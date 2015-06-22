@@ -6,6 +6,7 @@ var assert = require('assert'),
     dotMultiply = math.dotMultiply,
     divide = math.divide,
     matrix = math.matrix,
+    sparse = math.sparse,
     complex = math.complex,
     range = math.range,
     i = math.i,
@@ -65,34 +66,120 @@ describe('dotMultiply', function() {
     assert.throws(function () {dotMultiply("hello", 2)});
   });
 
-  var a = matrix([[1,2],[3,4]]);
-  var b = matrix([[5,6],[7,8]]);
-  var c = matrix([[5],[6]]);
-  var d = matrix([[5,6]]);
-
-  it('should multiply a all elements in a matrix by a number', function() {
-    // matrix, array, range
-    approx.deepEqual(dotMultiply(a, 3), matrix([[3,6],[9,12]]));
-    approx.deepEqual(dotMultiply(3, a), matrix([[3,6],[9,12]]));
+  describe('Array', function () {
+  
+    var a = [[1,0],[3,4]];
+    var b = [[5,6],[0,8]];
+    var c = [[5],[6]];
+    var d = [[5,6]];
+    
+    it('should multiply a all elements in a array by a number', function() {
+      // matrix, array, range
+      approx.deepEqual(dotMultiply(a, 3), [[3,0],[9,12]]);
+      approx.deepEqual(dotMultiply(3, a), [[3,0],[9,12]]);
+      approx.deepEqual(dotMultiply([1,2,3,4], 2), [2, 4, 6, 8]);
+      approx.deepEqual(dotMultiply(2, [1,2,3,4]), [2, 4, 6, 8]);
+    });
+    
+    it('should perform element-wise (array .* array) multiplication', function() {
+      approx.deepEqual(dotMultiply(a, b), [[5,0],[0,32]]);
+      approx.deepEqual(dotMultiply([[1,2],[3,4]], [[5,6],[7,8]]), [[5,12],[21,32]]);      
+    });
+    
+    it('should perform element-wise (array .* dense matrix) multiplication', function() {
+      approx.deepEqual(dotMultiply([[1,2],[3,4]], matrix([[5,6],[7,8]])), matrix([[5,12],[21,32]]));
+    });
+    
+    it('should perform element-wise (array .* sparse matrix) multiplication', function() {
+      approx.deepEqual(dotMultiply([[1,2],[3,4]], sparse([[5,6],[7,8]])), sparse([[5,12],[21,32]]));
+    });
+    
+    it('should throw an error if arrays are of different sizes', function() {
+      assert.throws(function () {dotMultiply(a, c)});
+      assert.throws(function () {dotMultiply(d, a)});
+      assert.throws(function () {dotMultiply(d, b)});
+      assert.throws(function () {dotMultiply(d, c)});
+      assert.throws(function () {dotMultiply(c, b)});
+    });
   });
+  
+  describe('DenseMatrix', function () {
 
-  it('should perform element-wise matrix multiplication', function() {
-    approx.deepEqual(dotMultiply(a, b), matrix([[5,12],[21,32]]));
-    approx.deepEqual(dotMultiply([[1,2],[3,4]], [[5,6],[7,8]]), [[5,12],[21,32]]);
-    approx.deepEqual(dotMultiply([1,2,3,4], 2), [2, 4, 6, 8]);
+    var a = matrix([[1,0],[3,4]]);
+    var b = matrix([[5,6],[0,8]]);
+    var c = matrix([[5],[6]]);
+    var d = matrix([[5,6]]);
+
+    it('should multiply a all elements in a dense matrix by a number', function() {
+      // matrix, array, range
+      approx.deepEqual(dotMultiply(a, 3), matrix([[3,0],[9,12]]));
+      approx.deepEqual(dotMultiply(3, a), matrix([[3,0],[9,12]]));
+      approx.deepEqual(dotMultiply(matrix([1,2,3,4]), 2), matrix([2, 4, 6, 8]));
+      approx.deepEqual(dotMultiply(2, matrix([1,2,3,4])), matrix([2, 4, 6, 8]));
+    });
+
+    it('should perform element-wise (dense matrix .* array) multiplication', function() {
+      approx.deepEqual(dotMultiply(a, [[5,6],[0,8]]), matrix([[5,0],[0,32]]));
+      approx.deepEqual(dotMultiply(matrix([[1,2],[3,4]]), [[5,6],[7,8]]), matrix([[5,12],[21,32]]));
+    });
+
+    it('should perform element-wise (dense matrix .* dense matrix) multiplication', function() {
+      approx.deepEqual(dotMultiply(matrix([[1,2],[3,4]]), matrix([[5,6],[7,8]])), matrix([[5,12],[21,32]]));
+    });
+
+    it('should perform element-wise (dense matrix .* sparse matrix) multiplication', function() {
+      approx.deepEqual(dotMultiply(matrix([[1,2],[3,4]]), sparse([[5,6],[7,8]])), sparse([[5,12],[21,32]]));
+    });
+
+    it('should throw an error if arrays are of different sizes', function() {
+      assert.throws(function () {dotMultiply(a, c)});
+      assert.throws(function () {dotMultiply(d, a)});
+      assert.throws(function () {dotMultiply(d, b)});
+      assert.throws(function () {dotMultiply(d, c)});
+      assert.throws(function () {dotMultiply(c, b)});
+    });
   });
+  
+  describe('SparseMatrix', function () {
 
-  it('should throw an error if matrices are of different sizes', function() {
-    assert.throws(function () {dotMultiply(a, c)});
-    assert.throws(function () {dotMultiply(d, a)});
-    assert.throws(function () {dotMultiply(d, b)});
-    assert.throws(function () {dotMultiply(d, c)});
-    assert.throws(function () {dotMultiply(c, b)});
+    var a = sparse([[1,0],[3,4]]);
+    var b = sparse([[5,6],[0,8]]);
+    var c = sparse([[5],[6]]);
+    var d = sparse([[5,6]]);
+
+    it('should multiply a all elements in a sparse matrix by a number', function() {
+      // matrix, array, range
+      approx.deepEqual(dotMultiply(a, 3), sparse([[3,0],[9,12]]));
+      approx.deepEqual(dotMultiply(3, a), sparse([[3,0],[9,12]]));
+      approx.deepEqual(dotMultiply(sparse([1,2,3,4]), 2), sparse([2, 4, 6, 8]));
+      approx.deepEqual(dotMultiply(2, sparse([1,2,3,4])), sparse([2, 4, 6, 8]));
+    });
+
+    it('should perform element-wise (sparse matrix .* array) multiplication', function() {
+      approx.deepEqual(dotMultiply(a, [[5,6],[0,8]]), sparse([[5,0],[0,32]]));
+      approx.deepEqual(dotMultiply(sparse([[1,2],[3,4]]), [[5,6],[7,8]]), sparse([[5,12],[21,32]]));
+    });
+
+    it('should perform element-wise (sparse matrix .* dense matrix) multiplication', function() {
+      approx.deepEqual(dotMultiply(sparse([[1,2],[3,4]]), matrix([[5,6],[7,8]])), sparse([[5,12],[21,32]]));
+    });
+
+    it('should perform element-wise (sparse matrix .* sparse matrix) multiplication', function() {
+      approx.deepEqual(dotMultiply(sparse([[0,2],[3,4]]), sparse([[5,6],[0,8]])), sparse([[0,12],[0,32]]));
+    });
+
+    it('should throw an error if arrays are of different sizes', function() {
+      assert.throws(function () {dotMultiply(a, c)});
+      assert.throws(function () {dotMultiply(d, a)});
+      assert.throws(function () {dotMultiply(d, b)});
+      assert.throws(function () {dotMultiply(d, c)});
+      assert.throws(function () {dotMultiply(c, b)});
+    });
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {dotMultiply(1)}, error.ArgumentsError);
-    assert.throws(function () {dotMultiply(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {dotMultiply(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {dotMultiply(1, 2, 3)}, /TypeError: Too many arguments/);
   });
   
   it('should LaTeX dotMultiply', function () {

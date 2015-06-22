@@ -11,7 +11,7 @@ var math = require('../index');
 
 /**
  * Calculate the numeric integration of a function
- * @param {function} f
+ * @param {Function} f
  * @param {number} start
  * @param {number} end
  * @param {number} [step=0.01]
@@ -54,9 +54,9 @@ integrate.transform = function (args, math, scope) {
   }
 
   // evaluate start, end, and step
-  var start = args[2].compile(math).eval(scope);
-  var end   = args[3].compile(math).eval(scope);
-  var step  = args[4] && args[4].compile(math).eval(scope); // step is optional
+  var start = args[2].compile().eval(scope);
+  var end   = args[3].compile().eval(scope);
+  var step  = args[4] && args[4].compile().eval(scope); // step is optional
 
   // create a new scope, linked to the provided scope. We use this new scope
   // to apply the variable.
@@ -64,7 +64,7 @@ integrate.transform = function (args, math, scope) {
 
   // construct a function which evaluates the first parameter f after applying
   // a value for parameter x.
-  var fnCode = args[0].compile(math);
+  var fnCode = args[0].compile();
   var f = function (x) {
     fnScope[variable] = x;
     return fnCode.eval(fnScope);

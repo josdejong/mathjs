@@ -1,15 +1,15 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     complex = math.complex,
     matrix = math.matrix,
+    sparse = math.sparse,
     unit = math.unit,
-    range = math.range,
     exp = math.exp;
 
 describe('exp', function() {
+
   it('should exponentiate a boolean', function () {
     approx.equal(exp(true), 2.71828182845905);
     approx.equal(exp(false), 1);
@@ -37,8 +37,8 @@ describe('exp', function() {
   });
 
   it('should throw an error if there\'s wrong number of arguments', function() {
-    assert.throws(function () {exp()}, error.ArgumentsError);
-    assert.throws(function () {exp(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {exp();}, /TypeError: Too few arguments/);
+    assert.throws(function () {exp(1, 2);}, /TypeError: Too many arguments/);
   });
 
   it('should exponentiate a complex number correctly', function() {
@@ -64,24 +64,26 @@ describe('exp', function() {
   });
 
   it('should throw an error on a unit', function() {
-    assert.throws(function () {exp(unit('5cm'))});
+    assert.throws(function () {exp(unit('5cm'));});
   });
 
   it('should throw an error with a string', function() {
-    assert.throws(function () {exp('text')});
+    assert.throws(function () {exp('text');});
   });
 
   it('should exponentiate matrices, arrays and ranges correctly', function() {
-    var res = [1, 2.71828182845905, 7.38905609893065, 20.0855369231877];
-    approx.deepEqual(exp([0,1,2,3]), res);
-    approx.deepEqual(exp(matrix([0,1,2,3])), matrix(res));
-    approx.deepEqual(exp(matrix([[0,1],[2,3]])),
-        matrix([[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]]));
+    // array
+    approx.deepEqual(exp([0, 1, 2, 3]), [1, 2.71828182845905, 7.38905609893065, 20.0855369231877]);
+    approx.deepEqual(exp([[0, 1], [2, 3]]), [[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]]);
+    // dense matrix
+    approx.deepEqual(exp(matrix([0, 1, 2, 3])), matrix([1, 2.71828182845905, 7.38905609893065, 20.0855369231877]));
+    approx.deepEqual(exp(matrix([[0, 1], [2, 3]])), matrix([[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]]));
+    // sparse matrix, TODO: it should return a dense matrix
+    approx.deepEqual(exp(sparse([[0, 1], [2, 3]])), sparse([[1, 2.71828182845905], [7.38905609893065, 20.0855369231877]]));
   });
 
   it('should LaTeX exp', function () {
     var expression = math.parse('exp(0)');
     assert.equal(expression.toTex(), '\\exp\\left(0\\right)');
   });
-
 });

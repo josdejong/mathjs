@@ -23,7 +23,6 @@ describe('number', function() {
   it('isNumber', function() {
     assert.equal(number.isNumber(1), true);
     assert.equal(number.isNumber(2e+3), true);
-    assert.equal(number.isNumber(new Number(23)), true);
     assert.equal(number.isNumber(Number(2.3)), true);
     assert.equal(number.isNumber(NaN), true);
     assert.equal(number.isNumber(-23), true);
@@ -40,6 +39,9 @@ describe('number', function() {
     assert.equal(number.isNumber(null), false);
     assert.equal(number.isNumber(undefined), false);
     assert.equal(number.isNumber(), false);
+
+    // we don't support non primitive Numbers anymore
+    assert.equal(number.isNumber(new Number(23)), false);
   });
 
   it('sign', function() {
@@ -455,29 +457,5 @@ describe('number', function() {
     });
 
   });
-
-    describe('isPositiveInteger', function() {
-
-        it('should determine if input is a integer', function() {
-            assert.equal(number.isPositiveInteger([1]), false);
-            assert.equal(number.isPositiveInteger(false), false);
-            assert.equal(number.isPositiveInteger('test'), false);
-            assert.equal(number.isPositiveInteger({a:1}), false);
-            assert.equal(number.isPositiveInteger(0.1), false);
-        });
-
-        it('should determine if integer is positive', function() {
-            assert.equal(number.isPositiveInteger(-1), false);
-            assert.equal(number.isPositiveInteger(1), true);
-        });
-
-        it('should determine if BigNumber is positive', function() {
-            BigNumber = require('decimal.js');
-            assert.equal(number.isPositiveInteger(new BigNumber(10)), true);
-            assert.equal(number.isPositiveInteger(new BigNumber(-10)), false);
-            assert.equal(number.isPositiveInteger(new BigNumber(100000)), true);
-        });
-
-    });
 
 });

@@ -1,10 +1,13 @@
 # Numbers
 
-Math.js supports two types of numbers:
+Math.js supports three types of numbers:
 
-- Number for fast floating point arithmetic described on this page.
-- BigNumber for arbitrary precision arithmetic described on the page
+- Number for fast floating point arithmetic, described on this page.
+- BigNumber for arbitrary precision arithmetic, described on the page
   [BigNumbers](bignumbers.md).
+- Fraction, which stores numbers in terms of a numerator and denominators, 
+  described on the page [Fractions](fractions.md).
+
 
 ## Configuration
 
@@ -16,7 +19,8 @@ can be configured when instantiating math.js:
 
 ```js
 math.config({
-  number: 'number' // Default type of number: 'number' (default) or 'bignumber'
+  number: 'number' // Default type of number: 
+                   // 'number' (default), 'bignumber', or 'fraction'
 });
 ```
 

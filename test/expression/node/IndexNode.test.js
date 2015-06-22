@@ -1,12 +1,13 @@
 // test IndexNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    bigmath = require('../../../index').create({number: 'bignumber'}),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    IndexNode = require('../../../lib/expression/node/IndexNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bigmath = require('../../../index').create({number: 'bignumber'});
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var IndexNode = math.expression.node.IndexNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('IndexNode', function() {
 
@@ -15,6 +16,11 @@ describe('IndexNode', function() {
     assert(n instanceof IndexNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'IndexNode');
+  });
+
+  it ('should have isIndexNode', function () {
+    var node = new IndexNode(new Node(), []);
+    assert(node.isIndexNode);
   });
 
   it ('should throw an error when calling with wrong arguments', function () {
@@ -29,13 +35,13 @@ describe('IndexNode', function() {
   });
 
   it ('should compile a IndexNode', function () {
-    var a = new SymbolNode('a');
+    var a = new bigmath.expression.node.SymbolNode('a');
     var ranges = [
-      new ConstantNode(2),
-      new ConstantNode(1)
+      new bigmath.expression.node.ConstantNode(2),
+      new bigmath.expression.node.ConstantNode(1)
     ];
-    var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var n = new bigmath.expression.node.IndexNode(a, ranges);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -53,7 +59,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -72,7 +78,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -90,7 +96,7 @@ describe('IndexNode', function() {
       )
     ];
     var n = new IndexNode(a, ranges);
-    var expr = n.compile(bigmath);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -99,11 +105,11 @@ describe('IndexNode', function() {
   });
 
   it ('should compile a IndexNode with bignumber setting', function () {
-    var a = new SymbolNode('a');
-    var b = new ConstantNode(2);
-    var c = new ConstantNode(1);
-    var n = new IndexNode(a, [b, c]);
-    var expr = n.compile(bigmath);
+    var a = new bigmath.expression.node.SymbolNode('a');
+    var b = new bigmath.expression.node.ConstantNode(2);
+    var c = new bigmath.expression.node.ConstantNode(1);
+    var n = new bigmath.expression.node.IndexNode(a, [b, c]);
+    var expr = n.compile();
 
     var scope = {
       a: [[1, 2], [3, 4]]
@@ -272,6 +278,31 @@ describe('IndexNode', function() {
     assert.equal(n2.toString(), 'a[]')
   });
 
+  it ('should stringigy an IndexNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'IndexNode') {
+        var string = node.object.toString(options) + ' at ';
+        node.ranges.forEach(function (range) {
+          string += range.toString(options) + ', ';
+        });
+
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var n = new IndexNode(a, [b, c]);
+
+    assert.equal(n.toString({handler: customFunction}), 'a at const(1, number), const(2, number), ');
+  });
+
   it ('should LaTeX an IndexNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
@@ -280,19 +311,19 @@ describe('IndexNode', function() {
     ];
 
     var n = new IndexNode(a, ranges);
-    assert.equal(n.toTex(), '\\mathrm{a}_{\\left[2,1\\right]}');
+    assert.equal(n.toTex(), ' a_{2,1}');
 
     var n2 = new IndexNode(a, []);
-    assert.equal(n2.toTex(), '\\mathrm{a}_{\\left[\\right]}')
+    assert.equal(n2.toTex(), ' a_{}')
   });
 
   it ('should LaTeX an IndexNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'IndexNode') {
-        var latex = node.object.toTex(callback) + ' at ';
+        var latex = node.object.toTex(options) + ' at ';
         node.ranges.forEach(function (range) {
-          latex += range.toTex(callback) + ', ';
+          latex += range.toTex(options) + ', ';
         });
 
         return latex;
@@ -308,7 +339,7 @@ describe('IndexNode', function() {
 
     var n = new IndexNode(a, [b, c]);
 
-    assert.equal(n.toTex(customFunction), '\\mathrm{a} at const\\left(1, number\\right), const\\left(2, number\\right), ');
+    assert.equal(n.toTex({handler: customFunction}), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ');
   });
 
 });

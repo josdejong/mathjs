@@ -86,17 +86,17 @@ describe('partitionSelect', function() {
   });
 
   it('should throw an error if called with unsupported type', function() {
-    assert.throws(function() { partitionSelect(2, 2) }, math.error.UnsupportedTypeError);
-    assert.throws(function() { partitionSelect('string', 2) }, math.error.UnsupportedTypeError);
-    assert.throws(function() { partitionSelect([1], 'string') }, math.error.UnsupportedTypeError);
-    assert.throws(function() { partitionSelect([1], 1, 'function') }, math.error.UnsupportedTypeError);
-    assert.throws(function() { partitionSelect([1], 1, {}) }, math.error.UnsupportedTypeError);
+    assert.throws(function() { partitionSelect(2, 2) }, /TypeError: Unexpected type of argument/);
+    assert.throws(function() { partitionSelect('string', 2) }, /TypeError: Unexpected type of argument/);
+    assert.throws(function() { partitionSelect([1], new Date()) }, /TypeError: Unexpected type of argument/);
+    assert.throws(function() { partitionSelect([1], 1, 'function') }, /Error: Compare string must be "asc" or "desc"/);
+    assert.throws(function() { partitionSelect([1], 1, {}) }, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if called with invalid number of arguments', function() {
-    assert.throws(function() { partitionSelect() }, math.error.ArgumentsError);
-    assert.throws(function() { partitionSelect([]) }, math.error.ArgumentsError);
-    assert.throws(function() { partitionSelect([], 2, 'foo', 3) }, math.error.ArgumentsError);
+    assert.throws(function() { partitionSelect() }, /TypeError: Too few arguments/);
+    assert.throws(function() { partitionSelect([]) }, /TypeError: Too few arguments/);
+    assert.throws(function() { partitionSelect([], 2, 'foo', 3) }, /TypeError: Too many arguments/);
   });
 
   /*

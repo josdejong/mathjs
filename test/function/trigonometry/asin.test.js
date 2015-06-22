@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    asin = math.asin,
-    sin = math.sin,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 21}),
-    asinBig = bigmath.asin,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var asin = math.asin;
+var sin = math.sin;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 21});
+var predmath = math.create({predictable: true});
+var asinBig = bigmath.asin;
+var Big = bigmath.bignumber;
 
 describe('asin', function() {
   it('should return the arcsin of a boolean', function () {
@@ -29,6 +30,14 @@ describe('asin', function() {
     approx.equal(asin(0) / pi, 0);
     approx.equal(asin(0.5) / pi, 1/6);
     approx.equal(asin(1) / pi, 0.5);
+
+    approx.deepEqual(asin(-2), complex('-1.57079632679490 + 1.31695789692482i'));
+    approx.deepEqual(asin(2), complex('1.57079632679490 - 1.31695789692482i'));
+  });
+
+  it('should return the arccos of a number when predictable:true', function() {
+    assert.equal(typeof predmath.asin(-2), 'number');
+    assert(isNaN(predmath.asin(-2)));
   });
 
   it('should return the arcsin of a bignumber', function() {
@@ -126,8 +135,8 @@ describe('asin', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {asin()}, error.ArgumentsError);
-    assert.throws(function () {asin(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {asin()}, /TypeError: Too few arguments/);
+    assert.throws(function () {asin(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX asin', function () {

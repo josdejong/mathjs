@@ -1,8 +1,8 @@
 // test bignumber utils
-var assert = require('assert'),
-    approx = require('../../tools/approx'),
-    BigNumber = require('decimal.js'),
-    bignumber = require('../../lib/util/bignumber');
+var assert = require('assert');
+var approx = require('../../tools/approx');
+var BigNumber = require('decimal.js');
+var bignumber = require('../../lib/util/bignumber');
 
 describe('bignumber', function() {
 
@@ -62,6 +62,19 @@ describe('bignumber', function() {
     assert.equal(bignumber.toExponential(new Big(2e+3), 30), '2.00000000000000000000000000000e+3');
     assert.equal(bignumber.toExponential(new Big('2e+300'), 30), '2.00000000000000000000000000000e+300');
     assert.equal(bignumber.toExponential(new Big('2e-300'), 30), '2.00000000000000000000000000000e-300');
+  });
+
+  it('should convert a number to BigNumber', function() {
+    var Big = BigNumber.constructor();
+    Big.config({precision: 4});
+
+    var a = bignumber.toBigNumber(0.123456789, BigNumber);
+    assert(a instanceof BigNumber);
+    assert.equal(a.plus(0).toString(), '0.123456789');
+
+    var b = bignumber.toBigNumber(0.123456789, Big);
+    assert(b instanceof BigNumber);
+    assert.equal(b.plus(0).toString(), '0.1235');
   });
 
   describe('format', function () {
@@ -278,27 +291,31 @@ describe('bignumber', function() {
 
   });
 
-    it('should determine if input is a integer', function() {
-        assert.equal(bignumber.isPositiveInteger([new BigNumber(1)]), false);
-        assert.equal(bignumber.isPositiveInteger(false), false);
-        assert.equal(bignumber.isPositiveInteger('test'), false);
-        assert.equal(bignumber.isPositiveInteger({a:new BigNumber(1)}), false);
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(0.1)), false);
-    });
+  it('should determine if input is a integer', function() {
+      assert.equal(bignumber.isPositiveInteger([new BigNumber(1)]), false);
+      assert.equal(bignumber.isPositiveInteger(false), false);
+      assert.equal(bignumber.isPositiveInteger('test'), false);
+      assert.equal(bignumber.isPositiveInteger({a:new BigNumber(1)}), false);
+      assert.equal(bignumber.isPositiveInteger(new BigNumber(0.1)), false);
+  });
 
-    it('should determine if integer is positive', function() {
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(1)), true);
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(0)), false);
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(0)), false);
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(-0)), false);
-    });
+  it('should determine if integer is positive', function() {
+      assert.equal(bignumber.isPositiveInteger(1), true);
+      assert.equal(bignumber.isPositiveInteger(0), true);
+      assert.equal(bignumber.isPositiveInteger(-0), true);
+      assert.equal(bignumber.isPositiveInteger(-1), false);
+      assert.equal(bignumber.isPositiveInteger(0.5), false);
+      assert.equal(bignumber.isPositiveInteger(-0.5), false);
+  });
 
-    it('should determine if BigNumber is positive', function() {
-        BigNumber = require('decimal.js');
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(10)), true);
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(-10)), false);
-        assert.equal(bignumber.isPositiveInteger(new BigNumber(100000)), true);
-    });
+  it('should determine if BigNumber is positive', function() {
+    assert.equal(bignumber.isPositiveInteger(new BigNumber(1)), true);
+    assert.equal(bignumber.isPositiveInteger(new BigNumber(0)), true);
+    assert.equal(bignumber.isPositiveInteger(new BigNumber(-0)), true);
+    assert.equal(bignumber.isPositiveInteger(new BigNumber(-1)), false);
+    assert.equal(bignumber.isPositiveInteger(new BigNumber(0.5)), false);
+    assert.equal(bignumber.isPositiveInteger(new BigNumber(-0.5)), false);
+  });
 
 });
 

@@ -14,14 +14,14 @@ math.deepEqual(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | First matrix to compare
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Second matrix to compare
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First matrix to compare
+`y` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Second matrix to compare
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Returns true when the input matrices have the same size and each of their elements is equal.
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Returns true when the input matrices have the same size and each of their elements is equal.
 
 
 ## Examples

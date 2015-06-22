@@ -1,7 +1,10 @@
-var assert = require('assert'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    prod = math.prod;
+var assert = require('assert');
+var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
+var prod = math.prod;
 
 describe('prod', function() {
 
@@ -14,16 +17,16 @@ describe('prod', function() {
   });
 
   it('should return the product of big numbers', function() {
-    assert.deepEqual(prod(bignumber(1),bignumber(3),bignumber(5),bignumber(2)),
-        bignumber(30));
+    assert.deepEqual(prod(new BigNumber(1),new BigNumber(3),new BigNumber(5),new BigNumber(2)),
+        new BigNumber(30));
   });
 
   it('should return the product of complex numbers', function() {
-    assert.deepEqual(prod(math.complex(2,3), math.complex(-1,2)), math.complex(-8,1));
+    assert.deepEqual(prod(new Complex(2,3), new Complex(-1,2)), new Complex(-8,1));
   });
 
   it('should return the product of mixed numbers and complex numbers', function() {
-    assert.deepEqual(prod(2, math.complex(2,3)), math.complex(4,6));
+    assert.deepEqual(prod(2, new Complex(2,3)), new Complex(4,6));
   });
 
   it('should return the prod from an array', function() {
@@ -31,7 +34,7 @@ describe('prod', function() {
   });
 
   it('should return the prod from an 1d matrix', function() {
-    assert.equal(prod(math.matrix([1,3,5,2])), 30);
+    assert.equal(prod(new DenseMatrix([1,3,5,2])), 30);
   });
 
   it('should return the prod element from a 2d array', function() {
@@ -42,7 +45,7 @@ describe('prod', function() {
   });
 
   it('should return the prod element from a 2d matrix', function() {
-    assert.deepEqual(prod(math.matrix([
+    assert.deepEqual(prod(new DenseMatrix([
       [ 1, 7, 2],
       [ 3, 5, 4]
     ])), 840);

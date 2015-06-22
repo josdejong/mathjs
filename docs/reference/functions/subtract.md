@@ -14,20 +14,20 @@ math.subtract(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null |  Initial value
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null |  Value to subtract from `x`
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Initial value
+`y` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Value to subtract from `x`
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Subtraction of `x` and `y`
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array &#124; Matrix |  Subtraction of `x` and `y`
 
 
 ## Examples
 
 ```js
-math.subtract(5.3, 2);        // returns Number 3.3
+math.subtract(5.3, 2);        // returns number 3.3
 
 var a = math.complex(2, 3);
 var b = math.complex(4, 1);

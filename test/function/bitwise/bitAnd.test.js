@@ -1,6 +1,5 @@
 // test bitAnd
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     bignumber = math.bignumber,
     bitAnd = math.bitAnd;
@@ -59,35 +58,117 @@ describe('bitAnd', function () {
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {bitAnd(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(2, math.unit('5cm'))}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(math.unit('5cm'), 2);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(2, math.unit('5cm'));}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(math.unit('2cm'), math.unit('5cm'));}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       bitAnd(1.1, 1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(1, 1.1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(1.1, 1.1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(bignumber(1.1), 1);
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(1, bignumber(1.1));
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(bignumber(1.1), bignumber(1));
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
     assert.throws(function () {
       bitAnd(bignumber(1), bignumber(1.1));
-    }, /Parameters in function bitAnd must be integer numbers/);
+    }, /Integers expected in function bitAnd/);
   });
 
+  it('should bitwise and arrays correctly', function () {
+    var a = [[1,4],[3,2]];
+    
+    // array - array
+    var b = [[5,8],[7,6]];
+    var c = bitAnd(a, b);
+    assert.deepEqual(c, [[1,0],[3,2]]);
+    
+    // array - dense
+    b = math.matrix([[5,8],[7,6]]);
+    c = bitAnd(a, b);
+    assert.deepEqual(c, math.matrix([[1,0],[3,2]]));
+    
+    // array - sparse
+    b = math.sparse([[5,8],[7,6]]);
+    c = bitAnd(a, b);
+    assert.deepEqual(c, math.sparse([[1,0],[3,2]]));
+  });
+  
+  it('should bitwise and dense matrix correctly', function () {
+    var a = math.matrix([[1,4],[3,2]]);
+
+    // dense - array
+    var b = [[5,8],[7,6]];
+    var c = bitAnd(a, b);
+    assert.deepEqual(c, math.matrix([[1,0],[3,2]]));
+
+    // dense - dense
+    b = math.matrix([[5,8],[7,6]]);
+    c = bitAnd(a, b);
+    assert.deepEqual(c, math.matrix([[1,0],[3,2]]));
+
+    // dense - sparse
+    b = math.sparse([[5,8],[7,6]]);
+    c = bitAnd(a, b);
+    assert.deepEqual(c, math.sparse([[1,0],[3,2]]));
+  });
+  
+  it('should bitwise and sparse matrix correctly', function () {
+    var a = math.sparse([[1,4],[3,2]]);
+
+    // sparse - array
+    var b = [[5,8],[7,6]];
+    var c = bitAnd(a, b);
+    assert.deepEqual(c, math.sparse([[1,0],[3,2]]));
+
+    // sparse - dense
+    b = math.matrix([[5,8],[7,6]]);
+    c = bitAnd(a, b);
+    assert.deepEqual(c, math.sparse([[1,0],[3,2]]));
+
+    // sparse - sparse
+    b = math.sparse([[5,8],[7,6]]);
+    c = bitAnd(a, b);
+    assert.deepEqual(c, math.sparse([[1,0],[3,2]]));
+
+    // sparse - sparse pattern
+    b = new math.type.SparseMatrix({ 
+      index: [ 0, 1],
+      ptr: [ 0, 1, 2 ],
+      size: [ 2, 2 ]
+    });
+    c = bitAnd(a, b);
+    assert.deepEqual(
+      c, 
+      new math.type.SparseMatrix({ 
+        index: [ 0, 1],
+        ptr: [ 0, 1, 2 ],
+        size: [ 2, 2 ]
+      }));
+    
+    // sparse pattern - sparse
+    c = bitAnd(b, a);
+    assert.deepEqual(
+      c, 
+      new math.type.SparseMatrix({ 
+        index: [ 0, 1],
+        ptr: [ 0, 1, 2 ],
+        size: [ 2, 2 ]
+      }));
+  });
+  
   it('should bitwise and matrices correctly', function () {
     var a2 = math.matrix([[1,2],[3,4]]);
     var a3 = math.matrix([[5,6],[7,8]]);
@@ -121,17 +202,15 @@ describe('bitAnd', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function () {
-    assert.throws(function () {bitAnd(1)}, error.ArgumentsError);
-    assert.throws(function () {bitAnd(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {bitAnd(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {bitAnd(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {bitAnd(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {bitAnd(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {bitAnd(new Date(), true);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(true, new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(true, undefined);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {bitAnd(undefined, true);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX bitAnd', function () {

@@ -3,15 +3,6 @@
 // load math.js
 var math = require('../index');
 
-/**
- * Helper function to output a value in the console. Value will be formatted.
- * @param {*} value
- */
-function print (value) {
-  var precision = 14;
-  console.log(math.format(value, precision));
-}
-
 // create a complex number with a numeric real and complex part
 console.log('create and manipulate complex numbers');
 var a = math.complex(2, 3);
@@ -52,3 +43,13 @@ print(c);                      // 1 + i
 // get polar coordinates of a complex number
 var d = math.complex(3, 4);
 console.log(d.toPolar());      // { r: 5, phi: 0.9272952180016122 }
+
+
+/**
+ * Helper function to output a value in the console. Value will be formatted.
+ * @param {*} value
+ */
+function print (value) {
+  var precision = 14;
+  console.log(math.format(value, precision));
+}

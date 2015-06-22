@@ -2,12 +2,12 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var FunctionNode = require('../../../lib/expression/node/FunctionNode');
-var OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var FunctionNode = math.expression.node.FunctionNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var RangeNode = math.expression.node.RangeNode;
 
 describe('FunctionNode', function() {
 
@@ -17,6 +17,12 @@ describe('FunctionNode', function() {
     assert(n instanceof FunctionNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'FunctionNode');
+  });
+
+  it ('should have isFunctionNode', function () {
+    var c = new ConstantNode(1);
+    var node = new FunctionNode('square', [c]);
+    assert(node.isFunctionNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -38,15 +44,15 @@ describe('FunctionNode', function() {
     var n = new FunctionNode('sqrt', [c]);
 
     var scope = {};
-    assert.equal(n.compile(math).eval(scope), 2);
+    assert.equal(n.compile().eval(scope), 2);
   });
 
   it ('should compile a FunctionNode with a raw function', function () {
     var mymath = math.create();
     function myFunction (args, _math, _scope) {
       assert.equal(args.length, 2);
-      assert(args[0] instanceof Node);
-      assert(args[1] instanceof Node);
+      assert(args[0] instanceof mymath.expression.node.Node);
+      assert(args[1] instanceof mymath.expression.node.Node);
       assert.deepEqual(_math.__proto__, mymath);
       assert.strictEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
@@ -54,12 +60,12 @@ describe('FunctionNode', function() {
     myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
-    var a = new ConstantNode(4);
-    var b = new ConstantNode(5);
-    var n = new FunctionNode('myFunction', [a, b]);
+    var a = new mymath.expression.node.ConstantNode(4);
+    var b = new mymath.expression.node.ConstantNode(5);
+    var n = new mymath.expression.node.FunctionNode('myFunction', [a, b]);
 
     var scope = {};
-    assert.equal(n.compile(mymath).eval(scope), 'myFunction(4, 5)');
+    assert.equal(n.compile().eval(scope), 'myFunction(4, 5)');
   });
 
   it ('should compile a FunctionNode with overloaded a raw function', function () {
@@ -70,16 +76,16 @@ describe('FunctionNode', function() {
     myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
-    var a = new ConstantNode(4);
-    var b = new ConstantNode(5);
-    var n = new FunctionNode('myFunction', [a, b]);
+    var a = new mymath.expression.node.ConstantNode(4);
+    var b = new mymath.expression.node.ConstantNode(5);
+    var n = new mymath.expression.node.FunctionNode('myFunction', [a, b]);
 
     var scope = {
       myFunction: function () {
         return 42;
       }
     };
-    assert.equal(n.compile(mymath).eval(scope), 42);
+    assert.equal(n.compile().eval(scope), 42);
   });
 
   it ('should filter a FunctionNode', function () {
@@ -265,6 +271,50 @@ describe('FunctionNode', function() {
     assert.equal(n.toString(), 'sqrt(4)');
   });
 
+  it ('should stringify a FunctionNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'FunctionNode') {
+        var string = '[' + node.name + '](';
+        node.args.forEach(function (arg) {
+          string += arg.toString(options) + ', ';
+        });
+        string += ')';
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new FunctionNode('add', [a, b]);
+    var n2 = new FunctionNode('subtract', [a, b]);
+
+    assert.equal(n1.toString({handler: customFunction}), '[add](const(1, number), const(2, number), )');
+    assert.equal(n2.toString({handler: customFunction}), '[subtract](const(1, number), const(2, number), )');
+  });
+
+  it ('should stringify a FunctionNode with custom toString for a single function', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = {
+      'add': function (node, options) {
+        return node.args[0].toString(options) 
+          + ' ' + node.name + ' ' 
+          + node.args[1].toString(options);
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new FunctionNode('add', [a, b]);
+
+    assert.equal(n.toString({handler: customFunction}), '1 add 2');
+  });
+
   it ('should LaTeX a FunctionNode', function () {
     var c1 = new ConstantNode(4);
     var c2 = new ConstantNode(5);
@@ -290,11 +340,11 @@ describe('FunctionNode', function() {
 
   it ('should LaTeX a FunctionNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'FunctionNode') {
         var latex = '\\mbox{' + node.name + '}\\left(';
         node.args.forEach(function (arg) {
-          latex += arg.toTex(callback) + ', ';
+          latex += arg.toTex(options) + ', ';
         });
         latex += '\\right)';
         return latex;
@@ -310,17 +360,17 @@ describe('FunctionNode', function() {
     var n1 = new FunctionNode('add', [a, b]);
     var n2 = new FunctionNode('subtract', [a, b]);
 
-    assert.equal(n1.toTex(customFunction), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
-    assert.equal(n2.toTex(customFunction), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n1.toTex({handler: customFunction}), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
+    assert.equal(n2.toTex({handler: customFunction}), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)');
   });
 
   it ('should LaTeX a FunctionNode with custom toTex for a single function', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = {
-      'add': function (node, callbacks) {
-        return node.args[0].toTex(callbacks) 
+      'add': function (node, options) {
+        return node.args[0].toTex(options) 
           + ' ' + node.name + ' ' 
-          + node.args[1].toTex(callbacks);
+          + node.args[1].toTex(options);
       }
     };
 
@@ -329,7 +379,86 @@ describe('FunctionNode', function() {
 
     var n = new FunctionNode('add', [a, b]);
 
-    assert.equal(n.toTex(customFunction), '1 add 2');
+    assert.equal(n.toTex({handler: customFunction}), '1 add 2');
+  });
+
+  it ('should LaTeX a FunctionNode with callback attached to the function', function () {
+    var customMath = math.create();
+    customMath.add.toTex = function (node, options) {
+      return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options);
+    };
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX a FunctionNode with template string attached to the function', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${args[0]} plus ${args[1]}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX a FunctionNode with object of callbacks attached to the function', function () {
+    var customMath = math.create();
+    customMath.sum.toTex = {
+      2: "${args[0]}+${args[1]}",
+      3: function (node, options) {
+        return node.args[0] + '+' + node.args[1] + '+' + node.args[2];
+      }
+    };
+
+    assert.equal(customMath.parse('sum(1,2)').toTex(), '1+2');
+    assert.equal(customMath.parse('sum(1,2,3)').toTex(), '1+2+3');
+  });
+
+  it ('should LaTeX templates with string properties', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${name}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), 'add');
+  });
+
+  it ('should LaTeX templates with node properties', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${args[0]} plus ${args[1]}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2');
+  });
+
+  it ('should LaTeX templates with properties that are arrays of Nodes', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${args}';
+
+    assert.equal(customMath.parse('add(1,2)').toTex(), '1,2');
+  });
+
+  it ('should throw an Error for templates with properties that don\'t exist', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${some_property}';
+
+    assert.throws(function () {customMath.parse('add(1,2)').toTex()}, ReferenceError);
+  });
+
+  it ('should throw an Error for templates with properties that aren\'t Nodes or Strings or Arrays of Nodes', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${some_property}';
+    var tree = customMath.parse('add(1,2)');
+
+    tree.some_property = {};
+    assert.throws(function () {tree.toTex()}, TypeError);
+
+    customMath.add.prototype.some_property = 1;
+    tree.some_property = 1;
+    assert.throws(function () {tree.toTex()}, TypeError);
+  });
+
+  it ('should throw an Error for templates with properties that are arrays of non Nodes', function () {
+    var customMath = math.create();
+    customMath.add.toTex = '${some_property}';
+    var tree = customMath.parse('add(1,2)');
+    tree.some_property = [1,2];
+
+    assert.throws(function () {tree.toTex()}, TypeError);
   });
 
 });

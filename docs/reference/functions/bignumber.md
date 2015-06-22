@@ -14,7 +14,7 @@ math.bignumber(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | Number &#124; String &#124; Array &#124; Matrix &#124; Boolean &#124; null | Value for the big number, 0 by default.
+`value` | number &#124; string &#124; Array &#124; Matrix &#124; boolean &#124; null | Value for the big number, 0 by default.
 
 ### Returns
 
@@ -26,11 +26,11 @@ BigNumber | The created bignumber
 ## Examples
 
 ```js
-0.1 + 0.2;                                  // returns Number 0.30000000000000004
+0.1 + 0.2;                                  // returns number 0.30000000000000004
 math.bignumber(0.1) + math.bignumber(0.2);  // returns BigNumber 0.3
 
 
-7.2e500;                                    // returns Number Infinity
+7.2e500;                                    // returns number Infinity
 math.bignumber('7.2e500');                  // returns BigNumber 7.2e500
 ```
 

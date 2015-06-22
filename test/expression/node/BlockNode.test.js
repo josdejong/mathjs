@@ -2,14 +2,14 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
-var OperatorNode = require('../../../lib/expression/node/OperatorNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
-var BlockNode = require('../../../lib/expression/node/BlockNode');
-var ResultSet = require('../../../lib/type/ResultSet');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var BlockNode = math.expression.node.BlockNode;
+var ResultSet = math.type.ResultSet;
 
 describe('BlockNode', function() {
 
@@ -18,6 +18,11 @@ describe('BlockNode', function() {
     assert(n instanceof BlockNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'BlockNode');
+  });
+
+  it ('should have isBlockNode', function () {
+    var node = new BlockNode([]);
+    assert(node.isBlockNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -48,7 +53,7 @@ describe('BlockNode', function() {
     ]);
 
     var scope = {};
-    assert.deepEqual(n.compile(math).eval(scope), new ResultSet([5, 3]));
+    assert.deepEqual(n.compile().eval(scope), new ResultSet([5, 3]));
     assert.deepEqual(scope, {foo: 3});
   });
 
@@ -57,7 +62,7 @@ describe('BlockNode', function() {
       {node: new ConstantNode(5)}
     ]);
 
-    assert.deepEqual(n.compile(math).eval(), new ResultSet([5]));
+    assert.deepEqual(n.compile().eval(), new ResultSet([5]));
   });
 
   it ('should filter a BlockNode', function () {
@@ -248,6 +253,30 @@ describe('BlockNode', function() {
     assert.equal(n.toString(), '5\nfoo = 3;\nfoo');
   });
 
+  it ('should stringify a BlockNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'BlockNode') {
+        var string = '';
+        node.blocks.forEach(function (block) {
+          string += block.node.toString(options) + '; ';
+        });
+
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new BlockNode([{node: a}, {node: b}]);
+
+    assert.equal(n.toString({handler: customFunction}), 'const(1, number); const(2, number); ');
+  });
+
   it ('should LaTeX a BlockNode', function () {
     var n = new BlockNode([
       {node: new ConstantNode(5), visible:true},
@@ -255,16 +284,16 @@ describe('BlockNode', function() {
       {node: new SymbolNode('foo'), visible:true}
     ]);
 
-    assert.equal(n.toTex(), '5\n\\mathrm{foo}:=3;\n\\mathrm{foo}');
+    assert.equal(n.toTex(), '5\\;\\;\nfoo:=3;\\;\\;\n foo');
   });
 
   it ('should LaTeX a BlockNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'BlockNode') {
         var latex = '';
         node.blocks.forEach(function (block) {
-          latex += block.node.toTex(callback) + '; ';
+          latex += block.node.toTex(options) + '; ';
         });
 
         return latex;
@@ -279,7 +308,7 @@ describe('BlockNode', function() {
 
     var n = new BlockNode([{node: a}, {node: b}]);
 
-    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right); const\\left(2, number\\right); ');
+    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right); const\\left(2, number\\right); ');
   });
 
 });

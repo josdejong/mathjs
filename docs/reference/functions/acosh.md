@@ -16,13 +16,13 @@ math.acosh(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccosine of x
+number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccosine of x
 
 
 ## Examples

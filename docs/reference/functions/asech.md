@@ -1,6 +1,6 @@
 # Function asech
 
-Calculate the hyperbolic arccos of a value,
+Calculate the hyperbolic arcsecant of a value,
 defined as `asech(x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
 
 For matrices, the function is evaluated element wise.
@@ -16,13 +16,13 @@ math.asech(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Array &#124; Matrix | Function input
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arcsecant of x
+number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arcsecant of x
 
 
 ## Examples

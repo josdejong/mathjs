@@ -1,7 +1,10 @@
-var assert = require('assert'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    min = math.min;
+var assert = require('assert');
+var math = require('../../../index');
+var BigNumber = math.type.BigNumber;
+var Complex = math.type.Complex;
+var DenseMatrix = math.type.DenseMatrix;
+var Unit = math.type.Unit;
+var min = math.min;
 
 describe('min', function() {
 
@@ -22,12 +25,12 @@ describe('min', function() {
   });
 
   it('should return the min of big numbers', function() {
-    assert.deepEqual(min(bignumber(1),bignumber(3),bignumber(5),bignumber(2),bignumber(-5)),
-        bignumber(-5));
+    assert.deepEqual(min(new BigNumber(1),new BigNumber(3),new BigNumber(5),new BigNumber(2),new BigNumber(-5)),
+        new BigNumber(-5));
   });
 
   it('should return the min element from a vector array', function() {
-    assert.equal(min(math.matrix([1,3,5,-5,2])), -5);
+    assert.equal(min(new DenseMatrix([1,3,5,-5,2])), -5);
   });
 
   it('should return the max element from a 2d matrix', function() {
@@ -36,7 +39,7 @@ describe('min', function() {
       [ 3, 0,  5],
       [-1, 9, 11]
     ]), -1);
-    assert.deepEqual(min(math.matrix([
+    assert.deepEqual(min(new DenseMatrix([
       [ 1, 4,  7],
       [ 3, 0,  5],
       [-1, 9, 11]
@@ -75,13 +78,13 @@ describe('min', function() {
   });
 
   it('should throw an error when called with complex numbers', function() {
-    assert.throws(function () {min(math.complex(2,3), math.complex(2,1))}, TypeError);
-    assert.throws(function () {min(math.complex(2,3), math.complex(2,5))}, TypeError);
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,1))}, TypeError);
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,5))}, TypeError);
 
-    assert.throws(function () {min(math.complex(3,4), 4)}, TypeError);
-    assert.throws(function () {min(math.complex(3,4), 5)}, TypeError);
-    assert.throws(function () {min(5, math.complex(3,4))}, TypeError);
-    assert.throws(function () {min(math.complex(3,4), 6)}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 4)}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 5)}, TypeError);
+    assert.throws(function () {min(5, new Complex(3,4))}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 6)}, TypeError);
   });
 
   it('should throw an error if called a dimension out of range', function() {

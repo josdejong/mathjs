@@ -1,6 +1,6 @@
 # Function filter
 
-Sort the items in a matrix.
+Filter the items in an array or one dimensional matrix.
 
 
 ## Syntax

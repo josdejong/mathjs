@@ -32,7 +32,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-math.chaining.Chain | The created chain
+math.type.Chain | The created chain
 
 
 ## Examples

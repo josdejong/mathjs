@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    acosh = math.acosh,
-    cosh = math.cosh,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 22}),
-    acoshBig = bigmath.acosh,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var acosh = math.acosh;
+var cosh = math.cosh;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 22});
+var predmath = math.create({predictable: true});
+var acoshBig = bigmath.acosh;
+var Big = bigmath.bignumber;
 
 describe('acosh', function() {
   it('should return the hyperbolic arccos of a boolean', function () {
@@ -35,6 +36,11 @@ describe('acosh', function() {
     approx.equal(acosh(2), 1.31695789692481670862504634730797);
     approx.equal(acosh(3), 1.7627471740390860504652186499595);
     approx.equal(acosh(pi), 1.811526272460853107021852049305);
+  });
+
+  it('should return NaN for values out of range and predictable:true', function() {
+    assert.equal(typeof predmath.acosh(-2), 'number');
+    assert(isNaN(predmath.acosh(-2)));
   });
 
   it('should return the hyperbolic arccos of a bignumber', function() {
@@ -104,8 +110,8 @@ describe('acosh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acosh()}, error.ArgumentsError);
-    assert.throws(function () {acosh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acosh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acosh(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX acosh', function () {

@@ -1,14 +1,16 @@
 // test exp
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    pow = math.pow;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var mathPredictable = math.create({predictable: true});
+var bignumber = math.bignumber;
+var fraction = math.fraction;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var pow = math.pow;
 
 describe('pow', function() {
 
@@ -26,6 +28,12 @@ describe('pow', function() {
 
   it('should exponentiate a negative number to a non-integer power', function() {
     approx.deepEqual(pow(-2,1.5), complex(0, -2.82842712474619));
+  });
+
+  it('should exponentiate a negative number to a non-integer power with predictable:true', function() {
+    var res = mathPredictable.pow(-2,1.5);
+    assert.equal(typeof res, 'number');
+    assert(isNaN(res));
   });
 
   it('should exponentiate booleans to the given power', function() {
@@ -61,12 +69,16 @@ describe('pow', function() {
     approx.deepEqual(pow(bignumber(-2), 1.5), complex(0, -2.82842712474619));
   });
 
+  it('should exponentiate a negative bignumber to a non-integer power', function() {
+    assert.deepEqual(mathPredictable.pow(bignumber(-2), bignumber(1.5)), bignumber(NaN));
+  });
+
   it('should exponentiate mixed numbers and bignumbers', function() {
     assert.deepEqual(pow(bignumber(2), 3), bignumber(8));
     assert.deepEqual(pow(2, bignumber(3)), bignumber(8));
 
-    approx.equal(pow(1/3, bignumber(2)), 1/9);
-    approx.equal(pow(bignumber(1), 1/3), 1);
+    assert.throws(function () {pow(1/3, bignumber(2))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {pow(bignumber(1), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
   });
 
   it('should exponentiate mixed booleans and bignumbers', function() {
@@ -76,9 +88,24 @@ describe('pow', function() {
     assert.deepEqual(pow(bignumber(3), true), bignumber(3));
   });
 
+  it('should exponentiate a fraction to an integer power', function() {
+    assert.deepEqual(math.pow(fraction(3), fraction(2)), fraction(9));
+    assert.deepEqual(math.pow(fraction(1.5), fraction(2)), fraction(2.25));
+    assert.deepEqual(math.pow(fraction(1.5), fraction(-2)), fraction(4, 9));
+    assert.strictEqual(math.pow(fraction(1.5), 2), 2.25);
+  });
+
+  it('should exponentiate a fraction to an non-integer power', function() {
+    assert.throws(function () {mathPredictable.pow(fraction(3), fraction(1.5))}, /Function pow does not support non-integer exponents for fractions/);
+    assert.strictEqual(mathPredictable.pow(fraction(4), 1.5), 8);
+
+    assert.strictEqual(math.pow(fraction(4), 1.5), 8);
+    assert.strictEqual(math.pow(fraction(4), fraction(1.5)), 8);
+  });
+
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {pow(1)}, error.ArgumentsError);
-    assert.throws(function () {pow(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {pow(1)}, /TypeError: Too few arguments in function pow/);
+    assert.throws(function () {pow(1, 2, 3)}, /TypeError: Too many arguments in function pow \(expected: 2, actual: 3\)/);
   });
 
   it('should exponentiate a complex number to the given power', function() {

@@ -8,7 +8,7 @@ var assert = require('assert'),
 
 describe('gamma', function () {
 
-  it('should calculate the gamma of a whole number', function () {
+  it('should calculate the gamma of an integer number', function () {
     assert.equal(gamma(1), 1);
     assert.equal(gamma(2), 1);
     assert.equal(gamma(3), 2);
@@ -52,7 +52,7 @@ describe('gamma', function () {
     approx.equal(gamma(-Math.E), -0.952681729748073099220537210195);
   });
 
-  it('should calculate the gamma of a whole bignumber', function () {
+  it('should calculate the gamma of an integer bignumber', function () {
     assert.deepEqual(gamma(bignumber(1)), bignumber(1));
     assert.deepEqual(gamma(bignumber(2)), bignumber(1));
     assert.deepEqual(gamma(bignumber(3)), bignumber(2));

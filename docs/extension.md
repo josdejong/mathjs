@@ -8,19 +8,22 @@ Function `import` has the following syntax:
 
 ```js
     math.import(object: Object [, options: Object])
-    math.import(moduleName: String [, options: Object])
 ```
 
-The first argument can be a module name or an object. The optional second
-argument can be an object with options. The following options are available:
+The first argument is object containing the functions and/or values to be
+imported. The optional second argument can be an object with options. The 
+following options are available:
 
-- `{Boolean} override`
+- `{boolean} override`
   If true, existing functions will be overwritten. False by default.
-- `{Boolean} wrap`
+- `{boolean} silent`
+  If true, the function will not throw errors on duplicates or invalid
+  types. Default value is `false`.
+- `{boolean} wrap`
   If true, the functions will be wrapped in a wrapper function which
   converts data types like Matrix to primitive data types like Array.
   The wrapper is needed when extending math.js with libraries which do not
-  support the math.js data types. The default value is false.
+  support the math.js data types. The default value is `false`.
 
 Math.js can be extended with functions and variables:
 
@@ -44,21 +47,20 @@ parser.eval('hello("user")');   // 'hello, user!'
 
 External libraries like
 [numbers.js](https://github.com/sjkaliski/numbers.js) and
-[numeric.js](http://numericjs.com/) can be imported as well.
+[numeric.js](http://numericjs.com/) can be imported as follows.
 The libraries must be installed using npm:
 
     npm install numbers
     npm install numeric
 
-The libraries can be easily imported into math.js using `import`. By default,
-existing functions will not be overwritten, and math.js will create a wrapper
-function around the imported functions which converts data types like `Matrix`
-to primitive types like `Array`.
+The libraries can be easily imported into math.js using `import`. 
+In order to convert math.js specific data types like `Matrix` to primitive types 
+like `Array`, the imported functions can be wrapped by enabling `{wrap: true}`.
 
 ```js
 // import the numbers.js and numeric.js libraries into math.js
-math.import('numbers', {wrap: true});
-math.import('numeric', {wrap: true});
+math.import(require('numbers'), {wrap: true, silent: true});
+math.import(require('numeric'), {wrap: true, silent: true});
 
 // use functions from numbers.js
 math.fibonacci(7);                          // 13

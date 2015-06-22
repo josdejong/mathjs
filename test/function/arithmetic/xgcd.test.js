@@ -108,9 +108,9 @@ describe('xgcd', function() {
     assert.throws(function () {xgcd(math.complex(1,3),2); }, TypeError, 'Function xgcd(complex, number) not supported');
   });
 
-  it('should throw an error when used with a string', function() {
-    assert.throws(function () {xgcd('a', 2); }, TypeError, 'Function xgcd(string, number) not supported');
-    assert.throws(function () {xgcd(2, 'a'); }, TypeError, 'Function xgcd(number, string) not supported');
+  it('should convert to a number when used with a string', function() {
+    assert.deepEqual(xgcd('65', '40'), [5, -3, 5]);
+    assert.throws(function () {xgcd(2, 'a'); }, /Cannot convert "a" to a number/);
   });
 
   it('should throw an error when used with a unit', function() {

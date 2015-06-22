@@ -28,7 +28,7 @@ math.var(A, normalization)
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
-`normalization` | String |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
+`normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
 ### Returns
 

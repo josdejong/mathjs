@@ -81,8 +81,8 @@ describe('format', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws (function () {math.format()}, error.ArgumentsError);
-    assert.throws (function () {math.format(1, 2, 3)}, error.ArgumentsError);
+    assert.throws (function () {math.format()}, /TypeError: Too few arguments/);
+    assert.throws (function () {math.format(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX format', function () {

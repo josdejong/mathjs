@@ -1,12 +1,12 @@
 // test ConditionalNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    AssignmentNode = require('../../../lib/expression/node/AssignmentNode'),
-    ConditionalNode = require('../../../lib/expression/node/ConditionalNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var ConditionalNode = math.expression.node.ConditionalNode;
 
 describe('ConditionalNode', function() {
   var condition = new ConstantNode(true);
@@ -24,6 +24,11 @@ describe('ConditionalNode', function() {
     assert.equal(n.type, 'ConditionalNode');
   });
 
+  it ('should have isConditionalNode', function () {
+    var node = new ConditionalNode(condition, a, b);
+    assert(node.isConditionalNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {ConditionalNode()}, SyntaxError);
   });
@@ -37,7 +42,7 @@ describe('ConditionalNode', function() {
 
   it ('should lazy evaluate a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
-    var expr = n.compile(math);
+    var expr = n.compile();
     var scope = {};
     assert.equal(expr.eval(scope), 2);
     assert.deepEqual(scope, {a: 2});
@@ -47,54 +52,54 @@ describe('ConditionalNode', function() {
     var condition = new ConditionalNode(new SymbolNode('a'), one, zero);
 
     it('should evaluate boolean conditions', function() {
-      assert.equal(condition.compile(math).eval({a: true}), 1);
-      assert.equal(condition.compile(math).eval({a: false}), 0);
+      assert.equal(condition.compile().eval({a: true}), 1);
+      assert.equal(condition.compile().eval({a: false}), 0);
     });
 
     it('should evaluate number conditions', function() {
-      assert.equal(condition.compile(math).eval({a: 1}), 1);
-      assert.equal(condition.compile(math).eval({a: 4}), 1);
-      assert.equal(condition.compile(math).eval({a: -1}), 1);
-      assert.equal(condition.compile(math).eval({a: 0}), 0);
+      assert.equal(condition.compile().eval({a: 1}), 1);
+      assert.equal(condition.compile().eval({a: 4}), 1);
+      assert.equal(condition.compile().eval({a: -1}), 1);
+      assert.equal(condition.compile().eval({a: 0}), 0);
     });
 
     it('should evaluate bignumber conditions', function() {
-      assert.equal(condition.compile(math).eval({a: math.bignumber(1)}), 1);
-      assert.equal(condition.compile(math).eval({a: math.bignumber(4)}), 1);
-      assert.equal(condition.compile(math).eval({a: math.bignumber(-1)}), 1);
-      assert.equal(condition.compile(math).eval({a: math.bignumber(0)}), 0);
+      assert.equal(condition.compile().eval({a: math.bignumber(1)}), 1);
+      assert.equal(condition.compile().eval({a: math.bignumber(4)}), 1);
+      assert.equal(condition.compile().eval({a: math.bignumber(-1)}), 1);
+      assert.equal(condition.compile().eval({a: math.bignumber(0)}), 0);
     });
 
     it('should evaluate complex number conditions', function() {
-      assert.equal(condition.compile(math).eval({a: math.complex(2, 3)}), 1);
-      assert.equal(condition.compile(math).eval({a: math.complex(2, 0)}), 1);
-      assert.equal(condition.compile(math).eval({a: math.complex(0, 3)}), 1);
-      assert.equal(condition.compile(math).eval({a: math.complex(0, 0)}), 0);
+      assert.equal(condition.compile().eval({a: math.complex(2, 3)}), 1);
+      assert.equal(condition.compile().eval({a: math.complex(2, 0)}), 1);
+      assert.equal(condition.compile().eval({a: math.complex(0, 3)}), 1);
+      assert.equal(condition.compile().eval({a: math.complex(0, 0)}), 0);
     });
 
     it('should evaluate string conditions', function() {
-      assert.equal(condition.compile(math).eval({a: 'hello'}), 1);
-      assert.equal(condition.compile(math).eval({a: ''}), 0);
+      assert.equal(condition.compile().eval({a: 'hello'}), 1);
+      assert.equal(condition.compile().eval({a: ''}), 0);
     });
 
     it('should evaluate unit conditions', function() {
-      assert.equal(condition.compile(math).eval({a: math.unit('5cm')}), 1);
-      assert.equal(condition.compile(math).eval({a: math.unit('0 inch')}), 0);
-      assert.equal(condition.compile(math).eval({a: math.unit('meter')}), 0);
+      assert.equal(condition.compile().eval({a: math.unit('5cm')}), 1);
+      assert.equal(condition.compile().eval({a: math.unit('0 inch')}), 0);
+      assert.equal(condition.compile().eval({a: math.unit('meter')}), 0);
     });
 
     it('should evaluate null conditions', function() {
-      assert.equal(condition.compile(math).eval({a: null}), 0);
+      assert.equal(condition.compile().eval({a: null}), 0);
     });
 
     it('should evaluate undefined conditions', function() {
-      assert.equal(condition.compile(math).eval({a: undefined}), 0);
+      assert.equal(condition.compile().eval({a: undefined}), 0);
     });
 
     it('should throw an error in case of unsupported type of conditions', function() {
-      assert.throws(function () {condition.compile(math).eval({a: {}})});
-      assert.throws(function () {condition.compile(math).eval({a: []})});
-      assert.throws(function () {condition.compile(math).eval({a: math.matrix()})});
+      assert.throws(function () {condition.compile().eval({a: {}})});
+      assert.throws(function () {condition.compile().eval({a: []})});
+      assert.throws(function () {condition.compile().eval({a: math.matrix()})});
     });
   });
 
@@ -249,25 +254,51 @@ describe('ConditionalNode', function() {
     assert.strictEqual(d.falseExpr, c.falseExpr);
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    assert.equal(math.parse('a?b:c').toString({parenthesis: 'all'}), '(a) ? (b) : (c)');
+  });
+
   it ('should stringify a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
     assert.equal(n.toString(), 'true ? (a = 2) : (b = 3)');
   });
 
+  it ('should stringify a ConditionalNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'ConditionalNode') {
+        return 'if ' + node.condition.toString(options)
+          + ' then ' + node.trueExpr.toString(options)
+          + ' else ' + node.falseExpr.toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+
+    var n = new ConditionalNode(a, b, c);
+
+    assert.equal(n.toString({handler: customFunction}), 'if const(1, number) then const(2, number) else const(3, number)');
+  });
+
   it ('should LaTeX a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
-    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{\\mathrm{a}:=2}, &\\quad{\\text{if}\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
+    assert.equal(n.toTex(), '\\left\\{\\begin{array}{l l}{a:=2}, &\\quad{\\text{if}\\;true}\\\\{b:=3}, &\\quad{\\text{otherwise}}\\end{array}\\right.');
   });
 
   it ('should LaTeX a ConditionalNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ConditionalNode') {
-        return 'if ' + node.condition.toTex(callback)
-          + ' then ' + node.trueExpr.toTex(callback)
-          + ' else ' + node.falseExpr.toTex(callback);
+        return 'if ' + node.condition.toTex(options)
+          + ' then ' + node.trueExpr.toTex(options)
+          + ' else ' + node.falseExpr.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -280,7 +311,7 @@ describe('ConditionalNode', function() {
 
     var n = new ConditionalNode(a, b, c);
 
-    assert.equal(n.toTex(customFunction), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)');
   });
 
 });

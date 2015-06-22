@@ -1,11 +1,11 @@
 // test SymbolNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var OperatorNode = math.expression.node.OperatorNode;
 
 describe('SymbolNode', function() {
 
@@ -14,6 +14,11 @@ describe('SymbolNode', function() {
     assert(n instanceof SymbolNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'SymbolNode');
+  });
+
+  it ('should have isSymbolNode', function () {
+    var node = new SymbolNode('a');
+    assert(node.isSymbolNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -28,19 +33,19 @@ describe('SymbolNode', function() {
   it ('should throw an error when evaluating an undefined symbol', function () {
     var scope = {};
     var s = new SymbolNode('foo');
-    assert.throws(function () {s.compile(math).eval(scope)}, Error);
+    assert.throws(function () {s.compile().eval(scope)}, Error);
   });
 
   it ('should compile a SymbolNode', function () {
     var s = new SymbolNode('a');
 
-    var expr = s.compile(math);
+    var expr = s.compile();
     var scope = {a: 5};
     assert.equal(expr.eval(scope), 5);
     assert.throws(function () {expr.eval({})}, Error);
 
     var s2 = new SymbolNode('sqrt');
-    var expr2 = s2.compile(math);
+    var expr2 = s2.compile();
     var scope2 = {};
     assert.strictEqual(expr2.eval(scope2), math.sqrt);
   });
@@ -102,15 +107,9 @@ describe('SymbolNode', function() {
     assert.equal(s.toString(), 'foo');
   });
 
-  it ('should LaTeX a SymbolNode', function () {
-    var s = new SymbolNode('foo');
-
-    assert.equal(s.toTex(), '\\mathrm{foo}');
-  });
-
-  it ('should LaTeX a SymbolNode with custom toTex', function () {
+  it ('should stringigy a SymbolNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'SymbolNode') {
         return 'symbol(' + node.name + ')';
       }
@@ -118,7 +117,26 @@ describe('SymbolNode', function() {
 
     var n = new SymbolNode('a');
 
-    assert.equal(n.toTex(customFunction), 'symbol(a)');
+    assert.equal(n.toString({handler: customFunction}), 'symbol(a)');
+  });
+
+  it ('should LaTeX a SymbolNode', function () {
+    var s = new SymbolNode('foo');
+
+    assert.equal(s.toTex(), ' foo');
+  });
+
+  it ('should LaTeX a SymbolNode with custom toTex', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'SymbolNode') {
+        return 'symbol(' + node.name + ')';
+      }
+    };
+
+    var n = new SymbolNode('a');
+
+    assert.equal(n.toTex({handler: customFunction}), 'symbol(a)');
   });
 
   it ('should LaTeX a SymbolNode without breaking \\cdot', function () {

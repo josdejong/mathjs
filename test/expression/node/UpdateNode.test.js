@@ -3,12 +3,12 @@ var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bigmath = math.create({number: 'bignumber'});
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var IndexNode = require('../../../lib/expression/node/IndexNode');
-var UpdateNode = require('../../../lib/expression/node/UpdateNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var IndexNode = math.expression.node.IndexNode;
+var UpdateNode = math.expression.node.UpdateNode;
 
 describe('UpdateNode', function() {
 
@@ -23,6 +23,17 @@ describe('UpdateNode', function() {
     assert(n instanceof UpdateNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'UpdateNode');
+  });
+
+  it ('should have isUpdateNode', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var i = new IndexNode(a, [b, c]);
+    var v = new ConstantNode(5);
+    var node = new UpdateNode(i, v);
+
+    assert(node.isUpdateNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -55,7 +66,7 @@ describe('UpdateNode', function() {
     ];
     var v = new ConstantNode(5);
     var n = new UpdateNode(new IndexNode(a, ranges), v);
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {
       a: [[0, 0], [0, 0]]
@@ -77,7 +88,7 @@ describe('UpdateNode', function() {
     ];
     var b = new SymbolNode('b');
     var n = new UpdateNode(new IndexNode(a, ranges), b);
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {
       a: [[0, 0], [0, 0]],
@@ -102,7 +113,7 @@ describe('UpdateNode', function() {
     ];
     var b = new SymbolNode('b');
     var n = new UpdateNode(new IndexNode(a, ranges), b);
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {
       a: [[0, 0], [0, 0]],
@@ -118,12 +129,12 @@ describe('UpdateNode', function() {
   it ('should compile an UpdateNode with bignumber setting', function () {
     var a = new SymbolNode('a');
     var ranges = [
-      new ConstantNode(2),
-      new ConstantNode(1)
+      new bigmath.expression.node.ConstantNode(2),
+      new bigmath.expression.node.ConstantNode(1)
     ];
-    var v = new ConstantNode(5);
-    var n = new UpdateNode(new IndexNode(a, ranges), v);
-    var expr = n.compile(bigmath);
+    var v = new bigmath.expression.node.ConstantNode(5);
+    var n = new bigmath.expression.node.UpdateNode(new bigmath.expression.node.IndexNode(a, ranges), v);
+    var expr = n.compile();
 
     var scope = {
       a: [[0, 0], [0, 0]]
@@ -310,6 +321,11 @@ describe('UpdateNode', function() {
     assert.equal(n.toString(), 'a[2, 1] = 5');
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    assert.equal(math.parse('a[1]=2').toString({parenthesis: 'all'}), 'a[1] = (2)' );
+    assert.equal(math.parse('a[1]=2').toTex({parenthesis: 'all'}), ' a_{1}:=\\left(2\\right)' );
+  });
+
   it ('should LaTeX an UpdateNode', function () {
     var a = new SymbolNode('a');
     var ranges = [
@@ -319,19 +335,49 @@ describe('UpdateNode', function() {
     var v = new ConstantNode(5);
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
-    assert.equal(n.toTex(), '\\mathrm{a}_{\\left[2,1\\right]}:=5');
+    assert.equal(n.toTex(), ' a_{2,1}:=5');
+  });
+
+  it ('should stringify an UpdateNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'UpdateNode') {
+        return node.index.toString(options) + ' equals ' + node.expr.toString(options);
+      }
+      else if (node.type === 'IndexNode') {
+        var string = node.object.toString(options) + ' at ';
+        node.ranges.forEach(function (range) {
+          string += range.toString(options) + ', ';
+        });
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new SymbolNode('a');
+    var ranges = [
+      new ConstantNode(2),
+      new ConstantNode(1)
+    ];
+    var v = new ConstantNode(5);
+
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
+
+    assert.equal(n.toString({handler: customFunction}), 'a at const(2, number), const(1, number),  equals const(5, number)');
   });
 
   it ('should LaTeX an UpdateNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'UpdateNode') {
-        return node.index.toTex(callback) + ' equals ' + node.expr.toTex(callback);
+        return node.index.toTex(options) + ' equals ' + node.expr.toTex(options);
       }
       else if (node.type === 'IndexNode') {
-        var latex = node.object.toTex(callback) + ' at ';
+        var latex = node.object.toTex(options) + ' at ';
         node.ranges.forEach(function (range) {
-          latex += range.toTex(callback) + ', ';
+          latex += range.toTex(options) + ', ';
         });
         return latex;
       }
@@ -349,7 +395,7 @@ describe('UpdateNode', function() {
 
     var n = new UpdateNode(new IndexNode(a, ranges), v);
 
-    assert.equal(n.toTex(customFunction), '\\mathrm{a} at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), ' a at const\\left(2, number\\right), const\\left(1, number\\right),  equals const\\left(5, number\\right)');
   });
 
 });

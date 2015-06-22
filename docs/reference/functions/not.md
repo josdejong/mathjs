@@ -14,13 +14,13 @@ math.not(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | First value to check
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | First value to check
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Boolean &#124; Array &#124; Matrix |  Returns true when input is a zero or empty value.
+boolean &#124; Array &#124; Matrix |  Returns true when input is a zero or empty value.
 
 
 ## Examples

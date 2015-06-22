@@ -1,11 +1,11 @@
 // test divide
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    approx = require('../../../tools/approx'),
-    divide = math.divide,
-    bignumber = math.bignumber,
-    complex = math.complex;
+var assert = require('assert');
+var math = require('../../../index');
+var error = require('../../../lib/error/index');
+var approx = require('../../../tools/approx');
+var divide = math.divide;
+var bignumber = math.bignumber;
+var complex = math.complex;
 
 describe('divide', function() {
   it('should divide two numbers', function() {
@@ -49,8 +49,9 @@ describe('divide', function() {
     assert.deepEqual(divide(0.3, bignumber(0.2)), bignumber(1.5));
     assert.deepEqual(divide(bignumber('2.6e5000'), 2), bignumber('1.3e5000'));
 
-    approx.equal(divide(1/3, bignumber(2)), 0.166666666666667);
-    approx.equal(divide(bignumber(1), 1/3), 3);
+    assert.throws(function () {divide(1/3, bignumber(2))}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+    assert.throws(function () {divide(bignumber(1), 1/3)}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
+
   });
 
   it('should divide mixed booleans and bignumbers', function() {
@@ -103,6 +104,17 @@ describe('divide', function() {
     assert.deepEqual(divide(bignumber(1), math.complex(2, 4)), math.complex(0.1, -0.2));
   });
 
+  it('should divide two fractions', function() {
+    var a = math.fraction(1,4);
+    assert.equal(divide(a, math.fraction(1,2)).toString(), '0.5');
+    assert.equal(a.toString(), '0.25');
+  });
+
+  it('should divide mixed fractions and numbers', function() {
+    assert.strictEqual(divide(1, math.fraction(3)), 0.3333333333333333);
+    assert.strictEqual(divide(math.fraction(1), 3), 0.3333333333333333);
+  });
+
   it('should divide units by a number', function() {
     assert.equal(divide(math.unit('5 m'), 10).toString(), '500 mm');
   });
@@ -111,8 +123,10 @@ describe('divide', function() {
     assert.equal(divide(math.unit('m'), 2).toString(), '500 mm');
   });
 
+  // TODO: divide units by a bignumber
   it('should divide units by a big number', function() {
-    assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm');
+    //assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm'); // TODO
+    assert.throws(function () {divide(math.unit('5 m'), bignumber(10))}, /TypeError: Unexpected type of argument in function divide/);
   });
 
   it('should divide each elements in a matrix by a number', function() {
@@ -122,7 +136,7 @@ describe('divide', function() {
     assert.deepEqual(divide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);
     assert.deepEqual(divide([], 2), []);
     assert.deepEqual(divide([], 2), []);
-  }); 
+  });
 
   it('should divide 1 over a matrix (matrix inverse)', function() {
     approx.deepEqual(divide(1, [

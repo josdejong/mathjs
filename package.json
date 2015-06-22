@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "1.7.0",
+  "version": "2.0.0-SNAPSHOT",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser and offers an integrated solution to work with numbers, big numbers, complex numbers, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -11,6 +11,7 @@
     "Devan Patel (https://github.com/devanp92)",
     "Guillermo Indalecio Fernández (https://github.com/guillermobox)",
     "Huseyn Guliyev (https://github.com/husayt)",
+    "Kunal Vyas (https://github.com/kv-kunalvyas)",
     "Daniel Levin (https://github.com/daniel-levin)",
     "Niels Heisterkamp (https://github.com/nheisterkamp)",
     "Fabrice Colas (https://github.com/fabricecolas)",
@@ -51,21 +52,24 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "~4.0.1"
+    "decimal.js": "^4.0.2",
+    "fraction.js": "^2.0.0",
+    "tiny-emitter": "^1.0.0",
+    "typed-function": "^0.9.0"
   },
   "devDependencies": {
-    "webpack": "latest",
-    "mocha": "latest",
-    "istanbul": "latest",
-    "numbers": "latest",
-    "uglify-js": "latest",
-    "underscore": "latest",
-    "seed-random": "latest",
-    "gulp": "latest",
-    "gulp-util": "latest",
-    "exec": "latest",
-    "glob": "latest",
-    "mkdirp": "latest"
+    "glob": "^5.0.5",
+    "gulp": "^3.8.11",
+    "gulp-util": "^3.0.4",
+    "istanbul": "^0.3.13",
+    "mkdirp": "^0.5.0",
+    "mocha": "^2.2.4",
+    "q": "^1.2.0",
+    "seed-random": "^2.2.0",
+    "tar": "^2.1.0",
+    "uglify-js": "^2.4.20",
+    "underscore": "^1.8.3",
+    "webpack": "^1.8.9"
   },
   "main": "./index",
   "scripts": {

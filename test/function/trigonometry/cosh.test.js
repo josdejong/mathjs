@@ -82,8 +82,8 @@ describe('cosh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {cosh()}, error.ArgumentsError);
-    assert.throws(function () {cosh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {cosh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {cosh(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX cosh', function () {

@@ -17,14 +17,14 @@ math.atan2(y, x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`y` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Second dimension
-`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | First dimension
+`y` | number &#124; Array &#124; Matrix | Second dimension
+`x` | number &#124; Array &#124; Matrix | First dimension
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Four-quadrant inverse tangent
+number &#124; Array &#124; Matrix | Four-quadrant inverse tangent
 
 
 ## Examples

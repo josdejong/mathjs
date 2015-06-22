@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    asec = math.asec,
-    sec = math.sec,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 21}),
-    asecBig = bigmath.asec,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var asec = math.asec;
+var sec = math.sec;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 21});
+var predmath = math.create({predictable: true});
+var asecBig = bigmath.asec;
+var Big = bigmath.bignumber;
 
 describe('asec', function() {
   it('should return the arcsec of a boolean', function () {
@@ -33,6 +34,11 @@ describe('asec', function() {
 
     approx.deepEqual(asec(-0.5), complex(pi, -1.3169578969248));
     approx.deepEqual(asec(0.5), complex(0, 1.3169578969248));
+  });
+
+  it('should return the arcsec of a number when predictable:true', function() {
+    assert.equal(typeof predmath.asec(0.5), 'number');
+    assert(isNaN(predmath.asec(0.5)));
   });
 
   it('should return the arcsec of a bignumber', function() {
@@ -114,8 +120,8 @@ describe('asec', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {asec()}, error.ArgumentsError);
-    assert.throws(function () {asec(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {asec()}, /TypeError: Too few arguments/);
+    assert.throws(function () {asec(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX asec', function () {

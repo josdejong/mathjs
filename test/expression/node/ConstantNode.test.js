@@ -1,11 +1,11 @@
 // test ConstantNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    bigmath = require('../../../index').create({number: 'bignumber'}),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bigmath = require('../../../index').create({number: 'bignumber'});
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
 
 describe('ConstantNode', function() {
 
@@ -29,6 +29,11 @@ describe('ConstantNode', function() {
     assert.deepEqual(new ConstantNode(undefined), new ConstantNode('undefined', 'undefined'));
   });
 
+  it ('should have isConstantNode', function () {
+    var node = new ConstantNode(1);
+    assert(node.isConstantNode);
+  });
+
   it ('should throw an error when calling without new operator', function () {
     assert.throws(function () {ConstantNode('3', 'number')}, SyntaxError);
   });
@@ -40,32 +45,32 @@ describe('ConstantNode', function() {
   });
 
   it ('should throw an error in case of unknown type of constant', function () {
-    assert.throws(function () {new ConstantNode('3', 'bla').compile(math);}, TypeError);
+    assert.throws(function () {new ConstantNode('3', 'bla').compile();}, TypeError);
   });
 
   it ('should compile a ConstantNode', function () {
-    var expr = new ConstantNode('2.3', 'number').compile(math);
+    var expr = new ConstantNode('2.3', 'number').compile();
     assert.strictEqual(expr.eval(), 2.3);
 
-    expr = new ConstantNode('002.3', 'number').compile(math);
+    expr = new ConstantNode('002.3', 'number').compile();
     assert.strictEqual(expr.eval(), 2.3);
 
-    expr = new ConstantNode('hello', 'string').compile(math);
+    expr = new ConstantNode('hello', 'string').compile();
     assert.strictEqual(expr.eval(), 'hello');
 
-    expr = new ConstantNode('true', 'boolean').compile(math);
+    expr = new ConstantNode('true', 'boolean').compile();
     assert.strictEqual(expr.eval(), true);
 
-    expr = new ConstantNode('undefined', 'undefined').compile(math);
+    expr = new ConstantNode('undefined', 'undefined').compile();
     assert.strictEqual(expr.eval(), undefined);
 
-    expr = new ConstantNode('null', 'null').compile(math);
+    expr = new ConstantNode('null', 'null').compile();
     assert.strictEqual(expr.eval(), null);
 
   });
 
   it ('should compile a ConstantNode with bigmath', function () {
-    var expr = new ConstantNode('2.3', 'number').compile(bigmath);
+    var expr = new bigmath.expression.node.ConstantNode('2.3', 'number').compile();
     assert.deepEqual(expr.eval(), new bigmath.type.BigNumber(2.3));
   });
 
@@ -129,10 +134,23 @@ describe('ConstantNode', function() {
     assert.equal(new ConstantNode('null', 'null').toString(), 'null');
   });
 
+  it ('should stringify a ConstantNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var n = new ConstantNode(1);
+
+    assert.equal(n.toString({handler: customFunction}), 'const(1, number)');
+  });
+
   it ('should LaTeX a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toTex(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toTex(), '3');
-    assert.equal(new ConstantNode('hi', 'string').toTex(), '\\text{hi}');
+    assert.equal(new ConstantNode('hi', 'string').toTex(), '\\mathtt{"hi"}');
     assert.equal(new ConstantNode('true', 'boolean').toTex(), 'true');
     assert.equal(new ConstantNode('false', 'boolean').toTex(), 'false');
     assert.equal(new ConstantNode('undefined', 'undefined').toTex(), 'undefined');
@@ -146,7 +164,7 @@ describe('ConstantNode', function() {
 
   it ('should LaTeX a ConstantNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
       }
@@ -154,7 +172,7 @@ describe('ConstantNode', function() {
 
     var n = new ConstantNode(1);
 
-    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right)');
   });
 
 });

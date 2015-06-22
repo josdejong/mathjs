@@ -1,8 +1,8 @@
 // test leftShift
 var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
+    matrix = math.matrix,
+    sparse = math.sparse,
     bignumber = math.bignumber,
     leftShift = math.leftShift;
 
@@ -65,72 +65,118 @@ describe('leftShift', function () {
   });
 
   it('should throw an error if used with a unit', function() {
-    assert.throws(function () {leftShift(math.unit('5cm'), 2)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(2, math.unit('5cm'))}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(math.unit('2cm'), math.unit('5cm'))}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(math.unit('5cm'), 2);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(2, math.unit('5cm'));}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(math.unit('2cm'), math.unit('5cm'));}, /TypeError: Unexpected type of argument/);
   });
 
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       leftShift(1.1, 1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(1, 1.1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(1.1, 1.1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(bignumber(1.1), 1);
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(1, bignumber(1.1));
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(bignumber(1.1), bignumber(1));
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
     assert.throws(function () {
       leftShift(bignumber(1), bignumber(1.1));
-    }, /Parameters in function leftShift must be integer numbers/);
+    }, /Integers expected in function leftShift/);
   });
 
-  it('should element-wise left shift a matrix', function () {
-    var a = math.matrix([1,2]);
-    var b = leftShift(a, 2); 
-    assert.ok(b instanceof math.type.Matrix);
-    assert.deepEqual(b, math.matrix([4,8]));
+  describe('Array', function () {
+    
+    it('should left shift array and scalar', function () {
+      assert.deepEqual(leftShift([[1, 2], [8, 0]], 2), [[4, 8], [32, 0]]);
+      assert.deepEqual(leftShift(2, [[1, 2], [8, 0]]), [[4, 8], [512, 2]]);
+    });
+    
+    it('should left shift array - array', function () {
+      assert.deepEqual(leftShift([[1, 2], [8, 0]], [[4, 8], [32, 0]]), [[16, 512], [8, 0]]);
+      assert.deepEqual(leftShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[8, 32], [8192, 0]]);
+    });
+    
+    it('should left shift array - dense matrix', function () {
+      assert.deepEqual(leftShift([[1, 2], [8, 0]], matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift([[4, 8], [32, 0]], matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]));
+    });
 
-    a = math.matrix([[1,2],[3,4]]);
-    b = leftShift(a, 2);
-    assert.ok(b instanceof math.type.Matrix);
-    assert.deepEqual(b, math.matrix([[4,8],[12,16]]));
+    it('should left shift array - sparse matrix', function () {
+      assert.deepEqual(leftShift([[1, 2], [8, 0]], sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift([[4, 8], [32, 0]], sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]));
+    });
+  });
+  
+  describe('DenseMatrix', function () {
+
+    it('should left shift dense matrix and scalar', function () {
+      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), 2), matrix([[4, 8], [32, 0]]));
+      assert.deepEqual(leftShift(2, matrix([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]));
+    });
+
+    it('should left shift dense matrix - array', function () {
+      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), matrix([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift(matrix([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), matrix([[8, 32], [8192, 0]]));
+    });
+
+    it('should left shift dense matrix - dense matrix', function () {
+      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift(matrix([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]));
+    });
+
+    it('should left shift dense matrix - sparse matrix', function () {
+      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift(matrix([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]));
+    });
   });
 
-  it('should element-wise left shift an array', function () {
-    var a = [[1,2],[3,4]];
-    assert.deepEqual(leftShift(a[0], 0), a[0]);
-    assert.deepEqual(leftShift(a[0], 2), [4,8]);
-    assert.deepEqual(leftShift(a, 0), a);
-    assert.deepEqual(leftShift(a, 2), [[4,8],[12,16]]);
+  describe('SparseMatrix', function () {
+
+    it('should left shift sparse matrix and scalar', function () {
+      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), 2), sparse([[4, 8], [32, 0]]));
+      assert.deepEqual(leftShift(2, sparse([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]));
+    });
+
+    it('should left shift sparse matrix - array', function () {
+      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), sparse([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift(sparse([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), sparse([[8, 32], [8192, 0]]));
+    });
+
+    it('should left shift sparse matrix - dense matrix', function () {
+      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift(sparse([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]));
+    });
+
+    it('should left shift sparse matrix - sparse matrix', function () {
+      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]));
+      assert.deepEqual(leftShift(sparse([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]));
+    });
   });
 
   it('should throw an error if used with wrong number of arguments', function () {
-    assert.throws(function () {leftShift(1)}, error.ArgumentsError);
-    assert.throws(function () {leftShift(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {leftShift(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {leftShift(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
-    assert.throws(function () {leftShift(new Date(), true)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(true, new Date())}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(true, 'foo')}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift('foo', true)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(true, undefined)}, error.UnsupportedTypeError);
-    assert.throws(function () {leftShift(undefined, true)}, error.UnsupportedTypeError);
+    assert.throws(function () {leftShift(new Date(), true);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(true, new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(true, undefined);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(undefined, true);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX leftShift', function () {
     var expression = math.parse('leftShift(2,3)');
     assert.equal(expression.toTex(), '\\left(2<<3\\right)');
   });
-
 });

@@ -23,14 +23,14 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Number | Returns the dot product of `x` and `y`
+number | Returns the dot product of `x` and `y`
 
 
 ## Examples
 
 ```js
-math.dot([2, 4, 1], [2, 2, 3]);       // returns Number 15
-math.multiply([2, 4, 1], [2, 2, 3]);  // returns Number 15
+math.dot([2, 4, 1], [2, 2, 3]);       // returns number 15
+math.multiply([2, 4, 1], [2, 2, 3]);  // returns number 15
 ```
 
 

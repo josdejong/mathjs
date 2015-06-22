@@ -91,8 +91,8 @@ describe('csc', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {csc()}, error.ArgumentsError);
-    assert.throws(function () {csc(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {csc()}, /TypeError: Too few arguments/);
+    assert.throws(function () {csc(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX csc', function () {

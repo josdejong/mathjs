@@ -1,9 +1,9 @@
 // test sign
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    bignumber = math.bignumber;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var bignumber = math.bignumber;
+var fraction = math.fraction;
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
@@ -27,6 +27,14 @@ describe('sign', function() {
     assert.deepEqual(math.sign(bignumber(0)), bignumber(0));
   });
 
+  it('should calculate the sign of a fraction', function() {
+    var a = fraction(0.5);
+    assert(math.sign(a) instanceof math.type.Fraction);
+    assert.equal(math.sign(a).toString(), '1');
+    assert.equal(math.sign(fraction(-0.5)).toString(), '-1');
+    assert.equal(a.toString(), '0.5');
+  });
+
   it('should calculate the sign of a complex value', function() {
     approx.deepEqual(math.sign(math.complex(2,-3)), math.complex(0.554700196225229, -0.832050294337844));
   });
@@ -48,8 +56,8 @@ describe('sign', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.sign()}, error.ArgumentsError);
-    assert.throws(function () {math.sign(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {math.sign()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.sign(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX sign', function () {

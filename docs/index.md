@@ -27,6 +27,7 @@ describing all available functions, constants, and units in detail.
 - [Data Types](datatypes/index.md)
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)
+  - [Fractions](datatypes/fractions.md)
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)
@@ -34,7 +35,6 @@ describing all available functions, constants, and units in detail.
 - [Serialization](serialization.md)
 - [Extension](extension.md)
 - [Command Line Interface](command_line_interface.md)
-- [Command Line Debugging](command_line_debugging.md)
 
 ## Examples
 

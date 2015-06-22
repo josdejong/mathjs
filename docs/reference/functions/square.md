@@ -14,22 +14,22 @@ math.square(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  Number for which to calculate the square
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix |  Number for which to calculate the square
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Squared value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix |  Squared value
 
 
 ## Examples
 
 ```js
-math.square(2);           // returns Number 4
-math.square(3);           // returns Number 9
-math.pow(3, 2);           // returns Number 9
-math.multiply(3, 3);      // returns Number 9
+math.square(2);           // returns number 4
+math.square(3);           // returns number 9
+math.pow(3, 2);           // returns number 9
+math.multiply(3, 3);      // returns number 9
 
 math.square([1, 2, 3, 4]);  // returns Array [1, 4, 9, 16]
 ```

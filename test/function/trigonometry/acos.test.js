@@ -1,17 +1,17 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    acos = math.acos,
-    cos = math.cos,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    acosBig = bigmath.acos,
-    cosBig = bigmath.cos,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var acos = math.acos;
+var cos = math.cos;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var mathPredictable = math.create({predictable: true});
+var acosBig = bigmath.acos;
+var cosBig = bigmath.cos;
+var Big = bigmath.bignumber;
 
 describe('acos', function() {
   it('should return the arccos of a boolean', function () {
@@ -29,6 +29,14 @@ describe('acos', function() {
     approx.equal(acos(0) / pi, 0.5);
     approx.equal(acos(0.5) / pi, 1 / 3);
     approx.equal(acos(1) / pi, 0);
+
+    approx.deepEqual(acos(-2), complex('3.14159265358979 - 1.31695789692482i'));
+    approx.deepEqual(acos(2), complex('1.316957896924817i'));
+  });
+
+  it('should return the arccos of a number when predictable:true', function() {
+    assert.equal(typeof mathPredictable.acos(-2), 'number');
+    assert(isNaN(mathPredictable.acos(-2)));
   });
 
   it('should return the arccos of a bignumber', function() {
@@ -102,8 +110,8 @@ describe('acos', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acos()}, error.ArgumentsError);
-    assert.throws(function () {acos(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acos()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acos(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX acos', function () {

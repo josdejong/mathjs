@@ -15,20 +15,20 @@ math.acos(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Function input
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The arc cosine of x
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The arc cosine of x
 
 
 ## Examples
 
 ```js
-math.acos(0.5);           // returns Number 1.0471975511965979
-math.acos(math.cos(1.5)); // returns Number 1.5
+math.acos(0.5);           // returns number 1.0471975511965979
+math.acos(math.cos(1.5)); // returns number 1.5
 
 math.acos(2);             // returns Complex 0 + 1.3169578969248166 i
 ```

@@ -15,22 +15,22 @@ math.ceil(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number to be rounded
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
 ## Examples
 
 ```js
-math.ceil(3.2);               // returns Number 4
-math.ceil(3.8);               // returns Number 4
-math.ceil(-4.2);              // returns Number -4
-math.ceil(-4.7);              // returns Number -4
+math.ceil(3.2);               // returns number 4
+math.ceil(3.8);               // returns number 4
+math.ceil(-4.2);              // returns number -4
+math.ceil(-4.7);              // returns number -4
 
 var c = math.complex(3.2, -2.7);
 math.ceil(c);                 // returns Complex 4 - 2i

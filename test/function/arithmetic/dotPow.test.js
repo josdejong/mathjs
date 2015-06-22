@@ -1,12 +1,11 @@
 // test exp
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
     math = require('../../../index'),
     complex = math.complex,
     matrix = math.matrix,
+    sparse = math.sparse,
     unit = math.unit,
-    range = math.range,
     dotPow = math.dotPow;
 
 describe('dotPow', function() {
@@ -44,8 +43,8 @@ describe('dotPow', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {dotPow(1)}, error.ArgumentsError);
-    assert.throws(function () {dotPow(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {dotPow(1);}, /TypeError: Too few arguments/);
+    assert.throws(function () {dotPow(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should elevate a complex number to the given power', function() {
@@ -86,26 +85,96 @@ describe('dotPow', function() {
   });
 
   it('should throw an error with units', function() {
-    assert.throws(function () {dotPow(unit('5cm'))});
+    assert.throws(function () {dotPow(unit('5cm'));});
   });
 
   it('should throw an error with strings', function() {
-    assert.throws(function () {dotPow('text')});
+    assert.throws(function () {dotPow('text');});
   });
 
-  it('should elevate each element in a matrix to the given power', function() {
-    var a = [[1,2],[3,4]];
-    var res = [[1,4],[9,16]];
-    approx.deepEqual(dotPow(a, 2), res);
-    approx.deepEqual(dotPow(a, 2.5), [[1,5.65685424949238], [15.58845726811990, 32]]);
-    approx.deepEqual(dotPow(3, [2,3]), [9,27]);
-    approx.deepEqual(dotPow(matrix(a), 2), matrix(res));
-    approx.deepEqual(dotPow([[1,2,3],[4,5,6]],2), [[1,4,9],[16,25,36]]);
+  describe('Array', function () {
+    
+    it('should elevate array .^ scalar', function () {
+      approx.deepEqual(dotPow([[1,2],[0,4]], 2), [[1,4],[0,16]]);
+      approx.deepEqual(dotPow([[1,2],[0,4]], 2.5), [[1,5.65685424949238], [0, 32]]);
+      approx.deepEqual(dotPow([[1,2,3],[4,5,0]], 2), [[1,4,9],[16,25,0]]);
+    });
+    
+    it('should elevate scalar .^ array', function () {
+      approx.deepEqual(dotPow(2, [[1,2],[0,4]]), [[2,4],[1,16]]);
+      approx.deepEqual(dotPow(2.5, [[1,2],[0,4]]), [[2.5, 6.25], [1, 39.0625]]);
+      approx.deepEqual(dotPow(2, [[1,2,3],[4,5,0]]), [[2,4,8],[16,32,1]]);
+    });
+    
+    it('should elevate array .^ array', function () {
+      approx.deepEqual(dotPow([[1,2,0],[0,1,4]], [[2,1,0],[4,1,0]]), [[1,2,1],[0,1,1]]);
+    });
+    
+    it('should elevate array .^ dense matrix', function () {
+      approx.deepEqual(dotPow([[1,2,0],[0,1,4]], matrix([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
+    });
+    
+    it('should elevate array .^ sparse matrix', function () {
+      approx.deepEqual(dotPow([[1,2,0],[0,1,4]], sparse([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
+    });
+  });
+  
+  describe('DenseMatrix', function () {
+
+    it('should elevate dense matrix .^ scalar', function () {
+      approx.deepEqual(dotPow(matrix([[1,2],[0,4]]), 2), matrix([[1,4],[0,16]]));
+      approx.deepEqual(dotPow(matrix([[1,2],[0,4]]), 2.5), matrix([[1,5.65685424949238], [0, 32]]));
+      approx.deepEqual(dotPow(matrix([[1,2,3],[4,5,0]]), 2), matrix([[1,4,9],[16,25,0]]));
+    });
+
+    it('should elevate scaler .^ dense matrix', function () {
+      approx.deepEqual(dotPow(2, matrix([[1,2],[0,4]])), matrix([[2,4],[1,16]]));
+      approx.deepEqual(dotPow(2.5, matrix([[1,2],[0,4]])), matrix([[2.5, 6.25], [1, 39.0625]]));
+      approx.deepEqual(dotPow(2, matrix([[1,2,3],[4,5,0]])), matrix([[2,4,8],[16,32,1]]));
+    });
+
+    it('should elevate dense matrix .^ array', function () {
+      approx.deepEqual(dotPow(matrix([[1,2,0],[0,1,4]]), [[2,1,0],[4,1,0]]), matrix([[1,2,1],[0,1,1]]));
+    });
+
+    it('should elevate dense matrix .^ dense matrix', function () {
+      approx.deepEqual(dotPow(matrix([[1,2,0],[0,1,4]]), matrix([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
+    });
+
+    it('should elevate dense matrix .^ sparse matrix', function () {
+      approx.deepEqual(dotPow(matrix([[1,2,0],[0,1,4]]), sparse([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
+    });
+  });
+  
+  describe('SparseMatrix', function () {
+
+    it('should elevate sparse matrix .^ scalar', function () {
+      approx.deepEqual(dotPow(sparse([[1,2],[0,4]]), 2), sparse([[1,4],[0,16]]));
+      approx.deepEqual(dotPow(sparse([[1,2],[0,4]]), 2.5), sparse([[1,5.65685424949238], [0, 32]]));
+      approx.deepEqual(dotPow(sparse([[1,2,3],[4,5,0]]), 2), sparse([[1,4,9],[16,25,0]]));
+    });
+
+    it('should elevate scalar .^ sparse matrix', function () {
+      approx.deepEqual(dotPow(2, sparse([[1,2],[0,4]])), matrix([[2,4],[1,16]]));
+      approx.deepEqual(dotPow(2.5, sparse([[1,2],[0,4]])), matrix([[2.5, 6.25], [1, 39.0625]]));
+      approx.deepEqual(dotPow(2, sparse([[1,2,3],[4,5,0]])), matrix([[2,4,8],[16,32,1]]));
+    });
+
+    it('should elevate sparse matrix .^ array', function () {
+      approx.deepEqual(dotPow(sparse([[1,2,0],[0,1,4]]), [[2,1,0],[4,1,0]]), matrix([[1,2,1],[0,1,1]]));
+    });
+
+    it('should elevate sparse matrix .^ dense matrix', function () {
+      approx.deepEqual(dotPow(sparse([[1,2,0],[0,1,4]]), matrix([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
+    });
+
+    it('should elevate sparse matrix .^ sparse matrix', function () {
+      approx.deepEqual(dotPow(sparse([[1,2,0],[0,1,4]]), sparse([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
+    });
   });
 
   it('should LaTeX dotPow', function () {
     var expression = math.parse('dotPow([1,2],[3,4])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)');
   });
-
 });

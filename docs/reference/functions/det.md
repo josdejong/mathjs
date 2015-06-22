@@ -19,7 +19,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Number | The determinant of `x`
+number | The determinant of `x`
 
 
 ## Examples

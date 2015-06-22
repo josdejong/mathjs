@@ -1,12 +1,12 @@
 // test square
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    unit = math.unit,
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    range = math.range,
-    square = math.square;
+var assert = require('assert');
+var math = require('../../../index');
+var unit = math.unit;
+var bignumber = math.bignumber;
+var fraction = math.fraction;
+var matrix = math.matrix;
+var range = math.range;
+var square = math.square;
 
 describe('square', function() {
   it('should return the square of a boolean', function () {
@@ -24,15 +24,22 @@ describe('square', function() {
     assert.equal(square(0), 0);
   });
 
-  it('should return the cube of a big number', function() {
+  it('should return the square of a big number', function() {
     assert.deepEqual(square(bignumber(4)), bignumber(16));
     assert.deepEqual(square(bignumber(-2)), bignumber(4));
     assert.deepEqual(square(bignumber(0)), bignumber(0));
   });
 
+  it('should return the square of a fraction', function() {
+    var a = fraction(0.5);
+    assert(square(a) instanceof math.type.Fraction);
+    assert.equal(square(a).toString(), '0.25');
+    assert.equal(a.toString(), '0.5');
+  });
+
   it('should throw an error if used with wrong number of arguments', function() {
-    assert.throws(function () {square()}, error.ArgumentsError);
-    assert.throws(function () {square(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {square()}, /TypeError: Too few arguments/);
+    assert.throws(function () {square(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should return the square of a complex number', function() {

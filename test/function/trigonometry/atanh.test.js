@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    atanh = math.atanh,
-    tanh = math.tanh,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 21}),
-    atanhBig = bigmath.atanh,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var atanh = math.atanh;
+var tanh = math.tanh;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 21});
+var predmath = math.create({predictable: true});
+var atanhBig = bigmath.atanh;
+var Big = bigmath.bignumber;
 
 describe('atanh', function() {
   it('should return the hyperbolic arctan of a boolean', function () {
@@ -34,6 +35,12 @@ describe('atanh', function() {
     approx.equal(atanh(0), 0);
     approx.equal(atanh(0.5), 0.54930614433405484569762261846);
     approx.equal(atanh(1), Infinity);
+  });
+
+
+  it('should return the hyperbolic arctan of a number when predictable:true', function() {
+    assert.equal(typeof predmath.atanh(-2), 'number');
+    assert(isNaN(predmath.atanh(-2)));
   });
 
   it('should return the hyperbolic arctan of a bignumber', function() {
@@ -108,8 +115,8 @@ describe('atanh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {atanh()}, error.ArgumentsError);
-    assert.throws(function () {atanh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {atanh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {atanh(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX atanh', function () {

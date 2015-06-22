@@ -1,12 +1,12 @@
 // test ArrayNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-    ArrayNode = require('../../../lib/expression/node/ArrayNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var ArrayNode = math.expression.node.ArrayNode;
 
 describe('ArrayNode', function() {
 
@@ -18,6 +18,12 @@ describe('ArrayNode', function() {
     assert(b instanceof ArrayNode);
     assert.equal(a.type, 'ArrayNode');
     assert.equal(b.type, 'ArrayNode');
+  });
+
+  it ('should have isArrayNode', function () {
+    var node = new ArrayNode([]);
+
+    assert(node.isArrayNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -34,23 +40,30 @@ describe('ArrayNode', function() {
     var a = new ArrayNode([c]);
     var b = new ArrayNode();
 
-    assert.deepEqual(a.compile(math).eval(), math.matrix([1]));
-    assert.deepEqual(b.compile(math).eval(), math.matrix([]));
+    assert.deepEqual(a.compile().eval(), math.matrix([1]));
+    assert.deepEqual(b.compile().eval(), math.matrix([]));
   });
 
-  it ('should compile an ArrayNode', function () {
+  it ('should compile an ArrayNode and evaluate as Matrix', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
     var c = new ConstantNode(3);
     var d = new ConstantNode(4);
     var n = new ArrayNode([a, b, c, d]);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
     assert.deepEqual(expr.eval(), math.matrix([1,2,3,4]));
+  });
 
+  it ('should compile an ArrayNode and evaluate as Array', function () {
     var mathArray = math.create({matrix: 'array'});
-    var expr2 = n.compile(mathArray);
-    assert.deepEqual(expr2.eval(), [1,2,3,4]);
+    var a = new mathArray.expression.node.ConstantNode(1);
+    var b = new mathArray.expression.node.ConstantNode(2);
+    var c = new mathArray.expression.node.ConstantNode(3);
+    var d = new mathArray.expression.node.ConstantNode(4);
+    var n = new mathArray.expression.node.ArrayNode([a, b, c, d]);
+    var expr = n.compile();
+    assert.deepEqual(expr.eval(), [1,2,3,4]);
   });
 
   it ('should compile nested ArrayNodes', function () {
@@ -63,7 +76,7 @@ describe('ArrayNode', function() {
     var n3 = new ArrayNode([c, d]);
     var n4 = new ArrayNode([n2, n3]);
 
-    var expr = n4.compile(math);
+    var expr = n4.compile();
     assert.deepEqual(expr.eval(), math.matrix([[1,2],[3,4]]));
   });
 
@@ -226,6 +239,31 @@ describe('ArrayNode', function() {
     assert.equal(n.toString(), '[1, 2, 3, 4]');
   });
 
+  it ('should stringify an ArrayNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'ArrayNode') {
+        var string = '[';
+        node.nodes.forEach(function (node) {
+          string += node.toString(options) + ', ';
+        });
+
+        string += ']';
+        return string;
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new ArrayNode([a, b]);
+
+    assert.equal(n.toString({handler: customFunction}), '[const(1, number), const(2, number), ]');
+  });
+
   it ('should LaTeX an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
@@ -240,11 +278,11 @@ describe('ArrayNode', function() {
 
   it ('should LaTeX an ArrayNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'ArrayNode') {
         var latex = '\\left[';
         node.nodes.forEach(function (node) {
-          latex += node.toTex(callback) + ', ';
+          latex += node.toTex(options) + ', ';
         });
 
         latex += '\\right]';
@@ -260,7 +298,7 @@ describe('ArrayNode', function() {
 
     var n = new ArrayNode([a, b]);
 
-    assert.equal(n.toTex(customFunction), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
+    assert.equal(n.toTex({handler: customFunction}), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]');
   });
 
 });

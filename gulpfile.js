@@ -12,7 +12,7 @@ var ENTRY       = './index.js',
     FILE_MIN    = 'math.min.js',
     FILE_MAP    = 'math.map',
     DIST        = './dist',
-    REF_SRC     = './lib/function/',
+    REF_SRC     = './lib/',
     REF_DEST    = './docs/reference/functions/',
     MATH_JS     = DIST + '/' + FILE;
 
@@ -104,14 +104,16 @@ gulp.task('minify', ['bundle'], function () {
 
 // test whether the docs for the expression parser are complete
 gulp.task('validate', function (cb) {
-  var exec = require('exec');
+  var child_process = require('child_process');
 
   // this is run in a separate process as the modules need to be reloaded
   // with every validation (and required modules stay in cache).
-  exec(['node', 'tools/validate'], function(err, out, code) {
-    if (err instanceof Error) throw err;
-    process.stderr.write(err);
-    process.stdout.write(out);
+  child_process.execFile ('node', ['./tools/validate'], function(err, stdout, stderr) {
+    if (err instanceof Error) {
+      throw err;
+    }
+    process.stdout.write(stdout);
+    process.stderr.write(stderr);
     cb();
   });
 });
@@ -120,10 +122,10 @@ gulp.task('docs', function () {
   docgenerator.iteratePath(REF_SRC, REF_DEST);
 });
 
-// The default task (called when you run `gulp`)
-gulp.task('default', ['bundle', 'minify']);
-
 // The watch task (to automatically rebuild when the source code changes)
 gulp.task('watch', ['bundle', 'minify'], function () {
   gulp.watch(['index.js', 'lib/**/*.js'], ['bundle', 'minify']);
 });
+
+// The default task (called when you run `gulp`)
+gulp.task('default', ['bundle', 'minify']);

@@ -85,8 +85,8 @@ describe('sinh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sinh()}, error.ArgumentsError);
-    assert.throws(function () {sinh(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {sinh()}, /TypeError: Too few arguments/);
+    assert.throws(function () {sinh(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX sinh', function () {

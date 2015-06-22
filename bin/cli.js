@@ -13,10 +13,12 @@
  *
  * Options:
  *
- *     --version, -v  Show application version
- *        --help, -h  Show this message
- *     --tex          Generate LaTeX instead of evaluating
- *     --string       Generate string instead of evaluating
+ *     --version, -v       Show application version
+ *     --help,    -h       Show this message
+ *     --tex               Generate LaTeX instead of evaluating
+ *     --string            Generate string instead of evaluating
+ *     --parenthesis=      Set the parenthesis option to
+ *                         either of "keep", "auto" and "all"
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
@@ -136,8 +138,9 @@ function completer (text) {
  * @param input   Input stream
  * @param output  Output stream
  * @param mode    Output mode
+ * @param parenthesis Parenthesis option
  */
-function runStream (input, output, mode) {
+function runStream (input, output, mode, parenthesis) {
   var readline = require('readline'),
       rl = readline.createInterface({
         input: input || process.stdin,
@@ -190,7 +193,7 @@ function runStream (input, output, mode) {
                 }
               }
               else if (res instanceof math.type.Help) {
-                console.log(res.toText(math));
+                console.log(res.toString());
               }
               else {
                 parser.set('ans', res);
@@ -201,18 +204,20 @@ function runStream (input, output, mode) {
               console.log(err.toString());
             }
             break;
+
           case 'string':
             try {
-              var string = math.parse(expr).toString();
+              var string = math.parse(expr).toString({parenthesis: parenthesis});
               console.log(string);
             }
             catch (err) {
               console.log(err.toString());
             }
             break;
+
           case 'tex':
             try {
-              var tex = math.parse(expr).toTex();
+              var tex = math.parse(expr).toTex({parenthesis: parenthesis});
               console.log(tex);
             }
             catch (err) {
@@ -267,10 +272,12 @@ function outputHelp() {
   console.log('    mathjs [scriptfile(s)] {OPTIONS}');
   console.log();
   console.log('Options:');
-  console.log('    --version, -v  Show application version');
-  console.log('       --help, -h  Show this message');
-  console.log('    --tex          Generate LaTeX instead of evaluating');
-  console.log('    --String       Generate string instead of evaluating');
+  console.log('    --version, -v       Show application version');
+  console.log('    --help,    -h       Show this message');
+  console.log('    --tex               Generate LaTeX instead of evaluating');
+  console.log('    --string            Generate string instead of evaluating');
+  console.log('    --parenthesis=      Set the parenthesis option to');
+  console.log('                        either of "keep", "auto" and "all"');
   console.log();
   console.log('Example usage:');
   console.log('    mathjs                                Open a command prompt');
@@ -288,6 +295,7 @@ function outputHelp() {
  */
 var queue = []; //queue of scripts that need to be processed
 var mode = 'eval'; //one of 'eval', 'tex' or 'string'
+var parenthesis = 'keep';
 
 process.argv.forEach(function (arg, index) {
 if (index < 2) {
@@ -309,6 +317,15 @@ switch (arg) {
   case '--string':
     mode = 'string';
     break;
+  case '--parenthesis=keep':
+    parenthesis = 'keep';
+    break;
+  case '--parenthesis=auto':
+    parenthesis = 'auto';
+    break;
+  case '--parenthesis=all':
+    parenthesis = 'all';
+    break
   default:
     queue.push(arg);
 }
@@ -316,12 +333,12 @@ switch (arg) {
 
 if (queue.length === 0) {
 // run a stream, can be user input or pipe input
-runStream(process.stdin, process.stdout, mode);
+runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
 //work through the queue
 queue.forEach(function (arg) {
   // run a script file
-  runStream(fs.createReadStream(arg), process.stdout, mode);
+  runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
 });
 }

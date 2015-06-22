@@ -1,14 +1,7 @@
-var assert= require('assert');
+var assert = require('assert');
 var math = require('../../index');
 var reviver = math.json.reviver;
-var Complex = math.type.Complex;
 var Range = math.type.Range;
-var Index = math.type.Index;
-var Unit = math.type.Unit;
-var Matrix = math.type.Matrix;
-var BigNumber = require('../../lib/type/BigNumber');
-var Help = math.type.Help;
-var ResultSet = math.type.ResultSet;
 
 describe('reviver', function () {
 
@@ -20,11 +13,11 @@ describe('reviver', function () {
 
   it('should parse a stringified complex number', function () {
     var json = '{"mathjs":"Complex","re":2,"im":4}';
-    var c = new Complex(2, 4);
+    var c = new math.type.Complex(2, 4);
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Complex);
+    assert(obj instanceof math.type.Complex);
     assert.deepEqual(obj, c);
   });
 
@@ -34,70 +27,82 @@ describe('reviver', function () {
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof BigNumber);
+    assert(obj instanceof math.type.BigNumber);
     assert.deepEqual(obj, b);
+  });
+
+  it('should parse a stringified Fraction', function () {
+    var json = '{"mathjs":"Fraction","n":3,"d":8}';
+    var b = new math.type.Fraction(0.375);
+
+    var obj = JSON.parse(json, reviver);
+
+    assert(obj instanceof math.type.Fraction);
+    assert.strictEqual(obj.s, b.s);
+    assert.strictEqual(obj.n, b.n);
+    assert.strictEqual(obj.d, b.d);
   });
 
   it('should parse a stringified Range', function () {
     var json = '{"mathjs":"Range","start":2,"end":10}';
-    var r = new Range(2, 10);
+    var r = new math.type.Range(2, 10);
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Range);
+    assert(obj instanceof math.type.Range);
     assert.deepEqual(obj, r);
   });
 
   it('should parse a stringified Unit', function () {
     var json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}';
-    var u = new Unit(5, 'cm');
+    var u = new math.type.Unit(5, 'cm');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Unit);
+    assert(obj instanceof math.type.Unit);
     assert.deepEqual(obj, u);
   });
 
   it('should parse a stringified Range (2)', function () {
     var json = '{"mathjs":"Range","start":2,"end":10,"step":2}';
-    var r = new Range(2, 10, 2);
+    var r = new math.type.Range(2, 10, 2);
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Range);
+    assert(obj instanceof math.type.Range);
     assert.deepEqual(obj, r);
   });
 
   it('should parse a stringified ResultSet', function () {
     var json = '{"mathjs":"ResultSet","entries":[1,2,{"mathjs":"Complex","re":3,"im":4}]}';
-    var r = new ResultSet([1,2,new Complex(3,4)]);
+    var r = new math.type.ResultSet([1,2,new math.type.Complex(3,4)]);
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof ResultSet);
+    assert(obj instanceof math.type.ResultSet);
     assert.deepEqual(obj, r);
   });
 
   it('should parse a stringified Index', function () {
-    var json = '{"mathjs":"Index","ranges":[' +
+    var json = '{"mathjs":"Index","dimensions":[' +
         '{"mathjs":"Range","start":0,"end":10,"step":1},' +
         '{"mathjs":"Range","start":2,"end":3,"step":1}' +
         ']}';
-    var i = new Index([0, 10], 2);
+    var i = new math.type.Index(new Range(0, 10), new Range(2, 3));
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Index);
+    assert(obj instanceof math.type.Index);
     assert.deepEqual(obj, i);
   });
 
   it('should parse a stringified Index (2)', function () {
-    var json = '{"mathjs":"Index","ranges":[[0, 10],2]}';
-    var i = new Index([0, 10], 2);
+    var json = '{"mathjs":"Index","dimensions":[[0, 10],2]}';
+    var i = new math.type.Index([0, 10], 2);
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Index);
+    assert(obj instanceof math.type.Index);
     assert.deepEqual(obj, i);
   });
 
@@ -107,50 +112,39 @@ describe('reviver', function () {
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Matrix);
+    assert(obj instanceof math.type.Matrix);
     assert.deepEqual(obj, m);
   });
 
   it('should parse a stringified Matrix containing a complex number, dense storage format', function () {
     var json = '{"mathjs":"DenseMatrix","data":[[1,2],[3,{"mathjs":"Complex","re":4,"im":5}]],"size":[2,2]}';
-    var c = new Complex(4, 5);
+    var c = new math.type.Complex(4, 5);
     var m = math.matrix([[1,2],[3,c]], 'dense');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Matrix);
-    assert(obj._data[1][1] instanceof Complex);
+    assert(obj instanceof math.type.Matrix);
+    assert(obj._data[1][1] instanceof math.type.Complex);
     assert.deepEqual(obj, m);
   });
 
-  it('should parse a Matrix, ccs storage format', function () {
-    var json = '{"mathjs":"CcsMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
-    var m = math.matrix([[1,2],[3,4]], 'ccs');
+  it('should parse a Matrix, sparse', function () {
+    var json = '{"mathjs":"SparseMatrix","values":[1,3,2,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
+    var m = math.matrix([[1,2],[3,4]], 'sparse');
 
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof math.type.CcsMatrix);
-    assert(obj instanceof Matrix);
-    assert.deepEqual(obj, m);
-  });
-
-  it('should parse a Matrix, crs storage format', function () {
-    var json = '{"mathjs":"CrsMatrix","values":[1,2,3,4],"index":[0,1,0,1],"ptr":[0,2,4],"size":[2,2]}';
-    var m = math.matrix([[1,2],[3,4]], 'crs');
-
-    var obj = JSON.parse(json, reviver);
-
-    assert(obj instanceof Matrix);
-    assert(obj instanceof math.type.CrsMatrix);
+    assert(obj instanceof math.type.SparseMatrix);
+    assert(obj instanceof math.type.Matrix);
     assert.deepEqual(obj, m);
   });
 
   it('should parse a stringified Help', function () {
     var json = '{"mathjs":"Help","name":"foo","description":"bar"}';
-    var h = new Help({name: 'foo', description: 'bar'});
+    var h = new math.type.Help({name: 'foo', description: 'bar'});
     var obj = JSON.parse(json, reviver);
 
-    assert(obj instanceof Help);
+    assert(obj instanceof math.type.Help);
     assert.deepEqual(obj, h);
   });
 

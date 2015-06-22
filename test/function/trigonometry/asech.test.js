@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    asech = math.asech,
-    sech = math.sech,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 22}),
-    asechBig = bigmath.asech,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var asech = math.asech;
+var sech = math.sech;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 22});
+var predmath = math.create({predictable: true});
+var asechBig = bigmath.asech;
+var Big = bigmath.bignumber;
 
 describe('asech', function() {
   it('should return the hyperbolic arcsec of a boolean', function () {
@@ -34,6 +35,11 @@ describe('asech', function() {
     approx.equal(asech(0.5), 1.31695789692481670862504634730797);
     approx.equal(asech(0.75), 0.7953654612239056305278909331478);
     assert.equal(asech(1), 0);
+  });
+
+  it('should return the hyperbolic arcsec of a number when predictable:true', function() {
+    assert.equal(typeof predmath.asech(2), 'number');
+    assert(isNaN(predmath.asech(2)));
   });
 
   it('should return the hyperbolic arcsec of a bignumber', function() {
@@ -108,8 +114,8 @@ describe('asech', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {asech()}, error.ArgumentsError);
-    assert.throws(function () {asech(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {asech()}, /TypeError: Too few arguments/);
+    assert.throws(function () {asech(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX asech', function () {

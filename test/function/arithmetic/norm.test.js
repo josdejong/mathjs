@@ -1,10 +1,9 @@
 // test norm
 var assert = require('assert'),
-  error = require('../../../lib/error/index'),
-  math = require('../../../index');
+    math = require('../../../index');
 
 describe('norm', function () {
-  
+
   it('should return the absolute value of a boolean', function () {
     assert.equal(math.norm(true), 1);
     assert.equal(math.norm(true, 10), 1);
@@ -24,7 +23,7 @@ describe('norm', function () {
     assert.equal(math.norm(0), 0);
     assert.equal(math.norm(100, 10), 100);
   });
-  
+
   it('should return the absolute value of a big number', function () {
     assert.deepEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3));
     assert.deepEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'));
@@ -75,24 +74,27 @@ describe('norm', function () {
     // p = 1
     assert.equal(math.norm([[1, 2], [3, 4]], 1), 6);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), 1), 6);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'sparse'), 1), 6);
     // p = Infinity
     assert.equal(math.norm([[1, 2], [3, 4]], Number.POSITIVE_INFINITY), 7);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), Number.POSITIVE_INFINITY), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'sparse'), Number.POSITIVE_INFINITY), 7);
     assert.equal(math.norm([[1, 2], [3, 4]], 'inf'), 7);
     assert.equal(math.norm(math.matrix([[1, 2], [3, 4]]), 'inf'), 7);
+    assert.equal(math.norm(math.matrix([[1, 2], [3, 4]], 'sparse'), 'inf'), 7);
     // p = 'fro'
     assert.equal(math.norm([[1, 2], [-3, -4]], 'fro'), math.sqrt(30));
     assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]]), 'fro'), math.sqrt(30));
-    assert.equal(math.norm(math.matrix([[1, 2, 3], [4, 5, 6]]), 'fro'), math.sqrt(91));
+    assert.equal(math.norm(math.matrix([[1, 2], [-3, -4]], 'sparse'), 'fro'), math.sqrt(30));
     // p - not implemented yet!
     assert.throws(function() {
       math.norm(math.norm([[1, 2], [3, 4]], 2), 6);
     });
   });
-  
+
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.norm();}, error.ArgumentsError);
-    assert.throws(function () {math.norm(1, 2, 3);}, error.ArgumentsError);
+    assert.throws(function () {math.norm();}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.norm(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error with a string', function () {
@@ -105,7 +107,7 @@ describe('norm', function () {
     var expr1 = math.parse('norm(a)');
     var expr2 = math.parse("norm(a,2)");
 
-    assert.equal(expr1.toTex(), '\\left\\|\\mathrm{a}\\right\\|');
-    assert.equal(expr2.toTex(), '\\mathrm{norm}\\left(\\mathrm{a},2\\right)');
+    assert.equal(expr1.toTex(), '\\left\\| a\\right\\|');
+    assert.equal(expr2.toTex(), '\\mathrm{norm}\\left( a,2\\right)');
   });
 });

@@ -34,19 +34,18 @@ describe('print', function() {
   });
 
   it('should throw an error on wrong number of arguments', function() {
-    assert.throws (function () {math.print()}, error.ArgumentsError);
-    assert.throws (function () {math.print('')}, error.ArgumentsError);
-    assert.throws (function () {math.print('', {}, 6, 2)}, error.ArgumentsError);
+    assert.throws (function () {math.print()}, /TypeError: Too few arguments/);
+    assert.throws (function () {math.print('')}, /TypeError: Too few arguments/);
+    assert.throws (function () {math.print('', {}, 6, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error on wrong type of arguments', function() {
-    assert.throws (function () {math.print(2, {})}, TypeError);
-    assert.throws (function () {math.print('', 2)}, TypeError);
+    assert.throws (function () {math.print('', 2)}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX print', function () {
     var expression = math.parse('print(template,values)');
-    assert.equal(expression.toTex(), '\\mathrm{print}\\left(\\mathrm{template},\\mathrm{values}\\right)');
+    assert.equal(expression.toTex(), '\\mathrm{print}\\left( template, values\\right)');
   });
 
 });

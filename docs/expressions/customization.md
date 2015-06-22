@@ -1,7 +1,15 @@
 # Customization
 
 Besides parsing and evaluating expressions, the expression parser supports
-a number of features to customize processing and evaluation of expressions.
+a number of features to customize processing and evaluation of expressions
+and outputting expressions.
+
+On this page:
+
+- [Function transforms](#function-transforms)
+- [Custom argument parsing](#custom-argument-parsing)
+- [Custom LaTeX handlers](#custom-latex-handlers)
+- [Custom LaTeX and string output](#custom-latex-and-string-output)
 
 ## Function transforms
 
@@ -121,7 +129,7 @@ function myFunction(args, math, scope) {
 
   // evaluate the arguments
   var res = args.map(function (arg) {
-    return arg.compile(math).eval(scope);
+    return arg.compile().eval(scope);
   });
 
   return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',');
@@ -140,21 +148,100 @@ math.eval('myFunction(2 + 3, sqrt(4))');
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
 
-## Custom LaTeX conversion
+## Custom LaTeX handlers
 
-You can provide the `toTex` function of an expression tree with your own LaTeX converters.
-This can be used to override the builtin LaTeX conversion or provide LaTeX output for your own custom functions.
+You can attach a `toTex` property to your custom functions before importing them to define their LaTeX output. This
+`toTex` property can be a handler in the format described in the next section 'Custom LaTeX and String conversion'
+or a template string similar to ES6 templates.
 
-You can pass your own callback(s) to `toTex`. If it returns nothing, the standard LaTeX conversion will be use.
-If your callback returns a string, this string will be used.
+### Template syntax
+
+* `${name}`: Gets replaced by the name of the function
+* `${args}`: Gets replaced by a comma separated list of the arguments of the function.
+* `${args[0]}`: Gets replaced by the first argument of a function
+* `$$`: Gets replaced by `$`
+
+#### Example
+
+```js
+var customFunctions = {
+  plus: function (a, b) {
+    return a + b;
+  },
+  minus: function (a, b) {
+    return a - b;
+  },
+  binom: function (n, k) {
+    return 1;
+  }
+};
+
+customFunctions.plus.toTex = '${args[0]}+${args[1]}'; //template string
+customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
+customFunctions.minus.toTex = function (node, options) { //handler function
+  return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
+};
+
+math.import(customFunctions);
+
+math.parse('plus(1,2)').toTex();    //'1+2'
+math.parse('binom(1,2)').toTex();   // '\\mathrm{binom}\\left(1,2\\right)'
+math.parse('minus(1,2)').toTex();   // '1minus2'
+```
+
+## Custom LaTeX and string output
+
+All expression nodes have a method `toTex` and `toString` to output an expression respectively in LaTex format or as regular text .
+The functions `toTex` and `toString` accept an `options` argument to customise output. This object is of the following form:
+```js
+{
+  parenthesis: 'keep',   // parenthesis option
+  handler: someHandler   // handler to change the output
+}
+```
+
+### Parenthesis
+
+The `parenthesis` option changes the way parenteheses are used in the output. There are three options available:
+* `keep`: Keep the parentheses from the input and display them as is. This is the default.
+* `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
+* `all`: Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
 
 There's two ways of passing callbacks:
+
 1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes with 
 functions of that name.
 2. Pass a function to `toTex`. This function will then be used for every node.
 
+```js
+var expression = math.parse('(1+1+1)');
 
-**Examples for option 2**
+expression.toString(); //(1 + 1 + 1)
+expression.toString({parenthesis: 'keep'}); //(1 + 1 + 1)
+expression.toString({parenthesis: 'auto'}); //1 + 1 + 1
+expression.toString({parenthesis: 'all'});  //(1 + 1) + 1
+```
+
+### Handler
+
+You can provide the `toTex` and `toString` functions of an expression with your own custom handlers that override the internal behaviour. This is especially useful to provide LaTeX/string output for your own custom functions. This can be done in two ways:
+
+1. Pass an object that maps function names to callbacks. Those callbacks will be used for FunctionNodes that contain functions with that name.
+2. Pass a callback directly. This callback will run for every node, so you can replace the output of anything you like.
+
+A callback function has the following form:
+```js
+var callback = function (node, options) {
+  ...
+}
+```
+Where `options` is the object passed to `toTex`/`toString`. Don't forget to pass this on to the child nodes, and `node` is a reference to the current node.
+
+If a callback returns nothing, the standard output will be used. If your callback returns a string, this string will be used.
+
+**Although the following examples use `toTex`, it works for `toString` in the same way**
+
+#### Examples for option 1
 
 ```js
 var customFunctions = {
@@ -166,10 +253,10 @@ var customFunctions = {
 };
 
 var customLaTeX = {
-  'binomial': function (node, callbacks) { //provide toTex for your own custom function
-    return '\\binom{' + node.args[0].toTex(callbacks) + '}{' + node.args[1].toTex(callbacks) + '}';
+  'binomial': function (node, options) { //provide toTex for your own custom function
+    return '\\binom{' + node.args[0].toTex(options) + '}{' + node.args[1].toTex(options) + '}';
   },
-  'factorial': function (node, callbacks) { //override toTex for builtin functions
+  'factorial': function (node, options) { //override toTex for builtin functions
   	return 'factorial\\left(' + node.args[0] + '\\right)';
   }
 };
@@ -180,17 +267,17 @@ You can simply use your custom toTex functions by passing them to `toTex`:
 ```js
 math.import(customFunctions);
 var expression = math.parse('binomial(factorial(2),1)');
-var latex = expression.toTex(customLaTeX);
+var latex = expression.toTex({handler: customLaTeX});
 //latex now contains "\binom{factorial\\left(2\\right)}{1}"
 ```
 
-**Examples for option 2:**
+#### Examples for option 2:
 
 ```js
-var customLaTeX = function (node, callback) {
+var customLaTeX = function (node, options) {
   if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
-    //don't forget to pass the callback to the toTex functions
-    return node.args[0].toTex(callback) + ' plus ' + node.args[1].toTex(callback);
+    //don't forget to pass the options to the toTex functions
+    return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options);
   }
   else if (node.type === 'ConstantNode') {
     if (node.value == 0) {
@@ -209,7 +296,7 @@ var customLaTeX = function (node, callback) {
 };
 
 var expression = math.parse('1+2');
-var latex = expression.toTex(customLaTeX);
+var latex = expression.toTex({handler: customLaTeX});
 //latex now contains '\mbox{one} plus \mbox{two}'
 ```
 
@@ -224,14 +311,14 @@ var customFunctions = {
   }
 };
 
-var customLaTeX = function (node, callback) {
+var customLaTeX = function (node, options) {
   if ((node.type === 'FunctionNode') && (node.name === 'binomial')) {
-      return '\\binom{' + node.args[0].toTex(callback) + '}{' + node.args[1].toTex(callback) + '}';
+      return '\\binom{' + node.args[0].toTex(options) + '}{' + node.args[1].toTex(options) + '}';
   }
 };
 
 math.import(customFunctions);
 var expression = math.parse('binomial(2,1)');
-var latex = expression.toTex(customLaTeX);
+var latex = expression.toTex({handler: customLaTeX});
 //latex now contains "\binom{2}{1}"
 ```

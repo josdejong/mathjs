@@ -18,14 +18,14 @@ math.smallerEq(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null | First value to compare
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null | Second value to compare
+`x` | number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
+`y` | number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, else returns false
+boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, else returns false
 
 
 ## Examples

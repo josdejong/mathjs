@@ -1,23 +1,22 @@
 // test abs
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = math.error;
+var assert = require('assert');
+var math = require('../../../index');
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {
-    assert.equal(math.abs(true), 1);
-    assert.equal(math.abs(false), 0);
+    assert.strictEqual(math.abs(true), 1);
+    assert.strictEqual(math.abs(false), 0);
   });
 
   it('should return the abs value of null', function () {
-    assert.equal(math.abs(null), 0);
+    assert.strictEqual(math.abs(null), 0);
   });
 
   it('should return the abs value of a number', function () {
-    assert.equal(math.abs(-4.2), 4.2);
-    assert.equal(math.abs(-3.5), 3.5);
-    assert.equal(math.abs(100), 100);
-    assert.equal(math.abs(0), 0);
+    assert.strictEqual(math.abs(-4.2), 4.2);
+    assert.strictEqual(math.abs(-3.5), 3.5);
+    assert.strictEqual(math.abs(100), 100);
+    assert.strictEqual(math.abs(0), 0);
   });
 
   it('should return the absolute value of a big number', function () {
@@ -29,7 +28,26 @@ describe('abs', function () {
   it('should return the absolute value of a complex number', function () {
     assert.equal(math.abs(math.complex(3, -4)), 5);
     assert.equal(math.abs(math.complex(1e200, -4e200)), 4.12310562561766e+200);
-    assert.equal(math.norm(math.complex(-4e200, 1e200)), 4.12310562561766e+200);
+  });
+
+  it('should return the absolute value of a fraction', function () {
+    var a = math.fraction('-1/3');
+    assert.equal(math.abs(a).toString(), '0.(3)');
+    assert.equal(a.toString(), '-0.(3)');
+    assert.equal(math.abs(math.fraction('1/3')).toString(), '0.(3)');
+  });
+
+  it('should convert a string to a number', function() {
+    assert.strictEqual(math.abs('-2'), 2);
+  });
+
+  it('should return the absolute value of all elements in an Array', function () {
+    var a1 = math.abs([1,-2,3]);
+    assert.ok(Array.isArray(a1));
+    assert.deepEqual(a1, [1,2,3]);
+    a1 = math.abs([-2,-1,0,1,2]);
+    assert.ok(Array.isArray(a1));
+    assert.deepEqual(a1, [2,1,0,1,2]);
   });
 
   it('should return the absolute number of a complex number with zero', function () {
@@ -58,14 +76,13 @@ describe('abs', function () {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {math.abs()}, error.ArgumentsError);
-    assert.throws(function () {math.abs(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {math.abs()}, /TypeError: Too few arguments/);
+    assert.throws(function () {math.abs(1, 2)}, /TypeError: Too many arguments/);
   });
 
-  it('should throw an error with a string', function () {
-    assert.throws(function () {
-      math.abs('a string');
-    });
+  it('should throw an error in case of unsupported types', function () {
+    assert.throws(function () {math.abs(new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.abs(undefined);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX abs', function () {

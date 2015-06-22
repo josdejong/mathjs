@@ -1,10 +1,11 @@
 // test sqrt
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    sqrt = math.sqrt,
-    bignumber = math.bignumber;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var mathPredictable = math.create({predictable: true});
+var sqrt = math.sqrt;
+var bignumber = math.bignumber;
 
 describe('sqrt', function() {
   it('should return the square root of a boolean', function () {
@@ -30,6 +31,12 @@ describe('sqrt', function() {
     assert.deepEqual(sqrt(-16), math.complex(0, 4));
   });
 
+  it('should return the square root of a negative number when predictable:true', function() {
+    assert.strictEqual(mathPredictable.sqrt(4), 2);
+    assert(typeof mathPredictable.sqrt(-4), 'number');
+    assert(isNaN(mathPredictable.sqrt(-4)));
+  });
+
   it('should return the square root of a positive bignumber', function() {
     assert.deepEqual(sqrt(bignumber(0)), bignumber(0));
     assert.deepEqual(sqrt(bignumber(1)), bignumber(1));
@@ -45,6 +52,11 @@ describe('sqrt', function() {
 
   it('should return the square root of a negative bignumber', function() {
     assert.deepEqual(sqrt(bignumber(-4)), math.complex(0, 2));
+  });
+
+  it('should return the square root of a negative bignumber when predictable:true', function() {
+    assert.deepEqual(mathPredictable.sqrt(bignumber(4)), bignumber(2));
+    assert.deepEqual(mathPredictable.sqrt(bignumber(-4)), bignumber(NaN));
   });
 
   it('should return the square root of a complex number', function() {
@@ -71,8 +83,8 @@ describe('sqrt', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sqrt()}, error.ArgumentsError);
-    assert.throws(function () {sqrt(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {sqrt()}, /TypeError: Too few arguments/);
+    assert.throws(function () {sqrt(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX sqrt', function () {

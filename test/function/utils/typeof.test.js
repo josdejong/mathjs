@@ -1,12 +1,13 @@
 // test typeof
-var assert = require('assert'),
-    math = require('../../../index')
-    Index = math.type.Index,
-    Range = math.type.Range,
-    Matrix = math.type.Matrix,
-    Help = math.type.Help,
-    Unit = math.type.Unit,
-    Complex = math.type.Complex;
+var assert = require('assert');
+var math = require('../../../index');
+var Index = math.type.Index;
+var Range = math.type.Range;
+var Matrix = math.type.Matrix;
+var Help = math.type.Help;
+var Unit = math.type.Unit;
+var Complex = math.type.Complex;
+var Fraction = math.type.Fraction;
 
 describe('typeof', function() {
 
@@ -16,8 +17,8 @@ describe('typeof', function() {
   });
 
   it('should return bignumber type for a bignumber', function() {
-    assert.equal(math.typeof(math.bignumber(0.1)), 'bignumber');
-    assert.equal(math.typeof(new math.type.BigNumber('0.2')), 'bignumber');
+    assert.equal(math.typeof(math.bignumber(0.1)), 'BigNumber');
+    assert.equal(math.typeof(new math.type.BigNumber('0.2')), 'BigNumber');
   });
 
   it('should return string type for a string', function() {
@@ -26,28 +27,33 @@ describe('typeof', function() {
   });
 
   it('should return complex type for a complex number', function() {
-    assert.equal(math.typeof(new Complex(2,3)), 'complex');
-    assert.equal(math.typeof(math.complex(2,3)), 'complex');
+    assert.equal(math.typeof(new Complex(2,3)), 'Complex');
+    assert.equal(math.typeof(math.complex(2,3)), 'Complex');
+  });
+
+  it('should return complex type for a fraction', function() {
+    assert.equal(math.typeof(new Fraction(2,3)), 'Fraction');
+    assert.equal(math.typeof(math.fraction(2,3)), 'Fraction');
   });
 
   it('should return array type for an array', function() {  
-    assert.equal(math.typeof([1,2,3]), 'array');
-    assert.equal(math.typeof(new Array()), 'array');
+    assert.equal(math.typeof([1,2,3]), 'Array');
+    assert.equal(math.typeof(new Array()), 'Array');
   });
 
   it('should return array type for an array', function() {
-    assert.equal(math.typeof([1,2,3]), 'array');
-    assert.equal(math.typeof(new Array()), 'array');
+    assert.equal(math.typeof([1,2,3]), 'Array');
+    assert.equal(math.typeof(new Array()), 'Array');
   });
 
   it('should return matrix type for a matrix', function() {  
-    assert.equal(math.typeof(math.matrix()), 'matrix');
-    assert.equal(math.typeof(math.matrix()), 'matrix');
+    assert.equal(math.typeof(math.matrix()), 'Matrix');
+    assert.equal(math.typeof(math.matrix()), 'Matrix');
   });
 
   it('should return unit type for a unit', function() {
-    assert.equal(math.typeof(new Unit(5, 'cm')), 'unit');
-    assert.equal(math.typeof(math.unit('5cm')), 'unit');
+    assert.equal(math.typeof(new Unit(5, 'cm')), 'Unit');
+    assert.equal(math.typeof(math.unit('5cm')), 'Unit');
   });
 
   it('should return boolean type for a boolean', function() {  
@@ -65,33 +71,33 @@ describe('typeof', function() {
   });
 
   it('should return date type for a Date', function() {  
-    assert.equal(math.typeof(new Date()), 'date');
+    assert.equal(math.typeof(new Date()), 'Date');
   });
 
   it('should return function type for a function', function() {  
-    assert.equal(math.typeof(function () {}), 'function');
-    assert.equal(math.typeof(new Function ()), 'function');
+    assert.equal(math.typeof(function () {}), 'Function');
+    assert.equal(math.typeof(new Function ()), 'Function');
   });
 
   it('should return function type for a chain', function() {
-    assert.equal(math.typeof(math.chain(3)), 'chain');
+    assert.equal(math.typeof(math.chain(3)), 'Chain');
   });
 
   it('should return function type for an index', function() {
-    assert.equal(math.typeof(new Index([0, 10])), 'index');
+    assert.equal(math.typeof(new Index([0, 10])), 'Index');
   });
 
   it('should return function type for a range', function() {
-    assert.equal(math.typeof(new Range(0, 10)), 'range');
+    assert.equal(math.typeof(new Range(0, 10)), 'Range');
   });
 
   it('should return function type for a help object', function() {
-    assert.equal(math.typeof(new Help({}, {})), 'help');
+    assert.equal(math.typeof(new Help({}, {})), 'Help');
   });
 
   it('should return object type for an object', function() {  
-    assert.equal(math.typeof({}), 'object');
-    assert.equal(math.typeof(new Object()), 'object');
+    assert.equal(math.typeof({}), 'Object');
+    assert.equal(math.typeof(new Object()), 'Object');
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {

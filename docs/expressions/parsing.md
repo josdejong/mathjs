@@ -97,7 +97,7 @@ which can be successively compiled and evaluated:
 
 ```js
 var node = math.parse(expr);      // parse expression into a node tree
-var code = node.compile(math);    // compile the node tree
+var code = node.compile();        // compile the node tree
 var result = code.eval([scope]);  // evaluate the code with an optional scope
 ```
 
@@ -114,12 +114,12 @@ Example usage:
 ```js
 // parse an expression into a node, and evaluate the node
 var node1 = math.parse('sqrt(3^2 + 4^2)');
-var code1 = node1.compile(math);
+var code1 = node1.compile();
 code1.eval(); // 5
 
 // provide a scope
 var node2 = math.parse('x^a', scope);
-var code2 = node2.compile(math);
+var code2 = node2.compile();
 var scope = {
     x: 3,
     a: 2

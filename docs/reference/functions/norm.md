@@ -16,14 +16,14 @@ math.norm(x, p)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Complex &#124; Boolean &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the norm
-`p` | Number &#124; String |  Vector space. Supported numbers include Infinity and -Infinity. Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm) Default value: 2.
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the norm
+`p` | number &#124; BigNumber &#124; string |  Vector space. Supported numbers include Infinity and -Infinity. Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm) Default value: 2.
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number | the p-norm
+number &#124; BigNumber | the p-norm
 
 
 ## Examples

@@ -8,7 +8,6 @@ describe('index.js', function () {
     assert('ArgumentsError' in error);
     assert('DimensionError' in error);
     assert('IndexError' in error);
-    assert('UnsupportedTypeError' in error);
   });
 
 });

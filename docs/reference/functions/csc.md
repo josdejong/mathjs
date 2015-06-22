@@ -15,20 +15,20 @@ math.csc(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Cosecant of x
+number &#124; Complex &#124; Array &#124; Matrix | Cosecant of x
 
 
 ## Examples
 
 ```js
-math.csc(2);      // returns Number 1.099750170294617
-1 / math.sin(2);  // returns Number 1.099750170294617
+math.csc(2);      // returns number 1.099750170294617
+1 / math.sin(2);  // returns number 1.099750170294617
 ```
 
 

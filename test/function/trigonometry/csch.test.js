@@ -73,8 +73,8 @@ describe('csch', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {csch()}, error.ArgumentsError);
-    assert.throws(function () {csch(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {csch()}, /TypeError: Too few arguments/);
+    assert.throws(function () {csch(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX csch', function () {

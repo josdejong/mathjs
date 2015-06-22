@@ -43,4 +43,4 @@ console.log();
 
 // convert a unit to a number
 // A second parameter with the unit for the exported number must be provided
-print(math.eval('number(5 cm, mm)')); // Number, 50
+print(math.eval('number(5 cm, mm)')); // number, 50

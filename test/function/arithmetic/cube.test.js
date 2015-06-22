@@ -1,12 +1,12 @@
 // test cube
-var assert = require('assert'),
-    math = require('../../../index'),
-    error = require('../../../lib/error/index'),
-    unit = math.unit,
-    bignumber = math.bignumber,
-    matrix = math.matrix,
-    range = math.range,
-    cube = math.cube;
+var assert = require('assert');
+var math = require('../../../index');
+var unit = math.unit;
+var bignumber = math.bignumber;
+var fraction = math.fraction;
+var matrix = math.matrix;
+var range = math.range;
+var cube = math.cube;
 
 describe('cube', function() {
   it('should return the cube of a boolean', function () {
@@ -30,6 +30,13 @@ describe('cube', function() {
     assert.deepEqual(cube(bignumber(0)), bignumber(0));
   });
 
+  it('should return the cube of a fraction', function() {
+    var a = fraction(0.5);
+    assert(cube(a) instanceof math.type.Fraction);
+    assert.equal(cube(a).toString(), '0.125');
+    assert.equal(a.toString(), '0.5');
+  });
+
   it('should return the cube of a complex number', function() {
     assert.deepEqual(cube(math.complex('2i')), math.complex('-8i'));
     assert.deepEqual(cube(math.complex('2+3i')), math.complex('-46+9i'));
@@ -45,8 +52,8 @@ describe('cube', function() {
   });
 
   it('should throw an error if there\'s wrong number of args', function() {
-    assert.throws(function () {cube()}, error.ArgumentsError);
-    assert.throws(function () {cube(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {cube()}, /TypeError: Too few arguments/);
+    assert.throws(function () {cube(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should cube each element in a matrix, array or range', function() {

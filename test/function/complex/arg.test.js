@@ -1,8 +1,7 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    arg = math.arg;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var arg = math.arg;
 
 describe('arg', function() {
   it('should compute the argument of a boolean', function () {
@@ -65,8 +64,8 @@ describe('arg', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {arg()}, error.ArgumentsError);
-    assert.throws(function () {arg(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {arg()}, /TypeError: Too few arguments/);
+    assert.throws(function () {arg(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX arg', function () {

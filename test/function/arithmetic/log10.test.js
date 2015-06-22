@@ -1,13 +1,13 @@
 // test exp
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    range = math.range,
-    log10 = math.log10;
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var mathPredictable = math.create({predictable: true});
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var range = math.range;
+var log10 = math.log10;
 
 describe('log10', function() {
   it('should return the log base 10 of a boolean', function () {
@@ -36,6 +36,11 @@ describe('log10', function() {
     approx.deepEqual(log10(-1), complex('0.000000000000000 + 1.364376353841841i'));
     approx.deepEqual(log10(-2), complex('0.301029995663981 + 1.364376353841841i'));
     approx.deepEqual(log10(-3), complex('0.477121254719662 + 1.364376353841841i'));
+  });
+
+  it('should return the log base 10 of negative numbers with predicable:true', function() {
+    assert.equal(typeof mathPredictable.log10(-1), 'number');
+    assert(isNaN(mathPredictable.log10(-1)));
   });
 
   it('should return the log base 10 of zero', function() {
@@ -68,8 +73,8 @@ describe('log10', function() {
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {
-    assert.throws(function () {log10()}, error.ArgumentsError);
-    assert.throws(function () {log10(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {log10()}, /TypeError: Too few arguments/);
+    assert.throws(function () {log10(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should return the log base 10 of a complex number', function() {

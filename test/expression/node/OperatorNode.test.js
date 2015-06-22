@@ -1,12 +1,12 @@
 // test OperatorNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    ConditionalNode = require('../../../lib/expression/node/ConditionalNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var OperatorNode = math.expression.node.OperatorNode;
+var ConditionalNode = math.expression.node.ConditionalNode;
 
 describe('OperatorNode', function() {
 
@@ -15,6 +15,11 @@ describe('OperatorNode', function() {
     assert(n instanceof OperatorNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'OperatorNode');
+  });
+
+  it ('should have isOperatorNode', function () {
+    var node = new OperatorNode('op', 'fn', []);
+    assert(node.isOperatorNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -28,7 +33,7 @@ describe('OperatorNode', function() {
     var b = new ConstantNode(3);
     var n = new OperatorNode('+', 'add', [a, b]);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     assert.equal(expr.eval(), 5);
   });
@@ -36,13 +41,11 @@ describe('OperatorNode', function() {
   it ('should throw an error in case of unresolved operator function', function () {
     var a = new ConstantNode(2);
     var b = new ConstantNode(3);
-    var n = new OperatorNode('+', 'add', [a, b]);
-
-    var emptyNamespace = {};
+    var n = new OperatorNode('***', 'foo', [a, b]);
 
     assert.throws(function () {
-      n.compile(emptyNamespace);
-    }, /Function add missing in provided namespace/);
+      n.compile();
+    }, /Function foo missing in provided namespace/);
   });
 
   it ('should filter an OperatorNode', function () {
@@ -226,32 +229,32 @@ describe('OperatorNode', function() {
     });
 
     it ('should stringify left associative OperatorNodes that are associative with another Node', function () {
-      assert.equal(math.parse('(a+b)+c').toString(), 'a + b + c');
-      assert.equal(math.parse('a+(b+c)').toString(), 'a + b + c');
-      assert.equal(math.parse('(a+b)-c').toString(), 'a + b - c');
-      assert.equal(math.parse('a+(b-c)').toString(), 'a + b - c');
+      assert.equal(math.parse('(a+b)+c').toString({parenthesis: 'auto'}), 'a + b + c');
+      assert.equal(math.parse('a+(b+c)').toString({parenthesis: 'auto'}), 'a + b + c');
+      assert.equal(math.parse('(a+b)-c').toString({parenthesis: 'auto'}), 'a + b - c');
+      assert.equal(math.parse('a+(b-c)').toString({parenthesis: 'auto'}), 'a + b - c');
 
-      assert.equal(math.parse('(a*b)*c').toString(), 'a * b * c');
-      assert.equal(math.parse('a*(b*c)').toString(), 'a * b * c');
-      assert.equal(math.parse('(a*b)/c').toString(), 'a * b / c');
-      assert.equal(math.parse('a*(b/c)').toString(), 'a * b / c');
+      assert.equal(math.parse('(a*b)*c').toString({parenthesis: 'auto'}), 'a * b * c');
+      assert.equal(math.parse('a*(b*c)').toString({parenthesis: 'auto'}), 'a * b * c');
+      assert.equal(math.parse('(a*b)/c').toString({parenthesis: 'auto'}), 'a * b / c');
+      assert.equal(math.parse('a*(b/c)').toString({parenthesis: 'auto'}), 'a * b / c');
     });
 
     it ('should stringify left associative OperatorNodes that are not associative with another Node', function () {
-      assert.equal(math.parse('(a-b)-c').toString(), 'a - b - c');
-      assert.equal(math.parse('a-(b-c)').toString(), 'a - (b - c)');
-      assert.equal(math.parse('(a-b)+c').toString(), 'a - b + c');
-      assert.equal(math.parse('a-(b+c)').toString(), 'a - (b + c)');
+      assert.equal(math.parse('(a-b)-c').toString({parenthesis: 'auto'}), 'a - b - c');
+      assert.equal(math.parse('a-(b-c)').toString({parenthesis: 'auto'}), 'a - (b - c)');
+      assert.equal(math.parse('(a-b)+c').toString({parenthesis: 'auto'}), 'a - b + c');
+      assert.equal(math.parse('a-(b+c)').toString({parenthesis: 'auto'}), 'a - (b + c)');
 
-      assert.equal(math.parse('(a/b)/c').toString(), 'a / b / c');
-      assert.equal(math.parse('a/(b/c)').toString(), 'a / (b / c)');
-      assert.equal(math.parse('(a/b)*c').toString(), 'a / b * c');
-      assert.equal(math.parse('a/(b*c)').toString(), 'a / (b * c)');
+      assert.equal(math.parse('(a/b)/c').toString({parenthesis: 'auto'}), 'a / b / c');
+      assert.equal(math.parse('a/(b/c)').toString({parenthesis: 'auto'}), 'a / (b / c)');
+      assert.equal(math.parse('(a/b)*c').toString({parenthesis: 'auto'}), 'a / b * c');
+      assert.equal(math.parse('a/(b*c)').toString({parenthesis: 'auto'}), 'a / (b * c)');
     });
 
     it ('should stringify right associative OperatorNodes that are not associative with another Node', function () {
-      assert.equal(math.parse('(a^b)^c').toString(), '(a ^ b) ^ c');
-      assert.equal(math.parse('a^(b^c)').toString(), 'a ^ b ^ c');
+      assert.equal(math.parse('(a^b)^c').toString({parenthesis: 'auto'}), '(a ^ b) ^ c');
+      assert.equal(math.parse('a^(b^c)').toString({parenthesis: 'auto'}), 'a ^ b ^ c');
     });
 
     it ('should stringify unary OperatorNodes containing a binary OperatorNode', function () {
@@ -261,10 +264,63 @@ describe('OperatorNode', function() {
     });
 
     it ('should stringify unary OperatorNodes containing a unary OperatorNode', function () {
-      assert.equal(math.parse('(-a)!').toString(), '(-a)!');
-      assert.equal(math.parse('-(a!)').toString(), '-a!');
-      assert.equal(math.parse('-(-a)').toString(), '-(-a)');
+      assert.equal(math.parse('(-a)!').toString({parenthesis: 'auto'}), '(-a)!');
+      assert.equal(math.parse('-(a!)').toString({parenthesis: 'auto'}), '-a!');
+      assert.equal(math.parse('-(-a)').toString({parenthesis: 'auto'}), '-(-a)');
     });
+  });
+
+  it ('should stringify an OperatorNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'OperatorNode') {
+        return node.op + node.fn + '(' 
+          + node.args[0].toString(options)
+          + ', ' +  node.args[1].toString(options) + ')';
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n1 = new OperatorNode('+', 'add', [a, b]);
+	var n2 = new OperatorNode('-', 'subtract', [a, b]);
+
+    assert.equal(n1.toString({handler: customFunction}), '+add(const(1, number), const(2, number))');
+    assert.equal(n2.toString({handler: customFunction}), '-subtract(const(1, number), const(2, number))');
+  });
+
+  it ('should stringify an OperatorNode with custom toString for a single operator', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
+        return node.args[0].toString(options)
+          + node.op + node.fn + node.op + 
+          node.args[1].toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+
+    var n = new OperatorNode('+', 'add', [a, b]);
+
+    assert.equal(n.toString({handler: customFunction}), 'const(1, number)+add+const(2, number)');
+  });
+
+  it ('should respect the \'all\' parenthesis option', function () {
+    assert.equal(math.parse('1+1+1').toString({parenthesis: 'all'}), '(1 + 1) + 1' );
+    assert.equal(math.parse('1+1+1').toTex({parenthesis: 'all'}), '\\left(1+1\\right)+1' );
+  });
+
+  it ('should correctly LaTeX fractions in \'all\' parenthesis mode', function () {
+    assert.equal(math.parse('1/2/3').toTex({parenthesis: 'all'}), '\\frac{\\left(\\frac{1}{2}\\right)}{3}');
   });
 
   it ('should LaTeX an OperatorNode', function () {
@@ -386,11 +442,11 @@ describe('OperatorNode', function() {
 
   it ('should LaTeX an OperatorNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'OperatorNode') {
         return node.op + node.fn + '(' 
-          + node.args[0].toTex(callback)
-          + ', ' +  node.args[1].toTex(callback) + ')';
+          + node.args[0].toTex(options)
+          + ', ' +  node.args[1].toTex(options) + ')';
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -403,17 +459,17 @@ describe('OperatorNode', function() {
     var n1 = new OperatorNode('+', 'add', [a, b]);
 	var n2 = new OperatorNode('-', 'subtract', [a, b]);
 
-    assert.equal(n1.toTex(customFunction), '+add(const\\left(1, number\\right), const\\left(2, number\\right))');
-    assert.equal(n2.toTex(customFunction), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))');
+    assert.equal(n1.toTex({handler: customFunction}), '+add(const\\left(1, number\\right), const\\left(2, number\\right))');
+    assert.equal(n2.toTex({handler: customFunction}), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))');
   });
 
   it ('should LaTeX an OperatorNode with custom toTex for a single operator', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
-        return node.args[0].toTex(callback)
+        return node.args[0].toTex(options)
           + node.op + node.fn + node.op + 
-          node.args[1].toTex(callback);
+          node.args[1].toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -425,7 +481,7 @@ describe('OperatorNode', function() {
 
     var n = new OperatorNode('+', 'add', [a, b]);
 
-    assert.equal(n.toTex(customFunction), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right)+add+const\\left(2, number\\right)');
   });
 
   it ('should LaTeX powers of fractions with parentheses', function () {
@@ -442,6 +498,11 @@ describe('OperatorNode', function() {
     var pow = new OperatorNode('^', 'pow', [cond, a]);
 
     assert.equal(pow.toTex(), '\\left({\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}\\right)^{1}');
+  });
+
+  it ('should LaTeX simple expressions in \'auto\' mode', function () {
+    //this covers a bug that was triggered previously
+    assert.equal(math.parse('1+(1+1)').toTex({parenthesis: 'auto'}), '1+1+1');
   });
 
 });

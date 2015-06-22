@@ -16,14 +16,14 @@ math.log(x, base)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the logarithm.
-`base` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; null |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
+`base` | number &#124; BigNumber &#124; Complex |  Optional base for the logarithm. If not provided, the natural logarithm of `x` is calculated. Default value: e.
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the logarithm of `x`
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the logarithm of `x`
 
 
 ## Examples

@@ -38,6 +38,10 @@ describe('util.array', function() {
       ]), [3,2,4]);
     });
 
+    it('should not validate whether all dimensions match', function () {
+      assert.deepEqual(size([[1,2],[3,4,5]]), [2,2]);
+    });
+
   });
 
   describe('resize', function () {

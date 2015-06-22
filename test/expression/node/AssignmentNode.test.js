@@ -2,13 +2,13 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var Node = require('../../../lib/expression/node/Node');
-var ConstantNode = require('../../../lib/expression/node/ConstantNode');
-var SymbolNode = require('../../../lib/expression/node/SymbolNode');
-var ArrayNode = require('../../../lib/expression/node/ArrayNode');
-var RangeNode = require('../../../lib/expression/node/RangeNode');
-var AssignmentNode = require('../../../lib/expression/node/AssignmentNode');
-var OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var ArrayNode = math.expression.node.ArrayNode;
+var AssignmentNode = math.expression.node.AssignmentNode;
+var OperatorNode = math.expression.node.OperatorNode;
 
 describe('AssignmentNode', function() {
 
@@ -17,6 +17,11 @@ describe('AssignmentNode', function() {
     assert(n instanceof AssignmentNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'AssignmentNode');
+  });
+
+  it ('should have isAssignmentNode', function () {
+    var node = new AssignmentNode('a', new Node());
+    assert(node.isAssignmentNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -41,7 +46,7 @@ describe('AssignmentNode', function() {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
 
     var scope = {};
     assert.equal(expr.eval(scope), 3);
@@ -194,6 +199,12 @@ describe('AssignmentNode', function() {
     assert.strictEqual(e.expr, d.expr);
   });
 
+  it ('should respect the \'all\' parenthesis option', function () {
+    var expr = math.parse('a=1');
+    assert.equal(expr.toString({parenthesis: 'all'}), 'a = (1)');
+    assert.equal(expr.toTex({parenthesis: 'all'}), 'a:=\\left(1\\right)');
+  });
+
   it ('should stringify a AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
@@ -210,11 +221,29 @@ describe('AssignmentNode', function() {
     assert.equal(n.toString(), 'b = (a = 2)');
   });
 
+  it ('should stringify an AssignmentNode with custom toString', function () {
+    //Also checks if custom funcions get passed to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'AssignmentNode') {
+        return node.name + ' equals ' + node.expr.toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+
+    var n = new AssignmentNode('a', a);
+
+    assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)');
+  });
+
   it ('should LaTeX a AssignmentNode', function () {
     var b = new ConstantNode(3);
     var n = new AssignmentNode('b', b);
 
-    assert.equal(n.toTex(), '\\mathrm{b}:=3');
+    assert.equal(n.toTex(), 'b:=3');
   });
 
   it ('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
@@ -223,14 +252,14 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('b', b);
 
-    assert.equal(n.toTex(), '\\mathrm{b}:=\\left(\\mathrm{a}:=2\\right)');
+    assert.equal(n.toTex(), 'b:=\\left(a:=2\\right)');
   });
 
   it ('should LaTeX an AssignmentNode with custom toTex', function () {
     //Also checks if custom funcions get passed to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'AssignmentNode') {
-        return node.name + '\\mbox{equals}' + node.expr.toTex(callback);
+        return node.name + '\\mbox{equals}' + node.expr.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -241,7 +270,7 @@ describe('AssignmentNode', function() {
 
     var n = new AssignmentNode('a', a);
 
-    assert.equal(n.toTex(customFunction), 'a\\mbox{equals}const\\left(1, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'a\\mbox{equals}const\\left(1, number\\right)');
   });
 
 });

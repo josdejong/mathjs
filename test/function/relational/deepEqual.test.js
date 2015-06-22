@@ -1,7 +1,6 @@
 // test deepEqual
 var assert = require('assert'),
     math = require('../../../index'),
-    error = require('../../../lib/error/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,
@@ -10,7 +9,7 @@ var assert = require('assert'),
 
 describe('deepEqual', function() {
 
-  it('should scalars correctly', function() {
+  it('should compare scalars correctly', function() {
     assert.equal(deepEqual(2, 3), false);
     assert.equal(deepEqual(2, 2), true);
     assert.equal(deepEqual(0, 0), true);
@@ -49,8 +48,8 @@ describe('deepEqual', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {deepEqual(1)}, error.ArgumentsError);
-    assert.throws(function () {deepEqual(1, 2, 3)}, error.ArgumentsError);
+    assert.throws(function () {deepEqual(1)}, /TypeError: Too few arguments/);
+    assert.throws(function () {deepEqual(1, 2, 3)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX deepEqual', function () {

@@ -12,6 +12,7 @@ For matrices, the function is evaluated element wise.
 ## Syntax
 
 ```js
+math.nthRoot(a)
 math.nthRoot(a, root)
 ```
 
@@ -19,14 +20,14 @@ math.nthRoot(a, root)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the nth root
-`root` | Number &#124; BigNumber &#124; Boolean &#124; null | The root. Default value: 2.
+`a` | number &#124; BigNumber &#124; Array &#124; Matrix |  Value for which to calculate the nth root
+`root` | number &#124; BigNumber | The root. Default value: 2.
 
 ### Returns
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Returns the nth root of `a`
+number &#124; Complex &#124; Array &#124; Matrix | Returns the nth root of `a`
 
 
 ## Examples

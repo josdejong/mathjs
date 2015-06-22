@@ -1,17 +1,18 @@
-var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
-    approx = require('../../../tools/approx'),
-    pi = math.pi,
-    acoth = math.acoth,
-    coth = math.coth,
-    complex = math.complex,
-    matrix = math.matrix,
-    unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({precision: 21}),
-    acothBig = bigmath.acoth,
-    Big = bigmath.bignumber;
+var assert = require('assert');
+var error = require('../../../lib/error/index');
+var math = require('../../../index');
+var approx = require('../../../tools/approx');
+var pi = math.pi;
+var acoth = math.acoth;
+var coth = math.coth;
+var complex = math.complex;
+var matrix = math.matrix;
+var unit = math.unit;
+var bigmath = math.create({number: 'bignumber', precision: 20});
+var biggermath = math.create({precision: 21});
+var predmath = math.create({predictable: true});
+var acothBig = bigmath.acoth;
+var Big = bigmath.bignumber;
 
 describe('acoth', function() {
   it('should return the hyperbolic arccot of a boolean', function () {
@@ -36,6 +37,11 @@ describe('acoth', function() {
     assert.equal(acoth(1), Infinity);
     approx.equal(acoth(2), 0.54930614433405484569762261846);
     assert.equal(acoth(Infinity), 0);
+  });
+
+  it('should return the hyperbolic arccot of a number when predictable:true', function() {
+    assert.equal(typeof predmath.acoth(0.5), 'number');
+    assert(isNaN(predmath.acoth(0.5)));
   });
 
   it('should return the hyperbolic arccot of a bignumber', function() {
@@ -111,8 +117,8 @@ describe('acoth', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {acoth()}, error.ArgumentsError);
-    assert.throws(function () {acoth(1, 2)}, error.ArgumentsError);
+    assert.throws(function () {acoth()}, /TypeError: Too few arguments/);
+    assert.throws(function () {acoth(1, 2)}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX acoth', function () {

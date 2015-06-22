@@ -1,8 +1,9 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
     math = require('../../../index'),
+    matrix = math.matrix,
+    sparse = math.sparse,
     Unit = math.type.Unit,
-    Matrix = math.type.Matrix,
     unit = math.unit;
 
 describe('to', function() {
@@ -24,42 +25,47 @@ describe('to', function() {
     approx.deepEqual(math.to(unit('2 litre'), unit('m3')), e);
   });
 
-  it('should perform the given unit conversion on each element of an array', function() {
-    approx.deepEqual(math.to([
-      unit('1cm'),
-      unit('2 inch'),
-      unit('2km')
-    ], unit('foot')), [
-      new Unit(0.032808, 'foot').to('foot'),
-      new Unit(0.16667, 'foot').to('foot'),
-      new Unit(6561.7, 'foot').to('foot')
-    ]);
+  describe('Array', function () {
+    
+    it('should perform the given unit conversion, array - scalar', function () {      
+      approx.deepEqual(math.to([unit('1cm'), unit('2 inch'), unit('2km')], unit('foot')), [new Unit(0.032808, 'foot').to('foot'), new Unit(0.16667, 'foot').to('foot'), new Unit(6561.7, 'foot').to('foot')]);
+      approx.deepEqual(math.to(unit('1cm'), [unit('cm'), unit('foot'), unit('km'), unit('m')]), [new Unit(1, 'cm').to('cm'), new Unit(1, 'cm').to('foot'), new Unit(1, 'cm').to('km'), new Unit(1, 'cm').to('m')]);
+    });
+    
+    it('should perform the given unit conversion, array - array', function () {      
+      approx.deepEqual(math.to([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]], [[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]]), [[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]);
+    });
+    
+    it('should perform the given unit conversion, array - dense matrix', function () {      
+      approx.deepEqual(math.to([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]], matrix([[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]])), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]));
+    });
   });
+  
+  describe('DenseMatrix', function () {
 
-  it('should perform the given unit conversion on each element of a matrix', function() {
-    var a = math.matrix([
-      [unit('1cm'), unit('2cm')],
-      [unit('3cm'),unit('4cm')]
-    ]);
+    it('should perform the given unit conversion, dense matrix - scalar', function () {      
+      approx.deepEqual(math.to(matrix([unit('1cm'), unit('2 inch'), unit('2km')]), unit('foot')), matrix([new Unit(0.032808, 'foot').to('foot'), new Unit(0.16667, 'foot').to('foot'), new Unit(6561.7, 'foot').to('foot')]));
+      approx.deepEqual(math.to(unit('1cm'), matrix([unit('cm'), unit('foot'), unit('km'), unit('m')])), matrix([new Unit(1, 'cm').to('cm'), new Unit(1, 'cm').to('foot'), new Unit(1, 'cm').to('km'), new Unit(1, 'cm').to('m')]));
+    });
 
-    var b = math.to(a, unit('mm'));
+    it('should perform the given unit conversion, dense matrix - array', function () {      
+      approx.deepEqual(math.to(matrix([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]]), [[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]]), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]));
+    });
 
-    assert.ok(b instanceof math.type.Matrix);
-    approx.deepEqual(b, math.matrix([
-      [new Unit(10, 'mm').to('mm'), new Unit(20, 'mm').to('mm')],
-      [new Unit(30, 'mm').to('mm'), new Unit(40, 'mm').to('mm')]
-    ]));
+    it('should perform the given unit conversion, dense matrix - dense matrix', function () {      
+      approx.deepEqual(math.to(matrix([[unit('1cm'), unit('2 inch')], [unit('2km'), unit('1 foot')]]), matrix([[unit('foot'), unit('foot')], [unit('cm'), unit('foot')]])), matrix([[unit('1cm').to('foot'), unit('2 inch').to('foot')], [unit('2km').to('cm'), unit('1 foot').to('foot')]]));
+    });
   });
 
   it('should throw an error if converting between incompatible units', function() {
-    assert.throws(function () {math.to(unit('20 kg'), unit('cm'))});
-    assert.throws(function () {math.to(unit('20 celsius'), unit('litre'))});
-    assert.throws(function () {math.to(unit('5 cm'), unit('2 m'))});
+    assert.throws(function () {math.to(unit('20 kg'), unit('cm'));});
+    assert.throws(function () {math.to(unit('20 celsius'), unit('litre'));});
+    assert.throws(function () {math.to(unit('5 cm'), unit('2 m'));});
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
-    assert.throws(function () {math.to(unit('20 kg'))});
-    assert.throws(function () {math.to(unit('20 kg'), unit('m'), unit('cm'))});
+    assert.throws(function () {math.to(unit('20 kg'));});
+    assert.throws(function () {math.to(unit('20 kg'), unit('m'), unit('cm'));});
   });
 
   it('should throw an error if called with a non-plain unit', function() {
@@ -67,17 +73,16 @@ describe('to', function() {
   });
 
   it('should throw an error if called with a number', function() {
-    assert.throws(function () {math.to(5, unit('m'))}, TypeError);
-    assert.throws(function () {math.to(unit('5cm'), 2)}, TypeError);
+    assert.throws(function () {math.to(5, unit('m'));}, TypeError);
+    assert.throws(function () {math.to(unit('5cm'), 2);}, /SyntaxError: Unknown unit "2"/);
   });
 
   it('should throw an error if called with a string', function() {
-    assert.throws(function () {math.to('5cm', unit('cm'))}, TypeError);
+    assert.throws(function () {math.to('5cm', unit('cm'));}, TypeError);
   });
 
   it('should LaTeX to', function () {
     var expression = math.parse('to(2cm,m)');
     assert.equal(expression.toTex(), '\\left(2\\cdot\\mathrm{cm}\\rightarrow\\mathrm{m}\\right)');
   });
-
 });

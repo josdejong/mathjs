@@ -1,12 +1,12 @@
 // test RangeNode
-var assert = require('assert'),
-    approx = require('../../../tools/approx'),
-    math = require('../../../index'),
-    Node = require('../../../lib/expression/node/Node'),
-    ConstantNode = require('../../../lib/expression/node/ConstantNode'),
-    SymbolNode = require('../../../lib/expression/node/SymbolNode'),
-    RangeNode = require('../../../lib/expression/node/RangeNode'),
-  OperatorNode = require('../../../lib/expression/node/OperatorNode');
+var assert = require('assert');
+var approx = require('../../../tools/approx');
+var math = require('../../../index');
+var Node = math.expression.node.Node;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
+var RangeNode = math.expression.node.RangeNode;
+var OperatorNode = math.expression.node.OperatorNode;
 
 describe('RangeNode', function() {
 
@@ -17,6 +17,14 @@ describe('RangeNode', function() {
     assert(n instanceof RangeNode);
     assert(n instanceof Node);
     assert.equal(n.type, 'RangeNode');
+  });
+
+  it ('should have isRangeNode', function () {
+    var start = new ConstantNode(0);
+    var end = new ConstantNode(10);
+    var node = new RangeNode(start, end);
+
+    assert(node.isRangeNode);
   });
 
   it ('should throw an error when calling without new operator', function () {
@@ -42,7 +50,7 @@ describe('RangeNode', function() {
     var step = new ConstantNode(2);
     var n = new RangeNode(start, end, step);
 
-    var expr = n.compile(math);
+    var expr = n.compile();
     assert.deepEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]));
   });
 
@@ -272,6 +280,33 @@ describe('RangeNode', function() {
     assert.equal(n.toString(), '(0:10):2:100');
   });
 
+  it ('should stringify a RangeNode with custom toString', function () {
+    //Also checks if the custom functions get passed on to the children
+    var customFunction = function (node, options) {
+      if (node.type === 'RangeNode') {
+        return 'from ' + node.start.toString(options)
+          + ' to ' + node.end.toString(options)
+          + ' with steps of ' + node.step.toString(options);
+      }
+      else if (node.type === 'ConstantNode') {
+        return 'const(' + node.value + ', ' + node.valueType + ')'
+      }
+    };
+
+    var a = new ConstantNode(1);
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+
+    var n = new RangeNode(a, b, c);
+
+    assert.equal(n.toString({handler: customFunction}), 'from const(1, number) to const(2, number) with steps of const(3, number)');
+  });
+
+  it ('should respect the \'all\' parenthesis option', function () {
+    assert.equal(math.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)');
+    assert.equal(math.parse('1:2:3').toTex({parenthesis: 'all'}), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
+  });
+
   it ('should LaTeX a RangeNode without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
@@ -291,11 +326,11 @@ describe('RangeNode', function() {
 
   it ('should LaTeX a RangeNode with custom toTex', function () {
     //Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, callback) {
+    var customFunction = function (node, options) {
       if (node.type === 'RangeNode') {
-        return 'from ' + node.start.toTex(callback)
-          + ' to ' + node.end.toTex(callback)
-          + ' with steps of ' + node.step.toTex(callback);
+        return 'from ' + node.start.toTex(options)
+          + ' to ' + node.end.toTex(options)
+          + ' with steps of ' + node.step.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
@@ -308,7 +343,7 @@ describe('RangeNode', function() {
 
     var n = new RangeNode(a, b, c);
 
-    assert.equal(n.toTex(customFunction), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
+    assert.equal(n.toTex({handler: customFunction}), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
   });
 
 });

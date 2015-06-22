@@ -56,8 +56,8 @@ describe('inv', function() {
   it('should return the inverse for each element in a matrix', function() {
     assert.deepEqual(inv(math.matrix([4])), math.matrix([1/4]));
     assert.deepEqual(inv(math.matrix([[4]])), math.matrix([[1/4]]));
-    assert.deepEqual(inv(math.matrix([[4]], 'ccs')), math.matrix([[1/4]], 'ccs'));
-    assert.deepEqual(inv(math.matrix([[1,2],[3,4]], 'ccs')), math.matrix([[-2, 1],[1.5, -0.5]], 'ccs'));
+    assert.deepEqual(inv(math.matrix([[4]], 'sparse')), math.matrix([[1/4]], 'sparse'));
+    assert.deepEqual(inv(math.matrix([[1,2],[3,4]], 'sparse')), math.matrix([[-2, 1],[1.5, -0.5]], 'sparse'));
   });
 
   it('should throw an error in case of non-square matrices', function() {
@@ -76,12 +76,12 @@ describe('inv', function() {
   });
 
   it('should throw an error in case of wrong number of arguments', function() {
-    assert.throws(function () {inv()}, error.ArgumentsError);
-    assert.throws(function () {inv([], [])}, error.ArgumentsError);
+    assert.throws(function () {inv()}, /TypeError: Too few arguments/);
+    assert.throws(function () {inv([], [])}, /TypeError: Too many arguments/);
   });
 
   it('should throw an error in case of invalid type of arguments', function() {
-    assert.throws(function () {math.concat(inv('str'))}, math.error.TypeError);
+    assert.throws(function () {math.concat(inv(new Date()))}, /TypeError: Unexpected type of argument/);
   });
 
   it('should  LaTeX inv', function () {
