@@ -142,7 +142,7 @@ All nodes have the following methods:
     a relative JSON Path.
 
     For example, to replace all nodes of type `SymbolNode` having name 'x' with a
-    ConstantNode with value 2:
+    ConstantNode with value `3`:
 
     ```js
     var node = math.parse('x^2 + 5*x');
