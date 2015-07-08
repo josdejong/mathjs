@@ -30,9 +30,9 @@ See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a mor
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
-[expressions](http://mathjs.org/docs/expressions.html)
+[expressions](http://mathjs.org/docs/expressions/)
 and supports
-[chained operations](http://mathjs.org/docs/chained_operations.html).
+[chained operations](http://mathjs.org/docs/chaining.html).
 
 ```js
 // load math.js
