@@ -80,6 +80,18 @@ describe('parse', function() {
       assert.deepEqual(parse('2*-\n3').compile(math).eval(), -6);
     });
 
+    it('should parse multiple function assignments', function() {
+      var scope = {};
+      parse('f(x)=x*2;g(x)=x*3').compile(math).eval(scope);
+      assert.equal(scope.f(2), 4);
+      assert.equal(scope.g(2), 6);
+
+      var scope2 = {};
+      parse('a=2;f(x)=x^a;').compile(math).eval(scope2);
+      assert.equal(scope2.a, 2);
+      assert.equal(scope2.f(3), 9);
+    });
+
     it('should spread a function over multiple lines', function() {
       assert.deepEqual(parse('add(\n4\n,\n2\n)').compile(math).eval(), 6);
     });

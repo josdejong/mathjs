@@ -5,6 +5,8 @@
 
 - Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
   for very small values. (backported from v2)
+- Fixed #405: Parser throws error when defining a function in a multiline 
+  expression.
 
 
 ## 2015-05-31, version 1.7.0
