@@ -37,6 +37,7 @@
     "type": "git",
     "url": "https://github.com/josdejong/mathjs.git"
   },
+  "license": "Apache-2.0",
   "keywords": [
     "math",
     "mathematics",
