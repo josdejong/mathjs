@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 1.7.1-SNAPSHOT
+
+- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
+  for very small values. (backported from v2)
+
+
 ## 2015-05-31, version 1.7.0
 
 - Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
