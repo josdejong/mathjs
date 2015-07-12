@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 1.7.1-SNAPSHOT
+## 2015-07-12, version 1.7.1
 
 - Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
   for very small values. (backported from v2)
