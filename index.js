@@ -35,10 +35,8 @@ function create (config) {
   math.import(require('./lib/type/chain'));
   math.import(require('./lib/type/complex'));
   math.import(require('./lib/type/fraction'));
-  math.import(require('./lib/type/index'));
   math.import(require('./lib/type/matrix'));
   math.import(require('./lib/type/number'));
-  math.import(require('./lib/type/range'));
   math.import(require('./lib/type/resultset'));
   math.import(require('./lib/type/string'));
   math.import(require('./lib/type/unit'));
