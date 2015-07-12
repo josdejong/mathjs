@@ -117,6 +117,17 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m1._datatype, m2._datatype);
     });
 
+    it('should create a DenseMatrix using method create', function () {
+      var a = new DenseMatrix ([1,2,3]);
+
+      var b = a.create([4,5,6]);
+      assert.equal(b.isDenseMatrix, true);
+      assert.deepEqual(b, new DenseMatrix([4,5,6]));
+
+      var c = a.create([7,8,9], 'number');
+      assert.deepEqual(c, new DenseMatrix([7,8,9], 'number'));
+    });
+
     it('should have a property isMatrix', function () {
       var a = new DenseMatrix();
       assert.strictEqual(a.isMatrix, true);

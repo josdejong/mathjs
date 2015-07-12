@@ -184,6 +184,17 @@ describe('SparseMatrix', function() {
       }, /DimensionError: Dimension mismatch \(3 != 2\)/);
     });
 
+    it('should create a SparseMatrix using method create', function () {
+      var a = new SparseMatrix ([[1,2,3]]);
+
+      var b = a.create([[4,5,6]]);
+      assert.equal(b.isSparseMatrix, true);
+      assert.deepEqual(b, new SparseMatrix([[4,5,6]]));
+
+      var c = a.create([[7,8,9]], 'number');
+      assert.deepEqual(c, new SparseMatrix([[7,8,9]], 'number'));
+    });
+
     it('should throw an error when called without new keyword', function () {
       assert.throws(function () { SparseMatrix(); }, /Constructor must be called with the new operator/);
     });

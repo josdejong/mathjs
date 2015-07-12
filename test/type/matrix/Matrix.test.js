@@ -35,6 +35,14 @@ describe('matrix', function() {
     });
   });
 
+  describe('create', function() {
+
+    it('should throw exception', function() {
+      var m = new Matrix();
+      assert.throws(function () { m.create([]); }, /Cannot invoke create on a Matrix interface/);
+    });
+  });
+
   describe('toString', function() {
     
     it('should throw exception', function() {
