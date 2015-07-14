@@ -6,7 +6,7 @@
  * *transform* for the function. A transform is a function wrapping around a
  * function to be transformed or completely replaces a function.
  */
-var math = require('../index');
+var math = require('../../index');
 
 // create a function
 function addIt(a, b) {

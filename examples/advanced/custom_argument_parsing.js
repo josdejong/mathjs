@@ -7,7 +7,7 @@
  * will be invoked with unevaluated arguments, allowing the function
  * to process the arguments in a customized way.
  */
-var math = require('../index');
+var math = require('../../index');
 
 /**
  * Calculate the numeric integration of a function

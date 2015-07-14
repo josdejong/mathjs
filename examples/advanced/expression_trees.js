@@ -1,4 +1,4 @@
-var math = require('../index');
+var math = require('../../index');
 
 // Filter an expression tree
 console.log('Filter all symbol nodes "x" in the expression "x^2 + x/4 + 3*y"');
