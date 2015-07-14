@@ -12,7 +12,7 @@ var math = core.create();
 //
 //     math.import(require('../lib/type'));
 //
-math.import(require('../../lib/type/fraction/index'));
+math.import(require('../../lib/type/fraction'));
 
 // Load the functions you need.
 //
