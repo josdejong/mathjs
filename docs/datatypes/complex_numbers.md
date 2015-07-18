@@ -77,6 +77,8 @@ A `Complex` object has the following functions:
   an object with properties `r` and `phi`.
 - `toString()`. Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
+- `nthRoot(n)`. Returns an array of n roots of the complex number in polar form,
+  each with properties `r` and `phi`. It uses the De Moviers Theorem.  
 
 
 ## Calculations
