@@ -26,6 +26,7 @@
 - Function `import` has a new option `silent` to ignore errors, and throws
   errors on duplicates by default.
 - Method `Node.compile()` no longer needs `math` to be passed as argument.
+- Reintroduced method `Node.eval([scope])`.
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 - The size of Arrays is no longer validated. Matrices will validate this on
   creation.

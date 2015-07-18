@@ -19,6 +19,8 @@ describe('composition', function() {
 
   it('should not work with non-integer and negative input', function() {
     assert.throws(function() {composition(0.5, 3)}, /TypeError: Positive integer value expected in function composition/);
+    assert.throws(function() {composition(-2, 3)}, /TypeError: Positive integer value expected in function composition/);
+    assert.throws(function() {composition(6, -2)}, /TypeError: Positive integer value expected in function composition/);
     assert.throws(function() {composition(3, 5)}, /TypeError: k must be less than or equal to n in function composition/);
     assert.throws(function() {composition(math.bignumber(3), math.bignumber(5))}, /TypeError: k must be less than or equal to n in function composition/);
     assert.throws(function() {composition(math.bignumber(3.5), math.bignumber(-3))}, /TypeError: Positive integer value expected in function composition/);

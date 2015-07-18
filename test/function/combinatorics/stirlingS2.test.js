@@ -17,11 +17,13 @@ describe('stirlingS2', function() {
   });
 
   it('should not work with non-integer and negative input', function() {
-    assert.throws(function() {stirlingS2(0.5, 3)}, TypeError);
-    assert.throws(function() {stirlingS2(3, 5)}, TypeError);
-    assert.throws(function() {stirlingS2(math.bignumber(3), math.bignumber(5))}, TypeError);
-    assert.throws(function() {stirlingS2(math.bignumber(3.5), math.bignumber(-3))}, TypeError);
-    assert.throws(function() {stirlingS2(math.bignumber(3.5), 1/3)}, TypeError);
+    assert.throws(function() {stirlingS2(0.5, 3)}, /Non-negative integer value expected/);
+    assert.throws(function() {stirlingS2(-2, 3)}, /Non-negative integer value expected/);
+
+    assert.throws(function() {stirlingS2(3, 5)}, /k must be less than or equal to n in function stirlingS2/);
+    assert.throws(function() {stirlingS2(math.bignumber(3), math.bignumber(5))}, /k must be less than or equal to n in function stirlingS2/);
+    assert.throws(function() {stirlingS2(math.bignumber(3.5), math.bignumber(-3))}, /Non-negative integer value expected/);
+    assert.throws(function() {stirlingS2(math.bignumber(3.5), 1/3)}, /Non-negative integer value expected/);
   });
 
   it('should not work with the wrong number or type of arguments', function() {

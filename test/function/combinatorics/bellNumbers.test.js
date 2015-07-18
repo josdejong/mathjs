@@ -23,7 +23,15 @@ describe('bellNumbers', function() {
     assert.throws(function() {bellNumbers(math.bignumber(3.5))}, TypeError);
   });
 
-  it('should not work with the wrong number or type of arguments', function() {
+  it('should throw an error in case of non-integer input', function() {
+    assert.throws(function() {bellNumbers(5.2)}, /Non-negative integer value expected/);
+  });
+
+  it('should throw an error in case of negative input', function() {
+    assert.throws(function() {bellNumbers(-2)}, /Non-negative integer value expected/);
+  });
+
+  it('should throw an error in case of wrong number or type of arguments', function() {
     assert.throws(function() {bellNumbers(5, 3, 2)});
     assert.throws(function() {bellNumbers(true, "hello world")});
   });

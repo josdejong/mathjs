@@ -291,31 +291,5 @@ describe('bignumber', function() {
 
   });
 
-  it('should determine if input is a integer', function() {
-      assert.equal(bignumber.isPositiveInteger([new BigNumber(1)]), false);
-      assert.equal(bignumber.isPositiveInteger(false), false);
-      assert.equal(bignumber.isPositiveInteger('test'), false);
-      assert.equal(bignumber.isPositiveInteger({a:new BigNumber(1)}), false);
-      assert.equal(bignumber.isPositiveInteger(new BigNumber(0.1)), false);
-  });
-
-  it('should determine if integer is positive', function() {
-      assert.equal(bignumber.isPositiveInteger(1), true);
-      assert.equal(bignumber.isPositiveInteger(0), true);
-      assert.equal(bignumber.isPositiveInteger(-0), true);
-      assert.equal(bignumber.isPositiveInteger(-1), false);
-      assert.equal(bignumber.isPositiveInteger(0.5), false);
-      assert.equal(bignumber.isPositiveInteger(-0.5), false);
-  });
-
-  it('should determine if BigNumber is positive', function() {
-    assert.equal(bignumber.isPositiveInteger(new BigNumber(1)), true);
-    assert.equal(bignumber.isPositiveInteger(new BigNumber(0)), true);
-    assert.equal(bignumber.isPositiveInteger(new BigNumber(-0)), true);
-    assert.equal(bignumber.isPositiveInteger(new BigNumber(-1)), false);
-    assert.equal(bignumber.isPositiveInteger(new BigNumber(0.5)), false);
-    assert.equal(bignumber.isPositiveInteger(new BigNumber(-0.5)), false);
-  });
-
 });
 
