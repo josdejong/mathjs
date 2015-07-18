@@ -20,9 +20,7 @@ var ResultSet = math.type.ResultSet;
  * @return {*} result
  */
 function parseAndEval(expr, scope) {
-  return parse(expr)
-      .compile()
-      .eval(scope);
+  return parse(expr).eval(scope);
 }
 
 describe('parse', function() {

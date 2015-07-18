@@ -77,11 +77,9 @@ console.log('\nparse an expression into a node tree');
 var node1 = math.parse('sqrt(3^2 + 4^2)');
 print(node1.toString());                    // "sqrt((3 ^ 2) + (4 ^ 2))"
 
-// compile the node
-var code1 = node1.compile();
-
-// evaluate the compiled code
-print(code1.eval());                        // 5
+// compile and evaluate the compiled code
+// you could also do this in two steps: node1.compile().eval()
+print(node1.eval());                        // 5
 
 // provide a scope
 console.log('\nprovide a scope');

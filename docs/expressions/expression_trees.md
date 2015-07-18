@@ -54,6 +54,16 @@ All nodes have the following methods:
     var eval = code.eval({x: 3};    // returns 5
     ```
 
+-   `eval([scope]) : Object`
+
+    Compile and eval an expression, this is the equivalent of doing 
+    `node.compile().eval(scope)`. Example:
+    
+    ```js
+    var node = math.parse('2 + x'); // returns the root Node of an expression tree
+    var eval = node.eval({x: 3};    // returns 5
+    ```
+
 -   `filter(callback: function) : Array.<Node>`
 
     Filter nodes in an expression tree. The `callback` function is called as
@@ -67,7 +77,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + x/4 + 3*y');
     var filtered = node.filter(function (node) {
-      return node.type == 'SymbolNode' && node.name == 'x';
+      return node.isSymbolNode && node.name == 'x';
     });
     // returns an array with two entries: two SymbolNodes 'x'
     ```
@@ -147,7 +157,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + 5*x');
     var transformed = node.transform(function (node, path, parent) {
-      if (node.type == 'SymbolNode' && node.name == 'x') {
+      if (node.SymbolNode && node.name == 'x') {
         return new math.expression.node.ConstantNode(3);
       }
       else {
@@ -187,21 +197,19 @@ All nodes have the following methods:
     ```
 
 
-### Static methods
-
--   `Node.isNode(object) : boolean`
-
-    Test whether an object is a `Node`. Returns `true` when `object` is an
-    instance of `Node`, else returns `false`.
-
-
 ### Properties
 
 Each `Node` has the following properties:
 
+-   `isNode: true`
+
+    Is defined with value `true` on Nodes. Additionally, each type of node 
+    adds it's own flag, for example a `SymbolNode` as has a property 
+    `isSymbolNode: true`. 
+
 -   `type: string`
 
-    The type of the node, for example `'SymbolNode'`.
+    The type of the node, for example `'SymbolNode'` in case of a `SymbolNode`.
 
 
 ## Nodes
