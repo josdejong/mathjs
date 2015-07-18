@@ -66,10 +66,6 @@ function create (config) {
   math.import(require('./lib/function/units'));
   math.import(require('./lib/function/utils'));
 
-  // util methods for Arrays and Matrices
-  // TODO: export these utils in a separate path utils or something, together with ./lib/utils?
-  math.import(require('./lib/type/matrix/collection'));
-
   // errors
   math.error = require('./lib/error');
 
