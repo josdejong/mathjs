@@ -29,7 +29,7 @@ math.typed.conversions.unshift({
   }
 });
 
-// Load all data types, functions, constants, the expression parser, etc.
+// Import all data types, functions, constants, the expression parser, etc.
 math.import(require('../../lib'));
 
 // Operators `add` and `divide` have support for Fractions. The result will be a Fraction
