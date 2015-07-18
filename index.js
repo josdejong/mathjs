@@ -24,50 +24,12 @@ var core = require('./core');
  *                              returns `complex('2i')` when true.
  */
 function create (config) {
-
   // create a new math.js instance
   var math = core.create(config);
   math.create = create;
 
-  // data types (Matrix, Complex, Unit, ...)
-  math.import(require('./lib/type/bignumber'));
-  math.import(require('./lib/type/boolean'));
-  math.import(require('./lib/type/chain'));
-  math.import(require('./lib/type/complex'));
-  math.import(require('./lib/type/fraction'));
-  math.import(require('./lib/type/matrix'));
-  math.import(require('./lib/type/number'));
-  math.import(require('./lib/type/resultset'));
-  math.import(require('./lib/type/string'));
-  math.import(require('./lib/type/unit'));
-
-  // constants
-  math.import(require('./lib/constants'));
-
-  // expression parsing
-  math.import(require('./lib/expression'));
-
-  // serialization utility (math.json.reviver)
-  math.import(require('./lib/json'));
-
-  // functions
-  math.import(require('./lib/function/algebra'));
-  math.import(require('./lib/function/arithmetic'));
-  math.import(require('./lib/function/bitwise'));
-  math.import(require('./lib/function/combinatorics'));
-  math.import(require('./lib/function/complex'));
-  math.import(require('./lib/function/geometry'));
-  math.import(require('./lib/function/logical'));
-  math.import(require('./lib/function/matrix'));
-  math.import(require('./lib/function/probability'));
-  math.import(require('./lib/function/relational'));
-  math.import(require('./lib/function/statistics'));
-  math.import(require('./lib/function/trigonometry'));
-  math.import(require('./lib/function/units'));
-  math.import(require('./lib/function/utils'));
-
-  // errors
-  math.error = require('./lib/error');
+  // import data types, functions, constants, expression parser, etc.
+  math.import(require('./lib'));
 
   return math;
 }

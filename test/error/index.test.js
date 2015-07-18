@@ -1,13 +1,13 @@
-var assert = require('assert'),
-    error = require('../../lib/error/index');
+var assert = require('assert');
+var error = require('../../lib/error/index');
 
 describe('index.js', function () {
 
-  it('should contain error namespace', function () {
-    assert.equal(typeof error, 'object');
-    assert('ArgumentsError' in error);
-    assert('DimensionError' in error);
-    assert('IndexError' in error);
+  it('should contain error factory functions', function () {
+    assert(Array.isArray(error));
+    assert(error[0].name, 'ArgumentsError');
+    assert(error[1].name, 'DimensionError');
+    assert(error[2].name, 'IndexError');
   });
 
 });
