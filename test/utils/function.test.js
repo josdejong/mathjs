@@ -32,8 +32,21 @@ describe('util.function', function() {
       var m = functionUtils.memoize(f);
 
       assert.strictEqual(m({x: 2, y: 3}), 6);
-      assert.deepEqual(Object.keys(m.cache), ['{"0":{"x":2,"y":3}}']);
-      assert.strictEqual(m.cache['{"0":{"x":2,"y":3}}'], 6);
+      assert.deepEqual(Object.keys(m.cache), ['[{"x":2,"y":3}]']);
+      assert.strictEqual(m.cache['[{"x":2,"y":3}]'], 6);
+    });
+
+    it('should memoize a function with a custom hashIt function', function () {
+      var f = function (obj) {return obj.id};
+      var hashIt = function (args) {
+        return 'id:' + args[0].id;
+      };
+
+      var m = functionUtils.memoize(f, hashIt);
+
+      assert.strictEqual(m({id: 2}), 2);
+      assert.deepEqual(Object.keys(m.cache), ['id:2']);
+      assert.strictEqual(m.cache['id:2'], 2);
     });
 
     it('should really return the cached result', function () {
