@@ -56,6 +56,12 @@ describe('clone', function() {
     assert.equal(b.toString(), '5 mm');
   });
 
+  it('should clone a fraction', function() {
+    var a = math.fraction(2,3);
+    var b = math.clone(a);
+    assert.deepEqual(a, b);
+  });
+
   it('should clone an array', function() {
     var a = [1,2,[3,4]];
     var b = math.clone(a);
