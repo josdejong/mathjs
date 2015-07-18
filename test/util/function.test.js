@@ -1,5 +1,5 @@
 var assert = require('assert');
-var functionUtils = require('../../lib/util/function');
+var functionUtils = require('../../lib/utils/function');
 
 describe('util.function', function() {
 

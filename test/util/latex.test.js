@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    latex = require('../../lib/util/latex');
+    latex = require('../../lib/utils/latex');
 
 describe('util.latex', function() {
   it('should convert symbols with indices', function () {

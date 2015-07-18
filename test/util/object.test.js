@@ -1,7 +1,7 @@
 // test object utils
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    object = require('../../lib/util/object');
+    object = require('../../lib/utils/object');
 
 describe ('object', function () {
 

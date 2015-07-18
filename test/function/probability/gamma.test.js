@@ -2,7 +2,7 @@ var assert = require('assert'),
     approx = require('../../../tools/approx'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
-    bigUtil = require('../../../lib/util/index').bignumber,
+    bigUtil = require('../../../lib/utils/index').bignumber,
     bignumber = math.bignumber,
     gamma = math.gamma;
 

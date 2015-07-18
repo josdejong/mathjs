@@ -1,7 +1,7 @@
 // test types utils
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    types = require('../../lib/util/types');
+    types = require('../../lib/utils/types');
 
 describe ('types', function () {
 
