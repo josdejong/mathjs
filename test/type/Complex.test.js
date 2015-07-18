@@ -304,26 +304,6 @@ describe('Complex', function () {
     });
   });
 
-  describe('nthRoot', function() {
-    it('should get the nth root of a complex number in polar form', function() {
-      var root1 = (new Complex(-1,0).nthRoot(6));
-      var roots1 = [
-        {r: 1, phi: Math.PI/6},
-        {r: 1, phi: Math.PI/2},
-        {r: 1, phi: (5 * Math.PI)/6},
-        {r: 1, phi: (7 * Math.PI)/6},
-        {r: 1, phi: (9 * Math.PI)/6},
-        {r: 1, phi: (11 * Math.PI)/6}
-      ];
-
-      root.forEach(function (value, index, array) {
-        assert.equal(value.r, roots1[index].r);
-        assert.equal(value.phi, roots1[index].phi)
-      });
-
-    })
-  })
-
   it('toJSON', function () {
     assert.deepEqual(new Complex(2, 4).toJSON(), {'mathjs': 'Complex', re: 2, im: 4});
     assert.deepEqual(new Complex(3, 0).toJSON(), {'mathjs': 'Complex', re: 3, im: 0});

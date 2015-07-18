@@ -97,9 +97,21 @@ describe('nthRoot', function() {
     assert.deepEqual(nthRoot(big(Infinity), big(-3)), big(0));
   });
 
-  it('should throw an error when used on a complex value', function() {
-    assert.throws(function () {nthRoot(math.complex(2,3))});
-    assert.throws(function () {nthRoot(math.complex(2,3), 3)});
+  it('should return an array of n complex roots of complex value', function() {
+    var roots = (new Complex(-1,0).nthRoot(6));
+      var roots1 = [
+        {r: 1, phi: Math.PI/6},
+        {r: 1, phi: Math.PI/2},
+        {r: 1, phi: (5 * Math.PI)/6},
+        {r: 1, phi: (7 * Math.PI)/6},
+        {r: 1, phi: (9 * Math.PI)/6},
+        {r: 1, phi: (11 * Math.PI)/6}
+      ];
+
+      roots.forEach(function (value, index, array) {
+        assert.equal(value.r, roots1[index].r);
+        assert.equal(value.phi, roots1[index].phi)
+      });
   });
 
   it('should throw an error when used on a unit', function() {
