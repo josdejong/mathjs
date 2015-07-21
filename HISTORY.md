@@ -14,6 +14,7 @@
 - Implemented function `intersect`. Thanks @kv-kunalvyas.
 - Implemented support for adding `toTex` properties to custom functions.
   Thanks @FSMaxB.
+- Implemented support for complex values to `nthRoot`. Thanks @gangachris.
 - Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
   `isPositive`, and `isZero`.
 - Large internal refactoring, allowing to create custom bundles of math.js.
