@@ -1,11 +1,14 @@
-var assert = require('assert'),
-    approx = require('../../../../tools/approx'),
-    math = require('../../../../index'),
-    market = require('../../../../tools/matrixmarket');
+var assert = require('assert');
+var approx = require('../../../../tools/approx');
+var market = require('../../../../tools/matrixmarket');
+var math = require('../../../../index');
+math.import(require('../../../../lib/function/algebra/sparse/cs_permute'));
+math.import(require('../../../../lib/function/algebra/sparse/cs_lu'));
+math.import(require('../../../../lib/function/algebra/sparse/cs_sqr'));
 
-var cs_permute = math.import(require('../../../../lib/function/algebra/sparse/cs_permute'));
-var cs_lu = math.import(require('../../../../lib/function/algebra/sparse/cs_lu'));
-var cs_sqr = math.import(require('../../../../lib/function/algebra/sparse/cs_sqr'));
+var cs_permute = math.sparse.cs_permute;
+var cs_lu = math.sparse.cs_lu;
+var cs_sqr = math.sparse.cs_sqr;
 
 describe('cs_lu', function () {
 

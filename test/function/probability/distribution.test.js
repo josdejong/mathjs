@@ -3,8 +3,10 @@ var error = require('../../../lib/error/index');
 var seed = require('seed-random');
 var _ = require('underscore');
 var math = require('../../../index');
-var distribution = math.import(require('../../../lib/function/probability/distribution'));
+math.import(require('../../../lib/function/probability/distribution'));
+
 var Matrix = math.type.Matrix;
+var distribution = math.distribution;
 
 var assertApproxEqual = function(testVal, val, tolerance) {
   var diff = Math.abs(val - testVal);

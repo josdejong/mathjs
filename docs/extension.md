@@ -7,7 +7,7 @@ functions and variables.
 Function `import` has the following syntax:
 
 ```js
-    math.import(object: Object [, options: Object])
+math.import(object: Object [, options: Object])
 ```
 
 The first argument is object containing the functions and/or values to be

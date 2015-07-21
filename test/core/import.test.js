@@ -32,13 +32,13 @@ describe('import', function() {
   });
 
   it('should throw no errors when silent:true', function() {
-    assert.deepEqual(math.import({myvalue: 10}, {silent: true}), {myvalue: undefined});
-    assert.equal(math.myvalue, 42);
+    math.import({myvalue: 10}, {silent: true});
+    assert.strictEqual(math.myvalue, 42);
   });
 
   it('should override existing functions if forced', function() {
     math.import({myvalue: 10}, {override: true});
-    approx.equal(math.myvalue, 10);
+    assert.strictEqual(math.myvalue, 10);
   });
 
   it('should parse the user defined members', function() {
@@ -108,12 +108,15 @@ describe('import', function() {
   });
 
   it('should return the imported object', function () {
-    assert.deepEqual(math.import({a: 24}), {a: 24});
-    assert.deepEqual(math.import({pi: 24}, {silent: true}), {pi: undefined}); // pi was ignored
+    math.import({a: 24});
+    assert.deepEqual(math.a, 24);
+
+    math.import({pi: 24}, {silent: true});
+    approx.equal(math.pi, Math.PI); // pi was ignored
   });
 
   it('should import a boolean', function () {
-    assert.deepEqual(math.import({a: true}), {a: true});
+    math.import({a: true});
     assert.strictEqual(math.a, true);
   });
 
@@ -173,7 +176,7 @@ describe('import', function() {
   });
 
   it('should import a boolean', function () {
-    assert.deepEqual(math.import({a: true}), {a: true});
+    math.import({a: true});
     assert.strictEqual(math.a, true);
   });
 

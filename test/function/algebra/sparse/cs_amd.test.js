@@ -1,9 +1,10 @@
-var assert = require('assert'),
-    approx = require('../../../../tools/approx'),
-    math = require('../../../../index'),
-    market = require('../../../../tools/matrixmarket');
+var assert = require('assert');
+var approx = require('../../../../tools/approx');
+var market = require('../../../../tools/matrixmarket');
+var math = require('../../../../index');
+math.import(require('../../../../lib/function/algebra/sparse/cs_amd'));
 
-var cs_amd = math.import(require('../../../../lib/function/algebra/sparse/cs_amd'));
+var cs_amd = math.sparse.cs_amd;
 
 describe('cs_amd', function () {
 
