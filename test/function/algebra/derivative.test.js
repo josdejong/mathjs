@@ -110,7 +110,7 @@ describe('derivative', function() {
                                                            ]));
     // Quotient rule, d/dx((2x) / (3x + 2)) = ((2*1)(3x + 2) - (2x)(3*1 + 0)) / (3x + 2)^2 = 4 / (3x + 2)^2
     assert.deepEqual(math.eval('derivative((2x) / (3x + 2), x)'), new OperatorNode('/', 'divide', [
-                                                                    new OperatorNode('-', 'minus', [
+                                                                    new OperatorNode('-', 'subtract', [
                                                                       new OperatorNode('*', 'multiply', [
                                                                         new ParenthesisNode(
                                                                           new OperatorNode('*', 'multiply', [
@@ -212,6 +212,23 @@ describe('derivative', function() {
                                                            ])
                                                          ])
                                                        ]));
+    // Elementary Power Rule, d/dx(2x^-2) = 2*-2*1*x^(-2-1) = -4x^-3
+    assert.deepEqual(math.eval('derivative(2x^-2, x)'), new OperatorNode('*', 'multiply', [
+                                                          new ConstantNode(2),
+                                                          new OperatorNode('*', 'multiply', [
+                                                            new OperatorNode('-', 'unaryMinus', [new ConstantNode(2)]),
+                                                            new OperatorNode('*', 'multiply', [
+                                                              new ConstantNode(1),
+                                                              new OperatorNode('^', 'pow', [
+                                                                new SymbolNode('x'),
+                                                                new OperatorNode('-', 'subtract', [
+                                                                  new OperatorNode('-', 'unaryMinus', [new ConstantNode(2)]),
+                                                                  new ConstantNode(1)
+                                                                ])
+                                                              ])
+                                                            ])
+                                                          ])
+                                                        ]));
 
     // Functional Power Rule, d/dx((x^3 + x)^(5x + 2)) = (x^3 + x)^(5x + 2) * [(((3*1*x)^(3-1)+1) * ((5x + 2) / (x^3 + x))) + (5*1 + 0)log((x^3 + x))]
     //                                                 = (x^3 + x)^(5x + 2) * [((3x^2 + 1)*(5x + 2) / (x^3 + x)) + 5log(x^3 + x)]
@@ -322,19 +339,146 @@ describe('derivative', function() {
                                                                      ])
                                                                    ])
                                                                  ]));
+    // (6 * x) ^ (1 / (2 * x)) * (((6*1)*((1/(2x))/(6x))) + ((((0*2x)-(1*(2*1)))/(2x)^2)*log(6x)))
+    assert.deepEqual(math.eval('derivative(nthRoot(6x, 2x), x)'), new OperatorNode('*', 'multiply', [
+                                                                    new OperatorNode('^', 'pow', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(6),
+                                                                        new SymbolNode('x')
+                                                                      ]),
+                                                                      new OperatorNode('/', 'divide', [
+                                                                        new ConstantNode(1),
+                                                                        new OperatorNode('*', 'multiply', [
+                                                                          new ConstantNode(2),
+                                                                          new SymbolNode('x')
+                                                                        ])
+                                                                      ])
+                                                                    ]),
+                                                                    new OperatorNode('+', 'add', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new OperatorNode('*', 'multiply', [
+                                                                          new ConstantNode(6),
+                                                                          new ConstantNode(1)
+                                                                        ]),
+                                                                        new OperatorNode('/', 'divide', [
+                                                                          new OperatorNode('/', 'divide', [
+                                                                            new ConstantNode(1),
+                                                                            new OperatorNode('*', 'multiply', [
+                                                                              new ConstantNode(2),
+                                                                              new SymbolNode('x')
+                                                                            ])
+                                                                          ]),
+                                                                          new OperatorNode('*', 'multiply', [
+                                                                            new ConstantNode(6),
+                                                                            new SymbolNode('x')
+                                                                          ])
+                                                                        ])
+                                                                      ]),
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new OperatorNode('/', 'divide', [
+                                                                          new OperatorNode('-', 'subtract', [
+                                                                            new OperatorNode('*', 'multiply', [
+                                                                              new ConstantNode(0),
+                                                                              new OperatorNode('*', 'multiply', [
+                                                                                new ConstantNode(2),
+                                                                                new SymbolNode('x')
+                                                                              ])
+                                                                            ]),
+                                                                            new OperatorNode('*', 'multiply', [
+                                                                              new ConstantNode(1),
+                                                                              new OperatorNode('*', 'multiply', [
+                                                                                new ConstantNode(2),
+                                                                                new ConstantNode(1)
+                                                                              ])
+                                                                            ])
+                                                                          ]),
+                                                                          new OperatorNode('^', 'pow', [
+                                                                            new OperatorNode('*', 'multiply', [
+                                                                              new ConstantNode(2),
+                                                                              new SymbolNode('x')
+                                                                            ]),
+                                                                            new ConstantNode(2)
+                                                                          ])
+                                                                        ]),
+                                                                        new FunctionNode('log', [
+                                                                          new OperatorNode('*', 'multiply', [
+                                                                            new ConstantNode(6),
+                                                                            new SymbolNode('x')
+                                                                          ])
+                                                                        ])
+                                                                      ])
+                                                                    ])
+                                                                  ]));
     assert.deepEqual(math.eval('derivative(log((6x)), x)'), math.parse('(6*1)/(6*x)'));
-    assert.deepEqual(math.eval('derivative(log((6x), 10), x)'), new OperatorNode('/', 'divide', [
-                                                                  math.parse('(6*1)'),
-                                                                  math.parse('(6x)log(10)')
-                                                                ]));
     assert.deepEqual(math.eval('derivative(log10((6x)), x)'), new OperatorNode('/', 'divide', [
                                                                   math.parse('(6*1)'),
                                                                   math.parse('(6x)log(10)')
                                                                 ]));
+    assert.deepEqual(math.eval('derivative(log((6x), 10), x)'), new OperatorNode('/', 'divide', [
+                                                                  math.parse('(6*1)'),
+                                                                  math.parse('(6x)log(10)')
+                                                                ]));
+    // d/dx(log(2x, 3x)) = ((2 * 1) / (2 * x) * log(3 * x) - log(2 * x) * (3 * 1) / (3 * x)) / log(3 * x) ^ 2 = (log(3x) - log(2x)) / (xlog(3x)^2)
+    assert.deepEqual(math.eval('derivative(log(2x, 3x), x)'), new OperatorNode('/', 'divide', [
+                                                                new OperatorNode('-', 'subtract', [
+                                                                  new OperatorNode('*', 'multiply', [
+                                                                    new OperatorNode('/', 'divide', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new ConstantNode(1)
+                                                                      ]),
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new SymbolNode('x')
+                                                                      ])
+                                                                    ]),
+                                                                    new FunctionNode('log', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(3),
+                                                                        new SymbolNode('x')
+                                                                      ])
+                                                                    ])
+                                                                  ]),
+                                                                  new OperatorNode('*', 'multiply', [
+                                                                    new FunctionNode('log', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new SymbolNode('x')
+                                                                      ])
+                                                                    ]),
+                                                                    new OperatorNode('/', 'divide', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(3),
+                                                                        new ConstantNode(1)
+                                                                      ]),
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(3),
+                                                                        new SymbolNode('x')
+                                                                      ])
+                                                                    ])
+                                                                  ])
+                                                                ]),
+                                                                new OperatorNode('^', 'pow', [
+                                                                  new FunctionNode('log', [
+                                                                    new OperatorNode('*', 'multiply', [
+                                                                      new ConstantNode(3),
+                                                                      new SymbolNode('x')
+                                                                    ])
+                                                                  ]),
+                                                                  new ConstantNode(2)
+                                                                ])
+                                                              ]));
+
     assert.deepEqual(math.eval('derivative(sin(2x), x)'), math.parse('2*1*cos(2x)'));
     assert.deepEqual(math.eval('derivative(cos(2x), x)'), math.parse('2*1*-sin(2x)'));
     assert.deepEqual(math.eval('derivative(tan(2x), x)'), math.parse('2*1*sec(2x)^2'));
-    assert.deepEqual(math.eval('derivative(sec(2x), x)'), math.parse('2*1*sec(2x)*tan(2x)'));
+    assert.deepEqual(math.eval('derivative(sec(2x), x)'), new OperatorNode('*', 'multiply', [
+                                                            new OperatorNode('*', 'multiply', [
+                                                              new ConstantNode(2),
+                                                              new ConstantNode(1)
+                                                            ]),
+                                                            math.parse('sec(2x)*tan(2x)')
+                                                          ]));
     assert.deepEqual(math.eval('derivative(csc(2x), x)'), new OperatorNode('*', 'multiply', [
                                                             new OperatorNode('-', 'unaryMinus', [
                                                               new OperatorNode('*', 'multiply', [
