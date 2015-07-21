@@ -7,6 +7,7 @@ var sparse = math.sparse;
 var unit = math.unit;
 var nthRoot = math.nthRoot;
 var big = math.bignumber;
+var complex = math.complex;
 
 
 describe('nthRoot', function() {
@@ -96,9 +97,29 @@ describe('nthRoot', function() {
     assert.deepEqual(nthRoot(big(Infinity), big(-3)), big(0));
   });
 
-  it('should throw an error when used on a complex value', function() {
-    assert.throws(function () {nthRoot(math.complex(2,3));});
-    assert.throws(function () {nthRoot(math.complex(2,3), 3);});
+  it('should return an array of Complex Roots in Polar form', function() {
+    var roots = nthRoot(complex("-1"), 6);
+    var roots1 = [
+      {r: 1, phi: Math.PI/6},
+      {r: 1, phi: Math.PI/2},
+      {r: 1, phi: (5 * Math.PI)/6},
+      {r: 1, phi: (7 * Math.PI)/6},
+      {r: 1, phi: (9 * Math.PI)/6},
+      {r: 1, phi: (11 * Math.PI)/6}
+    ];
+
+    roots.forEach(function (value, index, array) {
+      assert.equal(value.r, roots1[index].r);
+      assert.equal(value.phi, roots1[index].phi);
+    });
+  });
+
+  it('should throw an error when used with a complex number and root is less than 0', function() {
+    assert.throws(function () {nthRoot(complex("-1"), -1);});
+  });
+
+  it('should throw an error when used with a complex number and root is not an integer', function() {
+    assert.throws(function() {nthRoot(complex("-1 + 2i"), 0.5);});
   });
 
   it('should throw an error when used on a unit', function() {
