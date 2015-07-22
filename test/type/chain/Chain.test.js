@@ -22,6 +22,8 @@ describe('Chain', function() {
   });
 
   it('should not contain constants, only functions', function() {
+    assert(typeof Chain.pi, 'undefined');
+
     var chain = new Chain(math.bignumber(3));
 
     assert(typeof chain.pi, 'undefined');
