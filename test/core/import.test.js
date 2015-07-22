@@ -180,6 +180,23 @@ describe('import', function() {
     assert.strictEqual(math.a, true);
   });
 
+  it('should import a function with transform', function() {
+    function foo (text) {
+      return text.toLowerCase();
+    }
+
+    foo.transform = function foo(text) {
+      return text.toUpperCase();
+    };
+
+    math.import({foo: foo});
+
+    assert(math.hasOwnProperty('foo'));
+    assert.strictEqual(math.foo, foo);
+    assert(math.expression.transform.hasOwnProperty('foo'));
+    assert.strictEqual(math.expression.transform.foo, foo.transform);
+  });
+
   it.skip('should import a factory with name', function () {
     // TODO: unit test importing a factory
   });
