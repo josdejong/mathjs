@@ -32,7 +32,7 @@ console.log('convert to another type or to a number');
 print(b.to('cm'));                    // 10 cm  Alternatively: math.to(b, 'cm')
 print(math.to(b, 'inch'));            // 3.937 inch
 print(b.toNumber('cm'));              // 10
-print(math.number(b, 'gram'));        // 10
+print(math.number(b, 'cm'));        // 10
 console.log();
 
 // the expression parser supports units too
@@ -44,3 +44,28 @@ console.log();
 // convert a unit to a number
 // A second parameter with the unit for the exported number must be provided
 print(math.eval('number(5 cm, mm)')); // number, 50
+console.log();
+
+// derived units
+console.log('multiply, divide, exponentiate units');
+print(math.multiply(a, b));				// 0.045 m^2
+print(math.divide(a, b));				// 4.5
+print(math.pow(a, 3));					// 91125 cm^3
+console.log();
+
+console.log('compute molar volume of ideal gas at STP in L/mol:');
+var Rg = math.unit('8.314 N m / mol K');
+var P = math.unit('14.7 lbf/in^2');
+var T = math.unit('25 celsius');
+var v = math.divide(math.multiply(Rg, T), P);
+console.log('gas constant (Rg) = ');
+print(Rg);
+console.log();
+console.log('P = ');
+print(P);
+console.log();
+console.log('T = ');
+print(T);
+console.log();
+console.log('v = Rg * T / P =');
+print(math.to(v, 'L/mol'));

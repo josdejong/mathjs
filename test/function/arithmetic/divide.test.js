@@ -123,6 +123,20 @@ describe('divide', function() {
     assert.equal(divide(math.unit('m'), 2).toString(), '500 mm');
   });
 
+  it('should divide a number by a unit', function() {
+    assert.equal(divide(20, math.unit('4 N s')).toString(), '5 s / kg m');
+  });
+
+  it('should divide two units', function() {
+    assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/min').toString(), '0.03125 gal / min');
+  });
+
+  it('should divide valueless units', function() {
+    assert.equal(divide(math.unit('gal'), math.unit('L')).format(4), '3.785');
+    assert.equal(divide(math.unit('4 gal'), math.unit('L')).format(5), '15.142');
+    assert.equal(divide(math.unit('gal'), math.unit('4 L')).format(3), '0.946');
+  });
+
   // TODO: divide units by a bignumber
   it('should divide units by a big number', function() {
     //assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm'); // TODO
@@ -160,6 +174,8 @@ describe('divide', function() {
     assert.throws(function () {divide(a, [[1]])});
   });
 
+  /*
+  // These are supported now --ericman314
   it('should throw an error if dividing a number by a unit', function() {
     assert.throws(function () {divide(10, math.unit('5 m')).toString()});
   });
@@ -167,6 +183,7 @@ describe('divide', function() {
   it('should throw an error if dividing a unit by a non-number', function() {
     assert.throws(function () {divide(math.unit('5 m'), math.unit('5cm')).toString()});
   });
+  */
 
   it('should throw an error if there\'s wrong number of arguments', function() {
     assert.throws(function () {divide(2,3,4); });
