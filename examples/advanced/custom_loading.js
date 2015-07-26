@@ -10,7 +10,7 @@ var math = core.create();
 //
 // To load all data types:
 //
-//     math.import(require('../lib/type'));
+//     math.import(require('../../lib/type'));
 //
 math.import(require('../../lib/type/fraction'));
 
@@ -18,11 +18,11 @@ math.import(require('../../lib/type/fraction'));
 //
 // To load all functions:
 //
-//     math.import(require('../lib/function'));
+//     math.import(require('../../lib/function'));
 //
 // To load all functions of a specific category:
 //
-//     math.import(require('../lib/function/arithmetic'));
+//     math.import(require('../../lib/function/arithmetic'));
 //
 math.import(require('../../lib/function/arithmetic/add'));
 math.import(require('../../lib/function/arithmetic/subtract'));

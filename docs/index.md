@@ -34,6 +34,7 @@ describing all available functions, constants, and units in detail.
 - [Configuration](configuration.md)
 - [Serialization](serialization.md)
 - [Extension](extension.md)
+- [Custom loading and bundling](custom_loading_and_bundling.md)
 - [Command Line Interface](command_line_interface.md)
 
 ## Examples

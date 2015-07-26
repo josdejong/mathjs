@@ -3,7 +3,9 @@
 When math.js is installed globally using npm, its expression parser can be used
 from the command line. To install math.js globally:
 
-    npm install -g mathjs
+```bash
+$ npm install -g mathjs
+```
 
 Normally, a global installation must be run with admin rights (precede the
 command with `sudo`). After installation, the application `mathjs` is available
@@ -51,6 +53,7 @@ $ mathjs --string
 ```
 
 To change the parenthesis option use the `--parenthesis=` flag:
+
 ```bash
 $ mathjs --string --parenthesis=auto
 > (1+1+1)
@@ -63,17 +66,17 @@ $ mathjs --string --parenthesis=all
 (1 + 1) + 1
 ```
 
-# Command line debugging
+# Command line debugging (REPL)
 
 For debugging purposes, `bin/repl.js` provides a REPL (Read Evaluate Print Loop)
 for interactive testing of mathjs without having to build new build files after every
-little change to the source files. You can either start it directly (`./repl.js`) or
-via node (`node repl.js`).
+little change to the source files. You can either start it directly (`./bin/repl.js`) or
+via node (`node bin/repl.js`).
 
 You can exit using either [ctrl]-[C] or [ctrl]-[D].
 
 ```bash
-$ ./repl.js 
+$ ./bin/repl.js 
 > math.parse('1+1')
 { op: '+',
   fn: 'add',
