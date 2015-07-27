@@ -1,8 +1,8 @@
-var math = require('../../index');
+var math = require('../../../index');
 
 // import the new type MyType and the function `add` in math.js
-math.import(require('./myFiles/MyType'));
-math.import(require('./myFiles/myAdd'));
+math.import(require('./MyType'));
+math.import(require('./myAdd'));
 
 // create a shortcut to the new type.
 var MyType = math.type.MyType;

@@ -1,4 +1,4 @@
-// Note: This file is loaded and used by example ../import_new_datatypes.js
+// Note: This file is used by the file ./index.js
 
 
 // factory function which defines a new data type MyType

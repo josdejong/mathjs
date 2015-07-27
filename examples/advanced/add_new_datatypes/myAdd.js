@@ -1,4 +1,5 @@
-// Note: This file is loaded and used by example ../import_new_datatypes.js
+// Note: This file is used by the file ./index.js
+
 
 function factory (type, config, load, typed) {
   // create a new typed function using MyType
