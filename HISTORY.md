@@ -3,9 +3,12 @@
 
 ## not yet released, version 2.0.0-SNAPSHOT
 
-- String input is now converted to numbers by default for all functions. 
-- Adding two strings will no longer concatenate them, but will convert the 
-  strings to numbers and add them.
+- Large internal refactoring:
+
+  - performance improvements.
+  - allows to create custom bundles
+  - functions are composed using `typed-function` and are extensible
+  
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
@@ -17,11 +20,17 @@
 - Implemented support for complex values to `nthRoot`. Thanks @gangachris.
 - Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
   `isPositive`, and `isZero`.
-- Large internal refactoring, allowing to create custom bundles of math.js.
+- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
+  for very small values.
+
+### breaking changes
+
+- String input is now converted to numbers by default for all functions. 
+- Adding two strings will no longer concatenate them, but will convert the 
+  strings to numbers and add them.
 - Function `typeof` no longer returns lower case names, but now returns lower
   case names for primitives (like `number`, `boolean`, `string`), and 
   upper-camel-case for non-primitives (like `Array`, `Complex`, `Function`).
-- Function `import` now returns the imported objects.
 - Function `import` no longer supports a module name as argument. Instead,
   modules can be loaded using require: `math.import(require('module-name'))`.
 - Function `import` has a new option `silent` to ignore errors, and throws
@@ -31,8 +40,6 @@
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 - The size of Arrays is no longer validated. Matrices will validate this on
   creation.
-- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
-  for very small values.
 
 
 ## 2015-05-31, version 1.7.0

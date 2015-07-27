@@ -67,7 +67,6 @@
 - [gcd(a, b)](gcd.md)
 - [help(search)](help.md)
 - [im(x)](im.md)
-- [index(range1, range2, ...)](index.md)
 - [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.md)
 - [inv(x)](inv.md)
 - [isInteger(x)](isInteger.md)
