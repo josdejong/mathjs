@@ -93,15 +93,15 @@ Powerful and easy to use.
 
   <!-- facebook -->
   <div class="like facebook">
-    <div id="fb-root" style="display: none;"></div>
+    <div id="fb-root"></div>
     <script>(function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=537047263003274";
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=537047263003274";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-    <div class="fb-like" data-href="http://mathjs.org" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="verdana"></div>
+    <div class="fb-like" data-href="http://mathjs.org/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
   </div>
 
   <!-- linkedin -->
