@@ -8,11 +8,9 @@ layout: default
 <h2 id="20150728-version-200">2015-07-28, version 2.0.0 <a href="#20150728-version-200" title="Permalink">#</a></h2>
 
 - Large internal refactoring:
-
   - performance improvements.
   - allows to create custom bundles
   - functions are composed using `typed-function` and are extensible
-  
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
