@@ -23,7 +23,7 @@ body {
   padding: 40px 50px;
   border: 1px solid lightgray;
   border-radius: 3px;
-  overflow: hidden;
+  /*overflow: hidden;*/
 
   box-shadow: 2px 2px 10px rgba(128, 128, 128, 0.2);
 }
