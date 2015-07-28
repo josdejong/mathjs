@@ -276,7 +276,7 @@ The default number type of the expression parser can be changed at instantiation
 of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
-// Configure the type of number: 'number' (default) or 'bignumber'
+// Configure the type of number: 'number' (default), 'bignumber', or 'fraction'
 math.config({number: 'bignumber'});
 
 // all numbers are parsed as BigNumber
@@ -368,18 +368,18 @@ converted to a string using function `string`.
 var parser = math.parser();
 
 // create a string
-parser.eval('"hello"');                 // String, "hello"
+parser.eval('"hello"');                       // String, "hello"
 
 // string manipulation
-parser.eval('a = "hello" + " world"');  // String, "hello world"
-parser.eval('size(a)');                 // Number, 11
-parser.eval('a[1:5]');                  // String, "hello"
-parser.eval('a[1] = "H"');              // String, "Hello"
-parser.eval('a[7:12] = "there!"');      // String, "Hello there!"
+parser.eval('a = concat("hello", " world")'); // String, "hello world"
+parser.eval('size(a)');                       // Number, 11
+parser.eval('a[1:5]');                        // String, "hello"
+parser.eval('a[1] = "H"');                    // String, "Hello"
+parser.eval('a[7:12] = "there!"');            // String, "Hello there!"
 
 // string conversion
-parser.eval('number("300")');           // Number, 300
-parser.eval('string(300)');             // String, "300"
+parser.eval('number("300")');                 // Number, 300
+parser.eval('string(300)');                   // String, "300"
 ```
 
 Strings can be used in the `eval` function, to parse expressions inside

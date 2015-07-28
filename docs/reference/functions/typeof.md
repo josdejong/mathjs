@@ -10,23 +10,25 @@ Function `typeof` recognizes the following types of objects:
 
 Object                 | Returns       | Example
 ---------------------- | ------------- | ------------------------------------------
-Array                  | `'array'`     | `math.typeof ([1, 2, 3])`
-boolean                | `'boolean'`   | `math.typeof (true)`
-Date                   | `'date'`      | `math.typeof (new Date())`
 null                   | `'null'`      | `math.typeof(null)`
 number                 | `'number'`    | `math.typeof(3.5)`
-Object                 | `'object'`    | `math.typeof ({a: 2, b: 3})`
-RegExp                 | `'regexp'`    | `math.typeof (/a regexp/)`
+boolean                | `'boolean'`   | `math.typeof (true)`
 string                 | `'string'`    | `math.typeof ('hello world')`
+Array                  | `'Array'`     | `math.typeof ([1, 2, 3])`
+Date                   | `'Date'`      | `math.typeof (new Date())`
+Function               | `'Function'`  | `math.typeof (function () {})`
+Object                 | `'Object'`    | `math.typeof ({a: 2, b: 3})`
+RegExp                 | `'RegExp'`    | `math.typeof (/a regexp/)`
 undefined              | `'undefined'` | `math.typeof(undefined)`
-math.chaining.Chain    | `'chain'`     | `math.typeof (math.chain(2))`
-math.type.BigNumber    | `'bignumber'` | `math.typeof (math.bignumber('2.3e500'))`
-math.type.Complex      | `'complex'`   | `math.typeof (math.complex(2, 3))`
-math.type.Help         | `'help'`      | `math.typeof (math.help('sqrt'))`
-math.type.Index        | `'index'`     | `math.typeof (math.index(1, 3))`
-math.type.Matrix       | `'matrix'`    | `math.typeof (math.matrix([[1,2], [3, 4]]))`
-math.type.Range        | `'range'`     | `math.typeof (math.range(0, 10))`
-math.type.Unit         | `'unit'`      | `math.typeof (math.unit('45 deg'))`
+math.type.BigNumber    | `'BigNumber'` | `math.typeof (math.bignumber('2.3e500'))`
+math.type.Chain        | `'Chain'`     | `math.typeof (math.chain(2))`
+math.type.Complex      | `'Complex'`   | `math.typeof (math.complex(2, 3))`
+math.type.Fraction     | `'Fraction'`  | `math.typeof (math.fraction(1, 3))`
+math.type.Help         | `'Help'`      | `math.typeof (math.help('sqrt'))`
+math.type.Index        | `'Index'`     | `math.typeof (math.index(1, 3))`
+math.type.Matrix       | `'Matrix'`    | `math.typeof (math.matrix([[1,2], [3, 4]]))`
+math.type.Range        | `'Range'`     | `math.typeof (math.range(0, 10))`
+math.type.Unit         | `'Unit'`      | `math.typeof (math.unit('45 deg'))`
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -45,15 +47,15 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-String | Lower case type, for example 'number', 'string', 'array'.
+string | Returns the name of the type. Primitive types are lower case, non-primitive types are upper-camel-case. For example 'number', 'string', 'Array', 'Date'.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
 math.typeof(3.5);                     // returns 'number'
-math.typeof(math.complex('2 - 4i'));  // returns 'complex'
-math.typeof(math.unit('45 deg'));     // returns 'unit'
+math.typeof(math.complex('2 - 4i'));  // returns 'Complex'
+math.typeof(math.unit('45 deg'));     // returns 'Unit'
 math.typeof('hello world');           // returns 'string'
 ```
 

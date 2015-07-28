@@ -20,19 +20,19 @@ math.cosh(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cosine of x
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cosine of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.cosh(0.5);       // returns Number 1.1276259652063807
+math.cosh(0.5);       // returns number 1.1276259652063807
 ```
 
 

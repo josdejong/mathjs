@@ -19,20 +19,20 @@ math.leftShift(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Value to be shifted
-`y` | Number &#124; BigNumber &#124; Boolean &#124; null | Amount of shifts
+`x` | number &#124; BigNumber &#124; Array &#124; Matrix | Value to be shifted
+`y` | number &#124; BigNumber | Amount of shifts
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | `x` shifted left `y` times
+number &#124; BigNumber &#124; Array &#124; Matrix | `x` shifted left `y` times
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.leftShift(1, 2);               // returns Number 4
+math.leftShift(1, 2);               // returns number 4
 
 math.leftShift([1, 2, 3], 4);       // returns Array [16, 32, 64]
 ```
@@ -40,7 +40,7 @@ math.leftShift([1, 2, 3], 4);       // returns Array [16, 32, 64]
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[bitAnd](bitAnd.html),
+[leftShift](leftShift.html),
 [bitNot](bitNot.html),
 [bitOr](bitOr.html),
 [bitXor](bitXor.html),

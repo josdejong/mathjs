@@ -235,15 +235,14 @@ the static function `subset(matrix, index [, replacement])` can be used.
 When parameter `replacement` is provided, the function will replace a subset
 in the matrix, and if not, a subset of the matrix will be returned.
 
-A subset can be defined using an `Index`. An `Index` contains a range (start,
-end, step) or a single value for each dimension of a matrix. An `Index` can be
+A subset can be defined using an `Index`. An `Index` contains a single value
+or a set of values for each dimension of a matrix. An `Index` can be
 created using the function `index`.
 Matrix indexes in math.js are zero-based, like most programming languages
-including JavaScript itself. The lower-bound of a range is included, the
-upper-bound is excluded.
+including JavaScript itself.
 
 Note that mathematical applications like Matlab and Octave work differently,
-as they use one-based indexes and include the upper-bound of a range.
+as they use one-based indexes.
 
 ```js
 // create some matrices
@@ -255,22 +254,23 @@ var e = math.matrix();
 
 // get a subset
 math.subset(a, math.index(1));                // 1
-math.subset(a, math.index([2, 4]));           // Array, [2, 3]
+math.subset(a, math.index([2, 3]));           // Array, [2, 3]
+math.subset(a, math.index(math.range(0,4)));  // Array, [0, 1, 2, 3]
 math.subset(b, math.index(1, 0));             // 2
-math.subset(b, math.index(1, [0, 2]));        // Array, [2, 3]
-math.subset(b, math.index([0, 2], 0));        // Matrix, [[0], [2]]
+math.subset(b, math.index(1, [0, 1]));        // Array, [2, 3]
+math.subset(b, math.index([0, 1], 0));        // Matrix, [[0], [2]]
 
 // get a subset
-d.subset(math.index([1, 3], [0, 2]));         // Matrix, [[3, 4], [6, 7]]
+d.subset(math.index([1, 2], [0, 1]));         // Matrix, [[3, 4], [6, 7]]
 d.subset(math.index(1, 2));                   // 5
 
 // replace a subset. The subset will be applied to a clone of the matrix
 math.subset(b, math.index(1, 0), 9);          // Array, [[0, 1], [9, 3]]
-math.subset(b, math.index(2, [0, 2]), [4, 5]);// Array, [[0, 1], [2, 3], [4, 5]]
+math.subset(b, math.index(2, [0, 1]), [4, 5]);// Array, [[0, 1], [2, 3], [4, 5]]
 
 // replace a subset. The subset will be applied to the matrix itself
 c.subset(math.index(0, 1),1);                 // Matrix, [[0, 1], [0, 0]]
-c.subset(math.index(1, [0, 2]), [2, 3]);      // Matrix, [[0, 1], [2, 3]]
+c.subset(math.index(1, [0, 1]), [2, 3]);      // Matrix, [[0, 1], [2, 3]]
 e.resize([2, 3], 0);                          // Matrix, [[0, 0, 0], [0, 0, 0]]
 e.subset(math.index(1, 2), 5);                // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
@@ -318,16 +318,15 @@ console.log(cum.toString()); // [[0, 1], [3, 6], [10, 15]]
 
 Math.js supports both dense matrices as well as sparse matrices. Sparse matrices are efficient for matrices largely containing zeros. In that case they save a lot of memory, and calculations can be much faster than for dense matrices.
 
-Math.js supports three type of matrices:
+Math.js supports two type of matrices:
 
 - Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
-- Compressed row storage (`'crs'`): A two dimensional sparse matrix implementation.
-- Compressed column storage (`'ccs'`): A two dimensional sparse matrix implementation.
+- Sparse matrix (`'sparse'`): A two dimensional sparse matrix implementation.
 
 The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `eye`, `ones`, and `zeros`.
 
 ```js
 // create sparse matrices
-var m1 = math.matrix([[0, 1], [0, 0]], 'crs');
-var m2 = math.eye(1000, 1000, 'ccs');
+var m1 = math.matrix([[0, 1], [0, 0]], 'sparse');
+var m2 = math.eye(1000, 1000, 'sparse');
 ```

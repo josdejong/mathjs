@@ -10,15 +10,6 @@
 // load math.js
 var math = require('../index');
 
-/**
- * Helper function to output a value in the console. Value will be formatted.
- * @param {*} value
- */
-function print (value) {
-  var precision = 14;
-  console.log(math.format(value, precision));
-}
-
 // 1. using the function math.eval
 //
 // Function `eval` accepts a single expression or an array with
@@ -86,16 +77,14 @@ console.log('\nparse an expression into a node tree');
 var node1 = math.parse('sqrt(3^2 + 4^2)');
 print(node1.toString());                    // "sqrt((3 ^ 2) + (4 ^ 2))"
 
-// compile the node
-var code1 = node1.compile(math);
-
-// evaluate the compiled code
-print(code1.eval());                        // 5
+// compile and evaluate the compiled code
+// you could also do this in two steps: node1.compile().eval()
+print(node1.eval());                        // 5
 
 // provide a scope
 console.log('\nprovide a scope');
 var node2 = math.parse('x^a');
-var code2 = node2.compile(math);
+var code2 = node2.compile();
 print(node2.toString());                    // "x ^ a"
 var scope = {
   x: 3,
@@ -190,3 +179,13 @@ print(parser.eval('hello("hero")'));            // "hello, hero!"
 
 // clear defined functions and variables
 parser.clear();
+
+
+/**
+ * Helper function to output a value in the console. Value will be formatted.
+ * @param {*} value
+ */
+function print (value) {
+  var precision = 14;
+  console.log(math.format(value, precision));
+}

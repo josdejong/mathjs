@@ -23,7 +23,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Number | The determinant of `x`
+number | The determinant of `x`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

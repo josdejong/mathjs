@@ -20,7 +20,7 @@ math.eval([expr1, expr2, expr3, ...], scope)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`expr` | String &#124; String[] &#124; Matrix | The expression to be evaluated
+`expr` | string &#124; string[] &#124; Matrix | The expression to be evaluated
 `scope` | Object | Scope to read/write variables
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>

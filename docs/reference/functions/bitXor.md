@@ -18,20 +18,20 @@ math.bitXor(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | First value to xor
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Second value to xor
+`x` | number &#124; BigNumber &#124; Array &#124; Matrix | First value to xor
+`y` | number &#124; BigNumber &#124; Array &#124; Matrix | Second value to xor
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | XOR of `x` and `y`
+number &#124; BigNumber &#124; Array &#124; Matrix | XOR of `x` and `y`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.bitXor(1, 2);               // returns Number 3
+math.bitXor(1, 2);               // returns number 3
 
 math.bitXor([2, 3, 4], 4);       // returns Array [6, 7, 0]
 ```

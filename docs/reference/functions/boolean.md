@@ -21,13 +21,13 @@ math.boolean(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; null | A value of any type
+`value` | string &#124; number &#124; boolean &#124; Array &#124; Matrix &#124; null | A value of any type
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Boolean &#124; Array &#124; Matrix | The boolean value
+boolean &#124; Array &#124; Matrix | The boolean value
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

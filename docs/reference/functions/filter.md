@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-filter">Function filter <a href="#function-filter" title="Permalink">#</a></h1>
 
-Sort the items in a matrix.
+Filter the items in an array or one dimensional matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>

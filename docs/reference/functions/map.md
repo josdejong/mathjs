@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-map">Function map <a href="#function-map" title="Permalink">#</a></h1>
 
-Create a math.matrix or array with the results of the callback function executed on
+Create a new matrix or array with the results of the callback function executed on
 each entry of the matrix/array.
 
 

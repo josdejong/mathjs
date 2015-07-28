@@ -24,7 +24,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-String &#124; Array &#124; Matrix | The created string
+string &#124; Array &#124; Matrix | The created string
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

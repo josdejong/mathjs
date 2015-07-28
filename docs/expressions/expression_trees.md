@@ -47,17 +47,25 @@ All nodes have the following methods:
 
     Recursively clone an expression tree.
 
--   `compile(namespace: Object) : Object`
+-   `compile() : Object`
 
-    Compile an expression into optimized JavaScript code.
-    The expression is compiled against a namespace, typically `math`, needed to
-    bind internally used functions. `compile` returns an object with a function
-    `eval([scope])` to evaluate. Example:
+    Compile an expression into optimized JavaScript code. `compile` returns an 
+    object with a function `eval([scope])` to evaluate. Example:
     
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var code = node.compile(math);  // returns {eval: function (scope) {...}}
+    var code = node.compile();      // returns {eval: function (scope) {...}}
     var eval = code.eval({x: 3};    // returns 5
+    ```
+
+-   `eval([scope]) : Object`
+
+    Compile and eval an expression, this is the equivalent of doing 
+    `node.compile().eval(scope)`. Example:
+    
+    ```js
+    var node = math.parse('2 + x'); // returns the root Node of an expression tree
+    var eval = node.eval({x: 3};    // returns 5
     ```
 
 -   `filter(callback: function) : Array.<Node>`
@@ -73,7 +81,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + x/4 + 3*y');
     var filtered = node.filter(function (node) {
-      return node.type == 'SymbolNode' && node.name == 'x';
+      return node.isSymbolNode && node.name == 'x';
     });
     // returns an array with two entries: two SymbolNodes 'x'
     ```
@@ -113,7 +121,7 @@ All nodes have the following methods:
     
     See also `transform`, which is a recursive version of `map`.
 
--   `toString() : string`
+-   `toString(options: object) : string`
 
     Get a string representation of the parsed expression. This is not exactly
     the same as the original input. Example:
@@ -123,7 +131,9 @@ All nodes have the following methods:
     node.toString();  // returns '3 + (4 * 2)'
     ```
 
--   `toTex(): string`
+    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
+
+-   `toTex(options: object): string`
 
     Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
     expression. Example:
@@ -132,6 +142,8 @@ All nodes have the following methods:
     var node = math.parse('sqrt(2/3)');
     node.toTex(); // returns '\sqrt{\frac{2}{3}}'
     ```
+
+    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
 
 -   `transform(callback: function)`
 
@@ -144,12 +156,12 @@ All nodes have the following methods:
     a relative JSON Path.
 
     For example, to replace all nodes of type `SymbolNode` having name 'x' with a
-    ConstantNode with value 2:
+    ConstantNode with value `3`:
 
     ```js
     var node = math.parse('x^2 + 5*x');
     var transformed = node.transform(function (node, path, parent) {
-      if (node.type == 'SymbolNode' && node.name == 'x') {
+      if (node.SymbolNode && node.name == 'x') {
         return new math.expression.node.ConstantNode(3);
       }
       else {
@@ -189,21 +201,19 @@ All nodes have the following methods:
     ```
 
 
-<h3 id="static-methods">Static methods <a href="#static-methods" title="Permalink">#</a></h3>
-
--   `Node.isNode(object) : boolean`
-
-    Test whether an object is a `Node`. Returns `true` when `object` is an
-    instance of `Node`, else returns `false`.
-
-
 <h3 id="properties">Properties <a href="#properties" title="Permalink">#</a></h3>
 
 Each `Node` has the following properties:
 
+-   `isNode: true`
+
+    Is defined with value `true` on Nodes. Additionally, each type of node 
+    adds it's own flag, for example a `SymbolNode` as has a property 
+    `isSymbolNode: true`. 
+
 -   `type: string`
 
-    The type of the node, for example `'SymbolNode'`.
+    The type of the node, for example `'SymbolNode'` in case of a `SymbolNode`.
 
 
 <h2 id="nodes">Nodes <a href="#nodes" title="Permalink">#</a></h2>
@@ -448,6 +458,27 @@ var node1 = math.parse('2.3 + 5');
 var a     = new math.expression.node.ConstantNode(2.3);
 var b     = new math.expression.node.ConstantNode(5);
 var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
+```
+
+<h3 id="parenthesisnode">ParenthesisNode <a href="#parenthesisnode" title="Permalink">#</a></h3>
+
+Construction:
+
+```
+new ParenthesisNode(content: Node)
+```
+
+Properties:
+
+- `content: Node`
+
+Examples:
+
+```js
+var node1 = math.parse('(1)');
+
+var a     = new math.expression.node.ConstantNode(1);
+var node2 = new math.expression.node.ParenthesisNode(a);
 ```
 
 <h3 id="rangenode">RangeNode <a href="#rangenode" title="Permalink">#</a></h3>

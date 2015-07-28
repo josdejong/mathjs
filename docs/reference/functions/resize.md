@@ -18,9 +18,9 @@ math.resize(x, size, defaultValue)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | * &#124; Array &#124; Matrix | Matrix to be resized
+`x` | Array &#124; Matrix &#124; * | Matrix to be resized
 `size` | Array &#124; Matrix | One dimensional array with numbers
-`defaultValue` | Number &#124; String | Zero by default, except in case of a string, in that case defaultValue = ' ' Default value: 0.
+`defaultValue` | number &#124; string | Zero by default, except in case of a string, in that case defaultValue = ' ' Default value: 0.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -35,7 +35,7 @@ Type | Description
 math.resize([1, 2, 3, 4, 5], [3]); // returns Array  [1, 2, 3]
 math.resize([1, 2, 3], [5], 0);    // returns Array  [1, 2, 3, 0, 0]
 math.resize(2, [2, 3], 0);         // returns Matrix [[2, 0, 0], [0, 0, 0]]
-math.resize("hello", [8], "!");    // returns String 'hello!!!'
+math.resize("hello", [8], "!");    // returns string 'hello!!!'
 ```
 
 

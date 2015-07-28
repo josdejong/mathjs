@@ -23,14 +23,14 @@ math.compare(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null | First value to compare
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null | Second value to compare
+`x` | number &#124; BigNumber &#124; Fraction &#124; Unit &#124; string &#124; Array &#124; Matrix | First value to compare
+`y` | number &#124; BigNumber &#124; Fraction &#124; Unit &#124; string &#124; Array &#124; Matrix | Second value to compare
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | Returns the result of the comparison: 1, 0 or -1.
+number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the result of the comparison: 1, 0 or -1.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

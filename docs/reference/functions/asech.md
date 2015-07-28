@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-asech">Function asech <a href="#function-asech" title="Permalink">#</a></h1>
 
-Calculate the hyperbolic arccos of a value,
+Calculate the hyperbolic arcsecant of a value,
 defined as `asech(x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
 
 For matrices, the function is evaluated element wise.
@@ -20,13 +20,13 @@ math.asech(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Array &#124; Matrix | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arcsecant of x
+number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arcsecant of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

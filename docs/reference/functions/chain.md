@@ -36,7 +36,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-math.chaining.Chain | The created chain
+math.type.Chain | The created chain
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

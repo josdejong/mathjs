@@ -18,20 +18,20 @@ math.bitAnd(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | First value to and
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Second value to and
+`x` | number &#124; BigNumber &#124; Array &#124; Matrix | First value to and
+`y` | number &#124; BigNumber &#124; Array &#124; Matrix | Second value to and
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | AND of `x` and `y`
+number &#124; BigNumber &#124; Array &#124; Matrix | AND of `x` and `y`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.bitAnd(53, 131);               // returns Number 1
+math.bitAnd(53, 131);               // returns number 1
 
 math.bitAnd([1, 12, 31], 42);       // returns Array [0, 8, 10]
 ```

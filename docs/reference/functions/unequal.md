@@ -28,14 +28,14 @@ math.unequal(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | First value to compare
-`y` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix &#124; null &#124; undefined | Second value to compare
+`x` | number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix &#124; undefined | First value to compare
+`y` | number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix &#124; undefined | Second value to compare
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Boolean &#124; Array &#124; Matrix | Returns true when the compared values are unequal, else returns false
+boolean &#124; Array &#124; Matrix | Returns true when the compared values are unequal, else returns false
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

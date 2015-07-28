@@ -14,6 +14,7 @@ parameter. The parameter `normalization` can be one of the following values:
 - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
 - 'uncorrected'        The sum of squared errors is divided by n
 - 'biased'             The sum of squared errors is divided by (n + 1)
+
 Note that older browser may not like the variable name `var`. In that
 case, the function can be called as `math['var'](...)` instead of
 `math.var(...)`.
@@ -32,7 +33,7 @@ math.var(A, normalization)
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
-`normalization` | String |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
+`normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

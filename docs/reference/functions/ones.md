@@ -25,14 +25,14 @@ math.ones([m, n, p, ...], format)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | ...Number &#124; Array | The size of each dimension of the matrix
+`size` | ...number &#124; Array | The size of each dimension of the matrix
 `format` | string | The Matrix storage format
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Array &#124; Matrix &#124; Number | A matrix filled with ones
+Array &#124; Matrix &#124; number | A matrix filled with ones
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
@@ -43,7 +43,7 @@ math.ones(3, 2);                // returns [[1, 1], [1, 1], [1, 1]]
 math.ones(3, 2, 'dense');       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
 
 var A = [[1, 2, 3], [4, 5, 6]];
-math.zeros(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
+math.ones(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
 ```
 
 

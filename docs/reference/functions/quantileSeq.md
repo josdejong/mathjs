@@ -7,7 +7,7 @@ layout: default
 Compute the prob order quantile of a matrix or a list with values.
 The sequence is sorted and the middle value is returned.
 Supported types of sequence values are: Number, BigNumber, Unit
-Supported types of probablity are: Number, BigNumber
+Supported types of probability are: Number, BigNumber
 
 In case of a (multi dimensional) array or matrix, the prob order quantile
 of all elements will be calculated.
@@ -27,7 +27,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `data` | Array, Matrix | A single matrix or Array
 `probOrN` | Number, BigNumber, Array | prob is the order of the quantile, while N is the amount of evenly distributed steps of probabilities; only one of these options can be provided
-`sorted` | Boolean | =False              is data sorted in ascending order
+`sorted` | Boolean | =false              is data sorted in ascending order
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

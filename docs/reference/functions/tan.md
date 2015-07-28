@@ -19,22 +19,22 @@ math.tan(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Tangent of x
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Tangent of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.tan(0.5);                    // returns Number 0.5463024898437905
-math.sin(0.5) / math.cos(0.5);    // returns Number 0.5463024898437905
-math.tan(math.pi / 4);            // returns Number 1
-math.tan(math.unit(45, 'deg'));   // returns Number 1
+math.tan(0.5);                    // returns number 0.5463024898437905
+math.sin(0.5) / math.cos(0.5);    // returns number 0.5463024898437905
+math.tan(math.pi / 4);            // returns number 1
+math.tan(math.unit(45, 'deg'));   // returns number 1
 ```
 
 

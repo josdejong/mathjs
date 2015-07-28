@@ -24,7 +24,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Number | The trace of `x`
+number | The trace of `x`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

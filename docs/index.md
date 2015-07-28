@@ -31,14 +31,15 @@ describing all available functions, constants, and units in detail.
 - [Data Types](datatypes/index.html)
   - [Numbers](datatypes/numbers.html)
   - [BigNumbers](datatypes/bignumbers.html)
+  - [Fractions](datatypes/fractions.html)
   - [Complex Numbers](datatypes/complex_numbers.html)
   - [Matrices](datatypes/matrices.html)
   - [Units](datatypes/units.html)
 - [Configuration](configuration.html)
 - [Serialization](serialization.html)
 - [Extension](extension.html)
+- [Custom loading and bundling](custom_loading_and_bundling.html)
 - [Command Line Interface](command_line_interface.html)
-- [Command Line Debugging](command_line_debugging.html)
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 

@@ -22,7 +22,7 @@ math.format(value, fn)
    The value to be formatted
  - `options: Object`
    An object with formatting options. Available options:
-   - `notation: String`
+   - `notation: string`
      Number notation. Choose from:
      - 'fixed'
        Always use regular number notation.
@@ -35,17 +35,20 @@ math.format(value, fn)
        `lower` and `upper` bounds, and uses exponential notation elsewhere.
        Lower bound is included, upper bound is excluded.
        For example '123.4' and '1.4e7'.
-   - `precision: Number`
+   - `precision: number`
      A number between 0 and 16 to round the digits of the number. In case
      of notations 'exponential' and 'auto', `precision` defines the total
      number of significant digits returned and is undefined by default.
      In case of notation 'fixed', `precision` defines the number of
      significant digits after the decimal point, and is 0 by default.
    - `exponential: Object`
-     An object containing two parameters, {Number} lower and {Number} upper,
+     An object containing two parameters, {number} lower and {number} upper,
      used by notation 'auto' to determine when to return exponential
      notation. Default values are `lower=1e-3` and `upper=1e5`. Only
      applicable for notation `auto`.
+   - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
+     For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is
+     configured, and will output `0.(3)` when 'decimal' is configured.
 - `fn: Function`
   A custom formatting function. Can be used to override the built-in notations.
   Function `fn` is called with `value` as parameter and must return a string.
@@ -56,13 +59,13 @@ math.format(value, fn)
 Parameter | Type | Description
 --------- | ---- | -----------
 `value` | * | Value to be stringified
-`options` | Object &#124; Function &#124; Number | Formatting options
+`options` | Object &#124; Function &#124; number | Formatting options
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-String | The formatted value
+string | The formatted value
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

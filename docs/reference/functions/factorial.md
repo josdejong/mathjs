@@ -20,13 +20,13 @@ math.factorial(n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber &#124; Array &#124; Matrix &#124; Boolean &#124; null | An integer number
+`n` | number &#124; BigNumber &#124; Array &#124; Matrix | An integer number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | The factorial of `n`
+number &#124; BigNumber &#124; Array &#124; Matrix | The factorial of `n`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

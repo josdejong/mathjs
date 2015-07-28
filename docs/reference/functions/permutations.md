@@ -22,14 +22,14 @@ math.permutations(n, k)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`n` | Number &#124; BigNumber | The number of objects in total
-`k` | Number &#124; BigNumber | The number of objects in the subset
+`n` | number &#124; BigNumber | The number of objects in total
+`k` | number &#124; BigNumber | The number of objects in the subset
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber | The number of permutations
+number &#124; BigNumber | The number of permutations
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

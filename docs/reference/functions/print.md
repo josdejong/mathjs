@@ -18,15 +18,15 @@ math.print(template, values, precision)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`template` | String | A string containing variable placeholders.
+`template` | string | A string containing variable placeholders.
 `values` | Object | An object containing variables which will be filled in in the template.
-`precision` | Number | Number of digits to format numbers. If not provided, the value will not be rounded.
+`precision` | number | Number of digits to format numbers. If not provided, the value will not be rounded.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-String | Interpolated string
+string | Interpolated string
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

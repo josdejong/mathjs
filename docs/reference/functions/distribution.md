@@ -18,7 +18,7 @@ math.distribution(name)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`name` | String | Name of a distribution. Choose from 'uniform', 'normal'.
+`name` | string | Name of a distribution. Choose from 'uniform', 'normal'.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
@@ -31,7 +31,7 @@ Object | Returns a distribution object containing functions: `random([size] [, m
 
 ```js
 var normalDist = math.distribution('normal'); // create a normal distribution
-normalDist.random(0, 10);                      // get a random value between 0 and 10
+normalDist.random(0, 10);                     // get a random value between 0 and 10
 ```
 
 

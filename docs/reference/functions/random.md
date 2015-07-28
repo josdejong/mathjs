@@ -24,14 +24,14 @@ math.random(size, min, max)  // generate a matrix with random numbers between mi
 Parameter | Type | Description
 --------- | ---- | -----------
 `size` | Array &#124; Matrix | If provided, an array or matrix with given size and filled with random values is returned
-`min` | Number | Minimum boundary for the random value, included
-`max` | Number | Maximum boundary for the random value, excluded
+`min` | number | Minimum boundary for the random value, included
+`max` | number | Maximum boundary for the random value, excluded
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; Array &#124; Matrix | A random number
+number &#124; Array &#124; Matrix | A random number
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

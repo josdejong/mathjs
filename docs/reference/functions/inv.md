@@ -17,13 +17,13 @@ math.inv(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Complex &#124; Array &#124; Matrix | Matrix to be inversed
+`x` | number &#124; Complex &#124; Array &#124; Matrix | Matrix to be inversed
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | The inverse of `x`.
+number &#124; Complex &#124; Array &#124; Matrix | The inverse of `x`.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

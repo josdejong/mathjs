@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="function-reference-categorical">Function reference (categorical) <a href="#function-reference-categorical" title="Permalink">#</a></h1>
 
+<h2 id="algebra">algebra <a href="#algebra" title="Permalink">#</a></h2>
+
+- [lsolve(L, b)](lsolve.html)
+- [lup(A)](lup.html)
+- [lusolve(A, b)](lusolve.html)
+- [slu(A, order, threshold)](slu.html)
+- [usolve(U, b)](usolve.html)
+
 <h2 id="arithmetic">arithmetic <a href="#arithmetic" title="Permalink">#</a></h2>
 
 - [abs(x)](abs.html)
@@ -24,7 +32,7 @@ layout: default
 - [mod(x, y)](mod.html)
 - [multiply(x, y)](multiply.html)
 - [norm(x [, p])](norm.html)
-- [nthRoot(a, root)](nthRoot.html)
+- [nthRoot(a)](nthRoot.html)
 - [pow(x, y)](pow.html)
 - [round(x [, n])](round.html)
 - [sign(x)](sign.html)
@@ -64,10 +72,9 @@ layout: default
 - [boolean(x)](boolean.html)
 - [chain(value)](chain.html)
 - [complex(re, im)](complex.html)
-- [index(range1, range2, ...)](index.html)
+- [fraction(numerator, denominator)](fraction.html)
 - [matrix(x)](matrix.html)
 - [number(value)](number.html)
-- [parser()](parser.html)
 - [string(value)](string.html)
 - [unit(x)](unit.html)
 
@@ -77,6 +84,11 @@ layout: default
 - [eval(expr [, scope])](eval.html)
 - [help(search)](help.html)
 - [parse(expr [, scope])](parse.html)
+- [parser()](parser.html)
+
+<h2 id="geometry">geometry <a href="#geometry" title="Permalink">#</a></h2>
+
+- [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.html)
 
 <h2 id="logical">logical <a href="#logical" title="Permalink">#</a></h2>
 
@@ -112,7 +124,7 @@ layout: default
 - [factorial(n)](factorial.html)
 - [gamma(n)](gamma.html)
 - [multinomial(a)](multinomial.html)
-- [permutations(n)](permutations.html)
+- [permutations(n [, k])](permutations.html)
 - [pickRandom(array)](pickRandom.html)
 - [random([min, max])](random.html)
 - [randomInt([min, max])](randomInt.html)
@@ -178,7 +190,11 @@ layout: default
 - [filter(x, test)](filter.html)
 - [forEach(x, callback)](forEach.html)
 - [format(value [, precision])](format.html)
-- [import(filename | object, override)](import.html)
+- [isInteger(x)](isInteger.html)
+- [isNegative(x)](isNegative.html)
+- [isNumeric(x)](isNumeric.html)
+- [isPositive(x)](isPositive.html)
+- [isZero(x)](isZero.html)
 - [map(x, callback)](map.html)
 - [partitionSelect(x, k)](partitionSelect.html)
 - [print(template, values [, precision])](print.html)

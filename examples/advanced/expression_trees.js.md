@@ -7,13 +7,13 @@ layout: default
 File: [expression_trees.js](expression_trees.js)
 
 ```js
-var math = require('../index');
+var math = require('../../index');
 
 // Filter an expression tree
 console.log('Filter all symbol nodes "x" in the expression "x^2 + x/4 + 3*y"');
 var node = math.parse('x^2 + x/4 + 3*y');
 var filtered = node.filter(function (node) {
-  return node.type == 'SymbolNode' && node.name == 'x';
+  return node.isSymbolNode && node.name == 'x';
 });
 // returns an array with two entries: two SymbolNodes 'x'
 
@@ -50,7 +50,7 @@ console.log();
 console.log('Replace all symbol nodes "x" in expression "x^2 + 5*x" with a constant 3');
 var node2 = math.parse('x^2 + 5*x');
 var transformed = node2.transform(function (node, path, parent) {
-  if (node.type == 'SymbolNode' && node.name == 'x') {
+  if (node.isSymbolNode && node.name == 'x') {
     return new math.expression.node.ConstantNode(3);
   }
   else {

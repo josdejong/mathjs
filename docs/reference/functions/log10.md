@@ -19,13 +19,13 @@ math.log10(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null |  Value for which to calculate the logarithm.
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the logarithm.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the 10-base logarithm of `x`
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the 10-base logarithm of `x`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

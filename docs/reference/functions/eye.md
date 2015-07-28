@@ -23,14 +23,14 @@ math.eye([m, n], format)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | ...Number &#124; Matrix &#124; Array | The size for the matrix
+`size` | ...number &#124; Matrix &#124; Array | The size for the matrix
 `format` | string | The Matrix storage format
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Matrix &#124; Array &#124; Number | A matrix with ones on the diagonal.
+Matrix &#124; Array &#124; number | A matrix with ones on the diagonal.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

@@ -20,13 +20,13 @@ math.gcd(a, b, c, ...)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Two or more integer numbers
+`args` | ... number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Two or more integer numbers
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | The greatest common divisor
+number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | The greatest common divisor
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

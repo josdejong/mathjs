@@ -19,14 +19,14 @@ math.number(unit, valuelessUnit)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | String &#124; Number &#124; Boolean &#124; Array &#124; Matrix &#124; Unit &#124; null | Value to be converted
+`value` | string &#124; number &#124; boolean &#124; Array &#124; Matrix &#124; Unit &#124; null | Value to be converted
 `valuelessUnit` | Unit &#124; string | A valueless unit, used to convert a unit to a number
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; Array &#124; Matrix | The created number
+number &#124; Array &#124; Matrix | The created number
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

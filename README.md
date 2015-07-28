@@ -18,13 +18,13 @@ To update the website with the latest version of math.js:
 
 - To generate the website locally using [Jekyll](http://jekyllrb.com/):
 
-      jekyll build
-        
+      jekyll
+
   This will generate the static website in the folder `_site`.
 
 - To test the website locally, use Jekyll as server:
 
-      jekyll serve --watch
+      jekyll --server 4000
   
   The website is than available in the browser at http://localhost:4000.
 

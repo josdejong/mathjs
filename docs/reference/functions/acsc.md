@@ -19,20 +19,20 @@ math.acsc(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Array &#124; Matrix | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | The arc cosecant of x
+number &#124; Complex &#124; Array &#124; Matrix | The arc cosecant of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.acsc(0.5);           // returns Number 0.5235987755982989
-math.acsc(math.csc(1.5)); // returns Number ~1.5
+math.acsc(0.5);           // returns number 0.5235987755982989
+math.acsc(math.csc(1.5)); // returns number ~1.5
 
 math.acsc(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
 ```

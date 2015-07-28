@@ -17,7 +17,7 @@ math.size(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Boolean &#124; Number &#124; Complex &#124; Unit &#124; String &#124; Array &#124; Matrix | A matrix
+`x` | boolean &#124; number &#124; Complex &#124; Unit &#124; string &#124; Array &#124; Matrix | A matrix
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

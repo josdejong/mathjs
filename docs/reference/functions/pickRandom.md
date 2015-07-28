@@ -24,7 +24,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Number | One of the elements of the provided input array
+number | One of the elements of the provided input array
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

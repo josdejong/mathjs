@@ -23,7 +23,7 @@ math.zeros([m, n], format)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`size` | ...Number &#124; Array | The size of each dimension of the matrix
+`size` | ...number &#124; Array | The size of each dimension of the matrix
 `format` | string | The Matrix storage format
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>

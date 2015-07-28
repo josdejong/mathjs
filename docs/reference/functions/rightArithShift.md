@@ -19,20 +19,20 @@ math.rightArithShift(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; Matrix &#124; null | Value to be shifted
-`y` | Number &#124; BigNumber &#124; Boolean &#124; null | Amount of shifts
+`x` | number &#124; BigNumber &#124; Array &#124; Matrix | Value to be shifted
+`y` | number &#124; BigNumber | Amount of shifts
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Array &#124; Matrix | `x` sign-filled shifted right `y` times
+number &#124; BigNumber &#124; Array &#124; Matrix | `x` sign-filled shifted right `y` times
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.rightArithShift(4, 2);               // returns Number 1
+math.rightArithShift(4, 2);               // returns number 1
 
 math.rightArithShift([16, -32, 64], 4);   // returns Array [1, -2, 3]
 ```
@@ -44,7 +44,7 @@ math.rightArithShift([16, -32, 64], 4);   // returns Array [1, -2, 3]
 [bitNot](bitNot.html),
 [bitOr](bitOr.html),
 [bitXor](bitXor.html),
-[leftShift](leftShift.html),
+[rightArithShift](rightArithShift.html),
 [rightLogShift](rightLogShift.html)
 
 

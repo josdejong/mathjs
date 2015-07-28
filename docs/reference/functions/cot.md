@@ -19,20 +19,20 @@ math.cot(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; Boolean &#124; Complex &#124; Unit &#124; Array &#124; Matrix &#124; null | Function input
+`x` | number &#124; Complex &#124; Unit &#124; Array &#124; Matrix | Function input
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; Complex &#124; Array &#124; Matrix | Cotangent of x
+number &#124; Complex &#124; Array &#124; Matrix | Cotangent of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.cot(2);      // returns Number -0.45765755436028577
-1 / math.tan(2);  // returns Number -0.45765755436028577
+math.cot(2);      // returns number -0.45765755436028577
+1 / math.tan(2);  // returns number -0.45765755436028577
 ```
 
 

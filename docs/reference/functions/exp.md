@@ -18,21 +18,21 @@ math.exp(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | A number or matrix to exponentiate
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | A number or matrix to exponentiate
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of `x`
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of `x`
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.exp(2);                  // returns Number 7.3890560989306495
-math.pow(math.e, 2);          // returns Number 7.3890560989306495
-math.log(math.exp(2));        // returns Number 2
+math.exp(2);                  // returns number 7.3890560989306495
+math.pow(math.e, 2);          // returns number 7.3890560989306495
+math.log(math.exp(2));        // returns number 2
 
 math.exp([1, 2, 3]);
 // returns Array [

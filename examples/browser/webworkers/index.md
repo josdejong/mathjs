@@ -55,7 +55,7 @@ File: [webworkers.html](webworkers.html)
 
   /**
    * Evaluate an expression
-   * @param {String} expr
+   * @param {string} expr
    * @param {Function} callback   Called as callback(err, result)
    */
   MathWorker.prototype.eval = function eval (expr, callback) {
@@ -91,7 +91,7 @@ File: [webworkers.html](webworkers.html)
 File: [worker.js](worker.js)
 
 ```js
-importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/1.7.0/math.min.js');
+importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.0.0/math.min.js');
 
 // create a parser
 var parser = math.parser();

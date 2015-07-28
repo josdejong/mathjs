@@ -19,7 +19,7 @@ console.log(str1);
 // note that the reviver of math.js is needed for this:
 var str2 = '{"mathjs":"Unit","value":5,"unit":"cm"}';
 var y = JSON.parse(str2, math.json.reviver);
-console.log(math.typeof(y));  // 'unit'
+console.log(math.typeof(y));  // 'Unit'
 console.log(y.toString());    // 5 cm
 
 ```

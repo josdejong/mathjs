@@ -18,7 +18,7 @@ math.help(search)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`search` | function &#124; string &#124; Object | A function or function name for which to get help
+`search` | Function &#124; string &#124; Object | A function or function name for which to get help
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

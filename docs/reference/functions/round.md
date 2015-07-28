@@ -19,25 +19,25 @@ math.round(x, n)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | Number &#124; BigNumber &#124; Boolean &#124; Complex &#124; Array &#124; Matrix &#124; null | Number to be rounded
-`n` | Number &#124; BigNumber &#124; Boolean &#124; Array &#124; null | Number of decimals Default value: 0.
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number to be rounded
+`n` | number &#124; BigNumber &#124; Array | Number of decimals Default value: 0.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-Number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Rounded value
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Rounded value
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.round(3.2);              // returns Number 3
-math.round(3.8);              // returns Number 4
-math.round(-4.2);             // returns Number -4
-math.round(-4.7);             // returns Number -5
-math.round(math.pi, 3);       // returns Number 3.142
-math.round(123.45678, 2);     // returns Number 123.46
+math.round(3.2);              // returns number 3
+math.round(3.8);              // returns number 4
+math.round(-4.2);             // returns number -4
+math.round(-4.7);             // returns number -5
+math.round(math.pi, 3);       // returns number 3.142
+math.round(123.45678, 2);     // returns number 123.46
 
 var c = math.complex(3.2, -2.7);
 math.round(c);                // returns Complex 3 - 3i
