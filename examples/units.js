@@ -32,7 +32,6 @@ console.log('convert to another type or to a number');
 print(b.to('cm'));                    // 10 cm  Alternatively: math.to(b, 'cm')
 print(math.to(b, 'inch'));            // 3.937 inch
 print(b.toNumber('cm'));              // 10
-print(math.number(b, 'gram'));        // 10
 console.log();
 
 // the expression parser supports units too
