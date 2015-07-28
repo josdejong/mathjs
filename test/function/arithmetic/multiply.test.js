@@ -132,8 +132,8 @@ describe('multiply', function() {
     });
 
     it('should multiply mixed fractions and numbers', function() {
-      assert.strictEqual(multiply(2, math.fraction(1,3)), 0.6666666666666666);
-      assert.strictEqual(multiply(math.fraction(1,3), 2), 0.6666666666666666);
+      assert.deepEqual(multiply(2, math.fraction(1,3)), math.fraction(2,3));
+      assert.deepEqual(multiply(math.fraction(1,3), 2), math.fraction(2,3));
     });
 
     it('should multiply a number and a unit correctly', function() {

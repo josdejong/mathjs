@@ -111,8 +111,8 @@ describe('mod', function() {
   });
 
   it('should calculate modulus of mixed fractions and numbers', function() {
-    assert.strictEqual(mod(8, math.fraction(3)), 2);
-    assert.strictEqual(mod(math.fraction(8), 3), 2);
+    assert.deepEqual(mod(8, math.fraction(3)), math.fraction(2));
+    assert.deepEqual(mod(math.fraction(8), 3), math.fraction(2));
   });
 
   describe('Array', function () {

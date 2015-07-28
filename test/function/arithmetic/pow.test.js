@@ -92,12 +92,11 @@ describe('pow', function() {
     assert.deepEqual(math.pow(fraction(3), fraction(2)), fraction(9));
     assert.deepEqual(math.pow(fraction(1.5), fraction(2)), fraction(2.25));
     assert.deepEqual(math.pow(fraction(1.5), fraction(-2)), fraction(4, 9));
-    assert.strictEqual(math.pow(fraction(1.5), 2), 2.25);
+    assert.deepEqual(math.pow(fraction(1.5), 2), fraction(2.25));
   });
 
   it('should exponentiate a fraction to an non-integer power', function() {
     assert.throws(function () {mathPredictable.pow(fraction(3), fraction(1.5))}, /Function pow does not support non-integer exponents for fractions/);
-    assert.strictEqual(mathPredictable.pow(fraction(4), 1.5), 8);
 
     assert.strictEqual(math.pow(fraction(4), 1.5), 8);
     assert.strictEqual(math.pow(fraction(4), fraction(1.5)), 8);

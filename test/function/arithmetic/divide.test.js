@@ -111,8 +111,8 @@ describe('divide', function() {
   });
 
   it('should divide mixed fractions and numbers', function() {
-    assert.strictEqual(divide(1, math.fraction(3)), 0.3333333333333333);
-    assert.strictEqual(divide(math.fraction(1), 3), 0.3333333333333333);
+    assert.deepEqual(divide(1, math.fraction(3)), math.fraction(1,3));
+    assert.deepEqual(divide(math.fraction(1), 3), math.fraction(1,3));
   });
 
   it('should divide units by a number', function() {

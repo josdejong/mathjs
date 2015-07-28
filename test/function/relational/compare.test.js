@@ -90,8 +90,8 @@ describe('compare', function() {
   });
 
   it('should compare mixed fractions and numbers', function() {
-    assert.strictEqual(compare(1, math.fraction(1,3)), 1);
-    assert.strictEqual(compare(math.fraction(1,3), 1), -1);
+    assert.deepEqual(compare(1, math.fraction(1,3)), math.fraction(1));
+    assert.deepEqual(compare(math.fraction(1,3), 1), math.fraction(-1));
   });
 
   it('should add two measures of the same unit', function() {

@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 2.0.1
+
+- Fixed operations with mixed fractions and numbers be converted to numbers
+  instead of fractions.
+
+
 ## 2015-07-28, version 2.0.0
 
 - Large internal refactoring:

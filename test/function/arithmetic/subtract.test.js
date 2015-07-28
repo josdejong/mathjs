@@ -86,8 +86,8 @@ describe('subtract', function() {
   });
 
   it('should subtract mixed fractions and numbers', function() {
-    assert.strictEqual(subtract(1, math.fraction(1,3)), 0.6666666666666667);
-    assert.strictEqual(subtract(math.fraction(1,3), 1), -0.6666666666666667);
+    assert.deepEqual(subtract(1, math.fraction(1,3)), math.fraction(2,3));
+    assert.deepEqual(subtract(math.fraction(1,3), 1), math.fraction(-2,3));
   });
 
   it('should subtract two quantities of the same unit', function() {
