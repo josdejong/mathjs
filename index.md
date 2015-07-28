@@ -76,3 +76,5 @@ Powerful and easy to use.
   </div>
   <div class="end">&nbsp;</div>
 </div>
+
+<div class="test" style="display: none;"></div>
