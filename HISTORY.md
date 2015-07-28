@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 2.0.0-SNAPSHOT
+## 2015-07-28, version 2.0.0
 
 - Large internal refactoring:
 
@@ -20,14 +20,15 @@
 - Implemented support for complex values to `nthRoot`. Thanks @gangachris.
 - Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
   `isPositive`, and `isZero`.
-- Fixed #397: Inaccuracies in `nthRoot` for very large values, and wrong results 
-  for very small values.
 
 ### breaking changes
 
 - String input is now converted to numbers by default for all functions. 
 - Adding two strings will no longer concatenate them, but will convert the 
   strings to numbers and add them.
+- Function `index` does no longer accept an array `[start, end, step]`, but
+  instead accepts an array with arbitrary index values. It also accepts
+  a `Range` object as input.
 - Function `typeof` no longer returns lower case names, but now returns lower
   case names for primitives (like `number`, `boolean`, `string`), and 
   upper-camel-case for non-primitives (like `Array`, `Complex`, `Function`).
@@ -40,6 +41,14 @@
 - Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
 - The size of Arrays is no longer validated. Matrices will validate this on
   creation.
+
+
+## 2015-07-12, version 1.7.1
+
+- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results 
+  for very small values. (backported from v2)
+- Fixed #405: Parser throws error when defining a function in a multiline 
+  expression.
 
 
 ## 2015-05-31, version 1.7.0
