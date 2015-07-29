@@ -289,7 +289,7 @@ describe('derivative', function() {
   it('should have controlled behavior on arguments errors', function() {
     assert.throws(function() {
       math.eval('derivative(sqrt(), x)');
-    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Array or Matrix or Fraction or string or boolean or null, index: 0\)/);
+    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Array or Matrix, index: 0\)/);
     assert.throws(function() {
       math.eval('derivative(sqrt(12, 2x), x)');
     }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/);
