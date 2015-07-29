@@ -10,11 +10,9 @@
 ## 2015-07-28, version 2.0.0
 
 - Large internal refactoring:
-
   - performance improvements.
   - allows to create custom bundles
   - functions are composed using `typed-function` and are extensible
-  
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
   linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
