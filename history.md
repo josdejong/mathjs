@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20150729-version-201">2015-07-29, version 2.0.1 <a href="#20150729-version-201" title="Permalink">#</a></h2>
+
+- Fixed operations with mixed fractions and numbers be converted to numbers
+  instead of fractions.
+
+
 <h2 id="20150728-version-200">2015-07-28, version 2.0.0 <a href="#20150728-version-200" title="Permalink">#</a></h2>
 
 - Large internal refactoring:
