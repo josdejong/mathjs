@@ -284,7 +284,7 @@ function outputHelp() {
   console.log('    mathjs script.txt                     Run a script file');
   console.log('    mathjs script.txt script2.txt         Run two script files');
   console.log('    mathjs script.txt > results.txt       Run a script file, output to file');
-  console.log('    cat script.txt | mathjs               Run input streaml');
+  console.log('    cat script.txt | mathjs               Run input stream');
   console.log('    cat script.txt | mathjs > results.txt Run input stream, output to file');
   console.log();
   process.exit(0);
@@ -293,52 +293,68 @@ function outputHelp() {
 /**
  * Process input and output, based on the command line arguments
  */
-var queue = []; //queue of scripts that need to be processed
+var scripts = []; //queue of scripts that need to be processed
 var mode = 'eval'; //one of 'eval', 'tex' or 'string'
 var parenthesis = 'keep';
+var version = false;
+var help = false;
 
 process.argv.forEach(function (arg, index) {
-if (index < 2) {
-  return;
-}
+  if (index < 2) {
+    return;
+  }
 
-switch (arg) {
-  case '-v':
-  case '--version':
-    outputVersion();
-    break;
-  case '-h':
-  case '--help':
-    outputHelp();
-    break;
-  case '--tex':
-    mode = 'tex';
-    break;
-  case '--string':
-    mode = 'string';
-    break;
-  case '--parenthesis=keep':
-    parenthesis = 'keep';
-    break;
-  case '--parenthesis=auto':
-    parenthesis = 'auto';
-    break;
-  case '--parenthesis=all':
-    parenthesis = 'all';
-    break
-  default:
-    queue.push(arg);
-}
+  switch (arg) {
+    case '-v':
+    case '--version':
+      version = true;
+      break;
+
+    case '-h':
+    case '--help':
+      help = true;
+      break;
+
+    case '--tex':
+      mode = 'tex';
+      break;
+
+    case '--string':
+
+      mode = 'string';
+      break;
+
+    case '--parenthesis=keep':
+      parenthesis = 'keep';
+      break;
+
+    case '--parenthesis=auto':
+      parenthesis = 'auto';
+      break;
+
+    case '--parenthesis=all':
+      parenthesis = 'all';
+      break;
+
+    default:
+      scripts.push(arg);
+  }
 });
 
-if (queue.length === 0) {
-// run a stream, can be user input or pipe input
-runStream(process.stdin, process.stdout, mode, parenthesis);
+if (version) {
+  outputVersion();
+}
+else if (help) {
+  outputHelp();
+}
+else if (scripts.length === 0) {
+  // run a stream, can be user input or pipe input
+  runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
-//work through the queue
-queue.forEach(function (arg) {
-  // run a script file
-  runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
-});
+  //work through the queue of scripts
+  scripts.forEach(function (arg) {
+    // run a script file
+    runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
+  });
 }
