@@ -15,6 +15,11 @@ describe('kldivergence', function(){
         var q = [0.5,0.6,0.7];
         var p = [0.4,0.5,0.6];
         assert.equal(math.kldivergence(q, p), 0.00038410187968898266);
+
+        var q2 = [0.9,0.2,0.8,0.4];
+        var p2 = [0.1,0.8,0.7,0.6];
+        assert.equal(math.kldivergence(q2, p2), 0.6707144627487189);
+
     });
 
     it('should return normalized distance between two distributions', function(){
