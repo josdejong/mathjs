@@ -34,4 +34,9 @@ describe('kldivergence', function(){
         var p = [0.4,1];
         assert.equal(isNaN(parseFloat(math.kldivergence(q, p))), true);
     });
+
+    it('should return bignumber', function(){
+        var result = math.kldivergence([math.bignumber(4),math.bignumber(7)], [math.bignumber(1), math.bignumber(4)]);
+        assert.equal(result.toString(), '0.0717688178200499468328227075658945850681301640503275280115029999');
+    });
 });
