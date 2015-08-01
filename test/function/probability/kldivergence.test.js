@@ -14,13 +14,13 @@ describe('kldivergence', function(){
     it('should return distance between two distrubutions', function(){
         var q = [0.5,0.6,0.7];
         var p = [0.4,0.5,0.6];
-        assert.notEqual(math.kldivergence(q, p), 0);
+        assert.equal(math.kldivergence(q, p), 0.00038410187968898266);
     });
 
     it('should return normalized distance between two distributions', function(){
         var q = [1,2,3,4,5,6,7,8];
         var p = [2,3,4,5,6,7,8,9];
-        assert.notEqual(math.kldivergence(q, p), 0);
+        assert.equal(math.kldivergence(q, p), 0.006970870019248255);
     });
 
     it('should return infinity', function(){
