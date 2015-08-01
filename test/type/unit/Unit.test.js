@@ -20,10 +20,11 @@ describe('unit', function() {
       assert.equal(unit1.value, null);
       assert.equal(unit1.units[0].unit.name, 'g');
 
-      unit1 = new Unit(9.81, "m/s^2");
+      unit1 = new Unit(9.81, "kg m/s^2");
       assert.equal(unit1.value, 9.81);
-      assert.equal(unit1.units[0].unit.name, 'm');
-      assert.equal(unit1.units[1].unit.name, 's');
+      assert.equal(unit1.units[0].unit.name, 'g');
+      assert.equal(unit1.units[1].unit.name, 'm');
+      assert.equal(unit1.units[2].unit.name, 's');
     });
 
     it('should create square meter correctly', function() {
@@ -58,6 +59,16 @@ describe('unit', function() {
       assert.throws(function () { new Unit(4, ''); });
       assert.throws(function () { new Unit(0, 3); });
     });
+
+	it('should flag unit as already simplified', function() {
+      unit1 = new Unit(9.81, "kg m/s^2");
+	  assert.equal(unit1.isUnitListSimplified, true);
+	  assert.equal(unit1.toString(), "9.81 (kg m) / s^2");
+
+      unit1 = new Unit(null, "kg m/s^2");
+	  assert.equal(unit1.isUnitListSimplified, true);
+	  assert.equal(unit1.toString(), "(kg m) / s^2");
+	});
 
   });
 
@@ -95,6 +106,7 @@ describe('unit', function() {
     it('should test whether a unit has a certain base unit', function() {
       assert.equal(new Unit(5, 'cm').hasBase(Unit.BASE_UNITS.ANGLE), false);
       assert.equal(new Unit(5, 'cm').hasBase(Unit.BASE_UNITS.LENGTH), true);
+      assert.equal(new Unit(5, 'kg m / s ^ 2').hasBase(Unit.BASE_UNITS.FORCE), true);
     });
 
   });
@@ -117,7 +129,7 @@ describe('unit', function() {
       assert.equal(new Unit(100, 'cm').equals(new Unit(1, 'kg')), false);
       assert.equal(new Unit(100, 'ft lbf').equals(new Unit(1200, 'in lbf')), true);
       assert.equal(new Unit(100, 'N').equals(new Unit(100, 'kg m / s ^ 2')), true);
-      assert.equal(new Unit(100, 'N').equals(new Unit(001, 'kg m / s')), false);
+      assert.equal(new Unit(100, 'N').equals(new Unit(100, 'kg m / s')), false);
     });
 
   });
@@ -334,6 +346,8 @@ describe('unit', function() {
       assert.equal(new Unit(5, 'N').toString(), '5 N');
       assert.equal(new Unit(5, 'kg^1.0e0 m^1.0e0 s^-2.0e0').toString(), '5 (kg m) / s^2');
       assert.equal(new Unit(5, 's^-2').toString(), '5 s^-2');
+      assert.equal(new Unit(5, 'm / s ^ 2').toString(), '5 m / s^2');
+      assert.equal(new Unit(null, 'kg m^2 / s^2 mol').toString(), '(kg m^2) / (s^2 mol)');
     });
 
     it('should render with the best prefix', function() {
@@ -351,6 +365,37 @@ describe('unit', function() {
       assert.equal(new Unit(1000 ,'m').toString(), '1 km');
     });
 
+
+  });
+
+  describe('simplifyUnitListLazy', function() {
+	it('should simplify derived units according to the chosen unit system', function() {
+	  var unit1 = new Unit(10, "kg m/s^2");
+	  assert.equal(unit1.units[0].unit.name, "g");
+	  assert.equal(unit1.units[1].unit.name, "m");
+	  assert.equal(unit1.units[2].unit.name, "s");
+	
+	  Unit.setUnitSystem('us');
+	  unit1.isUnitListSimplified = false;
+	  unit1.simplifyUnitListLazy();
+	  assert.equal(unit1.units[0].unit.name, "lbf");
+	  assert.equal(unit1.toString(), "2.248089430997105 lbf");
+
+	  Unit.setUnitSystem('cgs');
+	  unit1.isUnitListSimplified = false;
+	  unit1.simplifyUnitListLazy();
+	  assert.equal(unit1.units[0].unit.name, "dyn");
+	  assert.equal(unit1.format(2), "1 Mdyn");
+	});
+
+	it('should correctly simplify units when unit system is "auto"', function() {
+      Unit.setUnitSystem('auto');
+      var unit1 = new Unit(5, "lbf min / s");
+	  unit1.isUnitListSimplified = false;
+	  unit1.simplifyUnitListLazy();
+	  assert.equal(unit1.toString(), "300 lbf");
+	});
+	
   });
 
   describe('valueOf', function() {
@@ -512,6 +557,10 @@ describe('unit', function() {
       assert.equal(unit1.units[3].power, -1);
       assert.equal(unit1.units[4].power, -1);
       assert.equal(unit1.units[0].prefix.name, 'k');
+
+	  unit1 = Unit.parse('5exabytes');
+	  approx.equal(unit1.value, 4e19);
+	  assert.equal(unit1.units[0].unit.name, 'bytes');
     });
 
     it('should return null when parsing an invalid unit', function() {
