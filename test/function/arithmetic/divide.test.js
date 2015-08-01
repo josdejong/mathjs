@@ -124,17 +124,20 @@ describe('divide', function() {
   });
 
   it('should divide a number by a unit', function() {
-    assert.equal(divide(20, math.unit('4 N s')).toString(), '5 s / kg m');
+    assert.equal(divide(20, math.unit('4 N s')).toString(), '5 N^-1 s^-1');
   });
 
   it('should divide two units', function() {
-    assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/min').toString(), '0.03125 gal / min');
+    assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute');
   });
 
-  it('should divide valueless units', function() {
-    assert.equal(divide(math.unit('gal'), math.unit('L')).format(4), '3.785');
+  it('should divide one valued unit by a valueless unit and vice-versa', function() {
     assert.equal(divide(math.unit('4 gal'), math.unit('L')).format(5), '15.142');
     assert.equal(divide(math.unit('gal'), math.unit('4 L')).format(3), '0.946');
+  });
+
+  it('should divide (but not simplify) two valueless units', function() {
+    assert.equal(divide(math.unit('gal'), math.unit('L')).toString(), 'gal / L');
   });
 
   // TODO: divide units by a bignumber

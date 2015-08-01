@@ -41,7 +41,7 @@ describe('unit', function() {
     it('should ignore properties on Object.prototype', function() {
       Object.prototype.foo = Unit.UNITS['meter'];
 
-      assert.throws(function () {new Unit(1, 'foo')}, /Unknown unit/);
+      assert.throws(function () {new Unit(1, 'foo')}, /Unit "foo" not found/);
 
       delete Object.prototype.foo;
     });
@@ -332,7 +332,7 @@ describe('unit', function() {
       assert.equal(new Unit(5, 'kg').toString(), '5 kg');
       assert.equal(new Unit(2/3, 'm').toString(), '0.6666666666666666 m');
       assert.equal(new Unit(5, 'N').toString(), '5 N');
-      assert.equal(new Unit(5, 'kg^1.0e0 m^1.0e0 s^-2.0e0').toString(), '5 kg m / s^2');
+      assert.equal(new Unit(5, 'kg^1.0e0 m^1.0e0 s^-2.0e0').toString(), '5 (kg m) / s^2');
       assert.equal(new Unit(5, 's^-2').toString(), '5 s^-2');
     });
 
@@ -360,7 +360,7 @@ describe('unit', function() {
       assert.strictEqual(new Unit(5, 'kg').valueOf(), '5 kg');
       assert.strictEqual(new Unit(2/3, 'm').valueOf(), '0.6666666666666666 m');
       assert.strictEqual(new Unit(5, 'N').valueOf(), '5 N');
-      assert.strictEqual(new Unit(5, 'kg^1.0e0 m^1.0e0 s^-2.0e0').valueOf(), '5 kg m / s^2');
+      assert.strictEqual(new Unit(5, 'kg^1.0e0 m^1.0e0 s^-2.0e0').valueOf(), '5 (kg m) / s^2');
       assert.strictEqual(new Unit(5, 's^-2').valueOf(), '5 s^-2');
     });
 
@@ -374,7 +374,7 @@ describe('unit', function() {
       assert.deepEqual(new Unit(5, 'cm').to('mm').toJSON(),
           {'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
       assert.deepEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
-          {'mathjs': 'Unit', value: 5000, unit: 'kg m / s^2', fixPrefix: true});
+          {'mathjs': 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true});
     });
 
     it('fromJSON', function () {
@@ -407,7 +407,7 @@ describe('unit', function() {
     it('should format a unit without value', function() {
       assert.equal(new Unit(null, 'cm').format(), 'cm');
       assert.equal(new Unit(null, 'm').format(), 'm');
-      assert.equal(new Unit(null, 'kg m/s').format(), 'kg m / s');
+      assert.equal(new Unit(null, 'kg m/s').format(), '(kg m) / s');
     });
 
     it('should format a unit with fixed prefix and without value', function() {
@@ -486,10 +486,10 @@ describe('unit', function() {
       assert.equal(unit1.units[0].unit.name, 'g');
       assert.equal(unit1.units[0].prefix.name, 'm');
 
-      unit1 = Unit.parse('300 kg/min');
+      unit1 = Unit.parse('300 kg/minute');
       approx.equal(unit1.value, 5);
       assert.equal(unit1.units[0].unit.name, 'g');
-      assert.equal(unit1.units[1].unit.name, 'min');
+      assert.equal(unit1.units[1].unit.name, 'minute');
       assert.equal(unit1.units[0].prefix.name, 'k');
 
       unit1 = Unit.parse('981 cm/s^2');
@@ -515,19 +515,30 @@ describe('unit', function() {
     });
 
     it('should return null when parsing an invalid unit', function() {
-      assert.equal(Unit.parse('.meter'), null);
-      assert.equal(Unit.parse('5e'), null);
-      assert.equal(Unit.parse('5e. meter'), null);
-      assert.equal(Unit.parse('5e1.3 meter'), null);
-      assert.equal(Unit.parse('5'), null);
-      assert.equal(Unit.parse(''), null);
-      assert.equal(Unit.parse('meter.'), null);
-      assert.equal(Unit.parse('meter/'), null);
-      assert.equal(Unit.parse('/meter'), null);
+	  // I'm worried something else will break if Unit.parse throws an exception instead of returning null???? --ericman314
+      assert.throws(function () {Unit.parse('.meter')}, /Could not parse/);
+      assert.throws(function () {Unit.parse('5e')}, /Unit "e" not found/);
+      assert.throws(function () {Unit.parse('5e.')}, /Unit "e" not found/);
+      assert.throws(function () {Unit.parse('5e1.3')}, /Could not parse/);
+      assert.throws(function () {Unit.parse('5')}, /contains no units/);
+      assert.throws(function () {Unit.parse('')}, /contains no units/);
+      assert.throws(function () {Unit.parse('meter.')}, /Could not parse/);
+      assert.throws(function () {Unit.parse('meter/')}, /Trailing characters/);
+      assert.throws(function () {Unit.parse('/meter')}, /Could not parse/);
+//      assert.equal(Unit.parse('.meter'), null);
+//      assert.equal(Unit.parse('5e'), null);
+//      assert.equal(Unit.parse('5e. meter'), null);
+//      assert.equal(Unit.parse('5e1.3 meter'), null);
+//      assert.equal(Unit.parse('5'), null);
+//      assert.equal(Unit.parse(''), null);
+//      assert.equal(Unit.parse('meter.'), null);
+//      assert.equal(Unit.parse('meter/'), null);
+//      assert.equal(Unit.parse('/meter'), null);
     });
 
     it('should return null when parsing an invalid type of argument', function() {
-      assert.equal(Unit.parse(123), null);
+      assert.throws(function () {Unit.parse(123)}, /Invalid argument in Unit.parse. Valid types are/);
+//      assert.equal(Unit.parse(123), null);
     });
   });
 

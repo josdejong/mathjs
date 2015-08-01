@@ -156,18 +156,18 @@ describe('multiply', function() {
 
     it('should multiply two units correctly', function() {
       assert.equal(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2');
-      assert.equal(multiply(unit('2 ft'), unit('4 ft')).format(5), '0.74322 m^2');
+      assert.equal(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2');
       assert.equal(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi');
-      assert.equal(multiply(unit('2 L'), unit('1 s^-1')).toString(), '0.002 m^3 / s');
+      assert.equal(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s');
       assert.equal(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1');
     });
 
     it('should multiply valueless units correctly', function() {
       assert.equal(multiply(unit('m'), unit('4 m')).toString(), '4 m^2');
-      assert.equal(multiply(unit('ft'), unit('4 ft')).format(5), '0.37161 m^2');
+      assert.equal(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2');
       assert.equal(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi');
-      assert.equal(multiply(unit('2 L'), unit('s^-1')).toString(), '0.002 m^3 / s');
-      assert.equal(multiply(unit('m/s'), unit('h/m')).toString(), '3600');
+      assert.equal(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s');
+      assert.equal(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)');
     });
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
