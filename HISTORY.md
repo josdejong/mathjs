@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 2.1.0
+
+- Implemented function `kldivergence` (Kullback-Leibler divergence). 
+  Thanks @saromanov.
+
 ## 2015-07-29, version 2.0.1
 
 - Fixed operations with mixed fractions and numbers be converted to numbers
