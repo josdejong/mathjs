@@ -325,7 +325,7 @@ parser.eval('number(a)');   // Error: 2 + i is no valid number
 
 ### Units
 
-math.js supports units. Units can be used the arithmetic operations
+math.js supports units. Units can be used in the arithmetic operations
 add, subtract, multiply, divide, and exponentiation.
 Units can also be converted from one to another.
 An overview of all available units can be found on the page
