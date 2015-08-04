@@ -117,6 +117,7 @@ describe('unit', function() {
       assert.equal(new Unit(5, 'cm').equalBase(new Unit(10, 'm')), true);
       assert.equal(new Unit(5, 'cm').equalBase(new Unit(10, 'kg')), false);
       assert.equal(new Unit(5, 'N').equalBase(new Unit(10, 'kg m / s ^ 2')), true);
+      assert.equal(new Unit(8.314, 'J / mol K').equalBase(new Unit(0.02366, 'ft^3 psi / mol degF')), true);
     });
 
   });
@@ -369,32 +370,55 @@ describe('unit', function() {
   });
 
   describe('simplifyUnitListLazy', function() {
-	it('should simplify derived units according to the chosen unit system', function() {
-	  var unit1 = new Unit(10, "kg m/s^2");
-	  assert.equal(unit1.units[0].unit.name, "g");
-	  assert.equal(unit1.units[1].unit.name, "m");
-	  assert.equal(unit1.units[2].unit.name, "s");
-	
-	  Unit.setUnitSystem('us');
-	  unit1.isUnitListSimplified = false;
-	  unit1.simplifyUnitListLazy();
-	  assert.equal(unit1.units[0].unit.name, "lbf");
-	  assert.equal(unit1.toString(), "2.248089430997105 lbf");
+		it('should not simplify units created with new Unit()', function() {
+			var unit1 = new Unit(10, "kg m/s^2");
+			assert.equal(unit1.units[0].unit.name, "g");
+			assert.equal(unit1.units[1].unit.name, "m");
+			assert.equal(unit1.units[2].unit.name, "s");
+			assert.equal(unit1.toString(), "10 (kg m) / s^2");
+		});
 
-	  Unit.setUnitSystem('cgs');
-	  unit1.isUnitListSimplified = false;
-	  unit1.simplifyUnitListLazy();
-	  assert.equal(unit1.units[0].unit.name, "dyn");
-	  assert.equal(unit1.format(2), "1 Mdyn");
-	});
+		it('should only simplify units with values', function() {
+			var unit1 = new Unit(null, "kg m mol / s^2 mol");
+			unit1.isUnitListSimplified = false;
+			unit1.simplifyUnitListLazy();
+			assert.equal(unit1.toString(), "(kg m mol) / (s^2 mol)");
+			unit1 = math.multiply(unit1, 1);
+			assert.equal(unit1.toString(), "1 N");
+		});
 
-	it('should correctly simplify units when unit system is "auto"', function() {
-      Unit.setUnitSystem('auto');
-      var unit1 = new Unit(5, "lbf min / s");
-	  unit1.isUnitListSimplified = false;
-	  unit1.simplifyUnitListLazy();
-	  assert.equal(unit1.toString(), "300 lbf");
-	});
+		it('should simplify units resulting from multiply/divide/power functions only when formatting for output', function() {
+			var unit1 = new Unit(2, "kg");
+			var unit2 = new Unit(5, "m/s^2");
+			var unit3 = math.multiply(unit1, unit2);
+			assert.equal(unit3.units[0].unit.name, "g");
+			assert.equal(unit3.units[1].unit.name, "m");
+			assert.equal(unit3.units[2].unit.name, "s");
+			assert.equal(unit3.toString(), "10 N");		// Triggers simplification
+			assert.equal(unit3.units[0].unit.name, "N");
+
+		});
+
+		it('should simplify units according to chosen unit system', function() {
+			var unit1 = new Unit(10, "N");
+			Unit.setUnitSystem('us');
+			unit1.isUnitListSimplified = false;
+			assert.equal(unit1.toString(), "2.248089430997105 lbf");
+			assert.equal(unit1.units[0].unit.name, "lbf");
+
+			Unit.setUnitSystem('cgs');
+			unit1.isUnitListSimplified = false;
+			assert.equal(unit1.format(2), "1 Mdyn");
+			assert.equal(unit1.units[0].unit.name, "dyn");
+		});
+
+		it('should correctly simplify units when unit system is "auto"', function() {
+			Unit.setUnitSystem('auto');
+			var unit1 = new Unit(5, "lbf min / s");
+			unit1.isUnitListSimplified = false;
+			assert.equal(unit1.toString(), "300 lbf");
+		});
+
 	
   });
 
@@ -563,7 +587,7 @@ describe('unit', function() {
 	  assert.equal(unit1.units[0].unit.name, 'bytes');
     });
 
-    it('should return null when parsing an invalid unit', function() {
+    it('should return null (update: throw exception --ericman314) when parsing an invalid unit', function() {
 	  // I'm worried something else will break if Unit.parse throws an exception instead of returning null???? --ericman314
       assert.throws(function () {Unit.parse('.meter')}, /Could not parse/);
       assert.throws(function () {Unit.parse('5e')}, /Unit "e" not found/);
@@ -574,6 +598,7 @@ describe('unit', function() {
       assert.throws(function () {Unit.parse('meter.')}, /Could not parse/);
       assert.throws(function () {Unit.parse('meter/')}, /Trailing characters/);
       assert.throws(function () {Unit.parse('/meter')}, /Could not parse/);
+      assert.throws(function () {Unit.parse('45 kg 34 m')}, /Could not parse/);
 //      assert.equal(Unit.parse('.meter'), null);
 //      assert.equal(Unit.parse('5e'), null);
 //      assert.equal(Unit.parse('5e. meter'), null);
@@ -590,6 +615,53 @@ describe('unit', function() {
 //      assert.equal(Unit.parse(123), null);
     });
   });
+
+	describe('_isDerived', function() {
+		it('should return the correct value', function () {
+			assert.equal(Unit.parse('34 kg')._isDerived(), false);
+			assert.equal(Unit.parse('34 kg/s')._isDerived(), true);
+			assert.equal(Unit.parse('34 kg^2')._isDerived(), true);
+			assert.equal(Unit.parse('34 N')._isDerived(), false);
+			assert.equal(Unit.parse('34 kg m / s^2')._isDerived(), true);
+			var unit1 = Unit.parse('34 kg m / s^2');
+			assert.equal(unit1._isDerived(), true);
+			unit1.isUnitListSimplified = false;
+			unit1.simplifyUnitListLazy();
+			assert.equal(unit1._isDerived(), false);
+		});
+	});
+	
+	describe('multiply, divide, and pow', function() {
+		it('should flag the unit as requiring simplification', function() {
+			var unit1 = new Unit(10, 'kg');
+			var unit2 = new Unit(9.81, 'm/s^2');
+			assert.equal(unit1.multiply(unit2).isUnitListSimplified, false);
+			assert.equal(unit1.divide(unit2).isUnitListSimplified, false);
+			assert.equal(unit1.pow(2).isUnitListSimplified, false);
+		});
+
+		it('should retain the units of their operands without simplifying', function() {
+			var unit1 = new Unit(10, "N/s");
+			var unit2 = new Unit(10, "h");
+			var unitM = unit1.multiply(unit2);
+			assert.equal(unitM.units[0].unit.name, 'N');
+			assert.equal(unitM.units[1].unit.name, 's');
+			assert.equal(unitM.units[2].unit.name, 'h');
+
+			var unit3 = new Unit(14.7, "lbf");
+			var unit4 = new Unit(1, "in in");
+			var unitD = unit3.divide(unit4);
+			assert.equal(unitD.units[0].unit.name, 'lbf');
+			assert.equal(unitD.units[1].unit.name, 'in');
+			assert.equal(unitD.units[2].unit.name, 'in');
+
+			var unit5 = new Unit(1, "N h/s");
+			var unitP = unit5.pow(-3.5);
+			assert.equal(unitP.units[0].unit.name, 'N');
+			assert.equal(unitP.units[1].unit.name, 'h');
+			assert.equal(unitP.units[2].unit.name, 's');
+		});
+	});
 
   describe('plurals', function() {
     it('should support plurals', function () {

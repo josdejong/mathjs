@@ -159,6 +159,18 @@ describe('pow', function() {
     assert.equal(pow(unit('123 hogshead'), 0).toString(), "1");
   });
 
+	it('should return a cloned value and not affect the argument', function() {
+		var unit1 = unit('2 m');
+		var unit2 = pow(unit1, 2);
+
+		assert.equal(unit1.toString(), '2 m');
+		assert.equal(unit2.toString(), '4 m^2');
+	});
+
+	it('should return a valuelessUnit when calculating valuelessUnit ^ number', function() {
+		assert.equal(pow(unit('kg^0.5 m^0.5 s^-1'), 2).toString(), "(kg m) / s^2");
+	});
+
   it('should throw an error when doing number ^ unit', function() {
     // This is supported now --ericman314
     //assert.throws(function () {pow(unit('5cm'), 2)});
