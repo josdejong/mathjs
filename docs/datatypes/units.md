@@ -26,6 +26,7 @@ Example usage:
 var a = math.unit(45, 'cm');        // Unit 450 mm
 var b = math.unit('0.1 kilogram');  // Unit 100 gram
 var c = math.unit('2 inch');        // Unit 2 inch
+var d = math.unit('90 km/h');       // Unit 90 km/h
 ```
 
 A `Unit` contains the following functions:
@@ -72,7 +73,7 @@ d.toString();                       // String "5.08 cm"
 
 ## Calculations
 
-Basic operations `add`, `subtract`, `multiply`, and `divide` can be performed
+Basic operations `add`, `subtract`, `multiply`, `divide`, and `pow` can be performed
 on units. Trigonometric functions like `sin` support units with an angle as
 argument.
 
@@ -84,6 +85,12 @@ math.multiply(b, 2);                // Unit 200 mm
 
 var c = math.unit(45, 'deg');       // Unit 45 deg
 math.cos(c);                        // Number 0.7071067811865476
+
+// Kinetic energy of average sedan on highway
+var d = math.unit('80 mi/h')		// Unit 80 mi/h
+var e = math.unit('2 tonne')		// Unit 2 tonne
+var f = math.multiply(0.5, math.multipy(math.pow(d, 2), e));
+                                    // 1.2790064742399996 MJ
 ```
 
 The expression parser supports units too. This is described in the section about

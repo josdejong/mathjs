@@ -52,9 +52,16 @@ describe('dotDivide', function() {
     assert.equal(dotDivide(math.unit('5 m'), 10).toString(), '500 mm');
   });
 
+  it('should divide a number by a unit', function() {
+    assert.equal(dotDivide(10, math.unit('5 m')).toString(), '2 m^-1');
+  });
+
+  /*
+  // This is supported not --ericman314
   it('should throw an error if dividing a number by a unit', function() {
     assert.throws(function () {dotDivide(10, math.unit('5 m')).toString();});
   });
+  */
 
   describe('Array', function () {
 

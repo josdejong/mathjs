@@ -35,7 +35,7 @@ describe('unit', function() {
   });
 
   it('should throw an error if called with a number', function() {
-    assert.throws(function () {unit(2)}, /SyntaxError: String "2" is no valid unit/);
+    assert.throws(function () {unit(2)}, /SyntaxError: "2" contains no units/);
   });
 
   it('should throw an error if called with a complex', function() {
