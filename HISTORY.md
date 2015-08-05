@@ -5,6 +5,8 @@
 
 - Implemented function `kldivergence` (Kullback-Leibler divergence). 
   Thanks @saromanov.
+- Implemented function `mode`. Thanks @kv-kunalvyas.
+
 
 ## 2015-07-29, version 2.0.1
 
