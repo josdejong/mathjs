@@ -83,3 +83,26 @@ console.log('h = ');
 print(h);
 console.log('v = (2 g h) ^ 0.5 =');
 print(v);
+console.log();
+
+console.log('electrical power consumption:');
+print(math.eval('460 V * 20 A * 30 days to kWh'));		// 6624 kWh
+console.log();
+
+console.log('circuit design:');
+print(math.eval('24 V / (6 mA)'));										// 4 kΩ
+console.log();
+
+console.log('operations on arrays:');
+var B = math.eval('[1, 0, 0] T');
+var v = math.eval('[0, 1, 0] m/s');
+var q = math.eval('1 C');
+var F = math.multiply(q, math.cross(v, B));
+console.log('B (magnetic field strength) = ');
+print(B);
+console.log('v (particle velocity) = ');
+print(v);
+console.log('q (particle charge) = ');
+print(q);
+console.log('F (force) = q (v cross B) = ');
+print(F);

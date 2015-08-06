@@ -706,15 +706,16 @@ describe('unit', function() {
 
 	describe('UNITS', function() {
 		it('should be of the correct value and dimension', function() {
-			assert.equal(new Unit(1, 's A'), new Unit(1, 'C'));
-			assert.equal(new Unit(1, 'W/A'), new Unit(1, 'V'));
-			assert.equal(new Unit(1, 'V/A'), new Unit(1, 'ohm'));
-			assert.equal(new Unit(1, 'C/V'), new Unit(1, 'F'));
-			assert.equal(new Unit(1, 'J/A'), new Unit(1, 'Wb'));
-			assert.equal(new Unit(1, 'Wb/m^2'), new Unit(1, 'T'));
-			assert.equal(new Unit(1, 'Wb/A'), new Unit(1, 'H'));
-			assert.equal(new Unit(1, 'ohm^-1'), new Unit(1, 'S'));
-			assert.equal(new Unit(1, 'eV'), new Unit(1.602176565e-19, 'J'));
+		
+			assert.equal(new Unit(1, 's A')   .equals(new Unit(1, 'C'))  , true);
+			assert.equal(new Unit(1, 'W/A')   .equals(new Unit(1, 'V'))  , true);
+			assert.equal(new Unit(1, 'V/A')   .equals(new Unit(1, 'ohm')), true);
+			assert.equal(new Unit(1, 'C/V')   .equals(new Unit(1, 'F'))  , true);
+			assert.equal(new Unit(1, 'J/A')   .equals(new Unit(1, 'Wb')) , true);
+			assert.equal(new Unit(1, 'Wb/m^2').equals(new Unit(1, 'T'))  , true);
+			assert.equal(new Unit(1, 'Wb/A')  .equals(new Unit(1, 'H'))  , true);
+			assert.equal(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S'))  , true);
+			assert.equal(new Unit(1, 'eV')    .equals(new Unit(1.602176565e-19, 'J')), true);
 		});
 	});
 });
