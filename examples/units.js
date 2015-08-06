@@ -26,9 +26,9 @@ console.log('perform operations');
 print(math.add(a, b));                // 0.55 m
 print(math.multiply(b, 2));           // 200 mm
 print(math.divide(math.unit('1 m'), math.unit('1 s')));
-									  // 1 m / s
+                    // 1 m / s
 print(math.pow(math.unit('12 in'), 3));
-                                      // 1728 in^3									 
+                                      // 1728 in^3                   
 console.log();
 
 // units can be converted to a specific type, or to a number
@@ -53,7 +53,7 @@ console.log();
 
 // simplify units
 console.log('simplify units');
-print(math.eval('100000 N / m^2'));		// 100 kPa
+print(math.eval('100000 N / m^2'));    // 100 kPa
 print(math.eval('9.81 m/s^2 * 100 kg * 40 m')); // 39.24 kJ
 console.log();
 
@@ -86,11 +86,11 @@ print(v);
 console.log();
 
 console.log('electrical power consumption:');
-print(math.eval('460 V * 20 A * 30 days to kWh'));		// 6624 kWh
+print(math.eval('460 V * 20 A * 30 days to kWh'));    // 6624 kWh
 console.log();
 
 console.log('circuit design:');
-print(math.eval('24 V / (6 mA)'));										// 4 kΩ
+print(math.eval('24 V / (6 mA)'));                    // 4 kΩ
 console.log();
 
 console.log('operations on arrays:');
