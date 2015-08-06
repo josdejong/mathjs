@@ -20,7 +20,7 @@ math.nthRoot(a, root)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`a` | number &#124; BigNumber &#124; Array &#124; Matrix |  Value for which to calculate the nth root
+`a` | number &#124; BigNumber &#124; Array &#124; Matrix &#124; Complex |  Value for which to calculate the nth root
 `root` | number &#124; BigNumber | The root. Default value: 2.
 
 ### Returns

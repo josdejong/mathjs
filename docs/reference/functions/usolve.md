@@ -25,6 +25,15 @@ Type | Description
 DenseMatrix &#124; Array | A column vector with the linear system solution (x)
 
 
+## Examples
+
+```js
+var a = [[-2, 3], [2, 1]];
+var b = [11, 9];
+var x = usolve(a, b);  // [[8], [9]]
+```
+
+
 ## See also
 
 [lup](lup.md),

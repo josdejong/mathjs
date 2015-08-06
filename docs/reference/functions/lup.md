@@ -23,6 +23,19 @@ Type | Description
 Array<Matrix> | The lower triangular matrix, the upper triangular matrix and the permutation matrix.
 
 
+## Examples
+
+```js
+var m = [[2, 1], [1, 4]];
+var r = math.lup();
+// r = {
+//   L: [[1, 0], [0.5, 1]],
+//   U: [[2, 1], [0, 3.5]],
+//   P: [0, 1]
+// }
+```
+
+
 ## See also
 
 [slu](slu.md),

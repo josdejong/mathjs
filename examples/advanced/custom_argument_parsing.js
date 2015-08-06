@@ -88,12 +88,12 @@ math.import({
 function f(x) {
   return math.pow(x, 0.5);
 }
-console.log(math.integrate(f, 0, 1));                       // outputs 0.6667...
+console.log(math.integrate(f, 0, 1));                       // outputs 0.6667254718034714
 
 // use the function via the expression parser
-console.log(math.eval('integrate(x^0.5, x, 0, 1)'));        // outputs 0.6667...
+console.log(math.eval('integrate(x^0.5, x, 0, 1)'));        // outputs 0.6667254718034714
 
 // use the function via the expression parser (2)
 var scope = {};
 math.eval('f(x) = 2 * x', scope);
-console.log(math.eval('integrate(f(x), x, 0, 2)', scope));  // outputs 4.0000...
+console.log(math.eval('integrate(f(x), x, 0, 2)', scope));  // outputs 4.000000000000003

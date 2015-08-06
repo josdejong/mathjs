@@ -64,8 +64,8 @@ describe('gcd', function() {
   });
 
   it('should find the greatest common divisor of mixed numbers and fractions', function () {
-    assert.strictEqual(gcd(math.fraction(12), 8), 4);
-    assert.strictEqual(gcd(12, math.fraction(8)), 4);
+    assert.deepEqual(gcd(math.fraction(12), 8), math.fraction(4));
+    assert.deepEqual(gcd(12, math.fraction(8)), math.fraction(4));
   });
 
   it('should find the greatest common divisor of booleans', function() {

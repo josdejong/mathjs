@@ -7,12 +7,11 @@ var gutil = require('gulp-util'),
 
 // names to ignore
 var ignore = [
-  // functions not supported by the parser:
-  'compile', 'parse', 'parser', 'chain', 'print', 'config', 'in', 'create',
-  // private functions:
-  '_divide',
-  // deprecated functions:
-  'workspace', 'unary', 'edivide', 'emultiply', 'epow', 'smallereq', 'largereq', 'ifElse', 'select'
+  // functions not supported or relevant for the parser:
+  'create', 'typed', 'config',
+  'on', 'off', 'emit', 'once',
+  'compile', 'parse', 'parser',
+  'chain', 'print'
 ];
 
 // test whether all functions are documented
@@ -20,7 +19,7 @@ var undocumentedCount = 0;
 for (prop in math) {
   if (math.hasOwnProperty(prop)) {
     var obj = math[prop];
-    if (math['typeof'](obj) != 'object') {
+    if (math['typeof'](obj) != 'Object') {
       if (!math.expression.docs[prop] && (ignore.indexOf(prop) == -1)) {
         gutil.log('WARNING: Function ' + prop + ' is undocumented');
         undocumentedCount++;

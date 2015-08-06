@@ -92,12 +92,11 @@ describe('pow', function() {
     assert.deepEqual(math.pow(fraction(3), fraction(2)), fraction(9));
     assert.deepEqual(math.pow(fraction(1.5), fraction(2)), fraction(2.25));
     assert.deepEqual(math.pow(fraction(1.5), fraction(-2)), fraction(4, 9));
-    assert.strictEqual(math.pow(fraction(1.5), 2), 2.25);
+    assert.deepEqual(math.pow(fraction(1.5), 2), fraction(2.25));
   });
 
   it('should exponentiate a fraction to an non-integer power', function() {
     assert.throws(function () {mathPredictable.pow(fraction(3), fraction(1.5))}, /Function pow does not support non-integer exponents for fractions/);
-    assert.strictEqual(mathPredictable.pow(fraction(4), 1.5), 8);
 
     assert.strictEqual(math.pow(fraction(4), 1.5), 8);
     assert.strictEqual(math.pow(fraction(4), fraction(1.5)), 8);
@@ -153,8 +152,27 @@ describe('pow', function() {
     approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0));
   });
 
-  it('should throw an error if used with a unit', function() {
-    assert.throws(function () {pow(unit('5cm'), 2)});
+  it('should correctly calculate unit ^ number', function() {
+    assert.equal(pow(unit('4 N'), 2).toString(), "16 N^2");
+    assert.equal(pow(unit('0.25 m/s'), -0.5).toString(), "2 s^0.5 / m^0.5");
+    assert.equal(pow(unit('123 hogshead'), 0).toString(), "1");
+  });
+
+	it('should return a cloned value and not affect the argument', function() {
+		var unit1 = unit('2 m');
+		var unit2 = pow(unit1, 2);
+
+		assert.equal(unit1.toString(), '2 m');
+		assert.equal(unit2.toString(), '4 m^2');
+	});
+
+	it('should return a valuelessUnit when calculating valuelessUnit ^ number', function() {
+		assert.equal(pow(unit('kg^0.5 m^0.5 s^-1'), 2).toString(), "(kg m) / s^2");
+	});
+
+  it('should throw an error when doing number ^ unit', function() {
+    // This is supported now --ericman314
+    //assert.throws(function () {pow(unit('5cm'), 2)});
     assert.throws(function () {pow(2, unit('5cm'))});
   });
 

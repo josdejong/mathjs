@@ -111,8 +111,8 @@ describe('divide', function() {
   });
 
   it('should divide mixed fractions and numbers', function() {
-    assert.strictEqual(divide(1, math.fraction(3)), 0.3333333333333333);
-    assert.strictEqual(divide(math.fraction(1), 3), 0.3333333333333333);
+    assert.deepEqual(divide(1, math.fraction(3)), math.fraction(1,3));
+    assert.deepEqual(divide(math.fraction(1), 3), math.fraction(1,3));
   });
 
   it('should divide units by a number', function() {
@@ -121,6 +121,23 @@ describe('divide', function() {
 
   it('should divide valueless units by a number', function() {
     assert.equal(divide(math.unit('m'), 2).toString(), '500 mm');
+  });
+
+  it('should divide a number by a unit', function() {
+    assert.equal(divide(20, math.unit('4 N s')).toString(), '5 N^-1 s^-1');
+  });
+
+  it('should divide two units', function() {
+    assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute');
+  });
+
+  it('should divide one valued unit by a valueless unit and vice-versa', function() {
+    assert.equal(divide(math.unit('4 gal'), math.unit('L')).format(5), '15.142');
+    assert.equal(divide(math.unit('gal'), math.unit('4 L')).format(3), '0.946');
+  });
+
+  it('should divide (but not simplify) two valueless units', function() {
+    assert.equal(divide(math.unit('gal'), math.unit('L')).toString(), 'gal / L');
   });
 
   // TODO: divide units by a bignumber
@@ -160,6 +177,8 @@ describe('divide', function() {
     assert.throws(function () {divide(a, [[1]])});
   });
 
+  /*
+  // These are supported now --ericman314
   it('should throw an error if dividing a number by a unit', function() {
     assert.throws(function () {divide(10, math.unit('5 m')).toString()});
   });
@@ -167,6 +186,7 @@ describe('divide', function() {
   it('should throw an error if dividing a unit by a non-number', function() {
     assert.throws(function () {divide(math.unit('5 m'), math.unit('5cm')).toString()});
   });
+  */
 
   it('should throw an error if there\'s wrong number of arguments', function() {
     assert.throws(function () {divide(2,3,4); });

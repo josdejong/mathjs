@@ -76,8 +76,14 @@ describe('add', function() {
   });
 
   it('should add mixed fractions and numbers', function() {
-    assert.strictEqual(add(1, math.fraction(1,3)), 1.3333333333333333);
-    assert.strictEqual(add(math.fraction(1,3), 1), 1.3333333333333333);
+    assert.deepEqual(add(1, math.fraction(1,3)), math.fraction(4,3));
+    assert.deepEqual(add(math.fraction(1,3), 1), math.fraction(4,3));
+  });
+
+  it('should throw an error when converting a number with 15+ digits to fraction', function() {
+    assert.throws(function () {
+      add(math.pi, math.fraction(1,3))
+    }, /Cannot implicitly convert a number with >15 significant digits to Fraction/);
   });
 
   it('should convert strings to numbers', function() {

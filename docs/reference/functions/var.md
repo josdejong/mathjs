@@ -10,6 +10,7 @@ parameter. The parameter `normalization` can be one of the following values:
 - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
 - 'uncorrected'        The sum of squared errors is divided by n
 - 'biased'             The sum of squared errors is divided by (n + 1)
+
 Note that older browser may not like the variable name `var`. In that
 case, the function can be called as `math['var'](...)` instead of
 `math.var(...)`.

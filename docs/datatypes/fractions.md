@@ -12,16 +12,16 @@ which can be represented as `0.(3)`, or `2/7` which can be represented as `0.(28
 A Fraction can be created using the function `fraction`:
 
 ```js
-math.fraction('1/3');   // Fraction, 0.(3)
-math.fraction(1, 3);    // Fraction, 0.(3)
-math.fraction('0.(3)'); // Fraction, 0.(3)
+math.fraction('1/3');   // Fraction, 1/3
+math.fraction(2, 3);    // Fraction, 2/3
+math.fraction('0.(3)'); // Fraction, 1/3
 ```
 
 And can be used in functions like `add` and `multiply` like:
 
 ```js
-math.add(fraction('1/3'), fraction('1/6'));        // Fraction, 0.5
-math.multiply(fraction('1/4'), fraction('1/2'));   // Fraction, 0.125
+math.add(math.fraction('1/3'), math.fraction('1/6'));      // Fraction, 1/2
+math.multiply(math.fraction('1/4'), math.fraction('1/2')); // Fraction, 1/8
 ```
 
 Note that not all functions support fractions. For example trigonometric 
@@ -41,8 +41,8 @@ math.config({
   number: 'fraction' 
 });
 
-// use math
-math.eval('0.1 + 0.2');   // Fraction, 0.3
+// use the expression parser
+math.eval('0.32 + 0.08');   // Fraction, 2/5
 ```
 
 ## Support
@@ -64,12 +64,12 @@ may be lost when the value cannot represented in 16 digits.
 ```js
 // converting numbers and fractions
 var a = math.number(0.3);                         // number, 0.3
-var b = math.fraction(a);                         // Fraction, 0.3
+var b = math.fraction(a);                         // Fraction, 3/10
 var c = math.number(b);                           // number, 0.3
 
 // loosing precision when converting to number: a fraction can represent
 // a number with an infinite number of repeating decimals, a number just
 // stores about 16 digits and cuts consecutive digits.
-var d = math.fraction('1/3');                     // Fraction, 0.(3)
-var e = math.number(f);                           // number, 0.3333333333333333
+var d = math.fraction('2/5');                     // Fraction, 2/5
+var e = math.number(d);                           // number, 0.4
 ```
