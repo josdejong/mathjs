@@ -60,15 +60,15 @@ describe('unit', function() {
       assert.throws(function () { new Unit(0, 3); });
     });
 
-	it('should flag unit as already simplified', function() {
+  it('should flag unit as already simplified', function() {
       unit1 = new Unit(9.81, "kg m/s^2");
-	  assert.equal(unit1.isUnitListSimplified, true);
-	  assert.equal(unit1.toString(), "9.81 (kg m) / s^2");
+    assert.equal(unit1.isUnitListSimplified, true);
+    assert.equal(unit1.toString(), "9.81 (kg m) / s^2");
 
       unit1 = new Unit(null, "kg m/s^2");
-	  assert.equal(unit1.isUnitListSimplified, true);
-	  assert.equal(unit1.toString(), "(kg m) / s^2");
-	});
+    assert.equal(unit1.isUnitListSimplified, true);
+    assert.equal(unit1.toString(), "(kg m) / s^2");
+  });
 
   });
 
@@ -370,56 +370,56 @@ describe('unit', function() {
   });
 
   describe('simplifyUnitListLazy', function() {
-		it('should not simplify units created with new Unit()', function() {
-			var unit1 = new Unit(10, "kg m/s^2");
-			assert.equal(unit1.units[0].unit.name, "g");
-			assert.equal(unit1.units[1].unit.name, "m");
-			assert.equal(unit1.units[2].unit.name, "s");
-			assert.equal(unit1.toString(), "10 (kg m) / s^2");
-		});
+    it('should not simplify units created with new Unit()', function() {
+      var unit1 = new Unit(10, "kg m/s^2");
+      assert.equal(unit1.units[0].unit.name, "g");
+      assert.equal(unit1.units[1].unit.name, "m");
+      assert.equal(unit1.units[2].unit.name, "s");
+      assert.equal(unit1.toString(), "10 (kg m) / s^2");
+    });
 
-		it('should only simplify units with values', function() {
-			var unit1 = new Unit(null, "kg m mol / s^2 mol");
-			unit1.isUnitListSimplified = false;
-			unit1.simplifyUnitListLazy();
-			assert.equal(unit1.toString(), "(kg m mol) / (s^2 mol)");
-			unit1 = math.multiply(unit1, 1);
-			assert.equal(unit1.toString(), "1 N");
-		});
+    it('should only simplify units with values', function() {
+      var unit1 = new Unit(null, "kg m mol / s^2 mol");
+      unit1.isUnitListSimplified = false;
+      unit1.simplifyUnitListLazy();
+      assert.equal(unit1.toString(), "(kg m mol) / (s^2 mol)");
+      unit1 = math.multiply(unit1, 1);
+      assert.equal(unit1.toString(), "1 N");
+    });
 
-		it('should simplify units resulting from multiply/divide/power functions only when formatting for output', function() {
-			var unit1 = new Unit(2, "kg");
-			var unit2 = new Unit(5, "m/s^2");
-			var unit3 = math.multiply(unit1, unit2);
-			assert.equal(unit3.units[0].unit.name, "g");
-			assert.equal(unit3.units[1].unit.name, "m");
-			assert.equal(unit3.units[2].unit.name, "s");
-			assert.equal(unit3.toString(), "10 N");		// Triggers simplification
-			assert.equal(unit3.units[0].unit.name, "N");
+    it('should simplify units resulting from multiply/divide/power functions only when formatting for output', function() {
+      var unit1 = new Unit(2, "kg");
+      var unit2 = new Unit(5, "m/s^2");
+      var unit3 = math.multiply(unit1, unit2);
+      assert.equal(unit3.units[0].unit.name, "g");
+      assert.equal(unit3.units[1].unit.name, "m");
+      assert.equal(unit3.units[2].unit.name, "s");
+      assert.equal(unit3.toString(), "10 N");    // Triggers simplification
+      assert.equal(unit3.units[0].unit.name, "N");
 
-		});
+    });
 
-		it('should simplify units according to chosen unit system', function() {
-			var unit1 = new Unit(10, "N");
-			Unit.setUnitSystem('us');
-			unit1.isUnitListSimplified = false;
-			assert.equal(unit1.toString(), "2.248089430997105 lbf");
-			assert.equal(unit1.units[0].unit.name, "lbf");
+    it('should simplify units according to chosen unit system', function() {
+      var unit1 = new Unit(10, "N");
+      Unit.setUnitSystem('us');
+      unit1.isUnitListSimplified = false;
+      assert.equal(unit1.toString(), "2.248089430997105 lbf");
+      assert.equal(unit1.units[0].unit.name, "lbf");
 
-			Unit.setUnitSystem('cgs');
-			unit1.isUnitListSimplified = false;
-			assert.equal(unit1.format(2), "1 Mdyn");
-			assert.equal(unit1.units[0].unit.name, "dyn");
-		});
+      Unit.setUnitSystem('cgs');
+      unit1.isUnitListSimplified = false;
+      assert.equal(unit1.format(2), "1 Mdyn");
+      assert.equal(unit1.units[0].unit.name, "dyn");
+    });
 
-		it('should correctly simplify units when unit system is "auto"', function() {
-			Unit.setUnitSystem('auto');
-			var unit1 = new Unit(5, "lbf min / s");
-			unit1.isUnitListSimplified = false;
-			assert.equal(unit1.toString(), "300 lbf");
-		});
+    it('should correctly simplify units when unit system is "auto"', function() {
+      Unit.setUnitSystem('auto');
+      var unit1 = new Unit(5, "lbf min / s");
+      unit1.isUnitListSimplified = false;
+      assert.equal(unit1.toString(), "300 lbf");
+    });
 
-	
+  
   });
 
   describe('valueOf', function() {
@@ -582,13 +582,13 @@ describe('unit', function() {
       assert.equal(unit1.units[4].power, -1);
       assert.equal(unit1.units[0].prefix.name, 'k');
 
-	  unit1 = Unit.parse('5exabytes');
-	  approx.equal(unit1.value, 4e19);
-	  assert.equal(unit1.units[0].unit.name, 'bytes');
+    unit1 = Unit.parse('5exabytes');
+    approx.equal(unit1.value, 4e19);
+    assert.equal(unit1.units[0].unit.name, 'bytes');
     });
 
     it('should return null (update: throw exception --ericman314) when parsing an invalid unit', function() {
-	  // I'm worried something else will break if Unit.parse throws an exception instead of returning null???? --ericman314
+    // I'm worried something else will break if Unit.parse throws an exception instead of returning null???? --ericman314
       assert.throws(function () {Unit.parse('.meter')}, /Could not parse/);
       assert.throws(function () {Unit.parse('5e')}, /Unit "e" not found/);
       assert.throws(function () {Unit.parse('5e.')}, /Unit "e" not found/);
@@ -616,52 +616,52 @@ describe('unit', function() {
     });
   });
 
-	describe('_isDerived', function() {
-		it('should return the correct value', function () {
-			assert.equal(Unit.parse('34 kg')._isDerived(), false);
-			assert.equal(Unit.parse('34 kg/s')._isDerived(), true);
-			assert.equal(Unit.parse('34 kg^2')._isDerived(), true);
-			assert.equal(Unit.parse('34 N')._isDerived(), false);
-			assert.equal(Unit.parse('34 kg m / s^2')._isDerived(), true);
-			var unit1 = Unit.parse('34 kg m / s^2');
-			assert.equal(unit1._isDerived(), true);
-			unit1.isUnitListSimplified = false;
-			unit1.simplifyUnitListLazy();
-			assert.equal(unit1._isDerived(), false);
-		});
-	});
-	
-	describe('multiply, divide, and pow', function() {
-		it('should flag the unit as requiring simplification', function() {
-			var unit1 = new Unit(10, 'kg');
-			var unit2 = new Unit(9.81, 'm/s^2');
-			assert.equal(unit1.multiply(unit2).isUnitListSimplified, false);
-			assert.equal(unit1.divide(unit2).isUnitListSimplified, false);
-			assert.equal(unit1.pow(2).isUnitListSimplified, false);
-		});
+  describe('_isDerived', function() {
+    it('should return the correct value', function () {
+      assert.equal(Unit.parse('34 kg')._isDerived(), false);
+      assert.equal(Unit.parse('34 kg/s')._isDerived(), true);
+      assert.equal(Unit.parse('34 kg^2')._isDerived(), true);
+      assert.equal(Unit.parse('34 N')._isDerived(), false);
+      assert.equal(Unit.parse('34 kg m / s^2')._isDerived(), true);
+      var unit1 = Unit.parse('34 kg m / s^2');
+      assert.equal(unit1._isDerived(), true);
+      unit1.isUnitListSimplified = false;
+      unit1.simplifyUnitListLazy();
+      assert.equal(unit1._isDerived(), false);
+    });
+  });
+  
+  describe('multiply, divide, and pow', function() {
+    it('should flag the unit as requiring simplification', function() {
+      var unit1 = new Unit(10, 'kg');
+      var unit2 = new Unit(9.81, 'm/s^2');
+      assert.equal(unit1.multiply(unit2).isUnitListSimplified, false);
+      assert.equal(unit1.divide(unit2).isUnitListSimplified, false);
+      assert.equal(unit1.pow(2).isUnitListSimplified, false);
+    });
 
-		it('should retain the units of their operands without simplifying', function() {
-			var unit1 = new Unit(10, "N/s");
-			var unit2 = new Unit(10, "h");
-			var unitM = unit1.multiply(unit2);
-			assert.equal(unitM.units[0].unit.name, 'N');
-			assert.equal(unitM.units[1].unit.name, 's');
-			assert.equal(unitM.units[2].unit.name, 'h');
+    it('should retain the units of their operands without simplifying', function() {
+      var unit1 = new Unit(10, "N/s");
+      var unit2 = new Unit(10, "h");
+      var unitM = unit1.multiply(unit2);
+      assert.equal(unitM.units[0].unit.name, 'N');
+      assert.equal(unitM.units[1].unit.name, 's');
+      assert.equal(unitM.units[2].unit.name, 'h');
 
-			var unit3 = new Unit(14.7, "lbf");
-			var unit4 = new Unit(1, "in in");
-			var unitD = unit3.divide(unit4);
-			assert.equal(unitD.units[0].unit.name, 'lbf');
-			assert.equal(unitD.units[1].unit.name, 'in');
-			assert.equal(unitD.units[2].unit.name, 'in');
+      var unit3 = new Unit(14.7, "lbf");
+      var unit4 = new Unit(1, "in in");
+      var unitD = unit3.divide(unit4);
+      assert.equal(unitD.units[0].unit.name, 'lbf');
+      assert.equal(unitD.units[1].unit.name, 'in');
+      assert.equal(unitD.units[2].unit.name, 'in');
 
-			var unit5 = new Unit(1, "N h/s");
-			var unitP = unit5.pow(-3.5);
-			assert.equal(unitP.units[0].unit.name, 'N');
-			assert.equal(unitP.units[1].unit.name, 'h');
-			assert.equal(unitP.units[2].unit.name, 's');
-		});
-	});
+      var unit5 = new Unit(1, "N h/s");
+      var unitP = unit5.pow(-3.5);
+      assert.equal(unitP.units[0].unit.name, 'N');
+      assert.equal(unitP.units[1].unit.name, 'h');
+      assert.equal(unitP.units[2].unit.name, 's');
+    });
+  });
 
   describe('plurals', function() {
     it('should support plurals', function () {
@@ -704,5 +704,18 @@ describe('unit', function() {
     });
   });
 
-    // TODO: test the value of each of the available units...
+  describe('UNITS', function() {
+    it('should be of the correct value and dimension', function() {
+    
+      assert.equal(new Unit(1, 's A')   .equals(new Unit(1, 'C'))  , true);
+      assert.equal(new Unit(1, 'W/A')   .equals(new Unit(1, 'V'))  , true);
+      assert.equal(new Unit(1, 'V/A')   .equals(new Unit(1, 'ohm')), true);
+      assert.equal(new Unit(1, 'C/V')   .equals(new Unit(1, 'F'))  , true);
+      assert.equal(new Unit(1, 'J/A')   .equals(new Unit(1, 'Wb')) , true);
+      assert.equal(new Unit(1, 'Wb/m^2').equals(new Unit(1, 'T'))  , true);
+      assert.equal(new Unit(1, 'Wb/A')  .equals(new Unit(1, 'H'))  , true);
+      assert.equal(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S'))  , true);
+      assert.equal(new Unit(1, 'eV')    .equals(new Unit(1.602176565e-19, 'J')), true);
+    });
+  });
 });

@@ -20,9 +20,10 @@ Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (de
 Amount of substance | mole (mol)
 Luminous intensity  | candela (cd)
 Force               | newton (N), dyne (dyn), poundforce (lbf)
-Energy              | J, erg, Wh, BTU
-Power               | W, hp
+Energy              | joule (J), erg, Wh, BTU, electronvolt (eV)
+Power               | watt (W), hp
 Pressure            | Pa, psi, atm
+Electricity and Magnetism | ampere (A), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bit (b), byte (B)
 
 Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`. 
