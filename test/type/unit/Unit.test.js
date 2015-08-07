@@ -364,6 +364,7 @@ describe('unit', function() {
       assert.equal(new Unit(500 ,'m').toString(), '500 m');
       assert.equal(new Unit(600 ,'m').toString(), '0.6 km');
       assert.equal(new Unit(1000 ,'m').toString(), '1 km');
+			assert.equal(new Unit(1000 ,'ohm').toString(), '1 kohm');
     });
 
 
