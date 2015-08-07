@@ -1,6 +1,15 @@
 # History
 
 
+## not yet released, version 2.1.0
+
+- Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
+- Implemented support for electric units. Thanks @ericman314.
+- Implemented function `kldivergence` (Kullback-Leibler divergence). 
+  Thanks @saromanov.
+- Implemented function `mode`. Thanks @kv-kunalvyas.
+
+
 ## 2015-07-29, version 2.0.1
 
 - Fixed operations with mixed fractions and numbers be converted to numbers

@@ -19,10 +19,16 @@ Electric current    | ampere (A)
 Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)
 Amount of substance | mole (mol)
 Luminous intensity  | candela (cd)
-Force               | newton (N), poundforce (lbf)
+Force               | newton (N), dyne (dyn), poundforce (lbf)
+Energy              | joule (J), erg, Wh, BTU, electronvolt (eV)
+Power               | watt (W), hp
+Pressure            | Pa, psi, atm
+Electricity and Magnetism | ampere (A), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bit (b), byte (B)
 
 Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`. 
+
+Surface and volume units can alternatively be expressed in terms of length units raised to a power, for example `100 in^2` instead of `100 sqin`.
 
 ## Prefixes
 
