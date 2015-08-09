@@ -90,7 +90,7 @@ print(math.eval('460 V * 20 A * 30 days to kWh'));    // 6624 kWh
 console.log();
 
 console.log('circuit design:');
-print(math.eval('24 V / (6 mA)'));                    // 4 kΩ
+print(math.eval('24 V / (6 mA)'));                    // 4 kohm
 console.log();
 
 console.log('operations on arrays:');

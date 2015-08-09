@@ -348,7 +348,7 @@ describe('unit', function() {
       assert.equal(new Unit(5, 'kg^1.0e0 m^1.0e0 s^-2.0e0').toString(), '5 (kg m) / s^2');
       assert.equal(new Unit(5, 's^-2').toString(), '5 s^-2');
       assert.equal(new Unit(5, 'm / s ^ 2').toString(), '5 m / s^2');
-      assert.equal(new Unit(null, 'kg m^2 / s^2 mol').toString(), '(kg m^2) / (s^2 mol)');
+      assert.equal(new Unit(null, 'kg m^2 / s^2 / mol').toString(), '(kg m^2) / (s^2 mol)');
     });
 
     it('should render with the best prefix', function() {
@@ -367,7 +367,6 @@ describe('unit', function() {
 			assert.equal(new Unit(1000 ,'ohm').toString(), '1 kohm');
     });
 
-
   });
 
   describe('simplifyUnitListLazy', function() {
@@ -380,7 +379,7 @@ describe('unit', function() {
     });
 
     it('should only simplify units with values', function() {
-      var unit1 = new Unit(null, "kg m mol / s^2 mol");
+      var unit1 = new Unit(null, "kg m mol / s^2 / mol");
       unit1.isUnitListSimplified = false;
       unit1.simplifyUnitListLazy();
       assert.equal(unit1.toString(), "(kg m mol) / (s^2 mol)");
@@ -569,6 +568,13 @@ describe('unit', function() {
       assert.equal(unit1.units[1].power, -2);
       assert.equal(unit1.units[0].prefix.name, 'c');
 
+      unit1 = Unit.parse('981 cm*s^-2');
+      approx.equal(unit1.value, 9.81);
+      assert.equal(unit1.units[0].unit.name, 'm');
+      assert.equal(unit1.units[1].unit.name, 's');
+      assert.equal(unit1.units[1].power, -2);
+      assert.equal(unit1.units[0].prefix.name, 'c');
+
       unit1 = Unit.parse('8.314 kg m^2 / s^2 / K / mol');
       approx.equal(unit1.value, 8.314);
       assert.equal(unit1.units[0].unit.name, 'g');
@@ -583,9 +589,22 @@ describe('unit', function() {
       assert.equal(unit1.units[4].power, -1);
       assert.equal(unit1.units[0].prefix.name, 'k');
 
-    unit1 = Unit.parse('5exabytes');
-    approx.equal(unit1.value, 4e19);
-    assert.equal(unit1.units[0].unit.name, 'bytes');
+      unit1 = Unit.parse('5exabytes');
+      approx.equal(unit1.value, 4e19);
+      assert.equal(unit1.units[0].unit.name, 'bytes');
+    });
+
+    it('should parse units with correct precedence', function() {
+      var unit1 = Unit.parse('1	m^3 / kg s^2'); // implicit multiplication
+
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 'm');
+      assert.equal(unit1.units[1].unit.name, 'g');
+      assert.equal(unit1.units[2].unit.name, 's');
+      assert.equal(unit1.units[0].power, 3);
+      assert.equal(unit1.units[1].power, -1);
+      assert.equal(unit1.units[2].power, 2);
+      assert.equal(unit1.units[0].prefix.name, '');
     });
 
     it('should return null (update: throw exception --ericman314) when parsing an invalid unit', function() {
