@@ -463,11 +463,11 @@ describe('unit', function() {
       assert.deepEqual(u5, u6);
     });
 
-		it('toJSON -> fromJSON should recover an "equal" unit', function() {
-			var unit1 = Unit.parse('1.23(m/(s/(kg mol)/(lbm/h)K))');
-			var unit2 = Unit.fromJSON(unit1.toJSON());
-			assert.equal(unit1.equals(unit2), true);
-		});
+    it('toJSON -> fromJSON should recover an "equal" unit', function() {
+      var unit1 = Unit.parse('1.23(m/(s/(kg mol)/(lbm/h)K))');
+      var unit2 = Unit.fromJSON(unit1.toJSON());
+      assert.equal(unit1.equals(unit2), true);
+    });
 
   });
 
