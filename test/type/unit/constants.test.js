@@ -63,7 +63,6 @@ describe('physical constants', function() {
     assert.equal(math.molarMass.toString(),         '0.001 kg / mol');
     assert.equal(math.molarMassC12.toString(),      '0.0012 kg / mol');
     assert.equal(math.gravity.toString(),           '9.80665 m / s^2');
-    assert.equal(math.atm.toString(),               '101.325 kPa');
 
     // Natural units
     assert.equal(math.planckLength.toString(),      '1.6161999700000003e-11 ym'); // round-off error
