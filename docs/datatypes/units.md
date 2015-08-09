@@ -23,10 +23,11 @@ math.unit(unit: Unit) : Unit
 Example usage:
 
 ```js
-var a = math.unit(45, 'cm');        // Unit 450 mm
-var b = math.unit('0.1 kilogram');  // Unit 100 gram
-var c = math.unit('2 inch');        // Unit 2 inch
-var d = math.unit('90 km/h');       // Unit 90 km/h
+var a = math.unit(45, 'cm');            // Unit 450 mm
+var b = math.unit('0.1 kilogram');      // Unit 100 gram
+var c = math.unit('2 inch');            // Unit 2 inch
+var d = math.unit('90 km/h');           // Unit 90 km/h
+var e = math.unit('101325 kg/(m s^2)'); // Unit 101325 kg / (m s^2)
 ```
 
 A `Unit` contains the following functions:
@@ -70,6 +71,19 @@ c.equalBase(b);                     // false
 d.toString();                       // String "5.08 cm"
 ```
 
+Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
+
+```js
+// These three are identical
+var correct1 = math.unit('8.314 m^3 Pa / mol / K');         // Unit 8.314 (m^3 Pa) / (mol K)
+var correct2 = math.unit('8.314 (m^3 Pa) / (mol K)');       // Unit 8.314 (m^3 Pa) / (mol K)
+var correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)');   // Unit 8.314 (m^3 Pa) / (mol K)
+```
+But this expression, which omits the second `/` between `mol` and `K`, results in the wrong value:
+```js
+// Missing the second '/' between 'mol' and 'K'
+var incorrect = math.unit('8.314 m^3 Pa / mol K');          // Unit 8.314 (m^3 Pa K) / mol
+```
 
 ## Calculations
 
@@ -87,7 +101,7 @@ var c = math.unit(45, 'deg');       // Unit 45 deg
 math.cos(c);                        // Number 0.7071067811865476
 
 // Kinetic energy of average sedan on highway
-var d = math.unit('80 mi/h')	      // Unit 80 mi/h
+var d = math.unit('80 mi/h')        // Unit 80 mi/h
 var e = math.unit('2 tonne')        // Unit 2 tonne
 var f = math.multiply(0.5, math.multipy(math.pow(d, 2), e));
                                     // 1.2790064742399996 MJ
