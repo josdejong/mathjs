@@ -5,6 +5,7 @@
 
 - Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
 - Implemented support for electric units. Thanks @ericman314.
+- Implemented physical constants like `speedOfLight`, `gravity`, etc. 
 - Implemented function `kldivergence` (Kullback-Leibler divergence). 
   Thanks @saromanov.
 - Implemented function `mode`. Thanks @kv-kunalvyas.
