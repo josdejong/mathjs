@@ -59,6 +59,23 @@ describe('parse', function() {
     }), math.matrix([undefined]));
   });
 
+  it('should parse unicode characters', function() {
+    // http://unicode-table.com/en
+    var scope = {};
+
+    math.eval('\u00E9 = 2', scope); // Latin Small Letter E with Acute
+    assert.strictEqual(scope['\u00E9'], 2);
+
+    math.eval('\u03A6 = 3', scope); // Greek Capital Letter Phi
+    assert.strictEqual(scope['\u03A6'], 3);
+
+    math.eval('\u03A9 = 4', scope); // Greek Capital Letter Omega
+    assert.strictEqual(scope['\u03A9'], 4);
+
+    math.eval('k\u00F6ln = 5', scope); // Combination of latin and unicode
+    assert.strictEqual(scope['k\u00F6ln'], 5);
+  });
+
   describe('multiline', function () {
 
     it('should parse multiline expressions', function() {

@@ -9,6 +9,8 @@
 - Implemented function `kldivergence` (Kullback-Leibler divergence). 
   Thanks @saromanov.
 - Implemented function `mode`. Thanks @kv-kunalvyas.
+- Added support for unicode characters in the expression parser: greek letters
+  and latin letters with accents. See #265.
 
 
 ## 2015-07-29, version 2.0.1
