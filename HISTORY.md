@@ -11,6 +11,8 @@
 - Implemented function `mode`. Thanks @kv-kunalvyas.
 - Added support for unicode characters in the expression parser: greek letters
   and latin letters with accents. See #265.
+- Internal functions `Unit.parse` and `Complex.parse` now throw an Error 
+  instead of returning null when passing invalid input.
 
 
 ## 2015-07-29, version 2.0.1

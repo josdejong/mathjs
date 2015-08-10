@@ -183,27 +183,28 @@ describe('Complex', function () {
       assertComplex(Complex.parse('2.'), 2, 0);
     });
 
-    it('should return null if called with an invalid string', function() {
-      assert.strictEqual(Complex.parse('str', 2), null);
-      assert.strictEqual(Complex.parse(''), null);
-      assert.strictEqual(Complex.parse('2r'), null);
-      assert.strictEqual(Complex.parse('str'), null);
-      assert.strictEqual(Complex.parse('2i+3i'), null);
-      assert.strictEqual(Complex.parse('2ia'), null);
-      assert.strictEqual(Complex.parse('3+4'), null);
-      assert.strictEqual(Complex.parse('3i+4'), null);
-      assert.strictEqual(Complex.parse('3e + 4i'), null);
-      assert.strictEqual(Complex.parse('3 + 4i bla'), null);
-      assert.strictEqual(Complex.parse('3e1.2 + 4i'), null);
-      assert.strictEqual(Complex.parse('3e1.2i'), null);
-      assert.strictEqual(Complex.parse('3e1.2i'), null);
-      assert.strictEqual(Complex.parse('- i'), null);
-      assert.strictEqual(Complex.parse('+ i'), null);
-      assert.strictEqual(Complex.parse('.'), null);
-      assert.strictEqual(Complex.parse('2 + .i'), null);
-      assert.strictEqual(Complex.parse('4i bla'), null);
-      assert.strictEqual(Complex.parse('i bla'), null);
-      assert.strictEqual(Complex.parse(2), null);
+    it('should throw an exception if called with an invalid string', function() {
+      assert.throws(function () {Complex.parse('')}, /SyntaxError: Could not parse: "" as complex number/);
+      assert.throws(function () {Complex.parse('2r')}, /SyntaxError: End of string expected, got "r"/);
+      assert.throws(function () {Complex.parse('str')}, /SyntaxError: Could not parse: "str" as complex number/);
+      assert.throws(function () {Complex.parse('2i+3i')}, /SyntaxError: End of string expected, got "\+3i"/);
+      assert.throws(function () {Complex.parse('2ia')}, /SyntaxError: End of string expected, got "a"/);
+      assert.throws(function () {Complex.parse('3+4')}, /SyntaxError: Character "i" expected, got ""/);
+      assert.throws(function () {Complex.parse('3i+4')}, /SyntaxError: End of string expected, got "\+4"/);
+      assert.throws(function () {Complex.parse('3e + 4i')}, /SyntaxError: Could not parse: "3e \+ 4i" as complex number/);
+      assert.throws(function () {Complex.parse('3 + 4i foo')}, /SyntaxError: End of string expected, got "foo"/);
+      assert.throws(function () {Complex.parse('3e1.2 + 4i')}, /SyntaxError: End of string expected, got ".2 \+ 4i"/);
+      assert.throws(function () {Complex.parse('3e1.2i')}, /SyntaxError: End of string expected, got ".2i"/);
+      assert.throws(function () {Complex.parse('- i')}, /SyntaxError: Could not parse: "- i" as complex number/);
+      assert.throws(function () {Complex.parse('+ i')}, /SyntaxError: Could not parse: "\+ i" as complex number/);
+      assert.throws(function () {Complex.parse('.')}, /SyntaxError: Could not parse: "." as complex number/);
+      assert.throws(function () {Complex.parse('2 + .i')}, /SyntaxError: Imaginary part expected/); // TODO: this is an odd message
+      assert.throws(function () {Complex.parse('4i foo')}, /SyntaxError: End of string expected, got "foo/);
+      assert.throws(function () {Complex.parse('i foo')}, /SyntaxError: End of string expected, got "foo"/);
+    });
+
+    it('should throw an exception when parsing an invalid type of argument', function() {
+      assert.throws(function () {Complex.parse(2)}, /TypeError: Invalid argument in Complex.parse, string expected/);
     });
 
   });

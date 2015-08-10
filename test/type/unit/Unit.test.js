@@ -662,7 +662,7 @@ describe('unit', function() {
     });
 
     it('should throw an exception when parsing an invalid type of argument', function() {
-      assert.throws(function () {Unit.parse(123)}, /Invalid argument in Unit.parse. Valid types are/);
+      assert.throws(function () {Unit.parse(123)}, /TypeError: Invalid argument in Unit.parse, string expected/);
     });
   });
 
