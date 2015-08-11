@@ -111,8 +111,26 @@ describe('add', function() {
     }, /Parameter y contains a unit with undefined value/);
   });
 
-  it('should throw an error in case of a unit and non-unit argument', function() {
-    assert.throws(function () {add(math.unit('5cm'), 2);}, /TypeError: Unexpected type of argument in function add/);
+  it('should throw an error in case of a unit and non-unit argument with no defaultUnits config set', function() {
+    assert.throws(function () {add(math.unit('5cm'), 2);}, /TypeError: Can not add a unitless value to one with units./);
+    assert.throws(function () {add(math.unit('5cm'), new Date());}, /TypeError: Unexpected type of argument in function add/);
+    assert.throws(function () {add(new Date(), math.unit('5cm'));}, /TypeError: Unexpected type of argument in function add/);
+  });
+
+  it('should convert unitless numbers to Unit values in order to add them to the other Unit values', function() {
+    var defaultUnitsMath = math.create({'defaultUnits': 'mm'});
+    var add = defaultUnitsMath.add;
+    approx.deepEqual(add(defaultUnitsMath.unit(5, 'mm'), 3), defaultUnitsMath.unit(8, 'mm'));
+    approx.deepEqual(add(10, defaultUnitsMath.unit(2000, 'mm')), defaultUnitsMath.unit(2010, 'mm'));
+
+    defaultUnitsMath.config({'defaultUnits': 'm'});
+    approx.deepEqual(add(defaultUnitsMath.unit(5, 'cm'), 3), defaultUnitsMath.unit(305, 'cm'));
+    approx.deepEqual(add(0, defaultUnitsMath.unit(17, 'mm')), defaultUnitsMath.unit(0.017, 'm'));
+  });
+
+  it('should still throw an error in case of a unit and Date argument with defaultUnits config set', function() {
+    var defaultUnitsMath = math.create({'defaultUnits': 'mm'});
+    var add = defaultUnitsMath.add;
     assert.throws(function () {add(math.unit('5cm'), new Date());}, /TypeError: Unexpected type of argument in function add/);
     assert.throws(function () {add(new Date(), math.unit('5cm'));}, /TypeError: Unexpected type of argument in function add/);
   });
