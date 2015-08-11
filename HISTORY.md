@@ -1,11 +1,11 @@
 # History
 
 
-## not yet released, version 2.1.0
+## 2015-08-11, version 2.1.0
 
 - Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
 - Implemented support for electric units. Thanks @ericman314.
-- Implemented physical constants like `speedOfLight`, `gravity`, etc. 
+- Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc. 
 - Implemented function `kldivergence` (Kullback-Leibler divergence). 
   Thanks @saromanov.
 - Implemented function `mode`. Thanks @kv-kunalvyas.
