@@ -11,14 +11,16 @@ describe('factory', function() {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-14
+      epsilon: 1e-14,
+      defaultUnits: undefined
     });
   });
 
   it('should create an instance of math.js with custom configuration', function() {
     var math1 = math.create({
       matrix: 'array',
-      number: 'bignumber'
+      number: 'bignumber',
+      defaultUnits: 'mm'
     });
 
     assert.strictEqual(typeof math1, 'object');
@@ -27,7 +29,8 @@ describe('factory', function() {
       number: 'bignumber',
       precision: 64,
       predictable: false,
-      epsilon: 1e-14
+      epsilon: 1e-14,
+      defaultUnits: 'mm'
     });
   });
 
@@ -59,7 +62,8 @@ describe('factory', function() {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-14
+      epsilon: 1e-14,
+      defaultUnits: undefined
     });
 
     // restore the original config

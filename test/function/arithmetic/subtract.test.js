@@ -109,12 +109,19 @@ describe('subtract', function() {
     }, /Parameter y contains a unit with undefined value/);
   });
 
-  it('should throw an error if subtracting numbers from units', function() {
+  it('should throw an error if subtracting numbers from units with no defaultUnits config set', function() {
     assert.throws(function () { subtract(math.unit(5, 'km'), 2); }, TypeError);
     assert.throws(function () { subtract(2, math.unit(5, 'km')); }, TypeError);
   });
 
-  it('should throw an error if subtracting numbers from units', function() {
+  it('should convert unitless numbers to Unit values in order to subtract them from the other Unit values', function() {
+    var defaultUnitsMath = math.create({'defaultUnits': 'km'});
+    var subtract = defaultUnitsMath.subtract;
+    approx.deepEqual(subtract(defaultUnitsMath.unit(5, 'km'), 2), defaultUnitsMath.unit(3, 'km'));
+    approx.deepEqual(subtract(2, defaultUnitsMath.unit(5, 'km')), defaultUnitsMath.unit(-3, 'km'));
+  });
+
+  it('should throw an error if subtracting big numbers from units', function() {
     assert.throws(function () { subtract(math.unit(5, 'km'), bignumber(2)); }, TypeError);
     assert.throws(function () { subtract(bignumber(2), math.unit(5, 'km')); }, TypeError);
   });
