@@ -4,7 +4,8 @@ layout: default
 
 <h1 id="unit-reference">Unit reference <a href="#unit-reference" title="Permalink">#</a></h1>
 
-This page lists all available units and prefixes. How to use units is explained on the page [Units](../datatypes/units.html).
+This page lists all available units, prefixes, and physical constants. 
+How to use units is explained on the page [Units](../datatypes/units.html).
 
 <h2 id="units">Units <a href="#units" title="Permalink">#</a></h2>
 
@@ -23,10 +24,16 @@ Electric current    | ampere (A)
 Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)
 Amount of substance | mole (mol)
 Luminous intensity  | candela (cd)
-Force               | newton (N), poundforce (lbf)
+Force               | newton (N), dyne (dyn), poundforce (lbf)
+Energy              | joule (J), erg, Wh, BTU, electronvolt (eV)
+Power               | watt (W), hp
+Pressure            | Pa, psi, atm
+Electricity and magnetism | ampere (A), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bit (b), byte (B)
 
 Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`. 
+
+Surface and volume units can alternatively be expressed in terms of length units raised to a power, for example `100 in^2` instead of `100 sqin`.
 
 <h2 id="prefixes">Prefixes <a href="#prefixes" title="Permalink">#</a></h2>
 
@@ -82,3 +89,106 @@ peta  | P            | 1e15
 exa   | E            | 1e18
 zetta | Z            | 1e21
 yotta | Y            | 1e24
+
+
+<h2 id="physical-constants">Physical Constants <a href="#physical-constants" title="Permalink">#</a></h2>
+
+Math.js includes the following physical constants. See [Wikipedia](http://en.wikipedia.org/wiki/Physical_constants) for more information.
+
+
+<h3 id="universal-constants">Universal constants <a href="#universal-constants" title="Permalink">#</a></h3>
+
+Name                  | Symbol                                                 | Value             | Unit
+----------------------|--------------------------------------------------------|-------------------|-------------------------------------------------------
+speedOfLight          | <i>c</i>                                               | 299792458         | m &#183; s<sup>-1</sup>
+gravitationConstant   | <i>G</i>                                               | 6.6738480e-11     | m<sup>3</sup> &#183; kg<sup>-1</sup> &#183; s<sup>-2</sup>
+planckConstant        | <i>h</i>                                               | 6.626069311e-34   | J &#183; s
+reducedPlanckConstant | <i><span style="text-decoration:overline">h</span></i> | 1.05457172647e-34 | J &#183; s 
+
+
+<h3 id="electromagnetic">Electromagnetic <a href="#electromagnetic" title="Permalink">#</a></h3>
+
+Name                      | Symbol                                           | Value                 | Unit
+--------------------------|--------------------------------------------------|-----------------------|----------------------------------------
+magneticConstant          | <i>&mu;<sub>0</sub></i>                          | 1.2566370614e-6       | N &#183; A<sup>-2</sup>
+electricConstant          | <i>&epsilon;<sub>0</sub></i>                     | 8.854187817e-12       | F &#183; m<sup>-1</sup>
+vacuumImpedance           | <i>Z<sub>0</sub></i>                             | 376.730313461         | &ohm;
+coulomb                   | <i>&kappa;</i>                                   | 8.9875517873681764e9  | N &#183; m<sup>2</sup> &#183; C<sup>-2</sup>
+elementaryCharge          | <i>e</i>                                         | 1.60217656535e-19     | C
+bohrMagneton              | <i>&mu;<sub>B</sub></i>                          | 9.2740096820e-24      | J &#183; T<sup>-1</sup>
+conductanceQuantum        | <i>G<sub>0</sub></i>                             | 7.748091734625e-5     | S
+inverseConductanceQuantum | <i>G<sub>0</sub><sup>-1</sup></i>                | 12906.403721742       | &ohm;
+magneticFluxQuantum       | <i><font face="Symbol">f</font><sub>0</sub></i>  | 2.06783375846e-15     | Wb
+nuclearMagneton           | <i>&mu;<sub>N</sub></i>                          | 5.0507835311e-27      | J &#183; T<sup>-1</sup>
+klitzing                  | <i>R<sub>K</sub></i>                             | 25812.807443484       | &ohm;
+
+<!-- TODO: implement josephson
+josephson                 | <i>K<sub>J</sub></i>                             | 4.8359787011e-14    | Hz &#183; V<sup>-1</sup> 
+-->
+
+
+<h3 id="atomic-and-nuclear-constants">Atomic and nuclear constants <a href="#atomic-and-nuclear-constants" title="Permalink">#</a></h3>
+
+Name                    | Symbol                | Value                 | Unit
+------------------------|------------------------------|-----------------------|----------------------------------
+bohrRadius              | <i>a<sub>0</sub></i>         | 5.291772109217e-11    | m
+classicalElectronRadius | <i>r<sub>e</sub></i>         | 2.817940326727e-15    | m
+electronMass            | <i>m<sub>e</sub></i>         | 9.1093829140e-31      | kg
+fermiCoupling           | <i>G<sub>F</sub></i>         | 1.1663645e-5          | GeV<sup>-2</sup>
+fineStructure           | <i>&alpha;</i>               | 7.297352569824e-3     | -
+hartreeEnergy           | <i>E<abbr>h</abbr> </i>      | 4.3597443419e-18      | J
+protonMass              | <i>m<sub>p</sub></i>         | 1.67262177774e-27     | kg
+deuteronMass            | <i>m<sub>d</sub></i>         | 3.3435830926e-27      | kg
+neutronMass             | <i>m<sub>n</sub></i>         | 1.6749271613e-27      | kg
+quantumOfCirculation    | <i>h / (2m<sub>e</sub>)</i>  | 3.636947552024e-4     | m<sup>2</sup> &#183; s<sup>-1</sup>
+rydberg                 | <i>R<sub>&infin;</sub></i>   | 10973731.56853955     | m<sup>-1</sup>
+thomsonCrossSection     |                              | 6.65245873413e-29     | m<sup>2</sup>
+weakMixingAngle         |                              | 0.222321              | -
+efimovFactor            |                              | 22.7                  | -
+
+
+<h3 id="physicochemical-constants">Physico-chemical constants <a href="#physicochemical-constants" title="Permalink">#</a></h3>
+
+Name                | Symbol                       | Value               | Unit
+--------------------|------------------------------|---------------------|--------------------------------------------
+atomicMass          | <i>m<sub>u</sub></i>         | 1.66053892173e-27   | kg
+avogadro            | <i>N<sub>A</sub></i>         | 6.0221412927e23     | mol<sup>-1</sup>
+boltzmann           | <i>k</i>                     | 1.380648813e-23     | J &#183; K<sup>-1</sup>
+faraday             | <i>F</i>                     | 96485.336521        | C &#183; mol<sup>-1</sup>
+firstRadiation      | <i>c<sub>1</sub></i>         | 3.7417715317e-16    | W &#183; m<sup>2</sup>
+loschmidt           | <i>n<sub>0</sub></i>         | 2.686780524e25      | m<sup>-3</sup>
+gasConstant         | <i>R</i>                     | 8.314462175         | J &#183; K<sup>-1</sup> &#183; mol<sup>-1</sup>
+molarPlanckConstant | <i>N<sub>A</sub> &#183; h</i>| 3.990312717628e-10| J &#183; s &#183; mol<sup>-1</sup>
+molarVolume         | <i>V<sub>m</sub></i>         | 2.241396820e-10     | m<sup>3</sup> &#183; mol<sup>-1</sup>
+sackurTetrode       |                              | -1.164870823        | -
+secondRadiation     | <i>c<sub>2</sub></i>         | 1.438777013e-2      | m &#183; K
+stefanBoltzmann     | <i>&sigma;</i>               | 5.67037321e-8       | W &#183; m<sup>-2</sup> &#183; K<sup>-4</sup>
+wienDisplacement    | <i>b</i>                     | 2.897772126e-3      | m &#183; K
+
+<!-- TODO: implement spectralRadiance 
+spectralRadiance    | <i>c<sub>1L</sub></i>        | 1.19104286953e-16  | W &#183; m<sup>2</sup> &#183; sr<sup>-1</sup>
+-->
+
+Note that the values of `loschmidt` and `molarValue` are at `T = 273.15 K` and `p = 101.325 kPa`. 
+The value of `sackurTetrode` is at `T = 1 K` and `p = 101.325 kPa`.
+
+
+<h3 id="adopted-values">Adopted values <a href="#adopted-values" title="Permalink">#</a></h3>
+
+Name          | Symbol                       | Value   | Unit
+--------------|------------------------------|---------|-------------------------
+molarMass     | <i>M<sub>u</sub></i>         | 1e-3    | kg &#183; mol<sup>-1</sup>
+molarMassC12  | <i>M(<sub>12</sub>C)</i>     | 1.2e-3  | kg &#183; mol<sup>-1</sup>
+gravity       | <i>g<sub>n</sub></i>         | 9.80665 | m &#183; s<sup>-2</sup>
+atm           | <i>atm</i>                   | 101325  | Pa
+
+
+<h3 id="natural-units">Natural units <a href="#natural-units" title="Permalink">#</a></h3>
+
+Name              | Symbol                | Value              | Unit
+------------------|-----------------------|--------------------|-----
+planckLength      | <i>l<sub>P</sub></i>  | 1.61619997e-35     | m
+planckMass        | <i>m<sub>P</sub></i>  | 2.1765113e-8       | kg 
+planckTime        | <i>t<sub>P</sub></i>  | 5.3910632e-44      | s
+planckCharge      | <i>q<sub>P</sub></i>  | 1.87554595641e-18  | C
+planckTemperature | <i>T<sub>P</sub></i>  | 1.41683385e+32     | K 

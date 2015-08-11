@@ -27,9 +27,11 @@ math.unit(unit: Unit) : Unit
 Example usage:
 
 ```js
-var a = math.unit(45, 'cm');        // Unit 450 mm
-var b = math.unit('0.1 kilogram');  // Unit 100 gram
-var c = math.unit('2 inch');        // Unit 2 inch
+var a = math.unit(45, 'cm');            // Unit 450 mm
+var b = math.unit('0.1 kilogram');      // Unit 100 gram
+var c = math.unit('2 inch');            // Unit 2 inch
+var d = math.unit('90 km/h');           // Unit 90 km/h
+var e = math.unit('101325 kg/(m s^2)'); // Unit 101325 kg / (m s^2)
 ```
 
 A `Unit` contains the following functions:
@@ -73,10 +75,23 @@ c.equalBase(b);                     // false
 d.toString();                       // String "5.08 cm"
 ```
 
+Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
+
+```js
+// These three are identical
+var correct1 = math.unit('8.314 m^3 Pa / mol / K');         // Unit 8.314 (m^3 Pa) / (mol K)
+var correct2 = math.unit('8.314 (m^3 Pa) / (mol K)');       // Unit 8.314 (m^3 Pa) / (mol K)
+var correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)');   // Unit 8.314 (m^3 Pa) / (mol K)
+```
+But this expression, which omits the second `/` between `mol` and `K`, results in the wrong value:
+```js
+// Missing the second '/' between 'mol' and 'K'
+var incorrect = math.unit('8.314 m^3 Pa / mol K');          // Unit 8.314 (m^3 Pa K) / mol
+```
 
 <h2 id="calculations">Calculations <a href="#calculations" title="Permalink">#</a></h2>
 
-Basic operations `add`, `subtract`, `multiply`, and `divide` can be performed
+Basic operations `add`, `subtract`, `multiply`, `divide`, and `pow` can be performed
 on units. Trigonometric functions like `sin` support units with an angle as
 argument.
 
@@ -88,6 +103,23 @@ math.multiply(b, 2);                // Unit 200 mm
 
 var c = math.unit(45, 'deg');       // Unit 45 deg
 math.cos(c);                        // Number 0.7071067811865476
+
+// Kinetic energy of average sedan on highway
+var d = math.unit('80 mi/h')        // Unit 80 mi/h
+var e = math.unit('2 tonne')        // Unit 2 tonne
+var f = math.multiply(0.5, math.multipy(math.pow(d, 2), e));
+                                    // 1.2790064742399996 MJ
+```
+
+Operations with arrays are supported too:
+
+```js
+// Force on a charged particle moving through a magnetic field
+var B = math.eval('[1, 0, 0] T');            // [1 T, 0 T, 0 T]
+var v = math.eval('[0, 1, 0] m/s');          // [0 m / s, 1 m / s, 0 m / s]
+var q = math.eval('1 C');                    // 1 C
+
+var F = math.multiply(q, math.cross(v, B));  // [0 N, 0 N, -1 N]
 ```
 
 The expression parser supports units too. This is described in the section about

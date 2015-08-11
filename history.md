@@ -5,6 +5,20 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20150811-version-210">2015-08-11, version 2.1.0 <a href="#20150811-version-210" title="Permalink">#</a></h2>
+
+- Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
+- Implemented support for electric units. Thanks @ericman314.
+- Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc. 
+- Implemented function `kldivergence` (Kullback-Leibler divergence). 
+  Thanks @saromanov.
+- Implemented function `mode`. Thanks @kv-kunalvyas.
+- Added support for unicode characters in the expression parser: greek letters
+  and latin letters with accents. See #265.
+- Internal functions `Unit.parse` and `Complex.parse` now throw an Error 
+  instead of returning null when passing invalid input.
+
+
 <h2 id="20150729-version-201">2015-07-29, version 2.0.1 <a href="#20150729-version-201" title="Permalink">#</a></h2>
 
 - Fixed operations with mixed fractions and numbers be converted to numbers
