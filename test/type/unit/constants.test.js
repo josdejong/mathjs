@@ -8,7 +8,7 @@ describe('physical constants', function() {
     // NOte: to keep these unit tests readable and compact, the toString() of the units is compared
 
     // Universal constants
-    assert.equal(math.speedOfLight.toString(),         '2.99792458e+8 m / s^2');
+    assert.equal(math.speedOfLight.toString(),         '2.99792458e+8 m / s');
     assert.equal(math.gravitationConstant.toString(),  '6.673848e-11 m^3 / (kg s^2)');
     assert.equal(math.planckConstant.toString(),       '6.626069311e-34 J s');
     assert.equal(math.reducedPlanckConstant.toString(),'1.05457172647e-34 J s');
