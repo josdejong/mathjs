@@ -43,6 +43,8 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
   </tr>
 </table>
 
+Too large for you? Create your own [custom bundle](docs/custom_loading_and_bundling.html).
+
 
 <h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>
 
