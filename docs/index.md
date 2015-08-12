@@ -38,7 +38,7 @@ describing all available functions, constants, and units in detail.
 - [Configuration](configuration.html)
 - [Serialization](serialization.html)
 - [Extension](extension.html)
-- [Custom loading and bundling](custom_loading_and_bundling.html)
+- [Custom bundling](custom_bundling.html)
 - [Command Line Interface](command_line_interface.html)
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

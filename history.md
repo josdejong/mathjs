@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20150812-version-211">2015-08-12, version 2.1.1 <a href="#20150812-version-211" title="Permalink">#</a></h2>
+
+- Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  
+  and `magneticFluxQuantum`. Thanks @ericman314 for finding two of them.
+
+
 <h2 id="20150811-version-210">2015-08-11, version 2.1.0 <a href="#20150811-version-210" title="Permalink">#</a></h2>
 
 - Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.

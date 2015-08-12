@@ -84,6 +84,7 @@ var correct2 = math.unit('8.314 (m^3 Pa) / (mol K)');       // Unit 8.314 (m^3 P
 var correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)');   // Unit 8.314 (m^3 Pa) / (mol K)
 ```
 But this expression, which omits the second `/` between `mol` and `K`, results in the wrong value:
+
 ```js
 // Missing the second '/' between 'mol' and 'K'
 var incorrect = math.unit('8.314 m^3 Pa / mol K');          // Unit 8.314 (m^3 Pa K) / mol
