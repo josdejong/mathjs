@@ -22,7 +22,7 @@ describe('physical constants', function() {
     assert.equal(math.bohrMagneton.toString(),              '9.274009682e-24 J / T');
     assert.equal(math.conductanceQuantum.toString(),        '77.48091734625 uS');
     assert.equal(math.inverseConductanceQuantum.toString(), '12.906403721741999 kohm'); // round-off error
-    assert.equal(math.magneticFluxQuantum.toString(),       '0.0050507835311000004 yWb');
+    assert.equal(math.magneticFluxQuantum.toString(),       '2.06783375846 fWb');
     assert.equal(math.nuclearMagneton.toString(),           '5.0507835311e-27 J / T');
     assert.equal(math.klitzing.toString(),                  '25.812807443483997 kohm'); // round-off error
     //assert.equal(math.josephson.toString(),                 '4.8359787011e-14 Hz V^-1');  // TODO: support for Hz needed

@@ -1,6 +1,12 @@
 # History
 
 
+## 2015-08-12, version 2.1.1
+
+- Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  
+  and `magneticFluxQuantum`. Thanks @ericman314 for finding two of them.
+
+
 ## 2015-08-11, version 2.1.0
 
 - Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
