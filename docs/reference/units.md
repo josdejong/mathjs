@@ -174,7 +174,7 @@ The value of `sackurTetrode` is at `T = 1 K` and `p = 101.325 kPa`.
 Name          | Symbol                       | Value   | Unit
 --------------|------------------------------|---------|-------------------------
 molarMass     | <i>M<sub>u</sub></i>         | 1e-3    | kg &#183; mol<sup>-1</sup>
-molarMassC12  | <i>M(<sub>12</sub>C)</i>     | 1.2e-3  | kg &#183; mol<sup>-1</sup>
+molarMassC12  | <i>M(<sub>12</sub>C)</i>     | 1.2e-2  | kg &#183; mol<sup>-1</sup>
 gravity       | <i>g<sub>n</sub></i>         | 9.80665 | m &#183; s<sup>-2</sup>
 atm           | <i>atm</i>                   | 101325  | Pa
 
