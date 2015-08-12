@@ -165,7 +165,7 @@ wienDisplacement    | <i>b</i>                     | 2.897772126e-3      | m &#1
 spectralRadiance    | <i>c<sub>1L</sub></i>        | 1.19104286953e-16  | W &#183; m<sup>2</sup> &#183; sr<sup>-1</sup>
 -->
 
-Note that the values of `loschmidt` and `molarValue` are at `T = 273.15 K` and `p = 101.325 kPa`. 
+Note that the values of `loschmidt` and `molarVolume` are at `T = 273.15 K` and `p = 101.325 kPa`. 
 The value of `sackurTetrode` is at `T = 1 K` and `p = 101.325 kPa`.
 
 
