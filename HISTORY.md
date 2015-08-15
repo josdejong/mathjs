@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 2.1.2
+
+- Improved the `canDefineProperty` check to return false in case of IE8, which
+  has a broken implementation of `defineProperty`. Thanks @golmansax.
+
+
 ## 2015-08-12, version 2.1.1
 
 - Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  
