@@ -1,8 +1,9 @@
 # History
 
 
-## not yet released, version 2.1.2
+## not yet released, version 2.2.0
 
+- Implemented function `catalan` (Combinatorics). Thanks @devanp92.
 - Improved the `canDefineProperty` check to return false in case of IE8, which
   has a broken implementation of `defineProperty`. Thanks @golmansax.
 
