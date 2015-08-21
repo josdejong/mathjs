@@ -3,6 +3,8 @@
 
 ## not yet released, version 2.2.0
 
+- Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.
+  Thanks @ericman314.
 - Implemented function `catalan` (Combinatorics). Thanks @devanp92.
 - Improved the `canDefineProperty` check to return false in case of IE8, which
   has a broken implementation of `defineProperty`. Thanks @golmansax.
