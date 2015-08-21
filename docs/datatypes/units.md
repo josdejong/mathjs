@@ -88,9 +88,8 @@ var incorrect = math.unit('8.314 m^3 Pa / mol K');          // Unit 8.314 (m^3 P
 
 ## Calculations
 
-Basic operations `add`, `subtract`, `multiply`, `divide`, and `pow` can be performed
-on units. Trigonometric functions like `sin` support units with an angle as
-argument.
+The operations that support units are `add`, `subtract`, `multiply`, `divide`, `pow`, `abs`, `sqrt`, `square`, `cube`, and `sign`.
+Trigonometric functions like `cos` are also supported when the argument is an angle.
 
 ```js
 var a = math.unit(45, 'cm');        // Unit 450 mm
@@ -117,6 +116,22 @@ var v = math.eval('[0, 1, 0] m/s');          // [0 m / s, 1 m / s, 0 m / s]
 var q = math.eval('1 C');                    // 1 C
 
 var F = math.multiply(q, math.cross(v, B));  // [0 N, 0 N, -1 N]
+```
+
+All arithmetic operators act on the value of the unit as it is represented in SI units.
+This may lead to surprising behavior when working with temperature scales like `celsius` (or `degC`) and `fahrenheit` (or `degF`).
+In general you should avoid calculations using `celsius` and `fahrenheit`. Rather, use `kelvin` (or `K`) and `rankine` (or `R`) instead.
+This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
+
+```js
+var T_14F = math.unit('14 degF');          // Unit 14 degF (263.15 K)
+var T_28F = math.multiply(T1, 2);          // Unit 487.67 degF (526.3 K), not 28 degF
+
+var Tnegative = math.unit(-13, 'degF');    // Unit -13 degF (248.15 K)
+var Tpositive = math.abs(T1);              // Unit -13 degF (248.15 K), not 13 degF
+
+var Trate1 = math.eval('5 (degC/hour)');   // Unit 5 degC/hour
+var Trate2 = math.eval('(5 degC)/hour');   // Unit 278.15 degC/hour
 ```
 
 The expression parser supports units too. This is described in the section about

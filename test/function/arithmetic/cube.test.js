@@ -43,12 +43,14 @@ describe('cube', function() {
     assert.deepEqual(cube(math.complex('2')), math.complex('8'));
   });
 
-  it('should throw an error with strings', function() {
-    assert.throws(function () {cube('text')});
+  it('should return the cube of a unit', function() {
+    assert.equal(cube(math.unit('4 cm')).toString(), '64 cm^3');
+    assert.equal(cube(math.unit('-2 cm')).toString(), '-8 cm^3');
+    assert.equal(cube(math.unit('0 cm')).toString(), '0 cm^3');
   });
 
-  it('should throw an error with units', function() {
-    assert.throws(function () {cube(unit('5cm'))});
+  it('should throw an error with strings', function() {
+    assert.throws(function () {cube('text')});
   });
 
   it('should throw an error if there\'s wrong number of args', function() {
