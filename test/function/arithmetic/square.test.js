@@ -48,8 +48,10 @@ describe('square', function() {
     assert.deepEqual(square(math.complex('2')), math.complex('4'));
   });
 
-  it('should throw an error when used with a unit', function() {
-    assert.throws(function () {square(unit('5cm'))});
+  it('should return the square of a unit', function() {
+    assert.equal(square(math.unit('4 cm')).toString(), '16 cm^2');
+    assert.equal(square(math.unit('-2 cm')).toString(), '4 cm^2');
+    assert.equal(square(math.unit('0 cm')).toString(), '0 cm^2');
   });
 
   it('should throw an error when used with a string', function() {

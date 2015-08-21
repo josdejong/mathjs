@@ -61,7 +61,7 @@ console.log();
 console.log('compute speed of fluid flowing out of hole in a container');
 var g = math.unit('9.81 m / s^2');
 var h = math.unit('1 m');
-var v = math.pow(math.multiply(2, math.multiply(g, h)), 0.5);
+var v = math.pow(math.multiply(2, math.multiply(g, h)), 0.5); // Can also use math.sqrt
 console.log('g = ' + format(g));
 console.log('h = ' + format(h));
 console.log('v = (2 g h) ^ 0.5 = ' + format(v)); // 4.429... m / s
