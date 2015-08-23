@@ -57,7 +57,7 @@ describe('dotMultiply', function() {
     assert.equal(dotMultiply(2, unit('5 mm')).toString(), '10 mm');
     assert.equal(dotMultiply(2, unit('5 mm')).toString(), '10 mm');
     assert.equal(dotMultiply(unit('5 mm'), 2).toString(), '10 mm');
-    assert.equal(dotMultiply(unit('5 mm'), 0).toString(), '0 m');
+    assert.equal(dotMultiply(unit('5 mm'), 0).toString(), '0 mm');
   });
 
   it('should throw an error with strings', function() {

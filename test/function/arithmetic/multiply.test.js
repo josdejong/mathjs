@@ -141,7 +141,7 @@ describe('multiply', function() {
       assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
       assert.equal(multiply(10, unit('celsius')).toString(), '10 celsius');
       assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm');
-      assert.equal(multiply(unit('5 mm'), 0).toString(), '0 m');
+      assert.equal(multiply(unit('5 mm'), 0).toString(), '0 mm');
       assert.equal(multiply(unit('celsius'), 10).toString(), '10 celsius');
     });
 
