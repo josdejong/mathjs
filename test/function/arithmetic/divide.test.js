@@ -125,6 +125,9 @@ describe('divide', function() {
 
   it('should divide a number by a unit', function() {
     assert.equal(divide(20, math.unit('4 N s')).toString(), '5 N^-1 s^-1');
+    assert.equal(divide(4, math.unit('W')).toString(), '4 W^-1');
+    assert.equal(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1');
+    assert.equal(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg');
   });
 
   it('should divide two units', function() {
