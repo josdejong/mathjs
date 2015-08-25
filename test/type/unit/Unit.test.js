@@ -377,8 +377,11 @@ describe('unit', function() {
     });
 
     it('should not render best prefix if "fixPrefix" is set', function() {
-      assert.equal(new Unit(5e-3, 'm')._fix().toString(), "0.005 m");
-      assert.equal(new Unit(5e-3, 'm')._fix()._unfix().toString(), "5 mm");
+			var u = new Unit(5e-3, 'm');
+			u.fixPrefix = true;
+      assert.equal(u.toString(), "0.005 m");
+			u.fixPrefix = false;
+      assert.equal(u.toString(), "5 mm");
     });
 
   });
