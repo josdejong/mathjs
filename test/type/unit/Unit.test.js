@@ -374,6 +374,23 @@ describe('unit', function() {
       assert.equal(new Unit(1000 ,'ohm').toString(), '1 kohm');
     });
 
+    it('should render best prefix for a single unit raised to integral power', function() {
+      assert.equal(new Unit(3.2e7, 'm^2').toString(), "32 km^2");
+      assert.equal(new Unit(3.2e-7, 'm^2').toString(), "0.32 mm^2");
+      assert.equal(new Unit(15000, 'm^-1').toString(), "15 mm^-1");
+      assert.equal(new Unit(3e-9, 'm^-2').toString(), "3000 Mm^-2");
+      assert.equal(new Unit(3e-9, 'm^-1.5').toString(), "3e-9 m^-1.5");
+      assert.equal(new Unit(2, 'kg^0').toString(), "2");
+    });
+
+    it('should not render best prefix if "fixPrefix" is set', function() {
+			var u = new Unit(5e-3, 'm');
+			u.fixPrefix = true;
+      assert.equal(u.toString(), "0.005 m");
+			u.fixPrefix = false;
+      assert.equal(u.toString(), "5 mm");
+    });
+
   });
 
   describe('simplifyUnitListLazy', function() {
