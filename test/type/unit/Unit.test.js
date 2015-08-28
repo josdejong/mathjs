@@ -320,12 +320,12 @@ describe('unit', function() {
       assert.equal(u2.fixPrefix, true);
     });
 
-		it ('should set isUnitListSimplified to true', function () {
-			var u1 = new Unit(1, 'ft lbf');
-			var u2 = u1.to('in lbf');
-			assert.equal(u2.isUnitListSimplified, true);
-			assert.equal(u2.toString(), "12 in lbf");
-		});
+    it ('should set isUnitListSimplified to true', function () {
+      var u1 = new Unit(1, 'ft lbf');
+      var u2 = u1.to('in lbf');
+      assert.equal(u2.isUnitListSimplified, true);
+      assert.equal(u2.toString(), "12 in lbf");
+    });
 
     it ('should throw an error when converting to an incompatible unit', function () {
       var u1 = new Unit(5000, 'cm');
@@ -384,10 +384,10 @@ describe('unit', function() {
     });
 
     it('should not render best prefix if "fixPrefix" is set', function() {
-			var u = new Unit(5e-3, 'm');
-			u.fixPrefix = true;
+      var u = new Unit(5e-3, 'm');
+      u.fixPrefix = true;
       assert.equal(u.toString(), "0.005 m");
-			u.fixPrefix = false;
+      u.fixPrefix = false;
       assert.equal(u.toString(), "5 mm");
     });
 
