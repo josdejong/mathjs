@@ -320,6 +320,13 @@ describe('unit', function() {
       assert.equal(u2.fixPrefix, true);
     });
 
+		it ('should set isUnitListSimplified to true', function () {
+			var u1 = new Unit(1, 'ft lbf');
+			var u2 = u1.to('in lbf');
+			assert.equal(u2.isUnitListSimplified, true);
+			assert.equal(u2.toString(), "12 in lbf");
+		});
+
     it ('should throw an error when converting to an incompatible unit', function () {
       var u1 = new Unit(5000, 'cm');
       assert.throws(function () {u1.to('kg')}, /Units do not match/);
