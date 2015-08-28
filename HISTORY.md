@@ -9,6 +9,7 @@
 - Implemented function `catalan` (Combinatorics). Thanks @devanp92.
 - Improved the `canDefineProperty` check to return false in case of IE8, which
   has a broken implementation of `defineProperty`. Thanks @golmansax.
+- Fixed function `to` not working in case of a simplified unit.
 
 
 ## 2015-08-12, version 2.1.1
