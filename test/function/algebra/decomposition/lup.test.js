@@ -148,7 +148,7 @@ describe('lup', function () {
         [0, 0, 0, 4]
       ]);
     // P
-    assert.deepEqual(r.p, [2, 1, 3, 0]);
+    assert.deepEqual(r.p, [3, 1, 0, 2]);
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
@@ -304,7 +304,7 @@ describe('lup', function () {
         [0, 0, 0, 4]
       ]);
     // P
-    assert.deepEqual(r.p, [2, 1, 3, 0]);
+    assert.deepEqual(r.p, [3, 1, 0, 2]);
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
@@ -375,21 +375,14 @@ describe('lup', function () {
    * Creates a Matrix out of a row permutation vector
    */
   function _p(p) {
+    // identity matrix
+    var identity = math.eye(p.length);
     // array
     var data = [];
     // loop rows
     for (var i = 0, l = p.length; i < l; i++) {
-      // row
-      var r = p[i];
-      // init data row
-      data[i] = [];
-      // loop columns
-      for (var j = 0; j < l; j++) {
-        if (r === j)
-          data[i][j] = 1;
-        else
-          data[i][j] = 0;
-      }      
+      // swap row
+      data[p[i]] = identity._data[i];
     }
     return data;
   }
