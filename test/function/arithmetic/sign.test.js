@@ -39,8 +39,13 @@ describe('sign', function() {
     approx.deepEqual(math.sign(math.complex(2,-3)), math.complex(0.554700196225229, -0.832050294337844));
   });
 
-  it('should throw an error when used with a unit', function() {
-    assert.throws(function () { math.sign(math.unit('5cm')); });
+  it('should calculate the sign of a unit', function() {
+    assert.equal(math.sign(math.unit('5 cm')), 1);
+    assert.equal(math.sign(math.unit('-5 kg')), -1);
+    assert.equal(math.sign(math.unit('0 mol/s')), 0);
+    assert.equal(math.sign(math.unit('-283.15 degC')), -1);
+    assert.equal(math.sign(math.unit('-273.15 degC')), 0);
+    assert.equal(math.sign(math.unit('-263.15 degC')), 1);
   });
 
   it('should throw an error when used with a string', function() {

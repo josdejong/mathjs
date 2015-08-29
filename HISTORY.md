@@ -1,10 +1,16 @@
 # History
 
 
-## not yet released, version 2.1.2
+## not yet released, version 2.2.0
 
+- Units with powers (like `m^2` and `s^-1`) now output with the best prefix.
+- Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.
+  Thanks @ericman314.
+- Implemented function `catalan` (Combinatorics). Thanks @devanp92.
 - Improved the `canDefineProperty` check to return false in case of IE8, which
   has a broken implementation of `defineProperty`. Thanks @golmansax.
+- Fixed function `to` not working in case of a simplified unit.
+- Fixed #437: an issue with row swapping in `lup`, also affecting `lusolve`.
 
 
 ## 2015-08-12, version 2.1.1
