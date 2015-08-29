@@ -9,6 +9,54 @@ var mod = math.mod;
 
 describe('mod', function() {
 
+  it('should default to "floored" mode', function() {
+    assert.equal(math.config().moduloFunc, 'floored');
+  });
+
+  it('should correctly calculate the truncated modulus of two numbers', function() {
+    var math1 = math.create({ moduloFunc: 'truncated' });
+
+    approx.equal(math1.mod( 4,  3),  1);
+    approx.equal(math1.mod( 4, -3),  1);
+    approx.equal(math1.mod(-4,  3), -1);
+    approx.equal(math1.mod(-4, -3), -1);
+  });
+
+  it('should correctly calculate the floored modulus of two numbers', function() {
+    var math1 = math.create({ moduloFunc: 'floored' });
+
+    approx.equal(math1.mod( 4,  3),  1);
+    approx.equal(math1.mod( 4, -3), -2);
+    approx.equal(math1.mod(-4,  3), 2);
+    approx.equal(math1.mod(-4, -3), -1);
+  });
+
+  it('should correctly calculate the euclidean modulus of two numbers', function() {
+    var math1 = math.create({ moduloFunc: 'euclidean' });
+
+    approx.equal(math1.mod( 4,  3),  1);
+    approx.equal(math1.mod( 4, -3),  1);
+    approx.equal(math1.mod(-4,  3),  2);
+    approx.equal(math1.mod(-4, -3),  2);
+  });
+
+  it('should handle a divisor of 0 by returning the dividend', function() {
+    assert.equal(mod(-2, 0), -2);
+    assert.equal(mod( 0, 0),  0);
+    assert.equal(mod( 3, 0),  3);
+  });
+
+  it('should handle a dividend of 0 by returning 0', function() {
+    assert.equal(mod(0, -2), 0);
+    assert.equal(mod(0,  0), 0);
+    assert.equal(mod(0,  3), 0);
+  });
+
+  if('should handle real numbers as well as integers', function() {
+    approx.equal(mod(8.2, 3), 2.2);
+    approx.equal(mod(4, 1.5), 1);
+  });
+
   it('should calculate the modulus of booleans correctly', function () {
     assert.equal(mod(true, true), 0);
     assert.equal(mod(false, true), 0);
@@ -20,26 +68,6 @@ describe('mod', function() {
     assert.equal(mod(null, null), 0);
     assert.equal(mod(null, 1), 0);
     assert.equal(mod(1, null), 1);
-  });
-
-  it('should calculate the modulus of two numbers', function() {
-    assert.equal(mod(1, 1), 0);
-    assert.equal(mod(0, 1), 0);
-    assert.equal(mod(1, 0), 1);
-    assert.equal(mod(0, 0), 0);
-    assert.equal(mod(7, 0), 7);
-
-    approx.equal(mod(7, 2), 1);
-    approx.equal(mod(9, 3), 0);
-    approx.equal(mod(10, 4), 2);
-    approx.equal(mod(-10, 4), 2);
-    approx.equal(mod(8.2, 3), 2.2);
-    approx.equal(mod(4, 1.5), 1);
-    approx.equal(mod(0, 3), 0);
-  });
-
-  it('should throw an error if the modulus is negative', function() {
-    assert.throws(function () {mod(10, -4);});
   });
 
   it('should throw an error if used with wrong number of arguments', function() {
