@@ -15,13 +15,13 @@ math.sqrt(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Value for which to calculate the square root.
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Value for which to calculate the square root.
 
 ### Returns
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the square root of `x`
+number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Returns the square root of `x`
 
 
 ## Examples
@@ -29,7 +29,7 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the
 ```js
 math.sqrt(25);                // returns 5
 math.square(5);               // returns 25
-math.sqrt(-4);                // returns Complex -2i
+math.sqrt(-4);                // returns Complex 2i
 ```
 
 

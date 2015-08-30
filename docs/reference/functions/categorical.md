@@ -52,6 +52,7 @@
 ## combinatorics
 
 - [bellNumbers(n)](bellNumbers.md)
+- [catalan(n)](catalan.md)
 - [composition(n, k)](composition.md)
 - [stirlingS2(n, k)](stirlingS2.md)
 

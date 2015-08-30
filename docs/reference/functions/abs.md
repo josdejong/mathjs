@@ -14,13 +14,13 @@ math.abs(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix |  A number or matrix for which to get the absolute value
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  A number or matrix for which to get the absolute value
 
 ### Returns
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix |  Absolute value of `x`
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit |  Absolute value of `x`
 
 
 ## Examples

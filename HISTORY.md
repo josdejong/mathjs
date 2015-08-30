@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 2.2.0
+## 2015-08-30, version 2.2.0
 
 - Units with powers (like `m^2` and `s^-1`) now output with the best prefix.
 - Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.

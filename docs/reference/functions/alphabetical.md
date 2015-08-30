@@ -24,6 +24,7 @@
 - [bitOr(x, y)](bitOr.md)
 - [bitXor(x, y)](bitXor.md)
 - [boolean(x)](boolean.md)
+- [catalan(n)](catalan.md)
 - [ceil(x)](ceil.md)
 - [chain(value)](chain.md)
 - [clone(x)](clone.md)
