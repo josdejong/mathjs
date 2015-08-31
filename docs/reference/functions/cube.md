@@ -18,13 +18,13 @@ math.cube(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Number for which to calculate the cube
+`x` | number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit | Number for which to calculate the cube
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix | Cube of x
+number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matrix &#124; Unit | Cube of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

@@ -28,6 +28,7 @@ layout: default
 - [bitOr(x, y)](bitOr.html)
 - [bitXor(x, y)](bitXor.html)
 - [boolean(x)](boolean.html)
+- [catalan(n)](catalan.html)
 - [ceil(x)](ceil.html)
 - [chain(value)](chain.html)
 - [clone(x)](clone.html)

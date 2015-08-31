@@ -11,13 +11,13 @@ File: [requirejs_loading.html](requirejs_loading.html)
 <html>
 <head>
   <title>math.js | require.js loading</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.11/require.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js"></script>
 </head>
 <body>
 
 <script>
   // load math.js using require.js
-  require(['http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.1.1/math.min.js'], function (math) {
+  require(['http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.2.0/math.min.js'], function (math) {
     // evaluate some expression
     var result = math.eval('1.2 * (2 + 4.5)');
     document.write(result);

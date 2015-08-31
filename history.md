@@ -5,6 +5,18 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20150830-version-220">2015-08-30, version 2.2.0 <a href="#20150830-version-220" title="Permalink">#</a></h2>
+
+- Units with powers (like `m^2` and `s^-1`) now output with the best prefix.
+- Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.
+  Thanks @ericman314.
+- Implemented function `catalan` (Combinatorics). Thanks @devanp92.
+- Improved the `canDefineProperty` check to return false in case of IE8, which
+  has a broken implementation of `defineProperty`. Thanks @golmansax.
+- Fixed function `to` not working in case of a simplified unit.
+- Fixed #437: an issue with row swapping in `lup`, also affecting `lusolve`.
+
+
 <h2 id="20150812-version-211">2015-08-12, version 2.1.1 <a href="#20150812-version-211" title="Permalink">#</a></h2>
 
 - Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  

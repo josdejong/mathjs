@@ -56,6 +56,7 @@ layout: default
 <h2 id="combinatorics">combinatorics <a href="#combinatorics" title="Permalink">#</a></h2>
 
 - [bellNumbers(n)](bellNumbers.html)
+- [catalan(n)](catalan.html)
 - [composition(n, k)](composition.html)
 - [stirlingS2(n, k)](stirlingS2.html)
 
