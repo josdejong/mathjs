@@ -1,5 +1,9 @@
 # History
 
+## not yet released, version 2.3.0
+
+- Implemented `distance`. Thanks @devanp92.
+
 
 ## 2015-08-30, version 2.2.0
 
