@@ -2,7 +2,7 @@
 
 ## not yet released, version 2.3.0
 
-- Implemented function ```distance`. Thanks @devanp92.
+- Implemented function `distance`. Thanks @devanp92.
 
 
 ## 2015-08-30, version 2.2.0
