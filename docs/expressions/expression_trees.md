@@ -390,7 +390,7 @@ new FunctionNode(name: string, args: Node[])
 
 Properties:
 
-- `name: string`
+- `symbol: Node`
 - `args: Node[]`
 
 Examples:
