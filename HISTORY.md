@@ -3,6 +3,7 @@
 ## not yet released, version 2.3.0
 
 - Implemented function `distance`. Thanks @devanp92.
+- Fixed #450: issue with non sorted index in sparse matrices.
 
 
 ## 2015-08-30, version 2.2.0
