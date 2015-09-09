@@ -77,6 +77,27 @@ describe('lcm', function() {
     assert.throws(function () {lcm('a', 2); }, /Cannot convert "a" to a number/);
   });
 
+  it('should find the least common multiple of fractions', function () {
+    var a = math.fraction(5,8);
+    assert.equal(lcm(a, math.fraction(3,7)).toString(), '15');
+    assert.equal(a.toString(), '0.625');
+  });
+
+  it('should find the least common multiple of mixed numbers and fractions', function () {
+    assert.deepEqual(lcm(math.fraction(12), 8), math.fraction(24));
+    assert.deepEqual(lcm(12, math.fraction(8)), math.fraction(24));
+  });
+  
+  it('should find the least common even for edge cases', function () {
+    assert.deepEqual(lcm(math.fraction(-3), math.fraction(3)), math.fraction(3));
+    assert.deepEqual(lcm(math.fraction(3), math.fraction(-3)), math.fraction(3));
+    assert.deepEqual(lcm(math.fraction(0), math.fraction(3)), math.fraction(0));
+    assert.deepEqual(lcm(math.fraction(3), math.fraction(0)), math.fraction(0));
+    assert.deepEqual(lcm(math.fraction(0), math.fraction(0)), math.fraction(0));
+    assert.deepEqual(lcm(math.fraction(200), math.fraction(333)), math.fraction(66600));
+    assert.deepEqual(lcm(math.fraction(9999), math.fraction(8888)), math.fraction(79992));
+  });
+
   it('should throw an error with units', function() {
     assert.throws(function () { lcm(math.unit('5cm'), 2); }, TypeError, 'Function lcm(unit, number) not supported');
   });
