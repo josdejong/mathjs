@@ -28,7 +28,8 @@
     "Owen Versteeg (https://github.com/owenversteeg)",
     "Pavel Panchekha (https://github.com/pavpanchekha)",
     "Pete Corey (https://github.com/pcorey)",
-    "Rogelio J. Baucells  (https://github.com/rjbaucells)",
+    "Robert Eisele (https://github.com/infusion)",
+    "Rogelio J. Baucells (https://github.com/rjbaucells)",
     "Ryan Seys (https://github.com/ryanseys)",
     "Sebastien Piquemal (https://github.com/sebpiq)",
     "Sergey Romanov (https://github.com/saromanov)",
@@ -58,7 +59,7 @@
   ],
   "dependencies": {
     "decimal.js": "^4.0.2",
-    "fraction.js": "^2.0.0",
+    "fraction.js": "^3.0.0",
     "tiny-emitter": "^1.0.0",
     "typed-function": "^0.10.1"
   },
