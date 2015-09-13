@@ -834,9 +834,11 @@ describe('parse', function() {
     });
 
     it('should throw an error when having an implicit multiplication between two numbers', function() {
-      assert.throws(function () {
-        math.parse('2 3');
-      }, /Unexpected part "3"/);
+      assert.throws(function () { math.parse('2 3'); }, /Unexpected part "3"/);
+      assert.throws(function () { math.parse('2 * 3 4'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('2 * 3 4 * 5'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('2 / 3 4 5'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('2 + 3 4'); }, /Unexpected part "4"/);
     });
 
     it('should parse pow ^', function() {
