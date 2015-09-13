@@ -833,6 +833,11 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4); // index, no multiplication
     });
 
+    it('should correctly order consecutive multiplications and implicit multiplications', function() {
+      var node = parse('9km*3km');
+      assert.equal(node.toString({parenthesis: 'all'}), '((9 * km) * 3) * km');
+    });
+
     it('should throw an error when having an implicit multiplication between two numbers', function() {
       assert.throws(function () { math.parse('2 3'); }, /Unexpected part "3"/);
       assert.throws(function () { math.parse('2 * 3 4'); }, /Unexpected part "4"/);
