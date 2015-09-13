@@ -193,6 +193,7 @@ math.parse('minus(1,2)').toTex();   // '1minus2'
 
 All expression nodes have a method `toTex` and `toString` to output an expression respectively in LaTex format or as regular text .
 The functions `toTex` and `toString` accept an `options` argument to customise output. This object is of the following form:
+
 ```js
 {
   parenthesis: 'keep',   // parenthesis option
@@ -230,6 +231,7 @@ You can provide the `toTex` and `toString` functions of an expression with your 
 2. Pass a callback directly. This callback will run for every node, so you can replace the output of anything you like.
 
 A callback function has the following form:
+
 ```js
 var callback = function (node, options) {
   ...
