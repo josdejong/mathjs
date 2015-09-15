@@ -74,7 +74,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `and`       | Logical and             | `x and y`   | Left to right | `true and false`      | `false`
 `not`       | Logical not             | `not y`     | Right to left | `not true`            | `false`
 `or`        | Logical or              | `x or y`    | Left to right | `true or false`       | `true`
-`xor`       | Logical xor             | `x xor y`   | Left to right | `true or true`        | `false`
+`xor`       | Logical xor             | `x xor y`   | Left to right | `true xor true`       | `false`
 `=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
 `?` `:`     | Conditional expression  | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
 `:`         | Range                   | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
