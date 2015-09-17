@@ -5,6 +5,7 @@
 - Implemented function `distance`. Thanks @devanp92.
 - Implemented support for Fractions in function `lcm`. Thanks @infusion.
 - Implemented function `cbrt` for numbers, complex numbers, BigNumbers, Units.
+- Implemented function `hypot`.
 - Upgraded to fraction.js v3.0.0.
 - Fixed #450: issue with non sorted index in sparse matrices.
 - Fixed #463, #322: inconsistent handling of implicit multiplication.
