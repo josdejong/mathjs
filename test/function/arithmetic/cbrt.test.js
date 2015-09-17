@@ -38,6 +38,20 @@ describe('cbrt', function() {
     assert.strictEqual(cbrt(-Infinity), -Infinity);
   });
 
+  it('should return all cubic roots of a number', function() {
+    approx.deepEqual(cbrt(8, true), math.matrix([
+      complex('2'),
+      complex('-1 + 1.7321i'),
+      complex('-1 - 1.7321i')
+    ]));
+
+    approx.deepEqual(cbrt(-8, true), math.matrix([
+      complex('1 + 1.7321i'),
+      complex('-2'),
+      complex('1 - 1.7321i')
+    ]));
+  });
+
   it('should return the cubic root of a positive bignumber', function() {
     assert.deepEqual(cbrt(bignumber(0)), bignumber(0));
     assert.deepEqual(cbrt(bignumber(1)), bignumber(1));
