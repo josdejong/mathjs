@@ -98,6 +98,11 @@ describe('cbrt', function() {
     math.config({matrix: 'matrix'});
   });
 
+  it('should return the cubic root of a unit', function() {
+    assert.equal(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString());
+    assert.equal(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString());
+  });
+
   it('should throw an error when used with a string', function() {
     assert.throws(function () {
       cbrt('a string');
