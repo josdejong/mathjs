@@ -12,6 +12,7 @@
 
 - [abs(x)](abs.md)
 - [add(x, y)](add.md)
+- [cbrt(x)](cbrt.md)
 - [ceil(x)](ceil.md)
 - [cube(x)](cube.md)
 - [divide(x, y)](divide.md)
@@ -22,6 +23,7 @@
 - [fix(x)](fix.md)
 - [floor(x)](floor.md)
 - [gcd(a, b)](gcd.md)
+- [hypot(a, b, ...)](hypot.md)
 - [lcm(a, b)](lcm.md)
 - [log(x [, base])](log.md)
 - [log10(x)](log10.md)
@@ -85,6 +87,7 @@
 
 ## geometry
 
+- [distance([x1, y1], [x2, y2])](distance.md)
 - [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.md)
 
 ## logical
