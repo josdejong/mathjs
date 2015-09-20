@@ -16,7 +16,6 @@ describe('derivative', function() {
 
   it('should take the derivative of a SymbolNodes', function() {
     assert.deepEqual(math.eval('derivative(x, x)'), new ConstantNode(1));
-    assert.deepEqual(math.eval('derivative(C, x)'), new ConstantNode(0));
   });
 
   it('should maintain parenthesis of ParenthesisNodes', function() {
@@ -278,6 +277,53 @@ describe('derivative', function() {
     assert.deepEqual(math.eval('derivative(acoth((2x)), x)'), new OperatorNode('/', 'divide', [
                                                                 new OperatorNode('-', 'unaryMinus', [math.parse('(2*1)')]),
                                                                 math.parse('1 - (2x)^2')
+                                                              ]));
+  });
+
+  it('should take the partial derivative of an expression', function() {
+    assert.deepEqual(math.eval('derivative(x + y, x)'), math.parse('1 + 0'));
+    assert.deepEqual(math.eval('derivative(x + log(y)*y, x)'), math.parse('1 + 0'));
+
+    assert.deepEqual(math.eval('derivative(x + y + z, x)'), math.parse('1 + 0 + 0'));
+    assert.deepEqual(math.eval('derivative(x + log(y)*z, x)'), math.parse('1 + 0'));
+
+    assert.deepEqual(math.eval('derivative(x + log(y)*x, x)'), math.parse('1 + log(y)*1'));
+
+    // 2 * 1 * x ^ (2 - 1) + y * 1 + 0 = 2x + y
+    assert.deepEqual(math.eval('derivative(x^2 + x*y + y^2, x)'), new OperatorNode('+', 'add', [
+                                                                    new OperatorNode('+', 'add', [
+                                                                      new OperatorNode('*', 'multiply', [
+                                                                        new ConstantNode(2),
+                                                                        new OperatorNode('*', 'multiply', [
+                                                                          new ConstantNode(1),
+                                                                          new OperatorNode('^', 'pow', [
+                                                                            new SymbolNode('x'),
+                                                                            math.parse('2 - 1')
+                                                                          ])
+                                                                        ])
+                                                                      ]),
+                                                                      math.parse('y * 1')
+                                                                    ]),
+                                                                    new ConstantNode(0)
+                                                                  ]));
+  });
+
+  it('should function properly even without being called within an eval', function() {
+    var f = math.parse('2x^3');
+
+    // 2*3*1*x^(3-1) = 6x^2
+    assert.deepEqual(math.derivative(f, new SymbolNode('x')), new OperatorNode('*', 'multiply', [
+                                                                new ConstantNode(2),
+                                                                new OperatorNode('*', 'multiply', [
+                                                                  new ConstantNode(3),
+                                                                  new OperatorNode('*', 'multiply', [
+                                                                    new ConstantNode(1),
+                                                                    new OperatorNode('^', 'pow', [
+                                                                      new SymbolNode('x'),
+                                                                      math.parse('3 - 1')
+                                                                    ])
+                                                                  ])
+                                                                ])
                                                               ]));
   });
 
