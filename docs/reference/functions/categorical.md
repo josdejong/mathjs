@@ -16,6 +16,7 @@ layout: default
 
 - [abs(x)](abs.html)
 - [add(x, y)](add.html)
+- [cbrt(x)](cbrt.html)
 - [ceil(x)](ceil.html)
 - [cube(x)](cube.html)
 - [divide(x, y)](divide.html)
@@ -26,6 +27,7 @@ layout: default
 - [fix(x)](fix.html)
 - [floor(x)](floor.html)
 - [gcd(a, b)](gcd.html)
+- [hypot(a, b, ...)](hypot.html)
 - [lcm(a, b)](lcm.html)
 - [log(x [, base])](log.html)
 - [log10(x)](log10.html)
@@ -89,6 +91,7 @@ layout: default
 
 <h2 id="geometry">geometry <a href="#geometry" title="Permalink">#</a></h2>
 
+- [distance([x1, y1], [x2, y2])](distance.html)
 - [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.html)
 
 <h2 id="logical">logical <a href="#logical" title="Permalink">#</a></h2>
