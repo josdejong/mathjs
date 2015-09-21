@@ -6,6 +6,7 @@ var OperatorNode = math.expression.node.OperatorNode;
 var FunctionNode = math.expression.node.FunctionNode;
 var ParenthesisNode = math.expression.node.ParenthesisNode;
 var SymbolNode = math.expression.node.SymbolNode;
+var derivative = math.derivative;
 var parse = math.parse;
 var eval = math.eval;
 
@@ -26,12 +27,20 @@ describe('derivative', function() {
   });
 
   it('should take the derivative of FunctionAssignmentNodes', function() {
-    assert.deepEqual(math.derivative(parse('f(x) = 5x + x + 2'), new SymbolNode('x')),
+    assert.deepEqual(derivative(parse('f(x) = 5x + x + 2'), new SymbolNode('x')),
                      parse('5*1 + 1 + 0'));
-    assert.deepEqual(math.derivative(parse('f(x) = 5 + 2'), new SymbolNode('x')),
+    assert.deepEqual(derivative(parse('f(x) = 5 + 2'), new SymbolNode('x')),
                      new ConstantNode(0));
-    assert.deepEqual(math.derivative(parse('f(y) = 5y + 2'), new SymbolNode('x')),
+    assert.deepEqual(derivative(parse('f(y) = 5y + 2'), new SymbolNode('x')),
                      new ConstantNode(0));
+
+    // non-embedded example
+    var f_of_x = parse('f(x) = x + 2');
+    var newFunc = new OperatorNode('+', 'add', [parse('5x'), f_of_x]);
+    assert.deepEqual(derivative(newFunc, new SymbolNode('x')), new OperatorNode('+', 'add', [
+                                                                 parse('5*1'),
+                                                                 parse('1 + 0')
+                                                               ]));
   });
 
   it('should take the derivative of a OperatorNodes with ConstantNodes', function() {
@@ -155,6 +164,16 @@ describe('derivative', function() {
   });
 
   it('should properly take the derivative of mathematical functions', function() {
+    assert.deepEqual(eval('derivative(cbrt(6x), x)'), new OperatorNode('/', 'divide', [
+                                                        parse('6*1'),
+                                                        new OperatorNode('*', 'multiply', [
+                                                          new ConstantNode(3),
+                                                          new OperatorNode('^', 'pow', [
+                                                            parse('6x'),
+                                                            parse('2/3')
+                                                          ])
+                                                        ])
+                                                      ]));
     assert.deepEqual(eval('derivative(sqrt(6x), x)'), new OperatorNode('/', 'divide', [
                                                         parse('6*1'),
                                                         parse('2*sqrt(6x)')
@@ -314,19 +333,19 @@ describe('derivative', function() {
     var f = parse('2x^3');
 
     // 2*3*1*x^(3-1) = 6x^2
-    assert.deepEqual(math.derivative(f, new SymbolNode('x')), new OperatorNode('*', 'multiply', [
-                                                                new ConstantNode(2),
-                                                                new OperatorNode('*', 'multiply', [
-                                                                  new ConstantNode(3),
-                                                                  new OperatorNode('*', 'multiply', [
-                                                                    new ConstantNode(1),
-                                                                    new OperatorNode('^', 'pow', [
-                                                                      new SymbolNode('x'),
-                                                                      parse('3-1')
-                                                                    ])
-                                                                  ])
-                                                                ])
-                                                              ]));
+    assert.deepEqual(derivative(f, new SymbolNode('x')), new OperatorNode('*', 'multiply', [
+                                                           new ConstantNode(2),
+                                                           new OperatorNode('*', 'multiply', [
+                                                             new ConstantNode(3),
+                                                             new OperatorNode('*', 'multiply', [
+                                                               new ConstantNode(1),
+                                                               new OperatorNode('^', 'pow', [
+                                                                 new SymbolNode('x'),
+                                                                 parse('3-1')
+                                                               ])
+                                                             ])
+                                                           ])
+                                                         ]));
   });
 
   it('should throw error if expressions contain unsupported operators or functions', function() {
