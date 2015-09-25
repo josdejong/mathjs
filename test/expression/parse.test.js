@@ -74,6 +74,16 @@ describe('parse', function() {
 
     math.eval('k\u00F6ln = 5', scope); // Combination of latin and unicode
     assert.strictEqual(scope['k\u00F6ln'], 5);
+
+    // test unicode characters in the astral plane (surrogate pairs
+    math.eval('\uD835\uDD38 = 1', scope); // double struck capital A
+    assert.strictEqual(scope['\uD835\uDD38'], 1);
+
+    // should not allow the "holes"
+    assert.throws(function () {
+      math.eval('\uD835\uDCA3 = 1', scope);
+    })
+
   });
 
   describe('multiline', function () {
