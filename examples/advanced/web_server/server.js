@@ -14,6 +14,7 @@
  *
  *     GET http://localhost:8080/mathjs?expr=sqrt(16)
  *
+ * Note that the query parameter `expr` should be properly url encoded.
  */
 
 try {
@@ -27,7 +28,7 @@ catch (err) {
 }
 
 var app = express();
-var pool = workerpool.pool(__dirname + '/mathWorker.js');
+var pool = workerpool.pool(__dirname + '/math_worker.js');
 
 var TIMEOUT = 10000; // milliseconds
 
