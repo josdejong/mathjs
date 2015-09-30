@@ -74,6 +74,16 @@ describe('parse', function() {
 
     math.eval('k\u00F6ln = 5', scope); // Combination of latin and unicode
     assert.strictEqual(scope['k\u00F6ln'], 5);
+
+    // test unicode characters in the astral plane (surrogate pairs
+    math.eval('\uD835\uDD38 = 1', scope); // double struck capital A
+    assert.strictEqual(scope['\uD835\uDD38'], 1);
+
+    // should not allow the "holes"
+    assert.throws(function () {
+      math.eval('\uD835\uDCA3 = 1', scope);
+    })
+
   });
 
   describe('multiline', function () {
@@ -833,10 +843,17 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4); // index, no multiplication
     });
 
+    it('should correctly order consecutive multiplications and implicit multiplications', function() {
+      var node = parse('9km*3km');
+      assert.equal(node.toString({parenthesis: 'all'}), '((9 * km) * 3) * km');
+    });
+
     it('should throw an error when having an implicit multiplication between two numbers', function() {
-      assert.throws(function () {
-        math.parse('2 3');
-      }, /Unexpected part "3"/);
+      assert.throws(function () { math.parse('2 3'); }, /Unexpected part "3"/);
+      assert.throws(function () { math.parse('2 * 3 4'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('2 * 3 4 * 5'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('2 / 3 4 5'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('2 + 3 4'); }, /Unexpected part "4"/);
     });
 
     it('should parse pow ^', function() {

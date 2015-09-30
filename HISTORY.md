@@ -1,7 +1,25 @@
 # History
 
+## not yet released, version 2.4.0
 
-## not yet released, version 2.2.0
+- Added support in the expression parser for mathematical alphanumeric symbols 
+  in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
+  invalid code points.
+
+
+## 2015-09-19, version 2.3.0
+
+- Implemented function `distance`. Thanks @devanp92.
+- Implemented support for Fractions in function `lcm`. Thanks @infusion.
+- Implemented function `cbrt` for numbers, complex numbers, BigNumbers, Units.
+- Implemented function `hypot`.
+- Upgraded to fraction.js v3.0.0.
+- Fixed #450: issue with non sorted index in sparse matrices.
+- Fixed #463, #322: inconsistent handling of implicit multiplication.
+- Fixed #444: factorial of infinity not returning infinity.
+
+
+## 2015-08-30, version 2.2.0
 
 - Units with powers (like `m^2` and `s^-1`) now output with the best prefix.
 - Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.
@@ -10,6 +28,7 @@
 - Improved the `canDefineProperty` check to return false in case of IE8, which
   has a broken implementation of `defineProperty`. Thanks @golmansax.
 - Fixed function `to` not working in case of a simplified unit.
+- Fixed #437: an issue with row swapping in `lup`, also affecting `lusolve`.
 
 
 ## 2015-08-12, version 2.1.1

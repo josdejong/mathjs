@@ -123,8 +123,9 @@ gulp.task('docs', function () {
 });
 
 // The watch task (to automatically rebuild when the source code changes)
-gulp.task('watch', ['bundle', 'minify'], function () {
-  gulp.watch(['index.js', 'lib/**/*.js'], ['bundle', 'minify']);
+// Does only generate math.js, not the minified math.min.js
+gulp.task('watch', ['bundle'], function () {
+  gulp.watch(['index.js', 'lib/**/*.js'], ['bundle']);
 });
 
 // The default task (called when you run `gulp`)
