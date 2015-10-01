@@ -5,6 +5,7 @@
 - Added support in the expression parser for mathematical alphanumeric symbols 
   in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
   invalid code points.
+- Corrected value of unit `stone`. Thanks @Esvandiary for finding the error.
 
 
 ## 2015-09-19, version 2.3.0
