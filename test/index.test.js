@@ -11,8 +11,7 @@ describe('factory', function() {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-14,
-      moduloFunc: 'floored'
+      epsilon: 1e-14
     });
   });
 
@@ -28,8 +27,7 @@ describe('factory', function() {
       number: 'bignumber',
       precision: 64,
       predictable: false,
-      epsilon: 1e-14,
-      moduloFunc: 'floored'
+      epsilon: 1e-14
     });
   });
 
@@ -61,8 +59,7 @@ describe('factory', function() {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-14,
-      moduloFunc: 'floored'
+      epsilon: 1e-14
     });
 
     // restore the original config
