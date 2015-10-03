@@ -9,22 +9,14 @@ var mod = math.mod;
 
 describe('mod', function() {
 
-  it('should default to "floored" mode', function() {
-    assert.equal(math.config().moduloFunc, 'floored');
-  });
-
   it('should correctly calculate the truncated modulus of two numbers', function() {
-    var math1 = math.create({ moduloFunc: 'truncated' });
-
-    approx.equal(math1.mod( 4,  3),  1);
-    approx.equal(math1.mod( 4, -3),  1);
-    approx.equal(math1.mod(-4,  3), -1);
-    approx.equal(math1.mod(-4, -3), -1);
+    approx.equal(math1.mod( 4,  3, 'truncated'),  1);
+    approx.equal(math1.mod( 4, -3, 'truncated'),  1);
+    approx.equal(math1.mod(-4,  3, 'truncated'), -1);
+    approx.equal(math1.mod(-4, -3, 'truncated'), -1);
   });
 
-  it('should correctly calculate the floored modulus of two numbers', function() {
-    var math1 = math.create({ moduloFunc: 'floored' });
-
+  it('should correctly calculate the default (floored) modulus of two numbers', function() {
     approx.equal(math1.mod( 4,  3),  1);
     approx.equal(math1.mod( 4, -3), -2);
     approx.equal(math1.mod(-4,  3), 2);
@@ -32,12 +24,10 @@ describe('mod', function() {
   });
 
   it('should correctly calculate the euclidean modulus of two numbers', function() {
-    var math1 = math.create({ moduloFunc: 'euclidean' });
-
-    approx.equal(math1.mod( 4,  3),  1);
-    approx.equal(math1.mod( 4, -3),  1);
-    approx.equal(math1.mod(-4,  3),  2);
-    approx.equal(math1.mod(-4, -3),  2);
+    approx.equal(math1.mod( 4,  3, 'euclidean'),  1);
+    approx.equal(math1.mod( 4, -3, 'euclidean'),  1);
+    approx.equal(math1.mod(-4,  3, 'euclidean'),  2);
+    approx.equal(math1.mod(-4, -3, 'euclidean'),  2);
   });
 
   it('should handle a divisor of 0 by returning the dividend', function() {
