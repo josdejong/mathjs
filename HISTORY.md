@@ -1,9 +1,23 @@
 # History
 
-## not yet released, version 2.3.0
+## not yet released, version 2.4.0
+
+- Added support in the expression parser for mathematical alphanumeric symbols 
+  in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
+  invalid code points.
+- Corrected value of unit `stone`. Thanks @Esvandiary for finding the error.
+
+
+## 2015-09-19, version 2.3.0
 
 - Implemented function `distance`. Thanks @devanp92.
+- Implemented support for Fractions in function `lcm`. Thanks @infusion.
+- Implemented function `cbrt` for numbers, complex numbers, BigNumbers, Units.
+- Implemented function `hypot`.
+- Upgraded to fraction.js v3.0.0.
 - Fixed #450: issue with non sorted index in sparse matrices.
+- Fixed #463, #322: inconsistent handling of implicit multiplication.
+- Fixed #444: factorial of infinity not returning infinity.
 
 
 ## 2015-08-30, version 2.2.0
