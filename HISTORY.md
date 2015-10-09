@@ -6,6 +6,8 @@
   in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
   invalid code points.
 - Extended function `distance` with more signatures. Thanks @kv-kunalvyas.
+- Fixed a bug in functions `sin` and `cos`, which gave wrong results for 
+  BigNumber integer values around multiples of tau (i.e. `sin(bignumber(7))`).
 - Fixed value of unit `stone`. Thanks @Esvandiary for finding the error.
 
 
