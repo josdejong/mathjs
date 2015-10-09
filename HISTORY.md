@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 2.4.0
+## 2015-10-09, version 2.4.0
 
 - Added support in the expression parser for mathematical alphanumeric symbols 
   in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
