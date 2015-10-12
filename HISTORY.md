@@ -1,5 +1,11 @@
 # History
 
+
+## not yet released, version 2.4.1
+
+- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
+
+
 ## 2015-10-09, version 2.4.0
 
 - Added support in the expression parser for mathematical alphanumeric symbols 
