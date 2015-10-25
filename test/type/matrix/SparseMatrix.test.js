@@ -13,7 +13,7 @@ describe('SparseMatrix', function() {
 
     it('should create empty matrix if called with no argument', function() {
       var m = new SparseMatrix();
-      assert.deepEqual(m._size, [0]);
+      assert.deepEqual(m._size, [0, 0]);
       assert.deepEqual(m._values, []);
       assert.deepEqual(m._index, []);
       assert.deepEqual(m._ptr, [0]);
