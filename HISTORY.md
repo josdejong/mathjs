@@ -10,6 +10,8 @@
   non-integer values of `k`.
 - Fixed: function `import` did not override typed functions when the option
   override was set true.
+- Fixed: added functions `math.sparse` and `math.index` to the reference docs, 
+  they where missing.
 
 
 ## 2015-10-09, version 2.4.0

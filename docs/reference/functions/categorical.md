@@ -72,8 +72,10 @@
 - [chain(value)](chain.md)
 - [complex(re, im)](complex.md)
 - [fraction(numerator, denominator)](fraction.md)
+- [index(range1, range2, ...)](index.md)
 - [matrix(x)](matrix.md)
 - [number(value)](number.md)
+- [sparse(x)](sparse.md)
 - [string(value)](string.md)
 - [unit(x)](unit.md)
 

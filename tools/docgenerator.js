@@ -467,7 +467,7 @@ function iteratePath (inputPath, outputPath) {
         if (path.indexOf('expression') !== -1) {
           category = 'expression';
         }
-        else if (path.indexOf(name) !== -1) {
+        else if (path[0] === '.' && path[1] === 'lib' && path[2] === 'type' && path[4] === 'function') {
           category = 'construction';
         }
         else {
