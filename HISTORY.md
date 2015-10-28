@@ -6,6 +6,8 @@
 - Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
 - Fixed #489: an issue with initializing a sparse matrix without data.
   Thanks @Retsam.
+- Fixed: #493: function `combinations` did not throw an exception for 
+  non-integer values of `k`.
 
 
 ## 2015-10-09, version 2.4.0
