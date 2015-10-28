@@ -58,18 +58,23 @@
   ['sin', 'cos', 'tan', 'sec', 'cot', 'csc'].forEach(function(name) {
     var fn = math[name]; // the original function
 
+    var fnNumber = function (x) {
+      // convert from configured type of angles to radians
+      switch (config.angles) {
+        case 'deg':
+          return fn(x / 360 * 2 * Math.PI);
+        case 'grad':
+          return fn(x / 400 * 2 * Math.PI);
+        default:
+          return fn(x);
+      }
+    };
+
+    // create a typed-function which check the input types
     replacements[name] = math.typed(name, {
-      // note: we should also add support for Matrix and Array. Left out to keep the example concise.
-      'number': function (x) {
-        // convert from configured type of angles to radians
-        switch (config.angles) {
-          case 'deg':
-            return fn(x / 360 * 2 * Math.PI);
-          case 'grad':
-            return fn(x / 400 * 2 * Math.PI);
-          default:
-            return fn(x);
-        }
+      'number': fnNumber,
+      'Array | Matrix': function (x) {
+        return math.map(x, fnNumber);
       }
     });
   });
@@ -78,21 +83,26 @@
   ['asin', 'acos', 'atan', 'atan2', 'acot', 'acsc', 'asec'].forEach(function(name) {
     var fn = math[name]; // the original function
 
-    replacements[name] = math.typed(name, {
-      // note: we should also add support for Matrix and Array. Left out to keep the example concise.
-      'number': function (x) {
-        var result = fn(x);
+    var fnNumber = function (x) {
+      var result = fn(x);
 
-        if (typeof result === 'number') {
-          // convert to radians to configured type of angles
-          switch(config.angles) {
-            case 'deg':  return result / 2 / Math.PI * 360;
-            case 'grad': return result / 2 / Math.PI * 400;
-            default: return result;
-          }
+      if (typeof result === 'number') {
+        // convert to radians to configured type of angles
+        switch(config.angles) {
+          case 'deg':  return result / 2 / Math.PI * 360;
+          case 'grad': return result / 2 / Math.PI * 400;
+          default: return result;
         }
+      }
 
-        return result;
+      return result;
+    };
+
+    // create a typed-function which check the input types
+    replacements[name] = math.typed(name, {
+      'number': fnNumber,
+      'Array | Matrix': function (x) {
+        return math.map(x, fnNumber);
       }
     });
   });
