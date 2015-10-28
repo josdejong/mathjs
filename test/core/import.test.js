@@ -146,6 +146,36 @@ describe('import', function() {
 
   });
 
+  it('should override existing typed functions', function () {
+    math.import({
+      'foo': math.typed('foo', {
+        'Date': function (x) {
+          return 'foo(Date)';
+        }
+      })
+    });
+
+    assert.equal(math.foo(new Date()), 'foo(Date)');
+
+    math.import({
+      'foo': math.typed('foo', {
+        'string': function (x) {
+          return 'foo(string)';
+        }
+      })
+    }, {override: true});
+
+    assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['string']);
+    assert.equal(math.foo('bar'), 'foo(string)');
+    assert.throws(function () {
+      math.foo(new Date())
+    }, /TypeError: Unexpected type of argument in function foo/);
+    assert.throws(function () {
+      math.foo(new Date())
+    }, /TypeError: Unexpected type of argument in function foo/);
+
+  });
+
   it('should merge typed functions coming from a factory', function () {
     math.import({
       'foo': math.typed('foo', {
