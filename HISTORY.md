@@ -14,6 +14,8 @@
   override was set true.
 - Fixed: added functions `math.sparse` and `math.index` to the reference docs, 
   they where missing.
+- Fixed: removed memoization from `gamma` and `factorial` functions, this 
+  could blow up memory.
 
 
 ## 2015-10-09, version 2.4.0
