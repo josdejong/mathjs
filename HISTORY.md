@@ -4,6 +4,8 @@
 ## not yet released, version 2.4.1
 
 - Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed #490: `nthRoot` returning an error for negative values like 
+  `nthRoot(-2, 3)`.
 - Fixed #489: an issue with initializing a sparse matrix without data.
   Thanks @Retsam.
 - Fixed: #493: function `combinations` did not throw an exception for 
