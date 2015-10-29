@@ -84,6 +84,7 @@ describe('nthRoot', function() {
   });
 
   it('should return the nthRoot of negative bignumber values', function() {
+    assert.deepEqual(nthRoot(big(-2), big(3)), big('-1.259921049894873164767210607278228350570251464701507980081975112'));
     assert.deepEqual(nthRoot(big(-64), big(3)), big(-4));
   });
 
