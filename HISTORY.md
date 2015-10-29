@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 2.4.1
+## 2015-10-29, version 2.4.1
 
 - Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
 - Fixed #490: `nthRoot` returning an error for negative values like 
