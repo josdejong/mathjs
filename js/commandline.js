@@ -537,3 +537,12 @@ function CommandLineEditor (params) {
   create();
   load();
 }
+
+
+var container = document.getElementById('commandline');
+if (container) {
+  var editor = new CommandLineEditor({
+    container: container,
+    math: math
+  });
+}

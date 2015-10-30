@@ -59,12 +59,6 @@ Powerful and easy to use.
       See <a href="http://mathnotepad.com/">Math Notepad</a> for a full application.
     </p>
     <div id="commandline">loading...</div>
-    <script type="text/javascript">
-      var editor = new CommandLineEditor({
-          container: document.getElementById('commandline'),
-          math: math
-      });
-    </script>
     <div class="tips">
       Shortcut keys:
       <ul>
