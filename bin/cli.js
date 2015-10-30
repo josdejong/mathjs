@@ -250,7 +250,7 @@ function outputVersion () {
     }
     else {
       var pkg = JSON.parse(data);
-      var version = pkg && pkg.version ? 'v' + pkg.version : 'unknown';
+      var version = pkg && pkg.version ? pkg.version : 'unknown';
       console.log(version);
     }
     process.exit(0);
