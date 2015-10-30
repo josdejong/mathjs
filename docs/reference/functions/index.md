@@ -17,7 +17,9 @@ math.index(range1, range2, ...)
 
 <h3 id="where">Where <a href="#where" title="Permalink">#</a></h3>
 
-Each range can be any of:
+- A number
+- An instance of `Range`
+- A one-dimensional Array or a Matrix with numbers
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
 
@@ -38,11 +40,10 @@ Index | Returns the created index
 var math = math.js
 
 var b = [1, 2, 3, 4, 5];
-math.subset(b, math.index([1, 3]));     // returns [2, 3]
+math.subset(b, math.index([1, 2, 3]));     // returns [2, 3, 4]
 
 var a = math.matrix([[1, 2], [3, 4]]);
 a.subset(math.index(0, 1));             // returns 2
-a.subset(math.index(1, null));          // returns [3, 4]
 ```
 
 

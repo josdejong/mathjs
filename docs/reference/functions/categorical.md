@@ -76,8 +76,10 @@ layout: default
 - [chain(value)](chain.html)
 - [complex(re, im)](complex.html)
 - [fraction(numerator, denominator)](fraction.html)
+- [index(range1, range2, ...)](index.html)
 - [matrix(x)](matrix.html)
 - [number(value)](number.html)
+- [sparse(x)](sparse.html)
 - [string(value)](string.html)
 - [unit(x)](unit.html)
 

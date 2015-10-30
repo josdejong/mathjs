@@ -4,6 +4,24 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20151029-version-241">2015-10-29, version 2.4.1 <a href="#20151029-version-241" title="Permalink">#</a></h2>
+
+- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed #490: `nthRoot` returning an error for negative values like 
+  `nthRoot(-2, 3)`.
+- Fixed #489: an issue with initializing a sparse matrix without data.
+  Thanks @Retsam.
+- Fixed: #493: function `combinations` did not throw an exception for 
+  non-integer values of `k`.
+- Fixed: function `import` did not override typed functions when the option
+  override was set true.
+- Fixed: added functions `math.sparse` and `math.index` to the reference docs, 
+  they where missing.
+- Fixed: removed memoization from `gamma` and `factorial` functions, this 
+  could blow up memory.
+
+
 <h2 id="20151009-version-240">2015-10-09, version 2.4.0 <a href="#20151009-version-240" title="Permalink">#</a></h2>
 
 - Added support in the expression parser for mathematical alphanumeric symbols 
