@@ -23,7 +23,7 @@ File: [angle_configuration.html](angle_configuration.html)
     }
   </style>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.1/math.min.js"></script>
 </head>
 <body>
 
@@ -67,37 +67,32 @@ File: [angle_configuration.html](angle_configuration.html)
   ['sin', 'cos', 'tan', 'sec', 'cot', 'csc'].forEach(function(name) {
     var fn = math[name]; // the original function
 
-    replacements[name] = function replacement(x) {
-      if (x instanceof math.type.BigNumber) {
-        x = x.toNumber(); // convert to number
+    var fnNumber = function (x) {
+      // convert from configured type of angles to radians
+      switch (config.angles) {
+        case 'deg':
+          return fn(x / 360 * 2 * Math.PI);
+        case 'grad':
+          return fn(x / 400 * 2 * Math.PI);
+        default:
+          return fn(x);
       }
-
-      if (typeof x === 'boolean') {
-        x = +x; // convert to number
-      }
-
-      if (typeof x === 'number') {
-        // convert from configured type of angles to radians
-        switch(config.angles) {
-          case 'deg':  return fn(x / 360 * 2 * Math.PI);
-          case 'grad': return fn(x / 400 * 2 * Math.PI);
-          default: return fn(x);
-        }
-      }
-
-      if (math.collection.isCollection(x)) {
-        return math.collection.deepMap(x, replacement);
-      }
-
-      return fn(x);
     };
+
+    // create a typed-function which check the input types
+    replacements[name] = math.typed(name, {
+      'number': fnNumber,
+      'Array | Matrix': function (x) {
+        return math.map(x, fnNumber);
+      }
+    });
   });
 
   // create trigonometric functions replacing the output depending on angle config
-  ['asin', 'acos', 'atan', 'atan2'].forEach(function(name) {
+  ['asin', 'acos', 'atan', 'atan2', 'acot', 'acsc', 'asec'].forEach(function(name) {
     var fn = math[name]; // the original function
 
-    replacements[name] = function replacement(x) {
+    var fnNumber = function (x) {
       var result = fn(x);
 
       if (typeof result === 'number') {
@@ -109,12 +104,16 @@ File: [angle_configuration.html](angle_configuration.html)
         }
       }
 
-      if (math.collection.isCollection(x)) {
-        return math.collection.deepMap(x, replacement);
-      }
-
       return result;
     };
+
+    // create a typed-function which check the input types
+    replacements[name] = math.typed(name, {
+      'number': fnNumber,
+      'Array | Matrix': function (x) {
+        return math.map(x, fnNumber);
+      }
+    });
   });
 
   // import all replacements into math.js, override existing trigonometric functions
