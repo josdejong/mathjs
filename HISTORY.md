@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 2.4.2
+
+- Fixed #502: Issue with `format` in some JavaScript engines.
+
+
 ## 2015-10-29, version 2.4.1
 
 - Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
