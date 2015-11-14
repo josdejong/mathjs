@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 2.4.2
+## 2015-11-14, version 2.4.2
 
 - Fixed #502: Issue with `format` in some JavaScript engines.
 - Fixed #503: Removed trailing commas and the use of keyword `import` as 
