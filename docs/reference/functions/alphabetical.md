@@ -52,7 +52,6 @@ layout: default
 - [det(x)](det.html)
 - [diag(X)](diag.html)
 - [distance([x1, y1], [x2, y2])](distance.html)
-- [distribution(name)](distribution.html)
 - [divide(x, y)](divide.html)
 - [dot(x, y)](dot.html)
 - [dotDivide(x, y)](dotDivide.html)
