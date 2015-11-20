@@ -126,7 +126,6 @@ layout: default
 <h2 id="probability">probability <a href="#probability" title="Permalink">#</a></h2>
 
 - [combinations(n, k)](combinations.html)
-- [distribution(name)](distribution.html)
 - [factorial(n)](factorial.html)
 - [gamma(n)](gamma.html)
 - [kldivergence(x, y)](kldivergence.html)
