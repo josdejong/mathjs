@@ -48,7 +48,6 @@
 - [det(x)](det.md)
 - [diag(X)](diag.md)
 - [distance([x1, y1], [x2, y2])](distance.md)
-- [distribution(name)](distribution.md)
 - [divide(x, y)](divide.md)
 - [dot(x, y)](dot.md)
 - [dotDivide(x, y)](dotDivide.md)

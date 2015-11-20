@@ -122,7 +122,6 @@
 ## probability
 
 - [combinations(n, k)](combinations.md)
-- [distribution(name)](distribution.md)
 - [factorial(n)](factorial.md)
 - [gamma(n)](gamma.md)
 - [kldivergence(x, y)](kldivergence.md)
