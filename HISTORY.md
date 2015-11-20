@@ -1,10 +1,14 @@
 # History
 
 
-## 2015-11-14, version 2.4.2
+## not yet released, version 2.5.0
 
 - Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
   Thanks @devdevdata222.
+
+
+## 2015-11-14, version 2.4.2
+
 - Fixed #502: Issue with `format` in some JavaScript engines.
 - Fixed #503: Removed trailing commas and the use of keyword `import` as 
   property, as this gives issues with old JavaScript engines.
