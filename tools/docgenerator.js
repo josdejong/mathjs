@@ -37,6 +37,10 @@ var SYNTAX = {
   print: 'print(template, values [, precision])'
 };
 
+var IGNORE_FUNCTIONS = {
+  distribution: true
+};
+
 var IGNORE_WARNINGS = {
   seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain'],
   parameters: ['parser'],
@@ -477,6 +481,10 @@ function iteratePath (inputPath, outputPath) {
       else if (path.join('/') === './lib/type') {
         // for boolean.js, number.js, string.js
         category = 'construction';
+      }
+
+      if (IGNORE_FUNCTIONS[name]) {
+        category = null;
       }
 
       if (category) {
