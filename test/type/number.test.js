@@ -24,6 +24,10 @@ describe('number', function() {
     approx.equal(number(math.bignumber('1.3e500')), Infinity);
   });
 
+  it('should convert a fraction to a number', function() {
+    approx.equal(number(math.fraction(2,5)), 0.4);
+  });
+
   it('should accept a number as argument', function() {
     approx.equal(number(3), 3);
     approx.equal(number(-3), -3);

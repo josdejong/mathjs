@@ -5,6 +5,7 @@
 
 - Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
   Thanks @devdevdata222.
+- Fixed: Function `number` didn't support `Fraction` as input.
 
 
 ## 2015-11-14, version 2.4.2
