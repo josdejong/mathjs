@@ -47,8 +47,12 @@ describe('unit', function() {
     assert.deepEqual(unit(10, 'kg').toString(), '10 kg');
   });
 
-  it('should take a bignumber as the quantity and a string as the unit (downgrades to number)', function() {
-    assert.deepEqual(unit(math.bignumber(5), 'cm').toString(), '50 mm');
+  it('should take a bignumber as the quantity and a string as the unit', function() {
+    assert.deepEqual(unit(math.bignumber(5).plus(1e-24), 'cm').toString(), '50.00000000000000000000001 mm');
+  });
+
+  it('should take a fraction as the quantity and a string as the unit', function() {
+    assert.deepEqual(unit(math.fraction(1,3), 'cm').toString(), '10/3 mm');
   });
 
   it('should convert a string to number with 2 strings', function() {

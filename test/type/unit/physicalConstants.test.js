@@ -35,7 +35,7 @@ describe('physical constants', function() {
     approx.equal(math.fineStructure.toString(),           7.297352569824e-3);
     assert.equal(math.hartreeEnergy.toString(),           '4.3597443419e-18 J');
     assert.equal(math.protonMass.toString(),              '1.67262177774e-27 kg');
-    assert.equal(math.deuteronMass.toString(),            '3.3435830926000005e-27 kg');  // round-off error
+    assert.equal(math.deuteronMass.toString(),            '3.3435830926e-27 kg');  // round-off error
     assert.equal(math.neutronMass.toString(),             '1.6749271613e-27 kg');
     assert.equal(math.quantumOfCirculation.toString(),    '3.636947552024e-4 m^2 / s');
     assert.equal(math.rydberg.toString(),                 '1.097373156853955e+7 m^-1');

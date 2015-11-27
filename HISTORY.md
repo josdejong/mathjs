@@ -3,6 +3,8 @@
 
 ## not yet released, version 2.5.0
 
+- Implemented support for numeric types `Fraction` and `BigNumber` in units.
+- Implemented new method `toNumeric` for units.
 - Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
   Thanks @devdevdata222.
 - Fixed: Function `number` didn't support `Fraction` as input.

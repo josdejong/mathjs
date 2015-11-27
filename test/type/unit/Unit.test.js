@@ -3,7 +3,7 @@ var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var Unit = math.type.Unit;
 
-describe('unit', function() {
+describe('Unit', function() {
 
   describe('constructor', function() {
 
@@ -25,6 +25,18 @@ describe('unit', function() {
       assert.equal(unit1.units[0].unit.name, 'g');
       assert.equal(unit1.units[1].unit.name, 'm');
       assert.equal(unit1.units[2].unit.name, 's');
+    });
+
+    it('should create a unit with Fraction value', function () {
+      var unit1 = new Unit(math.fraction(1000, 3), 'cm');
+      assert.deepEqual(unit1.value, math.fraction(10,3));
+      assert.equal(unit1.units[0].unit.name, 'm');
+    });
+
+    it('should create a unit with BigNumber value', function () {
+      var unit1 = new Unit(math.bignumber(5000), 'cm');
+      assert.deepEqual(unit1.value, math.bignumber(50));
+      assert.equal(unit1.units[0].unit.name, 'm');
     });
 
     it('should create square meter correctly', function() {
@@ -133,6 +145,16 @@ describe('unit', function() {
       assert.equal(new Unit(100, 'N').equals(new Unit(100, 'kg m / s')), false);
     });
 
+    it('should test whether two units with Fractions are equal', function() {
+      assert.equal(new Unit(math.fraction(100), 'cm').equals(new Unit(math.fraction(1), 'm')), true);
+      assert.equal(new Unit(math.fraction(100), 'cm').equals(new Unit(math.fraction(2), 'm')), false);
+    });
+
+    it('should test whether two units with a Fraction and a number are equal', function() {
+      assert.equal(new Unit(math.fraction(100), 'cm').equals(new Unit(1, 'm')), true);
+      assert.equal(new Unit(100, 'cm').equals(new Unit(math.fraction(2), 'm')), false);
+    });
+
   });
 
   describe('clone', function() {
@@ -160,6 +182,14 @@ describe('unit', function() {
 
     });
 
+    it('should clone a with a Fraction', function() {
+      var u1 = new Unit(math.fraction(1,3), 'cm');
+      var u2 = u1.clone();
+      assert(u1 !== u2);
+      assert.deepEqual(u1, u2);
+      assert(u1.value !== u2.value); // should be cloned
+    });
+
   });
 
   describe('toNumber', function() {
@@ -180,6 +210,18 @@ describe('unit', function() {
       var u1 = new Unit(981, 'cm/s^2');
       var u2 = u1.to('km/ms^2');
       approx.equal(u2.toNumber('m/s^2'), 9.81);
+    });
+
+    it ('should convert a unit with fraction to a number', function () {
+      var u = new Unit(math.fraction(5), 'cm');
+      assert.strictEqual(u.toNumber('mm'), 50);
+    });
+  });
+
+  describe('toNumberic', function() {
+    it ('should convert a unit to a numeric value', function () {
+      var u = new Unit(math.fraction(1,3), 'cm');
+      assert.deepEqual(u.toNumeric('mm'), math.fraction(10,3));
     });
   });
 
@@ -213,6 +255,17 @@ describe('unit', function() {
       assert.equal(u4.units[1].unit.name, 'h');
       assert.equal(u4.units[0].prefix.name, '');
       assert.equal(u4.fixPrefix, true);
+    });
+
+    it ('should convert a unit with a fraction', function () {
+      var u1 = new Unit(math.fraction(1,3), 'm');
+
+      var u2 = u1.to('cm');
+      assert.deepEqual(u2.value, math.fraction(1,3));
+      assert(u2.value.isFraction);
+      assert.equal(u2.units[0].unit.name, 'm');
+      assert.equal(u2.units[0].prefix.name, 'c');
+      assert.equal(u2.fixPrefix, true);
     });
 
     it ('should convert a unit to a fixed unit', function () {
@@ -391,6 +444,9 @@ describe('unit', function() {
       assert.equal(u.toString(), "5 mm");
     });
 
+    it('should convert a unit with Fraction to string properly', function() {
+      assert.equal(new Unit(math.fraction(9/10), 'mm').toString(), '9/10 mm');
+    });
   });
 
   describe('simplifyUnitListLazy', function() {
@@ -468,6 +524,16 @@ describe('unit', function() {
           {'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true});
       assert.deepEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
           {'mathjs': 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true});
+      assert.deepEqual(new Unit(math.fraction(0.375), 'cm').toJSON(),
+          {
+            mathjs: 'Unit',
+            value: math.fraction(0.375), // Note that value is not serialized at this point, that will be done by JSON.stringify
+            unit: 'cm',
+            fixPrefix: false
+          });
+
+      var str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'));
+      assert.deepEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}');
     });
 
     it('fromJSON', function () {
@@ -485,6 +551,14 @@ describe('unit', function() {
       var u6 = Unit.fromJSON({'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true});
       assert.ok(u6 instanceof Unit);
       assert.deepEqual(u5, u6);
+
+      var u7 = Unit.fromJSON({
+        mathjs: 'Unit',
+        value: math.fraction(0.375), // Note that value is already a Fraction at this point, that will be done by JSON.parse(str, reviver)
+        unit: 'cm',
+        fixPrefix: false
+      });
+      assert.deepEqual(u7, new Unit(math.fraction(0.375), 'cm'))
     });
 
     it('toJSON -> fromJSON should recover an "equal" unit', function() {
@@ -513,6 +587,15 @@ describe('unit', function() {
       assert.equal(new Unit(null, 'km').to('cm').format(), '1e+5 cm');
       assert.equal(new Unit(null, 'inch').to('cm').format(), '2.54 cm');
       assert.equal(new Unit(null, 'N/m^2').to('lbf/inch^2').format(5), '1.4504e-4 lbf / inch^2');
+    });
+
+    it('should format a unit with a bignumber', function() {
+      assert.equal(new Unit(math.bignumber(1).plus(1e-24), 'm').format(), '1.000000000000000000000001 m');
+      assert.equal(new Unit(math.bignumber(1e24).plus(1), 'm').format(), '1.000000000000000000000001 Ym');
+    });
+
+    it('should format a unit with a fraction', function() {
+      assert.equal(new Unit(math.fraction(4/5), 'm').format(), '4/5 m');
     });
 
     it('should ignore properties in Object.prototype when finding the best prefix', function() {
@@ -576,7 +659,7 @@ describe('unit', function() {
       assert.equal(unit1.units[0].prefix.name, 'k');
 
       unit1 = Unit.parse('-5mg');
-      assert.equal(unit1.value, -0.000005);
+      approx.equal(unit1.value, -0.000005);
       assert.equal(unit1.units[0].unit.name, 'g');
       assert.equal(unit1.units[0].prefix.name, 'm');
 
@@ -688,6 +771,20 @@ describe('unit', function() {
     it('should throw an exception when parsing an invalid type of argument', function() {
       assert.throws(function () {Unit.parse(123)}, /TypeError: Invalid argument in Unit.parse, string expected/);
     });
+
+    it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function() {
+      var origConfig = math.config();
+
+      math.config({number: 'fraction'});
+      var unit1 = Unit.parse('5kg');
+      assert(unit1.value.isFraction);
+
+      math.config({number: 'bignumber'});
+      var unit1 = Unit.parse('5kg');
+      assert(unit1.value.isBigNumber);
+
+      math.config(origConfig);
+    });
   });
 
   describe('_isDerived', function() {
@@ -734,6 +831,22 @@ describe('unit', function() {
       assert.equal(unitP.units[0].unit.name, 'N');
       assert.equal(unitP.units[1].unit.name, 'h');
       assert.equal(unitP.units[2].unit.name, 's');
+    });
+
+    it('should keep the same numeric type for the units value', function() {
+      var unit1 = new Unit(math.bignumber(10), "N/s");
+      var unit2 = new Unit(math.bignumber(10), "h");
+      var unitM = unit1.multiply(unit2);
+      assert(unitM.value.isBigNumber);
+
+      var unit3 = new Unit(math.bignumber(14.7), "lbf");
+      var unit4 = new Unit(math.bignumber(1), "in in");
+      var unitD = unit3.divide(unit4);
+      assert(unitD.value.isBigNumber);
+
+      var unit5 = new Unit(math.bignumber(1), "N h/s");
+      var unitP = unit5.pow(math.bignumber(-3.5));
+      assert(unitP.value.isBigNumber);
     });
   });
 

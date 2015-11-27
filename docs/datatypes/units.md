@@ -51,6 +51,11 @@ A `Unit` contains the following functions:
   Used when serializing a unit, see [Serialization](../serialization.md).
 - `toNumber(unitName)`. Get the value of a unit when converted to the
   specified unit (a unit with optional prefix but without value).
+  The type of the returned value is always `number`.
+- `toNumeric(unitName)`. Get the value of a unit when converted to the
+  specified unit (a unit with optional prefix but without value).
+  The type of the returned value depends on how the unit was created and 
+  can be `number`, `Fraction`, or `BigNumber`.
 - `toString()`. Get a string representation of the unit. The function will
   determine the best fitting prefix for the unit.
 
