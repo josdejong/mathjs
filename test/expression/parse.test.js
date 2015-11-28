@@ -118,6 +118,15 @@ describe('parse', function() {
       assert.equal(scope2.f(3), 9);
     });
 
+    it ('should correctly scope a function variable if also used outside the function', function () {
+      var scope = {};
+      var res = parse('x=2;f(x)=x^2;x').compile().eval(scope); // x should be x=2, not x of the function
+
+      assert.deepEqual(res, {entries: [2]});
+      assert.equal(scope.x, 2);
+      assert.equal(scope.f(3), 9);
+    });
+
     it('should spread a function over multiple lines', function() {
       assert.deepEqual(parse('add(\n4\n,\n2\n)').compile().eval(), 6);
     });
