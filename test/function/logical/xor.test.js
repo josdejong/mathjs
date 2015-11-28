@@ -121,6 +121,11 @@ describe('xor', function () {
     assert.strictEqual(xor(unit(5, 'km'), unit(0, 'gram')), true);
     assert.strictEqual(xor(unit(0, 'km'), unit(100, 'gram')), true);
     assert.strictEqual(xor(unit(0, 'km'), unit(0, 'gram')), false);
+
+    assert.strictEqual(xor(unit(bignumber(0), 'm'), unit(bignumber(0), 'm')), false);
+    assert.strictEqual(xor(unit(bignumber(1), 'm'), unit(bignumber(0), 'm')), true);
+    assert.strictEqual(xor(unit(bignumber(0), 'm'), unit(bignumber(1), 'm')), true);
+    assert.strictEqual(xor(unit(bignumber(1), 'm'), unit(bignumber(1), 'm')), false);
   });
 
   it('should xor two arrays', function () {

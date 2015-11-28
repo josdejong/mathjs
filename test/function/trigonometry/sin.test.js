@@ -88,6 +88,9 @@ describe('sin', function() {
   it('should return the sine of an angle', function() {
     approx.equal(sin(unit('45deg')), 0.707106781186548);
     approx.equal(sin(unit('-45deg')), -0.707106781186548);
+
+    assert(sin(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
   });
 
   it('should throw an error if called with an invalid unit', function() {

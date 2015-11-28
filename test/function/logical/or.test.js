@@ -125,6 +125,11 @@ describe('or', function () {
     assert.strictEqual(or(unit(5, 'km'), unit(0, 'gram')), true);
     assert.strictEqual(or(unit(0, 'km'), unit(100, 'gram')), true);
     assert.strictEqual(or(unit(0, 'km'), unit(0, 'gram')), false);
+
+    assert.strictEqual(or(unit(bignumber(0), 'm'), unit(bignumber(0), 'm')), false);
+    assert.strictEqual(or(unit(bignumber(1), 'm'), unit(bignumber(0), 'm')), true);
+    assert.strictEqual(or(unit(bignumber(0), 'm'), unit(bignumber(1), 'm')), true);
+    assert.strictEqual(or(unit(bignumber(1), 'm'), unit(bignumber(1), 'm')), true);
   });
 
   it('should or two arrays', function () {

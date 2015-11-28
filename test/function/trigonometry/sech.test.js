@@ -50,6 +50,9 @@ describe('sech', function() {
   it('should return the sech of an angle', function() {
     approx.equal(sech(unit('90deg')), 0.39853681533839);
     approx.equal(sech(unit('-45deg')), 0.75493970871413);
+
+    assert(sech(unit(math.bignumber(90), 'deg')).isBigNumber);
+    approx.equal(sech(unit(math.bignumber(90), 'deg')).toNumber(), 0.39853681533839);
   });
 
   it('should throw an error if called with an invalid unit', function() {

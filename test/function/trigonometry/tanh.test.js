@@ -60,6 +60,9 @@ describe('tanh', function() {
   it('should return the tanh of an angle', function() {
     approx.equal(tanh(unit('90deg')), 0.91715233566727);
     approx.equal(tanh(unit('-45deg')), -0.65579420263267);
+
+    assert(tanh(unit(math.bignumber(90), 'deg')).isBigNumber);
+    approx.equal(tanh(unit(math.bignumber(90), 'deg')).toNumber(), 0.91715233566727);
   });
 
   it('should throw an error if called with an invalid unit', function() {

@@ -96,6 +96,9 @@ describe('cos', function() {
   it('should return the cosine of an angle', function() {
     approx.equal(cos(unit('45deg')), 0.707106781186548);
     approx.equal(cos(unit('-135deg')), -0.707106781186548);
+
+    assert(cos(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
   });
 
   it('should throw an error if called with an invalid unit', function() {

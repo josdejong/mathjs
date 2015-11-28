@@ -73,6 +73,9 @@ describe('tan', function() {
   it('should return the tangent of an angle', function() {
     approx.equal(tan(unit(' 60deg')), math.sqrt(3));
     approx.equal(tan(unit('-135deg')), 1);
+
+    assert(tan(unit(math.bignumber(60), 'deg')).isBigNumber);
+    approx.equal(tan(unit(math.bignumber(60), 'deg')).toNumber(), math.sqrt(3));
   });
 
   it('should throw an error if called with an invalid unit', function() {
