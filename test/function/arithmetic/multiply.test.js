@@ -143,6 +143,11 @@ describe('multiply', function() {
       assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm');
       assert.equal(multiply(unit('5 mm'), 0).toString(), '0 mm');
       assert.equal(multiply(unit('celsius'), 10).toString(), '10 celsius');
+
+      assert.equal(multiply(unit(math.fraction(1,4), 'm'), 3).toString(), '3/4 m');
+      assert.equal(multiply(3, unit(math.fraction(1,4), 'm')).toString(), '3/4 m');
+      assert.equal(multiply(math.fraction(1,4), unit(3, 'm')).toString(), '3/4 m');
+      assert.equal(multiply(unit(3, 'm'), math.fraction(1,4)).toString(), '3/4 m');
     });
 
     it('should multiply a number and a unit without value correctly', function() {

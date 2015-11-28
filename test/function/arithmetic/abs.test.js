@@ -72,10 +72,15 @@ describe('abs', function () {
   it('should return the absolute value of a unit', function () {
     var u = math.abs(math.unit('5 m'));
     assert.equal(u.toString(), '5 m');
+
     u = math.abs(math.unit('-5 m'));
     assert.equal(u.toString(), '5 m');
+
     u = math.abs(math.unit('-283.15 degC'));
     assert.equal(u.toString(), '-263.15 degC');
+
+    u = math.abs(math.unit(math.fraction(2,3), 'm'));
+    assert.equal(u.toString(), '2/3 m');
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

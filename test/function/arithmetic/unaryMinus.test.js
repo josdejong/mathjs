@@ -51,6 +51,7 @@ describe('unaryMinus', function() {
 
   it('should perform unary minus of a unit', function() {
     assert.equal(math.unaryMinus(math.unit(5, 'km')).toString(), '-5 km');
+    assert.equal(math.unaryMinus(math.unit(fraction(2/3), 'km')).toString(), '-2/3 km');
   });
 
   it('should perform element-wise unary minus on a matrix', function() {

@@ -46,6 +46,11 @@ describe('sign', function() {
     assert.equal(math.sign(math.unit('-283.15 degC')), -1);
     assert.equal(math.sign(math.unit('-273.15 degC')), 0);
     assert.equal(math.sign(math.unit('-263.15 degC')), 1);
+
+    assert.deepEqual(math.sign(math.unit(bignumber(5), 'cm')), bignumber(1));
+    assert.deepEqual(math.sign(math.unit(bignumber(-5), 'cm')), bignumber(-1));
+    assert.deepEqual(math.sign(math.unit(fraction(5), 'cm')), fraction(1));
+    assert.deepEqual(math.sign(math.unit(fraction(-5), 'cm')), fraction(-1));
   });
 
   it('should throw an error when used with a string', function() {

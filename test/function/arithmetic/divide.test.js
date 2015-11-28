@@ -128,25 +128,31 @@ describe('divide', function() {
     assert.equal(divide(4, math.unit('W')).toString(), '4 W^-1');
     assert.equal(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1');
     assert.equal(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg');
+
+    assert.equal(divide(10, math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg');
   });
 
   it('should divide two units', function() {
     assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute');
+
+    var a = math.unit(math.fraction(75), 'mi/h');
+    var b = math.unit(math.fraction(40), 'mi/gal');
+    assert.equal(divide(a, b).to('gal/minute').toString(), '1/32 gal / minute');
   });
 
   it('should divide one valued unit by a valueless unit and vice-versa', function() {
     assert.equal(divide(math.unit('4 gal'), math.unit('L')).format(5), '15.142');
     assert.equal(divide(math.unit('gal'), math.unit('4 L')).format(3), '0.946');
+
+    assert.equal(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')), '127/50');
   });
 
   it('should divide (but not simplify) two valueless units', function() {
     assert.equal(divide(math.unit('gal'), math.unit('L')).toString(), 'gal / L');
   });
 
-  // TODO: divide units by a bignumber
   it('should divide units by a big number', function() {
-    //assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm'); // TODO
-    assert.throws(function () {divide(math.unit('5 m'), bignumber(10))}, /TypeError: Unexpected type of argument in function divide/);
+    assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm');
   });
 
   it('should divide each elements in a matrix by a number', function() {
