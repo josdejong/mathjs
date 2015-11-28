@@ -881,12 +881,12 @@ describe('Unit', function() {
 
       var unit1 = new Unit(5, 'lt');
       assert.equal(unit1.value, 5e-3);
-      assert.equal(unit1.units[0].unit.name, 'l');
+      assert.equal(unit1.units[0].unit.name, 'lt');
       assert.equal(unit1.units[0].prefix.name, '');
 
       var unit2 = new Unit(1, 'lb');
       assert.equal(unit2.value, 453.59237e-3);
-      assert.equal(unit2.units[0].unit.name, 'lbm');
+      assert.equal(unit2.units[0].unit.name, 'lb');
       assert.equal(unit2.units[0].prefix.name, '');
     });
   });
