@@ -76,6 +76,8 @@ describe('tan', function() {
 
     assert(tan(unit(math.bignumber(60), 'deg')).isBigNumber);
     approx.equal(tan(unit(math.bignumber(60), 'deg')).toNumber(), math.sqrt(3));
+
+    approx.deepEqual(tan(unit(complex('1+i'), 'rad')), complex(0.271752585319512, 1.083923327338695));
   });
 
   it('should throw an error if called with an invalid unit', function() {

@@ -67,6 +67,8 @@ describe('sinh', function() {
 
     assert(sinh(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(sinh(unit(math.bignumber(90), 'deg')).toNumber(), 2.3012989023073);
+
+    approx.deepEqual(sinh(unit(complex('2 + i'), 'rad')), complex(1.9596010414216, 3.1657785132162));
   });
 
   it('should throw an error if called with an invalid unit', function() {
