@@ -5,6 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20151114-version-242">2015-11-14, version 2.4.2 <a href="#20151114-version-242" title="Permalink">#</a></h2>
+
+- Fixed #502: Issue with `format` in some JavaScript engines.
+- Fixed #503: Removed trailing commas and the use of keyword `import` as 
+  property, as this gives issues with old JavaScript engines.
+
+
 <h2 id="20151029-version-241">2015-10-29, version 2.4.1 <a href="#20151029-version-241" title="Permalink">#</a></h2>
 
 - Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
