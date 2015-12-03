@@ -20,6 +20,10 @@ describe('Unit', function() {
       assert.equal(unit1.value, null);
       assert.equal(unit1.units[0].unit.name, 'g');
 
+      unit1 = new Unit(10, 'Hz');
+      assert.equal(unit1.value, 10);
+      assert.equal(unit1.units[0].unit.name, 'Hz');
+
       unit1 = new Unit(9.81, "kg m/s^2");
       assert.equal(unit1.value, 9.81);
       assert.equal(unit1.units[0].unit.name, 'g');
@@ -143,6 +147,7 @@ describe('Unit', function() {
       assert.equal(new Unit(100, 'ft lbf').equals(new Unit(1200, 'in lbf')), true);
       assert.equal(new Unit(100, 'N').equals(new Unit(100, 'kg m / s ^ 2')), true);
       assert.equal(new Unit(100, 'N').equals(new Unit(100, 'kg m / s')), false);
+      assert.equal(new Unit(100, 'Hz').equals(new Unit (100, 's ^ -1')), true);
     });
 
     it('should test whether two units with Fractions are equal', function() {
@@ -409,6 +414,7 @@ describe('Unit', function() {
       assert.equal(new Unit(5, 's^-2').toString(), '5 s^-2');
       assert.equal(new Unit(5, 'm / s ^ 2').toString(), '5 m / s^2');
       assert.equal(new Unit(null, 'kg m^2 / s^2 / mol').toString(), '(kg m^2) / (s^2 mol)');
+      assert.equal(new Unit(10, 'hertz').toString(), '10 hertz');
     });
 
     it('should render with the best prefix', function() {
@@ -479,6 +485,14 @@ describe('Unit', function() {
 
     });
 
+    it('should simplify units even when they cancel out', function() {
+      var unit1 = new Unit (2, "Hz");
+      var unit2 = new Unit(2, "s");
+      var unit3 = math.multiply(unit1, unit2);
+      assert.equal(unit3.toString(), "4");
+      assert.equal(unit3.units.length, 0);
+    })
+
     it('should simplify units according to chosen unit system', function() {
       var unit1 = new Unit(10, "N");
       Unit.setUnitSystem('us');
@@ -504,7 +518,7 @@ describe('Unit', function() {
 
   describe('valueOf', function() {
 
-    it('should return string representation wen calling valueOf', function() {
+    it('should return string representation when calling valueOf', function() {
       assert.strictEqual(new Unit(5000, 'cm').valueOf(), '50 m');
       assert.strictEqual(new Unit(5, 'kg').valueOf(), '5 kg');
       assert.strictEqual(new Unit(2/3, 'm').valueOf(), '0.6666666666666666 m');
