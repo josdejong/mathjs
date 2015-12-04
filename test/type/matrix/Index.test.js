@@ -32,7 +32,11 @@ describe('Index', function () {
   it('should create an Index from an Array', function () {
     assert.deepEqual(new Index([0, 10])._dimensions, [new ImmutableDenseMatrix([0, 10])]);
   });
-  
+
+  it('should create an Index from a string', function () {
+    assert.deepEqual(new Index('property')._dimensions, ['property']);
+  });
+
   it('should create an Index from a ImmutableDenseMatrix', function () {
     assert.deepEqual(new Index(new ImmutableDenseMatrix([0, 10]))._dimensions, [new ImmutableDenseMatrix([0, 10])]);
   });
@@ -60,6 +64,7 @@ describe('Index', function () {
     assert.deepEqual(new Index([1, 2, 3]).size(), [3]);
     assert.deepEqual(new Index(math.matrix([1, 2, 3])).size(), [3]);
     assert.deepEqual(new Index(new ImmutableDenseMatrix([1, 2, 3])).size(), [3]);
+    assert.deepEqual(new Index('property').size(), [1]);
     assert.deepEqual(new Index().size(), []);
   });
 
@@ -71,6 +76,7 @@ describe('Index', function () {
     assert.deepEqual(new Index(2).min(), [2]);
     assert.deepEqual(new Index(new Range(0, 10), new ImmutableDenseMatrix([4, 6]), new Range(3, -1, -1)).min(), [0, 4, 0]);
     assert.deepEqual(new Index().min(), []);
+    assert.deepEqual(new Index('property').min(), ['property']);
   });
 
   it('should calculate the maximum values of an Index', function () {
@@ -80,6 +86,7 @@ describe('Index', function () {
     assert.deepEqual(new Index(new Range(0, 10), new Range(4, 6), new Range(3, -1, -1)).max(), [9, 5, 3]);
     assert.deepEqual(new Index(2).max(), [2]);
     assert.deepEqual(new Index(new Range(0, 10), new ImmutableDenseMatrix([4, 6]), new Range(3, -1, -1)).max(), [9, 6, 3]);
+    assert.deepEqual(new Index('property').max(), ['property']);
     assert.deepEqual(new Index().max(), []);
   });
 
@@ -93,6 +100,7 @@ describe('Index', function () {
     assert.equal(new Index(2, new ImmutableDenseMatrix([0, 4]), 2).isScalar(), false);
     assert.equal(new Index(new Range(0, 2), new Range(0, 4)).isScalar(), false);
     assert.equal(new Index(new ImmutableDenseMatrix([0, 2]), new ImmutableDenseMatrix([0, 4])).isScalar(), false);
+    assert.deepEqual(new Index('property').isScalar(), true);
     assert.equal(new Index().isScalar(), true);
   });
 
@@ -114,6 +122,7 @@ describe('Index', function () {
     assert.equal(new Index(2, new Range(0, 3)).toString(), '[[2], 0:3]');
     assert.equal(new Index(new Range(0, 6, 2)).toString(), '[0:2:6]');
     assert.equal(new Index(new ImmutableDenseMatrix([0, 6, 2])).toString(), '[[0, 6, 2]]');
+    assert.deepEqual(new Index('property').toString(), '["property"]');
   });
 
   it('toJSON', function () {
@@ -205,6 +214,8 @@ describe('Index', function () {
       [],
       [1, 2]
     ]);
+
+    assert.deepEqual(new Index('property').toArray(), ['property']);
   });
 
   it('valueOf should return the expanded array', function () {
@@ -228,7 +239,7 @@ describe('Index', function () {
   });
 
   it('should throw an error on unsupported type of arguments', function () {
-    assert.throws(function () {new Index('string');}, TypeError);
+    assert.throws(function () {new Index({});}, TypeError);
     assert.throws(function () {new Index(new Date());}, TypeError);
   });
 });
