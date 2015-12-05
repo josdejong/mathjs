@@ -37,6 +37,10 @@ var SYNTAX = {
   print: 'print(template, values [, precision])'
 };
 
+var IGNORE_FUNCTIONS = {
+  distribution: true
+};
+
 var IGNORE_WARNINGS = {
   seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain'],
   parameters: ['parser'],
@@ -467,7 +471,7 @@ function iteratePath (inputPath, outputPath) {
         if (path.indexOf('expression') !== -1) {
           category = 'expression';
         }
-        else if (path.indexOf(name) !== -1) {
+        else if (path[0] === '.' && path[1] === 'lib' && path[2] === 'type' && path[4] === 'function') {
           category = 'construction';
         }
         else {
@@ -477,6 +481,10 @@ function iteratePath (inputPath, outputPath) {
       else if (path.join('/') === './lib/type') {
         // for boolean.js, number.js, string.js
         category = 'construction';
+      }
+
+      if (IGNORE_FUNCTIONS[name]) {
+        category = null;
       }
 
       if (category) {

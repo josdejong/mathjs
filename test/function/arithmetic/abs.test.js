@@ -69,10 +69,18 @@ describe('abs', function () {
     assert.deepEqual(a1.valueOf(), [2,1,0,1,2])
   });
 
-  it('should throw an error with a measurment unit', function () {
-    assert.throws(function () {
-      math.abs(math.unit(5, 'km'));
-    });
+  it('should return the absolute value of a unit', function () {
+    var u = math.abs(math.unit('5 m'));
+    assert.equal(u.toString(), '5 m');
+
+    u = math.abs(math.unit('-5 m'));
+    assert.equal(u.toString(), '5 m');
+
+    u = math.abs(math.unit('-283.15 degC'));
+    assert.equal(u.toString(), '-263.15 degC');
+
+    u = math.abs(math.unit(math.fraction(2,3), 'm'));
+    assert.equal(u.toString(), '2/3 m');
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
@@ -86,8 +94,8 @@ describe('abs', function () {
   });
 
   it('should LaTeX abs', function () {
-	  var expression = math.parse('abs(-1)');
-	  assert.equal(expression.toTex(),'\\left|-1\\right|');
+    var expression = math.parse('abs(-1)');
+    assert.equal(expression.toTex(),'\\left|-1\\right|');
   });
 
 });

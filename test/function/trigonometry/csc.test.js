@@ -70,6 +70,9 @@ describe('csc', function() {
   it('should return the cosecant of an angle', function() {
     approx.equal(csc(unit('45deg')), 1.41421356237310);
     approx.equal(csc(unit('-45deg')), -1.41421356237310);
+
+    assert(csc(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(csc(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
   });
 
   it('should throw an error if called with an invalid unit', function() {

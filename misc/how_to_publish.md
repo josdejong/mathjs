@@ -95,14 +95,9 @@ The website is located in the `gh-pages` branch of the project.
 Follow the readme in the `gh-pages` branch on how to update the website.
 
 
-## Update version number
+## Back to develop
 
-Switch to the develop branch, and update the version numbers in package.json and
-bower.json to a new snapshot version, like
-
-    1.2.5-SNAPSHOT
-
-commit and push the changes.
+Switch to the develop branch
 
 
 ## Done

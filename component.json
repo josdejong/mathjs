@@ -1,8 +1,8 @@
 {
   "name": "mathjs",
-  "repo": "josdejong/mathjs",
+  "version": "2.5.0",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser and offers an integrated solution to work with numbers, big numbers, complex numbers, units, and matrices.",
-  "version": "2.0.0",
+  "repo": "josdejong/mathjs",
   "main": "dist/math.min.js",
   "license": "Apache-2.0",
   "keywords": [

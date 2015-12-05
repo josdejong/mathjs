@@ -74,7 +74,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `and`       | Logical and             | `x and y`   | Left to right | `true and false`      | `false`
 `not`       | Logical not             | `not y`     | Right to left | `not true`            | `false`
 `or`        | Logical or              | `x or y`    | Left to right | `true or false`       | `true`
-`xor`       | Logical xor             | `x xor y`   | Left to right | `true or true`        | `false`
+`xor`       | Logical xor             | `x xor y`   | Left to right | `true xor true`       | `false`
 `=`         | Assignment              | `x = y`     | Right to left | `a = 5`               | `5`
 `?` `:`     | Conditional expression  | `x ? y : z` | Right to left | `15 > 100 ? 1 : -1`   | `-1`
 `:`         | Range                   | `x : y`     | Right to left | `1:4`                 | `[1,2,3,4]`
@@ -325,8 +325,9 @@ parser.eval('number(a)');   // Error: 2 + i is no valid number
 
 ### Units
 
-math.js supports units. Units can be used in basic arithmetic operations like
-add and subtract, and units can be converted from one to another.
+math.js supports units. Units can be used in the arithmetic operations
+add, subtract, multiply, divide, and exponentiation.
+Units can also be converted from one to another.
 An overview of all available units can be found on the page
 [Units](../datatypes/units.md).
 
@@ -339,6 +340,7 @@ math.eval('5.4 kg');                    // Unit, 5.4 kg
 // convert a unit
 math.eval('2 inch to cm');              // Unit, 5.08 cm
 math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
+math.eval('90 km/h to m/s');			// Unit, 25 m / s
 
 // convert a unit to a number
 // A second parameter with the unit for the exported number must be provided
@@ -350,6 +352,7 @@ math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
 math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
 math.eval('12 seconds * 2');            // Unit, 24 seconds
 math.eval('sin(45 deg)');               // Number, 0.7071067811865475
+math.eval('9.81 m/s^2 * 5 s to mi/h')   // Unit, 109.72172512527 mi / h
 ```
 
 

@@ -60,7 +60,7 @@ describe('to', function() {
   it('should throw an error if converting between incompatible units', function() {
     assert.throws(function () {math.to(unit('20 kg'), unit('cm'));});
     assert.throws(function () {math.to(unit('20 celsius'), unit('litre'));});
-    assert.throws(function () {math.to(unit('5 cm'), unit('2 m'));});
+    assert.throws(function () {math.to(unit('5 cm'), unit('2 m^2'));});
   });
 
   it('should throw an error if called with a wrong number of arguments', function() {
@@ -74,7 +74,7 @@ describe('to', function() {
 
   it('should throw an error if called with a number', function() {
     assert.throws(function () {math.to(5, unit('m'));}, TypeError);
-    assert.throws(function () {math.to(unit('5cm'), 2);}, /SyntaxError: Unknown unit "2"/);
+    assert.throws(function () {math.to(unit('5cm'), 2);}, /SyntaxError: "2" contains no units/);
   });
 
   it('should throw an error if called with a string', function() {

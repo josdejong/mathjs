@@ -220,20 +220,38 @@ describe('lusolve', function () {
     approx.deepEqual(x, [[-5/3], [7/3], [-1]]);
   });
 
-  it('should solve linear system 3 x 3, permutations, matrix', function () {
+  it('should solve linear system 4 x 4, permutations, matrix - Issue 437', function () {
     var m = math.matrix(
       [
-        [1, 2, -1],
-        [2, 1, 1],
-        [1, 2, 1]
+        [ -1, 1, -1, 1],
+        [ 0, 0, 0, 1],
+        [ 1, 1, 1, 1],
+        [ 8, 4, 2, 1]
       ]);
-    var b = [4, -2, 2];
+    
+    var b = [0.1, 0.2, 0.15, 0.1];
 
     var x = math.lusolve(m, b);
 
-    approx.deepEqual(x, math.matrix([[-5/3], [7/3], [-1]]));
+    approx.deepEqual(x, math.matrix([[0.025], [-0.075], [0], [0.2]]));
   });
 
+  it('should solve linear system 4 x 4, permutations, sparse - Issue 437', function () {
+    var m = math.sparse(
+      [
+        [ -1, 1, -1, 1],
+        [ 0, 0, 0, 1],
+        [ 1, 1, 1, 1],
+        [ 8, 4, 2, 1]
+      ]);
+    
+    var b = [0.1, 0.2, 0.15, 0.1];
+
+    var x = math.lusolve(m, b);
+
+    approx.deepEqual(x, math.matrix([[0.025], [-0.075], [0], [0.2]]));
+  });
+  
   it('should solve linear system 3 x 3, permutations, sparse matrix', function () {
     var m = math.matrix(
       [

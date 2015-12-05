@@ -79,6 +79,9 @@ describe('sec', function() {
   it('should return the secant of an angle', function() {
     approx.equal(sec(unit('45deg')), 1.41421356237310);
     approx.equal(sec(unit('-45deg')), 1.41421356237310);
+
+    assert(sec(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(sec(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
   });
 
   it('should throw an error if called with an invalid unit', function() {

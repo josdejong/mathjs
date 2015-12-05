@@ -12,6 +12,7 @@
 
 - [abs(x)](abs.md)
 - [add(x, y)](add.md)
+- [cbrt(x)](cbrt.md)
 - [ceil(x)](ceil.md)
 - [cube(x)](cube.md)
 - [divide(x, y)](divide.md)
@@ -22,6 +23,7 @@
 - [fix(x)](fix.md)
 - [floor(x)](floor.md)
 - [gcd(a, b)](gcd.md)
+- [hypot(a, b, ...)](hypot.md)
 - [lcm(a, b)](lcm.md)
 - [log(x [, base])](log.md)
 - [log10(x)](log10.md)
@@ -52,6 +54,7 @@
 ## combinatorics
 
 - [bellNumbers(n)](bellNumbers.md)
+- [catalan(n)](catalan.md)
 - [composition(n, k)](composition.md)
 - [stirlingS2(n, k)](stirlingS2.md)
 
@@ -69,8 +72,10 @@
 - [chain(value)](chain.md)
 - [complex(re, im)](complex.md)
 - [fraction(numerator, denominator)](fraction.md)
+- [index(range1, range2, ...)](index.md)
 - [matrix(x)](matrix.md)
 - [number(value)](number.md)
+- [sparse(x)](sparse.md)
 - [string(value)](string.md)
 - [unit(x)](unit.md)
 
@@ -84,6 +89,7 @@
 
 ## geometry
 
+- [distance([x1, y1], [x2, y2])](distance.md)
 - [intersect(endPoint1Line1, endPoint2Line1, endPoint1Line2, endPoint2Line2)](intersect.md)
 
 ## logical
@@ -116,9 +122,9 @@
 ## probability
 
 - [combinations(n, k)](combinations.md)
-- [distribution(name)](distribution.md)
 - [factorial(n)](factorial.md)
 - [gamma(n)](gamma.md)
+- [kldivergence(x, y)](kldivergence.md)
 - [multinomial(a)](multinomial.md)
 - [permutations(n [, k])](permutations.md)
 - [pickRandom(array)](pickRandom.md)
@@ -142,6 +148,7 @@
 - [mean(a, b, c, ...)](mean.md)
 - [median(a, b, c, ...)](median.md)
 - [min(a, b, c, ...)](min.md)
+- [mode(a, b, c, ...)](mode.md)
 - [prod(a, b, c, ...)](prod.md)
 - [quantileSeq(A, prob[, sorted])](quantileSeq.md)
 - [std(a, b, c, ...)](std.md)

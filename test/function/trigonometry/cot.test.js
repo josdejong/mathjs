@@ -79,6 +79,9 @@ describe('cot', function() {
   it('should return the cotan of an angle', function() {
     approx.equal(cot(unit('45deg')), 1);
     approx.equal(cot(unit('-45deg')), -1);
+
+    assert(cot(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(cot(unit(math.bignumber(45), 'deg')).toNumber(), 1);
   });
 
   it('should throw an error if called with an invalid unit', function() {

@@ -13,7 +13,7 @@ describe('SparseMatrix', function() {
 
     it('should create empty matrix if called with no argument', function() {
       var m = new SparseMatrix();
-      assert.deepEqual(m._size, [0]);
+      assert.deepEqual(m._size, [0, 0]);
       assert.deepEqual(m._values, []);
       assert.deepEqual(m._index, []);
       assert.deepEqual(m._ptr, [0]);
@@ -640,6 +640,24 @@ describe('SparseMatrix', function() {
       assert.equal(m.get([0, 0]), 10);
       assert.equal(m.get([3, 1]), 0);
       assert.equal(m.get([5, 1]), 4);
+      assert.equal(m.get([5, 5]), -1);
+    });
+    
+    it('should get matrix element - Issue #450', function () {
+      var m = new SparseMatrix({
+        mathjs: 'SparseMatrix',
+        values: [ 3, 10, 3, 9, 7, 4, 8, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, -1, 13 ],
+        index:  [ 1,  0, 3, 1, 2, 5, 4, 2, 3, 2, 3, 4,  0, 3, 4, 5, 1,  5,  4 ],
+        ptr: [ 0, 3, 7, 9, 12, 16, 19 ],
+        size: [ 6, 6 ],
+        datatype: undefined 
+      });
+
+      assert.equal(m.get([0, 0]), 10);
+      assert.equal(m.get([1, 0]), 3);
+      assert.equal(m.get([4, 1]), 8);
+      assert.equal(m.get([5, 1]), 4);
+      assert.equal(m.get([4, 5]), 13);
       assert.equal(m.get([5, 5]), -1);
     });
   });

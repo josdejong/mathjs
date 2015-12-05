@@ -94,6 +94,8 @@ describe('add', function() {
 
   it('should add two measures of the same unit', function() {
     approx.deepEqual(add(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(165.93, 'km'));
+
+    approx.deepEqual(add(math.unit(math.fraction(1,3), 'm'), math.unit(math.fraction(1,3), 'm')).toString(), '2/3 m');
   });
 
   it('should throw an error for two measures of different units', function() {

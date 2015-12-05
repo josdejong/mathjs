@@ -60,6 +60,9 @@ describe('not', function () {
     assert.strictEqual(not(unit('1m')), false);
     assert.strictEqual(not(unit('m')), true);
     assert.strictEqual(not(unit('-10inch')), false);
+
+    assert.strictEqual(not(unit(bignumber(1), 'm')), false);
+    assert.strictEqual(not(unit(bignumber(0), 'm')), true);
   });
 
   it('should not arrays', function () {

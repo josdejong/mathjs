@@ -21,7 +21,10 @@ describe('combinations', function() {
   });
 
   it('should not work with non-integer and negative input', function() {
+      assert.throws(function() {combinations(-12, 6)}, TypeError);
+      assert.throws(function() {combinations(12, -6)}, TypeError);
       assert.throws(function() {combinations(0.5, 3)}, TypeError);
+      assert.throws(function() {combinations(4, 0.5)}, TypeError);
       assert.throws(function() {combinations(3, 5)}, TypeError);
       assert.throws(function() {combinations(math.bignumber(3), math.bignumber(5))}, TypeError);
       assert.throws(function() {combinations(math.bignumber(3.5), math.bignumber(-3))}, TypeError);

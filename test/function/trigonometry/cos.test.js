@@ -56,6 +56,15 @@ describe('cos', function() {
     biggermath.config({precision: 16});
     var bigPi = biggermath.pi;
 
+    // we've had a bug in reducing the period, affecting integer values around multiples of tau
+    assert.deepEqual(bigmath.cos(bigmath.bignumber(6)).toString(), '0.96017028665037');
+    assert.deepEqual(bigmath.cos(bigmath.bignumber(7)).toString(), '0.7539022543433');
+
+    // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
+    for (var x = -20; x < 20; x += 1) {
+      approx.equal(bigmath.cos(bigmath.bignumber(x)).toNumber(), Math.cos(x));
+    }
+
     result_val = bigmath.SQRT2.div(2).toString();
     assert.deepEqual(bigmath.cos(bigPi.div(4)).toString(), result_val);
     assert.ok(bigmath.cos(bigPi.div(2)).isZero());
@@ -87,6 +96,9 @@ describe('cos', function() {
   it('should return the cosine of an angle', function() {
     approx.equal(cos(unit('45deg')), 0.707106781186548);
     approx.equal(cos(unit('-135deg')), -0.707106781186548);
+
+    assert(cos(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
   });
 
   it('should throw an error if called with an invalid unit', function() {

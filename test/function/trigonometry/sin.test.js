@@ -51,6 +51,11 @@ describe('sin', function() {
                                         '6061212602629134186583352145117086874446046421403346033616'));
     bigmath.config({number: 'bignumber', precision: 15});
 
+    // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
+    for (var x = -20; x < 20; x += 1) {
+      approx.equal(bigmath.sin(bigmath.bignumber(x)).toNumber(), Math.sin(x));
+    }
+
     var bigPi = bigmath.pi;
     result_val = bigmath.SQRT2.div(2).toString();
     assert.deepEqual(bigmath.sin(bigPi.div(8)).toString(), '0.38268343236509');
@@ -61,6 +66,7 @@ describe('sin', function() {
     assert.deepEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-'+result_val);
     assert.deepEqual(bigmath.sin(bigPi.times(3).div(2)).toString(), '-1');
     assert.deepEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-'+result_val);
+    assert.deepEqual(bigmath.sin(bigPi.times(2)), bigmath.bignumber(0));
     assert.ok(bigmath.sin(bigPi.times(2)).isZero());
     assert.ok(bigmath.sin(bigmath.tau).isZero());
     assert.ok(bigmath.sin(bigmath.tau.times(2)).isZero());
@@ -82,6 +88,9 @@ describe('sin', function() {
   it('should return the sine of an angle', function() {
     approx.equal(sin(unit('45deg')), 0.707106781186548);
     approx.equal(sin(unit('-45deg')), -0.707106781186548);
+
+    assert(sin(unit(math.bignumber(45), 'deg')).isBigNumber);
+    approx.equal(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
   });
 
   it('should throw an error if called with an invalid unit', function() {

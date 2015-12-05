@@ -52,6 +52,9 @@ describe('csch', function() {
   it('should return the csch of an angle', function() {
     approx.equal(csch(unit('90deg')), 0.4345372080947);
     approx.equal(csch(unit('-45deg')), -1.1511838709208);
+
+    assert(csch(unit(math.bignumber(90), 'deg')).isBigNumber);
+    approx.equal(csch(unit(math.bignumber(90), 'deg')).toNumber(), 0.4345372080947);
   });
 
   it('should throw an error if called with an invalid unit', function() {

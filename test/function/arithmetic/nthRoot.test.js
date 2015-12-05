@@ -47,6 +47,8 @@ describe('nthRoot', function() {
   it('should return the nthRoot for negative numbers', function() {
     approx.equal(nthRoot(-64, 3), -4);
     approx.equal(nthRoot(-8, 3), -2);
+    // Newton's method fails in this particular case: --ericman314
+    approx.equal(nthRoot(-2, 3), -1.2599210498949);
   });
 
   it('should return the nthRoot for negative roots', function() {
@@ -82,6 +84,7 @@ describe('nthRoot', function() {
   });
 
   it('should return the nthRoot of negative bignumber values', function() {
+    assert.deepEqual(nthRoot(big(-2), big(3)), big('-1.259921049894873164767210607278228350570251464701507980081975112'));
     assert.deepEqual(nthRoot(big(-64), big(3)), big(-4));
   });
 

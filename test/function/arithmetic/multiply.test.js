@@ -141,8 +141,13 @@ describe('multiply', function() {
       assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm');
       assert.equal(multiply(10, unit('celsius')).toString(), '10 celsius');
       assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm');
-      assert.equal(multiply(unit('5 mm'), 0).toString(), '0 m');
+      assert.equal(multiply(unit('5 mm'), 0).toString(), '0 mm');
       assert.equal(multiply(unit('celsius'), 10).toString(), '10 celsius');
+
+      assert.equal(multiply(unit(math.fraction(1,4), 'm'), 3).toString(), '3/4 m');
+      assert.equal(multiply(3, unit(math.fraction(1,4), 'm')).toString(), '3/4 m');
+      assert.equal(multiply(math.fraction(1,4), unit(3, 'm')).toString(), '3/4 m');
+      assert.equal(multiply(unit(3, 'm'), math.fraction(1,4)).toString(), '3/4 m');
     });
 
     it('should multiply a number and a unit without value correctly', function() {
@@ -152,6 +157,22 @@ describe('multiply', function() {
       assert.equal(multiply(unit('mm'), 2).toString(), '2 mm');
       assert.equal(multiply(unit('km'), 2).toString(), '2 km');
       assert.equal(multiply(unit('inch'), 2).toString(), '2 inch');
+    });
+
+    it('should multiply two units correctly', function() {
+      assert.equal(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2');
+      assert.equal(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2');
+      assert.equal(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi');
+      assert.equal(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s');
+      assert.equal(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1');
+    });
+
+    it('should multiply valueless units correctly', function() {
+      assert.equal(multiply(unit('m'), unit('4 m')).toString(), '4 m^2');
+      assert.equal(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2');
+      assert.equal(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi');
+      assert.equal(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s');
+      assert.equal(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)');
     });
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
@@ -172,11 +193,14 @@ describe('multiply', function() {
       assert.equal(multiply(unit('inch'), bignumber(2)).toString(), '2 inch');
     });
 
+
     it('should throw an error in case of unit non-numeric argument', function() {
-      assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'));}, /TypeError: Unexpected type/);
+      // Multiplying two units is supported now --ericman314
+      //assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'));}, /TypeError: Unexpected type/);
       assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'));}, /TypeError: Unexpected type/);
       assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'));}, /TypeError: Unexpected type/);
     });
+
 
     it('should throw an error if used with strings', function() {
       assert.throws(function () {multiply("hello", "world");});

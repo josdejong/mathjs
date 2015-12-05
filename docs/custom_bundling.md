@@ -1,10 +1,10 @@
-# Custom loading and bundling
+# Custom bundling
 
 Math.js is a large library containing many data types and functions. 
 It is well possible that you only need a small portion of the library. 
-Math.js allows for loading only the data types and functions that you need.
-This give faster load times, and allows bundling only the used part of the 
-library with tools like Webpack or browserify.
+Math.js allows for creating a custom index file, loading only the data types 
+and functions  that you need. This give faster load times, and allows bundling 
+only the used part of the library with tools like Webpack or browserify.
 
 To load an empty instance of math.js, load `mathjs/core`. This core only
 contains functions `import` and `config`.

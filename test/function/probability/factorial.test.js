@@ -13,8 +13,8 @@ describe('factorial', function() {
     assert.equal(factorial(3), 6);
     assert.equal(factorial(4), 24);
     assert.equal(factorial(5), 120);
-    assert.equal(factorial(Number.MAX_VALUE), Infinity);    // shouldn't stall
-    assert.equal(factorial(Infinity), Math.sqrt(2*Math.PI));
+    assert.ok(!isFinite(factorial(Number.MAX_VALUE)));    // shouldn't stall
+    assert.ok(!isFinite(factorial(Infinity)));
   });
 
   it('should calculate the factorial of a bignumber', function() {
@@ -22,10 +22,8 @@ describe('factorial', function() {
     var bigfactorial = bigmath.factorial;
     var bignumber = bigmath.bignumber;
 
-    assert.ok(bigfactorial(bignumber(-Infinity)).isNaN());
-    assert.deepEqual(bigfactorial(bignumber(-1)), bignumber(Infinity));
     assert.deepEqual(bigfactorial(bignumber(0)), bignumber(1));
-    assert.deepEqual(bigfactorial(bignumber(Infinity)), bigmath.tau.sqrt());
+    assert.deepEqual(bigfactorial(bignumber(Infinity)), bignumber(Infinity));
 
     assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000));
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));
@@ -67,15 +65,22 @@ describe('factorial', function() {
     assert.deepEqual(factorial([0,1,2,3,4,5]), [1,1,2,6,24,120]);
   });
 
-  it('should calculate the factorial of a negative number or non-integer', function() {
-    assert.equal(factorial(-1), Infinity);
-    approx.equal(factorial(-1.5), -3.54490770181103205459633);
+  it('should calculate the factorial of a non-integer', function() {
     approx.equal(factorial(1.5), 1.32934038817913702047362561);
+    approx.equal(factorial(7.5), 14034.40729348);
+  });
+
+  it('should throw error if called with negative number', function() {
+    assert.throws(function() { factorial(-1); }, /Value must be non-negative/);
+    assert.throws(function() { factorial(-1.5); }, /Value must be non-negative/);
+
+    assert.throws(function() { factorial(math.bignumber(-1)); }, /Value must be non-negative/);
+    assert.throws(function() { factorial(math.bignumber(-1.5)); }, /Value must be non-negative/);
+    assert.throws(function() { factorial(math.bignumber(-Infinity)); }, /Value must be non-negative/);
   });
 
   it('should throw an error if called with non-integer bignumber', function() {
     assert.throws(function() { factorial(math.bignumber(1.5)); });
-    assert.throws(function() { factorial(math.bignumber(-1.5)); });
   });
 
   it('should throw en error if called with invalid number of arguments', function() {

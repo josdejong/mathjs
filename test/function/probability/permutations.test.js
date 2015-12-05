@@ -39,7 +39,9 @@ describe('permutations', function() {
 
   it('should not accept negative or non-integer arguments', function() {
       assert.throws(function(){permutations(12, -6);}, TypeError);
-      assert.throws(function(){permutations(-12, -6);}, TypeError);
+      assert.throws(function(){permutations(-12, 6);}, TypeError);
+      assert.throws(function(){permutations(4.5, 2);}, TypeError);
+      assert.throws(function(){permutations(4, 0.5);}, TypeError);
       assert.throws(function(){permutations(math.bignumber(-12), -6);}, TypeError);
       assert.throws(function(){permutations(math.bignumber(12.5), math.bignumber(6));}, TypeError);
       assert.throws(function(){permutations(math.bignumber(12.5), math.pi);}, TypeError);

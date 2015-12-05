@@ -152,8 +152,27 @@ describe('pow', function() {
     approx.deepEqual(pow(complex(0, 2), math.bignumber(2)), complex(-4, 0));
   });
 
-  it('should throw an error if used with a unit', function() {
-    assert.throws(function () {pow(unit('5cm'), 2)});
+  it('should correctly calculate unit ^ number', function() {
+    assert.equal(pow(unit('4 N'), 2).toString(), "16 N^2");
+    assert.equal(pow(unit('0.25 m/s'), -0.5).toString(), "2 s^0.5 / m^0.5");
+    assert.equal(pow(unit('123 hogshead'), 0).toString(), "1");
+  });
+
+	it('should return a cloned value and not affect the argument', function() {
+		var unit1 = unit('2 m');
+		var unit2 = pow(unit1, 2);
+
+		assert.equal(unit1.toString(), '2 m');
+		assert.equal(unit2.toString(), '4 m^2');
+	});
+
+	it('should return a valuelessUnit when calculating valuelessUnit ^ number', function() {
+		assert.equal(pow(unit('kg^0.5 m^0.5 s^-1'), 2).toString(), "(kg m) / s^2");
+	});
+
+  it('should throw an error when doing number ^ unit', function() {
+    // This is supported now --ericman314
+    //assert.throws(function () {pow(unit('5cm'), 2)});
     assert.throws(function () {pow(2, unit('5cm'))});
   });
 

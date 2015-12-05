@@ -1,7 +1,98 @@
 # History
 
 
-## not yet released, version 2.0.1
+## 2015-12-05, version 2.5.0
+
+- Implemented support for numeric types `Fraction` and `BigNumber` in units.
+- Implemented new method `toNumeric` for units.
+- Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
+  Thanks @devdevdata222.
+- Implemented new unit `Herts` (`Hz`). Thanks @SwamWithTurtles.
+- Fixed #485: Scoping issue with variables both used globally as well as in a 
+  function definition.
+- Fixed: Function `number` didn't support `Fraction` as input.
+
+
+## 2015-11-14, version 2.4.2
+
+- Fixed #502: Issue with `format` in some JavaScript engines.
+- Fixed #503: Removed trailing commas and the use of keyword `import` as 
+  property, as this gives issues with old JavaScript engines.
+
+
+## 2015-10-29, version 2.4.1
+
+- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed #490: `nthRoot` returning an error for negative values like 
+  `nthRoot(-2, 3)`.
+- Fixed #489: an issue with initializing a sparse matrix without data.
+  Thanks @Retsam.
+- Fixed: #493: function `combinations` did not throw an exception for 
+  non-integer values of `k`.
+- Fixed: function `import` did not override typed functions when the option
+  override was set true.
+- Fixed: added functions `math.sparse` and `math.index` to the reference docs, 
+  they where missing.
+- Fixed: removed memoization from `gamma` and `factorial` functions, this 
+  could blow up memory.
+
+
+## 2015-10-09, version 2.4.0
+
+- Added support in the expression parser for mathematical alphanumeric symbols 
+  in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
+  invalid code points.
+- Extended function `distance` with more signatures. Thanks @kv-kunalvyas.
+- Fixed a bug in functions `sin` and `cos`, which gave wrong results for 
+  BigNumber integer values around multiples of tau (i.e. `sin(bignumber(7))`).
+- Fixed value of unit `stone`. Thanks @Esvandiary for finding the error.
+
+
+## 2015-09-19, version 2.3.0
+
+- Implemented function `distance`. Thanks @devanp92.
+- Implemented support for Fractions in function `lcm`. Thanks @infusion.
+- Implemented function `cbrt` for numbers, complex numbers, BigNumbers, Units.
+- Implemented function `hypot`.
+- Upgraded to fraction.js v3.0.0.
+- Fixed #450: issue with non sorted index in sparse matrices.
+- Fixed #463, #322: inconsistent handling of implicit multiplication.
+- Fixed #444: factorial of infinity not returning infinity.
+
+
+## 2015-08-30, version 2.2.0
+
+- Units with powers (like `m^2` and `s^-1`) now output with the best prefix.
+- Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.
+  Thanks @ericman314.
+- Implemented function `catalan` (Combinatorics). Thanks @devanp92.
+- Improved the `canDefineProperty` check to return false in case of IE8, which
+  has a broken implementation of `defineProperty`. Thanks @golmansax.
+- Fixed function `to` not working in case of a simplified unit.
+- Fixed #437: an issue with row swapping in `lup`, also affecting `lusolve`.
+
+
+## 2015-08-12, version 2.1.1
+
+- Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  
+  and `magneticFluxQuantum`. Thanks @ericman314 for finding two of them.
+
+
+## 2015-08-11, version 2.1.0
+
+- Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
+- Implemented support for electric units. Thanks @ericman314.
+- Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc. 
+- Implemented function `kldivergence` (Kullback-Leibler divergence). 
+  Thanks @saromanov.
+- Implemented function `mode`. Thanks @kv-kunalvyas.
+- Added support for unicode characters in the expression parser: greek letters
+  and latin letters with accents. See #265.
+- Internal functions `Unit.parse` and `Complex.parse` now throw an Error 
+  instead of returning null when passing invalid input.
+
+
+## 2015-07-29, version 2.0.1
 
 - Fixed operations with mixed fractions and numbers be converted to numbers
   instead of fractions.

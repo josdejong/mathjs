@@ -29,7 +29,7 @@ function create (config) {
   math.create = create;
 
   // import data types, functions, constants, expression parser, etc.
-  math.import(require('./lib'));
+  math['import'](require('./lib'));
 
   return math;
 }
