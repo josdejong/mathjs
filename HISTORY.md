@@ -1,12 +1,13 @@
 # History
 
 
-## not yet released, version 2.5.0
+## 2015-12-05, version 2.5.0
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
 - Implemented new method `toNumeric` for units.
 - Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
   Thanks @devdevdata222.
+- Implemented new unit `Herts` (`Hz`). Thanks @SwamWithTurtles.
 - Fixed #485: Scoping issue with variables both used globally as well as in a 
   function definition.
 - Fixed: Function `number` didn't support `Fraction` as input.
