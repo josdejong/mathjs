@@ -15,7 +15,7 @@ math.number(unit, valuelessUnit)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`value` | string &#124; number &#124; boolean &#124; Array &#124; Matrix &#124; Unit &#124; null | Value to be converted
+`value` | string &#124; number &#124; BigNumber &#124; Fraction &#124; boolean &#124; Array &#124; Matrix &#124; Unit &#124; null | Value to be converted
 `valuelessUnit` | Unit &#124; string | A valueless unit, used to convert a unit to a number
 
 ### Returns

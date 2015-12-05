@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 2.5.0
+## 2015-12-05, version 2.5.0
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
 - Implemented new method `toNumeric` for units.

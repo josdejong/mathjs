@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "main": "./dist/math.min.js",
   "license": "Apache-2.0",
   "ignore": [
