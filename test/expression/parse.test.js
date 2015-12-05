@@ -575,8 +575,8 @@ describe('parse', function() {
       };
 
       assert.throws(function () {
-        parseAndEval('a[2, "1"]', scope);
-      }, /TypeError: Ranges must be a Number, Range, Array or Matrix/);
+        parseAndEval('a[2, 2+3i]', scope);
+      }, /TypeError: Dimension must be an Array, Matrix, number, string, or Range/);
     });
 
     it('should throw an error for invalid matrix', function() {
