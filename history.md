@@ -5,6 +5,18 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20151205-version-250">2015-12-05, version 2.5.0 <a href="#20151205-version-250" title="Permalink">#</a></h2>
+
+- Implemented support for numeric types `Fraction` and `BigNumber` in units.
+- Implemented new method `toNumeric` for units.
+- Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
+  Thanks @devdevdata222.
+- Implemented new unit `Herts` (`Hz`). Thanks @SwamWithTurtles.
+- Fixed #485: Scoping issue with variables both used globally as well as in a 
+  function definition.
+- Fixed: Function `number` didn't support `Fraction` as input.
+
+
 <h2 id="20151114-version-242">2015-11-14, version 2.4.2 <a href="#20151114-version-242" title="Permalink">#</a></h2>
 
 - Fixed #502: Issue with `format` in some JavaScript engines.

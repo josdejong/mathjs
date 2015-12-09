@@ -11,11 +11,11 @@ File: [plot.html](plot.html)
 <html>
 <head>
   <title>math.js | plot</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.4.2/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js"></script>
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="http://brcdn.org/RbDt4b0Shej4JLF7KBQEilNbIiI.js"></script>
+  <script src="https://wzrd.in/standalone/function-plot@1.14.0"></script>
 
   <style>
     input[type=text] {
@@ -38,7 +38,7 @@ File: [plot.html](plot.html)
 
 <form id="form">
   <label for="eq">Enter an equation:</label>
-  <input type="text" id="eq" value="f(x) = 4 * sin(x) + 5 * cos(x/2)" />
+  <input type="text" id="eq" value="4 * sin(x) + 5 * cos(x/2)" />
   <input type="submit" value="Draw" />
 </form>
 
@@ -53,10 +53,10 @@ File: [plot.html](plot.html)
     try {
       functionPlot({
         target: '#plot',
-        yDomain: [-10, 10],
-        xDomain: [-10, 10],
         data: [{
-          fn: math.eval(document.getElementById('eq').value)
+          fn: document.getElementById('eq').value,
+          sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
+          graphType: 'polyline'
         }]
       });
     }
