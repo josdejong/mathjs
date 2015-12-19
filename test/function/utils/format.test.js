@@ -60,6 +60,27 @@ describe('format', function() {
 
   });
 
+  describe('engineering notation', function () {
+    it('should format positive single digit to engineering notation', function() {
+      assert.equal(math.format(3, { notation: 'engineering' }), '3.0e0');
+    });
+    xit('should format positive two digits to engineering notation', function() {
+      assert.equal(math.format(30, { notation: 'engineering' }), '30.0e0');
+    });
+    xit('should format positive three digits to engineering notation', function() {
+      assert.equal(math.format(300, { notation: 'engineering' }), '300.0e0');
+    });
+    xit('should format positive four digits to engineering notation', function() {
+      assert.equal(math.format(3000, { notation: 'engineering' }), '3.0e+3');
+    });
+    xit('should format positive uneven four digits to engineering notation', function() {
+      assert.equal(math.format(3001, { notation: 'engineering' }), '3.001e+3');
+    });
+    xit('should format positive uneven ten digits to engineering notation', function() {
+      assert.equal(math.format(3741293481, { notation: 'engineering' }), '3.741293481e+9');
+    });
+  });
+
   describe('bignumber', function () {
     var bigmath = math.create({precision: 20}); // ensure the precision is 20 digits
 
