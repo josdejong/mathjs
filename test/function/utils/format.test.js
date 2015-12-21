@@ -60,7 +60,7 @@ describe('format', function() {
 
   });
 
-  describe.only('engineering notation', function () {
+  describe('engineering notation', function () {
     it('should format positive single digit to engineering notation', function() {
       assert.equal(math.format(3, { notation: 'engineering' }), '3e+0');
     });
