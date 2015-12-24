@@ -106,6 +106,9 @@ describe('cbrt', function() {
     assert.deepEqual(cbrt(math.unit(math.bignumber(27), 'm^3')).value, math.bignumber(3));
     assert(cbrt(math.unit(math.bignumber(-27), 'm^3')).value.isBigNumber);
     assert.deepEqual(cbrt(math.unit(math.bignumber(-27), 'm^3')).value, math.bignumber(-3));
+
+    assert(cbrt(math.unit(math.complex(-46, 9), 's^3')).value.isComplex);
+    approx.deepEqual(cbrt(math.unit(math.complex(-46, 9), 's^3')).value, math.complex(2, 3));
   });
 
   it('should throw an error when used with a string', function() {

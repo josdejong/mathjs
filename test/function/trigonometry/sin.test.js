@@ -91,6 +91,8 @@ describe('sin', function() {
 
     assert(sin(unit(math.bignumber(45), 'deg')).isBigNumber);
     approx.equal(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
+
+    approx.deepEqual(sin(unit(complex('1+i'), 'rad')), complex(1.298457581415977, 0.634963914784736));
   });
 
   it('should throw an error if called with an invalid unit', function() {

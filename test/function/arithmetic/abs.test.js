@@ -81,6 +81,9 @@ describe('abs', function () {
 
     u = math.abs(math.unit(math.fraction(2,3), 'm'));
     assert.equal(u.toString(), '2/3 m');
+
+    u = math.abs(math.unit(math.complex(-4, 3), 'in'));
+    assert.equal(u.toString(), '5 in');
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

@@ -82,6 +82,8 @@ describe('sec', function() {
 
     assert(sec(unit(math.bignumber(45), 'deg')).isBigNumber);
     approx.equal(sec(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
+
+    approx.deepEqual(sec(unit(complex('1+i'), 'rad')), complex(0.498337030555187, 0.591083841721045));
   });
 
   it('should throw an error if called with an invalid unit', function() {

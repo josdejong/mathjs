@@ -43,6 +43,12 @@ describe('Unit', function() {
       assert.equal(unit1.units[0].unit.name, 'm');
     });
 
+    it('should create a unit with Complex value', function () {
+      var unit1 = new Unit(math.complex(500, 600), 'cm');
+      assert.deepEqual(unit1.value, math.complex(5, 6));
+      assert.equal(unit1.units[0].unit.name, 'm');
+    });
+
     it('should create square meter correctly', function() {
       var unit1 = new Unit(0.000001, 'km2');
       assert.equal(unit1.value, 1);
@@ -160,6 +166,16 @@ describe('Unit', function() {
       assert.equal(new Unit(100, 'cm').equals(new Unit(math.fraction(2), 'm')), false);
     });
 
+    it('should test whether two Complex units are equal', function() {
+      assert.equal(new Unit(math.complex(3, 4), 'km').equals(new Unit(math.complex(3000, 4000), 'm')), true);
+      assert.equal(new Unit(math.complex(3, 4), 'km').equals(new Unit(math.complex(3000, 10), 'm')), false);
+    });
+
+    it('should test whether a Complex unit and a unit with a number are equal', function() {
+      assert.equal(new Unit(math.complex(3, 0), 'km').equals(new Unit(3000, 'm')), true);
+      assert.equal(new Unit(math.complex(3, 4), 'km').equals(new Unit(3000, 'm')), false);
+    });
+
   });
 
   describe('clone', function() {
@@ -195,6 +211,14 @@ describe('Unit', function() {
       assert(u1.value !== u2.value); // should be cloned
     });
 
+    it('should clone a Complex unit', function() {
+      var u1 = new Unit(math.complex(1,3), 'cm');
+      var u2 = u1.clone();
+      assert(u1 !== u2);
+      assert.deepEqual(u1, u2);
+      assert(u1.value !== u2.value); // should be cloned
+    });
+
   });
 
   describe('toNumber', function() {
@@ -223,7 +247,7 @@ describe('Unit', function() {
     });
   });
 
-  describe('toNumberic', function() {
+  describe('toNumeric', function() {
     it ('should convert a unit to a numeric value', function () {
       var u = new Unit(math.fraction(1,3), 'cm');
       assert.deepEqual(u.toNumeric('mm'), math.fraction(10,3));
@@ -271,6 +295,13 @@ describe('Unit', function() {
       assert.equal(u2.units[0].unit.name, 'm');
       assert.equal(u2.units[0].prefix.name, 'c');
       assert.equal(u2.fixPrefix, true);
+    });
+
+    it ('should convert a Complex unit', function() {
+      var u1 = new Unit(math.complex(300,400), 'kPa');
+      var u2 = u1.to('lbf/in^2');
+      approx.deepEqual(u2.value, math.complex(300000, 400000));
+      assert.deepEqual(u2.toString(), "(43.511321319062766 + 58.01509509208369i) lbf / in^2");
     });
 
     it ('should convert a unit to a fixed unit', function () {
@@ -453,6 +484,10 @@ describe('Unit', function() {
     it('should convert a unit with Fraction to string properly', function() {
       assert.equal(new Unit(math.fraction(9/10), 'mm').toString(), '9/10 mm');
     });
+
+    it('should convert a Complex unit to string properly', function() {
+      assert.equal(new Unit(math.complex(-1,-2), 'J / (mol K)').toString(), '(-1 - 2i) J / (mol K)');
+    });
   });
 
   describe('simplifyUnitListLazy', function() {
@@ -545,9 +580,19 @@ describe('Unit', function() {
             unit: 'cm',
             fixPrefix: false
           });
+      approx.deepEqual(new Unit(math.complex(2, 4), 'g').toJSON(),
+          {
+            mathjs: 'Unit',
+            value: math.complex(2, 4),
+            unit: 'g',
+            fixPrefix: false
+          });
 
       var str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'));
       assert.deepEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}');
+
+      var cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'));
+      assert.equal(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g","fixPrefix":false}');
     });
 
     it('fromJSON', function () {
@@ -573,6 +618,14 @@ describe('Unit', function() {
         fixPrefix: false
       });
       assert.deepEqual(u7, new Unit(math.fraction(0.375), 'cm'))
+
+      var u8 = Unit.fromJSON({
+        mathjs: 'Unit',
+        value: math.complex(2, 4),
+        unit: 'g',
+        fixPrefix: false
+      });
+      assert.deepEqual(u8, new Unit(math.complex(2,4), 'g'));
     });
 
     it('toJSON -> fromJSON should recover an "equal" unit', function() {
@@ -610,6 +663,23 @@ describe('Unit', function() {
 
     it('should format a unit with a fraction', function() {
       assert.equal(new Unit(math.fraction(4/5), 'm').format(), '4/5 m');
+    });
+
+    it('should format a Complex unit', function() {
+      assert.equal(new Unit(math.complex(-2, 4.5), 'mm').format(14), '(-2 + 4.5i) mm');
+    });
+
+    it('should format units with VA and VAR correctly', function() {
+      assert.equal(math.eval('4000 VAR + 3000 VA').format(), "(3 + 4i) kVA");
+      assert.equal(math.eval('3000 VA + 4000 VAR').format(), "(3 + 4i) kVA");
+      assert.equal(math.eval('4000 VAR').format(), "(4) kVAR");
+      assert.equal(math.eval('4000i VA').format(), "(4) kVAR");
+      assert.equal(math.eval('4000i VAR').format(), "(-4) kVA");
+      assert.equal(math.eval('abs(4000 VAR + 3000 VA)').format(), "5 kW");
+      assert.equal(math.eval('abs(3000 VA + 4000 VAR)').format(), "5 kW");
+      assert.equal(math.eval('abs(4000 VAR)').format(), "4 kW");
+      assert.equal(math.eval('abs(4000i VA)').format(), "4 kW");
+      assert.equal(math.eval('abs(4000i VAR)').format(), "4 kW");
     });
 
     it('should ignore properties in Object.prototype when finding the best prefix', function() {

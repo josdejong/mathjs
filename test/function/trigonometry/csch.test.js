@@ -55,6 +55,8 @@ describe('csch', function() {
 
     assert(csch(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(csch(unit(math.bignumber(90), 'deg')).toNumber(), 0.4345372080947);
+
+    approx.deepEqual(csch(unit(complex('2 + i'), 'rad')), complex(0.14136302161241, -0.22837506559969));
   });
 
   it('should throw an error if called with an invalid unit', function() {

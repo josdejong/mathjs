@@ -94,6 +94,9 @@ describe('subtract', function() {
     approx.deepEqual(subtract(math.unit(5, 'km'), math.unit(100, 'mile')), math.unit(-155.93, 'km'));
 
     assert.deepEqual(subtract(math.unit(math.bignumber(5), 'km'), math.unit(math.bignumber(2), 'km')), math.unit(math.bignumber(3), 'km'));
+
+    assert.deepEqual(subtract(math.unit(math.complex(10,10), 'K'), math.unit(math.complex(3,4), 'K')), math.unit(math.complex(7,6), 'K'));
+    assert.deepEqual(subtract(math.unit(math.complex(10,10), 'K'), math.unit(3, 'K')), math.unit(math.complex(7,10), 'K'));
   });
 
   it('should throw an error if subtracting two quantities of different units', function() {

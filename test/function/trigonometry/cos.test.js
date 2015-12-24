@@ -99,6 +99,8 @@ describe('cos', function() {
 
     assert(cos(unit(math.bignumber(45), 'deg')).isBigNumber);
     approx.equal(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
+
+    approx.deepEqual(cos(unit(complex(1,1), 'rad')), complex(0.833730025131149, -0.988897705762865));
   });
 
   it('should throw an error if called with an invalid unit', function() {

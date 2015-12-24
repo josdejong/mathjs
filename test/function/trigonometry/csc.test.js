@@ -73,6 +73,8 @@ describe('csc', function() {
 
     assert(csc(unit(math.bignumber(45), 'deg')).isBigNumber);
     approx.equal(csc(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
+
+    approx.deepEqual(csc(unit(complex('1+i'), 'rad')), complex(0.621518017170428, -0.303931001628426));
   });
 
   it('should throw an error if called with an invalid unit', function() {
