@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 2.6.0
+
+- Implemented (complex) units `VA` and `VAR`.
+
+
 ## 2015-12-05, version 2.5.0
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
