@@ -86,6 +86,9 @@ describe('Index', function () {
   it('should test whether an Index contains a scalar', function () {
     assert.equal(new Index(2, 5, 2).isScalar(), true);
     assert.equal(new Index(2).isScalar(), true);
+    assert.equal(new Index([0,1,2], 2).isScalar(), false);
+    assert.equal(new Index([3], [2]).isScalar(), true);
+    assert.equal(new Index([0,1,2], [2]).isScalar(), false);
     assert.equal(new Index(new Range(2, 10)).isScalar(), false);
     assert.equal(new Index(new ImmutableDenseMatrix([2, 10])).isScalar(), false);
     assert.equal(new Index(new ImmutableDenseMatrix([2])).isScalar(), true);
