@@ -655,6 +655,19 @@ describe('Unit', function() {
       assert.equal(new Unit(math.complex(-2, 4.5), 'mm').format(14), '(-2 + 4.5i) mm');
     });
 
+    it('should format units with VA and VAR correctly', function() {
+      assert.equal(math.eval('4000 VAR + 3000 VA').format(), "(3 + 4i) kVA");
+      assert.equal(math.eval('3000 VA + 4000 VAR').format(), "(3 + 4i) kVA");
+      assert.equal(math.eval('4000 VAR').format(), "(4) kVAR");
+      assert.equal(math.eval('4000i VA').format(), "(4) kVAR");
+      assert.equal(math.eval('4000i VAR').format(), "(-4) kVA");
+      assert.equal(math.eval('abs(4000 VAR + 3000 VA)').format(), "5 kW");
+      assert.equal(math.eval('abs(3000 VA + 4000 VAR)').format(), "5 kW");
+      assert.equal(math.eval('abs(4000 VAR)').format(), "4 kW");
+      assert.equal(math.eval('abs(4000i VA)').format(), "4 kW");
+      assert.equal(math.eval('abs(4000i VAR)').format(), "4 kW");
+    });
+
     it('should ignore properties in Object.prototype when finding the best prefix', function() {
       Object.prototype.foo = 'bar';
 
