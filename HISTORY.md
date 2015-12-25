@@ -4,6 +4,8 @@
 ## not yet released, version 2.6.0
 
 - Implemented (complex) units `VA` and `VAR`.
+- Implemented new notation `engineering` in function `math.format`. 
+  Thanks @johnmarinelli.
 - Fixed #523: In some circumstances, matrix subset returned a scalar instead 
   of the correct subset.
 
