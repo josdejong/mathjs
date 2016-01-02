@@ -129,8 +129,9 @@ describe('subset', function() {
 
     it('should set a property of an object', function() {
       var obj = {};
-      assert.deepEqual(subset(obj, index('foo'), 'bar'), 'bar');
-      assert.deepEqual(obj, {foo: 'bar'});
+      var res = subset(obj, index('foo'), 'bar');
+      assert.deepEqual(res, {foo: 'bar'});
+      assert.deepEqual(obj, {}); // should leave the original object untouched
     });
 
     it('should throw an error if setting the subset of a string with an invalid replacement', function() {

@@ -195,6 +195,13 @@ describe('Index', function () {
     assert.strictEqual(a.type, 'Index');
   });
 
+  it('should test whether index contains an object property', function () {
+    assert.strictEqual(new math.type.Index(2, 3).isObjectProperty(), false);
+    assert.strictEqual(new math.type.Index([2, 5]).isObjectProperty(), false);
+    assert.strictEqual(new math.type.Index('foo', 'bar').isObjectProperty(), false);
+    assert.strictEqual(new math.type.Index('foo').isObjectProperty(), true);
+  });
+
   it('should expand an index into an array', function () {
     assert.deepEqual(new Index(new Range(2, 5)).toArray(), [
       [2, 3, 4]

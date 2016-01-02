@@ -288,6 +288,7 @@ describe('parse', function() {
     it('should set a string subset', function() {
       var scope = {};
       assert.deepEqual(parseAndEval('c="hello"', scope), "hello");
+      console.log(math.parse('c[1] = "H"').compile().eval.toString())
       assert.deepEqual(parseAndEval('c[1] = "H"', scope), "Hello");
       assert.deepEqual(parseAndEval('c', scope), "Hello");
       assert.deepEqual(parseAndEval('c[6:11] = " world"', scope), "Hello world");
@@ -597,6 +598,82 @@ describe('parse', function() {
       var scope = {};
       assert.throws(function () {parseAndEval('c=concat(a, [1,2,3])', scope);});
     });
+  });
+
+  describe('objects', function () {
+
+    it('should get an object property', function () {
+      assert.deepEqual(parseAndEval('obj["foo"]', {obj: {foo: 2}}), 2);
+    });
+
+    it('should get a nested object property', function () {
+      assert.deepEqual(parseAndEval('obj["foo"]["bar"]', {obj: {foo: {bar: 2}}}), 2);
+    });
+
+    it('should set an object property', function () {
+      var scope = {obj: {a:3}};
+      var res = parseAndEval('obj["b"] = 2', scope);
+      assert.deepEqual(res, {a: 3, b: 2});
+      assert.deepEqual(scope, {obj: {a: 3, b: 2}});
+    });
+
+    it('should set a nested object property', function () {
+      var scope = {obj: {foo: {}}};
+      var res = parseAndEval('obj["foo"]["bar"] = 2', scope);
+      assert.deepEqual(res, {foo: {bar: 2}});
+      assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
+    });
+
+    // TODO: unskip all skipped tests below
+
+    it.skip('should get an object property with dot notation', function () {
+      assert.deepEqual(parseAndEval('obj.foo', {obj: {foo: 2}}), 2);
+    });
+
+    it.skip('should get a nested object property with dot notation', function () {
+      assert.deepEqual(parseAndEval('obj.foo.bar', {obj: {foo: {bar: 2}}}), 2);
+    });
+
+    it.skip('should set an object property with dot notation', function () {
+      var scope = {obj: {}};
+      parseAndEval('obj.foo = 2', scope);
+      assert.deepEqual(scope, {obj: {foo: 2}});
+    });
+
+    it.skip('should set a nested object property with dot notation', function () {
+      var scope = {obj: {foo: {}}};
+      parseAndEval('obj.foo.bar = 2', scope);
+      assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
+    });
+
+    it.skip('should throw an error in case of invalid property with dot notation', function () {
+      assert.throws(function () {parseAndEval('obj. +foo')}, /SyntaxError: Property expected after dot \(char=4\)/);
+    });
+
+    it.skip('should create an empty object', function () {
+      assert.deepEqual(parseAndEval('{}'), {});
+    });
+
+    it.skip('should an object with quoted keys', function () {
+      assert.deepEqual(parseAndEval('{"a":2+3,"b":"foo"}'), {a: 5, b: 'foo'});
+    });
+
+    it.skip('should an object with unquoted keys', function () {
+      assert.deepEqual(parseAndEval('{a:2+3,b:"foo"}'), {a: 5, b: 'foo'});
+    });
+
+    it.skip('should an object with child object', function () {
+      assert.deepEqual(parseAndEval('{}'), {})
+    });
+
+    it.skip('should get a property from a just created object', function () {
+      assert.deepEqual(parseAndEval('{foo:2}["foo"]'), 2);
+    });
+
+    it.skip('should throw an exception in case of invalid object key', function () {
+      assert.throws(function () {parseAndEval('{a b: 2}')}, /SyntaxError: unexpected character " " at char 2./);
+    });
+
   });
 
   describe('boolean', function () {
@@ -1219,7 +1296,7 @@ describe('parse', function() {
         assert.equal(parseAndEval('3!+2'), 8);
         assert.equal(parseAndEval('(3!)+2'), 8);
         assert.equal(parseAndEval('+4!'), 24);
-        
+
         assert.equal(parseAndEval('~4!+1'), -24);
         assert.equal(parseAndEval('~(4!)+1'), -24);
 
