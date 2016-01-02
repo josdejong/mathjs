@@ -288,7 +288,6 @@ describe('parse', function() {
     it('should set a string subset', function() {
       var scope = {};
       assert.deepEqual(parseAndEval('c="hello"', scope), "hello");
-      console.log(math.parse('c[1] = "H"').compile().eval.toString())
       assert.deepEqual(parseAndEval('c[1] = "H"', scope), "Hello");
       assert.deepEqual(parseAndEval('c', scope), "Hello");
       assert.deepEqual(parseAndEval('c[6:11] = " world"', scope), "Hello world");
