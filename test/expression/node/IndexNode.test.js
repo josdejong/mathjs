@@ -278,6 +278,13 @@ describe('IndexNode', function() {
     assert.equal(n2.toString(), 'a[]')
   });
 
+  it ('should stringify an IndexNode with parentheses', function () {
+    var a = new SymbolNode('a');
+    var foo = new IndexNode(a, [new ConstantNode('foo')]);
+    var bar = new IndexNode(foo, [new ConstantNode('bar')]);
+    assert.equal(bar.toString(), '(a["foo"])["bar"]');
+  });
+
   it ('should stringigy an IndexNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {

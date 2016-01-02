@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 2.6.0
+
+- Implemented support for JSON objects.
+- Fixed a bug in the toString method of an IndexNode.
+
+
 ## 2015-12-05, version 2.5.0
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
