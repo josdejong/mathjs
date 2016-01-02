@@ -5,7 +5,7 @@ var assert = require('assert'),
 describe('node/index', function() {
 
   it('should contain all nodes', function() {
-    assert.equal(index.length, 14);
+    assert.equal(index.length, 15);
   });
 
 });

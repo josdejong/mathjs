@@ -649,28 +649,29 @@ describe('parse', function() {
       assert.throws(function () {parseAndEval('obj. +foo')}, /SyntaxError: Property expected after dot \(char=4\)/);
     });
 
-    it.skip('should create an empty object', function () {
+    it('should create an empty object', function () {
       assert.deepEqual(parseAndEval('{}'), {});
     });
 
-    it.skip('should an object with quoted keys', function () {
+    it('should an object with quoted keys', function () {
       assert.deepEqual(parseAndEval('{"a":2+3,"b":"foo"}'), {a: 5, b: 'foo'});
     });
 
-    it.skip('should an object with unquoted keys', function () {
+    it('should an object with unquoted keys', function () {
       assert.deepEqual(parseAndEval('{a:2+3,b:"foo"}'), {a: 5, b: 'foo'});
     });
 
-    it.skip('should an object with child object', function () {
-      assert.deepEqual(parseAndEval('{}'), {})
+    it('should an object with child object', function () {
+      assert.deepEqual(parseAndEval('{a:{b:2}}'), {a:{b:2}})
     });
 
-    it.skip('should get a property from a just created object', function () {
+    it('should get a property from a just created object', function () {
       assert.deepEqual(parseAndEval('{foo:2}["foo"]'), 2);
     });
 
-    it.skip('should throw an exception in case of invalid object key', function () {
-      assert.throws(function () {parseAndEval('{a b: 2}')}, /SyntaxError: unexpected character " " at char 2./);
+    it('should throw an exception in case of invalid object key', function () {
+      assert.throws(function () {parseAndEval('{a b: 2}')}, /SyntaxError: Colon : expected after object key \(char 4\)/);
+      assert.throws(function () {parseAndEval('{a: }')}, /SyntaxError: Value expected \(char 5\)/);
     });
 
   });
