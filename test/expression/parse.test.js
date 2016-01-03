@@ -623,30 +623,34 @@ describe('parse', function() {
       assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
     });
 
-    // TODO: unskip all skipped tests below
-
-    it.skip('should get an object property with dot notation', function () {
+    it('should get an object property with dot notation', function () {
       assert.deepEqual(parseAndEval('obj.foo', {obj: {foo: 2}}), 2);
     });
 
-    it.skip('should get a nested object property with dot notation', function () {
+    it('should get a nested object property with dot notation', function () {
       assert.deepEqual(parseAndEval('obj.foo.bar', {obj: {foo: {bar: 2}}}), 2);
     });
 
-    it.skip('should set an object property with dot notation', function () {
+    it('should get nested object property with mixed dot- and index-notation', function () {
+      assert.deepEqual(parseAndEval('obj.foo["bar"].baz', {obj: {foo: {bar: {baz: 2}}}}), 2);
+      assert.deepEqual(parseAndEval('obj["foo"].bar["baz"]', {obj: {foo: {bar: {baz: 2}}}}), 2);
+    });
+
+    it('should set an object property with dot notation', function () {
       var scope = {obj: {}};
       parseAndEval('obj.foo = 2', scope);
       assert.deepEqual(scope, {obj: {foo: 2}});
     });
 
-    it.skip('should set a nested object property with dot notation', function () {
+    it('should set a nested object property with dot notation', function () {
       var scope = {obj: {foo: {}}};
       parseAndEval('obj.foo.bar = 2', scope);
       assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
     });
 
-    it.skip('should throw an error in case of invalid property with dot notation', function () {
-      assert.throws(function () {parseAndEval('obj. +foo')}, /SyntaxError: Property expected after dot \(char=4\)/);
+    it('should throw an error in case of invalid property with dot notation', function () {
+      assert.throws(function () {parseAndEval('obj. +foo')}, /SyntaxError: Property name expected after dot \(char 6\)/);
+      assert.throws(function () {parseAndEval('obj.["foo"]')}, /SyntaxError: Property name expected after dot \(char 5\)/);
     });
 
     it('should create an empty object', function () {
@@ -1547,9 +1551,8 @@ describe('parse', function() {
       assert.deepEqual(bigmath.eval('2 * i'), new Complex(0, 2));
     });
 
-    // TODO: cleanup once decided to not downgrade BigNumber to number
-    it.skip('should work with units (downgrades bignumbers to number)', function() {
-      assert.deepEqual(bigmath.eval('2 cm'), new Unit(2, 'cm'));
+    it('should work with units', function() {
+      assert.deepEqual(bigmath.eval('2 cm'), new Unit(new BigNumber(2), 'cm'));
     });
   });
 
