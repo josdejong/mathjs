@@ -64,7 +64,7 @@ All nodes have the following methods:
     var eval = node.eval({x: 3};    // returns 5
     ```
 
--   `filter(callback: function) : Array.<Node>`
+-   `filter(callback: function) : Node[]`
 
     Filter nodes in an expression tree. The `callback` function is called as
     `callback(node: Node, path: string, parent: Node) : boolean` for every node
@@ -82,7 +82,7 @@ All nodes have the following methods:
     // returns an array with two entries: two SymbolNodes 'x'
     ```
 
--   `forEach(callback: function) : Array.<Node>`
+-   `forEach(callback: function) : Node[]`
 
     Execute a callback for each of the child nodes of this node. The `callback`
     function is called as `callback(child: Node, path: string, parent: Node)`.
@@ -107,7 +107,7 @@ All nodes have the following methods:
     //   ConstantNode 2
     ```
 
--   `map(callback: function) : Array.<Node>`
+-   `map(callback: function) : Node[]`
 
     Transform a node. Creates a new Node having it's childs be the results of
     calling the provided callback function for each of the childs of the original
@@ -431,6 +431,30 @@ var three = new math.expression.node.ConstantNode(3);
 var range = new math.expression.node.RangeNode(one, three);
 var node2 = new math.expression.node.IndexNode(A, [range, two]);
 ```
+
+### ObjectNode
+
+Construction:
+
+```
+new ObjectNode(properties: Object.<string, Node>)
+```
+
+Properties:
+
+- `properties: Object.<string, Node>`
+
+Examples:
+
+```js
+var node1 = math.parse('{a: 1, b: 2, c: 3}');
+
+var a = new math.expression.node.ConstantNode(1);
+var b = new math.expression.node.ConstantNode(2);
+var c = new math.expression.node.ConstantNode(3);
+var node2  = new math.expression.node.ObjectNode({a: a, b: b, c: c});
+```
+
 
 ### OperatorNode
 
