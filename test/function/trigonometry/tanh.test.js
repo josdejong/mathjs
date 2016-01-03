@@ -63,6 +63,8 @@ describe('tanh', function() {
 
     assert(tanh(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(tanh(unit(math.bignumber(90), 'deg')).toNumber(), 0.91715233566727);
+
+    approx.deepEqual(tanh(unit(complex('2 + i'), 'rad')), complex(1.0147936161466, 0.033812826079897));
   });
 
   it('should throw an error if called with an invalid unit', function() {

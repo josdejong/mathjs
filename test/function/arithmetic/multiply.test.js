@@ -148,6 +148,9 @@ describe('multiply', function() {
       assert.equal(multiply(3, unit(math.fraction(1,4), 'm')).toString(), '3/4 m');
       assert.equal(multiply(math.fraction(1,4), unit(3, 'm')).toString(), '3/4 m');
       assert.equal(multiply(unit(3, 'm'), math.fraction(1,4)).toString(), '3/4 m');
+
+      assert.equal(multiply(unit(math.complex(9, 8), 'm'), 2).toString(), '(18 + 16i) m');
+      assert.equal(math.format(multiply(unit(math.complex(2, 3), 'g'), math.complex(4, 5)), 14), '(-7 + 22i) g');
     });
 
     it('should multiply a number and a unit without value correctly', function() {
@@ -165,6 +168,7 @@ describe('multiply', function() {
       assert.equal(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi');
       assert.equal(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s');
       assert.equal(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1');
+      assert.equal(multiply(unit(math.complex(3,-4), 'N'), unit(math.complex(7,-2), 'm')).toString(), '(13 - 34i) J');
     });
 
     it('should multiply valueless units correctly', function() {
@@ -193,12 +197,12 @@ describe('multiply', function() {
       assert.equal(multiply(unit('inch'), bignumber(2)).toString(), '2 inch');
     });
 
-
     it('should throw an error in case of unit non-numeric argument', function() {
-      // Multiplying two units is supported now --ericman314
+      // Multiplying two units is supported now
       //assert.throws(function () {multiply(math.unit('5cm'), math.unit('4cm'));}, /TypeError: Unexpected type/);
-      assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'));}, /TypeError: Unexpected type/);
-      assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'));}, /TypeError: Unexpected type/);
+      // Complex units are supported now
+      //assert.throws(function () {multiply(math.unit('5cm'), math.complex('2+3i'));}, /TypeError: Unexpected type/);
+      //assert.throws(function () {multiply(math.complex('2+3i'), math.unit('5cm'));}, /TypeError: Unexpected type/);
     });
 
 

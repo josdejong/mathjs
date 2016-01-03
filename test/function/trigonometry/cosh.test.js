@@ -64,6 +64,8 @@ describe('cosh', function() {
 
     assert(cosh(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(cosh(unit(math.bignumber(90), 'deg')).toNumber(), 2.5091784786581);
+
+    approx.deepEqual(cosh(math.unit(complex('2 + i'), 'rad')), complex(2.0327230070197, 3.0518977991518));
   });
 
   it('should throw an error if called with an invalid unit', function() {

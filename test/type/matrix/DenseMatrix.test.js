@@ -409,6 +409,7 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m.subset(index(0, new Range(1,3))).valueOf(), [[2,3]]);
       assert.deepEqual(m.subset(index(new Range(1,3), 1)).valueOf(), [[5],[8]]);
       assert.deepEqual(m.subset(index(new Range(1,3), 2)).valueOf(), [[6],[9]]);
+      assert.deepEqual(m.subset(index([0,1,2], [1])).valueOf(), [[2],[5],[8]]);
 
       // get n-dimensional
       m = new DenseMatrix([[[1,2],[3,4]], [[5,6],[7,8]]]);

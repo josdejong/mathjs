@@ -60,6 +60,51 @@ describe('format', function() {
 
   });
 
+  describe('engineering notation', function () {
+    it('should format positive single digit to engineering notation', function() {
+      assert.equal(math.format(3, { notation: 'engineering' }), '3e+0');
+    });
+    it('should format positive two digits to engineering notation', function() {
+      assert.equal(math.format(30, { notation: 'engineering' }), '30e+0');
+    });
+    it('should format positive three digits to engineering notation', function() {
+      assert.equal(math.format(300, { notation: 'engineering' }), '300e+0');
+    });
+    it('should format positive four digits to engineering notation', function() {
+      assert.equal(math.format(3000, { notation: 'engineering' }), '3e+3');
+    });
+    it('should format positive uneven four digits to engineering notation', function() {
+      assert.equal(math.format(3001, { notation: 'engineering' }), '3.001e+3');
+    });
+    it('should format positive uneven ten digits to engineering notation', function() {
+      assert.equal(math.format(3741293481, { notation: 'engineering' }), '3.741293481e+9');
+    });
+    it('should format negative uneven ten digits to engineering notation', function() {
+      assert.equal(math.format(-3741293481, { notation: 'engineering' }), '-3.741293481e+9');
+    });
+    it('should format positive single digit floating point numbers to engineering notation', function() {
+      assert.equal(math.format(.1, { notation: 'engineering' }), '100e-3');
+    });
+    it('should format positive two digit floating point numbers to engineering notation', function() {
+      assert.equal(math.format(.01, { notation: 'engineering' }), '10e-3');
+    });
+    it('should format positive three digit floating point numbers to engineering notation', function() {
+      assert.equal(math.format(.003, { notation: 'engineering' }), '3e-3');
+    });
+    it('should format positive repeating three digit floating point numbers to engineering notation with precision', function() {
+      assert.equal(math.format(1/3, { precision: 3, notation: 'engineering' }), '333e-3');
+    });
+    it('should format positive seven digit floating point numbers to engineering notation', function() {
+      assert.equal(math.format(.1234567, { notation: 'engineering' }), '123.4567e-3');
+    });
+    it('should format negative single digit floating point numbers to engineering notation', function() {
+      assert.equal(math.format(-.1, { notation: 'engineering' }), '-100e-3');
+    });
+    it('should format positive floating point number to engineering notation', function() {
+      assert.equal(math.format(13308.0333333333, { precision: 11, notation: 'engineering' }), '13.308033333e+3');
+    });
+  });
+
   describe('bignumber', function () {
     var bigmath = math.create({precision: 20}); // ensure the precision is 20 digits
 

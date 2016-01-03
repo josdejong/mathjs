@@ -5,9 +5,16 @@
 
 - Implemented support for JSON objects in the expression parser.
 - Implemented support for JSON objects in the function `math.format`.
-- Fixed a bug in the toString method of an IndexNode.
+- Implemented (complex) units `VA` and `VAR`.
+- Implemented time units for weeks, months, years, decades, centuries, and 
+- millennia. Thanks @owenversteeg.
+- Implemented new notation `engineering` in function `math.format`. 
+  Thanks @johnmarinelli.
 - The command line interface does no longer round BigNumbers to 14 digits as 
   it does with numbers.
+- Fixed #523: In some circumstances, matrix subset returned a scalar instead 
+  of the correct subset.
+- Fixed a bug in the toString method of an IndexNode.
 
 
 ## 2015-12-05, version 2.5.0
