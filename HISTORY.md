@@ -3,7 +3,8 @@
 
 ## not yet released, version 2.6.0
 
-- Implemented support for JSON objects.
+- Implemented support for JSON objects in the expression parser.
+- Implemented support for JSON objects in the function `math.format`.
 - Fixed a bug in the toString method of an IndexNode.
 - The command line interface does no longer round BigNumbers to 14 digits as 
   it does with numbers.

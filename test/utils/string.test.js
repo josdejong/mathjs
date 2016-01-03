@@ -31,6 +31,14 @@ describe ('string', function () {
 
   describe('format', function () {
 
+    it ('should format null', function () {
+      assert.equal(string.format(null), 'null');
+    });
+
+    it ('should format undefined', function () {
+      assert.equal(string.format(undefined), 'undefined');
+    });
+
     it ('should format a number', function () {
       assert.equal(string.format(2.3), '2.3');
     });
@@ -72,6 +80,16 @@ describe ('string', function () {
       assert.equal(string.format('string'), '"string"');
     });
 
+    it ('should format an object', function () {
+      var obj = {
+        a: 1.1111,
+        b: math.complex(2.2222,3)
+      };
+
+      assert.equal(string.format(obj), '{"a": 1.1111, "b": 2.2222 + 3i}');
+      assert.equal(string.format(obj, 3), '{"a": 1.11, "b": 2.22 + 3i}');
+    });
+
     it ('should format an object with its own format function', function () {
       var obj = {
         format: function (options) {
@@ -96,7 +114,7 @@ describe ('string', function () {
     });
 
     it ('should format unknown objects by converting them to string', function () {
-      assert.equal(string.format({}), '[object Object]');
+      assert.equal(string.format({}), '{}');
     });
 
     it ('should format unknown primitives by converting them to string', function () {
