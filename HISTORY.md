@@ -5,6 +5,8 @@
 
 - Implemented support for JSON objects.
 - Fixed a bug in the toString method of an IndexNode.
+- The command line interface does no longer round BigNumbers to 14 digits as 
+  it does with numbers.
 
 
 ## 2015-12-05, version 2.5.0
