@@ -248,7 +248,7 @@ describe('ObjectNode', function() {
     var n1 = new ObjectNode({a: a, b: b});
     var n2 = new ObjectNode({c: c, n1: n1});
 
-    assert.equal(n2.toTex(), '\\{"c": 3, "n1": \\{"a": 1, "b": 2\\}\\}');
+    assert.equal(n2.toTex(), '\\left\\{\\begin{matrix}\\mathbf{c:} & \\\\\n & 3\\\\\n\\mathbf{n1:} & \\\\\n & \\left\\{\\begin{matrix}\\mathbf{a:} & \\\\\n & 1\\\\\n\\mathbf{b:} & \\\\\n & 2\\\\\\end{matrix}\\right\\}\\\\\\end{matrix}\\right\\}')
   });
 
   it ('should LaTeX an ObjectNode with custom toTex', function () {
@@ -262,7 +262,7 @@ describe('ObjectNode', function() {
     var b = new ConstantNode(2);
     var n = new ObjectNode({a: a, b: b});
 
-    assert.equal(n.toTex({handler: customFunction}), '\\{"a": const\\left(1, number\\right), "b": const\\left(2, number\\right)\\}');
+    assert.equal(n.toTex({handler: customFunction}), '\\left\\{\\begin{matrix}\\mathbf{a:} & \\\\\n & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & \\\\\n & const\\left(2, number\\right)\\\\\\end{matrix}\\right\\}');
   });
 
 });
