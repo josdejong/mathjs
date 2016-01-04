@@ -51,6 +51,28 @@ var fs = require('fs');
 var PRECISION = 14; // decimals
 
 /**
+ * Helper function to format and print a value in the console.
+ * Regular numbers will be rounded to 14 digits to prevent round-off errors
+ * from showing up.
+ * @param {*} value
+ */
+function print(value) {
+  var formattedValue = math.format(value, {
+    fn: function (value) {
+      if (typeof value === 'number') {
+        // round numbers
+        return math.format(value, PRECISION);
+      }
+      else {
+        return math.format(value);
+      }
+    }
+  });
+
+  console.log(formattedValue);
+}
+
+/**
  * auto complete a text
  * @param {String} text
  * @return {[Array, String]} completions
@@ -185,7 +207,7 @@ function runStream (input, output, mode, parenthesis) {
               var res = parser.eval(expr);
               if (res instanceof math.type.ResultSet) {
                 res.entries.forEach(function (entry) {
-                  console.log(math.format(entry, PRECISION));
+                  print(entry);
                 });
                 if (res.entries.length) {
                   // set last answer from the ResultSet as ans
@@ -197,7 +219,7 @@ function runStream (input, output, mode, parenthesis) {
               }
               else {
                 parser.set('ans', res);
-                console.log(math.format(res, PRECISION));
+                print(res);
               }
             }
             catch (err) {
@@ -320,7 +342,6 @@ process.argv.forEach(function (arg, index) {
       break;
 
     case '--string':
-
       mode = 'string';
       break;
 
@@ -335,6 +356,8 @@ process.argv.forEach(function (arg, index) {
     case '--parenthesis=all':
       parenthesis = 'all';
       break;
+
+    // TODO: implement configuration via command line arguments
 
     default:
       scripts.push(arg);

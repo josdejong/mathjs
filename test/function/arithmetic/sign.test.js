@@ -4,6 +4,7 @@ var approx = require('../../../tools/approx');
 var math = require('../../../index');
 var bignumber = math.bignumber;
 var fraction = math.fraction;
+var complex = math.complex;
 
 describe('sign', function() {
   it('should calculate the sign of a boolean', function () {
@@ -51,6 +52,8 @@ describe('sign', function() {
     assert.deepEqual(math.sign(math.unit(bignumber(-5), 'cm')), bignumber(-1));
     assert.deepEqual(math.sign(math.unit(fraction(5), 'cm')), fraction(1));
     assert.deepEqual(math.sign(math.unit(fraction(-5), 'cm')), fraction(-1));
+
+    assert.deepEqual(math.sign(math.unit(complex(3,4), 'mi')), complex(0.6,0.8));
   });
 
   it('should throw an error when used with a string', function() {

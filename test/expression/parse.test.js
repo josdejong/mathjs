@@ -575,8 +575,8 @@ describe('parse', function() {
       };
 
       assert.throws(function () {
-        parseAndEval('a[2, "1"]', scope);
-      }, /TypeError: Ranges must be a Number, Range, Array or Matrix/);
+        parseAndEval('a[2, 2+3i]', scope);
+      }, /TypeError: Dimension must be an Array, Matrix, number, string, or Range/);
     });
 
     it('should throw an error for invalid matrix', function() {
@@ -597,6 +597,87 @@ describe('parse', function() {
       var scope = {};
       assert.throws(function () {parseAndEval('c=concat(a, [1,2,3])', scope);});
     });
+  });
+
+  describe('objects', function () {
+
+    it('should get an object property', function () {
+      assert.deepEqual(parseAndEval('obj["foo"]', {obj: {foo: 2}}), 2);
+    });
+
+    it('should get a nested object property', function () {
+      assert.deepEqual(parseAndEval('obj["foo"]["bar"]', {obj: {foo: {bar: 2}}}), 2);
+    });
+
+    it('should set an object property', function () {
+      var scope = {obj: {a:3}};
+      var res = parseAndEval('obj["b"] = 2', scope);
+      assert.deepEqual(res, {a: 3, b: 2});
+      assert.deepEqual(scope, {obj: {a: 3, b: 2}});
+    });
+
+    it('should set a nested object property', function () {
+      var scope = {obj: {foo: {}}};
+      var res = parseAndEval('obj["foo"]["bar"] = 2', scope);
+      assert.deepEqual(res, {foo: {bar: 2}});
+      assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
+    });
+
+    it('should get an object property with dot notation', function () {
+      assert.deepEqual(parseAndEval('obj.foo', {obj: {foo: 2}}), 2);
+    });
+
+    it('should get a nested object property with dot notation', function () {
+      assert.deepEqual(parseAndEval('obj.foo.bar', {obj: {foo: {bar: 2}}}), 2);
+    });
+
+    it('should get nested object property with mixed dot- and index-notation', function () {
+      assert.deepEqual(parseAndEval('obj.foo["bar"].baz', {obj: {foo: {bar: {baz: 2}}}}), 2);
+      assert.deepEqual(parseAndEval('obj["foo"].bar["baz"]', {obj: {foo: {bar: {baz: 2}}}}), 2);
+    });
+
+    it('should set an object property with dot notation', function () {
+      var scope = {obj: {}};
+      parseAndEval('obj.foo = 2', scope);
+      assert.deepEqual(scope, {obj: {foo: 2}});
+    });
+
+    it('should set a nested object property with dot notation', function () {
+      var scope = {obj: {foo: {}}};
+      parseAndEval('obj.foo.bar = 2', scope);
+      assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
+    });
+
+    it('should throw an error in case of invalid property with dot notation', function () {
+      assert.throws(function () {parseAndEval('obj. +foo')}, /SyntaxError: Property name expected after dot \(char 6\)/);
+      assert.throws(function () {parseAndEval('obj.["foo"]')}, /SyntaxError: Property name expected after dot \(char 5\)/);
+    });
+
+    it('should create an empty object', function () {
+      assert.deepEqual(parseAndEval('{}'), {});
+    });
+
+    it('should an object with quoted keys', function () {
+      assert.deepEqual(parseAndEval('{"a":2+3,"b":"foo"}'), {a: 5, b: 'foo'});
+    });
+
+    it('should an object with unquoted keys', function () {
+      assert.deepEqual(parseAndEval('{a:2+3,b:"foo"}'), {a: 5, b: 'foo'});
+    });
+
+    it('should an object with child object', function () {
+      assert.deepEqual(parseAndEval('{a:{b:2}}'), {a:{b:2}})
+    });
+
+    it('should get a property from a just created object', function () {
+      assert.deepEqual(parseAndEval('{foo:2}["foo"]'), 2);
+    });
+
+    it('should throw an exception in case of invalid object key', function () {
+      assert.throws(function () {parseAndEval('{a b: 2}')}, /SyntaxError: Colon : expected after object key \(char 4\)/);
+      assert.throws(function () {parseAndEval('{a: }')}, /SyntaxError: Value expected \(char 5\)/);
+    });
+
   });
 
   describe('boolean', function () {
@@ -1219,7 +1300,7 @@ describe('parse', function() {
         assert.equal(parseAndEval('3!+2'), 8);
         assert.equal(parseAndEval('(3!)+2'), 8);
         assert.equal(parseAndEval('+4!'), 24);
-        
+
         assert.equal(parseAndEval('~4!+1'), -24);
         assert.equal(parseAndEval('~(4!)+1'), -24);
 
@@ -1470,9 +1551,8 @@ describe('parse', function() {
       assert.deepEqual(bigmath.eval('2 * i'), new Complex(0, 2));
     });
 
-    // TODO: cleanup once decided to not downgrade BigNumber to number
-    it.skip('should work with units (downgrades bignumbers to number)', function() {
-      assert.deepEqual(bigmath.eval('2 cm'), new Unit(2, 'cm'));
+    it('should work with units', function() {
+      assert.deepEqual(bigmath.eval('2 cm'), new Unit(new BigNumber(2), 'cm'));
     });
   });
 

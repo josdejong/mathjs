@@ -14,7 +14,8 @@ Surface             | m2, sqin, sqft, sqyd, sqmi, sqrd, sqch, sqmil
 Volume              | m3, litre (l, L, lt, liter), cc, cuin, cuft, cuyd, teaspoon, tablespoon
 Liquid volume       | minim (min), fluiddram (fldr), fluidounce (floz), gill (gi), cup (cp), pint (pt), quart (qt), gallon (gal), beerbarrel (bbl), oilbarrel (obl), hogshead, drop (gtt)
 Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute) 
-Time                | second (s), seconds, minute (minutes), hour (h, hours), day (days)
+Time                | second (s), seconds, minute (minutes), hour (h, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
+Frequency           | hertz (Hz)
 Mass                | gram(g), tonne, ton, grain (gr), dram(dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
 Electric current    | ampere (A)
 Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)
@@ -26,6 +27,8 @@ Power               | watt (W), hp
 Pressure            | Pa, psi, atm
 Electricity and magnetism | ampere (A), coulomb (C), watt (W), volt (V), ohm, farad (F), weber (Wb), tesla (T), henry (H), siemens (S), electronvolt (eV)
 Binary              | bit (b), byte (B)
+
+Note: all time units are based on the Julian year, with one month being 1/12th of a Julian year, a year being one Julian year, a decade being 10 Julian years, a century being 100, and a millennium being 1000.
 
 Note that all relevant units can also be written in plural form, for example `5 meters` instead of `5 meter` or `10 seconds` instead of `10 second`. 
 

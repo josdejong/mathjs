@@ -45,9 +45,11 @@ The following operators are available:
 
 Operator    | Name                    | Syntax      | Associativity | Example               | Result
 ----------- | ----------------------- | ----------  | ------------- | --------------------- | ---------------
-`(`, `)`    | Parentheses             | `(x)`       | None          | `2 * (3 + 4)`         | `14`
+`(`, `)`    | Grouping                | `(x)`       | None          | `2 * (3 + 4)`         | `14`
 `[`, `]`    | Matrix, Index           | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+`{`, `}`    | Object                  | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
 `,`         | Parameter separator     | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
+`.`         | Property accessor       | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
 `;`         | Statement separator     | `x; y`      | Left to right | `a=2; b=3; a*b`       | `[6]`
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
@@ -93,7 +95,8 @@ The operators have the following precedence, from highest to lowest:
 
 Operators                         | Description
 --------------------------------- | --------------------
-`x(...)`                          | Function call and matrix index
+`(...)`<br>`[...]`<br>`{...}`     | Grouping<br>Matrix<br>Object
+`x(...)`<br>`x[...]`<br>`obj.prop`<br>`:`| Function call<br>Matrix index<br>Property accessor<br>Key/value separator
 `'`                               | Matrix transpose
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
@@ -178,7 +181,7 @@ parser.eval('a * b');       // 8.5
 ## Data types
 
 The expression parser supports booleans, numbers, complex numbers, units,
-strings, and matrices.
+strings, matrices, and objects.
 
 
 ### Booleans
@@ -456,6 +459,45 @@ parser.eval('d = a * b');             // Matrix, [[19, 22], [43, 50]]
 parser.eval('d[2, 1]');               // 43
 parser.eval('d[2, 1:end]');           // Matrix, [[43, 50]]
 parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
+```
+
+## Objects
+
+Objects in math.js work the same as in languages like JavaScript and Python.
+An object is enclosed by square brackets `{`, `}`, and contains a set of 
+comma separated key/value pairs. Keys and values are separated by a colon `:`.
+Keys can be a symbol like `prop` or a string like `"prop"`.
+
+```js
+math.eval('{a: 2 + 1, b: 4}');        // {a: 3, b: 4}
+math.eval('{"a": 2 + 1, "b": 4}');    // {a: 3, b: 4}
+```
+
+Objects can contain objects:
+
+```js
+math.eval('{a: 2, b: {c: 3, d: 4}}'); // {a: 2, b: {c: 3, d: 4}}
+```
+
+Object properties can be retrieved or replaced using dot notation or bracket 
+notation. Unlike JavaScript, when setting a property value, the whole object
+is returned, not the property value
+
+```js
+var scope = {
+  obj: {
+    prop: 42
+  }
+};
+
+// retrieve properties
+math.eval('obj.prop', scope);         // 42
+math.eval('obj["prop"]', scope);      // 42
+
+// set properties (returns the whole object, not the property value!)
+math.eval('obj.prop = 43', scope);    // {prop: 43}
+math.eval('obj["prop"] = 43', scope); // {prop: 43}
+scope.obj;                            // {prop: 43}
 ```
 
 
