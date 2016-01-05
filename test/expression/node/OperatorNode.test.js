@@ -497,7 +497,7 @@ describe('OperatorNode', function() {
     var cond = new ConditionalNode(a, a, a);
     var pow = new OperatorNode('^', 'pow', [cond, a]);
 
-    assert.equal(pow.toTex(), '\\left({\\left\\{\\begin{array}{l l}{1}, &\\quad{\\text{if}\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{array}\\right.}\\right)^{1}');
+    assert.equal(pow.toTex(), '\\left({\\begin{cases} {1}, &\\quad{\\text{if }\\;1}\\\\{1}, &\\quad{\\text{otherwise}}\\end{cases}}\\right)^{1}');
   });
 
   it ('should LaTeX simple expressions in \'auto\' mode', function () {
