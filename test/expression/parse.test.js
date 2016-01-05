@@ -631,6 +631,19 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj.foo.bar', {obj: {foo: {bar: 2}}}), 2);
     });
 
+    // TODO
+    it.skip('should invoke a function in an object', function () {
+      var scope = {
+        obj: {
+          fn: function (x) {
+            return x * x;
+          }
+        }
+      };
+      assert.deepEqual(parseAndEval('obj.fn(2)', scope), 4);
+      assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
+    });
+
     it('should get nested object property with mixed dot- and index-notation', function () {
       assert.deepEqual(parseAndEval('obj.foo["bar"].baz', {obj: {foo: {bar: {baz: 2}}}}), 2);
       assert.deepEqual(parseAndEval('obj["foo"].bar["baz"]', {obj: {foo: {bar: {baz: 2}}}}), 2);
@@ -750,6 +763,18 @@ describe('parse', function() {
       assert.equal(parseAndEval('add(2, 3)'), 5);
       approx.deepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0));
       assert.equal(parseAndEval('unequal(2, 3)'), true);
+    });
+
+    // TODO: support invoking functions returned by functions
+    it.skip('should evaluate functions returned by functions', function() {
+      var scope = {
+        factory: function (exponent) {
+          return function (x) {
+            return Math.pow(x, exponent);
+          }
+        }
+      };
+      assert.equal(parseAndEval('factory(3)(2)', scope), 8);
     });
 
     it('should parse functions without parameters', function() {
