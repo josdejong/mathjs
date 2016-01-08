@@ -51,13 +51,12 @@ var fs = require('fs');
 var PRECISION = 14; // decimals
 
 /**
- * Helper function to format and print a value in the console.
- * Regular numbers will be rounded to 14 digits to prevent round-off errors
- * from showing up.
+ * Helper function to format a value. Regular numbers will be rounded
+ * to 14 digits to prevent round-off errors from showing up.
  * @param {*} value
  */
-function print(value) {
-  var formattedValue = math.format(value, {
+function format(value) {
+  return math.format(value, {
     fn: function (value) {
       if (typeof value === 'number') {
         // round numbers
@@ -68,8 +67,6 @@ function print(value) {
       }
     }
   });
-
-  console.log(formattedValue);
 }
 
 /**
@@ -85,9 +82,9 @@ function completer (text) {
     var keyword = m[0];
 
     // scope variables
-    // TODO: not nice to read the (private) defs inside the scope
-    for (var def in parser.scope.defs) {
-      if (parser.scope.defs.hasOwnProperty(def)) {
+    // TODO: not nice to read the (private) scope inside the parser
+    for (var def in parser.scope) {
+      if (parser.scope.hasOwnProperty(def)) {
         if (def.indexOf(keyword) == 0) {
           matches.push(def);
         }
@@ -207,7 +204,7 @@ function runStream (input, output, mode, parenthesis) {
               var res = parser.eval(expr);
               if (res instanceof math.type.ResultSet) {
                 res.entries.forEach(function (entry) {
-                  print(entry);
+                  console.log(format(entry));
                 });
                 if (res.entries.length) {
                   // set last answer from the ResultSet as ans
@@ -219,7 +216,7 @@ function runStream (input, output, mode, parenthesis) {
               }
               else {
                 parser.set('ans', res);
-                print(res);
+                console.log(format(res));
               }
             }
             catch (err) {

@@ -23,6 +23,8 @@
 - The command line interface does no longer round BigNumbers to 14 digits as 
   it does with numbers.
 - Fixed a bug in the toString method of an IndexNode.
+- Fixed non-working autocompletion of user defined variables in the command
+  line interface.
 
 
 ## 2016-01-08, version 2.6.0
