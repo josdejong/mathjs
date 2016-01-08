@@ -5,6 +5,10 @@
 
 ### breaking changes
 
+- Matrix multiplication no longer squeezes scalar outputs to a scalar value,
+  but leaves them as they are: a vector or matrix containing a single value.
+  See #529.
+
 ### non-breaking changes
 
 - Implemented support for JSON objects in the expression parser.

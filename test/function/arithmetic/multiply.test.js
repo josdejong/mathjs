@@ -228,22 +228,24 @@ describe('multiply', function() {
   });
 
   describe('squeeze', function () {
-    it ('should squeeze scalar results of matrix * matrix', function () {
+    // math.js v1 and v2 did squeeze output being a vector. Changed in v3
+
+    it ('should NOT squeeze scalar results of matrix * matrix', function () {
       var a = [[1, 2, 3]];
       var b = [[4], [5], [6]];
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), [[32]]);
     });
 
-    it ('should squeeze scalar results of vector * matrix', function () {
+    it ('should NOT squeeze scalar results of vector * matrix', function () {
       var a = [1, 2, 3];
       var b = [[4], [5], [6]];
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), [32]);
     });
 
-    it ('should squeeze scalar results of matrix * vector', function () {
+    it ('should NOT squeeze scalar results of matrix * vector', function () {
       var a = [[1, 2, 3]];
       var b = [4, 5, 6];
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), [32]);
     });
   });
 
@@ -288,26 +290,26 @@ describe('multiply', function() {
       var v = [[1, 2, 3, 0, 0, 5, 6]];
 
       var r = multiply(v, [[3], [4], [6], [0], [1], [2], [0]]);
-      assert.equal(r, 39);
+      assert.deepEqual(r, [[39]]);
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'dense'));
-      assert.equal(r, 39);
+      assert.deepEqual(r, math.matrix([[39]], 'dense'));
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'sparse'));
-      assert.equal(r, 39);
+      assert.deepEqual(r, math.matrix([[39]], 'sparse'));
     });
 
     it('should multiply dense row vector x column vector', function () {
       var v = math.matrix([[1, 2, 3, 0, 0, 5, 6]], 'dense');
 
       var r = multiply(v, [[3], [4], [6], [0], [1], [2], [0]]);
-      assert.equal(r, 39);
+      assert.deepEqual(r, math.matrix([[39]]));
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'dense'));
-      assert.equal(r, 39);
+      assert.deepEqual(r, math.matrix([[39]]));
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'sparse'));
-      assert.equal(r, 39);
+      assert.deepEqual(r, math.matrix([[39]], 'sparse'));
     });
 
     it('should throw an error when multiplying empty vectors', function () {
@@ -475,7 +477,7 @@ describe('multiply', function() {
         ]);
     });
 
-    it ('should squeeze scalar results of matrix * matrix', function () {
+    it ('should NOT squeeze scalar results of matrix * matrix', function () {
       var a = math.matrix(
         [
           [1, 2, 3]
@@ -486,16 +488,16 @@ describe('multiply', function() {
           [5], 
           [6]
         ]);
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), math.matrix([[32]]));
     });
 
-    it ('should squeeze scalar results of matrix * vector', function () {
+    it ('should NOT squeeze scalar results of matrix * vector', function () {
       var a = math.matrix(
         [
           [1, 2, 3]
         ]);
       var b = [4, 5, 6];
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), math.matrix([32]));
     });
 
     it('should throw an error when multiplying matrices with incompatible sizes', function() {
@@ -554,7 +556,7 @@ describe('multiply', function() {
       approx.deepEqual(multiply(a, c), matrix([[17],[39]]));
       approx.deepEqual(multiply(d, a), matrix([[23,34]]));
       approx.deepEqual(multiply(d, b), matrix([[67,78]]));
-      approx.deepEqual(multiply(d, c), 61);
+      approx.deepEqual(multiply(d, c), matrix([[61]]));
       approx.deepEqual(multiply([[1,2],[3,4]], [[5,6],[7,8]]), [[19,22],[43,50]]);
       approx.deepEqual(multiply([1,2,3,4], 2), [2, 4, 6, 8]);
       approx.deepEqual(multiply(matrix([1,2,3,4]), 2), matrix([2, 4, 6, 8]));
@@ -695,16 +697,16 @@ describe('multiply', function() {
         ]);
     });
 
-    it ('should squeeze scalar results of matrix * matrix', function () {
+    it ('should NOT squeeze scalar results of matrix * matrix', function () {
       var a = math.matrix([[1, 2, 3]], 'sparse');
       var b = math.matrix([[4], [5], [6]], 'sparse');
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), math.matrix([[32]], 'sparse'));
     });
 
-    it ('should squeeze scalar results of matrix * vector', function () {
+    it ('should NOT squeeze scalar results of matrix * vector', function () {
       var a = math.matrix([[1, 2, 3]], 'sparse');
       var b = [4, 5, 6];
-      assert.strictEqual(multiply(a, b), 32);
+      assert.deepEqual(multiply(a, b), math.matrix([32], 'sparse'));
     });
 
     it('should throw an error when multiplying matrices with incompatible sizes', function() {
@@ -764,7 +766,7 @@ describe('multiply', function() {
       approx.deepEqual(multiply(a, c), matrix([[17],[39]], 'sparse'));
       approx.deepEqual(multiply(d, a), matrix([[23,34]], 'sparse'));
       approx.deepEqual(multiply(d, b), matrix([[67,78]], 'sparse'));
-      approx.deepEqual(multiply(d, c), 61);
+      approx.deepEqual(multiply(d, c), matrix([[61]], 'sparse'));
     });
     
     it('should multiply two pattern matrices correctly', function() {
