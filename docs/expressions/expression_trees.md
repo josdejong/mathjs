@@ -564,6 +564,7 @@ Properties:
 
 - `index: IndexNode`
 - `expr: Node`
+- `name: string`  (read-only)
 
 Examples:
 

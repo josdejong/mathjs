@@ -77,6 +77,32 @@ describe('UpdateNode', function() {
     });
   });
 
+  it ('should read the name property of an UpdateNode', function () {
+    var a = new SymbolNode('a');
+    var ranges = [
+        new ConstantNode(2),
+        new ConstantNode(1)
+    ];
+    var v = new ConstantNode(5);
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
+
+    assert.strictEqual(n.name, 'a');
+  });
+
+  it ('should not allow rewriting the name property of an UpdateNode', function () {
+    var a = new SymbolNode('a');
+    var ranges = [
+        new ConstantNode(2),
+        new ConstantNode(1)
+    ];
+    var v = new ConstantNode(5);
+    var n = new UpdateNode(new IndexNode(a, ranges), v);
+
+    assert.throws(function () {
+      n.name = 'b'; // name is a read-only property
+    }, /Error: Cannot assign a new name, name is readonly/);
+  });
+
   it ('should compile an UpdateNode with range and context parameters', function () {
     var a = new SymbolNode('a');
     var ranges = [
