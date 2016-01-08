@@ -45,7 +45,7 @@
  */
 
 var math = require('../index');
-var parser = math.parser();
+var scope = {};
 var fs = require('fs');
 
 var PRECISION = 14; // decimals
@@ -82,9 +82,8 @@ function completer (text) {
     var keyword = m[0];
 
     // scope variables
-    // TODO: not nice to read the (private) scope inside the parser
-    for (var def in parser.scope) {
-      if (parser.scope.hasOwnProperty(def)) {
+    for (var def in scope) {
+      if (scope.hasOwnProperty(def)) {
         if (def.indexOf(keyword) == 0) {
           matches.push(def);
         }
@@ -185,7 +184,7 @@ function runStream (input, output, mode, parenthesis) {
         break;
       case 'clear':
         // clear memory
-        parser.clear();
+        scope = {};
         console.log('memory cleared');
 
         // get next input
@@ -201,21 +200,25 @@ function runStream (input, output, mode, parenthesis) {
           case 'eval':
             // evaluate expression
             try {
-              var res = parser.eval(expr);
-              if (res instanceof math.type.ResultSet) {
+              var node = math.parse(expr);
+              var res = node.eval(scope);
+              if (node.isAssignmentNode || node.isUpdateNode) {
+                console.log(node.name + ' = ' + format(scope[node.name]));
+              }
+              else if (res.isResultSet) {
                 res.entries.forEach(function (entry) {
                   console.log(format(entry));
                 });
                 if (res.entries.length) {
                   // set last answer from the ResultSet as ans
-                  parser.set('ans', res.entries[res.entries.length - 1]);
+                  scope.ans = res.entries[res.entries.length - 1];
                 }
               }
               else if (res instanceof math.type.Help) {
                 console.log(res.toString());
               }
               else {
-                parser.set('ans', res);
+                scope.ans = res;
                 console.log(format(res));
               }
             }

@@ -20,11 +20,11 @@
 
 - Implemented support for JSON objects in the expression parser.
 - Implemented support for JSON objects in the function `math.format`.
-- The command line interface does no longer round BigNumbers to 14 digits as 
-  it does with numbers.
+- Command line interface:
+  - Outputs the variable name of assignments.
+  - Fixed not rounding BigNumbers to 14 digits like numbers.
+  - Fixed non-working autocompletion of user defined variables.
 - Fixed a bug in the toString method of an IndexNode.
-- Fixed non-working autocompletion of user defined variables in the command
-  line interface.
 
 
 ## 2016-01-08, version 2.6.0
