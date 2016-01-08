@@ -8,6 +8,13 @@
 - Matrix multiplication no longer squeezes scalar outputs to a scalar value,
   but leaves them as they are: a vector or matrix containing a single value.
   See #529.
+- Assignments in the expression parser now return the assigned value rather
+  than the created or updated object (see #533). Example:
+  
+  ```
+  A = eye(3)
+  A[1,1] = 2   # this assignment now returns 2 instead of A 
+  ```
 
 ### non-breaking changes
 

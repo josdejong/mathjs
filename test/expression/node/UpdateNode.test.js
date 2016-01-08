@@ -71,7 +71,7 @@ describe('UpdateNode', function() {
     var scope = {
       a: [[0, 0], [0, 0]]
     };
-    assert.deepEqual(expr.eval(scope), [[0, 0], [5, 0]]);
+    assert.strictEqual(expr.eval(scope), 5);
     assert.deepEqual(scope, {
       a: [[0, 0], [5, 0]]
     });
@@ -94,7 +94,7 @@ describe('UpdateNode', function() {
       a: [[0, 0], [0, 0]],
       b: [5, 6]
     };
-    assert.deepEqual(expr.eval(scope), [[0, 0], [5, 6]]);
+    assert.deepEqual(expr.eval(scope), [5, 6]);
     assert.deepEqual(scope, {
       a: [[0, 0], [5, 6]],
       b: [5, 6]
@@ -119,7 +119,7 @@ describe('UpdateNode', function() {
       a: [[0, 0], [0, 0]],
       b: [5, 6]
     };
-    assert.deepEqual(expr.eval(scope), [[0, 0], [6, 5]]);
+    assert.deepEqual(expr.eval(scope), [5, 6]);
     assert.deepEqual(scope, {
       a: [[0, 0], [6, 5]],
       b: [5, 6]
@@ -139,7 +139,7 @@ describe('UpdateNode', function() {
     var scope = {
       a: [[0, 0], [0, 0]]
     };
-    assert.deepEqual(expr.eval(scope), [[0, 0], [bigmath.bignumber(5), 0]]);
+    assert.deepEqual(expr.eval(scope), bigmath.bignumber(5));
     assert.deepEqual(scope, {
       a: [[0, 0], [bigmath.bignumber(5), 0]]
     });
