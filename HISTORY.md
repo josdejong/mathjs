@@ -10,6 +10,7 @@
   Thanks @johnmarinelli.
 - Fixed #523: In some circumstances, matrix subset returned a scalar instead 
   of the correct subset.
+- Fixed #536: A bug in an internal method used for sparse matrices.
 
 
 ## 2015-12-05, version 2.5.0
