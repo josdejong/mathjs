@@ -1,11 +1,11 @@
 # History
 
 
-## not yet released, version 2.6.0
+## 2016-01-08, version 2.6.0
 
 - Implemented (complex) units `VA` and `VAR`.
 - Implemented time units for weeks, months, years, decades, centuries, and 
-- millennia. Thanks @owenversteeg.
+  millennia. Thanks @owenversteeg.
 - Implemented new notation `engineering` in function `math.format`. 
   Thanks @johnmarinelli.
 - Fixed #523: In some circumstances, matrix subset returned a scalar instead 
