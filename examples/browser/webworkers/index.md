@@ -91,7 +91,7 @@ File: [webworkers.html](webworkers.html)
 File: [worker.js](worker.js)
 
 ```js
-importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js');
+importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.6.0/math.min.js');
 
 // create a parser
 var parser = math.parser();

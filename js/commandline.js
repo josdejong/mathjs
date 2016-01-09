@@ -188,8 +188,8 @@ function CommandLineEditor (params) {
 
       // scope variables
       // TODO: not nice to read the (private) defs inside the scope
-      for (var def in parser.scope.defs) {
-        if (parser.scope.defs.hasOwnProperty(def)) {
+      for (var def in parser.scope) {
+        if (parser.scope.hasOwnProperty(def)) {
           if (def.indexOf(keyword) == 0) {
             matches.push(def);
           }

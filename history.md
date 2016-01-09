@@ -5,6 +5,18 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160108-version-260">2016-01-08, version 2.6.0 <a href="#20160108-version-260" title="Permalink">#</a></h2>
+
+- Implemented (complex) units `VA` and `VAR`.
+- Implemented time units for weeks, months, years, decades, centuries, and 
+  millennia. Thanks @owenversteeg.
+- Implemented new notation `engineering` in function `math.format`. 
+  Thanks @johnmarinelli.
+- Fixed #523: In some circumstances, matrix subset returned a scalar instead 
+  of the correct subset.
+- Fixed #536: A bug in an internal method used for sparse matrices.
+
+
 <h2 id="20151205-version-250">2015-12-05, version 2.5.0 <a href="#20151205-version-250" title="Permalink">#</a></h2>
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
