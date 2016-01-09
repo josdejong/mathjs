@@ -385,12 +385,13 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 Construction:
 
 ```
-new FunctionNode(name: string, args: Node[])
+new FunctionNode(object: Node, args: Node[])
 ```
 
 Properties:
 
-- `name: string`
+- `object: Node`
+- `name: string` (read-only)
 - `args: Node[]`
 
 Examples:
@@ -399,7 +400,7 @@ Examples:
 var node1 = math.parse('sqrt(4)');
 
 var four  = new math.expression.node.ConstantNode(4);
-var node2 = new math.expression.node.FunctionNode('sqrt', [four]);
+var node3 = new math.expression.node.FunctionNode(new SymbolNode('sqrt'), [four]);
 ```
 
 
@@ -564,7 +565,7 @@ Properties:
 
 - `index: IndexNode`
 - `expr: Node`
-- `name: string`  (read-only)
+- `name: string` (read-only)
 
 Examples:
 

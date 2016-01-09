@@ -62,7 +62,7 @@ describe('FunctionAssignmentNode', function() {
     var truePart = one;
     var falsePart = new OperatorNode('*', 'multiply', [
       x,
-      new FunctionNode('factorial', [
+      new FunctionNode(new SymbolNode('factorial'), [
         new OperatorNode('-', 'subtract', [
           x,
           one
@@ -94,10 +94,10 @@ describe('FunctionAssignmentNode', function() {
             new OperatorNode('<=', 'smallerEq', [x, two]),
             one,
             new OperatorNode('+', 'add', [
-              new FunctionNode('fib', [
+              new FunctionNode(new SymbolNode('fib'), [
                 new OperatorNode('-', 'subtract', [ x, one ])
               ]),
-              new FunctionNode('fib', [
+              new FunctionNode(new SymbolNode('fib'), [
                 new OperatorNode('-', 'subtract', [ x, two ])
               ])
             ])

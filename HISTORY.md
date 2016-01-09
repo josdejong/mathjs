@@ -5,6 +5,9 @@
 
 ### breaking changes
 
+- More restricted support for implicit multiplication in the expression
+  parser: `(...)(...)` is now evaluated as a function invocation,
+  and `[...][...]` as a matrix subset.
 - Matrix multiplication no longer squeezes scalar outputs to a scalar value,
   but leaves them as they are: a vector or matrix containing a single value.
   See #529.

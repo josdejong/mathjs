@@ -8,6 +8,7 @@ var unit = math.unit;
 var not = math.not;
 var FunctionNode = math.expression.node.FunctionNode;
 var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
 
 describe('not', function () {
 
@@ -87,7 +88,7 @@ describe('not', function () {
 
   it('should LaTeX not', function () {
     var c = new ConstantNode(1);
-    var node = new FunctionNode('not', [c]);
+    var node = new FunctionNode(new SymbolNode('not'), [c]);
     assert.equal(node.toTex(), '\\neg\\left(1\\right)');
   });
 

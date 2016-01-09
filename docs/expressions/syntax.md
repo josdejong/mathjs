@@ -530,26 +530,19 @@ array with results.
 
 The expression parser supports implicit multiplication. Implicit multiplication
 has the same precedence as explicit multiplications and divisions, so `3/4 mm`
-is evaluated as `(3 / 4) * mm`. Here some examples:
+is evaluated as `(3 / 4) * mm`.  Implicit multiplication can be tricky as there
+is ambiguity on how an expression is evaluated. Use it carefully.
+
+Here some examples:
 
 Expression      | Evaluated as:
 --------------- | ----------------------
 (3 + 2) b       | (3 + 2) * b
 3 / 4 mm        | (3 / 4) * mm
-(1 + 2) (4 - 2) | (1 + 2) * (4 - 2)
-sqrt(2)(4 + 1)  | sqrt(2) * (4 + 1)
-A[2, 3]         | A[2, 3]   # get subset
-(A)[2, 3]       | (A) * [2, 3]
-[2, 3][1, 3]    | [2, 3] * [1, 3]
+2 + 3 i         | 2 + (3 * i)
 
-Implicit multiplication can be tricky as there is ambiguity on how an expression
-is evaluated. Use it carefully.
-
-```js
-math.eval('(1 + 2)(4 - 2)');  // Number, 6
-math.eval('3/4 mm');          // Unit, 0.75 mm
-math.eval('2 + 3i');          // Complex, 2 + 3i
-```
+Not supported are expressions like `(1+2)(4-1)`: in that case the parser will
+evaluate `(1+2)` and try to invoke the result as a function with argument `(4-1)`.
 
 
 ## Comments

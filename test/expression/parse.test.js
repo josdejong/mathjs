@@ -641,12 +641,15 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj.foo', {obj: {foo: 2}}), 2);
     });
 
+    it('should get an object property from an object inside parentheses', function () {
+      assert.deepEqual(parseAndEval('(obj).foo', {obj: {foo: 2}}), 2);
+    });
+
     it('should get a nested object property with dot notation', function () {
       assert.deepEqual(parseAndEval('obj.foo.bar', {obj: {foo: {bar: 2}}}), 2);
     });
 
-    // TODO
-    it.skip('should invoke a function in an object', function () {
+    it('should invoke a function in an object', function () {
       var scope = {
         obj: {
           fn: function (x) {
@@ -656,6 +659,18 @@ describe('parse', function() {
       };
       assert.deepEqual(parseAndEval('obj.fn(2)', scope), 4);
       assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
+    });
+
+    // FIXME: should invoke a function on an object with the right context
+    it.skip('should invoke a function on an object with the right context', function () {
+      assert.deepEqual(parseAndEval('(2.54 cm).toNumeric("inch")'), 1);
+      assert.deepEqual(parseAndEval('bignumber(2).add(3)'), math.bignumber(5));
+      assert.deepEqual(parseAndEval('bignumber(2)["add"](3)'), math.bignumber(5));
+    });
+
+    // FIXME: should invoke toString on some object
+    it.skip('should invoke toString on some object', function () {
+      assert.strictEqual(parseAndEval('(3).toString()'), '3');
     });
 
     it('should get nested object property with mixed dot- and index-notation', function () {
@@ -779,8 +794,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('unequal(2, 3)'), true);
     });
 
-    // TODO: support invoking functions returned by functions
-    it.skip('should evaluate functions returned by functions', function() {
+    it('should evaluate functions returned by functions', function() {
       var scope = {
         factory: function (exponent) {
           return function (x) {
@@ -788,7 +802,17 @@ describe('parse', function() {
           }
         }
       };
+
       assert.equal(parseAndEval('factory(3)(2)', scope), 8);
+    });
+
+    it('should get a subset of a matrix returned by a function', function() {
+      var scope = {
+        test: function () {
+          return [1,2,3,4];
+        }
+      };
+      assert.equal(parseAndEval('test()[2]', scope), 2);
     });
 
     it('should parse functions without parameters', function() {
@@ -953,23 +977,21 @@ describe('parse', function() {
       assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
       assert.equal(parseAndEval('(2+3)2'), 10);
       assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
-      assert.equal(parseAndEval('(2+3)(-2)'), -10); //implicit multiplication
-      assert.equal(parseAndEval('4(2+3)'), 20);
-      assert.equal(parseAndEval('(a)(2+3)', {a:4}), 20);  // implicit multiplication
+      assert.equal(parseAndEval('(a)(2+3)', {a: function() {return 42;}}), 42); // function call
       assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42); // function call
 
-      assert.equal(parseAndEval('(2+3)(4+5)'), 45);
-      assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);
+      // TODO: cleanup
+      //assert.equal(parseAndEval('(2+3)(4+5)'), 45);
+      //assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);
 
       assert.equal(parseAndEval('(2a)^3', {a:2}), 64);
       assert.equal(parseAndEval('sqrt(2a)', {a:2}), 2);
 
       assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]));
       assert.deepEqual(parseAndEval('[2, 3] a', {a:2}), math.matrix([4, 6]));
-      assert.deepEqual(parseAndEval('[2, 3] [3, 2]', {a:2}), 12); // implicit multiplication
-      assert.deepEqual(parseAndEval('2 [2, 3]'), math.matrix([4, 6]));
-      assert.deepEqual(parseAndEval('(A) [2,2,2]', {A: [1,2,3]}), 12);  // implicit multiplication
-      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4); // index, no multiplication
+      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4);          // index, no multiplication
+      assert.deepEqual(parseAndEval('(A) [2,2]', {A: [[1,2], [3,4]]}), 4);        // implicit multiplication
+      assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]', {A: [[1,2], [3,4]]}), 4);  // index, no multiplication
     });
 
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
@@ -1258,7 +1280,7 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('4!*2'), 48);
       assert.deepEqual(parseAndEval('3!!'), 720);
       assert.deepEqual(parseAndEval('[1,2;3,1]!\'!'), math.matrix([[1, 720], [2, 1]]));
-      assert.deepEqual(parseAndEval('[4,5]![2,2]'), 24*2 + 120*2); // implicit multiplication
+      assert.deepEqual(parseAndEval('[4,5]![2]'), 120); // index [2]
     });
 
     it('should parse transpose \'', function() {
