@@ -202,24 +202,28 @@ function runStream (input, output, mode, parenthesis) {
             try {
               var node = math.parse(expr);
               var res = node.eval(scope);
-              if (node.isAssignmentNode || node.isUpdateNode) {
-                console.log(node.name + ' = ' + format(scope[node.name]));
+
+              if (res.isResultSet) {
+                // we can have 0 or 1 results in the ResultSet, as the CLI
+                // does not allow multiple expressions separated by a return
+                res = res.entries[0];
+                node = node.blocks
+                    .filter(function (entry) { return entry.visible; })
+                    .map(function (entry) { return entry.node })[0];
               }
-              else if (res.isResultSet) {
-                res.entries.forEach(function (entry) {
-                  console.log(format(entry));
-                });
-                if (res.entries.length) {
-                  // set last answer from the ResultSet as ans
-                  scope.ans = res.entries[res.entries.length - 1];
+
+              if (node) {
+                if (node.isAssignmentNode || node.isUpdateNode) {
+                  scope.ans = scope[node.name];
+                  console.log(node.name + ' = ' + format(scope[node.name]));
                 }
-              }
-              else if (res instanceof math.type.Help) {
-                console.log(res.toString());
-              }
-              else {
-                scope.ans = res;
-                console.log(format(res));
+                else if (res instanceof math.type.Help) {
+                  console.log(res.toString());
+                }
+                else {
+                  scope.ans = res;
+                  console.log(format(res));
+                }
               }
             }
             catch (err) {
