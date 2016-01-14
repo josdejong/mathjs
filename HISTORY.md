@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 2.6.1
+
+- Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
+
+
 ## 2016-01-08, version 2.6.0
 
 - Implemented (complex) units `VA` and `VAR`.
