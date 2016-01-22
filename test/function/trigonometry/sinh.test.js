@@ -63,7 +63,7 @@ describe('sinh', function() {
 
   it('should return the sinh of an angle', function() {
     approx.equal(sinh(unit('90deg')), 2.301298902307295);
-    approx.equal(sinh(unit('-45deg')), -0.86867096148601);
+    approx.equal(sinh(unit('-45deg')), -0.8686709614860096);
 
     assert(sinh(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(sinh(unit(math.bignumber(90), 'deg')).toNumber(), 2.3012989023073);
