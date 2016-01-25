@@ -3,6 +3,7 @@
 
 ## not yet released, version 2.6.1
 
+- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
 - Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
 
 
