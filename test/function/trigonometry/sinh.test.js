@@ -29,7 +29,16 @@ describe('sinh', function() {
     // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
     assert.equal(sinh(-1e-10), -1e-10);
     assert.equal(sinh(1e-50), 1e-50);
-  })
+  });
+
+  it('should return the sinh of a number between -1 and 1', function() {
+    approx.equal(sinh(0.9999999999), 1.17520119348949)
+    approx.equal(sinh(-0.9999999999), -1.17520119348949)
+    approx.equal(sinh(0.7), 0.75858370183953)
+    approx.equal(sinh(-0.7), -0.758583701839533)
+    approx.equal(sinh(0.3), 0.304520293447143)
+    approx.equal(sinh(-0.3), -0.304520293447143)
+  });
 
   it('should return the sinh of a bignumber', function() {
     var sinhBig = bigmath.sinh;
