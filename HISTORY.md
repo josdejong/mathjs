@@ -4,6 +4,7 @@
 ## not yet released, version 2.6.1
 
 - Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
+- Added support for doing operations with mixed `Fractions` and `BigNumbers`.
 - Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
 - Fixed #546: Cannot import BigNumber, Fraction, Matrix, Array.
   Thanks @brettjurgens.
