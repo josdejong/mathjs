@@ -57,7 +57,7 @@ describe('Complex', function () {
     });
 
     it('should accept an object with polar coordinates like fromPolar', function() {
-      assert.deepEqual(new Complex({r: 3, phi: 4}), Complex.fromPolar(3, 4));
+      assert.deepEqual(new Complex({r: 3, phi: 4}), Complex(3, 4));
     });
 
   });
@@ -143,68 +143,68 @@ describe('Complex', function () {
   describe('parse', function() {
 
     it('should parse rightly', function () {
-      assertComplex(Complex.parse('2 + 3i'), 2, 3);
-      assertComplex(Complex.parse('2 +3i'), 2, 3);
-      assertComplex(Complex.parse('2+3i'), 2, 3);
-      assertComplex(Complex.parse(' 2+3i '), 2, 3);
+      assertComplex(Complex('2 + 3i'), 2, 3);
+      assertComplex(Complex('2 +3i'), 2, 3);
+      assertComplex(Complex('2+3i'), 2, 3);
+      assertComplex(Complex(' 2+3i '), 2, 3);
 
-      assertComplex(Complex.parse('2-3i'), 2, -3);
-      assertComplex(Complex.parse('2 + i'), 2, 1);
-      assertComplex(Complex.parse('-2-3i'), -2, - 3);
-      assertComplex(Complex.parse('-2+3i'), -2, 3);
-      assertComplex(Complex.parse('-2+-3i'), -2, -3);
-      assertComplex(Complex.parse('-2-+3i'), -2, -3);
-      assertComplex(Complex.parse('+2-+3i'), 2, -3);
-      assertComplex(Complex.parse('+2-+3i'), 2, -3);
-      assertComplex(Complex.parse('2 + 3i'), 2, 3);
-      assertComplex(Complex.parse('2 - -3i'), 2, 3);
-      assertComplex(Complex.parse(' 2 + 3i '), 2, 3);
-      assertComplex(Complex.parse('2 + i'), 2, 1);
-      assertComplex(Complex.parse('2 - i'), 2, -1);
-      assertComplex(Complex.parse('2 + -i'), 2, -1);
-      assertComplex(Complex.parse('-2+3e-1i'), -2, 0.3);
-      assertComplex(Complex.parse('-2+3e+1i'), -2, 30);
-      assertComplex(Complex.parse('2+3e2i'), 2, 300);
-      assertComplex(Complex.parse('2.2e-1-3.2e-1i'), 0.22, -0.32);
-      assertComplex(Complex.parse('2.2e-1-+3.2e-1i'), 0.22, -0.32);
-      assertComplex(Complex.parse('2'), 2, 0);
-      assertComplex(Complex.parse('i'), 0, 1);
-      assertComplex(Complex.parse(' i '), 0, 1);
-      assertComplex(Complex.parse('-i'), 0, -1);
-      assertComplex(Complex.parse(' -i '), 0, -1);
-      assertComplex(Complex.parse('+i'), 0, 1);
-      assertComplex(Complex.parse(' +i '), 0, 1);
-      assertComplex(Complex.parse('-2'), -2, 0);
-      assertComplex(Complex.parse('3I'), 0, 3);
-      assertComplex(Complex.parse('-3i'), 0, -3);
-      assertComplex(Complex.parse('.2i'), 0, 0.2);
-      assertComplex(Complex.parse('.2'), 0.2, 0);
-      assertComplex(Complex.parse('2.i'), 0, 2);
-      assertComplex(Complex.parse('2.'), 2, 0);
+      assertComplex(Complex('2-3i'), 2, -3);
+      assertComplex(Complex('2 + i'), 2, 1);
+      assertComplex(Complex('-2-3i'), -2, - 3);
+      assertComplex(Complex('-2+3i'), -2, 3);
+      assertComplex(Complex('-2+-3i'), -2, -3);
+      assertComplex(Complex('-2-+3i'), -2, -3);
+      assertComplex(Complex('+2-+3i'), 2, -3);
+      assertComplex(Complex('+2-+3i'), 2, -3);
+      assertComplex(Complex('2 + 3i'), 2, 3);
+      assertComplex(Complex('2 - -3i'), 2, 3);
+      assertComplex(Complex(' 2 + 3i '), 2, 3);
+      assertComplex(Complex('2 + i'), 2, 1);
+      assertComplex(Complex('2 - i'), 2, -1);
+      assertComplex(Complex('2 + -i'), 2, -1);
+      assertComplex(Complex('-2+3e-1i'), -2, 0.3);
+      assertComplex(Complex('-2+3e+1i'), -2, 30);
+      assertComplex(Complex('2+3e2i'), 2, 300);
+      assertComplex(Complex('2.2e-1-3.2e-1i'), 0.22, -0.32);
+      assertComplex(Complex('2.2e-1-+3.2e-1i'), 0.22, -0.32);
+      assertComplex(Complex('2'), 2, 0);
+      assertComplex(Complex('i'), 0, 1);
+      assertComplex(Complex(' i '), 0, 1);
+      assertComplex(Complex('-i'), 0, -1);
+      assertComplex(Complex(' -i '), 0, -1);
+      assertComplex(Complex('+i'), 0, 1);
+      assertComplex(Complex(' +i '), 0, 1);
+      assertComplex(Complex('-2'), -2, 0);
+      assertComplex(Complex('3I'), 0, 3);
+      assertComplex(Complex('-3i'), 0, -3);
+      assertComplex(Complex('.2i'), 0, 0.2);
+      assertComplex(Complex('.2'), 0.2, 0);
+      assertComplex(Complex('2.i'), 0, 2);
+      assertComplex(Complex('2.'), 2, 0);
     });
 
     it('should throw an exception if called with an invalid string', function() {
-      assert.throws(function () {Complex.parse('')}, /SyntaxError: Could not parse: "" as complex number/);
-      assert.throws(function () {Complex.parse('2r')}, /SyntaxError: End of string expected, got "r"/);
-      assert.throws(function () {Complex.parse('str')}, /SyntaxError: Could not parse: "str" as complex number/);
-      assert.throws(function () {Complex.parse('2i+3i')}, /SyntaxError: End of string expected, got "\+3i"/);
-      assert.throws(function () {Complex.parse('2ia')}, /SyntaxError: End of string expected, got "a"/);
-      assert.throws(function () {Complex.parse('3+4')}, /SyntaxError: Character "i" expected, got ""/);
-      assert.throws(function () {Complex.parse('3i+4')}, /SyntaxError: End of string expected, got "\+4"/);
-      assert.throws(function () {Complex.parse('3e + 4i')}, /SyntaxError: Could not parse: "3e \+ 4i" as complex number/);
-      assert.throws(function () {Complex.parse('3 + 4i foo')}, /SyntaxError: End of string expected, got "foo"/);
-      assert.throws(function () {Complex.parse('3e1.2 + 4i')}, /SyntaxError: End of string expected, got ".2 \+ 4i"/);
-      assert.throws(function () {Complex.parse('3e1.2i')}, /SyntaxError: End of string expected, got ".2i"/);
-      assert.throws(function () {Complex.parse('- i')}, /SyntaxError: Could not parse: "- i" as complex number/);
-      assert.throws(function () {Complex.parse('+ i')}, /SyntaxError: Could not parse: "\+ i" as complex number/);
-      assert.throws(function () {Complex.parse('.')}, /SyntaxError: Could not parse: "." as complex number/);
-      assert.throws(function () {Complex.parse('2 + .i')}, /SyntaxError: Imaginary part expected/); // TODO: this is an odd message
-      assert.throws(function () {Complex.parse('4i foo')}, /SyntaxError: End of string expected, got "foo/);
-      assert.throws(function () {Complex.parse('i foo')}, /SyntaxError: End of string expected, got "foo"/);
+      assert.throws(function () {Complex('')}, /SyntaxError: Could not parse: "" as complex number/);
+      assert.throws(function () {Complex('2r')}, /SyntaxError: End of string expected, got "r"/);
+      assert.throws(function () {Complex('str')}, /SyntaxError: Could not parse: "str" as complex number/);
+      assert.throws(function () {Complex('2i+3i')}, /SyntaxError: End of string expected, got "\+3i"/);
+      assert.throws(function () {Complex('2ia')}, /SyntaxError: End of string expected, got "a"/);
+      assert.throws(function () {Complex('3+4')}, /SyntaxError: Character "i" expected, got ""/);
+      assert.throws(function () {Complex('3i+4')}, /SyntaxError: End of string expected, got "\+4"/);
+      assert.throws(function () {Complex('3e + 4i')}, /SyntaxError: Could not parse: "3e \+ 4i" as complex number/);
+      assert.throws(function () {Complex('3 + 4i foo')}, /SyntaxError: End of string expected, got "foo"/);
+      assert.throws(function () {Complex('3e1.2 + 4i')}, /SyntaxError: End of string expected, got ".2 \+ 4i"/);
+      assert.throws(function () {Complex('3e1.2i')}, /SyntaxError: End of string expected, got ".2i"/);
+      assert.throws(function () {Complex('- i')}, /SyntaxError: Could not parse: "- i" as complex number/);
+      assert.throws(function () {Complex('+ i')}, /SyntaxError: Could not parse: "\+ i" as complex number/);
+      assert.throws(function () {Complex('.')}, /SyntaxError: Could not parse: "." as complex number/);
+      assert.throws(function () {Complex('2 + .i')}, /SyntaxError: Imaginary part expected/); // TODO: this is an odd message
+      assert.throws(function () {Complex('4i foo')}, /SyntaxError: End of string expected, got "foo/);
+      assert.throws(function () {Complex('i foo')}, /SyntaxError: End of string expected, got "foo"/);
     });
 
     it('should throw an exception when parsing an invalid type of argument', function() {
-      assert.throws(function () {Complex.parse(2)}, /TypeError: Invalid argument in Complex.parse, string expected/);
+      assert.throws(function () {Complex(2)}, /TypeError: Invalid argument in Complex, string expected/);
     });
 
   });
@@ -241,11 +241,11 @@ describe('Complex', function () {
 
   describe('fromPolar', function() {
     it('should save polar coordinates input correctly', function() {
-      var complex1 = Complex.fromPolar({r: 0, phi: 4});
-      var complex2 = Complex.fromPolar({r: 5, phi: 0});
-      var complex3 = Complex.fromPolar({r: 1, phi: Math.PI});
-      var complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2});
-      var complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2});
+      var complex1 = Complex({r: 0, phi: 4});
+      var complex2 = Complex({r: 5, phi: 0});
+      var complex3 = Complex({r: 1, phi: Math.PI});
+      var complex4 = Complex({r: 3, phi: Math.PI / 2});
+      var complex5 = Complex({r: 3, phi: -Math.PI / 2});
       assertComplex(complex1, 0, 0);
       assertComplex(complex2, 5, 0);
       assert.equal(complex3.re, -1);
@@ -254,42 +254,42 @@ describe('Complex', function () {
     });
 
     it('should have the same value for the different import ways', function() {
-        var way1 = Complex.fromPolar(1, 1);
-        var way2 = Complex.fromPolar({r: 1, phi: 1});
+        var way1 = Complex(1, 1);
+        var way2 = Complex({r: 1, phi: 1});
         assert(way1.equals(way2));
     });
 
     it('should accept angle units for phi properly', function() {
-      var fromDeg = Complex.fromPolar(1, new Unit(90, 'deg')),
-          fromRad = Complex.fromPolar(1, new Unit(0, 'rad')),
-          fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'));
+      var fromDeg = Complex(1, new Unit(90, 'deg')),
+          fromRad = Complex(1, new Unit(0, 'rad')),
+          fromGrad = Complex(1, new Unit(100, 'grad'));
       assert.equal(fromDeg.im, 1);
       assert.equal(fromGrad.im, 1);
       assert.equal(fromRad.im, 0);
     });
 
     it('should only accept an object with r and phi keys for 1 argument', function() {
-      assert.throws(function() { Complex.fromPolar({}) }, TypeError);
-      assert.throws(function() { Complex.fromPolar({r: 1}) }, TypeError);
-      assert.throws(function() { Complex.fromPolar({phi: 1}) }, TypeError);
-      assert.throws(function() { Complex.fromPolar("") }, TypeError);
+      assert.throws(function() { Complex({}) }, TypeError);
+      assert.throws(function() { Complex({r: 1}) }, TypeError);
+      assert.throws(function() { Complex({phi: 1}) }, TypeError);
+      assert.throws(function() { Complex("") }, TypeError);
     });
 
     it('should only accept a number as r', function() {
-      assert.throws(function() { Complex.fromPolar("1", 0); });
-      assert.throws(function() { Complex.fromPolar(true, 0); });
-      assert.throws(function() { Complex.fromPolar({}, 0); });
+      assert.throws(function() { Complex("1", 0); });
+      assert.throws(function() { Complex(true, 0); });
+      assert.throws(function() { Complex({}, 0); });
     });
 
     it('should only accept units and numbers as phi', function() {
-      assert.throws(function() { Complex.fromPolar(1, "1")});
-      assert.throws(function() { Complex.fromPolar(1, true)});
-      assert.throws(function() { Complex.fromPolar(1, {})});
+      assert.throws(function() { Complex(1, "1")});
+      assert.throws(function() { Complex(1, true)});
+      assert.throws(function() { Complex(1, {})});
     });
 
     it('should throw an error in case of wrong number of arguments', function() {
-      assert.throws(function() { Complex.fromPolar(1,2,3)}, /Wrong number of arguments/);
-      assert.throws(function() { Complex.fromPolar()}, /Wrong number of arguments/);
+      assert.throws(function() { Complex(1,2,3)}, /Wrong number of arguments/);
+      assert.throws(function() { Complex()}, /Wrong number of arguments/);
     });
   });
 

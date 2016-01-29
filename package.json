@@ -62,7 +62,8 @@
   ],
   "dependencies": {
     "decimal.js": "^4.0.2",
-    "fraction.js": "^3.0.0",
+    "fraction.js": "^3.2.0",
+    "complex.js": "^1.6.0",
     "tiny-emitter": "^1.0.0",
     "typed-function": "^0.10.3"
   },
