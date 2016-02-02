@@ -506,7 +506,7 @@ function CommandLineEditor (params) {
       try {
         res = parser.eval(expr);
         resStr = math.format(res, { precision: 14 });
-        title = 'Unformatted result: ' + math.format(res);
+        title = 'Floating-point result: ' + math.format(res);
       }
       catch (err) {
         resStr = err.toString();
