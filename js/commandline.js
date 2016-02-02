@@ -502,12 +502,15 @@ function CommandLineEditor (params) {
       history.push(expr);
       historyIndex = history.length;
 
-      var res;
+      var res, resStr, title;
       try {
-        res = math.format(parser.eval(expr));
+        res = parser.eval(expr);
+        resStr = math.format(res, { precision: 14 });
+        title = 'Unformatted result: ' + math.format(res);
       }
       catch (err) {
-        res = err.toString();
+        resStr = err.toString();
+        title = '';
       }
 
       var preExpr = document.createElement('pre');
@@ -517,7 +520,8 @@ function CommandLineEditor (params) {
 
       var preRes = document.createElement('pre');
       preRes.className = 'res';
-      preRes.appendChild(document.createTextNode(res));
+      preRes.appendChild(document.createTextNode(resStr));
+      preRes.title = title;
       dom.results.appendChild(preRes);
 
       scrollDown();
@@ -535,9 +539,6 @@ function CommandLineEditor (params) {
   create();
   load();
 }
-
-// configure to use bignumbers
-math.config({number: 'bignumber'});
 
 var container = document.getElementById('commandline');
 if (container) {
