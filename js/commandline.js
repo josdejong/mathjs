@@ -504,9 +504,7 @@ function CommandLineEditor (params) {
 
       var res;
       try {
-        res = math.format(parser.eval(expr), {
-          precision: 14
-        });
+        res = math.format(parser.eval(expr));
       }
       catch (err) {
         res = err.toString();
@@ -538,6 +536,8 @@ function CommandLineEditor (params) {
   load();
 }
 
+// configure to use bignumbers
+math.config({number: 'bignumber'});
 
 var container = document.getElementById('commandline');
 if (container) {
