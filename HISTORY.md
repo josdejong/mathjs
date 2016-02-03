@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 2.6.1
+## 2016-02-03, version 2.7.0
 
 - Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
 - Added support for doing operations with mixed `Fractions` and `BigNumbers`.
