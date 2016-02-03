@@ -13,10 +13,10 @@
   See #529.
 - Assignments in the expression parser now return the assigned value rather
   than the created or updated object (see #533). Example:
-  
+
   ```
   A = eye(3)
-  A[1,1] = 2   # this assignment now returns 2 instead of A 
+  A[1,1] = 2   # this assignment now returns 2 instead of A
   ```
 
 ### non-breaking changes
@@ -28,6 +28,15 @@
   - Fixed not rounding BigNumbers to 14 digits like numbers.
   - Fixed non-working autocompletion of user defined variables.
 - Fixed a bug in the toString method of an IndexNode.
+
+
+## 2016-02-03, version 2.7.0
+
+- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
+- Added support for doing operations with mixed `Fractions` and `BigNumbers`.
+- Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
+- Fixed #546: Cannot import BigNumber, Fraction, Matrix, Array.
+  Thanks @brettjurgens.
 
 
 ## 2016-01-08, version 2.6.0
