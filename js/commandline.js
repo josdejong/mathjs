@@ -456,7 +456,7 @@ function CommandLineEditor (params) {
       // load some example expressions
       expressions = [
         '1.2 / (3.3 + 1.7)',
-        'a = 5.08 cm + 1 inch',
+        'a = 5.08 cm + 2 inch',
         'a to inch',
         'sin(45 deg) ^ 2',
         'f(x, y) = x ^ y',
@@ -535,7 +535,7 @@ function CommandLineEditor (params) {
         divInfo.style.display = 'none';
 
         var divInfoIcon = document.createElement('span');
-        divInfoIcon.appendChild(document.createTextNode('i'));
+        divInfoIcon.appendChild(document.createTextNode('round-off error'));
         divInfoIcon.className = 'result-info-icon';
         divInfoIcon.title = 'Click to see more info';
         divInfoIcon.onclick = function () {

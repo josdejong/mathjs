@@ -160,14 +160,12 @@
   color: white;
   background: lightgray;
 
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
   border-radius: 3px;
 
   display: inline-block;
   text-align: center;
   margin: 0 6px;
+  padding: 0 3px;
 
   cursor: pointer;
   transition: 0.1s all;
