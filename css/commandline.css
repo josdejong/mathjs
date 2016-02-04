@@ -155,3 +155,25 @@
   margin: 4px 0;
   padding: 0;
 }
+
+.result-info-icon {
+  color: white;
+  background: lightgray;
+
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 3px;
+
+  display: inline-block;
+  text-align: center;
+  margin: 0 6px;
+
+  cursor: pointer;
+  transition: 0.1s all;
+}
+
+.result-info-icon:hover {
+  background: darkgray;
+  transition: 0.3s all;
+}

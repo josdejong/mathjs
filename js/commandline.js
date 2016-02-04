@@ -455,7 +455,7 @@ function CommandLineEditor (params) {
     if (!expressions || !(expressions instanceof Array)) {
       // load some example expressions
       expressions = [
-        '1.2 / (2.3 + 0.7)',
+        '1.2 / (3.3 + 1.7)',
         'a = 5.08 cm + 1 inch',
         'a to inch',
         'sin(45 deg) ^ 2',
@@ -502,15 +502,21 @@ function CommandLineEditor (params) {
       history.push(expr);
       historyIndex = history.length;
 
-      var res, resStr, title;
+      var res, resStr, info;
       try {
         res = parser.eval(expr);
         resStr = math.format(res, { precision: 14 });
-        title = 'floating-point result: ' + math.format(res);
+        var unRoundedStr = math.format(res);
+        if (unRoundedStr.length - resStr.length > 4) {
+          info = [
+            createDiv('This result contains a round-off error which is hidden from the output. The unrounded result is:'),
+            createDiv(unRoundedStr),
+            createA('read more...', 'http://localhost:8080/docs/datatypes/numbers.html#roundoff-errors', '_blank')
+          ];
+        }
       }
       catch (err) {
         resStr = err.toString();
-        title = '';
       }
 
       var preExpr = document.createElement('pre');
@@ -521,7 +527,26 @@ function CommandLineEditor (params) {
       var preRes = document.createElement('pre');
       preRes.className = 'res';
       preRes.appendChild(document.createTextNode(resStr));
-      preRes.title = title;
+      if (info) {
+        var divInfo = document.createElement('div');
+        info.forEach(function (elem) {
+          divInfo.appendChild(elem);
+        });
+        divInfo.style.display = 'none';
+
+        var divInfoIcon = document.createElement('span');
+        divInfoIcon.appendChild(document.createTextNode('i'));
+        divInfoIcon.className = 'result-info-icon';
+        divInfoIcon.title = 'Click to see more info';
+        divInfoIcon.onclick = function () {
+          // toggle display
+          divInfo.style.display = (divInfo.style.display == '') ? 'none' : '';
+          resize();
+        };
+
+        preRes.appendChild(divInfoIcon);
+        preRes.appendChild(divInfo);
+      }
       dom.results.appendChild(preRes);
 
       scrollDown();
@@ -546,4 +571,34 @@ if (container) {
     container: container,
     math: math
   });
+}
+
+
+/**
+ * Test whether the child rect fits completely inside the parent rect.
+ * @param {ClientRect} parent
+ * @param {ClientRect} child
+ * @param {number} margin
+ */
+function insideRect (parent, child, margin) {
+  var _margin = margin !== undefined ? margin : 0;
+  return child.left   - _margin >= parent.left
+      && child.right  + _margin <= parent.right
+      && child.top    - _margin >= parent.top
+      && child.bottom + _margin <= parent.bottom;
+}
+
+function createDiv (text) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(text));
+  return div;
+}
+
+function createA (text, href, target) {
+  var a = document.createElement('a');
+  a.href = href;
+  a.target = target || '';
+  a.appendChild(document.createTextNode(text));
+
+  return a;
 }
