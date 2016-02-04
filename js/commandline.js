@@ -458,7 +458,7 @@ function CommandLineEditor (params) {
         '1.2 / (3.3 + 1.7)',
         'a = 5.08 cm + 2 inch',
         'a to inch',
-        'sin(45 deg) ^ 2',
+        'sin(90 deg)',
         'f(x, y) = x ^ y',
         'f(2, 3)'
       ];
