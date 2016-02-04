@@ -511,7 +511,7 @@ function CommandLineEditor (params) {
           info = [
             createDiv('This result contains a round-off error which is hidden from the output. The unrounded result is:'),
             createDiv(unRoundedStr),
-            createA('read more...', 'http://localhost:8080/docs/datatypes/numbers.html#roundoff-errors', '_blank')
+            createA('read more...', 'docs/datatypes/numbers.html#roundoff-errors', '_blank')
           ];
         }
       }
