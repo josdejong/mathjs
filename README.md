@@ -8,7 +8,9 @@ The website is static, and is hosted on [github pages](https://pages.github.com/
 
 To update the website with the latest version of math.js:
 
-- Install the latest math.js via npm:
+- Update the version number of math.js in package.json.
+
+- Install the dependencies via npm:
 
       npm install
 

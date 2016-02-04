@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160203-version-270">2016-02-03, version 2.7.0 <a href="#20160203-version-270" title="Permalink">#</a></h2>
+
+- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
+- Added support for doing operations with mixed `Fractions` and `BigNumbers`.
+- Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
+- Fixed #546: Cannot import BigNumber, Fraction, Matrix, Array.
+  Thanks @brettjurgens.
+
+
 <h2 id="20160108-version-260">2016-01-08, version 2.6.0 <a href="#20160108-version-260" title="Permalink">#</a></h2>
 
 - Implemented (complex) units `VA` and `VAR`.
