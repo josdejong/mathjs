@@ -50,6 +50,9 @@ var ans = math.add(0.1, 0.2);       //  0.30000000000000004
 math.format(ans, {precision: 14});  // '0.3'
 ```
 
+Alternatives are to use [Fractions](fractions.md) which store a number as a numerator and denominator, or [BigNumbers](bignumbers.md), which store a number with a higher precision.
+
+
 ## Minimum and maximum
 
 A Number can store values between `5e-324` and `1.7976931348623157e+308`.
