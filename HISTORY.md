@@ -21,8 +21,8 @@
 
 ### non-breaking changes
 
-- Implemented support for JSON objects in the expression parser.
-- Implemented support for JSON objects in the function `math.format`.
+- Implemented support for JSON objects in the expression parser and the
+  function `math.format`.
 - Command line interface:
   - Outputs the variable name of assignments.
   - Fixed not rounding BigNumbers to 14 digits like numbers.
