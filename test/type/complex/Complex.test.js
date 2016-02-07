@@ -33,25 +33,6 @@ describe('Complex', function () {
       assert.strictEqual(a.type, 'Complex');
     });
 
-    it('should throw an error if called with wrong number of arguments', function() {
-      assert.throws(function () { new Complex(3, -4, 5); });
-      assert.throws(function () { new Complex(1); });
-    });
-
-    it('should throw an error if called with wrong type of arguments', function() {
-      assert.throws(function () { new Complex(1, true); });
-      assert.throws(function () { new Complex(true, 2); });
-    });
-
-    it('should throw an error if called with wrong type of arguments', function() {
-      assert.throws(function () { new Complex(1, true); });
-      assert.throws(function () { new Complex({}); }, /Object with the re and im or r and phi properties expected/);
-    });
-
-    it('should throw an error if called without new operator', function() {
-      assert.throws(function () { Complex(3, -4); });
-    });
-
     it('should accept an object with im and re as keys', function() {
       assertComplex(new Complex({re: 1, im: 2}), 1, 2);
     });
@@ -203,9 +184,7 @@ describe('Complex', function () {
       assert.throws(function () {Complex('i foo')}, /SyntaxError: End of string expected, got "foo"/);
     });
 
-    it('should throw an exception when parsing an invalid type of argument', function() {
-      assert.throws(function () {Complex(2)}, /TypeError: Invalid argument in Complex, string expected/);
-    });
+
 
   });
 
@@ -269,10 +248,10 @@ describe('Complex', function () {
     });
 
     it('should only accept an object with r and phi keys for 1 argument', function() {
-      assert.throws(function() { Complex({}) }, TypeError);
-      assert.throws(function() { Complex({r: 1}) }, TypeError);
-      assert.throws(function() { Complex({phi: 1}) }, TypeError);
-      assert.throws(function() { Complex("") }, TypeError);
+      assert.throws(function() { Complex({}) }, "Invalid Param");
+      assert.throws(function() { Complex({r: 1}) }, "Invalid Param");
+      assert.throws(function() { Complex({phi: 1}) }, "Invalid Param");
+      assert.throws(function() { Complex("") }, "Invalid Param");
     });
 
     it('should only accept a number as r', function() {
@@ -281,16 +260,10 @@ describe('Complex', function () {
       assert.throws(function() { Complex({}, 0); });
     });
 
-    it('should only accept units and numbers as phi', function() {
-      assert.throws(function() { Complex(1, "1")});
-      assert.throws(function() { Complex(1, true)});
-      assert.throws(function() { Complex(1, {})});
+    it('should accept units and numbers as phi', function() {
+      assert.deepEqual(Complex.fromPolar(1, "90 deg"), Complex.fromPolar(1, 1));
     });
 
-    it('should throw an error in case of wrong number of arguments', function() {
-      assert.throws(function() { Complex(1,2,3)}, /Wrong number of arguments/);
-      assert.throws(function() { Complex()}, /Wrong number of arguments/);
-    });
   });
 
   describe('toPolar', function() {

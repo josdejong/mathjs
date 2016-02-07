@@ -143,7 +143,7 @@ describe('divide', function() {
 
     var c = math.unit(math.complex(21, 1), 'kg');
     var d = math.unit(math.complex(2, -3), 's');
-    assert.equal(divide(c, d).toString(), "(3 + 5i) kg / s");
+    assert.equal(divide(c, d).toString(), "(3 + 5.000000000000001i) kg / s");
   });
 
   it('should divide one valued unit by a valueless unit and vice-versa', function() {

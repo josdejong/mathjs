@@ -301,7 +301,7 @@ describe('Unit', function() {
       var u1 = new Unit(math.complex(300,400), 'kPa');
       var u2 = u1.to('lbf/in^2');
       approx.deepEqual(u2.value, math.complex(300000, 400000));
-      assert.deepEqual(u2.toString(), "(43.511321319062766 + 58.01509509208369i) lbf / in^2");
+      assert.deepEqual(u2.toString(), "(43.511321319062766 + 58.01509509208368i) lbf / in^2");
     });
 
     it ('should convert a unit to a fixed unit', function () {
