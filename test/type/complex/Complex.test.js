@@ -37,10 +37,6 @@ describe('Complex', function () {
       assertComplex(new Complex({re: 1, im: 2}), 1, 2);
     });
 
-    it('should accept an object with polar coordinates like fromPolar', function() {
-      assert.deepEqual(new Complex({r: 3, phi: 4}), Complex(3, 4));
-    });
-
   });
 
   describe('toString', function() {
@@ -220,11 +216,11 @@ describe('Complex', function () {
 
   describe('fromPolar', function() {
     it('should save polar coordinates input correctly', function() {
-      var complex1 = Complex({r: 0, phi: 4});
-      var complex2 = Complex({r: 5, phi: 0});
-      var complex3 = Complex({r: 1, phi: Math.PI});
-      var complex4 = Complex({r: 3, phi: Math.PI / 2});
-      var complex5 = Complex({r: 3, phi: -Math.PI / 2});
+      var complex1 = Complex.fromPolar({r: 0, phi: 4});
+      var complex2 = Complex.fromPolar({r: 5, phi: 0});
+      var complex3 = Complex.fromPolar({r: 1, phi: Math.PI});
+      var complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2});
+      var complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2});
       assertComplex(complex1, 0, 0);
       assertComplex(complex2, 5, 0);
       assert.equal(complex3.re, -1);
@@ -233,15 +229,15 @@ describe('Complex', function () {
     });
 
     it('should have the same value for the different import ways', function() {
-        var way1 = Complex(1, 1);
-        var way2 = Complex({r: 1, phi: 1});
-        assert(way1.equals(way2));
+      var way1 = Complex.fromPolar(1, 1);
+      var way2 = Complex.fromPolar({r: 1, phi: 1});
+      assert(way1.equals(way2));
     });
 
     it('should accept angle units for phi properly', function() {
-      var fromDeg = Complex(1, new Unit(90, 'deg')),
-          fromRad = Complex(1, new Unit(0, 'rad')),
-          fromGrad = Complex(1, new Unit(100, 'grad'));
+      var fromDeg = Complex.fromPolar(1, new Unit(90, 'deg')),
+          fromRad = Complex.fromPolar(1, new Unit(0, 'rad')),
+          fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'));
       assert.equal(fromDeg.im, 1);
       assert.equal(fromGrad.im, 1);
       assert.equal(fromRad.im, 0);
@@ -252,16 +248,6 @@ describe('Complex', function () {
       assert.throws(function() { Complex({r: 1}) }, "Invalid Param");
       assert.throws(function() { Complex({phi: 1}) }, "Invalid Param");
       assert.throws(function() { Complex("") }, "Invalid Param");
-    });
-
-    it('should only accept a number as r', function() {
-      assert.throws(function() { Complex("1", 0); });
-      assert.throws(function() { Complex(true, 0); });
-      assert.throws(function() { Complex({}, 0); });
-    });
-
-    it('should accept units and numbers as phi', function() {
-      assert.deepEqual(Complex.fromPolar(1, "90 deg"), Complex.fromPolar(1, 1));
     });
 
   });
