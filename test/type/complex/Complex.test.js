@@ -212,6 +212,18 @@ describe('Complex', function () {
       assert.equal(new Complex(0, 0).equals(new Complex()), true);
     });
 
+    it('should use the epsilon configured with math.js', function () {
+      var old = math.config();
+
+      assert.equal(Complex.EPSILON, math.config().epsilon);
+      assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), false);
+
+      math.config({epsilon: 0.1});
+      assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), true);
+
+      math.config(old); // restore old config
+    });
+
   });
 
   describe('fromPolar', function() {
