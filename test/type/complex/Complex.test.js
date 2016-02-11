@@ -161,23 +161,18 @@ describe('Complex', function () {
     });
 
     it('should throw an exception if called with an invalid string', function() {
-      assert.throws(function () {Complex('')}, /SyntaxError: Could not parse: "" as complex number/);
-      assert.throws(function () {Complex('2r')}, /SyntaxError: End of string expected, got "r"/);
-      assert.throws(function () {Complex('str')}, /SyntaxError: Could not parse: "str" as complex number/);
-      assert.throws(function () {Complex('2i+3i')}, /SyntaxError: End of string expected, got "\+3i"/);
-      assert.throws(function () {Complex('2ia')}, /SyntaxError: End of string expected, got "a"/);
-      assert.throws(function () {Complex('3+4')}, /SyntaxError: Character "i" expected, got ""/);
-      assert.throws(function () {Complex('3i+4')}, /SyntaxError: End of string expected, got "\+4"/);
-      assert.throws(function () {Complex('3e + 4i')}, /SyntaxError: Could not parse: "3e \+ 4i" as complex number/);
-      assert.throws(function () {Complex('3 + 4i foo')}, /SyntaxError: End of string expected, got "foo"/);
-      assert.throws(function () {Complex('3e1.2 + 4i')}, /SyntaxError: End of string expected, got ".2 \+ 4i"/);
-      assert.throws(function () {Complex('3e1.2i')}, /SyntaxError: End of string expected, got ".2i"/);
-      assert.throws(function () {Complex('- i')}, /SyntaxError: Could not parse: "- i" as complex number/);
-      assert.throws(function () {Complex('+ i')}, /SyntaxError: Could not parse: "\+ i" as complex number/);
-      assert.throws(function () {Complex('.')}, /SyntaxError: Could not parse: "." as complex number/);
-      assert.throws(function () {Complex('2 + .i')}, /SyntaxError: Imaginary part expected/); // TODO: this is an odd message
-      assert.throws(function () {Complex('4i foo')}, /SyntaxError: End of string expected, got "foo/);
-      assert.throws(function () {Complex('i foo')}, /SyntaxError: End of string expected, got "foo"/);
+      assert.throws(function () {Complex('')});
+      assert.throws(function () {Complex('2r')});
+      assert.throws(function () {Complex('str')});
+      assert.throws(function () {Complex('2ia')});
+      assert.throws(function () {Complex('3e + 4i')});
+      assert.throws(function () {Complex('3 + 4i foo')});
+      assert.throws(function () {Complex('3e1.2 + 4i')});
+      assert.throws(function () {Complex('3e1.2i')});
+      assert.throws(function () {Complex('.')});
+      assert.throws(function () {Complex('2 + .i')}); 
+      assert.throws(function () {Complex('4i foo')});
+      assert.throws(function () {Complex('i foo')});
     });
 
 
