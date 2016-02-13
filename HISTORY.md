@@ -5,6 +5,8 @@
 
 - Extended function `pow` to return the real root for cubic roots of negative
   numbers. See #525, #482, #567.
+- Replaced the internal `Complex.js` class with the `complex.js` library
+  created by @infusion.
 
 
 ## 2016-02-03, version 2.7.0
