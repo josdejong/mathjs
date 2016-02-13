@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 2.7.1
+
+- Extended function `pow` to return the real root for cubic roots of negative
+  numbers. See #525, #482, #567.
+
+
 ## 2016-02-03, version 2.7.0
 
 - Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
