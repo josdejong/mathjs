@@ -36,6 +36,30 @@ describe('pow', function() {
     assert(isNaN(res));
   });
 
+  it('should return a real-valued root if one exists with predictable:true', function() {
+    approx.equal(mathPredictable.pow(-8, 1/3), -2);
+    approx.equal(mathPredictable.pow(-8, 2/3), 4);
+    approx.equal(mathPredictable.pow(-8, 3/3), -8);
+    approx.equal(mathPredictable.pow(-8, 4/3), 16);
+    approx.equal(mathPredictable.pow(-8, 5/3), -32);
+    approx.equal(mathPredictable.pow(-8, -5/3), -0.03125);
+    approx.equal(mathPredictable.pow(-1, 2/3), 1);
+    approx.equal(mathPredictable.pow(-1, 50/99), 1);
+    approx.equal(mathPredictable.pow(-1, 49/99), -1);
+    approx.equal(mathPredictable.pow(-17, 29/137), -1.8216292479175);
+    approx.equal(mathPredictable.pow(-1, 0), 1);
+    approx.equal(mathPredictable.pow(-1, 0.2), -1);
+    approx.equal(mathPredictable.pow(-1, 1), -1);
+
+    approx.equal(mathPredictable.pow(4, 2), 16);
+    approx.equal(mathPredictable.pow(4, 0.5), 2);
+    approx.equal(mathPredictable.pow(-4, 2), 16);
+
+    assert(isNaN(mathPredictable.pow(-1, 49/100)));
+    assert(isNaN(mathPredictable.pow(-17, 29/138)));
+    assert(isNaN(mathPredictable.pow(-17, 3.14159265358979323)));
+  });
+
   it('should exponentiate booleans to the given power', function() {
     assert.equal(pow(true, true), 1);
     assert.equal(pow(true, false), 1);
@@ -171,8 +195,6 @@ describe('pow', function() {
 	});
 
   it('should throw an error when doing number ^ unit', function() {
-    // This is supported now --ericman314
-    //assert.throws(function () {pow(unit('5cm'), 2)});
     assert.throws(function () {pow(2, unit('5cm'))});
   });
 
