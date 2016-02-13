@@ -4,7 +4,6 @@ var approx = require('../../../tools/approx');
 var error = require('../../../lib/error/index');
 var math = require('../../../index');
 var mathPredictable = math.create({predictable: true});
-var mathRealmode = math.create({realmode: true});
 var bignumber = math.bignumber;
 var fraction = math.fraction;
 var complex = math.complex;
@@ -37,28 +36,28 @@ describe('pow', function() {
     assert(isNaN(res));
   });
 
-  it('should return a real-valued root if one exists with realmode:true', function() {
-    approx.equal(mathRealmode.pow(-8, 1/3), -2);
-    approx.equal(mathRealmode.pow(-8, 2/3), 4);
-    approx.equal(mathRealmode.pow(-8, 3/3), -8);
-    approx.equal(mathRealmode.pow(-8, 4/3), 16);
-    approx.equal(mathRealmode.pow(-8, 5/3), -32);
-    approx.equal(mathRealmode.pow(-8, -5/3), -0.03125);
-    approx.equal(mathRealmode.pow(-1, 2/3), 1);
-    approx.equal(mathRealmode.pow(-1, 50/99), 1);
-    approx.equal(mathRealmode.pow(-1, 49/99), -1);
-    approx.equal(mathRealmode.pow(-17, 29/137), -1.8216292479175);
-    approx.equal(mathRealmode.pow(-1, 0), 1);
-    approx.equal(mathRealmode.pow(-1, 0.2), -1);
-    approx.equal(mathRealmode.pow(-1, 1), -1);
+  it('should return a real-valued root if one exists with predictable:true', function() {
+    approx.equal(mathPredictable.pow(-8, 1/3), -2);
+    approx.equal(mathPredictable.pow(-8, 2/3), 4);
+    approx.equal(mathPredictable.pow(-8, 3/3), -8);
+    approx.equal(mathPredictable.pow(-8, 4/3), 16);
+    approx.equal(mathPredictable.pow(-8, 5/3), -32);
+    approx.equal(mathPredictable.pow(-8, -5/3), -0.03125);
+    approx.equal(mathPredictable.pow(-1, 2/3), 1);
+    approx.equal(mathPredictable.pow(-1, 50/99), 1);
+    approx.equal(mathPredictable.pow(-1, 49/99), -1);
+    approx.equal(mathPredictable.pow(-17, 29/137), -1.8216292479175);
+    approx.equal(mathPredictable.pow(-1, 0), 1);
+    approx.equal(mathPredictable.pow(-1, 0.2), -1);
+    approx.equal(mathPredictable.pow(-1, 1), -1);
 
-    approx.equal(mathRealmode.pow(4, 2), 16);
-    approx.equal(mathRealmode.pow(4, 0.5), 2);
-    approx.equal(mathRealmode.pow(-4, 2), 16);
+    approx.equal(mathPredictable.pow(4, 2), 16);
+    approx.equal(mathPredictable.pow(4, 0.5), 2);
+    approx.equal(mathPredictable.pow(-4, 2), 16);
 
-    assert(mathRealmode.pow(-1, 49/100).isComplex);
-    assert(mathRealmode.pow(-17, 29/138).isComplex);
-    assert(mathRealmode.pow(-17, 3.14159265358979323).isComplex);
+    assert(isNaN(mathPredictable.pow(-1, 49/100)));
+    assert(isNaN(mathPredictable.pow(-17, 29/138)));
+    assert(isNaN(mathPredictable.pow(-17, 3.14159265358979323)));
   });
 
   it('should exponentiate booleans to the given power', function() {
