@@ -1,10 +1,8 @@
 // test bignumber utils
 var assert = require('assert');
 var BigNumber = require('decimal.js');
-var Big32 = BigNumber.clone();
-Big32.config({precision: 32});
-var Big64 = BigNumber.clone();
-Big64.config({precision: 64});
+var Big32 = BigNumber.clone({precision: 32});
+var Big64 = BigNumber.clone({precision: 64});
 var constants = require('../../../lib/utils/bignumber/constants');
 
 describe('bignumber', function() {
