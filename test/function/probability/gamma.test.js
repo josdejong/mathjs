@@ -60,14 +60,13 @@ describe('gamma', function () {
     assert.deepEqual(gamma(bignumber(5)), bignumber(24));
     assert.deepEqual(gamma(bignumber(6)), bignumber(120));
     assert.deepEqual(gamma(bignumber(31)), bignumber('265252859812191058636308480000000'));
-    assert.deepEqual(gamma(bignumber(Infinity)), bignumber(Infinity));
+    assert.deepEqual(gamma(bignumber(Infinity)).toString(), 'Infinity');
   });
 
   it('should calculate the gamma of a nonpositive integer bignumber', function () {
-    assert.deepEqual(gamma(bignumber(0)), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber(-1)), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber(-2)), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber('-1.0e10223')), bignumber(Infinity));
+    assert.deepEqual(gamma(bignumber(0)).toString(), 'Infinity');
+    assert.deepEqual(gamma(bignumber(-1)).toString(), 'Infinity');
+    assert.deepEqual(gamma(bignumber(-2)).toString(), 'Infinity');
     assert.ok(gamma(bignumber(-Infinity)).isNaN());
   });
 /*

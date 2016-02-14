@@ -95,8 +95,8 @@ describe('nthRoot', function() {
   });
 
   it('should return the nthRoot for bignumber infinity', function() {
-    assert.deepEqual(nthRoot(big(Infinity), big(2)), big(Infinity));
-    assert.deepEqual(nthRoot(big(-Infinity), big(3)), big(-Infinity));
+    assert.deepEqual(nthRoot(big(Infinity), big(2)).toString(), 'Infinity');
+    assert.deepEqual(nthRoot(big(-Infinity), big(3)).toString(), '-Infinity');
     assert.deepEqual(nthRoot(big(Infinity), big(-3)), big(0));
   });
 

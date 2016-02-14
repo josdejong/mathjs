@@ -46,9 +46,9 @@ describe('tanh', function() {
     assert.deepEqual(tanhBig(arg10), Big(1));
 
     // Make sure args were not changed
-    assert.deepEqual(arg1, Big(-Infinity));
+    assert.deepEqual(arg1.toString(), '-Infinity');
     assert.deepEqual(arg2, Big(-3));
-    assert.deepEqual(arg10, Big(Infinity));
+    assert.deepEqual(arg10.toString(), 'Infinity');
   });
 
   it('should return the tanh of a complex number', function() {

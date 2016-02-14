@@ -35,7 +35,7 @@ describe('acsch', function() {
     var arg = Big(-2);
     assert.deepEqual(acschBig(arg), Big('-0.4812118250596034475'));
     assert.deepEqual(acschBig(Big(-1)), Big('-0.88137358701954302523'));
-    assert.deepEqual(acschBig(Big(0)), Big(Infinity));
+    assert.deepEqual(acschBig(Big(0)).toString(), 'Infinity');
     assert.deepEqual(acschBig(Big(1)), Big('0.88137358701954302523'));
     assert.deepEqual(acschBig(Big(2)), Big('0.4812118250596034475'));
     assert.deepEqual(acschBig(bigmath.pi).toString(), '0.31316588045086837587');

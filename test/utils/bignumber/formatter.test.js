@@ -9,7 +9,7 @@ describe('format', function () {
     var B = null;
 
     before (function () {
-      B = BigNumber.constructor();
+      B = BigNumber.clone();
       B.config({precision: 20}); // ensure the precision is 20 digits
     });
 
@@ -142,7 +142,7 @@ describe('format', function () {
     });
 
     it('should format bignumbers with custom precision, lower, and upper bound', function() {
-      var Big = BigNumber.constructor();
+      var Big = BigNumber.clone();
       Big.config({precision: 100});
 
       var options = {
@@ -219,7 +219,7 @@ describe('format', function () {
   });
 
   it('should format a bignumber using toFixed', function() {
-    var Big = BigNumber.constructor();
+    var Big = BigNumber.clone();
     Big.config({precision: 100});
 
     assert.equal(formatter.toFixed(new Big(2.34)), '2');
@@ -231,7 +231,7 @@ describe('format', function () {
   });
 
   it('should format a bignumber using toExponential', function() {
-    var Big = BigNumber.constructor();
+    var Big = BigNumber.clone();
     Big.config({precision: 100});
 
     assert.equal(formatter.toExponential(new Big(2.34)), '2.34e+0');

@@ -94,7 +94,7 @@ describe('pow', function() {
   });
 
   it('should exponentiate a negative bignumber to a non-integer power', function() {
-    assert.deepEqual(mathPredictable.pow(bignumber(-2), bignumber(1.5)), bignumber(NaN));
+    assert.ok(mathPredictable.pow(bignumber(-2), bignumber(1.5)).isNaN());
   });
 
   it('should exponentiate mixed numbers and bignumbers', function() {

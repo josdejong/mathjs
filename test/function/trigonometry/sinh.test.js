@@ -38,18 +38,18 @@ describe('sinh', function() {
     var arg1 = Big(-Infinity);
     var arg2 = Big(-1);
     var arg7 = Big(Infinity);
-    assert.deepEqual(sinhBig(arg1), Big(-Infinity));
+    assert.deepEqual(sinhBig(arg1).toString(), '-Infinity');
     assert.deepEqual(sinhBig(arg2), Big('-1.1752011936438014569'));
     assert.deepEqual(sinhBig(Big(-1e-10)), Big(-1e-10));
     assert.deepEqual(sinhBig(Big(0)), Big(0));
     assert.deepEqual(sinhBig(Big(1)), Big('1.1752011936438014569'));
     assert.deepEqual(sinhBig(bigmath.pi).toString(), '11.548739357257748378');
-    assert.deepEqual(sinhBig(arg7), Big(Infinity));
+    assert.deepEqual(sinhBig(arg7).toString(), 'Infinity');
 
     // Ensure args were not changed
-    assert.deepEqual(arg1, Big(-Infinity));
+    assert.deepEqual(arg1.toString(), '-Infinity');
     assert.deepEqual(arg2, Big(-1));
-    assert.deepEqual(arg7, Big(Infinity));
+    assert.deepEqual(arg7.toString(), 'Infinity');
 
     bigmath.config({precision: 50});
     assert.deepEqual(sinhBig(Big(1e-50)), Big(1e-50));

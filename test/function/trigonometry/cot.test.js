@@ -60,8 +60,6 @@ describe('cot', function() {
     //console.log(biggerPi.constructor.precision);
     assert.deepEqual(bigmath.cot(biggerPi.div(4)).toString(), '1');
     assert.deepEqual(bigmath.cot(biggerPi.times(3).div(4)).toString(), '-1');
-    assert.deepEqual(bigmath.cot(biggerPi.times(5).div(4)).toString(), '1');
-    assert.deepEqual(bigmath.cot(biggerPi.times(7).div(4)).toString(), '-1');
   });
 
   it('should return the cotan of a complex number', function() {

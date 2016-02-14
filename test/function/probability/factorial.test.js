@@ -23,7 +23,7 @@ describe('factorial', function() {
     var bignumber = bigmath.bignumber;
 
     assert.deepEqual(bigfactorial(bignumber(0)), bignumber(1));
-    assert.deepEqual(bigfactorial(bignumber(Infinity)), bignumber(Infinity));
+    assert.deepEqual(bigfactorial(bignumber(Infinity)).toString(), 'Infinity');
 
     assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000));
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));

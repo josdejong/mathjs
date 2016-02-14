@@ -31,7 +31,7 @@ describe('unaryMinus', function() {
   it('should perform unary minus of a big number', function() {
     assert.deepEqual(math.unaryMinus(bignumber(2)), bignumber(-2));
     assert.deepEqual(math.unaryMinus(bignumber(-2)), bignumber(2));
-    assert.deepEqual(math.unaryMinus(bignumber(0)).valueOf(), bignumber(0).valueOf());
+    assert.deepEqual(math.unaryMinus(bignumber(0)).toString(), '0');
   });
 
   it('should perform unary minus of a fraction', function() {

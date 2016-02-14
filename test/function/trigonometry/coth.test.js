@@ -31,7 +31,7 @@ describe('coth', function() {
   it('should return the coth of a bignumber', function() {
     var cothBig = bigmath.coth;
     var Big = bigmath.bignumber;
-    assert.deepEqual(cothBig(Big(0)), Big(Number.POSITIVE_INFINITY));
+    assert.deepEqual(cothBig(Big(0)).toString(), 'Infinity');
     assert.deepEqual(cothBig(Big(1)), Big('1.3130352854993313036'));
     assert.deepEqual(cothBig(Big(2)), Big('1.0373147207275480959'));
     assert.deepEqual(cothBig(Big(3)), Big('1.0049698233136891711'));

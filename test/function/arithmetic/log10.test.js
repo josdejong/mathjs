@@ -69,7 +69,7 @@ describe('log10', function() {
   it('should return the log of a bignumber with value zero', function() {
     var bigmath = math.create({precision: 100});
 
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(0)), bigmath.bignumber(-Infinity));
+    assert.deepEqual(bigmath.log10(bigmath.bignumber(0)).toString(), '-Infinity');
   });
 
   it('should throw an error if used with a wrong number of arguments', function() {

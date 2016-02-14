@@ -47,7 +47,7 @@ describe('atan2', function() {
   });
 
   it('should return the arctan of for bignumbers', function() {
-    assert.deepEqual(atan2Big(Big(0), Big(0)), Big(NaN));
+    assert.ok(atan2Big(Big(0), Big(0)).isNaN());
     assert.deepEqual(atan2Big(Big(0), Big(1)), Big(0));
     assert.deepEqual(atan2Big(Big(1), Big(1)), Big('0.7853981633974483096'));
     assert.deepEqual(atan2Big(Big(1), Big(0)), Big('1.5707963267948966192'));

@@ -54,7 +54,7 @@ describe('acot', function() {
     assert.deepEqual(arg3, Big(-0.5));
     assert.deepEqual(arg4, Big(0));
     assert.deepEqual(arg7, Big(2));
-    assert.deepEqual(arg8, Big(Infinity));
+    assert.deepEqual(arg8.toString(), 'Infinity');
 
     // Hit Newton's method case
     bigmath.config({precision: 61});

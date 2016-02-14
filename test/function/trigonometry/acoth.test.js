@@ -49,8 +49,8 @@ describe('acoth', function() {
     var arg3 = Big(-1);
     assert.deepEqual(acothBig(Big(-Infinity)), Big(0));
     assert.deepEqual(acothBig(arg2), Big('-0.5493061443340548457'));
-    assert.deepEqual(acothBig(arg3), Big(-Infinity));
-    assert.deepEqual(acothBig(Big(1)), Big(Infinity));
+    assert.deepEqual(acothBig(arg3).toString(), '-Infinity');
+    assert.deepEqual(acothBig(Big(1)).toString(), 'Infinity');
     assert.deepEqual(acothBig(Big(2)), Big('0.5493061443340548457'));
     assert.deepEqual(acothBig(Big(Infinity)), Big(0));
 

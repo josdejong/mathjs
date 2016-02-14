@@ -76,7 +76,7 @@ describe('constants', function() {
     });
 
     it('should have bignumber phi, golden ratio', function() {
-      assert.equal(bigmath.phi.toString(), '1.618033988749894848204586834365638117720309179805762862135448622');
+      assert.equal(bigmath.phi.toString(), '1.618033988749894848204586834365638117720309179805762862135448623');
     });
 
     it('should have bignumber e', function() {

@@ -45,7 +45,7 @@ describe('asech', function() {
   it('should return the hyperbolic arcsec of a bignumber', function() {
     var arg1 = Big(0);
     var arg2 = Big(0.25);
-    assert.deepEqual(asechBig(arg1), Big(Infinity));
+    assert.deepEqual(asechBig(arg1).toString(), 'Infinity');
     assert.deepEqual(asechBig(arg2), Big('2.0634370688955605467'));
     assert.deepEqual(asechBig(Big(0.5)), Big('1.3169578969248167086'));
     assert.deepEqual(asechBig(Big(0.75)), Big('0.79536546122390563053'));
