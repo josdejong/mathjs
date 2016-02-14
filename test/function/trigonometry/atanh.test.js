@@ -74,15 +74,8 @@ describe('atanh', function() {
     assert.deepEqual(atanhBig(biggermath.tanh(arg)), Big(-1));
     assert.deepEqual(atanhBig(biggermath.tanh(Big(0.1))), Big(0.1));
     assert.deepEqual(arg, Big(-1));
-  });
 
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      atanh(Big(1.1));
-    }, /atanh() only has non-complex values for |x| <= 1./);
-    assert.throws(function () {
-      atanh(Big(-1.1));
-    }, /atanh() only has non-complex values for |x| <= 1./);
+    assert.ok(atanh(Big(1.1)).isNaN());
   });
 
   it('should return the arctanh of a complex number', function() {

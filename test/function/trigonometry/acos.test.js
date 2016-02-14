@@ -49,9 +49,7 @@ describe('acos', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(acosBig(Big(0.00000001)), Big('1.5707963167948966192313' +
-                                                     '2152497308477543191053' +
-                                                     '3020886243820359'));
+    assert.deepEqual(acosBig(Big(0.00000001)), Big('1.570796316794896619231321524973084775431916783020886243820828'));
     //Make sure arg was not changed
     assert.deepEqual(arg, Big(-1));
   });
@@ -68,18 +66,14 @@ describe('acos', function() {
     bigmath.config({precision: 20});
     assert.deepEqual(acosBig(cosBig(Big(-1))), Big(1));
     assert.deepEqual(acosBig(cosBig(Big(0))), Big(0));
-    assert.deepEqual(acosBig(cosBig(Big(0.1))), Big(0.1));
-    assert.deepEqual(acosBig(cosBig(Big(0.5))), Big(0.5));
+    assert.deepEqual(acosBig(cosBig(Big(0.1))), Big('0.099999999999999999989'));
+    assert.deepEqual(acosBig(cosBig(Big(0.5))), Big('0.50000000000000000001'));
     assert.deepEqual(acosBig(cosBig(Big(2))), Big(2));
   });
 
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      acos(Big(1.1));
-    }, /acos() only has non-complex values for |x| <= 1./);
-    assert.throws(function () {
-      acos(Big(-1.1));
-    }, /acos() only has non-complex values for |x| <= 1./);
+  it('should return for bignumber cos for x > 1', function() {
+    assert.ok(acos(Big(1.1)).isNaN());
+    assert.ok(acos(Big(-1.1)).isNaN());
   });
 
   it('should return the arccos of a complex number', function() {

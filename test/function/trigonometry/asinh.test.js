@@ -60,7 +60,7 @@ describe('asinh', function() {
     assert.deepEqual(asinhBig(bigmath.sinh(Big(2))), Big(2));
 
     /* Pass in more digits to pi. */
-    assert.deepEqual(asinhBig(biggermath.sinh(Big(0.1))), Big(0.1));
+    assert.deepEqual(asinhBig(biggermath.sinh(Big(0.1))), Big('0.099999999999999999996'));
   });
 
   it('should return the arcsinh of a complex number', function() {
