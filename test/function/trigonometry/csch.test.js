@@ -35,7 +35,7 @@ describe('csch', function() {
     var Big = bigmath.bignumber;
 
     assert.deepEqual(cschBig(Big(0)).toString(), 'Infinity');
-    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154513'));
+    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154512'));
     assert.deepEqual(cschBig(Big(2)), Big('0.27572056477178320776'));
     assert.deepEqual(cschBig(Big(3)), Big('0.099821569668822732851'));
 

@@ -45,6 +45,7 @@ describe('cos', function() {
                         '59494006339537812110786663367929884637840572887762249921' +
                         '8425619255481';
     var cos_val = biggermath.cos(biggermath.bignumber(103.64));
+    assert.equal(biggermath.bignumber(103.64).constructor.precision, 238);
     assert.equal(cos_val.constructor.precision, 238);
     assert.deepEqual(cos_val.toString(), result_val);
 

@@ -43,16 +43,8 @@ describe('csc', function() {
     assert.deepEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557');
     assert.deepEqual(bigmath.csc(bigPi.div(4)).toString(), sqrt2);
     assert.deepEqual(bigmath.csc(bigPi.div(2)).toString(), '1');
-    assert.ok(!bigmath.csc(bigPi).isFinite());
+    assert.deepEqual(bigmath.csc(bigPi), Big('-26769019461318409709')); // large number (about infinity)
     assert.deepEqual(bigmath.csc(bigPi.times(3).div(2)).toString(), '-1');
-    assert.ok(!bigmath.csc(bigPi.times(2)).isFinite());
-    assert.ok(!bigmath.csc(bigmath.tau).isFinite());
-
-    /* Pass in more digits of pi. */
-    bigPi = biggermath.pi;
-    assert.deepEqual(bigmath.csc(bigPi.times(3).div(4)).toString(), sqrt2);
-    assert.deepEqual(bigmath.csc(bigPi.times(5).div(4)).toString(), '-'+sqrt2);
-    assert.deepEqual(bigmath.csc(bigPi.times(7).div(4)).toString(), '-'+sqrt2);
   });
 
   it('should return the cosecant of a complex number', function() {

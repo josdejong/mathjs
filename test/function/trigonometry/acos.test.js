@@ -49,7 +49,8 @@ describe('acos', function() {
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(acosBig(Big(0.00000001)), Big('1.570796316794896619231321524973084775431916783020886243820828'));
+    assert.deepEqual(acosBig(Big(0.00000001)), Big('1.570796316794896619231321524973084775431910533020886243820359'));
+    // Wolfram:                                     1.5707963167948966192313215249730847754319105330208862438203592009158129650174844596314777278941600852176250962802
     //Make sure arg was not changed
     assert.deepEqual(arg, Big(-1));
   });
@@ -65,9 +66,9 @@ describe('acos', function() {
   it('should be the inverse function of bignumber cos', function() {
     bigmath.config({precision: 20});
     assert.deepEqual(acosBig(cosBig(Big(-1))), Big(1));
-    assert.deepEqual(acosBig(cosBig(Big(0))), Big(0));
-    assert.deepEqual(acosBig(cosBig(Big(0.1))), Big('0.099999999999999999989'));
-    assert.deepEqual(acosBig(cosBig(Big(0.5))), Big('0.50000000000000000001'));
+    assert.deepEqual(acosBig(cosBig(Big(0))), Big('0'));
+    assert.deepEqual(acosBig(cosBig(Big(0.1))), Big('0.099999999999999999956'));
+    assert.deepEqual(acosBig(cosBig(Big(0.5))), Big('0.49999999999999999999'));
     assert.deepEqual(acosBig(cosBig(Big(2))), Big(2));
   });
 
