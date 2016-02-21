@@ -25,7 +25,7 @@ describe('bignumber', function() {
     assert.equal(constants.tau(Big32),
         '6.283185307179586476925286766559');
     assert.equal(constants.tau(Big64),
-        '6.283185307179586476925286766559005768394338798750211641949889185');
+        '6.283185307179586476925286766559005768394338798750211641949889184');
   });
 
   it('should calculate a bignumber phi', function() {

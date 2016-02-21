@@ -72,7 +72,7 @@ describe('constants', function() {
     });
 
     it('should have bignumber tau', function() {
-      assert.equal(bigmath.tau.toString(), '6.283185307179586476925286766559005768394338798750211641949889185');
+      assert.equal(bigmath.tau.toString(), '6.283185307179586476925286766559005768394338798750211641949889184');
     });
 
     it('should have bignumber phi, golden ratio', function() {
