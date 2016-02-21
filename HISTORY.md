@@ -5,8 +5,13 @@
 
 - Extended function `pow` to return the real root for cubic roots of negative
   numbers. See #525, #482, #567.
+- Upgraded the used BigNumber library `decimal.js` to v5. Replaced the
+  trigonometric functions of math.js with those provided in decimal.js v5.
+  This can give slightly different behavior qua round-off errors.
 - Replaced the internal `Complex.js` class with the `complex.js` library
   created by @infusion.
+- Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
+  being defined as BigNumbers when configuring to use BigNumbers.
 
 
 ## 2016-02-03, version 2.7.0
