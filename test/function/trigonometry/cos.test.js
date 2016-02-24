@@ -90,7 +90,7 @@ describe('cos', function() {
     approx.deepEqual(cos(complex('i')), complex(1.54308063481524, 0));
     approx.deepEqual(cos(complex('1')), complex(0.540302305868140, 0));
     approx.deepEqual(cos(complex('1+i')), complex(0.833730025131149, -0.988897705762865));
-    assert.ok(cos(complex('1e-50+1e-50i')).im != 0);
+    approx.deepEqual(cos(complex('1e-10+1e-10i')), complex('1-1e-20i'));
   });
 
   it('should return the cosine of an angle', function() {

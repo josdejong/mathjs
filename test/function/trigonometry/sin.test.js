@@ -82,7 +82,7 @@ describe('sin', function() {
     approx.deepEqual(sin(complex('i')), complex(0, 1.175201193643801));
     approx.deepEqual(sin(complex('1')), complex(0.841470984807897, 0));
     approx.deepEqual(sin(complex('1+i')), complex(1.298457581415977, 0.634963914784736));
-    assert.deepEqual(sin(complex('1e-50i')), complex(0, 1e-50));
+    approx.deepEqual(sin(complex('1e-10i')), complex('1e-10i'));
   });
 
   it('should return the sine of an angle', function() {

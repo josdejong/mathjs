@@ -63,24 +63,25 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "^4.0.2",
-    "fraction.js": "^3.0.0",
-    "tiny-emitter": "^1.0.0",
-    "typed-function": "^0.10.3"
+    "decimal.js": "4.0.3",
+    "fraction.js": "3.2.5",
+    "complex.js": "2.0.0",
+    "tiny-emitter": "1.0.2",
+    "typed-function": "0.10.3"
   },
   "devDependencies": {
-    "glob": "^5.0.5",
-    "gulp": "^3.8.11",
-    "gulp-util": "^3.0.4",
-    "istanbul": "^0.3.13",
-    "mkdirp": "^0.5.0",
-    "mocha": "^2.2.4",
-    "q": "^1.2.0",
-    "seed-random": "^2.2.0",
-    "tar": "^2.1.0",
-    "uglify-js": "^2.4.20",
-    "underscore": "^1.8.3",
-    "webpack": "^1.8.9"
+    "glob": "7.0.0",
+    "gulp": "3.9.1",
+    "gulp-util": "3.0.7",
+    "istanbul": "0.4.2",
+    "mkdirp": "0.5.1",
+    "mocha": "2.4.5",
+    "q": "1.4.1",
+    "seed-random": "2.2.0",
+    "tar": "2.2.1",
+    "uglify-js": "2.6.1",
+    "underscore": "1.8.3",
+    "webpack": "1.12.13"
   },
   "main": "./index",
   "scripts": {

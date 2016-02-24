@@ -19,8 +19,13 @@
   A[1,1] = 2   # this assignment now returns 2 instead of A
   ```
 
+- Replaced the internal `Complex.js` class with the `complex.js` library
+  created by @infusion.
+
 ### non-breaking changes
 
+- Extended function `pow` to return the real root for cubic roots of negative
+  numbers. See #525, #482, #567.
 - Implemented support for JSON objects in the expression parser and the
   function `math.format`.
 - Command line interface:
