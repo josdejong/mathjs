@@ -14,8 +14,8 @@ describe('ConditionalNode', function() {
   var one = new ConstantNode(1);
   var two = new ConstantNode(2);
   var three = new ConstantNode(3);
-  var a = new AssignmentNode('a', two);
-  var b = new AssignmentNode('b', three);
+  var a = new AssignmentNode(new SymbolNode('a'), two);
+  var b = new AssignmentNode(new SymbolNode('b'), three);
 
   it ('should create a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
@@ -289,7 +289,8 @@ describe('ConditionalNode', function() {
   it ('should LaTeX a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 
-    assert.equal(n.toTex(), '\\begin{cases} {a:=2}, &\\quad{\\text{if }\\;true}\\\\{b:=3}, &\\quad{\\text{otherwise}}\\end{cases}');
+    // note that b is enclosed in \\mathrm{...} since it's a unit
+    assert.equal(n.toTex(), '\\begin{cases} { a:=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{cases}');
   });
 
   it ('should LaTeX a ConditionalNode with custom toTex', function () {

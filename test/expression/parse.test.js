@@ -661,15 +661,13 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
     });
 
-    // FIXME: should invoke a function on an object with the right context
-    it.skip('should invoke a function on an object with the right context', function () {
-      assert.deepEqual(parseAndEval('(2.54 cm).toNumeric("inch")'), 1);
-      assert.deepEqual(parseAndEval('bignumber(2).add(3)'), math.bignumber(5));
-      assert.deepEqual(parseAndEval('bignumber(2)["add"](3)'), math.bignumber(5));
+    it('should invoke a function on an object with the right context', function () {
+      approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1);
+      assert.deepEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5));
+      assert.deepEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5));
     });
 
-    // FIXME: should invoke toString on some object
-    it.skip('should invoke toString on some object', function () {
+    it('should invoke toString on some object', function () {
       assert.strictEqual(parseAndEval('(3).toString()'), '3');
     });
 

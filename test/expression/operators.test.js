@@ -4,6 +4,7 @@ var math = require('../../index');
 var operators = require('../../lib/expression/operators');
 var OperatorNode = math.expression.node.OperatorNode;
 var AssignmentNode = math.expression.node.AssignmentNode;
+var SymbolNode = math.expression.node.SymbolNode;
 var ConstantNode = math.expression.node.ConstantNode;
 var Node = math.expression.node.Node;
 var ParenthesisNode = math.expression.node.ParenthesisNode;
@@ -13,7 +14,7 @@ describe('operators', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);
 
-    var n1 = new AssignmentNode('a', a);
+    var n1 = new AssignmentNode(new SymbolNode('a'), a);
     var n2 = new OperatorNode('or', 'or', [a, b]);
 
     assert.equal(operators.getPrecedence(n1, 'keep'), 0);
@@ -68,7 +69,7 @@ describe('operators', function () {
     var a = new ConstantNode(1);
 
     var n1 = new Node();
-    var n2 = new AssignmentNode('a', a);
+    var n2 = new AssignmentNode(new SymbolNode('a'), a);
 
     assert.equal(operators.getAssociativity(n1, 'keep'), null);
     assert.equal(operators.getAssociativity(n2, 'keep'), null);
@@ -90,7 +91,7 @@ describe('operators', function () {
     var a = new ConstantNode(1);
 
     var n1 = new Node();
-    var n2 = new AssignmentNode('a', a);
+    var n2 = new AssignmentNode(new SymbolNode('a'), a);
 
     assert.equal(operators.isAssociativeWith(n1, n1, 'keep'), null);
     assert.equal(operators.isAssociativeWith(n1, n2, 'keep'), null);

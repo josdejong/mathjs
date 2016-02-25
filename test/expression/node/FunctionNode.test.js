@@ -9,6 +9,7 @@ var FunctionNode = math.expression.node.FunctionNode;
 var OperatorNode = math.expression.node.OperatorNode;
 var RangeNode = math.expression.node.RangeNode;
 var IndexNode = math.expression.node.IndexNode;
+var AccessorNode = math.expression.node.AccessorNode;
 
 describe('FunctionNode', function() {
 
@@ -52,9 +53,10 @@ describe('FunctionNode', function() {
   it ('should compile a FunctionNode containing an index', function () {
     var s = new SymbolNode('foo');
     var range = [new ConstantNode('bar')];
-    var i = new IndexNode(s, range);
+    var i = new IndexNode(range);
+    var a = new AccessorNode(s, i);
     var c = new ConstantNode(4);
-    var n = new FunctionNode(i, [c]);
+    var n = new FunctionNode(a, [c]);
 
     var scope = {
       foo: {
@@ -64,6 +66,24 @@ describe('FunctionNode', function() {
       }
     };
     assert.equal(n.compile().eval(scope), 16);
+  });
+
+  it ('should execute a FunctionNode with the right context', function () {
+    var s = new SymbolNode('foo');
+    var i = new IndexNode([new ConstantNode('getCount')]);
+    var a = new AccessorNode(s, i);
+    var c = new ConstantNode(4);
+    var n = new FunctionNode(a, [c]);
+
+    var scope = {
+      foo: {
+        count: 42,
+        getCount: function () {
+          return this.count;
+        }
+      }
+    };
+    assert.equal(n.compile().eval(scope), 42);
   });
 
   it ('should compile a FunctionNode with a raw function', function () {
@@ -102,10 +122,11 @@ describe('FunctionNode', function() {
 
     var obj = new SymbolNode('obj');
     var prop = new ConstantNode('myFunction');
-    var i = new IndexNode(obj, [prop]);
-    var a = new mymath.expression.node.ConstantNode(4);
-    var b = new mymath.expression.node.ConstantNode(5);
-    var n = new mymath.expression.node.FunctionNode(i, [a, b]);
+    var i = new IndexNode([prop]);
+    var a = new AccessorNode(obj, i);
+    var b = new mymath.expression.node.ConstantNode(4);
+    var c = new mymath.expression.node.ConstantNode(5);
+    var n = new mymath.expression.node.FunctionNode(a, [b, c]);
 
     var scope = {
       obj: {
@@ -201,7 +222,7 @@ describe('FunctionNode', function() {
     assert.strictEqual(h.args[0],  c);
     assert.strictEqual(h.args[0].args[0],  a);
     assert.strictEqual(h.args[0].args[1],  b);
-    assert.equal(h.object.name, 'multiply');
+    assert.equal(h.fn.name, 'multiply');
     assert.strictEqual(h.args[1],  g);
   });
 
@@ -245,7 +266,7 @@ describe('FunctionNode', function() {
 
     var f = d.transform(function (node) {
       if (node instanceof FunctionNode) {
-        node.object = new SymbolNode('subtract');
+        node.fn = new SymbolNode('subtract');
       }
       return node;
     });
