@@ -326,3 +326,25 @@ The type of matrix can be selected when creating a matrix using the construction
 var m1 = math.matrix([[0, 1], [0, 0]], 'sparse');
 var m2 = math.eye(1000, 1000, 'sparse');
 ```
+
+## API
+
+All relevant [mathematical functions](../reference/functions.md) in math.js support the Matrix data type. (add, subtract, multiply, divide etc). In addition, certain matrix-specific functions exist, and must be used via the "math" namespace. We list those below:
+
+- [math.concat(a, b, c, ... [, dim])](../reference/functions/concat.md)
+- [math.cross(x, y)](../reference/functions/cross.md)
+- [math.det(x)](../reference/functions/det.md)
+- [math.diag(X)](../reference/functions/diag.md)
+- [math.dot(x, y)](../reference/functions/dot.md)
+- [math.eye(n)](../reference/functions/eye.md)
+- [math.flatten(x)](../reference/functions/flatten.md)
+- [math.inv(x)](../reference/functions/inv.md)
+- [math.ones(m, n, p, ...)](../reference/functions/ones.md)
+- [math.range(start, end [, step])](../reference/functions/range.md)
+- [math.resize(x, size [, defaultValue])](../reference/functions/resize.md)
+- [math.size(x)](../reference/functions/size.md)
+- [math.squeeze(x)](../reference/functions/squeeze.md)
+- [math.subset(x, index [, replacement])](../reference/functions/subset.md)
+- [math.trace(x)](../reference/functions/trace.md)
+- [math.transpose(x)](../reference/functions/transpose.md)
+- [math.zeros(m, n, p, ...)](../reference/functions/zeros.md)

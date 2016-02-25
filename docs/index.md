@@ -9,43 +9,33 @@ This documentation of contains a getting started tutorial,
 an extensive overview describing math.js on a high level, and a reference 
 describing all available functions, constants, and units in detail.
 
-
 ## Getting Started
 
 - [Getting Started](getting_started.md)
+- [Examples](http://mathjs.org/examples/index.html)
 
+## Documentation
 
-## Overview
-
-- [Introduction](introduction.md)
-- [Expressions](expressions/index.md)
+- **[Core](core.md)**
+  - [Configuration](configuration.md)
+  - [Chaining](chaining.md)
+  - [Extension](extension.md)
+  - [Serialization](serialization.md)
+- **[Expressions](expressions/index.md)**
   - [Parsing and evaluation](expressions/parsing.md)
   - [Syntax](expressions/syntax.md)
   - [Expression trees](expressions/expression_trees.md)
   - [Customization](expressions/customization.md)
-- [Chaining](chaining.md)
-- [Data Types](datatypes/index.md)
+- **[Data Types](datatypes/index.md)**
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)
   - [Fractions](datatypes/fractions.md)
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)
-- [Configuration](configuration.md)
-- [Serialization](serialization.md)
-- [Extension](extension.md)
+- **[Classes](class_api.md)**
+- **[Functions](reference/functions.md)**
+- **[Constants](reference/constants.md)**
 - [Custom bundling](custom_bundling.md)
 - [Command Line Interface](command_line_interface.md)
-
-## Examples
-
-- [Examples](http://mathjs.org/examples/index.html)
-
-## Reference
-
-- [Constants](reference/constants.md)
-- [Functions (alphabetical)](reference/functions/alphabetical.md)
-- [Functions (categorical)](reference/functions/categorical.md)
 - [History](../HISTORY.md)
-- [Units](reference/units.md)
-
