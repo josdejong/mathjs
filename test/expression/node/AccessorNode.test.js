@@ -38,11 +38,11 @@ describe('AccessorNode', function() {
 
   it ('should compile a AccessorNode', function () {
     var a = new bigmath.expression.node.SymbolNode('a');
-    var ranges = new IndexNode([
+    var index = new IndexNode([
       new bigmath.expression.node.ConstantNode(2),
       new bigmath.expression.node.ConstantNode(1)
     ]);
-    var n = new bigmath.expression.node.AccessorNode(a, ranges);
+    var n = new bigmath.expression.node.AccessorNode(a, index);
     var expr = n.compile();
 
     var scope = {
@@ -53,14 +53,14 @@ describe('AccessorNode', function() {
 
   it ('should compile a AccessorNode with range and context parameters', function () {
     var a = new SymbolNode('a');
-    var ranges = new IndexNode([
+    var index = new IndexNode([
       new ConstantNode(2),
       new RangeNode(
           new ConstantNode(1),
           new SymbolNode('end')
       )
     ]);
-    var n = new AccessorNode(a, ranges);
+    var n = new AccessorNode(a, index);
     var expr = n.compile();
 
     var scope = {
@@ -71,8 +71,8 @@ describe('AccessorNode', function() {
 
   it ('should compile a AccessorNode with a property', function () {
     var a = new SymbolNode('a');
-    var ranges = new IndexNode([new ConstantNode('b')]);
-    var n = new AccessorNode(a, ranges);
+    var index = new IndexNode([new ConstantNode('b')]);
+    var n = new AccessorNode(a, index);
     var expr = n.compile();
 
     var scope = {
@@ -81,9 +81,69 @@ describe('AccessorNode', function() {
     assert.deepEqual(expr.eval(scope), 42);
   });
 
+  it ('should throw a one-based index error when out of range (Array)', function () {
+    var a = new SymbolNode('a');
+    var index = new IndexNode([new ConstantNode(4)]);
+    var n = new AccessorNode(a, index);
+    var expr = n.compile();
+
+    var scope = {
+      a: [1,2,3]
+    };
+    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/);
+  });
+
+  it ('should throw a one-based index error when out of range (Matrix)', function () {
+    var a = new SymbolNode('a');
+    var index = new IndexNode([new ConstantNode(4)]);
+    var n = new AccessorNode(a, index);
+    var expr = n.compile();
+
+    var scope = {
+      a: math.matrix([1,2,3])
+    };
+    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/);
+  });
+
+  it ('should throw a one-based index error when out of range (string)', function () {
+    var a = new SymbolNode('a');
+    var index = new IndexNode([new ConstantNode(4)]);
+    var n = new AccessorNode(a, index);
+    var expr = n.compile();
+
+    var scope = {
+      a: 'hey'
+    };
+    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/);
+  });
+
+  it ('should throw an error when applying a matrix index onto an object', function () {
+    var a = new SymbolNode('a');
+    var index = new IndexNode([new ConstantNode(4)]);
+    var n = new AccessorNode(a, index);
+    var expr = n.compile();
+
+    var scope = {
+      a: {}
+    };
+    assert.throws(function () { expr.eval(scope) }, /Cannot apply a numeric index as object property/);
+  });
+
+  it ('should throw an error when applying an index onto a scalar', function () {
+    var a = new SymbolNode('a');
+    var index = new IndexNode([new ConstantNode(4)]);
+    var n = new AccessorNode(a, index);
+    var expr = n.compile();
+
+    var scope = {
+      a: 42
+    };
+    assert.throws(function () { expr.eval(scope) }, /Cannot apply index: unsupported type of object/);
+  });
+
   it ('should compile a AccessorNode with negative step range and context parameters', function () {
     var a = new SymbolNode('a');
-    var ranges = new IndexNode([
+    var index = new IndexNode([
       new ConstantNode(2),
       new RangeNode(
           new SymbolNode('end'),
@@ -91,7 +151,7 @@ describe('AccessorNode', function() {
           new ConstantNode(-1)
       )
     ]);
-    var n = new AccessorNode(a, ranges);
+    var n = new AccessorNode(a, index);
     var expr = n.compile();
 
     var scope = {
@@ -102,14 +162,14 @@ describe('AccessorNode', function() {
 
   it ('should compile a AccessorNode with "end" both as value and in a range', function () {
     var a = new SymbolNode('a');
-    var ranges = new IndexNode([
+    var index = new IndexNode([
       new SymbolNode('end'),
       new RangeNode(
           new ConstantNode(1),
           new SymbolNode('end')
       )
     ]);
-    var n = new AccessorNode(a, ranges);
+    var n = new AccessorNode(a, index);
     var expr = n.compile();
 
     var scope = {
@@ -281,12 +341,12 @@ describe('AccessorNode', function() {
 
   it ('should stringify an AccessorNode', function () {
     var a = new SymbolNode('a');
-    var ranges = new IndexNode([
+    var index = new IndexNode([
       new ConstantNode(2),
       new ConstantNode(1)
     ]);
 
-    var n = new AccessorNode(a, ranges);
+    var n = new AccessorNode(a, index);
     assert.equal(n.toString(), 'a[2, 1]');
 
     var n2 = new AccessorNode(a, new IndexNode([]));
@@ -335,12 +395,12 @@ describe('AccessorNode', function() {
 
   it ('should LaTeX an AccessorNode', function () {
     var a = new SymbolNode('a');
-    var ranges = new IndexNode([
+    var index = new IndexNode([
       new ConstantNode(2),
       new ConstantNode(1)
     ]);
 
-    var n = new AccessorNode(a, ranges);
+    var n = new AccessorNode(a, index);
     assert.equal(n.toTex(), ' a_{2,1}');
 
     var n2 = new AccessorNode(a, new IndexNode([]));

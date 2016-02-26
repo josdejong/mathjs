@@ -151,6 +151,19 @@ describe('AssignmentNode', function() {
     });
   });
 
+  it ('should throw an error when applying an index onto a scalar', function () {
+    var a = new SymbolNode('a');
+    var index = new IndexNode([new ConstantNode(4)]);
+    var value = new ConstantNode(2);
+    var n = new AssignmentNode(a, index, value);
+    var expr = n.compile();
+
+    var scope = {
+      a: 42
+    };
+    assert.throws(function () { expr.eval(scope) }, /Cannot apply index: unsupported type of object/);
+  });
+
   it ('should filter an AssignmentNode', function () {
     var a = new SymbolNode('a');
     var b = new ConstantNode(2);
