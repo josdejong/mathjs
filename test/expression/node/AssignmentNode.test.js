@@ -264,8 +264,8 @@ describe('AssignmentNode', function() {
 
     assert.notStrictEqual(f, n);
     assert.deepEqual(f.object,  a);
-    assert.deepEqual(f.index.ranges[0],  b);
-    assert.deepEqual(f.index.ranges[1],  c); // not replaced, is nested
+    assert.deepEqual(f.index.dimensions[0],  b);
+    assert.deepEqual(f.index.dimensions[1],  c); // not replaced, is nested
     assert.deepEqual(f.value, v);
   });
 
@@ -324,7 +324,7 @@ describe('AssignmentNode', function() {
     });
 
     assert.notStrictEqual(f, d);
-    assert.deepEqual(f.index.ranges[0], e);
+    assert.deepEqual(f.index.dimensions[0], e);
     assert.deepEqual(f.value.args[0], e);
     assert.deepEqual(f.value.args[1], b);
   });

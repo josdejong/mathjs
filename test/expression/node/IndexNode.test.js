@@ -70,7 +70,7 @@ describe('IndexNode', function() {
     assert.equal(nodes.length, 2);
     assert.strictEqual(nodes[0], b);
     assert.strictEqual(nodes[1], c);
-    assert.deepEqual(paths, ['ranges[0]', 'ranges[1]']);
+    assert.deepEqual(paths, ['dimensions[0]', 'dimensions[1]']);
   });
 
   it ('should map an IndexNode', function () {
@@ -92,11 +92,11 @@ describe('IndexNode', function() {
     assert.equal(nodes.length, 2);
     assert.strictEqual(nodes[0], b);
     assert.strictEqual(nodes[1], c);
-    assert.deepEqual(paths, ['ranges[0]', 'ranges[1]']);
+    assert.deepEqual(paths, ['dimensions[0]', 'dimensions[1]']);
 
     assert.notStrictEqual(f, n);
-    assert.deepEqual(f.ranges[0], b);
-    assert.deepEqual(f.ranges[1], e);
+    assert.deepEqual(f.dimensions[0], b);
+    assert.deepEqual(f.dimensions[1], e);
   });
 
   it ('should throw an error when the map callback does not return a node', function () {
@@ -120,8 +120,8 @@ describe('IndexNode', function() {
     });
 
     assert.notStrictEqual(f, n);
-    assert.deepEqual(f.ranges[0], b);
-    assert.deepEqual(f.ranges[1], e);
+    assert.deepEqual(f.dimensions[0], b);
+    assert.deepEqual(f.dimensions[1], e);
   });
 
   it ('should transform an IndexNode itself', function () {
@@ -147,18 +147,18 @@ describe('IndexNode', function() {
     assert(d.isIndexNode);
     assert.deepEqual(d, n);
     assert.notStrictEqual(d, n);
-    assert.notStrictEqual(d.ranges, n.ranges);
-    assert.strictEqual(d.ranges[0], n.ranges[0]);
-    assert.strictEqual(d.ranges[1], n.ranges[1]);
+    assert.notStrictEqual(d.dimensions, n.dimensions);
+    assert.strictEqual(d.dimensions[0], n.dimensions[0]);
+    assert.strictEqual(d.dimensions[1], n.dimensions[1]);
   });
 
   it ('should stringify an IndexNode', function () {
-    var ranges = [
+    var dimensions = [
       new ConstantNode(2),
       new ConstantNode(1)
     ];
 
-    var n = new IndexNode(ranges);
+    var n = new IndexNode(dimensions);
     assert.equal(n.toString(), '[2, 1]');
 
     var n2 = new IndexNode([]);
@@ -169,7 +169,7 @@ describe('IndexNode', function() {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {
       if (node.type === 'IndexNode') {
-        return node.ranges.map(function (range) {
+        return node.dimensions.map(function (range) {
           return range.toString(options);
         }).join(', ');
       }
@@ -187,12 +187,12 @@ describe('IndexNode', function() {
   });
 
   it ('should LaTeX an IndexNode', function () {
-    var ranges = [
+    var dimensions = [
       new ConstantNode(2),
       new ConstantNode(1)
     ];
 
-    var n = new IndexNode(ranges);
+    var n = new IndexNode(dimensions);
     assert.equal(n.toTex(), '_{2,1}');
 
     var n2 = new IndexNode([]);
@@ -203,7 +203,7 @@ describe('IndexNode', function() {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {
       if (node.type === 'IndexNode') {
-        return node.ranges.map(function (range) {
+        return node.dimensions.map(function (range) {
           return range.toTex(options);
         }).join(', ');
 

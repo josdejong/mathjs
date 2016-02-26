@@ -259,8 +259,8 @@ describe('AccessorNode', function() {
 
     assert.notStrictEqual(f, n);
     assert.deepEqual(f.object, e);
-    assert.deepEqual(f.index.ranges[0], b);
-    assert.deepEqual(f.index.ranges[1], c);
+    assert.deepEqual(f.index.dimensions[0], b);
+    assert.deepEqual(f.index.dimensions[1], c);
   });
 
   it ('should throw an error when the map callback does not return a node', function () {
@@ -287,8 +287,8 @@ describe('AccessorNode', function() {
 
     assert.notStrictEqual(f, n);
     assert.deepEqual(f.object, e);
-    assert.deepEqual(f.index.ranges[0], b);
-    assert.deepEqual(f.index.ranges[1], c);
+    assert.deepEqual(f.index.dimensions[0], b);
+    assert.deepEqual(f.index.dimensions[1], c);
   });
 
   it ('should transform an IndexNodes (nested) parameters', function () {
@@ -304,8 +304,8 @@ describe('AccessorNode', function() {
 
     assert.notStrictEqual(f, n);
     assert.deepEqual(f.object, a);
-    assert.deepEqual(f.index.ranges[0], b);
-    assert.deepEqual(f.index.ranges[1], e);
+    assert.deepEqual(f.index.dimensions[0], b);
+    assert.deepEqual(f.index.dimensions[1], e);
   });
 
   it ('should transform an AccessorNode itself', function () {
@@ -335,8 +335,8 @@ describe('AccessorNode', function() {
     assert.notStrictEqual(d, n);
     assert.strictEqual(d.object, n.object);
     assert.strictEqual(d.index, n.index);
-    assert.strictEqual(d.index.ranges[0], n.index.ranges[0]);
-    assert.strictEqual(d.index.ranges[1], n.index.ranges[1]);
+    assert.strictEqual(d.index.dimensions[0], n.index.dimensions[0]);
+    assert.strictEqual(d.index.dimensions[1], n.index.dimensions[1]);
   });
 
   it ('should stringify an AccessorNode', function () {
@@ -373,7 +373,7 @@ describe('AccessorNode', function() {
     var customFunction = function (node, options) {
       if (node.type === 'AccessorNode') {
         var string = node.object.toString(options) + ' at ';
-        node.index.ranges.forEach(function (range) {
+        node.index.dimensions.forEach(function (range) {
           string += range.toString(options) + ', ';
         });
 
@@ -412,7 +412,7 @@ describe('AccessorNode', function() {
     var customFunction = function (node, options) {
       if (node.type === 'AccessorNode') {
         var latex = node.object.toTex(options) + ' at ';
-        node.index.ranges.forEach(function (range) {
+        node.index.dimensions.forEach(function (range) {
           latex += range.toTex(options) + ', ';
         });
 
