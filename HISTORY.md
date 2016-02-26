@@ -21,6 +21,9 @@
 
 - Replaced the internal `Complex.js` class with the `complex.js` library
   created by @infusion.
+- Entries (normally numbers, BigNumbers, Units, etc) in a matrix are now
+  considered immutable, they are no longer cloned when performing operations on
+  the entries.
 
 ### non-breaking changes
 

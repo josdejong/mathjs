@@ -296,8 +296,22 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('c', scope), "Hello");
       assert.deepEqual(parseAndEval('c[6:11] = " world"', scope), " world");
       assert.deepEqual(scope.c, "Hello world");
-      assert.deepEqual(parseAndEval('c', scope), "Hello world");
-      assert.deepEqual(scope.c, "Hello world");
+      assert.deepEqual(parseAndEval('c[end] = "D"', scope), "D");
+      assert.deepEqual(scope.c, "Hello worlD");
+    });
+
+    it('should set a string subset on an object', function() {
+      var scope = { a: {} };
+      assert.deepEqual(parseAndEval('a.c="hello"', scope), "hello");
+      assert.deepEqual(parseAndEval('a.c[1] = "H"', scope), "H");
+      assert.deepEqual(scope.a, {c: "Hello"});
+      assert.deepEqual(parseAndEval('a.c', scope), "Hello");
+      assert.deepEqual(parseAndEval('a.c[6:11] = " world"', scope), " world");
+      assert.deepEqual(scope.a, {c: "Hello world"});
+      assert.deepEqual(parseAndEval('a.c', scope), "Hello world");
+      assert.deepEqual(scope.a, {c: "Hello world"});
+      assert.deepEqual(parseAndEval('a.c[end] = "D"', scope), "D");
+      assert.deepEqual(scope.a, {c: "Hello worlD"});
     });
 
   });
@@ -412,6 +426,17 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[2:, 2]', scope),       math.matrix([[5],[8]]));
       assert.deepEqual(parseAndEval('a[2:3, 2]', scope),      math.matrix([[5],[8]]));
       assert.deepEqual(parseAndEval('a[1:2:3, 2]', scope),    math.matrix([[2],[8]]));
+    });
+
+    it('should get a matrix subset of a matrix subset', function() {
+      var scope = {
+        a: math.matrix([
+          [1,2,3],
+          [4,5,6],
+          [7,8,9]
+        ])
+      };
+      assert.deepEqual(parseAndEval('a[2, :][1,1]', scope), 4);
     });
 
     it('should parse matrix resizings', function() {
@@ -623,6 +648,14 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj["foo"]["bar"]', {obj: {foo: {bar: 2}}}), 2);
     });
 
+    it('should get a nested matrix subset from an object property', function () {
+      assert.deepEqual(parseAndEval('obj.foo[2]', {obj: {foo: [1,2,3]}}), 2);
+      assert.deepEqual(parseAndEval('obj.foo[end]', {obj: {foo: [1,2,3]}}), 3);
+      assert.deepEqual(parseAndEval('obj.foo[2][3]', {obj: {foo: ['hello', 'world']}}), 'r');
+      assert.deepEqual(parseAndEval('obj.foo[2][end]', {obj: {foo: ['hello', 'world']}}), 'd');
+      assert.deepEqual(parseAndEval('obj.foo[1].bar', {obj: {foo: [{bar:4}]}}), 4);
+    });
+
     it('should set an object property', function () {
       var scope = {obj: {a:3}};
       var res = parseAndEval('obj["b"] = 2', scope);
@@ -636,6 +669,44 @@ describe('parse', function() {
       assert.strictEqual(res, 2);
       assert.deepEqual(scope, {obj: {foo: {bar: 2}}});
     });
+
+    it('should throw an error when trying to apply a matrix index as object property', function () {
+      var scope = {a: {}};
+      assert.throws(function () {
+        parseAndEval('a[2] = 6', scope);
+      }, /Cannot apply a numeric index as object property/);
+    });
+
+    it('should set a nested matrix subset from an object property (1)', function () {
+      var scope = {obj: {foo: [1,2,3]}};
+      assert.deepEqual(parseAndEval('obj.foo[2] = 6', scope), 6);
+      assert.deepEqual(scope, {obj: {foo: [1,6,3]}});
+
+      assert.deepEqual(parseAndEval('obj.foo[end] = 8', scope), 8);
+      assert.deepEqual(scope, {obj: {foo: [1,6,8]}});
+    });
+
+    it('should set a nested matrix subset from an object property (2)', function () {
+      var scope = {obj: {foo: [{bar:4}]}};
+      assert.deepEqual(parseAndEval('obj.foo[1].bar = 6', scope), 6);
+      assert.deepEqual(scope, {obj: {foo: [{bar: 6}]}});
+    });
+
+    it('should set a nested matrix subset from an object property (3)', function () {
+      var scope = {obj: {foo: [{bar:{}}]}};
+      assert.deepEqual(parseAndEval('obj.foo[1].bar.baz = 6', scope), 6);
+      assert.deepEqual(scope, {obj: {foo: [{bar: {baz:6}}]}});
+    });
+
+    it('should set a nested matrix subset from an object property (4)', function () {
+      var scope = {obj: {foo: ['hello', 'world']}};
+      assert.deepEqual(parseAndEval('obj.foo[1][end] = "a"', scope), 'a');
+      assert.deepEqual(scope, {obj: {foo: ['hella', 'world']}});
+      assert.deepEqual(parseAndEval('obj.foo[end][end] = "!"', scope), '!');
+      assert.deepEqual(scope, {obj: {foo: ['hella', 'worl!']}});
+    });
+
+    // TODO: test whether 1-based IndexErrors are thrown
 
     it('should get an object property with dot notation', function () {
       assert.deepEqual(parseAndEval('obj.foo', {obj: {foo: 2}}), 2);
