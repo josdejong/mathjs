@@ -222,12 +222,12 @@ namespace `math.expression.node`.
 Construction:
 
 ```
-new ArrayNode(nodes: Node[])
+new ArrayNode(items: Node[])
 ```
 
 Properties:
 
-- `nodes: Node[]`
+- `items: Node[]`
 
 Examples:
 
@@ -241,26 +241,53 @@ var node2  = new math.expression.node.ArrayNode([one, two, three]);
 ```
 
 
+### AccessorNode
+
+Construction:
+
+```
+new AccessorNode(object: Node, index: IndexNode)
+```
+
+Properties:
+
+- `object: Node`
+- `index: IndexNode`
+
+Examples:
+
+```js
+var node1 = math.parse('a[3]');
+
+var object = new math.expression.node.SymbolNode('a');
+var index = new math.expression.node.IndexNode([3]);
+var node2 = new math.expression.node.AccessorNode(object, index);
+```
+
+
 ### AssignmentNode
 
 Construction:
 
 ```
-new AssignmentNode(name: string, expr: Node)
+new AssignmentNode(symbol: SymbolNode, value: Node)
+new AssignmentNode(object: SymbolNode | AccessorNode, index: IndexNode, value: Node)
 ```
 
 Properties:
 
-- `name: string`
-- `expr: Node`
+- `object: SymbolNode | AccessorNode`
+- `index: IndexNode | null`
+- `value: Node`
 
 Examples:
 
 ```js
 var node1 = math.parse('a = 3');
 
-var expr  = new math.expression.node.ConstantNode(3);
-var node2 = new math.expression.node.AssignmentNode('a', expr);
+var symbol = new math.expression.node.SymbolNode('a');
+var value = new math.expression.node.ConstantNode(3);
+var node2 = new math.expression.node.AssignmentNode(symbol, value);
 ```
 
 
@@ -287,19 +314,22 @@ Examples:
 ```js
 var block1 = math.parse('a=1; b=2; c=3');
 
+var a = new math.expression.node.SymbolNode('a');
 var one = new math.expression.node.ConstantNode(1);
-var a = new math.expression.node.AssignmentNode('a', one);
+var ass1 = new math.expression.node.AssignmentNode(a, one);
 
+var b = new math.expression.node.SymbolNode('b');
 var two = new math.expression.node.ConstantNode(2);
-var b = new math.expression.node.AssignmentNode('b', two);
+var ass2 = new math.expression.node.AssignmentNode(b, two);
 
+var c = new math.expression.node.SymbolNode('c');
 var three = new math.expression.node.ConstantNode(3);
-var c = new math.expression.node.AssignmentNode('c', three);
+var ass3 = new math.expression.node.AssignmentNode(c, three);
 
 var block2 = new BlockNode([
-  {node: a, visible: false},
-  {node: b, visible: false},
-  {node: c, visible: true}
+  {node: ass1, visible: false},
+  {node: ass2, visible: false},
+  {node: ass3, visible: true}
 ]);
 ```
 
@@ -385,7 +415,7 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 Construction:
 
 ```
-new FunctionNode(object: Node, args: Node[])
+new FunctionNode(fn: Node, args: Node[])
 ```
 
 Properties:
@@ -409,15 +439,15 @@ var node3 = new math.expression.node.FunctionNode(new SymbolNode('sqrt'), [four]
 Construction:
 
 ```
-new IndexNode(object: Node, ranges: Node[])
+new IndexNode(dimensions: Node[])
 ```
 
-Note that ranges are one-based, including range end.
+Each dimension can be a single value, a range, or a property. The values of
+indices are one-based, including range end.
 
 Properties:
 
-- `object: Node`
-- `ranges: Node[]`
+- `dimensions: Node[]`
 
 Examples:
 
@@ -430,7 +460,8 @@ var two   = new math.expression.node.ConstantNode(2);
 var three = new math.expression.node.ConstantNode(3);
 
 var range = new math.expression.node.RangeNode(one, three);
-var node2 = new math.expression.node.IndexNode(A, [range, two]);
+var index = new math.expression.node.IndexNode([range, two]);
+var node2 = new math.expression.node.AccessNode(A, index);
 ```
 
 ### ObjectNode
@@ -550,33 +581,4 @@ Examples:
 var node = math.parse('x');
 
 var x = new math.expression.node.SymbolNode('x');
-```
-
-
-### UpdateNode
-
-Construction:
-
-```
-new UpdateNode(index: IndexNode, expr: Node)
-```
-
-Properties:
-
-- `index: IndexNode`
-- `expr: Node`
-- `name: string` (read-only)
-
-Examples:
-
-```js
-var node1 = math.parse('A[3, 1] = 4');
-
-var A     = new math.expression.node.SymbolNode('A');
-var one   = new math.expression.node.ConstantNode(1);
-var three = new math.expression.node.ConstantNode(3);
-var four  = new math.expression.node.ConstantNode(4);
-
-var index = new math.expression.node.IndexNode(A, [three, one]);
-var node2 = new math.expression.node.UpdateNode(index, four);
 ```

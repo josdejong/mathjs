@@ -19,11 +19,16 @@
   A[1,1] = 2   # this assignment now returns 2 instead of A
   ```
 
+- Expression parser now supports objects. This involves a refactoring and
+  extension in expression nodes:
+  - Implemented new node `ObjectNode`.
+  - Refactored `AssignmentNode`, `UpdateNode`, and `IndexNode` are refactored
+    into `AccessNode`, `AssignmentNode`, and `IndexNode` having a different API.
 - Replaced the internal `Complex.js` class with the `complex.js` library
   created by @infusion.
-- Entries (normally numbers, BigNumbers, Units, etc) in a matrix are now
-  considered immutable, they are no longer cloned when performing operations on
-  the entries.
+- Entries in a matrix (typically numbers, BigNumbers, Units, etc) are now
+  considered immutable, they are no longer copied when performing operations on
+  the entries, improving performance.
 
 ### non-breaking changes
 
