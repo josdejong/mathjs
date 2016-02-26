@@ -213,9 +213,16 @@ function runStream (input, output, mode, parenthesis) {
               }
 
               if (node) {
-                if (node.isAssignmentNode || node.isUpdateNode) {
-                  scope.ans = scope[node.name];
-                  console.log(node.name + ' = ' + format(scope[node.name]));
+                if (node.isAssignmentNode) {
+                  var name = findSymbolName(node);
+                  if (name != null) {
+                    scope.ans = scope[name];
+                    console.log(name + ' = ' + format(scope[name]));
+                  }
+                  else {
+                    scope.ans = res;
+                    console.log(format(res));
+                  }
                 }
                 else if (res instanceof math.type.Help) {
                   console.log(res.toString());
@@ -263,6 +270,25 @@ function runStream (input, output, mode, parenthesis) {
     console.log();
     process.exit(0);
   });
+}
+
+/**
+ * Find the symbol name of an AssignmentNode. Recurses into the chain of
+ * objects to the root object.
+ * @param {AssignmentNode} node
+ * @return {string | null} Returns the name when found, else returns null.
+ */
+function findSymbolName (node) {
+  var n = node;
+
+  while (n) {
+    if (n.isSymbolNode) {
+      return n.name;
+    }
+    n = n.object;
+  }
+
+  return null;
 }
 
 /**
