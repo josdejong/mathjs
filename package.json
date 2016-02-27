@@ -65,7 +65,7 @@
   "dependencies": {
     "decimal.js": "5.0.6",
     "fraction.js": "3.2.5",
-    "complex.js": "2.0.0",
+    "complex.js": "2.0.1",
     "tiny-emitter": "1.0.2",
     "typed-function": "0.10.3"
   },
