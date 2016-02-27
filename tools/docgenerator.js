@@ -543,6 +543,20 @@ function iteratePath (inputPath, outputPath, outputRoot) {
       return '- [' + syntax + '](' + name + '.md)';
     }
 
+    var order = ['core', 'construction', 'expression']; // and then the rest
+    function categoryIndex (entry) {
+      var index = order.indexOf(entry);
+      return index === -1 ? Infinity : index;
+    }
+    function compareAsc (a, b) {
+      return a > b ? 1 : (a < b ? -1 : 0);
+    }
+    function compareCategory (a, b) {
+      var indexA = categoryIndex(a);
+      var indexB = categoryIndex(b);
+      return (indexA > indexB) ? 1 : (indexA < indexB ? -1 : compareAsc(a, b));
+    }
+
     // generate categorical page with all functions
     var categories = {};
     Object.keys(functions).forEach(function (name) {
@@ -554,7 +568,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
       categories[fn.category][name] = fn;
     });
     var categorical = '# Function reference\n\n';
-    categorical += Object.keys(categories).sort().map(function (category) {
+    categorical += Object.keys(categories).sort(compareCategory).map(function (category) {
       var functions = categories[category];
       return '## ' + category + '\n\n' +
         Object.keys(functions).sort().map(functionEntry).join('\n') + '\n';
