@@ -473,10 +473,10 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         if (path.indexOf('expression') !== -1) {
           category = 'expression';
         }
-        else if (fullPath.indexOf('./lib/type/function') === 0) {
+        else if (/^.\/lib\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
           category = 'construction';
         }
-        else if (fullPath.indexOf('./lib/core/function') === 0) {
+        else if (/^.\/lib\/core\/function/.test(fullPath)) {
           category = 'core';
         }
         else {
@@ -553,7 +553,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
       }
       categories[fn.category][name] = fn;
     });
-    var categorical = '# Function reference (categorical)\n\n';
+    var categorical = '# Function reference\n\n';
     categorical += Object.keys(categories).sort().map(function (category) {
       var functions = categories[category];
       return '## ' + category + '\n\n' +
