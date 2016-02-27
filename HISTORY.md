@@ -43,6 +43,7 @@
   - Outputs the variable name of assignments.
   - Fixed not rounding BigNumbers to 14 digits like numbers.
   - Fixed non-working autocompletion of user defined variables.
+- Reorganized docs.
 - Fixed a bug in the toString method of an IndexNode.
 - Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
   being defined as BigNumbers when configuring to use BigNumbers.
