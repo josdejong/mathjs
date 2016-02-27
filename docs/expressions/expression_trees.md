@@ -443,14 +443,21 @@ Construction:
 
 ```
 new IndexNode(dimensions: Node[])
+new IndexNode(dimensions: Node[], dotNotation: boolean)
 ```
 
 Each dimension can be a single value, a range, or a property. The values of
 indices are one-based, including range end.
 
+An optional property `dotNotation` can be provided describing whether this index
+was written using dot notation like `a.b`, or using bracket notation
+like `a["b"]`. Default value is `false`. This information is used when
+stringifying the IndexNode.
+
 Properties:
 
 - `dimensions: Node[]`
+- `dotNotation: boolean`
 
 Examples:
 

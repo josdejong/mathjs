@@ -165,6 +165,13 @@ describe('IndexNode', function() {
     assert.equal(n2.toString(), '[]')
   });
 
+  it ('should stringify an IndexNode with dot notation', function () {
+    var dimensions = [new ConstantNode('a')];
+
+    var n = new IndexNode(dimensions, true);
+    assert.equal(n.toString(), '.a');
+  });
+
   it ('should stringigy an IndexNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {
@@ -197,6 +204,13 @@ describe('IndexNode', function() {
 
     var n2 = new IndexNode([]);
     assert.equal(n2.toTex(), '_{}')
+  });
+
+  it ('should LaTeX an IndexNode with dot notation', function () {
+    var dimensions = [new ConstantNode('a')];
+
+    var n = new IndexNode(dimensions, true);
+    assert.equal(n.toString(), '.a');
   });
 
   it ('should LaTeX an IndexNode with custom toTex', function () {

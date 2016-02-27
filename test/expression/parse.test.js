@@ -1832,6 +1832,12 @@ describe('parse', function() {
       assert.equal(parse('1/2a').toString(), '1 / 2 * a');
     });
 
+    it('should correctly stringify an index with dot notation', function() {
+      assert.equal(parse('A[2]').toString(), 'A[2]');
+      assert.equal(parse('a["b"]').toString(), 'a["b"]');
+      assert.equal(parse('a.b').toString(), 'a.b');
+    });
+
     describe('custom nodes', function () {
       // define a custom node
       function CustomNode (args) {
