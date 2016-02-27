@@ -33,7 +33,7 @@
   considered immutable, they are no longer copied when performing operations on
   the entries, improving performance.
 
-### non-breaking changes
+### non-breaking changes#
 
 - Extended function `pow` to return the real root for cubic roots of negative
   numbers. See #525, #482, #567.
