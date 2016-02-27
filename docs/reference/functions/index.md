@@ -14,6 +14,7 @@ math.index(range1, range2, ...)
 ### Where
 
 - A number
+- A string for getting/setting an object property
 - An instance of `Range`
 - A one-dimensional Array or a Matrix with numbers
 

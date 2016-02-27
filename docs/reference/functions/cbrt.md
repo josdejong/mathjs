@@ -9,6 +9,7 @@ For matrices, the function is evaluated element wise.
 
 ```js
 math.cbrt(x)
+math.cbrt(x, allRoots)
 ```
 
 ### Parameters

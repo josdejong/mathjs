@@ -12,6 +12,7 @@ var gutil = require('gulp-util');
 
 // special cases for function syntax
 var SYNTAX = {
+  cbrt: 'cbrt(x [, allRoots])',
   gcd: 'gcd(a, b)',
   log: 'log(x [, base])',
   lcm: 'lcm(a, b)',
@@ -42,9 +43,9 @@ var IGNORE_FUNCTIONS = {
 };
 
 var IGNORE_WARNINGS = {
-  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain'],
+  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed'],
   parameters: ['parser'],
-  returns: ['forEach']
+  returns: ['forEach', 'import']
 };
 
 /**
@@ -472,8 +473,11 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         if (path.indexOf('expression') !== -1) {
           category = 'expression';
         }
-        else if (path[0] === '.' && path[1] === 'lib' && path[2] === 'type' && path[4] === 'function') {
+        else if (fullPath.indexOf('./lib/type/function') === 0) {
           category = 'construction';
+        }
+        else if (fullPath.indexOf('./lib/core/function') === 0) {
+          category = 'core';
         }
         else {
           category = path[functionIndex + 1];

@@ -1,6 +1,6 @@
 # Function asec
 
-Calculate the inverse secant of a value.
+Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
 
 For matrices, the function is evaluated element wise.
 
