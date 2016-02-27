@@ -24,6 +24,9 @@
   - Implemented new node `ObjectNode`.
   - Refactored `AssignmentNode`, `UpdateNode`, and `IndexNode` are refactored
     into `AccessNode`, `AssignmentNode`, and `IndexNode` having a different API.
+- Upgraded the used BigNumber library `decimal.js` to v5. Replaced the
+  trigonometric functions of math.js with those provided in decimal.js v5.
+  This can give slightly different behavior qua round-off errors.
 - Replaced the internal `Complex.js` class with the `complex.js` library
   created by @infusion.
 - Entries in a matrix (typically numbers, BigNumbers, Units, etc) are now
@@ -41,6 +44,8 @@
   - Fixed not rounding BigNumbers to 14 digits like numbers.
   - Fixed non-working autocompletion of user defined variables.
 - Fixed a bug in the toString method of an IndexNode.
+- Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
+  being defined as BigNumbers when configuring to use BigNumbers.
 
 
 ## 2016-02-03, version 2.7.0

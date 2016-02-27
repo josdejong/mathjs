@@ -57,11 +57,9 @@ describe('sec', function() {
 
     /* Pass in one more digit of pi. */
     bigPi = biggermath.pi;
-    assert.ok(!bigmath.sec(bigPi.div(2)).isFinite());
+    assert.deepEqual(bigmath.sec(bigPi.div(2)), Big('756606132568153667460')); // (large number, about infinity)
     assert.deepEqual(bigmath.sec(bigPi.times(3).div(4)).toString(), '-'+sqrt2);
     assert.deepEqual(bigmath.sec(bigPi.times(5).div(4)).toString(), '-'+sqrt2);
-    assert.ok(!bigmath.sec(bigPi.times(3).div(2)).isFinite());
-    assert.deepEqual(bigmath.sec(bigPi.times(7).div(4)).toString(), sqrt2);
   });
 
   it('should return the secant of a complex number', function() {

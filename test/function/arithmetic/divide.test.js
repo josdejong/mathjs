@@ -56,7 +56,7 @@ describe('divide', function() {
 
   it('should divide mixed booleans and bignumbers', function() {
     assert.deepEqual(divide(bignumber(0.3), true), bignumber(0.3));
-    assert.deepEqual(divide(bignumber(0.3), false), bignumber(Infinity));
+    assert.deepEqual(divide(bignumber(0.3), false).toString(), 'Infinity');
     assert.deepEqual(divide(false, bignumber('2')), bignumber(0));
     assert.deepEqual(divide(true, bignumber('2')), bignumber(0.5));
   });

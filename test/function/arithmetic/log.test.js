@@ -76,13 +76,13 @@ describe('log', function() {
   });
 
   it('should return the log of negative bignumbers with predictable:true', function() {
-    assert.deepEqual(mathPredictable.log(math.bignumber(-1)), math.bignumber(NaN));
+    assert.ok(mathPredictable.log(math.bignumber(-1)).isNaN());
   });
 
   it('should return the log of a bignumber with value zero', function() {
     var bigmath = math.create({precision: 100});
 
-    assert.deepEqual(bigmath.log(bigmath.bignumber(0)), bigmath.bignumber(-Infinity));
+    assert.deepEqual(bigmath.log(bigmath.bignumber(0)).toString(), '-Infinity');
   });
 
   it('should return the log of a complex number', function() {
