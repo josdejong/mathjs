@@ -44,6 +44,21 @@ describe('AssignmentNode', function() {
     assert.throws(function () {new AssignmentNode(new Node(), new Node(), new Node())}, TypeError );
   });
 
+  it ('should get the name of an AssignmentNode', function () {
+    var n = new AssignmentNode(new SymbolNode('a'), new ConstantNode(1));
+    assert.equal(n.name, 'a');
+
+    var n2 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]));
+    var n3 = new AssignmentNode(n2, new ConstantNode(1));
+    assert.equal(n3.name, 'b');
+
+    var n4 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]), new ConstantNode(1));
+    assert.equal(n4.name, 'b');
+
+    var n5 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]), new ConstantNode(1));
+    assert.equal(n5.name, '');
+  });
+
   it ('should compile an AssignmentNode without index', function () {
     var n = new AssignmentNode(new SymbolNode('b'), new ConstantNode(3));
 

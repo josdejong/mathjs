@@ -41,6 +41,18 @@ describe('FunctionNode', function() {
     assert.throws(function () {new FunctionNode(s, [c, 3])}, TypeError);
   });
 
+  it ('should get the name of a FunctionNode', function () {
+    var n1 = new FunctionNode(new SymbolNode('sqrt'), [new ConstantNode(4)]);
+    assert.equal(n1.name, 'sqrt');
+
+    var n = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('toString')]));
+    var n2 = new FunctionNode(n, [new ConstantNode(4)]);
+    assert.equal(n2.name, 'toString');
+
+    var n3 = new FunctionNode(new OperatorNode('+', 'add', []), [new ConstantNode(4)]);
+    assert.equal(n3.name, '');
+  });
+
   it ('should compile a FunctionNode', function () {
     var s = new SymbolNode('sqrt');
     var c = new ConstantNode(4);

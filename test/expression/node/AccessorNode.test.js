@@ -36,6 +36,14 @@ describe('AccessorNode', function() {
     assert.throws(function () {AccessorNode(new Node(), new IndexNode([]))}, SyntaxError);
   });
 
+  it ('should get the name of an AccessorNode', function () {
+    var n = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('toString')]));
+    assert.equal(n.name, 'toString');
+
+    var n = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]));
+    assert.equal(n.name, '');
+  });
+
   it ('should compile a AccessorNode', function () {
     var a = new bigmath.expression.node.SymbolNode('a');
     var index = new IndexNode([

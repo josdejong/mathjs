@@ -217,6 +217,32 @@ Each `Node` has the following properties:
 math.js has the following types of nodes. All nodes are available at the
 namespace `math.expression.node`.
 
+
+### AccessorNode
+
+Construction:
+
+```
+new AccessorNode(object: Node, index: IndexNode)
+```
+
+Properties:
+
+- `object: Node`
+- `index: IndexNode`
+- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
+
+Examples:
+
+```js
+var node1 = math.parse('a[3]');
+
+var object = new math.expression.node.SymbolNode('a');
+var index = new math.expression.node.IndexNode([3]);
+var node2 = new math.expression.node.AccessorNode(object, index);
+```
+
+
 ### ArrayNode
 
 Construction:
@@ -241,30 +267,6 @@ var node2  = new math.expression.node.ArrayNode([one, two, three]);
 ```
 
 
-### AccessorNode
-
-Construction:
-
-```
-new AccessorNode(object: Node, index: IndexNode)
-```
-
-Properties:
-
-- `object: Node`
-- `index: IndexNode`
-
-Examples:
-
-```js
-var node1 = math.parse('a[3]');
-
-var object = new math.expression.node.SymbolNode('a');
-var index = new math.expression.node.IndexNode([3]);
-var node2 = new math.expression.node.AccessorNode(object, index);
-```
-
-
 ### AssignmentNode
 
 Construction:
@@ -279,6 +281,7 @@ Properties:
 - `object: SymbolNode | AccessorNode`
 - `index: IndexNode | null`
 - `value: Node`
+- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
 
 Examples:
 
@@ -421,7 +424,7 @@ new FunctionNode(fn: Node, args: Node[])
 Properties:
 
 - `object: Node`
-- `name: string` (read-only)
+- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
 - `args: Node[]`
 
 Examples:
