@@ -1,4 +1,4 @@
-.highlight pre {
+pre.highlight {
   background-color: #fcfcfc;
   border: 1px solid #ddd;
   line-height: 1.5em;
@@ -7,39 +7,39 @@
   font-size: 12px;
 }
 
-.highlight pre code {
+pre.highlight code {
   padding: 0;
 }
 
-.highlight .c,
-.highlight .c1,
-.highlight .cm {
+pre.highlight .c,
+pre.highlight .c1,
+pre.highlight .cm {
   color: #808080;
 }
 
-.highlight .kd ,
-.highlight .nt {
+pre.highlight .kd ,
+pre.highlight .nt {
   color: #004ED0;
   color: #2B7CE9;
 }
 
-.highlight .m,
-.highlight .mi,
-.highlight .mf {
+pre.highlight .m,
+pre.highlight .mi,
+pre.highlight .mf {
   color: #dc3912;
 }
 
-.highlight .s {
+pre.highlight .s {
   color: #008000;
 }
 
-.highlight .cp,
-.highlight .n,
-.highlight .na,
-.highlight .s1 {
+pre.highlight .cp,
+pre.highlight .n,
+pre.highlight .na,
+pre.highlight .s1 {
   color: #ffa500;
 }
 
-.highlight .kc {
+pre.highlight .kc {
   color: #990099;
 }
