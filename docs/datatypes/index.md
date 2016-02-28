@@ -17,6 +17,9 @@ The supported data types are:
 - [Unit](units.md)
 - String
 
+Function [`math.typeof(x)`](../reference/functions/typeof.md) can be used to get
+the type of a variable.
+
 Example usage:
 
 ```js
@@ -56,4 +59,9 @@ math.sqrt(matrix);                            // Matrix, [1, 2, 3, 4, 5]
 var a = math.unit(55, 'cm');    // 550 mm
 var b = math.unit('0.1m');      // 100 mm
 math.add(a, b);                 // 0.65 m
+
+// check the type of a variable
+math.typeof(2);                   // 'number'
+math.typeof(math.unit('2 inch')); // 'Unit'
+math.typeof(math.sqrt(-4));       // 'Complex'
 ```
