@@ -32,6 +32,8 @@
 - Entries in a matrix (typically numbers, BigNumbers, Units, etc) are now
   considered immutable, they are no longer copied when performing operations on
   the entries, improving performance.
+- Implemented nearly equal comparison for relational functions (`equal`,
+  `larger`, `smaller`, etc.) when using BigNumbers.
 
 ### non-breaking changes#
 

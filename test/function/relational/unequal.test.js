@@ -135,8 +135,11 @@ describe('unequal', function() {
   it('should apply configuration option epsilon', function() {
     var mymath = math.create();
     assert.equal(mymath.unequal(1, 0.991), true);
+    assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), true);
+
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.unequal(1, 0.991), false);
+    assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), false);
   });
 
   it('should throw an error when comparing numbers and units', function() {
