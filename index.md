@@ -29,7 +29,7 @@ Powerful and easy to use.
       Here some example code demonstrating how to use the library.
       <a href="http://jsbin.com/devacu/edit">Click here</a> to fiddle around.
     </p>
-<class="highlight"><code class="language-js" data-lang="js"><span class="c1">// functions and constants</span>
+<pre class="highlight"><code class="language-js" data-lang="js"><span class="c1">// functions and constants</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">e</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>            <span class="c1">// 2.718</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p">;</span>      <span class="c1">// 0.75</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>              <span class="c1">// 4</span>
