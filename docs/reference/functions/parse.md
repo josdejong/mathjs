@@ -18,7 +18,7 @@ parse([expr1, expr2, expr3, ...], options)
 Parameter | Type | Description
 --------- | ---- | -----------
 `expr` | string &#124; string[] &#124; Matrix | Expression to be parsed
-`options` | {nodes: Object<string, Node>} | Available options: - `nodes` a set of custom nodes
+`options` | {nodes: Object&lt;string, Node&gt;} | Available options: - `nodes` a set of custom nodes
 
 ### Returns
 

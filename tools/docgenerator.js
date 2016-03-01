@@ -210,6 +210,15 @@ function generateDoc(name, code) {
     return false;
   }
 
+  function trim (text) {
+    return text.trim();
+  }
+
+  // replace characters like '<' with HTML entities like '&lt;'
+  function escapeTags (text) {
+    return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   function parseParameters() {
     var count = 0;
     do {
@@ -221,9 +230,7 @@ function generateDoc(name, code) {
         var annotation = {
           name: match[2] || '',
           description: (match[3] || '').trim(),
-          types: match[1].split('|').map(function (t) {
-            return t.trim();
-          })
+          types: match[1].split('|').map(trim).map(escapeTags)
         };
         doc.parameters.push(annotation);
 
@@ -257,9 +264,7 @@ function generateDoc(name, code) {
 
       doc.returns = {
         description: match[2] || '',
-        types: match[1].split('|').map(function (t) {
-          return t.trim();
-        })
+        types: match[1].split('|').map(trim).map(escapeTags)
       };
 
       // multi line description

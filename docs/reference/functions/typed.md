@@ -21,7 +21,7 @@ math.typed(signatures) : function
 Parameter | Type | Description
 --------- | ---- | -----------
 `name` | string | Optional name for the typed-function
-`signatures` | Object<string, function> | Object with one ore multiple function signatures
+`signatures` | Object&lt;string, function&gt; | Object with one ore multiple function signatures
 
 ## Examples
 
