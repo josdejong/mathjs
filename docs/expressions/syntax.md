@@ -125,7 +125,7 @@ Operators                         | Description
 
 Functions are called by entering their name, followed by zero or more
 arguments enclosed by parentheses. All available functions are listed on the
-page [Functions](../functions.md).
+page [Functions](../reference/functions.md).
 
 ```js
 math.eval('sqrt(25)');          // 5
