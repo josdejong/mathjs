@@ -194,6 +194,13 @@ Function | Description
 [math.sum(a,&nbsp;b,&nbsp;c,&nbsp;...)](sum.md) | Compute the sum of a matrix or a list with values.
 [math.var(a,&nbsp;b,&nbsp;c,&nbsp;...)](var.md) | Compute the variance of a matrix or a  list with values.
 
+## String functions
+
+Function | Description
+---- | -----------
+[math.format(value&nbsp;[,&nbsp;precision])](format.md) | Format a value of any type into a string.
+[math.print(template, values [, precision])](print.md) | Interpolate values into a string template.
+
 ## Trigonometry functions
 
 Function | Description
@@ -235,13 +242,11 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.clone(x)](clone.md) | Clone an object.
-[math.format(value&nbsp;[,&nbsp;precision])](format.md) | Format a value of any type into a string.
 [math.isInteger(x)](isInteger.md) | Test whether a value is an integer number.
 [math.isNegative(x)](isNegative.md) | Test whether a value is negative: smaller than zero.
 [math.isNumeric(x)](isNumeric.md) | Test whether a value is an numeric value.
 [math.isPositive(x)](isPositive.md) | Test whether a value is positive: larger than zero.
 [math.isZero(x)](isZero.md) | Test whether a value is zero.
-[math.print(template, values [, precision])](print.md) | Interpolate values into a string template.
 [math.typeof(x)](typeof.md) | Determine the type of a variable.
 
 

@@ -548,9 +548,6 @@ function iteratePath (inputPath, outputPath, outputRoot) {
       if (syntax.length < 40) {
         syntax = syntax.replace(/ /g, '&nbsp;');
       }
-      else {
-        console.log("syntax", syntax.length, syntax)
-      }
 
       var description = '';
       if (fn.doc.description) {
