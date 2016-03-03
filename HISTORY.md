@@ -37,17 +37,21 @@
 - Changed the default config value for `epsilon` from `1e-14` to `1e-12`,
   see #561.
 
-### non-breaking changes#
+### non-breaking changes
 
 - Extended function `pow` to return the real root for cubic roots of negative
   numbers. See #525, #482, #567.
 - Implemented support for JSON objects in the expression parser and the
   function `math.format`.
+- Function `math.fraction` now supports `BigNumber`, and function
+  `math.bignumber` now supports `Fraction`.
+- Expression parser now allows function and/or variable assignments inside
+  accessors and conditionals, like `A[x=2]` or `a > 2 ? b="ok" : b="fail"`.
 - Command line interface:
   - Outputs the variable name of assignments.
   - Fixed not rounding BigNumbers to 14 digits like numbers.
   - Fixed non-working autocompletion of user defined variables.
-- Reorganized docs.
+- Reorganized and extended docs.
 - Fixed a bug in the toString method of an IndexNode.
 - Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
   being defined as BigNumbers when configuring to use BigNumbers.
