@@ -80,11 +80,6 @@ describe('add', function() {
     assert.deepEqual(add(math.fraction(1,3), 1), math.fraction(4,3));
   });
 
-  it('should add mixed fractions and bignumbers', function() {
-    assert.deepEqual(add(math.bignumber(2), math.fraction(2,5)), math.bignumber(2.4));
-    assert.deepEqual(add(math.fraction(2,5), math.bignumber(2)), math.bignumber(2.4));
-  });
-
   it('should throw an error when converting a number with 15+ digits to fraction', function() {
     assert.throws(function () {
       add(math.pi, math.fraction(1,3))
