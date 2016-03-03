@@ -34,7 +34,7 @@ describing all available functions, constants, and units in detail.
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)
-- **[Classes](class_api.md)**
+- **[Classes](classes.md)**
 - **[Functions](functions.md)**
 - **[Constants](reference/constants.md)**
 - [Custom bundling](custom_bundling.md)
