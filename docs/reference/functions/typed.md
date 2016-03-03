@@ -23,6 +23,13 @@ Parameter | Type | Description
 `name` | string | Optional name for the typed-function
 `signatures` | Object&lt;string, function&gt; | Object with one ore multiple function signatures
 
+### Returns
+
+Type | Description
+---- | -----------
+function | The created typed-function.
+
+
 ## Examples
 
 ```js
