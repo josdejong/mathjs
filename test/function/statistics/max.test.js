@@ -43,10 +43,10 @@ describe('max', function() {
   });
 
   it('should return a reduced n-1 matrix from a n matrix', function() {
-	  assert.deepEqual(max([
-	   [ 1, 2, 3],
-	   [ 4, 5, 6],
-	   [ 7, 8, 9]
+    assert.deepEqual(max([
+      [ 1, 2, 3],
+      [ 4, 5, 6],
+      [ 7, 8, 9]
     ], 0), [7, 8, 9]);
 
     assert.deepEqual(max([
