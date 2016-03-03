@@ -231,7 +231,7 @@ Function | Description
 [math.tan(x)](tan.md) | Calculate the tangent of a value.
 [math.tanh(x)](tanh.md) | Calculate the hyperbolic tangent of a value, defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.
 
-## Units functions
+## Unit functions
 
 Function | Description
 ---- | -----------
