@@ -52,6 +52,9 @@
   - Fixed not rounding BigNumbers to 14 digits like numbers.
   - Fixed non-working autocompletion of user defined variables.
 - Reorganized and extended docs, added docs on classes and more. Thanks @hgupta9.
+- Added new units `acre`, `hectare`, `torr`, `bar`, `mmHg`, `mmH2O`, `cmH2O`,
+  and adede new aliases `acres`, `hectares`, `sqfeet`, `sqyard`, `sqmile`,
+  `sqmiles`, `mmhg`, `mmh2o`, `cmh2o`. Thanks @hgupta9.
 - Fixed a bug in the toString method of an IndexNode.
 - Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
   being defined as BigNumbers when configuring to use BigNumbers.
