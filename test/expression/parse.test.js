@@ -768,20 +768,32 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('{}'), {});
     });
 
-    it('should an object with quoted keys', function () {
+    it('should create an object with quoted keys', function () {
       assert.deepEqual(parseAndEval('{"a":2+3,"b":"foo"}'), {a: 5, b: 'foo'});
     });
 
-    it('should an object with unquoted keys', function () {
+    it('should create an object with unquoted keys', function () {
       assert.deepEqual(parseAndEval('{a:2+3,b:"foo"}'), {a: 5, b: 'foo'});
     });
 
-    it('should an object with child object', function () {
+    it('should create an object with child object', function () {
       assert.deepEqual(parseAndEval('{a:{b:2}}'), {a:{b:2}})
     });
 
     it('should get a property from a just created object', function () {
       assert.deepEqual(parseAndEval('{foo:2}["foo"]'), 2);
+    });
+
+    it('should parse an object containing a function assignment', function () {
+      var obj = parseAndEval('{f: f(x)=x^2}');
+      assert.deepEqual(Object.keys(obj), ['f']);
+      assert.equal(obj.f(2), 4);
+    });
+
+    it('should parse an object containing a variable assignment', function () {
+      var scope = {};
+      assert.deepEqual(parseAndEval('{f: a=42}', scope), {f: 42});
+      assert.strictEqual(scope.a, 42);
     });
 
     it('should throw an exception in case of invalid object key', function () {
@@ -843,8 +855,16 @@ describe('parse', function() {
       assert.equal(scope.g, 7);
     });
 
-    it('should throw an error for invalid nested assignments', function() {
-      assert.throws(function () {parseAndEval('a(j = 3)', {});}, SyntaxError);
+    it('should parse variable assignment inside a function call', function() {
+      var scope = {};
+      assert.deepEqual(parseAndEval('sqrt(x=4)', scope), 2);
+      assert.deepEqual(scope, { x:4 });
+    });
+
+    it('should parse variable assignment inside an accessor', function () {
+      var scope = {A: [10,20,30]};
+      assert.deepEqual(parseAndEval('A[x=2]', scope), 20);
+      assert.deepEqual(scope, { A:[10,20,30], x:2 });
     });
 
   });
