@@ -14,11 +14,11 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
 
 ## Documentation
 
-- **[Core](core.md)**
-  - [Configuration](configuration.md)
-  - [Chaining](chaining.md)
-  - [Extension](extension.md)
-  - [Serialization](serialization.md)
+- **[Core](core/index.md)**
+  - [Configuration](core/configuration.md)
+  - [Chaining](core/chaining.md)
+  - [Extension](core/extension.md)
+  - [Serialization](core/serialization.md)
 - **[Expressions](expressions/index.md)**
   - [Parsing and evaluation](expressions/parsing.md)
   - [Syntax](expressions/syntax.md)
