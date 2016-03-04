@@ -329,25 +329,13 @@ var m2 = math.eye(1000, 1000, 'sparse');
 
 ## API
 
-All relevant [mathematical functions](../reference/functions.md) in math.js support the Matrix data type. (add, subtract, multiply, divide etc). In addition, certain matrix-specific functions exist, and must be used via the "math" namespace. We list those below:
+All relevant functions in math.js support Matrices and Arrays. Functions like `math.add` and `math.subtract`, `math.sqrt` handle matrices element wise. There is a set of functions specifically for creating or manipulating matrices, such as:
 
-- [math.concat(a, b, c, ... [, dim])](../reference/functions/concat.md)
-- [math.cross(x, y)](../reference/functions/cross.md)
-- [math.det(x)](../reference/functions/det.md)
-- [math.diag(X)](../reference/functions/diag.md)
-- [math.dot(x, y)](../reference/functions/dot.md)
-- [math.eye(n)](../reference/functions/eye.md)
-- [math.flatten(x)](../reference/functions/flatten.md)
-- [math.inv(x)](../reference/functions/inv.md)
-- [math.ones(m, n, p, ...)](../reference/functions/ones.md)
-- [math.range(start, end [, step])](../reference/functions/range.md)
-- [math.resize(x, size [, defaultValue])](../reference/functions/resize.md)
-- [math.size(x)](../reference/functions/size.md)
-- [math.squeeze(x)](../reference/functions/squeeze.md)
-- [math.subset(x, index [, replacement])](../reference/functions/subset.md)
-- [math.trace(x)](../reference/functions/trace.md)
-- [math.transpose(x)](../reference/functions/transpose.md)
-- [math.zeros(m, n, p, ...)](../reference/functions/zeros.md)
+- Functions like `math.matrix` and `math.sparse`, `math.ones`, `math.zeros`, and `math.eye` to create a matrix.
+- Functions like `math.subset` and `math.index` to get or replace a part of a matrix
+- Functions like `math.transpose` and `math.diag` to manipulate matrices.
+
+A full list of matrix functions is available on the [functions reference page](../reference/functions.md#matrix-functions).
 
 Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
