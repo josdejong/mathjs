@@ -44,7 +44,7 @@ describe('range', function() {
 
   it('should output an array when setting matrix==="array"', function() {
     var math2 = math.create({
-      matrix: 'array'
+      matrix: 'Array'
     });
 
     assert.deepEqual(math2.range(0,10,2), [0,2,4,6,8]);
@@ -75,14 +75,14 @@ describe('range', function() {
   });
 
   it('should parse a range with bignumbers', function() {
-    var bigmath = math.create({number: 'bignumber'});
+    var bigmath = math.create({number: 'BigNumber'});
     var bignumber = bigmath.bignumber;
     assert.deepEqual(bigmath.range('1:3'), matrix([bignumber(1),bignumber(2)]));
     assert.deepEqual(bigmath.range('3:-1:0'), matrix([bignumber(3),bignumber(2),bignumber(1)]));
   });
 
   it('should throw an error when parsing a an invalid string to a bignumber range', function() {
-    var bigmath = math.create({number: 'bignumber'});
+    var bigmath = math.create({number: 'BigNumber'});
     assert.throws(function () {bigmath.range('1:a')}, /is no valid range/);
   });
 

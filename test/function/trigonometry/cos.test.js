@@ -7,8 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     cos = math.cos,
-    bigmath = math.create({number: 'bignumber', precision: 15}),
-    biggermath = math.create({number: 'bignumber', precision: 238});
+    bigmath = math.create({number: 'BigNumber', precision: 15}),
+    biggermath = math.create({number: 'BigNumber', precision: 238});
 
 
 describe('cos', function() {

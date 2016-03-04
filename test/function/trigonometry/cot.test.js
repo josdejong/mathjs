@@ -7,8 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     cot = math.cot,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 22});
+    bigmath = math.create({number: 'BigNumber', precision: 20}),
+    biggermath = math.create({number: 'BigNumber', precision: 22});
 
 describe('cot', function() {
   it('should return the cotan of a boolean', function () {

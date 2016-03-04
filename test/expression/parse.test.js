@@ -244,7 +244,7 @@ describe('parse', function() {
 
     it('should output bignumbers if default number type is bignumber', function() {
       var bigmath = math.create({
-        number: 'bignumber'
+        number: 'BigNumber'
       });
 
       assert.deepEqual(bigmath.parse('0.1').compile().eval(), bigmath.bignumber(0.1));
@@ -257,7 +257,7 @@ describe('parse', function() {
 
     it('should output fractions if default number type is fraction', function() {
       var fmath = math.create({
-        number: 'fraction'
+        number: 'Fraction'
       });
 
       assert(fmath.parse('0.1').compile().eval() instanceof math.type.Fraction);
@@ -1632,7 +1632,7 @@ describe('parse', function() {
 
   describe('bignumber', function () {
     var bigmath = math.create({
-      number: 'bignumber'
+      number: 'BigNumber'
     });
     var BigNumber = bigmath.type.BigNumber;
 

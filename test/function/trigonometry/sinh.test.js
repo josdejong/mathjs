@@ -7,7 +7,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     sinh = math.sinh,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({number: 'BigNumber', precision: 20});
 
 describe('sinh', function() {
   it('should return the sinh of a boolean', function () {

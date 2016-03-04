@@ -146,7 +146,7 @@ describe('AssignmentNode', function() {
   });
 
   it ('should compile an AssignmentNode with bignumber setting', function () {
-    var bigmath = math.create({number: 'bignumber'});
+    var bigmath = math.create({number: 'BigNumber'});
 
     var object = new SymbolNode('a');
     var index = new bigmath.expression.node.IndexNode([

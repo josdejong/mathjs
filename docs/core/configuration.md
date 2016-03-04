@@ -4,9 +4,9 @@ Math.js contains a number of configuration options. There are two ways to
 configure math.js:
 
 - Configure an existing instance of math.js using `math.config(options)`,
-  for example `math.config({number: 'bignumber'})` to change to BigNumbers.
+  for example `math.config({number: 'BigNumber'})` to change to BigNumbers.
 - Create and configure a new instance of math.js using `math.create([options])`,
-  for example `var bigmath = math.create({number: 'bignumber'})` to create a new
+  for example `var bigmath = math.create({number: 'BigNumber'})` to create a new
   instance configured to use BigNumbers.
 
 The following configuration options are available:
@@ -16,7 +16,7 @@ The following configuration options are available:
   Default value is `1e-14`.
 
 - `matrix`. The default type of matrix output for functions.
-  Available values are: `'matrix'` (default) or `'array'`.
+  Available values are: `'Matrix'` (default) or `'Array'`.
   Where possible, the type of matrix output from functions is determined from
   the function input: An array as input will return an Array, a Matrix as input
   will return a Matrix. In case of no matrix as input, the type of output is
@@ -28,7 +28,7 @@ The following configuration options are available:
   functions input. For most functions though, the type of output is determined
   from the the input: a number as input will return a number as output,
   a BigNumber as input returns a BigNumber as output.
-  Available values are: `'number'` (default), `'bignumber'`, or `'fraction'`.
+  Available values are: `'number'` (default), `'BigNumber'`, or `'Fraction'`.
   [BigNumbers](../datatypes/bignumbers.js) have higher precision than the default
   numbers of JavaScript, and [`Fractions`](../datatypes/fractions.js) store
   values in terms of a numerator and denominator.
@@ -62,7 +62,7 @@ math.range(0, 4);       // Matrix [0, 1, 2, 3]
 
 // create a new instance configured to use Arrays
 var math2 = math.create({
-  matrix: 'array'       // Choose 'matrix' (default) or 'array'
+  matrix: 'Array'       // Choose 'Matrix' (default) or 'Array'
 });
 
 // range will output an Array 
@@ -70,16 +70,16 @@ math2.range(0, 4);      // Array [0, 1, 2, 3]
 
 // change the configuration of math2 from Arrays to Matrices
 math2.config({
-  matrix: 'matrix'      // Choose 'matrix' (default) or 'array'
+  matrix: 'Matrix'      // Choose 'Matrix' (default) or 'Array'
 });
 
 // range will output a Matrix
 math2.range(0, 4);      // Matrix [0, 1, 2, 3]
 
 
-// create an instance of math.js with bignumber configuration
+// create an instance of math.js with BigNumber configuration
 var bigmath = math.create({
-  number: 'bignumber',  // Choose 'number' (default), 'bignumber', or 'fraction'
+  number: 'BigNumber',  // Choose 'number' (default), 'BigNumber', or 'Fraction'
   precision: 32         // 64 by default, only applicable for BigNumbers
 });
 
@@ -105,7 +105,7 @@ bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
     
     // change the configuration of math from Matrices to Arrays
     math.config({
-      matrix: 'array'      // Choose 'matrix' (default) or 'array'
+      matrix: 'Array'      // Choose 'Matrix' (default) or 'Array'
     });
     
     // range will output an Array 
@@ -113,7 +113,7 @@ bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
     
     // create a new instance of math.js with bignumber configuration
     var bigmath = math.create({
-      number: 'bignumber',  // Choose 'number' (default), 'bignumber', or 'fraction'
+      number: 'BigNumber',  // Choose 'number' (default), 'BigNumber', or 'Fraction'
       precision: 32         // 64 by default, only applicable for BigNumbers
     });
     

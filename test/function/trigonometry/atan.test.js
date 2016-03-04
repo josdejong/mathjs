@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     atan = math.atan,
     tan = math.tan,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
+    bigmath = math.create({number: 'BigNumber', precision: 20}),
     atanBig = bigmath.atan,
     Big = bigmath.bignumber;
 

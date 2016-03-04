@@ -92,7 +92,7 @@ describe('gamma', function () {
     assert.deepEqual(gamma(bigUtil.pi(20)), bignumber('2.28803779534003'));
     assert.deepEqual(gamma(bigUtil.e(math.precision)), bignumber('1.56746825577405'));
 
-    var bigmath = math.create({ number: 'bignumber' });
+    var bigmath = math.create({ number: 'BigNumber' });
     assert.deepEqual(gamma(bigmath.SQRT2), bignumber('0.886581428719259'));
     assert.deepEqual(gamma(bigmath.SQRT2.neg()), bignumber('2.59945990753'));
   });

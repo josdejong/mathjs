@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     csch = math.csch,
     bigmath = math.create({precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 22});
+    biggermath = math.create({number: 'BigNumber', precision: 22});
 
 describe('csch', function() {
   it('should return the csch of a boolean', function () {

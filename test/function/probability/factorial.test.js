@@ -18,7 +18,7 @@ describe('factorial', function() {
   });
 
   it('should calculate the factorial of a bignumber', function() {
-    var bigmath = math.create({number: 'bignumber', precision: 5});
+    var bigmath = math.create({number: 'BigNumber', precision: 5});
     var bigfactorial = bigmath.factorial;
     var bignumber = bigmath.bignumber;
 

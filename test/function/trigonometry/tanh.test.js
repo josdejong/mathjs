@@ -7,7 +7,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     tanh = math.tanh,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({number: 'BigNumber', precision: 20});
 
 describe('tanh', function() {
   it('should return the tanh of a boolean', function () {

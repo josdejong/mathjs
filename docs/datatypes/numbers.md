@@ -20,7 +20,7 @@ can be configured when instantiating math.js:
 ```js
 math.config({
   number: 'number' // Default type of number: 
-                   // 'number' (default), 'bignumber', or 'fraction'
+                   // 'number' (default), 'BigNumber', or 'Fraction'
 });
 ```
 

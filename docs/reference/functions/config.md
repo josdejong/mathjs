@@ -14,7 +14,7 @@ math.config(config: Object): Object
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`options` | Object | Available options: {number} epsilon Minimum relative difference between two compared values, used by all comparison functions. {string} matrix A string 'matrix' (default) or 'array'. {string} number A string 'number' (default) or 'bignumber' {number} precision The number of significant digits for BigNumbers. Not applicable for Numbers. {string} parenthesis How to display parentheses in LaTeX and string output.
+`options` | Object | Available options: {number} epsilon Minimum relative difference between two compared values, used by all comparison functions. {string} matrix A string 'Matrix' (default) or 'Array'. {string} number A string 'number' (default) or 'BigNumber' {number} precision The number of significant digits for BigNumbers. Not applicable for Numbers. {string} parenthesis How to display parentheses in LaTeX and string output.
 
 ### Returns
 
@@ -28,7 +28,7 @@ Object | Returns the current configuration
 ```js
 math.config().number;                // outputs 'number'
 math.eval('0.4');                    // outputs number 0.4
-math.config({number: 'fraction'});
+math.config({number: 'Fraction'});
 math.eval('0.4');                    // outputs Fraction 2/5
 ```
 

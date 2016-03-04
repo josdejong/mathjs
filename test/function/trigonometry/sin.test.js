@@ -50,7 +50,7 @@ describe('sin', function() {
                                         '3071480438329880550139583951234188873226108092477936610585549' +
                                         '3575835362891900420559398509489530577719840860106717522689249' +
                                         '60612126026291341865833521451170868744460464214033460336158'));
-    bigmath.config({number: 'bignumber', precision: 15});
+    bigmath.config({number: 'BigNumber', precision: 15});
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
     for (var x = -20; x < 20; x += 1) {

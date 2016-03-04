@@ -34,6 +34,10 @@
   the entries, improving performance.
 - Implemented nearly equal comparison for relational functions (`equal`,
   `larger`, `smaller`, etc.) when using BigNumbers.
+- Changed the casing of the configuration options `matrix` (`Array` or `Matrix`)
+  and `number` (`number`, `BigNumber`, `Fraction`) such that they now match
+  the type returned by `math.typeof`. Wrong casing gives a console warning but
+  will still work.
 - Changed the default config value for `epsilon` from `1e-14` to `1e-12`,
   see #561.
 

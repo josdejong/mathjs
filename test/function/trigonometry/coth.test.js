@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     coth = math.coth,
     bigmath = math.create({precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 21});
+    biggermath = math.create({number: 'BigNumber', precision: 21});
 
 describe('coth', function() {
   it('should return the coth of a boolean', function () {

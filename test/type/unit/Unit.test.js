@@ -859,11 +859,11 @@ describe('Unit', function() {
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function() {
       var origConfig = math.config();
 
-      math.config({number: 'fraction'});
+      math.config({number: 'Fraction'});
       var unit1 = Unit.parse('5kg');
       assert(unit1.value.isFraction);
 
-      math.config({number: 'bignumber'});
+      math.config({number: 'BigNumber'});
       var unit1 = Unit.parse('5kg');
       assert(unit1.value.isBigNumber);
 

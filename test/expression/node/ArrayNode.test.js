@@ -56,7 +56,7 @@ describe('ArrayNode', function() {
   });
 
   it ('should compile an ArrayNode and evaluate as Array', function () {
-    var mathArray = math.create({matrix: 'array'});
+    var mathArray = math.create({matrix: 'Array'});
     var a = new mathArray.expression.node.ConstantNode(1);
     var b = new mathArray.expression.node.ConstantNode(2);
     var c = new mathArray.expression.node.ConstantNode(3);

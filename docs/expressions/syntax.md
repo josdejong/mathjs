@@ -275,8 +275,8 @@ The default number type of the expression parser can be changed at instantiation
 of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
-// Configure the type of number: 'number' (default), 'bignumber', or 'fraction'
-math.config({number: 'bignumber'});
+// Configure the type of number: 'number' (default), 'BigNumber', or 'Fraction'
+math.config({number: 'BigNumber'});
 
 // all numbers are parsed as BigNumber
 math.eval('0.1 + 0.2'); // BigNumber, 0.3

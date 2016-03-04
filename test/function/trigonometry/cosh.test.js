@@ -7,7 +7,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     cosh = math.cosh,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({number: 'BigNumber', precision: 20});
 
 describe('cosh', function() {
   it('should return the cosh of a boolean', function () {
