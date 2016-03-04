@@ -14,7 +14,7 @@ var ENTRY       = './index.js',
     DIST        = './dist',
     REF_SRC     = './lib/',
     REF_DEST    = './docs/reference/functions/',
-    REF_ROOT    = './docs',
+    REF_ROOT    = './docs/reference/',
     MATH_JS     = DIST + '/' + FILE;
 
 // generate banner with today's date and correct version
