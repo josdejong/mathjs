@@ -14,7 +14,7 @@ math.config(config: Object): Object
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`options` | Object | Available options: {number} epsilon Minimum relative difference between two compared values, used by all comparison functions. {string} matrix A string 'Matrix' (default) or 'Array'. {string} number A string 'number' (default) or 'BigNumber' {number} precision The number of significant digits for BigNumbers. Not applicable for Numbers. {string} parenthesis How to display parentheses in LaTeX and string output.
+`options` | Object | Available options: {number} epsilon Minimum relative difference between two compared values, used by all comparison functions. {string} matrix A string 'Matrix' (default) or 'Array'. {string} number A string 'number' (default), 'BigNumber', or 'Fraction' {number} precision The number of significant digits for BigNumbers. Not applicable for Numbers. {string} parenthesis How to display parentheses in LaTeX and string output.
 
 ### Returns
 
