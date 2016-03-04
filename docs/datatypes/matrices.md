@@ -339,5 +339,5 @@ A full list of matrix functions is available on the [functions reference page](.
 
 Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
-- [DenseMatrix](api/densematrix.md)
-- [SparseMatrix](api/sparsematrix.md)
+- [DenseMatrix](../reference/classes/densematrix.md)
+- [SparseMatrix](../reference/classes/sparsematrix.md)

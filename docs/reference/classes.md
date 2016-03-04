@@ -10,7 +10,7 @@ The "math" namespace contains the entire math.js functionality. All of the mathe
 ## [Unit](../datatypes/units.md)
 Stores values for a scalar unit and its postfix. (eg `100 mm` or `100 kg`). Although the `Unit` class contains public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
-- [Unit](../datatypes/api/unit.md)
+- [Unit](classes/unit.md)
 
 ## [Fraction](../datatypes/fractions.md)
 Stores values for a fractional number.
@@ -21,15 +21,15 @@ Stores values for a arbitrary-precision floating point number.
 ## [Matrix](../datatypes/matrices.md)
 Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
-- [DenseMatrix](../datatypes/api/densematrix.md)
-- [SparseMatrix](../datatypes/api/sparsematrix.md)
+- [DenseMatrix](classes/densematrix.md)
+- [SparseMatrix](classes/sparsematrix.md)
 
 Classes used internally that may be of use to developers:
 
-- [Index](../datatypes/api/matrixindex.md)
-- [Range](../datatypes/api/matrixrange.md)
-- [ResultSet](../datatypes/api/matrixrange.md)
-- [FibonacciHeap](../datatypes/api/fibonacciheap.md)
+- [Index](classes/matrixindex.md)
+- [Range](classes/matrixrange.md)
+- [ResultSet](classes/matrixrange.md)
+- [FibonacciHeap](classes/fibonacciheap.md)
 
 ## [Complex](../datatypes/complex_numbers.md)
 Stores values for a complex number.
