@@ -1,13 +1,11 @@
 # Documentation
 
 [Math.js](http://mathjs.org) is an extensive math library for JavaScript and Node.js.
-It features a flexible expression parser and offers an integrated solution
-to work with numbers, big numbers, complex numbers, units, and matrices.
-Powerful and easy to use.
+It features a flexible expression parser, a large set of built-in functions and constants,
+and offers an integrated solution to work with different data types like numbers,
+big numbers, complex numbers, units, and matrices.
 
-This documentation of contains a getting started tutorial,
-an extensive overview describing math.js on a high level, and a reference 
-describing all available functions, constants, and units in detail.
+Math.js can be used in the browser, in node.js and in any JavaScript engine. Installation and download instructions are available on the [Download page](http://mathjs.org/download.html) of the website.
 
 ## Getting Started
 
@@ -16,7 +14,6 @@ describing all available functions, constants, and units in detail.
 
 ## Documentation
 
-- [Introduction](introduction.md)
 - **[Core](core.md)**
   - [Configuration](configuration.md)
   - [Chaining](chaining.md)
@@ -34,9 +31,10 @@ describing all available functions, constants, and units in detail.
   - [Complex Numbers](datatypes/complex_numbers.md)
   - [Matrices](datatypes/matrices.md)
   - [Units](datatypes/units.md)
-- **[Classes](reference/classes.md)**
-- **[Functions](reference/functions.md)**
-- **[Constants](reference/constants.md)**
+- **[Reference](reference/index.md)**
+  - [Classes](reference/classes.md)
+  - [Functions](reference/functions.md)
+  - [Constants](reference/constants.md)
 - [Custom bundling](custom_bundling.md)
 - [Command Line Interface](command_line_interface.md)
 - [History](../HISTORY.md)
