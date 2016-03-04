@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 2.7.0
- * @date    2016-02-13
+ * @version 3.0.0
+ * @date    2016-03-04
  *
  * @license
  * Copyright (C) 2013-2016 Jos de Jong <wjosdejong@gmail.com>
@@ -146,9 +146,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *                              Minimum relative difference between two
 	 *                              compared values, used by all comparison functions.
 	 *                            {string} matrix
-	 *                              A string 'matrix' (default) or 'array'.
+	 *                              A string 'Matrix' (default) or 'Array'.
 	 *                            {string} number
-	 *                              A string 'number' (default), 'bignumber', or 'fraction'
+	 *                              A string 'number' (default), 'BigNumber', or 'Fraction'
 	 *                            {number} precision
 	 *                              The number of significant digits for BigNumbers.
 	 *                              Not applicable for Numbers.
@@ -190,12 +190,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var _config = {
 	    // minimum relative difference between two compared values,
 	    // used by all comparison functions
-	    epsilon: 1e-14,
+	    epsilon: 1e-12,
 
 	    // type of default matrix output. Choose 'matrix' (default) or 'array'
-	    matrix: 'matrix',
+	    matrix: 'Matrix',
 
-	    // type of default number output. Choose 'number' (default) or 'bignumber'
+	    // type of default number output. Choose 'number' (default) 'BigNumber', or 'Fraction
 	    number: 'number',
 
 	    // number of significant digits in BigNumbers
@@ -207,11 +207,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // predictable is false, and returns `complex('2i')` when true.
 	    predictable: false
 	  };
-
-	  if (options) {
-	    // merge options
-	    deepExtend(_config, options);
-	  }
 
 	  /**
 	   * Load a function or data type from a factory.
@@ -252,6 +247,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // load the import and config functions
 	  math['import'] = load(importFactory);
 	  math['config'] = load(configFactory);
+
+	  // apply options
+	  if (options) {
+	    math.config(options);
+	  }
 
 	  return math;
 	};
@@ -600,12 +600,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	              'Use function fraction(x) to convert to Fraction.');
 	        }
 	        return new type.Fraction(x);
-	      }
-	    }, {
-	      from: 'Fraction',
-	      to: 'BigNumber',
-	      convert: function (x) {
-	        return new type.BigNumber(x.valueOf());
 	      }
 	    }, {
 	      from: 'string',
@@ -2239,17 +2233,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {number} [epsilon]  The maximum relative difference between x and y
 	 *                            If epsilon is undefined or null, the function will
 	 *                            test whether x and y are exactly equal.
-	 * @return {boolean} whether the two numbers are equal
+	 * @return {boolean} whether the two numbers are nearly equal
 	*/
 	exports.nearlyEqual = function(x, y, epsilon) {
 	  // if epsilon is null or undefined, test whether x and y are exactly equal
-	  if (epsilon == null) return x == y;
+	  if (epsilon == null) {
+	    return x == y;
+	  }
 
 	  // use "==" operator, handles infinities
-	  if (x == y) return true;
+	  if (x == y) {
+	    return true;
+	  }
 
 	  // NaN
-	  if (isNaN(x) || isNaN(y)) return false;
+	  if (isNaN(x) || isNaN(y)) {
+	    return false;
+	  }
 
 	  // at this point x and y should be finite
 	  if(isFinite(x) && isFinite(y)) {
@@ -2937,17 +2937,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	var object = __webpack_require__(3);
 
 	function factory (type, config, load, typed, math) {
+	  var MATRIX = ['Matrix', 'Array'];                   // valid values for option matrix
+	  var NUMBER = ['number', 'BigNumber', 'Fraction'];   // valid values for option number
+
 	  /**
 	   * Set configuration options for math.js, and get current options.
 	   * Will emit a 'config' event, with arguments (curr, prev).
+	   *
+	   * Syntax:
+	   *
+	   *     math.config(config: Object): Object
+	   *
+	   * Examples:
+	   *
+	   *     math.config().number;                // outputs 'number'
+	   *     math.eval('0.4');                    // outputs number 0.4
+	   *     math.config({number: 'Fraction'});
+	   *     math.eval('0.4');                    // outputs Fraction 2/5
+	   *
 	   * @param {Object} [options] Available options:
 	   *                            {number} epsilon
 	   *                              Minimum relative difference between two
 	   *                              compared values, used by all comparison functions.
 	   *                            {string} matrix
-	   *                              A string 'matrix' (default) or 'array'.
+	   *                              A string 'Matrix' (default) or 'Array'.
 	   *                            {string} number
-	   *                              A string 'number' (default) or 'bignumber'
+	   *                              A string 'number' (default), 'BigNumber', or 'Fraction'
 	   *                            {number} precision
 	   *                              The number of significant digits for BigNumbers.
 	   *                              Not applicable for Numbers.
@@ -2956,9 +2971,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                              output.
 	   * @return {Object} Returns the current configuration
 	   */
-	  return function _config(options) {
+	  function _config(options) {
 	    if (options) {
 	      var prev = object.clone(config);
+
+	      // validate some of the options
+	      validateOption(options, 'matrix', MATRIX);
+	      validateOption(options, 'number', NUMBER);
 
 	      // merge options
 	      object.deepExtend(config, options);
@@ -2973,7 +2992,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	    else {
 	      return object.clone(config);
 	    }
-	  };
+	  }
+
+	  // attach the valid options to the function so they can be extended
+	  _config.MATRIX = MATRIX;
+	  _config.NUMBER = NUMBER;
+
+	  return _config;
+	}
+
+	/**
+	 * Test whether an Array contains a specific item.
+	 * @param {Array.<string>} array
+	 * @param {string} item
+	 * @return {boolean}
+	 */
+	function contains (array, item) {
+	  return array.indexOf(item) !== -1;
+	}
+
+	/**
+	 * Find a string in an array. Case insensitive search
+	 * @param {Array.<string>} array
+	 * @param {string} item
+	 * @return {number} Returns the index when found. Returns -1 when not found
+	 */
+	function findIndex (array, item) {
+	  return array
+	      .map(function (i) {
+	        return i.toLowerCase();
+	      })
+	      .indexOf(item.toLowerCase());
+	}
+
+	/**
+	 * Validate an option
+	 * @param {Object} options         Object with options
+	 * @param {string} name            Name of the option to validate
+	 * @param {Array.<string>} values  Array with valid values for this option
+	 */
+	function validateOption(options, name, values) {
+	  if (options[name] !== undefined && !contains(values, options[name])) {
+	    var index = findIndex(values, options[name]);
+	    if (index !== -1) {
+	      // right value, wrong casing
+	      // TODO: lower case values are deprecated since v3, remove this warning some day.
+	      console.warn('Warning: Wrong casing for configuration option "' + name + '", should be "' + values[index] + '" instead of "' + options[name] + '".');
+
+	      options[name] = values[index]; // change the option to the right casing
+	    }
+	    else {
+	      // unknown value
+	      console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". Available options: ' + values.map(JSON.stringify).join(', ') + '.');
+	    }
+	  }
 	}
 
 	exports.name = 'config';
@@ -2987,11 +3059,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = [
 	  __webpack_require__(14),        // data types (Matrix, Complex, Unit, ...)
-	  __webpack_require__(91),   // constants
+	  __webpack_require__(93),   // constants
 	  __webpack_require__(95),  // expression parsing
-	  __webpack_require__(319),    // functions
-	  __webpack_require__(496),        // serialization utility (math.json.reviver)
-	  __webpack_require__(498)        // errors
+	  __webpack_require__(325),    // functions
+	  __webpack_require__(488),        // serialization utility (math.json.reviver)
+	  __webpack_require__(490)        // errors
 	];
 
 
@@ -3006,10 +3078,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(26),
 	  __webpack_require__(33),
 	  __webpack_require__(37),
-	  __webpack_require__(69),
 	  __webpack_require__(70),
-	  __webpack_require__(72),
-	  __webpack_require__(73)
+	  __webpack_require__(71),
+	  __webpack_require__(73),
+	  __webpack_require__(74)
 	];
 
 
@@ -3031,10 +3103,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var Decimal = __webpack_require__(17);
-	var digits = __webpack_require__(6).digits;
 
 	function factory (type, config, load, typed, math) {
-	  var BigNumber = Decimal.constructor(config);
+	  var BigNumber = Decimal.clone({precision: config.precision});
 
 	  /**
 	   * Attach type information
@@ -3084,4070 +3155,5026 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v4.0.3 https://github.com/MikeMcl/decimal.js/LICENCE */
-	;(function (global) {
-	    'use strict';
-
-
-	    /*
-	     *  decimal.js v4.0.3
-	     *  An arbitrary-precision Decimal type for JavaScript.
-	     *  https://github.com/MikeMcl/decimal.js
-	     *  Copyright (c) 2014 Michael Mclaughlin <M8ch88l@gmail.com>
-	     *  MIT Expat Licence
-	     */
-
-
-	    var convertBase, decimal, noConflict,
-	        crypto = global['crypto'],
-	        external = true,
-	        id = 0,
-	        mathfloor = Math.floor,
-	        mathpow = Math.pow,
-	        outOfRange,
-	        toString = Object.prototype.toString,
-	        BASE = 1e7,
-	        LOGBASE = 7,
-	        NUMERALS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_',
-	        P = {},
-
-	        /*
-	         The maximum exponent magnitude.
-	         The limit on the value of toExpNeg, toExpPos, minE and maxE.
-	         */
-	        EXP_LIMIT = 9e15,                      // 0 to 9e15
-
-	        /*
-	         The limit on the value of precision, and on the argument to toDecimalPlaces,
-	         toExponential, toFixed, toFormat, toPrecision and toSignificantDigits.
-	         */
-	        MAX_DIGITS = 1E9,                      // 0 to 1e+9
-
-	        /*
-	         To decide whether or not to calculate x.pow(integer y) using the 'exponentiation by
-	         squaring' algorithm or by exp(y*ln(x)), the number of significant digits of x is multiplied
-	         by y. If this number is less than INT_POW_LIMIT then the former algorithm is used.
-	         */
-	        INT_POW_LIMIT = 3000,                  // 0 to 5000
-
-	        // The natural logarithm of 10 (1025 digits).
-	        LN10 = '2.3025850929940456840179914546843642076011014886287729760333279009675726096773524802359972050895982983419677840422862486334095254650828067566662873690987816894829072083255546808437998948262331985283935053089653777326288461633662222876982198867465436674744042432743651550489343149393914796194044002221051017141748003688084012647080685567743216228355220114804663715659121373450747856947683463616792101806445070648000277502684916746550586856935673420670581136429224554405758925724208241314695689016758940256776311356919292033376587141660230105703089634572075440370847469940168269282808481184289314848524948644871927809676271275775397027668605952496716674183485704422507197965004714951050492214776567636938662976979522110718264549734772662425709429322582798502585509785265383207606726317164309505995087807523710333101197857547331541421808427543863591778117054309827482385045648019095610299291824318237525357709750539565187697510374970888692180205189339507238539205144634197265287286965110862571492198849978748873771345686209167058';
-
-
-	    // Decimal prototype methods
-
-
-	    /*
-	     * Return a new Decimal whose value is the absolute value of this Decimal.
-	     *
-	     */
-	    P['absoluteValue'] = P['abs'] = function () {
-	        var x = new this['constructor'](this);
-
-	        if ( x['s'] < 0 ) {
-	            x['s'] = 1;
-	        }
-
-	        return rnd(x);
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal rounded to a whole number in
-	     * the direction of positive Infinity.
-	     *
-	     */
-	    P['ceil'] = function () {
-
-	        return rnd( new this['constructor'](this), this['e'] + 1, 2 );
-	    };
-
-
-	    /*
-	     * Return
-	     *   1    if the value of this Decimal is greater than the value of Decimal(y, b),
-	     *  -1    if the value of this Decimal is less than the value of Decimal(y, b),
-	     *   0    if they have the same value,
-	     *  null  if the value of either Decimal is NaN.
-	     *
-	     */
-	    P['comparedTo'] = P['cmp'] = function ( y, b ) {
-	        var a,
-	            x = this,
-	            xc = x['c'],
-	            yc = ( id = -id, y = new x['constructor']( y, b ), y['c'] ),
-	            i = x['s'],
-	            j = y['s'],
-	            k = x['e'],
-	            l = y['e'];
-
-	        // Either NaN?
-	        if ( !i || !j ) {
-	            return null;
-	        }
-
-	        a = xc && !xc[0];
-	        b = yc && !yc[0];
-
-	        // Either zero?
-	        if ( a || b ) {
-	            return a ? b ? 0 : -j : i;
-	        }
-
-	        // Signs differ?
-	        if ( i != j ) {
-	            return i;
-	        }
-
-	        a = i < 0;
-
-	        // Either Infinity?
-	        if ( !xc || !yc ) {
-	            return k == l ? 0 : !xc ^ a ? 1 : -1;
-	        }
-
-	        // Compare exponents.
-	        if ( k != l ) {
-	            return k > l ^ a ? 1 : -1;
-	        }
-
-	        // Compare digit by digit.
-	        for ( i = -1,
-	              j = ( k = xc.length ) < ( l = yc.length ) ? k : l;
-	              ++i < j; ) {
-
-	            if ( xc[i] != yc[i] ) {
-	                return xc[i] > yc[i] ^ a ? 1 : -1;
-	            }
-	        }
-
-	        // Compare lengths.
-	        return k == l ? 0 : k > l ^ a ? 1 : -1;
-	    };
-
-
-	    /*
-	     * Return the number of decimal places of the value of this Decimal.
-	     *
-	     */
-	     P['decimalPlaces'] = P['dp'] = function () {
-	        var c, v,
-	            n = null;
-
-	        if ( c = this['c'] ) {
-	            n = ( ( v = c.length - 1 ) - mathfloor( this['e'] / LOGBASE ) ) * LOGBASE;
-
-	            if ( v = c[v] ) {
-
-	                // Subtract the number of trailing zeros of the last number.
-	                for ( ; v % 10 == 0; v /= 10, n-- );
-	            }
-
-	            if ( n < 0 ) {
-	                n = 0;
-	            }
-	        }
-
-	        return n;
-	    };
-
-
-	    /*
-	     *  n / 0 = I
-	     *  n / N = N
-	     *  n / I = 0
-	     *  0 / n = 0
-	     *  0 / 0 = N
-	     *  0 / N = N
-	     *  0 / I = 0
-	     *  N / n = N
-	     *  N / 0 = N
-	     *  N / N = N
-	     *  N / I = N
-	     *  I / n = I
-	     *  I / 0 = I
-	     *  I / N = N
-	     *  I / I = N
-	     *
-	     * Return a new Decimal whose value is the value of this Decimal divided by Decimal(y, b),
-	     * rounded to precision significant digits using rounding mode rounding.
-	     *
-	     */
-	    P['dividedBy'] = P['div'] = function ( y, b ) {
-	        id = 2;
-
-	        return div( this, new this['constructor']( y, b ) );
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the integer part of dividing the value of this Decimal by
-	     * the value of Decimal(y, b), rounded to precision significant digits using rounding mode
-	     * rounding.
-	     *
-	     */
-	    P['dividedToIntegerBy'] = P['divToInt'] = function ( y, b ) {
-	        var x = this,
-	            Decimal = x['constructor'];
-	        id = 18;
-
-	        return rnd(
-	          div( x, new Decimal( y, b ), 0, 1, 1 ), Decimal['precision'], Decimal['rounding']
-	        );
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is equal to the value of Decimal(n, b), otherwise
-	     * return false.
-	     *
-	     */
-	    P['equals'] = P['eq'] = function ( n, b ) {
-	        id = 3;
-
-	        return this['cmp']( n, b ) === 0;
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the exponential of the value of this Decimal, i.e. the
-	     * base e raised to the power the value of this Decimal, rounded to precision significant digits
-	     * using rounding mode rounding.
-	     *
-	     */
-	    P['exponential'] = P['exp'] = function () {
-
-	        return exp(this);
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal rounded to a whole number in
-	     * the direction of negative Infinity.
-	     *
-	     */
-	    P['floor'] = function () {
-
-	        return rnd( new this['constructor'](this), this['e'] + 1, 3 );
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is greater than the value of Decimal(n, b), otherwise
-	     * return false.
-	     *
-	     */
-	    P['greaterThan'] = P['gt'] = function ( n, b ) {
-	        id = 4;
-
-	        return this['cmp']( n, b ) > 0;
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is greater than or equal to the value of
-	     * Decimal(n, b), otherwise return false.
-	     *
-	     */
-	    P['greaterThanOrEqualTo'] = P['gte'] = function ( n, b ) {
-	        id = 5;
-	        b = this['cmp']( n, b );
-
-	        return b == 1 || b === 0;
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is a finite number, otherwise return false.
-	     *
-	     */
-	    P['isFinite'] = function () {
-
-	        return !!this['c'];
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is an integer, otherwise return false.
-	     *
-	     */
-	    P['isInteger'] = P['isInt'] = function () {
-
-	        return !!this['c'] && mathfloor( this['e'] / LOGBASE ) > this['c'].length - 2;
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is NaN, otherwise return false.
-	     *
-	     */
-	    P['isNaN'] = function () {
-
-	        return !this['s'];
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is negative, otherwise return false.
-	     *
-	     */
-	    P['isNegative'] = P['isNeg'] = function () {
-
-	        return this['s'] < 0;
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is 0 or -0, otherwise return false.
-	     *
-	     */
-	    P['isZero'] = function () {
-
-	        return !!this['c'] && this['c'][0] == 0;
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is less than Decimal(n, b), otherwise return false.
-	     *
-	     */
-	    P['lessThan'] = P['lt'] = function ( n, b ) {
-	        id = 6;
-
-	        return this['cmp']( n, b ) < 0;
-	    };
-
-
-	    /*
-	     * Return true if the value of this Decimal is less than or equal to Decimal(n, b), otherwise
-	     * return false.
-	     *
-	     */
-	    P['lessThanOrEqualTo'] = P['lte'] = function ( n, b ) {
-	        id = 7;
-	        b = this['cmp']( n, b );
-
-	        return b == -1 || b === 0;
-	    };
-
-
-	    /*
-	     * Return the logarithm of the value of this Decimal to the specified base, rounded
-	     * to precision significant digits using rounding mode rounding.
-	     *
-	     * If no base is specified, return log[10](arg).
-	     *
-	     * log[base](arg) = ln(arg) / ln(base)
-	     *
-	     * The result will always be correctly rounded if the base of the log is 2 or 10, and
-	     * 'almost always' if not:
-	     *
-	     * Depending on the rounding mode, the result may be incorrectly rounded if the first fifteen
-	     * rounding digits are [49]99999999999999 or [50]00000000000000. In that case, the maximum error
-	     * between the result and the correctly rounded result will be one ulp (unit in the last place).
-	     *
-	     * log[-b](a)       = NaN
-	     * log[0](a)        = NaN
-	     * log[1](a)        = NaN
-	     * log[NaN](a)      = NaN
-	     * log[Infinity](a) = NaN
-	     * log[b](0)        = -Infinity
-	     * log[b](-0)       = -Infinity
-	     * log[b](-a)       = NaN
-	     * log[b](1)        = 0
-	     * log[b](Infinity) = Infinity
-	     * log[b](NaN)      = NaN
-	     *
-	     * [base] {number|string|Decimal} The base of the logarithm.
-	     * [b] {number} The base of base.
-	     *
-	     */
-	    P['logarithm'] = P['log'] = function ( base, b ) {
-	        var base10, c, denom, i, inf, num, sd, sd10, r,
-	            arg = this,
-	            Decimal = arg['constructor'],
-	            pr = Decimal['precision'],
-	            rm = Decimal['rounding'],
-	            guard = 5;
-
-	        // Default base is 10.
-	        if ( base == null ) {
-	            base = new Decimal(10);
-	            base10 = true;
-	        } else {
-	            id = 15;
-	            base = new Decimal( base, b );
-	            c = base['c'];
-
-	            // If base < 0 or +-Infinity/NaN or 0 or 1.
-	            if ( base['s'] < 0 || !c || !c[0] || !base['e'] && c[0] == 1 && c.length == 1 ) {
-
-	                return new Decimal(NaN);
-	            }
-	            base10 = base['eq'](10);
-	        }
-	        c = arg['c'];
-
-	        // If arg < 0 or +-Infinity/NaN or 0 or 1.
-	        if ( arg['s'] < 0 || !c || !c[0] || !arg['e'] && c[0] == 1 && c.length == 1 ) {
-
-	            return new Decimal( c && !c[0] ? -1 / 0 : arg['s'] != 1 ? NaN : c ? 0 : 1 / 0 );
-	        }
-
-	        /*
-	          The result will have an infinite decimal expansion if base is 10 and arg is not an
-	          integer power of 10...
-	         */
-	        inf = base10 && ( i = c[0], c.length > 1 || i != 1 && i != 10 &&
-	          i != 1e2 && i != 1e3 && i != 1e4 && i != 1e5 && i != 1e6 );
-	            /*
-	            // or if base last digit's evenness is not the same as arg last digit's evenness...
-	            // (FAILS when e.g. base.c[0] = 10 and c[0] = 1)
-	            || ( base['c'][ base['c'].length - 1 ] & 1 ) != ( c[ c.length - 1 ] & 1 )
-	              // or if base is 2 and there is more than one 1 in arg in base 2.
-	              // (SLOWS the method down significantly)
-	              || base['eq'](2) && arg.toString(2).replace( /[^1]+/g, '' ) != '1';
-	             */
-
-	        external = false;
-	        sd = pr + guard;
-	        sd10 = sd + 10;
-
-	        num = ln( arg, sd );
-
-	        if (base10) {
-
-	            if ( sd10 > LN10.length ) {
-	                ifExceptionsThrow( Decimal, 1, sd10, 'log' );
-	            }
-	            denom = new Decimal( LN10.slice( 0, sd10 ) );
-	        } else {
-	            denom = ln( base, sd );
-	        }
-
-	        // The result will have 5 rounding digits.
-	        r = div( num, denom, sd, 1 );
-
-	        /*
-	         If at a rounding boundary, i.e. the result's rounding digits are [49]9999 or [50]0000,
-	         calculate 10 further digits.
-
-	         If the result is known to have an infinite decimal expansion, repeat this until it is
-	         clear that the result is above or below the boundary. Otherwise, if after calculating
-	         the 10 further digits, the last 14 are nines, round up and assume the result is exact.
-	         Also assume the result is exact if the last 14 are zero.
-
-	         Example of a result that will be incorrectly rounded:
-	         log[1048576](4503599627370502) = 2.60000000000000009610279511444746...
-	         The above result correctly rounded using ROUND_CEIL to 1 decimal place should be 2.7,
-	         but it will be given as 2.6 as there are 15 zeros immediately after the requested
-	         decimal place, so the exact result would be assumed to be 2.6, which rounded using
-	         ROUND_CEIL to 1 decimal place is still 2.6.
-	         */
-	        if ( checkRoundingDigits( r['c'], i = pr, rm ) ) {
-
-	            do {
-	                sd += 10;
-	                num = ln( arg, sd );
-
-	                if (base10) {
-	                    sd10 = sd + 10;
-
-	                    if ( sd10 > LN10.length ) {
-	                        ifExceptionsThrow( Decimal, 1, sd10, 'log' );
-	                    }
-	                    denom = new Decimal( LN10.slice( 0, sd10 ) );
-	                } else {
-	                    denom = ln( base, sd );
-	                }
-
-	                r = div( num, denom, sd, 1 );
-
-	                if ( !inf ) {
-
-	                    // Check for 14 nines from the 2nd rounding digit, as the first may be 4.
-	                    if ( +coefficientToString( r['c'] ).slice( i + 1, i + 15 ) + 1 == 1e14 ) {
-	                        r = rnd( r, pr + 1, 0 );
-	                    }
-
-	                    break;
-	                }
-	            } while ( checkRoundingDigits( r['c'], i += 10, rm ) );
-	        }
-	        external = true;
-
-	        return rnd( r, pr, rm );
-	    };
-
-
-	    /*
-	     *  n - 0 = n
-	     *  n - N = N
-	     *  n - I = -I
-	     *  0 - n = -n
-	     *  0 - 0 = 0
-	     *  0 - N = N
-	     *  0 - I = -I
-	     *  N - n = N
-	     *  N - 0 = N
-	     *  N - N = N
-	     *  N - I = N
-	     *  I - n = I
-	     *  I - 0 = I
-	     *  I - N = N
-	     *  I - I = N
-	     *
-	     * Return a new Decimal whose value is the value of this Decimal minus Decimal(y, b), rounded
-	     * to precision significant digits using rounding mode rounding.
-	     *
-	     */
-	    P['minus'] = function ( y, b ) {
-	        var t, i, j, xLTy,
-	            x = this,
-	            Decimal = x['constructor'],
-	            a = x['s'];
-
-	        id = 8;
-	        y = new Decimal( y, b );
-	        b = y['s'];
-
-	        // Either NaN?
-	        if ( !a || !b ) {
-
-	            return new Decimal(NaN);
-	        }
-
-	        // Signs differ?
-	        if ( a != b ) {
-	            y['s'] = -b;
-
-	            return x['plus'](y);
-	        }
-
-	        var xc = x['c'],
-	            yc = y['c'],
-	            e = mathfloor( y['e'] / LOGBASE ),
-	            k = mathfloor( x['e'] / LOGBASE ),
-	            pr = Decimal['precision'],
-	            rm = Decimal['rounding'];
-
-	        if ( !k || !e ) {
-
-	            // Either Infinity?
-	            if ( !xc || !yc ) {
-
-	                return xc ? ( y['s'] = -b, y ) : new Decimal( yc ? x : NaN );
-	            }
-
-	            // Either zero?
-	            if ( !xc[0] || !yc[0] ) {
-
-	                // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
-	                x = yc[0] ? ( y['s'] = -b, y ) : new Decimal( xc[0] ? x :
-
-	                  // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
-	                  rm == 3 ? -0 : 0 );
-
-	                return external ? rnd( x, pr, rm ) : x;
-	            }
-	        }
-
-	        xc = xc.slice();
-	        i = xc.length;
-
-	        // Determine which is the bigger number. Prepend zeros to equalise exponents.
-	        if ( a = k - e ) {
-
-	            if ( xLTy = a < 0 ) {
-	                a = -a;
-	                t = xc;
-	                i = yc.length;
-	            } else {
-	                e = k;
-	                t = yc;
-	            }
-
-	            if ( ( k = Math.ceil( pr / LOGBASE ) ) > i ) {
-	                i = k;
-	            }
-
-	            /*
-	             Numbers with massively different exponents would result in a massive number of
-	             zeros needing to be prepended, but this can be avoided while still ensuring correct
-	             rounding by limiting the number of zeros to max( pr, i ) + 2, where pr is precision and
-	             i is the length of the coefficient of whichever is greater, x or y.
-	             */
-	            if ( a > ( i += 2 ) ) {
-	                a = i;
-	                t.length = 1;
-	            }
-
-	            t.reverse();
-	            for ( b = a; b--; t.push(0) );
-	            t.reverse();
-	        } else {
-	            // Exponents equal. Check digits.
-
-	            if ( xLTy = i < ( j = yc.length ) ) {
-	                j = i;
-	            }
-
-	            for ( a = b = 0; b < j; b++ ) {
-
-	                if ( xc[b] != yc[b] ) {
-	                    xLTy = xc[b] < yc[b];
-
-	                    break;
-	                }
-	            }
-	        }
-
-	        // x < y? Point xc to the array of the bigger number.
-	        if ( xLTy ) {
-	            t = xc, xc = yc, yc = t;
-	            y['s'] = -y['s'];
-	        }
-
-	        /*
-	         Append zeros to xc if shorter. No need to add zeros to yc if shorter as subtraction only
-	         needs to start at yc length.
-	         */
-	        if ( ( b = -( ( j = xc.length ) - yc.length ) ) > 0 ) {
-
-	            for ( ; b--; xc[j++] = 0 );
-	        }
-
-	        // Subtract yc from xc.
-	        for ( k = BASE - 1, b = yc.length; b > a; ) {
-
-	            if ( xc[--b] < yc[b] ) {
-
-	                for ( i = b; i && !xc[--i]; xc[i] = k );
-	                --xc[i];
-	                xc[b] += BASE;
-	            }
-	            xc[b] -= yc[b];
-	        }
-
-	        // Remove trailing zeros.
-	        for ( ; xc[--j] == 0; xc.pop() );
-
-	        // Remove leading zeros and adjust exponent accordingly.
-	        for ( ; xc[0] == 0; xc.shift(), --e );
-
-	        if ( !xc[0] ) {
-
-	            // Zero.
-	            xc = [ e = 0 ];
-
-	            // Following IEEE 754 (2008) 6.3, n - n = -0 when rounding towards -Infinity.
-	            y['s'] = rm == 3 ? -1 : 1;
-	        }
-
-	        y['c'] = xc;
-
-	        // Get the number of digits of xc[0].
-	        for ( a = 1, b = xc[0]; b >= 10; b /= 10, a++ );
-	        y['e'] = a + e * LOGBASE - 1;
-
-	        return external ? rnd( y, pr, rm ) : y;
-	    };
-
-
-	    /*
-	     *   n % 0 =  N
-	     *   n % N =  N
-	     *   n % I =  n
-	     *   0 % n =  0
-	     *  -0 % n = -0
-	     *   0 % 0 =  N
-	     *   0 % N =  N
-	     *   0 % I =  0
-	     *   N % n =  N
-	     *   N % 0 =  N
-	     *   N % N =  N
-	     *   N % I =  N
-	     *   I % n =  N
-	     *   I % 0 =  N
-	     *   I % N =  N
-	     *   I % I =  N
-	     *
-	     * Return a new Decimal whose value is the value of this Decimal modulo Decimal(y, b), rounded
-	     * to precision significant digits using rounding mode rounding.
-	     *
-	     * The result depends on the modulo mode.
-	     *
-	     */
-	    P['modulo'] = P['mod'] = function ( y, b ) {
-	        var n, q,
-	            x = this,
-	            Decimal = x['constructor'],
-	            m = Decimal['modulo'];
-
-	        id = 9;
-	        y = new Decimal( y, b );
-	        b = y['s'];
-	        n = !x['c'] || !b || y['c'] && !y['c'][0];
-
-	        /*
-	         Return NaN if x is Infinity or NaN, or y is NaN or zero, else return x if y is Infinity
-	         or x is zero.
-	         */
-	        if ( n || !y['c'] || x['c'] && !x['c'][0] ) {
-
-	            return n
-	              ? new Decimal(NaN)
-	              : rnd( new Decimal(x), Decimal['precision'], Decimal['rounding'] );
-	        }
-
-	        external = false;
-
-	        if ( m == 9 ) {
-
-	            // Euclidian division: q = sign(y) * floor(x / abs(y))
-	            // r = x - qy    where  0 <= r < abs(y)
-	            y['s'] = 1;
-	            q = div( x, y, 0, 3, 1 );
-	            y['s'] = b;
-	            q['s'] *= b;
-	        } else {
-	            q = div( x, y, 0, m, 1 );
-	        }
-
-	        q = q['times'](y);
-	        external = true;
-
-	        return x['minus'](q);
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the natural logarithm of the value of this Decimal,
-	     * rounded to precision significant digits using rounding mode rounding.
-	     *
-	     */
-	    P['naturalLogarithm'] = P['ln'] = function () {
-
-	        return ln(this);
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal negated, i.e. as if
-	     * multiplied by -1.
-	     *
-	     */
-	    P['negated'] = P['neg'] = function () {
-	        var x = new this['constructor'](this);
-	        x['s'] = -x['s'] || null;
-
-	        return rnd(x);
-	    };
-
-
-	    /*
-	     *  n + 0 = n
-	     *  n + N = N
-	     *  n + I = I
-	     *  0 + n = n
-	     *  0 + 0 = 0
-	     *  0 + N = N
-	     *  0 + I = I
-	     *  N + n = N
-	     *  N + 0 = N
-	     *  N + N = N
-	     *  N + I = N
-	     *  I + n = I
-	     *  I + 0 = I
-	     *  I + N = N
-	     *  I + I = I
-	     *
-	     * Return a new Decimal whose value is the value of this Decimal plus Decimal(y, b), rounded
-	     * to precision significant digits using rounding mode rounding.
-	     *
-	     */
-	    P['plus'] = function ( y, b ) {
-	        var t,
-	            x = this,
-	            Decimal = x['constructor'],
-	            a = x['s'];
-
-	        id = 10;
-	        y = new Decimal( y, b );
-	        b = y['s'];
-
-	        // Either NaN?
-	        if ( !a || !b ) {
-
-	            return new Decimal(NaN);
-	        }
-
-	        // Signs differ?
-	        if ( a != b ) {
-	            y['s'] = -b;
-
-	            return x['minus'](y);
-	        }
-
-	        var xc = x['c'],
-	            yc = y['c'],
-	            e = mathfloor( y['e'] / LOGBASE ),
-	            k = mathfloor( x['e'] / LOGBASE ),
-	            pr = Decimal['precision'],
-	            rm = Decimal['rounding'];
-
-	        if ( !k || !e ) {
-
-	            // Either Infinity?
-	            if ( !xc || !yc ) {
-
-	                // Return +-Infinity.
-	                return new Decimal( a / 0 );
-	            }
-
-	            // Either zero?
-	            if ( !xc[0] || !yc[0] ) {
-
-	                // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
-	                x = yc[0] ? y : new Decimal( xc[0] ? x : a * 0 );
-
-	                return external ? rnd( x, pr, rm ) : x;
-	            }
-	        }
-
-	        xc = xc.slice();
-
-	        // Prepend zeros to equalise exponents. Note: Faster to use reverse then do unshifts.
-	        if ( a = k - e ) {
-
-	            if ( a < 0 ) {
-	                a = -a;
-	                t = xc;
-	                b = yc.length;
-	            } else {
-	                e = k;
-	                t = yc;
-	                b = xc.length;
-	            }
-
-	            if ( ( k = Math.ceil( pr / LOGBASE ) ) > b ) {
-	                b = k;
-	            }
-
-	            // Limit number of zeros prepended to max( pr, b ) + 1.
-	            if ( a > ++b ) {
-	                a = b;
-	                t.length = 1;
-	            }
-
-	            for ( t.reverse(); a--; t.push(0) );
-	            t.reverse();
-	        }
-
-	        // Point xc to the longer array.
-	        if ( xc.length - yc.length < 0 ) {
-	            t = yc, yc = xc, xc = t;
-	        }
-
-	        // Only start adding at yc.length - 1 as the further digits of xc can be left as they are.
-	        for ( a = yc.length, b = 0, k = BASE; a; xc[a] %= k ) {
-	            b = ( xc[--a] = xc[a] + yc[a] + b ) / k | 0;
-	        }
-
-	        if (b) {
-	            xc.unshift(b);
-	            ++e;
-	        }
-
-	        // Remove trailing zeros.
-	        for ( a = xc.length; xc[--a] == 0; xc.pop() );
-
-	        // No need to check for zero, as +x + +y != 0 && -x + -y != 0
-
-	        y['c'] = xc;
-
-	        // Get the number of digits of xc[0].
-	        for ( a = 1, b = xc[0]; b >= 10; b /= 10, a++ );
-	        y['e'] = a + e * LOGBASE - 1;
-
-	        return external ? rnd( y, pr, rm ) : y;
-	    };
-
-
-	    /*
-	     * Return the number of significant digits of this Decimal.
-	     *
-	     * [z] {boolean|number} Whether to count integer-part trailing zeros: true, false, 1 or 0.
-	     *
-	     */
-	    P['precision'] = P['sd'] = function (z) {
-	        var n = null,
-	            x = this;
-
-	        if ( z != n && z !== !!z && z !== 1 && z !== 0 ) {
-
-	            // 'precision() argument not a boolean or binary digit: {z}'
-	            ifExceptionsThrow( x['constructor'], 'argument', z, 'precision', 1 );
-	        }
-
-	        if ( x['c'] ) {
-	            n = getCoeffLength( x['c'] );
-
-	            if ( z && x['e'] + 1 > n ) {
-	                n = x['e'] + 1;
-	            }
-	        }
-
-	        return n;
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal rounded to a whole number using
-	     * rounding mode rounding.
-	     *
-	     */
-	    P['round'] = function () {
-	        var x = this,
-	            Decimal = x['constructor'];
-
-	        return rnd( new Decimal(x), x['e'] + 1, Decimal['rounding'] );
-	    };
-
-
-	    /*
-	     *  sqrt(-n) =  N
-	     *  sqrt( N) =  N
-	     *  sqrt(-I) =  N
-	     *  sqrt( I) =  I
-	     *  sqrt( 0) =  0
-	     *  sqrt(-0) = -0
-	     *
-	     * Return a new Decimal whose value is the square root of this Decimal, rounded to precision
-	     * significant digits using rounding mode rounding.
-	     *
-	     */
-	    P['squareRoot'] = P['sqrt'] = function () {
-	        var m, n, sd, r, rep, t,
-	            x = this,
-	            c = x['c'],
-	            s = x['s'],
-	            e = x['e'],
-	            Decimal = x['constructor'],
-	            half = new Decimal(0.5);
-
-	        // Negative/NaN/Infinity/zero?
-	        if ( s !== 1 || !c || !c[0] ) {
-
-	            return new Decimal( !s || s < 0 && ( !c || c[0] ) ? NaN : c ? x : 1 / 0 );
-	        }
-
-	        external = false;
-
-	        // Initial estimate.
-	        s = Math.sqrt( +x );
-
-	        /*
-	         Math.sqrt underflow/overflow?
-	         Pass x to Math.sqrt as integer, then adjust the exponent of the result.
-	         */
-	        if ( s == 0 || s == 1 / 0 ) {
-	            n = coefficientToString(c);
-
-	            if ( ( n.length + e ) % 2 == 0 ) {
-	                n += '0';
-	            }
-
-	            s = Math.sqrt(n);
-	            e = mathfloor( ( e + 1 ) / 2 ) - ( e < 0 || e % 2 );
-
-	            if ( s == 1 / 0 ) {
-	                n = '1e' + e;
-	            } else {
-	                n = s.toExponential();
-	                n = n.slice( 0, n.indexOf('e') + 1 ) + e;
-	            }
-
-	            r = new Decimal(n);
-	        } else {
-	            r = new Decimal( s.toString() );
-	        }
-
-	        sd = ( e = Decimal['precision'] ) + 3;
-
-	        // Newton-Raphson iteration.
-	        for ( ; ; ) {
-	            t = r;
-	            r = half['times']( t['plus']( div( x, t, sd + 2, 1 ) ) );
-
-	            if ( coefficientToString( t['c'] ).slice( 0, sd ) ===
-	                ( n = coefficientToString( r['c'] ) ).slice( 0, sd ) ) {
-	                n = n.slice( sd - 3, sd + 1 );
-
-	                /*
-	                 The 4th rounding digit may be in error by -1 so if the 4 rounding digits are
-	                 9999 or 4999 (i.e. approaching a rounding boundary) continue the iteration.
-	                 */
-	                if ( n == '9999' || !rep && n == '4999' ) {
-
-	                    /*
-	                     On the first iteration only, check to see if rounding up gives the exact result
-	                     as the nines may infinitely repeat.
-	                     */
-	                    if ( !rep ) {
-	                        rnd( t, e + 1, 0 );
-
-	                        if ( t['times'](t)['eq'](x) ) {
-	                            r = t;
-
-	                            break;
-	                        }
-	                    }
-	                    sd += 4;
-	                    rep = 1;
-	                } else {
-
-	                    /*
-	                     If the rounding digits are null, 0{0,4} or 50{0,3}, check for an exact result.
-	                     If not, then there are further digits and m will be truthy.
-	                     */
-	                    if ( !+n || !+n.slice(1) && n.charAt(0) == '5' ) {
-
-	                        // Truncate to the first rounding digit.
-	                        rnd( r, e + 1, 1 );
-	                        m = !r['times'](r)['eq'](x);
-	                    }
-
-	                    break;
-	                }
-	            }
-	        }
-	        external = true;
-
-	        return rnd( r, e, Decimal['rounding'], m );
-	    };
-
-
-	    /*
-	     *  n * 0 = 0
-	     *  n * N = N
-	     *  n * I = I
-	     *  0 * n = 0
-	     *  0 * 0 = 0
-	     *  0 * N = N
-	     *  0 * I = N
-	     *  N * n = N
-	     *  N * 0 = N
-	     *  N * N = N
-	     *  N * I = N
-	     *  I * n = I
-	     *  I * 0 = N
-	     *  I * N = N
-	     *  I * I = I
-	     *
-	     * Return a new Decimal whose value is this Decimal times Decimal(y), rounded to precision
-	     * significant digits using rounding mode rounding.
-	     *
-	     */
-	    P['times'] = function ( y, b ) {
-	        var c, e,
-	            x = this,
-	            Decimal = x['constructor'],
-	            xc = x['c'],
-	            yc = ( id = 11, y = new Decimal( y, b ), y['c'] ),
-	            i = mathfloor( x['e'] / LOGBASE ),
-	            j = mathfloor( y['e'] / LOGBASE ),
-	            a = x['s'];
-
-	        b = y['s'];
-
-	        y['s'] = a == b ? 1 : -1;
-
-	        // Either NaN/Infinity/0?
-	        if ( !i && ( !xc || !xc[0] ) || !j && ( !yc || !yc[0] ) ) {
-
-	            // Either NaN?
-	            return new Decimal( !a || !b ||
-
-	              // x is 0 and y is Infinity  or y is 0 and x is Infinity?
-	              xc && !xc[0] && !yc || yc && !yc[0] && !xc
-
-	                // Return NaN.
-	                ? NaN
-
-	                // Either Infinity?
-	                : !xc || !yc
-
-	                  // Return +-Infinity.
-	                  ? y['s'] / 0
-
-	                  // x or y is 0. Return +-0.
-	                  : y['s'] * 0 );
-	        }
-
-	        e = i + j;
-	        a = xc.length;
-	        b = yc.length;
-
-	        if ( a < b ) {
-
-	            // Swap.
-	            c = xc, xc = yc, yc = c;
-	            j = a, a = b, b = j;
-	        }
-
-	        for ( j = a + b, c = []; j--; c.push(0) );
-
-	        // Multiply!
-	        for ( i = b - 1; i > -1; i-- ) {
-	            b = 0;
-
-	            for ( j = a + i; j > i; ) {
-	                  b = c[j] + yc[i] * xc[j - i - 1] + b;
-	                  c[j--] = b % BASE | 0;
-	                  b = b / BASE | 0;
-	            }
-	            c[j] = ( c[j] + b ) % BASE | 0;
-	        }
-
-	        if (b) {
-	            ++e;
-	        } else if ( !c[0] ) {
-
-	            // Remove leading zero.
-	            c.shift();
-	        }
-
-	        // Remove trailing zeros.
-	        for ( j = c.length; !c[--j]; c.pop() );
-	        y['c'] = c;
-
-	        // Get the number of digits of c[0].
-	        for ( a = 1, b = c[0]; b >= 10; b /= 10, a++ );
-	        y['e'] = a + e * LOGBASE - 1;
-
-	        return external ? rnd( y, Decimal['precision'], Decimal['rounding'] ) : y;
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of dp
-	     * decimal places using rounding mode rm or rounding if rm is omitted.
-	     *
-	     * If dp is omitted, return a new Decimal whose value is the value of this Decimal.
-	     *
-	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
-	     *
-	     * 'toDP() dp out of range: {dp}'
-	     * 'toDP() dp not an integer: {dp}'
-	     * 'toDP() rounding mode not an integer: {rm}'
-	     * 'toDP() rounding mode out of range: {rm}'
-	     *
-	     */
-	    P['toDecimalPlaces'] = P['toDP'] = function ( dp, rm ) {
-	        var x = this;
-	        x = new x['constructor'](x);
-
-	        return dp == null || !checkArg( x, dp, 'toDP' )
-	          ? x
-	          : rnd( x, ( dp | 0 ) + x['e'] + 1, checkRM( x, rm, 'toDP' ) );
-	    };
-
-
-	    /*
-	     * Return a string representing the value of this Decimal in exponential notation rounded to dp
-	     * fixed decimal places using rounding mode rounding.
-	     *
-	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
-	     *
-	     * errors true: Throw if dp and rm are not undefined, null or integers in range.
-	     * errors false: Ignore dp and rm if not numbers or not in range, and truncate non-integers.
-	     *
-	     * 'toExponential() dp not an integer: {dp}'
-	     * 'toExponential() dp out of range: {dp}'
-	     * 'toExponential() rounding mode not an integer: {rm}'
-	     * 'toExponential() rounding mode out of range: {rm}'
-	     *
-	     */
-	    P['toExponential'] = function ( dp, rm ) {
-	        var x = this;
-
-	        return x['c']
-	          ? format( x, dp != null && checkArg( x, dp, 'toExponential' ) ? dp | 0 : null,
-	            dp != null && checkRM( x, rm, 'toExponential' ), 1 )
-	          : x.toString();
-	    };
-
-
-	    /*
-	     * Return a string representing the value of this Decimal in normal (fixed-point) notation to
-	     * dp fixed decimal places and rounded using rounding mode rm or rounding if rm is omitted.
-	     *
-	     * Note: as with JS numbers, (-0).toFixed(0) is '0', but e.g. (-0.00001).toFixed(0) is '-0'.
-	     *
-	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
-	     *
-	     * errors true: Throw if dp and rm are not undefined, null or integers in range.
-	     * errors false: Ignore dp and rm if not numbers or not in range, and truncate non-integers.
-	     *
-	     * 'toFixed() dp not an integer: {dp}'
-	     * 'toFixed() dp out of range: {dp}'
-	     * 'toFixed() rounding mode not an integer: {rm}'
-	     * 'toFixed() rounding mode out of range: {rm}'
-	     *
-	     */
-	    P['toFixed'] = function ( dp, rm ) {
-	        var str,
-	            x = this,
-	            Decimal = x['constructor'],
-	            neg = Decimal['toExpNeg'],
-	            pos = Decimal['toExpPos'];
-
-	        if ( dp != null ) {
-	            dp = checkArg( x, dp, str = 'toFixed' ) ? x['e'] + ( dp | 0 ) : null;
-	            rm = checkRM( x, rm, str );
-	        }
-
-	        // Prevent toString returning exponential notation;
-	        Decimal['toExpNeg'] = -( Decimal['toExpPos'] = 1 / 0 );
-
-	        if ( dp == null || !x['c'] ) {
-	            str = x.toString();
-	        } else {
-	            str = format( x, dp, rm );
-
-	            // (-0).toFixed() is '0', but (-0.1).toFixed() is '-0'.
-	            // (-0).toFixed(1) is '0.0', but (-0.01).toFixed(1) is '-0.0'.
-	            if ( x['s'] < 0 && x['c'] ) {
-
-	                // As e.g. (-0).toFixed(3), will wrongly be returned as -0.000 from toString.
-	                if ( !x['c'][0] ) {
-	                    str = str.replace( '-', '' );
-
-	                // As e.g. -0.5 if rounded to -0 will cause toString to omit the minus sign.
-	                } else if ( str.indexOf('-') < 0 ) {
-	                    str = '-' + str;
-	                }
-	            }
-	        }
-	        Decimal['toExpNeg'] = neg;
-	        Decimal['toExpPos'] = pos;
-
-	        return str;
-	    };
-
-
-	    /*
-	     * Return a string representing the value of this Decimal in fixed-point notation to dp decimal
-	     * places, rounded using rounding mode rm or Decimal.rounding if rm is omitted, and formatted
-	     * according to the following properties of the Decimal.format object.
-	     *
-	     *  Decimal.format = {
-	     *      decimalSeparator : '.',
-	     *      groupSeparator : ',',
-	     *      groupSize : 3,
-	     *      secondaryGroupSize : 0,
-	     *      fractionGroupSeparator : '\xA0',    // non-breaking space
-	     *      fractionGroupSize : 0
-	     *  };
-	     *
-	     * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive
-	     *
-	     * (If dp or rm are invalid the error message will give the offending method call as toFixed.)
-	     *
-	     */
-	    P['toFormat'] = function( dp, rm ) {
-	        var x = this;
-
-	        if ( !x['c'] ) {
-	            return x.toString();
-	        }
-
-	        var i,
-	            isNeg = x['s'] < 0,
-	            f = x['constructor']['format'],
-	            groupSeparator = f['groupSeparator'],
-	            g1 = +f['groupSize'],
-	            g2 = +f['secondaryGroupSize'],
-	            arr = x.toFixed( dp, rm ).split('.'),
-	            intPart = arr[0],
-	            fractionPart = arr[1],
-	            intDigits = isNeg ? intPart.slice(1) : intPart,
-	            len = intDigits.length;
-
-	        if (g2) {
-	            len -= ( i = g1, g1 = g2, g2 = i );
-	        }
-
-	        if ( g1 > 0 && len > 0 ) {
-	            i = len % g1 || g1;
-	            intPart = intDigits.substr( 0, i );
-
-	            for ( ; i < len; i += g1 ) {
-	                intPart += groupSeparator + intDigits.substr( i, g1 );
-	            }
-
-	            if ( g2 > 0 ) {
-	                intPart += groupSeparator + intDigits.slice(i);
-	            }
-
-	            if (isNeg) {
-	                intPart = '-' + intPart;
-	            }
-	        }
-
-	        return fractionPart
-	          ? intPart + f['decimalSeparator'] + ( ( g2 = +f['fractionGroupSize'] )
-	            ? fractionPart.replace( new RegExp( '\\d{' + g2 + '}\\B', 'g' ),
-	              '$&' + f['fractionGroupSeparator'] )
-	            : fractionPart )
-	          : intPart;
-	    };
-
-
-	    /*
-	     * Return a string array representing the value of this Decimal as a simple fraction with an
-	     * integer numerator and an integer denominator.
-	     *
-	     * The denominator will be a positive non-zero value less than or equal to the specified
-	     * maximum denominator. If a maximum denominator is not specified, the denominator will be
-	     * the lowest value necessary to represent the number exactly.
-	     *
-	     * [maxD] {number|string|Decimal} Maximum denominator. Integer >= 1 and < Infinity.
-	     *
-	     */
-	    P['toFraction'] = function (maxD) {
-	        var d0, d2, e, frac, n, n0, p, q,
-	            x = this,
-	            Decimal = x['constructor'],
-	            n1 = d0 = new Decimal( Decimal['ONE'] ),
-	            d1 = n0 = new Decimal(0),
-	            xc = x['c'],
-	            d = new Decimal(d1);
-
-	        // NaN, Infinity.
-	        if ( !xc ) {
-
-	            return x.toString();
-	        }
-
-	        e = d['e'] = getCoeffLength(xc) - x['e'] - 1;
-	        d['c'][0] = mathpow( 10, ( p = e % LOGBASE ) < 0 ? LOGBASE + p : p );
-
-	        // If maxD is undefined or null...
-	        if ( maxD == null ||
-
-	             // or NaN...
-	             ( !( id = 12, n = new Decimal(maxD) )['s'] ||
-
-	               // or less than 1, or Infinity...
-	               ( outOfRange = n['cmp'](n1) < 0 || !n['c'] ) ||
-
-	                 // or not an integer...
-	                 ( Decimal['errors'] && mathfloor( n['e'] / LOGBASE ) < n['c'].length - 1 ) ) &&
-
-	                   // 'toFraction() max denominator not an integer: {maxD}'
-	                   // 'toFraction() max denominator out of range: {maxD}'
-	                   !ifExceptionsThrow( Decimal, 'max denominator', maxD, 'toFraction', 0 ) ||
-
-	                     // or greater than the maximum denominator needed to specify the value exactly.
-	                     ( maxD = n )['cmp'](d) > 0 ) {
-
-	            // d is 10**e, n1 is 1.
-	            maxD = e > 0 ? d : n1;
-	        }
-
-	        external = false;
-	        n = new Decimal( coefficientToString(xc) );
-	        p = Decimal['precision'];
-	        Decimal['precision'] = e = xc.length * LOGBASE * 2;
-
-	        for ( ; ; )  {
-	            q = div( n, d, 0, 1, 1 );
-	            d2 = d0['plus']( q['times'](d1) );
-
-	            if ( d2['cmp'](maxD) == 1 ) {
-
-	                break;
-	            }
-	            d0 = d1;
-	            d1 = d2;
-
-	            n1 = n0['plus']( q['times']( d2 = n1 ) );
-	            n0 = d2;
-
-	            d = n['minus']( q['times']( d2 = d ) );
-	            n = d2;
-	        }
-
-	        d2 = div( maxD['minus'](d0), d1, 0, 1, 1 );
-	        n0 = n0['plus']( d2['times'](n1) );
-	        d0 = d0['plus']( d2['times'](d1) );
-	        n0['s'] = n1['s'] = x['s'];
-
-	        // Determine which fraction is closer to x, n0/d0 or n1/d1?
-	        frac = div( n1, d1, e, 1 )['minus'](x)['abs']()['cmp'](
-	               div( n0, d0, e, 1 )['minus'](x)['abs']() ) < 1
-	          ? [ n1 + '', d1 + '' ]
-	          : [ n0 + '', d0 + '' ];
-
-	        external = true;
-	        Decimal['precision'] = p;
-
-	        return frac;
-	    };
-
-
-	    /*
-	     * Returns a new Decimal whose value is the nearest multiple of the magnitude of n to the value
-	     * of this Decimal.
-	     *
-	     * If the value of this Decimal is equidistant from two multiples of n, the rounding mode rm,
-	     * or rounding if rm is omitted or is null or undefined, determines the direction of the
-	     * nearest multiple.
-	     *
-	     * In the context of this method, rounding mode 4 (ROUND_HALF_UP) is the same as rounding mode 0
-	     * (ROUND_UP), and so on.
-	     *
-	     * The return value will always have the same sign as this Decimal, unless either this Decimal
-	     * or n is NaN, in which case the return value will be also be NaN.
-	     *
-	     * The return value is not rounded to precision significant digits.
-	     *
-	     * n {number|string|Decimal} The magnitude to round to a multiple of.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
-	     *
-	     * 'toNearest() rounding mode not an integer: {rm}'
-	     * 'toNearest() rounding mode out of range: {rm}'
-	     *
-	     */
-	    P['toNearest'] = function ( n, rm ) {
-	        var x = this,
-	            Decimal = x['constructor'];
-
-	        x = new Decimal(x);
-
-	        if ( n == null ) {
-	            n = new Decimal( Decimal['ONE'] );
-	            rm = Decimal['rounding'];
-	        } else {
-	            id = 17;
-	            n = new Decimal(n);
-	            rm = checkRM( x, rm, 'toNearest' );
-	        }
-
-	        // If n is finite...
-	        if ( n['c'] ) {
-
-	           // If x is finite...
-	            if ( x['c'] ) {
-
-	                if ( n['c'][0] ) {
-	                    external = false;
-	                    x = div( x, n, 0, rm < 4 ? [4, 5, 7, 8][rm] : rm, 1 )['times'](n);
-	                    external = true;
-	                    rnd(x);
-	                } else {
-	                    x['c'] = [ x['e'] = 0 ];
-	                }
-	            }
-
-	        // n is NaN or +-Infinity. If x is not NaN...
-	        } else if ( x['s'] ) {
-
-	            // If n is +-Infinity...
-	            if ( n['s'] ) {
-	                n['s'] = x['s'];
-	            }
-	            x = n;
-	        }
-
-	        return x;
-	    };
-
-
-	    /*
-	     * Return the value of this Decimal converted to a number primitive.
-	     *
-	     */
-	    P['toNumber'] = function () {
-	        var x = this;
-
-	        // Ensure zero has correct sign.
-	        return +x || ( x['s'] ? 0 * x['s'] : NaN );
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal raised to the power
-	     * Decimal(y, b), rounded to precision significant digits using rounding mode rounding.
-	     *
-	     * ECMAScript compliant.
-	     *
-	     *   x is any value, including NaN.
-	     *   n is any number, including �Infinity unless stated.
-	     *
-	     *   pow( x, NaN )                           = NaN
-	     *   pow( x, �0 )                            = 1
-
-	     *   pow( NaN, nonzero )                     = NaN
-	     *   pow( abs(n) > 1, +Infinity )            = +Infinity
-	     *   pow( abs(n) > 1, -Infinity )            = +0
-	     *   pow( abs(n) == 1, �Infinity )           = NaN
-	     *   pow( abs(n) < 1, +Infinity )            = +0
-	     *   pow( abs(n) < 1, -Infinity )            = +Infinity
-	     *   pow( +Infinity, n > 0 )                 = +Infinity
-	     *   pow( +Infinity, n < 0 )                 = +0
-	     *   pow( -Infinity, odd integer > 0 )       = -Infinity
-	     *   pow( -Infinity, even integer > 0 )      = +Infinity
-	     *   pow( -Infinity, odd integer < 0 )       = -0
-	     *   pow( -Infinity, even integer < 0 )      = +0
-	     *   pow( +0, n > 0 )                        = +0
-	     *   pow( +0, n < 0 )                        = +Infinity
-	     *   pow( -0, odd integer > 0 )              = -0
-	     *   pow( -0, even integer > 0 )             = +0
-	     *   pow( -0, odd integer < 0 )              = -Infinity
-	     *   pow( -0, even integer < 0 )             = +Infinity
-	     *   pow( finite n < 0, finite non-integer ) = NaN
-	     *
-	     * For non-integer and larger exponents pow(x, y) is calculated using
-	     *
-	     *   x^y = exp(y*ln(x))
-	     *
-	     * Assuming the first 15 rounding digits are each equally likely to be any digit 0-9, the
-	     * probability of an incorrectly rounded result
-	     * P( [49]9{14} | [50]0{14} ) = 2 * 0.2 * 10^-14 = 4e-15 = 1/2.5e+14
-	     * i.e. 1 in 250,000,000,000,000
-	     *
-	     * If a result is incorrectly rounded the maximum error will be 1 ulp (unit in last place).
-	     *
-	     * y {number|string|Decimal} The power to which to raise this Decimal.
-	     * [b] {number} The base of y.
-	     *
-	     */
-	    P['toPower'] = P['pow'] = function ( y, b ) {
-	        var a, e, n, r,
-	            x = this,
-	            Decimal = x['constructor'],
-	            s = x['s'],
-	            yN = +( id = 13, y = new Decimal( y, b ) ),
-	            i = yN < 0 ? -yN : yN,
-	            pr = Decimal['precision'],
-	            rm = Decimal['rounding'];
-
-	        // Handle +-Infinity, NaN and +-0.
-	        if ( !x['c'] || !y['c'] || ( n = !x['c'][0] ) || !y['c'][0] ) {
-
-	            // valueOf -0 is 0, so check for 0 then multiply it by the sign.
-	            return new Decimal( mathpow( n ? s * 0 : +x, yN ) );
-	        }
-
-	        x = new Decimal(x);
-	        a = x['c'].length;
-
-	        // if x == 1
-	        if ( !x['e'] && x['c'][0] == x['s'] && a == 1 ) {
-
-	            return x;
-	        }
-
-	        b = y['c'].length - 1;
-
-	        // if y == 1
-	        if ( !y['e'] && y['c'][0] == y['s'] && !b ) {
-	            r = rnd( x, pr, rm );
-	        } else {
-	            e = mathfloor( y['e'] / LOGBASE );
-	            n = e >= b;
-
-	            // If y is not an integer and x is negative, return NaN.
-	            if ( !n && s < 0 ) {
-	                r = new Decimal(NaN);
-	            } else {
-
-	                /*
-	                 If the approximate number of significant digits of x multiplied by abs(y) is less
-	                 than INT_POW_LIMIT use the 'exponentiation by squaring' algorithm.
-	                 */
-	                if ( n && a * LOGBASE * i < INT_POW_LIMIT ) {
-	                    r = intPow( Decimal, x, i );
-
-	                    if ( y['s'] < 0 ) {
-
-	                        return Decimal['ONE']['div'](r);
-	                    }
-	                } else {
-
-	                    // Result is negative if x is negative and the last digit of integer y is odd.
-	                    s = s < 0 && y['c'][ Math.max( e, b ) ] & 1 ? -1 : 1;
-
-	                    b = mathpow( +x, yN );
-
-	                    /*
-	                     Estimate result exponent.
-	                     x^y = 10^e,  where e = y * log10(x)
-	                     log10(x) = log10(x_significand) + x_exponent
-	                     log10(x_significand) = ln(x_significand) / ln(10)
-	                     */
-	                    e = b == 0 || !isFinite(b)
-	                      ? mathfloor( yN * ( Math.log( '0.' + coefficientToString( x['c'] ) ) /
-	                        Math.LN10 + x['e'] + 1 ) )
-	                      : new Decimal( b + '' )['e'];
-
-	                    // Estimate may be incorrect e.g. x: 0.999999999999999999, y: 2.29, e: 0, r.e:-1
-
-	                    // Overflow/underflow?
-	                    if ( e > Decimal['maxE'] + 1 || e < Decimal['minE'] - 1 ) {
-
-	                        return new Decimal( e > 0 ? s / 0 : 0 );
-	                    }
-
-	                    external = false;
-	                    Decimal['rounding'] = x['s'] = 1;
-
-	                    /*
-	                     Estimate extra digits needed from ln(x) to ensure five correct rounding digits
-	                     in result (i was unnecessary before max exponent was extended?).
-	                     Example of failure before i was introduced: (precision: 10),
-	                     new Decimal(2.32456).pow('2087987436534566.46411')
-	                     should be 1.162377823e+764914905173815, but is 1.162355823e+764914905173815
-	                     */
-	                    i = Math.min( 12, ( e + '' ).length );
-
-	                    // r = x^y = exp(y*ln(x))
-	                    r = exp( y['times']( ln( x, pr + i ) ), pr );
-
-	                    // Truncate to the required precision plus five rounding digits.
-	                    r = rnd( r, pr + 5, 1 );
-
-	                    /*
-	                     If the rounding digits are [49]9999 or [50]0000 increase the precision by 10
-	                     and recalculate the result.
-	                     */
-	                    if ( checkRoundingDigits( r['c'], pr, rm ) ) {
-	                        e = pr + 10;
-
-	                        // Truncate to the increased precision plus five rounding digits.
-	                        r = rnd( exp( y['times']( ln( x, e + i ) ), e ), e + 5, 1 );
-
-	                        /*
-	                          Check for 14 nines from the 2nd rounding digit (the first rounding digit
-	                          may be 4 or 9).
-	                         */
-	                        if ( +coefficientToString( r['c'] ).slice( pr + 1, pr + 15 ) + 1 == 1e14 ) {
-	                            r = rnd( r, pr + 1, 0 );
-	                        }
-	                    }
-
-	                    r['s'] = s;
-	                    external = true;
-	                    Decimal['rounding'] = rm;
-	                }
-
-	                r = rnd( r, pr, rm );
-	            }
-	        }
-
-	        return r;
-	    };
-
-
-	    /*
-	     * Return a string representing the value of this Decimal rounded to sd significant digits
-	     * using rounding mode rounding.
-	     *
-	     * Return exponential notation if sd is less than the number of digits necessary to represent
-	     * the integer part of the value in normal notation.
-	     *
-	     * sd {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
-	     *
-	     * errors true: Throw if sd and rm are not undefined, null or integers in range.
-	     * errors false: Ignore sd and rm if not numbers or not in range, and truncate non-integers.
-	     *
-	     * 'toPrecision() sd not an integer: {sd}'
-	     * 'toPrecision() sd out of range: {sd}'
-	     * 'toPrecision() rounding mode not an integer: {rm}'
-	     * 'toPrecision() rounding mode out of range: {rm}'
-	     *
-	     */
-	    P['toPrecision'] = function ( sd, rm ) {
-	        var x = this;
-
-	        return sd != null && checkArg( x, sd, 'toPrecision', 1 ) && x['c']
-	          ? format( x, --sd | 0, checkRM( x, rm, 'toPrecision' ), 2 )
-	          : x.toString();
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is this Decimal rounded to a maximum of d significant
-	     * digits using rounding mode rm, or to precision and rounding respectively if omitted.
-	     *
-	     * [d] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
-	     * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
-	     *
-	     * 'toSD() digits out of range: {d}'
-	     * 'toSD() digits not an integer: {d}'
-	     * 'toSD() rounding mode not an integer: {rm}'
-	     * 'toSD() rounding mode out of range: {rm}'
-	     *
-	     */
-	    P['toSignificantDigits'] = P['toSD'] = function ( d, rm ) {
-	        var x = this,
-	            Decimal = x['constructor'];
-
-	        x = new Decimal(x);
-
-	        return d == null || !checkArg( x, d, 'toSD', 1 )
-	          ? rnd( x, Decimal['precision'], Decimal['rounding'] )
-	          : rnd( x, d | 0, checkRM( x, rm, 'toSD' ) );
-	    };
-
-
-	    /*
-	     * Return a string representing the value of this Decimal in base b, or base 10 if b is
-	     * omitted. If a base is specified, including base 10, round to precision significant digits
-	     * using rounding mode rounding.
-	     *
-	     * Return exponential notation if a base is not specified, and this Decimal has a positive
-	     * exponent equal to or greater than toExpPos, or a negative exponent equal to or less than
-	     * toExpNeg.
-	     *
-	     * [b] {number} Base. Integer, 2 to 64 inclusive.
-	     *
-	     */
-	    P['toString'] = function (b) {
-	        var u, str, strL,
-	            x = this,
-	            Decimal = x['constructor'],
-	            xe = x['e'];
-
-	        // Infinity or NaN?
-	        if ( xe === null ) {
-	            str = x['s'] ? 'Infinity' : 'NaN';
-
-	        // Exponential format?
-	        } else if ( b === u && ( xe <= Decimal['toExpNeg'] || xe >= Decimal['toExpPos'] ) ) {
-
-	            return format( x, null, Decimal['rounding'], 1 );
-	        } else {
-	            str = coefficientToString( x['c'] );
-
-	            // Negative exponent?
-	            if ( xe < 0 ) {
-
-	                // Prepend zeros.
-	                for ( ; ++xe; str = '0' + str );
-	                str = '0.' + str;
-
-	            // Positive exponent?
-	            } else if ( strL = str.length, xe > 0 ) {
-
-	                if ( ++xe > strL ) {
-
-	                    // Append zeros.
-	                    for ( xe -= strL; xe-- ; str += '0' );
-
-	                } else if ( xe < strL ) {
-	                    str = str.slice( 0, xe ) + '.' + str.slice(xe);
-	                }
-
-	            // Exponent zero.
-	            } else {
-	                u = str.charAt(0);
-
-	                if ( strL > 1 ) {
-	                    str = u + '.' + str.slice(1);
-
-	                // Avoid '-0'
-	                } else if ( u == '0' ) {
-
-	                    return u;
-	                }
-	            }
-
-	            if ( b != null ) {
-
-	                if ( !( outOfRange = !( b >= 2 && b < 65 ) ) &&
-	                  ( b == (b | 0) || !Decimal['errors'] ) ) {
-	                    str = convertBase( Decimal, str, b | 0, 10, x['s'] );
-
-	                    // Avoid '-0'
-	                    if ( str == '0' ) {
-
-	                        return str;
-	                    }
-	                } else {
-
-	                    // 'toString() base not an integer: {b}'
-	                    // 'toString() base out of range: {b}'
-	                    ifExceptionsThrow( Decimal, 'base', b, 'toString', 0 );
-	                }
-	            }
-	        }
-
-	        return x['s'] < 0 ? '-' + str : str;
-	    };
-
-
-	    /*
-	     * Return a new Decimal whose value is the value of this Decimal truncated to a whole number.
-	     *
-	     */
-	    P['truncated'] = P['trunc'] = function () {
-
-	        return rnd( new this['constructor'](this), this['e'] + 1, 1 );
-	    };
-
-
-	    /*
-	     * Return as toString, but do not accept a base argument.
-	     *
-	     * Ensures that JSON.stringify() uses toString for serialization.
-	     *
-	     */
-	    P['valueOf'] = P['toJSON'] = function () {
-
-	        return this.toString();
-	    };
-
-
-	    /*
-	    // Add aliases to match BigDecimal method names.
-	    P['add'] = P['plus'];
-	    P['subtract'] = P['minus'];
-	    P['multiply'] = P['times'];
-	    P['divide'] = P['div'];
-	    P['remainder'] = P['mod'];
-	    P['compareTo'] = P['cmp'];
-	    P['negate'] = P['neg'];
-	     */
-
-
-	    // Private functions for Decimal.prototype methods.
-
-
-	    /*
-	     *  coefficientToString
-	     *  checkRoundingDigits
-	     *  checkRM
-	     *  checkArg
-	     *  convertBase
-	     *  div
-	     *  exp
-	     *  format
-	     *  getCoeffLength
-	     *  ifExceptionsThrow
-	     *  intPow
-	     *  ln
-	     *  rnd
-	     */
-
-
-	    function coefficientToString(a) {
-	        var s, z,
-	            i = 1,
-	            j = a.length,
-	            r = a[0] + '';
-
-	        for ( ; i < j; i++ ) {
-	            s = a[i] + '';
-
-	            for ( z = LOGBASE - s.length; z--; ) {
-	                s = '0' + s;
-	            }
-
-	            r += s;
-	        }
-
-	        // '0'
-	        for ( j = r.length; r.charCodeAt(--j) === 48; );
-
-	        return r.slice( 0, j + 1 || 1 );
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v5.0.6 https://github.com/MikeMcl/decimal.js/LICENCE */
+	;(function (globalScope) {
+	  'use strict';
+
+
+	  /*
+	   *  decimal.js v5.0.6
+	   *  An arbitrary-precision Decimal type for JavaScript.
+	   *  https://github.com/MikeMcl/decimal.js
+	   *  Copyright (c) 2016 Michael Mclaughlin <M8ch88l@gmail.com>
+	   *  MIT Expat Licence
+	   */
+
+
+	  // -----------------------------------  EDITABLE DEFAULTS  ------------------------------------ //
+
+
+	    // The maximum exponent magnitude.
+	    // The limit on the value of `toExpNeg`, `toExpPos`, `minE` and `maxE`.
+	  var EXP_LIMIT = 9e15,                      // 0 to 9e15
+
+	    // The limit on the value of `precision`, and on the value of the first argument to
+	    // `toDecimalPlaces`, `toExponential`, `toFixed`, `toPrecision` and `toSignificantDigits`.
+	    MAX_DIGITS = 1e9,                        // 0 to 1e9
+
+	    // The base 88 alphabet used by `toJSON` and `fromJSON`.
+	    // 7 printable ASCII characters omitted (space) \ " & ' < >
+	    NUMERALS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./:;=?@[]^_`{|}~',
+
+	    // The natural logarithm of 10 (1025 digits).
+	    LN10 = '2.3025850929940456840179914546843642076011014886287729760333279009675726096773524802359972050895982983419677840422862486334095254650828067566662873690987816894829072083255546808437998948262331985283935053089653777326288461633662222876982198867465436674744042432743651550489343149393914796194044002221051017141748003688084012647080685567743216228355220114804663715659121373450747856947683463616792101806445070648000277502684916746550586856935673420670581136429224554405758925724208241314695689016758940256776311356919292033376587141660230105703089634572075440370847469940168269282808481184289314848524948644871927809676271275775397027668605952496716674183485704422507197965004714951050492214776567636938662976979522110718264549734772662425709429322582798502585509785265383207606726317164309505995087807523710333101197857547331541421808427543863591778117054309827482385045648019095610299291824318237525357709750539565187697510374970888692180205189339507238539205144634197265287286965110862571492198849978748873771345686209167058',
+
+	    // Pi (1025 digits).
+	    PI = '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989380952572010654858632789',
+
+
+	    // The initial configuration properties of the Decimal constructor.
+	    Decimal = {
+
+	      // These values must be integers within the stated ranges (inclusive).
+	      // Most of these values can be changed during run-time using `Decimal.config`.
+
+	      // The maximum number of significant digits of the result of a calculation or base conversion.
+	      // E.g. `Decimal.config({ precision: 20 });`
+	      precision: 20,                         // 1 to MAX_DIGITS
+
+	      // The rounding mode used when rounding to `precision`.
+	      //
+	      // ROUND_UP         0 Away from zero.
+	      // ROUND_DOWN       1 Towards zero.
+	      // ROUND_CEIL       2 Towards +Infinity.
+	      // ROUND_FLOOR      3 Towards -Infinity.
+	      // ROUND_HALF_UP    4 Towards nearest neighbour. If equidistant, up.
+	      // ROUND_HALF_DOWN  5 Towards nearest neighbour. If equidistant, down.
+	      // ROUND_HALF_EVEN  6 Towards nearest neighbour. If equidistant, towards even neighbour.
+	      // ROUND_HALF_CEIL  7 Towards nearest neighbour. If equidistant, towards +Infinity.
+	      // ROUND_HALF_FLOOR 8 Towards nearest neighbour. If equidistant, towards -Infinity.
+	      //
+	      // E.g.
+	      // `Decimal.rounding = 4;`
+	      // `Decimal.rounding = Decimal.ROUND_HALF_UP;`
+	      rounding: 4,                           // 0 to 8
+
+	      // The modulo mode used when calculating the modulus: a mod n.
+	      // The quotient (q = a / n) is calculated according to the corresponding rounding mode.
+	      // The remainder (r) is calculated as: r = a - n * q.
+	      //
+	      // UP         0 The remainder is positive if the dividend is negative, else is negative.
+	      // DOWN       1 The remainder has the same sign as the dividend (JavaScript %).
+	      // FLOOR      3 The remainder has the same sign as the divisor (Python %).
+	      // HALF_EVEN  6 The IEEE 754 remainder function.
+	      // EUCLID     9 Euclidian division. q = sign(n) * floor(a / abs(n)). Always positive.
+	      //
+	      // Truncated division (1), floored division (3), the IEEE 754 remainder (6), and Euclidian
+	      // division (9) are commonly used for the modulus operation. The other rounding modes can also
+	      // be used, but they may not give useful results.
+	      modulo: 1,                             // 0 to 9
+
+	      // The exponent value at and beneath which `toString` returns exponential notation.
+	      // JavaScript numbers: -7
+	      toExpNeg: -7,                          // 0 to -EXP_LIMIT
+
+	      // The exponent value at and above which `toString` returns exponential notation.
+	      // JavaScript numbers: 21
+	      toExpPos:  21,                         // 0 to EXP_LIMIT
+
+	      // The minimum exponent value, beneath which underflow to zero occurs.
+	      // JavaScript numbers: -324  (5e-324)
+	      minE: -EXP_LIMIT,                      // -1 to -EXP_LIMIT
+
+	      // The maximum exponent value, above which overflow to Infinity occurs.
+	      // JavaScript numbers: 308  (1.7976931348623157e+308)
+	      maxE: EXP_LIMIT,                       // 1 to EXP_LIMIT
+
+	      // Whether to use cryptographically-secure random number generation, if available.
+	      crypto: void 0                         // true/false/undefined
+	    },
+
+
+	  // ----------------------------------- END OF EDITABLE DEFAULTS ------------------------------- //
+
+
+	    inexact, noConflict, quadrant,
+	    cryptoObject = typeof crypto != 'undefined' ? crypto : null,
+	    external = true,
+
+	    decimalError = '[DecimalError] ',
+	    invalidArgument = decimalError + 'Invalid argument: ',
+	    precisionLimitExceeded = decimalError + 'Precision limit exceeded',
+
+	    mathfloor = Math.floor,
+	    mathpow = Math.pow,
+
+	    isBinary = /^0b([01]+(\.[01]*)?|\.[01]+)(p[+-]?\d+)?$/i,
+	    isHex = /^0x([0-9a-f]+(\.[0-9a-f]*)?|\.[0-9a-f]+)(p[+-]?\d+)?$/i,
+	    isOctal = /^0o([0-7]+(\.[0-7]*)?|\.[0-7]+)(p[+-]?\d+)?$/i,
+	    isDecimal = /^(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
+
+	    BASE = 1e7,
+	    LOG_BASE = 7,
+	    MAX_SAFE_INTEGER = 9007199254740991,
+
+	    LN10_PRECISION = LN10.length - 1,
+	    PI_PRECISION = PI.length - 1,
+
+	    // Decimal.prototype object
+	    P = {};
+
+
+	  // Decimal prototype methods
+
+
+	  /*
+	   *  absoluteValue             abs
+	   *  ceil
+	   *  comparedTo                cmp
+	   *  cosine                    cos
+	   *  cubeRoot                  cbrt
+	   *  decimalPlaces             dp
+	   *  dividedBy                 div
+	   *  dividedToIntegerBy        divToInt
+	   *  equals                    eq
+	   *  floor
+	   *  greaterThan               gt
+	   *  greaterThanOrEqualTo      gte
+	   *  hyperbolicCosine          cosh
+	   *  hyperbolicSine            sinh
+	   *  hyperbolicTangent         tanh
+	   *  inverseCosine             acos
+	   *  inverseHyperbolicCosine   acosh
+	   *  inverseHyperbolicSine     asinh
+	   *  inverseHyperbolicTangent  atanh
+	   *  inverseSine               asin
+	   *  inverseTangent            atan
+	   *  isFinite
+	   *  isInteger                 isInt
+	   *  isNaN
+	   *  isNegative                isNeg
+	   *  isPositive                isPos
+	   *  isZero
+	   *  lessThan                  lt
+	   *  lessThanOrEqualTo         lte
+	   *  logarithm                 log
+	   *  [maximum]                 [max]
+	   *  [minimum]                 [min]
+	   *  minus                     sub
+	   *  modulo                    mod
+	   *  naturalExponential        exp
+	   *  naturalLogarithm          ln
+	   *  negated                   neg
+	   *  plus                      add
+	   *  precision                 sd
+	   *  round
+	   *  sine                      sin
+	   *  squareRoot                sqrt
+	   *  tangent                   tan
+	   *  times                     mul
+	   *  toBinary
+	   *  toDecimalPlaces           toDP
+	   *  toExponential
+	   *  toFixed
+	   *  toFraction
+	   *  toHexadecimal             toHex
+	   *  toJSON
+	   *  toNearest
+	   *  toNumber
+	   *  toOctal
+	   *  toPower                   pow
+	   *  toPrecision
+	   *  toSignificantDigits       toSD
+	   *  toString
+	   *  truncated                 trunc
+	   *  valueOf
+	   */
+
+
+	  /*
+	   * Return a new Decimal whose value is the absolute value of this Decimal.
+	   *
+	   */
+	  P.absoluteValue = P.abs = function () {
+	    var x = new this.constructor(this);
+	    if (x.s < 0) x.s = 1;
+	    return finalise(x);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal rounded to a whole number in the
+	   * direction of positive Infinity.
+	   *
+	   */
+	  P.ceil = function () {
+	    return finalise(new this.constructor(this), this.e + 1, 2);
+	  };
+
+
+	  /*
+	   * Return
+	   *   1    if the value of this Decimal is greater than the value of `y`,
+	   *  -1    if the value of this Decimal is less than the value of `y`,
+	   *   0    if they have the same value,
+	   *   NaN  if the value of either Decimal is NaN.
+	   *
+	   */
+	  P.comparedTo = P.cmp = function (y) {
+	    var i, j, xdL, ydL,
+	      x = this,
+	      xd = x.d,
+	      yd = (y = new x.constructor(y)).d,
+	      xs = x.s,
+	      ys = y.s;
+
+	    // Either NaN or ±Infinity?
+	    if (!xd || !yd) {
+	      return !xs || !ys ? NaN : xs !== ys ? xs : xd === yd ? 0 : !xd ^ xs < 0 ? 1 : -1;
 	    }
 
+	    // Either zero?
+	    if (!xd[0] || !yd[0]) return xd[0] ? xs : yd[0] ? -ys : 0;
 
-	    /*
-	     * Check 5 rounding digits if repeating is null, 4 otherwise.
-	     * repeating == null if caller is log or pow,
-	     * repeating != null if caller is ln or exp.
-	     *
-	     *
-	     // Previous, much simpler implementation when coefficient was base 10.
-	     function checkRoundingDigits( c, i, rm, repeating ) {
-	         return ( !repeating && rm > 3 && c[i] == 4 ||
-	           ( repeating || rm < 4 ) && c[i] == 9 ) && c[i + 1] == 9 && c[i + 2] == 9 &&
-	             c[i + 3] == 9 && ( repeating != null || c[i + 4] == 9 ) ||
-	               repeating == null && ( c[i] == 5 || !c[i] ) && !c[i + 1] && !c[i + 2] &&
-	                 !c[i + 3] && !c[i + 4];
-	     }
-	     */
-	    function checkRoundingDigits( c, i, rm, repeating ) {
-	        var ci, k, n, r, rd;
+	    // Signs differ?
+	    if (xs !== ys) return xs;
 
-	        // Get the length of the first element of the array c.
-	        for ( k = 1, n = c[0]; n >= 10; n /= 10, k++ );
+	    // Compare exponents.
+	    if (x.e !== y.e) return x.e > y.e ^ xs < 0 ? 1 : -1;
 
-	        n = i - k;
+	    xdL = xd.length;
+	    ydL = yd.length;
 
-	        // Is the rounding digit in the first element of c?
-	        if ( n < 0 ) {
-	            n += LOGBASE;
-	            ci = 0;
-	        } else {
-	            ci = Math.ceil( ( n + 1 ) / LOGBASE );
-	            n %= LOGBASE;
-	        }
-
-	        k = mathpow( 10, LOGBASE - n );
-	        rd = c[ci] % k | 0;
-
-	        if ( repeating == null ) {
-
-	            if ( n < 3 ) {
-
-	                if ( n == 0 ) {
-	                    rd = rd / 100 | 0;
-	                } else if ( n == 1 ) {
-	                    rd = rd / 10 | 0;
-	                }
-
-	                r = rm < 4 && rd == 99999 || rm > 3 && rd == 49999 || rd == 50000 || rd == 0;
-	            } else {
-	                r = ( rm < 4 && rd + 1 == k || rm > 3 && rd + 1 == k / 2 ) &&
-	                    ( c[ci + 1] / k / 100 | 0 ) == mathpow( 10, n - 2 ) - 1 ||
-	                        ( rd == k / 2 || rd == 0 ) && ( c[ci + 1] / k / 100 | 0 ) == 0;
-	            }
-	        } else {
-
-	            if ( n < 4 ) {
-
-	                if ( n == 0 ) {
-	                    rd = rd / 1000 | 0;
-	                } else if ( n == 1 ) {
-	                    rd = rd / 100 | 0;
-	                } else if ( n == 2 ) {
-	                    rd = rd / 10 | 0;
-	                }
-
-	                r = ( repeating || rm < 4 ) && rd == 9999 || !repeating && rm > 3 && rd == 4999;
-	            } else {
-	                r = ( ( repeating || rm < 4 ) && rd + 1 == k ||
-	                ( !repeating && rm > 3 ) && rd + 1 == k / 2 ) &&
-	                    ( c[ci + 1] / k / 1000 | 0 ) == mathpow( 10, n - 3 ) - 1;
-	            }
-	        }
-
-	        return r;
+	    // Compare digit by digit.
+	    for (i = 0, j = xdL < ydL ? xdL : ydL; i < j; ++i) {
+	      if (xd[i] !== yd[i]) return xd[i] > yd[i] ^ xs < 0 ? 1 : -1;
 	    }
 
-
-	    /*
-	     * Check and return rounding mode. If rm is invalid, return rounding mode rounding.
-	     */
-	    function checkRM( x, rm, method ) {
-	        var Decimal = x['constructor'];
-
-	        return rm == null || ( ( outOfRange = rm < 0 || rm > 8 ) ||
-	          rm !== 0 && ( Decimal['errors'] ? parseInt : parseFloat )(rm) != rm ) &&
-	            !ifExceptionsThrow( Decimal, 'rounding mode', rm, method, 0 )
-	              ? Decimal['rounding'] : rm | 0;
-	    }
-
-
-	    /*
-	     * Check that argument n is in range, return true or false.
-	     */
-	    function checkArg( x, n, method, min ) {
-	        var Decimal = x['constructor'];
-
-	        return !( outOfRange = n < ( min || 0 ) || n >= MAX_DIGITS + 1 ) &&
-
-	          /*
-	           * Include 'n === 0' because Opera has 'parseFloat(-0) == -0' as false
-	           * despite having 'parseFloat(-0) === -0 && parseFloat('-0') === -0 && 0 == -0' as true.
-	           */
-	          ( n === 0 || ( Decimal['errors'] ? parseInt : parseFloat )(n) == n ) ||
-	            ifExceptionsThrow( Decimal, 'argument', n, method, 0 );
-	    }
-
-
-	    /*
-	     * Convert a numeric string of baseIn to a numeric string of baseOut.
-	     */
-	    convertBase = (function () {
-
-	        /*
-	         * Convert string of baseIn to an array of numbers of baseOut.
-	         * Eg. convertBase('255', 10, 16) returns [15, 15].
-	         * Eg. convertBase('ff', 16, 10) returns [2, 5, 5].
-	         */
-	        function toBaseOut( str, baseIn, baseOut ) {
-	            var j,
-	                arr = [0],
-	                arrL,
-	                i = 0,
-	                strL = str.length;
-
-	            for ( ; i < strL; ) {
-	                for ( arrL = arr.length; arrL--; arr[arrL] *= baseIn );
-	                arr[ j = 0 ] += NUMERALS.indexOf( str.charAt( i++ ) );
-
-	                for ( ; j < arr.length; j++ ) {
-
-	                    if ( arr[j] > baseOut - 1 ) {
-
-	                        if ( arr[j + 1] == null ) {
-	                            arr[j + 1] = 0;
-	                        }
-	                        arr[j + 1] += arr[j] / baseOut | 0;
-	                        arr[j] %= baseOut;
-	                    }
-	                }
-	            }
-
-	            return arr.reverse();
-	        }
-
-	        return function ( Decimal, str, baseOut, baseIn, sign ) {
-	            var e, j, r, x, xc, y,
-	                i = str.indexOf( '.' ),
-	                pr = Decimal['precision'],
-	                rm = Decimal['rounding'];
-
-	            if ( baseIn < 37 ) {
-	                str = str.toLowerCase();
-	            }
-
-	            // Non-integer.
-	            if ( i >= 0 ) {
-	                str = str.replace( '.', '' );
-	                y = new Decimal(baseIn);
-	                x = intPow( Decimal, y, str.length - i );
-
-	                /*
-	                 Convert str as if an integer, then divide the result by its base raised to a power
-	                 such that the fraction part will be restored.
-	                 Use toFixed to avoid possible exponential notation.
-	                 */
-	                y['c'] = toBaseOut( x.toFixed(), 10, baseOut );
-	                y['e'] = y['c'].length;
-	            }
-
-	            // Convert the number as integer.
-	            xc = toBaseOut( str, baseIn, baseOut );
-	            e = j = xc.length;
-
-	            // Remove trailing zeros.
-	            for ( ; xc[--j] == 0; xc.pop() );
-
-	            if ( !xc[0] ) {
-
-	                return '0';
-	            }
-
-	            if ( i < 0 ) {
-	                e--;
-	            } else {
-	                x['c'] = xc;
-	                x['e'] = e;
-
-	                // sign is needed for correct rounding.
-	                x['s'] = sign;
-	                x = div( x, y, pr, rm, 0, baseOut );
-	                xc = x['c'];
-	                r = x['r'];
-	                e = x['e'];
-	            }
-
-	            // The rounding digit, i.e. the digit after the digit that may be rounded up.
-	            i = xc[pr];
-	            j = baseOut / 2;
-	            r = r || xc[pr + 1] != null;
-
-	            if ( rm < 4
-	              ? ( i != null || r ) && ( rm == 0 || rm == ( sign < 0 ? 3 : 2 ) )
-	              : i > j || i == j && ( rm == 4 || r || rm == 6 && xc[pr - 1] & 1 ||
-	                rm == ( sign < 0 ? 8 : 7 ) ) ) {
-
-	                xc.length = pr;
-
-	                // Rounding up may mean the previous digit has to be rounded up and so on.
-	                for ( --baseOut; ++xc[--pr] > baseOut; ) {
-	                    xc[pr] = 0;
-
-	                    if ( !pr ) {
-	                        ++e;
-	                        xc.unshift(1);
-	                    }
-	                }
-	            } else {
-	                xc.length = pr;
-	            }
-
-	            // Determine trailing zeros.
-	            for ( j = xc.length; !xc[--j]; );
-
-	            // E.g. [4, 11, 15] becomes 4bf.
-	            for ( i = 0, str = ''; i <= j; str += NUMERALS.charAt( xc[i++] ) );
-
-	            // Negative exponent?
-	            if ( e < 0 ) {
-
-	                // Prepend zeros.
-	                for ( ; ++e; str = '0' + str );
-
-	                str = '0.' + str;
-
-	            // Positive exponent?
-	            } else {
-	                i = str.length;
-
-	                if ( ++e > i ) {
-
-	                    // Append zeros.
-	                    for ( e -= i; e-- ; str += '0' );
-
-	                } else if ( e < i ) {
-	                    str = str.slice( 0, e ) + '.' + str.slice(e);
-	                }
-	            }
-
-	            // No negative numbers: the caller will add the sign.
-	            return str;
-	        };
-	    })();
-
-
-
-	    /*
-	     * Perform division in the specified base. Called by div and convertBase.
-	     */
-	    var div = ( function () {
-
-	        // Assumes non-zero x and k, and hence non-zero result.
-	        function multiplyInteger( x, k, base ) {
-	            var temp,
-	                carry = 0,
-	                i = x.length;
-
-	            for ( x = x.slice(); i--; ) {
-	                temp = x[i] * k + carry;
-	                x[i] = temp % base | 0;
-	                carry = temp / base | 0;
-	            }
-
-	            if (carry) {
-	                x.unshift(carry);
-	            }
-
-	            return x;
-	        }
-
-	        function compare( a, b, aL, bL ) {
-	            var i, cmp;
-
-	            if ( aL != bL ) {
-	                cmp = aL > bL ? 1 : -1;
-	            } else {
-
-	                for ( i = cmp = 0; i < aL; i++ ) {
-
-	                    if ( a[i] != b[i] ) {
-	                        cmp = a[i] > b[i] ? 1 : -1;
-
-	                        break;
-	                    }
-	                }
-	            }
-
-	            return cmp;
-	        }
-
-	        function subtract( a, b, aL, base ) {
-	            var i = 0;
-
-	            // Subtract b from a.
-	            for ( ; aL--; ) {
-	                a[aL] -= i;
-	                i = a[aL] < b[aL] ? 1 : 0;
-	                a[aL] = i * base + a[aL] - b[aL];
-	            }
-
-	            // Remove leading zeros.
-	            for ( ; !a[0] && a.length > 1; a.shift() );
-	        }
-
-	        // x: dividend, y: divisor.
-	        return function ( x, y, pr, rm, dp, base ) {
-	            var cmp, e, i, logbase, more, n, prod, prodL, q, qc, rem, remL, rem0, t, xi, xL, yc0,
-	                yL, yz,
-	                Decimal = x['constructor'],
-	                s = x['s'] == y['s'] ? 1 : -1,
-	                xc = x['c'],
-	                yc = y['c'];
-
-	            // Either NaN, Infinity or 0?
-	            if ( !xc || !xc[0] || !yc || !yc[0] ) {
-
-	                return new Decimal(
-
-	                  // Return NaN if either NaN, or both Infinity or 0.
-	                  !x['s'] || !y['s'] || ( xc ? yc && xc[0] == yc[0] : !yc ) ? NaN :
-
-	                    // Return +-0 if x is 0 or y is +-Infinity, or return +-Infinity as y is 0.
-	                    xc && xc[0] == 0 || !yc ? s * 0 : s / 0
-	                );
-	            }
-
-	            if (base) {
-	                logbase = 1;
-	                e = x['e'] - y['e'];
-	            } else {
-	                base = BASE;
-	                logbase = LOGBASE;
-	                e = mathfloor( x['e'] / logbase ) - mathfloor( y['e'] / logbase );
-	            }
-
-	            yL = yc.length;
-	            xL = xc.length;
-	            q = new Decimal(s);
-	            qc = q['c'] = [];
-
-	            // Result exponent may be one less then the current value of e.
-	            // The coefficients of the Decimals from convertBase may have trailing zeros.
-	            for ( i = 0; yc[i] == ( xc[i] || 0 ); i++ );
-
-	            if ( yc[i] > ( xc[i] || 0 ) ) {
-	                e--;
-	            }
-
-	            if ( pr == null ) {
-	                s = pr = Decimal['precision'];
-	                rm = Decimal['rounding'];
-	            } else if (dp) {
-	                s = pr + ( x['e'] - y['e'] ) + 1;
-	            } else {
-	                s = pr;
-	            }
-
-	            if ( s < 0 ) {
-	                qc.push(1);
-	                more = true;
-	            } else {
-
-	                // Convert base 10 decimal places to base 1e7 decimal places.
-	                s = s / logbase + 2 | 0;
-	                i = 0;
-
-	                // divisor < 1e7
-	                if ( yL == 1 ) {
-	                    n = 0;
-	                    yc = yc[0];
-	                    s++;
-
-	                    // 'n' is the carry.
-	                    for ( ; ( i < xL || n ) && s--; i++ ) {
-	                        t = n * base + ( xc[i] || 0 );
-	                        qc[i] = t / yc | 0;
-	                        n = t % yc | 0;
-	                    }
-
-	                    more = n || i < xL;
-
-	                // divisor >= 1e7
-	                } else {
-
-	                    // Normalise xc and yc so highest order digit of yc is >= base/2
-	                    n = base / ( yc[0] + 1 ) | 0;
-
-	                    if ( n > 1 ) {
-	                        yc = multiplyInteger( yc, n, base );
-	                        xc = multiplyInteger( xc, n, base );
-	                        yL = yc.length;
-	                        xL = xc.length;
-	                    }
-
-	                    xi = yL;
-	                    rem = xc.slice( 0, yL );
-	                    remL = rem.length;
-
-	                    // Add zeros to make remainder as long as divisor.
-	                    for ( ; remL < yL; rem[remL++] = 0 );
-
-	                    yz = yc.slice();
-	                    yz.unshift(0);
-	                    yc0 = yc[0];
-
-	                    if ( yc[1] >= base / 2 ) {
-	                        yc0++;
-	                    }
-
-	                    do {
-	                        n = 0;
-
-	                        // Compare divisor and remainder.
-	                        cmp = compare( yc, rem, yL, remL );
-
-	                        // If divisor < remainder.
-	                        if ( cmp < 0 ) {
-
-	                            // Calculate trial digit, n.
-	                            rem0 = rem[0];
-
-	                            if ( yL != remL ) {
-	                                rem0 = rem0 * base + ( rem[1] || 0 );
-	                            }
-
-	                            // n will be how many times the divisor goes into the current remainder.
-	                            n = rem0 / yc0 | 0;
-
-	                            /*
-	                              Algorithm:
-	                              1. product = divisor * trial digit (n)
-	                              2. if product > remainder: product -= divisor, n--
-	                              3. remainder -= product
-	                              4. if product was < remainder at 2:
-	                                5. compare new remainder and divisor
-	                                6. If remainder > divisor: remainder -= divisor, n++
-	                            */
-
-	                            if ( n > 1 ) {
-
-	                                if ( n >= base ) {
-	                                    n = base - 1;
-	                                }
-
-	                                // product = divisor * trial digit.
-	                                prod = multiplyInteger( yc, n, base );
-	                                prodL = prod.length;
-	                                remL = rem.length;
-
-	                                // Compare product and remainder.
-	                                cmp = compare( prod, rem, prodL, remL );
-
-	                                // product > remainder.
-	                                if ( cmp == 1 ) {
-	                                    n--;
-
-	                                    // Subtract divisor from product.
-	                                    subtract( prod, yL < prodL ? yz : yc, prodL, base );
-	                                }
-	                            } else {
-
-	                                // cmp is -1.
-	                                // If n is 0, there is no need to compare yc and rem again below, so change cmp to 1 to avoid it.
-	                                // If n is 1 there IS a need to compare yc and rem again below.
-	                                if ( n == 0 ) {
-	                                    cmp = n = 1;
-	                                }
-	                                prod = yc.slice();
-	                            }
-	                            prodL = prod.length;
-
-	                            if ( prodL < remL ) {
-	                                prod.unshift(0);
-	                            }
-
-	                            // Subtract product from remainder.
-	                            subtract( rem, prod, remL, base );
-
-	                            // If product was < previous remainder.
-	                            if ( cmp == -1 ) {
-	                                remL = rem.length;
-
-	                                // Compare divisor and new remainder.
-	                                cmp = compare( yc, rem, yL, remL );
-
-	                                // If divisor < new remainder, subtract divisor from remainder.
-	                                if ( cmp < 1 ) {
-	                                    n++;
-
-	                                    // Subtract divisor from remainder.
-	                                    subtract( rem, yL < remL ? yz : yc, remL, base );
-	                                }
-	                            }
-
-	                            remL = rem.length;
-
-	                        } else if ( cmp === 0 ) {
-	                            n++;
-	                            rem = [0];
-	                        }    // if cmp === 1, n will be 0
-
-	                        // Add the next digit, n, to the result array.
-	                        qc[i++] = n;
-
-	                        // Update the remainder.
-	                        if ( cmp && rem[0] ) {
-	                            rem[remL++] = xc[xi] || 0;
-	                        } else {
-	                            rem = [ xc[xi] ];
-	                            remL = 1;
-	                        }
-
-	                    } while ( ( xi++ < xL || rem[0] != null ) && s-- );
-
-	                    more = rem[0] != null;
-	                }
-
-	                // Leading zero?
-	                if ( !qc[0] ) {
-	                    qc.shift();
-	                }
-	            }
-
-	            // If div is being used for base conversion.
-	            if ( logbase == 1 ) {
-	                q['e'] = e;
-	                q['r'] = +more;
-	            } else {
-
-	                // To calculate q.e, first get the number of digits of qc[0].
-	                for ( i = 1, s = qc[0]; s >= 10; s /= 10, i++ );
-	                q['e'] = i + e * logbase - 1;
-
-	                rnd( q, dp ? pr + q['e'] + 1 : pr, rm, more );
-	            }
-
-	            return q;
-	        };
-	    })();
-
-
-	    /*
-	     * Taylor/Maclaurin series.
-	     *
-	     * exp(x) = x^0/0! + x^1/1! + x^2/2! + x^3/3! + ...
-	     *
-	     * Argument reduction:
-	     *   Repeat x = x / 32, k += 5, until |x| < 0.1
-	     *   exp(x) = exp(x / 2^k)^(2^k)
-	     *
-	     * Previously, the argument was initially reduced by
-	     * exp(x) = exp(r) * 10^k  where r = x - k * ln10, k = floor(x / ln10)
-	     * to first put r in the range [0, ln10], before dividing by 32 until |x| < 0.1, but this was
-	     * found to be slower than just dividing repeatedly by 32 as above.
-	     *
-	     * Max integer argument: exp('20723265836946413') = 6.3e+9000000000000000
-	     * Min integer argument: exp('-20723265836946411') = 1.2e-9000000000000000
-	     * ( Math object integer min/max: Math.exp(709) = 8.2e+307, Math.exp(-745) = 5e-324 )
-	     *
-	     *  exp(Infinity)  = Infinity
-	     *  exp(-Infinity) = 0
-	     *  exp(NaN)       = NaN
-	     *  exp(+-0)       = 1
-	     *
-	     *  exp(x) is non-terminating for any finite, non-zero x.
-	     *
-	     *  The result will always be correctly rounded.
-	     *
-	     */
-	    function exp( x, pr ) {
-	        var denom, guard, j, pow, sd, sum, t,
-	            rep = 0,
-	            i = 0,
-	            k = 0,
-	            Decimal = x['constructor'],
-	            one = Decimal['ONE'],
-	            rm = Decimal['rounding'],
-	            precision = Decimal['precision'];
-
-	        // 0/NaN/Infinity?
-	        if ( !x['c'] || !x['c'][0] || x['e'] > 17 ) {
-
-	            return new Decimal( x['c']
-	              ? !x['c'][0] ? one : x['s'] < 0 ? 0 : 1 / 0
-	              : x['s'] ? x['s'] < 0 ? 0 : x : NaN );
-	        }
-
-	        if ( pr == null ) {
-
-	            /*
-	             Estimate result exponent.
-	             e^x = 10^j, where j = x * log10(e) and
-	             log10(e) = ln(e) / ln(10) = 1 / ln(10),
-	             so j = x / ln(10)
-	            j = mathfloor( x / Math.LN10 );
-
-	            // Overflow/underflow? Estimate may be +-1 of true value.
-	            if ( j > Decimal['maxE'] + 1 || j < Decimal['minE'] - 1 ) {
-
-	                return new Decimal( j > 0 ? 1 / 0 : 0 );
-	            }
-	             */
-
-	            external = false;
-	            sd = precision;
-	        } else {
-	            sd = pr;
-	        }
-
-	        t = new Decimal(0.03125);
-
-	        // while abs(x) >= 0.1
-	        while ( x['e'] > -2 ) {
-
-	            // x = x / 2^5
-	            x = x['times'](t);
-	            k += 5;
-	        }
-
-	        /*
-	         Use 2 * log10(2^k) + 5 to estimate the increase in precision necessary to ensure the first
-	         4 rounding digits are correct.
-	         */
-	        guard = Math.log( mathpow( 2, k ) ) / Math.LN10 * 2 + 5 | 0;
-	        sd += guard;
-
-	        denom = pow = sum = new Decimal(one);
-	        Decimal['precision'] = sd;
-
-	        for ( ; ; ) {
-	            pow = rnd( pow['times'](x), sd, 1 );
-	            denom = denom['times'](++i);
-	            t = sum['plus']( div( pow, denom, sd, 1 ) );
-
-	            if ( coefficientToString( t['c'] ).slice( 0, sd ) ===
-	                 coefficientToString( sum['c'] ).slice( 0, sd ) ) {
-	                j = k;
-
-	                while ( j-- ) {
-	                    sum = rnd( sum['times'](sum), sd, 1 );
-	                }
-
-	                /*
-	                 Check to see if the first 4 rounding digits are [49]999.
-	                 If so, repeat the summation with a higher precision, otherwise
-	                 E.g. with precision: 18, rounding: 1
-	                 exp(18.404272462595034083567793919843761) = 98372560.1229999999
-	                                           when it should be 98372560.123
-
-	                 sd - guard is the index of first rounding digit.
-	                 */
-	                if ( pr == null ) {
-
-	                    if ( rep < 3 && checkRoundingDigits( sum['c'], sd - guard, rm, rep ) ) {
-	                        Decimal['precision'] = sd += 10;
-	                        denom = pow = t = new Decimal(one);
-	                        i = 0;
-	                        rep++;
-	                    } else {
-
-	                        return rnd( sum, Decimal['precision'] = precision, rm, external = true );
-	                    }
-	                } else {
-	                    Decimal['precision'] = precision;
-
-	                    return sum;
-	                }
-	            }
-	            sum = t;
-	        }
-	    }
-
-
-	    /*
-	     * Return a string representing the value of Decimal n in normal or exponential notation
-	     * rounded to the specified decimal places or significant digits.
-	     * Called by toString, toExponential (k is 1), toFixed, and toPrecision (k is 2).
-	     * i is the index (with the value in normal notation) of the digit that may be rounded up.
-	     * j is the rounding mode, then the number of digits required including fraction-part trailing
-	     * zeros.
-	     */
-	    function format( n, i, j, k ) {
-	        var s, z,
-	            Decimal = n['constructor'],
-	            e = ( n = new Decimal(n) )['e'];
-
-	        // i == null when toExponential(no arg), or toString() when x >= toExpPos etc.
-	        if ( i == null ) {
-	            j = 0;
-	        } else {
-	            rnd( n, ++i, j );
-
-	            // If toFixed, n['e'] may have changed if the value was rounded up.
-	            j = k ? i : i + n['e'] - e;
-	        }
-
-	        e = n['e'];
-	        s = coefficientToString( n['c'] );
-
-	        /*
-	         toPrecision returns exponential notation if the number of significant digits specified
-	         is less than the number of digits necessary to represent the integer part of the value
-	         in normal notation.
-	         */
-
-	        // Exponential notation.
-	        if ( k == 1 || k == 2 && ( i <= e || e <= Decimal['toExpNeg'] ) ) {
-
-	            // Append zeros?
-	            for ( ; s.length < j; s += '0' );
-
-	            if ( s.length > 1 ) {
-	                s = s.charAt(0) + '.' + s.slice(1);
-	            }
-
-	            s += ( e < 0 ? 'e' : 'e+' ) + e;
-
-	        // Normal notation.
-	        } else {
-	            k = s.length;
-
-	            // Negative exponent?
-	            if ( e < 0 ) {
-	                z = j - k;
-
-	                // Prepend zeros.
-	                for ( ; ++e; s = '0' + s );
-	                s = '0.' + s;
-
-	            // Positive exponent?
-	            } else {
-
-	                if ( ++e > k ) {
-	                    z = j - e;
-
-	                    // Append zeros.
-	                    for ( e -= k; e-- ; s += '0' );
-
-	                    if ( z > 0 ) {
-	                        s += '.';
-	                    }
-
-	                } else {
-	                    z = j - k;
-
-	                    if ( e < k ) {
-	                        s = s.slice( 0, e ) + '.' + s.slice(e);
-	                    } else if ( z > 0 ) {
-	                        s += '.';
-	                    }
-	                }
-	            }
-
-	            // Append more zeros?
-	            if ( z > 0 ) {
-
-	                for ( ; z--; s += '0' );
-	            }
-	        }
-
-	        return n['s'] < 0 && n['c'][0] ? '-' + s : s;
-	    }
-
-
-	    function getCoeffLength(c) {
-	        var v = c.length - 1,
-	            n = v * LOGBASE + 1;
-
-	        if ( v = c[v] ) {
-
-	            // Subtract the number of trailing zeros of the last number.
-	            for ( ; v % 10 == 0; v /= 10, n-- );
-
-	            // Add the number of digits of the first number.
-	            for ( v = c[0]; v >= 10; v /= 10, n++ );
-	        }
-
-	        return n;
-	    }
-
-
-	    /*
-	     * Assemble error messages. Throw Decimal Errors.
-	     */
-	    function ifExceptionsThrow( Decimal, message, arg, method, more ) {
-
-	        if ( Decimal['errors'] ) {
-	            var error = new Error( ( method || [
-	              'new Decimal', 'cmp', 'div', 'eq', 'gt', 'gte', 'lt', 'lte', 'minus', 'mod',
-	              'plus', 'times', 'toFraction', 'pow', 'random', 'log', 'sqrt', 'toNearest', 'divToInt'
-	              ][ id ? id < 0 ? -id : id : 1 / id < 0 ? 1 : 0 ] ) + '() ' + ( [
-	              'number type has more than 15 significant digits', 'LN10 out of digits' ][message]
-	              || message + ( [ outOfRange ? ' out of range' : ' not an integer',
-	              ' not a boolean or binary digit' ][more] || '' ) ) + ': ' + arg
-	            );
-	            error['name'] = 'Decimal Error';
-	            outOfRange = id = 0;
-
-	            throw error;
-	        }
-	    }
-
-
-
-
-	    /*
-	     * Use 'exponentiation by squaring' for small integers. Called by convertBase and pow.
-	     */
-	    function intPow( Decimal, x, i ) {
-	        var r = new Decimal( Decimal['ONE'] );
-
-	        for ( external = false; ; ) {
-
-	            if ( i & 1 ) {
-	                r = r['times'](x);
-	            }
-	            i >>= 1;
-
-	            if ( !i ) {
-
-	                break;
-	            }
-	            x = x['times'](x);
-	        }
-	        external = true;
-
-	        return r;
-	    }
-
-
-	    /*
-	     *  ln(-n)        = NaN
-	     *  ln(0)         = -Infinity
-	     *  ln(-0)        = -Infinity
-	     *  ln(1)         = 0
-	     *  ln(Infinity)  = Infinity
-	     *  ln(-Infinity) = NaN
-	     *  ln(NaN)       = NaN
-	     *
-	     *  ln(n) (n != 1) is non-terminating.
-	     *
-	     */
-	    function ln( y, pr ) {
-	        var c, c0, denom, e, num, rep, sd, sum, t, x1, x2,
-	            n = 1,
-	            guard = 10,
-	            x = y,
-	            xc = x['c'],
-	            Decimal = x['constructor'],
-	            one = Decimal['ONE'],
-	            rm = Decimal['rounding'],
-	            precision = Decimal['precision'];
-
-	        // x < 0 or +-Infinity/NaN or 0 or 1.
-	        if ( x['s'] < 0 || !xc || !xc[0] || !x['e'] && xc[0] == 1 && xc.length == 1 ) {
-
-	            return new Decimal( xc && !xc[0] ? -1 / 0 : x['s'] != 1 ? NaN : xc ? 0 : x );
-	        }
-
-	        if ( pr == null ) {
-	            external = false;
-	            sd = precision;
-	        } else {
-	            sd = pr;
-	        }
-
-	        Decimal['precision'] = sd += guard;
-
-	        c = coefficientToString(xc);
-	        c0 = c.charAt(0);
-
-	        if ( Math.abs( e = x['e'] ) < 1.5e15 ) {
-
-	            /*
-	             Argument reduction.
-	             The series converges faster the closer the argument is to 1, so using
-	             ln(a^b) = b * ln(a),   ln(a) = ln(a^b) / b
-	             multiply the argument by itself until the leading digits of the significand are 7, 8,
-	             9, 10, 11, 12 or 13, recording the number of multiplications so the sum of the series
-	             can later be divided by this number, then separate out the power of 10 using
-	             ln(a*10^b) = ln(a) + b*ln(10).
-	             */
-
-	            // max n is 21 ( gives 0.9, 1.0 or 1.1 ) ( 9e15 / 21 = 4.2e14 ).
-	            //while ( c0 < 9 && c0 != 1 || c0 == 1 && c.charAt(1) > 1 ) {
-	            // max n is 6 ( gives 0.7 - 1.3 )
-	            while ( c0 < 7 && c0 != 1 || c0 == 1 && c.charAt(1) > 3 ) {
-	                x = x['times'](y);
-	                c = coefficientToString( x['c'] );
-	                c0 = c.charAt(0);
-	                n++;
-	            }
-
-	            e = x['e'];
-
-	            if ( c0 > 1 ) {
-	                x = new Decimal( '0.' + c );
-	                e++;
-	            } else {
-	                x = new Decimal( c0 + '.' + c.slice(1) );
-	            }
-	        } else {
-
-	            /*
-	             The argument reduction method above may result in overflow if the argument y is a
-	             massive number with exponent >= 1500000000000000 ( 9e15 / 6 = 1.5e15 ), so instead
-	             recall this function using ln(x*10^e) = ln(x) + e*ln(10).
-	             */
-	            x = new Decimal( c0 + '.' + c.slice(1) );
-
-	            if ( sd + 2 > LN10.length ) {
-	                ifExceptionsThrow( Decimal, 1, sd + 2, 'ln' );
-	            }
-
-	            x = ln( x, sd - guard )['plus'](
-	                new Decimal( LN10.slice( 0, sd + 2 ) )['times']( e + '' )
-	            );
-
-	            Decimal['precision'] = precision;
-
-	            return pr == null ? rnd( x, precision, rm, external = true ) : x;
-	        }
-
-	        // x1 is x reduced to a value near 1.
-	        x1 = x;
-
-	        /*
-	         Taylor series.
-	         ln(y) = ln( (1 + x)/(1 - x) ) = 2( x + x^3/3 + x^5/5 + x^7/7 + ... )
-	         where
-	         x = (y - 1)/(y + 1)              ( |x| < 1 )
-	         */
-	        sum = num = x = div( x['minus'](one), x['plus'](one), sd, 1 );
-	        x2 = rnd( x['times'](x), sd, 1 );
-	        denom = 3;
-
-	        for ( ; ; ) {
-	            num = rnd( num['times'](x2), sd, 1 );
-	            t = sum['plus']( div( num, new Decimal(denom), sd, 1 ) );
-
-	            if ( coefficientToString( t['c'] ).slice( 0, sd ) ===
-	                 coefficientToString( sum['c'] ).slice( 0, sd ) ) {
-	                sum = sum['times'](2);
-
-	                /*
-	                 Reverse the argument reduction. Check that e is not 0 because, as well as
-	                 preventing an unnecessary calculation, -0 + 0 = +0 and to ensure correct
-	                 rounding later -0 needs to stay -0.
-	                 */
-	                if ( e !== 0 ) {
-
-	                    if ( sd + 2 > LN10.length ) {
-	                        ifExceptionsThrow( Decimal, 1, sd + 2, 'ln' );
-	                    }
-
-	                    sum = sum['plus'](
-	                        new Decimal( LN10.slice( 0, sd + 2 ) )['times']( e + '' )
-	                    );
-	                }
-
-	                sum = div( sum, new Decimal(n), sd, 1 );
-
-	                /*
-	                 Is rm > 3 and the first 4 rounding digits 4999, or rm < 4 (or the summation has
-	                 been repeated previously) and the first 4 rounding digits 9999?
-
-	                 If so, restart the summation with a higher precision, otherwise
-	                 e.g. with precision: 12, rounding: 1
-	                 ln(135520028.6126091714265381533) = 18.7246299999 when it should be 18.72463.
-
-	                 sd - guard is the index of first rounding digit.
-	                 */
-	                if ( pr == null ) {
-
-	                    if ( checkRoundingDigits( sum['c'], sd - guard, rm, rep ) ) {
-	                        Decimal['precision'] = sd += guard;
-	                        t = num = x = div( x1['minus'](one), x1['plus'](one), sd, 1 );
-	                        x2 = rnd( x['times'](x), sd, 1 );
-	                        denom = rep = 1;
-	                    } else {
-
-	                        return rnd( sum, Decimal['precision'] = precision, rm, external = true );
-	                    }
-	                } else {
-	                    Decimal['precision'] = precision;
-
-	                    return sum;
-	                }
-	            }
-
-	            sum = t;
-	            denom += 2;
-	        }
-	    }
-
-
-	    /*
-	     * Round x to sd significant digits using rounding mode rm. Check for over/under-flow.
-	     */
-	     function rnd( x, sd, rm, r ) {
-	        var digits, i, j, k, n, rd, xc, xci,
-	            Decimal = x['constructor'];
-
-	        // Don't round if sd is null or undefined.
-	        out: if ( sd != null ) {
-
-	            // Infinity/NaN.
-	            if ( !( xc = x['c'] ) ) {
-
-	                return x;
-	            }
-
-	            /*
-	             rd, the rounding digit, i.e. the digit after the digit that may be rounded up,
-	             n, a base 1e7 number, the element of xc containing rd,
-	             xci, the index of n within xc,
-	             digits, the number of digits of n,
-	             i, what would be the index of rd within n if all the numbers were 7 digits long (i.e. they had leading zeros)
-	             j, if > 0, the actual index of rd within n (if < 0, rd is a leading zero),
-	             nLeadingZeros, the number of leading zeros n would have if it were 7 digits long.
-	             */
-
-	            // Get the length of the first element of the coefficient array xc.
-	            for ( digits = 1, k = xc[0]; k >= 10; k /= 10, digits++ );
-
-	            i = sd - digits;
-
-	            // Is the rounding digit in the first element of xc?
-	            if ( i < 0 ) {
-	                i += LOGBASE;
-	                j = sd;
-	                n = xc[ xci = 0 ];
-
-	                // Get the rounding digit at index j of n.
-	                rd = n / mathpow( 10, digits - j - 1 ) % 10 | 0;
-	            } else {
-	                xci = Math.ceil( ( i + 1 ) / LOGBASE );
-
-	                if ( xci >= xc.length ) {
-
-	                    if (r) {
-
-	                        // Needed by exp, ln and sqrt.
-	                        for ( ; xc.length <= xci; xc.push(0) );
-
-	                        n = rd = 0;
-	                        digits = 1;
-	                        i %= LOGBASE;
-	                        j = i - LOGBASE + 1;
-	                    } else {
-
-	                      break out;
-	                    }
-	                } else {
-	                    n = k = xc[xci];
-
-	                    // Get the number of digits of n.
-	                    for ( digits = 1; k >= 10; k /= 10, digits++ );
-
-	                    // Get the index of rd within n.
-	                    i %= LOGBASE;
-
-	                    // Get the index of rd within n, adjusted for leading zeros.
-	                    // The number of leading zeros of n is given by LOGBASE - digits.
-	                    j = i - LOGBASE + digits;
-
-	                    // Get the rounding digit at index j of n.
-	                    // Floor using Math.floor instead of | 0 as rd may be outside int range.
-	                    rd = j < 0 ? 0 : mathfloor( n / mathpow( 10, digits - j - 1 ) % 10 );
-	                }
-	            }
-
-	            r = r || sd < 0 ||
-	              // Are there any non-zero digits after the rounding digit?
-	              xc[xci + 1] != null || ( j < 0 ? n : n % mathpow( 10, digits - j - 1 ) );
-
-	            /*
-	             The expression  n % mathpow( 10, digits - j - 1 )  returns all the digits of n to the
-	             right of the digit at (left-to-right) index j,
-	             e.g. if n is 908714 and j is 2, the expression will give 714.
-	             */
-
-	            r = rm < 4
-	              ? ( rd || r ) && ( rm == 0 || rm == ( x['s'] < 0 ? 3 : 2 ) )
-	              : rd > 5 || rd == 5 && ( rm == 4 || r ||
-	                // Check whether the digit to the left of the rounding digit is odd.
-	                rm == 6 && ( ( i > 0 ? j > 0 ? n / mathpow( 10, digits - j ) : 0 : xc[xci - 1] ) % 10 ) & 1 ||
-	                  rm == ( x['s'] < 0 ? 8 : 7 ) );
-
-	            if ( sd < 1 || !xc[0] ) {
-	                xc.length = 0;
-
-	                if (r) {
-
-	                    // Convert sd to decimal places.
-	                    sd -= x['e'] + 1;
-
-	                    // 1, 0.1, 0.01, 0.001, 0.0001 etc.
-	                    xc[0] = mathpow( 10, ( LOGBASE - sd % LOGBASE ) % LOGBASE );
-	                    x['e'] = -sd || 0;
-	                } else {
-
-	                    // Zero.
-	                    xc[0] = x['e'] = 0;
-	                }
-
-	                return x;
-	            }
-
-	            // Remove excess digits.
-
-	            if ( i == 0 ) {
-	                xc.length = xci;
-	                k = 1;
-	                xci--;
-	            } else {
-	                xc.length = xci + 1;
-	                k = mathpow( 10, LOGBASE - i );
-
-	                // E.g. 56700 becomes 56000 if 7 is the rounding digit.
-	                // j > 0 means i > number of leading zeros of n.
-	                xc[xci] = j > 0 ? ( n / mathpow( 10, digits - j ) % mathpow( 10, j ) | 0 ) * k : 0;
-	            }
-
-	            // Round up?
-	            if (r) {
-
-	                for ( ; ; ) {
-
-	                    // Is the digit to be rounded up in the first element of xc?
-	                    if ( xci == 0 ) {
-
-	                        // i will be the length of xc[0] before k is added.
-	                        for ( i = 1, j = xc[0]; j >= 10; j /= 10, i++ );
-
-	                        j = xc[0] += k;
-
-	                        for ( k = 1; j >= 10; j /= 10, k++ );
-
-	                        // if i != k the length has increased.
-	                        if ( i != k ) {
-	                            x['e']++;
-
-	                            if ( xc[0] == BASE ) {
-	                                xc[0] = 1;
-	                            }
-	                        }
-
-	                        break;
-	                    } else {
-	                        xc[xci] += k;
-
-	                        if ( xc[xci] != BASE ) {
-
-	                            break;
-	                        }
-
-	                        xc[xci--] = 0;
-	                        k = 1;
-	                    }
-	                }
-	            }
-
-	            // Remove trailing zeros.
-	            for ( i = xc.length; xc[--i] === 0; xc.pop() );
-	        }
-
-	        if (external) {
-
-	            // Overflow?
-	            if ( x['e'] > Decimal['maxE'] ) {
-
-	                // Infinity.
-	                x['c'] = x['e'] = null;
-
-	            // Underflow?
-	            } else if ( x['e'] < Decimal['minE'] ) {
-
-	                // Zero.
-	                x['c'] = [ x['e'] = 0 ];
-	            }
-	        }
-
-	        return x;
-	    }
-
-
-	    decimal = (function () {
-
-
-	        // Private functions used by static Decimal methods.
-
-
-	        /*
-	         *  The following emulations or wrappers of Math object functions are currently
-	         *  commented-out and not in the public API.
-	         *
-	         *  abs
-	         *  acos
-	         *  asin
-	         *  atan
-	         *  atan2
-	         *  ceil
-	         *  cos
-	         *  floor
-	         *  round
-	         *  sin
-	         *  tan
-	         *  trunc
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the absolute value of n.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function abs(n) { return new this(n)['abs']() }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the arccosine in radians of n.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function acos(n) { return new this( Math.acos(n) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the arcsine in radians of n.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function asin(n) { return new this( Math.asin(n) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the arctangent in radians of n.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function atan(n) { return new this( Math.atan(n) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the arctangent in radians of y/x in the range
-	         * -PI to PI (inclusive).
-	         *
-	         * y {number|string|Decimal} The y-coordinate.
-	         * x {number|string|Decimal} The x-coordinate.
-	         *
-	        function atan2( y, x ) { return new this( Math.atan2( y, x ) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is n round to an integer using ROUND_CEIL.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function ceil(n) { return new this(n)['ceil']() }
-	         */
-
-
-	        /*
-	         * Configure global settings for a Decimal constructor.
-	         *
-	         * obj is an object with any of the following properties,
-	         *
-	         *   precision  {number}
-	         *   rounding   {number}
-	         *   toExpNeg   {number}
-	         *   toExpPos   {number}
-	         *   minE       {number}
-	         *   maxE       {number}
-	         *   errors     {boolean|number}
-	         *   crypto     {boolean|number}
-	         *   modulo     {number}
-	         *
-	         *   format     {object}     See Decimal.prototype.toFormat
-	         *      decimalSeparator       {string}
-	         *      groupSeparator         {string}
-	         *      groupSize              {number}
-	         *      secondaryGroupSize     {number}
-	         *      fractionGroupSeparator {string}
-	         *      fractionGroupSize      {number}
-	         *
-	         *   A format object will replace the existing Decimal.format object without any property
-	         *   checking.
-	         *
-	         * E.g.
-	         *   Decimal.config({ precision: 20, rounding: 4 })
-	         *
-	         */
-	        function config(obj) {
-	            var p, u, v,
-	                Decimal = this,
-	                c = 'config',
-	                parse = Decimal['errors'] ? parseInt : parseFloat;
-
-	            if ( obj == u || typeof obj != 'object' &&
-	              // 'config() object expected: {obj}'
-	              !ifExceptionsThrow( Decimal, 'object expected', obj, c ) ) {
-
-	                return Decimal;
-	            }
-
-	            // precision {number} Integer, 1 to MAX_DIGITS inclusive.
-	            if ( ( v = obj[ p = 'precision' ] ) != u ) {
-
-	                if ( !( outOfRange = v < 1 || v > MAX_DIGITS ) && parse(v) == v ) {
-	                    Decimal[p] = v | 0;
-	                } else {
-
-	                    // 'config() precision not an integer: {v}'
-	                    // 'config() precision out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	            // rounding {number} Integer, 0 to 8 inclusive.
-	            if ( ( v = obj[ p = 'rounding' ] ) != u ) {
-
-	                if ( !( outOfRange = v < 0 || v > 8 ) && parse(v) == v ) {
-	                    Decimal[p] = v | 0;
-	                } else {
-
-	                    // 'config() rounding not an integer: {v}'
-	                    // 'config() rounding out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	            // toExpNeg {number} Integer, -EXP_LIMIT to 0 inclusive.
-	            if ( ( v = obj[ p = 'toExpNeg' ] ) != u ) {
-
-	                if ( !( outOfRange = v < -EXP_LIMIT || v > 0 ) && parse(v) == v ) {
-	                    Decimal[p] = mathfloor(v);
-	                } else {
-
-	                    // 'config() toExpNeg not an integer: {v}'
-	                    // 'config() toExpNeg out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	            // toExpPos {number} Integer, 0 to EXP_LIMIT inclusive.
-	            if ( ( v = obj[ p = 'toExpPos' ] ) != u ) {
-
-	                if ( !( outOfRange = v < 0 || v > EXP_LIMIT ) && parse(v) == v ) {
-	                    Decimal[p] = mathfloor(v);
-	                } else {
-
-	                    // 'config() toExpPos not an integer: {v}'
-	                    // 'config() toExpPos out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	             // minE {number} Integer, -EXP_LIMIT to 0 inclusive.
-	            if ( ( v = obj[ p = 'minE' ] ) != u ) {
-
-	                if ( !( outOfRange = v < -EXP_LIMIT || v > 0 ) && parse(v) == v ) {
-	                    Decimal[p] = mathfloor(v);
-	                } else {
-
-	                    // 'config() minE not an integer: {v}'
-	                    // 'config() minE out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	            // maxE {number} Integer, 0 to EXP_LIMIT inclusive.
-	            if ( ( v = obj[ p = 'maxE' ] ) != u ) {
-
-	                if ( !( outOfRange = v < 0 || v > EXP_LIMIT ) && parse(v) == v ) {
-	                    Decimal[p] = mathfloor(v);
-	                } else {
-
-	                    // 'config() maxE not an integer: {v}'
-	                    // 'config() maxE out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	            // errors {boolean|number} true, false, 1 or 0.
-	            if ( ( v = obj[ p = 'errors' ] ) != u ) {
-
-	                if ( v === !!v || v === 1 || v === 0 ) {
-	                    outOfRange = id = 0;
-	                    Decimal[p] = !!v;
-	                } else {
-
-	                    // 'config() errors not a boolean or binary digit: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 1 );
-	                }
-	            }
-
-	            // crypto {boolean|number} true, false, 1 or 0.
-	            if ( ( v = obj[ p = 'crypto' ] ) != u ) {
-
-	                if ( v === !!v || v === 1 || v === 0 ) {
-	                    Decimal[p] = !!( v && crypto && typeof crypto == 'object' );
-	                } else {
-
-	                    // 'config() crypto not a boolean or binary digit: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 1 );
-	                }
-	            }
-
-	            // modulo {number} Integer, 0 to 9 inclusive.
-	            if ( ( v = obj[ p = 'modulo' ] ) != u ) {
-
-	                if ( !( outOfRange = v < 0 || v > 9 ) && parse(v) == v ) {
-	                    Decimal[p] = v | 0;
-	                } else {
-
-	                    // 'config() modulo not an integer: {v}'
-	                    // 'config() modulo out of range: {v}'
-	                    ifExceptionsThrow( Decimal, p, v, c, 0 );
-	                }
-	            }
-
-	            // format {object}
-	            if ( ( obj = obj[ p = 'format' ] ) != u ) {
-
-	                if ( typeof obj == 'object' ) {
-	                    Decimal[p] = obj;
-	                } else {
-
-	                    // 'config() format object expected: {obj}'
-	                    ifExceptionsThrow( Decimal, 'format object expected', obj, c );
-	                }
-	            }
-
-	            return Decimal;
-	        }
-
-
-	        /*
-	         * Return a new Decimal whose value is the cosine of n.
-	         *
-	         * n {number|string|Decimal} A number given in radians.
-	         *
-	        function cos(n) { return new this( Math.cos(n) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the exponential of n,
-	         *
-	         * n {number|string|Decimal} The power to which to raise the base of the natural log.
-	         *
-	         */
-	        function exp(n) { return new this(n)['exp'](); }
-
-
-	        /*
-	         * Return a new Decimal whose value is n round to an integer using ROUND_FLOOR.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function floor(n) { return new this(n)['floor']() }
-	         */
-
-
-
-
-	        /*
-	         * Return a new Decimal whose value is the natural logarithm of n.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	         */
-	        function ln(n) { return new this(n)['ln'](); }
-
-
-	        /*
-	         * Return a new Decimal whose value is the log of x to the base y, or to base 10 if no
-	         * base is specified.
-	         *
-	         * log[y](x)
-	         *
-	         * x {number|string|Decimal} The argument of the logarithm.
-	         * y {number|string|Decimal} The base of the logarithm.
-	         *
-	         */
-	        function log( x, y ) { return new this(x)['log'](y); }
-
-
-	        /*
-	         * Handle max and min. ltgt is 'lt' or 'gt'.
-	         */
-	        function maxOrMin( Decimal, args, ltgt ) {
-	            var m, n,
-	                i = 0;
-
-	            if ( toString.call( args[0] ) == '[object Array]' ) {
-	                args = args[0];
-	            }
-
-	            m = new Decimal( args[0] );
-
-	            for ( ; ++i < args.length; ) {
-	                n = new Decimal( args[i] );
-
-	                if ( !n['s'] ) {
-	                    m = n;
-
-	                    break;
-	                } else if ( m[ltgt](n) ) {
-	                    m = n;
-	                }
-	            }
-
-	            return m;
-	        }
-
-
-	        /*
-	         * Return a new Decimal whose value is the maximum of the arguments.
-	         *
-	         * arguments {number|string|Decimal}
-	         *
-	         */
-	        function max() { return maxOrMin( this, arguments, 'lt' ); }
-
-
-	        /*
-	         * Return a new Decimal whose value is the minimum of the arguments.
-	         *
-	         * arguments {number|string|Decimal}
-	         *
-	         */
-	        function min() { return maxOrMin( this, arguments, 'gt' ); }
-
-
-	        /*
-	         * Parse the value of a new Decimal from a number or string.
-	         */
-	        var parseDecimal = (function () {
-	            var isValid = /^-?(\d+(\.\d*)?|\.\d+)(e[+-]?\d+)?$/i,
-	                trim = String.prototype.trim ||
-	                  function () { return this.replace(/^\s+|\s+$/g, ''); };
-
-	            return function ( Decimal, x, n, b ) {
-	                var d, e, i, isNum, orig, valid;
-
-	                if ( typeof n != 'string' ) {
-
-	                    // If n is a number, check if minus zero.
-	                    n = ( isNum = typeof n == 'number' || toString.call(n) == '[object Number]' ) &&
-	                        n === 0 && 1 / n < 0 ? '-0' : n + '';
-	                }
-	                orig = n;
-
-	                if ( b == null && isValid.test(n) ) {
-
-	                    // Determine sign.
-	                    x['s'] = n.charCodeAt(0) === 45 ? ( n = n.slice(1), -1 ) : 1;
-
-	                // Either n is not a valid Decimal or a base has been specified.
-	                } else {
-
-	                    /*
-	                     Enable exponential notation to be used with base 10 argument.
-	                     Ensure return value is rounded to precision as with other bases.
-	                     */
-	                    if ( b == 10 ) {
-
-	                        return rnd( new Decimal(n), Decimal['precision'], Decimal['rounding'] );
-	                    }
-
-	                    n = trim.call(n).replace( /^\+(?!-)/, '' );
-
-	                    x['s'] = n.charCodeAt(0) === 45 ? ( n = n.replace( /^-(?!-)/, '' ), -1 ) : 1;
-
-	                    if ( b != null ) {
-
-	                        if ( ( b == (b | 0) || !Decimal['errors'] ) &&
-	                          !( outOfRange = !( b >= 2 && b < 65 ) ) ) {
-	                            d = '[' + NUMERALS.slice( 0, b = b | 0 ) + ']+';
-
-	                           // Remove the `.` from e.g. '1.', and replace e.g. '.1' with '0.1'.
-	                            n = n.replace( /\.$/, '' ).replace( /^\./, '0.' );
-
-	                            // Any number in exponential form will fail due to the e+/-.
-	                            if ( valid = new RegExp(
-	                              '^' + d + '(?:\\.' + d + ')?$', b < 37 ? 'i' : '' ).test(n) ) {
-
-	                                if (isNum) {
-
-	                                    if ( n.replace( /^0\.0*|\./, '' ).length > 15 ) {
-
-	                                        // '{method} number type has more than 15 significant digits: {n}'
-	                                        ifExceptionsThrow( Decimal, 0, orig );
-	                                    }
-
-	                                    // Prevent later check for length on converted number.
-	                                    isNum = !isNum;
-	                                }
-	                                n = convertBase( Decimal, n, 10, b, x['s'] );
-
-	                            } else if ( n != 'Infinity' && n != 'NaN' ) {
-
-	                                // '{method} not a base {b} number: {n}'
-	                                ifExceptionsThrow( Decimal, 'not a base ' + b + ' number', orig );
-	                                n = 'NaN';
-	                            }
-	                        } else {
-
-	                            // '{method} base not an integer: {b}'
-	                            // '{method} base out of range: {b}'
-	                            ifExceptionsThrow( Decimal, 'base', b, 0, 0 );
-
-	                            // Ignore base.
-	                            valid = isValid.test(n);
-	                        }
-	                    } else {
-	                        valid = isValid.test(n);
-	                    }
-
-	                    if ( !valid ) {
-
-	                        // Infinity/NaN
-	                        x['c'] = x['e'] = null;
-
-	                        // NaN
-	                        if ( n != 'Infinity' ) {
-
-	                            // No exception on NaN.
-	                            if ( n != 'NaN' ) {
-
-	                                // '{method} not a number: {n}'
-	                                ifExceptionsThrow( Decimal, 'not a number', orig );
-	                            }
-	                            x['s'] = null;
-	                        }
-	                        id = 0;
-
-	                        return x;
-	                    }
-	                }
-
-	                // Decimal point?
-	                if ( ( e = n.indexOf('.') ) > -1 ) {
-	                    n = n.replace( '.', '' );
-	                }
-
-	                // Exponential form?
-	                if ( ( i = n.search(/e/i) ) > 0 ) {
-
-	                    // Determine exponent.
-	                    if ( e < 0 ) {
-	                        e = i;
-	                    }
-	                    e += +n.slice( i + 1 );
-	                    n = n.substring( 0, i );
-
-	                } else if ( e < 0 ) {
-
-	                    // Integer.
-	                    e = n.length;
-	                }
-
-	                // Determine leading zeros.
-	                for ( i = 0; n.charCodeAt(i) === 48; i++ );
-
-	                // Determine trailing zeros.
-	                for ( b = n.length; n.charCodeAt(--b) === 48; );
-
-	                n = n.slice( i, b + 1 );
-
-	                if (n) {
-	                    b = n.length;
-
-	                    // Disallow numbers with over 15 significant digits if number type.
-	                    if ( isNum && b > 15 ) {
-
-	                        // '{method} number type has more than 15 significant digits: {n}'
-	                        ifExceptionsThrow( Decimal, 0, orig );
-	                    }
-
-	                    x['e'] = e = e - i - 1;
-	                    x['c'] = [];
-
-	                    // Transform base
-
-	                    // e is the base 10 exponent.
-	                    // i is where to slice n to get the first element of the coefficient array.
-	                    i = ( e + 1 ) % LOGBASE;
-
-	                    if ( e < 0 ) {
-	                        i += LOGBASE;
-	                    }
-
-	                    // b is n.length.
-	                    if ( i < b ) {
-
-	                        if (i) {
-	                            x['c'].push( +n.slice( 0, i ) );
-	                        }
-
-	                        for ( b -= LOGBASE; i < b; ) {
-	                            x['c'].push( +n.slice( i, i += LOGBASE ) );
-	                        }
-
-	                        n = n.slice(i);
-	                        i = LOGBASE - n.length;
-	                    } else {
-	                        i -= b;
-	                    }
-
-	                    for ( ; i--; n += '0' );
-
-	                    x['c'].push( +n );
-
-	                    if (external) {
-
-	                        // Overflow?
-	                        if ( x['e'] > Decimal['maxE'] ) {
-
-	                            // Infinity.
-	                            x['c'] = x['e'] = null;
-
-	                        // Underflow?
-	                        } else if ( x['e'] < Decimal['minE'] ) {
-
-	                            // Zero.
-	                            x['c'] = [ x['e'] = 0 ];
-	                        }
-	                    }
-	                } else {
-
-	                    // Zero.
-	                    x['c'] = [ x['e'] = 0 ];
-	                }
-	                id = 0;
-
-	                return x;
-	            };
-	        })();
-
-
-	        /*
-	         * Return a new Decimal whose value is x raised to the power y.
-	         *
-	         * x {number|string|Decimal} The base.
-	         * y {number|string|Decimal} The exponent.
-	         *
-	         */
-	        function pow( x, y ) { return new this(x)['pow'](y); }
-
-
-	        /*
-	         * Returns a new Decimal with a random value equal to or greater than 0 and less than 1, and
-	         * with dp, or Decimal.precision if dp is omitted, decimal places (or less if trailing
-	         * zeros are produced).
-	         *
-	         * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
-	         *
-	         */
-	        function random(dp) {
-	            var a, n, v,
-	                i = 0,
-	                r = [],
-	                Decimal = this,
-	                rand = new Decimal( Decimal['ONE'] );
-
-	            if ( dp == null || !checkArg( rand, dp, 'random' ) ) {
-	                dp = Decimal['precision'];
-	            } else {
-	                dp |= 0;
-	            }
-
-	            n = Math.ceil( dp / LOGBASE );
-
-	            if ( Decimal['crypto'] ) {
-
-	                // Browsers supporting crypto.getRandomValues.
-	                if ( crypto && crypto['getRandomValues'] ) {
-
-	                    a = crypto['getRandomValues']( new Uint32Array(n) );
-
-	                    for ( ; i < n; ) {
-	                        v = a[i];
-
-	                        // 0 <= v < 4294967296
-	                        // Probability that v >= 4.29e9, is 4967296 / 4294967296 = 0.00116 (1 in 865).
-	                        if ( v >= 4.29e9 ) {
-
-	                            a[i] = crypto['getRandomValues']( new Uint32Array(1) )[0];
-	                        } else {
-
-	                            // 0 <= v <= 4289999999
-	                            // 0 <= ( v % 1e7 ) <= 9999999
-	                            r[i++] = v % 1e7;
-	                        }
-	                    }
-
-	                // Node.js supporting crypto.randomBytes.
-	                } else if ( crypto && crypto['randomBytes'] ) {
-
-	                    // buffer
-	                    a = crypto['randomBytes']( n *= 4 );
-
-	                    for ( ; i < n; ) {
-
-	                        // 0 <= v < 2147483648
-	                        v = a[i] + ( a[i + 1] << 8 ) + ( a[i + 2] << 16 ) +
-	                            ( ( a[i + 3] & 0x7f ) << 24 );
-
-	                        // Probability that v >= 2.14e9, is 7483648 / 2147483648 = 0.0035 (1 in 286).
-	                        if ( v >= 2.14e9 ) {
-	                            crypto['randomBytes'](4).copy( a, i );
-	                        } else {
-
-	                            // 0 <= v <= 2139999999
-	                            // 0 <= ( v % 1e7 ) <= 9999999
-	                            r.push( v % 1e7 );
-	                            i += 4;
-	                        }
-	                    }
-	                    i = n / 4;
-
-	                } else {
-	                    ifExceptionsThrow( Decimal, 'crypto unavailable', crypto, 'random' );
-	                }
-	            }
-
-	            // Use Math.random: either Decimal.crypto is false or crypto is unavailable and errors is false.
-	            if (!i) {
-
-	                for ( ; i < n; ) {
-	                    r[i++] = Math.random() * 1e7 | 0;
-	                }
-	            }
-
-	            n = r[--i];
-	            dp %= LOGBASE;
-
-	            // Convert trailing digits to zeros according to dp.
-	            if ( n && dp ) {
-	                v = mathpow( 10, LOGBASE - dp );
-	                r[i] = ( n / v | 0 ) * v;
-	            }
-
-	            // Remove trailing elements which are zero.
-	            for ( ; r[i] === 0; i-- ) {
-	                r.pop();
-	            }
-
-	            // Zero?
-	            if ( i < 0 ) {
-	                r = [ n = 0 ];
-	            } else {
-	                n = -1;
-
-	                // Remove leading elements which are zero and adjust exponent accordingly.
-	                for ( ; r[0] === 0; ) {
-	                    r.shift();
-	                    n -= LOGBASE;
-	                }
-
-	                // Count the digits of the first element of r to determine leading zeros.
-	                for ( i = 1, v = r[0]; v >= 10; ) {
-	                    v /= 10;
-	                    i++;
-	                }
-
-	                // Adjust the exponent for leading zeros of the first element of r.
-	                if ( i < LOGBASE ) {
-	                    n -= LOGBASE - i;
-	                }
-	            }
-
-	            rand['e'] = n;
-	            rand['c'] = r;
-
-	            return rand;
-	        }
-
-
-	        /*
-	         * Return a new Decimal whose value is n round to an integer using rounding mode rounding.
-	         *
-	         * To emulate Math.round, set rounding to 7 (ROUND_HALF_CEIL).
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function round(n) {
-	            var x = new this(n);
-
-	            return rnd( x, x['e'] + 1, this['rounding'] );
-	        }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the sine of n.
-	         *
-	         * n {number|string|Decimal} A number given in radians.
-	         *
-	        function sin(n) { return new this( Math.sin(n) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is the square root of n.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	         */
-	        function sqrt(n) { return new this(n)['sqrt'](); }
-
-
-	        /*
-	         * Return a new Decimal whose value is the tangent of n.
-	         *
-	         * n {number|string|Decimal} A number given in radians.
-	         *
-	        function tan(n) { return new this( Math.tan(n) + '' ) }
-	         */
-
-
-	        /*
-	         * Return a new Decimal whose value is n truncated to an integer.
-	         *
-	         * n {number|string|Decimal}
-	         *
-	        function trunc(n) { return new this(n)['trunc']() }
-	         */
-
-
-	        /*
-	         * Create and return a Decimal constructor.
-	         *
-	         */
-	        function decimalFactory(obj) {
-
-	            /*
-	             * The Decimal constructor and exported function.
-	             * Create and return a new instance of a Decimal object.
-	             *
-	             * n {number|string|Decimal} A numeric value.
-	             * [b] {number} The base of n. Integer, 2 to 64 inclusive.
-	             *
-	             */
-	            function Decimal( n, b ) {
-	                var x = this;
-
-	                // Constructor called without new.
-	                if ( !( x instanceof Decimal ) ) {
-	                    ifExceptionsThrow( Decimal, 'Decimal called without new', n );
-
-	                    return new Decimal( n, b );
-	                }
-
-	                // Retain a reference to this Decimal constructor, and shadow
-	                // Decimal.prototype.constructor which points to Object.
-	                x['constructor'] = Decimal;
-
-	                // Duplicate.
-	                if ( n instanceof Decimal ) {
-
-	                    if ( b == null ) {
-	                        id = 0;
-	                        x['s'] = n['s'];
-	                        x['e'] = n['e'];
-	                        x['c'] = ( n = n['c'] ) ? n.slice() : n;
-
-	                        return x;
-	                    } else if ( b == 10 ) {
-
-	                        return rnd( new Decimal(n), Decimal['precision'], Decimal['rounding'] );
-	                    } else {
-	                        n += '';
-	                    }
-	                }
-
-	                return parseDecimal( Decimal, x, n, b );
-	            }
-
-
-	            /* ************************ CONSTRUCTOR DEFAULT PROPERTIES ************************** */
-
-	            /*
-	             These default values must be integers within the stated ranges (inclusive).
-	             Most of these values can be changed during run-time using Decimal.config.
-	             */
-
-	            /*
-	             The maximum number of significant digits of the result of a calculation or base
-	             conversion.
-	             E.g.  Decimal.config({ precision: 20 })
-	             */
-	            Decimal['precision'] = 20;                        // 1 to MAX_DIGITS
-
-	            /*
-	             The rounding mode used when rounding to precision.
-
-	             ROUND_UP         0 Away from zero.
-	             ROUND_DOWN       1 Towards zero.
-	             ROUND_CEIL       2 Towards +Infinity.
-	             ROUND_FLOOR      3 Towards -Infinity.
-	             ROUND_HALF_UP    4 Towards nearest neighbour. If equidistant, up.
-	             ROUND_HALF_DOWN  5 Towards nearest neighbour. If equidistant, down.
-	             ROUND_HALF_EVEN  6 Towards nearest neighbour. If equidistant, towards even neighbour.
-	             ROUND_HALF_CEIL  7 Towards nearest neighbour. If equidistant, towards +Infinity.
-	             ROUND_HALF_FLOOR 8 Towards nearest neighbour. If equidistant, towards -Infinity.
-
-	             E.g.
-	             Decimal.rounding = 4;
-	             Decimal.rounding = Decimal.ROUND_HALF_UP;
-	             */
-	            Decimal['rounding'] = 4;                          // 0 to 8
-
-	            /*
-	             The modulo mode used when calculating the modulus: a mod n.
-	             The quotient (q = a / n) is calculated according to the corresponding rounding mode.
-	             The remainder (r) is calculated as: r = a - n * q.
-
-	             UP         0 The remainder is positive if the dividend is negative, else is negative.
-	             DOWN       1 The remainder has the same sign as the dividend.
-	                          This modulo mode is commonly known as "truncated division" and matches
-	                          as closely as possible, the behaviour of JS remainder operator (a % n).
-	             FLOOR      3 The remainder has the same sign as the divisor (Python %).
-	             HALF_EVEN  6 This modulo mode implements the IEEE 754 remainder function.
-	             EUCLID     9 Euclidian division. q = sign(n) * floor(a / abs(n)).
-	                          The remainder is always positive.
-
-	             The above modes - truncated division, floored division, Euclidian division and IEEE 754
-	             remainder - are commonly used for the modulus operation. Although any other of the
-	             rounding modes can be used, they may not give useful results.
-	             */
-	            Decimal['modulo'] = 1;                            // 0 to 9
-
-	            // The exponent value at and beneath which toString returns exponential notation.
-	            // Number type: -7
-	            Decimal['toExpNeg'] = -7;                         // 0 to -EXP_LIMIT
-
-	            // The exponent value at and above which toString returns exponential notation.
-	            // Number type: 21
-	            Decimal['toExpPos'] = 21;                         // 0 to EXP_LIMIT
-
-	            // The minimum exponent value, beneath which underflow to zero occurs.
-	            // Number type: -324  (5e-324)
-	            Decimal['minE'] = -EXP_LIMIT;                     // -1 to -EXP_LIMIT
-
-	            // The maximum exponent value, above which overflow to Infinity occurs.
-	            // Number type:  308  (1.7976931348623157e+308)
-	            Decimal['maxE'] = EXP_LIMIT;                      // 1 to EXP_LIMIT
-
-	            // Whether Decimal Errors are ever thrown.
-	            Decimal['errors'] = true;                         // true/false
-
-	            // Whether to use cryptographically-secure random number generation, if available.
-	            Decimal['crypto'] = false;                        // true/false
-
-	            // Format specification for the Decimal.prototype.toFormat method
-	            Decimal.format = {
-	                decimalSeparator: '.',
-	                groupSeparator: ',',
-	                groupSize: 3,
-	                secondaryGroupSize: 0,
-	                fractionGroupSeparator: '\xA0',              // non-breaking space
-	                fractionGroupSize: 0
-	            };
-
-
-	            /* ********************** END OF CONSTRUCTOR DEFAULT PROPERTIES ********************* */
-
-
-	            Decimal.prototype = P;
-
-	            Decimal['ONE'] = new Decimal(1);
-
-	            /*
-	            // Pi to 80 s.d.
-	            Decimal['PI'] = new Decimal(
-	                '3.1415926535897932384626433832795028841971693993751058209749445923078164062862089'
-	            );
-	             */
-
-	            Decimal['ROUND_UP'] = 0;
-	            Decimal['ROUND_DOWN'] = 1;
-	            Decimal['ROUND_CEIL'] = 2;
-	            Decimal['ROUND_FLOOR'] = 3;
-	            Decimal['ROUND_HALF_UP'] = 4;
-	            Decimal['ROUND_HALF_DOWN'] = 5;
-	            Decimal['ROUND_HALF_EVEN'] = 6;
-	            Decimal['ROUND_HALF_CEIL'] = 7;
-	            Decimal['ROUND_HALF_FLOOR'] = 8;
-
-	            // modulo mode
-	            Decimal['EUCLID'] = 9;
-
-	            //Decimal['abs'] = abs;
-	            //Decimal['acos'] = acos;
-	            //Decimal['asin'] = asin;
-	            //Decimal['atan'] = atan;
-	            //Decimal['atan2'] = atan2;
-	            //Decimal['ceil'] = ceil;
-	            //Decimal['cos'] = cos;
-	            //Decimal['floor'] = floor;
-	            //Decimal['round'] = round;
-	            //Decimal['sin'] = sin;
-	            //Decimal['tan'] = tan;
-	            //Decimal['trunc'] = trunc;
-
-	            Decimal['config'] = config;
-	            Decimal['constructor'] = decimalFactory;
-	            Decimal['exp'] = exp;
-	            Decimal['ln'] = ln;
-	            Decimal['log'] = log;
-	            Decimal['max'] = max;
-	            Decimal['min'] = min;
-	            Decimal['pow'] = pow;
-	            Decimal['sqrt'] = sqrt;
-	            Decimal['random'] = random;
-
-	            if ( obj != null ) {
-	                Decimal['config'](obj);
-	            }
-
-	            return Decimal;
-	        }
-
-	        return decimalFactory();
-	    })();
-
-
-	    // Export.
-
-
-	    // AMD.
-	    if ( true ) {
-
-	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	            return decimal;
-	        }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-	    // Node and other environments that support module.exports.
-	    } else if ( typeof module != 'undefined' && module.exports ) {
-	        module.exports = decimal;
-
-	        if ( !crypto ) {
-
-	            try {
-	                crypto = require('crypto');
-	            } catch (e) {}
-	        }
-
-	    // Browser.
+	    // Compare lengths.
+	    return xdL === ydL ? 0 : xdL > ydL ^ xs < 0 ? 1 : -1;
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the cosine of the value in radians of this Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-1, 1]
+	   *
+	   * cos(0)         = 1
+	   * cos(-0)        = 1
+	   * cos(Infinity)  = NaN
+	   * cos(-Infinity) = NaN
+	   * cos(NaN)       = NaN
+	   *
+	   */
+	  P.cosine = P.cos = function () {
+	    var pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.d) return new Ctor(NaN);
+
+	    // cos(0) = cos(-0) = 1
+	    if (!x.d[0]) return new Ctor(1);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + Math.max(x.e, x.sd()) + LOG_BASE;
+	    Ctor.rounding = 1;
+
+	    x = cosine(Ctor, toLessThanHalfPi(Ctor, x));
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return finalise(quadrant == 2 || quadrant == 3 ? x.neg() : x, pr, rm, true);
+	  };
+
+
+	  /*
+	   *
+	   * Return a new Decimal whose value is the cube root of the value of this Decimal, rounded to
+	   * `precision` significant digits using rounding mode `rounding`.
+	   *
+	   *  cbrt(0)  =  0
+	   *  cbrt(-0) = -0
+	   *  cbrt(1)  =  1
+	   *  cbrt(-1) = -1
+	   *  cbrt(N)  =  N
+	   *  cbrt(-I) = -I
+	   *  cbrt(I)  =  I
+	   *
+	   * Math.cbrt(x) = (x < 0 ? -Math.pow(-x, 1/3) : Math.pow(x, 1/3))
+	   *
+	   */
+	  P.cubeRoot = P.cbrt = function () {
+	    var e, m, n, r, rep, s, sd, t, t3, t3plusx,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite() || x.isZero()) return new Ctor(x);
+	    external = false;
+
+	    // Initial estimate.
+	    s = x.s * Math.pow(x.s * x, 1 / 3);
+
+	     // Math.cbrt underflow/overflow?
+	     // Pass x to Math.pow as integer, then adjust the exponent of the result.
+	    if (!s || Math.abs(s) == 1 / 0) {
+	      n = digitsToString(x.d);
+	      e = x.e;
+
+	      // Adjust n exponent so it is a multiple of 3 away from x exponent.
+	      if (s = (e - n.length + 1) % 3) n += (s == 1 || s == -2 ? '0' : '00');
+	      s = Math.pow(n, 1 / 3);
+
+	      // Rarely, e may be one less than the result exponent value.
+	      e = mathfloor((e + 1) / 3) - (e % 3 == (e < 0 ? -1 : 2));
+
+	      if (s == 1 / 0) {
+	        n = '5e' + e;
+	      } else {
+	        n = s.toExponential();
+	        n = n.slice(0, n.indexOf('e') + 1) + e;
+	      }
+
+	      r = new Ctor(n);
+	      r.s = x.s;
 	    } else {
-	        noConflict = global['Decimal'];
-
-	        decimal['noConflict'] = function () {
-	            global['Decimal'] = noConflict;
-
-	            return decimal;
-	        };
-
-	        global['Decimal'] = decimal;
+	      r = new Ctor(s.toString());
 	    }
+
+	    sd = (e = Ctor.precision) + 3;
+
+	    // Halley's method.
+	    // TODO? Compare Newton's method.
+	    for (;;) {
+	      t = r;
+	      t3 = t.times(t).times(t);
+	      t3plusx = t3.plus(x);
+	      r = divide(t3plusx.plus(x).times(t), t3plusx.plus(t3), sd + 2, 1);
+
+	      // TODO? Replace with for-loop and checkRoundingDigits.
+	      if (digitsToString(t.d).slice(0, sd) === (n = digitsToString(r.d)).slice(0, sd)) {
+	        n = n.slice(sd - 3, sd + 1);
+
+	        // The 4th rounding digit may be in error by -1 so if the 4 rounding digits are 9999 or 4999
+	        // , i.e. approaching a rounding boundary, continue the iteration.
+	        if (n == '9999' || !rep && n == '4999') {
+
+	          // On the first iteration only, check to see if rounding up gives the exact result as the
+	          // nines may infinitely repeat.
+	          if (!rep) {
+	            finalise(t, e + 1, 0);
+
+	            if (t.times(t).times(t).eq(x)) {
+	              r = t;
+	              break;
+	            }
+	          }
+
+	          sd += 4;
+	          rep = 1;
+	        } else {
+
+	          // If the rounding digits are null, 0{0,4} or 50{0,3}, check for an exact result.
+	          // If not, then there are further digits and m will be truthy.
+	          if (!+n || !+n.slice(1) && n.charAt(0) == '5') {
+
+	            // Truncate to the first rounding digit.
+	            finalise(r, e + 1, 1);
+	            m = !r.times(r).times(r).eq(x);
+	          }
+
+	          break;
+	        }
+	      }
+	    }
+
+	    external = true;
+
+	    return finalise(r, e, Ctor.rounding, m);
+	  };
+
+
+	  /*
+	   * Return the number of decimal places of the value of this Decimal.
+	   *
+	   */
+	  P.decimalPlaces = P.dp = function () {
+	    var w,
+	      d = this.d,
+	      n = NaN;
+
+	    if (d) {
+	      w = d.length - 1;
+	      n = (w - mathfloor(this.e / LOG_BASE)) * LOG_BASE;
+
+	      // Subtract the number of trailing zeros of the last word.
+	      w = d[w];
+	      if (w) for (; w % 10 == 0; w /= 10) n--;
+	      if (n < 0) n = 0;
+	    }
+
+	    return n;
+	  };
+
+
+	  /*
+	   *  n / 0 = I
+	   *  n / N = N
+	   *  n / I = 0
+	   *  0 / n = 0
+	   *  0 / 0 = N
+	   *  0 / N = N
+	   *  0 / I = 0
+	   *  N / n = N
+	   *  N / 0 = N
+	   *  N / N = N
+	   *  N / I = N
+	   *  I / n = I
+	   *  I / 0 = I
+	   *  I / N = N
+	   *  I / I = N
+	   *
+	   * Return a new Decimal whose value is the value of this Decimal divided by `y`, rounded to
+	   * `precision` significant digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.dividedBy = P.div = function (y) {
+	    return divide(this, new this.constructor(y));
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the integer part of dividing the value of this Decimal
+	   * by the value of `y`, rounded to `precision` significant digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.dividedToIntegerBy = P.divToInt = function (y) {
+	    var x = this,
+	      Ctor = x.constructor;
+	    return finalise(divide(x, new Ctor(y), 0, 1, 1), Ctor.precision, Ctor.rounding);
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is equal to the value of `y`, otherwise return false.
+	   *
+	   */
+	  P.equals = P.eq = function (y) {
+	    return this.cmp(y) === 0;
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal rounded to a whole number in the
+	   * direction of negative Infinity.
+	   *
+	   */
+	  P.floor = function () {
+	    return finalise(new this.constructor(this), this.e + 1, 3);
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is greater than the value of `y`, otherwise return
+	   * false.
+	   *
+	   */
+	  P.greaterThan = P.gt = function (y) {
+	    return this.cmp(y) > 0;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is greater than or equal to the value of `y`,
+	   * otherwise return false.
+	   *
+	   */
+	  P.greaterThanOrEqualTo = P.gte = function (y) {
+	    var k = this.cmp(y);
+	    return k == 1 || k === 0;
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the hyperbolic cosine of the value in radians of this
+	   * Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [1, Infinity]
+	   *
+	   * cosh(x) = 1 + x^2/2! + x^4/4! + x^6/6! + ...
+	   *
+	   * cosh(0)         = 1
+	   * cosh(-0)        = 1
+	   * cosh(Infinity)  = Infinity
+	   * cosh(-Infinity) = Infinity
+	   * cosh(NaN)       = NaN
+	   *
+	   *  x        time taken (ms)   result
+	   * 1000      9                 9.8503555700852349694e+433
+	   * 10000     25                4.4034091128314607936e+4342
+	   * 100000    171               1.4033316802130615897e+43429
+	   * 1000000   3817              1.5166076984010437725e+434294
+	   * 10000000  abandoned after 2 minute wait
+	   *
+	   * TODO? Compare performance of cosh(x) = 0.5 * (exp(x) + exp(-x))
+	   *
+	   */
+	  P.hyperbolicCosine = P.cosh = function () {
+	    var k, n, pr, rm, len,
+	      x = this,
+	      Ctor = x.constructor,
+	      one = new Ctor(1);
+
+	    if (!x.isFinite()) return new Ctor(x.s ? 1 / 0 : NaN);
+	    if (x.isZero()) return one;
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + Math.max(x.e, x.sd()) + 4;
+	    Ctor.rounding = 1;
+	    len = x.d.length;
+
+	    // Argument reduction: cos(4x) = 1 - 8cos^2(x) + 8cos^4(x) + 1
+	    // i.e. cos(x) = 1 - cos^2(x/4)(8 - 8cos^2(x/4))
+
+	    // Estimate the optimum number of times to use the argument reduction.
+	    // TODO? Estimation reused from cosine() and may not be optimal here.
+	    if (len < 32) {
+	      k = Math.ceil(len / 3);
+	      n = Math.pow(4, -k).toString();
+	    } else {
+	      k = 16;
+	      n = '2.3283064365386962890625e-10';
+	    }
+
+	    x = taylorSeries(Ctor, 1, x.times(n), new Ctor(1), true);
+
+	    // Reverse argument reduction
+	    var cosh2_x,
+	      i = k,
+	      d8 = new Ctor(8);
+	    for (; i--;) {
+	      cosh2_x = x.times(x);
+	      x = one.minus(cosh2_x.times(d8.minus(cosh2_x.times(d8))));
+	    }
+
+	    return finalise(x, Ctor.precision = pr, Ctor.rounding = rm, true);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the hyperbolic sine of the value in radians of this
+	   * Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-Infinity, Infinity]
+	   *
+	   * sinh(x) = x + x^3/3! + x^5/5! + x^7/7! + ...
+	   *
+	   * sinh(0)         = 0
+	   * sinh(-0)        = -0
+	   * sinh(Infinity)  = Infinity
+	   * sinh(-Infinity) = -Infinity
+	   * sinh(NaN)       = NaN
+	   *
+	   * x        time taken (ms)
+	   * 10       2 ms
+	   * 100      5 ms
+	   * 1000     14 ms
+	   * 10000    82 ms
+	   * 100000   886 ms            1.4033316802130615897e+43429
+	   * 200000   2613 ms
+	   * 300000   5407 ms
+	   * 400000   8824 ms
+	   * 500000   13026 ms          8.7080643612718084129e+217146
+	   * 1000000  48543 ms
+	   *
+	   * TODO? Compare performance of sinh(x) = 0.5 * (exp(x) - exp(-x))
+	   *
+	   */
+	  P.hyperbolicSine = P.sinh = function () {
+	    var k, pr, rm, len,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite() || x.isZero()) return new Ctor(x);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + Math.max(x.e, x.sd()) + 4;
+	    Ctor.rounding = 1;
+	    len = x.d.length;
+
+	    if (len < 3) {
+	      x = taylorSeries(Ctor, 2, x, x, true);
+	    } else {
+
+	      // Alternative argument reduction: sinh(3x) = sinh(x)(3 + 4sinh^2(x))
+	      // i.e. sinh(x) = sinh(x/3)(3 + 4sinh^2(x/3))
+	      // 3 multiplications and 1 addition
+
+	      // Argument reduction: sinh(5x) = sinh(x)(5 + sinh^2(x)(20 + 16sinh^2(x)))
+	      // i.e. sinh(x) = sinh(x/5)(5 + sinh^2(x/5)(20 + 16sinh^2(x/5)))
+	      // 4 multiplications and 2 additions
+
+	      // Estimate the optimum number of times to use the argument reduction.
+	      k = 1.4 * Math.sqrt(len);
+	      k = k > 16 ? 16 : k | 0;
+
+	      x = x.times(Math.pow(5, -k));
+
+	      x = taylorSeries(Ctor, 2, x, x, true);
+
+	      // Reverse argument reduction
+	      var sinh2_x,
+	        d5 = new Ctor(5),
+	        d16 = new Ctor(16),
+	        d20 = new Ctor(20);
+	      for (; k--;) {
+	        sinh2_x = x.times(x);
+	        x = x.times(d5.plus(sinh2_x.times(d16.times(sinh2_x).plus(d20))));
+	      }
+	    }
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return finalise(x, pr, rm, true);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the hyperbolic tangent of the value in radians of this
+	   * Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-1, 1]
+	   *
+	   * tanh(x) = sinh(x) / cosh(x)
+	   *
+	   * tanh(0)         = 0
+	   * tanh(-0)        = -0
+	   * tanh(Infinity)  = 1
+	   * tanh(-Infinity) = -1
+	   * tanh(NaN)       = NaN
+	   *
+	   */
+	  P.hyperbolicTangent = P.tanh = function () {
+	    var pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite()) return new Ctor(x.s);
+	    if (x.isZero()) return new Ctor(x);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + 7;
+	    Ctor.rounding = 1;
+
+	    return divide(x.sinh(), x.cosh(), Ctor.precision = pr, Ctor.rounding = rm);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the arccosine (inverse cosine) in radians of the value of
+	   * this Decimal.
+	   *
+	   * Domain: [-1, 1]
+	   * Range: [0, pi]
+	   *
+	   * acos(x) = pi/2 - asin(x)
+	   *
+	   * acos(0)       = pi/2
+	   * acos(-0)      = pi/2
+	   * acos(1)       = 0
+	   * acos(-1)      = pi
+	   * acos(1/2)     = pi/3
+	   * acos(-1/2)    = 2*pi/3
+	   * acos(|x| > 1) = NaN
+	   * acos(NaN)     = NaN
+	   *
+	   */
+	  P.inverseCosine = P.acos = function () {
+	    var halfPi,
+	      x = this,
+	      Ctor = x.constructor,
+	      k = x.abs().cmp(1),
+	      pr = Ctor.precision,
+	      rm = Ctor.rounding;
+
+	    if (k !== -1) {
+	      return k === 0
+	        // |x| is 1
+	        ? x.isNeg() ? getPi(Ctor, pr, rm) : new Ctor(0)
+	        // |x| > 1 or x is NaN
+	        : new Ctor(NaN);
+	    }
+
+	    if (x.isZero()) return getPi(Ctor, pr + 4, rm).times(0.5);
+
+	    // TODO? Special case acos(0.5) = pi/3 and acos(-0.5) = 2*pi/3
+
+	    Ctor.precision = pr + 6;
+	    Ctor.rounding = 1;
+
+	    x = x.asin();
+	    halfPi = getPi(Ctor, pr + 4, rm).times(0.5);
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return halfPi.minus(x);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the inverse of the hyperbolic cosine in radians of the
+	   * value of this Decimal.
+	   *
+	   * Domain: [1, Infinity]
+	   * Range: [0, Infinity]
+	   *
+	   * acosh(x) = ln(x + sqrt(x^2 - 1))
+	   *
+	   * acosh(x < 1)     = NaN
+	   * acosh(NaN)       = NaN
+	   * acosh(Infinity)  = Infinity
+	   * acosh(-Infinity) = NaN
+	   * acosh(0)         = NaN
+	   * acosh(-0)        = NaN
+	   * acosh(1)         = 0
+	   * acosh(-1)        = NaN
+	   *
+	   */
+	  P.inverseHyperbolicCosine = P.acosh = function () {
+	    var pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (x.lte(1)) return new Ctor(x.eq(1) ? 0 : NaN);
+	    if (!x.isFinite()) return new Ctor(x);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + Math.max(Math.abs(x.e), x.sd()) + 4;
+	    Ctor.rounding = 1;
+	    external = false;
+
+	    x = x.times(x).minus(1).sqrt().plus(x);
+
+	    external = true;
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return x.ln();
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the inverse of the hyperbolic sine in radians of the value
+	   * of this Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-Infinity, Infinity]
+	   *
+	   * asinh(x) = ln(x + sqrt(x^2 + 1))
+	   *
+	   * asinh(NaN)       = NaN
+	   * asinh(Infinity)  = Infinity
+	   * asinh(-Infinity) = -Infinity
+	   * asinh(0)         = 0
+	   * asinh(-0)        = -0
+	   *
+	   */
+	  P.inverseHyperbolicSine = P.asinh = function () {
+	    var pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite() || x.isZero()) return new Ctor(x);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + 2 * Math.max(Math.abs(x.e), x.sd()) + 6;
+	    Ctor.rounding = 1;
+	    external = false;
+
+	    x = x.times(x).plus(1).sqrt().plus(x);
+
+	    external = true;
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return x.ln();
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the inverse of the hyperbolic tangent in radians of the
+	   * value of this Decimal.
+	   *
+	   * Domain: [-1, 1]
+	   * Range: [-Infinity, Infinity]
+	   *
+	   * atanh(x) = 0.5 * ln((1 + x) / (1 - x))
+	   *
+	   * atanh(|x| > 1)   = NaN
+	   * atanh(NaN)       = NaN
+	   * atanh(Infinity)  = NaN
+	   * atanh(-Infinity) = NaN
+	   * atanh(0)         = 0
+	   * atanh(-0)        = -0
+	   * atanh(1)         = Infinity
+	   * atanh(-1)        = -Infinity
+	   *
+	   */
+	  P.inverseHyperbolicTangent = P.atanh = function () {
+	    var pr, rm, wpr, xsd,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite()) return new Ctor(NaN);
+	    if (x.e >= 0) return new Ctor(x.abs().eq(1) ? x.s / 0 : x.isZero() ? x : NaN);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    xsd = x.sd();
+
+	    if (Math.max(xsd, pr) < 2 * -x.e - 1) return finalise(new Ctor(x), pr, rm, true);
+
+	    Ctor.precision = wpr = xsd - x.e;
+
+	    x = divide(x.plus(1), new Ctor(1).minus(x), wpr + pr, 1);
+
+	    Ctor.precision = pr + 4;
+	    Ctor.rounding = 1;
+
+	    x = x.ln();
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return x.times(0.5);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the arcsine (inverse sine) in radians of the value of this
+	   * Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-pi/2, pi/2]
+	   *
+	   * asin(x) = 2*atan(x/(1 + sqrt(1 - x^2)))
+	   *
+	   * asin(0)       = 0
+	   * asin(-0)      = -0
+	   * asin(1/2)     = pi/6
+	   * asin(-1/2)    = -pi/6
+	   * asin(1)       = pi/2
+	   * asin(-1)      = -pi/2
+	   * asin(|x| > 1) = NaN
+	   * asin(NaN)     = NaN
+	   *
+	   * TODO? Compare performance of Taylor series.
+	   *
+	   */
+	  P.inverseSine = P.asin = function () {
+	    var halfPi, k,
+	      pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (x.isZero()) return new Ctor(x);
+
+	    k = x.abs().cmp(1);
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+
+	    if (k !== -1) {
+
+	      // |x| is 1
+	      if (k === 0) {
+	        halfPi = getPi(Ctor, pr + 4, rm).times(0.5);
+	        halfPi.s = x.s;
+	        return halfPi;
+	      }
+
+	      // |x| > 1 or x is NaN
+	      return new Ctor(NaN);
+	    }
+
+	    // TODO? Special case asin(1/2) = pi/6 and asin(-1/2) = -pi/6
+
+	    Ctor.precision = pr + 6;
+	    Ctor.rounding = 1;
+
+	    x = x.div(new Ctor(1).minus(x.times(x)).sqrt().plus(1)).atan();
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return x.times(2);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the arctangent (inverse tangent) in radians of the value
+	   * of this Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-pi/2, pi/2]
+	   *
+	   * atan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...
+	   *
+	   * atan(0)         = 0
+	   * atan(-0)        = -0
+	   * atan(1)         = pi/4
+	   * atan(-1)        = -pi/4
+	   * atan(Infinity)  = pi/2
+	   * atan(-Infinity) = -pi/2
+	   * atan(NaN)       = NaN
+	   *
+	   */
+	  P.inverseTangent = P.atan = function () {
+	    var i, j, k, n, px, t, r, wpr, x2,
+	      x = this,
+	      Ctor = x.constructor,
+	      pr = Ctor.precision,
+	      rm = Ctor.rounding;
+
+	    if (!x.isFinite()) {
+	      if (!x.s) return new Ctor(NaN);
+	      if (pr + 4 <= PI_PRECISION) {
+	        r = getPi(Ctor, pr + 4, rm).times(0.5);
+	        r.s = x.s;
+	        return r;
+	      }
+	    } else if (x.isZero()) {
+	      return new Ctor(x);
+	    } else if (x.abs().eq(1) && pr + 4 <= PI_PRECISION) {
+	      r = getPi(Ctor, pr + 4, rm).times(0.25);
+	      r.s = x.s;
+	      return r;
+	    }
+
+	    Ctor.precision = wpr = pr + 10;
+	    Ctor.rounding = 1;
+
+	    // TODO? if (x >= 1 && pr <= PI_PRECISION) atan(x) = halfPi * x.s - atan(1 / x);
+
+	    // Argument reduction
+	    // Ensure |x| < 0.42
+	    // atan(x) = 2 * atan(x / (1 + sqrt(1 + x^2)))
+
+	    k = Math.min(28, wpr / LOG_BASE + 2 | 0);
+
+	    for (i = k; i; --i) x = x.div(x.times(x).plus(1).sqrt().plus(1));
+
+	    external = false;
+
+	    j = Math.ceil(wpr / LOG_BASE);
+	    n = 1;
+	    x2 = x.times(x);
+	    r = new Ctor(x);
+	    px = x;
+
+	    // atan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...
+	    for (; i !== -1;) {
+	      px = px.times(x2);
+	      t = r.minus(px.div(n += 2));
+
+	      px = px.times(x2);
+	      r = t.plus(px.div(n += 2));
+
+	      if (r.d[j] !== void 0) for (i = j; r.d[i] === t.d[i] && i--;);
+	    }
+
+	    if (k) r = r.times(2 << (k - 1));
+
+	    external = true;
+
+	    return finalise(r, Ctor.precision = pr, Ctor.rounding = rm, true);
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is a finite number, otherwise return false.
+	   *
+	   */
+	  P.isFinite = function () {
+	    return !!this.d;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is an integer, otherwise return false.
+	   *
+	   */
+	  P.isInteger = P.isInt = function () {
+	    return !!this.d && mathfloor(this.e / LOG_BASE) > this.d.length - 2;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is NaN, otherwise return false.
+	   *
+	   */
+	  P.isNaN = function () {
+	    return !this.s;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is negative, otherwise return false.
+	   *
+	   */
+	  P.isNegative = P.isNeg = function () {
+	    return this.s < 0;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is positive, otherwise return false.
+	   *
+	   */
+	  P.isPositive = P.isPos = function () {
+	    return this.s > 0;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is 0 or -0, otherwise return false.
+	   *
+	   */
+	  P.isZero = function () {
+	    return !!this.d && this.d[0] === 0;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is less than `y`, otherwise return false.
+	   *
+	   */
+	  P.lessThan = P.lt = function (y) {
+	    return this.cmp(y) < 0;
+	  };
+
+
+	  /*
+	   * Return true if the value of this Decimal is less than or equal to `y`, otherwise return false.
+	   *
+	   */
+	  P.lessThanOrEqualTo = P.lte = function (y) {
+	    return this.cmp(y) < 1;
+	  };
+
+
+	  /*
+	   * Return the logarithm of the value of this Decimal to the specified base, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * If no base is specified, return log[10](arg).
+	   *
+	   * log[base](arg) = ln(arg) / ln(base)
+	   *
+	   * The result will always be correctly rounded if the base of the log is 10, and 'almost always'
+	   * otherwise:
+	   *
+	   * Depending on the rounding mode, the result may be incorrectly rounded if the first fifteen
+	   * rounding digits are [49]99999999999999 or [50]00000000000000. In that case, the maximum error
+	   * between the result and the correctly rounded result will be one ulp (unit in the last place).
+	   *
+	   * log[-b](a)       = NaN
+	   * log[0](a)        = NaN
+	   * log[1](a)        = NaN
+	   * log[NaN](a)      = NaN
+	   * log[Infinity](a) = NaN
+	   * log[b](0)        = -Infinity
+	   * log[b](-0)       = -Infinity
+	   * log[b](-a)       = NaN
+	   * log[b](1)        = 0
+	   * log[b](Infinity) = Infinity
+	   * log[b](NaN)      = NaN
+	   *
+	   * [base] {number|string|Decimal} The base of the logarithm.
+	   *
+	   */
+	  P.logarithm = P.log = function (base) {
+	    var isBase10, d, denominator, k, inf, num, sd, r,
+	      arg = this,
+	      Ctor = arg.constructor,
+	      pr = Ctor.precision,
+	      rm = Ctor.rounding,
+	      guard = 5;
+
+	    // Default base is 10.
+	    if (base == null) {
+	      base = new Ctor(10);
+	      isBase10 = true;
+	    } else {
+	      base = new Ctor(base);
+	      d = base.d;
+
+	      // Return NaN if base is negative, or non-finite, or is 0 or 1.
+	      if (base.s < 0 || !d || !d[0] || base.eq(1)) return new Ctor(NaN);
+
+	      isBase10 = base.eq(10);
+	    }
+
+	    d = arg.d;
+
+	    // Is arg negative, non-finite, 0 or 1?
+	    if (arg.s < 0 || !d || !d[0] || arg.eq(1)) {
+	      return new Ctor(d && !d[0] ? -1 / 0 : arg.s != 1 ? NaN : d ? 0 : 1 / 0);
+	    }
+
+	    // The result will have a non-terminating decimal expansion if base is 10 and arg is not an
+	    // integer power of 10.
+	    if (isBase10) {
+	      if (d.length > 1) {
+	        inf = true;
+	      } else {
+	        for (k = d[0]; k % 10 === 0;) k /= 10;
+	        inf = k !== 1;
+	      }
+	    }
+
+	    external = false;
+	    sd = pr + guard;
+	    num = naturalLogarithm(arg, sd);
+	    denominator = isBase10 ? getLn10(Ctor, sd + 10) : naturalLogarithm(base, sd);
+
+	    // The result will have 5 rounding digits.
+	    r = divide(num, denominator, sd, 1);
+
+	    // If at a rounding boundary, i.e. the result's rounding digits are [49]9999 or [50]0000,
+	    // calculate 10 further digits.
+	    //
+	    // If the result is known to have an infinite decimal expansion, repeat this until it is clear
+	    // that the result is above or below the boundary. Otherwise, if after calculating the 10
+	    // further digits, the last 14 are nines, round up and assume the result is exact.
+	    // Also assume the result is exact if the last 14 are zero.
+	    //
+	    // Example of a result that will be incorrectly rounded:
+	    // log[1048576](4503599627370502) = 2.60000000000000009610279511444746...
+	    // The above result correctly rounded using ROUND_CEIL to 1 decimal place should be 2.7, but it
+	    // will be given as 2.6 as there are 15 zeros immediately after the requested decimal place, so
+	    // the exact result would be assumed to be 2.6, which rounded using ROUND_CEIL to 1 decimal
+	    // place is still 2.6.
+	    if (checkRoundingDigits(r.d, k = pr, rm)) {
+
+	      do {
+	        sd += 10;
+	        num = naturalLogarithm(arg, sd);
+	        denominator = isBase10 ? getLn10(Ctor, sd + 10) : naturalLogarithm(base, sd);
+	        r = divide(num, denominator, sd, 1);
+
+	        if (!inf) {
+
+	          // Check for 14 nines from the 2nd rounding digit, as the first may be 4.
+	          if (+digitsToString(r.d).slice(k + 1, k + 15) + 1 == 1e14) {
+	            r = finalise(r, pr + 1, 0);
+	          }
+
+	          break;
+	        }
+	      } while (checkRoundingDigits(r.d, k += 10, rm));
+	    }
+
+	    external = true;
+
+	    return finalise(r, pr, rm);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the maximum of the arguments and the value of this Decimal.
+	   *
+	   * arguments {number|string|Decimal}
+	   *
+	  P.max = function () {
+	    Array.prototype.push.call(arguments, this);
+	    return maxOrMin(this.constructor, arguments, 'lt');
+	  };
+	   */
+
+
+	  /*
+	   * Return a new Decimal whose value is the minimum of the arguments and the value of this Decimal.
+	   *
+	   * arguments {number|string|Decimal}
+	   *
+	  P.min = function () {
+	    Array.prototype.push.call(arguments, this);
+	    return maxOrMin(this.constructor, arguments, 'gt');
+	  };
+	   */
+
+
+	  /*
+	   *  n - 0 = n
+	   *  n - N = N
+	   *  n - I = -I
+	   *  0 - n = -n
+	   *  0 - 0 = 0
+	   *  0 - N = N
+	   *  0 - I = -I
+	   *  N - n = N
+	   *  N - 0 = N
+	   *  N - N = N
+	   *  N - I = N
+	   *  I - n = I
+	   *  I - 0 = I
+	   *  I - N = N
+	   *  I - I = N
+	   *
+	   * Return a new Decimal whose value is the value of this Decimal minus `y`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.minus = P.sub = function (y) {
+	    var d, e, i, j, k, len, pr, rm, xd, xe, xLTy, yd,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    y = new Ctor(y);
+
+	    // If either is not finite...
+	    if (!x.d || !y.d) {
+
+	      // Return NaN if either is NaN.
+	      if (!x.s || !y.s) y = new Ctor(NaN);
+
+	      // Return y negated if x is finite and y is ±Infinity.
+	      else if (x.d) y.s = -y.s;
+
+	      // Return x if y is finite and x is ±Infinity.
+	      // Return x if both are ±Infinity with different signs.
+	      // Return NaN if both are ±Infinity with the same sign.
+	      else y = new Ctor(y.d || x.s !== y.s ? x : NaN);
+
+	      return y;
+	    }
+
+	    // If signs differ...
+	    if (x.s != y.s) {
+	      y.s = -y.s;
+	      return x.plus(y);
+	    }
+
+	    xd = x.d;
+	    yd = y.d;
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+
+	    // If either is zero...
+	    if (!xd[0] || !yd[0]) {
+
+	      // Return y negated if x is zero and y is non-zero.
+	      if (yd[0]) y.s = -y.s;
+
+	      // Return x if y is zero and x is non-zero.
+	      else if (xd[0]) y = new Ctor(x);
+
+	      // Return zero if both are zero.
+	      // From IEEE 754 (2008) 6.3: 0 - 0 = -0 - -0 = -0 when rounding to -Infinity.
+	      else return new Ctor(rm === 3 ? -0 : 0);
+
+	      return external ? finalise(y, pr, rm) : y;
+	    }
+
+	    // x and y are finite, non-zero numbers with the same sign.
+
+	    // Calculate base 1e7 exponents.
+	    e = mathfloor(y.e / LOG_BASE);
+	    xe = mathfloor(x.e / LOG_BASE);
+
+	    xd = xd.slice();
+	    k = xe - e;
+
+	    // If base 1e7 exponents differ...
+	    if (k) {
+	      xLTy = k < 0;
+
+	      if (xLTy) {
+	        d = xd;
+	        k = -k;
+	        len = yd.length;
+	      } else {
+	        d = yd;
+	        e = xe;
+	        len = xd.length;
+	      }
+
+	      // Numbers with massively different exponents would result in a very high number of
+	      // zeros needing to be prepended, but this can be avoided while still ensuring correct
+	      // rounding by limiting the number of zeros to `Math.ceil(pr / LOG_BASE) + 2`.
+	      i = Math.max(Math.ceil(pr / LOG_BASE), len) + 2;
+
+	      if (k > i) {
+	        k = i;
+	        d.length = 1;
+	      }
+
+	      // Prepend zeros to equalise exponents.
+	      d.reverse();
+	      for (i = k; i--;) d.push(0);
+	      d.reverse();
+
+	    // Base 1e7 exponents equal.
+	    } else {
+
+	      // Check digits to determine which is the bigger number.
+
+	      i = xd.length;
+	      len = yd.length;
+	      xLTy = i < len;
+	      if (xLTy) len = i;
+
+	      for (i = 0; i < len; i++) {
+	        if (xd[i] != yd[i]) {
+	          xLTy = xd[i] < yd[i];
+	          break;
+	        }
+	      }
+
+	      k = 0;
+	    }
+
+	    if (xLTy) {
+	      d = xd;
+	      xd = yd;
+	      yd = d;
+	      y.s = -y.s;
+	    }
+
+	    len = xd.length;
+
+	    // Append zeros to `xd` if shorter.
+	    // Don't add zeros to `yd` if shorter as subtraction only needs to start at `yd` length.
+	    for (i = yd.length - len; i > 0; --i) xd[len++] = 0;
+
+	    // Subtract yd from xd.
+	    for (i = yd.length; i > k;) {
+
+	      if (xd[--i] < yd[i]) {
+	        for (j = i; j && xd[--j] === 0;) xd[j] = BASE - 1;
+	        --xd[j];
+	        xd[i] += BASE;
+	      }
+
+	      xd[i] -= yd[i];
+	    }
+
+	    // Remove trailing zeros.
+	    for (; xd[--len] === 0;) xd.pop();
+
+	    // Remove leading zeros and adjust exponent accordingly.
+	    for (; xd[0] === 0; xd.shift()) --e;
+
+	    // Zero?
+	    if (!xd[0]) return new Ctor(rm === 3 ? -0 : 0);
+
+	    y.d = xd;
+	    y.e = getBase10Exponent(xd, e);
+
+	    return external ? finalise(y, pr, rm) : y;
+	  };
+
+
+	  /*
+	   *   n % 0 =  N
+	   *   n % N =  N
+	   *   n % I =  n
+	   *   0 % n =  0
+	   *  -0 % n = -0
+	   *   0 % 0 =  N
+	   *   0 % N =  N
+	   *   0 % I =  0
+	   *   N % n =  N
+	   *   N % 0 =  N
+	   *   N % N =  N
+	   *   N % I =  N
+	   *   I % n =  N
+	   *   I % 0 =  N
+	   *   I % N =  N
+	   *   I % I =  N
+	   *
+	   * Return a new Decimal whose value is the value of this Decimal modulo `y`, rounded to
+	   * `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * The result depends on the modulo mode.
+	   *
+	   */
+	  P.modulo = P.mod = function (y) {
+	    var q,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    y = new Ctor(y);
+
+	    // Return NaN if x is ±Infinity or NaN, or y is NaN or ±0.
+	    if (!x.d || !y.s || y.d && !y.d[0]) return new Ctor(NaN);
+
+	    // Return x if y is ±Infinity or x is ±0.
+	    if (!y.d || x.d && !x.d[0]) {
+	      return finalise(new Ctor(x), Ctor.precision, Ctor.rounding);
+	    }
+
+	    // Prevent rounding of intermediate calculations.
+	    external = false;
+
+	    if (Ctor.modulo == 9) {
+
+	      // Euclidian division: q = sign(y) * floor(x / abs(y))
+	      // result = x - q * y    where  0 <= result < abs(y)
+	      q = divide(x, y.abs(), 0, 3, 1);
+	      q.s *= y.s;
+	    } else {
+	      q = divide(x, y, 0, Ctor.modulo, 1);
+	    }
+
+	    q = q.times(y);
+
+	    external = true;
+
+	    return x.minus(q);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the natural exponential of the value of this Decimal,
+	   * i.e. the base e raised to the power the value of this Decimal, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.naturalExponential = P.exp = function () {
+	    return naturalExponential(this);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the natural logarithm of the value of this Decimal,
+	   * rounded to `precision` significant digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.naturalLogarithm = P.ln = function () {
+	    return naturalLogarithm(this);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal negated, i.e. as if multiplied by
+	   * -1.
+	   *
+	   */
+	  P.negated = P.neg = function () {
+	    var x = new this.constructor(this);
+	    x.s = -x.s;
+	    return finalise(x);
+	  };
+
+
+	  /*
+	   *  n + 0 = n
+	   *  n + N = N
+	   *  n + I = I
+	   *  0 + n = n
+	   *  0 + 0 = 0
+	   *  0 + N = N
+	   *  0 + I = I
+	   *  N + n = N
+	   *  N + 0 = N
+	   *  N + N = N
+	   *  N + I = N
+	   *  I + n = I
+	   *  I + 0 = I
+	   *  I + N = N
+	   *  I + I = I
+	   *
+	   * Return a new Decimal whose value is the value of this Decimal plus `y`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.plus = P.add = function (y) {
+	    var carry, d, e, i, k, len, pr, rm, xd, yd,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    y = new Ctor(y);
+
+	    // If either is not finite...
+	    if (!x.d || !y.d) {
+
+	      // Return NaN if either is NaN.
+	      if (!x.s || !y.s) y = new Ctor(NaN);
+
+	      // Return x if y is finite and x is ±Infinity.
+	      // Return x if both are ±Infinity with the same sign.
+	      // Return NaN if both are ±Infinity with different signs.
+	      // Return y if x is finite and y is ±Infinity.
+	      else if (!x.d) y = new Ctor(y.d || x.s === y.s ? x : NaN);
+
+	      return y;
+	    }
+
+	     // If signs differ...
+	    if (x.s != y.s) {
+	      y.s = -y.s;
+	      return x.minus(y);
+	    }
+
+	    xd = x.d;
+	    yd = y.d;
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+
+	    // If either is zero...
+	    if (!xd[0] || !yd[0]) {
+
+	      // Return x if y is zero.
+	      // Return y if y is non-zero.
+	      if (!yd[0]) y = new Ctor(x);
+
+	      return external ? finalise(y, pr, rm) : y;
+	    }
+
+	    // x and y are finite, non-zero numbers with the same sign.
+
+	    // Calculate base 1e7 exponents.
+	    k = mathfloor(x.e / LOG_BASE);
+	    e = mathfloor(y.e / LOG_BASE);
+
+	    xd = xd.slice();
+	    i = k - e;
+
+	    // If base 1e7 exponents differ...
+	    if (i) {
+
+	      if (i < 0) {
+	        d = xd;
+	        i = -i;
+	        len = yd.length;
+	      } else {
+	        d = yd;
+	        e = k;
+	        len = xd.length;
+	      }
+
+	      // Limit number of zeros prepended to max(ceil(pr / LOG_BASE), len) + 1.
+	      k = Math.ceil(pr / LOG_BASE);
+	      len = k > len ? k + 1 : len + 1;
+
+	      if (i > len) {
+	        i = len;
+	        d.length = 1;
+	      }
+
+	      // Prepend zeros to equalise exponents. Note: Faster to use reverse then do unshifts.
+	      d.reverse();
+	      for (; i--;) d.push(0);
+	      d.reverse();
+	    }
+
+	    len = xd.length;
+	    i = yd.length;
+
+	    // If yd is longer than xd, swap xd and yd so xd points to the longer array.
+	    if (len - i < 0) {
+	      i = len;
+	      d = yd;
+	      yd = xd;
+	      xd = d;
+	    }
+
+	    // Only start adding at yd.length - 1 as the further digits of xd can be left as they are.
+	    for (carry = 0; i;) {
+	      carry = (xd[--i] = xd[i] + yd[i] + carry) / BASE | 0;
+	      xd[i] %= BASE;
+	    }
+
+	    if (carry) {
+	      xd.unshift(carry);
+	      ++e;
+	    }
+
+	    // Remove trailing zeros.
+	    // No need to check for zero, as +x + +y != 0 && -x + -y != 0
+	    for (len = xd.length; xd[--len] == 0;) xd.pop();
+
+	    y.d = xd;
+	    y.e = getBase10Exponent(xd, e);
+
+	    return external ? finalise(y, pr, rm) : y;
+	  };
+
+
+	  /*
+	   * Return the number of significant digits of the value of this Decimal.
+	   *
+	   * [z] {boolean|number} Whether to count integer-part trailing zeros: true, false, 1 or 0.
+	   *
+	   */
+	  P.precision = P.sd = function (z) {
+	    var k,
+	      x = this;
+
+	    if (z !== void 0 && z !== !!z && z !== 1 && z !== 0) throw Error(invalidArgument + z);
+
+	    if (x.d) {
+	      k = getPrecision(x.d);
+	      if (z && x.e + 1 > k) k = x.e + 1;
+	    } else {
+	      k = NaN;
+	    }
+
+	    return k;
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal rounded to a whole number using
+	   * rounding mode `rounding`.
+	   *
+	   */
+	  P.round = function () {
+	    var x = this,
+	      Ctor = x.constructor;
+
+	    return finalise(new Ctor(x), x.e + 1, Ctor.rounding);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the sine of the value in radians of this Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-1, 1]
+	   *
+	   * sin(x) = x - x^3/3! + x^5/5! - ...
+	   *
+	   * sin(0)         = 0
+	   * sin(-0)        = -0
+	   * sin(Infinity)  = NaN
+	   * sin(-Infinity) = NaN
+	   * sin(NaN)       = NaN
+	   *
+	   */
+	  P.sine = P.sin = function () {
+	    var pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite()) return new Ctor(NaN);
+	    if (x.isZero()) return new Ctor(x);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + Math.max(x.e, x.sd()) + LOG_BASE;
+	    Ctor.rounding = 1;
+
+	    x = sine(Ctor, toLessThanHalfPi(Ctor, x));
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return finalise(quadrant > 2 ? x.neg() : x, pr, rm, true);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the square root of this Decimal, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   *  sqrt(-n) =  N
+	   *  sqrt(N)  =  N
+	   *  sqrt(-I) =  N
+	   *  sqrt(I)  =  I
+	   *  sqrt(0)  =  0
+	   *  sqrt(-0) = -0
+	   *
+	   */
+	  P.squareRoot = P.sqrt = function () {
+	    var m, n, sd, r, rep, t,
+	      x = this,
+	      d = x.d,
+	      e = x.e,
+	      s = x.s,
+	      Ctor = x.constructor;
+
+	    // Negative/NaN/Infinity/zero?
+	    if (s !== 1 || !d || !d[0]) {
+	      return new Ctor(!s || s < 0 && (!d || d[0]) ? NaN : d ? x : 1 / 0);
+	    }
+
+	    external = false;
+
+	    // Initial estimate.
+	    s = Math.sqrt(+x);
+
+	    // Math.sqrt underflow/overflow?
+	    // Pass x to Math.sqrt as integer, then adjust the exponent of the result.
+	    if (s == 0 || s == 1 / 0) {
+	      n = digitsToString(d);
+
+	      if ((n.length + e) % 2 == 0) n += '0';
+	      s = Math.sqrt(n);
+	      e = mathfloor((e + 1) / 2) - (e < 0 || e % 2);
+
+	      if (s == 1 / 0) {
+	        n = '1e' + e;
+	      } else {
+	        n = s.toExponential();
+	        n = n.slice(0, n.indexOf('e') + 1) + e;
+	      }
+
+	      r = new Ctor(n);
+	    } else {
+	      r = new Ctor(s.toString());
+	    }
+
+	    sd = (e = Ctor.precision) + 3;
+
+	    // Newton-Raphson iteration.
+	    for (;;) {
+	      t = r;
+	      r = t.plus(divide(x, t, sd + 2, 1)).times(0.5);
+
+	      // TODO? Replace with for-loop and checkRoundingDigits.
+	      if (digitsToString(t.d).slice(0, sd) === (n = digitsToString(r.d)).slice(0, sd)) {
+	        n = n.slice(sd - 3, sd + 1);
+
+	        // The 4th rounding digit may be in error by -1 so if the 4 rounding digits are 9999 or
+	        // 4999, i.e. approaching a rounding boundary, continue the iteration.
+	        if (n == '9999' || !rep && n == '4999') {
+
+	          // On the first iteration only, check to see if rounding up gives the exact result as the
+	          // nines may infinitely repeat.
+	          if (!rep) {
+	            finalise(t, e + 1, 0);
+
+	            if (t.times(t).eq(x)) {
+	              r = t;
+	              break;
+	            }
+	          }
+
+	          sd += 4;
+	          rep = 1;
+	        } else {
+
+	          // If the rounding digits are null, 0{0,4} or 50{0,3}, check for an exact result.
+	          // If not, then there are further digits and m will be truthy.
+	          if (!+n || !+n.slice(1) && n.charAt(0) == '5') {
+
+	            // Truncate to the first rounding digit.
+	            finalise(r, e + 1, 1);
+	            m = !r.times(r).eq(x);
+	          }
+
+	          break;
+	        }
+	      }
+	    }
+
+	    external = true;
+
+	    return finalise(r, e, Ctor.rounding, m);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the tangent of the value in radians of this Decimal.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-Infinity, Infinity]
+	   *
+	   * tan(0)         = 0
+	   * tan(-0)        = -0
+	   * tan(Infinity)  = NaN
+	   * tan(-Infinity) = NaN
+	   * tan(NaN)       = NaN
+	   *
+	   */
+	  P.tangent = P.tan = function () {
+	    var pr, rm,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (!x.isFinite()) return new Ctor(NaN);
+	    if (x.isZero()) return new Ctor(x);
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+	    Ctor.precision = pr + 10;
+	    Ctor.rounding = 1;
+
+	    x = x.sin();
+	    x.s = 1;
+	    x = divide(x, new Ctor(1).minus(x.times(x)).sqrt(), pr + 10, 0);
+
+	    Ctor.precision = pr;
+	    Ctor.rounding = rm;
+
+	    return finalise(quadrant == 2 || quadrant == 4 ? x.neg() : x, pr, rm, true);
+	  };
+
+
+	  /*
+	   *  n * 0 = 0
+	   *  n * N = N
+	   *  n * I = I
+	   *  0 * n = 0
+	   *  0 * 0 = 0
+	   *  0 * N = N
+	   *  0 * I = N
+	   *  N * n = N
+	   *  N * 0 = N
+	   *  N * N = N
+	   *  N * I = N
+	   *  I * n = I
+	   *  I * 0 = N
+	   *  I * N = N
+	   *  I * I = I
+	   *
+	   * Return a new Decimal whose value is this Decimal times `y`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   */
+	  P.times = P.mul = function (y) {
+	    var carry, e, i, k, r, rL, t, xdL, ydL,
+	      x = this,
+	      Ctor = x.constructor,
+	      xd = x.d,
+	      yd = (y = new Ctor(y)).d;
+
+	    y.s *= x.s;
+
+	     // If either is NaN, ±Infinity or ±0...
+	    if (!xd || !xd[0] || !yd || !yd[0]) {
+
+	      return new Ctor(!y.s || xd && !xd[0] && !yd || yd && !yd[0] && !xd
+
+	        // Return NaN if either is NaN.
+	        // Return NaN if x is ±0 and y is ±Infinity, or y is ±0 and x is ±Infinity.
+	        ? NaN
+
+	        // Return ±Infinity if either is ±Infinity.
+	        // Return ±0 if either is ±0.
+	        : !xd || !yd ? y.s / 0 : y.s * 0);
+	    }
+
+	    e = mathfloor(x.e / LOG_BASE) + mathfloor(y.e / LOG_BASE);
+	    xdL = xd.length;
+	    ydL = yd.length;
+
+	    // Ensure xd points to the longer array.
+	    if (xdL < ydL) {
+	      r = xd;
+	      xd = yd;
+	      yd = r;
+	      rL = xdL;
+	      xdL = ydL;
+	      ydL = rL;
+	    }
+
+	    // Initialise the result array with zeros.
+	    r = [];
+	    rL = xdL + ydL;
+	    for (i = rL; i--;) r.push(0);
+
+	    // Multiply!
+	    for (i = ydL; --i >= 0;) {
+	      carry = 0;
+	      for (k = xdL + i; k > i;) {
+	        t = r[k] + yd[i] * xd[k - i - 1] + carry;
+	        r[k--] = t % BASE | 0;
+	        carry = t / BASE | 0;
+	      }
+
+	      r[k] = (r[k] + carry) % BASE | 0;
+	    }
+
+	    // Remove trailing zeros.
+	    for (; !r[--rL];) r.pop();
+
+	    if (carry) ++e;
+	    else r.shift();
+
+	    // Remove trailing zeros.
+	    for (i = r.length; !r[--i];) r.pop();
+
+	    y.d = r;
+	    y.e = getBase10Exponent(r, e);
+
+	    return external ? finalise(y, Ctor.precision, Ctor.rounding) : y;
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal in base 2, round to `sd` significant
+	   * digits using rounding mode `rm`.
+	   *
+	   * If the optional `sd` argument is present then return binary exponential notation.
+	   *
+	   * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   */
+	  P.toBinary = function (sd, rm) {
+	    return toStringBinary(this, 2, sd, rm);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of `dp`
+	   * decimal places using rounding mode `rm` or `rounding` if `rm` is omitted.
+	   *
+	   * If `dp` is omitted, return a new Decimal whose value is the value of this Decimal.
+	   *
+	   * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   */
+	  P.toDecimalPlaces = P.toDP = function (dp, rm) {
+	    var x = this,
+	      Ctor = x.constructor;
+
+	    x = new Ctor(x);
+	    if (dp === void 0) return x;
+
+	    checkInt32(dp, 0, MAX_DIGITS);
+
+	    if (rm === void 0) rm = Ctor.rounding;
+	    else checkInt32(rm, 0, 8);
+
+	    return finalise(x, dp + x.e + 1, rm);
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal in exponential notation rounded to
+	   * `dp` fixed decimal places using rounding mode `rounding`.
+	   *
+	   * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   */
+	  P.toExponential = function (dp, rm) {
+	    var str,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (dp === void 0) {
+	      str = finiteToString(x, true);
+	    } else {
+	      checkInt32(dp, 0, MAX_DIGITS);
+
+	      if (rm === void 0) rm = Ctor.rounding;
+	      else checkInt32(rm, 0, 8);
+
+	      x = finalise(new Ctor(x), dp + 1, rm);
+	      str = finiteToString(x, true, dp + 1);
+	    }
+
+	    return x.isNeg() && !x.isZero() ? '-' + str : str;
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal in normal (fixed-point) notation to
+	   * `dp` fixed decimal places and rounded using rounding mode `rm` or `rounding` if `rm` is
+	   * omitted.
+	   *
+	   * As with JavaScript numbers, (-0).toFixed(0) is '0', but e.g. (-0.00001).toFixed(0) is '-0'.
+	   *
+	   * [dp] {number} Decimal places. Integer, 0 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   * (-0).toFixed(0) is '0', but (-0.1).toFixed(0) is '-0'.
+	   * (-0).toFixed(1) is '0.0', but (-0.01).toFixed(1) is '-0.0'.
+	   * (-0).toFixed(3) is '0.000'.
+	   * (-0.5).toFixed(0) is '-0'.
+	   *
+	   */
+	  P.toFixed = function (dp, rm) {
+	    var str, y,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (dp === void 0) {
+	      str = finiteToString(x);
+	    } else {
+	      checkInt32(dp, 0, MAX_DIGITS);
+
+	      if (rm === void 0) rm = Ctor.rounding;
+	      else checkInt32(rm, 0, 8);
+
+	      y = finalise(new Ctor(x), dp + x.e + 1, rm);
+	      str = finiteToString(y, false, dp + y.e + 1);
+	    }
+
+	    // To determine whether to add the minus sign look at the value before it was rounded,
+	    // i.e. look at `x` rather than `y`.
+	    return x.isNeg() && !x.isZero() ? '-' + str : str;
+	  };
+
+
+	  /*
+	   * Return an array representing the value of this Decimal as a simple fraction with an integer
+	   * numerator and an integer denominator.
+	   *
+	   * The denominator will be a positive non-zero value less than or equal to the specified maximum
+	   * denominator. If a maximum denominator is not specified, the denominator will be the lowest
+	   * value necessary to represent the number exactly.
+	   *
+	   * [maxD] {number|string|Decimal} Maximum denominator. Integer >= 1 and < Infinity.
+	   *
+	   */
+	  P.toFraction = function (maxD) {
+	    var d, d0, d1, d2, e, k, n, n0, n1, pr, q, r,
+	      x = this,
+	      xd = x.d,
+	      Ctor = x.constructor;
+
+	    if (!xd) return new Ctor(x);
+
+	    n1 = d0 = new Ctor(1);
+	    d1 = n0 = new Ctor(0);
+
+	    d = new Ctor(d1);
+	    e = d.e = getPrecision(xd) - x.e - 1;
+	    k = e % LOG_BASE;
+	    d.d[0] = mathpow(10, k < 0 ? LOG_BASE + k : k);
+
+	    if (maxD == null) {
+
+	      // d is 10**e, the minimum max-denominator needed.
+	      maxD = e > 0 ? d : n1;
+	    } else {
+	      n = new Ctor(maxD);
+	      if (!n.isInt() || n.lt(n1)) throw Error(invalidArgument + n);
+	      maxD = n.gt(d) ? (e > 0 ? d : n1) : n;
+	    }
+
+	    external = false;
+	    n = new Ctor(digitsToString(xd));
+	    pr = Ctor.precision;
+	    Ctor.precision = e = xd.length * LOG_BASE * 2;
+
+	    for (;;)  {
+	      q = divide(n, d, 0, 1, 1);
+	      d2 = d0.plus(q.times(d1));
+	      if (d2.cmp(maxD) == 1) break;
+	      d0 = d1;
+	      d1 = d2;
+	      d2 = n1;
+	      n1 = n0.plus(q.times(d2));
+	      n0 = d2;
+	      d2 = d;
+	      d = n.minus(q.times(d2));
+	      n = d2;
+	    }
+
+	    d2 = divide(maxD.minus(d0), d1, 0, 1, 1);
+	    n0 = n0.plus(d2.times(n1));
+	    d0 = d0.plus(d2.times(d1));
+	    n0.s = n1.s = x.s;
+
+	    // Determine which fraction is closer to x, n0/d0 or n1/d1?
+	    r = divide(n1, d1, e, 1).minus(x).abs().cmp(divide(n0, d0, e, 1).minus(x).abs()) < 1
+	        ? [n1, d1] : [n0, d0];
+
+	    Ctor.precision = pr;
+	    external = true;
+
+	    return r;
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal in base 16, round to `sd` significant
+	   * digits using rounding mode `rm`.
+	   *
+	   * If the optional `sd` argument is present then return binary exponential notation.
+	   *
+	   * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   */
+	  P.toHexadecimal = P.toHex = function (sd, rm) {
+	    return toStringBinary(this, 16, sd, rm);
+	  };
+
+
+	  /*
+	   * Return a string representing the exact value of this Decimal in a compact base-88 based format.
+	   *
+	   * The number of characters of the string will always be equal to or less than the number of
+	   * characters returned by `toString` or `toExponential` - usually just over half as many.
+	   *
+	   * The original Decimal value can be recreated by passing the string to `Decimal.fromJSON`.
+	   *
+	   * Base 88 alphabet:
+	   * 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./:;=?@[]^_`{|}~
+	   *
+	   * The following 7 printable ASCII characters are not used
+	   * (space) \ " & ' < >
+	   * so the return value is safe for strings, HTML, JSON, and XML.
+	   *
+	   *     0   0     g  16    w  32    M  48    $  64    ]  80
+	   *     1   1     h  17    x  33    N  49    %  65    ^  81
+	   *     2   2     i  18    y  34    O  50    (  66    _  82
+	   *     3   3     j  19    z  35    P  51    )  67    `  83
+	   *     4   4     k  20    A  36    Q  52    *  68    {  84
+	   *     5   5     l  21    B  37    R  53    +  69    |  85
+	   *     6   6     m  22    C  38    S  54    ,  70    }  86
+	   *     7   7     n  23    D  39    T  55    -  71    ~  87
+	   *     8   8     o  24    E  40    U  56    .  72
+	   *     9   9     p  25    F  41    V  57    /  73
+	   *     a  10     q  26    G  42    W  58    :  74
+	   *     b  11     r  27    H  43    X  59    ;  75
+	   *     c  12     s  28    I  44    Y  60    =  76
+	   *     d  13     t  29    J  45    Z  61    ?  77
+	   *     e  14     u  30    K  46    !  62    @  78
+	   *     f  15     v  31    L  47    #  63    [  79
+	   *
+	   * If the return value is just one character, it represents:
+	   * 0-81  [[0, 40][-0, -40]]
+	   * 82    -Infinity
+	   * 83    +Infinity
+	   * 84    NaN
+	   * 85-87 free
+	   *
+	   *   64 32 16  8  4  2  1
+	   *    1  0  1  0  1  1  1 = 87
+	   *
+	   */
+	   P.toJSON = function () {
+	    var arr, e, i, k, len, n, r, str,
+	      x = this,
+	      isNeg = x.s < 0;
+
+	    // -Infinity/Infinity/NaN.
+	    if (!x.d) return NUMERALS.charAt(x.s ? isNeg ? 82 : 83 : 84);
+	    e = x.e;
+
+	    // Small integer.
+	    if (x.d.length === 1 && e < 4 && e >= 0) {
+	      n = x.d[0];
+
+	      if (n < 2857) {
+
+	        // One character.
+	        // [[0, 40][-0, -40]]
+	        if (n < 41) return NUMERALS.charAt(isNeg ? n + 41 : n);
+
+	        // Two characters. High bit of first character unset.
+	        // 0XXXXXX
+	        // 63*88 + 87 = 5631 = 5632 values, 5632/2 = 2816
+	        // [[0, 2815][2816, 5631]]  (2816 * 2 = 5632 values)
+	        // [[0, 2815][-0, -2815]]
+	        // [[41, 2856][-41, -2856]]
+	        n -= 41;
+	        if (isNeg) n += 2816;
+	        k = n / 88 | 0;
+
+	        return NUMERALS.charAt(k) + NUMERALS.charAt(n - k * 88);
+	      }
+	    }
+
+	    str = digitsToString(x.d);
+	    r = '';
+
+	    // Values with a small exponent. Set high bit.
+	    // Positive value: 100XXXX
+	    // 1 0 0 {exponent [0, 15] -> [-7, 8]}
+	    if (!isNeg && e <= 8 && e >= -7) {
+	      k = 64 + e + 7;
+
+	    // Negative value: 1010XXX
+	    // 1 0 1 0 {exponent [0, 7] -> [-3, 4]}
+	    } else if (isNeg && e <= 4 && e >= -3) {
+	      k = 64 + 16 + e + 3;
+
+	    // Integer without trailing zeros: 0X00000
+	    // 0 {is negative} 0 0 0 0 0
+	    } else if (str.length === e + 1) {
+	      k = 32 * isNeg;
+
+	    // All remaining values: 0XXXXXX
+	    // Result will have at least 3 characters.
+	    // 0 {is negative} {is exponent negative} {exponent character count [1, 15]}
+	    } else {
+	      k = 32 * isNeg + 16 * (e < 0);
+	      e = Math.abs(e);
+
+	      // One character to represent the exponent.
+	      if (e < 88)  {
+	        k += 1;
+	        r = NUMERALS.charAt(e);
+
+	      // Two characters to represent the exponent.
+	      // 87*88 + 87 = 7743
+	      } else if (e < 7744) {
+	        k += 2;
+	        n = e / 88 | 0;
+	        r = NUMERALS.charAt(n) + NUMERALS.charAt(e - n * 88);
+
+	      // More than two characters to represent the exponent.
+	      } else {
+	        arr = convertBase(String(e), 10, 88);
+	        len = arr.length;
+	        k += len;
+	        for (i = 0; i < len; i++) r += NUMERALS.charAt(arr[i]);
+	      }
+	    }
+
+	    // At this point r contains the characters in base 88 representing the exponent value.
+	    // Prepend the first character, which describes the sign, the exponent sign, and the number of
+	    // characters that follow which represent the exponent value.
+	    r = NUMERALS.charAt(k) + r;
+	    arr = convertBase(str, 10, 88);
+	    len = arr.length;
+
+	    // Add the base 88 characters that represent the significand.
+	    for (i = 0; i < len; i++) r += NUMERALS.charAt(arr[i]);
+
+	    return r;
+	  };
+
+
+	  /*
+	   * Returns a new Decimal whose value is the nearest multiple of the magnitude of `y` to the value
+	   * of this Decimal.
+	   *
+	   * If the value of this Decimal is equidistant from two multiples of `y`, the rounding mode `rm`,
+	   * or `Decimal.rounding` if `rm` is omitted, determines the direction of the nearest multiple.
+	   *
+	   * In the context of this method, rounding mode 4 (ROUND_HALF_UP) is the same as rounding mode 0
+	   * (ROUND_UP), and so on.
+	   *
+	   * The return value will always have the same sign as this Decimal, unless either this Decimal
+	   * or `y` is NaN, in which case the return value will be also be NaN.
+	   *
+	   * The return value is not affected by the value of `precision`.
+	   *
+	   * y {number|string|Decimal} The magnitude to round to a multiple of.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   * 'toNearest() rounding mode not an integer: {rm}'
+	   * 'toNearest() rounding mode out of range: {rm}'
+	   *
+	   */
+	  P.toNearest = function (y, rm) {
+	    var x = this,
+	      Ctor = x.constructor;
+
+	    x = new Ctor(x);
+
+	    if (y == null) {
+
+	      // If x is not finite, return x.
+	      if (!x.d) return x;
+
+	      y = new Ctor(1);
+	      rm = Ctor.rounding;
+	    } else {
+	      y = new Ctor(y);
+	      if (rm !== void 0) checkInt32(rm, 0, 8);
+
+	      // If x is not finite, return x if y is not NaN, else NaN.
+	      if (!x.d) return y.s ? x : y;
+
+	      // If y is not finite, return Infinity with the sign of x if y is Infinity, else NaN.
+	      if (!y.d) {
+	        if (y.s) y.s = x.s;
+	        return y;
+	      }
+	    }
+
+	    // If y is not zero, calculate the nearest multiple of y to x.
+	    if (y.d[0]) {
+	      external = false;
+	      if (rm < 4) rm = [4, 5, 7, 8][rm];
+	      x = divide(x, y, 0, rm, 1).times(y);
+	      external = true;
+	      finalise(x);
+
+	    // If y is zero, return zero with the sign of x.
+	    } else {
+	      y.s = x.s;
+	      x = y;
+	    }
+
+	    return x;
+	  };
+
+
+	  /*
+	   * Return the value of this Decimal converted to a number primitive.
+	   * Zero keeps its sign.
+	   *
+	   */
+	  P.toNumber = function () {
+	    return +this;
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal in base 8, round to `sd` significant
+	   * digits using rounding mode `rm`.
+	   *
+	   * If the optional `sd` argument is present then return binary exponential notation.
+	   *
+	   * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   */
+	  P.toOctal = function (sd, rm) {
+	    return toStringBinary(this, 8, sd, rm);
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal raised to the power `y`, rounded
+	   * to `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * ECMAScript compliant.
+	   *
+	   *   pow(x, NaN)                           = NaN
+	   *   pow(x, ±0)                            = 1
+
+	   *   pow(NaN, non-zero)                    = NaN
+	   *   pow(abs(x) > 1, +Infinity)            = +Infinity
+	   *   pow(abs(x) > 1, -Infinity)            = +0
+	   *   pow(abs(x) == 1, ±Infinity)           = NaN
+	   *   pow(abs(x) < 1, +Infinity)            = +0
+	   *   pow(abs(x) < 1, -Infinity)            = +Infinity
+	   *   pow(+Infinity, y > 0)                 = +Infinity
+	   *   pow(+Infinity, y < 0)                 = +0
+	   *   pow(-Infinity, odd integer > 0)       = -Infinity
+	   *   pow(-Infinity, even integer > 0)      = +Infinity
+	   *   pow(-Infinity, odd integer < 0)       = -0
+	   *   pow(-Infinity, even integer < 0)      = +0
+	   *   pow(+0, y > 0)                        = +0
+	   *   pow(+0, y < 0)                        = +Infinity
+	   *   pow(-0, odd integer > 0)              = -0
+	   *   pow(-0, even integer > 0)             = +0
+	   *   pow(-0, odd integer < 0)              = -Infinity
+	   *   pow(-0, even integer < 0)             = +Infinity
+	   *   pow(finite x < 0, finite non-integer) = NaN
+	   *
+	   * For non-integer or very large exponents pow(x, y) is calculated using
+	   *
+	   *   x^y = exp(y*ln(x))
+	   *
+	   * Assuming the first 15 rounding digits are each equally likely to be any digit 0-9, the
+	   * probability of an incorrectly rounded result
+	   * P([49]9{14} | [50]0{14}) = 2 * 0.2 * 10^-14 = 4e-15 = 1/2.5e+14
+	   * i.e. 1 in 250,000,000,000,000
+	   *
+	   * If a result is incorrectly rounded the maximum error will be 1 ulp (unit in last place).
+	   *
+	   * y {number|string|Decimal} The power to which to raise this Decimal.
+	   *
+	   */
+	  P.toPower = P.pow = function (y) {
+	    var e, k, pr, r, rm, sign, yIsInt,
+	      x = this,
+	      Ctor = x.constructor,
+	      yn = +(y = new Ctor(y));
+
+	    // Either ±Infinity, NaN or ±0?
+	    if (!x.d || !y.d || !x.d[0] || !y.d[0]) return  new Ctor(mathpow(+x, yn));
+
+	    x = new Ctor(x);
+
+	    if (x.eq(1)) return x;
+
+	    pr = Ctor.precision;
+	    rm = Ctor.rounding;
+
+	    if (y.eq(1)) return finalise(x, pr, rm);
+
+	    e = mathfloor(y.e / LOG_BASE);
+	    k = y.d.length - 1;
+	    yIsInt = e >= k;
+	    sign = x.s;
+
+	    if (!yIsInt) {
+	      if (sign < 0) return new Ctor(NaN);
+
+	    // If y is a small integer use the 'exponentiation by squaring' algorithm.
+	    } else if ((k = yn < 0 ? -yn : yn) <= MAX_SAFE_INTEGER) {
+	      r = intPow(Ctor, x, k, pr);
+	      return y.s < 0 ? new Ctor(1).div(r) : finalise(r, pr, rm);
+	    }
+
+	    // Result is negative if x is negative and the last digit of integer y is odd.
+	    sign = sign < 0 && y.d[Math.max(e, k)] & 1 ? -1 : 1;
+
+	    // Estimate result exponent.
+	    // x^y = 10^e,  where e = y * log10(x)
+	    // log10(x) = log10(x_significand) + x_exponent
+	    // log10(x_significand) = ln(x_significand) / ln(10)
+	    k = mathpow(+x, yn);
+	    e = k == 0 || !isFinite(k)
+	      ? mathfloor(yn * (Math.log('0.' + digitsToString(x.d)) / Math.LN10 + x.e + 1))
+	      : new Ctor(k + '').e;
+
+	    // Estimate may be incorrect e.g. x: 0.999999999999999999, y: 2.29, e: 0, r.e: -1.
+
+	    // Overflow/underflow?
+	    if (e > Ctor.maxE + 1 || e < Ctor.minE - 1) return new Ctor(e > 0 ? sign / 0 : 0);
+
+	    external = false;
+	    Ctor.rounding = x.s = 1;
+
+	    // Estimate the extra guard digits needed to ensure five correct rounding digits from
+	    // naturalLogarithm(x). Example of failure without these extra digits (precision: 10):
+	    // new Decimal(2.32456).pow('2087987436534566.46411')
+	    // should be 1.162377823e+764914905173815, but is 1.162355823e+764914905173815
+	    k = Math.min(12, (e + '').length);
+
+	    // r = x^y = exp(y*ln(x))
+	    r = naturalExponential(y.times(naturalLogarithm(x, pr + k)), pr);
+
+	    // Truncate to the required precision plus five rounding digits.
+	    r = finalise(r, pr + 5, 1);
+
+	    // If the rounding digits are [49]9999 or [50]0000 increase the precision by 10 and recalculate
+	    // the result.
+	    if (checkRoundingDigits(r.d, pr, rm)) {
+	      e = pr + 10;
+
+	      // Truncate to the increased precision plus five rounding digits.
+	      r = finalise(naturalExponential(y.times(naturalLogarithm(x, e + k)), e), e + 5, 1);
+
+	      // Check for 14 nines from the 2nd rounding digit (the first rounding digit may be 4 or 9).
+	      if (+digitsToString(r.d).slice(pr + 1, pr + 15) + 1 == 1e14) {
+	        r = finalise(r, pr + 1, 0);
+	      }
+	    }
+
+	    r.s = sign;
+	    external = true;
+	    Ctor.rounding = rm;
+
+	    return finalise(r, pr, rm);
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal rounded to `sd` significant digits
+	   * using rounding mode `rounding`.
+	   *
+	   * Return exponential notation if `sd` is less than the number of digits necessary to represent
+	   * the integer part of the value in normal notation.
+	   *
+	   * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   */
+	  P.toPrecision = function (sd, rm) {
+	    var str,
+	      x = this,
+	      Ctor = x.constructor;
+
+	    if (sd === void 0) {
+	      str = finiteToString(x, x.e <= Ctor.toExpNeg || x.e >= Ctor.toExpPos);
+	    } else {
+	      checkInt32(sd, 1, MAX_DIGITS);
+
+	      if (rm === void 0) rm = Ctor.rounding;
+	      else checkInt32(rm, 0, 8);
+
+	      x = finalise(new Ctor(x), sd, rm);
+	      str = finiteToString(x, sd <= x.e || x.e <= Ctor.toExpNeg, sd);
+	    }
+
+	    return x.isNeg() && !x.isZero() ? '-' + str : str;
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal rounded to a maximum of `sd`
+	   * significant digits using rounding mode `rm`, or to `precision` and `rounding` respectively if
+	   * omitted.
+	   *
+	   * [sd] {number} Significant digits. Integer, 1 to MAX_DIGITS inclusive.
+	   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+	   *
+	   * 'toSD() digits out of range: {sd}'
+	   * 'toSD() digits not an integer: {sd}'
+	   * 'toSD() rounding mode not an integer: {rm}'
+	   * 'toSD() rounding mode out of range: {rm}'
+	   *
+	   */
+	  P.toSignificantDigits = P.toSD = function (sd, rm) {
+	    var x = this,
+	      Ctor = x.constructor;
+
+	    if (sd === void 0) {
+	      sd = Ctor.precision;
+	      rm = Ctor.rounding;
+	    } else {
+	      checkInt32(sd, 1, MAX_DIGITS);
+
+	      if (rm === void 0) rm = Ctor.rounding;
+	      else checkInt32(rm, 0, 8);
+	    }
+
+	    return finalise(new Ctor(x), sd, rm);
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal.
+	   *
+	   * Return exponential notation if this Decimal has a positive exponent equal to or greater than
+	   * `toExpPos`, or a negative exponent equal to or less than `toExpNeg`.
+	   *
+	   */
+	  P.toString = function () {
+	    var x = this,
+	      Ctor = x.constructor,
+	      str = finiteToString(x, x.e <= Ctor.toExpNeg || x.e >= Ctor.toExpPos);
+
+	    return x.isNeg() && !x.isZero() ? '-' + str : str;
+	  };
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of this Decimal truncated to a whole number.
+	   *
+	   */
+	  P.truncated = P.trunc = function () {
+	    return finalise(new this.constructor(this), this.e + 1, 1);
+	  };
+
+
+	  /*
+	   * Return a string representing the value of this Decimal.
+	   * Unlike `toString`, negative zero will include the minus sign.
+	   *
+	   */
+	  P.valueOf = function () {
+	    var x = this,
+	      Ctor = x.constructor,
+	      str = finiteToString(x, x.e <= Ctor.toExpNeg || x.e >= Ctor.toExpPos);
+
+	    return x.isNeg() ? '-' + str : str;
+	  };
+
+
+	  /*
+	  // Add aliases to match BigDecimal method names.
+	  // P.add = P.plus;
+	  P.subtract = P.minus;
+	  P.multiply = P.times;
+	  P.divide = P.div;
+	  P.remainder = P.mod;
+	  P.compareTo = P.cmp;
+	  P.negate = P.neg;
+	   */
+
+
+	  // Helper functions for Decimal.prototype (P) and/or Decimal methods, and their callers.
+
+
+	  /*
+	   *  digitsToString           P.cubeRoot, P.logarithm, P.squareRoot, P.toFraction, P.toJSON,
+	   *                           P.toPower, finiteToString, naturalExponential, naturalLogarithm
+	   *  checkInt32               P.toDecimalPlaces, P.toExponential, P.toFixed, P.toNearest,
+	   *                           P.toPrecision, P.toSignificantDigits, toStringBinary, random
+	   *  checkRoundingDigits      P.logarithm, P.toPower, naturalExponential, naturalLogarithm
+	   *  convertBase              P.toJSON, toStringBinary, fromJSON, parseOther
+	   *  cos                      P.cos
+	   *  divide                   P.atanh, P.cubeRoot, P.dividedBy, P.dividedToIntegerBy,
+	   *                           P.logarithm, P.modulo, P.squareRoot, P.tan, P.tanh, P.toFraction,
+	   *                           P.toNearest, toStringBinary, naturalExponential, naturalLogarithm,
+	   *                           taylorSeries, atan2, parseOther
+	   *  finalise                 P.absoluteValue, P.atan, P.atanh, P.ceil, P.cos, P.cosh,
+	   *                           P.cubeRoot, P.dividedToIntegerBy, P.floor, P.logarithm, P.minus,
+	   *                           P.modulo, P.negated, P.plus, P.round, P.sin, P.sinh, P.squareRoot,
+	   *                           P.tan, P.times, P.toDecimalPlaces, P.toExponential, P.toFixed,
+	   *                           P.toNearest, P.toPower, P.toPrecision, P.toSignificantDigits,
+	   *                           P.truncated, divide, getLn10, getPi, naturalExponential,
+	   *                           naturalLogarithm, ceil, floor, round, trunc
+	   *  finiteToString           P.toExponential, P.toFixed, P.toPrecision, P.toString, P.valueOf,
+	   *                           toStringBinary
+	   *  getBase10Exponent        P.minus, P.plus, P.times, parseOther
+	   *  getLn10                  P.logarithm, naturalLogarithm
+	   *  getPi                    P.acos, P.asin, P.atan, toLessThanHalfPi, atan2
+	   *  getPrecision             P.precision, P.toFraction
+	   *  getZeroString            digitsToString, finiteToString
+	   *  intPow                   P.toPower, parseOther
+	   *  isOdd                    toLessThanHalfPi
+	   *  maxOrMin                 max, min
+	   *  naturalExponential       P.naturalExponential, P.toPower
+	   *  naturalLogarithm         P.acosh, P.asinh, P.atanh, P.logarithm, P.naturalLogarithm,
+	   *                           P.toPower, naturalExponential
+	   *  nonFiniteToString        finiteToString, toStringBinary
+	   *  parseDecimal             Decimal
+	   *  parseOther               Decimal
+	   *  sin                      P.sin
+	   *  taylorSeries             P.cosh, P.sinh, cos, sin
+	   *  toLessThanHalfPi         P.cos, P.sin
+	   *  toStringBinary           P.toBinary, P.toHexadecimal, P.toOctal
+	   *  truncate                 intPow
+	   *
+	   *  Throws:                  P.logarithm, P.precision, P.toFraction, checkInt32, getLn10, getPi,
+	   *                           naturalLogarithm, config, fromJSON, parseOther, random, Decimal           *
+	   */
+
+
+	  function digitsToString(d) {
+	    var i, k, ws,
+	      indexOfLastWord = d.length - 1,
+	      str = '',
+	      w = d[0];
+
+	    if (indexOfLastWord > 0) {
+	      str += w;
+	      for (i = 1; i < indexOfLastWord; i++) {
+	        ws = d[i] + '';
+	        k = LOG_BASE - ws.length;
+	        if (k) str += getZeroString(k);
+	        str += ws;
+	      }
+
+	      w = d[i];
+	      ws = w + '';
+	      k = LOG_BASE - ws.length;
+	      if (k) str += getZeroString(k);
+	    } else if (w === 0) {
+	      return '0';
+	    }
+
+	    // Remove trailing zeros of last w.
+	    for (; w % 10 === 0;) w /= 10;
+
+	    return str + w;
+	  }
+
+
+	  function checkInt32(i, min, max) {
+	    if (i !== ~~i || i < min || i > max) {
+	      throw Error(invalidArgument + i);
+	    }
+	  }
+
+
+	  /*
+	   * Check 5 rounding digits if `repeating` is null, 4 otherwise.
+	   * `repeating == null` if caller is `log` or `pow`,
+	   * `repeating != null` if caller is `naturalLogarithm` or `naturalExponential`.
+	   */
+	  function checkRoundingDigits(d, i, rm, repeating) {
+	    var di, k, r, rd;
+
+	    // Get the length of the first word of the array d.
+	    for (k = d[0]; k >= 10; k /= 10) --i;
+
+	    // Is the rounding digit in the first word of d?
+	    if (--i < 0) {
+	      i += LOG_BASE;
+	      di = 0;
+	    } else {
+	      di = Math.ceil((i + 1) / LOG_BASE);
+	      i %= LOG_BASE;
+	    }
+
+	    // i is the index (0 - 6) of the rounding digit.
+	    // E.g. if within the word 3487563 the first rounding digit is 5,
+	    // then i = 4, k = 1000, rd = 3487563 % 1000 = 563
+	    k = mathpow(10, LOG_BASE - i);
+	    rd = d[di] % k | 0;
+
+	    if (repeating == null) {
+	      if (i < 3) {
+	        if (i == 0) rd = rd / 100 | 0;
+	        else if (i == 1) rd = rd / 10 | 0;
+	        r = rm < 4 && rd == 99999 || rm > 3 && rd == 49999 || rd == 50000 || rd == 0;
+	      } else {
+	        r = (rm < 4 && rd + 1 == k || rm > 3 && rd + 1 == k / 2) &&
+	          (d[di + 1] / k / 100 | 0) == mathpow(10, i - 2) - 1 ||
+	            (rd == k / 2 || rd == 0) && (d[di + 1] / k / 100 | 0) == 0;
+	      }
+	    } else {
+	      if (i < 4) {
+	        if (i == 0) rd = rd / 1000 | 0;
+	        else if (i == 1) rd = rd / 100 | 0;
+	        else if (i == 2) rd = rd / 10 | 0;
+	        r = (repeating || rm < 4) && rd == 9999 || !repeating && rm > 3 && rd == 4999;
+	      } else {
+	        r = ((repeating || rm < 4) && rd + 1 == k ||
+	        (!repeating && rm > 3) && rd + 1 == k / 2) &&
+	          (d[di + 1] / k / 1000 | 0) == mathpow(10, i - 3) - 1;
+	      }
+	    }
+
+	    return r;
+	  }
+
+
+	  // Convert string of `baseIn` to an array of numbers of `baseOut`.
+	  // Eg. convertBase('255', 10, 16) returns [15, 15].
+	  // Eg. convertBase('ff', 16, 10) returns [2, 5, 5].
+	  function convertBase(str, baseIn, baseOut) {
+	    var j,
+	      arr = [0],
+	      arrL,
+	      i = 0,
+	      strL = str.length;
+
+	    for (; i < strL;) {
+	      for (arrL = arr.length; arrL--;) arr[arrL] *= baseIn;
+	      arr[0] += NUMERALS.indexOf(str.charAt(i++));
+	      for (j = 0; j < arr.length; j++) {
+	        if (arr[j] > baseOut - 1) {
+	          if (arr[j + 1] === void 0) arr[j + 1] = 0;
+	          arr[j + 1] += arr[j] / baseOut | 0;
+	          arr[j] %= baseOut;
+	        }
+	      }
+	    }
+
+	    return arr.reverse();
+	  }
+
+
+	  /*
+	   * cos(x) = 1 - x^2/2! + x^4/4! - ...
+	   * |x| < pi/2
+	   *
+	   */
+	  function cosine(Ctor, x) {
+	    var k, y,
+	      len = x.d.length;
+
+	    // Argument reduction: cos(4x) = 8*(cos^4(x) - cos^2(x)) + 1
+	    // i.e. cos(x) = 8*(cos^4(x/4) - cos^2(x/4)) + 1
+
+	    // Estimate the optimum number of times to use the argument reduction.
+	    if (len < 32) {
+	      k = Math.ceil(len / 3);
+	      y = Math.pow(4, -k).toString();
+	    } else {
+	      k = 16;
+	      y = '2.3283064365386962890625e-10';
+	    }
+
+	    Ctor.precision += k;
+
+	    x = taylorSeries(Ctor, 1, x.times(y), new Ctor(1));
+
+	    // Reverse argument reduction
+	    for (var i = k; i--;) {
+	      var cos2x = x.times(x);
+	      x = cos2x.times(cos2x).minus(cos2x).times(8).plus(1);
+	    }
+
+	    Ctor.precision -= k;
+
+	    return x;
+	  }
+
+
+	  /*
+	   * Perform division in the specified base.
+	   */
+	  var divide = (function () {
+
+	    // Assumes non-zero x and k, and hence non-zero result.
+	    function multiplyInteger(x, k, base) {
+	      var temp,
+	        carry = 0,
+	        i = x.length;
+
+	      for (x = x.slice(); i--;) {
+	        temp = x[i] * k + carry;
+	        x[i] = temp % base | 0;
+	        carry = temp / base | 0;
+	      }
+
+	      if (carry) x.unshift(carry);
+
+	      return x;
+	    }
+
+	    function compare(a, b, aL, bL) {
+	      var i, r;
+
+	      if (aL != bL) {
+	        r = aL > bL ? 1 : -1;
+	      } else {
+	        for (i = r = 0; i < aL; i++) {
+	          if (a[i] != b[i]) {
+	            r = a[i] > b[i] ? 1 : -1;
+	            break;
+	          }
+	        }
+	      }
+
+	      return r;
+	    }
+
+	    function subtract(a, b, aL, base) {
+	      var i = 0;
+
+	      // Subtract b from a.
+	      for (; aL--;) {
+	        a[aL] -= i;
+	        i = a[aL] < b[aL] ? 1 : 0;
+	        a[aL] = i * base + a[aL] - b[aL];
+	      }
+
+	      // Remove leading zeros.
+	      for (; !a[0] && a.length > 1;) a.shift();
+	    }
+
+	    return function (x, y, pr, rm, dp, base) {
+	      var cmp, e, i, k, logBase, more, prod, prodL, q, qd, rem, remL, rem0, sd, t, xi, xL, yd0,
+	        yL, yz,
+	        Ctor = x.constructor,
+	        sign = x.s == y.s ? 1 : -1,
+	        xd = x.d,
+	        yd = y.d;
+
+	      // Either NaN, Infinity or 0?
+	      if (!xd || !xd[0] || !yd || !yd[0]) {
+
+	        return new Ctor(// Return NaN if either NaN, or both Infinity or 0.
+	          !x.s || !y.s || (xd ? yd && xd[0] == yd[0] : !yd) ? NaN :
+
+	          // Return ±0 if x is 0 or y is ±Infinity, or return ±Infinity as y is 0.
+	          xd && xd[0] == 0 || !yd ? sign * 0 : sign / 0);
+	      }
+
+	      if (base) {
+	        logBase = 1;
+	        e = x.e - y.e;
+	      } else {
+	        base = BASE;
+	        logBase = LOG_BASE;
+	        e = mathfloor(x.e / logBase) - mathfloor(y.e / logBase);
+	      }
+
+	      yL = yd.length;
+	      xL = xd.length;
+	      q = new Ctor(sign);
+	      qd = q.d = [];
+
+	      // Result exponent may be one less than e.
+	      // The digit array of a Decimal from toStringBinary may have trailing zeros.
+	      for (i = 0; yd[i] == (xd[i] || 0); i++);
+
+	      if (yd[i] > (xd[i] || 0)) e--;
+
+	      if (pr == null) {
+	        sd = pr = Ctor.precision;
+	        rm = Ctor.rounding;
+	      } else if (dp) {
+	        sd = pr + (x.e - y.e) + 1;
+	      } else {
+	        sd = pr;
+	      }
+
+	      if (sd < 0) {
+	        qd.push(1);
+	        more = true;
+	      } else {
+
+	        // Convert precision in number of base 10 digits to base 1e7 digits.
+	        sd = sd / logBase + 2 | 0;
+	        i = 0;
+
+	        // divisor < 1e7
+	        if (yL == 1) {
+	          k = 0;
+	          yd = yd[0];
+	          sd++;
+
+	          // k is the carry.
+	          for (; (i < xL || k) && sd--; i++) {
+	            t = k * base + (xd[i] || 0);
+	            qd[i] = t / yd | 0;
+	            k = t % yd | 0;
+	          }
+
+	          more = k || i < xL;
+
+	        // divisor >= 1e7
+	        } else {
+
+	          // Normalise xd and yd so highest order digit of yd is >= base/2
+	          k = base / (yd[0] + 1) | 0;
+
+	          if (k > 1) {
+	            yd = multiplyInteger(yd, k, base);
+	            xd = multiplyInteger(xd, k, base);
+	            yL = yd.length;
+	            xL = xd.length;
+	          }
+
+	          xi = yL;
+	          rem = xd.slice(0, yL);
+	          remL = rem.length;
+
+	          // Add zeros to make remainder as long as divisor.
+	          for (; remL < yL;) rem[remL++] = 0;
+
+	          yz = yd.slice();
+	          yz.unshift(0);
+	          yd0 = yd[0];
+
+	          if (yd[1] >= base / 2) ++yd0;
+
+	          do {
+	            k = 0;
+
+	            // Compare divisor and remainder.
+	            cmp = compare(yd, rem, yL, remL);
+
+	            // If divisor < remainder.
+	            if (cmp < 0) {
+
+	              // Calculate trial digit, k.
+	              rem0 = rem[0];
+	              if (yL != remL) rem0 = rem0 * base + (rem[1] || 0);
+
+	              // k will be how many times the divisor goes into the current remainder.
+	              k = rem0 / yd0 | 0;
+
+	              //  Algorithm:
+	              //  1. product = divisor * trial digit (k)
+	              //  2. if product > remainder: product -= divisor, k--
+	              //  3. remainder -= product
+	              //  4. if product was < remainder at 2:
+	              //    5. compare new remainder and divisor
+	              //    6. If remainder > divisor: remainder -= divisor, k++
+
+	              if (k > 1) {
+	                if (k >= base) k = base - 1;
+
+	                // product = divisor * trial digit.
+	                prod = multiplyInteger(yd, k, base);
+	                prodL = prod.length;
+	                remL = rem.length;
+
+	                // Compare product and remainder.
+	                cmp = compare(prod, rem, prodL, remL);
+
+	                // product > remainder.
+	                if (cmp == 1) {
+	                  k--;
+
+	                  // Subtract divisor from product.
+	                  subtract(prod, yL < prodL ? yz : yd, prodL, base);
+	                }
+	              } else {
+
+	                // cmp is -1.
+	                // If k is 0, there is no need to compare yd and rem again below, so change cmp to 1
+	                // to avoid it. If k is 1 there is a need to compare yd and rem again below.
+	                if (k == 0) cmp = k = 1;
+	                prod = yd.slice();
+	              }
+
+	              prodL = prod.length;
+	              if (prodL < remL) prod.unshift(0);
+
+	              // Subtract product from remainder.
+	              subtract(rem, prod, remL, base);
+
+	              // If product was < previous remainder.
+	              if (cmp == -1) {
+	                remL = rem.length;
+
+	                // Compare divisor and new remainder.
+	                cmp = compare(yd, rem, yL, remL);
+
+	                // If divisor < new remainder, subtract divisor from remainder.
+	                if (cmp < 1) {
+	                  k++;
+
+	                  // Subtract divisor from remainder.
+	                  subtract(rem, yL < remL ? yz : yd, remL, base);
+	                }
+	              }
+
+	              remL = rem.length;
+	            } else if (cmp === 0) {
+	              k++;
+	              rem = [0];
+	            }    // if cmp === 1, k will be 0
+
+	            // Add the next digit, k, to the result array.
+	            qd[i++] = k;
+
+	            // Update the remainder.
+	            if (cmp && rem[0]) {
+	              rem[remL++] = xd[xi] || 0;
+	            } else {
+	              rem = [xd[xi]];
+	              remL = 1;
+	            }
+
+	          } while ((xi++ < xL || rem[0] !== void 0) && sd--);
+
+	          more = rem[0] !== void 0;
+	        }
+
+	        // Leading zero?
+	        if (!qd[0]) qd.shift();
+	      }
+
+	      // logBase is 1 when divide is being used for base conversion.
+	      if (logBase == 1) {
+	        q.e = e;
+	        inexact = more;
+	      } else {
+
+	        // To calculate q.e, first get the number of digits of qd[0].
+	        for (i = 1, k = qd[0]; k >= 10; k /= 10) i++;
+	        q.e = i + e * logBase - 1;
+
+	        finalise(q, dp ? pr + q.e + 1 : pr, rm, more);
+	      }
+
+	      return q;
+	    };
+	  })();
+
+
+	  /*
+	   * Round `x` to `sd` significant digits using rounding mode `rm`.
+	   * Check for over/under-flow.
+	   */
+	   function finalise(x, sd, rm, isTruncated) {
+	    var digits, i, j, k, rd, roundUp, w, xd, xdi,
+	      Ctor = x.constructor;
+
+	    // Don't round if sd is null or undefined.
+	    out: if (sd != null) {
+	      xd = x.d;
+
+	      // Infinity/NaN.
+	      if (!xd) return x;
+
+	      // rd: the rounding digit, i.e. the digit after the digit that may be rounded up.
+	      // w: the word of xd containing rd, a base 1e7 number.
+	      // xdi: the index of w within xd.
+	      // digits: the number of digits of w.
+	      // i: what would be the index of rd within w if all the numbers were 7 digits long (i.e. if
+	      // they had leading zeros)
+	      // j: if > 0, the actual index of rd within w (if < 0, rd is a leading zero).
+
+	      // Get the length of the first word of the digits array xd.
+	      for (digits = 1, k = xd[0]; k >= 10; k /= 10) digits++;
+	      i = sd - digits;
+
+	      // Is the rounding digit in the first word of xd?
+	      if (i < 0) {
+	        i += LOG_BASE;
+	        j = sd;
+	        w = xd[xdi = 0];
+
+	        // Get the rounding digit at index j of w.
+	        rd = w / mathpow(10, digits - j - 1) % 10 | 0;
+	      } else {
+	        xdi = Math.ceil((i + 1) / LOG_BASE);
+	        k = xd.length;
+	        if (xdi >= k) {
+	          if (isTruncated) {
+
+	            // Needed by `naturalExponential`, `naturalLogarithm` and `squareRoot`.
+	            for (; k++ <= xdi;) xd.push(0);
+	            w = rd = 0;
+	            digits = 1;
+	            i %= LOG_BASE;
+	            j = i - LOG_BASE + 1;
+	          } else {
+	            break out;
+	          }
+	        } else {
+	          w = k = xd[xdi];
+
+	          // Get the number of digits of w.
+	          for (digits = 1; k >= 10; k /= 10) digits++;
+
+	          // Get the index of rd within w.
+	          i %= LOG_BASE;
+
+	          // Get the index of rd within w, adjusted for leading zeros.
+	          // The number of leading zeros of w is given by LOG_BASE - digits.
+	          j = i - LOG_BASE + digits;
+
+	          // Get the rounding digit at index j of w.
+	          rd = j < 0 ? 0 : w / mathpow(10, digits - j - 1) % 10 | 0;
+	        }
+	      }
+
+	      // Are there any non-zero digits after the rounding digit?
+	      isTruncated = isTruncated || sd < 0 ||
+	        xd[xdi + 1] !== void 0 || (j < 0 ? w : w % mathpow(10, digits - j - 1));
+
+	      // The expression `w % mathpow(10, digits - j - 1)` returns all the digits of w to the right
+	      // of the digit at (left-to-right) index j, e.g. if w is 908714 and j is 2, the expression
+	      // will give 714.
+
+	      roundUp = rm < 4
+	        ? (rd || isTruncated) && (rm == 0 || rm == (x.s < 0 ? 3 : 2))
+	        : rd > 5 || rd == 5 && (rm == 4 || isTruncated || rm == 6 &&
+
+	          // Check whether the digit to the left of the rounding digit is odd.
+	          ((i > 0 ? j > 0 ? w / mathpow(10, digits - j) : 0 : xd[xdi - 1]) % 10) & 1 ||
+	            rm == (x.s < 0 ? 8 : 7));
+
+	      if (sd < 1 || !xd[0]) {
+	        xd.length = 0;
+	        if (roundUp) {
+
+	          // Convert sd to decimal places.
+	          sd -= x.e + 1;
+
+	          // 1, 0.1, 0.01, 0.001, 0.0001 etc.
+	          xd[0] = mathpow(10, (LOG_BASE - sd % LOG_BASE) % LOG_BASE);
+	          x.e = -sd || 0;
+	        } else {
+
+	          // Zero.
+	          xd[0] = x.e = 0;
+	        }
+
+	        return x;
+	      }
+
+	      // Remove excess digits.
+	      if (i == 0) {
+	        xd.length = xdi;
+	        k = 1;
+	        xdi--;
+	      } else {
+	        xd.length = xdi + 1;
+	        k = mathpow(10, LOG_BASE - i);
+
+	        // E.g. 56700 becomes 56000 if 7 is the rounding digit.
+	        // j > 0 means i > number of leading zeros of w.
+	        xd[xdi] = j > 0 ? (w / mathpow(10, digits - j) % mathpow(10, j) | 0) * k : 0;
+	      }
+
+	      if (roundUp) {
+	        for (;;) {
+
+	          // Is the digit to be rounded up in the first word of xd?
+	          if (xdi == 0) {
+
+	            // i will be the length of xd[0] before k is added.
+	            for (i = 1, j = xd[0]; j >= 10; j /= 10) i++;
+	            j = xd[0] += k;
+	            for (k = 1; j >= 10; j /= 10) k++;
+
+	            // if i != k the length has increased.
+	            if (i != k) {
+	              x.e++;
+	              if (xd[0] == BASE) xd[0] = 1;
+	            }
+
+	            break;
+	          } else {
+	            xd[xdi] += k;
+	            if (xd[xdi] != BASE) break;
+	            xd[xdi--] = 0;
+	            k = 1;
+	          }
+	        }
+	      }
+
+	      // Remove trailing zeros.
+	      for (i = xd.length; xd[--i] === 0;) xd.pop();
+	    }
+
+	    if (external) {
+
+	      // Overflow?
+	      if (x.e > Ctor.maxE) {
+
+	        // Infinity.
+	        x.d = null;
+	        x.e = NaN;
+
+	      // Underflow?
+	      } else if (x.e < Ctor.minE) {
+
+	        // Zero.
+	        x.e = 0;
+	        x.d = [0];
+	        // Ctor.underflow = true;
+	      } // else Ctor.underflow = false;
+	    }
+
+	    return x;
+	  }
+
+
+	  function finiteToString(x, isExp, sd) {
+	    if (!x.isFinite()) return nonFiniteToString(x);
+	    var k,
+	      e = x.e,
+	      str = digitsToString(x.d),
+	      len = str.length;
+
+	    if (isExp) {
+	      if (sd && (k = sd - len) > 0) {
+	        str = str.charAt(0) + '.' + str.slice(1) + getZeroString(k);
+	      } else if (len > 1) {
+	        str = str.charAt(0) + '.' + str.slice(1);
+	      }
+
+	      str = str + (x.e < 0 ? 'e' : 'e+') + x.e;
+	    } else if (e < 0) {
+	      str = '0.' + getZeroString(-e - 1) + str;
+	      if (sd && (k = sd - len) > 0) str += getZeroString(k);
+	    } else if (e >= len) {
+	      str += getZeroString(e + 1 - len);
+	      if (sd && (k = sd - e - 1) > 0) str = str + '.' + getZeroString(k);
+	    } else {
+	      if ((k = e + 1) < len) str = str.slice(0, k) + '.' + str.slice(k);
+	      if (sd && (k = sd - len) > 0) {
+	        if (e + 1 === len) str += '.';
+	        str += getZeroString(k);
+	      }
+	    }
+
+	    return str;
+	  }
+
+
+	  // Calculate the base 10 exponent from the base 1e7 exponent.
+	  function getBase10Exponent(digits, e) {
+
+	    // First get the number of digits of the first word of the digits array.
+	    for (var i = 1, w = digits[0]; w >= 10; w /= 10) i++;
+	    return i + e * LOG_BASE - 1;
+	  }
+
+
+	   function getLn10(Ctor, sd, pr) {
+	    if (sd > LN10_PRECISION) {
+
+	      // Reset global state in case the exception is caught.
+	      external = true;
+	      if (pr) Ctor.precision = pr;
+	      throw Error(precisionLimitExceeded);
+	    }
+	    return finalise(new Ctor(LN10), sd, 1, true);
+	  }
+
+
+	  function getPi(Ctor, sd, rm) {
+	    if (sd > PI_PRECISION) throw Error(precisionLimitExceeded);
+	    return finalise(new Ctor(PI), sd, rm, true);
+	  }
+
+
+	  function getPrecision(digits) {
+	    var w = digits.length - 1,
+	      len = w * LOG_BASE + 1;
+
+	    w = digits[w];
+
+	    // If non-zero...
+	    if (w) {
+
+	      // Subtract the number of trailing zeros of the last word.
+	      for (; w % 10 == 0; w /= 10) len--;
+
+	      // Add the number of digits of the first word.
+	      for (w = digits[0]; w >= 10; w /= 10) len++;
+	    }
+
+	    return len;
+	  }
+
+
+	  function getZeroString(k) {
+	    var zs = '';
+	    for (; k--;) zs += '0';
+	    return zs;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the value of Decimal `x` to the power `n`, where `n` is an
+	   * integer of type number.
+	   *
+	   * Implements 'exponentiation by squaring'. Called by `pow` and `parseOther`.
+	   *
+	   */
+	  function intPow(Ctor, x, n, pr) {
+	    var isTruncated,
+	      r = new Ctor(1),
+
+	      // Max n of 9007199254740991 takes 53 loop iterations.
+	      // Maximum digits array length; leaves [28, 34] guard digits.
+	      k = Math.ceil(pr / LOG_BASE + 4);
+
+	    external = false;
+
+	    for (;;) {
+	      if (n % 2) {
+	        r = r.times(x);
+	        if (truncate(r.d, k)) isTruncated = true;
+	      }
+
+	      n = mathfloor(n / 2);
+	      if (n === 0) {
+
+	        // To ensure correct rounding when r.d is truncated, increment the last word if it is zero.
+	        n = r.d.length - 1;
+	        if (isTruncated && r.d[n] === 0) ++r.d[n];
+	        break;
+	      }
+
+	      x = x.times(x);
+	      truncate(x.d, k);
+	    }
+
+	    external = true;
+
+	    return r;
+	  }
+
+
+	  function isOdd(n) {
+	    return n.d[n.d.length - 1] & 1;
+	  }
+
+
+	  /*
+	   * Handle `max` and `min`. `ltgt` is 'lt' or 'gt'.
+	   */
+	  function maxOrMin(Ctor, args, ltgt) {
+	    var y,
+	      x = new Ctor(args[0]),
+	      i = 0;
+
+	    for (; ++i < args.length;) {
+	      y = new Ctor(args[i]);
+	      if (!y.s) {
+	        x = y;
+	        break;
+	      } else if (x[ltgt](y)) {
+	        x = y;
+	      }
+	    }
+
+	    return x;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the natural exponential of `x` rounded to `sd` significant
+	   * digits.
+	   *
+	   * Taylor/Maclaurin series.
+	   *
+	   * exp(x) = x^0/0! + x^1/1! + x^2/2! + x^3/3! + ...
+	   *
+	   * Argument reduction:
+	   *   Repeat x = x / 32, k += 5, until |x| < 0.1
+	   *   exp(x) = exp(x / 2^k)^(2^k)
+	   *
+	   * Previously, the argument was initially reduced by
+	   * exp(x) = exp(r) * 10^k  where r = x - k * ln10, k = floor(x / ln10)
+	   * to first put r in the range [0, ln10], before dividing by 32 until |x| < 0.1, but this was
+	   * found to be slower than just dividing repeatedly by 32 as above.
+	   *
+	   * Max integer argument: exp('20723265836946413') = 6.3e+9000000000000000
+	   * Min integer argument: exp('-20723265836946411') = 1.2e-9000000000000000
+	   * (Math object integer min/max: Math.exp(709) = 8.2e+307, Math.exp(-745) = 5e-324)
+	   *
+	   *  exp(Infinity)  = Infinity
+	   *  exp(-Infinity) = 0
+	   *  exp(NaN)       = NaN
+	   *  exp(±0)        = 1
+	   *
+	   *  exp(x) is non-terminating for any finite, non-zero x.
+	   *
+	   *  The result will always be correctly rounded.
+	   *
+	   */
+	  function naturalExponential(x, sd) {
+	    var denominator, guard, j, pow, sum, t, wpr,
+	      rep = 0,
+	      i = 0,
+	      k = 0,
+	      Ctor = x.constructor,
+	      rm = Ctor.rounding,
+	      pr = Ctor.precision;
+
+	    // 0/NaN/Infinity?
+	    if (!x.d || !x.d[0] || x.e > 17) {
+
+	      return new Ctor(x.d
+	        ? !x.d[0] ? 1 : x.s < 0 ? 0 : 1 / 0
+	        : x.s ? x.s < 0 ? 0 : x : 0 / 0);
+	    }
+
+	    if (sd == null) {
+	      external = false;
+	      wpr = pr;
+	    } else {
+	      wpr = sd;
+	    }
+
+	    t = new Ctor(0.03125);
+
+	    // while abs(x) >= 0.1
+	    while (x.e > -2) {
+
+	      // x = x / 2^5
+	      x = x.times(t);
+	      k += 5;
+	    }
+
+	    // Use 2 * log10(2^k) + 5 (empirically derived) to estimate the increase in precision
+	    // necessary to ensure the first 4 rounding digits are correct.
+	    guard = Math.log(mathpow(2, k)) / Math.LN10 * 2 + 5 | 0;
+	    wpr += guard;
+	    denominator = pow = sum = new Ctor(1);
+	    Ctor.precision = wpr;
+
+	    for (;;) {
+	      pow = finalise(pow.times(x), wpr, 1);
+	      denominator = denominator.times(++i);
+	      t = sum.plus(divide(pow, denominator, wpr, 1));
+
+	      if (digitsToString(t.d).slice(0, wpr) === digitsToString(sum.d).slice(0, wpr)) {
+	        j = k;
+	        while (j--) sum = finalise(sum.times(sum), wpr, 1);
+
+	        // Check to see if the first 4 rounding digits are [49]999.
+	        // If so, repeat the summation with a higher precision, otherwise
+	        // e.g. with precision: 18, rounding: 1
+	        // exp(18.404272462595034083567793919843761) = 98372560.1229999999 (should be 98372560.123)
+	        // `wpr - guard` is the index of first rounding digit.
+	        if (sd == null) {
+
+	          if (rep < 3 && checkRoundingDigits(sum.d, wpr - guard, rm, rep)) {
+	            Ctor.precision = wpr += 10;
+	            denominator = pow = t = new Ctor(1);
+	            i = 0;
+	            rep++;
+	          } else {
+	            return finalise(sum, Ctor.precision = pr, rm, external = true);
+	          }
+	        } else {
+	          Ctor.precision = pr;
+	          return sum;
+	        }
+	      }
+
+	      sum = t;
+	    }
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the natural logarithm of `x` rounded to `sd` significant
+	   * digits.
+	   *
+	   *  ln(-n)        = NaN
+	   *  ln(0)         = -Infinity
+	   *  ln(-0)        = -Infinity
+	   *  ln(1)         = 0
+	   *  ln(Infinity)  = Infinity
+	   *  ln(-Infinity) = NaN
+	   *  ln(NaN)       = NaN
+	   *
+	   *  ln(n) (n != 1) is non-terminating.
+	   *
+	   */
+	  function naturalLogarithm(y, sd) {
+	    var c, c0, denominator, e, numerator, rep, sum, t, wpr, x1, x2,
+	      n = 1,
+	      guard = 10,
+	      x = y,
+	      xd = x.d,
+	      Ctor = x.constructor,
+	      rm = Ctor.rounding,
+	      pr = Ctor.precision;
+
+	    // Is x negative or Infinity, NaN, 0 or 1?
+	    if (x.s < 0 || !xd || !xd[0] || !x.e && xd[0] == 1 && xd.length == 1) {
+	      return new Ctor(xd && !xd[0] ? -1 / 0 : x.s != 1 ? NaN : xd ? 0 : x);
+	    }
+
+	    if (sd == null) {
+	      external = false;
+	      wpr = pr;
+	    } else {
+	      wpr = sd;
+	    }
+
+	    Ctor.precision = wpr += guard;
+	    c = digitsToString(xd);
+	    c0 = c.charAt(0);
+
+	    if (Math.abs(e = x.e) < 1.5e15) {
+
+	      // Argument reduction.
+	      // The series converges faster the closer the argument is to 1, so using
+	      // ln(a^b) = b * ln(a),   ln(a) = ln(a^b) / b
+	      // multiply the argument by itself until the leading digits of the significand are 7, 8, 9,
+	      // 10, 11, 12 or 13, recording the number of multiplications so the sum of the series can
+	      // later be divided by this number, then separate out the power of 10 using
+	      // ln(a*10^b) = ln(a) + b*ln(10).
+
+	      // max n is 21 (gives 0.9, 1.0 or 1.1) (9e15 / 21 = 4.2e14).
+	      //while (c0 < 9 && c0 != 1 || c0 == 1 && c.charAt(1) > 1) {
+	      // max n is 6 (gives 0.7 - 1.3)
+	      while (c0 < 7 && c0 != 1 || c0 == 1 && c.charAt(1) > 3) {
+	        x = x.times(y);
+	        c = digitsToString(x.d);
+	        c0 = c.charAt(0);
+	        n++;
+	      }
+
+	      e = x.e;
+
+	      if (c0 > 1) {
+	        x = new Ctor('0.' + c);
+	        e++;
+	      } else {
+	        x = new Ctor(c0 + '.' + c.slice(1));
+	      }
+	    } else {
+
+	      // The argument reduction method above may result in overflow if the argument y is a massive
+	      // number with exponent >= 1500000000000000 (9e15 / 6 = 1.5e15), so instead recall this
+	      // function using ln(x*10^e) = ln(x) + e*ln(10).
+	      t = getLn10(Ctor, wpr + 2, pr).times(e + '');
+	      x = naturalLogarithm(new Ctor(c0 + '.' + c.slice(1)), wpr - guard).plus(t);
+	      Ctor.precision = pr;
+
+	      return sd == null ? finalise(x, pr, rm, external = true) : x;
+	    }
+
+	    // x1 is x reduced to a value near 1.
+	    x1 = x;
+
+	    // Taylor series.
+	    // ln(y) = ln((1 + x)/(1 - x)) = 2(x + x^3/3 + x^5/5 + x^7/7 + ...)
+	    // where x = (y - 1)/(y + 1)    (|x| < 1)
+	    sum = numerator = x = divide(x.minus(1), x.plus(1), wpr, 1);
+	    x2 = finalise(x.times(x), wpr, 1);
+	    denominator = 3;
+
+	    for (;;) {
+	      numerator = finalise(numerator.times(x2), wpr, 1);
+	      t = sum.plus(divide(numerator, new Ctor(denominator), wpr, 1));
+
+	      if (digitsToString(t.d).slice(0, wpr) === digitsToString(sum.d).slice(0, wpr)) {
+	        sum = sum.times(2);
+
+	        // Reverse the argument reduction. Check that e is not 0 because, besides preventing an
+	        // unnecessary calculation, -0 + 0 = +0 and to ensure correct rounding -0 needs to stay -0.
+	        if (e !== 0) sum = sum.plus(getLn10(Ctor, wpr + 2, pr).times(e + ''));
+	        sum = divide(sum, new Ctor(n), wpr, 1);
+
+	        // Is rm > 3 and the first 4 rounding digits 4999, or rm < 4 (or the summation has
+	        // been repeated previously) and the first 4 rounding digits 9999?
+	        // If so, restart the summation with a higher precision, otherwise
+	        // e.g. with precision: 12, rounding: 1
+	        // ln(135520028.6126091714265381533) = 18.7246299999 when it should be 18.72463.
+	        // `wpr - guard` is the index of first rounding digit.
+	        if (sd == null) {
+	          if (checkRoundingDigits(sum.d, wpr - guard, rm, rep)) {
+	            Ctor.precision = wpr += guard;
+	            t = numerator = x = divide(x1.minus(1), x1.plus(1), wpr, 1);
+	            x2 = finalise(x.times(x), wpr, 1);
+	            denominator = rep = 1;
+	          } else {
+	            return finalise(sum, Ctor.precision = pr, rm, external = true);
+	          }
+	        } else {
+	          Ctor.precision = pr;
+	          return sum;
+	        }
+	      }
+
+	      sum = t;
+	      denominator += 2;
+	    }
+	  }
+
+
+	  // ±Infinity, NaN.
+	  function nonFiniteToString(x) {
+	    // Unsigned.
+	    return String(x.s * x.s / 0);
+	  }
+
+
+	  /*
+	   * Parse the value of a new Decimal `x` from string `str`.
+	   */
+	  function parseDecimal(x, str) {
+	    var e, i, len;
+
+	    // Decimal point?
+	    if ((e = str.indexOf('.')) > -1) str = str.replace('.', '');
+
+	    // Exponential form?
+	    if ((i = str.search(/e/i)) > 0) {
+
+	      // Determine exponent.
+	      if (e < 0) e = i;
+	      e += +str.slice(i + 1);
+	      str = str.substring(0, i);
+	    } else if (e < 0) {
+
+	      // Integer.
+	      e = str.length;
+	    }
+
+	    // Determine leading zeros.
+	    for (i = 0; str.charCodeAt(i) === 48; i++);
+
+	    // Determine trailing zeros.
+	    for (len = str.length; str.charCodeAt(len - 1) === 48; --len);
+	    str = str.slice(i, len);
+
+	    if (str) {
+	      len -= i;
+	      x.e = e = e - i - 1;
+	      x.d = [];
+
+	      // Transform base
+
+	      // e is the base 10 exponent.
+	      // i is where to slice str to get the first word of the digits array.
+	      i = (e + 1) % LOG_BASE;
+	      if (e < 0) i += LOG_BASE;
+
+	      if (i < len) {
+	        if (i) x.d.push(+str.slice(0, i));
+	        for (len -= LOG_BASE; i < len;) x.d.push(+str.slice(i, i += LOG_BASE));
+	        str = str.slice(i);
+	        i = LOG_BASE - str.length;
+	      } else {
+	        i -= len;
+	      }
+
+	      for (; i--;) str += '0';
+	      x.d.push(+str);
+
+	      if (external) {
+
+	        // Overflow?
+	        if (x.e > x.constructor.maxE) {
+
+	          // Infinity.
+	          x.d = null;
+	          x.e = NaN;
+
+	        // Underflow?
+	        } else if (x.e < x.constructor.minE) {
+
+	          // Zero.
+	          x.e = 0;
+	          x.d = [0];
+	          // x.constructor.underflow = true;
+	        } // else x.constructor.underflow = false;
+	      }
+	    } else {
+
+	      // Zero.
+	      x.e = 0;
+	      x.d = [0];
+	    }
+
+	    return x;
+	  }
+
+
+	  /*
+	   * Parse the value of a new Decimal `x` from a string `str`, which is not a decimal value.
+	   */
+	  function parseOther(x, str) {
+	    var base, Ctor, divisor, i, isFloat, len, p, xd, xe;
+
+	    if (str === 'Infinity' || str === 'NaN') {
+	      if (!+str) x.s = NaN;
+	      x.e = NaN;
+	      x.d = null;
+	      return x;
+	    }
+
+	    if (isHex.test(str))  {
+	      base = 16;
+	      str = str.toLowerCase();
+	    } else if (isBinary.test(str))  {
+	      base = 2;
+	    } else if (isOctal.test(str))  {
+	      base = 8;
+	    } else {
+	      throw Error(invalidArgument + str);
+	    }
+
+	    // Is there a binary exponent part?
+	    i = str.search(/p/i);
+
+	    if (i > 0) {
+	      p = +str.slice(i + 1);
+	      str = str.substring(2, i);
+	    } else {
+	      str = str.slice(2);
+	    }
+
+	    // Convert `str` as an integer then divide the result by `base` raised to a power such that the
+	    // fraction part will be restored.
+	    i = str.indexOf('.');
+	    isFloat = i >= 0;
+	    Ctor = x.constructor;
+
+	    if (isFloat) {
+	      str = str.replace('.', '');
+	      len = str.length;
+	      i = len - i;
+
+	      // log[10](16) = 1.2041... , log[10](88) = 1.9444....
+	      divisor = intPow(Ctor, new Ctor(base), i, i * 2);
+	    }
+
+	    xd = convertBase(str, base, BASE);
+	    xe = xd.length - 1;
+
+	    // Remove trailing zeros.
+	    for (i = xe; xd[i] === 0; --i) xd.pop();
+	    if (i < 0) return new Ctor(x.s * 0);
+	    x.e = getBase10Exponent(xd, xe);
+	    x.d = xd;
+	    external = false;
+
+	    // At what precision to perform the division to ensure exact conversion?
+	    // maxDecimalIntegerPartDigitCount = ceil(log[10](b) * otherBaseIntegerPartDigitCount)
+	    // log[10](2) = 0.30103, log[10](8) = 0.90309, log[10](16) = 1.20412
+	    // E.g. ceil(1.2 * 3) = 4, so up to 4 decimal digits are needed to represent 3 hex int digits.
+	    // maxDecimalFractionPartDigitCount = {Hex:4|Oct:3|Bin:1} * otherBaseFractionPartDigitCount
+	    // Therefore using 4 * the number of digits of str will always be enough.
+	    if (isFloat) x = divide(x, divisor, len * 4);
+
+	    // Multiply by the binary exponent part if present.
+	    if (p) x = x.times(Math.abs(p) < 54 ? Math.pow(2, p) : Decimal.pow(2, p));
+	    external = true;
+
+	    return x;
+	  }
+
+
+	  /*
+	   * sin(x) = x - x^3/3! + x^5/5! - ...
+	   * |x| < pi/2
+	   *
+	   */
+	  function sine(Ctor, x) {
+	    var k,
+	      len = x.d.length;
+
+	    if (len < 3) return taylorSeries(Ctor, 2, x, x);
+
+	    // Argument reduction: sin(5x) = 16*sin^5(x) - 20*sin^3(x) + 5*sin(x)
+	    // i.e. sin(x) = 16*sin^5(x/5) - 20*sin^3(x/5) + 5*sin(x/5)
+	    // and  sin(x) = sin(x/5)(5 + sin^2(x/5)(16sin^2(x/5) - 20))
+
+	    // Estimate the optimum number of times to use the argument reduction.
+	    k = 1.4 * Math.sqrt(len);
+	    k = k > 16 ? 16 : k | 0;
+
+	    // Max k before Math.pow precision loss is 22
+	    x = x.times(Math.pow(5, -k));
+	    x = taylorSeries(Ctor, 2, x, x);
+
+	    // Reverse argument reduction
+	    var sin2_x,
+	      d5 = new Ctor(5),
+	      d16 = new Ctor(16),
+	      d20 = new Ctor(20);
+	    for (; k--;) {
+	      sin2_x = x.times(x);
+	      x = x.times(d5.plus(sin2_x.times(d16.times(sin2_x).minus(d20))));
+	    }
+
+	    return x;
+	  }
+
+
+	  // Calculate Taylor series for `cos`, `cosh`, `sin` and `sinh`.
+	  function taylorSeries(Ctor, n, x, y, isHyperbolic) {
+	    var j, t, u, x2,
+	      i = 1,
+	      pr = Ctor.precision,
+	      k = Math.ceil(pr / LOG_BASE);
+
+	    external = false;
+	    x2 = x.times(x);
+	    u = new Ctor(y);
+
+	    for (;;) {
+	      t = divide(u.times(x2), new Ctor(n++ * n++), pr, 1);
+	      u = isHyperbolic ? y.plus(t) : y.minus(t);
+	      y = divide(t.times(x2), new Ctor(n++ * n++), pr, 1);
+	      t = u.plus(y);
+
+	      if (t.d[k] !== void 0) {
+	        for (j = k; t.d[j] === u.d[j] && j--;);
+	        if (j == -1) break;
+	      }
+
+	      j = u;
+	      u = y;
+	      y = t;
+	      t = j;
+	      i++;
+	    }
+
+	    external = true;
+	    t.d.length = k + 1;
+
+	    return t;
+	  }
+
+
+	  // Return the absolute value of `x` reduced to less than or equal to half pi.
+	  function toLessThanHalfPi(Ctor, x) {
+	    var t,
+	      isNeg = x.s < 0,
+	      pi = getPi(Ctor, Ctor.precision, 1),
+	      halfPi = pi.times(0.5);
+
+	    x = x.abs();
+
+	    if (x.lte(halfPi)) {
+	      quadrant = isNeg ? 4 : 1;
+	      return x;
+	    }
+
+	    t = x.divToInt(pi);
+
+	    if (t.isZero()) {
+	      quadrant = isNeg ? 3 : 2;
+	    } else {
+	      x = x.minus(t.times(pi));
+
+	      // 0 <= x < pi
+	      if (x.lte(halfPi)) {
+	        quadrant = isOdd(t) ? (isNeg ? 2 : 3) : (isNeg ? 4 : 1);
+	        return x;
+	      }
+
+	      quadrant = isOdd(t) ? (isNeg ? 1 : 4) : (isNeg ? 3 : 2);
+	    }
+
+	    return x.minus(pi).abs();
+	  }
+
+
+	  /*
+	   * Return the value of Decimal `x` as a string in base `baseOut`.
+	   *
+	   * If the optional `sd` argument is present include a binary exponent suffix.
+	   */
+	  function toStringBinary(x, baseOut, sd, rm) {
+	    var base, e, i, k, len, roundUp, str, xd, y,
+	      Ctor = x.constructor,
+	      isExp = sd !== void 0;
+
+	    if (isExp) {
+	      checkInt32(sd, 1, MAX_DIGITS);
+	      if (rm === void 0) rm = Ctor.rounding;
+	      else checkInt32(rm, 0, 8);
+	    } else {
+	      sd = Ctor.precision;
+	      rm = Ctor.rounding;
+	    }
+
+	    if (!x.isFinite()) {
+	      str = nonFiniteToString(x);
+	    } else {
+	      str = finiteToString(x);
+	      i = str.indexOf('.');
+
+	      // Use exponential notation according to `toExpPos` and `toExpNeg`? No, but if required:
+	      // maxBinaryExponent = floor((decimalExponent + 1) * log[2](10))
+	      // minBinaryExponent = floor(decimalExponent * log[2](10))
+	      // log[2](10) = 3.321928094887362347870319429489390175864
+
+	      if (isExp) {
+	        base = 2;
+	        if (baseOut == 16) {
+	          sd = sd * 4 - 3;
+	        } else if (baseOut == 8) {
+	          sd = sd * 3 - 2;
+	        }
+	      } else {
+	        base = baseOut;
+	      }
+
+	      // Convert the number as an integer then divide the result by its base raised to a power such
+	      // that the fraction part will be restored.
+
+	      // Non-integer.
+	      if (i >= 0) {
+	        str = str.replace('.', '');
+	        y = new Ctor(1);
+	        y.e = str.length - i;
+	        y.d = convertBase(finiteToString(y), 10, base);
+	        y.e = y.d.length;
+	      }
+
+	      xd = convertBase(str, 10, base);
+	      e = len = xd.length;
+
+	      // Remove trailing zeros.
+	      for (; xd[--len] == 0;) xd.pop();
+
+	      if (!xd[0]) {
+	        str = isExp ? '0p+0' : '0';
+	      } else {
+	        if (i < 0) {
+	          e--;
+	        } else {
+	          x = new Ctor(x);
+	          x.d = xd;
+	          x.e = e;
+	          x = divide(x, y, sd, rm, 0, base);
+	          xd = x.d;
+	          e = x.e;
+	          roundUp = inexact;
+	        }
+
+	        // The rounding digit, i.e. the digit after the digit that may be rounded up.
+	        i = xd[sd];
+	        k = base / 2;
+	        roundUp = roundUp || xd[sd + 1] !== void 0;
+
+	        roundUp = rm < 4
+	          ? (i !== void 0 || roundUp) && (rm === 0 || rm === (x.s < 0 ? 3 : 2))
+	          : i > k || i === k && (rm === 4 || roundUp || rm === 6 && xd[sd - 1] & 1 ||
+	            rm === (x.s < 0 ? 8 : 7));
+
+	        xd.length = sd;
+
+	        if (roundUp) {
+
+	          // Rounding up may mean the previous digit has to be rounded up and so on.
+	          for (; ++xd[--sd] > base - 1;) {
+	            xd[sd] = 0;
+	            if (!sd) {
+	              ++e;
+	              xd.unshift(1);
+	            }
+	          }
+	        }
+
+	        // Determine trailing zeros.
+	        for (len = xd.length; !xd[len - 1]; --len);
+
+	        // E.g. [4, 11, 15] becomes 4bf.
+	        for (i = 0, str = ''; i < len; i++) str += NUMERALS.charAt(xd[i]);
+
+	        // Add binary exponent suffix?
+	        if (isExp) {
+	          if (len > 1) {
+	            if (baseOut == 16 || baseOut == 8) {
+	              i = baseOut == 16 ? 4 : 3;
+	              for (--len; len % i; len++) str += '0';
+	              xd = convertBase(str, base, baseOut);
+	              for (len = xd.length; !xd[len - 1]; --len);
+
+	              // xd[0] will always be be 1
+	              for (i = 1, str = '1.'; i < len; i++) str += NUMERALS.charAt(xd[i]);
+	            } else {
+	              str = str.charAt(0) + '.' + str.slice(1);
+	            }
+	          }
+
+	          str =  str + (e < 0 ? 'p' : 'p+') + e;
+	        } else if (e < 0) {
+	          for (; ++e;) str = '0' + str;
+	          str = '0.' + str;
+	        } else {
+	          if (++e > len) for (e -= len; e-- ;) str += '0';
+	          else if (e < len) str = str.slice(0, e) + '.' + str.slice(e);
+	        }
+	      }
+
+	      str = (baseOut == 16 ? '0x' : baseOut == 2 ? '0b' : baseOut == 8 ? '0o' : '') + str;
+	    }
+
+	    return x.s < 0 ? '-' + str : str;
+	  }
+
+
+	  // Does not strip trailing zeros.
+	  function truncate(arr, len) {
+	    if (arr.length > len) {
+	      arr.length = len;
+	      return true;
+	    }
+	  }
+
+
+	  // Decimal methods
+
+
+	  /*
+	   *  abs
+	   *  acos
+	   *  acosh
+	   *  add
+	   *  asin
+	   *  asinh
+	   *  atan
+	   *  atanh
+	   *  atan2
+	   *  cbrt
+	   *  ceil
+	   *  clone
+	   *  config
+	   *  cos
+	   *  cosh
+	   *  div
+	   *  exp
+	   *  floor
+	   *  fromJSON
+	   *  hypot
+	   *  ln
+	   *  log
+	   *  log2
+	   *  log10
+	   *  max
+	   *  min
+	   *  mod
+	   *  mul
+	   *  pow
+	   *  random
+	   *  round
+	   *  sign
+	   *  sin
+	   *  sinh
+	   *  sqrt
+	   *  sub
+	   *  tan
+	   *  tanh
+	   *  trunc
+	   */
+
+
+	  /*
+	   * Return a new Decimal whose value is the absolute value of `x`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function abs(x) {
+	    return new this(x).abs();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the arccosine in radians of `x`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function acos(x) {
+	    return new this(x).acos();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the inverse of the hyperbolic cosine of `x`, rounded to
+	   * `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function acosh(x) {
+	    return new this(x).acosh();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the sum of `x` and `y`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   * y {number|string|Decimal}
+	   *
+	   */
+	  function add(x, y) {
+	    return new this(x).plus(y);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the arcsine in radians of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function asin(x) {
+	    return new this(x).asin();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the inverse of the hyperbolic sine of `x`, rounded to
+	   * `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function asinh(x) {
+	    return new this(x).asinh();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the arctangent in radians of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function atan(x) {
+	    return new this(x).atan();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the inverse of the hyperbolic tangent of `x`, rounded to
+	   * `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function atanh(x) {
+	    return new this(x).atanh();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the arctangent in radians of `y/x` in the range -pi to pi
+	   * (inclusive), rounded to `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * Domain: [-Infinity, Infinity]
+	   * Range: [-pi, pi]
+	   *
+	   * y {number|string|Decimal} The y-coordinate.
+	   * x {number|string|Decimal} The x-coordinate.
+	   *
+	   * atan2(±0, -0)               = ±pi
+	   * atan2(±0, +0)               = ±0
+	   * atan2(±0, -x)               = ±pi for x > 0
+	   * atan2(±0, x)                = ±0 for x > 0
+	   * atan2(-y, ±0)               = -pi/2 for y > 0
+	   * atan2(y, ±0)                = pi/2 for y > 0
+	   * atan2(±y, -Infinity)        = ±pi for finite y > 0
+	   * atan2(±y, +Infinity)        = ±0 for finite y > 0
+	   * atan2(±Infinity, x)         = ±pi/2 for finite x
+	   * atan2(±Infinity, -Infinity) = ±3*pi/4
+	   * atan2(±Infinity, +Infinity) = ±pi/4
+	   * atan2(NaN, x) = NaN
+	   * atan2(y, NaN) = NaN
+	   *
+	   */
+	  function atan2(y, x) {
+	    y = new this(y);
+	    x = new this(x);
+	    var r,
+	      pr = this.precision,
+	      rm = this.rounding,
+	      wpr = pr + 4;
+
+	    // Either NaN
+	    if (!y.s || !x.s) {
+	      r = new this(NaN);
+
+	    // Both ±Infinity
+	    } else if (!y.d && !x.d) {
+	      r = getPi(this, wpr, 1).times(x.s > 0 ? 0.25 : 0.75);
+	      r.s = y.s;
+
+	    // x is ±Infinity or y is ±0
+	    } else if (!x.d || y.isZero()) {
+	      r = x.s < 0 ? getPi(this, pr, rm) : new this(0);
+	      r.s = y.s;
+
+	    // y is ±Infinity or x is ±0
+	    } else if (!y.d || x.isZero()) {
+	      r = getPi(this, wpr, 1).times(0.5);
+	      r.s = y.s;
+
+	    // Both non-zero and finite
+	    } else if (x.s < 0) {
+	      this.precision = wpr;
+	      this.rounding = 1;
+	      r = this.atan(divide(y, x, wpr, 1));
+	      x = getPi(this, wpr, 1);
+	      this.precision = pr;
+	      this.rounding = rm;
+	      r = y.s < 0 ? r.minus(x) : r.plus(x);
+	    } else {
+	      r = this.atan(divide(y, x, wpr, 1));
+	    }
+
+	    return r;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the cube root of `x`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function cbrt(x) {
+	    return new this(x).cbrt();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` rounded to an integer using `ROUND_CEIL`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function ceil(x) {
+	    return finalise(x = new this(x), x.e + 1, 2);
+	  }
+
+
+	  /*
+	   * Configure global settings for a Decimal constructor.
+	   *
+	   * `obj` is an object with one or more of the following properties,
+	   *
+	   *   precision  {number}
+	   *   rounding   {number}
+	   *   toExpNeg   {number}
+	   *   toExpPos   {number}
+	   *   maxE       {number}
+	   *   minE       {number}
+	   *   modulo     {number}
+	   *   crypto     {boolean|number|undefined}
+	   *
+	   * E.g. Decimal.config({ precision: 20, rounding: 4 })
+	   *
+	   */
+	  function config(obj) {
+	    if (!obj || typeof obj !== 'object') throw Error(decimalError + 'Object expected');
+	    var i, p, v,
+	      ps = [
+	        'precision', 1, MAX_DIGITS,
+	        'rounding', 0, 8,
+	        'toExpNeg', -EXP_LIMIT, 0,
+	        'toExpPos', 0, EXP_LIMIT,
+	        'maxE', 0, EXP_LIMIT,
+	        'minE', -EXP_LIMIT, 0,
+	        'modulo', 0, 9
+	      ];
+
+	    for (i = 0; i < ps.length; i += 3) {
+	      if ((v = obj[p = ps[i]]) !== void 0) {
+	        if (mathfloor(v) === v && v >= ps[i + 1] && v <= ps[i + 2]) this[p] = v;
+	        else throw Error(invalidArgument + p + ': ' + v);
+	      }
+	    }
+
+	    if (obj.hasOwnProperty(p = 'crypto')) {
+	      if ((v = obj[p]) === void 0) {
+	        this[p] = v;
+	      } else if (v === true || v === false || v === 0 || v === 1) {
+	        this[p] = !!(v && cryptoObject &&
+	            (cryptoObject.getRandomValues || cryptoObject.randomBytes));
+	      } else {
+	        throw Error(invalidArgument + p + ': ' + v);
+	      }
+	    }
+
+	    return this;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the cosine of `x`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function cos(x) {
+	    return new this(x).cos();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the hyperbolic cosine of `x`, rounded to precision
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function cosh(x) {
+	    return new this(x).cosh();
+	  }
+
+
+	  /*
+	   * Create and return a Decimal constructor with the same configuration properties as this Decimal
+	   * constructor.
+	   *
+	   */
+	  function clone(obj) {
+	    var i, p, ps;
+
+	    /*
+	     * The Decimal constructor and exported function.
+	     * Return a new Decimal instance.
+	     *
+	     * v {number|string|Decimal} A numeric value.
+	     *
+	     */
+	    function Decimal(v) {
+	      var e, i, t,
+	        x = this;
+
+	      // Decimal called without new.
+	      if (!(x instanceof Decimal)) return new Decimal(v);
+
+	      // Retain a reference to this Decimal constructor, and shadow Decimal.prototype.constructor
+	      // which points to Object.
+	      x.constructor = Decimal;
+
+	      // Duplicate.
+	      if (v instanceof Decimal) {
+	        x.s = v.s;
+	        x.e = v.e;
+	        x.d = (v = v.d) ? v.slice() : v;
+	        return;
+	      }
+
+	      t = typeof v;
+
+	      if (t === 'number') {
+	        if (v === 0) {
+	          x.s = 1 / v < 0 ? -1 : 1;
+	          x.e = 0;
+	          x.d = [0];
+	          return;
+	        }
+
+	        if (v < 0) {
+	          v = -v;
+	          x.s = -1;
+	        } else {
+	          x.s = 1;
+	        }
+
+	        // Fast path for small integers.
+	        if (v === ~~v && v < 1e7) {
+	          for (e = 0, i = v; i >= 10; i /= 10) e++;
+	          x.e = e;
+	          x.d = [v];
+	          return;
+
+	        // Infinity, NaN.
+	        } else if (v * 0 !== 0) {
+	          if (!v) x.s = NaN;
+	          x.e = NaN;
+	          x.d = null;
+	          return;
+	        }
+
+	        return parseDecimal(x, v.toString());
+
+	      } else if (t !== 'string') {
+	        throw Error(invalidArgument + v);
+	      }
+
+	      // Minus sign?
+	      if (v.charCodeAt(0) === 45) {
+	        v = v.slice(1);
+	        x.s = -1;
+	      } else {
+	        x.s = 1;
+	      }
+
+	      return isDecimal.test(v) ? parseDecimal(x, v) : parseOther(x, v);
+	    }
+
+	    Decimal.prototype = P;
+
+	    Decimal.ROUND_UP = 0;
+	    Decimal.ROUND_DOWN = 1;
+	    Decimal.ROUND_CEIL = 2;
+	    Decimal.ROUND_FLOOR = 3;
+	    Decimal.ROUND_HALF_UP = 4;
+	    Decimal.ROUND_HALF_DOWN = 5;
+	    Decimal.ROUND_HALF_EVEN = 6;
+	    Decimal.ROUND_HALF_CEIL = 7;
+	    Decimal.ROUND_HALF_FLOOR = 8;
+	    Decimal.EUCLID = 9;
+
+	    Decimal.config = config;
+	    Decimal.clone = clone;
+
+	    Decimal.abs = abs;
+	    Decimal.acos = acos;
+	    Decimal.acosh = acosh;        // ES6
+	    Decimal.add = add;
+	    Decimal.asin = asin;
+	    Decimal.asinh = asinh;        // ES6
+	    Decimal.atan = atan;
+	    Decimal.atanh = atanh;        // ES6
+	    Decimal.atan2 = atan2;
+	    Decimal.cbrt = cbrt;          // ES6
+	    Decimal.ceil = ceil;
+	    Decimal.cos = cos;
+	    Decimal.cosh = cosh;          // ES6
+	    Decimal.div = div;
+	    Decimal.exp = exp;
+	    Decimal.floor = floor;
+	    Decimal.fromJSON = fromJSON;
+	    Decimal.hypot = hypot;        // ES6
+	    Decimal.ln = ln;
+	    Decimal.log = log;
+	    Decimal.log10 = log10;        // ES6
+	    Decimal.log2 = log2;          // ES6
+	    Decimal.max = max;
+	    Decimal.min = min;
+	    Decimal.mod = mod;
+	    Decimal.mul = mul;
+	    Decimal.pow = pow;
+	    Decimal.random = random;
+	    Decimal.round = round;
+	    Decimal.sign = sign;          // ES6
+	    Decimal.sin = sin;
+	    Decimal.sinh = sinh;          // ES6
+	    Decimal.sqrt = sqrt;
+	    Decimal.sub = sub;
+	    Decimal.tan = tan;
+	    Decimal.tanh = tanh;          // ES6
+	    Decimal.trunc = trunc;        // ES6
+
+	    if (obj === void 0) obj = {};
+	    if (obj) {
+	      ps = ['precision', 'rounding', 'toExpNeg', 'toExpPos', 'maxE', 'minE', 'modulo', 'crypto'];
+	      for (i = 0; i < ps.length;) if (!obj.hasOwnProperty(p = ps[i++])) obj[p] = this[p];
+	    }
+
+	    Decimal.config(obj);
+
+	    return Decimal;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` divided by `y`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   * y {number|string|Decimal}
+	   *
+	   */
+	  function div(x, y) {
+	    return new this(x).div(y);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the natural exponential of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} The power to which to raise the base of the natural log.
+	   *
+	   */
+	  function exp(x) {
+	    return new this(x).exp();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` round to an integer using `ROUND_FLOOR`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function floor(x) {
+	    return finalise(x = new this(x), x.e + 1, 3);
+	  }
+
+
+	  /*
+	   * Return a new Decimal from `str`, a string value created by `toJSON`.
+	   *
+	   * Base 88 alphabet:
+	   * 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%()*+,-./:;=?@[]^_`{|}~
+	   *
+	   * If `str` is just one character:
+	   * 0-81  [[0, 40][-0, -40]]
+	   * 82    -Infinity
+	   * 83    +Infinity
+	   * 84    NaN
+	   *
+	   *   64 32 16  8  4  2  1
+	   *    1  0  1  0  1  1  1 = 87
+	   *
+	   */
+	  function fromJSON(str) {
+	    var e, isNeg, k, n;
+
+	    if (typeof str !== 'string' || !str) throw Error(invalidArgument + str);
+	    k = str.length;
+	    n = NUMERALS.indexOf(str.charAt(0));
+
+	    //  [0, 81] -> [[0, 40][-0, -40]]
+	    if (k === 1) {
+	      return new this(n > 81 ? [-1 / 0, 1 / 0, 0 / 0][n - 82] : n > 40 ? -(n - 41) : n);
+	    } else if (n & 64) {
+	      isNeg = n & 16;
+
+	      // e = isNeg ? [-3, 4] : [-7, 8]
+	      e = isNeg ? (n & 7) - 3 : (n & 15) - 7;
+	      k = 1;
+	    } else if (k === 2) {
+	      n = n * 88 + NUMERALS.indexOf(str.charAt(1));
+
+	      // [0, 5631] -> [[0, 2815][-0, -2815]] -> [[41, 2856][-41, -2856]]
+	      return new this(n >= 2816 ? -(n - 2816) - 41 : n + 41);
+	    } else {
+
+	      // 0XXXXXX
+	      // 0 {is negative} {is exponent negative} {exponent digit count [0, 15]}
+	      isNeg = n & 32;
+
+	      // Has an exponent been specified?
+	      if (n & 31) {
+	        e = n & 15;    // Exponent character count [1, 15]
+	        k = e + 1;     // Index of first character of the significand.
+
+	        if (e === 1)  {
+	          e = NUMERALS.indexOf(str.charAt(1));
+	        } else if (e === 2) {
+	          e = NUMERALS.indexOf(str.charAt(1)) * 88 +
+	            NUMERALS.indexOf(str.charAt(2));
+	        } else {
+	          e = +convertBase(str.slice(1, k), 88, 10).join('');
+	        }
+
+	        // Negative exponent?
+	        if (n & 16) e = -e;
+	      } else {
+
+	        // Integer without trailing zeros.
+	        // 0X00000
+	        // 0 {is negative} 0 0 0 0 0
+	        str = convertBase(str.slice(1), 88, 10).join('');
+	        return new this(isNeg ? '-' + str : str);
+	      }
+	    }
+
+	    str = convertBase(str.slice(k), 88, 10).join('');
+	    e = e - str.length + 1;
+	    str = str + 'e' + e;
+
+	    return new this(isNeg ? '-' + str : str);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the square root of the sum of the squares of the arguments,
+	   * rounded to `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * hypot(a, b, ...) = sqrt(a^2 + b^2 + ...)
+	   *
+	   */
+	  function hypot() {
+	    var i, n,
+	      t = new this(0);
+
+	    external = false;
+
+	    for (i = 0; i < arguments.length;) {
+	      n = new this(arguments[i++]);
+	      if (!n.d) {
+	        if (n.s) {
+	          external = true;
+	          return new this(1 / 0);
+	        }
+	        t = n;
+	      } else if (t.d) {
+	        t = t.plus(n.times(n));
+	      }
+	    }
+
+	    external = true;
+
+	    return t.sqrt();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the natural logarithm of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function ln(x) {
+	    return new this(x).ln();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the log of `x` to the base `y`, or to base 10 if no base
+	   * is specified, rounded to `precision` significant digits using rounding mode `rounding`.
+	   *
+	   * log[y](x)
+	   *
+	   * x {number|string|Decimal} The argument of the logarithm.
+	   * y {number|string|Decimal} The base of the logarithm.
+	   *
+	   */
+	  function log(x, y) {
+	    return new this(x).log(y);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the base 2 logarithm of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function log2(x) {
+	    return new this(x).log(2);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the base 10 logarithm of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function log10(x) {
+	    return new this(x).log(10);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the maximum of the arguments.
+	   *
+	   * arguments {number|string|Decimal}
+	   *
+	   */
+	  function max() {
+	    return maxOrMin(this, arguments, 'lt');
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the minimum of the arguments.
+	   *
+	   * arguments {number|string|Decimal}
+	   *
+	   */
+	  function min() {
+	    return maxOrMin(this, arguments, 'gt');
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` modulo `y`, rounded to `precision` significant digits
+	   * using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   * y {number|string|Decimal}
+	   *
+	   */
+	  function mod(x, y) {
+	    return new this(x).mod(y);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` multiplied by `y`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   * y {number|string|Decimal}
+	   *
+	   */
+	  function mul(x, y) {
+	    return new this(x).mul(y);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` raised to the power `y`, rounded to precision
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} The base.
+	   * y {number|string|Decimal} The exponent.
+	   *
+	   */
+	  function pow(x, y) {
+	    return new this(x).pow(y);
+	  }
+
+
+	  /*
+	   * Returns a new Decimal with a random value equal to or greater than 0 and less than 1, and with
+	   * `sd`, or `Decimal.precision` if `sd` is omitted, significant digits (or less if trailing zeros
+	   * are produced).
+	   *
+	   * [sd] {number} Significant digits. Integer, 0 to MAX_DIGITS inclusive.
+	   *
+	   */
+	  function random(sd) {
+	    var d, e, k, n,
+	      i = 0,
+	      r = new this(1),
+	      rd = [];
+
+	    if (sd === void 0) sd = this.precision;
+	    else checkInt32(sd, 1, MAX_DIGITS);
+
+	    k = Math.ceil(sd / LOG_BASE);
+
+	    if (this.crypto === false) {
+	      for (; i < k;) rd[i++] = Math.random() * 1e7 | 0;
+
+	    // Browsers supporting crypto.getRandomValues.
+	    } else if (cryptoObject && cryptoObject.getRandomValues) {
+	      d = cryptoObject.getRandomValues(new Uint32Array(k));
+
+	      for (; i < k;) {
+	        n = d[i];
+
+	        // 0 <= n < 4294967296
+	        // Probability n >= 4.29e9, is 4967296 / 4294967296 = 0.00116 (1 in 865).
+	        if (n >= 4.29e9) {
+	          d[i] = cryptoObject.getRandomValues(new Uint32Array(1))[0];
+	        } else {
+
+	          // 0 <= n <= 4289999999
+	          // 0 <= (n % 1e7) <= 9999999
+	          rd[i++] = n % 1e7;
+	        }
+	      }
+
+	    // Node.js supporting crypto.randomBytes.
+	    } else if (cryptoObject && cryptoObject.randomBytes) {
+
+	      // buffer
+	      d = cryptoObject.randomBytes(k *= 4);
+
+	      for (; i < k;) {
+
+	        // 0 <= n < 2147483648
+	        n = d[i] + (d[i + 1] << 8) + (d[i + 2] << 16) + ((d[i + 3] & 0x7f) << 24);
+
+	        // Probability n >= 2.14e9, is 7483648 / 2147483648 = 0.0035 (1 in 286).
+	        if (n >= 2.14e9) {
+	          cryptoObject.randomBytes(4).copy(d, i);
+	        } else {
+
+	          // 0 <= n <= 2139999999
+	          // 0 <= (n % 1e7) <= 9999999
+	          rd.push(n % 1e7);
+	          i += 4;
+	        }
+	      }
+
+	      i = k / 4;
+	    } else if (this.crypto) {
+	      throw Error(decimalError + 'crypto unavailable');
+	    } else {
+	      for (; i < k;) rd[i++] = Math.random() * 1e7 | 0;
+	    }
+
+	    k = rd[--i];
+	    sd %= LOG_BASE;
+
+	    // Convert trailing digits to zeros according to sd.
+	    if (k && sd) {
+	      n = mathpow(10, LOG_BASE - sd);
+	      rd[i] = (k / n | 0) * n;
+	    }
+
+	    // Remove trailing words which are zero.
+	    for (; rd[i] === 0; i--) rd.pop();
+
+	    // Zero?
+	    if (i < 0) {
+	      e = 0;
+	      rd = [0];
+	    } else {
+	      e = -1;
+
+	      // Remove leading words which are zero and adjust exponent accordingly.
+	      for (; rd[0] === 0; e -= LOG_BASE) rd.shift();
+
+	      // Count the digits of the first word of rd to determine leading zeros.
+	      for (k = 1, n = rd[0]; n >= 10; n /= 10) k++;
+
+	      // Adjust the exponent for leading zeros of the first word of rd.
+	      if (k < LOG_BASE) e -= LOG_BASE - k;
+	    }
+
+	    r.e = e;
+	    r.d = rd;
+
+	    return r;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` rounded to an integer using rounding mode `rounding`.
+	   *
+	   * To emulate `Math.round`, set rounding to 7 (ROUND_HALF_CEIL).
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function round(x) {
+	    return finalise(x = new this(x), x.e + 1, this.rounding);
+	  }
+
+
+	  /*
+	   * Return
+	   *   1    if x > 0,
+	   *  -1    if x < 0,
+	   *   0    if x is 0,
+	   *  -0    if x is -0,
+	   *   NaN  otherwise
+	   *
+	   */
+	  function sign(x) {
+	    x = new this(x);
+	    return x.d ? (x.d[0] ? x.s : 0 * x.s) : x.s || NaN;
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the sine of `x`, rounded to `precision` significant digits
+	   * using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function sin(x) {
+	    return new this(x).sin();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the hyperbolic sine of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function sinh(x) {
+	    return new this(x).sinh();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the square root of `x`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function sqrt(x) {
+	    return new this(x).sqrt();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` minus `y`, rounded to `precision` significant digits
+	   * using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal}
+	   * y {number|string|Decimal}
+	   *
+	   */
+	  function sub(x, y) {
+	    return new this(x).sub(y);
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the tangent of `x`, rounded to `precision` significant
+	   * digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function tan(x) {
+	    return new this(x).tan();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is the hyperbolic tangent of `x`, rounded to `precision`
+	   * significant digits using rounding mode `rounding`.
+	   *
+	   * x {number|string|Decimal} A value in radians.
+	   *
+	   */
+	  function tanh(x) {
+	    return new this(x).tanh();
+	  }
+
+
+	  /*
+	   * Return a new Decimal whose value is `x` truncated to an integer.
+	   *
+	   * x {number|string|Decimal}
+	   *
+	   */
+	  function trunc(x) {
+	    return finalise(x = new this(x), x.e + 1, 1);
+	  }
+
+
+	  // Create and configure initial Decimal constructor.
+	  Decimal = clone(Decimal);
+
+	  // Create the internal constants from their string values.
+	  LN10 = new Decimal(LN10);
+	  PI = new Decimal(PI);
+
+
+	  // Export.
+
+
+	  // AMD.
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return Decimal;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+	  // Node and other environments that support module.exports.
+	  } else if (typeof module != 'undefined' && module.exports) {
+	    module.exports = Decimal;
+
+	    if (!cryptoObject) {
+	      try {
+	        cryptoObject = require('cry' + 'pto');
+	      } catch (e) {
+	        // Ignore.
+	      }
+	    }
+
+	  // Browser.
+	  } else {
+	    if (!globalScope) {
+	      globalScope = typeof self != 'undefined' && self && self.self == self
+	        ? self : Function('return this')();
+	    }
+
+	    noConflict = globalScope.Decimal;
+	    Decimal.noConflict = function () {
+	      globalScope.Decimal = noConflict;
+	      return Decimal;
+	    };
+
+	    globalScope.Decimal = Decimal;
+	  }
 	})(this);
 
 
@@ -7181,7 +8208,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *    boolean, complex, index, matrix, string, unit
 	   *
-	   * @param {number | string | Array | Matrix | boolean | null} [value]  Value for the big number,
+	   * @param {number | string | Fraction | BigNumber | Array | Matrix | boolean | null} [value]  Value for the big number,
 	   *                                                    0 by default.
 	   * @returns {BigNumber} The created bignumber
 	   */
@@ -7202,6 +8229,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'BigNumber': function (x) {
 	      // we assume a BigNumber is immutable
 	      return x;
+	    },
+
+	    'Fraction': function (x) {
+	      return new type.BigNumber(x.n).div(x.d);
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -7556,8 +8587,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *     math.format(value)
 	 *     math.format(value, precision)
 	 *
-	 * If value is a function, the returned string is 'function' unless the function
-	 * has a property `description`, in that case this properties value is returned.
+	 * When value is a function:
+	 *
+	 * - When the function has a property `syntax`, it returns this
+	 *   syntax description.
+	 * - In other cases, a string `'function'` is returned.
+	 *
+	 * When `value` is an Object:
+	 *
+	 * - When the object contains a property `format` being a function, this
+	 *   function is invoked as `value.format(options)` and the result is returned.
+	 * - When the object has its own `toString` method, this method is invoked
+	 *   and the result is returned.
+	 * - In other cases the function will loop over all object properties and
+	 *   return JSON object notation like '{"a": 2, "b": 3}'.
 	 *
 	 * Example usage:
 	 *     math.format(2/7);                // '0.2857142857142857'
@@ -7601,15 +8644,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  if (typeof value === 'function') {
-	    return value.syntax ? value.syntax + '' : 'function';
+	    return value.syntax ? String(value.syntax) : 'function';
 	  }
 
-	  if (typeof value === 'object') {
+	  if (value && typeof value === 'object') {
 	    if (typeof value.format === 'function') {
 	      return value.format(options);
 	    }
-	    else {
+	    else if (value && value.toString() !== {}.toString()) {
+	      // this object has a non-native toString method, use that one
 	      return value.toString();
+	    }
+	    else {
+	      var entries = [];
+
+	      for (var key in value) {
+	        if (value.hasOwnProperty(key)) {
+	          entries.push('"' + key + '": ' + exports.format(value[key], options));
+	        }
+	      }
+
+	      return '{' + entries.join(', ') + '}';
 	    }
 	  }
 
@@ -7831,7 +8886,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return value.toFixed(precision || 0);
 	  // Note: the (precision || 0) is needed as the toFixed of BigNumber has an
 	  // undefined default precision instead of 0.
-	}
+	};
 
 
 /***/ },
@@ -8087,7 +9142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/**
-	 * @license Complex.js v2.0.0 11/02/2016
+	 * @license Complex.js v2.0.1 11/02/2016
 	 *
 	 * Copyright (c) 2016, Robert Eisele (robert@xarg.org)
 	 * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8504,6 +9559,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var re, im;
 
+	      if (a >= 0 && b === 0) {
+	        return new Complex(Math.sqrt(a), 0);
+	      }
+
 	      if (a >= 0) {
 	        re = 0.5 * Math.sqrt(2.0 * (r + a));
 	      } else {
@@ -8625,13 +9684,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    "tan": function() {
 
-	      var a = this["re"];
-	      var b = this["im"];
-	      var d = Math.exp(-4 * b) + 2 * Math.exp(-2 * b) * Math.cos(2 * a) + 1;
+	      var a = 2 * this["re"];
+	      var b = 2 * this["im"];
+	      var d = Math.cos(a) + Math.cosh(b);
 
 	      return new Complex(
-	              2 * Math.exp(-2 * b) * Math.sin(2 * a) / d,
-	             (1 - Math.exp(-4 * b)) / d);
+	              Math.sin(a) / d,
+	              Math.sinh(b) / d);
 	    },
 
 	    /**
@@ -8641,13 +9700,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    "cot": function() {
 
-	      var a = this["re"];
-	      var b = this["im"];
-	      var d = Math.exp(-4 * b) - 2 * Math.exp(-2 * b) * Math.cos(2 * a) + 1;
+	      var a = 2 * this["re"];
+	      var b = 2 * this["im"];
+	      var d = Math.cos(a) - Math.cosh(b);
 
 	      return new Complex(
-	              2 * Math.exp(-2 * b) * Math.sin(2 * a) / d,
-	                 (Math.exp(-4 * b) - 1) / d);
+	             -Math.sin(a) / d,
+	              Math.sinh(b) / d);
 	    },
 
 	    /**
@@ -8659,7 +9718,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var a = this["re"];
 	      var b = this["im"];
-	      var d = 0.5 * (0.5 * (Math.exp(-2 * b) + Math.exp(2 * b)) + Math.cos(2 * a));
+	      var d = 0.5 * Math.cosh(2 * b) + 0.5 * Math.cos(2 * a);
 
 	      return new Complex(
 	              Math.cos(a) * Math.cosh(b) / d,
@@ -8675,7 +9734,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var a = this["re"];
 	      var b = this["im"];
-	      var d = 0.25 * (Math.exp(-2 * b) + Math.exp(2 * b)) - 0.5 * Math.cos(2 * a);
+	      var d = 0.5 * Math.cosh(2 * b) - 0.5 * Math.cos(2 * a);
 
 	      return new Complex(
 	              Math.sin(a) * Math.cosh(b) / d,
@@ -8863,17 +9922,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    "tanh": function() {
 
-	      var a = this["re"];
-	      var b = this["im"];
-
-	      var t = Math.exp(2 * a);
-	      var re = t * Math.cos(2 * b);
-	      var im = t * Math.sin(2 * b);
-	      var d = (re + 1) * (re + 1) + im * im;
+	      var a = 2 * this["re"];
+	      var b = 2 * this["im"];
+	      var d = Math.cosh(a) + Math.cos(b);
 
 	      return new Complex(
-	              ((re - 1) * (re + 1) + im * im) / d,
-	              2 * im / d);
+	              Math.sinh(a) / d,
+	              Math.sin(b) / d);
 	    },
 
 	    /**
@@ -8883,17 +9938,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    "coth": function() {
 
-	      var a = this["re"];
-	      var b = this["im"];
-
-	      var t = Math.exp(2 * a);
-	      var re = t * Math.cos(2 * b);
-	      var im = t * Math.sin(2 * b);
-	      var d = (re - 1) * (re - 1) + im * im;
+	      var a = 2 * this["re"];
+	      var b = 2 * this["im"];
+	      var d = Math.cosh(a) - Math.cos(b);
 
 	      return new Complex(
-	              ((re + 1) * (re - 1) + im * im) / d,
-	              -2 * im / d);
+	              Math.sinh(a) / d,
+	             -Math.sin(b) / d);
 	    },
 
 	    /**
@@ -8905,13 +9956,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var a = this["re"];
 	      var b = this["im"];
+	      var d = Math.cos(2 * b) - Math.cosh(2 * a);
 
-	      var ep = Math.exp(a);
-	      var en = Math.exp(-a);
-	      var re = Math.cos(b) * (ep - en);
-	      var im = Math.sin(b) * (ep + en);
-	      var d = re * re + im * im;
-	      return new Complex(2 * re / d, -2 * im / d);
+	      return new Complex(
+	           -2 * Math.sinh(a) * Math.cos(b) / d, 
+	            2 * Math.cosh(a) * Math.sin(b) / d);
 	    },
 
 	    /**
@@ -8923,13 +9972,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      var a = this["re"];
 	      var b = this["im"];
+	      var d = Math.cos(2 * b) + Math.cosh(2 * a);
 
-	      var ep = Math.exp(a);
-	      var en = Math.exp(-a);
-	      var re = Math.cos(b) * (ep + en);
-	      var im = Math.sin(b) * (ep - en);
-	      var d = re * re + im * im;
-	      return new Complex(2 * re / d, -2 * im / d);
+	      return new Complex(
+	              2 * Math.cosh(a) * Math.cos(b) / d, 
+	             -2 * Math.sinh(a) * Math.sin(b) / d);
 	    },
 
 	    /**
@@ -9275,7 +10322,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  } else {
 	    root["Complex"] = Complex;
 	  }
-
+	  
 	})(this);
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module)))
@@ -10392,10 +11439,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   *    bignumber, number, string, unit
 	   *
-	   * @param {number | string | Array | Matrix} [args]
+	   * @param {number | string | Fraction | BigNumber | Array | Matrix} [args]
 	   *            Arguments specifying the numerator and denominator of
 	   *            the fraction
-	   * @return {fraction | Array | Matrix} Returns a fraction
+	   * @return {Fraction | Array | Matrix} Returns a fraction
 	   */
 	  var fraction = typed('fraction', {
 	    'number': function (x) {
@@ -10412,6 +11459,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    'number, number': function (numerator, denominator) {
 	      return new type.Fraction(numerator, denominator);
+	    },
+
+	    'BigNumber': function (x) {
+	      return new type.Fraction(x.toString());
 	    },
 
 	    'Fraction': function (x) {
@@ -10443,16 +11494,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(38),
 	  __webpack_require__(46),
 	  __webpack_require__(47),
-	  __webpack_require__(49),
-	  __webpack_require__(58),
-	  __webpack_require__(64),
+	  __webpack_require__(50),
+	  __webpack_require__(59),
 	  __webpack_require__(65),
 	  __webpack_require__(66),
+	  __webpack_require__(67),
 
 	  // construction functions
-	  __webpack_require__(67),
-	  __webpack_require__(51),
-	  __webpack_require__(68)
+	  __webpack_require__(68),
+	  __webpack_require__(52),
+	  __webpack_require__(69)
 	];
 
 
@@ -10823,6 +11874,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Test whether index is an integer number with index >= 0 and index < length
+	 * when length is provided
 	 * @param {number} index    Zero-based index
 	 * @param {number} [length] Length of the array
 	 */
@@ -10830,10 +11882,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (!number.isNumber(index) || !number.isInteger(index)) {
 	    throw new TypeError('Index must be an integer (value: ' + index + ')');
 	  }
-	  if (index < 0) {
-	    throw new IndexError(index);
-	  }
-	  if (length !== undefined && index >= length) {
+	  if (index < 0 || (typeof length === 'number' && index >= length)) {
 	    throw new IndexError(index, length);
 	  }
 	};
@@ -10933,7 +11982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if(defaultValue !== exports.UNINITIALIZED) {
 	      // fill new elements with the default value
 	      for (i = minLen; i < newLen; i++) {
-	        array[i] = object.clone(defaultValue);
+	        array[i] = defaultValue;
 	      }
 	    }
 	  }
@@ -11302,6 +12351,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var Matrix = load(__webpack_require__(38)); // force loading Matrix (do not use via type.Matrix)
 
+	  /**
+	   * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
+	   * @class DenseMatrix
+	   */
 	  function DenseMatrix(data, datatype) {
 	    if (!(this instanceof DenseMatrix))
 	      throw new SyntaxError('Constructor must be called with the new operator');
@@ -11365,6 +12418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Usage:
 	   *     var format = matrix.storage()                   // retrieve storage format
 	   *
+	   * @memberof DenseMatrix
 	   * @return {string}           The storage format.
 	   */
 	  DenseMatrix.prototype.storage = function () {
@@ -11377,6 +12431,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Usage:
 	   *     var format = matrix.datatype()                   // retrieve matrix datatype
 	   *
+	   * @memberof DenseMatrix
 	   * @return {string}           The datatype.
 	   */
 	  DenseMatrix.prototype.datatype = function () {
@@ -11385,6 +12440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create a new DenseMatrix
+	   * @memberof DenseMatrix
 	   * @param {Array} data
 	   * @param {string} [datatype]
 	   */
@@ -11399,6 +12455,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var subset = matrix.subset(index)               // retrieve subset
 	   *     var value = matrix.subset(index, replacement)   // replace subset
 	   *
+	   * @memberof DenseMatrix
 	   * @param {Index} index
 	   * @param {Array | DenseMatrix | *} [replacement]
 	   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
@@ -11422,6 +12479,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a single element from the matrix.
+	   * @memberof DenseMatrix
 	   * @param {number[]} index   Zero-based index
 	   * @return {*} value
 	   */
@@ -11442,11 +12500,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      data = data[index_i];
 	    }
 
-	    return object.clone(data);
+	    return data;
 	  };
 	  
 	  /**
 	   * Replace a single element in the matrix.
+	   * @memberof DenseMatrix
 	   * @param {number[]} index   Zero-based index
 	   * @param {*} value
 	   * @param {*} [defaultValue]        Default value, filled in on new entries when
@@ -11486,6 +12545,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a submatrix of this matrix
+	   * @memberof DenseMatrix
 	   * @param {DenseMatrix} matrix
 	   * @param {Index} index   Zero-based index
 	   * @private
@@ -11524,6 +12584,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Recursively get a submatrix of a multi dimensional matrix.
 	   * Index is not checked for correct number or length of dimensions.
+	   * @memberof DenseMatrix
 	   * @param {Array} data
 	   * @param {Index} index
 	   * @param {number} dims   Total number of dimensions
@@ -11551,6 +12612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Replace a submatrix in this matrix
 	   * Indexes are zero-based.
+	   * @memberof DenseMatrix
 	   * @param {DenseMatrix} matrix
 	   * @param {Index} index
 	   * @param {DenseMatrix | Array | *} submatrix
@@ -11634,6 +12696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Replace a submatrix of a multi dimensional matrix.
+	   * @memberof DenseMatrix
 	   * @param {Array} data
 	   * @param {Index} index
 	   * @param {Array} submatrix
@@ -11663,6 +12726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Resize the matrix to the given size. Returns a copy of the matrix when
 	   * `copy=true`, otherwise return the matrix itself (resize in place).
 	   *
+	   * @memberof DenseMatrix
 	   * @param {number[]} size           The new size the matrix should have.
 	   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
 	   *                                  If not provided, the matrix elements will
@@ -11691,10 +12755,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      while (isArray(v)) {
 	        v = v[0];
 	      }
-	      return object.clone(v);
+	      return v;
 	    }
 	    // resize matrix
-	    matrix._size = object.clone(size);
+	    matrix._size = size.slice(0); // copy the array
 	    matrix._data = array.resize(matrix._data, matrix._size, defaultValue);
 	    // return matrix
 	    return matrix;
@@ -11703,13 +12767,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Enlarge the matrix when it is smaller than given size.
 	   * If the matrix is larger or equal sized, nothing is done.
+	   * @memberof DenseMatrix
 	   * @param {DenseMatrix} matrix           The matrix to be resized
 	   * @param {number[]} size
 	   * @param {*} defaultValue          Default value, filled in on new entries.
 	   * @private
 	   */
 	  function _fit(matrix, size, defaultValue) {
-	    var newSize = object.clone(matrix._size),
+	    var newSize = matrix._size.slice(0), // copy the array
 	        changed = false;
 
 	    // add dimensions when needed
@@ -11734,6 +12799,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Create a clone of the matrix
+	   * @memberof DenseMatrix
 	   * @return {DenseMatrix} clone
 	   */
 	  DenseMatrix.prototype.clone = function () {
@@ -11747,6 +12813,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Retrieve the size of the matrix.
+	   * @memberof DenseMatrix
 	   * @returns {number[]} size
 	   */
 	  DenseMatrix.prototype.size = function() {
@@ -11756,6 +12823,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Create a new matrix with the results of the callback function executed on
 	   * each entry of the matrix.
+	   * @memberof DenseMatrix
 	   * @param {Function} callback   The callback function is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Matrix being traversed.
@@ -11785,6 +12853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Execute a callback function on each entry of the matrix.
+	   * @memberof DenseMatrix
 	   * @param {Function} callback   The callback function is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Matrix being traversed.
@@ -11807,6 +12876,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Create an Array with a copy of the data of the DenseMatrix
+	   * @memberof DenseMatrix
 	   * @returns {Array} array
 	   */
 	  DenseMatrix.prototype.toArray = function () {
@@ -11815,6 +12885,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get the primitive value of the DenseMatrix: a multidimensional array
+	   * @memberof DenseMatrix
 	   * @returns {Array} array
 	   */
 	  DenseMatrix.prototype.valueOf = function () {
@@ -11823,6 +12894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a string representation of the matrix, with optional formatting options.
+	   * @memberof DenseMatrix
 	   * @param {Object | number | Function} [options]  Formatting options. See
 	   *                                                lib/utils/number:format for a
 	   *                                                description of the available
@@ -11835,6 +12907,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a string representation of the matrix
+	   * @memberof DenseMatrix
 	   * @returns {string} str
 	   */
 	  DenseMatrix.prototype.toString = function () {
@@ -11843,6 +12916,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a JSON representation of the matrix
+	   * @memberof DenseMatrix
 	   * @returns {Object}
 	   */
 	  DenseMatrix.prototype.toJSON = function () {
@@ -11857,6 +12931,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Get the kth Matrix diagonal.
 	   *
+	   * @memberof DenseMatrix
 	   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
 	   *
 	   * @returns {Array}                      The array vector with the diagonal values.
@@ -11892,7 +12967,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    
 	    // loop rows
 	    for (var i = 0; i < n; i++) {
-	      data[i] = object.clone(this._data[i + kSub][i + kSuper]);
+	      data[i] = this._data[i + kSub][i + kSuper];
 	    }
 
 	    // create DenseMatrix
@@ -11906,8 +12981,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Create a diagonal matrix.
 	   *
+	   * @memberof DenseMatrix
 	   * @param {Array} size                   The matrix size.
-	   * @param {number, Array} value          The values for the diagonal.
+	   * @param {number | Array} value          The values for the diagonal.
 	   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will be filled in.
 	   * @param {number} [defaultValue]        The default value for non-diagonal
 	   *
@@ -12029,6 +13105,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Generate a matrix from a JSON object
+	   * @memberof DenseMatrix
 	   * @param {Object} json  An object structured like
 	   *                       `{"mathjs": "DenseMatrix", data: [], size: []}`,
 	   *                       where mathjs is optional
@@ -12041,6 +13118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Swap rows i and j in Matrix.
 	   *
+	   * @memberof DenseMatrix
 	   * @param {number} i       Matrix row index 1
 	   * @param {number} j       Matrix row index 2
 	   *
@@ -12081,6 +13159,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Preprocess data, which can be an Array or DenseMatrix with nested Arrays and
 	   * Matrices. Replaces all nested Matrices with Arrays
+	   * @memberof DenseMatrix
 	   * @param {Array} data
 	   * @return {Array} data
 	   */
@@ -12139,6 +13218,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Sparse Matrix implementation. This type implements a Compressed Column Storage format
 	   * for sparse matrices.
+	   * @class SparseMatrix
 	   */
 	  function SparseMatrix(data, datatype) {
 	    if (!(this instanceof SparseMatrix))
@@ -12281,6 +13361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Usage:
 	   *     var format = matrix.storage()                   // retrieve storage format
 	   *
+	   * @memberof SparseMatrix
 	   * @return {string}           The storage format.
 	   */
 	  SparseMatrix.prototype.storage = function () {
@@ -12293,6 +13374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Usage:
 	   *     var format = matrix.datatype()                   // retrieve matrix datatype
 	   *
+	   * @memberof SparseMatrix
 	   * @return {string}           The datatype.
 	   */
 	  SparseMatrix.prototype.datatype = function () {
@@ -12301,6 +13383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create a new SparseMatrix
+	   * @memberof SparseMatrix
 	   * @param {Array} data
 	   * @param {string} [datatype]
 	   */
@@ -12314,6 +13397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Usage:
 	   *     var density = matrix.density()                   // retrieve matrix density
 	   *
+	   * @memberof SparseMatrix
 	   * @return {number}           The matrix density.
 	   */
 	  SparseMatrix.prototype.density = function () {
@@ -12331,14 +13415,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var subset = matrix.subset(index)               // retrieve subset
 	   *     var value = matrix.subset(index, replacement)   // replace subset
 	   *
+	   * @memberof SparseMatrix
 	   * @param {Index} index
 	   * @param {Array | Maytrix | *} [replacement]
 	   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
 	   *                                  the matrix is resized. If not provided,
 	   *                                  new matrix elements will be filled with zeros.
 	   */
-	  SparseMatrix.prototype.subset = function (index, replacement, defaultValue) {	
-		// check it is a pattern matrix
+	  SparseMatrix.prototype.subset = function (index, replacement, defaultValue) { // check it is a pattern matrix
 	    if (!this._values)
 	      throw new Error('Cannot invoke subset on a Pattern only matrix');
 
@@ -12525,6 +13609,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a single element from the matrix.
+	   * @memberof SparseMatrix
 	   * @param {number[]} index   Zero-based index
 	   * @return {*} value
 	   */
@@ -12550,13 +13635,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index);
 	    // check k is prior to next column k and it is in the correct row
 	    if (k < this._ptr[j + 1] && this._index[k] === i)
-	      return object.clone(this._values[k]);
+	      return this._values[k];
 
 	    return 0;
 	  };
 	  
 	  /**
 	   * Replace a single element in the matrix.
+	   * @memberof SparseMatrix
 	   * @param {number[]} index   Zero-based index
 	   * @param {*} value
 	   * @param {*} [defaultValue]        Default value, filled in on new entries when
@@ -12666,6 +13752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Resize the matrix to the given size. Returns a copy of the matrix when 
 	   * `copy=true`, otherwise return the matrix itself (resize in place).
 	   *
+	   * @memberof SparseMatrix
 	   * @param {number[]} size           The new size the matrix should have.
 	   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
 	   *                                  If not provided, the matrix elements will
@@ -12817,6 +13904,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Create a clone of the matrix
+	   * @memberof SparseMatrix
 	   * @return {SparseMatrix} clone
 	   */
 	  SparseMatrix.prototype.clone = function () {
@@ -12832,15 +13920,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Retrieve the size of the matrix.
+	   * @memberof SparseMatrix
 	   * @returns {number[]} size
 	   */
 	  SparseMatrix.prototype.size = function() {
-	    return object.clone(this._size);
+	    return this._size.slice(0); // copy the Array
 	  };
 	  
 	  /**
 	   * Create a new matrix with the results of the callback function executed on
 	   * each entry of the matrix.
+	   * @memberof SparseMatrix
 	   * @param {Function} callback   The callback function is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Matrix being traversed.
@@ -12945,6 +14035,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Execute a callback function on each entry of the matrix.
+	   * @memberof SparseMatrix
 	   * @param {Function} callback   The callback function is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Matrix being traversed.
@@ -12992,6 +14083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Create an Array with a copy of the data of the SparseMatrix
+	   * @memberof SparseMatrix
 	   * @returns {Array} array
 	   */
 	  SparseMatrix.prototype.toArray = function () {
@@ -13000,6 +14092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the primitive value of the SparseMatrix: a two dimensions array
+	   * @memberof SparseMatrix
 	   * @returns {Array} array
 	   */
 	  SparseMatrix.prototype.valueOf = function () {
@@ -13039,6 +14132,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a string representation of the matrix, with optional formatting options.
+	   * @memberof SparseMatrix
 	   * @param {Object | number | Function} [options]  Formatting options. See
 	   *                                                lib/utils/number:format for a
 	   *                                                description of the available
@@ -13071,6 +14165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a string representation of the matrix
+	   * @memberof SparseMatrix
 	   * @returns {string} str
 	   */
 	  SparseMatrix.prototype.toString = function () {
@@ -13079,6 +14174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Get a JSON representation of the matrix
+	   * @memberof SparseMatrix
 	   * @returns {Object}
 	   */
 	  SparseMatrix.prototype.toJSON = function () {
@@ -13095,6 +14191,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Get the kth Matrix diagonal.
 	   *
+	   * @memberof SparseMatrix
 	   * @param {number | BigNumber} [k=0]     The kth diagonal where the vector will retrieved.
 	   *
 	   * @returns {Matrix}                     The matrix vector with the diagonal values.
@@ -13143,7 +14240,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // check row
 	        if (i === j - kSuper + kSub) {
 	          // value on this column
-	          values.push(object.clone(this._values[x]));
+	          values.push(this._values[x]);
 	          // store row
 	          index[values.length - 1] = i - kSub;
 	          // exit loop
@@ -13164,6 +14261,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Generate a matrix from a JSON object
+	   * @memberof SparseMatrix
 	   * @param {Object} json  An object structured like
 	   *                       `{"mathjs": "SparseMatrix", "values": [], "index": [], "ptr": [], "size": []}`,
 	   *                       where mathjs is optional
@@ -13176,6 +14274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Create a diagonal matrix.
 	   *
+	   * @memberof SparseMatrix
 	   * @param {Array} size                       The matrix size.
 	   * @param {number | Array | Matrix } value   The values for the diagonal.
 	   * @param {number | BigNumber} [k=0]         The kth diagonal where the vector will be filled in.
@@ -13316,6 +14415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Swap rows i and j in Matrix.
 	   *
+	   * @memberof SparseMatrix
 	   * @param {number} i       Matrix row index 1
 	   * @param {number} j       Matrix row index 2
 	   *
@@ -13441,6 +14541,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
 
 	function factory (type, config, load, typed) {
 	  
@@ -13463,7 +14564,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber, BigNumber': function (x, y) {
-	      return x.eq(y);
+	      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon);
 	    },
 
 	    'Fraction, Fraction': function (x, y) {
@@ -13494,13 +14595,64 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 49 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * Compares two BigNumbers.
+	 * @param {BigNumber} x       First value to compare
+	 * @param {BigNumber} y       Second value to compare
+	 * @param {number} [epsilon]  The maximum relative difference between x and y
+	 *                            If epsilon is undefined or null, the function will
+	 *                            test whether x and y are exactly equal.
+	 * @return {boolean} whether the two numbers are nearly equal
+	 */
+	module.exports = function nearlyEqual(x, y, epsilon) {
+	  // if epsilon is null or undefined, test whether x and y are exactly equal
+	  if (epsilon == null) {
+	    return x.eq(y);
+	  }
+
+
+	  // use "==" operator, handles infinities
+	  if (x.eq(y)) {
+	    return true;
+	  }
+
+	  // NaN
+	  if (x.isNaN() || y.isNaN()) {
+	    return false;
+	  }
+
+	  // at this point x and y should be finite
+	  if(x.isFinite() && y.isFinite()) {
+	    // check numbers are very close, needed when comparing numbers near zero
+	    var diff = x.minus(y).abs();
+	    if (diff.isZero()) {
+	      return true;
+	    }
+	    else {
+	      // use relative error
+	      var max = x.constructor.max(x.abs(), y.abs());
+	      return diff.lte(max.times(epsilon));
+	    }
+	  }
+
+	  // Infinite and Number or negative Infinite and positive Infinite cases
+	  return false;
+	};
+
+
+/***/ },
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 	  
-	  var add = load(__webpack_require__(50));
+	  var add = load(__webpack_require__(51));
 	  var equalScalar = load(__webpack_require__(48));
 	  
 	  /**
@@ -13640,7 +14792,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13649,15 +14801,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var addScalar = load(__webpack_require__(52));
+	  var matrix = load(__webpack_require__(52));
+	  var addScalar = load(__webpack_require__(53));
 	  var latex = __webpack_require__(32);
 	  
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm04 = load(__webpack_require__(54));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm04 = load(__webpack_require__(55));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Add two values, `x + y`.
@@ -13794,7 +14946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13888,7 +15040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -13945,7 +15097,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14065,7 +15217,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14258,7 +15410,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -14374,7 +15526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14484,7 +15636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -14572,18 +15724,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 	  
-	  var smaller = load(__webpack_require__(59));
-	  var larger = load(__webpack_require__(63));
+	  var smaller = load(__webpack_require__(60));
+	  var larger = load(__webpack_require__(64));
 	  
 	  var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
 	  
+	  /**
+	   * Fibonacci Heap implementation, used interally for Matrix math.
+	   * @class FibonacciHeap
+	   * @constructor FibonacciHeap
+	   */
 	  function FibonacciHeap() {
 	    if (!(this instanceof FibonacciHeap))
 	      throw new SyntaxError('Constructor must be called with the new operator');
@@ -14603,6 +15760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Inserts a new data element into the heap. No heap consolidation is
 	   * performed at this time, the new node is simply inserted into the root
 	   * list of this heap. Running time: O(1) actual.
+	   * @memberof FibonacciHeap
 	   */
 	  FibonacciHeap.prototype.insert = function (key, value) {
 	    // create node
@@ -14641,6 +15799,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Returns the number of nodes in heap. Running time: O(1) actual.
+	   * @memberof FibonacciHeap
 	   */
 	  FibonacciHeap.prototype.size = function () {
 	    return this._size;
@@ -14648,6 +15807,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Removes all elements from this heap.
+	   * @memberof FibonacciHeap
 	   */
 	  FibonacciHeap.prototype.clear = function () {
 	    this._minimum = null;
@@ -14656,6 +15816,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Returns true if the heap is empty, otherwise false.
+	   * @memberof FibonacciHeap
 	   */
 	  FibonacciHeap.prototype.isEmpty = function () {
 	    return !!this._minimum;
@@ -14664,6 +15825,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Extracts the node with minimum key from heap. Amortized running 
 	   * time: O(log n).
+	   * @memberof FibonacciHeap
 	   */
 	  FibonacciHeap.prototype.extractMinimum = function () {
 	    // node to remove
@@ -14721,6 +15883,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * in the heap will be consolidated, if necessary. This operation may fail
 	   * to remove the correct element if there are nodes with key value -Infinity.
 	   * Running time: O(log n) amortized.
+	   * @memberof FibonacciHeap
 	   */
 	  FibonacciHeap.prototype.remove = function (node) {
 	    // decrease key value
@@ -14733,6 +15896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Decreases the key value for a heap node, given the new value to take on.
 	   * The structure of the heap may be changed and will not be consolidated. 
 	   * Running time: O(1) amortized.
+	   * @memberof FibonacciHeap
 	   */
 	  var _decreaseKey = function (minimum, node, key) {
 	    // set node key
@@ -14755,6 +15919,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * The reverse of the link operation: removes node from the child list of parent.
 	   * This method assumes that min is non-null. Running time: O(1).
+	   * @memberof FibonacciHeap
 	   */
 	  var _cut = function (minimum, node, parent) {
 	    // remove node from parent children and decrement Degree[parent]
@@ -14782,6 +15947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Performs a cascading cut operation. This cuts node from its parent and then
 	   * does the same for its parent, and so on up the tree.
 	   * Running time: O(log n); O(1) excluding the recursion.
+	   * @memberof FibonacciHeap
 	   */
 	  var _cascadingCut= function (minimum, node) {
 	    // store parent node
@@ -14803,6 +15969,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 	  /**
 	   * Make the first node a child of the second one. Running time: O(1) actual.
+	   * @memberof FibonacciHeap
 	   */
 	  var _linkNodes = function (node, parent) {
 	    // remove node from root list of heap
@@ -14912,22 +16079,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  var latex = __webpack_require__(32);
 
@@ -14972,7 +16140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber, BigNumber': function (x, y) {
-	      return x.lt(y);
+	      return x.lt(y) && !bigNearlyEqual(x, y, config.epsilon);
 	    },
 
 	    'Fraction, Fraction': function (x, y) {
@@ -15094,7 +16262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15225,7 +16393,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15355,7 +16523,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -15471,22 +16639,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  var latex = __webpack_require__(32);
 
@@ -15531,7 +16700,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber, BigNumber': function (x, y) {
-	      return x.gt(y);
+	      return x.gt(y) && !bigNearlyEqual(x, y, config.epsilon);
 	    },
 
 	    'Fraction, Fraction': function (x, y) {
@@ -15653,7 +16822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15670,7 +16839,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  var DenseMatrix = load(__webpack_require__(46));
 
-	  var smaller = load(__webpack_require__(59));
+	  var smaller = load(__webpack_require__(60));
 
 	  function ImmutableDenseMatrix(data, datatype) {
 	    if (!(this instanceof ImmutableDenseMatrix))
@@ -15883,7 +17052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -15894,7 +17063,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type) {
 	  
 	  /**
-	   * @Constructor Index
 	   * Create an index. An Index can store ranges and sets for multiple dimensions.
 	   * Matrix.get, Matrix.set, and math.subset accept an Index as input.
 	   *
@@ -15903,12 +17071,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Where each parameter can be any of:
 	   *     A number
+	   *     A string (containing a name of an object property)
 	   *     An instance of Range
 	   *     An Array with the Set values
 	   *     A Matrix with the Set values
 	   *
 	   * The parameters start, end, and step must be integer numbers.
 	   *
+	   * @class Index
+	   * @Constructor Index
 	   * @param {...*} ranges
 	   */
 	  function Index(ranges) {
@@ -15940,9 +17111,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      else if (typeof arg === 'number') {
 	        this._dimensions.push(_createImmutableMatrix([arg]));
 	      }
+	      else if (typeof arg === 'string') {
+	        // object property (arguments.count should be 1)
+	        this._dimensions.push(arg);
+	      }
 	      // TODO: implement support for wildcard '*'
 	      else {
-	        throw new TypeError('Dimension must be an Array, Matrix, Number or Range');
+	        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range');
 	      }
 	    }
 	  }
@@ -15966,6 +17141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create a clone of the index
+	   * @memberof Index
 	   * @return {Index} clone
 	   */
 	  Index.prototype.clone = function () {
@@ -15977,6 +17153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create an index from an array with ranges/numbers
+	   * @memberof Index
 	   * @param {Array.<Array | number>} ranges
 	   * @return {Index} index
 	   * @private
@@ -15989,6 +17166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Retrieve the size of the index, the number of elements for each dimension.
+	   * @memberof Index
 	   * @returns {number[]} size
 	   */
 	  Index.prototype.size = function () {
@@ -15996,7 +17174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
 	      var d = this._dimensions[i];
-	      size[i] = d.size()[0];
+	      size[i] = (typeof d === 'string') ? 1 : d.size()[0];
 	    }
 
 	    return size;
@@ -16004,6 +17182,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the maximum value for each of the indexes ranges.
+	   * @memberof Index
 	   * @returns {number[]} max
 	   */
 	  Index.prototype.max = function () {
@@ -16011,7 +17190,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
 	      var range = this._dimensions[i];
-	      values[i] = range.max();
+	      values[i] = (typeof range === 'string') ? range : range.max();
 	    }
 
 	    return values;
@@ -16019,6 +17198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the minimum value for each of the indexes ranges.
+	   * @memberof Index
 	   * @returns {number[]} min
 	   */
 	  Index.prototype.min = function () {
@@ -16026,7 +17206,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
 	      var range = this._dimensions[i];
-	      values[i] = range.min();
+	      values[i] = (typeof range === 'string') ? range : range.min();
 	    }
 
 	    return values;
@@ -16034,6 +17214,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Loop over each of the ranges of the index
+	   * @memberof Index
 	   * @param {Function} callback   Called for each range with a Range as first
 	   *                              argument, the dimension as second, and the
 	   *                              index object as third.
@@ -16046,6 +17227,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Retrieve the dimension for the given index
+	   * @memberof Index
 	   * @param {Number} dim                  Number of the dimension
 	   * @returns {Range | null} range
 	   */
@@ -16054,10 +17236,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  /**
+	   * Test whether this index contains an object property
+	   * @returns {boolean} Returns true if the index is an object property
+	   */
+	  Index.prototype.isObjectProperty = function () {
+	    return this._dimensions.length === 1 && typeof this._dimensions[0] === 'string';
+	  };
+
+	  /**
+	   * Returns the object property name when the Index holds a single object property,
+	   * else returns null
+	   * @returns {string | null}
+	   */
+	  Index.prototype.getObjectProperty = function () {
+	    return this.isObjectProperty() ? this._dimensions[0] : null;
+	  };
+
+	  /**
 	   * Test whether this index contains only a single value.
 	   *
 	   * This is the case when the index is created with only scalar values as ranges,
 	   * not for ranges resolving into a single value.
+	   * @memberof Index
 	   * @return {boolean} isScalar
 	   */
 	  Index.prototype.isScalar = function () {
@@ -16067,12 +17267,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Expand the Index into an array.
 	   * For example new Index([0,3], [2,7]) returns [[0,1,2], [2,3,4,5,6]]
+	   * @memberof Index
 	   * @returns {Array} array
 	   */
 	  Index.prototype.toArray = function () {
 	    var array = [];
 	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-	      array.push(this._dimensions[i].toArray());
+	      var dimension = this._dimensions[i];
+	      array.push((typeof dimension === 'string') ? dimension : dimension.toArray());
 	    }
 	    return array;
 	  };
@@ -16080,19 +17282,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Get the primitive value of the Index, a two dimensional array.
 	   * Equivalent to Index.toArray().
+	   * @memberof Index
 	   * @returns {Array} array
 	   */
 	  Index.prototype.valueOf = Index.prototype.toArray;
 
 	  /**
 	   * Get the string representation of the index, for example '[2:6]' or '[0:2:10, 4:7, [1,2,3]]'
+	   * @memberof Index
 	   * @returns {String} str
 	   */
 	  Index.prototype.toString = function () {
 	    var strings = [];
 
 	    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-	      strings.push(this._dimensions[i].toString());
+	      var dimension = this._dimensions[i];
+	      if (typeof dimension === 'string') {
+	        strings.push(JSON.stringify(dimension));
+	      }
+	      else {
+	        strings.push(dimension.toString());
+	      }
 	    }
 
 	    return '[' + strings.join(', ') + ']';
@@ -16100,6 +17310,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a JSON representation of the Index
+	   * @memberof Index
 	   * @returns {Object} Returns a JSON object structured as:
 	   *                   `{"mathjs": "Index", "ranges": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`
 	   */
@@ -16112,6 +17323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Instantiate an Index from a JSON object
+	   * @memberof Index
 	   * @param {Object} json A JSON object structured as:
 	   *                     `{"mathjs": "Index", "dimensions": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`
 	   * @return {Index}
@@ -16129,7 +17341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16138,7 +17350,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  /**
-	   * @constructor Range
 	   * Create a range. A range has a start, step, and end, and contains functions
 	   * to iterate over the range.
 	   *
@@ -16161,6 +17372,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var d = new Range(2, -3, -1);    // 2:-1:-2
 	   *     d.toArray();                     // [2, 1, 0, -1, -2]
 	   *
+	   * @class Range
+	   * @constructor Range
 	   * @param {number} start  included lower bound
 	   * @param {number} end    excluded upper bound
 	   * @param {number} [step] step size, default value is 1
@@ -16205,6 +17418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * The string contains the start, optional step, and end, separated by a colon.
 	   * If the string does not contain a valid range, null is returned.
 	   * For example str='0:2:11'.
+	   * @memberof Range
 	   * @param {string} str
 	   * @return {Range | null} range
 	   */
@@ -16246,6 +17460,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Retrieve the size of the range.
 	   * Returns an array containing one number, the number of elements in the range.
+	   * @memberof Range
 	   * @returns {number[]} size
 	   */
 	  Range.prototype.size = function () {
@@ -16270,6 +17485,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Calculate the minimum value in the range
+	   * @memberof Range
 	   * @return {number | undefined} min
 	   */
 	  Range.prototype.min = function () {
@@ -16292,6 +17508,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Calculate the maximum value in the range
+	   * @memberof Range
 	   * @return {number | undefined} max
 	   */
 	  Range.prototype.max = function () {
@@ -16315,6 +17532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Execute a callback function for each value in the range.
+	   * @memberof Range
 	   * @param {function} callback   The callback method is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Range being traversed.
@@ -16344,6 +17562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Execute a callback function for each value in the Range, and return the
 	   * results as an array
+	   * @memberof Range
 	   * @param {function} callback   The callback method is invoked with three
 	   *                              parameters: the value of the element, the index
 	   *                              of the element, and the Matrix being traversed.
@@ -16359,6 +17578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Create an Array with a copy of the Ranges data
+	   * @memberof Range
 	   * @returns {Array} array
 	   */
 	  Range.prototype.toArray = function () {
@@ -16371,6 +17591,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get the primitive value of the Range, a one dimensional array
+	   * @memberof Range
 	   * @returns {Array} array
 	   */
 	  Range.prototype.valueOf = function () {
@@ -16381,6 +17602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Get a string representation of the range, with optional formatting options.
 	   * Output is formatted as 'start:step:end', for example '2:6' or '0:0.2:11'
+	   * @memberof Range
 	   * @param {Object | number | function} [options]  Formatting options. See
 	   *                                                lib/utils/number:format for a
 	   *                                                description of the available
@@ -16399,6 +17621,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a string representation of the range.
+	   * @memberof Range
 	   * @returns {string}
 	   */
 	  Range.prototype.toString = function () {
@@ -16407,6 +17630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a JSON representation of the range
+	   * @memberof Range
 	   * @returns {Object} Returns a JSON object structured as:
 	   *                   `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
 	   */
@@ -16421,6 +17645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Instantiate a Range from a JSON object
+	   * @memberof Range
 	   * @param {Object} json A JSON object structured as:
 	   *                      `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`
 	   * @return {Range}
@@ -16438,7 +17663,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16456,6 +17681,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Where each range can be any of:
 	   *
 	   * - A number
+	   * - A string for getting/setting an object property
 	   * - An instance of `Range`
 	   * - A one-dimensional Array or a Matrix with numbers
 	   *
@@ -16479,7 +17705,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {Index}        Returns the created index
 	   */
 	  return typed('index', {
-	    '...number | BigNumber | Range | Array | Matrix': function (args) {
+	    '...number | string | BigNumber | Range | Array | Matrix': function (args) {
 	      var ranges = args.map(function (arg) {
 	        if (arg && arg.isBigNumber === true) {
 	          return arg.toNumber(); // convert BigNumber to Number
@@ -16507,7 +17733,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16574,7 +17800,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16659,17 +17885,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	  // type
-	  __webpack_require__(71)
+	  __webpack_require__(72)
 	];
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -16677,8 +17903,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  /**
 	   * A ResultSet contains a list or results
+	   * @class ResultSet
 	   * @param {Array} entries
-	   * @constructor
+	   * @constructor ResultSet
 	   */
 	  function ResultSet(entries) {
 	    if (!(this instanceof ResultSet)) {
@@ -16696,6 +17923,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Returns the array with results hold by this ResultSet
+	   * @memberof ResultSet
 	   * @returns {Array} entries
 	   */
 	  ResultSet.prototype.valueOf = function () {
@@ -16704,6 +17932,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Returns the stringified results of the ResultSet
+	   * @memberof ResultSet
 	   * @returns {string} string
 	   */
 	  ResultSet.prototype.toString = function () {
@@ -16712,6 +17941,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a JSON representation of the ResultSet
+	   * @memberof ResultSet
 	   * @returns {Object} Returns a JSON object structured as:
 	   *                   `{"mathjs": "ResultSet", "entries": [...]}`
 	   */
@@ -16724,6 +17954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Instantiate a ResultSet from a JSON object
+	   * @memberof ResultSet
 	   * @param {Object} json  A JSON object structured as:
 	   *                       `{"mathjs": "ResultSet", "entries": [...]}`
 	   * @return {ResultSet}
@@ -16741,7 +17972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -16816,47 +18047,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	  // type
-	  __webpack_require__(74),
+	  __webpack_require__(75),
 
 	  // construction function
-	  __webpack_require__(89),
+	  __webpack_require__(91),
 
 	  // physical constants
-	  __webpack_require__(90)
+	  __webpack_require__(92)
 	];
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var endsWith = __webpack_require__(23).endsWith;
 	var clone = __webpack_require__(3).clone;
+	var constants = __webpack_require__(76);
 
-	function factory (type, config, load, typed) {
-	  var add       = load(__webpack_require__(52));
-	  var subtract  = load(__webpack_require__(75));
-	  var multiply  = load(__webpack_require__(78));
-	  var divide    = load(__webpack_require__(79));
-	  var pow       = load(__webpack_require__(80));
-	  var abs       = load(__webpack_require__(84));
-	  var equal     = load(__webpack_require__(85));
-	  var isNumeric = load(__webpack_require__(86));
-	  var format    = load(__webpack_require__(87));
-	  var getTypeOf = load(__webpack_require__(88));
-	  var toNumber  = load(__webpack_require__(69));
+	function factory (type, config, load, typed, math) {
+	  var add       = load(__webpack_require__(53));
+	  var subtract  = load(__webpack_require__(77));
+	  var multiply  = load(__webpack_require__(80));
+	  var divide    = load(__webpack_require__(81));
+	  var pow       = load(__webpack_require__(82));
+	  var abs       = load(__webpack_require__(86));
+	  var equal     = load(__webpack_require__(87));
+	  var isNumeric = load(__webpack_require__(88));
+	  var format    = load(__webpack_require__(89));
+	  var getTypeOf = load(__webpack_require__(90));
+	  var toNumber  = load(__webpack_require__(70));
 	  var Complex   = load(__webpack_require__(27));
 
 	  /**
-	   * @constructor Unit
-	   *
 	   * A unit can be constructed in the following ways:
 	   *     var a = new Unit(value, name);
 	   *     var b = new Unit(null, name);
@@ -16868,6 +18098,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *     var c = math.in(a, new Unit(null, 'm');  // 0.05 m
 	   *     var d = new Unit(9.81, "m/s^2");         // 9.81 m/s^2
 	   *
+	   * @class Unit
+	   * @constructor Unit
 	   * @param {number | BigNumber | Fraction | Complex | boolean} [value]  A value like 5.2
 	   * @param {string} [name]   A unit name like "cm" or "inch", or a derived unit of the form: "u1[^ex1] [u2[^ex2] ...] [/ u3[^ex3] [u4[^ex4]]]", such as "kg m^2/s^2", where each unit appearing after the forward slash is taken to be in the denominator. "kg m^2 s^-2" is a synonym and is also acceptable. Any of the units can include a prefix.
 	   */
@@ -16892,7 +18124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.units = [
 	        {
 	          unit: UNIT_NONE,
-	          prefix: PREFIX_NONE,  // link to a list with supported prefixes
+	          prefix: PREFIXES.NONE,  // link to a list with supported prefixes
 	          power: 0
 	        }
 	      ];
@@ -17061,6 +18293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * Throws an exception if the provided string does not contain a valid unit or
 	   * cannot be parsed.
+	   * @memberof Unit
 	   * @param {string} str        A string like "5.2 inch", "4e2 cm/s^2"
 	   * @return {Unit} unit
 	   */
@@ -17095,10 +18328,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var valueStr = parseNumber();
 	    var value = null;
 	    if(valueStr) {
-	      if (config.number === 'bignumber') {
+	      if (config.number === 'BigNumber') {
 	        value = new type.BigNumber(valueStr);
 	      }
-	      else if (config.number === 'fraction') {
+	      else if (config.number === 'Fraction') {
 	        value = new type.Fraction(valueStr);
 	      }
 	      else { // number
@@ -17239,6 +18472,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * create a copy of this unit
+	   * @memberof Unit
 	   * @return {Unit} Returns a cloned version of the unit
 	   */
 	  Unit.prototype.clone = function () {
@@ -17264,6 +18498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Return whether the unit is derived (such as m/s, or cm^2, but not N)
+	   * @memberof Unit
 	   * @return {boolean} True if the unit is derived
 	   */
 	  Unit.prototype._isDerived = function() {
@@ -17275,6 +18510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Normalize a value, based on its currently set unit(s)
+	   * @memberof Unit
 	   * @param {number | BigNumber | Fraction | boolean} value
 	   * @return {number | BigNumber | Fraction | boolean} normalized value
 	   * @private
@@ -17315,6 +18551,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Denormalize a value, based on its currently set unit(s)
+	   * @memberof Unit
 	   * @param {number} value
 	   * @param {number} [prefixValue]    Optional prefix value to be used (ignored if this is a derived unit)
 	   * @return {number} denormalized value
@@ -17362,6 +18599,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Find a unit from a string
+	   * @memberof Unit
 	   * @param {string} str              A string like 'cm' or 'inch'
 	   * @returns {Object | null} result  When found, an object with fields unit and
 	   *                                  prefix is returned. Else, null is returned.
@@ -17392,6 +18630,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Test if the given expression is a unit.
 	   * The unit can have a prefix but cannot have a value.
+	   * @memberof Unit
 	   * @param {string} name   A string to be tested whether it is a value less unit.
 	   *                        The unit can have prefix, like "cm"
 	   * @return {boolean}      true if the given string is a unit
@@ -17403,6 +18642,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * check if this unit has given base unit
 	   * If this unit is a derived unit, this will ALWAYS return false, since by definition base units are not derived.
+	   * @memberof Unit
 	   * @param {BASE_UNITS | string | undefined} base
 	   */
 	  Unit.prototype.hasBase = function (base) {
@@ -17428,6 +18668,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  /**
 	   * Check if this unit has a base or bases equal to another base or bases
 	   * For derived units, the exponent on each base also must match
+	   * @memberof Unit
 	   * @param {Unit} other
 	   * @return {boolean} true if equal base
 	   */
@@ -17443,6 +18684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Check if this unit equals another unit
+	   * @memberof Unit
 	   * @param {Unit} other
 	   * @return {boolean} true if both units are equal
 	   */
@@ -17452,6 +18694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Multiply this unit with another one
+	   * @memberof Unit
 	   * @param {Unit} other
 	   * @return {Unit} product of this unit and the other unit
 	   */
@@ -17485,6 +18728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Divide this unit by another one
+	   * @memberof Unit
 	   * @param {Unit} other
 	   * @return {Unit} result of dividing this unit by the other unit
 	   */
@@ -17520,6 +18764,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Calculate the power of a unit
+	   * @memberof Unit
 	   * @param {number | Fraction | BigNumber} p
 	   * @returns {Unit}      The result: this^p
 	   */
@@ -17555,6 +18800,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Calculate the absolute value of a unit
+	   * @memberof Unit
 	   * @param {number | Fraction | BigNumber} x
 	   * @returns {Unit}      The result: |x|, absolute value of x
 	   */
@@ -17575,6 +18821,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Convert the unit to a specific unit name.
+	   * @memberof Unit
 	   * @param {string | Unit} valuelessUnit   A unit without value. Can have prefix, like "cm"
 	   * @returns {Unit} Returns a clone of the unit with a fixed prefix and unit.
 	   */
@@ -17616,6 +18863,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Return the value of the unit when represented with given valueless unit
+	   * @memberof Unit
 	   * @param {string | Unit} valuelessUnit    For example 'cm' or 'inch'
 	   * @return {number} Returns the unit value as number.
 	   */
@@ -17626,6 +18874,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Return the value of the unit in the original numeric type
+	   * @memberof Unit
 	   * @param {string | Unit} valuelessUnit    For example 'cm' or 'inch'
 	   * @return {number | BigNumber | Fraction} Returns the unit value
 	   */
@@ -17641,6 +18890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a string representation of the unit.
+	   * @memberof Unit
 	   * @return {string}
 	   */
 	  Unit.prototype.toString = function () {
@@ -17649,6 +18899,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a JSON representation of the unit
+	   * @memberof Unit
 	   * @returns {Object} Returns a JSON object structured as:
 	   *                   `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false}`
 	   */
@@ -17663,6 +18914,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Instantiate a Unit from a JSON object
+	   * @memberof Unit
 	   * @param {Object} json  A JSON object structured as:
 	   *                       `{"mathjs": "Unit", "value": 2, "unit": "cm", "fixPrefix": false}`
 	   * @return {Unit}
@@ -17675,6 +18927,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Returns the string representation of the unit.
+	   * @memberof Unit
 	   * @return {string}
 	   */
 	  Unit.prototype.valueOf = Unit.prototype.toString;
@@ -17750,6 +19003,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a string representation of the units of this Unit, without the value.
+	   * @memberof Unit
 	   * @return {string}
 	   */
 	  Unit.prototype.formatUnits = function () {
@@ -17814,6 +19068,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Get a string representation of the Unit, with optional formatting options.
+	   * @memberof Unit
 	   * @param {Object | number | Function} [options]  Formatting options. See
 	   *                                                lib/utils/number:format for a
 	   *                                                description of the available
@@ -17873,6 +19128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Calculate the best prefix using current value.
+	   * @memberof Unit
 	   * @returns {Object} prefix
 	   * @private
 	   */
@@ -18087,8 +19343,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      PREFIXES.SHORTLONG[key] = PREFIXES.LONG[key];
 	    }
 	  }
-
-	  var PREFIX_NONE = {name: '', value: 1, scientific: true};
 
 	  /* Internally, each unit is represented by a value and a dimension array. The elements of the dimensions array have the following meaning:
 	   * Index  Dimension
@@ -18384,6 +19638,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: 6.4516e-10,
 	      offset: 0
 	    }, // 6.4516 * 10^-10 m2
+	    acre: {
+	      name: 'acre',
+	      base: BASE_UNITS.SURFACE,
+	      prefixes: PREFIXES.NONE,
+	      value: 4046.86,
+	      offset: 0
+	    }, // 4046.86 m2
+	    hectare: {
+	      name: 'hectare',
+	      base: BASE_UNITS.SURFACE,
+	      prefixes: PREFIXES.NONE,
+	      value: 10000,
+	      offset: 0
+	    }, // 10000 m2
 
 	    // Volume
 	    m3: {
@@ -18865,7 +20133,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: 'deg',
 	      base: BASE_UNITS.ANGLE,
 	      prefixes: PREFIXES.NONE,
-	      value: 0.017453292519943295769236907684888,
+	      value: null, // will be filled in by calculateAngleValues()
 	      offset: 0
 	    },
 	    // grad = rad / (2*pi) * 400  = rad / 0.015707963267948966192313216916399
@@ -18873,7 +20141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: 'grad',
 	      base: BASE_UNITS.ANGLE,
 	      prefixes: PREFIXES.NONE,
-	      value: 0.015707963267948966192313216916399,
+	      value: null, // will be filled in by calculateAngleValues()
 	      offset: 0
 	    },
 	    // cycle = rad / (2*pi) = rad / 6.2831853071795864769252867665793
@@ -18881,7 +20149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: 'cycle',
 	      base: BASE_UNITS.ANGLE,
 	      prefixes: PREFIXES.NONE,
-	      value: 6.2831853071795864769252867665793,
+	      value: null, // will be filled in by calculateAngleValues()
 	      offset: 0
 	    },
 	    // arcsec = rad / (3600 * (360 / 2 * pi)) = rad / 0.0000048481368110953599358991410235795
@@ -18889,7 +20157,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: 'arcsec',
 	      base: BASE_UNITS.ANGLE,
 	      prefixes: PREFIXES.NONE,
-	      value: 0.0000048481368110953599358991410235795,
+	      value: null, // will be filled in by calculateAngleValues()
 	      offset: 0
 	    },
 	    // arcmin = rad / (60 * (360 / 2 * pi)) = rad / 0.00029088820866572159615394846141477
@@ -18897,7 +20165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      name: 'arcmin',
 	      base: BASE_UNITS.ANGLE,
 	      prefixes: PREFIXES.NONE,
-	      value: 0.00029088820866572159615394846141477,
+	      value: null, // will be filled in by calculateAngleValues()
 	      offset: 0
 	    },
 	    
@@ -19170,6 +20438,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: 101325,
 	      offset: 0
 	    },
+	    bar: {
+	      name: 'bar',
+	      base: BASE_UNITS.PRESSURE,
+	      prefixes: PREFIXES.NONE,
+	      value: 100000,
+	      offset: 0
+	    },
+	    torr: {
+	      name: 'torr',
+	      base: BASE_UNITS.PRESSURE,
+	      prefixes: PREFIXES.NONE,
+	      value: 133.322,
+	      offset: 0
+	    },
+	    mmHg: {
+	      name: 'mmHg',
+	      base: BASE_UNITS.PRESSURE,
+	      prefixes: PREFIXES.NONE,
+	      value: 133.322,
+	      offset: 0
+	    },
+	    mmH2O: {
+	      name: 'mmH2O',
+	      base: BASE_UNITS.PRESSURE,
+	      prefixes: PREFIXES.NONE,
+	      value: 9.80665,
+	      offset: 0
+	    },
+	    cmH2O: {
+	      name: 'cmH2O',
+	      base: BASE_UNITS.PRESSURE,
+	      prefixes: PREFIXES.NONE,
+	      value: 98.0665,
+	      offset: 0
+	    },
 
 	    // Electric charge
 	    coulomb: {
@@ -19369,6 +20672,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    lb: 'lbm',
 	    lbs: 'lbm',
 
+	    acres: 'acre',
+	    hectares: 'hectare',
+	    sqfeet: 'sqft',
+	    sqyard: 'sqyd',
+	    sqmile: 'sqmi',
+	    sqmiles: 'sqmi',
+
+	    mmhg: 'mmHg',
+	    mmh2o: 'mmH2O',
+	    cmh2o: 'cmH2O',
+
 	    seconds: 'second',
 	    secs: 'second',
 	    minutes: 'minute',
@@ -19377,7 +20691,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    hr: 'hour',
 	    hrs: 'hour',
 	    days: 'day',
-	    
+
 	    hertz: 'hertz',
 
 	    radians: 'rad',
@@ -19405,7 +20719,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	    electronvolts: 'electronvolt',
 	    moles: 'mole'
 
-	};
+	  };
+
+	  /**
+	   * Calculate the values for the angle units.
+	   * Value is calculated as number or BigNumber depending on the configuration
+	   * @param {{number: 'number' | 'BigNumber'}} config
+	   */
+	  function calculateAngleValues (config) {
+	    if (config.number === 'BigNumber') {
+	      var pi = constants.pi(type.BigNumber);
+	      UNITS.rad.value = new type.BigNumber(1);
+	      UNITS.deg.value = pi.div(180);        // 2 * pi / 360;
+	      UNITS.grad.value = pi.div(200);       // 2 * pi / 400;
+	      UNITS.cycle.value = pi.times(2);      // 2 * pi
+	      UNITS.arcsec.value = pi.div(648000);  // 2 * pi / 360 / 3600
+	      UNITS.arcmin.value = pi.div(10800);   // 2 * pi / 360 / 60
+	    }
+	    else { // number
+	      UNITS.rad.value = 1;
+	      UNITS.deg.value = Math.PI / 180;        // 2 * pi / 360;
+	      UNITS.grad.value = Math.PI / 200;       // 2 * pi / 400;
+	      UNITS.cycle.value = Math.PI * 2;        // 2 * pi
+	      UNITS.arcsec.value = Math.PI / 648000;  // 2 * pi / 360 / 3600;
+	      UNITS.arcmin.value = Math.PI / 10800;   // 2 * pi / 360 / 60;
+	    }
+	  }
+
+	  // apply the angle values now
+	  calculateAngleValues(config);
+
+	  // recalculate the values on change of configuration
+	  math.on('config', function (curr, prev) {
+	    if (curr.number !== prev.number) {
+	      calculateAngleValues(curr);
+	    }
+	  });
 
 	  /**
 	   * A unit system is a set of dimensionally independent base units plus a set of derived units, formed by multiplication and division of the base units, that are by convention used with the unit system.
@@ -19562,10 +20911,66 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.name = 'Unit';
 	exports.path = 'type';
 	exports.factory = factory;
+	exports.math = true; // request access to the math namespace
 
 
 /***/ },
-/* 75 */
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var memoize = __webpack_require__(45).memoize;
+
+	/**
+	 * Calculate BigNumber e
+	 * @param {function} BigNumber   BigNumber constructor
+	 * @returns {BigNumber} Returns e
+	 */
+	exports.e = memoize(function (BigNumber) {
+	  return new BigNumber(1).exp();
+	}, hasher);
+
+	/**
+	 * Calculate BigNumber golden ratio, phi = (1+sqrt(5))/2
+	 * @param {function} BigNumber   BigNumber constructor
+	 * @returns {BigNumber} Returns phi
+	 */
+	exports.phi = memoize(function (BigNumber) {
+	  return new BigNumber(1).plus(new BigNumber(5).sqrt()).div(2);
+	}, hasher);
+
+	/**
+	 * Calculate BigNumber pi.
+	 * @param {function} BigNumber   BigNumber constructor
+	 * @returns {BigNumber} Returns pi
+	 */
+	exports.pi = memoize(function (BigNumber) {
+	  return pi = BigNumber.acos(-1);
+	}, hasher);
+
+	/**
+	 * Calculate BigNumber tau, tau = 2 * pi
+	 * @param {function} BigNumber   BigNumber constructor
+	 * @returns {BigNumber} Returns tau
+	 */
+	exports.tau = memoize(function (BigNumber) {
+	  return exports.pi(BigNumber).times(2);
+	}, hasher);
+
+	/**
+	 * Create a hash for a BigNumber constructor function. The created has is
+	 * the configured precision
+	 * @param {Array} args         Supposed to contain a single entry with
+	 *                             a BigNumber constructor
+	 * @return {number} precision
+	 * @private
+	 */
+	function hasher (args) {
+	  return args[0].precision;
+	}
+
+
+/***/ },
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19575,16 +20980,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
-	  var addScalar = load(__webpack_require__(52));
-	  var unaryMinus = load(__webpack_require__(76));
+	  var matrix = load(__webpack_require__(52));
+	  var addScalar = load(__webpack_require__(53));
+	  var unaryMinus = load(__webpack_require__(78));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm05 = load(__webpack_require__(77));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm05 = load(__webpack_require__(79));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  // TODO: split function subtract in two: subtract and subtractScalar
 
@@ -19768,7 +21173,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 76 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19842,7 +21247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 77 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20024,7 +21429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 78 */
+/* 80 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -20087,13 +21492,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 79 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory(type, config, load, typed) {
-	  var multiplyScalar = load(__webpack_require__(78));
+	  var multiplyScalar = load(__webpack_require__(80));
 
 	  /**
 	   * Divide two scalar values, `x / y`.
@@ -20152,7 +21557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 80 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20162,11 +21567,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
-	  var eye = load(__webpack_require__(81));
-	  var multiply = load(__webpack_require__(82));
-	  var matrix = load(__webpack_require__(51));
+	  var eye = load(__webpack_require__(83));
+	  var multiply = load(__webpack_require__(84));
+	  var matrix = load(__webpack_require__(52));
 	  var fraction = load(__webpack_require__(36));
-	  var number = load(__webpack_require__(69));
+	  var number = load(__webpack_require__(70));
 
 	  /**
 	   * Calculates the power of x to y, `x ^ y`.
@@ -20340,7 +21745,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 81 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20350,7 +21755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  
 	  /**
 	   * Create a 2-dimensional identity matrix with size m x n or n x n.
@@ -20371,7 +21776,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.eye(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
 	   *
 	   *    var A = [[1, 2, 3], [4, 5, 6]];
-	   *    math.eye(math.size(b));         // returns [[1, 0, 0], [0, 1, 0]]
+	   *    math.eye(math.size(A));         // returns [[1, 0, 0], [0, 1, 0]]
 	   *
 	   * See also:
 	   *
@@ -20384,7 +21789,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  var eye = typed('eye', {
 	    '': function () {
-	      return (config.matrix === 'matrix') ? matrix([]) : [];
+	      return (config.matrix === 'Matrix') ? matrix([]) : [];
 	    },
 
 	    'string': function (format) {
@@ -20392,7 +21797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'number | BigNumber': function (rows) {
-	      return _eye(rows, rows, config.matrix === 'matrix' ? 'default' : undefined);
+	      return _eye(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined);
 	    },
 	    
 	    'number | BigNumber, string': function (rows, format) {
@@ -20400,7 +21805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'number | BigNumber, number | BigNumber': function (rows, cols) {
-	      return _eye(rows, cols, config.matrix === 'matrix' ? 'default' : undefined);
+	      return _eye(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined);
 	    },
 	    
 	    'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
@@ -20492,7 +21897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 82 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20503,19 +21908,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
-	  var addScalar = load(__webpack_require__(52));
-	  var multiplyScalar = load(__webpack_require__(78));
+	  var matrix = load(__webpack_require__(52));
+	  var addScalar = load(__webpack_require__(53));
+	  var multiplyScalar = load(__webpack_require__(80));
 	  var equalScalar = load(__webpack_require__(48));
 
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  var DenseMatrix = type.DenseMatrix;
 	  var SparseMatrix = type.SparseMatrix;
 
 	  /**
-	   * Multiply two values, `x * y`. The result is squeezed.
+	   * Multiply two values, `x * y`.
 	   * For matrices, the matrix product is calculated.
 	   *
 	   * Syntax:
@@ -20802,10 +22207,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      c[j] = sum;
 	    }
 
-	    // check we need to squeeze the result into a scalar
-	    if (bcolumns === 1)
-	      return c[0];
-
 	    // return matrix
 	    return new DenseMatrix({
 	      data: c,
@@ -20916,9 +22317,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      c[i] = sum;
 	    }
-	    // check we need to squeeze the result into a scalar
-	    if (arows === 1)
-	      return c[0];
 
 	    // return matrix
 	    return new DenseMatrix({
@@ -20987,9 +22385,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        c[i][j] = sum;
 	      }
 	    }
-	    // check we need to squeeze the result into a scalar
-	    if (arows === 1 && bcolumns === 1)
-	      return c[0][0];
 
 	    // return matrix
 	    return new DenseMatrix({
@@ -21106,10 +22501,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // update ptr
 	    cptr[bcolumns] = cindex.length;
 
-	    // check we need to squeeze the result into a scalar
-	    if (arows === 1 && bcolumns === 1)
-	      return cvalues.length === 1 ? cvalues[0] : 0;
-
 	    // return sparse matrix
 	    return c;
 	  };
@@ -21207,10 +22598,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    // update ptr
 	    cptr[1] = cindex.length;
-
-	    // check we need to squeeze the result into a scalar
-	    if (arows === 1)
-	      return cvalues.length === 1 ? cvalues[0] : 0;
 
 	    // return sparse matrix
 	    return new SparseMatrix({
@@ -21330,10 +22717,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    // update ptr
 	    cptr[bcolumns] = cindex.length;
-
-	    // check we need to squeeze the result into a scalar
-	    if (arows === 1 && bcolumns === 1)
-	      return cvalues.length === 1 ? cvalues[0] : 0;
 
 	    // return sparse matrix
 	    return c;
@@ -21460,10 +22843,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // update ptr
 	    cptr[bcolumns] = cindex.length;
 
-	    // check we need to squeeze the result into a scalar
-	    if (arows === 1 && bcolumns === 1 && values)
-	      return cvalues.length === 1 ? cvalues[0] : 0;
-
 	    // return sparse matrix
 	    return c;
 	  };
@@ -21478,7 +22857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 83 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21593,7 +22972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 84 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21660,21 +23039,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 85 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var equalScalar = load(__webpack_require__(48));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  var latex = __webpack_require__(32);
 
@@ -21833,7 +23212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 86 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21892,7 +23271,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 87 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21948,6 +23327,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *   Function `fn` is called with `value` as parameter and must return a string.
 	   *   Is useful for example to format all values inside a matrix in a particular way.
 	   *
+	   * When `value` is an Object:
+	   *
+	   * - When the object contains a property `format` being a function, this function
+	   *   is invoked as `value.format(options)` and the result is returned.
+	   * - When the object has its own `toString` method, this method is invoked
+	   *   and the result is returned.
+	   * - In other cases the function will loop over all object properties and
+	   *   return JSON object notation like '{"a": 2, "b": 3}'.
+	   *
+	   * When value is a function:
+	   *
+	   * - When the function has a property `syntax`, it returns this
+	   *   syntax description.
+	   * - In other cases, a string `'function'` is returned.
+	   *
 	   * Examples:
 	   *
 	   *    math.format(6.4);                                        // returns '6.4'
@@ -21982,7 +23376,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 88 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22065,7 +23459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 89 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22132,7 +23526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var lazy = __webpack_require__(3).lazy;
@@ -22222,13 +23616,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var object = __webpack_require__(3);
-	var bigConstants = __webpack_require__(92);
+	var bigConstants = __webpack_require__(76);
 
 	function factory (type, config, load, typed, math) {
 	  // listen for changed in the configuration, automatically reload
@@ -22244,7 +23638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  math['null']     = null;
 	  math['uninitialized'] = __webpack_require__(40).UNINITIALIZED;
 
-	  if (config.number === 'bignumber') {
+	  if (config.number === 'BigNumber') {
 	    math['Infinity'] = new type.BigNumber(Infinity);
 	    math['NaN']      = new type.BigNumber(NaN);
 
@@ -22295,112 +23689,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.math = true;   // request access to the math namespace
 
 /***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var memoize = __webpack_require__(45).memoize;
-	var atan = __webpack_require__(93);
-
-	/**
-	 * Calculate BigNumber e
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @returns {BigNumber} Returns e
-	 */
-	exports.e = memoize(function (BigNumber) {
-	  return new BigNumber(1).exp();
-	}, hasher);
-
-	/**
-	 * Calculate BigNumber golden ratio, phi = (1+sqrt(5))/2
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @returns {BigNumber} Returns phi
-	 */
-	exports.phi = memoize(function (BigNumber) {
-	  return new BigNumber(1).plus(new BigNumber(5).sqrt()).div(2);
-	}, hasher);
-
-	/**
-	 * Calculate BigNumber pi.
-	 *
-	 * Uses Machin's formula: pi / 4 = 4 * arctan(1 / 5) - arctan(1 / 239)
-	 * http://milan.milanovic.org/math/english/pi/machin.html
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @returns {BigNumber} Returns pi
-	 */
-	exports.pi = memoize(function (BigNumber) {
-	  // we calculate pi with a few decimal places extra to prevent round off issues
-	  var Big = BigNumber.constructor({precision: BigNumber.precision + 4});
-	  var pi4th = new Big(4).times(atan(new Big(1).div(5)))
-	      .minus(atan(new Big(1).div(239)));
-
-	  // the final pi has the requested number of decimals
-	  return new BigNumber(4).times(pi4th);
-	}, hasher);
-
-	/**
-	 * Calculate BigNumber tau, tau = 2 * pi
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @returns {BigNumber} Returns tau
-	 */
-	exports.tau = memoize(function (BigNumber) {
-	  // we calculate pi at a slightly higher precision than configured to prevent round off errors
-	  // when multiplying by two in the end
-
-	  var pi = exports.pi(BigNumber.constructor({precision: BigNumber.precision + 2}));
-
-	  return new BigNumber(2).times(pi);
-	}, hasher);
-
-	/**
-	 * Create a hash for a BigNumber constructor function. The created has is
-	 * the configured precision
-	 * @param {Array} args         Supposed to contain a single entry with
-	 *                             a BigNumber constructor
-	 * @return {number} precision
-	 * @private
-	 */
-	function hasher (args) {
-	  return args[0].precision;
-	}
-
-
-/***/ },
-/* 93 */
-/***/ function(module, exports) {
-
-	/**
-	 * Calculate the arc tangent of x using a Taylor expansion
-	 *
-	 * arctan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...
-	 *           = x - x^2*x^1/3 + x^2*x^3/5 - x^2*x^5/7 + x^2*x^7/9 - ...
-	 *
-	 * @param {BigNumber} x
-	 * @returns {BigNumber} arc tangent of x
-	 */
-	module.exports = function atan(x) {
-	  var y = x;
-	  var yPrev = NaN;
-	  var x2 = x.times(x);
-	  var num = x;
-	  var add = true;
-
-	  for (var k = 3; !y.equals(yPrev); k += 2) {
-	    num = num.times(x2);
-
-	    yPrev = y;
-	    add = !add;
-	    y = (add) ? y.plus(num.div(k)) : y.minus(num.div(k));
-	  }
-
-	  return y;
-	};
-
-
-/***/ },
 /* 94 */
 /***/ function(module, exports) {
 
-	module.exports = '2.7.0';
+	module.exports = '3.0.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
@@ -22411,13 +23703,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = [
 	  __webpack_require__(96),
-	  __webpack_require__(266),
-	  __webpack_require__(290),
-	  __webpack_require__(291),
-
-	  __webpack_require__(318),
 	  __webpack_require__(268),
-	  __webpack_require__(289)
+	  __webpack_require__(297),
+	  __webpack_require__(299),
+
+	  __webpack_require__(324),
+	  __webpack_require__(270),
+	  __webpack_require__(296)
 	];
 
 
@@ -22425,7 +23717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	function factory (type, config, load, typed) {
+	function factory (construction, config, load, typed) {
 	  var docs = {};
 
 
@@ -22576,125 +23868,129 @@ return /******/ (function(modules) { // webpackBootstrap
 	  docs.composition = __webpack_require__(168);
 	  docs.stirlingS2 = __webpack_require__(169);
 
+	  // functions - core
+	  docs['config'] =  __webpack_require__(170);
+	  docs['import'] =  __webpack_require__(171);
+	  docs['typed'] =  __webpack_require__(172);
+
 	  // functions - complex
-	  docs.arg = __webpack_require__(170);
-	  docs.conj = __webpack_require__(171);
-	  docs.re = __webpack_require__(172);
-	  docs.im = __webpack_require__(173);
+	  docs.arg = __webpack_require__(173);
+	  docs.conj = __webpack_require__(174);
+	  docs.re = __webpack_require__(175);
+	  docs.im = __webpack_require__(176);
 
 	  // functions - expression
-	  docs['eval'] =  __webpack_require__(174);
-	  docs.help =  __webpack_require__(175);
+	  docs['eval'] =  __webpack_require__(177);
+	  docs.help =  __webpack_require__(178);
 
 	  // functions - geometry
-	  docs.distance = __webpack_require__(176);
-	  docs.intersect = __webpack_require__(177);
+	  docs.distance = __webpack_require__(179);
+	  docs.intersect = __webpack_require__(180);
 
 	  // functions - logical
-	  docs['and'] = __webpack_require__(178);
-	  docs['not'] = __webpack_require__(179);
-	  docs['or'] = __webpack_require__(180);
-	  docs['xor'] = __webpack_require__(181);
+	  docs['and'] = __webpack_require__(181);
+	  docs['not'] = __webpack_require__(182);
+	  docs['or'] = __webpack_require__(183);
+	  docs['xor'] = __webpack_require__(184);
 
 	  // functions - matrix
-	  docs['concat'] = __webpack_require__(182);
-	  docs.cross = __webpack_require__(183);
-	  docs.det = __webpack_require__(184);
-	  docs.diag = __webpack_require__(185);
-	  docs.dot = __webpack_require__(186);
-	  docs.eye = __webpack_require__(187);
-	  docs.flatten = __webpack_require__(188);
-	  docs.inv = __webpack_require__(189);
-	  docs.ones = __webpack_require__(190);
-	  docs.range = __webpack_require__(191);
-	  docs.resize = __webpack_require__(192);
-	  docs.size = __webpack_require__(193);
-	  docs.squeeze = __webpack_require__(194);
-	  docs.subset = __webpack_require__(195);
-	  docs.trace = __webpack_require__(196);
-	  docs.transpose = __webpack_require__(197);
-	  docs.zeros = __webpack_require__(198);
+	  docs['concat'] = __webpack_require__(185);
+	  docs.cross = __webpack_require__(186);
+	  docs.det = __webpack_require__(187);
+	  docs.diag = __webpack_require__(188);
+	  docs.dot = __webpack_require__(189);
+	  docs.eye = __webpack_require__(190);
+	  docs.filter =  __webpack_require__(191);
+	  docs.flatten = __webpack_require__(192);
+	  docs.forEach =  __webpack_require__(193);
+	  docs.inv = __webpack_require__(194);
+	  docs.map =  __webpack_require__(195);
+	  docs.ones = __webpack_require__(196);
+	  docs.partitionSelect =  __webpack_require__(197);
+	  docs.range = __webpack_require__(198);
+	  docs.resize = __webpack_require__(199);
+	  docs.size = __webpack_require__(200);
+	  docs.sort =  __webpack_require__(201);
+	  docs.squeeze = __webpack_require__(202);
+	  docs.subset = __webpack_require__(203);
+	  docs.trace = __webpack_require__(204);
+	  docs.transpose = __webpack_require__(205);
+	  docs.zeros = __webpack_require__(206);
 
 	  // functions - probability
-	  docs.combinations = __webpack_require__(199);
+	  docs.combinations = __webpack_require__(207);
 	  //docs.distribution = require('./function/probability/distribution');
-	  docs.factorial = __webpack_require__(200);
-	  docs.gamma = __webpack_require__(201);
-	  docs.kldivergence = __webpack_require__(202);
-	  docs.multinomial = __webpack_require__(203);
-	  docs.permutations = __webpack_require__(204);
-	  docs.pickRandom = __webpack_require__(205);
-	  docs.random = __webpack_require__(206);
-	  docs.randomInt = __webpack_require__(207);
+	  docs.factorial = __webpack_require__(208);
+	  docs.gamma = __webpack_require__(209);
+	  docs.kldivergence = __webpack_require__(210);
+	  docs.multinomial = __webpack_require__(211);
+	  docs.permutations = __webpack_require__(212);
+	  docs.pickRandom = __webpack_require__(213);
+	  docs.random = __webpack_require__(214);
+	  docs.randomInt = __webpack_require__(215);
 
 	  // functions - relational
-	  docs.compare = __webpack_require__(208);
-	  docs.deepEqual = __webpack_require__(209);
-	  docs['equal'] = __webpack_require__(210);
-	  docs.larger = __webpack_require__(211);
-	  docs.largerEq = __webpack_require__(212);
-	  docs.smaller = __webpack_require__(213);
-	  docs.smallerEq = __webpack_require__(214);
-	  docs.unequal = __webpack_require__(215);
+	  docs.compare = __webpack_require__(216);
+	  docs.deepEqual = __webpack_require__(217);
+	  docs['equal'] = __webpack_require__(218);
+	  docs.larger = __webpack_require__(219);
+	  docs.largerEq = __webpack_require__(220);
+	  docs.smaller = __webpack_require__(221);
+	  docs.smallerEq = __webpack_require__(222);
+	  docs.unequal = __webpack_require__(223);
 
 	  // functions - statistics
-	  docs.max = __webpack_require__(216);
-	  docs.mean = __webpack_require__(217);
-	  docs.median = __webpack_require__(218);
-	  docs.min = __webpack_require__(219);
-	  docs.mode = __webpack_require__(220);
-	  docs.prod = __webpack_require__(221);
-	  docs.quantileSeq = __webpack_require__(222);
-	  docs.std = __webpack_require__(223);
-	  docs.sum = __webpack_require__(224);
-	  docs['var'] = __webpack_require__(225);
+	  docs.max = __webpack_require__(224);
+	  docs.mean = __webpack_require__(225);
+	  docs.median = __webpack_require__(226);
+	  docs.min = __webpack_require__(227);
+	  docs.mode = __webpack_require__(228);
+	  docs.prod = __webpack_require__(229);
+	  docs.quantileSeq = __webpack_require__(230);
+	  docs.std = __webpack_require__(231);
+	  docs.sum = __webpack_require__(232);
+	  docs['var'] = __webpack_require__(233);
 
 	  // functions - trigonometry
-	  docs.acos = __webpack_require__(226);
-	  docs.acosh = __webpack_require__(227);
-	  docs.acot = __webpack_require__(228);
-	  docs.acoth = __webpack_require__(229);
-	  docs.acsc = __webpack_require__(230);
-	  docs.acsch = __webpack_require__(231);
-	  docs.asec = __webpack_require__(232);
-	  docs.asech = __webpack_require__(233);
-	  docs.asin = __webpack_require__(234);
-	  docs.asinh = __webpack_require__(235);
-	  docs.atan = __webpack_require__(236);
-	  docs.atanh = __webpack_require__(237);
-	  docs.atan2 = __webpack_require__(238);
-	  docs.cos = __webpack_require__(239);
-	  docs.cosh = __webpack_require__(240);
-	  docs.cot = __webpack_require__(241);
-	  docs.coth = __webpack_require__(242);
-	  docs.csc = __webpack_require__(243);
-	  docs.csch = __webpack_require__(244);
-	  docs.sec = __webpack_require__(245);
-	  docs.sech = __webpack_require__(246);
-	  docs.sin = __webpack_require__(247);
-	  docs.sinh = __webpack_require__(248);
-	  docs.tan = __webpack_require__(249);
-	  docs.tanh = __webpack_require__(250);
+	  docs.acos = __webpack_require__(234);
+	  docs.acosh = __webpack_require__(235);
+	  docs.acot = __webpack_require__(236);
+	  docs.acoth = __webpack_require__(237);
+	  docs.acsc = __webpack_require__(238);
+	  docs.acsch = __webpack_require__(239);
+	  docs.asec = __webpack_require__(240);
+	  docs.asech = __webpack_require__(241);
+	  docs.asin = __webpack_require__(242);
+	  docs.asinh = __webpack_require__(243);
+	  docs.atan = __webpack_require__(244);
+	  docs.atanh = __webpack_require__(245);
+	  docs.atan2 = __webpack_require__(246);
+	  docs.cos = __webpack_require__(247);
+	  docs.cosh = __webpack_require__(248);
+	  docs.cot = __webpack_require__(249);
+	  docs.coth = __webpack_require__(250);
+	  docs.csc = __webpack_require__(251);
+	  docs.csch = __webpack_require__(252);
+	  docs.sec = __webpack_require__(253);
+	  docs.sech = __webpack_require__(254);
+	  docs.sin = __webpack_require__(255);
+	  docs.sinh = __webpack_require__(256);
+	  docs.tan = __webpack_require__(257);
+	  docs.tanh = __webpack_require__(258);
 
 	  // functions - units
-	  docs.to = __webpack_require__(251);
+	  docs.to = __webpack_require__(259);
 
 	  // functions - utils
-	  docs.clone =  __webpack_require__(252);
-	  docs.map =  __webpack_require__(253);
-	  docs.partitionSelect =  __webpack_require__(254);
-	  docs.filter =  __webpack_require__(255);
-	  docs.forEach =  __webpack_require__(256);
-	  docs.format =  __webpack_require__(257);
-	  docs.isInteger =  __webpack_require__(258);
-	  docs.isNegative =  __webpack_require__(259);
-	  docs.isNumeric =  __webpack_require__(260);
-	  docs.isPositive =  __webpack_require__(261);
-	  docs.isZero =  __webpack_require__(262);
+	  docs.clone =  __webpack_require__(260);
+	  docs.format =  __webpack_require__(261);
+	  docs.isInteger =  __webpack_require__(262);
+	  docs.isNegative =  __webpack_require__(263);
+	  docs.isNumeric =  __webpack_require__(264);
+	  docs.isPositive =  __webpack_require__(265);
+	  docs.isZero =  __webpack_require__(266);
 	  // docs.print =  require('./function/utils/print'); // TODO: add documentation for print as soon as the parser supports objects.
-	  docs['import'] =  __webpack_require__(263);
-	  docs.sort =  __webpack_require__(264);
-	  docs['typeof'] =  __webpack_require__(265);
+	  docs['typeof'] =  __webpack_require__(267);
 
 	  return docs;
 	}
@@ -22710,7 +24006,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'bignumber',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'bignumber(x)'
 	  ],
@@ -22735,7 +24031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'boolean',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'x',
 	    'boolean(x)'
@@ -22762,7 +24058,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'complex',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'complex()',
 	    'complex(re, im)',
@@ -22787,7 +24083,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'fraction',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'fraction(num)',
 	    'fraction(num,den)'
@@ -22810,7 +24106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'index',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    '[start]',
 	    '[start:end]',
@@ -22841,7 +24137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'matrix',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    '[]',
 	    '[a1, b1, ...; a2, b2, ...]',
@@ -22872,7 +24168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'number',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'x',
 	    'number(x)'
@@ -22901,7 +24197,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'sparse',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'sparse()',
 	    'sparse([a1, b1, ...; a1, b2, ...])',
@@ -22926,7 +24222,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'string',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    '"text"',
 	    'string(x)'
@@ -22950,7 +24246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = {
 	  'name': 'unit',
-	  'category': 'Type',
+	  'category': 'Construction',
 	  'syntax': [
 	    'value unit',
 	    'unit(value, unit)',
@@ -24353,6 +25649,70 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = {
+	  'name': 'config',
+	  'category': 'Core',
+	  'syntax': [
+	    'config()',
+	    'config(options)'
+	  ],
+	  'description': 'Get configuration or change configuration.',
+	  'examples': [
+	    'config()',
+	    '1/3 + 1/4',
+	    'config({number: "Fraction"})',
+	    '1/3 + 1/4'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 171 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'import',
+	  'category': 'Core',
+	  'syntax': [
+	    'import(functions)',
+	    'import(functions, options)'
+	  ],
+	  'description': 'Import functions or constants from an object.',
+	  'examples': [
+	    'import({myFn: f(x)=x^2, myConstant: 32 })',
+	    'myFn(2)',
+	    'myConstant'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 172 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'typed',
+	  'category': 'Core',
+	  'syntax': [
+	    'typed(signatures)',
+	    'typed(name, signatures)'
+	  ],
+	  'description': 'Create a typed function.',
+	  'examples': [
+	    'double = typed({ "number, number": f(x)=x+x })',
+	    'double(2)',
+	    'double("hello")'
+	  ],
+	  'seealso': []
+	};
+
+
+/***/ },
+/* 173 */
+/***/ function(module, exports) {
+
+	module.exports = {
 	  'name': 'arg',
 	  'category': 'Complex',
 	  'syntax': [
@@ -24375,7 +25735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 171 */
+/* 174 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24401,7 +25761,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 172 */
+/* 175 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24427,7 +25787,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 173 */
+/* 176 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24453,7 +25813,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 174 */
+/* 177 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24473,7 +25833,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 175 */
+/* 178 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24493,7 +25853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 176 */
+/* 179 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24513,7 +25873,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 177 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24533,7 +25893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 178 */
+/* 181 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24556,7 +25916,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 179 */
+/* 182 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24580,7 +25940,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 180 */
+/* 183 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24603,7 +25963,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 181 */
+/* 184 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24627,7 +25987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 182 */
+/* 185 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24652,7 +26012,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 183 */
+/* 186 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24675,7 +26035,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 184 */
+/* 187 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24696,7 +26056,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 185 */
+/* 188 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24720,7 +26080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 186 */
+/* 189 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24744,7 +26104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 187 */
+/* 190 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24770,7 +26130,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 188 */
+/* 191 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'filter',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'filter(x, test)'
+	  ],
+	  'description': 'Filter items in a matrix.',
+	  'examples': [
+	    'isPositive(x) = x > 0',
+	    'filter([6, -2, -1, 4, 3], isPositive)',
+	    'filter([6, -2, 0, 1, 0], x != 0)'
+	  ],
+	  'seealso': ['sort', 'map', 'forEach']
+	};
+
+
+/***/ },
+/* 192 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24793,7 +26173,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 189 */
+/* 193 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'forEach',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'forEach(x, callback)'
+	  ],
+	  'description': 'Iterates over all elements of a matrix/array, and executes the given callback function.',
+	  'examples': [
+	    'forEach([1, 2, 3], function(val) { console.log(val) })'
+	  ],
+	  'seealso': ['map', 'sort', 'filter']
+	};
+
+
+/***/ },
+/* 194 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24815,7 +26213,25 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 190 */
+/* 195 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'map',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'map(x, callback)'
+	  ],
+	  'description': 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
+	  'examples': [
+	    'map([1, 2, 3], function(val) { return value * value })'
+	  ],
+	  'seealso': ['filter', 'forEach']
+	};
+
+
+/***/ },
+/* 196 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24845,7 +26261,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 191 */
+/* 197 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'partitionSelect',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'partitionSelect(x, k)',
+	    'partitionSelect(x, k, compare)'
+	  ],
+	  'description': 'Partition-based selection of an array or 1D matrix. Will find the kth smallest value, and mutates the input array. Uses Quickselect.',
+	  'examples': [
+	    'partitionSelect([5, 10, 1], 2)',
+	    'partitionSelect(["C", "B", "A", "D"], 1)'
+	  ],
+	  'seealso': ['sort']
+	};
+
+
+/***/ },
+/* 198 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24876,7 +26312,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 192 */
+/* 199 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24901,7 +26337,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 193 */
+/* 200 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24925,7 +26361,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 194 */
+/* 201 */
+/***/ function(module, exports) {
+
+	module.exports = {
+	  'name': 'sort',
+	  'category': 'Matrix',
+	  'syntax': [
+	    'sort(x)',
+	    'sort(x, compare)'
+	  ],
+	  'description': 'Sort the items in a matrix. Compare can be a string "asc" or "desc", or a custom sort function.',
+	  'examples': [
+	    'sort([5, 10, 1])',
+	    'sort(["C", "B", "A", "D"])',
+	    'sortByLength(a, b) = size(a)[1] - size(b)[1]',
+	    'sort(["Langdon", "Tom", "Sara"], sortByLength)'
+	  ],
+	  'seealso': ['map', 'filter', 'forEach']
+	};
+
+
+/***/ },
+/* 202 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24948,7 +26406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 195 */
+/* 203 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -24979,7 +26437,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 196 */
+/* 204 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25000,7 +26458,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 197 */
+/* 205 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25023,7 +26481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 198 */
+/* 206 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25052,7 +26510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 199 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25070,7 +26528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 200 */
+/* 208 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25090,7 +26548,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 201 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25111,7 +26569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 202 */
+/* 210 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25130,7 +26588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 203 */
+/* 211 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25147,7 +26605,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 204 */
+/* 212 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25167,7 +26625,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 205 */
+/* 213 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25187,7 +26645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 206 */
+/* 214 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25213,7 +26671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 207 */
+/* 215 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25236,7 +26694,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 208 */
+/* 216 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25261,7 +26719,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 209 */
+/* 217 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25283,7 +26741,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 210 */
+/* 218 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25310,7 +26768,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 211 */
+/* 219 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25338,7 +26796,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 212 */
+/* 220 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25364,7 +26822,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 213 */
+/* 221 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25391,7 +26849,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 214 */
+/* 222 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25417,7 +26875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 215 */
+/* 223 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25445,7 +26903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 216 */
+/* 224 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25479,7 +26937,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 217 */
+/* 225 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25512,7 +26970,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 218 */
+/* 226 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25540,7 +26998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 219 */
+/* 227 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25574,7 +27032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 220 */
+/* 228 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25604,7 +27062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 221 */
+/* 229 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25634,7 +27092,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 222 */
+/* 230 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25665,7 +27123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 223 */
+/* 231 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25698,7 +27156,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 224 */
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25728,7 +27186,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 225 */
+/* 233 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25761,7 +27219,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 226 */
+/* 234 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25784,7 +27242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 227 */
+/* 235 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25805,7 +27263,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 228 */
+/* 236 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25828,7 +27286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 229 */
+/* 237 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25848,7 +27306,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 230 */
+/* 238 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25872,7 +27330,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 231 */
+/* 239 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25893,7 +27351,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 232 */
+/* 240 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25917,7 +27375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 233 */
+/* 241 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25938,7 +27396,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 234 */
+/* 242 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25961,7 +27419,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 235 */
+/* 243 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -25982,7 +27440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 236 */
+/* 244 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26005,7 +27463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 237 */
+/* 245 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26026,7 +27484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 238 */
+/* 246 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26053,7 +27511,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 239 */
+/* 247 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26079,7 +27537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 240 */
+/* 248 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26101,7 +27559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 241 */
+/* 249 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26124,7 +27582,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 242 */
+/* 250 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26147,7 +27605,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 243 */
+/* 251 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26170,7 +27628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 244 */
+/* 252 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26193,7 +27651,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 245 */
+/* 253 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26216,7 +27674,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 246 */
+/* 254 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26239,7 +27697,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 247 */
+/* 255 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26265,7 +27723,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 248 */
+/* 256 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26286,7 +27744,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 249 */
+/* 257 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26311,7 +27769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 250 */
+/* 258 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26333,7 +27791,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 251 */
+/* 259 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26354,7 +27812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 252 */
+/* 260 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26376,83 +27834,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 253 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  'name': 'map',
-	  'category': 'Utils',
-	  'syntax': [
-	    'map(x, callback)'
-	  ],
-	  'description': 'Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.',
-	  'examples': [
-	    'map([1, 2, 3], function(val) { return value * value })'
-	  ],
-	  'seealso': ['filter', 'forEach']
-	};
-
-
-/***/ },
-/* 254 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  'name': 'partitionSelect',
-	  'category': 'Utils',
-	  'syntax': [
-	    'partitionSelect(x, k)',
-	    'partitionSelect(x, k, compare)'
-	  ],
-	  'description': 'Partition-based selection of an array or 1D matrix. Will find the kth smallest value, and mutates the input array. Uses Quickselect.',
-	  'examples': [
-	    'partitionSelect([5, 10, 1], 2)',
-	    'partitionSelect(["C", "B", "A", "D"], 1)'
-	  ],
-	  'seealso': ['sort']
-	};
-
-
-/***/ },
-/* 255 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  'name': 'filter',
-	  'category': 'Utils',
-	  'syntax': [
-	    'filter(x, test)'
-	  ],
-	  'description': 'Filter items in a matrix.',
-	  'examples': [
-	    'isPositive(x) = x > 0',
-	    'filter([6, -2, -1, 4, 3], isPositive)',
-	    'filter([6, -2, 0, 1, 0], x != 0)'
-	  ],
-	  'seealso': ['sort', 'map', 'forEach']
-	};
-
-
-/***/ },
-/* 256 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  'name': 'forEach',
-	  'category': 'Utils',
-	  'syntax': [
-	    'forEach(x, callback)'
-	  ],
-	  'description': 'Iterates over all elements of a matrix/array, and executes the given callback function.',
-	  'examples': [
-	    'forEach([1, 2, 3], function(val) { console.log(val) })'
-	  ],
-	  'seealso': ['map', 'sort', 'filter']
-	};
-
-
-/***/ },
-/* 257 */
+/* 261 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26474,7 +27856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 258 */
+/* 262 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26494,7 +27876,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 259 */
+/* 263 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26515,7 +27897,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 260 */
+/* 264 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26540,7 +27922,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 261 */
+/* 265 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26561,7 +27943,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 262 */
+/* 266 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26582,48 +27964,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 263 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  'name': 'import',
-	  'category': 'Utils',
-	  'syntax': [
-	    'import(string)'
-	  ],
-	  'description': 'Import functions from a file.',
-	  'examples': [
-	    'import("numbers")',
-	    'import("./mylib.js")'
-	  ],
-	  'seealso': []
-	};
-
-
-/***/ },
-/* 264 */
-/***/ function(module, exports) {
-
-	module.exports = {
-	  'name': 'sort',
-	  'category': 'Utils',
-	  'syntax': [
-	    'sort(x)',
-	    'sort(x, compare)'
-	  ],
-	  'description': 'Sort the items in a matrix. Compare can be a string "asc" or "desc", or a custom sort function.',
-	  'examples': [
-	    'sort([5, 10, 1])',
-	    'sort(["C", "B", "A", "D"])',
-	    'sortByLength(a, b) = size(a)[1] - size(b)[1]',
-	    'sort(["Langdon", "Tom", "Sara"], sortByLength)'
-	  ],
-	  'seealso': ['map', 'filter', 'forEach']
-	};
-
-
-/***/ },
-/* 265 */
+/* 267 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26644,20 +27985,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 266 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(267),
-	  __webpack_require__(285),
-	  __webpack_require__(286),
-	  __webpack_require__(287),
-	  __webpack_require__(288)
+	  __webpack_require__(269),
+	  __webpack_require__(292),
+	  __webpack_require__(293),
+	  __webpack_require__(294),
+	  __webpack_require__(295)
 	];
 
 
 /***/ },
-/* 267 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26665,7 +28006,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var deepMap = __webpack_require__(19);
 
 	function factory (type, config, load, typed) {
-	  var parse = load(__webpack_require__(268));
+	  var parse = load(__webpack_require__(270));
 
 	  /**
 	   * Parse and compile an expression.
@@ -26719,7 +28060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 268 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26728,19 +28069,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	var deepMap = __webpack_require__(19);
 
 	function factory (type, config, load, typed) {
-	  var ArrayNode               = load(__webpack_require__(269));
-	  var AssignmentNode          = load(__webpack_require__(272));
-	  var BlockNode               = load(__webpack_require__(274));
-	  var ConditionalNode         = load(__webpack_require__(275));
-	  var ConstantNode            = load(__webpack_require__(276));
-	  var FunctionAssignmentNode  = load(__webpack_require__(277));
-	  var IndexNode               = load(__webpack_require__(278));
-	  var OperatorNode            = load(__webpack_require__(281));
-	  var ParenthesisNode         = load(__webpack_require__(283));
-	  var FunctionNode            = load(__webpack_require__(282));
-	  var RangeNode               = load(__webpack_require__(279));
-	  var SymbolNode              = load(__webpack_require__(280));
-	  var UpdateNode              = load(__webpack_require__(284));
+	  var AccessorNode            = load(__webpack_require__(271));
+	  var ArrayNode               = load(__webpack_require__(277));
+	  var AssignmentNode          = load(__webpack_require__(278));
+	  var BlockNode               = load(__webpack_require__(281));
+	  var ConditionalNode         = load(__webpack_require__(282));
+	  var ConstantNode            = load(__webpack_require__(283));
+	  var FunctionAssignmentNode  = load(__webpack_require__(284));
+	  var IndexNode               = load(__webpack_require__(285));
+	  var ObjectNode              = load(__webpack_require__(288));
+	  var OperatorNode            = load(__webpack_require__(289));
+	  var ParenthesisNode         = load(__webpack_require__(291));
+	  var FunctionNode            = load(__webpack_require__(290));
+	  var RangeNode               = load(__webpack_require__(286));
+	  var SymbolNode              = load(__webpack_require__(287));
 
 
 	  /**
@@ -26819,6 +28161,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ')': true,
 	    '[': true,
 	    ']': true,
+	    '{': true,
+	    '}': true,
 	    '\"': true,
 	    ';': true,
 
@@ -27044,7 +28388,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        next();
 	      }
 
-	      if (NAMED_DELIMITERS[token]) {
+	      if (NAMED_DELIMITERS.hasOwnProperty(token)) {
 	        token_type = TOKENTYPE.DELIMITER;
 	      }
 	      else {
@@ -27194,7 +28538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    if (token != '\n' && token != ';') {
-	      node = parseFunctionAssignment();
+	      node = parseAssignment();
 	    }
 
 	    // TODO: simplify this loop
@@ -27209,7 +28553,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      getToken();
 	      if (token != '\n' && token != ';' && token != '') {
-	        node = parseFunctionAssignment();
+	        node = parseAssignment();
 
 	        visible = (token != ';');
 	        blocks.push({
@@ -27228,28 +28572,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
-	   * Parse a function assignment like "function f(a,b) = a*b"
-	   * @return {Node} node
-	   * @private
-	   */
-	  function parseFunctionAssignment () {
-	    // TODO: function assignment using keyword 'function' is deprecated since version 0.18.0, cleanup some day
-	    if (token_type == TOKENTYPE.SYMBOL && token == 'function') {
-	      throw createSyntaxError('Deprecated keyword "function". ' +
-	          'Functions can now be assigned without it, like "f(x) = x^2".');
-	    }
-
-	    return parseAssignment();
-	  }
-
-	  /**
-	   * Assignment of a variable, can be a variable like "a=2.3" or a updating an
-	   * existing variable like "matrix(2,3:5)=[6,7,8]"
+	   * Assignment of a function or variable,
+	   * - can be a variable like 'a=2.3'
+	   * - or a updating an existing variable like 'matrix(2,3:5)=[6,7,8]'
+	   * - defining a function like 'f(x) = x^2'
 	   * @return {Node} node
 	   * @private
 	   */
 	  function parseAssignment () {
-	    var name, args, expr, valid;
+	    var name, args, value, valid;
 
 	    var node = parseConditional();
 
@@ -27258,14 +28589,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // parse a variable assignment like 'a = 2/3'
 	        name = node.name;
 	        getTokenSkipNewline();
-	        expr = parseAssignment();
-	        return new AssignmentNode(name, expr);
+	        value = parseAssignment();
+	        return new AssignmentNode(new SymbolNode(name), value);
 	      }
-	      else if (node && node.isIndexNode) {
+	      else if (node && node.isAccessorNode) {
 	        // parse a matrix subset assignment like 'A[1,2] = 4'
 	        getTokenSkipNewline();
-	        expr = parseAssignment();
-	        return new UpdateNode(node, expr);
+	        value = parseAssignment();
+	        return new AssignmentNode(node.object, node.index, value);
 	      }
 	      else if (node && node.isFunctionNode) {
 	        // parse function assignment like 'f(x) = x^2'
@@ -27284,8 +28615,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        if (valid) {
 	          getTokenSkipNewline();
-	          expr = parseAssignment();
-	          return new FunctionAssignmentNode(name, args, expr);
+	          value = parseAssignment();
+	          return new FunctionAssignmentNode(name, args, value);
 	        }
 	      }
 
@@ -27316,14 +28647,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      getTokenSkipNewline();
 
 	      var condition = node;
-	      var trueExpr = parseLogicalOr();
+	      var trueExpr = parseAssignment();
 
 	      if (token != ':') throw createSyntaxError('False part of conditional expression expected');
 
 	      conditional_level = null;
 	      getTokenSkipNewline();
 
-	      var falseExpr = parseConditional(); // Note: check for conditional operator again, right associativity
+	      var falseExpr = parseAssignment(); // Note: check for conditional operator again, right associativity
 
 	      node = new ConditionalNode(condition, trueExpr, falseExpr);
 
@@ -27622,8 +28953,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      else if ((token_type == TOKENTYPE.SYMBOL) ||
 	          (token == 'in' && (node && node.isConstantNode)) ||
-	          (token_type == TOKENTYPE.NUMBER && !last.isConstantNode) ||
-	          (token == '(' || token == '[')) {
+	          (token_type == TOKENTYPE.NUMBER && !last.isConstantNode)) {
 	        // parse implicit multiplication
 	        //
 	        // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
@@ -27714,6 +29044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      params = [node];
 
 	      node = new OperatorNode(name, fn, params);
+	      node = parseAccessors(node);
 	    }
 
 	    return node;
@@ -27763,12 +29094,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        getToken();
 
 	        if (token != ')') {
-	          params.push(parseConditional());
+	          params.push(parseAssignment());
 
 	          // parse a list with parameters
 	          while (token == ',') {
 	            getToken();
-	            params.push(parseConditional());
+	            params.push(parseAssignment());
 	          }
 	        }
 
@@ -27802,8 +29133,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      getToken();
 
 	      // parse function parameters and matrix index
-	      node = parseFunctions(name);
-	      node = parseIndex(node);
+	      node = new SymbolNode(name);
+	      node = parseAccessors(node);
 	      return node;
 	    }
 
@@ -27811,76 +29142,84 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  /**
-	   * parse a function call like fn(a, b, c)
-	   * @param {string} name    Function name
-	   * @return {FunctionNode | SymbolNode} node
-	   * @private
-	   */
-	  function parseFunctions (name) {
-	    var params;
-
-	    if (token == '(') {
-	      params = [];
-
-	      openParams();
-	      getToken();
-
-	      if (token != ')') {
-	        params.push(parseConditional());
-
-	        // parse a list with parameters
-	        while (token == ',') {
-	          getToken();
-	          params.push(parseConditional());
-	        }
-	      }
-
-	      if (token != ')') {
-	        throw createSyntaxError('Parenthesis ) expected');
-	      }
-	      closeParams();
-	      getToken();
-
-	      return new FunctionNode(name, params);
-	    }
-
-	    return new SymbolNode(name);
-	  }
-
-	  /**
-	   * parse index parameters, enclosed in square brackets [...], for example A[2,3]
+	   * parse accessors:
+	   * - function invocation in round brackets (...), for example sqrt(2)
+	   * - index enclosed in square brackets [...], for example A[2,3]
+	   * - dot notation for properties, like foo.bar
 	   * @param {Node} node    Node on which to apply the parameters. If there
 	   *                       are no parameters in the expression, the node
 	   *                       itself is returned
+	   * @param {string[]} [types]  Filter the types of notations
+	   *                            can be ['(', '[', '.']
 	   * @return {Node} node
 	   * @private
 	   */
-	  function parseIndex (node) {
+	  function parseAccessors (node, types) {
 	    var params;
 
-	    while (token == '[') {
+	    while ((token == '(' || token == '[' || token == '.') &&
+	        (!types || types.indexOf(token) !== -1)) {
 	      params = [];
 
-	      openParams();
-	      getToken();
+	      if (token == '(') {
+	        // function invocation like fn(2, 3)
+	        openParams();
+	        getToken();
 
-	      if (token != ']') {
-	        params.push(parseConditional());
+	        if (token != ')') {
+	          params.push(parseAssignment());
 
-	        // parse a list with parameters
-	        while (token == ',') {
-	          getToken();
-	          params.push(parseConditional());
+	          // parse a list with parameters
+	          while (token == ',') {
+	            getToken();
+	            params.push(parseAssignment());
+	          }
 	        }
-	      }
 
-	      if (token != ']') {
-	        throw createSyntaxError('Parenthesis ] expected');
-	      }
-	      closeParams();
-	      getToken();
+	        if (token != ')') {
+	          throw createSyntaxError('Parenthesis ) expected');
+	        }
+	        closeParams();
+	        getToken();
 
-	      node = new IndexNode(node, params);
+	        node = new FunctionNode(node, params);
+	      }
+	      else if (token == '[') {
+	        // index notation like variable[2, 3]
+	        openParams();
+	        getToken();
+
+	        if (token != ']') {
+	          params.push(parseAssignment());
+
+	          // parse a list with parameters
+	          while (token == ',') {
+	            getToken();
+	            params.push(parseAssignment());
+	          }
+	        }
+
+	        if (token != ']') {
+	          throw createSyntaxError('Parenthesis ] expected');
+	        }
+	        closeParams();
+	        getToken();
+
+	        node = new AccessorNode(node, new IndexNode(params));
+	      }
+	      else {
+	        // dot notation like variable.prop
+	        getToken();
+
+	        if (token_type != TOKENTYPE.SYMBOL) {
+	          throw createSyntaxError('Property name expected after dot');
+	        }
+	        params.push(new ConstantNode(token));
+	        getToken();
+
+	        var dotNotation = true;
+	        node = new AccessorNode(node, new IndexNode(params, dotNotation));
+	      }
 	    }
 
 	    return node;
@@ -27893,34 +29232,44 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @private
 	   */
 	  function parseString () {
-	    var node, str, tPrev;
+	    var node, str;
 
 	    if (token == '"') {
-	      // string "..."
-	      str = '';
-	      tPrev = '';
-	      while (c != '' && (c != '\"' || tPrev == '\\')) { // also handle escape character
-	        str += c;
-	        tPrev = c;
-	        next();
-	      }
-
-	      getToken();
-	      if (token != '"') {
-	        throw createSyntaxError('End of string " expected');
-	      }
-	      getToken();
+	      str = parseStringToken();
 
 	      // create constant
 	      node = new ConstantNode(str, 'string');
 
 	      // parse index parameters
-	      node = parseIndex(node);
+	      node = parseAccessors(node);
 
 	      return node;
 	    }
 
 	    return parseMatrix();
+	  }
+
+	  /**
+	   * Parse a string surrounded by double quotes "..."
+	   * @return {string}
+	   */
+	  function parseStringToken () {
+	    var str = '';
+	    var tPrev = '';
+
+	    while (c != '' && (c != '\"' || tPrev == '\\')) { // also handle escape character
+	      str += c;
+	      tPrev = c;
+	      next();
+	    }
+
+	    getToken();
+	    if (token != '"') {
+	      throw createSyntaxError('End of string " expected');
+	    }
+	    getToken();
+
+	    return str;
 	  }
 
 	  /**
@@ -27960,11 +29309,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          getToken();
 
 	          // check if the number of columns matches in all rows
-	          cols = params[0].nodes.length;
+	          cols = params[0].items.length;
 	          for (var r = 1; r < rows; r++) {
-	            if (params[r].nodes.length != cols) {
+	            if (params[r].items.length != cols) {
 	              throw createError('Column dimensions mismatch ' +
-	                  '(' + params[r].nodes.length + ' != ' + cols + ')');
+	                  '(' + params[r].items.length + ' != ' + cols + ')');
 	            }
 	          }
 
@@ -27988,10 +29337,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        array = new ArrayNode([]);
 	      }
 
-	      return array;
+	      return parseAccessors(array);
 	    }
 
-	    return parseNumber();
+	    return parseObject();
 	  }
 
 	  /**
@@ -28011,6 +29360,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    return new ArrayNode(params);
+	  }
+
+	  /**
+	   * parse an object, enclosed in angle brackets{...}, for example {value: 2}
+	   * @return {Node} node
+	   * @private
+	   */
+	  function parseObject () {
+	    if (token == '{') {
+	      var key;
+
+	      var properties = {};
+	      do {
+	        getToken();
+
+	        if (token != '}') {
+	          // parse key
+	          if (token == '"') {
+	            key = parseStringToken();
+	          }
+	          else if (token_type == TOKENTYPE.SYMBOL) {
+	            key = token;
+	            getToken();
+	          }
+	          else {
+	            throw createSyntaxError('Symbol or string expected as object key');
+	          }
+
+	          // parse key/value separator
+	          if (token != ':') {
+	            throw createSyntaxError('Colon : expected after object key');
+	          }
+	          getToken();
+
+	          // parse key
+	          properties[key] = parseAssignment();
+	        }
+	      }
+	      while (token == ',');
+
+	      if (token != '}') {
+	        throw createSyntaxError('Comma , or bracket } expected after object value');
+	      }
+	      getToken();
+
+	      var node = new ObjectNode(properties);
+
+	      // parse index parameters
+	      node = parseAccessors(node);
+
+	      return node;
+	    }
+
+	    return parseNumber();
 	  }
 
 	  /**
@@ -28054,7 +29457,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      closeParams();
 	      getToken();
 
-	      return new ParenthesisNode(node);
+	      node = new ParenthesisNode(node);
+	      node = parseAccessors(node);
+	      return node;
 	    }
 
 	    return parseEnd();
@@ -28116,7 +29521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  function createError (message) {
 	    var c = col();
-	    var error = new Error(message + ' (char ' + c + ')');
+	    var error = new SyntaxError(message + ' (char ' + c + ')');
 	    error['char'] = c;
 
 	    return error;
@@ -28131,41 +29536,62 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 269 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var string = __webpack_require__(23);
-
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
+	  var access = load(__webpack_require__(274));
 
 	  /**
-	   * @constructor ArrayNode
+	   * @constructor AccessorNode
 	   * @extends {Node}
-	   * Holds an 1-dimensional array with nodes
-	   * @param {Node[]} [nodes]   1 dimensional array with nodes
+	   * Access an object property or get a matrix subset
+	   *
+	   * @param {Node} object                 The object from which to retrieve
+	   *                                      a property or subset.
+	   * @param {IndexNode} index             IndexNode containing ranges
 	   */
-	  function ArrayNode(nodes) {
-	    if (!(this instanceof ArrayNode)) {
+	  function AccessorNode(object, index) {
+	    if (!(this instanceof AccessorNode)) {
 	      throw new SyntaxError('Constructor must be called with the new operator');
 	    }
 
-	    this.nodes = nodes || [];
-
-	    // validate input
-	    if (!Array.isArray(this.nodes)
-	        || !this.nodes.every(function (node) {return node && node.isNode;})) {
-	      throw new TypeError('Array containing Nodes expected');
+	    if (!(object && object.isNode)) {
+	      throw new TypeError('Node expected for parameter "object"');
 	    }
+	    if (!(index && index.isIndexNode)) {
+	      throw new TypeError('IndexNode expected for parameter "index"');
+	    }
+
+	    this.object = object || null;
+	    this.index = index;
+
+	    // readonly property name
+	    Object.defineProperty(this, 'name', {
+	      get: function () {
+	        if (this.index) {
+	          return (this.index.isObjectProperty())
+	              ? this.index.getObjectProperty()
+	              : '';
+	        }
+	        else {
+	          return this.object.name || '';
+	        }
+	      }.bind(this),
+	      set: function () {
+	        throw new Error('Cannot assign a new name, name is read-only');
+	      }
+	    });
 	  }
 
-	  ArrayNode.prototype = new Node();
+	  AccessorNode.prototype = new Node();
 
-	  ArrayNode.prototype.type = 'ArrayNode';
+	  AccessorNode.prototype.type = 'AccessorNode';
 
-	  ArrayNode.prototype.isArrayNode = true;
+	  AccessorNode.prototype.isAccessorNode = true;
 
 	  /**
 	   * Compile the node to javascript code
@@ -28176,103 +29602,115 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                          the name of the argument, and the value is `true`.
 	   *                          The object may not be mutated, but must be
 	   *                          extended instead.
+	   * @return {string} js
 	   * @private
 	   */
-	  ArrayNode.prototype._compile = function (defs, args) {
-	    var asMatrix = (defs.math.config().matrix !== 'array');
+	  AccessorNode.prototype._compile = function (defs, args) {
+	    defs.access = access;
 
-	    var nodes = this.nodes.map(function (node) {
-	      return node._compile(defs, args);
-	    });
+	    var object = this.object._compile(defs, args);
+	    var index = this.index._compile(defs, args);
 
-	    return (asMatrix ? 'math.matrix([' : '[') +
-	        nodes.join(',') +
-	        (asMatrix ? '])' : ']');
+	    if (this.index.isObjectProperty()) {
+	      return object + '["' + this.index.getObjectProperty() + '"]';
+	    }
+	    else if (this.index.needsSize()) {
+	      // if some parameters use the 'end' parameter, we need to calculate the size
+	      return '(function () {' +
+	          '  var object = ' + object + ';' +
+	          '  var size = math.size(object).valueOf();' +
+	          '  return access(object, ' + index + ');' +
+	          '})()';
+	    }
+	    else {
+	      return 'access(' + object + ', ' + index + ')';
+	    }
 	  };
 
 	  /**
 	   * Execute a callback for each of the child nodes of this node
 	   * @param {function(child: Node, path: string, parent: Node)} callback
 	   */
-	  ArrayNode.prototype.forEach = function (callback) {
-	    for (var i = 0; i < this.nodes.length; i++) {
-	      var node = this.nodes[i];
-	      callback(node, 'nodes[' + i + ']', this);
-	    }
+	  AccessorNode.prototype.forEach = function (callback) {
+	    callback(this.object, 'object', this);
+	    callback(this.index, 'index', this);
 	  };
 
 	  /**
-	   * Create a new ArrayNode having it's childs be the results of calling
+	   * Create a new AccessorNode having it's childs be the results of calling
 	   * the provided callback function for each of the childs of the original node.
 	   * @param {function(child: Node, path: string, parent: Node): Node} callback
-	   * @returns {ArrayNode} Returns a transformed copy of the node
+	   * @returns {AccessorNode} Returns a transformed copy of the node
 	   */
-	  ArrayNode.prototype.map = function (callback) {
-	    var nodes = [];
-	    for (var i = 0; i < this.nodes.length; i++) {
-	      nodes[i] = this._ifNode(callback(this.nodes[i], 'nodes[' + i + ']', this));
-	    }
-	    return new ArrayNode(nodes);
+	  AccessorNode.prototype.map = function (callback) {
+	    return new AccessorNode(
+	        this._ifNode(callback(this.object, 'object', this)),
+	        this._ifNode(callback(this.index, 'index', this))
+	    );
 	  };
 
 	  /**
 	   * Create a clone of this node, a shallow copy
-	   * @return {ArrayNode}
+	   * @return {AccessorNode}
 	   */
-	  ArrayNode.prototype.clone = function() {
-	    return new ArrayNode(this.nodes.slice(0));
+	  AccessorNode.prototype.clone = function () {
+	    return new AccessorNode(this.object, this.index);
 	  };
 
 	  /**
 	   * Get string representation
 	   * @param {Object} options
-	   * @return {string} str
-	   * @override
+	   * @return {string}
 	   */
-	  ArrayNode.prototype._toString = function(options) {
-	    return string.format(this.nodes);
+	  AccessorNode.prototype._toString = function (options) {
+	    var object = this.object.toString(options);
+	    if (needParenthesis(this.object)) {
+	      object = '(' + object + ')';
+	    }
+
+	    return object + this.index.toString(options);
 	  };
 
 	  /**
 	   * Get LaTeX representation
 	   * @param {Object} options
-	   * @return {string} str
+	   * @return {string}
 	   */
-	  ArrayNode.prototype._toTex = function(options) {
-	    var s = '\\begin{bmatrix}';
+	  AccessorNode.prototype._toTex = function (options) {
+	    var object = this.object.toTex(options);
+	    if (needParenthesis(this.object)) {
+	      object = '\\left(' + object + '\\right)';
+	    }
 
-	    this.nodes.forEach(function(node) {
-	      if (node.nodes) {
-	        s += node.nodes.map(function(childNode) {
-	          return childNode.toTex(options);
-	        }).join('&');
-	      }
-	      else {
-	        s += node.toTex(options);
-	      }
-
-	      // new line
-	      s += '\\\\';
-	    });
-	    s += '\\end{bmatrix}';
-	    return s;
+	    return object + this.index.toTex(options);
 	  };
 
-	  return ArrayNode;
+	  /**
+	   * Are parenthesis needed?
+	   * @private
+	   */
+	  function needParenthesis(node) {
+	    // TODO: maybe make a method on the nodes which tells whether they need parenthesis?
+	    return !(node.isAccessorNode || node.isArrayNode || node.isConstantNode
+	        || node.isFunctionNode || node.isObjectNode || node.isParenthesisNode
+	        || node.isSymbolNode);
+	  }
+
+	  return AccessorNode;
 	}
 
-	exports.name = 'ArrayNode';
+	exports.name = 'AccessorNode';
 	exports.path = 'expression.node';
 	exports.factory = factory;
 
 
 /***/ },
-/* 270 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var keywords = __webpack_require__(271);
+	var keywords = __webpack_require__(273);
 	var extend = __webpack_require__(3).extend;
 
 	function factory (type, config, load, typed, math) {
@@ -28631,7 +30069,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 271 */
+/* 273 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28643,7 +30081,462 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 272 */
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var errorTransform = __webpack_require__(275).transform;
+
+	function factory (type, config, load, typed) {
+	  var subset = load(__webpack_require__(276));
+	  var matrix = load(__webpack_require__(52));
+
+	  /**
+	   * Retrieve part of an object:
+	   *
+	   * - Retrieve a property from an object
+	   * - Retrieve a part of a string
+	   * - Retrieve a matrix subset
+	   *
+	   * @param {Object | Array | Matrix | string} object
+	   * @param {Index} index
+	   * @return {Object | Array | Matrix | string} Returns the subset
+	   */
+	  return function access(object, index) {
+	    try {
+	      if (Array.isArray(object)) {
+	        return matrix(object).subset(index).valueOf();
+	      }
+	      else if (object && typeof object.subset === 'function') { // Matrix
+	        return object.subset(index);
+	      }
+	      else if (typeof object === 'string') {
+	        // TODO: move getStringSubset into a separate util file, use that
+	        return subset(object, index);
+	      }
+	      else if (typeof object === 'object') {
+	        if (!index.isObjectProperty()) {
+	          throw TypeError('Cannot apply a numeric index as object property');
+	        }
+	        return object[index.getObjectProperty()];
+	      }
+	      else {
+	        throw new TypeError('Cannot apply index: unsupported type of object');
+	      }
+	    }
+	    catch (err) {
+	      throw errorTransform(err);
+	    }
+	  }
+	}
+
+	exports.factory = factory;
+
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var IndexError = __webpack_require__(43);
+
+	/**
+	 * Transform zero-based indices to one-based indices in errors
+	 * @param {Error} err
+	 * @returns {Error} Returns the transformed error
+	 */
+	exports.transform = function (err) {
+	  if (err && err.isIndexError) {
+	    return new IndexError(
+	        err.index + 1,
+	        err.min + 1,
+	        err.max !== undefined ? err.max + 1 : undefined);
+	  }
+
+	  return err;
+	};
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var clone = __webpack_require__(3).clone;
+	var validateIndex = __webpack_require__(40).validateIndex;
+	var DimensionError = __webpack_require__(42);
+
+	function factory (type, config, load, typed) {
+	  var matrix = load(__webpack_require__(52));
+
+	  /**
+	   * Get or set a subset of a matrix or string.
+	   *
+	   * Syntax:
+	   *     math.subset(value, index)                                // retrieve a subset
+	   *     math.subset(value, index, replacement [, defaultValue])  // replace a subset
+	   *
+	   * Examples:
+	   *
+	   *     // get a subset
+	   *     var d = [[1, 2], [3, 4]];
+	   *     math.subset(d, math.index(1, 0));        // returns 3
+	   *     math.subset(d, math.index([0, 2], 1));   // returns [[2], [4]]
+	   *
+	   *     // replace a subset
+	   *     var e = [];
+	   *     var f = math.subset(e, math.index(0, [0, 2]), [5, 6]);  // f = [[5, 6]]
+	   *     var g = math.subset(f, math.index(1, 1), 7, 0);         // g = [[5, 6], [0, 7]]
+	   *
+	   * See also:
+	   *
+	   *     size, resize, squeeze, index
+	   *
+	   * @param {Array | Matrix | string} matrix  An array, matrix, or string
+	   * @param {Index} index                     An index containing ranges for each
+	   *                                          dimension
+	   * @param {*} [replacement]                 An array, matrix, or scalar.
+	   *                                          If provided, the subset is replaced with replacement.
+	   *                                          If not provided, the subset is returned
+	   * @param {*} [defaultValue=undefined]      Default value, filled in on new entries when
+	   *                                          the matrix is resized. If not provided,
+	   *                                          math.matrix elements will be left undefined.
+	   * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
+	   */
+	  var subset = typed('subset', {
+	    // get subset
+	    'Array, Index': function (value, index) {
+	      var m = matrix(value);
+	      var subset = m.subset(index);       // returns a Matrix
+	      return subset && subset.valueOf();  // return an Array (like the input)
+	    },
+
+	    'Matrix, Index': function (value, index) {
+	      return value.subset(index);
+	    },
+
+	    'Object, Index': _getObjectProperty,
+
+	    'string, Index': _getSubstring,
+
+	    // set subset
+	    'Array, Index, any': function (value, index, replacement) {
+	      return matrix(clone(value))
+	          .subset(index, replacement, undefined)
+	          .valueOf();
+	    },
+
+	    'Array, Index, any, any': function (value, index, replacement, defaultValue) {
+	      return matrix(clone(value))
+	          .subset(index, replacement, defaultValue)
+	          .valueOf();
+	    },
+
+	    'Matrix, Index, any': function (value, index, replacement) {
+	      return value.clone().subset(index, replacement);
+	    },
+
+	    'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
+	      return value.clone().subset(index, replacement, defaultValue);
+	    },
+
+	    'string, Index, string': _setSubstring,
+	    'string, Index, string, string': _setSubstring,
+	    'Object, Index, any': _setObjectProperty
+	  });
+
+	  subset.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+
+	  return subset;
+
+	  /**
+	   * Retrieve a subset of a string
+	   * @param {string} str            string from which to get a substring
+	   * @param {Index} index           An index containing ranges for each dimension
+	   * @returns {string} substring
+	   * @private
+	   */
+	  function _getSubstring(str, index) {
+	    if (!index || index.isIndex !== true) {
+	      // TODO: better error message
+	      throw new TypeError('Index expected');
+	    }
+	    if (index.size().length != 1) {
+	      throw new DimensionError(index.size().length, 1);
+	    }
+
+	    // validate whether the range is out of range
+	    var strLen = str.length;
+	    validateIndex(index.min()[0], strLen);
+	    validateIndex(index.max()[0], strLen);
+
+	    var range = index.dimension(0);
+
+	    var substr = '';
+	    range.forEach(function (v) {
+	      substr += str.charAt(v);
+	    });
+
+	    return substr;
+	  }
+
+	  /**
+	   * Replace a substring in a string
+	   * @param {string} str            string to be replaced
+	   * @param {Index} index           An index containing ranges for each dimension
+	   * @param {string} replacement    Replacement string
+	   * @param {string} [defaultValue] Default value to be uses when resizing
+	   *                                the string. is ' ' by default
+	   * @returns {string} result
+	   * @private
+	   */
+	  function _setSubstring(str, index, replacement, defaultValue) {
+	    if (!index || index.isIndex !== true) {
+	      // TODO: better error message
+	      throw new TypeError('Index expected');
+	    }
+	    if (index.size().length != 1) {
+	      throw new DimensionError(index.size().length, 1);
+	    }
+	    if (defaultValue !== undefined) {
+	      if (typeof defaultValue !== 'string' || defaultValue.length !== 1) {
+	        throw new TypeError('Single character expected as defaultValue');
+	      }
+	    }
+	    else {
+	      defaultValue = ' ';
+	    }
+
+	    var range = index.dimension(0);
+	    var len = range.size()[0];
+
+	    if (len != replacement.length) {
+	      throw new DimensionError(range.size()[0], replacement.length);
+	    }
+
+	    // validate whether the range is out of range
+	    var strLen = str.length;
+	    validateIndex(index.min()[0]);
+	    validateIndex(index.max()[0]);
+
+	    // copy the string into an array with characters
+	    var chars = [];
+	    for (var i = 0; i < strLen; i++) {
+	      chars[i] = str.charAt(i);
+	    }
+
+	    range.forEach(function (v, i) {
+	      chars[v] = replacement.charAt(i[0]);
+	    });
+
+	    // initialize undefined characters with a space
+	    if (chars.length > strLen) {
+	      for (i = strLen - 1, len = chars.length; i < len; i++) {
+	        if (!chars[i]) {
+	          chars[i] = defaultValue;
+	        }
+	      }
+	    }
+
+	    return chars.join('');
+	  }
+	}
+
+	/**
+	 * Retrieve a property from an object
+	 * @param {Object} object
+	 * @param {Index} index
+	 * @return {*} Returns the value of the property
+	 * @private
+	 */
+	function _getObjectProperty (object, index) {
+	  if (index.size().length !== 1) {
+	    throw new DimensionError(index.size(), 1);
+	  }
+
+	  var key = index.dimension(0);
+	  if (typeof key !== 'string') {
+	    throw new TypeError('String expected as index to retrieve an object property');
+	  }
+
+	  return object[key];
+	}
+
+	/**
+	 * Set a property on an object
+	 * @param {Object} object
+	 * @param {Index} index
+	 * @param {*} replacement
+	 * @return {*} Returns the updated object
+	 * @private
+	 */
+	function _setObjectProperty (object, index, replacement) {
+	  if (index.size().length !== 1) {
+	    throw new DimensionError(index.size(), 1);
+	  }
+
+	  var key = index.dimension(0);
+	  if (typeof key !== 'string') {
+	    throw new TypeError('String expected as index to retrieve an object property');
+	  }
+
+	  // clone the object, and apply the property to the clone
+	  var updated = clone(object);
+	  updated[key] = replacement;
+
+	  return updated;
+	}
+
+	exports.name = 'subset';
+	exports.factory = factory;
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
+	  var Node = load(__webpack_require__(272));
+
+	  /**
+	   * @constructor ArrayNode
+	   * @extends {Node}
+	   * Holds an 1-dimensional array with items
+	   * @param {Node[]} [items]   1 dimensional array with items
+	   */
+	  function ArrayNode(items) {
+	    if (!(this instanceof ArrayNode)) {
+	      throw new SyntaxError('Constructor must be called with the new operator');
+	    }
+
+	    this.items = items || [];
+
+	    // validate input
+	    if (!Array.isArray(this.items)
+	        || !this.items.every(function (item) {return item && item.isNode;})) {
+	      throw new TypeError('Array containing Nodes expected');
+	    }
+
+	    // TODO: deprecated since v3, remove some day
+	    var deprecated = function () {
+	      throw new Error('Property `ArrayNode.nodes` is deprecated, use `ArrayNode.items` instead');
+	    };
+	    Object.defineProperty(this, 'nodes', { get: deprecated, set: deprecated });
+	  }
+
+	  ArrayNode.prototype = new Node();
+
+	  ArrayNode.prototype.type = 'ArrayNode';
+
+	  ArrayNode.prototype.isArrayNode = true;
+
+	  /**
+	   * Compile the node to javascript code
+	   * @param {Object} defs     Object which can be used to define functions
+	   *                          or constants globally available for the compiled
+	   *                          expression
+	   * @param {Object} args     Object with local function arguments, the key is
+	   *                          the name of the argument, and the value is `true`.
+	   *                          The object may not be mutated, but must be
+	   *                          extended instead.
+	   * @private
+	   */
+	  ArrayNode.prototype._compile = function (defs, args) {
+	    var asMatrix = (defs.math.config().matrix !== 'Array');
+
+	    var items = this.items.map(function (node) {
+	      return node._compile(defs, args);
+	    });
+
+	    return (asMatrix ? 'math.matrix([' : '[') +
+	        items.join(',') +
+	        (asMatrix ? '])' : ']');
+	  };
+
+	  /**
+	   * Execute a callback for each of the child nodes of this node
+	   * @param {function(child: Node, path: string, parent: Node)} callback
+	   */
+	  ArrayNode.prototype.forEach = function (callback) {
+	    for (var i = 0; i < this.items.length; i++) {
+	      var node = this.items[i];
+	      callback(node, 'items[' + i + ']', this);
+	    }
+	  };
+
+	  /**
+	   * Create a new ArrayNode having it's childs be the results of calling
+	   * the provided callback function for each of the childs of the original node.
+	   * @param {function(child: Node, path: string, parent: Node): Node} callback
+	   * @returns {ArrayNode} Returns a transformed copy of the node
+	   */
+	  ArrayNode.prototype.map = function (callback) {
+	    var items = [];
+	    for (var i = 0; i < this.items.length; i++) {
+	      items[i] = this._ifNode(callback(this.items[i], 'items[' + i + ']', this));
+	    }
+	    return new ArrayNode(items);
+	  };
+
+	  /**
+	   * Create a clone of this node, a shallow copy
+	   * @return {ArrayNode}
+	   */
+	  ArrayNode.prototype.clone = function() {
+	    return new ArrayNode(this.items.slice(0));
+	  };
+
+	  /**
+	   * Get string representation
+	   * @param {Object} options
+	   * @return {string} str
+	   * @override
+	   */
+	  ArrayNode.prototype._toString = function(options) {
+	    var items = this.items.map(function (node) {
+	      return node.toString(options);
+	    });
+	    return '[' + items.join(', ') + ']';
+	  };
+
+	  /**
+	   * Get LaTeX representation
+	   * @param {Object} options
+	   * @return {string} str
+	   */
+	  ArrayNode.prototype._toTex = function(options) {
+	    var s = '\\begin{bmatrix}';
+
+	    this.items.forEach(function(node) {
+	      if (node.items) {
+	        s += node.items.map(function(childNode) {
+	          return childNode.toTex(options);
+	        }).join('&');
+	      }
+	      else {
+	        s += node.toTex(options);
+	      }
+
+	      // new line
+	      s += '\\\\';
+	    });
+	    s += '\\end{bmatrix}';
+	    return s;
+	  };
+
+	  return ArrayNode;
+	}
+
+	exports.name = 'ArrayNode';
+	exports.path = 'expression.node';
+	exports.factory = factory;
+
+
+/***/ },
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28651,32 +30544,80 @@ return /******/ (function(modules) { // webpackBootstrap
 	var latex = __webpack_require__(32);
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
-	  var ArrayNode = load(__webpack_require__(269));
+	  var Node = load(__webpack_require__(272));
+	  var ArrayNode = load(__webpack_require__(277));
+	  var matrix = load(__webpack_require__(52));
+	  var assign = load(__webpack_require__(279));
+	  var access = load(__webpack_require__(274));
 
-	  var keywords = __webpack_require__(271);
-	  var operators = __webpack_require__(273);
+	  var keywords = __webpack_require__(273);
+	  var operators = __webpack_require__(280);
 
 	  /**
 	   * @constructor AssignmentNode
 	   * @extends {Node}
-	   * Define a symbol, like "a = 3.2"
 	   *
-	   * @param {string} name       Symbol name
-	   * @param {Node} expr         The expression defining the symbol
+	   * Define a symbol, like `a=3.2`, update a property like `a.b=3.2`, or
+	   * replace a subset of a matrix like `A[2,2]=42`.
+	   *
+	   * Syntax:
+	   *
+	   *     new AssignmentNode(symbol, value)
+	   *     new AssignmentNode(object, index, value)
+	   *
+	   * Usage:
+	   *
+	   *    new AssignmentNode(new SymbolNode('a'), new ConstantNode(2));                      // a=2
+	   *    new AssignmentNode(new SymbolNode('a'), new IndexNode('b'), new ConstantNode(2))   // a.b=2
+	   *    new AssignmentNode(new SymbolNode('a'), new IndexNode(1, 2), new ConstantNode(3))  // a[1,2]=3
+	   *
+	   * @param {SymbolNode | AccessorNode} object  Object on which to assign a value
+	   * @param {IndexNode} [index=null]            Index, property name or matrix
+	   *                                            index. Optional. If not provided
+	   *                                            and `object` is a SymbolNode,
+	   *                                            the property is assigned to the
+	   *                                            global scope.
+	   * @param {Node} value                        The value to be assigned
 	   */
-	  function AssignmentNode(name, expr) {
+	  function AssignmentNode(object, index, value) {
 	    if (!(this instanceof AssignmentNode)) {
 	      throw new SyntaxError('Constructor must be called with the new operator');
 	    }
 
-	    // validate input
-	    if (typeof name !== 'string') throw new TypeError('String expected for parameter "name"');
-	    if (!(expr && expr.isNode))  throw new TypeError('Node expected for parameter "expr"');
-	    if (name in keywords)         throw new Error('Illegal symbol name, "'  + name +  '" is a reserved keyword');
+	    this.object = object;
+	    this.index = value ? index : null;
+	    this.value = value ? value : index;
 
-	    this.name = name;
-	    this.expr = expr;
+	    // validate input
+	    if (!object || !(object.isSymbolNode || object.isAccessorNode)) {
+	      throw new TypeError('SymbolNode or AccessorNode expected as "object"');
+	    }
+	    if (object && object.isSymbolNode && object.name === 'end') {
+	      throw new Error('Cannot assign to symbol "end"');
+	    }
+	    if (this.index && !this.index.isIndexNode) {
+	      throw new TypeError('IndexNode expected as "index"');
+	    }
+	    if (!this.value || !this.value.isNode) {
+	      throw new TypeError('Node expected as "value"');
+	    }
+
+	    // readonly property name
+	    Object.defineProperty(this, 'name', {
+	      get: function () {
+	        if (this.index) {
+	          return (this.index.isObjectProperty())
+	              ? this.index.getObjectProperty()
+	              : '';
+	        }
+	        else {
+	          return this.object.name || '';
+	        }
+	      }.bind(this),
+	      set: function () {
+	        throw new Error('Cannot assign a new name, name is read-only');
+	      }
+	    });
 	  }
 
 	  AssignmentNode.prototype = new Node();
@@ -28697,7 +30638,76 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @private
 	   */
 	  AssignmentNode.prototype._compile = function (defs, args) {
-	    return 'scope["' + this.name + '"] = ' + this.expr._compile(defs, args) + '';
+	    defs.assign = assign;
+	    defs.access = access;
+
+	    var size;
+	    var object = this.object._compile(defs, args);
+	    var index = this.index ? this.index._compile(defs, args) : null;
+	    var value = this.value._compile(defs, args);
+
+	    if (!this.index) {
+	      // apply a variable to the scope, for example `a=2`
+	      if (!this.object.isSymbolNode) {
+	        throw new TypeError('SymbolNode expected as object');
+	      }
+
+	      return 'scope["' + this.object.name + '"] = ' + value;
+	    }
+	    else if (this.index.isObjectProperty()) {
+	      // apply an object property for example `a.b=2`
+	      return object + '["' + this.index.getObjectProperty() + '"] = ' + value;
+	    }
+	    else if (this.object.isSymbolNode) {
+	      // update a matrix subset, for example `a[2]=3`
+	      size = this.index.needsSize() ? 'var size = math.size(object).valueOf();' : '';
+
+	      // apply updated object to scope
+	      return '(function () {' +
+	          '  var object = ' + object + ';' +
+	          '  var value = ' + value + ';' +
+	          '  ' + size +
+	          '  scope["' + this.object.name + '"] = assign(object, ' + index + ', value);' +
+	          '  return value;' +
+	          '})()';
+	    }
+	    else { // this.object.isAccessorNode === true
+	      // update a matrix subset, for example `a.b[2]=3`
+	      size = this.index.needsSize() ? 'var size = math.size(object).valueOf();' : '';
+
+	      // we will not use the _compile of the AccessorNode, but compile it
+	      // ourselves here as we need the parent object of the AccessorNode:
+	      // wee need to apply the updated object to parent object
+	      var parentObject = this.object.object._compile(defs, args);
+
+	      if (this.object.index.isObjectProperty()) {
+	        var parentProperty = '["' + this.object.index.getObjectProperty() + '"]';
+	        return '(function () {' +
+	            '  var parent = ' + parentObject + ';' +
+	            '  var object = parent' + parentProperty + ';' + // parentIndex is a property
+	            '  var value = ' + value + ';' +
+	            size +
+	            '  parent' + parentProperty + ' = assign(object, ' + index + ', value);' +
+	            '  return value;' +
+	            '})()';
+	      }
+	      else {
+	        // if some parameters use the 'end' parameter, we need to calculate the size
+	        var parentSize = this.object.index.needsSize() ? 'var size = math.size(parent).valueOf();' : '';
+	        var parentIndex = this.object.index._compile(defs, args);
+
+	        return '(function () {' +
+	            '  var parent = ' + parentObject + ';' +
+	            '  ' + parentSize +
+	            '  var parentIndex = ' + parentIndex + ';' +
+	            '  var object = access(parent, parentIndex);' +
+	            '  var value = ' + value + ';' +
+	            '  ' + size +
+	            '  assign(parent, parentIndex, assign(object, ' + index + ', value));' +
+	            '  return value;' +
+	            '})()';
+	      }
+	    }
 	  };
 
 
@@ -28706,7 +30716,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {function(child: Node, path: string, parent: Node)} callback
 	   */
 	  AssignmentNode.prototype.forEach = function (callback) {
-	    callback(this.expr, 'expr', this);
+	    callback(this.object, 'object', this);
+	    if (this.index) {
+	      callback(this.index, 'index', this);
+	    }
+	    callback(this.value, 'value', this);
 	  };
 
 	  /**
@@ -28716,7 +30730,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @returns {AssignmentNode} Returns a transformed copy of the node
 	   */
 	  AssignmentNode.prototype.map = function (callback) {
-	    return new AssignmentNode(this.name, this._ifNode(callback(this.expr, 'expr', this)));
+	    var object = this._ifNode(callback(this.object, 'object', this));
+	    var index = this.index
+	        ? this._ifNode(callback(this.index, 'index', this))
+	        : null;
+	    var value = this._ifNode(callback(this.value, 'value', this));
+
+	    return new AssignmentNode(object, index, value);
 	  };
 
 	  /**
@@ -28724,18 +30744,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {AssignmentNode}
 	   */
 	  AssignmentNode.prototype.clone = function() {
-	    return new AssignmentNode(this.name, this.expr);
+	    return new AssignmentNode(this.object, this.index, this.value);
 	  };
 
 	  /*
 	   * Is parenthesis needed?
 	   * @param {node} node
-	   * @param {string} parenthesis
+	   * @param {string} [parenthesis='keep']
 	   * @private
 	   */
 	  function needParenthesis(node, parenthesis) {
+	    if (!parenthesis) {
+	      parenthesis = 'keep';
+	    }
+
 	    var precedence = operators.getPrecedence(node, parenthesis);
-	    var exprPrecedence = operators.getPrecedence(node.expr, parenthesis);
+	    var exprPrecedence = operators.getPrecedence(node.value, parenthesis);
 	    return (parenthesis === 'all')
 	      || ((exprPrecedence !== null) && (exprPrecedence <= precedence));
 	  }
@@ -28746,12 +30770,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {string}
 	   */
 	  AssignmentNode.prototype._toString = function(options) {
-	    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
-	    var expr = this.expr.toString(options);
-	    if (needParenthesis(this, parenthesis)) {
-	      expr = '(' + expr + ')';
+	    var object = this.object.toString(options);
+	    var index = this.index ? this.index.toString(options) : '';
+	    var value = this.value.toString(options);
+	    if (needParenthesis(this, options && options.parenthesis)) {
+	      value = '(' + value + ')';
 	    }
-	    return this.name + ' = ' + expr;
+
+	    return object + index + ' = ' + value;
 	  };
 
 	  /**
@@ -28760,13 +30786,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {string}
 	   */
 	  AssignmentNode.prototype._toTex = function(options) {
-	    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
-	    var expr = this.expr.toTex(options);
-	    if (needParenthesis(this, parenthesis)) {
-	      expr = '\\left(' + expr + '\\right)';
+	    var object = this.object.toTex(options);
+	    var index = this.index ? this.index.toTex(options) : '';
+	    var value = this.value.toTex(options);
+	    if (needParenthesis(this, options && options.parenthesis)) {
+	      value = '\\left(' + value + '\\right)';
 	    }
 
-	    return latex.toSymbol(this.name) + ':=' + expr;
+	    return object + index + ':=' + value;
 	  };
 
 	  return AssignmentNode;
@@ -28778,7 +30805,64 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 273 */
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var errorTransform = __webpack_require__(275).transform;
+
+	function factory (type, config, load, typed) {
+	  var subset = load(__webpack_require__(276));
+	  var matrix = load(__webpack_require__(52));
+
+	  /**
+	   * Replace part of an object:
+	   *
+	   * - Assign a property to an object
+	   * - Replace a part of a string
+	   * - Replace a matrix subset
+	   *
+	   * @param {Object | Array | Matrix | string} object
+	   * @param {Index} index
+	   * @param {*} value
+	   * @return {Object | Array | Matrix | string} Returns the original object
+	   *                                            except in case of a string
+	   */
+	  return function assign(object, index, value) {
+	    try {
+	      if (Array.isArray(object)) {
+	        return matrix(object).subset(index, value).valueOf();
+	      }
+	      else if (object && typeof object.subset === 'function') { // Matrix
+	        return object.subset(index, value);
+	      }
+	      else if (typeof object === 'string') {
+	        // TODO: move setStringSubset into a separate util file, use that
+	        return subset(object, index, value);
+	      }
+	      else if (typeof object === 'object') {
+	        if (!index.isObjectProperty()) {
+	          throw TypeError('Cannot apply a numeric index as object property');
+	        }
+	        object[index.getObjectProperty()] = value;
+	        return object;
+	      }
+	      else {
+	        throw new TypeError('Cannot apply index: unsupported type of object');
+	      }
+	    }
+	    catch (err) {
+	        throw errorTransform(err);
+	    }
+	  }
+	}
+
+	exports.factory = factory;
+
+
+/***/ },
+/* 280 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -29100,14 +31184,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 274 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
-	  var ResultSet = load(__webpack_require__(71));
+	  var Node = load(__webpack_require__(272));
+	  var ResultSet = load(__webpack_require__(72));
 
 	  /**
 	   * @constructor BlockNode
@@ -29252,16 +31336,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 275 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var latex = __webpack_require__(32);
-	var operators = __webpack_require__(273);
+	var operators = __webpack_require__(280);
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
 
 	  /**
 	   * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
@@ -29438,7 +31522,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 276 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29446,7 +31530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var getType = __webpack_require__(41).type;
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
 
 	  /**
 	   * A ConstantNode holds a constant value like a number or string. A ConstantNode
@@ -29536,10 +31620,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      case 'number':
 	        // TODO: replace this with using config.number
 	        var numConfig = defs.math.config().number;
-	        if (numConfig === 'bignumber') {
+	        if (numConfig === 'BigNumber') {
 	          return 'math.bignumber("' + this.value + '")';
 	        }
-	        else if (numConfig === 'fraction') {
+	        else if (numConfig === 'Fraction') {
 	          return 'math.fraction("' + this.value + '")';
 	        }
 	        else {
@@ -29643,21 +31727,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 277 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var keywords = __webpack_require__(271);
+	var keywords = __webpack_require__(273);
 	var latex = __webpack_require__(32);
-	var operators = __webpack_require__(273);
+	var operators = __webpack_require__(280);
 
 	function isString (x) {
 	  return typeof x === 'string';
 	}
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
 
 	  /**
 	   * @constructor FunctionAssignmentNode
@@ -29808,17 +31892,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 278 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
-	  var RangeNode = load(__webpack_require__(279));
-	  var SymbolNode = load(__webpack_require__(280));
+	  var Node = load(__webpack_require__(272));
+	  var RangeNode = load(__webpack_require__(286));
+	  var SymbolNode = load(__webpack_require__(287));
 
-	  var Range = load(__webpack_require__(66));
+	  var Range = load(__webpack_require__(67));
 
 	  var isArray = Array.isArray;
 
@@ -29826,25 +31910,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @constructor IndexNode
 	   * @extends Node
 	   *
-	   * get a subset of a matrix
+	   * Describes a subset of a matrix or an object property.
+	   * Cannot be used on its own, needs to be used within an AccessorNode or
+	   * AssignmentNode.
 	   *
-	   * @param {Node} object
-	   * @param {Node[]} ranges
+	   * @param {Node[]} dimensions
+	   * @param {boolean} [dotNotation=false]  Optional property describing whether
+	   *                                       this index was written using dot
+	   *                                       notation like `a.b`, or using bracket
+	   *                                       notation like `a["b"]` (default).
+	   *                                       Used to stringify an IndexNode.
 	   */
-	  function IndexNode(object, ranges) {
+	  function IndexNode(dimensions, dotNotation) {
 	    if (!(this instanceof IndexNode)) {
 	      throw new SyntaxError('Constructor must be called with the new operator');
 	    }
 
+	    this.dimensions = dimensions;
+	    this.dotNotation = dotNotation || false;
+
 	    // validate input
-	    if (!(object && object.isNode)) throw new TypeError('Node expected for parameter "object"');
-	    if (!isArray(ranges)
-	        || !ranges.every(function (range) {return range && range.isNode;})) {
-	      throw new TypeError('Array containing Nodes expected for parameter "ranges"');
+	    if (!isArray(dimensions)
+	        || !dimensions.every(function (range) {return range && range.isNode;})) {
+	      throw new TypeError('Array containing Nodes expected for parameter "dimensions"');
+	    }
+	    if (this.dotNotation && !this.isObjectProperty()) {
+	      throw new Error('dotNotation only applicable for object properties');
 	    }
 
-	    this.object = object;
-	    this.ranges = ranges;
+	    // TODO: deprecated since v3, remove some day
+	    var deprecated = function () {
+	      throw new Error('Property `IndexNode.object` is deprecated, use `IndexNode.fn` instead');
+	    };
+	    Object.defineProperty(this, 'object', { get: deprecated, set: deprecated });
 	  }
 
 	  IndexNode.prototype = new Node();
@@ -29854,23 +31952,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  IndexNode.prototype.isIndexNode = true;
 
 	  /**
-	   * Compile the node to javascript code
-	   * @param {Object} defs     Object which can be used to define functions
-	   *                          or constants globally available for the compiled
-	   *                          expression
-	   * @param {Object} args     Object with local function arguments, the key is
-	   *                          the name of the argument, and the value is `true`.
-	   *                          The object may not be mutated, but must be
-	   *                          extended instead.
-	   * @return {string} js
-	   * @private
-	   */
-	  IndexNode.prototype._compile = function (defs, args) {
-	    return this.compileSubset(defs, args);
-	  };
-
-	  /**
-	   * Compile the node to javascript code
+	   * Compile all range nodes
+	   *
+	   * When some of the dimensions has `end` defined, the IndexNode requires
+	   * a variable `size` to be defined in the current closure, and must contain
+	   * the size of the matrix that's being handled. To check whether the `size`
+	   * variable is needed, call IndexNode.needsSize().
+	   *
 	   * @param {Object} defs           Object which can be used to define functions
 	   *                                or constants globally available for the
 	   *                                compiled expression
@@ -29878,27 +31966,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *                                the name of the argument, and the value is `true`.
 	   *                                The object may not be mutated, but must be
 	   *                                extended instead.
-	   * @param {string} [replacement]  If provided, the function returns
-	   *                                  "math.subset(obj, math.index(...), replacement)"
-	   *                                Else, the function returns
-	   *                                  "math.subset(obj, math.index(...))"
-	   * @return {string} js
-	   * @returns {string}
+	   * @return {string} code
 	   */
-	  IndexNode.prototype.compileSubset = function (defs, args, replacement) {
-	    // check whether any of the ranges expressions uses the context symbol 'end'
-	    function test(node) {
-	      return (node && node.isSymbolNode) && (node.name == 'end');
-	    }
+	  IndexNode.prototype._compile = function (defs, args) {
+	    // args can be mutated by IndexNode, when dimensions use `end`
+	    var childArgs = Object.create(args);
 
-	    var someUseEnd = false;
-	    var rangesUseEnd = this.ranges.map(function (range) {
-	      var useEnd = range.filter(test).length > 0;
-	      someUseEnd = useEnd ? useEnd : someUseEnd;
-	      return useEnd;
-	    });
-
-	    // create a Range from start, step and end
+	    // helper function to create a Range from start, step and end
 	    defs.range = function (start, end, step) {
 	      return new Range(
 	          (start && start.isBigNumber === true) ? start.toNumber() : start,
@@ -29907,28 +31981,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	      );
 	    };
 
-	    var childArgs = Object.create(args);
-
 	    // TODO: implement support for bignumber (currently bignumbers are silently
 	    //       reduced to numbers when changing the value to zero-based)
 
 	    // TODO: Optimization: when the range values are ConstantNodes,
 	    //       we can beforehand resolve the zero-based value
 
-	    var ranges = this.ranges.map(function (range, i) {
-	      var useEnd = rangesUseEnd[i];
+	    // optimization for a simple object property
+	    var dimensions = this.dimensions.map(function (range, i) {
 	      if (range && range.isRangeNode) {
-	        if (useEnd) {
+	        if (range.needsEnd()) {
 	          childArgs.end = true;
 
 	          // resolve end and create range
 	          return '(function () {' +
-	              '  var end = size[' + i + '];' +
-	              '  return range(' +
-	              '    ' + range.start._compile(defs, childArgs) + ', ' +
-	              '    ' + range.end._compile(defs, childArgs) + ', ' +
-	              '    ' + (range.step ? range.step._compile(defs, childArgs) : '1') +
-	              '  );' +
+	              'var end = size[' + i + ']; ' +
+	              'return range(' +
+	              range.start._compile(defs, childArgs) + ', ' +
+	              range.end._compile(defs, childArgs) + ', ' +
+	              (range.step ? range.step._compile(defs, childArgs) : '1') +
+	              '); ' +
 	              '})()';
 	        }
 	        else {
@@ -29940,42 +32012,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	              ')';
 	        }
 	      }
-	      else {
-	        if (useEnd) {
-	          childArgs.end = true;
+	      if (range.isSymbolNode && range.name === 'end') {
+	        childArgs.end = true;
 
-	          // resolve the parameter 'end'
-	          return '(function () {' +
-	              '  var end = size[' + i + '];' +
-	              '  return ' + range._compile(defs, childArgs) + ';' +
-	              '})()'
-	        }
-	        else {
-	          // just evaluate the expression
-	          return range._compile(defs, childArgs);
-	        }
+	        // resolve the parameter 'end'
+	        return '(function () {' +
+	            'var end = size[' + i + ']; ' +
+	            'return ' + range._compile(defs, childArgs) + '; ' +
+	            '})()'
+	      }
+	      else { // ConstantNode
+	        return range._compile(defs, childArgs);
 	      }
 	    });
 
-	    // if some parameters use the 'end' parameter, we need to calculate the size
-	    if (someUseEnd) {
-	      return '(function () {' +
-	          '  var obj = ' + this.object._compile(defs, childArgs) + ';' +
-	          '  var size = math.size(obj).valueOf();' +
-	          '  return math.subset(' +
-	          '    obj, ' +
-	          '    math.index(' + ranges.join(', ') + ')' +
-	          '    ' + (replacement ? (', ' + replacement) : '') +
-	          '  );' +
-	          '})()';
-	    }
-	    else {
-	      return 'math.subset(' +
-	          this.object._compile(defs, childArgs) + ',' +
-	          'math.index(' + ranges.join(', ') + ')' +
-	          (replacement ? (', ' + replacement) : '') +
-	          ')';
-	    }
+	    return 'math.index(' + dimensions.join(', ') + ')';
 	  };
 
 	  /**
@@ -29983,12 +32034,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {function(child: Node, path: string, parent: Node)} callback
 	   */
 	  IndexNode.prototype.forEach = function (callback) {
-	    // object
-	    callback(this.object, 'object', this);
-
-	    // ranges
-	    for (var i = 0; i < this.ranges.length; i++) {
-	      callback(this.ranges[i], 'ranges[' + i + ']', this);
+	    for (var i = 0; i < this.dimensions.length; i++) {
+	      callback(this.dimensions[i], 'dimensions[' + i + ']', this);
 	    }
 	  };
 
@@ -29999,22 +32046,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @returns {IndexNode} Returns a transformed copy of the node
 	   */
 	  IndexNode.prototype.map = function (callback) {
-	    var object = this._ifNode(callback(this.object, 'object', this));
-
-	    var ranges = [];
-	    for (var i = 0; i < this.ranges.length; i++) {
-	      ranges[i] = this._ifNode(callback(this.ranges[i], 'ranges[' + i + ']', this));
+	    var dimensions = [];
+	    for (var i = 0; i < this.dimensions.length; i++) {
+	      dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this));
 	    }
 
-	    return new IndexNode(object, ranges);
-	  };
-
-	  /**
-	   * Get the name of the object linked to this IndexNode
-	   * @return {string} name
-	   */
-	  IndexNode.prototype.objectName = function () {
-	    return this.object.name;
+	    return new IndexNode(dimensions);
 	  };
 
 	  /**
@@ -30022,25 +32059,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {IndexNode}
 	   */
 	  IndexNode.prototype.clone = function () {
-	    return new IndexNode(this.object, this.ranges.slice(0));
+	    return new IndexNode(this.dimensions.slice(0));
 	  };
 
 	  /**
-	   * Is parenthesis needed?
-	   * @private
+	   * Test whether this IndexNode contains a single property name
+	   * @return {boolean}
 	   */
-	  function needParenthesis(node) {
-	    switch (node.object.type) {
-	      case 'ArrayNode':
-	      case 'ConstantNode': //TODO don't know if this one makes sense
-	      case 'SymbolNode':
-	      case 'ParenthesisNode':
-	        //those nodes don't need parentheses within an index node
-	        return false;
-	      default:
-	        return true;
-	    }
-	  }
+	  IndexNode.prototype.isObjectProperty = function () {
+	    return this.dimensions.length === 1 &&
+	        this.dimensions[0].isConstantNode &&
+	        this.dimensions[0].valueType === 'string';
+	  };
+
+	  /**
+	   * Returns the property name if IndexNode contains a property.
+	   * If not, returns null.
+	   * @return {string | null}
+	   */
+	  IndexNode.prototype.getObjectProperty = function () {
+	    return this.isObjectProperty() ? this.dimensions[0].value : null;
+	  };
 
 	  /**
 	   * Get string representation
@@ -30048,12 +32087,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {string} str
 	   */
 	  IndexNode.prototype._toString = function (options) {
-	    var object = this.object.toString(options);
-	    if (needParenthesis(this)) {
-	      object = '(' + object + '(';
-	    }
 	    // format the parameters like "[1, 0:5]"
-	    return object + '[' + this.ranges.join(', ') + ']';
+	    return this.dotNotation
+	        ? ('.' + this.getObjectProperty())
+	        : ('[' + this.dimensions.join(', ') + ']');
 	  };
 
 	  /**
@@ -30062,16 +32099,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {string} str
 	   */
 	  IndexNode.prototype._toTex = function (options) {
-	    var object = this.object.toTex(options);
-	    if (needParenthesis(this)) {
-	      object = '\\left(' + object + '\\right)';
-	    }
-
-	    var ranges = this.ranges.map(function (range) {
+	    var dimensions = this.dimensions.map(function (range) {
 	      return range.toTex(options);
 	    });
 
-	    return object + '_{' + ranges.join(',') + '}';
+	    return this.dotNotation
+	        ? ('.' + this.getObjectProperty() + '')
+	        : ('_{' + dimensions.join(',') + '}');
+	  };
+
+	  /**
+	   * Test whether this IndexNode needs the object size, size of the Matrix
+	   * @return {boolean}
+	   */
+	  IndexNode.prototype.needsSize = function () {
+	    return this.dimensions.some(function (range) {
+	      return (range.isRangeNode && range.needsEnd()) ||
+	          (range.isSymbolNode && range.name === 'end');
+	    });
 	  };
 
 	  return IndexNode;
@@ -30083,15 +32128,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 279 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var operators = __webpack_require__(273);
+	var operators = __webpack_require__(280);
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
 
 	  /**
 	   * @constructor RangeNode
@@ -30124,7 +32169,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	  RangeNode.prototype.isRangeNode = true;
 
 	  /**
+	   * Check whether the RangeNode needs the `end` symbol to be defined.
+	   * This end is the size of the Matrix in current dimension.
+	   * @return {boolean}
+	   */
+	  RangeNode.prototype.needsEnd = function () {
+	    // find all `end` symbols in this RangeNode
+	    var endSymbols = this.filter(function (node) {
+	      return (node && node.isSymbolNode) && (node.name == 'end');
+	    });
+
+	    return endSymbols.length > 0;
+	  };
+
+	  /**
 	   * Compile the node to javascript code
+	   *
+	   * When the range has a symbol `end` defined, the RangeNode requires
+	   * a variable `end` to be defined in the current closure, which must contain
+	   * the length of the of the matrix that's being handled in the range's
+	   * dimension. To check whether the `end` variable is needed, call
+	   * RangeNode.needsEnd().
+	   *
 	   * @param {Object} defs     Object which can be used to define functions
 	   *                          or constants globally available for the compiled
 	   *                          expression
@@ -30280,7 +32346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 280 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30288,9 +32354,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var latex = __webpack_require__(32);
 
 	function factory (type, config, load, typed, math) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
 
-	  var Unit = load(__webpack_require__(74));
+	  var Unit = load(__webpack_require__(75));
 
 	  /**
 	   * @constructor SymbolNode
@@ -30425,19 +32491,162 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 281 */
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var string = __webpack_require__(23);
+
+	function factory (type, config, load, typed) {
+	  var Node = load(__webpack_require__(272));
+
+	  /**
+	   * @constructor ObjectNode
+	   * @extends {Node}
+	   * Holds an object with keys/values
+	   * @param {Object.<string, Node>} [properties]   array with key/value pairs
+	   */
+	  function ObjectNode(properties) {
+	    if (!(this instanceof ObjectNode)) {
+	      throw new SyntaxError('Constructor must be called with the new operator');
+	    }
+
+	    this.properties = properties || {};
+
+	    // validate input
+	    if (properties) {
+	      if (!(typeof properties === 'object') || Object.keys(properties).some(function (key) {
+	            return !properties[key] || !properties[key].isNode;
+	          })) {
+	        throw new TypeError('Object containing Nodes expected');
+	      }
+	    }
+	  }
+
+	  ObjectNode.prototype = new Node();
+
+	  ObjectNode.prototype.type = 'ObjectNode';
+
+	  ObjectNode.prototype.isObjectNode = true;
+
+	  /**
+	   * Compile the node to javascript code
+	   * @param {Object} defs     Object which can be used to define functions
+	   *                          or constants globally available for the compiled
+	   *                          expression
+	   * @param {Object} args     Object with local function arguments, the key is
+	   *                          the name of the argument, and the value is `true`.
+	   *                          The object may not be mutated, but must be
+	   *                          extended instead.
+	   * @return {string} code
+	   * @private
+	   */
+	  ObjectNode.prototype._compile = function (defs, args) {
+	    var entries = [];
+	    for (var key in this.properties) {
+	      if (this.properties.hasOwnProperty(key)) {
+	        entries.push('"' + key + '": ' + this.properties[key]._compile(defs, args));
+	      }
+	    }
+	    return '{' + entries.join(', ') + '}';
+	  };
+
+	  /**
+	   * Execute a callback for each of the child nodes of this node
+	   * @param {function(child: Node, path: string, parent: Node)} callback
+	   */
+	  ObjectNode.prototype.forEach = function (callback) {
+	    for (var key in this.properties) {
+	      if (this.properties.hasOwnProperty(key)) {
+	        callback(this.properties[key], 'properties["' + key + '"]', this);
+	      }
+	    }
+	  };
+
+	  /**
+	   * Create a new ObjectNode having it's childs be the results of calling
+	   * the provided callback function for each of the childs of the original node.
+	   * @param {function(child: Node, path: string, parent: Node): Node} callback
+	   * @returns {ObjectNode} Returns a transformed copy of the node
+	   */
+	  ObjectNode.prototype.map = function (callback) {
+	    var properties = {};
+	    for (var key in this.properties) {
+	      if (this.properties.hasOwnProperty(key)) {
+	        properties[key] = this._ifNode(callback(this.properties[key], 'properties["' + key + '"]', this));
+	      }
+	    }
+	    return new ObjectNode(properties);
+	  };
+
+	  /**
+	   * Create a clone of this node, a shallow copy
+	   * @return {ObjectNode}
+	   */
+	  ObjectNode.prototype.clone = function() {
+	    var properties = {};
+	    for (var key in this.properties) {
+	      if (this.properties.hasOwnProperty(key)) {
+	        properties[key] = this.properties[key];
+	      }
+	    }
+	    return new ObjectNode(properties);
+	  };
+
+	  /**
+	   * Get string representation
+	   * @param {Object} options
+	   * @return {string} str
+	   * @override
+	   */
+	  ObjectNode.prototype._toString = function(options) {
+	    var entries = [];
+	    for (var key in this.properties) {
+	      if (this.properties.hasOwnProperty(key)) {
+	        entries.push('"' + key + '": ' + this.properties[key].toString(options));
+	      }
+	    }
+	    return '{' + entries.join(', ') + '}';
+	  };
+
+	  /**
+	   * Get LaTeX representation
+	   * @param {Object} options
+	   * @return {string} str
+	   */
+	  ObjectNode.prototype._toTex = function(options) {
+	    var entries = [];
+	    for (var key in this.properties) {
+	      if (this.properties.hasOwnProperty(key)) {
+	        entries.push("\\mathbf{" + key + ':} & ' + this.properties[key].toTex(options) + "\\\\");
+	      }
+	    }
+	    return '\\left\\{\\begin{array}{ll}' + entries.join('\n') + '\\end{array}\\right\\}';
+	  };
+
+	  return ObjectNode;
+	}
+
+	exports.name = 'ObjectNode';
+	exports.path = 'expression.node';
+	exports.factory = factory;
+
+
+/***/ },
+/* 289 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var latex = __webpack_require__(32);
-	var operators = __webpack_require__(273);
+	var operators = __webpack_require__(280);
 
 	function factory (type, config, load, typed, math) {
-	  var Node         = load(__webpack_require__(270));
-	  var ConstantNode = load(__webpack_require__(276));
-	  var SymbolNode   = load(__webpack_require__(280));
-	  var FunctionNode = load(__webpack_require__(282));
+	  var Node         = load(__webpack_require__(272));
+	  var ConstantNode = load(__webpack_require__(283));
+	  var SymbolNode   = load(__webpack_require__(287));
+	  var FunctionNode = load(__webpack_require__(290));
 
 	  /**
 	   * @constructor OperatorNode
@@ -30540,9 +32749,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *
 	   * @param {OperatorNode} root
 	   * @param {string} parenthesis
-	   * @param {Node[]} arguments
-	   * @param {bool}
-	   * @return {bool[]}
+	   * @param {Node[]} args
+	   * @param {boolean} latex
+	   * @return {boolean[]}
 	   * @private
 	   */
 	  function calculateNecessaryParentheses(root, parenthesis, args, latex) {
@@ -30846,7 +33055,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 282 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30854,30 +33063,53 @@ return /******/ (function(modules) { // webpackBootstrap
 	var latex = __webpack_require__(32);
 
 	function factory (type, config, load, typed, math) {
-	  var Node = load(__webpack_require__(270));
-	  var SymbolNode = load(__webpack_require__(280));
+	  var Node = load(__webpack_require__(272));
+	  var SymbolNode = load(__webpack_require__(287));
 
 	  /**
 	   * @constructor FunctionNode
-	   * @extends {Node}
+	   * @extends {./Node}
 	   * invoke a list with arguments on a node
-	   * @param {string} name
-	   * @param {Node[]} args
+	   * @param {./Node} fn       Node resolving with a function on which to invoke
+	   *                          the arguments, typically a SymboNode or AccessorNode
+	   * @param {./Node[]} args
 	   */
-	  function FunctionNode(name, args) {
+	  function FunctionNode(fn, args) {
 	    if (!(this instanceof FunctionNode)) {
 	      throw new SyntaxError('Constructor must be called with the new operator');
 	    }
 
+	    // TODO deprecated since v3.0, cleanup some day
+	    if (typeof fn === 'string') {
+	      console.warn('WARNING: passing a string to FunctionNode is deprecated, pass a SymbolNode instead.');
+	      fn = new SymbolNode(fn);
+	    }
+
 	    // validate input
-	    if (typeof name !== 'string') throw new TypeError('string expected for parameter "name"');
+	    if (!fn || !fn.isNode) throw new TypeError('Node expected as parameter "fn"');
 	    if (!Array.isArray(args)
 	        || !args.every(function (arg) {return arg && arg.isNode;})) {
 	      throw new TypeError('Array containing Nodes expected for parameter "args"');
 	    }
 
-	    this.name = name;
+	    this.fn = fn;
 	    this.args = args || [];
+
+	    // readonly property name
+	    Object.defineProperty(this, 'name', {
+	      get: function () {
+	        return this.fn.name || '';
+	      }.bind(this),
+	      set: function () {
+	        throw new Error('Cannot assign a new name, name is read-only');
+	      }
+	    });
+
+	    // TODO: deprecated since v3, remove some day
+	    var deprecated = function () {
+	      throw new Error('Property `FunctionNode.object` is deprecated, use `FunctionNode.fn` instead');
+	    };
+	    Object.defineProperty(this, 'object', { get: deprecated, set: deprecated });
 	  }
 
 	  FunctionNode.prototype = new Node();
@@ -30899,34 +33131,77 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @private
 	   */
 	  FunctionNode.prototype._compile = function (defs, args) {
-	    var fn = defs.math[this.name];
-	    var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
-
-	    // compile the parameters
+	    // compile fn and arguments
+	    var jsFn = this.fn._compile(defs, args);
 	    var jsArgs = this.args.map(function (arg) {
 	      return arg._compile(defs, args);
 	    });
+	    var argsName;
 
-	    if (isRaw) {
-	      // pass unevaluated parameters (nodes) to the function
-	      var paramsName;
-	      var i = 0;
-	      do {
-	        paramsName = 'p' + i;
-	        i++;
+	    if (this.fn.isSymbolNode) {
+	      // we can statically determine whether the function has an rawArgs property
+	      var name = this.fn.name;
+	      var fn = defs.math[name];
+	      var isRaw = (typeof fn === 'function') && (fn.rawArgs == true);
+
+	      if (isRaw) {
+	        // pass unevaluated parameters (nodes) to the function
+	        argsName = this._getUniqueArgumentsName(defs);
+	        defs[argsName] = this.args;
+
+	        return jsFn + '(' + argsName + ', math, scope)';
 	      }
-	      while (paramsName in defs);
-	      defs[paramsName] = this.args;
+	      else {
+	        // "regular" evaluation
+	        return jsFn + '(' + jsArgs.join(', ') + ')';
+	      }
+	    }
+	    else if (this.fn.isAccessorNode && this.fn.index.isObjectProperty()) {
+	      // execute the function with the right context: the object of the AccessorNode
+	      argsName = this._getUniqueArgumentsName(defs);
+	      defs[argsName] = this.args;
 
-	      return '("' + this.name + '" in scope ? ' +
-	          'scope["' + this.name + '"](' + jsArgs.join(', ') + ') : ' +
-	          'math["' + this.name + '"]' + '(' + paramsName + ', math, scope))';
+	      var jsObject = this.fn.object._compile(defs, args);
+	      var prop = this.fn.index.getObjectProperty();
+
+	      return '(function () {' +
+	          'var object = ' + jsObject + ';' +
+	          'return (object["' + prop + '"] && object["' + prop + '"].rawArgs) ' +
+	          ' ? object["' + prop + '"](' + argsName + ', math, scope)' +
+	          ' : object["' + prop + '"](' + jsArgs.join(', ') + ')' +
+	          '})()';
 	    }
-	    else {
-	      // "regular" evaluation
-	      var symbol = new SymbolNode(this.name);
-	      return symbol._compile(defs, args) + '(' + jsArgs.join(', ') + ')';
+	    else { // this.fn.isAccessorNode && !this.fn.index.isObjectProperty()
+	      // we have to dynamically determine whether the function has a rawArgs property
+	      argsName = this._getUniqueArgumentsName(defs);
+	      defs[argsName] = this.args;
+
+	      return '(function () {' +
+	          'var fn = ' + jsFn + ';' +
+	          'return (fn && fn.rawArgs) ' +
+	          ' ? fn(' + argsName + ', math, scope)' +
+	          ' : fn(' + jsArgs.join(', ') + ')' +
+	          '})()';
 	    }
+	  };
+
+	  /**
+	   * Get a unique name for a arguments to store in defs
+	   * @param {Object} defs
+	   * @return {string} A string like 'args1', 'args2', ...
+	   * @private
+	   */
+	  FunctionNode.prototype._getUniqueArgumentsName = function (defs) {
+	    var argsName;
+	    var i = 0;
+
+	    do {
+	      argsName = 'args' + i;
+	      i++;
+	    }
+	    while (argsName in defs);
+
+	    return argsName;
 	  };
 
 	  /**
@@ -30946,11 +33221,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @returns {FunctionNode} Returns a transformed copy of the node
 	   */
 	  FunctionNode.prototype.map = function (callback) {
+	    var fn = this.fn.map(callback);
 	    var args = [];
 	    for (var i = 0; i < this.args.length; i++) {
 	      args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this));
 	    }
-	    return new FunctionNode(this.name, args);
+	    return new FunctionNode(fn, args);
 	  };
 
 	  /**
@@ -30958,7 +33234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @return {FunctionNode}
 	   */
 	  FunctionNode.prototype.clone = function () {
-	    return new FunctionNode(this.name, this.args.slice(0));
+	    return new FunctionNode(this.fn, this.args.slice(0));
 	  };
 
 	  //backup Node's toString function
@@ -30979,9 +33255,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  FunctionNode.prototype.toString = function (options) {
 	    var customString;
-	    if (options && (typeof options.handler === 'object') && options.handler.hasOwnProperty(this.name)) {
+	    var name = this.fn.toString();
+	    if (options && (typeof options.handler === 'object') && options.handler.hasOwnProperty(name)) {
 	      //callback is a map of callback functions
-	      customString = options.handler[this.name](this, options);
+	      customString = options.handler[name](this, options);
 	    }
 
 	    if (typeof customString !== 'undefined') {
@@ -30990,7 +33267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    //fall back to Node's toString
 	    return nodeToString.call(this, options);
-	  }
+	  };
 
 	  /**
 	   * Get string representation
@@ -30999,7 +33276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  FunctionNode.prototype._toString = function (options) {
 	    // format the parameters like "add(2, 4.2)"
-	    return this.name + '(' + this.args.join(', ') + ')';
+	    return this.fn.toString() + '(' + this.args.join(', ') + ')';
 	  };
 
 	  /*
@@ -31169,13 +33446,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 283 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
+	  var Node = load(__webpack_require__(272));
 
 	  /**
 	   * @constructor ParenthesisNode
@@ -31290,133 +33567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	function factory (type, config, load, typed) {
-	  var Node = load(__webpack_require__(270));
-	  var IndexNode = load(__webpack_require__(278));
-
-	  /**
-	   * @constructor UpdateNode
-	   * @extends {Node}
-	   * Update a matrix subset, like A[2,3] = 4.5
-	   *
-	   * @param {IndexNode} index             IndexNode containing symbol and ranges
-	   * @param {Node} expr                   The expression defining the symbol
-	   */
-	  function UpdateNode(index, expr) {
-	    if (!(this instanceof UpdateNode)) {
-	      throw new SyntaxError('Constructor must be called with the new operator');
-	    }
-
-	    if (!(index && index.isIndexNode)) {
-	      throw new TypeError('Expected IndexNode for parameter "index"');
-	    }
-	    if (!(expr && expr.isNode)) {
-	      throw new TypeError('Expected Node for parameter "expr"');
-	    }
-
-	    this.index = index;
-	    this.expr = expr;
-	  }
-
-	  UpdateNode.prototype = new Node();
-
-	  UpdateNode.prototype.type = 'UpdateNode';
-
-	  UpdateNode.prototype.isUpdateNode = true;
-
-	  /**
-	   * Compile the node to javascript code
-	   * @param {Object} defs     Object which can be used to define functions
-	   *                          or constants globally available for the compiled
-	   *                          expression
-	   * @param {Object} args     Object with local function arguments, the key is
-	   *                          the name of the argument, and the value is `true`.
-	   *                          The object may not be mutated, but must be
-	   *                          extended instead.
-	   * @return {string} js
-	   * @private
-	   */
-	  UpdateNode.prototype._compile = function (defs, args) {
-	    var lhs = args[this.index.objectName()]
-	        ? this.name + ' = ' // this is a FunctionAssignment argument
-	        : 'scope["' + this.index.objectName() + '\"]';
-
-	    var rhs = this.index.compileSubset(defs, args, this.expr._compile(defs, args));
-
-	    return lhs + ' = ' + rhs;
-	  };
-
-	  /**
-	   * Execute a callback for each of the child nodes of this node
-	   * @param {function(child: Node, path: string, parent: Node)} callback
-	   */
-	  UpdateNode.prototype.forEach = function (callback) {
-	    callback(this.index, 'index', this);
-	    callback(this.expr, 'expr', this);
-	  };
-
-	  /**
-	   * Create a new UpdateNode having it's childs be the results of calling
-	   * the provided callback function for each of the childs of the original node.
-	   * @param {function(child: Node, path: string, parent: Node): Node} callback
-	   * @returns {UpdateNode} Returns a transformed copy of the node
-	   */
-	  UpdateNode.prototype.map = function (callback) {
-	    return new UpdateNode(
-	        this._ifNode(callback(this.index, 'index', this)),
-	        this._ifNode(callback(this.expr, 'expr', this))
-	    );
-	  };
-
-	  /**
-	   * Create a clone of this node, a shallow copy
-	   * @return {UpdateNode}
-	   */
-	  UpdateNode.prototype.clone = function () {
-	    return new UpdateNode(this.index, this.expr);
-	  };
-
-	  /**
-	   * Get string representation
-	   * @param {Object} options
-	   * @return {string}
-	   */
-	  UpdateNode.prototype._toString = function (options) {
-	    var expr = this.expr.toString(options);
-	    if (options && options.parenthesis === 'all') {
-	      expr = '(' + expr + ')';
-	    }
-	    return this.index.toString(options) + ' = ' + expr;
-	  };
-
-	  /**
-	   * Get LaTeX representation
-	   * @param {Object} options
-	   * @return {string}
-	   */
-	  UpdateNode.prototype._toTex = function (options) {
-	    var expr = this.expr.toTex(options);
-	    if (options && options.parenthesis === 'all') {
-	      expr = '\\left(' + expr + '\\right)';
-	    }
-	    return this.index.toTex(options) + ':=' + expr;
-	  };
-
-	  return UpdateNode;
-	}
-
-	exports.name = 'UpdateNode';
-	exports.path = 'expression.node';
-	exports.factory = factory;
-
-
-/***/ },
-/* 285 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31424,7 +33575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var deepMap = __webpack_require__(19);
 
 	function factory (type, config, load, typed) {
-	  var parse = load(__webpack_require__(268));
+	  var parse = load(__webpack_require__(270));
 
 	  /**
 	   * Evaluate an expression.
@@ -31484,7 +33635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.factory = factory;
 
 /***/ },
-/* 286 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31554,13 +33705,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 287 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var parse = load(__webpack_require__(268));
+	  var parse = load(__webpack_require__(270));
 
 	  /**
 	   * Parse an expression. Returns a node tree, which can be evaluated by
@@ -31609,13 +33760,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 288 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed, math) {
-	  var Parser = load(__webpack_require__(289));
+	  var Parser = load(__webpack_require__(296));
 
 	  /**
 	   * Create a parser. The function creates a new `math.expression.Parser` object.
@@ -31673,13 +33824,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 289 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed, math) {
-	  var _parse = load(__webpack_require__(268));
+	  var _parse = load(__webpack_require__(270));
 
 	  /**
 	   * @constructor Parser
@@ -31829,52 +33980,77 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 290 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(269),
-	  __webpack_require__(272),
-	  __webpack_require__(274),
-	  __webpack_require__(275),
-	  __webpack_require__(276),
-	  __webpack_require__(278),
+	  __webpack_require__(271),
 	  __webpack_require__(277),
-	  __webpack_require__(282),
-	  __webpack_require__(270),
+	  __webpack_require__(278),
 	  __webpack_require__(281),
+	  __webpack_require__(282),
 	  __webpack_require__(283),
-	  __webpack_require__(279),
-	  __webpack_require__(280),
-	  __webpack_require__(284)
+	  __webpack_require__(285),
+	  __webpack_require__(284),
+	  __webpack_require__(290),
+	  __webpack_require__(272),
+	  __webpack_require__(288),
+	  __webpack_require__(289),
+	  __webpack_require__(291),
+	  __webpack_require__(286),
+	  __webpack_require__(287),
+	  __webpack_require__(298)
 	];
 
 
 /***/ },
-/* 291 */
+/* 298 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function factory (type, config, load, typed) {
+	  /**
+	   * @constructor UpdateNode
+	   */
+	  function UpdateNode() {
+	    // TODO: deprecated since v3. Cleanup some day
+	    throw new Error('UpdateNode is deprecated. Use AssignmentNode instead.');
+	  }
+
+	  return UpdateNode;
+	}
+
+	exports.name = 'UpdateNode';
+	exports.path = 'expression.node';
+	exports.factory = factory;
+
+
+/***/ },
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(292),
-	  __webpack_require__(295),
-	  __webpack_require__(297),
-	  __webpack_require__(299),
 	  __webpack_require__(300),
 	  __webpack_require__(302),
+	  __webpack_require__(304),
+	  __webpack_require__(306),
 	  __webpack_require__(307),
-	  __webpack_require__(312),
+	  __webpack_require__(309),
 	  __webpack_require__(314),
-	  __webpack_require__(316)
+	  __webpack_require__(319),
+	  __webpack_require__(321),
+	  __webpack_require__(323)
 	];
 
 
 /***/ },
-/* 292 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(293).transform;
+	var errorTransform = __webpack_require__(275).transform;
 
 	/**
 	 * Attach a transform function to math.range
@@ -31884,7 +34060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * from one-based to zero based
 	 */
 	function factory (type, config, load, typed) {
-	  var concat = load(__webpack_require__(294));
+	  var concat = load(__webpack_require__(301));
 
 	  // @see: comment of concat itself
 	 return typed('concat', {
@@ -31915,27 +34091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var IndexError = __webpack_require__(43);
-
-	/**
-	 * Transform zero-based indices to one-based indices in errors
-	 * @param {Error} err
-	 * @returns {Error} Returns the transformed error
-	 */
-	exports.transform = function (err) {
-	  if (err && err.isIndexError) {
-	    return new IndexError(err.index + 1, err.min + 1, err.max + 1);
-	  }
-
-	  return err;
-	};
-
-
-/***/ },
-/* 294 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31947,7 +34103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var DimensionError = __webpack_require__(42);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Concatenate two or more matrices.
@@ -32009,11 +34165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            throw new TypeError('Integer number expected for dimension');
 	          }
 
-	          if (dim < 0) {
-	            // TODO: would be more clear when throwing a DimensionError here
-	            throw new IndexError(dim);
-	          }
-	          if (i > 0 && dim > prevDim) {
+	          if (dim < 0 || (i > 0 && dim > prevDim)) {
 	            // TODO: would be more clear when throwing a DimensionError here
 	            throw new IndexError(dim, prevDim + 1);
 	          }
@@ -32089,7 +34241,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 295 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32102,8 +34254,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * so you can do something like 'filter([3, -2, 5], x > 0)'.
 	 */
 	function factory (type, config, load, typed) {
-	  var filter = load(__webpack_require__(296));
-	  var SymbolNode = load(__webpack_require__(280));
+	  var filter = load(__webpack_require__(303));
+	  var SymbolNode = load(__webpack_require__(287));
 
 	  function filterTransform(args, math, scope) {
 	    var x, test;
@@ -32159,7 +34311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 296 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32167,7 +34319,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var size = __webpack_require__(40).size;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  
 	  /**
 	   * Filter the items in an array or one dimensional matrix.
@@ -32254,7 +34406,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 297 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32266,7 +34418,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This transform creates a one-based index instead of a zero-based index
 	 */
 	function factory (type, config, load, typed) {
-	  var forEach = load(__webpack_require__(298));
+	  var forEach = load(__webpack_require__(305));
 
 	  return typed('forEach', {
 	    'Array | Matrix, function': function (array, callback) {
@@ -32292,7 +34444,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 298 */
+/* 305 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32360,7 +34512,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 299 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32374,7 +34526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This transform creates a one-based index instead of a zero-based index
 	 */
 	function factory (type, config, load) {
-	  var indexFactory = load(__webpack_require__(67));
+	  var indexFactory = load(__webpack_require__(68));
 
 	  return function indexTransform() {
 	    var args = [];
@@ -32398,8 +34550,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      else if (arg && arg.isBigNumber === true) {
 	        arg = arg.toNumber() - 1;
 	      }
+	      else if (typeof arg === 'string') {
+	        // leave as is
+	      }
 	      else {
-	        throw new TypeError('Ranges must be a Number, Range, Array or Matrix');
+	        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range');
 	      }
 
 	      args[i] = arg;
@@ -32417,7 +34572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 300 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32429,8 +34584,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This transform creates a one-based index instead of a zero-based index
 	 */
 	function factory (type, config, load, typed) {
-	  var map = load(__webpack_require__(301));
-	  var matrix = load(__webpack_require__(51));
+	  var map = load(__webpack_require__(308));
+	  var matrix = load(__webpack_require__(52));
 
 	  return typed('max', {
 	    'Array, function': function (x, callback) {
@@ -32473,7 +34628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 301 */
+/* 308 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32544,13 +34699,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 302 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(293).transform;
-	var isCollection = __webpack_require__(303);
+	var errorTransform = __webpack_require__(275).transform;
+	var isCollection = __webpack_require__(310);
 
 	/**
 	 * Attach a transform function to math.max
@@ -32560,7 +34715,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * from one-based to zero based
 	 */
 	function factory (type, config, load, typed) {
-	  var max = load(__webpack_require__(304));
+	  var max = load(__webpack_require__(311));
 
 	  return typed('max', {
 	    '...any': function (args) {
@@ -32591,7 +34746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 303 */
+/* 310 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32607,16 +34762,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 304 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepForEach = __webpack_require__(305);
-	var reduce = __webpack_require__(306);
+	var deepForEach = __webpack_require__(312);
+	var reduce = __webpack_require__(313);
 
 	function factory (type, config, load, typed) {
-	  var larger = load(__webpack_require__(63));
+	  var larger = load(__webpack_require__(64));
 
 	  /**
 	   * Compute the maximum value of a matrix or a  list with values.
@@ -32707,7 +34862,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 305 */
+/* 312 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -32738,7 +34893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 306 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32757,11 +34912,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	module.exports = function(mat, dim, callback) {
 	  var size = Array.isArray(mat) ? arraySize(mat) : mat.size();
-	  if (dim < 0) {
-	    // TODO: would be more clear when throwing a DimensionError here
-	    throw new IndexError(dim);
-	  }
-	  if (dim >= size.length) {
+	  if (dim < 0 || (dim >= size.length)) {
 	    // TODO: would be more clear when throwing a DimensionError here
 	    throw new IndexError(dim, size.length);
 	  }
@@ -32831,13 +34982,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 307 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(293).transform;
-	var isCollection = __webpack_require__(303);
+	var errorTransform = __webpack_require__(275).transform;
+	var isCollection = __webpack_require__(310);
 
 	/**
 	 * Attach a transform function to math.mean
@@ -32847,7 +34998,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * from one-based to zero based
 	 */
 	function factory (type, config, load, typed) {
-	  var mean = load(__webpack_require__(308));
+	  var mean = load(__webpack_require__(315));
 
 	  return typed('mean', {
 	    '...any': function (args) {
@@ -32878,18 +35029,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 308 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var size = __webpack_require__(40).size;
-	var deepForEach = __webpack_require__(305);
-	var reduce = __webpack_require__(306);
+	var deepForEach = __webpack_require__(312);
+	var reduce = __webpack_require__(313);
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(50));
-	  var divide = load(__webpack_require__(309));
+	  var add = load(__webpack_require__(51));
+	  var divide = load(__webpack_require__(316));
 
 	  /**
 	   * Compute the mean value of matrix or a list with values.
@@ -32944,7 +35095,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @private
 	   */
 	  function _nmean(array, dim){
-		  var sum = reduce(array, dim, add);
+	    var sum = reduce(array, dim, add);
 	    var s = Array.isArray(array) ? size(array) : array.size();
 	    return divide(sum, s[dim]);
 	  }
@@ -32977,7 +35128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 309 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32986,13 +35137,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var divideScalar = load(__webpack_require__(79));
-	  var multiply     = load(__webpack_require__(82));
-	  var inv          = load(__webpack_require__(310));
-	  var matrix       = load(__webpack_require__(51));
+	  var divideScalar = load(__webpack_require__(81));
+	  var multiply     = load(__webpack_require__(84));
+	  var inv          = load(__webpack_require__(317));
+	  var matrix       = load(__webpack_require__(52));
 
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Divide two values, `x / y`.
@@ -33072,7 +35223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 310 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33080,13 +35231,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var util = __webpack_require__(39);
 
 	function factory (type, config, load, typed) {
-	  var matrix       = load(__webpack_require__(51));
-	  var divideScalar = load(__webpack_require__(79));
-	  var addScalar    = load(__webpack_require__(52));
-	  var multiply     = load(__webpack_require__(82));
-	  var unaryMinus   = load(__webpack_require__(76));
-	  var det          = load(__webpack_require__(311));
-	  var eye          = load(__webpack_require__(81));
+	  var matrix       = load(__webpack_require__(52));
+	  var divideScalar = load(__webpack_require__(81));
+	  var addScalar    = load(__webpack_require__(53));
+	  var multiply     = load(__webpack_require__(84));
+	  var unaryMinus   = load(__webpack_require__(78));
+	  var det          = load(__webpack_require__(318));
+	  var eye          = load(__webpack_require__(83));
 
 	  /**
 	   * Calculate the inverse of a square matrix.
@@ -33285,7 +35436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 311 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33295,11 +35446,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var string = util.string;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
-	  var add = load(__webpack_require__(50));
-	  var subtract = load(__webpack_require__(75));
-	  var multiply = load(__webpack_require__(82));
-	  var unaryMinus = load(__webpack_require__(76));
+	  var matrix = load(__webpack_require__(52));
+	  var add = load(__webpack_require__(51));
+	  var subtract = load(__webpack_require__(77));
+	  var multiply = load(__webpack_require__(84));
+	  var unaryMinus = load(__webpack_require__(78));
 
 	  /**
 	   * Calculate the determinant of a matrix.
@@ -33459,13 +35610,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 312 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(293).transform;
-	var isCollection = __webpack_require__(303);
+	var errorTransform = __webpack_require__(275).transform;
+	var isCollection = __webpack_require__(310);
 
 	/**
 	 * Attach a transform function to math.min
@@ -33475,7 +35626,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * from one-based to zero based
 	 */
 	function factory (type, config, load, typed) {
-	  var min = load(__webpack_require__(313));
+	  var min = load(__webpack_require__(320));
 
 	  return typed('min', {
 	    '...any': function (args) {
@@ -33506,16 +35657,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 313 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepForEach = __webpack_require__(305);
-	var reduce = __webpack_require__(306);
+	var deepForEach = __webpack_require__(312);
+	var reduce = __webpack_require__(313);
 
 	function factory (type, config, load, typed) {
-	  var smaller = load(__webpack_require__(59));
+	  var smaller = load(__webpack_require__(60));
 	  
 	  /**
 	   * Compute the maximum value of a matrix or a  list of values.
@@ -33606,7 +35757,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 314 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33618,7 +35769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This transform creates a range which includes the end value
 	 */
 	function factory (type, config, load, typed) {
-	  var range = load(__webpack_require__(315));
+	  var range = load(__webpack_require__(322));
 
 	  return typed('range', {
 	    '...any': function (args) {
@@ -33640,13 +35791,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 315 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  var ZERO = new type.BigNumber(0);
 	  var ONE = new type.BigNumber(1);
@@ -33742,7 +35893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return range;
 
 	  function _out(arr) {
-	    return config.matrix === 'array' ? arr : matrix(arr);
+	    return config.matrix === 'Array' ? arr : matrix(arr);
 	  }
 
 	  function _strRange (str, includeEnd) {
@@ -33752,7 +35903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var fn;
-	    if (config.number === 'bignumber') {
+	    if (config.number === 'BigNumber') {
 	      fn = includeEnd ? _bigRangeInc : _bigRangeEx;
 	      return _out(fn(
 	          new type.BigNumber(r.start),
@@ -33925,12 +36076,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 316 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var errorTransform = __webpack_require__(293).transform;
+	var errorTransform = __webpack_require__(275).transform;
 
 	/**
 	 * Attach a transform function to math.subset
@@ -33939,7 +36090,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * This transform creates a range which includes the end value
 	 */
 	function factory (type, config, load, typed) {
-	  var subset = load(__webpack_require__(317));
+	  var subset = load(__webpack_require__(276));
 
 	  return typed('subset', {
 	    '...any': function (args) {
@@ -33959,194 +36110,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 317 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var clone = __webpack_require__(3).clone;
-	var validateIndex = __webpack_require__(40).validateIndex;
-	var DimensionError = __webpack_require__(42);
-
-	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
-
-	  /**
-	   * Get or set a subset of a matrix or string.
-	   *
-	   * Syntax:
-	   *     math.subset(value, index)                                // retrieve a subset
-	   *     math.subset(value, index, replacement [, defaultValue])  // replace a subset
-	   *
-	   * Examples:
-	   *
-	   *     // get a subset
-	   *     var d = [[1, 2], [3, 4]];
-	   *     math.subset(d, math.index(1, 0));        // returns 3
-	   *     math.subset(d, math.index([0, 2], 1));   // returns [[2], [4]]
-	   *
-	   *     // replace a subset
-	   *     var e = [];
-	   *     var f = math.subset(e, math.index(0, [0, 2]), [5, 6]);  // f = [[5, 6]]
-	   *     var g = math.subset(f, math.index(1, 1), 7, 0);         // g = [[5, 6], [0, 7]]
-	   *
-	   * See also:
-	   *
-	   *     size, resize, squeeze, index
-	   *
-	   * @param {Array | Matrix | string} matrix  An array, matrix, or string
-	   * @param {Index} index                     An index containing ranges for each
-	   *                                          dimension
-	   * @param {*} [replacement]                 An array, matrix, or scalar.
-	   *                                          If provided, the subset is replaced with replacement.
-	   *                                          If not provided, the subset is returned
-	   * @param {*} [defaultValue=undefined]      Default value, filled in on new entries when
-	   *                                          the matrix is resized. If not provided,
-	   *                                          math.matrix elements will be left undefined.
-	   * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
-	   */
-	  var subset = typed('subset', {
-	    // get subset
-	    'Array, Index': function (value, index) {
-	      var m = matrix(value);
-	      var subset = m.subset(index);       // returns a Matrix
-	      return subset && subset.valueOf();  // return an Array (like the input)
-	    },
-
-	    'Matrix, Index': function (value, index) {
-	      return value.subset(index);
-	    },
-
-	    'string, Index': _getSubstring,
-
-	    // set subset
-	    'Array, Index, any': function (value, index, replacement) {
-	      return matrix(clone(value))
-	          .subset(index, replacement, undefined)
-	          .valueOf();
-	    },
-
-	    'Array, Index, any, any': function (value, index, replacement, defaultValue) {
-	      return matrix(clone(value))
-	          .subset(index, replacement, defaultValue)
-	          .valueOf();
-	    },
-
-	    'Matrix, Index, any': function (value, index, replacement) {
-	      return value.clone().subset(index, replacement);
-	    },
-
-	    'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
-	      return value.clone().subset(index, replacement, defaultValue);
-	    },
-
-	    'string, Index, string': _setSubstring,
-	    'string, Index, string, string': _setSubstring
-	  });
-
-	  subset.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
-
-	  return subset;
-
-	  /**
-	   * Retrieve a subset of a string
-	   * @param {string} str            string from which to get a substring
-	   * @param {Index} index           An index containing ranges for each dimension
-	   * @returns {string} substring
-	   * @private
-	   */
-	  function _getSubstring(str, index) {
-	    if (!index || index.isIndex !== true) {
-	      // TODO: better error message
-	      throw new TypeError('Index expected');
-	    }
-	    if (index.size().length != 1) {
-	      throw new DimensionError(index.size().length, 1);
-	    }
-
-	    // validate whether the range is out of range
-	    var strLen = str.length;
-	    validateIndex(index.min()[0], strLen);
-	    validateIndex(index.max()[0], strLen);
-
-	    var range = index.dimension(0);
-
-	    var substr = '';
-	    range.forEach(function (v) {
-	      substr += str.charAt(v);
-	    });
-
-	    return substr;
-	  }
-
-	  /**
-	   * Replace a substring in a string
-	   * @param {string} str            string to be replaced
-	   * @param {Index} index           An index containing ranges for each dimension
-	   * @param {string} replacement    Replacement string
-	   * @param {string} [defaultValue] Default value to be uses when resizing
-	   *                                the string. is ' ' by default
-	   * @returns {string} result
-	   * @private
-	   */
-	  function _setSubstring(str, index, replacement, defaultValue) {
-	    if (!index || index.isIndex !== true) {
-	      // TODO: better error message
-	      throw new TypeError('Index expected');
-	    }
-	    if (index.size().length != 1) {
-	      throw new DimensionError(index.size().length, 1);
-	    }
-	    if (defaultValue !== undefined) {
-	      if (typeof defaultValue !== 'string' || defaultValue.length !== 1) {
-	        throw new TypeError('Single character expected as defaultValue');
-	      }
-	    }
-	    else {
-	      defaultValue = ' ';
-	    }
-
-	    var range = index.dimension(0);
-	    var len = range.size()[0];
-
-	    if (len != replacement.length) {
-	      throw new DimensionError(range.size()[0], replacement.length);
-	    }
-
-	    // validate whether the range is out of range
-	    var strLen = str.length;
-	    validateIndex(index.min()[0]);
-	    validateIndex(index.max()[0]);
-
-	    // copy the string into an array with characters
-	    var chars = [];
-	    for (var i = 0; i < strLen; i++) {
-	      chars[i] = str.charAt(i);
-	    }
-
-	    range.forEach(function (v, i) {
-	      chars[v] = replacement.charAt(i[0]);
-	    });
-
-	    // initialize undefined characters with a space
-	    if (chars.length > strLen) {
-	      for (i = strLen - 1, len = chars.length; i < len; i++) {
-	        if (!chars[i]) {
-	          chars[i] = defaultValue;
-	        }
-	      }
-	    }
-
-	    return chars.join('');
-	  }
-	}
-
-	exports.name = 'subset';
-	exports.factory = factory;
-
-
-/***/ },
-/* 318 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34155,7 +36119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var string = __webpack_require__(23);
 
 	function factory (type, config, load, typed) {
-	  var parser = load(__webpack_require__(288))();
+	  var parser = load(__webpack_require__(295))();
 
 	  /**
 	   * Documentation object
@@ -34269,45 +36233,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 319 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(320),
-	  __webpack_require__(347),
-	  __webpack_require__(379),
-	  __webpack_require__(395),
-	  __webpack_require__(404),
-	  __webpack_require__(409),
-	  __webpack_require__(412),
+	  __webpack_require__(326),
+	  __webpack_require__(353),
+	  __webpack_require__(385),
+	  __webpack_require__(401),
+	  __webpack_require__(410),
+	  __webpack_require__(415),
 	  __webpack_require__(418),
-	  __webpack_require__(427),
+	  __webpack_require__(424),
 	  __webpack_require__(436),
-	  __webpack_require__(441),
+	  __webpack_require__(445),
 	  __webpack_require__(449),
-	  __webpack_require__(490),
-	  __webpack_require__(492)
+	  __webpack_require__(456),
+	  __webpack_require__(458),
+	  __webpack_require__(484),
+	  __webpack_require__(486)
 	];
 
 
 /***/ },
-/* 320 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	  // decomposition
-	  __webpack_require__(321),
-	  __webpack_require__(322),
+	  __webpack_require__(327),
+	  __webpack_require__(328),
 
 	  // solver
-	  __webpack_require__(342),
-	  __webpack_require__(344),
-	  __webpack_require__(346)
+	  __webpack_require__(348),
+	  __webpack_require__(350),
+	  __webpack_require__(352)
 	];
 
 
 /***/ },
-/* 321 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34318,15 +36283,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var abs = load(__webpack_require__(84));
-	  var addScalar = load(__webpack_require__(52));
-	  var divideScalar = load(__webpack_require__(79));
-	  var multiplyScalar = load(__webpack_require__(78));
-	  var subtract = load(__webpack_require__(75));
-	  var larger = load(__webpack_require__(63));
+	  var matrix = load(__webpack_require__(52));
+	  var abs = load(__webpack_require__(86));
+	  var addScalar = load(__webpack_require__(53));
+	  var divideScalar = load(__webpack_require__(81));
+	  var multiplyScalar = load(__webpack_require__(80));
+	  var subtract = load(__webpack_require__(77));
+	  var larger = load(__webpack_require__(64));
 	  var equalScalar = load(__webpack_require__(48));
-	  var unaryMinus = load(__webpack_require__(76));
+	  var unaryMinus = load(__webpack_require__(78));
 	  
 	  var SparseMatrix = type.SparseMatrix;
 	  var DenseMatrix = type.DenseMatrix;
@@ -34700,7 +36665,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 322 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -34713,8 +36678,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var cs_sqr = load(__webpack_require__(323));
-	  var cs_lu = load(__webpack_require__(334));
+	  var cs_sqr = load(__webpack_require__(329));
+	  var cs_lu = load(__webpack_require__(340));
 
 	  /**
 	   * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where
@@ -34778,18 +36743,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 323 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_amd = load(__webpack_require__(324));
-	  var cs_permute = load(__webpack_require__(329));
-	  var cs_etree = load(__webpack_require__(330));
-	  var cs_post = load(__webpack_require__(331));
-	  var cs_counts = load(__webpack_require__(332));
+	  var cs_amd = load(__webpack_require__(330));
+	  var cs_permute = load(__webpack_require__(335));
+	  var cs_etree = load(__webpack_require__(336));
+	  var cs_post = load(__webpack_require__(337));
+	  var cs_counts = load(__webpack_require__(338));
 
 	  /**
 	   * Symbolic ordering and analysis for QR and LU decompositions.
@@ -34947,20 +36912,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 324 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_flip = load(__webpack_require__(325));
-	  var cs_fkeep = load(__webpack_require__(326));
-	  var cs_tdfs = load(__webpack_require__(327));
+	  var cs_flip = load(__webpack_require__(331));
+	  var cs_fkeep = load(__webpack_require__(332));
+	  var cs_tdfs = load(__webpack_require__(333));
 	  
-	  var add       = load(__webpack_require__(50));
-	  var multiply  = load(__webpack_require__(82));
-	  var transpose = load(__webpack_require__(328));
+	  var add       = load(__webpack_require__(51));
+	  var multiply  = load(__webpack_require__(84));
+	  var transpose = load(__webpack_require__(334));
 
 	  /**
 	   * Approximate minimum degree ordering. The minimum degree algorithm is a widely used 
@@ -35526,7 +37491,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 325 */
+/* 331 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35554,7 +37519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 326 */
+/* 332 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35625,7 +37590,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 327 */
+/* 333 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35683,7 +37648,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 328 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35694,7 +37659,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  var DenseMatrix = type.DenseMatrix,
 	      SparseMatrix = type.SparseMatrix;
@@ -35865,7 +37830,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 329 */
+/* 335 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -35942,7 +37907,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 330 */
+/* 336 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36024,14 +37989,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 331 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_tdfs = load(__webpack_require__(327));
+	  var cs_tdfs = load(__webpack_require__(333));
 
 	  /**
 	   * Post order a tree of forest
@@ -36089,16 +38054,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 332 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var transpose = load(__webpack_require__(328));
+	  var transpose = load(__webpack_require__(334));
 	  
-	  var cs_leaf = load(__webpack_require__(333));
+	  var cs_leaf = load(__webpack_require__(339));
 
 	  /**
 	   * Computes the column counts using the upper triangular part of A.
@@ -36216,7 +38181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 333 */
+/* 339 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36288,21 +38253,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 334 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var abs = load(__webpack_require__(84));
-	  var divideScalar = load(__webpack_require__(79));
-	  var multiply = load(__webpack_require__(82));
+	  var abs = load(__webpack_require__(86));
+	  var divideScalar = load(__webpack_require__(81));
+	  var multiply = load(__webpack_require__(84));
 	  
-	  var larger = load(__webpack_require__(63));
-	  var largerEq = load(__webpack_require__(335));
+	  var larger = load(__webpack_require__(64));
+	  var largerEq = load(__webpack_require__(341));
 	  
-	  var cs_spsolve = load(__webpack_require__(336));
+	  var cs_spsolve = load(__webpack_require__(342));
 
 	  var SparseMatrix = type.SparseMatrix;
 
@@ -36472,22 +38437,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 335 */
+/* 341 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  var latex = __webpack_require__(32);
 
@@ -36528,7 +38494,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber, BigNumber': function (x, y) {
-	      return x.gte(y);
+	      return x.gte(y) || bigNearlyEqual(x, y, config.epsilon);
 	    },
 
 	    'Fraction, Fraction': function (x, y) {
@@ -36650,18 +38616,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 336 */
+/* 342 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var divideScalar = load(__webpack_require__(79));
-	  var multiply = load(__webpack_require__(82));
-	  var subtract = load(__webpack_require__(75));
+	  var divideScalar = load(__webpack_require__(81));
+	  var multiply = load(__webpack_require__(84));
+	  var subtract = load(__webpack_require__(77));
 
-	  var cs_reach = load(__webpack_require__(337));
+	  var cs_reach = load(__webpack_require__(343));
 
 	  /**
 	   * The function cs_spsolve() computes the solution to G * x = bk, where bk is the
@@ -36742,16 +38708,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 337 */
+/* 343 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_dfs = load(__webpack_require__(338));
-	  var cs_marked = load(__webpack_require__(339));
-	  var cs_mark = load(__webpack_require__(340));
+	  var cs_dfs = load(__webpack_require__(344));
+	  var cs_marked = load(__webpack_require__(345));
+	  var cs_mark = load(__webpack_require__(346));
 
 	  /**
 	   * The cs_reach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1 
@@ -36809,16 +38775,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 338 */
+/* 344 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_marked = load(__webpack_require__(339));
-	  var cs_mark   = load(__webpack_require__(340));
-	  var cs_unflip = load(__webpack_require__(341));
+	  var cs_marked = load(__webpack_require__(345));
+	  var cs_mark   = load(__webpack_require__(346));
+	  var cs_unflip = load(__webpack_require__(347));
 
 	  /**
 	   * Depth-first search computes the nonzero pattern xi of the directed graph G (Matrix) starting
@@ -36900,7 +38866,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 339 */
+/* 345 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36929,14 +38895,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 340 */
+/* 346 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_flip = load(__webpack_require__(325));
+	  var cs_flip = load(__webpack_require__(331));
 
 	  /**
 	   * Marks the node at w[j]
@@ -36960,14 +38926,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 341 */
+/* 347 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load) {
 
-	  var cs_flip = load(__webpack_require__(325));
+	  var cs_flip = load(__webpack_require__(331));
 	  
 	  /**
 	   * Flips the value if it is negative of returns the same value otherwise.
@@ -36990,20 +38956,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 342 */
+/* 348 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var divideScalar = load(__webpack_require__(79));
-	  var multiplyScalar = load(__webpack_require__(78));
-	  var subtract = load(__webpack_require__(75));
+	  var matrix = load(__webpack_require__(52));
+	  var divideScalar = load(__webpack_require__(81));
+	  var multiplyScalar = load(__webpack_require__(80));
+	  var subtract = load(__webpack_require__(77));
 	  var equalScalar = load(__webpack_require__(48));
 
-	  var solveValidation = load(__webpack_require__(343));
+	  var solveValidation = load(__webpack_require__(349));
 
 	  var DenseMatrix = type.DenseMatrix;
 
@@ -37183,7 +39149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 343 */
+/* 349 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37350,7 +39316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.factory = factory;
 
 /***/ },
-/* 344 */
+/* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37359,15 +39325,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
-	  var lup = load(__webpack_require__(321));
-	  var slu = load(__webpack_require__(322));
-	  var cs_ipvec = load(__webpack_require__(345));
+	  var matrix = load(__webpack_require__(52));
+	  var lup = load(__webpack_require__(327));
+	  var slu = load(__webpack_require__(328));
+	  var cs_ipvec = load(__webpack_require__(351));
 
-	  var solveValidation = load(__webpack_require__(343));
+	  var solveValidation = load(__webpack_require__(349));
 
-	  var usolve = load(__webpack_require__(346));
-	  var lsolve = load(__webpack_require__(342));
+	  var usolve = load(__webpack_require__(352));
+	  var lsolve = load(__webpack_require__(348));
 
 	  /**
 	   * Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
@@ -37481,7 +39447,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 345 */
+/* 351 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37528,20 +39494,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 346 */
+/* 352 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var divideScalar = load(__webpack_require__(79));
-	  var multiplyScalar = load(__webpack_require__(78));
-	  var subtract = load(__webpack_require__(75));
+	  var matrix = load(__webpack_require__(52));
+	  var divideScalar = load(__webpack_require__(81));
+	  var multiplyScalar = load(__webpack_require__(80));
+	  var subtract = load(__webpack_require__(77));
 	  var equalScalar = load(__webpack_require__(48));
 
-	  var solveValidation = load(__webpack_require__(343));
+	  var solveValidation = load(__webpack_require__(349));
 	  
 	  var DenseMatrix = type.DenseMatrix;
 
@@ -37722,46 +39688,46 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 347 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(84),
-	  __webpack_require__(50),
-	  __webpack_require__(52),
-	  __webpack_require__(348),
-	  __webpack_require__(350),
-	  __webpack_require__(351),
-	  __webpack_require__(309),
-	  __webpack_require__(352),
+	  __webpack_require__(86),
+	  __webpack_require__(51),
+	  __webpack_require__(53),
 	  __webpack_require__(354),
 	  __webpack_require__(356),
 	  __webpack_require__(357),
+	  __webpack_require__(316),
 	  __webpack_require__(358),
-	  __webpack_require__(359),
 	  __webpack_require__(360),
-	  __webpack_require__(361),
-	  __webpack_require__(364),
-	  __webpack_require__(367),
-	  __webpack_require__(368),
-	  __webpack_require__(369),
-	  __webpack_require__(82),
-	  __webpack_require__(370),
-	  __webpack_require__(372),
-	  __webpack_require__(80),
-	  __webpack_require__(373),
-	  __webpack_require__(375),
 	  __webpack_require__(362),
+	  __webpack_require__(363),
+	  __webpack_require__(364),
+	  __webpack_require__(365),
+	  __webpack_require__(366),
+	  __webpack_require__(367),
+	  __webpack_require__(370),
+	  __webpack_require__(373),
+	  __webpack_require__(374),
+	  __webpack_require__(375),
+	  __webpack_require__(84),
 	  __webpack_require__(376),
-	  __webpack_require__(75),
-	  __webpack_require__(76),
-	  __webpack_require__(377),
-	  __webpack_require__(378)
+	  __webpack_require__(378),
+	  __webpack_require__(82),
+	  __webpack_require__(379),
+	  __webpack_require__(381),
+	  __webpack_require__(368),
+	  __webpack_require__(382),
+	  __webpack_require__(77),
+	  __webpack_require__(78),
+	  __webpack_require__(383),
+	  __webpack_require__(384)
 	];
 
 
 /***/ },
-/* 348 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37769,9 +39735,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var deepMap = __webpack_require__(19);
 
 	function factory (type, config, load, typed) {
-	  var unaryMinus = load(__webpack_require__(76));
-	  var isNegative = load(__webpack_require__(349));
-	  var matrix = load(__webpack_require__(51));
+	  var unaryMinus = load(__webpack_require__(78));
+	  var isNegative = load(__webpack_require__(355));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Calculate the cubic root of a value.
@@ -37781,6 +39747,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Syntax:
 	   *
 	   *    math.cbrt(x)
+	   *    math.cbrt(x, allRoots)
 	   *
 	   * Examples:
 	   *
@@ -37820,7 +39787,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    'Complex, boolean': _cbrtComplex,
 
-	    'BigNumber': _cbrtBigNumber,
+	    'BigNumber': function (x) {
+	      return x.cbrt();
+	    },
 
 	    'Unit': _cbrtUnit,
 
@@ -37890,39 +39859,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	            new type.Complex(0, arg_3 - Math.PI * 2 / 3).exp())
 	      ];
 
-	      return (config.matrix === 'array') ? all : matrix(all);
+	      return (config.matrix === 'Array') ? all : matrix(all);
 	    }
 	    else {
 	      return principal;
 	    }
-	  }
-
-	  /**
-	   * Calculate the cubic root for a BigNumber
-	   * @param {BigNumber} x
-	   * @returns {BigNumber} Returns the cubic root of x
-	   * @private
-	   */
-	  function _cbrtBigNumber(x) {
-	    if (x.isZero()) {
-	      return x;
-	    }
-
-	    var negate = x.isNegative();
-	    var result;
-	    if (negate) {
-	      x = x.neg();
-	    }
-
-	    if (!x.isFinite()) {
-	      result = Infinity;
-	    } else {
-	      // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-	      result = x.ln().div(3).exp();
-	      result = x.div(result.times(result)).plus(result.times(2)).div(3);
-	    }
-
-	    return negate ? result.neg() : result;
 	  }
 
 	  /**
@@ -37977,7 +39918,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 349 */
+/* 355 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38045,7 +39986,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 350 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38112,7 +40053,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 351 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38182,24 +40123,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 352 */
+/* 358 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var divideScalar = load(__webpack_require__(79));
+	  var matrix = load(__webpack_require__(52));
+	  var divideScalar = load(__webpack_require__(81));
 	  var latex = __webpack_require__(32);
 	  
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Divide two matrices element wise. The function accepts both matrices and
@@ -38331,7 +40272,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 353 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38456,22 +40397,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 354 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var multiplyScalar = load(__webpack_require__(78));
+	  var matrix = load(__webpack_require__(52));
+	  var multiplyScalar = load(__webpack_require__(80));
 	  var latex = __webpack_require__(32);
 
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm09 = load(__webpack_require__(355));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm09 = load(__webpack_require__(361));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Multiply two matrices element wise. The function accepts both matrices and
@@ -38603,7 +40544,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 355 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38758,23 +40699,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 356 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
-	  var pow = load(__webpack_require__(80));
+	  var matrix = load(__webpack_require__(52));
+	  var pow = load(__webpack_require__(82));
 	  var latex = __webpack_require__(32);
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Calculates the power of x to y element wise.
@@ -38903,7 +40844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 357 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38966,7 +40907,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 358 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39037,7 +40978,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 359 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39103,7 +41044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 360 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39112,13 +41053,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm04 = load(__webpack_require__(54));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm04 = load(__webpack_require__(55));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Calculate the greatest common divisor for two or more values or arrays.
@@ -39308,7 +41249,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 361 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39316,13 +41257,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var flatten = __webpack_require__(40).flatten;
 
 	function factory (type, config, load, typed) {
-	  var abs = load(__webpack_require__(84));
-	  var add = load(__webpack_require__(52));
-	  var divide = load(__webpack_require__(79));
-	  var multiply = load(__webpack_require__(78));
-	  var sqrt = load(__webpack_require__(362));
-	  var smaller = load(__webpack_require__(59));
-	  var isPositive = load(__webpack_require__(363));
+	  var abs = load(__webpack_require__(86));
+	  var add = load(__webpack_require__(53));
+	  var divide = load(__webpack_require__(81));
+	  var multiply = load(__webpack_require__(80));
+	  var sqrt = load(__webpack_require__(368));
+	  var smaller = load(__webpack_require__(60));
+	  var isPositive = load(__webpack_require__(369));
 
 	  /**
 	   * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
@@ -39398,7 +41339,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 362 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39484,7 +41425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 363 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39554,7 +41495,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 364 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39563,13 +41504,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm06 = load(__webpack_require__(365));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm06 = load(__webpack_require__(371));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Calculate the least common multiple for two or more values or arrays.
@@ -39774,12 +41715,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 365 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var scatter = __webpack_require__(366);
+	var scatter = __webpack_require__(372);
 	var DimensionError = __webpack_require__(42);
 
 	function factory (type, config, load, typed) {
@@ -39943,7 +41884,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 366 */
+/* 372 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -40013,7 +41954,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 367 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40021,7 +41962,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var deepMap = __webpack_require__(19);
 
 	function factory (type, config, load, typed) {
-	  var divideScalar = load(__webpack_require__(79));
+	  var divideScalar = load(__webpack_require__(81));
 
 	  /**
 	   * Calculate the logarithm of a value.
@@ -40105,7 +42046,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 368 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40179,23 +42120,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 369 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var latex = __webpack_require__(32);
 
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm05 = load(__webpack_require__(77));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm05 = load(__webpack_require__(79));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Calculates the modulus, the remainder of an integer division.
@@ -40367,24 +42308,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 370 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 	  
-	  var abs         = load(__webpack_require__(84));
-	  var add         = load(__webpack_require__(50));
-	  var pow         = load(__webpack_require__(80));
-	  var sqrt        = load(__webpack_require__(362));
-	  var multiply    = load(__webpack_require__(82));
+	  var abs         = load(__webpack_require__(86));
+	  var add         = load(__webpack_require__(51));
+	  var pow         = load(__webpack_require__(82));
+	  var sqrt        = load(__webpack_require__(368));
+	  var multiply    = load(__webpack_require__(84));
 	  var equalScalar = load(__webpack_require__(48));
-	  var larger      = load(__webpack_require__(63));
-	  var smaller     = load(__webpack_require__(59));
-	  var matrix      = load(__webpack_require__(51));
-	  var trace       = load(__webpack_require__(371));
-	  var transpose   = load(__webpack_require__(328));
+	  var larger      = load(__webpack_require__(64));
+	  var smaller     = load(__webpack_require__(60));
+	  var matrix      = load(__webpack_require__(52));
+	  var trace       = load(__webpack_require__(377));
+	  var transpose   = load(__webpack_require__(334));
 
 
 	  /**
@@ -40588,7 +42529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 371 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40598,8 +42539,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 	  
-	  var matrix = load(__webpack_require__(51));
-	  var add = load(__webpack_require__(50));
+	  var matrix = load(__webpack_require__(52));
+	  var add = load(__webpack_require__(51));
 
 	  /**
 	   * Calculate the trace of a matrix: the sum of the elements on the main
@@ -40741,21 +42682,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 372 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm06 = load(__webpack_require__(365));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm06 = load(__webpack_require__(371));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Calculate the nth root of a value.
@@ -40931,7 +42872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  function _bigNthRoot(a, root) {
 	    var precision = type.BigNumber.precision;
-	    var Big = type.BigNumber.constructor({precision: precision + 2});
+	    var Big = type.BigNumber.clone({precision: precision + 2});
 	    var zero = new type.BigNumber(0);
 
 	    var one = new Big(1);
@@ -41046,7 +42987,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 373 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41058,13 +42999,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var NO_INT = 'Number of decimals in function round must be an integer';
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var equalScalar = load(__webpack_require__(48));
-	  var zeros = load(__webpack_require__(374));
+	  var zeros = load(__webpack_require__(380));
 
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Round a value towards the nearest integer.
@@ -41226,7 +43167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 374 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41235,7 +43176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var resize = __webpack_require__(40).resize;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Create a matrix filled with zeros. The created matrix can have one or
@@ -41270,7 +43211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  var zeros = typed('zeros', {
 	    '': function () {
-	      return (config.matrix === 'array')
+	      return (config.matrix === 'Array')
 	          ? _zeros([])
 	          : _zeros([], 'default');
 	    },
@@ -41283,7 +43224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var format = size.pop();
 	        return _zeros(size, format);
 	      }
-	      else if (config.matrix === 'array') {
+	      else if (config.matrix === 'Array') {
 	        return _zeros(size);
 	      }
 	      else {
@@ -41366,7 +43307,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 375 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41441,7 +43382,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 376 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41512,7 +43453,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 377 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41574,7 +43515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    'boolean | string | null': function (x) {
 	      // convert to a number or bignumber
-	      return (config.number == 'bignumber') ? new type.BigNumber(+x): +x;
+	      return (config.number == 'BigNumber') ? new type.BigNumber(+x): +x;
 	    }
 	  });
 
@@ -41588,7 +43529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 378 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41596,7 +43537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isInteger = __webpack_require__(6).isInteger;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Calculate the extended greatest common divisor for two values.
@@ -41673,7 +43614,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    else {
 	      res = [a, a ? lastx : 0, lasty];
 	    }
-	    return (config.matrix === 'array') ? res : matrix(res);
+	    return (config.matrix === 'Array') ? res : matrix(res);
 	  }
 
 	  /**
@@ -41689,16 +43630,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	        q, // quotient
 	        r, // remainder
 	        zero = new type.BigNumber(0),
-	        x = new type.BigNumber(0), lastx = new type.BigNumber(1),
-	        y = new type.BigNumber(1), lasty = new type.BigNumber(0);
+	        one = new type.BigNumber(1),
+	        x = zero,
+	        lastx = one,
+	        y = one,
+	        lasty = zero;
 
 	    if (!a.isInt() || !b.isInt()) {
 	      throw new Error('Parameters in function xgcd must be integer numbers');
 	    }
 
+	    //console.log('start', [a, b].toString())
+
 	    while (!b.isZero()) {
+	      //console.log('inner', [a, b, t, q, r, x, y, lastx, lasty].toString());
 	      q = a.div(b).floor();
 	      r = a.mod(b);
+	      //console.log('MOD', [a, b, a.mod(b), r].toString())
 
 	      t = x;
 	      x = lastx.minus(q.times(x));
@@ -41710,7 +43658,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      a = b;
 	      b = r;
+
+	      //console.log('inner end', [a, b, t, q, r, x, y, lastx, lasty].toString());
 	    }
+
+	    //console.log('end', [a, lastx, lasty].toString())
 
 	    var res;
 	    if (a.lt(zero)) {
@@ -41719,7 +43671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    else {
 	      res = [a, !a.isZero() ? lastx : 0, lasty];
 	    }
-	    return (config.matrix === 'array') ? res : matrix(res);
+	    return (config.matrix === 'Array') ? res : matrix(res);
 	  }
 	}
 
@@ -41728,39 +43680,39 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 379 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(380),
-	  __webpack_require__(384),
-	  __webpack_require__(385),
-	  __webpack_require__(387),
-	  __webpack_require__(389),
-	  __webpack_require__(392),
-	  __webpack_require__(394)
+	  __webpack_require__(386),
+	  __webpack_require__(390),
+	  __webpack_require__(391),
+	  __webpack_require__(393),
+	  __webpack_require__(395),
+	  __webpack_require__(398),
+	  __webpack_require__(400)
 	];
 
 
 /***/ },
-/* 380 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isInteger = __webpack_require__(6).isInteger;
-	var bigBitAnd = __webpack_require__(381);
+	var bigBitAnd = __webpack_require__(387);
 
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm06 = load(__webpack_require__(365));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm06 = load(__webpack_require__(371));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Bitwise AND two values, `x & y`.
@@ -41896,10 +43848,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 381 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bitwise = __webpack_require__(382);
+	var bitwise = __webpack_require__(388);
 
 	/**
 	 * Bitwise and for Bignumbers
@@ -41970,10 +43922,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 382 */
+/* 388 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bitNot = __webpack_require__(383);
+	var bitNot = __webpack_require__(389);
 
 	/**
 	 * Applies bitwise function to numbers
@@ -42020,7 +43972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var longLen = maxBits.length;
 	  var expFuncVal = func(xSign, ySign) ^ 1;
 	  var outVal = new BigNumber(expFuncVal ^ 1);
-	  var twoPower = BigNumber.ONE;
+	  var twoPower = new BigNumber(1);
 	  var two = new BigNumber(2);
 
 	  var prevPrec = BigNumber.precision;
@@ -42050,7 +44002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/* Extracted from decimal.js, and edited to specialize. */
 	function decCoefficientToBinaryString (x) {
 	  // Convert to string
-	  var a = x.c;
+	  var a = x.d; // array with digits
 	  var r = a[0] + '';
 
 	  for (var i = 1; i < a.length; ++i) {
@@ -42100,7 +44052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 383 */
+/* 389 */
 /***/ function(module, exports) {
 
 	/**
@@ -42118,7 +44070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var prevPrec = BigNumber.precision;
 	  BigNumber.config({precision: 1E9});
 
-	  var x = x.plus(BigNumber.ONE);
+	  var x = x.plus(new BigNumber(1));
 	  x.s = -x.s || null;
 
 	  BigNumber.config({precision: prevPrec});
@@ -42127,13 +44079,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 384 */
+/* 390 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var bigBitNot = __webpack_require__(383);
+	var bigBitNot = __webpack_require__(389);
 	var isInteger = __webpack_require__(6).isInteger;
 
 	function factory (type, config, load, typed) {
@@ -42187,24 +44139,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 385 */
+/* 391 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isInteger = __webpack_require__(6).isInteger;
-	var bigBitOr = __webpack_require__(386);
+	var bigBitOr = __webpack_require__(392);
 
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm04 = load(__webpack_require__(54));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm04 = load(__webpack_require__(55));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Bitwise OR two values, `x | y`.
@@ -42340,10 +44292,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 386 */
+/* 392 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bitwise = __webpack_require__(382);
+	var bitwise = __webpack_require__(388);
 
 	/**
 	 * Bitwise OR for BigNumbers
@@ -42399,24 +44351,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 387 */
+/* 393 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isInteger = __webpack_require__(6).isInteger;
-	var bigBitXor = __webpack_require__(388);
+	var bigBitXor = __webpack_require__(394);
 
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Bitwise XOR two values, `x ^ y`.
@@ -42552,11 +44504,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 388 */
+/* 394 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bitwise = __webpack_require__(382);
-	var bitNot = __webpack_require__(383);
+	var bitwise = __webpack_require__(388);
+	var bitNot = __webpack_require__(389);
 
 	/**
 	 * Bitwise XOR for BigNumbers
@@ -42618,28 +44570,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 389 */
+/* 395 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isInteger = __webpack_require__(6).isInteger;
-	var bigLeftShift = __webpack_require__(390);
+	var bigLeftShift = __webpack_require__(396);
 
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var equalScalar = load(__webpack_require__(48));
-	  var zeros = load(__webpack_require__(374));
+	  var zeros = load(__webpack_require__(380));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm08 = load(__webpack_require__(391));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm08 = load(__webpack_require__(397));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Bitwise left logical shift of a value x by y number of bits, `x << y`.
@@ -42784,7 +44736,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 390 */
+/* 396 */
 /***/ function(module, exports) {
 
 	
@@ -42831,7 +44783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 391 */
+/* 397 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42997,28 +44949,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 392 */
+/* 398 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var isInteger = __webpack_require__(6).isInteger;
-	var bigRightArithShift = __webpack_require__(393);
+	var bigRightArithShift = __webpack_require__(399);
 
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 	  
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var equalScalar = load(__webpack_require__(48));
-	  var zeros = load(__webpack_require__(374));
+	  var zeros = load(__webpack_require__(380));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm08 = load(__webpack_require__(391));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm08 = load(__webpack_require__(397));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Bitwise right arithmetic shift of a value x by y number of bits, `x >> y`.
@@ -43163,7 +45115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 393 */
+/* 399 */
 /***/ function(module, exports) {
 
 	/*
@@ -43216,7 +45168,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 394 */
+/* 400 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43226,17 +45178,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var equalScalar = load(__webpack_require__(48));
-	  var zeros = load(__webpack_require__(374));
+	  var zeros = load(__webpack_require__(380));
 
-	  var algorithm01 = load(__webpack_require__(53));
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm08 = load(__webpack_require__(391));
-	  var algorithm10 = load(__webpack_require__(55));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm01 = load(__webpack_require__(54));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm08 = load(__webpack_require__(397));
+	  var algorithm10 = load(__webpack_require__(56));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Bitwise right logical shift of value x by y number of bits, `x >>> y`.
@@ -43382,28 +45334,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 395 */
+/* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(396),
 	  __webpack_require__(402),
-	  __webpack_require__(397),
-	  __webpack_require__(403)
+	  __webpack_require__(408),
+	  __webpack_require__(403),
+	  __webpack_require__(409)
 	];
 
 
 /***/ },
-/* 396 */
+/* 402 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(50));
-	  var stirlingS2 = load(__webpack_require__(397));
-	  var isNegative = load(__webpack_require__(349));
-	  var isInteger = load(__webpack_require__(401));
+	  var add = load(__webpack_require__(51));
+	  var stirlingS2 = load(__webpack_require__(403));
+	  var isNegative = load(__webpack_require__(355));
+	  var isInteger = load(__webpack_require__(407));
 
 	  /**
 	   * The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
@@ -43453,22 +45405,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 397 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(50));
-	  var subtract = load(__webpack_require__(75));
-	  var multiply = load(__webpack_require__(82));
-	  var divide = load(__webpack_require__(309));
-	  var pow = load(__webpack_require__(80));
-	  var factorial = load(__webpack_require__(398));
-	  var combinations = load(__webpack_require__(400));
-	  var isNegative = load(__webpack_require__(349));
-	  var isInteger = load(__webpack_require__(401));
-	  var larger = load(__webpack_require__(63));
+	  var add = load(__webpack_require__(51));
+	  var subtract = load(__webpack_require__(77));
+	  var multiply = load(__webpack_require__(84));
+	  var divide = load(__webpack_require__(316));
+	  var pow = load(__webpack_require__(82));
+	  var factorial = load(__webpack_require__(404));
+	  var combinations = load(__webpack_require__(406));
+	  var isNegative = load(__webpack_require__(355));
+	  var isInteger = load(__webpack_require__(407));
+	  var larger = load(__webpack_require__(64));
 
 	  /**
 	   * The Stirling numbers of the second kind, counts the number of ways to partition
@@ -43528,16 +45480,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 398 */
+/* 404 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var constants = __webpack_require__(92);
 
 	function factory (type, config, load, typed) {
-	  var gamma = load(__webpack_require__(399));
+	  var gamma = load(__webpack_require__(405));
 	  var latex = __webpack_require__(32);
 
 	  /**
@@ -43594,7 +45545,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 399 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43603,8 +45554,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isInteger = __webpack_require__(6).isInteger;
 
 	function factory (type, config, load, typed) {
-	  var multiply = load(__webpack_require__(82));
-	  var pow = load(__webpack_require__(80));
+	  var multiply = load(__webpack_require__(84));
+	  var pow = load(__webpack_require__(82));
 
 	  /**
 	   * Compute the gamma function of a value using Lanczos approximation for
@@ -43758,7 +45709,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var precision = config.precision + (Math.log(n.toNumber()) | 0);
-	    var Big = type.BigNumber.constructor({precision: precision});
+	    var Big = type.BigNumber.clone({precision: precision});
 
 	    var res = new Big(n);
 	    var value = n.toNumber() - 1; // number
@@ -43802,7 +45753,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 400 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43899,7 +45850,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 401 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -43961,17 +45912,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 402 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var combinations = load(__webpack_require__(400));
-	  var add = load(__webpack_require__(52));
-	  var isPositive = load(__webpack_require__(363));
-	  var isInteger = load(__webpack_require__(401));
-	  var larger = load(__webpack_require__(63));
+	  var combinations = load(__webpack_require__(406));
+	  var add = load(__webpack_require__(53));
+	  var isPositive = load(__webpack_require__(369));
+	  var isInteger = load(__webpack_require__(407));
+	  var larger = load(__webpack_require__(64));
 
 	  /**
 	   * The composition counts of n into k parts.
@@ -44018,18 +45969,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 403 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(50));
-	  var divide = load(__webpack_require__(309));
-	  var multiply = load(__webpack_require__(82));
-	  var combinations = load(__webpack_require__(400));
-	  var isNegative = load(__webpack_require__(349));
-	  var isInteger = load(__webpack_require__(401));
+	  var add = load(__webpack_require__(51));
+	  var divide = load(__webpack_require__(316));
+	  var multiply = load(__webpack_require__(84));
+	  var combinations = load(__webpack_require__(406));
+	  var isNegative = load(__webpack_require__(355));
+	  var isInteger = load(__webpack_require__(407));
 
 
 	  /**
@@ -44075,19 +46026,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 404 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(405),
-	  __webpack_require__(406),
-	  __webpack_require__(407),
-	  __webpack_require__(408)
+	  __webpack_require__(411),
+	  __webpack_require__(412),
+	  __webpack_require__(413),
+	  __webpack_require__(414)
 	];
 
 
 /***/ },
-/* 405 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44148,7 +46099,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 406 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44209,7 +46160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 407 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44272,7 +46223,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 408 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44335,28 +46286,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 409 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(410),
-	  __webpack_require__(411)
+	  __webpack_require__(416),
+	  __webpack_require__(417)
 	];
 
 
 /***/ },
-/* 410 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
 
-	  var abs = load(__webpack_require__(84));
-	  var add = load(__webpack_require__(50));
-	  var matrix = load(__webpack_require__(51));
-	  var multiply = load(__webpack_require__(82));
-	  var subtract = load(__webpack_require__(75));
+	  var abs = load(__webpack_require__(86));
+	  var add = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
+	  var multiply = load(__webpack_require__(84));
+	  var subtract = load(__webpack_require__(77));
 
 	  /**
 	   * Calculates the point of intersection of two lines in two or three dimensions
@@ -44493,13 +46444,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 411 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	    * Calculates:
@@ -44800,19 +46751,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 412 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(413),
-	  __webpack_require__(414),
-	  __webpack_require__(416),
-	  __webpack_require__(417)
+	  __webpack_require__(419),
+	  __webpack_require__(420),
+	  __webpack_require__(422),
+	  __webpack_require__(423)
 	];
 
 
 /***/ },
-/* 413 */
+/* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44820,16 +46771,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
-	  var zeros = load(__webpack_require__(374));
-	  var not = load(__webpack_require__(414));
-	  var isZero = load(__webpack_require__(415));
+	  var matrix = load(__webpack_require__(52));
+	  var zeros = load(__webpack_require__(380));
+	  var not = load(__webpack_require__(420));
+	  var isZero = load(__webpack_require__(421));
 
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm06 = load(__webpack_require__(365));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm06 = load(__webpack_require__(371));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
@@ -44987,7 +46938,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 414 */
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45054,7 +47005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 415 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45130,7 +47081,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 416 */
+/* 422 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45138,13 +47089,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm05 = load(__webpack_require__(77));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm05 = load(__webpack_require__(79));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
@@ -45292,7 +47243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 417 */
+/* 423 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45300,13 +47251,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 	  
 	  /**
 	   * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.
@@ -45454,32 +47405,37 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 418 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(294),
-	  __webpack_require__(419),
-	  __webpack_require__(311),
-	  __webpack_require__(420),
-	  __webpack_require__(421),
-	  __webpack_require__(81),
-	  __webpack_require__(422),
-	  __webpack_require__(310),
-	  __webpack_require__(423),
-	  __webpack_require__(315),
-	  __webpack_require__(424),
+	  __webpack_require__(301),
 	  __webpack_require__(425),
+	  __webpack_require__(318),
 	  __webpack_require__(426),
+	  __webpack_require__(427),
+	  __webpack_require__(83),
+	  __webpack_require__(303),
+	  __webpack_require__(428),
+	  __webpack_require__(305),
 	  __webpack_require__(317),
-	  __webpack_require__(371),
-	  __webpack_require__(328),
-	  __webpack_require__(374)
+	  __webpack_require__(308),
+	  __webpack_require__(429),
+	  __webpack_require__(430),
+	  __webpack_require__(322),
+	  __webpack_require__(432),
+	  __webpack_require__(433),
+	  __webpack_require__(434),
+	  __webpack_require__(435),
+	  __webpack_require__(276),
+	  __webpack_require__(377),
+	  __webpack_require__(334),
+	  __webpack_require__(380)
 	];
 
 
 /***/ },
-/* 419 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45487,9 +47443,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var size = __webpack_require__(40).size;
 
 	function factory (type, config, load, typed) {
-	  var matrix   = load(__webpack_require__(51));
-	  var subtract = load(__webpack_require__(75));
-	  var multiply = load(__webpack_require__(82));
+	  var matrix   = load(__webpack_require__(52));
+	  var subtract = load(__webpack_require__(77));
+	  var multiply = load(__webpack_require__(84));
 
 	  /**
 	   * Calculate the cross product for two vectors in three dimensional space.
@@ -45569,7 +47525,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 420 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45580,7 +47536,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  
 	  /**
 	   * Create a diagonal matrix or retrieve the diagonal of a matrix
@@ -45733,7 +47689,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var vector = [];
 	    // loop diagonal
 	    for (var i = 0; i < n; i++) {
-	      vector[i] = clone(x[i + kSub][i + kSuper]);
+	      vector[i] = x[i + kSub][i + kSuper];
 	    }
 	    // check we need to return a matrix
 	    return format !== null ? matrix(vector) : vector;
@@ -45745,7 +47701,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 421 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45753,8 +47709,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var size = __webpack_require__(40).size;
 
 	function factory (type, config, load, typed) {
-	  var add      = load(__webpack_require__(50));
-	  var multiply = load(__webpack_require__(82));
+	  var add      = load(__webpack_require__(51));
+	  var multiply = load(__webpack_require__(84));
 
 	  /**
 	   * Calculate the dot product of two vectors. The dot product of
@@ -45830,7 +47786,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 422 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45839,7 +47795,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _flatten = __webpack_require__(40).flatten;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Flatten a multi dimensional matrix into a single dimensional matrix.
@@ -45881,7 +47837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 423 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45890,7 +47846,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var resize = __webpack_require__(40).resize;
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Create a matrix filled with ones. The created matrix can have one or
@@ -45927,7 +47883,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  var ones = typed('ones', {
 	    '': function () {
-	      return (config.matrix === 'array')
+	      return (config.matrix === 'Array')
 	          ? _ones([])
 	          : _ones([], 'default');
 	    },
@@ -45940,7 +47896,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var format = size.pop();
 	        return _ones(size, format);
 	      }
-	      else if (config.matrix === 'array') {
+	      else if (config.matrix === 'Array') {
 	        return _ones(size);
 	      }
 	      else {
@@ -46021,7 +47977,337 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 424 */
+/* 430 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var isInteger = __webpack_require__(6).isInteger;
+
+	function factory (type, config, load, typed) {
+	  var asc = load(__webpack_require__(431));
+	  function desc(a, b) {
+	    return -asc(a, b);
+	  }
+
+	  /**
+	   * Partition-based selection of an array or 1D matrix.
+	   * Will find the kth smallest value, and mutates the input array.
+	   * Uses Quickselect.
+	   *
+	   * Syntax:
+	   *
+	   *    math.partitionSelect(x, k)
+	   *    math.partitionSelect(x, k, compare)
+	   *
+	   * Examples:
+	   *
+	   *    math.partitionSelect([5, 10, 1], 2);           // returns 10
+	   *    math.partitionSelect(['C', 'B', 'A', 'D'], 1); // returns 'B'
+	   *
+	   *    function sortByLength (a, b) {
+	   *      return a.length - b.length;
+	   *    }
+	   *    math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength); // returns 'Langdon'
+	   *
+	   * See also:
+	   *
+	   *    sort
+	   *
+	   * @param {Matrix | Array} x    A one dimensional matrix or array to sort
+	   * @param {Number} k            The kth smallest value to be retrieved; zero-based index
+	   * @param {Function | 'asc' | 'desc'} [compare='asc']
+	   *        An optional comparator function. The function is called as
+	   *        `compare(a, b)`, and must return 1 when a > b, -1 when a < b,
+	   *        and 0 when a == b.
+	   * @return {*} Returns the kth lowest value.
+	   */
+	  return typed('partitionSelect', {
+	    'Array | Matrix, number': function (x, k) {
+	      return _partitionSelect(x, k, asc);
+	    },
+
+	    'Array | Matrix, number, string': function (x, k, compare) {
+	      if (compare === 'asc') {
+	        return _partitionSelect(x, k, asc);
+	      }
+	      else if (compare === 'desc') {
+	        return _partitionSelect(x, k, desc);
+	      }
+	      else {
+	        throw new Error('Compare string must be "asc" or "desc"');
+	      }
+	    },
+
+	    'Array | Matrix, number, function': _partitionSelect
+	  });
+
+	  function _partitionSelect(x, k, compare) {
+	    if (!isInteger(k) || k < 0) {
+	      throw new Error('k must be a non-negative integer');
+	    }
+
+	    if (x && x.isMatrix) {
+	      var size = x.size();
+	      if (size.length > 1) {
+	        throw new Error('Only one dimensional matrices supported');
+	      }
+	      return quickSelect(x.valueOf(), k, compare);
+	    }
+
+	    if (Array.isArray(x)) {
+	      return quickSelect(x, k, compare);
+	    }
+	  }
+
+	  /**
+	   * Quickselect algorithm.
+	   * Code adapted from:
+	   * http://blog.teamleadnet.com/2012/07/quick-select-algorithm-find-kth-element.html
+	   *
+	   * @param {Array} arr
+	   * @param {Number} k
+	   * @param {Function} compare
+	   * @private
+	   */
+	  function quickSelect(arr, k, compare) {
+	    if (k >= arr.length) {
+	      throw new Error('k out of bounds');
+	    }
+
+	    var from = 0;
+	    var to = arr.length - 1;
+
+	    // if from == to we reached the kth element
+	    while (from < to) {
+	      var r = from;
+	      var w = to;
+	      var pivot = arr[Math.floor(Math.random() * (to - from + 1)) + from];
+
+	      // stop if the reader and writer meets
+	      while (r < w) {
+	        // arr[r] >= pivot
+	        if (compare(arr[r], pivot) >= 0) { // put the large values at the end
+	          var tmp = arr[w];
+	          arr[w] = arr[r];
+	          arr[r] = tmp;
+	          --w;
+	        } else { // the value is smaller than the pivot, skip
+	          ++r;
+	        }
+	      }
+
+	      // if we stepped up (r++) we need to step one down (arr[r] > pivot)
+	      if (compare(arr[r], pivot) > 0) {
+	        --r;
+	      }
+
+	      // the r pointer is on the end of the first k elements
+	      if (k <= r) {
+	        to = r;
+	      } else {
+	        from = r + 1;
+	      }
+	    }
+
+	    return arr[k];
+	  }
+	}
+
+	exports.name = 'partitionSelect';
+	exports.factory = factory;
+
+
+/***/ },
+/* 431 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
+
+	function factory (type, config, load, typed) {
+
+	  var matrix = load(__webpack_require__(52));
+
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm05 = load(__webpack_require__(79));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
+	  
+	  /**
+	   * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
+	   *
+	   * x and y are considered equal when the relative difference between x and y
+	   * is smaller than the configured epsilon. The function cannot be used to
+	   * compare values smaller than approximately 2.22e-16.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.compare(x, y)
+	   *
+	   * Examples:
+	   *
+	   *    math.compare(6, 1);           // returns 1
+	   *    math.compare(2, 3);           // returns -1
+	   *    math.compare(7, 7);           // returns 0
+	   *
+	   *    var a = math.unit('5 cm');
+	   *    var b = math.unit('40 mm');
+	   *    math.compare(a, b);           // returns 1
+	   *
+	   *    math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
+	   *
+	   * See also:
+	   *
+	   *    equal, unequal, smaller, smallerEq, larger, largerEq
+	   *
+	   * @param  {number | BigNumber | Fraction | Unit | string | Array | Matrix} x First value to compare
+	   * @param  {number | BigNumber | Fraction | Unit | string | Array | Matrix} y Second value to compare
+	   * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison: 1, 0 or -1.
+	   */
+	  var compare = typed('compare', {
+
+	    'boolean, boolean': function (x, y) {
+	      return x === y ? 0 : (x > y ? 1 : -1);
+	    },
+
+	    'number, number': function (x, y) {
+	      return (x === y || nearlyEqual(x, y, config.epsilon))
+	          ? 0
+	          : (x > y ? 1 : -1);
+	    },
+
+	    'BigNumber, BigNumber': function (x, y) {
+	      return (x.eq(y) || bigNearlyEqual(x, y, config.epsilon))
+	          ? new type.BigNumber(0)
+	          : new type.BigNumber(x.cmp(y));
+	    },
+
+	    'Fraction, Fraction': function (x, y) {
+	      return new type.Fraction(x.compare(y));
+	    },
+
+	    'Complex, Complex': function () {
+	      throw new TypeError('No ordering relation is defined for complex numbers');
+	    },
+
+	    'Unit, Unit': function (x, y) {
+	      if (!x.equalBase(y)) {
+	        throw new Error('Cannot compare units with different base');
+	      }
+	      return compare(x.value, y.value);
+	    },
+
+	    'string, string': function (x, y) {
+	      return x === y ? 0 : (x > y ? 1 : -1);
+	    },
+
+	    'Matrix, Matrix': function (x, y) {
+	      // result
+	      var c;
+
+	      // process matrix storage
+	      switch (x.storage()) {
+	        case 'sparse':
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // sparse + sparse
+	              c = algorithm05(x, y, compare);
+	              break;
+	            default:
+	              // sparse + dense
+	              c = algorithm03(y, x, compare, true);
+	              break;
+	          }
+	          break;
+	        default:
+	          switch (y.storage()) {
+	            case 'sparse':
+	              // dense + sparse
+	              c = algorithm03(x, y, compare, false);
+	              break;
+	            default:
+	              // dense + dense
+	              c = algorithm13(x, y, compare);
+	              break;
+	          }
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, Array': function (x, y) {
+	      // use matrix implementation
+	      return compare(matrix(x), matrix(y)).valueOf();
+	    },
+
+	    'Array, Matrix': function (x, y) {
+	      // use matrix implementation
+	      return compare(matrix(x), y);
+	    },
+
+	    'Matrix, Array': function (x, y) {
+	      // use matrix implementation
+	      return compare(x, matrix(y));
+	    },
+
+	    'Matrix, any': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (x.storage()) {
+	        case 'sparse':
+	          c = algorithm12(x, y, compare, false);
+	          break;
+	        default:
+	          c = algorithm14(x, y, compare, false);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'any, Matrix': function (x, y) {
+	      // result
+	      var c;
+	      // check storage format
+	      switch (y.storage()) {
+	        case 'sparse':
+	          c = algorithm12(y, x, compare, true);
+	          break;
+	        default:
+	          c = algorithm14(y, x, compare, true);
+	          break;
+	      }
+	      return c;
+	    },
+
+	    'Array, any': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(x), y, compare, false).valueOf();
+	    },
+
+	    'any, Array': function (x, y) {
+	      // use matrix implementation
+	      return algorithm14(matrix(y), x, compare, true).valueOf();
+	    }
+	  });
+
+	  compare.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+
+	  return compare;
+	}
+
+	exports.name = 'compare';
+	exports.factory = factory;
+
+
+/***/ },
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46035,7 +48321,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var array = __webpack_require__(40);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Resize a matrix
@@ -46092,7 +48378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    
 	    // check result should be a matrix
-	    var asMatrix = Array.isArray(x) ? false : (config.matrix !== 'array');
+	    var asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array');
 
 	    if (size.length == 0) {
 	      // output a scalar
@@ -46165,7 +48451,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 425 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46173,7 +48459,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var array = __webpack_require__(40);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Calculate the size of a matrix or scalar.
@@ -46207,12 +48493,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'Array': array.size,
 
 	    'string': function (x) {
-	      return (config.matrix === 'array') ? [x.length] : matrix([x.length]);
+	      return (config.matrix === 'Array') ? [x.length] : matrix([x.length]);
 	    },
 
 	    'number | Complex | BigNumber | Unit | boolean | null': function (x) {
 	      // scalar
-	      return (config.matrix === 'array') ? [] : matrix([]);
+	      return (config.matrix === 'Array') ? [] : matrix([]);
 	    }
 	  });
 
@@ -46226,7 +48512,133 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 426 */
+/* 434 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var size = __webpack_require__(40).size;
+
+	function factory (type, config, load, typed) {
+	  var matrix = load(__webpack_require__(52));
+	  var asc = load(__webpack_require__(431));
+	  var desc = function (a, b) {
+	    return -asc(a, b);
+	  };
+
+	  /**
+	   * Sort the items in a matrix.
+	   *
+	   * Syntax:
+	   *
+	   *    math.sort(x)
+	   *    math.sort(x, compare)
+	   *
+	   * Examples:
+	   *
+	   *    math.sort([5, 10, 1]); // returns [1, 5, 10]
+	   *    math.sort(['C', 'B', 'A', 'D']); // returns ['A', 'B', 'C', 'D']
+	   *
+	   *    function sortByLength (a, b) {
+	   *      return a.length - b.length;
+	   *    }
+	   *    math.sort(['Langdon', 'Tom', 'Sara'], sortByLength); // returns ['Tom', 'Sara', 'Langdon']
+	   *
+	   * See also:
+	   *
+	   *    filter, forEach, map
+	   *
+	   * @param {Matrix | Array} x    A one dimensional matrix or array to sort
+	   * @param {Function | 'asc' | 'desc'} [compare='asc']
+	   *        An optional _comparator function. The function is called as
+	   *        `compare(a, b)`, and must return 1 when a > b, -1 when a < b,
+	   *        and 0 when a == b.
+	   * @return {Matrix | Array} Returns the sorted matrix.
+	   */
+	  var sort = typed('sort', {
+	    'Array': function (x) {
+	      _arrayIsVector(x);
+	      return x.sort(asc);
+	    },
+
+	    'Matrix': function (x) {
+	      _matrixIsVector(x);
+	      return matrix(x.toArray().sort(asc), x.storage());
+	    },
+
+	    'Array, function': function (x, _comparator) {
+	      _arrayIsVector(x);
+	      return x.sort(_comparator);
+	    },
+
+	    'Matrix, function': function (x, _comparator) {
+	      _matrixIsVector(x);
+	      return matrix(x.toArray().sort(_comparator), x.storage());
+	    },
+
+	    'Array, string': function (x, order) {
+	      _arrayIsVector(x);
+	      return x.sort(_comparator(order));
+	    },
+
+	    'Matrix, string': function (x, order) {
+	      _matrixIsVector(x);
+	      return matrix(x.toArray().sort(_comparator(order)), x.storage());
+	    }
+	  });
+
+	  sort.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+
+	  /**
+	   * Get the comparator for given order ('asc' or 'desc')
+	   * @param {'asc' | 'desc'} order
+	   * @return {Function} Returns a _comparator function
+	   */
+	  function _comparator (order) {
+	    if (order === 'asc') {
+	      return asc;
+	    }
+	    else if (order === 'desc') {
+	      return desc;
+	    }
+	    else {
+	      throw new Error('String "asc" or "desc" expected');
+	    }
+	  }
+
+	  /**
+	   * Validate whether an array is one dimensional
+	   * Throws an error when this is not the case
+	   * @param {Array} array
+	   * @private
+	   */
+	  function _arrayIsVector (array) {
+	    if (size(array).length !== 1) {
+	      throw new Error('One dimensional array expected');
+	    }
+	  }
+
+	  /**
+	   * Validate whether a matrix is one dimensional
+	   * Throws an error when this is not the case
+	   * @param {Matrix} matrix
+	   * @private
+	   */
+	  function _matrixIsVector (matrix) {
+	    if (matrix.size().length !== 1) {
+	      throw new Error('One dimensional matrix expected');
+	    }
+	  }
+
+	  return sort;
+	}
+
+	exports.name = 'sort';
+	exports.factory = factory;
+
+
+/***/ },
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46235,7 +48647,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var array = __webpack_require__(40);
 
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
 	  /**
 	   * Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
@@ -46293,38 +48705,38 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 427 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
 	  //require('./distribution'), // TODO: rethink math.distribution
-	  __webpack_require__(400),
-	  __webpack_require__(398),
-	  __webpack_require__(399),
-	  __webpack_require__(428),
-	  __webpack_require__(430),
-	  __webpack_require__(431),
-	  __webpack_require__(432),
-	  __webpack_require__(434),
-	  __webpack_require__(435)
+	  __webpack_require__(406),
+	  __webpack_require__(404),
+	  __webpack_require__(405),
+	  __webpack_require__(437),
+	  __webpack_require__(439),
+	  __webpack_require__(440),
+	  __webpack_require__(441),
+	  __webpack_require__(443),
+	  __webpack_require__(444)
 	];
 
 
 /***/ },
-/* 428 */
+/* 437 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 
 	function factory(type, config, load, typed) {
-	    var matrix = load(__webpack_require__(51));
-	    var divide = load(__webpack_require__(309));
-	    var sum = load(__webpack_require__(429));
-	    var multiply = load(__webpack_require__(82));
-	    var dotDivide = load(__webpack_require__(352));
-	    var log = load(__webpack_require__(367));
-	    var isNumeric = load(__webpack_require__(86));
+	    var matrix = load(__webpack_require__(52));
+	    var divide = load(__webpack_require__(316));
+	    var sum = load(__webpack_require__(438));
+	    var multiply = load(__webpack_require__(84));
+	    var dotDivide = load(__webpack_require__(358));
+	    var log = load(__webpack_require__(373));
+	    var isNumeric = load(__webpack_require__(88));
 
 	    /**
 	     * Calculate the Kullback-Leibler (KL) divergence  between two distributions
@@ -46408,15 +48820,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 429 */
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepForEach = __webpack_require__(305);
+	var deepForEach = __webpack_require__(312);
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(52));
+	  var add = load(__webpack_require__(53));
 
 	  /**
 	   * Compute the sum of a matrix or a list with values.
@@ -46480,9 +48892,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      switch (config.number) {
 	        case 'number':
 	          return 0;
-	        case 'bignumber':
+	        case 'BigNumber':
 	          return new type.BigNumber(0);
-	        case 'fraction':
+	        case 'Fraction':
 	          return new type.Fraction(0);
 	        default:
 	          return 0;
@@ -46498,20 +48910,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 430 */
+/* 439 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepForEach = __webpack_require__(305);
+	var deepForEach = __webpack_require__(312);
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(50));
-	  var multiply = load(__webpack_require__(82));
-	  var divide = load(__webpack_require__(309));
-	  var factorial = load(__webpack_require__(398));
-	  var isInteger = load(__webpack_require__(401));
-	  var isPositive = load(__webpack_require__(363));
+	  var add = load(__webpack_require__(51));
+	  var multiply = load(__webpack_require__(84));
+	  var divide = load(__webpack_require__(316));
+	  var factorial = load(__webpack_require__(404));
+	  var isInteger = load(__webpack_require__(407));
+	  var isPositive = load(__webpack_require__(369));
 
 	  /**
 	   * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
@@ -46557,7 +48969,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 431 */
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46565,7 +48977,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isInteger = __webpack_require__(6).isInteger;
 
 	function factory (type, config, load, typed) {
-	  var factorial = load(__webpack_require__(398));
+	  var factorial = load(__webpack_require__(404));
 
 	  /**
 	   * Compute the number of ways of obtaining an ordered subset of `k` elements
@@ -46657,13 +49069,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 432 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var distribution = load(__webpack_require__(433));
+	  var distribution = load(__webpack_require__(442));
 
 	  /**
 	   * Random pick a value from a one dimensional array.
@@ -46697,18 +49109,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 433 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var ArgumentsError = __webpack_require__(11);
-	var isCollection = __webpack_require__(303);
+	var isCollection = __webpack_require__(310);
 
 	// TODO: rethink math.distribution
 	// TODO: rework to a typed function
 	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 	  var array = __webpack_require__(40);
 
 	  /**
@@ -46915,13 +49327,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 434 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var distribution = load(__webpack_require__(433));
+	  var distribution = load(__webpack_require__(442));
 
 	  /**
 	   * Return a random number larger or equal to `min` and smaller than `max`
@@ -46966,13 +49378,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 435 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var distribution = load(__webpack_require__(433));
+	  var distribution = load(__webpack_require__(442));
 
 	  /**
 	   * Return a random integer number larger or equal to `min` and smaller than `max`
@@ -47015,212 +49427,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 436 */
+/* 445 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(437),
-	  __webpack_require__(438),
-	  __webpack_require__(85),
-	  __webpack_require__(63),
-	  __webpack_require__(335),
-	  __webpack_require__(59),
-	  __webpack_require__(439),
-	  __webpack_require__(440)
+	  __webpack_require__(431),
+	  __webpack_require__(446),
+	  __webpack_require__(87),
+	  __webpack_require__(64),
+	  __webpack_require__(341),
+	  __webpack_require__(60),
+	  __webpack_require__(447),
+	  __webpack_require__(448)
 	];
 
 
 /***/ },
-/* 437 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var nearlyEqual = __webpack_require__(6).nearlyEqual;
-
-	function factory (type, config, load, typed) {
-
-	  var matrix = load(__webpack_require__(51));
-
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm05 = load(__webpack_require__(77));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
-	  
-	  /**
-	   * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
-	   *
-	   * x and y are considered equal when the relative difference between x and y
-	   * is smaller than the configured epsilon. The function cannot be used to
-	   * compare values smaller than approximately 2.22e-16.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.compare(x, y)
-	   *
-	   * Examples:
-	   *
-	   *    math.compare(6, 1);           // returns 1
-	   *    math.compare(2, 3);           // returns -1
-	   *    math.compare(7, 7);           // returns 0
-	   *
-	   *    var a = math.unit('5 cm');
-	   *    var b = math.unit('40 mm');
-	   *    math.compare(a, b);           // returns 1
-	   *
-	   *    math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
-	   *
-	   * See also:
-	   *
-	   *    equal, unequal, smaller, smallerEq, larger, largerEq
-	   *
-	   * @param  {number | BigNumber | Fraction | Unit | string | Array | Matrix} x First value to compare
-	   * @param  {number | BigNumber | Fraction | Unit | string | Array | Matrix} y Second value to compare
-	   * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison: 1, 0 or -1.
-	   */
-	  var compare = typed('compare', {
-
-	    'boolean, boolean': function (x, y) {
-	      return x === y ? 0 : (x > y ? 1 : -1);
-	    },
-
-	    'number, number': function (x, y) {
-	      return (x === y || nearlyEqual(x, y, config.epsilon)) ? 0 : (x > y ? 1 : -1);
-	    },
-
-	    'BigNumber, BigNumber': function (x, y) {
-	      return new type.BigNumber(x.cmp(y));
-	    },
-
-	    'Fraction, Fraction': function (x, y) {
-	      return new type.Fraction(x.compare(y));
-	    },
-
-	    'Complex, Complex': function () {
-	      throw new TypeError('No ordering relation is defined for complex numbers');
-	    },
-
-	    'Unit, Unit': function (x, y) {
-	      if (!x.equalBase(y)) {
-	        throw new Error('Cannot compare units with different base');
-	      }
-	      return compare(x.value, y.value);
-	    },
-
-	    'string, string': function (x, y) {
-	      return x === y ? 0 : (x > y ? 1 : -1);
-	    },
-
-	    'Matrix, Matrix': function (x, y) {
-	      // result
-	      var c;
-
-	      // process matrix storage
-	      switch (x.storage()) {
-	        case 'sparse':
-	          switch (y.storage()) {
-	            case 'sparse':
-	              // sparse + sparse
-	              c = algorithm05(x, y, compare);
-	              break;
-	            default:
-	              // sparse + dense
-	              c = algorithm03(y, x, compare, true);
-	              break;
-	          }
-	          break;
-	        default:
-	          switch (y.storage()) {
-	            case 'sparse':
-	              // dense + sparse
-	              c = algorithm03(x, y, compare, false);
-	              break;
-	            default:
-	              // dense + dense
-	              c = algorithm13(x, y, compare);
-	              break;
-	          }
-	          break;
-	      }
-	      return c;
-	    },
-
-	    'Array, Array': function (x, y) {
-	      // use matrix implementation
-	      return compare(matrix(x), matrix(y)).valueOf();
-	    },
-
-	    'Array, Matrix': function (x, y) {
-	      // use matrix implementation
-	      return compare(matrix(x), y);
-	    },
-
-	    'Matrix, Array': function (x, y) {
-	      // use matrix implementation
-	      return compare(x, matrix(y));
-	    },
-
-	    'Matrix, any': function (x, y) {
-	      // result
-	      var c;
-	      // check storage format
-	      switch (x.storage()) {
-	        case 'sparse':
-	          c = algorithm12(x, y, compare, false);
-	          break;
-	        default:
-	          c = algorithm14(x, y, compare, false);
-	          break;
-	      }
-	      return c;
-	    },
-
-	    'any, Matrix': function (x, y) {
-	      // result
-	      var c;
-	      // check storage format
-	      switch (y.storage()) {
-	        case 'sparse':
-	          c = algorithm12(y, x, compare, true);
-	          break;
-	        default:
-	          c = algorithm14(y, x, compare, true);
-	          break;
-	      }
-	      return c;
-	    },
-
-	    'Array, any': function (x, y) {
-	      // use matrix implementation
-	      return algorithm14(matrix(x), y, compare, false).valueOf();
-	    },
-
-	    'any, Array': function (x, y) {
-	      // use matrix implementation
-	      return algorithm14(matrix(y), x, compare, true).valueOf();
-	    }
-	  });
-
-	  compare.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
-
-	  return compare;
-	}
-
-	exports.name = 'compare';
-	exports.factory = factory;
-
-
-/***/ },
-/* 438 */
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var equal = load(__webpack_require__(85));
+	  var equal = load(__webpack_require__(87));
 
 	  /**
 	   * Test element wise whether two matrices are equal.
@@ -47301,22 +49530,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 439 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  var latex = __webpack_require__(32);
 
@@ -47356,7 +49586,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber, BigNumber': function (x, y) {
-	      return x.lte(y);
+	      return x.lte(y) || bigNearlyEqual(x, y, config.epsilon);
 	    },
 
 	    'Fraction, Fraction': function (x, y) {
@@ -47478,22 +49708,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 440 */
+/* 448 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var nearlyEqual = __webpack_require__(6).nearlyEqual;
+	var bigNearlyEqual = __webpack_require__(49);
 
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm07 = load(__webpack_require__(61));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm07 = load(__webpack_require__(62));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  var latex = __webpack_require__(32);
 
@@ -47652,7 +49883,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber, BigNumber': function (x, y) {
-	      return !x.eq(y);
+	      return !bigNearlyEqual(x, y, config.epsilon);
 	    },
 
 	    'Fraction, Fraction': function (x, y) {
@@ -47685,24 +49916,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 441 */
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(304),
-	  __webpack_require__(308),
-	  __webpack_require__(442),
-	  __webpack_require__(313),
-	  __webpack_require__(444),
-	  __webpack_require__(445),
-	  __webpack_require__(446),
-	  __webpack_require__(447),
-	  __webpack_require__(429),
-	  __webpack_require__(448)
+	  __webpack_require__(311),
+	  __webpack_require__(315),
+	  __webpack_require__(450),
+	  __webpack_require__(320),
+	  __webpack_require__(451),
+	  __webpack_require__(452),
+	  __webpack_require__(453),
+	  __webpack_require__(454),
+	  __webpack_require__(438),
+	  __webpack_require__(455)
 	];
 
 /***/ },
-/* 442 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47710,10 +49941,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var flatten = __webpack_require__(40).flatten;
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(52));
-	  var divide = load(__webpack_require__(79));
-	  var compare = load(__webpack_require__(437));
-	  var partitionSelect = load(__webpack_require__(443));
+	  var add = load(__webpack_require__(53));
+	  var divide = load(__webpack_require__(81));
+	  var compare = load(__webpack_require__(431));
+	  var partitionSelect = load(__webpack_require__(430));
 
 	  /**
 	   * Compute the median of a matrix or a list with values. The values are
@@ -47820,149 +50051,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 443 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isInteger = __webpack_require__(6).isInteger;
-
-	function factory (type, config, load, typed) {
-	  var asc = load(__webpack_require__(437));
-	  function desc(a, b) {
-	    return -asc(a, b);
-	  }
-
-	  /**
-	   * Partition-based selection of an array or 1D matrix.
-	   * Will find the kth smallest value, and mutates the input array.
-	   * Uses Quickselect.
-	   *
-	   * Syntax:
-	   *
-	   *    math.partitionSelect(x, k)
-	   *    math.partitionSelect(x, k, compare)
-	   *
-	   * Examples:
-	   *
-	   *    math.partitionSelect([5, 10, 1], 2);           // returns 10
-	   *    math.partitionSelect(['C', 'B', 'A', 'D'], 1); // returns 'B'
-	   *
-	   *    function sortByLength (a, b) {
-	   *      return a.length - b.length;
-	   *    }
-	   *    math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength); // returns 'Langdon'
-	   *
-	   * See also:
-	   *
-	   *    sort
-	   *
-	   * @param {Matrix | Array} x    A one dimensional matrix or array to sort
-	   * @param {Number} k            The kth smallest value to be retrieved; zero-based index
-	   * @param {Function | 'asc' | 'desc'} [compare='asc']
-	   *        An optional comparator function. The function is called as
-	   *        `compare(a, b)`, and must return 1 when a > b, -1 when a < b,
-	   *        and 0 when a == b.
-	   * @return {*} Returns the kth lowest value.
-	   */
-	  return typed('partitionSelect', {
-	    'Array | Matrix, number': function (x, k) {
-	      return _partitionSelect(x, k, asc);
-	    },
-
-	    'Array | Matrix, number, string': function (x, k, compare) {
-	      if (compare === 'asc') {
-	        return _partitionSelect(x, k, asc);
-	      }
-	      else if (compare === 'desc') {
-	        return _partitionSelect(x, k, desc);
-	      }
-	      else {
-	        throw new Error('Compare string must be "asc" or "desc"');
-	      }
-	    },
-
-	    'Array | Matrix, number, function': _partitionSelect
-	  });
-
-	  function _partitionSelect(x, k, compare) {
-	    if (!isInteger(k) || k < 0) {
-	      throw new Error('k must be a non-negative integer');
-	    }
-
-	    if (x && x.isMatrix) {
-	      var size = x.size();
-	      if (size.length > 1) {
-	        throw new Error('Only one dimensional matrices supported');
-	      }
-	      return quickSelect(x.valueOf(), k, compare);
-	    }
-
-	    if (Array.isArray(x)) {
-	      return quickSelect(x, k, compare);
-	    }
-	  }
-
-	  /**
-	   * Quickselect algorithm.
-	   * Code adapted from:
-	   * http://blog.teamleadnet.com/2012/07/quick-select-algorithm-find-kth-element.html
-	   *
-	   * @param {Array} arr
-	   * @param {Number} k
-	   * @param {Function} compare
-	   * @private
-	   */
-	  function quickSelect(arr, k, compare) {
-	    if (k >= arr.length) {
-	      throw new Error('k out of bounds');
-	    }
-
-	    var from = 0;
-	    var to = arr.length - 1;
-
-	    // if from == to we reached the kth element
-	    while (from < to) {
-	      var r = from;
-	      var w = to;
-	      var pivot = arr[Math.floor(Math.random() * (to - from + 1)) + from];
-
-	      // stop if the reader and writer meets
-	      while (r < w) {
-	        // arr[r] >= pivot
-	        if (compare(arr[r], pivot) >= 0) { // put the large values at the end
-	          var tmp = arr[w];
-	          arr[w] = arr[r];
-	          arr[r] = tmp;
-	          --w;
-	        } else { // the value is smaller than the pivot, skip
-	          ++r;
-	        }
-	      }
-
-	      // if we stepped up (r++) we need to step one down (arr[r] > pivot)
-	      if (compare(arr[r], pivot) > 0) {
-	        --r;
-	      }
-
-	      // the r pointer is on the end of the first k elements
-	      if (k <= r) {
-	        to = r;
-	      } else {
-	        from = r + 1;
-	      }
-	    }
-
-	    return arr[k];
-	  }
-	}
-
-	exports.name = 'partitionSelect';
-	exports.factory = factory;
-
-
-/***/ },
-/* 444 */
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48044,15 +50133,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.factory = factory;
 
 /***/ },
-/* 445 */
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var deepForEach = __webpack_require__(305);
+	var deepForEach = __webpack_require__(312);
 
 	function factory (type, config, load, typed) {
-	  var multiply = load(__webpack_require__(78));
+	  var multiply = load(__webpack_require__(80));
 
 	  /**
 	   * Compute the product of a matrix or a list with values.
@@ -48126,7 +50215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 446 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48134,13 +50223,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var isInteger = __webpack_require__(6).isInteger;
 	var isNumber = __webpack_require__(6).isNumber;
 	var flatten = __webpack_require__(40).flatten;
-	var isCollection = __webpack_require__(303);
+	var isCollection = __webpack_require__(310);
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(50));
-	  var multiply = load(__webpack_require__(82));
-	  var partitionSelect = load(__webpack_require__(443));
-	  var compare = load(__webpack_require__(437));
+	  var add = load(__webpack_require__(51));
+	  var multiply = load(__webpack_require__(84));
+	  var partitionSelect = load(__webpack_require__(430));
+	  var compare = load(__webpack_require__(431));
 
 	  /**
 	   * Compute the prob order quantile of a matrix or a list with values.
@@ -48217,7 +50306,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            throw new Error('N/prob must be non-negative');
 	          }
 
-	          one = probOrN.constructor.ONE;
+	          one = new probOrN.constructor(1);
 
 	          if (probOrN.lte(one)) {
 	            // quantileSeq([a, b, c, d, ...], prob[,sorted])
@@ -48256,7 +50345,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                throw new Error('Probability must be between 0 and 1, inclusive');
 	              }
 	            } else if (currProb && currProb.isBigNumber) {
-	              one = currProb.constructor.ONE;
+	              one = new currProb.constructor(1);
 	              if (currProb.isNegative() || currProb.gt(one)) {
 	                throw new Error('Probability must be between 0 and 1, inclusive');
 	              }
@@ -48365,7 +50454,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    validate(right);
 
 	    // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
-	    var one = fracPart.constructor.ONE;
+	    var one = new fracPart.constructor(1);
 	    return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart));
 	  }
 
@@ -48389,14 +50478,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 447 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	function factory (type, config, load, typed) {
-	  var sqrt       = load(__webpack_require__(362));
-	  var variance   = load(__webpack_require__(448));
+	  var sqrt       = load(__webpack_require__(368));
+	  var variance   = load(__webpack_require__(455));
 
 	  /**
 	   * Compute the standard deviation of a matrix or a  list with values.
@@ -48469,20 +50558,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 448 */
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var DEFAULT_NORMALIZATION = 'unbiased';
 
-	var deepForEach = __webpack_require__(305);
+	var deepForEach = __webpack_require__(312);
 
 	function factory (type, config, load, typed) {
-	  var add = load(__webpack_require__(52));
-	  var subtract = load(__webpack_require__(75));
-	  var multiply = load(__webpack_require__(78));
-	  var divide = load(__webpack_require__(79));
+	  var add = load(__webpack_require__(53));
+	  var subtract = load(__webpack_require__(77));
+	  var multiply = load(__webpack_require__(80));
+	  var divide = load(__webpack_require__(81));
 
 	  /**
 	   * Compute the variance of a matrix or a  list with values.
@@ -48603,14 +50692,119 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 449 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(450),
+	  __webpack_require__(89),
+	  __webpack_require__(457)
+	];
+
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var isString = __webpack_require__(23).isString;
+	var format = __webpack_require__(23).format;
+
+	function factory (type, config, load, typed) {
+	  /**
+	   * Interpolate values into a string template.
+	   *
+	   * Syntax:
+	   *
+	   *     math.print(template, values)
+	   *     math.print(template, values, precision)
+	   *     math.print(template, values, options)
+	   *
+	   * Example usage:
+	   *
+	   *     // the following outputs: 'Lucy is 5 years old'
+	   *     math.print('Lucy is $age years old', {age: 5});
+	   *
+	   *     // the following outputs: 'The value of pi is 3.141592654'
+	   *     math.print('The value of pi is $pi', {pi: math.pi}, 10);
+	   *
+	   *     // the following outputs: 'hello Mary! The date is 2013-03-23'
+	   *     math.print('Hello $user.name! The date is $date', {
+	   *       user: {
+	   *         name: 'Mary',
+	   *       },
+	   *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
+	   *     });
+	   *
+	   * See also:
+	   *
+	   *     format
+	   *
+	   * @param {string} template     A string containing variable placeholders.
+	   * @param {Object} values       An object containing variables which will
+	   *                              be filled in in the template.
+	   * @param {number | Object} [options]  Formatting options,
+	   *                              or the number of digits to format numbers.
+	   *                              See function math.format for a description
+	   *                              of all options.
+	   * @return {string} Interpolated string
+	   */
+	  var print = typed ('print', {
+	    'string, Object': _print,
+	    'string, Object, number': _print
+	  });
+
+	  print.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+
+	  return print;
+	}
+
+	/**
+	 * Interpolate values into a string template.
+	 * @param {string} template
+	 * @param {Object} values
+	 * @param {number | Object} [options]
+	 * @returns {string} Interpolated string
+	 * @private
+	 */
+	function _print(template, values, options) {
+	  return template.replace(/\$([\w\.]+)/g, function (original, key) {
+	        var keys = key.split('.');
+	        var value = values[keys.shift()];
+	        while (keys.length && value !== undefined) {
+	          var k = keys.shift();
+	          value = k ? value[k] : value + '.';
+	        }
+
+	        if (value !== undefined) {
+	          if (!isString(value)) {
+	            return format(value, options);
+	          }
+	          else {
+	            return value;
+	          }
+	        }
+
+	        return original;
+	      }
+	  );
+	}
+
+	exports.name = 'print';
+	exports.factory = factory;
+
+
+/***/ },
+/* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = [
+	  __webpack_require__(459),
 	  __webpack_require__(460),
+	  __webpack_require__(461),
 	  __webpack_require__(462),
 	  __webpack_require__(463),
+	  __webpack_require__(464),
 	  __webpack_require__(465),
 	  __webpack_require__(466),
 	  __webpack_require__(467),
@@ -48619,30 +50813,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	  __webpack_require__(470),
 	  __webpack_require__(471),
 	  __webpack_require__(472),
+	  __webpack_require__(473),
 	  __webpack_require__(474),
 	  __webpack_require__(475),
 	  __webpack_require__(476),
-	  __webpack_require__(479),
-	  __webpack_require__(481),
-	  __webpack_require__(483),
-	  __webpack_require__(484),
-	  __webpack_require__(485),
-	  __webpack_require__(486),
-	  __webpack_require__(487),
+	  __webpack_require__(477),
 	  __webpack_require__(478),
-	  __webpack_require__(488),
-	  __webpack_require__(489)
+	  __webpack_require__(479),
+	  __webpack_require__(480),
+	  __webpack_require__(481),
+	  __webpack_require__(482),
+	  __webpack_require__(483)
 	];
 
 
 /***/ },
-/* 450 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var acosAsec = __webpack_require__(451);
 
 	function factory (type, config, load, typed) {
 
@@ -48684,7 +50875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return acosAsec(x, type.BigNumber, false);
+	      return x.acos();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -48702,522 +50893,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 451 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var pi = __webpack_require__(92).pi;
-	var atanAcot = __webpack_require__(452);
-
-	/**
-	 * Calculate the arccosine or arcsecant of x
-	 *
-	 * acos(x) = 2*atan(sqrt(1-x^2)/(1+x))
-	 *
-	 * asec(x) = acos(1/x)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} reciprocal   is sec
-	 * @returns {BigNumber} arccosine or arcsecant of x
-	 */
-	module.exports = function acosAsec(x, BigNumber, reciprocal) {
-	  if (reciprocal) {
-	    if (x.abs().lt(BigNumber.ONE)) {
-	      throw new Error('asec() only has non-complex values for |x| >= 1.');
-	    }
-	  } else if (x.abs().gt(BigNumber.ONE)) {
-	    throw new Error('acos() only has non-complex values for |x| <= 1.');
-	  }
-	  if (x.eq(-1)) {
-	    return pi(BigNumber);
-	  }
-
-	  var precision = BigNumber.precision;
-	  BigNumber.config({precision: precision + 4});
-
-	  if (reciprocal) {
-	    x = BigNumber.ONE.div(x);
-	  }
-
-	  var acos = atanAcot(BigNumber.ONE.minus(x.times(x)).sqrt()
-	      .div(x.plus(BigNumber.ONE)), BigNumber).times(2);
-
-	  BigNumber.config({precision: precision});
-	  return acos.toDP(precision - 1);
-	};
-
-
-/***/ },
-/* 452 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var constants = __webpack_require__(92);
-	var asinAcsc = __webpack_require__(453);
-	var atan = __webpack_require__(93);
-
-	/**
-	 * Calculate the arctangent or arccotangent of x
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} reciprocal   is cot
-	 * @returns {BigNumber} arctangent or arccotangent of x
-	 */
-	module.exports = function atanAcot (x, BigNumber, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-	  if ((!reciprocal && x.isZero()) || (reciprocal && !x.isFinite())) {
-	    return new BigNumber(0);
-	  }
-
-	  var precision = BigNumber.precision;
-	  if ((!reciprocal && !x.isFinite()) || (reciprocal && x.isZero())) {
-	    var halfPi = constants.pi(BigNumber.constructor({precision: precision + 2})).div(2).toDP(precision - 1);
-	    halfPi.constructor = BigNumber;
-	    halfPi.s = x.s;
-
-	    return halfPi;
-	  }
-
-	  BigNumber.config({precision: precision + 4});
-
-	  if (reciprocal) {
-	    x = BigNumber.ONE.div(x);
-	  }
-
-	  var absX = x.abs();
-	  if (absX.lte(0.875)) {
-	    var ret = atan(x);
-
-	    ret.constructor = BigNumber;
-	    BigNumber.config({precision: precision});
-	    return ret.toDP(BigNumber.precision - 1);
-	  }
-	  if (absX.gte(1.143)) {
-	    // arctan(x) = sign(x)*((PI / 2) - arctan(1 / |x|))
-	    var halfPi = constants.pi(BigNumber.constructor({precision: precision + 4})).div(2);
-	    var ret = halfPi.minus(atan(BigNumber.ONE.div(absX)));
-	    ret.s = x.s;
-
-	    ret.constructor = BigNumber;
-	    BigNumber.config({precision: precision});
-	    return ret.toDP(BigNumber.precision - 1);
-	  }
-
-	  // arctan(x) = arcsin(x / [sqrt(1 + x^2)])
-	  x = x.div(x.times(x).plus(1).sqrt());
-
-	  BigNumber.config({precision: precision});
-	  return asinAcsc(x, BigNumber);
-	};
-
-
-/***/ },
-/* 453 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var pi = __webpack_require__(92).pi;
-	var asin = __webpack_require__(454);
-	var asinNewton = __webpack_require__(455);
-
-	/**
-	 * Calculate the arcsine or arccosecant of x
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} reciprocal   is csc
-	 * @returns {BigNumber} arcsine or arccosecant of x
-	 */
-	module.exports = function asinAcsc(x, BigNumber, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-
-	  var precision = BigNumber.precision;
-	  var absX = x.abs();
-	  if (reciprocal) {
-	    if (absX.lt(BigNumber.ONE)) {
-	      throw new Error('acsc() only has non-complex values for |x| >= 1.');
-	    }
-
-	    BigNumber.config({precision: precision + 2});
-	    x = BigNumber.ONE.div(x);
-	    BigNumber.config({precision: precision});
-
-	    absX = x.abs();
-	  } else if (absX.gt(BigNumber.ONE)) {
-	    throw new Error('asin() only has non-complex values for |x| <= 1.');
-	  }
-
-	  // Get x below 0.58
-	  if (absX.gt(0.8)) {
-	    BigNumber.config({precision: precision + 4});
-
-	    // arcsin(x) = sign(x)*(Pi/2 - arcsin(sqrt(1 - x^2)))
-	    var sign = x.s;
-	    var halfPi = pi(BigNumber.constructor({precision: precision + 4})).div(2);
-	    x = halfPi.minus(asinAcsc(BigNumber.ONE.minus(x.times(x)).sqrt(), BigNumber));
-	    x.s = sign;
-
-	    x.constructor = BigNumber;
-	    BigNumber.config({precision: precision});
-	    return x.toDP(precision - 1);
-	  }
-	  var wasReduced = absX.gt(0.58);
-	  if (wasReduced) {
-	    BigNumber.config({precision: precision + 8});
-
-	    // arcsin(x) = 2*arcsin(x / (sqrt(2)*sqrt(sqrt(1 - x^2) + 1)))
-	    x = x.div(new BigNumber(2).sqrt().times(BigNumber.ONE.minus(x.times(x)).sqrt()
-	        .plus(BigNumber.ONE).sqrt()));
-
-	    BigNumber.config({precision: precision});
-	  }
-
-	  // Avoid overhead of Newton's Method if feasible
-	  var ret = (precision <= 60 || ((x.dp() <= Math.log(precision)) && x.lt(0.05)))
-	      ? asin(x, precision)
-	      : asinNewton(x, BigNumber);
-
-	  if (wasReduced) {
-	    return ret.times(2);
-	  }
-	  return ret;
-	};
-
-
-/***/ },
-/* 454 */
-/***/ function(module, exports) {
-
-	/**
-	 * Calculate the arc sine of x
-	 *
-	 * arcsin(x) = x + (1/2)*x^3/3 + (3/8)*x^5/5 + (15/48)*x^7/7 ...
-	 *           = x + (1/2)*x^2*x^1/3 + [(1*3)/(2*4)]*x^2*x^3/5 + [(1*3*5)/(2*4*6)]*x^2*x^5/7 ...
-	 *
-	 * @param {BigNumber} x
-	 * @param {number} precision
-	 * @returns {BigNumber} arc sine of x
-	 */
-	module.exports = function asinTaylor(x, precision) {
-	  var BigNumber = x.constructor;
-	  BigNumber.config({precision: precision + Math.log(precision) | 0 + 4});
-
-	  var one = new BigNumber(1);
-	  var y = x;
-	  var yPrev = NaN;
-	  var x2 = x.times(x);
-	  var polyNum = x;
-	  var constNum = new BigNumber(one);
-	  var constDen = new BigNumber(one);
-
-	  var bigK = new BigNumber(one);
-	  for (var k = 3; !y.equals(yPrev); k += 2) {
-	    polyNum = polyNum.times(x2);
-
-	    constNum = constNum.times(bigK);
-	    constDen = constDen.times(bigK.plus(one));
-
-	    yPrev = y;
-	    bigK = new BigNumber(k);
-	    y = y.plus(polyNum.times(constNum).div(bigK.times(constDen)));
-	  }
-
-	  BigNumber.config({precision: precision});
-	  return y.toDP(precision - 1);
-	}
-
-
-/***/ },
-/* 455 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var cosSinSecCsc = __webpack_require__(456);
-	var sinToCos = __webpack_require__(459);
-
-	/**
-	 * Calculate the arc sine of x using Newton's method
-	 *
-	 * f(x) = sin(x) = N  =>  f(x)  = sin(x) - N
-	 *                        f'(x) = cos(x)
-	 *
-	 * Thus we solve each step as follows:
-	 *     x_(i+1) = x_i - (sin(x_i) - N)/cos(x_i)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @returns {BigNumber} arc sine of x
-	 */
-	module.exports = function asinNewton(x, BigNumber) {
-	  var oldPrecision = BigNumber.precision;
-
-	  // Calibration variables, adjusted from MAPM
-	  var tolerance = -(oldPrecision + 4);
-	  var maxp = oldPrecision + 8 - x.e;
-	  var localPrecision = 25 - x.e;
-	  var maxIter = Math.max(Math.log(oldPrecision + 2) * 1.442695 | 0 + 5, 5);
-	  BigNumber.config({precision: localPrecision});
-
-	  var i = 0;
-	  var curr = new BigNumber(Math.asin(x.toNumber()) + '');
-	  do {
-	    var tmp0 = cosSinSecCsc(curr, BigNumber, 1, false);
-	    var tmp1 = sinToCos(tmp0);
-	    if (!tmp0.isZero()) {
-	      tmp0.s = curr.s;
-	    }
-
-	    var tmp2 = tmp0.minus(x).div(tmp1);
-	    curr = curr.minus(tmp2);
-
-	    localPrecision = Math.min(2*localPrecision, maxp);
-	    BigNumber.config({precision: localPrecision});
-	  } while ((2*tmp2.e >= tolerance) && !tmp2.isZero() && (++i <= maxIter))
-
-	  if (i == maxIter) {
-	    throw new Error('asin() failed to converge to the requested accuracy.' +
-	        'Try with a higher precision.');
-	  }
-
-	  BigNumber.config({precision: oldPrecision});
-	  return curr.toDP(oldPrecision - 1);
-	};
-
-
-/***/ },
-/* 456 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var reduceToPeriod = __webpack_require__(457);
-	var cosSin = __webpack_require__(458);
-
-	/**
-	 * Calculate the cosine/sine of x using the multiple angle identity:
-	 *
-	 * cos(4x) = 8[cos(x)^4 - cos(x)^2] + 1
-	 *
-	 * sin(5x) = 16sin(x)^5 - 20sin(x)^3 + 5sin(x)
-	 * http://www.tc.umn.edu/~ringx004/sidebar.html
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {number} mode          cosine function if 0, sine function if 1
-	 * @param {boolean} reciprocal   is sec or csc
-	 * @returns {BigNumber} cosine, sine, secant, or cosecant of x
-	 */
-	module.exports = function cosSinSecCsc(x, BigNumber, mode, reciprocal) {
-	  if (x.isNaN() || !x.isFinite()) {
-	    return new BigNumber(NaN);
-	  }
-	  var precision = BigNumber.precision;
-
-	  // Avoid changing the original value
-	  var y = new BigNumber(x);
-
-	  // sin(-x) == -sin(x), cos(-x) == cos(x)
-	  var isNeg = y.isNegative();
-	  if (isNeg) {
-	    y.s = -y.s;
-	  }
-
-	  // Apply ~log(precision) guard bits
-	  var precPlusGuardDigits = precision + (Math.log(precision) | 0) + 3;
-	  BigNumber.config({precision: precPlusGuardDigits});
-
-	  y = reduceToPeriod(y, BigNumber.constructor({precision: precPlusGuardDigits}), mode);  // Make this destructive
-	  y[0].constructor = BigNumber;
-	  if (y[1]) {
-	    y = y[0];
-	    if (reciprocal && y.isZero()) {
-	      y = new BigNumber(Infinity);
-	    }
-
-	    BigNumber.config({precision: precision});
-	    return y;
-	  }
-
-	  var ret;
-	  y = y[0];
-	  if (mode) {
-	    ret = cosSin(y.div(3125), mode);
-	    BigNumber.config({precision: Math.min(precPlusGuardDigits, precision + 15)});
-
-	    var five = new BigNumber(5);
-	    var sixteen = new BigNumber(16);
-	    var twenty = new BigNumber(20);
-	    for (var i = 0; i < 5; ++i) {
-	      var ret2 = ret.times(ret);
-	      var ret3 = ret2.times(ret);
-	      var ret5 = ret3.times(ret2);
-	      ret = sixteen.times(ret5).minus(
-	          twenty.times(ret3)).plus(
-	          five.times(ret));
-	    }
-
-	    if (isNeg) {
-	      ret.s = -ret.s;
-	    }
-	  } else {
-	    var div_factor, loops;
-	    if (y.abs().lt(BigNumber.ONE)) {
-	      div_factor = 64;
-	      loops = 3;
-	    } else {
-	      div_factor = 256;
-	      loops = 4;
-	    }
-
-	    ret = cosSin(y.div(div_factor), mode);
-	    BigNumber.config({precision: Math.min(precPlusGuardDigits, precision + 8)});
-
-	    var eight = new BigNumber(8);
-	    for (; loops > 0; --loops) {
-	      var ret2 = ret.times(ret);
-	      var ret4 = ret2.times(ret2);
-	      ret = eight.times(ret4.minus(ret2)).plus(BigNumber.ONE);
-	    }
-	  }
-
-	  if (reciprocal) {
-	    ret = (ret.e <= -precision)
-	        ? new BigNumber(Infinity)
-	        : BigNumber.ONE.div(ret);
-	  }
-
-	  BigNumber.config({precision: precision});
-	  return ret.toDP(precision - 1);
-	};
-
-
-/***/ },
-/* 457 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var constants = __webpack_require__(92);
-
-	/**
-	 * Reduce x within a period of pi (0, pi] with guard digits.
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {number} mode          Will reduce sin if mode=1, cos if mode=0
-	 * @returns {Array} [Reduced x, is tau multiple?]
-	 */
-	module.exports = function reduceToPeriod(x, BigNumber, mode) {
-	  var pi = constants.pi(BigNumber.constructor({precision: BigNumber.precision + 2}));
-	  var tau = constants.tau(BigNumber);
-
-	  // TODO: the conditions in this function are too complicated, simplify this function
-
-	  if (x.abs().lte(pi.toDP(x.dp()))) {
-	    return [x, false];
-	  }
-
-	  // Catch if input is tau multiple using pi's precision
-	  if (x.dp() > 0 && x.div(pi.toDP(x.dp())).toNumber() % 2 == 0) {
-	    return [new BigNumber(mode ^ 1), true];
-	  }
-
-	  var y = x.mod(tau);
-
-	  // Catch if tau multiple with tau's precision
-	  if (x.dp() > 0 && y.toDP(x.dp(), 1).isZero()) {
-	    return [new BigNumber(mode ^ 1), true];
-	  }
-
-	  if (y.gt(pi)) {
-	    if (mode) {
-	      // sin(x + pi) = -sin(x)
-	      y = y.minus(pi);
-	      y.s = -y.s;
-	    } else {
-	      // cos(x) = cos(tau - x)
-	      y = tau.minus(y);
-	    }
-	  }
-
-	  y.constructor = x.constructor;
-	  return [y, false];
-	};
-
-
-/***/ },
-/* 458 */
-/***/ function(module, exports) {
-
-	/**
-	 * Calculate the cosine or sine of x using Taylor Series.
-	 *
-	 * cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - ...
-	 *        = 1 - 1*x^2/2! + x^2*x^2/4! - x^2*x^4/6! + x^2*x^6/8! - ...
-	 *
-	 * sin(x) = x - x^3/3! + x^5/5! - x^7/7! + x^9/9! - ...
-	 *        = x - x^2*x^1/3! + x^2*x^3/5! - x^2*x^5/7! + x^2*x^7/9! - ...
-	 *
-	 * @param {BigNumber} x     reduced argument
-	 * @param {number} mode     sine function if 1, cosine function if 0
-	 * @returns {BigNumber} sine or cosine of x
-	 */
-	module.exports = function cosSin(x, mode) {
-	  var one = x.constructor.ONE;
-
-	  var y = x;
-	  var yPrev = NaN;
-	  var x2 = x.times(x);
-	  var num = (mode) ? y : y = one;
-	  var den = one;
-	  var add = true;
-
-	  for (var k = mode; !y.equals(yPrev); k += 2) {
-	    num = num.times(x2);
-	    den = den.times(k+1).times(k+2);
-
-	    yPrev = y;
-	    add = !add;
-	    y = (add) ? y.plus(num.div(den)) : y.minus(num.div(den));
-	  }
-
-	  return y;
-	};
-
-
-/***/ },
-/* 459 */
-/***/ function(module, exports) {
-
-	/**
-	 * Convert from sine to cosine
-	 *
-	 * |cos(x)| = sqrt(1 - sin(x)^2)
-	 *
-	 * @param {BigNumber} value    Sine value of x
-	 * @returns {BigNumber} sine as cosine
-	 */
-	module.exports = function sinToCos(value) {
-	  var BigNumber = value.constructor;
-	  var precision = BigNumber.precision;
-	  BigNumber.config({precision: precision + 2});
-
-	  var ret = BigNumber.ONE.minus(value.times(value)).sqrt();
-
-	  BigNumber.config({precision: precision});
-	  return ret.toDP(precision - 1);
-	};
-
-
-/***/ },
 /* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var acoshAsinhAsechAcsch = __webpack_require__(461);
 
 	function factory (type, config, load, typed) {
-	  var complexAcos = typed.find(load(__webpack_require__(450)), ['Complex']);
 
 	  /**
 	   * Calculate the hyperbolic arccos of a value,
@@ -49256,7 +50939,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return acoshAsinhAsechAcsch(x, type.BigNumber, false, false);
+	      return x.acosh();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49275,75 +50958,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 461 */
-/***/ function(module, exports) {
-
-	/**
-	 * Calculate the hyperbolic arccosine, arcsine, arcsecant, or arccosecant of x
-	 *
-	 * acosh(x) = ln(x + sqrt(x^2 - 1))
-	 *
-	 * asinh(x) = ln(x + sqrt(x^2 + 1))
-	 *
-	 * asech(x) = acosh(1 / x)
-	 *
-	 * acsch(x) = asinh(1 / x)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} mode         sine function if true, cosine function if false
-	 * @param {boolean} reciprocal   is sec or csc
-	 * @returns {BigNumber} hyperbolic arccosine, arcsine, arcsecant, or arccosecant of x
-	 */
-	module.exports = function acoshAsinhAsechAcsch(x, BigNumber, mode, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-	  if (reciprocal && x.isZero()) {
-	    return new BigNumber(Infinity);
-	  }
-	  if (!mode) {
-	    if (reciprocal) {
-	      if (x.isNegative() || x.gt(BigNumber.ONE)) {
-	        throw new Error('asech() only has non-complex values for 0 <= x <= 1.');
-	      }
-	    } else if (x.lt(BigNumber.ONE)) {
-	      throw new Error('acosh() only has non-complex values for x >= 1.');
-	    }
-	  }
-
-	  var precision = BigNumber.precision;
-	  BigNumber.config({precision: precision + 4});
-
-	  var y = new BigNumber(x);
-	  y.constructor = BigNumber;
-
-	  if (reciprocal) {
-	    y = BigNumber.ONE.div(y);
-	  }
-
-	  var x2PlusOrMinus = (mode) ? y.times(y).plus(BigNumber.ONE) : y.times(y).minus(BigNumber.ONE);
-	  var ret = y.plus(x2PlusOrMinus.sqrt()).ln();
-
-	  BigNumber.config({precision: precision});
-	  return new BigNumber(ret.toPrecision(precision));
-	};
-
-
-/***/ },
-/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var atanAcot = __webpack_require__(452);
-
-	var HALF_PI = 1.5707963267948966;
 
 	function factory (type, config, load, typed) {
 
 	  /**
-	   * Calculate the inverse cotangent of a value.
+	   * Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -49367,7 +50991,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  var acot = typed('acot', {
 	    'number': function (x) {
-	      return (x) ? Math.atan(1 / x) : HALF_PI;
+	      return Math.atan(1 / x);
 	    },
 
 	    'Complex': function (x) {
@@ -49375,7 +50999,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return atanAcot(x, type.BigNumber, true);
+	      return new type.BigNumber(1).div(x).atan();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49393,19 +51017,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 463 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var atanhAcoth = __webpack_require__(464);
 
 	function factory (type, config, load, typed) {
 
 	  /**
 	   * Calculate the hyperbolic arccotangent of a value,
-	   * defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
+	   * defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -49437,7 +51060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return atanhAcoth(x, type.BigNumber, true);
+	      return new type.BigNumber(1).div(x).atanh();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49455,73 +51078,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 464 */
-/***/ function(module, exports) {
-
-	
-	/**
-	 * Calculate the hyperbolic arctangent or arccotangent of x
-	 *
-	 * atanh(x) = ln((1 + x)/(1 - x)) / 2
-	 *
-	 * acoth(x) = atanh(1 / x)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} reciprocal   is sec or csc
-	 * @returns {BigNumber} hyperbolic arctangent or arccotangent of x
-	 */
-	module.exports = function atanhAcoth(x, BigNumber, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-
-	  var absX = x.abs();
-	  if (absX.eq(BigNumber.ONE)) {
-	    return new BigNumber(x.isNegative() ? -Infinity : Infinity);
-	  }
-	  if (absX.gt(BigNumber.ONE)) {
-	    if (!reciprocal) {
-	      throw new Error('atanh() only has non-complex values for |x| <= 1.');
-	    }
-	  } else if (reciprocal) {
-	    throw new Error('acoth() has complex values for |x| < 1.');
-	  }
-
-	  if (x.isZero()) {
-	    return new BigNumber(0);
-	  }
-
-	  var precision = BigNumber.precision;
-	  BigNumber.config({precision: precision + 4});
-
-	  var y = new BigNumber(x);
-	  y.constructor = BigNumber;
-
-	  if (reciprocal) {
-	    y = BigNumber.ONE.div(y);
-	  }
-	  var ret = BigNumber.ONE.plus(y).div(BigNumber.ONE.minus(y)).ln().div(2);
-
-	  BigNumber.config({precision: precision});
-	  return new BigNumber(ret.toPrecision(precision));
-	};
-
-
-/***/ },
-/* 465 */
+/* 463 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var asinAcsc = __webpack_require__(453);
 
 
 	function factory (type, config, load, typed) {
 
 	  /**
-	   * Calculate the inverse cosecant of a value.
+	   * Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -49556,7 +51124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return asinAcsc(x, type.BigNumber, true);
+	      return new type.BigNumber(1).div(x).asin();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49574,19 +51142,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 466 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var acoshAsinhAsechAcsch = __webpack_require__(461);
 
 	function factory (type, config, load, typed) {
 
 	  /**
 	   * Calculate the hyperbolic arccosecant of a value,
-	   * defined as `acsch(x) = ln(1/x + sqrt(1/x^2 + 1))`.
+	   * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -49616,7 +51183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return acoshAsinhAsechAcsch(x, type.BigNumber, true, true);
+	      return new type.BigNumber(1).div(x).asinh();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49634,18 +51201,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 467 */
+/* 465 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var acosAsec = __webpack_require__(451);
 
 	function factory (type, config, load, typed) {
 
 	  /**
-	   * Calculate the inverse secant of a value.
+	   * Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -49680,7 +51246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return acosAsec(x, type.BigNumber, true);
+	      return new type.BigNumber(1).div(x).acos();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49698,20 +51264,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 468 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var acoshAsinhAsechAcsch = __webpack_require__(461);
 
 	function factory (type, config, load, typed) {
 	  var acosh = typed.find(load(__webpack_require__(460)), ['Complex']);
 
 	  /**
 	   * Calculate the hyperbolic arcsecant of a value,
-	   * defined as `asech(x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
+	   * defined as `asech(x) = acosh(1/x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -49751,7 +51316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return acoshAsinhAsechAcsch(x, type.BigNumber, false, true);
+	      return new type.BigNumber(1).div(x).acosh();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49769,13 +51334,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 469 */
+/* 467 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var asinAcsc = __webpack_require__(453);
 
 	function factory (type, config, load, typed) {
 
@@ -49817,7 +51381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return asinAcsc(x, type.BigNumber, false);
+	      return x.asin();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49836,16 +51400,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 470 */
+/* 468 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var acoshAsinhAsechAcsch = __webpack_require__(461);
 
 	function factory (type, config, load, typed) {
-	  var complexAsin = typed.find(load(__webpack_require__(469)), ['Complex']);
 
 	  /**
 	   * Calculate the hyperbolic arcsine of a value,
@@ -49878,7 +51440,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return acoshAsinhAsechAcsch(x, type.BigNumber, true, false);
+	      return x.asinh();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49897,13 +51459,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 471 */
+/* 469 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var atanAcot = __webpack_require__(452);
 
 	function factory (type, config, load, typed) {
 
@@ -49940,7 +51501,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return atanAcot(x, type.BigNumber, false);
+	      return x.atan();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -49959,24 +51520,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 472 */
+/* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var bigAtan2 = __webpack_require__(473);
-
 	function factory (type, config, load, typed) {
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm02 = load(__webpack_require__(353));
-	  var algorithm03 = load(__webpack_require__(60));
-	  var algorithm09 = load(__webpack_require__(355));
-	  var algorithm11 = load(__webpack_require__(83));
-	  var algorithm12 = load(__webpack_require__(62));
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm02 = load(__webpack_require__(359));
+	  var algorithm03 = load(__webpack_require__(61));
+	  var algorithm09 = load(__webpack_require__(361));
+	  var algorithm11 = load(__webpack_require__(85));
+	  var algorithm12 = load(__webpack_require__(63));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Calculate the inverse tangent function with two arguments, y/x.
@@ -50016,7 +51575,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // the atan only on base of the real part of the numbers and ignored the imaginary.
 
 	    'BigNumber, BigNumber': function (y, x) {
-	      return bigAtan2(y, x, type.BigNumber);
+	      return type.BigNumber.atan2(y, x);
 	    },
 
 	    'Matrix, Matrix': function (x, y) {
@@ -50119,57 +51678,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 473 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var constants = __webpack_require__(92);
-	var atanAcot = __webpack_require__(452);
-
-	/**
-	 * Calculate the arctangent of y, x
-	 *
-	 * @param {BigNumber} y
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @returns {BigNumber} arctangent of y, x
-	 */
-	module.exports = function arctan2(y, x, BigNumber) {
-	  var precision = BigNumber.precision;
-
-	  if (x.isZero()) {
-	    if (y.isZero()) {
-	      return new BigNumber(NaN);
-	    }
-
-	    var halfPi = constants.pi(BigNumber.constructor({precision: precision + 2})).div(2).toDP(precision - 1);
-	    halfPi.constructor = BigNumber;
-	    halfPi.s = y.s;
-
-	    return halfPi;
-	  }
-
-	  BigNumber.config({precision: precision + 2});
-
-	  var ret = atanAcot(y.div(x), BigNumber, false);
-	  if (x.isNegative()) {
-	    var pi = constants.pi(BigNumber);
-	    ret = y.isNegative() ? ret.minus(pi) : ret.plus(pi);
-	  }
-
-	  ret.constructor = BigNumber;
-	  BigNumber.config({precision: precision});
-	  return ret.toDP(precision - 1);
-	};
-
-
-/***/ },
-/* 474 */
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var atanhAcoth = __webpack_require__(464);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -50206,7 +51720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return atanhAcoth(x, type.BigNumber, false);
+	      return x.atanh();
 	    },
 
 	    'Array | Matrix': function (x) {
@@ -50225,17 +51739,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 475 */
+/* 472 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var cosSinSecCsc = __webpack_require__(456);
 
 	function factory (type, config, load, typed) {
-	  var cosh = typed.find(load(__webpack_require__(476)), ['number']);
-	  var sinh = typed.find(load(__webpack_require__(478)), ['number']);
 
 	  /**
 	   * Calculate the cosine of a value.
@@ -50271,7 +51782,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return cosSinSecCsc(x, type.BigNumber, 0, false);
+	      return x.cos();
 	    },
 
 	    'Unit': function (x) {
@@ -50296,13 +51807,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 476 */
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var coshSinhCschSech = __webpack_require__(477);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -50334,7 +51844,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return coshSinhCschSech(x, type.BigNumber, false, false);
+	      return x.cosh();
 	    },
 
 	    'Unit': function (x) {
@@ -50369,146 +51879,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 477 */
-/***/ function(module, exports) {
-
-	/**
-	 * Calculate the hyperbolic sine, cosine, secant, or cosecant of x
-	 *
-	 * cosh(x) = (exp(x) + exp(-x)) / 2
-	 *         = (e^x + 1/e^x) / 2
-	 *
-	 * sinh(x) = (exp(x) - exp(-x)) / 2
-	 *         = (e^x - 1/e^x) / 2
-	 *
-	 * sech(x) = 2 / (exp(x) + exp(-x))
-	 *         = 2 / (e^x + 1/e^x)
-	 *
-	 * csch(x) = 2 / (exp(x) - exp(-x))
-	 *         = 2 / (e^x - 1/e^x)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} mode         sinh function if true, cosh function if false
-	 * @param {boolean} reciprocal   is sech or csch
-	 * @returns {BigNumber} hyperbolic cosine, sine, secant. or cosecant of x
-	 */
-	module.exports = function coshSinhSschSech(x, BigNumber, mode, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-	  if (!x.isFinite()) {
-	    if (reciprocal) {
-	      return new BigNumber(0);
-	    }
-	    return new BigNumber((mode) ? x : Infinity);
-	  }
-
-	  var precision = BigNumber.precision;
-	  BigNumber.config({precision: precision + 4});
-
-	  var y = new BigNumber(x);
-	  y.constructor = BigNumber;
-
-	  y = y.exp();
-	  y = (mode) ? y.minus(BigNumber.ONE.div(y)) : y.plus(BigNumber.ONE.div(y));
-	  y = (reciprocal) ? new BigNumber(2).div(y) : y.div(2);
-
-	  BigNumber.config({precision: precision});
-	  return new BigNumber(y.toPrecision(precision));
-	};
-
-
-/***/ },
-/* 478 */
+/* 474 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var coshSinhCschSech = __webpack_require__(477);
 
 	function factory (type, config, load, typed) {
 	  /**
-	   * Calculate the hyperbolic sine of a value,
-	   * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
-	   *
-	   * For matrices, the function is evaluated element wise.
-	   *
-	   * Syntax:
-	   *
-	   *    math.sinh(x)
-	   *
-	   * Examples:
-	   *
-	   *    math.sinh(0.5);       // returns number 0.5210953054937474
-	   *
-	   * See also:
-	   *
-	   *    cosh, tanh
-	   *
-	   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
-	   * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
-	   */
-	  var sinh = typed('sinh', {
-	    'number': _sinh,
-
-	    'Complex': function (x) {
-	      return x.sinh();
-	    },
-
-	    'BigNumber': function (x) {
-	      return coshSinhCschSech(x, type.BigNumber, true, false);
-	    },
-
-	    'Unit': function (x) {
-	      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-	        throw new TypeError ('Unit in function sinh is no angle');
-	      }
-	      return sinh(x.value);
-	    },
-
-	    'Array | Matrix': function (x) {
-	      // deep map collection, skip zeros since sinh(0) = 0
-	      return deepMap(x, sinh, true);
-	    }
-	  });
-
-	  sinh.toTex = '\\sinh\\left(${args[0]}\\right)';
-
-	  return sinh;
-	}
-
-	/**
-	 * Calculate the hyperbolic sine of a number
-	 * @param {number} x
-	 * @returns {number}
-	 * @private
-	 */
-	function _sinh (x) {
-	  if (Math.abs(x) < 1) {
-	    return x + (x * x * x) / 6 + (x * x * x * x * x) / 120;
-	  } else {
-	    return (Math.exp(x) - Math.exp(-x)) / 2;
-	  }
-	}
-
-	exports.name = 'sinh';
-	exports.factory = factory;
-
-
-/***/ },
-/* 479 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var deepMap = __webpack_require__(19);
-	var tanCot = __webpack_require__(480);
-
-	function factory (type, config, load, typed) {
-	  /**
-	   * Calculate the cotangent of a value. `cot(x)` is defined as `1 / tan(x)`.
+	   * Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
 	   *
 	   * For matrices, the function is evaluated element wise.
 	   *
@@ -50538,7 +51918,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return tanCot(x, type.BigNumber, true);
+	      return new type.BigNumber(1).div(x.tan());
 	    },
 
 	    'Unit': function (x) {
@@ -50563,72 +51943,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 480 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var constants = __webpack_require__(92);
-	var cosSinSecCsc = __webpack_require__(456);
-	var sinToCos = __webpack_require__(459);
-	var reduceToPeriod = __webpack_require__(457);
-
-	/**
-	 * Calculate the tangent of x
-	 *
-	 * tan(x) = sin(x) / cos(x)
-	 *
-	 * cot(x) = cos(x) / sin(x)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} reciprocal   is cot
-	 * @returns {BigNumber} tangent or cotangent of x
-	 */
-	module.exports = function tanCot(x, BigNumber, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-
-	  var precision = BigNumber.precision;
-	  var pi = constants.pi(BigNumber.constructor({precision: precision + 2}));
-	  var halfPi = pi.div(2).toDP(precision - 1);
-	  pi = pi.toDP(precision - 1);
-
-	  var y = reduceToPeriod(x, BigNumber, 1)[0];
-	  if (y.abs().eq(pi)) {
-	    return new BigNumber(Infinity);
-	  }
-
-	  BigNumber.config({precision: precision + 4});
-	  var sin = cosSinSecCsc(y, BigNumber, 1, false);
-	  var cos = sinToCos(sin);
-
-	  sin = sin.toDP(precision);
-	  cos = cos.toDP(precision);
-
-	  // Make sure sign for cosine is correct
-	  if (y.eq(x)) {
-	    if (y.gt(halfPi)) {
-	      cos.s = -cos.s;
-	    }
-	  } else if (pi.minus(y.abs()).gt(halfPi)) {
-	    cos.s = -cos.s;
-	  }
-
-	  var tan = (reciprocal) ? cos.div(sin) : sin.div(cos);
-
-	  BigNumber.config({precision: precision});
-	  return new BigNumber(tan.toPrecision(precision));
-	};
-
-
-/***/ },
-/* 481 */
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var tanhCoth = __webpack_require__(482);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -50662,7 +51982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return tanhCoth(x, type.BigNumber, true);
+	      return new type.BigNumber(1).div(x.tanh());
 	    },
 
 	    'Unit': function (x) {
@@ -50698,57 +52018,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 482 */
-/***/ function(module, exports) {
-
-	/**
-	 * Calculate the hyperbolic tangent of x
-	 *
-	 * tanh(x) = (exp(x) + exp(-x)) / (exp(x) - exp(-x))
-	 *         = (exp(2x) - 1) / (exp(2x) + 1)
-	 *         = (e^x - 1/e^x) / (e^x + 1/e^x)
-	 *
-	 * coth(x) = (exp(x) - exp(-x)) / (exp(x) + exp(-x))
-	 *         = (exp(2x) + 1) / (exp(2x) - 1)
-	 *         = (e^x + 1/e^x) / (e^x - 1/e^x)
-	 *
-	 * @param {BigNumber} x
-	 * @param {function} BigNumber   BigNumber constructor
-	 * @param {boolean} reciprocal   is coth
-	 * @returns {BigNumber} hyperbolic tangent or cotangent of x
-	 */
-	module.exports = function tanhCoth(x, BigNumber, reciprocal) {
-	  if (x.isNaN()) {
-	    return new BigNumber(NaN);
-	  }
-	  if (!x.isFinite()) {
-	    return new BigNumber(x.s);
-	  }
-
-	  var precision = BigNumber.precision;
-	  BigNumber.config({precision: precision + 4});
-
-	  var y = new BigNumber(x);
-	  y.constructor = BigNumber;
-
-	  var posExp = y.exp();
-	  var negExp = BigNumber.ONE.div(posExp);
-	  var ret = posExp.minus(negExp);
-	  ret = (reciprocal) ? posExp.plus(negExp).div(ret) : ret.div(posExp.plus(negExp));
-
-	  BigNumber.config({precision: precision});
-	  return ret.toDP(precision - 1);
-	};
-
-
-/***/ },
-/* 483 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var cosSinSecCsc = __webpack_require__(456);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -50782,7 +52057,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return cosSinSecCsc(x, type.BigNumber, 1, true);
+	      return new type.BigNumber(1).div(x.sin());
 	    },
 
 	    'Unit': function (x) {
@@ -50807,13 +52082,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 484 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var coshSinhCschSech = __webpack_require__(477);
 	var sign = __webpack_require__(6).sign;
 
 	function factory (type, config, load, typed) {
@@ -50848,7 +52122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return coshSinhCschSech(x, type.BigNumber, true, true);
+	      return new type.BigNumber(1).div(x.sinh());
 	    },
 
 	    'Unit': function (x) {
@@ -50889,13 +52163,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 485 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var cosSinSecCsc = __webpack_require__(456);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -50929,7 +52202,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return cosSinSecCsc(x, type.BigNumber, 0, true);
+	      return new type.BigNumber(1).div(x.cos());
 	    },
 
 	    'Unit': function (x) {
@@ -50954,13 +52227,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 486 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var coshSinhCschSech = __webpack_require__(477);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -50994,7 +52266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return coshSinhCschSech(x, type.BigNumber, false, true);
+	      return new type.BigNumber(1).div(x.cosh());
 	    },
 
 	    'Unit': function (x) {
@@ -51029,17 +52301,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 487 */
+/* 480 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var cosSinSecCsc = __webpack_require__(456);
 
 	function factory (type, config, load, typed) {
-	  var cosh = typed.find(load(__webpack_require__(476)), ['number']);
-	  var sinh = typed.find(load(__webpack_require__(478)), ['number']);
 
 	  /**
 	   * Calculate the sine of a value.
@@ -51075,7 +52344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return cosSinSecCsc(x, type.BigNumber, 1, false);
+	      return x.sin();
 	    },
 
 	    'Unit': function (x) {
@@ -51101,13 +52370,89 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 488 */
+/* 481 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var tanCot = __webpack_require__(480);
+
+	function factory (type, config, load, typed) {
+	  /**
+	   * Calculate the hyperbolic sine of a value,
+	   * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
+	   *
+	   * For matrices, the function is evaluated element wise.
+	   *
+	   * Syntax:
+	   *
+	   *    math.sinh(x)
+	   *
+	   * Examples:
+	   *
+	   *    math.sinh(0.5);       // returns number 0.5210953054937474
+	   *
+	   * See also:
+	   *
+	   *    cosh, tanh
+	   *
+	   * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
+	   * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
+	   */
+	  var sinh = typed('sinh', {
+	    'number': _sinh,
+
+	    'Complex': function (x) {
+	      return x.sinh();
+	    },
+
+	    'BigNumber': function (x) {
+	      return x.sinh();
+	    },
+
+	    'Unit': function (x) {
+	      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+	        throw new TypeError ('Unit in function sinh is no angle');
+	      }
+	      return sinh(x.value);
+	    },
+
+	    'Array | Matrix': function (x) {
+	      // deep map collection, skip zeros since sinh(0) = 0
+	      return deepMap(x, sinh, true);
+	    }
+	  });
+
+	  sinh.toTex = '\\sinh\\left(${args[0]}\\right)';
+
+	  return sinh;
+	}
+
+	/**
+	 * Calculate the hyperbolic sine of a number
+	 * @param {number} x
+	 * @returns {number}
+	 * @private
+	 */
+	function _sinh (x) {
+	  if (Math.abs(x) < 1) {
+	    return x + (x * x * x) / 6 + (x * x * x * x * x) / 120;
+	  } else {
+	    return (Math.exp(x) - Math.exp(-x)) / 2;
+	  }
+	}
+
+	exports.name = 'sinh';
+	exports.factory = factory;
+
+
+/***/ },
+/* 482 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var deepMap = __webpack_require__(19);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -51141,7 +52486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return tanCot(x, type.BigNumber, false);
+	      return x.tan();
 	    },
 
 	    'Unit': function (x) {
@@ -51167,13 +52512,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 489 */
+/* 483 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var deepMap = __webpack_require__(19);
-	var tanhCoth = __webpack_require__(482);
 
 	function factory (type, config, load, typed) {
 	  /**
@@ -51208,7 +52552,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 
 	    'BigNumber': function (x) {
-	      return tanhCoth(x, type.BigNumber, false);
+	      return x.tanh();
 	    },
 
 	    'Unit': function (x) {
@@ -51245,15 +52589,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 490 */
+/* 484 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(491)
+	  __webpack_require__(485)
 	];
 
 /***/ },
-/* 491 */
+/* 485 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51261,10 +52605,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	function factory (type, config, load, typed) {
 	  var latex = __webpack_require__(32);
 
-	  var matrix = load(__webpack_require__(51));
+	  var matrix = load(__webpack_require__(52));
 
-	  var algorithm13 = load(__webpack_require__(56));
-	  var algorithm14 = load(__webpack_require__(57));
+	  var algorithm13 = load(__webpack_require__(57));
+	  var algorithm14 = load(__webpack_require__(58));
 
 	  /**
 	   * Change the unit of a value.
@@ -51347,29 +52691,22 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 492 */
+/* 486 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(493),
-	  __webpack_require__(296),
-	  __webpack_require__(87),
-	  __webpack_require__(401),
-	  __webpack_require__(349),
-	  __webpack_require__(86),
-	  __webpack_require__(363),
-	  __webpack_require__(415),
-	  __webpack_require__(301),
-	  __webpack_require__(443),
-	  __webpack_require__(494),
-	  __webpack_require__(495),
+	  __webpack_require__(487),
+	  __webpack_require__(407),
+	  __webpack_require__(355),
 	  __webpack_require__(88),
-	  __webpack_require__(298)
+	  __webpack_require__(369),
+	  __webpack_require__(421),
+	  __webpack_require__(90)
 	];
 
 
 /***/ },
-/* 493 */
+/* 487 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51409,232 +52746,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 494 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var isString = __webpack_require__(23).isString;
-	var format = __webpack_require__(23).format;
-
-	function factory (type, config, load, typed) {
-	  /**
-	   * Interpolate values into a string template.
-	   *
-	   * Syntax:
-	   *
-	   *     math.print(template, values)
-	   *     math.print(template, values, precision)
-	   *
-	   * Example usage:
-	   *
-	   *     // the following outputs: 'Lucy is 5 years old'
-	   *     math.print('Lucy is $age years old', {age: 5});
-	   *
-	   *     // the following outputs: 'The value of pi is 3.141592654'
-	   *     math.print('The value of pi is $pi', {pi: math.pi}, 10);
-	   *
-	   *     // the following outputs: 'hello Mary! The date is 2013-03-23'
-	   *     math.print('Hello $user.name! The date is $date', {
-	   *       user: {
-	   *         name: 'Mary',
-	   *       },
-	   *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
-	   *     });
-	   *
-	   * See also:
-	   *
-	   *     format
-	   *
-	   * @param {string} template     A string containing variable placeholders.
-	   * @param {Object} values       An object containing variables which will
-	   *                              be filled in in the template.
-	   * @param {number} [precision]  Number of digits to format numbers.
-	   *                              If not provided, the value will not be rounded.
-	   * @return {string} Interpolated string
-	   */
-	  var print = typed ('print', {
-	    'string, Object': _print,
-	    'string, Object, number': _print
-	  });
-
-	  print.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
-
-	  return print;
-	}
-
-	/**
-	 * Interpolate values into a string template.
-	 * @param {string} template
-	 * @param {Object} values
-	 * @param {number} [precision]
-	 * @returns {string} Interpolated string
-	 * @private
-	 */
-	function _print(template, values, precision) {
-	  return template.replace(/\$([\w\.]+)/g, function (original, key) {
-	        var keys = key.split('.');
-	        var value = values[keys.shift()];
-	        while (keys.length && value !== undefined) {
-	          var k = keys.shift();
-	          value = k ? value[k] : value + '.';
-	        }
-
-	        if (value !== undefined) {
-	          if (!isString(value)) {
-	            return format(value, precision);
-	          }
-	          else {
-	            return value;
-	          }
-	        }
-
-	        return original;
-	      }
-	  );
-	}
-
-	exports.name = 'print';
-	exports.factory = factory;
-
-
-/***/ },
-/* 495 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var size = __webpack_require__(40).size;
-
-	function factory (type, config, load, typed) {
-	  var matrix = load(__webpack_require__(51));
-	  var asc = load(__webpack_require__(437));
-	  var desc = function (a, b) {
-	    return -asc(a, b);
-	  };
-
-	  /**
-	   * Sort the items in a matrix.
-	   *
-	   * Syntax:
-	   *
-	   *    math.sort(x)
-	   *    math.sort(x, compare)
-	   *
-	   * Examples:
-	   *
-	   *    math.sort([5, 10, 1]); // returns [1, 5, 10]
-	   *    math.sort(['C', 'B', 'A', 'D']); // returns ['A', 'B', 'C', 'D']
-	   *
-	   *    function sortByLength (a, b) {
-	   *      return a.length - b.length;
-	   *    }
-	   *    math.sort(['Langdon', 'Tom', 'Sara'], sortByLength); // returns ['Tom', 'Sara', 'Langdon']
-	   *
-	   * See also:
-	   *
-	   *    filter, forEach, map
-	   *
-	   * @param {Matrix | Array} x    A one dimensional matrix or array to sort
-	   * @param {Function | 'asc' | 'desc'} [compare='asc']
-	   *        An optional _comparator function. The function is called as
-	   *        `compare(a, b)`, and must return 1 when a > b, -1 when a < b,
-	   *        and 0 when a == b.
-	   * @return {Matrix | Array} Returns the sorted matrix.
-	   */
-	  var sort = typed('sort', {
-	    'Array': function (x) {
-	      _arrayIsVector(x);
-	      return x.sort(asc);
-	    },
-
-	    'Matrix': function (x) {
-	      _matrixIsVector(x);
-	      return matrix(x.toArray().sort(asc), x.storage());
-	    },
-
-	    'Array, function': function (x, _comparator) {
-	      _arrayIsVector(x);
-	      return x.sort(_comparator);
-	    },
-
-	    'Matrix, function': function (x, _comparator) {
-	      _matrixIsVector(x);
-	      return matrix(x.toArray().sort(_comparator), x.storage());
-	    },
-
-	    'Array, string': function (x, order) {
-	      _arrayIsVector(x);
-	      return x.sort(_comparator(order));
-	    },
-
-	    'Matrix, string': function (x, order) {
-	      _matrixIsVector(x);
-	      return matrix(x.toArray().sort(_comparator(order)), x.storage());
-	    }
-	  });
-
-	  sort.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
-
-	  /**
-	   * Get the comparator for given order ('asc' or 'desc')
-	   * @param {'asc' | 'desc'} order
-	   * @return {Function} Returns a _comparator function
-	   */
-	  function _comparator (order) {
-	    if (order === 'asc') {
-	      return asc;
-	    }
-	    else if (order === 'desc') {
-	      return desc;
-	    }
-	    else {
-	      throw new Error('String "asc" or "desc" expected');
-	    }
-	  }
-
-	  /**
-	   * Validate whether an array is one dimensional
-	   * Throws an error when this is not the case
-	   * @param {Array} array
-	   * @private
-	   */
-	  function _arrayIsVector (array) {
-	    if (size(array).length !== 1) {
-	      throw new Error('One dimensional array expected');
-	    }
-	  }
-
-	  /**
-	   * Validate whether a matrix is one dimensional
-	   * Throws an error when this is not the case
-	   * @param {Matrix} matrix
-	   * @private
-	   */
-	  function _matrixIsVector (matrix) {
-	    if (matrix.size().length !== 1) {
-	      throw new Error('One dimensional matrix expected');
-	    }
-	  }
-
-	  return sort;
-	}
-
-	exports.name = 'sort';
-	exports.factory = factory;
-
-
-/***/ },
-/* 496 */
+/* 488 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = [
-	  __webpack_require__(497)
+	  __webpack_require__(489)
 	];
 
 
 /***/ },
-/* 497 */
+/* 489 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -51662,7 +52783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 498 */
+/* 490 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

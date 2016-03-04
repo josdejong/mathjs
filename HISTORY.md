@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.0.0
+## 2016-03-04, version 3.0.0
 
 ### breaking changes
 
