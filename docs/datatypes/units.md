@@ -135,7 +135,7 @@ the units value will be rounded to the provided number of digits.
 Revive a unit from a JSON object. Accepts
 An object `{mathjs: 'Unit', value: number, unit: string, fixPrefix: boolean}`,
 where the property `mathjs` and `fixPrefix` are optional.
-Used when deserializing a unit, see [Serialization](../serialization.md).
+Used when deserializing a unit, see [Serialization](../core/serialization.md).
 
 ### unit.to(unitName)
 Convert the unit to a specific unit name. Returns a clone of
@@ -144,7 +144,7 @@ the unit with a fixed prefix and unit.
 ### unit.toJSON()
 Returns a JSON representation of the unit, with signature
 `{mathjs: 'Unit', value: number, unit: string, fixPrefix: boolean}`.
-Used when serializing a unit, see [Serialization](../serialization.md).
+Used when serializing a unit, see [Serialization](../core/serialization.md).
 
 ### unit.toNumber(unitName)
 Get the value of a unit when converted to the

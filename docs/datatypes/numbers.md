@@ -82,7 +82,7 @@ option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
 where:
 
  - `EPSILON` is the relative difference between x and y. Epsilon is configurable
-   and is `1e-14` by default. See [Configuration](../configuration.md).
+   and is `1e-14` by default. See [Configuration](../core/configuration.md).
  - `DBL_EPSILON` is the minimum positive floating point number such that
    `1.0 + DBL_EPSILON != 1.0`. This is a constant with a value of approximately
    `2.2204460492503130808472633361816e-16`;

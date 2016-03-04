@@ -153,7 +153,7 @@ parser.eval('g(2, 3)'); // 8
 
 Math.js has a number of built-in constants such as `pi` and `e`.
 All available constants are listed on he page
-[Constants](../constants.md).
+[Constants](../reference/constants.md).
 
 ```js
 // use constants

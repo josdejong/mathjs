@@ -29,8 +29,8 @@ The following configuration options are available:
   from the the input: a number as input will return a number as output,
   a BigNumber as input returns a BigNumber as output.
   Available values are: `'number'` (default), `'bignumber'`, or `'fraction'`.
-  [BigNumbers](./datatypes/bignumbers.js) have higher precision than the default 
-  numbers of JavaScript, and [`Fractions`](./datatypes/fractions.js) store
+  [BigNumbers](../datatypes/bignumbers.js) have higher precision than the default
+  numbers of JavaScript, and [`Fractions`](../datatypes/fractions.js) store
   values in terms of a numerator and denominator.
 
 - `precision`. The maximum number of significant digits for bigNumbers.

@@ -1,6 +1,7 @@
 # Complex Numbers
 
 Math.js supports the creation, manipulation, and calculations with complex numbers.
+Support of complex numbers is powered by the library [complex.js](https://github.com/infusion/Complex.js).
 
 In mathematics, a complex number is an expression of the form `a + bi`,
 where `a` and `b` are real numbers and `i` represents the imaginary number
@@ -99,7 +100,7 @@ Get a string representation of the complex number,
 Revive a complex number from a JSON object. Accepts
   An object `{mathjs: 'Complex', re: number, im: number}`, where the property
   `mathjs` is optional.
-  Used when deserializing a complex number, see [Serialization](../serialization.md).
+  Used when deserializing a complex number, see [Serialization](../core/serialization.md).
 
 ### complex.fromPolar(r: number, phi: number)
 
@@ -109,7 +110,7 @@ Create a complex number from polar coordinates.
 
 Returns a JSON representation of the complex number, with signature
   `{mathjs: 'Complex', re: number, im: number}`.
-  Used when serializing a complex number, see [Serialization](../serialization.md).
+  Used when serializing a complex number, see [Serialization](../core/serialization.md).
 
 ### complex.toPolar()
 
