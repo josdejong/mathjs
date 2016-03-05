@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.1.0
+
+- Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
+
+
 ## 2016-03-04, version 3.0.0
 
 ### breaking changes
