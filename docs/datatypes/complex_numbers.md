@@ -5,6 +5,7 @@ layout: default
 <h1 id="complex-numbers">Complex Numbers <a href="#complex-numbers" title="Permalink">#</a></h1>
 
 Math.js supports the creation, manipulation, and calculations with complex numbers.
+Support of complex numbers is powered by the library [complex.js](https://github.com/infusion/Complex.js).
 
 In mathematics, a complex number is an expression of the form `a + bi`,
 where `a` and `b` are real numbers and `i` represents the imaginary number
@@ -15,7 +16,7 @@ complex number, having real part `3` and imaginary part `2`.
 Complex numbers are often used in applied mathematics, control theory,
 signal analysis, fluid dynamics and other fields.
 
-<h2 id="api">API <a href="#api" title="Permalink">#</a></h2>
+<h2 id="usage">Usage <a href="#usage" title="Permalink">#</a></h2>
 
 A complex number is created using the function `math.complex`. This function
 accepts:
@@ -51,38 +52,6 @@ b.re = 5;                       // Number 5
 b;                              // Complex 5 - 2i
 ```
 
-A `Complex` object has the following properties:
-
-- `re`. A number containing the real part of the complex number.
-- `im`. A number containing the imaginary part of the complex number.
-
-The properties `re` and `im` of a complex number can be read and replaced.
-
-A `Complex` object has the following functions:
-
-- `clone()`. Create a clone of the complex number.
-- `equals(other)`. Test whether a complex number equals another complex value.
-  Two complex numbers are equal when both their real and imaginary parts are
-  equal.
-- `format([precision: number])`. Get a string representation of the complex number,
-  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
-  If precision is defined, the units value will be rounded to the provided
-  number of digits.
-- `fromJSON(json)`. Revive a complex number from a JSON object. Accepts
-  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
-  `mathjs` is optional.
-  Used when deserializing a complex number, see [Serialization](../serialization.html).
-- `fromPolar(r: number, phi: number)`. Create a complex number from polar
-  coordinates.
-- `toJSON()`. Returns a JSON representation of the complex number, with signature
-  `{mathjs: 'Complex', re: number, im: number}`.
-  Used when serializing a complex number, see [Serialization](../serialization.html).
-- `toPolar()`. Get the polar coordinates of the complex number, returns
-  an object with properties `r` and `phi`.
-- `toString()`. Returns a string representation of the complex number, formatted
-  as `a + bi` where `a` is the real part and `b` the imaginary part.
-
-
 <h2 id="calculations">Calculations <a href="#calculations" title="Permalink">#</a></h2>
 
 Most functions of math.js support complex numbers. Complex and real numbers
@@ -100,3 +69,59 @@ math.add(a, b);                 // Complex 6 + i
 math.multiply(a, 2);            // Complex 4 + 6i
 math.sqrt(-4);                  // Complex 2i
 ```
+
+<h2 id="api">API <a href="#api" title="Permalink">#</a></h2>
+A `Complex` object contains the following properties and functions:
+
+<h3 id="complexre">complex.re <a href="#complexre" title="Permalink">#</a></h3>
+
+A number containing the real part of the complex number. Can be read and replaced.
+
+<h3 id="complexim">complex.im <a href="#complexim" title="Permalink">#</a></h3>
+
+A number containing the imaginary part of the complex number. Can be read and replaced.
+
+<h3 id="complexclone">complex.clone() <a href="#complexclone" title="Permalink">#</a></h3>
+
+Create a clone of the complex number.
+
+<h3 id="complexequalsother">complex.equals(other) <a href="#complexequalsother" title="Permalink">#</a></h3>
+
+Test whether a complex number equals another complex value.
+
+  Two complex numbers are equal when both their real and imaginary parts are
+  equal.
+  
+<h3 id="complexformatprecision-number">complex.format([precision: number]) <a href="#complexformatprecision-number" title="Permalink">#</a></h3>
+
+Get a string representation of the complex number,
+  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
+  If precision is defined, the units value will be rounded to the provided
+  number of digits.
+  
+<h3 id="complexfromjsonjson">complex.fromJSON(json) <a href="#complexfromjsonjson" title="Permalink">#</a></h3>
+
+Revive a complex number from a JSON object. Accepts
+  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
+  `mathjs` is optional.
+  Used when deserializing a complex number, see [Serialization](../core/serialization.html).
+
+<h3 id="complexfrompolarr-number-phi-number">complex.fromPolar(r: number, phi: number) <a href="#complexfrompolarr-number-phi-number" title="Permalink">#</a></h3>
+
+Create a complex number from polar coordinates.
+
+<h3 id="complextojson">complex.toJSON() <a href="#complextojson" title="Permalink">#</a></h3>
+
+Returns a JSON representation of the complex number, with signature
+  `{mathjs: 'Complex', re: number, im: number}`.
+  Used when serializing a complex number, see [Serialization](../core/serialization.html).
+
+<h3 id="complextopolar">complex.toPolar() <a href="#complextopolar" title="Permalink">#</a></h3>
+
+Get the polar coordinates of the complex number, returns
+  an object with properties `r` and `phi`.
+
+<h3 id="complextostring">complex.toString() <a href="#complextostring" title="Permalink">#</a></h3>
+
+Returns a string representation of the complex number, formatted
+  as `a + bi` where `a` is the real part and `b` the imaginary part.

@@ -5,7 +5,7 @@ layout: default
 <h1 id="function-acsch">Function acsch <a href="#function-acsch" title="Permalink">#</a></h1>
 
 Calculate the hyperbolic arccosecant of a value,
-defined as `acsch(x) = ln(1/x + sqrt(1/x^2 + 1))`.
+defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
 
 For matrices, the function is evaluated element wise.
 

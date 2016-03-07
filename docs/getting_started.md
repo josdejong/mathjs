@@ -9,7 +9,7 @@ This getting started describes how to install, load, and use math.js.
 
 <h2 id="install">Install <a href="#install" title="Permalink">#</a></h2>
 
-Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://twitter.github.io/bower/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
+Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://bower.io/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
 
 To install via npm, run:
 

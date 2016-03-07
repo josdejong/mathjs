@@ -40,9 +40,9 @@ which can be configured when instantiating math.js. To configure the use of
 fractions instead of [numbers](numbers.html) by default, configure math.js like:
 
 ```js
-// Configure the default type of number: 'number' (default), 'bignumber', or 'fraction'
+// Configure the default type of number: 'number' (default), 'BigNumber', or 'Fraction'
 math.config({
-  number: 'fraction' 
+  number: 'Fraction'
 });
 
 // use the expression parser

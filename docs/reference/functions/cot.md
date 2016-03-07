@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-cot">Function cot <a href="#function-cot" title="Permalink">#</a></h1>
 
-Calculate the cotangent of a value. `cot(x)` is defined as `1 / tan(x)`.
+Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
 
 For matrices, the function is evaluated element wise.
 

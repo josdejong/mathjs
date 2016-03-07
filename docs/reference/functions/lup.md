@@ -24,7 +24,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Array<Matrix> | The lower triangular matrix, the upper triangular matrix and the permutation matrix.
+Array&lt;Matrix&gt; | The lower triangular matrix, the upper triangular matrix and the permutation matrix.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

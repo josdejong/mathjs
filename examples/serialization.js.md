@@ -10,7 +10,7 @@ File: [serialization.js](serialization.js)
 var math = require('../index');
 
 // serialize a math.js data type into a JSON string
-var x = math.complex('2 + 3i');
+var x = math.complex('2+3i');
 var str1 = JSON.stringify(x);
 console.log(str1);
 // outputs {"mathjs":"Complex","re":2,"im":3}

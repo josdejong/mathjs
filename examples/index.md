@@ -12,6 +12,7 @@ layout: default
 - [Fractions](fractions.js.html)
 - [Import](import.js.html)
 - [Matrices](matrices.js.html)
+- [Objects](objects.js.html)
 - [Serialization](serialization.js.html)
 - [Sparse matrices](sparse_matrices.js.html)
 - [Units](units.js.html)
@@ -30,10 +31,10 @@ layout: default
 # Advanced examples
 
 - [Add new datatypes](advanced/add_new_datatypes/index.html)
+- [Convert fraction to bignumber](advanced/convert_fraction_to_bignumber.js.html)
 - [Custom argument parsing](advanced/custom_argument_parsing.js.html)
 - [Custom loading](advanced/custom_loading.js.html)
 - [Expression trees](advanced/expression_trees.js.html)
-- [Fallback from fraction to bignumber](advanced/fallback_from_fraction_to_bignumber.js.html)
 - [Function transform](advanced/function_transform.js.html)
 - [Web server](advanced/web_server/index.html)
 

@@ -5,7 +5,7 @@ layout: default
 <h1 id="function-acoth">Function acoth <a href="#function-acoth" title="Permalink">#</a></h1>
 
 Calculate the hyperbolic arccotangent of a value,
-defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
+defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
 
 For matrices, the function is evaluated element wise.
 

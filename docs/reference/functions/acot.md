@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-acot">Function acot <a href="#function-acot" title="Permalink">#</a></h1>
 
-Calculate the inverse cotangent of a value.
+Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
 
 For matrices, the function is evaluated element wise.
 

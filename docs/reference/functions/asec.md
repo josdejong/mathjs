@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-asec">Function asec <a href="#function-asec" title="Permalink">#</a></h1>
 
-Calculate the inverse secant of a value.
+Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
 
 For matrices, the function is evaluated element wise.
 

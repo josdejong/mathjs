@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-multiply">Function multiply <a href="#function-multiply" title="Permalink">#</a></h1>
 
-Multiply two values, `x * y`. The result is squeezed.
+Multiply two values, `x * y`.
 For matrices, the matrix product is calculated.
 
 

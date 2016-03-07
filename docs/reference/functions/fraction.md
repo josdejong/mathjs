@@ -20,13 +20,13 @@ math.fraction(matrix: Array | Matrix)         Turn all matrix entries
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | number &#124; string &#124; Array &#124; Matrix |  Arguments specifying the numerator and denominator of the fraction
+`args` | number &#124; string &#124; Fraction &#124; BigNumber &#124; Array &#124; Matrix |  Arguments specifying the numerator and denominator of the fraction
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-fraction &#124; Array &#124; Matrix | Returns a fraction
+Fraction &#124; Array &#124; Matrix | Returns a fraction
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

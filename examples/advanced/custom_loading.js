@@ -28,7 +28,7 @@ math.import(require('../../lib/function/arithmetic/add'));
 math.import(require('../../lib/function/arithmetic/subtract'));
 math.import(require('../../lib/function/arithmetic/multiply'));
 math.import(require('../../lib/function/arithmetic/divide'));
-math.import(require('../../lib/function/utils/format'));
+math.import(require('../../lib/function/string/format'));
 
 // Use the loaded functions
 var a = math.fraction(1, 3);

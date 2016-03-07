@@ -5,7 +5,7 @@ layout: default
 <h1 id="function-asech">Function asech <a href="#function-asech" title="Permalink">#</a></h1>
 
 Calculate the hyperbolic arcsecant of a value,
-defined as `asech(x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
+defined as `asech(x) = acosh(1/x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
 
 For matrices, the function is evaluated element wise.
 

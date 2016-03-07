@@ -24,7 +24,7 @@ can be configured when instantiating math.js:
 ```js
 math.config({
   number: 'number' // Default type of number: 
-                   // 'number' (default), 'bignumber', or 'fraction'
+                   // 'number' (default), 'BigNumber', or 'Fraction'
 });
 ```
 
@@ -54,9 +54,8 @@ var ans = math.add(0.1, 0.2);       //  0.30000000000000004
 math.format(ans, {precision: 14});  // '0.3'
 ```
 
-Alternatives are to use [Fractions](fractions.html) which store a number as a
-numerator and denominator, or [BigNumbers](bignumbers.html), which store a
-number with a higher precision.
+Alternatives are to use [Fractions](fractions.html) which store a number as a numerator and denominator, or [BigNumbers](bignumbers.html), which store a number with a higher precision.
+
 
 <h2 id="minimum-and-maximum">Minimum and maximum <a href="#minimum-and-maximum" title="Permalink">#</a></h2>
 
@@ -87,7 +86,7 @@ option `epsilon`. In pseudo code (without exceptions for 0, Infinity and NaN):
 where:
 
  - `EPSILON` is the relative difference between x and y. Epsilon is configurable
-   and is `1e-14` by default. See [Configuration](../configuration.html).
+   and is `1e-14` by default. See [Configuration](../core/configuration.html).
  - `DBL_EPSILON` is the minimum positive floating point number such that
    `1.0 + DBL_EPSILON != 1.0`. This is a constant with a value of approximately
    `2.2204460492503130808472633361816e-16`;

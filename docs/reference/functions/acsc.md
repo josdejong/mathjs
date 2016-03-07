@@ -4,7 +4,7 @@ layout: default
 
 <h1 id="function-acsc">Function acsc <a href="#function-acsc" title="Permalink">#</a></h1>
 
-Calculate the inverse cosecant of a value.
+Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
 
 For matrices, the function is evaluated element wise.
 

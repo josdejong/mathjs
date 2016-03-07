@@ -40,7 +40,7 @@ math.eye(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 math.eye(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
 
 var A = [[1, 2, 3], [4, 5, 6]];
-math.eye(math.size(b));         // returns [[1, 0, 0], [0, 1, 0]]
+math.eye(math.size(A));         // returns [[1, 0, 0], [0, 1, 0]]
 ```
 
 

@@ -12,6 +12,7 @@ Interpolate values into a string template.
 ```js
 math.print(template, values)
 math.print(template, values, precision)
+math.print(template, values, options)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -20,7 +21,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `template` | string | A string containing variable placeholders.
 `values` | Object | An object containing variables which will be filled in in the template.
-`precision` | number | Number of digits to format numbers. If not provided, the value will not be rounded.
+`options` | number &#124; Object | Formatting options, or the number of digits to format numbers. See function math.format for a description of all options.
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 

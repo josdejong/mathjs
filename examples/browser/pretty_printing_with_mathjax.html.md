@@ -12,7 +12,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 <head>
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.7.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.0.0/math.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
 
   <style>
@@ -85,7 +85,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
   pretty.innerHTML = '$$' + math.parse(expr.value).toTex({parenthesis: parenthesis}) + '$$';
-  result.innerHTML = math.eval(expr.value);
+  result.innerHTML = math.format(math.eval(expr.value));
 
   expr.oninput = function () {
     var node = null;
@@ -95,7 +95,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
       node = math.parse(expr.value);
 
       // evaluate the result of the expression
-      result.innerHTML = node.compile().eval();
+      result.innerHTML = math.format(node.compile().eval());
     }
     catch (err) {
       result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';

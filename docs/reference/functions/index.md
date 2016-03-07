@@ -18,6 +18,7 @@ math.index(range1, range2, ...)
 <h3 id="where">Where <a href="#where" title="Permalink">#</a></h3>
 
 - A number
+- A string for getting/setting an object property
 - An instance of `Range`
 - A one-dimensional Array or a Matrix with numbers
 
