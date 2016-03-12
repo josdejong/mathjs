@@ -1,6 +1,7 @@
 # Complex Numbers
 
 Math.js supports the creation, manipulation, and calculations with complex numbers.
+Support of complex numbers is powered by the library [complex.js](https://github.com/infusion/Complex.js).
 
 In mathematics, a complex number is an expression of the form `a + bi`,
 where `a` and `b` are real numbers and `i` represents the imaginary number
@@ -11,7 +12,7 @@ complex number, having real part `3` and imaginary part `2`.
 Complex numbers are often used in applied mathematics, control theory,
 signal analysis, fluid dynamics and other fields.
 
-## API
+## Usage
 
 A complex number is created using the function `math.complex`. This function
 accepts:
@@ -47,38 +48,6 @@ b.re = 5;                       // Number 5
 b;                              // Complex 5 - 2i
 ```
 
-A `Complex` object has the following properties:
-
-- `re`. A number containing the real part of the complex number.
-- `im`. A number containing the imaginary part of the complex number.
-
-The properties `re` and `im` of a complex number can be read and replaced.
-
-A `Complex` object has the following functions:
-
-- `clone()`. Create a clone of the complex number.
-- `equals(other)`. Test whether a complex number equals another complex value.
-  Two complex numbers are equal when both their real and imaginary parts are
-  equal.
-- `format([precision: number])`. Get a string representation of the complex number,
-  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
-  If precision is defined, the units value will be rounded to the provided
-  number of digits.
-- `fromJSON(json)`. Revive a complex number from a JSON object. Accepts
-  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
-  `mathjs` is optional.
-  Used when deserializing a complex number, see [Serialization](../serialization.md).
-- `fromPolar(r: number, phi: number)`. Create a complex number from polar
-  coordinates.
-- `toJSON()`. Returns a JSON representation of the complex number, with signature
-  `{mathjs: 'Complex', re: number, im: number}`.
-  Used when serializing a complex number, see [Serialization](../serialization.md).
-- `toPolar()`. Get the polar coordinates of the complex number, returns
-  an object with properties `r` and `phi`.
-- `toString()`. Returns a string representation of the complex number, formatted
-  as `a + bi` where `a` is the real part and `b` the imaginary part.
-
-
 ## Calculations
 
 Most functions of math.js support complex numbers. Complex and real numbers
@@ -96,3 +65,59 @@ math.add(a, b);                 // Complex 6 + i
 math.multiply(a, 2);            // Complex 4 + 6i
 math.sqrt(-4);                  // Complex 2i
 ```
+
+## API
+A `Complex` object contains the following properties and functions:
+
+### complex.re
+
+A number containing the real part of the complex number. Can be read and replaced.
+
+### complex.im
+
+A number containing the imaginary part of the complex number. Can be read and replaced.
+
+### complex.clone()
+
+Create a clone of the complex number.
+
+### complex.equals(other)
+
+Test whether a complex number equals another complex value.
+
+  Two complex numbers are equal when both their real and imaginary parts are
+  equal.
+  
+### complex.format([precision: number])
+
+Get a string representation of the complex number,
+  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
+  If precision is defined, the units value will be rounded to the provided
+  number of digits.
+  
+### complex.fromJSON(json)
+
+Revive a complex number from a JSON object. Accepts
+  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
+  `mathjs` is optional.
+  Used when deserializing a complex number, see [Serialization](../core/serialization.md).
+
+### complex.fromPolar(r: number, phi: number)
+
+Create a complex number from polar coordinates.
+
+### complex.toJSON()
+
+Returns a JSON representation of the complex number, with signature
+  `{mathjs: 'Complex', re: number, im: number}`.
+  Used when serializing a complex number, see [Serialization](../core/serialization.md).
+
+### complex.toPolar()
+
+Get the polar coordinates of the complex number, returns
+  an object with properties `r` and `phi`.
+
+### complex.toString()
+
+Returns a string representation of the complex number, formatted
+  as `a + bi` where `a` is the real part and `b` the imaginary part.

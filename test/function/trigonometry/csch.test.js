@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     csch = math.csch,
     bigmath = math.create({precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 22});
+    biggermath = math.create({number: 'BigNumber', precision: 22});
 
 describe('csch', function() {
   it('should return the csch of a boolean', function () {
@@ -34,8 +34,8 @@ describe('csch', function() {
     var cschBig = bigmath.csch;
     var Big = bigmath.bignumber;
 
-    assert.deepEqual(cschBig(Big(0)), Big(Infinity));
-    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154513'));
+    assert.deepEqual(cschBig(Big(0)).toString(), 'Infinity');
+    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154512'));
     assert.deepEqual(cschBig(Big(2)), Big('0.27572056477178320776'));
     assert.deepEqual(cschBig(Big(3)), Big('0.099821569668822732851'));
 

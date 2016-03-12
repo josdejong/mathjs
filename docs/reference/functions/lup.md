@@ -20,7 +20,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-Array<Matrix> | The lower triangular matrix, the upper triangular matrix and the permutation matrix.
+Array&lt;Matrix&gt; | The lower triangular matrix, the upper triangular matrix and the permutation matrix.
 
 
 ## Examples

@@ -47,34 +47,34 @@ describe('min', function() {
   });
 
   it('should return a reduced n-1 matrix from a n matrix', function() {
-	  assert.deepEqual(min([
-			  [ 1, 2, 3],
-			  [ 4, 5, 6],
-			  [ 7, 8, 9]], 0), [1, 2, 3]);
-	  assert.deepEqual(min([
-			  [ 1, 2, 3],
-			  [ 4, 5, 6],
-			  [ 7, 8, 9]], 1), [1, 4, 7]);
+    assert.deepEqual(min([
+        [ 1, 2, 3],
+        [ 4, 5, 6],
+        [ 7, 8, 9]], 0), [1, 2, 3]);
+    assert.deepEqual(min([
+        [ 1, 2, 3],
+        [ 4, 5, 6],
+        [ 7, 8, 9]], 1), [1, 4, 7]);
 
-	  assert.deepEqual(min([
-			  [ 1, 2, 3],
-			  [ 6, 5, 4],
-			  [ 8, 7, 9]], 1), [1, 4, 7]);
+    assert.deepEqual(min([
+        [ 1, 2, 3],
+        [ 6, 5, 4],
+        [ 8, 7, 9]], 1), [1, 4, 7]);
 
-	  assert.deepEqual(min([
-			  [ [1,2], [3,4], [5,6]],
-			  [ [6,7], [8,9], [10,11]]], 2),
-		  [[1, 3, 5], [6, 8, 10]]);
+    assert.deepEqual(min([
+        [ [1,2], [3,4], [5,6]],
+        [ [6,7], [8,9], [10,11]]], 2),
+      [[1, 3, 5], [6, 8, 10]]);
 
-	  assert.deepEqual(min([
-			  [ [1,2], [3,4], [5,6]],
-			  [ [6,7], [8,9], [10,11]]], 1),
-		  [[1, 2], [6,7]]);
+    assert.deepEqual(min([
+        [ [1,2], [3,4], [5,6]],
+        [ [6,7], [8,9], [10,11]]], 1),
+      [[1, 2], [6,7]]);
 
-	  assert.deepEqual(min([
-			  [ [1,2], [3,4], [5,6]],
-			  [ [6,7], [8,9], [10,11]]], 0),
-		  [[1, 2], [3,4], [5,6]]);
+    assert.deepEqual(min([
+        [ [1,2], [3,4], [5,6]],
+        [ [6,7], [8,9], [10,11]]], 0),
+      [[1, 2], [3,4], [5,6]]);
   });
 
   it('should throw an error when called with complex numbers', function() {

@@ -60,14 +60,13 @@ describe('gamma', function () {
     assert.deepEqual(gamma(bignumber(5)), bignumber(24));
     assert.deepEqual(gamma(bignumber(6)), bignumber(120));
     assert.deepEqual(gamma(bignumber(31)), bignumber('265252859812191058636308480000000'));
-    assert.deepEqual(gamma(bignumber(Infinity)), bignumber(Infinity));
+    assert.deepEqual(gamma(bignumber(Infinity)).toString(), 'Infinity');
   });
 
   it('should calculate the gamma of a nonpositive integer bignumber', function () {
-    assert.deepEqual(gamma(bignumber(0)), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber(-1)), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber(-2)), bignumber(Infinity));
-    assert.deepEqual(gamma(bignumber('-1.0e10223')), bignumber(Infinity));
+    assert.deepEqual(gamma(bignumber(0)).toString(), 'Infinity');
+    assert.deepEqual(gamma(bignumber(-1)).toString(), 'Infinity');
+    assert.deepEqual(gamma(bignumber(-2)).toString(), 'Infinity');
     assert.ok(gamma(bignumber(-Infinity)).isNaN());
   });
 /*
@@ -93,7 +92,7 @@ describe('gamma', function () {
     assert.deepEqual(gamma(bigUtil.pi(20)), bignumber('2.28803779534003'));
     assert.deepEqual(gamma(bigUtil.e(math.precision)), bignumber('1.56746825577405'));
 
-    var bigmath = math.create({ number: 'bignumber' });
+    var bigmath = math.create({ number: 'BigNumber' });
     assert.deepEqual(gamma(bigmath.SQRT2), bignumber('0.886581428719259'));
     assert.deepEqual(gamma(bigmath.SQRT2.neg()), bignumber('2.59945990753'));
   });

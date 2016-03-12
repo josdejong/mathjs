@@ -62,7 +62,7 @@ describe('FunctionAssignmentNode', function() {
     var truePart = one;
     var falsePart = new OperatorNode('*', 'multiply', [
       x,
-      new FunctionNode('factorial', [
+      new FunctionNode(new SymbolNode('factorial'), [
         new OperatorNode('-', 'subtract', [
           x,
           one
@@ -94,10 +94,10 @@ describe('FunctionAssignmentNode', function() {
             new OperatorNode('<=', 'smallerEq', [x, two]),
             one,
             new OperatorNode('+', 'add', [
-              new FunctionNode('fib', [
+              new FunctionNode(new SymbolNode('fib'), [
                 new OperatorNode('-', 'subtract', [ x, one ])
               ]),
-              new FunctionNode('fib', [
+              new FunctionNode(new SymbolNode('fib'), [
                 new OperatorNode('-', 'subtract', [ x, two ])
               ])
             ])
@@ -264,7 +264,7 @@ describe('FunctionAssignmentNode', function() {
   it ('should stringify a FunctionAssignmentNode conataining an AssignmentNode', function () {
     var a = new ConstantNode(2);
 
-    var n1 = new AssignmentNode('a', a);
+    var n1 = new AssignmentNode(new SymbolNode('a'), a);
     var n = new FunctionAssignmentNode('f', ['x'], n1);
 
     assert.equal(n.toString(), 'function f(x) = (a = 2)');
@@ -307,10 +307,10 @@ describe('FunctionAssignmentNode', function() {
   it ('should LaTeX a FunctionAssignmentNode containing an AssignmentNode', function () {
     var a = new ConstantNode(2);
 
-    var n1 = new AssignmentNode('a', a);
+    var n1 = new AssignmentNode(new SymbolNode('a'), a);
     var n = new FunctionAssignmentNode('f', ['x'], n1);
 
-    assert.equal(n.toTex(), '\\mathrm{f}\\left(x\\right):=\\left(a:=2\\right)');
+    assert.equal(n.toTex(), '\\mathrm{f}\\left(x\\right):=\\left( a:=2\\right)');
   });
 
   it ('should LaTeX a FunctionAssignmentNode with custom toTex', function () {

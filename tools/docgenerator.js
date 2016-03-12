@@ -12,29 +12,30 @@ var gutil = require('gulp-util');
 
 // special cases for function syntax
 var SYNTAX = {
-  gcd: 'gcd(a, b)',
-  log: 'log(x [, base])',
-  lcm: 'lcm(a, b)',
-  norm: 'norm(x [, p])',
-  round: 'round(x [, n])',
-  complex: 'complex(re, im)',
-  matrix: 'matrix(x)',
-  sparse: 'sparse(x)',
-  unit: 'unit(x)',
-  eval: 'eval(expr [, scope])',
-  parse: 'parse(expr [, scope])',
-  concat: 'concat(a, b, c, ... [, dim])',
-  ones: 'ones(m, n, p, ...)',
-  range: 'range(start, end [, step])',
-  resize: 'resize(x, size [, defaultValue])',
-  subset: 'subset(x, index [, replacement])',
-  zeros: 'zeros(m, n, p, ...)',
-  permutations: 'permutations(n [, k])',
-  random: 'random([min, max])',
-  randomInt: 'randomInt([min, max])',
-  format: 'format(value [, precision])',
-  'import': 'import(object, override)',
-  print: 'print(template, values [, precision])'
+  cbrt: 'math.cbrt(x [, allRoots])',
+  gcd: 'math.gcd(a, b)',
+  log: 'math.log(x [, base])',
+  lcm: 'math.lcm(a, b)',
+  norm: 'math.norm(x [, p])',
+  round: 'math.round(x [, n])',
+  complex: 'math.complex(re, im)',
+  matrix: 'math.matrix(x)',
+  sparse: 'math.sparse(x)',
+  unit: 'math.unit(x)',
+  eval: 'math.eval(expr [, scope])',
+  parse: 'math.parse(expr [, scope])',
+  concat: 'math.concat(a, b, c, ... [, dim])',
+  ones: 'math.ones(m, n, p, ...)',
+  range: 'math.range(start, end [, step])',
+  resize: 'math.resize(x, size [, defaultValue])',
+  subset: 'math.subset(x, index [, replacement])',
+  zeros: 'math.zeros(m, n, p, ...)',
+  permutations: 'math.permutations(n [, k])',
+  random: 'math.random([min, max])',
+  randomInt: 'math.randomInt([min, max])',
+  format: 'math.format(value [, precision])',
+  'import': 'math.import(object, override)',
+  print: 'math.print(template, values [, precision])'
 };
 
 var IGNORE_FUNCTIONS = {
@@ -42,9 +43,9 @@ var IGNORE_FUNCTIONS = {
 };
 
 var IGNORE_WARNINGS = {
-  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain'],
+  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed'],
   parameters: ['parser'],
-  returns: ['forEach']
+  returns: ['forEach', 'import']
 };
 
 /**
@@ -209,6 +210,15 @@ function generateDoc(name, code) {
     return false;
   }
 
+  function trim (text) {
+    return text.trim();
+  }
+
+  // replace characters like '<' with HTML entities like '&lt;'
+  function escapeTags (text) {
+    return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
   function parseParameters() {
     var count = 0;
     do {
@@ -220,9 +230,7 @@ function generateDoc(name, code) {
         var annotation = {
           name: match[2] || '',
           description: (match[3] || '').trim(),
-          types: match[1].split('|').map(function (t) {
-            return t.trim();
-          })
+          types: match[1].split('|').map(trim).map(escapeTags)
         };
         doc.parameters.push(annotation);
 
@@ -256,9 +264,7 @@ function generateDoc(name, code) {
 
       doc.returns = {
         description: match[2] || '',
-        types: match[1].split('|').map(function (t) {
-          return t.trim();
-        })
+        types: match[1].split('|').map(trim).map(escapeTags)
       };
 
       // multi line description
@@ -446,10 +452,11 @@ function generateMarkdown (doc, functions) {
 
 /**
  * Iterate over all source files and generate markdown documents for each of them
- * @param {String} inputPath
- * @param {String} outputPath
+ * @param {String} inputPath   Path to /lib/
+ * @param {String} outputPath  Path to /docs/reference/functions
+ * @param {String} outputRoot  Path to /docs/reference
  */
-function iteratePath (inputPath, outputPath) {
+function iteratePath (inputPath, outputPath, outputRoot) {
   if (!fs.existsSync(outputPath)) {
     mkdirp.sync(outputPath);
   }
@@ -471,8 +478,11 @@ function iteratePath (inputPath, outputPath) {
         if (path.indexOf('expression') !== -1) {
           category = 'expression';
         }
-        else if (path[0] === '.' && path[1] === 'lib' && path[2] === 'type' && path[4] === 'function') {
+        else if (/^.\/lib\/type\/[a-zA-Z0-9_]*\/function/.test(fullPath)) {
           category = 'construction';
+        }
+        else if (/^.\/lib\/core\/function/.test(fullPath)) {
+          category = 'core';
         }
         else {
           category = path[functionIndex + 1];
@@ -532,18 +542,44 @@ function iteratePath (inputPath, outputPath) {
       var fn = functions[name];
       var syntax = SYNTAX[name] || fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name;
       syntax = syntax
-          .replace(/^math\./, '')
+          //.replace(/^math\./, '')
           .replace(/\s+\/\/.*$/, '')
           .replace(/;$/, '');
-      return '- [' + syntax + '](' + name + '.md)';
+      if (syntax.length < 40) {
+        syntax = syntax.replace(/ /g, '&nbsp;');
+      }
+
+      var description = '';
+      if (fn.doc.description) {
+        description = fn.doc.description.replace(/\n/g, ' ').split('.')[0] + '.';
+      }
+
+      return '[' + syntax + '](functions/' + name + '.md) | ' + description;
     }
 
-    // generate alphabetical index page
-    var alphabetical = '# Function reference (alphabetical)\n\n';
-    alphabetical += Object.keys(functions).sort().map(functionEntry).join('\n');
-    fs.writeFileSync(outputPath + '/alphabetical.md', alphabetical);
+    /**
+     * Change the first letter of the given string to upper case
+     * @param {string} text
+     */
+    function toCapital (text) {
+      return text[0].toUpperCase() + text.slice(1);
+    }
 
-    // generate categorical index page
+    var order = ['core', 'construction', 'expression']; // and then the rest
+    function categoryIndex (entry) {
+      var index = order.indexOf(entry);
+      return index === -1 ? Infinity : index;
+    }
+    function compareAsc (a, b) {
+      return a > b ? 1 : (a < b ? -1 : 0);
+    }
+    function compareCategory (a, b) {
+      var indexA = categoryIndex(a);
+      var indexB = categoryIndex(b);
+      return (indexA > indexB) ? 1 : (indexA < indexB ? -1 : compareAsc(a, b));
+    }
+
+    // generate categorical page with all functions
     var categories = {};
     Object.keys(functions).forEach(function (name) {
       var fn = functions[name];
@@ -553,13 +589,18 @@ function iteratePath (inputPath, outputPath) {
       }
       categories[fn.category][name] = fn;
     });
-    var categorical = '# Function reference (categorical)\n\n';
-    categorical += Object.keys(categories).sort().map(function (category) {
+    var categorical = '# Function reference\n\n';
+    categorical += Object.keys(categories).sort(compareCategory).map(function (category) {
       var functions = categories[category];
-      return '## ' + category + '\n\n' +
+
+      return '## ' + toCapital(category) + ' functions\n\n' +
+          'Function | Description\n' +
+          '---- | -----------\n' +
         Object.keys(functions).sort().map(functionEntry).join('\n') + '\n';
     }).join('\n');
-    fs.writeFileSync(outputPath + '/categorical.md', categorical);
+    categorical += '\n\n\n<!-- Note: This file is automatically generated from source code comments. Changes made in this file will be overridden. -->\n';
+
+    fs.writeFileSync(outputRoot + 'functions.md', categorical);
 
 
     // output all issues

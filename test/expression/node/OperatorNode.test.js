@@ -287,7 +287,7 @@ describe('OperatorNode', function() {
     var b = new ConstantNode(2);
 
     var n1 = new OperatorNode('+', 'add', [a, b]);
-	var n2 = new OperatorNode('-', 'subtract', [a, b]);
+    var n2 = new OperatorNode('-', 'subtract', [a, b]);
 
     assert.equal(n1.toString({handler: customFunction}), '+add(const(1, number), const(2, number))');
     assert.equal(n2.toString({handler: customFunction}), '-subtract(const(1, number), const(2, number))');
@@ -457,7 +457,7 @@ describe('OperatorNode', function() {
     var b = new ConstantNode(2);
 
     var n1 = new OperatorNode('+', 'add', [a, b]);
-	var n2 = new OperatorNode('-', 'subtract', [a, b]);
+    var n2 = new OperatorNode('-', 'subtract', [a, b]);
 
     assert.equal(n1.toTex({handler: customFunction}), '+add(const\\left(1, number\\right), const\\left(2, number\\right))');
     assert.equal(n2.toTex({handler: customFunction}), '-subtract(const\\left(1, number\\right), const\\left(2, number\\right))');

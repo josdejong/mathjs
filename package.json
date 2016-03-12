@@ -1,11 +1,12 @@
 {
   "name": "mathjs",
-  "version": "2.6.0",
+  "version": "3.0.0",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser and offers an integrated solution to work with numbers, big numbers, complex numbers, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
     "Andy Pan (https://github.com/andy0130tw)",
     "Bart Kiers (https://github.com/bkiers)",
+    "Brett Jurgens (https://github.com/brettjurgens)",
     "Bryan Cuccioli (https://github.com/bcuccioli)",
     "Daniel Levin (https://github.com/daniel-levin)",
     "David Simons (https://github.com/SwamWithTurtles)",
@@ -19,13 +20,17 @@
     "Ganga Christopher (https://github.com/gangachris)",
     "Holman Gao (https://github.com/golmansax)",
     "Guillermo Indalecio Fernández (https://github.com/guillermobox)",
+    "hamadu (https://github.com/hamadu)",
+    "Harsh Gupta (https://github.com/hgupta9)",
     "Huseyn Guliyev (https://github.com/husayt)",
     "Jim Garrison (https://github.com/garrison)",
     "Kenan Yildirim (https://github.com/KenanY)",
+    "Keunhong Park (https://github.com/void42)",
     "Kunal Vyas (https://github.com/kv-kunalvyas)",
     "Marcus Andre (https://github.com/marcusandre)",
     "Max Bruckner (https://github.com/FSMaxB)",
     "Mitchel Kelonye (https://github.com/kelonye)",
+    "mtraynham (https://github.com/mtraynham)",
     "Niels Heisterkamp (https://github.com/nheisterkamp)",
     "Owen Versteeg (https://github.com/owenversteeg)",
     "Pavel Panchekha (https://github.com/pavpanchekha)",
@@ -37,9 +42,7 @@
     "Sebastien Piquemal (https://github.com/sebpiq)",
     "Sergey Romanov (https://github.com/saromanov)",
     "Waldir Pimenta (https://github.com/waldyrious)",
-    "Zach Zibrat (https://github.com/palimpsests)",
-    "hamadu (https://github.com/hamadu)",
-    "mtraynham (https://github.com/mtraynham)"
+    "Zach Zibrat (https://github.com/palimpsests)"
   ],
   "homepage": "http://mathjs.org",
   "repository": {
@@ -61,24 +64,25 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "^4.0.2",
-    "fraction.js": "^3.0.0",
-    "tiny-emitter": "^1.0.0",
-    "typed-function": "^0.10.3"
+    "decimal.js": "5.0.6",
+    "fraction.js": "3.2.5",
+    "complex.js": "2.0.1",
+    "tiny-emitter": "1.0.2",
+    "typed-function": "0.10.3"
   },
   "devDependencies": {
-    "glob": "^5.0.5",
-    "gulp": "^3.8.11",
-    "gulp-util": "^3.0.4",
-    "istanbul": "^0.3.13",
-    "mkdirp": "^0.5.0",
-    "mocha": "^2.2.4",
-    "q": "^1.2.0",
-    "seed-random": "^2.2.0",
-    "tar": "^2.1.0",
-    "uglify-js": "^2.4.20",
-    "underscore": "^1.8.3",
-    "webpack": "^1.8.9"
+    "glob": "7.0.0",
+    "gulp": "3.9.1",
+    "gulp-util": "3.0.7",
+    "istanbul": "0.4.2",
+    "mkdirp": "0.5.1",
+    "mocha": "2.4.5",
+    "q": "1.4.1",
+    "seed-random": "2.2.0",
+    "tar": "2.2.1",
+    "uglify-js": "2.6.1",
+    "underscore": "1.8.3",
+    "webpack": "1.12.13"
   },
   "main": "./index",
   "scripts": {

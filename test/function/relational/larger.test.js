@@ -100,8 +100,11 @@ describe('larger', function() {
   it('should apply configuration option epsilon', function() {
     var mymath = math.create();
     assert.equal(mymath.larger(1, 0.991), true);
+    assert.equal(mymath.larger(math.bignumber(1), math.bignumber(0.991)), true);
+
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.larger(1, 0.991), false);
+    assert.equal(mymath.larger(math.bignumber(1), math.bignumber(0.991)), false);
   });
 
   it('should throw an error if comparing a unit with a number', function() {

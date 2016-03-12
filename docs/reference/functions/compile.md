@@ -22,7 +22,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-{eval: Function} &#124; Array.<{eval: Function}> | code An object with the compiled expression
+{eval: Function} &#124; Array.&lt;{eval: Function}&gt; | code An object with the compiled expression
 
 
 ## Examples

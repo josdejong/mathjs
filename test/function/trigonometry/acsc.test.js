@@ -8,7 +8,7 @@ var matrix = math.matrix;
 var unit = math.unit;
 var acsc = math.acsc;
 var csc = math.csc;
-var bigmath = math.create({number: 'bignumber', precision: 20});
+var bigmath = math.create({number: 'BigNumber', precision: 20});
 var biggermath = math.create({precision: 21});
 var predmath = math.create({predictable: true});
 var acscBig = bigmath.acsc;
@@ -45,12 +45,13 @@ describe('acsc', function() {
     var arg2 = Big(-1.71);
     var arg3 = Big(-1);
 
-    assert.deepEqual(acscBig(arg1), Big('-0.5235987755982988731'));
-    assert.deepEqual(acscBig(arg2), Big('-0.624627713324716013'));
+    assert.deepEqual(acscBig(arg1), Big('-0.52359877559829887308'));
+    // wolfram:                          -0.52359877559829887307710723054658381403286156656251763682915743205130273438103483310467247089035284466369134775
+    assert.deepEqual(acscBig(arg2), Big('-0.62462771332471601304'));
     assert.deepEqual(acscBig(arg3), Big('-1.5707963267948966192'));
     assert.deepEqual(acscBig(Big(1)), Big('1.5707963267948966192'));
-    assert.deepEqual(acscBig(Big(1.71)), Big('0.624627713324716013'));
-    assert.deepEqual(acscBig(Big(2)), Big('0.5235987755982988731'));
+    assert.deepEqual(acscBig(Big(1.71)), Big('0.62462771332471601304'));
+    assert.deepEqual(acscBig(Big(2)), Big('0.52359877559829887308'));
 
     // Make sure args were not changed
     assert.deepEqual(arg1, Big(-2));
@@ -62,7 +63,11 @@ describe('acsc', function() {
 
     var arg4 = Big(1.00000001);
     assert.deepEqual(acscBig(arg4), Big('1.570654905439248565373629613450057180739125884090554026623514'));
+                              // wolfram 1.5706549054392485653736296134500571807391258840905540266235145245693842219005187990359787187421573662444504948773
     assert.deepEqual(arg4, Big(1.00000001));
+
+    assert.ok(acscBig(Big(0.5)).isNaN());
+    assert.ok(acscBig(Big(-0.5)).isNaN());
   });
 
   it('should be the inverse function of csc', function() {
@@ -74,35 +79,24 @@ describe('acsc', function() {
   });
 
   it('should be the inverse function of bignumber csc', function() {
-    // More Newton's method test cases
-    assert.deepEqual(acscBig(bigmath.csc(Big(-2))), Big('-1.141592653589793238462643383279502884197169399375105820974945'));
-    assert.deepEqual(acscBig(bigmath.csc(Big(-0.5))), Big(-0.5));
+    bigmath.config({precision: 61});
+    assert.deepEqual(acscBig(bigmath.csc(Big(-2))), Big('-1.141592653589793238462643383279502884197169399375105820974946'));
+    // wolfram:                                          -1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132
+    assert.deepEqual(acscBig(bigmath.csc(Big(-0.5))), Big('-0.4999999999999999999999999999999999999999999999999999999999999'));
     assert.deepEqual(acscBig(bigmath.csc(Big(-0.1))), Big(-0.1));
     assert.deepEqual(acscBig(bigmath.csc(Big(0.1))), Big(0.1));
-    assert.deepEqual(acscBig(bigmath.csc(Big(0.5))), Big(0.5));
-    assert.deepEqual(acscBig(bigmath.csc(Big(2))), Big('1.141592653589793238462643383279502884197169399375105820974945'));
+    assert.deepEqual(acscBig(bigmath.csc(Big(0.5))), Big('0.4999999999999999999999999999999999999999999999999999999999999'));
+    assert.deepEqual(acscBig(bigmath.csc(Big(2))), Big('1.141592653589793238462643383279502884197169399375105820974946'));
 
     // Full decimal Taylor test cases
     bigmath.config({precision: 20});
     assert.deepEqual(acscBig(bigmath.csc(Big(0))), Big(0));
-    assert.deepEqual(acscBig(bigmath.csc(Big(0.1))), Big(0.1));
+    assert.deepEqual(acscBig(bigmath.csc(Big(0.1))), Big('0.099999999999999999997'));
     assert.deepEqual(acscBig(bigmath.csc(Big(0.5))), Big(0.5));
 
     // Pass in an extra digit
     assert.deepEqual(acscBig(biggermath.csc(Big(-1))), Big('-1'));
     assert.deepEqual(acscBig(biggermath.csc(Big(2))), Big('1.1415926535897932385'));
-  });
-
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      acsc(Big(0.5));
-    }, /acsc() only has non-complex values for |x| >= 1./);
-    assert.throws(function () {
-      acsc(Big(0));
-    }, /acsc() only has non-complex values for |x| >= 1./);
-    assert.throws(function () {
-      acsc(Big(-0.5));
-    }, /acsc() only has non-complex values for |x| >= 1./);
   });
 
   it('should return the arccsc of a complex number', function() {

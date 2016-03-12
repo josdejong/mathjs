@@ -16,13 +16,13 @@ math.fraction(matrix: Array | Matrix)         Turn all matrix entries
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | number &#124; string &#124; Array &#124; Matrix |  Arguments specifying the numerator and denominator of the fraction
+`args` | number &#124; string &#124; Fraction &#124; BigNumber &#124; Array &#124; Matrix |  Arguments specifying the numerator and denominator of the fraction
 
 ### Returns
 
 Type | Description
 ---- | -----------
-fraction &#124; Array &#124; Matrix | Returns a fraction
+Fraction &#124; Array &#124; Matrix | Returns a fraction
 
 
 ## Examples

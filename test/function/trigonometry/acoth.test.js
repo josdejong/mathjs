@@ -8,7 +8,7 @@ var coth = math.coth;
 var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
-var bigmath = math.create({number: 'bignumber', precision: 20});
+var bigmath = math.create({number: 'BigNumber', precision: 20});
 var biggermath = math.create({precision: 21});
 var predmath = math.create({predictable: true});
 var acothBig = bigmath.acoth;
@@ -47,16 +47,20 @@ describe('acoth', function() {
   it('should return the hyperbolic arccot of a bignumber', function() {
     var arg2 = Big(-2);
     var arg3 = Big(-1);
-    assert.deepEqual(acothBig(Big(-Infinity)), Big(0));
+    assert.deepEqual(acothBig(Big(-Infinity)), Big('-0'));
     assert.deepEqual(acothBig(arg2), Big('-0.5493061443340548457'));
-    assert.deepEqual(acothBig(arg3), Big(-Infinity));
-    assert.deepEqual(acothBig(Big(1)), Big(Infinity));
+    assert.deepEqual(acothBig(arg3).toString(), '-Infinity');
+    assert.deepEqual(acothBig(Big(1)).toString(), 'Infinity');
     assert.deepEqual(acothBig(Big(2)), Big('0.5493061443340548457'));
     assert.deepEqual(acothBig(Big(Infinity)), Big(0));
 
     //Make sure arg was not changed
     assert.deepEqual(arg2, Big(-2));
     assert.deepEqual(arg3, Big(-1));
+
+    // out of range
+    assert.ok(acothBig(Big(-0.5)).isNaN());
+    assert.ok(acothBig(Big(0.5)).isNaN());
   });
 
   it('should be the inverse function of hyperbolic cot', function() {
@@ -73,20 +77,8 @@ describe('acoth', function() {
     assert.deepEqual(acothBig(bigmath.coth(Big(1))), Big(1));
 
     /* Pass in more digits to pi. */
-    assert.deepEqual(acothBig(biggermath.coth(Big(-2))), Big(-2));
-    assert.deepEqual(acothBig(biggermath.coth(Big(2))), Big(2));
-  });
-
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      acoth(Big(-0.5));
-    }, /acoth() has complex values for |x| < 1./);
-    assert.throws(function () {
-      acoth(Big(0.5));
-    }, /acoth() has complex values for |x| < 1./);
-    assert.throws(function () {
-      acoth(Big(0));
-    }, /acoth() has complex values for |x| < 1./);
+    assert.deepEqual(acothBig(biggermath.coth(Big(-2))), Big('-2.0000000000000000001'));
+    assert.deepEqual(acothBig(biggermath.coth(Big(2))), Big('2.0000000000000000001'));
   });
 
   it('should return the arccoth of a complex number', function() {

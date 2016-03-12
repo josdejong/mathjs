@@ -94,7 +94,8 @@ describe('Node', function() {
       return 'default';
     };
     var n1 = new mymath.expression.node.Node();
-    var n2 = new mymath.expression.node.FunctionNode('bla', []);
+    var s = new mymath.expression.node.SymbolNode('bla');
+    var n2 = new mymath.expression.node.FunctionNode(s, []);
     
     assert.equal(n1.toString(callback1), 'default');
     assert.equal(n2.toString(callback2), 'bla()');
@@ -111,7 +112,8 @@ describe('Node', function() {
       return 'default';
     };
     var n1 = new mymath.expression.node.Node();
-    var n2 = new mymath.expression.node.FunctionNode('bla', []);
+    var s = new mymath.expression.node.SymbolNode('bla');
+    var n2 = new mymath.expression.node.FunctionNode(s, []);
     
     assert.equal(n1.toTex(callback1), 'default');
     assert.equal(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)');

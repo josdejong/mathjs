@@ -1,7 +1,7 @@
 # Function acoth
 
 Calculate the hyperbolic arccotangent of a value,
-defined as `acoth(x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
+defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
 
 For matrices, the function is evaluated element wise.
 

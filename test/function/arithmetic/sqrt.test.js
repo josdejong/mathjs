@@ -56,7 +56,7 @@ describe('sqrt', function() {
 
   it('should return the square root of a negative bignumber when predictable:true', function() {
     assert.deepEqual(mathPredictable.sqrt(bignumber(4)), bignumber(2));
-    assert.deepEqual(mathPredictable.sqrt(bignumber(-4)), bignumber(NaN));
+    assert.ok(mathPredictable.sqrt(bignumber(-4)).isNaN());
   });
 
   it('should return the square root of a complex number', function() {

@@ -1,6 +1,85 @@
 # History
 
 
+## not yet released, version 3.1.0
+
+- Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
+- Restored support for implicit multiplication like `2(3+4)`.
+- Some improvements in the docs.
+
+
+## 2016-03-04, version 3.0.0
+
+### breaking changes
+
+- More restricted support for implicit multiplication in the expression
+  parser: `(...)(...)` is now evaluated as a function invocation,
+  and `[...][...]` as a matrix subset.
+- Matrix multiplication no longer squeezes scalar outputs to a scalar value,
+  but leaves them as they are: a vector or matrix containing a single value.
+  See #529.
+- Assignments in the expression parser now return the assigned value rather
+  than the created or updated object (see #533). Example:
+
+  ```
+  A = eye(3)
+  A[1,1] = 2   # this assignment now returns 2 instead of A
+  ```
+
+- Expression parser now supports objects. This involves a refactoring and
+  extension in expression nodes:
+  - Implemented new node `ObjectNode`.
+  - Refactored `AssignmentNode`, `UpdateNode`, and `IndexNode` are refactored
+    into `AccessNode`, `AssignmentNode`, and `IndexNode` having a different API.
+- Upgraded the used BigNumber library `decimal.js` to v5. Replaced the
+  trigonometric functions of math.js with those provided in decimal.js v5.
+  This can give slightly different behavior qua round-off errors.
+- Replaced the internal `Complex.js` class with the `complex.js` library
+  created by @infusion.
+- Entries in a matrix (typically numbers, BigNumbers, Units, etc) are now
+  considered immutable, they are no longer copied when performing operations on
+  the entries, improving performance.
+- Implemented nearly equal comparison for relational functions (`equal`,
+  `larger`, `smaller`, etc.) when using BigNumbers.
+- Changed the casing of the configuration options `matrix` (`Array` or `Matrix`)
+  and `number` (`number`, `BigNumber`, `Fraction`) such that they now match
+  the type returned by `math.typeof`. Wrong casing gives a console warning but
+  will still work.
+- Changed the default config value for `epsilon` from `1e-14` to `1e-12`,
+  see #561.
+
+### non-breaking changes
+
+- Extended function `pow` to return the real root for cubic roots of negative
+  numbers. See #525, #482, #567.
+- Implemented support for JSON objects in the expression parser and the
+  function `math.format`.
+- Function `math.fraction` now supports `BigNumber`, and function
+  `math.bignumber` now supports `Fraction`.
+- Expression parser now allows function and/or variable assignments inside
+  accessors and conditionals, like `A[x=2]` or `a > 2 ? b="ok" : b="fail"`.
+- Command line interface:
+  - Outputs the variable name of assignments.
+  - Fixed not rounding BigNumbers to 14 digits like numbers.
+  - Fixed non-working autocompletion of user defined variables.
+- Reorganized and extended docs, added docs on classes and more. Thanks @hgupta9.
+- Added new units `acre`, `hectare`, `torr`, `bar`, `mmHg`, `mmH2O`, `cmH2O`,
+  and added new aliases `acres`, `hectares`, `sqfeet`, `sqyard`, `sqmile`,
+  `sqmiles`, `mmhg`, `mmh2o`, `cmh2o`. Thanks @hgupta9.
+- Fixed a bug in the toString method of an IndexNode.
+- Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
+  being defined as BigNumbers when configuring to use BigNumbers.
+
+
+## 2016-02-03, version 2.7.0
+
+- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
+- Added support for doing operations with mixed `Fractions` and `BigNumbers`.
+- Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
+- Fixed #546: Cannot import BigNumber, Fraction, Matrix, Array.
+  Thanks @brettjurgens.
+
+
 ## 2016-01-08, version 2.6.0
 
 - Implemented (complex) units `VA` and `VAR`.

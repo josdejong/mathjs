@@ -7,7 +7,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     tanh = math.tanh,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({number: 'BigNumber', precision: 20});
 
 describe('tanh', function() {
   it('should return the tanh of a boolean', function () {
@@ -35,20 +35,20 @@ describe('tanh', function() {
     var arg2 = Big(-3);
     var arg10 = Big(Infinity);
     assert.deepEqual(tanhBig(arg1), Big(-1));
-    assert.deepEqual(tanhBig(arg2), Big('-0.9950547536867304513'));
-    assert.deepEqual(tanhBig(Big(-2)), Big('-0.9640275800758168839'));
-    assert.deepEqual(tanhBig(Big(-1)), Big('-0.7615941559557648881'));
+    assert.deepEqual(tanhBig(arg2), Big('-0.99505475368673045133'));
+    assert.deepEqual(tanhBig(Big(-2)), Big('-0.96402758007581688395'));
+    assert.deepEqual(tanhBig(Big(-1)), Big('-0.76159415595576488812'));
     assert.deepEqual(tanhBig(Big(0)), Big(0));
-    assert.deepEqual(tanhBig(Big(1)), Big('0.7615941559557648881'));
-    assert.deepEqual(tanhBig(Big(2)), Big('0.9640275800758168839'));
-    assert.deepEqual(tanhBig(Big(3)), Big('0.9950547536867304513'));
-    assert.deepEqual(tanhBig(bigmath.pi).toString(), '0.9962720762207499443');
+    assert.deepEqual(tanhBig(Big(1)), Big('0.76159415595576488812'));
+    assert.deepEqual(tanhBig(Big(2)), Big('0.96402758007581688395'));
+    assert.deepEqual(tanhBig(Big(3)), Big('0.99505475368673045133'));
+    assert.deepEqual(tanhBig(bigmath.pi).toString(), '0.99627207622074994426');
     assert.deepEqual(tanhBig(arg10), Big(1));
 
     // Make sure args were not changed
-    assert.deepEqual(arg1, Big(-Infinity));
+    assert.deepEqual(arg1.toString(), '-Infinity');
     assert.deepEqual(arg2, Big(-3));
-    assert.deepEqual(arg10, Big(Infinity));
+    assert.deepEqual(arg10.toString(), 'Infinity');
   });
 
   it('should return the tanh of a complex number', function() {

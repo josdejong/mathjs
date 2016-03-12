@@ -45,10 +45,29 @@
  */
 
 var math = require('../index');
-var parser = math.parser();
+var scope = {};
 var fs = require('fs');
 
 var PRECISION = 14; // decimals
+
+/**
+ * Helper function to format a value. Regular numbers will be rounded
+ * to 14 digits to prevent round-off errors from showing up.
+ * @param {*} value
+ */
+function format(value) {
+  return math.format(value, {
+    fn: function (value) {
+      if (typeof value === 'number') {
+        // round numbers
+        return math.format(value, PRECISION);
+      }
+      else {
+        return math.format(value);
+      }
+    }
+  });
+}
 
 /**
  * auto complete a text
@@ -63,9 +82,8 @@ function completer (text) {
     var keyword = m[0];
 
     // scope variables
-    // TODO: not nice to read the (private) defs inside the scope
-    for (var def in parser.scope.defs) {
-      if (parser.scope.defs.hasOwnProperty(def)) {
+    for (var def in scope) {
+      if (scope.hasOwnProperty(def)) {
         if (def.indexOf(keyword) == 0) {
           matches.push(def);
         }
@@ -166,7 +184,7 @@ function runStream (input, output, mode, parenthesis) {
         break;
       case 'clear':
         // clear memory
-        parser.clear();
+        scope = {};
         console.log('memory cleared');
 
         // get next input
@@ -182,22 +200,37 @@ function runStream (input, output, mode, parenthesis) {
           case 'eval':
             // evaluate expression
             try {
-              var res = parser.eval(expr);
-              if (res instanceof math.type.ResultSet) {
-                res.entries.forEach(function (entry) {
-                  console.log(math.format(entry, PRECISION));
-                });
-                if (res.entries.length) {
-                  // set last answer from the ResultSet as ans
-                  parser.set('ans', res.entries[res.entries.length - 1]);
+              var node = math.parse(expr);
+              var res = node.eval(scope);
+
+              if (res && res.isResultSet) {
+                // we can have 0 or 1 results in the ResultSet, as the CLI
+                // does not allow multiple expressions separated by a return
+                res = res.entries[0];
+                node = node.blocks
+                    .filter(function (entry) { return entry.visible; })
+                    .map(function (entry) { return entry.node })[0];
+              }
+
+              if (node) {
+                if (node.isAssignmentNode) {
+                  var name = findSymbolName(node);
+                  if (name != null) {
+                    scope.ans = scope[name];
+                    console.log(name + ' = ' + format(scope[name]));
+                  }
+                  else {
+                    scope.ans = res;
+                    console.log(format(res));
+                  }
                 }
-              }
-              else if (res instanceof math.type.Help) {
-                console.log(res.toString());
-              }
-              else {
-                parser.set('ans', res);
-                console.log(math.format(res, PRECISION));
+                else if (res instanceof math.type.Help) {
+                  console.log(res.toString());
+                }
+                else {
+                  scope.ans = res;
+                  console.log(format(res));
+                }
               }
             }
             catch (err) {
@@ -237,6 +270,25 @@ function runStream (input, output, mode, parenthesis) {
     console.log();
     process.exit(0);
   });
+}
+
+/**
+ * Find the symbol name of an AssignmentNode. Recurses into the chain of
+ * objects to the root object.
+ * @param {AssignmentNode} node
+ * @return {string | null} Returns the name when found, else returns null.
+ */
+function findSymbolName (node) {
+  var n = node;
+
+  while (n) {
+    if (n.isSymbolNode) {
+      return n.name;
+    }
+    n = n.object;
+  }
+
+  return null;
 }
 
 /**
@@ -320,7 +372,6 @@ process.argv.forEach(function (arg, index) {
       break;
 
     case '--string':
-
       mode = 'string';
       break;
 
@@ -335,6 +386,8 @@ process.argv.forEach(function (arg, index) {
     case '--parenthesis=all':
       parenthesis = 'all';
       break;
+
+    // TODO: implement configuration via command line arguments
 
     default:
       scripts.push(arg);

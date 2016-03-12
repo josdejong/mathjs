@@ -8,7 +8,7 @@ var sech = math.sech;
 var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
-var bigmath = math.create({number: 'bignumber', precision: 20});
+var bigmath = math.create({number: 'BigNumber', precision: 20});
 var biggermath = math.create({precision: 22});
 var predmath = math.create({predictable: true});
 var asechBig = bigmath.asech;
@@ -45,15 +45,19 @@ describe('asech', function() {
   it('should return the hyperbolic arcsec of a bignumber', function() {
     var arg1 = Big(0);
     var arg2 = Big(0.25);
-    assert.deepEqual(asechBig(arg1), Big(Infinity));
+    assert.deepEqual(asechBig(arg1).toString(), 'Infinity');
     assert.deepEqual(asechBig(arg2), Big('2.0634370688955605467'));
     assert.deepEqual(asechBig(Big(0.5)), Big('1.3169578969248167086'));
-    assert.deepEqual(asechBig(Big(0.75)), Big('0.79536546122390563053'));
+    assert.deepEqual(asechBig(Big(0.75)), Big('0.79536546122390563049'));
     assert.deepEqual(asechBig(Big(1)), Big(0));
 
     //Make sure arg was not changed
     assert.deepEqual(arg1, Big(0));
     assert.deepEqual(arg2, Big(0.25));
+
+    /* out of range */
+    assert.ok(asech(Big(-1)).isNaN());
+    assert.ok(asech(Big(2)).isNaN());
   });
 
   it('should be the inverse function of hyperbolic sec', function() {
@@ -67,20 +71,11 @@ describe('asech', function() {
   it('should be the inverse function of bignumber sech', function() {
     assert.deepEqual(asechBig(bigmath.sech(Big(-1))), Big(1));
     assert.deepEqual(asechBig(bigmath.sech(Big(0))), Big(0));
-    assert.deepEqual(asechBig(bigmath.sech(Big(0.5))), Big(0.5));
+    assert.deepEqual(asechBig(bigmath.sech(Big(0.5))), Big('0.49999999999999999995'));
     assert.deepEqual(asechBig(bigmath.sech(Big(2))), Big(2));
 
     /* Pass in more digits to pi. */
-    assert.deepEqual(asechBig(biggermath.sech(Big(0.1))), Big(0.1));
-  });
-
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      asech(Big(-1));
-    }, /asech\(\) only has non-complex values for 0 <= x <= 1./);
-    assert.throws(function () {
-      asech(Big(2));
-    }, /asech\(\) only has non-complex values for 0 <= x <= 1./);
+    assert.deepEqual(asechBig(biggermath.sech(Big(0.1))), Big('0.10000000000000000012'));
   });
 
   it('should return the arcsech of a complex number', function() {

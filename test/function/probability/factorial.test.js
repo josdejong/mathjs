@@ -18,12 +18,12 @@ describe('factorial', function() {
   });
 
   it('should calculate the factorial of a bignumber', function() {
-    var bigmath = math.create({number: 'bignumber', precision: 5});
+    var bigmath = math.create({number: 'BigNumber', precision: 5});
     var bigfactorial = bigmath.factorial;
     var bignumber = bigmath.bignumber;
 
     assert.deepEqual(bigfactorial(bignumber(0)), bignumber(1));
-    assert.deepEqual(bigfactorial(bignumber(Infinity)), bignumber(Infinity));
+    assert.deepEqual(bigfactorial(bignumber(Infinity)).toString(), 'Infinity');
 
     assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000));
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21));

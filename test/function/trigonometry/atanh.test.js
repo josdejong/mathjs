@@ -8,7 +8,7 @@ var tanh = math.tanh;
 var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
-var bigmath = math.create({number: 'bignumber', precision: 20});
+var bigmath = math.create({number: 'BigNumber', precision: 20});
 var biggermath = math.create({precision: 21});
 var predmath = math.create({predictable: true});
 var atanhBig = bigmath.atanh;
@@ -46,11 +46,11 @@ describe('atanh', function() {
   it('should return the hyperbolic arctan of a bignumber', function() {
     var arg1 = Big(-1);
     var arg2 = Big(-0.5);
-    assert.deepEqual(atanhBig(arg1), Big(-Infinity));
+    assert.deepEqual(atanhBig(arg1).toString(), '-Infinity');
     assert.deepEqual(atanhBig(arg2), Big('-0.5493061443340548457')); 
     assert.deepEqual(atanhBig(Big(0)), Big(0));
     assert.deepEqual(atanhBig(Big(0.5)), Big('0.5493061443340548457')); 
-    assert.deepEqual(atanhBig(Big(1)), Big(Infinity));
+    assert.deepEqual(atanhBig(Big(1)).toString(), 'Infinity');
 
     //Make sure arg was not changed
     assert.deepEqual(arg1, Big(-1));
@@ -74,15 +74,8 @@ describe('atanh', function() {
     assert.deepEqual(atanhBig(biggermath.tanh(arg)), Big(-1));
     assert.deepEqual(atanhBig(biggermath.tanh(Big(0.1))), Big(0.1));
     assert.deepEqual(arg, Big(-1));
-  });
 
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      atanh(Big(1.1));
-    }, /atanh() only has non-complex values for |x| <= 1./);
-    assert.throws(function () {
-      atanh(Big(-1.1));
-    }, /atanh() only has non-complex values for |x| <= 1./);
+    assert.ok(atanh(Big(1.1)).isNaN());
   });
 
   it('should return the arctanh of a complex number', function() {

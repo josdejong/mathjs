@@ -7,6 +7,7 @@ describe('intersect', function() {
     assert.deepEqual(math.intersect([0, 0], [10, 10], [10, 0], [0, 10]), [5, 5]);
     assert.deepEqual(math.intersect(math.matrix([0, 0]), [10, 10], math.matrix([10, 0]), math.matrix([0, 10])), math.matrix([5, 5]));
     assert.deepEqual(math.intersect(math.matrix([0, 0]), math.matrix([10, 10]), math.matrix([10, 0]), math.matrix([0, 10])), math.matrix([5, 5]));
+    assert.deepEqual(math.intersect([300, 90], [400, 97], [300, 130], [400, 125]), [633.3333333333334, 113.33333333333334]);
   });
 
   it('should calculate the intersection point of two 3D lines', function() {

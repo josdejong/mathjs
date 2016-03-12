@@ -1,6 +1,6 @@
 # Function acsc
 
-Calculate the inverse cosecant of a value.
+Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
 
 For matrices, the function is evaluated element wise.
 

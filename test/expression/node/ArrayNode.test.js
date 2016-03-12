@@ -56,7 +56,7 @@ describe('ArrayNode', function() {
   });
 
   it ('should compile an ArrayNode and evaluate as Array', function () {
-    var mathArray = math.create({matrix: 'array'});
+    var mathArray = math.create({matrix: 'Array'});
     var a = new mathArray.expression.node.ConstantNode(1);
     var b = new mathArray.expression.node.ConstantNode(2);
     var c = new mathArray.expression.node.ConstantNode(3);
@@ -108,7 +108,7 @@ describe('ArrayNode', function() {
       assert.strictEqual(parent, c);
     });
 
-    assert.deepEqual(paths, ['nodes[0]', 'nodes[1]']);
+    assert.deepEqual(paths, ['items[0]', 'items[1]']);
     assert.equal(nodes.length, 2);
     assert.strictEqual(nodes[0], a);
     assert.strictEqual(nodes[1], b);
@@ -131,14 +131,14 @@ describe('ArrayNode', function() {
       return (node instanceof SymbolNode) && (node.name == 'x') ? d : node;
     });
 
-    assert.deepEqual(paths, ['nodes[0]', 'nodes[1]']);
+    assert.deepEqual(paths, ['items[0]', 'items[1]']);
     assert.equal(nodes.length, 2);
     assert.strictEqual(nodes[0], a);
     assert.strictEqual(nodes[1], b);
 
     assert.notStrictEqual(e,  c);
-    assert.deepEqual(e.nodes[0],  d);
-    assert.deepEqual(e.nodes[1],  b);
+    assert.deepEqual(e.items[0],  d);
+    assert.deepEqual(e.items[1],  b);
   });
 
   it ('should throw an error when the map callback does not return a node', function () {
@@ -163,8 +163,8 @@ describe('ArrayNode', function() {
     });
 
     assert.notStrictEqual(e,  c);
-    assert.deepEqual(e.nodes[0],  d);
-    assert.deepEqual(e.nodes[1],  b);
+    assert.deepEqual(e.items[0],  d);
+    assert.deepEqual(e.items[1],  b);
   });
 
   it ('should transform an ArrayNode itself', function () {
@@ -200,13 +200,13 @@ describe('ArrayNode', function() {
 
         case 2:
           assert.strictEqual(node, a);
-          assert.strictEqual(path, 'nodes[0]');
+          assert.strictEqual(path, 'items[0]');
           assert.strictEqual(parent, c);
           break;
 
         case 3:
           assert.strictEqual(node, b);
-          assert.strictEqual(path, 'nodes[1]');
+          assert.strictEqual(path, 'items[1]');
           assert.strictEqual(parent, c);
           break;
       }
@@ -225,8 +225,8 @@ describe('ArrayNode', function() {
     assert(d instanceof ArrayNode);
     assert.deepEqual(c, d);
     assert.notStrictEqual(c, d);
-    assert.strictEqual(c.nodes[0], d.nodes[0]);
-    assert.strictEqual(c.nodes[1], d.nodes[1]);
+    assert.strictEqual(c.items[0], d.items[0]);
+    assert.strictEqual(c.items[1], d.items[1]);
   });
 
   it ('should stringify an ArrayNode', function () {
@@ -244,8 +244,8 @@ describe('ArrayNode', function() {
     var customFunction = function (node, options) {
       if (node.type === 'ArrayNode') {
         var string = '[';
-        node.nodes.forEach(function (node) {
-          string += node.toString(options) + ', ';
+        node.items.forEach(function (item) {
+          string += item.toString(options) + ', ';
         });
 
         string += ']';
@@ -281,8 +281,8 @@ describe('ArrayNode', function() {
     var customFunction = function (node, options) {
       if (node.type === 'ArrayNode') {
         var latex = '\\left[';
-        node.nodes.forEach(function (node) {
-          latex += node.toTex(options) + ', ';
+        node.items.forEach(function (item) {
+          latex += item.toTex(options) + ', ';
         });
 
         latex += '\\right]';

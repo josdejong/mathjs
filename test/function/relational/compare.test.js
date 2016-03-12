@@ -183,9 +183,13 @@ describe('compare', function() {
 
   it('should apply configuration option epsilon', function() {
     var mymath = math.create();
+
     assert.equal(mymath.compare(1, 0.991), 1);
+    assert.equal(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1);
+
     mymath.config({epsilon: 1e-2});
     assert.equal(mymath.compare(1, 0.991), 0);
+    assert.equal(mymath.compare(math.bignumber(1), math.bignumber(0.991)), 0);
   });
 
   it('should throw an error when comparing complex numbers', function() {

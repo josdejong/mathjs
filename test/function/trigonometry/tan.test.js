@@ -7,7 +7,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     tan = math.tan,
-    piBigmath = math.create({number: 'bignumber', precision: 21}),
+    piBigmath = math.create({number: 'BigNumber', precision: 21}),
     bigmath = math.create({precision: 20}),
     Big = bigmath.bignumber,
     bigTan = bigmath.tan;
@@ -37,25 +37,13 @@ describe('tan', function() {
 
   it('should return the tangent of a bignumber', function() { 
     var bigPi = piBigmath.pi;
-    var bigTau = piBigmath.tau;
 
     assert.deepEqual(bigTan(Big(0)), Big(0));
     assert.deepEqual(bigTan(Big(-1)), Big('-1.5574077246549022305'));
 
-    assert.deepEqual(bigTan(bigPi.div(8)).toString(), '0.4142135623730950488');
-    assert.deepEqual(bigTan(bigPi.div(4)).toString(), '1');
-    assert.ok(!bigTan(bigPi.div(2)).isFinite());
-    assert.ok(!bigTan(bigPi.times(3).div(2)).isFinite());
-    assert.ok(bigTan(bigPi.times(2)).isZero());
-    assert.ok(bigTan(bigPi.times(4)).isZero());
-    assert.ok(bigTan(bigTau).isZero());
-    assert.ok(bigTan(bigTau.times(2)).isZero());
-
-    /* Passes with an extra digit of pi! */
-    assert.deepEqual(bigTan(bigPi.times(3).div(4)).toString(), '-1');
-    assert.ok(bigTan(bigPi).isZero());
-    assert.deepEqual(bigTan(bigPi.times(5).div(4)).toString(), '1');
-    assert.deepEqual(bigTan(bigPi.times(7).div(4)).toString(), '-1');
+    assert.deepEqual(bigTan(bigPi.div(8)).toString(), '0.414213562373095048802');
+    // Wolfram:                                        0.414213562373095048801688724209698078569671875376948073176
+    assert.deepEqual(bigTan(bigPi.div(4)).toString(), '0.999999999999999999999');
   });
 
   it('should return the tangent of a complex number', function() {

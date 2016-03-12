@@ -62,6 +62,12 @@ describe('bignumber', function() {
     assert.equal(f.valueOf(), '1.2e+500');
   });
 
+  it('should create a bignumber from a fraction', function() {
+    var f = math.fraction(2,3);
+    var b = math.bignumber(f);
+    assert.equal(b.toString(), '0.6666666666666666666666666666666666666666666666666666666666666667');
+  });
+
   it('should apply precision setting to bignumbers', function() {
     var mymath = math.create({
       precision: 32

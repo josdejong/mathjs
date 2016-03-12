@@ -14,6 +14,7 @@ var ENTRY       = './index.js',
     DIST        = './dist',
     REF_SRC     = './lib/',
     REF_DEST    = './docs/reference/functions/',
+    REF_ROOT    = './docs/reference/',
     MATH_JS     = DIST + '/' + FILE;
 
 // generate banner with today's date and correct version
@@ -119,7 +120,7 @@ gulp.task('validate', function (cb) {
 });
 
 gulp.task('docs', function () {
-  docgenerator.iteratePath(REF_SRC, REF_DEST);
+  docgenerator.iteratePath(REF_SRC, REF_DEST, REF_ROOT);
 });
 
 // The watch task (to automatically rebuild when the source code changes)

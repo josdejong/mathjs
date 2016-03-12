@@ -8,7 +8,7 @@ var sec = math.sec;
 var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
-var bigmath = math.create({number: 'bignumber', precision: 20});
+var bigmath = math.create({number: 'BigNumber', precision: 20});
 var biggermath = math.create({precision: 21});
 var predmath = math.create({predictable: true});
 var asecBig = bigmath.asec;
@@ -54,10 +54,18 @@ describe('asec', function() {
     assert.deepEqual(arg2, Big(-1));
 
     // Hit Newton's method case
-    bigmath.config({precision: 61});
-    var arg = Big(3.00000001);
-    assert.deepEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265'));
+    bigmath.config({precision: 64});
+    var arg = Big('3.00000001');
+    assert.deepEqual(asecBig(Big(3)), bigmath.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'));
+    // wolfram:                  asec(3) = 1.2309594173407746821349291782479873757103400093550948390555483336639923144782560878532516201708609211389442794492
+    assert.deepEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265441'));
+    // wolfram:                         1.2309594185192859799386142061852977091559699298253663282542654408321080017053701257305273449373991752616248450522
     assert.deepEqual(arg, Big(3.00000001));
+
+    // out of range
+    assert.ok(asec(Big(0.5)).isNaN());
+    assert.ok(asec(Big(0)).isNaN());
+    assert.ok(asec(Big(-0.5)).isNaN());
   });
 
   it('should be the inverse function of sec', function() {
@@ -72,23 +80,8 @@ describe('asec', function() {
     bigmath.config({precision: 20});
     assert.deepEqual(asecBig(bigmath.sec(Big(-1))), Big(1));
     assert.deepEqual(asecBig(bigmath.sec(Big(0))), Big(0));
-    assert.deepEqual(asecBig(bigmath.sec(Big(0.5))), Big(0.5));
+    assert.deepEqual(asecBig(bigmath.sec(Big(0.5))), Big('0.49999999999999999997'));
     assert.deepEqual(asecBig(bigmath.sec(Big(2))), Big(2));
-
-    // Pass in extra digit
-    assert.deepEqual(asecBig(biggermath.sec(Big(0.1))), Big(0.1));
-  });
-
-  it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      asec(Big(0.5));
-    }, /asec() only has non-complex values for |x| >= 1./);
-    assert.throws(function () {
-      asec(Big(0));
-    }, /asec() only has non-complex values for |x| >= 1./);
-    assert.throws(function () {
-      asec(Big(-0.5));
-    }, /asec() only has non-complex values for |x| >= 1./);
   });
 
   it('should return the arcsec of a complex number', function() {
