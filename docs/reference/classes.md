@@ -7,24 +7,42 @@ layout: default
 
 This page lists all the various class types in Math.js. Every top-level function is listed here and links to its detailed reference to other parts of the documentation.
 
-<h2 id="mathfunctionshtml">["math"](functions.html) <a href="#mathfunctionshtml" title="Permalink">#</a></h2>
+<h2 id="math">math <a href="#math" title="Permalink">#</a></h2>
 
 The "math" namespace contains the entire math.js functionality. All of the mathematical functions are available in the "math" namespace, and allow for inputs of various types.
 
-<h2 id="unitdatatypesunitshtml">[Unit](../datatypes/units.html) <a href="#unitdatatypesunitshtml" title="Permalink">#</a></h2>
+- [Function reference](functions.html)
+- [Constant reference](constants.html)
+
+
+<h2 id="unit">Unit <a href="#unit" title="Permalink">#</a></h2>
+
 Stores values for a scalar unit and its postfix. (eg `100 mm` or `100 kg`). Although the `Unit` class contains public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
-- [Unit](classes/unit.html)
+- [Overview](../datatypes/units.html)
+- [Class API](classes/unit.html)
 
-<h2 id="fractiondatatypesfractionshtml">[Fraction](../datatypes/fractions.html) <a href="#fractiondatatypesfractionshtml" title="Permalink">#</a></h2>
+
+<h2 id="fraction">Fraction <a href="#fraction" title="Permalink">#</a></h2>
+
 Stores values for a fractional number.
 
-<h2 id="bignumberdatatypesbignumbershtml">[BigNumber](../datatypes/bignumbers.html) <a href="#bignumberdatatypesbignumbershtml" title="Permalink">#</a></h2>
+- [Overview](../datatypes/fractions.html)
+- [Class API](https://github.com/infusion/Fraction.js/)
+
+<h2 id="bignumber">BigNumber <a href="#bignumber" title="Permalink">#</a></h2>
+
 Stores values for a arbitrary-precision floating point number.
 
-<h2 id="matrixdatatypesmatriceshtml">[Matrix](../datatypes/matrices.html) <a href="#matrixdatatypesmatriceshtml" title="Permalink">#</a></h2>
+- [Overview](../datatypes/bignumbers.html)
+- [Class API](http://mikemcl.github.io/decimal.js/)
+
+
+<h2 id="matrix">Matrix <a href="#matrix" title="Permalink">#</a></h2>
+
 Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
+- [Overview](../datatypes/matrices.html)
 - [DenseMatrix](classes/densematrix.html)
 - [SparseMatrix](classes/sparsematrix.html)
 
@@ -35,14 +53,24 @@ Classes used internally that may be of use to developers:
 - [ResultSet](classes/matrixrange.html)
 - [FibonacciHeap](classes/fibonacciheap.html)
 
-<h2 id="complexdatatypescomplex_numbershtml">[Complex](../datatypes/complex_numbers.html) <a href="#complexdatatypescomplex_numbershtml" title="Permalink">#</a></h2>
+<h2 id="complex">Complex <a href="#complex" title="Permalink">#</a></h2>
+
 Stores values for a complex number.
 
-<h2 id="parserexpressionsparsinghtml">[Parser](../expressions/parsing.html) <a href="#parserexpressionsparsinghtml" title="Permalink">#</a></h2>
+- [Overview](../datatypes/complex_numbers.html)
+- [Class API](https://github.com/infusion/Complex.js/)
+
+<h2 id="parser">Parser <a href="#parser" title="Permalink">#</a></h2>
+
 The Parser object returned by `math.parser()`.
 
-<h2 id="nodeexpressionsexpression_treeshtml">[Node](expressions/expression_trees.html) <a href="#nodeexpressionsexpression_treeshtml" title="Permalink">#</a></h2>
+- [Overview](../expressions/parsing.html)
+
+<h2 id="node">Node <a href="#node" title="Permalink">#</a></h2>
+
 A node in an expression-tree, which can be used to analyze, manipulate, and evaluate expressions.
+
+- [Overview](expressions/expression_trees.html)
 
 `Node` is the base class of all other node classes:
 

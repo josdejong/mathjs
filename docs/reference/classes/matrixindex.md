@@ -22,7 +22,22 @@ layout: default
 
 <a name="new_Index_new"></a>
 <h3 id="new-indexranges">new Index(...ranges) <a href="#new-indexranges" title="Permalink">#</a></h3>
-Create an index. An Index can store ranges and sets for multiple dimensions.Matrix.get, Matrix.set, and math.subset accept an Index as input.Usage:    var index = new Index(range1, range2, matrix1, array1, ...);Where each parameter can be any of:    A number    An instance of Range    An Array with the Set values    A Matrix with the Set valuesThe parameters start, end, and step must be integer numbers.
+Create an index. An Index can store ranges and sets for multiple dimensions.
+Matrix.get, Matrix.set, and math.subset accept an Index as input.
+
+Usage:
+```js
+var index = new Index(range1, range2, matrix1, array1, ...);
+```
+
+Where each parameter can be any of:
+
+- A number
+- An instance of Range
+- An Array with the Set values
+- A Matrix with the Set values
+
+The parameters start, end, and step must be integer numbers.
 
 
 | Param | Type |
@@ -31,7 +46,8 @@ Create an index. An Index can store ranges and sets for multiple dimensions.Mat
 
 <a name="Index+valueOf"></a>
 <h3 id="indexvalueof--codearraycode">index.valueOf ⇒ <code>Array</code> <a href="#indexvalueof--codearraycode" title="Permalink">#</a></h3>
-Get the primitive value of the Index, a two dimensional array.Equivalent to Index.toArray().
+Get the primitive value of the Index, a two dimensional array.
+Equivalent to Index.toArray().
 
 **Kind**: instance property of <code>[Index](#Index)</code>  
 **Returns**: <code>Array</code> - array  
@@ -82,13 +98,17 @@ Retrieve the dimension for the given index
 
 <a name="Index+isScalar"></a>
 <h3 id="indexisscalar--codebooleancode">index.isScalar() ⇒ <code>boolean</code> <a href="#indexisscalar--codebooleancode" title="Permalink">#</a></h3>
-Test whether this index contains only a single value.This is the case when the index is created with only scalar values as ranges,not for ranges resolving into a single value.
+Test whether this index contains only a single value.
+
+This is the case when the index is created with only scalar values as ranges,
+not for ranges resolving into a single value.
 
 **Kind**: instance method of <code>[Index](#Index)</code>  
 **Returns**: <code>boolean</code> - isScalar  
 <a name="Index+toArray"></a>
 <h3 id="indextoarray--codearraycode">index.toArray() ⇒ <code>Array</code> <a href="#indextoarray--codearraycode" title="Permalink">#</a></h3>
-Expand the Index into an array.For example new Index([0,3], [2,7]) returns [[0,1,2], [2,3,4,5,6]]
+Expand the Index into an array.
+For example new Index([0,3], [2,7]) returns [[0,1,2], [2,3,4,5,6]]
 
 **Kind**: instance method of <code>[Index](#Index)</code>  
 **Returns**: <code>Array</code> - array  
@@ -103,7 +123,8 @@ Get the string representation of the index, for example '[2:6]' or '[0:2:10, 4:7
 Get a JSON representation of the Index
 
 **Kind**: instance method of <code>[Index](#Index)</code>  
-**Returns**: <code>Object</code> - Returns a JSON object structured as:                  `{"mathjs": "Index", "ranges": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`  
+**Returns**: <code>Object</code> - Returns a JSON object structured as:
+                  `{"mathjs": "Index", "ranges": [{"mathjs": "Range", start: 0, end: 10, step:1}, ...]}`  
 <a name="Index.fromJSON"></a>
 <h3 id="indexfromjsonjson--codeindexindexcode">Index.fromJSON(json) ⇒ <code>[Index](#Index)</code> <a href="#indexfromjsonjson--codeindexindexcode" title="Permalink">#</a></h3>
 Instantiate an Index from a JSON object
