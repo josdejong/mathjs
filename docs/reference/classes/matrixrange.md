@@ -18,8 +18,36 @@
 
 <a name="new_Range_new"></a>
 ### new Range(start, end, [step])
-Create a range. A range has a start, step, and end, and contains functionsto iterate over the range.A range can be constructed as:    var range = new Range(start, end);    var range = new Range(start, end, step);To get the result of the range:    range.forEach(function (x) {        console.log(x);    });    range.map(function (x) {        return math.sin(x);    });    range.toArray();Example usage:    var c = new Range(2, 6);         // 2:1:5    c.toArray();                     // [2, 3, 4, 5]    var d = new Range(2, -3, -1);    // 2:-1:-2    d.toArray();                     // [2, 1, 0, -1, -2]
+Create a range. A range has a start, step, and end, and contains functions
+to iterate over the range.
 
+A range can be constructed as:
+
+```js
+var range = new Range(start, end);
+var range = new Range(start, end, step);
+```
+
+To get the result of the range:
+
+```js
+range.forEach(function (x) {
+    console.log(x);
+});
+range.map(function (x) {
+    return math.sin(x);
+});
+range.toArray();
+```
+
+Example usage:
+
+```js
+var c = new Range(2, 6);         // 2:1:5
+c.toArray();                     // [2, 3, 4, 5]
+var d = new Range(2, -3, -1);    // 2:-1:-2
+d.toArray();                     // [2, 1, 0, -1, -2]
+```
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -29,7 +57,8 @@ Create a range. A range has a start, step, and end, and contains functionsto it
 
 <a name="Range+size"></a>
 ### range.size() ⇒ <code>Array.&lt;number&gt;</code>
-Retrieve the size of the range.Returns an array containing one number, the number of elements in the range.
+Retrieve the size of the range.
+Returns an array containing one number, the number of elements in the range.
 
 **Kind**: instance method of <code>[Range](#Range)</code>  
 **Returns**: <code>Array.&lt;number&gt;</code> - size  
@@ -57,7 +86,8 @@ Execute a callback function for each value in the range.
 
 <a name="Range+map"></a>
 ### range.map(callback) ⇒ <code>Array</code>
-Execute a callback function for each value in the Range, and return theresults as an array
+Execute a callback function for each value in the Range, and return the
+results as an array
 
 **Kind**: instance method of <code>[Range](#Range)</code>  
 **Returns**: <code>Array</code> - array  
@@ -80,7 +110,8 @@ Get the primitive value of the Range, a one dimensional array
 **Returns**: <code>Array</code> - array  
 <a name="Range+format"></a>
 ### range.format([options]) ⇒ <code>string</code>
-Get a string representation of the range, with optional formatting options.Output is formatted as 'start:step:end', for example '2:6' or '0:0.2:11'
+Get a string representation of the range, with optional formatting options.
+Output is formatted as 'start:step:end', for example '2:6' or '0:0.2:11'
 
 **Kind**: instance method of <code>[Range](#Range)</code>  
 **Returns**: <code>string</code> - str  
@@ -99,10 +130,14 @@ Get a string representation of the range.
 Get a JSON representation of the range
 
 **Kind**: instance method of <code>[Range](#Range)</code>  
-**Returns**: <code>Object</code> - Returns a JSON object structured as:                  `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`  
+**Returns**: <code>Object</code> - Returns a JSON object structured as:
+                  `{"mathjs": "Range", "start": 2, "end": 4, "step": 1}`  
 <a name="Range.parse"></a>
 ### Range.parse(str) ⇒ <code>[Range](#Range)</code> &#124; <code>null</code>
-Parse a string into a range,The string contains the start, optional step, and end, separated by a colon.If the string does not contain a valid range, null is returned.For example str='0:2:11'.
+Parse a string into a range,
+The string contains the start, optional step, and end, separated by a colon.
+If the string does not contain a valid range, null is returned.
+For example str='0:2:11'.
 
 **Kind**: static method of <code>[Range](#Range)</code>  
 **Returns**: <code>[Range](#Range)</code> &#124; <code>null</code> - range  
