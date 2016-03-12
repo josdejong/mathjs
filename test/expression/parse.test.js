@@ -1065,6 +1065,7 @@ describe('parse', function() {
 
       assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
       assert.equal(parseAndEval('(2+3)2'), 10);
+      assert.equal(parseAndEval('2(3+4)'), 14);
       assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
       assert.equal(parseAndEval('(a)(2+3)', {a: function() {return 42;}}), 42); // function call
       assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42); // function call

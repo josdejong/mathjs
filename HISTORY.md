@@ -4,6 +4,8 @@
 ## not yet released, version 3.1.0
 
 - Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
+- Restored support for implicit multiplication like `2(3+4)`.
+- Some improvements in the docs.
 
 
 ## 2016-03-04, version 3.0.0
