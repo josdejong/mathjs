@@ -6,6 +6,8 @@
 - Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
 - Restored support for implicit multiplication like `2(3+4)`.
 - Some improvements in the docs.
+- Added automatic conversions from `boolean` and `null` to `Fraction`,
+  and conversions from `Fraction` to `Complex`.
 
 
 ## 2016-03-04, version 3.0.0
