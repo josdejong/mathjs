@@ -4,6 +4,7 @@
 ## not yet released, version 3.1.0
 
 - Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
+- Added support for prefixes for units `mol` and `mole`. Thanks @stu-blair.
 - Restored support for implicit multiplication like `2(3+4)`.
 - Some improvements in the docs.
 - Added automatic conversions from `boolean` and `null` to `Fraction`,
