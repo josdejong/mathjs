@@ -27,17 +27,17 @@ describe('sinh', function() {
 
   it('should return the sinh of very small numbers (avoid returning zero)', function() {
     // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
-    assert.equal(sinh(-1e-10), -1e-10);
-    assert.equal(sinh(1e-50), 1e-50);
+    assert.notEqual(sinh(-1e-10), 0);
+    assert.notEqual(sinh(1e-50), 0);
   });
 
   it('should return the sinh of a number between -1 and 1', function() {
-    approx.equal(sinh(0.9999999999), 1.17520119348949)
-    approx.equal(sinh(-0.9999999999), -1.17520119348949)
-    approx.equal(sinh(0.7), 0.75858370183953)
-    approx.equal(sinh(-0.7), -0.758583701839533)
-    approx.equal(sinh(0.3), 0.304520293447143)
-    approx.equal(sinh(-0.3), -0.304520293447143)
+    approx.equal(sinh(0.9999999999), 1.17520119348949);
+    approx.equal(sinh(-0.9999999999), -1.17520119348949);
+    approx.equal(sinh(0.7), 0.75858370183953);
+    approx.equal(sinh(-0.7), -0.758583701839533);
+    approx.equal(sinh(0.3), 0.304520293447143);
+    approx.equal(sinh(-0.3), -0.304520293447143);
   });
 
   it('should return the sinh of a bignumber', function() {
@@ -68,6 +68,7 @@ describe('sinh', function() {
     approx.deepEqual(sinh(complex('1')), complex(1.1752011936438014, 0));
     approx.deepEqual(sinh(complex('i')), complex(0, 0.8414709848079));
     approx.deepEqual(sinh(complex('2 + i')), complex(1.9596010414216, 3.1657785132162));
+    assert.deepEqual(sinh(complex('0.9999999999')), complex(1.1752011934894933));
   });
 
   it('should return the sinh of an angle', function() {
@@ -81,11 +82,11 @@ describe('sinh', function() {
   });
 
   it('should throw an error if called with an invalid unit', function() {
-    assert.throws(function () {sinh(unit('5 celsius'))});
+    assert.throws(function () {sinh(unit('5 celsius'));});
   });
 
   it('should throw an error if called with a string', function() {
-    assert.throws(function () {sinh('string')});
+    assert.throws(function () {sinh('string');});
   });
 
   var sinh123 = [1.1752011936438014, 3.626860407847, 10.01787492741];
@@ -99,8 +100,8 @@ describe('sinh', function() {
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
-    assert.throws(function () {sinh()}, /TypeError: Too few arguments/);
-    assert.throws(function () {sinh(1, 2)}, /TypeError: Too many arguments/);
+    assert.throws(function () {sinh();}, /TypeError: Too few arguments/);
+    assert.throws(function () {sinh(1, 2);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX sinh', function () {
