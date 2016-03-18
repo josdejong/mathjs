@@ -37,7 +37,7 @@ Stores values for a complex number.
 ## [Parser](../expressions/parsing.md)
 The Parser object returned by `math.parser()`.
 
-## [Node](expressions/expression_trees.md)
+## [Node](../expressions/expression_trees.md)
 A node in an expression-tree, which can be used to analyze, manipulate, and evaluate expressions.
 
 `Node` is the base class of all other node classes:
