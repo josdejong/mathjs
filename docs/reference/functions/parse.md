@@ -30,11 +30,11 @@ Node &#124; Node[] | node
 ## Examples
 
 ```js
-var node = parse('sqrt(3^2 + 4^2)');
+var node = math.parse('sqrt(3^2 + 4^2)');
 node.compile().eval(); // 5
 
 var scope = {a:3, b:4}
-var node = parse('a * b'); // 12
+var node = math.parse('a * b'); // 12
 var code = node.compile();
 code.eval(scope); // 12
 scope.a = 5;
