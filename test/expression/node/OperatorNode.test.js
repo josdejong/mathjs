@@ -548,4 +548,46 @@ describe('OperatorNode', function() {
     assert.equal(h.toString({implicit: 'show'}), '2 * (3 + 4)');
   });
 
+  it ('should LaTeX implicit multiplications', function () {
+    var a = math.parse('4a');
+    var b = math.parse('4 a');
+    var c = math.parse('a b');
+    var d = math.parse('2a b');
+    var e = math.parse('a b c');
+    var f = math.parse('(2+3)a');
+    var g = math.parse('(2+3)2');
+    var h = math.parse('2(3+4)');
+
+    assert.equal(a.toTex(), a.toTex({implicit: 'hide'}));
+    assert.equal(a.toTex({implicit: 'hide'}), '4~ a');
+    assert.equal(a.toTex({implicit: 'show'}), '4\\cdot a');
+
+    assert.equal(b.toTex(), b.toTex({implicit: 'hide'}));
+    assert.equal(b.toTex({implicit: 'hide'}), '4~ a');
+    assert.equal(b.toTex({implicit: 'show'}), '4\\cdot a');
+
+    assert.equal(c.toTex(), c.toTex({implicit: 'hide'}));
+    assert.equal(c.toTex({implicit: 'hide'}), ' a~\\mathrm{b}');
+    assert.equal(c.toTex({implicit: 'show'}), ' a\\cdot\\mathrm{b}');
+
+    assert.equal(d.toTex(), d.toTex({implicit: 'hide'}));
+    assert.equal(d.toTex({implicit: 'hide'}), '2~ a~\\mathrm{b}');
+    assert.equal(d.toTex({implicit: 'show'}), '2\\cdot a\\cdot\\mathrm{b}');
+
+    assert.equal(e.toTex(), e.toTex({implicit: 'hide'}));
+    assert.equal(e.toTex({implicit: 'hide'}), ' a~\\mathrm{b}~ c');
+    assert.equal(e.toTex({implicit: 'show'}), ' a\\cdot\\mathrm{b}\\cdot c');
+
+    assert.equal(f.toTex(), f.toTex({implicit: 'hide'}));
+    assert.equal(f.toTex({implicit: 'hide'}), '\\left(2+3\\right)~ a');
+    assert.equal(f.toTex({implicit: 'show'}), '\\left(2+3\\right)\\cdot a');
+
+    assert.equal(g.toTex(), g.toTex({implicit: 'hide'}));
+    assert.equal(g.toTex({implicit: 'hide'}), '\\left(2+3\\right)~2');
+    assert.equal(g.toTex({implicit: 'show'}), '\\left(2+3\\right)\\cdot2');
+
+    assert.equal(h.toTex(), h.toTex({implicit: 'hide'}));
+    assert.equal(h.toTex({implicit: 'hide'}), '2~\\left(3+4\\right)');
+    assert.equal(h.toTex({implicit: 'show'}), '2\\cdot\\left(3+4\\right)');
+  });
 });

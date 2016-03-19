@@ -83,6 +83,6 @@ describe('to', function() {
 
   it('should LaTeX to', function () {
     var expression = math.parse('to(2cm,m)');
-    assert.equal(expression.toTex(), '\\left(2\\cdot\\mathrm{cm}\\rightarrow\\mathrm{m}\\right)');
+    assert.equal(expression.toTex(), '\\left(2~\\mathrm{cm}\\rightarrow\\mathrm{m}\\right)');
   });
 });
