@@ -3,24 +3,42 @@
 
 This page lists all the various class types in Math.js. Every top-level function is listed here and links to its detailed reference to other parts of the documentation.
 
-## ["math"](functions.md)
+## math
 
 The "math" namespace contains the entire math.js functionality. All of the mathematical functions are available in the "math" namespace, and allow for inputs of various types.
 
-## [Unit](../datatypes/units.md)
+- [Function reference](functions.md)
+- [Constant reference](constants.md)
+
+
+## Unit
+
 Stores values for a scalar unit and its postfix. (eg `100 mm` or `100 kg`). Although the `Unit` class contains public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
-- [Unit](classes/unit.md)
+- [Overview](../datatypes/units.md)
+- [Class API](classes/unit.md)
 
-## [Fraction](../datatypes/fractions.md)
+
+## Fraction
+
 Stores values for a fractional number.
 
-## [BigNumber](../datatypes/bignumbers.md)
+- [Overview](../datatypes/fractions.md)
+- [Class API](https://github.com/infusion/Fraction.js/)
+
+## BigNumber
+
 Stores values for a arbitrary-precision floating point number.
 
-## [Matrix](../datatypes/matrices.md)
+- [Overview](../datatypes/bignumbers.md)
+- [Class API](http://mikemcl.github.io/decimal.js/)
+
+
+## Matrix
+
 Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 
+- [Overview](../datatypes/matrices.md)
 - [DenseMatrix](classes/densematrix.md)
 - [SparseMatrix](classes/sparsematrix.md)
 
@@ -31,14 +49,24 @@ Classes used internally that may be of use to developers:
 - [ResultSet](classes/matrixrange.md)
 - [FibonacciHeap](classes/fibonacciheap.md)
 
-## [Complex](../datatypes/complex_numbers.md)
+## Complex
+
 Stores values for a complex number.
 
-## [Parser](../expressions/parsing.md)
+- [Overview](../datatypes/complex_numbers.md)
+- [Class API](https://github.com/infusion/Complex.js/)
+
+## Parser
+
 The Parser object returned by `math.parser()`.
 
-## [Node](../expressions/expression_trees.md)
+- [Overview](../expressions/parsing.md)
+
+## Node
+
 A node in an expression-tree, which can be used to analyze, manipulate, and evaluate expressions.
+
+- [Overview](../expressions/expression_trees.md)
 
 `Node` is the base class of all other node classes:
 

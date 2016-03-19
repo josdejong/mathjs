@@ -156,10 +156,10 @@ or a template string similar to ES6 templates.
 
 ### Template syntax
 
-* `${name}`: Gets replaced by the name of the function
-* `${args}`: Gets replaced by a comma separated list of the arguments of the function.
-* `${args[0]}`: Gets replaced by the first argument of a function
-* `$$`: Gets replaced by `$`
+- `${name}`: Gets replaced by the name of the function
+- `${args}`: Gets replaced by a comma separated list of the arguments of the function.
+- `${args[0]}`: Gets replaced by the first argument of a function
+- `$$`: Gets replaced by `$`
 
 #### Example
 
@@ -197,16 +197,18 @@ The functions `toTex` and `toString` accept an `options` argument to customise o
 ```js
 {
   parenthesis: 'keep',   // parenthesis option
-  handler: someHandler   // handler to change the output
+  handler: someHandler,   // handler to change the output
+  implicit: 'hide' // how to treat implicit multiplication
 }
 ```
 
 ### Parenthesis
 
-The `parenthesis` option changes the way parenteheses are used in the output. There are three options available:
-* `keep`: Keep the parentheses from the input and display them as is. This is the default.
-* `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
-* `all`: Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
+The `parenthesis` option changes the way parentheses are used in the output. There are three options available:
+
+- `keep` Keep the parentheses from the input and display them as is. This is the default.
+- `auto` Only display parentheses that are necessary. Mathjs tries to get rid of as much parentheses as possible.
+- `all` Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
 
 There's two ways of passing callbacks:
 
@@ -323,4 +325,21 @@ math.import(customFunctions);
 var expression = math.parse('binomial(2,1)');
 var latex = expression.toTex({handler: customLaTeX});
 //latex now contains "\binom{2}{1}"
+```
+
+### Implicit multiplication
+
+You can change the way that implicit multiplication is converted to a string or LaTeX. The two options are `hide`, to not show a multiplication operator for implicit multiplication and `show` to show it.
+
+Example:
+```js
+var node = math.parse('2a');
+
+node.toString(); //'2 a'
+node.toString({implicit: 'hide'}); //'2 a'
+node.toString({implicit: 'show'}); //'2 * a'
+
+node.toTex(); //'2~ a'
+node.toTex({implicit: 'hide'}); //'2~ a'
+node.toTex({implicit: 'show'}); //'2\\cdot a'
 ```

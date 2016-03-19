@@ -883,18 +883,6 @@ describe('parse', function() {
       assert.equal(parseAndEval('unequal(2, 3)'), true);
     });
 
-    it('should evaluate functions returned by functions', function() {
-      var scope = {
-        factory: function (exponent) {
-          return function (x) {
-            return Math.pow(x, exponent);
-          }
-        }
-      };
-
-      assert.equal(parseAndEval('factory(3)(2)', scope), 8);
-    });
-
     it('should get a subset of a matrix returned by a function', function() {
       var scope = {
         test: function () {
@@ -1065,27 +1053,41 @@ describe('parse', function() {
 
       assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
       assert.equal(parseAndEval('(2+3)2'), 10);
+      assert.equal(parseAndEval('2(3+4)'), 14);
       assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
-      assert.equal(parseAndEval('(a)(2+3)', {a: function() {return 42;}}), 42); // function call
-      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42); // function call
-
-      // TODO: cleanup
-      //assert.equal(parseAndEval('(2+3)(4+5)'), 45);
-      //assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);
+      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42);        // function call
+      assert.equal(parseAndEval('a.b(2+3)', {a: {b: function() {return 42;}}}), 42); // function call
+      assert.equal(parseAndEval('(2+3)(4+5)'), 45);       // implicit multiplication
+      assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);  // implicit multiplication
 
       assert.equal(parseAndEval('(2a)^3', {a:2}), 64);
       assert.equal(parseAndEval('sqrt(2a)', {a:2}), 2);
 
       assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]));
       assert.deepEqual(parseAndEval('[2, 3] a', {a:2}), math.matrix([4, 6]));
-      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4);          // index, no multiplication
-      assert.deepEqual(parseAndEval('(A) [2,2]', {A: [[1,2], [3,4]]}), 4);        // implicit multiplication
-      assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]', {A: [[1,2], [3,4]]}), 4);  // index, no multiplication
+      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4);          // index
+      assert.deepEqual(parseAndEval('(A) [2,2]', {A: [[1,2], [3,4]]}), 4);        // index
+
+      assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]'), 4);                       // index
+      assert.deepEqual(parseAndEval('([1,2;3,4])[2,2]'), 4);                      // index
+      assert.throws(function () {parseAndEval('2[1,2,3]')}, /Unexpected operator/);// index
+    });
+
+    it('should tell the OperatorNode about implicit multiplications', function() {
+      assert.equal(parse('4a').implicit, true);
+      assert.equal(parse('4 a').implicit, true);
+      assert.equal(parse('a b').implicit, true);
+      assert.equal(parse('2a b').implicit, true);
+      assert.equal(parse('a b c').implicit, true);
+
+      assert.equal(parse('(2+3)a').implicit, true);
+      assert.equal(parse('(2+3)2').implicit, true);
+      assert.equal(parse('2(3+4)').implicit, true);
     });
 
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
       var node = parse('9km*3km');
-      assert.equal(node.toString({parenthesis: 'all'}), '((9 * km) * 3) * km');
+      assert.equal(node.toString({parenthesis: 'all'}), '((9 km) * 3) km');
     });
 
     it('should throw an error when having an implicit multiplication between two numbers', function() {
@@ -1848,8 +1850,8 @@ describe('parse', function() {
     it('should correctly stringify a node tree', function() {
       assert.equal(parse('0').toString(), '0');
       assert.equal(parse('"hello"').toString(), '"hello"');
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 * i, 4]');
-      assert.equal(parse('1/2a').toString(), '1 / 2 * a');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 i, 4]');
+      assert.equal(parse('1/2a').toString(), '1 / 2 a');
     });
 
     it('should correctly stringify an index with dot notation', function() {

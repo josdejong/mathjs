@@ -29,13 +29,23 @@ for sparse matrices.
 
 <a name="SparseMatrix+storage"></a>
 ### sparseMatrix.storage() ⇒ <code>string</code>
-Get the storage format used by the matrix.Usage:    var format = matrix.storage()                   // retrieve storage format
+Get the storage format used by the matrix.
+
+Usage:
+```js
+var format = matrix.storage()                   // retrieve storage format
+```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
 **Returns**: <code>string</code> - The storage format.  
 <a name="SparseMatrix+datatype"></a>
 ### sparseMatrix.datatype() ⇒ <code>string</code>
-Get the datatype of the data stored in the matrix.Usage:    var format = matrix.datatype()                   // retrieve matrix datatype
+Get the datatype of the data stored in the matrix.
+
+Usage:
+```js
+var format = matrix.datatype()                   // retrieve matrix datatype
+```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
 **Returns**: <code>string</code> - The datatype.  
@@ -52,13 +62,24 @@ Create a new SparseMatrix
 
 <a name="SparseMatrix+density"></a>
 ### sparseMatrix.density() ⇒ <code>number</code>
-Get the matrix density.Usage:    var density = matrix.density()                   // retrieve matrix density
+Get the matrix density.
+
+Usage:
+```js
+var density = matrix.density()                   // retrieve matrix density
+```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
 **Returns**: <code>number</code> - The matrix density.  
 <a name="SparseMatrix+subset"></a>
 ### sparseMatrix.subset(index, [replacement], [defaultValue])
-Get a subset of the matrix, or replace a subset of the matrix.Usage:    var subset = matrix.subset(index)               // retrieve subset    var value = matrix.subset(index, replacement)   // replace subset
+Get a subset of the matrix, or replace a subset of the matrix.
+
+Usage:
+```js
+var subset = matrix.subset(index)               // retrieve subset
+var value = matrix.subset(index, replacement)   // replace subset
+```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
 
@@ -94,7 +115,8 @@ Replace a single element in the matrix.
 
 <a name="SparseMatrix+resize"></a>
 ### sparseMatrix.resize(size, [defaultValue], [copy]) ⇒ <code>Matrix</code>
-Resize the matrix to the given size. Returns a copy of the matrix when `copy=true`, otherwise return the matrix itself (resize in place).
+Resize the matrix to the given size. Returns a copy of the matrix when 
+`copy=true`, otherwise return the matrix itself (resize in place).
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
 **Returns**: <code>Matrix</code> - The resized matrix  
@@ -119,7 +141,8 @@ Retrieve the size of the matrix.
 **Returns**: <code>Array.&lt;number&gt;</code> - size  
 <a name="SparseMatrix+map"></a>
 ### sparseMatrix.map(callback, [skipZeros]) ⇒ <code>[SparseMatrix](#SparseMatrix)</code>
-Create a new matrix with the results of the callback function executed oneach entry of the matrix.
+Create a new matrix with the results of the callback function executed on
+each entry of the matrix.
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
 **Returns**: <code>[SparseMatrix](#SparseMatrix)</code> - matrix  

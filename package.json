@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser and offers an integrated solution to work with numbers, big numbers, complex numbers, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -41,6 +41,7 @@
     "Ryan Seys (https://github.com/ryanseys)",
     "Sebastien Piquemal (https://github.com/sebpiq)",
     "Sergey Romanov (https://github.com/saromanov)",
+    "Stu Blair (https://github.com/stu-blair)",
     "Waldir Pimenta (https://github.com/waldyrious)",
     "Zach Zibrat (https://github.com/palimpsests)"
   ],

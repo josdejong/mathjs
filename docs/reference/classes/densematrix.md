@@ -9,11 +9,11 @@ for dense matrices.
 	* [.create(data, [datatype])](#DenseMatrix+create)
 	* [.subset(index, [replacement], [defaultValue])](#DenseMatrix+subset)
 	* [.get(index)](#DenseMatrix+get) ⇒ <code>\*</code>
-	* [.set(index, value, [defaultValue])](#DenseMatrix+set) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+	* [.set(index, value, [defaultValue])](#DenseMatrix+set) ⇒ <code>DenseMatrix</code>
 	* [.resize(size, [defaultValue], [copy])](#DenseMatrix+resize) ⇒ <code>Matrix</code>
-	* [.clone()](#DenseMatrix+clone) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+	* [.clone()](#DenseMatrix+clone) ⇒ <code>DenseMatrix</code>
 	* [.size()](#DenseMatrix+size) ⇒ <code>Array.&lt;number&gt;</code>
-	* [.map(callback)](#DenseMatrix+map) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+	* [.map(callback)](#DenseMatrix+map) ⇒ <code>DenseMatrix</code>
 	* [.forEach(callback)](#DenseMatrix+forEach)
 	* [.toArray()](#DenseMatrix+toArray) ⇒ <code>Array</code>
 	* [.valueOf()](#DenseMatrix+valueOf) ⇒ <code>Array</code>
@@ -23,27 +23,39 @@ for dense matrices.
 	* [.diagonal([k])](#DenseMatrix+diagonal) ⇒ <code>Array</code>
 	* [.swapRows(i, j)](#DenseMatrix+swapRows) ⇒ <code>Matrix</code>
 * _static_
-	* [.diagonal(size, value, [k], [defaultValue])](#DenseMatrix.diagonal) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
-	* [.fromJSON(json)](#DenseMatrix.fromJSON) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+	* [.diagonal(size, value, [k], [defaultValue])](#DenseMatrix.diagonal) ⇒ <code>DenseMatrix</code>
+	* [.fromJSON(json)](#DenseMatrix.fromJSON) ⇒ <code>DenseMatrix</code>
 	* [.preprocess(data)](#DenseMatrix.preprocess) ⇒ <code>Array</code>
 
 <a name="DenseMatrix+storage"></a>
 ### denseMatrix.storage() ⇒ <code>string</code>
-Get the storage format used by the matrix.Usage:    var format = matrix.storage()                   // retrieve storage format
+Get the storage format used by the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+Usage:
+
+```js
+var format = matrix.storage()                   // retrieve storage format
+```
+
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>string</code> - The storage format.  
 <a name="DenseMatrix+datatype"></a>
 ### denseMatrix.datatype() ⇒ <code>string</code>
-Get the datatype of the data stored in the matrix.Usage:    var format = matrix.datatype()                   // retrieve matrix datatype
+Get the datatype of the data stored in the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+Usage:
+
+```js
+var format = matrix.datatype()                   // retrieve matrix datatype
+```
+
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>string</code> - The datatype.  
 <a name="DenseMatrix+create"></a>
 ### denseMatrix.create(data, [datatype])
 Create a new DenseMatrix
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 
 | Param | Type |
 | --- | --- |
@@ -52,21 +64,28 @@ Create a new DenseMatrix
 
 <a name="DenseMatrix+subset"></a>
 ### denseMatrix.subset(index, [replacement], [defaultValue])
-Get a subset of the matrix, or replace a subset of the matrix.Usage:    var subset = matrix.subset(index)               // retrieve subset    var value = matrix.subset(index, replacement)   // replace subset
+Get a subset of the matrix, or replace a subset of the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+Usage:
+
+```js
+var subset = matrix.subset(index)               // retrieve subset
+var value = matrix.subset(index, replacement)   // replace subset
+```
+
+**Kind**: instance method of <code>DenseMatrix</code> 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | index | <code>Index</code> |  |  |
-| [replacement] | <code>Array</code> &#124; <code>[DenseMatrix](#DenseMatrix)</code> &#124; <code>\*</code> |  |  |
+| [replacement] | <code>Array</code> &#124; <code>DenseMatrix</code>&#124; <code>\*</code> |  |  |
 | [defaultValue] | <code>\*</code> | <code>0</code> | Default value, filled in on new entries when                                  the matrix is resized. If not provided,                                  new matrix elements will be filled with zeros. |
 
 <a name="DenseMatrix+get"></a>
 ### denseMatrix.get(index) ⇒ <code>\*</code>
 Get a single element from the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>\*</code> - value  
 
 | Param | Type | Description |
@@ -74,11 +93,11 @@ Get a single element from the matrix.
 | index | <code>Array.&lt;number&gt;</code> | Zero-based index |
 
 <a name="DenseMatrix+set"></a>
-### denseMatrix.set(index, value, [defaultValue]) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+### denseMatrix.set(index, value, [defaultValue]) ⇒ <code>DenseMatrix</code>
 Replace a single element in the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
-**Returns**: <code>[DenseMatrix](#DenseMatrix)</code> - self  
+**Kind**: instance method of <code>DenseMatrix</code> 
+**Returns**: <code>DenseMatrix</code>- self  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -88,9 +107,10 @@ Replace a single element in the matrix.
 
 <a name="DenseMatrix+resize"></a>
 ### denseMatrix.resize(size, [defaultValue], [copy]) ⇒ <code>Matrix</code>
-Resize the matrix to the given size. Returns a copy of the matrix when`copy=true`, otherwise return the matrix itself (resize in place).
+Resize the matrix to the given size. Returns a copy of the matrix when
+`copy=true`, otherwise return the matrix itself (resize in place).
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>Matrix</code> - The resized matrix  
 
 | Param | Type | Default | Description |
@@ -100,23 +120,24 @@ Resize the matrix to the given size. Returns a copy of the matrix when`copy=tru
 | [copy] | <code>boolean</code> |  | Return a resized copy of the matrix |
 
 <a name="DenseMatrix+clone"></a>
-### denseMatrix.clone() ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+### denseMatrix.clone() ⇒ <code>DenseMatrix</code>
 Create a clone of the matrix
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
-**Returns**: <code>[DenseMatrix](#DenseMatrix)</code> - clone  
+**Kind**: instance method of <code>DenseMatrix</code> 
+**Returns**: <code>DenseMatrix</code>- clone  
 <a name="DenseMatrix+size"></a>
 ### denseMatrix.size() ⇒ <code>Array.&lt;number&gt;</code>
 Retrieve the size of the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>Array.&lt;number&gt;</code> - size  
 <a name="DenseMatrix+map"></a>
-### denseMatrix.map(callback) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
-Create a new matrix with the results of the callback function executed oneach entry of the matrix.
+### denseMatrix.map(callback) ⇒ <code>DenseMatrix</code>
+Create a new matrix with the results of the callback function executed on
+each entry of the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
-**Returns**: <code>[DenseMatrix](#DenseMatrix)</code> - matrix  
+**Kind**: instance method of <code>DenseMatrix</code> 
+**Returns**: <code>DenseMatrix</code>- matrix  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -126,7 +147,7 @@ Create a new matrix with the results of the callback function executed oneach e
 ### denseMatrix.forEach(callback)
 Execute a callback function on each entry of the matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -136,19 +157,19 @@ Execute a callback function on each entry of the matrix.
 ### denseMatrix.toArray() ⇒ <code>Array</code>
 Create an Array with a copy of the data of the DenseMatrix
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>Array</code> - array  
 <a name="DenseMatrix+valueOf"></a>
 ### denseMatrix.valueOf() ⇒ <code>Array</code>
 Get the primitive value of the DenseMatrix: a multidimensional array
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>Array</code> - array  
 <a name="DenseMatrix+format"></a>
 ### denseMatrix.format([options]) ⇒ <code>string</code>
 Get a string representation of the matrix, with optional formatting options.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>string</code> - str  
 
 | Param | Type | Description |
@@ -159,18 +180,18 @@ Get a string representation of the matrix, with optional formatting options.
 ### denseMatrix.toString() ⇒ <code>string</code>
 Get a string representation of the matrix
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>string</code> - str  
 <a name="DenseMatrix+toJSON"></a>
 ### denseMatrix.toJSON() ⇒ <code>Object</code>
 Get a JSON representation of the matrix
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 <a name="DenseMatrix+diagonal"></a>
 ### denseMatrix.diagonal([k]) ⇒ <code>Array</code>
 Get the kth Matrix diagonal.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>Array</code> - The array vector with the diagonal values.  
 
 | Param | Type | Default | Description |
@@ -181,7 +202,7 @@ Get the kth Matrix diagonal.
 ### denseMatrix.swapRows(i, j) ⇒ <code>Matrix</code>
 Swap rows i and j in Matrix.
 
-**Kind**: instance method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: instance method of <code>DenseMatrix</code> 
 **Returns**: <code>Matrix</code> - The matrix reference  
 
 | Param | Type | Description |
@@ -190,10 +211,10 @@ Swap rows i and j in Matrix.
 | j | <code>number</code> | Matrix row index 2 |
 
 <a name="DenseMatrix.diagonal"></a>
-### DenseMatrix.diagonal(size, value, [k], [defaultValue]) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+### DenseMatrix.diagonal(size, value, [k], [defaultValue]) ⇒ <code>DenseMatrix</code>
 Create a diagonal matrix.
 
-**Kind**: static method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: static method of <code>DenseMatrix</code> 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -203,10 +224,10 @@ Create a diagonal matrix.
 | [defaultValue] | <code>number</code> |  | The default value for non-diagonal |
 
 <a name="DenseMatrix.fromJSON"></a>
-### DenseMatrix.fromJSON(json) ⇒ <code>[DenseMatrix](#DenseMatrix)</code>
+### DenseMatrix.fromJSON(json) ⇒ <code>DenseMatrix</code>
 Generate a matrix from a JSON object
 
-**Kind**: static method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: static method of <code>DenseMatrix</code> 
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -214,9 +235,10 @@ Generate a matrix from a JSON object
 
 <a name="DenseMatrix.preprocess"></a>
 ### DenseMatrix.preprocess(data) ⇒ <code>Array</code>
-Preprocess data, which can be an Array or DenseMatrix with nested Arrays andMatrices. Replaces all nested Matrices with Arrays
+Preprocess data, which can be an Array or DenseMatrix with nested Arrays and
+Matrices. Replaces all nested Matrices with Arrays
 
-**Kind**: static method of <code>[DenseMatrix](#DenseMatrix)</code>  
+**Kind**: static method of <code>DenseMatrix</code> 
 **Returns**: <code>Array</code> - data  
 
 | Param | Type |
