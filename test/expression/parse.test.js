@@ -1098,7 +1098,7 @@ describe('parse', function() {
 
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
       var node = parse('9km*3km');
-      assert.equal(node.toString({parenthesis: 'all'}), '((9 * km) * 3) * km');
+      assert.equal(node.toString({parenthesis: 'all'}), '((9 km) * 3) km');
     });
 
     it('should throw an error when having an implicit multiplication between two numbers', function() {
@@ -1861,8 +1861,8 @@ describe('parse', function() {
     it('should correctly stringify a node tree', function() {
       assert.equal(parse('0').toString(), '0');
       assert.equal(parse('"hello"').toString(), '"hello"');
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 * i, 4]');
-      assert.equal(parse('1/2a').toString(), '1 / 2 * a');
+      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 i, 4]');
+      assert.equal(parse('1/2a').toString(), '1 / 2 a');
     });
 
     it('should correctly stringify an index with dot notation', function() {

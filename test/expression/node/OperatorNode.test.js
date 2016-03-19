@@ -505,4 +505,47 @@ describe('OperatorNode', function() {
     assert.equal(math.parse('1+(1+1)').toTex({parenthesis: 'auto'}), '1+1+1');
   });
 
+  it ('should stringify implicit multiplications', function () {
+    var a = math.parse('4a');
+    var b = math.parse('4 a');
+    var c = math.parse('a b');
+    var d = math.parse('2a b');
+    var e = math.parse('a b c');
+    var f = math.parse('(2+3)a');
+    var g = math.parse('(2+3)2');
+    var h = math.parse('2(3+4)');
+
+    assert.equal(a.toString(), a.toString({implicit: 'hide'}));
+    assert.equal(a.toString({implicit: 'hide'}), '4 a');
+    assert.equal(a.toString({implicit: 'show'}), '4 * a');
+
+    assert.equal(b.toString(), b.toString({implicit: 'hide'}));
+    assert.equal(b.toString({implicit: 'hide'}), '4 a');
+    assert.equal(b.toString({implicit: 'show'}), '4 * a');
+
+    assert.equal(c.toString(), c.toString({implicit: 'hide'}));
+    assert.equal(c.toString({implicit: 'hide'}), 'a b');
+    assert.equal(c.toString({implicit: 'show'}), 'a * b');
+
+    assert.equal(d.toString(), d.toString({implicit: 'hide'}));
+    assert.equal(d.toString({implicit: 'hide'}), '2 a b');
+    assert.equal(d.toString({implicit: 'show'}), '2 * a * b');
+
+    assert.equal(e.toString(), e.toString({implicit: 'hide'}));
+    assert.equal(e.toString({implicit: 'hide'}), 'a b c');
+    assert.equal(e.toString({implicit: 'show'}), 'a * b * c');
+
+    assert.equal(f.toString(), f.toString({implicit: 'hide'}));
+    assert.equal(f.toString({implicit: 'hide'}), '(2 + 3) a');
+    assert.equal(f.toString({implicit: 'show'}), '(2 + 3) * a');
+
+    assert.equal(g.toString(), g.toString({implicit: 'hide'}));
+    assert.equal(g.toString({implicit: 'hide'}), '(2 + 3) 2');
+    assert.equal(g.toString({implicit: 'show'}), '(2 + 3) * 2');
+
+    assert.equal(h.toString(), h.toString({implicit: 'hide'}));
+    assert.equal(h.toString({implicit: 'hide'}), '2 (3 + 4)');
+    assert.equal(h.toString({implicit: 'show'}), '2 * (3 + 4)');
+  });
+
 });
