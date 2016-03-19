@@ -530,20 +530,25 @@ array with results.
 
 The expression parser supports implicit multiplication. Implicit multiplication
 has the same precedence as explicit multiplications and divisions, so `3/4 mm`
-is evaluated as `(3 / 4) * mm`. Implicit multiplication can be tricky as there
-is ambiguity on how an expression is evaluated. Use it carefully.
+is evaluated as `(3 / 4) * mm`.
+
+Parentheses are parsed as a function call when there is a symbol or accessor on
+the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
+parentheses are interpreted as an implicit multiplication.
+
+Implicit multiplication can be tricky as there is ambiguity on how an expression
+is evaluated. Use it carefully.
 
 Here some examples:
 
-Expression      | Evaluated as   Result
---------------- | -------------| ------------------
-(1 + 3) pi      | (1 + 3) * pi | 12.566370614359172
-(4 - 1) 2       | (4 - 1) * 2  | 6
-3 / 4 mm        | (3 / 4) * mm | 0.75 mm
-2 + 3 i         | 2 + (3 * i)  | 2 + 3i
-
-Not supported are expressions like `(1+2)(4-1)`: in that case the parser will
-evaluate `(1+2)` and try to invoke the result as a function with argument `(4-1)`.
+Expression      | Evaluated as      | Result
+--------------- | ----------------- | ------------------
+(1 + 3) pi      | (1 + 3) * pi      | 12.566370614359172
+(4 - 1) 2       | (4 - 1) * 2       | 6
+3 / 4 mm        | (3 / 4) * mm      | 0.75 mm
+2 + 3 i         | 2 + (3 * i)       | 2 + 3i
+(1 + 2) (4 - 2) | (1 + 2) * (4 - 2) | 6
+sqrt(4) (1 + 2) | sqrt(4) * (1 + 2) | 6
 
 
 ## Comments

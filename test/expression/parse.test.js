@@ -883,18 +883,6 @@ describe('parse', function() {
       assert.equal(parseAndEval('unequal(2, 3)'), true);
     });
 
-    it('should evaluate functions returned by functions', function() {
-      var scope = {
-        factory: function (exponent) {
-          return function (x) {
-            return Math.pow(x, exponent);
-          }
-        }
-      };
-
-      assert.equal(parseAndEval('factory(3)(2)', scope), 8);
-    });
-
     it('should get a subset of a matrix returned by a function', function() {
       var scope = {
         test: function () {
@@ -1067,21 +1055,22 @@ describe('parse', function() {
       assert.equal(parseAndEval('(2+3)2'), 10);
       assert.equal(parseAndEval('2(3+4)'), 14);
       assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
-      assert.equal(parseAndEval('(a)(2+3)', {a: function() {return 42;}}), 42); // function call
-      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42); // function call
-
-      // TODO: cleanup
-      //assert.equal(parseAndEval('(2+3)(4+5)'), 45);
-      //assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);
+      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42);        // function call
+      assert.equal(parseAndEval('a.b(2+3)', {a: {b: function() {return 42;}}}), 42); // function call
+      assert.equal(parseAndEval('(2+3)(4+5)'), 45);       // implicit multiplication
+      assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);  // implicit multiplication
 
       assert.equal(parseAndEval('(2a)^3', {a:2}), 64);
       assert.equal(parseAndEval('sqrt(2a)', {a:2}), 2);
 
       assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]));
       assert.deepEqual(parseAndEval('[2, 3] a', {a:2}), math.matrix([4, 6]));
-      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4);          // index, no multiplication
-      assert.deepEqual(parseAndEval('(A) [2,2]', {A: [[1,2], [3,4]]}), 4);        // implicit multiplication
-      assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]', {A: [[1,2], [3,4]]}), 4);  // index, no multiplication
+      assert.deepEqual(parseAndEval('A [2,2]', {A: [[1,2], [3,4]]}), 4);          // index
+      assert.deepEqual(parseAndEval('(A) [2,2]', {A: [[1,2], [3,4]]}), 4);        // index
+
+      assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]'), 4);                       // index
+      assert.deepEqual(parseAndEval('([1,2;3,4])[2,2]'), 4);                      // index
+      assert.throws(function () {parseAndEval('2[1,2,3]')}, /Unexpected operator/);// index
     });
 
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
