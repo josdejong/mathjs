@@ -197,7 +197,8 @@ The functions `toTex` and `toString` accept an `options` argument to customise o
 ```js
 {
   parenthesis: 'keep',   // parenthesis option
-  handler: someHandler   // handler to change the output
+  handler: someHandler,   // handler to change the output
+  implicit: 'hide' // how to treat implicit multiplication
 }
 ```
 
@@ -324,4 +325,21 @@ math.import(customFunctions);
 var expression = math.parse('binomial(2,1)');
 var latex = expression.toTex({handler: customLaTeX});
 //latex now contains "\binom{2}{1}"
+```
+
+### Implicit multiplication
+
+You can change the way that implicit multiplication is converted to a string or LaTeX. The two options are `hide`, to not show a multiplication operator for implicit multiplication and `show` to show it.
+
+Example:
+```js
+var node = math.parse('2a');
+
+node.toString(); //'2 a'
+node.toString({implicit: 'hide'}); //'2 a'
+node.toString({implicit: 'show'}); //'2 * a'
+
+node.toTex(); //'2~ a'
+node.toTex({implicit: 'hide'}); //'2~ a'
+node.toTex({implicit: 'show'}); //'2\\cdot a'
 ```

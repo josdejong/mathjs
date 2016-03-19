@@ -65,13 +65,18 @@
 <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
 <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
 <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
+<br/>
+<b>Implicit multiplication:</b>
+<input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
+<input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
 
 
 <script>
   var expr = document.getElementById('expr'),
       pretty = document.getElementById('pretty'),
       result = document.getElementById('result'),
-      parenthesis = 'keep';
+      parenthesis = 'keep',
+      implicit = 'hide';
 
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
@@ -94,7 +99,7 @@
 
     try {
       // export the expression to LaTeX
-        var latex = node ? node.toTex({parenthesis: parenthesis}) : '';
+        var latex = node ? node.toTex({parenthesis: parenthesis, implicit: implicit}) : '';
       console.log('LaTeX expression:', latex);
 
       // display and re-render the expression
