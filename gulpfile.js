@@ -106,10 +106,10 @@ gulp.task('clean', function (cb) {
  */
 gulp.task('docs', ['clean'], function () {
   return gulp.src(DOCS_SRC)
-      .pipe(replace(/HISTORY.md/g, 'history.html'))       // change links to history.md to lowercase
-      .pipe(replace(/(\([\w\./]*).md(\))/g, '$1.html$2')) // replace urls to *.md with *.html
-      .pipe(injectPermalinks)                             // create headers with an id
-      .pipe(header(MD_HEADER))                            // add banner with markdown layout
+      .pipe(replace(/HISTORY.md/g, 'history.html'))         // change links to history.md to lowercase
+      .pipe(replace(/(\([\w\./]*).md([)#])/g, '$1.html$2')) // replace urls to *.md with *.html
+      .pipe(injectPermalinks)                               // create headers with an id
+      .pipe(header(MD_HEADER))                              // add banner with markdown layout
       .pipe(gulp.dest(DOCS_DEST));
 });
 
