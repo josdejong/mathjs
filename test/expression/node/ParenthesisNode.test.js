@@ -129,6 +129,7 @@ describe('ParenthesisNode', function() {
     var n = new ParenthesisNode(a);
 
     assert.equal(n.toString(), '(1)');
+    assert.equal(n.toString({}), '(1)');
   });
 
   it ('should stringify a ParenthesisNode when not in keep mode', function () {
@@ -158,6 +159,7 @@ describe('ParenthesisNode', function() {
     var n = new ParenthesisNode(a);
 
     assert.equal(n.toTex(), '\\left(1\\right)');
+    assert.equal(n.toTex({}), '\\left(1\\right)');
   });
 
   it ('should LaTeX a ParenthesisNode when not in keep mode', function () {
