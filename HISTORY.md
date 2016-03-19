@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.1.0
+## 2016-03-19, version 3.1.0
 
 - Hide multiplication operator by default when outputting `toTex` and `toString`
   for implicit multiplications. Implemented and option to output the operator.

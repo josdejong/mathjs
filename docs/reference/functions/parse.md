@@ -9,10 +9,10 @@ invoking node.eval();
 ## Syntax
 
 ```js
-parse(expr)
-parse(expr, options)
-parse([expr1, expr2, expr3, ...])
-parse([expr1, expr2, expr3, ...], options)
+math.parse(expr)
+math.parse(expr, options)
+math.parse([expr1, expr2, expr3, ...])
+math.parse([expr1, expr2, expr3, ...], options)
 ```
 
 ### Parameters
