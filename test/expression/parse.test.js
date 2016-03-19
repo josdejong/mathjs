@@ -1084,6 +1084,18 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]', {A: [[1,2], [3,4]]}), 4);  // index, no multiplication
     });
 
+    it('should tell the OperatorNode about implicit multiplications', function() {
+      assert.equal(parse('4a').implicit, true);
+      assert.equal(parse('4 a').implicit, true);
+      assert.equal(parse('a b').implicit, true);
+      assert.equal(parse('2a b').implicit, true);
+      assert.equal(parse('a b c').implicit, true);
+
+      assert.equal(parse('(2+3)a').implicit, true);
+      assert.equal(parse('(2+3)2').implicit, true);
+      assert.equal(parse('2(3+4)').implicit, true);
+    });
+
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
       var node = parse('9km*3km');
       assert.equal(node.toString({parenthesis: 'all'}), '((9 * km) * 3) * km');
