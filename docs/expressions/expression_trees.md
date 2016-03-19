@@ -127,7 +127,7 @@ All nodes have the following methods:
     node.toString();  // returns '3 + (4 * 2)'
     ```
 
-    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
+    Information about the options in [Customization](customization.md#custom-latex-and-string-output).
 
 -   `toTex(options: object): string`
 
@@ -139,7 +139,7 @@ All nodes have the following methods:
     node.toTex(); // returns '\sqrt{\frac{2}{3}}'
     ```
 
-    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
+    Information about the options in [Customization](customization.md#custom-latex-and-string-output).
 
 -   `transform(callback: function)`
 

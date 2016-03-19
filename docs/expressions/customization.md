@@ -156,10 +156,10 @@ or a template string similar to ES6 templates.
 
 ### Template syntax
 
-* `${name}`: Gets replaced by the name of the function
-* `${args}`: Gets replaced by a comma separated list of the arguments of the function.
-* `${args[0]}`: Gets replaced by the first argument of a function
-* `$$`: Gets replaced by `$`
+- `${name}`: Gets replaced by the name of the function
+- `${args}`: Gets replaced by a comma separated list of the arguments of the function.
+- `${args[0]}`: Gets replaced by the first argument of a function
+- `$$`: Gets replaced by `$`
 
 #### Example
 
@@ -203,10 +203,11 @@ The functions `toTex` and `toString` accept an `options` argument to customise o
 
 ### Parenthesis
 
-The `parenthesis` option changes the way parenteheses are used in the output. There are three options available:
-* `keep`: Keep the parentheses from the input and display them as is. This is the default.
-* `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
-* `all`: Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
+The `parenthesis` option changes the way parentheses are used in the output. There are three options available:
+
+- `keep` Keep the parentheses from the input and display them as is. This is the default.
+- `auto` Only display parentheses that are necessary. Mathjs tries to get rid of as much parentheses as possible.
+- `all` Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
 
 There's two ways of passing callbacks:
 
