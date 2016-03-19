@@ -160,10 +160,10 @@ or a template string similar to ES6 templates.
 
 <h3 id="template-syntax">Template syntax <a href="#template-syntax" title="Permalink">#</a></h3>
 
-* `${name}`: Gets replaced by the name of the function
-* `${args}`: Gets replaced by a comma separated list of the arguments of the function.
-* `${args[0]}`: Gets replaced by the first argument of a function
-* `$$`: Gets replaced by `$`
+- `${name}`: Gets replaced by the name of the function
+- `${args}`: Gets replaced by a comma separated list of the arguments of the function.
+- `${args[0]}`: Gets replaced by the first argument of a function
+- `$$`: Gets replaced by `$`
 
 <h4 id="example">Example <a href="#example" title="Permalink">#</a></h4>
 
@@ -201,16 +201,18 @@ The functions `toTex` and `toString` accept an `options` argument to customise o
 ```js
 {
   parenthesis: 'keep',   // parenthesis option
-  handler: someHandler   // handler to change the output
+  handler: someHandler,   // handler to change the output
+  implicit: 'hide' // how to treat implicit multiplication
 }
 ```
 
 <h3 id="parenthesis">Parenthesis <a href="#parenthesis" title="Permalink">#</a></h3>
 
-The `parenthesis` option changes the way parenteheses are used in the output. There are three options available:
-* `keep`: Keep the parentheses from the input and display them as is. This is the default.
-* `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
-* `all`: Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
+The `parenthesis` option changes the way parentheses are used in the output. There are three options available:
+
+- `keep` Keep the parentheses from the input and display them as is. This is the default.
+- `auto` Only display parentheses that are necessary. Mathjs tries to get rid of as much parentheses as possible.
+- `all` Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
 
 There's two ways of passing callbacks:
 
@@ -327,4 +329,21 @@ math.import(customFunctions);
 var expression = math.parse('binomial(2,1)');
 var latex = expression.toTex({handler: customLaTeX});
 //latex now contains "\binom{2}{1}"
+```
+
+<h3 id="implicit-multiplication">Implicit multiplication <a href="#implicit-multiplication" title="Permalink">#</a></h3>
+
+You can change the way that implicit multiplication is converted to a string or LaTeX. The two options are `hide`, to not show a multiplication operator for implicit multiplication and `show` to show it.
+
+Example:
+```js
+var node = math.parse('2a');
+
+node.toString(); //'2 a'
+node.toString({implicit: 'hide'}); //'2 a'
+node.toString({implicit: 'show'}); //'2 * a'
+
+node.toTex(); //'2~ a'
+node.toTex({implicit: 'hide'}); //'2~ a'
+node.toTex({implicit: 'show'}); //'2\\cdot a'
 ```

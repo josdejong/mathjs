@@ -5,6 +5,18 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160319-version-310">2016-03-19, version 3.1.0 <a href="#20160319-version-310" title="Permalink">#</a></h2>
+
+- Hide multiplication operator by default when outputting `toTex` and `toString`
+  for implicit multiplications. Implemented and option to output the operator.
+- Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
+- Added support for prefixes for units `mol` and `mole`. Thanks @stu-blair.
+- Restored support for implicit multiplications like `2(3+4)` and `(2+3)(4+5)`.
+- Some improvements in the docs.
+- Added automatic conversions from `boolean` and `null` to `Fraction`,
+  and conversions from `Fraction` to `Complex`.
+
+
 <h2 id="20160304-version-300">2016-03-04, version 3.0.0 <a href="#20160304-version-300" title="Permalink">#</a></h2>
 
 <h3 id="breaking-changes">breaking changes <a href="#breaking-changes" title="Permalink">#</a></h3>

@@ -9,7 +9,7 @@ File: [chaining.js](chaining.js)
 ```js
 // chaining
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // create a chained operation using the function `chain(value)`

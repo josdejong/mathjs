@@ -339,7 +339,7 @@ All relevant functions in math.js support Matrices and Arrays. Functions like `m
 - Functions like `math.subset` and `math.index` to get or replace a part of a matrix
 - Functions like `math.transpose` and `math.diag` to manipulate matrices.
 
-A full list of matrix functions is available on the [functions reference page](../reference/functions.md#matrix-functions).
+A full list of matrix functions is available on the [functions reference page](../reference/functions.html#matrix-functions).
 
 Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
 

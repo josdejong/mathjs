@@ -1,6 +1,6 @@
 // complex numbers
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // create a complex number with a numeric real and complex part

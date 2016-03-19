@@ -9,7 +9,7 @@ File: [units.js](units.js)
 ```js
 // units
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // units can be created by providing a value and unit name, or by providing

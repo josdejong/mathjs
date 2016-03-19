@@ -114,7 +114,7 @@ var Trate2 = math.eval('(5 degC)/hour');   // Unit 278.15 degC/hour
 ```
 
 The expression parser supports units too. This is described in the section about
-units on the page [Syntax](../expressions/syntax.md#units).
+units on the page [Syntax](../expressions/syntax.html#units).
 
 <h2 id="api">API <a href="#api" title="Permalink">#</a></h2>
 A `Unit` object contains the following functions:
@@ -182,12 +182,12 @@ Liquid volume       | minim (min), fluiddram (fldr), fluidounce (floz), gill (gi
 Angles              | rad (radian), deg (degree), grad (gradian), cycle, arcsec (arcsecond), arcmin (arcminute) 
 Time                | second (s, secs, seconds), minute (mins, minutes), hour (h, hr, hrs, hours), day (days), week (weeks), month (months), year (years), decade (decades), century (centuries), millennium (millennia)
 Frequency           | hertz (Hz)
-Mass                | gram(g), tonne, ton, grain (gr), dram(dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
+Mass                | gram(g), tonne, ton, grain (gr), dram (dr), ounce (oz), poundmass (lbm, lb, lbs), hundredweight (cwt), stick, stone
 Electric current    | ampere (A)
 Temperature         | kelvin (K), celsius (degC), fahrenheit (degF), rankine (degR)
 Amount of substance | mole (mol)
 Luminous intensity  | candela (cd)
-Force               | newton (N), dyne (dyn), poundforce (lbf)
+Force               | newton (N), dyne (dyn), poundforce (lbf), kip
 Energy              | joule (J), erg, Wh, BTU, electronvolt (eV)
 Power               | watt (W), hp
 Pressure            | Pa, psi, atm, torr, bar, mmHg, mmH2O, cmH2O

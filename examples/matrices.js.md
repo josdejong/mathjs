@@ -9,7 +9,7 @@ File: [matrices.js](matrices.js)
 ```js
 // matrices
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 

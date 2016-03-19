@@ -12,7 +12,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 <head>
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.0.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.1.0/math.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
 
   <style>
@@ -74,13 +74,18 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 <input type="radio" name="parenthesis" value="keep" onclick="parenthesis = 'keep'; expr.oninput();" checked>keep
 <input type="radio" name="parenthesis" value="auto" onclick="parenthesis = 'auto'; expr.oninput();">auto
 <input type="radio" name="parenthesis" value="all" onclick="parenthesis = 'all'; expr.oninput();">all
+<br/>
+<b>Implicit multiplication:</b>
+<input type="radio" name="implicit" value="hide" onclick="implicit = 'hide'; expr.oninput();" checked>hide
+<input type="radio" name="implicit" value="show" onclick="implicit = 'show'; expr.oninput();">show
 
 
 <script>
   var expr = document.getElementById('expr'),
       pretty = document.getElementById('pretty'),
       result = document.getElementById('result'),
-      parenthesis = 'keep';
+      parenthesis = 'keep',
+      implicit = 'hide';
 
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
@@ -103,7 +108,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 
     try {
       // export the expression to LaTeX
-        var latex = node ? node.toTex({parenthesis: parenthesis}) : '';
+        var latex = node ? node.toTex({parenthesis: parenthesis, implicit: implicit}) : '';
       console.log('LaTeX expression:', latex);
 
       // display and re-render the expression

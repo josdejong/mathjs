@@ -13,7 +13,7 @@ File: [import.js](import.js)
  * containing functions and variables.
  */
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 

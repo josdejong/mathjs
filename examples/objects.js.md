@@ -9,7 +9,7 @@ File: [objects.js](objects.js)
 ```js
 // objects
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // create an object. Keys can be symbols or strings

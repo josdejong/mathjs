@@ -9,7 +9,7 @@ File: [bignumbers.js](bignumbers.js)
 ```js
 // BigNumbers
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // configure the default type of numbers as BigNumbers

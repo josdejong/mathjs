@@ -9,7 +9,7 @@ File: [basic_usage.js](basic_usage.js)
 ```js
 // basic usage
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // functions and constants

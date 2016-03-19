@@ -7,6 +7,7 @@ layout: default
 File: [serialization.js](serialization.js)
 
 ```js
+// load math.js (using node.js)
 var math = require('../index');
 
 // serialize a math.js data type into a JSON string

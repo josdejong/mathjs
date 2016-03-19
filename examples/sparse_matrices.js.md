@@ -7,6 +7,7 @@ layout: default
 File: [sparse_matrices.js](sparse_matrices.js)
 
 ```js
+// load math.js (using node.js)
 var math = require('../index');
 
 // create a sparse matrix
