@@ -35,7 +35,7 @@
   extension in expression nodes:
   - Implemented new node `ObjectNode`.
   - Refactored `AssignmentNode`, `UpdateNode`, and `IndexNode` are refactored
-    into `AccessNode`, `AssignmentNode`, and `IndexNode` having a different API.
+    into `AccessorNode`, `AssignmentNode`, and `IndexNode` having a different API.
 - Upgraded the used BigNumber library `decimal.js` to v5. Replaced the
   trigonometric functions of math.js with those provided in decimal.js v5.
   This can give slightly different behavior qua round-off errors.
