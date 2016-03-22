@@ -336,6 +336,7 @@ var latex = expression.toTex({handler: customLaTeX});
 You can change the way that implicit multiplication is converted to a string or LaTeX. The two options are `hide`, to not show a multiplication operator for implicit multiplication and `show` to show it.
 
 Example:
+
 ```js
 var node = math.parse('2a');
 
