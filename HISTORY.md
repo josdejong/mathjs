@@ -1,6 +1,11 @@
 # History
 
 
+## 2016-03-24, version 3.1.2
+
+- Fix broken npm release.
+
+
 ## 2016-03-24, version 3.1.1
 
 - Fixed #621: a bug in parsing implicit multiplications like `(2)(3)+4`.
