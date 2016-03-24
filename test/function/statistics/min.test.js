@@ -87,6 +87,11 @@ describe('min', function() {
     assert.throws(function () {min(new Complex(3,4), 6)}, TypeError);
   });
 
+  it('should throw an error when called multiple arrays or matrices', function() {
+    assert.throws(function () {min([1,2], [3,4])}, /Scalar values expected/);
+    assert.throws(function () {min(math.matrix([1,2]), math.matrix([3,4]))}, /Scalar values expected/);
+  });
+
   it('should throw an error if called a dimension out of range', function() {
     assert.throws(function() {min([1,2,3], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
     assert.throws(function() {min([1,2,3], 1)}, /IndexError: Index out of range \(1 > 0\)/);

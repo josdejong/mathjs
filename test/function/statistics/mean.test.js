@@ -78,6 +78,11 @@ describe('mean', function() {
     assert.throws(function() {mean([], 2, 3)});
   });
 
+  it('should throw an error when called multiple arrays or matrices', function() {
+    assert.throws(function () {mean([1,2], [3,4])}, /Scalar values expected/);
+    assert.throws(function () {mean(math.matrix([1,2]), math.matrix([3,4]))}, /Scalar values expected/);
+  });
+
   it('should throw an error if called a dimension out of range', function() {
     assert.throws(function() {mean([1,2,3], -1)}, /IndexError: Index out of range \(-1 < 0\)/);
     assert.throws(function() {mean([1,2,3], 1)}, /IndexError: Index out of range \(1 > 0\)/);
