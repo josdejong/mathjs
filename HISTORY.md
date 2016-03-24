@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.1.1
+## 2016-03-24, version 3.1.1
 
 - Fixed #621: a bug in parsing implicit multiplications like `(2)(3)+4`.
 - Fixed #623: `nthRoot` of zero with a negative root returned `0` instead of
