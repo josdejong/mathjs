@@ -1,6 +1,11 @@
 # History
 
 
+## 2016-03-24, version 3.1.3
+
+- Fix broken bundle.
+
+
 ## 2016-03-24, version 3.1.2
 
 - Fix broken npm release.
