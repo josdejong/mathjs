@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.2.0
+
+- Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
+
+
 ## 2016-03-24, version 3.1.3
 
 - Fix broken bundle.
