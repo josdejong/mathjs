@@ -362,6 +362,18 @@ describe('FunctionNode', function() {
     assert.equal(n.toString(), 'sqrt(4)');
   });
 
+  it ('should pass options when stringifying a FunctionNode', function () {
+    var s = new SymbolNode('sqrt');
+    var a = new ConstantNode(2);
+    var b = new SymbolNode('x');
+    var c = new OperatorNode('*', 'multiply', [a, b], true); // implicit
+    var n = new FunctionNode(s, [c]);
+
+    assert.equal(n.toString(), 'sqrt(2 x)');
+    var options = {implicit: 'show'};
+    assert.equal(n.toString(options), 'sqrt(2 * x)');
+  });
+
   it ('should stringify a FunctionNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {

@@ -5,6 +5,7 @@
 
 - Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
 - Fixed #632: problem with escaped backslashes at the end of strings.
+- Fixed #635: `Node.toString` options where not passed to function arguments.
 
 
 ## 2016-03-24, version 3.1.3
