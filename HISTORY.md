@@ -3,11 +3,14 @@
 
 ## not yet released, version 3.2.0
 
+- Using ES6 Math functions like `Math.sinh`, `Math.cbrt`, `Math.sign`, etc when
+  available.
 - Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
 - Fixed #632: problem with escaped backslashes at the end of strings.
 - Fixed #635: `Node.toString` options where not passed to function arguments.
 - Fixed #629: expression parser throws an error when passing a number with
   decimal exponent instead of parsing them as implicit multiplication.
+- Fixed #484, #555: inaccuracy of `math.sinh` for values between -1 and 1.
 
 
 ## 2016-03-24, version 3.1.3

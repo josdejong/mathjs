@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var epsilon = 0.0001;
+var EPSILON = 0.0001;
 
 /**
  * Test whether a value is a number
@@ -16,8 +16,13 @@ function isNumber (value) {
  * between the two numbers is smaller than a fraction of their max value.
  * @param {Number} a
  * @param {Number} b
+ * @param {Number} [epsilon]
  */
-exports.equal = function equal(a, b) {
+exports.equal = function equal(a, b, epsilon) {
+  if (epsilon === undefined) {
+    epsilon = EPSILON;
+  }
+
   if (isNumber(a) && isNumber(b)) {
     if (a === b) {
       // great, we're done :)
