@@ -11,7 +11,7 @@ File: [basic_usage.html](basic_usage.html)
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.1.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.1.4/math.min.js"></script>
 </head>
 <body>
 
