@@ -2,7 +2,7 @@
 
 # Function log10
 
-Calculate the 10-base of a value. This is the same as calculating `log(x, 10)`.
+Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
 
 For matrices, the function is evaluated element wise.
 

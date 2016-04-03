@@ -11,7 +11,7 @@ Format a value of any type into a string.
 math.format(value)
 math.format(value, options)
 math.format(value, precision)
-math.format(value, fn)
+math.format(value, callback)
 ```
 
 ### Where
@@ -47,10 +47,12 @@ math.format(value, fn)
    - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
      For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is
      configured, and will output `0.(3)` when 'decimal' is configured.
-- `fn: Function`
-  A custom formatting function. Can be used to override the built-in notations.
-  Function `fn` is called with `value` as parameter and must return a string.
-  Is useful for example to format all values inside a matrix in a particular way.
+- `callback: function`
+  A custom formatting function, invoked for all numeric elements in `value`,
+  for example all elements of a matrix, or the real and imaginary
+  parts of a complex number. This callback can be used to override the
+  built-in numeric notation with any type of formatting. Function `callback`
+  is called with `value` as parameter and must return a string.
 
 ### Parameters
 
@@ -77,6 +79,11 @@ math.format(21385, 2);                                   // returns '21000'
 math.format(12.071, {notation: 'fixed'});                // returns '12'
 math.format(2.3,    {notation: 'fixed', precision: 2});  // returns '2.30'
 math.format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
+
+function formatCurrency(value) {
+  return '$' + value.toFixed(2);
+}
+math.format([2.1, 3, 0.016], formatCurrency};            // returns '[$2.10, $3.00, $0.02]'
 ```
 
 
