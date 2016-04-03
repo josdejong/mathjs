@@ -4,6 +4,7 @@
 ## not yet released, version 3.2.0
 
 - Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
+- Fixed #632: problem with escaped backslashes at the end of strings.
 
 
 ## 2016-03-24, version 3.1.3

@@ -274,6 +274,15 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('   "hi" '), "hi");
     });
 
+    it('should parse a with escaped characters', function() {
+      assert.deepEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext');
+      assert.deepEqual(parseAndEval('"line end\\n"'), 'line end\n');
+      assert.deepEqual(parseAndEval('"tab\\tnext"'), 'tab\tnext');
+      assert.deepEqual(parseAndEval('"tab\\t"'), 'tab\t');
+      assert.deepEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next');
+      assert.deepEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\');
+    });
+
     it('should throw an error with invalid strings', function() {
       assert.throws(function () {parseAndEval('"hi'); }, SyntaxError);
       assert.throws(function () {parseAndEval(' hi" '); }, Error);
