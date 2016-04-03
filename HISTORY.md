@@ -11,6 +11,8 @@
 - Fixed #629: expression parser throws an error when passing a number with
   decimal exponent instead of parsing them as implicit multiplication.
 - Fixed #484, #555: inaccuracy of `math.sinh` for values between -1 and 1.
+- Fixed #625: Unit `in` (`inch`) not always working due to ambiguity with
+  the operator `a in b` (alias of `a to b`).
 
 
 ## 2016-03-24, version 3.1.3

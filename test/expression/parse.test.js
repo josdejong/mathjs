@@ -384,9 +384,9 @@ describe('parse', function() {
       approx.deepEqual(parseAndEval('2 in to meter'), new Unit(2, 'inch').to('meter'));
       approx.deepEqual(parseAndEval('2 in in meter'), new Unit(2, 'inch').to('meter'));
       approx.deepEqual(parseAndEval('a in inch', {a: new Unit(5.08, 'cm')}), new Unit(2, 'inch').to('inch'));
-      // Note: the following is not supported (due to conflicts):
-      //approx.deepEqual(parseAndEval('(2+3) in'), new Unit(5, 'inch'));
-      //approx.deepEqual(parseAndEval('a in', {a: 5}), new Unit(5, 'inch'));
+      approx.deepEqual(parseAndEval('(2+3) in'), new Unit(5, 'in'));
+      approx.deepEqual(parseAndEval('a in', {a: 5}), new Unit(5, 'in'));
+      approx.deepEqual(parseAndEval('0.5in + 1.5in to cm'), new Unit(5.08, 'cm').to('cm'));
     });
   });
 
