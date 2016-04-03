@@ -5,6 +5,39 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160403-version-314">2016-04-03, version 3.1.4 <a href="#20160403-version-314" title="Permalink">#</a></h2>
+
+- Using ES6 Math functions like `Math.sinh`, `Math.cbrt`, `Math.sign`, etc when
+  available.
+- Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
+- Fixed #632: problem with escaped backslashes at the end of strings.
+- Fixed #635: `Node.toString` options where not passed to function arguments.
+- Fixed #629: expression parser throws an error when passing a number with
+  decimal exponent instead of parsing them as implicit multiplication.
+- Fixed #484, #555: inaccuracy of `math.sinh` for values between -1 and 1.
+- Fixed #625: Unit `in` (`inch`) not always working due to ambiguity with
+  the operator `a in b` (alias of `a to b`).
+
+
+<h2 id="20160324-version-313">2016-03-24, version 3.1.3 <a href="#20160324-version-313" title="Permalink">#</a></h2>
+
+- Fix broken bundle.
+
+
+<h2 id="20160324-version-312">2016-03-24, version 3.1.2 <a href="#20160324-version-312" title="Permalink">#</a></h2>
+
+- Fix broken npm release.
+
+
+<h2 id="20160324-version-311">2016-03-24, version 3.1.1 <a href="#20160324-version-311" title="Permalink">#</a></h2>
+
+- Fixed #621: a bug in parsing implicit multiplications like `(2)(3)+4`.
+- Fixed #623: `nthRoot` of zero with a negative root returned `0` instead of
+  `Infinity`.
+- Throw an error when functions `min`, `max`, `mean`, or `median` are invoked
+  with multiple matrices as arguments (see #598).
+
+
 <h2 id="20160319-version-310">2016-03-19, version 3.1.0 <a href="#20160319-version-310" title="Permalink">#</a></h2>
 
 - Hide multiplication operator by default when outputting `toTex` and `toString`
@@ -39,7 +72,7 @@ layout: default
   extension in expression nodes:
   - Implemented new node `ObjectNode`.
   - Refactored `AssignmentNode`, `UpdateNode`, and `IndexNode` are refactored
-    into `AccessNode`, `AssignmentNode`, and `IndexNode` having a different API.
+    into `AccessorNode`, `AssignmentNode`, and `IndexNode` having a different API.
 - Upgraded the used BigNumber library `decimal.js` to v5. Replaced the
   trigonometric functions of math.js with those provided in decimal.js v5.
   This can give slightly different behavior qua round-off errors.

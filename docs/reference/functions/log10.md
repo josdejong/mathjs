@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-log10">Function log10 <a href="#function-log10" title="Permalink">#</a></h1>
 
-Calculate the 10-base of a value. This is the same as calculating `log(x, 10)`.
+Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
 
 For matrices, the function is evaluated element wise.
 

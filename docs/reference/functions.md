@@ -68,7 +68,7 @@ Function | Description
 [math.hypot(a,&nbsp;b,&nbsp;...)](functions/hypot.html) | Calculate the hypotenusa of a list with values.
 [math.lcm(a,&nbsp;b)](functions/lcm.html) | Calculate the least common multiple for two or more values or arrays.
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.html) | Calculate the logarithm of a value.
-[math.log10(x)](functions/log10.html) | Calculate the 10-base of a value.
+[math.log10(x)](functions/log10.html) | Calculate the 10-base logarithm of a value.
 [math.mod(x,&nbsp;y)](functions/mod.html) | Calculates the modulus, the remainder of an integer division.
 [math.multiply(x,&nbsp;y)](functions/multiply.html) | Multiply two values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.html) | Calculate the norm of a number, vector or matrix.
