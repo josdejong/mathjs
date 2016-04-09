@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.1.5
+
+- Fixed #601: Issue with unnamed typed-functions by upgrading to
+  typed-function v0.10.4.
+
+
 ## 2016-04-03, version 3.1.4
 
 - Using ES6 Math functions like `Math.sinh`, `Math.cbrt`, `Math.sign`, etc when
