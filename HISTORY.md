@@ -5,6 +5,8 @@
 
 - Fixed #601: Issue with unnamed typed-functions by upgrading to
   typed-function v0.10.4.
+- Fixed #645: Added documentation about `engineering` notation of function
+  `math.format`.
 
 
 ## 2016-04-03, version 3.1.4
