@@ -5,6 +5,7 @@
 
 - Fixed #601: Issue with unnamed typed-functions by upgrading to
   typed-function v0.10.4.
+- Fixed #636: More strict `toTex` templates, reckon with number of arguments.
 - Fixed #645: Added documentation about `engineering` notation of function
   `math.format`.
 
