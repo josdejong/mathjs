@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 3.1.4
- * @date    2016-04-03
+ * @version 3.2.0
+ * @date    2016-04-16
  *
  * @license
  * Copyright (C) 2013-2016 Jos de Jong <wjosdejong@gmail.com>
@@ -705,7 +705,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	'use strict';
 
-	(function (factory) {
+	(function (root, factory) {
 	  if (true) {
 	    // AMD. Register as an anonymous module.
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -716,9 +716,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    module.exports = factory();
 	  } else {
 	    // Browser globals (root is window)
-	    window.typed = factory();
+	    root.typed = factory();
 	  }
-	}(function () {
+	}(this, function () {
 	  // factory function to create a new instance of typed-function
 	  // TODO: allow passing configuration, types, tests via the factory function
 	  function create() {
@@ -765,8 +765,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      for (var i = 0; i < fns.length; i++) {
 	        var fn = fns[i];
 
-	        // merge function name
-	        if (fn.name != '') {
+	        // merge function name when this is a typed function
+	        if (fn.signatures && fn.name != '') {
 	          if (name == '') {
 	            name = fn.name;
 	          }
@@ -2070,7 +2070,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *                         'exponential'    Always use exponential notation.
 	 *                                          For example '1.234e+2' and '1.4e+7'
 	 *                         'engineering'    Always use engineering notation.
-	 *                                          For example '123.4e+0 and 14.0e+6'
+	 *                                          For example '123.4e+0' and '14.0e+6'
 	 *                         'auto' (default) Regular number notation for numbers
 	 *                                          having an absolute value between
 	 *                                          `lower` and `upper` bounds, and uses
@@ -3180,13 +3180,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v5.0.6 https://github.com/MikeMcl/decimal.js/LICENCE */
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*! decimal.js v5.0.8 https://github.com/MikeMcl/decimal.js/LICENCE */
 	;(function (globalScope) {
 	  'use strict';
 
 
 	  /*
-	   *  decimal.js v5.0.6
+	   *  decimal.js v5.0.8
 	   *  An arbitrary-precision Decimal type for JavaScript.
 	   *  https://github.com/MikeMcl/decimal.js
 	   *  Copyright (c) 2016 Michael Mclaughlin <M8ch88l@gmail.com>
@@ -10654,7 +10654,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module) {/**
-	 * @license Fraction.js v3.2.5 09/09/2015
+	 * @license Fraction.js v3.3.1 09/09/2015
 	 * http://www.xarg.org/2014/03/precise-calculations-in-javascript/
 	 *
 	 * Copyright (c) 2015, Robert Eisele (robert@xarg.org)
@@ -10664,7 +10664,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 *
-	 * This class offers the possebility to calculate fractions.
+	 * This class offers the possibility to calculate fractions.
 	 * You can pass a fraction in different formats. Either as array, as double, as string or as an integer.
 	 *
 	 * Array/Object form
@@ -10679,7 +10679,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * String form
 	 * 123.456 - a simple double
-	 * 123/456 - A string fraction
+	 * 123/456 - a string fraction
 	 * 123.'456' - a double with repeating decimal places
 	 * 123.(456) - synonym
 	 * 123.45'6' - a double with repeating last place
@@ -10711,12 +10711,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function assign(n, s) {
 
 	    if (isNaN(n = parseInt(n, 10))) {
-	      thorwInvalidParam();
+	      throwInvalidParam();
 	    }
 	    return n * s;
 	  }
 
-	  function thorwInvalidParam() {
+	  function throwInvalidParam() {
 	    throw "Invalid Param";
 	  }
 
@@ -10752,7 +10752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            if (1 in p1)
 	              d = p1[1];
 	          } else {
-	            thorwInvalidParam();
+	            throwInvalidParam();
 	          }
 	          s = n * d;
 	          break;
@@ -10872,7 +10872,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          /* Fall through on error */
 	        }
 	        default:
-	          thorwInvalidParam();
+	          throwInvalidParam();
 	      }
 
 	    if (d === 0) {
@@ -11378,7 +11378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var n = 1; // str index
 
 	      // rough estimate to fill zeros
-	      var length = 10 + cycLen + cycOff + p.length; // 10 = decimal places when no repitation
+	      var length = 15 + cycLen + cycOff + p.length; // 15 = decimal places when no repitation
 
 	      for (var i = 0; i < length; i++, t*= 10) {
 
@@ -14971,7 +14971,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, addScalar.signatures));
 
-	  add.toTex = '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)';
+	  add.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)'
+	  };
 	  
 	  return add;
 	}
@@ -16287,7 +16289,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  smaller.toTex = '\\left(${args[0]}' + latex.operators['smaller'] + '${args[1]}\\right)';
+	  smaller.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['smaller'] + '${args[1]}\\right)'
+	  };
 
 	  return smaller;
 	}
@@ -16847,7 +16851,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  larger.toTex = '\\left(${args[0]}' + latex.operators['larger'] + '${args[1]}\\right)';
+	  larger.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['larger'] + '${args[1]}\\right)'
+	  };
 
 	  return larger;
 	}
@@ -21211,7 +21217,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  subtract.toTex = '\\left(${args[0]}' + latex.operators['subtract'] + '${args[1]}\\right)';
+	  subtract.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['subtract'] + '${args[1]}\\right)'
+	  };
 
 	  return subtract;
 	}
@@ -21285,7 +21293,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // TODO: add support for string
 	  });
 
-	  unaryMinus.toTex = latex.operators['unaryMinus'] + '\\left(${args[0]}\\right)';
+	  unaryMinus.toTex = {
+	    1: latex.operators['unaryMinus'] + '\\left(${args[0]}\\right)'
+	  };
 
 	  return unaryMinus;
 	}
@@ -21783,7 +21793,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 
-	  pow.toTex = '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}';
+	  pow.toTex = {
+	    2: '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}'
+	  };
 
 	  return pow;
 	}
@@ -21877,7 +21889,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  eye.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  eye.toTex = undefined; // use default template
 
 	  return eye;
 
@@ -22895,7 +22907,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return c;
 	  };
 
-	  multiply.toTex = '\\left(${args[0]}' + latex.operators['multiply'] + '${args[1]}\\right)';
+	  multiply.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['multiply'] + '${args[1]}\\right)'
+	  };
 
 	  return multiply;
 	}
@@ -23077,7 +23091,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  abs.toTex = '\\left|${args[0]}\\right|';
+	  abs.toTex = {1: '\\left|${args[0]}\\right|'};
 
 	  return abs;
 	}
@@ -23250,7 +23264,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  equal.toTex = '\\left(${args[0]}' + latex.operators['equal'] + '${args[1]}\\right)';
+	  equal.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['equal'] + '${args[1]}\\right)'
+	  };
 
 	  return equal;
 	}
@@ -23351,6 +23367,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *      - 'exponential'
 	   *        Always use exponential notation.
 	   *        For example '1.234e+2' and '1.4e+7'
+	   *      - 'engineering'
+	   *        Always use engineering notation.
+	   *        For example '123.4e+0' and '14.0e+6'
 	   *      - 'auto' (default)
 	   *        Regular number notation for numbers having an absolute value between
 	   *        `lower` and `upper` bounds, and uses exponential notation elsewhere.
@@ -23402,9 +23421,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	   *    math.format(12.071, {notation: 'fixed'});                // returns '12'
 	   *    math.format(2.3,    {notation: 'fixed', precision: 2});  // returns '2.30'
 	   *    math.format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
+	   *    math.format(12400,  {notation: 'engineering'});         // returns '12.400e+3'
 	   *
 	   *    function formatCurrency(value) {
+	   *      // return currency notation with two digits:
 	   *      return '$' + value.toFixed(2);
+	   *
+	   *      // you could also use math.format inside the callback:
+	   *      // return '$' + math.format(value, {notation: 'fixed', precision: 2});
 	   *    }
 	   *    math.format([2.1, 3, 0.016], formatCurrency};            // returns '[$2.10, $3.00, $0.02]'
 	   *
@@ -23421,7 +23445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'any, Object | function | number': string.format
 	  });
 
-	  format.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  format.toTex = undefined; // use default template
 
 	  return format;
 	}
@@ -23504,7 +23528,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  _typeof.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  _typeof.toTex = undefined; // use default template
 
 	  return _typeof;
 	}
@@ -23747,7 +23771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 94 */
 /***/ function(module, exports) {
 
-	module.exports = '3.1.4';
+	module.exports = '3.2.0';
 	// Note: This file is automatically generated when building math.js.
 	// Changes made in this file will be overwritten.
 
@@ -29258,8 +29282,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else {
 	          // implicit multiplication like (2+3)(4+5)
-	          // next parse operation is parseUnary, the one after parseMultiplyDivide
-	          node = new OperatorNode('*', 'multiply', [node, parseUnary()], true /*implicit*/);
+	          // don't parse it here but let it be handled by parseMultiplyDivide
+	          // with correct precedence
+	          return node;
 	        }
 	      }
 	      else if (token == '[') {
@@ -30328,7 +30353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'Object, Index, any': _setObjectProperty
 	  });
 
-	  subset.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  subset.toTex = undefined; // use default template
 
 	  return subset;
 
@@ -33924,6 +33949,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	var extend = __webpack_require__(3).extend;
+
 	function factory (type, config, load, typed, math) {
 	  var _parse = load(__webpack_require__(270));
 
@@ -33937,6 +33964,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Methods:
 	   *    var result = parser.eval(expr);    // evaluate an expression
 	   *    var value = parser.get(name);      // retrieve a variable from the parser
+	   *    var values = parser.getAll();      // retrieve all defined variables
 	   *    parser.set(name, value);           // set a variable in the parser
 	   *    parser.remove(name);               // clear a variable from the
 	   *                                       // parsers scope
@@ -34033,6 +34061,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  Parser.prototype.get = function (name) {
 	    // TODO: validate arguments
 	    return this.scope[name];
+	  };
+
+	  /**
+	   * Get a map with all defined variables
+	   * @return {Object} values
+	   */
+	  Parser.prototype.getAll = function () {
+	    return extend({}, this.scope);
 	  };
 
 	  /**
@@ -34297,7 +34333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  concat.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  concat.toTex = undefined; // use default template
 
 	  return concat;
 	}
@@ -34457,7 +34493,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  filter.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  filter.toTex = undefined; // use default template
 
 	  return filter;
 	}
@@ -34576,7 +34612,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  forEach.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  forEach.toTex = undefined; // use default template
 
 	  return forEach;
 	}
@@ -34761,7 +34797,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  map.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  map.toTex = undefined; // use default template
 
 	  return map;
 	}
@@ -35211,7 +35247,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  mean.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  mean.toTex = undefined; // use default template
 
 	  return mean;
 
@@ -35342,7 +35378,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }, divideScalar.signatures));
 
-	  divide.toTex = '\\frac{${args[0]}}{${args[1]}}';
+	  divide.toTex = {2: '\\frac{${args[0]}}{${args[1]}}'};
 
 	  return divide;
 	}
@@ -35555,7 +35591,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  inv.toTex = '\\left(${args[0]}\\right)^{-1}';
+	  inv.toTex = {1: '\\left(${args[0]}\\right)^{-1}'};
 
 	  return inv;
 	}
@@ -35660,7 +35696,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  det.toTex = '\\det\\left(${args[0]}\\right)';
+	  det.toTex = {1: '\\det\\left(${args[0]}\\right)'};
 
 	  return det;
 
@@ -36022,7 +36058,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  });
 
-	  range.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  range.toTex = undefined; // use default template
 
 	  return range;
 
@@ -37954,7 +37990,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  };
 
-	  transpose.toTex = '\\left(${args[0]}\\right)' + latex.operators['transpose'];
+	  transpose.toTex = {1: '\\left(${args[0]}\\right)' + latex.operators['transpose']};
 
 	  return transpose;
 	}
@@ -38740,7 +38776,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  largerEq.toTex = '\\left(${args[0]}' + latex.operators['largerEq'] + '${args[1]}\\right)';
+	  largerEq.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['largerEq'] + '${args[1]}\\right)'
+	  };
 
 	  return largerEq;
 	}
@@ -40010,7 +40048,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  cbrt.toTex = '\\sqrt[3]{${args[0]}}';
+	  cbrt.toTex = {1: '\\sqrt[3]{${args[0]}}'};
 
 	  return cbrt;
 	}
@@ -40177,7 +40215,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  ceil.toTex = '\\left\\lceil${args[0]}\\right\\rceil';
+	  ceil.toTex = {1: '\\left\\lceil${args[0]}\\right\\rceil'};
 
 	  return ceil;
 	}
@@ -40247,7 +40285,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  cube.toTex = '\\left(${args[0]}\\right)^3';
+	  cube.toTex = {1: '\\left(${args[0]}\\right)^3'};
 
 	  return cube;
 	}
@@ -40396,7 +40434,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  dotDivide.toTex = '\\left(${args[0]}' + latex.operators['dotDivide'] + '${args[1]}\\right)';
+	  dotDivide.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['dotDivide'] + '${args[1]}\\right)'
+	  };
 	  
 	  return dotDivide;
 	}
@@ -40668,7 +40708,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  dotMultiply.toTex = '\\left(${args[0]}' + latex.operators['dotMultiply'] + '${args[1]}\\right)';
+	  dotMultiply.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['dotMultiply'] + '${args[1]}\\right)'
+	  };
 	  
 	  return dotMultiply;
 	}
@@ -40968,7 +41010,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  dotPow.toTex = '\\left(${args[0]}' + latex.operators['dotPow'] + '${args[1]}\\right)';
+	  dotPow.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['dotPow'] + '${args[1]}\\right)'
+	  };
 	  
 	  return dotPow;
 	}
@@ -41031,7 +41075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  exp.toTex = '\\exp\\left(${args[0]}\\right)';
+	  exp.toTex = {1: '\\exp\\left(${args[0]}\\right)'};
 
 	  return exp;
 	}
@@ -41102,7 +41146,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  fix.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  fix.toTex = {1: '\\mathrm{${name}}\\left(${args[0]}\\right)'};
 
 	  return fix;
 	}
@@ -41168,7 +41212,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  floor.toTex = '\\left\\lfloor${args[0]}\\right\\rfloor';
+	  floor.toTex = {1: '\\left\\lfloor${args[0]}\\right\\rfloor'};
 
 	  return floor;
 	}
@@ -41549,7 +41593,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  }
 
-	  sqrt.toTex = '\\sqrt{${args[0]}}';
+	  sqrt.toTex = {1: '\\sqrt{${args[0]}}'};
 
 	  return sqrt;
 	}
@@ -41784,7 +41828,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  lcm.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  lcm.toTex = undefined;  // use default template
 
 	  return lcm;
 
@@ -42243,7 +42287,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  log10.toTex = '\\log_{10}\\left(${args[0]}\\right)';
+	  log10.toTex = {1: '\\log_{10}\\left(${args[0]}\\right)'};
 
 	  return log10;
 	}
@@ -42419,7 +42463,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  mod.toTex = '\\left(${args[0]}' + latex.operators['mod'] + '${args[1]}\\right)';
+	  mod.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['mod'] + '${args[1]}\\right)'
+	  };
 
 	  return mod;
 
@@ -42662,7 +42708,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  norm.toTex = {
 	    1: '\\left\\|${args[0]}\\right\\|',
-	    2: '\\mathrm{${name}}\\left(${args}\\right)'
+	    2: undefined  // use default template
 	  };
 
 	  return norm;
@@ -42816,7 +42862,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    throw new RangeError('Matrix must be square (size: ' + format(size) + ')');   
 	  };
 
-	  trace.toTex = '\\mathrm{tr}\\left(${args[0]}\\right)';
+	  trace.toTex = {1: '\\mathrm{tr}\\left(${args[0]}\\right)'};
 	  
 	  return trace;
 	}
@@ -43003,7 +43049,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  nthRoot.toTex = '\\sqrt[${args[1]}]{${args[0]}}';
+	  nthRoot.toTex = {2: '\\sqrt[${args[1]}]{${args[0]}}'};
 
 	  return nthRoot;
 
@@ -43288,7 +43334,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  round.toTex = {
 	    1: '\\left\\lfloor${args[0]}\\right\\rceil',
-	    2: '\\mathrm{${name}}\\left(${args}\\right)'
+	    2: undefined  // use default template
 	  };
 
 	  return round;
@@ -43388,7 +43434,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  zeros.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  zeros.toTex = undefined; // use default template
 
 	  return zeros;
 
@@ -43515,7 +43561,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sign.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  sign.toTex = {1: '\\mathrm{${name}}\\left(${args[0]}\\right)'};
 
 	  return sign;
 	}
@@ -43587,7 +43633,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  square.toTex = '\\left(${args[0]}\\right)^2';
+	  square.toTex = {1: '\\left(${args[0]}\\right)^2'};
 
 	  return square;
 	}
@@ -43663,7 +43709,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  unaryPlus.toTex = latex.operators['unaryPlus'] + '\\left(${args[0]}\\right)'
+	  unaryPlus.toTex = {
+	    1: latex.operators['unaryPlus'] + '\\left(${args[0]}\\right)'
+	  };
 
 	  return unaryPlus;
 	}
@@ -43712,7 +43760,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // TODO: implement support for Fraction
 	  });
 
-	  xgcd.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  xgcd.toTex = undefined; // use default template
 
 	  return xgcd;
 
@@ -43982,7 +44030,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  bitAnd.toTex = '\\left(${args[0]}' + latex.operators['bitAnd'] + '${args[1]}\\right)';
+	  bitAnd.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['bitAnd'] + '${args[1]}\\right)'
+	  };
 
 	  return bitAnd;
 	}
@@ -44273,7 +44323,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  bitNot.toTex = latex.operators['bitNot'] + '\\left(${args[0]}\\right)';
+	  bitNot.toTex = {
+	    1: latex.operators['bitNot'] + '\\left(${args[0]}\\right)'
+	  };
 
 	  return bitNot;
 	}
@@ -44426,7 +44478,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  bitOr.toTex = '\\left(${args[0]}' + latex.operators['bitOr'] + '${args[1]}\\right)';
+	  bitOr.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['bitOr'] + '${args[1]}\\right)'
+	  };
 
 	  return bitOr;
 	}
@@ -44638,7 +44692,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  bitXor.toTex = '\\left(${args[0]}' + latex.operators['bitXor'] + '${args[1]}\\right)';
+	  bitXor.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['bitXor'] + '${args[1]}\\right)'
+	  };
 
 	  return bitXor;
 	}
@@ -44870,7 +44926,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  leftShift.toTex = '\\left(${args[0]}' + latex.operators['leftShift'] + '${args[1]}\\right)';
+	  leftShift.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['leftShift'] + '${args[1]}\\right)'
+	  };
 
 	  return leftShift;
 	}
@@ -45249,7 +45307,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  rightArithShift.toTex = '\\left(${args[0]}' + latex.operators['rightArithShift'] + '${args[1]}\\right)';
+	  rightArithShift.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['rightArithShift'] + '${args[1]}\\right)'
+	  };
 
 	  return rightArithShift;
 	}
@@ -45468,7 +45528,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  rightLogShift.toTex = '\\left(${args[0]}' + latex.operators['rightLogShift'] + '${args[1]}\\right)';
+	  rightLogShift.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['rightLogShift'] + '${args[1]}\\right)'
+	  };
 
 	  return rightLogShift;
 	}
@@ -45539,7 +45601,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  bellNumbers.toTex = '\\mathrm{B}_{${args[0]}}';
+	  bellNumbers.toTex = {1: '\\mathrm{B}_{${args[0]}}'};
 
 	  return bellNumbers;
 	}
@@ -45614,7 +45676,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  stirlingS2.toTex = '\\mathrm{S}\\left(${args[0]},${args[1]}\\right)';
+	  stirlingS2.toTex = {2: '\\mathrm{S}\\left(${args}\\right)'};
 
 	  return stirlingS2;
 	}
@@ -45679,7 +45741,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  factorial.toTex = '\\left(${args[0]}\\right)' + latex.operators['factorial'];
+	  factorial.toTex = {
+	    1: '\\left(${args[0]}\\right)' + latex.operators['factorial']
+	  };
 
 	  return factorial;
 	}
@@ -45865,7 +45929,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return new type.BigNumber(res.toPrecision(type.BigNumber.precision));
 	  }
 
-	  gamma.toTex = '\\Gamma\\left(${args[0]}\\right)';
+	  gamma.toTex = {1: '\\Gamma\\left(${args[0]}\\right)'};
 
 	  return gamma;
 	}
@@ -45975,7 +46039,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // TODO: implement support for collection in combinations
 	  });
 
-	  combinations.toTex = '\\binom{${args[0]}}{${args[1]}}';
+	  combinations.toTex = {2: '\\binom{${args[0]}}{${args[1]}}'};
 
 	  return combinations;
 	}
@@ -46103,7 +46167,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  composition.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  composition.toTex = undefined; // use default template
 
 	  return composition;
 	}
@@ -46160,7 +46224,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  catalan.toTex = '\\mathrm{C}_{${args[0]}}';
+	  catalan.toTex = {1: '\\mathrm{C}_{${args[0]}}'};
 
 	  return catalan;
 	}
@@ -46233,7 +46297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  arg.toTex = '\\arg\\left(${args[0]}\\right)';
+	  arg.toTex = {1: '\\arg\\left(${args[0]}\\right)'};
 
 	  return arg;
 	}
@@ -46294,7 +46358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  conj.toTex = '\\left(${args[0]}\\right)^*';
+	  conj.toTex = {1: '\\left(${args[0]}\\right)^*'};
 
 	  return conj;
 	}
@@ -46357,7 +46421,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  im.toTex = '\\Im\\left\\lbrace${args[0]}\\right\\rbrace';
+	  im.toTex = {1: '\\Im\\left\\lbrace${args[0]}\\right\\rbrace'};
 
 	  return im;
 	}
@@ -46420,7 +46484,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  re.toTex = '\\Re\\left\\lbrace${args[0]}\\right\\rbrace';
+	  re.toTex = {1: '\\Re\\left\\lbrace${args[0]}\\right\\rbrace'};
 
 	  return re;
 	}
@@ -47072,7 +47136,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  and.toTex = '\\left(${args[0]}' + latex.operators['and'] + '${args[1]}\\right)';
+	  and.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['and'] + '${args[1]}\\right)'
+	  };
 
 	  return and;
 	}
@@ -47139,7 +47205,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  not.toTex = latex.operators['not'] + '\\left(${args[0]}\\right)';
+	  not.toTex = {
+	    1: latex.operators['not'] + '\\left(${args[0]}\\right)'
+	  };
 
 	  return not;
 	}
@@ -47377,7 +47445,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  or.toTex = '\\left(${args[0]}' + latex.operators['or'] + '${args[1]}\\right)';
+	  or.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['or'] + '${args[1]}\\right)'
+	  };
 
 	  return or;
 	}
@@ -47539,7 +47609,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  xor.toTex = '\\left(${args[0]}' + latex.operators['xor'] + '${args[1]}\\right)';
+	  xor.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['xor'] + '${args[1]}\\right)'
+	  };
 
 	  return xor;
 	}
@@ -47636,7 +47708,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'Array, Array': _cross
 	  });
 
-	  cross.toTex = '\\left(${args[0]}\\right)\\times\\left(${args[1]}\\right)';
+	  cross.toTex = {
+	    2: '\\left(${args[0]}\\right)\\times\\left(${args[1]}\\right)'
+	  };
 
 	  return cross;
 
@@ -47771,7 +47845,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  diag.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  diag.toTex = undefined; // use default template
 
 	  return diag;
 
@@ -47895,7 +47969,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'Array, Array': _dot
 	  });
 	  
-	  dot.toTex = '\\left(${args[0]}\\cdot${args[1]}\\right)';
+	  dot.toTex = {2: '\\left(${args[0]}\\cdot${args[1]}\\right)'};
 
 	  return dot;
 
@@ -47971,7 +48045,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  flatten.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  flatten.toTex = undefined; // use default template
 
 	  return flatten;
 	}
@@ -48060,7 +48134,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  ones.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  ones.toTex = undefined; // use default template
 
 	  return ones;
 
@@ -48441,7 +48515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  compare.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  compare.toTex = undefined; // use default template
 
 	  return compare;
 	}
@@ -48544,7 +48618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 
-	  resize.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  resize.toTex = undefined; // use default template
 
 	  return resize;
 
@@ -48646,7 +48720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  size.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  size.toTex = undefined; // use default template
 
 	  return size;
 	}
@@ -48731,7 +48805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sort.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  sort.toTex = undefined; // use default template
 
 	  /**
 	   * Get the comparator for given order ('asc' or 'desc')
@@ -48839,7 +48913,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  squeeze.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  squeeze.toTex = undefined; // use default template
 
 	  return squeeze;
 	}
@@ -49015,7 +49089,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sum.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  sum.toTex = undefined; // use default template
 
 	  return sum;
 
@@ -49194,7 +49268,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // TODO: implement support for collection in permutations
 	  });
 
-	  permutations.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  permutations.toTex = undefined; // use default template
 
 	  return permutations;
 	}
@@ -49243,7 +49317,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // TODO: rework pickRandom to a typed-function
 	  var pickRandom =  distribution('uniform').pickRandom;
 
-	  pickRandom.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  pickRandom.toTex = undefined; // use default template
 
 	  return pickRandom;
 	}
@@ -49461,7 +49535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  };
 
-	  distribution.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  distribution.toTex = undefined; // use default template
 
 	  return distribution;
 	}
@@ -49512,7 +49586,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // TODO: rework random to a typed-function
 	  var random = distribution('uniform').random;
 
-	  random.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  random.toTex = undefined; // use default template
 
 	  return random;
 	}
@@ -49561,7 +49635,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // TODO: rework randomInt to a typed-function
 	  var randomInt = distribution('uniform').randomInt;
 
-	  randomInt.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  randomInt.toTex = undefined; // use default template
 
 	  return randomInt;
 	}
@@ -49628,7 +49702,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  deepEqual.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  deepEqual.toTex = undefined; // use default template
 
 	  return deepEqual;
 
@@ -49842,7 +49916,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  smallerEq.toTex = '\\left(${args[0]}' + latex.operators['smallerEq'] + '${args[1]}\\right)';
+	  smallerEq.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['smallerEq'] + '${args[1]}\\right)'
+	  };
 
 	  return smallerEq;
 	}
@@ -50050,7 +50126,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  unequal.toTex = '\\left(${args[0]}' + latex.operators['unequal'] + '${args[1]}\\right)';
+	  unequal.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['unequal'] + '${args[1]}\\right)'
+	  };
 
 	  return unequal;
 	}
@@ -50191,7 +50269,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  median.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  median.toTex = undefined; // use default template
 
 	  return median;
 	}
@@ -50335,7 +50413,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  prod.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  prod.toTex = undefined; // use default template
 
 	  return prod;
 
@@ -50690,7 +50768,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 	  
-	  std.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  std.toTex = undefined; // use default template
 
 	  return std;
 
@@ -50904,7 +50982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'string, Object, number': _print
 	  });
 
-	  print.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  print.toTex = undefined; // use default template
 
 	  return print;
 	}
@@ -51033,7 +51111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  acos.toTex = '\\cos^{-1}\\left(${args[0]}\\right)';
+	  acos.toTex = {1: '\\cos^{-1}\\left(${args[0]}\\right)'};
 
 	  return acos;
 	}
@@ -51097,7 +51175,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  acosh.toTex = '\\cosh^{-1}\\left(${args[0]}\\right)';
+	  acosh.toTex = {1: '\\cosh^{-1}\\left(${args[0]}\\right)'};
 
 	  return acosh;
 	}
@@ -51167,7 +51245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  acot.toTex = '\\cot^{-1}\\left(${args[0]}\\right)';
+	  acot.toTex = {1: '\\cot^{-1}\\left(${args[0]}\\right)'};
 
 	  return acot;
 	}
@@ -51228,7 +51306,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  acoth.toTex = '\\coth^{-1}\\left(${args[0]}\\right)';
+	  acoth.toTex = {1: '\\coth^{-1}\\left(${args[0]}\\right)'};
 
 	  return acoth;
 	}
@@ -51292,7 +51370,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  acsc.toTex = '\\csc^{-1}\\left(${args[0]}\\right)';
+	  acsc.toTex = {1: '\\csc^{-1}\\left(${args[0]}\\right)'};
 
 	  return acsc;
 	}
@@ -51351,7 +51429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  acsch.toTex = '\\mathrm{csch}^{-1}\\left(${args[0]}\\right)';
+	  acsch.toTex = {1: '\\mathrm{csch}^{-1}\\left(${args[0]}\\right)'};
 
 	  return acsch;
 	}
@@ -51414,7 +51492,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  asec.toTex = '\\sec^{-1}\\left(${args[0]}\\right)';
+	  asec.toTex = {1: '\\sec^{-1}\\left(${args[0]}\\right)'};
 
 	  return asec;
 	}
@@ -51484,7 +51562,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  asech.toTex = '\\mathrm{sech}^{-1}\\left(${args[0]}\\right)';
+	  asech.toTex = {1: '\\mathrm{sech}^{-1}\\left(${args[0]}\\right)'};
 
 	  return asech;
 	}
@@ -51550,7 +51628,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  asin.toTex = '\\sin^{-1}\\left(${args[0]}\\right)';
+	  asin.toTex = {1: '\\sin^{-1}\\left(${args[0]}\\right)'};
 
 	  return asin;
 	}
@@ -51609,7 +51687,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  asinh.toTex = '\\sinh^{-1}\\left(${args[0]}\\right)';
+	  asinh.toTex = {1: '\\sinh^{-1}\\left(${args[0]}\\right)'};
 
 	  return asinh;
 	}
@@ -51670,7 +51748,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  atan.toTex = '\\tan^{-1}\\left(${args[0]}\\right)';
+	  atan.toTex = {1: '\\tan^{-1}\\left(${args[0]}\\right)'};
 
 	  return atan;
 	}
@@ -51828,7 +51906,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  atan2.toTex = '\\mathrm{atan2}\\left(${args}\\right)';
+	  atan2.toTex = {2: '\\mathrm{atan2}\\left(${args}\\right)'};
 
 	  return atan2;
 	}
@@ -51889,7 +51967,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  atanh.toTex = '\\tanh^{-1}\\left(${args[0]}\\right)';
+	  atanh.toTex = {1: '\\tanh^{-1}\\left(${args[0]}\\right)'};
 
 	  return atanh;
 	}
@@ -51967,7 +52045,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  cos.toTex = '\\cos\\left(${args[0]}\\right)';
+	  cos.toTex = {1: '\\cos\\left(${args[0]}\\right)'};
 
 	  return cos;
 	}
@@ -52029,7 +52107,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  cosh.toTex = '\\cosh\\left(${args[0]}\\right)';
+	  cosh.toTex = {1: '\\cosh\\left(${args[0]}\\right)'};
 
 	  return cosh;
 	}
@@ -52103,7 +52181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  cot.toTex = '\\cot\\left(${args[0]}\\right)';
+	  cot.toTex = {1: '\\cot\\left(${args[0]}\\right)'};
 
 	  return cot;
 	}
@@ -52167,7 +52245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  coth.toTex = '\\coth\\left(${args[0]}\\right)';
+	  coth.toTex = {1: '\\coth\\left(${args[0]}\\right)'};
 
 	  return coth;
 	}
@@ -52242,7 +52320,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  csc.toTex = '\\csc\\left(${args[0]}\\right)';
+	  csc.toTex = {1: '\\csc\\left(${args[0]}\\right)'};
 
 	  return csc;
 	}
@@ -52307,7 +52385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  csch.toTex = '\\mathrm{csch}\\left(${args[0]}\\right)';
+	  csch.toTex = {1: '\\mathrm{csch}\\left(${args[0]}\\right)'};
 
 	  return csch;
 	}
@@ -52387,7 +52465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sec.toTex = '\\sec\\left(${args[0]}\\right)';
+	  sec.toTex = {1: '\\sec\\left(${args[0]}\\right)'};
 
 	  return sec;
 	}
@@ -52451,7 +52529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sech.toTex = '\\mathrm{sech}\\left(${args[0]}\\right)';
+	  sech.toTex = {1: '\\mathrm{sech}\\left(${args[0]}\\right)'};
 
 	  return sech;
 	}
@@ -52530,7 +52608,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sin.toTex = '\\sin\\left(${args[0]}\\right)';
+	  sin.toTex = {1: '\\sin\\left(${args[0]}\\right)'};
 
 	  return sin;
 	}
@@ -52593,7 +52671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  sinh.toTex = '\\sinh\\left(${args[0]}\\right)';
+	  sinh.toTex = {1: '\\sinh\\left(${args[0]}\\right)'};
 
 	  return sinh;
 	}
@@ -52668,7 +52746,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  tan.toTex = '\\tan\\left(${args[0]}\\right)';
+	  tan.toTex = {1: '\\tan\\left(${args[0]}\\right)'};
 
 	  return tan;
 	}
@@ -52734,7 +52812,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  tanh.toTex = '\\tanh\\left(${args[0]}\\right)';
+	  tanh.toTex = {1: '\\tanh\\left(${args[0]}\\right)'};
 
 	  return tanh;
 	}
@@ -52847,7 +52925,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	  });
 
-	  to.toTex = '\\left(${args[0]}' + latex.operators['to'] + '${args[1]}\\right)';
+	  to.toTex = {
+	    2: '\\left(${args[0]}' + latex.operators['to'] + '${args[1]}\\right)'
+	  };
 
 	  return to;
 	}
@@ -52902,7 +52982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'any': object.clone
 	  });
 
-	  clone.toTex = '\\mathrm{${name}}\\left(${args}\\right)';
+	  clone.toTex = undefined; // use default template
 
 	  return clone;
 	}

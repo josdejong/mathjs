@@ -28,6 +28,9 @@ math.format(value, callback)
      - 'exponential'
        Always use exponential notation.
        For example '1.234e+2' and '1.4e+7'
+     - 'engineering'
+       Always use engineering notation.
+       For example '123.4e+0' and '14.0e+6'
      - 'auto' (default)
        Regular number notation for numbers having an absolute value between
        `lower` and `upper` bounds, and uses exponential notation elsewhere.
@@ -79,9 +82,14 @@ math.format(21385, 2);                                   // returns '21000'
 math.format(12.071, {notation: 'fixed'});                // returns '12'
 math.format(2.3,    {notation: 'fixed', precision: 2});  // returns '2.30'
 math.format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
+math.format(12400,  {notation: 'engineering'});         // returns '12.400e+3'
 
 function formatCurrency(value) {
+  // return currency notation with two digits:
   return '$' + value.toFixed(2);
+
+  // you could also use math.format inside the callback:
+  // return '$' + math.format(value, {notation: 'fixed', precision: 2});
 }
 math.format([2.1, 3, 0.016], formatCurrency};            // returns '[$2.10, $3.00, $0.02]'
 ```
