@@ -5,6 +5,20 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160416-version-320">2016-04-16, version 3.2.0 <a href="#20160416-version-320" title="Permalink">#</a></h2>
+
+- Implemented #644: method `Parser.getAll()` to retrieve all defined variables.
+- Upgraded dependencies (decimal.js@5.0.8, fraction.js@3.3.1,
+  typed-function@0.10.4).
+- Fixed #601: Issue with unnamed typed-functions by upgrading to
+  typed-function v0.10.4.
+- Fixed #636: More strict `toTex` templates, reckon with number of arguments.
+- Fixed #641: Bug in expression parser parsing implicit multiplication with
+  wrong precedence in specific cases.
+- Fixed #645: Added documentation about `engineering` notation of function
+  `math.format`.
+
+
 <h2 id="20160403-version-314">2016-04-03, version 3.1.4 <a href="#20160403-version-314" title="Permalink">#</a></h2>
 
 - Using ES6 Math functions like `Math.sinh`, `Math.cbrt`, `Math.sign`, etc when
