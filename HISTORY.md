@@ -4,6 +4,7 @@
 ## not yet released, version 3.1.5
 
 - Implemented #644: method `Parser.getAll()` to retrieve all defined variables.
+- Upgraded dependencies (decimal.js@5.0.8, fraction.js@3.3.1).
 - Fixed #601: Issue with unnamed typed-functions by upgrading to
   typed-function v0.10.4.
 - Fixed #636: More strict `toTex` templates, reckon with number of arguments.

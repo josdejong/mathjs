@@ -65,25 +65,25 @@
     "unit"
   ],
   "dependencies": {
-    "decimal.js": "5.0.6",
-    "fraction.js": "3.2.5",
+    "decimal.js": "5.0.8",
+    "fraction.js": "3.3.1",
     "complex.js": "2.0.1",
     "tiny-emitter": "1.0.2",
     "typed-function": "0.10.4"
   },
   "devDependencies": {
-    "glob": "7.0.0",
+    "glob": "7.0.3",
     "gulp": "3.9.1",
     "gulp-util": "3.0.7",
-    "istanbul": "0.4.2",
+    "istanbul": "0.4.3",
     "mkdirp": "0.5.1",
     "mocha": "2.4.5",
     "q": "1.4.1",
     "seed-random": "2.2.0",
     "tar": "2.2.1",
-    "uglify-js": "2.6.1",
+    "uglify-js": "2.6.2",
     "underscore": "1.8.3",
-    "webpack": "1.12.13"
+    "webpack": "1.13.0"
   },
   "main": "./index",
   "scripts": {
