@@ -1082,6 +1082,12 @@ describe('parse', function() {
       assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);  // implicit multiplication
 
       assert.equal(parseAndEval('(2a)^3', {a:2}), 64);
+      assert.equal(parseAndEval('2a^3', {a:2}), 16);
+      assert.equal(parseAndEval('2(a)^3', {a:2}), 16);
+      assert.equal(parseAndEval('(2)a^3', {a:2}), 16);
+      assert.equal(parseAndEval('2^3a', {a:2}), 16);
+      assert.equal(parseAndEval('2^3(a)', {a:2}), 16);
+      assert.equal(parseAndEval('2^(3)(a)', {a:2}), 16);
       assert.equal(parseAndEval('sqrt(2a)', {a:2}), 2);
 
       assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]));
@@ -1095,6 +1101,9 @@ describe('parse', function() {
     });
 
     it('should tell the OperatorNode about implicit multiplications', function() {
+      assert.equal(parse('2 + 3').implicit, false);
+      assert.equal(parse('4 * a').implicit, false);
+
       assert.equal(parse('4a').implicit, true);
       assert.equal(parse('4 a').implicit, true);
       assert.equal(parse('a b').implicit, true);
