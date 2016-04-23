@@ -520,13 +520,64 @@ describe('Unit', function() {
 
     });
 
-    it('should simplify units even when they cancel out', function() {
+    it('should simplify units when they cancel out with {predictable: true}', function() {
+      var origConfig = math.config();
+      math.config({predictable: true});
       var unit1 = new Unit (2, "Hz");
       var unit2 = new Unit(2, "s");
       var unit3 = math.multiply(unit1, unit2);
       assert.equal(unit3.toString(), "4");
       assert.equal(unit3.units.length, 0);
+
+      var nounit = math.eval('40m * 40N / (40J)');
+      assert.equal(nounit.toString(), "40");
+      assert.equal(nounit.units.length, 0);
+
+      var a = math.unit('3 s^-1');
+      var b = math.unit('4 s');
+      assert.equal(math.multiply(a, b).type, 'Unit');
+
+      var c = math.unit('8.314 J / mol / K');
+      assert.equal(math.pow(c, 0).type, 'Unit');
+
+      var d = math.unit('60 minute');
+      var e = math.unit('1 s');
+      assert.equal(math.divide(d, e).type, 'Unit');
+
+      math.config(origConfig);
     })
+
+    it('should convert units to appropriate _numeric_ values when they cancel out with {predictable: false}', function() {
+      var origConfig = math.config();
+      math.config({predictable: false});
+
+      assert.equal(typeof(math.eval('40 m * 40 N / (40 J)')), 'number');
+
+      var bigunit = math.unit(math.bignumber(1), 'km');
+      var smallunit = math.unit(math.bignumber(3000000), 'mm');
+      var verybignumber = math.divide(bigunit, smallunit);
+      assert.equal(verybignumber.type, 'BigNumber');
+      assert.equal(verybignumber.toString(), '0.3333333333333333333333333333333333333333333333333333333333333333');
+
+      bigunit = math.unit(math.fraction(1), 'km');
+      smallunit = math.unit(math.fraction(3000000), 'mm');
+      verybignumber = math.divide(bigunit, smallunit);
+      assert.equal(verybignumber.type, 'Fraction');
+      assert.equal(verybignumber.toFraction(), '1/3');
+
+      var a = math.unit('3 s^-1');
+      var b = math.unit('4 s');
+      assert.equal(typeof(math.multiply(a, b)), 'number');
+
+      var c = math.unit('8.314 J / mol / K');
+      assert.equal(typeof(math.pow(c, 0)), 'number');
+
+      var d = math.unit('60 minute');
+      var e = math.unit('1 s');
+      assert.equal(typeof(math.divide(d, e)), 'number');
+
+      math.config(origConfig);
+    });
 
     it('should simplify units according to chosen unit system', function() {
       var unit1 = new Unit(10, "N");

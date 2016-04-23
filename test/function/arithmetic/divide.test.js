@@ -147,10 +147,10 @@ describe('divide', function() {
   });
 
   it('should divide one valued unit by a valueless unit and vice-versa', function() {
-    assert.equal(divide(math.unit('4 gal'), math.unit('L')).format(5), '15.142');
-    assert.equal(divide(math.unit('gal'), math.unit('4 L')).format(3), '0.946');
+    assert.equal(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141648');
+    assert.equal(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946353');
 
-    assert.equal(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')), '127/50');
+    assert.equal(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50');
   });
 
   it('should divide (but not simplify) two valueless units', function() {
