@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.2.1
+
+- Fixed #651: unable to perform calculations on "Unit-less" units.
+
+
 ## 2016-04-16, version 3.2.0
 
 - Implemented #644: method `Parser.getAll()` to retrieve all defined variables.
