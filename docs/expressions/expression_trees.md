@@ -66,11 +66,11 @@ All nodes have the following methods:
 
 -   `filter(callback: function) : Node[]`
 
-    Filter nodes in an expression tree. The `callback` function is called as
-    `callback(node: Node, path: string, parent: Node) : boolean` for every node
-    in the tree, and must return a boolean. The function `filter` returns an
-    array with nodes for which the test returned true. Parameter `path` is a
-    string containing a relative JSON Path.
+    Recursively filter nodes in an expression tree. The `callback` function is
+    called as `callback(node: Node, path: string, parent: Node) : boolean` for
+    every node in the tree, and must return a boolean. The function `filter`
+    returns an array with nodes for which the test returned true.
+    Parameter `path` is a string containing a relative JSON Path.
     
     Example:
 
@@ -272,7 +272,7 @@ var node2  = new math.expression.node.ArrayNode([one, two, three]);
 Construction:
 
 ```
-new AssignmentNode(symbol: SymbolNode, value: Node)
+new AssignmentNode(object: SymbolNode, value: Node)
 new AssignmentNode(object: SymbolNode | AccessorNode, index: IndexNode, value: Node)
 ```
 
@@ -288,9 +288,9 @@ Examples:
 ```js
 var node1 = math.parse('a = 3');
 
-var symbol = new math.expression.node.SymbolNode('a');
+var object = new math.expression.node.SymbolNode('a');
 var value = new math.expression.node.ConstantNode(3);
-var node2 = new math.expression.node.AssignmentNode(symbol, value);
+var node2 = new math.expression.node.AssignmentNode(object, value);
 ```
 
 
