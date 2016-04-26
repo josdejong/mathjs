@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160426-version-321">2016-04-26, version 3.2.1 <a href="#20160426-version-321" title="Permalink">#</a></h2>
+
+- Fixed #651: unable to perform calculations on "Unit-less" units.
+- Fixed matrix.subset mutating the replacement matrix when unsqueezing it.
+
+
 <h2 id="20160416-version-320">2016-04-16, version 3.2.0 <a href="#20160416-version-320" title="Permalink">#</a></h2>
 
 - Implemented #644: method `Parser.getAll()` to retrieve all defined variables.
