@@ -174,6 +174,19 @@ describe('DenseMatrix', function() {
       assert.deepEqual(new DenseMatrix([[[3]]]).size(), [1,1,1]);
       assert.deepEqual(new DenseMatrix([[]]).size(), [1,0]);
     });
+
+    it('should return a clone of the size', function() {
+      var m = new DenseMatrix([[1,2,3], [4,5,6]]);
+      var s = m.size();
+
+      assert.deepEqual(s, [2, 3]);
+
+      // change s, should not change the size of m
+      s[2] = 4;
+      assert.deepEqual(s, [2, 3, 4]);
+      assert.deepEqual(m.size(), [2, 3]);
+    });
+
   });
 
   describe('toString', function() {
@@ -548,6 +561,16 @@ describe('DenseMatrix', function() {
       m = new DenseMatrix([[[0]],[[0]],[[0]]]); // 3x1x1
       m.subset(index(new Range(0,3), 0, 0), [[1],[2],[3]]); // 3x1
       assert.deepEqual(m, new DenseMatrix([[[1]],[[2]],[[3]]]));
+    });
+
+    it('should leave the subset unchanged when unsqueezing it', function() {
+      var m = new DenseMatrix([[0, 0], [0, 0]]);  // 2 dimensional
+      var r = new DenseMatrix([1,2]); // 1 dimensional
+
+      m.subset(index(0, new Range(0,2)), r);
+
+      assert.deepEqual(m, new DenseMatrix([[1, 2], [0, 0]]));
+      assert.deepEqual(r, new DenseMatrix([1,2]));
     });
 
     it('should resize the matrix if the replacement subset is different size than selected subset', function() {

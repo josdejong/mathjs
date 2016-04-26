@@ -4,6 +4,7 @@
 ## not yet released, version 3.2.1
 
 - Fixed #651: unable to perform calculations on "Unit-less" units.
+- Fixed matrix.subset mutating the replacement matrix when unsqueezing it.
 
 
 ## 2016-04-16, version 3.2.0
