@@ -7,6 +7,7 @@ It features a flexible expression parser and offers an integrated solution
 to work with numbers, big numbers, complex numbers, units, and matrices.
 Powerful and easy to use.
 
+[![Mentions](http://107.170.57.103/josdejong/mathjs.svg)](http://107.170.57.103/josdejong/mathjs)
 
 ## Features
 
