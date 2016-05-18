@@ -18,6 +18,36 @@ describe('forEach', function() {
     assert.deepEqual(output, [1,2,3]);
   });
 
+  it('should invoke a typed function with correct number of arguments (1)', function() {
+    var output = [];
+    math.forEach([1,2,3], math.typed('callback', {
+      'number': function (value) {
+        output.push(value + 2)
+      }
+    }));
+    assert.deepEqual(output, [3,4,5]);
+  });
+
+  it('should invoke a typed function with correct number of arguments (2)', function() {
+    var output = [];
+    math.forEach([1,2,3], math.typed('callback', {
+      'number, Array': function (value, index) {
+        output.push(value + 2)
+      }
+    }));
+    assert.deepEqual(output, [3,4,5]);
+  });
+
+  it('should invoke a typed function with correct number of arguments (3)', function() {
+    var output = [];
+    math.forEach([1,2,3], math.typed('callback', {
+      'number, Array, Array': function (value, index, array) {
+        output.push(value + 2)
+      }
+    }));
+    assert.deepEqual(output, [3,4,5]);
+  });
+
   it('should invoke callback with parameters value, index, obj', function() {
     var arr = [[1,2,3], [4,5,6]];
     var output = [];

@@ -3,8 +3,12 @@
 
 ## not yet released, version 3.2.2
 
+- Function `math.filter` now passes three arguments to the callback function:
+  value, index, and array.
 - Removed the check on the number of arguments from functions defined in the
   expression parser (see #665).
+- Fixed #665: functions `map`, `forEach`, and `filter` now invoke callbacks
+  which are a typed-function with the correct number of arguments.
 
 
 ## 2016-04-26, version 3.2.1

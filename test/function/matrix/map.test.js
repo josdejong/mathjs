@@ -39,6 +39,33 @@ describe('map', function() {
 
   });
 
+  it('should invoke a typed function with correct number of arguments (1)', function() {
+    var output = math.map([1,2,3], math.typed('callback', {
+      'number': function (value) {
+        return value + 2
+      }
+    }));
+    assert.deepEqual(output, [3,4,5]);
+  });
+
+  it('should invoke a typed function with correct number of arguments (2)', function() {
+    var output = math.map([1,2,3], math.typed('callback', {
+      'number, Array': function (value, index) {
+        return value + 2
+      }
+    }));
+    assert.deepEqual(output, [3,4,5]);
+  });
+
+  it('should invoke a typed function with correct number of arguments (3)', function() {
+    var output = math.map([1,2,3], math.typed('callback', {
+      'number, Array, Array': function (value, index, array) {
+        return value + 2
+      }
+    }));
+    assert.deepEqual(output, [3,4,5]);
+  });
+
   it('should throw an error if called with unsupported type', function() {
     assert.throws(function() { math.map(1, function() {}) });
     assert.throws(function() { math.map('arr', function() {}) });
