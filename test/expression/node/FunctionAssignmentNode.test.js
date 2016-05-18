@@ -50,8 +50,6 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(typeof scope.f, 'function');
     assert.equal(scope.f(3), 5);
     assert.equal(scope.f(5), 7);
-    assert.throws(function () {scope.f()}, SyntaxError);
-    assert.throws(function () {scope.f(2, 3)}, SyntaxError);
 
   });
 

@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.2.2
+
+- Removed the check on the number of arguments from functions defined in the
+  expression parser (see #665).
+
+
 ## 2016-04-26, version 3.2.1
 
 - Fixed #651: unable to perform calculations on "Unit-less" units.
