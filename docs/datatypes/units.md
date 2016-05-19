@@ -161,6 +161,9 @@ can be `number`, `Fraction`, or `BigNumber`.
 Get a string representation of the unit. The function will
 determine the best fitting prefix for the unit.
 
+### unit.formatUnits()
+Get a string representation of the best fitting unit type, without the value. For example: `25 cm` returns `cm`.
+
 ## Unit reference
 
 This section lists all available units, prefixes, and physical constants. These can be used via the Unit object, or via `math.eval()`.
