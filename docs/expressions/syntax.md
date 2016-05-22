@@ -361,10 +361,11 @@ math.eval('9.81 m/s^2 * 5 s to mi/h')   // Unit, 109.72172512527 mi / h
 
 ### Strings
 
-Strings are enclosed by double quotes ". Strings can be concatenated by adding
-them. Parts of a string can be retrieved or replaced by using indexes. Strings
-can be converted to a number using function `number`, and numbers can be
-converted to a string using function `string`.
+Strings are enclosed by double quotes ". Strings can be concatenated using the
+function `concat` (not by adding them using `+`). Parts of a string can be
+retrieved or replaced by using indexes. Strings can be converted to a number
+using function `number`, and numbers can be converted to a string using
+function `string`.
 
 ```js
 var parser = math.parser();
