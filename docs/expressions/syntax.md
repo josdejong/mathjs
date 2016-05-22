@@ -148,6 +148,17 @@ parser.eval('g(x, y) = x ^ y');
 parser.eval('g(2, 3)'); // 8
 ```
 
+Math.js itself heavily uses typed functions, which ensure correct inputs and
+throws meaningful errors when the input arguments are invalid. One can create
+a [typed-function](https://github.com/josdejong/typed-function) in the
+expression parser like:
+
+```js
+var parser = math.parser();
+
+parser.eval('f = typed({"number": f(x) = x ^ 2 - 5})');
+```
+
 
 ## Constants and variables
 
