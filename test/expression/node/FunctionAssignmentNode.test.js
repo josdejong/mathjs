@@ -34,7 +34,6 @@ describe('FunctionAssignmentNode', function() {
     assert.throws(function () {new FunctionAssignmentNode()}, TypeError);
     assert.throws(function () {new FunctionAssignmentNode('a')}, TypeError);
     assert.throws(function () {new FunctionAssignmentNode('a', ['x'])}, TypeError);
-    assert.throws(function () {new FunctionAssignmentNode('a', [2], new ConstantNode(2))}, TypeError);
     assert.throws(function () {new FunctionAssignmentNode(null, ['x'], new ConstantNode(2))}, TypeError);
   });
 
@@ -51,6 +50,23 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(scope.f(3), 5);
     assert.equal(scope.f(5), 7);
 
+  });
+
+  it ('should compile a typed FunctionAssignmentNode', function () {
+    var a = new ConstantNode(2);
+    var x = new SymbolNode('x');
+    var o = new OperatorNode('+', 'add', [a, x]);
+    var n = new FunctionAssignmentNode('f', [{name: 'x', type: 'number' }], o);
+
+    var expr = n.compile();
+    var scope = {};
+    var f = expr.eval(scope);
+    assert.equal(typeof scope.f, 'function');
+    assert.equal(scope.f(3), 5);
+    assert.equal(scope.f(5), 7);
+    assert.throws(function () { scope.f(new Date())}, /Unexpected type of argument in function f/);
+    assert.throws(function () { scope.f(2, 2)}, /Too many arguments in function f/);
+    assert.throws(function () { scope.f()}, /Too few arguments in function f/);
   });
 
   it ('should eval a recursive FunctionAssignmentNode', function () {
