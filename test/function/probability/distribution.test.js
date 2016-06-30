@@ -282,6 +282,91 @@ describe('distribution', function () {
     });
   });
 
+  describe('pickMultipleRandom', function() {
+
+    it('should pick the given number of values from the given array', function() {
+      var possibles = [11, 22, 33, 44, 55],
+          number = 3,
+          picked = [];
+
+      assert.equal(uniformDistrib.pickMultipleRandom(possibles, number).length, number);
+    });
+
+    it('should return the given array if the given number is equal its length', function() {
+      var possibles = [11, 22, 33, 44, 55],
+          number = 5,
+          picked = [];
+
+      assert.equal(uniformDistrib.pickMultipleRandom(possibles, number), possibles);
+    });
+
+    it('should return the given array if the given number is greater than its length', function() {
+      var possibles = [11, 22, 33, 44, 55],
+          number = 6,
+          picked = [];
+
+      assert.equal(uniformDistrib.pickMultipleRandom(possibles, number), possibles);
+    });
+
+    it('should pick numbers from the given array following an uniform distribution', function() {
+      var possibles = [11, 22, 33, 44, 55],
+          number = 2,
+          picked = [],
+          count;
+
+      _.times(1000, function() {
+        picked.push(uniformDistrib.pickMultipleRandom(possibles, number));
+      });
+
+      count = _.filter(picked, function(val) { return val.indexOf(11) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(22) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(33) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(44) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(55) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+    });
+
+    it('should pick numbers from the given matrix following an uniform distribution', function() {
+      var possibles = math.matrix([11, 22, 33, 44, 55]),
+          number = 3,
+          picked = [],
+          count;
+
+      _.times(1000, function() {
+        picked.push(uniformDistrib.pickMultipleRandom(possibles, number));
+      });
+
+      count = _.filter(picked, function(val) { return val.indexOf(11) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(22) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(33) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(44) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+
+      count = _.filter(picked, function(val) { return val.indexOf(55) !== -1 }).length;
+      assert.equal(math.round(count/(picked.length*number), 1), 0.2);
+    });
+
+    it('should throw an error when providing a multi dimensional matrix', function() {
+      assert.throws(function () {
+        uniformDistrib.pickMultipleRandom(math.matrix([[1,2], [3,4]]), 2);
+      }, /Only one dimensional vectors supported/);
+    });
+  });
+
   describe('distribution.normal', function() {
 
     it('should pick numbers in [0, 1] following a normal distribution', function() {
