@@ -243,6 +243,7 @@ Function | Description
 ---- | -----------
 [math.clone(x)](functions/clone.md) | Clone an object.
 [math.isInteger(x)](functions/isInteger.md) | Test whether a value is an integer number.
+[math.isNaN(x)](functions/isNaN.md) | Test whether a value is NaN (not a number).
 [math.isNegative(x)](functions/isNegative.md) | Test whether a value is negative: smaller than zero.
 [math.isNumeric(x)](functions/isNumeric.md) | Test whether a value is an numeric value.
 [math.isPositive(x)](functions/isPositive.md) | Test whether a value is positive: larger than zero.

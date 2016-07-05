@@ -1,8 +1,9 @@
 # History
 
 
-## not yet released, version 3.2.2
+## 2016-07-05, version 3.3.0
 
+- Implemented function `isNaN`.
 - Function `math.filter` now passes three arguments to the callback function:
   value, index, and array.
 - Removed the check on the number of arguments from functions defined in the
