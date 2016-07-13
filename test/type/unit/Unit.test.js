@@ -1040,4 +1040,60 @@ describe('Unit', function() {
       assert.equal(new Unit(1, 'eV')    .equals(new Unit(1.602176565e-19, 'J')), true);
     });
   });
+
+  describe('createUnit', function() {
+    it('should create a custom unit from a string definition', function() {
+      Unit.createUnit('widget', '5 kg bytes');
+      assert.equal(new Unit(1, 'widget').equals(new Unit(5, 'kg bytes')), true);
+      Unit.createUnit('woggle', '4 widget^2');
+      assert.equal(new Unit(1, 'woggle').equals(new Unit(4, 'widget^2')), true);
+      assert.equal(new Unit(2, 'woggle').equals(new Unit(200, 'kg^2 bytes^2')), true);
+    });
+
+    it('should create a custom unit from a Unit definition', function() {
+      var Unit1 = new Unit(5, 'N/woggle');
+      Unit.createUnit('gadget', Unit1);
+      assert.equal(new Unit(1, 'gadget').equals(new Unit(5, 'N/woggle')), true);
+    });
+
+    it('should return the new (value-less) unit', function() {
+      var Unit2 = new Unit(1000, 'N h kg^-2 bytes^-2');
+      var newUnit = Unit.createUnit('whimsy', '8 gadget hours');
+      assert.equal(Unit2.to(newUnit).toString(), '2500 whimsy');
+    });
+
+    it('should not override an existing unit', function() {
+      assert.throws(function () { Unit.createUnit('m', '1 kg'); }, /Cannot create unit .*: a unit with that name already exists/);
+      assert.throws(function () { Unit.createUnit('gadget', '1 kg'); }, /Cannot create unit .*: a unit with that name already exists/);
+    });
+
+    it('should throw an error for invalid parameters', function() {
+      assert.throws(function() { Unit.createUnit(); }, /createUnit expects first parameter/);
+      assert.throws(function() { Unit.createUnit(42); }, /createUnit expects first parameter/);
+      assert.throws(function() { Unit.createUnit('42'); }, /createUnit expects second parameter/);
+      assert.throws(function() { Unit.createUnit('42', 3.14); }, /createUnit expects second parameter/);
+    });
+
+    it('should apply the correct prefixes', function() {
+      Unit.createUnit('millizilch', '1e-3 m', {prefixes: 'long'});
+      assert.equal(new Unit(1e-6, 'millizilch').toString(), '1 micromillizilch');
+    });
+
+    it('should override prefixed built-in units', function() {
+      Unit.createUnit('mm', '1e-4 m', {prefixes: 'short'});   // User is being silly
+      assert.equal(new Unit(1e-3, 'mm').toString(), '1 mmm'); // Use the user's new definition
+      assert.equal(new Unit(1e-3, 'mm').to('m').format(4), '1e-7 m'); // Use the user's new definition
+    });
+
+    it('should create aliases', function() {
+      Unit.createUnit('knot', '0.51444444 m/s', {aliases:['knots', 'kts', 'kt']});
+      assert.equal(new Unit(1, 'knot').equals(new Unit(1, 'kts')), true);
+      assert.equal(new Unit(1, 'kt').equals(new Unit(1, 'knots')), true);
+    });
+
+    it('should apply offset correctly', function() {
+      Unit.createUnit('whatsit', '3.14 kN', {offset:2});
+      assert.equal(new Unit(1, 'whatsit').to('kN').toString(), '9.42 kN');
+    });
+  });
 });
