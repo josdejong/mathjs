@@ -231,7 +231,7 @@ describe('distribution', function () {
       }, /Only one dimensional vectors supported/);
     });
 
-    it('should throw an error if the length of the weights doesn\'t match the length of the possibles', function() {
+    it('should throw an error if the length of the weights does not match the length of the possibles', function() {
       var possibles = [11, 22, 33, 44, 55],
           weights = [1, 5, 2, 4],
           number = 2;
