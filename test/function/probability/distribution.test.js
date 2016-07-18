@@ -249,20 +249,20 @@ describe('distribution', function () {
       }, /Weights must have the same length as possibles/);
     });
 
-    it('should throw an error if the weights array contains a non integer value', function() {
+    it('should throw an error if the weights array contains a non number or negative value', function() {
       var possibles = [11, 22, 33, 44, 55],
-          weights = [1, 5, 2, 0.2, 6],
+          weights = [1, 5, 2, -1, 6],
           number = 2;
 
       assert.throws(function() {
         uniformDistrib.pickRandom(possibles, weights);
-      }, /Weights must be an array of integers/);
+      }, /Weights must be an array of positive numbers/);
 
-      weights = [1, 5, 2, "stinky", 6],
+      weights = [1, 5, 2, "stinky", 6];
 
       assert.throws(function() {
         uniformDistrib.pickRandom(possibles, weights);
-      }, /Weights must be an array of integers/);
+      }, /Weights must be an array of positive numbers/);
     });
 
     it('should return a single value if no number argument was passed', function() {
