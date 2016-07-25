@@ -1,5 +1,9 @@
 # History
 
+## not yet released, version 3.4.0
+
+- Implemented function `isPrime`. Thanks @MathBunny.
+
 
 ## 2016-07-05, version 3.3.0
 
