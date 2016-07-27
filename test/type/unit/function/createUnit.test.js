@@ -36,7 +36,7 @@ describe('createUnit', function() {
     assert.equal(math.eval('5 xfoo').toString(), '5 xfoo');
   });
 
-  it.skip('should simplify created units', function() {
+  it('should simplify created units', function() {
     // TODO: New units do not have base units set, therefore simplifying is impossible. Figure out a way to create base units for created units.
     assert.equal(math.eval('5 xfoo * 5 xbar').toString(), '25 xfoobar');
   });

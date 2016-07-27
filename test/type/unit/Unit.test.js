@@ -1023,6 +1023,9 @@ describe('Unit', function() {
       assert.equal(unit2.value, 453.59237e-3);
       assert.equal(unit2.units[0].unit.name, 'lb');
       assert.equal(unit2.units[0].prefix.name, '');
+
+      assert.equal(math.eval('2 feet * 8 s').toString(), '16 feet s');
+      assert.equal(math.eval('2 s * 8 feet').toString(), '16 s feet');
     });
   });
 
