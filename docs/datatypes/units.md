@@ -112,6 +112,38 @@ var Trate2 = math.eval('(5 degC)/hour');   // Unit 278.15 degC/hour
 The expression parser supports units too. This is described in the section about
 units on the page [Syntax](../expressions/syntax.md#units).
 
+## User-Defined Units
+
+You can add your own units to Math.js using the `math.createUnit` function. This example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
+
+```js
+math.createUnit('furlong', '220 yards');
+math.eval('1 mile to furlong');            // 8 furlong
+```
+
+The second argument can be omitted if the new unit cannot be expressed in terms of any existing unit. In this case, a new base dimension is created:
+
+```js
+// The 'foo' cannot be expressed in terms of any other unit.
+math.createUnit('foo');
+math.eval('8 foo * 4 feet');               // 32 foo feet
+```
+
+The second argument to `createUnit` can also be a configuration object consisting of the following properties:
+
+* *definition* A `string` or `Unit` which defines the user-defined unit in terms of existing built-in or user-defined units. If omitted
+* *prefixes* A `string` indicating which prefixes math.js should use with the new unit. Possible values are 'none', 'short', 'long', 'binary_short', or 'binary_long'. Default is 'none'.
+
+
+The argument to `createUnit` is an object map, where each key is the name of the unit and the value is an object describing the unit with the following optional properties:
+
+An optional `options` object can also be supplied as the last argument to either signature of `createUnits`. Currently only the `override` option is supported:
+
+```js
+// Redefine the mile (would not be the first time in history)
+math.createUnit('mile', '1609.347218694', {override: true}});
+```
+
 ## API
 A `Unit` object contains the following functions:
 
