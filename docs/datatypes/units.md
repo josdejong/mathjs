@@ -114,34 +114,63 @@ units on the page [Syntax](../expressions/syntax.md#units).
 
 ## User-Defined Units
 
-You can add your own units to Math.js using the `math.createUnit` function. This example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
+You can add your own units to Math.js using the `math.createUnit` function. The following example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
 
 ```js
 math.createUnit('furlong', '220 yards');
 math.eval('1 mile to furlong');            // 8 furlong
 ```
 
-The second argument can be omitted if the new unit cannot be expressed in terms of any existing unit. In this case, a new base dimension is created:
+If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. In this case, a new base unit is created:
 
 ```js
-// The 'foo' cannot be expressed in terms of any other unit.
+// A 'foo' cannot be expressed in terms of any other unit.
 math.createUnit('foo');
 math.eval('8 foo * 4 feet');               // 32 foo feet
 ```
 
 The second argument to `createUnit` can also be a configuration object consisting of the following properties:
 
-* *definition* A `string` or `Unit` which defines the user-defined unit in terms of existing built-in or user-defined units. If omitted
-* *prefixes* A `string` indicating which prefixes math.js should use with the new unit. Possible values are 'none', 'short', 'long', 'binary_short', or 'binary_long'. Default is 'none'.
+* **definition** A `string` or `Unit` which defines the user-defined unit in terms of existing built-in or user-defined units. If omitted, a new base unit is created.
+* **prefixes** A `string` indicating which prefixes math.js should use with the new unit. Possible values are `'none'`, `'short'`, `'long'`, `'binary_short'`, or `'binary_long'`. Default is `'none'`.
+* **offset** A value applied when converting to the unit. This is very helpful for temperature scales that do not share a zero with the absolute temperature scale. For example, if we were defining fahrenheit for the first time, we would use: `math.createUnit('fahrenheit', {definition: '0.555556 kelvin', offset: 459.67})`
+* **aliases** An array of strings to alias the new unit. Example: `math.createUnit('knot', {definition: '0.514444 m/s', aliases: ['knots', 'kt', 'kts']})`
 
-
-The argument to `createUnit` is an object map, where each key is the name of the unit and the value is an object describing the unit with the following optional properties:
-
-An optional `options` object can also be supplied as the last argument to either signature of `createUnits`. Currently only the `override` option is supported:
+An optional `options` object can also be supplied as the last argument to `createUnits`. Currently only the `override` option is supported:
 
 ```js
 // Redefine the mile (would not be the first time in history)
 math.createUnit('mile', '1609.347218694', {override: true}});
+```
+Base units created without specifying a definition cannot be overridden.
+
+Multiple units can defined using a single call to `createUnit` by passing an object map as the first argument, where each key in the object is the name of a new unit and the value is either a string defining the unit, or an object with the configuration properties listed above. If the value is an empty string or an object lacking a definition property, a new base unit is created.
+
+For example:
+
+```js
+math.createUnit( {
+  foo: {
+    prefixes: 'long'
+  },
+  bar: '40 foo',
+  baz: {
+    definition: '1 bar/hour',
+    prefixes: 'long'
+  }
+},
+{
+  override: true
+});
+math.eval('50000 kilofoo/s');   // 4.5 gigabaz
+```
+
+### Return Value
+`createUnit` returns the created unit, or, when multiple units are created, the last unit created. Since `createUnit` is also compatible with the expression parser, this allows you to do things like this:
+
+```js
+math.eval('45 mile/hour to createUnit("knot", "0.514444m/s")')
+// 39.103964668651976 knot
 ```
 
 ## API
