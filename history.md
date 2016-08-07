@@ -4,6 +4,23 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20160807-version-340">2016-08-07, version 3.4.0 <a href="#20160807-version-340" title="Permalink">#</a></h2>
+
+- Implemented support for custom units using `createUnit`. Thanks @ericman314.
+- Implemented function `splitUnits`. Thanks @ericman314.
+- Implemented function `isPrime`. Thanks @MathBunny.
+
+
+<h2 id="20160705-version-330">2016-07-05, version 3.3.0 <a href="#20160705-version-330" title="Permalink">#</a></h2>
+
+- Implemented function `isNaN`.
+- Function `math.filter` now passes three arguments to the callback function:
+  value, index, and array.
+- Removed the check on the number of arguments from functions defined in the
+  expression parser (see #665).
+- Fixed #665: functions `map`, `forEach`, and `filter` now invoke callbacks
+  which are a typed-function with the correct number of arguments.
+
 
 <h2 id="20160426-version-321">2016-04-26, version 3.2.1 <a href="#20160426-version-321" title="Permalink">#</a></h2>
 

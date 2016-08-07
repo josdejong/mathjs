@@ -48,4 +48,5 @@ a.to('m');                     // returns Unit 0.05 m
 [index](index.html),
 [matrix](matrix.html),
 [number](number.html),
-[string](string.html)
+[string](string.html),
+[createUnit](createUnit.html)
