@@ -1,7 +1,9 @@
 # History
 
-## not yet released, version 3.4.0
+## 2016-08-07, version 3.4.0
 
+- Implemented support for custom units using `createUnit`. Thanks @ericman314.
+- Implemented function `splitUnits`. Thanks @ericman314.
 - Implemented function `isPrime`. Thanks @MathBunny.
 
 
