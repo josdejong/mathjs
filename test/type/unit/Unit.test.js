@@ -1146,4 +1146,16 @@ describe('Unit', function() {
     });
   });
 
+  describe('splitUnit', function() {
+    it('should split a unit into parts', function() {
+      assert.equal((new Unit(1, 'm')).splitUnit(['ft', 'in']).toString(), "3 ft,3.3700787401574765 in");
+      assert.equal((new Unit(-1, 'm')).splitUnit(['ft', 'in']).toString(), "-3 ft,-3.3700787401574765 in");
+      assert.equal((new Unit(1, 'm/s')).splitUnit(['m/s']).toString(), "1 m / s");
+      assert.equal((new Unit(1, 'm')).splitUnit(['ft', 'ft']).toString(), "3 ft,0.280839895013123 ft");
+      assert.equal((new Unit(1.23, 'm/s')).splitUnit([]).toString(), "1.23 m / s");
+      assert.equal((new Unit(1, 'm')).splitUnit(['in', 'ft']).toString(), "39 in,0.030839895013123605 ft");
+      assert.equal((new Unit(1, 'm')).splitUnit([ new Unit(null, 'ft'), new Unit(null, 'in') ]).toString(), "3 ft,3.3700787401574765 in");
+    });
+  });
+
 });

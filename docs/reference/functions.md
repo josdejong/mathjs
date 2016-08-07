@@ -236,6 +236,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.to(x,&nbsp;unit)](functions/to.md) | Change the unit of a value.
+[math.splitUnit(array)](functions/splitUnit.md) | Split a unit into parts.
 
 ## Utils functions
 

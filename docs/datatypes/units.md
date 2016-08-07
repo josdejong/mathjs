@@ -198,6 +198,14 @@ An object `{mathjs: 'Unit', value: number, unit: string, fixPrefix: boolean}`,
 where the property `mathjs` and `fixPrefix` are optional.
 Used when deserializing a unit, see [Serialization](../core/serialization.md).
 
+### unit.splitUnit(parts)
+Split a unit into the specified parts. For example:
+
+```js
+var u = math.Unit(1, 'm');
+u.splitUnit(['ft', 'in']);    // 3 feet,3.3700787401574765 inch
+```
+
 ### unit.to(unitName)
 Convert the unit to a specific unit name. Returns a clone of
 the unit with a fixed prefix and unit.
