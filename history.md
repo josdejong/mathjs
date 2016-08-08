@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20160808-version-341">2016-08-08, version 3.4.1 <a href="#20160808-version-341" title="Permalink">#</a></h2>
+
+- Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).
+- Fixed some layout issues in the function reference docs.
+
+
 <h2 id="20160807-version-340">2016-08-07, version 3.4.0 <a href="#20160807-version-340" title="Permalink">#</a></h2>
 
 - Implemented support for custom units using `createUnit`. Thanks @ericman314.

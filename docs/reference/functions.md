@@ -20,13 +20,13 @@ Function | Description
 [math.boolean(x)](functions/boolean.html) | Create a boolean or convert a string or number to a boolean.
 [math.chain(value)](functions/chain.html) | Wrap any value in a chain, allowing to perform chained operations on the value.
 [math.complex(re,&nbsp;im)](functions/complex.html) | Create a complex value or convert a value to a complex value.
-[math.createUnit({](functions/createUnit.html) | Create a user-defined unit and register it with the Unit type.
+[math.createUnit(units)](functions/createUnit.html) | Create a user-defined unit and register it with the Unit type.
 [math.fraction(numerator,&nbsp;denominator)](functions/fraction.html) | Create a fraction convert a value to a fraction.
 [math.index(range1,&nbsp;range2,&nbsp;...)](functions/index.html) | Create an index.
 [math.matrix(x)](functions/matrix.html) | Create a Matrix.
 [math.number(value)](functions/number.html) | Create a number or convert a string, boolean, or unit to a number.
 [math.sparse(x)](functions/sparse.html) | Create a Sparse Matrix.
-[splitUnit(unit: Unit, parts: Array.<Unit>)](functions/splitUnit.html) | Returns an array of units whose sum is equal to this unit.
+[math.splitUnit(unit,&nbsp;parts)](functions/splitUnit.html) | Returns an array of units whose sum is equal to this unit.
 [math.string(value)](functions/string.html) | Create a string or convert any object into a string.
 [math.unit(x)](functions/unit.html) | Create a unit.
 
