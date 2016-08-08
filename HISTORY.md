@@ -4,6 +4,7 @@
 ## 2016-08-08, version 3.4.1
 
 - Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).
+- Fixed some layout issues in the function reference docs.
 
 
 ## 2016-08-07, version 3.4.0

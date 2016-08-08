@@ -16,13 +16,13 @@ Function | Description
 [math.boolean(x)](functions/boolean.md) | Create a boolean or convert a string or number to a boolean.
 [math.chain(value)](functions/chain.md) | Wrap any value in a chain, allowing to perform chained operations on the value.
 [math.complex(re,&nbsp;im)](functions/complex.md) | Create a complex value or convert a value to a complex value.
-[math.createUnit({](functions/createUnit.md) | Create a user-defined unit and register it with the Unit type.
+[math.createUnit(units)](functions/createUnit.md) | Create a user-defined unit and register it with the Unit type.
 [math.fraction(numerator,&nbsp;denominator)](functions/fraction.md) | Create a fraction convert a value to a fraction.
 [math.index(range1,&nbsp;range2,&nbsp;...)](functions/index.md) | Create an index.
 [math.matrix(x)](functions/matrix.md) | Create a Matrix.
 [math.number(value)](functions/number.md) | Create a number or convert a string, boolean, or unit to a number.
 [math.sparse(x)](functions/sparse.md) | Create a Sparse Matrix.
-[splitUnit(unit: Unit, parts: Array.<Unit>)](functions/splitUnit.md) | Returns an array of units whose sum is equal to this unit.
+[math.splitUnit(unit,&nbsp;parts)](functions/splitUnit.md) | Returns an array of units whose sum is equal to this unit.
 [math.string(value)](functions/string.md) | Create a string or convert any object into a string.
 [math.unit(x)](functions/unit.md) | Create a unit.
 
