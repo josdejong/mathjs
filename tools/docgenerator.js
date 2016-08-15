@@ -183,7 +183,9 @@ function generateDoc(name, code) {
       }
       stripLeadingSpaces(doc.examples);
 
-      if (doc.examples[doc.examples.length - 1].trim() == '') doc.examples.pop();
+      if (doc.examples.length > 0 && doc.examples[doc.examples.length - 1].trim() == '') {
+        doc.examples.pop();
+      }
 
       skipEmptyLines();
 

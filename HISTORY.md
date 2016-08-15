@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.4.2
+
+- Fixed function `print` not accepting an Object with formatting options as
+  third parameter Thanks @ThomasBrierley.
+
+
 ## 2016-08-08, version 3.4.1
 
 - Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).
