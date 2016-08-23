@@ -203,6 +203,18 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('2 + 3 # - 4\n6-2'), new ResultSet([5, 4]));
     });
 
+    it('should fill in the property comment of a Node', function() {
+      assert.equal(parse('2 + 3').comment, '');
+
+      assert.equal(parse('2 + 3 # hello').comment, '# hello');
+      assert.equal(parse('   # hi').comment, '# hi');
+
+      var blockNode = parse('2 # foo\n3   # bar');
+      assert.equal(blockNode.blocks.length, 2);
+      assert.equal(blockNode.blocks[0].node.comment, '# foo');
+      assert.equal(blockNode.blocks[1].node.comment, '# bar');
+    });
+
   });
 
   describe('number', function () {

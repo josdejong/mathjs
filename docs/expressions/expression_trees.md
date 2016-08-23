@@ -201,6 +201,12 @@ All nodes have the following methods:
 
 Each `Node` has the following properties:
 
+-   `comment: string`
+
+    A string holding a comment if there was any in the expression, or else the
+    string will be empty string. A comment can be attached to the root node of
+    an expression or to each of the childs nodes of a `BlockNode`.
+
 -   `isNode: true`
 
     Is defined with value `true` on Nodes. Additionally, each type of node 
