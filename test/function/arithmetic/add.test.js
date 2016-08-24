@@ -5,6 +5,7 @@ var math = require('../../../index');
 var BigNumber = require('decimal.js');
 var add = math.add;
 
+
 // TODO: make unit tests independent of math
 describe('add', function() {
 
@@ -226,5 +227,36 @@ describe('add', function() {
         }));
     });
   });
+  
+  describe('Quarternion', function(){
+    
+    it('should add 2 Quarternions', function() {
+      var a = new math.Quarternion(-1,2,-3,4);
+      var b =  new math.Quarternion(-1,-2,-3,-2);
+      var c = new math.Quarternion(-2,0,-6,2);
+      assert.deepEqual(add(a,b),c);
+    });
 
+    
+
+    it('should add a Quarternions and Complex number', function() {
+      var a = new math.complex(2,3);
+      var b = new math.Quarternion(1,2,3,-4);
+      var c = new math.Quarternion(3,5,3,-4);
+      assert.deepEqual(add(a,b),c);
+      assert.deepEqual(add(b,a),c);
+    });
+
+  
+    it('should add a number to a Quarternion',function() {
+      var a = new math.Quarternion(1,2,3,4);
+      var b = 5;
+      var c = new math.Quarternion(6,2,3,4);
+      assert.deepEqual(add(a,b),c);
+      assert.deepEqual(add(b,a),c);
+    })
+  });
 });
+
+
+

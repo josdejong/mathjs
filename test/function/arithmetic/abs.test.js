@@ -96,6 +96,10 @@ describe('abs', function () {
     assert.throws(function () {math.abs(undefined);}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should return the absolue or modulus of a Quarternion',function () {
+    assert.equals(new math.Quarternion(1,1,1,1),2);
+  }};
+
   it('should LaTeX abs', function () {
     var expression = math.parse('abs(-1)');
     assert.equal(expression.toTex(),'\\left|-1\\right|');
