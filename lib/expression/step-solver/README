@@ -1,0 +1,20 @@
+## A step by step solver for math.
+
+https://www.youtube.com/watch?v=ay6GjmiJTPM
+
+step(exp) should return exp reduced by one step
+
+To run just stepper tests:
+
+`./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
+
+
+--------
+
+ideas:
+
+- start with removing uncessary parens
+- didStep(stepObj) that prints the state of the expression tree (can it be global?)
+  and logs the details of the type of step just done
+
+will want to resolve any arithmetic at beginning
