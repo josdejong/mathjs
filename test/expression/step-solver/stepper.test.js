@@ -1,29 +1,53 @@
 var assert = require('assert');
 var math = require('../../../index');
-var step = require('../../../lib/expression/step-solver/stepper.js');
+var stepper = require('../../../lib/expression/step-solver/stepper.js');
+var step = stepper.step;
+var simplify = stepper.simplify;
 
 describe('arithmetic stepping', function () {
 	it('2+2 -> 4', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	  assert.deepEqual(math.parse('4'), step(math.parse('2+2'))[0]);
 	});
 	it('(2+2) -> 4', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	  assert.deepEqual(math.parse('4'), step(math.parse('(2+2)'))[0]);
 	});
 	it('(2+2)*5 -> 4*5', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	  assert.deepEqual(math.parse('4*5'), step(math.parse('(2+2)*5'))[0]);
 	});
 	it('5*(2+2) -> 5*4', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	  assert.deepEqual(math.parse('5*4'), step(math.parse('5*(2+2)'))[0]);
 	});
 	it('(((5))) -> 5', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	  assert.deepEqual(math.parse('5'), step(math.parse('(((5)))'))[0]);
 	});
+	// TODO: remove unecessary parens before starting to step
 	it('(2+(2)) -> 4', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	  assert.deepEqual(math.parse('2+2'), step(math.parse('(2+(2))'))[0]);
 	});
-	it('(2+(2)+7) -> 4+7', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2')));
+	it('(2+(2)+7) -> 2+2+7', function () {
+	  assert.deepEqual(math.parse('4+7'), step(math.parse('(2+2+7)'))[0]);
 	});
+});
+
+describe('arithmetic simplify', function () {
+	it('2+2 = 4', function () {
+	  assert.deepEqual(math.parse('4'), simplify(math.parse('2+2')));
+	});
+	it('(2+2)*5 = 20', function () {
+	  assert.deepEqual(math.parse('20'), simplify(math.parse('(2+2)*5')));
+	});
+	it('5*(2+2)*10 = 200', function () {
+	  assert.deepEqual(math.parse('200'), simplify(math.parse('5*(2+2)*10')));
+	});
+	it('(2+(2)+7) = 11', function () {
+	  assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
+	});
+	it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
+	  assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
+	});
+
+	
+
 });
 
 
