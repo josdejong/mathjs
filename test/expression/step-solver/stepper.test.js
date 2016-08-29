@@ -4,28 +4,32 @@ var stepper = require('../../../lib/expression/step-solver/stepper.js');
 var step = stepper.step;
 var simplify = stepper.simplify;
 
+function testStep(exp) {
+	return step(new stepper.RootNode(exp)).exp
+}
+
 describe('arithmetic stepping', function () {
 	it('2+2 -> 4', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('2+2'))[0]);
+	  assert.deepEqual(math.parse('4'), testStep(math.parse('2+2')));
 	});
 	it('(2+2) -> 4', function () {
-	  assert.deepEqual(math.parse('4'), step(math.parse('(2+2)'))[0]);
+	  assert.deepEqual(math.parse('4'), testStep(math.parse('(2+2)')));
 	});
 	it('(2+2)*5 -> 4*5', function () {
-	  assert.deepEqual(math.parse('4*5'), step(math.parse('(2+2)*5'))[0]);
+	  assert.deepEqual(math.parse('4*5'), testStep(math.parse('(2+2)*5')));
 	});
 	it('5*(2+2) -> 5*4', function () {
-	  assert.deepEqual(math.parse('5*4'), step(math.parse('5*(2+2)'))[0]);
+	  assert.deepEqual(math.parse('5*4'), testStep(math.parse('5*(2+2)')));
 	});
 	it('(((5))) -> 5', function () {
-	  assert.deepEqual(math.parse('5'), step(math.parse('(((5)))'))[0]);
+	  assert.deepEqual(math.parse('5'), testStep(math.parse('(((5)))')));
 	});
 	// TODO: remove unecessary parens before starting to step so this is 4
 	it('(2+(2)) -> 2+2', function () {
-	  assert.deepEqual(math.parse('2+2'), step(math.parse('(2+(2))'))[0]);
+	  assert.deepEqual(math.parse('2+2'), testStep(math.parse('(2+(2))')));
 	});
 	it('(2+(2)+7) -> 2+2+7', function () {
-	  assert.deepEqual(math.parse('4+7'), step(math.parse('(2+2+7)'))[0]);
+	  assert.deepEqual(math.parse('4+7'), testStep(math.parse('(2+2+7)')));
 	});
 });
 
@@ -49,11 +53,6 @@ describe('arithmetic simplify', function () {
 	
 
 });
-
-
-
-
-
 
 
 
