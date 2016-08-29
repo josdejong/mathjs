@@ -46,12 +46,11 @@ describe('arithmetic stepping', function () {
 	it('(((5))) -> 5', function () {
 	  assert.deepEqual(math.parse('5'), testStep(math.parse('(((5)))')));
 	});
-	// TODO: remove unecessary parens before starting to step so this is 4
-	it('(2+(2)) -> 2+2', function () {
-	  assert.deepEqual(math.parse('2+2'), testStep(math.parse('(2+(2))')));
+	it('(2+(2)) -> 4', function () {
+	  assert.deepEqual(math.parse('4'), testStep(math.parse('(2+(2))')));
 	});
 	it('(2+(2)+7) -> 11', function () {
-	  assert.deepEqual(math.parse('4+7'), testStep(math.parse('(2+(2)+7)')));
+	  assert.deepEqual(math.parse('11'), testStep(math.parse('(2+(2)+7)')));
 	});
 });
 
@@ -99,29 +98,41 @@ describe('flatten ops', function () {
 	});
 });
 
+describe('symbol addition', function() {
+	// nothing old breaks
+	it('2+x no change', function () {
+	  assert.deepEqual(math.parse('2+x'), testStep(math.parse('2+x')));
+	});
+	it('(2+2)*x = 4*x', function () {
+	  assert.deepEqual(math.parse('4*x'), testStep(math.parse('(2+2)*x')));
+	});
+	it('(2+2)*x+3 = 4*x+3', function () {
+	  assert.deepEqual(math.parse('4*x+3'), testStep(math.parse('(2+2)*x+3')));
+	});
+
+	// collects like terms
+	//it('(2+x+7) -> x + (2+7)', function () {
+	//  assert.deepEqual(math.parse('2+x+7'), testStep(math.parse('x+(2+7)')));
+	//});
+
+	/*
+
+	dictionary - symbol names, constants, can have an 'other' bucket
+	make them lists of nodes
+	then go through (constants first, then the rest) and put in parens if 
+
+
+	*/
+});
 
 
 /*
-describe('Checks', function() {
 
-	Checks = stepper.Checks;
+extend to take exponents (and order by degree)
 
-  	describe('combining exponents', function() {
-    	it('says x is a symbol', function() {
-      		assert.equal(Checks.isSymbol(math.parse('x')), true);
-    	});
-		it('says x^2 is a symbol', function() {
-	  		assert.equal(Checks.isSymbol(math.parse('x^2')), true);
-		});
-		it('says 2x^2 is not a symbol', function() {
-	  		assert.equal(Checks.isSymbol(math.parse('2x^2')), false);
-		});
-		it('says 2^2 is not a symbol', function() {
-	  		assert.equal(Checks.isSymbol(math.parse('2x^2')), false);
-		});
-	});    
-});
+then extend to take coefficients
 
+then multiplication:
 
     // PREREQ FUNCTIONS
     // x*x -> x^(1+1)
