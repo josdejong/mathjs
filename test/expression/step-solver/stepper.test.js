@@ -50,8 +50,8 @@ describe('arithmetic stepping', function () {
 	it('(2+(2)) -> 2+2', function () {
 	  assert.deepEqual(math.parse('2+2'), testStep(math.parse('(2+(2))')));
 	});
-	it('(2+(2)+7) -> 2+2+7', function () {
-	  assert.deepEqual(math.parse('4+7'), testStep(math.parse('(2+2+7)')));
+	it('(2+(2)+7) -> 11', function () {
+	  assert.deepEqual(math.parse('4+7'), testStep(math.parse('(2+(2)+7)')));
 	});
 });
 
@@ -90,7 +90,7 @@ describe('flatten ops', function () {
 				constNode(4)]),
 	  	flatten(math.parse('9*8*6+3+4')));
 	});
-  it('5*(2+3+2)*10', function () {
+  it('5*(2+(((3))+2))*10', function () {
 	  assert.deepEqual(opNode('*', [
 	  		constNode(5),
 	  		parenNode(opNode('+', [constNode(2), constNode(3),constNode(2)])),
