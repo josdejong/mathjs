@@ -121,6 +121,7 @@ describe('symbol addition', function() {
 	make them lists of nodes
 	then go through (constants first, then the rest) and put in parens if 
 
+	then work on evaluating the math to simplify, combining like terms
 
 	*/
 });
