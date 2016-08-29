@@ -97,4 +97,9 @@ describe('fix', function() {
     assert.equal(expression.toTex(), '\\mathrm{fix}\\left(0.6\\right)');
   });
 
+  it('should round Quaternions correctly', function() {
+    assert.deepEqual(fix(new math.quaternion()), new math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(new math.quaternion(-1.2,2.5,-3.9,18.1)), new math.quaternion(-1,2,-3,18));
+  });
+
 });

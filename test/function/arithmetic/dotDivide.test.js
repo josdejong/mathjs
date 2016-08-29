@@ -175,4 +175,8 @@ describe('dotDivide', function() {
     var expression = math.parse('dotDivide([1,2],[3,4])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.:\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)');
   });
+
+  it('should dot divide Quaternions', function() {
+    assert(dotDivide(new math.quaternion(2,4,6,9), new math.quaternion(2,2,3,3)), new math.quaternion(1,2,2,3));
+  });
 });

@@ -69,4 +69,12 @@ describe('square', function() {
     assert.equal(expression.toTex(), '\\left(4\\right)^2');
   });
 
+  it('should square Quaternions', function () {
+    assert.deepEqual(square(new math.quaternion({i:1})), new math.quaternion({r:-1}));
+    assert.deepEqual(square(new math.quaternion({j:1})), new math.quaternion({r:-1}));
+    assert.deepEqual(square(new math.quaternion({k:1})), new math.quaternion({r:-1}));
+    assert.deepEqual(square(new math.quaternion({r:1})), new math.quaternion({r:1}));
+    assert.deepEqual(square(new math.quaternion(3,-2,-3,4)), new math.quaternion(-20, -12, -18, 24));
+  });
+
 });

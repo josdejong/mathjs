@@ -142,4 +142,11 @@ describe('round', function() {
     assert.equal(expr2.toTex(), '\\mathrm{round}\\left(1.1,2\\right)');
   });
 
+  it('should round Quaternions', function () {
+    assert.deepEqual(round(new math.quaternion()),new math.quaternion());
+    assert.deepEqual(round(new math.quaternion(1.2,1.4,1.9,6.2)),new math.quaternion(1,1,2,6));
+    assert.deepEqual(round(new math.quaternion(-1.2,-1.4,-1.9,-6.2)),new math.quaternion(-1,-1,-2,-6));
+    assert.deepEqual(round(new math.quaternion(1.5,-1.5,3.5,0)),new math.quaternion(2,-1,4,0));
+  });
+
 });

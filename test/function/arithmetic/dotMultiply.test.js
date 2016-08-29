@@ -186,4 +186,10 @@ describe('dotMultiply', function() {
     var expression = math.parse('dotMultiply([1,2],[3,4])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)');
   });
+
+  it('should dot multiply Quaternions', function() {
+    assert.deepEqual(dotMultiply(new math.quaternion(1,2,3,4),new math.quaternion(4,3,2,1)), new math.quaternion(4,6,6,4));
+    assert.deepEqual(dotMultiply(new math.quaternion(1,1,1,1), new math.quaternion(1,1,1,1)),new math.quaternion(1,1,1,1));
+    assert.deepEqual(dotMultiply(new math.quaternion(0,0,0,0),new math.quaternion(1,1,1,1)),new math.quaternion(0,0,0,0));
+  })
 });

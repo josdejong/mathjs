@@ -66,9 +66,18 @@ describe('cube', function() {
     assert.deepEqual(cube(matrix([[1,2],[3,4]])), matrix([[1,8],[27,64]]));
   });
 
+  it('should cube Quaternions',function() {
+    // assert.deepEqual(cube(new math.quaternion({i:1})), new math.quaternion({i:-1}));
+    // assert.deepEqual(cube(new math.quaternion({j:1})), new math.quaternion({j:-1}));
+    assert.deepEqual(cube(new math.quaternion({r:1})), new math.quaternion({r:1}));
+    assert.deepEqual(cube(new math.quaternion({k:1})), new math.quaternion({k:-1}));
+    assert.deepEqual(cube(new math.quaternion(1,2,3,4)), new math.quaternion(-86,-52,-78,-104));
+    assert.deepEqual(cube(new math.quaternion(3,-2,-3,4)), new math.quaternion(-234,4,6,-8))
+  });
+
   it('should LaTeX cube', function () {
     var expression = math.parse('cube(2)');
     assert.equal(expression.toTex(), '\\left(2\\right)^3');
-  });
+  });  
 
 });

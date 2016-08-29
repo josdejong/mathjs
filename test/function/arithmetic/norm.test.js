@@ -110,4 +110,10 @@ describe('norm', function () {
     assert.equal(expr1.toTex(), '\\left\\| a\\right\\|');
     assert.equal(expr2.toTex(), '\\mathrm{norm}\\left( a,2\\right)');
   });
+
+  it('should fine the norm of a Quaternion', function () {
+    assert.equal(math.norm(new math.quaternion({r:5})), 5);
+    assert.equal(math.norm(new math.quaternion({r:-5})), 5);
+    assert.equal(math.norm(new math.quaternion(1,1,1,1)),2);
+  });
 });

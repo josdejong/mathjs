@@ -245,4 +245,11 @@ describe('subtract', function() {
     var expression = math.parse('subtract(2,1)');
     assert.equal(expression.toTex(), '\\left(2-1\\right)');
   });
+
+  it('should subtract Quaternions', function () {
+    assert.deepEqual(subtract(new math.quaternion(), new math.quaternion()),new math.quaternion());
+    assert.deepEqual(subtract(new math.quaternion(), new math.quaternion(1,2,3,4)),new math.quaternion(-1,-2,-3,-4));
+    assert.deepEqual(subtract(new math.quaternion(), new math.quaternion(-1,-2,-3,-4)),new math.quaternion(1,2,3,4));
+    assert.deepEqual(subtract(new math.quaternion(10,9,8,7), new math.quaternion(1,2,3,4)),new math.quaternion(9,7,5,3));
+  })
 });

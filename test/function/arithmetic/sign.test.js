@@ -78,4 +78,9 @@ describe('sign', function() {
     assert.equal(expression.toTex(), '\\mathrm{sign}\\left(-4\\right)');
   });
 
+  it('should find the sing of a Quaternion', function () {
+    assert.deepEqual(math.sign(new math.quaternion()), new math.quaternion());
+    assert.deepEqual(math.sign(new math.quaternion(-1,2,3,-5)), new math.quaternion(-1,1,1,-1));
+  })
+
 });

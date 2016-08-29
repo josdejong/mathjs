@@ -228,34 +228,36 @@ describe('add', function() {
     });
   });
   
-  describe('Quarternion', function(){
+  describe('Quaternion', function(){
     
-    it('should add 2 Quarternions', function() {
-      var a = new math.Quarternion(-1,2,-3,4);
-      var b =  new math.Quarternion(-1,-2,-3,-2);
-      var c = new math.Quarternion(-2,0,-6,2);
+    it('should add 2 Quaternions', function() {
+      var a = new math.quaternion(-1,2,-3,4);
+      var b =  new math.quaternion(-1,-2,-3,-2);
+      var c = new math.quaternion(-2,0,-6,2);
       assert.deepEqual(add(a,b),c);
     });
 
     
 
-    it('should add a Quarternions and Complex number', function() {
+    it('should add a Quaternions and Complex number', function() {
       var a = new math.complex(2,3);
-      var b = new math.Quarternion(1,2,3,-4);
-      var c = new math.Quarternion(3,5,3,-4);
+      var b = new math.quaternion(1,2,3,-4);
+      var c = new math.quaternion(3,5,3,-4);
       assert.deepEqual(add(a,b),c);
       assert.deepEqual(add(b,a),c);
     });
 
   
-    it('should add a number to a Quarternion',function() {
-      var a = new math.Quarternion(1,2,3,4);
+    it('should add a number to a Quaternion',function() {
+      var a = new math.quaternion(1,2,3,4);
       var b = 5;
-      var c = new math.Quarternion(6,2,3,4);
+      var c = new math.quaternion(6,2,3,4);
       assert.deepEqual(add(a,b),c);
       assert.deepEqual(add(b,a),c);
+      assert.deepEqual(add(new math.quaternion(3,-2,-1,7), new math.quaternion(-4,5,-8,2)), new math.quaternion(-1,3,-9,9));
     })
   });
+  
 });
 
 

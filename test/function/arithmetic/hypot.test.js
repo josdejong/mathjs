@@ -53,4 +53,8 @@ describe('hypot', function() {
     assert.equal(expression.toTex(),'\\hypot\\left(3,4\\right)');
   });
 
+  it('should calculate the hypot of a Quaternion as if it were a vector', function() {
+    assert.deepEqual(hypot(new math.quaternion(1,1,1,1)),2);
+  })
+
 });

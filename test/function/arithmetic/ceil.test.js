@@ -9,6 +9,7 @@ var matrix = math.matrix;
 var unit = math.unit;
 var range = math.range;
 var ceil = math.ceil;
+// var Quaternion = math.Quaternion;
 
 describe('ceil', function() {
   it('should return the ceil of a boolean', function () {
@@ -94,5 +95,11 @@ describe('ceil', function() {
     var expression = math.parse('ceil(0.5)');
     assert.equal(expression.toTex(), '\\left\\lceil0.5\\right\\rceil');
   });
+
+  it('should return an the ceil of a Quaternions components', function() {
+    assert.deepEqual(ceil(new math.quaternion()),new math.quaternion());
+    assert.deepEqual(ceil(new math.quaternion(0.2, 1.3, 8.1, 4)), new math.quaternion(1,2,9,4));
+    assert.deepEqual(ceil(new math.quaternion(-3.1,-9, -1.2,-0.03)), new math.quaternion(-3,-9,-1,0));
+  })
 
 });

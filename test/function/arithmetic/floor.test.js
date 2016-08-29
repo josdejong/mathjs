@@ -94,4 +94,9 @@ describe('floor', function() {
     assert.equal(expression.toTex(), '\\left\\lfloor0.6\\right\\rfloor');
   });
 
+  it('should floor Quaternions', function() {
+    assert.deepEqual(floor(new math.quaternion(3.2,1.3,-1.4,-9)), new math.quaternion(3,1,-2,-9));
+    assert.deepEqual(floor(new math.quaternion(0,0,0,0)), new math.quaternion(0,0,0,0));
+  });
+
 });

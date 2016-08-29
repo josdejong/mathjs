@@ -875,4 +875,16 @@ describe('multiply', function() {
     var expression = math.parse('multiply(2,3)');
     assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)');
   });
+
+  it('should multiply quaternions', function () {
+    var a = new math.quaternion(1,2,3,4);
+    var b =  new math.quaternion(3,-2,-3,4);
+    assert.deepEqual(multiply(new math.quaternion(), new math.quaternion(1,2,3,4)), new math.quaternion());
+    assert.deepEqual(multiply(new math.quaternion({r:1}), new math.quaternion(4,5,6,7)), new math.quaternion(4,5,6,7));
+    assert.deepEqual(multiply(new math.quaternion({r:-1}), new math.quaternion(4,5,6,7)), new math.quaternion(-4,-5,-6,-7));
+    assert.deepEqual(multiply(new math.quaternion(),new math.quaternion()),new math.quaternion());
+    assert.deepEqual(multiply(a,b), new math.quaternion(0, 28, -10, 16));
+    assert.equal(multiply(a,b) === multiply(b,a), false);
+    assert.deepEqual(multiply(multiply(new math.quaternion({i:1}), new math.quaternion({j:1})), new math.quaternion({k:1})), new math.quaternion({r:-1}));
+  });
 });

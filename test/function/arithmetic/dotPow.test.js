@@ -177,4 +177,9 @@ describe('dotPow', function() {
     var expression = math.parse('dotPow([1,2],[3,4])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)');
   });
+
+  it('should perform dot powes on Quaternions', function() {
+    assert.deepEqual(dotPow(new math.quaternion(2,3,7,4),2), new math.quaternion(4,9,49,16));
+    assert.deepEqual(dotPow(new math.quaternion(1,-5,2,3),0),new math.quaternion(1,1,1,1));
+  });
 });
