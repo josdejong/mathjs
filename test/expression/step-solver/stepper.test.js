@@ -20,8 +20,8 @@ describe('arithmetic stepping', function () {
 	it('(((5))) -> 5', function () {
 	  assert.deepEqual(math.parse('5'), step(math.parse('(((5)))'))[0]);
 	});
-	// TODO: remove unecessary parens before starting to step
-	it('(2+(2)) -> 4', function () {
+	// TODO: remove unecessary parens before starting to step so this is 4
+	it('(2+(2)) -> 2+2', function () {
 	  assert.deepEqual(math.parse('2+2'), step(math.parse('(2+(2))'))[0]);
 	});
 	it('(2+(2)+7) -> 2+2+7', function () {
