@@ -7,7 +7,7 @@ const step = stepper.step;
 const simplify = stepper.simplify;
 
 function testStep(exp) {
-	return step(new stepper.RootNode(exp)).exp
+	return step(new stepper.RootNode(exp)).expr;
 }
 
 // to create nodes, for testing
@@ -18,7 +18,7 @@ function opNode(op, args) {
 		case '*':
 			return new math.expression.node.OperatorNode('*', 'multiply', args);
 		default:
-			throw Error("Unsupported node type: " + exp.type);
+			throw Error("Unsupported operation: " + op);
 	}
 }
 
