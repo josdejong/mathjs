@@ -1,11 +1,33 @@
-var assert = require('assert');
-var math = require('../../../index');
-var stepper = require('../../../lib/expression/step-solver/stepper.js');
-var step = stepper.step;
-var simplify = stepper.simplify;
+"use strict"
+
+const assert = require('assert');
+const math = require('../../../index');
+const stepper = require('../../../lib/expression/step-solver/stepper.js');
+const step = stepper.step;
+const simplify = stepper.simplify;
 
 function testStep(exp) {
 	return step(new stepper.RootNode(exp)).exp
+}
+
+// to create nodes, for testing
+function opNode(op, args) {
+	switch (op) {
+		case '+':
+			return new math.expression.node.OperatorNode('+', 'add', args);
+		case '*':
+			return new math.expression.node.OperatorNode('*', 'multiply', args);
+		default:
+			throw Error("Unsupported node type: " + exp.type);
+	}
+}
+
+function constNode(val) {
+	return new math.expression.node.ConstantNode(val);
+}
+
+function parenNode(content) {
+	return new math.expression.node.ParenthesisNode(content);
 }
 
 describe('arithmetic stepping', function () {
@@ -49,11 +71,33 @@ describe('arithmetic simplify', function () {
 	it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
 	  assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
 	});
-
-	
-
 });
 
+describe('flatten ops', function () {
+	let flatten = stepper.flattenOps;
+
+	it('2+2', function () {
+	  assert.deepEqual(math.parse('2+2'), flatten(math.parse('2+2')));
+	});
+	it('2+2+7', function () {
+	  assert.deepEqual(opNode('+', [constNode(2), constNode(2), constNode(7)]),
+	  	flatten(math.parse('2+2+7')));
+	});
+	it('9*8*6+3+4', function () {
+	  assert.deepEqual(opNode('+', [
+		  	opNode('*', [constNode(9), constNode(8), constNode(6)]),
+				constNode(3),
+				constNode(4)]),
+	  	flatten(math.parse('9*8*6+3+4')));
+	});
+  it('5*(2+3+2)*10', function () {
+	  assert.deepEqual(opNode('*', [
+	  		constNode(5),
+	  		parenNode(opNode('+', [constNode(2), constNode(3),constNode(2)])),
+	  		constNode(10)]),
+	  	flatten(math.parse('5*(2+3+2)*10')));
+	});
+});
 
 
 

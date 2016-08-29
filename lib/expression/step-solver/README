@@ -4,12 +4,20 @@ https://www.youtube.com/watch?v=ay6GjmiJTPM
 
 step(exp) should return exp reduced by one step
 
+simplify(exp) should return a fully simplified expression
+
 To run just stepper tests:
 
 `./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
 
 
 --------
+
+TODO:
+
+- make constants or functions to check node type (to avoid typos)
+- add support for symbol nodes (in all switch statements)
+- add support for unction nodes like sqrt(x)
 
 ideas:
 
