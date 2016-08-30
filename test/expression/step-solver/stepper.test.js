@@ -161,29 +161,29 @@ describe('basic addition collect like terms, no exponents or coefficients',
 
 describe('classifies symbol terms correctly', function() {
   it('x', function () {
-    assert.equal(true, stepper.isSymbolicTerm(math.parse('x')));
+    assert.equal(true, stepper.isPolynomialTerm(math.parse('x')));
   });
   it('x^2', function () {
-    assert.equal(true, stepper.isSymbolicTerm(math.parse('x^2')));
+    assert.equal(true, stepper.isPolynomialTerm(math.parse('x^2')));
   });
   it('y^55', function () {
-    assert.equal(true, stepper.isSymbolicTerm(math.parse('y^55')));
+    assert.equal(true, stepper.isPolynomialTerm(math.parse('y^55')));
   });
   it('x^y', function () {
-    assert.equal(false, stepper.isSymbolicTerm(math.parse('x^y')));
+    assert.equal(false, stepper.isPolynomialTerm(math.parse('x^y')));
   });
   it('3', function () {
-    assert.equal(false, stepper.isSymbolicTerm(math.parse('3')));
+    assert.equal(false, stepper.isPolynomialTerm(math.parse('3')));
   });
   it('2^5', function () {
-    assert.equal(false, stepper.isSymbolicTerm(math.parse('2^5')));
+    assert.equal(false, stepper.isPolynomialTerm(math.parse('2^5')));
   });
 });
 
-describe('collect like terms with exponents', function() {
+describe('collect like terms with exponents and coefficients', function() {
   it('x^2 + x + x^2 + x -> (x + x) + (x^2 + x^2)', function () {
     assert.deepEqual(math.parse('(x + x) + (x^2 + x^2)'),
-      testStep(math.parse('x + x^2 + x + x^2')));
+      testStep(math.parse('x^2 + x + x^2 + x')));
   });
   it('y^2 + 5 + y^2 + 5 -> (y^2 + y^2) + (5 + 5)', function () {
     assert.deepEqual(math.parse('(y^2 + y^2) + (5 + 5)'),
@@ -193,6 +193,10 @@ describe('collect like terms with exponents', function() {
     assert.deepEqual(opNode('+', [
           math.parse('y'), math.parse('5'), math.parse('z^2')]),
       testStep(math.parse('y + 5 + z^2')));
+  });
+  it('2x^2 + x + x^2 + 3x -> (x + 3x) + (2x^2 + x^2)', function () {
+    assert.deepEqual(math.parse('(x + 3x) + (2x^2 + x^2)'),
+      testStep(math.parse('2x^2 + x + x^2 + 3x')));
   });
 });
 
