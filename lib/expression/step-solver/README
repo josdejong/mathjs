@@ -2,9 +2,9 @@
 
 https://www.youtube.com/watch?v=ay6GjmiJTPM
 
-step(exp) should return exp reduced by one step
+step(expr) should return exp reduced by one step
 
-simplify(exp) should return a fully simplified expression
+simplify(expr) should return a fully simplified expression
 
 To run just stepper tests:
 
@@ -16,13 +16,11 @@ To run just stepper tests:
 TODO:
 
 - make constants or functions to check node type (to avoid typos)
-- add support for symbol nodes (in all switch statements)
-- add support for unction nodes like sqrt(x)
+- add support for function nodes like sqrt(x)
 
 ideas:
 
-- start with removing uncessary parens
-- didStep(stepObj) that prints the state of the expression tree (can it be global?)
-  and logs the details of the type of step just done
+- in the object that stores the rootnode and hasChanged, also have a thing that
+  stores the step?
 
 will want to resolve any arithmetic at beginning

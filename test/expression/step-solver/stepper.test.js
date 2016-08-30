@@ -7,131 +7,167 @@ const step = stepper.step;
 const simplify = stepper.simplify;
 
 function testStep(exp) {
-	return step(new stepper.RootNode(exp)).expr;
+  return step(new stepper.RootNode(exp)).expr;
 }
 
 // to create nodes, for testing
 function opNode(op, args) {
-	switch (op) {
-		case '+':
-			return new math.expression.node.OperatorNode('+', 'add', args);
-		case '*':
-			return new math.expression.node.OperatorNode('*', 'multiply', args);
-		default:
-			throw Error("Unsupported operation: " + op);
-	}
+  switch (op) {
+    case '+':
+      return new math.expression.node.OperatorNode('+', 'add', args);
+    case '*':
+      return new math.expression.node.OperatorNode('*', 'multiply', args);
+    case '^':
+      return new math.expression.node.OperatorNode('^', 'pow', args);
+    default:
+      throw Error("Unsupported operation: " + op);
+  }
 }
 
 function constNode(val) {
-	return new math.expression.node.ConstantNode(val);
+  return new math.expression.node.ConstantNode(val);
+}
+
+function symbolNode(name) {
+  return new math.expression.node.SymbolNode(name);
 }
 
 function parenNode(content) {
-	return new math.expression.node.ParenthesisNode(content);
+  return new math.expression.node.ParenthesisNode(content);
 }
 
 describe('arithmetic stepping', function () {
-	it('2+2 -> 4', function () {
-	  assert.deepEqual(math.parse('4'), testStep(math.parse('2+2')));
-	});
-	it('(2+2) -> 4', function () {
-	  assert.deepEqual(math.parse('4'), testStep(math.parse('(2+2)')));
-	});
-	it('(2+2)*5 -> 4*5', function () {
-	  assert.deepEqual(math.parse('4*5'), testStep(math.parse('(2+2)*5')));
-	});
-	it('5*(2+2) -> 5*4', function () {
-	  assert.deepEqual(math.parse('5*4'), testStep(math.parse('5*(2+2)')));
-	});
-	it('(((5))) -> 5', function () {
-	  assert.deepEqual(math.parse('5'), testStep(math.parse('(((5)))')));
-	});
-	it('(2+(2)) -> 4', function () {
-	  assert.deepEqual(math.parse('4'), testStep(math.parse('(2+(2))')));
-	});
-	it('(2+(2)+7) -> 11', function () {
-	  assert.deepEqual(math.parse('11'), testStep(math.parse('(2+(2)+7)')));
-	});
+  it('2+2 -> 4', function () {
+    assert.deepEqual(math.parse('4'), testStep(math.parse('2+2')));
+  });
+  it('(2+2) -> 4', function () {
+    assert.deepEqual(math.parse('4'), testStep(math.parse('(2+2)')));
+  });
+  it('(2+2)*5 -> 4*5', function () {
+    assert.deepEqual(math.parse('4*5'), testStep(math.parse('(2+2)*5')));
+  });
+  it('5*(2+2) -> 5*4', function () {
+    assert.deepEqual(math.parse('5*4'), testStep(math.parse('5*(2+2)')));
+  });
+  it('(((5))) -> 5', function () {
+    assert.deepEqual(math.parse('5'), testStep(math.parse('(((5)))')));
+  });
+  it('(2+(2)) -> 4', function () {
+    assert.deepEqual(math.parse('4'), testStep(math.parse('(2+(2))')));
+  });
+  it('(2+(2)+7) -> 11', function () {
+    assert.deepEqual(math.parse('11'), testStep(math.parse('(2+(2)+7)')));
+  });
 });
 
 describe('arithmetic simplify', function () {
-	it('2+2 = 4', function () {
-	  assert.deepEqual(math.parse('4'), simplify(math.parse('2+2')));
-	});
-	it('(2+2)*5 = 20', function () {
-	  assert.deepEqual(math.parse('20'), simplify(math.parse('(2+2)*5')));
-	});
-	it('5*(2+2)*10 = 200', function () {
-	  assert.deepEqual(math.parse('200'), simplify(math.parse('5*(2+2)*10')));
-	});
-	it('(2+(2)+7) = 11', function () {
-	  assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
-	});
-	it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
-	  assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
-	});
+  it('2+2 = 4', function () {
+    assert.deepEqual(math.parse('4'), simplify(math.parse('2+2')));
+  });
+  it('(2+2)*5 = 20', function () {
+    assert.deepEqual(math.parse('20'), simplify(math.parse('(2+2)*5')));
+  });
+  it('5*(2+2)*10 = 200', function () {
+    assert.deepEqual(math.parse('200'), simplify(math.parse('5*(2+2)*10')));
+  });
+  it('(2+(2)+7) = 11', function () {
+    assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
+  });
+  it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
+    assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
+  });
 });
 
 describe('flatten ops', function () {
-	let flatten = stepper.flattenOps;
+  let flatten = stepper.flattenOps;
 
-	it('2+2', function () {
-	  assert.deepEqual(math.parse('2+2'), flatten(math.parse('2+2')));
-	});
-	it('2+2+7', function () {
-	  assert.deepEqual(opNode('+', [constNode(2), constNode(2), constNode(7)]),
-	  	flatten(math.parse('2+2+7')));
-	});
-	it('9*8*6+3+4', function () {
-	  assert.deepEqual(opNode('+', [
-		  	opNode('*', [constNode(9), constNode(8), constNode(6)]),
-				constNode(3),
-				constNode(4)]),
-	  	flatten(math.parse('9*8*6+3+4')));
-	});
+  it('2+2', function () {
+    assert.deepEqual(math.parse('2+2'), flatten(math.parse('2+2')));
+  });
+  it('2+2+7', function () {
+    assert.deepEqual(opNode('+', [constNode(2), constNode(2), constNode(7)]),
+      flatten(math.parse('2+2+7')));
+  });
+  it('9*8*6+3+4', function () {
+    assert.deepEqual(opNode('+', [
+        opNode('*', [constNode(9), constNode(8), constNode(6)]),
+        constNode(3),
+        constNode(4)]),
+      flatten(math.parse('9*8*6+3+4')));
+  });
   it('5*(2+(((3))+2))*10', function () {
-	  assert.deepEqual(opNode('*', [
-	  		constNode(5),
-	  		parenNode(opNode('+', [constNode(2), constNode(3),constNode(2)])),
-	  		constNode(10)]),
-	  	flatten(math.parse('5*(2+3+2)*10')));
-	});
+    assert.deepEqual(opNode('*', [
+        constNode(5),
+        parenNode(opNode('+', [constNode(2), constNode(3),constNode(2)])),
+        constNode(10)]),
+      flatten(math.parse('5*(2+3+2)*10')));
+  });
 });
 
-describe('symbol addition', function() {
-	// nothing old breaks
-	it('2+x no change', function () {
-	  assert.deepEqual(math.parse('2+x'), testStep(math.parse('2+x')));
-	});
-	it('(2+2)*x = 4*x', function () {
-	  assert.deepEqual(math.parse('4*x'), testStep(math.parse('(2+2)*x')));
-	});
-	it('(2+2)*x+3 = 4*x+3', function () {
-	  assert.deepEqual(math.parse('4*x+3'), testStep(math.parse('(2+2)*x+3')));
-	});
-
-	// collects like terms
-	//it('(2+x+7) -> x + (2+7)', function () {
-	//  assert.deepEqual(math.parse('2+x+7'), testStep(math.parse('x+(2+7)')));
-	//});
-
-	/*
-
-	dictionary - symbol names, constants, can have an 'other' bucket
-	make them lists of nodes
-	then go through (constants first, then the rest) and put in parens if 
-
-	then work on evaluating the math to simplify, combining like terms
-
-	*/
+describe('adding symbols without breaking things', function() {
+  // nothing old breaks
+  it('2+x no change', function () {
+    assert.deepEqual(math.parse('2+x'), testStep(math.parse('2+x')));
+  });
+  it('(2+2)*x = 4*x', function () {
+    assert.deepEqual(math.parse('4*x'), testStep(math.parse('(2+2)*x')));
+  });
+  it('(2+2)*x+3 = 4*x+3', function () {
+    assert.deepEqual(math.parse('4*x+3'), testStep(math.parse('(2+2)*x+3')));
+  });
 });
 
+describe('collect like terms', function() {
+  it('(2+x+7) -> x + (2+7)', function () {
+    assert.deepEqual(math.parse('x+(2+7)'), testStep(math.parse('2+x+7')));
+  });
+  it('x + 4 + x + 5 -> (x + x) + (4 + 5)', function () {
+    assert.deepEqual(math.parse('(x + x) + (4 + 5)'),
+      testStep(math.parse('x + 4 + x + 5')));
+  });
+  it('no change for x + 4 + y', function () {
+    assert.deepEqual(opNode('+', [
+        symbolNode('x'), constNode(4), symbolNode('y')]),
+      testStep(math.parse('x + 4 + y')));
+  });
+  it('no change for x + x + x', function () {
+    assert.deepEqual(opNode('+', [
+        symbolNode('x'), symbolNode('x'), symbolNode('x')]),
+      testStep(math.parse('x + x + x')));
+  });
+  it('x + 4 + x + y + 5 -> (x + x) + y + (4 + 5)', function () {
+    assert.deepEqual(opNode('+', [
+        math.parse('(x+x)'), symbolNode('y'), math.parse('(4+5)')]),
+      testStep(math.parse('x + 4 + x + y + 5')));
+  });
+  // 2^x is an 'other'
+  it('x + 4 + x + 2^x + 5 -> (x + x) + (4 + 5) + 2^x', function () {
+    assert.deepEqual(opNode('+', [
+        math.parse('(x+x)'), math.parse('(4+5)'), math.parse('2^x')]),
+      testStep(math.parse('x + 4 + x + 2^x + 5')));
+  });
+  // (2*(y + x)) is an 'other' cause it's in parens
+  it('z + (2*(y + x)) + 4 + z  -> (z + z) + 4 + (2(y+x))', function () {
+    assert.deepEqual(opNode('+', [
+        math.parse('(z+z)'), math.parse('4'), math.parse('(2*(y+x))')]),
+      testStep(math.parse('z + (2*(y + x)) + 4 + z')));
+  });
+});
 
 /*
+
+plan:
 
 extend to take exponents (and order by degree)
 
 then extend to take coefficients
+ - there's an implicit param in the multiply node!!
+ - but can I use that in conjunction with flattening?
+
+we'll want to get rid of parens if
+- we've fully collected like terms within the parens and there's + before and + or - after
+- e.g. x + (x^2 + y+y) + x -> x + (x^2 + 2y) + x -> x + x^2 + 2y + x
+- this includes things like (2x^2)
 
 then multiplication:
 
@@ -156,5 +192,7 @@ then multiplication:
     // (2x + 3)*(4x+7)
     // 2x^2 * (3x + 4)
 
+
+// TODO add tests (and more support) for subtraction and division
 
 */
