@@ -58,6 +58,9 @@ describe('arithmetic stepping', function () {
   it('(2+(2)+7) -> 11', function () {
     assert.deepEqual(math.parse('11'), testStep(math.parse('(2+(2)+7)')));
   });
+  it('((2+2) + ((2^3))) -> 4 + 2^3', function () {
+    assert.deepEqual(math.parse('4 + 2^3'), testStep(math.parse('((2+2) + ((2^3)))')));
+  });
 });
 
 describe('arithmetic simplify', function () {
@@ -117,52 +120,102 @@ describe('adding symbols without breaking things', function() {
   });
 });
 
-describe('collect like terms', function() {
-  it('(2+x+7) -> x + (2+7)', function () {
-    assert.deepEqual(math.parse('x+(2+7)'), testStep(math.parse('2+x+7')));
+describe('basic addition collect like terms, no exponents or coefficients',
+  function() {
+    it('(2+x+7) -> x + (2+7)', function () {
+      assert.deepEqual(math.parse('x+(2+7)'), testStep(math.parse('2+x+7')));
+    });
+    it('x + 4 + x + 5 -> (x + x) + (4 + 5)', function () {
+      assert.deepEqual(math.parse('(x + x) + (4 + 5)'),
+        testStep(math.parse('x + 4 + x + 5')));
+    });
+    it('no change for x + 4 + y', function () {
+      assert.deepEqual(opNode('+', [
+          symbolNode('x'), constNode(4), symbolNode('y')]),
+        testStep(math.parse('x + 4 + y')));
+    });
+    it('no change for x + x + x', function () {
+      assert.deepEqual(opNode('+', [
+          symbolNode('x'), symbolNode('x'), symbolNode('x')]),
+        testStep(math.parse('x + x + x')));
+    });
+    it('x + 4 + x + y + 5 -> (x + x) + y + (4 + 5)', function () {
+      assert.deepEqual(opNode('+', [
+          math.parse('(x+x)'), symbolNode('y'), math.parse('(4+5)')]),
+        testStep(math.parse('x + 4 + x + y + 5')));
+    });
+    // 2^x is an 'other'
+    it('x + 4 + x + 2^x + 5 -> (x + x) + (4 + 5) + 2^x', function () {
+      assert.deepEqual(opNode('+', [
+          math.parse('(x+x)'), math.parse('(4+5)'), math.parse('2^x')]),
+        testStep(math.parse('x + 4 + x + 2^x + 5')));
+    });
+    // (2*(y + x)) is an 'other' cause it's in parens
+    it('z + (2*(y + x)) + 4 + z  -> (z + z) + 4 + (2(y+x))', function () {
+      assert.deepEqual(opNode('+', [
+          math.parse('(z+z)'), math.parse('4'), math.parse('(2*(y+x))')]),
+        testStep(math.parse('z + (2*(y + x)) + 4 + z')));
+    });
+  }
+);
+
+describe('classifies symbol terms correctly', function() {
+  it('x', function () {
+    assert.equal(true, stepper.isPolynomialTerm(math.parse('x')));
   });
-  it('x + 4 + x + 5 -> (x + x) + (4 + 5)', function () {
-    assert.deepEqual(math.parse('(x + x) + (4 + 5)'),
-      testStep(math.parse('x + 4 + x + 5')));
+  it('x^2', function () {
+    assert.equal(true, stepper.isPolynomialTerm(math.parse('x^2')));
   });
-  it('no change for x + 4 + y', function () {
-    assert.deepEqual(opNode('+', [
-        symbolNode('x'), constNode(4), symbolNode('y')]),
-      testStep(math.parse('x + 4 + y')));
+  it('y^55', function () {
+    assert.equal(true, stepper.isPolynomialTerm(math.parse('y^55')));
   });
-  it('no change for x + x + x', function () {
-    assert.deepEqual(opNode('+', [
-        symbolNode('x'), symbolNode('x'), symbolNode('x')]),
-      testStep(math.parse('x + x + x')));
+  it('x^y', function () {
+    assert.equal(false, stepper.isPolynomialTerm(math.parse('x^y')));
   });
-  it('x + 4 + x + y + 5 -> (x + x) + y + (4 + 5)', function () {
-    assert.deepEqual(opNode('+', [
-        math.parse('(x+x)'), symbolNode('y'), math.parse('(4+5)')]),
-      testStep(math.parse('x + 4 + x + y + 5')));
+  it('3', function () {
+    assert.equal(false, stepper.isPolynomialTerm(math.parse('3')));
   });
-  // 2^x is an 'other'
-  it('x + 4 + x + 2^x + 5 -> (x + x) + (4 + 5) + 2^x', function () {
-    assert.deepEqual(opNode('+', [
-        math.parse('(x+x)'), math.parse('(4+5)'), math.parse('2^x')]),
-      testStep(math.parse('x + 4 + x + 2^x + 5')));
-  });
-  // (2*(y + x)) is an 'other' cause it's in parens
-  it('z + (2*(y + x)) + 4 + z  -> (z + z) + 4 + (2(y+x))', function () {
-    assert.deepEqual(opNode('+', [
-        math.parse('(z+z)'), math.parse('4'), math.parse('(2*(y+x))')]),
-      testStep(math.parse('z + (2*(y + x)) + 4 + z')));
+  it('2^5', function () {
+    assert.equal(false, stepper.isPolynomialTerm(math.parse('2^5')));
   });
 });
+
+describe('collect like terms with exponents and coefficients', function() {
+  it('x^2 + x + x^2 + x -> (x + x) + (x^2 + x^2)', function () {
+    assert.deepEqual(math.parse('(x + x) + (x^2 + x^2)'),
+      testStep(math.parse('x^2 + x + x^2 + x')));
+  });
+  it('y^2 + 5 + y^2 + 5 -> (y^2 + y^2) + (5 + 5)', function () {
+    assert.deepEqual(math.parse('(y^2 + y^2) + (5 + 5)'),
+      testStep(math.parse('y^2 + 5 + y^2 + 5')));
+  });
+  it('y + 5 + z^2 no change', function () {
+    assert.deepEqual(opNode('+', [
+          math.parse('y'), math.parse('5'), math.parse('z^2')]),
+      testStep(math.parse('y + 5 + z^2')));
+  });
+  it('2x^2 + x + x^2 + 3x -> (x + 3x) + (2x^2 + x^2)', function () {
+    assert.deepEqual(math.parse('(x + 3x) + (2x^2 + x^2)'),
+      testStep(math.parse('2x^2 + x + x^2 + 3x')));
+  });
+});
+
 
 /*
 
 plan:
 
 extend to take exponents (and order by degree)
+- make a function that recognizes a variable^smthng and returns the name and degree
+- append degree to symbol name when making object in collecting like terms
+
 
 then extend to take coefficients
  - there's an implicit param in the multiply node!!
  - but can I use that in conjunction with flattening?
+ - remove parens around this too
+
+then do the collecting of addition
 
 we'll want to get rid of parens if
 - we've fully collected like terms within the parens and there's + before and + or - after
