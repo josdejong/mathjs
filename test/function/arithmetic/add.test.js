@@ -237,8 +237,6 @@ describe('add', function() {
       assert.deepEqual(add(a,b),c);
     });
 
-    
-
     it('should add a Quaternions and Complex number', function() {
       var a = new math.complex(2,3);
       var b = new math.quaternion(1,2,3,-4);
@@ -247,7 +245,6 @@ describe('add', function() {
       assert.deepEqual(add(b,a),c);
     });
 
-  
     it('should add a number to a Quaternion',function() {
       var a = new math.quaternion(1,2,3,4);
       var b = 5;
@@ -255,6 +252,12 @@ describe('add', function() {
       assert.deepEqual(add(a,b),c);
       assert.deepEqual(add(b,a),c);
       assert.deepEqual(add(new math.quaternion(3,-2,-1,7), new math.quaternion(-4,5,-8,2)), new math.quaternion(-1,3,-9,9));
+    });
+
+    it('should add a Quaternion to a complex number', function () {
+      assert.deepEqual(add(new math.quaternion(), new math.complex()),new math.quaternion());
+      assert.deepEqual(add(new math.quaternion(1,2,3,4), new math.complex(1,2)),new math.quaternion(2,4,3,4));
+      assert.deepEqual(add(new math.quaternion(1,2,3,4), new math.complex(-1,-2)),new math.quaternion(0,0,3,4));
     })
   });
   
