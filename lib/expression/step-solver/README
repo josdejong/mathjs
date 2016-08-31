@@ -13,8 +13,73 @@ To run just stepper tests:
 
 --------
 
-TODO:
+BIG DETAILED TODO (in approx this order)
 
+
+MULTIPLICATION
+
+ - there's an implicit param in the multiply node
+  - 2*x is not implicit
+  - 2x is! so I can use that to find coefficients
+ - when flattening the tree, keep these as terms
+  - so 4*4y*(2+x)*2x should flatten to a mult with children: 4, 4y, (2+x), 2x
+ - when removing uncessary parens, make sure I'm removing them around polynomial terms
+ - make sure multiplication with like terms works 
+  - here like terms will be by symbol and shouldn't be divided by power
+  - note that this rule is kinda arbitrary (more than usual)
+  - the way I'm doing it right now is similar to addition, and uses coefficients
+  - e.g. 3*4*2x*3y*5x^2*6 --> 3*4*6 * (2x * 5x^2) * (3y)
+  - then we can resolve the constants individually
+  - and resolve the x terms individually too, multiplying their coefficients
+    and combining their exponents
+
+
+COLLECTING/RESOLVING
+
+- just for addition and mult
+- one step should be looking for collapse, then next step is collapsing
+
+
+ORGANIZE THE CODE
+
+- make a map of what calls what
+- separate things into steps, probably
+- see what can be private within a step, what needs to be accessible
+- put things into classes or functions
+- hopefully separate into files too
+
+
+SUBTRACTION SUPPORT
+
+- at beginning 'resolve' all unary minuses after addition signs
+ - (say it's a step, but don't change anything)
+- then change all subtraction into unary minuses after addition signs
+ - this is just internally - from now on always print "+ -" as "-"
+- make sure that all switch statements on operations support unary minus
+- make sure unary minus with a child that is symbol or constant is just treated
+  like any other symbol or constant
+
+DIVISION SUPPORT
+
+- this can still be a tree with the parent as mult and stay human readable
+ - (cymath does it)
+- for division signs following division signs: the first argument in a chain
+  becomes a numerator and the rest become the denominator
+ - e.g. a / b / c / d * e -> a/(b*c*d) * e
+- division signs following a multiplication sign becomes the denominator of
+  only the very last thing before it
+ - e.g. a * b * c / e * d -> a * b * c/e * d
+- note that to have the numerator be > 1 terms before the devisor, the numerator
+  would have had to be in parens e.g. a * (b * c) / e * d -> a * (b*c)/e * d
+- add support for polynomial terms that have fraction coefficients (ie are divided by a constant)
+
+
+various:
+
+- we'll want to get rid of parens if
+  - we've fully collected like terms within the parens and there's + before and + or - after
+  - e.g. x + (x^2 + y+y) + x -> x + (x^2 + 2y) + x -> x + x^2 + 2y + x
+  - this includes things like (2x^2)
 - make constants or functions to check node type (to avoid typos)
 - add support for function nodes like sqrt(x)
 
