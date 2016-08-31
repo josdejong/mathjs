@@ -15,29 +15,12 @@ To run just stepper tests:
 
 BIG DETAILED TODO (in approx this order)
 
-
-MULTIPLICATION
-
- - there's an implicit param in the multiply node
-  - 2*x is not implicit
-  - 2x is! so I can use that to find coefficients
- - when flattening the tree, keep these as terms
-  - so 4*4y*(2+x)*2x should flatten to a mult with children: 4, 4y, (2+x), 2x
- - when removing uncessary parens, make sure I'm removing them around polynomial terms
- - make sure multiplication with like terms works 
-  - here like terms will be by symbol and shouldn't be divided by power
-  - note that this rule is kinda arbitrary (more than usual)
-  - the way I'm doing it right now is similar to addition, and uses coefficients
-  - e.g. 3*4*2x*3y*5x^2*6 --> 3*4*6 * (2x * 5x^2) * (3y)
-  - then we can resolve the constants individually
-  - and resolve the x terms individually too, multiplying their coefficients
-    and combining their exponents
-
-
 COLLECTING/RESOLVING
 
 - just for addition and mult
 - one step should be looking for collapse, then next step is collapsing
+- for mult, use the power rule
+ - (combine the exponents, but let the simplify step resolve them)
 
 
 ORGANIZE THE CODE
@@ -89,3 +72,25 @@ ideas:
   stores the step?
 
 will want to resolve any arithmetic at beginning
+
+------- done ---------
+
+(starting at the time I made this list, which was after addition for like terms)
+
+MULTIPLICATION
+
+- there's an implicit param in the multiply node
+ - 2*x is not implicit
+ - 2x is! so I can use that to find coefficients
+- when flattening the tree, keep these as terms
+ - so 4*4y*(2+x)*2x should flatten to a mult with children: 4, 4y, (2+x), 2x
+- when removing uncessary parens, make sure I'm removing them around polynomial terms
+- make sure multiplication with like terms works
+ - here like terms will be by symbol and shouldn't be divided by power
+ - and constants should be at the front instead of the end
+ - note that this rule is kinda arbitrary (more than usual)
+ - the way I'm doing it right now is similar to addition, and uses coefficients
+ - e.g. 3*4*2x*3y*5x^2*6 --> 3*4*6 * (2x * 5x^2) * (3y)
+ - then we can resolve the constants individually
+ - and resolve the x terms individually too, multiplying their coefficients
+   and combining their exponents

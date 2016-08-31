@@ -105,6 +105,23 @@ describe('flatten ops', function () {
         constNode(10)]),
       flatten(math.parse('5*(2+3+2)*10')));
   });
+  it('9x*8*6+3+4 keeps the polynomial term', function () {
+    assert.deepEqual(opNode('+', [
+        opNode('*', [math.parse('9x'), constNode(8), constNode(6)]),
+        constNode(3),
+        constNode(4)]),
+      flatten(math.parse('9x*8*6+3+4')));
+  });
+  it('9x*8*6+3y^2+4 keeps the polynomial terms', function () {
+    console.log(JSON.stringify(flatten(math.parse('9x*8*6+3+4')), null, 2));
+
+    assert.deepEqual(opNode('+', [
+        opNode('*', [math.parse('9x'), constNode(8), constNode(6)]),
+        math.parse('3y^2'),
+        constNode(4)]),
+      flatten(math.parse('9x*8*6+3y^2+4')));
+  });
+
 });
 
 describe('adding symbols without breaking things', function() {
@@ -200,29 +217,37 @@ describe('collect like terms with exponents and coefficients', function() {
   });
 });
 
+describe('collect like terms for multiplication', function() {
+  it('((2x^2)) * y * x * y^3 -> (2x^2 * x) * (y * y^3)', function () {
+    assert.deepEqual(opNode('*', [
+        parenNode(opNode('*', [math.parse('2x^2'), symbolNode('x')])),
+        math.parse('(y*y^3)')]),
+      testStep(math.parse('2x^2 * y * x * y^3')));
+  });
+  it('y^2 * 5 * y * 9 -> (5 * 9)*(y^2 * y)', function () {
+    assert.deepEqual(math.parse('(5 * 9)*(y^2 * y)'),
+      testStep(math.parse('y^2 * 5 * y * 9')));
+  });
+  it('y * 5 * z^2 no change', function () {
+    assert.deepEqual(opNode('*', [
+          math.parse('y'), math.parse('5'), math.parse('z^2')]),
+      testStep(math.parse('y * 5 * z^2')));
+  });
+  it('y * 5 * (2+x) * y^2 puts the parens at the end', function () {
+      assert.deepEqual(opNode('*', [
+            math.parse('5'), math.parse('(y*y^2)'), math.parse('(2+x)')]),
+        testStep(math.parse('y * 5 * (2+x) * y^2')));
+    });
+  it('will still simplify first for y * 5 * (2+3) * y^2 ', function () {
+      assert.deepEqual(opNode('*', [
+            math.parse('y'), math.parse('5'), math.parse('5'), math.parse('y^2')]),
+        testStep(math.parse('y * 5 * (2+3) * y^2')));
+    });
+});
 
-/*
-
-plan:
-
-extend to take exponents (and order by degree)
-- make a function that recognizes a variable^smthng and returns the name and degree
-- append degree to symbol name when making object in collecting like terms
 
 
-then extend to take coefficients
- - there's an implicit param in the multiply node!!
- - but can I use that in conjunction with flattening?
- - remove parens around this too
-
-then do the collecting of addition
-
-we'll want to get rid of parens if
-- we've fully collected like terms within the parens and there's + before and + or - after
-- e.g. x + (x^2 + y+y) + x -> x + (x^2 + 2y) + x -> x + x^2 + 2y + x
-- this includes things like (2x^2)
-
-then multiplication:
+/* distribution test ideas
 
     // PREREQ FUNCTIONS
     // x*x -> x^(1+1)
@@ -244,8 +269,4 @@ then multiplication:
     // -2x * (3x - 4)
     // (2x + 3)*(4x+7)
     // 2x^2 * (3x + 4)
-
-
-// TODO add tests (and more support) for subtraction and division
-
 */
