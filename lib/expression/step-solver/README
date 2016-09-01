@@ -13,15 +13,7 @@ To run just stepper tests:
 
 --------
 
-BIG DETAILED TODO (in approx this order)
-
-COLLECTING/RESOLVING
-
-- just for addition and mult
-- one step should be looking for collapse, then next step is collapsing
-- for mult, use the power rule
- - (combine the exponents, but let the simplify step resolve them)
-
+## BIG DETAILED TODO (in approx this order)
 
 ORGANIZE THE CODE
 
@@ -59,10 +51,6 @@ DIVISION SUPPORT
 
 various:
 
-- we'll want to get rid of parens if
-  - we've fully collected like terms within the parens and there's + before and + or - after
-  - e.g. x + (x^2 + y+y) + x -> x + (x^2 + 2y) + x -> x + x^2 + 2y + x
-  - this includes things like (2x^2)
 - make constants or functions to check node type (to avoid typos)
 - add support for function nodes like sqrt(x)
 
@@ -94,3 +82,18 @@ MULTIPLICATION
  - then we can resolve the constants individually
  - and resolve the x terms individually too, multiplying their coefficients
    and combining their exponents
+
+COLLECTING/RESOLVING
+
+- just for addition and mult
+- one step should be looking for collapse, then next step is collapsing
+- for mult, use the power rule
+- (combine the exponents, but let the simplify step resolve them)
+
+LAST COLLECTING LIKE TERMS DETAIL
+
+- we'll want to get rid of parens if
+ - we've fully collected like terms within the parens and there's + before and + or - after
+ - e.g. x + (x^2 + y+y) + x -> x + (x^2 + 2y) + x -> x + x^2 + 2y + x
+ - this includes things like (2x^2)
+- x^1 should be reduced to x if that ever shows up
