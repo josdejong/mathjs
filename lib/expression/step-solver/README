@@ -15,14 +15,19 @@ To run just stepper tests:
 
 ## BIG DETAILED TODO (in approx this order)
 
-ORGANIZE THE CODE
+CLEANING THE CODE
 
-- make a map of what calls what
-- separate things into steps, probably
-- see what can be private within a step, what needs to be accessible
-- put things into classes or functions
-- hopefully separate into files too
-
+- more sub functions
+- add docstrings everywhere
+- turn rules into a list of constants
+- make functions to generate nodes
+- make functions to check type of node
+- add to this readme notes about things people should know to work on this
+ - node types
+ - what implicit means
+ - other stuff?
+- note that a polynomial term is only defined as having one symbol 
+ - (so 2x^2y would be 2x^2 * y)
 
 SUBTRACTION SUPPORT
 
@@ -97,3 +102,11 @@ LAST COLLECTING LIKE TERMS DETAIL
  - e.g. x + (x^2 + y+y) + x -> x + (x^2 + 2y) + x -> x + x^2 + 2y + x
  - this includes things like (2x^2)
 - x^1 should be reduced to x if that ever shows up
+
+ORGANIZE THE CODE
+
+- make a map of what calls what
+- separate things into steps, probably
+- see what can be private within a step, what needs to be accessible
+- put things into classes or functions
+- hopefully separate into files too

@@ -16,6 +16,7 @@ function testStep(exp, debug=false) {
 }
 
 // to create nodes, for testing
+// TODO: put these in a file that can be used by other files and also all the test files
 function opNode(op, args) {
   switch (op) {
     case '+':
@@ -92,56 +93,6 @@ describe('arithmetic simplify', function () {
   });
 });
 
-describe('flatten ops', function () {
-  let flatten = stepper.flattenOps;
-  it('2+2', function () {
-    assert.deepEqual(math.parse('2+2'), flatten(math.parse('2+2')));
-  });
-  it('2+2+7', function () {
-    assert.deepEqual(opNode('+', [constNode(2), constNode(2), constNode(7)]),
-      flatten(math.parse('2+2+7')));
-  });
-  it('9*8*6+3+4', function () {
-    assert.deepEqual(opNode('+', [
-        opNode('*', [constNode(9), constNode(8), constNode(6)]),
-        constNode(3),
-        constNode(4)]),
-      flatten(math.parse('9*8*6+3+4')));
-  });
-  it('5*(2+3+2))*10', function () {
-    assert.deepEqual(opNode('*', [
-        constNode(5),
-        parenNode(opNode('+', [constNode(2), constNode(3),constNode(2)])),
-        constNode(10)]),
-      flatten(math.parse('5*(2+3+2)*10')));
-  });
-  it('9x*8*6+3+4 keeps the polynomial term', function () {
-    assert.deepEqual(opNode('+', [
-        opNode('*', [math.parse('9x'), constNode(8), constNode(6)]),
-        constNode(3),
-        constNode(4)]),
-      flatten(math.parse('9x*8*6+3+4')));
-  });
-  it('9x*8*6+3y^2+4 keeps the polynomial terms', function () {
-    assert.deepEqual(opNode('+', [
-        opNode('*', [math.parse('9x'), constNode(8), constNode(6)]),
-        math.parse('3y^2'),
-        constNode(4)]),
-      flatten(math.parse('9x*8*6+3y^2+4')));
-  });
-  it('2x ^ (2 + 1) * y not flattened', function () {
-    assert.deepEqual(math.parse('2 x ^ (2 + 1) * y'),
-      flatten(math.parse('2 x ^ (2 + 1) * y')));
-  });
-  it('3x*4x -> 3x * 4x', function () {
-    console.log(flatten(math.parse('3x*4x')).toString());
-
-    assert.deepEqual(opNode('*', [
-      math.parse('3x'), math.parse('4x')]),
-      flatten(math.parse('3x*4x')));
-  });
-});
-
 describe('adding symbols without breaking things', function() {
   // nothing old breaks
   it('2+x no change', function () {
@@ -188,27 +139,6 @@ describe('basic addition collect like terms, no exponents or coefficients',
     });
   }
 );
-
-describe('classifies symbol terms correctly', function() {
-  it('x', function () {
-    assert.equal(true, stepper.isPolynomialTerm(math.parse('x')));
-  });
-  it('x^2', function () {
-    assert.equal(true, stepper.isPolynomialTerm(math.parse('x^2')));
-  });
-  it('y^55', function () {
-    assert.equal(true, stepper.isPolynomialTerm(math.parse('y^55')));
-  });
-  it('x^y', function () {
-    assert.equal(false, stepper.isPolynomialTerm(math.parse('x^y')));
-  });
-  it('3', function () {
-    assert.equal(false, stepper.isPolynomialTerm(math.parse('3')));
-  });
-  it('2^5', function () {
-    assert.equal(false, stepper.isPolynomialTerm(math.parse('2^5')));
-  });
-});
 
 describe('collect like terms with exponents and coefficients', function() {
   it('x^2 + x + x^2 + x -> (x^2 + x^2) + (x + x)', function () {
@@ -261,15 +191,16 @@ describe('collect like terms for multiplication', function() {
 describe('combines like terms', function() {
   it('(x + x) + (x^2 + x^2) -> 2x + 2x^2', function () {
     assert.deepEqual(math.parse('2x + (x^2 + x^2)'),
-      testStep(math.parse('(x + x) + (x^2 + x^2)'), true));
+      testStep(math.parse('(x + x) + (x^2 + x^2)')));
   });
   it('10 + (y^2 + y^2) -> 10 + 2y^2', function () {
     assert.deepEqual(math.parse('10 + 2y^2'),
       testStep(math.parse('10 + (y^2 + y^2)')));
   });
-  it('x + (y + y^2) no change', function () {
-    assert.deepEqual(math.parse('x + (y + y^2)'),
-      testStep(math.parse('x + (y + y^2)')));
+  it('x + y + y^2 no change', function () {
+    assert.deepEqual(opNode('+', [
+      math.parse('x'), math.parse('y'), math.parse('y^2')]),
+      testStep(math.parse('x + y + y^2')));
   });
   it('(2x^2 * x) * (y * y^3) -> 2x^(2+1) * (y * y^3)', function () {
     assert.deepEqual(math.parse('2x^(2+1) * (y * y^3)'),
@@ -308,7 +239,7 @@ describe('overall simplify combining like terms', function () {
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
     assert.deepEqual(opNode('+', [
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
-      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)'), true));
+      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
   });
 });
 
