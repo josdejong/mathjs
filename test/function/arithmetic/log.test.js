@@ -111,6 +111,27 @@ describe('log', function() {
         matrix([[0, 0.693147180559945], [1.098612288668110, 1.386294361119891]]));
   });
 
+  describe('Quaternion', function () {
+
+    it('should log quaternions with base e', function () {
+      assert.deepEqual(log(math.quaternion({r:-1})), math.quaternion({i:Math.PI}));
+      approx.deepEqual(log(math.quaternion({r:2, i:1})), math.quaternion({r:0.8047189562170503, i:0.46364760900080615}));
+      approx.deepEqual(log(math.quaternion(2,3,-1,2)), math.quaternion(1.4451858789480823, 0.8658571885733402, -0.28861906285778005, 0.5772381257155601));
+      approx.deepEqual(log(math.quaternion(-5,3,-2,0)), math.quaternion(1.8187930798631928, 2.094136451714334, -1.396090967809556, 0));
+    });
+
+    it('should returns the log of a quaternion with real base', function () {
+      approx.deepEqual(log(math.quaternion(1,2,3,4), 2), math.quaternion(2.4534452978042594, 0.7432624803406092, 1.1148937205109137, 1.4865249606812183));
+      approx.deepEqual(log(math.quaternion(-1,3,-5,2), 2), math.quaternion(2.642701109431124, 1.2157822201686082, -2.0263037002810136, 0.8105214801124053));
+      approx.deepEqual(log(math.quaternion(1,2,3,4), 0.5), math.quaternion(-2.4534452978042594, -0.7432624803406092, -1.1148937205109137, -1.4865249606812183));
+    });
+
+    it('should log Quaternions with a Quaternion base', function () {
+      approx.deepEqual(log(math.quaternion(1,2,3,4), math.quaternion(1,2,3,4)), math.quaternion({r:1}));
+      approx.deepEqual(log(math.quaternion(1,2,3,4), math.quaternion(-1,-2,-3,-4)), math.quaternion(0.07677530705872884, 0.3323621401313245, 0.4985432101969867, 0.664724280262649));
+    });
+  });
+
   it('should LaTeX log', function () {
     var expr1 = math.parse('log(e)');
     var expr2 = math.parse('log(32,2)');
