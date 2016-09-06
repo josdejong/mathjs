@@ -24,6 +24,9 @@ Here are some things to know that will help make sense of the code:
   but `n.implicit` will be true - meaning there was no astrix between the operands in the input.
   This is used a lot for polynomial terms and keeping them grouped together (ie 2x * 5 should just
   be two operands 2x and 5 instead of 3 operands 2, x, and 5)
+- If you want to see the flow of how this code works, start in `stepper.js`. This is where `step` and
+  `simplify` live. You can see what functions are called from `step` and follow the logic through other
+  files if you're curious how any of those steps work.
 - Note that polynomial terms right now are defiend by only having one symbol. So 2x is grouped together,
   but 2xy would be 2x * y (two operands)
 - To run just stepper tests: `./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
@@ -36,6 +39,8 @@ Here are some things to know that will help make sense of the code:
 CLEANING THE CODE
 
 - make functions to check type of node
+- consider renaming the root node context object (confusing)
+- maybe abstract out the whole node object thing so that it's only node contexts
 
 SUBTRACTION SUPPORT
 
