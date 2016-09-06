@@ -2,14 +2,32 @@
 
 https://www.youtube.com/watch?v=ay6GjmiJTPM
 
-step(expr) should return exp reduced by one step
+### Using the stepper
 
-simplify(expr) should return a fully simplified expression
+- step(expr) should return exp reduced by one step
+- simplify(expr) should return a fully simplified expression
 
-To run just stepper tests:
+### Things to know to navigate the code
 
-`./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
+Hi! If you're interested in working on this, that would be super cool!
+Here are some things to know that will help make sense of the code:
 
+- Expressions in mathJS are stored as trees. You can read more about that in
+  [the related mathJS documentation page](http://mathjs.org/docs/expressions/expression_trees.html)
+- There are a few different types of nodes that show up in the tree.
+  This stepper uses OperationNode, ParenthesisNode, ConstantNode and SymbolNode. You can read about
+  them [on the same documentation page as expressions](http://mathjs.org/docs/expressions/expression_trees.html)
+  It will be pretty helpful to get an idea of how they all work.
+- One thing that's especially helpful to know is that multiplication nodes can be implicit.
+  If you do `n = math.parse('2*x')` you'll get a multiplication node with `n.args` 2 and x.
+  If you do `n = math.parse(2x)` you'll also get a multiplication node with `n.args` 2 and x,
+  but `n.implicit` will be true - meaning there was no astrix between the operands in the input.
+  This is used a lot for polynomial terms and keeping them grouped together (ie 2x * 5 should just
+  be two operands 2x and 5 instead of 3 operands 2, x, and 5)
+- Note that polynomial terms right now are defiend by only having one symbol. So 2x is grouped together,
+  but 2xy would be 2x * y (two operands)
+- To run just stepper tests: `./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
+- What else to add?
 
 --------
 
@@ -17,15 +35,7 @@ To run just stepper tests:
 
 CLEANING THE CODE
 
-- make functions to generate nodes
 - make functions to check type of node
-- add to this readme notes about things people should know to work on this
- - node types
- - what implicit means
- - to run the stepper tests `./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
- - other stuff?
-- note that a polynomial term is only defined as having one symbol 
- - (so 2x^2y would be 2x^2 * y)
 
 SUBTRACTION SUPPORT
 
