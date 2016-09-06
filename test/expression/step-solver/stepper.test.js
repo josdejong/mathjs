@@ -7,9 +7,11 @@ const step = stepper.step;
 const simplify = stepper.simplify;
 
 function testStep(exp, debug=false) {
+  debug = true;
   let ret = step(new stepper.RootNode(exp));
   if (debug) {
-    console.log(ret.rule);
+    if (!ret.changeType) throw Error("missing or bad change type");
+    console.log(ret.changeType);
     console.log(ret.expr.toString(/*{parenthesis: 'all'}*/));
   }
   return ret.expr;
