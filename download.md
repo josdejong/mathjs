@@ -75,7 +75,7 @@ A changelog describing the changes with each release is available on the page [H
 
 <h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>
 
-The source code of math.js is available on GitHub: https://github.com/josdejong/mathjs.
+The source code of math.js is available on GitHub: [https://github.com/josdejong/mathjs](https://github.com/josdejong/mathjs).
 
 
 <h1 id="license">License <a href="#license" title="Permalink">#</a></h1>
