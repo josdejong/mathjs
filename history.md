@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160907-version-350">2016-09-07, version 3.5.0 <a href="#20160907-version-350" title="Permalink">#</a></h2>
+
+- Comments of expressions are are now stored in the parsed nodes. See #690.
+- Fixed function `print` not accepting an Object with formatting options as
+  third parameter Thanks @ThomasBrierley.
+- Fixed #707: The expression parser no longer accepts numbers ending with a dot
+  like `2.`.
+
+
 <h2 id="20160808-version-341">2016-08-08, version 3.4.1 <a href="#20160808-version-341" title="Permalink">#</a></h2>
 
 - Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).
