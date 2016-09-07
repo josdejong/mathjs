@@ -235,6 +235,25 @@ describe('pow', function() {
     assert.throws(function () {pow(a, [2,3]);});
   });
 
+  describe('Quaternion', function () {
+    it('should raise Quaternion to real powers', function () {
+      assert.deepEqual(pow(math.quaternion(1,2,3,4),2), math.quaternion(-28,4,6,8));
+      assert.deepEqual(pow(math.quaternion(1,2,3,4),0), math.quaternion({r:1}));
+      approx.deepEqual(pow(math.quaternion(1,2,3,4),2.5), math.quaternion(-66.5037706357561, -8.360428208578362, -12.540642312867543, -16.720856417156725));
+    });
+
+    it('should raise Quaternion to a Quaternion power', function () {
+      approx.deepEqual(pow(math.quaternion(1,4,0,0), math.quaternion(-2,3,0,0)), math.quaternion(-0.000030177061938851806, 0.0011015451057806702,0,0))
+      approx.deepEqual(pow(math.quaternion(1,4,-3,2), math.quaternion(4,2,-3,2)), math.quaternion(4.023822744421112, -0.08808649248602358, 0.10799947333843203, -0.045858528052467734));
+      approx.deepEqual(pow(math.quaternion(-1,-1,0,4), math.quaternion(-4,5,1,1.5)), math.quaternion(0.00009562614911354535, 0.0010196374737841477, 0.0015348157881126755, -0.0007464390363321687));
+    });
+    
+    it('should raise reals to quaternion powers', function () {
+      approx.deepEqual(pow(1, math.quaternion(3,4,5,9)), math.quaternion({r:1}));
+      approx.deepEqual(pow(-2,math.quaternion(4,2,1,1.5)), math.quaternion(-0.024695944127665907, 0.015530441791896946, -0.004473740387907085, 0.004654139181719533));
+    })
+  })
+
   it('should LaTeX pow', function () {
     var expression = math.parse('pow(2,10)');
     assert.equal(expression.toTex(), '\\left(2\\right)^{10}');
