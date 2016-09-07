@@ -6,6 +6,8 @@
 - Comments of expressions are are now stored in the parsed nodes. See #690.
 - Fixed function `print` not accepting an Object with formatting options as
   third parameter Thanks @ThomasBrierley.
+- Fixed #707: The expression parser no longer accepts numbers ending with a dot
+  like `2.`.
 
 
 ## 2016-08-08, version 3.4.1
