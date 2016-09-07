@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.5.0
+## 2016-09-07, version 3.5.0
 
 - Comments of expressions are are now stored in the parsed nodes. See #690.
 - Fixed function `print` not accepting an Object with formatting options as
