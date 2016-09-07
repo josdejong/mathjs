@@ -102,6 +102,19 @@ describe('sec', function() {
     approx.deepEqual(sec(matrix([1,2,3])), matrix(sec123));
   });
 
+  it('should return the secant of a quaternion', function () {
+    approx.deepEqual(sec(math.quaternion({r:0})), math.quaternion({r:1}));
+    approx.deepEqual(sec(math.quaternion({r:pi})), math.quaternion({r:-1}));
+    approx.deepEqual(sec(math.quaternion({r:pi/2})), math.quaternion({r:Infinity}));
+    approx.deepEqual(sec(math.quaternion({r:pi, i:1})), math.quaternion({r:-0.648054273663885}));
+    approx.deepEqual(sec(math.quaternion({r:2, i:3})), math.quaternion(-0.0416749644111443, 0.0906111371962376,0,0));
+    approx.deepEqual(sec(math.quaternion(1,2,3,4)), math.quaternion(0.106692134692065, -0.049546284522399, 0.198185138089594, -0.148638853567196));
+    approx.deepEqual(sec(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.106692134692065, -0.049546284522399, 0.198185138089594, -0.148638853567196));
+    approx.deepEqual(sec(math.quaternion({i:1})), math.quaternion({r:0.648054273663885}));
+    approx.deepEqual(sec(math.quaternion({j:1})), math.quaternion({r:1.850815717680925}));
+    approx.deepEqual(sec(math.quaternion({k:1})), math.quaternion({r:1.850815717680925}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sec()}, /TypeError: Too few arguments/);
     assert.throws(function () {sec(1, 2)}, /TypeError: Too many arguments/);

@@ -117,6 +117,19 @@ describe('sin', function() {
     assert.throws(function () {sin(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should return the sin of a quaternion', function () {
+    approx.deepEqual(sin(math.quaternion({r:0})), math.quaternion({r:0}));
+    approx.deepEqual(sin(math.quaternion({r:pi})), math.quaternion());
+    approx.deepEqual(sin(math.quaternion({r:pi/2})), math.quaternion({r:1}));
+    approx.deepEqual(sin(math.quaternion({r:pi, i:1})), math.quaternion({i:-1.1752011936438014}));
+    approx.deepEqual(sin(math.quaternion({r:2, i:3})), math.quaternion(9.15449914691143,-4.16890695996656,0,0));
+    approx.deepEqual(sin(math.quaternion(1,2,3,4)), math.quaternion(-0.6833644394248567, 1.3675795738115892, 2.05009331827457, 2.733457757699427));
+    approx.deepEqual(sin(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.6833644394248567, -1.3675795738115892, -2.05009331827457, -2.733457757699427));
+    approx.deepEqual(sin(math.quaternion({i:1})), math.quaternion({i:1.1752011936438014}));
+    approx.deepEqual(sin(math.quaternion({j:1})), math.quaternion({j:-0.8414709848078965}));
+    approx.deepEqual(sin(math.quaternion({k:1})), math.quaternion({k:-0.8414709848078965}));
+  });
+
   it('should LaTeX sin', function () {
     var expression = math.parse('sin(0.5)');
     assert.equal(expression.toTex(), '\\sin\\left(0.5\\right)');

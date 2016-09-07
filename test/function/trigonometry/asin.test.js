@@ -129,6 +129,19 @@ describe('asin', function() {
     approx.deepEqual(asin(matrix([1,2,3])), matrix(asin123));
   });
 
+  it('should return the arcsin of a quaternion', function () {
+    approx.deepEqual(asin(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(asin(math.quaternion({r:pi})), math.quaternion(1.570796326794897, -1.811526272460853,0,0));
+    approx.deepEqual(asin(math.quaternion({r:1})), math.quaternion({r:Math.PI/2}));
+    approx.deepEqual(asin(math.quaternion({r:pi, i:1})), math.quaternion(1.248543032813435, 1.867114393160261,0,0));
+    approx.deepEqual(asin(math.quaternion({r:2, i:3})), math.quaternion(0.570652784321099, 1.983387029916536));
+    approx.deepEqual(asin(math.quaternion(1,2,3,4)), math.quaternion(0.120780096593916, -1.82282439812825, 0.431868480989845, 0.865525438020193));
+    approx.deepEqual(asin(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.159157951935806, -2.212801703031092, -0.434885668972992, -0.402396780153886));
+    approx.deepEqual(asin(math.quaternion({i:1})), math.quaternion({i:0.881373587019543}));
+    approx.deepEqual(asin(math.quaternion({j:1})), math.quaternion(0, -0.549306144334055, 0.615479708670387,0));
+    approx.deepEqual(asin(math.quaternion({k:1})), math.quaternion(0, -0.549306144334055,0, 0.615479708670387));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {asin()}, /TypeError: Too few arguments/);
     assert.throws(function () {asin(1, 2)}, /TypeError: Too many arguments/);

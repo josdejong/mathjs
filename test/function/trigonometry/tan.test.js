@@ -86,6 +86,19 @@ describe('tan', function() {
     approx.deepEqual(tan(matrix([1,2,3])), matrix(tan123));
   });
 
+  it('should return the  of a quaternion', function () {
+    approx.deepEqual(tan(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(tan(math.quaternion({r:pi})), math.quaternion());
+    approx.deepEqual(tan(math.quaternion({r:pi/2})), math.quaternion({r:Infinity}));
+    approx.deepEqual(tan(math.quaternion({r:pi, i:1})), math.quaternion({i:0.761594155955765}));
+    approx.deepEqual(tan(math.quaternion({r:2, i:3})), math.quaternion({r:-0.00376402564150425, i:1.00323862735360980}));
+    approx.deepEqual(tan(math.quaternion(1,2,3,4)), math.quaternion(-0.005151124143795, -0.666686070666377, 0.151138940872055, 0.765821403633296));
+    approx.deepEqual(tan(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.005151124143795, 0.666686070666377, -0.151138940872055, -0.765821403633296));
+    approx.deepEqual(tan(math.quaternion({i:1})), math.quaternion({i: 0.761594155955765}));
+    approx.deepEqual(tan(math.quaternion({j:1})), math.quaternion({j: -1.5574077246549}));
+    approx.deepEqual(tan(math.quaternion({k:1})), math.quaternion({k: -1.5574077246549}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {tan()}, /TypeError: Too few arguments/);
     assert.throws(function () {tan(1, 2)}, /TypeError: Too many arguments/);

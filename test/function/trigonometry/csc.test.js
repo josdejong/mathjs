@@ -87,6 +87,19 @@ describe('csc', function() {
     approx.deepEqual(csc(matrix([1,2,3])), matrix(csc123));
   });
 
+  it('should return the cosecant of a quaternion', function () {
+    approx.deepEqual(csc(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(csc(math.quaternion({r:pi})), math.quaternion({r:Infinity}));
+    approx.deepEqual(csc(math.quaternion({r:pi/2})), math.quaternion({r:1}));
+    approx.deepEqual(csc(math.quaternion({r:pi, i:1})), math.quaternion({i:0.850918128239322}));
+    approx.deepEqual(csc(math.quaternion({r:2, i:3})), math.quaternion(0.090473209753207, 0.0412009862885741,0,0));
+    approx.deepEqual(csc(math.quaternion(1,2,3,4)), math.quaternion(-0.048770169888788, -0.097601051947278, -0.146310509666365, -0.195080679555153));
+    approx.deepEqual(csc(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.048770169888788, 0.097601051947278, 0.146310509666365, 0.195080679555153));
+    approx.deepEqual(csc(math.quaternion({i:1})), math.quaternion({i: -0.850918128239322}));
+    approx.deepEqual(csc(math.quaternion({j:1})), math.quaternion({j: 1.188395105778122}));
+    approx.deepEqual(csc(math.quaternion({k:1})), math.quaternion({k: 1.188395105778122}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {csc()}, /TypeError: Too few arguments/);
     assert.throws(function () {csc(1, 2)}, /TypeError: Too many arguments/);

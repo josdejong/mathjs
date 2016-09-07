@@ -93,6 +93,19 @@ describe('cot', function() {
     approx.deepEqual(cot(matrix([1,2,3])), matrix(cot123));
   });
 
+  it('should return the cotangent of a quaternion', function () {
+    approx.deepEqual(cot(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(cot(math.quaternion({r:pi})), math.quaternion({r:Infinity}));
+    approx.deepEqual(cot(math.quaternion({r:pi/2})), math.quaternion());
+    approx.deepEqual(cot(math.quaternion({r:pi, i:1})), math.quaternion({i:-1.313035285499332}));
+    approx.deepEqual(cot(math.quaternion({r:2, i:3})), math.quaternion(-0.00373971037633696, -0.99675779656935837,0,0));
+    approx.deepEqual(cot(math.quaternion(1,2,3,4)), math.quaternion(-0.0048880388804, 0.632636167071215, -0.143419765997103, -0.726708324611319));
+    approx.deepEqual(cot(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.0048880388804, -0.632636167071215, 0.143419765997103, 0.726708324611319));
+    approx.deepEqual(cot(math.quaternion({i:1})), math.quaternion({i: -1.313035285499332}));
+    approx.deepEqual(cot(math.quaternion({j:1})), math.quaternion({j: 0.642092615934331}));
+    approx.deepEqual(cot(math.quaternion({k:1})), math.quaternion({k: 0.642092615934331}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {cot()}, /TypeError: Too few arguments/);
     assert.throws(function () {cot(1, 2)}, /TypeError: Too many arguments/);

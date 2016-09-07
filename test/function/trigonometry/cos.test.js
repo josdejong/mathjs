@@ -110,10 +110,23 @@ describe('cos', function() {
 
   it('should return the cos of each element of a matrix', function() {
     approx.deepEqual(cos(matrix([1,2,3])), matrix(cos123));
-  });
+  }); 
 
   it('should return the cos of each element of an array', function() {
     approx.deepEqual(cos([1,2,3]), cos123);
+  });
+
+  it('should return the cos of a quaternion', function () {
+    approx.deepEqual(cos(math.quaternion({r:0})), math.quaternion({r:1}));
+    approx.deepEqual(cos(math.quaternion({r:pi})), math.quaternion({r:-1}));
+    approx.deepEqual(cos(math.quaternion({r:pi/2})), math.quaternion());
+    approx.deepEqual(cos(math.quaternion({r:pi, i:1})), math.quaternion({r: -1.5430806348152437, i:0}));
+    approx.deepEqual(cos(math.quaternion({r:2, i:3})), math.quaternion(-4.189625690968807, -9.109227893755337));
+    approx.deepEqual(cos(math.quaternion(1,2,3,4)), math.quaternion(1.418610423681068, 0.6587821668486117, -2.6351286673944467, 1.9763465005458352));
+    approx.deepEqual(cos(math.quaternion(-1,-2,-3,-4)), math.quaternion(1.418610423681068, 0.6587821668486117, -2.6351286673944467, 1.9763465005458352));
+    approx.deepEqual(cos(math.quaternion({i:1})), math.quaternion({r: 1.5430806348152437}));
+    approx.deepEqual(cos(math.quaternion({j:1})), math.quaternion({r: 0.5403023058681398}));
+    approx.deepEqual(cos(math.quaternion({k:1})), math.quaternion({r: 0.5403023058681398}));
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
@@ -127,3 +140,18 @@ describe('cos', function() {
   });
 
 });
+
+
+
+// it('should return the  of a quaternion', function () {
+//     approx.deepEqual( (math.quaternion({r:0})), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion({r:pi})), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion({r:pi/2})), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion({r:pi, i:1})), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion({r:2, i:3})), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion(1,2,3,4)), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion(-1,-2,-3,-4)), math.quaternion( ));
+//     approx.deepEqual( (math.quaternion({i:1})), math.quaternion({i: }));
+//     approx.deepEqual( (math.quaternion({j:1})), math.quaternion({j: }));
+//     approx.deepEqual( (math.quaternion({k:1})), math.quaternion({k: }));
+//   });
