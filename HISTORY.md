@@ -1,6 +1,11 @@
 # History
 
 
+## 2016-09-12, version 3.5.1
+
+- Removed a left over console.log statement. Thanks @eknkc.
+
+
 ## 2016-09-07, version 3.5.0
 
 - Comments of expressions are are now stored in the parsed nodes. See #690.
