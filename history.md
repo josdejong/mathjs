@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160912-version-351">2016-09-12, version 3.5.1 <a href="#20160912-version-351" title="Permalink">#</a></h2>
+
+- Removed a left over console.log statement. Thanks @eknkc.
+
+
 <h2 id="20160907-version-350">2016-09-07, version 3.5.0 <a href="#20160907-version-350" title="Permalink">#</a></h2>
 
 - Comments of expressions are are now stored in the parsed nodes. See #690.

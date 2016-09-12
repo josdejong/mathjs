@@ -23,7 +23,7 @@ File: [angle_configuration.html](angle_configuration.html)
     }
   </style>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.5.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.5.1/math.min.js"></script>
 </head>
 <body>
 
