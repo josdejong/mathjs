@@ -193,10 +193,10 @@ describe('divide', function() {
   });
 
   it('should divide quaternions by each other', function() {
-    assert.deepEqual(divide(new math.quaternion({k:1}) ,new math.quaternion({j:1})), new math.quaternion({i:1}));
-    assert.deepEqual(divide(new math.quaternion({i:1}) ,new math.quaternion({k:1})), new math.quaternion({j:1}));
-    assert.deepEqual(divide(new math.quaternion(3,-2,-3,4),new math.quaternion(3,-2,-3,4)), new math.quaternion(1,0,0,0));
-    assert.deepEqual(divide(new math.quaternion(1,2,3,4), new math.quaternion(-1,1,2,3)), new math.quaternion(19/15, -4/15,-1/5,-8/15));
+    assert.deepEqual(divide(math.quaternion({k:1}), math.quaternion({j:1})), new math.quaternion({i:1}));
+    assert.deepEqual(divide(math.quaternion({i:1}), math.quaternion({k:1})), new math.quaternion({j:1}));
+    assert.deepEqual(divide(math.quaternion(3,-2,-3,4), math.quaternion(3,-2,-3,4)), new math.quaternion(1,0,0,0));
+    approx.deepEqual(divide(math.quaternion(1,2,3,4), math.quaternion(-1,1,2,3)), new math.quaternion(19/15, -4/15,-1/5,-8/15));
   });
   /*
   // These are supported now --ericman314

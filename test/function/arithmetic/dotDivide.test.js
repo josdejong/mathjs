@@ -177,6 +177,6 @@ describe('dotDivide', function() {
   });
 
   it('should dot divide Quaternions', function() {
-    assert(dotDivide(new math.quaternion(2,4,6,9), new math.quaternion(2,2,3,3)), new math.quaternion(1,2,2,3));
+    assert(dotDivide(new math.quaternion(2,4,6,9), new math.quaternion(2,2,3,3)), 8);
   });
 });
