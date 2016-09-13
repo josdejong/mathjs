@@ -71,7 +71,7 @@ describe('arithmetic simplify', function () {
     assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
   });
   it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
-    assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5'), true));
+    assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
   });
 });
 
@@ -223,6 +223,11 @@ describe('overall simplify combining like terms', function () {
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
       simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
   });
+  // TODO: make this test pass by coming up with a way multiply constants by terms that aren't adjacent *****
+  it('2x * y * 10', function () {
+    assert.deepEqual(math.parse('40x^2*y'),
+      simplify(math.parse('2x * y * 10'), true));
+  });
 });
 
 describe('can simplify with division', function () {
@@ -230,6 +235,19 @@ describe('can simplify with division', function () {
     assert.deepEqual(math.parse('19'),
       simplify(math.parse('2 * 4 / 5 * 10 + 3')));
   });
+  it('2x * 4x / 5 * 10 + 3', function () {
+    assert.deepEqual(math.parse('4x^2 + 3'),
+      simplify(math.parse('2x * x / 5 * 10 + 3')));
+  });
+  // once the above todo works, I'm hoping this will too
+  it('2x * y / z * 10', function () {
+    assert.deepEqual(opNode('*', [math.parse('20x'), math.parse('y / z')]),
+      simplify(math.parse('2x * y / z * 10'), true));
+  });
+
+  // TODO: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
+  // also 2x * 3/x should probably simplify and get rid of the x's
+  // I gotta figure out all the rules I need to match - there might be a fair bit (how much do we want to cover for now?)
 });
 
 

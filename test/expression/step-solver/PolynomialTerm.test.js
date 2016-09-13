@@ -14,6 +14,12 @@ describe('classifies symbol terms correctly', function() {
   it('y^55', function () {
     assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('y^55')));
   });
+  it('y^4/4', function () {
+    assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('y^4/4')));
+  });
+  it('5y/3', function () {
+    assert.equal(false, PolynomialTerm.isPolynomialTerm(math.parse('5y/3')));
+  });
   it('x^y', function () {
     assert.equal(false, PolynomialTerm.isPolynomialTerm(math.parse('x^y')));
   });
