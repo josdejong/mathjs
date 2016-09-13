@@ -3,8 +3,15 @@
 const assert = require('assert');
 const math = require('../../../index');
 const stepper = require('../../../lib/expression/step-solver/stepper.js');
+const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
+
+// to create nodes, for testing
+let opNode = NodeCreator.operator;
+let constNode = NodeCreator.constant;
+let symbolNode = NodeCreator.symbol;
+let parenNode = NodeCreator.parenthesis;
 
 function testStep(exp, debug=false) {
   debug = true;
@@ -15,33 +22,6 @@ function testStep(exp, debug=false) {
     console.log(ret.expr.toString(/*{parenthesis: 'all'}*/));
   }
   return ret.expr;
-}
-
-// to create nodes, for testing
-// TODO: put these in a file that can be used by other files and also all the test files
-function opNode(op, args) {
-  switch (op) {
-    case '+':
-      return new math.expression.node.OperatorNode('+', 'add', args);
-    case '*':
-      return new math.expression.node.OperatorNode('*', 'multiply', args);
-    case '^':
-      return new math.expression.node.OperatorNode('^', 'pow', args);
-    default:
-      throw Error("Unsupported operation: " + op);
-  }
-}
-
-function constNode(val) {
-  return new math.expression.node.ConstantNode(val);
-}
-
-function symbolNode(name) {
-  return new math.expression.node.SymbolNode(name);
-}
-
-function parenNode(content) {
-  return new math.expression.node.ParenthesisNode(content);
 }
 
 describe('arithmetic stepping', function () {
@@ -91,7 +71,7 @@ describe('arithmetic simplify', function () {
     assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
   });
   it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
-    assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
+    assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5'), true));
   });
 });
 
@@ -245,6 +225,13 @@ describe('overall simplify combining like terms', function () {
   });
 });
 
+describe('can simplify with division', function () {
+  it('2 * 4 / 5 * 10 + 3', function () {
+    assert.deepEqual(math.parse('19'),
+      simplify(math.parse('2 * 4 / 5 * 10 + 3')));
+  });
+});
+
 
 /* distribution test ideas
 
@@ -253,7 +240,7 @@ describe('overall simplify combining like terms', function () {
     // x*x^3 -> x^(1+3)
     // x^2*x -> x^(2+1)
     // x^2 * x^5 -> x^(2+5)
-    // 2x*x -> 2x^(1+1) 
+    // 2x*x -> 2x^(1+1)
     // 2x*4x -> 2*4*x^(1+1)
     // ---- mrahhh math.parse('x * 2x') gives x*2 on the left..
     // ---- probably still fine
