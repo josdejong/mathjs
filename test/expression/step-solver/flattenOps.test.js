@@ -79,4 +79,11 @@ describe('flattens division', function () {
       opNode('*', [constNode(2), math.parse('x/4'), constNode(6)]),
       flatten(math.parse('2 * x / 4 * 6')));
   });
+  it('2 x * 4 x / 8', function () {
+    assert.deepEqual(
+      opNode('*', [math.parse('2x'), opNode('/', [math.parse('4x'), constNode(8)])]),
+      flatten(math.parse('2 x * 4 x / 8')));
+  });
+
+
 });

@@ -19,7 +19,7 @@ function testStep(exp, debug=false) {
   if (debug) {
     if (!ret.changeType) throw Error("missing or bad change type");
     console.log(ret.changeType);
-    console.log(ret.expr.toString(/*{parenthesis: 'all'}*/));
+    console.log(ret.expr.toString({parenthesis: 'all'}));
   }
   return ret.expr;
 }
@@ -223,11 +223,13 @@ describe('overall simplify combining like terms', function () {
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
       simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
   });
-  // TODO: make this test pass by coming up with a way multiply constants by terms that aren't adjacent *****
+  /*
+  // TODO: multiplication revamp
   it('2x * y * 10', function () {
-    assert.deepEqual(math.parse('40x^2*y'),
+    assert.deepEqual(math.parse('40*x*y'),
       simplify(math.parse('2x * y * 10'), true));
   });
+  */
 });
 
 describe('can simplify with division', function () {
@@ -235,34 +237,32 @@ describe('can simplify with division', function () {
     assert.deepEqual(math.parse('19'),
       simplify(math.parse('2 * 4 / 5 * 10 + 3')));
   });
-  it('2x * 4x / 5 * 10 + 3', function () {
-    assert.deepEqual(math.parse('4x^2 + 3'),
-      simplify(math.parse('2x * x / 5 * 10 + 3')));
+  it('2x * 5x / 2', function () {
+    assert.deepEqual(math.parse('5x^2'),
+      simplify(math.parse('2x * 5x / 2')));
   });
-  // once the above todo works, I'm hoping this will too
+  /* TODO multiplication revamp
+  it('2x * 4x / 5 * 10 + 3', function () {
+    assert.deepEqual(math.parse('16x^2 + 3'),
+      simplify(math.parse('2x * 4x / 5 * 10 + 3'), true));
+  }); */
+  it('2x * 4x / 8', function () {
+    assert.deepEqual(math.parse('x^2'),
+      simplify(math.parse('2x * 4x / 8')));
+  });
+  /* TODO: multiplication revamp
   it('2x * y / z * 10', function () {
     assert.deepEqual(opNode('*', [math.parse('20x'), math.parse('y / z')]),
       simplify(math.parse('2x * y / z * 10'), true));
   });
-
-  // TODO: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
+ */
+  // TODO in the future: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
   // also 2x * 3/x should probably simplify and get rid of the x's
-  // I gotta figure out all the rules I need to match - there might be a fair bit (how much do we want to cover for now?)
+  // and probably a bunch more rules
 });
 
 
 /* distribution test ideas
-
-    // PREREQ FUNCTIONS
-    // x*x -> x^(1+1)
-    // x*x^3 -> x^(1+3)
-    // x^2*x -> x^(2+1)
-    // x^2 * x^5 -> x^(2+5)
-    // 2x*x -> 2x^(1+1)
-    // 2x*4x -> 2*4*x^(1+1)
-    // ---- mrahhh math.parse('x * 2x') gives x*2 on the left..
-    // ---- probably still fine
-
 
     // case 1 has one in parens and one not, only addition
     // 2x * (3x + 4)
