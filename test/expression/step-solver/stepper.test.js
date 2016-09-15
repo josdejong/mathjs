@@ -14,7 +14,6 @@ let symbolNode = NodeCreator.symbol;
 let parenNode = NodeCreator.parenthesis;
 
 function testStep(exp, debug=false) {
-  debug = true;
   let ret = step(new stepper.RootNode(exp));
   if (debug) {
     if (!ret.changeType) throw Error("missing or bad change type");
@@ -143,10 +142,9 @@ describe('collect like terms with exponents and coefficients', function() {
 });
 
 describe('collect like terms for multiplication', function() {
-  it('((2x^2)) * y * x * y^3 -> (2x^2 * x) * (y * y^3)', function () {
-    assert.deepEqual(opNode('*', [
-        parenNode(opNode('*', [math.parse('2x^2'), symbolNode('x')])),
-        math.parse('(y*y^3)')]),
+  it('((2x^2)) * y * x * y^3 -> 2 * (x^2 * x) * (y * y^3)', function () {
+    assert.deepEqual(opNode('*',
+      [math.parse(2), math.parse('(x^2 * x)'), math.parse('(y*y^3)')]),
       testStep(math.parse('2x^2 * y * x * y^3')));
   });
   it('y^2 * 5 * y * 9 -> (5 * 9)*(y^2 * y)', function () {
@@ -201,8 +199,8 @@ describe('combines like terms', function() {
 });
 
 describe('overall simplify combining like terms', function () {
-  it('2x^2 * y * x * y^3 = 2x^3 * y^4', function () {
-    assert.deepEqual(math.parse('2x^3 * y^4'),
+  it('2x^2 * y * x * y^3 = 2 * x^3 * y^4', function () {
+    assert.deepEqual(opNode('*', [constNode(2), math.parse('x^3'), math.parse('y^4')]),
       simplify(math.parse('2x^2 * y * x * y^3')));
   });
   it('x^2 + 3x*4x + 5x^3 + 3x^2 + 6 = 5x^3 + 16x^2 + 6', function () {
@@ -223,39 +221,33 @@ describe('overall simplify combining like terms', function () {
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
       simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
   });
-  /*
-  // TODO: multiplication revamp
-  it('2x * y * 10', function () {
-    assert.deepEqual(math.parse('40*x*y'),
-      simplify(math.parse('2x * y * 10'), true));
+  it('y * 2x * 10 -> 20 * x * y', function () {
+    assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), symbolNode('y')]),
+      simplify(math.parse('y * 2x * 10')));
   });
-  */
 });
 
 describe('can simplify with division', function () {
-  it('2 * 4 / 5 * 10 + 3', function () {
+  it('2 * 4 / 5 * 10 + 3 -> 19', function () {
     assert.deepEqual(math.parse('19'),
       simplify(math.parse('2 * 4 / 5 * 10 + 3')));
   });
-  it('2x * 5x / 2', function () {
+  it('2x * 5x / 2 -> 5x^2', function () {
     assert.deepEqual(math.parse('5x^2'),
       simplify(math.parse('2x * 5x / 2')));
   });
-  /* TODO multiplication revamp
-  it('2x * 4x / 5 * 10 + 3', function () {
+  it('2x * 4x / 5 * 10 + 3 -> 16x^2 + 3', function () {
     assert.deepEqual(math.parse('16x^2 + 3'),
-      simplify(math.parse('2x * 4x / 5 * 10 + 3'), true));
-  }); */
-  it('2x * 4x / 8', function () {
+      simplify(math.parse('2x * 4x / 5 * 10 + 3')));
+  });
+  it('2x * 4x / 8 -> x^2', function () {
     assert.deepEqual(math.parse('x^2'),
       simplify(math.parse('2x * 4x / 8')));
   });
-  /* TODO: multiplication revamp
-  it('2x * y / z * 10', function () {
-    assert.deepEqual(opNode('*', [math.parse('20x'), math.parse('y / z')]),
-      simplify(math.parse('2x * y / z * 10'), true));
+  it('2x * y / z * 10 -> 20 * x * y / z', function () {
+    assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), math.parse('y / z')]),
+      simplify(math.parse('2x * y / z * 10')));
   });
- */
   // TODO in the future: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
   // also 2x * 3/x should probably simplify and get rid of the x's
   // and probably a bunch more rules
