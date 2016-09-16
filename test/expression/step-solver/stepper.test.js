@@ -13,14 +13,14 @@ let constNode = NodeCreator.constant;
 let symbolNode = NodeCreator.symbol;
 let parenNode = NodeCreator.parenthesis;
 
-function testStep(exp, debug=false) {
-  let ret = step(new stepper.RootNode(exp));
+function testStep(node, debug=false) {
+  let nodeStatus = step(node);
   if (debug) {
-    if (!ret.changeType) throw Error("missing or bad change type");
-    console.log(ret.changeType);
-    console.log(ret.expr.toString({parenthesis: 'all'}));
+    if (!nodeStatus.changeType) throw Error("missing or bad change type");
+    console.log(nodeStatus.changeType);
+    console.log(nodeStatus.node.toString({parenthesis: 'all'}));
   }
-  return ret.expr;
+  return nodeStatus.node;
 }
 
 describe('arithmetic stepping', function () {
@@ -70,7 +70,9 @@ describe('arithmetic simplify', function () {
     assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
   });
   it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
-    assert.deepEqual(math.parse('4.8'), simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
+    assert.deepEqual(
+      math.parse('4.8'),
+      simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
   });
 });
 
@@ -219,7 +221,7 @@ describe('overall simplify combining like terms', function () {
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
     assert.deepEqual(opNode('+', [
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
-      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
+      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)'), true));
   });
   it('y * 2x * 10 -> 20 * x * y', function () {
     assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), symbolNode('y')]),

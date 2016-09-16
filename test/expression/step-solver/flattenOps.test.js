@@ -2,9 +2,16 @@
 
 const assert = require('assert');
 const math = require('../../../index');
-const flatten = require('../../../lib/expression/step-solver/flattenOps.js');
+const flattenOps = require('../../../lib/expression/step-solver/flattenOps.js');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 
+function flatten(node, debug=false) {
+  let flattened = flattenOps(node).node;
+  if (debug) {
+    console.log(flattened.toString());
+  }
+  return flattened
+}
 
 // to create nodes, for testing
 let opNode = NodeCreator.operator;
