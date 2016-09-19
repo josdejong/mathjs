@@ -6,6 +6,7 @@ const stepper = require('../../../lib/expression/step-solver/stepper.js');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
+const print = stepper.prettyPrint;
 
 // to create nodes, for testing
 let opNode = NodeCreator.operator;
@@ -18,7 +19,7 @@ function testStep(node, debug=false) {
   if (debug) {
     if (!nodeStatus.changeType) throw Error("missing or bad change type");
     console.log(nodeStatus.changeType);
-    console.log(nodeStatus.node.toString({parenthesis: 'all'}));
+    console.log(print(nodeStatus.node));
   }
   return nodeStatus.node;
 }
@@ -184,11 +185,12 @@ describe('combines like terms', function() {
       math.parse('x'), math.parse('y'), math.parse('y^2')]),
       testStep(math.parse('x + y + y^2')));
   });
-  it('(2x^2 * x) * (y * y^3) -> 2x^(2+1) * (y * y^3)', function () {
-    assert.deepEqual(math.parse('2x^(2+1) * (y * y^3)'),
-      testStep(opNode('*', [
-        parenNode(opNode('*', [math.parse('2x^2'), symbolNode('x')])),
-        math.parse('(y*y^3)')])));
+  it('2x^2 * x * 3x/4 -> (2 * 3/4) * (x^2 * x * x)', function () {
+    assert.deepEqual(testStep(math.parse('2x^2 * x * 3x/4')),
+      opNode('*', [
+        parenNode(opNode('*', [constNode(2), math.parse('3/4')])),
+        parenNode(opNode('*', [
+          math.parse('x^2'), symbolNode('x'), symbolNode('x')]))]));
   });
   it('2x^(2+1) -> 2x^3', function () {
     assert.deepEqual(math.parse('2x^3'),
@@ -221,7 +223,7 @@ describe('overall simplify combining like terms', function () {
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
     assert.deepEqual(opNode('+', [
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
-      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)'), true));
+      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
   });
   it('y * 2x * 10 -> 20 * x * y', function () {
     assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), symbolNode('y')]),
