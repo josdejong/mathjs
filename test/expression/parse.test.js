@@ -223,6 +223,9 @@ describe('parse', function() {
       assert.equal(parseAndEval('0'), 0);
       assert.equal(parseAndEval('3'), 3);
       assert.equal(parseAndEval('3.2'), 3.2);
+      assert.equal(parseAndEval('3.'), 3);
+      assert.equal(parseAndEval('3. '), 3);
+      assert.equal(parseAndEval('3.\t'), 3);
       assert.equal(parseAndEval('003.2'), 3.2);
       assert.equal(parseAndEval('003.200'), 3.2);
       assert.equal(parseAndEval('.2'), 0.2);
@@ -240,7 +243,6 @@ describe('parse', function() {
 
     it('should throw an error with invalid numbers', function() {
       assert.throws(function () {parseAndEval('.'); }, /Value expected/);
-      assert.throws(function () {parseAndEval('4.'); }, /Unexpected operator ./);
       assert.throws(function () {parseAndEval('3.2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2e2.2'); }, SyntaxError);
       

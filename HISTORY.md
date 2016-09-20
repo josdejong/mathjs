@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.5.2
+
+- Fixed numbers ending with a decimal mark (like `2.`) not being supported by
+  the parser, solved the ambiguity in the parser. See #707, #711.
+
+
 ## 2016-09-12, version 3.5.1
 
 - Removed a left over console.log statement. Thanks @eknkc.
