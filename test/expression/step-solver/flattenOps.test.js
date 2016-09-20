@@ -6,11 +6,11 @@ const flattenOps = require('../../../lib/expression/step-solver/flattenOps.js');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 
 function flatten(node, debug=false) {
-  let flattened = flattenOps(node).node;
+  let flattened = flattenOps(node);
   if (debug) {
     console.log(flattened.toString());
   }
-  return flattened
+  return flattened;
 }
 
 // to create nodes, for testing
@@ -76,10 +76,10 @@ describe('flattens + and *', function () {
 });
 
 describe('flattens division', function () {
-  it('2/3/4/5 --> 2/(3*4*5)', function () {
+  it('2*3/4/5*6 --> 2 * 3/4/5 * 6', function () {
     assert.deepEqual(
-      opNode('/', [constNode(2), opNode('*', [constNode(3), constNode(4), constNode(5)])]),
-      flatten(math.parse('2/3/4/5')));
+      opNode('*', [constNode(2), math.parse('3/4/5'), constNode(6)]),
+      flatten(math.parse('2*3/4/5*6')));
   });
   it('2 * x / 4 * 6 groups x/4 and continues to flatten *', function () {
     assert.deepEqual(

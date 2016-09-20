@@ -6,7 +6,7 @@ const stepper = require('../../../lib/expression/step-solver/stepper.js');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
-const print = stepper.prettyPrint;
+const print = require('./../../../lib/expression/step-solver/Util');
 
 // to create nodes, for testing
 let opNode = NodeCreator.operator;
@@ -244,9 +244,9 @@ describe('can simplify with division', function () {
     assert.deepEqual(math.parse('16x^2 + 3'),
       simplify(math.parse('2x * 4x / 5 * 10 + 3')));
   });
-  it('2x * 4x / 8 -> x^2', function () {
+  it('2x * 4x / 2 / 4 -> x^2', function () {
     assert.deepEqual(math.parse('x^2'),
-      simplify(math.parse('2x * 4x / 8')));
+      simplify(math.parse('2x * 4x / 2 / 4')));
   });
   it('2x * y / z * 10 -> 20 * x * y / z', function () {
     assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), math.parse('y / z')]),
