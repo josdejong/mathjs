@@ -3,34 +3,16 @@
 const assert = require('assert');
 const math = require('../../../index');
 const flatten = require('../../../lib/expression/step-solver/flattenOps.js');
+const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
+
 
 // to create nodes, for testing
-function opNode(op, args) {
-  switch (op) {
-    case '+':
-      return new math.expression.node.OperatorNode('+', 'add', args);
-    case '*':
-      return new math.expression.node.OperatorNode('*', 'multiply', args);
-    case '^':
-      return new math.expression.node.OperatorNode('^', 'pow', args);
-    default:
-      throw Error("Unsupported operation: " + op);
-  }
-}
+let opNode = NodeCreator.operator;
+let constNode = NodeCreator.constant;
+let symbolNode = NodeCreator.symbol;
+let parenNode = NodeCreator.parenthesis;
 
-function constNode(val) {
-  return new math.expression.node.ConstantNode(val);
-}
-
-function symbolNode(name) {
-  return new math.expression.node.SymbolNode(name);
-}
-
-function parenNode(content) {
-  return new math.expression.node.ParenthesisNode(content);
-}
-
-describe('flatten ops', function () {
+describe('flattens + and *', function () {
   it('2+2', function () {
     assert.deepEqual(math.parse('2+2'), flatten(math.parse('2+2')));
   });
@@ -70,11 +52,38 @@ describe('flatten ops', function () {
     assert.deepEqual(math.parse('2 x ^ (2 + 1) * y'),
       flatten(math.parse('2 x ^ (2 + 1) * y')));
   });
+  it('2x ^ (2 + 1 + 2) * y flattens the addition', function () {
+    assert.deepEqual(
+      opNode('*', [
+        opNode('*', [constNode(2),
+          opNode('^', [symbolNode('x'), parenNode(opNode('+', [constNode(2), constNode(1), constNode(2)]))]),
+          ], true),
+        symbolNode('y')]),
+     flatten(math.parse('2 x ^ (2 + 1 + 2) * y')));
+  });
   it('3x*4x -> 3x * 4x', function () {
-    console.log(flatten(math.parse('3x*4x')).toString());
-
     assert.deepEqual(opNode('*', [
       math.parse('3x'), math.parse('4x')]),
       flatten(math.parse('3x*4x')));
   });
+});
+
+describe('flattens division', function () {
+  it('2/3/4/5 --> 2/(3*4*5)', function () {
+    assert.deepEqual(
+      opNode('/', [constNode(2), opNode('*', [constNode(3), constNode(4), constNode(5)])]),
+      flatten(math.parse('2/3/4/5')));
+  });
+  it('2 * x / 4 * 6 groups x/4 and continues to flatten *', function () {
+    assert.deepEqual(
+      opNode('*', [constNode(2), math.parse('x/4'), constNode(6)]),
+      flatten(math.parse('2 * x / 4 * 6')));
+  });
+  it('2 x * 4 x / 8', function () {
+    assert.deepEqual(
+      opNode('*', [math.parse('2x'), opNode('/', [math.parse('4x'), constNode(8)])]),
+      flatten(math.parse('2 x * 4 x / 8')));
+  });
+
+
 });
