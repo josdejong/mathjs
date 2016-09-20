@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160920-version-352">2016-09-20, version 3.5.2 <a href="#20160920-version-352" title="Permalink">#</a></h2>
+
+- Fixed numbers ending with a decimal mark (like `2.`) not being supported by
+  the parser, solved the underlying ambiguity in the parser. See #707, #711.
+
+
 <h2 id="20160912-version-351">2016-09-12, version 3.5.1 <a href="#20160912-version-351" title="Permalink">#</a></h2>
 
 - Removed a left over console.log statement. Thanks @eknkc.

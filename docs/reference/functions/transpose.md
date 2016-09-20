@@ -7,7 +7,9 @@ layout: default
 <h1 id="function-transpose">Function transpose <a href="#function-transpose" title="Permalink">#</a></h1>
 
 Transpose a matrix. All values of the matrix are reflected over its
-main diagonal. Only two dimensional matrices are supported.
+main diagonal. Only applicable to two dimensional matrices containing
+a vector (i.e. having size `[1,n]` or `[n,1]`). One dimensional
+vectors and scalars return the input unchanged.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
