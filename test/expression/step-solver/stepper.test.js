@@ -3,42 +3,24 @@
 const assert = require('assert');
 const math = require('../../../index');
 const stepper = require('../../../lib/expression/step-solver/stepper.js');
+const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
+
+// to create nodes, for testing
+let opNode = NodeCreator.operator;
+let constNode = NodeCreator.constant;
+let symbolNode = NodeCreator.symbol;
+let parenNode = NodeCreator.parenthesis;
 
 function testStep(exp, debug=false) {
   let ret = step(new stepper.RootNode(exp));
   if (debug) {
-    console.log(ret.rule);
-    console.log(ret.expr.toString(/*{parenthesis: 'all'}*/));
+    if (!ret.changeType) throw Error("missing or bad change type");
+    console.log(ret.changeType);
+    console.log(ret.expr.toString({parenthesis: 'all'}));
   }
   return ret.expr;
-}
-
-// to create nodes, for testing
-function opNode(op, args) {
-  switch (op) {
-    case '+':
-      return new math.expression.node.OperatorNode('+', 'add', args);
-    case '*':
-      return new math.expression.node.OperatorNode('*', 'multiply', args);
-    case '^':
-      return new math.expression.node.OperatorNode('^', 'pow', args);
-    default:
-      throw Error("Unsupported operation: " + op);
-  }
-}
-
-function constNode(val) {
-  return new math.expression.node.ConstantNode(val);
-}
-
-function symbolNode(name) {
-  return new math.expression.node.SymbolNode(name);
-}
-
-function parenNode(content) {
-  return new math.expression.node.ParenthesisNode(content);
 }
 
 describe('arithmetic stepping', function () {
@@ -92,56 +74,6 @@ describe('arithmetic simplify', function () {
   });
 });
 
-describe('flatten ops', function () {
-  let flatten = stepper.flattenOps;
-  it('2+2', function () {
-    assert.deepEqual(math.parse('2+2'), flatten(math.parse('2+2')));
-  });
-  it('2+2+7', function () {
-    assert.deepEqual(opNode('+', [constNode(2), constNode(2), constNode(7)]),
-      flatten(math.parse('2+2+7')));
-  });
-  it('9*8*6+3+4', function () {
-    assert.deepEqual(opNode('+', [
-        opNode('*', [constNode(9), constNode(8), constNode(6)]),
-        constNode(3),
-        constNode(4)]),
-      flatten(math.parse('9*8*6+3+4')));
-  });
-  it('5*(2+3+2))*10', function () {
-    assert.deepEqual(opNode('*', [
-        constNode(5),
-        parenNode(opNode('+', [constNode(2), constNode(3),constNode(2)])),
-        constNode(10)]),
-      flatten(math.parse('5*(2+3+2)*10')));
-  });
-  it('9x*8*6+3+4 keeps the polynomial term', function () {
-    assert.deepEqual(opNode('+', [
-        opNode('*', [math.parse('9x'), constNode(8), constNode(6)]),
-        constNode(3),
-        constNode(4)]),
-      flatten(math.parse('9x*8*6+3+4')));
-  });
-  it('9x*8*6+3y^2+4 keeps the polynomial terms', function () {
-    assert.deepEqual(opNode('+', [
-        opNode('*', [math.parse('9x'), constNode(8), constNode(6)]),
-        math.parse('3y^2'),
-        constNode(4)]),
-      flatten(math.parse('9x*8*6+3y^2+4')));
-  });
-  it('2x ^ (2 + 1) * y not flattened', function () {
-    assert.deepEqual(math.parse('2 x ^ (2 + 1) * y'),
-      flatten(math.parse('2 x ^ (2 + 1) * y')));
-  });
-  it('3x*4x -> 3x * 4x', function () {
-    console.log(flatten(math.parse('3x*4x')).toString());
-
-    assert.deepEqual(opNode('*', [
-      math.parse('3x'), math.parse('4x')]),
-      flatten(math.parse('3x*4x')));
-  });
-});
-
 describe('adding symbols without breaking things', function() {
   // nothing old breaks
   it('2+x no change', function () {
@@ -189,27 +121,6 @@ describe('basic addition collect like terms, no exponents or coefficients',
   }
 );
 
-describe('classifies symbol terms correctly', function() {
-  it('x', function () {
-    assert.equal(true, stepper.isPolynomialTerm(math.parse('x')));
-  });
-  it('x^2', function () {
-    assert.equal(true, stepper.isPolynomialTerm(math.parse('x^2')));
-  });
-  it('y^55', function () {
-    assert.equal(true, stepper.isPolynomialTerm(math.parse('y^55')));
-  });
-  it('x^y', function () {
-    assert.equal(false, stepper.isPolynomialTerm(math.parse('x^y')));
-  });
-  it('3', function () {
-    assert.equal(false, stepper.isPolynomialTerm(math.parse('3')));
-  });
-  it('2^5', function () {
-    assert.equal(false, stepper.isPolynomialTerm(math.parse('2^5')));
-  });
-});
-
 describe('collect like terms with exponents and coefficients', function() {
   it('x^2 + x + x^2 + x -> (x^2 + x^2) + (x + x)', function () {
     assert.deepEqual(math.parse('(x^2 + x^2) + (x + x)'),
@@ -231,10 +142,9 @@ describe('collect like terms with exponents and coefficients', function() {
 });
 
 describe('collect like terms for multiplication', function() {
-  it('((2x^2)) * y * x * y^3 -> (2x^2 * x) * (y * y^3)', function () {
-    assert.deepEqual(opNode('*', [
-        parenNode(opNode('*', [math.parse('2x^2'), symbolNode('x')])),
-        math.parse('(y*y^3)')]),
+  it('((2x^2)) * y * x * y^3 -> 2 * (x^2 * x) * (y * y^3)', function () {
+    assert.deepEqual(opNode('*',
+      [math.parse(2), math.parse('(x^2 * x)'), math.parse('(y*y^3)')]),
       testStep(math.parse('2x^2 * y * x * y^3')));
   });
   it('y^2 * 5 * y * 9 -> (5 * 9)*(y^2 * y)', function () {
@@ -261,15 +171,16 @@ describe('collect like terms for multiplication', function() {
 describe('combines like terms', function() {
   it('(x + x) + (x^2 + x^2) -> 2x + 2x^2', function () {
     assert.deepEqual(math.parse('2x + (x^2 + x^2)'),
-      testStep(math.parse('(x + x) + (x^2 + x^2)'), true));
+      testStep(math.parse('(x + x) + (x^2 + x^2)')));
   });
   it('10 + (y^2 + y^2) -> 10 + 2y^2', function () {
     assert.deepEqual(math.parse('10 + 2y^2'),
       testStep(math.parse('10 + (y^2 + y^2)')));
   });
-  it('x + (y + y^2) no change', function () {
-    assert.deepEqual(math.parse('x + (y + y^2)'),
-      testStep(math.parse('x + (y + y^2)')));
+  it('x + y + y^2 no change', function () {
+    assert.deepEqual(opNode('+', [
+      math.parse('x'), math.parse('y'), math.parse('y^2')]),
+      testStep(math.parse('x + y + y^2')));
   });
   it('(2x^2 * x) * (y * y^3) -> 2x^(2+1) * (y * y^3)', function () {
     assert.deepEqual(math.parse('2x^(2+1) * (y * y^3)'),
@@ -288,8 +199,8 @@ describe('combines like terms', function() {
 });
 
 describe('overall simplify combining like terms', function () {
-  it('2x^2 * y * x * y^3 = 2x^3 * y^4', function () {
-    assert.deepEqual(math.parse('2x^3 * y^4'),
+  it('2x^2 * y * x * y^3 = 2 * x^3 * y^4', function () {
+    assert.deepEqual(opNode('*', [constNode(2), math.parse('x^3'), math.parse('y^4')]),
       simplify(math.parse('2x^2 * y * x * y^3')));
   });
   it('x^2 + 3x*4x + 5x^3 + 3x^2 + 6 = 5x^3 + 16x^2 + 6', function () {
@@ -308,23 +219,42 @@ describe('overall simplify combining like terms', function () {
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
     assert.deepEqual(opNode('+', [
       math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
-      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)'), true));
+      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
   });
+  it('y * 2x * 10 -> 20 * x * y', function () {
+    assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), symbolNode('y')]),
+      simplify(math.parse('y * 2x * 10')));
+  });
+});
+
+describe('can simplify with division', function () {
+  it('2 * 4 / 5 * 10 + 3 -> 19', function () {
+    assert.deepEqual(math.parse('19'),
+      simplify(math.parse('2 * 4 / 5 * 10 + 3')));
+  });
+  it('2x * 5x / 2 -> 5x^2', function () {
+    assert.deepEqual(math.parse('5x^2'),
+      simplify(math.parse('2x * 5x / 2')));
+  });
+  it('2x * 4x / 5 * 10 + 3 -> 16x^2 + 3', function () {
+    assert.deepEqual(math.parse('16x^2 + 3'),
+      simplify(math.parse('2x * 4x / 5 * 10 + 3')));
+  });
+  it('2x * 4x / 8 -> x^2', function () {
+    assert.deepEqual(math.parse('x^2'),
+      simplify(math.parse('2x * 4x / 8')));
+  });
+  it('2x * y / z * 10 -> 20 * x * y / z', function () {
+    assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), math.parse('y / z')]),
+      simplify(math.parse('2x * y / z * 10')));
+  });
+  // TODO in the future: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
+  // also 2x * 3/x should probably simplify and get rid of the x's
+  // and probably a bunch more rules
 });
 
 
 /* distribution test ideas
-
-    // PREREQ FUNCTIONS
-    // x*x -> x^(1+1)
-    // x*x^3 -> x^(1+3)
-    // x^2*x -> x^(2+1)
-    // x^2 * x^5 -> x^(2+5)
-    // 2x*x -> 2x^(1+1) 
-    // 2x*4x -> 2*4*x^(1+1)
-    // ---- mrahhh math.parse('x * 2x') gives x*2 on the left..
-    // ---- probably still fine
-
 
     // case 1 has one in parens and one not, only addition
     // 2x * (3x + 4)
