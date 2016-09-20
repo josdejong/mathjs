@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.5.3
+
+- Some more fixes regarding numbers ending with a decimal mark (like `2.`).
+
+
 ## 2016-09-20, version 3.5.2
 
 - Fixed numbers ending with a decimal mark (like `2.`) not being supported by

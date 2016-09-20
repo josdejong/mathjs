@@ -1001,6 +1001,7 @@ describe('parse', function() {
     it('should parse add +', function() {
       assert.equal(parseAndEval('2 + 3'), 5);
       assert.equal(parseAndEval('2 + 3 + 4'), 9);
+      assert.equal(parseAndEval('2.+3'), 5); // test whether the decimal mark isn't confused
     });
 
     it('should parse divide /', function() {
