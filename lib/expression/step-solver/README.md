@@ -18,6 +18,9 @@ Here are some things to know that will help make sense of the code:
   This stepper uses OperationNode, ParenthesisNode, ConstantNode and SymbolNode. You can read about
   them [on the same documentation page as expressions](http://mathjs.org/docs/expressions/expression_trees.html)
   It will be pretty helpful to get an idea of how they all work.
+- Keep in mind when dealing with the node expression that a parent node's child nodes are
+  called different things depending on the parent node type. Operation nodes have `args` as
+  their children, and parenthesis nodes have a single child called `content`.
 - One thing that's especially helpful to know is that multiplication nodes can be implicit.
   If you do `n = math.parse('2*x')` you'll get a multiplication node with `n.args` 2 and x.
   If you do `n = math.parse(2x)` you'll also get a multiplication node with `n.args` 2 and x,
@@ -36,12 +39,6 @@ Here are some things to know that will help make sense of the code:
 
 ## BIG DETAILED TODO (in approx this order)
 
-CLEANING THE CODE
-
-- make functions to check type of node
-- consider renaming the root node context object (confusing)
-- maybe abstract out the whole node object thing so that it's only node contexts
-
 SUBTRACTION SUPPORT
 
 - at beginning 'resolve' all unary minuses after addition signs
@@ -52,32 +49,19 @@ SUBTRACTION SUPPORT
 - make sure unary minus with a child that is symbol or constant is just treated
   like any other symbol or constant
 
-DIVISION SUPPORT
+REFACTOR #3
 
-- this can still be a tree with the parent as mult and stay human readable
- - (cymath does it)
-- for division signs following division signs: the first argument in a chain
-  becomes a numerator and the rest become the denominator
- - e.g. a / b / c / d * e -> a/(b*c*d) * e
-- division signs following a multiplication sign becomes the denominator of
-  only the very last thing before it
- - e.g. a * b * c / e * d -> a * b * c/e * d
-- note that to have the numerator be > 1 terms before the devisor, the numerator
-  would have had to be in parens e.g. a * (b * c) / e * d -> a * (b*c)/e * d
-- add support for polynomial terms that have fraction coefficients (ie are divided by a constant)
+- make functions to check type of node
+- abstract polynomial terms into its own class, shouldn't have to deal with any
+  args or other node attributes outside of the class (coefficient, exponent,
+  symbol, nodes, constants, etc)
 
+FUTURE THINGS:
 
-various:
-
-- make constants or functions to check node type (to avoid typos)
+- distribution
+- fraction support
+- factoring
 - add support for function nodes like sqrt(x)
-
-ideas:
-
-- in the object that stores the rootnode and hasChanged, also have a thing that
-  stores the step?
-
-will want to resolve any arithmetic at beginning
 
 ------- done ---------
 
@@ -116,10 +100,31 @@ LAST COLLECTING LIKE TERMS DETAIL
  - this includes things like (2x^2)
 - x^1 should be reduced to x if that ever shows up
 
-ORGANIZE THE CODE
+ORGANIZE THE CODE / REFACTOR #1
 
 - make a map of what calls what
 - separate things into steps, probably
 - see what can be private within a step, what needs to be accessible
 - put things into classes or functions
-- hopefully separate into files too
+- separate into lots of different files
+
+DIVISION SUPPORT
+
+- this can still be a tree with the parent as mult and stay human readable
+ - (cymath does it)
+- for division signs following division signs: the first argument in a chain
+  becomes a numerator and the rest become the denominator
+ - e.g. a / b / c / d * e -> a/(b*c*d) * e
+- division signs following a multiplication sign becomes the denominator of
+  only the very last thing before it
+ - e.g. a * b * c / e * d -> a * b * c/e * d
+- note that to have the numerator be > 1 terms before the devisor, the numerator
+  would have had to be in parens e.g. a * (b * c) / e * d -> a * (b*c)/e * d
+- add support for polynomial terms that have fraction coefficients (ie are divided by a constant)
+
+BETTER RECURSION / REFACTOR #2
+
+- replace context nodes with status nodes and better recursion
+- more comments and clearer variable names
+- add more tests
+

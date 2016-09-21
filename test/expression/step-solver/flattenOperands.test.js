@@ -2,11 +2,11 @@
 
 const assert = require('assert');
 const math = require('../../../index');
-const flattenOps = require('../../../lib/expression/step-solver/flattenOps.js');
+const flattenOperands = require('../../../lib/expression/step-solver/flattenOperands.js');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 
 function flatten(node, debug=false) {
-  let flattened = flattenOps(node);
+  let flattened = flattenOperands(node);
   if (debug) {
     console.log(flattened.toString());
   }
