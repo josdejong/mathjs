@@ -74,7 +74,7 @@ MULTIPLICATION
  - 2x is! so I can use that to find coefficients
 - when flattening the tree, keep these as terms
  - so 4\*4y\*(2+x)\*2x should flatten to a mult with children: 4, 4y, (2+x), 2x
-- when removing uncessary parens, make sure I'm removing them around polynomial terms
+- when removing unnecessary parens, make sure I'm removing them around polynomial terms
 - make sure multiplication with like terms works
  - here like terms will be by symbol and shouldn't be divided by power
  - and constants should be at the front instead of the end

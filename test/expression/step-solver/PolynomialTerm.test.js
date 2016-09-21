@@ -3,33 +3,37 @@
 const assert = require('assert');
 const math = require('../../../index');
 
-const flatten = require('../../../lib/expression/step-solver/flattenOps.js');
+const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const PolynomialTerm = require('../../../lib/expression/step-solver/PolynomialTerm.js');
+
+function isPolynomialTerm(exprString) {
+  return PolynomialTerm.isPolynomialTerm(math.parse(exprString))
+}
 
 describe('classifies symbol terms correctly', function() {
   it('x', function () {
-    assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('x')));
+    assert.equal(isPolynomialTerm('x'), true);
   });
   it('x^2', function () {
-    assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('x^2')));
+    assert.equal(isPolynomialTerm('x^2'), true);
   });
   it('y^55', function () {
-    assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('y^55')));
+    assert.equal(isPolynomialTerm('y^55'), true);
   });
   it('y^(4+3)/4', function () {
-    assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('y^4/4')));
+    assert.equal(isPolynomialTerm('y^4/4'), true);
   });
   it('5y/3', function () {
-    assert.equal(true, PolynomialTerm.isPolynomialTerm(math.parse('5y/3')));
+    assert.equal(isPolynomialTerm('5y/3'), true);
   });
   it('x^y', function () {
-    assert.equal(false, PolynomialTerm.isPolynomialTerm(math.parse('x^y')));
+    assert.equal(isPolynomialTerm('x^y'), false);
   });
   it('3', function () {
-    assert.equal(false, PolynomialTerm.isPolynomialTerm(math.parse('3')));
+    assert.equal(isPolynomialTerm('3'), false);
   });
   it('2^5', function () {
-    assert.equal(false, PolynomialTerm.isPolynomialTerm(math.parse('2^5')));
+    assert.equal(isPolynomialTerm('2^5'), false);
   });
 });
 
@@ -110,10 +114,44 @@ describe('combinePolynomialTerms addition', function() {
   });
 });
 
-/*
-multiplyConstantByPolynomialTerm
 
-simplifyPolynomialFraction
+function multiplyConstantAndPolynomialTerm(exprString) {
+  return PolynomialTerm.multiplyConstantAndPolynomialTerm(
+    flatten(math.parse(exprString))).node;
+}
 
-canCombinePolynomialTerms
-*/
+describe('multiplyConstantAndPolynomialTerm', function() {
+  it('2 * x^2 -> 2x^2', function () {
+    assert.deepEqual(
+      multiplyConstantAndPolynomialTerm('2 * x^2'),
+      flatten(math.parse('2x^2')));
+  });
+  it('y^3 * 5-> 30y^3', function () {
+    assert.deepEqual(
+      multiplyConstantAndPolynomialTerm('y^3 * 5'),
+      flatten(math.parse('5y^3')));
+  });
+});
+
+function simplifyPolynomialFraction(exprString) {
+  return PolynomialTerm.simplifyPolynomialFraction(
+    flatten(math.parse(exprString))).node;
+}
+
+describe('simplifyPolynomialFraction', function() {
+  it('2x/4 -> x/2', function () {
+    assert.deepEqual(
+      simplifyPolynomialFraction('2x/4'),
+      flatten(math.parse('x/2')));
+  });
+  it('9y/3 -> 3y', function () {
+    assert.deepEqual(
+      simplifyPolynomialFraction('9y/3'),
+      flatten(math.parse('3y')));
+  });
+  it('12z^2/27 -> 4z^2/9', function () {
+    assert.deepEqual(
+      simplifyPolynomialFraction('12z^2/27'),
+      flatten(math.parse('4z^2/9')));
+  });
+});

@@ -4,7 +4,7 @@ const assert = require('assert');
 const math = require('../../../index');
 
 const LikeTermCollector = require('../../../lib/expression/step-solver/LikeTermCollector.js');
-const flatten = require('../../../lib/expression/step-solver/flattenOps.js');
+const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 
 function collectLikeTerms(expression, debug=false) {
   const exprTree = flatten(math.parse(expression));

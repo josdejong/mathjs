@@ -3,10 +3,11 @@
 const assert = require('assert');
 const math = require('../../../index');
 const stepper = require('../../../lib/expression/step-solver/stepper.js');
-const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
+const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const print = require('./../../../lib/expression/step-solver/Util');
+const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 
 // to create nodes, for testing
 let opNode = NodeCreator.operator;
@@ -14,10 +15,13 @@ let constNode = NodeCreator.constant;
 let symbolNode = NodeCreator.symbol;
 let parenNode = NodeCreator.parenthesis;
 
-function testStep(node, debug=false) {
-  let nodeStatus = step(node);
+function testStep(exprString, debug=false) {
+  let expr = math.parse(exprString);
+  let nodeStatus = step(expr);
   if (debug) {
-    if (!nodeStatus.changeType) throw Error("missing or bad change type");
+    if (!nodeStatus.changeType) {
+      throw Error("missing or bad change type");
+    }
     console.log(nodeStatus.changeType);
     console.log(print(nodeStatus.node));
   }
@@ -25,50 +29,56 @@ function testStep(node, debug=false) {
 }
 
 describe('arithmetic stepping', function () {
-  it('2+2 -> 4', function () {
-    assert.deepEqual(math.parse('4'), testStep(math.parse('2+2')));
-  });
   it('(2+2) -> 4', function () {
-    assert.deepEqual(math.parse('4'), testStep(math.parse('(2+2)')));
+    assert.deepEqual(
+      testStep('(2+2)'),
+      math.parse('4'));
   });
   it('(2+2)*5 -> 4*5', function () {
-    assert.deepEqual(math.parse('4*5'), testStep(math.parse('(2+2)*5')));
+    assert.deepEqual(
+      testStep('(2+2)*5'),
+      math.parse('4*5'));
   });
   it('5*(2+2) -> 5*4', function () {
-    assert.deepEqual(math.parse('5*4'), testStep(math.parse('5*(2+2)')));
-  });
-  it('(((5))) -> 5', function () {
-    assert.deepEqual(math.parse('5'), testStep(math.parse('(((5)))')));
+    assert.deepEqual(
+      testStep('5*(2+2)'),
+      math.parse('5*4'));
   });
   it('2*(2+2) + 2^3 -> 2*4 + 2^3', function () {
-    assert.deepEqual(math.parse('2*4 + 2^3'), testStep(math.parse('2*(2+2) + 2^3 ')));
+    assert.deepEqual(
+      testStep('2*(2+2) + 2^3'),
+      math.parse('2*4 + 2^3'));
   });
 });
 
-describe('remove uncessary parens', function() {
+describe('remove unnecessary parens at root level', function() {
   it('(2+(2)) -> 2+2', function () {
-    assert.deepEqual(math.parse('2+2'), testStep(math.parse('(2+(2))')));
-  });
-  it('(2+(2)+7) -> 2+2+7', function () {
-    assert.deepEqual(math.parse('2+2+7'), testStep(math.parse('(2+(2)+7)')));
+    assert.deepEqual(
+      testStep('(2+(2))'),
+      math.parse('2+2'));
   });
   it('((2+2) + ((2^3))) -> (2+2) + 2^3 ', function () {
-    assert.deepEqual(math.parse('(2+2) + 2^3'), testStep(math.parse('((2+2) + ((2^3)))')));
+    assert.deepEqual(
+      testStep('((2+2) + ((2^3)))'),
+      math.parse('(2+2) + 2^3'));
   });
 });
 
-describe('arithmetic simplify', function () {
-  it('2+2 = 4', function () {
-    assert.deepEqual(math.parse('4'), simplify(math.parse('2+2')));
-  });
+describe('simplify (arithmetic)', function () {
   it('(2+2)*5 = 20', function () {
-    assert.deepEqual(math.parse('20'), simplify(math.parse('(2+2)*5')));
+    assert.deepEqual(
+      simplify(math.parse('(2+2)*5')),
+      math.parse('20'));
   });
   it('5*(2+2)*10 = 200', function () {
-    assert.deepEqual(math.parse('200'), simplify(math.parse('5*(2+2)*10')));
+    assert.deepEqual(
+      simplify(math.parse('5*(2+2)*10')),
+      math.parse('200'));
   });
   it('(2+(2)+7) = 11', function () {
-    assert.deepEqual(math.parse('11'), simplify(math.parse('(2+(2)+7)')));
+    assert.deepEqual(
+      simplify(math.parse('(2+(2)+7)')),
+      math.parse('11'));
   });
   it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
     assert.deepEqual(
@@ -80,100 +90,118 @@ describe('arithmetic simplify', function () {
 describe('adding symbols without breaking things', function() {
   // nothing old breaks
   it('2+x no change', function () {
-    assert.deepEqual(math.parse('2+x'), testStep(math.parse('2+x')));
+    assert.deepEqual(
+      testStep('2+x'),
+      math.parse('2+x'));
   });
   it('(2+2)*x = 4*x', function () {
-    assert.deepEqual(math.parse('4*x'), testStep(math.parse('(2+2)*x')));
+    assert.deepEqual(
+      testStep('(2+2)*x'),
+      math.parse('4*x'));
   });
   it('(2+2)*x+3 = 4*x+3', function () {
-    assert.deepEqual(math.parse('4*x+3'), testStep(math.parse('(2+2)*x+3')));
+    assert.deepEqual(
+      testStep('(2+2)*x+3'),
+      math.parse('4*x+3'));
   });
 });
 
-describe('collecting like terms within the context of the stepper',
-  function() {
-    it('(2+x+7) -> x + (2+7)', function () {
-      assert.deepEqual(math.parse('x+(2+7)'), testStep(math.parse('2+x+7')));
-    });
-  }
+describe('collecting like terms within the context of the stepper', function() {
+  it('(2+x+7) -> x + (2+7)', function () {
+    assert.deepEqual(
+      testStep('2+x+7'),
+      math.parse('x+(2+7)'));
+  });
   it('((2x^2)) * y * x * y^3 -> 2 * (x^2 * x) * (y * y^3)', function () {
-    assert.deepEqual(opNode('*',
-      [math.parse(2), math.parse('(x^2 * x)'), math.parse('(y*y^3)')]),
-      testStep(math.parse('2x^2 * y * x * y^3')));
+    assert.deepEqual(
+      testStep('2x^2 * y * x * y^3'),
+      flatten(math.parse('2 * (x^2 * x) * (y * y^3)')));
   });
   it('will still simplify first for y * 5 * (2+3) * y^2 ', function () {
-      assert.deepEqual(opNode('*', [
-            math.parse('y'), math.parse('5'), math.parse('5'), math.parse('y^2')]),
-        testStep(math.parse('y * 5 * (2+3) * y^2')));
-    });
+      assert.deepEqual(
+        testStep('y * 5 * (2+3) * y^2'),
+        flatten(math.parse('y * 5 * 5 * y^2')));
+  });
 });
 
-describe('combines like terms', function() {
+describe('collects and combines like terms', function() {
   it('(x + x) + (x^2 + x^2) -> 2x + 2x^2', function () {
-    assert.deepEqual(math.parse('2x + (x^2 + x^2)'),
-      testStep(math.parse('(x + x) + (x^2 + x^2)')));
+    assert.deepEqual(
+      testStep('(x + x) + (x^2 + x^2)'),
+      math.parse('2x + (x^2 + x^2)'));
   });
   it('10 + (y^2 + y^2) -> 10 + 2y^2', function () {
-    assert.deepEqual(math.parse('10 + 2y^2'),
-      testStep(math.parse('10 + (y^2 + y^2)')));
+    assert.deepEqual(
+      testStep('10 + (y^2 + y^2)'),
+      math.parse('10 + 2y^2'));
   });
   it('x + y + y^2 no change', function () {
-    assert.deepEqual(opNode('+', [
-      math.parse('x'), math.parse('y'), math.parse('y^2')]),
-      testStep(math.parse('x + y + y^2')));
+    assert.deepEqual(
+      testStep('x + y + y^2'),
+      flatten(math.parse('x + y + y^2')));
   });
   it('2x^(2+1) -> 2x^3', function () {
-    assert.deepEqual(math.parse('2x^3'),
-      testStep(math.parse('2x^(2+1)')));
+    assert.deepEqual(
+      testStep('2x^(2+1)'),
+      math.parse('2x^3'));
   });
   it('2x^2 * y * x * y^3 = 2 * x^3 * y^4', function () {
-    assert.deepEqual(opNode('*', [constNode(2), math.parse('x^3'), math.parse('y^4')]),
-      simplify(math.parse('2x^2 * y * x * y^3')));
+    assert.deepEqual(
+      simplify(math.parse('2x^2 * y * x * y^3')),
+      flatten(math.parse('2 * x^3 * y^4')));
   });
   it('x^2 + 3x*4x + 5x^3 + 3x^2 + 6 = 5x^3 + 16x^2 + 6', function () {
-    assert.deepEqual(opNode('+', [
-        math.parse('5x^3'), math.parse('16x^2'), math.parse('6')]),
-      simplify(math.parse('x^2 + 3x * 4x + 5x^3 + 3x^2 + 6')));
+    assert.deepEqual(
+      simplify(math.parse('x^2 + 3x * 4x + 5x^3 + 3x^2 + 6')),
+      flatten(math.parse('5x^3 + 16x^2 + 6')));
   });
   it('4y * 3 * 5 -> 60y', function () {
-    assert.deepEqual(math.parse('60y'),
-      simplify(math.parse('4y*3*5')));
+    assert.deepEqual(
+      simplify(math.parse('4y*3*5')),
+      math.parse('60y'));
   });
   it('(2x^2 + 4) + (4x^2 + 3) -> 6x^2 + 7', function () {
-    assert.deepEqual(math.parse('6x^2 + 7'),
-      simplify(math.parse('(2x^2 + 4) + (4x^2 + 3)')));
+    assert.deepEqual(
+      simplify(math.parse('(2x^2 + 4) + (4x^2 + 3)')),
+      math.parse('6x^2 + 7'));
   });
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
-    assert.deepEqual(opNode('+', [
-      math.parse('4x^2'), math.parse('2x'), math.parse('7')]),
-      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')));
+    assert.deepEqual(
+      simplify(math.parse('(2x^1 + 4) + (4x^2 + 3)')),
+      flatten(math.parse('4x^2 + 2x + 7')));
   });
   it('y * 2x * 10 -> 20 * x * y', function () {
-    assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), symbolNode('y')]),
-      simplify(math.parse('y * 2x * 10')));
+    assert.deepEqual(
+      simplify(math.parse('y * 2x * 10')),
+      flatten(math.parse('20 * x * y')));
   });
 });
 
 describe('can simplify with division', function () {
   it('2 * 4 / 5 * 10 + 3 -> 19', function () {
-    assert.deepEqual(math.parse('19'),
-      simplify(math.parse('2 * 4 / 5 * 10 + 3')));
+    assert.deepEqual(
+      simplify(math.parse('2 * 4 / 5 * 10 + 3')),
+      math.parse('19'));
   });
   it('2x * 5x / 2 -> 5x^2', function () {
-    assert.deepEqual(math.parse('5x^2'),
-      simplify(math.parse('2x * 5x / 2')));
+    assert.deepEqual(
+      simplify(math.parse('2x * 5x / 2')),
+      math.parse('5x^2'));
   });
   it('2x * 4x / 5 * 10 + 3 -> 16x^2 + 3', function () {
-    assert.deepEqual(math.parse('16x^2 + 3'),
-      simplify(math.parse('2x * 4x / 5 * 10 + 3')));
+    assert.deepEqual(
+      simplify(math.parse('2x * 4x / 5 * 10 + 3')),
+      math.parse('16x^2 + 3'));
   });
   it('2x * 4x / 2 / 4 -> x^2', function () {
-    assert.deepEqual(math.parse('x^2'),
-      simplify(math.parse('2x * 4x / 2 / 4')));
+    assert.deepEqual(
+      simplify(math.parse('2x * 4x / 2 / 4')),
+      math.parse('x^2'));
   });
   it('2x * y / z * 10 -> 20 * x * y / z', function () {
-    assert.deepEqual(opNode('*', [constNode(20), symbolNode('x'), math.parse('y / z')]),
-      simplify(math.parse('2x * y / z * 10')));
+    assert.deepEqual(
+      simplify(math.parse('2x * y / z * 10')),
+      flatten(math.parse('20 * x * y / z')));
   });
   // TODO in the future: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
   // also 2x * 3/x should probably simplify and get rid of the x's
