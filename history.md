@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20160921-version-353">2016-09-21, version 3.5.3 <a href="#20160921-version-353" title="Permalink">#</a></h2>
+
+- Some more fixes regarding numbers ending with a decimal mark (like `2.`).
+
+
 <h2 id="20160920-version-352">2016-09-20, version 3.5.2 <a href="#20160920-version-352" title="Permalink">#</a></h2>
 
 - Fixed numbers ending with a decimal mark (like `2.`) not being supported by
