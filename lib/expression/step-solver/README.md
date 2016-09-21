@@ -18,29 +18,26 @@ Here are some things to know that will help make sense of the code:
   This stepper uses OperationNode, ParenthesisNode, ConstantNode and SymbolNode. You can read about
   them [on the same documentation page as expressions](http://mathjs.org/docs/expressions/expression_trees.html)
   It will be pretty helpful to get an idea of how they all work.
+- Keep in mind when dealing with the node expression that a parent node's child nodes are
+  called different things depending on the parent node type. Operation nodes have `args` as
+  their children, and parenthesis nodes have a single child called `content`.
 - One thing that's especially helpful to know is that multiplication nodes can be implicit.
-  If you do `n = math.parse('2*x')` you'll get a multiplication node with `n.args` 2 and x.
+  If you do `n = math.parse('2\*x')` you'll get a multiplication node with `n.args` 2 and x.
   If you do `n = math.parse(2x)` you'll also get a multiplication node with `n.args` 2 and x,
   but `n.implicit` will be true - meaning there was no astrix between the operands in the input.
-  This is used a lot for polynomial terms and keeping them grouped together (ie 2x * 5 should just
+  This is used a lot for polynomial terms and keeping them grouped together (ie 2x \* 5 should just
   be two operands 2x and 5 instead of 3 operands 2, x, and 5)
 - If you want to see the flow of how this code works, start in `stepper.js`. This is where `step` and
   `simplify` live. You can see what functions are called from `step` and follow the logic through other
   files if you're curious how any of those steps work.
 - Note that polynomial terms right now are defiend by only having one symbol. So 2x is grouped together,
-  but 2xy would be 2x * y (two operands)
+  but 2xy would be 2x \* y (two operands)
 - To run just stepper tests: `./node_modules/mocha/bin/mocha ./test/expression/step-solver/`
 - What else to add?
 
 --------
 
 ## BIG DETAILED TODO (in approx this order)
-
-CLEANING THE CODE
-
-- make functions to check type of node
-- consider renaming the root node context object (confusing)
-- maybe abstract out the whole node object thing so that it's only node contexts
 
 SUBTRACTION SUPPORT
 
@@ -52,32 +49,19 @@ SUBTRACTION SUPPORT
 - make sure unary minus with a child that is symbol or constant is just treated
   like any other symbol or constant
 
-DIVISION SUPPORT
+REFACTOR #3
 
-- this can still be a tree with the parent as mult and stay human readable
- - (cymath does it)
-- for division signs following division signs: the first argument in a chain
-  becomes a numerator and the rest become the denominator
- - e.g. a / b / c / d * e -> a/(b*c*d) * e
-- division signs following a multiplication sign becomes the denominator of
-  only the very last thing before it
- - e.g. a * b * c / e * d -> a * b * c/e * d
-- note that to have the numerator be > 1 terms before the devisor, the numerator
-  would have had to be in parens e.g. a * (b * c) / e * d -> a * (b*c)/e * d
-- add support for polynomial terms that have fraction coefficients (ie are divided by a constant)
+- make functions to check type of node
+- abstract polynomial terms into its own class, shouldn't have to deal with any
+  args or other node attributes outside of the class (coefficient, exponent,
+  symbol, nodes, constants, etc)
 
+FUTURE THINGS:
 
-various:
-
-- make constants or functions to check node type (to avoid typos)
+- distribution
+- fraction support
+- factoring
 - add support for function nodes like sqrt(x)
-
-ideas:
-
-- in the object that stores the rootnode and hasChanged, also have a thing that
-  stores the step?
-
-will want to resolve any arithmetic at beginning
 
 ------- done ---------
 
@@ -86,17 +70,17 @@ will want to resolve any arithmetic at beginning
 MULTIPLICATION
 
 - there's an implicit param in the multiply node
- - 2*x is not implicit
+ - 2\*x is not implicit
  - 2x is! so I can use that to find coefficients
 - when flattening the tree, keep these as terms
- - so 4*4y*(2+x)*2x should flatten to a mult with children: 4, 4y, (2+x), 2x
+ - so 4\*4y\*(2+x)\*2x should flatten to a mult with children: 4, 4y, (2+x), 2x
 - when removing uncessary parens, make sure I'm removing them around polynomial terms
 - make sure multiplication with like terms works
  - here like terms will be by symbol and shouldn't be divided by power
  - and constants should be at the front instead of the end
  - note that this rule is kinda arbitrary (more than usual)
  - the way I'm doing it right now is similar to addition, and uses coefficients
- - e.g. 3*4*2x*3y*5x^2*6 --> 3*4*6 * (2x * 5x^2) * (3y)
+ - e.g. 3\*4\*2x\*3y\*5x^2\*6 --> 3\*4\*6 \* (2x \* 5x^2) \* (3y)
  - then we can resolve the constants individually
  - and resolve the x terms individually too, multiplying their coefficients
    and combining their exponents
@@ -116,10 +100,31 @@ LAST COLLECTING LIKE TERMS DETAIL
  - this includes things like (2x^2)
 - x^1 should be reduced to x if that ever shows up
 
-ORGANIZE THE CODE
+ORGANIZE THE CODE / REFACTOR #1
 
 - make a map of what calls what
 - separate things into steps, probably
 - see what can be private within a step, what needs to be accessible
 - put things into classes or functions
-- hopefully separate into files too
+- separate into lots of different files
+
+DIVISION SUPPORT
+
+- this can still be a tree with the parent as mult and stay human readable
+ - (cymath does it)
+- for division signs following division signs: the first argument in a chain
+  becomes a numerator and the rest become the denominator
+ - e.g. a / b / c / d \* e -> a/(b\*c\*d) \* e
+- division signs following a multiplication sign becomes the denominator of
+  only the very last thing before it
+ - e.g. a \* b \* c / e \* d -> a \* b \* c/e \* d
+- note that to have the numerator be > 1 terms before the devisor, the numerator
+  would have had to be in parens e.g. a \* (b \* c) / e \* d -> a \* (b\*c)/e \* d
+- add support for polynomial terms that have fraction coefficients (ie are divided by a constant)
+
+BETTER RECURSION / REFACTOR #2
+
+- replace context nodes with status nodes and better recursion
+- more comments and clearer variable names
+- add more tests
+
