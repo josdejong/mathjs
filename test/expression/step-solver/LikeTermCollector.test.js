@@ -21,32 +21,32 @@ function canCollectLikeTerms(expression) {
 }
 
 describe('can collect like terms for addition', function () {
-  it('2+2 no (only one type)', function () {
+  it('2+2 --> false (only one type)', function () {
     assert.deepEqual(
       canCollectLikeTerms('2+2'),
       false);
   });
-  it('x^2 + x^2 no (only one type)', function () {
+  it('x^2 + x^2 --> false (only one type)', function () {
     assert.deepEqual(
       canCollectLikeTerms('x^2+x^2'),
       false);
   });
-  it('x+2 no (all types have only one)', function () {
+  it('x+2 --> false (all types have only one)', function () {
     assert.deepEqual(
       canCollectLikeTerms('x+2'),
       false);
   });
-  it('x+2+x yes', function () {
+  it('x+2+x --> true', function () {
     assert.deepEqual(
       canCollectLikeTerms('x+2+x'),
       true);
   });
-  it('(x+2+x) no, because parenthesis', function () {
+  it('(x+2+x) --> false, because parenthesis', function () {
     assert.deepEqual(
       canCollectLikeTerms('(x+2+x)'),
       false);
   });
-  it('x^2 + 5 + x + x^2 yes', function () {
+  it('x^2 + 5 + x + x^2 --> true', function () {
     assert.deepEqual(
       canCollectLikeTerms('x^2 + 5 + x + x^2'),
       true);
@@ -55,22 +55,22 @@ describe('can collect like terms for addition', function () {
 });
 
 describe('can collect like terms for multiplication', function () {
-  it('2*2 no (only one type)', function () {
+  it('2*2 --> false (only one type)', function () {
     assert.deepEqual(
       canCollectLikeTerms('2*2'),
       false);
   });
-  it('x^2 * 2x^2 yes', function () {
+  it('x^2 * 2x^2 --> true', function () {
     assert.deepEqual(
       canCollectLikeTerms('x^2 * 2x^2'),
       true);
   });
-  it('x * 2 no (all types have only one)', function () {
+  it('x * 2 --> false (all types have only one)', function () {
     assert.deepEqual(
       canCollectLikeTerms('x * 2'),
       false);
   });
-  it('((2x^2)) * y * x * y^3 yes', function () {
+  it('((2x^2)) * y * x * y^3 --> true', function () {
     assert.deepEqual(
       canCollectLikeTerms('((2x^2)) * y * x * y^3'),
       true);
