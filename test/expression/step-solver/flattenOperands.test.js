@@ -105,3 +105,23 @@ describe('flattens division', function () {
       opNode('*', [math.parse('2x'), opNode('/', [math.parse('4x'), constNode(8)])]));
   });
 });
+
+describe('subtraction!', function () {
+  it('1 + 2 - 3 - 4 + 5', function () {
+    assert.deepEqual(
+      flatten(math.parse('1 + 2 - 3 - 4 + 5')),
+      opNode('+', [
+        constNode(1), constNode(2), constNode(-3), constNode(-4), constNode(5)]));
+  });
+  it('x - 3', function () {
+    assert.deepEqual(
+      flatten(math.parse('x - 3')),
+      opNode('+', [symbolNode('x'), constNode(-3)]));
+  });
+  it('x + 4 - (y+4)', function () {
+    assert.deepEqual(
+      flatten(math.parse('x + 4 - (y+4)')),
+      opNode('+', [
+        symbolNode('x'), constNode(4), math.parse('-(y+4)')]));
+  });
+});

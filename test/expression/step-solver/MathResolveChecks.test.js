@@ -30,4 +30,9 @@ describe('resolvesToConstant', function () {
       resolvesToConstant('2 * 3^x'),
       false);
   });
+  it('-(2) * -3 true', function () {
+    assert.deepEqual(
+      resolvesToConstant('-(2) * -3'),
+      true);
+  });
 });

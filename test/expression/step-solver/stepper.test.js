@@ -70,6 +70,11 @@ describe('simplify (arithmetic)', function () {
       simplify(math.parse('(2+2)*5')),
       math.parse('20'));
   });
+  it('(8+(-4))*5 = 20', function () {
+    assert.deepEqual(
+      simplify(math.parse('(8+(-4))*5')),
+      math.parse('20'));
+  });
   it('5*(2+2)*10 = 200', function () {
     assert.deepEqual(
       simplify(math.parse('5*(2+2)*10')),
@@ -207,7 +212,6 @@ describe('can simplify with division', function () {
   // also 2x * 3/x should probably simplify and get rid of the x's
   // and probably a bunch more rules
 });
-
 
 /* distribution test ideas
 
