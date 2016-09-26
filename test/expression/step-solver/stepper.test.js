@@ -51,16 +51,16 @@ describe('arithmetic stepping', function () {
   });
 });
 
-describe('remove unnecessary parens at root level', function() {
-  it('(2+(2)) -> 2+2', function () {
+describe('handles unnecessary parens at root level', function() {
+  it('(x+(y)) -> x+y', function () {
     assert.deepEqual(
-      testStep('(2+(2))'),
-      math.parse('2+2'));
+      simplify(math.parse('(x+(y))')),
+      math.parse('x+y'));
   });
-  it('((2+2) + ((2^3))) -> (2+2) + 2^3 ', function () {
+  it('((x+y) + ((z^3))) -> x + y + z^3 ', function () {
     assert.deepEqual(
-      testStep('((2+2) + ((2^3)))'),
-      math.parse('(2+2) + 2^3'));
+      simplify(math.parse('((x+y) + ((z^3)))')),
+      flatten(math.parse('x + y + z^3')));
   });
 });
 
