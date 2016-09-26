@@ -36,6 +36,16 @@ describe('simplifies', function () {
       simplify('2*1*z^2'),
       math.parse('2*z^2'));
   });
+  it('removes multiplication by 0: 0x -> 0', function () {
+    assert.deepEqual(
+      simplify('0x'),
+      math.parse('0'));
+  });
+  it('removes multiplication by 0: 2*0*z^2 -> 0', function () {
+    assert.deepEqual(
+      simplify('2*0*z^2'),
+      math.parse('0'));
+  });
   it('removes multiplication by -1 -1*x -> -x', function () {
     assert.deepEqual(
       simplify('-1*x'),
@@ -61,5 +71,4 @@ describe('simplifies', function () {
       simplify('x^1'),
       math.parse('x'));
   });
-
 });

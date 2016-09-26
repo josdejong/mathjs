@@ -148,10 +148,15 @@ describe('collect like terms for multiplication', function() {
       collectLikeTerms('y^2 * 5 * y * 9'),
       flatten(math.parse('(5 * 9)*(y^2 * y)')));
   });
-  it('5y^2 * -4 * y * 9 -> (5 * -4 * 9)*(y^2 * y)', function () {
+  it('5y^2 * -4y * 9 -> (5 * -4 * 9)*(y^2 * y)', function () {
     assert.deepEqual(
-      collectLikeTerms('5y^2 * -4 * y * 9'),
+      collectLikeTerms('5y^2 * -4y * 9'),
       flatten(math.parse('(5 * -4 * 9)*(y^2 * y)')));
+  });
+  it('5y^2 * -y * 9 -> (5 * -1 * 9)*(y^2 * y)', function () {
+    assert.deepEqual(
+      collectLikeTerms('5y^2 * -y * 9'),
+      flatten(math.parse('(5 * -1 * 9)*(y^2 * y)')));
   });
   it('y * 5 * z^2 no change', function () {
     assert.deepEqual(

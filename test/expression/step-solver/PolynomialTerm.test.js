@@ -14,13 +14,16 @@ describe('classifies symbol terms correctly', function() {
   it('x', function () {
     assert.equal(isPolynomialTerm('x'), true);
   });
+  it('-x', function () {
+    assert.equal(isPolynomialTerm('x'), true);
+  });
   it('x^2', function () {
     assert.equal(isPolynomialTerm('x^2'), true);
   });
   it('y^55', function () {
     assert.equal(isPolynomialTerm('y^55'), true);
   });
-  it('y^(4+3)/4', function () {
+  it('-y^(4+3)/4', function () {
     assert.equal(isPolynomialTerm('y^4/4'), true);
   });
   it('5y/3', function () {
@@ -148,6 +151,21 @@ describe('simplifyPolynomialFraction', function() {
     assert.deepEqual(
       simplifyPolynomialFraction('9y/3'),
       flatten(math.parse('3y')));
+  });
+  it('y/-3 -> -y/3', function () {
+    assert.deepEqual(
+      simplifyPolynomialFraction('y/-3'),
+      flatten(math.parse('-y/3')));
+  });
+  it('-3y/-2 -> 3y/2', function () {
+    assert.deepEqual(
+      simplifyPolynomialFraction('-3y/-2'),
+      flatten(math.parse('3y/2')));
+  });
+  it('-y/-1 -> y', function () {
+    assert.deepEqual(
+      simplifyPolynomialFraction('-y/-1'),
+      flatten(math.parse('y')));
   });
   it('12z^2/27 -> 4z^2/9', function () {
     assert.deepEqual(

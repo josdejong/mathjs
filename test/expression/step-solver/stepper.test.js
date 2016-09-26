@@ -155,20 +155,21 @@ describe('collects and combines like terms', function() {
       simplify(math.parse('2x^2 * y * x * y^3')),
       flatten(math.parse('2 * x^3 * y^4')));
   });
-  it('x^2 + 3x*4x + 5x^3 + 3x^2 + 6 = 5x^3 + 16x^2 + 6', function () {
+  it('x^2 + 3x*(-4x) + 5x^3 + 3x^2 + 6 = 5x^3 - 8x^2 + 6', function () {
     assert.deepEqual(
-      simplify(math.parse('x^2 + 3x * 4x + 5x^3 + 3x^2 + 6')),
-      flatten(math.parse('5x^3 + 16x^2 + 6')));
+      simplify(math.parse('x^2 + 3x * (-4x) + 5x^3 + 3x^2 + 6')),
+      opNode('+', [
+        math.parse('5x^3'), flatten(math.parse('-8x^2')), constNode(6)]));
   });
   it('4y * 3 * 5 -> 60y', function () {
     assert.deepEqual(
       simplify(math.parse('4y*3*5')),
       math.parse('60y'));
   });
-  it('(2x^2 + 4) + (4x^2 + 3) -> 6x^2 + 7', function () {
+  it('(2x^2 - 4) + (4x^2 + 3) -> 6x^2 - 1', function () {
     assert.deepEqual(
-      simplify(math.parse('(2x^2 + 4) + (4x^2 + 3)')),
-      math.parse('6x^2 + 7'));
+      simplify(math.parse('(2x^2 - 4) + (4x^2 + 3)')),
+      flatten(math.parse('6x^2 - 1')));
   });
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
     assert.deepEqual(
