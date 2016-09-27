@@ -214,6 +214,29 @@ describe('can simplify with division', function () {
   // and probably a bunch more rules
 });
 
+describe('subtraction support', function() {
+  it('simplifyDoupleUnaryMinus -(-(2+3)) -> 5', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(-(2+3))')),
+      math.parse('5'));
+  });
+  it('simplifyDoupleUnaryMinus -(-(2+x)) -> 2+x', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(-(2+x))')),
+      math.parse('2+x'));
+  });
+  it('simplifyDoupleUnaryMinus -------5 -> -5', function () {
+    assert.deepEqual(
+      simplify(math.parse('-------5')),
+      flatten(math.parse('-5')));
+  });
+  it('simplifyDoupleUnaryMinus --(-----5) -> -5', function () {
+    assert.deepEqual(
+      simplify(math.parse('--(-----5)')),
+      flatten(math.parse('-5')));
+  });
+});
+
 /* distribution test ideas
 
     // case 1 has one in parens and one not, only addition

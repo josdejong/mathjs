@@ -71,4 +71,20 @@ describe('simplifies', function () {
       simplify('x^1'),
       math.parse('x'));
   });
+  it('simplifyDoupleUnaryMinus --5 -> 5', function () {
+    assert.deepEqual(
+      simplify('--5'),
+      math.parse('5'));
+  });
+  it('simplifyDoupleUnaryMinus --x -> x', function () {
+    assert.deepEqual(
+      simplify('--x'),
+      math.parse('x'));
+  });
+  // note the double parens are handled in stepper.js with a final call to remove unnecessary parens
+  it('simplifyDoupleUnaryMinus -(-(2+x)) -> ((2+x))', function () {
+    assert.deepEqual(
+      simplify('-(-(2+x))'),
+      math.parse('((2+x))'));
+  });
 });
