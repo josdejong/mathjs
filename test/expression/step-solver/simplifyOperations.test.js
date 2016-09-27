@@ -87,4 +87,9 @@ describe('simplifies', function () {
       simplify('-(-(2+x))'),
       math.parse('((2+x))'));
   });
+  it('removeAdditionByZero 2+0+x -> 2+x', function () {
+    assert.deepEqual(
+      simplify('2+0+x'),
+      math.parse('2+x'));
+  });
 });

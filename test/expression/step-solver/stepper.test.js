@@ -235,6 +235,11 @@ describe('subtraction support', function() {
       simplify(math.parse('--(-----5) + 6')),
       math.parse('1'));
   });
+  it('simplifies 0 when terms cancel out: x^2 + 3 - x*x -> 3', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^2 + 3 - x*x')),
+      math.parse('3'));
+  });
 });
 
 /* distribution test ideas
