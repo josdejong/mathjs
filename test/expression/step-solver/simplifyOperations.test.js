@@ -64,7 +64,7 @@ describe('simplifies', function () {
   it('is okay with unary minus parens -(2*x) * -(2+2) ', function () {
     assert.deepEqual(
       simplify('-(2*x) * -(2+2)'),
-      flatten(math.parse('-(2x) * -(2+2)')));
+      math.parse('-(2x) * -(4)'));
   });
   it('removeExponentByOne x^1 -> x', function () {
     assert.deepEqual(

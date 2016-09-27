@@ -228,7 +228,7 @@ describe('subtraction support', function() {
   it('simplifyDoupleUnaryMinus -------5 -> -5', function () {
     assert.deepEqual(
       simplify(math.parse('-------5')),
-      math.parse('-5'));
+      flatten(math.parse('-5')));
   });
   it('simplifyDoupleUnaryMinus --(-----5) + 6 -> 1', function () {
     assert.deepEqual(
