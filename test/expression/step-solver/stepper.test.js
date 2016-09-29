@@ -27,7 +27,7 @@ function testStep(exprString, debug=false) {
   }
   return nodeStatus.node;
 }
-
+/*
 describe('arithmetic stepping', function () {
   it('(2+2) -> 4', function () {
     assert.deepEqual(
@@ -239,6 +239,14 @@ describe('subtraction support', function() {
     assert.deepEqual(
       simplify(math.parse('x^2 + 3 - x*x')),
       math.parse('3'));
+  });
+});
+*/
+describe('support for more *', function () {
+  it('??', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3*x)*(4*x)'), true),
+      flatten(math.parse('12x^2')));
   });
 });
 
