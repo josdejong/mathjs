@@ -61,31 +61,26 @@ describe('simplifies', function () {
       simplify('2*x*2*-1'),
       flatten(math.parse('2*x*2*-1')));
   });
-  it('is okay with unary minus parens -(2*x) * -(2+2) ', function () {
-    assert.deepEqual(
-      simplify('-(2*x) * -(2+2)'),
-      math.parse('-(2x) * -(4)'));
-  });
   it('removeExponentByOne x^1 -> x', function () {
     assert.deepEqual(
       simplify('x^1'),
       math.parse('x'));
   });
-  it('simplifyDoupleUnaryMinus --5 -> 5', function () {
+  it('simplifyDoubleUnaryMinus --5 -> 5', function () {
     assert.deepEqual(
       simplify('--5'),
       math.parse('5'));
   });
-  it('simplifyDoupleUnaryMinus --x -> x', function () {
+  it('simplifyDoubleUnaryMinus --x -> x', function () {
     assert.deepEqual(
       simplify('--x'),
       math.parse('x'));
   });
   // note the double parens are handled in stepper.js with a final call to remove unnecessary parens
-  it('simplifyDoupleUnaryMinus -(-(2+x)) -> ((2+x))', function () {
+  it('simplifyDoubleUnaryMinus -(-(2+x)) -> 2+x', function () {
     assert.deepEqual(
       simplify('-(-(2+x))'),
-      math.parse('((2+x))'));
+      math.parse('2+x'));
   });
   it('removeAdditionByZero 2+0+x -> 2+x', function () {
     assert.deepEqual(

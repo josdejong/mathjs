@@ -27,7 +27,7 @@ function testStep(exprString, debug=false) {
   }
   return nodeStatus.node;
 }
-/*
+
 describe('arithmetic stepping', function () {
   it('(2+2) -> 4', function () {
     assert.deepEqual(
@@ -240,14 +240,31 @@ describe('subtraction support', function() {
       simplify(math.parse('x^2 + 3 - x*x')),
       math.parse('3'));
   });
-});
-*/
-describe('support for more *', function () {
-  it('??', function () {
+  it('is okay with unary minus parens -(2*x) * -(2+2) -> 8x', function () {
     assert.deepEqual(
-      simplify(math.parse('(3*x)*(4*x)'), true),
+      simplify(math.parse('-(2*x) * -(2+2)')),
+      math.parse('8x'));
+  });
+});
+
+describe('support for more * and ( that come from latex conversion', function () {
+  it('(3*x)*(4*x) -> 12x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3*x)*(4*x)')),
       flatten(math.parse('12x^2')));
   });
+  it('(12*z^(2))/27 -> 4z^2/9', function () {
+    assert.deepEqual(
+      simplify(math.parse('(12*z^(2))/27')),
+      flatten(math.parse('4z^2/9')));
+  });
+  /* TODO after polynomial refactor:
+  it('x^2 - 12x^2 + 5x^2 - 7 -> 6x^2 - 7', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^2 - 12x^2 + 5x^2 - 7'), true),
+      flatten(math.parse('-6x^2 -7')));
+  });
+  */
 });
 
 /* distribution test ideas
