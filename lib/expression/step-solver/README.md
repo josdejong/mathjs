@@ -39,19 +39,9 @@ Here are some things to know that will help make sense of the code:
 
 ## BIG DETAILED TODO (in approx this order)
 
-SUBTRACTION SUPPORT
-
-- at beginning 'resolve' all unary minuses after addition signs
- - (say it's a step, but don't change anything)
-- then change all subtraction into unary minuses after addition signs
- - this is just internally - from now on always print "+ -" as "-"
-- make sure that all switch statements on operations support unary minus
-- make sure unary minus with a child that is symbol or constant is just treated
-  like any other symbol or constant
-
 REFACTOR #3
 
-- make functions to check type of node
+- make functions to check type of node (done)
 - abstract polynomial terms into its own class, shouldn't have to deal with any
   args or other node attributes outside of the class (coefficient, exponent,
   symbol, nodes, constants, etc)
@@ -128,3 +118,12 @@ BETTER RECURSION / REFACTOR #2
 - more comments and clearer variable names
 - add more tests
 
+SUBTRACTION SUPPORT
+
+- at beginning 'resolve' all unary minuses after addition signs
+ - (say it's a step, but don't change anything)
+- then change all subtraction into unary minuses after addition signs
+ - this is just internally - from now on always print "+ -" as "-"
+- make sure that all switch statements on operations support unary minus
+- make sure unary minus with a child that is symbol or constant is just treated
+  like any other symbol or constant

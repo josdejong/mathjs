@@ -10,37 +10,37 @@ let constNode = NodeCreator.constant;
 describe('NodeType works', function () {
   it('(2+2) parenthesis', function () {
     assert.deepEqual(
-      NodeType.parenthesis(math.parse('(2+2)')),
+      NodeType.isParenthesis(math.parse('(2+2)')),
       true);
   });
   it('10 constant', function () {
     assert.deepEqual(
-      NodeType.constant(math.parse(10)),
+      NodeType.isConstant(math.parse(10)),
       true);
   });
   it('-2 constant', function () {
     assert.deepEqual(
-      NodeType.constant(constNode(-2)),
+      NodeType.isConstant(constNode(-2)),
       true);
   });
   it('2+2 operator', function () {
     assert.deepEqual(
-      NodeType.operator(math.parse('2+2')),
+      NodeType.isOperator(math.parse('2+2')),
       true);
   });
   it('-x not operator', function () {
     assert.deepEqual(
-      NodeType.operator(math.parse('-x')),
+      NodeType.isOperator(math.parse('-x')),
       false);
   });
   it('-x symbol', function () {
     assert.deepEqual(
-      NodeType.symbol(math.parse('-x')),
+      NodeType.isSymbol(math.parse('-x')),
       true);
   });
   it('y symbol', function () {
     assert.deepEqual(
-      NodeType.symbol(math.parse('y')),
+      NodeType.isSymbol(math.parse('y')),
       true);
   });
 });
