@@ -70,6 +70,11 @@ describe('simplify (arithmetic)', function () {
       simplify(math.parse('(2+2)*5')),
       math.parse('20'));
   });
+  it('(8+(-4))*5 = 20', function () {
+    assert.deepEqual(
+      simplify(math.parse('(8+(-4))*5')),
+      math.parse('20'));
+  });
   it('5*(2+2)*10 = 200', function () {
     assert.deepEqual(
       simplify(math.parse('5*(2+2)*10')),
@@ -150,20 +155,21 @@ describe('collects and combines like terms', function() {
       simplify(math.parse('2x^2 * y * x * y^3')),
       flatten(math.parse('2 * x^3 * y^4')));
   });
-  it('x^2 + 3x*4x + 5x^3 + 3x^2 + 6 = 5x^3 + 16x^2 + 6', function () {
+  it('x^2 + 3x*(-4x) + 5x^3 + 3x^2 + 6 = 5x^3 - 8x^2 + 6', function () {
     assert.deepEqual(
-      simplify(math.parse('x^2 + 3x * 4x + 5x^3 + 3x^2 + 6')),
-      flatten(math.parse('5x^3 + 16x^2 + 6')));
+      simplify(math.parse('x^2 + 3x * (-4x) + 5x^3 + 3x^2 + 6')),
+      opNode('+', [
+        math.parse('5x^3'), flatten(math.parse('-8x^2')), constNode(6)]));
   });
   it('4y * 3 * 5 -> 60y', function () {
     assert.deepEqual(
       simplify(math.parse('4y*3*5')),
       math.parse('60y'));
   });
-  it('(2x^2 + 4) + (4x^2 + 3) -> 6x^2 + 7', function () {
+  it('(2x^2 - 4) + (4x^2 + 3) -> 6x^2 - 1', function () {
     assert.deepEqual(
-      simplify(math.parse('(2x^2 + 4) + (4x^2 + 3)')),
-      math.parse('6x^2 + 7'));
+      simplify(math.parse('(2x^2 - 4) + (4x^2 + 3)')),
+      flatten(math.parse('6x^2 - 1')));
   });
   it('(2x^1 + 4) + (4x^2 + 3) -> 4x^2 + 2x + 7', function () {
     assert.deepEqual(
@@ -208,6 +214,58 @@ describe('can simplify with division', function () {
   // and probably a bunch more rules
 });
 
+describe('subtraction support', function() {
+  it('simplifyDoupleUnaryMinus -(-(2+3)) -> 5', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(-(2+3))')),
+      math.parse('5'));
+  });
+  it('simplifyDoupleUnaryMinus -(-(2+x)) -> 2+x', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(-(2+x))')),
+      math.parse('2+x'));
+  });
+  it('simplifyDoupleUnaryMinus -------5 -> -5', function () {
+    assert.deepEqual(
+      simplify(math.parse('-------5')),
+      flatten(math.parse('-5')));
+  });
+  it('simplifyDoupleUnaryMinus --(-----5) + 6 -> 1', function () {
+    assert.deepEqual(
+      simplify(math.parse('--(-----5) + 6')),
+      math.parse('1'));
+  });
+  it('simplifies 0 when terms cancel out: x^2 + 3 - x*x -> 3', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^2 + 3 - x*x')),
+      math.parse('3'));
+  });
+  it('is okay with unary minus parens -(2*x) * -(2+2) -> 8x', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(2*x) * -(2+2)')),
+      math.parse('8x'));
+  });
+});
+
+describe('support for more * and ( that come from latex conversion', function () {
+  it('(3*x)*(4*x) -> 12x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3*x)*(4*x)')),
+      flatten(math.parse('12x^2')));
+  });
+  it('(12*z^(2))/27 -> 4z^2/9', function () {
+    assert.deepEqual(
+      simplify(math.parse('(12*z^(2))/27')),
+      flatten(math.parse('4z^2/9')));
+  });
+  /* TODO after polynomial refactor:
+  it('x^2 - 12x^2 + 5x^2 - 7 -> 6x^2 - 7', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^2 - 12x^2 + 5x^2 - 7'), true),
+      flatten(math.parse('-6x^2 -7')));
+  });
+  */
+});
 
 /* distribution test ideas
 
