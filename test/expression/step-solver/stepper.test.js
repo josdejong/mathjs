@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 const assert = require('assert');
 const math = require('../../../index');
@@ -20,7 +20,7 @@ function testStep(exprString, debug=false) {
   let nodeStatus = step(expr);
   if (debug) {
     if (!nodeStatus.changeType) {
-      throw Error("missing or bad change type");
+      throw Error('missing or bad change type');
     }
     console.log(nodeStatus.changeType);
     console.log(print(nodeStatus.node));
@@ -209,7 +209,7 @@ describe('can simplify with division', function () {
       simplify(math.parse('2x * y / z * 10')),
       flatten(math.parse('20 * x * y / z')));
   });
-  // TODO in the future: "2x * 4x / 5 * 10 + 3" and "2x/x" (division with polynomials)
+  // TODO in the future: '2x * 4x / 5 * 10 + 3' and '2x/x' (division with polynomials)
   // also 2x * 3/x should probably simplify and get rid of the x's
   // and probably a bunch more rules
 });

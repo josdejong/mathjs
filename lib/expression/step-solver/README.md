@@ -123,7 +123,7 @@ SUBTRACTION SUPPORT
 - at beginning 'resolve' all unary minuses after addition signs
  - (say it's a step, but don't change anything)
 - then change all subtraction into unary minuses after addition signs
- - this is just internally - from now on always print "+ -" as "-"
+ - this is just internally - from now on always print '+ -' as '-'
 - make sure that all switch statements on operations support unary minus
 - make sure unary minus with a child that is symbol or constant is just treated
   like any other symbol or constant

@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 const assert = require('assert');
 const math = require('../../../index');
