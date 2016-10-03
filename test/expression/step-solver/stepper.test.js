@@ -209,9 +209,9 @@ describe('can simplify with division', function () {
       simplify(math.parse('2x * y / z * 10')),
       flatten(math.parse('20 * x * y / z')));
   });
-  // TODO in the future: '2x * 4x / 5 * 10 + 3' and '2x/x' (division with polynomials)
-  // also 2x * 3/x should probably simplify and get rid of the x's
-  // and probably a bunch more rules
+  // TODO in the future: '2x * 4x / 5 * 10 + 3' and '2x/x' (division with
+  // polynomials) - also 2x * 3/x should probably simplify and get rid of
+  // the x's and probably a bunch more rules
 });
 
 describe('subtraction support', function() {
