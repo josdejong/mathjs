@@ -97,4 +97,9 @@ describe('simplifies', function () {
       simplify('(x+3)/-1'),
       math.parse('-(x+3)'));
   });
+  it('(x+3)^0 -> 1', function () {
+    assert.deepEqual(
+      simplify('(x+3)^0'),
+      math.parse('1'));
+  });
 });
