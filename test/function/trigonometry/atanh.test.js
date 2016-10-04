@@ -47,9 +47,9 @@ describe('atanh', function() {
     var arg1 = Big(-1);
     var arg2 = Big(-0.5);
     assert.deepEqual(atanhBig(arg1).toString(), '-Infinity');
-    assert.deepEqual(atanhBig(arg2), Big('-0.5493061443340548457')); 
+    assert.deepEqual(atanhBig(arg2), Big('-0.5493061443340548457'));
     assert.deepEqual(atanhBig(Big(0)), Big(0));
-    assert.deepEqual(atanhBig(Big(0.5)), Big('0.5493061443340548457')); 
+    assert.deepEqual(atanhBig(Big(0.5)), Big('0.5493061443340548457'));
     assert.deepEqual(atanhBig(Big(1)).toString(), 'Infinity');
 
     //Make sure arg was not changed
@@ -105,6 +105,19 @@ describe('atanh', function() {
     var atanh101 = [-Infinity, 0, Infinity];
     assert.deepEqual(atanh([-1,0,1]), atanh101);
     assert.deepEqual(atanh(matrix([-1,0,1])), matrix(atanh101));
+  });
+
+  it('should return the hyperbolic ar tangent of a quaternion', function () {
+    approx.deepEqual(atanh(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(atanh(math.quaternion({i:pi})), math.quaternion({i:1.262627255678911}));
+    approx.deepEqual(atanh(math.quaternion({i:pi/2})), math.quaternion({i:1.003884821853887}));
+    approx.deepEqual(atanh(math.quaternion({r:pi, i:1})), math.quaternion(0.294621440340857,1.470828825919461,0,0));
+    approx.deepEqual(atanh(math.quaternion({r:2, i:3})), math.quaternion(0.1469466662255,1.33897252229449,0,0));
+    approx.deepEqual(atanh(math.quaternion(1,2,3,4)), math.quaternion(0.032302932870002,0.517345368319696,0.776018052479543,1.034690736639389));
+    approx.deepEqual(atanh(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.032302932870002,-0.517345368319696,-0.776018052479543,-1.034690736639389));
+    approx.deepEqual(atanh(math.quaternion({i:1})), math.quaternion({i:0.785398163397448}));
+    approx.deepEqual(atanh(math.quaternion({j:1})), math.quaternion({j:0.785398163397448}));
+    approx.deepEqual(atanh(math.quaternion({k:1})), math.quaternion({k:0.785398163397448}));
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

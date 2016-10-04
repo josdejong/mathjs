@@ -35,7 +35,7 @@ describe('tan', function() {
     approx.equal(tan(pi*8/4), 0);
   });
 
-  it('should return the tangent of a bignumber', function() { 
+  it('should return the tangent of a bignumber', function() {
     var bigPi = piBigmath.pi;
 
     assert.deepEqual(bigTan(Big(0)), Big(0));
@@ -86,7 +86,7 @@ describe('tan', function() {
     approx.deepEqual(tan(matrix([1,2,3])), matrix(tan123));
   });
 
-  it('should return the  of a quaternion', function () {
+  it('should return the tangent of a quaternion', function () {
     approx.deepEqual(tan(math.quaternion({r:0})), math.quaternion());
     approx.deepEqual(tan(math.quaternion({r:pi})), math.quaternion());
     approx.deepEqual(tan(math.quaternion({r:pi/2})), math.quaternion({r:Infinity}));

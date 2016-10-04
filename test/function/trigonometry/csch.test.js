@@ -77,6 +77,19 @@ describe('csch', function() {
     approx.deepEqual(csch(matrix([1,2,3])), matrix(csch123));
   });
 
+  it('should return the hyperbolic cosecant of a quaternion', function () {
+    approx.deepEqual(csch(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(csch(math.quaternion({i:pi})), math.quaternion());
+    approx.deepEqual(csch(math.quaternion({i:pi/2})), math.quaternion({i:-1}));
+    approx.deepEqual(csch(math.quaternion({r:pi, i:1})), math.quaternion(0.04653746145342093, -0.07274900469791766,0,0));
+    approx.deepEqual(csch(math.quaternion({r:2, i:1})), math.quaternion(0.14136302161241, -0.22837506559969,0,0));
+    approx.deepEqual(csch(math.quaternion(1,2,3,4)), math.quaternion(0.36749725482767553, 0.22491676803326494, 0.33737515204989743, 0.44983353606652987));
+    approx.deepEqual(csch(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.36749725482767553, -0.22491676803326494, -0.33737515204989743, -0.44983353606652987));
+    approx.deepEqual(csch(math.quaternion({i:1})), math.quaternion({i:-1.1883951057781206}));
+    approx.deepEqual(csch(math.quaternion({j:1})), math.quaternion({j:-1.1883951057781206}));
+    approx.deepEqual(csch(math.quaternion({k:1})), math.quaternion({k:-1.1883951057781206}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {csch()}, /TypeError: Too few arguments/);
     assert.throws(function () {csch(1, 2)}, /TypeError: Too many arguments/);

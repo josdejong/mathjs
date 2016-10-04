@@ -110,7 +110,7 @@ describe('cos', function() {
 
   it('should return the cos of each element of a matrix', function() {
     approx.deepEqual(cos(matrix([1,2,3])), matrix(cos123));
-  }); 
+  });
 
   it('should return the cos of each element of an array', function() {
     approx.deepEqual(cos([1,2,3]), cos123);

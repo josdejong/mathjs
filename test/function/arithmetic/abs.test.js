@@ -97,8 +97,8 @@ describe('abs', function () {
   });
 
   it('should return the absolue or modulus of a Quaternion',function () {
-    assert.deepEqual(math.abs(new math.quaternion(1,1,1,1)),2);
-    assert.deepEqual(math.abs(new math.quaternion()),0);
+    assert.deepEqual(math.abs( math.quaternion(1,1,1,1)),2);
+    assert.deepEqual(math.abs( math.quaternion()),0);
   });
 
   it('should LaTeX abs', function () {

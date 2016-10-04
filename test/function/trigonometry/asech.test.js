@@ -108,6 +108,19 @@ describe('asech', function() {
     assert.deepEqual(asech(matrix([0,1])), matrix(asech01));
   });
 
+  it('should return the hyperbolic ar secant of a quaternion', function () {
+    approx.deepEqual(asech(math.quaternion({r:0})), math.quaternion({i:pi/2}));
+    approx.deepEqual(asech(math.quaternion({i:pi})), math.quaternion(-0.3131658804508684,1.5707963267948966,0,0));
+    approx.deepEqual(asech(math.quaternion({r:1})), math.quaternion());
+    approx.deepEqual(asech(math.quaternion({r:pi, i:1})), math.quaternion(0.09591398081723239,-1.2789707291504853,0,0));
+    approx.deepEqual(asech(math.quaternion({r:2, i:3})), math.quaternion(0.23133469857397,-1.420410722467035,0,0));
+    approx.deepEqual(asech(math.quaternion(1,2,3,4)), math.quaternion(0.1786503635424272,-0.57119219533443,-0.8567882930016452,-1.14238439066886));
+    approx.deepEqual(asech(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.1786503635424273,-0.5955660251113637,-0.8933490376670458,-1.1911320502227274));
+    approx.deepEqual(asech(math.quaternion({i:1})), math.quaternion(-0.8813735870195428,1.5707963267948963,0,0));
+    approx.deepEqual(asech(math.quaternion({j:1})), math.quaternion(0.5493061443340549,1.282549830161864,-0.9068996821171088,0));
+    approx.deepEqual(asech(math.quaternion({k:1})), math.quaternion(0.5493061443340549,1.282549830161864,0,-0.9068996821171088));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {asech()}, /TypeError: Too few arguments/);
     assert.throws(function () {asech(1, 2)}, /TypeError: Too many arguments/);

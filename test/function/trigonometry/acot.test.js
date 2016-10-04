@@ -108,6 +108,19 @@ describe('acot', function() {
     approx.deepEqual(acot(matrix([1,2,3])), matrix(acot123));
   });
 
+  it('should return the ar cotangent of a quaternion', function () {
+    approx.deepEqual(acot(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(acot(math.quaternion({r:1})), math.quaternion({r:pi/4}));
+    approx.deepEqual(acot(math.quaternion({r:pi/2})), math.quaternion({r:0.566911504941009}));
+    approx.deepEqual(acot(math.quaternion({r:pi, i:1})), math.quaternion(0.283455752470505,-0.085059985077454,0,0));
+    approx.deepEqual(acot(math.quaternion({r:2, i:3})), math.quaternion(0.160875277198321,-0.229072682968539,0,0));
+    approx.deepEqual(acot(math.quaternion(1,2,3,4)), math.quaternion(0.033158315593989,-0.064877798871271,-0.099474946781969,-0.132633262375958));
+    approx.deepEqual(acot(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.033158315593989,0.064877798871271,0.099474946781969,0.132633262375958));
+    approx.deepEqual(acot(math.quaternion({i:1})), math.quaternion({i:-Infinity}));
+    approx.deepEqual(acot(math.quaternion({j:1})), math.quaternion({j:-0.785398163397448}));
+    approx.deepEqual(acot(math.quaternion({k:1})), math.quaternion({k:-0.785398163397448}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {acot()}, /TypeError: Too few arguments/);
     assert.throws(function () {acot(1, 2)}, /TypeError: Too many arguments/);

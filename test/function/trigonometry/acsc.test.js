@@ -130,6 +130,18 @@ describe('acsc', function() {
     approx.deepEqual(acsc([1,2,3]), acsc123);
     approx.deepEqual(acsc(matrix([1,2,3])), matrix(acsc123));
   });
+  it('should return the arccosecant of a quaternion', function () {
+    approx.deepEqual(acsc(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(acsc(math.quaternion({r:1})), math.quaternion({r:pi/2}));
+    approx.deepEqual(acsc(math.quaternion({r:pi/2})), math.quaternion({r:0.69010709137454}));
+    approx.deepEqual(acsc(math.quaternion({r:pi, i:1})), math.quaternion(0.291825597644411,-0.095913980817232,0,0));
+    approx.deepEqual(acsc(math.quaternion({r:2, i:3})), math.quaternion(0.150385604327861963,-0.231334698573973315,0,0));
+    approx.deepEqual(acsc(math.quaternion(1,2,3,4)), math.quaternion(0.032558397151459,-0.0911831035412,-0.087645992037699,-0.12521898889749));
+    approx.deepEqual(acsc(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.032482818179711,0.036837160719117,0.108860507867325,0.135637299382939));
+    approx.deepEqual(acsc(math.quaternion({i:1})), math.quaternion({i:-0.881373587019543}));
+    approx.deepEqual(acsc(math.quaternion({j:1})), math.quaternion(0,-0.549306144334055,-0.615479708670387,0));
+    approx.deepEqual(acsc(math.quaternion({k:1})), math.quaternion(0,-0.549306144334055,0,-0.615479708670387));
+  });
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {acsc()}, /TypeError: Too few arguments/);

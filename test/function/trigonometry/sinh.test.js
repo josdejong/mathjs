@@ -100,6 +100,19 @@ describe('sinh', function() {
     approx.deepEqual(sinh(matrix([1,2,3])), matrix(sinh123), EPSILON);
   });
 
+  it('should return the hyperbolic sine of a quaternion', function () {
+    approx.deepEqual(sinh(math.quaternion({r:0})), math.quaternion());
+    approx.deepEqual(sinh(math.quaternion({i:Math.PI})), math.quaternion());
+    approx.deepEqual(sinh(math.quaternion({r:Math.PI})), math.quaternion({r:11.548739357257748}));
+    approx.deepEqual(sinh(math.quaternion({r:pi, i:1})), math.quaternion({r:6.2398105045965,i:9.754292338600218}));
+    approx.deepEqual(sinh(math.quaternion({r:2, i:1})), math.quaternion(1.9596010414216, 3.1657785132162,0,0));
+    approx.deepEqual(sinh(math.quaternion(1,2,3,4)), math.quaternion(0.732337606046343, -0.448207449980542, -0.672311174970813, -0.896414899961084));
+    approx.deepEqual(sinh(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.732337606046343, 0.448207449980542, 0.672311174970813, 0.896414899961084));
+    approx.deepEqual(sinh(math.quaternion({i:1})), math.quaternion({i:0.841470984807897}));
+    approx.deepEqual(sinh(math.quaternion({j:1})), math.quaternion({j:0.841470984807897}));
+    approx.deepEqual(sinh(math.quaternion({k:1})), math.quaternion({k:0.841470984807897}));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sinh()}, /TypeError: Too few arguments/);
     assert.throws(function () {sinh(1, 2)}, /TypeError: Too many arguments/);

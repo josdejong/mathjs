@@ -104,6 +104,19 @@ describe('acos', function() {
     approx.deepEqual(acos(matrix([1,2,3])), matrix(acos123));
   });
 
+  it('should return the arccos of a quaternion', function () {
+    approx.deepEqual(acos(math.quaternion({r:0})), math.quaternion({r:pi/2}));
+    approx.deepEqual(acos(math.quaternion({r:pi})), math.quaternion({i:1.811526272460853}));
+    approx.deepEqual(acos(math.quaternion({r:1})), math.quaternion());
+    approx.deepEqual(acos(math.quaternion({r:1, i:pi})), math.quaternion(1.275211292583267,  -1.904627686970658,0,0));
+    approx.deepEqual(acos(math.quaternion({r:2, i:3})), math.quaternion(1.00014354247380, -1.98338702991654,0,0));
+    approx.deepEqual(acos(math.quaternion(1,2,3,4)), math.quaternion(1.450016230200981, 1.82282439812825, -0.431868480989845, -0.865525438020193));
+    approx.deepEqual(acos(math.quaternion(-1,-2,-3,-4)), math.quaternion(1.729954278730703, 2.212801703031092, 0.434885668972992, 0.402396780153886));
+    approx.deepEqual(acos(math.quaternion({i:1})), math.quaternion(1.570796326794897, -0.881373587019543,0,0));
+    approx.deepEqual(acos(math.quaternion({j:1})), math.quaternion(1.570796326794897, 0.549306144334055, -0.615479708670387,0));
+    approx.deepEqual(acos(math.quaternion({k:1})), math.quaternion(1.570796326794897, 0.549306144334055,0, -0.615479708670387));
+  });
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {acos()}, /TypeError: Too few arguments/);
     assert.throws(function () {acos(1, 2)}, /TypeError: Too many arguments/);
