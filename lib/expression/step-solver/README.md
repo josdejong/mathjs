@@ -39,16 +39,10 @@ Here are some things to know that will help make sense of the code:
 
 ## BIG DETAILED TODO (in approx this order)
 
-REFACTOR #3
-
-- make functions to check type of node (done)
-- abstract polynomial terms into its own class, shouldn't have to deal with any
-  args or other node attributes outside of the class (coefficient, exponent,
-  symbol, nodes, constants, etc)
-
 FUTURE THINGS:
 
 - distribution
+- equation support (e.g. x+3 = 3x-5, solve for x)
 - fraction support
 - factoring
 - add support for function nodes like sqrt(x)
@@ -127,3 +121,10 @@ SUBTRACTION SUPPORT
 - make sure that all switch statements on operations support unary minus
 - make sure unary minus with a child that is symbol or constant is just treated
   like any other symbol or constant
+
+REFACTOR #3
+
+- make functions to check type of node (done)
+- abstract polynomial terms into its own class, shouldn't have to deal with any
+  args or other node attributes outside of the class (coefficient, exponent,
+  symbol, nodes, constants, etc)

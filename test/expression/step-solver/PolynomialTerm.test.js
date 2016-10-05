@@ -4,7 +4,6 @@ const assert = require('assert');
 const math = require('../../../index');
 
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
-const PolynomialTerm = require('../../../lib/expression/step-solver/PolynomialTerm.js');
 const PolynomialTermNode = require('../../../lib/expression/step-solver/PolynomialTermNode.js');
 const PolynomialTermOperations = require('../../../lib/expression/step-solver/PolynomialTermOperations.js');
 
