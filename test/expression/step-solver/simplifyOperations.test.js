@@ -77,10 +77,10 @@ describe('simplifies', function () {
       math.parse('x'));
   });
   // note the double parens are handled in stepper.js with a final call to remove unnecessary parens
-  it('simplifyDoubleUnaryMinus -(-(2+x)) -> 2+x', function () {
+  it('simplifyDoubleUnaryMinus -(-(2+x)) -> ((2+x))', function () {
     assert.deepEqual(
       simplify('-(-(2+x))'),
-      math.parse('2+x'));
+      math.parse('((2+x))'));
   });
   it('removeAdditionByZero 2+0+x -> 2+x', function () {
     assert.deepEqual(

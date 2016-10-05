@@ -181,6 +181,11 @@ describe('collects and combines like terms', function() {
       simplify(math.parse('y * 2x * 10')),
       flatten(math.parse('20 * x * y')));
   });
+  it('x^y * x^z -> x^(y+z)', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^y * x^z')),
+      flatten(math.parse('x^(y+z)')));
+  });
 });
 
 describe('can simplify with division', function () {
@@ -273,11 +278,6 @@ describe('support for more * and ( that come from latex conversion', function ()
     assert.deepEqual(
       simplify(math.parse('-(12 x ^ 2)')),
       flatten(math.parse('-12 x^2')));
-  });
-  it('test', function () {
-    assert.deepEqual(
-      simplify(math.parse('-(-2)')),
-      flatten(math.parse('2')));
   });
 });
 
