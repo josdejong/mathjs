@@ -186,6 +186,11 @@ describe('collects and combines like terms', function() {
       simplify(math.parse('x^y * x^z')),
       flatten(math.parse('x^(y+z)')));
   });
+  it('x^(3+y) + x^(3+y)+ 4 -> 2x^(3+y) + 4', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^(3+y) + x^(3+y)+ 4')),
+      flatten(math.parse('2x^(3+y) + 4')));
+  });
 });
 
 describe('can simplify with division', function () {
