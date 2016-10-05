@@ -7,8 +7,9 @@ https://www.youtube.com/watch?v=ay6GjmiJTPM
 The main module is `stepper.js` which exports the following functions:
 
 - simplify(expr) returns a simplified expression node
-- stepThrough(expr) returns a list of what changed and the updated expression
-  node for each step in simplifying an expression node
+- stepThrough(expr) goes through step by step to simplify an expression and
+  returns a list of, for each step, what changed and the updated expression
+  node for each step
 - step(expr) performs a single step on an expression node
 
 ### Things to know to navigate the code
@@ -22,17 +23,18 @@ Expression trees
   [the mathJS expresisons documentation
   page](http://mathjs.org/docs/expressions/expression_trees.html)
 - There are a few different types of nodes that show up in the tree.
-  This stepper uses OperationNode, ParenthesisNode, ConstantNode and SymbolNode.
-  You can read about them on [the mathJS expresisons documentation
+  This stepper uses OperationNode, ParenthesisNode, ConstantNode, and
+  SymbolNode. You can read about them on [the mathJS expresisons documentation
   page](http://mathjs.org/docs/expressions/expression_trees.html). **Being
   familiar with these node types is essential for working in this code.**
+  In the future, it would be nice to add support for FunctionNode.
 - Keep in mind when dealing with node expressions that child nodes in the
   tree are called different things depending on the parent node type.
   Operation nodes have `args` as their children, and parenthesis nodes have a
   single child called `content`.
 - One thing that's especially helpful to know is that operation nodes with op
   `*` can be implicit. If you do `n = math.parse('2*x')`, the resulting
-  expression node is an operation node with `n.ops` equal to `*`, and `n.args`
+  expression node is an operation node with `n.op` equal to `*`, and `n.args`
   equal to constant node 2 and symbol node x. Contrastingly,
   `n = math.parse(2x)` has the same `op` and `args`, but `n.implicit`
   will be true - meaning there was no astrix between the operands in the input.
@@ -49,12 +51,16 @@ The code
   they are. Note that unaryMinus nodes (e.g. -x) are technically operator
   nodes, but we don't treat them as such, and always keep them as their own
   separate type.
-- `NodeStatus` objects are used throughout the code. They are returned from
-  functions that might make changes that count as a step, and signal if/how
-  an expression node has changed.
+- `NodeStatus` objects are used throughout the code. The stepper calls a bunch
+  of functions that might make changes that are counted as a step, and each of
+  these functions return a NodeStatus object which contains: the updated node
+  after calling this function, if this function changed the expression in a way
+  that counts as a step, and what the change type is.
 - `MathChangeTypes` are used to describe different changes that count as steps.
 - `flattenOperands` (sometimes shortened to `flatten`) changes the structure
-  of the expression tree to be easier to work with.
+  of the expression tree to be easier to work with. You probably will need to
+  use this in your tests, but nowhere else.
+  - TODO: write something that abstracts this away in the tests
 - `PolynomialTermNode` describes and stores what counts as a polynomial term
   (e.g. x, x^2, -4/5 x^y) and `PolynomialTermOperations` define all operations
   that can happen with these polynomial terms
