@@ -181,6 +181,16 @@ describe('collects and combines like terms', function() {
       simplify(math.parse('y * 2x * 10')),
       flatten(math.parse('20 * x * y')));
   });
+  it('x^y * x^z -> x^(y+z)', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^y * x^z')),
+      flatten(math.parse('x^(y+z)')));
+  });
+  it('x^(3+y) + x^(3+y)+ 4 -> 2x^(3+y) + 4', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^(3+y) + x^(3+y)+ 4')),
+      flatten(math.parse('2x^(3+y) + 4')));
+  });
 });
 
 describe('can simplify with division', function () {
@@ -220,6 +230,11 @@ describe('subtraction support', function() {
       simplify(math.parse('-(-(2+3))')),
       math.parse('5'));
   });
+  it('simplifyDoupleUnaryMinus -(-5) -> 5', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(-5)')),
+      math.parse('5'));
+  });
   it('simplifyDoupleUnaryMinus -(-(2+x)) -> 2+x', function () {
     assert.deepEqual(
       simplify(math.parse('-(-(2+x))')),
@@ -253,18 +268,22 @@ describe('support for more * and ( that come from latex conversion', function ()
       simplify(math.parse('(3*x)*(4*x)')),
       flatten(math.parse('12x^2')));
   });
-  it('(12*z^(2))/27 -> 4z^2/9', function () {
+  // TODO: leave fractions as fractions and don't evaluate unless whole number
+  it('(12*z^(2))/27 -> 0.44448 z^2', function () {
     assert.deepEqual(
       simplify(math.parse('(12*z^(2))/27')),
-      flatten(math.parse('4z^2/9')));
+      flatten(math.parse('0.44448 z^2')));
   });
-  /* TODO after polynomial refactor:
   it('x^2 - 12x^2 + 5x^2 - 7 -> 6x^2 - 7', function () {
     assert.deepEqual(
-      simplify(math.parse('x^2 - 12x^2 + 5x^2 - 7'), true),
+      simplify(math.parse('x^2 - 12x^2 + 5x^2 - 7')),
       flatten(math.parse('-6x^2 -7')));
   });
-  */
+  it('-(12 x ^ 2) -> -12 x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('-(12 x ^ 2)')),
+      flatten(math.parse('-12 x^2')));
+  });
 });
 
 /* distribution test ideas
