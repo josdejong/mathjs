@@ -87,4 +87,19 @@ describe('simplifies', function () {
       simplify('2+0+x'),
       math.parse('2+x'));
   });
+  it('x/1 -> x', function () {
+    assert.deepEqual(
+      simplify('x/1'),
+      (math.parse('x')));
+  });
+  it('(x+3)/-1 -> -(x+3)', function () {
+    assert.deepEqual(
+      simplify('(x+3)/-1'),
+      math.parse('-(x+3)'));
+  });
+  it('(x+3)^0 -> 1', function () {
+    assert.deepEqual(
+      simplify('(x+3)^0'),
+      math.parse('1'));
+  });
 });
