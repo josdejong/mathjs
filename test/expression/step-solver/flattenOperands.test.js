@@ -1,4 +1,4 @@
-"use strict"
+'use strict'
 
 const assert = require('assert');
 const math = require('../../../index');
@@ -72,7 +72,8 @@ describe('flattens + and *', function () {
       flatten(math.parse('2 x ^ (2 + 1 + 2) * y')),
       opNode('*', [
         opNode('*', [constNode(2),
-          opNode('^', [symbolNode('x'), parenNode(opNode('+', [constNode(2), constNode(1), constNode(2)]))]),
+          opNode('^', [symbolNode('x'), parenNode(
+            opNode('+', [constNode(2), constNode(1), constNode(2)]))]),
           ], true),
         symbolNode('y')]));
   });
@@ -102,7 +103,8 @@ describe('flattens division', function () {
   it('2 x * 4 x / 8', function () {
     assert.deepEqual(
       flatten(math.parse('2 x * 4 x / 8')),
-      opNode('*', [math.parse('2x'), opNode('/', [math.parse('4x'), constNode(8)])]));
+      opNode('*', [math.parse('2x'), opNode(
+        '/', [math.parse('4x'), constNode(8)])]));
   });
 });
 
