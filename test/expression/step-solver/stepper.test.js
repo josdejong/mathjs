@@ -292,6 +292,11 @@ describe('distribution', function () {
       simplify(math.parse('(3*x)*(4*x)')),
       flatten(math.parse('12x^2')));
   });
+  it('(3+x)*(4+x)*(x+5) -> x^3 + 12x^2 + 47x + 60', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3+x)*(4+x)*(x+5)')),
+      flatten(math.parse('x^3 + 12x^2 + 47x + 60')));
+  });
   it('-2x^2 * (3x - 4) -> -6x^3 + 8x^2', function () {
     assert.deepEqual(
       simplify(math.parse('-2x^2 * (3x - 4)')),
