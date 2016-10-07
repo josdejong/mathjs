@@ -94,10 +94,10 @@ describe('basic addition collect like terms, no exponents or coefficients',
         collectLikeTerms('x + 4 + y'),
         flatten(math.parse('x + 4 + y')));
     });
-    it('x + 4 + x + y + 5 -> (x + x) + y + (4 + 5)', function () {
+    it('x + 4 + x + 4/9 + y + 5/7 -> (x + x) + y + 4 + (4/9 + 5/7)', function () {
       assert.deepEqual(
-        collectLikeTerms('x + 4 + x + y + 5'),
-        flatten(math.parse('(x + x) + y + (4 + 5)')));
+        collectLikeTerms('x + 4 + x + 4/9 + y + 5/7'),
+        flatten(math.parse('(x + x) + y + 4 + (4/9 + 5/7)')));
     });
     // 2^x is an 'other'
     it('x + 4 + x + 2^x + 5 -> (x + x) + (4 + 5) + 2^x', function () {
@@ -163,9 +163,9 @@ describe('collect like terms for multiplication', function() {
       collectLikeTerms('y * 5 * z^2'),
       flatten(math.parse('y * 5 * z^2')));
   });
-  it('y * 5 * (2+x) * y^2 -> 5 * (y*y^2) * (2+x)', function () {
+  it('y * 5 * (2+x) * y^2 * 1/3 -> (5 * 1/3) * (y*y^2) * (2+x)', function () {
     assert.deepEqual(
-      collectLikeTerms('y * 5 * (2+x) * y^2'),
-      flatten(math.parse('5 * (y*y^2) * (2+x)')));
+      collectLikeTerms('y * 5 * (2+x) * y^2 * 1/3'),
+      flatten(math.parse('(5 * 1/3) * (y*y^2) * (2+x)')));
   });
 });

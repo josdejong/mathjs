@@ -85,10 +85,10 @@ describe('simplify (arithmetic)', function () {
       simplify(math.parse('(2+(2)+7)')),
       math.parse('11'));
   });
-  it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
+  it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 24/5', function () {
     assert.deepEqual(
-      math.parse('4.8'),
-      simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
+      simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')),
+      math.parse('24/5'));
   });
 });
 
@@ -268,11 +268,11 @@ describe('support for more * and ( that come from latex conversion', function ()
       simplify(math.parse('(3*x)*(4*x)')),
       flatten(math.parse('12x^2')));
   });
-  // TODO: leave fractions as fractions and don't evaluate unless whole number
-  it('(12*z^(2))/27 -> 0.44448 z^2', function () {
+  it('(12*z^(2))/27 -> 4/9 z^2', function () {
     assert.deepEqual(
       simplify(math.parse('(12*z^(2))/27')),
-      flatten(math.parse('0.44448 z^2')));
+      // TODO: fix printing and removing parens so we don't need the parens here
+      flatten(math.parse('(4/9) z^2')));
   });
   it('x^2 - 12x^2 + 5x^2 - 7 -> 6x^2 - 7', function () {
     assert.deepEqual(
