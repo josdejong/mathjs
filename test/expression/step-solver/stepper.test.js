@@ -307,4 +307,9 @@ describe('distribution', function () {
       simplify(math.parse('x^2 - x^2*(12 + 5x) - 7')),
       flatten(math.parse('-5x^3 - 11x^2 - 7')));
   });
+  it('(5+x)*(x+3) -> x^2 + 8x + 15', function () {
+    assert.deepEqual(
+      simplify(math.parse('(5+x)*(x+3)')),
+      flatten(math.parse('x^2 + 8x + 15')));
+  });
 });

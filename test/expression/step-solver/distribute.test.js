@@ -57,10 +57,10 @@ describe('distribute', function () {
       testDistribute('(x+2+y)*x*7'),
       flatten(math.parse('(x*x + 2*x + y*x)*7')));
   });
-  it('(5+x)*(x+3) -> (5*x + 5*3 + x*x + x*3)', function () {
+  it('(5+x)*(x+3) -> (5*(x+3) + x*(x+3))', function () {
     assert.deepEqual(
       testDistribute('(5+x)*(x+3)'),
-      flatten(math.parse('(5*x + 5*3 + x*x + x*3)')));
+      flatten(math.parse('(5*(x+3) + x*(x+3))')));
   });
   it('-2x^2 * (3x - 4) -> (-2x^2 * 3x - 2x^2 * -4)', function () {
     assert.deepEqual(
