@@ -70,8 +70,23 @@ describe('canCombinePolynomialTerms multiplication', function() {
   });
   it('y * y^3', function () {
     assert.deepEqual(
-      canCombine('y * y^3 '),
+      canCombine('y * y^3'),
       true);
+  });
+  it('5 * y^3', function () { // makes it implicit
+    assert.deepEqual(
+      canCombine('5 * y^3'),
+      true);
+  });
+  it('5/7 * x', function () { // makes it implicit
+    assert.deepEqual(
+      canCombine('5/7 * x'),
+      true);
+  });
+  it('5/7*9 * x', function () { // makes it implicit
+    assert.deepEqual(
+      canCombine('5/7*9 * x'),
+      false);
   });
 });
 

@@ -21,6 +21,16 @@ describe('simplifies', function () {
       simplify('2*3*5'),
       math.parse('30'));
   });
+  it('performArithmetic 8/4 -> 2', function () {
+    assert.deepEqual(
+      simplify('8/4'),
+      math.parse('2'));
+  });
+  it('performArithmetic does not divide 9/4', function () {
+    assert.deepEqual(
+      simplify('9/4'),
+      math.parse('9/4'));
+  });
   it('removes multiplication by 1 x*1 -> x', function () {
     assert.deepEqual(
       simplify('x*1'),
