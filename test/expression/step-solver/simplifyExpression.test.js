@@ -2,9 +2,10 @@
 
 const assert = require('assert');
 const math = require('../../../index');
-const stepper = require('../../../lib/expression/step-solver/stepper.js');
+const stepper = require('../../../lib/expression/step-solver/simplifyExpression.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
+const stepThrough = stepper.stepThrough;
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const print = require('./../../../lib/expression/step-solver/Util');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
@@ -85,10 +86,10 @@ describe('simplify (arithmetic)', function () {
       simplify(math.parse('(2+(2)+7)')),
       math.parse('11'));
   });
-  it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 4.8', function () {
+  it('(8-2) * 2^2 * (1+1) / (4 / 2) / 5 = 24/5', function () {
     assert.deepEqual(
-      math.parse('4.8'),
-      simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')));
+      simplify(math.parse('(8-2) * 2^2 * (1+1) / (4 /2) / 5')),
+      math.parse('24/5'));
   });
 });
 
@@ -268,11 +269,11 @@ describe('support for more * and ( that come from latex conversion', function ()
       simplify(math.parse('(3*x)*(4*x)')),
       flatten(math.parse('12x^2')));
   });
-  // TODO: leave fractions as fractions and don't evaluate unless whole number
-  it('(12*z^(2))/27 -> 0.44448 z^2', function () {
+  it('(12*z^(2))/27 -> 4/9 z^2', function () {
     assert.deepEqual(
       simplify(math.parse('(12*z^(2))/27')),
-      flatten(math.parse('0.44448 z^2')));
+      // TODO: fix printing and removing parens so we don't need the parens here
+      flatten(math.parse('(4/9) z^2')));
   });
   it('x^2 - 12x^2 + 5x^2 - 7 -> 6x^2 - 7', function () {
     assert.deepEqual(
@@ -286,15 +287,43 @@ describe('support for more * and ( that come from latex conversion', function ()
   });
 });
 
-/* distribution test ideas
+describe('distribution', function () {
+  it('(3*x)*(4*x) -> 12x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3*x)*(4*x)')),
+      flatten(math.parse('12x^2')));
+  });
+  it('(3+x)*(4+x)*(x+5) -> x^3 + 12x^2 + 47x + 60', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3+x)*(4+x)*(x+5)')),
+      flatten(math.parse('x^3 + 12x^2 + 47x + 60')));
+  });
+  it('-2x^2 * (3x - 4) -> -6x^3 + 8x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('-2x^2 * (3x - 4)')),
+      flatten(math.parse('-6x^3 + 8x^2')));
+  });
+  it('x^2 - x^2*(12 + 5x) - 7 -> -5x^3 - 11x^2 - 7', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^2 - x^2*(12 + 5x) - 7')),
+      flatten(math.parse('-5x^3 - 11x^2 - 7')));
+  });
+  it('(5+x)*(x+3) -> x^2 + 8x + 15', function () {
+    assert.deepEqual(
+      simplify(math.parse('(5+x)*(x+3)')),
+      flatten(math.parse('x^2 + 8x + 15')));
+  });
+});
 
-    // case 1 has one in parens and one not, only addition
-    // 2x * (3x + 4)
-    // (2x + 4) * 3x
-    // case 2 with subtraction
-    // (2x - 4) * 3x
-    // case 3 unary minus
-    // -2x * (3x - 4)
-    // (2x + 3)*(4x+7)
-    // 2x^2 * (3x + 4)
-*/
+describe('stepThrough returning no steps', function() {
+  it('12x^2 already simplified', function () {
+    assert.deepEqual(
+      stepThrough(math.parse('12x^2')),
+      []);
+  });
+  it('2*5x^2 + sqrt(5) has unsupported sqrt', function () {
+    assert.deepEqual(
+      stepThrough(math.parse('2*5x^2 + sqrt(5)')),
+      []);
+  });
+});
