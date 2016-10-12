@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const math = require('../../../index');
-const stepper = require('../../../lib/expression/step-solver/stepper.js');
+const stepper = require('../../../lib/expression/step-solver/simplifyExpression.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
 const stepThrough = stepper.stepThrough;

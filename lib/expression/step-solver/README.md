@@ -2,9 +2,9 @@
 
 https://www.youtube.com/watch?v=ay6GjmiJTPM
 
-### Using the stepper
+### Using the expression stepper
 
-The main module is `stepper.js` which exports the following functions:
+The main module is `simplifyExpression.js` which exports the following functions:
 
 - simplify(expr) returns a simplified expression node
 - stepThrough(expr) goes through step by step to simplify an expression and
