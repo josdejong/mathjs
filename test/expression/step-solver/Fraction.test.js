@@ -63,3 +63,40 @@ describe('multiplyConstantsAndFractions', function () {
       flatten(math.parse('(3*10)/(7*11)')));
   });
 });
+
+function simplifyFraction(exprStr) {
+  return flatten(Fraction.simplifyFraction(flatten(math.parse(exprStr))).node);
+}
+
+describe('simplifyFraction', function() {
+  it('2/4 -> 1/2', function () {
+    assert.deepEqual(
+      simplifyFraction('2/4'),
+      flatten(math.parse('1/2')));
+  });
+  it('9/3 -> 3', function () {
+    assert.deepEqual(
+      simplifyFraction('9/3'),
+      flatten(math.parse('3')));
+  });
+  it('1/-3 -> -1/3', function () {
+    assert.deepEqual(
+      simplifyFraction('1/-3'),
+      flatten(math.parse('-1/3')));
+  });
+  it('-3/-2 -> 3/2', function () {
+    assert.deepEqual(
+      simplifyFraction('-3/-2'),
+      flatten(math.parse('3/2')));
+  });
+  it('-1/-1 -> 1', function () {
+    assert.deepEqual(
+      simplifyFraction('-1/-1'),
+      flatten(math.parse('1')));
+  });
+  it('12/27 -> 4/9', function () {
+    assert.deepEqual(
+      simplifyFraction('12/27'),
+      flatten(math.parse('4/9')));
+  });
+});
