@@ -41,17 +41,3 @@ describe('isConstantOrConstantFraction', function () {
       false);
   });
 });
-
-describe('prettyPrint', function () {
-  it('2 + 3 + 4', function () {
-    assert.deepEqual(
-      Util.prettyPrint(math.parse('2+3+4')),
-      '2 + 3 + 4');
-  });
-  it('2 + (4 - x) + - 4', function () {
-    assert.deepEqual(
-      Util.prettyPrint(math.parse('2 + (4 - x) + - 4')),
-      '2 + (4 - x) - 4');
-  });
-});
-
