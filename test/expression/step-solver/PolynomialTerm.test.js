@@ -179,3 +179,36 @@ describe('simplifyPolynomialFraction', function() {
       flatten(math.parse('4/9 z^2')));
   });
 });
+
+function negatePolynomialTerm(exprString) {
+  return PolynomialTermOperations.negatePolynomialTerm(
+    flatten(math.parse(exprString)));
+}
+
+describe('negatePolynomialTerm', function() {
+  it('x -> -x', function () {
+    assert.deepEqual(
+      negatePolynomialTerm('x'),
+      flatten(math.parse('-x')));
+  });
+  it('x^2 -> -x^2', function () {
+    assert.deepEqual(
+      negatePolynomialTerm('x^2'),
+      flatten(math.parse('-x^2')));
+  });
+  it('-y^3 -> y^3', function () {
+    assert.deepEqual(
+      negatePolynomialTerm('-y^3'),
+      flatten(math.parse('y^3')));
+  });
+  it('2/3 x -> -2/3 x', function () {
+    assert.deepEqual(
+      negatePolynomialTerm('2/3 x'),
+      flatten(math.parse('-2/3 x')));
+  });
+  it('-5/6 z -> 5/6 x', function () {
+    assert.deepEqual(
+      negatePolynomialTerm('-5/6 z'),
+      flatten(math.parse('5/6 z')));
+  });
+});

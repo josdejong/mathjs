@@ -287,6 +287,34 @@ describe('support for more * and ( that come from latex conversion', function ()
   });
 });
 
+describe('distribution', function () {
+  it('(3*x)*(4*x) -> 12x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3*x)*(4*x)')),
+      flatten(math.parse('12x^2')));
+  });
+  it('(3+x)*(4+x)*(x+5) -> x^3 + 12x^2 + 47x + 60', function () {
+    assert.deepEqual(
+      simplify(math.parse('(3+x)*(4+x)*(x+5)')),
+      flatten(math.parse('x^3 + 12x^2 + 47x + 60')));
+  });
+  it('-2x^2 * (3x - 4) -> -6x^3 + 8x^2', function () {
+    assert.deepEqual(
+      simplify(math.parse('-2x^2 * (3x - 4)')),
+      flatten(math.parse('-6x^3 + 8x^2')));
+  });
+  it('x^2 - x^2*(12 + 5x) - 7 -> -5x^3 - 11x^2 - 7', function () {
+    assert.deepEqual(
+      simplify(math.parse('x^2 - x^2*(12 + 5x) - 7')),
+      flatten(math.parse('-5x^3 - 11x^2 - 7')));
+  });
+  it('(5+x)*(x+3) -> x^2 + 8x + 15', function () {
+    assert.deepEqual(
+      simplify(math.parse('(5+x)*(x+3)')),
+      flatten(math.parse('x^2 + 8x + 15')));
+  });
+});
+
 describe('stepThrough returning no steps', function() {
   it('12x^2 already simplified', function () {
     assert.deepEqual(
@@ -299,16 +327,3 @@ describe('stepThrough returning no steps', function() {
       []);
   });
 });
-
-/* distribution test ideas
-
-    // case 1 has one in parens and one not, only addition
-    // 2x * (3x + 4)
-    // (2x + 4) * 3x
-    // case 2 with subtraction
-    // (2x - 4) * 3x
-    // case 3 unary minus
-    // -2x * (3x - 4)
-    // (2x + 3)*(4x+7)
-    // 2x^2 * (3x + 4)
-*/
