@@ -5,6 +5,7 @@ const math = require('../../../index');
 const stepper = require('../../../lib/expression/step-solver/stepper.js');
 const step = stepper.step;
 const simplify = stepper.simplify;
+const stepThrough = stepper.stepThrough;
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const print = require('./../../../lib/expression/step-solver/Util');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
@@ -283,6 +284,19 @@ describe('support for more * and ( that come from latex conversion', function ()
     assert.deepEqual(
       simplify(math.parse('-(12 x ^ 2)')),
       flatten(math.parse('-12 x^2')));
+  });
+});
+
+describe('stepThrough returning no steps', function() {
+  it('12x^2 already simplified', function () {
+    assert.deepEqual(
+      stepThrough(math.parse('12x^2')),
+      []);
+  });
+  it('2*5x^2 + sqrt(5) has unsupported sqrt', function () {
+    assert.deepEqual(
+      stepThrough(math.parse('2*5x^2 + sqrt(5)')),
+      []);
   });
 });
 
