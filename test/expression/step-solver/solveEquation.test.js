@@ -62,69 +62,64 @@ describe('solveEquation', function () {
 });
 
 describe('constant comparison support', function () {
-    it('0 = 0 -> "Infinite solutions"', function () {
-      assert.equal(
-        testSolve('0 = 0', '='),
-        'Infinite solutions');
-    });
-    it('1 = 2 -> "No solution"', function () {
+    it('1 = 2 -> "False"', function () {
       assert.equal(
         testSolve('1 = 2', '='),
-        'No solution');
+        'False');
     });
-    it('3 + 5 = 8 -> "One solution"', function () {
+    it('3 + 5 = 8 -> "True"', function () {
       assert.equal(
         testSolve('3 + 5 = 8', '='),
-        'One solution');
+        'True');
     });
-    it('2 > 1 -> "This is true"', function () {
+    it('2 > 1 -> "True"', function () {
       assert.equal(
         testSolve('2 > 1', '>'),
-        'This is true');
+        'True');
     });
-    it('1 > 2 -> "This is false"', function () {
+    it('1 > 2 -> "False"', function () {
       assert.equal(
         testSolve('1 > 2', '>'),
-        'This is false');
+        'False');
     });
-    it('1 >= 1 -> "This is true"', function () {
+    it('1 >= 1 -> "True"', function () {
       assert.equal(
         testSolve('1 >= 1', '>='),
-        'This is true');
+        'True');
     });
-    it('2 >= 1 -> "This is true"', function () {
+    it('2 >= 1 -> "True"', function () {
       assert.equal(
         testSolve('2 >= 1', '>='),
-        'This is true');
+        'True');
     });
-    it('1 >= 2 -> "This is false"', function () {
+    it('1 >= 2 -> "False"', function () {
       assert.equal(
         testSolve('1 >= 2', '>='),
-        'This is false');
+        'False');
     });
-    it('2 < 1 -> "This is false"', function () {
+    it('2 < 1 -> "False"', function () {
       assert.equal(
         testSolve('2 < 1', '<'),
-        'This is false');
+        'False');
     });
-    it('1 < 2 -> "This is true"', function () {
+    it('1 < 2 -> "True"', function () {
       assert.equal(
         testSolve('1 < 2', '<'),
-        'This is true');
+        'True');
     });
-    it('1 <= 1 -> "This is true"', function () {
+    it('1 <= 1 -> "True"', function () {
       assert.equal(
         testSolve('1 <= 1', '<='),
-        'This is true');
+        'True');
     });
-    it('2 <= 1 -> "This is false"', function () {
+    it('2 <= 1 -> "False"', function () {
       assert.equal(
         testSolve('2 <= 1', '<='),
-        'This is false');
+        'False');
     });
-    it('1 <= 2 -> "This is true"', function () {
+    it('1 <= 2 -> "True"', function () {
       assert.equal(
         testSolve('1 <= 2', '<='),
-        'This is true');
+        'True');
     });
 });
