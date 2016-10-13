@@ -329,7 +329,6 @@ describe('stepThrough returning no steps', function() {
 
 describe('simplifying fractions', function() {
   it('5x + (1/2)x -> 11/2', function () {
-    console.log(print(simplify(math.parse('5x + (1/2)x'))));
     assert.deepEqual(
       simplify(math.parse('5x + (1/2)x')),
       flatten(math.parse('11/2 x')));
