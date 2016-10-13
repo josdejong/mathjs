@@ -7,7 +7,7 @@ const step = stepper.step;
 const simplify = stepper.simplify;
 const stepThrough = stepper.stepThrough;
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
-const print = require('./../../../lib/expression/step-solver/Util');
+const print = require('./../../../lib/expression/step-solver/prettyPrint');
 const NodeCreator = require('../../../lib/expression/step-solver/NodeCreator.js');
 
 // to create nodes, for testing
@@ -131,15 +131,15 @@ describe('collecting like terms within the context of the stepper', function() {
 });
 
 describe('collects and combines like terms', function() {
-  it('(x + x) + (x^2 + x^2) -> 2x + 2x^2', function () {
+  it('(x + x) + (x^2 + x^2) -> (1+1)x + 2x^2', function () {
     assert.deepEqual(
       testStep('(x + x) + (x^2 + x^2)'),
-      math.parse('2x + (x^2 + x^2)'));
+      math.parse('(1+1)x + (x^2 + x^2)'));
   });
-  it('10 + (y^2 + y^2) -> 10 + 2y^2', function () {
+  it('10 + (y^2 + y^2) -> 10 + (1+1)y^2', function () {
     assert.deepEqual(
       testStep('10 + (y^2 + y^2)'),
-      math.parse('10 + 2y^2'));
+      math.parse('10 + (1+1)y^2'));
   });
   it('x + y + y^2 no change', function () {
     assert.deepEqual(
@@ -272,8 +272,7 @@ describe('support for more * and ( that come from latex conversion', function ()
   it('(12*z^(2))/27 -> 4/9 z^2', function () {
     assert.deepEqual(
       simplify(math.parse('(12*z^(2))/27')),
-      // TODO: fix printing and removing parens so we don't need the parens here
-      flatten(math.parse('(4/9) z^2')));
+      flatten(math.parse('4/9 z^2')));
   });
   it('x^2 - 12x^2 + 5x^2 - 7 -> 6x^2 - 7', function () {
     assert.deepEqual(
@@ -325,5 +324,33 @@ describe('stepThrough returning no steps', function() {
     assert.deepEqual(
       stepThrough(math.parse('2*5x^2 + sqrt(5)')),
       []);
+  });
+});
+
+describe('simplifying fractions', function() {
+  it('5x + (1/2)x -> 11/2', function () {
+    assert.deepEqual(
+      simplify(math.parse('5x + (1/2)x')),
+      flatten(math.parse('11/2 x')));
+  });
+  it('x + x/2 -> 3/2 x', function () {
+    assert.deepEqual(
+      simplify(math.parse('x + x/2')),
+      flatten(math.parse('3/2 x')));
+  });
+  it('1 + 1/2 -> 3/2', function () {
+    assert.deepEqual(
+      simplify(math.parse('1 + 1/2')),
+      flatten(math.parse('3/2')));
+  });
+  it('2 + 5/2 + 3 -> one step -> (2+3) + 5/2', function () {
+    assert.deepEqual(
+      testStep('2 + 5/2 + 3'),
+      flatten(math.parse('(2+3) + 5/2')));
+  });
+  it('2 + 5/2 + 3 -> simplify -> 15/2', function () {
+    assert.deepEqual(
+      simplify(math.parse('2 + 5/2 + 3')),
+      flatten(math.parse('15/2')));
   });
 });
