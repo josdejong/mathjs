@@ -6,20 +6,20 @@ const math = require('../../../index');
 const Fraction = require('../../../lib/expression/step-solver/Fraction');
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 
-describe('isConstantFraction', function () {
+describe('isIntegerFraction', function () {
   it('4/5 true', function () {
     assert.deepEqual(
-      Fraction.isConstantFraction(math.parse('4/5')),
+      Fraction.isIntegerFraction(math.parse('4/5')),
       true);
   });
   it('4x/5 false', function () {
     assert.deepEqual(
-      Fraction.isConstantFraction(math.parse('4x/5')),
+      Fraction.isIntegerFraction(math.parse('4x/5')),
       false);
   });
   it('5 false', function () {
     assert.deepEqual(
-      Fraction.isConstantFraction(math.parse('5')),
+      Fraction.isIntegerFraction(math.parse('5')),
       false);
   });
 });
