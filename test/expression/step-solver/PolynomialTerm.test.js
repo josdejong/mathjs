@@ -127,15 +127,15 @@ describe('canCombinePolynomialTerms addition', function() {
 });
 
 describe('combinePolynomialTerms addition', function() {
-  it('x + x -> 2x', function () {
+  it('x + x -> (1+1)x', function () {
     assert.deepEqual(
-      combinePolynomialTerms('x+x'),
-      flatten(math.parse('2x')));
+      flatten(combinePolynomialTerms('x+x')),
+      flatten(math.parse('(1 + 1)x')));
   });
-  it('4y^2 + 7y^2 + y^2 -> 12y^2', function () {
+  it('4y^2 + 7y^2 + y^2 -> (4+7+1)y^2', function () {
     assert.deepEqual(
-      combinePolynomialTerms('4y^2 + 7y^2 + y^2'),
-      math.parse('12y^2'));
+      flatten(combinePolynomialTerms('4y^2 + 7y^2 + y^2')),
+      flatten(math.parse('(4+7+1)y^2')));
   });
 });
 
