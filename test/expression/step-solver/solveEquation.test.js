@@ -3,15 +3,16 @@
 const assert = require('assert');
 const math = require('../../../index');
 
+const Equation = require('../../../lib/expression/step-solver/Equation.js');
 const solveEquation = require('../../../lib/expression/step-solver/solveEquation.js');
 
 function testSolve(equationString, debug=false) {
-  const equation = solveEquation.createEquationFromString(equationString, '=');
-  const result = solveEquation.solveEquation(equation, debug);
+  const equation = Equation.createEquationFromString(equationString, '=');
+  const [steps, solution] = solveEquation(equation, debug);
   if (debug) {
-    console.log(result[0])
+    console.log(steps);
   }
-  return result[1]
+  return solution;
 }
 
 describe('solveEquation', function () {
