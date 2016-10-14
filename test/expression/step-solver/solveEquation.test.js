@@ -96,62 +96,87 @@ describe('solveEquation', function () {
 });
 
 describe('constant comparison support', function () {
-    it('1 = 2 -> "False"', function () {
+    it('1 = 2 -> False', function () {
       assert.equal(
         testSolve('1 = 2', '='),
         'False');
     });
-    it('3 + 5 = 8 -> "True"', function () {
+    it('3 + 5 = 8 -> True', function () {
       assert.equal(
         testSolve('3 + 5 = 8', '='),
         'True');
     });
-    it('2 > 1 -> "True"', function () {
+    it('1/2 = 1/2 -> True', function () {
+      assert.equal(
+        testSolve('1 = 2', '='),
+        'False');
+    });
+    it('2 > 1 -> True', function () {
       assert.equal(
         testSolve('2 > 1', '>'),
         'True');
     });
-    it('1 > 2 -> "False"', function () {
+    it('2/3 > 1/3 -> True', function () {
+      assert.equal(
+        testSolve('2/3 > 1/3', '>'),
+        'True');
+    });
+    it('1 > 2 -> False', function () {
       assert.equal(
         testSolve('1 > 2', '>'),
         'False');
     });
-    it('1 >= 1 -> "True"', function () {
+    it('1/3 > 2/3 -> False', function () {
+      assert.equal(
+        testSolve('1/3 > 2/3', '>'),
+        'False');
+    });
+    it('1 >= 1 -> True', function () {
       assert.equal(
         testSolve('1 >= 1', '>='),
         'True');
     });
-    it('2 >= 1 -> "True"', function () {
+    it('2 >= 1 -> True', function () {
       assert.equal(
         testSolve('2 >= 1', '>='),
         'True');
     });
-    it('1 >= 2 -> "False"', function () {
+    it('1 >= 2 -> False', function () {
       assert.equal(
         testSolve('1 >= 2', '>='),
         'False');
     });
-    it('2 < 1 -> "False"', function () {
+    it('2 < 1 -> False', function () {
       assert.equal(
         testSolve('2 < 1', '<'),
         'False');
     });
-    it('1 < 2 -> "True"', function () {
+    it('2/3 < 1/3 -> False', function () {
+      assert.equal(
+        testSolve('2/3 < 1/3', '<'),
+        'False');
+    });
+    it('1 < 2 -> True', function () {
       assert.equal(
         testSolve('1 < 2', '<'),
         'True');
     });
-    it('1 <= 1 -> "True"', function () {
+    it('1/3 < 2/3 -> True', function () {
+      assert.equal(
+        testSolve('1/3 < 2/3', '<'),
+        'True');
+    });
+    it('1 <= 1 -> True', function () {
       assert.equal(
         testSolve('1 <= 1', '<='),
         'True');
     });
-    it('2 <= 1 -> "False"', function () {
+    it('2 <= 1 -> False', function () {
       assert.equal(
         testSolve('2 <= 1', '<='),
         'False');
     });
-    it('1 <= 2 -> "True"', function () {
+    it('1 <= 2 -> True', function () {
       assert.equal(
         testSolve('1 <= 2', '<='),
         'True');
