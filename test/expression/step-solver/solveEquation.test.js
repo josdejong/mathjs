@@ -9,9 +9,6 @@ const solveEquation = require('../../../lib/expression/step-solver/solveEquation
 function testSolve(equationString, comparator, debug=false) {
   const equation = Equation.createEquationFromString(equationString, comparator);
   const [steps, solution] = solveEquation(equation, debug);
-  if (debug) {
-    console.log(steps);
-  }
   return solution;
 }
 
@@ -35,6 +32,26 @@ describe('solveEquation', function () {
       assert.equal(
         testSolve('2x - 3 = 0', '='),
         'x = 3/2');
+    });
+    it('x/3 - 2 = -1 -> x = 3', function () {
+      assert.equal(
+        testSolve('x/3 - 2 = -1', '='),
+        'x = 3');
+    });
+    it('5x/2 + 2 = 3x/2 + 10 -> x = 8', function () {
+      assert.equal(
+        testSolve('5x/2 + 2 = 3x/2 + 10', '='),
+        'x = 8');
+    });
+    it('2x - 1 = -x -> x = 1/3', function () {
+      assert.equal(
+        testSolve('2x - 1 = -x', '='),
+        'x = 1/3');
+    });
+    it('2 - x = -4 + x -> x = 3', function () {
+      assert.equal(
+        testSolve('2 - x = -4 + x', '='),
+        'x = 3');
     });
     it('2x/3 = 2 -> x = 3', function () {
       assert.equal(
