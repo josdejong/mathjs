@@ -7,10 +7,10 @@ const Equation = require('../../../lib/expression/step-solver/Equation.js');
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const solveEquation = require('../../../lib/expression/step-solver/solveEquation.js');
 
-function testSolve(equationString, comparator, debug=false) {
+function testSolve(equationString, comparator, debug=true) {
   const sides = equationString.split(comparator);
-  const leftNode = flatten(math.parse(sides[0]));
-  const rightNode = flatten(math.parse(sides[1]));
+  const leftNode = math.parse(sides[0]);
+  const rightNode = math.parse(sides[1]);
 
   const [steps, solution] = solveEquation(leftNode, rightNode, comparator, debug);
   return solution;
@@ -26,6 +26,11 @@ describe('solveEquation', function () {
     assert.equal(
       testSolve('2 = x', '='),
       'x = 2');
+  });
+  it('2 + -3 = x -> x = -1', function () {
+    assert.equal(
+      testSolve('2 + -3 = x', '='),
+      'x = -1');
   });
   it('x + 3 = 4 -> x = 1', function () {
     assert.equal(
@@ -71,6 +76,11 @@ describe('solveEquation', function () {
     assert.equal(
       testSolve('8 - 2a = a + 3 - 1', '='),
       'a = 2');
+  });
+  it('2 - x = 4 -> x = -2', function () {
+    assert.equal(
+      testSolve('2 - x = 4', '=', true),
+      'x = -2');
   });
   // TODO(bug): x/(2/3) is not the same as (x/2)/3 or x/2/3
   // it('x/(2/3) = 1 -> x = 3/2', function () {
