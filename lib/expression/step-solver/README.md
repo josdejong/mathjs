@@ -75,6 +75,11 @@ Testing
 
   ```./node_modules/mocha/bin/mocha ./test/expression/step-solver/```
 
+- If you want to see what the expression tree looks like at any point
+  in the code, you can log `node` as an expression string (e.g. '2x + 5') with
+  `console.log(prettyPrint(node))`, and you can log the full tree structure
+  with `console.log(JSON.stringify(node, null, 2))`
+
 --------
 
 --------
