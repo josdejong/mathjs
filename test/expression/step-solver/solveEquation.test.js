@@ -41,13 +41,30 @@ describe('solveEquation', function () {
         testSolve('2x/3 = 2', '='),
         'x = 3');
     });
-    // TODO: add test once we figure out parens issue
+    it('2x - 3 = x -> x = 3', function () {
+      assert.equal(
+        testSolve('2x - 3 = x', '='),
+        'x = 3');
+    });
+    // TODO(bug): add test once we figure out parens issue
     // it('5x + (1/2)x = 27 -> x = 1', function () {
     //   assert.equal(
     //     testSolve('5x + (1/2)x = 27 ', '=', true),
     //     'x = 54/11');
     // });
-    // TODO: add test once we fix fraction issue
+    // TODO(bug): add test once we figure out parens issue
+    // it('2x/3 = 2x - 4 -> x = 3', function () {
+    //   assert.equal(
+    //     testSolve('2x/3 = 2x - 4 ', '='),
+    //     'x = 3');
+    // });
+    // TODO(bug): add test once we figure out parens issue
+    // it('(x+1)/3 = 4 -> x = 3', function () {
+    //   assert.equal(
+    //     testSolve('(x+1)/3 = 4', '='),
+    //     'x = 3');
+    // });
+    // TODO(bug): add test once we fix fraction issue
     // it('2(x+3)/3 = 2 -> x = 0', function () {
     //   assert.equal(
     //     testSolve('2(x+3)/3 = 2', '='),
