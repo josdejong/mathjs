@@ -84,12 +84,12 @@ describe('solveEquation', function () {
   });
   it('2 - x = 4 -> x = -2', function () {
     assert.equal(
-      testSolve('2 - x = 4', '=', true).mathString,
+      testSolve('2 - x = 4', '=').mathString,
       'x = -2');
   });
   it('2 - 4x = x -> x = 2/5', function () {
     assert.equal(
-      testSolve('2 - 4x = x', '=', true).mathString,
+      testSolve('2 - 4x = x', '=').mathString,
       'x = 2/5');
   });
   // TODO(bug): x/(2/3) is not the same as (x/2)/3 or x/2/3
@@ -146,12 +146,11 @@ describe('constant comparison support', function () {
       testSolve('1 = 2', '=').explanation,
       MathChangeTypes.STATEMENT_IS_FALSE);
   });
-  // TODO(bug): both sides are constants!
-  // it('2 - 3 = 5 -> True', function () {
-  //   assert.equal(
-  //     testSolve('2 - 3 = 5', '=').explanation,
-  //     MathChangeTypes.STATEMENT_IS_FALSE);
-  // });
+  it('2 - 3 = 5 -> True', function () {
+    assert.equal(
+      testSolve('2 - 3 = 5', '=', true).explanation,
+      MathChangeTypes.STATEMENT_IS_FALSE);
+  });
   it('2 > 1 -> True', function () {
     assert.equal(
       testSolve('2 > 1', '>').explanation,
