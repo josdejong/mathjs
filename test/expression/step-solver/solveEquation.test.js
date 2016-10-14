@@ -148,7 +148,7 @@ describe('constant comparison support', function () {
   });
   it('2 - 3 = 5 -> True', function () {
     assert.equal(
-      testSolve('2 - 3 = 5', '=', true).explanation,
+      testSolve('2 - 3 = 5', '=').explanation,
       MathChangeTypes.STATEMENT_IS_FALSE);
   });
   it('2 > 1 -> True', function () {
