@@ -7,12 +7,16 @@ const Equation = require('../../../lib/expression/step-solver/Equation.js');
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const solveEquation = require('../../../lib/expression/step-solver/solveEquation.js');
 
-function testSolve(equationString, comparator, debug=true) {
+function testSolve(equationString, comparator, debug=false) {
   const sides = equationString.split(comparator);
   const leftNode = math.parse(sides[0]);
   const rightNode = math.parse(sides[1]);
 
-  const [steps, solution] = solveEquation(leftNode, rightNode, comparator, debug);
+  const steps = solveEquation(leftNode, rightNode, comparator, debug);
+  let solution;
+  if (steps.length > 0) {
+    solution = steps[steps.length - 1].mathString;
+  }
   return solution;
 }
 
@@ -79,7 +83,7 @@ describe('solveEquation', function () {
   });
   it('2 - x = 4 -> x = -2', function () {
     assert.equal(
-      testSolve('2 - x = 4', '=', true),
+      testSolve('2 - x = 4', '='),
       'x = -2');
   });
   // TODO(bug): x/(2/3) is not the same as (x/2)/3 or x/2/3
