@@ -92,6 +92,16 @@ describe('solveEquation', function () {
       testSolve('2 - 4x = x', '=').mathString,
       'x = 2/5');
   });
+  it('9x + 4 - 3 = 2x -> x = -1/7', function () {
+    assert.equal(
+      testSolve('9x + 4 - 3 = 2x', '=').mathString,
+      'x = -1/7');
+  });
+  it('9x + 4 - 3 = -2x -> x = -1/11', function () {
+    assert.equal(
+      testSolve('9x + 4 - 3 = -2x', '=').mathString,
+      'x = -1/11');
+  });
   // TODO(bug): x/(2/3) is not the same as (x/2)/3 or x/2/3
   // it('x/(2/3) = 1 -> x = 3/2', function () {
   //   assert.equal(
@@ -101,7 +111,7 @@ describe('solveEquation', function () {
   // TODO(bug): add test once we figure out parens issue
   // it('5x + (1/2)x = 27 -> x = 1', function () {
   //   assert.equal(
-  //     testSolve('5x + (1/2)x = 27 ', '='),
+  //     testSolve('5x + (1/2)x = 27 ', '=').mathString,
   //     'x = 54/11');
   // });
   // TODO(bug): add test once we figure out parens issue
@@ -116,7 +126,7 @@ describe('solveEquation', function () {
   //     testSolve('(x+1)/3 = 4', '=').mathString,
   //     'x = 3');
   // });
-  // TODO(bug): add test once we fix fraction issue
+  // // TODO(bug): add test once we fix fraction issue
   // it('2(x+3)/3 = 2 -> x = 0', function () {
   //   assert.equal(
   //     testSolve('2(x+3)/3 = 2', '=').mathString,
