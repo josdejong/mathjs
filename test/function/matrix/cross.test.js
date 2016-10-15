@@ -22,6 +22,12 @@ describe('cross', function() {
         math.matrix([1, -1, 1]));
   });
 
+  it('should calculate cross product for n-d arrays and matrices', function () {
+    assert.deepEqual(math.cross([[1, 2, 3]], [[4, 5, 6]]), [[-3, 6, -3]]);
+    assert.deepEqual(math.cross([[1], [2], [3]], [4, 5, 6]), [[-3, 6, -3]]);
+    assert.deepEqual(math.cross([[[[1, 2, 3]]]], [[4, 5, 6]]), [[-3, 6, -3]]);
+  });
+
   it('should throw an error for unsupported types of arguments', function() {
     assert.throws(function () {math.cross([2, 4, 1], 2)}, TypeError);
   });
