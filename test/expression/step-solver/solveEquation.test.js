@@ -9,7 +9,7 @@ const MathChangeTypes = require('../../../lib/expression/step-solver/MathChangeT
 const flatten = require('../../../lib/expression/step-solver/flattenOperands.js');
 const solveEquation = require('../../../lib/expression/step-solver/solveEquation.js');
 
-function testSolve(equationString, comparator, debug=true) {
+function testSolve(equationString, comparator, debug=false) {
   const sides = equationString.split(comparator);
   const leftNode = math.parse(sides[0]);
   const rightNode = math.parse(sides[1]);
