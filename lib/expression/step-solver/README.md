@@ -40,6 +40,14 @@ Expression trees
   will be true - meaning there was no astrix between the operands in the input.
   (This is used a lot for polynomial terms - ie 2x \* 5 should just be two
    operands 2x and 5 instead of 3 operands 2, x, and 5)
+- TRICKY catch: any subtraction in the tree will be converted to adding the
+  negative, e.g. 2 - 3 would be 2 + -3 in the tree. This is so that all
+  addition and subtraction is flat (e.g. 2 + 3 - 5 + 8 would become one
+  addition operation with 2, 3, -5, and 8 as its child nodes). This is a common
+  strategy for computer algebra systems but can be confusing and easy to forget.
+  So at most points in the codebase, there should be no operators with sign `-`
+  If you're curious what the code that modifies subtraction looks like, you can
+  find it in 'flatten.js'
 
 The code
 

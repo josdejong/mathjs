@@ -23,21 +23,3 @@ describe('appendToArrayInObject', function () {
      );
   });
 });
-
-describe('isConstantOrConstantFraction', function () {
-  it('2 true', function () {
-    assert.deepEqual(
-      Util.isConstantOrConstantFraction(math.parse('2')),
-      true);
-  });
-  it('2/9 true', function () {
-    assert.deepEqual(
-      Util.isConstantOrConstantFraction(math.parse('4/9')),
-      true);
-  });
-  it('x/2 false', function () {
-    assert.deepEqual(
-      Util.isConstantOrConstantFraction(math.parse('x/2')),
-      false);
-  });
-});
