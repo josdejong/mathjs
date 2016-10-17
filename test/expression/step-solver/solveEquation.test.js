@@ -15,7 +15,7 @@ function testSolve(equationString, comparator, debug=false) {
   const rightNode = math.parse(sides[1]);
 
   const steps = solveEquation(leftNode, rightNode, comparator, debug);
-  if (steps.length == 0) {
+  if (steps.length === 0) {
     return equationString;
   }
   return steps[steps.length -1];
