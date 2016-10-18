@@ -107,7 +107,11 @@ describe('solveEquation', function () {
       testSolve('(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0', '=').asciimath,
       '2x^6 - x^4 - 50x^2 = -25');
   });
-
+  it('(-x ^ 2 - 4x + 2)(-3x^2 - 6x + 3) = 0 -> 3x^4 + 18x^3 + 15x^2 − 24x = -6', function () {
+    assert.equal(
+      testSolve('(-x ^ 2 - 4x + 2)(-3x^2 - 6x + 3) = 0', '=', true).asciimath,
+      '3x^4 + 18x^3 + 15x^2 - 24x = -6');
+  });
   // // TODO(bug): x/(2/3) is not the same as (x/2)/3 or x/2/3
   // it('x/(2/3) = 1 -> x = 3/2', function () {
   //   assert.equal(
