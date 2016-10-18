@@ -102,6 +102,12 @@ describe('solveEquation', function () {
       testSolve('9x + 4 - 3 = -2x', '=').asciimath,
       'x = -1/11');
   });
+  it('(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0 -> 2x^6 - x^4 - 50x^2 = -25', function () {
+    assert.equal(
+      testSolve('(2x^2 - 1)(x^2 - 5)(x^2 + 5) = 0', '=').asciimath,
+      '2x^6 - x^4 - 50x^2 = -25');
+  });
+
   // // TODO(bug): x/(2/3) is not the same as (x/2)/3 or x/2/3
   // it('x/(2/3) = 1 -> x = 3/2', function () {
   //   assert.equal(
