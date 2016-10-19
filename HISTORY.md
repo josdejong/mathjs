@@ -4,6 +4,9 @@
 ## not yet released, version 3.6.0
 
 - Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
+- Extended function `pickRandom` with the option to pick multiple values from
+  an array and give the values weights: `pickRandom(possibles, number, weights)`.
+  Thanks @woylie.
 
 
 ## 2016-09-21, version 3.5.3
