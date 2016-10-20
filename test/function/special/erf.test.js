@@ -142,8 +142,17 @@ describe('erf', function () {
     assert.equal(expression.toTex(), 'erf\\left(2.5\\right)');
   });
 
+  it('should return 1 for numbers greater than 2**53 (including Infinity)', function () {
+    assert.equal(erf(Math.pow(2, 53)), 1);
+    assert.equal(erf(Infinity), 1);
+  });
+
+  it('should return -1 for numbers less than -2**53 (including -Infinity)', function () {
+    assert.equal(erf(-Math.pow(2, 53)), -1);
+    assert.equal(erf(-Infinity), -1);
+  });
+
   // TODO: Test with nums really close to 0
-  // TODO: Test with really, really big numbers (at some point erf returns NaN)
   // TODO: Once this works for complex numbers and imaginary units, test
 
 });
