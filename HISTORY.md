@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.6.0
+## 2016-10-21, version 3.6.0
 
 - Implemented function `erf()`. THanks @patgrasso.
 - Extended function `cross()` to support n-d vectors. Thanks @patgrasso.

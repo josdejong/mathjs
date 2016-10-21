@@ -164,7 +164,7 @@ Function | Description
 [math.kldivergence(x,&nbsp;y)](functions/kldivergence.md) | Calculate the Kullback-Leibler (KL) divergence  between two distributions.
 [math.multinomial(a)](functions/multinomial.md) | Multinomial Coefficients compute the number of ways of picking a1, a2, .
 [math.permutations(n&nbsp;[,&nbsp;k])](functions/permutations.md) | Compute the number of ways of obtaining an ordered subset of `k` elements from a set of `n` elements.
-[math.pickRandom(array)](functions/pickRandom.md) | Random pick a value from a one dimensional array.
+[math.pickRandom(array)](functions/pickRandom.md) | Random pick one or more values from a one dimensional array.
 [math.random([min,&nbsp;max])](functions/random.md) | Return a random number larger or equal to `min` and smaller than `max` using a uniform distribution.
 [math.randomInt([min,&nbsp;max])](functions/randomInt.md) | Return a random integer number larger or equal to `min` and smaller than `max` using a uniform distribution.
 
@@ -180,6 +180,12 @@ Function | Description
 [math.smaller(x,&nbsp;y)](functions/smaller.md) | Test whether value x is smaller than y.
 [math.smallerEq(x,&nbsp;y)](functions/smallerEq.md) | Test whether value x is smaller or equal to y.
 [math.unequal(x,&nbsp;y)](functions/unequal.md) | Test whether two values are unequal.
+
+## Special functions
+
+Function | Description
+---- | -----------
+[math.erf(x)](functions/erf.md) | Compute the erf function of a value using a rational Chebyshev approximations for different intervals of x.
 
 ## Statistics functions
 
