@@ -1085,6 +1085,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('8/2a/2', {a:2}), 4);
       assert.equal(parseAndEval('8/2a*2', {a:2}), 16);
       assert.equal(parseAndEval('4*2a', {a:2}), 16);
+      assert.equal(parseAndEval('3!10'), 60);
 
       assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
       assert.equal(parseAndEval('(2+3)2'), 10);
@@ -1141,6 +1142,9 @@ describe('parse', function() {
       assert.throws(function () { math.parse('2 * 3 4 * 5'); }, /Unexpected part "4"/);
       assert.throws(function () { math.parse('2 / 3 4 5'); }, /Unexpected part "4"/);
       assert.throws(function () { math.parse('2 + 3 4'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('-2 2'); }, /Unexpected part "2"/);
+      assert.throws(function () { math.parse('+3 3'); }, /Unexpected part "3"/);
+      assert.throws(function () { math.parse('2^3 4'); }, /Unexpected part "4"/);
     });
 
     it('should parse pow ^', function() {

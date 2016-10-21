@@ -8,6 +8,8 @@
 - Extended function `pickRandom` with the option to pick multiple values from
   an array and give the values weights: `pickRandom(possibles, number, weights)`.
   Thanks @woylie.
+- Fixed #727: Parser not throwing an error for invalid implicit multiplications
+  like `-2 2` and `2^3 4` (right after the second value of an operator).
 
 
 ## 2016-09-21, version 3.5.3
