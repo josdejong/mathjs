@@ -3,6 +3,7 @@
 
 ## not yet released, version 3.6.0
 
+- Implemented function `erf()`. THanks @patgrasso.
 - Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
 - Extended function `pickRandom` with the option to pick multiple values from
   an array and give the values weights: `pickRandom(possibles, number, weights)`.
