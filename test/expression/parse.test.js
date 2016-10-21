@@ -1958,4 +1958,51 @@ describe('parse', function() {
 
   });
 
+  describe ('expose test functions', function () {
+    it('should expose isAlpha', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isAlpha === 'function')
+    });
+
+    it('should expose isValidLatinOrGreek', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isValidLatinOrGreek === 'function')
+    });
+
+    it('should expose isValidMathSymbol', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isValidMathSymbol === 'function')
+    });
+
+    it('should expose isWhitespace', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isWhitespace === 'function')
+    });
+
+    it('should expose isDecimalMark', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isDecimalMark === 'function')
+    });
+
+    it('should expose isDigitDot', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isDigitDot === 'function')
+    });
+
+    it('should expose isDigit', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isDigit === 'function')
+    });
+
+    it('should allow overriding isAlpha', function() {
+      var originalIsAlpha = math.expression.parse.isAlpha;
+
+      // override isAlpha with one accepting $ characters too
+      math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+        return /^[a-zA-Z_$]$/.test(c)
+      };
+
+      const node = math.expression.parse('$foo');
+      const result = node.eval({$foo: 42});
+      assert.equal(result, 42);
+
+      // restore original isAlpha
+      math.expression.parse.isAlpha = originalIsAlpha
+    });
+
+  });
+
 });

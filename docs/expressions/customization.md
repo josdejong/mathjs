@@ -10,6 +10,7 @@ On this page:
 - [Custom argument parsing](#custom-argument-parsing)
 - [Custom LaTeX handlers](#custom-latex-handlers)
 - [Custom LaTeX and string output](#custom-latex-and-string-output)
+- [Customize supported characters](#customize-supported-characters)
 
 ## Function transforms
 
@@ -343,4 +344,45 @@ node.toString({implicit: 'show'}); //'2 * a'
 node.toTex(); //'2~ a'
 node.toTex({implicit: 'hide'}); //'2~ a'
 node.toTex({implicit: 'show'}); //'2\\cdot a'
+```
+
+
+## Customize supported characters
+
+It is possible to customize the characters allowed in symbols and digits.
+The `parse` function exposes the following test functions:
+
+- `math.expression.parse.isAlpha(c, cPrev, cNext)`
+  - A latin letter (upper or lower case). Ascii: a-z, A-Z
+  - An underscore.                        Ascii: _
+  - A latin letter with accents.          Unicode: \u00C0 - \u02AF
+  - A greek letter.                       Unicode: \u0370 - \u03FF
+  - A mathematical alphanumeric symbol.   Unicode: \u{1D400} - \u{1D7FF} excluding invalid code points
+- `math.expression.parse.isWhitespace(c, nestingLevel)`
+  - Space
+  - Tab `\t`
+  - Return character `\n` when nested inside a matrix or parentheses (i.e. nestingLevel > 0).
+- `math.expression.parse.isDecimalMark(c, cNext)`
+  - Decimal point `.`, and not the first character of operators `/*`, `./` or `.^`.
+- `math.expression.parse.isDigitDot(c)`
+  - A number `0` to `9`
+  - A decimal point `.`
+- `math.expression.parse.isDigit(c)`
+  - A number `0` to `9`
+
+The exact signature and implementation of these functions can be looked up in
+the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js).
+
+For example, the `$` character is not supported by default. It can be enabled
+by replacing the `isAlpha` function:
+
+```js
+var isAlphaOriginal = math.expression.parse.isAlpha;
+math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+  return isAlphaOriginal(c, cPrev, cNext) || (c === '$');
+};
+
+// now we can use the $ character in expressions
+var result = math.eval('$foo', {$foo: 42}); // returns 42
+console.log(result);
 ```
