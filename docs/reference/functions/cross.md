@@ -7,7 +7,7 @@ layout: default
 <h1 id="function-cross">Function cross <a href="#function-cross" title="Permalink">#</a></h1>
 
 Calculate the cross product for two vectors in three dimensional space.
-The cross product of `A = [a1, a2, a3]` and `B =[b1, b2, b3]` is defined
+The cross product of `A = [a1, a2, a3]` and `B = [b1, b2, b3]` is defined
 as:
 
    cross(A, B) = [
@@ -15,6 +15,9 @@ as:
      a3 * b1 - a1 * b3,
      a1 * b2 - a2 * b1
    ]
+
+If one of the input vectors has a dimension greater than 1, the output
+vector will be a 1x3 (2-dimensional) matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -40,9 +43,10 @@ Array &#124; Matrix | Returns the cross product of `x` and `y`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.cross([1, 1, 0],  [0, 1, 1]);  // Returns [1, -1, 1]
-math.cross([3, -3, 1], [4, 9, 2]);  // Returns [-15, -2, 39]
-math.cross([2, 3, 4],  [5, 6, 7]);  // Returns [-3, 6, -3]
+math.cross([1, 1, 0],   [0, 1, 1]);       // Returns [1, -1, 1]
+math.cross([3, -3, 1],  [4, 9, 2]);       // Returns [-15, -2, 39]
+math.cross([2, 3, 4],   [5, 6, 7]);       // Returns [-3, 6, -3]
+math.cross([[1, 2, 3]], [[4], [5], [6]]); // Returns [[-3, 6, -3]]
 ```
 
 

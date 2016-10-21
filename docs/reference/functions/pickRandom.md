@@ -6,14 +6,18 @@ layout: default
 
 <h1 id="function-pickrandom">Function pickRandom <a href="#function-pickrandom" title="Permalink">#</a></h1>
 
-Random pick a value from a one dimensional array.
-Array element is picked using a random function with uniform distribution.
+Random pick one or more values from a one dimensional array.
+Array elements are picked using a random function with uniform or weighted distribution.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
 math.pickRandom(array)
+math.pickRandom(array, number)
+math.pickRandom(array, weights)
+math.pickRandom(array, number, weights)
+math.pickRandom(array, weights, number)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -21,18 +25,24 @@ math.pickRandom(array)
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array | A one dimensional array
+`number` | Int | An int or float
+`weights` | Array | An array of ints or floats
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number | One of the elements of the provided input array
+array | An array of elements of the provided input array
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.pickRandom([3, 6, 12, 2]);       // returns one of the values in the array
+math.pickRandom([3, 6, 12, 2]);                  // returns one of the values in the array
+math.pickRandom([3, 6, 12, 2], 2);               // returns an array of two of the values in the array
+math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1]);    // returns one of the values in the array with weighted distribution
+math.pickRandom([3, 6, 12, 2], 2, [1, 3, 2, 1]); // returns an array of two of the values in the array with weighted distribution
+math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1], 2); // returns an array of two of the values in the array with weighted distribution
 ```
 
 

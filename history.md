@@ -5,6 +5,20 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20161021-version-360">2016-10-21, version 3.6.0 <a href="#20161021-version-360" title="Permalink">#</a></h2>
+
+- Implemented function `erf()`. THanks @patgrasso.
+- Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
+- Extended function `pickRandom` with the option to pick multiple values from
+  an array and give the values weights: `pickRandom(possibles, number, weights)`.
+  Thanks @woylie.
+- Parser now exposes test functions like `isAlpha` which can be replaced in
+  order to adjust the allowed characters in variables names (See #715).
+- Fixed #727: Parser not throwing an error for invalid implicit multiplications
+  like `-2 2` and `2^3 4` (right after the second value of an operator).
+- Fixed #688: Describe allowed variable names in the docs.
+
+
 <h2 id="20160921-version-353">2016-09-21, version 3.5.3 <a href="#20160921-version-353" title="Permalink">#</a></h2>
 
 - Some more fixes regarding numbers ending with a decimal mark (like `2.`).

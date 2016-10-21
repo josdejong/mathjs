@@ -18,6 +18,8 @@ To update the website with the latest version of math.js:
 
       npm run build
 
+- Ensure any new pages are added to git.
+
 - To generate the website locally using [Jekyll](http://jekyllrb.com/):
 
       jekyll
