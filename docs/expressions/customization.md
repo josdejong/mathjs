@@ -353,25 +353,13 @@ It is possible to customize the characters allowed in symbols and digits.
 The `parse` function exposes the following test functions:
 
 - `math.expression.parse.isAlpha(c, cPrev, cNext)`
-  - A latin letter (upper or lower case). Ascii: a-z, A-Z
-  - An underscore.                        Ascii: _
-  - A latin letter with accents.          Unicode: \u00C0 - \u02AF
-  - A greek letter.                       Unicode: \u0370 - \u03FF
-  - A mathematical alphanumeric symbol.   Unicode: \u{1D400} - \u{1D7FF} excluding invalid code points
 - `math.expression.parse.isWhitespace(c, nestingLevel)`
-  - Space
-  - Tab `\t`
-  - Return character `\n` when nested inside a matrix or parentheses (i.e. nestingLevel > 0).
 - `math.expression.parse.isDecimalMark(c, cNext)`
-  - Decimal point `.`, and not the first character of operators `/*`, `./` or `.^`.
 - `math.expression.parse.isDigitDot(c)`
-  - A number `0` to `9`
-  - A decimal point `.`
 - `math.expression.parse.isDigit(c)`
-  - A number `0` to `9`
 
 The exact signature and implementation of these functions can be looked up in
-the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js).
+the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.md#constants-and-variables).
 
 For example, the `$` character is not supported by default. It can be enabled
 by replacing the `isAlpha` function:

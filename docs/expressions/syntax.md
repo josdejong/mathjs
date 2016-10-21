@@ -188,6 +188,19 @@ parser.eval('b = 5 / 2');   // 2.5
 parser.eval('a * b');       // 8.5
 ```
 
+Variable names must:
+
+- Begin with an "alpha character", which is:
+  - A latin letter (upper or lower case). Ascii: `a-z`, `A-Z`
+  - An underscore.                        Ascii: `_`
+  - A latin letter with accents.          Unicode: `\u00C0` - `\u02AF`
+  - A greek letter.                       Unicode: `\u0370` - `\u03FF`
+  - A mathematical alphanumeric symbol.   Unicode: `\u{1D400}` - `\u{1D7FF}` excluding invalid code points
+- Contain only alpha characters (above) and digits `0-9`
+- Not be any of the following: `mod`, `to`, `in`, `and`, `xor`, `or`, `not`, `end`. It is possible to assign to some of these, but that's not recommended.
+
+It is possible to customize the allowed alpha characters, see [Customize supported characters](customization.md#customize-supported-characters) for more information.
+
 
 ## Data types
 

@@ -12,6 +12,7 @@
   order to adjust the allowed characters in variables names (See #715).
 - Fixed #727: Parser not throwing an error for invalid implicit multiplications
   like `-2 2` and `2^3 4` (right after the second value of an operator).
+- Fixed #688: Describe allowed variable names in the docs.
 
 
 ## 2016-09-21, version 3.5.3
