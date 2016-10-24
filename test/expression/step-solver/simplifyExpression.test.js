@@ -131,15 +131,15 @@ describe('collecting like terms within the context of the stepper', function() {
 });
 
 describe('collects and combines like terms', function() {
-  it('(x + x) + (x^2 + x^2) -> (1+1)x + 2x^2', function () {
+  it('(x + x) + (x^2 + x^2) -> (1+1)*x + 2x^2', function () {
     assert.deepEqual(
       testStep('(x + x) + (x^2 + x^2)'),
-      math.parse('(1+1)x + (x^2 + x^2)'));
+      math.parse('(1+1)*x + (x^2 + x^2)'));
   });
-  it('10 + (y^2 + y^2) -> 10 + (1+1)y^2', function () {
+  it('10 + (y^2 + y^2) -> 10 + (1+1)*y^2', function () {
     assert.deepEqual(
       testStep('10 + (y^2 + y^2)'),
-      math.parse('10 + (1+1)y^2'));
+      math.parse('10 + (1+1)*y^2'));
   });
   it('x + y + y^2 no change', function () {
     assert.deepEqual(
@@ -261,6 +261,16 @@ describe('subtraction support', function() {
       simplify(math.parse('-(2*x) * -(2+2)')),
       math.parse('8x'));
   });
+  it('(x-4)-5 -> x-9', function () {
+    assert.deepEqual(
+      simplify(math.parse('(x-4)-5')),
+      flatten(math.parse('x-9')));
+  });
+  it('5-x-4 -> -x+1', function () {
+    assert.deepEqual(
+      simplify(math.parse('5-x-4')),
+      flatten(math.parse('-x+1')));
+  });
 });
 
 describe('support for more * and ( that come from latex conversion', function () {
@@ -312,6 +322,11 @@ describe('distribution', function () {
       simplify(math.parse('(5+x)*(x+3)')),
       flatten(math.parse('x^2 + 8x + 15')));
   });
+  it('(x-2)(x-4) -> x^2-6x+8', function () {
+    assert.deepEqual(
+      simplify(math.parse('(x-2)(x-4)')),
+      flatten(math.parse('x^2-6x+8')));
+  });
 });
 
 describe('stepThrough returning no steps', function() {
@@ -352,5 +367,10 @@ describe('simplifying fractions', function() {
     assert.deepEqual(
       simplify(math.parse('2 + 5/2 + 3')),
       flatten(math.parse('15/2')));
+  });
+  it('9/18-5/18 -> 4/18', function () {
+    assert.deepEqual(
+      simplify(math.parse('9/18-5/18')),
+      flatten(math.parse('2/9')));
   });
 });
