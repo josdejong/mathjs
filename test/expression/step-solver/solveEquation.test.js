@@ -134,7 +134,7 @@ describe('solveEquation', function () {
   //     testSolve('x/(2/3) = 1', '=').asciimath,
   //     'x = 3/2');
   // });
-  // TODO(bug): add test once we fix parens/fraction issue
+  // TODO(bug): add test once we fix parens/fraction issue, or support () here
   // it('(x+1)/3 = 4 -> x = 3', function () {
   //   assert.equal(
   //     testSolve('(x+1)/3 = 4', '=').asciimath,
