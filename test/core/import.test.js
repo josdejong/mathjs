@@ -227,6 +227,22 @@ describe('import', function() {
     assert.strictEqual(math.expression.transform.foo, foo.transform);
   });
 
+  it('should throw an error when a factory function has a transform', function() {
+    assert.throws(function () {
+      math.import({
+        name: 'foo2',
+        factory: function () {
+          var fn = function () {};
+          fn.transform = function () {};
+          return fn;
+        }
+      });
+
+      math.foo2(); // as soon as we use it, it will resolve the factory function
+
+    }, /Transforms cannot be attached to factory functions/);
+  });
+
   it.skip('should import a factory with name', function () {
     // TODO: unit test importing a factory
   });
