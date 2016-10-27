@@ -374,3 +374,11 @@ describe('simplifying fractions', function() {
       flatten(math.parse('2/9')));
   });
 });
+
+describe('floating point', function() {
+  it('1.983*10 -> 19.83', function () {
+    assert.deepEqual(
+      simplify(math.parse('1.983*10')),
+      flatten(math.parse('19.83')));
+  });
+});
