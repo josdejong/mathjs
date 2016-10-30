@@ -1,6 +1,11 @@
 # History
 
 
+## 2016-10-21, version 3.6.1
+
+- Command Line Interface loads faster.
+
+
 ## 2016-10-21, version 3.6.0
 
 - Implemented function `erf()`. THanks @patgrasso.

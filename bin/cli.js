@@ -44,11 +44,20 @@
  * the License.
  */
 
-var math = require('../index');
 var scope = {};
 var fs = require('fs');
 
 var PRECISION = 14; // decimals
+
+/**
+ * "Lazy" load math.js: only require when we actually start using it.
+ * This ensures the cli application looks like it loads instantly.
+ * When requesting help or version number, math.js isn't even loaded.
+ * @return {*}
+ */
+function getMath () {
+  return require('../index');
+}
 
 /**
  * Helper function to format a value. Regular numbers will be rounded
@@ -56,6 +65,8 @@ var PRECISION = 14; // decimals
  * @param {*} value
  */
 function format(value) {
+  var math = getMath();
+
   return math.format(value, {
     fn: function (value) {
       if (typeof value === 'number') {
@@ -75,6 +86,7 @@ function format(value) {
  * @return {[Array, String]} completions
  */
 function completer (text) {
+  var math = getMath();
   var name;
   var matches = [];
   var m = /[a-zA-Z_0-9]+$/.exec(text);
@@ -170,6 +182,9 @@ function runStream (input, output, mode, parenthesis) {
     rl.setPrompt('> ');
     rl.prompt();
   }
+
+  // load math.js now, right *after* loading the prompt.
+  var math = getMath();
 
   // TODO: automatic insertion of 'ans' before operators like +, -, *, /
 
