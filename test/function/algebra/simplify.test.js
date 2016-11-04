@@ -22,9 +22,13 @@ describe('simplify', function() {
     simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', {x:7});
   });
 
-  it('should resolve trees with no symbols to a fraction', function() {
+  it('should simplify rational expressions with no symbols to fraction', function() {
     simplifyAndCompare('3*4', '12');
     simplifyAndCompare('3+2/4', '7/2');
+  });
+
+  it('should simplify non-rational expressions with no symbols to number', function() {
+    simplifyAndCompare('3+sin(4)', '2.2431975046920716');
   });
 
   it('should collect like terms', function() {
@@ -40,4 +44,8 @@ describe('simplify', function() {
     simplifyAndCompare('x^2+x+3+x^2', '2*x^2+x+3');
   });
 
+  it('should compute and simplify derivatives', function() {
+    simplifyAndCompare('derivative(5x*3x, x)', '30*x');
+    simplifyAndCompare('5+derivative(5/(3x), x)', '-15/(3*x)^2+5');
+  });
 });
