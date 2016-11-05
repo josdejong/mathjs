@@ -1,8 +1,9 @@
 # History
 
 
-## 2016-10-21, version 3.6.1
+## 2016-10-21, version 3.7.0
 
+- Implemented method `Node.equals(other)` for all nodes of the expression parser.
 - Command Line Interface loads faster.
 
 

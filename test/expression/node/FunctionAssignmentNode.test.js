@@ -260,6 +260,28 @@ describe('FunctionAssignmentNode', function() {
     assert.strictEqual(e.expr, d.expr);
   });
 
+  it ('test equality another Node', function () {
+    var a = new FunctionAssignmentNode('f', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var b = new FunctionAssignmentNode('f', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var c = new FunctionAssignmentNode('g', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var d = new FunctionAssignmentNode('f', ['y'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var e = new FunctionAssignmentNode('f', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(3), new SymbolNode('x')]));
+    var f = new SymbolNode('add');
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+    assert.strictEqual(a.equals(f), false);
+  });
+
   it ('should respect the \'all\' parenthesis option', function () {
     var expr = math.parse('f(x)=x+1');
     assert.equal(expr.toString({parenthesis: 'all'}), 'function f(x) = (x + 1)');

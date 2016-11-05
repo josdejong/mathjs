@@ -101,6 +101,22 @@ describe('SymbolNode', function() {
     assert.equal(a.name, b.name);
   });
 
+  it ('test equality another Node', function () {
+    var a = new SymbolNode('a');
+    var b = new SymbolNode('b');
+    var aEqual = new SymbolNode('a');
+    var aFake = {
+      name: 'a'
+    };
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(aEqual), true);
+    assert.strictEqual(a.equals(b), false);
+    assert.strictEqual(a.equals(aFake), false);
+    assert.strictEqual(a.equals(new ConstantNode(2)), false);
+  });
+
   it ('should stringify a SymbolNode', function () {
     var s = new SymbolNode('foo');
 

@@ -151,6 +151,23 @@ describe('IndexNode', function() {
     assert.strictEqual(d.dimensions[1], n.dimensions[1]);
   });
 
+  it ('test equality another Node', function () {
+    var a = new IndexNode([new ConstantNode(2), new ConstantNode(1)]);
+    var b = new IndexNode([new ConstantNode(2), new ConstantNode(1)]);
+    var c = new IndexNode([new ConstantNode(2)]);
+    var d = new IndexNode([new ConstantNode(2), new ConstantNode(1), new ConstantNode(3)]);
+    var e = new IndexNode([new ConstantNode(2), new ConstantNode(4)]);
+    var f = new SymbolNode('x');
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+    assert.strictEqual(a.equals(f), false);
+  });
+
   it ('should stringify an IndexNode', function () {
     var dimensions = [
       new ConstantNode(2),

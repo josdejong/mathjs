@@ -34,11 +34,7 @@ The default precision for BigNumber is 64 digits, and can be configured with
 the option `precision`.
 
 *Important:
-BigNumber is not supported by the following functions:
-gcd, lcm, xgcd,
-arg,
-random,
-atan2.
+BigNumber is not supported by all functions, like `arg`, and `random`.
 These functions will downgrade BigNumber to Number, and return a Number.*
 
 

@@ -254,6 +254,21 @@ describe('ConditionalNode', function() {
     assert.strictEqual(d.falseExpr, c.falseExpr);
   });
 
+  it ('test equality another Node', function () {
+    var a = new ConditionalNode(new ConstantNode(1), new ConstantNode(2), new ConstantNode(3));
+    var b = new ConditionalNode(new ConstantNode(1), new ConstantNode(2), new ConstantNode(3));
+    var c = new ConditionalNode(new SymbolNode('x'), new ConstantNode(2), new ConstantNode(3));
+    var d = new ConditionalNode(new ConstantNode(1), new ConstantNode(5), new ConstantNode(3));
+    var e = new ConditionalNode(new ConstantNode(1), new ConstantNode(2), new ConstantNode(55));
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+  });
+
   it ('should respect the \'all\' parenthesis option', function () {
     assert.equal(math.parse('a?b:c').toString({parenthesis: 'all'}), '(a) ? (b) : (c)');
   });

@@ -229,6 +229,20 @@ describe('ArrayNode', function() {
     assert.strictEqual(c.items[1], d.items[1]);
   });
 
+  it ('test equality with other nodes', function () {
+    // [x, 2]
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ArrayNode([a, b]);
+
+    assert.strictEqual(c.equals(null), false);
+    assert.strictEqual(c.equals(undefined), false);
+    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(2)])), true);
+    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(2), new ConstantNode(3)])), false);
+    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x'), new ConstantNode(3)])), false);
+    assert.strictEqual(c.equals(new ArrayNode([new SymbolNode('x')])), false);
+  });
+
   it ('should stringify an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);

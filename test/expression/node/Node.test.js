@@ -70,6 +70,13 @@ describe('Node', function() {
     }, /Cannot clone a Node interface/);
   });
 
+  it ('test equality with another Node', function () {
+    assert.strictEqual(new Node().equals(new Node()), true);
+    assert.strictEqual(new Node().equals(null), false);
+    assert.strictEqual(new Node().equals(undefined), false);
+    assert.strictEqual(new Node().equals({}), false);
+  });
+
   it ('should throw an error when stringifying a Node interface', function () {
     assert.throws(function () {
       var node = new Node();
