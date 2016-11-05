@@ -22,13 +22,13 @@ math.arg(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
 
 <h3 id="returns">Returns <a href="#returns" title="Permalink">#</a></h3>
 
 Type | Description
 ---- | -----------
-number &#124; Array &#124; Matrix | The argument of x
+number &#124; BigNumber &#124; Array &#124; Matrix | The argument of x
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

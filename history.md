@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20161105-version-370">2016-11-05, version 3.7.0 <a href="#20161105-version-370" title="Permalink">#</a></h2>
+
+- Implemented method `Node.equals(other)` for all nodes of the expression parser.
+- Implemented BigNumber support in function `arg()`.
+- Command Line Interface loads faster.
+- Implicit conversions between Fractions and BigNumbers throw a neat error now
+  (See #710).
+
+
 <h2 id="20161021-version-360">2016-10-21, version 3.6.0 <a href="#20161021-version-360" title="Permalink">#</a></h2>
 
 - Implemented function `erf()`. THanks @patgrasso.

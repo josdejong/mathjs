@@ -37,13 +37,11 @@ math.eval('0.1 + 0.2'); // BigNumber, 0.3
 The default precision for BigNumber is 64 digits, and can be configured with
 the option `precision`.
 
-*Important:
-BigNumber is not supported by the following functions:
-gcd, lcm, xgcd,
-arg,
-random,
-atan2.
-These functions will downgrade BigNumber to Number, and return a Number.*
+
+<h2 id="support">Support <a href="#support" title="Permalink">#</a></h2>
+
+Most functions in math.js support BigNumbers, but not all of them.
+For example the function `random` doesn't support BigNumbers.
 
 
 <h2 id="roundoff-errors">Round-off errors <a href="#roundoff-errors" title="Permalink">#</a></h2>
