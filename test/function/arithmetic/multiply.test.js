@@ -59,6 +59,11 @@ describe('multiply', function() {
       assert.throws(function () {multiply(bignumber(1).div(3), 1/3);}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
     });
 
+    it('should throw an error when multipling mixed fractions and bignumbers', function() {
+      assert.throws(function () {multiply(math.bignumber('2'), math.fraction(1,3))}, /Cannot implicitly convert a Fraction to BigNumber/);
+      assert.throws(function () {multiply(math.fraction(1,3), math.bignumber('2'))}, /Cannot implicitly convert a Fraction to BigNumber/);
+    });
+
     it('should multiply mixed booleans and bignumbers', function() {
       assert.deepEqual(multiply(bignumber(0.3), true), bignumber(0.3));
       assert.deepEqual(multiply(bignumber(0.3), false), bignumber(0));

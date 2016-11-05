@@ -33,9 +33,7 @@ math.eval('0.1 + 0.2'); // BigNumber, 0.3
 The default precision for BigNumber is 64 digits, and can be configured with
 the option `precision`.
 
-*Important:
-BigNumber is not supported by all functions, like `arg`, and `random`.
-These functions will downgrade BigNumber to Number, and return a Number.*
+Note that BigNumbers are not supported by all functions.
 
 
 ## Round-off errors
