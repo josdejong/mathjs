@@ -20,8 +20,10 @@ describe('arg', function() {
     approx.equal(arg(-2), 3.141592653589793);
   });
 
-  it('should compute the argument of a bignumber (downgrades to number)', function () {
-    assert.equal(arg(math.bignumber(1)), 0);
+  it('should compute the argument of a bignumber', function () {
+    assert.deepEqual(arg(math.bignumber(1)), math.bignumber(0));
+    assert.deepEqual(arg(math.bignumber(-2)),
+        math.bignumber('3.141592653589793238462643383279502884197169399375105820974944592'));
   });
 
   it('should compute the argument of a complex number correctly', function() {

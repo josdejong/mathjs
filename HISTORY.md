@@ -4,7 +4,10 @@
 ## 2016-10-21, version 3.7.0
 
 - Implemented method `Node.equals(other)` for all nodes of the expression parser.
+- Implemented BigNumber support in function `arg()`.
 - Command Line Interface loads faster.
+- Implicit conversions between Fractions and BigNumbers now throw a neat error
+  (See #710).
 
 
 ## 2016-10-21, version 3.6.0
