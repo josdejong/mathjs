@@ -1,6 +1,13 @@
 # History
 
 
+## not yet released, version 3.7.1
+
+- Fixed #737: Improved algorithm determining the best prefix for units. It will
+  now retain the original unit like `1 cm` when close enough, instead of
+  returning `10 mm`. Thanks @ericman314.
+
+
 ## 2016-11-05, version 3.7.0
 
 - Implemented method `Node.equals(other)` for all nodes of the expression parser.
