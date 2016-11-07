@@ -62,4 +62,43 @@ describe('util.function', function() {
 
   });
 
+  describe ('maxArgumentCount', function () {
+
+    it('should calculate the max argument count of a typed function', function() {
+      var a = function () {};
+      a.signatures = {
+        'number, number': function () {},
+        'number': function () {}
+      };
+      assert.equal(functionUtils.maxArgumentCount(a), 2);
+
+      var b = function () {};
+      b.signatures = {
+        'number': function () {},
+        'number, number': function () {}
+      };
+      assert.equal(functionUtils.maxArgumentCount(b), 2);
+
+      var c = function () {};
+      c.signatures = {
+        'number': function () {},
+        'BigNumber': function () {}
+      };
+      assert.equal(functionUtils.maxArgumentCount(c), 1);
+
+      var d = function () {};
+      d.signatures = {
+        'number,number': function () {},
+        'number': function () {},
+        'number,any,number': function () {}
+      };
+      assert.equal(functionUtils.maxArgumentCount(d), 3);
+    });
+
+    it('should return -1 for regular functions', function() {
+      assert.equal(functionUtils.maxArgumentCount(function () {}), -1);
+    });
+
+  });
+
 });

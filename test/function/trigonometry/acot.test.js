@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     acot = math.acot,
     cot = math.cot,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
+    bigmath = math.create({number: 'BigNumber', precision: 20}),
     acotBig = bigmath.acot,
     cotBig = bigmath.cot,
     Big = bigmath.bignumber;
@@ -41,12 +41,12 @@ describe('acot', function() {
     var arg7 = Big(2);
     var arg8 = Big(Infinity);
 
-    assert.deepEqual(acotBig(Big(-2)), Big('-0.4636476090008061162'));
-    assert.deepEqual(acotBig(arg2), Big('-0.7853981633974483096'));
+    assert.deepEqual(acotBig(Big(-2)), Big('-0.46364760900080611621'));
+    assert.deepEqual(acotBig(arg2), Big('-0.78539816339744830962'));
     assert.deepEqual(acotBig(arg3), Big('-1.107148717794090503'));
     assert.deepEqual(acotBig(arg4).toString(), '1.5707963267948966192');
-    assert.deepEqual(acotBig(Big(1)), Big('0.7853981633974483096'));
-    assert.deepEqual(acotBig(arg7), Big('0.4636476090008061162'));
+    assert.deepEqual(acotBig(Big(1)), Big('0.78539816339744830962'));
+    assert.deepEqual(acotBig(arg7), Big('0.46364760900080611621'));
     assert.deepEqual(acotBig(arg8), Big(0));
 
     // Ensure the arguments where not changed
@@ -54,11 +54,11 @@ describe('acot', function() {
     assert.deepEqual(arg3, Big(-0.5));
     assert.deepEqual(arg4, Big(0));
     assert.deepEqual(arg7, Big(2));
-    assert.deepEqual(arg8, Big(Infinity));
+    assert.deepEqual(arg8.toString(), 'Infinity');
 
     // Hit Newton's method case
     bigmath.config({precision: 61});
-    assert.deepEqual(acotBig(Big(1.1)), Big('0.73781506012046491381362812980339020358273335525044448963405'));
+    assert.deepEqual(acotBig(Big(1.1)), Big('0.7378150601204649138136281298033902035827333552504444896340492'));
   });
 
   it('should be the inverse function of cot', function() {
@@ -76,7 +76,8 @@ describe('acot', function() {
     assert.deepEqual(acotBig(cotBig(Big(0.1))), Big(0.1));
     assert.deepEqual(acotBig(cotBig(Big(0.5))), Big(0.5));
     assert.deepEqual(acotBig(cotBig(Big(2))), Big('-1.1415926535897932385'));
-    assert.deepEqual(acotBig(cotBig(bigmath.pi.div(2))).toString(), '1.5707963267948966192');
+    assert.deepEqual(acotBig(cotBig(bigmath.pi.div(2).minus(1e-10))).toString(), '1.5707963266948966193');
+    assert.deepEqual(acotBig(cotBig(bigmath.pi.div(2))).toString(), '-1.570796326794895205');
   });
 
   it('should return the arccot of a complex number', function() {

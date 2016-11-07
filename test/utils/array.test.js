@@ -365,6 +365,42 @@ describe('util.array', function() {
       assert.throws(function () {array.validateIndex(100, 10)}, /Index out of range/);
     });
 
+    it('thrown IndexError should contain the right index, max, and min properties', function () {
+      try {
+        array.validateIndex(4, 3);
+        assert.ok(false, 'should not reach this point');
+      }
+      catch(err) {
+        assert.equal(err.toString(), 'IndexError: Index out of range (4 > 2)');
+        assert.equal(err.index, 4);
+        assert.equal(err.min, 0);
+        assert.equal(err.max, 3);
+      }
+
+      try {
+        array.validateIndex(-1, 3);
+        assert.ok(false, 'should not reach this point');
+      }
+      catch(err) {
+        assert.equal(err.toString(), 'IndexError: Index out of range (-1 < 0)');
+        assert.equal(err.index, -1);
+        assert.equal(err.min, 0);
+        assert.equal(err.max, 3);
+      }
+
+      try {
+        array.validateIndex(-1);
+        assert.ok(false, 'should not reach this point');
+      }
+      catch(err) {
+        assert.equal(err.toString(), 'IndexError: Index out of range (-1 < 0)');
+        assert.equal(err.index, -1);
+        assert.equal(err.min, 0);
+        assert.equal(err.max, undefined);
+      }
+
+    });
+
   });
 
   describe('validate', function () {

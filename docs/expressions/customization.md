@@ -10,6 +10,7 @@ On this page:
 - [Custom argument parsing](#custom-argument-parsing)
 - [Custom LaTeX handlers](#custom-latex-handlers)
 - [Custom LaTeX and string output](#custom-latex-and-string-output)
+- [Customize supported characters](#customize-supported-characters)
 
 ## Function transforms
 
@@ -156,10 +157,10 @@ or a template string similar to ES6 templates.
 
 ### Template syntax
 
-* `${name}`: Gets replaced by the name of the function
-* `${args}`: Gets replaced by a comma separated list of the arguments of the function.
-* `${args[0]}`: Gets replaced by the first argument of a function
-* `$$`: Gets replaced by `$`
+- `${name}`: Gets replaced by the name of the function
+- `${args}`: Gets replaced by a comma separated list of the arguments of the function.
+- `${args[0]}`: Gets replaced by the first argument of a function
+- `$$`: Gets replaced by `$`
 
 #### Example
 
@@ -197,16 +198,18 @@ The functions `toTex` and `toString` accept an `options` argument to customise o
 ```js
 {
   parenthesis: 'keep',   // parenthesis option
-  handler: someHandler   // handler to change the output
+  handler: someHandler,   // handler to change the output
+  implicit: 'hide' // how to treat implicit multiplication
 }
 ```
 
 ### Parenthesis
 
-The `parenthesis` option changes the way parenteheses are used in the output. There are three options available:
-* `keep`: Keep the parentheses from the input and display them as is. This is the default.
-* `auto`: Only display parentheses that are necessary. Mathjs tries to get rid of as much parntheses as possible.
-* `all`: Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
+The `parenthesis` option changes the way parentheses are used in the output. There are three options available:
+
+- `keep` Keep the parentheses from the input and display them as is. This is the default.
+- `auto` Only display parentheses that are necessary. Mathjs tries to get rid of as much parentheses as possible.
+- `all` Display all parentheses that are given by the structure of the node tree. This makes the output precedence unambiguous.
 
 There's two ways of passing callbacks:
 
@@ -323,4 +326,51 @@ math.import(customFunctions);
 var expression = math.parse('binomial(2,1)');
 var latex = expression.toTex({handler: customLaTeX});
 //latex now contains "\binom{2}{1}"
+```
+
+### Implicit multiplication
+
+You can change the way that implicit multiplication is converted to a string or LaTeX. The two options are `hide`, to not show a multiplication operator for implicit multiplication and `show` to show it.
+
+Example:
+
+```js
+var node = math.parse('2a');
+
+node.toString(); //'2 a'
+node.toString({implicit: 'hide'}); //'2 a'
+node.toString({implicit: 'show'}); //'2 * a'
+
+node.toTex(); //'2~ a'
+node.toTex({implicit: 'hide'}); //'2~ a'
+node.toTex({implicit: 'show'}); //'2\\cdot a'
+```
+
+
+## Customize supported characters
+
+It is possible to customize the characters allowed in symbols and digits.
+The `parse` function exposes the following test functions:
+
+- `math.expression.parse.isAlpha(c, cPrev, cNext)`
+- `math.expression.parse.isWhitespace(c, nestingLevel)`
+- `math.expression.parse.isDecimalMark(c, cNext)`
+- `math.expression.parse.isDigitDot(c)`
+- `math.expression.parse.isDigit(c)`
+
+The exact signature and implementation of these functions can be looked up in
+the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.md#constants-and-variables).
+
+For example, the `$` character is not supported by default. It can be enabled
+by replacing the `isAlpha` function:
+
+```js
+var isAlphaOriginal = math.expression.parse.isAlpha;
+math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+  return isAlphaOriginal(c, cPrev, cNext) || (c === '$');
+};
+
+// now we can use the $ character in expressions
+var result = math.eval('$foo', {$foo: 42}); // returns 42
+console.log(result);
 ```

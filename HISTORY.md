@@ -1,6 +1,218 @@
 # History
 
 
+## 2016-10-21, version 3.6.0
+
+- Implemented function `erf()`. THanks @patgrasso.
+- Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
+- Extended function `pickRandom` with the option to pick multiple values from
+  an array and give the values weights: `pickRandom(possibles, number, weights)`.
+  Thanks @woylie.
+- Parser now exposes test functions like `isAlpha` which can be replaced in
+  order to adjust the allowed characters in variables names (See #715).
+- Fixed #727: Parser not throwing an error for invalid implicit multiplications
+  like `-2 2` and `2^3 4` (right after the second value of an operator).
+- Fixed #688: Describe allowed variable names in the docs.
+
+
+## 2016-09-21, version 3.5.3
+
+- Some more fixes regarding numbers ending with a decimal mark (like `2.`).
+
+
+## 2016-09-20, version 3.5.2
+
+- Fixed numbers ending with a decimal mark (like `2.`) not being supported by
+  the parser, solved the underlying ambiguity in the parser. See #707, #711.
+
+
+## 2016-09-12, version 3.5.1
+
+- Removed a left over console.log statement. Thanks @eknkc.
+
+
+## 2016-09-07, version 3.5.0
+
+- Comments of expressions are are now stored in the parsed nodes. See #690.
+- Fixed function `print` not accepting an Object with formatting options as
+  third parameter Thanks @ThomasBrierley.
+- Fixed #707: The expression parser no longer accepts numbers ending with a dot
+  like `2.`.
+
+
+## 2016-08-08, version 3.4.1
+
+- Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).
+- Fixed some layout issues in the function reference docs.
+
+
+## 2016-08-07, version 3.4.0
+
+- Implemented support for custom units using `createUnit`. Thanks @ericman314.
+- Implemented function `splitUnits`. Thanks @ericman314.
+- Implemented function `isPrime`. Thanks @MathBunny.
+
+
+## 2016-07-05, version 3.3.0
+
+- Implemented function `isNaN`.
+- Function `math.filter` now passes three arguments to the callback function:
+  value, index, and array.
+- Removed the check on the number of arguments from functions defined in the
+  expression parser (see #665).
+- Fixed #665: functions `map`, `forEach`, and `filter` now invoke callbacks
+  which are a typed-function with the correct number of arguments.
+
+
+## 2016-04-26, version 3.2.1
+
+- Fixed #651: unable to perform calculations on "Unit-less" units.
+- Fixed matrix.subset mutating the replacement matrix when unsqueezing it.
+
+
+## 2016-04-16, version 3.2.0
+
+- Implemented #644: method `Parser.getAll()` to retrieve all defined variables.
+- Upgraded dependencies (decimal.js@5.0.8, fraction.js@3.3.1,
+  typed-function@0.10.4).
+- Fixed #601: Issue with unnamed typed-functions by upgrading to
+  typed-function v0.10.4.
+- Fixed #636: More strict `toTex` templates, reckon with number of arguments.
+- Fixed #641: Bug in expression parser parsing implicit multiplication with
+  wrong precedence in specific cases.
+- Fixed #645: Added documentation about `engineering` notation of function
+  `math.format`.
+
+
+## 2016-04-03, version 3.1.4
+
+- Using ES6 Math functions like `Math.sinh`, `Math.cbrt`, `Math.sign`, etc when
+  available.
+- Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
+- Fixed #632: problem with escaped backslashes at the end of strings.
+- Fixed #635: `Node.toString` options where not passed to function arguments.
+- Fixed #629: expression parser throws an error when passing a number with
+  decimal exponent instead of parsing them as implicit multiplication.
+- Fixed #484, #555: inaccuracy of `math.sinh` for values between -1 and 1.
+- Fixed #625: Unit `in` (`inch`) not always working due to ambiguity with
+  the operator `a in b` (alias of `a to b`).
+
+
+## 2016-03-24, version 3.1.3
+
+- Fix broken bundle.
+
+
+## 2016-03-24, version 3.1.2
+
+- Fix broken npm release.
+
+
+## 2016-03-24, version 3.1.1
+
+- Fixed #621: a bug in parsing implicit multiplications like `(2)(3)+4`.
+- Fixed #623: `nthRoot` of zero with a negative root returned `0` instead of
+  `Infinity`.
+- Throw an error when functions `min`, `max`, `mean`, or `median` are invoked
+  with multiple matrices as arguments (see #598).
+
+
+## 2016-03-19, version 3.1.0
+
+- Hide multiplication operator by default when outputting `toTex` and `toString`
+  for implicit multiplications. Implemented and option to output the operator.
+- Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
+- Added support for prefixes for units `mol` and `mole`. Thanks @stu-blair.
+- Restored support for implicit multiplications like `2(3+4)` and `(2+3)(4+5)`.
+- Some improvements in the docs.
+- Added automatic conversions from `boolean` and `null` to `Fraction`,
+  and conversions from `Fraction` to `Complex`.
+
+
+## 2016-03-04, version 3.0.0
+
+### breaking changes
+
+- More restricted support for implicit multiplication in the expression
+  parser: `(...)(...)` is now evaluated as a function invocation,
+  and `[...][...]` as a matrix subset.
+- Matrix multiplication no longer squeezes scalar outputs to a scalar value,
+  but leaves them as they are: a vector or matrix containing a single value.
+  See #529.
+- Assignments in the expression parser now return the assigned value rather
+  than the created or updated object (see #533). Example:
+
+  ```
+  A = eye(3)
+  A[1,1] = 2   # this assignment now returns 2 instead of A
+  ```
+
+- Expression parser now supports objects. This involves a refactoring and
+  extension in expression nodes:
+  - Implemented new node `ObjectNode`.
+  - Refactored `AssignmentNode`, `UpdateNode`, and `IndexNode` are refactored
+    into `AccessorNode`, `AssignmentNode`, and `IndexNode` having a different API.
+- Upgraded the used BigNumber library `decimal.js` to v5. Replaced the
+  trigonometric functions of math.js with those provided in decimal.js v5.
+  This can give slightly different behavior qua round-off errors.
+- Replaced the internal `Complex.js` class with the `complex.js` library
+  created by @infusion.
+- Entries in a matrix (typically numbers, BigNumbers, Units, etc) are now
+  considered immutable, they are no longer copied when performing operations on
+  the entries, improving performance.
+- Implemented nearly equal comparison for relational functions (`equal`,
+  `larger`, `smaller`, etc.) when using BigNumbers.
+- Changed the casing of the configuration options `matrix` (`Array` or `Matrix`)
+  and `number` (`number`, `BigNumber`, `Fraction`) such that they now match
+  the type returned by `math.typeof`. Wrong casing gives a console warning but
+  will still work.
+- Changed the default config value for `epsilon` from `1e-14` to `1e-12`,
+  see #561.
+
+### non-breaking changes
+
+- Extended function `pow` to return the real root for cubic roots of negative
+  numbers. See #525, #482, #567.
+- Implemented support for JSON objects in the expression parser and the
+  function `math.format`.
+- Function `math.fraction` now supports `BigNumber`, and function
+  `math.bignumber` now supports `Fraction`.
+- Expression parser now allows function and/or variable assignments inside
+  accessors and conditionals, like `A[x=2]` or `a > 2 ? b="ok" : b="fail"`.
+- Command line interface:
+  - Outputs the variable name of assignments.
+  - Fixed not rounding BigNumbers to 14 digits like numbers.
+  - Fixed non-working autocompletion of user defined variables.
+- Reorganized and extended docs, added docs on classes and more. Thanks @hgupta9.
+- Added new units `acre`, `hectare`, `torr`, `bar`, `mmHg`, `mmH2O`, `cmH2O`,
+  and added new aliases `acres`, `hectares`, `sqfeet`, `sqyard`, `sqmile`,
+  `sqmiles`, `mmhg`, `mmh2o`, `cmh2o`. Thanks @hgupta9.
+- Fixed a bug in the toString method of an IndexNode.
+- Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
+  being defined as BigNumbers when configuring to use BigNumbers.
+
+
+## 2016-02-03, version 2.7.0
+
+- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
+- Added support for doing operations with mixed `Fractions` and `BigNumbers`.
+- Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
+- Fixed #546: Cannot import BigNumber, Fraction, Matrix, Array.
+  Thanks @brettjurgens.
+
+
+## 2016-01-08, version 2.6.0
+
+- Implemented (complex) units `VA` and `VAR`.
+- Implemented time units for weeks, months, years, decades, centuries, and 
+  millennia. Thanks @owenversteeg.
+- Implemented new notation `engineering` in function `math.format`. 
+  Thanks @johnmarinelli.
+- Fixed #523: In some circumstances, matrix subset returned a scalar instead 
+  of the correct subset.
+- Fixed #536: A bug in an internal method used for sparse matrices.
+
+
 ## 2015-12-05, version 2.5.0
 
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.

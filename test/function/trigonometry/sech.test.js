@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     sech = math.sech,
     bigmath = math.create({precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 21});
+    biggermath = math.create({number: 'BigNumber', precision: 21});
 
 describe('sech', function() {
   it('should return the sech of a boolean', function () {
@@ -53,6 +53,8 @@ describe('sech', function() {
 
     assert(sech(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(sech(unit(math.bignumber(90), 'deg')).toNumber(), 0.39853681533839);
+
+    approx.deepEqual(sech(unit(complex('2 + i'), 'rad')), complex(0.15117629826558, -0.22697367539372));
   });
 
   it('should throw an error if called with an invalid unit', function() {

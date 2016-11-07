@@ -56,6 +56,11 @@ describe('nthRoot', function() {
     approx.equal(nthRoot(-64, -3), -0.25);
   });
 
+  it('should return the nthRoot for zero', function() {
+    assert.equal(nthRoot(0, 2), 0);
+    assert.equal(nthRoot(0, -2), Infinity);
+  });
+
   it('should return the nthRoot for infinity', function() {
     approx.equal(nthRoot(Infinity, 2), Infinity);
     approx.equal(nthRoot(-Infinity, 3), -Infinity);
@@ -94,9 +99,14 @@ describe('nthRoot', function() {
     assert.deepEqual(nthRoot(big(-64), big(-3)), big(-0.25));
   });
 
+  it('should return the nthRoot for bignumber zero', function() {
+    assert.deepEqual(nthRoot(big(0), big(2)).toString(), '0');
+    assert.deepEqual(nthRoot(big(0), big(-2)).toString(), 'Infinity');
+  });
+
   it('should return the nthRoot for bignumber infinity', function() {
-    assert.deepEqual(nthRoot(big(Infinity), big(2)), big(Infinity));
-    assert.deepEqual(nthRoot(big(-Infinity), big(3)), big(-Infinity));
+    assert.deepEqual(nthRoot(big(Infinity), big(2)).toString(), 'Infinity');
+    assert.deepEqual(nthRoot(big(-Infinity), big(3)).toString(), '-Infinity');
     assert.deepEqual(nthRoot(big(Infinity), big(-3)), big(0));
   });
 

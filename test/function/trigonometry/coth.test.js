@@ -8,7 +8,7 @@ var assert = require('assert'),
     unit = math.unit,
     coth = math.coth,
     bigmath = math.create({precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 21});
+    biggermath = math.create({number: 'BigNumber', precision: 21});
 
 describe('coth', function() {
   it('should return the coth of a boolean', function () {
@@ -31,7 +31,7 @@ describe('coth', function() {
   it('should return the coth of a bignumber', function() {
     var cothBig = bigmath.coth;
     var Big = bigmath.bignumber;
-    assert.deepEqual(cothBig(Big(0)), Big(Number.POSITIVE_INFINITY));
+    assert.deepEqual(cothBig(Big(0)).toString(), 'Infinity');
     assert.deepEqual(cothBig(Big(1)), Big('1.3130352854993313036'));
     assert.deepEqual(cothBig(Big(2)), Big('1.0373147207275480959'));
     assert.deepEqual(cothBig(Big(3)), Big('1.0049698233136891711'));
@@ -52,6 +52,8 @@ describe('coth', function() {
 
     assert(coth(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(coth(unit(math.bignumber(90), 'deg')).toNumber(), 1.0903314107274);
+
+    approx.deepEqual(coth(math.unit(complex('2 + i'), 'rad')), complex(0.98432922645819, -0.032797755533753));
   });
 
   it('should throw an error if called with an invalid unit', function() {

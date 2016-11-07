@@ -1,7 +1,7 @@
-var assert = require('assert'),
-    error = require('../../../../lib/error/index'),
-    math = require('../../../../index'),
-    complex = math.complex;
+var assert = require('assert');
+var error = require('../../../../lib/error/index');
+var math = require('../../../../index');
+var complex = math.complex;
 
 describe('complex', function() {
 
@@ -18,6 +18,10 @@ describe('complex', function() {
 
   it('should convert a real number into a complex value', function() {
     assert.deepEqual(complex(123), new math.type.Complex(123, 0));
+  });
+
+  it('should convert a fraction into a complex value', function() {
+    assert.deepEqual(complex(math.fraction(123)), new math.type.Complex(123, 0));
   });
 
   it('should convert a big number into a complex value (downgrades to number', function() {

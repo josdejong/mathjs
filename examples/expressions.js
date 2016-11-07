@@ -7,7 +7,7 @@
  *    and keeps a scope with assigned variables in memory
  */
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // 1. using the function math.eval

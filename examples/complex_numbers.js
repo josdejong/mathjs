@@ -1,6 +1,6 @@
 // complex numbers
 
-// load math.js
+// load math.js (using node.js)
 var math = require('../index');
 
 // create a complex number with a numeric real and complex part
@@ -21,7 +21,7 @@ a.re = 5;
 print(a);                       // 5 + 3i
 
 // create a complex number by providing a string with real and complex parts
-var b = math.complex('3 - 7i');
+var b = math.complex('3-7i');
 print(b);                       // 3 - 7i
 console.log();
 
@@ -42,7 +42,7 @@ print(c);                      // 1 + i
 
 // get polar coordinates of a complex number
 var d = math.complex(3, 4);
-console.log(d.toPolar());      // { r: 5, phi: 0.9272952180016122 }
+console.log(d.abs(), d.arg());      // radius = 5, phi = 0.9272952180016122
 
 
 /**

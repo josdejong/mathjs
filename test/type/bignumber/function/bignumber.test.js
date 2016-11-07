@@ -17,6 +17,11 @@ describe('bignumber', function() {
     assert.ok(a instanceof BigNumber);
     assert.equal(a.valueOf(), '0.1');
 
+    // from Fraction
+    var a = bignumber(math.fraction(0.1));
+    assert.ok(a instanceof BigNumber);
+    assert.equal(a.valueOf(), '0.1');
+
     // from number with >15 digits
     var a2 = bignumber(1/3);
     assert.ok(a2 instanceof BigNumber);
@@ -60,6 +65,12 @@ describe('bignumber', function() {
     // really big
     var f = bignumber('1.2e500');
     assert.equal(f.valueOf(), '1.2e+500');
+  });
+
+  it('should create a bignumber from a fraction', function() {
+    var f = math.fraction(2,3);
+    var b = math.bignumber(f);
+    assert.equal(b.toString(), '0.6666666666666666666666666666666666666666666666666666666666666667');
   });
 
   it('should apply precision setting to bignumbers', function() {

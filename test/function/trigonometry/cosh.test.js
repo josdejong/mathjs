@@ -7,7 +7,7 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     cosh = math.cosh,
-    bigmath = math.create({number: 'bignumber', precision: 20});
+    bigmath = math.create({number: 'BigNumber', precision: 20});
 
 describe('cosh', function() {
   it('should return the cosh of a boolean', function () {
@@ -30,7 +30,6 @@ describe('cosh', function() {
   it('should return the cosh of a bignumber', function() {
     var coshBig = bigmath.cosh;
     var Big = bigmath.bignumber;
-    var bigInfinity = Big(Infinity);
 
     var arg1 = Big(-3);
     var arg9 = Big(Infinity);
@@ -43,13 +42,13 @@ describe('cosh', function() {
     assert.deepEqual(coshBig(Big(2)), Big('3.7621956910836314596'));
     assert.deepEqual(coshBig(Big(3)), Big('10.067661995777765842'));
     assert.deepEqual(coshBig(bigmath.pi).toString(), '11.591953275521520628');
-    assert.deepEqual(coshBig(arg9), bigInfinity);
-    assert.deepEqual(coshBig(arg10), bigInfinity);
+    assert.deepEqual(coshBig(arg9).toString(), 'Infinity');
+    assert.deepEqual(coshBig(arg10).toString(), 'Infinity');
 
     // Ensure args were not changed
     assert.deepEqual(arg1, Big(-3));
-    assert.deepEqual(arg9, bigInfinity);
-    assert.deepEqual(arg10, Big(-Infinity));
+    assert.deepEqual(arg9.toString(), 'Infinity');
+    assert.deepEqual(arg10.toString(), '-Infinity');
   });
 
   it('should return the cosh of a complex number', function() {
@@ -64,6 +63,8 @@ describe('cosh', function() {
 
     assert(cosh(unit(math.bignumber(90), 'deg')).isBigNumber);
     approx.equal(cosh(unit(math.bignumber(90), 'deg')).toNumber(), 2.5091784786581);
+
+    approx.deepEqual(cosh(math.unit(complex('2 + i'), 'rad')), complex(2.0327230070197, 3.0518977991518));
   });
 
   it('should throw an error if called with an invalid unit', function() {

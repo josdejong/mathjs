@@ -43,10 +43,10 @@ describe('max', function() {
   });
 
   it('should return a reduced n-1 matrix from a n matrix', function() {
-	  assert.deepEqual(max([
-	   [ 1, 2, 3],
-	   [ 4, 5, 6],
-	   [ 7, 8, 9]
+    assert.deepEqual(max([
+      [ 1, 2, 3],
+      [ 4, 5, 6],
+      [ 7, 8, 9]
     ], 0), [7, 8, 9]);
 
     assert.deepEqual(max([
@@ -76,6 +76,11 @@ describe('max', function() {
     assert.throws(function () {max(new Complex(3,4), 5)}, TypeError);
     assert.throws(function () {max(5, new Complex(3,4))}, TypeError);
     assert.throws(function () {max(new Complex(3,4), 6)}, TypeError);
+  });
+
+  it('should throw an error when called multiple arrays or matrices', function() {
+    assert.throws(function () {max([1,2], [3,4])}, /Scalar values expected/);
+    assert.throws(function () {max(math.matrix([1,2]), math.matrix([3,4]))}, /Scalar values expected/);
   });
 
   it('should throw an error if called a dimension out of range', function() {

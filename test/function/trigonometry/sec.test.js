@@ -7,8 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     sec = math.sec,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 21});
+    bigmath = math.create({number: 'BigNumber', precision: 20}),
+    biggermath = math.create({number: 'BigNumber', precision: 21});
 
 describe('sec', function() {
   it('should return the secant of a boolean', function () {
@@ -57,11 +57,9 @@ describe('sec', function() {
 
     /* Pass in one more digit of pi. */
     bigPi = biggermath.pi;
-    assert.ok(!bigmath.sec(bigPi.div(2)).isFinite());
+    assert.deepEqual(bigmath.sec(bigPi.div(2)), Big('756606132568153667460')); // (large number, about infinity)
     assert.deepEqual(bigmath.sec(bigPi.times(3).div(4)).toString(), '-'+sqrt2);
     assert.deepEqual(bigmath.sec(bigPi.times(5).div(4)).toString(), '-'+sqrt2);
-    assert.ok(!bigmath.sec(bigPi.times(3).div(2)).isFinite());
-    assert.deepEqual(bigmath.sec(bigPi.times(7).div(4)).toString(), sqrt2);
   });
 
   it('should return the secant of a complex number', function() {
@@ -82,6 +80,8 @@ describe('sec', function() {
 
     assert(sec(unit(math.bignumber(45), 'deg')).isBigNumber);
     approx.equal(sec(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
+
+    approx.deepEqual(sec(unit(complex('1+i'), 'rad')), complex(0.498337030555187, 0.591083841721045));
   });
 
   it('should throw an error if called with an invalid unit', function() {

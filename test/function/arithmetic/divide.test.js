@@ -56,7 +56,7 @@ describe('divide', function() {
 
   it('should divide mixed booleans and bignumbers', function() {
     assert.deepEqual(divide(bignumber(0.3), true), bignumber(0.3));
-    assert.deepEqual(divide(bignumber(0.3), false), bignumber(Infinity));
+    assert.deepEqual(divide(bignumber(0.3), false).toString(), 'Infinity');
     assert.deepEqual(divide(false, bignumber('2')), bignumber(0));
     assert.deepEqual(divide(true, bignumber('2')), bignumber(0.5));
   });
@@ -130,6 +130,8 @@ describe('divide', function() {
     assert.equal(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg');
 
     assert.equal(divide(10, math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg');
+
+    approx.equal(math.format(divide(10, math.unit(math.complex(1,2), 'm/s')), 14), '(2 - 4i) s / m');
   });
 
   it('should divide two units', function() {
@@ -138,13 +140,17 @@ describe('divide', function() {
     var a = math.unit(math.fraction(75), 'mi/h');
     var b = math.unit(math.fraction(40), 'mi/gal');
     assert.equal(divide(a, b).to('gal/minute').toString(), '1/32 gal / minute');
+
+    var c = math.unit(math.complex(21, 1), 'kg');
+    var d = math.unit(math.complex(2, -3), 's');
+    assert.equal(divide(c, d).toString(), "(3 + 5.000000000000001i) kg / s");
   });
 
   it('should divide one valued unit by a valueless unit and vice-versa', function() {
-    assert.equal(divide(math.unit('4 gal'), math.unit('L')).format(5), '15.142');
-    assert.equal(divide(math.unit('gal'), math.unit('4 L')).format(3), '0.946');
+    assert.equal(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141648');
+    assert.equal(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946353');
 
-    assert.equal(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')), '127/50');
+    assert.equal(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50');
   });
 
   it('should divide (but not simplify) two valueless units', function() {

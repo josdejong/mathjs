@@ -64,13 +64,13 @@ All nodes have the following methods:
     var eval = node.eval({x: 3};    // returns 5
     ```
 
--   `filter(callback: function) : Array.<Node>`
+-   `filter(callback: function) : Node[]`
 
-    Filter nodes in an expression tree. The `callback` function is called as
-    `callback(node: Node, path: string, parent: Node) : boolean` for every node
-    in the tree, and must return a boolean. The function `filter` returns an
-    array with nodes for which the test returned true. Parameter `path` is a
-    string containing a relative JSON Path.
+    Recursively filter nodes in an expression tree. The `callback` function is
+    called as `callback(node: Node, path: string, parent: Node) : boolean` for
+    every node in the tree, and must return a boolean. The function `filter`
+    returns an array with nodes for which the test returned true.
+    Parameter `path` is a string containing a relative JSON Path.
     
     Example:
 
@@ -82,7 +82,7 @@ All nodes have the following methods:
     // returns an array with two entries: two SymbolNodes 'x'
     ```
 
--   `forEach(callback: function) : Array.<Node>`
+-   `forEach(callback: function) : Node[]`
 
     Execute a callback for each of the child nodes of this node. The `callback`
     function is called as `callback(child: Node, path: string, parent: Node)`.
@@ -107,7 +107,7 @@ All nodes have the following methods:
     //   ConstantNode 2
     ```
 
--   `map(callback: function) : Array.<Node>`
+-   `map(callback: function) : Node[]`
 
     Transform a node. Creates a new Node having it's childs be the results of
     calling the provided callback function for each of the childs of the original
@@ -127,7 +127,7 @@ All nodes have the following methods:
     node.toString();  // returns '3 + (4 * 2)'
     ```
 
-    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
+    Information about the options in [Customization](customization.md#custom-latex-and-string-output).
 
 -   `toTex(options: object): string`
 
@@ -139,7 +139,7 @@ All nodes have the following methods:
     node.toTex(); // returns '\sqrt{\frac{2}{3}}'
     ```
 
-    Information about the options in [Customization](customization.md#custom-latex-and-string-conversion).
+    Information about the options in [Customization](customization.md#custom-latex-and-string-output).
 
 -   `transform(callback: function)`
 
@@ -201,6 +201,12 @@ All nodes have the following methods:
 
 Each `Node` has the following properties:
 
+-   `comment: string`
+
+    A string holding a comment if there was any in the expression, or else the
+    string will be empty string. A comment can be attached to the root node of
+    an expression or to each of the childs nodes of a `BlockNode`.
+
 -   `isNode: true`
 
     Is defined with value `true` on Nodes. Additionally, each type of node 
@@ -217,17 +223,43 @@ Each `Node` has the following properties:
 math.js has the following types of nodes. All nodes are available at the
 namespace `math.expression.node`.
 
+
+### AccessorNode
+
+Construction:
+
+```
+new AccessorNode(object: Node, index: IndexNode)
+```
+
+Properties:
+
+- `object: Node`
+- `index: IndexNode`
+- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
+
+Examples:
+
+```js
+var node1 = math.parse('a[3]');
+
+var object = new math.expression.node.SymbolNode('a');
+var index = new math.expression.node.IndexNode([3]);
+var node2 = new math.expression.node.AccessorNode(object, index);
+```
+
+
 ### ArrayNode
 
 Construction:
 
 ```
-new ArrayNode(nodes: Node[])
+new ArrayNode(items: Node[])
 ```
 
 Properties:
 
-- `nodes: Node[]`
+- `items: Node[]`
 
 Examples:
 
@@ -246,21 +278,25 @@ var node2  = new math.expression.node.ArrayNode([one, two, three]);
 Construction:
 
 ```
-new AssignmentNode(name: string, expr: Node)
+new AssignmentNode(object: SymbolNode, value: Node)
+new AssignmentNode(object: SymbolNode | AccessorNode, index: IndexNode, value: Node)
 ```
 
 Properties:
 
-- `name: string`
-- `expr: Node`
+- `object: SymbolNode | AccessorNode`
+- `index: IndexNode | null`
+- `value: Node`
+- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
 
 Examples:
 
 ```js
 var node1 = math.parse('a = 3');
 
-var expr  = new math.expression.node.ConstantNode(3);
-var node2 = new math.expression.node.AssignmentNode('a', expr);
+var object = new math.expression.node.SymbolNode('a');
+var value = new math.expression.node.ConstantNode(3);
+var node2 = new math.expression.node.AssignmentNode(object, value);
 ```
 
 
@@ -287,19 +323,22 @@ Examples:
 ```js
 var block1 = math.parse('a=1; b=2; c=3');
 
+var a = new math.expression.node.SymbolNode('a');
 var one = new math.expression.node.ConstantNode(1);
-var a = new math.expression.node.AssignmentNode('a', one);
+var ass1 = new math.expression.node.AssignmentNode(a, one);
 
+var b = new math.expression.node.SymbolNode('b');
 var two = new math.expression.node.ConstantNode(2);
-var b = new math.expression.node.AssignmentNode('b', two);
+var ass2 = new math.expression.node.AssignmentNode(b, two);
 
+var c = new math.expression.node.SymbolNode('c');
 var three = new math.expression.node.ConstantNode(3);
-var c = new math.expression.node.AssignmentNode('c', three);
+var ass3 = new math.expression.node.AssignmentNode(c, three);
 
 var block2 = new BlockNode([
-  {node: a, visible: false},
-  {node: b, visible: false},
-  {node: c, visible: true}
+  {node: ass1, visible: false},
+  {node: ass2, visible: false},
+  {node: ass3, visible: true}
 ]);
 ```
 
@@ -385,12 +424,13 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 Construction:
 
 ```
-new FunctionNode(name: string, args: Node[])
+new FunctionNode(fn: Node, args: Node[])
 ```
 
 Properties:
 
-- `name: string`
+- `object: Node`
+- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
 - `args: Node[]`
 
 Examples:
@@ -399,7 +439,7 @@ Examples:
 var node1 = math.parse('sqrt(4)');
 
 var four  = new math.expression.node.ConstantNode(4);
-var node2 = new math.expression.node.FunctionNode('sqrt', [four]);
+var node3 = new math.expression.node.FunctionNode(new SymbolNode('sqrt'), [four]);
 ```
 
 
@@ -408,15 +448,22 @@ var node2 = new math.expression.node.FunctionNode('sqrt', [four]);
 Construction:
 
 ```
-new IndexNode(object: Node, ranges: Node[])
+new IndexNode(dimensions: Node[])
+new IndexNode(dimensions: Node[], dotNotation: boolean)
 ```
 
-Note that ranges are one-based, including range end.
+Each dimension can be a single value, a range, or a property. The values of
+indices are one-based, including range end.
+
+An optional property `dotNotation` can be provided describing whether this index
+was written using dot notation like `a.b`, or using bracket notation
+like `a["b"]`. Default value is `false`. This information is used when
+stringifying the IndexNode.
 
 Properties:
 
-- `object: Node`
-- `ranges: Node[]`
+- `dimensions: Node[]`
+- `dotNotation: boolean`
 
 Examples:
 
@@ -429,8 +476,33 @@ var two   = new math.expression.node.ConstantNode(2);
 var three = new math.expression.node.ConstantNode(3);
 
 var range = new math.expression.node.RangeNode(one, three);
-var node2 = new math.expression.node.IndexNode(A, [range, two]);
+var index = new math.expression.node.IndexNode([range, two]);
+var node2 = new math.expression.node.AccessNode(A, index);
 ```
+
+### ObjectNode
+
+Construction:
+
+```
+new ObjectNode(properties: Object.<string, Node>)
+```
+
+Properties:
+
+- `properties: Object.<string, Node>`
+
+Examples:
+
+```js
+var node1 = math.parse('{a: 1, b: 2, c: 3}');
+
+var a = new math.expression.node.ConstantNode(1);
+var b = new math.expression.node.ConstantNode(2);
+var c = new math.expression.node.ConstantNode(3);
+var node2  = new math.expression.node.ObjectNode({a: a, b: b, c: c});
+```
+
 
 ### OperatorNode
 
@@ -525,32 +597,4 @@ Examples:
 var node = math.parse('x');
 
 var x = new math.expression.node.SymbolNode('x');
-```
-
-
-### UpdateNode
-
-Construction:
-
-```
-new UpdateNode(index: IndexNode, expr: Node)
-```
-
-Properties:
-
-- `index: IndexNode`
-- `expr: Node`
-
-Examples:
-
-```js
-var node1 = math.parse('A[3, 1] = 4');
-
-var A     = new math.expression.node.SymbolNode('A');
-var one   = new math.expression.node.ConstantNode(1);
-var three = new math.expression.node.ConstantNode(3);
-var four  = new math.expression.node.ConstantNode(4);
-
-var index = new math.expression.node.IndexNode(A, [three, one]);
-var node2 = new math.expression.node.UpdateNode(index, four);
 ```

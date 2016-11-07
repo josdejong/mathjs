@@ -166,6 +166,8 @@ The parser contains the following functions:
   Evaluate an expression. Returns the result of the expression.
 - `get(name)`
   Retrieve a variable or function from the parser's scope.
+- `getAll()`
+  Retrieve a map with all defined a variables from the parser's scope.
 - `remove(name)`
   Remove a variable or function from the parser's scope.
 - `set(name, value)`

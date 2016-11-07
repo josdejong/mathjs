@@ -1,3 +1,4 @@
+// load math.js (using node.js)
 var math = require('../index');
 
 // create a sparse matrix

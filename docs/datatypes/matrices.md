@@ -22,7 +22,7 @@ function input: An `Array` as input will return an `Array`, a `Matrix` as input
 will return a `Matrix`. In case of mixed input, a `Matrix` is returned.
 For functions where the type of output cannot be determined from the
 input, the output is determined by the configuration option `matrix`,
-which can be a string `'matrix'` (default) or `'array'`.
+which can be a string `'Matrix'` (default) or `'Array'`.
 
 ```js
 // create an array and a matrix
@@ -326,3 +326,18 @@ The type of matrix can be selected when creating a matrix using the construction
 var m1 = math.matrix([[0, 1], [0, 0]], 'sparse');
 var m2 = math.eye(1000, 1000, 'sparse');
 ```
+
+## API
+
+All relevant functions in math.js support Matrices and Arrays. Functions like `math.add` and `math.subtract`, `math.sqrt` handle matrices element wise. There is a set of functions specifically for creating or manipulating matrices, such as:
+
+- Functions like `math.matrix` and `math.sparse`, `math.ones`, `math.zeros`, and `math.eye` to create a matrix.
+- Functions like `math.subset` and `math.index` to get or replace a part of a matrix
+- Functions like `math.transpose` and `math.diag` to manipulate matrices.
+
+A full list of matrix functions is available on the [functions reference page](../reference/functions.md#matrix-functions).
+
+Two types of matrix classes are available in math.js, for storage of dense and sparse matrices. Although they contain public functions documented as follows, using the following API directly is *not* recommended. Prefer using the functions in the "math" namespace wherever possible.
+
+- [DenseMatrix](../reference/classes/densematrix.md)
+- [SparseMatrix](../reference/classes/sparsematrix.md)

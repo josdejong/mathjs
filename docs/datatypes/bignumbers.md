@@ -21,8 +21,8 @@ BigNumbers instead of [numbers](numbers.md) by default, configure math.js like:
 
 ```js
 math.config({
-  number: 'bignumber', // Default type of number: 
-                       // 'number' (default), 'bignumber', or 'fraction'
+  number: 'BigNumber', // Default type of number:
+                       // 'number' (default), 'BigNumber', or 'Fraction'
   precision: 64        // Number of significant digits for BigNumbers
 });
 

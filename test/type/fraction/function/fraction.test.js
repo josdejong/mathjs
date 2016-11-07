@@ -11,6 +11,12 @@ describe('fraction', function () {
     equalFraction(math.fraction({n: 1, d: 3}), new Fraction(1,3));
   });
 
+  it('should create a fraction from a BigNumber', function () {
+    var b = math.bignumber(2).div(3);
+    var f = math.fraction(b);
+    equalFraction(f, new Fraction('0.6666666666666666666666666666666666666666666666666666666666666667'));
+  });
+
   it('should clone a fraction', function () {
     var a = math.fraction(1,3);
     var b = math.fraction(a);

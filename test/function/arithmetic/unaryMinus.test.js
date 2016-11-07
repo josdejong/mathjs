@@ -3,6 +3,7 @@ var assert = require('assert');
 var math = require('../../../index');
 var bignumber = math.bignumber;
 var fraction = math.fraction;
+var complex = math.complex;
 
 describe('unaryMinus', function() {
   it('should return unary minus of a boolean', function () {
@@ -12,7 +13,7 @@ describe('unaryMinus', function() {
 
   // TODO: unary minus should return bignumber on boolean input when configured for bignumber
   it.skip('should return bignumber unary minus of a boolean', function () {
-    var bigmath = math.create({number: 'bignumber'});
+    var bigmath = math.create({number: 'BigNumber'});
     assert.deepEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1));
     assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(0));
   });
@@ -30,7 +31,7 @@ describe('unaryMinus', function() {
   it('should perform unary minus of a big number', function() {
     assert.deepEqual(math.unaryMinus(bignumber(2)), bignumber(-2));
     assert.deepEqual(math.unaryMinus(bignumber(-2)), bignumber(2));
-    assert.deepEqual(math.unaryMinus(bignumber(0)).valueOf(), bignumber(0).valueOf());
+    assert.deepEqual(math.unaryMinus(bignumber(0)).toString(), '0');
   });
 
   it('should perform unary minus of a fraction', function() {
@@ -52,6 +53,7 @@ describe('unaryMinus', function() {
   it('should perform unary minus of a unit', function() {
     assert.equal(math.unaryMinus(math.unit(5, 'km')).toString(), '-5 km');
     assert.equal(math.unaryMinus(math.unit(fraction(2/3), 'km')).toString(), '-2/3 km');
+    assert.equal(math.unaryMinus(math.unit(complex(2,-4), 'gal')).toString(), '(-2 + 4i) gal');
   });
 
   it('should perform element-wise unary minus on a matrix', function() {

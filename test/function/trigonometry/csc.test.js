@@ -7,8 +7,8 @@ var assert = require('assert'),
     matrix = math.matrix,
     unit = math.unit,
     csc = math.csc,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
-    biggermath = math.create({number: 'bignumber', precision: 21});
+    bigmath = math.create({number: 'BigNumber', precision: 20}),
+    biggermath = math.create({number: 'BigNumber', precision: 21});
 
 describe('csc', function() {
   it('should return the cosecant of a boolean', function () {
@@ -39,20 +39,12 @@ describe('csc', function() {
     var bigPi = bigmath.pi;
     var sqrt2 = bigmath.SQRT2.toString();
 
-    assert.deepEqual(bigmath.csc(Big(0)), Big(Infinity));
+    assert.deepEqual(bigmath.csc(Big(0)).toString(), 'Infinity');
     assert.deepEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557');
     assert.deepEqual(bigmath.csc(bigPi.div(4)).toString(), sqrt2);
     assert.deepEqual(bigmath.csc(bigPi.div(2)).toString(), '1');
-    assert.ok(!bigmath.csc(bigPi).isFinite());
+    assert.deepEqual(bigmath.csc(bigPi), Big('-26769019461318409709')); // large number (about infinity)
     assert.deepEqual(bigmath.csc(bigPi.times(3).div(2)).toString(), '-1');
-    assert.ok(!bigmath.csc(bigPi.times(2)).isFinite());
-    assert.ok(!bigmath.csc(bigmath.tau).isFinite());
-
-    /* Pass in more digits of pi. */
-    bigPi = biggermath.pi;
-    assert.deepEqual(bigmath.csc(bigPi.times(3).div(4)).toString(), sqrt2);
-    assert.deepEqual(bigmath.csc(bigPi.times(5).div(4)).toString(), '-'+sqrt2);
-    assert.deepEqual(bigmath.csc(bigPi.times(7).div(4)).toString(), '-'+sqrt2);
   });
 
   it('should return the cosecant of a complex number', function() {
@@ -73,6 +65,8 @@ describe('csc', function() {
 
     assert(csc(unit(math.bignumber(45), 'deg')).isBigNumber);
     approx.equal(csc(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
+
+    approx.deepEqual(csc(unit(complex('1+i'), 'rad')), complex(0.621518017170428, -0.303931001628426));
   });
 
   it('should throw an error if called with an invalid unit', function() {

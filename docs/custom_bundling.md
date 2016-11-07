@@ -47,7 +47,7 @@ math.import(require('mathjs/lib/function/arithmetic/add'));
 math.import(require('mathjs/lib/function/arithmetic/subtract'));
 math.import(require('mathjs/lib/function/arithmetic/multiply'));
 math.import(require('mathjs/lib/function/arithmetic/divide'));
-math.import(require('mathjs/lib/function/utils/format'));
+math.import(require('mathjs/lib/function/string/format'));
 ```
 
 To see which data types and categories are available, explore the `index.js` 

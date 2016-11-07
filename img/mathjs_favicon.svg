@@ -13,11 +13,11 @@
    height="100"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.91 r"
    sodipodi:docname="mathjs_favicon.svg"
-   inkscape:export-filename="/home/jos/mathjs/img/mathjs.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/home/jos/mathjs/img/favicon_256x256.png"
+   inkscape:export-xdpi="230.39999"
+   inkscape:export-ydpi="230.39999">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -27,14 +27,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.0000001"
-     inkscape:cx="141.21249"
-     inkscape:cy="53.281202"
+     inkscape:zoom="2.0000001"
+     inkscape:cx="38.579374"
+     inkscape:cy="12.700664"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1600"
-     inkscape:window-height="850"
+     inkscape:window-width="1920"
+     inkscape:window-height="1028"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
@@ -87,5 +87,18 @@
          id="tspan3784"
          x="98"
          y="19" /></text>
-  </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4140"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="translate(-10.999999,922.86218)"><flowRegion
+         id="flowRegion4142"><rect
+           id="rect4144"
+           width="197"
+           height="172.5"
+           x="17.5"
+           y="23.000002"
+           style="fill:#ffffff;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara4146"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:80px;font-family:'Source Sans Pro';-inkscape-font-specification:'Source Sans Pro Bold';fill:#ffffff;fill-opacity:1">m</flowPara></flowRoot>  </g>
 </svg>

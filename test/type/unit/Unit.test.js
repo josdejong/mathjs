@@ -43,6 +43,12 @@ describe('Unit', function() {
       assert.equal(unit1.units[0].unit.name, 'm');
     });
 
+    it('should create a unit with Complex value', function () {
+      var unit1 = new Unit(math.complex(500, 600), 'cm');
+      assert.deepEqual(unit1.value, math.complex(5, 6));
+      assert.equal(unit1.units[0].unit.name, 'm');
+    });
+
     it('should create square meter correctly', function() {
       var unit1 = new Unit(0.000001, 'km2');
       assert.equal(unit1.value, 1);
@@ -160,6 +166,16 @@ describe('Unit', function() {
       assert.equal(new Unit(100, 'cm').equals(new Unit(math.fraction(2), 'm')), false);
     });
 
+    it('should test whether two Complex units are equal', function() {
+      assert.equal(new Unit(math.complex(3, 4), 'km').equals(new Unit(math.complex(3000, 4000), 'm')), true);
+      assert.equal(new Unit(math.complex(3, 4), 'km').equals(new Unit(math.complex(3000, 10), 'm')), false);
+    });
+
+    it('should test whether a Complex unit and a unit with a number are equal', function() {
+      assert.equal(new Unit(math.complex(3, 0), 'km').equals(new Unit(3000, 'm')), true);
+      assert.equal(new Unit(math.complex(3, 4), 'km').equals(new Unit(3000, 'm')), false);
+    });
+
   });
 
   describe('clone', function() {
@@ -195,6 +211,14 @@ describe('Unit', function() {
       assert(u1.value !== u2.value); // should be cloned
     });
 
+    it('should clone a Complex unit', function() {
+      var u1 = new Unit(math.complex(1,3), 'cm');
+      var u2 = u1.clone();
+      assert(u1 !== u2);
+      assert.deepEqual(u1, u2);
+      assert(u1.value !== u2.value); // should be cloned
+    });
+
   });
 
   describe('toNumber', function() {
@@ -223,7 +247,7 @@ describe('Unit', function() {
     });
   });
 
-  describe('toNumberic', function() {
+  describe('toNumeric', function() {
     it ('should convert a unit to a numeric value', function () {
       var u = new Unit(math.fraction(1,3), 'cm');
       assert.deepEqual(u.toNumeric('mm'), math.fraction(10,3));
@@ -271,6 +295,13 @@ describe('Unit', function() {
       assert.equal(u2.units[0].unit.name, 'm');
       assert.equal(u2.units[0].prefix.name, 'c');
       assert.equal(u2.fixPrefix, true);
+    });
+
+    it ('should convert a Complex unit', function() {
+      var u1 = new Unit(math.complex(300,400), 'kPa');
+      var u2 = u1.to('lbf/in^2');
+      approx.deepEqual(u2.value, math.complex(300000, 400000));
+      assert.deepEqual(u2.toString(), "(43.511321319062766 + 58.01509509208368i) lbf / in^2");
     });
 
     it ('should convert a unit to a fixed unit', function () {
@@ -453,6 +484,10 @@ describe('Unit', function() {
     it('should convert a unit with Fraction to string properly', function() {
       assert.equal(new Unit(math.fraction(9/10), 'mm').toString(), '9/10 mm');
     });
+
+    it('should convert a Complex unit to string properly', function() {
+      assert.equal(new Unit(math.complex(-1,-2), 'J / (mol K)').toString(), '(-1 - 2i) J / (mol K)');
+    });
   });
 
   describe('simplifyUnitListLazy', function() {
@@ -485,13 +520,64 @@ describe('Unit', function() {
 
     });
 
-    it('should simplify units even when they cancel out', function() {
+    it('should simplify units when they cancel out with {predictable: true}', function() {
+      var origConfig = math.config();
+      math.config({predictable: true});
       var unit1 = new Unit (2, "Hz");
       var unit2 = new Unit(2, "s");
       var unit3 = math.multiply(unit1, unit2);
       assert.equal(unit3.toString(), "4");
       assert.equal(unit3.units.length, 0);
+
+      var nounit = math.eval('40m * 40N / (40J)');
+      assert.equal(nounit.toString(), "40");
+      assert.equal(nounit.units.length, 0);
+
+      var a = math.unit('3 s^-1');
+      var b = math.unit('4 s');
+      assert.equal(math.multiply(a, b).type, 'Unit');
+
+      var c = math.unit('8.314 J / mol / K');
+      assert.equal(math.pow(c, 0).type, 'Unit');
+
+      var d = math.unit('60 minute');
+      var e = math.unit('1 s');
+      assert.equal(math.divide(d, e).type, 'Unit');
+
+      math.config(origConfig);
     })
+
+    it('should convert units to appropriate _numeric_ values when they cancel out with {predictable: false}', function() {
+      var origConfig = math.config();
+      math.config({predictable: false});
+
+      assert.equal(typeof(math.eval('40 m * 40 N / (40 J)')), 'number');
+
+      var bigunit = math.unit(math.bignumber(1), 'km');
+      var smallunit = math.unit(math.bignumber(3000000), 'mm');
+      var verybignumber = math.divide(bigunit, smallunit);
+      assert.equal(verybignumber.type, 'BigNumber');
+      assert.equal(verybignumber.toString(), '0.3333333333333333333333333333333333333333333333333333333333333333');
+
+      bigunit = math.unit(math.fraction(1), 'km');
+      smallunit = math.unit(math.fraction(3000000), 'mm');
+      verybignumber = math.divide(bigunit, smallunit);
+      assert.equal(verybignumber.type, 'Fraction');
+      assert.equal(verybignumber.toFraction(), '1/3');
+
+      var a = math.unit('3 s^-1');
+      var b = math.unit('4 s');
+      assert.equal(typeof(math.multiply(a, b)), 'number');
+
+      var c = math.unit('8.314 J / mol / K');
+      assert.equal(typeof(math.pow(c, 0)), 'number');
+
+      var d = math.unit('60 minute');
+      var e = math.unit('1 s');
+      assert.equal(typeof(math.divide(d, e)), 'number');
+
+      math.config(origConfig);
+    });
 
     it('should simplify units according to chosen unit system', function() {
       var unit1 = new Unit(10, "N");
@@ -545,9 +631,19 @@ describe('Unit', function() {
             unit: 'cm',
             fixPrefix: false
           });
+      approx.deepEqual(new Unit(math.complex(2, 4), 'g').toJSON(),
+          {
+            mathjs: 'Unit',
+            value: math.complex(2, 4),
+            unit: 'g',
+            fixPrefix: false
+          });
 
       var str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'));
       assert.deepEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}');
+
+      var cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'));
+      assert.equal(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g","fixPrefix":false}');
     });
 
     it('fromJSON', function () {
@@ -573,6 +669,14 @@ describe('Unit', function() {
         fixPrefix: false
       });
       assert.deepEqual(u7, new Unit(math.fraction(0.375), 'cm'))
+
+      var u8 = Unit.fromJSON({
+        mathjs: 'Unit',
+        value: math.complex(2, 4),
+        unit: 'g',
+        fixPrefix: false
+      });
+      assert.deepEqual(u8, new Unit(math.complex(2,4), 'g'));
     });
 
     it('toJSON -> fromJSON should recover an "equal" unit', function() {
@@ -610,6 +714,23 @@ describe('Unit', function() {
 
     it('should format a unit with a fraction', function() {
       assert.equal(new Unit(math.fraction(4/5), 'm').format(), '4/5 m');
+    });
+
+    it('should format a Complex unit', function() {
+      assert.equal(new Unit(math.complex(-2, 4.5), 'mm').format(14), '(-2 + 4.5i) mm');
+    });
+
+    it('should format units with VA and VAR correctly', function() {
+      assert.equal(math.eval('4000 VAR + 3000 VA').format(), "(3 + 4i) kVA");
+      assert.equal(math.eval('3000 VA + 4000 VAR').format(), "(3 + 4i) kVA");
+      assert.equal(math.eval('4000 VAR').format(), "(4) kVAR");
+      assert.equal(math.eval('4000i VA').format(), "(4) kVAR");
+      assert.equal(math.eval('4000i VAR').format(), "(-4) kVA");
+      assert.equal(math.eval('abs(4000 VAR + 3000 VA)').format(), "5 kW");
+      assert.equal(math.eval('abs(3000 VA + 4000 VAR)').format(), "5 kW");
+      assert.equal(math.eval('abs(4000 VAR)').format(), "4 kW");
+      assert.equal(math.eval('abs(4000i VA)').format(), "4 kW");
+      assert.equal(math.eval('abs(4000i VAR)').format(), "4 kW");
     });
 
     it('should ignore properties in Object.prototype when finding the best prefix', function() {
@@ -789,11 +910,11 @@ describe('Unit', function() {
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function() {
       var origConfig = math.config();
 
-      math.config({number: 'fraction'});
+      math.config({number: 'Fraction'});
       var unit1 = Unit.parse('5kg');
       assert(unit1.value.isFraction);
 
-      math.config({number: 'bignumber'});
+      math.config({number: 'BigNumber'});
       var unit1 = Unit.parse('5kg');
       assert(unit1.value.isBigNumber);
 
@@ -902,6 +1023,9 @@ describe('Unit', function() {
       assert.equal(unit2.value, 453.59237e-3);
       assert.equal(unit2.units[0].unit.name, 'lb');
       assert.equal(unit2.units[0].prefix.name, '');
+
+      assert.equal(math.eval('2 feet * 8 s').toString(), '16 feet s');
+      assert.equal(math.eval('2 s * 8 feet').toString(), '16 s feet');
     });
   });
 
@@ -919,4 +1043,119 @@ describe('Unit', function() {
       assert.equal(new Unit(1, 'eV')    .equals(new Unit(1.602176565e-19, 'J')), true);
     });
   });
+
+  describe('createUnitSingle', function() {
+    it('should create a custom unit from a string definition', function() {
+      Unit.createUnitSingle('widget', '5 kg bytes');
+      assert.equal(new Unit(1, 'widget').equals(new Unit(5, 'kg bytes')), true);
+      Unit.createUnitSingle('woggle', '4 widget^2');
+      assert.equal(new Unit(1, 'woggle').equals(new Unit(4, 'widget^2')), true);
+      assert.equal(new Unit(2, 'woggle').equals(new Unit(200, 'kg^2 bytes^2')), true);
+    });
+
+    it('should create a custom unit from a Unit definition', function() {
+      var Unit1 = new Unit(5, 'N/woggle');
+      Unit.createUnitSingle('gadget', Unit1);
+      assert.equal(new Unit(1, 'gadget').equals(new Unit(5, 'N/woggle')), true);
+    });
+
+    it('should create a custom unit from a configuration object', function() {
+      Unit.createUnitSingle('wiggle', { definition: '4 rad^2/s', offset: 1, prefixes: 'long' });
+      assert.equal(math.eval('8000 rad^2/s').toString(), '1 kilowiggle');
+    });
+
+    it('should return the new (value-less) unit', function() {
+      var Unit2 = new Unit(1000, 'N h kg^-2 bytes^-2');
+      var newUnit = Unit.createUnitSingle('whimsy', '8 gadget hours');
+      assert.equal(Unit2.to(newUnit).toString(), '2500 whimsy');
+    });
+
+    it('should not override an existing unit', function() {
+      assert.throws(function () { Unit.createUnitSingle('m', '1 kg'); }, /Cannot create unit .*: a unit with that name already exists/);
+      assert.throws(function () { Unit.createUnitSingle('gadget', '1 kg'); }, /Cannot create unit .*: a unit with that name already exists/);
+      assert.throws(function () { Unit.createUnitSingle('morogrove', { aliases: 's' }); }, /Cannot create alias .*: a unit with that name already exists/);
+    });
+
+    it('should throw an error for invalid parameters', function() {
+      assert.throws(function() { Unit.createUnitSingle(); }, /createUnitSingle expects first parameter/);
+      assert.throws(function() { Unit.createUnitSingle(42); }, /createUnitSingle expects first parameter/);
+      assert.throws(function() { Unit.createUnitSingle('42'); }, /Error: Invalid unit name/);
+    });
+
+    it('should apply the correct prefixes', function() {
+      Unit.createUnitSingle('millizilch', {definition: '1e-3 m', prefixes: 'long'});
+      assert.equal(new Unit(1e-6, 'millizilch').toString(), '1 micromillizilch');
+    });
+
+    it('should override prefixed built-in units', function() {
+      Unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short'});   // User is being silly
+      assert.equal(new Unit(1e-3, 'mm').toString(), '1 mmm'); // Use the user's new definition
+      assert.equal(new Unit(1e-3, 'mm').to('m').format(4), '1e-7 m'); // Use the user's new definition
+    });
+
+    it('should create aliases', function() {
+      Unit.createUnitSingle('knot', {definition: '0.51444444 m/s', aliases:['knots', 'kts', 'kt']});
+      assert.equal(new Unit(1, 'knot').equals(new Unit(1, 'kts')), true);
+      assert.equal(new Unit(1, 'kt').equals(new Unit(1, 'knots')), true);
+    });
+
+    it('should apply offset correctly', function() {
+      Unit.createUnitSingle('whatsit', {definition: '3.14 kN', offset:2});
+      assert.equal(new Unit(1, 'whatsit').to('kN').toString(), '9.42 kN');
+    });
+
+    it('should create new base units', function() {
+      var fooBase_unit = Unit.createUnitSingle('fooBase');
+      assert.equal(fooBase_unit.dimensions.toString(), Unit.BASE_UNITS['fooBase_STUFF'].dimensions.toString());
+      var testUnit = new Unit(5, 'fooBase');
+      assert.equal(testUnit.toString(), '5 fooBase');
+    });
+
+    it('should not override base units', function() {
+      assert.throws(function() { Unit.createUnitSingle('fooBase', '', {override: true}); }, /Cannot create/);
+    });
+
+    it('should create and use a new base if no matching base exists', function() {
+      Unit.createUnitSingle('jabberwocky', '1 mile^5/hour');
+      assert.equal('jabberwocky_STUFF' in Unit.BASE_UNITS, true);
+      assert.equal(math.eval('4 mile^5/minute').format(4), '240 jabberwocky');
+    });
+  });
+
+  describe('createUnit', function() {
+    it('should create multiple units', function() {
+      Unit.createUnit({
+        'foo1': '',
+        'foo2': '2 foo1',
+        'foo3': {
+          definition: '2 foo2',
+          prefixes: 'long'
+        }
+      });
+      assert.equal(math.eval('2 foo3 to foo1').toString(), '8 foo1');
+    });
+
+    it('should override units when requested and if able', function() {
+      assert.throws(function() {Unit.createUnit({foo1:''});}, /Cannot/);
+      assert.throws(function() {Unit.createUnit({foo1:'', override:true});}, /Cannot/);
+      Unit.createUnit({foo3:''}, {override: true});
+    });
+
+    it('should throw error when first parameter is not an object', function() {
+      assert.throws(function() {Unit.createUnit('not an object');}, /createUnit expects first/);
+    });
+  });
+
+  describe('splitUnit', function() {
+    it('should split a unit into parts', function() {
+      assert.equal((new Unit(1, 'm')).splitUnit(['ft', 'in']).toString(), "3 ft,3.3700787401574765 in");
+      assert.equal((new Unit(-1, 'm')).splitUnit(['ft', 'in']).toString(), "-3 ft,-3.3700787401574765 in");
+      assert.equal((new Unit(1, 'm/s')).splitUnit(['m/s']).toString(), "1 m / s");
+      assert.equal((new Unit(1, 'm')).splitUnit(['ft', 'ft']).toString(), "3 ft,0.280839895013123 ft");
+      assert.equal((new Unit(1.23, 'm/s')).splitUnit([]).toString(), "1.23 m / s");
+      assert.equal((new Unit(1, 'm')).splitUnit(['in', 'ft']).toString(), "39 in,0.030839895013123605 ft");
+      assert.equal((new Unit(1, 'm')).splitUnit([ new Unit(null, 'ft'), new Unit(null, 'in') ]).toString(), "3 ft,3.3700787401574765 in");
+    });
+  });
+
 });

@@ -1,8 +1,8 @@
 // test bignumber utils
 var assert = require('assert');
 var BigNumber = require('decimal.js');
-var Big32 = BigNumber.constructor({precision: 32});
-var Big64 = BigNumber.constructor({precision: 64});
+var Big32 = BigNumber.clone({precision: 32});
+var Big64 = BigNumber.clone({precision: 64});
 var constants = require('../../../lib/utils/bignumber/constants');
 
 describe('bignumber', function() {
@@ -25,7 +25,7 @@ describe('bignumber', function() {
     assert.equal(constants.tau(Big32),
         '6.283185307179586476925286766559');
     assert.equal(constants.tau(Big64),
-        '6.283185307179586476925286766559005768394338798750211641949889185');
+        '6.283185307179586476925286766559005768394338798750211641949889184');
   });
 
   it('should calculate a bignumber phi', function() {

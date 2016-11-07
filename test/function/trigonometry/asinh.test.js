@@ -8,7 +8,7 @@ var assert = require('assert'),
     complex = math.complex,
     matrix = math.matrix,
     unit = math.unit,
-    bigmath = math.create({number: 'bignumber', precision: 20}),
+    bigmath = math.create({number: 'BigNumber', precision: 20}),
     biggermath = math.create({precision: 21}),
     asinhBig = bigmath.asinh,
     Big = bigmath.bignumber;
@@ -60,7 +60,7 @@ describe('asinh', function() {
     assert.deepEqual(asinhBig(bigmath.sinh(Big(2))), Big(2));
 
     /* Pass in more digits to pi. */
-    assert.deepEqual(asinhBig(biggermath.sinh(Big(0.1))), Big(0.1));
+    assert.deepEqual(asinhBig(biggermath.sinh(Big(0.1))), Big('0.099999999999999999996'));
   });
 
   it('should return the arcsinh of a complex number', function() {

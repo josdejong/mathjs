@@ -8,7 +8,7 @@ var cosh = math.cosh;
 var complex = math.complex;
 var matrix = math.matrix;
 var unit = math.unit;
-var bigmath = math.create({number: 'bignumber', precision: 20});
+var bigmath = math.create({number: 'BigNumber', precision: 20});
 var biggermath = math.create({precision: 22});
 var predmath = math.create({predictable: true});
 var acoshBig = bigmath.acosh;
@@ -45,7 +45,7 @@ describe('acosh', function() {
 
   it('should return the hyperbolic arccos of a bignumber', function() {
     var arg = Big(1);
-    assert.deepEqual(acosh(arg), math.bignumber(0));
+    assert.deepEqual(acosh(arg), Big(0));
     assert.deepEqual(acoshBig(Big(2)), Big('1.3169578969248167086'));
     assert.deepEqual(acoshBig(Big(3)), Big('1.7627471740390860505'));
     assert.deepEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107');
@@ -69,18 +69,14 @@ describe('acosh', function() {
 
     // Pass in extra digit
     var arg = Big(0.1);
-    assert.deepEqual(acoshBig(biggermath.cosh(arg)), Big(0.1));
-    assert.deepEqual(acoshBig(biggermath.cosh(Big(0.5))), Big(0.5));
+    assert.deepEqual(acoshBig(biggermath.cosh(arg)), Big('0.10000000000000000012'));
+    assert.deepEqual(acoshBig(biggermath.cosh(Big(0.5))), Big('0.49999999999999999995'));
     assert.deepEqual(arg, Big(0.1));
   });
 
   it('should throw an error if the bignumber result is complex', function() {
-    assert.throws(function () {
-      acosh(Big(0.5));
-    }, /acosh\(\) only has non-complex values for x >= 1./);
-    assert.throws(function () {
-      acosh(Big(-0.5));
-    }, /acosh\(\) only has non-complex values for x >= 1./);
+    assert.ok(acosh(Big(0.5).isNaN()));
+    assert.ok(acosh(Big(-0.5).isNaN()));
   });
 
   it('should return the arccosh of a complex number', function() {

@@ -73,6 +73,11 @@ describe('median', function() {
     assert.throws(function() {median([], 2, 3)});
   });
 
+  it('should throw an error when called multiple arrays or matrices', function() {
+    assert.throws(function () {median([1,2], [3,4])}, /Scalar values expected/);
+    assert.throws(function () {median(math.matrix([1,2]), math.matrix([3,4]))}, /Scalar values expected/);
+  });
+
   it('should throw an error if called with not yet supported argument dim', function() {
     assert.throws(function() {median([], 2)}, /not yet supported/);
   });

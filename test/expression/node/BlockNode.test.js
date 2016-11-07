@@ -43,7 +43,7 @@ describe('BlockNode', function() {
         visible: true
       },
       {
-        node: new AssignmentNode('foo', new ConstantNode(3)),
+        node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)),
         visible: false
       },
       {
@@ -68,7 +68,8 @@ describe('BlockNode', function() {
   it ('should filter a BlockNode', function () {
     var a = new ConstantNode(5);
     var b2 = new ConstantNode(3);
-    var b = new AssignmentNode('foo', b2);
+    var foo = new SymbolNode('foo');
+    var b = new AssignmentNode(foo, b2);
     var c = new SymbolNode('foo');
     var d = new BlockNode([
       {node: a, visible: true},
@@ -77,7 +78,7 @@ describe('BlockNode', function() {
     ]);
 
     assert.deepEqual(d.filter(function (node) {return node instanceof BlockNode}),     [d]);
-    assert.deepEqual(d.filter(function (node) {return node instanceof SymbolNode}),    [c]);
+    assert.deepEqual(d.filter(function (node) {return node instanceof SymbolNode}),    [foo, c]);
     assert.deepEqual(d.filter(function (node) {return node instanceof RangeNode}),     []);
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode}),  [a, b2]);
     assert.deepEqual(d.filter(function (node) {return node instanceof ConstantNode && node.value == '3'}),  [b2]);
@@ -246,7 +247,7 @@ describe('BlockNode', function() {
   it ('should stringify a BlockNode', function () {
     var n = new BlockNode([
       {node: new ConstantNode(5), visible:true},
-      {node: new AssignmentNode('foo', new ConstantNode(3)), visible:false},
+      {node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)), visible:false},
       {node: new SymbolNode('foo'), visible:true}
     ]);
 
@@ -280,11 +281,11 @@ describe('BlockNode', function() {
   it ('should LaTeX a BlockNode', function () {
     var n = new BlockNode([
       {node: new ConstantNode(5), visible:true},
-      {node: new AssignmentNode('foo', new ConstantNode(3)), visible:false},
+      {node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)), visible:false},
       {node: new SymbolNode('foo'), visible:true}
     ]);
 
-    assert.equal(n.toTex(), '5\\;\\;\nfoo:=3;\\;\\;\n foo');
+    assert.equal(n.toTex(), '5\\;\\;\n foo:=3;\\;\\;\n foo');
   });
 
   it ('should LaTeX a BlockNode with custom toTex', function () {

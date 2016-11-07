@@ -45,9 +45,11 @@ The following operators are available:
 
 Operator    | Name                    | Syntax      | Associativity | Example               | Result
 ----------- | ----------------------- | ----------  | ------------- | --------------------- | ---------------
-`(`, `)`    | Parentheses             | `(x)`       | None          | `2 * (3 + 4)`         | `14`
+`(`, `)`    | Grouping                | `(x)`       | None          | `2 * (3 + 4)`         | `14`
 `[`, `]`    | Matrix, Index           | `[...]`     | None          | `[[1,2],[3,4]]`       | `[[1,2],[3,4]]`
+`{`, `}`    | Object                  | `{...}`     | None          | `{a: 1, b: 2}`        | `{a: 1, b: 2}`
 `,`         | Parameter separator     | `x, y`      | Left to right | `max(2, 1, 5)`        | `5`
+`.`         | Property accessor       | `obj.prop`  | Left to right | `obj={a: 12}; obj.a`  | `12`
 `;`         | Statement separator     | `x; y`      | Left to right | `a=2; b=3; a*b`       | `[6]`
 `;`         | Row separator           | `[x, y]`    | Left to right | `[1,2;3,4]`           | `[[1,2],[3,4]]`
 `\n`        | Statement separator     | `x \n y`    | Left to right | `a=2 \n b=3 \n a*b`   | `[2,3,6]`
@@ -93,7 +95,8 @@ The operators have the following precedence, from highest to lowest:
 
 Operators                         | Description
 --------------------------------- | --------------------
-`x(...)`                          | Function call and matrix index
+`(...)`<br>`[...]`<br>`{...}`     | Grouping<br>Matrix<br>Object
+`x(...)`<br>`x[...]`<br>`obj.prop`<br>`:`| Function call<br>Matrix index<br>Property accessor<br>Key/value separator
 `'`                               | Matrix transpose
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
@@ -122,7 +125,7 @@ Operators                         | Description
 
 Functions are called by entering their name, followed by zero or more
 arguments enclosed by parentheses. All available functions are listed on the
-page [Functions](../functions.md).
+page [Functions](../reference/functions.md).
 
 ```js
 math.eval('sqrt(25)');          // 5
@@ -145,12 +148,23 @@ parser.eval('g(x, y) = x ^ y');
 parser.eval('g(2, 3)'); // 8
 ```
 
+Math.js itself heavily uses typed functions, which ensure correct inputs and
+throws meaningful errors when the input arguments are invalid. One can create
+a [typed-function](https://github.com/josdejong/typed-function) in the
+expression parser like:
+
+```js
+var parser = math.parser();
+
+parser.eval('f = typed({"number": f(x) = x ^ 2 - 5})');
+```
+
 
 ## Constants and variables
 
 Math.js has a number of built-in constants such as `pi` and `e`.
 All available constants are listed on he page
-[Constants](../constants.md).
+[Constants](../reference/constants.md).
 
 ```js
 // use constants
@@ -174,11 +188,24 @@ parser.eval('b = 5 / 2');   // 2.5
 parser.eval('a * b');       // 8.5
 ```
 
+Variable names must:
+
+- Begin with an "alpha character", which is:
+  - A latin letter (upper or lower case). Ascii: `a-z`, `A-Z`
+  - An underscore.                        Ascii: `_`
+  - A latin letter with accents.          Unicode: `\u00C0` - `\u02AF`
+  - A greek letter.                       Unicode: `\u0370` - `\u03FF`
+  - A mathematical alphanumeric symbol.   Unicode: `\u{1D400}` - `\u{1D7FF}` excluding invalid code points
+- Contain only alpha characters (above) and digits `0-9`
+- Not be any of the following: `mod`, `to`, `in`, `and`, `xor`, `or`, `not`, `end`. It is possible to assign to some of these, but that's not recommended.
+
+It is possible to customize the allowed alpha characters, see [Customize supported characters](customization.md#customize-supported-characters) for more information.
+
 
 ## Data types
 
 The expression parser supports booleans, numbers, complex numbers, units,
-strings, and matrices.
+strings, matrices, and objects.
 
 
 ### Booleans
@@ -272,8 +299,8 @@ The default number type of the expression parser can be changed at instantiation
 of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
-// Configure the type of number: 'number' (default), 'bignumber', or 'fraction'
-math.config({number: 'bignumber'});
+// Configure the type of number: 'number' (default), 'BigNumber', or 'Fraction'
+math.config({number: 'BigNumber'});
 
 // all numbers are parsed as BigNumber
 math.eval('0.1 + 0.2'); // BigNumber, 0.3
@@ -358,10 +385,11 @@ math.eval('9.81 m/s^2 * 5 s to mi/h')   // Unit, 109.72172512527 mi / h
 
 ### Strings
 
-Strings are enclosed by double quotes ". Strings can be concatenated by adding
-them. Parts of a string can be retrieved or replaced by using indexes. Strings
-can be converted to a number using function `number`, and numbers can be
-converted to a string using function `string`.
+Strings are enclosed by double quotes ". Strings can be concatenated using the
+function `concat` (not by adding them using `+` like in JavaScript). Parts of
+a string can be retrieved or replaced by using indexes. Strings can be converted
+to a number using function `number`, and numbers can be converted to a string
+using function `string`.
 
 ```js
 var parser = math.parser();
@@ -458,6 +486,45 @@ parser.eval('d[2, 1:end]');           // Matrix, [[43, 50]]
 parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
 ```
 
+## Objects
+
+Objects in math.js work the same as in languages like JavaScript and Python.
+An object is enclosed by square brackets `{`, `}`, and contains a set of 
+comma separated key/value pairs. Keys and values are separated by a colon `:`.
+Keys can be a symbol like `prop` or a string like `"prop"`.
+
+```js
+math.eval('{a: 2 + 1, b: 4}');        // {a: 3, b: 4}
+math.eval('{"a": 2 + 1, "b": 4}');    // {a: 3, b: 4}
+```
+
+Objects can contain objects:
+
+```js
+math.eval('{a: 2, b: {c: 3, d: 4}}'); // {a: 2, b: {c: 3, d: 4}}
+```
+
+Object properties can be retrieved or replaced using dot notation or bracket 
+notation. Unlike JavaScript, when setting a property value, the whole object
+is returned, not the property value
+
+```js
+var scope = {
+  obj: {
+    prop: 42
+  }
+};
+
+// retrieve properties
+math.eval('obj.prop', scope);         // 42
+math.eval('obj["prop"]', scope);      // 42
+
+// set properties (returns the whole object, not the property value!)
+math.eval('obj.prop = 43', scope);    // {prop: 43}
+math.eval('obj["prop"] = 43', scope); // {prop: 43}
+scope.obj;                            // {prop: 43}
+```
+
 
 ## Multi-line expressions
 
@@ -488,26 +555,25 @@ array with results.
 
 The expression parser supports implicit multiplication. Implicit multiplication
 has the same precedence as explicit multiplications and divisions, so `3/4 mm`
-is evaluated as `(3 / 4) * mm`. Here some examples:
+is evaluated as `(3 / 4) * mm`.
 
-Expression      | Evaluated as:
---------------- | ----------------------
-(3 + 2) b       | (3 + 2) * b
-3 / 4 mm        | (3 / 4) * mm
-(1 + 2) (4 - 2) | (1 + 2) * (4 - 2)
-sqrt(2)(4 + 1)  | sqrt(2) * (4 + 1)
-A[2, 3]         | A[2, 3]   # get subset
-(A)[2, 3]       | (A) * [2, 3]
-[2, 3][1, 3]    | [2, 3] * [1, 3]
+Parentheses are parsed as a function call when there is a symbol or accessor on
+the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
+parentheses are interpreted as an implicit multiplication.
 
 Implicit multiplication can be tricky as there is ambiguity on how an expression
 is evaluated. Use it carefully.
 
-```js
-math.eval('(1 + 2)(4 - 2)');  // Number, 6
-math.eval('3/4 mm');          // Unit, 0.75 mm
-math.eval('2 + 3i');          // Complex, 2 + 3i
-```
+Here some examples:
+
+Expression      | Evaluated as      | Result
+--------------- | ----------------- | ------------------
+(1 + 3) pi      | (1 + 3) * pi      | 12.566370614359172
+(4 - 1) 2       | (4 - 1) * 2       | 6
+3 / 4 mm        | (3 / 4) * mm      | 0.75 mm
+2 + 3 i         | 2 + (3 * i)       | 2 + 3i
+(1 + 2) (4 - 2) | (1 + 2) * (4 - 2) | 6
+sqrt(4) (1 + 2) | sqrt(4) * (1 + 2) | 6
 
 
 ## Comments

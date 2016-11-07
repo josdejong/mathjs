@@ -110,7 +110,7 @@ To see the coverage results, open the generated report in your browser:
 
 ## License
 
-Copyright (C) 2013-2015 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2016 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

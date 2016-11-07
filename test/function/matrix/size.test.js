@@ -40,7 +40,7 @@ describe('size', function() {
   });
 
   it('should calculate the size of a scalar with setting matrix=="array"', function() {
-    var math2 = math.create({matrix: 'array'});
+    var math2 = math.create({matrix: 'Array'});
     assert.deepEqual(math2.size(2), []);
     assert.deepEqual(math2.size(math2.bignumber(2)), []);
     assert.deepEqual(math2.size(math2.complex(2,3)), []);
