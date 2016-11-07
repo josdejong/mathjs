@@ -399,10 +399,12 @@ parser.eval('"hello"');                       // String, "hello"
 
 // string manipulation
 parser.eval('a = concat("hello", " world")'); // String, "hello world"
-parser.eval('size(a)');                       // Number, 11
+parser.eval('size(a)');                       // Matrix size [1], [11]
 parser.eval('a[1:5]');                        // String, "hello"
-parser.eval('a[1] = "H"');                    // String, "Hello"
-parser.eval('a[7:12] = "there!"');            // String, "Hello there!"
+parser.eval('a[1] = "H"');                    // String, "H"
+parser.eval('a');                             // String, "Hello world"
+parser.eval('a[7:12] = "there!"');            // String, "there!"
+parser.eval('a');                             // String, "Hello there!"
 
 // string conversion
 parser.eval('number("300")');                 // Number, 300
