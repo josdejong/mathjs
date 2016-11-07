@@ -40,12 +40,20 @@ describe('simplify', function() {
 
   it('should collect seperated like terms', function() {
     simplifyAndCompare('x+1+x', '2*x+1');
-    simplifyAndCompare('x+1+2x', '3*x+1');
     simplifyAndCompare('x^2+x+3+x^2', '2*x^2+x+3');
+    simplifyAndCompare('x+1+2x', '3*x+1');
+    simplifyAndCompare('x-1+x', '2*x-1');
+    simplifyAndCompare('x-1-2x+2', '1-x');
+  });
+
+  it('should collect seperated like factors', function() {
+    simplifyAndCompare('x/2*x', 'x^2/2');
+    simplifyAndCompare('x*2*x', '2*x^2');
+    simplifyAndCompare('x*y*-x/(x^2)', '-y');
   });
 
   it('should compute and simplify derivatives', function() {
     simplifyAndCompare('derivative(5x*3x, x)', '30*x');
-    simplifyAndCompare('5+derivative(5/(3x), x)', '-15/(3*x)^2+5');
+    simplifyAndCompare('5+derivative(5/(3x), x)', '5-15/(3*x)^2');
   });
 });
