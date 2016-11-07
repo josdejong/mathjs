@@ -169,7 +169,7 @@ describe('distribution', function () {
       assertUniformDistribution(picked, -103, 8);
     });
 
-    it.skip ('should throw an error if called with invalid arguments', function() {
+    it ('should throw an error if called with invalid arguments', function() {
       assert.throws(function() { uniformDistrib.random(1, 2, [4, 8]); });
       assert.throws(function() { uniformDistrib.random(1, 2, 3, 6); });
 

@@ -94,6 +94,10 @@ Wait until the new version of math.js is available on cdnjs.org.
 The website is located in the `gh-pages` branch of the project.
 Follow the readme in the `gh-pages` branch on how to update the website.
 
+## Update the REST API
+
+Update the `mathjs-rest` project (served at http://api.mathjs.org).
+
 
 ## Back to develop
 

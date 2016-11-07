@@ -347,6 +347,28 @@ describe('AccessorNode', function() {
     assert.strictEqual(d.index.dimensions[1], n.index.dimensions[1]);
   });
 
+  it ('should test equality of an Node', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var node1 = new AccessorNode(a, new IndexNode([b, c]));
+
+    var a = new SymbolNode('a');
+    var b = new SymbolNode('b');
+    var c = new ConstantNode(1);
+    var node2 = new AccessorNode(a, new IndexNode([b, c]));
+
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var node3 = new AccessorNode(a, new IndexNode([b, c]));
+
+    assert.strictEqual(node1.equals(null), false);
+    assert.strictEqual(node1.equals(undefined), false);
+    assert.strictEqual(node1.equals(node2), false);
+    assert.strictEqual(node1.equals(node3), true);
+  });
+
   it ('should stringify an AccessorNode', function () {
     var a = new SymbolNode('a');
     var index = new IndexNode([

@@ -354,6 +354,21 @@ describe('FunctionNode', function() {
     assert.strictEqual(e.args[1], d.args[1]);
   });
 
+  it ('test equality another Node', function () {
+    var a = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)]);
+    var b = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)]);
+    var c = new FunctionNode(new SymbolNode('subtract'), [new ConstantNode(2), new ConstantNode(3)]);
+    var d = new FunctionNode(new SymbolNode('add'), [new ConstantNode(4), new ConstantNode(3)]);
+    var e = new SymbolNode('add');
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+  });
+
   it ('should stringify a FunctionNode', function () {
     var s = new SymbolNode('sqrt');
     var c = new ConstantNode(4);

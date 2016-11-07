@@ -124,6 +124,19 @@ describe('ConstantNode', function() {
     assert.equal(a.valueType, b.valueType);
   });
 
+  it ('test equality another Node', function () {
+    var a = new ConstantNode(2);
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(new ConstantNode(2)), true);
+    assert.strictEqual(a.equals(new ConstantNode(3)), false);
+    assert.strictEqual(a.equals(new ConstantNode('2', 'number')), true);
+    assert.strictEqual(a.equals(new ConstantNode('2', 'string')), false);
+    assert.strictEqual(a.equals(new SymbolNode('2')), false);
+    assert.strictEqual(a.equals({value:2, valueType: 'number'}), false);
+  });
+
   it ('should stringify a ConstantNode', function () {
     assert.equal(new ConstantNode('3', 'number').toString(), '3');
     assert.deepEqual(new ConstantNode('3', 'number').toString(), '3');

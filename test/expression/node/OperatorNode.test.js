@@ -176,6 +176,21 @@ describe('OperatorNode', function() {
     assert.strictEqual(d.args[1], c.args[1]);
   });
 
+  it ('test equality another Node', function () {
+    var a = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)]);
+    var b = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)]);
+    var c = new OperatorNode('*', 'multiply', [new SymbolNode('x'), new ConstantNode(2)]);
+    var d = new OperatorNode('*', 'add', [new SymbolNode('x'), new ConstantNode(3)]);
+    var e = new OperatorNode('*', 'add', [new SymbolNode('x'), new ConstantNode(2), new ConstantNode(4)]);
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+  });
+
   describe('toString', function () {
     it ('should stringify an OperatorNode', function () {
       var a = new ConstantNode(2);

@@ -18,13 +18,13 @@ math.arg(x)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
+`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  A complex number or array with complex numbers
 
 ### Returns
 
 Type | Description
 ---- | -----------
-number &#124; Array &#124; Matrix | The argument of x
+number &#124; BigNumber &#124; Array &#124; Matrix | The argument of x
 
 
 ## Examples

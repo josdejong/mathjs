@@ -244,6 +244,21 @@ describe('BlockNode', function() {
     assert.strictEqual(a.blocks[1].node, d.blocks[1].node);
   });
 
+  it ('test equality another Node', function () {
+    var a = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2)} ]);
+    var b = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2)} ]);
+    var c = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(4)} ]);
+    var d = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2), visible: false} ]);
+    var e = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2)}, {node: new ConstantNode(5)} ]);
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+  });
+
   it ('should stringify a BlockNode', function () {
     var n = new BlockNode([
       {node: new ConstantNode(5), visible:true},

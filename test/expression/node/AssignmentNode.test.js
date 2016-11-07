@@ -434,6 +434,36 @@ describe('AssignmentNode', function() {
     assert.strictEqual(e.value, d.value);
   });
 
+  it ('test equality another Node', function () {
+    var a = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(3));
+    var b = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(3));
+    var c = new AssignmentNode(
+        new SymbolNode('B'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(3));
+    var d = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2)]),
+        new ConstantNode(3));
+    var e = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(4));
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+  });
+
   it ('should respect the \'all\' parenthesis option', function () {
     var object = new SymbolNode('a');
     var value = new ConstantNode(1);
