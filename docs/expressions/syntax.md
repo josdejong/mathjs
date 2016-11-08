@@ -391,6 +391,11 @@ a string can be retrieved or replaced by using indexes. Strings can be converted
 to a number using function `number`, and numbers can be converted to a string
 using function `string`.
 
+When setting the value of a character in a string, the character that has been
+set is returned. Likewise, when a range of characters is set, that range of
+characters is returned. 
+
+
 ```js
 var parser = math.parser();
 
