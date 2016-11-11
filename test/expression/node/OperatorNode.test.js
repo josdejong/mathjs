@@ -176,6 +176,16 @@ describe('OperatorNode', function() {
     assert.strictEqual(d.args[1], c.args[1]);
   });
 
+  it ('should clone implicit multiplications', function () {
+    var two = new ConstantNode(2);
+    var x = new SymbolNode('x');
+    var node = new OperatorNode('*', 'multiply', [two, x], true);
+
+    assert.equal('2 x', node.toString());
+    assert.strictEqual(true, node.clone().implicit);
+    assert.equal(node.toString(), node.clone().toString());
+  });
+
   it ('test equality another Node', function () {
     var a = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)]);
     var b = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)]);
