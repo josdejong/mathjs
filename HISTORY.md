@@ -7,6 +7,8 @@
   now retain the original unit like `1 cm` when close enough, instead of
   returning `10 mm`. Thanks @ericman314.
 - Some fixes in the docs and comments of examples. Thanks @HarrySarson.
+- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
+  Thanks @FSMaxB.
 
 
 ## 2016-11-05, version 3.7.0
