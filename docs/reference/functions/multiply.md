@@ -2,7 +2,7 @@
 
 # Function multiply
 
-Multiply two values, `x * y`.
+Multiply two or multiple values, `x * y`.
 For matrices, the matrix product is calculated.
 
 
@@ -10,6 +10,7 @@ For matrices, the matrix product is calculated.
 
 ```js
 math.multiply(x, y)
+math.multiply(x, y, z, ...)
 ```
 
 ### Parameters

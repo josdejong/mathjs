@@ -75,7 +75,7 @@
     "fraction.js": "3.3.1",
     "complex.js": "2.0.1",
     "tiny-emitter": "1.0.2",
-    "typed-function": "0.10.4"
+    "typed-function": "0.10.5"
   },
   "devDependencies": {
     "glob": "7.0.3",

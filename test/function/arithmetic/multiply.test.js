@@ -278,7 +278,6 @@ describe('multiply', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {multiply(1);}, /TypeError: Too few arguments/);
-    assert.throws(function () {multiply(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   describe('Vector', function () {
@@ -876,7 +875,17 @@ describe('multiply', function() {
     });
   });
 
-  it('should LaTeX mutliply', function () {
+
+  describe ('multiple arguments', function () {
+
+    it ('should multiply more than two arguments', function () {
+      assert.deepEqual(multiply(2, 3, 4), 24);
+      assert.deepEqual(multiply(2, 3, [5,6]), [30,36]);
+    });
+
+  });
+
+  it('should LaTeX multiply', function () {
     var expression = math.parse('multiply(2,3)');
     assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)');
   });

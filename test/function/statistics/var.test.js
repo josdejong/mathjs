@@ -66,7 +66,6 @@ describe('variance', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {variance()});
-    assert.throws(function() {variance([], 2, 3)});
   });
 
   it('should throw an error if called with invalid type of arguments', function() {

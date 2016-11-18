@@ -2,7 +2,7 @@
 
 # Function add
 
-Add two values, `x + y`.
+Add two or multiple values, `x + y`.
 For matrices, the function is evaluated element wise.
 
 
@@ -10,6 +10,7 @@ For matrices, the function is evaluated element wise.
 
 ```js
 math.add(x, y)
+math.add(x, y, z, ...)
 ```
 
 ### Parameters

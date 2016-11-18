@@ -51,7 +51,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.abs(x)](functions/abs.md) | Calculate the absolute value of a number.
-[math.add(x,&nbsp;y)](functions/add.md) | Add two values, `x + y`.
+[math.add(x,&nbsp;y)](functions/add.md) | Add two or multiple values, `x + y`.
 [math.cbrt(x&nbsp;[,&nbsp;allRoots])](functions/cbrt.md) | Calculate the cubic root of a value.
 [math.ceil(x)](functions/ceil.md) | Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 [math.cube(x)](functions/cube.md) | Compute the cube of a value, `x * x * x`.
@@ -68,7 +68,7 @@ Function | Description
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.md) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.md) | Calculate the 10-base logarithm of a value.
 [math.mod(x,&nbsp;y)](functions/mod.md) | Calculates the modulus, the remainder of an integer division.
-[math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two values, `x * y`.
+[math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or multiple values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
 [math.pow(x,&nbsp;y)](functions/pow.md) | Calculates the power of x to y, `x ^ y`.
