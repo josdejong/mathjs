@@ -2,7 +2,7 @@
 
 # Function multiply
 
-Multiply two or multiple values, `x * y`.
+Multiply two or more values, `x * y`.
 For matrices, the matrix product is calculated.
 
 
@@ -31,6 +31,7 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 
 ```js
 math.multiply(4, 5.2);        // returns number 20.8
+math.multiply(2, 3, 4);       // returns number 24
 
 var a = math.complex(2, 3);
 var b = math.complex(4, 1);
@@ -47,4 +48,7 @@ math.multiply(3, e);          // returns Unit 6.3 km
 
 ## See also
 
-[divide](divide.md)
+[divide](divide.md),
+[prod](prod.md),
+[cross](cross.md),
+[dot](dot.md)

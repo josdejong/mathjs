@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.8.0
+## 2016-11-18, version 3.8.0
 
 - Functions `add` and `multiply` now accept more than two arguments. See #739.
 - `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
