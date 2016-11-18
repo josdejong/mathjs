@@ -12,6 +12,7 @@
   It will now retain the original unit like `1 cm` when close enough,
   instead of returning `10 mm`. Thanks @ericman314.
 - Fixed #732: Allow letter-like unicode characters like Ohm `\u2126`.
+- Fixed #749: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
 - Some fixes in the docs and comments of examples. Thanks @HarrySarson.
 
 
