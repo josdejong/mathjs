@@ -5,12 +5,13 @@
 
 - Functions `add` and `multiply` now accept more than two arguments. See #739.
 - `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
+- Implemented a method `Node.cloneDeep` for the expression nodes. See #745.
+- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
+  Thanks @FSMaxB.
 - Fixed #737: Improved algorithm determining the best prefix for units.
   It will now retain the original unit like `1 cm` when close enough,
   instead of returning `10 mm`. Thanks @ericman314.
 - Some fixes in the docs and comments of examples. Thanks @HarrySarson.
-- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
-  Thanks @FSMaxB.
 
 
 ## 2016-11-05, version 3.7.0
