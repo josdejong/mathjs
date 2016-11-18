@@ -195,6 +195,7 @@ Variable names must:
   - An underscore.                        Ascii: `_`
   - A latin letter with accents.          Unicode: `\u00C0` - `\u02AF`
   - A greek letter.                       Unicode: `\u0370` - `\u03FF`
+  - A letter-like character.              Unicode: `\u2100` - `\u214F`
   - A mathematical alphanumeric symbol.   Unicode: `\u{1D400}` - `\u{1D7FF}` excluding invalid code points
 - Contain only alpha characters (above) and digits `0-9`
 - Not be any of the following: `mod`, `to`, `in`, `and`, `xor`, `or`, `not`, `end`. It is possible to assign to some of these, but that's not recommended.

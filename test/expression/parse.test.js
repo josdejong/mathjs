@@ -72,6 +72,9 @@ describe('parse', function() {
     math.eval('\u03A9 = 4', scope); // Greek Capital Letter Omega
     assert.strictEqual(scope['\u03A9'], 4);
 
+    math.eval('\u2126 = 4', scope); // Letter-like character Ohm
+    assert.strictEqual(scope['\u2126'], 4);
+
     math.eval('k\u00F6ln = 5', scope); // Combination of latin and unicode
     assert.strictEqual(scope['k\u00F6ln'], 5);
 
