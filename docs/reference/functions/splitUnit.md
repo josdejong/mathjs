@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-splitunit">Function splitUnit <a href="#function-splitunit" title="Permalink">#</a></h1>
 
-Returns an array of units whose sum is equal to this unit
+Split a unit in an array of units whose sum is equal to the original unit.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
@@ -31,7 +31,7 @@ Array | An array of units.
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-splitUnit(new Unit(1, 'm'), ['feet', 'inch']);
+math.splitUnit(new Unit(1, 'm'), ['feet', 'inch']);
 // [ 3 feet, 3.3700787401575 inch ]
 ```
 

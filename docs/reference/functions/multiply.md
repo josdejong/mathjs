@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-multiply">Function multiply <a href="#function-multiply" title="Permalink">#</a></h1>
 
-Multiply two values, `x * y`.
+Multiply two or more values, `x * y`.
 For matrices, the matrix product is calculated.
 
 
@@ -14,6 +14,7 @@ For matrices, the matrix product is calculated.
 
 ```js
 math.multiply(x, y)
+math.multiply(x, y, z, ...)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -34,6 +35,7 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 
 ```js
 math.multiply(4, 5.2);        // returns number 20.8
+math.multiply(2, 3, 4);       // returns number 24
 
 var a = math.complex(2, 3);
 var b = math.complex(4, 1);
@@ -50,4 +52,7 @@ math.multiply(3, e);          // returns Unit 6.3 km
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[divide](divide.html)
+[divide](divide.html),
+[prod](prod.html),
+[cross](cross.html),
+[dot](dot.html)

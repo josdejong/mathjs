@@ -26,7 +26,7 @@ Function | Description
 [math.matrix(x)](functions/matrix.html) | Create a Matrix.
 [math.number(value)](functions/number.html) | Create a number or convert a string, boolean, or unit to a number.
 [math.sparse(x)](functions/sparse.html) | Create a Sparse Matrix.
-[math.splitUnit(unit,&nbsp;parts)](functions/splitUnit.html) | Returns an array of units whose sum is equal to this unit.
+[math.splitUnit(unit,&nbsp;parts)](functions/splitUnit.html) | Split a unit in an array of units whose sum is equal to the original unit.
 [math.string(value)](functions/string.html) | Create a string or convert any object into a string.
 [math.unit(x)](functions/unit.html) | Create a unit.
 
@@ -55,7 +55,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.abs(x)](functions/abs.html) | Calculate the absolute value of a number.
-[math.add(x,&nbsp;y)](functions/add.html) | Add two values, `x + y`.
+[math.add(x,&nbsp;y)](functions/add.html) | Add two or more values, `x + y`.
 [math.cbrt(x&nbsp;[,&nbsp;allRoots])](functions/cbrt.html) | Calculate the cubic root of a value.
 [math.ceil(x)](functions/ceil.html) | Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 [math.cube(x)](functions/cube.html) | Compute the cube of a value, `x * x * x`.
@@ -72,7 +72,7 @@ Function | Description
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.html) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.html) | Calculate the 10-base logarithm of a value.
 [math.mod(x,&nbsp;y)](functions/mod.html) | Calculates the modulus, the remainder of an integer division.
-[math.multiply(x,&nbsp;y)](functions/multiply.html) | Multiply two values, `x * y`.
+[math.multiply(x,&nbsp;y)](functions/multiply.html) | Multiply two or more values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.html) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.html) | Calculate the nth root of a value.
 [math.pow(x,&nbsp;y)](functions/pow.html) | Calculates the power of x to y, `x ^ y`.

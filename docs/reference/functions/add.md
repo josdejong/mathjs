@@ -6,7 +6,7 @@ layout: default
 
 <h1 id="function-add">Function add <a href="#function-add" title="Permalink">#</a></h1>
 
-Add two values, `x + y`.
+Add two or more values, `x + y`.
 For matrices, the function is evaluated element wise.
 
 
@@ -14,6 +14,7 @@ For matrices, the function is evaluated element wise.
 
 ```js
 math.add(x, y)
+math.add(x, y, z, ...)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -34,6 +35,7 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 
 ```js
 math.add(2, 3);               // returns number 5
+math.add(2, 3, 4);            // returns number 9
 
 var a = math.complex(2, 3);
 var b = math.complex(-4, 1);
@@ -51,4 +53,5 @@ math.add("2.3", "4");         // returns number 6.3
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[subtract](subtract.html)
+[subtract](subtract.html),
+[sum](sum.html)

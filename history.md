@@ -5,6 +5,21 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20161118-version-380">2016-11-18, version 3.8.0 <a href="#20161118-version-380" title="Permalink">#</a></h2>
+
+- Functions `add` and `multiply` now accept more than two arguments. See #739.
+- `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
+- Implemented a method `Node.cloneDeep` for the expression nodes. See #745.
+- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
+  Thanks @FSMaxB.
+- Fixed #737: Improved algorithm determining the best prefix for units.
+  It will now retain the original unit like `1 cm` when close enough,
+  instead of returning `10 mm`. Thanks @ericman314.
+- Fixed #732: Allow letter-like unicode characters like Ohm `\u2126`.
+- Fixed #749: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
+- Some fixes in the docs and comments of examples. Thanks @HarrySarson.
+
+
 <h2 id="20161105-version-370">2016-11-05, version 3.7.0 <a href="#20161105-version-370" title="Permalink">#</a></h2>
 
 - Implemented method `Node.equals(other)` for all nodes of the expression parser.

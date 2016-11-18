@@ -46,7 +46,7 @@ Unit | The new unit
 
 ```js
 math.createUnit('foo');
-math.createUnit('knot', {definition: '0.514444444 m/s', aliases: ['knots', 'kt', 'kts]});
+math.createUnit('knot', {definition: '0.514444444 m/s', aliases: ['knots', 'kt', 'kts']});
 math.createUnit('mph', '1 mile/hour');
 ```
 
