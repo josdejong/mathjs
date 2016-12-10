@@ -769,6 +769,23 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
     });
 
+    it('should invoke a function returned by a function', function () {
+      var scope = {
+        theAnswer: function () {
+          return function () {
+            return 42;
+          };
+        },
+        partialAdd: function (a) {
+          return function (b) {
+            return a + b;
+          };
+        }
+      };
+      assert.deepEqual(parseAndEval('theAnswer()()', scope), 42);
+      assert.deepEqual(parseAndEval('partialAdd(2)(3)', scope), 5);
+    });
+
     it('should invoke a function on an object with the right context', function () {
       approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1);
       assert.deepEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5));

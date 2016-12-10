@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.8.1
+
+- Fixed #762: expression parser failing to invoke a function returned
+  by a function.
+
+
 ## 2016-11-18, version 3.8.0
 
 - Functions `add` and `multiply` now accept more than two arguments. See #739.
