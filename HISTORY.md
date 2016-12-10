@@ -3,6 +3,7 @@
 
 ## not yet released, version 3.8.1
 
+- Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
 - Fixed #762: expression parser failing to invoke a function returned
   by a function.
 
