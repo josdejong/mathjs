@@ -57,7 +57,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
     var code = node.compile();      // returns {eval: function (scope) {...}}
-    var eval = code.eval({x: 3};    // returns 5
+    var eval = code.eval({x: 3});   // returns 5
     ```
 
 -   `eval([scope]) : Object`
@@ -67,7 +67,7 @@ All nodes have the following methods:
     
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var eval = node.eval({x: 3};    // returns 5
+    var eval = node.eval({x: 3});   // returns 5
     ```
 
 -   `equals(other: Node) : boolean`
