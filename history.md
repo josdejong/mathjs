@@ -5,6 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20161215-version-381">2016-12-15, version 3.8.1 <a href="#20161215-version-381" title="Permalink">#</a></h2>
+
+- Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
+- Fixed #762: expression parser failing to invoke a function returned
+  by a function.
+
+
 <h2 id="20161118-version-380">2016-11-18, version 3.8.0 <a href="#20161118-version-380" title="Permalink">#</a></h2>
 
 - Functions `add` and `multiply` now accept more than two arguments. See #739.
