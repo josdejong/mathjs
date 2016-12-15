@@ -191,6 +191,7 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.mad(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mad.md) | Compute the median absolute deviation of a matrix or a list with values.
 [math.max(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/max.md) | Compute the maximum value of a matrix or a  list with values.
 [math.mean(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mean.md) | Compute the mean value of matrix or a list with values.
 [math.median(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/median.md) | Compute the median of a matrix or a list with values.
