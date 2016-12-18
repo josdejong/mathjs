@@ -284,7 +284,7 @@ describe('FunctionAssignmentNode', function() {
 
   it ('should respect the \'all\' parenthesis option', function () {
     var expr = math.parse('f(x)=x+1');
-    assert.equal(expr.toString({parenthesis: 'all'}), 'function f(x) = (x + 1)');
+    assert.equal(expr.toString({parenthesis: 'all'}), 'f(x) = (x + 1)');
     assert.equal(expr.toTex({parenthesis: 'all'}), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)');
   });
 
@@ -294,7 +294,7 @@ describe('FunctionAssignmentNode', function() {
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionAssignmentNode('f', ['x'], o);
 
-    assert.equal(n.toString(), 'function f(x) = 2 + x');
+    assert.equal(n.toString(), 'f(x) = 2 + x');
   });
 
   it ('should stringify a FunctionAssignmentNode conataining an AssignmentNode', function () {
@@ -303,7 +303,7 @@ describe('FunctionAssignmentNode', function() {
     var n1 = new AssignmentNode(new SymbolNode('a'), a);
     var n = new FunctionAssignmentNode('f', ['x'], n1);
 
-    assert.equal(n.toString(), 'function f(x) = (a = 2)');
+    assert.equal(n.toString(), 'f(x) = (a = 2)');
   });
 
   it ('should stringify a FunctionAssignmentNode with custom toString', function () {

@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.8.2
+
+- Fixed #765: `FunctionAssignmentNode.toString()` returning a string
+  incompatible with the function assignment syntax.
+
+
 ## 2016-12-15, version 3.8.1
 
 - Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
