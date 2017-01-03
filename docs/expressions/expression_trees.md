@@ -557,12 +557,13 @@ Properties:
 
 Examples:
 
-```js
+~~~eval-js
 var node1 = math.parse('(1)');
 
 var a     = new math.expression.node.ConstantNode(1);
 var node2 = new math.expression.node.ParenthesisNode(a);
-```
+node2
+~~~
 
 <h3 id="rangenode">RangeNode <a href="#rangenode" title="Permalink">#</a></h3>
 
@@ -613,3 +614,10 @@ var node = math.parse('x');
 
 var x = new math.expression.node.SymbolNode('x');
 ```
+<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector_eval_js: '.language-eval-js', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>

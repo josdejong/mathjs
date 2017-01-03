@@ -8,6 +8,7 @@ var gutil = require('gulp-util');
 var replace = require('gulp-replace');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
+var footer = require('gulp-footer');
 var handlebars = require('handlebars');
 
 var LIB_SRC           = './node_modules/mathjs/dist/*';
@@ -27,6 +28,15 @@ var MD_HEADER =
     'layout: default\n' +
     '---\n' +
     '\n';
+
+var KLIPSE_INCLUDE =
+`<link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+<script>
+    window.klipse_settings = {
+        selector_eval_js: '.language-eval-js', // css selector for the html elements you want to klipsify
+    };
+</script>
+<script src="https://storage.googleapis.com/app.klipse.tech/plugin_prod/js/klipse_plugin.min.js"></script>`;
 
 var EXAMPLE_TEMPLATE = MD_HEADER +
     '# {{title}}\n\n' +
@@ -110,6 +120,7 @@ gulp.task('docs', ['clean'], function () {
       .pipe(replace(/(\([\w\./]*).md([)#])/g, '$1.html$2')) // replace urls to *.md with *.html
       .pipe(injectPermalinks)                               // create headers with an id
       .pipe(header(MD_HEADER))                              // add banner with markdown layout
+      .pipe(footer(KLIPSE_INCLUDE))                         // include klipse
       .pipe(gulp.dest(DOCS_DEST));
 });
 

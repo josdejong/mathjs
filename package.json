@@ -1,6 +1,7 @@
+
 {
   "name": "mathjs-website",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/josdejong/mathjs.git"
@@ -12,6 +13,7 @@
     "glob": "^4.3.5",
     "gulp": "^3.8.10",
     "gulp-header": "^1.2.2",
+    "gulp-footer": "^1.0.5",
     "gulp-rename": "^1.2.0",
     "gulp-replace": "^0.5.2",
     "gulp-util": "^3.0.2",
