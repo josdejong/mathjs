@@ -1,8 +1,9 @@
 # History
 
 
-## not yet released, version 3.8.2
+## not yet released, version 3.9.0
 
+- Implemented Kronecker Product, function `kron`. Thanks @adamisntdead.
 - Fixed #765: `FunctionAssignmentNode.toString()` returning a string
   incompatible with the function assignment syntax.
 
