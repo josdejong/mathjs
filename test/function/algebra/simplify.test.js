@@ -1,18 +1,16 @@
-// test derivative
+// test simplify
 var assert = require('assert');
 var math = require('../../../index');
-var parse = math.parse;
-var simplify = math.simplify;
 
 describe('simplify', function() {
 
   var simplifyAndCompare = function(left, right) {
-    assert.equal(simplify(left).toString(), parse(right).toString());
+    assert.equal(math.simplify(left).toString(), math.parse(right).toString());
   };
 
   var simplifyAndCompareEval = function(left, right, scope) {
     scope = scope || {};
-    assert.equal(simplify(left).eval(scope), parse(right).eval(scope));
+    assert.equal(math.simplify(left).eval(scope), math.parse(right).eval(scope));
   };
 
   it('should not change the value of the function', function() {
@@ -52,8 +50,42 @@ describe('simplify', function() {
     simplifyAndCompare('x*y*-x/(x^2)', '-y');
   });
 
-  it('should compute and simplify derivatives', function() {
-    simplifyAndCompare('derivative(5x*3x, x)', '30*x');
-    simplifyAndCompare('5+derivative(5/(3x), x)', '5-15/(3*x)^2');
+  describe('expression parser' ,function () {
+
+    it('should evaluate simplify containing string value', function() {
+      var res = math.eval('simplify("2x + 3x")');
+      assert.ok(res && res.isNode)
+      assert.equal(res.toString(), '5 * x');
+    });
+
+    it('should evaluate simplify containing nodes', function() {
+      var res = math.eval('simplify(parse("2x + 3x"))');
+      assert.ok(res && res.isNode)
+      assert.equal(res.toString(), '5 * x');
+    });
+
+    it('should compute and simplify derivatives', function() {
+      var res = math.eval('simplify(derivative("5x*3x", "x"))');
+      assert.ok(res && res.isNode)
+      assert.equal(res.toString(), '30 * x');
+    });
+
+    it('should compute and simplify derivatives (2)', function() {
+      var scope = {}
+      math.eval('a = derivative("5x*3x", "x")', scope)
+      var res = math.eval('simplify(a)', scope);
+      assert.ok(res && res.isNode)
+      assert.equal(res.toString(), '30 * x');
+    });
+
+    it.skip('should compute and simplify derivatives (3)', function() {
+      // TODO: this requires the + operator to support Nodes,
+      //       i.e.   math.add(5, math.parse('2')) => return an OperatorNode
+      var res = math.eval('simplify(5+derivative(5/(3x), x))');
+      assert.ok(res && res.isNode)
+      assert.equal(res.toString(), '5 - 15 / (3 * x) ^ 2');
+    });
+
   });
+
 });

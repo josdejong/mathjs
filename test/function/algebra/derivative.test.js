@@ -6,10 +6,11 @@ var OperatorNode = math.expression.node.OperatorNode;
 var FunctionNode = math.expression.node.FunctionNode;
 var ParenthesisNode = math.expression.node.ParenthesisNode;
 var SymbolNode = math.expression.node.SymbolNode;
-var simplifyDerivative = math.algebra.simplify.simplifyDerivative;
 var derivative = math.derivative;
 var parse = math.parse;
 var eval = math.eval;
+
+// TODO: simplify the unit tests, write the functions as strings instead of writing them on Node level
 
 describe('derivative', function() {
   var OP = function(op, args) {
@@ -379,42 +380,77 @@ describe('derivative', function() {
                                                          ]));
   });
 
+  it('should accept string input', function() {
+    assert.equal(derivative('x^2', 'x').simplify().toString(), '2 * x');
+    assert.equal(derivative(math.parse('x^2'), 'x').simplify().toString(), '2 * x');
+    assert.equal(derivative('x^2', math.parse('x')).simplify().toString(), '2 * x');
+    assert.equal(derivative(math.parse('x^2'), math.parse('x')).simplify().toString(), '2 * x');
+  });
+
+  describe('expression parser', function() {
+
+    it('should evaluate a derivative containing string value', function() {
+      var res = math.eval('derivative("x^2", "x")');
+      assert.ok(res && res.isNode)
+
+      assert.equal(res.simplify().toString(), '2 * x');
+    });
+
+    it('should evaluate a derivative containing nodes', function() {
+      var res = math.eval('derivative(parse("x^2"), parse("x"))');
+      assert.ok(res && res.isNode)
+
+      assert.equal(res.simplify().toString(), '2 * x');
+    });
+
+  });
+
   it('should throw error if expressions contain unsupported operators or functions', function() {
-    assert.throws(function () { eval('derivative(x << 2, x)'); }, /Error: Operator "<<" not supported by derivative/);
-    assert.throws(function () { eval('derivative(subset(x), x)'); }, /Error: Function "subset" not supported by derivative/);
+    assert.throws(function () { derivative('x << 2', 'x'); }, /Error: Operator "<<" not supported by derivative/);
+    assert.throws(function () { derivative('subset(x)', 'x'); }, /Error: Function "subset" not supported by derivative/);
   });
 
   it('should have controlled behavior on arguments errors', function() {
     assert.throws(function() {
-      eval('derivative(sqrt(), x)');
+      derivative('sqrt()', 'x');
     }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix, index: 0\)/);
     assert.throws(function() {
-      eval('derivative(sqrt(12, 2x), x)');
+      derivative('sqrt(12, 2x)', 'x');
     }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/);
   });
 
   it('should throw error for incorrect argument types', function() {
     assert.throws(function () {
-      eval('derivative(42, 42)');
-    }, /TypeError: Unexpected type of argument in function derivative \(expected: SymbolNode, actual: ConstantNode, index: 1\)/);
+      derivative('42', '42');
+    }, /TypeError: Unexpected type of argument in function derivative \(expected: string or SymbolNode, actual: ConstantNode, index: 1\)/);
 
     assert.throws(function () {
-      eval('derivative([1, 2; 3, 4], x)');
+      derivative('[1, 2; 3, 4]', 'x');
     }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
 
     assert.throws(function () {
-      eval('derivative(x + [1, 2; 3, 4], x)');
+      derivative('x + [1, 2; 3, 4]', 'x');
     }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
   });
 
   it('should throw error if incorrect number of arguments', function() {
     assert.throws(function () {
-      eval('derivative(x + 2)');
-    }, /TypeError: Too few arguments in function derivative \(expected: SymbolNode, index: 1\)/);
+      derivative('x + 2');
+    }, /TypeError: Too few arguments in function derivative \(expected: string or SymbolNode, index: 1\)/);
 
     assert.throws(function () {
-      eval('derivative(x + 2, x, "stuff", true, 42)');
-    }, /TypeError: Too many arguments in function derivative \(expected: 3, actual: 5\)/);
+      derivative('x + 2', 'x', "stuff", true, 42);
+    }, /TypeError: Too many arguments in function derivative \(expected: 2, actual: 5\)/);
   });
 
 });
+
+// TODO: remove the need for this helper function
+function simplifyDerivative(expr) {
+  return expr.transform(function(node, path, parent){
+    if (node.isFunctionNode && node.name === 'derivative') {
+      return derivative(node.args[0], node.args[1]);
+    }
+    return node;
+  });
+}
