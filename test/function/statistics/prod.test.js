@@ -53,7 +53,6 @@ describe('prod', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {prod()});
-    assert.throws(function() {prod([], 2, 3)});
   });
 
   it('should throw an error if called with not yet supported argument dim', function() {

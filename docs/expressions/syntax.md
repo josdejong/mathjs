@@ -195,6 +195,7 @@ Variable names must:
   - An underscore.                        Ascii: `_`
   - A latin letter with accents.          Unicode: `\u00C0` - `\u02AF`
   - A greek letter.                       Unicode: `\u0370` - `\u03FF`
+  - A letter-like character.              Unicode: `\u2100` - `\u214F`
   - A mathematical alphanumeric symbol.   Unicode: `\u{1D400}` - `\u{1D7FF}` excluding invalid code points
 - Contain only alpha characters (above) and digits `0-9`
 - Not be any of the following: `mod`, `to`, `in`, `and`, `xor`, `or`, `not`, `end`. It is possible to assign to some of these, but that's not recommended.
@@ -391,6 +392,11 @@ a string can be retrieved or replaced by using indexes. Strings can be converted
 to a number using function `number`, and numbers can be converted to a string
 using function `string`.
 
+When setting the value of a character in a string, the character that has been
+set is returned. Likewise, when a range of characters is set, that range of
+characters is returned. 
+
+
 ```js
 var parser = math.parser();
 
@@ -399,10 +405,11 @@ parser.eval('"hello"');                       // String, "hello"
 
 // string manipulation
 parser.eval('a = concat("hello", " world")'); // String, "hello world"
-parser.eval('size(a)');                       // Number, 11
+parser.eval('size(a)');                       // Matrix [11]
 parser.eval('a[1:5]');                        // String, "hello"
-parser.eval('a[1] = "H"');                    // String, "Hello"
-parser.eval('a[7:12] = "there!"');            // String, "Hello there!"
+parser.eval('a[1] = "H"');                    // String, "H"
+parser.eval('a[7:12] = "there!"');            // String, "there!"
+parser.eval('a');                             // String, "Hello there!"
 
 // string conversion
 parser.eval('number("300")');                 // Number, 300

@@ -68,7 +68,6 @@ describe('std', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {std()});
-    assert.throws(function() {std([], 2, 3)});
   });
 
   it('should throw an error if called with invalid type of arguments', function() {

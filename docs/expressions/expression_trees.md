@@ -41,7 +41,13 @@ All nodes have the following methods:
 
 -   `clone() : Node`
 
-    Recursively clone an expression tree.
+    Create a shallow clone of the node.
+    The node itself is cloned, its childs are not cloned.
+
+-   `cloneDeep() : Node`
+
+    Create a deep clone of the node.
+    Both the node as well as all its childs are cloned recursively.
 
 -   `compile() : Object`
 
@@ -51,7 +57,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
     var code = node.compile();      // returns {eval: function (scope) {...}}
-    var eval = code.eval({x: 3};    // returns 5
+    var eval = code.eval({x: 3});   // returns 5
     ```
 
 -   `eval([scope]) : Object`
@@ -61,7 +67,7 @@ All nodes have the following methods:
     
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var eval = node.eval({x: 3};    // returns 5
+    var eval = node.eval({x: 3});   // returns 5
     ```
 
 -   `equals(other: Node) : boolean`

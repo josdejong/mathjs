@@ -123,7 +123,6 @@ describe('add', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {add(1);}, /TypeError: Too few arguments/);
-    assert.throws(function () {add(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX add', function () {

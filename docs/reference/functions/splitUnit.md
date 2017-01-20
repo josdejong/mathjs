@@ -2,7 +2,7 @@
 
 # Function splitUnit
 
-Returns an array of units whose sum is equal to this unit
+Split a unit in an array of units whose sum is equal to the original unit.
 
 
 ## Syntax
@@ -27,7 +27,7 @@ Array | An array of units.
 ## Examples
 
 ```js
-splitUnit(new Unit(1, 'm'), ['feet', 'inch']);
+math.splitUnit(new Unit(1, 'm'), ['feet', 'inch']);
 // [ 3 feet, 3.3700787401575 inch ]
 ```
 

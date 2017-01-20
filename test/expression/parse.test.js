@@ -72,6 +72,9 @@ describe('parse', function() {
     math.eval('\u03A9 = 4', scope); // Greek Capital Letter Omega
     assert.strictEqual(scope['\u03A9'], 4);
 
+    math.eval('\u2126 = 4', scope); // Letter-like character Ohm
+    assert.strictEqual(scope['\u2126'], 4);
+
     math.eval('k\u00F6ln = 5', scope); // Combination of latin and unicode
     assert.strictEqual(scope['k\u00F6ln'], 5);
 
@@ -764,6 +767,34 @@ describe('parse', function() {
       };
       assert.deepEqual(parseAndEval('obj.fn(2)', scope), 4);
       assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
+    });
+
+    it('should invoke a function returned by a function', function () {
+      var scope = {
+        theAnswer: function () {
+          return function () {
+            return 42;
+          };
+        },
+        partialAdd: function (a) {
+          return function (b) {
+            return a + b;
+          };
+        }
+      };
+      assert.deepEqual(parseAndEval('theAnswer()()', scope), 42);
+      assert.deepEqual(parseAndEval('partialAdd(2)(3)', scope), 5);
+    });
+
+    it('should invoke a function which is a property of a function', function () {
+      function f () {
+        return '42'
+      }
+      f.foo = function () {
+        return 'bar'
+      }
+
+      assert.deepEqual(parseAndEval('f.foo()', {f: f}), 'bar');
     });
 
     it('should invoke a function on an object with the right context', function () {

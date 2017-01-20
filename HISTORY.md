@@ -1,11 +1,32 @@
 # History
 
 
-## not yet released, version 3.7.1
+## not yet released, version 3.8.2
 
-- Fixed #737: Improved algorithm determining the best prefix for units. It will
-  now retain the original unit like `1 cm` when close enough, instead of
-  returning `10 mm`. Thanks @ericman314.
+- Fixed #765: `FunctionAssignmentNode.toString()` returning a string
+  incompatible with the function assignment syntax.
+
+
+## 2016-12-15, version 3.8.1
+
+- Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
+- Fixed #762: expression parser failing to invoke a function returned
+  by a function.
+
+
+## 2016-11-18, version 3.8.0
+
+- Functions `add` and `multiply` now accept more than two arguments. See #739.
+- `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
+- Implemented a method `Node.cloneDeep` for the expression nodes. See #745.
+- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
+  Thanks @FSMaxB.
+- Fixed #737: Improved algorithm determining the best prefix for units.
+  It will now retain the original unit like `1 cm` when close enough,
+  instead of returning `10 mm`. Thanks @ericman314.
+- Fixed #732: Allow letter-like unicode characters like Ohm `\u2126`.
+- Fixed #749: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
+- Some fixes in the docs and comments of examples. Thanks @HarrySarson.
 
 
 ## 2016-11-05, version 3.7.0
