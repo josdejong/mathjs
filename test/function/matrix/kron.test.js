@@ -32,10 +32,13 @@ describe('kron', function() {
     assert.deepEqual(math.kron([[]], [[]]), [[]]);
   });
 
-  it('should throw an error for other then 2 dimensions', function() {
-    assert.throws(function () {
-      math.kron([1, 2], [4, 5]);
-    });
+  it('should calculate product for 1D Arrays', function() {
+    assert.deepEqual(math.kron([1,1], [[1,0],[0,1]]), [[1, 0, 1, 0],[0, 1, 0, 1]]);
+    assert.deepEqual(math.kron([[1,0],[0,1]], [1,1]), [[1, 1, 0, 0],[0, 0, 1, 1]]);
+    assert.deepEqual(math.kron([1,2,6,8], [12,1,2,3]), [[12,1,2,3,24,2,4,6,72,6,12,18,96,8,16,24]]);
+  });
+
+  it('should throw an error for greater then 2 dimensions', function() {
     assert.throws(function () {
       math.kron([[[1, 1], [1, 1]], [[1, 1], [1, 1]]], [[[1, 2, 3], [4, 5, 6]], [[6, 7, 8], [9, 10, 11]]]);
     });
@@ -61,10 +64,6 @@ describe('kron', function() {
     });
 
     it('should throw an error for invalid kronecker product of matrix', function() {
-      var y = math.matrix([7, 7]);
-      var x = math.matrix([1, 7]);
-      assert.throws(function () { math.kron(y, x) });
-
       y = math.matrix([[[]]]);
       x = math.matrix([[[1,1], [1,1]], [[1,1], [1,1]]]);
       assert.throws(function () { math.kron(y, x) });
