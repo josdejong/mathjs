@@ -38,6 +38,23 @@ describe('kron', function() {
     assert.deepEqual(math.kron([1,2,6,8], [12,1,2,3]), [[12,1,2,3,24,2,4,6,72,6,12,18,96,8,16,24]]);
   });
 
+  it('should support complex numbers', function() {
+    assert.deepEqual(math.kron([
+      [1,math.complex(0,1)],
+      [math.complex(0,1),2]
+    ],
+    [
+      [2,2],
+      [2,2]
+    ]),
+    [
+      [2,2,math.complex(0,2),math.complex(0,2)],
+      [2,2,math.complex(0,2),math.complex(0,2)],
+      [math.complex(0,2),math.complex(0,2),4,4],
+      [math.complex(0,2),math.complex(0,2),4,4]
+    ]);
+  });
+
   it('should throw an error for greater then 2 dimensions', function() {
     assert.throws(function () {
       math.kron([[[1, 1], [1, 1]], [[1, 1], [1, 1]]], [[[1, 2, 3], [4, 5, 6]], [[6, 7, 8], [9, 10, 11]]]);
