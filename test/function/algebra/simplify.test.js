@@ -4,14 +4,14 @@ var math = require('../../../index');
 
 describe('simplify', function() {
 
-  var simplifyAndCompare = function(left, right) {
+  function simplifyAndCompare(left, right) {
     assert.equal(math.simplify(left).toString(), math.parse(right).toString());
-  };
+  }
 
-  var simplifyAndCompareEval = function(left, right, scope) {
+  function simplifyAndCompareEval (left, right, scope) {
     scope = scope || {};
     assert.equal(math.simplify(left).eval(scope), math.parse(right).eval(scope));
-  };
+  }
 
   it('should not change the value of the function', function() {
     simplifyAndCompareEval('3+2/4+2*8', '7/2+16');
