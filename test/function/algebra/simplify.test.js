@@ -36,7 +36,7 @@ describe('simplify', function() {
     simplifyAndCompare('y*x^2+2*x^2', '(y+2)*x^2');
   });
 
-  it('should collect seperated like terms', function() {
+  it('should collect separated like terms', function() {
     simplifyAndCompare('x+1+x', '2*x+1');
     simplifyAndCompare('x^2+x+3+x^2', '2*x^2+x+3');
     simplifyAndCompare('x+1+2x', '3*x+1');
@@ -44,10 +44,14 @@ describe('simplify', function() {
     simplifyAndCompare('x-1-2x+2', '1-x');
   });
 
-  it('should collect seperated like factors', function() {
+  it('should collect separated like factors', function() {
     simplifyAndCompare('x/2*x', 'x^2/2');
     simplifyAndCompare('x*2*x', '2*x^2');
     simplifyAndCompare('x*y*-x/(x^2)', '-y');
+  });
+
+  it('should handle non-existing functions like a pro', function() {
+    simplifyAndCompare('foo(x)', 'foo(x)');
   });
 
   describe('expression parser' ,function () {
