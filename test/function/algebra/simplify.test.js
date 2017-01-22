@@ -14,7 +14,7 @@ describe('simplify', function() {
   }
 
   it('should not change the value of the function', function() {
-    simplifyAndCompareEval('3+2/4+2*8', '7/2+16');
+    simplifyAndCompareEval('3+2/4+2*8', '39/2');
     simplifyAndCompareEval('x+1+x', '2x+1', {x:7});
     simplifyAndCompareEval('x+1+2x', '3x+1', {x:7});
     simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', {x:7});
