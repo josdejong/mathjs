@@ -3,7 +3,10 @@
 
 ## not yet released, version 3.9.0
 
+- Implemented support for algebra: powerful new functions `simplify` and
+  `derivative`. Thanks @ericman314, @tetslee, and @BigFav.
 - Implemented Kronecker Product, function `kron`. Thanks @adamisntdead.
+- Reverted `FunctionNode` not accepting a string as function name anymore.
 - Fixed #765: `FunctionAssignmentNode.toString()` returning a string
   incompatible with the function assignment syntax.
 

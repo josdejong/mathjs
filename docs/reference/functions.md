@@ -5,7 +5,6 @@
 Function | Description
 ---- | -----------
 [math.config(config:&nbsp;Object):&nbsp;Object](functions/config.md) | Set configuration options for math.
-[math.import(object,&nbsp;override)](functions/import.md) | Import functions from an object or a module.
 [math.typed(name,&nbsp;signatures)&nbsp;:&nbsp;function](functions/typed.md) | Create a typed-function which checks the types of the arguments and can match them against multiple provided signatures.
 
 ## Construction functions
@@ -40,9 +39,11 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[derivative(expr,&nbsp;variable)](functions/derivative.md) | Takes the derivative of an expression expressed in parser Nodes.
 [math.lsolve(L,&nbsp;b)](functions/lsolve.md) | Solves the linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.md) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.md) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
+[simplify(expr)](functions/simplify.md) | Simplify an expression tree.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.md) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.usolve(U,&nbsp;b)](functions/usolve.md) | Solves the linear equation system by backward substitution.
 
