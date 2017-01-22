@@ -65,7 +65,7 @@ describe('simplify', function() {
     });
 
     it('should compute and simplify derivatives', function() {
-      var res = math.eval('simplify(derivative("5x*3x", "x"))');
+      var res = math.eval('derivative("5x*3x", "x")');
       assert.ok(res && res.isNode)
       assert.equal(res.toString(), '30 * x');
     });

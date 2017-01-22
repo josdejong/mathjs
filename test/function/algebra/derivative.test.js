@@ -175,14 +175,14 @@ describe('derivative', function() {
       var res = math.eval('derivative("x^2", "x")');
       assert.ok(res && res.isNode)
 
-      assert.equal(res.simplify().toString(), '2 * x');
+      assert.equal(res.toString(), '2 * x');
     });
 
     it('should evaluate a derivative containing nodes', function() {
       var res = math.eval('derivative(parse("x^2"), parse("x"))');
       assert.ok(res && res.isNode)
 
-      assert.equal(res.simplify().toString(), '2 * x');
+      assert.equal(res.toString(), '2 * x');
     });
 
   });

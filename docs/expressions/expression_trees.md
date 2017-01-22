@@ -140,11 +140,6 @@ All nodes have the following methods:
 
     Information about the options in [Customization](customization.md#custom-latex-and-string-output).
 
--   `simplify([rules: Array]): Node`
-
-    Simplify the expression tree. Optionally, a custom set with rules can be
-    passed. See function `math.simplify` for more details.
-
 -   `toTex(options: object): string`
 
     Get a [LaTeX](http://en.wikipedia.org/wiki/LaTeX) representation of the
