@@ -67,7 +67,7 @@ Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
 
 -   [mathsteps](https://github.com/socraticorg/mathsteps)
 
-    A step-by-step solver. The goal of mathsteps is to offer a math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
+    A step-by-step math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
 
 
 <h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>
