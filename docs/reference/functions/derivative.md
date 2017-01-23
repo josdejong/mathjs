@@ -38,6 +38,7 @@ ConstantNode &#124; SymbolNode &#124; ParenthesisNode &#124; FunctionNode &#124;
 ```js
 math.derivative('x^2', 'x');                     // Node {2 * x}
 math.derivative('x^2', 'x', {simplify: false});  // Node {2 * 1 * x ^ (2 - 1)
+math.derivative('sin(2x)', 'x'));                // Node {2 * cos(2 * x)}
 math.derivative('2*x', 'x').eval();              // number 2
 math.derivative('x^2', 'x').eval({x: 4});        // number 8
 var f = math.parse('x^2');
