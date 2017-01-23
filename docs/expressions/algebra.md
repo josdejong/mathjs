@@ -6,8 +6,8 @@ layout: default
 
 math.js has built-in support for symbolic computation ([CAS](https://www.wikiwand.com/en/Computer_algebra_system)). It can parse expressions into an expression tree and do algebraic operations like simplification and derivation on the tree.
 
-> It's worth mentioning an excellent extension on math.js here: the step-by-step solver [mathsteps](https://github.com/socraticorg/mathsteps).
-> The goal of [mathsteps](https://github.com/socraticorg/mathsteps) is to offer a math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
+> It's worth mentioning an excellent extension on math.js here: [mathsteps](https://github.com/socraticorg/mathsteps).
+> The goal of mathsteps is to offer a math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
 
 
 <h2 id="simplify">Simplify <a href="#simplify" title="Permalink">#</a></h2>
