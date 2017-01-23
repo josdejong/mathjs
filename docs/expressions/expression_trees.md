@@ -439,13 +439,12 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 Construction:
 
 ```
-new FunctionNode(fn: Node, args: Node[])
+new FunctionNode(fn: Node | string, args: Node[])
 ```
 
 Properties:
 
-- `object: Node`
-- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
+- `fn: Node | string` (read-only) The object or function name which to invoke.
 - `args: Node[]`
 
 Examples:

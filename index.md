@@ -5,20 +5,17 @@ title: Home
 
 <h1 id="an-extensive-math-library-for-javascript-and-nodejs">An extensive math library for JavaScript and Node.js <a href="#an-extensive-math-library-for-javascript-and-nodejs" title="Permalink">#</a></h1>
 
-Math.js is an extensive math library for JavaScript and Node.js.
-It features a flexible expression parser and offers an integrated solution
-to work with numbers, big numbers, complex numbers, units, and matrices.
-Powerful and easy to use.
-
+Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices. Powerful and easy to use.
 
 <h1 id="features">Features <a href="#features" title="Permalink">#</a></h1>
 
-- Supports numbers, big numbers, fractions, complex numbers, units, strings, arrays, and matrices.
+- Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
 - Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
-- Supports chained operations.
+- Does symbolic computation.
 - Comes with a large set of built-in functions and constants.
 - Has no dependencies. Runs on any JavaScript engine.
+- Can be used as a command line application as well.
 - Is easily extensible.
 - Open source.
 
@@ -35,6 +32,7 @@ Powerful and easy to use.
 <span class="nx">math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p">;</span>      <span class="c1">// 0.75</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>              <span class="c1">// 4</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">);</span>                    <span class="c1">// 2i</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">derivative</span><span class="p">(</span><span class="s1">'x^2 + x'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">);</span>  <span class="c1">// 2*x+1</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">pow</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="mi">2</span><span class="p">);</span>
      <span class="c1">// [[7, 0], [0, 7]]</span>
 

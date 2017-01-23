@@ -40,27 +40,34 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table class="download">
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.8.1/math.js">
-        Development (version 3.8.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.0/math.js">
+        Development (version 3.9.0)
       </a>
     </td>
     <td>
-      <span id="development-size">1488 kB</span>, uncompressed with comments
+      <span id="development-size">1553 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.8.1/math.min.js">
-        Production (version 3.8.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.0/math.min.js">
+        Production (version 3.9.0)
       </a>
     </td>
     <td>
-      <span id="production-size">113 kB</span>, minified and gzipped
+      <span id="production-size">118 kB</span>, minified and gzipped
     </td>
   </tr>
 </table>
 
 Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
+
+
+<h1 id="extensions">Extensions <a href="#extensions" title="Permalink">#</a></h1>
+
+-   [mathsteps](https://github.com/socraticorg/mathsteps)
+
+    A step-by-step solver. The goal of mathsteps is to offer a math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
 
 
 <h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>

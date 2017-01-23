@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170123-version-390">2017-01-23, version 3.9.0 <a href="#20170123-version-390" title="Permalink">#</a></h2>
+
+- Implemented support for algebra: powerful new functions `simplify` and
+  `derivative`. Thanks @ericman314, @tetslee, and @BigFav.
+- Implemented Kronecker Product `kron`. Thanks @adamisntdead.
+- Reverted `FunctionNode` not accepting a string as function name anymore.
+- Fixed #765: `FunctionAssignmentNode.toString()` returning a string
+  incompatible with the function assignment syntax.
+
+
 <h2 id="20161215-version-381">2016-12-15, version 3.8.1 <a href="#20161215-version-381" title="Permalink">#</a></h2>
 
 - Implemented function `mad` (median absolute deviation). Thanks @ruhleder.

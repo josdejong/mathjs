@@ -9,7 +9,6 @@ layout: default
 Function | Description
 ---- | -----------
 [math.config(config:&nbsp;Object):&nbsp;Object](functions/config.html) | Set configuration options for math.
-[math.import(object,&nbsp;override)](functions/import.html) | Import functions from an object or a module.
 [math.typed(name,&nbsp;signatures)&nbsp;:&nbsp;function](functions/typed.html) | Create a typed-function which checks the types of the arguments and can match them against multiple provided signatures.
 
 <h2 id="construction-functions">Construction functions <a href="#construction-functions" title="Permalink">#</a></h2>
@@ -44,9 +43,11 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[derivative(expr,&nbsp;variable)](functions/derivative.html) | Takes the derivative of an expression expressed in parser Nodes.
 [math.lsolve(L,&nbsp;b)](functions/lsolve.html) | Solves the linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.html) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.html) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
+[simplify(expr)](functions/simplify.html) | Simplify an expression tree.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.usolve(U,&nbsp;b)](functions/usolve.html) | Solves the linear equation system by backward substitution.
 
@@ -145,6 +146,7 @@ Function | Description
 [math.flatten(x)](functions/flatten.html) | Flatten a multi dimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.html) | Iterate over all elements of a matrix/array, and executes the given callback function.
 [math.inv(x)](functions/inv.html) | Calculate the inverse of a square matrix.
+[math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
 [math.ones(m,&nbsp;n,&nbsp;p,&nbsp;...)](functions/ones.html) | Create a matrix filled with ones.
 [math.partitionSelect(x,&nbsp;k)](functions/partitionSelect.html) | Partition-based selection of an array or 1D matrix.

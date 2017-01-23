@@ -4,6 +4,7 @@ layout: default
 
 # Examples
 
+- [Algebra](algebra.js.html)
 - [Basic usage](basic_usage.js.html)
 - [Bignumbers](bignumbers.js.html)
 - [Chaining](chaining.js.html)
