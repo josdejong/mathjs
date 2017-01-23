@@ -1,7 +1,7 @@
 // units
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // units can be created by providing a value and unit name, or by providing
 // a string with a valued unit.

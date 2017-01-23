@@ -8,7 +8,7 @@ File: [sparse_matrices.js](sparse_matrices.js)
 
 ```js
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // create a sparse matrix
 console.log('creating a 1000x1000 sparse matrix...');

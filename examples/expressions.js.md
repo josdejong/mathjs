@@ -17,7 +17,7 @@ File: [expressions.js](expressions.js)
  */
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // 1. using the function math.eval
 //

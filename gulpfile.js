@@ -123,6 +123,7 @@ gulp.task('copyExamples', ['clean'], function () {
       .pipe(replace(/src=".*dist\/math.js"/, 'src="' + script + '"'))
       .pipe(replace(/src=".*dist\/math.min.js"/, 'src="' + script + '"'))
       .pipe(replace(/'.*dist\/math.js'/, "'" + script + "'"))
+      .pipe(replace(/require\('..\/index'\)/, "require('mathjs')"))
       .pipe(gulp.dest(EXAMPLES_DEST));
 });
 

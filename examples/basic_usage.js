@@ -1,7 +1,7 @@
 // basic usage
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // functions and constants
 console.log('functions and constants');

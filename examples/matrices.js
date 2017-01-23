@@ -1,7 +1,7 @@
 // matrices
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 
 // create matrices and arrays. a matrix is just a wrapper around an Array,

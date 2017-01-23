@@ -14,7 +14,7 @@ File: [import.js](import.js)
  */
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 
 /**

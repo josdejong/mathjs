@@ -14,7 +14,7 @@ File: [algebra.js](algebra.js)
 // simplification and derivation on this tree.
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // simplify an expression
 console.log('simplify expressions');

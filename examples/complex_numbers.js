@@ -1,7 +1,7 @@
 // complex numbers
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // create a complex number with a numeric real and complex part
 console.log('create and manipulate complex numbers');

@@ -1,7 +1,7 @@
 // chaining
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // create a chained operation using the function `chain(value)`
 // end a chain using done(). Let's calculate (3 + 4) * 2

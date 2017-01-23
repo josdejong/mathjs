@@ -1,7 +1,7 @@
 // objects
 
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // create an object. Keys can be symbols or strings
 print(math.eval('{x: 2 + 1, y: 4}'));           // {"x": 3, "y": 4}

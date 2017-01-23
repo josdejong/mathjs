@@ -1,5 +1,5 @@
 // load math.js (using node.js)
-var math = require('../index');
+var math = require('mathjs');
 
 // serialize a math.js data type into a JSON string
 var x = math.complex('2+3i');
