@@ -12,8 +12,8 @@ second parameter. If there are multiple variables in the expression,
 it will return a partial derivative.
 
 This uses rules of differentiation which can be found here:
-  http://en.wikipedia.org/wiki/Differentiation_rules
 
+- [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
