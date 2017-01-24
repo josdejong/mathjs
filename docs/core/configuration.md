@@ -39,8 +39,8 @@ The following configuration options are available:
 
 - `predictable`. Predictable output type of functions. When true, output type 
   depends only on the input types. When false (default), output type can vary 
-  depending on input values. For example `math.sqrt(-2)` returns `NaN` when 
-  predictable is false, and returns `complex('2i')` when true. 
+  depending on input values. For example `math.sqrt(-4)` returns `complex('2i')` when
+  predictable is false, and returns `NaN` when true.
   Predictable output can be needed when programmatically handling the result of 
   a calculation, but can be inconvenient for users when evaluating dynamic 
   equations.
