@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.9.1
+
+- Small fixes in the docs. Thanks @HarrySarson.
+
+
 ## 2017-01-23, version 3.9.0
 
 - Implemented support for algebra: powerful new functions `simplify` and
