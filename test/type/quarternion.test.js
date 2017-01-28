@@ -10,7 +10,7 @@ function assertQuaternion(Q,r,i,j,k){
 };
 
 describe('Quaternion', function () {
-  
+
 
   describe('constructor', function(){
     it('Should create a Quaternion from components', function () {
@@ -23,19 +23,19 @@ describe('Quaternion', function () {
       assertQuaternion(Q,0,0,0,0);
     });
 
-    it('Should create a Quaternion when passed an object',function (){
+    it('Should create a Quaternion when passed an object', function (){
       var Q = new quaternion({r: 1, i: 3, j:-2, k:-8});
       assertQuaternion(Q, 1,3,-2,-8);
     });
 
     describe('from complex', function(){
-      it('Should create a Quaternion with j and k = 0 when passed cartesian form of complex', 
+      it('Should create a Quaternion with j and k = 0 when passed cartesian form of complex',
       function(){
         var Q = new quaternion({re:3, im:-2});
         assertQuaternion(Q,3,-2,0,0);
       });
 
-      it('Should create a Quaternion with j and k = 0 when passed mod arg form of complex', 
+      it('Should create a Quaternion with j and k = 0 when passed mod arg form of complex',
         function(){
           var Q = new quaternion({phi:math.PI/2,r:2})
           // todo use approx here
@@ -55,7 +55,38 @@ describe('Quaternion', function () {
         assertQuaternion(new quaternion('2.i -.4'),-0.4,2,0,0);
       });
     })
-    
+  });
 
+  describe('properties', function () {
+    it('zero should be pure and scalar', function(){
+      assert.equal(quaternion().isScalar,true);
+      assert.equal(quaternion().isPure,true);
+    });
+
+    it('real numbers should be scalar', function() {
+      assert.equal(quaternion({r:123}).isScalar, true);
+      assert.equal(quaternion({r:-123}).isScalar, true);
+      assert.equal(quaternion({r:123.023}).isScalar, true);
+      assert.equal(quaternion({r:Math.PI}).isScalar, true);
+    });
+
+    it('number with zero real component should be pure', function() {
+      assert.equal(quaternion({i:123}).isPure, true);
+      assert.equal(quaternion({i:-123}).isPure, true);
+      assert.equal(quaternion({j:123}).isPure, true);
+      assert.equal(quaternion({j:-123}).isPure, true);
+      assert.equal(quaternion({k:123}).isPure, true);
+      assert.equal(quaternion({k:-123}).isPure, true);
+      assert.equal(quaternion(0,1,2,3).isPure, true);
+    });
+
+    it('should be quaternion', function () {
+      assert.equal(quaternion().isQuaternion,true);
+      assert.equal(quaternion(1,2,0,0).isQuaternion,true);
+      assert.equal(quaternion(1,2,3,4).isQuaternion,true);
+      assert.equal(quaternion().type,'Quaternion');
+      assert.equal(quaternion(1,2,0,0).type,'Quaternion');
+      assert.equal(quaternion(1,2,3,4).type,'Quaternion');
+    })
   })
 })
