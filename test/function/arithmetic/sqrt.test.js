@@ -87,6 +87,26 @@ describe('sqrt', function() {
     assert.deepEqual(sqrt(math.matrix([[4,9],[16,25]])), math.matrix([[2,3],[4,5]]));
   });
 
+  it('should return the square root of a Quaternion', function () {
+    approx.deepEqual(sqrt(math.quaternion(1,2,3,4)),math.quaternion(1.799614621947108,0.555674524870243,0.833511787305364,1.111349049740485));
+    approx.deepEqual(math.square(sqrt(math.quaternion(-1,-2,-3,-4))),math.quaternion(-1,-2,-3,-4));
+    approx.deepEqual(sqrt(math.quaternion()),math.quaternion());
+
+    var a = math.quaternion({r:-5});
+    var b = sqrt(a,{i:1,j:0.25},'k');
+    var c = math.quaternion({k:0.1,i:2});
+    assert.deepEqual(math.square(b),a);
+    approx.deepEqual(sqrt(a,'i+0.25j','k'),b);
+    approx.deepEqual(sqrt(a,'k+2j','i'),math.quaternion(0,0,2,1));
+    approx.deepEqual(sqrt(a,c,'j'),math.quaternion(0,2,0.99498743710662,0.1));
+    approx.deepEqual(sqrt(a,{k:0.9,i:1},'j'),math.quaternion(0,1,1.786057109949175,0.9))
+
+    assert.throws(function () {sqrt(a,c,'k')},/TypeError: Unknown component can not be constraint/);
+    assert.throws(function () {sqrt(a,c,'b')},/TypeError: Invalid unknown component/);
+    assert.throws(function () {sqrt(math.quaternion({r:-1}),c,'j')},/TypeError: Constraint too large. No roots exist that fit the constraint/);
+
+  })
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sqrt()}, /TypeError: Too few arguments/);
     assert.throws(function () {sqrt(1, 2)}, /TypeError: Too many arguments/);

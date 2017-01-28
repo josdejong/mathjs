@@ -123,6 +123,15 @@ describe('cbrt', function() {
     assert.deepEqual(cbrt(math.matrix([[8,27],[64,125]])), math.matrix([[2,3],[4,5]]));
   });
 
+  it('should returns the cube root of a Quaternion', function() {
+    assert.deepEqual(cbrt(math.quaternion()), math.quaternion());
+    var a = math.quaternion(1,2,3,4);
+    var b = math.quaternion(-86,-52,-78,-104);
+    approx.deepEqual(math.pow(cbrt(math.quaternion(a)),3),a);
+    approx.deepEqual(cbrt(b),math.quaternion(4.163689526544407,-1.3216337604513382,-1.982450640677007,-2.6432675209026764));
+
+  })
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {cbrt()}, /TypeError: Too few arguments/);
     assert.throws(function () {cbrt(1, true, 2)}, /TypeError: Too many arguments/);
