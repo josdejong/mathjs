@@ -85,19 +85,6 @@ describe('cosh', function() {
     approx.deepEqual(cosh(matrix([1,2,3])), matrix(cosh123));
   });
 
-  it('should return the hyperbolic cosine of a quaternion', function () {
-    approx.deepEqual(cosh(math.quaternion({r:0})), math.quaternion({r:1}));
-    approx.deepEqual(cosh(math.quaternion({r:pi})), math.quaternion({r:11.591953275521522}));
-    approx.deepEqual(cosh(math.quaternion({i:pi})), math.quaternion({r:-1}));
-    approx.deepEqual(cosh(math.quaternion({i:pi/2})), math.quaternion());
-    approx.deepEqual(cosh(math.quaternion({r:2, i:3})), math.quaternion(-3.724545504915322, 0.511822569987385,0,0));
-    approx.deepEqual(cosh(math.quaternion(1,2,3,4)), math.quaternion(0.961585117636957, -0.341352174561017, -0.512028261841525, -0.682704349122033));
-    approx.deepEqual(cosh(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.961585117636957, -0.341352174561017, -0.512028261841525, -0.682704349122033));
-    approx.deepEqual(cosh(math.quaternion({i:1})), math.quaternion({r:0.54030230586814}));
-    approx.deepEqual(cosh(math.quaternion({j:1})), math.quaternion({r:0.54030230586814}));
-    approx.deepEqual(cosh(math.quaternion({k:1})), math.quaternion({r:0.54030230586814}));
-  });
-
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {cosh()}, /TypeError: Too few arguments/);
     assert.throws(function () {cosh(1, 2)}, /TypeError: Too many arguments/);

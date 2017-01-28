@@ -74,18 +74,6 @@ describe('sech', function() {
   it('should return the sech of each element of a matrix', function() {
     approx.deepEqual(sech(matrix([1,2,3])), matrix(sech123));
   });
-  it('should return the hyperbolic secant of a quaternion', function () {
-    approx.deepEqual(sech(math.quaternion()), math.quaternion({r:1}));
-    approx.deepEqual(sech(math.quaternion({i:pi})), math.quaternion({r:-1}));
-    approx.deepEqual(sech(math.quaternion({i:pi/2})), math.quaternion());
-    approx.deepEqual(sech(math.quaternion({r:pi, i:1})), math.quaternion(0.04685702827224311,-0.07270345069206713,0,0));
-    approx.deepEqual(sech(math.quaternion({r:2, i:1})), math.quaternion(0.15117629826558,-0.22697367539372,0,0));
-    approx.deepEqual(sech(math.quaternion(1,2,3,4)), math.quaternion(0.5434448435117085,0.19291696146729514,0.2893754422009424,0.38583392293458973));
-    approx.deepEqual(sech(math.quaternion(-1,-2,-3,-4)), math.quaternion(0.5434448435117085,0.19291696146729514,0.2893754422009424,0.38583392293458973));
-    approx.deepEqual(sech(math.quaternion({i:1})), math.quaternion({r:1.8508157176809246}));
-    approx.deepEqual(sech(math.quaternion({j:1})), math.quaternion({r:1.8508157176809246}));
-    approx.deepEqual(sech(math.quaternion({k:1})), math.quaternion({r:1.8508157176809246}));
-  });
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sech()}, /TypeError: Too few arguments/);

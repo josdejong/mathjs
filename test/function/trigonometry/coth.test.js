@@ -74,19 +74,6 @@ describe('coth', function() {
     approx.deepEqual(coth(matrix([1,2,3])), matrix(coth123));
   });
 
-  it('should return the hyperbolic cotangent of a quaternion', function () {
-    approx.deepEqual(coth(math.quaternion({r:0})), math.quaternion());
-    approx.deepEqual(coth(math.quaternion({i:pi})), math.quaternion());
-    approx.deepEqual(coth(math.quaternion({i:pi/2})), math.quaternion());
-    approx.deepEqual(coth(math.quaternion({r:pi, i:1})), math.quaternion(0.998441192773836,-0.00339083966728,0,0));
-    approx.deepEqual(coth(math.quaternion({r:2, i:1})), math.quaternion(0.98432922645819,-0.032797755533753,0,0));
-    approx.deepEqual(coth(math.quaternion(1,2,3,4)), math.quaternion(0.910004643024312,0.09083062976716,0.13624594465074,0.18166125953432));
-    approx.deepEqual(coth(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.910004643024312,-0.09083062976716,-0.13624594465074,-0.18166125953432));
-    approx.deepEqual(coth(math.quaternion({i:1})), math.quaternion({i:-0.642092615934331}));
-    approx.deepEqual(coth(math.quaternion({j:1})), math.quaternion({j:-0.642092615934331}));
-    approx.deepEqual(coth(math.quaternion({k:1})), math.quaternion({k:-0.642092615934331}));
-  });
-
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {coth()}, /TypeError: Too few arguments/);
     assert.throws(function () {coth(1, 2)}, /TypeError: Too many arguments/);

@@ -103,19 +103,6 @@ describe('atan', function() {
     approx.deepEqual(atan(matrix([1,2,3])), matrix(atan123));
   });
 
-  it('should return the arctangent of a quaternion', function () {
-    approx.deepEqual(atan(math.quaternion({r:0})), math.quaternion());
-    approx.deepEqual(atan(math.quaternion({r:pi})), math.quaternion({r:1.262627255678912}));
-    approx.deepEqual(atan(math.quaternion({r:pi/2})), math.quaternion({r:1.003884821853887}));
-    approx.deepEqual(atan(math.quaternion({r:pi, i:1})), math.quaternion(1.287340574324392, 0.085059985077454,0,0));
-    approx.deepEqual(atan(math.quaternion({r:2, i:3})), math.quaternion(1.409921049596575, 0.229072682968539));
-    approx.deepEqual(atan(math.quaternion(1,2,3,4)), math.quaternion(0.274900189106282, 0.064877798871271, 0.824700567318845, 1.099600756425126));
-    approx.deepEqual(atan(math.quaternion(-1,-2,-3,-4)), math.quaternion(-0.274900189106282, -0.064877798871271, -0.824700567318845, -1.099600756425126));
-    approx.deepEqual(atan(math.quaternion({i:1})), math.quaternion({i:Infinity}));
-    approx.deepEqual(atan(math.quaternion({j:1})), math.quaternion({j:0.785398163397448}));
-    approx.deepEqual(atan(math.quaternion({k:1})), math.quaternion({k:0.785398163397448}));
-  });
-
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {atan()}, /TypeError: Too few arguments/);
     assert.throws(function () {atan(1, 2)}, /TypeError: Too many arguments/);

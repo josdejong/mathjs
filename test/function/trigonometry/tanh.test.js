@@ -85,19 +85,6 @@ describe('tanh', function() {
     approx.deepEqual(tanh(matrix([1,2,3])), matrix(tanh123));
   });
 
-  it('should return the hyperbolic tangent of a quaternion', function () {
-    approx.deepEqual(tanh(math.quaternion({r:0})), math.quaternion());
-    approx.deepEqual(tanh(math.quaternion({r:pi})), math.quaternion({r:0.99627207622075}));
-    approx.deepEqual(tanh(math.quaternion({i:pi})), math.quaternion());
-    approx.deepEqual(tanh(math.quaternion({i:pi/2})), math.quaternion());
-    approx.deepEqual(tanh(math.quaternion({r:2, i:3})), math.quaternion(0.965385879022133, -0.009884375038322,0,0));
-    approx.deepEqual(tanh(math.quaternion(1,2,3,4)), math.quaternion(1.024869536055662, -0.102295681788764, -0.153443522683147, -0.204591363577528));
-    approx.deepEqual(tanh(math.quaternion(-1,-2,-3,-4)), math.quaternion(-1.024869536055662, 0.102295681788764, 0.153443522683147, 0.204591363577528));
-    approx.deepEqual(tanh(math.quaternion({i:1})), math.quaternion({i:1.557407724654902}));
-    approx.deepEqual(tanh(math.quaternion({j:1})), math.quaternion({j:1.557407724654902}));
-    approx.deepEqual(tanh(math.quaternion({k:1})), math.quaternion({k:1.557407724654902}));
-  });
-
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {tanh()}, /TypeError: Too few arguments/);
     assert.throws(function () {tanh(1, 2)}, /TypeError: Too many arguments/);

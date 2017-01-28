@@ -105,19 +105,6 @@ describe('acosh', function() {
     approx.deepEqual(acosh(matrix([1,2,3])), matrix(acosh123));
   });
 
-  it('should return the hyperbolic ar cosine of a quaternion', function () {
-    approx.deepEqual(acosh(math.quaternion({r:0})), math.quaternion({i:1.5707963267948966}));
-    approx.deepEqual(acosh(math.quaternion({i:pi})), math.quaternion(1.8622957433108482,1.5707963267948966,0,0));
-    approx.deepEqual(acosh(math.quaternion({i:pi/2})), math.quaternion(1.233403117511217,1.5707963267948966,0,0));
-    approx.deepEqual(acosh(math.quaternion({r:pi, i:1})), math.quaternion(1.8671143931602596,0.32225329398145874,0,0));
-    approx.deepEqual(acosh(math.quaternion({r:2, i:3})), math.quaternion(1.9833870299165, 1.000143542473797,0,0));
-    approx.deepEqual(acosh(math.quaternion(1,2,3,4)), math.quaternion(2.401447202007401,0.5162761016176176,0.7744141524264265,1.0325522032352352));
-    approx.deepEqual(acosh(math.quaternion(-1,-2,-3,-4)), math.quaternion(-2.4014472020073967,0.6504821188281815,0.9757231782422722,1.300964237656363));
-    approx.deepEqual(acosh(math.quaternion({i:1})), math.quaternion(0.881373587019543,1.5707963267948966,0,0));
-    approx.deepEqual(acosh(math.quaternion({j:1})), math.quaternion(0.5493061443340549,1.282549830161864,0.9068996821171088,0));
-    approx.deepEqual(acosh(math.quaternion({k:1})), math.quaternion(0.5493061443340549,1.282549830161864,0,0.9068996821171088));
-  });
-
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {acosh()}, /TypeError: Too few arguments/);
     assert.throws(function () {acosh(1, 2)}, /TypeError: Too many arguments/);
