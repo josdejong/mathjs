@@ -58,7 +58,7 @@
 
   function fetchAndImportCurrencies () {
     // fetch actual currency conversion rates
-    return fetch('http://api.fixer.io/latest')
+    return fetch('https://api.fixer.io/latest')
         .then(function (response) {
           return response.json();
         }).then(function (data) {
