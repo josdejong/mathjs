@@ -1,7 +1,7 @@
 // test FunctionNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../index').create();
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;
@@ -105,7 +105,7 @@ describe('FunctionNode', function() {
       assert(args[0] instanceof mymath.expression.node.Node);
       assert(args[1] instanceof mymath.expression.node.Node);
       assert.deepEqual(_math.__proto__, mymath);
-      assert.strictEqual(_scope, scope);
+      assert.deepEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
     }
     myFunction.rawArgs = true;
@@ -127,7 +127,7 @@ describe('FunctionNode', function() {
       assert(args[0] instanceof mymath.expression.node.Node);
       assert(args[1] instanceof mymath.expression.node.Node);
       assert.deepEqual(_math.__proto__, mymath);
-      assert.strictEqual(_scope, scope);
+      assert.deepEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
     }
     myFunction.rawArgs = true;

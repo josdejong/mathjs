@@ -1,7 +1,7 @@
 // test FunctionAssignmentNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../index').create();
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;
@@ -135,6 +135,68 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(fib(6), 8);
     assert.equal(fib(7), 13);
     assert.equal(fib(8), 21);
+  });
+
+  it ('should pass function arguments in scope to functions with rawArgs', function () {
+    var outputScope = function (args, math, scope) {
+      return scope;
+    }
+    outputScope.rawArgs = true;
+    math.import({ outputScope: outputScope }, { override: true });
+
+    // f(x) = outputScope(x)
+    var x = new SymbolNode('x');
+    var o = new FunctionNode('outputScope', [x]);
+    var n = new FunctionAssignmentNode('f', ['x'], o);
+
+    var scope = {a: 2};
+    var f = n.eval(scope);
+    assert.deepEqual(f(3), {a: 2, f: f, x: 3});
+  });
+
+  it ('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
+    var outputScope = function (args, math, scope) {
+      return scope;
+    }
+
+    outputScope.rawArgs = true;
+    var returnOutputScope = function () {
+      return outputScope
+    }
+
+    math.import({
+      outputScope: outputScope,
+      returnOutputScope: returnOutputScope
+    }, { override: true });
+
+    // f(x, y) = returnOutputScope(x)(y)
+    var a = new FunctionNode('returnOutputScope', [new SymbolNode('x')]);
+    var b = new FunctionNode(a, [new SymbolNode('y')]);
+    var n = new FunctionAssignmentNode('f', ['x', 'y'], b);
+
+    var scope = {a: 2};
+    var f = n.eval(scope);
+    assert.deepEqual(f(3, 4), {a: 2, f: f, x: 3, y: 4});
+  });
+
+  it ('should pass function arguments in scope to functions with rawArgs and transform', function () {
+    var outputScope = function (x) {
+      return 'should not occur'
+    }
+    outputScope.transform = function (args, math, scope) {
+      return scope;
+    }
+    outputScope.transform.rawArgs = true;
+    math.import({ outputScope: outputScope }, { override: true });
+
+    // f(x) = outputScope(x)
+    var x = new SymbolNode('x');
+    var o = new FunctionNode('outputScope', [x]);
+    var n = new FunctionAssignmentNode('f', ['x'], o);
+
+    var scope = {a: 2};
+    var f = n.eval(scope);
+    assert.deepEqual(f(3), {a: 2, f: f, x: 3});
   });
 
   it ('should filter a FunctionAssignmentNode', function () {

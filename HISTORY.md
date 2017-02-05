@@ -5,6 +5,8 @@
 
 - Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
   `Fraction`, or `Complex` number.
+- Fixed #790: Expression parser did not pass function arguments of enclosing
+  functions via `scope` to functions having `rawArgs = true`.
 - Small fixes in the docs. Thanks @HarrySarson.
 
 
