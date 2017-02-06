@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.9.1
+## 2017-02-06, version 3.9.1
 
 - Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
   `Fraction`, or `Complex` number.
