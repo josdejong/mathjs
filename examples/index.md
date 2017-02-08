@@ -22,6 +22,7 @@ layout: default
 
 - [Angle configuration](browser/angle_configuration.html.html)
 - [Basic usage](browser/basic_usage.html.html)
+- [Currency conversion](browser/currency_conversion.html.html)
 - [Custom separators](browser/custom_separators.html.html)
 - [Old browsers](browser/old_browsers.html.html)
 - [Plot](browser/plot.html.html)

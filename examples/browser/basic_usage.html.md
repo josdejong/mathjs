@@ -11,7 +11,7 @@ File: [basic_usage.html](basic_usage.html)
 <html>
 <head>
   <title>math.js | basic usage</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.1/math.min.js"></script>
 </head>
 <body>
 
@@ -27,6 +27,7 @@ File: [basic_usage.html](basic_usage.html)
   print(math.log(1000, 10));               // 3
   print(math.sqrt(-4));                    // 2i
   print(math.pow([[-1, 2], [3, 1]], 2));   // [[7, 0], [0, 7]]
+  print(math.derivative('x^2 + x', 'x'));  // 2 * x + 1
 
   // expressions
   print(math.eval('12 / (2.3 + 0.7)'));    // 4

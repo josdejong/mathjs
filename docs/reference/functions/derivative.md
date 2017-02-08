@@ -15,6 +15,7 @@ This uses rules of differentiation which can be found here:
 
 - [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
 
+
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js

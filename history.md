@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170206-version-391">2017-02-06, version 3.9.1 <a href="#20170206-version-391" title="Permalink">#</a></h2>
+
+- Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
+  `Fraction`, or `Complex` number.
+- Fixed #790: Expression parser did not pass function arguments of enclosing
+  functions via `scope` to functions having `rawArgs = true`.
+- Small fixes in the docs. Thanks @HarrySarson.
+
+
 <h2 id="20170123-version-390">2017-01-23, version 3.9.0 <a href="#20170123-version-390" title="Permalink">#</a></h2>
 
 - Implemented support for algebra: powerful new functions `simplify` and
