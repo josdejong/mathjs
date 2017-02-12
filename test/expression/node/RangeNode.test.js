@@ -239,6 +239,18 @@ describe('RangeNode', function() {
     assert.strictEqual(d.step, null);
   });
 
+  it ('test equality another Node', function () {
+    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 4)), true);
+    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 5)), false);
+    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 4, 1)), false);
+    assert.strictEqual(createRangeNode(2, 4).equals(createRangeNode(2, 4, -1)), false);
+    assert.strictEqual(createRangeNode(2, 4, -1).equals(createRangeNode(2, 4, -1)), true);
+    assert.strictEqual(createRangeNode(2, 4, -1).equals(null), false);
+    assert.strictEqual(createRangeNode(2, 4, -1).equals(undefined), false);
+    assert.strictEqual(createRangeNode(2, 4, -1).equals(new SymbolNode('a')), false);
+    assert.strictEqual(createRangeNode(2, 4, -1).equals(new SymbolNode('a')), false);
+  });
+
   it ('should stringify a RangeNode without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);
@@ -346,4 +358,19 @@ describe('RangeNode', function() {
     assert.equal(n.toTex({handler: customFunction}), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)');
   });
 
+  /**
+   * Helper function to create a RangeNode
+   * @param {number} start
+   * @param {number} end
+   * @param {number} [step]
+   * @return {RangeNode}
+   */
+  function createRangeNode(start, end, step) {
+    if (step === undefined) {
+      return new RangeNode(new ConstantNode(start), new ConstantNode(end));
+    }
+    else {
+      return new RangeNode(new ConstantNode(start), new ConstantNode(end), new ConstantNode(step));
+    }
+  }
 });

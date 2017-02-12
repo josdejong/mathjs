@@ -19,9 +19,9 @@ var core = require('./core');
  *                              Predictable output type of functions. When true,
  *                              output type depends only on the input types. When
  *                              false (default), output type can vary depending
- *                              on input values. For example `math.sqrt(-2)`
- *                              returns `NaN` when predictable is false, and
- *                              returns `complex('2i')` when true.
+ *                              on input values. For example `math.sqrt(-4)`
+ *                              returns `complex('2i')` when predictable is false, and
+ *                              returns `NaN` when true.
  */
 function create (config) {
   // create a new math.js instance

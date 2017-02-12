@@ -1,7 +1,7 @@
 // test FunctionNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../index').create();
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;
@@ -105,7 +105,7 @@ describe('FunctionNode', function() {
       assert(args[0] instanceof mymath.expression.node.Node);
       assert(args[1] instanceof mymath.expression.node.Node);
       assert.deepEqual(_math.__proto__, mymath);
-      assert.strictEqual(_scope, scope);
+      assert.deepEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
     }
     myFunction.rawArgs = true;
@@ -127,7 +127,7 @@ describe('FunctionNode', function() {
       assert(args[0] instanceof mymath.expression.node.Node);
       assert(args[1] instanceof mymath.expression.node.Node);
       assert.deepEqual(_math.__proto__, mymath);
-      assert.strictEqual(_scope, scope);
+      assert.deepEqual(_scope, scope);
       return 'myFunction(' + args.join(', ') + ')';
     }
     myFunction.rawArgs = true;
@@ -352,6 +352,21 @@ describe('FunctionNode', function() {
     assert.notStrictEqual(e.args, d.args);
     assert.strictEqual(e.args[0], d.args[0]);
     assert.strictEqual(e.args[1], d.args[1]);
+  });
+
+  it ('test equality another Node', function () {
+    var a = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)]);
+    var b = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)]);
+    var c = new FunctionNode(new SymbolNode('subtract'), [new ConstantNode(2), new ConstantNode(3)]);
+    var d = new FunctionNode(new SymbolNode('add'), [new ConstantNode(4), new ConstantNode(3)]);
+    var e = new SymbolNode('add');
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
   });
 
   it ('should stringify a FunctionNode', function () {

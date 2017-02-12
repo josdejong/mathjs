@@ -49,7 +49,7 @@ describe('dotDivide', function() {
   });
 
   it('should divide a unit by a number', function() {
-    assert.equal(dotDivide(math.unit('5 m'), 10).toString(), '500 mm');
+    assert.equal(dotDivide(math.unit('5 m'), 10).toString(), '0.5 m');
   });
 
   it('should divide a number by a unit', function() {

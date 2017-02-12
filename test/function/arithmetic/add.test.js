@@ -2,7 +2,6 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var BigNumber = require('decimal.js');
 var add = math.add;
 
 
@@ -228,7 +227,7 @@ describe('add', function() {
     });
   });
 
-  describe('Quaternion', function(){
+  describe('Quaternion', function() {
 
     it('should add 2 Quaternions', function() {
 
@@ -280,8 +279,15 @@ describe('add', function() {
 
       assert.deepEqual(add(math.quaternion(-1,0,0,0), math.complex(1,0)), math.quaternion(0,0,0,0));
       assert.deepEqual(add(math.quaternion(0,-1,0,0), math.complex(0,1)), math.quaternion(0,0,0,0));
+    });
+  });
 
-    })
+  describe('multiple arguments', function () {
+
+    it ('should add more than two arguments', function () {
+      assert.deepEqual(add(2, 3, 4), 9);
+      assert.deepEqual(add(2, 3, [5,6]), [10,11]);
+    });
   });
 
 });

@@ -116,11 +116,11 @@ describe('divide', function() {
   });
 
   it('should divide units by a number', function() {
-    assert.equal(divide(math.unit('5 m'), 10).toString(), '500 mm');
+    assert.equal(divide(math.unit('5 m'), 10).toString(), '0.5 m');
   });
 
   it('should divide valueless units by a number', function() {
-    assert.equal(divide(math.unit('m'), 2).toString(), '500 mm');
+    assert.equal(divide(math.unit('m'), 2).toString(), '0.5 m');
   });
 
   it('should divide a number by a unit', function() {
@@ -158,7 +158,7 @@ describe('divide', function() {
   });
 
   it('should divide units by a big number', function() {
-    assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '500 mm');
+    assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '0.5 m');
   });
 
   it('should divide each elements in a matrix by a number', function() {

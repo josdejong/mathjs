@@ -1,6 +1,95 @@
 # History
 
 
+## 2017-02-06, version 3.9.1
+
+- Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
+  `Fraction`, or `Complex` number.
+- Fixed #790: Expression parser did not pass function arguments of enclosing
+  functions via `scope` to functions having `rawArgs = true`.
+- Small fixes in the docs. Thanks @HarrySarson.
+
+
+## 2017-01-23, version 3.9.0
+
+- Implemented support for algebra: powerful new functions `simplify` and
+  `derivative`. Thanks @ericman314, @tetslee, and @BigFav.
+- Implemented Kronecker Product `kron`. Thanks @adamisntdead.
+- Reverted `FunctionNode` not accepting a string as function name anymore.
+- Fixed #765: `FunctionAssignmentNode.toString()` returning a string
+  incompatible with the function assignment syntax.
+
+
+## 2016-12-15, version 3.8.1
+
+- Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
+- Fixed #762: expression parser failing to invoke a function returned
+  by a function.
+
+
+## 2016-11-18, version 3.8.0
+
+- Functions `add` and `multiply` now accept more than two arguments. See #739.
+- `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
+- Implemented a method `Node.cloneDeep` for the expression nodes. See #745.
+- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
+  Thanks @FSMaxB.
+- Fixed #737: Improved algorithm determining the best prefix for units.
+  It will now retain the original unit like `1 cm` when close enough,
+  instead of returning `10 mm`. Thanks @ericman314.
+- Fixed #732: Allow letter-like unicode characters like Ohm `\u2126`.
+- Fixed #749: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
+- Some fixes in the docs and comments of examples. Thanks @HarrySarson.
+
+
+## 2016-11-05, version 3.7.0
+
+- Implemented method `Node.equals(other)` for all nodes of the expression parser.
+- Implemented BigNumber support in function `arg()`.
+- Command Line Interface loads faster.
+- Implicit conversions between Fractions and BigNumbers throw a neat error now
+  (See #710).
+
+
+## 2016-10-21, version 3.6.0
+
+- Implemented function `erf()`. THanks @patgrasso.
+- Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
+- Extended function `pickRandom` with the option to pick multiple values from
+  an array and give the values weights: `pickRandom(possibles, number, weights)`.
+  Thanks @woylie.
+- Parser now exposes test functions like `isAlpha` which can be replaced in
+  order to adjust the allowed characters in variables names (See #715).
+- Fixed #727: Parser not throwing an error for invalid implicit multiplications
+  like `-2 2` and `2^3 4` (right after the second value of an operator).
+- Fixed #688: Describe allowed variable names in the docs.
+
+
+## 2016-09-21, version 3.5.3
+
+- Some more fixes regarding numbers ending with a decimal mark (like `2.`).
+
+
+## 2016-09-20, version 3.5.2
+
+- Fixed numbers ending with a decimal mark (like `2.`) not being supported by
+  the parser, solved the underlying ambiguity in the parser. See #707, #711.
+
+
+## 2016-09-12, version 3.5.1
+
+- Removed a left over console.log statement. Thanks @eknkc.
+
+
+## 2016-09-07, version 3.5.0
+
+- Comments of expressions are are now stored in the parsed nodes. See #690.
+- Fixed function `print` not accepting an Object with formatting options as
+  third parameter Thanks @ThomasBrierley.
+- Fixed #707: The expression parser no longer accepts numbers ending with a dot
+  like `2.`.
+
+
 ## 2016-08-08, version 3.4.1
 
 - Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).

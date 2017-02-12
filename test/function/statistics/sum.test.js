@@ -64,7 +64,6 @@ describe('sum', function() {
 
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {sum()});
-    assert.throws(function() {sum([], 2, 3)});
   });
 
   it('should throw an error if called with not yet supported argument dim', function() {

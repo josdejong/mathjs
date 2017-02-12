@@ -86,10 +86,28 @@ describe('add', function() {
     }, /Cannot implicitly convert a number with >15 significant digits to Fraction/);
   });
 
-  it('should convert strings to numbers', function() {
+  it('should add strings to numbers', function() {
     assert.strictEqual(add('2', '3'), 5);
     assert.strictEqual(add(2, '3'), 5);
     assert.strictEqual(add('2', 3), 5);
+  });
+
+  it('should add strings to BigNumbers', function() {
+    assert.deepEqual(add('2', math.bignumber(3)), math.bignumber(5));
+    assert.deepEqual(add(math.bignumber(3), '2'), math.bignumber(5));
+    assert.throws(function () { add('foo', math.bignumber(3)) }, /Error: Cannot convert "foo" to BigNumber/)
+  });
+
+  it('should add strings to Fractions', function() {
+    assert.deepEqual(add('2', math.fraction(3)), math.fraction(5));
+    assert.deepEqual(add(math.fraction(3), '2'), math.fraction(5));
+    assert.throws(function () { add('foo', math.fraction(3)) }, /Error: Cannot convert "foo" to Fraction/)
+  });
+
+  it('should add strings to Complex numbers', function() {
+    assert.deepEqual(add('2', math.complex(0, 3)), math.complex(2, 3));
+    assert.deepEqual(add(math.complex(0, 3), '2'), math.complex(2, 3));
+    assert.throws(function () { add('foo', math.complex(0, 3)) }, /Error: Cannot convert "foo" to Complex/)
   });
 
   it('should add two measures of the same unit', function() {
@@ -123,7 +141,6 @@ describe('add', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {add(1);}, /TypeError: Too few arguments/);
-    assert.throws(function () {add(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   it('should LaTeX add', function () {

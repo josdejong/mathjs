@@ -10,6 +10,7 @@ On this page:
 - [Custom argument parsing](#custom-argument-parsing)
 - [Custom LaTeX handlers](#custom-latex-handlers)
 - [Custom LaTeX and string output](#custom-latex-and-string-output)
+- [Customize supported characters](#customize-supported-characters)
 
 ## Function transforms
 
@@ -343,4 +344,33 @@ node.toString({implicit: 'show'}); //'2 * a'
 node.toTex(); //'2~ a'
 node.toTex({implicit: 'hide'}); //'2~ a'
 node.toTex({implicit: 'show'}); //'2\\cdot a'
+```
+
+
+## Customize supported characters
+
+It is possible to customize the characters allowed in symbols and digits.
+The `parse` function exposes the following test functions:
+
+- `math.expression.parse.isAlpha(c, cPrev, cNext)`
+- `math.expression.parse.isWhitespace(c, nestingLevel)`
+- `math.expression.parse.isDecimalMark(c, cNext)`
+- `math.expression.parse.isDigitDot(c)`
+- `math.expression.parse.isDigit(c)`
+
+The exact signature and implementation of these functions can be looked up in
+the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.md#constants-and-variables).
+
+For example, the `$` character is not supported by default. It can be enabled
+by replacing the `isAlpha` function:
+
+```js
+var isAlphaOriginal = math.expression.parse.isAlpha;
+math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+  return isAlphaOriginal(c, cPrev, cNext) || (c === '$');
+};
+
+// now we can use the $ character in expressions
+var result = math.eval('$foo', {$foo: 42}); // returns 42
+console.log(result);
 ```

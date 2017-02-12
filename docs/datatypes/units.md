@@ -202,7 +202,7 @@ Used when deserializing a unit, see [Serialization](../core/serialization.md).
 Split a unit into the specified parts. For example:
 
 ```js
-var u = math.Unit(1, 'm');
+var u = math.unit(1, 'm');
 u.splitUnit(['ft', 'in']);    // 3 feet,3.3700787401574765 inch
 ```
 

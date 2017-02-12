@@ -2,10 +2,7 @@
 
 [http://mathjs.org](http://mathjs.org)
 
-Math.js is an extensive math library for JavaScript and Node.js.
-It features a flexible expression parser and offers an integrated solution
-to work with numbers, big numbers, complex numbers, units, and matrices.
-Powerful and easy to use.
+Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices. Powerful and easy to use.
 
 
 ## Features
@@ -13,12 +10,12 @@ Powerful and easy to use.
 - Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
 - Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
-- Supports chained operations.
+- Does symbolic computation.
 - Comes with a large set of built-in functions and constants.
 - Has no dependencies. Runs on any JavaScript engine.
 - Can be used as a command line application as well.
 - Is easily extensible.
-
+- Open source.
 
 ## Usage
 
@@ -44,6 +41,7 @@ math.atan2(3, -3) / math.pi;      // 0.75
 math.log(1000, 10);               // 3
 math.sqrt(-4);                    // 2i
 math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
+math.derivative('x^2 + x', 'x');  // 2 * x + 1
 
 // expressions
 math.eval('12 / (2.3 + 0.7)');    // 4
@@ -110,7 +108,7 @@ To see the coverage results, open the generated report in your browser:
 
 ## License
 
-Copyright (C) 2013-2016 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -59,6 +59,11 @@ describe('multiply', function() {
       assert.throws(function () {multiply(bignumber(1).div(3), 1/3);}, /Cannot implicitly convert a number with >15 significant digits to BigNumber/);
     });
 
+    it('should throw an error when multipling mixed fractions and bignumbers', function() {
+      assert.throws(function () {multiply(math.bignumber('2'), math.fraction(1,3))}, /Cannot implicitly convert a Fraction to BigNumber/);
+      assert.throws(function () {multiply(math.fraction(1,3), math.bignumber('2'))}, /Cannot implicitly convert a Fraction to BigNumber/);
+    });
+
     it('should multiply mixed booleans and bignumbers', function() {
       assert.deepEqual(multiply(bignumber(0.3), true), bignumber(0.3));
       assert.deepEqual(multiply(bignumber(0.3), false), bignumber(0));
@@ -273,7 +278,6 @@ describe('multiply', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {multiply(1);}, /TypeError: Too few arguments/);
-    assert.throws(function () {multiply(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
   describe('Vector', function () {
@@ -871,7 +875,17 @@ describe('multiply', function() {
     });
   });
 
-  it('should LaTeX mutliply', function () {
+
+  describe ('multiple arguments', function () {
+
+    it ('should multiply more than two arguments', function () {
+      assert.deepEqual(multiply(2, 3, 4), 24);
+      assert.deepEqual(multiply(2, 3, [5,6]), [30,36]);
+    });
+
+  });
+
+  it('should LaTeX multiply', function () {
     var expression = math.parse('multiply(2,3)');
     assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)');
   });
