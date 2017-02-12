@@ -97,19 +97,19 @@ describe('round', function() {
     assert.deepEqual(round([1.7,2.3]), [2,2]);
     assert.deepEqual(round(math.matrix([1.7,2.3])).valueOf(), [2, 2]);
   });
-  
+
   describe('Array', function () {
-    
+
     it('should round array', function () {
       assert.deepEqual(round([1.7, 2.3]), [2, 2]);
     });
-    
+
     it('should round array and scalar', function () {
       assert.deepEqual(round([1.7777, 2.3456], 3), [1.778, 2.346]);
       assert.deepEqual(round(3.12385, [2, 3]), [3.12, 3.124]);
     });
   });
-  
+
   describe('DenseMatrix', function () {
 
     it('should round dense matrix', function () {
@@ -121,7 +121,7 @@ describe('round', function() {
       assert.deepEqual(round(3.12385, matrix([[2, 3], [0, 2]])), matrix([[3.12, 3.124],[3, 3.12]]));
     });
   });
-  
+
   describe('SparseMatrix', function () {
 
     it('should round sparse matrix', function () {
@@ -143,10 +143,26 @@ describe('round', function() {
   });
 
   it('should round Quaternions', function () {
-    assert.deepEqual(round(new math.quaternion()),new math.quaternion());
-    assert.deepEqual(round(new math.quaternion(1.2,1.4,1.9,6.2)),new math.quaternion(1,1,2,6));
-    assert.deepEqual(round(new math.quaternion(-1.2,-1.4,-1.9,-6.2)),new math.quaternion(-1,-1,-2,-6));
-    assert.deepEqual(round(new math.quaternion(1.5,-1.5,3.5,0)),new math.quaternion(2,-1,4,0));
+    assert.deepEqual(round(math.quaternion()), math.quaternion());
+    assert.deepEqual(round(math.quaternion(1.2,1.4,1.9,6.2)), math.quaternion(1,1,2,6));
+    assert.deepEqual(round(math.quaternion(-1.2,-1.4,-1.9,-6.2)), math.quaternion(-1,-1,-2,-6));
+    assert.deepEqual(round(math.quaternion(1.5,-1.5,3.5,0)), math.quaternion(2,-1,4,0));
+
+    assert.deepEqual(round(math.quaternion(0.1,0,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,0.1,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,0,0.1,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,0,0,0.1)), math.quaternion(0,0,0,0));
+
+    assert.deepEqual(round(math.quaternion(-0.1,0,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,-0.1,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,0,-0.1,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,0,0,-0.1)), math.quaternion(0,0,0,0));
+
+    assert.deepEqual(round(math.quaternion(0.5,0,0,0)), math.quaternion(1,0,0,0));
+    assert.deepEqual(round(math.quaternion(0,0.5,0,0)), math.quaternion(0,1,0,0));
+    assert.deepEqual(round(math.quaternion(0,0,0.5,0)), math.quaternion(0,0,1,0));
+    assert.deepEqual(round(math.quaternion(0,0,0,0.5)), math.quaternion(0,0,0,1));
+
   });
 
 });

@@ -5,13 +5,23 @@ describe('k', function () {
 
 	describe('Quaternion', function () {
 		it('should find the k component of a quaternion', function () {
-			assert.equal(k(new math.quaternion()),0);
-      assert.equal(k(new math.quaternion(1,2,3,4)),4);
-      assert.equal(k(new math.quaternion(-1,-2,-3,-4)),-4);
+			assert.equal(k(math.quaternion()),0);
+      assert.equal(k(math.quaternion(1,2,3,4)),4);
+      assert.equal(k(math.quaternion(-1,-2,-3,-4)),-4);
+
+      assert.equal(k(math.quaternion(1.0,0,0)),0);
+      assert.equal(k(math.quaternion(0,1,0,0)),0);
+      assert.equal(k(math.quaternion(0,0,1,0)),0);
+      assert.equal(k(math.quaternion(0,0,0,1)),1);
+
+      assert.equal(k(math.quaternion(-1,0,0,0)),0);
+      assert.equal(k(math.quaternion(0,-1,0,0)),0);
+      assert.equal(k(math.quaternion(0,0,-1,0)),0);
+      assert.equal(k(math.quaternion(0,0,0,-1)),-1);
 		});
 
     it('should find the k component for each element of a matrix', function () {
-      assert.deepEqual(k([new math.quaternion(1,2,4,3), new math.quaternion(4,-3,-2,-1)]), [3,-1]);
+      assert.deepEqual(k([math.quaternion(1,2,4,3), math.quaternion(4,-3,-2,-1)]), [3,-1]);
     });
 
 	});

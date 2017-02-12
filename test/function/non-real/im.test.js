@@ -21,13 +21,23 @@ describe('im', function() {
       assert.equal(math.im(math.quaternion(1,2,3,4)),2);
       assert.equal(math.im(math.quaternion()),0);
       assert.equal(math.im(math.quaternion(4,-3)),-3);
+
+      assert.equal(math.im(math.quaternion(1,0,0,0)),0);
+      assert.equal(math.im(math.quaternion(0,1,0,0)),1);
+      assert.equal(math.im(math.quaternion(0,0,1,0)),0);
+      assert.equal(math.im(math.quaternion(0,0,0,1)),0);
+
+      assert.equal(math.im(math.quaternion(-1,0,0,0)),0);
+      assert.equal(math.im(math.quaternion(0,-1,0,0)),-1);
+      assert.equal(math.im(math.quaternion(0,0,-1,0)),0);
+      assert.equal(math.im(math.quaternion(0,0,0,-1)),0);
     });
 
     it('shoud calculate the imaginary part for each elemet in a matrix', function () {
-      assert.deepEqual(math.im([new math.quaternion(1,2,4,3), new math.quaternion(4,-3,2,-1)]), [2,-3]);
+      assert.deepEqual(math.im([math.quaternion(1,2,4,3), math.quaternion(4,-3,2,-1)]), [2,-3]);
     })
   })
-  
+
   describe('other types', function () {
     it('should return the imaginary part of a real number', function() {
       assert.equal(math.im(2), 0);

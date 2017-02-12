@@ -5,7 +5,7 @@ var conj = math.conj;
 describe('conj', function() {
 
   describe('complex', function () {
-    
+
     it('should compute the conjugate of a bignumber', function () {
       assert.deepEqual(conj(math.bignumber(2)), math.bignumber(2));
     });
@@ -30,14 +30,25 @@ describe('conj', function() {
 
   describe('Quaternion', function() {
     it('should find conjigate of Quaternion', function () {
-      assert.deepEqual(conj(new math.quaternion()), new math.quaternion());
-      assert.deepEqual(conj(new math.quaternion(1,2,3,4)), new math.quaternion(1,-2,-3,-4));
-      assert.deepEqual(conj(new math.quaternion(-1,-2,-3,-4)), new math.quaternion(-1,2,3,4));
+      assert.deepEqual(conj(math.quaternion(1,2,3,4)), math.quaternion(1,-2,-3,-4));
+      assert.deepEqual(conj(math.quaternion(-1,-2,-3,-4)), math.quaternion(-1,2,3,4));
+
+      assert.deepEqual(conj(math.quaternion(0,0,0,0)), math.quaternion(0,0,0,0));
+      assert.deepEqual(conj(math.quaternion(1,0,0,0)), math.quaternion(1,0,0,0));
+      assert.deepEqual(conj(math.quaternion(0,1,0,0)), math.quaternion(0,-1,0,0));
+      assert.deepEqual(conj(math.quaternion(0,0,1,0)), math.quaternion(0,0,-1,0));
+      assert.deepEqual(conj(math.quaternion(0,0,0,1)), math.quaternion(0,0,0,-1));
+
+      assert.deepEqual(conj(math.quaternion(-1,0,0,0)), math.quaternion(-1,0,0,0));
+      assert.deepEqual(conj(math.quaternion(0,-1,0,0)), math.quaternion(0,1,0,0));
+      assert.deepEqual(conj(math.quaternion(0,0,-1,0)), math.quaternion(0,0,1,0));
+      assert.deepEqual(conj(math.quaternion(0,0,0,-1)), math.quaternion(0,0,0,1));
+
     });
 
     it('should calculate the conjigate for each element of matrix', function () {
-      assert.deepEqual(conj([new math.quaternion(1,2,4,3), new math.quaternion(4,-3,2,-1)]),
-       [new math.quaternion(1,-2,-4,-3), new math.quaternion(4,3,-2,1)] );
+      assert.deepEqual(conj([math.quaternion(1,2,4,3), math.quaternion(4,-3,2,-1)]),
+       [math.quaternion(1,-2,-4,-3), math.quaternion(4,3,-2,1)] );
     });
   });
 

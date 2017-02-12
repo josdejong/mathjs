@@ -154,7 +154,7 @@ describe('subtract', function() {
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c, math.matrix([-2,0,2]));
     });
-    
+
     it('should subtract array and dense matrix correctly', function() {
       var a = [[1,2,3],[4,5,6]];
       var b = math.sparse([[6,5,4],[ 3, 2, 1]]);
@@ -164,7 +164,7 @@ describe('subtract', function() {
       assert.deepEqual(c, math.matrix([[-5,-3,-1],[1,3,5]]));
     });
   });
-  
+
   describe('DenseMatrix', function () {
 
     it('should subtract matrices correctly', function() {
@@ -189,7 +189,7 @@ describe('subtract', function() {
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c, math.matrix([-2,0,2]));
     });
-    
+
     it('should subtract dense and sparse matrices correctly', function() {
       var a = math.matrix([[1,2,3],[1,0,0]]);
       var b = math.sparse([[3,2,1],[0,0,1]]);
@@ -199,7 +199,7 @@ describe('subtract', function() {
       assert.deepEqual(c, math.matrix([[-2,0,2],[1,0,-1]]));
     });
   });
-  
+
   describe('SparseMatrix', function () {
 
     it('should subtract matrices correctly', function() {
@@ -225,7 +225,7 @@ describe('subtract', function() {
       assert.ok(c instanceof math.type.Matrix);
       assert.deepEqual(c.valueOf(), [[-2,0,2],[1,0,-1]]);
     });
-    
+
     it('should subtract sparse and dense matrices correctly', function() {
       var a = math.sparse([[1,2,3],[1,0,0]]);
       var b = math.matrix([[3,2,1],[0,0,1]]);
@@ -248,24 +248,24 @@ describe('subtract', function() {
 
   describe('Quaternions', function () {
     it('should subtract Quaternion from Quaternion', function () {
-      assert.deepEqual(subtract(new math.quaternion(), new math.quaternion()),new math.quaternion());
-      assert.deepEqual(subtract(new math.quaternion(), new math.quaternion(1,2,3,4)),new math.quaternion(-1,-2,-3,-4));
-      assert.deepEqual(subtract(new math.quaternion(), new math.quaternion(-1,-2,-3,-4)),new math.quaternion(1,2,3,4));
-      assert.deepEqual(subtract(new math.quaternion(10,9,8,7), new math.quaternion(1,2,3,4)),new math.quaternion(9,7,5,3));
+      assert.deepEqual(subtract(math.quaternion(), math.quaternion()),math.quaternion());
+      assert.deepEqual(subtract(math.quaternion(), math.quaternion(1,2,3,4)),math.quaternion(-1,-2,-3,-4));
+      assert.deepEqual(subtract(math.quaternion(), math.quaternion(-1,-2,-3,-4)),math.quaternion(1,2,3,4));
+      assert.deepEqual(subtract(math.quaternion(10,9,8,7), math.quaternion(1,2,3,4)),math.quaternion(9,7,5,3));
     });
 
     it('should subtract Complex form Quaternion', function () {
-      assert.deepEqual(subtract(new math.quaternion(), new math.complex()), new math.quaternion());
-      assert.deepEqual(subtract(new math.quaternion(1,4,5,2), new math.complex(1,3)), new math.quaternion(0,1,5,2));
-      assert.deepEqual(subtract(new math.quaternion(1,4,5,2), new math.complex(-1,-3)), new math.quaternion(2,7,5,2));
-      assert.deepEqual(subtract(new math.quaternion(), new math.complex(4,2)), new math.quaternion(-4,-2,0,0));
+      assert.deepEqual(subtract(math.quaternion(), math.complex()), math.quaternion());
+      assert.deepEqual(subtract(math.quaternion(1,4,5,2), math.complex(1,3)), math.quaternion(0,1,5,2));
+      assert.deepEqual(subtract(math.quaternion(1,4,5,2), math.complex(-1,-3)), math.quaternion(2,7,5,2));
+      assert.deepEqual(subtract(math.quaternion(), math.complex(4,2)), math.quaternion(-4,-2,0,0));
     });
 
     it('should subtract Quaternion from from Complex', function () {
-      assert.deepEqual(subtract(new math.complex(), new math.quaternion()), new math.quaternion());
-      assert.deepEqual(subtract(new math.complex(2,3), new math.quaternion(4,2,5,2)), new math.quaternion(-2,1,-5,-2));
-      assert.deepEqual(subtract(new math.complex(2,3), new math.quaternion(-4,-2,-5,-2)), new math.quaternion(6,5,5,2));
+      assert.deepEqual(subtract(math.complex(), math.quaternion()), math.quaternion());
+      assert.deepEqual(subtract(math.complex(2,3), math.quaternion(4,2,5,2)), math.quaternion(-2,1,-5,-2));
+      assert.deepEqual(subtract(math.complex(2,3), math.quaternion(-4,-2,-5,-2)), math.quaternion(6,5,5,2));
     })
   });
-  
+
 });

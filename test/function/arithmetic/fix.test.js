@@ -71,7 +71,7 @@ describe('fix', function() {
     assert.equal(fix(fraction(-2)).toString(), '-2');
     assert.equal(fix(fraction(-2.1)).toString(), '-2');
   });
-  
+
   it('should throw an error on unit as parameter', function() {
     // unit
     assert.throws(function () {fix(unit('5cm'))}, TypeError, 'Function fix(unit) not supported');
@@ -98,8 +98,18 @@ describe('fix', function() {
   });
 
   it('should round Quaternions correctly', function() {
-    assert.deepEqual(fix(new math.quaternion()), new math.quaternion(0,0,0,0));
-    assert.deepEqual(fix(new math.quaternion(-1.2,2.5,-3.9,18.1)), new math.quaternion(-1,2,-3,18));
+    assert.deepEqual(fix(math.quaternion()), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(-1.2,2.5,-3.9,18.1)), math.quaternion(-1,2,-3,18));
+
+    assert.deepEqual(fix(math.quaternion(0.1,0,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(0,0.1,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(0,0,0.1,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(0,0,0,0.1)), math.quaternion(0,0,0,0));
+
+    assert.deepEqual(fix(math.quaternion(-0.1,0,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(0,-0.1,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(0,0,-0.1,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(fix(math.quaternion(0,0,0,-0.1)), math.quaternion(0,0,0,0));
   });
 
 });

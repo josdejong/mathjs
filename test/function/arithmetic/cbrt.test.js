@@ -130,6 +130,11 @@ describe('cbrt', function() {
     approx.deepEqual(math.pow(cbrt(math.quaternion(a)),3),a);
     approx.deepEqual(cbrt(b),math.quaternion(4.163689526544407,-1.3216337604513382,-1.982450640677007,-2.6432675209026764));
 
+    approx.deepEqual(cbrt(math.quaternion(0,0,0,0)), math.quaternion(0,0,0,0));
+    approx.deepEqual(cbrt(math.quaternion(1,0,0,0)), math.quaternion(1,0,0,0));
+    approx.deepEqual(cbrt(math.quaternion(0,1,0,0)), math.quaternion(0.8660254037844387,0.49999999999999994,0,0));
+    approx.deepEqual(cbrt(math.quaternion(0,0,1,0)), math.quaternion(0.866025403784439,0,0.5,0));
+    approx.deepEqual(cbrt(math.quaternion(0,0,0,1)), math.quaternion(0.866025403784439,0,0,0.5));
   })
 
   it('should throw an error in case of invalid number of arguments', function() {

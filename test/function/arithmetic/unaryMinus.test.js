@@ -80,10 +80,10 @@ describe('unaryMinus', function() {
   });
 
   it('should unary minus on a Quaternion', function () {
-    assert.deepEqual(math.unaryMinus(new math.quaternion()), new math.quaternion());
-    assert.deepEqual(math.unaryMinus(new math.quaternion(1,2,3,4)), new math.quaternion(-1,-2,-3,-4));
-    assert.deepEqual(math.unaryMinus(new math.quaternion(-1,-2,-3,-4)), new math.quaternion(1,2,3,4));
-    assert.deepEqual(math.unaryMinus(new math.quaternion(-1,-2,3,0)), new math.quaternion(1,2,-3,0));
+    assert.deepEqual(math.unaryMinus(math.quaternion()), math.quaternion());
+    assert.deepEqual(math.unaryMinus(math.quaternion(1,2,3,4)), math.quaternion(-1,-2,-3,-4));
+    assert.deepEqual(math.unaryMinus(math.quaternion(-1,-2,-3,-4)), math.quaternion(1,2,3,4));
+    assert.deepEqual(math.unaryMinus(math.quaternion(-1,-2,3,0)), math.quaternion(1,2,-3,0));
   });
 
 });

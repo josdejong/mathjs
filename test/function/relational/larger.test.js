@@ -199,6 +199,11 @@ describe('larger', function() {
     assert.throws(function () {larger(complex(2,4), math.bignumber(3));}, TypeError);
   });
 
+  it('should throw an error when comparing quaternions', function() {
+    assert.throws( function () {larger(math.quaternioin(), math.quaternioin())}, TypeError);
+    assert.throws( function () {larger(math.quaternioin(1,2,3,4), math.quaternioin(1,1,1,1))}, TypeError);
+  })
+
   it('should throw an error if matrices are different sizes', function() {
     assert.throws(function () {larger([1,4,6], [3,4]);});
   });

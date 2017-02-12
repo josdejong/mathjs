@@ -70,11 +70,25 @@ describe('square', function() {
   });
 
   it('should square Quaternions', function () {
-    assert.deepEqual(square(new math.quaternion({i:1})), new math.quaternion({r:-1}));
-    assert.deepEqual(square(new math.quaternion({j:1})), new math.quaternion({r:-1}));
-    assert.deepEqual(square(new math.quaternion({k:1})), new math.quaternion({r:-1}));
-    assert.deepEqual(square(new math.quaternion({r:1})), new math.quaternion({r:1}));
-    assert.deepEqual(square(new math.quaternion(3,-2,-3,4)), new math.quaternion(-20, -12, -18, 24));
+    assert.deepEqual(square(math.quaternion({i:1})), math.quaternion({r:-1}));
+    assert.deepEqual(square(math.quaternion({j:1})), math.quaternion({r:-1}));
+    assert.deepEqual(square(math.quaternion({k:1})), math.quaternion({r:-1}));
+    assert.deepEqual(square(math.quaternion({r:1})), math.quaternion({r:1}));
+    assert.deepEqual(square(math.quaternion(3,-2,-3,4)), math.quaternion(-20, -12, -18, 24));
+
+    assert.deepEqual(square(math.quaternion(1,2,3,4)), math.quaternion(-28,4,6,8));
+    assert.deepEqual(square(math.quaternion(-1,2,3,4)), math.quaternion(-28,-4,-6,-8));
+    assert.deepEqual(square(math.quaternion(1,-2,3,4)), math.quaternion(-28,-4,6,8));
+    assert.deepEqual(square(math.quaternion(1,2,-3,4)), math.quaternion(-28,4,-6,8));
+    assert.deepEqual(square(math.quaternion(1,2,3,-4)), math.quaternion(-28,4,6,-8));
+
+    assert.deepEqual(square(math.quaternion(5,4,3,2)), math.quaternion(-4,40,30,20));
+    assert.deepEqual(square(math.quaternion(-5,4,3,2)), math.quaternion(-4,-40,-30,-20));
+    assert.deepEqual(square(math.quaternion(5,-4,3,2)), math.quaternion(-4,-40,30,20));
+    assert.deepEqual(square(math.quaternion(5,4,-3,2)), math.quaternion(-4,40,-30,20));
+    assert.deepEqual(square(math.quaternion(5,4,3,-2)), math.quaternion(-4,40,30,-20));
+
+
   });
 
 });

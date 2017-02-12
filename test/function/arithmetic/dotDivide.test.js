@@ -75,32 +75,32 @@ describe('dotDivide', function() {
     it('should divide 1 over a array element-wise', function() {
       approx.deepEqual(dotDivide(1, [[1, 4, 7], [ 3, 0, 5], [-1, 9, 11]]), [[1, 0.25, 1/7],[1/3, Infinity, 0.2], [-1, 1/9, 1/11]]);
     });
-  
+
     it('should perform (array ./ array) element-wise matrix division', function() {
       var a = [[1,2],[3,4]];
       var b = [[5,6],[7,8]];
       assert.deepEqual(dotDivide(a, b), [[1/5, 2/6], [3/7,4/8]]);
     });
-    
+
     it('should perform (array ./ dense matrix) element-wise matrix division', function() {
       var a = [[1,2],[3,4]];
       var b = math.matrix([[5,6],[7,8]]);
       assert.deepEqual(dotDivide(a, b), math.matrix([[1/5, 2/6], [3/7,4/8]]));
     });
-    
+
     it('should perform (array ./ sparse matrix) element-wise matrix division', function() {
       var a = [[1,2],[3,4]];
       var b = math.sparse([[5,0],[7,8]]);
       assert.deepEqual(dotDivide(a, b), math.matrix([[1/5, Infinity], [3/7,4/8]]));
     });
-    
+
     it('should throw an error when dividing element-wise with differing size', function() {
       assert.throws(function () {dotDivide([[1,2],[3,4]], [[1]]);});
     });
   });
-  
+
   describe('DenseMatrix', function () {
-    
+
     it('should divide all the elements of a dense matrix by one number', function() {
       assert.deepEqual(dotDivide(math.matrix([2,4,6]), 2), math.matrix([1,2,3]));
       var a = math.matrix([[1,2],[3,4]]);
@@ -129,12 +129,12 @@ describe('dotDivide', function() {
       var b = math.sparse([[5,0],[7,8]]);
       assert.deepEqual(dotDivide(a, b), math.matrix([[1/5, Infinity], [3/7,4/8]]));
     });
-    
+
     it('should throw an error when dividing element-wise with differing size', function() {
       assert.throws(function () {dotDivide(math.matrix([[1,2],[3,4]]), math.matrix([[1]]));});
     });
   });
-  
+
   describe('SparseMatrix', function () {
 
     it('should divide all the elements of a sparse matrix by one number', function() {
@@ -177,6 +177,15 @@ describe('dotDivide', function() {
   });
 
   it('should dot divide Quaternions', function() {
-    assert(dotDivide(new math.quaternion(2,4,6,9), new math.quaternion(2,2,3,3)), 8);
+    assert.deepEqual(dotDivide(math.quaternion(2,4,6,9), math.quaternion(2,2,3,3)), math.quaternion(1,2,2,3));
+    assert.deepEqual(dotDivide(math.quaternion(-5,2,-1,7), math.quaternion(10,5,-1,-21)), math.quaternion(-0.5,0.4, 1, -1/3));
+    assert.throws( function() {dotDivide(math.quaternion(1,2,3,4), math.quaternion())}, /TypeError: Cannot divide by zero/);
+    assert.throws( function() {dotDivide(math.quaternion(1,2,3,4), math.quaternion(0,1,1,1))}, /TypeError: Cannot divide by zero/);
+    assert.throws( function() {dotDivide(math.quaternion(1,2,3,4), math.quaternion(1,0,1,1))}, /TypeError: Cannot divide by zero/);
+    assert.throws( function() {dotDivide(math.quaternion(1,2,3,4), math.quaternion(1,1,0,1))}, /TypeError: Cannot divide by zero/);
+    assert.throws( function() {dotDivide(math.quaternion(1,2,3,4), math.quaternion(1,1,1,0))}, /TypeError: Cannot divide by zero/);
+    assert.throws( function() {dotDivide(math.quaternion(123,-9,2,8), math.quaternion())}, /TypeError: Cannot divide by zero/);
   });
 });
+
+

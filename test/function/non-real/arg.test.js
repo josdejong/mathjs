@@ -55,6 +55,28 @@ describe('arg', function() {
     assert.equal(arg(-2) / math.pi, 1);
   });
 
+  it('should find the argument of a quaternion number', function() {
+    assert.equal(arg(math.quaternion()), 0);
+    assert.equal(arg(math.quaternion({r:-5})), math.pi );
+    approx.equal(arg(math.quaternion({r:1})), 0);
+    approx.equal(arg(math.quaternion(1,2,3,4)),1.387192316515978);
+    approx.equal(arg(math.quaternion(-2,1,-5,9)),1.7617869508322737);
+
+    approx.equal(arg(math.quaternion(1,0,0,0)), 0);
+    approx.equal(arg(math.quaternion(0,1,0,0)), Math.PI/2);
+    approx.equal(arg(math.quaternion(0,0,1,0)), Math.PI/2);
+    approx.equal(arg(math.quaternion(0,0,0,1)), Math.PI/2);
+    approx.equal(arg(math.quaternion(231,0,0,0)), 0);
+    approx.equal(arg(math.quaternion(0,0,0,1231)), Math.PI/2);
+
+    approx.equal(arg(math.quaternion(-1,0,0,0)), Math.PI);
+    approx.equal(arg(math.quaternion(0,-1,0,0)), Math.PI/2);
+    approx.equal(arg(math.quaternion(0,0,-1,0)), Math.PI/2);
+    approx.equal(arg(math.quaternion(0,0,0,-1)), Math.PI/2);
+    approx.equal(arg(math.quaternion(-231,0,0,0)), Math.PI);
+    approx.equal(arg(math.quaternion(0,0,0,-1231)), Math.PI/2);
+  });
+
   it('should throw an error if used with a string', function() {
     assert.throws(function () {arg('string')});
   });

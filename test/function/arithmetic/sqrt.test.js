@@ -88,9 +88,14 @@ describe('sqrt', function() {
   });
 
   it('should return the square root of a Quaternion', function () {
-    approx.deepEqual(sqrt(math.quaternion(1,2,3,4)),math.quaternion(1.799614621947108,0.555674524870243,0.833511787305364,1.111349049740485));
+    approx.deepEqual(sqrt(math.quaternion(1,2,3,4)),math.quaternion(1.7996146219471072,0.5556745248702426,0.8335117873053639,1.1113490497404852));
     approx.deepEqual(math.square(sqrt(math.quaternion(-1,-2,-3,-4))),math.quaternion(-1,-2,-3,-4));
     approx.deepEqual(sqrt(math.quaternion()),math.quaternion());
+
+    approx.deepEqual(sqrt(math.quaternion(1,0,0,0)), math.quaternion(1,0,0,0));
+    approx.deepEqual(sqrt(math.quaternion(0,1,0,0)), math.quaternion(0.7071067811865476,0.7071067811865475,0,0));
+    approx.deepEqual(sqrt(math.quaternion(0,0,1,0)), math.quaternion(0.7071067811865476,0,0.7071067811865475,0));
+    approx.deepEqual(sqrt(math.quaternion(0,0,0,1)), math.quaternion(0.7071067811865476,0,0,0.7071067811865475));
 
     var a = math.quaternion({r:-5});
     var b = sqrt(a,{i:1,j:0.25},'k');

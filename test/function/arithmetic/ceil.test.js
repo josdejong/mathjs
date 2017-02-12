@@ -97,9 +97,20 @@ describe('ceil', function() {
   });
 
   it('should return an the ceil of a Quaternions components', function() {
-    assert.deepEqual(ceil(new math.quaternion()),new math.quaternion());
-    assert.deepEqual(ceil(new math.quaternion(0.2, 1.3, 8.1, 4)), new math.quaternion(1,2,9,4));
-    assert.deepEqual(ceil(new math.quaternion(-3.1,-9, -1.2,-0.03)), new math.quaternion(-3,-9,-1,0));
+    assert.deepEqual(ceil(math.quaternion()), math.quaternion());
+    assert.deepEqual(ceil(math.quaternion(0.2, 1.3, 8.1, 4)), math.quaternion(1,2,9,4));
+    assert.deepEqual(ceil(math.quaternion(-3.1,-9, -1.2,-0.03)), math.quaternion(-3,-9,-1,0));
+
+    assert.deepEqual(ceil(math.quaternion(0.1,0,0,0)), math.quaternion(1,0,0,0));
+    assert.deepEqual(ceil(math.quaternion(0,0.1,0,0)), math.quaternion(0,1,0,0));
+    assert.deepEqual(ceil(math.quaternion(0,0,0.1,0)), math.quaternion(0,0,1,0));
+    assert.deepEqual(ceil(math.quaternion(0,0,0,0.1)), math.quaternion(0,0,0,1));
+
+    assert.deepEqual(ceil(math.quaternion(-0.1,0,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(ceil(math.quaternion(0,-0.1,0,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(ceil(math.quaternion(0,0,-0.1,0)), math.quaternion(0,0,0,0));
+    assert.deepEqual(ceil(math.quaternion(0,0,0,-0.1)), math.quaternion(0,0,0,0));
+
   })
 
 });

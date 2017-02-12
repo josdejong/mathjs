@@ -111,8 +111,8 @@ describe('unaryPlus', function() {
     assert.equal(expression.toTex(), '+\\left(1\\right)');
   });
   it('should perform unary plue of a Quaternion', function () {
-    assert.deepEqual(math.unaryPlus(new math.quaternion()),new math.quaternion());
-    assert.deepEqual(math.unaryPlus(new math.quaternion(1,2,3,4)),new math.quaternion(1,2,3,4));
-    assert.deepEqual(math.unaryPlus(new math.quaternion(-1,-2,-3,-4)),new math.quaternion(-1,-2,-3,-4));
+    assert.deepEqual(math.unaryPlus(math.quaternion()),math.quaternion());
+    assert.deepEqual(math.unaryPlus(math.quaternion(1,2,3,4)),math.quaternion(1,2,3,4));
+    assert.deepEqual(math.unaryPlus(math.quaternion(-1,-2,-3,-4)),math.quaternion(-1,-2,-3,-4));
   })
 });

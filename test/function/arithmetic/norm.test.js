@@ -112,8 +112,27 @@ describe('norm', function () {
   });
 
   it('should fine the norm of a Quaternion', function () {
-    assert.equal(math.norm(new math.quaternion({r:5})), 5);
-    assert.equal(math.norm(new math.quaternion({r:-5})), 5);
-    assert.equal(math.norm(new math.quaternion(1,1,1,1)),2);
+    assert.equal(math.norm(math.quaternion({r:5})), 5);
+    assert.equal(math.norm(math.quaternion({r:-5})), 5);
+    assert.equal(math.norm(math.quaternion(1,1,1,1)),2);
+
+    assert.equal(math.norm(math.quaternion(0,0,0,0)), 0);
+    assert.equal(math.norm(math.quaternion(3,4,0,0)), 5);
+    assert.equal(math.norm(math.quaternion(0,3,4,0)), 5);
+    assert.equal(math.norm(math.quaternion(0,0,3,4)), 5);
+
+    assert.equal(math.norm(math.quaternion(-3,4,0,0)), 5);
+    assert.equal(math.norm(math.quaternion(0,-3,4,0)), 5);
+    assert.equal(math.norm(math.quaternion(0,0,-3,4)), 5);
+
+    assert.equal(math.norm(math.quaternion(1,2,2,0)),3);
+    assert.equal(math.norm(math.quaternion(0,1,2,2)),3);
+
+    assert.equal(math.norm(math.quaternion(1,2,6,20)),21);
+    assert.equal(math.norm(math.quaternion(20,1,2,6)),21);
+    assert.equal(math.norm(math.quaternion(6,20,1,2)),21);
+    assert.equal(math.norm(math.quaternion(2,6,20,1)),21);
+
   });
 });
+

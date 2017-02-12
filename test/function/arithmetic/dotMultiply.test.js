@@ -67,12 +67,12 @@ describe('dotMultiply', function() {
   });
 
   describe('Array', function () {
-  
+
     var a = [[1,0],[3,4]];
     var b = [[5,6],[0,8]];
     var c = [[5],[6]];
     var d = [[5,6]];
-    
+
     it('should multiply a all elements in a array by a number', function() {
       // matrix, array, range
       approx.deepEqual(dotMultiply(a, 3), [[3,0],[9,12]]);
@@ -80,20 +80,20 @@ describe('dotMultiply', function() {
       approx.deepEqual(dotMultiply([1,2,3,4], 2), [2, 4, 6, 8]);
       approx.deepEqual(dotMultiply(2, [1,2,3,4]), [2, 4, 6, 8]);
     });
-    
+
     it('should perform element-wise (array .* array) multiplication', function() {
       approx.deepEqual(dotMultiply(a, b), [[5,0],[0,32]]);
-      approx.deepEqual(dotMultiply([[1,2],[3,4]], [[5,6],[7,8]]), [[5,12],[21,32]]);      
+      approx.deepEqual(dotMultiply([[1,2],[3,4]], [[5,6],[7,8]]), [[5,12],[21,32]]);
     });
-    
+
     it('should perform element-wise (array .* dense matrix) multiplication', function() {
       approx.deepEqual(dotMultiply([[1,2],[3,4]], matrix([[5,6],[7,8]])), matrix([[5,12],[21,32]]));
     });
-    
+
     it('should perform element-wise (array .* sparse matrix) multiplication', function() {
       approx.deepEqual(dotMultiply([[1,2],[3,4]], sparse([[5,6],[7,8]])), sparse([[5,12],[21,32]]));
     });
-    
+
     it('should throw an error if arrays are of different sizes', function() {
       assert.throws(function () {dotMultiply(a, c)});
       assert.throws(function () {dotMultiply(d, a)});
@@ -102,7 +102,7 @@ describe('dotMultiply', function() {
       assert.throws(function () {dotMultiply(c, b)});
     });
   });
-  
+
   describe('DenseMatrix', function () {
 
     var a = matrix([[1,0],[3,4]]);
@@ -139,7 +139,7 @@ describe('dotMultiply', function() {
       assert.throws(function () {dotMultiply(c, b)});
     });
   });
-  
+
   describe('SparseMatrix', function () {
 
     var a = sparse([[1,0],[3,4]]);
@@ -181,15 +181,26 @@ describe('dotMultiply', function() {
     assert.throws(function () {dotMultiply(1)}, /TypeError: Too few arguments/);
     assert.throws(function () {dotMultiply(1, 2, 3)}, /TypeError: Too many arguments/);
   });
-  
+
   it('should LaTeX dotMultiply', function () {
     var expression = math.parse('dotMultiply([1,2],[3,4])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)');
   });
 
   it('should dot multiply Quaternions', function() {
-    assert.deepEqual(dotMultiply(new math.quaternion(1,2,3,4),new math.quaternion(4,3,2,1)), 20);
-    assert.deepEqual(dotMultiply(new math.quaternion(1,1,1,1), new math.quaternion(1,1,1,1)), 4);
-    assert.deepEqual(dotMultiply(new math.quaternion(0,0,0,0),new math.quaternion(1,1,1,1)), 0);
+    assert.deepEqual(dotMultiply(math.quaternion(1,2,3,4), math.quaternion(4,3,2,1)), math.quaternion(4,6,6,4));
+    assert.deepEqual(dotMultiply(math.quaternion(1,1,1,1), math.quaternion(1,1,1,1)), math.quaternion(1,1,1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(0,0,0,0), math.quaternion(1,1,1,1)), math.quaternion());
+
+    assert.deepEqual(dotMultiply(math.quaternion(1,1,1,1), math.quaternion(1,1,1,1)), math.quaternion(1,1,1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(0,1,1,1), math.quaternion(1,1,1,1)), math.quaternion(0,1,1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(1,0,1,1), math.quaternion(1,1,1,1)), math.quaternion(1,0,1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(1,1,0,1), math.quaternion(1,1,1,1)), math.quaternion(1,1,0,1));
+    assert.deepEqual(dotMultiply(math.quaternion(1,1,1,0), math.quaternion(1,1,1,1)), math.quaternion(1,1,1,0));
+
+    assert.deepEqual(dotMultiply(math.quaternion(-1,1,1,1), math.quaternion(1,1,1,1)), math.quaternion(-1,1,1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(1,-1,1,1), math.quaternion(1,1,1,1)), math.quaternion(1,-1,1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(1,1,-1,1), math.quaternion(1,1,1,1)), math.quaternion(1,1,-1,1));
+    assert.deepEqual(dotMultiply(math.quaternion(1,1,1,-1), math.quaternion(1,1,1,1)), math.quaternion(1,1,1,-1));
   })
 });

@@ -100,6 +100,19 @@ describe('unequal', function() {
     assert.deepEqual(unequal(bignumber(6), math.complex(6, 4)), true);
   });
 
+  it('should compare 2 quaternions correctly', function() {
+    assert.equal(unequal(math.quaternion(), math.quaternion(0,0,0,0)), false);
+    assert.equal(unequal(math.quaternion(1,1,1,1), math.quaternion(1,1,1,1)), false);
+    assert.equal(unequal(math.quaternion(1,1,1,0), math.quaternion(1,1,1,0)), false);
+    assert.equal(unequal(math.quaternion(1,1,0,1), math.quaternion(1,1,0,1)), false);
+    assert.equal(unequal(math.quaternion(1,0,1,1), math.quaternion(1,0,1,1)), false);
+    assert.equal(unequal(math.quaternion(0,1,1,1), math.quaternion(0,1,1,1)), false);
+    assert.equal(unequal(math.quaternion(1,1,1,1), math.quaternion(-1,1,1,1)), true);
+    assert.equal(unequal(math.quaternion(1,1,1,1), math.quaternion(1,-1,1,1)), true);
+    assert.equal(unequal(math.quaternion(1,1,1,1), math.quaternion(1,1,-1,1)), true);
+    assert.equal(unequal(math.quaternion(1,1,1,1), math.quaternion(1,1,1,-1)), true);
+  });
+
   it('should compare two fractions', function() {
     assert.strictEqual(unequal(math.fraction(3), math.fraction(2)).valueOf(), true);
     assert.strictEqual(unequal(math.fraction(2), math.fraction(3)).valueOf(), true);

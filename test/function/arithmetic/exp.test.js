@@ -88,35 +88,20 @@ describe('exp', function() {
   });
 
   it('should rase e to the power of a Quaternion', function () {
-    var A = exp(new math.quaternion({i:Math.PI}));
-    approx.equal(A.r, -1);
-    approx.equal(A.i, 0);
-    approx.equal(A.j, 0);
-    approx.equal(A.k, 0);
+    approx.deepEqual(exp(math.quaternion(0,0,0,0)), math.quaternion(1,0,0,0));
+    approx.deepEqual(exp(math.quaternion(1,0,0,0)), math.quaternion(2.718281828459045,0,0,0));
+    approx.deepEqual(exp(math.quaternion(0,1,0,0)), math.quaternion(0.5403023058681398,0.8414709848078965,0,0));
+    approx.deepEqual(exp(math.quaternion(0,0,1,0)), math.quaternion(0.5403023058681398,0,0.8414709848078965,0));
+    approx.deepEqual(exp(math.quaternion(0,0,0,1)), math.quaternion(0.5403023058681398,0,0,0.8414709848078965));
 
-    var B = exp(new math.quaternion());
+    approx.deepEqual(exp(math.quaternion(-1,0,0,0)), math.quaternion(0.3678794411714424,0,0,0));
+    approx.deepEqual(exp(math.quaternion(0,-1,0,0)), math.quaternion(0.5403023058681398,-0.8414709848078965,0,0));
+    approx.deepEqual(exp(math.quaternion(0,0,-1,0)), math.quaternion(0.5403023058681398,0,-0.8414709848078965,0));
+    approx.deepEqual(exp(math.quaternion(0,0,0,-1)), math.quaternion(0.5403023058681398,0,0,-0.8414709848078965));
 
-    assert.equal(B.r, 1);
-    assert.equal(B.i, 0);
-    assert.equal(B.j, 0);
-    assert.equal(B.k, 0);
-
-    var C = exp(new math.quaternion(1,2,3,4));
-    approx.equal(C.r, 1.6939227236832994);
-    approx.equal(C.i, -0.7895596245415588);
-    approx.equal(C.j, -1.184339436812338);
-    approx.equal(C.k, -1.5791192490831176);
-
-    var D = exp(new math.quaternion({i:1}));
-    var E = exp(new math.quaternion({k:1}));
-    var F = exp(new math.quaternion({j:1}));
-    assert.equal(D.r === 0.5403023058681398 && D.r === E.r && D.r === F.r, true);
-    assert.equal(D.i === 0.8414709848078965 && D.i === E.k && D.i === F.j, true);
-
-    var G = exp(new math.quaternion(3,-2,1,-3));
-    approx.equal(G.r, -16.57657478398476);
-    approx.equal(G.i, 6.062671780746171);
-    approx.equal(G.j, -3.0313358903730854);
-    approx.equal(G.k, 9.094007671119256);
+    approx.deepEqual(exp(math.quaternion(1,2,3,4)), math.quaternion(1.6939227236832994,-0.7895596245415588,-1.184339436812338,-1.5791192490831176));
+    approx.deepEqual(exp(math.quaternion(4,1,2,3)), math.quaternion(-45.05980201339819,-8.240025266756877,-16.480050533513754,-24.720075800270628));
+    approx.deepEqual(exp(math.quaternion(3,4,1,2)), math.quaternion(-2.6000526954284027,-17.384580348249628,-4.346145087062407,-8.692290174124814));
+    approx.deepEqual(exp(math.quaternion(2,3,4,1)), math.quaternion(2.786189997492657,-4.026439818820405,-5.3685864250938735,-1.3421466062734684));
   });
 });

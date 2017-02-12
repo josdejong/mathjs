@@ -239,18 +239,42 @@ describe('pow', function() {
     it('should raise Quaternion to real powers', function () {
       assert.deepEqual(pow(math.quaternion(1,2,3,4),2), math.quaternion(-28,4,6,8));
       assert.deepEqual(pow(math.quaternion(1,2,3,4),0), math.quaternion({r:1}));
-      approx.deepEqual(pow(math.quaternion(1,2,3,4),2.5), math.quaternion(-66.5037706357561, -8.360428208578362, -12.540642312867543, -16.720856417156725));
+      approx.deepEqual(pow(math.quaternion(1,2,3,4),2.5), math.quaternion(-66.50377063575604,-8.360428208578368,-12.54064231286755,-16.720856417156735));
+      approx.deepEqual(pow(math.quaternion(1,2,3,4),-2.5), math.quaternion(-0.0134909686430938,0.0016959981926818065,0.0025439972890227095,0.003391996385363613))
+
     });
+
 
     it('should raise Quaternion to a Quaternion power', function () {
       approx.deepEqual(pow(math.quaternion(1,4,0,0), math.quaternion(-2,3,0,0)), math.quaternion(-0.000030177061938851806, 0.0011015451057806702,0,0))
       approx.deepEqual(pow(math.quaternion(1,4,-3,2), math.quaternion(4,2,-3,2)), math.quaternion(4.023822744421112, -0.08808649248602358, 0.10799947333843203, -0.045858528052467734));
       approx.deepEqual(pow(math.quaternion(-1,-1,0,4), math.quaternion(-4,5,1,1.5)), math.quaternion(0.00009562614911354535, 0.0010196374737841477, 0.0015348157881126755, -0.0007464390363321687));
+
+      approx.deepEqual(pow(math.quaternion(0,2,0,0), math.quaternion(1,0,0,0)), math.quaternion(0,2,0,0));
+      approx.deepEqual(pow(math.quaternion(0,2,0,0), math.quaternion(0,1,0,0)), math.quaternion(0.15990905692806803,0.13282699942462048,0,0));
+      approx.deepEqual(pow(math.quaternion(0,2,0,0), math.quaternion(0,0,1,0)), math.quaternion(-0.145615694487965,0,0.399409670603132,0.905134235650981));
+      approx.deepEqual(pow(math.quaternion(0,2,0,0), math.quaternion(0,0,0,1)), math.quaternion(-0.145615694487965,0,-0.905134235650981,0.399409670603132));
+
+      approx.deepEqual(pow(math.quaternion(0,0,2,0), math.quaternion(1,0,0,0)), math.quaternion(0,0,2,0));
+      approx.deepEqual(pow(math.quaternion(0,0,2,0), math.quaternion(0,1,0,0)), math.quaternion(-0.145615694487965,0.399409670603132,0,-0.905134235650981));
+      approx.deepEqual(pow(math.quaternion(0,0,2,0), math.quaternion(0,0,1,0)), math.quaternion(0.159909056928068,0,0.13282699942462,0));
+      approx.deepEqual(pow(math.quaternion(0,0,2,0), math.quaternion(0,0,0,1)), math.quaternion(-0.145615694487965,0.905134235650981,0,0.399409670603132));
+
+      approx.deepEqual(pow(math.quaternion(0,0,0,2), math.quaternion(1,0,0,0)), math.quaternion(0,0,0,2));
+      approx.deepEqual(pow(math.quaternion(0,0,0,2), math.quaternion(0,1,0,0)), math.quaternion(-0.145615694487965,0.399409670603132,0.905134235650981,0));
+      approx.deepEqual(pow(math.quaternion(0,0,0,2), math.quaternion(0,0,1,0)), math.quaternion(-0.145615694487965,-0.905134235650981,0.399409670603132,0));
+      approx.deepEqual(pow(math.quaternion(0,0,0,2), math.quaternion(0,0,0,1)), math.quaternion(0.159909056928068,0,0,0.13282699942462));
+
     });
-    
+
     it('should raise reals to quaternion powers', function () {
       approx.deepEqual(pow(1, math.quaternion(3,4,5,9)), math.quaternion({r:1}));
       approx.deepEqual(pow(-2,math.quaternion(4,2,1,1.5)), math.quaternion(-0.024695944127665907, 0.015530441791896946, -0.004473740387907085, 0.004654139181719533));
+
+      approx.deepEqual(pow(math.quaternion(2,0,0,0), math.quaternion(1,0,0,0)), math.quaternion(2,0,0,0));
+      approx.deepEqual(pow(math.quaternion(2,0,0,0), math.quaternion(0,1,0,0)), math.quaternion(0.7692389013639721,0.6389612763136348,0,0));
+      approx.deepEqual(pow(math.quaternion(2,0,0,0), math.quaternion(0,0,1,0)), math.quaternion(0.769238901363972,0,0.638961276313635,0));
+      approx.deepEqual(pow(math.quaternion(2,0,0,0), math.quaternion(0,0,0,1)), math.quaternion(0.769238901363972,0,0,0.638961276313635));
     })
   })
 

@@ -231,33 +231,56 @@ describe('add', function() {
   describe('Quaternion', function(){
 
     it('should add 2 Quaternions', function() {
-      var a = math.quaternion(-1,2,-3,4);
-      var b = math.quaternion(-1,-2,-3,-2);
-      var c = math.quaternion(-2,0,-6,2);
-      assert.deepEqual(add(a,b),c);
+
+      assert.deepEqual(add(math.quaternion(1,2,3,4), math.quaternion(5,6,7,8)),math.quaternion(6,8,10,12));
+      assert.deepEqual(add(math.quaternion(-1,2,3,4), math.quaternion(5,6,7,8)),math.quaternion(4,8,10,12));
+      assert.deepEqual(add(math.quaternion(1,-2,3,4), math.quaternion(5,6,7,8)),math.quaternion(6,4,10,12));
+      assert.deepEqual(add(math.quaternion(1,2,-3,4), math.quaternion(5,6,7,8)),math.quaternion(6,8,4,12));
+      assert.deepEqual(add(math.quaternion(1,2,3,-4), math.quaternion(5,6,7,8)),math.quaternion(6,8,10,4));
+
+      assert.deepEqual(add(math.quaternion(0,0,0,0),math.quaternion(0,0,0,0)),math.quaternion(0,0,0,0));
+      assert.deepEqual(add(math.quaternion(1,0,0,0),math.quaternion(-1,0,0,0)),math.quaternion(0,0,0,0));
+      assert.deepEqual(add(math.quaternion(0,1,0,0),math.quaternion(0,-1,0,0)),math.quaternion(0,0,0,0));
+      assert.deepEqual(add(math.quaternion(0,0,1,0),math.quaternion(0,0,-1,0)),math.quaternion(0,0,0,0));
+      assert.deepEqual(add(math.quaternion(0,0,0,1),math.quaternion(0,0,0,-1)),math.quaternion(0,0,0,0));
+
+      assert.deepEqual(add(math.quaternion(1,0,0,0),math.quaternion(0,0,0,0)),math.quaternion(1,0,0,0));
+      assert.deepEqual(add(math.quaternion(0,1,0,0),math.quaternion(0,0,0,0)),math.quaternion(0,1,0,0));
+      assert.deepEqual(add(math.quaternion(0,0,1,0),math.quaternion(0,0,0,0)),math.quaternion(0,0,1,0));
+      assert.deepEqual(add(math.quaternion(0,0,0,1),math.quaternion(0,0,0,0)),math.quaternion(0,0,0,1));
+
     });
 
     it('should add a Quaternions and Complex number', function() {
-      var a = math.complex(2,3);
-      var b = math.quaternion(1,2,3,-4);
-      var c = math.quaternion(3,5,3,-4);
-      assert.deepEqual(add(a,b),c);
-      assert.deepEqual(add(b,a),c);
+
+      assert.deepEqual(add(math.complex(0,0), math.quaternion(3,4,5,6)), math.quaternion(3,4,5,6));
+      assert.deepEqual(add(math.complex(1,2), math.quaternion(0,0,0,0)), math.quaternion(1,2,0,0));
+      assert.deepEqual(add(math.complex(1,2), math.quaternion(3,4,5,6)), math.quaternion(4,6,5,6));
+      assert.deepEqual(add(math.complex(-1,2), math.quaternion(3,4,5,6)), math.quaternion(2,6,5,6));
+      assert.deepEqual(add(math.complex(1,-2), math.quaternion(3,4,5,6)), math.quaternion(4,2,5,6));
+
+      assert.deepEqual(add(math.complex(1,0), math.quaternion(-1,0,0,0)), math.quaternion(0,0,0,0));
+      assert.deepEqual(add(math.complex(0,1), math.quaternion(0,-1,0,0)), math.quaternion(0,0,0,0));
+
     });
 
     it('should add a number to a Quaternion',function() {
-      var a = math.quaternion(1,2,3,4);
-      var b = 5;
-      var c = math.quaternion(6,2,3,4);
-      assert.deepEqual(add(a,b),c);
-      assert.deepEqual(add(b,a),c);
-      assert.deepEqual(add( math.quaternion(3,-2,-1,7), math.quaternion(-4,5,-8,2)), math.quaternion(-1,3,-9,9));
+      assert.deepEqual(add(math.quaternion(1,2,3,4),5), math.quaternion(6,2,3,4));
+      assert.deepEqual(add(math.quaternion(1,2,3,4),-5), math.quaternion(-4,2,3,4));
+      assert.deepEqual(add(math.quaternion(1,2,3,4),0), math.quaternion(1,2,3,4));
+      assert.deepEqual(add(math.quaternion(0,0,0,0),5), math.quaternion(5,0,0,0));
     });
 
     it('should add a Quaternion to a complex number', function () {
-      assert.deepEqual(add( math.quaternion(), math.complex()), math.quaternion());
-      assert.deepEqual(add( math.quaternion(1,2,3,4), math.complex(1,2)), math.quaternion(2,4,3,4));
-      assert.deepEqual(add( math.quaternion(1,2,3,4), math.complex(-1,-2)), math.quaternion(0,0,3,4));
+      assert.deepEqual(add(math.quaternion(3,4,5,6), math.complex(0,0)), math.quaternion(3,4,5,6));
+      assert.deepEqual(add(math.quaternion(0,0,0,0), math.complex(1,2)), math.quaternion(1,2,0,0));
+      assert.deepEqual(add(math.quaternion(3,4,5,6), math.complex(1,2)), math.quaternion(4,6,5,6));
+      assert.deepEqual(add(math.quaternion(3,4,5,6), math.complex(-1,-2)), math.quaternion(2,2,5,6));
+      assert.deepEqual(add(math.quaternion(3,4,5,6), math.complex(1,-2)), math.quaternion(4,2,5,6));
+
+      assert.deepEqual(add(math.quaternion(-1,0,0,0), math.complex(1,0)), math.quaternion(0,0,0,0));
+      assert.deepEqual(add(math.quaternion(0,-1,0,0), math.complex(0,1)), math.quaternion(0,0,0,0));
+
     })
   });
 

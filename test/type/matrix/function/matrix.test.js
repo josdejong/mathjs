@@ -16,19 +16,19 @@ describe('matrix', function() {
     assert.ok(a instanceof math.type.Matrix);
     assert.deepEqual(math.size(a), matrix([0]));
   });
-  
+
   it('should create empty matrix, dense format, number datatype', function() {
     var a = matrix('dense', 'number');
     assert.ok(a instanceof math.type.Matrix);
     assert.deepEqual(math.size(a), matrix([0]));
     assert(a.datatype(), 'number');
   });
-  
+
   it('should create empty matrix, sparse', function() {
     var a = matrix('sparse');
     assert.ok(a instanceof math.type.Matrix);
   });
-  
+
   it('should create a matrix from an array', function() {
     var b = matrix([[1,2],[3,4]]);
     assert.ok(b instanceof math.type.Matrix);
@@ -43,7 +43,7 @@ describe('matrix', function() {
     assert.deepEqual(c, matrix([[1,2],[3,4]], 'dense'));
     assert.deepEqual(math.size(c), matrix([2,2], 'dense'));
   });
-  
+
   it('should be the identity if called with a matrix, dense format, number datatype', function() {
     var b = matrix([[1,2],[3,4]], 'dense', 'number');
     var c = matrix(b, 'dense');
@@ -53,14 +53,14 @@ describe('matrix', function() {
     assert.deepEqual(c._size, b._size);
     assert.ok(c.datatype() === 'number');
   });
-  
+
   it('should be the identity if called with a matrix, sparse', function() {
     var b = matrix([[1,2],[3,4]], 'sparse');
     var c = matrix(b, 'sparse');
     assert.ok(c._values != b._values); // data should be cloned
     assert.deepEqual(c, matrix([[1,2],[3,4]], 'sparse'));
   });
-  
+
   it('should be the identity if called with a matrix, sparse, number datatype', function() {
     var b = matrix([[1,2],[3,4]], 'sparse', 'number');
     var c = matrix(b, 'sparse');
@@ -74,6 +74,14 @@ describe('matrix', function() {
     assert.ok(d instanceof math.type.Matrix);
     assert.deepEqual(d, matrix([1,2,3,4,5]));
     assert.deepEqual(math.size(d), matrix([5]));
+  });
+
+  it('should create a 4x4 matrix from a Quaternion', function() {
+    var a = math.quaternion(1,2,3,4);
+    assert.deepEqual(matrix(a)._data, a.to4x4Matrix());
+    assert.deepEqual(matrix(math.quaternion(4,3,1,2))._data, matrix([[4,-3,-1,-2],[3,4,-2,1],[1,2,4,-3],[2,-1,3,4]])._data);
+    assert.deepEqual(matrix(math.quaternion(-4,-3,-1,-2))._data, matrix([[-4,3,1,2],[-3,-4,2,-1],[-1,-2,-4,3],[-2,1,-3,-4]])._data );
+    assert.deepEqual(matrix(math.quaternion(-1,9,0,-6))._data, matrix([[-1,-9,-0,6],[9,-1,6,0],[0,-6,-1,-9],[-6,-0,9,-1]])._data);
   });
 
   it('should throw an error if called with an invalid argument', function() {
@@ -91,7 +99,7 @@ describe('matrix', function() {
   it('should throw an error when called with an invalid storage format', function () {
     assert.throws(function () { math.matrix([], 1); }, /Unsupported matrix storage format: 1/);
   });
-  
+
   it('should throw an error when called with an unknown storage format', function () {
     assert.throws(function () { math.matrix([], '123'); }, /Unsupported matrix storage format: 123/);
   });
