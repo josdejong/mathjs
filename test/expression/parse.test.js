@@ -31,6 +31,11 @@ describe('parse', function() {
 
   it('should parse an empty expression', function() {
     assert.strictEqual(parse('').compile().eval(), undefined);
+    assert.strictEqual(parse('\n').compile().eval(), undefined);
+    assert.strictEqual(parse('\n\n').compile().eval(), undefined);
+    assert.strictEqual(parse('\n  \n').compile().eval(), undefined);
+    assert.strictEqual(parse('#foo\n').compile().eval(), undefined);
+    assert.strictEqual(parse('#foo\n#bar\n').compile().eval(), undefined);
   });
 
   it('should parse an array with expressions', function() {
