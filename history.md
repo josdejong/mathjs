@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170216-version-392">2017-02-16, version 3.9.2 <a href="#20170216-version-392" title="Permalink">#</a></h2>
+
+- Fixed #795: Parse error in case of a multi-line expression with just comments.
+
+
 <h2 id="20170206-version-391">2017-02-06, version 3.9.1 <a href="#20170206-version-391" title="Permalink">#</a></h2>
 
 - Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
