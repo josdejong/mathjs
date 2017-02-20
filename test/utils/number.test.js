@@ -352,6 +352,137 @@ describe('number', function() {
         });
       });
 
+      it('should split a number into sign, coefficient, exponent', function () {
+        assert.deepEqual(number.splitNumber(0),        {sign: '', coefficients: [0], exponent: 0});
+        assert.deepEqual(number.splitNumber(2.3),      {sign: '', coefficients: [2, 3], exponent: 0});
+
+        var a = number.splitNumber(2.3);
+        assert.strictEqual(a.coefficients[0], 2);
+        assert.strictEqual(a.coefficients[1], 3);
+        assert.strictEqual(a.exponent, 0);
+
+        assert.deepEqual(number.splitNumber(-2.3),     {sign: '-', coefficients: [2, 3], exponent: 0});
+        assert.deepEqual(number.splitNumber('02.3'),   {sign: '', coefficients: [2, 3], exponent: 0});
+        assert.deepEqual(number.splitNumber(2300),     {sign: '', coefficients: [2, 3], exponent: 3});
+        assert.deepEqual(number.splitNumber(0.00023),  {sign: '', coefficients: [2, 3], exponent: -4});
+        assert.deepEqual(number.splitNumber('0.00023'),{sign: '', coefficients: [2, 3], exponent: -4});
+        assert.deepEqual(number.splitNumber('000.0002300'),  {sign: '', coefficients: [2, 3], exponent: -4});
+        assert.deepEqual(number.splitNumber('002300'), {sign: '', coefficients: [2, 3], exponent: 3});
+        assert.deepEqual(number.splitNumber('2.3e3'),  {sign: '', coefficients: [2, 3], exponent: 3});
+        assert.deepEqual(number.splitNumber('2.3e+3'),  {sign: '', coefficients: [2, 3], exponent: 3});
+        assert.deepEqual(number.splitNumber('-2.3e3'), {sign: '-', coefficients: [2, 3], exponent: 3});
+        assert.deepEqual(number.splitNumber('23e3'),   {sign: '', coefficients: [2, 3], exponent: 4});
+        assert.deepEqual(number.splitNumber('-23e3'),  {sign: '-', coefficients: [2, 3], exponent: 4});
+        assert.deepEqual(number.splitNumber('2.3e-3'), {sign: '', coefficients: [2, 3], exponent: -3});
+        assert.deepEqual(number.splitNumber('23e-3'),  {sign: '', coefficients: [2, 3], exponent: -2});
+        assert.deepEqual(number.splitNumber('-23e-3'),  {sign: '-', coefficients: [2, 3], exponent: -2});
+        assert.deepEqual(number.splitNumber('99.99'),  {sign: '', coefficients: [9,9,9,9], exponent: 1});
+      });
+
+      it('should round digits of a a split number', function () {
+        assert.deepEqual(number.roundDigits(number.splitNumber(123456), 3), number.splitNumber(123000));
+        assert.deepEqual(number.roundDigits(number.splitNumber(123456), 4), number.splitNumber(123500));
+        assert.deepEqual(number.roundDigits(number.splitNumber(0.00555), 2), number.splitNumber(0.0056));
+        assert.deepEqual(number.roundDigits(number.splitNumber(99.99), 2), number.splitNumber(100));
+      });
+
+      it('should format a number with toFixed', function () {
+        assert.strictEqual(number.toFixed(0), '0');
+        assert.strictEqual(number.toFixed(2300), '2300');
+        assert.strictEqual(number.toFixed(-2300), '-2300');
+        assert.strictEqual(number.toFixed(19.9), '20');
+        assert.strictEqual(number.toFixed(99.9), '100');
+        assert.strictEqual(number.toFixed(99.5), '100');
+        assert.strictEqual(number.toFixed(99.4), '99');
+        assert.strictEqual(number.toFixed(2.3), '2');
+        assert.strictEqual(number.toFixed(2.5), '3');
+        assert.strictEqual(number.toFixed(2.9), '3');
+        assert.strictEqual(number.toFixed(1.5), '2');
+        assert.strictEqual(number.toFixed(-1.5), '-2');
+        assert.strictEqual(number.toFixed(123.45), '123');
+        assert.strictEqual(number.toFixed(0.005), '0');
+        assert.strictEqual(number.toFixed(0.7), '1');
+
+        assert.strictEqual(number.toFixed(0.15, 1), '0.2');
+        assert.strictEqual(number.toFixed(123.4567, 1), '123.5');
+        assert.strictEqual(number.toFixed(-123.4567, 1), '-123.5');
+        assert.strictEqual(number.toFixed(0.23, 1), '0.2');
+        assert.strictEqual(number.toFixed(0.005, 5), '0.00500');
+        assert.strictEqual(number.toFixed(0.00567, 4), '0.0057');
+        assert.strictEqual(number.toFixed(0.00999, 2), '0.01');
+        assert.strictEqual(number.toFixed(0.00999, 3), '0.010');
+        assert.strictEqual(number.toFixed(-0.00999, 3), '-0.010');
+
+        assert.strictEqual(number.toFixed(NaN, 2), 'NaN');
+        assert.strictEqual(number.toFixed(Infinity, 2), 'Infinity');
+        assert.strictEqual(number.toFixed(-Infinity, 2), '-Infinity');
+      });
+
+      it('should format a number with toExponential', function () {
+        assert.strictEqual(number.toExponential(0), '0e+0');
+        assert.strictEqual(number.toExponential(0.15), '1.5e-1');
+        assert.strictEqual(number.toExponential(1), '1e+0');
+        assert.strictEqual(number.toExponential(-1), '-1e+0');
+        assert.strictEqual(number.toExponential(1000), '1e+3');
+        assert.strictEqual(number.toExponential(2300), '2.3e+3');
+        assert.strictEqual(number.toExponential(-2300), '-2.3e+3');
+        assert.strictEqual(number.toExponential(3.568), '3.568e+0');
+        assert.strictEqual(number.toExponential(0.00123), '1.23e-3');
+        assert.strictEqual(number.toExponential(-0.00123), '-1.23e-3');
+        assert.strictEqual(number.toExponential('20.3e2'), '2.03e+3');
+
+        assert.strictEqual(number.toExponential(0, 2), '0.0e+0');
+        assert.strictEqual(number.toExponential(0.15, 1), '2e-1');
+        assert.strictEqual(number.toExponential(1234, 2), '1.2e+3');
+        assert.strictEqual(number.toExponential(-1234, 2), '-1.2e+3');
+        assert.strictEqual(number.toExponential(1234, 6), '1.23400e+3');
+        assert.strictEqual(number.toExponential(9999, 2), '1.0e+4');
+
+        assert.strictEqual(number.toExponential(NaN, 2), 'NaN');
+        assert.strictEqual(number.toExponential(Infinity, 2), 'Infinity');
+        assert.strictEqual(number.toExponential(-Infinity, 2), '-Infinity');
+
+      });
+
+      it('should format a number with toPrecision', function () {
+        assert.strictEqual(number.toPrecision(0), '0');
+        assert.strictEqual(number.toPrecision(0.15), '0.15');
+        assert.strictEqual(number.toPrecision(2300), '2300');
+        assert.strictEqual(number.toPrecision(-2300), '-2300');
+        assert.strictEqual(number.toPrecision(0.00123), '0.00123');
+        assert.strictEqual(number.toPrecision(-0.00123), '-0.00123');
+        assert.strictEqual(number.toPrecision(1.2e-8), '1.2e-8');
+
+        assert.strictEqual(number.toPrecision(2300, 6), '2300.00');
+        assert.strictEqual(number.toPrecision(1234.5678, 6), '1234.57');
+        assert.strictEqual(number.toPrecision(1234.5678, 2), '1200');
+        assert.strictEqual(number.toPrecision(1234, 2), '1200');
+        assert.strictEqual(number.toPrecision(0.15, 1), '0.2');
+        assert.strictEqual(number.toPrecision(0.004, 3), '0.00400');
+        assert.strictEqual(number.toPrecision(0.00123456, 5), '0.0012346');
+        assert.strictEqual(number.toPrecision(999, 2), '1000');
+        assert.strictEqual(number.toPrecision(99900, 2), '100000');
+        assert.strictEqual(number.toPrecision(99999, 2), '100000');
+        assert.strictEqual(number.toPrecision(999e7, 2), '1.0e+10');
+        assert.strictEqual(number.toPrecision(0.00999, 2), '0.010');
+        assert.strictEqual(number.toPrecision(-0.00999, 2), '-0.010');
+
+        assert.strictEqual(number.toPrecision(NaN, 2), 'NaN');
+        assert.strictEqual(number.toPrecision(Infinity, 2), 'Infinity');
+        assert.strictEqual(number.toPrecision(-Infinity, 2), '-Infinity');
+      });
+
+      it('should should throw an error on invalid input', function () {
+        assert.throws(function () {number.splitNumber('2.3.4')}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber('2.3ee')}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber('2.3e4.3')}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber('2.3a')}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber('foo')}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber(NaN)}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber('NaN')}, /SyntaxError/);
+        assert.throws(function () {number.splitNumber(new Date())}, /SyntaxError/);
+      });
+
     });
 
     it('should format numbers with precision as second parameter', function() {

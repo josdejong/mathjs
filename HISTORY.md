@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.9.3
+
+- Fixed `math.round` not accepting inputs `NaN`, `Infinity`, `-Infinity`.
+
+
 ## 2017-02-16, version 3.9.2
 
 - Fixed #795: Parse error in case of a multi-line expression with just comments.
