@@ -37,7 +37,8 @@ function updateVersionFile() {
       '// Changes made in this file will be overwritten.\n');
 }
 
-var bannerPlugin = new webpack.BannerPlugin(createBanner(), {
+var bannerPlugin = new webpack.BannerPlugin({
+  banner: createBanner(),
   entryOnly: true,
   raw: true
 });
