@@ -3,7 +3,9 @@
 
 ## not yet released, version 3.9.3
 
+- Fixed #797: issue with production builds of React Native projects.
 - Fixed `math.round` not accepting inputs `NaN`, `Infinity`, `-Infinity`.
+- Upgraded all dependencies.
 
 
 ## 2017-02-16, version 3.9.2
