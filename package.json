@@ -79,7 +79,7 @@
     "complex.js": "2.0.1",
     "decimal.js": "5.0.8",
     "fraction.js": "3.3.1",
-    "seed-random": "^2.2.0",
+    "seed-random": "2.2.0",
     "tiny-emitter": "1.0.2",
     "typed-function": "0.10.5"
   },
