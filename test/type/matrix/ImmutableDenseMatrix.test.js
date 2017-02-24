@@ -202,8 +202,18 @@ describe('ImmutableDenseMatrix', function() {
 
     it('should throw an exception on resize', function() {
       var m = new ImmutableDenseMatrix([[1,2,3],[4,5,6]]);
-      assert.throws(function () { m.resize([2,4]); }, /Cannot invoke resize on an Immutable Matrix instance/);      
+      assert.throws(function () { m.resize([2,4]); }, /Cannot invoke resize on an Immutable Matrix instance/);
     });
+
+  });
+
+  describe('reshape', function() {
+
+    it('should throw an exception on reshape', function() {
+      var m = new ImmutableDenseMatrix([[1,2,3],[4,5,6]]);
+      assert.throws(function () { m.reshape([6,1]); }, /Cannot invoke reshape on an Immutable Matrix instance/);
+    });
+
   });
 
   describe('get', function () {
