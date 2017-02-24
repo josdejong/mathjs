@@ -47,12 +47,12 @@ describe('distribution', function () {
 
   before(function () {
     // Seed Random Number Generator for Reproducibility
-    math.seedrandom('test');
+    math.config({randomSeed: 'test'});
   });
 
   after(function () {
     // Randomly seed random number generator
-    math.seedrandom();
+    math.config({randomSeed: null});
   });
 
   beforeEach(function() {
