@@ -334,6 +334,44 @@ describe('DenseMatrix', function() {
         ]);
     });
   });
+
+  describe('reshape', function () {
+
+    it('should reshape the matrix properly', function () {
+      var m = new DenseMatrix([[1,2,3],[4,5,6]]);
+      m.reshape([3,2]);
+      assert.deepEqual(m.valueOf(), [[1,2], [3,4], [5,6]]);
+      m.reshape([6,1]);
+      assert.deepEqual(m.valueOf(), [[1],[2],[3],[4],[5],[6]]);
+    });
+
+    it('should return a copy only when specified', function () {
+      var m1 = new DenseMatrix([[1, 2], [3, 4]]);
+      var m2 = m1.reshape([4]);
+      var m3 = m2.reshape([1, 4], true);
+
+      assert.strictEqual(m2, m1);
+      assert.deepEqual(m2.valueOf(), [1, 2, 3, 4]);
+      assert.deepEqual(m2.valueOf(), m1.valueOf());
+
+      assert.notStrictEqual(m3, m2);
+      assert.deepEqual(m3.valueOf(), [[1, 2, 3, 4]]);
+      assert.notDeepEqual(m3.valueOf(), m2.valueOf());
+    });
+
+    it('should update the size of the reshaped matrix', function () {
+      var m1 = new DenseMatrix([[1, 2], [3, 4]]);
+      var m2 = m1.reshape([4], true);
+
+      assert.deepEqual(m1.size(), [2, 2]);
+
+      m1.reshape([1, 1, 4]);
+
+      assert.deepEqual(m1.size(), [1, 1, 4]);
+      assert.deepEqual(m2.size(), [4]);
+    });
+
+  });
   
   describe('get', function () {
 
