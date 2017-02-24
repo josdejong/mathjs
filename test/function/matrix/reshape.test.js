@@ -1,4 +1,3 @@
-// test resize
 var assert = require('assert'),
     error = require('../../../lib/error/index'),
     math = require('../../../index'),
@@ -61,7 +60,7 @@ describe('reshape', function() {
     assert.doesNotThrow(function () {math.reshape([[1, 2]], [2])});
   });
 
-  it('should LaTeX resize', function () {
+  it('should LaTeX reshape', function () {
     var expression = math.parse('reshape([1,2],1)');
     assert.equal(expression.toTex(), '\\mathrm{reshape}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)');
   });
