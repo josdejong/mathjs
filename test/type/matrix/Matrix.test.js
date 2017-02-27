@@ -66,6 +66,14 @@ describe('matrix', function() {
       assert.throws(function () { m.resize(); }, /Cannot invoke resize on a Matrix interface/);
     });
   });
+
+  describe('reshape', function() {
+
+    it('should throw exception', function() {
+      var m = new Matrix();
+      assert.throws(function () { m.reshape(); }, /Cannot invoke reshape on a Matrix interface/);
+    });
+  });
   
   describe('get', function() {
 
