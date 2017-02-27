@@ -11,7 +11,8 @@ describe('factory', function() {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-12
+      epsilon: 1e-12,
+      randomSeed: null
     });
   });
 
@@ -27,7 +28,8 @@ describe('factory', function() {
       number: 'BigNumber',
       precision: 64,
       predictable: false,
-      epsilon: 1e-12
+      epsilon: 1e-12,
+      randomSeed: null
     });
   });
 
@@ -59,7 +61,8 @@ describe('factory', function() {
       number: 'number',
       precision: 64,
       predictable: false,
-      epsilon: 1e-12
+      epsilon: 1e-12,
+      randomSeed: null
     });
 
     // restore the original config

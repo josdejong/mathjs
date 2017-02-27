@@ -1,6 +1,5 @@
 var assert = require('assert');
 var error = require('../../../lib/error/index');
-var seed = require('seed-random');
 var _ = require('underscore');
 var math = require('../../../index');
 math.import(require('../../../lib/function/probability/distribution'));
@@ -47,14 +46,13 @@ describe('distribution', function () {
   var originalRandom, uniformDistrib;
 
   before(function () {
-    // replace the original Math.random with a reproducible one
-    originalRandom = Math.random;
-    Math.random = seed('key');
+    // Seed Random Number Generator for Reproducibility
+    math.config({randomSeed: 'test'});
   });
 
   after(function () {
-    // restore the original random function
-    Math.random = originalRandom;
+    // Randomly seed random number generator
+    math.config({randomSeed: null});
   });
 
   beforeEach(function() {

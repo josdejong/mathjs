@@ -76,10 +76,11 @@
     "unit"
   ],
   "dependencies": {
+    "seed-random": "2.2.0",
+    "tiny-emitter": "1.0.2",
     "decimal.js": "7.1.1",
     "fraction.js": "4.0.0",
     "complex.js": "2.0.1",
-    "tiny-emitter": "1.1.0",
     "typed-function": "0.10.5"
   },
   "devDependencies": {
