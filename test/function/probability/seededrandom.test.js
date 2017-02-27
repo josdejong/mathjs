@@ -82,4 +82,20 @@ describe('seed', function () {
     var second = math.randomInt(1, 100);
     assert.notEqual(first, second);
   });
+
+  it('should work for number seeds', function () {
+    math.config({randomSeed: 1});
+    var first = math.random();
+    math.config({randomSeed: 1});
+    var second = math.random();
+    assert.equal(first, second);
+  });
+
+  it('should work for object seeds', function () {
+    math.config({randomSeed: {a: 1}});
+    var first = math.random();
+    math.config({randomSeed: {a: 1}});
+    var second = math.random();
+    assert.equal(first, second);
+  });
 });
