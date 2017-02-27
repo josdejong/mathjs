@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "3.9.2",
+  "version": "3.9.3",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -76,26 +76,26 @@
     "unit"
   ],
   "dependencies": {
-    "complex.js": "2.0.1",
-    "decimal.js": "5.0.8",
-    "fraction.js": "3.3.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "1.0.2",
+    "decimal.js": "7.1.1",
+    "fraction.js": "4.0.0",
+    "complex.js": "2.0.1",
     "typed-function": "0.10.5"
   },
   "devDependencies": {
-    "glob": "7.0.3",
+    "glob": "7.1.1",
     "gulp": "3.9.1",
-    "gulp-util": "3.0.7",
-    "istanbul": "0.4.3",
+    "gulp-util": "3.0.8",
+    "istanbul": "0.4.5",
     "mkdirp": "0.5.1",
-    "mocha": "2.4.5",
+    "mocha": "3.2.0",
     "q": "1.4.1",
     "seed-random": "2.2.0",
     "tar": "2.2.1",
-    "uglify-js": "2.6.2",
+    "uglify-js": "2.7.5",
     "underscore": "1.8.3",
-    "webpack": "1.13.0"
+    "webpack": "2.2.1"
   },
   "main": "./index",
   "scripts": {

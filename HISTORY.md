@@ -1,6 +1,13 @@
 # History
 
 
+## 2017-02-22, version 3.9.3
+
+- Fixed #797: issue with production builds of React Native projects.
+- Fixed `math.round` not accepting inputs `NaN`, `Infinity`, `-Infinity`.
+- Upgraded all dependencies.
+
+
 ## 2017-02-16, version 3.9.2
 
 - Fixed #795: Parse error in case of a multi-line expression with just comments.
