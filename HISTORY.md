@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.10.0
+
+- Implemented function `reshape`. Thanks @patgrasso.
+
+
 ## 2017-02-22, version 3.9.3
 
 - Fixed #797: issue with production builds of React Native projects.
