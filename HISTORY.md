@@ -4,6 +4,8 @@
 ## not yet released, version 3.10.0
 
 - Implemented function `reshape`. Thanks @patgrasso.
+- Implemented configuration option `seedRandom` for deterministic random
+  numbers. Thanks @morsecodist.
 
 
 ## 2017-02-22, version 3.9.3
