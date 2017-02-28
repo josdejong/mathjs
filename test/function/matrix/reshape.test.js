@@ -64,5 +64,45 @@ describe('reshape', function() {
     var expression = math.parse('reshape([1,2],1)');
     assert.equal(expression.toTex(), '\\mathrm{reshape}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)');
   });
+
+  it('should reshape a SparseMatrix', function() {
+
+    /*
+     * Must use toArray because SparseMatrix.reshape currently does not preserve
+     * the order of the _index and _values arrays (this does not matter?)
+     */
+
+    var matrix = math.matrix([[0,1,2],[3,4,5]], 'sparse');
+    assert.deepEqual(math.reshape(matrix, [3, 2]).toArray(),
+        [[0,1], [2,3], [4,5]]);
+
+    assert.deepEqual(math.reshape(matrix, [6, 1]).toArray(),
+        [[0],[1],[2],[3],[4],[5]]);
+
+    assert.deepEqual(math.reshape(matrix, [1, 6]).toArray(),
+        [[0,1,2,3,4,5]]);
+
+    matrix = math.matrix([[0,1,2,3,4,5]], 'sparse');
+    assert.deepEqual(math.reshape(matrix, [3, 2]).toArray(),
+        [[0,1], [2,3], [4,5]]);
+
+    matrix = math.matrix([[0],[1],[2],[3],[4],[5]], 'sparse');
+    assert.deepEqual(math.reshape(matrix, [3, 2]).toArray(),
+        [[0,1], [2,3], [4,5]]);
+
+  });
+
+  it('should throw on attempting to reshape an ImmutableDenseMatrix', function() {
+    var immutableMatrix = new math.type.ImmutableDenseMatrix([[1,2],[3,4]]);
+    assert.throws(function() { math.reshape(immutableMatrix, [1, 4]); },
+        /Cannot invoke reshape on an Immutable Matrix instance/);
+  });
+
+  it('should throw on attempting to reshape a Matrix (abstract type)', function() {
+    var matrix = new math.type.Matrix([[1,2],[3,4]]);
+    assert.throws(function() { math.reshape(matrix, [1, 4]); },
+        /Cannot invoke reshape on a Matrix interface/);
+  });
+
 });
 
