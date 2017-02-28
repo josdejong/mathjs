@@ -3,7 +3,7 @@
 
 ## not yet released, version 3.10.0
 
-- Implemented function `reshape`. Thanks @patgrasso.
+- Implemented function `reshape`. Thanks @patgrasso and @ericman314.
 - Implemented configuration option `seedRandom` for deterministic random
   numbers. Thanks @morsecodist.
 
