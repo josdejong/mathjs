@@ -6,6 +6,7 @@
 - Implemented function `reshape`. Thanks @patgrasso and @ericman314.
 - Implemented configuration option `seedRandom` for deterministic random
   numbers. Thanks @morsecodist.
+- Small fixes in the docs. Thanks @HarrySarson.
 
 
 ## 2017-02-22, version 3.9.3
