@@ -23,10 +23,6 @@ Math.js can be installed via various package managers:
       <td><a href="http://bower.io/">bower</a></td>
       <td><pre class="highlight">bower install mathjs</pre></td>
     </tr>
-    <tr>
-      <td><a href="https://github.com/component/component/">component(1)</a></td>
-      <td><pre class="highlight">component install josdejong/mathjs</pre></td>
-    </tr>
   </tbody>
 </table>
 
@@ -40,22 +36,22 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table class="download">
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.3/math.js">
-        Development (version 3.9.3)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.0/math.js">
+        Development (version 3.10.0)
       </a>
     </td>
     <td>
-      <span id="development-size">1480 kB</span>, uncompressed with comments
+      <span id="development-size">1497 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.9.3/math.min.js">
-        Production (version 3.9.3)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.0/math.min.js">
+        Production (version 3.10.0)
       </a>
     </td>
     <td>
-      <span id="production-size">117 kB</span>, minified and gzipped
+      <span id="production-size">118 kB</span>, minified and gzipped
     </td>
   </tr>
 </table>

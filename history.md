@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170305-version-3100">2017-03-05, version 3.10.0 <a href="#20170305-version-3100" title="Permalink">#</a></h2>
+
+- Implemented function `reshape`. Thanks @patgrasso and @ericman314.
+- Implemented configuration option `seedRandom` for deterministic random
+  numbers. Thanks @morsecodist.
+- Small fixes in the docs. Thanks @HarrySarson.
+- Dropped support for component package manager (which became deprecated about
+  one and a half year ago).
+
+
 <h2 id="20170222-version-393">2017-02-22, version 3.9.3 <a href="#20170222-version-393" title="Permalink">#</a></h2>
 
 - Fixed #797: issue with production builds of React Native projects.
