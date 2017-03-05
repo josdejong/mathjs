@@ -5,7 +5,7 @@ This document describes the steps required to publish a new version of math.js.
 
 ## Update version number
 
-Update the version number in both package.json and component.json.
+Update the version number package.json.
 
 
 ## Update history
@@ -64,8 +64,7 @@ Publish to npm:
     npm publish
 
 No need to publish for bower: The library is already published because of the
-new version tag. There is also no need to publish a component(1) build, because
-component(1) uses GitHub as it's registry.
+new version tag.
 
 No need to publish at cdnjs: should be updated automatically by the owners
 of cdnjs. This is currently done manually and can easily take up to a day

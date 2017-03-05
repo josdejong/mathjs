@@ -1,12 +1,14 @@
 # History
 
 
-## not yet released, version 3.10.0
+## 2017-03-05, version 3.10.0
 
 - Implemented function `reshape`. Thanks @patgrasso and @ericman314.
 - Implemented configuration option `seedRandom` for deterministic random
   numbers. Thanks @morsecodist.
 - Small fixes in the docs. Thanks @HarrySarson.
+- Dropped support for component package manager (which became deprecated about
+  one and a half year ago).
 
 
 ## 2017-02-22, version 3.9.3

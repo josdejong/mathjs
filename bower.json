@@ -13,7 +13,6 @@
     ".npmignore",
     ".travis.yml",
     "gulpfile.js",
-    "component.json",
     "package.json"
   ]
 }

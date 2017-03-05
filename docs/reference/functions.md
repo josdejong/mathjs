@@ -147,6 +147,7 @@ Function | Description
 [math.ones(m,&nbsp;n,&nbsp;p,&nbsp;...)](functions/ones.md) | Create a matrix filled with ones.
 [math.partitionSelect(x,&nbsp;k)](functions/partitionSelect.md) | Partition-based selection of an array or 1D matrix.
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.md) | Create an array from a range.
+[math.reshape(x,&nbsp;sizes)](functions/reshape.md) | Reshape a multi dimensional array to fit the specified dimensions.
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.md) | Resize a matrix.
 [math.size(x)](functions/size.md) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.md) | Sort the items in a matrix.
