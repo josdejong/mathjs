@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.10.1
+
+- Fixed `xgcd` for negative values. Thanks @litmit.
+
+
 ## 2017-03-05, version 3.10.0
 
 - Implemented function `reshape`. Thanks @patgrasso and @ericman314.
