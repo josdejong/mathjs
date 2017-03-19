@@ -93,7 +93,6 @@
     "mkdirp": "0.5.1",
     "mocha": "3.2.0",
     "q": "1.4.1",
-    "seed-random": "2.2.0",
     "tar": "2.2.1",
     "uglify-js": "2.7.5",
     "underscore": "1.8.3",
