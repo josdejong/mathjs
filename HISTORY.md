@@ -4,6 +4,8 @@
 ## not yet released, version 3.10.1
 
 - Fixed `xgcd` for negative values. Thanks @litmit.
+- Fixed #807: function transform of existing functions not being removed when
+  overriding such a function.
 
 
 ## 2017-03-05, version 3.10.0

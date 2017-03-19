@@ -227,6 +227,19 @@ describe('import', function() {
     assert.strictEqual(math.expression.transform.foo, foo.transform);
   });
 
+  it('should override a function with transform for one without', function() {
+    function mean () {
+      return 'test'
+    }
+
+    math.import({mean: mean}, {override: true});
+
+    assert(math.hasOwnProperty('mean'));
+    assert.strictEqual(math.mean, mean);
+    assert.strictEqual(math.expression.transform.hasOwnProperty('mean'), false);
+    assert.strictEqual(math.expression.transform.mean, mean);
+  });
+
   it('should throw an error when a factory function has a transform', function() {
     assert.throws(function () {
       math.import({
