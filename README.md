@@ -57,6 +57,10 @@ math.chain(3)
     .done(); // 14
 ```
 
+## Browser support
+
+Math.js works on any ES5 compatible JavaScript engine: node.js 0.10, and Internet Explorer 9 and newer, and all other browsers (Chrome, Firefox, Safari). If support for old browsers like Internet Explorer 8 is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+
 
 ## Documentation
 
