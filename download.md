@@ -76,6 +76,11 @@ Math.js is available as a RESTful web service: <a href="http://api.mathjs.org">h
 A changelog describing the changes with each release is available on the page [History](history.html).
 
 
+<h1 id="browsersupport">Browser support <a href="#browsersupport" title="Permalink">#</a></h1>
+
+Math.js works on any ES5 compatible JavaScript engine: node.js 0.10 and newer and IE9 and newer. If support for old browsers (Internet Explorer 8 and older) is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+
+
 <h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>
 
 The source code of math.js is available on GitHub: [https://github.com/josdejong/mathjs](https://github.com/josdejong/mathjs).
