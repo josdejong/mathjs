@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.10.1
+## 2017-03-26, version 3.10.1
 
 - Fixed `xgcd` for negative values. Thanks @litmit.
 - Fixed #807: function transform of existing functions not being removed when
