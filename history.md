@@ -5,6 +5,13 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170326-version-3101">2017-03-26, version 3.10.1 <a href="#20170326-version-3101" title="Permalink">#</a></h2>
+
+- Fixed `xgcd` for negative values. Thanks @litmit.
+- Fixed #807: function transform of existing functions not being removed when
+  overriding such a function.
+
+
 <h2 id="20170305-version-3100">2017-03-05, version 3.10.0 <a href="#20170305-version-3100" title="Permalink">#</a></h2>
 
 - Implemented function `reshape`. Thanks @patgrasso and @ericman314.

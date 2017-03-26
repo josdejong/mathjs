@@ -12,7 +12,7 @@ File: [currency_conversion.html](currency_conversion.html)
 <head>
   <title>math.js | currency conversion</title>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.10.1/math.min.js"></script>
 
   <style>
     body,
