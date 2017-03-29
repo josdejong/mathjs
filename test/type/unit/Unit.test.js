@@ -1173,4 +1173,31 @@ describe('Unit', function() {
     });
   });
 
+  describe('toSI', function() {
+    it('should return a clone of the unit', function() {
+      var u1 = Unit.parse('3 ft');
+      var u2 = u1.toSI();
+      assert.equal(u1 === u2, false);
+    });
+
+    it('should return the unit in SI units', function() {
+      assert.equal(Unit.parse('3 ft').toSI().format(10), "0.9144 m");
+    });
+
+    it('should return SI units for valueless units', function() {
+      assert.equal(Unit.parse('ft/minute').toSI().toString(), "m / s");
+    });
+
+    it('should return SI units for custom units defined from other units', function() {
+      Unit.createUnit({foo:'3 kW'}, {override: true});
+      assert.equal(Unit.parse('42 foo').toSI().toString(), "1.26e+5 (kg m^2) / s^3");
+    });
+
+    it('should throw if custom unit not defined from existing units', function() {
+      Unit.createUnit({baz:''}, {override:true});
+      assert.throws(function() { Unit.parse('10 baz').toSI(); }, /Cannot express custom unit/);
+    });
+
+  });
+
 });
