@@ -22,6 +22,7 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
   - [Expression trees](expressions/expression_trees.md)
   - [Algebra](expressions/algebra.md)
   - [Customization](expressions/customization.md)
+  - [Security](expressions/security.md)
 - **[Data Types](datatypes/index.md)**
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)
