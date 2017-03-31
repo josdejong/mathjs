@@ -2052,12 +2052,16 @@ describe('parse', function() {
     it ('should not allow calling Function', function () {
       assert.throws(function () {
         math.eval('disguised("console.log(\\"hacked...\\")")()', {disguised: Function})
+        math.eval('obj.disguised("console.log(\\"hacked...\\")")()', {obj: {disguised: Function}})
+        math.eval('fn()("console.log(\\"hacked...\\")")()', {fn: function () {return Function}})
       }, /Error: Calling "Function" is not allowed/)
     })
 
     it ('should not allow calling eval', function () {
       assert.throws(function () {
         math.eval('disguised("console.log(\\"hacked...\\")")()', {disguised: eval})
+        math.eval('obj.disguised("console.log(\\"hacked...\\")")()', {obj: {disguised: eval}})
+        math.eval('fn()("console.log(\\"hacked...\\")")()', {fn: function () {return eval}})
       }, /Error: Calling "eval" is not allowed/)
     })
 
