@@ -226,6 +226,9 @@ specified unit (a unit with optional prefix but without value).
 The type of the returned value depends on how the unit was created and 
 can be `number`, `Fraction`, or `BigNumber`.
 
+### unit.toSI()
+Returns a clone of a unit represented in SI units. Works with units with or without a value.
+
 ### unit.toString()
 Get a string representation of the unit. The function will
 determine the best fitting prefix for the unit.
