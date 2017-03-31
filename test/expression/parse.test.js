@@ -2045,7 +2045,6 @@ describe('parse', function() {
 
     it ('should not allow calling Function from an object property', function () {
       assert.throws(function () {
-        console.log(math.eval('[].map.constructor("console.log(\\"hacked...\\")")()'))
         math.eval('[].map.constructor("console.log(\\"hacked...\\")")()')
       }, /Error: Calling "Function" is not allowed/)
     })
