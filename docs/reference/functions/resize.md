@@ -45,4 +45,5 @@ math.resize("hello", [8], "!");    // returns string 'hello!!!'
 
 [size](size.html),
 [squeeze](squeeze.html),
-[subset](subset.html)
+[subset](subset.html),
+[reshape](reshape.html)

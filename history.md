@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170331-version-3102">2017-03-31, version 3.10.2 <a href="#20170331-version-3102" title="Permalink">#</a></h2>
+
+- Fixed a security vulnerability in the expression parser allowing
+  execution of arbitrary JavaScript. Thanks @CapacitorSet and @denvit.
+
+
 <h2 id="20170326-version-3101">2017-03-26, version 3.10.1 <a href="#20170326-version-3101" title="Permalink">#</a></h2>
 
 - Fixed `xgcd` for negative values. Thanks @litmit.

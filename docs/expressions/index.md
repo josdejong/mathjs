@@ -22,3 +22,4 @@ This section is divided in the following pages:
 - [Algebra](algebra.html) describing symbolic computation in math.js.
 - [Customization](customization.html) describes how to customize processing and
   evaluation of expressions.
+- [Security](security.html) about security risks of executing arbitrary expressions.
