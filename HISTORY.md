@@ -1,6 +1,12 @@
 # History
 
 
+## 2017-03-31, version 3.10.2
+
+- Fixed a security vulnerability in the expression parser allowing
+  execution of arbitrary JavaScript. Thanks @CapacitorSet and @denvit.
+
+
 ## 2017-03-26, version 3.10.1
 
 - Fixed `xgcd` for negative values. Thanks @litmit.

@@ -2041,4 +2041,27 @@ describe('parse', function() {
 
   });
 
+  describe('security', function () {
+
+    it ('should not allow calling Function from an object property', function () {
+      assert.throws(function () {
+        console.log(math.eval('[].map.constructor("console.log(\\"hacked...\\")")()'))
+        math.eval('[].map.constructor("console.log(\\"hacked...\\")")()')
+      }, /Error: Calling "Function" is not allowed/)
+    })
+
+    it ('should not allow calling Function', function () {
+      assert.throws(function () {
+        math.eval('disguised("console.log(\\"hacked...\\")")()', {disguised: Function})
+      }, /Error: Calling "Function" is not allowed/)
+    })
+
+    it ('should not allow calling eval', function () {
+      assert.throws(function () {
+        math.eval('disguised("console.log(\\"hacked...\\")")()', {disguised: eval})
+      }, /Error: Calling "eval" is not allowed/)
+    })
+
+  });
+
 });

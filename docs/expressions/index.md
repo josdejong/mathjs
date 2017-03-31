@@ -18,3 +18,5 @@ This section is divided in the following pages:
 - [Algebra](algebra.md) describing symbolic computation in math.js.
 - [Customization](customization.md) describes how to customize processing and
   evaluation of expressions.
+- [Security](security.md) about security risks of executing arbitrary
+  expressions.
