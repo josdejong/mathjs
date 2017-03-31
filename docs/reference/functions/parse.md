@@ -5,6 +5,9 @@
 Parse an expression. Returns a node tree, which can be evaluated by
 invoking node.eval();
 
+Note the evaluating arbitrary expressions may involve security risks,
+see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
+
 
 ## Syntax
 

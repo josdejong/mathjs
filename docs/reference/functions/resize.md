@@ -41,4 +41,5 @@ math.resize("hello", [8], "!");    // returns string 'hello!!!'
 
 [size](size.md),
 [squeeze](squeeze.md),
-[subset](subset.md)
+[subset](subset.md),
+[reshape](reshape.md)
