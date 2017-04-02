@@ -84,6 +84,14 @@ describe('security', function () {
     }, /Error: Access to "Function" is disabled/)
   })
 
+  it ('should not allow calling Function via a symbol', function () {
+    assert.throws(function () {
+      math.eval('O = {}.constructor\n' +
+          'd = O.getOwnPropertyDescriptor(O.__proto__, "constructor")\n' +
+          'eval("value", d)("console.log(\'hacked...\')")()')
+    }, /Error: Access to "Function" is disabled/)
+  })
+
   it ('should not allow calling Function via a specially encoded constructor property name', function () {
     assert.throws(function () {
       math.eval('[].map["\\x63onstructor"]("console.log(\'hacked...\')")()')
