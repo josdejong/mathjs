@@ -5,9 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170403-version-3112">2017-04-03, version 3.11.2 <a href="#20170403-version-3112" title="Permalink">#</a></h2>
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
 <h2 id="20170402-version-3111">2017-04-02, version 3.11.1 <a href="#20170402-version-3111" title="Permalink">#</a></h2>
 
-- Fixed more security vulnerabilities. Thanks Joe Vennix and @xfix.
+- Fixed security vulnerabilities in the expression parser.
+  Thanks Joe Vennix and @xfix.
 
 
 <h2 id="20170402-version-3110">2017-04-02, version 3.11.0 <a href="#20170402-version-3110" title="Permalink">#</a></h2>
@@ -15,6 +21,7 @@ layout: default
 - Implemented method Unit.toSI() to convert a unit to base SI units.
   Thanks @ericman314.
 - Fixed #821, #822: security vulnerabilities in the expression parser.
+  Thanks @comex and @xfix.
 
 
 <h2 id="20170331-version-3103">2017-03-31, version 3.10.3 <a href="#20170331-version-3103" title="Permalink">#</a></h2>
