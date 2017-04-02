@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.11.1
+## 2017-04-02, version 3.11.1
 
 - Fixed more security vulnerabilities. Thanks Joe Vennix and @xfix.
 

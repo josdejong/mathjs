@@ -61,20 +61,20 @@ describe('security', function () {
     }, /Error: Access to "Function" is disabled/)
   })
 
-  it ('should not allow calling Function/eval via imported, overridden function', function () {
+  it ('should not allow calling Function via imported, overridden function', function () {
     assert.throws(function () {
       var math2 = math.create();
       math2.eval('import({matrix:cos.constructor},{override:1});x=["console.log(\'hacked...\')"];x()');
     }, /Error: Access to "Function" is disabled/)
   })
 
-  it ('should not allow calling Function/eval via imported, overridden function', function () {
+  it ('should not allow calling Function via index retrieval', function () {
     assert.throws(function () {
       math.eval('a=["console.log(\'hacked...\')"]._data;a.isRange=true;x={subset:cos.constructor}[a];x()');
     }, /Error: Access to "Function" is disabled/)
   })
 
-  it ('should not allow calling Function/eval via getOwnPropertyDescriptor', function () {
+  it ('should not allow calling Function via getOwnPropertyDescriptor', function () {
     assert.throws(function () {
       math.eval('p = parser()\n' +
           'p.eval("", [])\n' +
@@ -84,7 +84,7 @@ describe('security', function () {
     }, /Error: Access to "Function" is disabled/)
   })
 
-  it ('should not allow calling Function/eval via a specially encoded constructor property name', function () {
+  it ('should not allow calling Function via a specially encoded constructor property name', function () {
     assert.throws(function () {
       math.eval('[].map["\\x63onstructor"]("console.log(\'hacked...\')")()')
     }, /Error: Access to "Function" is disabled/)
