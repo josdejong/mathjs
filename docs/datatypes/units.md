@@ -230,6 +230,9 @@ specified unit (a unit with optional prefix but without value).
 The type of the returned value depends on how the unit was created and 
 can be `number`, `Fraction`, or `BigNumber`.
 
+<h3 id="unittosi">unit.toSI() <a href="#unittosi" title="Permalink">#</a></h3>
+Returns a clone of a unit represented in SI units. Works with units with or without a value.
+
 <h3 id="unittostring">unit.toString() <a href="#unittostring" title="Permalink">#</a></h3>
 Get a string representation of the unit. The function will
 determine the best fitting prefix for the unit.
