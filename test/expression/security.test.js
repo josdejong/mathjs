@@ -23,9 +23,13 @@ describe('security', function () {
     assert.throws(function () {
       math.eval('[].map.constructor("console.log(\'hacked...\')")()')
     }, /Error: Access to "Function" is disabled/)
+
+    assert.throws(function () {
+      math.eval('[].map["constructor"]("console.log(\'hacked...\')")()')
+    }, /Error: Access to "Function" is disabled/)
   })
 
-  it ('should not allow calling Function via a disquised constructor', function () {
+  it ('should not allow calling Function via a disguised constructor', function () {
     assert.throws(function () {
       math.eval('prop="constructor"; [].map[prop]("console.log(\'hacked...\')")()')
     }, /Error: Access to "Function" is disabled/)
@@ -67,6 +71,22 @@ describe('security', function () {
   it ('should not allow calling Function/eval via imported, overridden function', function () {
     assert.throws(function () {
       math.eval('a=["console.log(\'hacked...\')"]._data;a.isRange=true;x={subset:cos.constructor}[a];x()');
+    }, /Error: Access to "Function" is disabled/)
+  })
+
+  it ('should not allow calling Function/eval via getOwnPropertyDescriptor', function () {
+    assert.throws(function () {
+      math.eval('p = parser()\n' +
+          'p.eval("", [])\n' +
+          'o = p.get("constructor")\n' +
+          'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' +
+          'c.value("console.log(\'hacked...\')")()')
+    }, /Error: Access to "Function" is disabled/)
+  })
+
+  it ('should not allow calling Function/eval via a specially encoded constructor property name', function () {
+    assert.throws(function () {
+      math.eval('[].map["\\x63onstructor"]("console.log(\'hacked...\')")()')
     }, /Error: Access to "Function" is disabled/)
   })
 
