@@ -5,6 +5,8 @@
 
 - Implemented method Unit.toSI() to convert a unit to base SI units.
   Thanks @ericman314.
+- Fixed #821, #822: security vulnerabilities in the expression parser.
+
 
 ## 2017-03-31, version 3.10.3
 
