@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.11.0
+## 2017-04-02, version 3.11.0
 
 - Implemented method Unit.toSI() to convert a unit to base SI units.
   Thanks @ericman314.
