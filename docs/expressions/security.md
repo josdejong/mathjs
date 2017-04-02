@@ -27,6 +27,14 @@ security risks of a node.js servers is listed in an article [Node.js security ch
 Lastly, one could look into running server side code in a sandboxed
 [node.js VM](https://nodejs.org/api/vm.html).
 
+### Found a security vulnerability? Please report in private!
+
+You found a security vulnerability? Awesome! We hope you don't have bad
+intentions and want to help fix the issue. Please report the
+vulnerability in a private way by contacting one of the maintainers
+via mail or an other private channel. That way we can work together
+on a fix before sharing the issue with everybody including the bad guys.
+
 ## Stability risks
 
 A user could accidentally or on purpose execute a
