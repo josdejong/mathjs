@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.11.2
+## 2017-04-03, version 3.11.2
 
 - Fixed a security vulnerability in the expression parser. Thanks @xfix.
 
@@ -17,6 +17,7 @@
 - Implemented method Unit.toSI() to convert a unit to base SI units.
   Thanks @ericman314.
 - Fixed #821, #822: security vulnerabilities in the expression parser.
+  Thanks @comex and @xfix.
 
 
 ## 2017-03-31, version 3.10.3
