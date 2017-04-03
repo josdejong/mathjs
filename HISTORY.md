@@ -1,6 +1,11 @@
 # History
 
 
+## 2017-04-03, version 3.11.4
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
 ## 2017-04-03, version 3.11.3
 
 - Fixed a security vulnerability in the expression parser. Thanks @xfix.
