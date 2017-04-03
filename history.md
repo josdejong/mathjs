@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170403-version-3114">2017-04-03, version 3.11.4 <a href="#20170403-version-3114" title="Permalink">#</a></h2>
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
+<h2 id="20170403-version-3113">2017-04-03, version 3.11.3 <a href="#20170403-version-3113" title="Permalink">#</a></h2>
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
 <h2 id="20170403-version-3112">2017-04-03, version 3.11.2 <a href="#20170403-version-3112" title="Permalink">#</a></h2>
 
 - Fixed a security vulnerability in the expression parser. Thanks @xfix.

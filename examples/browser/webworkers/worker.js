@@ -1,4 +1,4 @@
-importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.2/math.min.js');
+importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.4/math.min.js');
 
 // create a parser
 var parser = math.parser();

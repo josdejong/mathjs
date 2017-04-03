@@ -6,7 +6,7 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 3.11.2
+ * @version 3.11.4
  * @date    2017-04-03
  *
  * @license
@@ -4565,7 +4565,7 @@ exports.emitter = __webpack_require__(133);
 
 
 var latex = __webpack_require__(3);
-var getSafeValue = __webpack_require__(60).getSafeValue;
+var getSafeProperty = __webpack_require__(60).getSafeProperty;
 
 function factory (type, config, load, typed, math) {
   var Node = load(__webpack_require__(11));
@@ -4612,7 +4612,7 @@ function factory (type, config, load, typed, math) {
     // add a function to the definitions
     defs['undef'] = undef;
     defs['Unit'] = Unit;
-    defs.getSafeValue = getSafeValue;
+    defs.getSafeProperty = getSafeProperty;
 
     if (args[this.name]) {
       // this is a FunctionAssignment argument
@@ -4620,11 +4620,11 @@ function factory (type, config, load, typed, math) {
       return this.name;
     }
     else if (this.name in defs.math) {
-      return 'getSafeValue("' + this.name + '" in scope ? scope["' + this.name + '"] : math["' + this.name + '"])';
+      return '("' + this.name + '" in scope ? getSafeProperty(scope, "' + this.name + '") : getSafeProperty(math, "' + this.name + '"))';
     }
     else {
-      return 'getSafeValue(' +
-          '"' + this.name + '" in scope ? scope["' + this.name + '"] : ' +
+      return '(' +
+          '"' + this.name + '" in scope ? getSafeProperty(scope, "' + this.name + '") : ' +
           (Unit.isValuelessUnit(this.name) ?
           'new Unit(null, "' + this.name + '")' :
           'undef("' + this.name + '")') +
@@ -7991,7 +7991,7 @@ exports.factory = factory;
 
 var latex = __webpack_require__(3);
 var extend = __webpack_require__(4).extend;
-var getSafeValue = __webpack_require__(60).getSafeValue;
+var getSafeProperty = __webpack_require__(60).getSafeProperty;
 
 function factory (type, config, load, typed, math) {
   var Node = load(__webpack_require__(11));
@@ -8090,14 +8090,14 @@ function factory (type, config, load, typed, math) {
       // execute the function with the right context: the object of the AccessorNode
       argsName = this._getUniqueArgumentsName(defs);
       defs[argsName] = this.args;
-      defs.getSafeValue = getSafeValue
+      defs.getSafeProperty = getSafeProperty
 
       var jsObject = this.fn.object._compile(defs, args);
       var prop = this.fn.index.getObjectProperty();
 
       return '(function () {' +
           'var object = ' + jsObject + ';' +
-          'var value = getSafeValue(object["' + prop + '"]);' +
+          'var value = getSafeProperty(object, "' + prop + '");' +
           'return (value && value.rawArgs) ' +
           ' ? object["' + prop + '"](' + argsName + ', math, ' + jsScope + ')' +
           ' : object["' + prop + '"](' + jsArgs.join(', ') + ')' +
@@ -10804,19 +10804,27 @@ function _switch(mat){
 /***/ (function(module, exports) {
 
 /**
- * Test whether a value is safe to use (i.e. not Function
- * @param {*} value
- * @return {*} Returns the value when safe, else throws an error
+ * Get a property of an object and check whether the property value is
+ * safe and allowed. When the returned value is for example Function,
+ * an error is thrown.
+ * @param {Object} object
+ * @param {String} prop
+ * @return {*} Returns the property value when safe, else throws an error
  */
-function getSafeValue(value) {
-  if (value === Function) {
-    throw new Error('Access to "Function" is disabled');
+function getSafeProperty (object, prop) {
+  // Note: checking for property names like "constructor" is not
+  // helpful since you can work around it.
+
+  var value = object[prop];
+
+  if (value === Function || value === Object || value === Function.bind) {
+    throw new Error('Access to "' + value.name + '" is disabled');
   }
 
   return value;
 }
 
-exports.getSafeValue = getSafeValue
+exports.getSafeProperty = getSafeProperty;
 
 
 /***/ }),
@@ -13833,7 +13841,7 @@ exports.math = true; // requires the math namespace as 5th argument
 "use strict";
 
 
-var getSafeValue = __webpack_require__(60).getSafeValue;
+var getSafeProperty = __webpack_require__(60).getSafeProperty;
 
 function factory (type, config, load, typed) {
   var Node = load(__webpack_require__(11));
@@ -13901,14 +13909,14 @@ function factory (type, config, load, typed) {
    */
   AccessorNode.prototype._compile = function (defs, args) {
     defs.access = access;
-    defs.getSafeValue = getSafeValue;
+    defs.getSafeProperty = getSafeProperty;
 
     var object = this.object._compile(defs, args);
     var index = this.index._compile(defs, args);
 
     if (this.index.isObjectProperty()) {
       var prop = this.index.getObjectProperty();
-      return 'getSafeValue(' + object + '["' + prop + '"])';
+      return 'getSafeProperty(' + object + ', "' + prop + '")';
     }
     else if (this.index.needsSize()) {
       // if some parameters use the 'end' parameter, we need to calculate the size
@@ -15171,7 +15179,7 @@ exports.factory = factory;
 
 
 var errorTransform = __webpack_require__(29).transform;
-var getSafeValue = __webpack_require__(60).getSafeValue;
+var getSafeProperty = __webpack_require__(60).getSafeProperty;
 
 function factory (type, config, load, typed) {
   var subset = load(__webpack_require__(51));
@@ -15205,7 +15213,7 @@ function factory (type, config, load, typed) {
           throw new TypeError('Cannot apply a numeric index as object property');
         }
 
-        return getSafeValue(object[index.getObjectProperty()]);
+        return getSafeProperty(object, index.getObjectProperty());
       }
       else {
         throw new TypeError('Cannot apply index: unsupported type of object');
@@ -48743,7 +48751,7 @@ module.exports = function scatter(a, j, w, x, u, mark, c, f, inverse, update, va
 /* 507 */
 /***/ (function(module, exports) {
 
-module.exports = '3.11.2';
+module.exports = '3.11.4';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 

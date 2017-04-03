@@ -17,7 +17,7 @@ File: [requirejs_loading.html](requirejs_loading.html)
 
 <script>
   // load math.js using require.js
-  require(['http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.2/math.min.js'], function (math) {
+  require(['http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.4/math.min.js'], function (math) {
     // evaluate some expression
     var result = math.eval('1.2 * (2 + 4.5)');
     document.write(result);
