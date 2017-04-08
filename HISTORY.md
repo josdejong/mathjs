@@ -1,13 +1,11 @@
 # History
 
 
-## not yet released, version 3.11.5
+## 2017-04-08, version 3.11.5
 
 - More security measures in the expression parser.
-  WARNING: more strict behavior of the expression parser introduces
-  a small chance that existing functionality breaks when using
-  undocumented methods or features. Sorry, but it's necessary to stay
-  secure. Measures:
+  WARNING: the behavior of the expression parser is now more strict,
+  some undocumented features may not work any longer.
   - Accessing and assigning properties is now only allowed on plain
     objects, not on classes, arrays, and functions anymore.
   - Accessing methods is restricted to a set of known, safe methods.
