@@ -28,8 +28,6 @@ When running a node.js server, it's good to be aware of the different
 types of security risks. The risk whe running inside a browser may be
 limited though it's good to be aware of [Cross side scripting (XSS)](https://www.wikiwand.com/en/Cross-site_scripting) vulnerabilities. A nice overview of
 security risks of a node.js servers is listed in an article [Node.js security checklist](https://blog.risingstack.com/node-js-security-checklist/) by Gergely Nemeth.
-Lastly, one could look into running server side code in a sandboxed
-[node.js VM](https://nodejs.org/api/vm.html).
 
 <h3 id="found-a-security-vulnerability-please-report-in-private">Found a security vulnerability? Please report in private! <a href="#found-a-security-vulnerability-please-report-in-private" title="Permalink">#</a></h3>
 

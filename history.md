@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170408-version-3115">2017-04-08, version 3.11.5 <a href="#20170408-version-3115" title="Permalink">#</a></h2>
+
+- More security measures in the expression parser.
+  WARNING: the behavior of the expression parser is now more strict,
+  some undocumented features may not work any longer.
+  - Accessing and assigning properties is now only allowed on plain
+    objects, not on classes, arrays, and functions anymore.
+  - Accessing methods is restricted to a set of known, safe methods.
+
+
 <h2 id="20170403-version-3114">2017-04-03, version 3.11.4 <a href="#20170403-version-3114" title="Permalink">#</a></h2>
 
 - Fixed a security vulnerability in the expression parser. Thanks @xfix.

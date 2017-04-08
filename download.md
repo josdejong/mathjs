@@ -36,22 +36,22 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table class="download">
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.4/math.js">
-        Development (version 3.11.4)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.5/math.js">
+        Development (version 3.11.5)
       </a>
     </td>
     <td>
-      <span id="development-size">1500 kB</span>, uncompressed with comments
+      <span id="development-size">1510 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.4/math.min.js">
-        Production (version 3.11.4)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.11.5/math.min.js">
+        Production (version 3.11.5)
       </a>
     </td>
     <td>
-      <span id="production-size">119 kB</span>, minified and gzipped
+      <span id="production-size">120 kB</span>, minified and gzipped
     </td>
   </tr>
 </table>
