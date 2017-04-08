@@ -791,17 +791,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('partialAdd(2)(3)', scope), 5);
     });
 
-    it('should invoke a function which is a property of a function', function () {
-      function f () {
-        return '42'
-      }
-      f.foo = function () {
-        return 'bar'
-      }
-
-      assert.deepEqual(parseAndEval('f.foo()', {f: f}), 'bar');
-    });
-
     it('should invoke a function on an object with the right context', function () {
       approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1);
       assert.deepEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5));
@@ -914,7 +903,7 @@ describe('parse', function() {
     });
 
     it('should parse nested assignments', function() {
-      var scope = [];
+      var scope = {};
       assert.equal(parseAndEval('c = d = (e = 4.5)', scope), 4.5);
       assert.equal(scope.c, 4.5);
       assert.equal(scope.d, 4.5);

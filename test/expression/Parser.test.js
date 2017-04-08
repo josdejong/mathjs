@@ -63,10 +63,10 @@ describe('parser', function() {
     assert.deepEqual(parser.getAll(), {b: 5});
   });
 
-  it ('should return null when getting a non existing variable', function () {
+  it ('should return undefined when getting a non existing variable', function () {
     var parser = new Parser();
 
-    assert.equal(parser.get('non_existing_variable'), null);
+    assert.strictEqual(parser.get('non_existing_variable'), undefined);
   });
 
   it ('should set variables in the parsers namespace ', function () {
@@ -131,20 +131,37 @@ describe('parser', function() {
     assert.throws(function () {parser.eval('yy')});
     assert.throws(function () {parser.eval('zz')});
     assert.equal(parser.eval('pi'), Math.PI);
-
   });
 
-  it ('should not clear inherited properties', function () {
-    var parser = new Parser();
+  describe ('security', function () {
 
-    Object.prototype.foo = 'bar';
+    it ('should throw an error when accessing inherited properties', function () {
+      try {
+        var parser = new Parser();
 
-    parser.clear();
+        Object.prototype.foo = 'bar';
 
-    assert.equal(parser.get('foo'), 'bar');
+        parser.clear();
 
-    delete Object.prototype.foo;
-  });
+        assert.throws(function () {parser.get('foo')}, /No access/);
+      }
+      finally {
+        delete Object.prototype.foo;
+      }
+    });
+
+    it ('should throw an error when assigning an inherited property', function () {
+
+      try {
+        var parser = new Parser();
+        assert.throws(function () {parser.set('toString', null)}, /No access/);
+      }
+      finally {
+        delete Object.prototype.foo;
+      }
+    });
+
+  })
 
   it ('should throw an exception when creating a parser without new', function () {
     assert.throws(function () {Parser()}, /Constructor must be called with the new operator/);
