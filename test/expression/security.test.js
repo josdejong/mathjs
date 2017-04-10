@@ -155,6 +155,30 @@ describe('security', function () {
     }, /Error: Undefined symbol expression/);
   })
 
+  it ('should not allow replacing _compile', function () {
+    assert.throws(function () {
+      math.eval('c(x,y)="console.log(\'hacked...\')";expression.node.Node.prototype.compile.apply({_compile:c}).eval()')
+    }, /Error: Undefined symbol expression/);
+  })
+
+  it ('should not allow using restricted properties via subset (1)', function () {
+    assert.throws(function () {
+      math.eval('f()=false;g()={length:3};h()={"0":0,"1":0,"2":0};j(x)=[x("constructor")];k(x)={map:j};i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
+    }, /Error: No access to property "constructor/);
+  })
+
+  it ('should not allow using restricted properties via subset (2)', function () {
+    assert.throws(function () {
+      math.eval("scope={}; setter = eval(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"eval\", subset); scope.obj.compile().eval()(\"console.log('hacked...')\")")
+    }, /Error: No access to property "constructor/);
+  })
+
+  it ('should not allow using restricted properties via subset (3)', function () {
+    assert.throws(function () {
+      math.eval('subset(parse("1"), index("value"), "eval").compile().eval()("console.log(\'hacked...\')")')
+    }, /Error: No access to property "constructor/);
+  })
+
   it ('should allow calling functions on math', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })
