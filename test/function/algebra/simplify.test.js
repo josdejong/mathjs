@@ -54,6 +54,11 @@ describe('simplify', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
   });
 
+  it('should remove addition of 0', function() {
+    simplifyAndCompare('x+0', 'x');
+    simplifyAndCompare('x-0', 'x');
+  });
+
   describe('expression parser' ,function () {
 
     it('should evaluate simplify containing string value', function() {
