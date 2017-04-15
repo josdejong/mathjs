@@ -1,6 +1,11 @@
 # History
 
 
+## 2017-04-08, version 3.12.0
+
+- Implemented QR decomposition (function `math.qr`). Thanks @HarrySarson.
+
+
 ## 2017-04-08, version 3.11.5
 
 - More security measures in the expression parser.
