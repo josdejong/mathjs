@@ -179,6 +179,12 @@ describe('security', function () {
     }, /Error: No access to property "constructor/);
   })
 
+  it ('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {
+    assert.throws(function () {
+      math.eval("badValue = {\"isNode\": true, \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
+    }, /Error: No access to property "constructor/);
+  })
+
   it ('should allow calling functions on math', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })
