@@ -3,6 +3,8 @@
 
 ## not yet released, version 3.12.1
 
+- Refactoring and performance improvements in `math.qr`.
+  Thanks @HarrySarson.
 - Fixed #824: Calling `math.random()` freezes IE and node.js.
 
 
