@@ -4,6 +4,7 @@
 
 Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices. Powerful and easy to use.
 
+[![Mentions](http://107.170.57.103/josdejong/mathjs.svg)](http://107.170.57.103/josdejong/mathjs)
 
 ## Features
 
