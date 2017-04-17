@@ -47,6 +47,7 @@ Function | Description
 [math.lsolve(L,&nbsp;b)](functions/lsolve.html) | Solves the linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.html) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.html) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
+[math.qr(A)](functions/qr.html) | Calculate the Matrix QR decomposition.
 [simplify(expr)](functions/simplify.html) | Simplify an expression tree.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.html) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.usolve(U,&nbsp;b)](functions/usolve.html) | Solves the linear equation system by backward substitution.

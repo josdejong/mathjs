@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170417-version-3120">2017-04-17, version 3.12.0 <a href="#20170417-version-3120" title="Permalink">#</a></h2>
+
+- Implemented QR decomposition, function `math.qr`. Thanks @HarrySarson.
+- Fixed #824: Calling `math.random()` freezes IE and node.js.
+
+
 <h2 id="20170408-version-3115">2017-04-08, version 3.11.5 <a href="#20170408-version-3115" title="Permalink">#</a></h2>
 
 - More security measures in the expression parser.
