@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.12.1
+
+- Fixed #824: Calling `math.random()` freezes IE and node.js.
+
+
 ## 2017-04-08, version 3.12.0
 
 - Implemented QR decomposition (function `math.qr`). Thanks @HarrySarson.
