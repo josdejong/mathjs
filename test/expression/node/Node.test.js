@@ -156,7 +156,7 @@ describe('Node', function() {
     var node = new Node();
     assert.throws(function () {
       node.compile()
-    }, /Cannot compile a Node interface/);
+    }, /Cannot compile node: unknown type "Node"/);
   });
 
   it ('should have an identifier', function () {
