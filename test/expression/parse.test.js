@@ -2030,4 +2030,15 @@ describe('parse', function() {
 
   });
 
+  it ('Should not allow crashing math by placing a clone function in the config', function () {
+    var mathClone = math.create();
+
+    try {
+      mathClone.eval('f(x)=1;config({clone:f})')
+    }
+    catch (err) {}
+
+    assert.equal(mathClone.eval('2'), 2);
+  });
+
 });
