@@ -46,7 +46,7 @@ describe('AccessorNode', function() {
 
   it ('should compile a AccessorNode', function () {
     var a = new bigmath.expression.node.SymbolNode('a');
-    var index = new IndexNode([
+    var index = new bigmath.expression.node.IndexNode([
       new bigmath.expression.node.ConstantNode(2),
       new bigmath.expression.node.ConstantNode(1)
     ]);
