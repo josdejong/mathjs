@@ -1,6 +1,11 @@
 # History
 
 
+## 2017-04-17, version 3.12.1
+
+- Fixed security vulnerabilities in `math.subset`. Thanks Sam and Dan.
+
+
 ## 2017-04-17, version 3.12.0
 
 - Implemented QR decomposition, function `math.qr`. Thanks @HarrySarson.

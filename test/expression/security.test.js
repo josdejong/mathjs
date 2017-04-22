@@ -163,20 +163,26 @@ describe('security', function () {
 
   it ('should not allow using restricted properties via subset (1)', function () {
     assert.throws(function () {
-      math.eval('f()=false;g()={length:3};h()={"0":0,"1":0,"2":0};j(x)=[x("constructor")];k(x)={map:j};i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
-    }, /Error: No access to property "constructor/);
+      math.eval('f()=false;' +
+          'g()={length:3};' +
+          'h()={"0":0,"1":0,"2":0};' +
+          'j(x)=[x("constructor")];' +
+          'k(x)={map:j};' +
+          'i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};' +
+          'subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
+    }, /TypeError: Index must be an integer \(value: constructor\)/);
   })
 
   it ('should not allow using restricted properties via subset (2)', function () {
     assert.throws(function () {
       math.eval("scope={}; setter = eval(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"eval\", subset); scope.obj.compile().eval()(\"console.log('hacked...')\")")
-    }, /Error: No access to property "constructor/);
+    }, /Error: No access to property "value/);
   })
 
   it ('should not allow using restricted properties via subset (3)', function () {
     assert.throws(function () {
       math.eval('subset(parse("1"), index("value"), "eval").compile().eval()("console.log(\'hacked...\')")')
-    }, /Error: No access to property "constructor/);
+    }, /Error: No access to property "value/);
   })
 
   it ('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {
@@ -208,6 +214,7 @@ describe('security', function () {
     assert.throws(function () {math.eval('expression')}, /Undefined symbol/)
     assert.throws(function () {math.eval('type')}, /Undefined symbol/)
     assert.throws(function () {math.eval('error')}, /Undefined symbol/)
+    assert.throws(function () {math.eval('json')}, /Undefined symbol/)
   });
 
 });
