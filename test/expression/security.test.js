@@ -188,7 +188,47 @@ describe('security', function () {
   it ('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {
     assert.throws(function () {
       math.eval("badValue = {\"isNode\": true, \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
-    }, /Error: No access to property "constructor/);
+    }, /Error: Cannot compile node: unknown type "undefined"/);
+
+    assert.throws(function () {
+      math.eval("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
+    }, /TypeError: fn is not a function/); // The error message is vague but well...
+  })
+
+  it.skip ('should not allow injecting code via an adjusted ConstantNode value', function () {
+    assert.throws(function () {
+        // TODO
+      }, /Error: No access to property "constructor/);
+  })
+
+  it.skip ('should not allow injecting code via an adjusted SymbolNode name', function () {
+    assert.throws(function () {
+        // TODO
+      }, /Error: No access to property "constructor/);
+  })
+
+  it.skip ('should not allow injecting code via an adjusted FunctionNode name', function () {
+    assert.throws(function () {
+        // TODO
+      }, /Error: No access to property "constructor/);
+  })
+
+  it.skip ('should not allow injecting code via an adjusted function name', function () {
+    assert.throws(function () {
+        // TODO
+      }, /Error: No access to property "constructor/);
+  })
+
+  it.skip ('should not allow injecting code via a property name', function () {
+    assert.throws(function () {
+        // TODO
+      }, /Error: No access to property "constructor/);
+  })
+
+  it.skip ('should not allow inserting a fake ObjectNode', function () {
+    assert.throws(function () {
+        // TODO
+      }, /Error: No access to property "constructor/);
   })
 
   it ('should allow calling functions on math', function () {
