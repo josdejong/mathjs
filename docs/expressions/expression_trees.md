@@ -88,7 +88,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + x/4 + 3*y');
     var filtered = node.filter(function (node) {
-      return node.isSymbolNode && node.name == 'x';
+      return node.isSymbolNode && node.name === 'x';
     });
     // returns an array with two entries: two SymbolNodes 'x'
     ```
@@ -168,7 +168,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + 5*x');
     var transformed = node.transform(function (node, path, parent) {
-      if (node.SymbolNode && node.name == 'x') {
+      if (node.isSymbolNode && node.name === 'x') {
         return new math.expression.node.ConstantNode(3);
       }
       else {
