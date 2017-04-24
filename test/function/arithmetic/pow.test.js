@@ -131,6 +131,31 @@ describe('pow', function() {
     assert.throws(function () {pow(1, 2, 3)}, /TypeError: Too many arguments in function pow \(expected: 2, actual: 3\)/);
   });
 
+  it('should handle infitie exponents', function() {
+    var Ptbl = mathPredictable;
+
+     // TODO replace isNaN with complexInfinity when complex.js updates
+
+
+    assert.equal(math.pow( 3,  Infinity), Infinity);
+    assert.equal(math.pow( 3, -Infinity), 0);
+    assert(isNaN(Ptbl.pow(-3,  Infinity)));
+    assert(      math.pow(-3,  Infinity).isNaN());
+    assert.equal(math.pow(-3, -Infinity), 0);
+
+    assert.equal(math.pow( 0.3,  Infinity), 0);
+    assert.equal(math.pow( 0.3, -Infinity), Infinity);
+    assert.equal(math.pow(-0.3,  Infinity), 0);
+    assert(isNaN(Ptbl.pow(-0.3, -Infinity)));
+    assert(      math.pow(-0.3, -Infinity).isNaN());
+
+    assert.equal(math.pow( Infinity,  Infinity), Infinity);
+    assert.equal(math.pow( Infinity, -Infinity), 0); // https://www.wolframalpha.com/input/?i=infinity%5E(-infinity)
+    assert(isNaN(Ptbl.pow(-Infinity,  Infinity)));
+    assert(      math.pow(-Infinity,  Infinity).isNaN());
+    assert.equal(math.pow(-Infinity, -Infinity), 0);
+  });
+
   it('should exponentiate a complex number to the given power', function() {
     approx.deepEqual(pow(complex(3, 0), 2), complex(9, 0));
     approx.deepEqual(pow(complex(0, 2), 2), complex(-4, 0));
