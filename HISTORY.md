@@ -1,5 +1,9 @@
 # History
 
+## not yet released, version 3.12.1
+
+- Improved handling of powers of `Infinity`. Thanks @HarrySarson.
+
 
 ## 2017-04-17, version 3.12.0
 
