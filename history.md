@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170424-version-3121">2017-04-24, version 3.12.1 <a href="#20170424-version-3121" title="Permalink">#</a></h2>
+
+- Fixed #804
+  - Improved handling of powers of `Infinity`. Thanks @HarrySarson.
+  - Fixed wrong formatting of complex NaN.
+- Fixed security vulnerabilities in the expression parser.
+  Thanks Sam and Dan.
+
+
 <h2 id="20170417-version-3120">2017-04-17, version 3.12.0 <a href="#20170417-version-3120" title="Permalink">#</a></h2>
 
 - Implemented QR decomposition, function `math.qr`. Thanks @HarrySarson.
