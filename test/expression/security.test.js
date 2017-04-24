@@ -192,7 +192,7 @@ describe('security', function () {
 
     assert.throws(function () {
       math.eval("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
-    }, /TypeError: fn is not a function/); // The error message is vague but well...
+    }); // The error message is vague but well...
   })
 
   it.skip ('should not allow injecting code via an adjusted ConstantNode value', function () {
