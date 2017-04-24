@@ -1,15 +1,13 @@
 # History
 
-## not yet released, version 3.12.1
+
+## 2017-04-24, version 3.12.1
 
 - Fixed #804
   - Improved handling of powers of `Infinity`. Thanks @HarrySarson.
   - Fixed wrong formatting of complex NaN.
-
-
-## 2017-04-17, version 3.12.1
-
-- Fixed security vulnerabilities in `math.subset`. Thanks Sam and Dan.
+- Fixed security vulnerabilities in the expression parser.
+  Thanks Sam and Dan.
 
 
 ## 2017-04-17, version 3.12.0
