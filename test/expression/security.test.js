@@ -197,25 +197,25 @@ describe('security', function () {
 
   it.skip ('should not allow injecting code via an adjusted ConstantNode value', function () {
     assert.throws(function () {
-        // TODO
+      // TODO: write unit test
       }, /Error: No access to property "constructor/);
   })
 
   it.skip ('should not allow injecting code via an adjusted SymbolNode name', function () {
     assert.throws(function () {
-        // TODO
+      // TODO: write unit test
       }, /Error: No access to property "constructor/);
   })
 
   it.skip ('should not allow injecting code via an adjusted FunctionNode name', function () {
     assert.throws(function () {
-        // TODO
+      // TODO: write unit test
       }, /Error: No access to property "constructor/);
   })
 
   it.skip ('should not allow injecting code via an adjusted function name', function () {
     assert.throws(function () {
-        // TODO
+        // TODO: write unit test
       }, /Error: No access to property "constructor/);
   })
 
@@ -227,7 +227,7 @@ describe('security', function () {
 
   it.skip ('should not allow inserting a fake ObjectNode', function () {
     assert.throws(function () {
-        // TODO
+      // TODO: write unit test
       }, /Error: No access to property "constructor/);
   })
 
