@@ -2,7 +2,9 @@
 
 ## not yet released, version 3.12.1
 
-- Improved handling of powers of `Infinity`. Thanks @HarrySarson.
+- Fixed #804
+  - Improved handling of powers of `Infinity`. Thanks @HarrySarson.
+  - Fixed wrong formatting of complex NaN.
 
 
 ## 2017-04-17, version 3.12.0
