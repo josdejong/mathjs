@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170430-version-3122">2017-04-30, version 3.12.2 <a href="#20170430-version-3122" title="Permalink">#</a></h2>
+
+- Added a rocket trajectory optimization example.
+
+
 <h2 id="20170424-version-3121">2017-04-24, version 3.12.1 <a href="#20170424-version-3121" title="Permalink">#</a></h2>
 
 - Fixed #804

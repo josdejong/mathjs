@@ -28,6 +28,7 @@ layout: default
 - [Plot](browser/plot.html.html)
 - [Pretty printing with mathjax](browser/pretty_printing_with_mathjax.html.html)
 - [Requirejs loading](browser/requirejs_loading.html.html)
+- [Rocket trajectory optimization](browser/rocket_trajectory_optimization.html.html)
 - [Webworkers](browser/webworkers/index.html)
 
 # Advanced examples
