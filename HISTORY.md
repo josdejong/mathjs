@@ -1,6 +1,11 @@
 # History
 
 
+## 2017-04-30, version 3.12.2
+
+- Added a rocket trajectory optimization example.
+
+
 ## 2017-04-24, version 3.12.1
 
 - Fixed #804
