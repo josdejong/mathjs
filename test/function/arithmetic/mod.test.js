@@ -60,11 +60,11 @@ describe('mod', function() {
     assert.deepEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf());
   });
 
-  it.skip('should calculate the modulus of bignumbers for fractions', function () {
+  it('should calculate the modulus of bignumbers for fractions', function () {
     assert.deepEqual(mod(bignumber(7).div(3), bignumber(1).div(3)), bignumber(0));
   });
 
-  it.skip('should calculate the modulus of bignumbers for negative values', function () {
+  it('should calculate the modulus of bignumbers for negative values', function () {
     assert.deepEqual(mod(bignumber(-10), bignumber(4)), bignumber(2));
   });
 
