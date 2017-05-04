@@ -337,7 +337,7 @@ function outputHelp() {
   console.log('functions, and a flexible expression parser.');
   console.log();
   console.log('Usage:');
-  console.log('    mathjs [scriptfile(s)] {OPTIONS}');
+  console.log('    mathjs [scriptfile(s)|expression] {OPTIONS}');
   console.log();
   console.log('Options:');
   console.log('    --version, -v       Show application version');
@@ -349,6 +349,7 @@ function outputHelp() {
   console.log();
   console.log('Example usage:');
   console.log('    mathjs                                Open a command prompt');
+  console.log('    mathjs 1+2                            Evaluate expression');
   console.log('    mathjs script.txt                     Run a script file');
   console.log('    mathjs script.txt script2.txt         Run two script files');
   console.log('    mathjs script.txt > results.txt       Run a script file, output to file');
