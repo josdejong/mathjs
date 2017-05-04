@@ -423,8 +423,8 @@ else if (scripts.length === 0) {
 else {
   fs.stat(scripts[0], (e, f) => {
     if (e)
-      return console.log(getMath().eval(scripts.join(' ')))
-    
+      return console.log(getMath().eval(scripts.join(' ')).toString())
+
     //work through the queue of scripts
     scripts.forEach(function (arg) {
       // run a script file
