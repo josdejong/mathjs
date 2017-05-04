@@ -22,6 +22,7 @@
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
+ *     mathjs 1+2                             Evaluate expression
  *     mathjs script.txt                      Run a script file
  *     mathjs script1.txt script2.txt         Run two script files
  *     mathjs script.txt > results.txt        Run a script file, output to file
@@ -420,9 +421,14 @@ else if (scripts.length === 0) {
   runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
-  //work through the queue of scripts
-  scripts.forEach(function (arg) {
-    // run a script file
-    runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
-  });
+  fs.stat(scripts[0], (e, f) => {
+    if (e)
+      return console.log(getMath().eval(scripts.join(' ')))
+    
+    //work through the queue of scripts
+    scripts.forEach(function (arg) {
+      // run a script file
+        runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
+    });
+  })
 }
