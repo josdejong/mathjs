@@ -190,7 +190,8 @@ describe('AccessorNode', function() {
     var a = new bigmath.expression.node.SymbolNode('a');
     var b = new bigmath.expression.node.ConstantNode(2);
     var c = new bigmath.expression.node.ConstantNode(1);
-    var n = new bigmath.expression.node.AccessorNode(a, new IndexNode([b, c]));
+    var n = new bigmath.expression.node.AccessorNode(a,
+        new bigmath.expression.node.IndexNode([b, c]));
     var expr = n.compile();
 
     var scope = {

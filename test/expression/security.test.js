@@ -234,19 +234,19 @@ describe('security', function () {
   it ('should not allow creating a bad FunctionAssignmentNode', function () {
     assert.throws(function () {
       math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
-    }, /TypeError: fn is not a function/);
+    }, /Error: No valid FunctionAssignmentNode/);
   })
 
   it ('should not allow creating a bad OperatorNode (1)', function () {
     assert.throws(function () {
       math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
-    }, /TypeError: fn is not a function/);
+    }, /TypeError: No valid FunctionAssignmentNode/);
   })
 
   it ('should not allow creating a bad OperatorNode (2)', function () {
     assert.throws(function () {
       math.eval("parse(\"(0)\").map(eval(\"f(a,b,c)=d\",{d:{isNode:true,type:\"OperatorNode\",fn:\"__lookupGetter__\",args:{map:eval(\"f(a)=b\",{b:{join:eval(\"f(a)=\\\"1)||eval;}};//\\\"\")}})}}})).compile().eval()(\"console.log('hacked...')\")")
-    }, /TypeError: fn is not a function/);
+    }, /TypeError: No valid OperatorNode/);
   })
 
   it ('should not allow creating a bad ConstantNode', function () {
@@ -258,7 +258,7 @@ describe('security', function () {
   it ('should not allow creating a bad ArrayNode', function () {
     assert.throws(function () {
       math.eval('g(x)="eval";f(x)=({join: g});fakeArrayNode={isNode: true, type: "ArrayNode", items: {map: f}};injectFakeArrayNode(child,path,parent)=path=="value"?fakeArrayNode:child;parse("a=3").map(injectFakeArrayNode).compile().eval()[1]("console.log(\'hacked...\')")')
-    }, /Index out of range \(1 > 0\)/);
+    }, /TypeError: No valid ArrayNode/);
   })
 
   it ('should allow calling functions on math', function () {

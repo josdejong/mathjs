@@ -156,7 +156,7 @@ describe('FunctionNode', function() {
     myFunction.rawArgs = true;
     mymath.import({myFunction: myFunction});
 
-    var s = new SymbolNode('myFunction');
+    var s = new mymath.expression.node.SymbolNode('myFunction');
     var a = new mymath.expression.node.ConstantNode(4);
     var b = new mymath.expression.node.ConstantNode(5);
     var n = new mymath.expression.node.FunctionNode(s, [a, b]);
