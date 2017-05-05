@@ -29,19 +29,20 @@ describe('simplify', function() {
     simplifyAndCompareEval('1e-10', '1e-10');
   });
 
-  it.skip('should not change the value of numbers when converting to fractions (2)', function() {
+  it('should not change the value of numbers when converting to fractions (2)', function() {
+    simplifyAndCompareEval('0.2 * 1e-14', '2e-15');
+  });
+
+  it.skip('should not change the value of numbers when converting to fractions (3)', function() {
     // TODO this requires that all operators and functions have the correct logic in their 'Fraction' typed-functions.
     //      Ideally they should convert parameters to Fractions if they can all be expressed exactly,
     //      otherwise convert all parameters to the 'number' type.
-    simplifyAndCompareEval('0 + 1e-10', '0 + 1e-10');
-    simplifyAndCompareEval('0 - 1e-10', '0 - 1e-10');
-    simplifyAndCompareEval('1 * 1e-10', '1 * 1e-10');
-    simplifyAndCompareEval('1e-10 / 1', '1e-10 / 1');
-    simplifyAndCompareEval('(1e-10)^1', '(1e-10)^1');
-    simplifyAndCompareEval('abs(1e-10)', 'abs(1e-10)');
-    simplifyAndCompareEval('min(1e-10)', 'min(1e-10)');
-    simplifyAndCompareEval('max(1e-10)', 'max(1e-10)');
-    simplifyAndCompareEval('log(1e-10)', 'log(1e-10)');
+    simplifyAndCompareEval('1 - 1e-10', '1 - 1e-10');
+    simplifyAndCompareEval('1 + 1e-10', '1 + 1e-10');
+    simplifyAndCompareEval('1e-10 / 2', '1e-10 / 2');
+    simplifyAndCompareEval('(1e-5)^2', '(1e-5)^2');
+    simplifyAndCompareEval('min(1, -1e-10)', '-1e-10');
+    simplifyAndCompareEval('max(1e-10, -1)', '1e-10');
   });
 
   it('should simplify non-rational expressions with no symbols to number', function() {
