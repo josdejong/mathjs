@@ -212,7 +212,7 @@ describe('security', function () {
   it ('should not allow replacing validateSafeMethod with a local variant', function () {
     assert.throws(function () {
       math.eval("eval(\"f(validateSafeMethod)=cos.constructor(\\\"return eval\\\")()\")(eval(\"f(x,y)=0\"))(\"console.log('hacked...')\")")
-    }, /Error: Cannot compile node/);
+    }, /Error: No access to method "constructor"/);
   })
 
   it ('should not allow abusing toString', function () {
