@@ -110,6 +110,20 @@ describe('security', function () {
     }, /Error: Cannot access method "map" as a property/);
   })
 
+  it ('should not allow creating an Object with forbidden properties', function () {
+    assert.throws(function () {
+      math.eval('{hasOwnProperty: 2}');
+    }, /Error: No access to property "hasOwnProperty/);
+
+    assert.throws(function () {
+      math.eval('{constructor: 2}');
+    }, /Error: No access to property "constructor/);
+
+    assert.throws(function () {
+      math.eval('{toString: 2}');
+    }, /Error: No access to property "toString/);
+  })
+
   it ('should not allow calling Object via a an object constructor', function () {
     assert.throws(function () {
             math.eval('{}.constructor.assign(expression.node.AssignmentNode.prototype, ' +
@@ -191,44 +205,44 @@ describe('security', function () {
     }, /Error: Cannot compile node: unknown type "undefined"/);
 
     assert.throws(function () {
-      math.eval("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
+      math.eval("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked...\')\")")
     }); // The error message is vague but well...
   })
 
-  it.skip ('should not allow injecting code via an adjusted ConstantNode value', function () {
+  it ('should not allow replacing validateSafeMethod with a local variant', function () {
     assert.throws(function () {
-      // TODO: write unit test
-      }, /Error: No access to property "constructor/);
+      math.eval("eval(\"f(validateSafeMethod)=cos.constructor(\\\"return eval\\\")()\")(eval(\"f(x,y)=0\"))(\"console.log('hacked...')\")")
+    }, /Error: Cannot compile node/);
   })
 
-  it.skip ('should not allow injecting code via an adjusted SymbolNode name', function () {
+  it ('should not allow abusing toString', function () {
     assert.throws(function () {
-      // TODO: write unit test
-      }, /Error: No access to property "constructor/);
+      math.eval("badToString = eval(\"f() = 1\"); badReplace = eval(\"f(a, b) = \\\"eval\\\"\"); badNumber = {toString:badToString, replace:badReplace}; badNode = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"number\", \"value\": badNumber}; x = eval(\"f(child, path, parent) = badNode\", {badNode:badNode}); parse(\"(1)\").map(x).compile().eval()(\"console.log('hacked...')\")")
+    }, /Error: No access to property "toString"/);
   })
 
-  it.skip ('should not allow injecting code via an adjusted FunctionNode name', function () {
+  it ('should not allow creating a bad FunctionAssignmentNode', function () {
     assert.throws(function () {
-      // TODO: write unit test
-      }, /Error: No access to property "constructor/);
+      math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
+    }, /TypeError: fn is not a function/);
   })
 
-  it.skip ('should not allow injecting code via an adjusted function name', function () {
+  it ('should not allow creating a bad OperatorNode (1)', function () {
     assert.throws(function () {
-        // TODO: write unit test
-      }, /Error: No access to property "constructor/);
+      math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
+    }, /TypeError: fn is not a function/);
   })
 
-  it.skip ('should not allow injecting code via a property name', function () {
+  it ('should not allow creating a bad OperatorNode (2)', function () {
     assert.throws(function () {
-        // TODO
-      }, /Error: No access to property "constructor/);
+      math.eval("parse(\"(0)\").map(eval(\"f(a,b,c)=d\",{d:{isNode:true,type:\"OperatorNode\",fn:\"__lookupGetter__\",args:{map:eval(\"f(a)=b\",{b:{join:eval(\"f(a)=\\\"1)||eval;}};//\\\"\")}})}}})).compile().eval()(\"console.log('hacked...')\")")
+    }, /TypeError: fn is not a function/);
   })
 
-  it.skip ('should not allow inserting a fake ObjectNode', function () {
+  it ('should not allow creating a bad ConstantNode', function () {
     assert.throws(function () {
-      // TODO: write unit test
-      }, /Error: No access to property "constructor/);
+      math.eval('f(x,y)="eval";g()=3;fakeConstantNode={"isNode": true, "type": "ConstantNode", "valueType": "number", "value": {"replace": f, "toString": g}};injectFakeConstantNode(child,path,parent)=path=="value"?fakeConstantNode:child;parse("a=3").map(injectFakeConstantNode).compile().eval()("console.log(\'hacked...\')")')
+    }, /Error: No access to property "toString"/);
   })
 
   it ('should allow calling functions on math', function () {
