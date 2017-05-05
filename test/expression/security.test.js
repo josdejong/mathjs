@@ -31,6 +31,16 @@ describe('security', function () {
     }, /Error: No access to method "constructor"/);
   })
 
+  it ('should not allow calling constructor', function () {
+    assert.throws(function () {
+      math.eval('constructor');
+    }, /Error: No access to property "constructor"/);
+
+    assert.throws(function () {
+      math.eval('toString');
+    }, /Cannot access method "toString" as a property/);
+  })
+
   it ('should not allow calling Function via constructor', function () {
     assert.throws(function () {
       math.eval('[].map.constructor("console.log(\'hacked...\')")()');
@@ -190,7 +200,7 @@ describe('security', function () {
   it ('should not allow using restricted properties via subset (2)', function () {
     assert.throws(function () {
       math.eval("scope={}; setter = eval(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"eval\", subset); scope.obj.compile().eval()(\"console.log('hacked...')\")")
-    }, /Error: No access to property "value/);
+    }, /Error: Undefined symbol name/);
   })
 
   it ('should not allow using restricted properties via subset (3)', function () {
@@ -243,6 +253,12 @@ describe('security', function () {
     assert.throws(function () {
       math.eval('f(x,y)="eval";g()=3;fakeConstantNode={"isNode": true, "type": "ConstantNode", "valueType": "number", "value": {"replace": f, "toString": g}};injectFakeConstantNode(child,path,parent)=path=="value"?fakeConstantNode:child;parse("a=3").map(injectFakeConstantNode).compile().eval()("console.log(\'hacked...\')")')
     }, /Error: No access to property "toString"/);
+  })
+
+  it ('should not allow creating a bad ArrayNode', function () {
+    assert.throws(function () {
+      math.eval('g(x)="eval";f(x)=({join: g});fakeArrayNode={isNode: true, type: "ArrayNode", items: {map: f}};injectFakeArrayNode(child,path,parent)=path=="value"?fakeArrayNode:child;parse("a=3").map(injectFakeArrayNode).compile().eval()[1]("console.log(\'hacked...\')")')
+    }, /Index out of range \(1 > 0\)/);
   })
 
   it ('should allow calling functions on math', function () {
