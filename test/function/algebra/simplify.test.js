@@ -54,6 +54,13 @@ describe('simplify', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
   });
 
+  it('should handle built-in constant symbols in rules', function() {
+    assert.equal(math.simplify('true', ['true -> 1']).toString(), '1');
+    assert.equal(math.simplify('false', ['false -> 0']).toString(), '0');
+    assert.equal(math.simplify('log(e)', ['log(e) -> 1']).toString(), '1');
+    assert.equal(math.simplify('sin(pi * x)', ['sin(pi * n) -> 0']).toString(), '0');
+  });
+
   it('should remove addition of 0', function() {
     simplifyAndCompare('x+0', 'x');
     simplifyAndCompare('x-0', 'x');
