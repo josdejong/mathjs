@@ -1,5 +1,9 @@
 # History
 
+## 2017-05-05, version 3.12.3
+
+- Fixed security vulnerabilities. Thanks Dan and Sam.
+
 
 ## 2017-04-30, version 3.12.2
 
