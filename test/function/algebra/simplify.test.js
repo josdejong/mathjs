@@ -25,6 +25,25 @@ describe('simplify', function() {
     simplifyAndCompare('3+2/4', '7/2');
   });
 
+  it('should not change the value of numbers when converting to fractions (1)', function() {
+    simplifyAndCompareEval('1e-10', '1e-10');
+  });
+
+  it.skip('should not change the value of numbers when converting to fractions (2)', function() {
+    // TODO this requires that all operators and functions have the correct logic in their 'Fraction' typed-functions.
+    //      Ideally they should convert parameters to Fractions if they can all be expressed exactly,
+    //      otherwise convert all parameters to the 'number' type.
+    simplifyAndCompareEval('0 + 1e-10', '0 + 1e-10');
+    simplifyAndCompareEval('0 - 1e-10', '0 - 1e-10');
+    simplifyAndCompareEval('1 * 1e-10', '1 * 1e-10');
+    simplifyAndCompareEval('1e-10 / 1', '1e-10 / 1');
+    simplifyAndCompareEval('(1e-10)^1', '(1e-10)^1');
+    simplifyAndCompareEval('abs(1e-10)', 'abs(1e-10)');
+    simplifyAndCompareEval('min(1e-10)', 'min(1e-10)');
+    simplifyAndCompareEval('max(1e-10)', 'max(1e-10)');
+    simplifyAndCompareEval('log(1e-10)', 'log(1e-10)');
+  });
+
   it('should simplify non-rational expressions with no symbols to number', function() {
     simplifyAndCompare('3+sin(4)', '2.2431975046920716');
   });
