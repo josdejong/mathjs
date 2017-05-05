@@ -4,6 +4,10 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20170505-version-3123">2017-05-05, version 3.12.3 <a href="#20170505-version-3123" title="Permalink">#</a></h2>
+
+- Fixed security vulnerabilities. Thanks Dan and Sam.
+
 
 <h2 id="20170430-version-3122">2017-04-30, version 3.12.2 <a href="#20170430-version-3122" title="Permalink">#</a></h2>
 
