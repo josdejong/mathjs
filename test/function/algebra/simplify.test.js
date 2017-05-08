@@ -54,11 +54,28 @@ describe('simplify', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
   });
 
-  it('should handle built-in constant symbols in rules', function() {
+  it('should handle valid built-in constant symbols in rules', function() {
     assert.equal(math.simplify('true', ['true -> 1']).toString(), '1');
     assert.equal(math.simplify('false', ['false -> 0']).toString(), '0');
     assert.equal(math.simplify('log(e)', ['log(e) -> 1']).toString(), '1');
     assert.equal(math.simplify('sin(pi * x)', ['sin(pi * n) -> 0']).toString(), '0');
+    assert.equal(math.simplify('i', ['i -> 1']).toString(), '1');
+    assert.equal(math.simplify('Infinity', ['Infinity -> 1']).toString(), '1');
+    assert.equal(math.simplify('LN2', ['LN2 -> 1']).toString(), '1');
+    assert.equal(math.simplify('LN10', ['LN10 -> 1']).toString(), '1');
+    assert.equal(math.simplify('LOG2E', ['LOG2E -> 1']).toString(), '1');
+    assert.equal(math.simplify('LOG10E', ['LOG10E -> 1']).toString(), '1');
+    assert.equal(math.simplify('NaN', ['NaN -> 1']).toString(), '1');
+    assert.equal(math.simplify('phi', ['phi -> 1']).toString(), '1');
+    assert.equal(math.simplify('SQRT1_2', ['SQRT1_2 -> 1']).toString(), '1');
+    assert.equal(math.simplify('SQRT2', ['SQRT2 -> 1']).toString(), '1');
+    assert.equal(math.simplify('tau', ['tau -> 1']).toString(), '1');
+  });
+
+  it('should throw an error for invalid built-in constant symbols in rules', function() {
+    assert.throws(function(){ math.simplify('null', ['null -> 1']).toString(); });
+    assert.throws(function(){ math.simplify('uninitialized', ['uninitialized -> 1']).toString(); });
+    assert.throws(function(){ math.simplify('version', ['version -> 1']).toString(); });
   });
 
   it('should remove addition of 0', function() {
