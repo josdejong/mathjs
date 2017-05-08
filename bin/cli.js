@@ -22,6 +22,7 @@
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
+ *     mathjs 1+2                             Evaluate expression
  *     mathjs script.txt                      Run a script file
  *     mathjs script1.txt script2.txt         Run two script files
  *     mathjs script.txt > results.txt        Run a script file, output to file
@@ -336,7 +337,7 @@ function outputHelp() {
   console.log('functions, and a flexible expression parser.');
   console.log();
   console.log('Usage:');
-  console.log('    mathjs [scriptfile(s)] {OPTIONS}');
+  console.log('    mathjs [scriptfile(s)|expression] {OPTIONS}');
   console.log();
   console.log('Options:');
   console.log('    --version, -v       Show application version');
@@ -348,6 +349,7 @@ function outputHelp() {
   console.log();
   console.log('Example usage:');
   console.log('    mathjs                                Open a command prompt');
+  console.log('    mathjs 1+2                            Evaluate expression');
   console.log('    mathjs script.txt                     Run a script file');
   console.log('    mathjs script.txt script2.txt         Run two script files');
   console.log('    mathjs script.txt > results.txt       Run a script file, output to file');
@@ -420,9 +422,15 @@ else if (scripts.length === 0) {
   runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
-  //work through the queue of scripts
-  scripts.forEach(function (arg) {
-    // run a script file
-    runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
-  });
+  fs.stat(scripts[0], function(e, f) {
+    if (e) {
+      console.log(getMath().eval(scripts.join(' ')).toString())
+    } else {
+    //work through the queue of scripts
+      scripts.forEach(function (arg) {
+        // run a script file
+          runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
+      });
+    }
+  })
 }
