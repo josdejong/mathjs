@@ -422,14 +422,15 @@ else if (scripts.length === 0) {
   runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
-  fs.stat(scripts[0], (e, f) => {
-    if (e)
-      return console.log(getMath().eval(scripts.join(' ')).toString())
-
+  fs.stat(scripts[0], function(e, f) {
+    if (e) {
+      console.log(getMath().eval(scripts.join(' ')).toString())
+    } else {
     //work through the queue of scripts
-    scripts.forEach(function (arg) {
-      // run a script file
-        runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
-    });
+      scripts.forEach(function (arg) {
+        // run a script file
+          runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
+      });
+    }
   })
 }
