@@ -25,6 +25,15 @@ describe('simplify', function() {
     simplifyAndCompare('3+2/4', '7/2');
   });
 
+  it('should preserve the value of BigNumbers', function() {
+    var bigmath = math.create({number: 'BigNumber', precision: 64});
+    assert.deepEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.eval('222222222222222222'));
+    assert.deepEqual(bigmath.simplify('1 + 111111111111111111').eval(), bigmath.eval('111111111111111112'));
+    assert.deepEqual(bigmath.simplify('1/2 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.5'));
+    assert.deepEqual(bigmath.simplify('1/3 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.33333333333333333333333333333333333333333333'));
+    assert.deepEqual(bigmath.simplify('3 + 1 / 11111111111111111111').eval(), bigmath.eval('3 + 1 / 11111111111111111111'));
+  });
+
   it('should not change the value of numbers when converting to fractions (1)', function() {
     simplifyAndCompareEval('1e-10', '1e-10');
   });
