@@ -80,10 +80,10 @@ describe('add', function() {
     assert.deepEqual(add(math.fraction(1,3), 1), math.fraction(4,3));
   });
 
-  it('should throw an error when converting a number with 15+ digits to fraction', function() {
+  it('should throw an error when converting a number to a fraction that is not an exact representation', function() {
     assert.throws(function () {
       add(math.pi, math.fraction(1,3))
-    }, /Cannot implicitly convert a number with >15 significant digits to Fraction/);
+    }, /Cannot implicitly convert a number to a Fraction when there will be a loss of precision/);
   });
 
   it('should add strings to numbers', function() {
