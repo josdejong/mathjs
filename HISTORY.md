@@ -4,6 +4,11 @@
 
 - Command line application can now evaluate inline expressions
   like `mathjs 1+2`. Thanks @slavaGanzin.
+- Function `simplify` now supports BigNumbers. Thanks @tetslee.
+- Fixed #813: function `simplify` converting small numbers to inexact
+  Fractions. Thanks @tetslee.
+- Fixed #838: Function `simplify` now supports constants like `e`.
+  Thanks @tetslee.
 
 
 ## 2017-05-05, version 3.12.3
