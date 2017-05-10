@@ -79,4 +79,11 @@ describe('unaryMinus', function() {
     assert.equal(expression.toTex(), '-\\left(1\\right)');
   });
 
+  it('should unary minus on a Quaternion', function () {
+    assert.deepEqual(math.unaryMinus(math.quaternion()), math.quaternion());
+    assert.deepEqual(math.unaryMinus(math.quaternion(1,2,3,4)), math.quaternion(-1,-2,-3,-4));
+    assert.deepEqual(math.unaryMinus(math.quaternion(-1,-2,-3,-4)), math.quaternion(1,2,3,4));
+    assert.deepEqual(math.unaryMinus(math.quaternion(-1,-2,3,0)), math.quaternion(1,2,-3,0));
+  });
+
 });

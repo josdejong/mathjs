@@ -488,8 +488,8 @@ describe('multiply', function() {
         ]);
       var b = math.matrix(
         [
-          [4], 
-          [5], 
+          [4],
+          [5],
           [6]
         ]);
       assert.deepEqual(multiply(a, b), math.matrix([[32]]));
@@ -522,8 +522,8 @@ describe('multiply', function() {
     it('should multiply triangular matrices', function () {
       var l = [
         [1, 0, 0, 0],
-        [-0.5, 1, 0, 0],  
-        [0, -0.7, 1, 0],  
+        [-0.5, 1, 0, 0],
+        [0, -0.7, 1, 0],
         [0.0666667, -0.4, -0.5714286, 1]
       ];
       var u = [
@@ -642,11 +642,11 @@ describe('multiply', function() {
           [43, 50]
         ]);
     });
-    
+
     it('should multiply matrix x matrix, number datatype', function() {
       var m1 = math.matrix([[1, 2], [3, 4]], 'sparse', 'number');
       var m2 = math.matrix([[5, 6], [7, 8]], 'sparse', 'number');
-      
+
       var r = multiply(m1, m2);
       assert(r.datatype() === 'number');
       assert.deepEqual(
@@ -660,7 +660,7 @@ describe('multiply', function() {
     it('should multiply matrix x array', function() {
       var m = math.matrix([[2, 0], [4, 0]], 'sparse');
 
-      var r = multiply(m, 
+      var r = multiply(m,
                        [
         [2, 0],
         [4, 0]
@@ -672,7 +672,7 @@ describe('multiply', function() {
           [8, 0]
         ]);
 
-      r = multiply(m, 
+      r = multiply(m,
                    [
         [2, 0, 1],
         [4, 0, 1]
@@ -688,7 +688,7 @@ describe('multiply', function() {
     it('should multiply matrix x vector array', function() {
       var m = math.matrix([[2, 0], [4, 0]], 'sparse');
 
-      var r = multiply(m, 
+      var r = multiply(m,
                        [
         [2],
         [4]
@@ -731,8 +731,8 @@ describe('multiply', function() {
     it('should multiply triangular matrices', function () {
       var l = math.matrix([
         [1, 0, 0, 0],
-        [-0.5, 1, 0, 0],  
-        [0, -0.7, 1, 0],  
+        [-0.5, 1, 0, 0],
+        [0, -0.7, 1, 0],
         [0.0666667, -0.4, -0.5714286, 1]
       ], 'sparse');
       var u = math.matrix([
@@ -743,7 +743,7 @@ describe('multiply', function() {
       ], 'sparse');
 
       var r = multiply(l, u);
-      
+
       assert(r.storage(), 'sparse');
       approx.deepEqual(
         r.valueOf(),
@@ -772,7 +772,7 @@ describe('multiply', function() {
       approx.deepEqual(multiply(d, b), matrix([[67,78]], 'sparse'));
       approx.deepEqual(multiply(d, c), matrix([[61]], 'sparse'));
     });
-    
+
     it('should multiply two pattern matrices correctly', function() {
 
       var a = new math.type.SparseMatrix({
@@ -889,4 +889,77 @@ describe('multiply', function() {
     var expression = math.parse('multiply(2,3)');
     assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)');
   });
+
+  describe('Quaternion multiplication', function () {
+
+    it('should multiply 2 Quaternions', function () {
+      var a = math.quaternion(1,2,3,4);
+      var b =  math.quaternion(3,-2,-3,4);
+      assert.deepEqual(multiply(math.quaternion(), math.quaternion(1,2,3,4)), math.quaternion());
+      assert.deepEqual(multiply(math.quaternion({r:1}), math.quaternion(4,5,6,7)), math.quaternion(4,5,6,7));
+      assert.deepEqual(multiply(math.quaternion({r:-1}), math.quaternion(4,5,6,7)), math.quaternion(-4,-5,-6,-7));
+      assert.deepEqual(multiply(math.quaternion(),math.quaternion()),math.quaternion());
+      assert.deepEqual(multiply(a,b), math.quaternion(0, 28, -10, 16));
+      assert.equal(multiply(a,b) === multiply(b,a), false);
+      assert.deepEqual(multiply(multiply(math.quaternion({i:1}), math.quaternion({j:1})), math.quaternion({k:1})), math.quaternion({r:-1}));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(1,0,0,0)),math.quaternion(1,0,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(1,0,0,0)),math.quaternion(0,1,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(1,0,0,0)),math.quaternion(0,0,1,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(1,0,0,0)),math.quaternion(0,0,0,1));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(0,1,0,0)),math.quaternion(0,1,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(0,1,0,0)),math.quaternion(-1,0,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(0,1,0,0)),math.quaternion(0,0,0,-1));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(0,1,0,0)),math.quaternion(0,0,1,0));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(0,0,1,0)),math.quaternion(0,0,1,0));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(0,0,1,0)),math.quaternion(0,0,0,1));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(0,0,1,0)),math.quaternion(-1,0,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(0,0,1,0)),math.quaternion(0,-1,0,0));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(0,0,0,1)),math.quaternion(0,0,0,1));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(0,0,0,1)),math.quaternion(0,0,-1,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(0,0,0,1)),math.quaternion(0,1,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(0,0,0,1)),math.quaternion(-1,0,0,0));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(-1,0,0,0)),math.quaternion(-1,0,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(-1,0,0,0)),math.quaternion(0,-1,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(-1,0,0,0)),math.quaternion(0,0,-1,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(-1,0,0,0)),math.quaternion(0,0,0,-1));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(0,-1,0,0)),math.quaternion(0,-1,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(0,-1,0,0)),math.quaternion(1,0,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(0,-1,0,0)),math.quaternion(0,0,0,1));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(0,-1,0,0)),math.quaternion(0,0,-1,0));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(0,0,-1,0)),math.quaternion(0,0,-1,0));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(0,0,-1,0)),math.quaternion(0,0,0,-1));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(0,0,-1,0)),math.quaternion(1,0,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(0,0,-1,0)),math.quaternion(0,1,0,0));
+
+      assert.deepEqual(multiply(math.quaternion(1,0,0,0), math.quaternion(0,0,0,-1)),math.quaternion(0,0,0,-1));
+      assert.deepEqual(multiply(math.quaternion(0,1,0,0), math.quaternion(0,0,0,-1)),math.quaternion(0,0,1,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,1,0), math.quaternion(0,0,0,-1)),math.quaternion(0,-1,0,0));
+      assert.deepEqual(multiply(math.quaternion(0,0,0,1), math.quaternion(0,0,0,-1)),math.quaternion(1,0,0,0));
+    });
+
+    it('should muliply a Quaternion and a Complex number', function () {
+      assert.deepEqual(multiply(math.quaternion(), complex()), math.quaternion());
+      assert.deepEqual(multiply(math.quaternion(3,-2,-3,4), complex(3,-2)), math.quaternion(5,-12,-17,6));
+      assert.deepEqual(multiply(math.quaternion(1,2,3,4), complex()), math.quaternion());
+      assert.deepEqual(multiply(math.quaternion(1,2,3,4), complex(2,3)), math.quaternion(-4,7,18,-1));
+      assert.deepEqual(multiply(math.quaternion(0,-2,-3,-9), complex(4,-3)), math.quaternion(-6,-8,15,-45));
+    });
+
+    it('should multiply a Complex number and a Quaternion', function () {
+      assert.deepEqual(multiply(complex(), math.quaternion()), math.quaternion());
+      assert.deepEqual(multiply(complex(5), math.quaternion(-1,-4,2,4)), math.quaternion(-5,-20,10,20));
+      assert.deepEqual(multiply(complex(-3,2), math.quaternion(-1,6,-4,5)), math.quaternion(-9,-20,2,-23));
+      assert.deepEqual(multiply(complex(4,-2), math.quaternion(1,5,-4,5)), math.quaternion(14, 18, -6, 28));
+      assert.deepEqual(multiply(math.i,math.quaternion({j:1})), math.quaternion({k:1}));
+
+    });
+  });
+
 });

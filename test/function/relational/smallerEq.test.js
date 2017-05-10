@@ -205,6 +205,11 @@ describe('smallerEq', function() {
     assert.throws(function () {smallerEq(complex(2,4), math.bignumber(3));}, TypeError);
   });
 
+  it('should throw an error when comparing quaternions', function() {
+    assert.throws( function () {smallerEq(math.quaternioin(), math.quaternioin())}, TypeError);
+    assert.throws( function () {smallerEq(math.quaternioin(1,2,3,4), math.quaternioin(1,1,1,1))}, TypeError);
+  })
+
   it('should throw an error with two matrices of different sizes', function () {
     assert.throws(function () {smallerEq([1,4,6], [3,4]);});
   });

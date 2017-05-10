@@ -93,32 +93,32 @@ describe('dotPow', function() {
   });
 
   describe('Array', function () {
-    
+
     it('should elevate array .^ scalar', function () {
       approx.deepEqual(dotPow([[1,2],[0,4]], 2), [[1,4],[0,16]]);
       approx.deepEqual(dotPow([[1,2],[0,4]], 2.5), [[1,5.65685424949238], [0, 32]]);
       approx.deepEqual(dotPow([[1,2,3],[4,5,0]], 2), [[1,4,9],[16,25,0]]);
     });
-    
+
     it('should elevate scalar .^ array', function () {
       approx.deepEqual(dotPow(2, [[1,2],[0,4]]), [[2,4],[1,16]]);
       approx.deepEqual(dotPow(2.5, [[1,2],[0,4]]), [[2.5, 6.25], [1, 39.0625]]);
       approx.deepEqual(dotPow(2, [[1,2,3],[4,5,0]]), [[2,4,8],[16,32,1]]);
     });
-    
+
     it('should elevate array .^ array', function () {
       approx.deepEqual(dotPow([[1,2,0],[0,1,4]], [[2,1,0],[4,1,0]]), [[1,2,1],[0,1,1]]);
     });
-    
+
     it('should elevate array .^ dense matrix', function () {
       approx.deepEqual(dotPow([[1,2,0],[0,1,4]], matrix([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
     });
-    
+
     it('should elevate array .^ sparse matrix', function () {
       approx.deepEqual(dotPow([[1,2,0],[0,1,4]], sparse([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
     });
   });
-  
+
   describe('DenseMatrix', function () {
 
     it('should elevate dense matrix .^ scalar', function () {
@@ -145,7 +145,7 @@ describe('dotPow', function() {
       approx.deepEqual(dotPow(matrix([[1,2,0],[0,1,4]]), sparse([[2,1,0],[4,1,0]])), matrix([[1,2,1],[0,1,1]]));
     });
   });
-  
+
   describe('SparseMatrix', function () {
 
     it('should elevate sparse matrix .^ scalar', function () {
@@ -176,5 +176,17 @@ describe('dotPow', function() {
   it('should LaTeX dotPow', function () {
     var expression = math.parse('dotPow([1,2],[3,4])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)');
+  });
+
+  it('should perform dot powes on Quaternions', function() {
+    assert.deepEqual(dotPow(math.quaternion(2,3,7,4),2), math.quaternion(4,9,49,16));
+    assert.deepEqual(dotPow(math.quaternion(1,-5,2,3),0), math.quaternion(1,1,1,1));
+
+    assert.throws( function() {dotPow(math.quaternion(-2,-1,-5,-4), 0.5)}, /TypeError: Cannot raise negative number to non intiger power/);
+    assert.throws( function() {dotPow(math.quaternion(-2,-1,-5,-4), -1.5)}, /TypeError: Cannot raise negative number to non intiger power/);
+    assert.throws( function() {dotPow(math.quaternion(-1,0,0,0), 0.5)}, /TypeError: Cannot raise negative number to non intiger power/);
+    assert.throws( function() {dotPow(math.quaternion(0,-1,0,0), 0.5)}, /TypeError: Cannot raise negative number to non intiger power/);
+    assert.throws( function() {dotPow(math.quaternion(0,0,-1,0), 0.5)}, /TypeError: Cannot raise negative number to non intiger power/);
+    assert.throws( function() {dotPow(math.quaternion(0,0,0,-1), 0.5)}, /TypeError: Cannot raise negative number to non intiger power/);
   });
 });

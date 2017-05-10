@@ -5,10 +5,10 @@ var OperatorNode = math.expression.node.OperatorNode;
 var derivative = math.derivative;
 
 describe('derivative', function() {
-  
+
   function derivativeWithoutSimplify (expr, value) {
     return math.derivative(expr, value, {simplify: false});
-  }  
+  }
 
   function compareString(left, right) {
     assert.equal(left.toString(), right.toString());
@@ -143,7 +143,7 @@ describe('derivative', function() {
     compareString(derivativeWithoutSimplify('asech((2x))', 'x'), '-(2 * 1) / ((2 x) * sqrt(1 - (2 x) ^ 2))');
     compareString(derivativeWithoutSimplify('acsch((2x))', 'x'), '-(2 * 1) / (abs((2 x)) * sqrt((2 x) ^ 2 + 1))');
     compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)');
-    
+
     compareString(derivativeWithoutSimplify('exp(2x)', 'x'), '2 * 1 * exp(2 x)');
   });
 
@@ -201,11 +201,13 @@ describe('derivative', function() {
   it('should have controlled behavior on arguments errors', function() {
     assert.throws(function() {
       derivative('sqrt()', 'x');
-    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix, index: 0\)/);
+    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix or Quaternion, index: 0\)/);
     assert.throws(function() {
       derivative('sqrt(12, 2x)', 'x');
     }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/);
   });
+
+// }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix, index: 0\)/);
 
   it('should throw error for incorrect argument types', function() {
     assert.throws(function () {

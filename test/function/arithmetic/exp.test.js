@@ -86,4 +86,22 @@ describe('exp', function() {
     var expression = math.parse('exp(0)');
     assert.equal(expression.toTex(), '\\exp\\left(0\\right)');
   });
+
+  it('should rase e to the power of a Quaternion', function () {
+    approx.deepEqual(exp(math.quaternion(0,0,0,0)), math.quaternion(1,0,0,0));
+    approx.deepEqual(exp(math.quaternion(1,0,0,0)), math.quaternion(2.718281828459045,0,0,0));
+    approx.deepEqual(exp(math.quaternion(0,1,0,0)), math.quaternion(0.5403023058681398,0.8414709848078965,0,0));
+    approx.deepEqual(exp(math.quaternion(0,0,1,0)), math.quaternion(0.5403023058681398,0,0.8414709848078965,0));
+    approx.deepEqual(exp(math.quaternion(0,0,0,1)), math.quaternion(0.5403023058681398,0,0,0.8414709848078965));
+
+    approx.deepEqual(exp(math.quaternion(-1,0,0,0)), math.quaternion(0.3678794411714424,0,0,0));
+    approx.deepEqual(exp(math.quaternion(0,-1,0,0)), math.quaternion(0.5403023058681398,-0.8414709848078965,0,0));
+    approx.deepEqual(exp(math.quaternion(0,0,-1,0)), math.quaternion(0.5403023058681398,0,-0.8414709848078965,0));
+    approx.deepEqual(exp(math.quaternion(0,0,0,-1)), math.quaternion(0.5403023058681398,0,0,-0.8414709848078965));
+
+    approx.deepEqual(exp(math.quaternion(1,2,3,4)), math.quaternion(1.6939227236832994,-0.7895596245415588,-1.184339436812338,-1.5791192490831176));
+    approx.deepEqual(exp(math.quaternion(4,1,2,3)), math.quaternion(-45.05980201339819,-8.240025266756877,-16.480050533513754,-24.720075800270628));
+    approx.deepEqual(exp(math.quaternion(3,4,1,2)), math.quaternion(-2.6000526954284027,-17.384580348249628,-4.346145087062407,-8.692290174124814));
+    approx.deepEqual(exp(math.quaternion(2,3,4,1)), math.quaternion(2.786189997492657,-4.026439818820405,-5.3685864250938735,-1.3421466062734684));
+  });
 });

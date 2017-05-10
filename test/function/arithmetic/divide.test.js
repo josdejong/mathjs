@@ -192,6 +192,18 @@ describe('divide', function() {
     assert.throws(function () {divide(a, [[1]])});
   });
 
+  it('should divide quaternions by each other', function() {
+    assert.deepEqual(divide(math.quaternion({k:1}), math.quaternion({j:1})), math.quaternion({i:1}));
+    assert.deepEqual(divide(math.quaternion({i:1}), math.quaternion({k:1})), math.quaternion({j:1}));
+    assert.deepEqual(divide(math.quaternion(3,-2,-3,4), math.quaternion(3,-2,-3,4)), math.quaternion(1,0,0,0));
+    approx.deepEqual(divide(math.quaternion(1,2,3,4), math.quaternion(-1,1,2,3)), math.quaternion(19/15, -4/15,-1/5,-8/15));
+
+    assert.deepEqual(divide(math.quaternion(1,0,0,0), math.quaternion(1,0,0,0)), math.quaternion(1,0,0,0));
+    assert.deepEqual(divide(math.quaternion(1,0,0,0), math.quaternion(0,1,0,0)), math.quaternion(0,-1,0,0));
+    assert.deepEqual(divide(math.quaternion(1,0,0,0), math.quaternion(0,0,1,0)), math.quaternion(0,0,-1,0));
+    assert.deepEqual(divide(math.quaternion(1,0,0,0), math.quaternion(0,0,0,1)), math.quaternion(0,0,0,-1));
+
+  });
   /*
   // These are supported now --ericman314
   it('should throw an error if dividing a number by a unit', function() {

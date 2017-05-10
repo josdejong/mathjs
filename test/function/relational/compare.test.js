@@ -122,25 +122,25 @@ describe('compare', function() {
   });
 
   describe('Array', function () {
-    
+
     it('should compare array - scalar', function () {
       assert.deepEqual(compare('B', ['A', 'B', 'C']), [1, 0, -1]);
       assert.deepEqual(compare(['A', 'B', 'C'], 'B'), [-1, 0, 1]);
     });
-    
+
     it('should compare array - array', function () {
       assert.deepEqual(compare([[1, 2, 0], [-1, 0, 2]], [[3, -1, 0], [-2, 1, 0]]), [[-1, 1, 0], [1, -1, 1]]);
     });
-    
+
     it('should compare array - dense matrix', function () {
       assert.deepEqual(compare([[1, 2, 0], [-1, 0, 2]], matrix([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]));
     });
-    
+
     it('should compare array - sparse matrix', function () {
       assert.deepEqual(compare([[1, 2, 0], [-1, 0, 2]], sparse([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]));
     });
   });
-  
+
   describe('DenseMatrix', function () {
 
     it('should compare dense matrix - scalar', function () {
@@ -160,7 +160,7 @@ describe('compare', function() {
       assert.deepEqual(compare(matrix([[1, 2, 0], [-1, 0, 2]]), sparse([[3, -1, 0], [-2, 1, 0]])), matrix([[-1, 1, 0], [1, -1, 1]]));
     });
   });
-  
+
   describe('SparseMatrix', function () {
 
     it('should compare sparse matrix - scalar', function () {
@@ -199,6 +199,11 @@ describe('compare', function() {
     assert.throws(function () {compare(math.bignumber(3), complex(2,4));}, TypeError);
     assert.throws(function () {compare(complex(2,4), math.bignumber(3));}, TypeError);
   });
+
+  it('should throw an error when comparing quaternions', function(){
+    assert.throws(function() {compare(math.quaternion(), math.quaternion())}, TypeError);
+    assert.throws(function() {compare(math.quaternion(1,2,3,4), math.quaternion())}, TypeError);
+  })
 
   it('should throw an error if matrices are different sizes', function() {
     assert.throws(function () {compare([1,4,6], [3,4]);});

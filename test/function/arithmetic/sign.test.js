@@ -78,4 +78,27 @@ describe('sign', function() {
     assert.equal(expression.toTex(), '\\mathrm{sign}\\left(-4\\right)');
   });
 
+  it('should find the sing of a Quaternion', function () {
+    assert.deepEqual(math.sign(math.quaternion()), math.quaternion());
+    assert.deepEqual(math.sign(math.quaternion(-1,2,3,-5)), math.quaternion(-1,1,1,-1));
+
+    assert.deepEqual(math.sign(math.quaternion(2,2,2,2)), math.quaternion(1,1,1,1));
+    assert.deepEqual(math.sign(math.quaternion(-2,2,2,2)), math.quaternion(-1,1,1,1));
+    assert.deepEqual(math.sign(math.quaternion(2,-2,2,2)), math.quaternion(1,-1,1,1));
+    assert.deepEqual(math.sign(math.quaternion(2,2,-2,2)), math.quaternion(1,1,-1,1));
+    assert.deepEqual(math.sign(math.quaternion(2,2,2,-2)), math.quaternion(1,1,1,-1));
+
+    assert.deepEqual(math.sign(math.quaternion(-2,-2,-2,-2)), math.quaternion(-1,-1,-1,-1));
+    assert.deepEqual(math.sign(math.quaternion(2,-2,-2,-2)), math.quaternion(1,-1,-1,-1));
+    assert.deepEqual(math.sign(math.quaternion(-2,2,-2,-2)), math.quaternion(-1,1,-1,-1));
+    assert.deepEqual(math.sign(math.quaternion(-2,-2,2,-2)), math.quaternion(-1,-1,1,-1));
+    assert.deepEqual(math.sign(math.quaternion(-2,-2,-2,2)), math.quaternion(-1,-1,-1,1));
+
+    assert.deepEqual(math.sign(math.quaternion(0,2,2,2)), math.quaternion(0,1,1,1));
+    assert.deepEqual(math.sign(math.quaternion(2,0,2,2)), math.quaternion(1,0,1,1));
+    assert.deepEqual(math.sign(math.quaternion(2,2,0,2)), math.quaternion(1,1,0,1));
+    assert.deepEqual(math.sign(math.quaternion(2,2,2,0)), math.quaternion(1,1,1,0));
+
+  })
+
 });

@@ -90,6 +90,19 @@ describe('equal', function() {
     assert.equal(equal(complex(2,0), 3), false);
   });
 
+  it('should compare 2 quaternions correctly', function() {
+    assert.equal(equal(math.quaternion(), math.quaternion(0,0,0,0)), true);
+    assert.equal(equal(math.quaternion(1,1,1,1), math.quaternion(1,1,1,1)), true);
+    assert.equal(equal(math.quaternion(1,1,1,0), math.quaternion(1,1,1,0)), true);
+    assert.equal(equal(math.quaternion(1,1,0,1), math.quaternion(1,1,0,1)), true);
+    assert.equal(equal(math.quaternion(1,0,1,1), math.quaternion(1,0,1,1)), true);
+    assert.equal(equal(math.quaternion(0,1,1,1), math.quaternion(0,1,1,1)), true);
+    assert.equal(equal(math.quaternion(1,1,1,1), math.quaternion(-1,1,1,1)), false);
+    assert.equal(equal(math.quaternion(1,1,1,1), math.quaternion(1,-1,1,1)), false);
+    assert.equal(equal(math.quaternion(1,1,1,1), math.quaternion(1,1,-1,1)), false);
+    assert.equal(equal(math.quaternion(1,1,1,1), math.quaternion(1,1,1,-1)), false);
+  });
+
   it('should compare mixed complex numbers and bignumbers (downgrades to numbers)', function() {
     assert.deepEqual(equal(math.complex(6, 0), bignumber(6)), true);
     assert.deepEqual(equal(math.complex(6, -2), bignumber(6)), false);
@@ -183,12 +196,12 @@ describe('equal', function() {
     it('should compare array - sparse matrix', function () {
       assert.deepEqual(equal([[1, 2, 0], [-1, 0, 2]], sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, false, true], [true, false, false]]));
     });
-    
+
     it('should throw an error if arrays have different sizes', function() {
       assert.throws(function () {equal([1,4,5], [3,4]);});
     });
   });
-  
+
   describe('DenseMatrix', function () {
 
     it('should compare dense matrix - scalar', function () {
@@ -228,7 +241,7 @@ describe('equal', function() {
       assert.deepEqual(equal(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[true, false, true], [true, false, false]]));
     });
   });
-  
+
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {equal(1);}, /Too few arguments/);
     assert.throws(function () {equal(1, 2, 3);}, /Too many arguments/);

@@ -95,6 +95,20 @@ describe('log', function() {
     approx.deepEqual(log(complex(1, 0)),   complex(0, 0));
   });
 
+  it('should return the log base e of a quaternion', function () {
+    approx.deepEqual(log(math.quaternion(1,2,3,4)), math.quaternion(1.7005986908310777,0.515190292664085,0.7727854389961275,1.03038058532817));
+    approx.deepEqual(log(math.quaternion(-1,2,3,4)), math.quaternion(1.7005986908310777,0.6515679277817118,0.9773518916725678,1.3031358555634236));
+    approx.deepEqual(log(math.quaternion(1,-2,3,4)), math.quaternion(1.7005986908310777,-0.515190292664085,0.7727854389961275,1.03038058532817));
+    approx.deepEqual(log(math.quaternion(1,2,-3,4)), math.quaternion(1.7005986908310777,0.515190292664085,-0.7727854389961275,1.03038058532817));
+    approx.deepEqual(log(math.quaternion(1,2,3,-4)), math.quaternion(1.7005986908310777,0.515190292664085,0.7727854389961275,-1.03038058532817));
+
+    approx.deepEqual(log(math.quaternion(2,3,4,5)), math.quaternion(1.9944920232821373,0.549487105217117,0.7326494736228226,0.9158118420285283));
+    approx.deepEqual(log(math.quaternion(5,2,3,4)), math.quaternion(1.9944920232821373,0.30545737557546476,0.45818606336319717,0.6109147511509295));
+    approx.deepEqual(log(math.quaternion(4,5,2,3)), math.quaternion(1.9944920232821373,0.8072177296195943,0.3228870918478377,0.48433063777175656));
+    approx.deepEqual(log(math.quaternion(3,4,5,2)), math.quaternion(1.9944920232821373,0.685883734654061,0.8573546683175763,0.3429418673270305));
+
+  });
+
   it('should throw an error when used on a unit', function() {
     assert.throws(function () {log(unit('5cm'))});
   });
