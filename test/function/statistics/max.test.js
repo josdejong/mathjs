@@ -68,14 +68,31 @@ describe('max', function() {
         [[2, 4, 6], [7, 9, 11]]);
   });
 
-  it('should throw an error when called with complex numbers', function() {
-    assert.throws(function () {max(new Complex(2,3), new Complex(2,1))}, TypeError);
-    assert.throws(function () {max(new Complex(2,3), new Complex(2,5))}, TypeError);
+  describe('Complex Numbers', function () {
 
-    assert.throws(function () {max(new Complex(3,4), 4)}, TypeError);
-    assert.throws(function () {max(new Complex(3,4), 5)}, TypeError);
-    assert.throws(function () {max(5, new Complex(3,4))}, TypeError);
-    assert.throws(function () {max(new Complex(3,4), 6)}, TypeError);
+    it('should return the complex number with larger real value', function() {
+      assert.deepEqual(max(new Complex(1,1), new Complex(1,2)), new Complex(1,1));
+      assert.deepEqual(max(new Complex(2,1), new Complex(1,2)), new Complex(2,1));
+      assert.deepEqual(max(new Complex(0,1), new Complex(1,2)), new Complex(1,2));
+    });
+
+    it('should return the larger between complex number real part and number', function() {
+      assert.deepEqual(max(new Complex(1,1), 1), new Complex(1,1));
+      assert.deepEqual(max(new Complex(2,1), 1), new Complex(2,1));
+      assert.equal(max(new Complex(0,1), 1), 1);
+      assert.equal(max(1, new Complex(1,1)), 1);
+      assert.deepEqual(max(1, new Complex(2,1)), new Complex(2,1));
+      assert.equal(max(1, new Complex(0,1)), 1);
+    });
+
+    it('should return the larger between complex number real part and bignumber', function() {
+      assert.deepEqual(max(new Complex(1,1), math.bignumber(1)), new Complex(1,1));
+      assert.deepEqual(max(new Complex(2,1), math.bignumber(1)), new Complex(2,1));
+      assert.equal(max(new Complex(0,1), math.bignumber(1)), 1);
+      assert.equal(max(math.bignumber(1), new Complex(1,1)), 1);
+      assert.deepEqual(max(math.bignumber(1), new Complex(2,1)), new Complex(2,1));
+      assert.equal(max(math.bignumber(1), new Complex(0,1)), 1);
+    });
   });
 
   it('should throw an error when called multiple arrays or matrices', function() {

@@ -44,6 +44,36 @@ print(c);                      // 1 + i
 var d = math.complex(3, 4);
 console.log(d.abs(), d.arg());      // radius = 5, phi = 0.9272952180016122
 
+// comparisions between two complex numbers (only considers real components)
+console.log('\ncomparisions between two complex numbers (only considers real components)');
+var e = math.complex(3, 4);
+var f = math.complex(5, 6);
+console.log('compare - ', math.compare(e, f));
+console.log('larger - ', math.larger(e, f));
+console.log('largerEq - ', math.largerEq(e, f));
+console.log('smaller - ', math.smaller(e, f));
+console.log('smallerEq - ', math.smallerEq(e, f));
+
+// comparisions between a complex number and a number
+console.log('\ncomparisions between a complex number and a number');
+var g = math.complex(6, 2);
+var h = 5;
+console.log('compare - ', math.compare(g, h));
+console.log('larger - ', math.larger(g, h));
+console.log('largerEq - ', math.largerEq(g, h));
+console.log('smaller - ', math.smaller(g, h));
+console.log('smallerEq - ', math.smallerEq(g, h));
+
+// comparisions between a complex number and a number
+console.log('\ncomparisions between a complex number and a bignumber');
+var i = math.complex(6, 2);
+var j = math.bignumber(6);
+console.log('compare - ', math.compare(i, j));
+console.log('larger - ', math.larger(g, h));
+console.log('largerEq - ', math.largerEq(g, h));
+console.log('smaller - ', math.smaller(g, h));
+console.log('smallerEq - ', math.smallerEq(g, h));
+
 
 /**
  * Helper function to output a value in the console. Value will be formatted.

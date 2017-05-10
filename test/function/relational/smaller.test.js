@@ -197,12 +197,31 @@ describe('smaller', function() {
     });
   });
 
-  it('should throw an error when comparing complex numbers', function() {
-    assert.throws(function () {smaller(complex(1,1), complex(1,2));}, TypeError);
-    assert.throws(function () {smaller(complex(2,1), 3);}, TypeError);
-    assert.throws(function () {smaller(3, complex(2,4));}, TypeError);
-    assert.throws(function () {smaller(math.bignumber(3), complex(2,4));}, TypeError);
-    assert.throws(function () {smaller(complex(2,4), math.bignumber(3));}, TypeError);
+  describe('Complex Numbers', function () {
+
+    it('should compare complex numbers', function() {
+      assert.equal(smaller(complex(1,1), complex(1,2)), false);
+      assert.equal(smaller(complex(2,1), complex(1,2)), false);
+      assert.equal(smaller(complex(0,1), complex(1,2)), true);
+    });
+
+    it('should compare complex number and number', function() {
+      assert.equal(smaller(complex(1,1), 1), false);
+      assert.equal(smaller(complex(2,1), 1), false);
+      assert.equal(smaller(complex(0,1), 1), true);
+      assert.equal(smaller(1, complex(1,1)), false);
+      assert.equal(smaller(1, complex(2,1)), true);
+      assert.equal(smaller(1, complex(0,1)), false);
+    });
+
+    it('should compare complex number and bignumber', function() {
+      assert.equal(smaller(complex(1,1), math.bignumber(1)), false);
+      assert.equal(smaller(complex(2,1), math.bignumber(1)), false);
+      assert.equal(smaller(complex(0,1), math.bignumber(1)), true);
+      assert.equal(smaller(math.bignumber(1), complex(1,1)), false);
+      assert.equal(smaller(math.bignumber(1), complex(2,1)), true);
+      assert.equal(smaller(math.bignumber(1), complex(0,1)), false);
+    });
   });
 
   it('should throw an error with two matrices of different sizes', function () {
