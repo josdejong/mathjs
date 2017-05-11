@@ -143,6 +143,7 @@ describe('derivative', function() {
     compareString(derivativeWithoutSimplify('asech((2x))', 'x'), '-(2 * 1) / ((2 x) * sqrt(1 - (2 x) ^ 2))');
     compareString(derivativeWithoutSimplify('acsch((2x))', 'x'), '-(2 * 1) / (abs((2 x)) * sqrt((2 x) ^ 2 + 1))');
     compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)');
+    compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / (2 x)');
     
     compareString(derivativeWithoutSimplify('exp(2x)', 'x'), '2 * 1 * exp(2 x)');
   });
