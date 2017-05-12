@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 3.12.3
- * @date    2017-05-05
+ * @version 3.13.0
+ * @date    2017-05-12
  *
  * @license
  * Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
@@ -16407,7 +16407,7 @@ exports.factory = factory;
 
 
 
-function factory (type, config, load, typed) {
+function factory (type, config, load, typed, math) {
   var parse = load(__webpack_require__(30));
   var ConstantNode = load(__webpack_require__(45));
   var FunctionNode = load(__webpack_require__(46));
@@ -16428,6 +16428,8 @@ function factory (type, config, load, typed) {
   /**
    * Simplify an expression tree.
    *
+   * A list of rules are applied to an expression, repeating over the list until
+   * no further changes are made.
    * It's possible to pass a custom set of rules to the function as second
    * argument. A rule can be specified as an object, string, or function:
    *
@@ -16440,8 +16442,17 @@ function factory (type, config, load, typed) {
    *       }
    *     ]
    *
+   * String and object rules consist of a left and right pattern. The left is
+   * used to match against the expression and the right determines what matches
+   * are replaced with. The main difference between a pattern and a normal
+   * expression is that variables starting with the following characters are
+   * interpreted as wildcards:
    *
-   * The default list with rules is exposed on the function as `simplify.rules`
+   * - 'n' - matches any Node
+   * - 'c' - matches any ConstantNode
+   * - 'v' - matches any Node that is not a ConstantNode
+   *
+   * The default list of rules is exposed on the function as `simplify.rules`
    * and can be used as a basis to built a set of custom rules.
    *
    * For more details on the theory, see:
@@ -16487,11 +16498,12 @@ function factory (type, config, load, typed) {
       rules = _buildRules(rules);
 
       var res = removeParens(expr);
-      var after = res.toString({parenthesis: 'all'});
-      var before = null;
-      while(before != after) {
-        lastsym = 0;
-        before = after;
+      var visited = {};
+
+      var str = res.toString({parenthesis: 'all'});
+      while(!visited[str]) {
+        visited[str] = true;
+        _lastsym = 0; // counter for placeholder symbols
         for (var i=0; i<rules.length; i++) {
           if (typeof rules[i] === 'function') {
             res = rules[i](res);
@@ -16502,7 +16514,7 @@ function factory (type, config, load, typed) {
           }
           unflattenl(res); // using left-heavy binary tree here since custom rule functions may expect it
         }
-        after = res.toString({parenthesis: 'all'});
+        str = res.toString({parenthesis: 'all'});
       }
 
       return res;
@@ -16519,6 +16531,28 @@ function factory (type, config, load, typed) {
       }
     });
   }
+
+  // All constants that are allowed in rules
+  var SUPPORTED_CONSTANTS = {
+    true: true,
+    false: true,
+    e: true,
+    i: true,
+    Infinity: true,
+    LN2: true,
+    LN10: true,
+    LOG2E: true,
+    LOG10E: true,
+    NaN: true,
+    phi: true,
+    pi: true,
+    SQRT1_2: true,
+    SQRT2: true,
+    tau: true,
+    // null: false,
+    // uninitialized: false,
+    // version: false,
+  };
 
   // Array of strings, used to build the ruleSet.
   // Each l (left side) and r (right side) are parsed by
@@ -16541,8 +16575,8 @@ function factory (type, config, load, typed) {
 
     // temporary rules
     { l: 'n-n1', r:'n+-n1' }, // temporarily replace 'subtract' so we can further flatten the 'add' operator
-    { l: '-(c*C)', r: '(-c) * C' }, // make non-constant terms positive
-    { l: '-C', r: '(-1) * C' },
+    { l: '-(c*v)', r: '(-c) * v' }, // make non-constant terms positive
+    { l: '-v', r: '(-1) * v' },
     { l: 'n/n1^n2', r:'n*n1^-n2' }, // temporarily replace 'divide' so we can further flatten the 'multiply' operator
     { l: 'n/n1', r:'n*n1^-1' },
 
@@ -16562,8 +16596,8 @@ function factory (type, config, load, typed) {
     { l: '(-n)*n1', r: '-(n*n1)' }, // make factors positive (and undo 'make non-constant terms positive')
 
     // ordering of constants
-    { l: 'c+C', r: 'C+c', context: { 'add': { commutative:false } } },
-    { l: 'C*c', r: 'c*C', context: { 'multiply': { commutative:false } } },
+    { l: 'c+v', r: 'v+c', context: { 'add': { commutative:false } } },
+    { l: 'v*c', r: 'c*v', context: { 'multiply': { commutative:false } } },
 
     // undo temporary rules
     { l: '(-1) * n', r: '-n' },
@@ -16649,9 +16683,9 @@ function factory (type, config, load, typed) {
     return ruleSet;
   }
 
-  var lastsym = 0;
+  var _lastsym = 0;
   function _getExpandPlaceholderSymbol() {
-    return new SymbolNode('_p'+lastsym++);
+    return new SymbolNode('_p' + _lastsym++);
   }
 
   /**
@@ -16901,7 +16935,17 @@ function factory (type, config, load, typed) {
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?');
       }
-      if (rule.name[0] == 'n' || rule.name.substring(0,2) == '_p') {
+     if (math.hasOwnProperty(rule.name)) {
+        if (!SUPPORTED_CONSTANTS[rule.name]) {
+          throw new Error('Built in constant: ' + rule.name + ' is not supported by simplify.');
+        }
+
+        // built-in constant must match exactly
+        if(rule.name !== node.name) {
+          return [];
+        }
+      }
+      else if (rule.name[0] == 'n' || rule.name.substring(0,2) == '_p') {
         // rule matches _anything_, so assign this node to the rule.name placeholder
         // Assign node to the rule.name placeholder.
         // Our parent will check for matches among placeholders.
@@ -16915,16 +16959,6 @@ function factory (type, config, load, typed) {
         else {
           // Mis-match: rule was expecting something other than a ConstantNode
           return [];
-        }
-      }
-      else if (rule.name[0] == 'C') {
-        // rule matches anything but a ConstantNode
-        if(node instanceof ConstantNode) {
-          // Mis-match: rule was expecting not a ConstantNode
-          return [];
-        }
-        else {
-          res[0].placeholders[rule.name] = node;
         }
       }
       else if (rule.name[0] == 'c') {
@@ -16942,11 +16976,8 @@ function factory (type, config, load, typed) {
       }
     }
     else if (rule instanceof ConstantNode) {
-      // Literal constant in our rule, so much match node exactly
-      if(rule.value === node.value) {
-        // The constants match
-      }
-      else {
+      // Literal constant must match exactly
+      if(rule.value !== node.value) {
         return [];
       }
     }
@@ -17013,6 +17044,7 @@ function factory (type, config, load, typed) {
   return simplify;
 }
 
+exports.math = true;
 exports.name = 'simplify';
 exports.factory = factory;
 
@@ -26087,11 +26119,12 @@ function factory (type, config, load, typed, math) {
     delete Unit.UNITS[name];
   };
 
-
+  // expose arrays with prefixes, dimensions, units, systems
   Unit.PREFIXES = PREFIXES;
+  Unit.BASE_DIMENSIONS = BASE_DIMENSIONS;
   Unit.BASE_UNITS = BASE_UNITS;
-  Unit.UNITS = UNITS;
   Unit.UNIT_SYSTEMS = UNIT_SYSTEMS;
+  Unit.UNITS = UNITS;
 
   return Unit;
 }
@@ -26911,7 +26944,7 @@ exports.create = function create(type) {
     { name: 'Object',          test: function (x) { return typeof x === 'object' } },
     { name: 'null',            test: function (x) { return x === null } },
     { name: 'undefined',       test: function (x) { return x === undefined } },
-    
+
     { name: 'OperatorNode',    test: function (x) { return x && x.isOperatorNode } },
     { name: 'ConstantNode',    test: function (x) { return x && x.isConstantNode } },
     { name: 'SymbolNode',      test: function (x) { return x && x.isSymbolNode } },
@@ -26977,8 +27010,9 @@ exports.create = function create(type) {
       from: 'number',
       to: 'Fraction',
       convert: function (x) {
-        if (digits(x) > 15) {
-          throw new TypeError('Cannot implicitly convert a number with >15 significant digits to Fraction ' +
+        var f = new type.Fraction(x);
+        if (f.valueOf() !== x) {
+          throw new TypeError('Cannot implicitly convert a number to a Fraction when there will be a loss of precision ' +
               '(value: ' + x + '). ' +
               'Use function fraction(x) to convert to Fraction.');
         }
@@ -33198,6 +33232,13 @@ function factory (type, config, load, typed) {
             ])
           ]);
           break;
+        case 'abs':
+          // d/dx(abs(x)) = abs(x)/x
+          funcDerivative = new OperatorNode('/', 'divide', [
+            new FunctionNode(new SymbolNode('abs'), [arg1.clone()]),
+            arg1.clone()
+          ]);
+          break;
         case 'gamma':  // Needs digamma function, d/dx(gamma(x)) = gamma(x)digamma(x)
         default: throw new Error('Function "' + node.name + '" not supported by derivative');
       }
@@ -33434,54 +33475,82 @@ function factory(type, config, load, typed, math) {
       return _toNumber(math[fnname].apply(null, args));
     }
     catch (ignore) {
-    // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again using just numbers
-      args = args.map(function(x){ return x.valueOf(); });
+      // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
+      args = args.map(function(x){
+        if (x.isFraction) {
+          return x.valueOf();
+        }
+        return x;
+      });
       return _toNumber(math[fnname].apply(null, args));
     }
   }
 
   var _toNode = typed({
     'Fraction': _fractionToNode,
-    'number': _numberToNode,
-    'BigNumber': function(s) {
-      return _numberToNode(s._toNumber());
+    'number': function(n) {
+      if (n < 0) {
+        return unaryMinusNode(new ConstantNode(-n));
+      }
+      return new ConstantNode(n);
+    },
+    'BigNumber': function(n) {
+      if (n < 0) {
+        return unaryMinusNode(new ConstantNode(n.negated().toString(), 'number'));
+      }
+      return new ConstantNode(n.toString(), 'number');
     },
     'Complex': function(s) {
       throw 'Cannot convert Complex number to Node';
     }
   });
 
-  var _toNumber = typed({
-    'Fraction': function(s) { return s; },
-    'BigNumber': function(s) {
-      if (s.decimalPlaces() <= 15) {
-        return math.fraction(s.toNumber())
+  // convert a number to a fraction only if it can be expressed exactly
+  function _exactFraction(n) {
+    if (isFinite(n)) {
+      var f = math.fraction(n);
+      if (f.valueOf() === n) {
+        return f;
       }
-      return s.toNumber();
-    },
-    'number': function(s) {
-      if (digits(s) <= 15) {
+    }
+    return n;
+  }
+
+  // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
+  // BigNumbers are left alone
+  var _toNumber = typed({
+    'string': function(s) {
+      if (config.number === 'BigNumber') {
+        return math.bignumber(s);
+      }
+      else if (config.number === 'Fraction') {
         return math.fraction(s);
       }
-      return s;
+      else {
+        return _exactFraction(parseFloat(s));
+      }
     },
+
+    'Fraction': function(s) { return s; },
+
+    'BigNumber': function(s) { return s; },
+
+    'number': function(s) {
+      return _exactFraction(s);
+    },
+
     'Complex': function(s) {
       if (s.im !== 0) {
         return s;
       }
-      if (digits(s.re) <= 15) {
-        return math.fraction(s.re);
-      }
-      return s.re;
+      return _exactFraction(s.re);
     },
   });
 
-  function _numberToNode(n) {
-    if (n < 0) {
-      return new OperatorNode('-', 'unaryMinus', [new ConstantNode(-n)])
-    }
-    return new ConstantNode(n);
+  function unaryMinusNode(n) {
+    return new OperatorNode('-', 'unaryMinus', [n]);
   }
+
   function _fractionToNode(f) {
     var n;
     var vn = f.s*f.n;
@@ -33535,7 +33604,10 @@ function factory(type, config, load, typed, math) {
       case 'SymbolNode':
         return node;
       case 'ConstantNode':
-        return _toNumber(node.value);
+        if (node.valueType === 'number') {
+          return _toNumber(node.value);
+        }
+        return node;
       case 'FunctionNode':
         if (math[node.name] && math[node.name].rawArgs) {
           return node;
@@ -49807,7 +49879,7 @@ module.exports = function scatter(a, j, w, x, u, mark, c, f, inverse, update, va
 /* 511 */
 /***/ (function(module, exports) {
 
-module.exports = '3.12.3';
+module.exports = '3.13.0';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 

@@ -4,6 +4,19 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20170512-version-3130">2017-05-12, version 3.13.0 <a href="#20170512-version-3130" title="Permalink">#</a></h2>
+
+- Command line application can now evaluate inline expressions
+  like `mathjs 1+2`. Thanks @slavaGanzin.
+- Function `derivative` now supports `abs`. Thanks @tetslee.
+- Function `simplify` now supports BigNumbers. Thanks @tetslee.
+- Prevent against endless loops in `simplify`. Thanks @tetslee.
+- Fixed #813: function `simplify` converting small numbers to inexact
+  Fractions. Thanks @tetslee.
+- Fixed #838: Function `simplify` now supports constants like `e`.
+  Thanks @tetslee.
+
+
 <h2 id="20170505-version-3123">2017-05-05, version 3.12.3 <a href="#20170505-version-3123" title="Permalink">#</a></h2>
 
 - Fixed security vulnerabilities. Thanks Dan and Sam.
