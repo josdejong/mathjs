@@ -4,7 +4,9 @@
 
 - Command line application can now evaluate inline expressions
   like `mathjs 1+2`. Thanks @slavaGanzin.
+- Function `derivative` now supports `abs`. Thanks @tetslee.
 - Function `simplify` now supports BigNumbers. Thanks @tetslee.
+- Prevent against endless loops in `simplify`. Thanks @tetslee.
 - Fixed #813: function `simplify` converting small numbers to inexact
   Fractions. Thanks @tetslee.
 - Fixed #838: Function `simplify` now supports constants like `e`.
