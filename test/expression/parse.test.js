@@ -390,10 +390,11 @@ describe('parse', function() {
     });
 
     it('should create units and aliases', function() {
-      parseAndEval('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})');
-      assert.equal(parseAndEval('5 knot').toString(), '5 knot');
-      assert.equal(parseAndEval('5 knots').toString(), '5 knots');
-      assert.equal(parseAndEval('5 kt').toString(), '5 kt');
+      var myMath = math.create()
+      myMath.eval('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})');
+      assert.equal(myMath.eval('5 knot').toString(), '5 knot');
+      assert.equal(myMath.eval('5 knots').toString(), '5 knots');
+      assert.equal(myMath.eval('5 kt').toString(), '5 kt');
     });
 
     it('should evaluate operator "to" with correct precedence ', function () {
