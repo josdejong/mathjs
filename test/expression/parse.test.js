@@ -389,6 +389,13 @@ describe('parse', function() {
           math.unit(10, 'celsius').to('celsius'));
     });
 
+    it('should create units and aliases', function() {
+      parseAndEval('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})');
+      assert.equal(parseAndEval('5 knot').toString(), '5 knot');
+      assert.equal(parseAndEval('5 knots').toString(), '5 knots');
+      assert.equal(parseAndEval('5 kt').toString(), '5 kt');
+    });
+
     it('should evaluate operator "to" with correct precedence ', function () {
       approx.deepEqual(parseAndEval('5.08 cm * 1000 to inch'),
           new Unit(2000, 'inch').to('inch'));
