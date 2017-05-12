@@ -1,9 +1,10 @@
 # History
 
-## not yet released, version 3.13.1
+## 2017-05-12, version 3.13.1
 
 - Fixed creating units with an alias not working within the expression
   parser.
+- Fixed security vulnerabilities. Thanks Sam.
 
 
 ## 2017-05-12, version 3.13.0
@@ -17,7 +18,6 @@
   Fractions. Thanks @tetslee.
 - Fixed #838: Function `simplify` now supports constants like `e`.
   Thanks @tetslee.
-- Fixed security vulnerabilities. Thanks Sam.
 
 
 ## 2017-05-05, version 3.12.3
