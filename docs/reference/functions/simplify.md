@@ -4,6 +4,8 @@
 
 Simplify an expression tree.
 
+A list of rules are applied to an expression, repeating over the list until
+no further changes are made.
 It's possible to pass a custom set of rules to the function as second
 argument. A rule can be specified as an object, string, or function:
 
@@ -16,8 +18,17 @@ argument. A rule can be specified as an object, string, or function:
       }
     ]
 
+String and object rules consist of a left and right pattern. The left is
+used to match against the expression and the right determines what matches
+are replaced with. The main difference between a pattern and a normal
+expression is that variables starting with the following characters are
+interpreted as wildcards:
 
-The default list with rules is exposed on the function as `simplify.rules`
+- 'n' - matches any Node
+- 'c' - matches any ConstantNode
+- 'v' - matches any Node that is not a ConstantNode
+
+The default list of rules is exposed on the function as `simplify.rules`
 and can be used as a basis to built a set of custom rules.
 
 For more details on the theory, see:

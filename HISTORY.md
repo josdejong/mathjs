@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 3.13.0
+## 2017-05-12, version 3.13.0
 
 - Command line application can now evaluate inline expressions
   like `mathjs 1+2`. Thanks @slavaGanzin.
