@@ -17,6 +17,7 @@
   Fractions. Thanks @tetslee.
 - Fixed #838: Function `simplify` now supports constants like `e`.
   Thanks @tetslee.
+- Fixed security vulnerabilities. Thanks Sam.
 
 
 ## 2017-05-05, version 3.12.3

@@ -261,6 +261,15 @@ describe('security', function () {
     }, /TypeError: No valid ArrayNode/);
   })
 
+  it ('should not allow unescaping escaped double quotes', function () {
+    // exploits:
+    // 1) A bug in validateSafeMethod which allows to call any method in Object.prototype
+    // 2) A bug in stringify
+    assert.throws(function () {
+      math.eval("x=parse(\"\\\"a\\\"\");x.__defineGetter__(\"value\",eval(\"f()=\\\"false\\\\\\\\\\\\\\\\\\\\\\\"&&eval;}};\\\/\\\/\\\"\")); x.compile().eval()(\"console.log('hacked...')\")")
+    }, /Error: No access to method "__defineGetter__"/);
+  })
+
   it ('should allow calling functions on math', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })
