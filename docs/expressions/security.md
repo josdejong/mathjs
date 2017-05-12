@@ -7,7 +7,8 @@ layout: default
 Executing arbitrary expressions like enabled by the expression parser of
 mathjs involves a risk in general. When you're using mathjs to let users
 execute arbitrary expressions, it's good to take a moment to think about
-possible security and stability implications.
+possible security and stability implications, especially when running
+the code server side.
 
 <h2 id="security-risks">Security risks <a href="#security-risks" title="Permalink">#</a></h2>
 
@@ -28,6 +29,37 @@ When running a node.js server, it's good to be aware of the different
 types of security risks. The risk whe running inside a browser may be
 limited though it's good to be aware of [Cross side scripting (XSS)](https://www.wikiwand.com/en/Cross-site_scripting) vulnerabilities. A nice overview of
 security risks of a node.js servers is listed in an article [Node.js security checklist](https://blog.risingstack.com/node-js-security-checklist/) by Gergely Nemeth.
+
+<h3 id="less-vulnerable-expression-parser">Less vulnerable expression parser <a href="#less-vulnerable-expression-parser" title="Permalink">#</a></h3>
+
+There is a small number of functions which yield the biggest security
+risk in the expression parser:
+
+- `import` and `createUnit` which alter the built-in functionality and
+  allow overriding existing functions and units.
+- `eval`, `parse`, `simplify`, and `derivative` which parse arbitrary
+  input into a manipulable expression tree.
+
+To make the expression parser less vulnerable whilst still supporting
+most functionality, these functions can be disabled:
+
+```js
+var math = require('mathjs');
+var limitedEval = math.eval;
+
+math.import({
+  'import':     function () { throw new Error('Function import is disabled') },
+  'createUnit': function () { throw new Error('Function createUnit is disabled') },
+  'eval':       function () { throw new Error('Function eval is disabled') },
+  'parse':      function () { throw new Error('Function parse is disabled') },
+  'simplify':   function () { throw new Error('Function simplify is disabled') },
+  'derivative': function () { throw new Error('Function derivative is disabled') }
+}, {override: true});
+
+console.log(limitedEval('sqrt(16)'));     // Ok, 4
+console.log(limitedEval('parse("2+3")')); // Error: Function parse is disabled
+```
+
 
 <h3 id="found-a-security-vulnerability-please-report-in-private">Found a security vulnerability? Please report in private! <a href="#found-a-security-vulnerability-please-report-in-private" title="Permalink">#</a></h3>
 
