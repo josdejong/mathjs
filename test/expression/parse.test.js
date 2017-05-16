@@ -489,6 +489,11 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('a[2, :][1,1]', scope), 4);
     });
 
+    it('should get BigNumber value from an array', function() {
+      var res = parseAndEval('arr[1]', {arr: [math.bignumber(2)]});
+      assert.deepEqual(res, math.bignumber(2));
+    });
+
     it('should parse matrix resizings', function() {
       var scope = {};
       assert.deepEqual(parseAndEval('a = []', scope),    math.matrix([]));

@@ -14,6 +14,7 @@ describe('subset', function() {
   it('should get the right subset of an array', function() {
     assert.deepEqual(subset(a, index(new Range(0,2), 1)), [[2],[4]]);
     assert.deepEqual(subset(a, index(1,0)), 3);
+    assert.deepEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2));
   });
 
   it('should throw an error if trying to access an invalid subset of an array', function() {
