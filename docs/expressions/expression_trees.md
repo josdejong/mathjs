@@ -127,6 +127,25 @@ All nodes have the following methods:
     a relative JSON Path.
     
     See also `transform`, which is a recursive version of `map`.
+	
+-	`toHTML(options: object): string`
+
+	Get a HTML representation of the parsed expression. Example:
+
+    ```js
+    var node = math.parse('sqrt(2/3)');
+    node.toString();
+	// returns
+	// <span class="math-function">sqrt</span>
+	// <span class="math-paranthesis math-round-parenthesis">(</span>
+	// <span class="math-number">2</span>
+	// <span class="math-operator math-binary-operator math-explicit-binary-operator">/</span>
+	// <span class="math-number">3</span>
+	// <span class="math-paranthesis math-round-parenthesis">)</span>
+    ```
+	
+    Information about the available HTML classes in [HTML Classes](html_classes.md).
+    Information about the options in [Customization](customization.md#custom-html-latex-and-string-output).
 
 -   `toString(options: object) : string`
 
@@ -138,7 +157,7 @@ All nodes have the following methods:
     node.toString();  // returns '3 + (4 * 2)'
     ```
 
-    Information about the options in [Customization](customization.md#custom-latex-and-string-output).
+    Information about the options in [Customization](customization.md#custom-html-latex-and-string-output).
 
 -   `toTex(options: object): string`
 
@@ -150,7 +169,7 @@ All nodes have the following methods:
     node.toTex(); // returns '\sqrt{\frac{2}{3}}'
     ```
 
-    Information about the options in [Customization](customization.md#custom-latex-and-string-output).
+    Information about the options in [Customization](customization.md#custom-html-latex-and-string-output).
 
 -   `transform(callback: function)`
 
