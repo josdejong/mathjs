@@ -4,6 +4,7 @@
 
 - Fixed #856: function `subset` not returning non-primitive scalars
   from Arrays correctly. (like `math.eval('arr[1]', {arr: [math.bignumber(2)]})`.
+- Fixed #861: physical constants not available in the expression parser.
 
 
 ## 2017-05-12, version 3.13.1

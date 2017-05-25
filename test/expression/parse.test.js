@@ -365,6 +365,16 @@ describe('parse', function() {
       assert.ok(parseAndEval('5cm') instanceof Unit);
     });
 
+    it('should parse constants', function() {
+      assert.equal(parseAndEval('pi'), Math.PI);
+    });
+
+    it('should parse physical constants', function() {
+      var expected = new Unit(299792458, 'm/s');
+      expected.fixPrefix = true;
+      assert.deepEqual(parseAndEval('speedOfLight'), expected);
+    });
+
     it('should correctly parse negative temperatures', function () {
       approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
       approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'));
