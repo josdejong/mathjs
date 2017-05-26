@@ -270,6 +270,18 @@ describe('security', function () {
     }, /Error: No access to method "__defineGetter__"/);
   })
 
+  it ('should not allow using method chain', function () {
+    assert.throws(function () {
+      math.eval('math.eval("chain(\"a(){return eval;};function b\").typed({\"\":f()=0}).done()()(\"console.log(\'hacked...\')\")")')
+    }, /SyntaxError: Parenthesis \) expected/);
+  })
+
+  it ('should not allow using method chain (2)', function () {
+    assert.throws(function () {
+      math.eval('math.eval("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")")')
+    }, /SyntaxError: Parenthesis \) expected/);
+  })
+
   it ('should allow calling functions on math', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })
@@ -286,14 +298,17 @@ describe('security', function () {
 
   it ('should not allow getting properties from non plain objects', function () {
     assert.throws(function () {math.eval('[]._data')}, /No access to property "_data"/)
-    assert.throws(function () {math.eval('unit("5cm").valueOf')}, /Cannot access method "valueOf" as a property/)
+    assert.throws(function () {math.eval('unit("5cm").valueOf')}, /Cannot access method "valueOf" as a property/);
   });
 
   it ('should not have access to specific namespaces', function () {
-    assert.throws(function () {math.eval('expression')}, /Undefined symbol/)
-    assert.throws(function () {math.eval('type')}, /Undefined symbol/)
-    assert.throws(function () {math.eval('error')}, /Undefined symbol/)
-    assert.throws(function () {math.eval('json')}, /Undefined symbol/)
+    assert.throws(function () {math.eval('expression')}, /Undefined symbol/);
+    assert.throws(function () {math.eval('type')}, /Undefined symbol/);
+    assert.throws(function () {math.eval('error')}, /Undefined symbol/);
+    assert.throws(function () {math.eval('json')}, /Undefined symbol/);
+
+    assert.strictEqual(math.expression.mathWithTransform.chain, undefined);
+    assert.deepEqual(math.eval('chain'), math.unit('chain'));
   });
 
 });

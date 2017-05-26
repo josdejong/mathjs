@@ -2,6 +2,8 @@
 
 ## not yet released, version 3.13.2
 
+- Disabled function `chain` inside the expression parser for security
+  reasons (it's not needed there anyway).
 - Fixed #856: function `subset` not returning non-primitive scalars
   from Arrays correctly. (like `math.eval('arr[1]', {arr: [math.bignumber(2)]})`.
 - Fixed #861: physical constants not available in the expression parser.
