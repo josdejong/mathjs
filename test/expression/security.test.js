@@ -103,7 +103,7 @@ describe('security', function () {
           'o = p.get("constructor")\n' +
           'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' +
           'c.value("console.log(\'hacked...\')")()');
-    }, /Error: No access to method "get"/);
+    }, /Error: No access to property "constructor"/);
   })
 
   it ('should not allow calling Function via a symbol', function () {
