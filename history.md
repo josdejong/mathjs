@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20170526-version-3132">2017-05-26, version 3.13.2 <a href="#20170526-version-3132" title="Permalink">#</a></h2>
+
+- Disabled function `chain` inside the expression parser for security
+  reasons (it's not needed there anyway).
+- Fixed #856: function `subset` not returning non-primitive scalars
+  from Arrays correctly. (like `math.eval('arr[1]', {arr: [math.bignumber(2)]})`.
+- Fixed #861: physical constants not available in the expression parser.
+
+
 <h2 id="20170512-version-3131">2017-05-12, version 3.13.1 <a href="#20170512-version-3131" title="Permalink">#</a></h2>
 
 - Fixed creating units with an alias not working within the expression
