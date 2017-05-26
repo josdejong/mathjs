@@ -272,14 +272,14 @@ describe('security', function () {
 
   it ('should not allow using method chain', function () {
     assert.throws(function () {
-      math.eval('math.eval("chain(\"a(){return eval;};function b\").typed({\"\":f()=0}).done()()(\"console.log(\'hacked...\')\")")')
-    }, /SyntaxError: Parenthesis \) expected/);
+      math.eval("chain(\"a(){return eval;};function b\").typed({\"\":f()=0}).done()()(\"console.log(\'hacked...\')\")")
+    }, /is not a function/);
   })
 
   it ('should not allow using method chain (2)', function () {
     assert.throws(function () {
-      math.eval('math.eval("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")")')
-    }, /SyntaxError: Parenthesis \) expected/);
+      math.eval("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")")
+    }, /is not a function/);
   })
 
   it ('should allow calling functions on math', function () {
