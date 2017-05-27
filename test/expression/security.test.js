@@ -282,6 +282,12 @@ describe('security', function () {
     }, /is not a function/);
   })
 
+  it ('should not allow using method Chain', function () {
+    assert.throws(function () {
+      math.eval("x=parse(\"a\",{nodes:{a:Chain}});Chain.bind(x,{})();evilMath=x.create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")");
+    }, /Undefined symbol Chain/);
+  })
+
   it ('should allow calling functions on math', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })

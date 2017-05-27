@@ -1,9 +1,10 @@
 # History
 
-## not yet released, version 3.13.3
+## 2017-05-27, version 3.13.3
 
 - Fixed a bug in function `intersection` of line and plane.
   Thanks @viclai.
+- Fixed security vulnerabilities.
 
 
 ## 2017-05-26, version 3.13.2
