@@ -286,6 +286,10 @@ describe('security', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })
 
+  it ('should allow invoking methods on complex numbers', function () {
+    assert.deepEqual(math.eval('complex(4, 0).sqrt(2)'), math.complex(2, 0));
+  })
+
   it ('should allow accessing properties on an object', function () {
     assert.deepEqual(math.eval('obj.a', {obj: {a:42}}), 42);
   })
@@ -296,19 +300,56 @@ describe('security', function () {
     }, /Error: No access to property "constructor"/)
   })
 
+  it ('should not allow accessing __proto__', function () {
+    assert.throws(function () {
+      math.eval('{}.__proto__');
+    }, /Error: No access to property "__proto__"/)
+  })
+
   it ('should not allow getting properties from non plain objects', function () {
     assert.throws(function () {math.eval('[]._data')}, /No access to property "_data"/)
     assert.throws(function () {math.eval('unit("5cm").valueOf')}, /Cannot access method "valueOf" as a property/);
   });
 
   it ('should not have access to specific namespaces', function () {
+    Object.keys(math.expression.mathWithTransform).forEach (function (name) {
+      var value = math.expression.mathWithTransform[name];
+
+      // only plain functions allowed, no constructor functions
+      if (typeof value === 'function') {
+        assert.strictEqual(isPlainFunction(value), true,
+            'only plain functions expected, constructor functions not allowed (name: ' + name + ')');
+      }
+      else {
+        // plain objects not allowed, only class instances like units and complex numbers
+        if (value && typeof value === 'object') {
+          if (isPlainObject(value) && (name !== 'uninitialized' )) {
+            throw new Error('plain objects are not allowed, only class instances (object name: ' + name + ')');
+          }
+        }
+      }
+
+    });
+
     assert.throws(function () {math.eval('expression')}, /Undefined symbol/);
     assert.throws(function () {math.eval('type')}, /Undefined symbol/);
     assert.throws(function () {math.eval('error')}, /Undefined symbol/);
     assert.throws(function () {math.eval('json')}, /Undefined symbol/);
 
+    assert.strictEqual(math.expression.mathWithTransform.Matrix, undefined);
+    assert.strictEqual(math.expression.mathWithTransform.Node, undefined);
     assert.strictEqual(math.expression.mathWithTransform.chain, undefined);
     assert.deepEqual(math.eval('chain'), math.unit('chain'));
   });
 
 });
+
+function isPlainObject (object) {
+  return typeof object === 'object' && object &&
+      object.constructor === Object &&
+      object.__proto__ === Object.prototype;
+}
+
+function isPlainFunction (fn) {
+  return typeof fn === 'function' && fn.prototype.constructor === fn;
+}
