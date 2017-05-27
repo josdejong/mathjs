@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20170527-version-3133">2017-05-27, version 3.13.3 <a href="#20170527-version-3133" title="Permalink">#</a></h2>
+
+- Fixed a bug in function `intersection` of line and plane.
+  Thanks @viclai.
+- Fixed security vulnerabilities.
+
+
 <h2 id="20170526-version-3132">2017-05-26, version 3.13.2 <a href="#20170526-version-3132" title="Permalink">#</a></h2>
 
 - Disabled function `chain` inside the expression parser for security
