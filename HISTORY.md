@@ -1,5 +1,11 @@
 # History
 
+## not yet released, version 3.13.3
+
+- Fixed a bug in function `intersection` of line and plane.
+  Thanks @viclai.
+
+
 ## 2017-05-26, version 3.13.2
 
 - Disabled function `chain` inside the expression parser for security
