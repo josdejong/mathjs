@@ -1,9 +1,19 @@
 # History
 
-## not yet released, version 3.13.2
+## 2017-05-27, version 3.13.3
 
+- Fixed a bug in function `intersection` of line and plane.
+  Thanks @viclai.
+- Fixed security vulnerabilities.
+
+
+## 2017-05-26, version 3.13.2
+
+- Disabled function `chain` inside the expression parser for security
+  reasons (it's not needed there anyway).
 - Fixed #856: function `subset` not returning non-primitive scalars
   from Arrays correctly. (like `math.eval('arr[1]', {arr: [math.bignumber(2)]})`.
+- Fixed #861: physical constants not available in the expression parser.
 
 
 ## 2017-05-12, version 3.13.1

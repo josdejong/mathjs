@@ -365,6 +365,16 @@ describe('parse', function() {
       assert.ok(parseAndEval('5cm') instanceof Unit);
     });
 
+    it('should parse constants', function() {
+      assert.equal(parseAndEval('pi'), Math.PI);
+    });
+
+    it('should parse physical constants', function() {
+      var expected = new Unit(299792458, 'm/s');
+      expected.fixPrefix = true;
+      assert.deepEqual(parseAndEval('speedOfLight'), expected);
+    });
+
     it('should correctly parse negative temperatures', function () {
       approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
       approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'));
@@ -810,8 +820,9 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5));
     });
 
-    it('should invoke toString on some object', function () {
+    it('should invoke native methods on a number', function () {
       assert.strictEqual(parseAndEval('(3).toString()'), '3');
+      assert.strictEqual(parseAndEval('(3.2).toFixed()'), '3');
     });
 
     it('should get nested object property with mixed dot- and index-notation', function () {

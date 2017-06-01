@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 3.13.1
- * @date    2017-05-12
+ * @version 3.13.3
+ * @date    2017-05-27
  *
  * @license
  * Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
@@ -3948,301 +3948,48 @@ function validateSafeMethod (object, method) {
   }
 }
 
+/**
+ * Check whether a method is safe.
+ * Throws an error when that's not the case (for example for `constructor`).
+ * @param {Object} object
+ * @param {string} method
+ * @return {boolean} Returns true when safe, false otherwise
+ */
 function isSafeMethod (object, method) {
-  // TODO: remove this, replace with whitelist
-  if (method === 'constructor') {
-    return false;
-  }
-
   // test for plain functions defined on the object (instead of a method)
-  if (hasOwnProperty(object, method) && isPlainObject(object)) {
-    return true;
+  if (hasOwnProperty(object, method)) {
+    return isPlainObject(object);
   }
-
-  // only allow methods from the whitelist
-  // TODO: also check whether this method is supported on given object
-  return hasOwnProperty(safeMethods, method);
+  else {
+    // only allow methods:
+    // - defined on the prototype of this object
+    // - not defined on the prototype of native Object
+    //   i.e. constructor, __defineGetter__, hasOwnProperty, etc. are not allowed
+    // - calling methods on a function (like bind) is not allowed
+    // - A few safe native methods are allowed: toString, valueOf, toLocaleString
+    return (object && typeof object !== 'function' &&
+        (hasOwnProperty(object.constructor.prototype, method) ||
+            hasOwnProperty(object.__proto__, method)) &&
+        (!hasOwnProperty(Object.prototype, method) || hasOwnProperty(safeNativeMethods, method)));
+  }
 }
 
 function isPlainObject (object) {
-  // TODO: improve this function
   return typeof object === 'object' && object && object.constructor === Object;
 }
 
-// whitelist of safe methods
-var safeMethods = {
-  abs: true,
-  absoluteValue: true,
-  acos: true,
-  acosh: true,
-  acot: true,
-  acoth: true,
-  acsc: true,
-  acsch: true,
-  add: true,
-  and: true,
-  arg: true,
-  asec: true,
-  asech: true,
-  asin: true,
-  asinh: true,
-  atan: true,
-  atan2: true,
-  atanh: true,
-  bellNumbers: true,
-  bignumber: true,
-  bitAnd: true,
-  bitNot: true,
-  bitOr: true,
-  bitXor: true,
-  boolean: true,
-  catalan: true,
-  cbrt: true,
-  ceil: true,
-  chain: true,
-  clone: true,
-  cloneDeep: true,
-  cmp: true,
-  combinations: true,
-  compare: true,
-  comparedTo: true,
-  compile: true,
-  complex: true,
-  composition: true,
-  concat: true,
-  config: true,
-  conj: true,
-  conjugate: true,
-  cos: true,
-  cosh: true,
-  cosine: true,
-  cot: true,
-  coth: true,
-  create: true,
-  createUnit: true,
-  cross: true,
-  csc: true,
-  csch: true,
-  cube: true,
-  cubeRoot: true,
-  decimalPlaces: true,
-  deepEqual: true,
-  derivative: true,
-  det: true,
-  diag: true,
-  diagonal: true,
-  distance: true,
-  div: true,
-  divToInt: true,
-  divide: true,
-  dividedBy: true,
-  dividedToIntegerBy: true,
-  done: true,
-  dot: true,
-  dotDivide: true,
-  dotMultiply: true,
-  dotPow: true,
-  dp: true,
-  emit: true,
-  eq: true,
-  equal: true,
-  equalBase: true,
-  equals: true,
-  erf: true,
-  eval: true,
-  exp: true,
-  eye: true,
-  factorial: true,
-  filter: true,
-  fix: true,
-  flatten: true,
-  floor: true,
-  forEach: true,
-  format: true,
-  formatUnits: true,
-  fraction: true,
-  gamma: true,
-  gcd: true,
-  greaterThan: true,
-  greaterThanOrEqualTo: true,
-  gt: true,
-  gte: true,
-  hasBase: true,
-  help: true,
-  hyperbolicCosine: true,
-  hyperbolicSine: true,
-  hyperbolicTangent: true,
-  hypot: true,
-  im: true,
-  import: true,
-  index: true,
-  intersect: true,
-  inv: true,
-  inverse: true,
-  inverseCosine: true,
-  inverseHyperbolicCosine: true,
-  inverseHyperbolicSine: true,
-  inverseHyperbolicTangent: true,
-  inverseSine: true,
-  inverseTangent: true,
-  isFinite: true,
-  isInt: true,
-  isInteger: true,
-  isNaN: true,
-  isNeg: true,
-  isNegative: true,
-  isNumeric: true,
-  isPos: true,
-  isPositive: true,
-  isPrime: true,
-  isZero: true,
-  kldivergence: true,
-  kron: true,
-  larger: true,
-  largerEq: true,
-  lcm: true,
-  leftShift: true,
-  lessThan: true,
-  lessThanOrEqualTo: true,
-  ln: true,
-  log: true,
-  log10: true,
-  log2: true,
-  logarithm: true,
-  lsolve: true,
-  lt: true,
-  lte: true,
-  lup: true,
-  lusolve: true,
-  mad: true,
-  map: true,
-  matrix: true,
-  max: true,
-  mean: true,
-  median: true,
-  min: true,
-  minus: true,
-  mod: true,
-  mode: true,
-  modulo: true,
-  mul: true,
-  multinomial: true,
-  multiply: true,
-  naturalExponential: true,
-  naturalLogarithm: true,
-  neg: true,
-  negated: true,
-  noConflict: true,
-  norm: true,
-  not: true,
-  nthRoot: true,
-  number: true,
-  off: true,
-  on: true,
-  once: true,
-  ones: true,
-  or: true,
-  parse: true,
-  parser: true,
-  partitionSelect: true,
-  permutations: true,
-  pickRandom: true,
-  plus: true,
-  pow: true,
-  precision: true,
-  print: true,
-  prod: true,
-  quantileSeq: true,
-  random: true,
-  randomInt: true,
-  range: true,
-  re: true,
-  reshape: true,
-  resize: true,
-  rightArithShift: true,
-  rightLogShift: true,
-  round: true,
-  sd: true,
-  sec: true,
-  sech: true,
-  set: true,
-  sign: true,
-  simplify: true,
-  sin: true,
-  sine: true,
-  sinh: true,
-  size: true,
-  slu: true,
-  smaller: true,
-  smallerEq: true,
-  sort: true,
-  sparse: true,
-  splitUnit: true,
-  sqrt: true,
-  square: true,
-  squareRoot: true,
-  squeeze: true,
-  std: true,
-  stirlingS2: true,
-  string: true,
-  sub: true,
-  subset: true,
-  subtract: true,
-  sum: true,
-  swapRows: true,
-  tan: true,
-  tangent: true,
-  tanh: true,
-  times: true,
-  to: true,
-  toArray: true,
-  toBinary: true,
-  toContinued: true,
-  toDP: true,
-  toDecimalPlaces: true,
-  toExponential: true,
-  toFixed: true,
-  toFraction: true,
-  toHex: true,
-  toHexadecimal: true,
-  toJSON: true,
-  toLatex: true,
-  toNearest: true,
-  toNumber: true,
-  toNumeric: true,
-  toOctal: true,
-  toPower: true,
-  toPrecision: true,
-  toSD: true,
-  toSignificantDigits: true,
+var safeNativeMethods = {
   toString: true,
-  toTex: true,
-  toVector: true,
-  trace: true,
-  transform: true,
-  transpose: true,
-  traverse: true,
-  trunc: true,
-  truncated: true,
-  typed: true,
-  typeof: true,
-  unaryMinus: true,
-  unaryPlus: true,
-  unequal: true,
-  unit: true,
-  usolve: true,
   valueOf: true,
-  var: true,
-  xgcd: true,
-  xor: true,
-  zeros: true
-}
+  toLocaleString: true
+};
 
 exports.getSafeProperty = getSafeProperty;
 exports.setSafeProperty = setSafeProperty;
 exports.isSafeProperty = isSafeProperty;
 exports.validateSafeMethod = validateSafeMethod;
 exports.isSafeMethod = isSafeMethod;
+exports.isPlainObject = isPlainObject;
 
 
 /***/ }),
@@ -10565,7 +10312,9 @@ function factory (type, config, load, typed) {
     'Array, Index': function (value, index) {
       var m = matrix(value);
       var subset = m.subset(index);       // returns a Matrix
-      return subset && subset.valueOf();  // return an Array (like the input)
+      return index.isScalar()
+          ? subset
+          : subset.valueOf();  // return an Array (like the input)
     },
 
     'Matrix, Index': function (value, index) {
@@ -15887,7 +15636,6 @@ var getSafeProperty = __webpack_require__(17).getSafeProperty;
 
 function factory (type, config, load, typed) {
   var subset = load(__webpack_require__(55));
-  var matrix = load(__webpack_require__(0));
 
   /**
    * Retrieve part of an object:
@@ -15903,7 +15651,7 @@ function factory (type, config, load, typed) {
   return function access(object, index) {
     try {
       if (Array.isArray(object)) {
-        return matrix(object).subset(index).valueOf();
+        return subset(object, index);
       }
       else if (object && typeof object.subset === 'function') { // Matrix
         return object.subset(index);
@@ -26767,14 +26515,14 @@ function factory (type, config, load, typed, math) {
   function _importTransform (name, value) {
     if (value && typeof value.transform === 'function') {
       math.expression.transform[name] = value.transform;
-      if (!unsafe[name]) {
+      if (allowedInExpressions(name)) {
         math.expression.mathWithTransform[name] = value.transform
       }
     }
     else {
       // remove existing transform
       delete math.expression.transform[name]
-      if (!unsafe[name]) {
+      if (allowedInExpressions(name)) {
         math.expression.mathWithTransform[name] = value
       }
     }
@@ -26849,15 +26597,16 @@ function factory (type, config, load, typed, math) {
         lazy(namespace, name, resolver);
 
         if (!existingTransform) {
-          if (!unsafe[name]) {
+          if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
             lazy(math.expression.mathWithTransform, name, resolver);
           }
         }
       }
       else {
         namespace[name] = resolver();
+
         if (!existingTransform) {
-          if (!unsafe[name]) {
+          if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
             math.expression.mathWithTransform[name] = resolver();
           }
         }
@@ -26901,12 +26650,22 @@ function factory (type, config, load, typed, math) {
     return typeof fn === 'function' && typeof fn.signatures === 'object';
   }
 
-  // namespaces not available in the parser for safety reasons
+  function allowedInExpressions (name) {
+    return !unsafe.hasOwnProperty(name);
+  }
+
+  function factoryAllowedInExpressions (factory) {
+    return factory.path === undefined && !unsafe.hasOwnProperty(factory.name);
+  }
+
+  // namespaces and functions not available in the parser for safety reasons
   var unsafe = {
     'expression': true,
     'type': true,
+    'docs': true,
     'error': true,
-    'json': true
+    'json': true,
+    'chain': true // chain method not supported. Note that there is a unit chain too.
   };
 
   return math_import;
@@ -40120,7 +39879,7 @@ function factory (type, config, load, typed) {
   }
 
   function _intersectLinePlane(x1, y1, z1, x2, y2, z2, x, y, z, c){
-    var t = (c - x1*x - y1*y - z1*z)/(x2*x + y2*y + z2*z - x1 - y1 - z1);
+    var t = (c - x1*x - y1*y - z1*z)/(x2*x + y2*y + z2*z - x1*x - y1*y - z1*z);
     var px = x1 + t * (x2 - x1);
     var py = y1 + t * (y2 - y1);
     var pz = z1 + t * (z2 - z1);
@@ -49253,70 +49012,76 @@ function factory (type, config, load, typed, math) {
   // Source: http://www.wikiwand.com/en/Physical_constant
 
   // Universal constants
-  lazy(math, 'speedOfLight',         function () {return fixedUnit('299792458 m s^-1')});
-  lazy(math, 'gravitationConstant',  function () {return fixedUnit('6.6738480e-11 m^3 kg^-1 s^-2')});
-  lazy(math, 'planckConstant',       function () {return fixedUnit('6.626069311e-34 J s')});
-  lazy(math, 'reducedPlanckConstant',function () {return fixedUnit('1.05457172647e-34 J s')});
+  setLazyConstant(math, 'speedOfLight',         function () {return fixedUnit('299792458 m s^-1')});
+  setLazyConstant(math, 'gravitationConstant',  function () {return fixedUnit('6.6738480e-11 m^3 kg^-1 s^-2')});
+  setLazyConstant(math, 'planckConstant',       function () {return fixedUnit('6.626069311e-34 J s')});
+  setLazyConstant(math, 'reducedPlanckConstant',function () {return fixedUnit('1.05457172647e-34 J s')});
 
   // Electromagnetic constants
-  lazy(math, 'magneticConstant',          function () {return fixedUnit('1.2566370614e-6 N A^-2')});
-  lazy(math, 'electricConstant',          function () {return fixedUnit('8.854187817e-12 F m^-1')});
-  lazy(math, 'vacuumImpedance',           function () {return fixedUnit('376.730313461 ohm')});
-  lazy(math, 'coulomb',                   function () {return fixedUnit('8.9875517873681764e9 N m^2 C^-2')});
-  lazy(math, 'elementaryCharge',          function () {return fixedUnit('1.60217656535e-19 C')});
-  lazy(math, 'bohrMagneton',              function () {return fixedUnit('9.2740096820e-24 J T^-1')});
-  lazy(math, 'conductanceQuantum',        function () {return fixedUnit('7.748091734625e-5 S')});
-  lazy(math, 'inverseConductanceQuantum', function () {return fixedUnit('12906.403721742 ohm')});
-  lazy(math, 'magneticFluxQuantum',       function () {return fixedUnit('2.06783375846e-15 Wb')});
-  lazy(math, 'nuclearMagneton',           function () {return fixedUnit('5.0507835311e-27 J T^-1')});
-  lazy(math, 'klitzing',                  function () {return fixedUnit('25812.807443484 ohm')});
-  //lazy(math, 'josephson',                 function () {return fixedUnit('4.8359787011e-14 Hz V^-1')});  // TODO: support for Hz needed
+  setLazyConstant(math, 'magneticConstant',          function () {return fixedUnit('1.2566370614e-6 N A^-2')});
+  setLazyConstant(math, 'electricConstant',          function () {return fixedUnit('8.854187817e-12 F m^-1')});
+  setLazyConstant(math, 'vacuumImpedance',           function () {return fixedUnit('376.730313461 ohm')});
+  setLazyConstant(math, 'coulomb',                   function () {return fixedUnit('8.9875517873681764e9 N m^2 C^-2')});
+  setLazyConstant(math, 'elementaryCharge',          function () {return fixedUnit('1.60217656535e-19 C')});
+  setLazyConstant(math, 'bohrMagneton',              function () {return fixedUnit('9.2740096820e-24 J T^-1')});
+  setLazyConstant(math, 'conductanceQuantum',        function () {return fixedUnit('7.748091734625e-5 S')});
+  setLazyConstant(math, 'inverseConductanceQuantum', function () {return fixedUnit('12906.403721742 ohm')});
+  setLazyConstant(math, 'magneticFluxQuantum',       function () {return fixedUnit('2.06783375846e-15 Wb')});
+  setLazyConstant(math, 'nuclearMagneton',           function () {return fixedUnit('5.0507835311e-27 J T^-1')});
+  setLazyConstant(math, 'klitzing',                  function () {return fixedUnit('25812.807443484 ohm')});
+  //setLazyConstant(math, 'josephson',                 function () {return fixedUnit('4.8359787011e-14 Hz V^-1')});  // TODO: support for Hz needed
 
   // Atomic and nuclear constants
-  lazy(math, 'bohrRadius',              function () {return fixedUnit('5.291772109217e-11 m')});
-  lazy(math, 'classicalElectronRadius', function () {return fixedUnit('2.817940326727e-15 m')});
-  lazy(math, 'electronMass',            function () {return fixedUnit('9.1093829140e-31 kg')});
-  lazy(math, 'fermiCoupling',           function () {return fixedUnit('1.1663645e-5 GeV^-2')});
-  lazy(math, 'fineStructure',           function () {return 7.297352569824e-3});
-  lazy(math, 'hartreeEnergy',           function () {return fixedUnit('4.3597443419e-18 J')});
-  lazy(math, 'protonMass',              function () {return fixedUnit('1.67262177774e-27 kg')});
-  lazy(math, 'deuteronMass',            function () {return fixedUnit('3.3435830926e-27 kg')});
-  lazy(math, 'neutronMass',             function () {return fixedUnit('1.6749271613e-27 kg')});
-  lazy(math, 'quantumOfCirculation',    function () {return fixedUnit('3.636947552024e-4 m^2 s^-1')});
-  lazy(math, 'rydberg',                 function () {return fixedUnit('10973731.56853955 m^-1')});
-  lazy(math, 'thomsonCrossSection',     function () {return fixedUnit('6.65245873413e-29 m^2')});
-  lazy(math, 'weakMixingAngle',         function () {return 0.222321});
-  lazy(math, 'efimovFactor',            function () {return 22.7});
+  setLazyConstant(math, 'bohrRadius',              function () {return fixedUnit('5.291772109217e-11 m')});
+  setLazyConstant(math, 'classicalElectronRadius', function () {return fixedUnit('2.817940326727e-15 m')});
+  setLazyConstant(math, 'electronMass',            function () {return fixedUnit('9.1093829140e-31 kg')});
+  setLazyConstant(math, 'fermiCoupling',           function () {return fixedUnit('1.1663645e-5 GeV^-2')});
+  setLazyConstant(math, 'fineStructure',           function () {return 7.297352569824e-3});
+  setLazyConstant(math, 'hartreeEnergy',           function () {return fixedUnit('4.3597443419e-18 J')});
+  setLazyConstant(math, 'protonMass',              function () {return fixedUnit('1.67262177774e-27 kg')});
+  setLazyConstant(math, 'deuteronMass',            function () {return fixedUnit('3.3435830926e-27 kg')});
+  setLazyConstant(math, 'neutronMass',             function () {return fixedUnit('1.6749271613e-27 kg')});
+  setLazyConstant(math, 'quantumOfCirculation',    function () {return fixedUnit('3.636947552024e-4 m^2 s^-1')});
+  setLazyConstant(math, 'rydberg',                 function () {return fixedUnit('10973731.56853955 m^-1')});
+  setLazyConstant(math, 'thomsonCrossSection',     function () {return fixedUnit('6.65245873413e-29 m^2')});
+  setLazyConstant(math, 'weakMixingAngle',         function () {return 0.222321});
+  setLazyConstant(math, 'efimovFactor',            function () {return 22.7});
 
   // Physico-chemical constants
-  lazy(math, 'atomicMass',          function () {return fixedUnit('1.66053892173e-27 kg')});
-  lazy(math, 'avogadro',            function () {return fixedUnit('6.0221412927e23 mol^-1')});
-  lazy(math, 'boltzmann',           function () {return fixedUnit('1.380648813e-23 J K^-1')});
-  lazy(math, 'faraday',             function () {return fixedUnit('96485.336521 C mol^-1')});
-  lazy(math, 'firstRadiation',      function () {return fixedUnit('3.7417715317e-16 W m^2')});
-  // lazy(math, 'spectralRadiance',   function () {return fixedUnit('1.19104286953e-16 W m^2 sr^-1')}); // TODO spectralRadiance
-  lazy(math, 'loschmidt',           function () {return fixedUnit('2.686780524e25 m^-3')});
-  lazy(math, 'gasConstant',         function () {return fixedUnit('8.314462175 J K^-1 mol^-1')});
-  lazy(math, 'molarPlanckConstant', function () {return fixedUnit('3.990312717628e-10 J s mol^-1')});
-  lazy(math, 'molarVolume',         function () {return fixedUnit('2.241396820e-10 m^3 mol^-1')});
-  lazy(math, 'sackurTetrode',       function () {return -1.164870823});
-  lazy(math, 'secondRadiation',     function () {return fixedUnit('1.438777013e-2 m K')});
-  lazy(math, 'stefanBoltzmann',     function () {return fixedUnit('5.67037321e-8 W m^-2 K^-4')});
-  lazy(math, 'wienDisplacement',    function () {return fixedUnit('2.897772126e-3 m K')});
+  setLazyConstant(math, 'atomicMass',          function () {return fixedUnit('1.66053892173e-27 kg')});
+  setLazyConstant(math, 'avogadro',            function () {return fixedUnit('6.0221412927e23 mol^-1')});
+  setLazyConstant(math, 'boltzmann',           function () {return fixedUnit('1.380648813e-23 J K^-1')});
+  setLazyConstant(math, 'faraday',             function () {return fixedUnit('96485.336521 C mol^-1')});
+  setLazyConstant(math, 'firstRadiation',      function () {return fixedUnit('3.7417715317e-16 W m^2')});
+  // setLazyConstant(math, 'spectralRadiance',   function () {return fixedUnit('1.19104286953e-16 W m^2 sr^-1')}); // TODO spectralRadiance
+  setLazyConstant(math, 'loschmidt',           function () {return fixedUnit('2.686780524e25 m^-3')});
+  setLazyConstant(math, 'gasConstant',         function () {return fixedUnit('8.314462175 J K^-1 mol^-1')});
+  setLazyConstant(math, 'molarPlanckConstant', function () {return fixedUnit('3.990312717628e-10 J s mol^-1')});
+  setLazyConstant(math, 'molarVolume',         function () {return fixedUnit('2.241396820e-10 m^3 mol^-1')});
+  setLazyConstant(math, 'sackurTetrode',       function () {return -1.164870823});
+  setLazyConstant(math, 'secondRadiation',     function () {return fixedUnit('1.438777013e-2 m K')});
+  setLazyConstant(math, 'stefanBoltzmann',     function () {return fixedUnit('5.67037321e-8 W m^-2 K^-4')});
+  setLazyConstant(math, 'wienDisplacement',    function () {return fixedUnit('2.897772126e-3 m K')});
 
   // Adopted values
-  lazy(math, 'molarMass',         function () {return fixedUnit('1e-3 kg mol^-1')});
-  lazy(math, 'molarMassC12',      function () {return fixedUnit('1.2e-2 kg mol^-1')});
-  lazy(math, 'gravity',           function () {return fixedUnit('9.80665 m s^-2')});
+  setLazyConstant(math, 'molarMass',         function () {return fixedUnit('1e-3 kg mol^-1')});
+  setLazyConstant(math, 'molarMassC12',      function () {return fixedUnit('1.2e-2 kg mol^-1')});
+  setLazyConstant(math, 'gravity',           function () {return fixedUnit('9.80665 m s^-2')});
   // atm is defined in Unit.js
 
   // Natural units
-  lazy(math, 'planckLength',      function () {return fixedUnit('1.61619997e-35 m')});
-  lazy(math, 'planckMass',        function () {return fixedUnit('2.1765113e-8 kg')});
-  lazy(math, 'planckTime',        function () {return fixedUnit('5.3910632e-44 s')});
-  lazy(math, 'planckCharge',      function () {return fixedUnit('1.87554595641e-18 C')});
-  lazy(math, 'planckTemperature', function () {return fixedUnit('1.41683385e+32 K')});
+  setLazyConstant(math, 'planckLength',      function () {return fixedUnit('1.61619997e-35 m')});
+  setLazyConstant(math, 'planckMass',        function () {return fixedUnit('2.1765113e-8 kg')});
+  setLazyConstant(math, 'planckTime',        function () {return fixedUnit('5.3910632e-44 s')});
+  setLazyConstant(math, 'planckCharge',      function () {return fixedUnit('1.87554595641e-18 C')});
+  setLazyConstant(math, 'planckTemperature', function () {return fixedUnit('1.41683385e+32 K')});
 
+}
+
+// create a lazy constant in both math and mathWithTransform
+function setLazyConstant (math, name, resolver) {
+  lazy(math, name,  resolver);
+  lazy(math.expression.mathWithTransform, name,  resolver);
 }
 
 exports.factory = factory;
@@ -49904,7 +49669,7 @@ module.exports = function scatter(a, j, w, x, u, mark, c, f, inverse, update, va
 /* 511 */
 /***/ (function(module, exports) {
 
-module.exports = '3.13.1';
+module.exports = '3.13.3';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
