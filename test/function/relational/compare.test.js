@@ -195,25 +195,25 @@ describe('compare', function() {
   describe('Complex Numbers', function () {
 
     it('should compare complex numbers', function() {
-      assert.equal(compare(complex(1,1), complex(1,2)), 0);
+      assert.equal(compare(complex(1,1), complex(1,1)), 0);
       assert.equal(compare(complex(2,1), complex(1,2)), 1);
       assert.equal(compare(complex(0,1), complex(1,2)), -1);
     });
 
     it('should compare complex number and number', function() {
-      assert.equal(compare(complex(1,1), 1), 0);
+      assert.equal(compare(complex(1,0), 1), 0);
       assert.equal(compare(complex(2,1), 1), 1);
       assert.equal(compare(complex(0,1), 1), -1);
-      assert.equal(compare(1, complex(1,1)), 0);
+      assert.equal(compare(1, complex(1,0)), 0);
       assert.equal(compare(1, complex(2,1)), -1);
       assert.equal(compare(1, complex(0,1)), 1);
     });
 
     it('should compare complex number and bignumber', function() {
-      assert.equal(compare(complex(1,1), math.bignumber(1)), 0);
+      assert.equal(compare(complex(1,0), math.bignumber(1)), 0);
       assert.equal(compare(complex(2,1), math.bignumber(1)), 1);
       assert.equal(compare(complex(0,1), math.bignumber(1)), -1);
-      assert.equal(compare(math.bignumber(1), complex(1,1)), 0);
+      assert.equal(compare(math.bignumber(1), complex(1,0)), 0);
       assert.equal(compare(math.bignumber(1), complex(2,1)), -1);
       assert.equal(compare(math.bignumber(1), complex(0,1)), 1);
     });

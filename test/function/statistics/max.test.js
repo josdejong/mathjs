@@ -70,26 +70,26 @@ describe('max', function() {
 
   describe('Complex Numbers', function () {
 
-    it('should return the complex number with larger real value', function() {
-      assert.deepEqual(max(new Complex(1,1), new Complex(1,2)), new Complex(1,1));
+    it('should return the complex number with larger significant value', function() {
+      assert.deepEqual(max(new Complex(1,1), new Complex(1,1)), new Complex(1,1));
       assert.deepEqual(max(new Complex(2,1), new Complex(1,2)), new Complex(2,1));
       assert.deepEqual(max(new Complex(0,1), new Complex(1,2)), new Complex(1,2));
     });
 
-    it('should return the larger between complex number real part and number', function() {
-      assert.deepEqual(max(new Complex(1,1), 1), new Complex(1,1));
+    it('should return the larger between complex number significant part and number', function() {
+      assert.deepEqual(max(new Complex(1,0), 1), new Complex(1,0));
       assert.deepEqual(max(new Complex(2,1), 1), new Complex(2,1));
       assert.equal(max(new Complex(0,1), 1), 1);
-      assert.equal(max(1, new Complex(1,1)), 1);
+      assert.equal(max(1, new Complex(1,0)), 1);
       assert.deepEqual(max(1, new Complex(2,1)), new Complex(2,1));
       assert.equal(max(1, new Complex(0,1)), 1);
     });
 
-    it('should return the larger between complex number real part and bignumber', function() {
-      assert.deepEqual(max(new Complex(1,1), math.bignumber(1)), new Complex(1,1));
+    it('should return the larger between complex number significant part and bignumber', function() {
+      assert.deepEqual(max(new Complex(1,0), math.bignumber(1)), new Complex(1,0));
       assert.deepEqual(max(new Complex(2,1), math.bignumber(1)), new Complex(2,1));
       assert.equal(max(new Complex(0,1), math.bignumber(1)), 1);
-      assert.equal(max(math.bignumber(1), new Complex(1,1)), 1);
+      assert.equal(max(math.bignumber(1), new Complex(1,0)), 1);
       assert.deepEqual(max(math.bignumber(1), new Complex(2,1)), new Complex(2,1));
       assert.equal(max(math.bignumber(1), new Complex(0,1)), 1);
     });

@@ -79,26 +79,26 @@ describe('min', function() {
 
   describe('Complex Numbers', function () {
 
-    it('should return the complex number with smaller real value', function() {
+    it('should return the complex number with smaller significant value', function() {
       assert.deepEqual(min(new Complex(1,1), new Complex(1,2)), new Complex(1,1));
       assert.deepEqual(min(new Complex(2,1), new Complex(1,2)), new Complex(1,2));
       assert.deepEqual(min(new Complex(0,1), new Complex(1,2)), new Complex(0,1));
     });
 
-    it('should return the smaller between complex number real part and number', function() {
-      assert.deepEqual(min(new Complex(1,1), 1), new Complex(1,1));
+    it('should return the smaller between complex number significant part and number', function() {
+      assert.deepEqual(min(new Complex(1,0), 1), new Complex(1,0));
       assert.equal(min(new Complex(2,1), 1), 1);
       assert.deepEqual(min(new Complex(0,1), 1), new Complex(0,1));
-      assert.equal(min(1, new Complex(1,1)), 1);
+      assert.equal(min(1, new Complex(1,0)), 1);
       assert.equal(min(1, new Complex(2,1)), 1);
       assert.deepEqual(min(1, new Complex(0,1)), new Complex(0,1));
     });
 
-    it('should return the smaller between complex number real part and bignumber', function() {
-      assert.deepEqual(min(new Complex(1,1), math.bignumber(1)), new Complex(1,1));
+    it('should return the smaller between complex number significant part and bignumber', function() {
+      assert.deepEqual(min(new Complex(1,0), math.bignumber(1)), new Complex(1,0));
       assert.equal(min(new Complex(2,1), math.bignumber(1)), 1);
       assert.deepEqual(min(new Complex(0,1), math.bignumber(1)), new Complex(0,1));
-      assert.equal(min(math.bignumber(1), new Complex(1,1)), 1);
+      assert.equal(min(math.bignumber(1), new Complex(1,0)), 1);
       assert.equal(min(math.bignumber(1), new Complex(2,1)), 1);
       assert.deepEqual(min(math.bignumber(1), new Complex(0,1)), new Complex(0,1));
     });
