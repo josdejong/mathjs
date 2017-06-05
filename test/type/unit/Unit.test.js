@@ -1171,6 +1171,18 @@ describe('Unit', function() {
       assert.equal((new Unit(1, 'm')).splitUnit(['in', 'ft']).toString(), "39 in,0.030839895013123605 ft");
       assert.equal((new Unit(1, 'm')).splitUnit([ new Unit(null, 'ft'), new Unit(null, 'in') ]).toString(), "3 ft,3.3700787401574765 in");
     });
+
+    it('should be resistant to round-off error', function() {
+
+      assert.equal((new Unit(-12, 'in')).splitUnit(['ft', 'in']).toString(), "-1 ft,0 in");
+      assert.equal((new Unit(12, 'in')).splitUnit(['ft', 'in']).toString(), "1 ft,0 in");
+      assert.equal((new Unit(24, 'in')).splitUnit(['ft', 'in']).toString(), "2 ft,0 in");
+      assert.equal((new Unit(36, 'in')).splitUnit(['ft', 'in']).toString(), "3 ft,0 in");
+      assert.equal((new Unit(48, 'in')).splitUnit(['ft', 'in']).toString(), "4 ft,0 in");
+      assert.equal((new Unit(60, 'in')).splitUnit(['ft', 'in']).toString(), "5 ft,0 in");
+      assert.equal((new Unit(36000, 'in')).splitUnit(['ft', 'in']).toString(), "3000 ft,0 in");
+
+    });
   });
 
   describe('toSI', function() {
