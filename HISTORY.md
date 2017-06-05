@@ -1,7 +1,12 @@
 # History
 
-## not yet released, version 3.13.4
+## not yet released, version 3.14.0
 
+- Upgraded dependencies to the latest versions:
+  - `complex.js@2.0.3`
+  - `decimal.js@7.2.1`
+  - `tiny-emitter@2.0.0`
+  - And all devDependencies.
 - Fixed #865: `splitUnit` can now deal with round-off errors.
   Thanks @ericman314.
 
