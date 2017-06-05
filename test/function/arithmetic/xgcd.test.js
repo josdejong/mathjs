@@ -60,8 +60,7 @@ describe('xgcd', function() {
     assert.deepEqual(xgcd(65, math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);
   });
 
-  // FIXME: xgcd for negative values
-  it.skip('should calculate xgcd for edge cases with negative values', function () {
+  it('should calculate xgcd for edge cases with negative values', function () {
     assert.deepEqual([1, -2, 1], xgcd(2, 5));
     assert.deepEqual([1, -2, -1], xgcd(2, -5));
     assert.deepEqual([1, 2, 1], xgcd(-2, 5));

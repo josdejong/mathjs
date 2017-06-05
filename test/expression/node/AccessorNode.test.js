@@ -46,7 +46,7 @@ describe('AccessorNode', function() {
 
   it ('should compile a AccessorNode', function () {
     var a = new bigmath.expression.node.SymbolNode('a');
-    var index = new IndexNode([
+    var index = new bigmath.expression.node.IndexNode([
       new bigmath.expression.node.ConstantNode(2),
       new bigmath.expression.node.ConstantNode(1)
     ]);
@@ -190,7 +190,8 @@ describe('AccessorNode', function() {
     var a = new bigmath.expression.node.SymbolNode('a');
     var b = new bigmath.expression.node.ConstantNode(2);
     var c = new bigmath.expression.node.ConstantNode(1);
-    var n = new bigmath.expression.node.AccessorNode(a, new IndexNode([b, c]));
+    var n = new bigmath.expression.node.AccessorNode(a,
+        new bigmath.expression.node.IndexNode([b, c]));
     var expr = n.compile();
 
     var scope = {
@@ -345,6 +346,28 @@ describe('AccessorNode', function() {
     assert.strictEqual(d.index, n.index);
     assert.strictEqual(d.index.dimensions[0], n.index.dimensions[0]);
     assert.strictEqual(d.index.dimensions[1], n.index.dimensions[1]);
+  });
+
+  it ('should test equality of an Node', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var node1 = new AccessorNode(a, new IndexNode([b, c]));
+
+    var a = new SymbolNode('a');
+    var b = new SymbolNode('b');
+    var c = new ConstantNode(1);
+    var node2 = new AccessorNode(a, new IndexNode([b, c]));
+
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(1);
+    var node3 = new AccessorNode(a, new IndexNode([b, c]));
+
+    assert.strictEqual(node1.equals(null), false);
+    assert.strictEqual(node1.equals(undefined), false);
+    assert.strictEqual(node1.equals(node2), false);
+    assert.strictEqual(node1.equals(node3), true);
   });
 
   it ('should stringify an AccessorNode', function () {

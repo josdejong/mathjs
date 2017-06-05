@@ -70,6 +70,39 @@ describe('Node', function() {
     }, /Cannot clone a Node interface/);
   });
 
+  it ('should shallow clone the content of a Node', function () {
+    var a = new math.expression.node.ConstantNode(1);
+    var b = new math.expression.node.ConstantNode(2);
+    var c = new math.expression.node.OperatorNode('+', 'add', [a, b]);
+
+    var clone = c.clone();
+
+    assert.deepEqual(c, clone);
+    assert.notStrictEqual(c, clone);
+    assert.strictEqual(clone.args[0], c.args[0]);
+    assert.strictEqual(clone.args[1], c.args[1]);
+  });
+
+  it ('should deepClone the content of a Node', function () {
+    var a = new math.expression.node.ConstantNode(1);
+    var b = new math.expression.node.ConstantNode(2);
+    var c = new math.expression.node.OperatorNode('+', 'add', [a, b]);
+
+    var clone = c.cloneDeep();
+
+    assert.deepEqual(c, clone);
+    assert.notStrictEqual(c, clone);
+    assert.notStrictEqual(clone.args[0], c.args[0]);
+    assert.notStrictEqual(clone.args[1], c.args[1]);
+  });
+
+  it ('test equality with another Node', function () {
+    assert.strictEqual(new Node().equals(new Node()), true);
+    assert.strictEqual(new Node().equals(null), false);
+    assert.strictEqual(new Node().equals(undefined), false);
+    assert.strictEqual(new Node().equals({}), false);
+  });
+
   it ('should throw an error when stringifying a Node interface', function () {
     assert.throws(function () {
       var node = new Node();
@@ -123,7 +156,7 @@ describe('Node', function() {
     var node = new Node();
     assert.throws(function () {
       node.compile()
-    }, /Cannot compile a Node interface/);
+    }, /Cannot compile node: unknown type "Node"/);
   });
 
   it ('should have an identifier', function () {

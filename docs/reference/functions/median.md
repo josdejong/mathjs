@@ -47,4 +47,5 @@ math.median([3, -1, 5, 7]);  // returns 4
 [sum](sum.md),
 [prod](prod.md),
 [std](std.md),
-[var](var.md)
+[var](var.md),
+[quantileSeq](quantileSeq.md)

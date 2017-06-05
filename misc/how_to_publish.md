@@ -5,7 +5,7 @@ This document describes the steps required to publish a new version of math.js.
 
 ## Update version number
 
-Update the version number in both package.json, bower.json, and component.json.
+Update the version number package.json.
 
 
 ## Update history
@@ -23,14 +23,8 @@ Build the distribution files ./dist/math.js and ./dist/math.min.js by running:
 After the build is complete, verify if the files are created and contain the
 correct date and version number in the header.
 
-To update the reference documentation, run:
-
-    npm run docs
-
-This will regenerate all documentation in docs/reference/functions from the
-functions code comments.
-
-Check whether there are new markdown files generated and add them to git.
+Check whether there are new markdown files generated in `./docs` and add if
+so add them to git.
 
 
 ## Test
@@ -70,8 +64,7 @@ Publish to npm:
     npm publish
 
 No need to publish for bower: The library is already published because of the
-new version tag. There is also no need to publish a component(1) build, because
-component(1) uses GitHub as it's registry.
+new version tag.
 
 No need to publish at cdnjs: should be updated automatically by the owners
 of cdnjs. This is currently done manually and can easily take up to a day
@@ -93,6 +86,10 @@ Wait until the new version of math.js is available on cdnjs.org.
 
 The website is located in the `gh-pages` branch of the project.
 Follow the readme in the `gh-pages` branch on how to update the website.
+
+## Update the REST API
+
+Update the `mathjs-rest` project (served at http://api.mathjs.org).
 
 
 ## Back to develop

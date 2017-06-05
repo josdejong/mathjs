@@ -31,6 +31,11 @@ describe('parse', function() {
 
   it('should parse an empty expression', function() {
     assert.strictEqual(parse('').compile().eval(), undefined);
+    assert.strictEqual(parse('\n').compile().eval(), undefined);
+    assert.strictEqual(parse('\n\n').compile().eval(), undefined);
+    assert.strictEqual(parse('\n  \n').compile().eval(), undefined);
+    assert.strictEqual(parse('#foo\n').compile().eval(), undefined);
+    assert.strictEqual(parse('#foo\n#bar\n').compile().eval(), undefined);
   });
 
   it('should parse an array with expressions', function() {
@@ -71,6 +76,9 @@ describe('parse', function() {
 
     math.eval('\u03A9 = 4', scope); // Greek Capital Letter Omega
     assert.strictEqual(scope['\u03A9'], 4);
+
+    math.eval('\u2126 = 4', scope); // Letter-like character Ohm
+    assert.strictEqual(scope['\u2126'], 4);
 
     math.eval('k\u00F6ln = 5', scope); // Combination of latin and unicode
     assert.strictEqual(scope['k\u00F6ln'], 5);
@@ -203,6 +211,18 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('2 + 3 # - 4\n6-2'), new ResultSet([5, 4]));
     });
 
+    it('should fill in the property comment of a Node', function() {
+      assert.equal(parse('2 + 3').comment, '');
+
+      assert.equal(parse('2 + 3 # hello').comment, '# hello');
+      assert.equal(parse('   # hi').comment, '# hi');
+
+      var blockNode = parse('2 # foo\n3   # bar');
+      assert.equal(blockNode.blocks.length, 2);
+      assert.equal(blockNode.blocks[0].node.comment, '# foo');
+      assert.equal(blockNode.blocks[1].node.comment, '# bar');
+    });
+
   });
 
   describe('number', function () {
@@ -211,10 +231,12 @@ describe('parse', function() {
       assert.equal(parseAndEval('0'), 0);
       assert.equal(parseAndEval('3'), 3);
       assert.equal(parseAndEval('3.2'), 3.2);
+      assert.equal(parseAndEval('3.'), 3);
+      assert.equal(parseAndEval('3. '), 3);
+      assert.equal(parseAndEval('3.\t'), 3);
       assert.equal(parseAndEval('003.2'), 3.2);
       assert.equal(parseAndEval('003.200'), 3.2);
       assert.equal(parseAndEval('.2'), 0.2);
-      assert.equal(parseAndEval('2.'), 2);
       assert.equal(parseAndEval('3e2'), 300);
       assert.equal(parseAndEval('300e2'), 30000);
       assert.equal(parseAndEval('300e+2'), 30000);
@@ -228,7 +250,7 @@ describe('parse', function() {
     });
 
     it('should throw an error with invalid numbers', function() {
-      assert.throws(function () {parseAndEval('.'); }, SyntaxError);
+      assert.throws(function () {parseAndEval('.'); }, /Value expected/);
       assert.throws(function () {parseAndEval('3.2.2'); }, SyntaxError);
       assert.throws(function () {parseAndEval('3.2e2.2'); }, SyntaxError);
       
@@ -343,6 +365,16 @@ describe('parse', function() {
       assert.ok(parseAndEval('5cm') instanceof Unit);
     });
 
+    it('should parse constants', function() {
+      assert.equal(parseAndEval('pi'), Math.PI);
+    });
+
+    it('should parse physical constants', function() {
+      var expected = new Unit(299792458, 'm/s');
+      expected.fixPrefix = true;
+      assert.deepEqual(parseAndEval('speedOfLight'), expected);
+    });
+
     it('should correctly parse negative temperatures', function () {
       approx.deepEqual(parseAndEval('-6 celsius'), new Unit(-6, 'celsius'));
       approx.deepEqual(parseAndEval('--6 celsius'), new Unit(6, 'celsius'));
@@ -365,6 +397,14 @@ describe('parse', function() {
           math.unit(68, 'fahrenheit').to('fahrenheit'));
       approx.deepEqual(parseAndEval('50 fahrenheit to celsius'),
           math.unit(10, 'celsius').to('celsius'));
+    });
+
+    it('should create units and aliases', function() {
+      var myMath = math.create()
+      myMath.eval('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})');
+      assert.equal(myMath.eval('5 knot').toString(), '5 knot');
+      assert.equal(myMath.eval('5 knots').toString(), '5 knots');
+      assert.equal(myMath.eval('5 kt').toString(), '5 kt');
     });
 
     it('should evaluate operator "to" with correct precedence ', function () {
@@ -457,6 +497,11 @@ describe('parse', function() {
         ])
       };
       assert.deepEqual(parseAndEval('a[2, :][1,1]', scope), 4);
+    });
+
+    it('should get BigNumber value from an array', function() {
+      var res = parseAndEval('arr[1]', {arr: [math.bignumber(2)]});
+      assert.deepEqual(res, math.bignumber(2));
     });
 
     it('should parse matrix resizings', function() {
@@ -752,14 +797,32 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
     });
 
+    it('should invoke a function returned by a function', function () {
+      var scope = {
+        theAnswer: function () {
+          return function () {
+            return 42;
+          };
+        },
+        partialAdd: function (a) {
+          return function (b) {
+            return a + b;
+          };
+        }
+      };
+      assert.deepEqual(parseAndEval('theAnswer()()', scope), 42);
+      assert.deepEqual(parseAndEval('partialAdd(2)(3)', scope), 5);
+    });
+
     it('should invoke a function on an object with the right context', function () {
       approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1);
       assert.deepEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5));
       assert.deepEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5));
     });
 
-    it('should invoke toString on some object', function () {
+    it('should invoke native methods on a number', function () {
       assert.strictEqual(parseAndEval('(3).toString()'), '3');
+      assert.strictEqual(parseAndEval('(3.2).toFixed()'), '3');
     });
 
     it('should get nested object property with mixed dot- and index-notation', function () {
@@ -864,7 +927,7 @@ describe('parse', function() {
     });
 
     it('should parse nested assignments', function() {
-      var scope = [];
+      var scope = {};
       assert.equal(parseAndEval('c = d = (e = 4.5)', scope), 4.5);
       assert.equal(scope.c, 4.5);
       assert.equal(scope.d, 4.5);
@@ -987,6 +1050,7 @@ describe('parse', function() {
     it('should parse add +', function() {
       assert.equal(parseAndEval('2 + 3'), 5);
       assert.equal(parseAndEval('2 + 3 + 4'), 9);
+      assert.equal(parseAndEval('2.+3'), 5); // test whether the decimal mark isn't confused
     });
 
     it('should parse divide /', function() {
@@ -996,6 +1060,7 @@ describe('parse', function() {
 
     it('should parse dotDivide ./', function() {
       assert.equal(parseAndEval('4./2'), 2);
+      assert.deepEqual(parseAndEval('4./[2,4]'), math.matrix([2,1]));
       assert.equal(parseAndEval('4 ./ 2'), 2);
       assert.equal(parseAndEval('8 ./ 2 / 2'), 2);
 
@@ -1004,8 +1069,8 @@ describe('parse', function() {
 
     it('should parse dotMultiply .*', function() {
       approx.deepEqual(parseAndEval('2.*3'), 6);
+      approx.deepEqual(parseAndEval('2e3.*3'), 6e3);
       approx.deepEqual(parseAndEval('2 .* 3'), 6);
-      approx.deepEqual(parseAndEval('2. * 3'), 6);
       approx.deepEqual(parseAndEval('4 .* 2'), 8);
       approx.deepEqual(parseAndEval('8 .* 2 .* 2'), 32);
       assert.deepEqual(parseAndEval('a=3; a.*4'), new ResultSet([12]));
@@ -1016,7 +1081,6 @@ describe('parse', function() {
     it('should parse dotPower .^', function() {
       approx.deepEqual(parseAndEval('2.^3'), 8);
       approx.deepEqual(parseAndEval('2 .^ 3'), 8);
-      assert.deepEqual(parseAndEval('2. ^ 3'), 8);
       approx.deepEqual(parseAndEval('-2.^2'), -4);  // -(2^2)
       approx.deepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24); // 2^(3^4)
 
@@ -1070,6 +1134,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('8/2a/2', {a:2}), 4);
       assert.equal(parseAndEval('8/2a*2', {a:2}), 16);
       assert.equal(parseAndEval('4*2a', {a:2}), 16);
+      assert.equal(parseAndEval('3!10'), 60);
 
       assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
       assert.equal(parseAndEval('(2+3)2'), 10);
@@ -1126,6 +1191,9 @@ describe('parse', function() {
       assert.throws(function () { math.parse('2 * 3 4 * 5'); }, /Unexpected part "4"/);
       assert.throws(function () { math.parse('2 / 3 4 5'); }, /Unexpected part "4"/);
       assert.throws(function () { math.parse('2 + 3 4'); }, /Unexpected part "4"/);
+      assert.throws(function () { math.parse('-2 2'); }, /Unexpected part "2"/);
+      assert.throws(function () { math.parse('+3 3'); }, /Unexpected part "3"/);
+      assert.throws(function () { math.parse('2^3 4'); }, /Unexpected part "4"/);
     });
 
     it('should parse pow ^', function() {
@@ -1937,6 +2005,64 @@ describe('parse', function() {
       });
     });
 
+  });
+
+  describe ('expose test functions', function () {
+    it('should expose isAlpha', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isAlpha === 'function')
+    });
+
+    it('should expose isValidLatinOrGreek', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isValidLatinOrGreek === 'function')
+    });
+
+    it('should expose isValidMathSymbol', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isValidMathSymbol === 'function')
+    });
+
+    it('should expose isWhitespace', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isWhitespace === 'function')
+    });
+
+    it('should expose isDecimalMark', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isDecimalMark === 'function')
+    });
+
+    it('should expose isDigitDot', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isDigitDot === 'function')
+    });
+
+    it('should expose isDigit', function() {
+      assert.ok('should expose isAlpha', typeof math.expression.parse.isDigit === 'function')
+    });
+
+    it('should allow overriding isAlpha', function() {
+      var originalIsAlpha = math.expression.parse.isAlpha;
+
+      // override isAlpha with one accepting $ characters too
+      math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+        return /^[a-zA-Z_$]$/.test(c)
+      };
+
+      const node = math.expression.parse('$foo');
+      const result = node.eval({$foo: 42});
+      assert.equal(result, 42);
+
+      // restore original isAlpha
+      math.expression.parse.isAlpha = originalIsAlpha
+    });
+
+  });
+
+  it ('Should not allow crashing math by placing a clone function in the config', function () {
+    var mathClone = math.create();
+
+    try {
+      mathClone.eval('f(x)=1;config({clone:f})')
+    }
+    catch (err) {}
+
+    assert.equal(mathClone.eval('2'), 2);
   });
 
 });

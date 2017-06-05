@@ -1,7 +1,244 @@
 # History
 
-## not yet released, version 3.4.0
+## 2017-05-27, version 3.13.3
 
+- Fixed a bug in function `intersection` of line and plane.
+  Thanks @viclai.
+- Fixed security vulnerabilities.
+
+
+## 2017-05-26, version 3.13.2
+
+- Disabled function `chain` inside the expression parser for security
+  reasons (it's not needed there anyway).
+- Fixed #856: function `subset` not returning non-primitive scalars
+  from Arrays correctly. (like `math.eval('arr[1]', {arr: [math.bignumber(2)]})`.
+- Fixed #861: physical constants not available in the expression parser.
+
+
+## 2017-05-12, version 3.13.1
+
+- Fixed creating units with an alias not working within the expression
+  parser.
+- Fixed security vulnerabilities. Thanks Sam.
+
+
+## 2017-05-12, version 3.13.0
+
+- Command line application can now evaluate inline expressions
+  like `mathjs 1+2`. Thanks @slavaGanzin.
+- Function `derivative` now supports `abs`. Thanks @tetslee.
+- Function `simplify` now supports BigNumbers. Thanks @tetslee.
+- Prevent against endless loops in `simplify`. Thanks @tetslee.
+- Fixed #813: function `simplify` converting small numbers to inexact
+  Fractions. Thanks @tetslee.
+- Fixed #838: Function `simplify` now supports constants like `e`.
+  Thanks @tetslee.
+
+
+## 2017-05-05, version 3.12.3
+
+- Fixed security vulnerabilities. Thanks Dan and Sam.
+
+
+## 2017-04-30, version 3.12.2
+
+- Added a rocket trajectory optimization example.
+
+
+## 2017-04-24, version 3.12.1
+
+- Fixed #804
+  - Improved handling of powers of `Infinity`. Thanks @HarrySarson.
+  - Fixed wrong formatting of complex NaN.
+- Fixed security vulnerabilities in the expression parser.
+  Thanks Sam and Dan.
+
+
+## 2017-04-17, version 3.12.0
+
+- Implemented QR decomposition, function `math.qr`. Thanks @HarrySarson.
+- Fixed #824: Calling `math.random()` freezes IE and node.js.
+
+
+## 2017-04-08, version 3.11.5
+
+- More security measures in the expression parser.
+  WARNING: the behavior of the expression parser is now more strict,
+  some undocumented features may not work any longer.
+  - Accessing and assigning properties is now only allowed on plain
+    objects, not on classes, arrays, and functions anymore.
+  - Accessing methods is restricted to a set of known, safe methods.
+
+
+## 2017-04-03, version 3.11.4
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
+## 2017-04-03, version 3.11.3
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
+## 2017-04-03, version 3.11.2
+
+- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+
+
+## 2017-04-02, version 3.11.1
+
+- Fixed security vulnerabilities in the expression parser.
+  Thanks Joe Vennix and @xfix.
+
+
+## 2017-04-02, version 3.11.0
+
+- Implemented method Unit.toSI() to convert a unit to base SI units.
+  Thanks @ericman314.
+- Fixed #821, #822: security vulnerabilities in the expression parser.
+  Thanks @comex and @xfix.
+
+
+## 2017-03-31, version 3.10.3
+
+- More security fixes related to the ones fixed in `v3.10.2`.
+
+
+## 2017-03-31, version 3.10.2
+
+- Fixed a security vulnerability in the expression parser allowing
+  execution of arbitrary JavaScript. Thanks @CapacitorSet and @denvit.
+
+
+## 2017-03-26, version 3.10.1
+
+- Fixed `xgcd` for negative values. Thanks @litmit.
+- Fixed #807: function transform of existing functions not being removed when
+  overriding such a function.
+
+
+## 2017-03-05, version 3.10.0
+
+- Implemented function `reshape`. Thanks @patgrasso and @ericman314.
+- Implemented configuration option `seedRandom` for deterministic random
+  numbers. Thanks @morsecodist.
+- Small fixes in the docs. Thanks @HarrySarson.
+- Dropped support for component package manager (which became deprecated about
+  one and a half year ago).
+
+
+## 2017-02-22, version 3.9.3
+
+- Fixed #797: issue with production builds of React Native projects.
+- Fixed `math.round` not accepting inputs `NaN`, `Infinity`, `-Infinity`.
+- Upgraded all dependencies.
+
+
+## 2017-02-16, version 3.9.2
+
+- Fixed #795: Parse error in case of a multi-line expression with just comments.
+
+
+## 2017-02-06, version 3.9.1
+
+- Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
+  `Fraction`, or `Complex` number.
+- Fixed #790: Expression parser did not pass function arguments of enclosing
+  functions via `scope` to functions having `rawArgs = true`.
+- Small fixes in the docs. Thanks @HarrySarson.
+
+
+## 2017-01-23, version 3.9.0
+
+- Implemented support for algebra: powerful new functions `simplify` and
+  `derivative`. Thanks @ericman314, @tetslee, and @BigFav.
+- Implemented Kronecker Product `kron`. Thanks @adamisntdead.
+- Reverted `FunctionNode` not accepting a string as function name anymore.
+- Fixed #765: `FunctionAssignmentNode.toString()` returning a string
+  incompatible with the function assignment syntax.
+
+
+## 2016-12-15, version 3.8.1
+
+- Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
+- Fixed #762: expression parser failing to invoke a function returned
+  by a function.
+
+
+## 2016-11-18, version 3.8.0
+
+- Functions `add` and `multiply` now accept more than two arguments. See #739.
+- `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
+- Implemented a method `Node.cloneDeep` for the expression nodes. See #745.
+- Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
+  Thanks @FSMaxB.
+- Fixed #737: Improved algorithm determining the best prefix for units.
+  It will now retain the original unit like `1 cm` when close enough,
+  instead of returning `10 mm`. Thanks @ericman314.
+- Fixed #732: Allow letter-like unicode characters like Ohm `\u2126`.
+- Fixed #749: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
+- Some fixes in the docs and comments of examples. Thanks @HarrySarson.
+
+
+## 2016-11-05, version 3.7.0
+
+- Implemented method `Node.equals(other)` for all nodes of the expression parser.
+- Implemented BigNumber support in function `arg()`.
+- Command Line Interface loads faster.
+- Implicit conversions between Fractions and BigNumbers throw a neat error now
+  (See #710).
+
+
+## 2016-10-21, version 3.6.0
+
+- Implemented function `erf()`. THanks @patgrasso.
+- Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
+- Extended function `pickRandom` with the option to pick multiple values from
+  an array and give the values weights: `pickRandom(possibles, number, weights)`.
+  Thanks @woylie.
+- Parser now exposes test functions like `isAlpha` which can be replaced in
+  order to adjust the allowed characters in variables names (See #715).
+- Fixed #727: Parser not throwing an error for invalid implicit multiplications
+  like `-2 2` and `2^3 4` (right after the second value of an operator).
+- Fixed #688: Describe allowed variable names in the docs.
+
+
+## 2016-09-21, version 3.5.3
+
+- Some more fixes regarding numbers ending with a decimal mark (like `2.`).
+
+
+## 2016-09-20, version 3.5.2
+
+- Fixed numbers ending with a decimal mark (like `2.`) not being supported by
+  the parser, solved the underlying ambiguity in the parser. See #707, #711.
+
+
+## 2016-09-12, version 3.5.1
+
+- Removed a left over console.log statement. Thanks @eknkc.
+
+
+## 2016-09-07, version 3.5.0
+
+- Comments of expressions are are now stored in the parsed nodes. See #690.
+- Fixed function `print` not accepting an Object with formatting options as
+  third parameter Thanks @ThomasBrierley.
+- Fixed #707: The expression parser no longer accepts numbers ending with a dot
+  like `2.`.
+
+
+## 2016-08-08, version 3.4.1
+
+- Fixed broken bundle files (`dist/math.js`, `dist/math.min.js`).
+- Fixed some layout issues in the function reference docs.
+
+
+## 2016-08-07, version 3.4.0
+
+- Implemented support for custom units using `createUnit`. Thanks @ericman314.
+- Implemented function `splitUnits`. Thanks @ericman314.
 - Implemented function `isPrime`. Thanks @MathBunny.
 
 

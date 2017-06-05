@@ -15,5 +15,7 @@ This section is divided in the following pages:
 - [Syntax](syntax.md) describes how to write expressions.
 - [Expression trees](expression_trees.md) explains how to parse an expression into an
   expression tree, and use this to analyse and manipulate the expression.
+- [Algebra](algebra.md) describing symbolic computation in math.js.
 - [Customization](customization.md) describes how to customize processing and
   evaluation of expressions.
+- [Security](security.md) about security risks of executing arbitrary expressions.

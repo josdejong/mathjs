@@ -1,9 +1,6 @@
 # Documentation
 
-[Math.js](http://mathjs.org) is an extensive math library for JavaScript and Node.js.
-It features a flexible expression parser, a large set of built-in functions and constants,
-and offers an integrated solution to work with different data types like numbers,
-big numbers, complex numbers, units, and matrices.
+[Math.js](http://mathjs.org) is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.
 
 Math.js can be used in the browser, in node.js and in any JavaScript engine. Installation and download instructions are available on the [Download page](http://mathjs.org/download.html) of the website.
 
@@ -23,7 +20,9 @@ Math.js can be used in the browser, in node.js and in any JavaScript engine. Ins
   - [Parsing and evaluation](expressions/parsing.md)
   - [Syntax](expressions/syntax.md)
   - [Expression trees](expressions/expression_trees.md)
+  - [Algebra](expressions/algebra.md)
   - [Customization](expressions/customization.md)
+  - [Security](expressions/security.md)
 - **[Data Types](datatypes/index.md)**
   - [Numbers](datatypes/numbers.md)
   - [BigNumbers](datatypes/bignumbers.md)

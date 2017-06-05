@@ -176,6 +176,31 @@ describe('OperatorNode', function() {
     assert.strictEqual(d.args[1], c.args[1]);
   });
 
+  it ('should clone implicit multiplications', function () {
+    var two = new ConstantNode(2);
+    var x = new SymbolNode('x');
+    var node = new OperatorNode('*', 'multiply', [two, x], true);
+
+    assert.equal('2 x', node.toString());
+    assert.strictEqual(true, node.clone().implicit);
+    assert.equal(node.toString(), node.clone().toString());
+  });
+
+  it ('test equality another Node', function () {
+    var a = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)]);
+    var b = new OperatorNode('+', 'add', [new SymbolNode('x'), new ConstantNode(2)]);
+    var c = new OperatorNode('*', 'multiply', [new SymbolNode('x'), new ConstantNode(2)]);
+    var d = new OperatorNode('*', 'add', [new SymbolNode('x'), new ConstantNode(3)]);
+    var e = new OperatorNode('*', 'add', [new SymbolNode('x'), new ConstantNode(2), new ConstantNode(4)]);
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+  });
+
   describe('toString', function () {
     it ('should stringify an OperatorNode', function () {
       var a = new ConstantNode(2);
@@ -210,6 +235,61 @@ describe('OperatorNode', function() {
 
       var n = new OperatorNode('foo', 'foo', [a, b, c]);
       assert.equal(n.toString(), 'foo(2, 3, 4)');
+
+    });
+
+    it ('should stringify addition and multiplication with more than two operands', function () {
+      var a = new SymbolNode('a');
+      var b = new SymbolNode('b');
+      var c = new SymbolNode('c');
+
+      var add = new OperatorNode('+', 'add', [a, b, c]);
+      var multiply = new OperatorNode('*', 'multiply', [a, b, c]);
+      var implicitMultiply = new OperatorNode('*', 'multiply', [a, b, c], true);
+
+      assert.equal(add.toString(), 'a + b + c');
+      assert.equal(multiply.toString(), 'a * b * c');
+      assert.equal(implicitMultiply.toString(), 'a b c');
+    });
+
+    it ('should stringify addition and multiplication with more than two operands including OperatorNode', function () {
+      var a = new SymbolNode('a');
+      var b = new SymbolNode('b');
+      var c = new SymbolNode('c');
+      var d = new SymbolNode('d');
+
+      var mult = new OperatorNode('*', 'multiply', [a,b]);
+      var add = new OperatorNode('+', 'add', [a, b]);
+
+      var multipleMultWithMult = new OperatorNode('*', 'multiply', [c, mult, d]);
+      var multipleMultWithAdd = new OperatorNode('*', 'multiply', [c, add, d]);
+      var multipleAddWithMult = new OperatorNode('+', 'add', [c, mult, d]);
+      var multipleAddWithAdd = new OperatorNode('+', 'add', [c, add, d]);
+
+      assert.equal(multipleMultWithMult.toString(), 'c * a * b * d');
+      assert.equal(multipleMultWithAdd.toString(), 'c * (a + b) * d');
+      assert.equal(multipleAddWithMult.toString(), 'c + a * b + d');
+      assert.equal(multipleAddWithAdd.toString(), 'c + a + b + d');
+    });
+
+    it ('should stringify an OperatorNode that contains an operatornode with more than two operands', function () {
+      var a = new SymbolNode('a');
+      var b = new SymbolNode('b');
+      var c = new SymbolNode('c');
+      var d = new SymbolNode('d');
+
+      var mult = new OperatorNode('*', 'multiply', [a, b, c]);
+      var add = new OperatorNode('+', 'add', [a, b, c]);
+
+      var addWithMult = new OperatorNode('+', 'add', [mult, d]);
+      var addWithAdd = new OperatorNode('+', 'add', [add, d]);
+      var multWithMult = new OperatorNode('*', 'multiply', [mult, d]);
+      var multWithAdd = new OperatorNode('*', 'multiply', [add, d]);
+
+      assert.equal(addWithMult.toString(), 'a * b * c + d');
+      assert.equal(addWithAdd.toString(), 'a + b + c + d');
+      assert.equal(multWithMult.toString(), 'a * b * c * d');
+      assert.equal(multWithAdd.toString(), '(a + b + c) * d');
 
     });
 
@@ -420,6 +500,60 @@ describe('OperatorNode', function() {
     assert.equal(n2.toTex(), '4-5');
     assert.equal(n3.toTex(), '\\left(2+3\\right)\\cdot\\left(4-5\\right)');
     assert.equal(m3.toTex(), '\\left(2+3\\right)\\cdot4-5');
+  });
+
+  it ('should LaTeX addition and multiplication with more than two operands', function () {
+    var a = new SymbolNode('a');
+    var b = new SymbolNode('b');
+    var c = new SymbolNode('c');
+
+    var add = new OperatorNode('+', 'add', [a, b, c]);
+    var multiply = new OperatorNode('*', 'multiply', [a, b, c]);
+    var implicitMultiply = new OperatorNode('*', 'multiply', [a, b, c], true);
+
+    assert.equal(add.toTex(), ' a+\\mathrm{b}+ c');
+    assert.equal(multiply.toTex(), ' a\\cdot\\mathrm{b}\\cdot c');
+    assert.equal(implicitMultiply.toTex(), ' a~\\mathrm{b}~ c');
+  });
+
+  it ('should LaTeX addition and multiplication with more than two operands including OperatorNode', function () {
+    var a = new SymbolNode('a');
+    var b = new SymbolNode('b');
+    var c = new SymbolNode('c');
+    var d = new SymbolNode('d');
+
+    var mult = new OperatorNode('*', 'multiply', [a,b]);
+    var add = new OperatorNode('+', 'add', [a, b]);
+
+    var multipleMultWithMult = new OperatorNode('*', 'multiply', [c, mult, d]);
+    var multipleMultWithAdd = new OperatorNode('*', 'multiply', [c, add, d]);
+    var multipleAddWithMult = new OperatorNode('+', 'add', [c, mult, d]);
+    var multipleAddWithAdd = new OperatorNode('+', 'add', [c, add, d]);
+
+    assert.equal(multipleMultWithMult.toTex(), ' c\\cdot a\\cdot\\mathrm{b}\\cdot d');
+    assert.equal(multipleMultWithAdd.toTex(), ' c\\cdot\\left( a+\\mathrm{b}\\right)\\cdot d');
+    assert.equal(multipleAddWithMult.toTex(), ' c+ a\\cdot\\mathrm{b}+ d');
+    assert.equal(multipleAddWithAdd.toTex(), ' c+ a+\\mathrm{b}+ d');
+  });
+
+  it ('should LaTeX an OperatorNode that contains an operatornode with more than two operands', function () {
+    var a = new SymbolNode('a');
+    var b = new SymbolNode('b');
+    var c = new SymbolNode('c');
+    var d = new SymbolNode('d');
+
+    var mult = new OperatorNode('*', 'multiply', [a, b, c]);
+    var add = new OperatorNode('+', 'add', [a, b, c]);
+
+    var addWithMult = new OperatorNode('+', 'add', [mult, d]);
+    var addWithAdd = new OperatorNode('+', 'add', [add, d]);
+    var multWithMult = new OperatorNode('*', 'multiply', [mult, d]);
+    var multWithAdd = new OperatorNode('*', 'multiply', [add, d]);
+
+    assert.equal(addWithMult.toTex(), ' a\\cdot\\mathrm{b}\\cdot c+ d');
+    assert.equal(addWithAdd.toTex(), ' a+\\mathrm{b}+ c+ d');
+    assert.equal(multWithMult.toTex(), ' a\\cdot\\mathrm{b}\\cdot c\\cdot d');
+    assert.equal(multWithAdd.toTex(), '\\left( a+\\mathrm{b}+ c\\right)\\cdot d');
   });
 
   it('should LaTeX fractions with operators that are enclosed in parenthesis', function () {

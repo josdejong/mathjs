@@ -49,7 +49,7 @@ describe('string', function() {
   });
 
   it('should convert a unit to string', function() {
-    assert.equal(string(math.unit('5cm')), '50 mm');
+    assert.equal(string(math.unit('5cm')), '5 cm');
   });
 
   it('should throw an error if called with wrong number of arguments', function() {

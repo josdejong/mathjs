@@ -80,6 +80,30 @@ describe('ConstantNode', function() {
     assert.deepEqual(a.filter(function (node) {return node instanceof SymbolNode}), []);
   });
 
+  it ('should throw an error when compiling an invalid value', function () {
+    var clone = math.create();
+    clone.config({number: 'number'});
+    assert.throws(function () { new ConstantNode('console.log("foo")', 'number').compile() }, /Invalid numeric value/)
+    clone.config({number: 'BigNumber'});
+    assert.throws(function () { new ConstantNode('console.log("foo")', 'number').compile() }, /Invalid numeric value/)
+    clone.config({number: 'Fraction'});
+    assert.throws(function () { new ConstantNode('console.log("foo")', 'number').compile() }, /Invalid numeric value/)
+  });
+
+  it ('should escape quotes in strings', function () {
+    assert.strictEqual( new ConstantNode('"+foo+"', 'string').compile().eval.toString(),
+        'function (scope) {    if (scope) _validateScope(scope);    scope = scope || {};    return "\\"+foo+\\"";  }')
+
+    assert.strictEqual( new ConstantNode('\\"escaped\\"', 'string').compile().eval.toString(),
+        'function (scope) {    if (scope) _validateScope(scope);    scope = scope || {};    return "\\"escaped\\"";  }')
+  });
+
+  it ('should find a ConstantNode', function () {
+    var a = new ConstantNode('2', 'number');
+    assert.deepEqual(a.filter(function (node) {return node instanceof ConstantNode}),  [a]);
+    assert.deepEqual(a.filter(function (node) {return node instanceof SymbolNode}), []);
+  });
+
   it ('should run forEach on a ConstantNode', function () {
     var a = new ConstantNode(2);
     a.forEach(function () {
@@ -122,6 +146,19 @@ describe('ConstantNode', function() {
     assert.notStrictEqual(a, b);
     assert.equal(a.value, b.value);
     assert.equal(a.valueType, b.valueType);
+  });
+
+  it ('test equality another Node', function () {
+    var a = new ConstantNode(2);
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(new ConstantNode(2)), true);
+    assert.strictEqual(a.equals(new ConstantNode(3)), false);
+    assert.strictEqual(a.equals(new ConstantNode('2', 'number')), true);
+    assert.strictEqual(a.equals(new ConstantNode('2', 'string')), false);
+    assert.strictEqual(a.equals(new SymbolNode('2')), false);
+    assert.strictEqual(a.equals({value:2, valueType: 'number'}), false);
   });
 
   it ('should stringify a ConstantNode', function () {

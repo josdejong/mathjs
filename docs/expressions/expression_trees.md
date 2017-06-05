@@ -41,7 +41,13 @@ All nodes have the following methods:
 
 -   `clone() : Node`
 
-    Recursively clone an expression tree.
+    Create a shallow clone of the node.
+    The node itself is cloned, its childs are not cloned.
+
+-   `cloneDeep() : Node`
+
+    Create a deep clone of the node.
+    Both the node as well as all its childs are cloned recursively.
 
 -   `compile() : Object`
 
@@ -51,7 +57,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
     var code = node.compile();      // returns {eval: function (scope) {...}}
-    var eval = code.eval({x: 3};    // returns 5
+    var eval = code.eval({x: 3});   // returns 5
     ```
 
 -   `eval([scope]) : Object`
@@ -61,8 +67,13 @@ All nodes have the following methods:
     
     ```js
     var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var eval = node.eval({x: 3};    // returns 5
+    var eval = node.eval({x: 3});   // returns 5
     ```
+
+-   `equals(other: Node) : boolean`
+
+    Test whether this node equals an other node. Does a deep comparison of the
+    values of both nodes.
 
 -   `filter(callback: function) : Node[]`
 
@@ -77,7 +88,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + x/4 + 3*y');
     var filtered = node.filter(function (node) {
-      return node.isSymbolNode && node.name == 'x';
+      return node.isSymbolNode && node.name === 'x';
     });
     // returns an array with two entries: two SymbolNodes 'x'
     ```
@@ -157,7 +168,7 @@ All nodes have the following methods:
     ```js
     var node = math.parse('x^2 + 5*x');
     var transformed = node.transform(function (node, path, parent) {
-      if (node.SymbolNode && node.name == 'x') {
+      if (node.isSymbolNode && node.name === 'x') {
         return new math.expression.node.ConstantNode(3);
       }
       else {
@@ -200,6 +211,12 @@ All nodes have the following methods:
 ### Properties
 
 Each `Node` has the following properties:
+
+-   `comment: string`
+
+    A string holding a comment if there was any in the expression, or else the
+    string will be empty string. A comment can be attached to the root node of
+    an expression or to each of the childs nodes of a `BlockNode`.
 
 -   `isNode: true`
 
@@ -418,13 +435,12 @@ var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
 Construction:
 
 ```
-new FunctionNode(fn: Node, args: Node[])
+new FunctionNode(fn: Node | string, args: Node[])
 ```
 
 Properties:
 
-- `object: Node`
-- `name: string` (read-only) The function or method name. Returns an empty string when undefined.
+- `fn: Node | string` (read-only) The object or function name which to invoke.
 - `args: Node[]`
 
 Examples:

@@ -21,6 +21,12 @@ describe('intersect', function() {
     assert.deepEqual(math.intersect(math.matrix([1, 0, 1]), [4, -2, 2], math.matrix([1, 1, 1, 6])), math.matrix([7, -4, 3]));
     assert.deepEqual(math.intersect(math.matrix([1, 0, 1]), math.matrix([4, -2, 2]), math.matrix([1, 1, 1, 6])), math.matrix([7, -4, 3]));
   });
+
+  it('should calculate the intersection point of a line and a plane with plane coefficients other than (1, 1, 1)', function() {
+    assert.deepEqual(math.intersect([0, 30, 0], [0, 21, 0], [0, 9, 0, 0]), [0, 0, 0]);
+    assert.deepEqual(math.intersect(math.matrix([0, 30, 0]), [0, 21, 0], math.matrix([0, 9, 0, 0])), math.matrix([0, 0, 0]));
+    assert.deepEqual(math.intersect(math.matrix([0, 30, 0]), math.matrix([0, 21, 0]), math.matrix([0, 9, 0, 0])), math.matrix([0, 0, 0]));
+  });
   
   it('should return null if the points do not intersect', function() {
     assert.deepEqual(math.intersect([0, 1, 0], [0, 0, 0], [1, 1, 0], [1, 0, 0]), null);

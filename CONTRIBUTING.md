@@ -14,4 +14,11 @@ There are a few preferences regarding code contributions:
   which are located in the folder `dist`.
 - Send pull requests to the `develop` branch, not the `master` branch.
 
+What can I do?
+
+- Search through the [issues](https://github.com/josdejong/mathjs/issues) looking 
+  for something that looks interesting to you to pick up. Some issues are marked 
+  ["help wanted"](https://github.com/josdejong/mathjs/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22), 
+  these are typically issues which should be relatively easy to pick up.
+
 Thanks!

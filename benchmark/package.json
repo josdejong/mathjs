@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "expr-eval": "1.0.0",
+    "jsep": "0.3.0",
+    "math-expression-evaluator": "1.2.16",
+    "ndarray": "1.0.18",
+    "ndarray-determinant": "1.0.0",
+    "ndarray-gemm": "1.0.0",
+    "ndarray-ops": "1.2.2",
+    "ndarray-pack": "1.2.1",
+    "numericjs": "1.2.6",
+    "pad-left": "2.1.0",
+    "pad-right": "0.2.2",
+    "sylvester": "0.0.21",
+    "zeros": "1.0.0"
+  }
+}

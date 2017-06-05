@@ -449,19 +449,34 @@ describe('Unit', function() {
     });
 
     it('should render with the best prefix', function() {
+      assert.equal(new Unit(0.000001 ,'m').format(8), '1 um');
+      assert.equal(new Unit(0.00001 ,'m').format(8), '10 um');
+      assert.equal(new Unit(0.0001 ,'m').format(8), '100 um');
+      assert.equal(new Unit(0.0005 ,'m').format(8), '500 um');
+      assert.equal(new Unit(0.0006 ,'m').toString(), '0.6 mm');
       assert.equal(new Unit(0.001 ,'m').toString(), '1 mm');
       assert.equal(new Unit(0.01 ,'m').toString(), '10 mm');
-      assert.equal(new Unit(0.1 ,'m').toString(), '100 mm');
-      assert.equal(new Unit(0.5 ,'m').toString(), '500 mm');
+      assert.equal(new Unit(100000 ,'m').toString(), '100 km');
+      assert.equal(new Unit(300000 ,'m').toString(), '300 km');
+      assert.equal(new Unit(500000 ,'m').toString(), '500 km');
+      assert.equal(new Unit(600000 ,'m').toString(), '0.6 Mm');
+      assert.equal(new Unit(1000000 ,'m').toString(), '1 Mm');
+      assert.equal(new Unit(2000 ,'ohm').toString(), '2 kohm');
+    });
+
+    it('should keep the original prefix when in range', function() {
+      assert.equal(new Unit(0.0999 ,'m').toString(), '99.9 mm');
+      assert.equal(new Unit(0.1 ,'m').toString(), '0.1 m');
+      assert.equal(new Unit(0.5 ,'m').toString(), '0.5 m');
       assert.equal(new Unit(0.6 ,'m').toString(), '0.6 m');
       assert.equal(new Unit(1 ,'m').toString(), '1 m');
       assert.equal(new Unit(10 ,'m').toString(), '10 m');
       assert.equal(new Unit(100 ,'m').toString(), '100 m');
       assert.equal(new Unit(300 ,'m').toString(), '300 m');
       assert.equal(new Unit(500 ,'m').toString(), '500 m');
-      assert.equal(new Unit(600 ,'m').toString(), '0.6 km');
-      assert.equal(new Unit(1000 ,'m').toString(), '1 km');
-      assert.equal(new Unit(1000 ,'ohm').toString(), '1 kohm');
+      assert.equal(new Unit(600 ,'m').toString(), '600 m');
+      assert.equal(new Unit(1000 ,'m').toString(), '1000 m');
+      assert.equal(new Unit(1001 ,'m').toString(), '1.001 km');
     });
 
     it('should render best prefix for a single unit raised to integral power', function() {
@@ -1144,6 +1159,45 @@ describe('Unit', function() {
     it('should throw error when first parameter is not an object', function() {
       assert.throws(function() {Unit.createUnit('not an object');}, /createUnit expects first/);
     });
+  });
+
+  describe('splitUnit', function() {
+    it('should split a unit into parts', function() {
+      assert.equal((new Unit(1, 'm')).splitUnit(['ft', 'in']).toString(), "3 ft,3.3700787401574765 in");
+      assert.equal((new Unit(-1, 'm')).splitUnit(['ft', 'in']).toString(), "-3 ft,-3.3700787401574765 in");
+      assert.equal((new Unit(1, 'm/s')).splitUnit(['m/s']).toString(), "1 m / s");
+      assert.equal((new Unit(1, 'm')).splitUnit(['ft', 'ft']).toString(), "3 ft,0.280839895013123 ft");
+      assert.equal((new Unit(1.23, 'm/s')).splitUnit([]).toString(), "1.23 m / s");
+      assert.equal((new Unit(1, 'm')).splitUnit(['in', 'ft']).toString(), "39 in,0.030839895013123605 ft");
+      assert.equal((new Unit(1, 'm')).splitUnit([ new Unit(null, 'ft'), new Unit(null, 'in') ]).toString(), "3 ft,3.3700787401574765 in");
+    });
+  });
+
+  describe('toSI', function() {
+    it('should return a clone of the unit', function() {
+      var u1 = Unit.parse('3 ft');
+      var u2 = u1.toSI();
+      assert.equal(u1 === u2, false);
+    });
+
+    it('should return the unit in SI units', function() {
+      assert.equal(Unit.parse('3 ft').toSI().format(10), "0.9144 m");
+    });
+
+    it('should return SI units for valueless units', function() {
+      assert.equal(Unit.parse('ft/minute').toSI().toString(), "m / s");
+    });
+
+    it('should return SI units for custom units defined from other units', function() {
+      Unit.createUnit({foo:'3 kW'}, {override: true});
+      assert.equal(Unit.parse('42 foo').toSI().toString(), "1.26e+5 (kg m^2) / s^3");
+    });
+
+    it('should throw if custom unit not defined from existing units', function() {
+      Unit.createUnit({baz:''}, {override:true});
+      assert.throws(function() { Unit.parse('10 baz').toSI(); }, /Cannot express custom unit/);
+    });
+
   });
 
 });

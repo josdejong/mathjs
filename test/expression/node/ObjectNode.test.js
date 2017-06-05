@@ -217,6 +217,23 @@ describe('ObjectNode', function() {
     assert.strictEqual(c.properties["b"], d.properties["b"]);
   });
 
+  it ('test equality another Node', function () {
+    var a = new ObjectNode({a: new SymbolNode('a'), b: new ConstantNode(2)});
+    var b = new ObjectNode({a: new SymbolNode('a'), b: new ConstantNode(2)});
+    var c = new ObjectNode({a: new SymbolNode('a'), b: new ConstantNode(2), c: new ConstantNode(3)});
+    var d = new ObjectNode({a: new SymbolNode('foo'), b: new ConstantNode(2)});
+    var e = new ObjectNode({a: new SymbolNode('a')});
+    var f = new SymbolNode('x');
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+    assert.strictEqual(a.equals(f), false);
+  });
+
   it ('should stringify an ObjectNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);

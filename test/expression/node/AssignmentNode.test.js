@@ -148,7 +148,7 @@ describe('AssignmentNode', function() {
   it ('should compile an AssignmentNode with bignumber setting', function () {
     var bigmath = math.create({number: 'BigNumber'});
 
-    var object = new SymbolNode('a');
+    var object = new bigmath.expression.node.SymbolNode('a');
     var index = new bigmath.expression.node.IndexNode([
       new bigmath.expression.node.ConstantNode(2),
       new bigmath.expression.node.ConstantNode(1)
@@ -432,6 +432,36 @@ describe('AssignmentNode', function() {
     assert.strictEqual(e.object, d.object);
     assert.strictEqual(e.index, d.index);
     assert.strictEqual(e.value, d.value);
+  });
+
+  it ('test equality another Node', function () {
+    var a = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(3));
+    var b = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(3));
+    var c = new AssignmentNode(
+        new SymbolNode('B'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(3));
+    var d = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2)]),
+        new ConstantNode(3));
+    var e = new AssignmentNode(
+        new SymbolNode('A'),
+        new IndexNode([new ConstantNode(2), new SymbolNode('x')]),
+        new ConstantNode(4));
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
   });
 
   it ('should respect the \'all\' parenthesis option', function () {

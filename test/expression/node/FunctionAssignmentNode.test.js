@@ -1,7 +1,7 @@
 // test FunctionAssignmentNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../index').create();
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;
@@ -137,6 +137,68 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(fib(8), 21);
   });
 
+  it ('should pass function arguments in scope to functions with rawArgs', function () {
+    var outputScope = function (args, math, scope) {
+      return scope;
+    }
+    outputScope.rawArgs = true;
+    math.import({ outputScope: outputScope }, { override: true });
+
+    // f(x) = outputScope(x)
+    var x = new SymbolNode('x');
+    var o = new FunctionNode('outputScope', [x]);
+    var n = new FunctionAssignmentNode('f', ['x'], o);
+
+    var scope = {a: 2};
+    var f = n.eval(scope);
+    assert.deepEqual(f(3), {a: 2, f: f, x: 3});
+  });
+
+  it ('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
+    var outputScope = function (args, math, scope) {
+      return scope;
+    }
+
+    outputScope.rawArgs = true;
+    var returnOutputScope = function () {
+      return outputScope
+    }
+
+    math.import({
+      outputScope: outputScope,
+      returnOutputScope: returnOutputScope
+    }, { override: true });
+
+    // f(x, y) = returnOutputScope(x)(y)
+    var a = new FunctionNode('returnOutputScope', [new SymbolNode('x')]);
+    var b = new FunctionNode(a, [new SymbolNode('y')]);
+    var n = new FunctionAssignmentNode('f', ['x', 'y'], b);
+
+    var scope = {a: 2};
+    var f = n.eval(scope);
+    assert.deepEqual(f(3, 4), {a: 2, f: f, x: 3, y: 4});
+  });
+
+  it ('should pass function arguments in scope to functions with rawArgs and transform', function () {
+    var outputScope = function (x) {
+      return 'should not occur'
+    }
+    outputScope.transform = function (args, math, scope) {
+      return scope;
+    }
+    outputScope.transform.rawArgs = true;
+    math.import({ outputScope: outputScope }, { override: true });
+
+    // f(x) = outputScope(x)
+    var x = new SymbolNode('x');
+    var o = new FunctionNode('outputScope', [x]);
+    var n = new FunctionAssignmentNode('f', ['x'], o);
+
+    var scope = {a: 2};
+    var f = n.eval(scope);
+    assert.deepEqual(f(3), {a: 2, f: f, x: 3});
+  });
+
   it ('should filter a FunctionAssignmentNode', function () {
     var a = new ConstantNode(2);
     var x = new SymbolNode('x');
@@ -260,9 +322,31 @@ describe('FunctionAssignmentNode', function() {
     assert.strictEqual(e.expr, d.expr);
   });
 
+  it ('test equality another Node', function () {
+    var a = new FunctionAssignmentNode('f', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var b = new FunctionAssignmentNode('f', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var c = new FunctionAssignmentNode('g', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var d = new FunctionAssignmentNode('f', ['y'],
+        new OperatorNode('+', 'add', [new ConstantNode(2), new SymbolNode('x')]));
+    var e = new FunctionAssignmentNode('f', ['x'],
+        new OperatorNode('+', 'add', [new ConstantNode(3), new SymbolNode('x')]));
+    var f = new SymbolNode('add');
+
+    assert.strictEqual(a.equals(null), false);
+    assert.strictEqual(a.equals(undefined), false);
+    assert.strictEqual(a.equals(b), true);
+    assert.strictEqual(a.equals(c), false);
+    assert.strictEqual(a.equals(d), false);
+    assert.strictEqual(a.equals(e), false);
+    assert.strictEqual(a.equals(f), false);
+  });
+
   it ('should respect the \'all\' parenthesis option', function () {
     var expr = math.parse('f(x)=x+1');
-    assert.equal(expr.toString({parenthesis: 'all'}), 'function f(x) = (x + 1)');
+    assert.equal(expr.toString({parenthesis: 'all'}), 'f(x) = (x + 1)');
     assert.equal(expr.toTex({parenthesis: 'all'}), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)');
   });
 
@@ -272,7 +356,7 @@ describe('FunctionAssignmentNode', function() {
     var o = new OperatorNode('+', 'add', [a, x]);
     var n = new FunctionAssignmentNode('f', ['x'], o);
 
-    assert.equal(n.toString(), 'function f(x) = 2 + x');
+    assert.equal(n.toString(), 'f(x) = 2 + x');
   });
 
   it ('should stringify a FunctionAssignmentNode conataining an AssignmentNode', function () {
@@ -281,7 +365,7 @@ describe('FunctionAssignmentNode', function() {
     var n1 = new AssignmentNode(new SymbolNode('a'), a);
     var n = new FunctionAssignmentNode('f', ['x'], n1);
 
-    assert.equal(n.toString(), 'function f(x) = (a = 2)');
+    assert.equal(n.toString(), 'f(x) = (a = 2)');
   });
 
   it ('should stringify a FunctionAssignmentNode with custom toString', function () {

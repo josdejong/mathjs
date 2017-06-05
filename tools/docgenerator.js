@@ -13,6 +13,7 @@ var gutil = require('gulp-util');
 // special cases for function syntax
 var SYNTAX = {
   cbrt: 'math.cbrt(x [, allRoots])',
+  createUnit: 'math.createUnit(units)',
   gcd: 'math.gcd(a, b)',
   log: 'math.log(x [, base])',
   lcm: 'math.lcm(a, b)',
@@ -29,6 +30,7 @@ var SYNTAX = {
   range: 'math.range(start, end [, step])',
   resize: 'math.resize(x, size [, defaultValue])',
   subset: 'math.subset(x, index [, replacement])',
+  splitUnit: 'math.splitUnit(unit, parts)',
   zeros: 'math.zeros(m, n, p, ...)',
   permutations: 'math.permutations(n [, k])',
   random: 'math.random([min, max])',
@@ -181,7 +183,9 @@ function generateDoc(name, code) {
       }
       stripLeadingSpaces(doc.examples);
 
-      if (doc.examples[doc.examples.length - 1].trim() == '') doc.examples.pop();
+      if (doc.examples.length > 0 && doc.examples[doc.examples.length - 1].trim() == '') {
+        doc.examples.pop();
+      }
 
       skipEmptyLines();
 

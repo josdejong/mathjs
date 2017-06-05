@@ -27,6 +27,10 @@ describe('format', function() {
     assert.equal(math.format(math.divide(math.complex(2,5),3), 5), '0.66667 + 1.6667i');
     assert.equal(math.format(math.divide(math.complex(2,5),3), {notation: 'fixed'}), '1 + 2i');
     assert.equal(math.format(math.divide(math.complex(2,5),3), {notation: 'fixed', precision: 1}), '0.7 + 1.7i');
+
+    assert.equal(math.format(math.complex(NaN , NaN)), 'NaN + NaNi');
+    assert.equal(math.format(math.complex(Infinity, Infinity)), 'Infinity + Infinityi');
+    assert.equal(math.format(math.complex(Infinity, -Infinity)), 'Infinity - Infinityi');
   });
 
   describe('precision', function() {

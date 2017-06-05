@@ -1,6 +1,7 @@
 var assert = require('assert'),
     array = require('../../lib/utils/array'),
-    resize = array.resize;
+    resize = array.resize,
+    reshape = array.reshape,
     size = array.size;
 
 describe('util.array', function() {
@@ -224,6 +225,98 @@ describe('util.array', function() {
       assert.throws(function () {resize([], 2)}, /Array expected/);
       assert.throws(function () {resize(2)}, /Array expected/);
     });
+  });
+
+  describe('reshape', function () {
+
+    it('should reshape a 1 dimensional array into a 2 dimensional array', function () {
+      var a = [1, 2, 3, 4, 5, 6, 7, 8];
+
+      assert.deepEqual(
+        reshape(a, [2, 4]),
+        [[1, 2, 3, 4],
+         [5, 6, 7, 8]]
+      );
+      assert.deepEqual(
+        reshape(a, [4, 2]),
+        [[1, 2],
+         [3, 4],
+         [5, 6],
+         [7, 8]]
+      );
+      assert.deepEqual(
+        reshape(a, [1, 8]),
+        [[1, 2, 3, 4, 5, 6, 7, 8]]
+      );
+      assert.deepEqual(
+        reshape(a, [1, 1, 8]),
+        [[[1, 2, 3, 4, 5, 6, 7, 8]]]
+      );
+    });
+
+    it('should reshape a 2 dimensional array into a 1 dimensional array', function () {
+      var a = [
+        [0, 1],
+        [2, 3]
+      ];
+
+      assert.deepEqual(
+        reshape(a, [4]),
+        [0, 1, 2, 3]
+      );
+    });
+
+    it('should reshape a 3 dimensional array', function () {
+      var a = [[[1, 2],
+                [3, 4]],
+
+               [[5, 6],
+                [7, 8]]];
+
+      assert.deepEqual(
+        reshape(a, [8]),
+        [1, 2, 3, 4, 5, 6, 7, 8]
+      );
+
+      assert.deepEqual(
+        reshape(a, [2, 4]),
+        [[1, 2, 3, 4],
+         [5, 6, 7, 8]]
+      );
+
+    });
+
+    it('should throw an error when reshaping to a dimension with length 0', function () {
+      assert.throws(function () {reshape([1, 2], [0, 2]);}, /DimensionError/);
+      assert.throws(function () {reshape([1, 2], [2, 0]);}, /DimensionError/);
+    });
+
+    it('should throw an error when reshaping a non-empty array to an empty array', function () {
+      assert.throws(function () {reshape([1], []);}, /DimensionError/);
+      assert.throws(function () {reshape([1, 2], []);}, /DimensionError/);
+    });
+
+    it('should throw an error when reshaping to a size that differs from the original', function () {
+      var a = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      assert.deepEqual(
+        reshape(a, [3, 3]),
+        [[1, 2, 3],
+         [4, 5, 6],
+         [7, 8, 9]]
+      );
+      assert.throws(function () {reshape(a, [3, 2]);}, /DimensionError/);
+      assert.throws(function () {reshape(a, [2, 3]);}, /DimensionError/);
+      assert.throws(function () {reshape(a, [3, 3, 3]);}, /DimensionError/);
+      assert.throws(function () {reshape(a, [3, 4]);}, /DimensionError/);
+      assert.throws(function () {reshape(a, [4, 3]);}, /DimensionError/);
+    });
+
+    it('should throw an error in case of wrong type of arguments', function () {
+      assert.throws(function () {reshape([], 2);}, /Array expected/);
+      assert.throws(function () {reshape(2);}, /Array expected/);
+    });
+
   });
 
   describe('squeeze', function () {

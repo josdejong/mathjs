@@ -2,7 +2,6 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
 var math = require('../../../index');
-var BigNumber = require('decimal.js');
 var add = math.add;
 
 // TODO: make unit tests independent of math
@@ -14,7 +13,7 @@ describe('add', function() {
       assert.deepEqual(add('2', ['3', '4']), [5, 6]);
       assert.deepEqual(add(['2', '3'], '4'), [6, 7]);
     });
-    
+
     it('should add arrays correctly', function() {
       var a2 = [[1,2],[3,4]];
       var a3 = [[5,6],[7,8]];
@@ -225,6 +224,15 @@ describe('add', function() {
           size: [3, 3]
         }));
     });
+  });
+
+  describe ('multiple arguments', function () {
+
+    it ('should add more than two arguments', function () {
+      assert.deepEqual(add(2, 3, 4), 9);
+      assert.deepEqual(add(2, 3, [5,6]), [10,11]);
+    });
+
   });
 
 });

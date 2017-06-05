@@ -5,7 +5,6 @@
 Function | Description
 ---- | -----------
 [math.config(config:&nbsp;Object):&nbsp;Object](functions/config.md) | Set configuration options for math.
-[math.import(object,&nbsp;override)](functions/import.md) | Import functions from an object or a module.
 [math.typed(name,&nbsp;signatures)&nbsp;:&nbsp;function](functions/typed.md) | Create a typed-function which checks the types of the arguments and can match them against multiple provided signatures.
 
 ## Construction functions
@@ -16,11 +15,13 @@ Function | Description
 [math.boolean(x)](functions/boolean.md) | Create a boolean or convert a string or number to a boolean.
 [math.chain(value)](functions/chain.md) | Wrap any value in a chain, allowing to perform chained operations on the value.
 [math.complex(re,&nbsp;im)](functions/complex.md) | Create a complex value or convert a value to a complex value.
+[math.createUnit(units)](functions/createUnit.md) | Create a user-defined unit and register it with the Unit type.
 [math.fraction(numerator,&nbsp;denominator)](functions/fraction.md) | Create a fraction convert a value to a fraction.
 [math.index(range1,&nbsp;range2,&nbsp;...)](functions/index.md) | Create an index.
 [math.matrix(x)](functions/matrix.md) | Create a Matrix.
 [math.number(value)](functions/number.md) | Create a number or convert a string, boolean, or unit to a number.
 [math.sparse(x)](functions/sparse.md) | Create a Sparse Matrix.
+[math.splitUnit(unit,&nbsp;parts)](functions/splitUnit.md) | Split a unit in an array of units whose sum is equal to the original unit.
 [math.string(value)](functions/string.md) | Create a string or convert any object into a string.
 [math.unit(x)](functions/unit.md) | Create a unit.
 
@@ -38,9 +39,12 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[derivative(expr,&nbsp;variable)](functions/derivative.md) | Takes the derivative of an expression expressed in parser Nodes.
 [math.lsolve(L,&nbsp;b)](functions/lsolve.md) | Solves the linear equation system by forwards substitution.
 [math.lup(A)](functions/lup.md) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.md) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
+[math.qr(A)](functions/qr.md) | Calculate the Matrix QR decomposition.
+[simplify(expr)](functions/simplify.md) | Simplify an expression tree.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.md) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.usolve(U,&nbsp;b)](functions/usolve.md) | Solves the linear equation system by backward substitution.
 
@@ -49,7 +53,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.abs(x)](functions/abs.md) | Calculate the absolute value of a number.
-[math.add(x,&nbsp;y)](functions/add.md) | Add two values, `x + y`.
+[math.add(x,&nbsp;y)](functions/add.md) | Add two or more values, `x + y`.
 [math.cbrt(x&nbsp;[,&nbsp;allRoots])](functions/cbrt.md) | Calculate the cubic root of a value.
 [math.ceil(x)](functions/ceil.md) | Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 [math.cube(x)](functions/cube.md) | Compute the cube of a value, `x * x * x`.
@@ -66,7 +70,7 @@ Function | Description
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.md) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.md) | Calculate the 10-base logarithm of a value.
 [math.mod(x,&nbsp;y)](functions/mod.md) | Calculates the modulus, the remainder of an integer division.
-[math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two values, `x * y`.
+[math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or more values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
 [math.pow(x,&nbsp;y)](functions/pow.md) | Calculates the power of x to y, `x ^ y`.
@@ -139,10 +143,12 @@ Function | Description
 [math.flatten(x)](functions/flatten.md) | Flatten a multi dimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.md) | Iterate over all elements of a matrix/array, and executes the given callback function.
 [math.inv(x)](functions/inv.md) | Calculate the inverse of a square matrix.
+[math.kron(x,&nbsp;y)](functions/kron.md) | Calculates the kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.md) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
 [math.ones(m,&nbsp;n,&nbsp;p,&nbsp;...)](functions/ones.md) | Create a matrix filled with ones.
 [math.partitionSelect(x,&nbsp;k)](functions/partitionSelect.md) | Partition-based selection of an array or 1D matrix.
 [math.range(start,&nbsp;end&nbsp;[,&nbsp;step])](functions/range.md) | Create an array from a range.
+[math.reshape(x,&nbsp;sizes)](functions/reshape.md) | Reshape a multi dimensional array to fit the specified dimensions.
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.md) | Resize a matrix.
 [math.size(x)](functions/size.md) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.md) | Sort the items in a matrix.
@@ -162,7 +168,7 @@ Function | Description
 [math.kldivergence(x,&nbsp;y)](functions/kldivergence.md) | Calculate the Kullback-Leibler (KL) divergence  between two distributions.
 [math.multinomial(a)](functions/multinomial.md) | Multinomial Coefficients compute the number of ways of picking a1, a2, .
 [math.permutations(n&nbsp;[,&nbsp;k])](functions/permutations.md) | Compute the number of ways of obtaining an ordered subset of `k` elements from a set of `n` elements.
-[math.pickRandom(array)](functions/pickRandom.md) | Random pick a value from a one dimensional array.
+[math.pickRandom(array)](functions/pickRandom.md) | Random pick one or more values from a one dimensional array.
 [math.random([min,&nbsp;max])](functions/random.md) | Return a random number larger or equal to `min` and smaller than `max` using a uniform distribution.
 [math.randomInt([min,&nbsp;max])](functions/randomInt.md) | Return a random integer number larger or equal to `min` and smaller than `max` using a uniform distribution.
 
@@ -179,10 +185,17 @@ Function | Description
 [math.smallerEq(x,&nbsp;y)](functions/smallerEq.md) | Test whether value x is smaller or equal to y.
 [math.unequal(x,&nbsp;y)](functions/unequal.md) | Test whether two values are unequal.
 
+## Special functions
+
+Function | Description
+---- | -----------
+[math.erf(x)](functions/erf.md) | Compute the erf function of a value using a rational Chebyshev approximations for different intervals of x.
+
 ## Statistics functions
 
 Function | Description
 ---- | -----------
+[math.mad(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mad.md) | Compute the median absolute deviation of a matrix or a list with values.
 [math.max(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/max.md) | Compute the maximum value of a matrix or a  list with values.
 [math.mean(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mean.md) | Compute the mean value of matrix or a list with values.
 [math.median(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/median.md) | Compute the median of a matrix or a list with values.
@@ -247,6 +260,7 @@ Function | Description
 [math.isNegative(x)](functions/isNegative.md) | Test whether a value is negative: smaller than zero.
 [math.isNumeric(x)](functions/isNumeric.md) | Test whether a value is an numeric value.
 [math.isPositive(x)](functions/isPositive.md) | Test whether a value is positive: larger than zero.
+[math.isPrime(x)](functions/isPrime.md) | Test whether a value is prime: has no divisors other than itself and one.
 [math.isZero(x)](functions/isZero.md) | Test whether a value is zero.
 [math.typeof(x)](functions/typeof.md) | Determine the type of a variable.
 

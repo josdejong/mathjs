@@ -11,7 +11,7 @@ describe('unit', function() {
   });
 
   it('should parse a valid string to a unit', function() {
-    assert.deepEqual(unit('5 cm').toString(), '50 mm');
+    assert.deepEqual(unit('5 cm').toString(), '5 cm');
     assert.deepEqual(unit('5000 cm').toString(), '50 m');
     assert.deepEqual(unit('10 kg').toString(), '10 kg');
   });
@@ -19,7 +19,7 @@ describe('unit', function() {
   it('should clone a unit', function() {
     var a = math.unit('5cm');
     var b = math.unit(a);
-    assert.deepEqual(b.toString(), '50 mm');
+    assert.deepEqual(b.toString(), '5 cm');
   });
 
   it('should create units from all elements in an array', function() {
@@ -43,20 +43,20 @@ describe('unit', function() {
   });
 
   it('should take a number as the quantity and a string as the unit', function() {
-    assert.deepEqual(unit(5, 'cm').toString(), '50 mm');
+    assert.deepEqual(unit(5, 'cm').toString(), '5 cm');
     assert.deepEqual(unit(10, 'kg').toString(), '10 kg');
   });
 
   it('should take a bignumber as the quantity and a string as the unit', function() {
-    assert.deepEqual(unit(math.bignumber(5).plus(1e-24), 'cm').toString(), '50.00000000000000000000001 mm');
+    assert.deepEqual(unit(math.bignumber(5).plus(1e-24), 'cm').toString(), '5.000000000000000000000001 cm');
   });
 
   it('should take a fraction as the quantity and a string as the unit', function() {
-    assert.deepEqual(unit(math.fraction(1,3), 'cm').toString(), '10/3 mm');
+    assert.deepEqual(unit(math.fraction(1,3), 'cm').toString(), '1/3 cm');
   });
 
   it('should convert a string to number with 2 strings', function() {
-    assert.deepEqual(unit('5', 'cm').toString(), '50 mm');
+    assert.deepEqual(unit('5', 'cm').toString(), '5 cm');
   });
 
   it('should throw an error if called with an invalid argument', function() {

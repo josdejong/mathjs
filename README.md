@@ -2,23 +2,25 @@
 
 [http://mathjs.org](http://mathjs.org)
 
-Math.js is an extensive math library for JavaScript and Node.js.
-It features a flexible expression parser and offers an integrated solution
-to work with numbers, big numbers, complex numbers, units, and matrices.
-Powerful and easy to use.
+Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices. Powerful and easy to use.
 
+[![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
+[![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
+[![Build Status](https://img.shields.io/travis/josdejong/mathjs.svg)](https://travis-ci.org/josdejong/mathjs)
+![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)
+[![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 
 ## Features
 
 - Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
 - Is compatible with JavaScript's built-in Math library.
 - Contains a flexible expression parser.
-- Supports chained operations.
+- Does symbolic computation.
 - Comes with a large set of built-in functions and constants.
 - Has no dependencies. Runs on any JavaScript engine.
 - Can be used as a command line application as well.
 - Is easily extensible.
-
+- Open source.
 
 ## Usage
 
@@ -44,6 +46,7 @@ math.atan2(3, -3) / math.pi;      // 0.75
 math.log(1000, 10);               // 3
 math.sqrt(-4);                    // 2i
 math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
+math.derivative('x^2 + x', 'x');  // 2 * x + 1
 
 // expressions
 math.eval('12 / (2.3 + 0.7)');    // 4
@@ -58,6 +61,10 @@ math.chain(3)
     .multiply(2)
     .done(); // 14
 ```
+
+## Browser support
+
+Math.js works on any ES5 compatible JavaScript engine: node.js 0.10, and Internet Explorer 9 and newer, and all other browsers (Chrome, Firefox, Safari). If support for old browsers like Internet Explorer 8 is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
 
 
 ## Documentation
@@ -110,7 +117,7 @@ To see the coverage results, open the generated report in your browser:
 
 ## License
 
-Copyright (C) 2013-2016 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

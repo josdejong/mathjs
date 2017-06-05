@@ -10,6 +10,7 @@ print(math.atan2(3, -3) / math.pi);     // 0.75
 print(math.log(10000, 10));             // 4
 print(math.sqrt(-4));                   // 2i
 print(math.pow([[-1, 2], [3, 1]], 2));  // [[7, 0], [0, 7]]
+print(math.derivative('x^2 + x', 'x')); // 2 * x + 1
 console.log();
 
 // expressions

@@ -22,6 +22,7 @@
  *
  * Example usage:
  *     mathjs                                 Open a command prompt
+ *     mathjs 1+2                             Evaluate expression
  *     mathjs script.txt                      Run a script file
  *     mathjs script1.txt script2.txt         Run two script files
  *     mathjs script.txt > results.txt        Run a script file, output to file
@@ -29,7 +30,7 @@
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
- * Copyright (C) 2013-2016 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
@@ -44,11 +45,20 @@
  * the License.
  */
 
-var math = require('../index');
 var scope = {};
 var fs = require('fs');
 
 var PRECISION = 14; // decimals
+
+/**
+ * "Lazy" load math.js: only require when we actually start using it.
+ * This ensures the cli application looks like it loads instantly.
+ * When requesting help or version number, math.js isn't even loaded.
+ * @return {*}
+ */
+function getMath () {
+  return require('../index');
+}
 
 /**
  * Helper function to format a value. Regular numbers will be rounded
@@ -56,6 +66,8 @@ var PRECISION = 14; // decimals
  * @param {*} value
  */
 function format(value) {
+  var math = getMath();
+
   return math.format(value, {
     fn: function (value) {
       if (typeof value === 'number') {
@@ -75,6 +87,7 @@ function format(value) {
  * @return {[Array, String]} completions
  */
 function completer (text) {
+  var math = getMath();
   var name;
   var matches = [];
   var m = /[a-zA-Z_0-9]+$/.exec(text);
@@ -170,6 +183,9 @@ function runStream (input, output, mode, parenthesis) {
     rl.setPrompt('> ');
     rl.prompt();
   }
+
+  // load math.js now, right *after* loading the prompt.
+  var math = getMath();
 
   // TODO: automatic insertion of 'ans' before operators like +, -, *, /
 
@@ -321,7 +337,7 @@ function outputHelp() {
   console.log('functions, and a flexible expression parser.');
   console.log();
   console.log('Usage:');
-  console.log('    mathjs [scriptfile(s)] {OPTIONS}');
+  console.log('    mathjs [scriptfile(s)|expression] {OPTIONS}');
   console.log();
   console.log('Options:');
   console.log('    --version, -v       Show application version');
@@ -333,6 +349,7 @@ function outputHelp() {
   console.log();
   console.log('Example usage:');
   console.log('    mathjs                                Open a command prompt');
+  console.log('    mathjs 1+2                            Evaluate expression');
   console.log('    mathjs script.txt                     Run a script file');
   console.log('    mathjs script.txt script2.txt         Run two script files');
   console.log('    mathjs script.txt > results.txt       Run a script file, output to file');
@@ -405,9 +422,15 @@ else if (scripts.length === 0) {
   runStream(process.stdin, process.stdout, mode, parenthesis);
 }
 else {
-  //work through the queue of scripts
-  scripts.forEach(function (arg) {
-    // run a script file
-    runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
-  });
+  fs.stat(scripts[0], function(e, f) {
+    if (e) {
+      console.log(getMath().eval(scripts.join(' ')).toString())
+    } else {
+    //work through the queue of scripts
+      scripts.forEach(function (arg) {
+        // run a script file
+          runStream(fs.createReadStream(arg), process.stdout, mode, parenthesis);
+      });
+    }
+  })
 }

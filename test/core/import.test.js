@@ -227,6 +227,35 @@ describe('import', function() {
     assert.strictEqual(math.expression.transform.foo, foo.transform);
   });
 
+  it('should override a function with transform for one without', function() {
+    function mean () {
+      return 'test'
+    }
+
+    math.import({mean: mean}, {override: true});
+
+    assert(math.hasOwnProperty('mean'));
+    assert.strictEqual(math.mean, mean);
+    assert.strictEqual(math.expression.transform.mean, undefined);
+    assert.strictEqual(math.expression.mathWithTransform.mean, mean);
+  });
+
+  it('should throw an error when a factory function has a transform', function() {
+    assert.throws(function () {
+      math.import({
+        name: 'foo2',
+        factory: function () {
+          var fn = function () {};
+          fn.transform = function () {};
+          return fn;
+        }
+      });
+
+      math.foo2(); // as soon as we use it, it will resolve the factory function
+
+    }, /Transforms cannot be attached to factory functions/);
+  });
+
   it.skip('should import a factory with name', function () {
     // TODO: unit test importing a factory
   });
