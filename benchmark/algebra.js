@@ -18,10 +18,10 @@ console.log('    ' + math.derivative(derivativeExpr, 'x'));
 
 var suite = new Benchmark.Suite();
 suite
-    .add(pad('simplify '), function() {
+    .add(pad('algebra simplify '), function() {
       var res = math.simplify(simplifyExpr);
     })
-    .add(pad('derivative'), function() {
+    .add(pad('algebra derivative'), function() {
       var res = math.derivative(derivativeExpr, 'x');
     })
     .on('cycle', function(event) {
