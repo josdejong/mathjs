@@ -122,7 +122,6 @@ Get the polar coordinates of the complex number, returns
 Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
 
-### complex.significant(complex)
+### complex.compare(a: complex, b: complex)
 
-Returns the significant part of the complex number,
-  as the value of the real/imaginary part relative to the given argument.
+Returns the comparision result of the complex number, similar to [compare](../reference/functions/compare.md).

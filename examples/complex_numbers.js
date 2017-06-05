@@ -45,7 +45,6 @@ var d = math.complex(3, 4);
 console.log(d.abs(), d.arg());      // radius = 5, phi = 0.9272952180016122
 
 // comparision operations
-// the values are evaluated using the 'real' parts of the complex numbers
 console.log('\ncomparision operations');
 console.log('compare - ', math.compare(a, b)); // returns 1 as 5 > 3
 console.log('larger - ', math.larger(a, b)); // returns true as 5 > 3
