@@ -121,3 +121,7 @@ Get the polar coordinates of the complex number, returns
 
 Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
+
+### complex.compare(a: complex, b: complex)
+
+Returns the comparision result of the complex number, similar to [compare](../reference/functions/compare.md).
