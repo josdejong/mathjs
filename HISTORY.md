@@ -1,5 +1,11 @@
 # History
 
+## not yet released, version 3.13.4
+
+- Fixed #865: `splitUnit` can now deal with round-off errors.
+  Thanks @ericman314.
+
+
 ## 2017-05-27, version 3.13.3
 
 - Fixed a bug in function `intersection` of line and plane.
