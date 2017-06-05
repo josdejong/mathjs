@@ -2,6 +2,8 @@
 
 ## not yet released, version 3.14.0
 
+- Implemented comparing complex numbers in functions `compare`,
+  `smaller`, `smallerEq`, `larger`, `largerEq`. Thanks @gulfaraz.
 - Upgraded dependencies to the latest versions:
   - `complex.js@2.0.3`
   - `decimal.js@7.2.1`
