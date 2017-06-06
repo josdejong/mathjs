@@ -593,6 +593,24 @@ describe('util.array', function() {
     });
 
   });
+  
+  describe('identify', function () {
+
+    it('should append a unique identifier to every element of the array', function () {
+      assert.deepEqual(array.identify([]), []);
+      assert.deepEqual(array.identify([1, 1, 2]), [{value: 1, identifier: 0}, {value: 1, identifier: 1}, {value: 2, identifier: 0}]);
+    });
+
+  });
+  
+  describe('generalize', function () {
+
+    it('should remove the unique identifier from every element of the array', function () {
+      assert.deepEqual(array.generalize([]), []);
+      assert.deepEqual(array.generalize([{value: 1, identifier: 0}, {value: 1, identifier: 1}, {value: 2, identifier: 0}]), [1, 1, 2]);
+    });
+
+  });
 
 });
 
