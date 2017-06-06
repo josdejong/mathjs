@@ -328,7 +328,7 @@ var _import = typed('importMatrix', {
       // gz
       input = input.pipe(zlib.createUnzip());
       // tar
-      input = input.pipe(tar.Parse());
+      input = input.pipe(new tar.Parse());
       // process entries
       input.on('entry', function (e) {
         // check we need to process entry

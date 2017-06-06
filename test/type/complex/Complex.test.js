@@ -299,4 +299,10 @@ describe('Complex', function () {
     assert.strictEqual(c2.im, 0);
   });
 
+  it('compare', function () {
+    assert.deepEqual(Complex.compare(new Complex(3, 4), new Complex(2, 4)), 1);
+    assert.deepEqual(Complex.compare(new Complex(2, 4), new Complex(2, 4)), 0);
+    assert.deepEqual(Complex.compare(new Complex(2, 4), new Complex(2, 7)), -1);
+  });
+
 });

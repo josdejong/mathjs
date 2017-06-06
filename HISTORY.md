@@ -1,5 +1,18 @@
 # History
 
+## not yet released, version 3.14.0
+
+- Implemented comparing complex numbers in functions `compare`,
+  `smaller`, `smallerEq`, `larger`, `largerEq`. Thanks @gulfaraz.
+- Upgraded dependencies to the latest versions:
+  - `complex.js@2.0.3`
+  - `decimal.js@7.2.1`
+  - `tiny-emitter@2.0.0`
+  - And all devDependencies.
+- Fixed #865: `splitUnit` can now deal with round-off errors.
+  Thanks @ericman314.
+
+
 ## 2017-05-27, version 3.13.3
 
 - Fixed a bug in function `intersection` of line and plane.
