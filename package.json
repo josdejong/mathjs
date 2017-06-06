@@ -56,7 +56,6 @@
     "Thomas Brierley (https://github.com/ThomasBrierley)",
     "Timothy Lee (https://github.com/tetslee)",
     "Todd Morse (https://github.com/morsecodist)",
-    "Victor (https://github.com/viclai)",
     "Waldir Pimenta (https://github.com/waldyrious)",
     "Zach Zibrat (https://github.com/palimpsests)"
   ],
@@ -129,5 +128,13 @@
   "engines": {
     "node": ">= 0.1"
   },
-  "false": {}
+  "bugs": {
+    "url": "https://github.com/josdejong/mathjs/issues"
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "lib": "lib",
+    "test": "test"
+  }
 }
