@@ -28,6 +28,11 @@ describe ('string', function () {
     assert.equal(string.endsWith('hello', 'LO'), false);
     assert.equal(string.endsWith('hello', 'hellohello'), false);
   });
+  
+  it('should escape special HTML characters', function() {
+	assert.equal(string.escape('&<>"\''), '&amp;&lt;&gt;&quot;&#39;');
+	assert.equal(string.escape('<script src="script.js?version=1.0&type=js">'), '&lt;script src=&quot;script.js?version=1.0&amp;type=js&quot;&gt;');
+  });
 
   describe('format', function () {
 
