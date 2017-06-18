@@ -12,6 +12,7 @@
   - And all devDependencies.
 - Fixed #865: `splitUnit` can now deal with round-off errors.
   Thanks @ericman314.
+- Fixed #876: incorrect definition for unit `erg`. Thanks @pjhampton.
 
 
 ## 2017-05-27, version 3.13.3
