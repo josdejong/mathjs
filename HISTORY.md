@@ -4,8 +4,7 @@
 
 - Implemented set methods `setCartesian`, `setDifference`, `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`, `setSize`. Thanks @Nekomajin42.
 - Implemented method `toHTML` on nodes. Thanks @Nekomajin42.
-- Implemented comparing complex numbers in functions `compare`,
-  `smaller`, `smallerEq`, `larger`, `largerEq`. Thanks @gulfaraz.
+- Implemented `compareNatural` and `sort([...], 'natural')`.
 - Upgraded dependencies to the latest versions:
   - `complex.js@2.0.4`
   - `decimal.js@7.2.1`

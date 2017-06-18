@@ -11,6 +11,10 @@ describe('setDifference', function () {
     assert.deepEqual(math.setDifference([], []), []);
   });
 
+  it('should return the difference of two sets with mixed content', function () {
+    assert.deepEqual(math.setDifference([math.complex(5,1), 4], [1, 2, math.complex(5,1)]), [4]);
+  });
+
   it('should return the difference of two multisets', function () {
     assert.deepEqual(math.setDifference([1, 1, 2, 3, 4, 4], [1, 2, 3, 4, 4, 4]), [1]);
     assert.deepEqual(math.setDifference([1, 2, 1, 3, 4, 4], [1, 2, 4, 3, 4, 4]), [1]);

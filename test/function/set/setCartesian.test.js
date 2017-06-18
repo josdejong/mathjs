@@ -11,6 +11,10 @@ describe('setCartesian', function () {
     assert.deepEqual(math.setCartesian([], []), []);
   });
 
+  it('should return the cartesian product of two sets with mixed content', function () {
+    assert.deepEqual(math.setCartesian([1, math.complex(2, 3)], [3]), [[1, 3], [math.complex(2, 3), 3]]);
+  });
+
   it('should return the cartesian product of two multisets', function () {
     assert.deepEqual(math.setCartesian([1, 1], [3, 3]), [[1,3], [1, 3], [1, 3], [1, 3]]);
   });

@@ -7,6 +7,8 @@ describe('setIntersect', function () {
     assert.deepEqual(math.setIntersect([1, 2, 3], [3, 4]), [3]);
     assert.deepEqual(math.setIntersect([1, 2], [3, 4]), []);
     assert.deepEqual(math.setIntersect(["a", "b", "c"], ["c", "d"]), ["c"]);
+    assert.deepEqual(math.setIntersect([1, math.complex(2,2), math.complex(3,3)],
+        [math.complex(3,3), 1]), [1, math.complex(3,3)]);
     assert.deepEqual(math.setIntersect([], [3, 4]), []);
     assert.deepEqual(math.setIntersect([], []), []);
   });

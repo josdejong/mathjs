@@ -123,6 +123,8 @@ describe('compareNatural', function() {
     assert.equal(compareNatural('10', '2'), 1);
   });
 
+  // TODO: test deterministic ordering of mixed types: number, bignumber, unit, complex, ...
+
   // TODO: compareNatural for Array
   describe.skip('Array', function () {
     

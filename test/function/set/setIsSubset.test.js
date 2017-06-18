@@ -8,6 +8,8 @@ describe('setIsSubset', function () {
     assert.strictEqual(math.setIsSubset([1, 2, 3, 4], [1, 2]), false);
     assert.strictEqual(math.setIsSubset([], [1, 2]), true);
     assert.strictEqual(math.setIsSubset([], []), true);
+
+    assert.strictEqual(math.setIsSubset([1, math.complex(2,2)], [1, 3, 4, math.complex(2,2)]), true);
   });
 
   it('should return true or false', function () {

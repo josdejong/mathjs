@@ -77,31 +77,14 @@ describe('min', function() {
       [[1, 2], [3,4], [5,6]]);
   });
 
-  describe('Complex Numbers', function () {
+  it('should throw an error when called with complex numbers', function() {
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,1))}, TypeError);
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,5))}, TypeError);
 
-    it('should return the complex number with smaller value', function() {
-      assert.deepEqual(min(new Complex(1,1), new Complex(1,2)), new Complex(1,1));
-      assert.deepEqual(min(new Complex(2,1), new Complex(1,2)), new Complex(1,2));
-      assert.deepEqual(min(new Complex(0,1), new Complex(1,2)), new Complex(0,1));
-    });
-
-    it('should return the smaller between complex number and number', function() {
-      assert.deepEqual(min(new Complex(1,0), 1), new Complex(1,0));
-      assert.equal(min(new Complex(2,1), 1), 1);
-      assert.deepEqual(min(new Complex(0,1), 1), new Complex(0,1));
-      assert.equal(min(1, new Complex(1,0)), 1);
-      assert.equal(min(1, new Complex(2,1)), 1);
-      assert.deepEqual(min(1, new Complex(0,1)), new Complex(0,1));
-    });
-
-    it('should return the smaller between complex number and bignumber', function() {
-      assert.deepEqual(min(new Complex(1,0), math.bignumber(1)), new Complex(1,0));
-      assert.equal(min(new Complex(2,1), math.bignumber(1)), 1);
-      assert.deepEqual(min(new Complex(0,1), math.bignumber(1)), new Complex(0,1));
-      assert.equal(min(math.bignumber(1), new Complex(1,0)), 1);
-      assert.equal(min(math.bignumber(1), new Complex(2,1)), 1);
-      assert.deepEqual(min(math.bignumber(1), new Complex(0,1)), new Complex(0,1));
-    });
+    assert.throws(function () {min(new Complex(3,4), 4)}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 5)}, TypeError);
+    assert.throws(function () {min(5, new Complex(3,4))}, TypeError);
+    assert.throws(function () {min(new Complex(3,4), 6)}, TypeError);
   });
 
   it('should throw an error when called multiple arrays or matrices', function() {
