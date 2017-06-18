@@ -36,7 +36,8 @@ math.sqrt(-4); // 2i
 
 ### Browser
 
-Math.js can be loaded as a regular JavaScript file in the browser:
+Math.js can be loaded as a regular JavaScript file in the browser, use the global
+variable `math` to access the libary once loaded:
 
 ```html
 <!DOCTYPE HTML>
@@ -46,7 +47,7 @@ Math.js can be loaded as a regular JavaScript file in the browser:
 </head>
 <body>
   <script type="text/javascript">
-    // use math.js
+    // use the math.js libary
     math.sqrt(-4); // 2i
   </script>
 </body>
