@@ -2,6 +2,7 @@
 
 ## not yet released, version 3.14.0
 
+- Implemented set methods `setCartesian`, `setDifference`, `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`, `setSize`. Thanks @Nekomajin42.
 - Implemented method `toHTML` on nodes. Thanks @Nekomajin42.
 - Implemented comparing complex numbers in functions `compare`,
   `smaller`, `smallerEq`, `larger`, `largerEq`. Thanks @gulfaraz.
