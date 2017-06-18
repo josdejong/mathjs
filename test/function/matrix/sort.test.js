@@ -24,6 +24,11 @@ describe('sort', function() {
     assert.deepEqual(math.sort([5,10,1], 'desc'), [10,5,1]);
   });
 
+  it('should sort an array in natural order', function() {
+    assert.deepEqual(math.sort(['1', '2', '10'], 'asc'), ['1', '10', '2']);
+    assert.deepEqual(math.sort(['1', '2', '10'], 'natural'), ['1', '2', '10']);
+  });
+
   it('should sort an array with a custom compare function', function() {
     function sortByLength (a, b) {
       return a.length - b.length;
@@ -39,7 +44,7 @@ describe('sort', function() {
   it('should throw an error if called with unsupported type', function() {
     assert.throws(function() { math.sort(2) });
     assert.throws(function() { math.sort('string') });
-    assert.throws(function() { math.sort([], 'string') }, /String "asc" or "desc" expected/);
+    assert.throws(function() { math.sort([], 'string') }, /String "asc", "desc", or "natural" expected/);
     assert.throws(function() { math.sort([], {}) });
   });
 
