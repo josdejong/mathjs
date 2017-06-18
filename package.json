@@ -83,16 +83,16 @@
     "unit"
   ],
   "dependencies": {
-    "complex.js": "2.0.3",
+    "complex.js": "2.0.4",
     "decimal.js": "7.2.1",
-    "fraction.js": "4.0.0",
+    "fraction.js": "4.0.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.0",
     "typed-function": "0.10.5"
   },
   "devDependencies": {
     "benchmark": "2.1.4",
-    "expr-eval": "1.0.0",
+    "expr-eval": "1.0.1",
     "glob": "7.1.2",
     "gulp": "3.9.1",
     "gulp-util": "3.0.8",
@@ -110,8 +110,8 @@
     "pad-right": "0.2.2",
     "q": "1.5.0",
     "sylvester": "0.0.21",
-    "tar": "2.2.1",
-    "uglify-js": "3.0.15",
+    "tar": "3.1.5",
+    "uglify-js": "3.0.18",
     "underscore": "1.8.3",
     "webpack": "2.6.1",
     "zeros": "1.0.0"

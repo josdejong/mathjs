@@ -7,8 +7,9 @@
 - Implemented comparing complex numbers in functions `compare`,
   `smaller`, `smallerEq`, `larger`, `largerEq`. Thanks @gulfaraz.
 - Upgraded dependencies to the latest versions:
-  - `complex.js@2.0.3`
+  - `complex.js@2.0.4`
   - `decimal.js@7.2.1`
+  - `fraction.js@4.0.1`
   - `tiny-emitter@2.0.0`
   - And all devDependencies.
 - Fixed #865: `splitUnit` can now deal with round-off errors.
