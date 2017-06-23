@@ -177,6 +177,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.compare(x,&nbsp;y)](functions/compare.md) | Compare two values.
+[math.compareNatural(x,&nbsp;y)](functions/compareNatural.md) | Compare two values in a natural way.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.md) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.md) | Test whether two values are equal.
 [math.larger(x,&nbsp;y)](functions/larger.md) | Test whether value x is larger than y.
@@ -184,6 +185,21 @@ Function | Description
 [math.smaller(x,&nbsp;y)](functions/smaller.md) | Test whether value x is smaller than y.
 [math.smallerEq(x,&nbsp;y)](functions/smallerEq.md) | Test whether value x is smaller or equal to y.
 [math.unequal(x,&nbsp;y)](functions/unequal.md) | Test whether two values are unequal.
+
+## Set functions
+
+Function | Description
+---- | -----------
+[math.setCartesian(set1,&nbsp;set2)](functions/setCartesian.md) | Create the cartesian product of two (multi)sets.
+[math.setDifference(set1,&nbsp;set2)](functions/setDifference.md) | Create the difference of two (multi)sets.
+[math.setDistinct(set)](functions/setDistinct.md) | Collect the distinct elements of a multiset.
+[math.setIntersect(set1,&nbsp;set2)](functions/setIntersect.md) | Create the intersection of two (multi)sets.
+[math.setIsSubset(set1,&nbsp;set2)](functions/setIsSubset.md) | Decide whether a (multi)set is a subset of another (multi)set.
+[math.setMultiplicity(set)](functions/setMultiplicity.md) | Count the multiplicity of an element in a multiset.
+[math.setPowerset(set)](functions/setPowerset.md) | Create the powerset of a (multi)set.
+[math.setSize(set)](functions/setSize.md) | Count the number of elements of a (multi)set.
+[math.setSymDifference(set1,&nbsp;set2)](functions/setSymDifference.md) | Create the symmetric difference of two (multi)sets.
+[math.setUnion(set1,&nbsp;set2)](functions/setUnion.md) | Create the union of two (multi)sets.
 
 ## Special functions
 

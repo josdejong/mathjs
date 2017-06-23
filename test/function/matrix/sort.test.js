@@ -10,6 +10,7 @@ describe('sort', function() {
 
   it('should sort an array with strings', function() {
     assert.deepEqual(math.sort(['C', 'B', 'A', 'D']), ['A', 'B', 'C', 'D']);
+    assert.deepEqual(math.sort(['1', '2', '10'], 'asc'), ['1', '10', '2']);
   });
 
   it('should sort a Matrix', function() {
@@ -22,11 +23,6 @@ describe('sort', function() {
 
   it('should sort an array in descending order', function() {
     assert.deepEqual(math.sort([5,10,1], 'desc'), [10,5,1]);
-  });
-
-  it('should sort an array in natural order', function() {
-    assert.deepEqual(math.sort(['1', '2', '10'], 'asc'), ['1', '10', '2']);
-    assert.deepEqual(math.sort(['1', '2', '10'], 'natural'), ['1', '2', '10']);
   });
 
   it('should sort an array with a custom compare function', function() {

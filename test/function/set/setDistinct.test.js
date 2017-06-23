@@ -11,7 +11,7 @@ describe('setDistinct', function () {
   it('should return the distinct elements of a multiset', function () {
     assert.deepEqual(math.setDistinct([1, 1, 2, 2]), [1, 2]);
     assert.deepEqual(math.setDistinct([1, 2, 1, 2]), [1, 2]);
-    assert.deepEqual(math.setDistinct([1, 2, math.complex(3,3), 2, math.complex(3,3)]), [1, 2, math.complex(3,3)]);
+    assert.deepEqual(math.setDistinct([1, 2, math.complex(3,3), 2, math.complex(3,3)]), [math.complex(3,3), 1, 2]);
   });
   
   it('should return the same type of output as the inputs', function() {

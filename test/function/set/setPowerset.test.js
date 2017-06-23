@@ -6,7 +6,7 @@ describe('setPowerset', function () {
   it('should return the powerset of a set', function () {
     assert.deepEqual(math.setPowerset([1, 2]), [[], [1], [2], [1, 2]]);
     assert.deepEqual(math.setPowerset([1, math.complex(2,2)]),
-        [[], [1], [math.complex(2,2)], [1, math.complex(2,2)]]);
+        [[], [math.complex(2,2)], [1], [math.complex(2,2), 1]]);
     assert.deepEqual(math.setPowerset([]), []);
   });
 
