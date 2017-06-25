@@ -86,6 +86,7 @@
     "complex.js": "2.0.4",
     "decimal.js": "7.2.1",
     "fraction.js": "4.0.1",
+    "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.0",
     "typed-function": "0.10.5"
