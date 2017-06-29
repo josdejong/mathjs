@@ -28,6 +28,18 @@ describe ('customs', function () {
 
       // non existing method
       assert.equal(customs.isSafeMethod(object, 'foo'), false);
+
+      // custom inherited method
+      var object = {};
+      object.foo = function () {};
+      object = Object.create(object);
+      assert.equal(customs.isSafeMethod(object, 'foo'), true);
+
+      // ghosted native method
+      var object = {};
+      object.toString = function () {};
+      assert.equal(customs.isSafeMethod(object, 'toString'), false);
+
     });
 
     it ('function objects', function () {
@@ -50,9 +62,15 @@ describe ('customs', function () {
       assert.equal(customs.isSafeMethod(unit, 'toNumeric'), true);
       assert.equal(customs.isSafeMethod(unit, 'toString'), true);
 
-      // extend the class instance with an overridden method
-      matrix.myFunction = function () {};
-      assert.equal(customs.isSafeMethod(matrix, 'myFunction'), false);
+      // extend the class instance with a custom method
+      var object = math.matrix();
+      object.foo = function () {};
+      assert.equal(customs.isSafeMethod(object, 'foo'), true);
+
+      // extend the class instance with a ghosted method
+      var object = math.matrix();
+      object.toJSON = function () {};
+      assert.equal(customs.isSafeMethod(object, 'toJSON'), false);
 
       // unsafe native methods
       assert.equal(customs.isSafeMethod(matrix, 'constructor'), false);
