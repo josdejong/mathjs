@@ -1,8 +1,9 @@
 # History
 
-## 2017-06-30, version 3.14.0
+## 2017-06-30, version 3.14.1
 
-- Reverted to `fraction.js@4.0.0`, there is an issue with `4.0.1`.
+- Reverted to `fraction.js@4.0.0`, there is an issue with `4.0.1`
+  in the browser.
 
 
 ## 2017-06-30, version 3.14.0
