@@ -96,6 +96,8 @@ describe('compareNatural', function() {
     // fractions and units
     assert.strictEqual (compareNatural(1, math.fraction(1,3)), 1);
     assert.strictEqual (compareNatural(math.fraction(1,3), 1), -1);
+    assert.strictEqual (compareNatural(1, math.fraction(1)), 1);
+    assert.strictEqual (compareNatural(math.fraction(1), 1), -1);
 
     // units and numbers
     assert.strictEqual (compareNatural(unit('100cm'), 22), -1);
@@ -111,6 +113,8 @@ describe('compareNatural', function() {
 
     // numbers and bignumbers
     assert.strictEqual (compareNatural(bignumber(2), 3), -1);
+    assert.strictEqual (compareNatural(3, bignumber(2)), 1);
+    assert.strictEqual (compareNatural(bignumber(2), 2), -1);
     assert.strictEqual (compareNatural(2, bignumber(2)), 1);
 
     // array, DenseMatrix, SparseMatrix
