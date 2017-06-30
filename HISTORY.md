@@ -1,8 +1,10 @@
 # History
 
-## not yet released, version 3.14.0
+## 2017-06-30, version 3.14.0
 
-- Implemented set methods `setCartesian`, `setDifference`, `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`, `setSize`. Thanks @Nekomajin42.
+- Implemented set methods `setCartesian`, `setDifference`,
+  `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`,
+  `setSize`. Thanks @Nekomajin42.
 - Implemented method `toHTML` on nodes. Thanks @Nekomajin42.
 - Implemented `compareNatural` and `sort([...], 'natural')`.
 - Upgraded dependencies to the latest versions:
