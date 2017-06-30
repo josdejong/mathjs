@@ -2,6 +2,11 @@
 
 ## 2017-06-30, version 3.14.0
 
+- Reverted to `fraction.js@4.0.0`, there is an issue with `4.0.1`.
+
+
+## 2017-06-30, version 3.14.0
+
 - Implemented set methods `setCartesian`, `setDifference`,
   `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`,
   `setSize`. Thanks @Nekomajin42.

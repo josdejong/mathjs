@@ -85,7 +85,7 @@
   "dependencies": {
     "complex.js": "2.0.4",
     "decimal.js": "7.2.3",
-    "fraction.js": "4.0.1",
+    "fraction.js": "4.0.0",
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.0",
@@ -114,7 +114,7 @@
     "tar": "2.2.1",
     "uglify-js": "2.7.5",
     "underscore": "1.8.3",
-    "webpack": "2.2.1",
+    "webpack": "2.6.1",
     "zeros": "1.0.0"
   },
   "main": "./index",
