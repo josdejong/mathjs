@@ -1,5 +1,10 @@
 # History
 
+## not yet released, version 3.14.2
+
+- Upgraded to `fraction.js@4.0.2`
+
+
 ## 2017-06-30, version 3.14.1
 
 - Reverted to `fraction.js@4.0.0`, there is an issue with `4.0.1`
