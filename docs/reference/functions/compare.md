@@ -57,4 +57,5 @@ math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
 [smaller](smaller.html),
 [smallerEq](smallerEq.html),
 [larger](larger.html),
-[largerEq](largerEq.html)
+[largerEq](largerEq.html),
+[compareNatural](compareNatural.html)

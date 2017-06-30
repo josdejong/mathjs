@@ -181,6 +181,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.compare(x,&nbsp;y)](functions/compare.html) | Compare two values.
+[math.compareNatural(x,&nbsp;y)](functions/compareNatural.html) | Compare two values of any type in a deterministic, natural way.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.html) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.html) | Test whether two values are equal.
 [math.larger(x,&nbsp;y)](functions/larger.html) | Test whether value x is larger than y.
@@ -188,6 +189,21 @@ Function | Description
 [math.smaller(x,&nbsp;y)](functions/smaller.html) | Test whether value x is smaller than y.
 [math.smallerEq(x,&nbsp;y)](functions/smallerEq.html) | Test whether value x is smaller or equal to y.
 [math.unequal(x,&nbsp;y)](functions/unequal.html) | Test whether two values are unequal.
+
+<h2 id="set-functions">Set functions <a href="#set-functions" title="Permalink">#</a></h2>
+
+Function | Description
+---- | -----------
+[math.setCartesian(set1,&nbsp;set2)](functions/setCartesian.html) | Create the cartesian product of two (multi)sets.
+[math.setDifference(set1,&nbsp;set2)](functions/setDifference.html) | Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
+[math.setDistinct(set)](functions/setDistinct.html) | Collect the distinct elements of a multiset.
+[math.setIntersect(set1,&nbsp;set2)](functions/setIntersect.html) | Create the intersection of two (multi)sets.
+[math.setIsSubset(set1,&nbsp;set2)](functions/setIsSubset.html) | Check whether a (multi)set is a subset of another (multi)set.
+[math.setMultiplicity(element,&nbsp;set)](functions/setMultiplicity.html) | Count the multiplicity of an element in a multiset.
+[math.setPowerset(set)](functions/setPowerset.html) | Create the powerset of a (multi)set.
+[math.setSize(set)](functions/setSize.html) | Count the number of elements of a (multi)set.
+[math.setSymDifference(set1,&nbsp;set2)](functions/setSymDifference.html) | Create the symmetric difference of two (multi)sets.
+[math.setUnion(set1,&nbsp;set2)](functions/setUnion.html) | Create the union of two (multi)sets.
 
 <h2 id="special-functions">Special functions <a href="#special-functions" title="Permalink">#</a></h2>
 

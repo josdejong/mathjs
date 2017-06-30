@@ -191,10 +191,10 @@ length, mass, etc.
 Test whether a unit equals an other unit. Units are equal
 when they have the same base and same value when normalized to SI units.
 
-<h3 id="unitformatprecision">unit.format([precision]) <a href="#unitformatprecision" title="Permalink">#</a></h3>
+<h3 id="unitformatoptions">unit.format([options]) <a href="#unitformatoptions" title="Permalink">#</a></h3>
 Get a string representation of the unit. The function
-will determine the best fitting prefix for the unit. If precision is defined,
-the units value will be rounded to the provided number of digits.
+will determine the best fitting prefix for the unit. See the [Format](../functions/format.html)
+page for available options.
 
 <h3 id="unitfromjsonjson">unit.fromJSON(json) <a href="#unitfromjsonjson" title="Permalink">#</a></h3>
 Revive a unit from a JSON object. Accepts
