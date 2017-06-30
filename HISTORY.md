@@ -7,13 +7,15 @@
 - Implemented `compareNatural` and `sort([...], 'natural')`.
 - Upgraded dependencies to the latest versions:
   - `complex.js@2.0.4`
-  - `decimal.js@7.2.1`
+  - `decimal.js@7.2.3`
   - `fraction.js@4.0.1`
   - `tiny-emitter@2.0.0`
   - And all devDependencies.
 - Fixed #865: `splitUnit` can now deal with round-off errors.
   Thanks @ericman314.
 - Fixed #876: incorrect definition for unit `erg`. Thanks @pjhampton.
+- More informative error message when using single quotes instead of
+  double quotes around a string. Thanks @HarrySarson.
 
 
 ## 2017-05-27, version 3.13.3
