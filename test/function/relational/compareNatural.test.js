@@ -73,7 +73,7 @@ describe('compareNatural', function() {
   });
 
   it('should compare two measures of different unit', function() {
-    assert.strictEqual(compareNatural(math.unit(5, 'km'), math.unit(100, 'gram')), -1);
+    assert.strictEqual(compareNatural(math.unit(5, 'km'), math.unit(100, 'gram')), 1);
     assert.strictEqual(compareNatural(math.unit(4, 'km/h'), math.unit(2, 'm/s^2')), -1);
     assert.strictEqual(compareNatural(math.unit(2, 'm/s^2'), math.unit(4, 'km/h')), 1);
   });
@@ -118,9 +118,12 @@ describe('compareNatural', function() {
     assert.strictEqual (compareNatural(2, bignumber(2)), 1);
 
     // array, DenseMatrix, SparseMatrix
+    assert.strictEqual (compareNatural([2], matrix([2])), -1);
     assert.strictEqual (compareNatural(matrix([2]), [2]), 1);
-    assert.strictEqual (compareNatural(sparse([2]), [2]), 1);
-    assert.strictEqual (compareNatural(sparse([2]), matrix([2])), 1);
+    assert.strictEqual (compareNatural(sparse([2]), [2]), -1);
+    assert.strictEqual (compareNatural([2], sparse([2])), 1);
+    assert.strictEqual (compareNatural(sparse([2]), matrix([2])), -1);
+    assert.strictEqual (compareNatural(matrix([2]), sparse([2])), 1);
 
     // string and number
     assert.strictEqual (compareNatural('0', 0), 1);
@@ -136,45 +139,65 @@ describe('compareNatural', function() {
   });
 
   it('should compare arrays', function () {
-    // different number of dimensions
-    // Note: for arrays we don't compare the number of dimensions!
-    assert.strictEqual(compareNatural([[2]], [1]), -1);
+    // mixed number/array
+    assert.strictEqual(compareNatural(5, [1,2,3]), 1);
+    assert.strictEqual(compareNatural([1,2,3], 5), -1);
 
-    // different size
-    assert.strictEqual(compareNatural([[2,3]], [[4]]), 1);
+    // same size
+    assert.strictEqual(compareNatural([1,2,4], [1,2,3]), 1);
 
-    // different content
+    // unequal size
+    assert.strictEqual(compareNatural([1,2,3,4], [1,2,3]), 1);
+    assert.strictEqual(compareNatural([1,2,3], [1,2,3,4]), -1);
+    assert.strictEqual(compareNatural([1,4], [1,2,3]), 1);
+
+    // unequal dimensions
+    assert.strictEqual(compareNatural([[2]], [1]), 1);
+
+    // multiple dimensions
     assert.strictEqual(compareNatural([[2,3]], [[2,4]]), -1);
-
-    // equal
     assert.strictEqual(compareNatural([[2,3], [5,6]], [[2,3], [5,6]]), 0);
   });
 
   it('should compare dense matrices', function () {
-    // different number of dimensions
+    // mixed number/matrix
+    assert.strictEqual(compareNatural(5, matrix([1,2,3])), 1);
+    assert.strictEqual(compareNatural(matrix([1,2,3]), 5), -1);
+
+    // same size
+    assert.strictEqual(compareNatural(matrix([1,2,4]), matrix([1,2,3])), 1);
+
+    // unequal size
+    assert.strictEqual(compareNatural(matrix([1,2,3,4]), matrix([1,2,3])), 1);
+    assert.strictEqual(compareNatural(matrix([1,2,3]), matrix([1,2,3,4])), -1);
+    assert.strictEqual(compareNatural(matrix([1,4]), matrix([1,2,3])), 1);
+
+    // unequal dimensions
     assert.strictEqual(compareNatural(matrix([[2]]), matrix([1])), 1);
 
-    // different size
-    assert.strictEqual(compareNatural(matrix([[2,3]]), matrix([[4]])), 1);
-
-    // different content
+    // multiple dimensions
     assert.strictEqual(compareNatural(matrix([[2,3]]), matrix([[2,4]])), -1);
-
-    // equal
     assert.strictEqual(compareNatural(matrix([[2,3], [5,6]]), matrix([[2,3], [5,6]])), 0);
   });
 
   it('should compare sparse matrices', function () {
-    // different number of dimensions
+    // mixed number/sparse
+    assert.strictEqual(compareNatural(5, sparse([1,2,3])), 1);
+    assert.strictEqual(compareNatural(sparse([1,2,3]), 5), -1);
+
+    // same size
+    assert.strictEqual(compareNatural(sparse([1,2,4]), sparse([1,2,3])), 1);
+
+    // unequal size
+    assert.strictEqual(compareNatural(sparse([1,2,3,4]), sparse([1,2,3])), 1);
+    assert.strictEqual(compareNatural(sparse([1,2,3]), sparse([1,2,3,4])), -1);
+    assert.strictEqual(compareNatural(sparse([1,4]), sparse([1,2,3])), 1);
+
+    // unequal dimensions
     assert.strictEqual(compareNatural(sparse([[2]]), sparse([1])), 1);
 
-    // different size
-    assert.strictEqual(compareNatural(sparse([[2,3]]), sparse([[4]])), 1);
-
-    // different content
+    // multiple dimensions
     assert.strictEqual(compareNatural(sparse([[2,3]]), sparse([[2,4]])), -1);
-
-    // equal
     assert.strictEqual(compareNatural(sparse([[2,3], [5,6]]), sparse([[2,3], [5,6]])), 0);
   });
 
