@@ -54,7 +54,11 @@ var webpackConfig = {
   externals: [
     'crypto' // is referenced by decimal.js
   ],
-  plugins: [ bannerPlugin ],
+  plugins: [
+    bannerPlugin,
+    new webpack.optimize.ModuleConcatenationPlugin()
+    // TODO: ModuleConcatenationPlugin seems not to work. https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b
+  ],
   cache: true
 };
 
