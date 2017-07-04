@@ -88,6 +88,37 @@ describe ('customs', function () {
 
   });
 
+  describe ('isSafeProperty', function () {
+
+    it ('plain objects', function () {
+      var object = {
+        foo: true
+      };
+      assert.equal(customs.isSafeProperty(object, '__proto__'), false);
+      assert.equal(customs.isSafeProperty(object, 'length'), true);
+      assert.equal(customs.isSafeProperty(object, 'name'), false);
+      assert.equal(customs.isSafeProperty(object, 'arguments'), false);
+      assert.equal(customs.isSafeProperty(object, 'caller'), false);
+
+      // non existing property
+      assert.equal(customs.isSafeProperty(object, 'foo'), true);
+
+      // custom inherited property
+      var object = {};
+      object.foo = true;
+      object = Object.create(object);
+      assert.equal(customs.isSafeProperty(object, 'foo'), true);
+
+      // ghosted native property
+      var array = [];
+      array = Object.create(array);
+      array.length = Infinity;
+      assert.equal(customs.isSafeProperty(array, 'length'), false);
+
+    });
+
+  });
+
   it ('should distinguish plain objects', function () {
     var a = {};
     var b = Object.create(a);
