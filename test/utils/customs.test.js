@@ -91,17 +91,25 @@ describe ('customs', function () {
   describe ('isSafeProperty', function () {
 
     it ('plain objects', function () {
-      var object = {
-        foo: true
-      };
+      var object = {};
+
+      /* From Object.prototype:
+        Object.getOwnPropertyNames(Object.prototype).forEach(
+          key => typeof ({})[key] !== 'function' && console.log(key))
+      */
       assert.equal(customs.isSafeProperty(object, '__proto__'), false);
+
+      /* From Function.prototype:
+        Object.getOwnPropertyNames(Function.prototype).forEach(
+          key => typeof (function () {})[key] !== 'function' && console.log(key))
+      */
       assert.equal(customs.isSafeProperty(object, 'length'), true);
       assert.equal(customs.isSafeProperty(object, 'name'), false);
       assert.equal(customs.isSafeProperty(object, 'arguments'), false);
       assert.equal(customs.isSafeProperty(object, 'caller'), false);
 
       // non existing property
-      assert.equal(customs.isSafeProperty(object, 'foo'), true);
+      assert.equal(customs.isSafeProperty(object, 'bar'), true);
 
       // custom inherited property
       var object = {};
