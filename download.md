@@ -36,18 +36,18 @@ Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
 <table class="download">
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.14.1/math.js">
-        Development (version 3.14.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.14.2/math.js">
+        Development (version 3.14.2)
       </a>
     </td>
     <td>
-      <span id="development-size">1577 kB</span>, uncompressed with comments
+      <span id="development-size">1584 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.14.1/math.min.js">
-        Production (version 3.14.1)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.14.2/math.min.js">
+        Production (version 3.14.2)
       </a>
     </td>
     <td>
@@ -64,6 +64,10 @@ Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
 -   [mathsteps](https://github.com/socraticorg/mathsteps)
 
     A step-by-step math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
+
+-   [mathjs-expression-parser](https://github.com/josdejong/mathjs-expression-parser)
+
+    This custom build of mathjs contains just the expression parser and basic arithmetic functions for numbers. About four times as small as the full mathjs library.
 
 
 <h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>

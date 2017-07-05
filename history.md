@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20170705-version-3142">2017-07-05, version 3.14.2 <a href="#20170705-version-3142" title="Permalink">#</a></h2>
+
+- Upgraded to `fraction.js@4.0.2`
+- Fixed #891 using BigNumbers not working in browser environments.
+
+
 <h2 id="20170630-version-3141">2017-06-30, version 3.14.1 <a href="#20170630-version-3141" title="Permalink">#</a></h2>
 
 - Reverted to `fraction.js@4.0.0`, there is an issue with `4.0.1`
