@@ -1,8 +1,9 @@
 # History
 
-## not yet released, version 3.14.2
+## 2017-07-05, version 3.14.2
 
 - Upgraded to `fraction.js@4.0.2`
+- Fixed #891 using BigNumbers not working in browser environments.
 
 
 ## 2017-06-30, version 3.14.1
