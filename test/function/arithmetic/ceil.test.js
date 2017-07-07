@@ -54,7 +54,7 @@ describe('ceil', function() {
     approx.deepEqual(ceil(complex(-1.3, -1.8)), complex(-1, -1));
   });
 
-  it('should return the ceil of a number', function() {
+  it('should return the ceil of a fraction', function() {
     var a = fraction('2/3');
     assert(ceil(a) instanceof math.type.Fraction);
     assert.equal(a.toString(), '0.(6)');
@@ -69,6 +69,17 @@ describe('ceil', function() {
     assert.equal(ceil(fraction(-1.8)).toString(), '-1');
     assert.equal(ceil(fraction(-2)).toString(), '-2');
     assert.equal(ceil(fraction(-2.1)).toString(), '-2');
+  });
+  
+  it('should gracefully handle round-off errors', function() {
+    assert.equal(ceil(3.0000000000000004), 3);
+    assert.equal(ceil(7.999999999999999), 8); 
+    assert.equal(ceil(-3.0000000000000004), -3);
+    assert.equal(ceil(-7.999999999999999), -8);
+    assert.equal(ceil(30000.000000000004), 30000);
+    assert.equal(ceil(799999.9999999999), 800000); 
+    assert.equal(ceil(-30000.000000000004), -30000);
+    assert.equal(ceil(-799999.9999999999), -800000);
   });
 
   it('should throw an error for units', function() {
