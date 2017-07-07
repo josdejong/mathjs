@@ -28,6 +28,18 @@ describe ('customs', function () {
 
       // non existing method
       assert.equal(customs.isSafeMethod(object, 'foo'), false);
+
+      // custom inherited method
+      var object = {};
+      object.foo = function () {};
+      object = Object.create(object);
+      assert.equal(customs.isSafeMethod(object, 'foo'), true);
+
+      // ghosted native method
+      var object = {};
+      object.toString = function () {};
+      assert.equal(customs.isSafeMethod(object, 'toString'), false);
+
     });
 
     it ('function objects', function () {
@@ -50,9 +62,15 @@ describe ('customs', function () {
       assert.equal(customs.isSafeMethod(unit, 'toNumeric'), true);
       assert.equal(customs.isSafeMethod(unit, 'toString'), true);
 
-      // extend the class instance with an overridden method
-      matrix.myFunction = function () {};
-      assert.equal(customs.isSafeMethod(matrix, 'myFunction'), false);
+      // extend the class instance with a custom method
+      var object = math.matrix();
+      object.foo = function () {};
+      assert.equal(customs.isSafeMethod(object, 'foo'), true);
+
+      // extend the class instance with a ghosted method
+      var object = math.matrix();
+      object.toJSON = function () {};
+      assert.equal(customs.isSafeMethod(object, 'toJSON'), false);
 
       // unsafe native methods
       assert.equal(customs.isSafeMethod(matrix, 'constructor'), false);
@@ -66,6 +84,45 @@ describe ('customs', function () {
 
       // non existing method
       assert.equal(customs.isSafeMethod(matrix, 'nonExistingMethod'), false);
+    });
+
+  });
+
+  describe ('isSafeProperty', function () {
+
+    it ('plain objects', function () {
+      var object = {};
+
+      /* From Object.prototype:
+        Object.getOwnPropertyNames(Object.prototype).forEach(
+          key => typeof ({})[key] !== 'function' && console.log(key))
+      */
+      assert.equal(customs.isSafeProperty(object, '__proto__'), false);
+
+      /* From Function.prototype:
+        Object.getOwnPropertyNames(Function.prototype).forEach(
+          key => typeof (function () {})[key] !== 'function' && console.log(key))
+      */
+      assert.equal(customs.isSafeProperty(object, 'length'), true);
+      assert.equal(customs.isSafeProperty(object, 'name'), false);
+      assert.equal(customs.isSafeProperty(object, 'arguments'), false);
+      assert.equal(customs.isSafeProperty(object, 'caller'), false);
+
+      // non existing property
+      assert.equal(customs.isSafeProperty(object, 'bar'), true);
+
+      // custom inherited property
+      var object = {};
+      object.foo = true;
+      object = Object.create(object);
+      assert.equal(customs.isSafeProperty(object, 'foo'), true);
+
+      // ghosted native property
+      var array = [];
+      array = Object.create(array);
+      array.length = Infinity;
+      assert.equal(customs.isSafeProperty(array, 'length'), false);
+
     });
 
   });

@@ -53,4 +53,5 @@ math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
 [smaller](smaller.md),
 [smallerEq](smallerEq.md),
 [larger](larger.md),
-[largerEq](largerEq.md)
+[largerEq](largerEq.md),
+[compareNatural](compareNatural.md)

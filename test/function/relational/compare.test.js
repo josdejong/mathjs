@@ -119,6 +119,9 @@ describe('compare', function() {
     assert.equal(compare('abd', 'abc'), 1);
     assert.equal(compare('abc', 'abc'), 0);
     assert.equal(compare('abc', 'abd'), -1);
+
+    assert.equal(compare('10', '2'), -1);
+
   });
 
   describe('Array', function () {

@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "3.13.3",
+  "version": "3.14.2",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -24,6 +24,7 @@
     "Harry Sarson (https://github.com/HarrySarson)",
     "Holman Gao (https://github.com/golmansax)",
     "Guillermo Indalecio Fernández (https://github.com/guillermobox)",
+    "Gulfaraz (https://github.com/gulfaraz)",
     "hamadu (https://github.com/hamadu)",
     "Harsh Gupta (https://github.com/hgupta9)",
     "Huseyn Guliyev (https://github.com/husayt)",
@@ -43,6 +44,7 @@
     "Pavel Panchekha (https://github.com/pavpanchekha)",
     "Pat Grasso (https://github.com/patgrasso)",
     "Pete Corey (https://github.com/pcorey)",
+    "PJ Hampton (https://github.com/pjhampton )",
     "Retsam (https://github.com/Retsam)",
     "Robert Eisele (https://github.com/infusion)",
     "Rogelio J. Baucells (https://github.com/rjbaucells)",
@@ -54,8 +56,8 @@
     "Stu Blair (https://github.com/stu-blair)",
     "Thomas Brierley (https://github.com/ThomasBrierley)",
     "Timothy Lee (https://github.com/tetslee)",
+    "Tóth Róbert (https://github.com/Nekomajin42)",
     "Todd Morse (https://github.com/morsecodist)",
-    "Victor (https://github.com/viclai)",
     "Waldir Pimenta (https://github.com/waldyrious)",
     "Zach Zibrat (https://github.com/palimpsests)"
   ],
@@ -81,25 +83,39 @@
     "unit"
   ],
   "dependencies": {
+    "complex.js": "2.0.4",
+    "decimal.js": "7.2.3",
+    "fraction.js": "4.0.2",
+    "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
-    "tiny-emitter": "1.0.2",
-    "decimal.js": "7.1.1",
-    "fraction.js": "4.0.0",
-    "complex.js": "2.0.1",
+    "tiny-emitter": "2.0.0",
     "typed-function": "0.10.5"
   },
   "devDependencies": {
-    "glob": "7.1.1",
+    "benchmark": "2.1.4",
+    "expr-eval": "1.0.1",
+    "glob": "7.1.2",
     "gulp": "3.9.1",
     "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
+    "jsep": "0.3.0",
+    "math-expression-evaluator": "1.2.17",
     "mkdirp": "0.5.1",
-    "mocha": "3.2.0",
-    "q": "1.4.1",
+    "mocha": "3.4.2",
+    "ndarray": "1.0.18",
+    "ndarray-determinant": "1.0.0",
+    "ndarray-gemm": "1.0.0",
+    "ndarray-ops": "1.2.2",
+    "ndarray-pack": "1.2.1",
+    "numericjs": "1.2.6",
+    "pad-right": "0.2.2",
+    "q": "1.5.0",
+    "sylvester": "0.0.21",
     "tar": "2.2.1",
     "uglify-js": "2.7.5",
     "underscore": "1.8.3",
-    "webpack": "2.2.1"
+    "webpack": "2.6.1",
+    "zeros": "1.0.0"
   },
   "main": "./index",
   "scripts": {
@@ -114,5 +130,14 @@
   },
   "engines": {
     "node": ">= 0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/josdejong/mathjs/issues"
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "lib": "lib",
+    "test": "test"
   }
 }

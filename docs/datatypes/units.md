@@ -187,10 +187,10 @@ length, mass, etc.
 Test whether a unit equals an other unit. Units are equal
 when they have the same base and same value when normalized to SI units.
 
-### unit.format([precision])
+### unit.format([options])
 Get a string representation of the unit. The function
-will determine the best fitting prefix for the unit. If precision is defined,
-the units value will be rounded to the provided number of digits.
+will determine the best fitting prefix for the unit. See the [Format](../functions/format.md)
+page for available options.
 
 ### unit.fromJSON(json)
 Revive a unit from a JSON object. Accepts

@@ -9,7 +9,7 @@ On this page:
 - [Function transforms](#function-transforms)
 - [Custom argument parsing](#custom-argument-parsing)
 - [Custom LaTeX handlers](#custom-latex-handlers)
-- [Custom LaTeX and string output](#custom-latex-and-string-output)
+- [Custom HTML, LaTeX and string output](#custom-html-latex-and-string-output)
 - [Customize supported characters](#customize-supported-characters)
 
 ## Function transforms
@@ -190,10 +190,10 @@ math.parse('binom(1,2)').toTex();   // '\\mathrm{binom}\\left(1,2\\right)'
 math.parse('minus(1,2)').toTex();   // '1minus2'
 ```
 
-## Custom LaTeX and string output
+## Custom HTML, LaTeX and string output
 
-All expression nodes have a method `toTex` and `toString` to output an expression respectively in LaTex format or as regular text .
-The functions `toTex` and `toString` accept an `options` argument to customise output. This object is of the following form:
+All expression nodes have a method `toTex` and `toString` to output an expression respectively in HTML or LaTex format or as regular text .
+The functions `toHTML`, `toTex` and `toString` accept an `options` argument to customise output. This object is of the following form:
 
 ```js
 {
@@ -240,11 +240,11 @@ var callback = function (node, options) {
   ...
 }
 ```
-Where `options` is the object passed to `toTex`/`toString`. Don't forget to pass this on to the child nodes, and `node` is a reference to the current node.
+Where `options` is the object passed to `toHTML`/`toTex`/`toString`. Don't forget to pass this on to the child nodes, and `node` is a reference to the current node.
 
 If a callback returns nothing, the standard output will be used. If your callback returns a string, this string will be used.
 
-**Although the following examples use `toTex`, it works for `toString` in the same way**
+**Although the following examples use `toTex`, it works for `toString` and `toHTML` in the same way**
 
 #### Examples for option 1
 

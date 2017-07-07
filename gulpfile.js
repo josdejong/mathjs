@@ -11,7 +11,7 @@ var ENTRY       = './index.js',
     FILE        = 'math.js',
     FILE_MIN    = 'math.min.js',
     FILE_MAP    = 'math.map',
-    DIST        = './dist',
+    DIST        = __dirname + '/dist',
     REF_SRC     = './lib/',
     REF_DEST    = './docs/reference/functions/',
     REF_ROOT    = './docs/reference/',
@@ -54,7 +54,11 @@ var webpackConfig = {
   externals: [
     'crypto' // is referenced by decimal.js
   ],
-  plugins: [ bannerPlugin ],
+  plugins: [
+    bannerPlugin,
+    new webpack.optimize.ModuleConcatenationPlugin()
+    // TODO: ModuleConcatenationPlugin seems not to work. https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b
+  ],
   cache: true
 };
 

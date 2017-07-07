@@ -121,3 +121,15 @@ Get the polar coordinates of the complex number, returns
 
 Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
+
+### complex.compare(a: Complex, b: Complex)
+
+Returns the comparision result of two complex number:
+
+- Returns 1 when the real part of `a` is larger than the real part of `b`
+- Returns -1 when the real part of `a` is smaller than the real part of `b`
+- Returns 1 when the real parts are equal
+  and the imaginary part of `a` is larger than the imaginary part of `b`
+- Returns -1 when the real parts are equal
+  and the imaginary part of `a` is smaller than the imaginary part of `b`
+- Returns 0 when both real and imaginary parts are equal.

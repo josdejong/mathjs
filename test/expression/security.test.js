@@ -80,7 +80,7 @@ describe('security', function () {
       math.eval('{}.constructor.assign(cos.constructor, {binding: cos.bind})\n' +
           '{}.constructor.assign(cos.constructor, {bind: null})\n' +
           'cos.constructor.binding()("console.log(\'hacked...\')")()');
-    }, /Error: No access to property "constructor/);
+    }, /Error: No access to property "bind/);
   })
 
   it ('should not allow calling Function via imported, overridden function', function () {

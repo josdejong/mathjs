@@ -1,13 +1,21 @@
 /**
  * Benchmark
  * 
- * Compare performance of basic matrix operations of a number of math libraries. 
+ * Compare performance of basic matrix operations of a number of math libraries.
+ *
+ * These are some rough benchmarks to get an idea of the performance of math.js
+ * compared to other JavaScript libraries and to Octave (C++). They only give an
+ * _indication_ of the order of magnitude difference meant to see were math.js
+ * has room for improvements, it's not a fully fletched benchmark suite.
  */
 
-var padLeft = require('pad-left')
-var padRight = require('pad-right')
+var Benchmark = require('benchmark');
+var padRight = require('pad-right');
+var suite = new Benchmark.Suite();
 
-var iterations = 1000
+function pad (text) {
+  return padRight(text, 40, ' ');
+}
 
 // fiedler matrix 25 x 25
 var fiedler = [
@@ -36,89 +44,62 @@ var fiedler = [
   [22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0,  1,  2],
   [23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0,  1],
   [24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10,  9,  8,  7,  6,  5,  4,  3,  2,  1,  0]
-]
+];
 
 // mathjs
-{
-  var math = require('../index')
-  var A = math.matrix(fiedler)
+(function () {
+  var math = require('../index');
+  var A = math.matrix(fiedler);
+  var res;
 
-  measure ('mathjs', 'A+A',    function () { res = math.add(A, A) })
-  measure ('mathjs', 'A*A',    function () { res = math.multiply(A, A) })
-  measure ('mathjs', 'A\'',    function () { res = math.transpose(A) })
-  measure ('mathjs', 'det(A)', function () { res = math.det(A) })
-}
+  suite.add(pad('matrix operations mathjs A+A'),    function () { res = math.add(A, A) });
+  suite.add(pad('matrix operations mathjs A*A'),    function () { res = math.multiply(A, A) });
+  suite.add(pad('matrix operations mathjs A\''),    function () { res = math.transpose(A) });
+  suite.add(pad('matrix operations mathjs det(A)'), function () { res = math.det(A) });
+})();
 
 // sylvester
-{
-  var sylvester = require('sylvester')
-  var A = sylvester.Matrix.create(fiedler)
+(function () {
+  var sylvester = require('sylvester');
+  var A = sylvester.Matrix.create(fiedler);
 
-  measure ('sylvester', 'A+A',    function () { A.add(A) })
-  measure ('sylvester', 'A*A',    function () { A.multiply(A) })
-  measure ('sylvester', 'A\'',    function () { A.transpose() })
-  measure ('sylvester', 'det(A)', function () { A.det() })
-}
+  suite.add(pad('matrix operations sylvester A+A'),    function () { A.add(A) });
+  suite.add(pad('matrix operations sylvester A*A'),    function () { A.multiply(A) });
+  suite.add(pad('matrix operations sylvester A\''),    function () { A.transpose() });
+  suite.add(pad('matrix operations sylvester det(A)'), function () { A.det() });
+})();
 
 // numericjs
-{
-  var numeric = require('numericjs')
-  var A = fiedler
+(function () {
+  var numeric = require('numericjs');
+  var A = fiedler;
 
-  measure ('numericjs', 'A+A',    function () { numeric.add(A, A) })
-  measure ('numericjs', 'A*A',    function () { numeric.dot(A, A) })
-  measure ('numericjs', 'A\'',    function () { numeric.transpose(A) })
-  measure ('numericjs', 'det(A)', function () { numeric.det(A) })
-}
+  suite.add(pad('matrix operations numericjs A+A'),    function () { numeric.add(A, A) });
+  suite.add(pad('matrix operations numericjs A*A'),    function () { numeric.dot(A, A) });
+  suite.add(pad('matrix operations numericjs A\''),    function () { numeric.transpose(A) });
+  suite.add(pad('matrix operations numericjs det(A)'), function () { numeric.det(A) });
+})();
 
 // ndarray
-{
-  var ndarray = require('ndarray')
-  var gemm = require('ndarray-gemm')
-  var zeros = require('zeros')
-  var ops = require('ndarray-ops')
-  var pack = require('ndarray-pack')
-  var det  = require('ndarray-determinant')
+(function () {
+  var ndarray = require('ndarray');
+  var gemm = require('ndarray-gemm');
+  var zeros = require('zeros');
+  var ops = require('ndarray-ops');
+  var pack = require('ndarray-pack');
+  var det  = require('ndarray-determinant');
   
-  var A = pack(fiedler)
-  var B = zeros([25, 25])
+  var A = pack(fiedler);
+  var B = zeros([25, 25]);
 
-  measure('ndarray', 'A+A', function () { ops.add(B, A, A) })
-  measure('ndarray', 'A*A', function () { gemm(B, A, A) })
-  measure('ndarray', 'A\'', function () { ops.assign(B, A); B.transpose(1, 0); })
-  measure('ndarray', 'det(A)', function () { det(A) })
-}
+  suite.add(pad('matrix operations ndarray A+A'), function () { ops.add(B, A, A) });
+  suite.add(pad('matrix operations ndarray A*A'), function () { gemm(B, A, A) });
+  suite.add(pad('matrix operations ndarray A\''), function () { ops.assign(B, A); B.transpose(1, 0); });
+  suite.add(pad('matrix operations ndarray det(A)'), function () { det(A) });
+})();
 
-/**
- * Repeatedly execute test and print the average duration
- * @param {string} library
- * @param {string} description
- * @param {function} test 
- */
-function measure (library, description, test) {
-  // warm up
-  test() 
-
-  var start = Date.now()
-  for (var i = 0; i < iterations / 10; i++) {
-    // ten times to minimize the impact of the duration of the for loop itself
-    test()
-    test()
-    test()
-    test()
-    test()
-    test()
-    test()
-    test()
-    test()
-    test()
-  }
-  var end = Date.now()
-  var duration = Math.round((end - start) * 1000 / (iterations))  // in microseconds
-
-  console.log(padRight(library, 12, ' ') + padRight(description, 8, ' ') + padLeft(duration, 6, ' ') + ' microseconds')
-}
-
-function flatten (arr) {
-  return [].concat.apply([], arr)
-}
+suite
+    .on('cycle', function(event) {
+      console.log(String(event.target));
+    })
+    .run();

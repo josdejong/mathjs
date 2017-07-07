@@ -45,6 +45,10 @@ describe('help', function() {
     assert.equal(help.doc.name, 'pi');
   });
 
+  it('should not allow accessing unsafe properties ', function() {
+    assert.throws(function () {math.help('constructor')}, /No access/);
+  });
+
   it('should throw an error when no help is found', function() {
     // assert.throws(function () {math.help(undefined)}, /No documentation found/);
     assert.throws(function () {math.help(new Date())}, /No documentation found/);

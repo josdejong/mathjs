@@ -1,5 +1,37 @@
 # History
 
+## 2017-07-05, version 3.14.2
+
+- Upgraded to `fraction.js@4.0.2`
+- Fixed #891 using BigNumbers not working in browser environments.
+
+
+## 2017-06-30, version 3.14.1
+
+- Reverted to `fraction.js@4.0.0`, there is an issue with `4.0.1`
+  in the browser.
+
+
+## 2017-06-30, version 3.14.0
+
+- Implemented set methods `setCartesian`, `setDifference`,
+  `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`,
+  `setSize`. Thanks @Nekomajin42.
+- Implemented method `toHTML` on nodes. Thanks @Nekomajin42.
+- Implemented `compareNatural` and `sort([...], 'natural')`.
+- Upgraded dependencies to the latest versions:
+  - `complex.js@2.0.4`
+  - `decimal.js@7.2.3`
+  - `fraction.js@4.0.1`
+  - `tiny-emitter@2.0.0`
+  - And all devDependencies.
+- Fixed #865: `splitUnit` can now deal with round-off errors.
+  Thanks @ericman314.
+- Fixed #876: incorrect definition for unit `erg`. Thanks @pjhampton.
+- More informative error message when using single quotes instead of
+  double quotes around a string. Thanks @HarrySarson.
+
+
 ## 2017-05-27, version 3.13.3
 
 - Fixed a bug in function `intersection` of line and plane.
