@@ -1,5 +1,10 @@
 # History
 
+## not yet released, version 3.15.0
+
+- Added support for the dollar character `$` in symbol names (see #895).
+
+
 ## 2017-07-05, version 3.14.2
 
 - Upgraded to `fraction.js@4.0.2`

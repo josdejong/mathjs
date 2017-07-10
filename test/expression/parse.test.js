@@ -64,9 +64,12 @@ describe('parse', function() {
     }), math.matrix([undefined]));
   });
 
-  it('should parse unicode characters', function() {
+  it('should parse unicode and other special characters', function() {
     // http://unicode-table.com/en
     var scope = {};
+
+    math.eval('$ab$c = 2', scope); // dollar sign
+    assert.strictEqual(scope['$ab$c'], 2);
 
     math.eval('\u00E9 = 2', scope); // Latin Small Letter E with Acute
     assert.strictEqual(scope['\u00E9'], 2);
