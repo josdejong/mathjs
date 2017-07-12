@@ -123,6 +123,12 @@ describe ('customs', function () {
       array.length = Infinity;
       assert.equal(customs.isSafeProperty(array, 'length'), false);
 
+      // ghosted custom property
+      var object = {foo: true};
+      object = Object.create(object);
+      object.foo = false;
+      assert.equal(customs.isSafeProperty(object, 'foo'), true);
+
     });
 
   });
