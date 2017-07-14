@@ -111,24 +111,6 @@ describe ('customs', function () {
       // non existing property
       assert.equal(customs.isSafeProperty(object, 'bar'), true);
 
-      // custom inherited property
-      var object = {};
-      object.foo = true;
-      object = Object.create(object);
-      assert.equal(customs.isSafeProperty(object, 'foo'), true);
-
-      // ghosted native property
-      var array = [];
-      array = Object.create(array);
-      array.length = Infinity;
-      assert.equal(customs.isSafeProperty(array, 'length'), false);
-
-      // ghosted custom property
-      var object = {foo: true};
-      object = Object.create(object);
-      object.foo = false;
-      assert.equal(customs.isSafeProperty(object, 'foo'), true);
-
     });
 
   });
