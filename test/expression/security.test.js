@@ -194,7 +194,7 @@ describe('security', function () {
           'k(x)={map:j};' +
           'i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};' +
           'subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
-    }, /Error: No access to property "length"/);
+    }, /TypeError: Index must be an integer \(value: constructor\)/);
   })
 
   it ('should not allow using restricted properties via subset (2)', function () {
