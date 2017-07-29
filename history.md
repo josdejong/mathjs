@@ -4,6 +4,21 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20170729-version-3150">2017-07-29, version 3.15.0 <a href="#20170729-version-3150" title="Permalink">#</a></h2>
+
+- Added support for the dollar character `$` in symbol names (see #895).
+- Allow objects with prototypes as scope again in the expression parser,
+  this was disabled for security reasons some time ago. See #888, #899.
+  Thanks @ThomasBrierley.
+- Fixed #846: Issues in the functions `map`, `forEach`, and `filter`
+  when used in the expression parser:
+  - Not being able to use a function assignment as inline expression
+    for the callback function.
+  - Not being able to pass an inline expression as callback for `map`
+    and `forEach`.
+  - Index and original array/matrix not passed in `map` and `filter`.
+
+
 <h2 id="20170705-version-3142">2017-07-05, version 3.14.2 <a href="#20170705-version-3142" title="Permalink">#</a></h2>
 
 - Upgraded to `fraction.js@4.0.2`

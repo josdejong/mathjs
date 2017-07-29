@@ -197,6 +197,7 @@ Variable names must:
 - Begin with an "alpha character", which is:
   - A latin letter (upper or lower case). Ascii: `a-z`, `A-Z`
   - An underscore.                        Ascii: `_`
+  - A dollar sign.                        Ascii: `$`
   - A latin letter with accents.          Unicode: `\u00C0` - `\u02AF`
   - A greek letter.                       Unicode: `\u0370` - `\u03FF`
   - A letter-like character.              Unicode: `\u2100` - `\u214F`
