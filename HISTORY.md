@@ -3,6 +3,9 @@
 ## not yet released, version 3.15.0
 
 - Added support for the dollar character `$` in symbol names (see #895).
+- Allow objects with prototypes as scope again in the expression parser,
+  this was disabled for security reasons some time ago. See #888, #899.
+  Thanks @ThomasBrierley.
 
 
 ## 2017-07-05, version 3.14.2
