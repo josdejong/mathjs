@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 3.15.0
+## 2017-07-29, version 3.15.0
 
 - Added support for the dollar character `$` in symbol names (see #895).
 - Allow objects with prototypes as scope again in the expression parser,
