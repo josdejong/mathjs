@@ -6,6 +6,13 @@
 - Allow objects with prototypes as scope again in the expression parser,
   this was disabled for security reasons some time ago. See #888, #899.
   Thanks @ThomasBrierley.
+- Fixed #846: Issues in the functions `map`, `forEach`, and `filter`
+  when used in the expression parser:
+  - Not being able to use a function assignment as inline expression
+    for the callback function.
+  - Not being able to pass an inline expression as callback for `map`
+    and `forEach`.
+  - Index and original array/matrix not passed in `map` and `filter`.
 
 
 ## 2017-07-05, version 3.14.2

@@ -612,70 +612,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0]));
     });
 
-    it('should execute map on an array with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: [1,2,3],
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-          return value + 1;
-        }
-      };
-      var res = math.eval('map(A, callback)', scope);
-      assert.deepEqual(res, [2,3,4]);
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
-    it('should execute map on a Matrix with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: math.matrix([1,2,3]),
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-          return value + 1;
-        }
-      };
-      var res = math.eval('map(A, callback)', scope);
-      assert.deepEqual(res, math.matrix([2,3,4]));
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
-    it('should execute forEach on an array with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: [1,2,3],
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-        }
-      };
-      math.eval('forEach(A, callback)', scope);
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
-    it('should execute forEach on a Matrix with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: math.matrix([1,2,3]),
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-        }
-      };
-      math.eval('forEach(A, callback)', scope);
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
     it('should disable arrays as range in a matrix index', function () {
       var scope = {
         a: [[1,2,3],[4,5,6]]
@@ -1717,18 +1653,6 @@ describe('parse', function() {
       parseAndEval('sortByLength(a, b) = size(a)[1] - size(b)[1]', scope);
       assert.deepEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
           math.matrix(["Tom", "Sara", "Langdon"]));
-    });
-
-    it('should evaluate function "filter" with a custom test function', function () {
-      var scope = {};
-      parseAndEval('isPositive(x) = x > 0', scope);
-      assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], isPositive)', scope),
-          math.matrix([6, 4, 3]));
-    });
-
-    it('should evaluate function "filter" with a custom test equation', function () {
-      assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], x > 0)'),
-          math.matrix([6, 4, 3]));
     });
 
   });
