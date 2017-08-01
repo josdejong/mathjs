@@ -25,6 +25,24 @@ describe('simplify', function() {
     simplifyAndCompare('3+2/4', '7/2');
   });
 
+  it('should simplify (-1)*n', function() {
+    simplifyAndCompare('(-1)*4', '-4');
+    simplifyAndCompare('(-1)*x', '-x');
+  });
+
+  it('should simplify (n- -n1)', function() {
+    simplifyAndCompare('2 + -3', '-1');
+    simplifyAndCompare('2 - 3', '-1');
+    simplifyAndCompare('2 - -3', '5');
+    var e = math.parse('2 - -3');
+    e = math.simplify.simplifyCore(e);
+    assert.equal(e.toString(), '5'); // simplifyCore
+    simplifyAndCompare('x - -x', '2*x');
+    var e = math.parse('x - -x');
+    e = math.simplify.simplifyCore(e);
+    assert.equal(e.toString(), 'x + x'); // not a core simplification since + is cheaper than *
+  });
+
   it('should preserve the value of BigNumbers', function() {
     var bigmath = math.create({number: 'BigNumber', precision: 64});
     assert.deepEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.eval('222222222222222222'));
