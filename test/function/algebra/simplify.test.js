@@ -4,8 +4,12 @@ var math = require('../../../index');
 
 describe('simplify', function() {
 
-  function simplifyAndCompare(left, right) {
-    assert.equal(math.simplify(left).toString(), math.parse(right).toString());
+  function simplifyAndCompare(left, right, scope) {
+    if (scope) {
+        assert.equal(math.simplify(left, scope).toString(), math.parse(right).toString());
+    } else {
+        assert.equal(math.simplify(left).toString(), math.parse(right).toString());
+    }
   }
 
   function simplifyAndCompareEval (left, right, scope) {
@@ -128,6 +132,23 @@ describe('simplify', function() {
   it('should remove addition of 0', function() {
     simplifyAndCompare('x+0', 'x');
     simplifyAndCompare('x-0', 'x');
+  });
+
+  it('resolve() should substitute scoped constants', function() {
+    assert.equal(math.simplify.resolve('x+y', {x:1}).toString(), "1 + y"); // direct
+    simplifyAndCompare('x+y', 'x+y', {}); // operator
+    simplifyAndCompare('x+y', 'y+1', {x:1});
+    simplifyAndCompare('x+y', 'y+1', {x:'1'});
+    simplifyAndCompare('x+y', '3', {x:1,y:2});
+    simplifyAndCompare('x+x+x', '3*x');
+    simplifyAndCompare('y', 'x+1', {y:"1+x"});
+    simplifyAndCompare('y', '3', {x:2, y:"1+x"});
+    simplifyAndCompare('x+y', '3*x', {y:"x+x"});
+    simplifyAndCompare('x+y', '6', {x:2,y:"x+x"});
+    simplifyAndCompare('x+(y+2-1-1)', '6', {x:2,y:"x+x"}); // parentheses
+    simplifyAndCompare('log(x+y)', `${Math.log(6)}`, {x:2,y:"x+x"}); // function
+    simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )', 
+        'combinations(ceil(0.9092974268256817 * y ), 2)', {x:-2});
   });
 
   describe('expression parser' ,function () {
