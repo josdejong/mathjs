@@ -16,7 +16,7 @@ console.log();
 // expressions
 console.log('expressions');
 print(math.eval('1.2 * (2 + 4.5)'));    // 7.8
-print(math.eval('5.08 cm to inch'));    // 2 inch
+print(math.eval('12.7 cm to inch'));    // 5 inch
 print(math.eval('sin(45 deg) ^ 2'));    // 0.5
 print(math.eval('9 / 3 + 2i'));         // 3 + 2i
 print(math.eval('det([-1, 2; 3, 1])')); // -7
