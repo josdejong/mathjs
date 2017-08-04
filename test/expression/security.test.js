@@ -194,7 +194,7 @@ describe('security', function () {
           'k(x)={map:j};' +
           'i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};' +
           'subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
-    }, /TypeError: Index must be an integer \(value: constructor\)/);
+    }, /TypeError: Unexpected type of argument in function subset \(expected: Index, actual: Object, index: 1\)/);
   })
 
   it ('should not allow using restricted properties via subset (2)', function () {
