@@ -1971,8 +1971,8 @@ describe('parse', function() {
         return /^[a-zA-Z_$]$/.test(c)
       };
 
-      const node = math.expression.parse('$foo');
-      const result = node.eval({$foo: 42});
+      var node = math.expression.parse('$foo');
+      var result = node.eval({$foo: 42});
       assert.equal(result, 42);
 
       // restore original isAlpha
