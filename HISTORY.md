@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.16.0
+## 2017-08-06, version 3.16.0
 
 - Significant performance improvements in `math.simplify`.
   Thanks @firepick1.
