@@ -158,7 +158,7 @@ describe('simplify', function() {
     simplifyAndCompare('x+y', '3*x', {y:math.parse("x+x")});
     simplifyAndCompare('x+y', '6', {x:2,y:math.parse("x+x")});
     simplifyAndCompare('x+(y+2-1-1)', '6', {x:2,y:math.parse("x+x")}); // parentheses
-    simplifyAndCompare('log(x+y)', `${Math.log(6)}`, {x:2,y:math.parse("x+x")}); // function
+    simplifyAndCompare('log(x+y)', String(Math.log(6)), {x:2,y:math.parse("x+x")}); // function
     simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )', 
         'combinations(ceil(0.9092974268256817 * y ), 2)', {x:-2});
 
