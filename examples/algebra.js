@@ -11,6 +11,7 @@ var math = require('../index');
 console.log('simplify expressions');
 console.log(math.simplify('3 + 2 / 4').toString());             // '7 / 2'
 console.log(math.simplify('2x + 3x').toString());               // '5 * x'
+console.log(math.simplify('2 * 3 * x', {x: 4}).toString());     // '24'
 console.log(math.simplify('x^2 + x + 3 + x^2').toString());     // '2 * x ^ 2 + x + 3'
 console.log(math.simplify('x * y * -x / (x ^ 2)').toString());  // '-y'
 
