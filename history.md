@@ -4,6 +4,17 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20170806-version-3160">2017-08-06, version 3.16.0 <a href="#20170806-version-3160" title="Permalink">#</a></h2>
+
+- Significant performance improvements in `math.simplify`.
+  Thanks @firepick1.
+- Improved API for `math.simplify`, optionally pass a scope with
+  variables which are resolved, see #907. Thanks @firepick1.
+- Fixed #912: math.js didn't work on IE10 anymore (regression
+  since 3.15.0).
+
+
 <h2 id="20170729-version-3150">2017-07-29, version 3.15.0 <a href="#20170729-version-3150" title="Permalink">#</a></h2>
 
 - Added support for the dollar character `$` in symbol names (see #895).

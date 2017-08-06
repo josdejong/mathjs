@@ -19,8 +19,8 @@ via the command line:
 $ mathjs
 > 12 / (2.3 + 0.7)
 4
-> 5.08 cm to inch
-2 inch
+> 12.7 cm to inch
+5 inch
 > sin(45 deg) ^ 2
 0.5
 > 9 / 3 + 2i

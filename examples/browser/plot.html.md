@@ -11,7 +11,7 @@ File: [plot.html](plot.html)
 <html>
 <head>
   <title>math.js | plot</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.15.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.0/math.min.js"></script>
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>

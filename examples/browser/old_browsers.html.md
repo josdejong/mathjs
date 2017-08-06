@@ -16,7 +16,7 @@ File: [old_browsers.html](old_browsers.html)
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.15.0/math.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.0/math.min.js"></script>
 </head>
 <body>
 
@@ -34,13 +34,13 @@ File: [old_browsers.html](old_browsers.html)
   // functions and constants
   print(math.round(math.e, 3));            // 2.718
   print(math.atan2(3, -3) / math.pi);      // 0.75
-  print(math.log(1000, 10));               // 3
+  print(math.log(10000, 10));              // 4
   print(math.sqrt(-4));                    // 2i
   print(math.pow([[-1, 2], [3, 1]], 2));   // [[7, 0], [0, 7]]
 
   // expressions
   print(math.eval('12 / (2.3 + 0.7)'));    // 4
-  print(math.eval('5.08 cm to inch'));     // 2 inch
+  print(math.eval('12.7 cm to inch'));     // 12.7 inch
   print(math.eval('9 / 3 + 2i'));          // 3 + 2i
   print(math.eval('det([-1, 2; 3, 1])'));  // -7
 

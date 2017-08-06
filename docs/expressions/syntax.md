@@ -133,7 +133,7 @@ page [Functions](../reference/functions.html).
 
 ```js
 math.eval('sqrt(25)');          // 5
-math.eval('log(1000, 3 + 7)');  // 4
+math.eval('log(10000, 3 + 7)'); // 4
 math.eval('sin(pi / 4)');       // 0.7071067811865475
 ```
 
