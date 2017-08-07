@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.16.1
+
+- Fixed #915: No access to property "name".
+
+
 ## 2017-08-06, version 3.16.0
 
 - Significant performance improvements in `math.simplify`.
