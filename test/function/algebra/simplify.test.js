@@ -43,6 +43,17 @@ describe('simplify', function() {
     simplifyAndCompare('(-1)*x', '-x');
   });
 
+  it('should handle FunctionAssignmentNode', function() {
+    const node = math.expression.node;
+    const s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'));
+    const f = new node.FunctionNode(s, [new node.SymbolNode('x')]);
+    assert.equal(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))(x)');
+    assert.equal(f.eval({x: 5}), 0.9933071490757153);
+    const fsimplified = math.simplify.simplifyCore(f);
+    assert.equal(fsimplified.toString(), 'sigma(x) = 1 / (1 + exp(-x))(x)');
+    assert.equal(fsimplified.eval({x: 5}), 0.9933071490757153);
+  });
+
   it('should simplify (n- -n1)', function() {
     simplifyAndCompare('2 + -3', '-1');
     simplifyAndCompare('2 - 3', '-1');
