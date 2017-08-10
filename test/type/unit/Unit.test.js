@@ -253,10 +253,10 @@ describe('Unit', function() {
       assert.deepEqual(u.toNumeric('mm'), math.fraction(10,3));
     });
     it ('should simplify units before returning a numeric value', function () {
-      var cm = new Unit(1, 'cm');
-      var m = new Unit(1, 'm');
+      var cm = new Unit(1, 'gram');
+      var m = new Unit(1, 'kilogram');
       var product = cm.multiply(m)
-      assert.deepEqual(product.toNumeric(), 0.01);
+      assert.deepEqual(product.toNumeric(), 0.001);
     });
   });
 
