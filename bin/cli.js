@@ -219,7 +219,7 @@ function runStream (input, output, mode, parenthesis) {
               var node = math.parse(expr);
               var res = node.eval(scope);
 
-              if (res && res.isResultSet) {
+              if (math.type.isResultSet(res)) {
                 // we can have 0 or 1 results in the ResultSet, as the CLI
                 // does not allow multiple expressions separated by a return
                 res = res.entries[0];
