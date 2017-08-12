@@ -9,6 +9,9 @@
 - Fixed `toString` of a parsed expression tree containing an
   immediately invoked function assignment not being wrapped in
   parenthesis (for example `(f(x) = x^2)(4)`).
+- For security reasons, type checking is now done in a more strict
+  way using functions like `isComplex(x)` instead of duck type checking
+  like `x && x.isMatrix === true`.
 
 
 ## 2017-08-06, version 3.16.0
