@@ -297,7 +297,7 @@ describe('Unit', function() {
 
       var u2 = u1.to('cm');
       assert.deepEqual(u2.value, math.fraction(1,3));
-      assert(u2.value.isFraction);
+      assert(math.type.isFraction(u2.value));
       assert.equal(u2.units[0].unit.name, 'm');
       assert.equal(u2.units[0].prefix.name, 'c');
       assert.equal(u2.fixPrefix, true);
@@ -933,7 +933,7 @@ describe('Unit', function() {
 
       math.config({number: 'Fraction'});
       var unit1 = Unit.parse('5kg');
-      assert(unit1.value.isFraction);
+      assert(math.type.isFraction(unit1.value));
 
       math.config({number: 'BigNumber'});
       var unit1 = Unit.parse('5kg');
