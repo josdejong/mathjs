@@ -5,6 +5,19 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170812-version-3161">2017-08-12, version 3.16.1 <a href="#20170812-version-3161" title="Permalink">#</a></h2>
+
+- For security reasons, type checking is now done in a more strict
+  way using functions like `isComplex(x)` instead of duck type checking
+  like `x && x.isComplex === true`.
+- Fixed #915: No access to property "name".
+- Fixed #901: Simplify units when calling `unit.toNumeric()`.
+  Thanks @AlexanderBeyn.
+- Fixed `toString` of a parsed expression tree containing an
+  immediately invoked function assignment not being wrapped in
+  parenthesis (for example `(f(x) = x^2)(4)`).
+
+
 <h2 id="20170806-version-3160">2017-08-06, version 3.16.0 <a href="#20170806-version-3160" title="Permalink">#</a></h2>
 
 - Significant performance improvements in `math.simplify`.
