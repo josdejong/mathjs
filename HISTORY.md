@@ -4,6 +4,8 @@
 ## not yet released, version 3.16.1
 
 - Fixed #915: No access to property "name".
+- Fixed #901: Simplify units when calling `unit.toNumeric()`.
+  Thanks @AlexanderBeyn.
 
 
 ## 2017-08-06, version 3.16.0
