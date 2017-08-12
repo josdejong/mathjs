@@ -229,7 +229,7 @@ function runStream (input, output, mode, parenthesis) {
               }
 
               if (node) {
-                if (node.isAssignmentNode) {
+                if (math.type.isAssignmentNode(node)) {
                   var name = findSymbolName(node);
                   if (name != null) {
                     scope.ans = scope[name];
@@ -240,7 +240,7 @@ function runStream (input, output, mode, parenthesis) {
                     console.log(format(res));
                   }
                 }
-                else if (res instanceof math.type.Help) {
+                else if (math.type.isHelp(res)) {
                   console.log(res.toString());
                 }
                 else {
@@ -295,10 +295,11 @@ function runStream (input, output, mode, parenthesis) {
  * @return {string | null} Returns the name when found, else returns null.
  */
 function findSymbolName (node) {
+  var math = getMath();
   var n = node;
 
   while (n) {
-    if (n.isSymbolNode) {
+    if (math.type.isSymbolNode(n)) {
       return n.name;
     }
     n = n.object;
