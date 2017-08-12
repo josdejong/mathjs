@@ -287,4 +287,11 @@ describe ('typed', function () {
     assert.strictEqual(math.type.isNode(), false);
   });
 
+  it('should test whether a value is a chain', function () {
+    assert.strictEqual(math.type.isChain(math.chain(2)), true);
+    assert.strictEqual(math.type.isChain({isChain: true}), false);
+    assert.strictEqual(math.type.isChain(2), false);
+    assert.strictEqual(math.type.isChain(), false);
+  });
+
 });
