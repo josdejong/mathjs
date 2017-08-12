@@ -1,6 +1,16 @@
 # History
 
 
+## not yet released, version 3.16.1
+
+- Fixed #915: No access to property "name".
+- Fixed #901: Simplify units when calling `unit.toNumeric()`.
+  Thanks @AlexanderBeyn.
+- Fixed `toString` of a parsed expression tree containing an
+  immediately invoked function assignment not being wrapped in
+  parenthesis (for example `(f(x) = x^2)(4)`).
+
+
 ## 2017-08-06, version 3.16.0
 
 - Significant performance improvements in `math.simplify`.

@@ -106,7 +106,7 @@ describe ('customs', function () {
           key => typeof (function () {})[key] !== 'function' && console.log(key))
       */
       assert.equal(customs.isSafeProperty(object, 'length'), true);
-      assert.equal(customs.isSafeProperty(object, 'name'), false);
+      assert.equal(customs.isSafeProperty(object, 'name'), true);
       assert.equal(customs.isSafeProperty(object, 'arguments'), false);
       assert.equal(customs.isSafeProperty(object, 'caller'), false);
 
