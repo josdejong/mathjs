@@ -10,6 +10,7 @@ var OperatorNode = math.expression.node.OperatorNode;
 var RangeNode = math.expression.node.RangeNode;
 var IndexNode = math.expression.node.IndexNode;
 var AccessorNode = math.expression.node.AccessorNode;
+var FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode;
 
 describe('FunctionNode', function() {
 
@@ -375,6 +376,14 @@ describe('FunctionNode', function() {
     var n = new FunctionNode(s, [c]);
 
     assert.equal(n.toString(), 'sqrt(4)');
+  });
+
+  it ('should stringify a FunctionNode with an immediately invoked function assignment', function () {
+    var f = new FunctionAssignmentNode('f', ['x'], new SymbolNode('x')) // f(x) = x
+    var c = new ConstantNode(4);
+    var n = new FunctionNode(f, [c]);
+
+    assert.equal(n.toString(), '(f(x) = x)(4)');
   });
 
   it ('should pass options when stringifying a FunctionNode', function () {

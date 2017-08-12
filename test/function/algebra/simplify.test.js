@@ -68,10 +68,10 @@ describe('simplify', function() {
     var node = math.expression.node;
     var s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'));
     var f = new node.FunctionNode(s, [new node.SymbolNode('x')]);
-    assert.equal(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))(x)');
+    assert.equal(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)');
     assert.equal(f.eval({x: 5}), 0.9933071490757153);
     var fsimplified = math.simplify.simplifyCore(f);
-    assert.equal(fsimplified.toString(), 'sigma(x) = 1 / (1 + exp(-x))(x)');
+    assert.equal(fsimplified.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)');
     assert.equal(fsimplified.eval({x: 5}), 0.9933071490757153);
   })
 
