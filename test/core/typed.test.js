@@ -236,12 +236,31 @@ describe ('typed', function () {
     assert.strictEqual(math.type.isAssignmentNode(), false);
   });
 
+  it('should test whether a value is an AccessorNode', function () {
+    var a = new math.expression.node.SymbolNode('a');
+    var index = new math.expression.node.IndexNode([new math.expression.node.ConstantNode('b')]);
+
+    assert.strictEqual(math.type.isAccessorNode(new math.expression.node.AccessorNode(a, index)), true);
+    assert.strictEqual(math.type.isAccessorNode(new math2.expression.node.AccessorNode(a, index)), true);
+    assert.strictEqual(math.type.isAccessorNode({isAccessorNode: true}), false);
+    assert.strictEqual(math.type.isAccessorNode(2), false);
+    assert.strictEqual(math.type.isAccessorNode(), false);
+  });
+
   it('should test whether a value is a BlockNode', function () {
     assert.strictEqual(math.type.isBlockNode(new math.expression.node.BlockNode([])), true);
     assert.strictEqual(math.type.isBlockNode(new math2.expression.node.BlockNode([])), true);
     assert.strictEqual(math.type.isBlockNode({isBlockNode: true}), false);
     assert.strictEqual(math.type.isBlockNode(2), false);
     assert.strictEqual(math.type.isBlockNode(), false);
+  });
+
+  it('should test whether a value is a ObjectNode', function () {
+    assert.strictEqual(math.type.isObjectNode(new math.expression.node.ObjectNode({})), true);
+    assert.strictEqual(math.type.isObjectNode(new math2.expression.node.ObjectNode({})), true);
+    assert.strictEqual(math.type.isObjectNode({isObjectNode: true}), false);
+    assert.strictEqual(math.type.isObjectNode(2), false);
+    assert.strictEqual(math.type.isObjectNode(), false);
   });
 
   it('should test whether a value is a ConditionalNode', function () {
