@@ -92,7 +92,7 @@ describe('cos', function() {
     approx.equal(cos(unit('45deg')), 0.707106781186548);
     approx.equal(cos(unit('-135deg')), -0.707106781186548);
 
-    assert(cos(unit(math.bignumber(45), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(cos(unit(math.bignumber(45), 'deg'))));
     approx.equal(cos(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
 
     approx.deepEqual(cos(unit(complex(1,1), 'rad')), complex(0.833730025131149, -0.988897705762865));

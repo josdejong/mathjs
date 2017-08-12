@@ -50,7 +50,7 @@ describe('coth', function() {
     approx.equal(coth(unit('90deg')), 1.0903314107274);
     approx.equal(coth(unit('-45deg')), -1.5248686188221);
 
-    assert(coth(unit(math.bignumber(90), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(coth(unit(math.bignumber(90), 'deg'))));
     approx.equal(coth(unit(math.bignumber(90), 'deg')).toNumber(), 1.0903314107274);
 
     approx.deepEqual(coth(math.unit(complex('2 + i'), 'rad')), complex(0.98432922645819, -0.032797755533753));

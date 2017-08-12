@@ -69,7 +69,7 @@ describe('cot', function() {
     approx.equal(cot(unit('45deg')), 1);
     approx.equal(cot(unit('-45deg')), -1);
 
-    assert(cot(unit(math.bignumber(45), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(cot(unit(math.bignumber(45), 'deg'))));
     approx.equal(cot(unit(math.bignumber(45), 'deg')).toNumber(), 1);
 
     approx.deepEqual(cot(math.unit(complex('1+i'), 'rad')), complex(0.217621561854403, -0.868014142895925));

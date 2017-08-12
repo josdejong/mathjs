@@ -88,7 +88,7 @@ describe('sin', function() {
     approx.equal(sin(unit('45deg')), 0.707106781186548);
     approx.equal(sin(unit('-45deg')), -0.707106781186548);
 
-    assert(sin(unit(math.bignumber(45), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(sin(unit(math.bignumber(45), 'deg'))));
     approx.equal(sin(unit(math.bignumber(45), 'deg')).toNumber(), 0.707106781186548);
 
     approx.deepEqual(sin(unit(complex('1+i'), 'rad')), complex(1.298457581415977, 0.634963914784736));

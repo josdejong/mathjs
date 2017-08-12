@@ -937,7 +937,7 @@ describe('Unit', function() {
 
       math.config({number: 'BigNumber'});
       var unit1 = Unit.parse('5kg');
-      assert(unit1.value.isBigNumber);
+      assert(math.type.isBigNumber(unit1.value));
 
       math.config(origConfig);
     });
@@ -993,16 +993,16 @@ describe('Unit', function() {
       var unit1 = new Unit(math.bignumber(10), "N/s");
       var unit2 = new Unit(math.bignumber(10), "h");
       var unitM = unit1.multiply(unit2);
-      assert(unitM.value.isBigNumber);
+      assert(math.type.isBigNumber(unitM.value));
 
       var unit3 = new Unit(math.bignumber(14.7), "lbf");
       var unit4 = new Unit(math.bignumber(1), "in in");
       var unitD = unit3.divide(unit4);
-      assert(unitD.value.isBigNumber);
+      assert(math.type.isBigNumber(unitD.value));
 
       var unit5 = new Unit(math.bignumber(1), "N h/s");
       var unitP = unit5.pow(math.bignumber(-3.5));
-      assert(unitP.value.isBigNumber);
+      assert(math.type.isBigNumber(unitP.value));
     });
   });
 
