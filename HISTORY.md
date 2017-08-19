@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.16.2
+
+- Fixed #924: a regression in `simplify` not accepting the signature
+  `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
+
+
 ## 2017-08-12, version 3.16.1
 
 - For security reasons, type checking is now done in a more strict
