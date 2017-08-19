@@ -146,6 +146,11 @@ describe('simplify', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
   });
 
+  it ('should support custom rules', function() {
+      var node = math.simplify("y+x",[{l:'n1-n2',r:'-n2+n1'}],{x:5})
+      assert.equal(node.toString(), 'y + 5');
+  });
+
   it('should handle valid built-in constant symbols in rules', function() {
     assert.equal(math.simplify('true', ['true -> 1']).toString(), '1');
     assert.equal(math.simplify('false', ['false -> 0']).toString(), '0');
