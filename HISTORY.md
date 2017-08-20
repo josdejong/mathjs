@@ -5,6 +5,8 @@
 
 - Fixed #924: a regression in `simplify` not accepting the signature
   `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
+- Fixed missing parenthesis when stringifying expressions containing
+  implicit multiplications. Thanks @FSMaxB.
 
 
 ## 2017-08-12, version 3.16.1
