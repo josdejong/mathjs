@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 3.16.1
- * @date    2017-08-12
+ * @version 3.16.2
+ * @date    2017-08-20
  *
  * @license
  * Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
@@ -12236,7 +12236,7 @@ function factory (type, config, load, typed) {
    * @return {boolean[]}
    * @private
    */
-  function calculateNecessaryParentheses(root, parenthesis, args, latex) {
+  function calculateNecessaryParentheses(root, parenthesis, implicit, args, latex) {
     //precedence of the root OperatorNode
     var precedence = operators.getPrecedence(root, parenthesis);
     var associativity = operators.getAssociativity(root, parenthesis);
@@ -12257,154 +12257,184 @@ function factory (type, config, load, typed) {
       return parens;
     }
 
-    if (args.length === 0) {
-      return [];
-    } else if (args.length === 1) { //unary operators
-      //precedence of the operand
-      var operandPrecedence = operators.getPrecedence(args[0], parenthesis);
+    var result = undefined;
+    switch (args.length) {
+      case 0:
+        result = [];
+        break;
 
-      //handle special cases for LaTeX, where some of the parentheses aren't needed
-      if (latex && (operandPrecedence !== null)) {
-        var operandIdentifier;
-        var rootIdentifier;
-        if (parenthesis === 'keep') {
-          operandIdentifier = args[0].getIdentifier();
-          rootIdentifier = root.getIdentifier();
-        }
-        else {
-          //Ignore Parenthesis Nodes when not in 'keep' mode
-          operandIdentifier = args[0].getContent().getIdentifier();
-          rootIdentifier = root.getContent().getIdentifier();
-        }
-        if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
-          return [false];
-        }
+      case 1: //unary operators
+        //precedence of the operand
+        var operandPrecedence = operators.getPrecedence(args[0], parenthesis);
 
-        if (operators.properties[operandPrecedence][operandIdentifier].latexParens === false) {
-          return [false];
-        }
-      }
-
-      if (operandPrecedence === null) {
-        //if the operand has no defined precedence, no parens are needed
-        return [false];
-      }
-
-      if (operandPrecedence <= precedence) {
-        //if the operands precedence is lower, parens are needed
-        return [true];
-      }
-
-      //otherwise, no parens needed
-      return [false];
-    } else if (args.length === 2) { //binary operators
-      var lhsParens; //left hand side needs parenthesis?
-      //precedence of the left hand side
-      var lhsPrecedence = operators.getPrecedence(args[0], parenthesis);
-      //is the root node associative with the left hand side
-      var assocWithLhs = operators.isAssociativeWith(root, args[0], parenthesis);
-
-      if (lhsPrecedence === null) {
-        //if the left hand side has no defined precedence, no parens are needed
-        //FunctionNode for example
-        lhsParens = false;
-      }
-      else if ((lhsPrecedence === precedence) && (associativity === 'right') && !assocWithLhs) {
-        //In case of equal precedence, if the root node is left associative
-        // parens are **never** necessary for the left hand side.
-        //If it is right associative however, parens are necessary
-        //if the root node isn't associative with the left hand side
-        lhsParens = true;
-      }
-      else if (lhsPrecedence < precedence) {
-        lhsParens = true;
-      }
-      else {
-        lhsParens = false;
-      }
-
-      var rhsParens; //right hand side needs parenthesis?
-      //precedence of the right hand side
-      var rhsPrecedence = operators.getPrecedence(args[1], parenthesis);
-      //is the root node associative with the right hand side?
-      var assocWithRhs = operators.isAssociativeWith(root, args[1], parenthesis);
-
-      if (rhsPrecedence === null) {
-        //if the right hand side has no defined precedence, no parens are needed
-        //FunctionNode for example
-        rhsParens = false;
-      }
-      else if ((rhsPrecedence === precedence) && (associativity === 'left') && !assocWithRhs) {
-        //In case of equal precedence, if the root node is right associative
-        // parens are **never** necessary for the right hand side.
-        //If it is left associative however, parens are necessary
-        //if the root node isn't associative with the right hand side
-        rhsParens = true;
-      }
-      else if (rhsPrecedence < precedence) {
-        rhsParens = true;
-      }
-      else {
-        rhsParens = false;
-      }
-
-      //handle special cases for LaTeX, where some of the parentheses aren't needed
-      if (latex) {
-        var rootIdentifier;
-        var lhsIdentifier;
-        var rhsIdentifier;
-        if (parenthesis === 'keep') {
-          rootIdentifier = root.getIdentifier();
-          lhsIdentifier = root.args[0].getIdentifier();
-          rhsIdentifier = root.args[1].getIdentifier();
-        }
-        else {
-          //Ignore ParenthesisNodes when not in 'keep' mode
-          rootIdentifier = root.getContent().getIdentifier();
-          lhsIdentifier = root.args[0].getContent().getIdentifier();
-          rhsIdentifier = root.args[1].getContent().getIdentifier();
-        }
-
-        if (lhsPrecedence !== null) {
+        //handle special cases for LaTeX, where some of the parentheses aren't needed
+        if (latex && (operandPrecedence !== null)) {
+          var operandIdentifier;
+          var rootIdentifier;
+          if (parenthesis === 'keep') {
+            operandIdentifier = args[0].getIdentifier();
+            rootIdentifier = root.getIdentifier();
+          }
+          else {
+            //Ignore Parenthesis Nodes when not in 'keep' mode
+            operandIdentifier = args[0].getContent().getIdentifier();
+            rootIdentifier = root.getContent().getIdentifier();
+          }
           if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
-            lhsParens = false;
+            result = [false];
+            break;
           }
 
-          if (operators.properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
-            lhsParens = false;
+          if (operators.properties[operandPrecedence][operandIdentifier].latexParens === false) {
+            result = [false];
+            break;
+          }
+        }
+
+        if (operandPrecedence === null) {
+          //if the operand has no defined precedence, no parens are needed
+          result = [false];
+          break;
+        }
+
+        if (operandPrecedence <= precedence) {
+          //if the operands precedence is lower, parens are needed
+          result = [true];
+          break;
+        }
+
+        //otherwise, no parens needed
+        result = [false];
+        break;
+
+      case 2: //binary operators
+        var lhsParens; //left hand side needs parenthesis?
+        //precedence of the left hand side
+        var lhsPrecedence = operators.getPrecedence(args[0], parenthesis);
+        //is the root node associative with the left hand side
+        var assocWithLhs = operators.isAssociativeWith(root, args[0], parenthesis);
+
+        if (lhsPrecedence === null) {
+          //if the left hand side has no defined precedence, no parens are needed
+          //FunctionNode for example
+          lhsParens = false;
+        }
+        else if ((lhsPrecedence === precedence) && (associativity === 'right') && !assocWithLhs) {
+          //In case of equal precedence, if the root node is left associative
+          // parens are **never** necessary for the left hand side.
+          //If it is right associative however, parens are necessary
+          //if the root node isn't associative with the left hand side
+          lhsParens = true;
+        }
+        else if (lhsPrecedence < precedence) {
+          lhsParens = true;
+        }
+        else {
+          lhsParens = false;
+        }
+
+        var rhsParens; //right hand side needs parenthesis?
+        //precedence of the right hand side
+        var rhsPrecedence = operators.getPrecedence(args[1], parenthesis);
+        //is the root node associative with the right hand side?
+        var assocWithRhs = operators.isAssociativeWith(root, args[1], parenthesis);
+
+        if (rhsPrecedence === null) {
+          //if the right hand side has no defined precedence, no parens are needed
+          //FunctionNode for example
+          rhsParens = false;
+        }
+        else if ((rhsPrecedence === precedence) && (associativity === 'left') && !assocWithRhs) {
+          //In case of equal precedence, if the root node is right associative
+          // parens are **never** necessary for the right hand side.
+          //If it is left associative however, parens are necessary
+          //if the root node isn't associative with the right hand side
+          rhsParens = true;
+        }
+        else if (rhsPrecedence < precedence) {
+          rhsParens = true;
+        }
+        else {
+          rhsParens = false;
+        }
+
+        //handle special cases for LaTeX, where some of the parentheses aren't needed
+        if (latex) {
+          var rootIdentifier;
+          var lhsIdentifier;
+          var rhsIdentifier;
+          if (parenthesis === 'keep') {
+            rootIdentifier = root.getIdentifier();
+            lhsIdentifier = root.args[0].getIdentifier();
+            rhsIdentifier = root.args[1].getIdentifier();
+          }
+          else {
+            //Ignore ParenthesisNodes when not in 'keep' mode
+            rootIdentifier = root.getContent().getIdentifier();
+            lhsIdentifier = root.args[0].getContent().getIdentifier();
+            rhsIdentifier = root.args[1].getContent().getIdentifier();
+          }
+
+          if (lhsPrecedence !== null) {
+            if (operators.properties[precedence][rootIdentifier].latexLeftParens === false) {
+              lhsParens = false;
+            }
+
+            if (operators.properties[lhsPrecedence][lhsIdentifier].latexParens === false) {
+              lhsParens = false;
+            }
+          }
+
+          if (rhsPrecedence !== null) {
+            if (operators.properties[precedence][rootIdentifier].latexRightParens === false) {
+              rhsParens = false;
+            }
+
+            if (operators.properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
+              rhsParens = false;
+            }
           }
         }
 
-        if (rhsPrecedence !== null) {
-          if (operators.properties[precedence][rootIdentifier].latexRightParens === false) {
-            rhsParens = false;
-          }
+        result = [lhsParens, rhsParens];
+        break;
 
-          if (operators.properties[rhsPrecedence][rhsIdentifier].latexParens === false) {
-            rhsParens = false;
-          }
+      default:
+        if ((root.getIdentifier() === 'OperatorNode:add') || (root.getIdentifier() === 'OperatorNode:multiply')) {
+          var result = args.map(function (arg) {
+            var argPrecedence = operators.getPrecedence(arg, parenthesis);
+            var assocWithArg = operators.isAssociativeWith(root, arg, parenthesis);
+            var argAssociativity = operators.getAssociativity(arg, parenthesis);
+            if (argPrecedence === null) {
+              //if the argument has no defined precedence, no parens are needed
+              return false;
+            } else if ((precedence === argPrecedence) && (associativity === argAssociativity) && !assocWithArg) {
+              return true;
+            } else if (argPrecedence < precedence) {
+              return true;
+            }
+
+            return false;
+          });
         }
-      }
+        break;
+    }
 
-      return [lhsParens, rhsParens];
-    } else if ((args.length > 2) && ((root.getIdentifier() === 'OperatorNode:add') || (root.getIdentifier() === 'OperatorNode:multiply'))) {
-      var parensArray = args.map(function (arg) {
-        var argPrecedence = operators.getPrecedence(arg, parenthesis);
-        var assocWithArg = operators.isAssociativeWith(root, arg, parenthesis);
-        var argAssociativity = operators.getAssociativity(arg, parenthesis);
-        if (argPrecedence === null) {
-          //if the argument has no defined precedence, no parens are needed
-          return false;
-        } else if ((precedence === argPrecedence) && (associativity === argAssociativity) && !assocWithArg) {
-          return true;
-        } else if (argPrecedence < precedence) {
+    //handles an edge case of 'auto' parentheses with implicit multiplication of ConstantNode
+    //In that case print parentheses for ParenthesisNodes even though they normally wouldn't be
+    //printed.
+    if ((args.length >= 2) && (root.getIdentifier() === 'OperatorNode:multiply') && root.implicit && (parenthesis === 'auto') && (implicit === 'hide')) {
+      result = args.map(function (arg, index) {
+        var isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode');
+        if (result[index] || isParenthesisNode) { //put in parenthesis?
           return true;
         }
 
         return false;
       });
-      return parensArray;
     }
+
+    return result;
   }
 
   /**
@@ -12416,7 +12446,7 @@ function factory (type, config, load, typed) {
     var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
     var implicit = (options && options.implicit) ? options.implicit : 'hide';
     var args = this.args;
-    var parens = calculateNecessaryParentheses(this, parenthesis, args, false);
+    var parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false);
 
     if (args.length === 1) { //unary operators
       var assoc = operators.getAssociativity(this, parenthesis);
@@ -12480,7 +12510,7 @@ function factory (type, config, load, typed) {
     var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
     var implicit = (options && options.implicit) ? options.implicit : 'hide';
     var args = this.args;
-    var parens = calculateNecessaryParentheses(this, parenthesis, args, false);
+    var parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false);
 
     if (args.length === 1) { //unary operators
       var assoc = operators.getAssociativity(this, parenthesis);
@@ -12546,7 +12576,7 @@ function factory (type, config, load, typed) {
     var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
     var implicit = (options && options.implicit) ? options.implicit : 'hide';
     var args = this.args;
-    var parens = calculateNecessaryParentheses(this, parenthesis, args, true);
+    var parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true);
     var op = latex.operators[this.fn];
     op = typeof op === 'undefined' ? this.op : op; //fall back to using this.op
 
@@ -20285,6 +20315,10 @@ function factory (type, config, load, typed, math) {
 
     'string, Array': function (expr, rules) {
       return simplify(parse(expr), rules, {});
+    },
+
+    'string, Array, Object': function (expr, rules, scope) {
+      return simplify(parse(expr), rules, scope);
     },
 
     'Node, Object': function (expr, scope) {
@@ -40629,7 +40663,7 @@ exports.math = true;   // request access to the math namespace
 /* 190 */
 /***/ (function(module, exports) {
 
-module.exports = '3.16.1';
+module.exports = '3.16.2';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 

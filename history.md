@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170820-version-3162">2017-08-20, version 3.16.2 <a href="#20170820-version-3162" title="Permalink">#</a></h2>
+
+- Fixed #924: a regression in `simplify` not accepting the signature
+  `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
+- Fixed missing parenthesis when stringifying expressions containing
+  implicit multiplications (see #922). Thanks @FSMaxB.
+
+
 <h2 id="20170812-version-3161">2017-08-12, version 3.16.1 <a href="#20170812-version-3161" title="Permalink">#</a></h2>
 
 - For security reasons, type checking is now done in a more strict
