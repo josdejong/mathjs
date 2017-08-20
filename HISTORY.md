@@ -1,12 +1,12 @@
 # History
 
 
-## not yet released, version 3.16.2
+## 2017-08-20, version 3.16.2
 
 - Fixed #924: a regression in `simplify` not accepting the signature
   `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
 - Fixed missing parenthesis when stringifying expressions containing
-  implicit multiplications. Thanks @FSMaxB.
+  implicit multiplications (see #922). Thanks @FSMaxB.
 
 
 ## 2017-08-12, version 3.16.1
