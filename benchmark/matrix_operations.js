@@ -98,8 +98,15 @@ var fiedler = [
   suite.add(pad('matrix operations ndarray det(A)'), function () { det(A) });
 })();
 
+var durations = []
+
 suite
     .on('cycle', function(event) {
+      var benchmark = event.target
       console.log(String(event.target));
+      durations.push(benchmark.name + ' avg duration per operation: ' + Math.round(benchmark.stats.mean * 1e6) + ' microseconds');
     })
     .run();
+
+console.log();
+console.log(durations.join('\n'));
