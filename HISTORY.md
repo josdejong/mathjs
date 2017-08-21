@@ -4,7 +4,9 @@
 ## not yet released, version 3.16.3
 
 - Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
- 
+- Fixed #930: function `isNaN` returning wrong result for complex 
+  numbers having just one of their parts (re/im) being `NaN`.
+
 
 ## 2017-08-20, version 3.16.2
 
