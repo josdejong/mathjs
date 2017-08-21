@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.16.3
+
+- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
+ 
+
 ## 2017-08-20, version 3.16.2
 
 - Fixed #924: a regression in `simplify` not accepting the signature

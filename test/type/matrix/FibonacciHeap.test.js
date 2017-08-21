@@ -139,4 +139,19 @@ describe('FibonacciHeap', function () {
       assert.equal(h._size, 4);
     });
   });
+
+  it('should check whether emtpy', function () {
+    var h = new FibonacciHeap();      
+    assert.equal(h.isEmpty(), true);
+    assert.equal(h.size(), 0);
+
+    h.insert(1, 'v1');
+    h.insert(10, 'v10');
+    assert.equal(h.isEmpty(), false);
+    assert.equal(h.size(), 2);
+    
+    h.clear();
+    assert.equal(h.isEmpty(), true);
+    assert.equal(h.size(), 0);
+  })
 });
