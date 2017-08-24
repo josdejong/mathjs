@@ -2,13 +2,20 @@
 =========================
 
 `isPolynomial` - it’s a very simple recursive function. I’ve tried with some nice expressions    
-and all error types. 12 runs.
-      
+and all error types. I've run 12 tests.
+
+`polyToCanonical` – it’s more complex recursive function. I've run 44 tests, to encompass all possible situations.
+
 `Rationalize` – it uses **isPolynomial** and an auxiliary function (_expandPower_) to handle with    
 polynomial powers and other auxiliary function (_rulesRationalize_) to gather the set of rules   
-to simplify `Mathjs` function, and prepares the result for numerator and denominator functions.    
+to simplify `Mathjs` function, and prepares the result for numerator and denominator functions. I've run 12 tests.    
 
-`polyToCanonical` – it’s more complex recursive function with 44 runs of test, to encompass all possible situations.
+Notice that one particular expression is very hard do simplify because there are many cycles to run until no
+more changes. 
+
+>  "x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )"
+
+Particularly hard is the combination of sucessive divisions with fraction sum / subtraction.
 
 `solveEq` – It’s not part of package. It uses a NPM compatible package (`poly-roots`) to solve polynomials with   
 one variable equation that needs to receive the coefficients in an array. To use this package,
