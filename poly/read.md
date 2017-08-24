@@ -1,7 +1,7 @@
 **isPolynomial**
 ================
 **Syntax:**  _isPolynomial (expr [, obj] )_  
-Function to check is expression is a polynomial expression.    
+Function to check is expression is a polynomial expression
 
 **Parameters**     
 `expr` - string or expression tree  _(input)_   
@@ -13,12 +13,35 @@ Function to check is expression is a polynomial expression.
 **returns**   
    true or error message   
 
+**rationalize**    
+===============
+     
+**Syntax:**    rationalize(expr [, obj] )     
+Transform a rationalizable expression in a division of two    
+near canonical polynomials (fraction). A near canonical polynomial is a sum of
+terms of the form   `c * x^n` onde **c** é uma constante real **x** é uma variável 
+e **n** é um expoente inteiro positivo, it may contain terms with the same exponent and
+any order. 
+    
+**Parameters**    
+`node` - string or tree expression _(input)_   
+`obj` _(optional)_    
+&nbsp;&nbsp;&nbsp;&nbsp;`.scopeAdd` - Scope of expression _(input)_     
+&nbsp;&nbsp;&nbsp;&nbsp;`.moreThanOne` - true if accepts more than one variable.     
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = false _(input)_     
+&nbsp;&nbsp;&nbsp;&nbsp;`.numerator` - numerator in a tree expression _(output)_      
+&nbsp;&nbsp;&nbsp;&nbsp;`.denominator` - denominator in a tree expression _(output)_    
+     
+**Return**    
+   Tree expression or error message     
+
+
 **numerator**
 =============
 **Syntax:**   _numerator (expr [, obj] )_
     
-Get a numerator with near canonical polynomial    
-from a rationalizable expression    
+Get a numerator with near canonical polynomial from a rationalizable expression. Uses     
+directly the _rationalize_ function 
    
 **Parameters**    
 `expr` - string or tree expression  _(input)_   
@@ -34,8 +57,8 @@ from a rationalizable expression
 =============== 
 **Syntax:**    _denominator(expr [, obj] )_    
     
-Get a denominator with near canonical polynomial     
-from a rationalizable expression    
+Get a denominator with near canonical polynomial from a rationalizable expression. Uses      
+directly the _rationalize_ function 
 
 **Parameters**    
 `expr` - string or tree expression _(input)_    
@@ -47,30 +70,12 @@ from a rationalizable expression
 **Return**    
    Tree expression or error message    
      
-**rationalize**    
-===============
-     
-**Syntax:**    rationalize(expr [, obj] )     
-Transform a rationalizable expression in a rational fraction of    
-near canonical polynomials    
-    
-**Parameters**    
-`node` - string or tree expression _(input)_   
-`obj` _(optional)_    
-&nbsp;&nbsp;&nbsp;&nbsp;`.scopeAdd` - Scope of expression _(input)_     
-&nbsp;&nbsp;&nbsp;&nbsp;`.moreThanOne` - true if accepts more than one variable.     
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = false _(input)_     
-&nbsp;&nbsp;&nbsp;&nbsp;`.numerator` - numerator in a tree expression _(output)_      
-&nbsp;&nbsp;&nbsp;&nbsp;`.denominator` - denominator in a tree expression _(output)_    
-     
-**Return**    
-   Tree expression or error message     
 
 **PolyToCanonical**
 ===================
 **Syntax:** PolyToCanonical(node  [, oExit ])     
-Convert near canonical polynomial in one variable in a canonical polynomial   
-with one term for each exponentm in decreasing order    
+Convert near canonical one variable polynomial in a canonical polynomial   
+with one term for each exponentm in decreasing order.    
 
 **Parameters**    
 `node` - tre expression or string expression    
