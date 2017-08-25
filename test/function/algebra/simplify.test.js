@@ -53,6 +53,12 @@ describe('simplify', function() {
     assert.equal(fsimplified.eval()(5), 0.9933071490757153);
   });
 
+  it('should simplifyCore convert +unaryMinus to subtract', function() {
+      var result = math.simplify('x + y + a', [math.simplify.simplifyCore], {a: -1}).toString()
+      assert.equal(result, "x + y - 1");
+  });
+
+
   it('should handle custom functions', function() {
     function doubleIt (x) { return x + x }
     var node = math.expression.node;
