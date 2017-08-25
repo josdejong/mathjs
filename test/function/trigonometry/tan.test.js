@@ -62,7 +62,7 @@ describe('tan', function() {
     approx.equal(tan(unit(' 60deg')), math.sqrt(3));
     approx.equal(tan(unit('-135deg')), 1);
 
-    assert(tan(unit(math.bignumber(60), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(tan(unit(math.bignumber(60), 'deg'))));
     approx.equal(tan(unit(math.bignumber(60), 'deg')).toNumber(), math.sqrt(3));
 
     approx.deepEqual(tan(unit(complex('1+i'), 'rad')), complex(0.271752585319512, 1.083923327338695));

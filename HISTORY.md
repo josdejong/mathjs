@@ -1,5 +1,29 @@
 # History
 
+
+## 2017-08-12, version 3.16.1
+
+- For security reasons, type checking is now done in a more strict
+  way using functions like `isComplex(x)` instead of duck type checking
+  like `x && x.isComplex === true`.
+- Fixed #915: No access to property "name".
+- Fixed #901: Simplify units when calling `unit.toNumeric()`.
+  Thanks @AlexanderBeyn.
+- Fixed `toString` of a parsed expression tree containing an
+  immediately invoked function assignment not being wrapped in
+  parenthesis (for example `(f(x) = x^2)(4)`).
+
+
+## 2017-08-06, version 3.16.0
+
+- Significant performance improvements in `math.simplify`.
+  Thanks @firepick1.
+- Improved API for `math.simplify`, optionally pass a scope with
+  variables which are resolved, see #907. Thanks @firepick1.
+- Fixed #912: math.js didn't work on IE10 anymore (regression
+  since 3.15.0).
+
+
 ## 2017-07-29, version 3.15.0
 
 - Added support for the dollar character `$` in symbol names (see #895).
