@@ -1,11 +1,13 @@
 # History
 
 
-## not yet released, version 3.16.3
+## 2017-08-28, version 3.16.3
 
-- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
+- Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
+- Fixed #933: function `simplify` reordering operations. Thanks @firepick1.
 - Fixed #930: function `isNaN` returning wrong result for complex 
   numbers having just one of their parts (re/im) being `NaN`.
+- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
 
 
 ## 2017-08-20, version 3.16.2
