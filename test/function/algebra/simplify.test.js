@@ -54,6 +54,7 @@ describe('simplify', function() {
   });
 
   it('should simplifyCore convert +unaryMinus to subtract', function() {
+      simplifyAndCompareEval('--2', '2');
       var result = math.simplify('x + y + a', [math.simplify.simplifyCore], {a: -1}).toString()
       assert.equal(result, "x + y - 1");
   });
@@ -143,9 +144,9 @@ describe('simplify', function() {
   });
 
   it('should collect separated like factors', function() {
+    simplifyAndCompare('x*y*-x/(x^2)', '-y');
     simplifyAndCompare('x/2*x', 'x^2/2');
     simplifyAndCompare('x*2*x', '2*x^2');
-    simplifyAndCompare('x*y*-x/(x^2)', '-y');
   });
 
   it('should handle non-existing functions like a pro', function() {
