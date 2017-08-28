@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20170828-version-3163">2017-08-28, version 3.16.3 <a href="#20170828-version-3163" title="Permalink">#</a></h2>
+
+- Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
+- Fixed #933: function `simplify` reordering operations. Thanks @firepick1.
+- Fixed #930: function `isNaN` returning wrong result for complex 
+  numbers having just one of their parts (re/im) being `NaN`.
+- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
+
+
 <h2 id="20170820-version-3162">2017-08-20, version 3.16.2 <a href="#20170820-version-3162" title="Permalink">#</a></h2>
 
 - Fixed #924: a regression in `simplify` not accepting the signature
