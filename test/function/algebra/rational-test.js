@@ -1,41 +1,45 @@
 'use strict';
 
 var assert = require('assert');
-var math = require('../../../index');  // for local test: require('./poly.js')
-var m=math;                            // for local test:  require('mathjs')
+
+var math = require('../../../index');  // Github
+// var math = require('./poly.js')                   // Local computer
+
+var m=math;    // GitHub
+// var m=require('mathjs') // Local computer
 
 describe('rationalize', function() {
   this.timeout(15000);
 
   function rationalizeAndCompareError(left, right, adic) {
     try {
-        adic = !! adic
-        if (! adic)
-          assert.equal(math.rationalize(left).toString(),right)
-        else
-          assert.equal(math.rationalize(left,adic).toString(),right)
+      adic = !! adic
+      if (! adic)
+        assert.equal(math.rationalize(left).toString(),right)
+      else
+        assert.equal(math.rationalize(left,adic).toString(),right)
     } catch (err) {
-        if (err instanceof Error) {
-            console.log(err.stack);
-        } else {
-            console.log(new Error(err));
-        }
-        throw err;
+      if (err instanceof Error) {
+          console.log(err.stack);
+      } else {
+          console.log(new Error(err));
+      }
+      throw err;
     }
   } // rationalizeAndCompareError
 
 
   function rationalizeAndCompareExpr(left, right) {
-  try {
+    try {
       assert.equal(math.rationalize(left).toString().replace(/ /g,''),right);
-   } catch (err) {
-       if (err instanceof Error) {
-           console.log(err.stack);
-        } else {
-           console.log(new Error(err));
-        }
-        throw err;
-   }
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err.stack);
+      } else {
+        console.log(new Error(err));
+      }
+      throw err;
+    }
   } // rationalizeAndCompareExpr
 
 
@@ -44,9 +48,9 @@ describe('rationalize', function() {
   });
 
   it('valid expression but not appropriate', function() {
-      rationalizeAndCompareError('a=2','Invalid polynomial expression');  
-      rationalizeAndCompareError('sin(x)+x','There is an unsolved function call'); 
-      rationalizeAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression'); 
+    rationalizeAndCompareError('a=2','Invalid polynomial expression');  
+    rationalizeAndCompareError('sin(x)+x','There is an unsolved function call'); 
+    rationalizeAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression'); 
   });
 
   it('non-integer exponent', function() {
@@ -60,8 +64,8 @@ describe('rationalize', function() {
   });
  
   it('processing constant expressions', function() {
-   rationalizeAndCompareExpr('-2+3+32-32','1');     
-   rationalizeAndCompareExpr('1^2 + 20 + 3','24');  
+    rationalizeAndCompareExpr('-2+3+32-32','1');     
+    rationalizeAndCompareExpr('1^2 + 20 + 3','24');  
   });
 
   it('processing simple expressions', function() {
@@ -122,121 +126,120 @@ describe('rationalize', function() {
   });
 
 
-describe('getPolynomial', function() {
+  describe('getPolynomial', function() {
 
-  function getPolynomialAndCompareError(left, right, extension) {
-    try {
+    function getPolynomialAndCompareError(left, right, extension) {
+      try {
         extension = !! extension;
         assert.equal(math.getPolynomial(left,{},[],extension).toString(),right)
-    } catch (err) {
+      } catch (err) {
         if (err instanceof Error) {
-            console.log(err.stack);
+          console.log(err.stack);
         } else {
-            console.log(new Error(err));
+          console.log(new Error(err));
         }
         throw err;
-    }
-  } // getPolynomialAndCompareError
+      }
+    } // getPolynomialAndCompareError
 
 
-  function getPolynomialAndCompareCte(left, right, extension) {
-    try {
+    function getPolynomialAndCompareCte(left, right, extension) {
+      try {
         extension = !! extension;
         assert.equal(math.getPolynomial(left,{},[],extension).toString().replace(/ /g,''),right)
-    } catch (err) {
+      } catch (err) {
         if (err instanceof Error) {
-            console.log(err.stack);
+          console.log(err.stack);
         } else {
-            console.log(new Error(err));
+          console.log(new Error(err));
         }
         throw err;
-    }
-  } // getPolynomialAndCompareCte
+      }
+    } // getPolynomialAndCompareCte
 
 
-  function getPolynomialAndCompareExpr(left, right, extension, checkVars, scope) {
-  var varNames = [];
-  if (scope===undefined) scope={};
-  try {
-      assert.equal(math.getPolynomial(left,scope,varNames,extension).toString().replace(/ /g,''),right);
-      assert.equal(varNames.join(","),checkVars);
-   } catch (err) {
-       if (err instanceof Error) {
-           console.log(err.stack);
+    function getPolynomialAndCompareExpr(left, right, extension, checkVars, scope) {
+      var varNames = [];
+      if (scope===undefined) scope={};
+      try {
+        assert.equal(math.getPolynomial(left,scope,varNames,extension).toString().replace(/ /g,''),right);
+        assert.equal(varNames.join(","),checkVars);
+      } catch (err) {
+        if (err instanceof Error) {
+          console.log(err.stack);
         } else {
-           console.log(new Error(err));
+          console.log(new Error(err));
         }
         throw err;
-   }
-  } // getPolynomialAndCompareExpr
+      }
+    } // getPolynomialAndCompareExpr
 
 
-  it('Invalid expression', function() {
-    getPolynomialAndCompareError('(x*/2)','Invalid expression: Value expected (char 4)');   
-  });
-  
-  it('Valid expression but not appropriate', function() {
-    getPolynomialAndCompareError('sin(x)+x','There is an unsolved function call');     
-    getPolynomialAndCompareError('x^2.5 - 2*x + 3','There is a non-integer exponent'); 
-    getPolynomialAndCompareError('a=2','Invalid polynomial expression');  
-  });
+    it('Invalid expression', function() {
+      getPolynomialAndCompareError('(x*/2)','Invalid expression: Value expected (char 4)');   
+    });
+    
+    it('Valid expression but not appropriate', function() {
+      getPolynomialAndCompareError('sin(x)+x','There is an unsolved function call');     
+      getPolynomialAndCompareError('x^2.5 - 2*x + 3','There is a non-integer exponent'); 
+      getPolynomialAndCompareError('a=2','Invalid polynomial expression');  
+    });
 
-  it('Divide in expression can be accept or not', function() {
-    getPolynomialAndCompareError('(x+2)/(x % 2)','Operator / invalid in polynomial expression');
-    getPolynomialAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression',true);
-  });
+    it('Divide in expression can be accept or not', function() {
+      getPolynomialAndCompareError('(x+2)/(x % 2)','Operator / invalid in polynomial expression');
+      getPolynomialAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression',true);
+    });
 
-  it('Constant expression', function() {
-    getPolynomialAndCompareCte('1^2 + 20 + 3','24');
-  });
+    it('Constant expression', function() {
+      getPolynomialAndCompareCte('1^2 + 20 + 3','24');
+    });
 
 
-  it('2 variable expression', function() {
+    it('2 variable expression', function() {
       getPolynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+2*x*y+3',false,'x,y');   
-  });
+    });
 
-  it('2 variable expression with scope', function() {
-    getPolynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+10*x+3',false,'x',{y:5});
-    getPolynomialAndCompareExpr('sin(y)+x','x+0.49999999999999994',false,'x',{y:m.PI/6})     
-  });
+    it('2 variable expression with scope', function() {
+      getPolynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+10*x+3',false,'x',{y:5});
+      getPolynomialAndCompareExpr('sin(y)+x','x+0.49999999999999994',false,'x',{y:m.PI/6})     
+    });
 
-  it('Miscelaneous  expressions', function() {
-    getPolynomialAndCompareExpr('x^2 + 2*x + 3','x^2+2*x+3',false,'x');
-    getPolynomialAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3',
-      'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
-    var no = m.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3');
-    getPolynomialAndCompareExpr(no,'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
-  });
-
-
- })  // Describe getPolynomial
+    it('Miscelaneous  expressions', function() {
+      getPolynomialAndCompareExpr('x^2 + 2*x + 3','x^2+2*x+3',false,'x');
+      getPolynomialAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3',
+        'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
+      var no = m.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3');
+      getPolynomialAndCompareExpr(no,'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
+    });
 
 
-describe('numerator and denominator', function() {
+  })  // Describe getPolynomial
 
-  function fractionPartAndCompareExpr(func, left, right) {
-    try {
+
+  describe('numerator and denominator', function() {
+    function fractionPartAndCompareExpr(func, left, right) {
+      try {
         assert.equal(func(left).toString().replace(/ /g,''),right)
-    } catch (err) {
+      } catch (err) {
         if (err instanceof Error) {
-            console.log(err.stack);
+          console.log(err.stack);
         } else {
-            console.log(new Error(err));
+          console.log(new Error(err));
         }
         throw err;
-    }
-  } // fractionPartAndCompareExpr
-   
+      }
+    } // fractionPartAndCompareExpr
+     
 
-  it('numerator', function() {
-    fractionPartAndCompareExpr(math.numerator,'2x/y - y/(x+1)','2*x^2-y^2+2*x')
-  });
+    it('numerator', function() {
+      fractionPartAndCompareExpr(math.numerator,'2x/y - y/(x+1)','2*x^2-y^2+2*x')
+    });
 
 
-  it('denominator', function() {
-     fractionPartAndCompareExpr(math.denominator,'2x/y - y/(x+1)','x*y+y')
-  });
+    it('denominator', function() {
+      fractionPartAndCompareExpr(math.denominator,'2x/y - y/(x+1)','x*y+y')
+    });
 
-})  // Describe numerator and denominator
+  })  // Describe numerator and denominator
 
 })  // Describe rationalize
