@@ -8,47 +8,70 @@ var math = require('../../../index');  // Github
 var m=math;    // GitHub
 // var m=require('mathjs') // Local computer
 
+
+// **********************************
+//         throwAssertionError
+// Throw error if is an assertion error
+// ***********************************
+function throwAssertionError(err) {
+  if (typeof err==="string")
+     return;
+  if (err.message.slice(0,9)==="Assertion") {
+     if (err instanceof Error) {
+       console.log(err.stack);
+     } else {
+       console.log(new Error(err));
+     }
+     throw err;
+  }
+} // throw assertion error
+
+
+///////////////////// rationalize ///////////////////////
 describe('rationalize', function() {
   this.timeout(15000);
 
   function rationalizeAndCompareError(left, right, adic) {
     try {
       adic = !! adic
-      if (! adic)
-        assert.equal(math.rationalize(left).toString(),right)
-      else
-        assert.equal(math.rationalize(left,adic).toString(),right)
+      var ret = adic 
+                   ? math.rationalize(left,adic).toString()
+                   : math.rationalize(left).toString();
+      assert.equal(ret,right);
     } catch (err) {
-      if (err instanceof Error) {
-          console.log(err.stack);
-      } else {
-          console.log(new Error(err));
-      }
-      throw err;
-    }
+        throwAssertionError(err)
+        try  {
+          var mess=typeof err==="string"  ? err : err.message; 
+          assert.equal(mess,right); 
+        } catch (err) {   
+          throwAssertionError(err)
+        }
+    } // external catch
   } // rationalizeAndCompareError
 
 
   function rationalizeAndCompareExpr(left, right) {
     try {
-      assert.equal(math.rationalize(left).toString().replace(/ /g,''),right);
+      var ret = math.rationalize(left).toString().replace(/ /g,'');
+      assert.equal(ret,right);
     } catch (err) {
-      if (err instanceof Error) {
-        console.log(err.stack);
-      } else {
-        console.log(new Error(err));
+      throwAssertionError(err)
+      try  {
+        var mess=typeof err==="string"  ? err : err.message; 
+        assert.equal(mess,right); 
+      } catch (err) {   
+        throwAssertionError(err)
       }
-      throw err;
     }
   } // rationalizeAndCompareExpr
-
+  
 
   it('invalid expression', function() {
     rationalizeAndCompareError('(x*/2)','Value expected (char 4)');
   });
 
   it('valid expression but not appropriate', function() {
-    rationalizeAndCompareError('a=2','Invalid polynomial expression');  
+    rationalizeAndCompareError('a=2','Unimplemented node type in simplifyConstant: AssignmentNode');  
     rationalizeAndCompareError('sin(x)+x','There is an unsolved function call'); 
     rationalizeAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression'); 
   });
@@ -60,7 +83,7 @@ describe('rationalize', function() {
   });
 
   it('calling error', function() {
-    rationalizeAndCompareError('x^2 + 2*x + 3','Second optional parameter should be a Scope object',23);   
+    rationalizeAndCompareError('x^2 + 2*x + 3','Type Error: Second optional parameter should be a Scope object',23);   
   });
  
   it('processing constant expressions', function() {
@@ -126,19 +149,22 @@ describe('rationalize', function() {
   });
 
 
+///////////////////// getPolynomial ///////////////////////
   describe('getPolynomial', function() {
 
     function getPolynomialAndCompareError(left, right, extension) {
       try {
         extension = !! extension;
-        assert.equal(math.getPolynomial(left,{},[],extension).toString(),right)
+        var ret = math.getPolynomial(left,{},[],extension).toString()
+        assert.equal(ret,right)
       } catch (err) {
-        if (err instanceof Error) {
-          console.log(err.stack);
-        } else {
-          console.log(new Error(err));
+        throwAssertionError(err)
+        try  {
+          var mess=typeof err==="string"  ? err : err.message; 
+          assert.equal(mess,right); 
+        } catch (err) {   
+          throwAssertionError(err)
         }
-        throw err;
       }
     } // getPolynomialAndCompareError
 
@@ -146,14 +172,16 @@ describe('rationalize', function() {
     function getPolynomialAndCompareCte(left, right, extension) {
       try {
         extension = !! extension;
-        assert.equal(math.getPolynomial(left,{},[],extension).toString().replace(/ /g,''),right)
+        var ret=math.getPolynomial(left,{},[],extension).toString().replace(/ /g,''); 
+        assert.equal(ret,right)
       } catch (err) {
-        if (err instanceof Error) {
-          console.log(err.stack);
-        } else {
-          console.log(new Error(err));
-        }
-        throw err;
+        throwAssertionError(err);
+        try  {
+          var mess=typeof err==="string"  ? err : err.message; 
+          assert.equal(mess,right); 
+        } catch (err) {   
+          throwAssertionError(err);
+        } 
       }
     } // getPolynomialAndCompareCte
 
@@ -162,21 +190,23 @@ describe('rationalize', function() {
       var varNames = [];
       if (scope===undefined) scope={};
       try {
-        assert.equal(math.getPolynomial(left,scope,varNames,extension).toString().replace(/ /g,''),right);
+        var ret=math.getPolynomial(left,scope,varNames,extension).toString().replace(/ /g,''); 
+        assert.equal(ret,right);
         assert.equal(varNames.join(","),checkVars);
       } catch (err) {
-        if (err instanceof Error) {
-          console.log(err.stack);
-        } else {
-          console.log(new Error(err));
+        throwAssertionError(err);
+        try  {
+          var mess=typeof err==="string"  ? err : err.message; 
+          assert.equal(mess,right); 
+        } catch (err) {   
+          throwAssertionError(err);
         }
-        throw err;
       }
     } // getPolynomialAndCompareExpr
 
 
     it('Invalid expression', function() {
-      getPolynomialAndCompareError('(x*/2)','Invalid expression: Value expected (char 4)');   
+      getPolynomialAndCompareError('(x*/2)','Value expected (char 4)');   
     });
     
     it('Valid expression but not appropriate', function() {
@@ -215,8 +245,9 @@ describe('rationalize', function() {
 
   })  // Describe getPolynomial
 
-
+///////////////////// numerator and denominator ///////////////////////
   describe('numerator and denominator', function() {
+
     function fractionPartAndCompareExpr(func, left, right) {
       try {
         assert.equal(func(left).toString().replace(/ /g,''),right)
@@ -243,3 +274,4 @@ describe('rationalize', function() {
   })  // Describe numerator and denominator
 
 })  // Describe rationalize
+
