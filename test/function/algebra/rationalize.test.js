@@ -2,7 +2,6 @@
 
 var assert = require('assert');
 var math = require('../../../index'); 
-var m=math;    
 
 // **********************************
 //         throwAssertionError
