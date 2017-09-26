@@ -1,12 +1,11 @@
 'use strict';
 
 var assert = require('assert');
-
 var math = require('../../../index');  // Github
 // var math = require('./poly.js')                   // Local computer
 
 var m=math;    // GitHub
-// var m=require('mathjs') // Local computer
+//var m=require('mathjs') // Local computer
 
 
 // **********************************
@@ -30,13 +29,11 @@ function throwAssertionError(err) {
 ///////////////////// rationalize ///////////////////////
 describe('rationalize', function() {
   this.timeout(15000);
-
-  function rationalizeAndCompareError(left, right, adic) {
+  
+  function rationalizeAndCompareError(left, right, scope) {
     try {
-      adic = !! adic
-      var ret = adic 
-                   ? math.rationalize(left,adic).toString()
-                   : math.rationalize(left).toString();
+      if (scope===undefined) scope={};
+      var ret = math.rationalize(left,adic).toString()
       assert.equal(ret,right);
     } catch (err) {
         throwAssertionError(err)
@@ -50,15 +47,24 @@ describe('rationalize', function() {
   } // rationalizeAndCompareError
 
 
-  function rationalizeAndCompareExpr(left, right) {
+  function rationalizeAndCompareExpr(left, right, scope, varRight, coeffRight) {
     try {
-      var ret = math.rationalize(left).toString().replace(/ /g,'');
-      assert.equal(ret,right);
+      if (scope===undefined) scope={};
+      var retRationalize = math.rationalize(left,scope,true)
+      var expr = retRationalize.expression.toString().replace(/ /g,'');
+      assert.equal(expr,right);
+      if (arguments.length>=4)
+         assert.equal(retRationalize.variables.join(",")===varRight);
+      if (arguments.length===5)
+         assert.equal(retRationalize.coefficients.join(",")===coeffRight);
     } catch (err) {
       throwAssertionError(err)
       try  {
         var mess=typeof err==="string"  ? err : err.message; 
-        assert.equal(mess,right); 
+        if ( (typeof err==="object") && (err instanceof TypeError) )
+          assert.equal("TypeError",right); 
+        else 
+          assert.equal(mess,right); 
       } catch (err) {   
         throwAssertionError(err)
       }
@@ -112,6 +118,16 @@ describe('rationalize', function() {
     rationalizeAndCompareExpr('-4x^4+3x^2-2x','-4*x^4+3*x^2-2*x');
   });
 
+  it('testing additional parameters', function() {
+    var variables = [];
+    var coefficients= [];
+    rationalizeAndCompareExpr('x+x+x+y','3*x+1',{y:1});
+    rationalizeAndCompareExpr('x+x+x+y','3*x+y',{});
+    rationalizeAndCompareExpr('x+x+x+y','3*x+y',{},'x,y');
+    rationalizeAndCompareExpr('-2+5x^2','5*x^2-2',{},'x','-2,0,5');
+  });
+
+
   it('processing simple and reducible expressions', function() {
     rationalizeAndCompareExpr('x+x+x','3*x');
     rationalizeAndCompareExpr('x-x','0');
@@ -139,7 +155,7 @@ describe('rationalize', function() {
     rationalizeAndCompareExpr('(2x+1)^3/(x-2)^3','(8*x^3+12*x^2+6*x+1)/(x^3-6*x^2+12*x-8)');
   });
 
-  it('processing power expressions', function() {
+  it('processing tougher expressions', function() {
     rationalizeAndCompareExpr('2x/(x+2) - x/(x+1)','x^2/(x^2+3*x+2)');
     rationalizeAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3','(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)');
     rationalizeAndCompareExpr('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )',
@@ -149,14 +165,15 @@ describe('rationalize', function() {
   });
 
 
-///////////////////// getPolynomial ///////////////////////
-  describe('getPolynomial', function() {
+///////////////////// polynomial ///////////////////////
+  describe('polynomial', function() {
 
-    function getPolynomialAndCompareError(left, right, extension) {
+    function polynomialAndCompareError(left, right, extension) {
       try {
         extension = !! extension;
-        var ret = math.getPolynomial(left,{},[],extension).toString()
-        assert.equal(ret,right)
+        var retPoly = math.polynomial(left,{},extension);
+        var expr = retPoly.expression.toString(); 
+        assert.equal(expr,right)
       } catch (err) {
         throwAssertionError(err)
         try  {
@@ -166,14 +183,15 @@ describe('rationalize', function() {
           throwAssertionError(err)
         }
       }
-    } // getPolynomialAndCompareError
+    } // polynomialAndCompareError
 
 
-    function getPolynomialAndCompareCte(left, right, extension) {
+    function polynomialAndCompareCte(left, right, extension) {
       try {
         extension = !! extension;
-        var ret=math.getPolynomial(left,{},[],extension).toString().replace(/ /g,''); 
-        assert.equal(ret,right)
+        var retPoly = math.polynomial(left,{},extension)
+        var expr = retPoly.expression.toString().replace(/ /g,''); 
+        assert.equal(expr,right)
       } catch (err) {
         throwAssertionError(err);
         try  {
@@ -183,16 +201,16 @@ describe('rationalize', function() {
           throwAssertionError(err);
         } 
       }
-    } // getPolynomialAndCompareCte
+    } // PolynomialAndCompareCte
 
 
-    function getPolynomialAndCompareExpr(left, right, extension, checkVars, scope) {
-      var varNames = [];
+    function polynomialAndCompareExpr(left, right, extension, checkVars, scope) {
       if (scope===undefined) scope={};
       try {
-        var ret=math.getPolynomial(left,scope,varNames,extension).toString().replace(/ /g,''); 
-        assert.equal(ret,right);
-        assert.equal(varNames.join(","),checkVars);
+        var retPoly = math.polynomial(left,scope,extension)
+        var expr = retPoly.expression.toString().replace(/ /g,''); 
+        assert.equal(expr,right);
+        assert.equal(retPoly.variables.join(","),checkVars);
       } catch (err) {
         throwAssertionError(err);
         try  {
@@ -202,76 +220,49 @@ describe('rationalize', function() {
           throwAssertionError(err);
         }
       }
-    } // getPolynomialAndCompareExpr
+    } // polynomialAndCompareExpr
 
 
     it('Invalid expression', function() {
-      getPolynomialAndCompareError('(x*/2)','Value expected (char 4)');   
+      polynomialAndCompareError('(x*/2)','Value expected (char 4)');   
     });
     
     it('Valid expression but not appropriate', function() {
-      getPolynomialAndCompareError('sin(x)+x','There is an unsolved function call');     
-      getPolynomialAndCompareError('x^2.5 - 2*x + 3','There is a non-integer exponent'); 
-      getPolynomialAndCompareError('a=2','Invalid polynomial expression');  
+      polynomialAndCompareError('sin(x)+x','There is an unsolved function call');     
+      polynomialAndCompareError('x^2.5 - 2*x + 3','There is a non-integer exponent'); 
+      polynomialAndCompareError('a=2','Invalid polynomial expression');  
     });
 
     it('Divide in expression can be accept or not', function() {
-      getPolynomialAndCompareError('(x+2)/(x % 2)','Operator / invalid in polynomial expression');
-      getPolynomialAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression',true);
+      polynomialAndCompareError('(x+2)/(x % 2)','Operator / invalid in polynomial expression');
+      polynomialAndCompareError('(x+2)/(x % 2)','Operator % invalid in polynomial expression',true);
     });
 
     it('Constant expression', function() {
-      getPolynomialAndCompareCte('1^2 + 20 + 3','24');
+      polynomialAndCompareCte('1^2 + 20 + 3','24');
     });
 
 
     it('2 variable expression', function() {
-      getPolynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+2*x*y+3',false,'x,y');   
+      polynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+2*x*y+3',false,'x,y');   
     });
 
     it('2 variable expression with scope', function() {
-      getPolynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+10*x+3',false,'x',{y:5});
-      getPolynomialAndCompareExpr('sin(y)+x','x+0.49999999999999994',false,'x',{y:m.PI/6})     
+      polynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+10*x+3',false,'x',{y:5});
+      polynomialAndCompareExpr('sin(y)+x','x+0.49999999999999994',false,'x',{y:m.PI/6})     
     });
 
     it('Miscelaneous  expressions', function() {
-      getPolynomialAndCompareExpr('x^2 + 2*x + 3','x^2+2*x+3',false,'x');
-      getPolynomialAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3',
+      polynomialAndCompareExpr('x^2 + 2*x + 3','x^2+2*x+3',false,'x');
+      polynomialAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3',
         'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
       var no = m.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3');
-      getPolynomialAndCompareExpr(no,'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
+      polynomialAndCompareExpr(no,'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
     });
 
 
-  })  // Describe getPolynomial
+  })  // Describe polynomial
 
-///////////////////// numerator and denominator ///////////////////////
-  describe('numerator and denominator', function() {
-
-    function fractionPartAndCompareExpr(func, left, right) {
-      try {
-        assert.equal(func(left).toString().replace(/ /g,''),right)
-      } catch (err) {
-        if (err instanceof Error) {
-          console.log(err.stack);
-        } else {
-          console.log(new Error(err));
-        }
-        throw err;
-      }
-    } // fractionPartAndCompareExpr
-     
-
-    it('numerator', function() {
-      fractionPartAndCompareExpr(math.numerator,'2x/y - y/(x+1)','2*x^2-y^2+2*x')
-    });
-
-
-    it('denominator', function() {
-      fractionPartAndCompareExpr(math.denominator,'2x/y - y/(x+1)','x*y+y')
-    });
-
-  })  // Describe numerator and denominator
 
 })  // Describe rationalize
 
