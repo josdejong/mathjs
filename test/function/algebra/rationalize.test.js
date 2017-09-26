@@ -1,12 +1,8 @@
 'use strict';
 
 var assert = require('assert');
-var math = require('../../../index');  // Github
-// var math = require('./poly.js')                   // Local computer
-
-var m=math;    // GitHub
-//var m=require('mathjs') // Local computer
-
+var math = require('../../../index'); 
+var m=math;    
 
 // **********************************
 //         throwAssertionError
@@ -160,7 +156,7 @@ describe('rationalize', function() {
     rationalizeAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3','(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)');
     rationalizeAndCompareExpr('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )',
           '(-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/(-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)');
-    var no = m.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3'); 
+    var no = math.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3'); 
     rationalizeAndCompareExpr(no,'(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)');
   });
 
@@ -249,14 +245,14 @@ describe('rationalize', function() {
 
     it('2 variable expression with scope', function() {
       polynomialAndCompareExpr('x^2 + 2*x*y + 3','x^2+10*x+3',false,'x',{y:5});
-      polynomialAndCompareExpr('sin(y)+x','x+0.49999999999999994',false,'x',{y:m.PI/6})     
+      polynomialAndCompareExpr('sin(y)+x','x+0.49999999999999994',false,'x',{y:math.PI/6})     
     });
 
     it('Miscelaneous  expressions', function() {
       polynomialAndCompareExpr('x^2 + 2*x + 3','x^2+2*x+3',false,'x');
       polynomialAndCompareExpr('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3',
         'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
-      var no = m.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3');
+      var no = math.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3');
       polynomialAndCompareExpr(no,'x*2/((2*x-1)/(3*x+2))-x*5/((3*x+4)/(2*x^2-5))+3',true,'x');
     });
 
