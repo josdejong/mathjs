@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.16.4
+
+- Fixed many small issues in the embedded docs.  Thanks @Schnark.
+
+
 ## 2017-08-28, version 3.16.3
 
 - Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
