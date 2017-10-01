@@ -63,7 +63,7 @@ describe('csc', function() {
     approx.equal(csc(unit('45deg')), 1.41421356237310);
     approx.equal(csc(unit('-45deg')), -1.41421356237310);
 
-    assert(csc(unit(math.bignumber(45), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(csc(unit(math.bignumber(45), 'deg'))));
     approx.equal(csc(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
 
     approx.deepEqual(csc(unit(complex('1+i'), 'rad')), complex(0.621518017170428, -0.303931001628426));

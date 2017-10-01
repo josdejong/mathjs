@@ -50,12 +50,11 @@ var fiedler = [
 (function () {
   var math = require('../index');
   var A = math.matrix(fiedler);
-  var res;
 
-  suite.add(pad('matrix operations mathjs A+A'),    function () { res = math.add(A, A) });
-  suite.add(pad('matrix operations mathjs A*A'),    function () { res = math.multiply(A, A) });
-  suite.add(pad('matrix operations mathjs A\''),    function () { res = math.transpose(A) });
-  suite.add(pad('matrix operations mathjs det(A)'), function () { res = math.det(A) });
+  suite.add(pad('matrix operations mathjs A+A'),    function () { return math.add(A, A) });
+  suite.add(pad('matrix operations mathjs A*A'),    function () { return math.multiply(A, A) });
+  suite.add(pad('matrix operations mathjs A\''),    function () { return math.transpose(A) });
+  suite.add(pad('matrix operations mathjs det(A)'), function () { return math.det(A) });
 })();
 
 // sylvester
@@ -63,10 +62,10 @@ var fiedler = [
   var sylvester = require('sylvester');
   var A = sylvester.Matrix.create(fiedler);
 
-  suite.add(pad('matrix operations sylvester A+A'),    function () { A.add(A) });
-  suite.add(pad('matrix operations sylvester A*A'),    function () { A.multiply(A) });
-  suite.add(pad('matrix operations sylvester A\''),    function () { A.transpose() });
-  suite.add(pad('matrix operations sylvester det(A)'), function () { A.det() });
+  suite.add(pad('matrix operations sylvester A+A'),    function () { return A.add(A) });
+  suite.add(pad('matrix operations sylvester A*A'),    function () { return A.multiply(A) });
+  suite.add(pad('matrix operations sylvester A\''),    function () { return A.transpose() });
+  suite.add(pad('matrix operations sylvester det(A)'), function () { return A.det() });
 })();
 
 // numericjs
@@ -74,10 +73,10 @@ var fiedler = [
   var numeric = require('numericjs');
   var A = fiedler;
 
-  suite.add(pad('matrix operations numericjs A+A'),    function () { numeric.add(A, A) });
-  suite.add(pad('matrix operations numericjs A*A'),    function () { numeric.dot(A, A) });
-  suite.add(pad('matrix operations numericjs A\''),    function () { numeric.transpose(A) });
-  suite.add(pad('matrix operations numericjs det(A)'), function () { numeric.det(A) });
+  suite.add(pad('matrix operations numericjs A+A'),    function () { return numeric.add(A, A) });
+  suite.add(pad('matrix operations numericjs A*A'),    function () { return numeric.dot(A, A) });
+  suite.add(pad('matrix operations numericjs A\''),    function () { return numeric.transpose(A) });
+  suite.add(pad('matrix operations numericjs det(A)'), function () { return numeric.det(A) });
 })();
 
 // ndarray
@@ -92,14 +91,21 @@ var fiedler = [
   var A = pack(fiedler);
   var B = zeros([25, 25]);
 
-  suite.add(pad('matrix operations ndarray A+A'), function () { ops.add(B, A, A) });
-  suite.add(pad('matrix operations ndarray A*A'), function () { gemm(B, A, A) });
-  suite.add(pad('matrix operations ndarray A\''), function () { ops.assign(B, A); B.transpose(1, 0); });
-  suite.add(pad('matrix operations ndarray det(A)'), function () { det(A) });
+  suite.add(pad('matrix operations ndarray A+A'), function () { return ops.add(B, A, A) });
+  suite.add(pad('matrix operations ndarray A*A'), function () { return gemm(B, A, A) });
+  suite.add(pad('matrix operations ndarray A\''), function () { return ops.assign(B, A); B.transpose(1, 0); });
+  suite.add(pad('matrix operations ndarray det(A)'), function () { return det(A) });
 })();
+
+var durations = []
 
 suite
     .on('cycle', function(event) {
+      var benchmark = event.target
       console.log(String(event.target));
+      durations.push(benchmark.name + ' avg duration per operation: ' + Math.round(benchmark.stats.mean * 1e6) + ' microseconds');
     })
     .run();
+
+console.log();
+console.log(durations.join('\n'));

@@ -78,7 +78,7 @@ describe('sec', function() {
     approx.equal(sec(unit('45deg')), 1.41421356237310);
     approx.equal(sec(unit('-45deg')), 1.41421356237310);
 
-    assert(sec(unit(math.bignumber(45), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(sec(unit(math.bignumber(45), 'deg'))));
     approx.equal(sec(unit(math.bignumber(45), 'deg')).toNumber(), 1.41421356237310);
 
     approx.deepEqual(sec(unit(complex('1+i'), 'rad')), complex(0.498337030555187, 0.591083841721045));

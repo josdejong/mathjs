@@ -1,6 +1,41 @@
 # History
 
 
+## not yet released, version 3.16.4
+
+- Fixed many small issues in the embedded docs.  Thanks @Schnark.
+
+
+## 2017-08-28, version 3.16.3
+
+- Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
+- Fixed #933: function `simplify` reordering operations. Thanks @firepick1.
+- Fixed #930: function `isNaN` returning wrong result for complex 
+  numbers having just one of their parts (re/im) being `NaN`.
+- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
+
+
+## 2017-08-20, version 3.16.2
+
+- Fixed #924: a regression in `simplify` not accepting the signature
+  `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
+- Fixed missing parenthesis when stringifying expressions containing
+  implicit multiplications (see #922). Thanks @FSMaxB.
+
+
+## 2017-08-12, version 3.16.1
+
+- For security reasons, type checking is now done in a more strict
+  way using functions like `isComplex(x)` instead of duck type checking
+  like `x && x.isComplex === true`.
+- Fixed #915: No access to property "name".
+- Fixed #901: Simplify units when calling `unit.toNumeric()`.
+  Thanks @AlexanderBeyn.
+- Fixed `toString` of a parsed expression tree containing an
+  immediately invoked function assignment not being wrapped in
+  parenthesis (for example `(f(x) = x^2)(4)`).
+
+
 ## 2017-08-06, version 3.16.0
 
 - Significant performance improvements in `math.simplify`.

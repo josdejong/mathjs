@@ -53,7 +53,7 @@ describe('csch', function() {
     approx.equal(csch(unit('90deg')), 0.4345372080947);
     approx.equal(csch(unit('-45deg')), -1.1511838709208);
 
-    assert(csch(unit(math.bignumber(90), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(csch(unit(math.bignumber(90), 'deg'))));
     approx.equal(csch(unit(math.bignumber(90), 'deg')).toNumber(), 0.4345372080947);
 
     approx.deepEqual(csch(unit(complex('2 + i'), 'rad')), complex(0.14136302161241, -0.22837506559969));
