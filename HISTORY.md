@@ -3,6 +3,8 @@
 
 ## not yet released, version 3.16.4
 
+- Fixed #948, #949: function `simplify` returning wrong results or 
+  running into an infinite recursive loop. Thanks @ericman314.
 - Fixed many small issues in the embedded docs.  Thanks @Schnark.
 
 

@@ -149,6 +149,16 @@ describe('simplify', function() {
     simplifyAndCompare('x*2*x', '2*x^2');
   });
 
+  it('should not run into an infinite recursive loop', function () {
+    simplifyAndCompare('2n - 1', '2 * n - 1');
+    simplifyAndCompare('16n - 1', '16 * n - 1');
+    simplifyAndCompare('16n / 1', '16 * n');
+    simplifyAndCompare('8 / 5n', 'n * 8 / 5');
+    simplifyAndCompare('8n - 4n', '4 * n');
+    simplifyAndCompare('8 - 4n', '8 - 4 * n');
+    simplifyAndCompare('8 - n', '8 - n');
+  });
+
   it('should handle non-existing functions like a pro', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
   });
