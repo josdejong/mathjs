@@ -149,6 +149,12 @@ describe('simplify', function() {
     simplifyAndCompare('x*2*x', '2*x^2');
   });
 
+  it('should handle nested exponentiation', function() {
+    simplifyAndCompare('(x^2)^3', 'x^6');
+    simplifyAndCompare('(x^y)^z', 'x^(y*z)');
+    simplifyAndCompare('8 * x ^ 9 + 2 * (x ^ 3) ^ 3', '10 * x ^ 9');
+  });
+
   it('should not run into an infinite recursive loop', function () {
     simplifyAndCompare('2n - 1', '2 * n - 1');
     simplifyAndCompare('16n - 1', '16 * n - 1');
