@@ -12,7 +12,7 @@ File: [printing_html.html](printing_html.html)
 <head>
 	<title>math.js | printing HTML</title>
 
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.4/math.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.16.5/math.min.js"></script>
 
 	<style>
 		body {

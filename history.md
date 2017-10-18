@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20171018-version-3165">2017-10-18, version 3.16.5 <a href="#20171018-version-3165" title="Permalink">#</a></h2>
+
+- Fixed #954: Functions `add` and `multiply` not working when
+  passing three or more arrays or matrices.
+
+
 <h2 id="20171001-version-3164">2017-10-01, version 3.16.4 <a href="#20171001-version-3164" title="Permalink">#</a></h2>
 
 - Fixed #948, #949: function `simplify` returning wrong results or 
