@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 3.16.5
+
+- Fixed #954: Functions `add` and `multiply` not working when
+  passing three or more arrays or matrices.
+
+
 ## 2017-10-01, version 3.16.4
 
 - Fixed #948, #949: function `simplify` returning wrong results or 
