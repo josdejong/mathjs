@@ -881,6 +881,14 @@ describe('multiply', function() {
     it ('should multiply more than two arguments', function () {
       assert.deepEqual(multiply(2, 3, 4), 24);
       assert.deepEqual(multiply(2, 3, [5,6]), [30,36]);
+
+      assert.deepEqual(multiply([[2,2],[2,2]], [[3,3],[3,3]], [[4,4],[4,4]]), [[96,96],[96,96]]);
+      assert.deepEqual(multiply([[2,2],[2,2]], [[3,3],[3,3]], 4), [[48,48],[48,48]]);
+      assert.deepEqual(multiply([[2,2],[2,2]], 3, 4), [[24,24],[24,24]]);
+
+      assert.deepEqual(multiply(math.matrix([[2,2],[2,2]]), math.matrix([[3,3],[3,3]]), math.matrix([[4,4],[4,4]])), math.matrix([[96,96],[96,96]]));
+      assert.deepEqual(multiply(math.matrix([[2,2],[2,2]]), math.matrix([[3,3],[3,3]]), 4), math.matrix([[48,48],[48,48]]));
+      assert.deepEqual(multiply(math.matrix([[2,2],[2,2]]), 3, 4), math.matrix([[24,24],[24,24]]));
     });
 
   });

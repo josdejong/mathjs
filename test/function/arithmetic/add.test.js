@@ -231,6 +231,14 @@ describe('add', function() {
     it ('should add more than two arguments', function () {
       assert.deepEqual(add(2, 3, 4), 9);
       assert.deepEqual(add(2, 3, [5,6]), [10,11]);
+
+      assert.deepEqual(add([1,1], [2,2], [3,3]), [6, 6]);
+      assert.deepEqual(add([1,1], [2,2], 3), [6, 6]);
+      assert.deepEqual(add([1,1], 2, 3), [6, 6]);
+
+      assert.deepEqual(add(math.matrix([1,1]), math.matrix([2,2]), math.matrix([3,3])), math.matrix([6, 6]));
+      assert.deepEqual(add(math.matrix([1,1]), math.matrix([2,2]), 3), math.matrix([6, 6]));
+      assert.deepEqual(add(math.matrix([1,1]), 2, 3), math.matrix([6, 6]));
     });
 
   });
