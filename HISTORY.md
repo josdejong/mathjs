@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.16.5
+## 2017-10-18, version 3.16.5
 
 - Fixed #954: Functions `add` and `multiply` not working when
   passing three or more arrays or matrices.
