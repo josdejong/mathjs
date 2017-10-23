@@ -17,7 +17,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 - Contains a flexible expression parser.
 - Does symbolic computation.
 - Comes with a large set of built-in functions and constants.
-- Has no dependencies. Runs on any JavaScript engine.
+- Runs on any JavaScript engine.
 - Can be used as a command line application as well.
 - Is easily extensible.
 - Open source.
