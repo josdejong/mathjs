@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 3.17.0
+
+- Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
+
+
 ## 2017-10-18, version 3.16.5
 
 - Fixed #954: Functions `add` and `multiply` not working when
