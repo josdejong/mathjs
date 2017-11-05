@@ -41,7 +41,7 @@ function objToStrings(obj) {
 
 ///////////////////// rationalize ///////////////////////
 describe('rationalize', function() {
-  this.timeout(30000);
+  this.timeout(60000);
 
  it('invalid expression', function() {
     assert.throws(function () { math.rationalize('(x*/2)') }, /Value expected \(char 4\)/)
@@ -60,9 +60,8 @@ describe('rationalize', function() {
   });
 
   it('calling error', function() {
-    assert.throws(function () { math.rationalize('x^2 + 2*x + 3',23) }, /Unexpected type of argument in function rationalize \(expected: Object, actual: number, index: 1\)/)
+    assert.throws(function () { math.rationalize('x^2 + 2*x + 3',23) }, /Unexpected type of argument in function rationalize \(expected: boolean or Object, actual: number, index: 1\)/)
   });
-
 
   it('processing constant expressions', function() {
     assert.equal(stri(math.rationalize('-2+3+32-32')),'1');     
