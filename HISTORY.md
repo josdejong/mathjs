@@ -1,6 +1,17 @@
 # History
 
 
+## not yet released, version 3.18.0
+
+- Upgraded dependencies:
+  ```
+  decimal.js    7.2.3  →  7.3.0 
+  fraction.js   4.0.2  →  4.0.3 
+  tiny-emitter  2.0.0  →  2.0.2 
+  ```
+- Upgraded dev dependencies
+
+
 ## 2017-11-18, version 3.17.0
 
 - Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
