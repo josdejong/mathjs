@@ -5,6 +5,17 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20171118-version-3170">2017-11-18, version 3.17.0 <a href="#20171118-version-3170" title="Permalink">#</a></h2>
+
+- Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
+- Fixed a security issue in `typed-function` allowing arbitrary code execution
+  in the JavaScript engine by creating a typed function with JavaScript code
+  in the name. Thanks Masato Kinugawa.
+- Fixed a security issue where forbidden properties like constructor could be
+  replaced by using unicode characters when creating an object. No known exploit,
+  but could possibly allow arbitrary code execution. Thanks Masato Kinugawa.
+
+
 <h2 id="20171018-version-3165">2017-10-18, version 3.16.5 <a href="#20171018-version-3165" title="Permalink">#</a></h2>
 
 - Fixed #954: Functions `add` and `multiply` not working when
