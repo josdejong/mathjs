@@ -85,6 +85,9 @@ describe ('customs', function () {
 
       // non existing method
       assert.equal(customs.isSafeMethod(matrix, 'nonExistingMethod'), false);
+
+      // method with unicode chars
+      assert.equal(customs.isSafeMethod(matrix, 'co\u006Estructor'), false);
     });
 
   });
@@ -113,6 +116,8 @@ describe ('customs', function () {
       // non existing property
       assert.equal(customs.isSafeProperty(object, 'bar'), true);
 
+      // property with unicode chars
+      assert.equal(customs.isSafeProperty(object, 'co\u006Estructor'), false);
     });
 
     it ('should test inherited properties on plain objects ', function () {

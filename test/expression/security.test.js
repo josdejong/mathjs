@@ -83,6 +83,23 @@ describe('security', function () {
     }, /Error: No access to property "bind/);
   })
 
+  it ('should not allow disguising forbidden properties with unicode characters', function () {
+    var scope = {
+      a: {}
+    };
+
+    assert.throws(function () { math.eval('a.co\u006Estructor', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a["co\\u006Estructor"]', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a.constructor', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a.constructor = 2', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a["constructor"] = 2', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a["co\\u006Estructor"] = 2', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a = {"constructor": 2}', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a = {constructor: 2}', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a = {"co\\u006Estructor": 2}', scope); }, /Error: No access to property "constructor"/);
+    assert.throws(function () { math.eval('a = {co\u006Estructor: 2}', scope); }, /Error: No access to property "constructor"/);
+  })
+
   it ('should not allow calling Function via imported, overridden function', function () {
     assert.throws(function () {
       var math2 = math.create();

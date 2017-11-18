@@ -7,6 +7,9 @@
 - Fixed a security issue in `typed-function` allowing arbitrary code execution
   in the JavaScript engine by creating a typed function with JavaScript code
   in the name. Thanks Masato Kinugawa.
+- Fixed a security issue where forbidden properties like constructor could be
+  replaced by using unicode characters when creating an object. No known exploit,
+  but could possibly allow arbitrary code execution. Thanks Masato Kinugawa.
 
 
 ## 2017-10-18, version 3.16.5
