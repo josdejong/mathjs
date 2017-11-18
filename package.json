@@ -115,10 +115,10 @@
     "pad-right": "0.2.2",
     "q": "1.5.1",
     "sylvester": "0.0.21",
-    "tar": "4.0.2",
+    "tar": "2.2.1",
     "uglify-js": "2.7.5",
     "underscore": "1.8.3",
-    "webpack": "3.8.1",
+    "webpack": "2.6.1",
     "zeros": "1.0.0"
   },
   "main": "./index",
