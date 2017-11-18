@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 3.17.0
+## 2017-11-18, version 3.17.0
 
 - Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
 - Fixed a security issue in `typed-function` allowing arbitrary code execution
