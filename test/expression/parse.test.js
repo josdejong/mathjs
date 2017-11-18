@@ -812,6 +812,13 @@ describe('parse', function() {
       assert.equal(obj.f(2), 4);
     });
 
+    it('should not parse a function assignment in an accessor node', function () {
+      assert.throws(function () {
+        var scope = {}
+        var obj = parseAndEval('a["b"](x)=x^2', scope);
+      }, /SyntaxError: Invalid left hand side of assignment operator =/)
+    });
+
     it('should parse an object containing a variable assignment', function () {
       var scope = {};
       assert.deepEqual(parseAndEval('{f: a=42}', scope), {f: 42});

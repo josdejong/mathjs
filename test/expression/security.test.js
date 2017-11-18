@@ -288,6 +288,24 @@ describe('security', function () {
     }, /Undefined symbol Chain/);
   })
 
+  it ('should not allow passing a function name containg bad contents', function () {
+    // underlying issues where:
+    // the input '[]["fn"]()=0'   
+    // - defines a function in the root scope, but this shouldn't be allowed syntax
+    // - there is a typed function created which unsecurely evaluates JS code with the function name in it 
+    //   -> when the function name contains JS code it can be executed, example:
+    //
+    //         var fn = typed("(){}+console.log(`hacked...`);function a", { "": function () { } })
+
+    assert.throws(function () {
+      math.eval('[]["(){}+console.log(`hacked...`);function a"]()=0')
+    }, /SyntaxError: Invalid left hand side of assignment operator =/);
+
+    assert.throws(function () {
+      math.eval('{}["(){}+console.log(`hacked...`);function a"]()=0')
+    }, /SyntaxError: Invalid left hand side of assignment operator =/);
+  })
+
   it ('should allow calling functions on math', function () {
     assert.equal(math.eval('sqrt(4)'), 2);
   })

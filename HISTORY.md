@@ -4,6 +4,9 @@
 ## not yet released, version 3.17.0
 
 - Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
+- Fixed a security issue in `typed-function` allowing arbitrary code execution
+  in the JavaScript engine by creating a typed function with JavaScript code
+  in the name. Thanks Masato Kinugawa.
 
 
 ## 2017-10-18, version 3.16.5

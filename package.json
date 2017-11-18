@@ -93,7 +93,7 @@
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.0",
-    "typed-function": "0.10.5"
+    "typed-function": "0.10.6"
   },
   "devDependencies": {
     "benchmark": "2.1.4",
