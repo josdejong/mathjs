@@ -20,7 +20,7 @@ describe('ArrayNode', function() {
     assert.equal(b.type, 'ArrayNode');
   });
 
-  it ('should have isArrayNode', function () {
+  it ('should have property isArrayNode', function () {
     var node = new ArrayNode([]);
 
     assert(node.isArrayNode);

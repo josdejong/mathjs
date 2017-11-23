@@ -1,5 +1,74 @@
 # History
 
+
+## 2017-10-18, version 3.16.5
+
+- Fixed #954: Functions `add` and `multiply` not working when
+  passing three or more arrays or matrices.
+
+
+## 2017-10-01, version 3.16.4
+
+- Fixed #948, #949: function `simplify` returning wrong results or 
+  running into an infinite recursive loop. Thanks @ericman314.
+- Fixed many small issues in the embedded docs.  Thanks @Schnark.
+
+
+## 2017-08-28, version 3.16.3
+
+- Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
+- Fixed #933: function `simplify` reordering operations. Thanks @firepick1.
+- Fixed #930: function `isNaN` returning wrong result for complex 
+  numbers having just one of their parts (re/im) being `NaN`.
+- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
+
+
+## 2017-08-20, version 3.16.2
+
+- Fixed #924: a regression in `simplify` not accepting the signature
+  `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
+- Fixed missing parenthesis when stringifying expressions containing
+  implicit multiplications (see #922). Thanks @FSMaxB.
+
+
+## 2017-08-12, version 3.16.1
+
+- For security reasons, type checking is now done in a more strict
+  way using functions like `isComplex(x)` instead of duck type checking
+  like `x && x.isComplex === true`.
+- Fixed #915: No access to property "name".
+- Fixed #901: Simplify units when calling `unit.toNumeric()`.
+  Thanks @AlexanderBeyn.
+- Fixed `toString` of a parsed expression tree containing an
+  immediately invoked function assignment not being wrapped in
+  parenthesis (for example `(f(x) = x^2)(4)`).
+
+
+## 2017-08-06, version 3.16.0
+
+- Significant performance improvements in `math.simplify`.
+  Thanks @firepick1.
+- Improved API for `math.simplify`, optionally pass a scope with
+  variables which are resolved, see #907. Thanks @firepick1.
+- Fixed #912: math.js didn't work on IE10 anymore (regression
+  since 3.15.0).
+
+
+## 2017-07-29, version 3.15.0
+
+- Added support for the dollar character `$` in symbol names (see #895).
+- Allow objects with prototypes as scope again in the expression parser,
+  this was disabled for security reasons some time ago. See #888, #899.
+  Thanks @ThomasBrierley.
+- Fixed #846: Issues in the functions `map`, `forEach`, and `filter`
+  when used in the expression parser:
+  - Not being able to use a function assignment as inline expression
+    for the callback function.
+  - Not being able to pass an inline expression as callback for `map`
+    and `forEach`.
+  - Index and original array/matrix not passed in `map` and `filter`.
+
+
 ## 2017-07-05, version 3.14.2
 
 - Upgraded to `fraction.js@4.0.2`

@@ -1,10 +1,11 @@
 {
   "name": "mathjs",
-  "version": "3.14.2",
+  "version": "3.16.5",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
     "Adam Kelly (https://github.com/adamisntdead)",
+    "Alexander Beyn (https://github.com/AlexanderBeyn)",
     "Andy Pan (https://github.com/andy0130tw)",
     "Bart Kiers (https://github.com/bkiers)",
     "Brett Jurgens (https://github.com/brettjurgens)",
@@ -29,6 +30,7 @@
     "Harsh Gupta (https://github.com/hgupta9)",
     "Huseyn Guliyev (https://github.com/husayt)",
     "Jim Garrison (https://github.com/garrison)",
+    "Karl Lew (https://github.com/firepick1)",
     "Kenan Yildirim (https://github.com/KenanY)",
     "Keunhong Park (https://github.com/void42)",
     "Kunal Vyas (https://github.com/kv-kunalvyas)",
@@ -37,6 +39,7 @@
     "Mathias Polligkeit (https://github.com/woylie)",
     "Max Bruckner (https://github.com/FSMaxB)",
     "Maxence Dalmais (https://github.com/maxired)",
+    "Michael M. (https://github.com/Schnark)",
     "Mitchel Kelonye (https://github.com/kelonye)",
     "mtraynham (https://github.com/mtraynham)",
     "Niels Heisterkamp (https://github.com/nheisterkamp)",

@@ -30,15 +30,16 @@ describe ('customs', function () {
       assert.equal(customs.isSafeMethod(object, 'foo'), false);
 
       // custom inherited method
-      var object = {};
-      object.foo = function () {};
-      object = Object.create(object);
-      assert.equal(customs.isSafeMethod(object, 'foo'), true);
+      var object = {
+        foo: function () {}
+      };
+      var object2 = Object.create(object);
+      assert.equal(customs.isSafeMethod(object2, 'foo'), true);
 
       // ghosted native method
-      var object = {};
-      object.toString = function () {};
-      assert.equal(customs.isSafeMethod(object, 'toString'), false);
+      var object3 = {};
+      object3.toString = function () {};
+      assert.equal(customs.isSafeMethod(object3, 'toString'), false);
 
     });
 
@@ -90,7 +91,7 @@ describe ('customs', function () {
 
   describe ('isSafeProperty', function () {
 
-    it ('plain objects', function () {
+    it ('should test properties on plain objects', function () {
       var object = {};
 
       /* From Object.prototype:
@@ -98,31 +99,42 @@ describe ('customs', function () {
           key => typeof ({})[key] !== 'function' && console.log(key))
       */
       assert.equal(customs.isSafeProperty(object, '__proto__'), false);
+      assert.equal(customs.isSafeProperty(object, 'constructor'), false);
 
       /* From Function.prototype:
         Object.getOwnPropertyNames(Function.prototype).forEach(
           key => typeof (function () {})[key] !== 'function' && console.log(key))
       */
       assert.equal(customs.isSafeProperty(object, 'length'), true);
-      assert.equal(customs.isSafeProperty(object, 'name'), false);
+      assert.equal(customs.isSafeProperty(object, 'name'), true);
       assert.equal(customs.isSafeProperty(object, 'arguments'), false);
       assert.equal(customs.isSafeProperty(object, 'caller'), false);
 
       // non existing property
       assert.equal(customs.isSafeProperty(object, 'bar'), true);
 
-      // custom inherited property
-      var object = {};
-      object.foo = true;
-      object = Object.create(object);
-      assert.equal(customs.isSafeProperty(object, 'foo'), true);
+    });
 
-      // ghosted native property
-      var array = [];
-      array = Object.create(array);
-      array.length = Infinity;
-      assert.equal(customs.isSafeProperty(array, 'length'), false);
+    it ('should test inherited properties on plain objects ', function () {
+      var object1 = {};
+      var object2 = Object.create(object1);
+      object1.foo = true;
+      object2.bar = true;
+      assert.equal(customs.isSafeProperty(object2, 'foo'), true);
+      assert.equal(customs.isSafeProperty(object2, 'bar'), true);
+      assert.equal(customs.isSafeProperty(object2, '__proto__'), false);
+      assert.equal(customs.isSafeProperty(object2, 'constructor'), false);
 
+      object2.foo = true; // override "foo" of object1
+      assert.equal(customs.isSafeProperty(object2, 'foo'), true);
+      assert.equal(customs.isSafeProperty(object2, 'constructor'), false);
+    });
+
+    it ('should test for ghosted native property', function () {
+      var array1 = [];
+      var array2 = Object.create(array1);
+      array2.length = Infinity;
+      assert.equal(customs.isSafeProperty(array2, 'length'), true);
     });
 
   });

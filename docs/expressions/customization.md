@@ -361,16 +361,16 @@ The `parse` function exposes the following test functions:
 The exact signature and implementation of these functions can be looked up in
 the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.md#constants-and-variables).
 
-For example, the `$` character is not supported by default. It can be enabled
+For example, the phone character <code>&#9742;</code> is not supported by default. It can be enabled
 by replacing the `isAlpha` function:
 
 ```js
 var isAlphaOriginal = math.expression.parse.isAlpha;
 math.expression.parse.isAlpha = function (c, cPrev, cNext) {
-  return isAlphaOriginal(c, cPrev, cNext) || (c === '$');
+  return isAlphaOriginal(c, cPrev, cNext) || (c === '\u260E');
 };
 
-// now we can use the $ character in expressions
-var result = math.eval('$foo', {$foo: 42}); // returns 42
+// now we can use the \u260E (phone) character in expressions
+var result = math.eval('\u260Efoo', {'\u260Efoo': 42}); // returns 42
 console.log(result);
 ```

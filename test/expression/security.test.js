@@ -194,7 +194,7 @@ describe('security', function () {
           'k(x)={map:j};' +
           'i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};' +
           'subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
-    }, /TypeError: Index must be an integer \(value: constructor\)/);
+    }, /TypeError: Unexpected type of argument in function subset \(expected: Index, actual: Object, index: 1\)/);
   })
 
   it ('should not allow using restricted properties via subset (2)', function () {
@@ -212,7 +212,7 @@ describe('security', function () {
   it ('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {
     assert.throws(function () {
       math.eval("badValue = {\"isNode\": true, \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
-    }, /Error: Cannot compile node: unknown type "undefined"/);
+    }, /TypeError: Callback function must return a Node/);
 
     assert.throws(function () {
       math.eval("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked...\')\")")
@@ -234,19 +234,19 @@ describe('security', function () {
   it ('should not allow creating a bad FunctionAssignmentNode', function () {
     assert.throws(function () {
       math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
-    }, /Error: No valid FunctionAssignmentNode/);
+    }, /TypeError: Callback function must return a Node/);
   })
 
   it ('should not allow creating a bad OperatorNode (1)', function () {
     assert.throws(function () {
       math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
-    }, /TypeError: No valid FunctionAssignmentNode/);
+    }, /TypeError: Callback function must return a Node/);
   })
 
   it ('should not allow creating a bad OperatorNode (2)', function () {
     assert.throws(function () {
       math.eval("parse(\"(0)\").map(eval(\"f(a,b,c)=d\",{d:{isNode:true,type:\"OperatorNode\",fn:\"__lookupGetter__\",args:{map:eval(\"f(a)=b\",{b:{join:eval(\"f(a)=\\\"1)||eval;}};//\\\"\")}})}}})).compile().eval()(\"console.log('hacked...')\")")
-    }, /TypeError: No valid OperatorNode/);
+    }, /TypeError: Node expected for parameter "content"/);
   })
 
   it ('should not allow creating a bad ConstantNode', function () {
@@ -258,7 +258,7 @@ describe('security', function () {
   it ('should not allow creating a bad ArrayNode', function () {
     assert.throws(function () {
       math.eval('g(x)="eval";f(x)=({join: g});fakeArrayNode={isNode: true, type: "ArrayNode", items: {map: f}};injectFakeArrayNode(child,path,parent)=path=="value"?fakeArrayNode:child;parse("a=3").map(injectFakeArrayNode).compile().eval()[1]("console.log(\'hacked...\')")')
-    }, /TypeError: No valid ArrayNode/);
+    }, /TypeError: Callback function must return a Node/);
   })
 
   it ('should not allow unescaping escaped double quotes', function () {

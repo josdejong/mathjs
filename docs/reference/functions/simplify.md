@@ -42,6 +42,8 @@ For more details on the theory, see:
 ```js
 simplify(expr)
 simplify(expr, rules)
+simplify(expr, rules, scope)
+simplify(expr, scope)
 ```
 
 ### Parameters
@@ -62,6 +64,7 @@ Node | Returns the simplified form of `expr`
 
 ```js
 math.simplify('2 * 1 * x ^ (2 - 1)');      // Node {2 * x}
+math.simplify('2 * 3 * x', {x: 4});        // Node {24}
 var f = math.parse('2 * 1 * x ^ (2 - 1)');
 math.simplify(f);                          // Node {2 * x}
 ```
