@@ -138,6 +138,7 @@ Function | Description
 [math.det(x)](functions/det.md) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.md) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.md) | Calculate the dot product of two vectors.
+[math.expm(x)](functions/expm.md) | Calculate the exponential of a matrix.
 [math.eye(n)](functions/eye.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.filter(x,&nbsp;test)](functions/filter.md) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.md) | Flatten a multi dimensional matrix into a single dimensional matrix.
