@@ -10,6 +10,7 @@
   tiny-emitter  2.0.0  →  2.0.2 
   ```
 - Upgraded dev dependencies
+- Fixed #975: a wrong example in the docs of lusolve.
 
 
 ## 2017-11-18, version 3.17.0
