@@ -47,6 +47,7 @@
     "Owen Versteeg (https://github.com/owenversteeg)",
     "Pavel Panchekha (https://github.com/pavpanchekha)",
     "Pat Grasso (https://github.com/patgrasso)",
+    "Paulo Buchsbaum (https://github.com/paulobuchsbaum)",
     "Pete Corey (https://github.com/pcorey)",
     "PJ Hampton (https://github.com/pjhampton )",
     "Retsam (https://github.com/Retsam)",
@@ -88,7 +89,7 @@
   ],
   "dependencies": {
     "complex.js": "2.0.4",
-    "decimal.js": "7.3.0",
+    "decimal.js": "7.4.0",
     "fraction.js": "4.0.3",
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
@@ -118,7 +119,7 @@
     "tar": "2.2.1",
     "uglify-js": "2.7.5",
     "underscore": "1.8.3",
-    "webpack": "2.6.1",
+    "webpack": "3.9.1",
     "zeros": "1.0.0"
   },
   "main": "./index",

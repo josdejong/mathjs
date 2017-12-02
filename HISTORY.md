@@ -3,9 +3,10 @@
 
 ## not yet released, version 3.18.0
 
+- Implemented function `rationalize`. Thanks @paulobuchsbaum.
 - Upgraded dependencies:
   ```
-  decimal.js    7.2.3  →  7.3.0 
+  decimal.js    7.2.3  →  7.4.0 
   fraction.js   4.0.2  →  4.0.3 
   tiny-emitter  2.0.0  →  2.0.2 
   ```
