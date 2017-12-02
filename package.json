@@ -119,7 +119,7 @@
     "tar": "2.2.1",
     "uglify-js": "2.7.5",
     "underscore": "1.8.3",
-    "webpack": "3.9.1",
+    "webpack": "2.6.1",
     "zeros": "1.0.0"
   },
   "main": "./index",

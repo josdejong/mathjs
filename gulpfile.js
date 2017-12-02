@@ -56,7 +56,7 @@ var webpackConfig = {
   ],
   plugins: [
     bannerPlugin,
-    new webpack.optimize.ModuleConcatenationPlugin()
+    // new webpack.optimize.ModuleConcatenationPlugin()
     // TODO: ModuleConcatenationPlugin seems not to work. https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b
   ],
   cache: true
