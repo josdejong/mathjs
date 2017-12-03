@@ -138,7 +138,14 @@ describe('rationalize', function() {
       coefficients:'', 
       denominator: null,
       expression:'3*x+y',
-      numerator: null,
+      numerator: '3*x+y',
+      variables:'x,y'
+    }); 
+    assert.deepEqual(objToStrings(math.rationalize('2x/y - y/(x+1)',{},true)),{
+      coefficients:'', 
+      denominator: 'x*y+y',
+      expression:'(2*x^2-y^2+2*x)/(x*y+y)',
+      numerator: '2*x^2-y^2+2*x',
       variables:'x,y'
     }); 
     assert.deepEqual(objToStrings(math.rationalize('-2+5x^2',{},true)), {
