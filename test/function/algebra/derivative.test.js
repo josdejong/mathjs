@@ -5,10 +5,10 @@ var OperatorNode = math.expression.node.OperatorNode;
 var derivative = math.derivative;
 
 describe('derivative', function() {
-  
+
   function derivativeWithoutSimplify (expr, value) {
     return math.derivative(expr, value, {simplify: false});
-  }  
+  }
 
   function compareString(left, right) {
     assert.equal(left.toString(), right.toString());
@@ -119,6 +119,8 @@ describe('derivative', function() {
     // d/dx(log(2x, 3x)) = ((2 * 1) / (2 * x) * log(3 * x) - log(2 * x) * (3 * 1) / (3 * x)) / log(3 * x) ^ 2 = (log(3x) - log(2x)) / (xlog(3x)^2)
     compareString(derivativeWithoutSimplify('log((2x), (3x))', 'x'), '((2 * 1) / (2 x) * log((3 x)) - log((2 x)) * (3 * 1) / (3 x)) / log((3 x)) ^ 2');
 
+    compareString(derivativeWithoutSimplify('log(x)', 'x'), '1 / x');
+
     compareString(derivativeWithoutSimplify('sin(2x)', 'x'), '2 * 1 * cos(2 x)');
     compareString(derivativeWithoutSimplify('cos(2x)', 'x'), '2 * 1 * -sin(2 x)');
     compareString(derivativeWithoutSimplify('tan(2x)', 'x'), '2 * 1 * sec(2 x) ^ 2');
@@ -144,7 +146,7 @@ describe('derivative', function() {
     compareString(derivativeWithoutSimplify('acsch((2x))', 'x'), '-(2 * 1) / (abs((2 x)) * sqrt((2 x) ^ 2 + 1))');
     compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)');
     compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / (2 x)');
-    
+
     compareString(derivativeWithoutSimplify('exp(2x)', 'x'), '2 * 1 * exp(2 x)');
   });
 
