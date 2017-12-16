@@ -41,7 +41,7 @@ var x2 = math.lusolve(f, [1, 2, 1, -1]);          // x2 = [[1], [1], [1/3], [-0.
 
 var a = [[-2, 3], [2, 1]];
 var b = [11, 9];
-var x = lusolve(a, b);  // [[-5.5], [20]]
+var x = math.lusolve(a, b);  // [[2], [5]]
 ```
 
 

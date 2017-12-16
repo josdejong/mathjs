@@ -1,16 +1,16 @@
 # History
 
 
-## not yet released, version 3.18.0
+## 2017-12-16, version 3.18.0
 
 - Implemented function `rationalize`. Thanks @paulobuchsbaum.
 - Upgraded dependencies:
   ```
-  decimal.js    7.2.3  →  7.4.0 
-  fraction.js   4.0.2  →  4.0.3 
+  decimal.js    7.2.3  →  9.0.1 (no breaking changes affecting mathjs) 
+  fraction.js   4.0.2  →  4.0.4 
   tiny-emitter  2.0.0  →  2.0.2 
   ```
-- Upgraded dev dependencies
+- Upgraded dev dependencies.
 - Fixed #975: a wrong example in the docs of lusolve.
 - Fixed #983: `pickRandom` returning an array instead of single value
   when input was an array with just one value. Clarified docs.
