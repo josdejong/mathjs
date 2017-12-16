@@ -1,3 +1,4 @@
+// @ts-nocheck
 var fs = require('fs'),
     gulp = require('gulp'),
     gutil = require('gulp-util'),
@@ -10,7 +11,7 @@ var ENTRY       = './index.js',
     VERSION     = './lib/version.js',
     FILE        = 'math.js',
     FILE_MIN    = 'math.min.js',
-    FILE_MAP    = 'math.map',
+    FILE_MAP    = 'math.min.map',
     DIST        = __dirname + '/dist',
     REF_SRC     = './lib/',
     REF_DEST    = './docs/reference/functions/',
@@ -63,7 +64,10 @@ var webpackConfig = {
 };
 
 var uglifyConfig = {
-  outSourceMap: FILE_MAP,
+  sourceMap: {
+    filename: FILE,
+    url: FILE_MAP
+  },
   output: {
     comments: /@license/
   }
@@ -94,7 +98,13 @@ gulp.task('minify', ['bundle'], function () {
   process.chdir(DIST);
 
   try {
-    var result = uglify.minify([FILE], uglifyConfig);
+    var result = uglify.minify({
+      'math.js': fs.readFileSync(FILE, "utf8")
+    }, uglifyConfig);
+
+    if (result.error) {
+      throw result.error
+    }
 
     fs.writeFileSync(FILE_MIN, result.code);
     fs.writeFileSync(FILE_MAP, result.map);
