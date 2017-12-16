@@ -14,6 +14,8 @@
 - Fixed #975: a wrong example in the docs of lusolve.
 - Fixed #983: `pickRandom` returning an array instead of single value
   when input was an array with just one value. Clarified docs.
+- Fixed #969: preven issues with yarn autoclean by renaming an
+  interally used folder "docs" to "embeddedDocs".
 
 
 ## 2017-11-18, version 3.17.0
