@@ -32,7 +32,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-array | An array of elements of the provided input array
+number &#124; Array | Returns a single random value from array when number is 1 or undefined. Returns an array with the configured number of elements when number is > 1.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>

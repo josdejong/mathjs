@@ -5,6 +5,23 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20171216-version-3180">2017-12-16, version 3.18.0 <a href="#20171216-version-3180" title="Permalink">#</a></h2>
+
+- Implemented function `rationalize`. Thanks @paulobuchsbaum.
+- Upgraded dependencies:
+  ```
+  decimal.js    7.2.3  →  9.0.1 (no breaking changes affecting mathjs) 
+  fraction.js   4.0.2  →  4.0.4 
+  tiny-emitter  2.0.0  →  2.0.2 
+  ```
+- Upgraded dev dependencies.
+- Fixed #975: a wrong example in the docs of lusolve.
+- Fixed #983: `pickRandom` returning an array instead of single value
+  when input was an array with just one value. Clarified docs.
+- Fixed #969: preven issues with yarn autoclean by renaming an
+  interally used folder "docs" to "embeddedDocs".
+
+
 <h2 id="20171118-version-3170">2017-11-18, version 3.17.0 <a href="#20171118-version-3170" title="Permalink">#</a></h2>
 
 - Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
