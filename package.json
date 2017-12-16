@@ -140,9 +140,9 @@
     "url": "https://github.com/josdejong/mathjs/issues"
   },
   "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "lib": "lib",
-    "test": "test"
+    "doc": "./docs",
+    "example": "./examples",
+    "lib": "./lib",
+    "test": "./test"
   }
 }
