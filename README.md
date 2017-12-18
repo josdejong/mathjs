@@ -113,7 +113,9 @@ To see the coverage results, open the generated report in your browser:
 
     ./coverage/lcov-report/index.html
 
+Automated cross browser testing for mathjs is generously provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a>
 
+<a href="https://www.browserstack.com" target="_blank"><img alt="BrowserStack" src="https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png"></a>
 
 
 ## License
