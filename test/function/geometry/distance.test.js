@@ -89,4 +89,27 @@ describe('distance', function() {
     assert.deepEqual(math.distance({pointX: 2, pointY: 3, pointZ: 1}, {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1}), 2.3204774044612857);
   });
 
+  it('should calculate the distance if coordinates are bignumbers', function() {
+    var bigmath = math.create({number: 'BigNumber', precision: 32});
+    var bigdistance = bigmath.distance;
+    var bignumber = bigmath.bignumber;
+
+    assert.deepEqual(bigmath.eval('distance([1, 2], [4, 6])'), bignumber(5));
+    assert.deepEqual(bigdistance([bignumber(1), bignumber(2)], [bignumber(4), bignumber(6)]), bignumber(5));
+    assert.deepEqual(bigdistance([bignumber(1), 2], [4, bignumber(6)]), bignumber(5));
+    assert.deepEqual(bigmath.eval('distance([3, 5], [10, 1])'), bignumber('8.0622577482985496523666132303038'));
+    assert.deepEqual(bigmath.eval('distance([1, 2, 3], [-2, -3, -4])'), bignumber('9.1104335791442988819456261046887'));
+    assert.deepEqual(bigmath.eval('distance({pointOneX: 0, pointOneY: 0}, {pointTwoX: 10, pointTwoY: 10})'), bignumber('14.142135623730950488016887242097'));
+    assert.deepEqual(bigmath.eval('distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 10})'), bignumber('3.4641016151377545870548926830117'));
+    assert.deepEqual(bigmath.eval('distance([[0,2],[-2,0],[0,2]])'), [ bignumber('2.8284271247461900976033774484194'), bignumber('0'), bignumber('2.8284271247461900976033774484194') ]);
+    assert.deepEqual(bigmath.eval('distance([[1,2,4],[1,2,6],[8,1,3]])'), [bignumber('2'), bignumber('7.1414284285428499979993998113673'), bignumber('7.6811457478686081757696870217314')]);
+    assert.deepEqual(bigmath.eval('distance([0.23, -0.1240], [-0.232, 13.292], [-0.34, 0.346])'), bignumber('10.658908662088362142660358292758'));
+    assert.deepEqual(bigmath.eval('distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8})'),
+      bignumber('2.7205493726247441306311612969564'));
+    assert.deepEqual(bigmath.eval('distance([0.1123, -0.242], [0.1316, -0.2421, 0.122135])'), bignumber('0.709482134734344383494644726006'));
+    assert.deepEqual(bigmath.eval('distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3})'), bignumber('11.535230316796386425693769698742'));
+    assert.deepEqual(bigmath.eval('distance([2, 3, 1], [1, 1, 2, 5, 0, 1])'), bignumber('2.3204774044612855517320588018918'));
+    assert.deepEqual(bigmath.eval('distance({pointX: 2, pointY: 3, pointZ: 1}, {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1})'),
+      bignumber('2.3204774044612855517320588018918'));
+  });
 });
