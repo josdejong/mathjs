@@ -50,6 +50,17 @@ describe('simplify', function() {
     simplifyAndCompare('3+2/4', '7/2');
   });
 
+  it('should simplify equations with different variables', function() {
+    simplifyAndCompare('-(x+y)', '-(x + y)');
+    simplifyAndCompare('-(x*y)', '-(x * y)');
+    simplifyAndCompare('-(x+y+x+y)', '-(2 * (y + x))');
+    simplifyAndCompare('(x-y)', 'x - y');
+    simplifyAndCompare('0+(x-y)', 'x - y');
+    simplifyAndCompare('-(x-y)', 'y - x');
+    simplifyAndCompare('-1 * (x-y)', 'y - x');
+    simplifyAndCompare('x + y + x + 2y', '3 * y + 2 * x');
+  });
+
   it('should simplify (-1)*n', function() {
     simplifyAndCompare('(-1)*4', '-4');
     simplifyAndCompare('(-1)*x', '-x');
