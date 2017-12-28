@@ -276,6 +276,7 @@ gulp.task('version', ['copy'], function (cb) {
         // replace version
         data = data.replace(/\(version [0-9]+\.[0-9]+\.[0-9]+(-SNAPSHOT)?\)/g, '(version ' + version() + ')');
         data = data.replace(/\/[0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)?\//g, '/' + version() + '/');
+        data = data.replace(/\/mathjs@[0-9]+\.[0-9]+\.[0-9]+?(-SNAPSHOT)?\//g, '/mathjs@' + version() + '/');
 
         // replace development size
         data = data.replace(/<span id="development-size">([\w\s]*)<\/span>/g,

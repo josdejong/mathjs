@@ -20,7 +20,7 @@ Math.js can be installed via various package managers:
       <td><pre class="highlight">npm install mathjs</pre></td>
     </tr>
     <tr>
-      <td><a href="http://bower.io/">bower</a></td>
+      <td><a href="http://bower.io/">bower</a> (deprecated)</td>
       <td><pre class="highlight">bower install mathjs</pre></td>
     </tr>
   </tbody>
@@ -31,7 +31,32 @@ When installed globally with [npm](https://npmjs.org/) (using the `-g` option), 
 
 <h1 id="download">Download <a href="#download" title="Permalink">#</a></h1>
 
-Math.js can be downloaded or linked from [cdnjs](http://cdnjs.com/):
+Math.js can be downloaded or linked from various content delivery networks:
+
+<table>
+  <thead>
+    <tr>
+      <th>CDN</th>
+      <th>Url</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>unpkg</td>
+      <td><a href="https://unpkg.com/mathjs@3.18.1/">https://unpkg.com/mathjs@3.18.1/</a></td>
+    </tr>
+    <tr>
+      <td>cdnjs</td>
+      <td><a href="https://cdnjs.com/libraries/mathjs">https://cdnjs.com/libraries/mathjs</a></td>
+    </tr>
+    <tr>
+      <td>jsDelivr</td>
+      <td><a href="https://www.jsdelivr.com/package/npm/mathjs">https://www.jsdelivr.com/package/npm/mathjs</a></td>
+    </tr>
+  </tbody>
+</table>
+
+Here some direct download links from [cdnjs](http://cdnjs.com/):
 
 <table class="download">
   <tr>
