@@ -25,11 +25,15 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 
 ## Usage
 
-Math.js can be installed using npm or bower, or by [downloading](http://mathjs.org/download.html) the library.
-The library can be used in both node.js and in the browser.
-See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial. To install math.js using npm:
+Math.js can be used in both node.js and in the browser.
+
+Install math.js using npm:
 
     npm install mathjs
+
+Or download mathjs via one of the CDN's listed on the downloads page: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;[http://mathjs.org/download.html](http://mathjs.org/download.html#download)
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
@@ -62,6 +66,9 @@ math.chain(3)
     .multiply(2)
     .done(); // 14
 ```
+
+See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial. 
+
 
 ## Browser support
 
