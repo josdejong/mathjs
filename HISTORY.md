@@ -1,5 +1,10 @@
 # History
 
+## 2017-12-28, version 3.18.1
+
+- Fixed #998: An issue with simplifying an expression containing a subtraction.
+  Thanks @firepick1.
+
 
 ## 2017-12-16, version 3.18.0
 
