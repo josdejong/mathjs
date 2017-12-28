@@ -27,7 +27,7 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 
 Math.js can be used in both node.js and in the browser.
 
-Install math.js using npm:
+Install math.js using [npm](https://www.npmjs.com/package/mathjs):
 
     npm install mathjs
 
