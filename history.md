@@ -4,6 +4,11 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20171228-version-3181">2017-12-28, version 3.18.1 <a href="#20171228-version-3181" title="Permalink">#</a></h2>
+
+- Fixed #998: An issue with simplifying an expression containing a subtraction.
+  Thanks @firepick1.
+
 
 <h2 id="20171216-version-3180">2017-12-16, version 3.18.0 <a href="#20171216-version-3180" title="Permalink">#</a></h2>
 
