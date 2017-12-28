@@ -33,9 +33,32 @@ describe('simplify', function() {
     simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', {x:7});
   });
 
+  it('should simplify exponents', function() {
+    // power rule
+    simplifyAndCompare('(x^2)^3', 'x^6');
+    simplifyAndCompare('2*(x^2)^3', '2*x^6');
+
+    // simplify exponent
+    simplifyAndCompare('x^(2+3)', 'x^5');
+
+    // right associative
+    simplifyAndCompare('x^2^3', 'x^8');
+  });
+
   it('should simplify rational expressions with no symbols to fraction', function() {
     simplifyAndCompare('3*4', '12');
     simplifyAndCompare('3+2/4', '7/2');
+  });
+
+  it('should simplify equations with different variables', function() {
+    simplifyAndCompare('-(x+y)', '-(x + y)');
+    simplifyAndCompare('-(x*y)', '-(x * y)');
+    simplifyAndCompare('-(x+y+x+y)', '-(2 * (y + x))');
+    simplifyAndCompare('(x-y)', 'x - y');
+    simplifyAndCompare('0+(x-y)', 'x - y');
+    simplifyAndCompare('-(x-y)', 'y - x');
+    simplifyAndCompare('-1 * (x-y)', 'y - x');
+    simplifyAndCompare('x + y + x + 2y', '3 * y + 2 * x');
   });
 
   it('should simplify (-1)*n', function() {
