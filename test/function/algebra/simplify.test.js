@@ -166,6 +166,12 @@ describe('simplify', function() {
     simplifyAndCompare('x-1-2x+2', '1-x');
   });
 
+  it('should collect like terms that are embedded in other terms', function() {
+    simplifyAndCompare('10 - (x - 2)', '12 - x');
+    simplifyAndCompare('x - (y + x)', '-y');
+    simplifyAndCompare('x - (y - (y - x))', '0');
+  });
+
   it('should collect separated like factors', function() {
     simplifyAndCompare('x*y*-x/(x^2)', '-y');
     simplifyAndCompare('x/2*x', 'x^2/2');
@@ -228,7 +234,7 @@ describe('simplify', function() {
 
   it('resolve() should substitute scoped constants', function() {
     assert.equal(
-        math.simplify.resolve(math.parse('x+y'), {x:1}).toString(), 
+        math.simplify.resolve(math.parse('x+y'), {x:1}).toString(),
         "1 + y"
     ); // direct
     simplifyAndCompare('x+y', 'x+y', {}); // operator
@@ -242,7 +248,7 @@ describe('simplify', function() {
     simplifyAndCompare('x+y', '6', {x:2,y:math.parse("x+x")});
     simplifyAndCompare('x+(y+2-1-1)', '6', {x:2,y:math.parse("x+x")}); // parentheses
     simplifyAndCompare('log(x+y)', String(Math.log(6)), {x:2,y:math.parse("x+x")}); // function
-    simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )', 
+    simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )',
         'combinations(ceil(0.9092974268256817 * y ), 2)', {x:-2});
 
     // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
