@@ -67,6 +67,12 @@ describe('derivative', function() {
     // With '-': d/dx(5x - x - 2) = 5*1 - 1 - 0 = 4
     compareString(derivativeWithoutSimplify('5x - x - 2', 'x'), '5 * 1 - 1 - 0');
 
+    var threeArgAddition = new OperatorNode('+', 'add', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')]);
+    compareString(derivativeWithoutSimplify(threeArgAddition, 'x'), '1 + 1 * cos(x) + 5 * 1');
+
+    var threeArgMultiplication = new OperatorNode('*', 'multiply', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')]);
+    compareString(derivativeWithoutSimplify(threeArgMultiplication, 'x'), '1 * sin(x) * 5 x + x * 1 * cos(x) * 5 x + x * sin(x) * 5 * 1');
+
 
     // d/dx(2*(x + x)) = 2*(1 + 1)
     compareString(derivativeWithoutSimplify('2(x + x)', 'x'), '2 * (1 + 1)');
