@@ -150,7 +150,7 @@ describe('ParenthesisNode', function() {
 
     var p = new math.expression.node.ParenthesisNode(c);
 
-    assert.equal(p.toString({parenthesis: 'all'}), '1');
+    assert.equal(p.toString({parenthesis: 'all'}), '(1)');
     assert.equal(p.toString({parenthesis: 'auto'}), '1');
   });
 
@@ -180,7 +180,7 @@ describe('ParenthesisNode', function() {
 
     var p = new math.expression.node.ParenthesisNode(c);
 
-    assert.equal(p.toTex({parenthesis: 'all'}), '1');
+    assert.equal(p.toTex({parenthesis: 'all'}), '\\left(1\\right)');
     assert.equal(p.toTex({parenthesis: 'auto'}), '1');
   });
 
