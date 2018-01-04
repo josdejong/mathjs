@@ -52,6 +52,8 @@ describe('derivative', function() {
   it('should take the derivative of a OperatorNodes with ConstantNodes', function() {
     compareString(derivativeWithoutSimplify('1 + 2', 'x'), '0');
     compareString(derivativeWithoutSimplify('-100^2 + 3*3/2 - 12', 'x'), '0');
+    var threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('7^4'), math.parse('123.124')]);
+    compareString(derivativeWithoutSimplify(threeArgMultiplyConstant, 'x'), 0);
   });
 
   it('should take the derivative of a OperatorNodes with SymbolNodes', function() {
@@ -59,6 +61,9 @@ describe('derivative', function() {
     compareString(derivativeWithoutSimplify('-4x', 'x'), '-4 * 1');
     // d/dx(+4x) = +4*1 = +4
     compareString(derivativeWithoutSimplify('+4x', 'x'), '+4 * 1');
+
+    var threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('x'), math.parse('sin(x)')]);
+    compareString(derivativeWithoutSimplify(threeArgMultiplyConstant, 'x'), '3 * (1 * sin(x) + x * 1 * cos(x))');
 
 
     // Linearity of differentiation
