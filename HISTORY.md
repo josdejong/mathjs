@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 3.19.0
+## 2018-01-06, version 3.19.0
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.
   Thanks @ovk. 
