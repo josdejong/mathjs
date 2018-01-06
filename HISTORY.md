@@ -4,6 +4,8 @@
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.
   Thanks @ovk. 
+- Improvements in function `simplify`: added a rule that allows combining 
+  of like terms in embedded quantities. Thanks @joelhoover. 
 
 
 ## 2017-12-28, version 3.18.1
