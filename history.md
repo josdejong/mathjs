@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180106-version-3190">2018-01-06, version 3.19.0 <a href="#20180106-version-3190" title="Permalink">#</a></h2>
+
+- Extended functions `distance` and `intersect` with support for BigNumbers.
+  Thanks @ovk. 
+- Improvements in function `simplify`: added a rule that allows combining 
+  of like terms in embedded quantities. Thanks @joelhoover. 
+
+
 <h2 id="20171228-version-3181">2017-12-28, version 3.18.1 <a href="#20171228-version-3181" title="Permalink">#</a></h2>
 
 - Fixed #998: An issue with simplifying an expression containing a subtraction.
