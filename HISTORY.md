@@ -1,5 +1,14 @@
 # History
 
+## not yet released, version 3.19.1
+
+- Fixed `simplify` evalution of `simplify` of functions with more than two 
+  arguments wrongly: `simplify('f(x, y, z)') evaluated to `f(f(x, y), z)`
+  instead of `f(x, y, z)`. Thanks @joelhoover.
+- Fixed `simplify` throwing an error in some cases when simplifying unknown
+  functions, for example `simplify('f(4)')`. Thanks @joelhoover.
+
+
 ## 2018-01-06, version 3.19.0
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.
