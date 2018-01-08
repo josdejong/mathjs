@@ -196,6 +196,8 @@ describe('simplify', function() {
 
   it('should handle non-existing functions like a pro', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
+    simplifyAndCompare('foo(1)', 'foo(1)');
+    simplifyAndCompare('myMultiArg(x, y, z, w)', 'myMultiArg(x, y, z, w)');
   });
 
   it ('should support custom rules', function() {
