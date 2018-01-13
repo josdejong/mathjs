@@ -1,7 +1,9 @@
 # History
 
-## not yet released, version 3.19.1
+## not yet released, version 3.20.0
 
+- Implement support for 3 or more arguments for operators `+` and `*` in
+  `derivative`. Thanks @HarrySarson. See #1002. 
 - Fixed `simplify` evalution of `simplify` of functions with more than two 
   arguments wrongly: `simplify('f(x, y, z)') evaluated to `f(f(x, y), z)`
   instead of `f(x, y, z)`. Thanks @joelhoover.
