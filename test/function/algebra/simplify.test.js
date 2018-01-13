@@ -82,6 +82,16 @@ describe('simplify', function() {
       assert.equal(result, "x + y - 1");
   });
 
+  it('should simplify convert minus and unary minus', function() {
+    // see https://github.com/josdejong/mathjs/issues/1013
+    assert.equal(math.simplify('0 - -1', {}).toString(), '1');
+    assert.equal(math.simplify('0 - -x', {}).toString(), 'x');
+    assert.equal(math.simplify('0----x', {}).toString(), 'x');
+    assert.equal(math.simplify('1 - -x', {}).toString(), 'x + 1');
+    assert.equal(math.simplify('0 - (-x)', {}).toString(), 'x');
+    assert.equal(math.simplify('-(-x)', {}).toString(), 'x');
+    assert.equal(math.simplify('0 - (x - y)', {}).toString(), 'y - x');
+  });
 
   it('should handle custom functions', function() {
     function doubleIt (x) { return x + x }

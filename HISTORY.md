@@ -9,6 +9,8 @@
   instead of `f(x, y, z)`. Thanks @joelhoover.
 - Fixed `simplify` throwing an error in some cases when simplifying unknown
   functions, for example `simplify('f(4)')`. Thanks @joelhoover.
+- Fixed #1013: `simplify` wrongly simplifing some expressions containing unary
+  minus, like `0 - -x`. Thanks @joelhoover.
 - Fixed an error in an example in the documentation of `xor`. Thanks @denisx.
 
 
