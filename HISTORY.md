@@ -7,6 +7,7 @@
   instead of `f(x, y, z)`. Thanks @joelhoover.
 - Fixed `simplify` throwing an error in some cases when simplifying unknown
   functions, for example `simplify('f(4)')`. Thanks @joelhoover.
+- Fixed an error in an example in the documentation of `xor`. Thanks @denisx.
 
 
 ## 2018-01-06, version 3.19.0
