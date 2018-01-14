@@ -4,6 +4,20 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180114-version-3200">2018-01-14, version 3.20.0 <a href="#20180114-version-3200" title="Permalink">#</a></h2>
+
+- Implement support for 3 or more arguments for operators `+` and `*` in
+  `derivative`. Thanks @HarrySarson. See #1002. 
+- Fixed `simplify` evalution of `simplify` of functions with more than two 
+  arguments wrongly: `simplify('f(x, y, z)') evaluated to `f(f(x, y), z)`
+  instead of `f(x, y, z)`. Thanks @joelhoover.
+- Fixed `simplify` throwing an error in some cases when simplifying unknown
+  functions, for example `simplify('f(4)')`. Thanks @joelhoover.
+- Fixed #1013: `simplify` wrongly simplifing some expressions containing unary
+  minus, like `0 - -x`. Thanks @joelhoover.
+- Fixed an error in an example in the documentation of `xor`. Thanks @denisx.
+
+
 <h2 id="20180106-version-3190">2018-01-06, version 3.19.0 <a href="#20180106-version-3190" title="Permalink">#</a></h2>
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.
