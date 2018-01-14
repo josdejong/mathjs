@@ -1,6 +1,6 @@
 # History
 
-## not yet released, version 3.20.0
+## 2018-01-14, version 3.20.0
 
 - Implement support for 3 or more arguments for operators `+` and `*` in
   `derivative`. Thanks @HarrySarson. See #1002. 
