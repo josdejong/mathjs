@@ -76,6 +76,40 @@ describe('simplify', function() {
     assert.equal(fsimplified.eval()(5), 0.9933071490757153);
   });
 
+  it('simplifyCore should handle different node types', function() {
+    var testSimplifyCore = function(expr, expected) {
+        var actual = math.simplify.simplifyCore(math.parse(expr)).toString();
+        assert.equal(actual, expected);
+    }
+    testSimplifyCore("5*x*3", "15 * x");
+    testSimplifyCore("5*x*3*x", "15 * x * x");
+
+    testSimplifyCore("x-0", "x");
+    testSimplifyCore("0-x", "-x");
+    testSimplifyCore("0-3", "-3");
+    testSimplifyCore("x+0", "x");
+    testSimplifyCore("0+x", "x");
+    testSimplifyCore("0*x", "0");
+    testSimplifyCore("x*0", "0");
+    testSimplifyCore("x*1", "x");
+    testSimplifyCore("1*x", "x");
+    testSimplifyCore("-(x)", "-x");
+    testSimplifyCore("0/x", "0");
+    testSimplifyCore("(1*x + y*0)*1+0", "x");
+    testSimplifyCore("sin(x+0)*1", "sin(x)");
+    testSimplifyCore("((x+0)*1)", "x");
+    testSimplifyCore("sin((x-0)*1+y*0)", "sin(x)");
+    testSimplifyCore("((x)*(y))", "(x * y)");
+    testSimplifyCore("((x)*(y))^1", "(x * y)");
+
+    // constant folding
+    testSimplifyCore("1+2", "3");
+    testSimplifyCore("2*3", "6");
+    testSimplifyCore("2-3", "-1");
+    testSimplifyCore("3/2", "1.5");
+    testSimplifyCore("3^2", "9");
+  });
+
   it('should simplifyCore convert +unaryMinus to subtract', function() {
       simplifyAndCompareEval('--2', '2');
       var result = math.simplify('x + y + a', [math.simplify.simplifyCore], {a: -1}).toString()
