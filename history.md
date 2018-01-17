@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180117-version-3201">2018-01-17, version 3.20.1 <a href="#20180117-version-3201" title="Permalink">#</a></h2>
+
+- Fixed #1018: `simplifyCore` failing in some cases with parentheses.
+  Thanks @firepick1.
+
+
 <h2 id="20180114-version-3200">2018-01-14, version 3.20.0 <a href="#20180114-version-3200" title="Permalink">#</a></h2>
 
 - Implement support for 3 or more arguments for operators `+` and `*` in

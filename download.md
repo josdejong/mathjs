@@ -43,7 +43,7 @@ Math.js can be downloaded or linked from various content delivery networks:
   <tbody>
     <tr>
       <td>unpkg</td>
-      <td><a href="https://unpkg.com/mathjs@3.20.0/">https://unpkg.com/mathjs@3.20.0/</a></td>
+      <td><a href="https://unpkg.com/mathjs@3.20.1/">https://unpkg.com/mathjs@3.20.1/</a></td>
     </tr>
     <tr>
       <td>cdnjs</td>
@@ -61,8 +61,8 @@ Here some direct download links from [cdnjs](http://cdnjs.com/):
 <table class="download">
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.0/math.js">
-        Development (version 3.20.0)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.js">
+        Development (version 3.20.1)
       </a>
     </td>
     <td>
@@ -71,8 +71,8 @@ Here some direct download links from [cdnjs](http://cdnjs.com/):
   </tr>
   <tr>
     <td>
-      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.0/math.min.js">
-        Production (version 3.20.0)
+      <a href="http://cdnjs.cloudflare.com/ajax/libs/mathjs/3.20.1/math.min.js">
+        Production (version 3.20.1)
       </a>
     </td>
     <td>
