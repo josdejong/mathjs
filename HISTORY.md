@@ -1,5 +1,11 @@
 # History
 
+## 2018-01-17, version 3.20.1
+
+- Fixed #1018: `simplifyCore` failing in some cases with parentheses.
+  Thanks @firepick1.
+
+
 ## 2018-01-14, version 3.20.0
 
 - Implement support for 3 or more arguments for operators `+` and `*` in
