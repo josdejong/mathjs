@@ -156,7 +156,7 @@ describe('Node', function() {
     var node = new Node();
     assert.throws(function () {
       node.compile()
-    }, /Cannot compile node: unknown type "Node"/);
+    }, /Error: Method _compile should be implemented by type Node/);
   });
 
   it ('should have an identifier', function () {

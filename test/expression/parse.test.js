@@ -1906,7 +1906,9 @@ describe('parse', function() {
         this.args.forEach(function (arg) {
           strArgs.push(arg.toString());
         });
-        return '"CustomNode(' + strArgs.join(', ') + ')"';
+        return function (scope, args, context) {
+          return 'CustomNode(' + strArgs.join(', ') + ')';
+        };
       };
       CustomNode.prototype.forEach = function (callback) {
         // we don't have childs

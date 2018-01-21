@@ -90,12 +90,9 @@ describe('ConstantNode', function() {
     assert.throws(function () { new ConstantNode('console.log("foo")', 'number').compile() }, /Invalid numeric value/)
   });
 
-  it ('should escape quotes in strings', function () {
-    assert.strictEqual( new ConstantNode('"+foo+"', 'string').compile().eval.toString(),
-        'function (scope) {    if (scope) _validateScope(scope);    scope = scope || {};    return "\\"+foo+\\"";  }')
-
-    assert.strictEqual( new ConstantNode('\\"escaped\\"', 'string').compile().eval.toString(),
-        'function (scope) {    if (scope) _validateScope(scope);    scope = scope || {};    return "\\"escaped\\"";  }')
+  it ('should leave quotes in strings as is (no escaping)', function () {
+    assert.strictEqual( new ConstantNode('"+foo+"', 'string').compile().eval(), '"+foo+"')
+    assert.strictEqual( new ConstantNode('\\"escaped\\"', 'string').compile().eval(), '\\"escaped\\"')
   });
 
   it ('should find a ConstantNode', function () {

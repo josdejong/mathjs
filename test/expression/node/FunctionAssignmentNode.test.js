@@ -151,7 +151,7 @@ describe('FunctionAssignmentNode', function() {
 
     var scope = {a: 2};
     var f = n.eval(scope);
-    assert.deepEqual(f(3), {a: 2, f: f, x: 3});
+    assert.deepEqual(f(3), {a: 2, f: f});
   });
 
   it ('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
@@ -176,7 +176,7 @@ describe('FunctionAssignmentNode', function() {
 
     var scope = {a: 2};
     var f = n.eval(scope);
-    assert.deepEqual(f(3, 4), {a: 2, f: f, x: 3, y: 4});
+    assert.deepEqual(f(3, 4), {a: 2, f: f});
   });
 
   it ('should pass function arguments in scope to functions with rawArgs and transform', function () {
@@ -196,7 +196,7 @@ describe('FunctionAssignmentNode', function() {
 
     var scope = {a: 2};
     var f = n.eval(scope);
-    assert.deepEqual(f(3), {a: 2, f: f, x: 3});
+    assert.deepEqual(f(3), {a: 2, f: f});
   });
 
   it ('should filter a FunctionAssignmentNode', function () {

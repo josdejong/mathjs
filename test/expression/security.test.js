@@ -104,7 +104,7 @@ describe('security', function () {
     assert.throws(function () {
       var math2 = math.create();
       math2.eval('import({matrix:cos.constructor},{override:1});x=["console.log(\'hacked...\')"];x()');
-    }, /Error: Undefined symbol import/);
+    }, /Error: No access to property "constructor"/);
   })
 
   it ('should not allow calling Function via index retrieval', function () {
@@ -133,7 +133,7 @@ describe('security', function () {
 
   it ('should not allow calling Function via a specially encoded constructor property name', function () {
     assert.throws(function () {
-      math.eval('[].map["\\x63onstructor"]("console.log(\'hacked...\')")()');
+      math.eval('[].map["\\u0063onstructor"]("console.log(\'hacked...\')")()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
@@ -217,7 +217,7 @@ describe('security', function () {
   it ('should not allow using restricted properties via subset (2)', function () {
     assert.throws(function () {
       math.eval("scope={}; setter = eval(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"eval\", subset); scope.obj.compile().eval()(\"console.log('hacked...')\")")
-    }, /Error: Undefined symbol name/);
+    }, /Error: No access to property "value"/);
   })
 
   it ('should not allow using restricted properties via subset (3)', function () {
@@ -296,7 +296,7 @@ describe('security', function () {
   it ('should not allow using method chain (2)', function () {
     assert.throws(function () {
       math.eval("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")")
-    }, /is not a function/);
+    }, /Cannot read property 'apply' of undefined/);
   })
 
   it ('should not allow using method Chain', function () {
