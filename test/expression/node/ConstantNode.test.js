@@ -212,4 +212,10 @@ describe('ConstantNode', function() {
     assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right)');
   });
 
+  it('should escape strings in toTex', function () {
+    var n = new ConstantNode('space tab\tunderscore_bla$/', 'string');
+
+    assert.equal(n.toTex(), '\\mathtt{"space~tab\\qquad{}underscore\\_bla\\$/"}');
+  });
+
 });
