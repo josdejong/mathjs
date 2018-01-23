@@ -16,8 +16,8 @@ describe('min', function() {
     assert.equal(min(0,0,0,0), 0);
   });
 
-  it('should return the min string following lexical order', function() {
-    assert.equal(min('A', 'C', 'D', 'B'), 'A');
+  it('should return the min of strings by their numerical value', function() {
+    assert.equal(min('10', '3', '4', '2'), '2');
   });
 
   it('should return the min element from a vector', function() {

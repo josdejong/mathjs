@@ -21,8 +21,8 @@ describe('max', function() {
         new BigNumber(5));
   });
 
-  it('should return the max string following lexical order', function() {
-    assert.equal(max('A', 'C', 'D', 'B'), 'D');
+  it('should return the max of strings by their numerical value', function() {
+    assert.equal(max('10', '3', '4', '2'), '10');
   });
 
   it('should return the max element from a vector', function() {

@@ -121,18 +121,19 @@ describe('largerEq', function() {
     assert.throws(function () {largerEq(unit('100cm'), bignumber(22));});
   });
 
-  it('should perform lexical comparison for 2 strings', function() {
+  it('should compare two strings by their numerical value', function() {
     assert.equal(largerEq('0', 0), true);
-    assert.equal(largerEq('abd', 'abc'), true);
-    assert.equal(largerEq('abc', 'abc'), true);
-    assert.equal(largerEq('abc', 'abd'), false);
+    assert.equal(largerEq('10', '2'), true);
+    assert.equal(largerEq('1e3', '1000'), true);
+
+    assert.throws(function () {largerEq('A', 'B')}, /Cannot convert "A" to a number/);
   });
 
   describe('Array', function () {
 
     it('should compare array - scalar', function () {
-      assert.deepEqual(largerEq('B', ['A', 'B', 'C']), [true, true, false]);
-      assert.deepEqual(largerEq(['A', 'B', 'C'], 'B'), [false, true, true]);
+      assert.deepEqual(largerEq(2, [1, 2, 3]), [true, true, false]);
+      assert.deepEqual(largerEq([1, 2, 3], 2), [false, true, true]);
     });
 
     it('should compare array - array', function () {
@@ -155,8 +156,8 @@ describe('largerEq', function() {
   describe('DenseMatrix', function () {
 
     it('should compare dense matrix - scalar', function () {
-      assert.deepEqual(largerEq('B', matrix(['A', 'B', 'C'])), matrix([true, true, false]));
-      assert.deepEqual(largerEq(matrix(['A', 'B', 'C']), 'B'), matrix([false, true, true]));
+      assert.deepEqual(largerEq(2, matrix([1, 2, 3])), matrix([true, true, false]));
+      assert.deepEqual(largerEq(matrix([1, 2, 3]), 2), matrix([false, true, true]));
     });
 
     it('should compare dense matrix - array', function () {
@@ -175,8 +176,8 @@ describe('largerEq', function() {
   describe('SparseMatrix', function () {
 
     it('should compare sparse matrix - scalar', function () {
-      assert.deepEqual(largerEq('B', sparse([['A', 'B'], ['C', 'D']])), matrix([[true, true], [false, false]]));
-      assert.deepEqual(largerEq(sparse([['A', 'B'], ['C', 'D']]), 'B'), matrix([[false, true], [true, true]]));
+      assert.deepEqual(largerEq(2, sparse([[1, 2], [3, 4]])), matrix([[true, true], [false, false]]));
+      assert.deepEqual(largerEq(sparse([[1, 2], [3, 4]]), 2), matrix([[false, true], [true, true]]));
     });
 
     it('should compare sparse matrix - array', function () {

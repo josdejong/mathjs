@@ -12,13 +12,6 @@ describe('partitionSelect', function() {
     assert.equal(partitionSelect([5,10,1], 2), 10);
   });
 
-  it('should sort an array with strings', function() {
-    assert.equal(partitionSelect(['C', 'B', 'A', 'D'], 0), 'A');
-    assert.equal(partitionSelect(['C', 'B', 'A', 'D'], 1), 'B');
-    assert.equal(partitionSelect(['C', 'B', 'A', 'D'], 2), 'C');
-    assert.equal(partitionSelect(['C', 'B', 'A', 'D'], 3), 'D');
-  });
-
   it('should sort a Matrix', function() {
     assert.equal(partitionSelect(matrix([5,10,1]), 0), 1);
     assert.equal(partitionSelect(matrix([5,10,1]), 1), 5);

@@ -2,6 +2,8 @@
 
 ## not yet released, version 4.0.0
 
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
 Breaking changes:
 
 - Compiler of the expression parser is replaced with one that doesn't use
@@ -11,9 +13,14 @@ Breaking changes:
   - Internal code is easier to understand, maintain, and debug.
   Breaking change here: When using custom nodes in the expression parser, 
   the syntax of `_compile` has changed. This is an undocumented feature though.
-- Fixed #749: Changed `rad`, `deg`, and `grad` to have short prefixes,
+- Changed `rad`, `deg`, and `grad` to have short prefixes,
   and introduced `radian`, `degree`, and `gradian` and their plurals
-  having long prefixes.
+  having long prefixes. See #749.
+- Changed the behavior of relational functions (`compare`, `equal`,
+  `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
+  to compare strings by their numeric value they contain instead of
+  alphabetically. This also impacts functions `sort`, `min`, `max`,
+  `median`, and `partitionSelect`. See #680.
 
 ## 2018-01-17, version 3.20.1
 
