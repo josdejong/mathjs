@@ -37,11 +37,6 @@ describe('dotMultiply', function() {
     assert.equal(dotMultiply(false, 2), 0);
   });
 
-  it('should multiply numbers and null', function () {
-    assert.equal(dotMultiply(1, null), 0);
-    assert.equal(dotMultiply(null, 1), 0);
-  });
-
   it('should multiply 2 complex numbers', function() {
     // complex
     approx.deepEqual(dotMultiply(complex(2, 3), 2), complex(4, 6));
@@ -64,6 +59,10 @@ describe('dotMultiply', function() {
     // string
     assert.throws(function () {dotMultiply("hello", "world")});
     assert.throws(function () {dotMultiply("hello", 2)});
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {dotMultiply(null, 1);}, /TypeError: Unexpected type of argument/);
   });
 
   describe('Array', function () {

@@ -17,10 +17,6 @@ describe('sinh', function() {
     assert.equal(sinh(false), 0);
   });
 
-  it('should return the sinh of a null', function () {
-    assert.equal(sinh(null), 0);
-  });
-
   it('should return the sinh of a number', function() {
     approx.equal(sinh(-2), -3.62686040784701876766821398280126170488634201232113572130, EPSILON);
     approx.equal(sinh(-0.5), -0.52109530549374736162242562641149155910592898261148052794, EPSILON);
@@ -103,6 +99,10 @@ describe('sinh', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sinh()}, /TypeError: Too few arguments/);
     assert.throws(function () {sinh(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {sinh(null)}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX sinh', function () {

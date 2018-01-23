@@ -5,10 +5,6 @@ var assert = require('assert'),
 
 describe ('types', function () {
 
-  it('should return the type of null', function () {
-    assert.equal(types.type(null), 'null');
-  });
-
   it('should return the type of undefined', function () {
     assert.equal(types.type(undefined), 'undefined');
     assert.equal(types.type(), 'undefined');

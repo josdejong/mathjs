@@ -48,12 +48,6 @@ describe('compare', function() {
     assert.equal(compare(false, 2), -1);
   });
 
-  it('should compare mixed numbers and null', function() {
-    assert.equal(compare(2, null), 1);
-    assert.equal(compare(0, null), 0);
-    assert.equal(compare(null, 2), -1);
-  });
-
   it('should compare bignumbers', function() {
     assert.deepEqual(compare(bignumber(2), bignumber(3)), bignumber(-1));
     assert.deepEqual(compare(bignumber(2), bignumber(2)), bignumber(0));
@@ -204,6 +198,10 @@ describe('compare', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {compare(1);}, /TypeError: Too few arguments/);
     assert.throws(function () {compare(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {compare(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX compare', function () {

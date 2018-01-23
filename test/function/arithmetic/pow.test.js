@@ -74,11 +74,6 @@ describe('pow', function() {
     assert.equal(pow(false, 2), 0);
   });
 
-  it('should exponentiate numbers and null', function () {
-    assert.equal(pow(1, null), 1);
-    assert.equal(pow(null, 1), 0);
-  });
-
   it('should exponentiate bignumbers', function() {
     assert.deepEqual(pow(bignumber(2), bignumber(3)), bignumber(8));
     assert.deepEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'));
@@ -129,6 +124,10 @@ describe('pow', function() {
   it('should throw an error if used with wrong number of arguments', function() {
     assert.throws(function () {pow(1)}, /TypeError: Too few arguments in function pow/);
     assert.throws(function () {pow(1, 2, 3)}, /TypeError: Too many arguments in function pow \(expected: 2, actual: 3\)/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {pow(null, 2);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should handle infitie exponents', function() {

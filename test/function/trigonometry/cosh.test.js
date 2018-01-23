@@ -15,10 +15,6 @@ describe('cosh', function() {
     approx.equal(cosh(false), 1);
   });
 
-  it('should return the cosh of null', function () {
-    approx.equal(cosh(null), 1);
-  });
-
   it('should return the cosh of a number', function() {
     approx.equal(cosh(0), 1);
     approx.equal(cosh(pi), 11.591953275522);

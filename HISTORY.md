@@ -22,6 +22,8 @@ Breaking changes:
   alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
   `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
   need to sort an array with text. See #680.
+- `null` is no longer implicitly casted to a number `0`, so input like
+  `math.add(2, null)` is no longer supported. See #830, #353.
 
 
 ## 2018-01-17, version 3.20.1

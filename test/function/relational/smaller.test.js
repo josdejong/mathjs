@@ -50,13 +50,6 @@ describe('smaller', function() {
     assert.equal(smaller(false, 2), true);
   });
 
-  it('should compare mixed numbers and null', function() {
-    assert.equal(smaller(1, null), false);
-    assert.equal(smaller(0, null), false);
-    assert.equal(smaller(null, 1), true);
-    assert.equal(smaller(null, 0), false);
-  });
-
   it('should compare bignumbers', function() {
     assert.deepEqual(smaller(bignumber(2), bignumber(3)), true);
     assert.deepEqual(smaller(bignumber(2), bignumber(2)), false);
@@ -213,6 +206,10 @@ describe('smaller', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {smaller(1);}, /TypeError: Too few arguments/);
     assert.throws(function () {smaller(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {smaller(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX smaller', function () {

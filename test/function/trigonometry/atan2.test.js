@@ -41,11 +41,6 @@ describe('atan2', function() {
     assert.equal(atan2(false, 1), 0);
   });
 
-  it('should calculate atan2 with mixed numbers and null', function() {
-    assert.equal(atan2(1, null), 0.5 * pi);
-    assert.equal(atan2(null, 1), 0);
-  });
-
   it('should return the arctan of for bignumbers', function() {
     assert.deepEqual(atan2Big(Big(0), Big(0)), Big(0));
     assert.deepEqual(atan2Big(Big(0), Big(1)), Big(0));
@@ -68,11 +63,6 @@ describe('atan2', function() {
     assert.deepEqual(atan2Big(Big(1), false), Big('1.5707963267948966192'));
     assert.deepEqual(atan2Big(true, Big(1)), Big('0.78539816339744830962'));
     assert.deepEqual(atan2Big(false, Big(1)), Big(0));
-  });
-
-  it('should calculate atan2 with mixed bignumbers and null', function() {
-    assert.deepEqual(atan2Big(Big(1), null), Big('1.5707963267948966192'));
-    assert.deepEqual(atan2Big(null, Big(1)), Big(0));
   });
 
   it('should throw an error if called with a complex', function() {
@@ -161,6 +151,10 @@ describe('atan2', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {atan2(1);}, /TypeError: Too few arguments/);
     assert.throws(function () {atan2(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {atan2(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX atan2', function () {

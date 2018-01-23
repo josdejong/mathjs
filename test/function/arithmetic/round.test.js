@@ -26,11 +26,6 @@ describe('round', function() {
     approx.equal(round(false, 2), 0);
   });
 
-  it('should round null', function () {
-    assert.equal(round(null), 0);
-    assert.equal(round(null, 2), 0);
-  });
-
   it('should throw an error on invalid type of value', function() {
     assert.throws(function () {round(new Date());}, /TypeError: Unexpected type of argument/);
   });
@@ -48,6 +43,10 @@ describe('round', function() {
   it('should throw an error if used with wrong number of arguments', function() {
     assert.throws(function () {round();}, /TypeError: Too few arguments/);
     assert.throws(function () {round(1,2,3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {round(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should round bignumbers', function() {

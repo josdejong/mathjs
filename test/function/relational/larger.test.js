@@ -48,13 +48,6 @@ describe('larger', function() {
     assert.equal(larger(false, 2), false);
   });
 
-  it('should compare mixed numbers and null', function() {
-    assert.equal(larger(1, null), true);
-    assert.equal(larger(0, null), false);
-    assert.equal(larger(null, 1), false);
-    assert.equal(larger(null, 0), false);
-  });
-
   it('should compare bignumbers', function() {
     assert.equal(larger(bignumber(2), bignumber(3)), false);
     assert.equal(larger(bignumber(2), bignumber(2)), false);
@@ -205,6 +198,10 @@ describe('larger', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {larger(1);}, /Too few arguments/);
     assert.throws(function () {larger(1, 2, 3);}, /Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {larger(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX larger', function () {

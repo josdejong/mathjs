@@ -16,10 +16,6 @@ describe('sech', function() {
     approx.equal(sech(false), 1);
   });
 
-  it('should return the sech of null', function () {
-    approx.equal(sech(null), 1);
-  });
-
   it('should return the sech of a number', function() {
     approx.equal(sech(0), 1);
     approx.equal(sech(pi), 0.086266738334054);

@@ -51,13 +51,6 @@ describe('smallerEq', function() {
     assert.equal(smallerEq(false, 2), true);
   });
 
-  it('should compare mixed numbers and null', function() {
-    assert.equal(smallerEq(1, null), false);
-    assert.equal(smallerEq(0, null), true);
-    assert.equal(smallerEq(null, 1), true);
-    assert.equal(smallerEq(null, 0), true);
-  });
-
   it('should compare bignumbers', function() {
     assert.deepEqual(smallerEq(bignumber(2), bignumber(3)), true);
     assert.deepEqual(smallerEq(bignumber(2), bignumber(2)), true);
@@ -213,6 +206,10 @@ describe('smallerEq', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {smallerEq(1);}, /TypeError: Too few arguments/);
     assert.throws(function () {smallerEq(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {smallerEq(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX smallerEq', function () {

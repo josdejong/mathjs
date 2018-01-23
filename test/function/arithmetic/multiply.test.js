@@ -40,11 +40,6 @@ describe('multiply', function() {
       assert.equal(multiply(false, 2), 0);
     });
 
-    it('should multiply numbers and null', function () {
-      assert.equal(multiply(1, null), 0);
-      assert.equal(multiply(null, 1), 0);
-    });
-
     it('should multiply bignumbers', function() {
       assert.deepEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3));
       assert.deepEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'));
@@ -278,6 +273,10 @@ describe('multiply', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {multiply(1);}, /TypeError: Too few arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {multiply(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   describe('Vector', function () {
