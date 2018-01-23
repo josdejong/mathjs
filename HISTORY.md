@@ -16,6 +16,9 @@ Breaking changes:
   `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
   Stringification uses `math.format`, which may result in differently
   formatted numeric output.
+- The constants `true`, `false`, `null`, `undefined`, `NaN`, `Infinity`,
+  and `uninitialized` are now parsed as ConstantNodes instead of
+  SymbolNodes in the expression parser. See #833.
 
 
 ## 2018-01-17, version 3.20.1
