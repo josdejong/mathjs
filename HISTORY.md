@@ -1,5 +1,18 @@
 # History
 
+## not yet released, version 4.0.0
+
+Breaking changes:
+
+- Compiler of the expression parser is replaced with one that doesn't use
+  `eval` internally. This yields:
+  - Slightly improved performance on most browsers.
+  - Much less risk of security exploits.
+  - Internal code is easier to understand, maintain, and debug.
+  Breaking change here: When using custom nodes in the expression parser, 
+  the syntax of `_compile` has changed. This is an undocumented feature though.
+
+
 ## 2018-01-17, version 3.20.1
 
 - Fixed #1018: `simplifyCore` failing in some cases with parentheses.

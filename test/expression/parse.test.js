@@ -1901,7 +1901,7 @@ describe('parse', function() {
       CustomNode.prototype.toString = function () {
         return 'CustomNode';
       };
-      CustomNode.prototype._compile = function (defs) {
+      CustomNode.prototype._compile = function (math, argNames) {
         var strArgs = [];
         this.args.forEach(function (arg) {
           strArgs.push(arg.toString());
