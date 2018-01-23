@@ -19,8 +19,10 @@ Breaking changes:
 - Changed the behavior of relational functions (`compare`, `equal`,
   `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
   to compare strings by their numeric value they contain instead of
-  alphabetically. This also impacts functions `sort`, `min`, `max`,
-  `median`, and `partitionSelect`. See #680.
+  alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
+  `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
+  need to sort an array with text. See #680.
+
 
 ## 2018-01-17, version 3.20.1
 
