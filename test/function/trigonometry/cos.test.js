@@ -17,10 +17,6 @@ describe('cos', function() {
     approx.equal(cos(false), 1);
   });
 
-  it('should return the cosine of null', function () {
-    approx.equal(cos(null), 1);
-  });
-
   it('should return the cosine of a number', function() {
     approx.equal(cos(0), 1);
     approx.equal(cos(pi*1/4), 0.707106781186548);

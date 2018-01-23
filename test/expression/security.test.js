@@ -229,7 +229,7 @@ describe('security', function () {
   it ('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {
     assert.throws(function () {
       math.eval("badValue = {\"isNode\": true, \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked\')\")")
-    }, /TypeError: Callback function must return a Node/);
+    }, /Error: Cannot convert "object" to a number/);
 
     assert.throws(function () {
       math.eval("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log(\'hacked...\')\")")
@@ -275,7 +275,7 @@ describe('security', function () {
   it ('should not allow creating a bad ArrayNode', function () {
     assert.throws(function () {
       math.eval('g(x)="eval";f(x)=({join: g});fakeArrayNode={isNode: true, type: "ArrayNode", items: {map: f}};injectFakeArrayNode(child,path,parent)=path=="value"?fakeArrayNode:child;parse("a=3").map(injectFakeArrayNode).compile().eval()[1]("console.log(\'hacked...\')")')
-    }, /TypeError: Callback function must return a Node/);
+    }, /Error: Cannot convert "object" to a number/);
   })
 
   it ('should not allow unescaping escaped double quotes', function () {

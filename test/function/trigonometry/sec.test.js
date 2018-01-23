@@ -16,10 +16,6 @@ describe('sec', function() {
     assert.equal(sec(false), 1);
   });
 
-  it('should return the secant of null', function () {
-    assert.equal(sec(null), 1);
-  });
-
   it('should return the secant of a number', function() {
     approx.equal(1 / sec(0), 1);
     approx.equal(1 / sec(pi*1/4), 0.707106781186548);

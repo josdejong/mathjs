@@ -33,11 +33,6 @@ describe('leftShift', function () {
     assert.equal(leftShift(false, 2), 0);
   });
 
-  it('should left shift numbers and null', function () {
-    assert.equal(leftShift(1, null), 1);
-    assert.equal(leftShift(null, 1), 0);
-  });
-
   it('should left shift bignumbers', function () {
     assert.deepEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16));
     assert.deepEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'));
@@ -170,6 +165,7 @@ describe('leftShift', function () {
 
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {leftShift(new Date(), true);}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {leftShift(2, null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {leftShift(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {leftShift(true, undefined);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {leftShift(undefined, true);}, /TypeError: Unexpected type of argument/);

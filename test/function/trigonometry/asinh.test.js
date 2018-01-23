@@ -19,10 +19,6 @@ describe('asinh', function() {
     assert.equal(asinh(false), 0);
   });
 
-  it('should return the hyperbolic arcsin of null', function () {
-    assert.equal(asinh(null), 0);
-  });
-
   it('should return the hyperbolic arcsin of a number', function() {
     approx.equal(asinh(-2), -1.44363547517881034249327674027311);
     approx.equal(asinh(-1), -0.88137358701954302523260932497979);

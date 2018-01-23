@@ -21,11 +21,6 @@ describe('asec', function() {
     //assert.ok(isNaN(asec(false)));
   });
 
-  it('should return the arcsec of null', function () {
-    assert.deepEqual(asec(null), complex(0, Infinity));
-    //assert.ok(isNaN(asec(null)));
-  });
-
   it('should return the arcsec of a number', function() {
     approx.equal(asec(-2) / pi, 2 / 3);
     approx.equal(asec(-1) / pi, 1);

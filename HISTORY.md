@@ -2,6 +2,8 @@
 
 ## not yet released, version 4.0.0
 
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
 Breaking changes:
 
 - Compiler of the expression parser is replaced with one that doesn't use
@@ -11,6 +13,17 @@ Breaking changes:
   - Internal code is easier to understand, maintain, and debug.
   Breaking change here: When using custom nodes in the expression parser, 
   the syntax of `_compile` has changed. This is an undocumented feature though.
+- Changed `rad`, `deg`, and `grad` to have short prefixes,
+  and introduced `radian`, `degree`, and `gradian` and their plurals
+  having long prefixes. See #749.
+- Changed the behavior of relational functions (`compare`, `equal`,
+  `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
+  to compare strings by their numeric value they contain instead of
+  alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
+  `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
+  need to sort an array with text. See #680.
+- `null` is no longer implicitly casted to a number `0`, so input like
+  `math.add(2, null)` is no longer supported. See #830, #353.
 - The class `ConstantNode` is changed such that it just holds a value
   instead of holding a stringified value and it's type.
   `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`

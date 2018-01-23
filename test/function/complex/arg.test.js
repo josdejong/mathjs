@@ -9,10 +9,6 @@ describe('arg', function() {
     assert.equal(arg(false), 0);
   });
 
-  it('should compute the argument of null', function () {
-    assert.equal(arg(null), 0);
-  });
-
   it('should compute the argument of a number', function () {
     assert.equal(arg(1), 0);
     assert.equal(arg(2), 0);

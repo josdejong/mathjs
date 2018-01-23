@@ -19,10 +19,6 @@ describe('acot', function() {
     assert.equal(acot(false), pi / 2);
   });
 
-  it('should return the arccot of null', function () {
-    assert.equal(acot(null), pi / 2);
-  });
-
   it('should return the arccot of a number', function() {
     approx.equal(acot(-1) / pi, -0.25);
     approx.equal(acot(-0.5), -1.107148717794);

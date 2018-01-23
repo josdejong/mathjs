@@ -24,6 +24,10 @@ describe('complex', function() {
     assert.deepEqual(complex(math.fraction(123)), new math.type.Complex(123, 0));
   });
 
+  it('should convert null into a complex value', function() {
+    assert.deepEqual(complex(null), new math.type.Complex(0, 0));
+  });
+
   it('should convert a big number into a complex value (downgrades to number', function() {
     assert.deepEqual(complex(math.bignumber(123)), new math.type.Complex(123, 0));
     assert.deepEqual(complex(math.bignumber(2), math.bignumber(3)), new math.type.Complex(2, 3));

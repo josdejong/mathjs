@@ -78,11 +78,6 @@ describe('xor', function () {
     assert.strictEqual(xor(false, 0), false);
   });
 
-  it('should xor mixed numbers and null', function () {
-    assert.strictEqual(xor(2, null), true);
-    assert.strictEqual(xor(null, 2), true);
-  });
-
   it('should xor bignumbers', function () {
     assert.strictEqual(xor(bignumber(1), bignumber(1)), false);
     assert.strictEqual(xor(bignumber(-1), bignumber(1)), false);
@@ -203,6 +198,7 @@ describe('xor', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {xor(2, null)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {xor(new Date(), true)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {xor(true, new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {xor(true, undefined)}, /TypeError: Unexpected type of argument/);

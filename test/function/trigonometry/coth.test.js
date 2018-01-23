@@ -16,10 +16,6 @@ describe('coth', function() {
     approx.equal(coth(false), Number.POSITIVE_INFINITY);
   });
 
-  it('should return the coth of null', function () {
-    approx.equal(coth(null), Number.POSITIVE_INFINITY);
-  });
-
   it('should return the coth of a number', function() {
     approx.equal(coth(0), Number.POSITIVE_INFINITY);
     approx.equal(coth(pi), 1.0037418731973);

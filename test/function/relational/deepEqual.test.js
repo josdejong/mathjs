@@ -14,6 +14,8 @@ describe('deepEqual', function() {
     assert.equal(deepEqual(2, 2), true);
     assert.equal(deepEqual(0, 0), true);
     assert.equal(deepEqual(-2, 2), false);
+    assert.equal(deepEqual(2, math.bignumber(2)), true);
+    assert.equal(deepEqual(math.fraction(1, 2), 0.5), true);
     assert.equal(deepEqual(true, 1), true);
   });
 
@@ -40,7 +42,8 @@ describe('deepEqual', function() {
   });
 
   it('should compare two matrices with mixed types', function() {
-    assert.deepEqual(deepEqual([1,4,5], [true,4,5]), true);
+    assert.deepEqual(deepEqual([1,4], [true,4]), true);
+    assert.deepEqual(deepEqual([1,4], [1,'4']), true);
     assert.deepEqual(deepEqual([2,3], [2, bignumber(3)]), true);
     assert.deepEqual(deepEqual([2,3], [2, bignumber(4)]), false);
     assert.deepEqual(deepEqual([complex(2,3),3], [complex(2,3),3]), true);
@@ -50,6 +53,10 @@ describe('deepEqual', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {deepEqual(1)}, /TypeError: Too few arguments/);
     assert.throws(function () {deepEqual(1, 2, 3)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {deepEqual(['A'], ['B'])}, /Error: Cannot convert "A" to a number/);
   });
 
   it('should LaTeX deepEqual', function () {

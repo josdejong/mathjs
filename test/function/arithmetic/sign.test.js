@@ -12,10 +12,6 @@ describe('sign', function() {
     assert.equal(math.sign(false), 0);
   });
 
-  it('should calculate the sign of null', function () {
-    assert.equal(math.sign(null), 0);
-  });
-
   it('should calculate the sign of a number', function() {
     assert.equal(math.sign(3), 1);
     assert.equal(math.sign(-3), -1);
@@ -71,6 +67,10 @@ describe('sign', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {math.sign()}, /TypeError: Too few arguments/);
     assert.throws(function () {math.sign(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {math.sign(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX sign', function () {

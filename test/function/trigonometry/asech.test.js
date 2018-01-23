@@ -20,10 +20,6 @@ describe('asech', function() {
     assert.equal(asech(false), Infinity);
   });
 
-  it('should return the hyperbolic arcsec of null', function () {
-    assert.equal(asech(null), Infinity);
-  });
-
   it('should return the hyperbolic arcsec of a number', function() {
     approx.deepEqual(asech(-0.5), complex(1.3169578969, pi));
     approx.deepEqual(asech(2), complex(0, pi / 3));

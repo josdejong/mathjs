@@ -39,10 +39,6 @@ describe('not', function () {
     assert.strictEqual(not(false), true);
   });
 
-  it('should not null', function () {
-    assert.strictEqual(not(null), true);
-  });
-
   it('should not bignumbers', function () {
     assert.strictEqual(not(bignumber(1)), false);
     assert.strictEqual(not(bignumber(-1)), false);
@@ -82,6 +78,7 @@ describe('not', function () {
   });
 
   it('should throw an error in case of invalid type if arguments', function () {
+    assert.throws(function () {not(null)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {not(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {not({})}, /TypeError: Unexpected type of argument/);
   });

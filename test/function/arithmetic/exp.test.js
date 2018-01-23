@@ -15,10 +15,6 @@ describe('exp', function() {
     approx.equal(exp(false), 1);
   });
 
-  it('should exponentiate null', function () {
-    assert.equal(exp(null), 1);
-  });
-
   it('should exponentiate a number', function() {
     approx.equal(exp(-3), 0.0497870683678639);
     approx.equal(exp(-2), 0.1353352832366127);
@@ -39,6 +35,10 @@ describe('exp', function() {
   it('should throw an error if there\'s wrong number of arguments', function() {
     assert.throws(function () {exp();}, /TypeError: Too few arguments/);
     assert.throws(function () {exp(1, 2);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {exp(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should exponentiate a complex number correctly', function() {

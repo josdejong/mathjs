@@ -14,10 +14,6 @@ describe('square', function() {
     assert.equal(square(false), 0);
   });
 
-  it('should return the square of null', function () {
-    assert.equal(square(null), 0);
-  });
-
   it('should return the square of a number', function() {
     assert.equal(square(4), 16);
     assert.equal(square(-2), 4);
@@ -40,6 +36,10 @@ describe('square', function() {
   it('should throw an error if used with wrong number of arguments', function() {
     assert.throws(function () {square()}, /TypeError: Too few arguments/);
     assert.throws(function () {square(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {square(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should return the square of a complex number', function() {

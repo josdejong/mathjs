@@ -11,10 +11,6 @@ describe('unaryPlus', function() {
     assert.equal(math.unaryPlus(false), 0);
   });
 
-  it('should return unary plus of null', function () {
-    assert.equal(math.unaryPlus(null), 0);
-  });
-
   it.skip('should return bignumber unary plus of a boolean', function () {
     var bigmath = math.create({number: 'BigNumber'});
     assert.deepEqual(bigmath.unaryPlus(true), bigmath.bignumber(1));
@@ -104,6 +100,7 @@ describe('unaryPlus', function() {
 
   it('should throw an error in case of invalid type of argument', function() {
     assert.throws(function () {math.unaryPlus(new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.unaryPlus(null)}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX unaryPlus', function () {

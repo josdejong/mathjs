@@ -21,11 +21,6 @@ describe('acoth', function() {
     //assert.ok(isNaN(acoth(false)));
   });
 
-  it('should return the hyperbolic arccot of null', function () {
-    approx.deepEqual(acoth(null), complex(0, pi / 2));
-    //assert.ok(isNaN(acoth(null)));
-  });
-
   it('should return the hyperbolic arccot of a number', function() {
     approx.deepEqual(acoth(0), complex(0, pi / 2));
     approx.deepEqual(acoth(0.5), complex(0.5493061443340548, -1.5707963267949));

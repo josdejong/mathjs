@@ -62,7 +62,7 @@ describe('Chain', function() {
   });
 
   it('should not break with null or true as value', function() {
-    assert.equal(new Chain(null).add(1).done(), 1);
+    assert.deepEqual(new Chain(null).size().done(), math.matrix([]));
     assert.equal(new Chain(true).add(1).done(), 2);
   });
 
