@@ -1065,6 +1065,41 @@ describe('Unit', function() {
     });
   });
 
+  describe('angles', function () {
+
+    it ('should create angles', function () {
+      assert.equal(new Unit(1, 'radian').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'radians').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'degree').equals(new Unit(1, 'deg'))  , true);
+      assert.equal(new Unit(1, 'degrees').equals(new Unit(1, 'deg'))  , true);
+      assert.equal(new Unit(1, 'gradian').equals(new Unit(1, 'grad'))  , true);
+      assert.equal(new Unit(1, 'gradians').equals(new Unit(1, 'grad'))  , true);
+
+      assert.equal(new Unit(1, 'radian').to('rad').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'radians').to('rad').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'deg').to('rad').equals(new Unit(2 * Math.PI / 360, 'rad'))  , true);
+      assert.equal(new Unit(1, 'degree').to('rad').equals(new Unit(2 * Math.PI / 360, 'rad'))  , true);
+      assert.equal(new Unit(1, 'degrees').to('rad').equals(new Unit(2 * Math.PI / 360, 'rad'))  , true);
+      assert.equal(new Unit(1, 'gradian').to('rad').equals(new Unit(Math.PI / 200, 'rad'))  , true);
+      assert.equal(new Unit(1, 'gradians').to('rad').equals(new Unit(Math.PI / 200, 'rad'))  , true);
+    });
+
+    it('should have correct long/short prefixes', function () {
+      assert.equal(new Unit(20000, 'rad').toString(), '20 krad');
+      assert.equal(new Unit(20000, 'radian').toString(), '20 kiloradian');
+      assert.equal(new Unit(20000, 'radians').toString(), '20 kiloradians');
+
+      assert.equal(new Unit(20000, 'deg').toString(), '20 kdeg');
+      assert.equal(new Unit(20000, 'degree').toString(), '20 kilodegree');
+      assert.equal(new Unit(20000, 'degrees').toString(), '20 kilodegrees');
+
+      assert.equal(new Unit(20000, 'grad').toString(), '20 kgrad');
+      assert.equal(new Unit(20000, 'gradian').toString(), '20 kilogradian');
+      assert.equal(new Unit(20000, 'gradians').toString(), '20 kilogradians');
+    })
+
+  });
+
   describe('createUnitSingle', function() {
     it('should create a custom unit from a string definition', function() {
       Unit.createUnitSingle('widget', '5 kg bytes');

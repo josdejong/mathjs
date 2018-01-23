@@ -11,7 +11,9 @@ Breaking changes:
   - Internal code is easier to understand, maintain, and debug.
   Breaking change here: When using custom nodes in the expression parser, 
   the syntax of `_compile` has changed. This is an undocumented feature though.
-
+- Fixed #749: Changed `rad`, `deg`, and `grad` to have short prefixes,
+  and introduced `radian`, `degree`, and `gradian` and their plurals
+  having long prefixes.
 
 ## 2018-01-17, version 3.20.1
 
