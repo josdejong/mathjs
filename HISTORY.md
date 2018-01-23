@@ -11,6 +11,11 @@ Breaking changes:
   - Internal code is easier to understand, maintain, and debug.
   Breaking change here: When using custom nodes in the expression parser, 
   the syntax of `_compile` has changed. This is an undocumented feature though.
+- The class `ConstantNode` is changed such that it just holds a value
+  instead of holding a stringified value and it's type.
+  `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
+  Stringification uses `math.format`, which may result in differently
+  formatted numeric output.
 
 
 ## 2018-01-17, version 3.20.1
