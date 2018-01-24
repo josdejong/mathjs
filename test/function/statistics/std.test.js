@@ -71,8 +71,10 @@ describe('std', function() {
   });
 
   it('should throw an error if called with invalid type of arguments', function() {
-    assert.throws(function() {std(new Date(), 2)}, TypeError);
-    assert.throws(function() {std(new Unit('5cm'), new Unit('10cm'))}, TypeError);
+    assert.throws(function() {std(new Date(), 2)}, /Cannot calculate std, unexpected type of argument/);
+    assert.throws(function() {std(new Unit(5, 'cm'), new Unit(10, 'cm'))}, /Cannot calculate std, unexpected type of argument/);
+    assert.throws(function() {std(2, 3, null)}, /Cannot calculate std, unexpected type of argument/);
+    assert.throws(function() {std([2, 3, null])}, /Cannot calculate std, unexpected type of argument/);
     assert.throws(function() {std([2,3,4], 5)}, /Unknown normalization "5"/);
   });
 

@@ -25,6 +25,10 @@ Breaking changes:
 - `null` is no longer implicitly casted to a number `0`, so input like
   `math.add(2, null)` is no longer supported. See #830, #353.
 
+Non breaking changes:
+
+- Improved error messages for statistical functions.
+
 
 ## 2018-01-17, version 3.20.1
 
