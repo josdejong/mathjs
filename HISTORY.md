@@ -24,6 +24,8 @@ Breaking changes:
   need to sort an array with text. See #680.
 - `null` is no longer implicitly casted to a number `0`, so input like
   `math.add(2, null)` is no longer supported. See #830, #353.
+- `fixed` notation in function `math.format` no longer rounds to zero digits 
+  when no precision is specified: it leaves the digits as is. See #676.
 
 Non breaking changes:
 

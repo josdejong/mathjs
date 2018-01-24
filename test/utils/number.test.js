@@ -71,10 +71,13 @@ describe('number', function() {
   });
 
   it('should format a number using toFixed', function() {
-    assert.equal(number.toFixed(2.34), '2');
+    assert.equal(number.toFixed(2.34), '2.34');
     assert.equal(number.toFixed(2.34, 1), '2.3');
     assert.equal(number.toFixed(-2.34, 1), '-2.3');
+    assert.equal(number.toFixed(2.34e10), '23400000000');
     assert.equal(number.toFixed(2.34e10, 1), '23400000000.0');
+    assert.equal(number.toFixed(123456789.1234), '123456789.1234');
+    assert.equal(number.toFixed(2.34e30), '2340000000000000000000000000000'); // test above the 21 digit limit of toPrecision
     assert.equal(number.toFixed(2.34e30, 1), '2340000000000000000000000000000.0'); // test above the 21 digit limit of toPrecision
     assert.equal(number.toFixed(2.34e-10, 1), '0.0');
     assert.equal(number.toFixed(2, 20), '2.00000000000000000000');
@@ -84,7 +87,9 @@ describe('number', function() {
     assert.equal(number.toFixed(-2e3, 0), '-2000');
     assert.equal(number.toFixed(5.555, 1), '5.6');
     assert.equal(number.toFixed(-5.555, 1), '-5.6');
+    assert.equal(number.toFixed(-0.005555), '-0.005555');
     assert.equal(number.toFixed(-0.005555, 4), '-0.0056');
+    assert.equal(number.toFixed(-0.005555, 8), '-0.00555500');
     assert.equal(number.toFixed(2.135, 2), '2.14');
   });
 
@@ -127,11 +132,11 @@ describe('number', function() {
         var options = {notation: 'fixed'};
         assert.equal(number.format(0, options), '0');
         assert.equal(number.format(123, options), '123');
-        assert.equal(number.format(123.456, options), '123');
-        assert.equal(number.format(123.7, options), '124');
-        assert.equal(number.format(-123.7, options), '-124');
+        assert.equal(number.format(123.456, options), '123.456');
+        assert.equal(number.format(123.7, options), '123.7');
+        assert.equal(number.format(-123.7, options), '-123.7');
         assert.equal(number.format(-66, options), '-66');
-        assert.equal(number.format(0.123456, options), '0');
+        assert.equal(number.format(0.123456, options), '0.123456');
 
         assert.equal(number.format(123456789, options), '123456789');
         assert.equal(number.format(-123456789, options), '-123456789');
@@ -143,9 +148,9 @@ describe('number', function() {
         assert.equal(number.format(123456789e+21, options), '123456789000000000000000000000');
         assert.equal(number.format(123456789e+22, options), '1234567890000000000000000000000');
 
-        assert.equal(number.format(1e-18, options), '0');
-        assert.equal(number.format(1e-22, options), '0');
-        assert.equal(number.format(1e-32, options), '0');
+        assert.equal(number.format(1e-18, options), '0.000000000000000001');
+        assert.equal(number.format(1e-22, options), '0.0000000000000000000001');
+        assert.equal(number.format(1e-32, options), '0.00000000000000000000000000000001');
       });
 
       it('fixed notation with precision', function () {
@@ -390,18 +395,18 @@ describe('number', function() {
         assert.strictEqual(number.toFixed(0), '0');
         assert.strictEqual(number.toFixed(2300), '2300');
         assert.strictEqual(number.toFixed(-2300), '-2300');
-        assert.strictEqual(number.toFixed(19.9), '20');
-        assert.strictEqual(number.toFixed(99.9), '100');
-        assert.strictEqual(number.toFixed(99.5), '100');
-        assert.strictEqual(number.toFixed(99.4), '99');
-        assert.strictEqual(number.toFixed(2.3), '2');
-        assert.strictEqual(number.toFixed(2.5), '3');
-        assert.strictEqual(number.toFixed(2.9), '3');
-        assert.strictEqual(number.toFixed(1.5), '2');
-        assert.strictEqual(number.toFixed(-1.5), '-2');
-        assert.strictEqual(number.toFixed(123.45), '123');
-        assert.strictEqual(number.toFixed(0.005), '0');
-        assert.strictEqual(number.toFixed(0.7), '1');
+        assert.strictEqual(number.toFixed(19.9, 0), '20');
+        assert.strictEqual(number.toFixed(99.9, 0), '100');
+        assert.strictEqual(number.toFixed(99.5, 0), '100');
+        assert.strictEqual(number.toFixed(99.4, 0), '99');
+        assert.strictEqual(number.toFixed(2.3, 0), '2');
+        assert.strictEqual(number.toFixed(2.5, 0), '3');
+        assert.strictEqual(number.toFixed(2.9, 0), '3');
+        assert.strictEqual(number.toFixed(1.5, 0), '2');
+        assert.strictEqual(number.toFixed(-1.5, 0), '-2');
+        assert.strictEqual(number.toFixed(123.45, 0), '123');
+        assert.strictEqual(number.toFixed(0.005, 0), '0');
+        assert.strictEqual(number.toFixed(0.7, 0), '1');
 
         assert.strictEqual(number.toFixed(0.15, 1), '0.2');
         assert.strictEqual(number.toFixed(123.4567, 1), '123.5');
