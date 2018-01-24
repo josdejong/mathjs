@@ -16,6 +16,8 @@ approximately 2.22e-16.
 For Complex numbers, first the real parts are compared. If equal,
 the imaginary parts are compared.
 
+Strings are compared lexically.
+
 Arrays and Matrices are compared value by value until there is an
 unequal pair of values encountered. Objects are compared by sorted
 keys until the keys or their values are unequal.

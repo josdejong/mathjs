@@ -5,6 +5,8 @@
 Test element wise whether two matrices are equal.
 The function accepts both matrices and scalar values.
 
+Strings are compared by their numerical value.
+
 
 ## Syntax
 

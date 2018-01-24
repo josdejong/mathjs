@@ -9,6 +9,7 @@ is smaller than the configured epsilon. The function cannot be used to
 compare values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
+Strings are compared by their numerical value.
 
 
 ## Syntax
@@ -37,6 +38,7 @@ number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the
 math.compare(6, 1);           // returns 1
 math.compare(2, 3);           // returns -1
 math.compare(7, 7);           // returns 0
+math.compare('10', '2');      // returns 1
 
 var a = math.unit('5 cm');
 var b = math.unit('40 mm');

@@ -94,10 +94,8 @@ describe('format', function () {
 
       it('auto notation with custom lower and upper bound', function () {
         var options = {
-          exponential: {
-            lower: 1e-6,
-            upper: 1e+9
-          }
+          lowerExp: -6,
+          upperExp: 9
         };
         assert.equal(formatter.format(new B(0), options), '0');
         assert.equal(formatter.format(new B(1234567), options), '1234567');
@@ -145,11 +143,9 @@ describe('format', function () {
 
       var options = {
         notation: 'auto',
-        precision : 50,
-        exponential: {
-          lower: 1e-50,
-          upper: 1e+50
-        }
+        precision: 50,
+        lowerExp: -50,
+        upperExp: 50
       };
 
       assert.deepEqual(formatter.format(new Big(5).div(3), options), '1.6666666666666666666666666666666666666666666666667');
@@ -163,9 +159,7 @@ describe('format', function () {
 
     it('auto notation with custom lower bound', function () {
       var options = {
-        exponential: {
-          lower: 1e-6
-        }
+        lowerExp: -6
       };
       assert.equal(formatter.format(new BigNumber(0), options), '0');
       assert.equal(formatter.format(new BigNumber(1e-5), options), '0.00001');
@@ -176,9 +170,7 @@ describe('format', function () {
 
     it('auto notation with custom upper bound', function () {
       var options = {
-        exponential: {
-          upper: 1e+9
-        }
+        upperExp: 9
       };
       assert.equal(formatter.format(new BigNumber(1e+9), options), '1e+9');
       assert.equal(formatter.format(new BigNumber(1e+9-1), options), '999999999');

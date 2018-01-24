@@ -24,8 +24,20 @@ Breaking changes:
   need to sort an array with text. See #680.
 - `null` is no longer implicitly casted to a number `0`, so input like
   `math.add(2, null)` is no longer supported. See #830, #353.
-- `fixed` notation in function `math.format` no longer rounds to zero digits 
-  when no precision is specified: it leaves the digits as is. See #676.
+- In function `math.format`, the option `notation: 'fixed'` no longer rounds to
+  zero digits  when no precision is specified: it leaves the digits as is. 
+  See #676.
+- In function `math.format`, the options `{exponential: {lower: number, upper: number}}`
+  (where `lower` and `upper` are values) are replaced with `{lowerExp: number, upperExp: number}`
+  (where `lowerExp` and `upperExp` are exponents). See #676. For example:
+  ```js
+  math.format(2000, {exponential: {lower: 1e-2, upper: 1e2}})
+  ```
+  is now:
+  ```js
+  math.format(2000, {lowerExp: -2, upperExp: 2})
+  ```
+  
 
 Non breaking changes:
 
