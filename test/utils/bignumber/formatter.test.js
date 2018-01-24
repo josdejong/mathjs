@@ -189,8 +189,8 @@ describe('format', function () {
         notation: 'fixed'
       };
 
-      assert.deepEqual(formatter.format(new BigNumber('1.23456'), options), '1');
-      assert.deepEqual(formatter.format(new BigNumber('1.7'), options), '2');
+      assert.deepEqual(formatter.format(new BigNumber('1.23456'), options), '1.23456');
+      assert.deepEqual(formatter.format(new BigNumber('1.7'), options), '1.7');
       assert.deepEqual(formatter.format(new BigNumber('12345678'), options), '12345678');
       assert.deepEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000');
       assert.deepEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000');
@@ -219,7 +219,7 @@ describe('format', function () {
   it('should format a bignumber using toFixed', function() {
     var Big = BigNumber.clone({precision: 100});
 
-    assert.equal(formatter.toFixed(new Big(2.34)), '2');
+    assert.equal(formatter.toFixed(new Big(2.34)), '2.34');
     assert.equal(formatter.toFixed(new Big(2.34), 1), '2.3');
     assert.equal(formatter.toFixed(new Big(2), 20), '2.00000000000000000000');
     assert.equal(formatter.toFixed(new Big(2), 21), '2.000000000000000000000');
