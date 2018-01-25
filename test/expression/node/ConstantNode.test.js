@@ -6,6 +6,7 @@ var bigmath = require('../../../index').create({number: 'BigNumber'});
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;
+var Fraction = require('../../../lib/type/fraction/Fraction');
 
 describe('ConstantNode', function() {
 
@@ -182,6 +183,14 @@ describe('ConstantNode', function() {
     var n = new ConstantNode(1);
 
     assert.equal(n.toTex({handler: customFunction}), 'const\\left(1\\right)');
+  });
+
+  it ('should LaTeX a ConstantNode with a fraction', function () {
+    var positive = new ConstantNode(new math.type.Fraction(1.5));
+    var negative = new ConstantNode(new math.type.Fraction(-1.5));
+
+    assert.equal(positive.toTex(), '\\frac{3}{2}');
+    assert.equal(negative.toTex(), '-\\frac{3}{2}');
   });
 
 });
