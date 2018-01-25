@@ -78,7 +78,7 @@ describe('UnaryOperatorNode', function() {
     });
 
     assert.deepEqual(nodes, [x]);
-    assert.deepEqual(paths, ['value']);
+    assert.deepEqual(paths, ['arg']);
   });
 
   it('should map an UnaryOperatorNode', function () {
@@ -97,10 +97,10 @@ describe('UnaryOperatorNode', function() {
     });
 
     assert.deepEqual(nodes, [x]);
-    assert.deepEqual(paths, ['value']);
+    assert.deepEqual(paths, ['arg']);
 
     assert.notStrictEqual(c, b);
-    assert.strictEqual(c.value, b.value);
+    assert.strictEqual(c.arg, b.arg);
   });
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -127,8 +127,8 @@ describe('UnaryOperatorNode', function() {
       return node;
     });
 
-    assert.deepEqual(transformed.value, f);
-    assert.deepEqual(notTransformed.value, x);
+    assert.deepEqual(transformed.arg, f);
+    assert.deepEqual(notTransformed.arg, x);
   });
 
   it('should transform an UnaryOperatorNode itself', function () {
@@ -152,7 +152,7 @@ describe('UnaryOperatorNode', function() {
     assert(cloned instanceof UnaryOperatorNode);
     assert.deepEqual(cloned, node);
     assert.notStrictEqual(cloned, node);
-    assert.strictEqual(cloned.value, node.value);
+    assert.strictEqual(cloned.arg, node.arg);
   });
 
 
