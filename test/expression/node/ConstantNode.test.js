@@ -137,6 +137,8 @@ describe('ConstantNode', function() {
   it ('should stringify a ConstantNode', function () {
     assert.equal(new ConstantNode(3).toString(), '3');
     assert.deepEqual(new ConstantNode(3).toString(), '3');
+    assert.deepEqual(new ConstantNode(math.bignumber('1e500')).toString(), '1e+500');
+    assert.deepEqual(new ConstantNode(math.fraction(2,3)).toString(), '2/3');
     assert.equal(new ConstantNode('hi').toString(), '"hi"');
     assert.equal(new ConstantNode(true).toString(), 'true');
     assert.equal(new ConstantNode(false).toString(), 'false');
@@ -160,6 +162,7 @@ describe('ConstantNode', function() {
   it ('should LaTeX a ConstantNode', function () {
     assert.equal(new ConstantNode(3).toTex(), '3');
     assert.deepEqual(new ConstantNode(3).toTex(), '3');
+    assert.deepEqual(new ConstantNode(math.bignumber('3')).toTex(), '3');
     assert.equal(new ConstantNode('hi').toTex(), '\\mathtt{"hi"}');
     assert.equal(new ConstantNode(true).toTex(), 'true');
     assert.equal(new ConstantNode(false).toTex(), 'false');
