@@ -8,7 +8,7 @@ var padRight = require('pad-right');
 var math = require('../index');
 var getSafeProperty = require('../lib/utils/customs').getSafeProperty
 
-
+// expose on window when using bundled in a browser
 if (typeof window !== 'undefined') {
   window['Benchmark'] = Benchmark;
 }
