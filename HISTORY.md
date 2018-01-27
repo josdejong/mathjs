@@ -1,5 +1,11 @@
 # History
 
+## not-yet-released, version 3.20.2
+
+- Fixed option `implicit` not being copied from an `OperatorNode`
+  when applying function `map`. Thanks @HarraySarson.
+
+
 ## 2018-01-17, version 3.20.1
 
 - Fixed #1018: `simplifyCore` failing in some cases with parentheses.
