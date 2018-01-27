@@ -84,6 +84,12 @@ describe('sum', function() {
     assert.equal(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true);
   });
 
+  it('should throw an error if called with invalid type of arguments', function() {
+    assert.throws(function() {sum(new Date(), 2)}, /Cannot calculate sum, unexpected type of argument/);
+    assert.throws(function() {sum(2, 3, null)}, /Cannot calculate sum, unexpected type of argument/);
+    assert.throws(function() {sum([2, 3, null])}, /Cannot calculate sum, unexpected type of argument/);
+  });
+
   it('should LaTeX sum', function () {
     var expression = math.parse('sum(1,2,3)');
     assert.equal(expression.toTex(), '\\mathrm{sum}\\left(1,2,3\\right)');

@@ -71,10 +71,13 @@ describe('number', function() {
   });
 
   it('should format a number using toFixed', function() {
-    assert.equal(number.toFixed(2.34), '2');
+    assert.equal(number.toFixed(2.34), '2.34');
     assert.equal(number.toFixed(2.34, 1), '2.3');
     assert.equal(number.toFixed(-2.34, 1), '-2.3');
+    assert.equal(number.toFixed(2.34e10), '23400000000');
     assert.equal(number.toFixed(2.34e10, 1), '23400000000.0');
+    assert.equal(number.toFixed(123456789.1234), '123456789.1234');
+    assert.equal(number.toFixed(2.34e30), '2340000000000000000000000000000'); // test above the 21 digit limit of toPrecision
     assert.equal(number.toFixed(2.34e30, 1), '2340000000000000000000000000000.0'); // test above the 21 digit limit of toPrecision
     assert.equal(number.toFixed(2.34e-10, 1), '0.0');
     assert.equal(number.toFixed(2, 20), '2.00000000000000000000');
@@ -84,7 +87,9 @@ describe('number', function() {
     assert.equal(number.toFixed(-2e3, 0), '-2000');
     assert.equal(number.toFixed(5.555, 1), '5.6');
     assert.equal(number.toFixed(-5.555, 1), '-5.6');
+    assert.equal(number.toFixed(-0.005555), '-0.005555');
     assert.equal(number.toFixed(-0.005555, 4), '-0.0056');
+    assert.equal(number.toFixed(-0.005555, 8), '-0.00555500');
     assert.equal(number.toFixed(2.135, 2), '2.14');
   });
 
@@ -127,11 +132,11 @@ describe('number', function() {
         var options = {notation: 'fixed'};
         assert.equal(number.format(0, options), '0');
         assert.equal(number.format(123, options), '123');
-        assert.equal(number.format(123.456, options), '123');
-        assert.equal(number.format(123.7, options), '124');
-        assert.equal(number.format(-123.7, options), '-124');
+        assert.equal(number.format(123.456, options), '123.456');
+        assert.equal(number.format(123.7, options), '123.7');
+        assert.equal(number.format(-123.7, options), '-123.7');
         assert.equal(number.format(-66, options), '-66');
-        assert.equal(number.format(0.123456, options), '0');
+        assert.equal(number.format(0.123456, options), '0.123456');
 
         assert.equal(number.format(123456789, options), '123456789');
         assert.equal(number.format(-123456789, options), '-123456789');
@@ -143,9 +148,9 @@ describe('number', function() {
         assert.equal(number.format(123456789e+21, options), '123456789000000000000000000000');
         assert.equal(number.format(123456789e+22, options), '1234567890000000000000000000000');
 
-        assert.equal(number.format(1e-18, options), '0');
-        assert.equal(number.format(1e-22, options), '0');
-        assert.equal(number.format(1e-32, options), '0');
+        assert.equal(number.format(1e-18, options), '0.000000000000000001');
+        assert.equal(number.format(1e-22, options), '0.0000000000000000000001');
+        assert.equal(number.format(1e-32, options), '0.00000000000000000000000000000001');
       });
 
       it('fixed notation with precision', function () {
@@ -264,10 +269,8 @@ describe('number', function() {
 
       it('auto notation with custom lower and upper bound', function () {
         var options = {
-          exponential: {
-            lower: 1e-6,
-            upper: 1e+9
-          }
+          lowerExp: -6,
+          upperExp: 9
         };
         assert.equal(number.format(0, options), '0');
         assert.equal(number.format(1234567, options), '1234567');
@@ -277,63 +280,61 @@ describe('number', function() {
         assert.equal(number.format(0.999e-6, options), '9.99e-7');
         assert.equal(number.format(123456789123, options), '1.23456789123e+11');
 
-        assert.equal(number.format(Math.pow(2, 53), {exponential: {upper: 1e+20}}), '9007199254740992');
+        assert.equal(number.format(Math.pow(2, 53), {upperExp: 20}), '9007199254740992');
       });
 
       it('auto notation with custom lower bound', function () {
-        var options = { exponential: { lower: 1e-6 } };
+        var options = { lowerExp: -6 };
         assert.equal(number.format(0, options), '0');
         assert.equal(number.format(1e-6, options), '0.000001');
         assert.equal(number.format(0.999e-6, options), '9.99e-7');
       });
 
       it('auto notation with very large custom lower bound', function () {
-        assert.equal(number.format(1, { exponential: { lower: 1e-2 } }), '1');
-        assert.equal(number.format(1e-1, { exponential: { lower: 1e-2 } }), '0.1');
-        assert.equal(number.format(1e-2, { exponential: { lower: 1e-2} }), '0.01');
-        assert.equal(number.format(1e-3, { exponential: { lower: 1e-2 } }), '1e-3');
+        assert.equal(number.format(1, { lowerExp: -2 }), '1');
+        assert.equal(number.format(1e-1, { lowerExp: -2 }), '0.1');
+        assert.equal(number.format(1e-2, { lowerExp: -2}), '0.01');
+        assert.equal(number.format(1e-3, { lowerExp: -2 }), '1e-3');
       });
 
       it('auto notation with very small custom lower bound', function () {
-        assert.equal(number.format(1e-18, { exponential: { lower: 1e-30 } }), '0.000000000000000001');
-        assert.equal(number.format(1e-19, { exponential: { lower: 1e-30 } }), '0.0000000000000000001');
-        assert.equal(number.format(1e-20, { exponential: { lower: 1e-30 } }), '0.00000000000000000001');
-        assert.equal(number.format(1e-21, { exponential: { lower: 1e-30 } }), '0.000000000000000000001');
-        assert.equal(number.format(1e-22, { exponential: { lower: 1e-30 } }), '0.0000000000000000000001');
-        assert.equal(number.format(1e-23, { exponential: { lower: 1e-30 } }), '0.00000000000000000000001');
-        assert.equal(number.format(1e-24, { exponential: { lower: 1e-30 } }), '0.000000000000000000000001');
+        assert.equal(number.format(1e-18, { lowerExp: -30 }), '0.000000000000000001');
+        assert.equal(number.format(1e-19, { lowerExp: -30 }), '0.0000000000000000001');
+        assert.equal(number.format(1e-20, { lowerExp: -30 }), '0.00000000000000000001');
+        assert.equal(number.format(1e-21, { lowerExp: -30 }), '0.000000000000000000001');
+        assert.equal(number.format(1e-22, { lowerExp: -30 }), '0.0000000000000000000001');
+        assert.equal(number.format(1e-23, { lowerExp: -30 }), '0.00000000000000000000001');
+        assert.equal(number.format(1e-24, { lowerExp: -30 }), '0.000000000000000000000001');
       });
 
       it('auto notation with custom upper bound', function () {
-        var options = { exponential: { upper: 1e+9 } };
+        var options = { upperExp: 9 };
         assert.equal(number.format(1e+9, options), '1e+9');
         assert.equal(number.format(1e+9-1, options), '999999999');
       });
 
       it('auto notation with very large custom upper bound', function () {
-        assert.equal(number.format(1e+18, { exponential: { upper: 1e+30 } }), '1000000000000000000');
-        assert.equal(number.format(1e+19, { exponential: { upper: 1e+30 } }), '10000000000000000000');
-        assert.equal(number.format(1e+20, { exponential: { upper: 1e+30 } }), '100000000000000000000');
-        assert.equal(number.format(1e+21, { exponential: { upper: 1e+30 } }), '1000000000000000000000');
-        assert.equal(number.format(1e+22, { exponential: { upper: 1e+30 } }), '10000000000000000000000');
-        assert.equal(number.format(1e+23, { exponential: { upper: 1e+30 } }), '100000000000000000000000');
-        assert.equal(number.format(1e+24, { exponential: { upper: 1e+30 } }), '1000000000000000000000000');
+        assert.equal(number.format(1e+18, { upperExp: 30 }), '1000000000000000000');
+        assert.equal(number.format(1e+19, { upperExp: 30 }), '10000000000000000000');
+        assert.equal(number.format(1e+20, { upperExp: 30 }), '100000000000000000000');
+        assert.equal(number.format(1e+21, { upperExp: 30 }), '1000000000000000000000');
+        assert.equal(number.format(1e+22, { upperExp: 30 }), '10000000000000000000000');
+        assert.equal(number.format(1e+23, { upperExp: 30 }), '100000000000000000000000');
+        assert.equal(number.format(1e+24, { upperExp: 30 }), '1000000000000000000000000');
       });
 
       it('auto notation with very small custom upper bound', function () {
-        assert.equal(number.format(1, { exponential: { upper: 1e2 } }), '1');
-        assert.equal(number.format(1e1, { exponential: { upper: 1e2 } }), '10');
-        assert.equal(number.format(1e2, { exponential: { upper: 1e2 } }), '1e+2');
-        assert.equal(number.format(1e3, { exponential: { upper: 1e2 } }), '1e+3');
+        assert.equal(number.format(1, { upperExp: 2 }), '1');
+        assert.equal(number.format(1e1, { upperExp: 2 }), '10');
+        assert.equal(number.format(1e2, { upperExp: 2 }), '1e+2');
+        assert.equal(number.format(1e3, { upperExp: 2 }), '1e+3');
       });
 
       it('auto notation with custom precision, lower, and upper bound', function () {
         var options = {
           precision: 4,
-          exponential: {
-            lower: 1e-6,
-            upper: 1e+9
-          }
+          lowerExp: -6,
+          upperExp: 9
         };
 
         assert.equal(number.format(0, options), '0');
@@ -390,18 +391,18 @@ describe('number', function() {
         assert.strictEqual(number.toFixed(0), '0');
         assert.strictEqual(number.toFixed(2300), '2300');
         assert.strictEqual(number.toFixed(-2300), '-2300');
-        assert.strictEqual(number.toFixed(19.9), '20');
-        assert.strictEqual(number.toFixed(99.9), '100');
-        assert.strictEqual(number.toFixed(99.5), '100');
-        assert.strictEqual(number.toFixed(99.4), '99');
-        assert.strictEqual(number.toFixed(2.3), '2');
-        assert.strictEqual(number.toFixed(2.5), '3');
-        assert.strictEqual(number.toFixed(2.9), '3');
-        assert.strictEqual(number.toFixed(1.5), '2');
-        assert.strictEqual(number.toFixed(-1.5), '-2');
-        assert.strictEqual(number.toFixed(123.45), '123');
-        assert.strictEqual(number.toFixed(0.005), '0');
-        assert.strictEqual(number.toFixed(0.7), '1');
+        assert.strictEqual(number.toFixed(19.9, 0), '20');
+        assert.strictEqual(number.toFixed(99.9, 0), '100');
+        assert.strictEqual(number.toFixed(99.5, 0), '100');
+        assert.strictEqual(number.toFixed(99.4, 0), '99');
+        assert.strictEqual(number.toFixed(2.3, 0), '2');
+        assert.strictEqual(number.toFixed(2.5, 0), '3');
+        assert.strictEqual(number.toFixed(2.9, 0), '3');
+        assert.strictEqual(number.toFixed(1.5, 0), '2');
+        assert.strictEqual(number.toFixed(-1.5, 0), '-2');
+        assert.strictEqual(number.toFixed(123.45, 0), '123');
+        assert.strictEqual(number.toFixed(0.005, 0), '0');
+        assert.strictEqual(number.toFixed(0.7, 0), '1');
 
         assert.strictEqual(number.toFixed(0.15, 1), '0.2');
         assert.strictEqual(number.toFixed(123.4567, 1), '123.5');

@@ -69,8 +69,10 @@ describe('variance', function() {
   });
 
   it('should throw an error if called with invalid type of arguments', function() {
-    assert.throws(function() {variance(new Date(), 2)}, /TypeError/);
-    assert.throws(function() {variance(new Unit('5cm'), new Unit('10cm'))}, /TypeError/);
+    assert.throws(function() {variance(new Date(), 2)}, /Cannot calculate var, unexpected type of argument/);
+    assert.throws(function() {variance(new Unit(5, 'cm'), new Unit(10, 'cm'))}, /Cannot calculate var, unexpected type of argument/);
+    assert.throws(function() {variance(2, 3, null)}, /Cannot calculate var, unexpected type of argument/);
+    assert.throws(function() {variance([2, 3, null])}, /Cannot calculate var, unexpected type of argument/);
     assert.throws(function() {variance([2,3,4], 5)}, /Unknown normalization "5"/);
   });
 
