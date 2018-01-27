@@ -11,7 +11,7 @@ Breaking changes:
   - Slightly improved performance on most browsers.
   - Much less risk of security exploits.
   - Internal code is easier to understand, maintain, and debug.
-  Breaking change here: When using custom nodes in the expression parser, 
+  Breaking change here: When using custom nodes in the expression parser,
   the syntax of `_compile` has changed. This is an undocumented feature though.
 - Changed `rad`, `deg`, and `grad` to have short prefixes,
   and introduced `radian`, `degree`, and `gradian` and their plurals
@@ -25,7 +25,7 @@ Breaking changes:
 - `null` is no longer implicitly casted to a number `0`, so input like
   `math.add(2, null)` is no longer supported. See #830, #353.
 - In function `math.format`, the option `notation: 'fixed'` no longer rounds to
-  zero digits  when no precision is specified: it leaves the digits as is. 
+  zero digits  when no precision is specified: it leaves the digits as is.
   See #676.
 - In function `math.format`, the options `{exponential: {lower: number, upper: number}}`
   (where `lower` and `upper` are values) are replaced with `{lowerExp: number, upperExp: number}`
@@ -37,11 +37,17 @@ Breaking changes:
   ```js
   math.format(2000, {lowerExp: -2, upperExp: 2})
   ```
-  
+
 
 Non breaking changes:
 
 - Improved error messages for statistical functions.
+
+
+## not-yet-released, version 3.20.2
+
+- Fixed option `implicit` not being copied from an `OperatorNode`
+  when applying function `map`. Thanks @HarraySarson.
 
 
 ## 2018-01-17, version 3.20.1
