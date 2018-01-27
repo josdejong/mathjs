@@ -194,7 +194,7 @@ All nodes have the following methods:
         return node;
       }
     });
-    transformed.toString(); // returns '(3 ^ 2) + (5 * 3)'
+    transformed.toString(); // returns '3 ^ 2 + 5 * 3'
     ```
 
 -   `traverse(callback)`

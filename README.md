@@ -37,9 +37,9 @@ Or download mathjs via one of the CDN's listed on the downloads page:
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
-[expressions](http://mathjs.org/docs/expressions.html)
+[expressions](http://mathjs.org/docs/expressions/index.html)
 and supports
-[chained operations](http://mathjs.org/docs/chained_operations.html).
+[chained operations](http://mathjs.org/docs/core/chaining.html).
 
 ```js
 // load math.js
