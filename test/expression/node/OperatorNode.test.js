@@ -120,6 +120,14 @@ describe('OperatorNode', function() {
     assert.deepEqual(g.args[1],  f);
   });
 
+  it('should map an implicit OperatorNode', function () {
+    var x = new SymbolNode('x');
+    var y = new SymbolNode('y');
+    var product = new OperatorNode('*', 'multiply', [x, y], true /* implicit */);
+
+    assert.deepEqual(product.map(function(x) { return x; }), product);
+  });
+
   it ('should throw an error when the map callback does not return a node', function () {
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
