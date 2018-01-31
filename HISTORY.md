@@ -49,7 +49,11 @@ Breaking changes:
 
 Non breaking changes:
 
+- Implemented additional methods `isUnary()` and `isBinary()` on
+  `OperatorNode`. See #1025.
 - Improved error messages for statistical functions.
+- Fixed #1014: `derivative` silently dropping additional arguments
+  from operator nodes with more than two arguments.
 
 
 ## not-yet-released, version 3.20.2
