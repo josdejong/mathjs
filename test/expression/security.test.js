@@ -192,7 +192,7 @@ describe('security', function () {
 
   it ('should not allow calling eval via clone', function () {
     assert.throws(function () {
-      math.eval('expression.node.ConstantNode.prototype.clone.call({"value":"eval", "valueType":"null"}).eval()("console.log(\'hacked...\')")')
+      math.eval('expression.node.ConstantNode.prototype.clone.call({"value":"eval"}).eval()("console.log(\'hacked...\')")')
     }, /Error: Undefined symbol expression/);
   })
 

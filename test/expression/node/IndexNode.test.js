@@ -85,7 +85,7 @@ describe('IndexNode', function() {
       paths.push(path);
       assert.strictEqual(parent, n);
 
-      return node.isConstantNode && node.value === '1' ? e : node;
+      return node.isConstantNode && node.value === 1 ? e : node;
     });
 
     assert.equal(nodes.length, 2);
@@ -115,7 +115,7 @@ describe('IndexNode', function() {
 
     var e = new SymbolNode('c');
     var f = n.transform(function (node) {
-      return node.isConstantNode && node.value === '1' ? e : node;
+      return node.isConstantNode && node.value === 1 ? e : node;
     });
 
     assert.notStrictEqual(f, n);
@@ -197,7 +197,7 @@ describe('IndexNode', function() {
         }).join(', ');
       }
       else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -240,7 +240,7 @@ describe('IndexNode', function() {
         return latex;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 

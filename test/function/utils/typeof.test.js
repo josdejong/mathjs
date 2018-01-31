@@ -14,6 +14,8 @@ describe('typeof', function() {
   it('should return number type for a number', function() {
     assert.equal(math.typeof(2), 'number');
     assert.equal(math.typeof(new Number(2)), 'number');
+    assert.equal(math.typeof(new Number(2.3)), 'number');
+    assert.equal(math.typeof(NaN), 'number');
   });
 
   it('should return bignumber type for a bignumber', function() {
@@ -66,12 +68,16 @@ describe('typeof', function() {
     assert.equal(math.typeof(null), 'null');
   });
 
-  it('should return undefined type for undefined', function() {  
+  it('should return undefined type for undefined', function() {
     assert.equal(math.typeof(undefined), 'undefined');
   });
 
   it('should return date type for a Date', function() {  
     assert.equal(math.typeof(new Date()), 'Date');
+  });
+
+  it('should return the type of a regexp', function () {
+    assert.equal(math.typeof(/regexp/), 'RegExp');
   });
 
   it('should return function type for a function', function() {  
@@ -109,5 +115,10 @@ describe('typeof', function() {
     var expression = math.parse('typeof(1)');
     assert.equal(expression.toTex(), '\\mathrm{typeof}\\left(1\\right)');
   });
+
+  it('should throw an error in case of wrong number of arguments', function () {
+    assert.throws(function () {math.typeof()}, /Too few arguments in function _typeof/);
+    assert.throws(function () {math.typeof(1,2,3)}, /Too many arguments in function _typeof/);
+  })
 
 });

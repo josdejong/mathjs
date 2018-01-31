@@ -5,6 +5,7 @@ var math = require('../../index');
 var ArgumentsError = require('../../lib/error/ArgumentsError');
 var parse = math.expression.parse;
 var ConditionalNode = math.expression.node.ConditionalNode;
+var ConstantNode = math.expression.node.ConstantNode;
 var OperatorNode = math.expression.node.OperatorNode;
 var RangeNode = math.expression.node.RangeNode;
 var Complex = math.type.Complex;
@@ -366,10 +367,6 @@ describe('parse', function() {
     it('should parse units', function() {
       assert.deepEqual(parseAndEval('5cm'), new Unit(5, 'cm'));
       assert.ok(parseAndEval('5cm') instanceof Unit);
-    });
-
-    it('should parse constants', function() {
-      assert.equal(parseAndEval('pi'), Math.PI);
     });
 
     it('should parse physical constants', function() {
@@ -844,12 +841,35 @@ describe('parse', function() {
 
   describe('constants', function () {
 
-    it('should parse constants', function() {
+    it ('should parse symbolic constants', function () {
+      assert.strictEqual(parse('i').type, 'SymbolNode');
       assert.deepEqual(parseAndEval('i'), new Complex(0, 1));
       approx.equal(parseAndEval('pi'), Math.PI);
       approx.equal(parseAndEval('e'), Math.E);
+    })
+
+    it('should parse constants', function() {
+      assert.strictEqual(parse('true').type, 'ConstantNode');
+      assert.deepStrictEqual(parse('true'), createConstantNode(true));
+      assert.deepStrictEqual(parse('false'), createConstantNode(false));
+      assert.deepStrictEqual(parse('null'), createConstantNode(null));
+      assert.deepStrictEqual(parse('undefined'), createConstantNode(undefined));
+      assert.deepStrictEqual(parse('uninitialized'), createConstantNode(math.uninitialized));
     });
 
+    it('should parse numeric constants', function() {
+      var nanConstantNode = parse('NaN');
+      assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode');
+      assert.ok(isNaN(nanConstantNode.value));
+      assert.deepStrictEqual(parse('Infinity'), createConstantNode(Infinity));
+    });
+
+    // helper function to create a ConstantNode with empty comment
+    function createConstantNode (value) {
+      var c = new ConstantNode(value);
+      c.comment = ''
+      return c;
+    }
   });
 
   describe('variables', function () {
