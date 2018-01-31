@@ -24,6 +24,14 @@ Breaking changes:
   need to sort an array with text. See #680.
 - `null` is no longer implicitly casted to a number `0`, so input like
   `math.add(2, null)` is no longer supported. See #830, #353.
+- The class `ConstantNode` is changed such that it just holds a value
+  instead of holding a stringified value and it's type.
+  `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
+  Stringification uses `math.format`, which may result in differently
+  formatted numeric output.
+- The constants `true`, `false`, `null`, `undefined`, `NaN`, `Infinity`,
+  and `uninitialized` are now parsed as ConstantNodes instead of
+  SymbolNodes in the expression parser. See #833.
 - In function `math.format`, the option `notation: 'fixed'` no longer rounds to
   zero digits  when no precision is specified: it leaves the digits as is.
   See #676.

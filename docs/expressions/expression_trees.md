@@ -405,13 +405,12 @@ var node2     = new math.expression.node.ConditionalNode(condition, trueExpr, fa
 Construction:
 
 ```
-new ConstantNode(value: * [, valueType: string])
+new ConstantNode(value: *)
 ```
 
 Properties:
 
 - `value: *`
-- `valueType: string`
 
 Examples:
 
@@ -419,7 +418,7 @@ Examples:
 var node1 = math.parse('2.4');
 
 var node2 = new math.expression.node.ConstantNode(2.4);
-var node3 = new math.expression.node.ConstantNode('2.4', 'number');
+var node3 = new math.expression.node.ConstantNode('foo');
 ```
 
 
