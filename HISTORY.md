@@ -56,6 +56,8 @@ Non breaking changes:
 
 - Fixed option `implicit` not being copied from an `OperatorNode`
   when applying function `map`. Thanks @HarraySarson.
+- Fixed #995: spaces and underscores not property being escaped
+  in `toTex()`. Thanks @FSMaxB.
 
 
 ## 2018-01-17, version 3.20.1
