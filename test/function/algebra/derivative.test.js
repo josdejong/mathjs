@@ -228,11 +228,11 @@ describe('derivative', function() {
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x');
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or UnaryOperatorNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
 
     assert.throws(function () {
       derivative('x + [1, 2; 3, 4]', 'x');
-    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
+    }, /TypeError: Unexpected type of argument in function constTag \(expected: OperatorNode or ConstantNode or SymbolNode or ParenthesisNode or FunctionNode or UnaryOperatorNode or FunctionAssignmentNode, actual: ArrayNode, index: 1\)/);
   });
 
   it('should throw error if incorrect number of arguments', function() {
