@@ -2,6 +2,8 @@
 var assert = require('assert');
 var math = require('../../../index');
 var OperatorNode = math.expression.node.OperatorNode;
+var ConstantNode = math.expression.node.ConstantNode;
+var SymbolNode = math.expression.node.SymbolNode;
 var derivative = math.derivative;
 
 describe('derivative', function() {
@@ -207,9 +209,28 @@ describe('derivative', function() {
 
   });
 
+  it ('should not drop any additional operator arguments', function() {
+    // This case cannot happen when parsing via the expression parser,
+    // but it can when you create your own operator nodes. See #1014
+
+    var c12 = new ConstantNode(12);
+    var c4 = new ConstantNode(4);
+    var x = new SymbolNode('x');
+
+    assert.throws(function () {
+      var node = new OperatorNode('/', 'myDivide', [c12, c4, x]);
+      derivative(node, 'x')
+    }, /Error: Operator "\/" is not supported by derivative, or a wrong number of arguments is passed/ );
+
+    assert.throws(function () {
+      var node = new OperatorNode('^', 'myPow', [c12, c4, x]);
+      derivative(node, 'x')
+    }, /Error: Operator "\^" is not supported by derivative, or a wrong number of arguments is passed/ );
+  });
+
   it('should throw error if expressions contain unsupported operators or functions', function() {
-    assert.throws(function () { derivative('x << 2', 'x'); }, /Error: Operator "<<" not supported by derivative/);
-    assert.throws(function () { derivative('subset(x)', 'x'); }, /Error: Function "subset" not supported by derivative/);
+    assert.throws(function () { derivative('x << 2', 'x'); }, /Error: Operator "<<" is not supported by derivative/);
+    assert.throws(function () { derivative('subset(x)', 'x'); }, /Error: Function "subset" is not supported by derivative/);
   });
 
   it('should have controlled behavior on arguments errors', function() {

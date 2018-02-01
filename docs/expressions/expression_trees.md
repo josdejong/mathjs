@@ -528,7 +528,7 @@ var node1 = math.parse('{a: 1, b: 2, c: 3}');
 var a = new math.expression.node.ConstantNode(1);
 var b = new math.expression.node.ConstantNode(2);
 var c = new math.expression.node.ConstantNode(3);
-var node2  = new math.expression.node.ObjectNode({a: a, b: b, c: c});
+var node2 = new math.expression.node.ObjectNode({a: a, b: b, c: c});
 ```
 
 
@@ -539,6 +539,31 @@ Construction:
 ```
 new OperatorNode(op: string, fn: string, args: Node[])
 ```
+
+Additional methods:
+
+-   `isUnary() : boolean`
+
+    Returns true when the `OperatorNode` contains exactly one argument,
+    like with a unary minus:
+
+    ```js
+    var a = new math.expression.node.ConstantNode(2);
+    var b = new math.expression.node.OperatorNode('-', 'unaryMinus', [a]);`
+    b.isUnary(); // true
+    ```
+
+-   `isBinary() : boolean`
+
+    Returns true when the `OperatorNode` contains exactly two arguments,
+    like with most regular operators:
+
+    ```js
+    var a = new math.expression.node.ConstantNode(2);
+    var b = new math.expression.node.ConstantNode(3);
+    var c = new math.expression.node.OperatorNode('+', 'add', [a, b]);`
+    c.isBinary(); // true
+    ```
 
 Properties:
 
