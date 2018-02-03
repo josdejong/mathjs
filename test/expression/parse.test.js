@@ -1142,6 +1142,45 @@ describe('parse', function() {
       assert.throws(function () { math.parse('2^3 4'); }, /Unexpected part "4"/);
     });
 
+    it('should promote implicit multiplication when configured to do so', function() {
+      var lastPromoteImplicit = math.config().promoteImplicit;
+      math.config({promoteImplicit: true});
+
+      assert.equal(parseAndEval('2a / b', {a: 2, b: 4}), 1);
+      assert.equal(parseAndEval('a b c', {a: 2, b: 4, c: 6}), 48);
+      assert.equal(parseAndEval('a b*c', {a: 2, b: 4, c: 6}), 48);
+      assert.equal(parseAndEval('a*b c', {a: 2, b: 4, c: 6}), 48);
+      assert.equal(parseAndEval('a/b c', {a: 24, b: 2, c: 6}), 2);
+
+      assert.equal(parseAndEval('1/2a', {a:2}), 0.25);
+      assert.equal(parseAndEval('8/2a/2', {a:2}), 1);
+      assert.equal(parseAndEval('8/2a*2', {a:2}), 4);
+
+      assert.equal(parseAndEval('a/b c d e', {a: 1200, b: 2, c: 3, d: 4, e: 5}), 10);
+      assert.equal(parseAndEval('a/b c*d e', {a: 1200, b: 2, c: 3, d: 4, e: 5}), 4000);
+
+      
+      assert.equal(parse('9km*3km').toString({parenthesis: 'all'}), '(9 km) * (3 km)');
+
+      assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
+      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42);        // function call
+      assert.equal(parseAndEval('a.b(2+3)', {a: {b: function() {return 42;}}}), 42); // function call
+      assert.equal(parseAndEval('(2+3)(4+5)'), 45);       // implicit multiplication
+      assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);  // implicit multiplication
+
+      assert.equal(parse('4 * a').implicit, false);
+      assert.equal(parse('4a').implicit, true);
+
+      assert.throws(function () { math.parse('2 3'); }, /Unexpected part "3"/);
+
+      assert.deepEqual(parseAndEval('1/2i'), new Complex(0, -0.5));
+
+      assert.equal(parse('1/2a').toString(), '1 / (2 a)');
+
+      math.config({promoteImplicit: lastPromoteImplicit});
+
+    });
+
     it('should parse pow ^', function() {
       approx.equal(parseAndEval('2^3'), 8);
       approx.equal(parseAndEval('-2^2'), -4);  // -(2^2)

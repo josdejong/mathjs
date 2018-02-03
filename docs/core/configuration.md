@@ -47,6 +47,7 @@ The following configuration options are available:
 
 - `randomSeed`. Set this option to seed pseudo random number generation, making it deterministic. The pseudo random number generator is reset with the seed provided each time this option is set. For example, setting it to `'a'` will cause `math.random()` to return `0.43449421599986604` upon the first call after setting the option every time. Set to `null` to seed the pseudo random number generator with a random seed. Default value is `null`.
 
+- `promoteImplicit`. When set, gives implicit multiplication higher precedence than ordinary (explicit) multiplication and division. The default is `false`, in which case implicit and explicit multiplication have equal precedence. When `true`, the expression `1 / 2 x` will be parsed as `1 / (2 * x)`; and when false, parsed as `(1 / 2) * x`.
 
 ## Examples
 
