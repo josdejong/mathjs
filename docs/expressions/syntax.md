@@ -121,6 +121,7 @@ See section below                 | Implicit multiplication
 `;`                               | Row separator
 `\n`, `;`                         | Statement separators
 
+
 ## Functions
 
 Functions are called by entering their name, followed by zero or more
