@@ -572,7 +572,7 @@ Parentheses are parsed as a function call when there is a symbol or accessor on
 the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
 parentheses are interpreted as an implicit multiplication.
 
-Math.js will always give implicit multiplication higher precedence than multiplication with the `*` operator, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[number] / [number] [symbol]` or `[number] / [number] [left paren]`. In that special case, the division is evaluated first:
+Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[number] / [number] [symbol]` or `[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
 ```js
 math.eval('20 kg / 4 kg');  // 5      Evaluated as (20 kg) / (4 kg)
@@ -586,20 +586,20 @@ The behavior of implicit multiplication can be summarized by these operator prec
 - Implicit multiplication
 - All other division `/` and multiplication `*`
 
-Experience has shown that these rules most closely match user intent when entering expressions that could be interpreted different ways. It's also possible that these rules could be tweaked in future major releases. Implicit multiplication can be tricky as there is ambiguity on how an expression
-is evaluated. Use it carefully. If you don't like the uncertainty introduced by implicit multiplication, use explicit `*` operators and parentheses to ensure your expression is evaluated correctly.
+Implicit multiplication is tricky as there can appear to be ambiguity in how an expression will be evaluated. Experience has shown that the above rules most closely match user intent when entering expressions that could be interpreted different ways. It's also possible that these rules could be tweaked in future major releases.  Use implicit multiplication carefully. If you don't like the uncertainty introduced by implicit multiplication, use explicit `*` operators and parentheses to ensure your expression is evaluated the way you intend.
 
-Here are some more examples:
+Here are some more examples using implicit multiplication:  
 
-Expression      | Evaluated as      | Result
---------------- | ----------------- | ------------------
-(1 + 3) pi      | (1 + 3) * pi      | 12.566370614359172
-(4 - 1) 2       | (4 - 1) * 2       | 6
-3 / 4 mm        | (3 / 4) * mm      | 0.75 mm
-2 + 3 i         | 2 + (3 * i)       | 2 + 3i
-(1 + 2) (4 - 2) | (1 + 2) * (4 - 2) | 6
-sqrt(4) (1 + 2) | sqrt(4) * (1 + 2) | 6
-
+Expression      | Evaluated as        | Result
+--------------- | ------------------- | ------------------
+(1 + 3) pi      | (1 + 3) * pi        | 12.566370614359172
+(4 - 1) 2       | (4 - 1) * 2         | 6
+3 / 4 mm        | (3 / 4) * mm        | 0.75 mm
+2 + 3 i         | 2 + (3 * i)         | 2 + 3i
+(1 + 2) (4 - 2) | (1 + 2) * (4 - 2)   | 6
+sqrt(4) (1 + 2) | sqrt(4) * (1 + 2)   | 6
+8 pi / 2 pi     | (8 * pi) / (2 * pi) | 4
+1 / 2i          | (1 / 2) * i         | 0.5 i
 
 
 ## Comments
