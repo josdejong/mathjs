@@ -5,23 +5,23 @@ describe('security', function () {
 
   it ('should not allow calling Function via constructor', function () {
     assert.throws(function () {
-      math.eval('[].map.constructor("console.log(\'hacked...\')")()');
+      math.eval('f=[].map.constructor("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
   it ('should not allow calling Function via constructor (2)', function () {
     assert.throws(function () {
-      math.eval('sqrt.constructor("console.log(\'hacked...\')")()');
+      math.eval('f=sqrt.constructor("console.log(\'hacked...\')"); f()');
     }, /Error: No access to method "constructor"/);
   })
 
   it ('should not allow calling Function via call/apply', function () {
     assert.throws(function () {
-      math.eval('[].map.constructor.call(null, "console.log(\'hacked...\')")()');
+      math.eval('f=[].map.constructor.call(null, "console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
 
     assert.throws(function () {
-      math.eval('[].map.constructor.apply(null, ["console.log(\'hacked...\')"])()');
+      math.eval('f=[].map.constructor.apply(null, ["console.log(\'hacked...\')"]); f()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
@@ -43,27 +43,27 @@ describe('security', function () {
 
   it ('should not allow calling Function via constructor', function () {
     assert.throws(function () {
-      math.eval('[].map.constructor("console.log(\'hacked...\')")()');
+      math.eval('f=[].map.constructor("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
 
     assert.throws(function () {
-      math.eval('[].map["constructor"]("console.log(\'hacked...\')")()');
+      math.eval('f=[].map["constructor"]("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
   it ('should not allow calling Function via a disguised constructor', function () {
     assert.throws(function () {
-      math.eval('prop="constructor"; [].map[prop]("console.log(\'hacked...\')")()');
+      math.eval('prop="constructor"; f=[].map[prop]("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
 
     assert.throws(function () {
-      math.eval('[].map[concat("constr", "uctor")]("console.log(\'hacked...\')")()');
+      math.eval('f=[].map[concat("constr", "uctor")]("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
   it ('should not allow calling Function via bind', function () {
     assert.throws(function () {
-      math.eval('[].map.constructor.bind()("console.log(\'hacked...\')")()');
+      math.eval('f=[].map.constructor.bind()("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
@@ -79,7 +79,8 @@ describe('security', function () {
     assert.throws(function () {
       math.eval('{}.constructor.assign(cos.constructor, {binding: cos.bind})\n' +
           '{}.constructor.assign(cos.constructor, {bind: null})\n' +
-          'cos.constructor.binding()("console.log(\'hacked...\')")()');
+          'f=cos.constructor.binding()("console.log(\'hacked...\')")\n' +
+          'f()');
     }, /Error: No access to property "bind/);
   })
 
@@ -119,7 +120,8 @@ describe('security', function () {
           'p.eval("", [])\n' +
           'o = p.get("constructor")\n' +
           'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' +
-          'c.value("console.log(\'hacked...\')")()');
+          'f = c.value("console.log(\'hacked...\')")\n' +
+          'f()');
     }, /Error: No access to property "constructor"/);
   })
 
@@ -127,13 +129,14 @@ describe('security', function () {
     assert.throws(function () {
       math.eval('O = {}.constructor\n' +
           'd = O.getOwnPropertyDescriptor(O.__proto__, "constructor")\n' +
-          'eval("value", d)("console.log(\'hacked...\')")()');
+          'f = eval("value", d)("console.log(\'hacked...\')")\n' +
+          'f()');
     }, /Error: No access to property "constructor/);
   })
 
   it ('should not allow calling Function via a specially encoded constructor property name', function () {
     assert.throws(function () {
-      math.eval('[].map["\\u0063onstructor"]("console.log(\'hacked...\')")()');
+      math.eval('f=[].map["\\u0063onstructor"]("console.log(\'hacked...\')"); f()');
     }, /Error: Cannot access method "map" as a property/);
   })
 
@@ -210,7 +213,8 @@ describe('security', function () {
           'j(x)=[x("constructor")];' +
           'k(x)={map:j};' +
           'i={isIndex:true,isScalar:f,size:g,min:h,max:h,dimension:k};' +
-          'subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')")()')
+          'f=subset(subset([[[0]]],i),index(1,1,1))("console.log(\'hacked...\')");' +
+          'f()')
     }, /TypeError: Unexpected type of argument in function subset \(expected: Index, actual: Object, index: 1\)/);
   })
 
@@ -239,7 +243,7 @@ describe('security', function () {
   it ('should not allow replacing validateSafeMethod with a local variant', function () {
     assert.throws(function () {
       math.eval("eval(\"f(validateSafeMethod)=cos.constructor(\\\"return eval\\\")()\")(eval(\"f(x,y)=0\"))(\"console.log('hacked...')\")")
-    }, /Error: No access to method "constructor"/);
+    }, /SyntaxError: Value expected/);
   })
 
   it ('should not allow abusing toString', function () {
@@ -251,13 +255,13 @@ describe('security', function () {
   it ('should not allow creating a bad FunctionAssignmentNode', function () {
     assert.throws(function () {
       math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
-    }, /TypeError: Callback function must return a Node/);
+    }, /SyntaxError: Value expected/);
   })
 
   it ('should not allow creating a bad OperatorNode (1)', function () {
     assert.throws(function () {
       math.eval("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
-    }, /TypeError: Callback function must return a Node/);
+    }, /SyntaxError: Value expected/);
   })
 
   it ('should not allow creating a bad OperatorNode (2)', function () {
@@ -289,7 +293,9 @@ describe('security', function () {
 
   it ('should not allow using method chain', function () {
     assert.throws(function () {
-      math.eval("chain(\"a(){return eval;};function b\").typed({\"\":f()=0}).done()()(\"console.log(\'hacked...\')\")")
+      math.eval("f=chain(\"a(){return eval;};function b\").typed({\"\":f()=0}).done();" +
+          "g=f();" +
+          "g(\"console.log(\'hacked...\')\")")
     }, /is not a function/);
   })
 
@@ -301,8 +307,11 @@ describe('security', function () {
 
   it ('should not allow using method Chain', function () {
     assert.throws(function () {
-      math.eval("x=parse(\"a\",{nodes:{a:Chain}});Chain.bind(x,{})();evilMath=x.create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")");
-    }, /Undefined symbol Chain/);
+      math.eval("x=parse(\"a\",{nodes:{a:Chain}});Chain.bind(x,{})();" +
+          "evilMath=x.create().done();" +
+          "evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); " +
+          "parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log(\'hacked...\')\")");
+    }, /SyntaxError: Value expected/);
   })
 
   it ('should not allow passing a function name containg bad contents', function () {
