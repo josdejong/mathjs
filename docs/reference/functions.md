@@ -44,6 +44,7 @@ Function | Description
 [math.lup(A)](functions/lup.md) | Calculate the Matrix LU decomposition with partial pivoting.
 [math.lusolve(A,&nbsp;b)](functions/lusolve.md) | Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
 [math.qr(A)](functions/qr.md) | Calculate the Matrix QR decomposition.
+[rationalize(expr)](functions/rationalize.md) | Transform a rationalizable expression in a rational fraction.
 [simplify(expr)](functions/simplify.md) | Simplify an expression tree.
 [math.slu(A,&nbsp;order,&nbsp;threshold)](functions/slu.md) | Calculate the Sparse Matrix LU decomposition with full pivoting.
 [math.usolve(U,&nbsp;b)](functions/usolve.md) | Solves the linear equation system by backward substitution.

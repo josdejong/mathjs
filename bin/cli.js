@@ -30,7 +30,7 @@
  *     cat script.txt | mathjs > results.txt  Run input stream, output to file
  *
  * @license
- * Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
+ * Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy
@@ -219,7 +219,7 @@ function runStream (input, output, mode, parenthesis) {
               var node = math.parse(expr);
               var res = node.eval(scope);
 
-              if (res && res.isResultSet) {
+              if (math.type.isResultSet(res)) {
                 // we can have 0 or 1 results in the ResultSet, as the CLI
                 // does not allow multiple expressions separated by a return
                 res = res.entries[0];
@@ -229,7 +229,7 @@ function runStream (input, output, mode, parenthesis) {
               }
 
               if (node) {
-                if (node.isAssignmentNode) {
+                if (math.type.isAssignmentNode(node)) {
                   var name = findSymbolName(node);
                   if (name != null) {
                     scope.ans = scope[name];
@@ -240,7 +240,7 @@ function runStream (input, output, mode, parenthesis) {
                     console.log(format(res));
                   }
                 }
-                else if (res instanceof math.type.Help) {
+                else if (math.type.isHelp(res)) {
                   console.log(res.toString());
                 }
                 else {
@@ -295,10 +295,11 @@ function runStream (input, output, mode, parenthesis) {
  * @return {string | null} Returns the name when found, else returns null.
  */
 function findSymbolName (node) {
+  var math = getMath();
   var n = node;
 
   while (n) {
-    if (n.isSymbolNode) {
+    if (math.type.isSymbolNode(n)) {
       return n.name;
     }
     n = n.object;

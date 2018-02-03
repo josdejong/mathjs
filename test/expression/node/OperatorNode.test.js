@@ -120,6 +120,14 @@ describe('OperatorNode', function() {
     assert.deepEqual(g.args[1],  f);
   });
 
+  it('should map an implicit OperatorNode', function () {
+    var x = new SymbolNode('x');
+    var y = new SymbolNode('y');
+    var product = new OperatorNode('*', 'multiply', [x, y], true /* implicit */);
+
+    assert.deepEqual(product.map(function(x) { return x; }), product);
+  });
+
   it ('should throw an error when the map callback does not return a node', function () {
     var a = new SymbolNode('x');
     var b = new ConstantNode(2);
@@ -723,5 +731,35 @@ describe('OperatorNode', function() {
     assert.equal(h.toTex(), h.toTex({implicit: 'hide'}));
     assert.equal(h.toTex({implicit: 'hide'}), '2~\\left(3+4\\right)');
     assert.equal(h.toTex({implicit: 'show'}), '2\\cdot\\left(3+4\\right)');
+  });
+
+  it ('should stringify implicit multiplications between ConstantNodes with parentheses', function () {
+    var a = math.parse('(4)(4)(4)(4)');
+    var b = math.parse('4b*4(4)');
+    var c = math.parse('(4(4(4)))');
+
+    assert.equal(a.toString({implicit: 'hide', parenthesis: 'auto'}), '(4) (4) (4) (4)');
+    assert.equal(b.toString({implicit: 'hide', parenthesis: 'auto'}), '4 b * 4 (4)');
+    assert.equal(c.toString({implicit: 'hide', parenthesis: 'auto'}), '4 (4 (4))');
+  });
+
+  it ('should LaTeX implicit multiplications between ConstantNodes with parentheses', function () {
+    var a = math.parse('(4)(4)(4)(4)');
+    var b = math.parse('4b*4(4)');
+    var c = math.parse('(4(4(4)))');
+
+    assert.equal(a.toTex({implicit: 'hide', parenthesis: 'auto'}), '\\left(4\\right)~\\left(4\\right)~\\left(4\\right)~\\left(4\\right)');
+    assert.equal(b.toTex({implicit: 'hide', parenthesis: 'auto'}), '4~\\mathrm{b}\\cdot4~\\left(4\\right)');
+    assert.equal(c.toTex({implicit: 'hide', parenthesis: 'auto'}), '4~\\left(4~\\left(4\\right)\\right)');
+  });
+
+  it ('should HTML implicit multiplications between ConstantNodes with parentheses', function () {
+    var a = math.parse('(4)(4)(4)(4)');
+    var b = math.parse('4b*4(4)');
+    var c = math.parse('(4(4(4)))');
+
+    assert.equal(a.toHTML({implicit: 'hide', parenthesis: 'auto'}), '<span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>');
+    assert.equal(b.toHTML({implicit: 'hide', parenthesis: 'auto'}), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-symbol">b</span><span class="math-operator math-binary-operator math-explicit-binary-operator">*</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span>');
+    assert.equal(c.toHTML({implicit: 'hide', parenthesis: 'auto'}), '<span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-operator math-binary-operator math-implicit-binary-operator"></span><span class="math-parenthesis math-round-parenthesis">(</span><span class="math-number">4</span><span class="math-parenthesis math-round-parenthesis">)</span><span class="math-parenthesis math-round-parenthesis">)</span>');
   });
 });

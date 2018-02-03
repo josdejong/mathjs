@@ -12,6 +12,8 @@ var expr = '2 + 3 * sin(pi / 4) - 4x';
 var scope = {x: 2};
 var compiled = math.parse(expr).compile();
 
+console.log('expression:', expr);
+
 var suite = new Benchmark.Suite();
 suite
     .add(pad('expression parse and evaluate'), function() {

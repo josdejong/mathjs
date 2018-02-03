@@ -5,10 +5,10 @@ var OperatorNode = math.expression.node.OperatorNode;
 var derivative = math.derivative;
 
 describe('derivative', function() {
-  
+
   function derivativeWithoutSimplify (expr, value) {
     return math.derivative(expr, value, {simplify: false});
-  }  
+  }
 
   function compareString(left, right) {
     assert.equal(left.toString(), right.toString());
@@ -52,6 +52,8 @@ describe('derivative', function() {
   it('should take the derivative of a OperatorNodes with ConstantNodes', function() {
     compareString(derivativeWithoutSimplify('1 + 2', 'x'), '0');
     compareString(derivativeWithoutSimplify('-100^2 + 3*3/2 - 12', 'x'), '0');
+    var threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('7^4'), math.parse('123.124')]);
+    compareString(derivativeWithoutSimplify(threeArgMultiplyConstant, 'x'), 0);
   });
 
   it('should take the derivative of a OperatorNodes with SymbolNodes', function() {
@@ -60,12 +62,21 @@ describe('derivative', function() {
     // d/dx(+4x) = +4*1 = +4
     compareString(derivativeWithoutSimplify('+4x', 'x'), '+4 * 1');
 
+    var threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('x'), math.parse('sin(x)')]);
+    compareString(derivativeWithoutSimplify(threeArgMultiplyConstant, 'x'), '3 * (1 * sin(x) + x * 1 * cos(x))');
+
 
     // Linearity of differentiation
     // With '+': d/dx(5x + x + 2) = 5*1 + 1 + 0 = 6
     compareString(derivativeWithoutSimplify('5x + x + 2', 'x'), '5 * 1 + 1 + 0');
     // With '-': d/dx(5x - x - 2) = 5*1 - 1 - 0 = 4
     compareString(derivativeWithoutSimplify('5x - x - 2', 'x'), '5 * 1 - 1 - 0');
+
+    var threeArgAddition = new OperatorNode('+', 'add', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')]);
+    compareString(derivativeWithoutSimplify(threeArgAddition, 'x'), '1 + 1 * cos(x) + 5 * 1');
+
+    var threeArgMultiplication = new OperatorNode('*', 'multiply', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')]);
+    compareString(derivativeWithoutSimplify(threeArgMultiplication, 'x'), '1 * sin(x) * 5 x + x * 1 * cos(x) * 5 x + x * sin(x) * 5 * 1');
 
 
     // d/dx(2*(x + x)) = 2*(1 + 1)
@@ -119,6 +130,8 @@ describe('derivative', function() {
     // d/dx(log(2x, 3x)) = ((2 * 1) / (2 * x) * log(3 * x) - log(2 * x) * (3 * 1) / (3 * x)) / log(3 * x) ^ 2 = (log(3x) - log(2x)) / (xlog(3x)^2)
     compareString(derivativeWithoutSimplify('log((2x), (3x))', 'x'), '((2 * 1) / (2 x) * log((3 x)) - log((2 x)) * (3 * 1) / (3 x)) / log((3 x)) ^ 2');
 
+    compareString(derivativeWithoutSimplify('log(x)', 'x'), '1 / x');
+
     compareString(derivativeWithoutSimplify('sin(2x)', 'x'), '2 * 1 * cos(2 x)');
     compareString(derivativeWithoutSimplify('cos(2x)', 'x'), '2 * 1 * -sin(2 x)');
     compareString(derivativeWithoutSimplify('tan(2x)', 'x'), '2 * 1 * sec(2 x) ^ 2');
@@ -144,7 +157,7 @@ describe('derivative', function() {
     compareString(derivativeWithoutSimplify('acsch((2x))', 'x'), '-(2 * 1) / (abs((2 x)) * sqrt((2 x) ^ 2 + 1))');
     compareString(derivativeWithoutSimplify('acoth((2x))', 'x'), '-(2 * 1) / (1 - (2 x) ^ 2)');
     compareString(derivativeWithoutSimplify('abs(2x)', 'x'), '2 * 1 * abs(2 x) / (2 x)');
-    
+
     compareString(derivativeWithoutSimplify('exp(2x)', 'x'), '2 * 1 * exp(2 x)');
   });
 

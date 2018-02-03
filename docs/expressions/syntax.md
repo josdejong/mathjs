@@ -69,7 +69,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
 `~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
 <code>&#124;</code>  | Bitwise or     | <code>x &#124; y</code>   | Left to right | <code>5 &#124; 3</code>  | `7`
-<code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `6`
+<code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `7`
 `<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
 `>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
 `>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
@@ -129,7 +129,7 @@ page [Functions](../reference/functions.md).
 
 ```js
 math.eval('sqrt(25)');          // 5
-math.eval('log(1000, 3 + 7)');  // 4
+math.eval('log(10000, 3 + 7)'); // 4
 math.eval('sin(pi / 4)');       // 0.7071067811865475
 ```
 
@@ -193,6 +193,7 @@ Variable names must:
 - Begin with an "alpha character", which is:
   - A latin letter (upper or lower case). Ascii: `a-z`, `A-Z`
   - An underscore.                        Ascii: `_`
+  - A dollar sign.                        Ascii: `$`
   - A latin letter with accents.          Unicode: `\u00C0` - `\u02AF`
   - A greek letter.                       Unicode: `\u0370` - `\u03FF`
   - A letter-like character.              Unicode: `\u2100` - `\u214F`

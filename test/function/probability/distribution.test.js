@@ -271,6 +271,12 @@ describe('distribution', function () {
       assert.notEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles, weights)), -1);
     });
 
+    it('should return a single value if no number argument was passed (2)', function() {
+      var possibles = [5];
+
+      assert.strictEqual(uniformDistrib.pickRandom(possibles), 5);
+    });
+
     it('should return the given array if the given number is equal its length', function() {
       var possibles = [11, 22, 33, 44, 55],
           weights = [1, 5, 2, 4, 6],

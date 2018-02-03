@@ -1,6 +1,6 @@
 A = gallery("fiedler", 25);
 
-iterations = 1000;
+iterations = 10000;
 
 # --------------- ADD ---------------------
 timeStart = time();

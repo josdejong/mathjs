@@ -7,8 +7,9 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://img.shields.io/travis/josdejong/mathjs.svg)](https://travis-ci.org/josdejong/mathjs)
-![Maintenance](https://img.shields.io/maintenance/yes/2017.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 
 ## Features
 
@@ -17,24 +18,28 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 - Contains a flexible expression parser.
 - Does symbolic computation.
 - Comes with a large set of built-in functions and constants.
-- Has no dependencies. Runs on any JavaScript engine.
 - Can be used as a command line application as well.
+- Runs on any JavaScript engine.
 - Is easily extensible.
 - Open source.
 
 ## Usage
 
-Math.js can be installed using npm or bower, or by [downloading](http://mathjs.org/download.html) the library.
-The library can be used in both node.js and in the browser.
-See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial. To install math.js using npm:
+Math.js can be used in both node.js and in the browser.
+
+Install math.js using [npm](https://www.npmjs.com/package/mathjs):
 
     npm install mathjs
 
+Or download mathjs via one of the CDN's listed on the downloads page: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;[http://mathjs.org/download.html](http://mathjs.org/download.html#download)
+
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate
-[expressions](http://mathjs.org/docs/expressions.html)
+[expressions](http://mathjs.org/docs/expressions/index.html)
 and supports
-[chained operations](http://mathjs.org/docs/chained_operations.html).
+[chained operations](http://mathjs.org/docs/core/chaining.html).
 
 ```js
 // load math.js
@@ -43,14 +48,14 @@ var math = require('mathjs');
 // functions and constants
 math.round(math.e, 3);            // 2.718
 math.atan2(3, -3) / math.pi;      // 0.75
-math.log(1000, 10);               // 3
+math.log(10000, 10);              // 4
 math.sqrt(-4);                    // 2i
 math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
 math.derivative('x^2 + x', 'x');  // 2 * x + 1
 
 // expressions
 math.eval('12 / (2.3 + 0.7)');    // 4
-math.eval('5.08 cm to inch');     // 2 inch
+math.eval('12.7 cm to inch');     // 5 inch
 math.eval('sin(45 deg) ^ 2');     // 0.5
 math.eval('9 / 3 + 2i');          // 3 + 2i
 math.eval('det([-1, 2; 3, 1])');  // -7
@@ -61,6 +66,9 @@ math.chain(3)
     .multiply(2)
     .done(); // 14
 ```
+
+See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a more detailed tutorial. 
+
 
 ## Browser support
 
@@ -112,12 +120,14 @@ To see the coverage results, open the generated report in your browser:
 
     ./coverage/lcov-report/index.html
 
+Automated cross browser testing for mathjs is generously provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a>
 
+<a href="https://www.browserstack.com" target="_blank"><img alt="BrowserStack" src="https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png"></a>
 
 
 ## License
 
-Copyright (C) 2013-2017 Jos de Jong <wjosdejong@gmail.com>
+Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

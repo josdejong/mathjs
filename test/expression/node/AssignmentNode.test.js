@@ -21,7 +21,7 @@ describe('AssignmentNode', function() {
     assert.equal(n.type, 'AssignmentNode');
   });
 
-  it ('should have isAssignmentNode', function () {
+  it ('should have property isAssignmentNode', function () {
     var node = new AssignmentNode(new SymbolNode('a'), new Node());
     assert(node.isAssignmentNode);
   });

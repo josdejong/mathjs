@@ -48,8 +48,8 @@ describe('isNegative', function() {
 
   it('should test whether a complex number contains NaN', function () {
     assert.strictEqual(isNaN(complex(0, 0)), false);
-    assert.strictEqual(isNaN(complex(NaN, 0)), false);
-    assert.strictEqual(isNaN(complex(0, NaN)), false);
+    assert.strictEqual(isNaN(complex(NaN, 0)), true);
+    assert.strictEqual(isNaN(complex(0, NaN)), true);
     assert.strictEqual(isNaN(complex(NaN, NaN)), true);
   });
 

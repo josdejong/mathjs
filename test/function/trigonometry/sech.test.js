@@ -51,7 +51,7 @@ describe('sech', function() {
     approx.equal(sech(unit('90deg')), 0.39853681533839);
     approx.equal(sech(unit('-45deg')), 0.75493970871413);
 
-    assert(sech(unit(math.bignumber(90), 'deg')).isBigNumber);
+    assert(math.type.isBigNumber(sech(unit(math.bignumber(90), 'deg'))));
     approx.equal(sech(unit(math.bignumber(90), 'deg')).toNumber(), 0.39853681533839);
 
     approx.deepEqual(sech(unit(complex('2 + i'), 'rad')), complex(0.15117629826558, -0.22697367539372));

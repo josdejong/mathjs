@@ -64,9 +64,12 @@ describe('parse', function() {
     }), math.matrix([undefined]));
   });
 
-  it('should parse unicode characters', function() {
+  it('should parse unicode and other special characters', function() {
     // http://unicode-table.com/en
     var scope = {};
+
+    math.eval('$ab$c = 2', scope); // dollar sign
+    assert.strictEqual(scope['$ab$c'], 2);
 
     math.eval('\u00E9 = 2', scope); // Latin Small Letter E with Acute
     assert.strictEqual(scope['\u00E9'], 2);
@@ -609,70 +612,6 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0]));
     });
 
-    it('should execute map on an array with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: [1,2,3],
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-          return value + 1;
-        }
-      };
-      var res = math.eval('map(A, callback)', scope);
-      assert.deepEqual(res, [2,3,4]);
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
-    it('should execute map on a Matrix with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: math.matrix([1,2,3]),
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-          return value + 1;
-        }
-      };
-      var res = math.eval('map(A, callback)', scope);
-      assert.deepEqual(res, math.matrix([2,3,4]));
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
-    it('should execute forEach on an array with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: [1,2,3],
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-        }
-      };
-      math.eval('forEach(A, callback)', scope);
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
-    it('should execute forEach on a Matrix with one based indices', function () {
-      var logs = [];
-      var scope = {
-        A: math.matrix([1,2,3]),
-        callback: function (value, index, matrix) {
-          assert.strictEqual(matrix, scope.A);
-          // note: we don't copy index, index should be a new Array for every call of callback
-          logs.push([value, index]);
-        }
-      };
-      math.eval('forEach(A, callback)', scope);
-
-      assert.deepEqual(logs, [[1, [1]], [2, [2]], [3, [3]]]);
-    });
-
     it('should disable arrays as range in a matrix index', function () {
       var scope = {
         a: [[1,2,3],[4,5,6]]
@@ -871,6 +810,13 @@ describe('parse', function() {
       var obj = parseAndEval('{f: f(x)=x^2}');
       assert.deepEqual(Object.keys(obj), ['f']);
       assert.equal(obj.f(2), 4);
+    });
+
+    it('should not parse a function assignment in an accessor node', function () {
+      assert.throws(function () {
+        var scope = {}
+        var obj = parseAndEval('a["b"](x)=x^2', scope);
+      }, /SyntaxError: Invalid left hand side of assignment operator =/)
     });
 
     it('should parse an object containing a variable assignment', function () {
@@ -1716,18 +1662,6 @@ describe('parse', function() {
           math.matrix(["Tom", "Sara", "Langdon"]));
     });
 
-    it('should evaluate function "filter" with a custom test function', function () {
-      var scope = {};
-      parseAndEval('isPositive(x) = x > 0', scope);
-      assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], isPositive)', scope),
-          math.matrix([6, 4, 3]));
-    });
-
-    it('should evaluate function "filter" with a custom test equation', function () {
-      assert.deepEqual(parseAndEval('filter([6, -2, -1, 4, 3], x > 0)'),
-          math.matrix([6, 4, 3]));
-    });
-
   });
 
   describe('bignumber', function () {
@@ -2044,8 +1978,8 @@ describe('parse', function() {
         return /^[a-zA-Z_$]$/.test(c)
       };
 
-      const node = math.expression.parse('$foo');
-      const result = node.eval({$foo: 42});
+      var node = math.expression.parse('$foo');
+      var result = node.eval({$foo: 42});
       assert.equal(result, 42);
 
       // restore original isAlpha

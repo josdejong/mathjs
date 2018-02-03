@@ -4,8 +4,21 @@ var math = require('../../../index');
 
 describe('simplify', function() {
 
-  function simplifyAndCompare(left, right) {
-    assert.equal(math.simplify(left).toString(), math.parse(right).toString());
+  function simplifyAndCompare(left, right, scope) {
+    try {
+        if (scope) {
+            assert.equal(math.simplify(left, scope).toString(), math.parse(right).toString());
+        } else {
+            assert.equal(math.simplify(left).toString(), math.parse(right).toString());
+        }
+    } catch (err) {
+        if (err instanceof Error) {
+            console.log(err.stack);
+        } else {
+            console.log(new Error(err));
+        }
+        throw err;
+    }
   }
 
   function simplifyAndCompareEval (left, right, scope) {
@@ -20,9 +33,133 @@ describe('simplify', function() {
     simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', {x:7});
   });
 
+  it('should simplify exponents', function() {
+    // power rule
+    simplifyAndCompare('(x^2)^3', 'x^6');
+    simplifyAndCompare('2*(x^2)^3', '2*x^6');
+
+    // simplify exponent
+    simplifyAndCompare('x^(2+3)', 'x^5');
+
+    // right associative
+    simplifyAndCompare('x^2^3', 'x^8');
+  });
+
   it('should simplify rational expressions with no symbols to fraction', function() {
     simplifyAndCompare('3*4', '12');
     simplifyAndCompare('3+2/4', '7/2');
+  });
+
+  it('should simplify equations with different variables', function() {
+    simplifyAndCompare('-(x+y)', '-(x + y)');
+    simplifyAndCompare('-(x*y)', '-(x * y)');
+    simplifyAndCompare('-(x+y+x+y)', '-(2 * (y + x))');
+    simplifyAndCompare('(x-y)', 'x - y');
+    simplifyAndCompare('0+(x-y)', 'x - y');
+    simplifyAndCompare('-(x-y)', 'y - x');
+    simplifyAndCompare('-1 * (x-y)', 'y - x');
+    simplifyAndCompare('x + y + x + 2y', '3 * y + 2 * x');
+  });
+
+  it('should simplify (-1)*n', function() {
+    simplifyAndCompare('(-1)*4', '-4');
+    simplifyAndCompare('(-1)*x', '-x');
+  });
+
+  it('should handle function assignments', function() {
+    var node = math.expression.node;
+    var f = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'));
+    assert.equal(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))');
+    assert.equal(f.eval()(5), 0.9933071490757153);
+    var fsimplified = math.simplify.simplifyCore(f);
+    assert.equal(fsimplified.toString(), 'sigma(x) = 1 / (1 + exp(-x))');
+    assert.equal(fsimplified.eval()(5), 0.9933071490757153);
+  });
+
+  it('simplifyCore should handle different node types', function() {
+    var testSimplifyCore = function(expr, expected) {
+        var actual = math.simplify.simplifyCore(math.parse(expr)).toString();
+        assert.equal(actual, expected);
+    }
+    testSimplifyCore("5*x*3", "15 * x");
+    testSimplifyCore("5*x*3*x", "15 * x * x");
+
+    testSimplifyCore("x-0", "x");
+    testSimplifyCore("0-x", "-x");
+    testSimplifyCore("0-3", "-3");
+    testSimplifyCore("x+0", "x");
+    testSimplifyCore("0+x", "x");
+    testSimplifyCore("0*x", "0");
+    testSimplifyCore("x*0", "0");
+    testSimplifyCore("x*1", "x");
+    testSimplifyCore("1*x", "x");
+    testSimplifyCore("-(x)", "-x");
+    testSimplifyCore("0/x", "0");
+    testSimplifyCore("(1*x + y*0)*1+0", "x");
+    testSimplifyCore("sin(x+0)*1", "sin(x)");
+    testSimplifyCore("((x+0)*1)", "x");
+    testSimplifyCore("sin((x-0)*1+y*0)", "sin(x)");
+    testSimplifyCore("((x)*(y))", "(x * y)");
+    testSimplifyCore("((x)*(y))^1", "(x * y)");
+
+    // constant folding
+    testSimplifyCore("1+2", "3");
+    testSimplifyCore("2*3", "6");
+    testSimplifyCore("2-3", "-1");
+    testSimplifyCore("3/2", "1.5");
+    testSimplifyCore("3^2", "9");
+  });
+
+  it('should simplifyCore convert +unaryMinus to subtract', function() {
+      simplifyAndCompareEval('--2', '2');
+      var result = math.simplify('x + y + a', [math.simplify.simplifyCore], {a: -1}).toString()
+      assert.equal(result, "x + y - 1");
+  });
+
+  it('should simplify convert minus and unary minus', function() {
+    // see https://github.com/josdejong/mathjs/issues/1013
+    assert.equal(math.simplify('0 - -1', {}).toString(), '1');
+    assert.equal(math.simplify('0 - -x', {}).toString(), 'x');
+    assert.equal(math.simplify('0----x', {}).toString(), 'x');
+    assert.equal(math.simplify('1 - -x', {}).toString(), 'x + 1');
+    assert.equal(math.simplify('0 - (-x)', {}).toString(), 'x');
+    assert.equal(math.simplify('-(-x)', {}).toString(), 'x');
+    assert.equal(math.simplify('0 - (x - y)', {}).toString(), 'y - x');
+  });
+
+  it('should handle custom functions', function() {
+    function doubleIt (x) { return x + x }
+    var node = math.expression.node;
+    var f = new node.FunctionNode(new node.SymbolNode('doubleIt'), [new node.SymbolNode('value')]);
+    assert.equal(f.toString(), 'doubleIt(value)');
+    assert.equal(f.eval({ doubleIt: doubleIt, value: 4 }), 8);
+    var fsimplified = math.simplify.simplifyCore(f);
+    assert.equal(fsimplified.toString(), 'doubleIt(value)');
+    assert.equal(fsimplified.eval({ doubleIt: doubleIt, value: 4 }), 8);
+  });
+
+  it('should handle immediately invoked function assignments', function() {
+    var node = math.expression.node;
+    var s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'));
+    var f = new node.FunctionNode(s, [new node.SymbolNode('x')]);
+    assert.equal(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)');
+    assert.equal(f.eval({x: 5}), 0.9933071490757153);
+    var fsimplified = math.simplify.simplifyCore(f);
+    assert.equal(fsimplified.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)');
+    assert.equal(fsimplified.eval({x: 5}), 0.9933071490757153);
+  })
+
+  it('should simplify (n- -n1)', function() {
+    simplifyAndCompare('2 + -3', '-1');
+    simplifyAndCompare('2 - 3', '-1');
+    simplifyAndCompare('2 - -3', '5');
+    var e = math.parse('2 - -3');
+    e = math.simplify.simplifyCore(e);
+    assert.equal(e.toString(), '5'); // simplifyCore
+    simplifyAndCompare('x - -x', '2*x');
+    var e = math.parse('x - -x');
+    e = math.simplify.simplifyCore(e);
+    assert.equal(e.toString(), 'x + x'); // not a core simplification since + is cheaper than *
   });
 
   it('should preserve the value of BigNumbers', function() {
@@ -73,14 +210,43 @@ describe('simplify', function() {
     simplifyAndCompare('x-1-2x+2', '1-x');
   });
 
+  it('should collect like terms that are embedded in other terms', function() {
+    simplifyAndCompare('10 - (x - 2)', '12 - x');
+    simplifyAndCompare('x - (y + x)', '-y');
+    simplifyAndCompare('x - (y - (y - x))', '0');
+  });
+
   it('should collect separated like factors', function() {
+    simplifyAndCompare('x*y*-x/(x^2)', '-y');
     simplifyAndCompare('x/2*x', 'x^2/2');
     simplifyAndCompare('x*2*x', '2*x^2');
-    simplifyAndCompare('x*y*-x/(x^2)', '-y');
+  });
+
+  it('should handle nested exponentiation', function() {
+    simplifyAndCompare('(x^2)^3', 'x^6');
+    simplifyAndCompare('(x^y)^z', 'x^(y*z)');
+    simplifyAndCompare('8 * x ^ 9 + 2 * (x ^ 3) ^ 3', '10 * x ^ 9');
+  });
+
+  it('should not run into an infinite recursive loop', function () {
+    simplifyAndCompare('2n - 1', '2 * n - 1');
+    simplifyAndCompare('16n - 1', '16 * n - 1');
+    simplifyAndCompare('16n / 1', '16 * n');
+    simplifyAndCompare('8 / 5n', 'n * 8 / 5');
+    simplifyAndCompare('8n - 4n', '4 * n');
+    simplifyAndCompare('8 - 4n', '8 - 4 * n');
+    simplifyAndCompare('8 - n', '8 - n');
   });
 
   it('should handle non-existing functions like a pro', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
+    simplifyAndCompare('foo(1)', 'foo(1)');
+    simplifyAndCompare('myMultiArg(x, y, z, w)', 'myMultiArg(x, y, z, w)');
+  });
+
+  it ('should support custom rules', function() {
+      var node = math.simplify("y+x",[{l:'n1-n2',r:'-n2+n1'}],{x:5})
+      assert.equal(node.toString(), 'y + 5');
   });
 
   it('should handle valid built-in constant symbols in rules', function() {
@@ -110,6 +276,28 @@ describe('simplify', function() {
   it('should remove addition of 0', function() {
     simplifyAndCompare('x+0', 'x');
     simplifyAndCompare('x-0', 'x');
+  });
+
+  it('resolve() should substitute scoped constants', function() {
+    assert.equal(
+        math.simplify.resolve(math.parse('x+y'), {x:1}).toString(),
+        "1 + y"
+    ); // direct
+    simplifyAndCompare('x+y', 'x+y', {}); // operator
+    simplifyAndCompare('x+y', 'y+1', {x:1});
+    simplifyAndCompare('x+y', 'y+1', {x:math.parse('1')});
+    simplifyAndCompare('x+y', '3', {x:1,y:2});
+    simplifyAndCompare('x+x+x', '3*x');
+    simplifyAndCompare('y', 'x+1', {y:math.parse("1+x")});
+    simplifyAndCompare('y', '3', {x:2, y:math.parse("1+x")});
+    simplifyAndCompare('x+y', '3*x', {y:math.parse("x+x")});
+    simplifyAndCompare('x+y', '6', {x:2,y:math.parse("x+x")});
+    simplifyAndCompare('x+(y+2-1-1)', '6', {x:2,y:math.parse("x+x")}); // parentheses
+    simplifyAndCompare('log(x+y)', String(Math.log(6)), {x:2,y:math.parse("x+x")}); // function
+    simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )',
+        'combinations(ceil(0.9092974268256817 * y ), 2)', {x:-2});
+
+    // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
   });
 
   describe('expression parser' ,function () {
