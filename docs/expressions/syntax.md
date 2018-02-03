@@ -600,7 +600,9 @@ Expression      | Evaluated as        | Result
 (1 + 2) (4 - 2) | (1 + 2) * (4 - 2)   | 6
 sqrt(4) (1 + 2) | sqrt(4) * (1 + 2)   | 6
 8 pi / 2 pi     | (8 * pi) / (2 * pi) | 4
+pi / 2 pi       | pi / (2 * pi)       | 0.5
 1 / 2i          | (1 / 2) * i         | 0.5 i
+8.314 J / mol K | 8.314 J / (mol * K) | 8.314 J / (mol * K)
 
 
 ## Comments
