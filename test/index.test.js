@@ -12,7 +12,8 @@ describe('factory', function() {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      promoteImplicit: false
     });
   });
 
@@ -29,7 +30,8 @@ describe('factory', function() {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      promoteImplicit: false
     });
   });
 
@@ -62,7 +64,8 @@ describe('factory', function() {
       precision: 64,
       predictable: false,
       epsilon: 1e-12,
-      randomSeed: null
+      randomSeed: null,
+      promoteImplicit: false
     });
 
     // restore the original config

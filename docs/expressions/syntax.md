@@ -101,8 +101,7 @@ Operators                         | Description
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
-`x unit`                          | Unit
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply<sup>1</sup>
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -119,7 +118,8 @@ Operators                         | Description
 `,`                               | Parameter and column separator
 `;`                               | Row separator
 `\n`, `;`                         | Statement separators
-
+<sup>1</sup> Implicit multiplication is given higher precedence than ordinary (explicit) multiplication and division
+when the config option `promoteImplicit` is set.
 
 ## Functions
 
