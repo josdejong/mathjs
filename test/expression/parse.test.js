@@ -1001,8 +1001,9 @@ describe('parse', function() {
       assert.equal(parseAndEval('4./2'), 2);
       assert.deepEqual(parseAndEval('4./[2,4]'), math.matrix([2,1]));
       assert.equal(parseAndEval('4 ./ 2'), 2);
+      assert.equal(parseAndEval('8 ./ 4 / 2'), 1);
       assert.equal(parseAndEval('8 ./ 2 / 2'), 2);
-
+      
       assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), math.matrix([1,1,1]));
     });
 
@@ -1067,7 +1068,7 @@ describe('parse', function() {
       assert.equal(parseAndEval('a b c', {a: 2, b: 4, c: 6}), 48);
       assert.equal(parseAndEval('a b*c', {a: 2, b: 4, c: 6}), 48);
       assert.equal(parseAndEval('a*b c', {a: 2, b: 4, c: 6}), 48);
-      assert.equal(parseAndEval('a/b c', {a: 4, b: 2, c: 6}), 12);
+      assert.equal(parseAndEval('a/b c', {a: 12, b: 2, c: 3}), 2);
 
       assert.equal(parseAndEval('1/2a', {a:2}), 1);
       assert.equal(parseAndEval('8/2a/2', {a:2}), 4);
@@ -1121,7 +1122,7 @@ describe('parse', function() {
 
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
       var node = parse('9km*3km');
-      assert.equal(node.toString({parenthesis: 'all'}), '((9 km) * 3) km');
+      assert.equal(node.toString({parenthesis: 'all'}), '(9 km) * (3 km)');
     });
 
     it('should throw an error when having an implicit multiplication between two numbers', function() {

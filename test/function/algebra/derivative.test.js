@@ -72,8 +72,8 @@ describe('derivative', function() {
     compareString(derivativeWithoutSimplify('2(x + x)', 'x'), '2 * (1 + 1)');
     compareString(derivativeWithoutSimplify('(x + x)*2', 'x'), '2 * (1 + 1)');
 
-    // Product Rule, d/dx(5x*3x) = 5*(3*1*x + x*3*1) = 30x
-    compareString(derivativeWithoutSimplify('5x*3x', 'x'), '3 * 5 * 1 * x + 5 x * 3 * 1');
+    // Product Rule, d/dx(5x*3x) = 5 * 1 * 3 x + 5 x * 3 * 1 = 30x
+    compareString(derivativeWithoutSimplify('5x*3x', 'x'), '5 * 1 * 3 x + 5 x * 3 * 1');
 
 
     // Basic division, d/dx(7x / 2) = 7 * 1 / 2 = 7 / 2
