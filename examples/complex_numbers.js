@@ -45,9 +45,15 @@ var d = math.complex(3, 4);
 console.log(d.abs(), d.arg());      // radius = 5, phi = 0.9272952180016122
 
 // comparision operations
-console.log('\ncomparision operations');
-console.log('compare - ', math.compare(a, b)); // returns 1 as 5 > 3
-console.log('larger - ', math.larger(a, b)); // returns true as 5 > 3
+// note that there is no mathematical ordering defined for complex numbers
+// we can only check equality. To sort a list with complex numbers,
+// the natural sorting can be used
+console.log('\ncomparision and sorting operations');
+console.log('equal', math.equal(a, b)); // returns false
+var values = [a, b, c];
+console.log('values:', math.format(values, 14)); // [5 + 3i, 3 - 7i, 1 + i]
+math.sort(values, 'natural');
+console.log('sorted:', math.format(values, 14)); // [1 + i, 3 - 7i, 5 + 3i]
 
 /**
  * Helper function to output a value in the console. Value will be formatted.

@@ -37,7 +37,7 @@ Breaking changes (see also #682):
       a number of specific cases. This gives a more natural behavior
       for implicit multiplications. For example `24h / 6h` now returns `4`,
       whilst `1/2 kg` evaluates to `0.5 kg`. Thanks @ericman314. See: #792.
-      Detailed documentation: http://mathjs.org/docs/expressions/syntax.html#implicit-multiplication.
+      Detailed documentation: https://github.com/josdejong/mathjs/blob/v4/docs/expressions/syntax.md#implicit-multiplication.
 
     - Immediately invoking a function returned by a function like `partialAdd(2)(3)`
       is no longer supported, instead these expressions are evaluated as

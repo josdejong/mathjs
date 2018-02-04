@@ -8,14 +8,14 @@ var math = require('../index');
 console.log('create units');
 var a = math.unit(45, 'cm');
 var b = math.unit('0.1m');
-print(a);     // 450 mm
-print(b);     // 100 mm
+print(a);     // 45 cm
+print(b);     // 0.1 m
 console.log();
 
 // units can be added, subtracted, and multiplied or divided by numbers and by other units
 console.log('perform operations');
-print(math.add(a, b));                                  // 0.55 m
-print(math.multiply(b, 2));                             // 200 mm
+print(math.add(a, b));                                  // 55 cm
+print(math.multiply(b, 2));                             // 0.2 m
 print(math.divide(math.unit('1 m'), math.unit('1 s'))); // 1 m / s
 print(math.pow(math.unit('12 in'), 3));                 // 1728 in^3
 console.log();
@@ -23,7 +23,7 @@ console.log();
 // units can be converted to a specific type, or to a number
 console.log('convert to another type or to a number');
 print(b.to('cm'));                    // 10 cm  Alternatively: math.to(b, 'cm')
-print(math.to(b, 'inch'));            // 3.9370... inch
+print(math.to(b, 'inch'));            // 3.9370078740157 inch
 print(b.toNumber('cm'));              // 10
 print(math.number(b, 'cm'));          // 10
 console.log();
@@ -31,7 +31,7 @@ console.log();
 // the expression parser supports units too
 console.log('parse expressions');
 print(math.eval('2 inch to cm'));     // 5.08 cm
-print(math.eval('cos(45 deg)'));      // 0.70711...
+print(math.eval('cos(45 deg)'));      // 0.70710678118655
 print(math.eval('90 km/h to m/s'));   // 25 m / s
 console.log();
 
@@ -55,7 +55,8 @@ var v = math.divide(math.multiply(Rg, T), P);
 console.log('gas constant (Rg) = ', format(Rg));
 console.log('P = ' + format(P));
 console.log('T = ' + format(T));
-console.log('v = Rg * T / P = ' + format(math.to(v, 'L/mol'))); // 23.910... L / mol
+console.log('v = Rg * T / P = ' + format(math.to(v, 'L/mol')));
+    // 23.910432393453 L / mol
 console.log();
 
 console.log('compute speed of fluid flowing out of hole in a container');
@@ -64,7 +65,8 @@ var h = math.unit('1 m');
 var v = math.pow(math.multiply(2, math.multiply(g, h)), 0.5); // Can also use math.sqrt
 console.log('g = ' + format(g));
 console.log('h = ' + format(h));
-console.log('v = (2 g h) ^ 0.5 = ' + format(v)); // 4.429... m / s
+console.log('v = (2 g h) ^ 0.5 = ' + format(v));
+    // 4.42944691807 m / s
 console.log();
 
 console.log('electrical power consumption:');
