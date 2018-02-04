@@ -4,48 +4,81 @@
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
-Breaking changes:
+Breaking changes (see also #682):
 
-- Compiler of the expression parser is replaced with one that doesn't use
-  `eval` internally. This yields:
-  - Slightly improved performance on most browsers.
-  - Much less risk of security exploits.
-  - Internal code is easier to understand, maintain, and debug.
-  Breaking change here: When using custom nodes in the expression parser,
-  the syntax of `_compile` has changed. This is an undocumented feature though.
-- Changed `rad`, `deg`, and `grad` to have short prefixes,
-  and introduced `radian`, `degree`, and `gradian` and their plurals
-  having long prefixes. See #749.
-- Changed the behavior of relational functions (`compare`, `equal`,
-  `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
-  to compare strings by their numeric value they contain instead of
-  alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
-  `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
-  need to sort an array with text. See #680.
-- `null` is no longer implicitly casted to a number `0`, so input like
-  `math.add(2, null)` is no longer supported. See #830, #353.
-- The class `ConstantNode` is changed such that it just holds a value
-  instead of holding a stringified value and it's type.
-  `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
-  Stringification uses `math.format`, which may result in differently
-  formatted numeric output.
-- The constants `true`, `false`, `null`, `undefined`, `NaN`, `Infinity`,
-  and `uninitialized` are now parsed as ConstantNodes instead of
-  SymbolNodes in the expression parser. See #833.
-- In function `math.format`, the option `notation: 'fixed'` no longer rounds to
-  zero digits  when no precision is specified: it leaves the digits as is.
-  See #676.
-- In function `math.format`, the options `{exponential: {lower: number, upper: number}}`
-  (where `lower` and `upper` are values) are replaced with `{lowerExp: number, upperExp: number}`
-  (where `lowerExp` and `upperExp` are exponents). See #676. For example:
-  ```js
-  math.format(2000, {exponential: {lower: 1e-2, upper: 1e2}})
-  ```
-  is now:
-  ```js
-  math.format(2000, {lowerExp: -2, upperExp: 2})
-  ```
+- **New expression compiler**
 
+    The compiler of the expression parser is replaced with one that doesn't use
+    `eval` internally. See #1019. This means:
+
+    - a slightly improved performance on most browsers.
+    - less risk of security exploits.
+    - the code of the new compiler is easier to understand, maintain, and debug.
+
+    Breaking change here: When using custom nodes in the expression parser,
+    the syntax of `_compile` has changed. This is an undocumented feature though.
+
+- **Parsed expressions**
+
+    - The class `ConstantNode` is changed such that it just holds a value
+      instead of holding a stringified value and it's type.
+      `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
+      Stringification uses `math.format`, which may result in differently
+      formatted numeric output.
+
+    - The constants `true`, `false`, `null`, `undefined`, `NaN`, `Infinity`,
+      and `uninitialized` are now parsed as ConstantNodes instead of
+      SymbolNodes in the expression parser. See #833.
+
+- **Implicit multiplication**
+
+    - Changed the behavior of implicit multiplication to have higher
+      precedence than explicit multiplication and division, except in
+      a number of specific cases. This gives a more natural behavior
+      for implicit multiplications. For example `24h / 6h` now returns `4`,
+      whilst `1/2 kg` evaluates to `0.5 kg`. Thanks @ericman314. See: #792.
+      Detailed documentation: http://mathjs.org/docs/expressions/syntax.html#implicit-multiplication.
+
+    - Immediately invoking a function returned by a function like `partialAdd(2)(3)`
+      is no longer supported, instead these expressions are evaluated as
+      an implicit multiplication `partialAdd(2) * (3)`. See #1035.
+
+- **String formatting**
+
+    - In function `math.format`, the options `{exponential: {lower: number, upper: number}}`
+      (where `lower` and `upper` are values) are replaced with `{lowerExp: number, upperExp: number}`
+      (where `lowerExp` and `upperExp` are exponents). See #676. For example:
+      ```js
+      math.format(2000, {exponential: {lower: 1e-2, upper: 1e2}})
+      ```
+      is now:
+      ```js
+      math.format(2000, {lowerExp: -2, upperExp: 2})
+      ```
+
+    - In function `math.format`, the option `notation: 'fixed'` no longer rounds to
+      zero digits  when no precision is specified: it leaves the digits as is.
+      See #676.
+
+- **String comparison**
+
+    Changed the behavior of relational functions (`compare`, `equal`,
+    `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
+    to compare strings by their numeric value they contain instead of
+    alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
+    `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
+    need to sort an array with text. See #680.
+
+- **Angle units**
+
+    Changed `rad`, `deg`, and `grad` to have short prefixes,
+    and introduced `radian`, `degree`, and `gradian` and their plurals
+    having long prefixes. See #749.
+
+- **Null**
+
+    - `null` is no longer implicitly casted to a number `0`, so input like
+      `math.add(2, null)` is no longer supported. See #830, #353.
 
 Non breaking changes:
 
