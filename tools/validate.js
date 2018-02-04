@@ -11,7 +11,7 @@ var ignore = [
   'create', 'typed', 'config',
   'on', 'off', 'emit', 'once',
   'compile', 'parse', 'parser',
-  'chain', 'print'
+  'chain', 'print', 'uninitialized'
 ];
 
 // test whether all functions are documented
