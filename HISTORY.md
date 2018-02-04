@@ -80,6 +80,11 @@ Breaking changes (see also #682):
     - `null` is no longer implicitly casted to a number `0`, so input like
       `math.add(2, null)` is no longer supported. See #830, #353.
 
+    - Dropped constant `uninitialized`, which was used to initialize
+      leave new entries undefined when resizing a matrix is removed.
+      Use `undefined` instead to indicate entries that are not explicitly
+      set. See #833.
+
 Non breaking changes:
 
 - Implemented additional methods `isUnary()` and `isBinary()` on

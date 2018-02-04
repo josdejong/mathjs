@@ -373,7 +373,7 @@ describe('security', function () {
       else {
         // plain objects not allowed, only class instances like units and complex numbers
         if (value && typeof value === 'object') {
-          if (isPlainObject(value) && (name !== 'uninitialized' )) {
+          if (isPlainObject(value)) {
             throw new Error('plain objects are not allowed, only class instances (object name: ' + name + ')');
           }
         }

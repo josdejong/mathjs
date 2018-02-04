@@ -846,7 +846,6 @@ describe('parse', function() {
       assert.deepStrictEqual(parse('false'), createConstantNode(false));
       assert.deepStrictEqual(parse('null'), createConstantNode(null));
       assert.deepStrictEqual(parse('undefined'), createConstantNode(undefined));
-      assert.deepStrictEqual(parse('uninitialized'), createConstantNode(math.uninitialized));
     });
 
     it('should parse numeric constants', function() {

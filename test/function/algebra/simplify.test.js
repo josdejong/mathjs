@@ -270,7 +270,6 @@ describe('simplify', function() {
   });
 
   it('should throw an error for invalid built-in constant symbols in rules', function() {
-    assert.throws(function(){ math.simplify('uninitialized', ['uninitialized -> 1']).toString(); });
     assert.throws(function(){ math.simplify('version', ['version -> 1']).toString(); });
   });
 
