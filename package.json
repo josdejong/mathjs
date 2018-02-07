@@ -121,7 +121,7 @@
     "q": "1.5.1",
     "sylvester": "0.0.21",
     "tar": "4.1.1",
-    "uglify-js": "3.2.2",
+    "uglify-js": "3.3.9",
     "underscore": "1.8.3",
     "webpack": "3.10.0",
     "zeros": "1.0.0"
