@@ -1,7 +1,8 @@
 # History
 
-## not-yet-released, version 3.20.2
+## 2018-02-07, version 3.20.2
 
+- Upgraded to `typed-function@0.10.7` (bug-fix release).
 - Fixed option `implicit` not being copied from an `OperatorNode`
   when applying function `map`. Thanks @HarraySarson.
 - Fixed #995: spaces and underscores not property being escaped
