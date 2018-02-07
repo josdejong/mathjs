@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180207-version-3202">2018-02-07, version 3.20.2 <a href="#20180207-version-3202" title="Permalink">#</a></h2>
+
+- Upgraded to `typed-function@0.10.7` (bug-fix release).
+- Fixed option `implicit` not being copied from an `OperatorNode`
+  when applying function `map`. Thanks @HarraySarson.
+- Fixed #995: spaces and underscores not property being escaped
+  in `toTex()`. Thanks @FSMaxB.
+
+
 <h2 id="20180117-version-3201">2018-01-17, version 3.20.1 <a href="#20180117-version-3201" title="Permalink">#</a></h2>
 
 - Fixed #1018: `simplifyCore` failing in some cases with parentheses.
