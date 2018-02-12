@@ -140,6 +140,21 @@ describe('format', function () {
       assert.deepEqual(formatter.format(new B(1).div(3), options), '3.33333333333333333e-1');
     });
 
+    it('should format bignumbers in exponential notation with precision and rounding mode', function() {
+      var options = {
+        notation: 'exponential',
+        precision: 3
+      };
+
+      options.roundingMode = BigNumber.ROUND_UP;
+      assert.equal(formatter.format(new BigNumber('2.345'), options), '2.35e+0');
+      assert.equal(formatter.format(new BigNumber('-2.345'), options), '-2.35e+0');
+
+      options.roundingMode = BigNumber.ROUND_DOWN;
+      assert.equal(formatter.format(new BigNumber('2.345'), options), '2.34e+0');
+      assert.equal(formatter.format(new BigNumber('-2.345'), options), '-2.34e+0');
+    });
+
     it('should format bignumbers with custom precision, lower, and upper bound', function() {
       var Big = BigNumber.clone({precision: 100});
 
@@ -206,6 +221,14 @@ describe('format', function () {
       assert.deepEqual(formatter.format(new BigNumber('12345678'), options), '12345678.00');
       assert.deepEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000.00');
       assert.deepEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00');
+
+      options.roundingMode = BigNumber.ROUND_UP;
+      assert.equal(formatter.format(new BigNumber('2.345'), options), '2.35');
+      assert.equal(formatter.format(new BigNumber('-2.345'), options), '-2.35');
+
+      options.roundingMode = BigNumber.ROUND_DOWN;
+      assert.equal(formatter.format(new BigNumber('2.345'), options), '2.34');
+      assert.equal(formatter.format(new BigNumber('-2.345'), options), '-2.34');
     });
 
     it('should throw an error on unknown notation', function () {
@@ -220,11 +243,28 @@ describe('format', function () {
     var Big = BigNumber.clone({precision: 100});
 
     assert.equal(formatter.toFixed(new Big(2.34)), '2');
+    
+    // with precision
     assert.equal(formatter.toFixed(new Big(2.34), 1), '2.3');
     assert.equal(formatter.toFixed(new Big(2), 20), '2.00000000000000000000');
     assert.equal(formatter.toFixed(new Big(2), 21), '2.000000000000000000000');
     assert.equal(formatter.toFixed(new Big(2), 22), '2.0000000000000000000000');
     assert.equal(formatter.toFixed(new Big(2), 30), '2.000000000000000000000000000000');
+
+    // with rounding modes
+    assert.equal(formatter.toFixed(new Big(2.34), 1, Big.ROUND_UP), '2.4');
+    assert.equal(formatter.toFixed(new Big(2.34), 1, Big.ROUND_DOWN), '2.3');
+    assert.equal(formatter.toFixed(new Big(-2.34), 1, Big.ROUND_UP), '-2.4');
+    assert.equal(formatter.toFixed(new Big(-2.34), 1, Big.ROUND_DOWN), '-2.3');
+    assert.equal(formatter.toFixed(new Big(3.45), 1, Big.ROUND_UP), '3.5');
+    assert.equal(formatter.toFixed(new Big(3.45), 1, Big.ROUND_DOWN), '3.4');
+    assert.equal(formatter.toFixed(new Big(-3.45), 1, Big.ROUND_UP), '-3.5');
+    assert.equal(formatter.toFixed(new Big(-3.45), 1, Big.ROUND_DOWN), '-3.4');
+    assert.equal(formatter.toFixed(new Big(4.56), 1, Big.ROUND_UP), '4.6');
+    assert.equal(formatter.toFixed(new Big(4.56), 1, Big.ROUND_DOWN), '4.5');
+    assert.equal(formatter.toFixed(new Big(-4.56), 1, Big.ROUND_UP), '-4.6');
+    assert.equal(formatter.toFixed(new Big(-4.56), 1, Big.ROUND_DOWN), '-4.5');
+
   });
 
   it('should format a bignumber using toExponential', function() {
@@ -233,6 +273,8 @@ describe('format', function () {
     assert.equal(formatter.toExponential(new Big(2.34)), '2.34e+0');
     assert.equal(formatter.toExponential(new Big(2.34e+3)), '2.34e+3');
     assert.equal(formatter.toExponential(new Big(2.34e-3)), '2.34e-3');
+    
+    // with precision
     assert.equal(formatter.toExponential(new Big(2.34e+3), 2), '2.3e+3');
     assert.equal(formatter.toExponential(new Big(2e+3), 20), '2.0000000000000000000e+3');
     assert.equal(formatter.toExponential(new Big(2e+3), 21), '2.00000000000000000000e+3');
@@ -240,6 +282,20 @@ describe('format', function () {
     assert.equal(formatter.toExponential(new Big(2e+3), 30), '2.00000000000000000000000000000e+3');
     assert.equal(formatter.toExponential(new Big('2e+300'), 30), '2.00000000000000000000000000000e+300');
     assert.equal(formatter.toExponential(new Big('2e-300'), 30), '2.00000000000000000000000000000e-300');
+
+    // with rounding modes
+    assert.equal(formatter.toExponential(new Big(2.34), 2, Big.ROUND_UP), '2.4e+0');
+    assert.equal(formatter.toExponential(new Big(2.34), 2, Big.ROUND_DOWN), '2.3e+0');
+    assert.equal(formatter.toExponential(new Big(-2.34), 2, Big.ROUND_UP), '-2.4e+0');
+    assert.equal(formatter.toExponential(new Big(-2.34), 2, Big.ROUND_DOWN), '-2.3e+0');
+    assert.equal(formatter.toExponential(new Big(3.45), 2, Big.ROUND_UP), '3.5e+0');
+    assert.equal(formatter.toExponential(new Big(3.45), 2, Big.ROUND_DOWN), '3.4e+0');
+    assert.equal(formatter.toExponential(new Big(-3.45), 2, Big.ROUND_UP), '-3.5e+0');
+    assert.equal(formatter.toExponential(new Big(-3.45), 2, Big.ROUND_DOWN), '-3.4e+0');
+    assert.equal(formatter.toExponential(new Big(4.56), 2, Big.ROUND_UP), '4.6e+0');
+    assert.equal(formatter.toExponential(new Big(4.56), 2, Big.ROUND_DOWN), '4.5e+0');
+    assert.equal(formatter.toExponential(new Big(-4.56), 2, Big.ROUND_UP), '-4.6e+0');
+    assert.equal(formatter.toExponential(new Big(-4.56), 2, Big.ROUND_DOWN), '-4.5e+0');
   });
 
 });
