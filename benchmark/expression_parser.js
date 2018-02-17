@@ -46,17 +46,17 @@ suite
       total+= compiledPlainJs.eval(scope);
     })
 
-    .add(pad('(mathjs) parse'), function() {
-      var node = math.parse(expr);
+    .add(pad('(mathjs) evaluate'), function() {
+      total += compiled.eval(scope);
+    })
+    .add(pad('(mathjs) parse, compile, evaluate'), function() {
+      total += math.parse(expr).compile().eval(scope);
     })
     .add(pad('(mathjs) parse, compile'), function() {
       var node = math.parse(expr).compile();
     })
-    .add(pad('(mathjs) parse, compile, evaluate'), function() {
-      total+= math.parse(expr).compile().eval(scope);
-    })
-    .add(pad('(mathjs) evaluate'), function() {
-      total+= compiled.eval(scope);
+    .add(pad('(mathjs) parse'), function() {
+      var node = math.parse(expr);
     })
 
     .on('cycle', function(event) {
