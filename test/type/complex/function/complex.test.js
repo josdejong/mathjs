@@ -66,7 +66,7 @@ describe('complex', function() {
   });
 
   it('should throw an error if called with a unit', function() {
-    assert.throws(function () {complex(math.unit('5cm'))}, /Error: Expected object with either properties re and im, or properties r and phi./);
+    assert.throws(function () {complex(math.unit('5cm'))}, /TypeError: Unexpected type of argument in function complex \(expected: number or Complex or BigNumber or string or Array or Matrix or null or Object or Fraction or boolean, actual: Unit, index: 0\)/);
   });
 
   it('should accept two numbers as arguments', function() {

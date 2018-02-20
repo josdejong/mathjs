@@ -225,9 +225,11 @@ describe('security', function () {
   })
 
   it ('should not allow using restricted properties via subset (3)', function () {
+    // this exploit does no longer work because parse("1") returns a ConstantNode
+    // and subset doesn't accept that anymore (expects a plain Object)
     assert.throws(function () {
       math.eval('subset(parse("1"), index("value"), "eval").compile().eval()("console.log(\'hacked...\')")')
-    }, /Error: No access to property "value/);
+    }, /TypeError: Unexpected type of argument in function subset/);
   })
 
   it ('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {

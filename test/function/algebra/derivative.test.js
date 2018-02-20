@@ -236,7 +236,7 @@ describe('derivative', function() {
   it('should have controlled behavior on arguments errors', function() {
     assert.throws(function() {
       derivative('sqrt()', 'x');
-    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix, index: 0\)/);
+    }, /TypeError: Too few arguments in function sqrt \(expected: number or Complex or BigNumber or Unit or Array or Matrix or Fraction or string or boolean, index: 0\)/);
     assert.throws(function() {
       derivative('sqrt(12, 2x)', 'x');
     }, /TypeError: Too many arguments in function sqrt \(expected: 1, actual: 2\)/);
@@ -245,7 +245,7 @@ describe('derivative', function() {
   it('should throw error for incorrect argument types', function() {
     assert.throws(function () {
       derivative('42', '42');
-    }, /TypeError: Unexpected type of argument in function derivative \(expected: string or SymbolNode, actual: ConstantNode, index: 1\)/);
+    }, /TypeError: Unexpected type of argument in function derivative \(expected: string or SymbolNode or number or boolean, actual: ConstantNode, index: 1\)/);
 
     assert.throws(function () {
       derivative('[1, 2; 3, 4]', 'x');
@@ -259,7 +259,7 @@ describe('derivative', function() {
   it('should throw error if incorrect number of arguments', function() {
     assert.throws(function () {
       derivative('x + 2');
-    }, /TypeError: Too few arguments in function derivative \(expected: string or SymbolNode, index: 1\)/);
+    }, /TypeError: Too few arguments in function derivative \(expected: string or SymbolNode or number or boolean, index: 1\)/);
 
     assert.throws(function () {
       derivative('x + 2', 'x', {}, true, 42);

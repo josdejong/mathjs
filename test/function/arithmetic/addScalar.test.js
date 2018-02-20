@@ -6,7 +6,7 @@ var BigNumber = require('decimal.js');
 var add = math.add;
 
 // TODO: make unit tests independent of math
-describe('add', function() {
+describe('addScalar', function() {
 
   it('should add two numbers', function() {
     assert.equal(add(2, 3), 5);

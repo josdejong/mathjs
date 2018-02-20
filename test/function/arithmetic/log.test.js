@@ -47,7 +47,7 @@ describe('log', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {log()}, /TypeError: Too few arguments in function log \(expected: any, index: 1\)/);
+    assert.throws(function () {log()}, /TypeError: Too few arguments in function log \(expected: any, index: 0\)/);
     assert.throws(function () {log(1, 2, 3)}, /TypeError: Too many arguments in function log \(expected: 2, actual: 3\)/);
   });
 
