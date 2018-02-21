@@ -486,7 +486,7 @@ layout: default
 - Hide multiplication operator by default when outputting `toTex` and `toString`
   for implicit multiplications. Implemented and option to output the operator.
 - Implemented unit `kip` and alias `kips`. Thanks <a href="https://github.com/hgupta9">@hgupta9</a>.
-- Added support for prefixes for units `mol` and `mole`. Thanks <a href="https://github.com/stu">@stu</a>-blair.
+- Added support for prefixes for units `mol` and `mole`. Thanks <a href="https://github.com/stu-blair">@stu-blair</a>.
 - Restored support for implicit multiplications like `2(3+4)` and `(2+3)(4+5)`.
 - Some improvements in the docs.
 - Added automatic conversions from `boolean` and `null` to `Fraction`,
@@ -618,7 +618,7 @@ layout: default
 - Added support in the expression parser for mathematical alphanumeric symbols 
   in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
   invalid code points.
-- Extended function `distance` with more signatures. Thanks <a href="https://github.com/kv">@kv</a>-kunalvyas.
+- Extended function `distance` with more signatures. Thanks <a href="https://github.com/kv-kunalvyas">@kv-kunalvyas</a>.
 - Fixed a bug in functions `sin` and `cos`, which gave wrong results for 
   BigNumber integer values around multiples of tau (i.e. `sin(bignumber(7))`).
 - Fixed value of unit `stone`. Thanks <a href="https://github.com/Esvandiary">@Esvandiary</a> for finding the error.
@@ -661,7 +661,7 @@ layout: default
 - Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc. 
 - Implemented function `kldivergence` (Kullback-Leibler divergence). 
   Thanks <a href="https://github.com/saromanov">@saromanov</a>.
-- Implemented function `mode`. Thanks <a href="https://github.com/kv">@kv</a>-kunalvyas.
+- Implemented function `mode`. Thanks <a href="https://github.com/kv-kunalvyas">@kv-kunalvyas</a>.
 - Added support for unicode characters in the expression parser: greek letters
   and latin letters with accents. See <a href="https://github.com/josdejong/mathjs/issues/265">#265</a>.
 - Internal functions `Unit.parse` and `Complex.parse` now throw an Error 
@@ -685,7 +685,7 @@ layout: default
   linear equations solver (functions `lup` and `lusolve`). Thanks <a href="https://github.com/rjbaucells">@rjbaucells</a>.
 - Implemented a new configuration option `predictable`, which can be set to
   true in order to ensure predictable function output types.
-- Implemented function `intersect`. Thanks <a href="https://github.com/kv">@kv</a>-kunalvyas.
+- Implemented function `intersect`. Thanks <a href="https://github.com/kv-kunalvyas">@kv-kunalvyas</a>.
 - Implemented support for adding `toTex` properties to custom functions.
   Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
 - Implemented support for complex values to `nthRoot`. Thanks <a href="https://github.com/gangachris">@gangachris</a>.
