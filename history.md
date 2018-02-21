@@ -8,48 +8,48 @@ layout: default
 
 - Upgraded to `typed-function@0.10.7` (bug-fix release).
 - Fixed option `implicit` not being copied from an `OperatorNode`
-  when applying function `map`. Thanks @HarraySarson.
-- Fixed #995: spaces and underscores not property being escaped
-  in `toTex()`. Thanks @FSMaxB.
+  when applying function `map`. Thanks <a href="https://github.com/HarraySarson">@HarraySarson</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/995">#995</a>: spaces and underscores not property being escaped
+  in `toTex()`. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
 
 
 <h2 id="20180117-version-3201">2018-01-17, version 3.20.1 <a href="#20180117-version-3201" title="Permalink">#</a></h2>
 
-- Fixed #1018: `simplifyCore` failing in some cases with parentheses.
-  Thanks @firepick1.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1018">#1018</a>: `simplifyCore` failing in some cases with parentheses.
+  Thanks <a href="https://github.com/firepick1">@firepick1</a>.
 
 
 <h2 id="20180114-version-3200">2018-01-14, version 3.20.0 <a href="#20180114-version-3200" title="Permalink">#</a></h2>
 
 - Implement support for 3 or more arguments for operators `+` and `*` in
-  `derivative`. Thanks @HarrySarson. See #1002. 
+  `derivative`. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>. See <a href="https://github.com/josdejong/mathjs/issues/1002">#1002</a>. 
 - Fixed `simplify` evalution of `simplify` of functions with more than two 
   arguments wrongly: `simplify('f(x, y, z)') evaluated to `f(f(x, y), z)`
-  instead of `f(x, y, z)`. Thanks @joelhoover.
+  instead of `f(x, y, z)`. Thanks <a href="https://github.com/joelhoover">@joelhoover</a>.
 - Fixed `simplify` throwing an error in some cases when simplifying unknown
-  functions, for example `simplify('f(4)')`. Thanks @joelhoover.
-- Fixed #1013: `simplify` wrongly simplifing some expressions containing unary
-  minus, like `0 - -x`. Thanks @joelhoover.
-- Fixed an error in an example in the documentation of `xor`. Thanks @denisx.
+  functions, for example `simplify('f(4)')`. Thanks <a href="https://github.com/joelhoover">@joelhoover</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1013">#1013</a>: `simplify` wrongly simplifing some expressions containing unary
+  minus, like `0 - -x`. Thanks <a href="https://github.com/joelhoover">@joelhoover</a>.
+- Fixed an error in an example in the documentation of `xor`. Thanks <a href="https://github.com/denisx">@denisx</a>.
 
 
 <h2 id="20180106-version-3190">2018-01-06, version 3.19.0 <a href="#20180106-version-3190" title="Permalink">#</a></h2>
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.
-  Thanks @ovk. 
+  Thanks <a href="https://github.com/ovk">@ovk</a>. 
 - Improvements in function `simplify`: added a rule that allows combining 
-  of like terms in embedded quantities. Thanks @joelhoover. 
+  of like terms in embedded quantities. Thanks <a href="https://github.com/joelhoover">@joelhoover</a>. 
 
 
 <h2 id="20171228-version-3181">2017-12-28, version 3.18.1 <a href="#20171228-version-3181" title="Permalink">#</a></h2>
 
-- Fixed #998: An issue with simplifying an expression containing a subtraction.
-  Thanks @firepick1.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/998">#998</a>: An issue with simplifying an expression containing a subtraction.
+  Thanks <a href="https://github.com/firepick1">@firepick1</a>.
 
 
 <h2 id="20171216-version-3180">2017-12-16, version 3.18.0 <a href="#20171216-version-3180" title="Permalink">#</a></h2>
 
-- Implemented function `rationalize`. Thanks @paulobuchsbaum.
+- Implemented function `rationalize`. Thanks <a href="https://github.com/paulobuchsbaum">@paulobuchsbaum</a>.
 - Upgraded dependencies:
   ```
   decimal.js    7.2.3  →  9.0.1 (no breaking changes affecting mathjs) 
@@ -57,16 +57,16 @@ layout: default
   tiny-emitter  2.0.0  →  2.0.2 
   ```
 - Upgraded dev dependencies.
-- Fixed #975: a wrong example in the docs of lusolve.
-- Fixed #983: `pickRandom` returning an array instead of single value
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/975">#975</a>: a wrong example in the docs of lusolve.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/983">#983</a>: `pickRandom` returning an array instead of single value
   when input was an array with just one value. Clarified docs.
-- Fixed #969: preven issues with yarn autoclean by renaming an
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/969">#969</a>: preven issues with yarn autoclean by renaming an
   interally used folder "docs" to "embeddedDocs".
 
 
 <h2 id="20171118-version-3170">2017-11-18, version 3.17.0 <a href="#20171118-version-3170" title="Permalink">#</a></h2>
 
-- Improved `simplify` for nested exponentiations. Thanks @IvanVergiliev.
+- Improved `simplify` for nested exponentiations. Thanks <a href="https://github.com/IvanVergiliev">@IvanVergiliev</a>.
 - Fixed a security issue in `typed-function` allowing arbitrary code execution
   in the JavaScript engine by creating a typed function with JavaScript code
   in the name. Thanks Masato Kinugawa.
@@ -77,32 +77,32 @@ layout: default
 
 <h2 id="20171018-version-3165">2017-10-18, version 3.16.5 <a href="#20171018-version-3165" title="Permalink">#</a></h2>
 
-- Fixed #954: Functions `add` and `multiply` not working when
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/954">#954</a>: Functions `add` and `multiply` not working when
   passing three or more arrays or matrices.
 
 
 <h2 id="20171001-version-3164">2017-10-01, version 3.16.4 <a href="#20171001-version-3164" title="Permalink">#</a></h2>
 
-- Fixed #948, #949: function `simplify` returning wrong results or 
-  running into an infinite recursive loop. Thanks @ericman314.
-- Fixed many small issues in the embedded docs.  Thanks @Schnark.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/948">#948</a>, <a href="https://github.com/josdejong/mathjs/issues/949">#949</a>: function `simplify` returning wrong results or 
+  running into an infinite recursive loop. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed many small issues in the embedded docs.  Thanks <a href="https://github.com/Schnark">@Schnark</a>.
 
 
 <h2 id="20170828-version-3163">2017-08-28, version 3.16.3 <a href="#20170828-version-3163" title="Permalink">#</a></h2>
 
-- Fixed #934: Wrong simplification of unary minus. Thanks @firepick1.
-- Fixed #933: function `simplify` reordering operations. Thanks @firepick1.
-- Fixed #930: function `isNaN` returning wrong result for complex 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/934">#934</a>: Wrong simplification of unary minus. Thanks <a href="https://github.com/firepick1">@firepick1</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/933">#933</a>: function `simplify` reordering operations. Thanks <a href="https://github.com/firepick1">@firepick1</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/930">#930</a>: function `isNaN` returning wrong result for complex 
   numbers having just one of their parts (re/im) being `NaN`.
-- Fixed #929: `FibonacciHeap.isEmpty` returning wrong result.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/929">#929</a>: `FibonacciHeap.isEmpty` returning wrong result.
 
 
 <h2 id="20170820-version-3162">2017-08-20, version 3.16.2 <a href="#20170820-version-3162" title="Permalink">#</a></h2>
 
-- Fixed #924: a regression in `simplify` not accepting the signature
-  `simplify(expr, rules, scope)` anymore. Thanks @firepick1.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/924">#924</a>: a regression in `simplify` not accepting the signature
+  `simplify(expr, rules, scope)` anymore. Thanks <a href="https://github.com/firepick1">@firepick1</a>.
 - Fixed missing parenthesis when stringifying expressions containing
-  implicit multiplications (see #922). Thanks @FSMaxB.
+  implicit multiplications (see <a href="https://github.com/josdejong/mathjs/issues/922">#922</a>). Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
 
 
 <h2 id="20170812-version-3161">2017-08-12, version 3.16.1 <a href="#20170812-version-3161" title="Permalink">#</a></h2>
@@ -110,9 +110,9 @@ layout: default
 - For security reasons, type checking is now done in a more strict
   way using functions like `isComplex(x)` instead of duck type checking
   like `x && x.isComplex === true`.
-- Fixed #915: No access to property "name".
-- Fixed #901: Simplify units when calling `unit.toNumeric()`.
-  Thanks @AlexanderBeyn.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/915">#915</a>: No access to property "name".
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/901">#901</a>: Simplify units when calling `unit.toNumeric()`.
+  Thanks <a href="https://github.com/AlexanderBeyn">@AlexanderBeyn</a>.
 - Fixed `toString` of a parsed expression tree containing an
   immediately invoked function assignment not being wrapped in
   parenthesis (for example `(f(x) = x^2)(4)`).
@@ -121,20 +121,20 @@ layout: default
 <h2 id="20170806-version-3160">2017-08-06, version 3.16.0 <a href="#20170806-version-3160" title="Permalink">#</a></h2>
 
 - Significant performance improvements in `math.simplify`.
-  Thanks @firepick1.
+  Thanks <a href="https://github.com/firepick1">@firepick1</a>.
 - Improved API for `math.simplify`, optionally pass a scope with
-  variables which are resolved, see #907. Thanks @firepick1.
-- Fixed #912: math.js didn't work on IE10 anymore (regression
+  variables which are resolved, see <a href="https://github.com/josdejong/mathjs/issues/907">#907</a>. Thanks <a href="https://github.com/firepick1">@firepick1</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/912">#912</a>: math.js didn't work on IE10 anymore (regression
   since 3.15.0).
 
 
 <h2 id="20170729-version-3150">2017-07-29, version 3.15.0 <a href="#20170729-version-3150" title="Permalink">#</a></h2>
 
-- Added support for the dollar character `$` in symbol names (see #895).
+- Added support for the dollar character `$` in symbol names (see <a href="https://github.com/josdejong/mathjs/issues/895">#895</a>).
 - Allow objects with prototypes as scope again in the expression parser,
-  this was disabled for security reasons some time ago. See #888, #899.
-  Thanks @ThomasBrierley.
-- Fixed #846: Issues in the functions `map`, `forEach`, and `filter`
+  this was disabled for security reasons some time ago. See <a href="https://github.com/josdejong/mathjs/issues/888">#888</a>, <a href="https://github.com/josdejong/mathjs/issues/899">#899</a>.
+  Thanks <a href="https://github.com/ThomasBrierley">@ThomasBrierley</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/846">#846</a>: Issues in the functions `map`, `forEach`, and `filter`
   when used in the expression parser:
   - Not being able to use a function assignment as inline expression
     for the callback function.
@@ -146,7 +146,7 @@ layout: default
 <h2 id="20170705-version-3142">2017-07-05, version 3.14.2 <a href="#20170705-version-3142" title="Permalink">#</a></h2>
 
 - Upgraded to `fraction.js@4.0.2`
-- Fixed #891 using BigNumbers not working in browser environments.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/891">#891</a> using BigNumbers not working in browser environments.
 
 
 <h2 id="20170630-version-3141">2017-06-30, version 3.14.1 <a href="#20170630-version-3141" title="Permalink">#</a></h2>
@@ -159,8 +159,8 @@ layout: default
 
 - Implemented set methods `setCartesian`, `setDifference`,
   `setDistinct`, `setIntersect`, `setIsSubset`, `setPowerset`,
-  `setSize`. Thanks @Nekomajin42.
-- Implemented method `toHTML` on nodes. Thanks @Nekomajin42.
+  `setSize`. Thanks <a href="https://github.com/Nekomajin42">@Nekomajin42</a>.
+- Implemented method `toHTML` on nodes. Thanks <a href="https://github.com/Nekomajin42">@Nekomajin42</a>.
 - Implemented `compareNatural` and `sort([...], 'natural')`.
 - Upgraded dependencies to the latest versions:
   - `complex.js@2.0.4`
@@ -168,17 +168,17 @@ layout: default
   - `fraction.js@4.0.1`
   - `tiny-emitter@2.0.0`
   - And all devDependencies.
-- Fixed #865: `splitUnit` can now deal with round-off errors.
-  Thanks @ericman314.
-- Fixed #876: incorrect definition for unit `erg`. Thanks @pjhampton.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/865">#865</a>: `splitUnit` can now deal with round-off errors.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/876">#876</a>: incorrect definition for unit `erg`. Thanks <a href="https://github.com/pjhampton">@pjhampton</a>.
 - More informative error message when using single quotes instead of
-  double quotes around a string. Thanks @HarrySarson.
+  double quotes around a string. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
 
 
 <h2 id="20170527-version-3133">2017-05-27, version 3.13.3 <a href="#20170527-version-3133" title="Permalink">#</a></h2>
 
 - Fixed a bug in function `intersection` of line and plane.
-  Thanks @viclai.
+  Thanks <a href="https://github.com/viclai">@viclai</a>.
 - Fixed security vulnerabilities.
 
 
@@ -186,9 +186,9 @@ layout: default
 
 - Disabled function `chain` inside the expression parser for security
   reasons (it's not needed there anyway).
-- Fixed #856: function `subset` not returning non-primitive scalars
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/856">#856</a>: function `subset` not returning non-primitive scalars
   from Arrays correctly. (like `math.eval('arr[1]', {arr: [math.bignumber(2)]})`.
-- Fixed #861: physical constants not available in the expression parser.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/861">#861</a>: physical constants not available in the expression parser.
 
 
 <h2 id="20170512-version-3131">2017-05-12, version 3.13.1 <a href="#20170512-version-3131" title="Permalink">#</a></h2>
@@ -201,14 +201,14 @@ layout: default
 <h2 id="20170512-version-3130">2017-05-12, version 3.13.0 <a href="#20170512-version-3130" title="Permalink">#</a></h2>
 
 - Command line application can now evaluate inline expressions
-  like `mathjs 1+2`. Thanks @slavaGanzin.
-- Function `derivative` now supports `abs`. Thanks @tetslee.
-- Function `simplify` now supports BigNumbers. Thanks @tetslee.
-- Prevent against endless loops in `simplify`. Thanks @tetslee.
-- Fixed #813: function `simplify` converting small numbers to inexact
-  Fractions. Thanks @tetslee.
-- Fixed #838: Function `simplify` now supports constants like `e`.
-  Thanks @tetslee.
+  like `mathjs 1+2`. Thanks <a href="https://github.com/slavaGanzin">@slavaGanzin</a>.
+- Function `derivative` now supports `abs`. Thanks <a href="https://github.com/tetslee">@tetslee</a>.
+- Function `simplify` now supports BigNumbers. Thanks <a href="https://github.com/tetslee">@tetslee</a>.
+- Prevent against endless loops in `simplify`. Thanks <a href="https://github.com/tetslee">@tetslee</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/813">#813</a>: function `simplify` converting small numbers to inexact
+  Fractions. Thanks <a href="https://github.com/tetslee">@tetslee</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/838">#838</a>: Function `simplify` now supports constants like `e`.
+  Thanks <a href="https://github.com/tetslee">@tetslee</a>.
 
 
 <h2 id="20170505-version-3123">2017-05-05, version 3.12.3 <a href="#20170505-version-3123" title="Permalink">#</a></h2>
@@ -223,8 +223,8 @@ layout: default
 
 <h2 id="20170424-version-3121">2017-04-24, version 3.12.1 <a href="#20170424-version-3121" title="Permalink">#</a></h2>
 
-- Fixed #804
-  - Improved handling of powers of `Infinity`. Thanks @HarrySarson.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/804">#804</a>
+  - Improved handling of powers of `Infinity`. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
   - Fixed wrong formatting of complex NaN.
 - Fixed security vulnerabilities in the expression parser.
   Thanks Sam and Dan.
@@ -232,8 +232,8 @@ layout: default
 
 <h2 id="20170417-version-3120">2017-04-17, version 3.12.0 <a href="#20170417-version-3120" title="Permalink">#</a></h2>
 
-- Implemented QR decomposition, function `math.qr`. Thanks @HarrySarson.
-- Fixed #824: Calling `math.random()` freezes IE and node.js.
+- Implemented QR decomposition, function `math.qr`. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/824">#824</a>: Calling `math.random()` freezes IE and node.js.
 
 
 <h2 id="20170408-version-3115">2017-04-08, version 3.11.5 <a href="#20170408-version-3115" title="Permalink">#</a></h2>
@@ -248,31 +248,31 @@ layout: default
 
 <h2 id="20170403-version-3114">2017-04-03, version 3.11.4 <a href="#20170403-version-3114" title="Permalink">#</a></h2>
 
-- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+- Fixed a security vulnerability in the expression parser. Thanks <a href="https://github.com/xfix">@xfix</a>.
 
 
 <h2 id="20170403-version-3113">2017-04-03, version 3.11.3 <a href="#20170403-version-3113" title="Permalink">#</a></h2>
 
-- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+- Fixed a security vulnerability in the expression parser. Thanks <a href="https://github.com/xfix">@xfix</a>.
 
 
 <h2 id="20170403-version-3112">2017-04-03, version 3.11.2 <a href="#20170403-version-3112" title="Permalink">#</a></h2>
 
-- Fixed a security vulnerability in the expression parser. Thanks @xfix.
+- Fixed a security vulnerability in the expression parser. Thanks <a href="https://github.com/xfix">@xfix</a>.
 
 
 <h2 id="20170402-version-3111">2017-04-02, version 3.11.1 <a href="#20170402-version-3111" title="Permalink">#</a></h2>
 
 - Fixed security vulnerabilities in the expression parser.
-  Thanks Joe Vennix and @xfix.
+  Thanks Joe Vennix and <a href="https://github.com/xfix">@xfix</a>.
 
 
 <h2 id="20170402-version-3110">2017-04-02, version 3.11.0 <a href="#20170402-version-3110" title="Permalink">#</a></h2>
 
 - Implemented method Unit.toSI() to convert a unit to base SI units.
-  Thanks @ericman314.
-- Fixed #821, #822: security vulnerabilities in the expression parser.
-  Thanks @comex and @xfix.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/821">#821</a>, <a href="https://github.com/josdejong/mathjs/issues/822">#822</a>: security vulnerabilities in the expression parser.
+  Thanks <a href="https://github.com/comex">@comex</a> and <a href="https://github.com/xfix">@xfix</a>.
 
 
 <h2 id="20170331-version-3103">2017-03-31, version 3.10.3 <a href="#20170331-version-3103" title="Permalink">#</a></h2>
@@ -283,77 +283,77 @@ layout: default
 <h2 id="20170331-version-3102">2017-03-31, version 3.10.2 <a href="#20170331-version-3102" title="Permalink">#</a></h2>
 
 - Fixed a security vulnerability in the expression parser allowing
-  execution of arbitrary JavaScript. Thanks @CapacitorSet and @denvit.
+  execution of arbitrary JavaScript. Thanks <a href="https://github.com/CapacitorSet">@CapacitorSet</a> and <a href="https://github.com/denvit">@denvit</a>.
 
 
 <h2 id="20170326-version-3101">2017-03-26, version 3.10.1 <a href="#20170326-version-3101" title="Permalink">#</a></h2>
 
-- Fixed `xgcd` for negative values. Thanks @litmit.
-- Fixed #807: function transform of existing functions not being removed when
+- Fixed `xgcd` for negative values. Thanks <a href="https://github.com/litmit">@litmit</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/807">#807</a>: function transform of existing functions not being removed when
   overriding such a function.
 
 
 <h2 id="20170305-version-3100">2017-03-05, version 3.10.0 <a href="#20170305-version-3100" title="Permalink">#</a></h2>
 
-- Implemented function `reshape`. Thanks @patgrasso and @ericman314.
+- Implemented function `reshape`. Thanks <a href="https://github.com/patgrasso">@patgrasso</a> and <a href="https://github.com/ericman314">@ericman314</a>.
 - Implemented configuration option `seedRandom` for deterministic random
-  numbers. Thanks @morsecodist.
-- Small fixes in the docs. Thanks @HarrySarson.
+  numbers. Thanks <a href="https://github.com/morsecodist">@morsecodist</a>.
+- Small fixes in the docs. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
 - Dropped support for component package manager (which became deprecated about
   one and a half year ago).
 
 
 <h2 id="20170222-version-393">2017-02-22, version 3.9.3 <a href="#20170222-version-393" title="Permalink">#</a></h2>
 
-- Fixed #797: issue with production builds of React Native projects.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/797">#797</a>: issue with production builds of React Native projects.
 - Fixed `math.round` not accepting inputs `NaN`, `Infinity`, `-Infinity`.
 - Upgraded all dependencies.
 
 
 <h2 id="20170216-version-392">2017-02-16, version 3.9.2 <a href="#20170216-version-392" title="Permalink">#</a></h2>
 
-- Fixed #795: Parse error in case of a multi-line expression with just comments.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/795">#795</a>: Parse error in case of a multi-line expression with just comments.
 
 
 <h2 id="20170206-version-391">2017-02-06, version 3.9.1 <a href="#20170206-version-391" title="Permalink">#</a></h2>
 
-- Fixed #789: Math.js not supporting conversion of `string` to `BigNumber`,
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/789">#789</a>: Math.js not supporting conversion of `string` to `BigNumber`,
   `Fraction`, or `Complex` number.
-- Fixed #790: Expression parser did not pass function arguments of enclosing
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/790">#790</a>: Expression parser did not pass function arguments of enclosing
   functions via `scope` to functions having `rawArgs = true`.
-- Small fixes in the docs. Thanks @HarrySarson.
+- Small fixes in the docs. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
 
 
 <h2 id="20170123-version-390">2017-01-23, version 3.9.0 <a href="#20170123-version-390" title="Permalink">#</a></h2>
 
 - Implemented support for algebra: powerful new functions `simplify` and
-  `derivative`. Thanks @ericman314, @tetslee, and @BigFav.
-- Implemented Kronecker Product `kron`. Thanks @adamisntdead.
+  `derivative`. Thanks <a href="https://github.com/ericman314">@ericman314</a>, <a href="https://github.com/tetslee">@tetslee</a>, and <a href="https://github.com/BigFav">@BigFav</a>.
+- Implemented Kronecker Product `kron`. Thanks <a href="https://github.com/adamisntdead">@adamisntdead</a>.
 - Reverted `FunctionNode` not accepting a string as function name anymore.
-- Fixed #765: `FunctionAssignmentNode.toString()` returning a string
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/765">#765</a>: `FunctionAssignmentNode.toString()` returning a string
   incompatible with the function assignment syntax.
 
 
 <h2 id="20161215-version-381">2016-12-15, version 3.8.1 <a href="#20161215-version-381" title="Permalink">#</a></h2>
 
-- Implemented function `mad` (median absolute deviation). Thanks @ruhleder.
-- Fixed #762: expression parser failing to invoke a function returned
+- Implemented function `mad` (median absolute deviation). Thanks <a href="https://github.com/ruhleder">@ruhleder</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/762">#762</a>: expression parser failing to invoke a function returned
   by a function.
 
 
 <h2 id="20161118-version-380">2016-11-18, version 3.8.0 <a href="#20161118-version-380" title="Permalink">#</a></h2>
 
-- Functions `add` and `multiply` now accept more than two arguments. See #739.
-- `OperatorNode` now supports more than two arguments. See #739. Thanks @FSMaxB.
-- Implemented a method `Node.cloneDeep` for the expression nodes. See #745.
+- Functions `add` and `multiply` now accept more than two arguments. See <a href="https://github.com/josdejong/mathjs/issues/739">#739</a>.
+- `OperatorNode` now supports more than two arguments. See <a href="https://github.com/josdejong/mathjs/issues/739">#739</a>. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Implemented a method `Node.cloneDeep` for the expression nodes. See <a href="https://github.com/josdejong/mathjs/issues/745">#745</a>.
 - Fixed a bug in `Node.clone()` not cloning implicit multiplication correctly.
-  Thanks @FSMaxB.
-- Fixed #737: Improved algorithm determining the best prefix for units.
+  Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/737">#737</a>: Improved algorithm determining the best prefix for units.
   It will now retain the original unit like `1 cm` when close enough,
-  instead of returning `10 mm`. Thanks @ericman314.
-- Fixed #732: Allow letter-like unicode characters like Ohm `\u2126`.
-- Fixed #749: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
-- Some fixes in the docs and comments of examples. Thanks @HarrySarson.
+  instead of returning `10 mm`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/732">#732</a>: Allow letter-like unicode characters like Ohm `\u2126`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/749">#749</a>: Units `rad`, `deg`, and `grad` can now have prefixes like `millirad`.
+- Some fixes in the docs and comments of examples. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
 
 
 <h2 id="20161105-version-370">2016-11-05, version 3.7.0 <a href="#20161105-version-370" title="Permalink">#</a></h2>
@@ -362,21 +362,21 @@ layout: default
 - Implemented BigNumber support in function `arg()`.
 - Command Line Interface loads faster.
 - Implicit conversions between Fractions and BigNumbers throw a neat error now
-  (See #710).
+  (See <a href="https://github.com/josdejong/mathjs/issues/710">#710</a>).
 
 
 <h2 id="20161021-version-360">2016-10-21, version 3.6.0 <a href="#20161021-version-360" title="Permalink">#</a></h2>
 
-- Implemented function `erf()`. THanks @patgrasso.
-- Extended function `cross()` to support n-d vectors. Thanks @patgrasso.
+- Implemented function `erf()`. THanks <a href="https://github.com/patgrasso">@patgrasso</a>.
+- Extended function `cross()` to support n-d vectors. Thanks <a href="https://github.com/patgrasso">@patgrasso</a>.
 - Extended function `pickRandom` with the option to pick multiple values from
   an array and give the values weights: `pickRandom(possibles, number, weights)`.
-  Thanks @woylie.
+  Thanks <a href="https://github.com/woylie">@woylie</a>.
 - Parser now exposes test functions like `isAlpha` which can be replaced in
-  order to adjust the allowed characters in variables names (See #715).
-- Fixed #727: Parser not throwing an error for invalid implicit multiplications
+  order to adjust the allowed characters in variables names (See <a href="https://github.com/josdejong/mathjs/issues/715">#715</a>).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/727">#727</a>: Parser not throwing an error for invalid implicit multiplications
   like `-2 2` and `2^3 4` (right after the second value of an operator).
-- Fixed #688: Describe allowed variable names in the docs.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/688">#688</a>: Describe allowed variable names in the docs.
 
 
 <h2 id="20160921-version-353">2016-09-21, version 3.5.3 <a href="#20160921-version-353" title="Permalink">#</a></h2>
@@ -387,20 +387,20 @@ layout: default
 <h2 id="20160920-version-352">2016-09-20, version 3.5.2 <a href="#20160920-version-352" title="Permalink">#</a></h2>
 
 - Fixed numbers ending with a decimal mark (like `2.`) not being supported by
-  the parser, solved the underlying ambiguity in the parser. See #707, #711.
+  the parser, solved the underlying ambiguity in the parser. See <a href="https://github.com/josdejong/mathjs/issues/707">#707</a>, <a href="https://github.com/josdejong/mathjs/issues/711">#711</a>.
 
 
 <h2 id="20160912-version-351">2016-09-12, version 3.5.1 <a href="#20160912-version-351" title="Permalink">#</a></h2>
 
-- Removed a left over console.log statement. Thanks @eknkc.
+- Removed a left over console.log statement. Thanks <a href="https://github.com/eknkc">@eknkc</a>.
 
 
 <h2 id="20160907-version-350">2016-09-07, version 3.5.0 <a href="#20160907-version-350" title="Permalink">#</a></h2>
 
-- Comments of expressions are are now stored in the parsed nodes. See #690.
+- Comments of expressions are are now stored in the parsed nodes. See <a href="https://github.com/josdejong/mathjs/issues/690">#690</a>.
 - Fixed function `print` not accepting an Object with formatting options as
-  third parameter Thanks @ThomasBrierley.
-- Fixed #707: The expression parser no longer accepts numbers ending with a dot
+  third parameter Thanks <a href="https://github.com/ThomasBrierley">@ThomasBrierley</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/707">#707</a>: The expression parser no longer accepts numbers ending with a dot
   like `2.`.
 
 
@@ -412,9 +412,9 @@ layout: default
 
 <h2 id="20160807-version-340">2016-08-07, version 3.4.0 <a href="#20160807-version-340" title="Permalink">#</a></h2>
 
-- Implemented support for custom units using `createUnit`. Thanks @ericman314.
-- Implemented function `splitUnits`. Thanks @ericman314.
-- Implemented function `isPrime`. Thanks @MathBunny.
+- Implemented support for custom units using `createUnit`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Implemented function `splitUnits`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Implemented function `isPrime`. Thanks <a href="https://github.com/MathBunny">@MathBunny</a>.
 
 
 <h2 id="20160705-version-330">2016-07-05, version 3.3.0 <a href="#20160705-version-330" title="Permalink">#</a></h2>
@@ -423,28 +423,28 @@ layout: default
 - Function `math.filter` now passes three arguments to the callback function:
   value, index, and array.
 - Removed the check on the number of arguments from functions defined in the
-  expression parser (see #665).
-- Fixed #665: functions `map`, `forEach`, and `filter` now invoke callbacks
+  expression parser (see <a href="https://github.com/josdejong/mathjs/issues/665">#665</a>).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/665">#665</a>: functions `map`, `forEach`, and `filter` now invoke callbacks
   which are a typed-function with the correct number of arguments.
 
 
 <h2 id="20160426-version-321">2016-04-26, version 3.2.1 <a href="#20160426-version-321" title="Permalink">#</a></h2>
 
-- Fixed #651: unable to perform calculations on "Unit-less" units.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/651">#651</a>: unable to perform calculations on "Unit-less" units.
 - Fixed matrix.subset mutating the replacement matrix when unsqueezing it.
 
 
 <h2 id="20160416-version-320">2016-04-16, version 3.2.0 <a href="#20160416-version-320" title="Permalink">#</a></h2>
 
-- Implemented #644: method `Parser.getAll()` to retrieve all defined variables.
+- Implemented <a href="https://github.com/josdejong/mathjs/issues/644">#644</a>: method `Parser.getAll()` to retrieve all defined variables.
 - Upgraded dependencies (decimal.js@5.0.8, fraction.js@3.3.1,
   typed-function@0.10.4).
-- Fixed #601: Issue with unnamed typed-functions by upgrading to
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/601">#601</a>: Issue with unnamed typed-functions by upgrading to
   typed-function v0.10.4.
-- Fixed #636: More strict `toTex` templates, reckon with number of arguments.
-- Fixed #641: Bug in expression parser parsing implicit multiplication with
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/636">#636</a>: More strict `toTex` templates, reckon with number of arguments.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/641">#641</a>: Bug in expression parser parsing implicit multiplication with
   wrong precedence in specific cases.
-- Fixed #645: Added documentation about `engineering` notation of function
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/645">#645</a>: Added documentation about `engineering` notation of function
   `math.format`.
 
 
@@ -452,13 +452,13 @@ layout: default
 
 - Using ES6 Math functions like `Math.sinh`, `Math.cbrt`, `Math.sign`, etc when
   available.
-- Fixed #631: unit aliases `weeks`, `months`, and `years` where missing.
-- Fixed #632: problem with escaped backslashes at the end of strings.
-- Fixed #635: `Node.toString` options where not passed to function arguments.
-- Fixed #629: expression parser throws an error when passing a number with
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/631">#631</a>: unit aliases `weeks`, `months`, and `years` where missing.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/632">#632</a>: problem with escaped backslashes at the end of strings.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/635">#635</a>: `Node.toString` options where not passed to function arguments.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/629">#629</a>: expression parser throws an error when passing a number with
   decimal exponent instead of parsing them as implicit multiplication.
-- Fixed #484, #555: inaccuracy of `math.sinh` for values between -1 and 1.
-- Fixed #625: Unit `in` (`inch`) not always working due to ambiguity with
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/484">#484</a>, <a href="https://github.com/josdejong/mathjs/issues/555">#555</a>: inaccuracy of `math.sinh` for values between -1 and 1.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/625">#625</a>: Unit `in` (`inch`) not always working due to ambiguity with
   the operator `a in b` (alias of `a to b`).
 
 
@@ -474,19 +474,19 @@ layout: default
 
 <h2 id="20160324-version-311">2016-03-24, version 3.1.1 <a href="#20160324-version-311" title="Permalink">#</a></h2>
 
-- Fixed #621: a bug in parsing implicit multiplications like `(2)(3)+4`.
-- Fixed #623: `nthRoot` of zero with a negative root returned `0` instead of
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/621">#621</a>: a bug in parsing implicit multiplications like `(2)(3)+4`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/623">#623</a>: `nthRoot` of zero with a negative root returned `0` instead of
   `Infinity`.
 - Throw an error when functions `min`, `max`, `mean`, or `median` are invoked
-  with multiple matrices as arguments (see #598).
+  with multiple matrices as arguments (see <a href="https://github.com/josdejong/mathjs/issues/598">#598</a>).
 
 
 <h2 id="20160319-version-310">2016-03-19, version 3.1.0 <a href="#20160319-version-310" title="Permalink">#</a></h2>
 
 - Hide multiplication operator by default when outputting `toTex` and `toString`
   for implicit multiplications. Implemented and option to output the operator.
-- Implemented unit `kip` and alias `kips`. Thanks @hgupta9.
-- Added support for prefixes for units `mol` and `mole`. Thanks @stu-blair.
+- Implemented unit `kip` and alias `kips`. Thanks <a href="https://github.com/hgupta9">@hgupta9</a>.
+- Added support for prefixes for units `mol` and `mole`. Thanks <a href="https://github.com/stu">@stu</a>-blair.
 - Restored support for implicit multiplications like `2(3+4)` and `(2+3)(4+5)`.
 - Some improvements in the docs.
 - Added automatic conversions from `boolean` and `null` to `Fraction`,
@@ -502,9 +502,9 @@ layout: default
   and `[...][...]` as a matrix subset.
 - Matrix multiplication no longer squeezes scalar outputs to a scalar value,
   but leaves them as they are: a vector or matrix containing a single value.
-  See #529.
+  See <a href="https://github.com/josdejong/mathjs/issues/529">#529</a>.
 - Assignments in the expression parser now return the assigned value rather
-  than the created or updated object (see #533). Example:
+  than the created or updated object (see <a href="https://github.com/josdejong/mathjs/issues/533">#533</a>). Example:
 
   ```
   A = eye(3)
@@ -520,7 +520,7 @@ layout: default
   trigonometric functions of math.js with those provided in decimal.js v5.
   This can give slightly different behavior qua round-off errors.
 - Replaced the internal `Complex.js` class with the `complex.js` library
-  created by @infusion.
+  created by <a href="https://github.com/infusion">@infusion</a>.
 - Entries in a matrix (typically numbers, BigNumbers, Units, etc) are now
   considered immutable, they are no longer copied when performing operations on
   the entries, improving performance.
@@ -531,12 +531,12 @@ layout: default
   the type returned by `math.typeof`. Wrong casing gives a console warning but
   will still work.
 - Changed the default config value for `epsilon` from `1e-14` to `1e-12`,
-  see #561.
+  see <a href="https://github.com/josdejong/mathjs/issues/561">#561</a>.
 
 <h3 id="nonbreaking-changes">non-breaking changes <a href="#nonbreaking-changes" title="Permalink">#</a></h3>
 
 - Extended function `pow` to return the real root for cubic roots of negative
-  numbers. See #525, #482, #567.
+  numbers. See <a href="https://github.com/josdejong/mathjs/issues/525">#525</a>, <a href="https://github.com/josdejong/mathjs/issues/482">#482</a>, <a href="https://github.com/josdejong/mathjs/issues/567">#567</a>.
 - Implemented support for JSON objects in the expression parser and the
   function `math.format`.
 - Function `math.fraction` now supports `BigNumber`, and function
@@ -547,10 +547,10 @@ layout: default
   - Outputs the variable name of assignments.
   - Fixed not rounding BigNumbers to 14 digits like numbers.
   - Fixed non-working autocompletion of user defined variables.
-- Reorganized and extended docs, added docs on classes and more. Thanks @hgupta9.
+- Reorganized and extended docs, added docs on classes and more. Thanks <a href="https://github.com/hgupta9">@hgupta9</a>.
 - Added new units `acre`, `hectare`, `torr`, `bar`, `mmHg`, `mmH2O`, `cmH2O`,
   and added new aliases `acres`, `hectares`, `sqfeet`, `sqyard`, `sqmile`,
-  `sqmiles`, `mmhg`, `mmh2o`, `cmh2o`. Thanks @hgupta9.
+  `sqmiles`, `mmhg`, `mmh2o`, `cmh2o`. Thanks <a href="https://github.com/hgupta9">@hgupta9</a>.
 - Fixed a bug in the toString method of an IndexNode.
 - Fixed angle units `deg`, `rad`, `grad`, `cycle`, `arcsec`, and `arcmin` not
   being defined as BigNumbers when configuring to use BigNumbers.
@@ -558,23 +558,23 @@ layout: default
 
 <h2 id="20160203-version-270">2016-02-03, version 2.7.0 <a href="#20160203-version-270" title="Permalink">#</a></h2>
 
-- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See #551.
+- Added more unit aliases for time: `secs`, `mins`, `hr`, `hrs`. See <a href="https://github.com/josdejong/mathjs/issues/551">#551</a>.
 - Added support for doing operations with mixed `Fractions` and `BigNumbers`.
-- Fixed #540: `math.intersect()` returning null in some cases. Thanks @void42.
-- Fixed #546: Cannot import BigNumber, Fraction, Matrix, Array.
-  Thanks @brettjurgens.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/540">#540</a>: `math.intersect()` returning null in some cases. Thanks <a href="https://github.com/void42">@void42</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/546">#546</a>: Cannot import BigNumber, Fraction, Matrix, Array.
+  Thanks <a href="https://github.com/brettjurgens">@brettjurgens</a>.
 
 
 <h2 id="20160108-version-260">2016-01-08, version 2.6.0 <a href="#20160108-version-260" title="Permalink">#</a></h2>
 
 - Implemented (complex) units `VA` and `VAR`.
 - Implemented time units for weeks, months, years, decades, centuries, and 
-  millennia. Thanks @owenversteeg.
+  millennia. Thanks <a href="https://github.com/owenversteeg">@owenversteeg</a>.
 - Implemented new notation `engineering` in function `math.format`. 
-  Thanks @johnmarinelli.
-- Fixed #523: In some circumstances, matrix subset returned a scalar instead 
+  Thanks <a href="https://github.com/johnmarinelli">@johnmarinelli</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/523">#523</a>: In some circumstances, matrix subset returned a scalar instead 
   of the correct subset.
-- Fixed #536: A bug in an internal method used for sparse matrices.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/536">#536</a>: A bug in an internal method used for sparse matrices.
 
 
 <h2 id="20151205-version-250">2015-12-05, version 2.5.0 <a href="#20151205-version-250" title="Permalink">#</a></h2>
@@ -582,28 +582,28 @@ layout: default
 - Implemented support for numeric types `Fraction` and `BigNumber` in units.
 - Implemented new method `toNumeric` for units.
 - Implemented new units `arcsec`, `arcsecond`, `arcmin`, `arcminute`. 
-  Thanks @devdevdata222.
-- Implemented new unit `Herts` (`Hz`). Thanks @SwamWithTurtles.
-- Fixed #485: Scoping issue with variables both used globally as well as in a 
+  Thanks <a href="https://github.com/devdevdata222">@devdevdata222</a>.
+- Implemented new unit `Herts` (`Hz`). Thanks <a href="https://github.com/SwamWithTurtles">@SwamWithTurtles</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/485">#485</a>: Scoping issue with variables both used globally as well as in a 
   function definition.
 - Fixed: Function `number` didn't support `Fraction` as input.
 
 
 <h2 id="20151114-version-242">2015-11-14, version 2.4.2 <a href="#20151114-version-242" title="Permalink">#</a></h2>
 
-- Fixed #502: Issue with `format` in some JavaScript engines.
-- Fixed #503: Removed trailing commas and the use of keyword `import` as 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/502">#502</a>: Issue with `format` in some JavaScript engines.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/503">#503</a>: Removed trailing commas and the use of keyword `import` as 
   property, as this gives issues with old JavaScript engines.
 
 
 <h2 id="20151029-version-241">2015-10-29, version 2.4.1 <a href="#20151029-version-241" title="Permalink">#</a></h2>
 
-- Fixed #480: `nthRoot` not working on Internet Explorer (up to IE 11).
-- Fixed #490: `nthRoot` returning an error for negative values like 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/480">#480</a>: `nthRoot` not working on Internet Explorer (up to IE 11).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/490">#490</a>: `nthRoot` returning an error for negative values like 
   `nthRoot(-2, 3)`.
-- Fixed #489: an issue with initializing a sparse matrix without data.
-  Thanks @Retsam.
-- Fixed: #493: function `combinations` did not throw an exception for 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/489">#489</a>: an issue with initializing a sparse matrix without data.
+  Thanks <a href="https://github.com/Retsam">@Retsam</a>.
+- Fixed: <a href="https://github.com/josdejong/mathjs/issues/493">#493</a>: function `combinations` did not throw an exception for 
   non-integer values of `k`.
 - Fixed: function `import` did not override typed functions when the option
   override was set true.
@@ -618,52 +618,52 @@ layout: default
 - Added support in the expression parser for mathematical alphanumeric symbols 
   in the expression parser: unicode range \u{1D400} to \u{1D7FF} excluding 
   invalid code points.
-- Extended function `distance` with more signatures. Thanks @kv-kunalvyas.
+- Extended function `distance` with more signatures. Thanks <a href="https://github.com/kv">@kv</a>-kunalvyas.
 - Fixed a bug in functions `sin` and `cos`, which gave wrong results for 
   BigNumber integer values around multiples of tau (i.e. `sin(bignumber(7))`).
-- Fixed value of unit `stone`. Thanks @Esvandiary for finding the error.
+- Fixed value of unit `stone`. Thanks <a href="https://github.com/Esvandiary">@Esvandiary</a> for finding the error.
 
 
 <h2 id="20150919-version-230">2015-09-19, version 2.3.0 <a href="#20150919-version-230" title="Permalink">#</a></h2>
 
-- Implemented function `distance`. Thanks @devanp92.
-- Implemented support for Fractions in function `lcm`. Thanks @infusion.
+- Implemented function `distance`. Thanks <a href="https://github.com/devanp92">@devanp92</a>.
+- Implemented support for Fractions in function `lcm`. Thanks <a href="https://github.com/infusion">@infusion</a>.
 - Implemented function `cbrt` for numbers, complex numbers, BigNumbers, Units.
 - Implemented function `hypot`.
 - Upgraded to fraction.js v3.0.0.
-- Fixed #450: issue with non sorted index in sparse matrices.
-- Fixed #463, #322: inconsistent handling of implicit multiplication.
-- Fixed #444: factorial of infinity not returning infinity.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/450">#450</a>: issue with non sorted index in sparse matrices.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/463">#463</a>, <a href="https://github.com/josdejong/mathjs/issues/322">#322</a>: inconsistent handling of implicit multiplication.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/444">#444</a>: factorial of infinity not returning infinity.
 
 
 <h2 id="20150830-version-220">2015-08-30, version 2.2.0 <a href="#20150830-version-220" title="Permalink">#</a></h2>
 
 - Units with powers (like `m^2` and `s^-1`) now output with the best prefix.
 - Implemented support for units to `abs`, `cube`, `sign`, `sqrt`, `square`.
-  Thanks @ericman314.
-- Implemented function `catalan` (Combinatorics). Thanks @devanp92.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Implemented function `catalan` (Combinatorics). Thanks <a href="https://github.com/devanp92">@devanp92</a>.
 - Improved the `canDefineProperty` check to return false in case of IE8, which
-  has a broken implementation of `defineProperty`. Thanks @golmansax.
+  has a broken implementation of `defineProperty`. Thanks <a href="https://github.com/golmansax">@golmansax</a>.
 - Fixed function `to` not working in case of a simplified unit.
-- Fixed #437: an issue with row swapping in `lup`, also affecting `lusolve`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/437">#437</a>: an issue with row swapping in `lup`, also affecting `lusolve`.
 
 
 <h2 id="20150812-version-211">2015-08-12, version 2.1.1 <a href="#20150812-version-211" title="Permalink">#</a></h2>
 
 - Fixed wrong values of the physical constants `speedOfLight`, `molarMassC12`,  
-  and `magneticFluxQuantum`. Thanks @ericman314 for finding two of them.
+  and `magneticFluxQuantum`. Thanks <a href="https://github.com/ericman314">@ericman314</a> for finding two of them.
 
 
 <h2 id="20150811-version-210">2015-08-11, version 2.1.0 <a href="#20150811-version-210" title="Permalink">#</a></h2>
 
-- Implemented derived units (like `110 km/h in m/s`). Thanks @ericman314.
-- Implemented support for electric units. Thanks @ericman314.
+- Implemented derived units (like `110 km/h in m/s`). Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Implemented support for electric units. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
 - Implemented about 50 physical constants like `speedOfLight`, `gravity`, etc. 
 - Implemented function `kldivergence` (Kullback-Leibler divergence). 
-  Thanks @saromanov.
-- Implemented function `mode`. Thanks @kv-kunalvyas.
+  Thanks <a href="https://github.com/saromanov">@saromanov</a>.
+- Implemented function `mode`. Thanks <a href="https://github.com/kv">@kv</a>-kunalvyas.
 - Added support for unicode characters in the expression parser: greek letters
-  and latin letters with accents. See #265.
+  and latin letters with accents. See <a href="https://github.com/josdejong/mathjs/issues/265">#265</a>.
 - Internal functions `Unit.parse` and `Complex.parse` now throw an Error 
   instead of returning null when passing invalid input.
 
@@ -682,13 +682,13 @@ layout: default
   - functions are composed using `typed-function` and are extensible
 - Implemented support for fractions, powered by the library `fraction.js`.
 - Implemented matrix LU decomposition with partial pivoting and a LU based 
-  linear equations solver (functions `lup` and `lusolve`). Thanks @rjbaucells.
+  linear equations solver (functions `lup` and `lusolve`). Thanks <a href="https://github.com/rjbaucells">@rjbaucells</a>.
 - Implemented a new configuration option `predictable`, which can be set to
   true in order to ensure predictable function output types.
-- Implemented function `intersect`. Thanks @kv-kunalvyas.
+- Implemented function `intersect`. Thanks <a href="https://github.com/kv">@kv</a>-kunalvyas.
 - Implemented support for adding `toTex` properties to custom functions.
-  Thanks @FSMaxB.
-- Implemented support for complex values to `nthRoot`. Thanks @gangachris.
+  Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Implemented support for complex values to `nthRoot`. Thanks <a href="https://github.com/gangachris">@gangachris</a>.
 - Implemented util functions `isInteger`, `isNegative`, `isNumeric`, 
   `isPositive`, and `isZero`.
 
@@ -709,64 +709,64 @@ layout: default
   errors on duplicates by default.
 - Method `Node.compile()` no longer needs `math` to be passed as argument.
 - Reintroduced method `Node.eval([scope])`.
-- Function `sum` now returns zero when input is an empty array. Thanks @FSMAxB.
+- Function `sum` now returns zero when input is an empty array. Thanks <a href="https://github.com/FSMAxB">@FSMAxB</a>.
 - The size of Arrays is no longer validated. Matrices will validate this on
   creation.
 
 
 <h2 id="20150712-version-171">2015-07-12, version 1.7.1 <a href="#20150712-version-171" title="Permalink">#</a></h2>
 
-- Fixed #397: Inaccuracies in nthRoot for very large values, and wrong results 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/397">#397</a>: Inaccuracies in nthRoot for very large values, and wrong results 
   for very small values. (backported from v2)
-- Fixed #405: Parser throws error when defining a function in a multiline 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/405">#405</a>: Parser throws error when defining a function in a multiline 
   expression.
 
 
 <h2 id="20150531-version-170">2015-05-31, version 1.7.0 <a href="#20150531-version-170" title="Permalink">#</a></h2>
 
-- Implemented function `quantileSeq` and `partitionSelect`. Thanks @BigFav.
+- Implemented function `quantileSeq` and `partitionSelect`. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
 - Implemented functions `stirlingS2`, `bellNumbers`, `composition`, and 
-  `multinomial`. Thanks @devanp92.
-- Improved the performance of `median` (see #373). Thanks @BigFav.
+  `multinomial`. Thanks <a href="https://github.com/devanp92">@devanp92</a>.
+- Improved the performance of `median` (see <a href="https://github.com/josdejong/mathjs/issues/373">#373</a>). Thanks <a href="https://github.com/BigFav">@BigFav</a>.
 - Extended the command line interface with a `mode` option to output either
   the expressions result, string representation, or tex representation.
-  Thanks @FSMaxB.
-- Fixed #309: Function median mutating the input matrix. Thanks @FSMaxB. 
+  Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/309">#309</a>: Function median mutating the input matrix. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>. 
 - Fixed `Node.transform` not recursing over replaced parts of the 
-  node tree (see #349).
-- Fixed #381: issue in docs of `randomInt`.
+  node tree (see <a href="https://github.com/josdejong/mathjs/issues/349">#349</a>).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/381">#381</a>: issue in docs of `randomInt`.
 
 
 <h2 id="20150422-version-160">2015-04-22, version 1.6.0 <a href="#20150422-version-160" title="Permalink">#</a></h2>
 
-- Improvements in `toTex`. Thanks @FSMaxB.
-- Fixed #328: `abs(0 + 0i)` evaluated to `NaN`.
+- Improvements in `toTex`. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/328">#328</a>: `abs(0 + 0i)` evaluated to `NaN`.
 - Fixed not being able to override lazy loaded constants.
 
 
 <h2 id="20150409-version-152">2015-04-09, version 1.5.2 <a href="#20150409-version-152" title="Permalink">#</a></h2>
 
-- Fixed #313: parsed functions did not handle recursive calls correctly.
-- Fixed #251: binary prefix and SI prefix incorrectly used for byte. Now 
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/313">#313</a>: parsed functions did not handle recursive calls correctly.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/251">#251</a>: binary prefix and SI prefix incorrectly used for byte. Now 
   following SI standards (`1 KiB == 1024 B`, `1 kB == 1000 B`).
 - Performance improvements in parsed functions.
 
 
 <h2 id="20150408-version-151">2015-04-08, version 1.5.1 <a href="#20150408-version-151" title="Permalink">#</a></h2>
 
-- Fixed #316: a bug in rounding values when formatting.
-- Fixed #317, #319: a bug in formatting negative values.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/316">#316</a>: a bug in rounding values when formatting.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/317">#317</a>, <a href="https://github.com/josdejong/mathjs/issues/319">#319</a>: a bug in formatting negative values.
 
 
 <h2 id="20150328-version-150">2015-03-28, version 1.5.0 <a href="#20150328-version-150" title="Permalink">#</a></h2>
 
 - Added unit `stone` (6.35 kg).
-- Implemented support for sparse matrices. Thanks @rjbaucells.
-- Implemented BigNumber support for function `atan2`. Thanks @BigFav.
-- Implemented support for custom LaTeX representations. Thanks @FSMaxB.
+- Implemented support for sparse matrices. Thanks <a href="https://github.com/rjbaucells">@rjbaucells</a>.
+- Implemented BigNumber support for function `atan2`. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
+- Implemented support for custom LaTeX representations. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
 - Improvements and bug fixes in outputting parentheses in `Node.toString` and
-  `Node.toTex` functions. Thanks @FSMaxB.
-- Fixed #291: function `format` sometimes returning exponential notation when
+  `Node.toTex` functions. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/291">#291</a>: function `format` sometimes returning exponential notation when
   it should return a fixed notation.
 
 
@@ -774,40 +774,40 @@ layout: default
 
 - Implemented trigonometric functions:
   `acosh`, `acoth`, `acsch`, `asech`, `asinh`, `atanh`, `acot`, `acsc`, `asec`.
-  Thanks @BigFav.
+  Thanks <a href="https://github.com/BigFav">@BigFav</a>.
 - Added BigNumber support for functions: `cot`, `csc`, `sec`, `coth`,
-  `csch`, `sech`. Thanks @BigFav.
+  `csch`, `sech`. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
 - Implemented support for serialization and deserialization of math.js data
   types.
 - Fixed the calculation of `norm()` and `abs()` for large complex numbers.
-  Thanks @rjbaucells.
-- Fixed #281: improved formatting complex numbers. Round the real or imaginary
+  Thanks <a href="https://github.com/rjbaucells">@rjbaucells</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/281">#281</a>: improved formatting complex numbers. Round the real or imaginary
   part to zero when the difference is larger than the configured precision.
 
 
 <h2 id="20150209-version-130">2015-02-09, version 1.3.0 <a href="#20150209-version-130" title="Permalink">#</a></h2>
 
 - Implemented BigNumber implementations of most trigonometric functions: `sin`,
-  `cos`, `tan`, `asin`, `acos`, `atan`, `cosh`, `sinh`, `tanh`. Thanks @BigFav.
-- Implemented function `trace`. Thanks @pcorey.
+  `cos`, `tan`, `asin`, `acos`, `atan`, `cosh`, `sinh`, `tanh`. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
+- Implemented function `trace`. Thanks <a href="https://github.com/pcorey">@pcorey</a>.
 - Faster loading of BigNumber configuration with a high precision by lazy
   loading constants like `pi` and `e`.
 - Fixed constants `NaN` and `Infinity` not being BigNumber objects when
   BigNumbers are configured.
 - Fixed missing parentheses in the `toTex` representation of function
   `permutations`.
-- Some minor fixes in the docs. Thanks @KenanY.
+- Some minor fixes in the docs. Thanks <a href="https://github.com/KenanY">@KenanY</a>.
 
 
 <h2 id="20141225-version-120">2014-12-25, version 1.2.0 <a href="#20141225-version-120" title="Permalink">#</a></h2>
 
 - Support for bitwise operations `bitAnd`, `bitNot`, `bitOr`, `bitXor`,
-  `leftShift`, `rightArithShift`, and `rightLogShift`. Thanks @BigFav.
-- Support for boolean operations `and`, `not`, `or`, `xor`. Thanks @BigFav.
-- Support for `gamma` function. Thanks @BigFav.
+  `leftShift`, `rightArithShift`, and `rightLogShift`. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
+- Support for boolean operations `and`, `not`, `or`, `xor`. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
+- Support for `gamma` function. Thanks <a href="https://github.com/BigFav">@BigFav</a>.
 - Converting a unit without value will now result in a unit *with* value,
   i.e. `inch in cm` will return `2.54 cm` instead of `cm`.
-- Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks @pavpanchekha.
+- Improved accuracy of `sinh` and complex `cos` and `sin`. Thanks <a href="https://github.com/pavpanchekha">@pavpanchekha</a>.
 - Renamed function `select` to `chain`. The old function `select` will remain
   functional until math.js v2.0.
 - Upgraded to decimal.js v4.0.1 (BigNumber library).
@@ -817,7 +817,7 @@ layout: default
 
 - Fixed Unit divided by Number returning zero.
 - Fixed BigNumber downgrading to Number for a negative base in `pow`.
-- Fixed some typos in error messaging (thanks @andy0130tw) and docs.
+- Fixed some typos in error messaging (thanks <a href="https://github.com/andy0130tw">@andy0130tw</a>) and docs.
 
 
 <h2 id="20141115-version-110">2014-11-15, version 1.1.0 <a href="#20141115-version-110" title="Permalink">#</a></h2>
@@ -1042,7 +1042,7 @@ layout: default
 <h2 id="20140330-version-0190">2014-03-30, version 0.19.0 <a href="#20140330-version-0190" title="Permalink">#</a></h2>
 
 - Implemented functions `compare`, `sum`, `prod`, `var`, `std`, `median`.
-- Implemented function `ifElse` Thanks @mtraynham.
+- Implemented function `ifElse` Thanks <a href="https://github.com/mtraynham">@mtraynham</a>.
 - Minor bug fixes.
 
 
@@ -1050,7 +1050,7 @@ layout: default
 
 - Added unit `feet`.
 - Implemented function `compile` (shortcut for parsing and then compiling).
-- Improved performance of function `pow` for matrices. Thanks @hamadu.
+- Improved performance of function `pow` for matrices. Thanks <a href="https://github.com/hamadu">@hamadu</a>.
 - Fixed broken auto completion in the command line interface.
 - Fixed an error in function `combinations` for large numbers, and
   improved performance of both functions `combinations` and `permutations`.
@@ -1143,7 +1143,7 @@ layout: default
     use `math.format(value [, precision])` instead.
   - Fixed formatting numbers as scientific notation in some cases returning
     a zero digit left from the decimal point. (like "0.33333e8" rather than
-    "3.3333e7"). Thanks @husayt.
+    "3.3333e7"). Thanks <a href="https://github.com/husayt">@husayt</a>.
 - Implemented a function `print` to interpolate values in a template string,
   this functionality was moved from the function `format`.
 - Implemented statistics function `mean`. Thanks Guillermo Indalecio Fernandez
@@ -1224,7 +1224,7 @@ layout: default
   for example `A[0, 0:3]`.
 - Removed the feature introduced in v0.10.0 to automatically convert a complex
   value with an imaginary part equal to zero to a number.
-- Fixed zeros being formatted as null. Thanks @TimKraft.
+- Fixed zeros being formatted as null. Thanks <a href="https://github.com/TimKraft">@TimKraft</a>.
 
 
 <h2 id="20130723-version-0111">2013-07-23, version 0.11.1 <a href="#20130723-version-0111" title="Permalink">#</a></h2>
@@ -1324,7 +1324,7 @@ layout: default
 <h2 id="20130504-version-072">2013-05-04, version 0.7.2 <a href="#20130504-version-072" title="Permalink">#</a></h2>
 
 - Fixed method unequal, which was checking for equality instead of inequality.
-  Thanks @FJS2.
+  Thanks <a href="https://github.com/FJS2">@FJS2</a>.
 
 
 <h2 id="20130427-version-071">2013-04-27, version 0.7.1 <a href="#20130427-version-071" title="Permalink">#</a></h2>

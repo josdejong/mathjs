@@ -81,6 +81,12 @@ var fn = function (header, level, title) {
 };
 var injectPermalinks = replace(/^(#+) (.*)$/mg, fn);
 var injectPermalinks2 = replace(/^(#+) (.*)$/mg, fn);
+var injectClickableIssueTags = replace(/ (#(\d+))/mg, function (match, tag, number) {
+  return ' <a href="https://github.com/josdejong/mathjs/issues/' + number + '">' + tag + '</a>'
+});
+var injectClickableUserTags = replace(/ (@([0-9a-zA-Z_]+))/mg, function (match, tag, username) {
+  return ' <a href="https://github.com/' + username + '">' + tag + '</a>'
+});
 
 /**
  * copy math.js and math.min.js
@@ -221,6 +227,8 @@ gulp.task('examples', ['copyExamples'], function (cb) {
 gulp.task('history', function () {
   return gulp.src(HISTORY_SRC)
       .pipe(header(MD_HEADER))    // add header with markdown layout
+      .pipe(injectClickableIssueTags) // must be done before injectPermalinks
+      .pipe(injectClickableUserTags)  // must be done before injectPermalinks
       .pipe(injectPermalinks2)
       .pipe(rename('history.md')) // rename to lower case
       .pipe(gulp.dest(HISTORY_DEST));
