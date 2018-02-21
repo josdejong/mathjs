@@ -274,7 +274,7 @@ function generateDoc(name, code) {
       };
 
       // multi line description
-      while (exists() && !empty() && /^\s{6}/.test(line)) {
+      while (exists() && !empty() && !/^\s*@/.test(line)) {
         doc.returns.description += ' ' + line.trim();
         next();
       }

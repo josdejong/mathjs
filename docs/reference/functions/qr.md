@@ -23,7 +23,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-{Q: Array &#124; Matrix, R: Array &#124; Matrix} | Q: the orthogonal
+{Q: Array &#124; Matrix, R: Array &#124; Matrix} | Q: the orthogonal matrix and R: the upper triangular matrix
 
 
 ## Examples
