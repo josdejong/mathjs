@@ -17,7 +17,7 @@ math.qr(A);
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`A` | Matrix &#124; Array | A two dimensional matrix or array
+`A` | Matrix &#124; Array | A two dimensional matrix or array for which to get the QR decomposition.
 
 ### Returns
 
