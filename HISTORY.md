@@ -1,6 +1,6 @@
 # History
 
-## 2018-02-04, version 4.0.0-rc.1
+## 2018-02-21, version 4.0.0-rc.2
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
@@ -85,11 +85,25 @@ Breaking changes (see also #682):
       Use `undefined` instead to indicate entries that are not explicitly
       set. See #833.
 
+- **New typed-function library**
+
+    - The `typed-function` library used to check the input types
+      of functions is completely rewritten and doesn't use `eval` under
+      the hood anymore. This means a reduced security risk, and easier
+      to debug code. The API is the same, but error messages may differ
+      a bit. Performance is comparable but may differ in specific
+      use cases and browsers.
+
 Non breaking changes:
 
+- Thanks to the new expression compiler and `typed-function` implementation,
+  mathjs doesn't use JavaScript's `eval` anymore under the hood.
+  This allows using mathjs in environments with security restrictions.
+  See #401.
 - Implemented additional methods `isUnary()` and `isBinary()` on
   `OperatorNode`. See #1025.
 - Improved error messages for statistical functions.
+- Upgraded devDependencies.
 - Fixed #1014: `derivative` silently dropping additional arguments
   from operator nodes with more than two arguments.
 
