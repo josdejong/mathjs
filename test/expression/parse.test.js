@@ -1522,6 +1522,14 @@ describe('parse', function() {
         assert.equal(node.args[0].toString(), 'a');
         assert.equal(node.args[1].toString(), 'b\'');
       });
+      
+      it('should respect precedence of transpose (3)', function () {
+        var node = math.parse('a √ b\'');
+        assert(node instanceof OperatorNode);
+        assert.equal(node.op, '√');
+        assert.equal(node.args[0].toString(), 'b\'');
+        assert.equal(node.args[1].toString(), 'a');
+      });
 
       it('should respect precedence of conditional operator and other operators', function () {
         assert.equal(parseAndEval('2 > 3 ? true : false'), false);
