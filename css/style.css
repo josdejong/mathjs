@@ -366,6 +366,5 @@ h6 a:hover {
 .info-warning {
   background: #ffff9e;
   border: 1px solid #ffe765;
-  border-radius: 3px;
-  padding: 10px;
+  padding: 6px 10px;
 }
