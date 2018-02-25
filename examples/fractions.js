@@ -24,8 +24,8 @@ print(math.divide(0.3, 0.2));             // number, 1.4999999999999998
 console.log();
 
 console.log('no round-off errors with fractions :)');
-print(math.add(math.fraction(0.1), math.fraction(0.2)));     // Fraction, 3/10
-print(math.divide(math.fraction(0.3), math.fraction(0.2)));  // Fraction, 3/2
+print(math.add(math.fraction(0.1), math.fraction(0.2)));     // Fraction, 0.3
+print(math.divide(math.fraction(0.3), math.fraction(0.2)));  // Fraction, 1.5
 console.log();
 
 console.log('represent an infinite number of repeating digits');

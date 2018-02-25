@@ -46,7 +46,7 @@ function integrate(f, start, end, step) {
  */
 integrate.transform = function (args, math, scope) {
   // determine the variable name
-  if (args[1] instanceof math.expression.node.SymbolNode) {
+  if (args[1].isSymbolNode) {
     var variable = args[1].name;
   }
   else {

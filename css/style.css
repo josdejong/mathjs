@@ -362,3 +362,10 @@ h6 a:hover {
 #forkme.small {
   display: none;
 }
+
+.info-warning {
+  background: #ffff9e;
+  border: 1px solid #ffe765;
+  border-radius: 3px;
+  padding: 10px;
+}

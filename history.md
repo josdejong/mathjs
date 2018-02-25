@@ -4,6 +4,114 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180225-version-400">2018-02-25, version 4.0.0 <a href="#20180225-version-400" title="Permalink">#</a></h2>
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+Breaking changes (see also <a href="https://github.com/josdejong/mathjs/issues/682">#682</a>):
+
+- **New expression compiler**
+
+    The compiler of the expression parser is replaced with one that doesn't use
+    `eval` internally. See <a href="https://github.com/josdejong/mathjs/issues/1019">#1019</a>. This means:
+
+    - a slightly improved performance on most browsers.
+    - less risk of security exploits.
+    - the code of the new compiler is easier to understand, maintain, and debug.
+
+    Breaking change here: When using custom nodes in the expression parser,
+    the syntax of `_compile` has changed. This is an undocumented feature though.
+
+- **Parsed expressions**
+
+    - The class `ConstantNode` is changed such that it just holds a value
+      instead of holding a stringified value and it's type.
+      `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
+      Stringification uses `math.format`, which may result in differently
+      formatted numeric output.
+
+    - The constants `true`, `false`, `null`, `undefined`, `NaN`, `Infinity`,
+      and `uninitialized` are now parsed as ConstantNodes instead of
+      SymbolNodes in the expression parser. See <a href="https://github.com/josdejong/mathjs/issues/833">#833</a>.
+
+- **Implicit multiplication**
+
+    - Changed the behavior of implicit multiplication to have higher
+      precedence than explicit multiplication and division, except in
+      a number of specific cases. This gives a more natural behavior
+      for implicit multiplications. For example `24h / 6h` now returns `4`,
+      whilst `1/2 kg` evaluates to `0.5 kg`. Thanks <a href="https://github.com/ericman314">@ericman314</a>. See: <a href="https://github.com/josdejong/mathjs/issues/792">#792</a>.
+      Detailed documentation: https://github.com/josdejong/mathjs/blob/v4/docs/expressions/syntax.md#implicit-multiplication.
+
+    - Immediately invoking a function returned by a function like `partialAdd(2)(3)`
+      is no longer supported, instead these expressions are evaluated as
+      an implicit multiplication `partialAdd(2) * (3)`. See <a href="https://github.com/josdejong/mathjs/issues/1035">#1035</a>.
+
+- **String formatting**
+
+    - In function `math.format`, the options `{exponential: {lower: number, upper: number}}`
+      (where `lower` and `upper` are values) are replaced with `{lowerExp: number, upperExp: number}`
+      (where `lowerExp` and `upperExp` are exponents). See <a href="https://github.com/josdejong/mathjs/issues/676">#676</a>. For example:
+      ```js
+      math.format(2000, {exponential: {lower: 1e-2, upper: 1e2}})
+      ```
+      is now:
+      ```js
+      math.format(2000, {lowerExp: -2, upperExp: 2})
+      ```
+
+    - In function `math.format`, the option `notation: 'fixed'` no longer rounds to
+      zero digits  when no precision is specified: it leaves the digits as is.
+      See <a href="https://github.com/josdejong/mathjs/issues/676">#676</a>.
+
+- **String comparison**
+
+    Changed the behavior of relational functions (`compare`, `equal`,
+    `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
+    to compare strings by their numeric value they contain instead of
+    alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
+    `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
+    need to sort an array with text. See <a href="https://github.com/josdejong/mathjs/issues/680">#680</a>.
+
+- **Angle units**
+
+    Changed `rad`, `deg`, and `grad` to have short prefixes,
+    and introduced `radian`, `degree`, and `gradian` and their plurals
+    having long prefixes. See <a href="https://github.com/josdejong/mathjs/issues/749">#749</a>.
+
+- **Null**
+
+    - `null` is no longer implicitly casted to a number `0`, so input like
+      `math.add(2, null)` is no longer supported. See <a href="https://github.com/josdejong/mathjs/issues/830">#830</a>, <a href="https://github.com/josdejong/mathjs/issues/353">#353</a>.
+
+    - Dropped constant `uninitialized`, which was used to initialize
+      leave new entries undefined when resizing a matrix is removed.
+      Use `undefined` instead to indicate entries that are not explicitly
+      set. See <a href="https://github.com/josdejong/mathjs/issues/833">#833</a>.
+
+- **New typed-function library**
+
+    - The `typed-function` library used to check the input types
+      of functions is completely rewritten and doesn't use `eval` under
+      the hood anymore. This means a reduced security risk, and easier
+      to debug code. The API is the same, but error messages may differ
+      a bit. Performance is comparable but may differ in specific
+      use cases and browsers.
+
+Non breaking changes:
+
+- Thanks to the new expression compiler and `typed-function` implementation,
+  mathjs doesn't use JavaScript's `eval` anymore under the hood.
+  This allows using mathjs in environments with security restrictions.
+  See <a href="https://github.com/josdejong/mathjs/issues/401">#401</a>.
+- Implemented additional methods `isUnary()` and `isBinary()` on
+  `OperatorNode`. See <a href="https://github.com/josdejong/mathjs/issues/1025">#1025</a>.
+- Improved error messages for statistical functions.
+- Upgraded devDependencies.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1014">#1014</a>: `derivative` silently dropping additional arguments
+  from operator nodes with more than two arguments.
+
+
 <h2 id="20180207-version-3202">2018-02-07, version 3.20.2 <a href="#20180207-version-3202" title="Permalink">#</a></h2>
 
 - Upgraded to `typed-function@0.10.7` (bug-fix release).

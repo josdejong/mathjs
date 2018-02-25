@@ -22,7 +22,6 @@ highlight the syntax or change the default layout (e.g. spaces around operators)
   - `math-null-symbol` (`null`)
   - `math-nan-symbol` (`NaN`)
   - `math-infinity-symbol` (`Infinity`)
-  - `math-uninitialized-symbol` (`uninitialized`)
   - `math-imaginary-symbol` (`i`)
 - `math-operator`
   - `math-unary-operator`

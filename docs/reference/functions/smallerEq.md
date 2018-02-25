@@ -11,7 +11,9 @@ Test whether value x is smaller or equal to y.
 The function returns true when x is smaller than y or the relative
 difference between x and y is smaller than the configured epsilon. The
 function cannot be used to compare values smaller than approximately 2.22e-16.
+
 For matrices, the function is evaluated element wise.
+Strings are compared by their numerical value.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
