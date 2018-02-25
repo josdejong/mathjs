@@ -1,6 +1,6 @@
 # History
 
-## 2018-02-21, version 4.0.0-rc.2
+## 2018-02-25, version 4.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
 
