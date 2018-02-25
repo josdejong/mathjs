@@ -246,9 +246,11 @@ function generateDoc(name, code) {
           annotation.description = annotation.description.substring(index + 1).trim();
         }
 
-        // multi line description
-        while (exists() && !empty() && /^\s{6}/.test(line)) {
-          annotation.description += ' ' + line.trim();
+        // multi line description (must be non-empty and not start with @param or @return)
+        while (exists() && !empty() && !/^\s*@/.test(line)) {
+          var lineTrim = line.trim()
+          var separator = (lineTrim[0] === '-' ? '</br>' : ' ');
+          annotation.description += separator + lineTrim;
           next();
         }
 
@@ -272,7 +274,7 @@ function generateDoc(name, code) {
       };
 
       // multi line description
-      while (exists() && !empty() && /^\s{6}/.test(line)) {
+      while (exists() && !empty() && !/^\s*@/.test(line)) {
         doc.returns.description += ' ' + line.trim();
         next();
       }
