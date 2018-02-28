@@ -4,7 +4,7 @@ layout: default
 
 # Sparse matrices
 
-File: [sparse_matrices.js](sparse_matrices.js)
+File: [sparse_matrices.js](sparse_matrices.js) (click for a live demo)
 
 ```js
 // load math.js (using node.js)

@@ -4,7 +4,7 @@ layout: default
 
 # More secure eval
 
-File: [more_secure_eval.js](more_secure_eval.js)
+File: [more_secure_eval.js](more_secure_eval.js) (click for a live demo)
 
 ```js
 // Expression parser security

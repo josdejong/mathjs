@@ -4,7 +4,7 @@ layout: default
 
 # Add new datatypes
 
-File: [index.js](index.js)
+File: [index.js](index.js) (click for a live demo)
 
 ```js
 var math = require('../../../index');
@@ -26,7 +26,7 @@ console.log(ans2.toString());                       // outputs 'MyType:11'
 
 ```
 
-File: [MyType.js](MyType.js)
+File: [MyType.js](MyType.js) (click for a live demo)
 
 ```js
 // Note: This file is used by the file ./index.js
@@ -76,7 +76,7 @@ exports.lazy = false;         // disable lazy loading as this factory has side
 
 ```
 
-File: [myAdd.js](myAdd.js)
+File: [myAdd.js](myAdd.js) (click for a live demo)
 
 ```js
 // Note: This file is used by the file ./index.js

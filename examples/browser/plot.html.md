@@ -4,14 +4,14 @@ layout: default
 
 # Plot
 
-File: [plot.html](plot.html)
+File: [plot.html](plot.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
   <title>math.js | plot</title>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>
 
   <!-- load http://maurizzzio.github.io/function-plot/ -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>

@@ -4,7 +4,7 @@ layout: default
 
 # Pretty printing with mathjax
 
-File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
+File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ File: [pretty_printing_with_mathjax.html](pretty_printing_with_mathjax.html)
 <head>
   <title>math.js | pretty printing with MathJax</title>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
 
   <style>

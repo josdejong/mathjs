@@ -4,7 +4,7 @@ layout: default
 
 # Algebra
 
-File: [algebra.js](algebra.js)
+File: [algebra.js](algebra.js) (click for a live demo)
 
 ```js
 // algebra

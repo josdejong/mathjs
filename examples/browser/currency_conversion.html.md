@@ -4,7 +4,7 @@ layout: default
 
 # Currency conversion
 
-File: [currency_conversion.html](currency_conversion.html)
+File: [currency_conversion.html](currency_conversion.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ File: [currency_conversion.html](currency_conversion.html)
 <head>
   <title>math.js | currency conversion</title>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>
 
   <style>
     body,

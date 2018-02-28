@@ -4,7 +4,7 @@ layout: default
 
 # Rocket trajectory optimization
 
-File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
+File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
 <head>
   <title>math.js | rocket trajectory optimization</title>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
   <style>

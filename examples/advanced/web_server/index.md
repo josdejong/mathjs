@@ -4,7 +4,7 @@ layout: default
 
 # Web server
 
-File: [math_worker.js](math_worker.js)
+File: [math_worker.js](math_worker.js) (click for a live demo)
 
 ```js
 var math = require('mathjs');
@@ -33,7 +33,7 @@ workerpool.worker({
 
 ```
 
-File: [server.js](server.js)
+File: [server.js](server.js) (click for a live demo)
 
 ```js
 /**

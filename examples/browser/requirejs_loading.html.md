@@ -4,7 +4,7 @@ layout: default
 
 # Requirejs loading
 
-File: [requirejs_loading.html](requirejs_loading.html)
+File: [requirejs_loading.html](requirejs_loading.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ File: [requirejs_loading.html](requirejs_loading.html)
 
 <script>
   // load math.js using require.js
-  require(['http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js'], function (math) {
+  require(['https://unpkg.com/mathjs@4.0.0/dist/math.min.js'], function (math) {
     // evaluate some expression
     var result = math.eval('1.2 * (2 + 4.5)');
     document.write(result);

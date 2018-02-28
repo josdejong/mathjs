@@ -4,7 +4,7 @@ layout: default
 
 # Printing html
 
-File: [printing_html.html](printing_html.html)
+File: [printing_html.html](printing_html.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ File: [printing_html.html](printing_html.html)
 <head>
 	<title>math.js | printing HTML</title>
 
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js"></script>
+	<script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>
 
 	<style>
 		body {

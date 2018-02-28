@@ -4,7 +4,7 @@ layout: default
 
 # Custom separators
 
-File: [custom_separators.html](custom_separators.html)
+File: [custom_separators.html](custom_separators.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -23,7 +23,7 @@ File: [custom_separators.html](custom_separators.html)
     }
   </style>
 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@4.0.0/dist/math.min.js"></script>
 </head>
 <body>
 

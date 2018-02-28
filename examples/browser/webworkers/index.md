@@ -4,7 +4,7 @@ layout: default
 
 # Webworkers
 
-File: [webworkers.html](webworkers.html)
+File: [webworkers.html](webworkers.html) (click for a live demo)
 
 ```html
 <!DOCTYPE html>
@@ -88,10 +88,10 @@ File: [webworkers.html](webworkers.html)
 </html>
 ```
 
-File: [worker.js](worker.js)
+File: [worker.js](worker.js) (click for a live demo)
 
 ```js
-importScripts('http://cdnjs.cloudflare.com/ajax/libs/mathjs/4.0.0/math.min.js');
+importScripts('https://unpkg.com/mathjs@4.0.0/dist/math.min.js');
 
 // create a parser
 var parser = math.parser();
