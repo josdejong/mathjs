@@ -5,21 +5,59 @@ var complex = math.complex;
 var nthRoots = math.nthRoots;
 
 describe('nthRoots', function() {
-  it('should return an array of Complex Roots in Polar form', function() {
+  it('should return an array of Complex roots', function() {
     var roots = nthRoots(complex("-1"), 6);
     var roots1 = [
-      {r: 1, phi: Math.PI/6},
-      {r: 1, phi: Math.PI/2},
-      {r: 1, phi: (5 * Math.PI)/6},
-      {r: 1, phi: (7 * Math.PI)/6},
-      {r: 1, phi: (9 * Math.PI)/6},
-      {r: 1, phi: (11 * Math.PI)/6}
+      complex({r: 1, phi: Math.PI/6}),
+      complex(0, 1),
+      complex({r: 1, phi: (5 * Math.PI)/6}),
+      complex({r: 1, phi: (7 * Math.PI)/6}),
+      complex(0, -1),
+      complex({r: 1, phi: (11 * Math.PI)/6})
     ];
 
     roots.forEach(function (value, index, array) {
-      assert.equal(value.r, roots1[index].r);
-      assert.equal(value.phi, roots1[index].phi);
+      assert.deepEqual(value, roots1[index]);
     });
+  });
+
+  var twos = [
+    complex(2, 0),
+    complex(0, 2),
+    complex(-2, 0),
+    complex(0, -2),
+  ];
+  it('should return pure roots without artifacts', function() {
+    var roots = nthRoots(complex("16"), 4);
+
+    roots.forEach(function (value, index, array) {
+      assert.deepEqual(value, twos[index]);
+    });
+  });
+
+  it('should return roots for numeric arguments', function() {
+    var roots = nthRoots(16, 4);
+
+    roots.forEach(function (value, index, array) {
+      assert.deepEqual(value, twos[index]);
+    });
+  });
+
+  it('should return roots for string arguments', function() {
+    var roots = nthRoots("16", 4);
+
+    roots.forEach(function (value, index, array) {
+      assert.deepEqual(value, twos[index]);
+    });
+  });
+
+  it('should return zero exactly once', function() {
+    var roots2 = nthRoots(0);
+    var roots4 = nthRoots(0, 4);
+    var roots8 = nthRoots(0, 8);
+    assert.deepEqual(roots2, [complex(0)]);
+    assert.deepEqual(roots4, [complex(0)]);
+    assert.deepEqual(roots8, [complex(0)]);
   });
 
 });
