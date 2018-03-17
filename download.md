@@ -43,7 +43,7 @@ Math.js can be downloaded or linked from various content delivery networks:
   <tbody>
     <tr>
       <td>unpkg</td>
-      <td><a href="https://unpkg.com/mathjs@4.0.0/">https://unpkg.com/mathjs@4.0.0/</a></td>
+      <td><a href="https://unpkg.com/mathjs@4.0.1/">https://unpkg.com/mathjs@4.0.1/</a></td>
     </tr>
     <tr>
       <td>cdnjs</td>
@@ -61,18 +61,18 @@ Here some direct download links from [unpkg](https://unpkg.com):
 <table class="download">
   <tr>
     <td>
-      <a href="https://unpkg.com/mathjs@4.0.0/dist/math.js">
-        Development (version 4.0.0)
+      <a href="https://unpkg.com/mathjs@4.0.1/dist/math.js">
+        Development (version 4.0.1)
       </a>
     </td>
     <td>
-      <span id="development-size">1621 kB</span>, uncompressed with comments
+      <span id="development-size">1622 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="https://unpkg.com/mathjs@4.0.0/dist/math.min.js">
-        Production (version 4.0.0)
+      <a href="https://unpkg.com/mathjs@4.0.1/dist/math.min.js">
+        Production (version 4.0.1)
       </a>
     </td>
     <td>
@@ -107,7 +107,7 @@ A changelog describing the changes with each release is available on the page [H
 
 <h1 id="browsersupport">Browser support <a href="#browsersupport" title="Permalink">#</a></h1>
 
-Math.js works on any ES5 compatible JavaScript engine: node.js 0.10 and newer and IE9 and newer. If support for old browsers (Internet Explorer 8 and older) is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+Math.js works on any ES5 compatible JavaScript engine: node.js 0.10 and newer and IE11 and newer. If support for old browsers (Internet Explorer 8 and older) is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
 
 
 <h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>

@@ -4,6 +4,13 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20170317-version-401">2017-03-17, version 4.0.1 <a href="#20170317-version-401" title="Permalink">#</a></h2>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1062">#1062</a>: mathjs not working on ES5 browsers like IE11 and Safari 9.3.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1061">#1061</a>: `math.unit` not accepting input like `1/s`.
+
+
 <h2 id="20180225-version-400">2018-02-25, version 4.0.0 <a href="#20180225-version-400" title="Permalink">#</a></h2>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
