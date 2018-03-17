@@ -107,7 +107,7 @@ A changelog describing the changes with each release is available on the page [H
 
 <h1 id="browsersupport">Browser support <a href="#browsersupport" title="Permalink">#</a></h1>
 
-Math.js works on any ES5 compatible JavaScript engine: node.js 0.10 and newer and IE11 and newer. If support for old browsers (Internet Explorer 8 and older) is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+Math.js works on any ES5 compatible JavaScript engine: node.js 0.10 and newer and IE11 and newer. If support for old browsers is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
 
 
 <h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>
