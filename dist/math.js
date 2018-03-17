@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 4.0.0
- * @date    2018-02-25
+ * @version 4.0.1
+ * @date    2018-03-17
  *
  * @license
  * Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
@@ -25051,7 +25051,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      *                    Throws a TypeError otherwise
      */
     function findTypeByName (typeName) {
-      var entry = typed.types.find(function (entry) {
+      var entry = findInArray(typed.types, function (entry) {
         return entry.name === typeName;
       });
 
@@ -25063,7 +25063,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return anyType;
       }
 
-      var hint = typed.types.find(function (entry) {
+      var hint = findInArray(typed.types, function (entry) {
         return entry.name.toLowerCase() === typeName.toLowerCase();
       });
 
@@ -25091,7 +25091,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
      *                  the type test matches the value.
      */
     function findTypeName(value) {
-      var entry = typed.types.find(function (entry) {
+      var entry = findInArray(typed.types, function (entry) {
         return entry.test(value);
       });
 
@@ -25932,7 +25932,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           .filter(notNull)
           .forEach(function (parsedSignature) {
             // check whether this parameter conflicts with already parsed signatures
-            var conflictingSignature = parsedSignatures.find(function (s) {
+            var conflictingSignature = findInArray(parsedSignatures, function (s) {
               return hasConflictingParams(s, parsedSignature)
             });
             if (conflictingSignature) {
@@ -26035,8 +26035,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return generic.apply(null, arguments);
       }
 
-      // attach name and signatures to the typed function
-      Object.defineProperty(fn, 'name', {value: name});
+      // attach name the typed function
+      try {
+        Object.defineProperty(fn, 'name', {value: name});
+      }
+      catch (err) {
+        // old browsers do not support Object.defineProperty and some don't support setting the name property
+        // the function name is not essential for the functioning, it's mostly useful for debugging,
+        // so it's fine to have unnamed functions.
+      }
+
+      // attach signatures to the function
       fn.signatures = createSignaturesMap(signatures);
 
       return fn;
@@ -26140,6 +26149,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
 
       return false;
+    }
+
+    /**
+     * Return the first item from an array for which test(arr[i]) returns true
+     * @param {Array} arr
+     * @param {function} test
+     * @return {* | undefined} Returns the first matching item
+     *                         or undefined when there is no match
+     */
+    function findInArray(arr, test) {
+      for (var i = 0; i < arr.length; i++) {
+        if (test(arr[i])) {
+          return arr[i];
+        }
+      }
+      return undefined;
     }
 
     /**
@@ -37378,8 +37403,12 @@ function factory (type, config, load, typed, math) {
     var unit = new Unit();
     unit.units = [];
 
+    var powerMultiplierCurrent = 1;
+    var expectingUnit = false;
+
     // A unit should follow this pattern:
-    // [number]unit[^number] [unit[^number]]...[/unit[^number] [unit[^number]]]
+    // [number] ...[ [*/] unit[^number] ]
+    // unit[^number] ... [ [*/] unit[^number] ]
 
     // Rules:
     // number is any floating point number.
@@ -37393,6 +37422,7 @@ function factory (type, config, load, typed, math) {
 
     next();
     skipWhitespace();
+
     // Optional number at the start of the string
     var valueStr = parseNumber();
     var value = null;
@@ -37406,12 +37436,19 @@ function factory (type, config, load, typed, math) {
       else { // number
         value = parseFloat(valueStr);
       }
-    }
-    skipWhitespace();    // Whitespace is not required here
 
-    // Next, we read any number of unit[^number]
-    var powerMultiplierCurrent = 1;
-    var expectingUnit = false;
+      skipWhitespace();    // Whitespace is not required here
+
+      // handle multiplication or division right after the value, like '1/s'
+      if (parseCharacter('*')) {
+        powerMultiplierCurrent = 1;
+        expectingUnit = true;
+      }
+      else if (parseCharacter('/')) {
+        powerMultiplierCurrent = -1;
+        expectingUnit = true;
+      }
+    }
 
     // Stack to keep track of powerMultipliers applied to each parentheses group
     var powerMultiplierStack = [];
@@ -40829,7 +40866,7 @@ exports.math = true;   // request access to the math namespace
 /* 192 */
 /***/ (function(module, exports) {
 
-module.exports = '4.0.0';
+module.exports = '4.0.1';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
@@ -60471,7 +60508,7 @@ function factory (type, config, load, typed) {
    *    math.isPrime(-0);                    // returns false
    *    math.isPrime(0.5);                   // returns false
    *    math.isPrime('2');                   // returns true
-   *    math.isPrime([2, 17, 100]');           // returns [true, true, false]
+   *    math.isPrime([2, 17, 100]);           // returns [true, true, false]
    *
    * See also:
    *

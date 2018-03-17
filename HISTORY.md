@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 4.0.1
+## 2017-03-17, version 4.0.1
 
 - Fixed #1062: mathjs not working on ES5 browsers like IE11 and Safari 9.3.
 - Fixed #1061: `math.unit` not accepting input like `1/s`.
