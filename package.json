@@ -98,7 +98,7 @@
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
-    "typed-function": "1.0.1"
+    "typed-function": "1.0.3"
   },
   "devDependencies": {
     "benchmark": "2.1.4",
