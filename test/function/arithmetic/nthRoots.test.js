@@ -21,6 +21,17 @@ describe('nthRoots', function() {
     });
   });
 
+  it('should return the correct answer for Complex values', function() {
+    var roots = nthRoots(complex(3, 4), 2);
+    var roots1 = [
+      { re: 2, im: 1 },
+      { re: -2.0000000000000004, im: -0.9999999999999999}
+    ];
+    roots.forEach(function (value, index, array) {
+      assert.deepEqual(value, roots1[index]);
+    });
+  });
+
   var twos = [
     complex(2, 0),
     complex(0, 2),
