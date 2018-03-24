@@ -1,5 +1,9 @@
 # History
 
+## not yet released, version 5.0.0
+
+- Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
+
 
 ## 2017-03-17, version 4.0.1
 
