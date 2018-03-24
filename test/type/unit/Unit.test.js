@@ -861,6 +861,21 @@ describe('Unit', function() {
       unit1 = Unit.parse('5exabytes');
       approx.equal(unit1.value, 4e19);
       assert.equal(unit1.units[0].unit.name, 'bytes');
+
+      unit1 = Unit.parse('1 / s');
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 's');
+      assert.equal(unit1.units[0].power, -1);
+
+      unit1 = Unit.parse('1/s');
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 's');
+      assert.equal(unit1.units[0].power, -1);
+
+      unit1 = Unit.parse('1 * s');
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 's');
+      assert.equal(unit1.units[0].power, 1);
     });
 
     it('should parse expressions with nested parentheses correctly', function() {
@@ -921,6 +936,7 @@ describe('Unit', function() {
       assert.throws(function () {Unit.parse('meter.')}, /Unexpected "\."/);
       assert.throws(function () {Unit.parse('meter/')}, /Trailing characters/);
       assert.throws(function () {Unit.parse('/meter')}, /Unexpected "\/"/);
+      assert.throws(function () {Unit.parse('1 */ s')}, /Unexpected "\/"/);
       assert.throws(function () {Unit.parse('45 kg 34 m')}, /Unexpected "3"/);
     });
 

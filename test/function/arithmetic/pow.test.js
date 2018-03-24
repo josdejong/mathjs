@@ -28,12 +28,14 @@ describe('pow', function() {
 
   it('should exponentiate a negative number to a non-integer power', function() {
     approx.deepEqual(pow(-2,1.5), complex(0, -2.82842712474619));
+    approx.deepEqual(pow(-8, 1/3), complex(1, 1.732050807568877));
   });
 
   it('should exponentiate a negative number to a non-integer power with predictable:true', function() {
     var res = mathPredictable.pow(-2,1.5);
     assert.equal(typeof res, 'number');
     assert(isNaN(res));
+    assert.strictEqual(mathPredictable.pow(-8, 1/3), -2);
   });
 
   it('should return a real-valued root if one exists with predictable:true', function() {
@@ -130,7 +132,7 @@ describe('pow', function() {
     assert.throws(function () {pow(null, 2);}, /TypeError: Unexpected type of argument/);
   });
 
-  it('should handle infitie exponents', function() {
+  it('should handle infinite exponents', function() {
     var Ptbl = mathPredictable;
 
      // TODO replace isNaN with complexInfinity when complex.js updates
