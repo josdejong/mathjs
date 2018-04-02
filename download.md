@@ -84,20 +84,38 @@ Here some direct download links from [unpkg](https://unpkg.com):
 Too large for you? Create your own [custom bundle](docs/custom_bundling.html).
 
 
-<h1 id="extensions">Extensions <a href="#extensions" title="Permalink">#</a></h1>
-
--   [mathsteps](https://github.com/socraticorg/mathsteps)
-
-    A step-by-step math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
-
--   [mathjs-expression-parser](https://github.com/josdejong/mathjs-expression-parser)
-
-    This custom build of mathjs contains just the expression parser and basic arithmetic functions for numbers. About four times as small as the full mathjs library.
-
-
 <h1 id="webservice">Web Service <a href="#webservice" title="Permalink">#</a></h1>
 
 Math.js is available as a RESTful web service: <a href="http://api.mathjs.org">http://api.mathjs.org</a>
+
+
+<h1 id="extensions">Extensions <a href="#extensions" title="Permalink">#</a></h1>
+
+Here some notable extensions for mathjs:
+
+Extension | Description
+--------- | -----------
+[mathsteps](https://github.com/socraticorg/mathsteps) | A step-by-step math solver library that is focused on pedagogy (how best to teach). The math problems it focuses on are pre-algebra and algebra problems involving simplifying expressions.
+[mathjs&#8209;expression&#8209;parser](https://github.com/josdejong/mathjs-expression-parser) | This custom build of mathjs contains just the expression parser and basic arithmetic functions for numbers. About four times as small as the full mathjs library.
+[mathjs-simple-integral](https://github.com/joelhoover/mathjs-simple-integral) | Extends Math.js to be able to compute simple integrals.
+[math.diff.js](https://github.com/hausen/math.diff.js) | Symbolic differentiation plugin for Math.js
+[postcss-math](https://github.com/shauns/postcss-math) | PostCSS plugin for making calculations with math.js
+
+
+<h1 id="extensions">Other math libraries <a href="#other-math-libraries" title="Permalink">#</a></h1>
+
+Here some other interesting JavaScript math libraries. Some can be imported into math.js using `math.import`.
+
+Extension | Description
+--------- | -----------
+[math&#8209;expression&#8209;evaluator](https://www.npmjs.com/package/math-expression-evaluator) | An extremely efficient, flexible and amazing evaluator for Math expression in Javascript.
+[numbers.js](https://github.com/numbers/numbers.js) | Advanced Mathematics Library for Node.js and JavaScript
+[numeric.js](https://github.com/sloisel/numeric) | Numerical analysis in Javascript
+[decimal.js](https://github.com/MikeMcl/decimal.js/) | An arbitrary-precision Decimal type for JavaScript. Used by mathjs for BigNumber support.
+[ndarray](https://github.com/scijs/ndarray) | Multidimensional arrays for JavaScript
+[Algebrite](https://github.com/davidedc/Algebrite) | Computer Algebra System in Javascript (Coffeescript)
+[algebra.js](https://github.com/nicolewhite/algebra.js) | Build, display, and solve algebraic equations.
+[numeral-js](https://github.com/adamwdraper/Numeral-js) | A javascript library for formatting and manipulating numbers
 
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
@@ -107,7 +125,7 @@ A changelog describing the changes with each release is available on the page [H
 
 <h1 id="browsersupport">Browser support <a href="#browsersupport" title="Permalink">#</a></h1>
 
-Math.js works on any ES5 compatible JavaScript engine: node.js 0.10 and newer and IE11 and newer. If support for old browsers is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+Math.js works on any ES5 compatible JavaScript engine: node.js 4 and newer and IE11 and newer. If support for old browsers is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
 
 
 <h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>
