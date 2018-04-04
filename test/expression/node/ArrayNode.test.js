@@ -278,6 +278,23 @@ describe('ArrayNode', function() {
     assert.equal(n.toString({handler: customFunction}), '[const(1, number), const(2, number), ]');
   });
 
+  it('toJSON and fromJSON', function () {
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var node = new ArrayNode([b, c]);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'ArrayNode',
+      items: [ b, c ]
+    });
+
+    var parsed = ArrayNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX an ArrayNode', function () {
     var a = new ConstantNode(1);
     var b = new ConstantNode(2);

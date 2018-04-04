@@ -319,6 +319,25 @@ describe('RangeNode', function() {
     assert.equal(math.parse('1:2:3').toTex({parenthesis: 'all'}), '\\left(1\\right):\\left(2\\right):\\left(3\\right)');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new ConstantNode(0);
+    var b = new ConstantNode(10);
+    var c = new ConstantNode(2);
+    var node = new RangeNode(a, b, c);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'RangeNode',
+      start: a,
+      end: b,
+      step: c
+    });
+
+    var parsed = RangeNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX a RangeNode without step', function () {
     var start = new ConstantNode(0);
     var end = new ConstantNode(10);

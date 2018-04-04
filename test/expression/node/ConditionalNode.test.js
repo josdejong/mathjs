@@ -301,6 +301,25 @@ describe('ConditionalNode', function() {
     assert.equal(n.toString({handler: customFunction}), 'if const(1, number) then const(2, number) else const(3, number)');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('x');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(3);
+    var node = new ConditionalNode(a, b, c);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'ConditionalNode',
+      condition: a,
+      trueExpr: b,
+      falseExpr: c
+    });
+
+    var parsed = ConditionalNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX a ConditionalNode', function () {
     var n = new ConditionalNode(condition, a, b);
 

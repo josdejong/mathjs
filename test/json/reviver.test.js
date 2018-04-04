@@ -148,4 +148,57 @@ describe('reviver', function () {
     assert.deepEqual(obj, h);
   });
 
+  it('should parse a stringified Chain', function () {
+    var json = '{"mathjs":"Chain","value":2.3}';
+    var c = math.chain(2.3);
+    var obj = JSON.parse(json, reviver);
+
+    assert(obj instanceof math.type.Chain);
+    assert.deepEqual(obj, c);
+  });
+
+  it('should parse a stringified node tree', function () {
+    var json = JSON.stringify({
+      "mathjs": "OperatorNode",
+      "op": "+",
+      "fn": "add",
+      "args": [
+        {
+          "mathjs": "ConstantNode",
+          "value": 2
+        },
+        {
+          "mathjs": "FunctionNode",
+          "fn": {
+            "mathjs": "SymbolNode",
+            "name": "sin"
+          },
+          "args": [
+            {
+              "mathjs": "OperatorNode",
+              "op": "*",
+              "fn": "multiply",
+              "args": [
+                {
+                  "mathjs": "ConstantNode",
+                  "value": 3
+                },
+                {
+                  "mathjs": "SymbolNode",
+                  "name": "x"
+                }
+              ],
+              "implicit": true
+            }
+          ]
+        }
+      ],
+      "implicit": false
+    });
+
+    var node = JSON.parse(json, reviver);
+
+    assert.equal(node.type, 'OperatorNode');
+    assert.equal(node.toString(), '2 + sin(3 x)');
+  });
 });

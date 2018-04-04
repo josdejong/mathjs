@@ -463,4 +463,26 @@ describe('AccessorNode', function() {
     assert.equal(n.toTex({handler: customFunction}), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var node = new AccessorNode(a, new IndexNode([b, c]));
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'AccessorNode',
+      index: {
+        dimensions: [ b, c ],
+        dotNotation: false
+      },
+      object: a
+    });
+
+    var parsed = AccessorNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
 });

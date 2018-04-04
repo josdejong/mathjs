@@ -3,6 +3,8 @@
 
 ## not yet released, version 4.0.2
 
+- Fixed #1077: Serialization/deserialization to JSON with reviver not being
+  supported by nodes.
 - Fixed #1016: Extended `math.typeof` with support for `ResultSet` and nodes
   like `SymbolNode`.
 - Fixed #1072: Added support for long and short prefixes for the unit `bar`

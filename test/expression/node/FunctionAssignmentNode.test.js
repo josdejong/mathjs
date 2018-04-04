@@ -359,7 +359,7 @@ describe('FunctionAssignmentNode', function() {
     assert.equal(n.toString(), 'f(x) = 2 + x');
   });
 
-  it ('should stringify a FunctionAssignmentNode conataining an AssignmentNode', function () {
+  it ('should stringify a FunctionAssignmentNode containing an AssignmentNode', function () {
     var a = new ConstantNode(2);
 
     var n1 = new AssignmentNode(new SymbolNode('a'), a);
@@ -390,6 +390,29 @@ describe('FunctionAssignmentNode', function() {
     var n = new FunctionAssignmentNode('func', ['x'], a);
 
     assert.equal(n.toString({handler: customFunction}), '[func](x, )=const(1, number)');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var expr = new SymbolNode('add');
+    var node = new FunctionAssignmentNode('f', [
+        {name: 'x', type: 'number'},
+        'y'
+    ], expr);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'FunctionAssignmentNode',
+      name: 'f',
+      params: [
+        {name: 'x', type: 'number'},
+        {name: 'y', type: 'any'}
+      ],
+      expr: expr
+    });
+
+    var parsed = FunctionAssignmentNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX a FunctionAssignmentNode', function() {
