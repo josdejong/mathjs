@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 4.1.0
+
+- Fixed #1016: Extended `math.typeof` with support for `ResultSet` and nodes
+  like `SymbolNode`.
+
+
 ## 2017-03-17, version 4.0.1
 
 - Fixed #1062: mathjs not working on ES5 browsers like IE11 and Safari 9.3.

@@ -89,6 +89,31 @@ describe('typeof', function() {
     assert.equal(math.typeof(math.chain(3)), 'Chain');
   });
 
+  it('should return function type for a ResultSet', function() {
+    assert.equal(math.typeof(math.eval('a=2\nb=3')), 'ResultSet');
+    assert.equal(math.typeof(new math.type.ResultSet([2, 3])), 'ResultSet');
+  });
+
+  it('should return function type for nodes', function() {
+    var constantNode = new math.expression.node.ConstantNode(2);
+    var symbolNode = new math.expression.node.SymbolNode('x');
+    var indexNode = new math.expression.node.IndexNode([]);
+
+    assert.equal(math.typeof(new math.expression.node.AccessorNode(symbolNode, indexNode)), 'AccessorNode');
+    assert.equal(math.typeof(new math.expression.node.ArrayNode([])), 'ArrayNode');
+    assert.equal(math.typeof(new math.expression.node.AssignmentNode(symbolNode, constantNode)), 'AssignmentNode');
+    assert.equal(math.typeof(new math.expression.node.BlockNode([])), 'BlockNode');
+    assert.equal(math.typeof(new math.expression.node.ConditionalNode(symbolNode, constantNode, constantNode)), 'ConditionalNode');
+    assert.equal(math.typeof(constantNode), 'ConstantNode');
+    assert.equal(math.typeof(new math.expression.node.FunctionAssignmentNode('f', [], constantNode)), 'FunctionAssignmentNode');
+    assert.equal(math.typeof(new math.expression.node.FunctionNode('f', [])), 'FunctionNode');
+    assert.equal(math.typeof(indexNode), 'IndexNode');
+    assert.equal(math.typeof(new math.expression.node.ObjectNode({})), 'ObjectNode');
+    assert.equal(math.typeof(new math.expression.node.ParenthesisNode(constantNode)), 'ParenthesisNode');
+    assert.equal(math.typeof(new math.expression.node.RangeNode(constantNode, constantNode)), 'RangeNode');
+    assert.equal(math.typeof(symbolNode), 'SymbolNode');
+  });
+
   it('should return function type for an index', function() {
     assert.equal(math.typeof(new Index([0, 10])), 'Index');
   });
