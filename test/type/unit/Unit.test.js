@@ -959,6 +959,20 @@ describe('Unit', function() {
     });
   });
 
+  describe('prefixes', function () {
+    it('should accept both long and short prefixes for ohm', function () {
+      assert.equal(Unit.parse('5 ohm').toString(), "5 ohm");
+      assert.equal(Unit.parse('5 milliohm').toString(), "5 milliohm");
+      assert.equal(Unit.parse('5 mohm').toString(), "5 mohm");
+    });
+
+    it('should accept both long and short prefixes for bar', function () {
+      assert.equal(Unit.parse('5 bar').toString(), "5 bar");
+      assert.equal(Unit.parse('5 millibar').toString(), "5 millibar");
+      assert.equal(Unit.parse('5 mbar').toString(), "5 mbar");
+    });
+  });
+
   describe('_isDerived', function() {
     it('should return the correct value', function () {
       assert.equal(Unit.parse('34 kg')._isDerived(), false);

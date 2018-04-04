@@ -1,10 +1,12 @@
 # History
 
 
-## not yet released, version 4.1.0
+## not yet released, version 4.0.2
 
 - Fixed #1016: Extended `math.typeof` with support for `ResultSet` and nodes
   like `SymbolNode`.
+- Fixed #1072: Added support for long and short prefixes for the unit `bar`
+  (i.e. `millibar` and `mbar`).
 
 
 ## 2017-03-17, version 4.0.1
