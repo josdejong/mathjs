@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 4.0.1
- * @date    2018-03-17
+ * @version 4.1.0
+ * @date    2018-04-08
  *
  * @license
  * Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
@@ -3628,6 +3628,16 @@ function factory (type, config, load, typed, math) {
     }
 
     return this._toString(options);
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * Both .toJSON() and the static .fromJSON(json) should be implemented by all
+   * implementations of Node
+   * @returns {Object}
+   */
+  Node.prototype.toJSON = function () {
+    throw new Error('Cannot serialize object: toJSON not implemented by ' + this.type);
   };
 
   /**
@@ -9849,23 +9859,38 @@ function factory (type, config, load, typed) {
    * ---------------------- | ------------- | ------------------------------------------
    * null                   | `'null'`      | `math.typeof(null)`
    * number                 | `'number'`    | `math.typeof(3.5)`
-   * boolean                | `'boolean'`   | `math.typeof (true)`
-   * string                 | `'string'`    | `math.typeof ('hello world')`
-   * Array                  | `'Array'`     | `math.typeof ([1, 2, 3])`
-   * Date                   | `'Date'`      | `math.typeof (new Date())`
-   * Function               | `'Function'`  | `math.typeof (function () {})`
-   * Object                 | `'Object'`    | `math.typeof ({a: 2, b: 3})`
-   * RegExp                 | `'RegExp'`    | `math.typeof (/a regexp/)`
+   * boolean                | `'boolean'`   | `math.typeof(true)`
+   * string                 | `'string'`    | `math.typeof('hello world')`
+   * Array                  | `'Array'`     | `math.typeof([1, 2, 3])`
+   * Date                   | `'Date'`      | `math.typeof(new Date())`
+   * Function               | `'Function'`  | `math.typeof(function () {})`
+   * Object                 | `'Object'`    | `math.typeof({a: 2, b: 3})`
+   * RegExp                 | `'RegExp'`    | `math.typeof(/a regexp/)`
    * undefined              | `'undefined'` | `math.typeof(undefined)`
-   * math.type.BigNumber    | `'BigNumber'` | `math.typeof (math.bignumber('2.3e500'))`
-   * math.type.Chain        | `'Chain'`     | `math.typeof (math.chain(2))`
-   * math.type.Complex      | `'Complex'`   | `math.typeof (math.complex(2, 3))`
-   * math.type.Fraction     | `'Fraction'`  | `math.typeof (math.fraction(1, 3))`
-   * math.type.Help         | `'Help'`      | `math.typeof (math.help('sqrt'))`
-   * math.type.Index        | `'Index'`     | `math.typeof (math.index(1, 3))`
-   * math.type.Matrix       | `'Matrix'`    | `math.typeof (math.matrix([[1,2], [3, 4]]))`
-   * math.type.Range        | `'Range'`     | `math.typeof (math.range(0, 10))`
-   * math.type.Unit         | `'Unit'`      | `math.typeof (math.unit('45 deg'))`
+   * math.type.BigNumber    | `'BigNumber'` | `math.typeof(math.bignumber('2.3e500'))`
+   * math.type.Chain        | `'Chain'`     | `math.typeof(math.chain(2))`
+   * math.type.Complex      | `'Complex'`   | `math.typeof(math.complex(2, 3))`
+   * math.type.Fraction     | `'Fraction'`  | `math.typeof(math.fraction(1, 3))`
+   * math.type.Help         | `'Help'`      | `math.typeof(math.help('sqrt'))`
+   * math.type.Help         | `'Help'`      | `math.typeof(math.help('sqrt'))`
+   * math.type.Index        | `'Index'`     | `math.typeof(math.index(1, 3))`
+   * math.type.Matrix       | `'Matrix'`    | `math.typeof(math.matrix([[1,2], [3, 4]]))`
+   * math.type.Range        | `'Range'`     | `math.typeof(math.range(0, 10))`
+   * math.type.ResultSet    | `'ResultSet'` | `math.typeof(math.eval('a=2\nb=3'))`
+   * math.type.Unit         | `'Unit'`      | `math.typeof(math.unit('45 deg'))`
+   * math.expression.node.AccessorNode            | `'AccessorNode'`            | `math.typeof(math.parse('A[2]'))`
+   * math.expression.node.ArrayNode               | `'ArrayNode'`               | `math.typeof(math.parse('[1,2,3]'))`
+   * math.expression.node.AssignmentNode          | `'AssignmentNode'`          | `math.typeof(math.parse('x=2'))`
+   * math.expression.node.BlockNode               | `'BlockNode'`               | `math.typeof(math.parse('a=2; b=3'))`
+   * math.expression.node.ConditionalNode         | `'ConditionalNode'`         | `math.typeof(math.parse('x<0 ? -x : x'))`
+   * math.expression.node.ConstantNode            | `'ConstantNode'`            | `math.typeof(math.parse('2.3'))`
+   * math.expression.node.FunctionAssignmentNode  | `'FunctionAssignmentNode'`  | `math.typeof(math.parse('f(x)=x^2'))`
+   * math.expression.node.FunctionNode            | `'FunctionNode'`            | `math.typeof(math.parse('sqrt(4)'))`
+   * math.expression.node.IndexNode               | `'IndexNode'`               | `math.typeof(math.parse('A[2]').index)`
+   * math.expression.node.ObjectNode              | `'ObjectNode'`              | `math.typeof(math.parse('{a:2}'))`
+   * math.expression.node.ParenthesisNode         | `'ParenthesisNode'`         | `math.typeof(math.parse('(2+3)'))`
+   * math.expression.node.RangeNode               | `'RangeNode'`               | `math.typeof(math.parse('1:10'))`
+   * math.expression.node.SymbolNode              | `'SymbolNode'`              | `math.typeof(math.parse('x'))`
    *
    * Syntax:
    *
@@ -9905,6 +9930,8 @@ function factory (type, config, load, typed) {
         if (type.isUnit(x))      return 'Unit';
         if (type.isIndex(x))     return 'Index';
         if (type.isRange(x))     return 'Range';
+        if (type.isResultSet(x)) return 'ResultSet';
+        if (type.isNode(x))      return x.type;
         if (type.isChain(x))     return 'Chain';
         if (type.isHelp(x))      return 'Help';
 
@@ -10090,6 +10117,28 @@ function factory (type, config, load, typed, math) {
 	}
 	
 	return '<span class="math-symbol">' + name + '</span>';
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  SymbolNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'SymbolNode',
+      name: this.name
+    };
+  };
+
+  /**
+   * Instantiate a SymbolNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "SymbolNode", name: "x"}`,
+   *                       where mathjs is optional
+   * @returns {SymbolNode}
+   */
+  SymbolNode.fromJSON = function (json) {
+    return new SymbolNode(json.name);
   };
 
   /**
@@ -11010,6 +11059,28 @@ function factory (type, config, load, typed) {
   };
 
   /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  ConstantNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'ConstantNode',
+      value: this.value
+    };
+  };
+
+  /**
+   * Instantiate a ConstantNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "SymbolNode", value: 2.3}`,
+   *                       where mathjs is optional
+   * @returns {ConstantNode}
+   */
+  ConstantNode.fromJSON = function (json) {
+    return new ConstantNode(json.value);
+  };
+
+  /**
    * Get LaTeX representation
    * @param {Object} options
    * @return {string} str
@@ -11478,6 +11549,31 @@ function factory (type, config, load, typed) {
       //fallback to formatting as a function call
       return this.fn + '(' + this.args.join(', ') + ')';
     }
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  OperatorNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'OperatorNode',
+      op: this.op,
+      fn: this.fn,
+      args: this.args,
+      implicit: this.implicit
+    };
+  };
+
+  /**
+   * Instantiate an OperatorNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "OperatorNode", "op": "+", "fn": "add", "args": [...], "implicit": false}`,
+   *                       where mathjs is optional
+   * @returns {OperatorNode}
+   */
+  OperatorNode.fromJSON = function (json) {
+    return new OperatorNode(json.op, json.fn, json.args, json.implicit);
   };
 
   /**
@@ -12329,6 +12425,28 @@ function factory (type, config, load, typed) {
   };
 
   /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  ParenthesisNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'ParenthesisNode',
+      content: this.content
+    };
+  };
+
+  /**
+   * Instantiate an ParenthesisNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "ParenthesisNode", "content": ...}`,
+   *                       where mathjs is optional
+   * @returns {ParenthesisNode}
+   */
+  ParenthesisNode.fromJSON = function (json) {
+    return new ParenthesisNode(json.content);
+  };
+
+  /**
    * Get HTML representation
    * @param {Object} options
    * @return {string} str
@@ -12611,7 +12729,30 @@ function factory (type, config, load, typed, math) {
     // format the arguments like "add(2, 4.2)"
     return fn + '(' + args.join(', ') + ')';
   };
-  
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  FunctionNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'FunctionNode',
+      fn: this.fn,
+      args: this.args
+    };
+  };
+
+  /**
+   * Instantiate an AssignmentNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "FunctionNode", fn: ..., args: ...}`,
+   *                       where mathjs is optional
+   * @returns {FunctionNode}
+   */
+  FunctionNode.fromJSON = function (json) {
+    return new FunctionNode(json.fn, json.args);
+  };
+
   /**
    * Get HTML representation
    * @param {Object} options
@@ -14274,6 +14415,29 @@ function factory (type, config, load, typed) {
     return this.dotNotation
         ? ('.' + this.getObjectProperty())
         : ('[' + this.dimensions.join(', ') + ']');
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  IndexNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'IndexNode',
+      dimensions: this.dimensions,
+      dotNotation: this.dotNotation
+    };
+  };
+
+  /**
+   * Instantiate an IndexNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "IndexNode", dimensions: [...], dotNotation: false}`,
+   *                       where mathjs is optional
+   * @returns {IndexNode}
+   */
+  IndexNode.fromJSON = function (json) {
+    return new IndexNode(json.dimensions, json.dotNotation);
   };
 
   /**
@@ -17814,6 +17978,29 @@ function factory (type, config, load, typed) {
   };
 
   /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  AccessorNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'AccessorNode',
+      object: this.object,
+      index: this.index
+    };
+  };
+
+  /**
+   * Instantiate an AccessorNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "AccessorNode", object: ..., index: ...}`,
+   *                       where mathjs is optional
+   * @returns {AccessorNode}
+   */
+  AccessorNode.fromJSON = function (json) {
+    return new AccessorNode(json.object, json.index);
+  };
+
+  /**
    * Are parenthesis needed?
    * @private
    */
@@ -18029,6 +18216,28 @@ function factory (type, config, load, typed) {
       return node.toString(options);
     });
     return '[' + items.join(', ') + ']';
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  ArrayNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'ArrayNode',
+      items: this.items
+    };
+  };
+
+  /**
+   * Instantiate an ArrayNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "ArrayNode", items: [...]}`,
+   *                       where mathjs is optional
+   * @returns {ArrayNode}
+   */
+  ArrayNode.fromJSON = function (json) {
+    return new ArrayNode(json.items);
   };
 
   /**
@@ -18326,6 +18535,30 @@ function factory (type, config, load, typed) {
   };
 
   /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  AssignmentNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'AssignmentNode',
+      object: this.object,
+      index: this.index,
+      value: this.value
+    };
+  };
+
+  /**
+   * Instantiate an AssignmentNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "AssignmentNode", object: ..., index: ..., value: ...}`,
+   *                       where mathjs is optional
+   * @returns {AssignmentNode}
+   */
+  AssignmentNode.fromJSON = function (json) {
+    return new AssignmentNode(json.object, json.index, json.value);
+  };
+
+  /**
    * Get HTML representation
    * @param {Object} options
    * @return {string}
@@ -18507,6 +18740,28 @@ function factory (type, config, load, typed) {
   };
 
   /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  BlockNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'BlockNode',
+      blocks: this.blocks
+    };
+  };
+
+  /**
+   * Instantiate an BlockNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "BlockNode", blocks: [{node: ..., visible: false}, ...]}`,
+   *                       where mathjs is optional
+   * @returns {BlockNode}
+   */
+  BlockNode.fromJSON = function (json) {
+    return new BlockNode(json.blocks);
+  };
+
+  /**
    * Get HTML representation
    * @param {Object} options
    * @return {string} str
@@ -18673,6 +18928,30 @@ function factory (type, config, load, typed) {
       falseExpr = '(' + falseExpr + ')';
     }
     return condition + ' ? ' + trueExpr + ' : ' + falseExpr;
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  ConditionalNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'ConditionalNode',
+      condition: this.condition,
+      trueExpr: this.trueExpr,
+      falseExpr: this.falseExpr
+    };
+  };
+
+  /**
+   * Instantiate an ConditionalNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "ConditionalNode", "condition": ..., "trueExpr": ..., "falseExpr": ...}`,
+   *                       where mathjs is optional
+   * @returns {ConditionalNode}
+   */
+  ConditionalNode.fromJSON = function (json) {
+    return new ConditionalNode(json.condition, json.trueExpr, json.falseExpr);
   };
 
   /**
@@ -18928,6 +19207,37 @@ function factory (type, config, load, typed) {
   };
 
   /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  FunctionAssignmentNode.prototype.toJSON = function () {
+    var types = this.types;
+
+    return {
+      mathjs: 'FunctionAssignmentNode',
+      name: this.name,
+      params: this.params.map(function(param, index) {
+        return {
+          name: param,
+          type: types[index]
+        }
+      }),
+      expr: this.expr
+    };
+  };
+
+  /**
+   * Instantiate an FunctionAssignmentNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "FunctionAssignmentNode", name: ..., params: ..., expr: ...}`,
+   *                       where mathjs is optional
+   * @returns {FunctionAssignmentNode}
+   */
+  FunctionAssignmentNode.fromJSON = function (json) {
+    return new FunctionAssignmentNode(json.name, json.params, json.expr);
+  };
+
+  /**
    * get HTML representation
    * @param {Object} options
    * @return {string} str
@@ -18987,7 +19297,7 @@ function factory (type, config, load, typed) {
    * @constructor ObjectNode
    * @extends {Node}
    * Holds an object with keys/values
-   * @param {Object.<string, Node>} [properties]   array with key/value pairs
+   * @param {Object.<string, Node>} [properties]   object with key/value pairs
    */
   function ObjectNode(properties) {
     if (!(this instanceof ObjectNode)) {
@@ -19112,6 +19422,28 @@ function factory (type, config, load, typed) {
       }
     }
     return '{' + entries.join(', ') + '}';
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  ObjectNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'ObjectNode',
+      properties: this.properties
+    };
+  };
+
+  /**
+   * Instantiate an OperatorNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "ObjectNode", "properties": {...}}`,
+   *                       where mathjs is optional
+   * @returns {ObjectNode}
+   */
+  ObjectNode.fromJSON = function (json) {
+    return new ObjectNode(json.properties);
   };
 
   /**
@@ -19343,6 +19675,30 @@ function factory (type, config, load, typed) {
     str += ':' + end;
 
     return str;
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  RangeNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'RangeNode',
+      start: this.start,
+      end: this.end,
+      step: this.step
+    };
+  };
+
+  /**
+   * Instantiate an RangeNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "RangeNode", "start": ..., "end": ..., "step": ...}`,
+   *                       where mathjs is optional
+   * @returns {RangeNode}
+   */
+  RangeNode.fromJSON = function (json) {
+    return new RangeNode(json.start, json.end, json.step);
   };
 
   /**
@@ -32015,6 +32371,28 @@ function factory (type, config, load, typed, math) {
   };
 
   /**
+   * Get a JSON representation of the chain
+   * @returns {Object}
+   */
+  Chain.prototype.toJSON = function () {
+    return {
+      mathjs: 'Chain',
+      value: this.value
+    };
+  };
+
+  /**
+   * Instantiate a Chain from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "Chain", value: ...}`,
+   *                       where mathjs is optional
+   * @returns {Chain}
+   */
+  Chain.fromJSON = function (json) {
+    return new Chain(json.value);
+  };
+
+  /**
    * Create a proxy method for the chain
    * @param {string} name
    * @param {Function} fn      The function to be proxied
@@ -38586,7 +38964,7 @@ function factory (type, config, load, typed, math) {
     }
   };
 
-  // Add a prefix list for both short and long prefixes (for ohm in particular, since Mohm and megaohm are both acceptable):
+  // Add a prefix list for both short and long prefixes (for example for ohm and bar which support both Mohm and megaohm, mbar and millibar):
   PREFIXES.SHORTLONG = {};
   for (var key in PREFIXES.SHORT) {
     if(PREFIXES.SHORT.hasOwnProperty(key)) {
@@ -39725,7 +40103,7 @@ function factory (type, config, load, typed, math) {
     bar: {
       name: 'bar',
       base: BASE_UNITS.PRESSURE,
-      prefixes: PREFIXES.NONE,
+      prefixes: PREFIXES.SHORTLONG,
       value: 100000,
       offset: 0
     },
@@ -40866,7 +41244,7 @@ exports.math = true;   // request access to the math namespace
 /* 192 */
 /***/ (function(module, exports) {
 
-module.exports = '4.0.1';
+module.exports = '4.1.0';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
@@ -58573,22 +58951,29 @@ function factory (type, config, load, typed) {
    *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
    *     });
    *
+   *    // the following outputs: 'My favorite fruits are apples and bananas !'
+   *    math.print('My favorite fruits are $0 and $1 !', [
+   *      'apples',
+   *      'bananas'
+   *    ]);
+   *
    * See also:
    *
    *     format
    *
-   * @param {string} template     A string containing variable placeholders.
-   * @param {Object} values       An object containing variables which will
-   *                              be filled in in the template.
+   * @param {string} template       A string containing variable placeholders.
+   * @param {Object | Array | Matrix} values An object or array containing variables
+   *                                which will be filled in in the template.
    * @param {number | Object} [options]  Formatting options,
-   *                              or the number of digits to format numbers.
-   *                              See function math.format for a description
-   *                              of all options.
+   *                                or the number of digits to format numbers.
+   *                                See function math.format for a description
+   *                                of all options.
    * @return {string} Interpolated string
    */
   var print = typed ('print', {
-    'string, Object': _print,
-    'string, Object, number | Object': _print
+    // note: Matrix will be converted automatically to an Array
+    'string, Object | Array': _print,
+    'string, Object | Array, number | Object': _print
   });
 
   print.toTex = undefined; // use default template
@@ -60656,7 +61041,7 @@ module.exports = [
 "use strict";
 
 
-function factory (type, config, load, typed) {
+function factory (type, config, load, typed, math) {
   /**
    * Instantiate mathjs data types from their JSON representation
    * @param {string} key
@@ -60664,7 +61049,10 @@ function factory (type, config, load, typed) {
    * @returns {*} Returns the revived object
    */
   return function reviver(key, value) {
-    var constructor = type[value && value.mathjs];
+    var constructor = type[value && value.mathjs] ||
+        (math.expression && math.expression.node[value && value.mathjs]);
+    // TODO: instead of checking math.expression.node, expose all Node classes on math.type too
+
     if (constructor && typeof constructor.fromJSON === 'function') {
       return constructor.fromJSON(value);
     }
@@ -60676,6 +61064,7 @@ function factory (type, config, load, typed) {
 exports.name = 'reviver';
 exports.path = 'json';
 exports.factory = factory;
+exports.math = true; // request the math namespace as fifth argument
 
 
 /***/ }),

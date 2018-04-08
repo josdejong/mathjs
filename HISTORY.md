@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 4.1.0
+## 2018-04-08, version 4.1.0
 
 - Extended function `math.print` with support for arrays and matrices.
   Thanks @jean-emmanuel.

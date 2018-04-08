@@ -18,7 +18,7 @@ math.print(template, values, options)
 Parameter | Type | Description
 --------- | ---- | -----------
 `template` | string | A string containing variable placeholders.
-`values` | Object &#124; Array | An object or array containing variables which will be filled in in the template.
+`values` | Object &#124; Array &#124; Matrix | An object or array containing variables which will be filled in in the template.
 `options` | number &#124; Object | Formatting options, or the number of digits to format numbers. See function math.format for a description of all options.
 
 ### Returns
