@@ -83,6 +83,12 @@ describe('print', function() {
     assert.equal(math.print('Hello $0.', ['user']), 'Hello user.');
     assert.equal(math.print('Hello $0...', ['user']), 'Hello user...');
     assert.equal(math.print('Hello $0.0.', [['user']]), 'Hello user.');
+    assert.equal(math.print('Values: $0, $1', [[1,2],[3,4]]), 'Values: [1, 2], [3, 4]');
+  });
+
+  it('should leave trailing point intact (matrix)', function() {
+    assert.equal(math.print('Hello $0.', math.matrix(['user'])), 'Hello user.');
+    assert.equal(math.print('Values: $0, $1', math.matrix([[1,2],[3,4]])), 'Values: [1, 2], [3, 4]');
   });
 
   it('should throw an error on wrong number of arguments', function() {

@@ -1,8 +1,10 @@
 # History
 
 
-## not yet released, version 4.0.2
+## not yet released, version 4.1.0
 
+- Extended function `math.print` with support for arrays and matrices.
+  Thanks @jean-emmanuel.
 - Fixed #1077: Serialization/deserialization to JSON with reviver not being
   supported by nodes.
 - Fixed #1016: Extended `math.typeof` with support for `ResultSet` and nodes
