@@ -5,7 +5,19 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
-<h2 id="20170317-version-401">2017-03-17, version 4.0.1 <a href="#20170317-version-401" title="Permalink">#</a></h2>
+<h2 id="20180408-version-410">2018-04-08, version 4.1.0 <a href="#20180408-version-410" title="Permalink">#</a></h2>
+
+- Extended function `math.print` with support for arrays and matrices.
+  Thanks <a href="https://github.com/jean-emmanuel">@jean-emmanuel</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1077">#1077</a>: Serialization/deserialization to JSON with reviver not being
+  supported by nodes.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1016">#1016</a>: Extended `math.typeof` with support for `ResultSet` and nodes
+  like `SymbolNode`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1072">#1072</a>: Added support for long and short prefixes for the unit `bar`
+  (i.e. `millibar` and `mbar`).
+
+
+<h2 id="20180317-version-401">2018-03-17, version 4.0.1 <a href="#20180317-version-401" title="Permalink">#</a></h2>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1062">#1062</a>: mathjs not working on ES5 browsers like IE11 and Safari 9.3.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1061">#1061</a>: `math.unit` not accepting input like `1/s`.
