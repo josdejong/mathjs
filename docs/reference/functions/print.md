@@ -31,19 +31,19 @@ string | Interpolated string
 ## Examples
 
 ```js
- // the following outputs: 'Lucy is 5 years old'
- math.print('Lucy is $age years old', {age: 5});
+// the following outputs: 'Lucy is 5 years old'
+math.print('Lucy is $age years old', {age: 5});
 
- // the following outputs: 'The value of pi is 3.141592654'
- math.print('The value of pi is $pi', {pi: math.pi}, 10);
+// the following outputs: 'The value of pi is 3.141592654'
+math.print('The value of pi is $pi', {pi: math.pi}, 10);
 
- // the following outputs: 'hello Mary! The date is 2013-03-23'
- math.print('Hello $user.name! The date is $date', {
-   user: {
-     name: 'Mary',
-   },
-   date: new Date(2013, 2, 23).toISOString().substring(0, 10)
- });
+// the following outputs: 'hello Mary! The date is 2013-03-23'
+math.print('Hello $user.name! The date is $date', {
+  user: {
+    name: 'Mary',
+  },
+  date: new Date(2013, 2, 23).toISOString().substring(0, 10)
+});
 
 // the following outputs: 'My favorite fruits are apples and bananas !'
 math.print('My favorite fruits are $0 and $1 !', [

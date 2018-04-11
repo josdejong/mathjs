@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 4.1.1
+## 2018-04-11, version 4.1.1
 
 - Fixed #1063: derivative not working when resolving a variable with unary
   minus like `math.derivative('-x', 'x')`.
