@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180411-version-411">2018-04-11, version 4.1.1 <a href="#20180411-version-411" title="Permalink">#</a></h2>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1063">#1063</a>: derivative not working when resolving a variable with unary
+  minus like `math.derivative('-x', 'x')`.
+
+
 <h2 id="20180408-version-410">2018-04-08, version 4.1.0 <a href="#20180408-version-410" title="Permalink">#</a></h2>
 
 - Extended function `math.print` with support for arrays and matrices.
