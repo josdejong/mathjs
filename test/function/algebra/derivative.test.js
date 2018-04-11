@@ -117,6 +117,10 @@ describe('derivative', function() {
     // Functional Power Rule, d/dx((x^3 + x)^(5x + 2)) = (x^3 + x)^(5x + 2) * [(((3*1*x)^(3-1)+1) * ((5x + 2) / (x^3 + x))) + (5*1 + 0)log((x^3 + x))]
     //                                                 = (x^3 + x)^(5x + 2) * [((3x^2 + 1)*(5x + 2) / (x^3 + x)) + 5log(x^3 + x)]
     compareString(derivativeWithoutSimplify('(x^3 + x)^(5x + 2)', 'x'), '(x ^ 3 + x) ^ (5 x + 2) * ((3 * 1 * x ^ (3 - 1) + 1) * (5 x + 2) / (x ^ 3 + x) + (5 * 1 + 0) * log((x ^ 3 + x)))');
+
+    // https://github.com/josdejong/mathjs/issues/1063
+    compareString(derivativeWithoutSimplify('-x', 'x'), '-1');
+    compareString(derivativeWithoutSimplify('1 - (-x)', 'x'), '0 - (-1)');
   });
 
   it('should properly take the derivative of mathematical functions', function() {

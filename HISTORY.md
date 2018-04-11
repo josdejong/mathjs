@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 4.1.1
+
+- Fixed #1063: derivative not working when resolving a variable with unary
+  minus like `math.derivative('-x', 'x')`.
+
+
 ## 2018-04-08, version 4.1.0
 
 - Extended function `math.print` with support for arrays and matrices.
