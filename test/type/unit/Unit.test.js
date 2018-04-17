@@ -1059,6 +1059,9 @@ describe('Unit', function() {
       assert.equal(unit3.units[0].unit.name, 'meters');
       assert.equal(unit3.units[0].prefix.name, '');
 
+      assert.equal(new Unit(10, "decades").toNumeric("decade"), 10);
+      assert.equal(new Unit(10, "centuries").toNumeric("century"), 10);
+      assert.equal(new Unit(10, "millennia").toNumeric("millennium"), 10);
     });
   });
 

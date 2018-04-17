@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 4.1.2
+
+- Fixed #1082: implemented support for unit plurals `decades`, `centuries`,
+  and `millennia`.
+
+
 ## 2018-04-11, version 4.1.1
 
 - Fixed #1063: derivative not working when resolving a variable with unary
