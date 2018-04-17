@@ -5,6 +5,8 @@
 
 - Fixed #1082: implemented support for unit plurals `decades`, `centuries`,
   and `millennia`.
+- Fixed #1083: units `decade` and `watt` having a wrong name when stringifying.
+  Thanks @ericman314.
 
 
 ## 2018-04-11, version 4.1.1
