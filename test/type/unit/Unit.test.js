@@ -1096,6 +1096,12 @@ describe('Unit', function() {
       assert.equal(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S'))  , true);
       assert.equal(new Unit(1, 'eV')    .equals(new Unit(1.602176565e-19, 'J')), true);
     });
+
+    it("For each built-in unit, 'name' should match key", function() {
+      for(var key in Unit.UNITS) {
+        assert.equal(key, Unit.UNITS[key].name);
+      }
+    });
   });
 
   describe('angles', function () {
