@@ -411,7 +411,7 @@ describe('AccessorNode', function() {
         return string;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -450,7 +450,7 @@ describe('AccessorNode', function() {
         return latex;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 
@@ -461,6 +461,28 @@ describe('AccessorNode', function() {
     var n = new AccessorNode(a, new IndexNode([b, c]));
 
     assert.equal(n.toTex({handler: customFunction}), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var node = new AccessorNode(a, new IndexNode([b, c]));
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'AccessorNode',
+      index: {
+        dimensions: [ b, c ],
+        dotNotation: false
+      },
+      object: a
+    });
+
+    var parsed = AccessorNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
 });

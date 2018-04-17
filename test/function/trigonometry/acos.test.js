@@ -19,10 +19,6 @@ describe('acos', function() {
     approx.equal(acos(false), 0.5 * pi);
   });
 
-  it('should return the arccos of null', function () {
-    approx.equal(acos(null), 0.5 * pi);
-  });
-
   it('should return the arccos of a number', function() {
     approx.equal(acos(-1) / pi, 1);
     approx.equal(acos(-0.5) / pi, 2 / 3);

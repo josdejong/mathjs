@@ -189,9 +189,9 @@ math.size(c);                                 // Array, [2, 2, 3]
 
 Matrices can be resized using their `resize` function. This function is called
 with an Array with the new size as the first argument, and accepts an optional
-default value. If no default value is provided, new entries will be filled with
-zero. To leave new entries uninitialized, specify `math.uninitialized` as the
-default value.
+default value. By default, new entries will be set to `0`, but it is possible
+to pass a different default value like `null` to clearly indicate that
+the entries haven't been explicitly set.
 
 ```js
 var a = math.matrix();  // Matrix, size [0],       []

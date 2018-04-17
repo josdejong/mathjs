@@ -78,11 +78,11 @@ k.subset(math.index(2), 6);
 print(k);                                   // [0, 0, 6]
 console.log();
 
-console.log('set a value outside a matrices range, leaving new entries uninitialized');
+console.log('set a value outside a matrices range, setting other new entries to null');
 var m = math.matrix();
-defaultValue = math.uninitialized;
+defaultValue = null;
 m.subset(math.index(2), 6, defaultValue);
-print(m);                                   // [undefined, undefined, 6]
+print(m);                                   // [null, null, 6]
 console.log();
 
 // create ranges

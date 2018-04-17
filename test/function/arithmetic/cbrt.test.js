@@ -13,10 +13,6 @@ describe('cbrt', function() {
     assert.equal(cbrt(false), 0);
   });
 
-  it('should return the cubic root of null', function () {
-    assert.equal(cbrt(null), 0);
-  });
-
   it('should return the cubic root of a positive number', function() {
     assert.equal(cbrt(0), 0);
     assert.equal(cbrt(1), 1);
@@ -126,6 +122,10 @@ describe('cbrt', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {cbrt()}, /TypeError: Too few arguments/);
     assert.throws(function () {cbrt(1, true, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {cbrt(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX cbrt', function () {

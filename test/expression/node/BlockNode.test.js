@@ -281,7 +281,7 @@ describe('BlockNode', function() {
         return string;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -291,6 +291,26 @@ describe('BlockNode', function() {
     var n = new BlockNode([{node: a}, {node: b}]);
 
     assert.equal(n.toString({handler: customFunction}), 'const(1, number); const(2, number); ');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var bBlock = {node: b, visible: false};
+    var cBlock = {node: c, visible: true};
+
+    var node = new BlockNode([bBlock, cBlock]);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'BlockNode',
+      blocks: [ bBlock, cBlock ]
+    });
+
+    var parsed = BlockNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX a BlockNode', function () {
@@ -315,7 +335,7 @@ describe('BlockNode', function() {
         return latex;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 

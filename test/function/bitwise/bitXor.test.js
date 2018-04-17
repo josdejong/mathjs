@@ -23,12 +23,6 @@ describe('bitXor', function () {
     assert.equal(bitXor(false, false), 0);
   });
 
-  it('should xor numbers and null', function () {
-    assert.equal(math.bitXor(null, null), 0);
-    assert.equal(math.bitXor(null, 1), 1);
-    assert.equal(math.bitXor(1, null), 1);
-  });
-
   it('should xor mixed numbers and booleans', function () {
     assert.equal(bitXor(0, true), 1);
     assert.equal(bitXor(0, false), 0);
@@ -156,6 +150,7 @@ describe('bitXor', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {bitXor(2, null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitXor(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitXor(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitXor(true, undefined);}, /TypeError: Unexpected type of argument/);

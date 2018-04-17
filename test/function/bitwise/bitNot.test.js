@@ -10,10 +10,6 @@ describe('bitNot', function () {
     assert.equal(bitNot(false), -1);
   });
 
-  it('should return bitwise not of null', function () {
-    assert.equal(bitNot(null), -1);
-  });
-
   it('should perform bitwise not of a number', function () {
     assert.deepEqual(bitNot(2), -3);
     assert.deepEqual(bitNot(-2), 1);
@@ -57,6 +53,7 @@ describe('bitNot', function () {
   });
 
   it('should throw an error in case of invalid type of argument', function () {
+    assert.throws(function () {bitNot(null)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitNot(new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitNot(undefined)}, /TypeError: Unexpected type of argument/);
   });

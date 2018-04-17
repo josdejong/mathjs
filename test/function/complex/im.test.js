@@ -22,10 +22,6 @@ describe('im', function() {
     assert.equal(math.im(false), 0);
   });
 
-  it('should return the imaginary part of null', function() {
-    assert.equal(math.im(null), 0);
-  });
-
   it('should return the imaginary part of a boolean', function() {
     assert.equal(math.im(true), 0);
     assert.equal(math.im(false), 0);

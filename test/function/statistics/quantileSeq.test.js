@@ -156,7 +156,12 @@ describe('quantileSeq', function() {
     assert.throws(function () {quantileSeq('A', 'C', 'B')}, math.error.UnsupportedTypeError);
     assert.throws(function () {quantileSeq(true, false, true)}, math.error.UnsupportedTypeError);
     assert.throws(function () {quantileSeq(0, 'B')}, math.error.UnsupportedTypeError);
-    assert.throws(function () {quantileSeq(math.complex(2,3), math.complex(-1,2))}, TypeError);
+
+    assert.throws(function () {quantileSeq(math.complex(2,3), math.complex(-1,2))}, /TypeError: Unexpected type of argument in function quantileSeq/);
+    assert.throws(function () {quantileSeq(2, null)}, /TypeError: Unexpected type of argument in function quantileSeq/);
+
+    // TODO: improve error messages of quantileSeq
+    assert.throws(function () {quantileSeq([2, null], 2)}, /TypeError: Unexpected type of argument in function compare/);
   });
 
   it('should throw error for bad probabilities and splits', function() {

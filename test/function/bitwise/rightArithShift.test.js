@@ -35,11 +35,6 @@ describe('rightArithShift', function () {
     assert.equal(rightArithShift(false, 2), 0);
   });
 
-  it('should right arithmetically shift numbers and null', function () {
-    assert.equal(rightArithShift(1, null), 1);
-    assert.equal(rightArithShift(null, 1), 0);
-  });
-
   it('should right arithmetically shift bignumbers', function () {
     assert.deepEqual(rightArithShift(bignumber(17), bignumber(3)), bignumber(2));
     assert.deepEqual(rightArithShift(bignumber('633825300114114700748351602688000'), bignumber(100)), bignumber(500));
@@ -174,6 +169,7 @@ describe('rightArithShift', function () {
 
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () {rightArithShift(new Date(), true)}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {rightArithShift(2, null)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightArithShift(true, new Date())}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightArithShift(true, undefined)}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightArithShift(undefined, true)}, /TypeError: Unexpected type of argument/);

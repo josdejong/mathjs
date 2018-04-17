@@ -15,10 +15,6 @@ describe('log10', function() {
     assert.equal(log10(false), -Infinity);
   });
 
-  it('should return the log base 10 of null', function () {
-    assert.equal(log10(null), -Infinity);
-  });
-
   it('should return the log base 10 of positive numbers', function() {
     approx.deepEqual(log10(1), 0);
     approx.deepEqual(log10(2), 0.301029995663981);
@@ -75,6 +71,10 @@ describe('log10', function() {
   it('should throw an error if used with a wrong number of arguments', function() {
     assert.throws(function () {log10()}, /TypeError: Too few arguments/);
     assert.throws(function () {log10(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {log10(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should return the log base 10 of a complex number', function() {

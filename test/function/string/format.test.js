@@ -25,8 +25,8 @@ describe('format', function() {
   it('should format complex values', function() {
     assert.equal(math.format(math.divide(math.complex(2,5),3)), '0.6666666666666666 + 1.6666666666666667i');
     assert.equal(math.format(math.divide(math.complex(2,5),3), 5), '0.66667 + 1.6667i');
-    assert.equal(math.format(math.divide(math.complex(2,5),3), {notation: 'fixed'}), '1 + 2i');
     assert.equal(math.format(math.divide(math.complex(2,5),3), {notation: 'fixed', precision: 1}), '0.7 + 1.7i');
+    assert.equal(math.format(math.divide(math.complex(6,9),3), {notation: 'fixed'}), '2 + 3i');
 
     assert.equal(math.format(math.complex(NaN , NaN)), 'NaN + NaNi');
     assert.equal(math.format(math.complex(Infinity, Infinity)), 'Infinity + Infinityi');

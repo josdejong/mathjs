@@ -63,6 +63,12 @@ describe('prod', function() {
     assert.throws(function() {prod([])});
   });
 
+  it('should throw an error if called with invalid type of arguments', function() {
+    assert.throws(function() {prod([[2,undefined, 4]])}, /TypeError: Cannot calculate prod, unexpected type of argument/);
+    assert.throws(function() {prod([[2,new Date(), 4]])}, /TypeError: Cannot calculate prod, unexpected type of argument/);
+    assert.throws(function() {prod([2,null, 4])}, /TypeError: Cannot calculate prod, unexpected type of argument/);
+  });
+
   it('should LaTeX prod', function () {
     var expression = math.parse('prod(1,2,3)');
     assert.equal(expression.toTex(), '\\mathrm{prod}\\left(1,2,3\\right)');

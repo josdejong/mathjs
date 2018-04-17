@@ -34,11 +34,6 @@ describe('rightLogShift', function () {
     assert.equal(rightLogShift(false, 2), 0);
   });
 
-  it('should right logically shift numbers and null', function () {
-    assert.equal(rightLogShift(1, null), 1);
-    assert.equal(rightLogShift(null, 1), 0);
-  });
-
   it('should throw an error if the parameters are not integers', function () {
     assert.throws(function () {
       rightLogShift(1.1, 1);
@@ -135,6 +130,7 @@ describe('rightLogShift', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {rightLogShift(2, null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightLogShift(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightLogShift(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {rightLogShift(true, undefined);}, /TypeError: Unexpected type of argument/);

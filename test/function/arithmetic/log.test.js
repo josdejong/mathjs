@@ -17,11 +17,6 @@ describe('log', function() {
     assert.equal(log(1,false), 0);
   });
 
-  it('should return the log of null', function () {
-    assert.equal(log(null), -Infinity);
-    assert.equal(log(1, null), 0);
-  });
-
   it('should return the log of positive numbers', function() {
     approx.deepEqual(log(1), 0);
     approx.deepEqual(log(2), 0.693147180559945);
@@ -52,8 +47,12 @@ describe('log', function() {
   });
 
   it('should throw an error if invalid number of arguments', function() {
-    assert.throws(function () {log()}, /TypeError: Too few arguments in function log \(expected: any, index: 1\)/);
+    assert.throws(function () {log()}, /TypeError: Too few arguments in function log \(expected: any, index: 0\)/);
     assert.throws(function () {log(1, 2, 3)}, /TypeError: Too many arguments in function log \(expected: 2, actual: 3\)/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {log(null);}, /Too few arguments/); // TODO: this is a misleading error message
   });
 
   it('should return the log of positive bignumbers', function() {

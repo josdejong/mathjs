@@ -247,7 +247,7 @@ describe('ObjectNode', function() {
   it ('should stringify an ObjectNode with custom toString', function () {
     var customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -256,6 +256,23 @@ describe('ObjectNode', function() {
     var n = new ObjectNode({a: a, b: b});
 
     assert.equal(n.toString({handler: customFunction}), '{"a": const(1, number), "b": const(2, number)}');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var node = new ObjectNode({b: b, c: c});
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'ObjectNode',
+      properties: { b: b, c: c}
+    });
+
+    var parsed = ObjectNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX an ObjectNode', function () {
@@ -271,7 +288,7 @@ describe('ObjectNode', function() {
   it ('should LaTeX an ObjectNode with custom toTex', function () {
     var customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 

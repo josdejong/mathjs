@@ -85,7 +85,7 @@ describe('IndexNode', function() {
       paths.push(path);
       assert.strictEqual(parent, n);
 
-      return node.isConstantNode && node.value === '1' ? e : node;
+      return node.isConstantNode && node.value === 1 ? e : node;
     });
 
     assert.equal(nodes.length, 2);
@@ -115,7 +115,7 @@ describe('IndexNode', function() {
 
     var e = new SymbolNode('c');
     var f = n.transform(function (node) {
-      return node.isConstantNode && node.value === '1' ? e : node;
+      return node.isConstantNode && node.value === 1 ? e : node;
     });
 
     assert.notStrictEqual(f, n);
@@ -188,7 +188,7 @@ describe('IndexNode', function() {
     assert.equal(n.toString(), '.a');
   });
 
-  it ('should stringigy an IndexNode with custom toString', function () {
+  it ('should stringify an IndexNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {
       if (node.type === 'IndexNode') {
@@ -197,7 +197,7 @@ describe('IndexNode', function() {
         }).join(', ');
       }
       else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -207,6 +207,22 @@ describe('IndexNode', function() {
     var n = new IndexNode([b, c]);
 
     assert.equal(n.toString({handler: customFunction}), 'const(1, number), const(2, number)');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var prop = new ConstantNode('prop');
+    var node = new IndexNode([prop], true);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'IndexNode',
+      dimensions: [ prop ],
+      dotNotation: true
+    });
+
+    var parsed = IndexNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX an IndexNode', function () {
@@ -240,7 +256,7 @@ describe('IndexNode', function() {
         return latex;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 

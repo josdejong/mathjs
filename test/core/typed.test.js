@@ -146,8 +146,13 @@ describe ('typed', function () {
 
   it('should test whether a value is an Object', function () {
     assert.strictEqual(math.type.isObject({}), true);
-    assert.strictEqual(math.type.isObject(math.matrix()), true);
-    assert.strictEqual(math.type.isObject(/test/), true);
+    assert.strictEqual(math.type.isObject(math.matrix()), false);
+    assert.strictEqual(math.type.isObject([]), false);
+    assert.strictEqual(math.type.isObject(math.fraction(1,2)), false);
+    assert.strictEqual(math.type.isObject(math.bignumber(2)), false);
+    assert.strictEqual(math.type.isObject(math.complex(2,3)), false);
+    assert.strictEqual(math.type.isObject(math.parse('2')), false);
+    assert.strictEqual(math.type.isObject(/test/), false);
     assert.strictEqual(math.type.isObject(function () {}), false);
     assert.strictEqual(math.type.isObject(2), false);
     assert.strictEqual(math.type.isObject(), false);

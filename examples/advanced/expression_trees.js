@@ -4,7 +4,7 @@ var math = require('../../index');
 console.log('Filter all symbol nodes "x" in the expression "x^2 + x/4 + 3*y"');
 var node = math.parse('x^2 + x/4 + 3*y');
 var filtered = node.filter(function (node) {
-  return node.isSymbolNode && node.name == 'x';
+  return node.isSymbolNode && node.name === 'x';
 });
 // returns an array with two entries: two SymbolNodes 'x'
 

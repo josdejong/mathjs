@@ -15,10 +15,6 @@ describe('tanh', function() {
     approx.equal(tanh(false), 0);
   });
 
-  it('should return the tanh of null', function () {
-    approx.equal(tanh(null), 0);
-  });
-
   it('should return the tanh of a number', function() {
     approx.equal(tanh(0), 0);
     approx.equal(tanh(pi), 0.99627207622075);

@@ -22,6 +22,7 @@ the lower level syntax of math.js. Differences are:
 - There are custom operators like `x + y` instead of `add(x, y)`.
 - Some operators are different. For example  `^` is used for exponentiation,
   not bitwise xor.
+- Implicit multiplication, like `2 pi`, is supported and has special rules.
 
 
 ## Operators
@@ -101,8 +102,8 @@ Operators                         | Description
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
-`x unit`                          | Unit
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
+See section below                 | Implicit multiplication
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -561,27 +562,47 @@ array with results.
 
 ## Implicit multiplication
 
-The expression parser supports implicit multiplication. Implicit multiplication
-has the same precedence as explicit multiplications and divisions, so `3/4 mm`
-is evaluated as `(3 / 4) * mm`.
+*Implicit multiplication* means the multiplication of two symbols, numbers, or a grouped expression inside parentheses without using the `*` operator. This type of syntax allows a more natural way to enter expressions. For example:
+
+```js
+math.eval('2 pi');        // 6.283185307179586
+math.eval('(1+2)(3+4)');  // 21
+```
 
 Parentheses are parsed as a function call when there is a symbol or accessor on
 the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
 parentheses are interpreted as an implicit multiplication.
 
-Implicit multiplication can be tricky as there is ambiguity on how an expression
-is evaluated. Use it carefully.
+Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[number] / [number] [symbol]` or `[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
-Here some examples:
+```js
+math.eval('20 kg / 4 kg');  // 5      Evaluated as (20 kg) / (4 kg)
+math.eval('20 / 4 kg');     // 5 kg   Evaluated as (20 / 4) kg
+```
 
-Expression      | Evaluated as      | Result
---------------- | ----------------- | ------------------
-(1 + 3) pi      | (1 + 3) * pi      | 12.566370614359172
-(4 - 1) 2       | (4 - 1) * 2       | 6
-3 / 4 mm        | (3 / 4) * mm      | 0.75 mm
-2 + 3 i         | 2 + (3 * i)       | 2 + 3i
-(1 + 2) (4 - 2) | (1 + 2) * (4 - 2) | 6
-sqrt(4) (1 + 2) | sqrt(4) * (1 + 2) | 6
+The behavior of implicit multiplication can be summarized by these operator precedence rules, listed from highest to lowest precedence:
+
+- Function calls: `[symbol] [left paren]`
+- Explicit division `/` when the division matches this pattern: `[number] / [number] [symbol]` or `[number] / [number] [left paren]`
+- Implicit multiplication
+- All other division `/` and multiplication `*`
+
+Implicit multiplication is tricky as there can appear to be ambiguity in how an expression will be evaluated. Experience has shown that the above rules most closely match user intent when entering expressions that could be interpreted different ways. It's also possible that these rules could be tweaked in future major releases.  Use implicit multiplication carefully. If you don't like the uncertainty introduced by implicit multiplication, use explicit `*` operators and parentheses to ensure your expression is evaluated the way you intend.
+
+Here are some more examples using implicit multiplication:  
+
+Expression      | Evaluated as        | Result
+--------------- | ------------------- | ------------------
+(1 + 3) pi      | (1 + 3) * pi        | 12.566370614359172
+(4 - 1) 2       | (4 - 1) * 2         | 6
+3 / 4 mm        | (3 / 4) * mm        | 0.75 mm
+2 + 3 i         | 2 + (3 * i)         | 2 + 3i
+(1 + 2) (4 - 2) | (1 + 2) * (4 - 2)   | 6
+sqrt(4) (1 + 2) | sqrt(4) * (1 + 2)   | 6
+8 pi / 2 pi     | (8 * pi) / (2 * pi) | 4
+pi / 2 pi       | pi / (2 * pi)       | 0.5
+1 / 2i          | (1 / 2) * i         | 0.5 i
+8.314 J / mol K | 8.314 J / (mol * K) | 8.314 J / (mol * K)
 
 
 ## Comments

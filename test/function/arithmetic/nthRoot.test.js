@@ -18,10 +18,6 @@ describe('nthRoot', function() {
     assert.equal(nthRoot(1,true), 1);
   });
 
-  it('should return the nthRoot of null', function () {
-    assert.equal(nthRoot(null), 0);
-  });
-
   it('should return the nthRoot for numbers', function() {
     approx.equal(nthRoot(4), 2);
     approx.equal(nthRoot(9), 3);
@@ -79,6 +75,10 @@ describe('nthRoot', function() {
   it('should throw an error if invalid number of arguments', function() {
     assert.throws(function () {nthRoot();}, /TypeError: Too few arguments/);
     assert.throws(function () {nthRoot(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {nthRoot(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should return the nthRoot of bignumbers', function() {

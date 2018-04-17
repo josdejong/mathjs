@@ -18,10 +18,6 @@ describe('tan', function() {
     approx.equal(tan(false), 0);
   });
 
-  it('should return the tangent of null', function () {
-    approx.equal(tan(null), 0);
-  });
-
   it('should return the tangent of a number', function() {
     approx.equal(tan(0), 0);
     approx.equal(tan(pi*1/4), 1);

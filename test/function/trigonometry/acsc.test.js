@@ -21,11 +21,6 @@ describe('acsc', function() {
     //assert.ok(isNaN(acsc(false)));
   });
 
-  it('should return the arccsc of null', function () {
-    assert.deepEqual(acsc(null), complex(pi / 2, Infinity));
-    //assert.ok(isNaN(acsc(null)));
-  });
-
   it('should return the arccsc of a number', function() {
     approx.equal(acsc(-2) / pi, -1/6);
     approx.equal(acsc(-1) / pi, -0.5);

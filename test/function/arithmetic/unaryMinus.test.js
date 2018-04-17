@@ -18,10 +18,6 @@ describe('unaryMinus', function() {
     assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(0));
   });
 
-  it('should return unary minus of null', function () {
-    assert.equal(math.unaryMinus(null), 0);
-  });
-
   it('should perform unary minus of a number', function() {
     assert.deepEqual(math.unaryMinus(2), -2);
     assert.deepEqual(math.unaryMinus(-2), 2);
@@ -72,6 +68,7 @@ describe('unaryMinus', function() {
 
   it('should throw an error in case of invalid type of argument', function() {
     assert.throws(function () {math.unaryMinus(new Date())}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.unaryMinus(null)}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX unaryMinus', function () {

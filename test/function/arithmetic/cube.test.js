@@ -14,10 +14,6 @@ describe('cube', function() {
     assert.equal(cube(false), 0);
   });
 
-  it('should return the cube of null', function () {
-    assert.equal(math.ceil(null), 0);
-  });
-
   it('should return the cube of a number', function() {
     assert.equal(cube(4), 64);
     assert.equal(cube(-2), -8);
@@ -56,6 +52,10 @@ describe('cube', function() {
   it('should throw an error if there\'s wrong number of args', function() {
     assert.throws(function () {cube()}, /TypeError: Too few arguments/);
     assert.throws(function () {cube(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {cube(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should cube each element in a matrix, array or range', function() {

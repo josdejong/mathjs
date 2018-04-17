@@ -16,10 +16,6 @@ describe('csch', function() {
     approx.equal(csch(false), Number.POSITIVE_INFINITY);
   });
 
-  it('should return the csch of null', function () {
-    approx.equal(csch(null), Number.POSITIVE_INFINITY);
-  });
-
   it('should return the csch of a number', function() {
     approx.equal(csch(0), Number.POSITIVE_INFINITY);
     approx.equal(csch(pi), 0.086589537530047);

@@ -861,6 +861,21 @@ describe('Unit', function() {
       unit1 = Unit.parse('5exabytes');
       approx.equal(unit1.value, 4e19);
       assert.equal(unit1.units[0].unit.name, 'bytes');
+
+      unit1 = Unit.parse('1 / s');
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 's');
+      assert.equal(unit1.units[0].power, -1);
+
+      unit1 = Unit.parse('1/s');
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 's');
+      assert.equal(unit1.units[0].power, -1);
+
+      unit1 = Unit.parse('1 * s');
+      approx.equal(unit1.value, 1);
+      assert.equal(unit1.units[0].unit.name, 's');
+      assert.equal(unit1.units[0].power, 1);
     });
 
     it('should parse expressions with nested parentheses correctly', function() {
@@ -921,6 +936,7 @@ describe('Unit', function() {
       assert.throws(function () {Unit.parse('meter.')}, /Unexpected "\."/);
       assert.throws(function () {Unit.parse('meter/')}, /Trailing characters/);
       assert.throws(function () {Unit.parse('/meter')}, /Unexpected "\/"/);
+      assert.throws(function () {Unit.parse('1 */ s')}, /Unexpected "\/"/);
       assert.throws(function () {Unit.parse('45 kg 34 m')}, /Unexpected "3"/);
     });
 
@@ -940,6 +956,20 @@ describe('Unit', function() {
       assert(math.type.isBigNumber(unit1.value));
 
       math.config(origConfig);
+    });
+  });
+
+  describe('prefixes', function () {
+    it('should accept both long and short prefixes for ohm', function () {
+      assert.equal(Unit.parse('5 ohm').toString(), "5 ohm");
+      assert.equal(Unit.parse('5 milliohm').toString(), "5 milliohm");
+      assert.equal(Unit.parse('5 mohm').toString(), "5 mohm");
+    });
+
+    it('should accept both long and short prefixes for bar', function () {
+      assert.equal(Unit.parse('5 bar').toString(), "5 bar");
+      assert.equal(Unit.parse('5 millibar').toString(), "5 millibar");
+      assert.equal(Unit.parse('5 mbar').toString(), "5 mbar");
     });
   });
 
@@ -1029,6 +1059,9 @@ describe('Unit', function() {
       assert.equal(unit3.units[0].unit.name, 'meters');
       assert.equal(unit3.units[0].prefix.name, '');
 
+      assert.equal(new Unit(10, "decades").toNumeric("decade"), 10);
+      assert.equal(new Unit(10, "centuries").toNumeric("century"), 10);
+      assert.equal(new Unit(10, "millennia").toNumeric("millennium"), 10);
     });
   });
 
@@ -1069,6 +1102,41 @@ describe('Unit', function() {
         assert.equal(key, Unit.UNITS[key].name);
       }
     });
+  });
+
+  describe('angles', function () {
+
+    it ('should create angles', function () {
+      assert.equal(new Unit(1, 'radian').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'radians').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'degree').equals(new Unit(1, 'deg'))  , true);
+      assert.equal(new Unit(1, 'degrees').equals(new Unit(1, 'deg'))  , true);
+      assert.equal(new Unit(1, 'gradian').equals(new Unit(1, 'grad'))  , true);
+      assert.equal(new Unit(1, 'gradians').equals(new Unit(1, 'grad'))  , true);
+
+      assert.equal(new Unit(1, 'radian').to('rad').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'radians').to('rad').equals(new Unit(1, 'rad'))  , true);
+      assert.equal(new Unit(1, 'deg').to('rad').equals(new Unit(2 * Math.PI / 360, 'rad'))  , true);
+      assert.equal(new Unit(1, 'degree').to('rad').equals(new Unit(2 * Math.PI / 360, 'rad'))  , true);
+      assert.equal(new Unit(1, 'degrees').to('rad').equals(new Unit(2 * Math.PI / 360, 'rad'))  , true);
+      assert.equal(new Unit(1, 'gradian').to('rad').equals(new Unit(Math.PI / 200, 'rad'))  , true);
+      assert.equal(new Unit(1, 'gradians').to('rad').equals(new Unit(Math.PI / 200, 'rad'))  , true);
+    });
+
+    it('should have correct long/short prefixes', function () {
+      assert.equal(new Unit(20000, 'rad').toString(), '20 krad');
+      assert.equal(new Unit(20000, 'radian').toString(), '20 kiloradian');
+      assert.equal(new Unit(20000, 'radians').toString(), '20 kiloradians');
+
+      assert.equal(new Unit(20000, 'deg').toString(), '20 kdeg');
+      assert.equal(new Unit(20000, 'degree').toString(), '20 kilodegree');
+      assert.equal(new Unit(20000, 'degrees').toString(), '20 kilodegrees');
+
+      assert.equal(new Unit(20000, 'grad').toString(), '20 kgrad');
+      assert.equal(new Unit(20000, 'gradian').toString(), '20 kilogradian');
+      assert.equal(new Unit(20000, 'gradians').toString(), '20 kilogradians');
+    })
+
   });
 
   describe('createUnitSingle', function() {

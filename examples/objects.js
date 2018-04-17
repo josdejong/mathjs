@@ -21,8 +21,8 @@ print(math.eval('obj.prop', scope));            // 42
 print(math.eval('obj["prop"]', scope));         // 42
 
 // set properties (returns the whole object, not the property value!)
-print(math.eval('obj.prop = 43', scope));       // {"prop": 43}
-print(math.eval('obj["prop"] = 43', scope));    // {"prop": 43}
+print(math.eval('obj.prop = 43', scope));       // 43
+print(math.eval('obj["prop"] = 43', scope));    // 43
 print(scope.obj);                               // {"prop": 43}
 
 

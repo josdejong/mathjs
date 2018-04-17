@@ -410,7 +410,7 @@ describe('FunctionNode', function() {
         return string;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -440,6 +440,24 @@ describe('FunctionNode', function() {
     var n = new FunctionNode(s, [a, b]);
 
     assert.equal(n.toString({handler: customFunction}), '1 add 2');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(4);
+    var node = new FunctionNode(a, [b, c]);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'FunctionNode',
+      fn: a,
+      args: [b, c]
+    });
+
+    var parsed = FunctionNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX a FunctionNode', function () {
@@ -478,7 +496,7 @@ describe('FunctionNode', function() {
         return latex;
       }
       else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 

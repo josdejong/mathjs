@@ -23,17 +23,23 @@ The following configuration options are available:
   determined by the option `matrix`. In case of mixed matrix
   inputs, a matrix will be returned always.
 
-- `number`. The default type of numbers. This setting is used by functions
-  like `eval` which cannot determine the correct type of output from the
-  functions input. For most functions though, the type of output is determined
-  from the the input: a number as input will return a number as output,
+- `number`. The type of numeric output for functions which cannot
+  determine the numeric type from the inputs. For most functions though,
+  the type of output is determined from the the input:
+  a number as input will return a number as output,
   a BigNumber as input returns a BigNumber as output.
+
+  For example the functions `math.eval('2+3')`, `math.parse('2+3')`,
+  `math.range('1:10')`, and `math.unit('5cm')` use the `number` configuration
+  setting. But `math.sqrt(4)` will always return the number `2`
+  regardless of the `number` configuration, because the input is a number.
+
   Available values are: `'number'` (default), `'BigNumber'`, or `'Fraction'`.
   [BigNumbers](../datatypes/bignumbers.js) have higher precision than the default
   numbers of JavaScript, and [`Fractions`](../datatypes/fractions.js) store
   values in terms of a numerator and denominator.
 
-- `precision`. The maximum number of significant digits for bigNumbers.
+- `precision`. The maximum number of significant digits for BigNumbers.
   This setting only applies to BigNumbers, not to numbers.
   Default value is `64`.
 

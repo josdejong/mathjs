@@ -16,10 +16,6 @@ describe('ceil', function() {
     assert.equal(ceil(false), 0);
   });
 
-  it('should return the ceil of null', function () {
-    assert.equal(math.ceil(null), 0);
-  });
-
   it('should return the ceil of a number', function() {
     approx.equal(ceil(0), 0);
     approx.equal(ceil(1), 1);
@@ -88,6 +84,10 @@ describe('ceil', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {ceil()}, /TypeError: Too few arguments/);
     assert.throws(function () {ceil(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {ceil(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX ceil', function () {

@@ -167,6 +167,21 @@ describe('ParenthesisNode', function() {
     assert.equal(n.toString({handler: customFunction}), '[1]');
   });
 
+  it('toJSON and fromJSON', function () {
+    var b = new ConstantNode(2);
+    var node = new ParenthesisNode(b);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'ParenthesisNode',
+      content: b
+    });
+
+    var parsed = ParenthesisNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX a ParenthesisNode', function () {
     var a = new ConstantNode(1);
     var n = new ParenthesisNode(a);

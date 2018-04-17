@@ -21,12 +21,6 @@ describe('bitAnd', function () {
     assert.equal(bitAnd(false, false), 0);
   });
 
-  it('should bitwise and numbers and null', function () {
-    assert.equal(math.bitAnd(null, null), 0);
-    assert.equal(math.bitAnd(null, 1), 0);
-    assert.equal(math.bitAnd(1, null), 0);
-  });
-
   it('should bitwise and mixed numbers and booleans', function () {
     assert.equal(bitAnd(1, true), 1);
     assert.equal(bitAnd(1, false), 0);
@@ -207,6 +201,7 @@ describe('bitAnd', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {bitAnd(null, 1);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitAnd(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitAnd(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitAnd(true, undefined);}, /TypeError: Unexpected type of argument/);

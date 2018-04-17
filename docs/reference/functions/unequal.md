@@ -10,10 +10,11 @@ values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
 In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
+Strings are compared by their numerical value.
 
 Values `null` and `undefined` are compared strictly, thus `null` is unequal
-with everything except `null`, and `undefined` is unequal with everying
-except. `undefined`.
+with everything except `null`, and `undefined` is unequal with everything
+except `undefined`.
 
 
 ## Syntax

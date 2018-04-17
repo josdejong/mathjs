@@ -18,10 +18,6 @@ describe('acsch', function() {
     assert.equal(acsch(false), Infinity);
   });
 
-  it('should return the hyperbolic arccsc of null', function () {
-    assert.equal(acsch(null), Infinity);
-  });
-
   it('should return the hyperbolic arccsc of a number', function() {
     approx.equal(acsch(-2), -0.48121182505960344749775891342437);
     approx.equal(acsch(-1), -0.88137358701954302523260932497979);

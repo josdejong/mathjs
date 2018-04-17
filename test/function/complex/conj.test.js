@@ -8,10 +8,6 @@ describe('conj', function() {
     assert.strictEqual(conj(false), 0);
   });
 
-  it('should compute the conjugate of null', function () {
-    assert.strictEqual(conj(null), 0);
-  });
-
   it('should compute the conjugate of a number', function () {
     assert.equal(conj(1), 1);
     assert.equal(conj(2), 2);

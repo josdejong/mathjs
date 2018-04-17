@@ -11,11 +11,6 @@ describe('norm', function () {
     assert.equal(math.norm(false, 10), 0);
   });
 
-  it('should return the absolute value of null', function () {
-    assert.equal(math.norm(null), 0);
-    assert.equal(math.norm(null, 10), 0);
-  });
-
   it('should return the absolute value of a number', function () {
     assert.equal(math.norm(-4.2), 4.2);
     assert.equal(math.norm(-3.5), 3.5);
@@ -95,6 +90,10 @@ describe('norm', function () {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {math.norm();}, /TypeError: Too few arguments/);
     assert.throws(function () {math.norm(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {math.norm(null);}, /Unexpected type of argument in function norm/);
   });
 
   it('should throw an error with a string', function () {

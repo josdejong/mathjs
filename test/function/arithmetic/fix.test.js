@@ -16,10 +16,6 @@ describe('fix', function() {
     assert.equal(fix(false), 0);
   });
 
-  it('should round null', function () {
-    assert.equal(math.ceil(null), 0);
-  });
-
   it('should round numbers correctly', function() {
     approx.equal(fix(0), 0);
     approx.equal(fix(1), 1);
@@ -90,6 +86,10 @@ describe('fix', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {fix()}, /TypeError: Too few arguments/);
     assert.throws(function () {fix(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {fix(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX fix', function () {

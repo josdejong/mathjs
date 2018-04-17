@@ -79,12 +79,6 @@ describe('or', function () {
     assert.strictEqual(or(false, 0), false);
   });
 
-  it('should or mixed numbers and null', function () {
-    assert.strictEqual(or(2, null), true);
-    assert.strictEqual(or(null, 2), true);
-    assert.strictEqual(or(null, null), false);
-  });
-
   it('should or bignumbers', function () {
     assert.strictEqual(or(bignumber(1), bignumber(1)), true);
     assert.strictEqual(or(bignumber(-1), bignumber(1)), true);
@@ -214,6 +208,7 @@ describe('or', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {or(2, null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {or(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {or(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {or(true, undefined);}, /TypeError: Unexpected type of argument/);
