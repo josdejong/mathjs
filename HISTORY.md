@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 4.1.2
+## 2018-04-18, version 4.1.2
 
 - Fixed #1082: implemented support for unit plurals `decades`, `centuries`,
   and `millennia`.
