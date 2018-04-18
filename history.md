@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180418-version-412">2018-04-18, version 4.1.2 <a href="#20180418-version-412" title="Permalink">#</a></h2>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1082">#1082</a>: implemented support for unit plurals `decades`, `centuries`,
+  and `millennia`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1083">#1083</a>: units `decade` and `watt` having a wrong name when stringifying.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h2 id="20180411-version-411">2018-04-11, version 4.1.1 <a href="#20180411-version-411" title="Permalink">#</a></h2>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1063">#1063</a>: derivative not working when resolving a variable with unary

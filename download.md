@@ -43,7 +43,7 @@ Math.js can be downloaded or linked from various content delivery networks:
   <tbody>
     <tr>
       <td>unpkg</td>
-      <td><a href="https://unpkg.com/mathjs@4.1.1/">https://unpkg.com/mathjs@4.1.1/</a></td>
+      <td><a href="https://unpkg.com/mathjs@4.1.2/">https://unpkg.com/mathjs@4.1.2/</a></td>
     </tr>
     <tr>
       <td>cdnjs</td>
@@ -61,8 +61,8 @@ Here some direct download links from [unpkg](https://unpkg.com):
 <table class="download">
   <tr>
     <td>
-      <a href="https://unpkg.com/mathjs@4.1.1/dist/math.js">
-        Development (version 4.1.1)
+      <a href="https://unpkg.com/mathjs@4.1.2/dist/math.js">
+        Development (version 4.1.2)
       </a>
     </td>
     <td>
@@ -71,8 +71,8 @@ Here some direct download links from [unpkg](https://unpkg.com):
   </tr>
   <tr>
     <td>
-      <a href="https://unpkg.com/mathjs@4.1.1/dist/math.min.js">
-        Production (version 4.1.1)
+      <a href="https://unpkg.com/mathjs@4.1.2/dist/math.min.js">
+        Production (version 4.1.2)
       </a>
     </td>
     <td>
