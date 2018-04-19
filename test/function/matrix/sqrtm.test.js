@@ -51,4 +51,15 @@ describe('sqrtm', function () {
     approx.deepEqual(math.pow(math.sqrtm(B), 2), B);
   });
 
+  it('should throw an error in case of non-square matrices', function() {
+    assert.throws(function () { math.sqrtm([1, 2, 3]) }, /Matrix must be square/);
+    assert.throws(function () { math.sqrtm([[1, 2, 3]]) }, /Matrix must be square/);
+    assert.throws(function () { math.sqrtm([[1, 2, 3], [4, 5, 6]]) }, /Matrix must be square/);
+  });
+
+  it('should LaTeX sqrtm', function () {
+    var expression = math.parse('sqrtm([[33, 24], [48, 57]])');
+    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}33&24\\\\48&57\\\\\\end{bmatrix}\\right)^{\\frac{1}{2}}');
+  });
+
 });
