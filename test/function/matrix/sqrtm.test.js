@@ -43,4 +43,12 @@ describe('sqrtm', function () {
     assert.deepEqual(math.sqrtm([20.25]), math.matrix([4.5]));
   });
 
+  it('math.pow(math.sqrtm(A), 2) should equal A', function() {
+    var A = math.matrix([[33, 24], [48, 57]]);
+    var B = math.matrix([[ 5,  2], [ 4,  7]]);
+
+    approx.deepEqual(math.pow(math.sqrtm(A), 2), A);
+    approx.deepEqual(math.pow(math.sqrtm(B), 2), B);
+  });
+
 });
