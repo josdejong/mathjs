@@ -1,12 +1,13 @@
 // test sqrtm
 var assert = require('assert'),
-    math = require('../../../index');
+    approx = require('../../../tools/approx'),
+    math   = require('../../../index');
 
 describe('sqrtm', function () {
 
   it('should return the principal square root of a matrix', function() {
-    assert.deepEqual(math.round(math.sqrtm([[33, 24], [48, 57]])), math.matrix([[5, 2], [4, 7]]));
-    assert.deepEqual(math.round(math.sqrtm([[2, 4], [4, 1]])), math.matrix([[4, -1], [-1, 4]]));
+    approx.deepEqual(math.sqrtm([[33, 24], [48, 57]]), math.matrix([[5, 2], [4, 7]]));
+    approx.deepEqual(math.sqrtm([[2, 4], [4, 1]]), math.matrix([[4, -1], [-1, 4]]));
   });
 
   it('should return the principal square root of a matrix with just one value', function() {
