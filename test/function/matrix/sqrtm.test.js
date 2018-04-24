@@ -30,9 +30,9 @@ describe('sqrtm', function () {
   });
 
   it('should return the principal square root of a matrix with just one value', function() {
-    assert.deepEqual(math.sqrtm([4]), math.matrix([2]));
-    assert.deepEqual(math.sqrtm([16]), math.matrix([4]));
-    assert.deepEqual(math.sqrtm([20.25]), math.matrix([4.5]));
+    math.deepEqual(math.sqrtm([ 4]), [2]);
+    math.deepEqual(math.sqrtm([16]), [4]);
+    math.deepEqual(math.sqrtm([20.25]), [4.5]);
   });
 
   it('should return the principal square root of a matrix of big numbers', function() {
@@ -56,6 +56,18 @@ describe('sqrtm', function () {
   it('should LaTeX sqrtm', function () {
     var expression = math.parse('sqrtm([[33, 24], [48, 57]])');
     assert.equal(expression.toTex(), '{\\begin{bmatrix}33&24\\\\48&57\\\\\\end{bmatrix}}^{\\frac{1}{2}}');
+  });
+
+  it('should return the result in the same format as the input', function() {
+    assert.equal(math.typeof(math.sqrtm(A)),  'Array');
+    assert.equal(math.typeof(math.sqrtm(B)),  'Array');
+    assert.equal(math.typeof(math.sqrtm(AA)), 'Array');
+    assert.equal(math.typeof(math.sqrtm(BB)), 'Array');
+
+    assert.equal(math.typeof(math.sqrtm(math.matrix(A))),  'Matrix');
+    assert.equal(math.typeof(math.sqrtm(math.matrix(B))),  'Matrix');
+    assert.equal(math.typeof(math.sqrtm(math.matrix(AA))), 'Matrix');
+    assert.equal(math.typeof(math.sqrtm(math.matrix(BB))), 'Matrix');
   });
 
 });
