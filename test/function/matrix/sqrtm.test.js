@@ -36,8 +36,7 @@ describe('sqrtm', function () {
   });
 
   it('should return the principal square root of a matrix of big numbers', function() {
-    // approx.deepEqual(math.sqrtm(math.bignumber(AA)), math.bignumber(A));
-    // approx.deepEqual(math.sqrtm(math.bignumber(BB)), math.bignumber(B));
+    assert.deepEqual(math.round(math.sqrtm(math.bignumber(AA)), 20), math.bignumber(A));
   });
 
   it('math.pow(math.sqrtm(A), 2) should equal A', function() {
