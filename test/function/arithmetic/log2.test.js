@@ -15,9 +15,6 @@ describe('log2', function() {
     assert.equal(log2(false), -Infinity);
   });
 
-  it('should return the log base 2 of null', function () {
-    assert.equal(log2(null), -Infinity);
-  });
 
   it('should return the log base 2 of positive numbers', function() {
     assert.equal(log2(1), 0);

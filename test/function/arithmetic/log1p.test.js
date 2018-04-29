@@ -17,11 +17,6 @@ describe('log1p', function() {
     assert.equal(log1p(1,false), 0);
   });
 
-  it('should return the log1p of null', function () {
-    assert.equal(log1p(null), 0);
-    assert.equal(log1p(1, null), 0);
-  });
-
   it('should return the log1p of positive numbers', function() {
     assert.equal(log1p(-1), -Infinity);
     assert.equal(log1p(-0), -0);
