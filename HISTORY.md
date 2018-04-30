@@ -1,6 +1,11 @@
 # History
 
 
+## not yet released, version 4.2.0
+
+- Implemented function `math.sqrtm`. Thanks @ferrolho.
+
+
 ## 2018-04-18, version 4.1.2
 
 - Fixed #1082: implemented support for unit plurals `decades`, `centuries`,
