@@ -1,7 +1,7 @@
 var assert = require('assert');
 var approx = require('../../../../../tools/approx');
 var market = require('../../../../../tools/matrixmarket');
-var math = require('../../../../../index');
+var math = require('../../../../../index').create();
 
 math.import(require('../../../../../lib/function/algebra/sparse/cs_permute'));
 math.import(require('../../../../../lib/function/algebra/sparse/cs_lu'));
