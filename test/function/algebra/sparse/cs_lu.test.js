@@ -1,6 +1,6 @@
 var assert = require('assert');
 var approx = require('../../../../tools/approx');
-var math = require('../../../../index');
+var math = require('../../../../index').create();
 math.import(require('../../../../lib/function/algebra/sparse/cs_permute'));
 math.import(require('../../../../lib/function/algebra/sparse/cs_lu'));
 math.import(require('../../../../lib/function/algebra/sparse/cs_sqr'));
