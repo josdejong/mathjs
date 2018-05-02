@@ -1,6 +1,11 @@
 # History
 
 
+## 2018-05-02, version 4.2.1
+
+- Fixed `dist/math.js` being minified.
+
+
 ## 2018-05-02, version 4.2.0
 
 - Implemented function `math.sqrtm`. Thanks @ferrolho.
