@@ -2,7 +2,6 @@
 var assert = require('assert'),
     math = require('../../../index'),
     approx = require('../../../tools/approx'),
-    market = require('../../../tools/matrixmarket'),
     multiply = math.multiply,
     divide = math.divide,
     matrix = math.matrix,
