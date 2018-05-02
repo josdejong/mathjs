@@ -135,7 +135,7 @@
     "docs": "gulp docs",
     "test": "mocha test --recursive",
     "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\"",
-    "prepublishOnly": "npm test && npm run build"
+    "prepublishOnly": "npm run build && npm test"
   },
   "bin": {
     "mathjs": "./bin/cli.js"
