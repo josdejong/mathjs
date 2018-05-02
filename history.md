@@ -5,6 +5,11 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180502-version-421">2018-05-02, version 4.2.1 <a href="#20180502-version-421" title="Permalink">#</a></h2>
+
+- Fixed `dist/math.js` being minified.
+
+
 <h2 id="20180502-version-420">2018-05-02, version 4.2.0 <a href="#20180502-version-420" title="Permalink">#</a></h2>
 
 - Implemented function `math.sqrtm`. Thanks <a href="https://github.com/ferrolho">@ferrolho</a>.
