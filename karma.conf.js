@@ -55,7 +55,14 @@ module.exports = function(config) {
 
     webpack: {
       // don't use esm
+      mode: 'development',
+
       resolve: {
+        // unless we disallow .mjs files here the tests fail
+        // due to decimal.mjs being imported.
+        extensions: [".js", ".json"],
+        // same as above, disallow 'module' field to prevent
+        // decimal.mjs from breaking tests.
         mainFields: ['browser', 'main'],
       },
     },
@@ -67,4 +74,4 @@ module.exports = function(config) {
       }
     },
   })
-}
+};
