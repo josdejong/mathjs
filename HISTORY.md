@@ -1,11 +1,14 @@
 # History
 
 
-## not yet released, version 4.2.0
+## 2018-05-02, version 4.2.0
 
 - Implemented function `math.sqrtm`. Thanks @ferrolho.
 - Implemented functions `math.log2`, `math.log1p`, and `math.expm1`.
   Thanks @BigFav and @harrysarson.
+- Fixed some unit tests broken on nodejs v10.
+- Upgraded development dependencies.
+- Dropped integration testing on nodejs v4.
 
 
 ## 2018-04-18, version 4.1.2

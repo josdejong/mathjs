@@ -228,7 +228,7 @@ describe('Complex', function () {
       var complex3 = Complex.fromPolar({r: 1, phi: Math.PI});
       var complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2});
       var complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2});
-      assertComplex(complex1, 0, 0);
+      assertComplex(complex1, -0, -0);
       assertComplex(complex2, 5, 0);
       assert.equal(complex3.re, -1);
       assert.equal(complex4.im, 3);
@@ -251,10 +251,10 @@ describe('Complex', function () {
     });
 
     it('should only accept an object with r and phi keys for 1 argument', function() {
-      assert.throws(function() { Complex({}) }, "Invalid Param");
-      assert.throws(function() { Complex({r: 1}) }, "Invalid Param");
-      assert.throws(function() { Complex({phi: 1}) }, "Invalid Param");
-      assert.throws(function() { Complex("") }, "Invalid Param");
+      assert.throws(function() { Complex({}) }, /Invalid Param/);
+      assert.throws(function() { Complex({r: 1}) }, /Invalid Param/);
+      assert.throws(function() { Complex({phi: 1}) }, /Invalid Param/);
+      assert.throws(function() { Complex("") }, /Invalid Param/);
     });
 
   });
