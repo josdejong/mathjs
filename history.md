@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180502-version-420">2018-05-02, version 4.2.0 <a href="#20180502-version-420" title="Permalink">#</a></h2>
+
+- Implemented function `math.sqrtm`. Thanks <a href="https://github.com/ferrolho">@ferrolho</a>.
+- Implemented functions `math.log2`, `math.log1p`, and `math.expm1`.
+  Thanks <a href="https://github.com/BigFav">@BigFav</a> and <a href="https://github.com/harrysarson">@harrysarson</a>.
+- Fixed some unit tests broken on nodejs v10.
+- Upgraded development dependencies.
+- Dropped integration testing on nodejs v4.
+
+
 <h2 id="20180418-version-412">2018-04-18, version 4.1.2 <a href="#20180418-version-412" title="Permalink">#</a></h2>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1082">#1082</a>: implemented support for unit plurals `decades`, `centuries`,

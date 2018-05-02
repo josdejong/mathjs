@@ -67,6 +67,7 @@ Function | Description
 [math.dotMultiply(x,&nbsp;y)](functions/dotMultiply.html) | Multiply two matrices element wise.
 [math.dotPow(x,&nbsp;y)](functions/dotPow.html) | Calculates the power of x to y element wise.
 [math.exp(x)](functions/exp.html) | Calculate the exponent of a value.
+[math.expm1(x)](functions/expm1.html) | Calculate the value of subtracting 1 from the exponential value.
 [math.fix(x)](functions/fix.html) | Round a value towards zero.
 [math.floor(x)](functions/floor.html) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.html) | Calculate the greatest common divisor for two or more values or arrays.
@@ -74,6 +75,8 @@ Function | Description
 [math.lcm(a,&nbsp;b)](functions/lcm.html) | Calculate the least common multiple for two or more values or arrays.
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.html) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.html) | Calculate the 10-base logarithm of a value.
+[math.log1p(x)](functions/log1p.html) | Calculate the logarithm of a `value+1`.
+[math.log2(x)](functions/log2.html) | Calculate the 2-base of a value.
 [math.mod(x,&nbsp;y)](functions/mod.html) | Calculates the modulus, the remainder of an integer division.
 [math.multiply(x,&nbsp;y)](functions/multiply.html) | Multiply two or more values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.html) | Calculate the norm of a number, vector or matrix.
@@ -157,6 +160,7 @@ Function | Description
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.html) | Resize a matrix.
 [math.size(x)](functions/size.html) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.html) | Sort the items in a matrix.
+[X&nbsp;=&nbsp;math.sqrtm(A)](functions/sqrtm.html) | Calculate the principal square root of a square matrix.
 [math.squeeze(x)](functions/squeeze.html) | Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
 [math.subset(x,&nbsp;index&nbsp;[,&nbsp;replacement])](functions/subset.html) | Get or set a subset of a matrix or string.
 [math.trace(x)](functions/trace.html) | Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.

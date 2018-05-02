@@ -32,6 +32,21 @@ Type | Description
 Object | The lower triangular matrix, the upper triangular matrix and the permutation vectors.
 
 
+<h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
+
+```js
+var A = math.sparse([[4,3], [6, 3]])
+math.slu(A, 1, 0.001)
+// returns:
+// {
+//   L: [[1, 0], [1.5, 1]]
+//   U: [[4, 3], [0, -1.5]]
+//   p: [0, 1]
+//   q: [0, 1]
+// }
+```
+
+
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [lup](lup.html),

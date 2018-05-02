@@ -50,4 +50,6 @@ math.pow(2, 10);                // returns 1024
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [exp](exp.html),
-[log10](log10.html)
+[log2](log2.html),
+[log10](log10.html),
+[log1p](log1p.html)
