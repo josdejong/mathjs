@@ -40,4 +40,5 @@ math.sqrt(-4);                // returns Complex 2i
 [square](square.md),
 [multiply](multiply.md),
 [cube](cube.md),
-[cbrt](cbrt.md)
+[cbrt](cbrt.md),
+[sqrtm](sqrtm.md)

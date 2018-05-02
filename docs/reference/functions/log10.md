@@ -39,4 +39,6 @@ math.pow(10, 4);                // returns 10000
 ## See also
 
 [exp](exp.md),
-[log](log.md)
+[log](log.md),
+[log1p](log1p.md),
+[log2](log2.md)
