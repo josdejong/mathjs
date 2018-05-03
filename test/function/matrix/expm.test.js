@@ -70,6 +70,24 @@ describe('expm', function() {
      ));
   });
 
+  it('should work on SparseMatrix', function() {
+    approx.deepEqual(expm(
+      math.sparse(
+        [[0, 6, 0, 0],
+        [0, 0, 6, 0],
+        [0, 0, 0, 6],
+        [0, 0, 0, 0]]
+      )
+     ),
+     math.sparse(
+      [[1, 6, 18, 36],
+       [0, 1,  6, 18],
+       [0, 0,  1,  6],
+       [0, 0,  0,  1]]
+     ));
+
+  });
+
   it('should LaTeX transpose', function () {
     var expression = math.parse('expm([[1,2],[3,4]])');
     assert.equal(expression.toTex(), '\\exp\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)');
