@@ -2,6 +2,10 @@
 
 ## not yet released, version 5.0.0
 
+- Implemented complex conjugate transpose `math.ctranspose`. See #1097.
+  Thanks @jackschmidt.
+- Changed the behavior of `A'` in the expression parser to calculate the complex
+  conjugate transpose. See #1097. Thanks @jackschmidt.
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
 
 
