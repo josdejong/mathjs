@@ -188,7 +188,7 @@ describe('IndexNode', function() {
     assert.equal(n.toString(), '.a');
   });
 
-  it ('should stringigy an IndexNode with custom toString', function () {
+  it ('should stringify an IndexNode with custom toString', function () {
     //Also checks if the custom functions get passed on to the children
     var customFunction = function (node, options) {
       if (node.type === 'IndexNode') {
@@ -207,6 +207,22 @@ describe('IndexNode', function() {
     var n = new IndexNode([b, c]);
 
     assert.equal(n.toString({handler: customFunction}), 'const(1, number), const(2, number)');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var prop = new ConstantNode('prop');
+    var node = new IndexNode([prop], true);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'IndexNode',
+      dimensions: [ prop ],
+      dotNotation: true
+    });
+
+    var parsed = IndexNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX an IndexNode', function () {

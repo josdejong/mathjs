@@ -5,7 +5,48 @@
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
 
 
-## 2017-03-17, version 4.0.1
+## 2018-05-02, version 4.2.1
+
+- Fixed `dist/math.js` being minified.
+
+
+## 2018-05-02, version 4.2.0
+
+- Implemented function `math.sqrtm`. Thanks @ferrolho.
+- Implemented functions `math.log2`, `math.log1p`, and `math.expm1`.
+  Thanks @BigFav and @harrysarson.
+- Fixed some unit tests broken on nodejs v10.
+- Upgraded development dependencies.
+- Dropped integration testing on nodejs v4.
+
+
+## 2018-04-18, version 4.1.2
+
+- Fixed #1082: implemented support for unit plurals `decades`, `centuries`,
+  and `millennia`.
+- Fixed #1083: units `decade` and `watt` having a wrong name when stringifying.
+  Thanks @ericman314.
+
+
+## 2018-04-11, version 4.1.1
+
+- Fixed #1063: derivative not working when resolving a variable with unary
+  minus like `math.derivative('-x', 'x')`.
+
+
+## 2018-04-08, version 4.1.0
+
+- Extended function `math.print` with support for arrays and matrices.
+  Thanks @jean-emmanuel.
+- Fixed #1077: Serialization/deserialization to JSON with reviver not being
+  supported by nodes.
+- Fixed #1016: Extended `math.typeof` with support for `ResultSet` and nodes
+  like `SymbolNode`.
+- Fixed #1072: Added support for long and short prefixes for the unit `bar`
+  (i.e. `millibar` and `mbar`).
+
+
+## 2018-03-17, version 4.0.1
 
 - Fixed #1062: mathjs not working on ES5 browsers like IE11 and Safari 9.3.
 - Fixed #1061: `math.unit` not accepting input like `1/s`.

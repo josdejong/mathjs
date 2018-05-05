@@ -293,6 +293,26 @@ describe('BlockNode', function() {
     assert.equal(n.toString({handler: customFunction}), 'const(1, number); const(2, number); ');
   });
 
+  it('toJSON and fromJSON', function () {
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var bBlock = {node: b, visible: false};
+    var cBlock = {node: c, visible: true};
+
+    var node = new BlockNode([bBlock, cBlock]);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'BlockNode',
+      blocks: [ bBlock, cBlock ]
+    });
+
+    var parsed = BlockNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX a BlockNode', function () {
     var n = new BlockNode([
       {node: new ConstantNode(5), visible:true},

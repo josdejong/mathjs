@@ -94,10 +94,58 @@ describe('replacer', function () {
     assert.deepEqual(JSON.stringify(m), json);
   });
 
+  it('should stringify a Chain', function () {
+    var c = math.chain(2.3);
+    var json = '{"mathjs":"Chain","value":2.3}';
+    assert.deepEqual(JSON.stringify(c), json);
+  });
+
+  it('should stringify a node tree', function () {
+    var node = math.parse('2 + sin(3 x)');
+    var json = {
+      "mathjs": "OperatorNode",
+      "op": "+",
+      "fn": "add",
+      "args": [
+        {
+          "mathjs": "ConstantNode",
+          "value": 2
+        },
+        {
+          "mathjs": "FunctionNode",
+          "fn": {
+            "mathjs": "SymbolNode",
+            "name": "sin"
+          },
+          "args": [
+            {
+              "mathjs": "OperatorNode",
+              "op": "*",
+              "fn": "multiply",
+              "args": [
+                {
+                  "mathjs": "ConstantNode",
+                  "value": 3
+                },
+                {
+                  "mathjs": "SymbolNode",
+                  "name": "x"
+                }
+              ],
+              "implicit": true
+            }
+          ]
+        }
+      ],
+      "implicit": false
+    };
+
+    assert.deepEqual(JSON.parse(JSON.stringify(node)), json);
+  });
+
   it('should stringify Help', function () {
     var h = new math.type.Help({name: 'foo', description: 'bar'});
     var json = '{"mathjs":"Help","name":"foo","description":"bar"}';
-
     assert.deepEqual(JSON.parse(JSON.stringify(h)), JSON.parse(json));
   });
 

@@ -959,6 +959,20 @@ describe('Unit', function() {
     });
   });
 
+  describe('prefixes', function () {
+    it('should accept both long and short prefixes for ohm', function () {
+      assert.equal(Unit.parse('5 ohm').toString(), "5 ohm");
+      assert.equal(Unit.parse('5 milliohm').toString(), "5 milliohm");
+      assert.equal(Unit.parse('5 mohm').toString(), "5 mohm");
+    });
+
+    it('should accept both long and short prefixes for bar', function () {
+      assert.equal(Unit.parse('5 bar').toString(), "5 bar");
+      assert.equal(Unit.parse('5 millibar').toString(), "5 millibar");
+      assert.equal(Unit.parse('5 mbar').toString(), "5 mbar");
+    });
+  });
+
   describe('_isDerived', function() {
     it('should return the correct value', function () {
       assert.equal(Unit.parse('34 kg')._isDerived(), false);
@@ -1045,6 +1059,9 @@ describe('Unit', function() {
       assert.equal(unit3.units[0].unit.name, 'meters');
       assert.equal(unit3.units[0].prefix.name, '');
 
+      assert.equal(new Unit(10, "decades").toNumeric("decade"), 10);
+      assert.equal(new Unit(10, "centuries").toNumeric("century"), 10);
+      assert.equal(new Unit(10, "millennia").toNumeric("millennium"), 10);
     });
   });
 
@@ -1078,6 +1095,12 @@ describe('Unit', function() {
       assert.equal(new Unit(1, 'Wb/A')  .equals(new Unit(1, 'H'))  , true);
       assert.equal(new Unit(1, 'ohm^-1').equals(new Unit(1, 'S'))  , true);
       assert.equal(new Unit(1, 'eV')    .equals(new Unit(1.602176565e-19, 'J')), true);
+    });
+
+    it("For each built-in unit, 'name' should match key", function() {
+      for(var key in Unit.UNITS) {
+        assert.equal(key, Unit.UNITS[key].name);
+      }
     });
   });
 

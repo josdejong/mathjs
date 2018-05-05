@@ -63,6 +63,10 @@ Publish to npm:
 
     npm publish
 
+or directly pass a valid one time password (two factor authentication):
+
+    npm publish --otp 123456
+
 No need to publish for bower: The library is already published because of the
 new version tag.
 

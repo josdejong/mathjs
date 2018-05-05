@@ -45,7 +45,8 @@ var IGNORE_FUNCTIONS = {
 };
 
 var IGNORE_WARNINGS = {
-  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed'],
+  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed',
+    'distance', 'kldivergence', 'erf'],
   parameters: ['parser'],
   returns: ['forEach', 'import']
 };

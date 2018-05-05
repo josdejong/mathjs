@@ -4,9 +4,7 @@
   <title>math.js | plot</title>
   <script src="../../dist/math.js"></script>
 
-  <!-- load http://maurizzzio.github.io/function-plot/ -->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://wzrd.in/standalone/function-plot@1.14.0"></script>
+  <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
 
   <style>
     input[type=text] {
@@ -36,23 +34,33 @@
 <div id="plot"></div>
 
 <p>
-  Plot library: <a href="https://github.com/maurizzzio/function-plot">https://github.com/maurizzzio/function-plot</a>
+  Used plot library: <a href="https://plot.ly/javascript/">Plotly</a>
 </p>
 
 <script>
   function draw() {
     try {
-      functionPlot({
-        target: '#plot',
-        data: [{
-          fn: document.getElementById('eq').value,
-          sampler: 'builtIn',  // this will make function-plot use the evaluator of math.js
-          graphType: 'polyline'
-        }]
+      // compile the expression once
+      var expression = document.getElementById('eq').value;
+      var expr = math.compile(expression);
+
+      // evaluate the expression repeatedly for different values of x
+      var xValues = math.range(-10, 10, 0.5).toArray();
+      var yValues = xValues.map(function (x) {
+        return expr.eval({x: x});
       });
+
+      // render the plot using plotly
+      var trace1 = {
+        x: xValues,
+        y: yValues,
+        type: 'scatter'
+      };
+      var data = [trace1];
+      Plotly.newPlot('plot', data);
     }
     catch (err) {
-      console.log(err);
+      console.error(err);
       alert(err);
     }
   }

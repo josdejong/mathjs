@@ -60,6 +60,9 @@ var webpackConfig = {
     // new webpack.optimize.ModuleConcatenationPlugin()
     // TODO: ModuleConcatenationPlugin seems not to work. https://medium.com/webpack/webpack-3-official-release-15fd2dd8f07b
   ],
+  optimization: {
+    minimize: false
+  },
   cache: true
 };
 

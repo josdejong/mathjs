@@ -509,6 +509,30 @@ describe('AssignmentNode', function() {
     assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+    var d = new ConstantNode(3);
+
+    var node = new AssignmentNode(a, new IndexNode([b, c]), d);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'AssignmentNode',
+      index: {
+        dimensions: [ b, c ],
+        dotNotation: false
+      },
+      object: a,
+      value: d
+    });
+
+    var parsed = AssignmentNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX a AssignmentNode', function () {
     var value = new ConstantNode(2);
     var a = new AssignmentNode(new SymbolNode('a'), value);

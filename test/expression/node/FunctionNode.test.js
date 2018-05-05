@@ -442,6 +442,24 @@ describe('FunctionNode', function() {
     assert.equal(n.toString({handler: customFunction}), '1 add 2');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('add');
+    var b = new ConstantNode(2);
+    var c = new ConstantNode(4);
+    var node = new FunctionNode(a, [b, c]);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'FunctionNode',
+      fn: a,
+      args: [b, c]
+    });
+
+    var parsed = FunctionNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX a FunctionNode', function () {
     var s = new SymbolNode('sqrt');
     var c1 = new ConstantNode(4);

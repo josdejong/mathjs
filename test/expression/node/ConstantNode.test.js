@@ -159,6 +159,20 @@ describe('ConstantNode', function() {
     assert.equal(n.toString({handler: customFunction}), 'const(1)');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new ConstantNode(2.3);
+
+    var json = a.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'ConstantNode',
+      value: 2.3
+    });
+
+    var parsed = ConstantNode.fromJSON(json);
+    assert.deepEqual(parsed, a);
+  });
+
   it ('should LaTeX a ConstantNode', function () {
     assert.equal(new ConstantNode(3).toTex(), '3');
     assert.deepEqual(new ConstantNode(3).toTex(), '3');

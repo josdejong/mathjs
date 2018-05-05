@@ -714,6 +714,26 @@ describe('OperatorNode', function() {
     assert.equal(h.toString({implicit: 'show'}), '2 * (3 + 4)');
   });
 
+  it('toJSON and fromJSON', function () {
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+
+    var node = new OperatorNode('+', 'add', [b, c], true);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'OperatorNode',
+      op: '+',
+      fn: 'add',
+      args: [ b, c ],
+      implicit: true
+    });
+
+    var parsed = OperatorNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
+  });
+
   it ('should LaTeX implicit multiplications', function () {
     var a = math.parse('4a');
     var b = math.parse('4 a');
