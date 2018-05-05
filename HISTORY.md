@@ -5,6 +5,8 @@
 
 - Fixed calculating the Frobenius norm of complex matrices correctly,
   see #1098. Thanks @jackschmidt.
+- Fixed #1076: cannot use mathjs in React VR by updating to
+  `escape-latex@1.0.3`.
 
 
 ## 2018-05-02, version 4.2.1
