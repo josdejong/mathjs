@@ -5,6 +5,19 @@
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
 
 
+## not yet released, version 4.3.0
+
+- Implemented matrix exponential `math.expm`. Thanks @ericman314.
+
+
+## 2018-05-05, version 4.2.2
+
+- Fixed calculating the Frobenius norm of complex matrices correctly,
+  see #1098. Thanks @jackschmidt.
+- Fixed #1076: cannot use mathjs in React VR by updating to
+  `escape-latex@1.0.3`.
+
+
 ## 2018-05-02, version 4.2.1
 
 - Fixed `dist/math.js` being minified.
