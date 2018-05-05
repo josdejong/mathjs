@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 4.2.2
+## 2018-05-05, version 4.2.2
 
 - Fixed calculating the Frobenius norm of complex matrices correctly,
   see #1098. Thanks @jackschmidt.
