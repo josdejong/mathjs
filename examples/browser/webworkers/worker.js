@@ -1,4 +1,4 @@
-importScripts('https://unpkg.com/mathjs@4.2.1/dist/math.min.js');
+importScripts('https://unpkg.com/mathjs@4.2.2/dist/math.min.js');
 
 // create a parser
 var parser = math.parser();

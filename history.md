@@ -5,6 +5,14 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180505-version-422">2018-05-05, version 4.2.2 <a href="#20180505-version-422" title="Permalink">#</a></h2>
+
+- Fixed calculating the Frobenius norm of complex matrices correctly,
+  see <a href="https://github.com/josdejong/mathjs/issues/1098">#1098</a>. Thanks <a href="https://github.com/jackschmidt">@jackschmidt</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1076">#1076</a>: cannot use mathjs in React VR by updating to
+  `escape-latex@1.0.3`.
+
+
 <h2 id="20180502-version-421">2018-05-02, version 4.2.1 <a href="#20180502-version-421" title="Permalink">#</a></h2>
 
 - Fixed `dist/math.js` being minified.
