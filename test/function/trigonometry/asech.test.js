@@ -84,7 +84,7 @@ describe('asech', function() {
     approx.deepEqual(asech(complex('2')), complex(0, pi / 3));
     assert.deepEqual(asech(complex('1')), complex(0, 0));
     approx.deepEqual(asech(complex('0.5')), complex(1.3169578969248, 0));
-    assert.deepEqual(asech(complex('0')), complex(Infinity, 0));
+    assert.deepEqual(asech(complex('0')), complex(Infinity, Infinity));
     approx.deepEqual(asech(complex('-0.5')), complex(1.3169578969248, pi));
     approx.deepEqual(asech(complex('-1')), complex(0, pi));
   });

@@ -60,10 +60,10 @@ describe('divide', function() {
     approx.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
     approx.deepEqual(divide(complex('2i'), complex('4i')), complex('0.5'));
     approx.deepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'));
-    approx.deepEqual(divide(math.i, 0), complex(0, Infinity));
-    approx.deepEqual(divide(complex(0,1), 0), complex(0, Infinity));
-    approx.deepEqual(divide(complex(1,0), 0), complex(Infinity, 0));
-    approx.deepEqual(divide(complex(0,1), complex(0,0)), complex(0, Infinity));
+    approx.deepEqual(divide(math.i, 0), complex(Infinity, Infinity));
+    approx.deepEqual(divide(complex(0,1), 0), complex(Infinity, Infinity));
+    approx.deepEqual(divide(complex(1,0), 0), complex(Infinity, Infinity));
+    approx.deepEqual(divide(complex(0,1), complex(0,0)), complex(Infinity, Infinity));
     approx.deepEqual(divide(complex(1,1), complex(0,0)), complex(Infinity, Infinity));
     approx.deepEqual(divide(complex(1,-1), complex(0,0)), complex(Infinity, -Infinity));
     approx.deepEqual(divide(complex(-1,1), complex(0,0)), complex(-Infinity, Infinity));

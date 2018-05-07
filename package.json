@@ -94,10 +94,10 @@
     "unit"
   ],
   "dependencies": {
-    "complex.js": "2.0.4",
+    "complex.js": "2.0.10",
     "decimal.js": "9.0.1",
     "escape-latex": "1.0.3",
-    "fraction.js": "4.0.4",
+    "fraction.js": "4.0.8",
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
