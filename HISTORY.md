@@ -1,6 +1,22 @@
 # History
 
 
+## not yet released, version 4.3.0
+
+- Implemented matrix exponential `math.expm`. Thanks @ericman314.
+- Upgraded dependencies
+  - `complex.js` from `v2.0.2` to `v2.0.10`.
+  - `fraction.js` from `v4.0.4` to `v4.0.8`.
+
+
+## 2018-05-05, version 4.2.2
+
+- Fixed calculating the Frobenius norm of complex matrices correctly,
+  see #1098. Thanks @jackschmidt.
+- Fixed #1076: cannot use mathjs in React VR by updating to
+  `escape-latex@1.0.3`.
+
+
 ## 2018-05-02, version 4.2.1
 
 - Fixed `dist/math.js` being minified.

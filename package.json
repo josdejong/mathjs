@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -33,6 +33,7 @@
     "Huseyn Guliyev (https://github.com/husayt)",
     "Ivan Vergiliev (IvanVergiliev)",
     "jean-emmanuel (https://github.com/jean-emmanuel)",
+    "Jack Schmidt (https://github.com/jackschmidt)",
     "Jim Garrison (https://github.com/garrison)",
     "Joel Hoover (https://github.com/joelhoover)",
     "Karl Lew (https://github.com/firepick1)",
@@ -93,10 +94,10 @@
     "unit"
   ],
   "dependencies": {
-    "complex.js": "2.0.4",
+    "complex.js": "2.0.10",
     "decimal.js": "9.0.1",
-    "escape-latex": "1.0.0",
-    "fraction.js": "4.0.4",
+    "escape-latex": "1.0.3",
+    "fraction.js": "4.0.8",
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
@@ -138,7 +139,7 @@
     "build": "gulp",
     "watch": "gulp watch",
     "docs": "gulp docs",
-    "test": "mocha test --recursive",
+    "test": "mocha test node-test --recursive",
     "karma": "karma start",
     "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run build && npm test"
