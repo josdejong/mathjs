@@ -134,7 +134,7 @@
     "build": "gulp",
     "watch": "gulp watch",
     "docs": "gulp docs",
-    "test": "mocha test --recursive",
+    "test": "mocha test node-test --recursive",
     "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run build && npm test"
   },

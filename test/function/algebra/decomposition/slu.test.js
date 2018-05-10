@@ -1,6 +1,5 @@
 var approx = require('../../../../tools/approx'),
-    math = require('../../../../index'),
-    market = require('../../../../tools/matrixmarket');
+    math = require('../../../../index');
 
 describe('slu', function () {
 
@@ -72,94 +71,6 @@ describe('slu', function () {
     approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf());
   });
 
-  it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
-    // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        var m = matrices[0];
-
-        // full pivoting
-        var r = math.slu(m, 0, 0.001);
-
-        // verify M[p,q]=L*U
-        approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf());
-
-        // indicate test has completed
-        done();
-      })
-      .fail(function (error) {
-      // indicate test has completed
-      done(error);
-    });
-  });
-
-  it('should decompose matrix, 48 x 48, amd(A+A\') (order=1), full pivoting, matrix market', function (done) {
-    // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        var m = matrices[0];
-
-        // full pivoting
-        var r = math.slu(m, 1, 0.001);
-
-        // verify M[p,q]=L*U
-        approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf());
-
-        // indicate test has completed
-        done();
-      })
-      .fail(function (error) {
-        // indicate test has completed
-        done(error);
-      });
-  });
-
-  it('should decompose matrix, 48 x 48, amd(A\'*A) (order=2), full pivoting, matrix market', function (done) {
-    // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        var m = matrices[0];
-
-        // full pivoting
-        var r = math.slu(m, 2, 0.001);
-
-        // verify M[p,q]=L*U
-        approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf());
-
-        // indicate test has completed
-        done();
-      })
-      .fail(function (error) {
-        // indicate test has completed
-        done(error);
-      });
-  });
-
-  it('should decompose matrix, 48 x 48, amd(A\'*A) (order=3), full pivoting, matrix market', function (done) {
-    // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        var m = matrices[0];
-
-        // full pivoting
-        var r = math.slu(m, 3, 0.001);
-
-        // verify M[p,q]=L*U
-        approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf());
-
-        // indicate test has completed
-        done();
-      })
-      .fail(function (error) {
-        // indicate test has completed
-        done(error);
-      });
-  });
-  
   /**
    * C = A(p,q) where p is the row permutation vector and q the column permutation vector.
    */
