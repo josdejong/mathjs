@@ -13,6 +13,6 @@ jobs:
     - stage: browser-tests
       node_js: 8
       script: npm run test:browser
-    - stage browserstack
+    - stage: browserstack
       node_js: 8
       script: npm run test:browserstack
