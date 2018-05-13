@@ -1,3 +1,7 @@
+env:
+  - BROWSER_STACK_USERNAME: "harrysarson1"
+  - secure: "N22ToZ5bJ6VS/B6kljqs8OpQ3pfPoaOZqVWKiZHfpGgjC9/otAneT6lk6o+CzAIXctzSUj4bUf/vftgX7fj2jAru7pHa3QjkkTtb3AEf3noS1wBnkQgUcIxC7c6IwD2QQSC2Tcya0ynkIVjTpdtplSk2i41qqKl+24oJ/qaXXvI="
+
 language: node_js
 node_js:
   - 6
@@ -9,3 +13,6 @@ jobs:
     - stage: browser-tests
       node_js: 8
       script: npm run test:browser
+    - stage browserstack
+      node_js: 8
+      script: npm run test:browserstack
