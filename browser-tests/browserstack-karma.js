@@ -7,6 +7,8 @@ module.exports = function(config) {
   config.set(Object.assign(baseConfig, {
     browsers: [
       'bs_firefox_android',
+      'bs_ie_11',
+      'bs_edge',
       'bs_chrome_mac',
     ],
     reporters: [
@@ -28,6 +30,20 @@ module.exports = function(config) {
         device: 'Samsung Galaxy S8',
         os: 'android',
         os_version: '7.0',
+      },
+      bs_ie_11: {
+        base: 'BrowserStack',
+        browser: 'IE',
+        browser_version: '11',
+        os: 'Windows',
+        os_version: '7',
+      },
+      bs_edge: {
+        base: 'BrowserStack',
+        browser: 'Edge',
+        browser_version: '16',
+        os: 'Windows',
+        os_version: '10',
       },
       bs_chrome_mac: {
         base: 'BrowserStack',
