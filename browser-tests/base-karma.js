@@ -1,9 +1,9 @@
 var path = require('path');
 
 module.exports = function(config) {
-  config.set({
+  return {
 
-    basePath: '',
+    basePath: '../',
 
 
     frameworks: ['mocha'],
@@ -15,17 +15,14 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-      '**/*.js': [ 'webpack' ],
+      '**/*.js': ['webpack'],
     },
-
-
-    reporters: ['mocha'],
 
     captureTimeout: 210000,
     browserDisconnectTolerance: 3, //this one helps
-    browserDisconnectTimeout : 210000,
-    browserNoActivityTimeout : 210000,
-    
+    browserDisconnectTimeout: 210000,
+    browserNoActivityTimeout: 210000,
+
     // web server port
     port: 9876,
 
@@ -41,8 +38,6 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
-
-    browsers: [/*'ChromeHeadless', */'FirefoxHeadless'],
 
 
     // Continuous Integration mode
@@ -67,11 +62,5 @@ module.exports = function(config) {
       },
     },
 
-    client: {
-      captureConsole: true,
-      mocha: {
-        reporter: 'html',
-      }
-    },
-  })
+  };
 };
