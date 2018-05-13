@@ -234,4 +234,11 @@ describe('derivative', function() {
     }, /TypeError: Too many arguments in function derivative \(expected: 3, actual: 5\)/);
   });
 
+  it('should LaTeX expressions involving derivative', function() {
+    compareString(math.parse('derivative(x*y,x)').toTex(), '{d\\over dx}\\left[x * y\\right]');
+    compareString(math.parse('derivative("x*y",x)').toTex(), '{d\\over dx}\\left[x * y\\right]');
+    compareString(math.parse('derivative(x*y,"x")').toTex(), '{d\\over dx}\\left[x * y\\right]');
+    compareString(math.parse('derivative("x*y","x")').toTex(), '{d\\over dx}\\left[x * y\\right]');
+  });
+
 });
