@@ -1,8 +1,7 @@
 
 env:
   - BROWSER_STACK_USERNAME: "harrysarson1"
-  - global:
-    secure: "Fha+K8DFdYkUtuKNmkH/uhnUledp3b31QITMOj4fUl/dvkda1Z50ug0AQwMpAM0EVKTl+ei+LZs7lyGOojoyRJA0ODs0C0h9S3ItIr2sC9hk+cAzJVv1E/346KjOwbHxr7h31pVIyr2QY5J65bPe9nCxezBjyoRvEuKELlqaBWU="
+  - secure: "Fha+K8DFdYkUtuKNmkH/uhnUledp3b31QITMOj4fUl/dvkda1Z50ug0AQwMpAM0EVKTl+ei+LZs7lyGOojoyRJA0ODs0C0h9S3ItIr2sC9hk+cAzJVv1E/346KjOwbHxr7h31pVIyr2QY5J65bPe9nCxezBjyoRvEuKELlqaBWU="
 
 
 language: node_js
