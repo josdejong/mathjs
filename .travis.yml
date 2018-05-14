@@ -1,6 +1,9 @@
-env:
-  - BROWSER_STACK_USERNAME: "harrysarson1"
-  - secure: "N22ToZ5bJ6VS/B6kljqs8OpQ3pfPoaOZqVWKiZHfpGgjC9/otAneT6lk6o+CzAIXctzSUj4bUf/vftgX7fj2jAru7pHa3QjkkTtb3AEf3noS1wBnkQgUcIxC7c6IwD2QQSC2Tcya0ynkIVjTpdtplSk2i41qqKl+24oJ/qaXXvI="
+
+addons:
+  browserstack:
+    username: "harrysarson1"
+    access_key:
+      secure: "YYIZb5kfKT9AIcusLMmM8jbXiQNA8KCi3giRPMrlk9Nt3lScmQfVYGI9jsm8/YW4I5K8XLSddxfmFPSAfCLvMPW4Mglye27nVv5r8N7Gt1IkdxXlRt8Uj+hgZ+HhEwJEX/ddyBk7S4hF8eej0Az718pC1lyCXxu57MKFvU24zWk="
 
 language: node_js
 node_js:
