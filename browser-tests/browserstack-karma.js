@@ -31,7 +31,7 @@ module.exports = function(config) {
         os: 'android',
         os_version: '7.0',
       },
-      bs_ie_9: {
+      bs_ie_11: {
         base: 'BrowserStack',
         browser: 'IE',
         browser_version: '11',
