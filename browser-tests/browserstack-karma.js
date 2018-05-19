@@ -7,7 +7,7 @@ module.exports = function(config) {
   config.set(Object.assign(baseConfig, {
     browsers: [
       'bs_firefox_android',
-      'bs_ie_9',
+      'bs_ie_11',
       'bs_edge',
       'bs_chrome_mac',
     ],
@@ -34,7 +34,7 @@ module.exports = function(config) {
       bs_ie_9: {
         base: 'BrowserStack',
         browser: 'IE',
-        browser_version: '9',
+        browser_version: '11',
         os: 'Windows',
         os_version: '7',
       },
