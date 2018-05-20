@@ -20,5 +20,4 @@ jobs:
       node_js: 8
       script: npm run test:$NAME
       env:
-        - NAME=browser
-        - NAME=browserstack
+        - NAME=browser NAME=browserstack
