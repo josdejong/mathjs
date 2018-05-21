@@ -8,6 +8,7 @@
 - Upgraded dependencies
   - `complex.js` from `v2.0.2` to `v2.0.10`.
   - `fraction.js` from `v4.0.4` to `v4.0.8`.
+- Upgraded devDependencies (`mocha`, `uglify-js`, `webpack`).
 
 
 ## 2018-05-05, version 4.2.2
