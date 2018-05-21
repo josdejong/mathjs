@@ -3,3 +3,9 @@ node_js:
   - 6
   - 8
   - 10
+
+jobs:
+  include:
+    - stage: browser-tests
+      node_js: 8
+      script: npm run karma
