@@ -5,6 +5,16 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="not-yet-released-version-430">not yet released, version 4.3.0 <a href="#not-yet-released-version-430" title="Permalink">#</a></h2>
+
+- Implemented matrix exponential `math.expm`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1101">#1101</a>: math.js bundle not working when loading in a WebWorker.
+- Upgraded dependencies
+  - `complex.js` from `v2.0.2` to `v2.0.10`.
+  - `fraction.js` from `v4.0.4` to `v4.0.8`.
+- Upgraded devDependencies (`mocha`, `uglify-js`, `webpack`).
+
+
 <h2 id="20180505-version-422">2018-05-05, version 4.2.2 <a href="#20180505-version-422" title="Permalink">#</a></h2>
 
 - Fixed calculating the Frobenius norm of complex matrices correctly,

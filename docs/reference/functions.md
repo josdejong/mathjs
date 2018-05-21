@@ -146,6 +146,7 @@ Function | Description
 [math.det(x)](functions/det.html) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.html) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.html) | Calculate the dot product of two vectors.
+[math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
 [math.eye(n)](functions/eye.html) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.html) | Flatten a multi dimensional matrix into a single dimensional matrix.
