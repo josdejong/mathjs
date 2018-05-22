@@ -11,7 +11,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'browser-tests/browser-tests.test.js',
+      'browser-test-config/browser-tests.test.js',
     ],
 
     preprocessors: {

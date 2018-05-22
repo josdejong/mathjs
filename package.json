@@ -141,8 +141,8 @@
     "watch": "gulp watch",
     "docs": "gulp docs",
     "test": "mocha test node-test --recursive",
-    "test:browser": "karma start ./browser-tests/local-karma.js",
-    "test:browserstack": "karma start ./browser-tests/browserstack-karma.js",
+    "test:browser": "karma start ./browser-test-config/local-karma.js",
+    "test:browserstack": "karma start ./browser-test-config/browserstack-karma.js",
     "coverage": "istanbul cover _mocha -- test --recursive; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run build && npm test"
   },
