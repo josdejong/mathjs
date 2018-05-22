@@ -50,6 +50,7 @@ var webpackConfig = {
     library: 'math',
     libraryTarget: 'umd',
     path: DIST,
+    globalObject: 'this',
     filename: FILE
   },
   externals: [
