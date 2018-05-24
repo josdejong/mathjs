@@ -4,8 +4,16 @@ node_js:
   - 8
   - 10
 
+# NAME env var is purely cosmetic, only way to identify builds until
+# https://github.com/travis-ci/travis-ci/issues/5898 is fixed.
+
 jobs:
   include:
     - stage: browser-tests
       node_js: 8
-      script: npm run karma
+      script: npm run test:browser
+      env: NAME=local browser
+    - # second script to run in the browser-tests stage
+      node_js: 8
+      script: npm run test:browserstack
+      env: NAME=browserstack
