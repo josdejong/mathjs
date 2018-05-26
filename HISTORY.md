@@ -1,7 +1,12 @@
 # History
 
 
-## not yet released, version 4.3.0
+## not yet released, version 4.4.0
+
+- Implemented function `compareText`. See #1085.
+
+
+## 2018-05-21, version 4.3.0
 
 - Implemented matrix exponential `math.expm`. Thanks @ericman314.
 - Fixed #1101: math.js bundle not working when loading in a WebWorker.
