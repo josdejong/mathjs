@@ -3,7 +3,7 @@
 
 ## not yet released, version 4.4.0
 
-- Implemented function `compareText`. See #1085.
+- Implemented functions `equalText` and `compareText`. See #1085.
 
 
 ## 2018-05-21, version 4.3.0
