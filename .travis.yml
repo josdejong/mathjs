@@ -15,5 +15,5 @@ jobs:
       env: NAME=local browser
     - # second script to run in the browser-tests stage
       node_js: 8
-      script: npm run test:browserstack
+      script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
       env: NAME=browserstack
