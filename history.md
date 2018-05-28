@@ -5,7 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
-<h2 id="not-yet-released-version-430">not yet released, version 4.3.0 <a href="#not-yet-released-version-430" title="Permalink">#</a></h2>
+<h2 id="20180528-version-440">2018-05-28, version 4.4.0 <a href="#20180528-version-440" title="Permalink">#</a></h2>
+
+- Implemented functions `equalText` and `compareText`. See <a href="https://github.com/josdejong/mathjs/issues/1085">#1085</a>.
+
+
+<h2 id="20180521-version-430">2018-05-21, version 4.3.0 <a href="#20180521-version-430" title="Permalink">#</a></h2>
 
 - Implemented matrix exponential `math.expm`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1101">#1101</a>: math.js bundle not working when loading in a WebWorker.

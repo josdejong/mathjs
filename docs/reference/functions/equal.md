@@ -69,4 +69,5 @@ math.equal(0, null);          // returns false
 [larger](larger.html),
 [largerEq](largerEq.html),
 [compare](compare.html),
-[deepEqual](deepEqual.html)
+[deepEqual](deepEqual.html),
+[equalText](equalText.html)

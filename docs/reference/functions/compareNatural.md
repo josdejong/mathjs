@@ -44,7 +44,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-number | Returns the result of the comparison: 1, 0 or -1.
+number | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 0 when x == y.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
@@ -75,10 +75,5 @@ math.compareNatural({a: 2}, {a: 4});       // returns -1
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[equal](equal.html),
-[unequal](unequal.html),
-[smaller](smaller.html),
-[smallerEq](smallerEq.html),
-[larger](larger.html),
-[largerEq](largerEq.html),
-[compare](compare.html)
+[compare](compare.html),
+[compareText](compareText.html)

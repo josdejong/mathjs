@@ -188,8 +188,10 @@ Function | Description
 ---- | -----------
 [math.compare(x,&nbsp;y)](functions/compare.html) | Compare two values.
 [math.compareNatural(x,&nbsp;y)](functions/compareNatural.html) | Compare two values of any type in a deterministic, natural way.
+[math.compareText(x,&nbsp;y)](functions/compareText.html) | Compare two strings lexically.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.html) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.html) | Test whether two values are equal.
+[math.equalText(x,&nbsp;y)](functions/equalText.html) | Check equality of two strings.
 [math.larger(x,&nbsp;y)](functions/larger.html) | Test whether value x is larger than y.
 [math.largerEq(x,&nbsp;y)](functions/largerEq.html) | Test whether value x is larger or equal to y.
 [math.smaller(x,&nbsp;y)](functions/smaller.html) | Test whether value x is smaller than y.

@@ -33,7 +33,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the result of the comparison: 1, 0 or -1.
+number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 0 when x == y.
 
 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
@@ -43,6 +43,7 @@ math.compare(6, 1);           // returns 1
 math.compare(2, 3);           // returns -1
 math.compare(7, 7);           // returns 0
 math.compare('10', '2');      // returns 1
+math.compare('1000', '1e3');  // returns 0
 
 var a = math.unit('5 cm');
 var b = math.unit('40 mm');
@@ -60,4 +61,5 @@ math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
 [smallerEq](smallerEq.html),
 [larger](larger.html),
 [largerEq](largerEq.html),
-[compareNatural](compareNatural.html)
+[compareNatural](compareNatural.html),
+[compareText](compareText.html)
