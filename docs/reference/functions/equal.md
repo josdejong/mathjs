@@ -65,4 +65,5 @@ math.equal(0, null);          // returns false
 [larger](larger.md),
 [largerEq](largerEq.md),
 [compare](compare.md),
-[deepEqual](deepEqual.md)
+[deepEqual](deepEqual.md),
+[equalText](equalText.md)

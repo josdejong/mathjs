@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 4.4.0
+## 2018-05-28, version 4.4.0
 
 - Implemented functions `equalText` and `compareText`. See #1085.
 

@@ -40,7 +40,7 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-number | Returns the result of the comparison: 1, 0 or -1.
+number | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 0 when x == y.
 
 
 ## Examples
@@ -71,10 +71,5 @@ math.compareNatural({a: 2}, {a: 4});       // returns -1
 
 ## See also
 
-[equal](equal.md),
-[unequal](unequal.md),
-[smaller](smaller.md),
-[smallerEq](smallerEq.md),
-[larger](larger.md),
-[largerEq](largerEq.md),
-[compare](compare.md)
+[compare](compare.md),
+[compareText](compareText.md)
