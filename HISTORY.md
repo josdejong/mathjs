@@ -1,6 +1,12 @@
 # History
 
 
+## 2018-05-29, version 4.4.1
+
+- Fixed #1109: a bug in `inv` when dealing with values close to zero.
+  Thanks @ericman314.
+
+
 ## 2018-05-28, version 4.4.0
 
 - Implemented functions `equalText` and `compareText`. See #1085.
