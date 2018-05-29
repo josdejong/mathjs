@@ -84,6 +84,35 @@ describe('inv', function() {
     assert.throws(function () {math.concat(inv(new Date()))}, /TypeError: Unexpected type of argument/);
   });
 
+  it('should avoid issues with elements that are almost zero', function() {
+
+    approx.deepEqual(inv([
+      [0, 1, 0, 788 ],
+      [-1, 0, 0, 692   ],
+      [0, 0, 1, 0   ],
+      [0, 0, 0, 1]
+    ]), [
+      [0, -1, 0, 692 ],
+      [1, 0, 0, -788  ],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ]);
+    
+    approx.deepEqual(inv([
+      [6.123233995736766e-17, 1, 0, 788 ],
+      [-1, 6.123233995736766e-17, 0, 692   ],
+      [0, 0, 1, 0   ],
+      [0, 0, 0, 1]
+    ]), [
+      [6.123233995736766e-17, -1, 0, 692 ],
+      [1, 6.123233995736766e-17, 0, -788  ],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ]);
+    
+    
+  })
+
   it('should  LaTeX inv', function () {
     var expression = math.parse('inv([[1,2],[3,4]])');
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^{-1}');
