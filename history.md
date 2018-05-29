@@ -5,6 +5,12 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180529-version-441">2018-05-29, version 4.4.1 <a href="#20180529-version-441" title="Permalink">#</a></h2>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1109">#1109</a>: a bug in `inv` when dealing with values close to zero.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h2 id="20180528-version-440">2018-05-28, version 4.4.0 <a href="#20180528-version-440" title="Permalink">#</a></h2>
 
 - Implemented functions `equalText` and `compareText`. See <a href="https://github.com/josdejong/mathjs/issues/1085">#1085</a>.
