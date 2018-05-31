@@ -133,7 +133,7 @@ The test results can be checked on https://travis-ci.org/josdejong/mathjs. Travi
 
 Thanks Travis and BrowserStack for the generous free hosting of this open source project!
 
-![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo) &nbsp;&nbsp;&nbsp;
+![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png) &nbsp;&nbsp;&nbsp;
 ![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)
 
 To run the tests on remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
