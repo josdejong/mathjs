@@ -8,6 +8,8 @@ module.exports = function(config) {
     browsers: [
       'bs_firefox_android',
       'bs_chrome_mac',
+      'bs_ie_11',
+      'bs_edge',
     ],
     reporters: [
       'mocha', 'BrowserStack',
@@ -35,6 +37,20 @@ module.exports = function(config) {
         browser_version: '66',
         os: 'OS X',
         os_version: 'High Sierra',
+      },
+      bs_ie_11: {
+        base: 'BrowserStack',
+        browser: 'IE',
+        browser_version: '11',
+        os: 'Windows',
+        os_version: '7',
+      },
+      bs_edge: {
+        base: 'BrowserStack',
+        browser: 'Edge',
+        browser_version: '16',
+        os: 'Windows',
+        os_version: '10',
       },
     },
   }));
