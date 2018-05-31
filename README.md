@@ -113,6 +113,10 @@ Then, the tests can be executed:
 
     npm test
 
+Additionally, the tests can be run on FireFox using [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode):
+
+    npm run test:browser
+
 To test code coverage of the tests:
 
     npm run coverage
@@ -121,9 +125,15 @@ To see the coverage results, open the generated report in your browser:
 
     ./coverage/lcov-report/index.html
 
-Automated cross browser testing for mathjs is generously provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a>
+### ![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)
 
-<a href="https://www.browserstack.com" target="_blank"><img alt="BrowserStack" src="https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png"></a>
+Automated cross browser testing for mathjs is generously provided by [BrowserStack](https://www.browserstack.com") and is run automatically when any commit lands in Math.js.
+To run the tests on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then
+
+    npm run test:browserstack
+
+will run the tests remotely on BrowserStack.
+Note that a valid BrowserStack account is needed to use the remote testing.
 
 
 ## License
