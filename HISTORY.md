@@ -3,6 +3,7 @@
 
 ## not yet released, version 4.4.2
 
+- Drastically improved the performance of `det`. Thanks @ericman314.
 - Fixed #1065, #1121: Fixed wrong documentation of function
   `compareNatural` and clarified the behavior for strings.
 
