@@ -131,15 +131,14 @@ To see the coverage results, open the generated report in your browser:
 Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github.
 The test results can be checked on https://travis-ci.org/josdejong/mathjs. Travis CI runs the tests for different versions of node.js, and BrowserStack runs the tests are run on all major browsers.
 
-Thanks Travis and BrowserStack for the generous free hosting of this open source project!
-
-![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png) &nbsp;&nbsp;&nbsp;
-![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)
-
 To run the tests on remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
 
     npm run test:browserstack
 
+![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png) &nbsp;&nbsp;&nbsp;
+![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)
+
+Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
 
 ## License
 
