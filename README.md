@@ -135,8 +135,8 @@ To run the tests on remotely on BrowserStack, first set the environment variable
 
     npm run test:browserstack
 
-![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png) &nbsp;&nbsp;&nbsp;
-![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)
+[![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png)](https://travis-ci.org/) &nbsp;&nbsp;&nbsp;
+[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
 
 Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
 
