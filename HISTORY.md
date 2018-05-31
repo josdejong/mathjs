@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 4.4.2
+
+- Fixed #1065, #1121: Fixed wrong documentation of function
+  `compareNatural` and clarified the behavior for strings.
+
+
 ## 2018-05-29, version 4.4.1
 
 - Fixed #1109: a bug in `inv` when dealing with values close to zero.
