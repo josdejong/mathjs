@@ -17,3 +17,6 @@ jobs:
       node_js: 8
       script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
       env: NAME=browserstack
+
+git:
+  depth: 5
