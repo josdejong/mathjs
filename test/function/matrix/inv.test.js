@@ -51,6 +51,17 @@ describe('inv', function() {
       [0, 0, 1],
       [0, 1, 0]
     ]);
+
+    approx.deepEqual(inv([
+      [1, 0, 0],
+      [0, -1, 1],
+      [0, 0, 1]
+    ]), [
+      [1, 0, 0],
+      [0, -1, 1],
+      [0, 0, 1]
+    ]);
+    
   });
 
   it('should return the inverse for each element in a matrix', function() {
