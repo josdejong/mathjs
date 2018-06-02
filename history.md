@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180602-version-442">2018-06-02, version 4.4.2 <a href="#20180602-version-442" title="Permalink">#</a></h2>
+
+- Drastically improved the performance of `det`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1065">#1065</a>, <a href="https://github.com/josdejong/mathjs/issues/1121">#1121</a>: Fixed wrong documentation of function
+  `compareNatural` and clarified the behavior for strings.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1122">#1122</a> a regression in function `inv` (since `v4.4.1`).
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h2 id="20180529-version-441">2018-05-29, version 4.4.1 <a href="#20180529-version-441" title="Permalink">#</a></h2>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1109">#1109</a>: a bug in `inv` when dealing with values close to zero.

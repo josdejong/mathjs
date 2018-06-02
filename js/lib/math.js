@@ -7,8 +7,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 4.4.1
- * @date    2018-05-29
+ * @version 4.4.2
+ * @date    2018-06-02
  *
  * @license
  * Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
@@ -1427,7 +1427,7 @@ exports.toSymbol = function (name, isUnit) {
 "use strict";
 
 
-var isBigNumber = __webpack_require__(90);
+var isBigNumber = __webpack_require__(91);
 
 /**
  * Clone an object
@@ -2839,7 +2839,7 @@ exports.factory = factory;
 
 var formatNumber = __webpack_require__(3).format;
 var formatBigNumber = __webpack_require__(547).format;
-var isBigNumber = __webpack_require__(90);
+var isBigNumber = __webpack_require__(91);
 
 /**
  * Test whether value is a string
@@ -3227,7 +3227,7 @@ function factory (type, config, load, typed) {
   var latex = __webpack_require__(4);
   
   var algorithm01 = load(__webpack_require__(34));
-  var algorithm04 = load(__webpack_require__(88));
+  var algorithm04 = load(__webpack_require__(89));
   var algorithm10 = load(__webpack_require__(44));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -5122,7 +5122,11 @@ function factory (type, config, load, typed) {
    * For Complex numbers, first the real parts are compared. If equal,
    * the imaginary parts are compared.
    *
-   * Strings are compared lexically.
+   * Strings are compared with a natural sorting algorithm, which
+   * orders strings in a "logic" way following some heuristics.
+   * This differs from the function `compare`, which converts the string
+   * into a numeric value and compares that. The function `compareText`
+   * on the other hand compares text lexically.
    *
    * Arrays and Matrices are compared value by value until there is an
    * unequal pair of values encountered. Objects are compared by sorted
@@ -5139,6 +5143,13 @@ function factory (type, config, load, typed) {
    *    math.compareNatural(7, 7);              // returns 0
    *
    *    math.compareNatural('10', '2');         // returns 1
+   *    math.compareText('10', '2');            // returns -1
+   *    math.compare('10', '2');                // returns 1
+   *
+   *    math.compareNatural('Answer: 10', 'Answer: 2'); // returns 1
+   *    math.compareText('Answer: 10', 'Answer: 2');    // returns -1
+   *    math.compare('Answer: 10', 'Answer: 2');
+   *        // Error: Cannot convert "Answer: 10" to a number
    *
    *    var a = math.unit('5 cm');
    *    var b = math.unit('40 mm');
@@ -6522,7 +6533,7 @@ function factory (type, config, load, typed) {
   var ConditionalNode         = load(__webpack_require__(130));
   var ConstantNode            = load(__webpack_require__(58));
   var FunctionAssignmentNode  = load(__webpack_require__(129));
-  var IndexNode               = load(__webpack_require__(86));
+  var IndexNode               = load(__webpack_require__(87));
   var ObjectNode              = load(__webpack_require__(128));
   var OperatorNode            = load(__webpack_require__(57));
   var ParenthesisNode         = load(__webpack_require__(70));
@@ -8469,7 +8480,7 @@ function factory (type, config, load, typed) {
   var multiply = load(__webpack_require__(8));
   var matrix = load(__webpack_require__(1));
   var fraction = load(__webpack_require__(147));
-  var number = load(__webpack_require__(87));
+  var number = load(__webpack_require__(88));
 
   /**
    * Calculates the power of x to y, `x ^ y`.
@@ -9833,7 +9844,7 @@ var isString = string.isString;
 var validateIndex = array.validateIndex;
 
 function factory (type, config, load, typed) {
-  var Matrix = load(__webpack_require__(89)); // force loading Matrix (do not use via type.Matrix)
+  var Matrix = load(__webpack_require__(90)); // force loading Matrix (do not use via type.Matrix)
 
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -12247,7 +12258,7 @@ exports.factory = factory;
 var deepMap = __webpack_require__(0);
 
 function factory (type, config, load, typed) {
-  var gamma = load(__webpack_require__(101));
+  var gamma = load(__webpack_require__(102));
   var latex = __webpack_require__(4);
 
   /**
@@ -12814,7 +12825,7 @@ function factory (type, config, load, typed) {
       // loop over all columns, and perform row reductions
       for (var c = 0; c < cols; c++) {
         // Pivoting: Swap row c with row r, where row r contains the largest element A[r][c]
-        var A_big = A[c][c];
+        var A_big = abs(A[c][c]);
         var r_big = c;
         r = c+1;
         while (r < rows) {
@@ -15681,3500 +15692,6 @@ exports.factory = factory;
 "use strict";
 
 
-var arraySize = __webpack_require__(2).size;
-var isMatrix = __webpack_require__(72);
-var IndexError = __webpack_require__(61);
-
-/**
- * Reduce a given matrix or array to a new matrix or
- * array with one less dimension, applying the given
- * callback in the selected dimension.
- * @param {Array | Matrix} mat
- * @param {number} dim
- * @param {Function} callback
- * @return {Array | Matrix} res
- */
-module.exports = function(mat, dim, callback) {
-  var size = Array.isArray(mat) ? arraySize(mat) : mat.size();
-  if (dim < 0 || (dim >= size.length)) {
-    // TODO: would be more clear when throwing a DimensionError here
-    throw new IndexError(dim, size.length);
-  }
-
-  if (isMatrix(mat)) {
-    return mat.create(_reduce(mat.valueOf(), dim, callback));
-  }else {
-    return _reduce(mat, dim, callback);
-  }
-};
-
-/**
- * Recursively reduce a matrix
- * @param {Array} mat
- * @param {number} dim
- * @param {Function} callback
- * @returns {Array} ret
- * @private
- */
-function _reduce(mat, dim, callback){
-  var i, ret, val, tran;
-
-  if(dim<=0){
-    if( !Array.isArray(mat[0]) ){
-      val = mat[0];
-      for(i=1; i<mat.length; i++){
-        val = callback(val, mat[i]);
-      }
-      return val;
-    }else{
-      tran = _switch(mat);
-      ret = [];
-      for(i=0; i<tran.length; i++){
-        ret[i] = _reduce(tran[i], dim-1, callback);
-      }
-      return ret;
-    }
-  }else{
-    ret = [];
-    for(i=0; i<mat.length; i++){
-      ret[i] = _reduce(mat[i], dim-1, callback);
-    }
-    return ret;
-  }
-}
-
-/**
- * Transpose a matrix
- * @param {Array} mat
- * @returns {Array} ret
- * @private
- */
-function _switch(mat){
-  var I = mat.length;
-  var J = mat[0].length;
-  var i, j;
-  var ret = [];
-  for( j=0; j<J; j++) {
-    var tmp = [];
-    for( i=0; i<I; i++) {
-      tmp.push(mat[i][j]);
-    }
-    ret.push(tmp);
-  }
-  return ret;
-}
-
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepForEach = __webpack_require__(37);
-var reduce = __webpack_require__(83);
-var containsCollections = __webpack_require__(67);
-
-function factory (type, config, load, typed) {
-  var larger = load(__webpack_require__(33));
-  var improveErrorMessage = load(__webpack_require__(31));
-
-  /**
-   * Compute the maximum value of a matrix or a  list with values.
-   * In case of a multi dimensional array, the maximum of the flattened array
-   * will be calculated. When `dim` is provided, the maximum over the selected
-   * dimension will be calculated. Parameter `dim` is zero-based.
-   *
-   * Syntax:
-   *
-   *     math.max(a, b, c, ...)
-   *     math.max(A)
-   *     math.max(A, dim)
-   *
-   * Examples:
-   *
-   *     math.max(2, 1, 4, 3);                  // returns 4
-   *     math.max([2, 1, 4, 3]);                // returns 4
-   *
-   *     // maximum over a specified dimension (zero-based)
-   *     math.max([[2, 5], [4, 3], [1, 7]], 0); // returns [4, 7]
-   *     math.max([[2, 5], [4, 3]], [1, 7], 1); // returns [5, 4, 7]
-   *
-   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
-   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
-   *
-   * See also:
-   *
-   *    mean, median, min, prod, std, sum, var
-   *
-   * @param {... *} args  A single matrix or or multiple scalar values
-   * @return {*} The maximum value
-   */
-  var max = typed('max', {
-    // max([a, b, c, d, ...])
-    'Array | Matrix': _max,
-
-    // max([a, b, c, d, ...], dim)
-    'Array | Matrix, number | BigNumber': function (array, dim) {
-      return reduce(array, dim.valueOf(), _largest);
-    },
-
-    // max(a, b, c, d, ...)
-    '...': function (args) {
-      if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function max');
-      }
-
-      return _max(args);
-    }
-  });
-
-  max.toTex = '\\max\\left(${args}\\right)';
-
-  return max;
-
-  /**
-   * Return the largest of two values
-   * @param {*} x
-   * @param {*} y
-   * @returns {*} Returns x when x is largest, or y when y is largest
-   * @private
-   */
-  function _largest(x, y) {
-    try {
-      return larger(x, y) ? x : y;
-    }
-    catch (err) {
-      throw improveErrorMessage(err, 'max', y);
-    }
-  }
-
-  /**
-   * Recursively calculate the maximum value in an n-dimensional array
-   * @param {Array} array
-   * @return {number} max
-   * @private
-   */
-  function _max(array) {
-    var max = undefined;
-
-    deepForEach(array, function (value) {
-      try {
-        if (max === undefined || larger(value, max)) {
-          max = value;
-        }
-      }
-      catch (err) {
-        throw improveErrorMessage(err, 'max', value);
-      }
-    });
-
-    if (max === undefined) {
-      throw new Error('Cannot calculate max of an empty array');
-    }
-
-    return max;
-  }
-
-}
-
-exports.name = 'max';
-exports.factory = factory;
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function factory (type, config, load, typed) {
-  /**
-   * Compile an inline expression like "x > 0"
-   * @param {Node} expression
-   * @param {Object} math
-   * @param {Object} scope
-   * @return {function} Returns a function with one argument which fills in the
-   *                    undefined variable (like "x") and evaluates the expression
-   */
-  return function compileInlineExpression(expression, math, scope) {
-    // find an undefined symbol
-    var symbol = expression.filter(function (node) {
-      return type.isSymbolNode(node) &&
-          !(node.name in math) &&
-          !(node.name in scope);
-    })[0];
-
-    if (!symbol) {
-      throw new Error('No undefined variable found in inline expression "' + expression + '"');
-    }
-
-    // create a test function for this equation
-    var name = symbol.name; // variable name
-    var subScope = Object.create(scope);
-    var eq = expression.compile();
-    return function inlineExpression(x) {
-      subScope[name] = x;
-      return eq.eval(subScope);
-    }
-  };
-}
-
-exports.factory = factory;
-
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var map = __webpack_require__(2).map;
-var escape = __webpack_require__(9).escape;
-
-function factory (type, config, load, typed) {
-  var Node = load(__webpack_require__(14));
-  var Range = load(__webpack_require__(146));
-
-  var isArray = Array.isArray;
-
-  /**
-   * @constructor IndexNode
-   * @extends Node
-   *
-   * Describes a subset of a matrix or an object property.
-   * Cannot be used on its own, needs to be used within an AccessorNode or
-   * AssignmentNode.
-   *
-   * @param {Node[]} dimensions
-   * @param {boolean} [dotNotation=false]  Optional property describing whether
-   *                                       this index was written using dot
-   *                                       notation like `a.b`, or using bracket
-   *                                       notation like `a["b"]` (default).
-   *                                       Used to stringify an IndexNode.
-   */
-  function IndexNode(dimensions, dotNotation) {
-    if (!(this instanceof IndexNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
-    }
-
-    this.dimensions = dimensions;
-    this.dotNotation = dotNotation || false;
-
-    // validate input
-    if (!isArray(dimensions) || !dimensions.every(type.isNode)) {
-      throw new TypeError('Array containing Nodes expected for parameter "dimensions"');
-    }
-    if (this.dotNotation && !this.isObjectProperty()) {
-      throw new Error('dotNotation only applicable for object properties');
-    }
-
-    // TODO: deprecated since v3, remove some day
-    var deprecated = function () {
-      throw new Error('Property `IndexNode.object` is deprecated, use `IndexNode.fn` instead');
-    };
-    Object.defineProperty(this, 'object', { get: deprecated, set: deprecated });
-  }
-
-  IndexNode.prototype = new Node();
-
-  IndexNode.prototype.type = 'IndexNode';
-
-  IndexNode.prototype.isIndexNode = true;
-
-  /**
-   * Compile a node into a JavaScript function.
-   * This basically pre-calculates as much as possible and only leaves open
-   * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
-   * @param {Object} argNames An object with argument names as key and `true`
-   *                          as value. Used in the SymbolNode to optimize
-   *                          for arguments from user assigned functions
-   *                          (see FunctionAssignmentNode) or special symbols
-   *                          like `end` (see IndexNode).
-   * @return {function} Returns a function which can be called like:
-   *                        evalNode(scope: Object, args: Object, context: *)
-   */
-  IndexNode.prototype._compile = function (math, argNames) {
-    // TODO: implement support for bignumber (currently bignumbers are silently
-    //       reduced to numbers when changing the value to zero-based)
-
-    // TODO: Optimization: when the range values are ConstantNodes,
-    //       we can beforehand resolve the zero-based value
-
-    // optimization for a simple object property
-    var evalDimensions = map(this.dimensions, function (range, i) {
-      if (type.isRangeNode(range)) {
-        if (range.needsEnd()) {
-          // create a range containing end (like '4:end')
-          var childArgNames = Object.create(argNames);
-          childArgNames['end'] = true;
-
-          var evalStart = range.start._compile(math, childArgNames);
-          var evalEnd = range.end._compile(math, childArgNames);
-          var evalStep = range.step 
-              ? range.step._compile(math, childArgNames) 
-              : function () { return 1 };
-
-          return function evalDimension(scope, args, context) {
-            var size = math.size(context).valueOf();
-            var childArgs = Object.create(args);
-            childArgs['end'] = size[i];
-
-            return createRange(
-              evalStart(scope, childArgs, context),
-              evalEnd(scope, childArgs, context),
-              evalStep(scope, childArgs, context)
-            );
-          };
-        }
-        else {
-          // create range
-          var evalStart = range.start._compile(math, argNames);
-          var evalEnd = range.end._compile(math, argNames);
-          var evalStep = range.step 
-              ? range.step._compile(math, argNames) 
-              : function () { return 1 };
-
-          return function evalDimension(scope, args, context) {
-            return createRange(
-              evalStart(scope, args, context),
-              evalEnd(scope, args, context),
-              evalStep(scope, args, context)
-            );
-          };
-        }
-      }
-      else if (type.isSymbolNode(range) && range.name === 'end') {
-        // SymbolNode 'end'
-        var childArgNames = Object.create(argNames);
-        childArgNames['end'] = true;
-
-        var evalRange = range._compile(math, childArgNames);
-        
-        return function evalDimension(scope, args, context) {
-          var size = math.size(context).valueOf();
-          var childArgs = Object.create(args);
-          childArgs['end'] = size[i];
-
-          return evalRange(scope, childArgs, context);
-        };
-      }
-      else {
-        // ConstantNode
-        var evalRange = range._compile(math, argNames);
-        return function evalDimension(scope, args, context) {
-          return evalRange(scope, args, context);
-        };
-      }
-    });
-
-    return function evalIndexNode (scope, args, context) {
-      var dimensions = map(evalDimensions, function (evalDimension) {
-        return evalDimension(scope, args, context);
-      });
-      return math.index.apply(math, dimensions);
-    };
-  }
-
-  /**
-   * Execute a callback for each of the child nodes of this node
-   * @param {function(child: Node, path: string, parent: Node)} callback
-   */
-  IndexNode.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.dimensions.length; i++) {
-      callback(this.dimensions[i], 'dimensions[' + i + ']', this);
-    }
-  };
-
-  /**
-   * Create a new IndexNode having it's childs be the results of calling
-   * the provided callback function for each of the childs of the original node.
-   * @param {function(child: Node, path: string, parent: Node): Node} callback
-   * @returns {IndexNode} Returns a transformed copy of the node
-   */
-  IndexNode.prototype.map = function (callback) {
-    var dimensions = [];
-    for (var i = 0; i < this.dimensions.length; i++) {
-      dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this));
-    }
-
-    return new IndexNode(dimensions);
-  };
-
-  /**
-   * Create a clone of this node, a shallow copy
-   * @return {IndexNode}
-   */
-  IndexNode.prototype.clone = function () {
-    return new IndexNode(this.dimensions.slice(0));
-  };
-
-  /**
-   * Test whether this IndexNode contains a single property name
-   * @return {boolean}
-   */
-  IndexNode.prototype.isObjectProperty = function () {
-    return this.dimensions.length === 1 &&
-        type.isConstantNode(this.dimensions[0]) &&
-        typeof this.dimensions[0].value === 'string';
-  };
-
-  /**
-   * Returns the property name if IndexNode contains a property.
-   * If not, returns null.
-   * @return {string | null}
-   */
-  IndexNode.prototype.getObjectProperty = function () {
-    return this.isObjectProperty() ? this.dimensions[0].value : null;
-  };
-
-  /**
-   * Get string representation
-   * @param {Object} options
-   * @return {string} str
-   */
-  IndexNode.prototype._toString = function (options) {
-    // format the parameters like "[1, 0:5]"
-    return this.dotNotation
-        ? ('.' + this.getObjectProperty())
-        : ('[' + this.dimensions.join(', ') + ']');
-  };
-
-  /**
-   * Get a JSON representation of the node
-   * @returns {Object}
-   */
-  IndexNode.prototype.toJSON = function () {
-    return {
-      mathjs: 'IndexNode',
-      dimensions: this.dimensions,
-      dotNotation: this.dotNotation
-    };
-  };
-
-  /**
-   * Instantiate an IndexNode from its JSON representation
-   * @param {Object} json  An object structured like
-   *                       `{"mathjs": "IndexNode", dimensions: [...], dotNotation: false}`,
-   *                       where mathjs is optional
-   * @returns {IndexNode}
-   */
-  IndexNode.fromJSON = function (json) {
-    return new IndexNode(json.dimensions, json.dotNotation);
-  };
-
-  /**
-   * Get HTML representation
-   * @param {Object} options
-   * @return {string} str
-   */
-  IndexNode.prototype.toHTML = function (options) {
-    // format the parameters like "[1, 0:5]"
-	var dimensions = []
-	for (var i=0; i<this.dimensions.length; i++)	{
-	  dimensions[i] = this.dimensions[i].toHTML();
-	}
-	if (this.dotNotation) {
-	  return '<span class="math-operator math-accessor-operator">.</span>' + '<span class="math-symbol math-property">' + escape(this.getObjectProperty()) + '</span>';}
-	else {
-	  return '<span class="math-parenthesis math-square-parenthesis">[</span>' + dimensions.join('<span class="math-separator">,</span>') + '<span class="math-parenthesis math-square-parenthesis">]</span>'}
-  };
-
-  /**
-   * Get LaTeX representation
-   * @param {Object} options
-   * @return {string} str
-   */
-  IndexNode.prototype._toTex = function (options) {
-    var dimensions = this.dimensions.map(function (range) {
-      return range.toTex(options);
-    });
-
-    return this.dotNotation
-        ? ('.' + this.getObjectProperty() + '')
-        : ('_{' + dimensions.join(',') + '}');
-  };
-
-  // helper function to create a Range from start, step and end
-  function createRange(start, end, step) {
-    return new Range(
-        type.isBigNumber(start) ? start.toNumber() : start,
-        type.isBigNumber(end)   ? end.toNumber()   : end,
-        type.isBigNumber(step)  ? step.toNumber()  : step
-    );
-  };
-
-  return IndexNode;
-}
-
-exports.name = 'IndexNode';
-exports.path = 'expression.node';
-exports.factory = factory;
-
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepMap = __webpack_require__(0);
-
-function factory (type, config, load, typed) {
-  /**
-   * Create a number or convert a string, boolean, or unit to a number.
-   * When value is a matrix, all elements will be converted to number.
-   *
-   * Syntax:
-   *
-   *    math.number(value)
-   *    math.number(unit, valuelessUnit)
-   *
-   * Examples:
-   *
-   *    math.number(2);                         // returns number 2
-   *    math.number('7.2');                     // returns number 7.2
-   *    math.number(true);                      // returns number 1
-   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
-   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
-   *
-   * See also:
-   *
-   *    bignumber, boolean, complex, index, matrix, string, unit
-   *
-   * @param {string | number | BigNumber | Fraction | boolean | Array | Matrix | Unit | null} [value]  Value to be converted
-   * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
-   * @return {number | Array | Matrix} The created number
-   */
-  var number = typed('number', {
-    '': function () {
-      return 0;
-    },
-
-    'number': function (x) {
-      return x;
-    },
-
-    'string': function (x) {
-      var num = Number(x);
-      if (isNaN(num)) {
-        throw new SyntaxError('String "' + x + '" is no valid number');
-      }
-      return num;
-    },
-
-    'BigNumber': function (x) {
-      return x.toNumber();
-    },
-
-    'Fraction': function (x) {
-      return x.valueOf();
-    },
-
-    'Unit': function (x) {
-      throw new Error('Second argument with valueless unit expected');
-    },
-
-    'null': function (x) {
-      return 0;
-    },
-
-    'Unit, string | Unit': function (unit, valuelessUnit) {
-      return unit.toNumber(valuelessUnit);
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, number);
-    }
-  });
-
-  number.toTex = {
-    0: '0',
-    1: '\\left(${args[0]}\\right)',
-    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
-  };
-
-  return number;
-}
-
-exports.name = 'number';
-exports.factory = factory;
-
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DimensionError = __webpack_require__(11);
-
-function factory (type, config, load, typed) {
-
-  var equalScalar = load(__webpack_require__(10));
-
-  var SparseMatrix = type.SparseMatrix;
-
-  /**
-   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij). 
-   * Callback function invoked MAX(NNZA, NNZB) times
-   *
-   *
-   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
-   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0
-   *          └  B(i,j)       ; B(i,j) !== 0
-   *
-   *
-   * @param {Matrix}   a                 The SparseMatrix instance (A)
-   * @param {Matrix}   b                 The SparseMatrix instance (B)
-   * @param {Function} callback          The f(Aij,Bij) operation to invoke
-   *
-   * @return {Matrix}                    SparseMatrix (C)
-   *
-   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
-   */
-  var algorithm04 = function (a, b, callback) {
-    // sparse matrix arrays
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var asize = a._size;
-    var adt = a._datatype;
-    // sparse matrix arrays
-    var bvalues = b._values;
-    var bindex = b._index;
-    var bptr = b._ptr;
-    var bsize = b._size;
-    var bdt = b._datatype;
-
-    // validate dimensions
-    if (asize.length !== bsize.length)
-      throw new DimensionError(asize.length, bsize.length);
-
-    // check rows & columns
-    if (asize[0] !== bsize[0] || asize[1] !== bsize[1])
-      throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
-
-    // rows & columns
-    var rows = asize[0];
-    var columns = asize[1];
-
-    // datatype
-    var dt;
-    // equal signature to use
-    var eq = equalScalar;
-    // zero value
-    var zero = 0;
-    // callback signature to use
-    var cf = callback;
-
-    // process data types
-    if (typeof adt === 'string' && adt === bdt) {
-      // datatype
-      dt = adt;
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt]);
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt);
-      // callback
-      cf = typed.find(callback, [dt, dt]);
-    }
-
-    // result arrays
-    var cvalues = avalues && bvalues ? [] : undefined;
-    var cindex = [];
-    var cptr = [];
-    // matrix
-    var c = new SparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    });
-
-    // workspace
-    var xa = avalues && bvalues ? [] : undefined;
-    var xb = avalues && bvalues ? [] : undefined;
-    // marks indicating we have a value in x for a given column
-    var wa = [];
-    var wb = [];
-
-    // vars 
-    var i, j, k, k0, k1;
-    
-    // loop columns
-    for (j = 0; j < columns; j++) {
-      // update cptr
-      cptr[j] = cindex.length;
-      // columns mark
-      var mark = j + 1;
-      // loop A(:,j)
-      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-        // row
-        i = aindex[k];
-        // update c
-        cindex.push(i);
-        // update workspace
-        wa[i] = mark;
-        // check we need to process values
-        if (xa)
-          xa[i] = avalues[k];
-      }
-      // loop B(:,j)
-      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
-        // row
-        i = bindex[k];
-        // check row exists in A
-        if (wa[i] === mark) {
-          // update record in xa @ i
-          if (xa) {
-            // invoke callback
-            var v = cf(xa[i], bvalues[k]);
-            // check for zero
-            if (!eq(v, zero)) {
-              // update workspace
-              xa[i] = v;              
-            }
-            else {
-              // remove mark (index will be removed later)
-              wa[i] = null;
-            }
-          }
-        }
-        else {
-          // update c
-          cindex.push(i);
-          // update workspace
-          wb[i] = mark;
-          // check we need to process values
-          if (xb)
-            xb[i] = bvalues[k];
-        }
-      }
-      // check we need to process values (non pattern matrix)
-      if (xa && xb) {
-        // initialize first index in j
-        k = cptr[j];
-        // loop index in j
-        while (k < cindex.length) {
-          // row
-          i = cindex[k];
-          // check workspace has value @ i
-          if (wa[i] === mark) {
-            // push value (Aij != 0 || (Aij != 0 && Bij != 0))
-            cvalues[k] = xa[i];
-            // increment pointer
-            k++;
-          }
-          else if (wb[i] === mark) {
-            // push value (bij != 0)
-            cvalues[k] = xb[i];
-            // increment pointer
-            k++;
-          }
-          else {
-            // remove index @ k
-            cindex.splice(k, 1);
-          }
-        }
-      }
-    }
-    // update cptr
-    cptr[columns] = cindex.length;
-
-    // return sparse matrix
-    return c;
-  };
-  
-  return algorithm04;
-}
-
-exports.name = 'algorithm04';
-exports.factory = factory;
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var util = __webpack_require__(29);
-
-var string = util.string;
-
-var isString = string.isString;
-
-function factory (type, config, load, typed) {
-  /**
-   * @constructor Matrix
-   *
-   * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
-   * array. A matrix can be constructed as:
-   *     var matrix = math.matrix(data)
-   *
-   * Matrix contains the functions to resize, get and set values, get the size,
-   * clone the matrix and to convert the matrix to a vector, array, or scalar.
-   * Furthermore, one can iterate over the matrix using map and forEach.
-   * The internal Array of the Matrix can be accessed using the function valueOf.
-   *
-   * Example usage:
-   *     var matrix = math.matrix([[1, 2], [3, 4]]);
-   *     matix.size();              // [2, 2]
-   *     matrix.resize([3, 2], 5);
-   *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
-   *     matrix.subset([1,2])       // 3 (indexes are zero-based)
-   *
-   */
-  function Matrix() {
-    if (!(this instanceof Matrix)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
-    }
-  }
-
-  /**
-   * Attach type information
-   */
-  Matrix.prototype.type = 'Matrix';
-  Matrix.prototype.isMatrix = true;
-
-  /**
-   * Get the Matrix storage constructor for the given format.
-   *
-   * @param {string} format       The Matrix storage format.
-   *
-   * @return {Function}           The Matrix storage constructor.
-   */
-  Matrix.storage = function (format) {
-    // check storage format is a string
-    if (!isString(format)) {
-      throw new TypeError('format must be a string value');
-    }
-
-    // get storage format constructor
-    var constructor = Matrix._storage[format];
-    if (!constructor) {
-      throw new SyntaxError('Unsupported matrix storage format: ' + format);
-    }
-
-    // return storage constructor
-    return constructor;
-  };
-
-  // a map with all constructors for all storage types
-  Matrix._storage = {};
-
-  /**
-   * Get the storage format used by the matrix.
-   *
-   * Usage:
-   *     var format = matrix.storage()                   // retrieve storage format
-   *
-   * @return {string}           The storage format.
-   */
-  Matrix.prototype.storage = function () {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke storage on a Matrix interface');
-  };
-  
-  /**
-   * Get the datatype of the data stored in the matrix.
-   *
-   * Usage:
-   *     var format = matrix.datatype()                   // retrieve matrix datatype
-   *
-   * @return {string}           The datatype.
-   */
-  Matrix.prototype.datatype = function () {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke datatype on a Matrix interface');
-  };
-
-  /**
-   * Create a new Matrix With the type of the current matrix instance
-   * @param {Array | Object} data
-   * @param {string} [datatype]
-   */
-  Matrix.prototype.create = function (data, datatype) {
-    throw new Error('Cannot invoke create on a Matrix interface');
-  };
-
-  /**
-   * Get a subset of the matrix, or replace a subset of the matrix.
-   *
-   * Usage:
-   *     var subset = matrix.subset(index)               // retrieve subset
-   *     var value = matrix.subset(index, replacement)   // replace subset
-   *
-   * @param {Index} index
-   * @param {Array | Matrix | *} [replacement]
-   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
-   *                                  the matrix is resized. If not provided,
-   *                                  new matrix elements will be filled with zeros.
-   */
-  Matrix.prototype.subset = function (index, replacement, defaultValue) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke subset on a Matrix interface');
-  };
-
-  /**
-   * Get a single element from the matrix.
-   * @param {number[]} index   Zero-based index
-   * @return {*} value
-   */
-  Matrix.prototype.get = function (index) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke get on a Matrix interface');
-  };
-
-  /**
-   * Replace a single element in the matrix.
-   * @param {number[]} index   Zero-based index
-   * @param {*} value
-   * @param {*} [defaultValue]        Default value, filled in on new entries when
-   *                                  the matrix is resized. If not provided,
-   *                                  new matrix elements will be left undefined.
-   * @return {Matrix} self
-   */
-  Matrix.prototype.set = function (index, value, defaultValue) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke set on a Matrix interface');
-  };
-
-  /**
-   * Resize the matrix to the given size. Returns a copy of the matrix when 
-   * `copy=true`, otherwise return the matrix itself (resize in place).
-   *
-   * @param {number[]} size           The new size the matrix should have.
-   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
-   *                                  If not provided, the matrix elements will
-   *                                  be filled with zeros.
-   * @param {boolean} [copy]          Return a resized copy of the matrix
-   *
-   * @return {Matrix}                 The resized matrix
-   */
-  Matrix.prototype.resize = function (size, defaultValue) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke resize on a Matrix interface');
-  };
-
-  /**
-   * Reshape the matrix to the given size. Returns a copy of the matrix when
-   * `copy=true`, otherwise return the matrix itself (reshape in place).
-   *
-   * @param {number[]} size           The new size the matrix should have.
-   * @param {boolean} [copy]          Return a reshaped copy of the matrix
-   *
-   * @return {Matrix}                 The reshaped matrix
-   */
-  Matrix.prototype.reshape = function (size, defaultValue) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke reshape on a Matrix interface');
-  };
-
-  /**
-   * Create a clone of the matrix
-   * @return {Matrix} clone
-   */
-  Matrix.prototype.clone = function () {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke clone on a Matrix interface');
-  };
-
-  /**
-   * Retrieve the size of the matrix.
-   * @returns {number[]} size
-   */
-  Matrix.prototype.size = function() {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke size on a Matrix interface');
-  };
-
-  /**
-   * Create a new matrix with the results of the callback function executed on
-   * each entry of the matrix.
-   * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: the value of the element, the index
-   *                              of the element, and the Matrix being traversed.
-   * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
-   *
-   * @return {Matrix} matrix
-   */
-  Matrix.prototype.map = function (callback, skipZeros) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke map on a Matrix interface');
-  };
-
-  /**
-   * Execute a callback function on each entry of the matrix.
-   * @param {Function} callback   The callback function is invoked with three
-   *                              parameters: the value of the element, the index
-   *                              of the element, and the Matrix being traversed.
-   */
-  Matrix.prototype.forEach = function (callback) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke forEach on a Matrix interface');
-  };
-
-  /**
-   * Create an Array with a copy of the data of the Matrix
-   * @returns {Array} array
-   */
-  Matrix.prototype.toArray = function () {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke toArray on a Matrix interface');
-  };
-
-  /**
-   * Get the primitive value of the Matrix: a multidimensional array
-   * @returns {Array} array
-   */
-  Matrix.prototype.valueOf = function () {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke valueOf on a Matrix interface');
-  };
-
-  /**
-   * Get a string representation of the matrix, with optional formatting options.
-   * @param {Object | number | Function} [options]  Formatting options. See
-   *                                                lib/utils/number:format for a
-   *                                                description of the available
-   *                                                options.
-   * @returns {string} str
-   */
-  Matrix.prototype.format = function (options) {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke format on a Matrix interface');
-  };
-
-  /**
-   * Get a string representation of the matrix
-   * @returns {string} str
-   */
-  Matrix.prototype.toString = function () {
-    // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke toString on a Matrix interface');
-  };
-   
-  // exports
-  return Matrix;
-}
-
-exports.name = 'Matrix';
-exports.path = 'type';
-exports.factory = factory;
-
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Test whether a value is a BigNumber
- * @param {*} x
- * @return {boolean}
- */
-module.exports = function isBigNumber(x) {
-  return x && x.constructor.prototype.isBigNumber || false
-}
-
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepMap = __webpack_require__(0);
-
-function factory (type, config, load, typed) {
-
-  /**
-   * Calculate the hyperbolic arccos of a value,
-   * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
-   *
-   * For matrices, the function is evaluated element wise.
-   *
-   * Syntax:
-   *
-   *    math.acosh(x)
-   *
-   * Examples:
-   *
-   *    math.acosh(1.5);       // returns 0.9624236501192069
-   *
-   * See also:
-   *
-   *    cosh, asinh, atanh
-   *
-   * @param {number | Complex | Unit | Array | Matrix} x  Function input
-   * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
-   */
-  var acosh = typed('acosh', {
-    'number': function (x) {
-      if (x >= 1 || config.predictable) {
-        return _acosh(x);
-      }
-      if (x <= -1) {
-        return new type.Complex(Math.log(Math.sqrt(x*x - 1) - x), Math.PI);
-      }
-      return new type.Complex(x, 0).acosh();
-    },
-
-    'Complex': function (x) {
-      return x.acosh();
-    },
-
-    'BigNumber': function (x) {
-      return x.acosh();
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, acosh);
-    }
-  });
-
-  acosh.toTex = {1: '\\cosh^{-1}\\left(${args[0]}\\right)'};
-
-  return acosh;
-}
-
-/**
- * Calculate the hyperbolic arccos of a number
- * @param {number} x
- * @return {number}
- * @private
- */
-var _acosh = Math.acosh || function (x) {
-  return Math.log(Math.sqrt(x*x - 1) + x)
-};
-
-exports.name = 'acosh';
-exports.factory = factory;
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DEFAULT_NORMALIZATION = 'unbiased';
-
-var deepForEach = __webpack_require__(37);
-
-function factory (type, config, load, typed) {
-  var add = load(__webpack_require__(20));
-  var subtract = load(__webpack_require__(16));
-  var multiply = load(__webpack_require__(21));
-  var divide = load(__webpack_require__(12));
-  var improveErrorMessage = load(__webpack_require__(31));
-
-  /**
-   * Compute the variance of a matrix or a  list with values.
-   * In case of a (multi dimensional) array or matrix, the variance over all
-   * elements will be calculated.
-   *
-   * Optionally, the type of normalization can be specified as second
-   * parameter. The parameter `normalization` can be one of the following values:
-   *
-   * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
-   * - 'uncorrected'        The sum of squared errors is divided by n
-   * - 'biased'             The sum of squared errors is divided by (n + 1)
-   *
-   * Note that older browser may not like the variable name `var`. In that
-   * case, the function can be called as `math['var'](...)` instead of
-   * `math.var(...)`.
-   *
-   * Syntax:
-   *
-   *     math.var(a, b, c, ...)
-   *     math.var(A)
-   *     math.var(A, normalization)
-   *
-   * Examples:
-   *
-   *     math.var(2, 4, 6);                     // returns 4
-   *     math.var([2, 4, 6, 8]);                // returns 6.666666666666667
-   *     math.var([2, 4, 6, 8], 'uncorrected'); // returns 5
-   *     math.var([2, 4, 6, 8], 'biased');      // returns 4
-   *
-   *     math.var([[1, 2, 3], [4, 5, 6]]);      // returns 3.5
-   *
-   * See also:
-   *
-   *    mean, median, max, min, prod, std, sum
-   *
-   * @param {Array | Matrix} array
-   *                        A single matrix or or multiple scalar values
-   * @param {string} [normalization='unbiased']
-   *                        Determines how to normalize the variance.
-   *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
-   * @return {*} The variance
-   */
-  var variance = typed('variance', {
-    // var([a, b, c, d, ...])
-    'Array | Matrix': function (array) {
-      return _var(array, DEFAULT_NORMALIZATION);
-    },
-
-    // var([a, b, c, d, ...], normalization)
-    'Array | Matrix, string': _var,
-
-    // var(a, b, c, d, ...)
-    '...': function (args) {
-      return _var(args, DEFAULT_NORMALIZATION);
-    }
-  });
-
-  variance.toTex = '\\mathrm{Var}\\left(${args}\\right)';
-
-  return variance;
-
-  /**
-   * Recursively calculate the variance of an n-dimensional array
-   * @param {Array} array
-   * @param {string} normalization
-   *                        Determines how to normalize the variance:
-   *                        - 'unbiased'    The sum of squared errors is divided by (n - 1)
-   *                        - 'uncorrected' The sum of squared errors is divided by n
-   *                        - 'biased'      The sum of squared errors is divided by (n + 1)
-   * @return {number | BigNumber} variance
-   * @private
-   */
-  function _var(array, normalization) {
-    var sum = 0;
-    var num = 0;
-
-    if (array.length == 0) {
-      throw new SyntaxError('Function var requires one or more parameters (0 provided)');
-    }
-
-    // calculate the mean and number of elements
-    deepForEach(array, function (value) {
-      try {
-        sum = add(sum, value);
-        num++;
-      }
-      catch (err) {
-        throw improveErrorMessage(err, 'var', value);
-      }
-    });
-    if (num === 0) throw new Error('Cannot calculate var of an empty array');
-
-    var mean = divide(sum, num);
-
-    // calculate the variance
-    sum = 0;
-    deepForEach(array, function (value) {
-      var diff = subtract(value, mean);
-      sum = add(sum, multiply(diff, diff));
-    });
-
-    switch (normalization) {
-      case 'uncorrected':
-        return divide(sum, num);
-
-      case 'biased':
-        return divide(sum, num + 1);
-
-      case 'unbiased':
-        var zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0;
-        return (num == 1) ? zero : divide(sum, num - 1);
-
-      default:
-        throw new Error('Unknown normalization "' + normalization + '". ' +
-        'Choose "unbiased" (default), "uncorrected", or "biased".');
-    }
-  }
-}
-
-exports.name = 'var';
-exports.factory = factory;
-
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var flatten = __webpack_require__(2).flatten;
-var containsCollections = __webpack_require__(67);
-
-function factory (type, config, load, typed) {
-  var add = load(__webpack_require__(20));
-  var divide = load(__webpack_require__(12));
-  var compare = load(__webpack_require__(46));
-  var partitionSelect = load(__webpack_require__(74));
-  var improveErrorMessage = load(__webpack_require__(31));
-
-  /**
-   * Compute the median of a matrix or a list with values. The values are
-   * sorted and the middle value is returned. In case of an even number of
-   * values, the average of the two middle values is returned.
-   * Supported types of values are: Number, BigNumber, Unit
-   *
-   * In case of a (multi dimensional) array or matrix, the median of all
-   * elements will be calculated.
-   *
-   * Syntax:
-   *
-   *     math.median(a, b, c, ...)
-   *     math.median(A)
-   *
-   * Examples:
-   *
-   *     math.median(5, 2, 7);        // returns 5
-   *     math.median([3, -1, 5, 7]);  // returns 4
-   *
-   * See also:
-   *
-   *     mean, min, max, sum, prod, std, var, quantileSeq
-   *
-   * @param {... *} args  A single matrix or or multiple scalar values
-   * @return {*} The median
-   */
-  var median = typed('median', {
-    // median([a, b, c, d, ...])
-    'Array | Matrix': _median,
-
-    // median([a, b, c, d, ...], dim)
-    'Array | Matrix, number | BigNumber': function (array, dim) {
-      // TODO: implement median(A, dim)
-      throw new Error('median(A, dim) is not yet supported');
-      //return reduce(arguments[0], arguments[1], ...);
-    },
-
-    // median(a, b, c, d, ...)
-    '...': function (args) {
-      if (containsCollections(args)) {
-          throw new TypeError('Scalar values expected in function median');
-      }
-
-      return _median(args);
-    }
-  });
-
-
-  /**
-   * Recursively calculate the median of an n-dimensional array
-   * @param {Array} array
-   * @return {Number} median
-   * @private
-   */
-  function _median(array) {
-    try {
-      array = flatten(array.valueOf());
-
-      var num = array.length;
-      if (num == 0) {
-        throw new Error('Cannot calculate median of an empty array');
-      }
-
-      if (num % 2 == 0) {
-        // even: return the average of the two middle values
-        var mid = num / 2 - 1;
-        var right = partitionSelect(array, mid + 1);
-
-        // array now partitioned at mid + 1, take max of left part
-        var left = array[mid];
-        for (var i = 0; i < mid; ++i) {
-          if (compare(array[i], left) > 0) {
-            left = array[i];
-          }
-        }
-
-        return middle2(left, right);
-      }
-      else {
-        // odd: return the middle value
-        var m = partitionSelect(array, (num - 1) / 2);
-
-        return middle(m);
-      }
-    }
-    catch (err) {
-      throw improveErrorMessage(err, 'median');
-    }
-  }
-
-  // helper function to type check the middle value of the array
-  var middle = typed({
-    'number | BigNumber | Complex | Unit': function (value) {
-      return value;
-    }
-  });
-
-  // helper function to type check the two middle value of the array
-  var middle2 = typed({
-    'number | BigNumber | Complex | Unit, number | BigNumber | Complex | Unit': function (left, right) {
-      return divide(add(left, right), 2);
-    }
-  });
-
-  median.toTex = undefined; // use default template
-
-  return median;
-}
-
-exports.name = 'median';
-exports.factory = factory;
-
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var flatten = __webpack_require__(2).flatten;
-
-function factory (type, config, load, typed) {
-  var index = load(__webpack_require__(27));
-  var concat = load(__webpack_require__(68));
-  var size = load(__webpack_require__(24));
-  var subset = load(__webpack_require__(22));
-  var setDifference = load(__webpack_require__(96));
-  
-  /**
-   * Create the symmetric difference of two (multi)sets.
-   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
-   *
-   * Syntax:
-   *
-   *    math.setSymDifference(set1, set2)
-   *
-   * Examples:
-   *
-   *    math.setSymDifference([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [1, 2, 5, 6]
-   *    math.setSymDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [1, 2, 5, 6]
-   *
-   * See also:
-   *
-   *    setUnion, setIntersect, setDifference
-   *
-   * @param {Array | Matrix}    a1  A (multi)set
-   * @param {Array | Matrix}    a2  A (multi)set
-   * @return {Array | Matrix}    The symmetric difference of two (multi)sets
-   */
-  var setSymDifference = typed('setSymDifference', {
-    'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new index(0)) === 0) { // if any of them is empty, return the other one
-        return flatten(a2);
-      }
-      else if (subset(size(a2), new index(0)) === 0) {
-        return flatten(a1);
-      }
-      var b1 = flatten(a1);
-      var b2 = flatten(a2);
-      return concat(setDifference(b1, b2), setDifference(b2, b1));
-    }
-  });
-
-  return setSymDifference;
-}
-
-exports.name = 'setSymDifference';
-exports.factory = factory;
-
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var flatten = __webpack_require__(2).flatten;
-var identify = __webpack_require__(2).identify;
-var generalize = __webpack_require__(2).generalize;
-
-function factory (type, config, load, typed) {
-  var index = load(__webpack_require__(27));
-  var matrix = load(__webpack_require__(53));
-  var size = load(__webpack_require__(24));
-  var subset = load(__webpack_require__(22));
-  var compareNatural = load(__webpack_require__(26));
-  
-  /**
-   * Create the intersection of two (multi)sets.
-   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
-   *
-   * Syntax:
-   *
-   *    math.setIntersect(set1, set2)
-   *
-   * Examples:
-   *
-   *    math.setIntersect([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [3, 4]
-   *    math.setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [3, 4]
-   *
-   * See also:
-   *
-   *    setUnion, setDifference
-   *
-   * @param {Array | Matrix}    a1  A (multi)set
-   * @param {Array | Matrix}    a2  A (multi)set
-   * @return {Array | Matrix}    The intersection of two (multi)sets
-   */
-  var setIntersect = typed('setIntersect', {
-    'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new index(0)) === 0 || subset(size(a2), new index(0)) === 0) { // of any of them is empty, return empty
-        var result = [];
-      }
-      else {
-        var b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural));
-        var b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural));
-        var result = [];
-        for (var i=0; i<b1.length; i++) {
-          for (var j=0; j<b2.length; j++) {
-              if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
-                result.push(b1[i]);
-                break;
-              }
-          }
-        }
-      }
-      // return an array, if both inputs were arrays
-      if (Array.isArray(a1) && Array.isArray(a2)) {
-        return generalize(result);
-      }
-      // return a matrix otherwise
-      return new matrix(generalize(result));
-    }
-  });
-
-  return setIntersect;
-}
-
-exports.name = 'setIntersect';
-exports.factory = factory;
-
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var flatten = __webpack_require__(2).flatten;
-var identify = __webpack_require__(2).identify;
-var generalize = __webpack_require__(2).generalize;
-
-function factory (type, config, load, typed) {
-  var index = load(__webpack_require__(27));
-  var matrix = load(__webpack_require__(53));
-  var size = load(__webpack_require__(24));
-  var subset = load(__webpack_require__(22));
-  var compareNatural = load(__webpack_require__(26));
-  
-  /**
-   * Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
-   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
-   *
-   * Syntax:
-   *
-   *    math.setDifference(set1, set2)
-   *
-   * Examples:
-   *
-   *    math.setDifference([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [1, 2]
-   *    math.setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [1, 2]
-   *
-   * See also:
-   *
-   *    setUnion, setIntersect, setSymDifference
-   *
-   * @param {Array | Matrix}    a1  A (multi)set
-   * @param {Array | Matrix}    a2  A (multi)set
-   * @return {Array | Matrix}    The difference of two (multi)sets
-   */
-  var setDifference = typed('setDifference', {
-    'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new index(0)) === 0) { // empty-anything=empty
-        var result = [];
-      }
-      else if (subset(size(a2), new index(0)) === 0) { // anything-empty=anything
-        return flatten(a1.toArray());
-      }
-      else {
-        var b1 = identify(flatten(Array.isArray(a1) ? a1: a1.toArray()).sort(compareNatural));
-        var b2 = identify(flatten(Array.isArray(a2) ? a2: a2.toArray()).sort(compareNatural));
-        var result = [];
-        var inb2;
-        for (var i=0; i<b1.length; i++) {
-          inb2 = false;
-          for (var j=0; j<b2.length; j++) {
-            if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
-              inb2 = true;
-              break;
-            }
-          }
-          if (!inb2) {
-            result.push(b1[i]);
-          }
-        }
-      }
-      // return an array, if both inputs were arrays
-      if (Array.isArray(a1) && Array.isArray(a2)) {
-        return generalize(result);
-      }
-      // return a matrix otherwise
-      return new matrix(generalize(result));
-    }
-  });
-
-  return setDifference;
-}
-
-exports.name = 'setDifference';
-exports.factory = factory;
-
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory (type, config, load, typed) {
-
-  var matrix = load(__webpack_require__(1));
-  var _typeof = load(__webpack_require__(40));
-
-  var algorithm13 = load(__webpack_require__(7));
-  var algorithm14 = load(__webpack_require__(6));
-  
-  /**
-   * Compare two strings lexically. Comparison is case sensitive.
-   * Returns 1 when x > y, -1 when x < y, and 0 when x == y.
-   *
-   * For matrices, the function is evaluated element wise.
-   *
-   * Syntax:
-   *
-   *    math.compareText(x, y)
-   *
-   * Examples:
-   *
-   *    math.compareText('B', 'A');     // returns 1
-   *    math.compareText('2', '10');    // returns 1
-   *    math.compare('2', '10');        // returns -1
-   *    math.compareNatural('2', '10'); // returns -1
-   *
-   *    math.compareText('B', ['A', 'B', 'C']); // returns [1, 0, -1]
-   *
-   * See also:
-   *
-   *    equal, equalText, compare, compareNatural
-   *
-   * @param  {string | Array | DenseMatrix} x First string to compare
-   * @param  {string | Array | DenseMatrix} y Second string to compare
-   * @return {number | Array | DenseMatrix} Returns the result of the comparison:
-   *                                        1 when x > y, -1 when x < y, and 0 when x == y.
-   */
-  var compareText = typed('compareText', {
-
-    'any, any': _compareText,
-
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, _compareText);
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return compareText(matrix(x), matrix(y)).valueOf();
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return compareText(matrix(x), y);
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return compareText(x, matrix(y));
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, _compareText, false);
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, _compareText, true);
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, _compareText, false).valueOf();
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, _compareText, true).valueOf();
-    }
-  });
-
-  /**
-   * Compare two strings
-   * @param {string} x
-   * @param {string} y
-   * @returns {number}
-   * @private
-   */
-  function _compareText(x, y) {
-    // we don't want to convert numbers to string, only accept string input
-    if (!type.isString(x)) {
-      throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)');
-    }
-    if (!type.isString(y)) {
-      throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)');
-    }
-
-    return (x === y)
-        ? 0
-        : (x > y ? 1 : -1);
-  }
-
-  compareText.toTex = undefined; // use default template
-
-  return compareText;
-}
-
-exports.name = 'compareText';
-exports.factory = factory;
-
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepForEach = __webpack_require__(37);
-
-function factory (type, config, load, typed) {
-  var add = load(__webpack_require__(20));
-  var improveErrorMessage = load(__webpack_require__(31));
-
-  /**
-   * Compute the sum of a matrix or a list with values.
-   * In case of a (multi dimensional) array or matrix, the sum of all
-   * elements will be calculated.
-   *
-   * Syntax:
-   *
-   *     math.sum(a, b, c, ...)
-   *     math.sum(A)
-   *
-   * Examples:
-   *
-   *     math.sum(2, 1, 4, 3);               // returns 10
-   *     math.sum([2, 1, 4, 3]);             // returns 10
-   *     math.sum([[2, 5], [4, 3], [1, 7]]); // returns 22
-   *
-   * See also:
-   *
-   *    mean, median, min, max, prod, std, var
-   *
-   * @param {... *} args  A single matrix or or multiple scalar values
-   * @return {*} The sum of all values
-   */
-  var sum = typed('sum', {
-    'Array | Matrix': function (args) {
-      // sum([a, b, c, d, ...])
-      return _sum(args);
-    },
-
-    'Array | Matrix, number | BigNumber': function () {
-      // sum([a, b, c, d, ...], dim)
-      // TODO: implement sum(A, dim)
-      throw new Error('sum(A, dim) is not yet supported');
-    },
-
-    '...': function (args) {
-      // sum(a, b, c, d, ...)
-      return _sum(args);
-    }
-  });
-
-  sum.toTex = undefined; // use default template
-
-  return sum;
-
-  /**
-   * Recursively calculate the sum of an n-dimensional array
-   * @param {Array} array
-   * @return {number} sum
-   * @private
-   */
-  function _sum(array) {
-    var sum = undefined;
-
-    deepForEach(array, function (value) {
-      try {
-        sum = (sum === undefined) ? value : add(sum, value);
-      }
-      catch (err) {
-        throw improveErrorMessage(err, 'sum', value);
-      }
-    });
-
-    if (sum === undefined) {
-      switch (config.number) {
-        case 'number':
-          return 0;
-        case 'BigNumber':
-          return new type.BigNumber(0);
-        case 'Fraction':
-          return new type.Fraction(0);
-        default:
-          return 0;
-      }
-    }
-
-    return sum;
-  }
-}
-
-exports.name = 'sum';
-exports.factory = factory;
-
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var maxArgumentCount = __webpack_require__(35).maxArgumentCount;
-
-function factory (type, config, load, typed) {
-  /**
-   * Create a new matrix or array with the results of the callback function executed on
-   * each entry of the matrix/array.
-   *
-   * Syntax:
-   *
-   *    math.map(x, callback)
-   *
-   * Examples:
-   *
-   *    math.map([1, 2, 3], function(value) {
-   *      return value * value;
-   *    });  // returns [1, 4, 9]
-   *
-   * See also:
-   *
-   *    filter, forEach, sort
-   *
-   * @param {Matrix | Array} x    The matrix to iterate on.
-   * @param {Function} callback   The callback method is invoked with three
-   *                              parameters: the value of the element, the index
-   *                              of the element, and the matrix being traversed.
-   * @return {Matrix | array}     Transformed map of x
-   */
-  var map = typed('map', {
-    'Array, function': _map,
-
-    'Matrix, function': function (x, callback) {
-      return x.map(callback);
-    }
-  });
-
-  map.toTex = undefined; // use default template
-
-  return map;
-}
-
-/**
- * Map for a multi dimensional array
- * @param {Array} array
- * @param {Function} callback
- * @return {Array}
- * @private
- */
-function _map (array, callback) {
-  // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback);
-
-  var recurse = function (value, index) {
-    if (Array.isArray(value)) {
-      return value.map(function (child, i) {
-        // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i));
-      });
-    }
-    else {
-      // invoke the callback function with the right number of arguments
-      if (args === 1) {
-        return callback(value);
-      }
-      else if (args === 2) {
-        return callback(value, index);
-      }
-      else { // 3 or -1
-        return callback(value, index, array);
-      }
-    }
-  };
-
-  return recurse(array, []);
-}
-
-exports.name = 'map';
-exports.factory = factory;
-
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepMap = __webpack_require__(0);
-
-function factory (type, config, load, typed) {
-  var latex = __webpack_require__(4);
-
-  /**
-   * Logical `not`. Flips boolean value of a given parameter.
-   * For matrices, the function is evaluated element wise.
-   *
-   * Syntax:
-   *
-   *    math.not(x)
-   *
-   * Examples:
-   *
-   *    math.not(2);      // returns false
-   *    math.not(0);      // returns true
-   *    math.not(true);   // returns false
-   *
-   *    a = [2, -7, 0];
-   *    math.not(a);      // returns [false, false, true]
-   *
-   * See also:
-   *
-   *    and, or, xor
-   *
-   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x First value to check
-   * @return {boolean | Array | Matrix}
-   *            Returns true when input is a zero or empty value.
-   */
-  var not = typed('not', {
-    'number': function (x) {
-      return !x;
-    },
-
-    'Complex': function (x) {
-      return x.re === 0 && x.im === 0;
-    },
-
-    'BigNumber': function (x) {
-      return x.isZero() || x.isNaN();
-    },
-
-    'Unit': function (x) {
-      return x.value !== null ? not(x.value) : true;
-    },
-
-    'Array | Matrix': function (x) {
-      return deepMap(x, not);
-    }
-  });
-
-  not.toTex = {
-    1: latex.operators['not'] + '\\left(${args[0]}\\right)'
-  };
-
-  return not;
-}
-
-exports.name = 'not';
-exports.factory = factory;
-
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepMap = __webpack_require__(0);
-var isInteger = __webpack_require__(3).isInteger;
-
-function factory (type, config, load, typed) {
-  var multiply = load(__webpack_require__(8));
-  var pow = load(__webpack_require__(42));
-
-  /**
-   * Compute the gamma function of a value using Lanczos approximation for
-   * small values, and an extended Stirling approximation for large values.
-   *
-   * For matrices, the function is evaluated element wise.
-   *
-   * Syntax:
-   *
-   *    math.gamma(n)
-   *
-   * Examples:
-   *
-   *    math.gamma(5);       // returns 24
-   *    math.gamma(-0.5);    // returns -3.5449077018110335
-   *    math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
-   *
-   * See also:
-   *
-   *    combinations, factorial, permutations
-   *
-   * @param {number | Array | Matrix} n   A real or complex number
-   * @return {number | Array | Matrix}    The gamma of `n`
-   */
-  var gamma = typed('gamma', {
-    'number': function (n) {
-      var t, x;
-
-      if (isInteger(n)) {
-        if (n <= 0) {
-          return isFinite(n) ? Infinity : NaN;
-        }
-
-        if (n > 171) {
-          return Infinity;                  // Will overflow
-        }
-
-        var value = n - 2;
-        var res = n - 1;
-        while (value > 1) {
-          res *= value;
-          value--;
-        }
-
-        if (res == 0) {
-          res = 1;                          // 0! is per definition 1
-        }
-
-        return res;
-      }
-
-      if (n < 0.5) {
-        return Math.PI / (Math.sin(Math.PI * n) * gamma(1-n));
-      }
-
-      if (n >= 171.35) {
-        return Infinity;                    // will overflow
-      }
-
-      if (n > 85.0) {                       // Extended Stirling Approx
-        var twoN = n*n;
-        var threeN = twoN*n;
-        var fourN = threeN*n;
-        var fiveN = fourN*n;
-        return Math.sqrt(2*Math.PI/n) * Math.pow((n/Math.E), n) *
-            (1 + 1/(12*n) + 1/(288*twoN) - 139/(51840*threeN) -
-            571/(2488320*fourN) + 163879/(209018880*fiveN) +
-            5246819/(75246796800*fiveN*n));
-      }
-
-      --n;
-      x = p[0];
-      for (var i = 1; i < p.length; ++i) {
-        x += p[i] / (n+i);
-      }
-
-      t = n + g + 0.5;
-      return Math.sqrt(2*Math.PI) * Math.pow(t, n+0.5) * Math.exp(-t) * x;
-    },
-
-    'Complex': function (n) {
-      var t, x;
-
-      if (n.im == 0) {
-        return gamma(n.re);
-      }
-
-      n = new type.Complex(n.re - 1, n.im);
-      x = new type.Complex(p[0], 0);
-      for (var i = 1; i < p.length; ++i) {
-        var real = n.re + i;                // x += p[i]/(n+i)
-        var den = real*real + n.im*n.im;
-        if (den != 0) {
-          x.re += p[i] * real / den;
-          x.im += -(p[i] * n.im) / den;
-        } else {
-          x.re = p[i] < 0
-              ? -Infinity
-              :  Infinity;
-        }
-      }
-
-      t = new type.Complex(n.re + g + 0.5, n.im);
-      var twoPiSqrt = Math.sqrt(2*Math.PI);
-
-      n.re += 0.5;
-      var result = pow(t, n);
-      if (result.im == 0) {                 // sqrt(2*PI)*result
-        result.re *= twoPiSqrt;
-      } else if (result.re == 0) {
-        result.im *= twoPiSqrt;
-      } else {
-        result.re *= twoPiSqrt;
-        result.im *= twoPiSqrt;
-      }
-
-      var r = Math.exp(-t.re);              // exp(-t)
-      t.re = r * Math.cos(-t.im);
-      t.im = r * Math.sin(-t.im);
-
-      return multiply(multiply(result, t), x);
-    },
-
-    'BigNumber': function (n) {
-      if (n.isInteger()) {
-        return (n.isNegative() || n.isZero())
-            ? new type.BigNumber(Infinity)
-            : bigFactorial(n.minus(1));
-      }
-
-      if (!n.isFinite()) {
-        return new type.BigNumber(n.isNegative() ? NaN : Infinity);
-      }
-
-      throw new Error('Integer BigNumber expected');
-    },
-
-    'Array | Matrix': function (n) {
-      return deepMap(n, gamma);
-    }
-  });
-
-  /**
-   * Calculate factorial for a BigNumber
-   * @param {BigNumber} n
-   * @returns {BigNumber} Returns the factorial of n
-   */
-  function bigFactorial(n) {
-    if (n.isZero()) {
-      return new type.BigNumber(1); // 0! is per definition 1
-    }
-
-    var precision = config.precision + (Math.log(n.toNumber()) | 0);
-    var Big = type.BigNumber.clone({precision: precision});
-
-    var res = new Big(n);
-    var value = n.toNumber() - 1; // number
-    while (value > 1) {
-      res = res.times(value);
-      value--;
-    }
-
-    return new type.BigNumber(res.toPrecision(type.BigNumber.precision));
-  }
-
-  gamma.toTex = {1: '\\Gamma\\left(${args[0]}\\right)'};
-
-  return gamma;
-}
-
-// TODO: comment on the variables g and p
-
-var g = 4.7421875;
-
-var p = [
-  0.99999999999999709182,
-  57.156235665862923517,
-  -59.597960355475491248,
-  14.136097974741747174,
-  -0.49191381609762019978,
-  0.33994649984811888699e-4,
-  0.46523628927048575665e-4,
-  -0.98374475304879564677e-4,
-  0.15808870322491248884e-3,
-  -0.21026444172410488319e-3,
-  0.21743961811521264320e-3,
-  -0.16431810653676389022e-3,
-  0.84418223983852743293e-4,
-  -0.26190838401581408670e-4,
-  0.36899182659531622704e-5
-];
-
-exports.name = 'gamma';
-exports.factory = factory;
-
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory (type, config, load, typed) {
-  var add = load(__webpack_require__(13));
-  var subtract = load(__webpack_require__(16));
-  var multiply = load(__webpack_require__(8));
-  var divide = load(__webpack_require__(30));
-  var pow = load(__webpack_require__(42));
-  var factorial = load(__webpack_require__(63));
-  var combinations = load(__webpack_require__(62));
-  var isNegative = load(__webpack_require__(55));
-  var isInteger = load(__webpack_require__(47));
-  var larger = load(__webpack_require__(33));
-
-  /**
-   * The Stirling numbers of the second kind, counts the number of ways to partition
-   * a set of n labelled objects into k nonempty unlabelled subsets.
-   * stirlingS2 only takes integer arguments.
-   * The following condition must be enforced: k <= n.
-   *
-   *  If n = k or k = 1, then s(n,k) = 1
-   *
-   * Syntax:
-   *
-   *   math.stirlingS2(n, k)
-   *
-   * Examples:
-   *
-   *    math.stirlingS2(5, 3); //returns 25
-   *
-   * See also:
-   *
-   *    Bell numbers
-   *
-   * @param {Number | BigNumber} n    Total number of objects in the set
-   * @param {Number | BigNumber} k    Number of objects in the subset
-   * @return {Number | BigNumber}     S(n,k)
-   */
-  var stirlingS2 = typed('stirlingS2', {
-    'number | BigNumber, number | BigNumber': function (n, k) {
-      if (!isInteger(n) || isNegative(n) || !isInteger(k) || isNegative(k)) {
-        throw new TypeError('Non-negative integer value expected in function stirlingS2');
-      }
-      else if (larger(k, n)) {
-        throw new TypeError('k must be less than or equal to n in function stirlingS2');
-      }
-
-      // 1/k! Sum(i=0 -> k) [(-1)^(k-i)*C(k,j)* i^n]
-      var kFactorial = factorial(k);
-      var result = 0;
-      for(var i = 0; i <= k; i++) {
-        var negativeOne = pow(-1, subtract(k,i));
-        var kChooseI = combinations(k,i);
-        var iPower = pow(i,n);
-
-        result = add(result, multiply(multiply(kChooseI, iPower), negativeOne));
-      }
-
-      return divide(result, kFactorial);
-    }
-  });
-
-  stirlingS2.toTex = {2: '\\mathrm{S}\\left(${args}\\right)'};
-
-  return stirlingS2;
-}
-
-exports.name = 'stirlingS2';
-exports.factory = factory;
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var clone = __webpack_require__(5).clone;
-var format = __webpack_require__(9).format;
-
-function factory (type, config, load, typed) {
-  
-  var matrix = load(__webpack_require__(1));
-  var add = load(__webpack_require__(13));
-
-  /**
-   * Calculate the trace of a matrix: the sum of the elements on the main
-   * diagonal of a square matrix.
-   *
-   * Syntax:
-   *
-   *    math.trace(x)
-   *
-   * Examples:
-   *
-   *    math.trace([[1, 2], [3, 4]]); // returns 5
-   *
-   *    var A = [
-   *      [1, 2, 3],
-   *      [-1, 2, 3],
-   *      [2, 0, 3]
-   *    ]
-   *    math.trace(A); // returns 6
-   *
-   * See also:
-   *
-   *    diag
-   *
-   * @param {Array | Matrix} x  A matrix
-   *
-   * @return {number} The trace of `x`
-   */
-  var trace = typed('trace', {
-    
-    'Array': function _arrayTrace(x) {
-      // use dense matrix implementation
-      return _denseTrace(matrix(x));
-    },
-
-    'SparseMatrix': _sparseTrace,
-
-    'DenseMatrix': _denseTrace,
-
-    'any': clone
-  });
-  
-  function _denseTrace(m) {
-    // matrix size & data
-    var size = m._size;
-    var data = m._data;
-    
-    // process dimensions
-    switch (size.length) {
-      case 1:
-        // vector
-        if (size[0] === 1) {
-          // return data[0]
-          return clone(data[0]);
-        }
-        throw new RangeError('Matrix must be square (size: ' + format(size) + ')');
-      case 2:
-        // two dimensional
-        var rows = size[0];
-        var cols = size[1];
-        if (rows === cols) {
-          // calulate sum
-          var sum = 0;
-          // loop diagonal
-          for (var i = 0; i < rows; i++)
-            sum = add(sum, data[i][i]);
-          // return trace
-          return sum;
-        }
-        throw new RangeError('Matrix must be square (size: ' + format(size) + ')');        
-      default:
-        // multi dimensional
-        throw new RangeError('Matrix must be two dimensional (size: ' + format(size) + ')');
-    }
-  }
-  
-  function _sparseTrace(m) {
-    // matrix arrays
-    var values = m._values;
-    var index = m._index;
-    var ptr = m._ptr;
-    var size = m._size;
-    // check dimensions
-    var rows = size[0];
-    var columns = size[1];
-    // matrix must be square
-    if (rows === columns) {
-      // calulate sum
-      var sum = 0;
-      // check we have data (avoid looping columns)
-      if (values.length > 0) {
-        // loop columns
-        for (var j = 0; j < columns; j++) {
-          // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-          var k0 = ptr[j];
-          var k1 = ptr[j + 1];
-          // loop k within [k0, k1[
-          for (var k = k0; k < k1; k++) {
-            // row index
-            var i = index[k];
-            // check row
-            if (i === j) {
-              // accumulate value
-              sum = add(sum, values[k]);
-              // exit loop
-              break;
-            }
-            if (i > j) {
-              // exit loop, no value on the diagonal for column j
-              break;
-            }
-          }
-        }
-      }
-      // return trace
-      return sum;
-    }
-    throw new RangeError('Matrix must be square (size: ' + format(size) + ')');   
-  }
-
-  trace.toTex = {1: '\\mathrm{tr}\\left(${args[0]}\\right)'};
-  
-  return trace;
-}
-
-exports.name = 'trace';
-exports.factory = factory;
-
-
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var DimensionError = __webpack_require__(11);
-
-function factory (type, config, load, typed) {
-
-  var equalScalar = load(__webpack_require__(10));
-
-  var SparseMatrix = type.SparseMatrix;
-
-  /**
-   * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij). 
-   * Callback function invoked NZA times, number of nonzero elements in A.
-   *
-   *
-   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0
-   * C(i,j) = ┤  
-   *          └  0            ; otherwise
-   *
-   *
-   * @param {Matrix}   a                 The SparseMatrix instance (A)
-   * @param {Matrix}   b                 The SparseMatrix instance (B)
-   * @param {Function} callback          The f(Aij,Bij) operation to invoke
-   *
-   * @return {Matrix}                    SparseMatrix (C)
-   *
-   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
-   */
-  var algorithm09 = function (a, b, callback) {
-    // sparse matrix arrays
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var asize = a._size;
-    var adt = a._datatype;
-    // sparse matrix arrays
-    var bvalues = b._values;
-    var bindex = b._index;
-    var bptr = b._ptr;
-    var bsize = b._size;
-    var bdt = b._datatype;
-
-    // validate dimensions
-    if (asize.length !== bsize.length)
-      throw new DimensionError(asize.length, bsize.length);
-
-    // check rows & columns
-    if (asize[0] !== bsize[0] || asize[1] !== bsize[1])
-      throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
-
-    // rows & columns
-    var rows = asize[0];
-    var columns = asize[1];
-
-    // datatype
-    var dt;
-    // equal signature to use
-    var eq = equalScalar;
-    // zero value
-    var zero = 0;
-    // callback signature to use
-    var cf = callback;
-
-    // process data types
-    if (typeof adt === 'string' && adt === bdt) {
-      // datatype
-      dt = adt;
-      // find signature that matches (dt, dt)
-      eq = typed.find(equalScalar, [dt, dt]);
-      // convert 0 to the same datatype
-      zero = typed.convert(0, dt);
-      // callback
-      cf = typed.find(callback, [dt, dt]);
-    }
-
-    // result arrays
-    var cvalues = avalues && bvalues ? [] : undefined;
-    var cindex = [];
-    var cptr = [];
-    // matrix
-    var c = new SparseMatrix({
-      values: cvalues,
-      index: cindex,
-      ptr: cptr,
-      size: [rows, columns],
-      datatype: dt
-    });
-
-    // workspaces
-    var x = cvalues ? [] : undefined;
-    // marks indicating we have a value in x for a given column
-    var w = [];
-
-    // vars
-    var i, j, k, k0, k1;
-    
-    // loop columns
-    for (j = 0; j < columns; j++) {
-      // update cptr
-      cptr[j] = cindex.length;
-      // column mark
-      var mark = j + 1;
-      // check we need to process values
-      if (x) {
-        // loop B(:,j)
-        for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
-          // row
-          i = bindex[k];
-          // update workspace
-          w[i] = mark;
-          x[i] = bvalues[k];
-        }
-      }
-      // loop A(:,j)
-      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
-        // row
-        i = aindex[k];
-        // check we need to process values
-        if (x) {
-          // b value @ i,j
-          var vb = w[i] === mark ? x[i] : zero;
-          // invoke f
-          var vc = cf(avalues[k], vb);
-          // check zero value
-          if (!eq(vc, zero)) {
-            // push index
-            cindex.push(i);
-            // push value
-            cvalues.push(vc);
-          }
-        }
-        else {
-          // push index
-          cindex.push(i);
-        }
-      }
-    }
-    // update cptr
-    cptr[columns] = cindex.length;
-
-    // return sparse matrix
-    return c;
-  };
-
-  return algorithm09;
-}
-
-exports.name = 'algorithm09';
-exports.factory = factory;
-
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory (type, config, load, typed) {
-
-  var matrix = load(__webpack_require__(1));
-  var divideScalar = load(__webpack_require__(12));
-  var latex = __webpack_require__(4);
-  
-  var algorithm02 = load(__webpack_require__(25));
-  var algorithm03 = load(__webpack_require__(19));
-  var algorithm07 = load(__webpack_require__(28));
-  var algorithm11 = load(__webpack_require__(17));
-  var algorithm12 = load(__webpack_require__(18));
-  var algorithm13 = load(__webpack_require__(7));
-  var algorithm14 = load(__webpack_require__(6));
-
-  /**
-   * Divide two matrices element wise. The function accepts both matrices and
-   * scalar values.
-   *
-   * Syntax:
-   *
-   *    math.dotDivide(x, y)
-   *
-   * Examples:
-   *
-   *    math.dotDivide(2, 4);   // returns 0.5
-   *
-   *    a = [[9, 5], [6, 1]];
-   *    b = [[3, 2], [5, 2]];
-   *
-   *    math.dotDivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
-   *    math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
-   *
-   * See also:
-   *
-   *    divide, multiply, dotMultiply
-   *
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Numerator
-   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
-   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
-   */
-  var dotDivide = typed('dotDivide', {
-    
-    'any, any': divideScalar,
-
-    'SparseMatrix, SparseMatrix': function (x, y) {
-      return algorithm07(x, y, divideScalar, false);
-    },
-
-    'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, divideScalar, true);
-    },
-
-    'DenseMatrix, SparseMatrix': function (x, y) {
-      return algorithm03(x, y, divideScalar, false);
-    },
-
-    'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, divideScalar);
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return dotDivide(matrix(x), matrix(y)).valueOf();
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return dotDivide(matrix(x), y);
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return dotDivide(x, matrix(y));
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, divideScalar, false);
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, divideScalar, false);
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, divideScalar, true);
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, divideScalar, true);
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, divideScalar, false).valueOf();
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, divideScalar, true).valueOf();
-    }
-  });
-
-  dotDivide.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['dotDivide'] + '${args[1]}\\right)'
-  };
-  
-  return dotDivide;
-}
-
-exports.name = 'dotDivide';
-exports.factory = factory;
-
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory (type, config, load, typed) {
-
-  var matrix = load(__webpack_require__(1));
-  var divideScalar = load(__webpack_require__(12));
-  var multiplyScalar = load(__webpack_require__(21));
-  var subtract = load(__webpack_require__(16));
-  var equalScalar = load(__webpack_require__(10));
-
-  var solveValidation = load(__webpack_require__(79));
-  
-  var DenseMatrix = type.DenseMatrix;
-
-  /**
-   * Solves the linear equation system by backward substitution. Matrix must be an upper triangular matrix.
-   *
-   * `U * x = b`
-   *
-   * Syntax:
-   *
-   *    math.usolve(U, b);
-   *
-   * Examples:
-   *
-   *    var a = [[-2, 3], [2, 1]];
-   *    var b = [11, 9];
-   *    var x = usolve(a, b);  // [[8], [9]]
-   *
-   * See also:
-   *
-   *    lup, slu, usolve, lusolve
-   *
-   * @param {Matrix, Array} U       A N x N matrix or array (U)
-   * @param {Matrix, Array} b       A column vector with the b values
-   *
-   * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
-   */
-  var usolve = typed('usolve', {
-    
-    'SparseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
-      return _sparseBackwardSubstitution(m, b);
-    },
-
-    'DenseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
-      return _denseBackwardSubstitution(m, b);
-    },
-
-    'Array, Array | Matrix': function (a, b) {
-      // create dense matrix from array
-      var m = matrix(a);
-      // use matrix implementation
-      var r = _denseBackwardSubstitution(m, b);
-      // result
-      return r.valueOf();
-    }
-  });
-
-  var _denseBackwardSubstitution = function (m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true);
-    // column vector data
-    var bdata = b._data;
-    // rows & columns
-    var rows = m._size[0];
-    var columns = m._size[1];
-    // result
-    var x = [];
-    // arrays
-    var data = m._data;
-    // backward solve m * x = b, loop columns (backwards)
-    for (var j = columns - 1; j >= 0 ; j--) {
-      // b[j]
-      var bj = bdata[j][0] || 0;
-      // x[j]
-      var xj;
-      // backward substitution (outer product) avoids inner looping when bj == 0
-      if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = data[j][j];
-        // check vjj
-        if (equalScalar(vjj, 0)) {
-          // system cannot be solved
-          throw new Error('Linear system cannot be solved since matrix is singular');
-        }
-        // calculate xj
-        xj = divideScalar(bj, vjj);        
-        // loop rows
-        for (var i = j - 1; i >= 0; i--) {
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))];
-        }
-      }
-      else {
-        // zero value @ j
-        xj = 0;
-      }
-      // update x
-      x[j] = [xj];
-    }
-    // return column vector
-    return new DenseMatrix({
-      data: x,
-      size: [rows, 1]
-    });
-  };
-  
-  var _sparseBackwardSubstitution = function (m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true);
-    // column vector data
-    var bdata = b._data;
-    // rows & columns
-    var rows = m._size[0];
-    var columns = m._size[1];
-    // matrix arrays
-    var values = m._values;
-    var index = m._index;
-    var ptr = m._ptr;
-    // vars
-    var i, k;
-    // result
-    var x = [];
-    // backward solve m * x = b, loop columns (backwards)
-    for (var j = columns - 1; j >= 0 ; j--) {
-      // b[j]
-      var bj = bdata[j][0] || 0;
-      // backward substitution (outer product) avoids inner looping when bj == 0
-      if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = 0;
-        // upper triangular matrix values & index (column j)
-        var jvalues = [];
-        var jindex = [];
-        // first & last indeces in column
-        var f = ptr[j];
-        var l = ptr[j + 1];
-        // values in column, find value @ [j, j], loop backwards
-        for (k = l - 1; k >= f; k--) {
-          // row
-          i = index[k];
-          // check row
-          if (i === j) {
-            // update vjj
-            vjj = values[k];
-          }
-          else if (i < j) {
-            // store upper triangular
-            jvalues.push(values[k]);
-            jindex.push(i);
-          }
-        }
-        // at this point we must have a value @ [j, j]
-        if (equalScalar(vjj, 0)) {
-          // system cannot be solved, there is no value @ [j, j]
-          throw new Error('Linear system cannot be solved since matrix is singular');
-        }
-        // calculate xj
-        var xj = divideScalar(bj, vjj);
-        // loop upper triangular
-        for (k = 0, l = jindex.length; k < l; k++) {
-          // row
-          i = jindex[k];
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0], multiplyScalar(xj, jvalues[k]))];
-        }
-        // update x
-        x[j] = [xj];
-      }
-      else {
-        // update x
-        x[j] = [0];
-      }
-    }
-    // return vector
-    return new DenseMatrix({
-      data: x,
-      size: [rows, 1]
-    });
-  };
-  
-  return usolve;
-}
-
-exports.name = 'usolve';
-exports.factory = factory;
-
-
-/***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory (type, config, load, typed) {
-
-  var matrix = load(__webpack_require__(1));
-  var divideScalar = load(__webpack_require__(12));
-  var multiplyScalar = load(__webpack_require__(21));
-  var subtract = load(__webpack_require__(16));
-  var equalScalar = load(__webpack_require__(10));
-
-  var solveValidation = load(__webpack_require__(79));
-
-  var DenseMatrix = type.DenseMatrix;
-
-  /** 
-   * Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
-   *
-   * `L * x = b`
-   *
-   * Syntax:
-   *
-   *    math.lsolve(L, b);
-   *
-   * Examples:
-   *
-   *    var a = [[-2, 3], [2, 1]];
-   *    var b = [11, 9];
-   *    var x = lsolve(a, b);  // [[-5.5], [20]]
-   *
-   * See also:
-   *
-   *    lup, slu, usolve, lusolve
-   *
-   * @param {Matrix, Array} L       A N x N matrix or array (L)
-   * @param {Matrix, Array} b       A column vector with the b values
-   *
-   * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
-   */
-  var lsolve = typed('lsolve', {
-
-    'SparseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
-      return _sparseForwardSubstitution(m, b);
-    },
-    
-    'DenseMatrix, Array | Matrix': function (m, b) {
-      // process matrix
-      return _denseForwardSubstitution(m, b);
-    },
-    
-    'Array, Array | Matrix': function (a, b) {
-      // create dense matrix from array
-      var m = matrix(a);
-      // use matrix implementation
-      var r = _denseForwardSubstitution(m, b);
-      // result
-      return r.valueOf();
-    }
-  });
-
-  var _denseForwardSubstitution = function (m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true);
-    // column vector data
-    var bdata = b._data;
-    // rows & columns
-    var rows = m._size[0];
-    var columns = m._size[1];
-    // result
-    var x = [];
-    // data
-    var data = m._data;
-    // forward solve m * x = b, loop columns
-    for (var j = 0; j < columns; j++) {
-      // b[j]
-      var bj = bdata[j][0] || 0;
-      // x[j]
-      var xj;
-      // forward substitution (outer product) avoids inner looping when bj == 0
-      if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = data[j][j];
-        // check vjj
-        if (equalScalar(vjj, 0)) {
-          // system cannot be solved
-          throw new Error('Linear system cannot be solved since matrix is singular');
-        }
-        // calculate xj
-        xj = divideScalar(bj, vjj);
-        // loop rows
-        for (var i = j + 1; i < rows; i++) {
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))];
-        }
-      }
-      else {
-        // zero @ j
-        xj = 0;
-      }
-      // update x
-      x[j] = [xj];
-    }
-    // return vector
-    return new DenseMatrix({
-      data: x,
-      size: [rows, 1]
-    });
-  };
-
-  var _sparseForwardSubstitution = function (m, b) {
-    // validate matrix and vector, return copy of column vector b
-    b = solveValidation(m, b, true);
-    // column vector data
-    var bdata = b._data;
-    // rows & columns
-    var rows = m._size[0];
-    var columns = m._size[1];
-    // matrix arrays
-    var values = m._values;
-    var index = m._index;
-    var ptr = m._ptr;
-    // vars
-    var i, k;
-    // result
-    var x = [];
-    // forward solve m * x = b, loop columns
-    for (var j = 0; j < columns; j++) {
-      // b[j]
-      var bj = bdata[j][0] || 0;
-      // forward substitution (outer product) avoids inner looping when bj == 0
-      if (!equalScalar(bj, 0)) {
-        // value @ [j, j]
-        var vjj = 0;
-        // lower triangular matrix values & index (column j)
-        var jvalues = [];
-        var jindex = [];
-        // last index in column
-        var l = ptr[j + 1];
-        // values in column, find value @ [j, j]
-        for (k = ptr[j]; k < l; k++) {
-          // row
-          i = index[k];
-          // check row (rows are not sorted!)
-          if (i === j) {
-            // update vjj
-            vjj = values[k];
-          }
-          else if (i > j) {
-            // store lower triangular
-            jvalues.push(values[k]);
-            jindex.push(i);
-          }
-        }
-        // at this point we must have a value @ [j, j]
-        if (equalScalar(vjj, 0)) {
-          // system cannot be solved, there is no value @ [j, j]
-          throw new Error('Linear system cannot be solved since matrix is singular');
-        }
-        // calculate xj
-        var xj = divideScalar(bj, vjj);
-        // loop lower triangular
-        for (k = 0, l = jindex.length; k < l; k++) {
-          // row
-          i = jindex[k];
-          // update copy of b
-          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, jvalues[k]))];
-        }
-        // update x
-        x[j] = [xj];
-      }
-      else {
-        // update x
-        x[j] = [0];
-      }
-    }
-    // return vector
-    return new DenseMatrix({
-      data: x,
-      size: [rows, 1]
-    });
-  };
-
-  return lsolve;
-}
-
-exports.name = 'lsolve';
-exports.factory = factory;
-
-
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory (type, config, load) {
-
-  var cs_flip = load(__webpack_require__(80));
-
-  /**
-   * Marks the node at w[j]
-   *
-   * @param {Array}   w               The array
-   * @param {Number}  j               The array index
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
-   */
-  var cs_mark = function (w, j) {
-    // mark w[j]
-    w[j] = cs_flip(w [j]);
-  };
-
-  return cs_mark;
-}
-
-exports.name = 'cs_mark';
-exports.path = 'sparse';
-exports.factory = factory;
-
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory () {
-
-  /**
-   * Checks if the node at w[j] is marked
-   *
-   * @param {Array}   w               The array
-   * @param {Number}  j               The array index
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
-   */
-  var cs_marked = function (w, j) {
-    // check node is marked
-    return w[j] < 0;
-  };
-
-  return cs_marked;
-}
-
-exports.name = 'cs_marked';
-exports.path = 'sparse';
-exports.factory = factory;
-
-
-/***/ }),
-/* 110 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var nearlyEqual = __webpack_require__(3).nearlyEqual;
-var bigNearlyEqual = __webpack_require__(45);
-
-function factory (type, config, load, typed) {
-  
-  var matrix = load(__webpack_require__(1));
-
-  var algorithm03 = load(__webpack_require__(19));
-  var algorithm07 = load(__webpack_require__(28));
-  var algorithm12 = load(__webpack_require__(18));
-  var algorithm13 = load(__webpack_require__(7));
-  var algorithm14 = load(__webpack_require__(6));
-
-  var latex = __webpack_require__(4);
-
-  /**
-   * Test whether value x is larger or equal to y.
-   *
-   * The function returns true when x is larger than y or the relative
-   * difference between x and y is smaller than the configured epsilon. The
-   * function cannot be used to compare values smaller than approximately 2.22e-16.
-   *
-   * For matrices, the function is evaluated element wise.
-   * Strings are compared by their numerical value.
-   *
-   * Syntax:
-   *
-   *    math.largerEq(x, y)
-   *
-   * Examples:
-   *
-   *    math.larger(2, 1 + 1);         // returns false
-   *    math.largerEq(2, 1 + 1);       // returns true
-   *
-   * See also:
-   *
-   *    equal, unequal, smaller, smallerEq, larger, compare
-   *
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
-   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
-   * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
-   */
-  var largerEq = typed('largerEq', {
-
-    'boolean, boolean': function (x, y) {
-      return x >= y;
-    },
-
-    'number, number': function (x, y) {
-      return x >= y || nearlyEqual(x, y, config.epsilon);
-    },
-
-    'BigNumber, BigNumber': function (x, y) {
-      return x.gte(y) || bigNearlyEqual(x, y, config.epsilon);
-    },
-
-    'Fraction, Fraction': function (x, y) {
-      return x.compare(y) !== -1;
-    },
-
-    'Complex, Complex': function () {
-      throw new TypeError('No ordering relation is defined for complex numbers');
-    },
-
-    'Unit, Unit': function (x, y) {
-      if (!x.equalBase(y)) {
-        throw new Error('Cannot compare units with different base');
-      }
-      return largerEq(x.value, y.value);
-    },
-
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm07(x, y, largerEq);
-    },
-
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm03(y, x, largerEq, true);
-    },
-
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm03(x, y, largerEq, false);
-    },
-
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, largerEq);
-    },
-
-    'Array, Array': function (x, y) {
-      // use matrix implementation
-      return largerEq(matrix(x), matrix(y)).valueOf();
-    },
-
-    'Array, Matrix': function (x, y) {
-      // use matrix implementation
-      return largerEq(matrix(x), y);
-    },
-
-    'Matrix, Array': function (x, y) {
-      // use matrix implementation
-      return largerEq(x, matrix(y));
-    },
-
-    'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, largerEq, false);
-    },
-
-    'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, largerEq, false);
-    },
-
-    'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, largerEq, true);
-    },
-
-    'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, largerEq, true);
-    },
-
-    'Array, any': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(x), y, largerEq, false).valueOf();
-    },
-
-    'any, Array': function (x, y) {
-      // use matrix implementation
-      return algorithm14(matrix(y), x, largerEq, true).valueOf();
-    }
-  });
-
-  largerEq.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['largerEq'] + '${args[1]}\\right)'
-  };
-
-  return largerEq;
-}
-
-exports.name = 'largerEq';
-exports.factory = factory;
-
-
-/***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function factory () {
-
-  /**
-   * Depth-first search and postorder of a tree rooted at node j
-   *
-   * @param {Number}  j               The tree node
-   * @param {Number}  k               
-   * @param {Array}   w               The workspace array
-   * @param {Number}  head            The index offset within the workspace for the head array
-   * @param {Number}  next            The index offset within the workspace for the next array
-   * @param {Array}   post            The post ordering array
-   * @param {Number}  stack           The index offset within the workspace for the stack array
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
-   */
-  var cs_tdfs = function (j, k, w, head, next, post, stack) {
-    // variables
-    var top = 0;
-    // place j on the stack
-    w[stack] = j;
-    // while (stack is not empty) 
-    while (top >= 0) {
-      // p = top of stack
-      var p = w[stack + top];
-      // i = youngest child of p
-      var i = w[head + p];
-      if (i == -1) {
-        // p has no unordered children left
-        top--;
-        // node p is the kth postordered node
-        post[k++] = p;
-      }
-      else {
-        // remove i from children of p
-        w[head + p] = w[next + i];
-        // increment top
-        ++top;
-        // start dfs on child node i
-        w[stack + top] = i;
-      }
-    }
-    return k;
-  };
-
-  return cs_tdfs;
-}
-
-exports.name = 'cs_tdfs';
-exports.path = 'sparse';
-exports.factory = factory;
-
-
-/***/ }),
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var util = __webpack_require__(29);
-
-var number = util.number,
-    
-    isInteger = number.isInteger;
-
-function factory (type, config, load, typed) {
-
-  var cs_sqr = load(__webpack_require__(295));
-  var cs_lu = load(__webpack_require__(287));
-
-  /**
-   * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where
-   *
-   * `P * A * Q = L * U`
-   *
-   * Syntax:
-   *
-   *    math.slu(A, order, threshold);
-   *
-   * Examples:
-   *
-   *    var A = math.sparse([[4,3], [6, 3]])
-   *    math.slu(A, 1, 0.001)
-   *    // returns:
-   *    // {
-   *    //   L: [[1, 0], [1.5, 1]]
-   *    //   U: [[4, 3], [0, -1.5]]
-   *    //   p: [0, 1]
-   *    //   q: [0, 1]
-   *    // }
-   *
-   * See also:
-   *
-   *    lup, lsolve, usolve, lusolve
-   *
-   * @param {SparseMatrix} A              A two dimensional sparse matrix for which to get the LU decomposition.
-   * @param {Number}       order          The Symbolic Ordering and Analysis order:
-   *                                       0 - Natural ordering, no permutation vector q is returned
-   *                                       1 - Matrix must be square, symbolic ordering and analisis is performed on M = A + A'
-   *                                       2 - Symbolic ordering and analisis is performed on M = A' * A. Dense columns from A' are dropped, A recreated from A'. 
-   *                                           This is appropriatefor LU factorization of unsymmetric matrices.
-   *                                       3 - Symbolic ordering and analisis is performed on M = A' * A. This is best used for LU factorization is matrix M has no dense rows.
-   *                                           A dense row is a row with more than 10*sqr(columns) entries.
-   * @param {Number}       threshold       Partial pivoting threshold (1 for partial pivoting)
-   *
-   * @return {Object} The lower triangular matrix, the upper triangular matrix and the permutation vectors.
-   */
-  var slu = typed('slu', {
-
-    'SparseMatrix, number, number': function (a, order, threshold) {
-      // verify order
-      if (!isInteger(order) || order < 0 || order > 3)
-        throw new Error('Symbolic Ordering and Analysis order must be an integer number in the interval [0, 3]');
-      // verify threshold
-      if (threshold < 0 || threshold > 1)
-        throw new Error('Partial pivoting threshold must be a number from 0 to 1');
-      
-      // perform symbolic ordering and analysis
-      var s = cs_sqr(order, a, false);
-      
-      // perform lu decomposition
-      var f = cs_lu(a, s, threshold);
-      
-      // return decomposition
-      return {
-        L: f.L,
-        U: f.U,
-        p: f.pinv,
-        q: s.q,
-        toString: function () {
-          return 'L: ' + this.L.toString() + '\nU: ' + this.U.toString() + '\np: ' + this.p.toString() + (this.q ? '\nq: ' + this.q.toString() : '') + '\n';
-        }
-      };
-    }
-  });
-
-  return slu;
-}
-
-exports.name = 'slu';
-exports.factory = factory;
-
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var util = __webpack_require__(29);
 
 var object = util.object;
@@ -19559,6 +16076,3500 @@ function factory (type, config, load, typed) {
 }
 
 exports.name = 'lup';
+exports.factory = factory;
+
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var arraySize = __webpack_require__(2).size;
+var isMatrix = __webpack_require__(72);
+var IndexError = __webpack_require__(61);
+
+/**
+ * Reduce a given matrix or array to a new matrix or
+ * array with one less dimension, applying the given
+ * callback in the selected dimension.
+ * @param {Array | Matrix} mat
+ * @param {number} dim
+ * @param {Function} callback
+ * @return {Array | Matrix} res
+ */
+module.exports = function(mat, dim, callback) {
+  var size = Array.isArray(mat) ? arraySize(mat) : mat.size();
+  if (dim < 0 || (dim >= size.length)) {
+    // TODO: would be more clear when throwing a DimensionError here
+    throw new IndexError(dim, size.length);
+  }
+
+  if (isMatrix(mat)) {
+    return mat.create(_reduce(mat.valueOf(), dim, callback));
+  }else {
+    return _reduce(mat, dim, callback);
+  }
+};
+
+/**
+ * Recursively reduce a matrix
+ * @param {Array} mat
+ * @param {number} dim
+ * @param {Function} callback
+ * @returns {Array} ret
+ * @private
+ */
+function _reduce(mat, dim, callback){
+  var i, ret, val, tran;
+
+  if(dim<=0){
+    if( !Array.isArray(mat[0]) ){
+      val = mat[0];
+      for(i=1; i<mat.length; i++){
+        val = callback(val, mat[i]);
+      }
+      return val;
+    }else{
+      tran = _switch(mat);
+      ret = [];
+      for(i=0; i<tran.length; i++){
+        ret[i] = _reduce(tran[i], dim-1, callback);
+      }
+      return ret;
+    }
+  }else{
+    ret = [];
+    for(i=0; i<mat.length; i++){
+      ret[i] = _reduce(mat[i], dim-1, callback);
+    }
+    return ret;
+  }
+}
+
+/**
+ * Transpose a matrix
+ * @param {Array} mat
+ * @returns {Array} ret
+ * @private
+ */
+function _switch(mat){
+  var I = mat.length;
+  var J = mat[0].length;
+  var i, j;
+  var ret = [];
+  for( j=0; j<J; j++) {
+    var tmp = [];
+    for( i=0; i<I; i++) {
+      tmp.push(mat[i][j]);
+    }
+    ret.push(tmp);
+  }
+  return ret;
+}
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deepForEach = __webpack_require__(37);
+var reduce = __webpack_require__(84);
+var containsCollections = __webpack_require__(67);
+
+function factory (type, config, load, typed) {
+  var larger = load(__webpack_require__(33));
+  var improveErrorMessage = load(__webpack_require__(31));
+
+  /**
+   * Compute the maximum value of a matrix or a  list with values.
+   * In case of a multi dimensional array, the maximum of the flattened array
+   * will be calculated. When `dim` is provided, the maximum over the selected
+   * dimension will be calculated. Parameter `dim` is zero-based.
+   *
+   * Syntax:
+   *
+   *     math.max(a, b, c, ...)
+   *     math.max(A)
+   *     math.max(A, dim)
+   *
+   * Examples:
+   *
+   *     math.max(2, 1, 4, 3);                  // returns 4
+   *     math.max([2, 1, 4, 3]);                // returns 4
+   *
+   *     // maximum over a specified dimension (zero-based)
+   *     math.max([[2, 5], [4, 3], [1, 7]], 0); // returns [4, 7]
+   *     math.max([[2, 5], [4, 3]], [1, 7], 1); // returns [5, 4, 7]
+   *
+   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
+   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
+   *
+   * See also:
+   *
+   *    mean, median, min, prod, std, sum, var
+   *
+   * @param {... *} args  A single matrix or or multiple scalar values
+   * @return {*} The maximum value
+   */
+  var max = typed('max', {
+    // max([a, b, c, d, ...])
+    'Array | Matrix': _max,
+
+    // max([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': function (array, dim) {
+      return reduce(array, dim.valueOf(), _largest);
+    },
+
+    // max(a, b, c, d, ...)
+    '...': function (args) {
+      if (containsCollections(args)) {
+        throw new TypeError('Scalar values expected in function max');
+      }
+
+      return _max(args);
+    }
+  });
+
+  max.toTex = '\\max\\left(${args}\\right)';
+
+  return max;
+
+  /**
+   * Return the largest of two values
+   * @param {*} x
+   * @param {*} y
+   * @returns {*} Returns x when x is largest, or y when y is largest
+   * @private
+   */
+  function _largest(x, y) {
+    try {
+      return larger(x, y) ? x : y;
+    }
+    catch (err) {
+      throw improveErrorMessage(err, 'max', y);
+    }
+  }
+
+  /**
+   * Recursively calculate the maximum value in an n-dimensional array
+   * @param {Array} array
+   * @return {number} max
+   * @private
+   */
+  function _max(array) {
+    var max = undefined;
+
+    deepForEach(array, function (value) {
+      try {
+        if (max === undefined || larger(value, max)) {
+          max = value;
+        }
+      }
+      catch (err) {
+        throw improveErrorMessage(err, 'max', value);
+      }
+    });
+
+    if (max === undefined) {
+      throw new Error('Cannot calculate max of an empty array');
+    }
+
+    return max;
+  }
+
+}
+
+exports.name = 'max';
+exports.factory = factory;
+
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function factory (type, config, load, typed) {
+  /**
+   * Compile an inline expression like "x > 0"
+   * @param {Node} expression
+   * @param {Object} math
+   * @param {Object} scope
+   * @return {function} Returns a function with one argument which fills in the
+   *                    undefined variable (like "x") and evaluates the expression
+   */
+  return function compileInlineExpression(expression, math, scope) {
+    // find an undefined symbol
+    var symbol = expression.filter(function (node) {
+      return type.isSymbolNode(node) &&
+          !(node.name in math) &&
+          !(node.name in scope);
+    })[0];
+
+    if (!symbol) {
+      throw new Error('No undefined variable found in inline expression "' + expression + '"');
+    }
+
+    // create a test function for this equation
+    var name = symbol.name; // variable name
+    var subScope = Object.create(scope);
+    var eq = expression.compile();
+    return function inlineExpression(x) {
+      subScope[name] = x;
+      return eq.eval(subScope);
+    }
+  };
+}
+
+exports.factory = factory;
+
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var map = __webpack_require__(2).map;
+var escape = __webpack_require__(9).escape;
+
+function factory (type, config, load, typed) {
+  var Node = load(__webpack_require__(14));
+  var Range = load(__webpack_require__(146));
+
+  var isArray = Array.isArray;
+
+  /**
+   * @constructor IndexNode
+   * @extends Node
+   *
+   * Describes a subset of a matrix or an object property.
+   * Cannot be used on its own, needs to be used within an AccessorNode or
+   * AssignmentNode.
+   *
+   * @param {Node[]} dimensions
+   * @param {boolean} [dotNotation=false]  Optional property describing whether
+   *                                       this index was written using dot
+   *                                       notation like `a.b`, or using bracket
+   *                                       notation like `a["b"]` (default).
+   *                                       Used to stringify an IndexNode.
+   */
+  function IndexNode(dimensions, dotNotation) {
+    if (!(this instanceof IndexNode)) {
+      throw new SyntaxError('Constructor must be called with the new operator');
+    }
+
+    this.dimensions = dimensions;
+    this.dotNotation = dotNotation || false;
+
+    // validate input
+    if (!isArray(dimensions) || !dimensions.every(type.isNode)) {
+      throw new TypeError('Array containing Nodes expected for parameter "dimensions"');
+    }
+    if (this.dotNotation && !this.isObjectProperty()) {
+      throw new Error('dotNotation only applicable for object properties');
+    }
+
+    // TODO: deprecated since v3, remove some day
+    var deprecated = function () {
+      throw new Error('Property `IndexNode.object` is deprecated, use `IndexNode.fn` instead');
+    };
+    Object.defineProperty(this, 'object', { get: deprecated, set: deprecated });
+  }
+
+  IndexNode.prototype = new Node();
+
+  IndexNode.prototype.type = 'IndexNode';
+
+  IndexNode.prototype.isIndexNode = true;
+
+  /**
+   * Compile a node into a JavaScript function.
+   * This basically pre-calculates as much as possible and only leaves open
+   * calculations which depend on a dynamic scope with variables.
+   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} argNames An object with argument names as key and `true`
+   *                          as value. Used in the SymbolNode to optimize
+   *                          for arguments from user assigned functions
+   *                          (see FunctionAssignmentNode) or special symbols
+   *                          like `end` (see IndexNode).
+   * @return {function} Returns a function which can be called like:
+   *                        evalNode(scope: Object, args: Object, context: *)
+   */
+  IndexNode.prototype._compile = function (math, argNames) {
+    // TODO: implement support for bignumber (currently bignumbers are silently
+    //       reduced to numbers when changing the value to zero-based)
+
+    // TODO: Optimization: when the range values are ConstantNodes,
+    //       we can beforehand resolve the zero-based value
+
+    // optimization for a simple object property
+    var evalDimensions = map(this.dimensions, function (range, i) {
+      if (type.isRangeNode(range)) {
+        if (range.needsEnd()) {
+          // create a range containing end (like '4:end')
+          var childArgNames = Object.create(argNames);
+          childArgNames['end'] = true;
+
+          var evalStart = range.start._compile(math, childArgNames);
+          var evalEnd = range.end._compile(math, childArgNames);
+          var evalStep = range.step 
+              ? range.step._compile(math, childArgNames) 
+              : function () { return 1 };
+
+          return function evalDimension(scope, args, context) {
+            var size = math.size(context).valueOf();
+            var childArgs = Object.create(args);
+            childArgs['end'] = size[i];
+
+            return createRange(
+              evalStart(scope, childArgs, context),
+              evalEnd(scope, childArgs, context),
+              evalStep(scope, childArgs, context)
+            );
+          };
+        }
+        else {
+          // create range
+          var evalStart = range.start._compile(math, argNames);
+          var evalEnd = range.end._compile(math, argNames);
+          var evalStep = range.step 
+              ? range.step._compile(math, argNames) 
+              : function () { return 1 };
+
+          return function evalDimension(scope, args, context) {
+            return createRange(
+              evalStart(scope, args, context),
+              evalEnd(scope, args, context),
+              evalStep(scope, args, context)
+            );
+          };
+        }
+      }
+      else if (type.isSymbolNode(range) && range.name === 'end') {
+        // SymbolNode 'end'
+        var childArgNames = Object.create(argNames);
+        childArgNames['end'] = true;
+
+        var evalRange = range._compile(math, childArgNames);
+        
+        return function evalDimension(scope, args, context) {
+          var size = math.size(context).valueOf();
+          var childArgs = Object.create(args);
+          childArgs['end'] = size[i];
+
+          return evalRange(scope, childArgs, context);
+        };
+      }
+      else {
+        // ConstantNode
+        var evalRange = range._compile(math, argNames);
+        return function evalDimension(scope, args, context) {
+          return evalRange(scope, args, context);
+        };
+      }
+    });
+
+    return function evalIndexNode (scope, args, context) {
+      var dimensions = map(evalDimensions, function (evalDimension) {
+        return evalDimension(scope, args, context);
+      });
+      return math.index.apply(math, dimensions);
+    };
+  }
+
+  /**
+   * Execute a callback for each of the child nodes of this node
+   * @param {function(child: Node, path: string, parent: Node)} callback
+   */
+  IndexNode.prototype.forEach = function (callback) {
+    for (var i = 0; i < this.dimensions.length; i++) {
+      callback(this.dimensions[i], 'dimensions[' + i + ']', this);
+    }
+  };
+
+  /**
+   * Create a new IndexNode having it's childs be the results of calling
+   * the provided callback function for each of the childs of the original node.
+   * @param {function(child: Node, path: string, parent: Node): Node} callback
+   * @returns {IndexNode} Returns a transformed copy of the node
+   */
+  IndexNode.prototype.map = function (callback) {
+    var dimensions = [];
+    for (var i = 0; i < this.dimensions.length; i++) {
+      dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this));
+    }
+
+    return new IndexNode(dimensions);
+  };
+
+  /**
+   * Create a clone of this node, a shallow copy
+   * @return {IndexNode}
+   */
+  IndexNode.prototype.clone = function () {
+    return new IndexNode(this.dimensions.slice(0));
+  };
+
+  /**
+   * Test whether this IndexNode contains a single property name
+   * @return {boolean}
+   */
+  IndexNode.prototype.isObjectProperty = function () {
+    return this.dimensions.length === 1 &&
+        type.isConstantNode(this.dimensions[0]) &&
+        typeof this.dimensions[0].value === 'string';
+  };
+
+  /**
+   * Returns the property name if IndexNode contains a property.
+   * If not, returns null.
+   * @return {string | null}
+   */
+  IndexNode.prototype.getObjectProperty = function () {
+    return this.isObjectProperty() ? this.dimensions[0].value : null;
+  };
+
+  /**
+   * Get string representation
+   * @param {Object} options
+   * @return {string} str
+   */
+  IndexNode.prototype._toString = function (options) {
+    // format the parameters like "[1, 0:5]"
+    return this.dotNotation
+        ? ('.' + this.getObjectProperty())
+        : ('[' + this.dimensions.join(', ') + ']');
+  };
+
+  /**
+   * Get a JSON representation of the node
+   * @returns {Object}
+   */
+  IndexNode.prototype.toJSON = function () {
+    return {
+      mathjs: 'IndexNode',
+      dimensions: this.dimensions,
+      dotNotation: this.dotNotation
+    };
+  };
+
+  /**
+   * Instantiate an IndexNode from its JSON representation
+   * @param {Object} json  An object structured like
+   *                       `{"mathjs": "IndexNode", dimensions: [...], dotNotation: false}`,
+   *                       where mathjs is optional
+   * @returns {IndexNode}
+   */
+  IndexNode.fromJSON = function (json) {
+    return new IndexNode(json.dimensions, json.dotNotation);
+  };
+
+  /**
+   * Get HTML representation
+   * @param {Object} options
+   * @return {string} str
+   */
+  IndexNode.prototype.toHTML = function (options) {
+    // format the parameters like "[1, 0:5]"
+	var dimensions = []
+	for (var i=0; i<this.dimensions.length; i++)	{
+	  dimensions[i] = this.dimensions[i].toHTML();
+	}
+	if (this.dotNotation) {
+	  return '<span class="math-operator math-accessor-operator">.</span>' + '<span class="math-symbol math-property">' + escape(this.getObjectProperty()) + '</span>';}
+	else {
+	  return '<span class="math-parenthesis math-square-parenthesis">[</span>' + dimensions.join('<span class="math-separator">,</span>') + '<span class="math-parenthesis math-square-parenthesis">]</span>'}
+  };
+
+  /**
+   * Get LaTeX representation
+   * @param {Object} options
+   * @return {string} str
+   */
+  IndexNode.prototype._toTex = function (options) {
+    var dimensions = this.dimensions.map(function (range) {
+      return range.toTex(options);
+    });
+
+    return this.dotNotation
+        ? ('.' + this.getObjectProperty() + '')
+        : ('_{' + dimensions.join(',') + '}');
+  };
+
+  // helper function to create a Range from start, step and end
+  function createRange(start, end, step) {
+    return new Range(
+        type.isBigNumber(start) ? start.toNumber() : start,
+        type.isBigNumber(end)   ? end.toNumber()   : end,
+        type.isBigNumber(step)  ? step.toNumber()  : step
+    );
+  };
+
+  return IndexNode;
+}
+
+exports.name = 'IndexNode';
+exports.path = 'expression.node';
+exports.factory = factory;
+
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deepMap = __webpack_require__(0);
+
+function factory (type, config, load, typed) {
+  /**
+   * Create a number or convert a string, boolean, or unit to a number.
+   * When value is a matrix, all elements will be converted to number.
+   *
+   * Syntax:
+   *
+   *    math.number(value)
+   *    math.number(unit, valuelessUnit)
+   *
+   * Examples:
+   *
+   *    math.number(2);                         // returns number 2
+   *    math.number('7.2');                     // returns number 7.2
+   *    math.number(true);                      // returns number 1
+   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
+   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
+   *
+   * See also:
+   *
+   *    bignumber, boolean, complex, index, matrix, string, unit
+   *
+   * @param {string | number | BigNumber | Fraction | boolean | Array | Matrix | Unit | null} [value]  Value to be converted
+   * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
+   * @return {number | Array | Matrix} The created number
+   */
+  var number = typed('number', {
+    '': function () {
+      return 0;
+    },
+
+    'number': function (x) {
+      return x;
+    },
+
+    'string': function (x) {
+      var num = Number(x);
+      if (isNaN(num)) {
+        throw new SyntaxError('String "' + x + '" is no valid number');
+      }
+      return num;
+    },
+
+    'BigNumber': function (x) {
+      return x.toNumber();
+    },
+
+    'Fraction': function (x) {
+      return x.valueOf();
+    },
+
+    'Unit': function (x) {
+      throw new Error('Second argument with valueless unit expected');
+    },
+
+    'null': function (x) {
+      return 0;
+    },
+
+    'Unit, string | Unit': function (unit, valuelessUnit) {
+      return unit.toNumber(valuelessUnit);
+    },
+
+    'Array | Matrix': function (x) {
+      return deepMap(x, number);
+    }
+  });
+
+  number.toTex = {
+    0: '0',
+    1: '\\left(${args[0]}\\right)',
+    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
+  };
+
+  return number;
+}
+
+exports.name = 'number';
+exports.factory = factory;
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DimensionError = __webpack_require__(11);
+
+function factory (type, config, load, typed) {
+
+  var equalScalar = load(__webpack_require__(10));
+
+  var SparseMatrix = type.SparseMatrix;
+
+  /**
+   * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij). 
+   * Callback function invoked MAX(NNZA, NNZB) times
+   *
+   *
+   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0 && B(i,j) !== 0
+   * C(i,j) = ┤  A(i,j)       ; A(i,j) !== 0
+   *          └  B(i,j)       ; B(i,j) !== 0
+   *
+   *
+   * @param {Matrix}   a                 The SparseMatrix instance (A)
+   * @param {Matrix}   b                 The SparseMatrix instance (B)
+   * @param {Function} callback          The f(Aij,Bij) operation to invoke
+   *
+   * @return {Matrix}                    SparseMatrix (C)
+   *
+   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
+   */
+  var algorithm04 = function (a, b, callback) {
+    // sparse matrix arrays
+    var avalues = a._values;
+    var aindex = a._index;
+    var aptr = a._ptr;
+    var asize = a._size;
+    var adt = a._datatype;
+    // sparse matrix arrays
+    var bvalues = b._values;
+    var bindex = b._index;
+    var bptr = b._ptr;
+    var bsize = b._size;
+    var bdt = b._datatype;
+
+    // validate dimensions
+    if (asize.length !== bsize.length)
+      throw new DimensionError(asize.length, bsize.length);
+
+    // check rows & columns
+    if (asize[0] !== bsize[0] || asize[1] !== bsize[1])
+      throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+    // rows & columns
+    var rows = asize[0];
+    var columns = asize[1];
+
+    // datatype
+    var dt;
+    // equal signature to use
+    var eq = equalScalar;
+    // zero value
+    var zero = 0;
+    // callback signature to use
+    var cf = callback;
+
+    // process data types
+    if (typeof adt === 'string' && adt === bdt) {
+      // datatype
+      dt = adt;
+      // find signature that matches (dt, dt)
+      eq = typed.find(equalScalar, [dt, dt]);
+      // convert 0 to the same datatype
+      zero = typed.convert(0, dt);
+      // callback
+      cf = typed.find(callback, [dt, dt]);
+    }
+
+    // result arrays
+    var cvalues = avalues && bvalues ? [] : undefined;
+    var cindex = [];
+    var cptr = [];
+    // matrix
+    var c = new SparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
+
+    // workspace
+    var xa = avalues && bvalues ? [] : undefined;
+    var xb = avalues && bvalues ? [] : undefined;
+    // marks indicating we have a value in x for a given column
+    var wa = [];
+    var wb = [];
+
+    // vars 
+    var i, j, k, k0, k1;
+    
+    // loop columns
+    for (j = 0; j < columns; j++) {
+      // update cptr
+      cptr[j] = cindex.length;
+      // columns mark
+      var mark = j + 1;
+      // loop A(:,j)
+      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+        // row
+        i = aindex[k];
+        // update c
+        cindex.push(i);
+        // update workspace
+        wa[i] = mark;
+        // check we need to process values
+        if (xa)
+          xa[i] = avalues[k];
+      }
+      // loop B(:,j)
+      for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+        // row
+        i = bindex[k];
+        // check row exists in A
+        if (wa[i] === mark) {
+          // update record in xa @ i
+          if (xa) {
+            // invoke callback
+            var v = cf(xa[i], bvalues[k]);
+            // check for zero
+            if (!eq(v, zero)) {
+              // update workspace
+              xa[i] = v;              
+            }
+            else {
+              // remove mark (index will be removed later)
+              wa[i] = null;
+            }
+          }
+        }
+        else {
+          // update c
+          cindex.push(i);
+          // update workspace
+          wb[i] = mark;
+          // check we need to process values
+          if (xb)
+            xb[i] = bvalues[k];
+        }
+      }
+      // check we need to process values (non pattern matrix)
+      if (xa && xb) {
+        // initialize first index in j
+        k = cptr[j];
+        // loop index in j
+        while (k < cindex.length) {
+          // row
+          i = cindex[k];
+          // check workspace has value @ i
+          if (wa[i] === mark) {
+            // push value (Aij != 0 || (Aij != 0 && Bij != 0))
+            cvalues[k] = xa[i];
+            // increment pointer
+            k++;
+          }
+          else if (wb[i] === mark) {
+            // push value (bij != 0)
+            cvalues[k] = xb[i];
+            // increment pointer
+            k++;
+          }
+          else {
+            // remove index @ k
+            cindex.splice(k, 1);
+          }
+        }
+      }
+    }
+    // update cptr
+    cptr[columns] = cindex.length;
+
+    // return sparse matrix
+    return c;
+  };
+  
+  return algorithm04;
+}
+
+exports.name = 'algorithm04';
+exports.factory = factory;
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var util = __webpack_require__(29);
+
+var string = util.string;
+
+var isString = string.isString;
+
+function factory (type, config, load, typed) {
+  /**
+   * @constructor Matrix
+   *
+   * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
+   * array. A matrix can be constructed as:
+   *     var matrix = math.matrix(data)
+   *
+   * Matrix contains the functions to resize, get and set values, get the size,
+   * clone the matrix and to convert the matrix to a vector, array, or scalar.
+   * Furthermore, one can iterate over the matrix using map and forEach.
+   * The internal Array of the Matrix can be accessed using the function valueOf.
+   *
+   * Example usage:
+   *     var matrix = math.matrix([[1, 2], [3, 4]]);
+   *     matix.size();              // [2, 2]
+   *     matrix.resize([3, 2], 5);
+   *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
+   *     matrix.subset([1,2])       // 3 (indexes are zero-based)
+   *
+   */
+  function Matrix() {
+    if (!(this instanceof Matrix)) {
+      throw new SyntaxError('Constructor must be called with the new operator');
+    }
+  }
+
+  /**
+   * Attach type information
+   */
+  Matrix.prototype.type = 'Matrix';
+  Matrix.prototype.isMatrix = true;
+
+  /**
+   * Get the Matrix storage constructor for the given format.
+   *
+   * @param {string} format       The Matrix storage format.
+   *
+   * @return {Function}           The Matrix storage constructor.
+   */
+  Matrix.storage = function (format) {
+    // check storage format is a string
+    if (!isString(format)) {
+      throw new TypeError('format must be a string value');
+    }
+
+    // get storage format constructor
+    var constructor = Matrix._storage[format];
+    if (!constructor) {
+      throw new SyntaxError('Unsupported matrix storage format: ' + format);
+    }
+
+    // return storage constructor
+    return constructor;
+  };
+
+  // a map with all constructors for all storage types
+  Matrix._storage = {};
+
+  /**
+   * Get the storage format used by the matrix.
+   *
+   * Usage:
+   *     var format = matrix.storage()                   // retrieve storage format
+   *
+   * @return {string}           The storage format.
+   */
+  Matrix.prototype.storage = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke storage on a Matrix interface');
+  };
+  
+  /**
+   * Get the datatype of the data stored in the matrix.
+   *
+   * Usage:
+   *     var format = matrix.datatype()                   // retrieve matrix datatype
+   *
+   * @return {string}           The datatype.
+   */
+  Matrix.prototype.datatype = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke datatype on a Matrix interface');
+  };
+
+  /**
+   * Create a new Matrix With the type of the current matrix instance
+   * @param {Array | Object} data
+   * @param {string} [datatype]
+   */
+  Matrix.prototype.create = function (data, datatype) {
+    throw new Error('Cannot invoke create on a Matrix interface');
+  };
+
+  /**
+   * Get a subset of the matrix, or replace a subset of the matrix.
+   *
+   * Usage:
+   *     var subset = matrix.subset(index)               // retrieve subset
+   *     var value = matrix.subset(index, replacement)   // replace subset
+   *
+   * @param {Index} index
+   * @param {Array | Matrix | *} [replacement]
+   * @param {*} [defaultValue=0]      Default value, filled in on new entries when
+   *                                  the matrix is resized. If not provided,
+   *                                  new matrix elements will be filled with zeros.
+   */
+  Matrix.prototype.subset = function (index, replacement, defaultValue) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke subset on a Matrix interface');
+  };
+
+  /**
+   * Get a single element from the matrix.
+   * @param {number[]} index   Zero-based index
+   * @return {*} value
+   */
+  Matrix.prototype.get = function (index) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke get on a Matrix interface');
+  };
+
+  /**
+   * Replace a single element in the matrix.
+   * @param {number[]} index   Zero-based index
+   * @param {*} value
+   * @param {*} [defaultValue]        Default value, filled in on new entries when
+   *                                  the matrix is resized. If not provided,
+   *                                  new matrix elements will be left undefined.
+   * @return {Matrix} self
+   */
+  Matrix.prototype.set = function (index, value, defaultValue) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke set on a Matrix interface');
+  };
+
+  /**
+   * Resize the matrix to the given size. Returns a copy of the matrix when 
+   * `copy=true`, otherwise return the matrix itself (resize in place).
+   *
+   * @param {number[]} size           The new size the matrix should have.
+   * @param {*} [defaultValue=0]      Default value, filled in on new entries.
+   *                                  If not provided, the matrix elements will
+   *                                  be filled with zeros.
+   * @param {boolean} [copy]          Return a resized copy of the matrix
+   *
+   * @return {Matrix}                 The resized matrix
+   */
+  Matrix.prototype.resize = function (size, defaultValue) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke resize on a Matrix interface');
+  };
+
+  /**
+   * Reshape the matrix to the given size. Returns a copy of the matrix when
+   * `copy=true`, otherwise return the matrix itself (reshape in place).
+   *
+   * @param {number[]} size           The new size the matrix should have.
+   * @param {boolean} [copy]          Return a reshaped copy of the matrix
+   *
+   * @return {Matrix}                 The reshaped matrix
+   */
+  Matrix.prototype.reshape = function (size, defaultValue) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke reshape on a Matrix interface');
+  };
+
+  /**
+   * Create a clone of the matrix
+   * @return {Matrix} clone
+   */
+  Matrix.prototype.clone = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke clone on a Matrix interface');
+  };
+
+  /**
+   * Retrieve the size of the matrix.
+   * @returns {number[]} size
+   */
+  Matrix.prototype.size = function() {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke size on a Matrix interface');
+  };
+
+  /**
+   * Create a new matrix with the results of the callback function executed on
+   * each entry of the matrix.
+   * @param {Function} callback   The callback function is invoked with three
+   *                              parameters: the value of the element, the index
+   *                              of the element, and the Matrix being traversed.
+   * @param {boolean} [skipZeros] Invoke callback function for non-zero values only.
+   *
+   * @return {Matrix} matrix
+   */
+  Matrix.prototype.map = function (callback, skipZeros) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke map on a Matrix interface');
+  };
+
+  /**
+   * Execute a callback function on each entry of the matrix.
+   * @param {Function} callback   The callback function is invoked with three
+   *                              parameters: the value of the element, the index
+   *                              of the element, and the Matrix being traversed.
+   */
+  Matrix.prototype.forEach = function (callback) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke forEach on a Matrix interface');
+  };
+
+  /**
+   * Create an Array with a copy of the data of the Matrix
+   * @returns {Array} array
+   */
+  Matrix.prototype.toArray = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke toArray on a Matrix interface');
+  };
+
+  /**
+   * Get the primitive value of the Matrix: a multidimensional array
+   * @returns {Array} array
+   */
+  Matrix.prototype.valueOf = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke valueOf on a Matrix interface');
+  };
+
+  /**
+   * Get a string representation of the matrix, with optional formatting options.
+   * @param {Object | number | Function} [options]  Formatting options. See
+   *                                                lib/utils/number:format for a
+   *                                                description of the available
+   *                                                options.
+   * @returns {string} str
+   */
+  Matrix.prototype.format = function (options) {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke format on a Matrix interface');
+  };
+
+  /**
+   * Get a string representation of the matrix
+   * @returns {string} str
+   */
+  Matrix.prototype.toString = function () {
+    // must be implemented by each of the Matrix implementations
+    throw new Error('Cannot invoke toString on a Matrix interface');
+  };
+   
+  // exports
+  return Matrix;
+}
+
+exports.name = 'Matrix';
+exports.path = 'type';
+exports.factory = factory;
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Test whether a value is a BigNumber
+ * @param {*} x
+ * @return {boolean}
+ */
+module.exports = function isBigNumber(x) {
+  return x && x.constructor.prototype.isBigNumber || false
+}
+
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deepMap = __webpack_require__(0);
+
+function factory (type, config, load, typed) {
+
+  /**
+   * Calculate the hyperbolic arccos of a value,
+   * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.acosh(x)
+   *
+   * Examples:
+   *
+   *    math.acosh(1.5);       // returns 0.9624236501192069
+   *
+   * See also:
+   *
+   *    cosh, asinh, atanh
+   *
+   * @param {number | Complex | Unit | Array | Matrix} x  Function input
+   * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
+   */
+  var acosh = typed('acosh', {
+    'number': function (x) {
+      if (x >= 1 || config.predictable) {
+        return _acosh(x);
+      }
+      if (x <= -1) {
+        return new type.Complex(Math.log(Math.sqrt(x*x - 1) - x), Math.PI);
+      }
+      return new type.Complex(x, 0).acosh();
+    },
+
+    'Complex': function (x) {
+      return x.acosh();
+    },
+
+    'BigNumber': function (x) {
+      return x.acosh();
+    },
+
+    'Array | Matrix': function (x) {
+      return deepMap(x, acosh);
+    }
+  });
+
+  acosh.toTex = {1: '\\cosh^{-1}\\left(${args[0]}\\right)'};
+
+  return acosh;
+}
+
+/**
+ * Calculate the hyperbolic arccos of a number
+ * @param {number} x
+ * @return {number}
+ * @private
+ */
+var _acosh = Math.acosh || function (x) {
+  return Math.log(Math.sqrt(x*x - 1) + x)
+};
+
+exports.name = 'acosh';
+exports.factory = factory;
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DEFAULT_NORMALIZATION = 'unbiased';
+
+var deepForEach = __webpack_require__(37);
+
+function factory (type, config, load, typed) {
+  var add = load(__webpack_require__(20));
+  var subtract = load(__webpack_require__(16));
+  var multiply = load(__webpack_require__(21));
+  var divide = load(__webpack_require__(12));
+  var improveErrorMessage = load(__webpack_require__(31));
+
+  /**
+   * Compute the variance of a matrix or a  list with values.
+   * In case of a (multi dimensional) array or matrix, the variance over all
+   * elements will be calculated.
+   *
+   * Optionally, the type of normalization can be specified as second
+   * parameter. The parameter `normalization` can be one of the following values:
+   *
+   * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
+   * - 'uncorrected'        The sum of squared errors is divided by n
+   * - 'biased'             The sum of squared errors is divided by (n + 1)
+   *
+   * Note that older browser may not like the variable name `var`. In that
+   * case, the function can be called as `math['var'](...)` instead of
+   * `math.var(...)`.
+   *
+   * Syntax:
+   *
+   *     math.var(a, b, c, ...)
+   *     math.var(A)
+   *     math.var(A, normalization)
+   *
+   * Examples:
+   *
+   *     math.var(2, 4, 6);                     // returns 4
+   *     math.var([2, 4, 6, 8]);                // returns 6.666666666666667
+   *     math.var([2, 4, 6, 8], 'uncorrected'); // returns 5
+   *     math.var([2, 4, 6, 8], 'biased');      // returns 4
+   *
+   *     math.var([[1, 2, 3], [4, 5, 6]]);      // returns 3.5
+   *
+   * See also:
+   *
+   *    mean, median, max, min, prod, std, sum
+   *
+   * @param {Array | Matrix} array
+   *                        A single matrix or or multiple scalar values
+   * @param {string} [normalization='unbiased']
+   *                        Determines how to normalize the variance.
+   *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+   * @return {*} The variance
+   */
+  var variance = typed('variance', {
+    // var([a, b, c, d, ...])
+    'Array | Matrix': function (array) {
+      return _var(array, DEFAULT_NORMALIZATION);
+    },
+
+    // var([a, b, c, d, ...], normalization)
+    'Array | Matrix, string': _var,
+
+    // var(a, b, c, d, ...)
+    '...': function (args) {
+      return _var(args, DEFAULT_NORMALIZATION);
+    }
+  });
+
+  variance.toTex = '\\mathrm{Var}\\left(${args}\\right)';
+
+  return variance;
+
+  /**
+   * Recursively calculate the variance of an n-dimensional array
+   * @param {Array} array
+   * @param {string} normalization
+   *                        Determines how to normalize the variance:
+   *                        - 'unbiased'    The sum of squared errors is divided by (n - 1)
+   *                        - 'uncorrected' The sum of squared errors is divided by n
+   *                        - 'biased'      The sum of squared errors is divided by (n + 1)
+   * @return {number | BigNumber} variance
+   * @private
+   */
+  function _var(array, normalization) {
+    var sum = 0;
+    var num = 0;
+
+    if (array.length == 0) {
+      throw new SyntaxError('Function var requires one or more parameters (0 provided)');
+    }
+
+    // calculate the mean and number of elements
+    deepForEach(array, function (value) {
+      try {
+        sum = add(sum, value);
+        num++;
+      }
+      catch (err) {
+        throw improveErrorMessage(err, 'var', value);
+      }
+    });
+    if (num === 0) throw new Error('Cannot calculate var of an empty array');
+
+    var mean = divide(sum, num);
+
+    // calculate the variance
+    sum = 0;
+    deepForEach(array, function (value) {
+      var diff = subtract(value, mean);
+      sum = add(sum, multiply(diff, diff));
+    });
+
+    switch (normalization) {
+      case 'uncorrected':
+        return divide(sum, num);
+
+      case 'biased':
+        return divide(sum, num + 1);
+
+      case 'unbiased':
+        var zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0;
+        return (num == 1) ? zero : divide(sum, num - 1);
+
+      default:
+        throw new Error('Unknown normalization "' + normalization + '". ' +
+        'Choose "unbiased" (default), "uncorrected", or "biased".');
+    }
+  }
+}
+
+exports.name = 'var';
+exports.factory = factory;
+
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var flatten = __webpack_require__(2).flatten;
+var containsCollections = __webpack_require__(67);
+
+function factory (type, config, load, typed) {
+  var add = load(__webpack_require__(20));
+  var divide = load(__webpack_require__(12));
+  var compare = load(__webpack_require__(46));
+  var partitionSelect = load(__webpack_require__(74));
+  var improveErrorMessage = load(__webpack_require__(31));
+
+  /**
+   * Compute the median of a matrix or a list with values. The values are
+   * sorted and the middle value is returned. In case of an even number of
+   * values, the average of the two middle values is returned.
+   * Supported types of values are: Number, BigNumber, Unit
+   *
+   * In case of a (multi dimensional) array or matrix, the median of all
+   * elements will be calculated.
+   *
+   * Syntax:
+   *
+   *     math.median(a, b, c, ...)
+   *     math.median(A)
+   *
+   * Examples:
+   *
+   *     math.median(5, 2, 7);        // returns 5
+   *     math.median([3, -1, 5, 7]);  // returns 4
+   *
+   * See also:
+   *
+   *     mean, min, max, sum, prod, std, var, quantileSeq
+   *
+   * @param {... *} args  A single matrix or or multiple scalar values
+   * @return {*} The median
+   */
+  var median = typed('median', {
+    // median([a, b, c, d, ...])
+    'Array | Matrix': _median,
+
+    // median([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': function (array, dim) {
+      // TODO: implement median(A, dim)
+      throw new Error('median(A, dim) is not yet supported');
+      //return reduce(arguments[0], arguments[1], ...);
+    },
+
+    // median(a, b, c, d, ...)
+    '...': function (args) {
+      if (containsCollections(args)) {
+          throw new TypeError('Scalar values expected in function median');
+      }
+
+      return _median(args);
+    }
+  });
+
+
+  /**
+   * Recursively calculate the median of an n-dimensional array
+   * @param {Array} array
+   * @return {Number} median
+   * @private
+   */
+  function _median(array) {
+    try {
+      array = flatten(array.valueOf());
+
+      var num = array.length;
+      if (num == 0) {
+        throw new Error('Cannot calculate median of an empty array');
+      }
+
+      if (num % 2 == 0) {
+        // even: return the average of the two middle values
+        var mid = num / 2 - 1;
+        var right = partitionSelect(array, mid + 1);
+
+        // array now partitioned at mid + 1, take max of left part
+        var left = array[mid];
+        for (var i = 0; i < mid; ++i) {
+          if (compare(array[i], left) > 0) {
+            left = array[i];
+          }
+        }
+
+        return middle2(left, right);
+      }
+      else {
+        // odd: return the middle value
+        var m = partitionSelect(array, (num - 1) / 2);
+
+        return middle(m);
+      }
+    }
+    catch (err) {
+      throw improveErrorMessage(err, 'median');
+    }
+  }
+
+  // helper function to type check the middle value of the array
+  var middle = typed({
+    'number | BigNumber | Complex | Unit': function (value) {
+      return value;
+    }
+  });
+
+  // helper function to type check the two middle value of the array
+  var middle2 = typed({
+    'number | BigNumber | Complex | Unit, number | BigNumber | Complex | Unit': function (left, right) {
+      return divide(add(left, right), 2);
+    }
+  });
+
+  median.toTex = undefined; // use default template
+
+  return median;
+}
+
+exports.name = 'median';
+exports.factory = factory;
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var flatten = __webpack_require__(2).flatten;
+
+function factory (type, config, load, typed) {
+  var index = load(__webpack_require__(27));
+  var concat = load(__webpack_require__(68));
+  var size = load(__webpack_require__(24));
+  var subset = load(__webpack_require__(22));
+  var setDifference = load(__webpack_require__(97));
+  
+  /**
+   * Create the symmetric difference of two (multi)sets.
+   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
+   *
+   * Syntax:
+   *
+   *    math.setSymDifference(set1, set2)
+   *
+   * Examples:
+   *
+   *    math.setSymDifference([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [1, 2, 5, 6]
+   *    math.setSymDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [1, 2, 5, 6]
+   *
+   * See also:
+   *
+   *    setUnion, setIntersect, setDifference
+   *
+   * @param {Array | Matrix}    a1  A (multi)set
+   * @param {Array | Matrix}    a2  A (multi)set
+   * @return {Array | Matrix}    The symmetric difference of two (multi)sets
+   */
+  var setSymDifference = typed('setSymDifference', {
+    'Array | Matrix, Array | Matrix': function (a1, a2) {
+      if (subset(size(a1), new index(0)) === 0) { // if any of them is empty, return the other one
+        return flatten(a2);
+      }
+      else if (subset(size(a2), new index(0)) === 0) {
+        return flatten(a1);
+      }
+      var b1 = flatten(a1);
+      var b2 = flatten(a2);
+      return concat(setDifference(b1, b2), setDifference(b2, b1));
+    }
+  });
+
+  return setSymDifference;
+}
+
+exports.name = 'setSymDifference';
+exports.factory = factory;
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var flatten = __webpack_require__(2).flatten;
+var identify = __webpack_require__(2).identify;
+var generalize = __webpack_require__(2).generalize;
+
+function factory (type, config, load, typed) {
+  var index = load(__webpack_require__(27));
+  var matrix = load(__webpack_require__(53));
+  var size = load(__webpack_require__(24));
+  var subset = load(__webpack_require__(22));
+  var compareNatural = load(__webpack_require__(26));
+  
+  /**
+   * Create the intersection of two (multi)sets.
+   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
+   *
+   * Syntax:
+   *
+   *    math.setIntersect(set1, set2)
+   *
+   * Examples:
+   *
+   *    math.setIntersect([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [3, 4]
+   *    math.setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [3, 4]
+   *
+   * See also:
+   *
+   *    setUnion, setDifference
+   *
+   * @param {Array | Matrix}    a1  A (multi)set
+   * @param {Array | Matrix}    a2  A (multi)set
+   * @return {Array | Matrix}    The intersection of two (multi)sets
+   */
+  var setIntersect = typed('setIntersect', {
+    'Array | Matrix, Array | Matrix': function (a1, a2) {
+      if (subset(size(a1), new index(0)) === 0 || subset(size(a2), new index(0)) === 0) { // of any of them is empty, return empty
+        var result = [];
+      }
+      else {
+        var b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural));
+        var b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural));
+        var result = [];
+        for (var i=0; i<b1.length; i++) {
+          for (var j=0; j<b2.length; j++) {
+              if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
+                result.push(b1[i]);
+                break;
+              }
+          }
+        }
+      }
+      // return an array, if both inputs were arrays
+      if (Array.isArray(a1) && Array.isArray(a2)) {
+        return generalize(result);
+      }
+      // return a matrix otherwise
+      return new matrix(generalize(result));
+    }
+  });
+
+  return setIntersect;
+}
+
+exports.name = 'setIntersect';
+exports.factory = factory;
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var flatten = __webpack_require__(2).flatten;
+var identify = __webpack_require__(2).identify;
+var generalize = __webpack_require__(2).generalize;
+
+function factory (type, config, load, typed) {
+  var index = load(__webpack_require__(27));
+  var matrix = load(__webpack_require__(53));
+  var size = load(__webpack_require__(24));
+  var subset = load(__webpack_require__(22));
+  var compareNatural = load(__webpack_require__(26));
+  
+  /**
+   * Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
+   * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
+   *
+   * Syntax:
+   *
+   *    math.setDifference(set1, set2)
+   *
+   * Examples:
+   *
+   *    math.setDifference([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [1, 2]
+   *    math.setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [1, 2]
+   *
+   * See also:
+   *
+   *    setUnion, setIntersect, setSymDifference
+   *
+   * @param {Array | Matrix}    a1  A (multi)set
+   * @param {Array | Matrix}    a2  A (multi)set
+   * @return {Array | Matrix}    The difference of two (multi)sets
+   */
+  var setDifference = typed('setDifference', {
+    'Array | Matrix, Array | Matrix': function (a1, a2) {
+      if (subset(size(a1), new index(0)) === 0) { // empty-anything=empty
+        var result = [];
+      }
+      else if (subset(size(a2), new index(0)) === 0) { // anything-empty=anything
+        return flatten(a1.toArray());
+      }
+      else {
+        var b1 = identify(flatten(Array.isArray(a1) ? a1: a1.toArray()).sort(compareNatural));
+        var b2 = identify(flatten(Array.isArray(a2) ? a2: a2.toArray()).sort(compareNatural));
+        var result = [];
+        var inb2;
+        for (var i=0; i<b1.length; i++) {
+          inb2 = false;
+          for (var j=0; j<b2.length; j++) {
+            if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
+              inb2 = true;
+              break;
+            }
+          }
+          if (!inb2) {
+            result.push(b1[i]);
+          }
+        }
+      }
+      // return an array, if both inputs were arrays
+      if (Array.isArray(a1) && Array.isArray(a2)) {
+        return generalize(result);
+      }
+      // return a matrix otherwise
+      return new matrix(generalize(result));
+    }
+  });
+
+  return setDifference;
+}
+
+exports.name = 'setDifference';
+exports.factory = factory;
+
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory (type, config, load, typed) {
+
+  var matrix = load(__webpack_require__(1));
+  var _typeof = load(__webpack_require__(40));
+
+  var algorithm13 = load(__webpack_require__(7));
+  var algorithm14 = load(__webpack_require__(6));
+  
+  /**
+   * Compare two strings lexically. Comparison is case sensitive.
+   * Returns 1 when x > y, -1 when x < y, and 0 when x == y.
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.compareText(x, y)
+   *
+   * Examples:
+   *
+   *    math.compareText('B', 'A');     // returns 1
+   *    math.compareText('2', '10');    // returns 1
+   *    math.compare('2', '10');        // returns -1
+   *    math.compareNatural('2', '10'); // returns -1
+   *
+   *    math.compareText('B', ['A', 'B', 'C']); // returns [1, 0, -1]
+   *
+   * See also:
+   *
+   *    equal, equalText, compare, compareNatural
+   *
+   * @param  {string | Array | DenseMatrix} x First string to compare
+   * @param  {string | Array | DenseMatrix} y Second string to compare
+   * @return {number | Array | DenseMatrix} Returns the result of the comparison:
+   *                                        1 when x > y, -1 when x < y, and 0 when x == y.
+   */
+  var compareText = typed('compareText', {
+
+    'any, any': _compareText,
+
+    'DenseMatrix, DenseMatrix': function(x, y) {
+      return algorithm13(x, y, _compareText);
+    },
+
+    'Array, Array': function (x, y) {
+      // use matrix implementation
+      return compareText(matrix(x), matrix(y)).valueOf();
+    },
+
+    'Array, Matrix': function (x, y) {
+      // use matrix implementation
+      return compareText(matrix(x), y);
+    },
+
+    'Matrix, Array': function (x, y) {
+      // use matrix implementation
+      return compareText(x, matrix(y));
+    },
+
+    'DenseMatrix, any': function (x, y) {
+      return algorithm14(x, y, _compareText, false);
+    },
+
+    'any, DenseMatrix': function (x, y) {
+      return algorithm14(y, x, _compareText, true);
+    },
+
+    'Array, any': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(x), y, _compareText, false).valueOf();
+    },
+
+    'any, Array': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, _compareText, true).valueOf();
+    }
+  });
+
+  /**
+   * Compare two strings
+   * @param {string} x
+   * @param {string} y
+   * @returns {number}
+   * @private
+   */
+  function _compareText(x, y) {
+    // we don't want to convert numbers to string, only accept string input
+    if (!type.isString(x)) {
+      throw new TypeError('Unexpected type of argument in function compareText ' +
+          '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)');
+    }
+    if (!type.isString(y)) {
+      throw new TypeError('Unexpected type of argument in function compareText ' +
+          '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)');
+    }
+
+    return (x === y)
+        ? 0
+        : (x > y ? 1 : -1);
+  }
+
+  compareText.toTex = undefined; // use default template
+
+  return compareText;
+}
+
+exports.name = 'compareText';
+exports.factory = factory;
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deepForEach = __webpack_require__(37);
+
+function factory (type, config, load, typed) {
+  var add = load(__webpack_require__(20));
+  var improveErrorMessage = load(__webpack_require__(31));
+
+  /**
+   * Compute the sum of a matrix or a list with values.
+   * In case of a (multi dimensional) array or matrix, the sum of all
+   * elements will be calculated.
+   *
+   * Syntax:
+   *
+   *     math.sum(a, b, c, ...)
+   *     math.sum(A)
+   *
+   * Examples:
+   *
+   *     math.sum(2, 1, 4, 3);               // returns 10
+   *     math.sum([2, 1, 4, 3]);             // returns 10
+   *     math.sum([[2, 5], [4, 3], [1, 7]]); // returns 22
+   *
+   * See also:
+   *
+   *    mean, median, min, max, prod, std, var
+   *
+   * @param {... *} args  A single matrix or or multiple scalar values
+   * @return {*} The sum of all values
+   */
+  var sum = typed('sum', {
+    'Array | Matrix': function (args) {
+      // sum([a, b, c, d, ...])
+      return _sum(args);
+    },
+
+    'Array | Matrix, number | BigNumber': function () {
+      // sum([a, b, c, d, ...], dim)
+      // TODO: implement sum(A, dim)
+      throw new Error('sum(A, dim) is not yet supported');
+    },
+
+    '...': function (args) {
+      // sum(a, b, c, d, ...)
+      return _sum(args);
+    }
+  });
+
+  sum.toTex = undefined; // use default template
+
+  return sum;
+
+  /**
+   * Recursively calculate the sum of an n-dimensional array
+   * @param {Array} array
+   * @return {number} sum
+   * @private
+   */
+  function _sum(array) {
+    var sum = undefined;
+
+    deepForEach(array, function (value) {
+      try {
+        sum = (sum === undefined) ? value : add(sum, value);
+      }
+      catch (err) {
+        throw improveErrorMessage(err, 'sum', value);
+      }
+    });
+
+    if (sum === undefined) {
+      switch (config.number) {
+        case 'number':
+          return 0;
+        case 'BigNumber':
+          return new type.BigNumber(0);
+        case 'Fraction':
+          return new type.Fraction(0);
+        default:
+          return 0;
+      }
+    }
+
+    return sum;
+  }
+}
+
+exports.name = 'sum';
+exports.factory = factory;
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var maxArgumentCount = __webpack_require__(35).maxArgumentCount;
+
+function factory (type, config, load, typed) {
+  /**
+   * Create a new matrix or array with the results of the callback function executed on
+   * each entry of the matrix/array.
+   *
+   * Syntax:
+   *
+   *    math.map(x, callback)
+   *
+   * Examples:
+   *
+   *    math.map([1, 2, 3], function(value) {
+   *      return value * value;
+   *    });  // returns [1, 4, 9]
+   *
+   * See also:
+   *
+   *    filter, forEach, sort
+   *
+   * @param {Matrix | Array} x    The matrix to iterate on.
+   * @param {Function} callback   The callback method is invoked with three
+   *                              parameters: the value of the element, the index
+   *                              of the element, and the matrix being traversed.
+   * @return {Matrix | array}     Transformed map of x
+   */
+  var map = typed('map', {
+    'Array, function': _map,
+
+    'Matrix, function': function (x, callback) {
+      return x.map(callback);
+    }
+  });
+
+  map.toTex = undefined; // use default template
+
+  return map;
+}
+
+/**
+ * Map for a multi dimensional array
+ * @param {Array} array
+ * @param {Function} callback
+ * @return {Array}
+ * @private
+ */
+function _map (array, callback) {
+  // figure out what number of arguments the callback function expects
+  var args = maxArgumentCount(callback);
+
+  var recurse = function (value, index) {
+    if (Array.isArray(value)) {
+      return value.map(function (child, i) {
+        // we create a copy of the index array and append the new index value
+        return recurse(child, index.concat(i));
+      });
+    }
+    else {
+      // invoke the callback function with the right number of arguments
+      if (args === 1) {
+        return callback(value);
+      }
+      else if (args === 2) {
+        return callback(value, index);
+      }
+      else { // 3 or -1
+        return callback(value, index, array);
+      }
+    }
+  };
+
+  return recurse(array, []);
+}
+
+exports.name = 'map';
+exports.factory = factory;
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deepMap = __webpack_require__(0);
+
+function factory (type, config, load, typed) {
+  var latex = __webpack_require__(4);
+
+  /**
+   * Logical `not`. Flips boolean value of a given parameter.
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.not(x)
+   *
+   * Examples:
+   *
+   *    math.not(2);      // returns false
+   *    math.not(0);      // returns true
+   *    math.not(true);   // returns false
+   *
+   *    a = [2, -7, 0];
+   *    math.not(a);      // returns [false, false, true]
+   *
+   * See also:
+   *
+   *    and, or, xor
+   *
+   * @param  {number | BigNumber | Complex | Unit | Array | Matrix} x First value to check
+   * @return {boolean | Array | Matrix}
+   *            Returns true when input is a zero or empty value.
+   */
+  var not = typed('not', {
+    'number': function (x) {
+      return !x;
+    },
+
+    'Complex': function (x) {
+      return x.re === 0 && x.im === 0;
+    },
+
+    'BigNumber': function (x) {
+      return x.isZero() || x.isNaN();
+    },
+
+    'Unit': function (x) {
+      return x.value !== null ? not(x.value) : true;
+    },
+
+    'Array | Matrix': function (x) {
+      return deepMap(x, not);
+    }
+  });
+
+  not.toTex = {
+    1: latex.operators['not'] + '\\left(${args[0]}\\right)'
+  };
+
+  return not;
+}
+
+exports.name = 'not';
+exports.factory = factory;
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deepMap = __webpack_require__(0);
+var isInteger = __webpack_require__(3).isInteger;
+
+function factory (type, config, load, typed) {
+  var multiply = load(__webpack_require__(8));
+  var pow = load(__webpack_require__(42));
+
+  /**
+   * Compute the gamma function of a value using Lanczos approximation for
+   * small values, and an extended Stirling approximation for large values.
+   *
+   * For matrices, the function is evaluated element wise.
+   *
+   * Syntax:
+   *
+   *    math.gamma(n)
+   *
+   * Examples:
+   *
+   *    math.gamma(5);       // returns 24
+   *    math.gamma(-0.5);    // returns -3.5449077018110335
+   *    math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
+   *
+   * See also:
+   *
+   *    combinations, factorial, permutations
+   *
+   * @param {number | Array | Matrix} n   A real or complex number
+   * @return {number | Array | Matrix}    The gamma of `n`
+   */
+  var gamma = typed('gamma', {
+    'number': function (n) {
+      var t, x;
+
+      if (isInteger(n)) {
+        if (n <= 0) {
+          return isFinite(n) ? Infinity : NaN;
+        }
+
+        if (n > 171) {
+          return Infinity;                  // Will overflow
+        }
+
+        var value = n - 2;
+        var res = n - 1;
+        while (value > 1) {
+          res *= value;
+          value--;
+        }
+
+        if (res == 0) {
+          res = 1;                          // 0! is per definition 1
+        }
+
+        return res;
+      }
+
+      if (n < 0.5) {
+        return Math.PI / (Math.sin(Math.PI * n) * gamma(1-n));
+      }
+
+      if (n >= 171.35) {
+        return Infinity;                    // will overflow
+      }
+
+      if (n > 85.0) {                       // Extended Stirling Approx
+        var twoN = n*n;
+        var threeN = twoN*n;
+        var fourN = threeN*n;
+        var fiveN = fourN*n;
+        return Math.sqrt(2*Math.PI/n) * Math.pow((n/Math.E), n) *
+            (1 + 1/(12*n) + 1/(288*twoN) - 139/(51840*threeN) -
+            571/(2488320*fourN) + 163879/(209018880*fiveN) +
+            5246819/(75246796800*fiveN*n));
+      }
+
+      --n;
+      x = p[0];
+      for (var i = 1; i < p.length; ++i) {
+        x += p[i] / (n+i);
+      }
+
+      t = n + g + 0.5;
+      return Math.sqrt(2*Math.PI) * Math.pow(t, n+0.5) * Math.exp(-t) * x;
+    },
+
+    'Complex': function (n) {
+      var t, x;
+
+      if (n.im == 0) {
+        return gamma(n.re);
+      }
+
+      n = new type.Complex(n.re - 1, n.im);
+      x = new type.Complex(p[0], 0);
+      for (var i = 1; i < p.length; ++i) {
+        var real = n.re + i;                // x += p[i]/(n+i)
+        var den = real*real + n.im*n.im;
+        if (den != 0) {
+          x.re += p[i] * real / den;
+          x.im += -(p[i] * n.im) / den;
+        } else {
+          x.re = p[i] < 0
+              ? -Infinity
+              :  Infinity;
+        }
+      }
+
+      t = new type.Complex(n.re + g + 0.5, n.im);
+      var twoPiSqrt = Math.sqrt(2*Math.PI);
+
+      n.re += 0.5;
+      var result = pow(t, n);
+      if (result.im == 0) {                 // sqrt(2*PI)*result
+        result.re *= twoPiSqrt;
+      } else if (result.re == 0) {
+        result.im *= twoPiSqrt;
+      } else {
+        result.re *= twoPiSqrt;
+        result.im *= twoPiSqrt;
+      }
+
+      var r = Math.exp(-t.re);              // exp(-t)
+      t.re = r * Math.cos(-t.im);
+      t.im = r * Math.sin(-t.im);
+
+      return multiply(multiply(result, t), x);
+    },
+
+    'BigNumber': function (n) {
+      if (n.isInteger()) {
+        return (n.isNegative() || n.isZero())
+            ? new type.BigNumber(Infinity)
+            : bigFactorial(n.minus(1));
+      }
+
+      if (!n.isFinite()) {
+        return new type.BigNumber(n.isNegative() ? NaN : Infinity);
+      }
+
+      throw new Error('Integer BigNumber expected');
+    },
+
+    'Array | Matrix': function (n) {
+      return deepMap(n, gamma);
+    }
+  });
+
+  /**
+   * Calculate factorial for a BigNumber
+   * @param {BigNumber} n
+   * @returns {BigNumber} Returns the factorial of n
+   */
+  function bigFactorial(n) {
+    if (n.isZero()) {
+      return new type.BigNumber(1); // 0! is per definition 1
+    }
+
+    var precision = config.precision + (Math.log(n.toNumber()) | 0);
+    var Big = type.BigNumber.clone({precision: precision});
+
+    var res = new Big(n);
+    var value = n.toNumber() - 1; // number
+    while (value > 1) {
+      res = res.times(value);
+      value--;
+    }
+
+    return new type.BigNumber(res.toPrecision(type.BigNumber.precision));
+  }
+
+  gamma.toTex = {1: '\\Gamma\\left(${args[0]}\\right)'};
+
+  return gamma;
+}
+
+// TODO: comment on the variables g and p
+
+var g = 4.7421875;
+
+var p = [
+  0.99999999999999709182,
+  57.156235665862923517,
+  -59.597960355475491248,
+  14.136097974741747174,
+  -0.49191381609762019978,
+  0.33994649984811888699e-4,
+  0.46523628927048575665e-4,
+  -0.98374475304879564677e-4,
+  0.15808870322491248884e-3,
+  -0.21026444172410488319e-3,
+  0.21743961811521264320e-3,
+  -0.16431810653676389022e-3,
+  0.84418223983852743293e-4,
+  -0.26190838401581408670e-4,
+  0.36899182659531622704e-5
+];
+
+exports.name = 'gamma';
+exports.factory = factory;
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory (type, config, load, typed) {
+  var add = load(__webpack_require__(13));
+  var subtract = load(__webpack_require__(16));
+  var multiply = load(__webpack_require__(8));
+  var divide = load(__webpack_require__(30));
+  var pow = load(__webpack_require__(42));
+  var factorial = load(__webpack_require__(63));
+  var combinations = load(__webpack_require__(62));
+  var isNegative = load(__webpack_require__(55));
+  var isInteger = load(__webpack_require__(47));
+  var larger = load(__webpack_require__(33));
+
+  /**
+   * The Stirling numbers of the second kind, counts the number of ways to partition
+   * a set of n labelled objects into k nonempty unlabelled subsets.
+   * stirlingS2 only takes integer arguments.
+   * The following condition must be enforced: k <= n.
+   *
+   *  If n = k or k = 1, then s(n,k) = 1
+   *
+   * Syntax:
+   *
+   *   math.stirlingS2(n, k)
+   *
+   * Examples:
+   *
+   *    math.stirlingS2(5, 3); //returns 25
+   *
+   * See also:
+   *
+   *    Bell numbers
+   *
+   * @param {Number | BigNumber} n    Total number of objects in the set
+   * @param {Number | BigNumber} k    Number of objects in the subset
+   * @return {Number | BigNumber}     S(n,k)
+   */
+  var stirlingS2 = typed('stirlingS2', {
+    'number | BigNumber, number | BigNumber': function (n, k) {
+      if (!isInteger(n) || isNegative(n) || !isInteger(k) || isNegative(k)) {
+        throw new TypeError('Non-negative integer value expected in function stirlingS2');
+      }
+      else if (larger(k, n)) {
+        throw new TypeError('k must be less than or equal to n in function stirlingS2');
+      }
+
+      // 1/k! Sum(i=0 -> k) [(-1)^(k-i)*C(k,j)* i^n]
+      var kFactorial = factorial(k);
+      var result = 0;
+      for(var i = 0; i <= k; i++) {
+        var negativeOne = pow(-1, subtract(k,i));
+        var kChooseI = combinations(k,i);
+        var iPower = pow(i,n);
+
+        result = add(result, multiply(multiply(kChooseI, iPower), negativeOne));
+      }
+
+      return divide(result, kFactorial);
+    }
+  });
+
+  stirlingS2.toTex = {2: '\\mathrm{S}\\left(${args}\\right)'};
+
+  return stirlingS2;
+}
+
+exports.name = 'stirlingS2';
+exports.factory = factory;
+
+
+/***/ }),
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var clone = __webpack_require__(5).clone;
+var format = __webpack_require__(9).format;
+
+function factory (type, config, load, typed) {
+  
+  var matrix = load(__webpack_require__(1));
+  var add = load(__webpack_require__(13));
+
+  /**
+   * Calculate the trace of a matrix: the sum of the elements on the main
+   * diagonal of a square matrix.
+   *
+   * Syntax:
+   *
+   *    math.trace(x)
+   *
+   * Examples:
+   *
+   *    math.trace([[1, 2], [3, 4]]); // returns 5
+   *
+   *    var A = [
+   *      [1, 2, 3],
+   *      [-1, 2, 3],
+   *      [2, 0, 3]
+   *    ]
+   *    math.trace(A); // returns 6
+   *
+   * See also:
+   *
+   *    diag
+   *
+   * @param {Array | Matrix} x  A matrix
+   *
+   * @return {number} The trace of `x`
+   */
+  var trace = typed('trace', {
+    
+    'Array': function _arrayTrace(x) {
+      // use dense matrix implementation
+      return _denseTrace(matrix(x));
+    },
+
+    'SparseMatrix': _sparseTrace,
+
+    'DenseMatrix': _denseTrace,
+
+    'any': clone
+  });
+  
+  function _denseTrace(m) {
+    // matrix size & data
+    var size = m._size;
+    var data = m._data;
+    
+    // process dimensions
+    switch (size.length) {
+      case 1:
+        // vector
+        if (size[0] === 1) {
+          // return data[0]
+          return clone(data[0]);
+        }
+        throw new RangeError('Matrix must be square (size: ' + format(size) + ')');
+      case 2:
+        // two dimensional
+        var rows = size[0];
+        var cols = size[1];
+        if (rows === cols) {
+          // calulate sum
+          var sum = 0;
+          // loop diagonal
+          for (var i = 0; i < rows; i++)
+            sum = add(sum, data[i][i]);
+          // return trace
+          return sum;
+        }
+        throw new RangeError('Matrix must be square (size: ' + format(size) + ')');        
+      default:
+        // multi dimensional
+        throw new RangeError('Matrix must be two dimensional (size: ' + format(size) + ')');
+    }
+  }
+  
+  function _sparseTrace(m) {
+    // matrix arrays
+    var values = m._values;
+    var index = m._index;
+    var ptr = m._ptr;
+    var size = m._size;
+    // check dimensions
+    var rows = size[0];
+    var columns = size[1];
+    // matrix must be square
+    if (rows === columns) {
+      // calulate sum
+      var sum = 0;
+      // check we have data (avoid looping columns)
+      if (values.length > 0) {
+        // loop columns
+        for (var j = 0; j < columns; j++) {
+          // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
+          var k0 = ptr[j];
+          var k1 = ptr[j + 1];
+          // loop k within [k0, k1[
+          for (var k = k0; k < k1; k++) {
+            // row index
+            var i = index[k];
+            // check row
+            if (i === j) {
+              // accumulate value
+              sum = add(sum, values[k]);
+              // exit loop
+              break;
+            }
+            if (i > j) {
+              // exit loop, no value on the diagonal for column j
+              break;
+            }
+          }
+        }
+      }
+      // return trace
+      return sum;
+    }
+    throw new RangeError('Matrix must be square (size: ' + format(size) + ')');   
+  }
+
+  trace.toTex = {1: '\\mathrm{tr}\\left(${args[0]}\\right)'};
+  
+  return trace;
+}
+
+exports.name = 'trace';
+exports.factory = factory;
+
+
+/***/ }),
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var DimensionError = __webpack_require__(11);
+
+function factory (type, config, load, typed) {
+
+  var equalScalar = load(__webpack_require__(10));
+
+  var SparseMatrix = type.SparseMatrix;
+
+  /**
+   * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij). 
+   * Callback function invoked NZA times, number of nonzero elements in A.
+   *
+   *
+   *          ┌  f(Aij, Bij)  ; A(i,j) !== 0
+   * C(i,j) = ┤  
+   *          └  0            ; otherwise
+   *
+   *
+   * @param {Matrix}   a                 The SparseMatrix instance (A)
+   * @param {Matrix}   b                 The SparseMatrix instance (B)
+   * @param {Function} callback          The f(Aij,Bij) operation to invoke
+   *
+   * @return {Matrix}                    SparseMatrix (C)
+   *
+   * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
+   */
+  var algorithm09 = function (a, b, callback) {
+    // sparse matrix arrays
+    var avalues = a._values;
+    var aindex = a._index;
+    var aptr = a._ptr;
+    var asize = a._size;
+    var adt = a._datatype;
+    // sparse matrix arrays
+    var bvalues = b._values;
+    var bindex = b._index;
+    var bptr = b._ptr;
+    var bsize = b._size;
+    var bdt = b._datatype;
+
+    // validate dimensions
+    if (asize.length !== bsize.length)
+      throw new DimensionError(asize.length, bsize.length);
+
+    // check rows & columns
+    if (asize[0] !== bsize[0] || asize[1] !== bsize[1])
+      throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')');
+
+    // rows & columns
+    var rows = asize[0];
+    var columns = asize[1];
+
+    // datatype
+    var dt;
+    // equal signature to use
+    var eq = equalScalar;
+    // zero value
+    var zero = 0;
+    // callback signature to use
+    var cf = callback;
+
+    // process data types
+    if (typeof adt === 'string' && adt === bdt) {
+      // datatype
+      dt = adt;
+      // find signature that matches (dt, dt)
+      eq = typed.find(equalScalar, [dt, dt]);
+      // convert 0 to the same datatype
+      zero = typed.convert(0, dt);
+      // callback
+      cf = typed.find(callback, [dt, dt]);
+    }
+
+    // result arrays
+    var cvalues = avalues && bvalues ? [] : undefined;
+    var cindex = [];
+    var cptr = [];
+    // matrix
+    var c = new SparseMatrix({
+      values: cvalues,
+      index: cindex,
+      ptr: cptr,
+      size: [rows, columns],
+      datatype: dt
+    });
+
+    // workspaces
+    var x = cvalues ? [] : undefined;
+    // marks indicating we have a value in x for a given column
+    var w = [];
+
+    // vars
+    var i, j, k, k0, k1;
+    
+    // loop columns
+    for (j = 0; j < columns; j++) {
+      // update cptr
+      cptr[j] = cindex.length;
+      // column mark
+      var mark = j + 1;
+      // check we need to process values
+      if (x) {
+        // loop B(:,j)
+        for (k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+          // row
+          i = bindex[k];
+          // update workspace
+          w[i] = mark;
+          x[i] = bvalues[k];
+        }
+      }
+      // loop A(:,j)
+      for (k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+        // row
+        i = aindex[k];
+        // check we need to process values
+        if (x) {
+          // b value @ i,j
+          var vb = w[i] === mark ? x[i] : zero;
+          // invoke f
+          var vc = cf(avalues[k], vb);
+          // check zero value
+          if (!eq(vc, zero)) {
+            // push index
+            cindex.push(i);
+            // push value
+            cvalues.push(vc);
+          }
+        }
+        else {
+          // push index
+          cindex.push(i);
+        }
+      }
+    }
+    // update cptr
+    cptr[columns] = cindex.length;
+
+    // return sparse matrix
+    return c;
+  };
+
+  return algorithm09;
+}
+
+exports.name = 'algorithm09';
+exports.factory = factory;
+
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory (type, config, load, typed) {
+
+  var matrix = load(__webpack_require__(1));
+  var divideScalar = load(__webpack_require__(12));
+  var latex = __webpack_require__(4);
+  
+  var algorithm02 = load(__webpack_require__(25));
+  var algorithm03 = load(__webpack_require__(19));
+  var algorithm07 = load(__webpack_require__(28));
+  var algorithm11 = load(__webpack_require__(17));
+  var algorithm12 = load(__webpack_require__(18));
+  var algorithm13 = load(__webpack_require__(7));
+  var algorithm14 = load(__webpack_require__(6));
+
+  /**
+   * Divide two matrices element wise. The function accepts both matrices and
+   * scalar values.
+   *
+   * Syntax:
+   *
+   *    math.dotDivide(x, y)
+   *
+   * Examples:
+   *
+   *    math.dotDivide(2, 4);   // returns 0.5
+   *
+   *    a = [[9, 5], [6, 1]];
+   *    b = [[3, 2], [5, 2]];
+   *
+   *    math.dotDivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
+   *    math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
+   *
+   * See also:
+   *
+   *    divide, multiply, dotMultiply
+   *
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Numerator
+   * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
+   * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
+   */
+  var dotDivide = typed('dotDivide', {
+    
+    'any, any': divideScalar,
+
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm07(x, y, divideScalar, false);
+    },
+
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm02(y, x, divideScalar, true);
+    },
+
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm03(x, y, divideScalar, false);
+    },
+
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, divideScalar);
+    },
+
+    'Array, Array': function (x, y) {
+      // use matrix implementation
+      return dotDivide(matrix(x), matrix(y)).valueOf();
+    },
+
+    'Array, Matrix': function (x, y) {
+      // use matrix implementation
+      return dotDivide(matrix(x), y);
+    },
+
+    'Matrix, Array': function (x, y) {
+      // use matrix implementation
+      return dotDivide(x, matrix(y));
+    },
+
+    'SparseMatrix, any': function (x, y) {
+      return algorithm11(x, y, divideScalar, false);
+    },
+
+    'DenseMatrix, any': function (x, y) {
+      return algorithm14(x, y, divideScalar, false);
+    },
+
+    'any, SparseMatrix': function (x, y) {
+      return algorithm12(y, x, divideScalar, true);
+    },
+
+    'any, DenseMatrix': function (x, y) {
+      return algorithm14(y, x, divideScalar, true);
+    },
+
+    'Array, any': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(x), y, divideScalar, false).valueOf();
+    },
+
+    'any, Array': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, divideScalar, true).valueOf();
+    }
+  });
+
+  dotDivide.toTex = {
+    2: '\\left(${args[0]}' + latex.operators['dotDivide'] + '${args[1]}\\right)'
+  };
+  
+  return dotDivide;
+}
+
+exports.name = 'dotDivide';
+exports.factory = factory;
+
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory (type, config, load, typed) {
+
+  var matrix = load(__webpack_require__(1));
+  var divideScalar = load(__webpack_require__(12));
+  var multiplyScalar = load(__webpack_require__(21));
+  var subtract = load(__webpack_require__(16));
+  var equalScalar = load(__webpack_require__(10));
+
+  var solveValidation = load(__webpack_require__(79));
+  
+  var DenseMatrix = type.DenseMatrix;
+
+  /**
+   * Solves the linear equation system by backward substitution. Matrix must be an upper triangular matrix.
+   *
+   * `U * x = b`
+   *
+   * Syntax:
+   *
+   *    math.usolve(U, b);
+   *
+   * Examples:
+   *
+   *    var a = [[-2, 3], [2, 1]];
+   *    var b = [11, 9];
+   *    var x = usolve(a, b);  // [[8], [9]]
+   *
+   * See also:
+   *
+   *    lup, slu, usolve, lusolve
+   *
+   * @param {Matrix, Array} U       A N x N matrix or array (U)
+   * @param {Matrix, Array} b       A column vector with the b values
+   *
+   * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
+   */
+  var usolve = typed('usolve', {
+    
+    'SparseMatrix, Array | Matrix': function (m, b) {
+      // process matrix
+      return _sparseBackwardSubstitution(m, b);
+    },
+
+    'DenseMatrix, Array | Matrix': function (m, b) {
+      // process matrix
+      return _denseBackwardSubstitution(m, b);
+    },
+
+    'Array, Array | Matrix': function (a, b) {
+      // create dense matrix from array
+      var m = matrix(a);
+      // use matrix implementation
+      var r = _denseBackwardSubstitution(m, b);
+      // result
+      return r.valueOf();
+    }
+  });
+
+  var _denseBackwardSubstitution = function (m, b) {
+    // validate matrix and vector, return copy of column vector b
+    b = solveValidation(m, b, true);
+    // column vector data
+    var bdata = b._data;
+    // rows & columns
+    var rows = m._size[0];
+    var columns = m._size[1];
+    // result
+    var x = [];
+    // arrays
+    var data = m._data;
+    // backward solve m * x = b, loop columns (backwards)
+    for (var j = columns - 1; j >= 0 ; j--) {
+      // b[j]
+      var bj = bdata[j][0] || 0;
+      // x[j]
+      var xj;
+      // backward substitution (outer product) avoids inner looping when bj == 0
+      if (!equalScalar(bj, 0)) {
+        // value @ [j, j]
+        var vjj = data[j][j];
+        // check vjj
+        if (equalScalar(vjj, 0)) {
+          // system cannot be solved
+          throw new Error('Linear system cannot be solved since matrix is singular');
+        }
+        // calculate xj
+        xj = divideScalar(bj, vjj);        
+        // loop rows
+        for (var i = j - 1; i >= 0; i--) {
+          // update copy of b
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))];
+        }
+      }
+      else {
+        // zero value @ j
+        xj = 0;
+      }
+      // update x
+      x[j] = [xj];
+    }
+    // return column vector
+    return new DenseMatrix({
+      data: x,
+      size: [rows, 1]
+    });
+  };
+  
+  var _sparseBackwardSubstitution = function (m, b) {
+    // validate matrix and vector, return copy of column vector b
+    b = solveValidation(m, b, true);
+    // column vector data
+    var bdata = b._data;
+    // rows & columns
+    var rows = m._size[0];
+    var columns = m._size[1];
+    // matrix arrays
+    var values = m._values;
+    var index = m._index;
+    var ptr = m._ptr;
+    // vars
+    var i, k;
+    // result
+    var x = [];
+    // backward solve m * x = b, loop columns (backwards)
+    for (var j = columns - 1; j >= 0 ; j--) {
+      // b[j]
+      var bj = bdata[j][0] || 0;
+      // backward substitution (outer product) avoids inner looping when bj == 0
+      if (!equalScalar(bj, 0)) {
+        // value @ [j, j]
+        var vjj = 0;
+        // upper triangular matrix values & index (column j)
+        var jvalues = [];
+        var jindex = [];
+        // first & last indeces in column
+        var f = ptr[j];
+        var l = ptr[j + 1];
+        // values in column, find value @ [j, j], loop backwards
+        for (k = l - 1; k >= f; k--) {
+          // row
+          i = index[k];
+          // check row
+          if (i === j) {
+            // update vjj
+            vjj = values[k];
+          }
+          else if (i < j) {
+            // store upper triangular
+            jvalues.push(values[k]);
+            jindex.push(i);
+          }
+        }
+        // at this point we must have a value @ [j, j]
+        if (equalScalar(vjj, 0)) {
+          // system cannot be solved, there is no value @ [j, j]
+          throw new Error('Linear system cannot be solved since matrix is singular');
+        }
+        // calculate xj
+        var xj = divideScalar(bj, vjj);
+        // loop upper triangular
+        for (k = 0, l = jindex.length; k < l; k++) {
+          // row
+          i = jindex[k];
+          // update copy of b
+          bdata[i] = [subtract(bdata[i][0], multiplyScalar(xj, jvalues[k]))];
+        }
+        // update x
+        x[j] = [xj];
+      }
+      else {
+        // update x
+        x[j] = [0];
+      }
+    }
+    // return vector
+    return new DenseMatrix({
+      data: x,
+      size: [rows, 1]
+    });
+  };
+  
+  return usolve;
+}
+
+exports.name = 'usolve';
+exports.factory = factory;
+
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory (type, config, load, typed) {
+
+  var matrix = load(__webpack_require__(1));
+  var divideScalar = load(__webpack_require__(12));
+  var multiplyScalar = load(__webpack_require__(21));
+  var subtract = load(__webpack_require__(16));
+  var equalScalar = load(__webpack_require__(10));
+
+  var solveValidation = load(__webpack_require__(79));
+
+  var DenseMatrix = type.DenseMatrix;
+
+  /** 
+   * Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
+   *
+   * `L * x = b`
+   *
+   * Syntax:
+   *
+   *    math.lsolve(L, b);
+   *
+   * Examples:
+   *
+   *    var a = [[-2, 3], [2, 1]];
+   *    var b = [11, 9];
+   *    var x = lsolve(a, b);  // [[-5.5], [20]]
+   *
+   * See also:
+   *
+   *    lup, slu, usolve, lusolve
+   *
+   * @param {Matrix, Array} L       A N x N matrix or array (L)
+   * @param {Matrix, Array} b       A column vector with the b values
+   *
+   * @return {DenseMatrix | Array}  A column vector with the linear system solution (x)
+   */
+  var lsolve = typed('lsolve', {
+
+    'SparseMatrix, Array | Matrix': function (m, b) {
+      // process matrix
+      return _sparseForwardSubstitution(m, b);
+    },
+    
+    'DenseMatrix, Array | Matrix': function (m, b) {
+      // process matrix
+      return _denseForwardSubstitution(m, b);
+    },
+    
+    'Array, Array | Matrix': function (a, b) {
+      // create dense matrix from array
+      var m = matrix(a);
+      // use matrix implementation
+      var r = _denseForwardSubstitution(m, b);
+      // result
+      return r.valueOf();
+    }
+  });
+
+  var _denseForwardSubstitution = function (m, b) {
+    // validate matrix and vector, return copy of column vector b
+    b = solveValidation(m, b, true);
+    // column vector data
+    var bdata = b._data;
+    // rows & columns
+    var rows = m._size[0];
+    var columns = m._size[1];
+    // result
+    var x = [];
+    // data
+    var data = m._data;
+    // forward solve m * x = b, loop columns
+    for (var j = 0; j < columns; j++) {
+      // b[j]
+      var bj = bdata[j][0] || 0;
+      // x[j]
+      var xj;
+      // forward substitution (outer product) avoids inner looping when bj == 0
+      if (!equalScalar(bj, 0)) {
+        // value @ [j, j]
+        var vjj = data[j][j];
+        // check vjj
+        if (equalScalar(vjj, 0)) {
+          // system cannot be solved
+          throw new Error('Linear system cannot be solved since matrix is singular');
+        }
+        // calculate xj
+        xj = divideScalar(bj, vjj);
+        // loop rows
+        for (var i = j + 1; i < rows; i++) {
+          // update copy of b
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, data[i][j]))];
+        }
+      }
+      else {
+        // zero @ j
+        xj = 0;
+      }
+      // update x
+      x[j] = [xj];
+    }
+    // return vector
+    return new DenseMatrix({
+      data: x,
+      size: [rows, 1]
+    });
+  };
+
+  var _sparseForwardSubstitution = function (m, b) {
+    // validate matrix and vector, return copy of column vector b
+    b = solveValidation(m, b, true);
+    // column vector data
+    var bdata = b._data;
+    // rows & columns
+    var rows = m._size[0];
+    var columns = m._size[1];
+    // matrix arrays
+    var values = m._values;
+    var index = m._index;
+    var ptr = m._ptr;
+    // vars
+    var i, k;
+    // result
+    var x = [];
+    // forward solve m * x = b, loop columns
+    for (var j = 0; j < columns; j++) {
+      // b[j]
+      var bj = bdata[j][0] || 0;
+      // forward substitution (outer product) avoids inner looping when bj == 0
+      if (!equalScalar(bj, 0)) {
+        // value @ [j, j]
+        var vjj = 0;
+        // lower triangular matrix values & index (column j)
+        var jvalues = [];
+        var jindex = [];
+        // last index in column
+        var l = ptr[j + 1];
+        // values in column, find value @ [j, j]
+        for (k = ptr[j]; k < l; k++) {
+          // row
+          i = index[k];
+          // check row (rows are not sorted!)
+          if (i === j) {
+            // update vjj
+            vjj = values[k];
+          }
+          else if (i > j) {
+            // store lower triangular
+            jvalues.push(values[k]);
+            jindex.push(i);
+          }
+        }
+        // at this point we must have a value @ [j, j]
+        if (equalScalar(vjj, 0)) {
+          // system cannot be solved, there is no value @ [j, j]
+          throw new Error('Linear system cannot be solved since matrix is singular');
+        }
+        // calculate xj
+        var xj = divideScalar(bj, vjj);
+        // loop lower triangular
+        for (k = 0, l = jindex.length; k < l; k++) {
+          // row
+          i = jindex[k];
+          // update copy of b
+          bdata[i] = [subtract(bdata[i][0] || 0, multiplyScalar(xj, jvalues[k]))];
+        }
+        // update x
+        x[j] = [xj];
+      }
+      else {
+        // update x
+        x[j] = [0];
+      }
+    }
+    // return vector
+    return new DenseMatrix({
+      data: x,
+      size: [rows, 1]
+    });
+  };
+
+  return lsolve;
+}
+
+exports.name = 'lsolve';
+exports.factory = factory;
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory (type, config, load) {
+
+  var cs_flip = load(__webpack_require__(80));
+
+  /**
+   * Marks the node at w[j]
+   *
+   * @param {Array}   w               The array
+   * @param {Number}  j               The array index
+   *
+   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
+   */
+  var cs_mark = function (w, j) {
+    // mark w[j]
+    w[j] = cs_flip(w [j]);
+  };
+
+  return cs_mark;
+}
+
+exports.name = 'cs_mark';
+exports.path = 'sparse';
+exports.factory = factory;
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory () {
+
+  /**
+   * Checks if the node at w[j] is marked
+   *
+   * @param {Array}   w               The array
+   * @param {Number}  j               The array index
+   *
+   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
+   */
+  var cs_marked = function (w, j) {
+    // check node is marked
+    return w[j] < 0;
+  };
+
+  return cs_marked;
+}
+
+exports.name = 'cs_marked';
+exports.path = 'sparse';
+exports.factory = factory;
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var nearlyEqual = __webpack_require__(3).nearlyEqual;
+var bigNearlyEqual = __webpack_require__(45);
+
+function factory (type, config, load, typed) {
+  
+  var matrix = load(__webpack_require__(1));
+
+  var algorithm03 = load(__webpack_require__(19));
+  var algorithm07 = load(__webpack_require__(28));
+  var algorithm12 = load(__webpack_require__(18));
+  var algorithm13 = load(__webpack_require__(7));
+  var algorithm14 = load(__webpack_require__(6));
+
+  var latex = __webpack_require__(4);
+
+  /**
+   * Test whether value x is larger or equal to y.
+   *
+   * The function returns true when x is larger than y or the relative
+   * difference between x and y is smaller than the configured epsilon. The
+   * function cannot be used to compare values smaller than approximately 2.22e-16.
+   *
+   * For matrices, the function is evaluated element wise.
+   * Strings are compared by their numerical value.
+   *
+   * Syntax:
+   *
+   *    math.largerEq(x, y)
+   *
+   * Examples:
+   *
+   *    math.larger(2, 1 + 1);         // returns false
+   *    math.largerEq(2, 1 + 1);       // returns true
+   *
+   * See also:
+   *
+   *    equal, unequal, smaller, smallerEq, larger, compare
+   *
+   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} x First value to compare
+   * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
+   * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
+   */
+  var largerEq = typed('largerEq', {
+
+    'boolean, boolean': function (x, y) {
+      return x >= y;
+    },
+
+    'number, number': function (x, y) {
+      return x >= y || nearlyEqual(x, y, config.epsilon);
+    },
+
+    'BigNumber, BigNumber': function (x, y) {
+      return x.gte(y) || bigNearlyEqual(x, y, config.epsilon);
+    },
+
+    'Fraction, Fraction': function (x, y) {
+      return x.compare(y) !== -1;
+    },
+
+    'Complex, Complex': function () {
+      throw new TypeError('No ordering relation is defined for complex numbers');
+    },
+
+    'Unit, Unit': function (x, y) {
+      if (!x.equalBase(y)) {
+        throw new Error('Cannot compare units with different base');
+      }
+      return largerEq(x.value, y.value);
+    },
+
+    'SparseMatrix, SparseMatrix': function(x, y) {
+      return algorithm07(x, y, largerEq);
+    },
+
+    'SparseMatrix, DenseMatrix': function(x, y) {
+      return algorithm03(y, x, largerEq, true);
+    },
+
+    'DenseMatrix, SparseMatrix': function(x, y) {
+      return algorithm03(x, y, largerEq, false);
+    },
+
+    'DenseMatrix, DenseMatrix': function(x, y) {
+      return algorithm13(x, y, largerEq);
+    },
+
+    'Array, Array': function (x, y) {
+      // use matrix implementation
+      return largerEq(matrix(x), matrix(y)).valueOf();
+    },
+
+    'Array, Matrix': function (x, y) {
+      // use matrix implementation
+      return largerEq(matrix(x), y);
+    },
+
+    'Matrix, Array': function (x, y) {
+      // use matrix implementation
+      return largerEq(x, matrix(y));
+    },
+
+    'SparseMatrix, any': function (x, y) {
+      return algorithm12(x, y, largerEq, false);
+    },
+
+    'DenseMatrix, any': function (x, y) {
+      return algorithm14(x, y, largerEq, false);
+    },
+
+    'any, SparseMatrix': function (x, y) {
+      return algorithm12(y, x, largerEq, true);
+    },
+
+    'any, DenseMatrix': function (x, y) {
+      return algorithm14(y, x, largerEq, true);
+    },
+
+    'Array, any': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(x), y, largerEq, false).valueOf();
+    },
+
+    'any, Array': function (x, y) {
+      // use matrix implementation
+      return algorithm14(matrix(y), x, largerEq, true).valueOf();
+    }
+  });
+
+  largerEq.toTex = {
+    2: '\\left(${args[0]}' + latex.operators['largerEq'] + '${args[1]}\\right)'
+  };
+
+  return largerEq;
+}
+
+exports.name = 'largerEq';
+exports.factory = factory;
+
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function factory () {
+
+  /**
+   * Depth-first search and postorder of a tree rooted at node j
+   *
+   * @param {Number}  j               The tree node
+   * @param {Number}  k               
+   * @param {Array}   w               The workspace array
+   * @param {Number}  head            The index offset within the workspace for the head array
+   * @param {Number}  next            The index offset within the workspace for the next array
+   * @param {Array}   post            The post ordering array
+   * @param {Number}  stack           The index offset within the workspace for the stack array
+   *
+   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
+   */
+  var cs_tdfs = function (j, k, w, head, next, post, stack) {
+    // variables
+    var top = 0;
+    // place j on the stack
+    w[stack] = j;
+    // while (stack is not empty) 
+    while (top >= 0) {
+      // p = top of stack
+      var p = w[stack + top];
+      // i = youngest child of p
+      var i = w[head + p];
+      if (i == -1) {
+        // p has no unordered children left
+        top--;
+        // node p is the kth postordered node
+        post[k++] = p;
+      }
+      else {
+        // remove i from children of p
+        w[head + p] = w[next + i];
+        // increment top
+        ++top;
+        // start dfs on child node i
+        w[stack + top] = i;
+      }
+    }
+    return k;
+  };
+
+  return cs_tdfs;
+}
+
+exports.name = 'cs_tdfs';
+exports.path = 'sparse';
+exports.factory = factory;
+
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var util = __webpack_require__(29);
+
+var number = util.number,
+    
+    isInteger = number.isInteger;
+
+function factory (type, config, load, typed) {
+
+  var cs_sqr = load(__webpack_require__(295));
+  var cs_lu = load(__webpack_require__(287));
+
+  /**
+   * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where
+   *
+   * `P * A * Q = L * U`
+   *
+   * Syntax:
+   *
+   *    math.slu(A, order, threshold);
+   *
+   * Examples:
+   *
+   *    var A = math.sparse([[4,3], [6, 3]])
+   *    math.slu(A, 1, 0.001)
+   *    // returns:
+   *    // {
+   *    //   L: [[1, 0], [1.5, 1]]
+   *    //   U: [[4, 3], [0, -1.5]]
+   *    //   p: [0, 1]
+   *    //   q: [0, 1]
+   *    // }
+   *
+   * See also:
+   *
+   *    lup, lsolve, usolve, lusolve
+   *
+   * @param {SparseMatrix} A              A two dimensional sparse matrix for which to get the LU decomposition.
+   * @param {Number}       order          The Symbolic Ordering and Analysis order:
+   *                                       0 - Natural ordering, no permutation vector q is returned
+   *                                       1 - Matrix must be square, symbolic ordering and analisis is performed on M = A + A'
+   *                                       2 - Symbolic ordering and analisis is performed on M = A' * A. Dense columns from A' are dropped, A recreated from A'. 
+   *                                           This is appropriatefor LU factorization of unsymmetric matrices.
+   *                                       3 - Symbolic ordering and analisis is performed on M = A' * A. This is best used for LU factorization is matrix M has no dense rows.
+   *                                           A dense row is a row with more than 10*sqr(columns) entries.
+   * @param {Number}       threshold       Partial pivoting threshold (1 for partial pivoting)
+   *
+   * @return {Object} The lower triangular matrix, the upper triangular matrix and the permutation vectors.
+   */
+  var slu = typed('slu', {
+
+    'SparseMatrix, number, number': function (a, order, threshold) {
+      // verify order
+      if (!isInteger(order) || order < 0 || order > 3)
+        throw new Error('Symbolic Ordering and Analysis order must be an integer number in the interval [0, 3]');
+      // verify threshold
+      if (threshold < 0 || threshold > 1)
+        throw new Error('Partial pivoting threshold must be a number from 0 to 1');
+      
+      // perform symbolic ordering and analysis
+      var s = cs_sqr(order, a, false);
+      
+      // perform lu decomposition
+      var f = cs_lu(a, s, threshold);
+      
+      // return decomposition
+      return {
+        L: f.L,
+        U: f.U,
+        p: f.pinv,
+        q: s.q,
+        toString: function () {
+          return 'L: ' + this.L.toString() + '\nU: ' + this.U.toString() + '\np: ' + this.p.toString() + (this.q ? '\nq: ' + this.q.toString() : '') + '\n';
+        }
+      };
+    }
+  });
+
+  return slu;
+}
+
+exports.name = 'slu';
 exports.factory = factory;
 
 
@@ -20784,7 +20795,7 @@ exports.factory = factory;
 
 
 var deepForEach = __webpack_require__(37);
-var reduce = __webpack_require__(83);
+var reduce = __webpack_require__(84);
 var containsCollections = __webpack_require__(67);
 
 function factory (type, config, load, typed) {
@@ -20910,6 +20921,7 @@ function factory (type, config, load, typed) {
   var subtract = load(__webpack_require__(16));
   var multiply = load(__webpack_require__(8));
   var unaryMinus = load(__webpack_require__(32));
+  var lup = load(__webpack_require__(83));
 
   /**
    * Calculate the determinant of a matrix.
@@ -21016,49 +21028,40 @@ function factory (type, config, load, typed) {
       );
     }
     else {
-      // this is an n x n matrix
-      var compute_mu = function (matrix) {
-        var i, j;
 
-        // Compute the matrix with zero lower triangle, same upper triangle,
-        // and diagonals given by the negated sum of the below diagonal
-        // elements.
-        var mu = new Array(matrix.length);
-        var sum = 0;
-        for (i = 1; i < matrix.length; i++) {
-          sum = add(sum, matrix[i][i]);
-        }
+      // Compute the LU decomposition
+      var decomp = lup(matrix);
 
-        for (i = 0; i < matrix.length; i++) {
-          mu[i] = new Array(matrix.length);
-          mu[i][i] = unaryMinus(sum);
-
-          for (j = 0; j < i; j++) {
-            mu[i][j] = 0; // TODO: make bignumber 0 in case of bignumber computation
-          }
-
-          for (j = i + 1; j < matrix.length; j++) {
-            mu[i][j] = matrix[i][j];
-          }
-
-          if (i+1 < matrix.length) {
-            sum = subtract(sum, matrix[i + 1][i + 1]);
-          }
-        }
-
-        return mu;
-      };
-
-      var fa = matrix;
-      for (var i = 0; i < rows - 1; i++) {
-        fa = multiply(compute_mu(fa), matrix);
+      // The determinant is the product of the diagonal entries of U (and those of L, but they are all 1)
+      var det = decomp.U[0][0];
+      for(var i=1; i<rows; i++) {
+        det = multiply(det, decomp.U[i][i]);
       }
 
-      if (rows % 2 == 0) {
-        return unaryMinus(fa[0][0]);
-      } else {
-        return fa[0][0];
+      // The determinant will be multiplied by 1 or -1 depending on the parity of the permutation matrix.
+      // This can be determined by counting the cycles. This is roughly a linear time algorithm.
+      var evenCycles=0;
+      var i=0;
+      var visited=[];
+      while(true) {
+        while(visited[i]) {
+         i++;
+        }
+        if(i >= rows) break;
+        var j=i;
+        var cycleLen = 0;
+        while(!visited[decomp.p[j]]) {
+          visited[decomp.p[j]] = true;
+          j = decomp.p[j];
+          cycleLen++;
+        }
+        if(cycleLen % 2 === 0) {
+          evenCycles++;
+        }
       }
+
+      return evenCycles % 2 === 0 ? det : unaryMinus(det);
+
     }
   }
 }
@@ -21077,7 +21080,7 @@ exports.factory = factory;
 
 var size = __webpack_require__(2).size;
 var deepForEach = __webpack_require__(37);
-var reduce = __webpack_require__(83);
+var reduce = __webpack_require__(84);
 var containsCollections = __webpack_require__(67);
 
 function factory (type, config, load, typed) {
@@ -23241,7 +23244,7 @@ var getSafeProperty = __webpack_require__(15).getSafeProperty;
 
 function factory (type, config, load, typed) {
   var Node = load(__webpack_require__(14));
-  var IndexNode = load(__webpack_require__(86));
+  var IndexNode = load(__webpack_require__(87));
   var access = load(__webpack_require__(134));
 
   /**
@@ -26311,7 +26314,7 @@ function factory (type, config, load, typed) {
 
   var algorithm02 = load(__webpack_require__(25));
   var algorithm03 = load(__webpack_require__(19));
-  var algorithm09 = load(__webpack_require__(104));
+  var algorithm09 = load(__webpack_require__(105));
   var algorithm11 = load(__webpack_require__(17));
   var algorithm12 = load(__webpack_require__(18));
   var algorithm13 = load(__webpack_require__(7));
@@ -26622,7 +26625,7 @@ exports.factory = factory;
 var deepMap = __webpack_require__(0);
 
 function factory (type, config, load, typed) {
-  var acosh = typed.find(load(__webpack_require__(91)), ['Complex']);
+  var acosh = typed.find(load(__webpack_require__(92)), ['Complex']);
 
   /**
    * Calculate the hyperbolic arcsecant of a value,
@@ -27069,7 +27072,7 @@ exports.factory = factory;
 
 module.exports = [
   __webpack_require__(181),
-  __webpack_require__(91),
+  __webpack_require__(92),
   __webpack_require__(180),
   __webpack_require__(179),
   __webpack_require__(178),
@@ -27218,7 +27221,7 @@ module.exports = [
 
 function factory (type, config, load, typed) {
   var sqrt       = load(__webpack_require__(36));
-  var variance   = load(__webpack_require__(92));
+  var variance   = load(__webpack_require__(93));
 
   /**
    * Compute the standard deviation of a matrix or a  list with values.
@@ -27748,8 +27751,8 @@ var flatten = __webpack_require__(2).flatten;
 
 function factory (type, config, load, typed) {
   var abs      = load(__webpack_require__(23));
-  var map      = load(__webpack_require__(99));
-  var median   = load(__webpack_require__(93));
+  var map      = load(__webpack_require__(100));
+  var median   = load(__webpack_require__(94));
   var subtract = load(__webpack_require__(16));
   var improveErrorMessage = load(__webpack_require__(31));
 
@@ -27827,16 +27830,16 @@ exports.factory = factory;
 
 module.exports = [
   __webpack_require__(189),
-  __webpack_require__(84),
+  __webpack_require__(85),
   __webpack_require__(123),
-  __webpack_require__(93),
+  __webpack_require__(94),
   __webpack_require__(121),
   __webpack_require__(188),
   __webpack_require__(187),
   __webpack_require__(186),
   __webpack_require__(185),
-  __webpack_require__(98),
-  __webpack_require__(92)
+  __webpack_require__(99),
+  __webpack_require__(93)
 ];
 
 
@@ -28069,8 +28072,8 @@ function factory (type, config, load, typed) {
   var concat = load(__webpack_require__(68));
   var size = load(__webpack_require__(24));
   var subset = load(__webpack_require__(22));
-  var setIntersect = load(__webpack_require__(95));
-  var setSymDifference = load(__webpack_require__(94));
+  var setIntersect = load(__webpack_require__(96));
+  var setSymDifference = load(__webpack_require__(95));
   
   /**
    * Create the union of two (multi)sets.
@@ -28530,14 +28533,14 @@ exports.factory = factory;
 
 module.exports = [
   __webpack_require__(199),
-  __webpack_require__(96),
+  __webpack_require__(97),
   __webpack_require__(198),
-  __webpack_require__(95),
+  __webpack_require__(96),
   __webpack_require__(197),
   __webpack_require__(196),
   __webpack_require__(195),
   __webpack_require__(194),
-  __webpack_require__(94),
+  __webpack_require__(95),
   __webpack_require__(193)
 ];
 
@@ -28697,7 +28700,7 @@ exports.factory = factory;
 
 
 function factory (type, config, load, typed) {
-  var compareText = load(__webpack_require__(97));
+  var compareText = load(__webpack_require__(98));
   var isZero = load(__webpack_require__(48));
 
   /**
@@ -28842,12 +28845,12 @@ exports.factory = factory;
 module.exports = [
   __webpack_require__(46),
   __webpack_require__(26),
-  __webpack_require__(97),
+  __webpack_require__(98),
   __webpack_require__(203),
   __webpack_require__(51),
   __webpack_require__(202),
   __webpack_require__(33),
-  __webpack_require__(110),
+  __webpack_require__(111),
   __webpack_require__(43),
   __webpack_require__(201),
   __webpack_require__(115)
@@ -29436,9 +29439,9 @@ exports.factory = factory;
 function factory(type, config, load, typed) {
     var matrix = load(__webpack_require__(1));
     var divide = load(__webpack_require__(30));
-    var sum = load(__webpack_require__(98));
+    var sum = load(__webpack_require__(99));
     var multiply = load(__webpack_require__(8));
-    var dotDivide = load(__webpack_require__(105));
+    var dotDivide = load(__webpack_require__(106));
     var log = load(__webpack_require__(78));
     var isNumeric = load(__webpack_require__(60));
 
@@ -29533,7 +29536,7 @@ module.exports = [
   //require('./distribution'), // TODO: rethink math.distribution
   __webpack_require__(62),
   __webpack_require__(63),
-  __webpack_require__(101),
+  __webpack_require__(102),
   __webpack_require__(213),
   __webpack_require__(212),
   __webpack_require__(211),
@@ -29632,7 +29635,7 @@ function factory(type, config, load, typed) {
   var subtract = load(__webpack_require__(16));
   var inv      = load(__webpack_require__(66));
   var size     = load(__webpack_require__(24));
-  var max      = load(__webpack_require__(84));
+  var max      = load(__webpack_require__(85));
   var eye      = load(__webpack_require__(52));
 
   /**
@@ -31175,7 +31178,7 @@ module.exports = [
   __webpack_require__(223),
   __webpack_require__(66),
   __webpack_require__(222),
-  __webpack_require__(99),
+  __webpack_require__(100),
   __webpack_require__(221),
   __webpack_require__(74),
   __webpack_require__(120),
@@ -31186,7 +31189,7 @@ module.exports = [
   __webpack_require__(216),
   __webpack_require__(215),
   __webpack_require__(22),
-  __webpack_require__(103),
+  __webpack_require__(104),
   __webpack_require__(65),
   __webpack_require__(41)
 ];
@@ -31470,7 +31473,7 @@ function factory (type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var zeros = load(__webpack_require__(41));
-  var not = load(__webpack_require__(100));
+  var not = load(__webpack_require__(101));
   var isZero = load(__webpack_require__(48));
 
   var algorithm02 = load(__webpack_require__(25));
@@ -31622,7 +31625,7 @@ exports.factory = factory;
 
 module.exports = [
   __webpack_require__(233),
-  __webpack_require__(100),
+  __webpack_require__(101),
   __webpack_require__(232),
   __webpack_require__(231)
 ];
@@ -32476,7 +32479,7 @@ exports.factory = factory;
 
 function factory (type, config, load, typed) {
   var add = load(__webpack_require__(13));
-  var stirlingS2 = load(__webpack_require__(102));
+  var stirlingS2 = load(__webpack_require__(103));
   var isNegative = load(__webpack_require__(55));
   var isInteger = load(__webpack_require__(47));
 
@@ -32536,7 +32539,7 @@ exports.factory = factory;
 module.exports = [
   __webpack_require__(244),
   __webpack_require__(243),
-  __webpack_require__(102),
+  __webpack_require__(103),
   __webpack_require__(242)
 ];
 
@@ -33349,7 +33352,7 @@ function factory (type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
 
   var algorithm01 = load(__webpack_require__(34));
-  var algorithm04 = load(__webpack_require__(88));
+  var algorithm04 = load(__webpack_require__(89));
   var algorithm10 = load(__webpack_require__(44));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -34328,7 +34331,7 @@ function factory (type, config, load, typed) {
   var larger      = load(__webpack_require__(33));
   var smaller     = load(__webpack_require__(43));
   var matrix      = load(__webpack_require__(1));
-  var trace       = load(__webpack_require__(103));
+  var trace       = load(__webpack_require__(104));
   var transpose   = load(__webpack_require__(65));
 
 
@@ -35350,7 +35353,7 @@ function factory (type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
 
   var algorithm01 = load(__webpack_require__(34));
-  var algorithm04 = load(__webpack_require__(88));
+  var algorithm04 = load(__webpack_require__(89));
   var algorithm10 = load(__webpack_require__(44));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -35852,7 +35855,7 @@ function factory (type, config, load, typed) {
   var latex = __webpack_require__(4);
 
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm09 = load(__webpack_require__(104));
+  var algorithm09 = load(__webpack_require__(105));
   var algorithm11 = load(__webpack_require__(17));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -36301,7 +36304,7 @@ module.exports = [
   __webpack_require__(278),
   __webpack_require__(277),
   __webpack_require__(30),
-  __webpack_require__(105),
+  __webpack_require__(106),
   __webpack_require__(276),
   __webpack_require__(275),
   __webpack_require__(274),
@@ -36391,14 +36394,14 @@ var isArray = Array.isArray;
 function factory (type, config, load, typed) {
   
   var matrix = load(__webpack_require__(1));
-  var lup = load(__webpack_require__(113));
-  var slu = load(__webpack_require__(112));
+  var lup = load(__webpack_require__(83));
+  var slu = load(__webpack_require__(113));
   var cs_ipvec = load(__webpack_require__(281));
 
   var solveValidation = load(__webpack_require__(79));
 
-  var usolve = load(__webpack_require__(106));
-  var lsolve = load(__webpack_require__(107));
+  var usolve = load(__webpack_require__(107));
+  var lsolve = load(__webpack_require__(108));
 
   /**
    * Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
@@ -36551,8 +36554,8 @@ exports.factory = factory;
 
 function factory (type, config, load) {
 
-  var cs_marked = load(__webpack_require__(109));
-  var cs_mark   = load(__webpack_require__(108));
+  var cs_marked = load(__webpack_require__(110));
+  var cs_mark   = load(__webpack_require__(109));
   var cs_unflip = load(__webpack_require__(283));
 
   /**
@@ -36644,8 +36647,8 @@ exports.factory = factory;
 function factory (type, config, load) {
 
   var cs_dfs = load(__webpack_require__(284));
-  var cs_marked = load(__webpack_require__(109));
-  var cs_mark = load(__webpack_require__(108));
+  var cs_marked = load(__webpack_require__(110));
+  var cs_mark = load(__webpack_require__(109));
 
   /**
    * The cs_reach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1 
@@ -36809,7 +36812,7 @@ function factory (type, config, load) {
   var multiply = load(__webpack_require__(8));
   
   var larger = load(__webpack_require__(33));
-  var largerEq = load(__webpack_require__(110));
+  var largerEq = load(__webpack_require__(111));
   
   var cs_spsolve = load(__webpack_require__(286));
 
@@ -37190,7 +37193,7 @@ exports.factory = factory;
 
 function factory (type, config, load) {
 
-  var cs_tdfs = load(__webpack_require__(111));
+  var cs_tdfs = load(__webpack_require__(112));
 
   /**
    * Post order a tree of forest
@@ -37491,7 +37494,7 @@ function factory (type, config, load) {
 
   var cs_flip = load(__webpack_require__(80));
   var cs_fkeep = load(__webpack_require__(293));
-  var cs_tdfs = load(__webpack_require__(111));
+  var cs_tdfs = load(__webpack_require__(112));
   
   var add       = load(__webpack_require__(13));
   var multiply  = load(__webpack_require__(8));
@@ -39966,13 +39969,13 @@ module.exports = [
   
   // decomposition
   __webpack_require__(296),
+  __webpack_require__(83),
   __webpack_require__(113),
-  __webpack_require__(112),
 
   // solver
-  __webpack_require__(107),
+  __webpack_require__(108),
   __webpack_require__(282),
-  __webpack_require__(106)
+  __webpack_require__(107)
 ];
 
 
@@ -40312,7 +40315,7 @@ var isCollection = __webpack_require__(49);
  * from one-based to zero based
  */
 function factory (type, config, load, typed) {
-  var max = load(__webpack_require__(84));
+  var max = load(__webpack_require__(85));
 
   return typed('max', {
     '...any': function (args) {
@@ -40359,7 +40362,7 @@ var map = __webpack_require__(2).map;
  * This transform creates a one-based index instead of a zero-based index
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(__webpack_require__(85));
+  var compileInlineExpression = load(__webpack_require__(86));
   var matrix = load(__webpack_require__(1));
 
   function mapTransform(args, math, scope) {
@@ -40514,7 +40517,7 @@ var forEach = __webpack_require__(2).forEach;
  * This transform creates a one-based index instead of a zero-based index
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(__webpack_require__(85));
+  var compileInlineExpression = load(__webpack_require__(86));
 
   function forEachTransform(args, math, scope) {
     var x, callback;
@@ -40595,7 +40598,7 @@ var maxArgumentCount = __webpack_require__(35).maxArgumentCount;
  * so you can do something like 'filter([3, -2, 5], x > 0)'.
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(__webpack_require__(85));
+  var compileInlineExpression = load(__webpack_require__(86));
   var matrix = load(__webpack_require__(1));
 
   function filterTransform(args, math, scope) {
@@ -40777,7 +40780,7 @@ module.exports = [
   __webpack_require__(131),
   __webpack_require__(130),
   __webpack_require__(58),
-  __webpack_require__(86),
+  __webpack_require__(87),
   __webpack_require__(129),
   __webpack_require__(69),
   __webpack_require__(14),
@@ -45754,7 +45757,7 @@ module.exports = [
 /* 521 */
 /***/ (function(module, exports) {
 
-module.exports = '4.4.1';
+module.exports = '4.4.2';
 // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
@@ -46172,7 +46175,7 @@ function factory (type, config, load, typed, math) {
   var isNumeric = load(__webpack_require__(60));
   var format    = load(__webpack_require__(141));
   var getTypeOf = load(__webpack_require__(40));
-  var toNumber  = load(__webpack_require__(87));
+  var toNumber  = load(__webpack_require__(88));
   var Complex   = load(__webpack_require__(148));
 
   /**
@@ -50496,7 +50499,7 @@ var isString = string.isString;
 var validateIndex = array.validateIndex;
 
 function factory (type, config, load, typed) {
-  var Matrix = load(__webpack_require__(89)); // force loading Matrix (do not use via type.Matrix)
+  var Matrix = load(__webpack_require__(90)); // force loading Matrix (do not use via type.Matrix)
   var equalScalar = load(__webpack_require__(10));
 
   /**
@@ -51939,7 +51942,7 @@ exports.isBoolean = function(value) {
 
 module.exports = [
   // types
-  __webpack_require__(89),
+  __webpack_require__(90),
   __webpack_require__(53),
   __webpack_require__(536),
   __webpack_require__(535),
@@ -60002,7 +60005,7 @@ module.exports = [
   __webpack_require__(545),
   __webpack_require__(541),
   __webpack_require__(538),
-  __webpack_require__(87),
+  __webpack_require__(88),
   __webpack_require__(530),
   __webpack_require__(529),
   __webpack_require__(528)
@@ -61914,7 +61917,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var typedFunction = __webpack_require__(560);
 var digits = __webpack_require__(3).digits;
-var isBigNumber = __webpack_require__(90);
+var isBigNumber = __webpack_require__(91);
 var isMatrix = __webpack_require__(72);
 
 // returns a new instance of typed-function
