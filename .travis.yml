@@ -20,3 +20,7 @@ jobs:
 
 git:
   depth: 5
+
+cache:
+  directories:
+    - node_modules
