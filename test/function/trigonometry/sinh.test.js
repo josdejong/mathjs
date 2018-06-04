@@ -33,8 +33,10 @@ describe('sinh', function() {
 
     it('should return the sinh of very small numbers (avoid returning zero)', function() {
       // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
-      assert.equal(sinh(-1e-10), -1e-10);
-      assert.equal(sinh(1e-50), 1e-50);
+      assert(sinh(-1e-10) !== 0);
+      assert(sinh(-1e-50) !== 0);
+      assert(Math.abs(sinh(-1e-10) - -1e-10) < EPSILON);
+      assert(Math.abs(sinh(1e-50) - 1e-50) < EPSILON);
     });
   }
 
