@@ -48,7 +48,7 @@ module.exports = function(config) {
       bs_edge: {
         base: 'BrowserStack',
         browser: 'Edge',
-        browser_version: '16',
+        browser_version: '17',
         os: 'Windows',
         os_version: '10',
       },
