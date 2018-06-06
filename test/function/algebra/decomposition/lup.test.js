@@ -376,7 +376,7 @@ describe('lup', function () {
    */
   function _p(p) {
     // identity matrix
-    var identity = math.eye(p.length);
+    var identity = math.identity(p.length);
     // array
     var data = [];
     // loop rows

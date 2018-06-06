@@ -8,7 +8,7 @@ var DenseMatrix = math.type.DenseMatrix;
 var SparseMatrix = math.type.SparseMatrix;
 var det = math.det;
 var diag = math.diag;
-var eye = math.eye;
+var identity = math.identity;
 
 describe('det', function() {
 
@@ -56,9 +56,9 @@ describe('det', function() {
   });
 
   it('should return 1 for the identity matrix',function() {
-    assert.equal(det(eye(7)), 1);
-    assert.equal(det(eye(2)), 1);
-    assert.equal(det(eye(1)), 1);
+    assert.equal(det(identity(7)), 1);
+    assert.equal(det(identity(2)), 1);
+    assert.equal(det(identity(1)), 1);
   });
 
   it('should return 0 for a singular matrix',function() {

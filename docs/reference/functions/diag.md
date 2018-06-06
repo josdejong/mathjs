@@ -52,4 +52,4 @@ math.diag(a);   // returns [1, 5, 9]
 
 [ones](ones.md),
 [zeros](zeros.md),
-[eye](eye.md)
+[identity](identity.md)

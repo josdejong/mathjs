@@ -446,7 +446,7 @@ math.eval('[1, 2, 3; 4, 5, 6]');                      // Matrix, size [2, 3]
 ```
 
 Another way to create filled matrices is using the functions `zeros`, `ones`,
-`eye`, and `range`.
+`identity`, and `range`.
 
 ```js
 // initialize a matrix with ones or zeros
@@ -455,7 +455,7 @@ math.eval('ones(3)');         // Matrix, [1, 1, 1],                 size [3]
 math.eval('5 * ones(2, 2)');  // Matrix, [[5, 5], [5, 5]],          size [2, 2]
 
 // create an identity matrix
-math.eval('eye(2)');          // Matrix, [[1, 0], [0, 1]],          size [2, 2]
+math.eval('identity(2)');     // Matrix, [[1, 0], [0, 1]],          size [2, 2]
 
 // create a range
 math.eval('1:4');             // Matrix, [1, 2, 3, 4],              size [4]

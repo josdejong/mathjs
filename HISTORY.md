@@ -2,12 +2,13 @@
 
 ## not yet released, version 5.0.0
 
-!!! Breaking changes !!!
+!!! BE CAREFUL: BREAKING CHANGES !!!
 
 - Implemented complex conjugate transpose `math.ctranspose`. See #1097.
   Thanks @jackschmidt.
 - Changed the behavior of `A'` in the expression parser to calculate the complex
   conjugate transpose. See #1097. Thanks @jackschmidt.
+- Renamed `eye` to `identity`, see #1054.
 - Upgraded dependencies:
   - `decimal.js` from `9.0.1` to `10.0.1`
   - Upgraded dev dependencies
