@@ -140,7 +140,7 @@
   "files": [
       "dist",
       "lib",
-      "src",
+      "src"
   ],
   "scripts": {
     "build": "gulp",
