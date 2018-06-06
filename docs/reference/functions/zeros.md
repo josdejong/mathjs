@@ -46,6 +46,6 @@ math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
 ## See also
 
 [ones](ones.md),
-[eye](eye.md),
+[identity](identity.md),
 [size](size.md),
 [range](range.md)

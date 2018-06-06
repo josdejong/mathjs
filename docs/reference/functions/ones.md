@@ -48,6 +48,6 @@ math.ones(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
 ## See also
 
 [zeros](zeros.md),
-[eye](eye.md),
+[identity](identity.md),
 [size](size.md),
 [range](range.md)

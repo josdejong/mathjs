@@ -3,7 +3,7 @@ var math = require('../index');
 
 // create a sparse matrix
 console.log('creating a 1000x1000 sparse matrix...');
-var a = math.eye(1000, 1000, 'sparse');
+var a = math.identity(1000, 1000, 'sparse');
 
 // do operations with a sparse matrix
 console.log('doing some operations on the sparse matrix...');

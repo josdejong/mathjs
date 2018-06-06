@@ -73,7 +73,7 @@ function assertValidQRDecomposition(A, Q, R) {
   
   // Q has unitary (orthonormal for real A) columns
   // use math.equal as approx.deepEqual cannot handle complex vs real number comparision  
-  assert(math.equal(math.multiply(math.conj(math.transpose(Q)), Q).valueOf(), math.eye([Asize[0], Asize[0]]).valueOf()),
+  assert(math.equal(math.multiply(math.conj(math.transpose(Q)), Q).valueOf(), math.identity([Asize[0], Asize[0]]).valueOf()),
     'Matrix Q is not unitary/orthonormal');
   
   

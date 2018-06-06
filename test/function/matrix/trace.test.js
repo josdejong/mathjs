@@ -101,9 +101,9 @@ describe('trace', function() {
   });
 
   it('should return N for the identity matrix',function() {
-    assert.equal(math.trace(math.eye(7)), 7);
-    assert.equal(math.trace(math.eye(2)), 2);
-    assert.equal(math.trace(math.eye(1)), 1);
+    assert.equal(math.trace(math.identity(7)), 7);
+    assert.equal(math.trace(math.identity(2)), 2);
+    assert.equal(math.trace(math.identity(1)), 1);
   });
 
   it('should calculate the trace for a scalar',function() {

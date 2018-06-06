@@ -145,10 +145,10 @@ Function | Description
 [math.diag(X)](functions/diag.md) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.md) | Calculate the dot product of two vectors.
 [math.expm(x)](functions/expm.md) | Compute the matrix exponential, expm(A) = e^A.
-[math.eye(n)](functions/eye.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.filter(x,&nbsp;test)](functions/filter.md) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.md) | Flatten a multi dimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.md) | Iterate over all elements of a matrix/array, and executes the given callback function.
+[math.identity(n)](functions/identity.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.inv(x)](functions/inv.md) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.md) | Calculates the kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.md) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
