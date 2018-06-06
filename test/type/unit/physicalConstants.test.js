@@ -44,7 +44,7 @@ describe('physical constants', function() {
     approx.equal(math.efimovFactor,                       22.7);
 
     // Physico-chemical constants
-    assert.equal(math.atomicMass.toString(),          '1.6605389217299995e-27 kg');  // round-off error
+    assert.equal(math.atomicMass.format({precision: 14}),  '1.66053892173e-27 kg');  // round-off error
     assert.equal(math.avogadro.toString(),            '6.0221412927e+23 mol^-1');
     assert.equal(math.boltzmann.toString(),           '1.380648813e-23 J / K');
     assert.equal(math.faraday.toString(),             '96485.336521 C / mol');

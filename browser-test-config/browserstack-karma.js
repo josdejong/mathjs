@@ -59,7 +59,7 @@ module.exports = function(config) {
         browser: 'IE',
         browser_version: '11',
         os: 'Windows',
-        os_version: '7'
+        os_version: '10'
       },
       bs_edge: {
         base: 'BrowserStack',
