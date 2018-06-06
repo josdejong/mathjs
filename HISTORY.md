@@ -9,6 +9,8 @@
 - Changed the behavior of `A'` in the expression parser to calculate the complex
   conjugate transpose. See #1097. Thanks @jackschmidt.
 - Renamed `eye` to `identity`, see #1054.
+- Source code is moved from `lib` to `src`, and `lib` now contains the
+  compiled ES5 compatible version of the code.
 - Upgraded dependencies:
   - `decimal.js` from `9.0.1` to `10.0.1`
   - Upgraded dev dependencies

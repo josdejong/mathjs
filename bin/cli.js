@@ -57,7 +57,7 @@ var PRECISION = 14; // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../dist/math.js');
+  return require('../index');
 }
 
 /**

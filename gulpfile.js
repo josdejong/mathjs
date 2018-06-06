@@ -1,14 +1,18 @@
 // @ts-nocheck
-var fs = require('fs'),
-    gulp = require('gulp'),
-    gutil = require('gulp-util'),
-    webpack = require('webpack'),
-    uglify = require('uglify-js'),
-    docgenerator = require('./tools/docgenerator');
+const fs = require('fs')
+const gulp = require('gulp')
+const gutil = require('gulp-util')
+const webpack = require('webpack')
+const babel = require('gulp-babel')
+const uglify = require('uglify-js')
+const docgenerator = require('./tools/docgenerator')
 
-var ENTRY       = './index.js',
-    HEADER      = './lib/header.js',
-    VERSION     = './lib/version.js',
+
+var ENTRY       = './src/index.js',
+    HEADER      = './src/header.js',
+    VERSION     = './src/version.js',
+    COMPILE_SRC = './src/**/*.js',
+    COMPILE_LIB = './lib',
     FILE        = 'math.js',
     FILE_MIN    = 'math.min.js',
     FILE_MAP    = 'math.min.map',
@@ -106,6 +110,12 @@ gulp.task('bundle', [], function (cb) {
   });
 });
 
+gulp.task('compile', function () {
+  return gulp.src(COMPILE_SRC)
+      .pipe(babel())
+      .pipe(gulp.dest(COMPILE_LIB))
+})
+
 gulp.task('minify', ['bundle'], function () {
   var oldCwd = process.cwd();
   process.chdir(DIST);
@@ -147,15 +157,15 @@ gulp.task('validate', ['minify'], function (cb) {
   });
 });
 
-gulp.task('docs', function () {
+gulp.task('docs', ['compile'], function () {
   docgenerator.iteratePath(REF_SRC, REF_DEST, REF_ROOT);
 });
 
 // The watch task (to automatically rebuild when the source code changes)
 // Does only generate math.js, not the minified math.min.js
-gulp.task('watch', ['bundle'], function () {
-  gulp.watch(['index.js', 'lib/**/*.js'], ['bundle']);
+gulp.task('watch', ['bundle', 'compile'], function () {
+  gulp.watch(['index.js', 'src/**/*.js'], ['bundle', 'compile']);
 });
 
 // The default task (called when you run `gulp`)
-gulp.task('default', ['bundle', 'minify', 'validate', 'docs']);
+gulp.task('default', ['bundle', 'compile', 'minify', 'validate', 'docs']);
