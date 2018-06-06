@@ -77,6 +77,7 @@ Function | Description
 [math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or more values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
+[math.nthRoots(x)](functions/nthRoots.md) | Calculate the nth roots of a value.
 [math.pow(x,&nbsp;y)](functions/pow.md) | Calculates the power of x to y, `x ^ y`.
 [math.round(x&nbsp;[,&nbsp;n])](functions/round.md) | Round a value towards the nearest integer.
 [math.sign(x)](functions/sign.md) | Compute the sign of a value.
@@ -139,6 +140,7 @@ Function | Description
 ---- | -----------
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.md) | Concatenate two or more matrices.
 [math.cross(x,&nbsp;y)](functions/cross.md) | Calculate the cross product for two vectors in three dimensional space.
+[math.ctranspose(x)](functions/ctranspose.md) | Transpose and complex conjugate a matrix.
 [math.det(x)](functions/det.md) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.md) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.md) | Calculate the dot product of two vectors.
