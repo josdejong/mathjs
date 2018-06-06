@@ -143,6 +143,7 @@
       "src",
       "bin",
       "core.js",
+      "index.js",
       "docs",
       "examples",
       "CONTRIBUTING.md"
