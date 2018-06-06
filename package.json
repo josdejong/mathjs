@@ -160,11 +160,11 @@
     "compile": "gulp compile",
     "watch": "gulp watch",
     "docs": "gulp docs",
-    "test": "mocha test node-test --recursive --require babel-core/register",
+    "test": "npm run compile && mocha test test-node test-cli --recursive --require babel-core/register",
     "test:cli": "npm run compile && mocha test-cli --recursive --require babel-core/register",
     "test:browser": "karma start ./browser-test-config/local-karma.js",
     "test:browserstack": "karma start ./browser-test-config/browserstack-karma.js",
-    "coverage": "nyc --reporter=lcov --reporter=text-summary npm test; echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test test-node --recursive --require babel-core/register; echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run build && npm test"
   },
   "bin": {
