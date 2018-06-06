@@ -1,9 +1,12 @@
+browser-test-config
 coverage
+gulpfile.js
 img
 misc
 node_modules
+node-test
+test
 tools
-gulpfile.js
 .idea
 .npmignore
 .travis.yml
