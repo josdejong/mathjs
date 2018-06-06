@@ -242,6 +242,8 @@ describe('pow', function() {
   });
 
   it('should compute large size of square matrix', function() {
+    this.timeout(10000);
+
     var a = math.eye(30).valueOf();
     approx.deepEqual(pow(a, 1000), a);
     approx.deepEqual(pow(matrix(a), 1000), matrix(a));

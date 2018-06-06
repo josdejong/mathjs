@@ -30,9 +30,9 @@ describe('physical constants', function() {
     // Atomic and nuclear constants
     assert.equal(math.bohrRadius.toString(),              '5.291772109217e-11 m');
     assert.equal(math.classicalElectronRadius.toString(), '2.817940326727e-15 m');
-    assert.equal(math.electronMass.toString(),            '9.109382913999998e-31 kg');
+    assert.equal(math.electronMass.format({precision: 14}),'9.109382914e-31 kg');
     assert.equal(math.fermiCoupling.toString(),           '1.1663645e-5 GeV^-2');
-    approx.equal(math.fineStructure.toString(),           7.297352569824e-3);
+    approx.equal(math.fineStructure,                      7.297352569824e-3);
     assert.equal(math.hartreeEnergy.toString(),           '4.3597443419e-18 J');
     assert.equal(math.protonMass.toString(),              '1.67262177774e-27 kg');
     assert.equal(math.deuteronMass.toString(),            '3.3435830926e-27 kg');  // round-off error
@@ -40,8 +40,8 @@ describe('physical constants', function() {
     assert.equal(math.quantumOfCirculation.toString(),    '3.636947552024e-4 m^2 / s');
     assert.equal(math.rydberg.toString(),                 '1.097373156853955e+7 m^-1');
     assert.equal(math.thomsonCrossSection.toString(),     '6.65245873413e-29 m^2');
-    approx.equal(math.weakMixingAngle.toString(),         0.222321);
-    approx.equal(math.efimovFactor.toString(),            22.7);
+    approx.equal(math.weakMixingAngle,                    0.222321);
+    approx.equal(math.efimovFactor,                       22.7);
 
     // Physico-chemical constants
     assert.equal(math.atomicMass.toString(),          '1.6605389217299995e-27 kg');  // round-off error
@@ -53,7 +53,7 @@ describe('physical constants', function() {
     assert.equal(math.gasConstant.toString(),         '8.314462175 J / (K mol)');
     assert.equal(math.molarPlanckConstant.toString(), '3.990312717628e-10 (J s) / mol');
     assert.equal(math.molarVolume.toString(),         '2.24139682e-10 m^3 / mol');
-    approx.equal(math.sackurTetrode.toString(),       -1.164870823);
+    approx.equal(math.sackurTetrode,                  -1.164870823);
     assert.equal(math.secondRadiation.toString(),     '0.01438777013 m K');
     assert.equal(math.stefanBoltzmann.toString(),     '5.67037321e-8 W / (m^2 K^4)');
     assert.equal(math.wienDisplacement.toString(),    '0.002897772126 m K');
