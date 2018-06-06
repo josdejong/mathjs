@@ -28,8 +28,9 @@ describe('sinh', function() {
     approx.equal(sinh(2), 3.626860407847018767668213982801261704886342012321135721309, EPSILON);
   });
 
-  if (!/v0\.10|v0\.12/.test(process.version)) {
-    // skip this test on node v0.10 and v0.12, which have a numerical issue
+  if (process.version !== '' && !/v0\.10|v0\.12/.test(process.version)) {
+    // we only do these tests on node.js
+    // skip this test on node v0.10 and v0.12 and IE 11, which have a numerical issue
 
     it('should return the sinh of very small numbers (avoid returning zero)', function() {
       // If sinh returns 0, that is bad, so we are using assert, not approx.equal
@@ -37,7 +38,6 @@ describe('sinh', function() {
       assert(Math.abs(sinh(-1e-10) - -1e-10) < EPSILON);
     });
 
-    // FIXME: this test doesn't work on IE11, find a solution for that
     it('should return the sinh of very large numbers (avoid returning zero)', function() {
       // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
       console.log('process.version=', process.version)
