@@ -9,9 +9,34 @@
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
 
 
-## not yet released, version 4.3.0
+## 2018-06-02, version 4.4.2
+
+- Drastically improved the performance of `det`. Thanks @ericman314.
+- Fixed #1065, #1121: Fixed wrong documentation of function
+  `compareNatural` and clarified the behavior for strings.
+- Fixed #1122 a regression in function `inv` (since `v4.4.1`).
+  Thanks @ericman314.
+
+
+## 2018-05-29, version 4.4.1
+
+- Fixed #1109: a bug in `inv` when dealing with values close to zero.
+  Thanks @ericman314.
+
+
+## 2018-05-28, version 4.4.0
+
+- Implemented functions `equalText` and `compareText`. See #1085.
+
+
+## 2018-05-21, version 4.3.0
 
 - Implemented matrix exponential `math.expm`. Thanks @ericman314.
+- Fixed #1101: math.js bundle not working when loading in a WebWorker.
+- Upgraded dependencies
+  - `complex.js` from `v2.0.2` to `v2.0.10`.
+  - `fraction.js` from `v4.0.4` to `v4.0.8`.
+- Upgraded devDependencies (`mocha`, `uglify-js`, `webpack`).
 
 
 ## 2018-05-05, version 4.2.2

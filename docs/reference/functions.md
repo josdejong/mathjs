@@ -142,7 +142,7 @@ Function | Description
 [math.det(x)](functions/det.md) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.md) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.md) | Calculate the dot product of two vectors.
-[math.expm(x)](functions/expm.md) | Calculate the exponential of a matrix.
+[math.expm(x)](functions/expm.md) | Compute the matrix exponential, expm(A) = e^A.
 [math.eye(n)](functions/eye.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.filter(x,&nbsp;test)](functions/filter.md) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.md) | Flatten a multi dimensional matrix into a single dimensional matrix.
@@ -184,8 +184,10 @@ Function | Description
 ---- | -----------
 [math.compare(x,&nbsp;y)](functions/compare.md) | Compare two values.
 [math.compareNatural(x,&nbsp;y)](functions/compareNatural.md) | Compare two values of any type in a deterministic, natural way.
+[math.compareText(x,&nbsp;y)](functions/compareText.md) | Compare two strings lexically.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.md) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.md) | Test whether two values are equal.
+[math.equalText(x,&nbsp;y)](functions/equalText.md) | Check equality of two strings.
 [math.larger(x,&nbsp;y)](functions/larger.md) | Test whether value x is larger than y.
 [math.largerEq(x,&nbsp;y)](functions/largerEq.md) | Test whether value x is larger or equal to y.
 [math.smaller(x,&nbsp;y)](functions/smaller.md) | Test whether value x is smaller than y.

@@ -113,6 +113,14 @@ Then, the tests can be executed:
 
     npm test
 
+Additionally, the tests can be run on FireFox using [headless mode](https://developer.mozilla.org/en-US/Firefox/Headless_mode):
+
+    npm run test:browser
+
+To run the tests on remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
+
+    npm run test:browserstack
+
 To test code coverage of the tests:
 
     npm run coverage
@@ -121,10 +129,16 @@ To see the coverage results, open the generated report in your browser:
 
     ./coverage/lcov-report/index.html
 
-Automated cross browser testing for mathjs is generously provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a>
 
-<a href="https://www.browserstack.com" target="_blank"><img alt="BrowserStack" src="https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png"></a>
+### Continuous integration testing
 
+Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and [BrowserStack](https://www.browserstack.com) every time a commit is pushed to github.
+The test results can be checked on https://travis-ci.org/josdejong/mathjs. Travis CI runs the tests for different versions of node.js, and BrowserStack runs the tests are run on all major browsers.
+
+[![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png)](https://travis-ci.org/) &nbsp;&nbsp;&nbsp;
+[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
+
+Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
 
 ## License
 

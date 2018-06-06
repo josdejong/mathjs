@@ -51,6 +51,17 @@ describe('inv', function() {
       [0, 0, 1],
       [0, 1, 0]
     ]);
+
+    approx.deepEqual(inv([
+      [1, 0, 0],
+      [0, -1, 1],
+      [0, 0, 1]
+    ]), [
+      [1, 0, 0],
+      [0, -1, 1],
+      [0, 0, 1]
+    ]);
+    
   });
 
   it('should return the inverse for each element in a matrix', function() {
@@ -83,6 +94,35 @@ describe('inv', function() {
   it('should throw an error in case of invalid type of arguments', function() {
     assert.throws(function () {math.concat(inv(new Date()))}, /TypeError: Unexpected type of argument/);
   });
+
+  it('should avoid issues with elements that are almost zero', function() {
+
+    approx.deepEqual(inv([
+      [0, 1, 0, 788 ],
+      [-1, 0, 0, 692   ],
+      [0, 0, 1, 0   ],
+      [0, 0, 0, 1]
+    ]), [
+      [0, -1, 0, 692 ],
+      [1, 0, 0, -788  ],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ]);
+    
+    approx.deepEqual(inv([
+      [6.123233995736766e-17, 1, 0, 788 ],
+      [-1, 6.123233995736766e-17, 0, 692   ],
+      [0, 0, 1, 0   ],
+      [0, 0, 0, 1]
+    ]), [
+      [6.123233995736766e-17, -1, 0, 692 ],
+      [1, 6.123233995736766e-17, 0, -788  ],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1]
+    ]);
+    
+    
+  })
 
   it('should  LaTeX inv', function () {
     var expression = math.parse('inv([[1,2],[3,4]])');
