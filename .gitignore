@@ -6,3 +6,4 @@ coverage
 *swp
 node_modules
 *.log
+dist

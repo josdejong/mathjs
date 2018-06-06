@@ -3,7 +3,6 @@ img
 misc
 node_modules
 tools
-bower.json
 gulpfile.js
 .idea
 .npmignore

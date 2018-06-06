@@ -12,7 +12,9 @@
 - Upgraded dependencies:
   - `decimal.js` from `9.0.1` to `10.0.1`
   - Upgraded dev dependencies
-- Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
+- Dropped support for bower. Use npm or an other package manages instead.
+- Fixed #851: More consistent behavior of sqrt, nthRoot, and pow.
+  Thanks @dakotablair.
 
 
 ## 2018-06-02, version 4.4.2
