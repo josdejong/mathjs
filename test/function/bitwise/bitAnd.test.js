@@ -1,6 +1,6 @@
 // test bitAnd
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../src/index'),
     bignumber = math.bignumber,
     bitAnd = math.bitAnd;
 

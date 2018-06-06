@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../src/index'),
     mode = math.mode,
     DenseMatrix = math.type.DenseMatrix;
 ;

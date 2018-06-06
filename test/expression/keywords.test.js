@@ -1,6 +1,6 @@
 // test keywords
 var assert = require('assert'),
-    keywords = require('../../lib/expression/keywords');
+    keywords = require('../../src/expression/keywords');
 
 describe('keywords', function() {
 

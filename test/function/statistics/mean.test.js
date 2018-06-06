@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var BigNumber = math.type.BigNumber;
 var Complex = math.type.Complex;
 var DenseMatrix = math.type.DenseMatrix;

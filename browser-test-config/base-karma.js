@@ -1,5 +1,3 @@
-var path = require('path');
-
 module.exports = function(config) {
   return {
 
@@ -15,7 +13,7 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-      '**/*.js': ['webpack'],
+      '**/*.js': ['babel', 'webpack'],
     },
 
     captureTimeout: 210000,
@@ -55,7 +53,7 @@ module.exports = function(config) {
       resolve: {
         // unless we disallow .mjs files here the tests fail
         // due to decimal.mjs being imported.
-        extensions: [".js", ".json"],
+        extensions: ['.js', '.json'],
         // same as above, disallow 'module' field to prevent
         // decimal.mjs from breaking tests.
         mainFields: ['browser', 'main'],

@@ -1,7 +1,7 @@
 // test nthRoot
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var matrix = math.matrix;
 var sparse = math.sparse;
 var unit = math.unit;

@@ -1,7 +1,7 @@
 // test boolean utils
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    boolean = require('../../lib/utils/boolean');
+    boolean = require('../../src/utils/boolean');
 
 describe ('boolean', function () {
 

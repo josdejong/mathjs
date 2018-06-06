@@ -1,6 +1,6 @@
 // test bitNot
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../src/index'),
     bignumber = math.bignumber,
     bitNot = math.bitNot;
 

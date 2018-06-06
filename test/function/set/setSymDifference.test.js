@@ -1,6 +1,6 @@
 // test setSymDifference
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 
 describe('setSymDifference', function () {
   it('should return the symetric difference of two sets', function () {

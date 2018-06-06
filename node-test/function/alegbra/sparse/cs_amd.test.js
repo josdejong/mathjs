@@ -1,8 +1,8 @@
 var assert = require('assert');
 var approx = require('../../../../tools/approx');
 var market = require('../../../../tools/matrixmarket');
-var math = require('../../../../index').create();
-math.import(require('../../../../lib/function/algebra/sparse/cs_amd'));
+var math = require('../../../../src/index').create();
+math.import(require('../../../../src/function/algebra/sparse/cs_amd'));
 
 var cs_amd = math.sparse.cs_amd;
 

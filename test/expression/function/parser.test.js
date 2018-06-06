@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var Parser = math.expression.Parser;
 
 describe('parser', function() {

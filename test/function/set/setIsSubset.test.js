@@ -1,6 +1,6 @@
 // test setIsSubset
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 
 describe('setIsSubset', function () {
   it('should return true or false', function () {

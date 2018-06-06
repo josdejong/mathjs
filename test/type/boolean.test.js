@@ -1,6 +1,6 @@
 var assert = require('assert'),
-    error = require('../../lib/error/index'),
-    math = require('../../index'),
+    error = require('../../src/error/index'),
+    math = require('../../src/index'),
     bool = math['boolean'];
 
 describe('boolean', function() {

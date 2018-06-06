@@ -1,6 +1,6 @@
 // test setDistinct
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 
 describe('setDistinct', function () {
   it('should return the elements of a set', function () {

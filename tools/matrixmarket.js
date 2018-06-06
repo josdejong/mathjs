@@ -3,7 +3,7 @@
 var fs = require('fs'),
     zlib = require('zlib'),
     tar = require('tar'),
-    math = require('../index'),
+    math = require('../src/index'),
     Q = require('q'),
     typed = require('typed-function'),
     

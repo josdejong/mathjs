@@ -1,8 +1,8 @@
 // test dotMultiply (element-wise multiply)
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../src/index'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
+    error = require('../../../src/error/index'),
     dotMultiply = math.dotMultiply,
     divide = math.divide,
     matrix = math.matrix,

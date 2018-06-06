@@ -1,6 +1,6 @@
 var assert = require('assert');
-var error = require('../../../lib/error/index');
-var math = require('../../../index');
+var error = require('../../../src/error/index');
+var math = require('../../../src/index');
 
 describe('distance', function() {
   it('should calculate the distance of two 2D points', function() {

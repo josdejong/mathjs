@@ -1,8 +1,8 @@
 // test parse
 var assert = require('assert');
 var approx = require('../../tools/approx');
-var math = require('../../index');
-var ArgumentsError = require('../../lib/error/ArgumentsError');
+var math = require('../../src/index');
+var ArgumentsError = require('../../src/error/ArgumentsError');
 var parse = math.expression.parse;
 var ConditionalNode = math.expression.node.ConditionalNode;
 var ConstantNode = math.expression.node.ConstantNode;

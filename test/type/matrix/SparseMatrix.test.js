@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var index = math.index;
 var Matrix = math.type.Matrix;
 var SparseMatrix = math.type.SparseMatrix;
