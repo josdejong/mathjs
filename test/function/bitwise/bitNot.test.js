@@ -36,11 +36,11 @@ describe('bitNot', function () {
   });
 
   it('should perform element-wise bitwise not on a matrix', function () {
-    a2 = math.matrix([[1,2],[3,4]]);
-    var a7 = bitNot(a2);
-    assert.ok(a7 instanceof math.type.Matrix);
-    assert.deepEqual(a7.size(), [2,2]);
-    assert.deepEqual(a7.valueOf(), [[-2,-3],[-4,-5]]);
+    const a2 = math.matrix([[1,2],[3,4]])
+    const a7 = bitNot(a2)
+    assert.ok(a7 instanceof math.type.Matrix)
+    assert.deepEqual(a7.size(), [2,2])
+    assert.deepEqual(a7.valueOf(), [[-2,-3],[-4,-5]])
   });
 
   it('should perform element-wise bitwise not on an array', function () {

@@ -31,12 +31,12 @@ describe('unaryMinus', function() {
   });
 
   it('should perform unary minus of a fraction', function() {
-    var a = fraction(0.5);
-    assert(math.unaryMinus(a) instanceof math.type.Fraction);
-    assert.equal(a.toString(), '0.5');
+    const a = fraction(0.5)
+    assert(math.unaryMinus(a) instanceof math.type.Fraction)
+    assert.equal(a.toString(), '0.5')
 
-    assert.equal(math.unaryMinus(fraction(0.5)).toString(), '-0.5');
-    assert.equal(math.unaryMinus(fraction(-0.5)).toString(), '0.5');
+    assert.equal(math.unaryMinus(fraction(0.5)).toString(), '-0.5')
+    assert.equal(math.unaryMinus(fraction(-0.5)).toString(), '0.5')
   });
 
   it('should perform unary minus of a complex number', function() {
@@ -53,12 +53,12 @@ describe('unaryMinus', function() {
   });
 
   it('should perform element-wise unary minus on a matrix', function() {
-    a2 = math.matrix([[1,2],[3,4]]);
-    var a7 = math.unaryMinus(a2);
-    assert.ok(a7 instanceof math.type.Matrix);
-    assert.deepEqual(a7.size(), [2,2]);
-    assert.deepEqual(a7.valueOf(), [[-1,-2],[-3,-4]]);
-    assert.deepEqual(math.unaryMinus([[1,2],[3,4]]), [[-1,-2],[-3,-4]]);
+    const a2 = math.matrix([[1,2],[3,4]])
+    const a7 = math.unaryMinus(a2)
+    assert.ok(a7 instanceof math.type.Matrix)
+    assert.deepEqual(a7.size(), [2,2])
+    assert.deepEqual(a7.valueOf(), [[-1,-2],[-3,-4]])
+    assert.deepEqual(math.unaryMinus([[1,2],[3,4]]), [[-1,-2],[-3,-4]])
   });
 
   it('should throw an error in case of invalid number of arguments', function() {

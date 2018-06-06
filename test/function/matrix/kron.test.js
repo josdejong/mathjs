@@ -81,11 +81,11 @@ describe('kron', function() {
     });
 
     it('should throw an error for invalid kronecker product of matrix', function() {
-      y = math.matrix([[[]]]);
-      x = math.matrix([[[1,1], [1,1]], [[1,1], [1,1]]]);
-      assert.throws(function () { math.kron(y, x) });
-    });
-  });
+      const y = math.matrix([[[]]])
+      const x = math.matrix([[[1,1], [1,1]], [[1,1], [1,1]]])
+      assert.throws(function () { math.kron(y, x) })
+    })
+  })
 
   describe('SparseMatrix', function () {
     it('should calculate the kronecker product of a 2d matrix', function() {

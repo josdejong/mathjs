@@ -7,11 +7,11 @@ var Complex = math.type.Complex;
 
 describe('Complex', function () {
 
-  assertComplex = function(complex, re, im) {
+  function assertComplex(complex, re, im) {
     assert(complex instanceof Complex);
     assert.strictEqual(complex.re, re);
     assert.strictEqual(complex.im, im);
-  };
+  }
 
   describe('constructor', function() {
 
