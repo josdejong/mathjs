@@ -1,7 +1,7 @@
 // test subtract
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var bignumber = math.bignumber;
 var subtract = math.subtract;
 

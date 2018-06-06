@@ -1,7 +1,7 @@
 // test transforms
 var assert = require('assert');
 var approx = require('../../tools/approx');
-var math = require('../../src/index');
+var math = require('../../lib/index');
 var parse = math.expression.parse;
 
 describe('transforms', function() {

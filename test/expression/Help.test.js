@@ -1,6 +1,6 @@
 // test Help
 var assert = require('assert');
-var math = require('../../src/index');
+var math = require('../../lib/index');
 var Help = math.type.Help;
 
 describe('help', function() {

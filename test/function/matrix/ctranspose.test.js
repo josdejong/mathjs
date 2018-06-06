@@ -1,6 +1,6 @@
 // test transpose
 var assert = require('assert'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     ctranspose = math.ctranspose;
 
 describe('ctranspose', function() {

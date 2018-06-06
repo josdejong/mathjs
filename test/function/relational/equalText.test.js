@@ -1,6 +1,6 @@
 // test equalText
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var bignumber = math.bignumber;
 var matrix = math.matrix;
 var sparse = math.sparse;

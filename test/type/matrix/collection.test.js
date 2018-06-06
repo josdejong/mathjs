@@ -1,6 +1,6 @@
 var assert = require('assert');
-var isCollection = require('../../../src/utils/collection/isCollection');
-var math = require('../../../src/index');
+var isCollection = require('../../../lib/utils/collection/isCollection');
+var math = require('../../../lib/index');
 var DenseMatrix = math.type.DenseMatrix;
 var SparseMatrix = math.type.SparseMatrix;
 

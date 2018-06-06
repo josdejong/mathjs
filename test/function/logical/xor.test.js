@@ -1,6 +1,6 @@
 // test xor
 var assert = require('assert'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,

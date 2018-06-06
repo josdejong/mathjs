@@ -1,6 +1,6 @@
 // test norm
 var assert = require('assert'),
-    math = require('../../../src/index');
+    math = require('../../../lib/index');
 
 describe('norm', function () {
 

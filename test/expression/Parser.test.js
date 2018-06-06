@@ -2,7 +2,7 @@
 
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    math = require('../../src/index'),
+    math = require('../../lib/index'),
     Parser = math.expression.Parser;
 
 describe('parser', function() {

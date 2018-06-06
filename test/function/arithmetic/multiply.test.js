@@ -1,6 +1,6 @@
 // test multiply
 var assert = require('assert'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     approx = require('../../../tools/approx'),
     multiply = math.multiply,
     divide = math.divide,

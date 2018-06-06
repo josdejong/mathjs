@@ -1,6 +1,6 @@
 // test setDifference
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 
 describe('setDifference', function () {
   it('should return the difference of two sets', function () {

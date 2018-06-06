@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    array = require('../../src/utils/array'),
+    array = require('../../lib/utils/array'),
     resize = array.resize,
     reshape = array.reshape,
     size = array.size;

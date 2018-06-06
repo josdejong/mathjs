@@ -1,6 +1,6 @@
 // test kronecker product
 var assert = require('assert'),
-    math = require('../../../src/index');
+    math = require('../../../lib/index');
 
 describe('kron', function() {
 

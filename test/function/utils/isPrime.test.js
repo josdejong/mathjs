@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var isPrime = math.isPrime;
 var bignumber = math.bignumber;
 var complex = math.complex;

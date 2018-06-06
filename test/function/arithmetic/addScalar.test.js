@@ -1,7 +1,7 @@
 // test add
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var BigNumber = require('decimal.js');
 var add = math.add;
 

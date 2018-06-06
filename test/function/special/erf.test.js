@@ -1,8 +1,8 @@
 var assert          = require('assert')
   , approx          = require('../../../tools/approx')
-  , error           = require('../../../src/error/index')
-  , math            = require('../../../src/index')
-  , bigUtil         = require('../../../src/utils/index').bignumber
+  , error           = require('../../../lib/error/index')
+  , math            = require('../../../lib/index')
+  , bigUtil         = require('../../../lib/utils/index').bignumber
   , bignumber       = math.bignumber
   , subtract        = math.subtract
   , abs             = math.abs

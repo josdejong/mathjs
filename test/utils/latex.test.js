@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    latex = require('../../src/utils/latex');
+    latex = require('../../lib/utils/latex');
 
 describe('util.latex', function() {
   it('should convert symbols with underscores', function () {

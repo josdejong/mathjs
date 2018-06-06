@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     bignumber = math.bignumber;
 
 describe('diag', function() {

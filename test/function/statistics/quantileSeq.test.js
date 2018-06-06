@@ -1,6 +1,6 @@
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     bignumber = math.bignumber,
     quantileSeq = math.quantileSeq;
 

@@ -1,7 +1,7 @@
 // test ones
 var assert = require('assert'),
-    error = require('../../../src/error/index'),
-    math = require('../../../src/index'),
+    error = require('../../../lib/error/index'),
+    math = require('../../../lib/index'),
     ones = math.ones,
     matrix = math.matrix;
 

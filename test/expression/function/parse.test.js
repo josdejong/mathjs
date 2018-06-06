@@ -1,7 +1,7 @@
 // test parse
 var assert = require('assert');
-var error = require('../../../src/error/index');
-var math = require('../../../src/index');
+var error = require('../../../lib/error/index');
+var math = require('../../../lib/index');
 var Node = math.expression.node.Node;
 
 describe('parse', function() {

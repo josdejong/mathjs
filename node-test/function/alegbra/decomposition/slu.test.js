@@ -1,5 +1,5 @@
 var approx = require('../../../../tools/approx'),
-  math = require('../../../../src/index'),
+  math = require('../../../../lib/index'),
   market = require('../../../../tools/matrixmarket');
 
 describe('slu - matrix market', function () {

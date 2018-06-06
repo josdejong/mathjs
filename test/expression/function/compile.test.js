@@ -1,6 +1,6 @@
 // test compile
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 
 describe('compile', function() {
 

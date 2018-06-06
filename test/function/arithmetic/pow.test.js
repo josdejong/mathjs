@@ -1,8 +1,8 @@
 // test exp
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var error = require('../../../src/error/index');
-var math = require('../../../src/index');
+var error = require('../../../lib/error/index');
+var math = require('../../../lib/index');
 var mathPredictable = math.create({predictable: true});
 var bignumber = math.bignumber;
 var fraction = math.fraction;

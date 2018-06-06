@@ -1,8 +1,8 @@
 var assert = require('assert');
-var error = require('../../../src/error/index');
+var error = require('../../../lib/error/index');
 var _ = require('underscore');
-var math = require('../../../src/index');
-math.import(require('../../../src/function/probability/distribution'));
+var math = require('../../../lib/index');
+math.import(require('../../../lib/function/probability/distribution'));
 
 var Matrix = math.type.Matrix;
 var distribution = math.distribution;

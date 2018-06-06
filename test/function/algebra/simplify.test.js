@@ -1,6 +1,6 @@
 // test simplify
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 
 describe('simplify', function() {
 

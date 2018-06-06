@@ -1,5 +1,5 @@
 var approx = require('../../../../tools/approx'),
-    math = require('../../../../src/index');
+    math = require('../../../../lib/index');
 
 describe('slu', function () {
 

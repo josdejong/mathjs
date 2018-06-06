@@ -1,6 +1,6 @@
 // test unary minus
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var bignumber = math.bignumber;
 var fraction = math.fraction;
 var complex = math.complex;

@@ -1,6 +1,6 @@
 // test setMultiplicity
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 
 describe('setMultiplicity', function () {
   it('should return the multiplicity on an element of a set', function () {

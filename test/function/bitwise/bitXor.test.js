@@ -1,6 +1,6 @@
 // test bitXor
 var assert = require('assert'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     matrix = math.matrix,
     sparse = math.sparse,
     bignumber = math.bignumber,

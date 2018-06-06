@@ -1,7 +1,7 @@
 // test usolve
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
-    math = require('../../../../src/index');
+    math = require('../../../../lib/index');
 
 describe('usolve', function () {
 

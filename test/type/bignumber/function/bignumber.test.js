@@ -1,6 +1,6 @@
 var assert = require('assert'),
-    error = require('../../../../src/error/index'),
-    math = require('../../../../src/index'),
+    error = require('../../../../lib/error/index'),
+    math = require('../../../../lib/index'),
     bignumber = math.bignumber,
     BigNumber = math.type.BigNumber;
 

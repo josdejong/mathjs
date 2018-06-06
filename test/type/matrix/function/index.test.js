@@ -1,6 +1,6 @@
 // test index construction
 var assert = require('assert'),
-    math = require('../../../../src/index'),
+    math = require('../../../../lib/index'),
     Range = math.type.Range,
     ImmutableDenseMatrix = math.type.ImmutableDenseMatrix;
 

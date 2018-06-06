@@ -1,7 +1,7 @@
 // test exp
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var mathPredictable = math.create({predictable: true});
 var complex = math.complex;
 var matrix = math.matrix;

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var Matrix = math.type.Matrix;
 var DenseMatrix = math.type.DenseMatrix;
 var ImmutableDenseMatrix = math.type.ImmutableDenseMatrix;

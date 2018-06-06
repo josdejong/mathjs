@@ -1,6 +1,6 @@
 // test bitOr
 var assert = require('assert'),
-    math = require('../../../src/index'),
+    math = require('../../../lib/index'),
     bignumber = math.bignumber,
     bitOr = math.bitOr;
 

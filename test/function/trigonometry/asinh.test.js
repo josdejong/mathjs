@@ -1,6 +1,6 @@
 var assert = require('assert'),
-    error = require('../../../src/error/index'),
-    math = require('../../../src/index'),
+    error = require('../../../lib/error/index'),
+    math = require('../../../lib/index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     asinh = math.asinh,

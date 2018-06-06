@@ -1,7 +1,7 @@
 // test lusolve
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
-    math = require('../../../../src/index');
+    math = require('../../../../lib/index');
 
 describe('lusolve', function () {
   

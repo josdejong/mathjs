@@ -1,5 +1,5 @@
 var assert = require('assert');
-var error = require('../../src/error/index');
+var error = require('../../lib/error/index');
 
 describe('index.js', function () {
 

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../../src/index');
+var math = require('../../../lib/index');
 var isZero = math.isZero;
 var bignumber = math.bignumber;
 var fraction = math.fraction;
