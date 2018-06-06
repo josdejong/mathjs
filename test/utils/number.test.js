@@ -1,7 +1,7 @@
 // test number utils
 var assert = require('assert'),
     approx = require('../../tools/approx'),
-    number = require('../../lib/utils/number');
+    number = require('../../src/utils/number');
 
 describe('number', function() {
 

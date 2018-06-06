@@ -8,3 +8,4 @@ node_modules
 *.log
 dist
 lib
+.nyc_output

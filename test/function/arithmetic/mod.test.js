@@ -1,7 +1,7 @@
 // test mod
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var bignumber = math.bignumber;
 var matrix = math.matrix;
 var sparse = math.sparse;

@@ -1,7 +1,7 @@
 // test lup
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
-    math = require('../../../../lib/index');
+    math = require('../../../../src/index');
 
 describe('lup', function () {
 

@@ -1,6 +1,6 @@
 // test atan2
 var assert = require('assert'),
-    math = require('../../../lib/index'),
+    math = require('../../../src/index'),
     approx = require('../../../tools/approx'),
     pi = math.pi,
     complex = math.complex,

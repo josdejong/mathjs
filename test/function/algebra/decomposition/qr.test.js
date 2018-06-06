@@ -1,7 +1,7 @@
 // test lup
 var assert = require('assert'),
     approx = require('../../../../tools/approx'),
-    math = require('../../../../lib/index');
+    math = require('../../../../src/index');
     
 /**
  * Tests whether `Q` and `R` are the valid QR decomposition of `A`.

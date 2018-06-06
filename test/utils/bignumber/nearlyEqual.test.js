@@ -1,6 +1,6 @@
 var assert = require('assert');
 var BigNumber = require('decimal.js');
-var nearlyEqual = require('../../../lib/utils/bignumber/nearlyEqual');
+var nearlyEqual = require('../../../src/utils/bignumber/nearlyEqual');
 
 describe('nearlyEqual', function () {
 

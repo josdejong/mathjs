@@ -1,7 +1,7 @@
 var assert = require('assert');
 
-var math = require('../../lib/index');
-var operators = require('../../lib/expression/operators');
+var math = require('../../src/index');
+var operators = require('../../src/expression/operators');
 var OperatorNode = math.expression.node.OperatorNode;
 var AssignmentNode = math.expression.node.AssignmentNode;
 var SymbolNode = math.expression.node.SymbolNode;

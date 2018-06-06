@@ -1,6 +1,6 @@
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../lib/index'),
+    error = require('../../../src/error/index'),
+    math = require('../../../src/index'),
     permutations = math.permutations;
 
 describe('permutations', function() {

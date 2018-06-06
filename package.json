@@ -132,6 +132,7 @@
     "ndarray-gemm": "1.0.0",
     "ndarray-ops": "1.2.2",
     "ndarray-pack": "1.2.1",
+    "nyc": "12.0.2",
     "numericjs": "1.2.6",
     "pad-right": "0.2.2",
     "q": "1.5.1",
@@ -159,10 +160,11 @@
     "compile": "gulp compile",
     "watch": "gulp watch",
     "docs": "gulp docs",
-    "test": "npm run compile && mocha test node-test --recursive --require babel-core/register",
-    "test:browser": "npm run compile && karma start ./browser-test-config/local-karma.js",
-    "test:browserstack": "npm run compile && karma start ./browser-test-config/browserstack-karma.js",
-    "coverage": "npm run compile && istanbul cover _mocha -- test node-test --recursive --require babel-core/register; echo \"\nCoverage report is available at ./coverage/lcov-report/index.html\"",
+    "test": "mocha test node-test --recursive --require babel-core/register",
+    "test:cli": "npm run compile && mocha test-cli --recursive --require babel-core/register",
+    "test:browser": "karma start ./browser-test-config/local-karma.js",
+    "test:browserstack": "karma start ./browser-test-config/browserstack-karma.js",
+    "coverage": "nyc --reporter=lcov --reporter=text-summary npm test; echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
     "prepublishOnly": "npm run build && npm test"
   },
   "bin": {

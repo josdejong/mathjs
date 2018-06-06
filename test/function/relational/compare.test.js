@@ -1,6 +1,6 @@
 // test compare
 var assert = require('assert'),
-    math = require('../../../lib/index'),
+    math = require('../../../src/index'),
     bignumber = math.bignumber,
     complex = math.complex,
     matrix = math.matrix,

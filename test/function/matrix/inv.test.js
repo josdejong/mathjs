@@ -1,8 +1,8 @@
 // test inv
 var assert = require('assert'),
     approx = require('../../../tools/approx'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../lib/index'),
+    error = require('../../../src/error/index'),
+    math = require('../../../src/index'),
     inv = math.inv;
 
 describe('inv', function() {

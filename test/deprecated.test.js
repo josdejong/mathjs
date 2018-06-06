@@ -1,6 +1,6 @@
 // test error messages for deprecated functions
 var assert = require('assert');
-var math = require('../lib/index');
+var math = require('../src/index');
 
 describe('deprecated stuff', function() {
 

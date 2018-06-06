@@ -1,7 +1,7 @@
 // test ceil
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var bignumber = math.bignumber;
 var complex = math.complex;
 var fraction = math.fraction;

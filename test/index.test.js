@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../lib/index')
+const math = require('../src/index')
 
 describe('factory', function() {
 

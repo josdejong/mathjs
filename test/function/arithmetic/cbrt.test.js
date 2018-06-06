@@ -1,8 +1,8 @@
 // test cbrt
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var error = require('../../../lib/error/index');
-var math = require('../../../lib/index');
+var error = require('../../../src/error/index');
+var math = require('../../../src/index');
 var cbrt = math.cbrt;
 var bignumber = math.bignumber;
 var complex = math.complex;

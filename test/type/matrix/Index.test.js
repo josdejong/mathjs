@@ -1,6 +1,6 @@
 // test data type Index
 var assert = require('assert');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var Index = math.type.Index;
 var Range = math.type.Range;
 var ImmutableDenseMatrix = math.type.ImmutableDenseMatrix;

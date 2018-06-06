@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    ArgumentsError = require('../../lib/error/ArgumentsError');
+    ArgumentsError = require('../../src/error/ArgumentsError');
 
 describe('ArgumentsError', function () {
 

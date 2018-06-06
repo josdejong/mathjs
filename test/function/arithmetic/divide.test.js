@@ -1,7 +1,7 @@
 // test divide
 var assert = require('assert');
-var math = require('../../../lib/index');
-var error = require('../../../lib/error/index');
+var math = require('../../../src/index');
+var error = require('../../../src/error/index');
 var approx = require('../../../tools/approx');
 var divide = math.divide;
 var bignumber = math.bignumber;

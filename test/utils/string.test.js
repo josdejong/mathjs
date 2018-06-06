@@ -2,8 +2,8 @@
 var assert = require('assert');
 var approx = require('../../tools/approx');
 var BigNumber = require('decimal.js');
-var math = require('../../lib/index');
-var string = require('../../lib/utils/string');
+var math = require('../../src/index');
+var string = require('../../src/utils/string');
 
 describe ('string', function () {
 

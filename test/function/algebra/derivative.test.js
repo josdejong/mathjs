@@ -1,6 +1,6 @@
 // test derivative
 var assert = require('assert');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var OperatorNode = math.expression.node.OperatorNode;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;

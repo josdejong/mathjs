@@ -1,7 +1,7 @@
 // test xgcd
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../lib/index').create({matrix: 'Array'}),
+    error = require('../../../src/error/index'),
+    math = require('../../../src/index').create({matrix: 'Array'}),
     gcd = math.gcd,
     xgcd = math.xgcd;
 

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var math = require('../../lib/index');
+var math = require('../../src/index');
 var reviver = math.json.reviver;
 var Range = math.type.Range;
 

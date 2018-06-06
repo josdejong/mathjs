@@ -1,7 +1,7 @@
 // test data type Range
 
 var assert = require('assert');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var Range = math.type.Range;
 
 describe('range', function() {

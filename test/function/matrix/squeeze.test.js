@@ -1,7 +1,7 @@
 // test squeeze
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../lib/index'),
+    error = require('../../../src/error/index'),
+    math = require('../../../src/index'),
     squeeze = math.squeeze,
     size = math.size,
     matrix = math.matrix;

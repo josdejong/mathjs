@@ -1,6 +1,6 @@
 var assert = require('assert');
-var error = require('../../../lib/error/index');
-var math = require('../../../lib/index');
+var error = require('../../../src/error/index');
+var math = require('../../../src/index');
 
 describe('cross', function() {
 

@@ -1,6 +1,6 @@
 // test rightLogShift
 var assert = require('assert'),
-    math = require('../../../lib/index'),
+    math = require('../../../src/index'),
     matrix = math.matrix,
     sparse = math.sparse,
     rightLogShift = math.rightLogShift;

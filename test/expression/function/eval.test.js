@@ -1,7 +1,7 @@
 // test eval
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var Complex = math.type.Complex;
 var Matrix = math.type.Matrix;
 var Unit = math.type.Unit;

@@ -1,12 +1,12 @@
 // test ConstantNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../lib/index');
-var bigmath = require('../../../lib/index').create({number: 'BigNumber'});
+var math = require('../../../src/index');
+var bigmath = require('../../../src/index').create({number: 'BigNumber'});
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;
-var Fraction = require('../../../lib/type/fraction/Fraction');
+var Fraction = require('../../../src/type/fraction/Fraction');
 
 describe('ConstantNode', function() {
 

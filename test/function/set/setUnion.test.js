@@ -1,6 +1,6 @@
 // test setUnion
 var assert = require('assert');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 
 describe('setUnion', function () {
   it('should return the union of two sets', function () {

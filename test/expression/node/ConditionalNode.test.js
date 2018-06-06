@@ -1,7 +1,7 @@
 // test ConditionalNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var SymbolNode = math.expression.node.SymbolNode;

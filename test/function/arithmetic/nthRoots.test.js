@@ -1,6 +1,6 @@
 // test nthRoots
 var assert = require('assert');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var complex = math.complex;
 var nthRoots = math.nthRoots;
 

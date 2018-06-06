@@ -1,6 +1,6 @@
 // test dotDivide (element-wise divide)
 var assert = require('assert'),
-    math = require('../../../lib/index'),
+    math = require('../../../src/index'),
     approx = require('../../../tools/approx'),
     dotDivide = math.dotDivide,
     complex = math.complex;

@@ -1,6 +1,6 @@
 // test cube
 var assert = require('assert');
-var math = require('../../../lib/index');
+var math = require('../../../src/index');
 var unit = math.unit;
 var bignumber = math.bignumber;
 var fraction = math.fraction;

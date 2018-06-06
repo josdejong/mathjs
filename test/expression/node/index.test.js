@@ -1,6 +1,6 @@
 // test the contents of index.js
 var assert = require('assert');
-var index = require('../../../lib/expression/node/index');
+var index = require('../../../src/expression/node/index');
 
 describe('node/index', function() {
 
