@@ -2,10 +2,15 @@
 
 ## not yet released, version 5.0.0
 
+!!! Breaking changes !!!
+
 - Implemented complex conjugate transpose `math.ctranspose`. See #1097.
   Thanks @jackschmidt.
 - Changed the behavior of `A'` in the expression parser to calculate the complex
   conjugate transpose. See #1097. Thanks @jackschmidt.
+- Upgraded dependencies:
+  - `decimal.js` from `9.0.1` to `10.0.1`
+  - Upgraded dev dependencies
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow. Thanks @dakotablair.
 
 
