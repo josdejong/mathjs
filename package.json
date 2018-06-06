@@ -137,6 +137,11 @@
     "zeros": "1.0.0"
   },
   "main": "./index",
+  "files": [
+      "dist",
+      "lib",
+      "src",
+  ],
   "scripts": {
     "build": "gulp",
     "watch": "gulp watch",
