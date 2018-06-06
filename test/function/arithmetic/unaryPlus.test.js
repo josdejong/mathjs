@@ -11,22 +11,10 @@ describe('unaryPlus', function() {
     assert.equal(math.unaryPlus(false), 0);
   });
 
-  it.skip('should return bignumber unary plus of a boolean', function () {
+  it('should return bignumber unary plus of a boolean', function () {
     var bigmath = math.create({number: 'BigNumber'});
     assert.deepEqual(bigmath.unaryPlus(true), bigmath.bignumber(1));
     assert.deepEqual(bigmath.unaryPlus(false), bigmath.bignumber(0));
-  });
-
-  // TODO: this is temporary until the test above works again
-  it('should return bignumber unary plus of a boolean', function () {
-    var bigmath = math.create({number: 'BigNumber'});
-    var a = bigmath.unaryPlus(true);
-    assert(a instanceof math.type.BigNumber);
-    assert.deepEqual(a.toString(), '1');
-
-    var b = bigmath.unaryPlus(false);
-    assert(b instanceof math.type.BigNumber);
-    assert.deepEqual(b.toString(), '0');
   });
 
   it('should return unary plus on a string', function() {
@@ -34,7 +22,7 @@ describe('unaryPlus', function() {
     assert.equal(math.unaryPlus('-2'), -2);
   });
 
-  it.skip('should return bignumber unary plus on a string', function() {
+  it('should return bignumber unary plus on a string', function() {
     var bigmath = math.create({number: 'BigNumber'});
     assert.deepEqual(bigmath.unaryPlus('2'), bigmath.bignumber(2));
     assert.deepEqual(bigmath.unaryPlus('-2'), bigmath.bignumber(-2));
