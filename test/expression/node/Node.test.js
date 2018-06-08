@@ -110,6 +110,13 @@ describe('Node', function() {
     }, /_toString not implemented for Node/);
   });
 
+  it ('should throw an error when calling toJSON on a Node interface', function () {
+    assert.throws(function () {
+      var a = new Node();
+      a.toJSON();
+    }, /Cannot serialize object: toJSON not implemented/);
+  });
+
   it ('should throw an error when calling _toTex', function () {
     assert.throws(function () {
       var node = new Node();
@@ -156,7 +163,7 @@ describe('Node', function() {
     var node = new Node();
     assert.throws(function () {
       node.compile()
-    }, /Cannot compile node: unknown type "Node"/);
+    }, /Error: Method _compile should be implemented by type Node/);
   });
 
   it ('should have an identifier', function () {

@@ -9,8 +9,9 @@ describe('sort', function() {
   });
 
   it('should sort an array with strings', function() {
-    assert.deepEqual(math.sort(['C', 'B', 'A', 'D']), ['A', 'B', 'C', 'D']);
-    assert.deepEqual(math.sort(['1', '2', '10'], 'asc'), ['1', '10', '2']);
+    assert.deepEqual(math.sort(['C', 'B', 'A', 'D'], 'natural'), ['A', 'B', 'C', 'D']);
+    assert.deepEqual(math.sort(['1', '2', '10'], 'asc'), ['1', '2', '10']);
+    assert.deepEqual(math.sort(['1', '2', '10'], 'natural'), ['1', '2', '10']);
   });
 
   it('should sort a Matrix', function() {

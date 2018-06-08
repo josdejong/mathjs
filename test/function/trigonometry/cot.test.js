@@ -16,10 +16,6 @@ describe('cot', function() {
     approx.equal(cot(false), Infinity);
   });
 
-  it('should return the cotan of null', function () {
-    approx.equal(cot(null), Infinity);
-  });
-
   it('should return the cotan of a number', function() {
     approx.equal(cot(0), Infinity);
     approx.equal(1 / cot(pi*1/8), 0.414213562373095);

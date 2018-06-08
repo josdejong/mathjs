@@ -5,9 +5,10 @@ var math = require('../../../index');
 var BigNumber = math.type.BigNumber;
 var Complex = math.type.Complex;
 var DenseMatrix = math.type.DenseMatrix;
+var SparseMatrix = math.type.SparseMatrix;
 var det = math.det;
 var diag = math.diag;
-var eye = math.eye;
+var identity = math.identity;
 
 describe('det', function() {
 
@@ -32,13 +33,32 @@ describe('det', function() {
       [1,7,5,9,7],
       [2,7,4,3,7]
     ]), -1176);
+    approx.equal(det([
+      [0,7,0,3,7],
+      [1,7,4,3,7],
+      [0,7,4,3,0],
+      [1,7,5,9,7],
+      [2,7,4,3,7]
+    ]), 1176);
     approx.equal(det(diag([4,-5,6])), -120);
   });
 
+  it('should return the determinant of a sparse matrix', function() {
+
+    approx.equal(det(new SparseMatrix([
+      [1,7,4,3,7],
+      [0,7,0,3,7],
+      [0,7,4,3,0],
+      [1,7,5,9,7],
+      [2,7,4,3,7]
+    ])), -1176);
+
+  });
+
   it('should return 1 for the identity matrix',function() {
-    assert.equal(det(eye(7)), 1);
-    assert.equal(det(eye(2)), 1);
-    assert.equal(det(eye(1)), 1);
+    assert.equal(det(identity(7)), 1);
+    assert.equal(det(identity(2)), 1);
+    assert.equal(det(identity(1)), 1);
   });
 
   it('should return 0 for a singular matrix',function() {

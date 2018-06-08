@@ -13,10 +13,6 @@ describe('sqrt', function() {
     assert.equal(sqrt(false), 0);
   });
 
-  it('should return the square root of null', function () {
-    assert.equal(sqrt(null), 0);
-  });
-
   it('should return the square root of a positive number', function() {
     assert.equal(sqrt(0), 0);
     assert.equal(sqrt(1), 1);
@@ -90,6 +86,10 @@ describe('sqrt', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sqrt()}, /TypeError: Too few arguments/);
     assert.throws(function () {sqrt(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {sqrt(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX sqrt', function () {

@@ -101,10 +101,6 @@ describe('erf', function () {
     assert.ok(Math.abs(erf(false) - actualErfValues['0.0']) < DIFF_THRESH);
   });
 
-  it('should calculate the erf of null (0)', function () {
-    assert.ok(Math.abs(erf(null) - actualErfValues['0.0']) < DIFF_THRESH);
-  });
-
   it('should calculate the erf of each element in a matrix', function () {
     math.subtract(
       erf(math.matrix([0,1,2,3,4,5])),

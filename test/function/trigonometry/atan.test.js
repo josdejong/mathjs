@@ -18,10 +18,6 @@ describe('atan', function() {
     approx.equal(atan(false), 0);
   });
 
-  it('should return the arctan of null', function () {
-    approx.equal(atan(null), 0);
-  });
-
   it('should return the arctan of a number', function() {
     approx.equal(atan(-1) / pi, -0.25);
     approx.equal(atan(-0.5) / pi, -0.147583617650433);

@@ -37,11 +37,6 @@ describe('dotPow', function() {
     assert.equal(dotPow(false, 2), 0);
   });
 
-  it('should exponentiate numbers and null', function () {
-    assert.equal(dotPow(1, null), 1);
-    assert.equal(dotPow(null, 1), 0);
-  });
-
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {dotPow(1);}, /TypeError: Too few arguments/);
     assert.throws(function () {dotPow(1, 2, 3);}, /TypeError: Too many arguments/);

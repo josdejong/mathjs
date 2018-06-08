@@ -21,8 +21,8 @@ describe('max', function() {
         new BigNumber(5));
   });
 
-  it('should return the max string following lexical order', function() {
-    assert.equal(max('A', 'C', 'D', 'B'), 'D');
+  it('should return the max of strings by their numerical value', function() {
+    assert.equal(max('10', '3', '4', '2'), '10');
   });
 
   it('should return the max element from a vector', function() {
@@ -68,16 +68,6 @@ describe('max', function() {
         [[2, 4, 6], [7, 9, 11]]);
   });
 
-  it('should throw an error when called with complex numbers', function() {
-    assert.throws(function () {max(new Complex(2,3), new Complex(2,1))}, TypeError);
-    assert.throws(function () {max(new Complex(2,3), new Complex(2,5))}, TypeError);
-
-    assert.throws(function () {max(new Complex(3,4), 4)}, TypeError);
-    assert.throws(function () {max(new Complex(3,4), 5)}, TypeError);
-    assert.throws(function () {max(5, new Complex(3,4))}, TypeError);
-    assert.throws(function () {max(new Complex(3,4), 6)}, TypeError);
-  });
-
   it('should throw an error when called multiple arrays or matrices', function() {
     assert.throws(function () {max([1,2], [3,4])}, /Scalar values expected/);
     assert.throws(function () {max(math.matrix([1,2]), math.matrix([3,4]))}, /Scalar values expected/);
@@ -91,6 +81,16 @@ describe('max', function() {
   it('should throw an error if called with invalid number of arguments', function() {
     assert.throws(function() {max()});
     assert.throws(function() {max([], 2, 3)});
+  });
+
+  it('should throw an error if called with invalid type of arguments', function() {
+    assert.throws(function () {max(2, new Complex(2,5))}, /TypeError: Cannot calculate max, no ordering relation is defined for complex numbers/);
+    assert.throws(function () {max(new Complex(2,3), new Complex(2,1))}, /TypeError: Cannot calculate max, no ordering relation is defined for complex numbers/);
+
+    assert.throws(function() {max([[2,undefined, 4]])}, /TypeError: Cannot calculate max, unexpected type of argument/);
+    assert.throws(function() {max([[2,new Date(), 4]])}, /TypeError: Cannot calculate max, unexpected type of argument/);
+    assert.throws(function() {max([2,null, 4])}, /TypeError: Cannot calculate max, unexpected type of argument/);
+    assert.throws(function() {max([[2, 5], [4, null], [1, 7]], 0)}, /TypeError: Cannot calculate max, unexpected type of argument/);
   });
 
   it('should return undefined if called with an empty array', function() {

@@ -46,4 +46,6 @@ math.pow(2, 10);                // returns 1024
 ## See also
 
 [exp](exp.md),
-[log10](log10.md)
+[log2](log2.md),
+[log10](log10.md),
+[log1p](log1p.md)

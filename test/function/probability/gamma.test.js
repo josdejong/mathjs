@@ -134,10 +134,6 @@ describe('gamma', function () {
     assert.equal(gamma(false), Infinity);
   });
 
-  it('should calculate the gamma of null', function () {
-    assert.equal(gamma(null), Infinity);
-  });
-
   it('should calculate the gamma of each element in a matrix', function () {
     assert.deepEqual(gamma(math.matrix([0,1,2,3,4,5])), math.matrix([Infinity,1,1,2,6,24]));
   });

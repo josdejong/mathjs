@@ -43,5 +43,6 @@ math.exp([1, 2, 3]);
 
 ## See also
 
+[expm1](expm1.md),
 [log](log.md),
 [pow](pow.md)

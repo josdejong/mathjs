@@ -298,10 +298,10 @@ describe('DenseMatrix', function() {
       assert.deepEqual(m.valueOf(), []);
     });
 
-    it('should resize the matrix with uninitialized default value', function() {
+    it('should resize the matrix with null default value', function() {
       var m = new DenseMatrix([]);
-      m.resize([3], math.uninitialized);
-      assert.deepEqual(m.valueOf(), arr(uninit, uninit, uninit));
+      m.resize([3], null);
+      assert.deepEqual(m.valueOf(), [null, null, null]);
     });
     
     it('should return a different matrix when copy=true', function() {
@@ -1361,21 +1361,5 @@ describe('DenseMatrix', function() {
         ]);
     });
   });
-  
-  /**
-   * Helper function to create an Array containing uninitialized values
-   * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
-   */
-  var uninit = {};
-  function arr() {
-    var array = [];
-    array.length = arguments.length;
-    for (var i = 0; i < arguments.length; i++) {
-      var value = arguments[i];
-      if (value !== uninit) {
-        array[i] = value;
-      }
-    }
-    return array;
-  }
+
 });  

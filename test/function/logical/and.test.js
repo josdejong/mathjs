@@ -69,11 +69,6 @@ describe('and', function () {
     assert.strictEqual(and(false, 2), false);
   });
 
-  it('should and mixed numbers and null', function () {
-    assert.strictEqual(and(2, null), false);
-    assert.strictEqual(and(null, 2), false);
-  });
-
   it('should and bignumbers', function () {
     assert.strictEqual(and(bignumber(1), bignumber(1)), true);
     assert.strictEqual(and(bignumber(-1), bignumber(1)), true);
@@ -183,6 +178,7 @@ describe('and', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {and(2, null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {and(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {and(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {and(true, undefined);}, /TypeError: Unexpected type of argument/);

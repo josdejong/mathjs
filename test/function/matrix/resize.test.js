@@ -21,12 +21,12 @@ describe('resize', function() {
   it('should resize an array with a default value', function() {
     var array = [[0,1,2],[3,4,5]];
     assert.deepEqual(math.resize(array, [3, 2], 5), [[0,1], [3,4], [5,5]]);
-    assert.deepEqual(math.resize(array, [2]), arr(0,3));
+    assert.deepEqual(math.resize(array, [2]), [0,3]);
   });
 
-  it('should resize an array with uninitialized as default value', function() {
+  it('should resize an array with null as default value', function() {
     var array = [];
-    assert.deepEqual(math.resize(array, [3], math.uninitialized), arr(uninit, uninit, uninit));
+    assert.deepEqual(math.resize(array, [3], null), [null, null, null]);
   });
 
   it('should resize an array with bignumbers', function() {
@@ -126,21 +126,3 @@ describe('resize', function() {
     assert.equal(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)');
   });
 });
-
-
-/**
- * Helper function to create an Array containing uninitialized values
- * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
- */
-var uninit = {};
-function arr() {
-  var array = [];
-  array.length = arguments.length;
-  for (var i = 0; i < arguments.length; i++) {
-    var value = arguments[i];
-    if (value !== uninit) {
-      array[i] = value;
-    }
-  }
-  return array;
-}

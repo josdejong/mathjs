@@ -92,6 +92,13 @@ describe('mean', function() {
     assert.throws(function() {mean([])});
   });
 
+  it('should throw an error if called with invalid type of arguments', function() {
+    assert.throws(function() {mean([[2,undefined, 4]])}, /TypeError: Cannot calculate mean, unexpected type of argument/);
+    assert.throws(function() {mean([[2,new Date(), 4]])}, /TypeError: Cannot calculate mean, unexpected type of argument/);
+    assert.throws(function() {mean([2,null, 4])}, /TypeError: Cannot calculate mean, unexpected type of argument/);
+    assert.throws(function() {mean([[2, 5], [4, null], [1, 7]], 0)}, /TypeError: Cannot calculate mean, unexpected type of argument/);
+  });
+
   it('should LaTeX mean', function () {
     var expression = math.parse('mean(1,2,3,4)');
     assert.equal(expression.toTex(), '\\mathrm{mean}\\left(1,2,3,4\\right)');

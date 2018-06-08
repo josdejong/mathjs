@@ -28,12 +28,14 @@ describe('pow', function() {
 
   it('should exponentiate a negative number to a non-integer power', function() {
     approx.deepEqual(pow(-2,1.5), complex(0, -2.82842712474619));
+    approx.deepEqual(pow(-8, 1/3), complex(1, 1.732050807568877));
   });
 
   it('should exponentiate a negative number to a non-integer power with predictable:true', function() {
     var res = mathPredictable.pow(-2,1.5);
     assert.equal(typeof res, 'number');
     assert(isNaN(res));
+    assert.strictEqual(mathPredictable.pow(-8, 1/3), -2);
   });
 
   it('should return a real-valued root if one exists with predictable:true', function() {
@@ -72,11 +74,6 @@ describe('pow', function() {
     assert.equal(pow(2, false), 1);
     assert.equal(pow(true, 2), 1);
     assert.equal(pow(false, 2), 0);
-  });
-
-  it('should exponentiate numbers and null', function () {
-    assert.equal(pow(1, null), 1);
-    assert.equal(pow(null, 1), 0);
   });
 
   it('should exponentiate bignumbers', function() {
@@ -131,7 +128,11 @@ describe('pow', function() {
     assert.throws(function () {pow(1, 2, 3)}, /TypeError: Too many arguments in function pow \(expected: 2, actual: 3\)/);
   });
 
-  it('should handle infitie exponents', function() {
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {pow(null, 2);}, /TypeError: Unexpected type of argument/);
+  });
+
+  it('should handle infinite exponents', function() {
     var Ptbl = mathPredictable;
 
      // TODO replace isNaN with complexInfinity when complex.js updates
@@ -243,7 +244,9 @@ describe('pow', function() {
   });
 
   it('should compute large size of square matrix', function() {
-    var a = math.eye(30).valueOf();
+    this.timeout(10000);
+
+    var a = math.identity(30).valueOf();
     approx.deepEqual(pow(a, 1000), a);
     approx.deepEqual(pow(matrix(a), 1000), matrix(a));
   });

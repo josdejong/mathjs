@@ -22,10 +22,6 @@ describe('re', function() {
     assert.strictEqual(math.re(false), 0);
   });
 
-  it('should return the real part of null', function() {
-    assert.strictEqual(math.re(null), 0);
-  });
-
   it('should return the real part for each element in a matrix', function() {
     assert.deepEqual(math.re([2, math.complex('3-6i')]), [2, 3]);
     assert.deepEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3]);

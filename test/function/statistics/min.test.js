@@ -16,8 +16,8 @@ describe('min', function() {
     assert.equal(min(0,0,0,0), 0);
   });
 
-  it('should return the min string following lexical order', function() {
-    assert.equal(min('A', 'C', 'D', 'B'), 'A');
+  it('should return the min of strings by their numerical value', function() {
+    assert.equal(min('10', '3', '4', '2'), '2');
   });
 
   it('should return the min element from a vector', function() {
@@ -77,16 +77,6 @@ describe('min', function() {
       [[1, 2], [3,4], [5,6]]);
   });
 
-  it('should throw an error when called with complex numbers', function() {
-    assert.throws(function () {min(new Complex(2,3), new Complex(2,1))}, TypeError);
-    assert.throws(function () {min(new Complex(2,3), new Complex(2,5))}, TypeError);
-
-    assert.throws(function () {min(new Complex(3,4), 4)}, TypeError);
-    assert.throws(function () {min(new Complex(3,4), 5)}, TypeError);
-    assert.throws(function () {min(5, new Complex(3,4))}, TypeError);
-    assert.throws(function () {min(new Complex(3,4), 6)}, TypeError);
-  });
-
   it('should throw an error when called multiple arrays or matrices', function() {
     assert.throws(function () {min([1,2], [3,4])}, /Scalar values expected/);
     assert.throws(function () {min(math.matrix([1,2]), math.matrix([3,4]))}, /Scalar values expected/);
@@ -104,6 +94,16 @@ describe('min', function() {
 
   it('should throw an error if called with an empty array', function() {
     assert.throws(function() {min([])});
+  });
+
+  it('should throw an error if called with invalid type of arguments', function() {
+    assert.throws(function () {min(2, new Complex(2,5))}, /TypeError: Cannot calculate min, no ordering relation is defined for complex numbers/);
+    assert.throws(function () {min(new Complex(2,3), new Complex(2,1))}, /TypeError: Cannot calculate min, no ordering relation is defined for complex numbers/);
+
+    assert.throws(function() {min([[2,undefined, 4]])}, /TypeError: Cannot calculate min, unexpected type of argument/);
+    assert.throws(function() {min([[2,new Date(), 4]])}, /TypeError: Cannot calculate min, unexpected type of argument/);
+    assert.throws(function() {min([2,null, 4])}, /TypeError: Cannot calculate min, unexpected type of argument/);
+    assert.throws(function() {min([[2, 5], [4, null], [1, 7]], 0)}, /TypeError: Cannot calculate min, unexpected type of argument/);
   });
 
   it('should LaTeX min', function () {

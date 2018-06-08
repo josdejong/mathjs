@@ -26,12 +26,6 @@ describe('divide', function() {
     assert.ok(isNaN(divide(false, false)));
   });
 
-  it('should divide numbers and null', function () {
-    assert.equal(divide(1, null), Infinity);
-    assert.equal(divide(null, 1), 0);
-    assert(isNaN(divide(null, null)));
-  });
-
   it('should divide mixed numbers and booleans', function() {
     assert.equal(divide(2, true), 2);
     assert.equal(divide(2, false), Infinity);
@@ -66,10 +60,10 @@ describe('divide', function() {
     approx.deepEqual(divide(complex('2+3i'), complex('4i')), complex('0.75 - 0.5i'));
     approx.deepEqual(divide(complex('2i'), complex('4i')), complex('0.5'));
     approx.deepEqual(divide(4, complex('1+2i')), complex('0.8 - 1.6i'));
-    approx.deepEqual(divide(math.i, 0), complex(0, Infinity));
-    approx.deepEqual(divide(complex(0,1), 0), complex(0, Infinity));
-    approx.deepEqual(divide(complex(1,0), 0), complex(Infinity, 0));
-    approx.deepEqual(divide(complex(0,1), complex(0,0)), complex(0, Infinity));
+    approx.deepEqual(divide(math.i, 0), complex(Infinity, Infinity));
+    approx.deepEqual(divide(complex(0,1), 0), complex(Infinity, Infinity));
+    approx.deepEqual(divide(complex(1,0), 0), complex(Infinity, Infinity));
+    approx.deepEqual(divide(complex(0,1), complex(0,0)), complex(Infinity, Infinity));
     approx.deepEqual(divide(complex(1,1), complex(0,0)), complex(Infinity, Infinity));
     approx.deepEqual(divide(complex(1,-1), complex(0,0)), complex(Infinity, -Infinity));
     approx.deepEqual(divide(complex(-1,1), complex(0,0)), complex(-Infinity, Infinity));
@@ -206,6 +200,10 @@ describe('divide', function() {
   it('should throw an error if there\'s wrong number of arguments', function() {
     assert.throws(function () {divide(2,3,4); });
     assert.throws(function () {divide(2); });
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {divide(null, 2);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX divide', function () {

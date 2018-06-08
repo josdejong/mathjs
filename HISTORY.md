@@ -1,5 +1,244 @@
 # History
 
+## not yet released, version 5.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Implemented complex conjugate transpose `math.ctranspose`. See #1097.
+  Thanks @jackschmidt.
+- Changed the behavior of `A'` in the expression parser to calculate the complex
+  conjugate transpose. See #1097. Thanks @jackschmidt.
+- Renamed `eye` to `identity`, see #1054.
+- Upgraded dependencies:
+  - `decimal.js` from `9.0.1` to `10.0.1`
+  - Upgraded dev dependencies
+- Dropped support for bower. Use npm or an other package manages instead.
+- Fixed #851: More consistent behavior of sqrt, nthRoot, and pow.
+  Thanks @dakotablair.
+
+
+## 2018-06-02, version 4.4.2
+
+- Drastically improved the performance of `det`. Thanks @ericman314.
+- Fixed #1065, #1121: Fixed wrong documentation of function
+  `compareNatural` and clarified the behavior for strings.
+- Fixed #1122 a regression in function `inv` (since `v4.4.1`).
+  Thanks @ericman314.
+
+
+## 2018-05-29, version 4.4.1
+
+- Fixed #1109: a bug in `inv` when dealing with values close to zero.
+  Thanks @ericman314.
+
+
+## 2018-05-28, version 4.4.0
+
+- Implemented functions `equalText` and `compareText`. See #1085.
+
+
+## 2018-05-21, version 4.3.0
+
+- Implemented matrix exponential `math.expm`. Thanks @ericman314.
+- Fixed #1101: math.js bundle not working when loading in a WebWorker.
+- Upgraded dependencies
+  - `complex.js` from `v2.0.2` to `v2.0.10`.
+  - `fraction.js` from `v4.0.4` to `v4.0.8`.
+- Upgraded devDependencies (`mocha`, `uglify-js`, `webpack`).
+
+
+## 2018-05-05, version 4.2.2
+
+- Fixed calculating the Frobenius norm of complex matrices correctly,
+  see #1098. Thanks @jackschmidt.
+- Fixed #1076: cannot use mathjs in React VR by updating to
+  `escape-latex@1.0.3`.
+
+
+## 2018-05-02, version 4.2.1
+
+- Fixed `dist/math.js` being minified.
+
+
+## 2018-05-02, version 4.2.0
+
+- Implemented function `math.sqrtm`. Thanks @ferrolho.
+- Implemented functions `math.log2`, `math.log1p`, and `math.expm1`.
+  Thanks @BigFav and @harrysarson.
+- Fixed some unit tests broken on nodejs v10.
+- Upgraded development dependencies.
+- Dropped integration testing on nodejs v4.
+
+
+## 2018-04-18, version 4.1.2
+
+- Fixed #1082: implemented support for unit plurals `decades`, `centuries`,
+  and `millennia`.
+- Fixed #1083: units `decade` and `watt` having a wrong name when stringifying.
+  Thanks @ericman314.
+
+
+## 2018-04-11, version 4.1.1
+
+- Fixed #1063: derivative not working when resolving a variable with unary
+  minus like `math.derivative('-x', 'x')`.
+
+
+## 2018-04-08, version 4.1.0
+
+- Extended function `math.print` with support for arrays and matrices.
+  Thanks @jean-emmanuel.
+- Fixed #1077: Serialization/deserialization to JSON with reviver not being
+  supported by nodes.
+- Fixed #1016: Extended `math.typeof` with support for `ResultSet` and nodes
+  like `SymbolNode`.
+- Fixed #1072: Added support for long and short prefixes for the unit `bar`
+  (i.e. `millibar` and `mbar`).
+
+
+## 2018-03-17, version 4.0.1
+
+- Fixed #1062: mathjs not working on ES5 browsers like IE11 and Safari 9.3.
+- Fixed #1061: `math.unit` not accepting input like `1/s`.
+
+
+## 2018-02-25, version 4.0.0
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+Breaking changes (see also #682):
+
+- **New expression compiler**
+
+    The compiler of the expression parser is replaced with one that doesn't use
+    `eval` internally. See #1019. This means:
+
+    - a slightly improved performance on most browsers.
+    - less risk of security exploits.
+    - the code of the new compiler is easier to understand, maintain, and debug.
+
+    Breaking change here: When using custom nodes in the expression parser,
+    the syntax of `_compile` has changed. This is an undocumented feature though.
+
+- **Parsed expressions**
+
+    - The class `ConstantNode` is changed such that it just holds a value
+      instead of holding a stringified value and it's type.
+      `ConstantNode(valueStr, valueType`) is now `ConstantNode(value)`
+      Stringification uses `math.format`, which may result in differently
+      formatted numeric output.
+
+    - The constants `true`, `false`, `null`, `undefined`, `NaN`, `Infinity`,
+      and `uninitialized` are now parsed as ConstantNodes instead of
+      SymbolNodes in the expression parser. See #833.
+
+- **Implicit multiplication**
+
+    - Changed the behavior of implicit multiplication to have higher
+      precedence than explicit multiplication and division, except in
+      a number of specific cases. This gives a more natural behavior
+      for implicit multiplications. For example `24h / 6h` now returns `4`,
+      whilst `1/2 kg` evaluates to `0.5 kg`. Thanks @ericman314. See: #792.
+      Detailed documentation: https://github.com/josdejong/mathjs/blob/v4/docs/expressions/syntax.md#implicit-multiplication.
+
+    - Immediately invoking a function returned by a function like `partialAdd(2)(3)`
+      is no longer supported, instead these expressions are evaluated as
+      an implicit multiplication `partialAdd(2) * (3)`. See #1035.
+
+- **String formatting**
+
+    - In function `math.format`, the options `{exponential: {lower: number, upper: number}}`
+      (where `lower` and `upper` are values) are replaced with `{lowerExp: number, upperExp: number}`
+      (where `lowerExp` and `upperExp` are exponents). See #676. For example:
+      ```js
+      math.format(2000, {exponential: {lower: 1e-2, upper: 1e2}})
+      ```
+      is now:
+      ```js
+      math.format(2000, {lowerExp: -2, upperExp: 2})
+      ```
+
+    - In function `math.format`, the option `notation: 'fixed'` no longer rounds to
+      zero digits  when no precision is specified: it leaves the digits as is.
+      See #676.
+
+- **String comparison**
+
+    Changed the behavior of relational functions (`compare`, `equal`,
+    `equalScalar`, `larger`, `largerEq`, `smaller`, `smallerEq`, `unequal`)
+    to compare strings by their numeric value they contain instead of
+    alphabetically. This also impacts functions `deepEqual`, `sort`, `min`,
+    `max`, `median`, and `partitionSelect`. Use `compareNatural` if you
+    need to sort an array with text. See #680.
+
+- **Angle units**
+
+    Changed `rad`, `deg`, and `grad` to have short prefixes,
+    and introduced `radian`, `degree`, and `gradian` and their plurals
+    having long prefixes. See #749.
+
+- **Null**
+
+    - `null` is no longer implicitly casted to a number `0`, so input like
+      `math.add(2, null)` is no longer supported. See #830, #353.
+
+    - Dropped constant `uninitialized`, which was used to initialize
+      leave new entries undefined when resizing a matrix is removed.
+      Use `undefined` instead to indicate entries that are not explicitly
+      set. See #833.
+
+- **New typed-function library**
+
+    - The `typed-function` library used to check the input types
+      of functions is completely rewritten and doesn't use `eval` under
+      the hood anymore. This means a reduced security risk, and easier
+      to debug code. The API is the same, but error messages may differ
+      a bit. Performance is comparable but may differ in specific
+      use cases and browsers.
+
+Non breaking changes:
+
+- Thanks to the new expression compiler and `typed-function` implementation,
+  mathjs doesn't use JavaScript's `eval` anymore under the hood.
+  This allows using mathjs in environments with security restrictions.
+  See #401.
+- Implemented additional methods `isUnary()` and `isBinary()` on
+  `OperatorNode`. See #1025.
+- Improved error messages for statistical functions.
+- Upgraded devDependencies.
+- Fixed #1014: `derivative` silently dropping additional arguments
+  from operator nodes with more than two arguments.
+
+
+## 2018-02-07, version 3.20.2
+
+- Upgraded to `typed-function@0.10.7` (bug-fix release).
+- Fixed option `implicit` not being copied from an `OperatorNode`
+  when applying function `map`. Thanks @HarraySarson.
+- Fixed #995: spaces and underscores not property being escaped
+  in `toTex()`. Thanks @FSMaxB.
+
+
+## 2018-01-17, version 3.20.1
+
+- Fixed #1018: `simplifyCore` failing in some cases with parentheses.
+  Thanks @firepick1.
+
+
+## 2018-01-14, version 3.20.0
+
+- Implement support for 3 or more arguments for operators `+` and `*` in
+  `derivative`. Thanks @HarrySarson. See #1002. 
+- Fixed `simplify` evalution of `simplify` of functions with more than two 
+  arguments wrongly: `simplify('f(x, y, z)') evaluated to `f(f(x, y), z)`
+  instead of `f(x, y, z)`. Thanks @joelhoover.
+- Fixed `simplify` throwing an error in some cases when simplifying unknown
+  functions, for example `simplify('f(4)')`. Thanks @joelhoover.
+- Fixed #1013: `simplify` wrongly simplifing some expressions containing unary
+  minus, like `0 - -x`. Thanks @joelhoover.
+- Fixed an error in an example in the documentation of `xor`. Thanks @denisx.
+
+
 ## 2018-01-06, version 3.19.0
 
 - Extended functions `distance` and `intersect` with support for BigNumbers.

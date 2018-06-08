@@ -44,12 +44,6 @@ describe('xgcd', function() {
     assert.deepEqual(xgcd(false, false), [0, 0, 0]);
   });
 
-  it('should calculate xgcd of numbers and null', function () {
-    assert.deepEqual(xgcd(1, null), [1, 1, 0]);
-    assert.deepEqual(xgcd(null, 1), [1, 0, 1]);
-    assert.deepEqual(xgcd(null, null), [0, 0, 0]);
-  });
-
   it('should calculate xgcd for BigNumbers', function() {
     assert.deepEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);
     assert.deepEqual(xgcd(math.bignumber(65), math.bignumber(40)), [math.bignumber(5), math.bignumber(-3), math.bignumber(5)]);

@@ -5,6 +5,7 @@ var math = require('../../index');
 var ArgumentsError = require('../../lib/error/ArgumentsError');
 var parse = math.expression.parse;
 var ConditionalNode = math.expression.node.ConditionalNode;
+var ConstantNode = math.expression.node.ConstantNode;
 var OperatorNode = math.expression.node.OperatorNode;
 var RangeNode = math.expression.node.RangeNode;
 var Complex = math.type.Complex;
@@ -21,6 +22,10 @@ var ResultSet = math.type.ResultSet;
  */
 function parseAndEval(expr, scope) {
   return parse(expr).eval(scope);
+}
+
+function parseAndStringifyWithParens(expr) {
+  return parse(expr).toString({parenthesis:'all'});
 }
 
 describe('parse', function() {
@@ -366,10 +371,6 @@ describe('parse', function() {
     it('should parse units', function() {
       assert.deepEqual(parseAndEval('5cm'), new Unit(5, 'cm'));
       assert.ok(parseAndEval('5cm') instanceof Unit);
-    });
-
-    it('should parse constants', function() {
-      assert.equal(parseAndEval('pi'), Math.PI);
     });
 
     it('should parse physical constants', function() {
@@ -736,21 +737,9 @@ describe('parse', function() {
       assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4);
     });
 
-    it('should invoke a function returned by a function', function () {
-      var scope = {
-        theAnswer: function () {
-          return function () {
-            return 42;
-          };
-        },
-        partialAdd: function (a) {
-          return function (b) {
-            return a + b;
-          };
-        }
-      };
-      assert.deepEqual(parseAndEval('theAnswer()()', scope), 42);
-      assert.deepEqual(parseAndEval('partialAdd(2)(3)', scope), 5);
+    it ('should apply implicit multiplication after a function call', function () {
+      assert.deepEqual(parseAndEval('sqrt(4)(1+2)'), 6);
+      assert.deepEqual(parseAndEval('sqrt(4)(1+2)(2)'), 12);
     });
 
     it('should invoke a function on an object with the right context', function () {
@@ -844,12 +833,34 @@ describe('parse', function() {
 
   describe('constants', function () {
 
-    it('should parse constants', function() {
+    it ('should parse symbolic constants', function () {
+      assert.strictEqual(parse('i').type, 'SymbolNode');
       assert.deepEqual(parseAndEval('i'), new Complex(0, 1));
       approx.equal(parseAndEval('pi'), Math.PI);
       approx.equal(parseAndEval('e'), Math.E);
+    })
+
+    it('should parse constants', function() {
+      assert.strictEqual(parse('true').type, 'ConstantNode');
+      assert.deepStrictEqual(parse('true'), createConstantNode(true));
+      assert.deepStrictEqual(parse('false'), createConstantNode(false));
+      assert.deepStrictEqual(parse('null'), createConstantNode(null));
+      assert.deepStrictEqual(parse('undefined'), createConstantNode(undefined));
     });
 
+    it('should parse numeric constants', function() {
+      var nanConstantNode = parse('NaN');
+      assert.deepStrictEqual(nanConstantNode.type, 'ConstantNode');
+      assert.ok(isNaN(nanConstantNode.value));
+      assert.deepStrictEqual(parse('Infinity'), createConstantNode(Infinity));
+    });
+
+    // helper function to create a ConstantNode with empty comment
+    function createConstantNode (value) {
+      var c = new ConstantNode(value);
+      c.comment = ''
+      return c;
+    }
   });
 
   describe('variables', function () {
@@ -1008,8 +1019,9 @@ describe('parse', function() {
       assert.equal(parseAndEval('4./2'), 2);
       assert.deepEqual(parseAndEval('4./[2,4]'), math.matrix([2,1]));
       assert.equal(parseAndEval('4 ./ 2'), 2);
+      assert.equal(parseAndEval('8 ./ 4 / 2'), 1);
       assert.equal(parseAndEval('8 ./ 2 / 2'), 2);
-
+      
       assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), math.matrix([1,1,1]));
     });
 
@@ -1065,41 +1077,41 @@ describe('parse', function() {
     });
 
     it('should parse implicit multiplication', function() {
-      assert.equal(parseAndEval('4a', {a:2}), 8);
-      assert.equal(parseAndEval('4 a', {a:2}), 8);
-      assert.equal(parseAndEval('a b', {a: 2, b: 4}), 8);
-      assert.equal(parseAndEval('2a b', {a: 2, b: 4}), 16);
-      assert.equal(parseAndEval('2a * b', {a: 2, b: 4}), 16);
-      assert.equal(parseAndEval('2a / b', {a: 2, b: 4}), 1);
-      assert.equal(parseAndEval('a b c', {a: 2, b: 4, c: 6}), 48);
-      assert.equal(parseAndEval('a b*c', {a: 2, b: 4, c: 6}), 48);
-      assert.equal(parseAndEval('a*b c', {a: 2, b: 4, c: 6}), 48);
-      assert.equal(parseAndEval('a/b c', {a: 4, b: 2, c: 6}), 12);
+      assert.equal(parseAndStringifyWithParens('4a'), '4 a');
+      assert.equal(parseAndStringifyWithParens('4 a'), '4 a');
+      assert.equal(parseAndStringifyWithParens('a b'), 'a b');
+      assert.equal(parseAndStringifyWithParens('2a b'), '(2 a) b');
+      assert.equal(parseAndStringifyWithParens('2a * b'), '(2 a) * b');
+      assert.equal(parseAndStringifyWithParens('2a / b'), '(2 a) / b');
+      assert.equal(parseAndStringifyWithParens('a b c'), '(a b) c');
+      assert.equal(parseAndStringifyWithParens('a b*c'), '(a b) * c');
+      assert.equal(parseAndStringifyWithParens('a*b c'), 'a * (b c)');
+      assert.equal(parseAndStringifyWithParens('a/b c'), 'a / (b c)');
 
-      assert.equal(parseAndEval('1/2a', {a:2}), 1);
-      assert.equal(parseAndEval('8/2a/2', {a:2}), 4);
-      assert.equal(parseAndEval('8/2a*2', {a:2}), 16);
-      assert.equal(parseAndEval('4*2a', {a:2}), 16);
-      assert.equal(parseAndEval('3!10'), 60);
+      assert.equal(parseAndStringifyWithParens('1/2a'), '(1 / 2) a');
+      assert.equal(parseAndStringifyWithParens('8/2a/2'), '((8 / 2) a) / 2');
+      assert.equal(parseAndStringifyWithParens('8/2a*2'), '((8 / 2) a) * 2');
+      assert.equal(parseAndStringifyWithParens('4*2a'), '4 * (2 a)');
+      assert.equal(parseAndStringifyWithParens('3!10'), '(3!) 10');
 
-      assert.equal(parseAndEval('(2+3)a', {a:2}), 10);
-      assert.equal(parseAndEval('(2+3)2'), 10);
-      assert.equal(parseAndEval('(2)(3)+4'), 10);
-      assert.equal(parseAndEval('2(3+4)'), 14);
-      assert.equal(parseAndEval('(2+3)-2'), 3); // no implicit multiplication, just a unary minus
-      assert.equal(parseAndEval('a(2+3)', {a: function() {return 42;}}), 42);        // function call
-      assert.equal(parseAndEval('a.b(2+3)', {a: {b: function() {return 42;}}}), 42); // function call
-      assert.equal(parseAndEval('(2+3)(4+5)'), 45);       // implicit multiplication
-      assert.equal(parseAndEval('(2+3)(4+5)(3-1)'), 90);  // implicit multiplication
+      assert.equal(parseAndStringifyWithParens('(2+3)a'), '(2 + 3) a');
+      assert.equal(parseAndStringifyWithParens('(2+3)2'), '(2 + 3) 2');
+      assert.equal(parseAndStringifyWithParens('(2)(3)+4'), '(2 3) + 4');
+      assert.equal(parseAndStringifyWithParens('2(3+4)'), '2 (3 + 4)');
+      assert.equal(parseAndStringifyWithParens('(2+3)-2'), '(2 + 3) - 2'); // no implicit multiplication, just a unary minus
+      assert.equal(parseAndStringifyWithParens('a(2+3)'), 'a(2 + 3)');        // function call
+      assert.equal(parseAndStringifyWithParens('a.b(2+3)'), 'a.b(2 + 3)'); // function call
+      assert.equal(parseAndStringifyWithParens('(2+3)(4+5)'), '(2 + 3) (4 + 5)');       // implicit multiplication
+      assert.equal(parseAndStringifyWithParens('(2+3)(4+5)(3-1)'), '((2 + 3) (4 + 5)) (3 - 1)');  // implicit multiplication
 
-      assert.equal(parseAndEval('(2a)^3', {a:2}), 64);
-      assert.equal(parseAndEval('2a^3', {a:2}), 16);
-      assert.equal(parseAndEval('2(a)^3', {a:2}), 16);
-      assert.equal(parseAndEval('(2)a^3', {a:2}), 16);
-      assert.equal(parseAndEval('2^3a', {a:2}), 16);
-      assert.equal(parseAndEval('2^3(a)', {a:2}), 16);
-      assert.equal(parseAndEval('2^(3)(a)', {a:2}), 16);
-      assert.equal(parseAndEval('sqrt(2a)', {a:2}), 2);
+      assert.equal(parseAndStringifyWithParens('(2a)^3'), '(2 a) ^ 3');
+      assert.equal(parseAndStringifyWithParens('2a^3'), '2 (a ^ 3)');
+      assert.equal(parseAndStringifyWithParens('2(a)^3'), '2 (a ^ 3)');
+      assert.equal(parseAndStringifyWithParens('(2)a^3'), '2 (a ^ 3)');
+      assert.equal(parseAndStringifyWithParens('2^3a'), '(2 ^ 3) a');
+      assert.equal(parseAndStringifyWithParens('2^3(a)'), '(2 ^ 3) a');
+      assert.equal(parseAndStringifyWithParens('2^(3)(a)'), '(2 ^ 3) a');
+      assert.equal(parseAndStringifyWithParens('sqrt(2a)'), 'sqrt(2 a)');
 
       assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]));
       assert.deepEqual(parseAndEval('[2, 3] a', {a:2}), math.matrix([4, 6]));
@@ -1127,8 +1139,29 @@ describe('parse', function() {
     });
 
     it('should correctly order consecutive multiplications and implicit multiplications', function() {
-      var node = parse('9km*3km');
-      assert.equal(node.toString({parenthesis: 'all'}), '((9 km) * 3) km');
+      assert.equal(parseAndStringifyWithParens('9km*3km'), '(9 km) * (3 km)');
+    });
+
+    it('should follow precedence rules for implicit multiplication and division', function() {
+      assert.equal(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x');
+      assert.equal(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg');
+      assert.equal(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y');
+      assert.equal(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)');
+      assert.equal(parseAndStringifyWithParens('17 h / 1 h'), '(17 h) / (1 h)');
+      assert.equal(parseAndStringifyWithParens('1 / 2 x'), '(1 / 2) x');
+      assert.equal(parseAndStringifyWithParens('1 / 2 * x'), '(1 / 2) * x');
+      assert.equal(parseAndStringifyWithParens('1 / 2 x y'), '((1 / 2) x) y');
+      assert.equal(parseAndStringifyWithParens('1 / 2 (x y)'), '(1 / 2) (x y)');
+      assert.equal(parseAndStringifyWithParens('1 / 2x * y'), '((1 / 2) x) * y');
+      assert.equal(parseAndStringifyWithParens('y / 2 x'), 'y / (2 x)');
+      assert.equal(parseAndStringifyWithParens('y / 2 * x'), '(y / 2) * x');
+      assert.equal(parseAndStringifyWithParens('y / 2 x w'), 'y / ((2 x) w)');
+      assert.equal(parseAndStringifyWithParens('y / v x w'), 'y / ((v x) w)');
+      assert.equal(parseAndStringifyWithParens('1 h / (1+1) h'), '(1 h) / ((1 + 1) h)');
+      assert.equal(parseAndStringifyWithParens('4 lb + 1/2 lb'), '(4 lb) + ((1 / 2) lb)');
+      assert.equal(parseAndStringifyWithParens('4 lb + 1 lb^2 / 2 lb'), '(4 lb) + ((1 (lb ^ 2)) / (2 lb))');
+      assert.equal(parseAndStringifyWithParens('1 m/s^2 + 1 m / 2 s^2'), '((1 m) / (s ^ 2)) + ((1 m) / (2 (s ^ 2)))');
+      assert.equal(parseAndStringifyWithParens('8.314 J/mol K'), '(8.314 J) / (mol K)');
     });
 
     it('should throw an error when having an implicit multiplication between two numbers', function() {
@@ -1901,12 +1934,14 @@ describe('parse', function() {
       CustomNode.prototype.toString = function () {
         return 'CustomNode';
       };
-      CustomNode.prototype._compile = function (defs) {
+      CustomNode.prototype._compile = function (math, argNames) {
         var strArgs = [];
         this.args.forEach(function (arg) {
           strArgs.push(arg.toString());
         });
-        return '"CustomNode(' + strArgs.join(', ') + ')"';
+        return function (scope, args, context) {
+          return 'CustomNode(' + strArgs.join(', ') + ')';
+        };
       };
       CustomNode.prototype.forEach = function (callback) {
         // we don't have childs

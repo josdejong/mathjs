@@ -6,7 +6,7 @@ var BigNumber = require('decimal.js');
 var add = math.add;
 
 // TODO: make unit tests independent of math
-describe('add', function() {
+describe('addScalar', function() {
 
   it('should add two numbers', function() {
     assert.equal(add(2, 3), 5);
@@ -22,10 +22,8 @@ describe('add', function() {
     assert.equal(add(false, false), 0);
   });
 
-  it('should add numbers and null', function () {
-    assert.equal(math.add(null, null), 0);
-    assert.equal(math.add(null, 1), 1);
-    assert.equal(math.add(1, null), 1);
+  it('does not support null', function() {
+    assert.throws(function () {add(null, 0) }, /Unexpected type of argument/);
   });
 
   it('should add mixed numbers and booleans', function() {
@@ -141,6 +139,10 @@ describe('add', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {add(1);}, /TypeError: Too few arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {add(null, 1);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX add', function () {

@@ -33,11 +33,6 @@ describe('subtract', function() {
     assert.equal(subtract(false, 2), -2);
   });
 
-  it('should subtract numbers and null', function () {
-    assert.equal(subtract(1, null), 1);
-    assert.equal(subtract(null, 1), -1);
-  });
-
   it('should subtract bignumbers', function() {
     assert.deepEqual(subtract(bignumber(0.3), bignumber(0.2)), bignumber(0.1));
     assert.deepEqual(subtract(bignumber('2.3e5001'), bignumber('3e5000')), bignumber('2e5001'));
@@ -239,6 +234,10 @@ describe('subtract', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {subtract(1);}, /TypeError: Too few arguments/);
     assert.throws(function () {subtract(1, 2, 3);}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {subtract(null, 2);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX subtract', function () {

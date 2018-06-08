@@ -31,14 +31,13 @@ describe('dotDivide', function() {
     assert.equal(dotDivide(false, 2), 0);
   });
 
-  it('should divide numbers and null', function () {
-    assert.equal(dotDivide(1, null), Infinity);
-    assert.equal(dotDivide(null, 1), 0);
-  });
-
   it('should throw an error if there\'s wrong number of arguments', function() {
     assert.throws(function () {dotDivide(2,3,4); });
     assert.throws(function () {dotDivide(2); });
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {dotDivide(null, 1);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should divide two complex numbers', function() {

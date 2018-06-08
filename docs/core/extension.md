@@ -178,7 +178,7 @@ looks like:
 ```js
 exports.name = 'myFunction';
 exports.factory = function (type, config, load, typed) {
-  return myFunction (a, b) {
+  return function myFunction (a, b) {
     // ...
   }
 };

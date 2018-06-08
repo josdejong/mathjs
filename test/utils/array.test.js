@@ -62,12 +62,12 @@ describe('util.array', function() {
       assert.deepEqual(a, [100,100]);
     });
 
-    it('should resize a 1 dimensional array with UNINITIALIZED defaultValue', function () {
+    it('should resize a 1 dimensional array with null as defaultValue', function () {
       var a = [];
 
-      // resize with default value UNINITIALIZED
-      a = resize(a, [3], array.UNINITIALIZED);
-      assert.deepEqual(a, arr(uninit, uninit, uninit));
+      // resize with default value undefined
+      a = resize(a, [3], null);
+      assert.deepEqual(a, [null, null, null]);
     });
 
     it('should resize a 2 dimensional array', function () {
@@ -613,20 +613,3 @@ describe('util.array', function() {
   });
 
 });
-
-/**
- * Helper function to create an Array containing uninitialized values
- * Example: arr(uninit, uninit, 2);    // [ , , 2 ]
- */
-var uninit = {};
-function arr() {
-  var array = [];
-  array.length = arguments.length;
-  for (var i = 0; i < arguments.length; i++) {
-    var value = arguments[i];
-    if (value !== uninit) {
-      array[i] = value;
-    }
-  }
-  return array;
-}

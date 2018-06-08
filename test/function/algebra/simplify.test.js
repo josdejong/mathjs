@@ -76,12 +76,56 @@ describe('simplify', function() {
     assert.equal(fsimplified.eval()(5), 0.9933071490757153);
   });
 
+  it('simplifyCore should handle different node types', function() {
+    var testSimplifyCore = function(expr, expected) {
+        var actual = math.simplify.simplifyCore(math.parse(expr)).toString();
+        assert.equal(actual, expected);
+    }
+    testSimplifyCore("5*x*3", "15 * x");
+    testSimplifyCore("5*x*3*x", "15 * x * x");
+
+    testSimplifyCore("x-0", "x");
+    testSimplifyCore("0-x", "-x");
+    testSimplifyCore("0-3", "-3");
+    testSimplifyCore("x+0", "x");
+    testSimplifyCore("0+x", "x");
+    testSimplifyCore("0*x", "0");
+    testSimplifyCore("x*0", "0");
+    testSimplifyCore("x*1", "x");
+    testSimplifyCore("1*x", "x");
+    testSimplifyCore("-(x)", "-x");
+    testSimplifyCore("0/x", "0");
+    testSimplifyCore("(1*x + y*0)*1+0", "x");
+    testSimplifyCore("sin(x+0)*1", "sin(x)");
+    testSimplifyCore("((x+0)*1)", "x");
+    testSimplifyCore("sin((x-0)*1+y*0)", "sin(x)");
+    testSimplifyCore("((x)*(y))", "(x * y)");
+    testSimplifyCore("((x)*(y))^1", "(x * y)");
+
+    // constant folding
+    testSimplifyCore("1+2", "3");
+    testSimplifyCore("2*3", "6");
+    testSimplifyCore("2-3", "-1");
+    testSimplifyCore("3/2", "1.5");
+    testSimplifyCore("3^2", "9");
+  });
+
   it('should simplifyCore convert +unaryMinus to subtract', function() {
       simplifyAndCompareEval('--2', '2');
       var result = math.simplify('x + y + a', [math.simplify.simplifyCore], {a: -1}).toString()
       assert.equal(result, "x + y - 1");
   });
 
+  it('should simplify convert minus and unary minus', function() {
+    // see https://github.com/josdejong/mathjs/issues/1013
+    assert.equal(math.simplify('0 - -1', {}).toString(), '1');
+    assert.equal(math.simplify('0 - -x', {}).toString(), 'x');
+    assert.equal(math.simplify('0----x', {}).toString(), 'x');
+    assert.equal(math.simplify('1 - -x', {}).toString(), 'x + 1');
+    assert.equal(math.simplify('0 - (-x)', {}).toString(), 'x');
+    assert.equal(math.simplify('-(-x)', {}).toString(), 'x');
+    assert.equal(math.simplify('0 - (x - y)', {}).toString(), 'y - x');
+  });
 
   it('should handle custom functions', function() {
     function doubleIt (x) { return x + x }
@@ -196,6 +240,8 @@ describe('simplify', function() {
 
   it('should handle non-existing functions like a pro', function() {
     simplifyAndCompare('foo(x)', 'foo(x)');
+    simplifyAndCompare('foo(1)', 'foo(1)');
+    simplifyAndCompare('myMultiArg(x, y, z, w)', 'myMultiArg(x, y, z, w)');
   });
 
   it ('should support custom rules', function() {
@@ -214,16 +260,16 @@ describe('simplify', function() {
     assert.equal(math.simplify('LN10', ['LN10 -> 1']).toString(), '1');
     assert.equal(math.simplify('LOG2E', ['LOG2E -> 1']).toString(), '1');
     assert.equal(math.simplify('LOG10E', ['LOG10E -> 1']).toString(), '1');
-    assert.equal(math.simplify('NaN', ['NaN -> 1']).toString(), '1');
+    assert.equal(math.simplify('null', ['null -> 1']).toString(), '1');
     assert.equal(math.simplify('phi', ['phi -> 1']).toString(), '1');
     assert.equal(math.simplify('SQRT1_2', ['SQRT1_2 -> 1']).toString(), '1');
     assert.equal(math.simplify('SQRT2', ['SQRT2 -> 1']).toString(), '1');
     assert.equal(math.simplify('tau', ['tau -> 1']).toString(), '1');
+
+    // note that NaN is a special case, we can't compare two values both NaN.
   });
 
   it('should throw an error for invalid built-in constant symbols in rules', function() {
-    assert.throws(function(){ math.simplify('null', ['null -> 1']).toString(); });
-    assert.throws(function(){ math.simplify('uninitialized', ['uninitialized -> 1']).toString(); });
     assert.throws(function(){ math.simplify('version', ['version -> 1']).toString(); });
   });
 

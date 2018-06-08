@@ -21,12 +21,6 @@ describe('bitOr', function () {
     assert.equal(bitOr(false, false), 0);
   });
 
-  it('should bitwise or numbers and null', function () {
-    assert.equal(math.bitOr(null, null), 0);
-    assert.equal(math.bitOr(null, 1), 1);
-    assert.equal(math.bitOr(1, null), 1);
-  });
-
   it('should bitwise or mixed numbers and booleans', function () {
     assert.equal(bitOr(0, true), 1);
     assert.equal(bitOr(0, false), 0);
@@ -207,6 +201,7 @@ describe('bitOr', function () {
   });
 
   it('should throw an error in case of invalid type of arguments', function () {
+    assert.throws(function () {bitOr(null, 1);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitOr(new Date(), true);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitOr(true, new Date());}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {bitOr(true, undefined);}, /TypeError: Unexpected type of argument/);

@@ -48,13 +48,6 @@ describe('larger', function() {
     assert.equal(larger(false, 2), false);
   });
 
-  it('should compare mixed numbers and null', function() {
-    assert.equal(larger(1, null), true);
-    assert.equal(larger(0, null), false);
-    assert.equal(larger(null, 1), false);
-    assert.equal(larger(null, 0), false);
-  });
-
   it('should compare bignumbers', function() {
     assert.equal(larger(bignumber(2), bignumber(3)), false);
     assert.equal(larger(bignumber(2), bignumber(2)), false);
@@ -119,19 +112,18 @@ describe('larger', function() {
     assert.throws(function () {larger(unit('100cm'), bignumber(22));});
   });
 
-  it('should perform lexical comparison for two strings', function() {
+  it('should compare two strings by their numerical value', function() {
     assert.equal(larger('0', 0), false);
+    assert.equal(larger('10', '2'), true);
 
-    assert.equal(larger('abd', 'abc'), true);
-    assert.equal(larger('abc', 'abc'), false);
-    assert.equal(larger('abc', 'abd'), false);
+    assert.throws(function () {larger('A', 'B')}, /Cannot convert "A" to a number/);
   });
 
   describe('Array', function () {
 
     it('should compare array - scalar', function () {
-      assert.deepEqual(larger('B', ['A', 'B', 'C']), [true, false, false]);
-      assert.deepEqual(larger(['A', 'B', 'C'], 'B'), [false, false, true]);
+      assert.deepEqual(larger(2, [1, 2, 3]), [true, false, false]);
+      assert.deepEqual(larger([1, 2, 3], 2), [false, false, true]);
     });
 
     it('should compare array - array', function () {
@@ -154,8 +146,8 @@ describe('larger', function() {
   describe('DenseMatrix', function () {
 
     it('should compare dense matrix - scalar', function () {
-      assert.deepEqual(larger('B', matrix(['A', 'B', 'C'])), matrix([true, false, false]));
-      assert.deepEqual(larger(matrix(['A', 'B', 'C']), 'B'), matrix([false, false, true]));
+      assert.deepEqual(larger(2, matrix([1, 2, 3])), matrix([true, false, false]));
+      assert.deepEqual(larger(matrix([1, 2, 3]), 2), matrix([false, false, true]));
     });
 
     it('should compare dense matrix - array', function () {
@@ -174,8 +166,8 @@ describe('larger', function() {
   describe('SparseMatrix', function () {
 
     it('should compare sparse matrix - scalar', function () {
-      assert.deepEqual(larger('B', sparse([['A', 'B'], ['C', 'D']])), matrix([[true, false], [false, false]]));
-      assert.deepEqual(larger(sparse([['A', 'B'], ['C', 'D']]), 'B'), matrix([[false, false], [true, true]]));
+      assert.deepEqual(larger(2, sparse([[1, 2], [3, 4]])), matrix([[true, false], [false, false]]));
+      assert.deepEqual(larger(sparse([[1, 2], [3, 4]]), 2), matrix([[false, false], [true, true]]));
     });
 
     it('should compare sparse matrix - array', function () {
@@ -206,6 +198,10 @@ describe('larger', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {larger(1);}, /Too few arguments/);
     assert.throws(function () {larger(1, 2, 3);}, /Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {larger(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX larger', function () {

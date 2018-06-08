@@ -153,7 +153,7 @@ describe('AssignmentNode', function() {
       new bigmath.expression.node.ConstantNode(2),
       new bigmath.expression.node.ConstantNode(1)
     ]);
-    var value = new bigmath.expression.node.ConstantNode(5);
+    var value = new bigmath.expression.node.ConstantNode(bigmath.bignumber(5));
     var n = new bigmath.expression.node.AssignmentNode(object, index, value);
     var expr = n.compile();
 
@@ -190,8 +190,8 @@ describe('AssignmentNode', function() {
     assert.deepEqual(n.filter(function (node) {return node.isAssignmentNode}), [n]);
     assert.deepEqual(n.filter(function (node) {return node.isSymbolNode}),     [a]);
     assert.deepEqual(n.filter(function (node) {return node.isConstantNode}),   [b, c, v]);
-    assert.deepEqual(n.filter(function (node) {return node.value ===  '1'}),   [c]);
-    assert.deepEqual(n.filter(function (node) {return node.value === '2'}),    [b, v]);
+    assert.deepEqual(n.filter(function (node) {return node.value ===  1}),     [c]);
+    assert.deepEqual(n.filter(function (node) {return node.value === 2}),      [b, v]);
     assert.deepEqual(n.filter(function (node) {return node.name === 'q'}),     []);
   });
 
@@ -203,7 +203,7 @@ describe('AssignmentNode', function() {
     assert.deepEqual(n.filter(function (node) {return node.isAssignmentNode}), [n]);
     assert.deepEqual(n.filter(function (node) {return node.isSymbolNode}),     [a]);
     assert.deepEqual(n.filter(function (node) {return node.isConstantNode}),   [v]);
-    assert.deepEqual(n.filter(function (node) {return node.value === '2'}),    [v]);
+    assert.deepEqual(n.filter(function (node) {return node.value === 2}),      [v]);
     assert.deepEqual(n.filter(function (node) {return node.name === 'q'}),     []);
   });
 
@@ -498,7 +498,7 @@ describe('AssignmentNode', function() {
             ' equals ' + node.value.toString(options);
       }
       else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + node.valueType + ')'
+        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
       }
     };
 
@@ -507,6 +507,30 @@ describe('AssignmentNode', function() {
     var n = new AssignmentNode(object, value);
 
     assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)');
+  });
+
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('a');
+    var b = new ConstantNode(1);
+    var c = new ConstantNode(2);
+    var d = new ConstantNode(3);
+
+    var node = new AssignmentNode(a, new IndexNode([b, c]), d);
+
+    var json = node.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'AssignmentNode',
+      index: {
+        dimensions: [ b, c ],
+        dotNotation: false
+      },
+      object: a,
+      value: d
+    });
+
+    var parsed = AssignmentNode.fromJSON(json);
+    assert.deepEqual(parsed, node);
   });
 
   it ('should LaTeX a AssignmentNode', function () {
@@ -533,7 +557,7 @@ describe('AssignmentNode', function() {
             '\\mbox{equals}' + node.value.toTex(options);
       }
       else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + node.valueType + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }
     };
 

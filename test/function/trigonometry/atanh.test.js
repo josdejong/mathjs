@@ -20,10 +20,6 @@ describe('atanh', function() {
     assert.equal(atanh(false), 0);
   });
 
-  it('should return the hyperbolic arctan of null', function () {
-    assert.equal(atanh(null), 0);
-  });
-
   it('should return the hyperbolic arctan of a number', function() {
     approx.deepEqual(atanh(-2), complex(-0.54930614433405485, pi / 2));
     approx.deepEqual(atanh(2),  complex(0.54930614433405485, -pi / 2));

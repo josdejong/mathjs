@@ -36,7 +36,7 @@ math.isPrime(0);                     // returns false
 math.isPrime(-0);                    // returns false
 math.isPrime(0.5);                   // returns false
 math.isPrime('2');                   // returns true
-math.isPrime([2, 17, 100]');           // returns [true, true, false]
+math.isPrime([2, 17, 100]);           // returns [true, true, false]
 ```
 
 

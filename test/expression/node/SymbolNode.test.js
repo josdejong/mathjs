@@ -136,6 +136,20 @@ describe('SymbolNode', function() {
     assert.equal(n.toString({handler: customFunction}), 'symbol(a)');
   });
 
+  it('toJSON and fromJSON', function () {
+    var a = new SymbolNode('a');
+
+    var json = a.toJSON();
+
+    assert.deepEqual(json, {
+      mathjs: 'SymbolNode',
+      name: 'a'
+    });
+
+    var parsed = SymbolNode.fromJSON(json);
+    assert.deepEqual(parsed, a);
+  });
+
   it ('should LaTeX a SymbolNode', function () {
     var s = new SymbolNode('foo');
 

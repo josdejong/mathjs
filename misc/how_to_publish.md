@@ -63,12 +63,9 @@ Publish to npm:
 
     npm publish
 
-No need to publish for bower: The library is already published because of the
-new version tag.
+or directly pass a valid one time password (two factor authentication):
 
-No need to publish at cdnjs: should be updated automatically by the owners
-of cdnjs. This is currently done manually and can easily take up to a day
-before updated.
+    npm publish --otp 123456
 
 
 ## Test published libraries
@@ -77,7 +74,6 @@ Install the libraries locally and test whether they work correctly:
 
     cd tmp-folder
     npm install mathjs
-    bower install mathjs
 
 
 ## Update the website

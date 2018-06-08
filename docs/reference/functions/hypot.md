@@ -20,7 +20,7 @@ math.hypot([a, b, c, ...])
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`args` | ... number &#124; BigNumber | 
+`args` | ... number &#124; BigNumber &#124; Array &#124; Matrix | A list with numeric values or an Array or Matrix. Matrix and Array input is flattened and returns a single number for the whole matrix.
 
 ### Returns
 

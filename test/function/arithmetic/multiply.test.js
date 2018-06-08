@@ -2,7 +2,6 @@
 var assert = require('assert'),
     math = require('../../../index'),
     approx = require('../../../tools/approx'),
-    market = require('../../../tools/matrixmarket'),
     multiply = math.multiply,
     divide = math.divide,
     matrix = math.matrix,
@@ -38,11 +37,6 @@ describe('multiply', function() {
       assert.equal(multiply(2, false), 0);
       assert.equal(multiply(true, 2), 2);
       assert.equal(multiply(false, 2), 0);
-    });
-
-    it('should multiply numbers and null', function () {
-      assert.equal(multiply(1, null), 0);
-      assert.equal(multiply(null, 1), 0);
     });
 
     it('should multiply bignumbers', function() {
@@ -87,8 +81,8 @@ describe('multiply', function() {
       approx.deepEqual(multiply(complex(2, 3), 0), complex(0, 0));
       approx.deepEqual(multiply(complex(0, 3), complex(0, -4)), complex(12, 0));
       approx.deepEqual(multiply(multiply(3, i), multiply(-4, i)), complex(12, 0));
-      approx.deepEqual(multiply(math.i, Infinity), complex(NaN, Infinity));
-      approx.deepEqual(multiply(Infinity, math.i), complex(NaN, Infinity));
+      approx.deepEqual(multiply(math.i, Infinity), complex(Infinity, Infinity));
+      approx.deepEqual(multiply(Infinity, math.i), complex(Infinity, Infinity));
 
       approx.deepEqual(multiply(complex(2,0), complex(0,2)), complex(0, 4));
       approx.deepEqual(multiply(complex(0,2), complex(0,2)), -4);
@@ -278,6 +272,10 @@ describe('multiply', function() {
 
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {multiply(1);}, /TypeError: Too few arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {multiply(2, null);}, /TypeError: Unexpected type of argument/);
   });
 
   describe('Vector', function () {
@@ -852,26 +850,6 @@ describe('multiply', function() {
           [1, 0, 0],
           [1, 0, 1]
         ]);
-    });
-  });
-
-  describe('Matrix Market', function () {
-
-    it('should multiply matrix x matrix 1220 x 1220, Matrix Market, sparse x sparse', function (done) {
-      // import matrix
-      market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
-        .then(function (matrices) {
-          // matrix
-          var m = matrices[0];
-          // multiply matrices, used to compare performance in different implementations
-          math.multiply(m, m);
-          // indicate test has completed
-          done();
-        })
-        .fail(function (error) {
-          // indicate test has completed
-          done(error);
-        });
     });
   });
 

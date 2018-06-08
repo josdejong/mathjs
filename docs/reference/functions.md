@@ -63,6 +63,7 @@ Function | Description
 [math.dotMultiply(x,&nbsp;y)](functions/dotMultiply.md) | Multiply two matrices element wise.
 [math.dotPow(x,&nbsp;y)](functions/dotPow.md) | Calculates the power of x to y element wise.
 [math.exp(x)](functions/exp.md) | Calculate the exponent of a value.
+[math.expm1(x)](functions/expm1.md) | Calculate the value of subtracting 1 from the exponential value.
 [math.fix(x)](functions/fix.md) | Round a value towards zero.
 [math.floor(x)](functions/floor.md) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.md) | Calculate the greatest common divisor for two or more values or arrays.
@@ -70,10 +71,13 @@ Function | Description
 [math.lcm(a,&nbsp;b)](functions/lcm.md) | Calculate the least common multiple for two or more values or arrays.
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.md) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.md) | Calculate the 10-base logarithm of a value.
+[math.log1p(x)](functions/log1p.md) | Calculate the logarithm of a `value+1`.
+[math.log2(x)](functions/log2.md) | Calculate the 2-base of a value.
 [math.mod(x,&nbsp;y)](functions/mod.md) | Calculates the modulus, the remainder of an integer division.
 [math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or more values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
+[math.nthRoots(x)](functions/nthRoots.md) | Calculate the nth roots of a value.
 [math.pow(x,&nbsp;y)](functions/pow.md) | Calculates the power of x to y, `x ^ y`.
 [math.round(x&nbsp;[,&nbsp;n])](functions/round.md) | Round a value towards the nearest integer.
 [math.sign(x)](functions/sign.md) | Compute the sign of a value.
@@ -136,13 +140,15 @@ Function | Description
 ---- | -----------
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.md) | Concatenate two or more matrices.
 [math.cross(x,&nbsp;y)](functions/cross.md) | Calculate the cross product for two vectors in three dimensional space.
+[math.ctranspose(x)](functions/ctranspose.md) | Transpose and complex conjugate a matrix.
 [math.det(x)](functions/det.md) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.md) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.md) | Calculate the dot product of two vectors.
-[math.eye(n)](functions/eye.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
+[math.expm(x)](functions/expm.md) | Compute the matrix exponential, expm(A) = e^A.
 [math.filter(x,&nbsp;test)](functions/filter.md) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.md) | Flatten a multi dimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.md) | Iterate over all elements of a matrix/array, and executes the given callback function.
+[math.identity(n)](functions/identity.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.inv(x)](functions/inv.md) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.md) | Calculates the kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.md) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.
@@ -153,6 +159,7 @@ Function | Description
 [math.resize(x,&nbsp;size&nbsp;[,&nbsp;defaultValue])](functions/resize.md) | Resize a matrix.
 [math.size(x)](functions/size.md) | Calculate the size of a matrix or scalar.
 [math.sort(x)](functions/sort.md) | Sort the items in a matrix.
+[X&nbsp;=&nbsp;math.sqrtm(A)](functions/sqrtm.md) | Calculate the principal square root of a square matrix.
 [math.squeeze(x)](functions/squeeze.md) | Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
 [math.subset(x,&nbsp;index&nbsp;[,&nbsp;replacement])](functions/subset.md) | Get or set a subset of a matrix or string.
 [math.trace(x)](functions/trace.md) | Calculate the trace of a matrix: the sum of the elements on the main diagonal of a square matrix.
@@ -179,8 +186,10 @@ Function | Description
 ---- | -----------
 [math.compare(x,&nbsp;y)](functions/compare.md) | Compare two values.
 [math.compareNatural(x,&nbsp;y)](functions/compareNatural.md) | Compare two values of any type in a deterministic, natural way.
+[math.compareText(x,&nbsp;y)](functions/compareText.md) | Compare two strings lexically.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.md) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.md) | Test whether two values are equal.
+[math.equalText(x,&nbsp;y)](functions/equalText.md) | Check equality of two strings.
 [math.larger(x,&nbsp;y)](functions/larger.md) | Test whether value x is larger than y.
 [math.largerEq(x,&nbsp;y)](functions/largerEq.md) | Test whether value x is larger or equal to y.
 [math.smaller(x,&nbsp;y)](functions/smaller.md) | Test whether value x is smaller than y.

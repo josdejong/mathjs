@@ -16,12 +16,6 @@ describe('mod', function() {
     assert.equal(mod(false, false), 0);
   });
 
-  it('should calculate the modulus of numbers and null', function () {
-    assert.equal(mod(null, null), 0);
-    assert.equal(mod(null, 1), 0);
-    assert.equal(mod(1, null), 1);
-  });
-
   it('should calculate the modulus of two numbers', function() {
     assert.equal(mod(1, 1), 0);
     assert.equal(mod(0, 1), 0);
@@ -49,6 +43,7 @@ describe('mod', function() {
 
   it('should throw an error if used with wrong type of arguments', function() {
     assert.throws(function () {mod(1, new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {mod(1, null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {mod(new Date(), bignumber(2));}, /TypeError: Unexpected type of argument/);
   });
 

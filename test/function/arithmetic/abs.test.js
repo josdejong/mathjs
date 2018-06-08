@@ -8,8 +8,8 @@ describe('abs', function () {
     assert.strictEqual(math.abs(false), 0);
   });
 
-  it('should return the abs value of null', function () {
-    assert.strictEqual(math.abs(null), 0);
+  it('should not support null', function () {
+    assert.throws(function () {math.abs(null) }, /Unexpected type of argument/);
   });
 
   it('should return the abs value of a number', function () {
@@ -91,8 +91,13 @@ describe('abs', function () {
     assert.throws(function () {math.abs(1, 2)}, /TypeError: Too many arguments/);
   });
 
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {math.abs(null);}, /TypeError: Unexpected type of argument/);
+  });
+
   it('should throw an error in case of unsupported types', function () {
     assert.throws(function () {math.abs(new Date());}, /TypeError: Unexpected type of argument/);
+    assert.throws(function () {math.abs(null);}, /TypeError: Unexpected type of argument/);
     assert.throws(function () {math.abs(undefined);}, /TypeError: Unexpected type of argument/);
   });
 

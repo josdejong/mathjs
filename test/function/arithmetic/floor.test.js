@@ -16,10 +16,6 @@ describe('floor', function() {
     assert.equal(floor(false), 0);
   });
 
-  it('should round null', function () {
-    assert.equal(floor(null), 0);
-  });
-
   it('should floor numbers correctly', function() {
     approx.equal(floor(0), 0);
     approx.equal(floor(1), 1);
@@ -87,6 +83,10 @@ describe('floor', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {floor()}, /TypeError: Too few arguments/);
     assert.throws(function () {floor(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {floor(null);}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX floor', function () {

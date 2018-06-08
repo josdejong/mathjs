@@ -18,10 +18,6 @@ describe('nthRoot', function() {
     assert.equal(nthRoot(1,true), 1);
   });
 
-  it('should return the nthRoot of null', function () {
-    assert.equal(nthRoot(null), 0);
-  });
-
   it('should return the nthRoot for numbers', function() {
     approx.equal(nthRoot(4), 2);
     approx.equal(nthRoot(9), 3);
@@ -81,6 +77,10 @@ describe('nthRoot', function() {
     assert.throws(function () {nthRoot(1, 2, 3);}, /TypeError: Too many arguments/);
   });
 
+  it('should throw an in case of wrong type of arguments', function() {
+    assert.throws(function () {nthRoot(null);}, /TypeError: Unexpected type of argument/);
+  });
+
   it('should return the nthRoot of bignumbers', function() {
     assert.deepEqual(nthRoot(big(4)), big(2));
     assert.deepEqual(nthRoot(big(9)), big(3));
@@ -110,21 +110,8 @@ describe('nthRoot', function() {
     assert.deepEqual(nthRoot(big(Infinity), big(-3)), big(0));
   });
 
-  it('should return an array of Complex Roots in Polar form', function() {
-    var roots = nthRoot(complex("-1"), 6);
-    var roots1 = [
-      {r: 1, phi: Math.PI/6},
-      {r: 1, phi: Math.PI/2},
-      {r: 1, phi: (5 * Math.PI)/6},
-      {r: 1, phi: (7 * Math.PI)/6},
-      {r: 1, phi: (9 * Math.PI)/6},
-      {r: 1, phi: (11 * Math.PI)/6}
-    ];
-
-    roots.forEach(function (value, index, array) {
-      assert.equal(value.r, roots1[index].r);
-      assert.equal(value.phi, roots1[index].phi);
-    });
+  it('should throw an error when used with a complex number', function() {
+    assert.throws(function () {nthRoot(complex("-8"), 3);});
   });
 
   it('should throw an error when used with a complex number and root is less than 0', function() {

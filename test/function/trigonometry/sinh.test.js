@@ -17,10 +17,6 @@ describe('sinh', function() {
     assert.equal(sinh(false), 0);
   });
 
-  it('should return the sinh of a null', function () {
-    assert.equal(sinh(null), 0);
-  });
-
   it('should return the sinh of a number', function() {
     approx.equal(sinh(-2), -3.62686040784701876766821398280126170488634201232113572130, EPSILON);
     approx.equal(sinh(-0.5), -0.52109530549374736162242562641149155910592898261148052794, EPSILON);
@@ -32,13 +28,21 @@ describe('sinh', function() {
     approx.equal(sinh(2), 3.626860407847018767668213982801261704886342012321135721309, EPSILON);
   });
 
-  if (!/v0\.10|v0\.12/.test(process.version)) {
-    // skip this test on node v0.10 and v0.12, which have a numerical issue
+  if (process.version !== '' && !/v0\.10|v0\.12/.test(process.version)) {
+    // we only do these tests on node.js
+    // skip this test on node v0.10 and v0.12 and IE 11, which have a numerical issue
 
     it('should return the sinh of very small numbers (avoid returning zero)', function() {
+      // If sinh returns 0, that is bad, so we are using assert, not approx.equal
+      assert(sinh(-1e-10) !== 0);
+      assert(Math.abs(sinh(-1e-10) - -1e-10) < EPSILON);
+    });
+
+    it('should return the sinh of very large numbers (avoid returning zero)', function() {
       // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
-      assert.equal(sinh(-1e-10), -1e-10);
-      assert.equal(sinh(1e-50), 1e-50);
+      console.log('process.version=', process.version)
+      assert(sinh(1e-50) !== 0);
+      assert(Math.abs(sinh(1e-50) - 1e-50) < EPSILON);
     });
   }
 
@@ -103,6 +107,10 @@ describe('sinh', function() {
   it('should throw an error in case of invalid number of arguments', function() {
     assert.throws(function () {sinh()}, /TypeError: Too few arguments/);
     assert.throws(function () {sinh(1, 2)}, /TypeError: Too many arguments/);
+  });
+
+  it('should throw an error in case of invalid type of arguments', function() {
+    assert.throws(function () {sinh(null)}, /TypeError: Unexpected type of argument/);
   });
 
   it('should LaTeX sinh', function () {

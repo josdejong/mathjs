@@ -20,10 +20,6 @@ describe('asin', function() {
     assert.equal(asin(false), 0);
   });
 
-  it('should return the arcsin of null', function () {
-    assert.equal(asin(null), 0);
-  });
-
   it('should return the arcsin of a number', function() {
     approx.equal(asin(-1) / pi, -0.5);
     approx.equal(asin(-0.5) / pi, -1/6);

@@ -53,10 +53,6 @@ describe('factorial', function() {
     assert.equal(factorial(false), 1);
   });
 
-  it('should calculate the factorial of null', function() {
-    assert.equal(factorial(null), 1);
-  });
-
   it('should calculate the factorial of each element in a matrix', function() {
     assert.deepEqual(factorial(math.matrix([0,1,2,3,4,5])), math.matrix([1,1,2,6,24,120]));
   });

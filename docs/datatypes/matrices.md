@@ -77,7 +77,7 @@ a.subset(math.index(1)); // 'hello'
 
 
 There are a number of functions to create a matrix with a specific size and
-content: `ones`, `zeros`, `eye`.
+content: `ones`, `zeros`, `identity`.
 
 ```js
 // zeros creates a matrix filled with zeros
@@ -90,13 +90,13 @@ math.zeros(2, 2, 2);    // Matrix, size [2, 2, 2],
 math.ones(3);                       // Matrix, size [3],    [1, 1, 1]
 math.multiply(math.ones(2, 2), 5);  // Matrix, size [2, 2], [[5, 5], [5, 5]]
 
-// eye creates an identity matrix
-math.eye(3);     // Matrix, size [3, 3], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-math.eye(2, 3);  // Matrix, size [2, 3], [[1, 0, 0], [0, 1, 0]]
+// identity creates an identity matrix
+math.identity(3);     // Matrix, size [3, 3], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+math.identity(2, 3);  // Matrix, size [2, 3], [[1, 0, 0], [0, 1, 0]]
 ```
 
 
-The functions `ones`, `zeros`, and `eye` also accept a single array
+The functions `ones`, `zeros`, and `identity` also accept a single array
 or matrix containing the dimensions for the matrix. When the input is an Array,
 the functions will output an Array. When the input is a Matrix, the output will
 be a Matrix. Note that in case of numbers as arguments, the output is
@@ -189,9 +189,9 @@ math.size(c);                                 // Array, [2, 2, 3]
 
 Matrices can be resized using their `resize` function. This function is called
 with an Array with the new size as the first argument, and accepts an optional
-default value. If no default value is provided, new entries will be filled with
-zero. To leave new entries uninitialized, specify `math.uninitialized` as the
-default value.
+default value. By default, new entries will be set to `0`, but it is possible
+to pass a different default value like `null` to clearly indicate that
+the entries haven't been explicitly set.
 
 ```js
 var a = math.matrix();  // Matrix, size [0],       []
@@ -319,19 +319,19 @@ Math.js supports two type of matrices:
 - Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
 - Sparse matrix (`'sparse'`): A two dimensional sparse matrix implementation.
 
-The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `eye`, `ones`, and `zeros`.
+The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `identity`, `ones`, and `zeros`.
 
 ```js
 // create sparse matrices
 var m1 = math.matrix([[0, 1], [0, 0]], 'sparse');
-var m2 = math.eye(1000, 1000, 'sparse');
+var m2 = math.identity(1000, 1000, 'sparse');
 ```
 
 ## API
 
 All relevant functions in math.js support Matrices and Arrays. Functions like `math.add` and `math.subtract`, `math.sqrt` handle matrices element wise. There is a set of functions specifically for creating or manipulating matrices, such as:
 
-- Functions like `math.matrix` and `math.sparse`, `math.ones`, `math.zeros`, and `math.eye` to create a matrix.
+- Functions like `math.matrix` and `math.sparse`, `math.ones`, `math.zeros`, and `math.identity` to create a matrix.
 - Functions like `math.subset` and `math.index` to get or replace a part of a matrix
 - Functions like `math.transpose` and `math.diag` to manipulate matrices.
 
