@@ -3,9 +3,7 @@ module.exports = function(config) {
 
     basePath: '../',
 
-
     frameworks: ['mocha'],
-
 
     // list of files / patterns to load in the browser
     files: [
@@ -13,7 +11,7 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-      '**/*.js': ['babel', 'webpack'],
+      '**/*.js': ['webpack'],
     },
 
     captureTimeout: 210000,
@@ -24,19 +22,15 @@ module.exports = function(config) {
     // web server port
     port: 9876,
 
-
     // enable / disable colors in the output (reporters and logs)
     colors: true,
-
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
-
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -57,6 +51,16 @@ module.exports = function(config) {
         // same as above, disallow 'module' field to prevent
         // decimal.mjs from breaking tests.
         mainFields: ['browser', 'main'],
+      },
+
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: 'babel-loader'
+          }
+        ]
       },
     },
 

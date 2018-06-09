@@ -13,17 +13,21 @@ module.exports = function(config) {
       'bs_ie_11',
       'bs_edge'
     ],
+
     reporters: [
       'mocha', 'BrowserStack'
     ],
+
     client: {
       mocha: {
         reporter: 'html'
       }
     },
+
     browserStack: {
       startTunnel: true
     },
+
     customLaunchers: {
       bs_firefox_android: {
         base: 'BrowserStack',
