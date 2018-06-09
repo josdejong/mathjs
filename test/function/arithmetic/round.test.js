@@ -1,7 +1,7 @@
 // test round
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var bignumber = math.bignumber;
 var fraction = math.fraction;
 var matrix = math.matrix;

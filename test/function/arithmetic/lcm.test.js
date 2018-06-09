@@ -1,5 +1,5 @@
 var assert = require('assert'),
-    math = require('../../../index'),
+    math = require('../../../src/index'),
     matrix = math.matrix,
     sparse = math.sparse,
     lcm = math.lcm;

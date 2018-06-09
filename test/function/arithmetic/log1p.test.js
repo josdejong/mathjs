@@ -1,8 +1,8 @@
 // test log1p
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var error = require('../../../lib/error/index');
-var math = require('../../../index');
+var error = require('../../../src/error/index');
+var math = require('../../../src/index');
 var mathPredictable = math.create({predictable: true});
 var complex = math.complex;
 var matrix = math.matrix;

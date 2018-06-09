@@ -1,7 +1,7 @@
 // test data type ResultSet
 
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var Unit = math.type.Unit;
 var Complex = math.type.Complex;
 var ResultSet = math.type.ResultSet;

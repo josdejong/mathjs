@@ -1,6 +1,6 @@
 // test typeof
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var Index = math.type.Index;
 var Range = math.type.Range;
 var Matrix = math.type.Matrix;

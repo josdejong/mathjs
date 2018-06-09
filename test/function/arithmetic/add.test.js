@@ -1,7 +1,7 @@
 // test add
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var add = math.add;
 
 // TODO: make unit tests independent of math

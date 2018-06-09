@@ -1,7 +1,7 @@
 // test divide
 var assert = require('assert');
-var math = require('../../../index');
-var error = require('../../../lib/error/index');
+var math = require('../../../src/index');
+var error = require('../../../src/error/index');
 var approx = require('../../../tools/approx');
 var divide = math.divide;
 var bignumber = math.bignumber;
@@ -156,12 +156,12 @@ describe('divide', function() {
   });
 
   it('should divide each elements in a matrix by a number', function() {
-    assert.deepEqual(divide([2,4,6], 2), [1,2,3]);
-    a  = math.matrix([[1,2],[3,4]]);
-    assert.deepEqual(divide(a, 2), math.matrix([[0.5,1],[1.5,2]]));
-    assert.deepEqual(divide(a.valueOf(), 2), [[0.5,1],[1.5,2]]);
-    assert.deepEqual(divide([], 2), []);
-    assert.deepEqual(divide([], 2), []);
+    assert.deepEqual(divide([2,4,6], 2), [1,2,3])
+    const a = math.matrix([[1,2],[3,4]])
+    assert.deepEqual(divide(a, 2), math.matrix([[0.5,1],[1.5,2]]))
+    assert.deepEqual(divide(a.valueOf(), 2), [[0.5,1],[1.5,2]])
+    assert.deepEqual(divide([], 2), [])
+    assert.deepEqual(divide([], 2), [])
   });
 
   it('should divide 1 over a matrix (matrix inverse)', function() {
@@ -177,9 +177,9 @@ describe('divide', function() {
   });
 
   it('should perform matrix division', function() {
-    a = math.matrix([[1,2],[3,4]]);
-    b = math.matrix([[5,6],[7,8]]);
-    assert.deepEqual(divide(a, b), math.matrix([[3,-2], [2,-1]]));
+    const a = math.matrix([[1,2],[3,4]])
+    const b = math.matrix([[5,6],[7,8]])
+    assert.deepEqual(divide(a, b), math.matrix([[3,-2], [2,-1]]))
   });
 
   it('should divide a matrix by a matrix containing a scalar', function() {

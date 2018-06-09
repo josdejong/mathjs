@@ -6,7 +6,8 @@ function run(args, done) {
     done(e, r.replace(/\n$/g, ''))
   })
 }
-describe('evaluate expression', function() {
+
+describe('command line interface', function() {
     it('should sum numbers', function(done) {
         run('1+1', function(e, result) {
           assert.equal(result, 2)
@@ -29,12 +30,11 @@ describe('evaluate expression', function() {
     })
     
     it('should interpret scripts', function(done) {
-      run('test/cli/script1" "test/cli/script2', function(e, result){
+      run('test-dist/cli/script1" "test-dist/cli/script2', function(e, result){
         result = result.split('\n')
         assert.equal(result[0], 2)
         assert.equal(result[1], 8)
         done()
       })
     })
-    
 })

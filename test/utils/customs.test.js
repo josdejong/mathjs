@@ -1,8 +1,8 @@
 // test boolean utils
 var assert = require('assert');
 var approx = require('../../tools/approx');
-var customs = require('../../lib/utils/customs');
-var math = require('../../index');
+var customs = require('../../src/utils/customs');
+var math = require('../../src/index');
 
 describe ('customs', function () {
 

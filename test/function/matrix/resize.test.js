@@ -1,7 +1,7 @@
 // test resize
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
+    error = require('../../../src/error/index'),
+    math = require('../../../src/index'),
     Matrix = math.type.Matrix;
 
 describe('resize', function() {

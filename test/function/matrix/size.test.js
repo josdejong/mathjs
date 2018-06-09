@@ -1,7 +1,7 @@
 // test size
 var assert = require('assert'),
-    error = require('../../../lib/error/index'),
-    math = require('../../../index'),
+    error = require('../../../src/error/index'),
+    math = require('../../../src/index'),
     size = math.size,
     matrix = math.matrix;
 

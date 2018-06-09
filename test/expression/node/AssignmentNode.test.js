@@ -1,7 +1,7 @@
 // test AssignmentNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var Node = math.expression.node.Node;
 var AccessorNode = math.expression.node.AccessorNode;
 var ConstantNode = math.expression.node.ConstantNode;

@@ -1,6 +1,6 @@
 var assert = require('assert');
 var BigNumber = require('decimal.js');
-var formatter = require('../../../lib/utils/bignumber/formatter');
+var formatter = require('../../../src/utils/bignumber/formatter');
 
 describe('format', function () {
 
@@ -190,15 +190,15 @@ describe('format', function () {
 
 
     it('should format bignumbers in fixed notation with precision', function() {
-      options = {
+      const options = {
         notation: 'fixed',
         precision: 2
-      };
-      assert.deepEqual(formatter.format(new BigNumber('1.23456'), options), '1.23');
-      assert.deepEqual(formatter.format(new BigNumber('12345678'), options), '12345678.00');
-      assert.deepEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000.00');
-      assert.deepEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00');
-    });
+      }
+      assert.deepEqual(formatter.format(new BigNumber('1.23456'), options), '1.23')
+      assert.deepEqual(formatter.format(new BigNumber('12345678'), options), '12345678.00')
+      assert.deepEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000.00')
+      assert.deepEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00')
+    })
 
     it('should throw an error on unknown notation', function () {
       assert.throws(function () {

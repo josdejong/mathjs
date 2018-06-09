@@ -1,6 +1,6 @@
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var Unit = math.type.Unit;
 
 describe('Unit', function() {
@@ -82,15 +82,15 @@ describe('Unit', function() {
       assert.throws(function () { new Unit(0, 3); });
     });
 
-  it('should flag unit as already simplified', function() {
-      unit1 = new Unit(9.81, "kg m/s^2");
-    assert.equal(unit1.isUnitListSimplified, true);
-    assert.equal(unit1.toString(), "9.81 (kg m) / s^2");
+    it('should flag unit as already simplified', function() {
+      const unit1 = new Unit(9.81, "kg m/s^2")
+      assert.equal(unit1.isUnitListSimplified, true)
+      assert.equal(unit1.toString(), "9.81 (kg m) / s^2")
 
-      unit1 = new Unit(null, "kg m/s^2");
-    assert.equal(unit1.isUnitListSimplified, true);
-    assert.equal(unit1.toString(), "(kg m) / s^2");
-  });
+      const unit2 = new Unit(null, "kg m/s^2")
+      assert.equal(unit2.isUnitListSimplified, true)
+      assert.equal(unit2.toString(), "(kg m) / s^2")
+    })
 
   });
 
@@ -879,38 +879,38 @@ describe('Unit', function() {
     });
 
     it('should parse expressions with nested parentheses correctly', function() {
-      unit1 = Unit.parse('8.314 kg (m^2 / (s^2 / (K^-1 / mol)))');
-      approx.equal(unit1.value, 8.314);
-      assert.equal(unit1.units[0].unit.name, 'g');
-      assert.equal(unit1.units[1].unit.name, 'm');
-      assert.equal(unit1.units[2].unit.name, 's');
-      assert.equal(unit1.units[3].unit.name, 'K');
-      assert.equal(unit1.units[4].unit.name, 'mol');
-      assert.equal(unit1.units[0].power, 1);
-      assert.equal(unit1.units[1].power, 2);
-      assert.equal(unit1.units[2].power, -2);
-      assert.equal(unit1.units[3].power, -1);
-      assert.equal(unit1.units[4].power, -1);
-      assert.equal(unit1.units[0].prefix.name, 'k');
+      let unit1 = Unit.parse('8.314 kg (m^2 / (s^2 / (K^-1 / mol)))')
+      approx.equal(unit1.value, 8.314)
+      assert.equal(unit1.units[0].unit.name, 'g')
+      assert.equal(unit1.units[1].unit.name, 'm')
+      assert.equal(unit1.units[2].unit.name, 's')
+      assert.equal(unit1.units[3].unit.name, 'K')
+      assert.equal(unit1.units[4].unit.name, 'mol')
+      assert.equal(unit1.units[0].power, 1)
+      assert.equal(unit1.units[1].power, 2)
+      assert.equal(unit1.units[2].power, -2)
+      assert.equal(unit1.units[3].power, -1)
+      assert.equal(unit1.units[4].power, -1)
+      assert.equal(unit1.units[0].prefix.name, 'k')
 
-      unit1 = Unit.parse('1 (m / ( s / ( kg mol ) / ( lbm / h ) K ) )');
-      assert.equal(unit1.units[0].unit.name, 'm');
-      assert.equal(unit1.units[1].unit.name, 's');
-      assert.equal(unit1.units[2].unit.name, 'g');
-      assert.equal(unit1.units[3].unit.name, 'mol');
-      assert.equal(unit1.units[4].unit.name, 'lbm');
-      assert.equal(unit1.units[5].unit.name, 'h');
-      assert.equal(unit1.units[6].unit.name, 'K');
-      assert.equal(unit1.units[0].power, 1);
-      assert.equal(unit1.units[1].power, -1);
-      assert.equal(unit1.units[2].power, 1);
-      assert.equal(unit1.units[3].power, 1);
-      assert.equal(unit1.units[4].power, 1);
-      assert.equal(unit1.units[5].power, -1);
-      assert.equal(unit1.units[6].power, -1);
+      unit1 = Unit.parse('1 (m / ( s / ( kg mol ) / ( lbm / h ) K ) )')
+      assert.equal(unit1.units[0].unit.name, 'm')
+      assert.equal(unit1.units[1].unit.name, 's')
+      assert.equal(unit1.units[2].unit.name, 'g')
+      assert.equal(unit1.units[3].unit.name, 'mol')
+      assert.equal(unit1.units[4].unit.name, 'lbm')
+      assert.equal(unit1.units[5].unit.name, 'h')
+      assert.equal(unit1.units[6].unit.name, 'K')
+      assert.equal(unit1.units[0].power, 1)
+      assert.equal(unit1.units[1].power, -1)
+      assert.equal(unit1.units[2].power, 1)
+      assert.equal(unit1.units[3].power, 1)
+      assert.equal(unit1.units[4].power, 1)
+      assert.equal(unit1.units[5].power, -1)
+      assert.equal(unit1.units[6].power, -1)
 
-      unit2 = Unit.parse('1(m/(s/(kg mol)/(lbm/h)K))');
-      assert.deepEqual(unit1, unit2);
+      const unit2 = Unit.parse('1(m/(s/(kg mol)/(lbm/h)K))')
+      assert.deepEqual(unit1, unit2)
     });
 
     it('should parse units with correct precedence', function() {

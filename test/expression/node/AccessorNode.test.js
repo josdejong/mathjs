@@ -1,8 +1,8 @@
 // test AccessorNode
 var assert = require('assert');
 var approx = require('../../../tools/approx');
-var math = require('../../../index');
-var bigmath = require('../../../index').create({number: 'BigNumber'});
+var math = require('../../../src/index');
+var bigmath = require('../../../src/index').create({number: 'BigNumber'});
 var Node = math.expression.node.Node;
 var ConstantNode = math.expression.node.ConstantNode;
 var OperatorNode = math.expression.node.OperatorNode;

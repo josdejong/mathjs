@@ -1,17 +1,17 @@
 // test data type Complex
 
 var assert = require('assert');
-var math = require('../../../index');
+var math = require('../../../src/index');
 var Unit = math.type.Unit;
 var Complex = math.type.Complex;
 
 describe('Complex', function () {
 
-  assertComplex = function(complex, re, im) {
+  function assertComplex(complex, re, im) {
     assert(complex instanceof Complex);
     assert.strictEqual(complex.re, re);
     assert.strictEqual(complex.im, im);
-  };
+  }
 
   describe('constructor', function() {
 

@@ -1,7 +1,7 @@
 // test unary plus
 var assert = require('assert');
-var math = require('../../../index');
-var error = require('../../../lib/error/index');
+var math = require('../../../src/index');
+var error = require('../../../src/error/index');
 var bignumber = math.bignumber;
 var fraction = math.fraction;
 
@@ -73,12 +73,12 @@ describe('unaryPlus', function() {
   });
 
   it('should perform element-wise unary plus on a matrix', function() {
-    a2 = math.matrix([[1,2],[3,4]]);
-    var a7 = math.unaryPlus(a2);
-    assert.ok(a7 instanceof math.type.Matrix);
-    assert.deepEqual(a7.size(), [2,2]);
-    assert.deepEqual(a7.valueOf(), [[1,2],[3,4]]);
-    assert.deepEqual(math.unaryPlus([[1,2],[3,4]]), [[1,2],[3,4]]);
+    const a2 = math.matrix([[1,2],[3,4]])
+    const a7 = math.unaryPlus(a2)
+    assert.ok(a7 instanceof math.type.Matrix)
+    assert.deepEqual(a7.size(), [2,2])
+    assert.deepEqual(a7.valueOf(), [[1,2],[3,4]])
+    assert.deepEqual(math.unaryPlus([[1,2],[3,4]]), [[1,2],[3,4]])
   });
 
   it('should throw an error in case of invalid number of arguments', function() {
