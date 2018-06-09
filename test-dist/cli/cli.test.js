@@ -30,7 +30,7 @@ describe('command line interface', function() {
     })
     
     it('should interpret scripts', function(done) {
-      run('test-cli/cli/script1" "test-cli/cli/script2', function(e, result){
+      run('test-dist/cli/script1" "test-dist/cli/script2', function(e, result){
         result = result.split('\n')
         assert.equal(result[0], 2)
         assert.equal(result[1], 8)
