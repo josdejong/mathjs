@@ -6,11 +6,11 @@
 
 - Implemented complex conjugate transpose `math.ctranspose`. See #1097.
   Thanks @jackschmidt.
-- Changed the behavior of `A'` in the expression parser to calculate the complex
-  conjugate transpose. See #1097. Thanks @jackschmidt.
+- Changed the behavior of `A'` (transpose) in the expression parser to
+  calculate the complex conjugate transpose. See #1097. Thanks @jackschmidt.
 - Renamed `eye` to `identity`, see #1054.
-- Source code is moved from `lib` to `src`, and `lib` now contains the
-  compiled ES5 compatible version of the code.
+- Math.js code can now contain ES6. The ES6 source code is moved from `lib`
+  to `src`, and `lib` now contains the compiled ES5 code.
 - Upgraded dependencies:
   - `decimal.js` from `9.0.1` to `10.0.1`
   - Upgraded dev dependencies
