@@ -19,4 +19,4 @@ module.exports = {
   'seealso': [
     'simplify', 'parse', 'eval'
   ]
-};
+}

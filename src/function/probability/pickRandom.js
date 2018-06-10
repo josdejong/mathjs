@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var distribution = load(require('./distribution'));
+  var distribution = load(require('./distribution'))
 
   /**
    * Random pick one or more values from a one dimensional array.
@@ -34,12 +34,12 @@ function factory (type, config, load, typed) {
    *                          Returns an array with the configured number of elements when number is > 1.
    */
   // TODO: rework pickRandom to a typed-function
-  var pickRandom =  distribution('uniform').pickRandom;
+  var pickRandom = distribution('uniform').pickRandom
 
-  pickRandom.toTex = undefined; // use default template
+  pickRandom.toTex = undefined // use default template
 
-  return pickRandom;
+  return pickRandom
 }
 
-exports.name = 'pickRandom';
-exports.factory = factory;
+exports.name = 'pickRandom'
+exports.factory = factory

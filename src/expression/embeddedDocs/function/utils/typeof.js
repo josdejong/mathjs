@@ -12,4 +12,4 @@ module.exports = {
     'typeof("hello world")'
   ],
   'seealso': []
-};
+}

@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
-var size = require('../../utils/array').size;
+var isInteger = require('../../utils/number').isInteger
+var size = require('../../utils/array').size
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
-  var identity = load(require('../matrix/identity'));
-  var multiply = load(require('./multiply'));
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var fraction = load(require('../../type/fraction/function/fraction'));
-  var number = load(require('../../type/number'));
+  var latex = require('../../utils/latex')
+  var identity = load(require('../matrix/identity'))
+  var multiply = load(require('./multiply'))
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var fraction = load(require('../../type/fraction/function/fraction'))
+  var number = load(require('../../type/number'))
 
   /**
    * Calculates the power of x to y, `x ^ y`.
@@ -47,49 +47,46 @@ function factory (type, config, load, typed) {
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
-      return x.pow(y);
+      return x.pow(y)
     },
 
     'BigNumber, BigNumber': function (x, y) {
       if (y.isInteger() || x >= 0 || config.predictable) {
-        return x.pow(y);
-      }
-      else {
-        return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0);
+        return x.pow(y)
+      } else {
+        return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
       }
     },
 
     'Fraction, Fraction': function (x, y) {
       if (y.d !== 1) {
         if (config.predictable) {
-          throw new Error('Function pow does not support non-integer exponents for fractions.');
+          throw new Error('Function pow does not support non-integer exponents for fractions.')
+        } else {
+          return _pow(x.valueOf(), y.valueOf())
         }
-        else {
-          return _pow(x.valueOf(), y.valueOf());
-        }
+      } else {
+        return x.pow(y)
       }
-      else {
-        return x.pow(y);
-     }
     },
 
     'Array, number': _powArray,
 
     'Array, BigNumber': function (x, y) {
-      return _powArray(x, y.toNumber());
+      return _powArray(x, y.toNumber())
     },
 
     'Matrix, number': _powMatrix,
 
     'Matrix, BigNumber': function (x, y) {
-      return _powMatrix(x, y.toNumber());
+      return _powMatrix(x, y.toNumber())
     },
 
     'Unit, number': function (x, y) {
-      return x.pow(y);
+      return x.pow(y)
     }
 
-  });
+  })
 
   /**
    * Calculates the power of x to y, x^y, for two numbers.
@@ -98,50 +95,46 @@ function factory (type, config, load, typed) {
    * @return {number | Complex} res
    * @private
    */
-  function _pow(x, y) {
-
+  function _pow (x, y) {
     // Alternatively could define a 'realmode' config option or something, but
     // 'predictable' will work for now
     if (config.predictable && !isInteger(y) && x < 0) {
       // Check to see if y can be represented as a fraction
       try {
-        var yFrac = fraction(y);
-        var yNum = number(yFrac);
-        if(y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
-          if(yFrac.d % 2 === 1) {
-            return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y);
+        var yFrac = fraction(y)
+        var yNum = number(yFrac)
+        if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
+          if (yFrac.d % 2 === 1) {
+            return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y)
           }
         }
-      }
-      catch (ex) {
+      } catch (ex) {
         // fraction() throws an error if y is Infinity, etc.
       }
 
       // Unable to express y as a fraction, so continue on
     }
 
-
     // x^Infinity === 0 if -1 < x < 1
     // A real number 0 is returned instead of complex(0)
-    if ((x*x < 1 && y ===  Infinity) ||
-        (x*x > 1 && y === -Infinity)) {
-      return 0;
+    if ((x * x < 1 && y === Infinity) ||
+        (x * x > 1 && y === -Infinity)) {
+      return 0
     }
 
     // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
     if (config.predictable &&
-        ((x < -1 &&          y ===  Infinity) ||
+        ((x < -1 && y === Infinity) ||
          (x > -1 && x < 0 && y === -Infinity))) {
-      return NaN;
+      return NaN
     }
 
     if (isInteger(y) || x >= 0 || config.predictable) {
-      return Math.pow(x, y);
-    }
-    else {
-      return new type.Complex(x, 0).pow(y, 0);
+      return Math.pow(x, y)
+    } else {
+      return new type.Complex(x, 0).pow(y, 0)
     }
   }
 
@@ -152,29 +145,29 @@ function factory (type, config, load, typed) {
    * @returns {Array}
    * @private
    */
-  function _powArray(x, y) {
+  function _powArray (x, y) {
     if (!isInteger(y) || y < 0) {
-      throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')');
+      throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')')
     }
     // verify that A is a 2 dimensional square matrix
-    var s = size(x);
+    var s = size(x)
     if (s.length != 2) {
-      throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)');
+      throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)')
     }
     if (s[0] != s[1]) {
-      throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')');
+      throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
     }
 
-    var res = identity(s[0]).valueOf();
-    var px = x;
+    var res = identity(s[0]).valueOf()
+    var px = x
     while (y >= 1) {
       if ((y & 1) == 1) {
-        res = multiply(px, res);
+        res = multiply(px, res)
       }
-      y >>= 1;
-      px = multiply(px, px);
+      y >>= 1
+      px = multiply(px, px)
     }
-    return res;
+    return res
   }
 
   /**
@@ -185,17 +178,15 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _powMatrix (x, y) {
-    return matrix(_powArray(x.valueOf(), y));
+    return matrix(_powArray(x.valueOf(), y))
   }
-
-
 
   pow.toTex = {
     2: '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}'
-  };
+  }
 
-  return pow;
+  return pow
 }
 
-exports.name = 'pow';
-exports.factory = factory;
+exports.name = 'pow'
+exports.factory = factory

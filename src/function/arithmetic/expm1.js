@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Calculate the value of subtracting 1 from the exponential value.
@@ -37,21 +37,21 @@ function factory (type, config, load, typed) {
     'number': Math.expm1 || _expm1,
 
     'Complex': function (x) {
-      var r = Math.exp(x.re);
+      var r = Math.exp(x.re)
       return new type.Complex(
-          r * Math.cos(x.im) - 1,
-          r * Math.sin(x.im)
-      );
+        r * Math.cos(x.im) - 1,
+        r * Math.sin(x.im)
+      )
     },
 
     'BigNumber': function (x) {
-      return x.exp().minus(1);
+      return x.exp().minus(1)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, expm1);
+      return deepMap(x, expm1)
     }
-  });
+  })
 
   /**
    * Calculates exponentiation minus 1.
@@ -59,16 +59,16 @@ function factory (type, config, load, typed) {
    * @return {number} res
    * @private
    */
-  function _expm1(x) {
+  function _expm1 (x) {
     return (x >= 2e-4 || x <= -2e-4)
       ? Math.exp(x) - 1
-      : x + x*x/2 + x*x*x/6;
+      : x + x * x / 2 + x * x * x / 6
   }
 
-  expm1.toTex = '\\left(e' + latex.operators['pow'] + '{${args[0]}}-1\\right)';
+  expm1.toTex = '\\left(e' + latex.operators['pow'] + '{${args[0]}}-1\\right)'
 
-  return expm1;
+  return expm1
 }
 
-exports.name = 'expm1';
-exports.factory = factory;
+exports.name = 'expm1'
+exports.factory = factory

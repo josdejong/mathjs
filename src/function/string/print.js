@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var isString = require('../../utils/string').isString;
-var format = require('../../utils/string').format;
+var isString = require('../../utils/string').isString
+var format = require('../../utils/string').format
 
 function factory (type, config, load, typed) {
   /**
@@ -48,15 +48,15 @@ function factory (type, config, load, typed) {
    *                                of all options.
    * @return {string} Interpolated string
    */
-  var print = typed ('print', {
+  var print = typed('print', {
     // note: Matrix will be converted automatically to an Array
     'string, Object | Array': _print,
     'string, Object | Array, number | Object': _print
-  });
+  })
 
-  print.toTex = undefined; // use default template
+  print.toTex = undefined // use default template
 
-  return print;
+  return print
 }
 
 /**
@@ -67,28 +67,27 @@ function factory (type, config, load, typed) {
  * @returns {string} Interpolated string
  * @private
  */
-function _print(template, values, options) {
+function _print (template, values, options) {
   return template.replace(/\$([\w\.]+)/g, function (original, key) {
-        var keys = key.split('.');
-        var value = values[keys.shift()];
-        while (keys.length && value !== undefined) {
-          var k = keys.shift();
-          value = k ? value[k] : value + '.';
-        }
+    var keys = key.split('.')
+    var value = values[keys.shift()]
+    while (keys.length && value !== undefined) {
+      var k = keys.shift()
+      value = k ? value[k] : value + '.'
+    }
 
-        if (value !== undefined) {
-          if (!isString(value)) {
-            return format(value, options);
-          }
-          else {
-            return value;
-          }
-        }
-
-        return original;
+    if (value !== undefined) {
+      if (!isString(value)) {
+        return format(value, options)
+      } else {
+        return value
       }
-  );
+    }
+
+    return original
+  }
+  )
 }
 
-exports.name = 'print';
-exports.factory = factory;
+exports.name = 'print'
+exports.factory = factory

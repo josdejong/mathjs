@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -26,33 +26,33 @@ function factory (type, config, load, typed) {
    */
   var sec = typed('sec', {
     'number': function (x) {
-      return 1 / Math.cos(x);
+      return 1 / Math.cos(x)
     },
 
     'Complex': function (x) {
-      return x.sec();
+      return x.sec()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.cos());
+      return new type.BigNumber(1).div(x.cos())
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function sec is no angle');
+        throw new TypeError('Unit in function sec is no angle')
       }
-      return sec(x.value);
+      return sec(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, sec);
+      return deepMap(x, sec)
     }
-  });
+  })
 
-  sec.toTex = {1: '\\sec\\left(${args[0]}\\right)'};
+  sec.toTex = {1: '\\sec\\left(${args[0]}\\right)'}
 
-  return sec;
+  return sec
 }
 
-exports.name = 'sec';
-exports.factory = factory;
+exports.name = 'sec'
+exports.factory = factory

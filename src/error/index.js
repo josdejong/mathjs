@@ -1,30 +1,31 @@
-'use strict';
+'use strict'
 
-var ArgumentsError = require('./ArgumentsError');
-var DimensionError = require('./DimensionError');
-var IndexError = require('./IndexError');
+var ArgumentsError = require('./ArgumentsError')
+var DimensionError = require('./DimensionError')
+var IndexError = require('./IndexError')
 
 module.exports = [
   {
-    name: 'ArgumentsError', path: 'error',
+    name: 'ArgumentsError',
+    path: 'error',
     factory: function () {
-      return ArgumentsError;
+      return ArgumentsError
     }
   },
   {
     name: 'DimensionError',
     path: 'error',
     factory: function () {
-      return DimensionError;
+      return DimensionError
     }
   },
   {
     name: 'IndexError',
     path: 'error',
     factory: function () {
-      return IndexError;
+      return IndexError
     }
   }
-];
+]
 
 // TODO: implement an InvalidValueError?

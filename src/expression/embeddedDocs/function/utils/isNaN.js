@@ -12,4 +12,4 @@ module.exports = {
     'isNaN(Infinity)'
   ],
   'seealso': ['isNegative', 'isNumeric', 'isPositive', 'isZero']
-};
+}

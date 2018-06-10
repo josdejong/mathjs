@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -28,29 +28,29 @@ function factory (type, config, load, typed) {
     'number': _sinh,
 
     'Complex': function (x) {
-      return x.sinh();
+      return x.sinh()
     },
 
     'BigNumber': function (x) {
-      return x.sinh();
+      return x.sinh()
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function sinh is no angle');
+        throw new TypeError('Unit in function sinh is no angle')
       }
-      return sinh(x.value);
+      return sinh(x.value)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since sinh(0) = 0
-      return deepMap(x, sinh, true);
+      return deepMap(x, sinh, true)
     }
-  });
+  })
 
-  sinh.toTex = {1: '\\sinh\\left(${args[0]}\\right)'};
+  sinh.toTex = {1: '\\sinh\\left(${args[0]}\\right)'}
 
-  return sinh;
+  return sinh
 }
 
 /**
@@ -60,8 +60,8 @@ function factory (type, config, load, typed) {
  * @private
  */
 var _sinh = Math.sinh || function (x) {
-  return (Math.exp(x) - Math.exp(-x)) / 2;
-};
+  return (Math.exp(x) - Math.exp(-x)) / 2
+}
 
-exports.name = 'sinh';
-exports.factory = factory;
+exports.name = 'sinh'
+exports.factory = factory

@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var extend = require('../utils/object').extend;
-var customs = require('../utils/customs');
+var extend = require('../utils/object').extend
+var customs = require('../utils/customs')
 
 function factory (type, config, load, typed, math) {
-  var _parse = load(require('./parse'));
+  var _parse = load(require('./parse'))
 
   /**
    * @constructor Parser
@@ -54,19 +54,19 @@ function factory (type, config, load, typed, math) {
    *    parser.clear();
    *
    */
-  function Parser() {
+  function Parser () {
     if (!(this instanceof Parser)) {
       throw new SyntaxError(
-          'Constructor must be called with the new operator');
+        'Constructor must be called with the new operator')
     }
-    this.scope = {};
+    this.scope = {}
   }
 
   /**
    * Attach type information
    */
-  Parser.prototype.type = 'Parser';
-  Parser.prototype.isParser = true;
+  Parser.prototype.type = 'Parser'
+  Parser.prototype.isParser = true
 
   /**
    * Parse an expression and return the parsed function node.
@@ -77,8 +77,8 @@ function factory (type, config, load, typed, math) {
    * @throws {Error}
    */
   Parser.prototype.parse = function (expr) {
-    throw new Error('Parser.parse is deprecated. Use math.parse instead.');
-  };
+    throw new Error('Parser.parse is deprecated. Use math.parse instead.')
+  }
 
   /**
    * Parse and compile an expression, return the compiled javascript code.
@@ -88,8 +88,8 @@ function factory (type, config, load, typed, math) {
    * @throws {Error}
    */
   Parser.prototype.compile = function (expr) {
-    throw new Error('Parser.compile is deprecated. Use math.compile instead.');
-  };
+    throw new Error('Parser.compile is deprecated. Use math.compile instead.')
+  }
 
   /**
    * Parse and evaluate the given expression
@@ -100,9 +100,9 @@ function factory (type, config, load, typed, math) {
   Parser.prototype.eval = function (expr) {
     // TODO: validate arguments
     return _parse(expr)
-        .compile()
-        .eval(this.scope);
-  };
+      .compile()
+      .eval(this.scope)
+  }
 
   /**
    * Get a variable (a function or variable) by name from the parsers scope.
@@ -113,17 +113,17 @@ function factory (type, config, load, typed, math) {
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
     return name in this.scope
-        ? customs.getSafeProperty(this.scope, name)
-        : undefined;
-  };
+      ? customs.getSafeProperty(this.scope, name)
+      : undefined
+  }
 
   /**
    * Get a map with all defined variables
    * @return {Object} values
    */
   Parser.prototype.getAll = function () {
-    return extend({}, this.scope);
-  };
+    return extend({}, this.scope)
+  }
 
   /**
    * Set a symbol (a function or variable) by name from the parsers scope.
@@ -132,8 +132,8 @@ function factory (type, config, load, typed, math) {
    */
   Parser.prototype.set = function (name, value) {
     // TODO: validate arguments
-    return customs.setSafeProperty(this.scope, name, value);
-  };
+    return customs.setSafeProperty(this.scope, name, value)
+  }
 
   /**
    * Remove a variable from the parsers scope
@@ -141,8 +141,8 @@ function factory (type, config, load, typed, math) {
    */
   Parser.prototype.remove = function (name) {
     // TODO: validate arguments
-    delete this.scope[name];
-  };
+    delete this.scope[name]
+  }
 
   /**
    * Clear the scope with variables and functions
@@ -150,15 +150,15 @@ function factory (type, config, load, typed, math) {
   Parser.prototype.clear = function () {
     for (var name in this.scope) {
       if (this.scope.hasOwnProperty(name)) {
-        delete this.scope[name];
+        delete this.scope[name]
       }
     }
-  };
+  }
 
-  return Parser;
+  return Parser
 }
 
-exports.name = 'Parser';
-exports.path = 'expression';
-exports.factory = factory;
-exports.math = true; // requires the math namespace as 5th argument
+exports.name = 'Parser'
+exports.path = 'expression'
+exports.factory = factory
+exports.math = true // requires the math namespace as 5th argument

@@ -1,20 +1,18 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  
-  var abs         = load(require('../arithmetic/abs'));
-  var add         = load(require('../arithmetic/add'));
-  var pow         = load(require('../arithmetic/pow'));
-  var conj        = load(require('../complex/conj'));
-  var sqrt        = load(require('../arithmetic/sqrt'));
-  var multiply    = load(require('../arithmetic/multiply'));
-  var equalScalar = load(require('../relational/equalScalar'));
-  var larger      = load(require('../relational/larger'));
-  var smaller     = load(require('../relational/smaller'));
-  var matrix      = load(require('../../type/matrix/function/matrix'));
-  var trace       = load(require('../matrix/trace'));
-  var transpose   = load(require('../matrix/transpose'));
-
+  var abs = load(require('../arithmetic/abs'))
+  var add = load(require('../arithmetic/add'))
+  var pow = load(require('../arithmetic/pow'))
+  var conj = load(require('../complex/conj'))
+  var sqrt = load(require('../arithmetic/sqrt'))
+  var multiply = load(require('../arithmetic/multiply'))
+  var equalScalar = load(require('../relational/equalScalar'))
+  var larger = load(require('../relational/larger'))
+  var smaller = load(require('../relational/smaller'))
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var trace = load(require('../matrix/trace'))
+  var transpose = load(require('../matrix/transpose'))
 
   /**
    * Calculate the norm of a number, vector or matrix.
@@ -58,40 +56,40 @@ function factory (type, config, load, typed) {
     'number': Math.abs,
 
     'Complex': function (x) {
-      return x.abs();
+      return x.abs()
     },
 
     'BigNumber': function (x) {
       // norm(x) = abs(x)
-      return x.abs();
+      return x.abs()
     },
-    
-    'boolean' : function (x) {
+
+    'boolean': function (x) {
       // norm(x) = abs(x)
-      return Math.abs(x);
+      return Math.abs(x)
     },
 
     'Array': function (x) {
-      return _norm(matrix(x), 2);
+      return _norm(matrix(x), 2)
     },
-    
+
     'Matrix': function (x) {
-      return _norm(x, 2);
+      return _norm(x, 2)
     },
 
     'number | Complex | BigNumber | boolean, number | BigNumber | string': function (x) {
       // ignore second parameter, TODO: remove the option of second parameter for these types
-      return norm(x);
+      return norm(x)
     },
 
     'Array, number | BigNumber | string': function (x, p) {
-      return _norm(matrix(x), p);
+      return _norm(matrix(x), p)
     },
-    
+
     'Matrix, number | BigNumber | string': function (x, p) {
-      return _norm(x, p);
+      return _norm(x, p)
     }
-  });
+  })
 
   /**
    * Calculate the norm for an array
@@ -102,120 +100,116 @@ function factory (type, config, load, typed) {
    */
   function _norm (x, p) {
     // size
-    var sizeX = x.size();
-    
+    var sizeX = x.size()
+
     // check if it is a vector
     if (sizeX.length == 1) {
       // check p
       if (p === Number.POSITIVE_INFINITY || p === 'inf') {
         // norm(x, Infinity) = max(abs(x))
-        var pinf = 0;
+        var pinf = 0
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value) {
-            var v = abs(value);
-            if (larger(v, pinf))
-              pinf = v;
+            var v = abs(value)
+            if (larger(v, pinf)) { pinf = v }
           },
-          true);
-        return pinf;
+          true)
+        return pinf
       }
       if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
         // norm(x, -Infinity) = min(abs(x))
-        var ninf;
+        var ninf
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value) {
-            var v = abs(value);
-            if (!ninf || smaller(v, ninf))
-              ninf = v;
+            var v = abs(value)
+            if (!ninf || smaller(v, ninf)) { ninf = v }
           },
-          true);
-        return ninf || 0;
+          true)
+        return ninf || 0
       }
       if (p === 'fro') {
-        return _norm(x, 2);
+        return _norm(x, 2)
       }
       if (typeof p === 'number' && !isNaN(p)) {
         // check p != 0
         if (!equalScalar(p, 0)) {
           // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
-          var n = 0;
+          var n = 0
           // skip zeros since abs(0) == 0
           x.forEach(
             function (value) {
-              n = add(pow(abs(value), p), n);
+              n = add(pow(abs(value), p), n)
             },
-            true);
-          return pow(n, 1 / p);
+            true)
+          return pow(n, 1 / p)
         }
-        return Number.POSITIVE_INFINITY;
+        return Number.POSITIVE_INFINITY
       }
       // invalid parameter value
-      throw new Error('Unsupported parameter value');
+      throw new Error('Unsupported parameter value')
     }
     // MxN matrix
     if (sizeX.length == 2) {
       // check p
       if (p === 1) {
         // norm(x) = the largest column sum
-        var c = [];
+        var c = []
         // result
-        var maxc = 0;
+        var maxc = 0
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value, index) {
-            var j = index[1];
-            var cj = add(c[j] || 0, abs(value));
-            if (larger(cj, maxc))
-              maxc = cj;
-            c[j] = cj;
+            var j = index[1]
+            var cj = add(c[j] || 0, abs(value))
+            if (larger(cj, maxc)) { maxc = cj }
+            c[j] = cj
           },
-          true);
-        return maxc;
+          true)
+        return maxc
       }
       if (p === Number.POSITIVE_INFINITY || p === 'inf') {
         // norm(x) = the largest row sum
-        var r = [];
+        var r = []
         // result
-        var maxr = 0;
+        var maxr = 0
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value, index) {
-            var i = index[0];
-            var ri = add(r[i] || 0, abs(value));
-            if (larger(ri, maxr))
-              maxr = ri;
-            r[i] = ri;
+            var i = index[0]
+            var ri = add(r[i] || 0, abs(value))
+            if (larger(ri, maxr)) { maxr = ri }
+            r[i] = ri
           },
-          true);
-        return maxr;
+          true)
+        return maxr
       }
       if (p === 'fro') {
         // norm(x) = sqrt(sum(diag(x'x)))
-        var fro = 0;
+        var fro = 0
         x.forEach(
           function (value, index) {
-            fro = add( fro, multiply( value, conj(value) ) );
-          });
-        return sqrt(fro);
+            fro = add(fro, multiply(value, conj(value)))
+          })
+        return sqrt(fro)
       }
       if (p === 2) {
         // not implemented
-        throw new Error('Unsupported parameter value, missing implementation of matrix singular value decomposition');
+        throw new Error('Unsupported parameter value, missing implementation of matrix singular value decomposition')
       }
       // invalid parameter value
-      throw new Error('Unsupported parameter value');
+      throw new Error('Unsupported parameter value')
     }
   }
 
   norm.toTex = {
     1: '\\left\\|${args[0]}\\right\\|',
-    2: undefined  // use default template
-  };
+    2: undefined // use default template
+  }
 
-  return norm;
+  return norm
 }
 
-exports.name = 'norm';
-exports.factory = factory;
+exports.name = 'norm'
+exports.factory = factory

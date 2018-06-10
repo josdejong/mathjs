@@ -15,4 +15,4 @@ module.exports = {
   'seealso': [
     'and', 'or', 'xor'
   ]
-};
+}

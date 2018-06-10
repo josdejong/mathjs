@@ -11,4 +11,4 @@ module.exports = {
     'filter([6, -2, 0, 1, 0], x != 0)'
   ],
   'seealso': ['sort', 'map', 'forEach']
-};
+}

@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the inverse tangent of a value.
    *
@@ -29,27 +28,27 @@ function factory (type, config, load, typed) {
    */
   var atan = typed('atan', {
     'number': function (x) {
-      return Math.atan(x);
+      return Math.atan(x)
     },
 
     'Complex': function (x) {
-      return x.atan();
+      return x.atan()
     },
 
     'BigNumber': function (x) {
-      return x.atan();
+      return x.atan()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since atan(0) = 0
-      return deepMap(x, atan, true);
+      return deepMap(x, atan, true)
     }
-  });
+  })
 
-  atan.toTex = {1: '\\tan^{-1}\\left(${args[0]}\\right)'};
+  atan.toTex = {1: '\\tan^{-1}\\left(${args[0]}\\right)'}
 
-  return atan;
+  return atan
 }
 
-exports.name = 'atan';
-exports.factory = factory;
+exports.name = 'atan'
+exports.factory = factory

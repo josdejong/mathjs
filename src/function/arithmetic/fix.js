@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -32,34 +32,34 @@ function factory (type, config, load, typed) {
    */
   var fix = typed('fix', {
     'number': function (x) {
-      return (x > 0) ? Math.floor(x) : Math.ceil(x);
+      return (x > 0) ? Math.floor(x) : Math.ceil(x)
     },
 
     'Complex': function (x) {
       return new type.Complex(
-          (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
-          (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
-      );
+        (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
+        (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
+      )
     },
 
     'BigNumber': function (x) {
-      return x.isNegative() ? x.ceil() : x.floor();
+      return x.isNegative() ? x.ceil() : x.floor()
     },
 
     'Fraction': function (x) {
-      return x.s < 0 ? x.ceil() : x.floor();
+      return x.s < 0 ? x.ceil() : x.floor()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since fix(0) = 0
-      return deepMap(x, fix, true);
+      return deepMap(x, fix, true)
     }
-  });
+  })
 
-  fix.toTex = {1: '\\mathrm{${name}}\\left(${args[0]}\\right)'};
+  fix.toTex = {1: '\\mathrm{${name}}\\left(${args[0]}\\right)'}
 
-  return fix;
+  return fix
 }
 
-exports.name = 'fix';
-exports.factory = factory;
+exports.name = 'fix'
+exports.factory = factory

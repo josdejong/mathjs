@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
-var isNumber = require('../../utils/number').isNumber;
-var flatten = require('../../utils/array').flatten;
-var isCollection = require('../../utils/collection/isCollection');
+var isInteger = require('../../utils/number').isInteger
+var isNumber = require('../../utils/number').isNumber
+var flatten = require('../../utils/array').flatten
+var isCollection = require('../../utils/collection/isCollection')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'));
-  var multiply = load(require('../arithmetic/multiply'));
-  var partitionSelect = load(require('../matrix/partitionSelect'));
-  var compare = load(require('../relational/compare'));
+  var add = load(require('../arithmetic/add'))
+  var multiply = load(require('../arithmetic/multiply'))
+  var partitionSelect = load(require('../matrix/partitionSelect'))
+  var compare = load(require('../relational/compare'))
 
   /**
    * Compute the prob order quantile of a matrix or a list with values.
@@ -45,197 +45,197 @@ function factory (type, config, load, typed) {
    * @param {Boolean} sorted=false              is data sorted in ascending order
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
-  function quantileSeq(data, probOrN, sorted) {
-    var probArr, dataArr, one;
+  function quantileSeq (data, probOrN, sorted) {
+    var probArr, dataArr, one
 
     if (arguments.length < 2 || arguments.length > 3) {
-      throw new SyntaxError('Function quantileSeq requires two or three parameters');
+      throw new SyntaxError('Function quantileSeq requires two or three parameters')
     }
 
     if (isCollection(data)) {
-      sorted = sorted || false;
+      sorted = sorted || false
       if (typeof sorted === 'boolean') {
-        dataArr = data.valueOf();
+        dataArr = data.valueOf()
         if (isNumber(probOrN)) {
           if (probOrN < 0) {
-            throw new Error('N/prob must be non-negative');
+            throw new Error('N/prob must be non-negative')
           }
 
           if (probOrN <= 1) {
             // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return _quantileSeq(dataArr, probOrN, sorted);
+            return _quantileSeq(dataArr, probOrN, sorted)
           }
 
           if (probOrN > 1) {
             // quantileSeq([a, b, c, d, ...], N[,sorted])
             if (!isInteger(probOrN)) {
-              throw new Error('N must be a positive integer');
+              throw new Error('N must be a positive integer')
             }
 
-            var nPlusOne = probOrN + 1;
-            probArr = new Array(probOrN);
+            var nPlusOne = probOrN + 1
+            probArr = new Array(probOrN)
             for (var i = 0; i < probOrN;) {
-              probArr[i] = _quantileSeq(dataArr, (++i) / nPlusOne, sorted);
+              probArr[i] = _quantileSeq(dataArr, (++i) / nPlusOne, sorted)
             }
-            return probArr;
+            return probArr
           }
         }
 
         if (type.isBigNumber(probOrN)) {
           if (probOrN.isNegative()) {
-            throw new Error('N/prob must be non-negative');
+            throw new Error('N/prob must be non-negative')
           }
 
-          one = new probOrN.constructor(1);
+          one = new probOrN.constructor(1)
 
           if (probOrN.lte(one)) {
             // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return _quantileSeq(dataArr, probOrN, sorted);
+            return _quantileSeq(dataArr, probOrN, sorted)
           }
 
           if (probOrN.gt(one)) {
             // quantileSeq([a, b, c, d, ...], N[,sorted])
             if (!probOrN.isInteger()) {
-              throw new Error('N must be a positive integer');
+              throw new Error('N must be a positive integer')
             }
 
             // largest possible Array length is 2^32-1;
             // 2^32 < 10^15, thus safe conversion guaranteed
-            var intN = probOrN.toNumber();
+            var intN = probOrN.toNumber()
             if (intN > 4294967295) {
-              throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array');
+              throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
             }
 
-            var nPlusOne = new type.BigNumber(intN + 1);
-            probArr = new Array(intN);
+            var nPlusOne = new type.BigNumber(intN + 1)
+            probArr = new Array(intN)
             for (var i = 0; i < intN;) {
-              probArr[i] = _quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted);
+              probArr[i] = _quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted)
             }
-            return probArr;
+            return probArr
           }
         }
 
         if (Array.isArray(probOrN)) {
           // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
-          probArr = new Array(probOrN.length);
+          probArr = new Array(probOrN.length)
           for (var i = 0; i < probArr.length; ++i) {
-            var currProb = probOrN[i];
+            var currProb = probOrN[i]
             if (isNumber(currProb)) {
               if (currProb < 0 || currProb > 1) {
-                throw new Error('Probability must be between 0 and 1, inclusive');
+                throw new Error('Probability must be between 0 and 1, inclusive')
               }
             } else if (type.isBigNumber(currProb)) {
-              one = new currProb.constructor(1);
+              one = new currProb.constructor(1)
               if (currProb.isNegative() || currProb.gt(one)) {
-                throw new Error('Probability must be between 0 and 1, inclusive');
+                throw new Error('Probability must be between 0 and 1, inclusive')
               }
             } else {
-              throw new TypeError('Unexpected type of argument in function quantileSeq'); // FIXME: becomes redundant when converted to typed-function
+              throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
             }
 
-            probArr[i] = _quantileSeq(dataArr, currProb, sorted);
+            probArr[i] = _quantileSeq(dataArr, currProb, sorted)
           }
-          return probArr;
+          return probArr
         }
 
-        throw new TypeError('Unexpected type of argument in function quantileSeq'); // FIXME: becomes redundant when converted to typed-function
+        throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
       }
 
-      throw new TypeError('Unexpected type of argument in function quantileSeq'); // FIXME: becomes redundant when converted to typed-function
+      throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
     }
 
-    throw new TypeError('Unexpected type of argument in function quantileSeq'); // FIXME: becomes redundant when converted to typed-function
+    throw new TypeError('Unexpected type of argument in function quantileSeq') // FIXME: becomes redundant when converted to typed-function
   }
 
   /**
    * Calculate the prob order quantile of an n-dimensional array.
-   * 
+   *
    * @param {Array} array
    * @param {Number, BigNumber} prob
    * @param {Boolean} sorted
    * @return {Number, BigNumber, Unit} prob order quantile
    * @private
    */
-  function _quantileSeq(array, prob, sorted) {
-    var flat = flatten(array);
-    var len = flat.length;
+  function _quantileSeq (array, prob, sorted) {
+    var flat = flatten(array)
+    var len = flat.length
     if (len === 0) {
-      throw new Error('Cannot calculate quantile of an empty sequence');
+      throw new Error('Cannot calculate quantile of an empty sequence')
     }
 
     if (isNumber(prob)) {
-      var index = prob * (len-1);
-      var fracPart = index % 1;
+      var index = prob * (len - 1)
+      var fracPart = index % 1
       if (fracPart === 0) {
-        var value = sorted ? flat[index] : partitionSelect(flat, index);
+        var value = sorted ? flat[index] : partitionSelect(flat, index)
 
-        validate(value);
+        validate(value)
 
-        return value;
+        return value
       }
 
-      var integerPart = Math.floor(index);
+      var integerPart = Math.floor(index)
 
-      var left, right;
+      var left, right
       if (sorted) {
-        left = flat[integerPart];
-        right = flat[integerPart+1];
+        left = flat[integerPart]
+        right = flat[integerPart + 1]
       } else {
-        right = partitionSelect(flat, integerPart+1);
+        right = partitionSelect(flat, integerPart + 1)
 
         // max of partition is kth largest
-        left = flat[integerPart];
+        left = flat[integerPart]
         for (var i = 0; i < integerPart; ++i) {
           if (compare(flat[i], left) > 0) {
-            left = flat[i];
+            left = flat[i]
           }
         }
       }
 
-      validate(left);
-      validate(right);
+      validate(left)
+      validate(right)
 
       // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
-      return add(multiply(left, 1 - fracPart), multiply(right, fracPart));
+      return add(multiply(left, 1 - fracPart), multiply(right, fracPart))
     }
 
     // If prob is a BigNumber
-    var index = prob.times(len-1);
+    var index = prob.times(len - 1)
     if (index.isInteger()) {
-      index = index.toNumber();
-      var value = sorted ? flat[index] : partitionSelect(flat, index);
+      index = index.toNumber()
+      var value = sorted ? flat[index] : partitionSelect(flat, index)
 
-      validate(value);
+      validate(value)
 
-      return value;
+      return value
     }
 
-    var integerPart = index.floor();
-    var fracPart = index.minus(integerPart);
-    var integerPartNumber = integerPart.toNumber();
+    var integerPart = index.floor()
+    var fracPart = index.minus(integerPart)
+    var integerPartNumber = integerPart.toNumber()
 
-    var left, right;
+    var left, right
     if (sorted) {
-      left = flat[integerPartNumber];
-      right = flat[integerPartNumber+1];
+      left = flat[integerPartNumber]
+      right = flat[integerPartNumber + 1]
     } else {
-      right = partitionSelect(flat, integerPartNumber+1);
+      right = partitionSelect(flat, integerPartNumber + 1)
 
       // max of partition is kth largest
-      left = flat[integerPartNumber];
+      left = flat[integerPartNumber]
       for (var i = 0; i < integerPartNumber; ++i) {
         if (compare(flat[i], left) > 0) {
-          left = flat[i];
+          left = flat[i]
         }
       }
     }
 
-    validate(left);
-    validate(right);
+    validate(left)
+    validate(right)
 
     // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
-    var one = new fracPart.constructor(1);
-    return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart));
+    var one = new fracPart.constructor(1)
+    return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart))
   }
 
   /**
@@ -246,12 +246,12 @@ function factory (type, config, load, typed) {
    */
   var validate = typed({
     'number | BigNumber | Unit': function (x) {
-      return x;
+      return x
     }
-  });
+  })
 
-  return quantileSeq;
+  return quantileSeq
 }
 
-exports.name = 'quantileSeq';
-exports.factory = factory;
+exports.name = 'quantileSeq'
+exports.factory = factory

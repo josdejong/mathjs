@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
 function factory () {
-
   /**
    * Permutes a vector; x = P'b. In MATLAB notation, x(p)=b.
    *
@@ -11,31 +10,30 @@ function factory () {
    * @return {Array}            The output vector x = P'b
    */
   var cs_ipvec = function (p, b, n) {
-    // vars 
-    var k;
-    var n = b.length;
-    var x = [];
+    // vars
+    var k
+    var n = b.length
+    var x = []
     // check permutation vector was provided, p = null denotes identity
     if (p) {
       // loop vector
       for (k = 0; k < n; k++) {
         // apply permutation
-        x[p[k]] = b[k];
+        x[p[k]] = b[k]
       }
-    }
-    else {
+    } else {
       // loop vector
       for (k = 0; k < n; k++) {
         // x[i] = b[i]
-        x[k] = b[k];
+        x[k] = b[k]
       }
     }
-    return x;
-  };
+    return x
+  }
 
-  return cs_ipvec;
+  return cs_ipvec
 }
 
-exports.name = 'cs_ipvec';
-exports.path = 'sparse';
-exports.factory = factory;
+exports.name = 'cs_ipvec'
+exports.path = 'sparse'
+exports.factory = factory

@@ -1,6 +1,6 @@
-'use strict';
-var bitwise = require('./bitwise');
-var bitNot = require('./bitNot');
+'use strict'
+var bitwise = require('./bitwise')
+var bitNot = require('./bitNot')
 
 /**
  * Bitwise XOR for BigNumbers
@@ -21,41 +21,41 @@ var bitNot = require('./bitNot');
  * @return {BigNumber} Result of `x` ^ `y`, fully precise
  *
  */
-module.exports = function bitXor(x, y) {
+module.exports = function bitXor (x, y) {
   if ((x.isFinite() && !x.isInteger()) || (y.isFinite() && !y.isInteger())) {
-    throw new Error('Integers expected in function bitXor');
+    throw new Error('Integers expected in function bitXor')
   }
 
-  var BigNumber = x.constructor;
+  var BigNumber = x.constructor
   if (x.isNaN() || y.isNaN()) {
-    return new BigNumber(NaN);
+    return new BigNumber(NaN)
   }
   if (x.isZero()) {
-    return y;
+    return y
   }
   if (y.isZero()) {
-    return x;
+    return x
   }
 
   if (x.eq(y)) {
-    return new BigNumber(0);
+    return new BigNumber(0)
   }
 
-  var negOne = new BigNumber(-1);
+  var negOne = new BigNumber(-1)
   if (x.eq(negOne)) {
-    return bitNot(y);
+    return bitNot(y)
   }
   if (y.eq(negOne)) {
-    return bitNot(x);
+    return bitNot(x)
   }
 
   if (!x.isFinite() || !y.isFinite()) {
     if (!x.isFinite() && !y.isFinite()) {
-      return negOne;
+      return negOne
     }
     return new BigNumber(x.isNegative() == y.isNegative()
-        ?  Infinity
-        : -Infinity);
+      ? Infinity
+      : -Infinity)
   }
-  return bitwise(x, y, function (a, b) { return a ^ b });
-};
+  return bitwise(x, y, function (a, b) { return a ^ b })
+}

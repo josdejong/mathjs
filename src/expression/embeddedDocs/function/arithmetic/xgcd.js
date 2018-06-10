@@ -11,4 +11,4 @@ module.exports = {
     'xgcd(36163, 21199)'
   ],
   'seealso': [ 'gcd', 'lcm' ]
-};
+}

@@ -1,8 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load) {
-
-  var cs_flip = load(require('./cs_flip'));
+  var cs_flip = load(require('./cs_flip'))
 
   /**
    * Marks the node at w[j]
@@ -14,12 +13,12 @@ function factory (type, config, load) {
    */
   var cs_mark = function (w, j) {
     // mark w[j]
-    w[j] = cs_flip(w [j]);
-  };
+    w[j] = cs_flip(w[j])
+  }
 
-  return cs_mark;
+  return cs_mark
 }
 
-exports.name = 'cs_mark';
-exports.path = 'sparse';
-exports.factory = factory;
+exports.name = 'cs_mark'
+exports.path = 'sparse'
+exports.factory = factory

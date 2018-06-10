@@ -13,4 +13,4 @@ module.exports = {
     'clone("hello world")'
   ],
   'seealso': []
-};
+}

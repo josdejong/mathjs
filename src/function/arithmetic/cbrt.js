@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var unaryMinus = load(require('./unaryMinus'));
-  var isNegative = load(require('../utils/isNegative'));
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var unaryMinus = load(require('./unaryMinus'))
+  var isNegative = load(require('../utils/isNegative'))
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Calculate the cubic root of a value.
@@ -56,16 +56,16 @@ function factory (type, config, load, typed) {
     'Complex, boolean': _cbrtComplex,
 
     'BigNumber': function (x) {
-      return x.cbrt();
+      return x.cbrt()
     },
 
     'Unit': _cbrtUnit,
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since cbrt(0) = 0
-      return deepMap(x, cbrt, true);
+      return deepMap(x, cbrt, true)
     }
-  });
+  })
 
   /**
    * Calculate the cubic root for a complex number
@@ -76,29 +76,28 @@ function factory (type, config, load, typed) {
    * @returns {Complex | Array.<Complex> | Matrix.<Complex>} Returns the cubic root(s) of x
    * @private
    */
-  function _cbrtComplex(x, allRoots) {
+  function _cbrtComplex (x, allRoots) {
     // https://www.wikiwand.com/en/Cube_root#/Complex_numbers
 
-    var arg_3 = x.arg() / 3;
-    var abs = x.abs();
+    var arg_3 = x.arg() / 3
+    var abs = x.abs()
 
     // principal root:
     var principal = new type.Complex(_cbrtNumber(abs), 0).mul(
-        new type.Complex(0, arg_3).exp());
+      new type.Complex(0, arg_3).exp())
 
     if (allRoots) {
       var all = [
-          principal,
-          new type.Complex(_cbrtNumber(abs), 0).mul(
-            new type.Complex(0, arg_3 + Math.PI * 2 / 3).exp()),
-          new type.Complex(_cbrtNumber(abs), 0).mul(
-            new type.Complex(0, arg_3 - Math.PI * 2 / 3).exp())
-      ];
+        principal,
+        new type.Complex(_cbrtNumber(abs), 0).mul(
+          new type.Complex(0, arg_3 + Math.PI * 2 / 3).exp()),
+        new type.Complex(_cbrtNumber(abs), 0).mul(
+          new type.Complex(0, arg_3 - Math.PI * 2 / 3).exp())
+      ]
 
-      return (config.matrix === 'Array') ? all : matrix(all);
-    }
-    else {
-      return principal;
+      return (config.matrix === 'Array') ? all : matrix(all)
+    } else {
+      return principal
     }
   }
 
@@ -108,45 +107,42 @@ function factory (type, config, load, typed) {
    * @return {Unit} Returns the cubic root of x
    * @private
    */
-  function _cbrtUnit(x) {
-    if(x.value && type.isComplex(x.value)) {
-      var result = x.clone();
-      result.value = 1.0;
-      result = result.pow(1.0/3);           // Compute the units
-      result.value = _cbrtComplex(x.value); // Compute the value
-      return result;
-    }
-    else {
-      var negate = isNegative(x.value);
+  function _cbrtUnit (x) {
+    if (x.value && type.isComplex(x.value)) {
+      var result = x.clone()
+      result.value = 1.0
+      result = result.pow(1.0 / 3) // Compute the units
+      result.value = _cbrtComplex(x.value) // Compute the value
+      return result
+    } else {
+      var negate = isNegative(x.value)
       if (negate) {
-        x.value = unaryMinus(x.value);
+        x.value = unaryMinus(x.value)
       }
 
       // TODO: create a helper function for this
-      var third;
+      var third
       if (type.isBigNumber(x.value)) {
-        third = new type.BigNumber(1).div(3);
-      }
-      else if (type.isFraction(x.value)) {
-        third = new type.Fraction(1, 3);
-      }
-      else {
-        third = 1/3;
+        third = new type.BigNumber(1).div(3)
+      } else if (type.isFraction(x.value)) {
+        third = new type.Fraction(1, 3)
+      } else {
+        third = 1 / 3
       }
 
-      var result = x.pow(third);
+      var result = x.pow(third)
 
       if (negate) {
-        result.value = unaryMinus(result.value);
+        result.value = unaryMinus(result.value)
       }
 
-      return result;
+      return result
     }
   }
 
-  cbrt.toTex = {1: '\\sqrt[3]{${args[0]}}'};
+  cbrt.toTex = {1: '\\sqrt[3]{${args[0]}}'}
 
-  return cbrt;
+  return cbrt
 }
 
 /**
@@ -161,25 +157,25 @@ function factory (type, config, load, typed) {
  */
 var _cbrtNumber = Math.cbrt || function (x) {
   if (x === 0) {
-    return x;
+    return x
   }
 
-  var negate = x < 0;
-  var result;
+  var negate = x < 0
+  var result
   if (negate) {
-    x = -x;
+    x = -x
   }
 
   if (isFinite(x)) {
-    result = Math.exp(Math.log(x) / 3);
+    result = Math.exp(Math.log(x) / 3)
     // from http://en.wikipedia.org/wiki/Cube_root#Numerical_methods
-    result = (x / (result * result) + (2 * result)) / 3;
+    result = (x / (result * result) + (2 * result)) / 3
   } else {
-    result = x;
+    result = x
   }
 
-  return negate ? -result : result;
-};
+  return negate ? -result : result
+}
 
-exports.name = 'cbrt';
-exports.factory = factory;
+exports.name = 'cbrt'
+exports.factory = factory

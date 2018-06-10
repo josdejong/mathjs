@@ -9,7 +9,7 @@ var chain = {
 }
 for (var name in math) {
   if (math.hasOwnProperty(name) && typeof math[name] === 'function') {
-    chain[name] = true;
+    chain[name] = true
   }
 }
 
@@ -286,19 +286,19 @@ var groups = [
     'transform': true,
     'traverse': true
   }
-];
+]
 
 // merge all groups into a single whitelist
 var whitelist = groups.reduce(function (whitelist, group) {
-  return Object.assign(whitelist, group);
+  return Object.assign(whitelist, group)
 }, {})
 
-var keys = Object.keys(whitelist).sort();
+var keys = Object.keys(whitelist).sort()
 var orderedWhitelist = keys.reduce(function (whitelist, key) {
-  whitelist[key] = true;
-  return whitelist;
-}, {});
+  whitelist[key] = true
+  return whitelist
+}, {})
 
-console.log(orderedWhitelist);
-console.log('number of methods/functions:', keys.length);
-console.log('copy this object with safe methods into the file customs.js.');
+console.log(orderedWhitelist)
+console.log('number of methods/functions:', keys.length)
+console.log('copy this object with safe methods into the file customs.js.')

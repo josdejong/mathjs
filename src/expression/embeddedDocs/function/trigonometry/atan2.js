@@ -18,4 +18,4 @@ module.exports = {
     'cos',
     'tan'
   ]
-};
+}

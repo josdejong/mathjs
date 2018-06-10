@@ -1,16 +1,14 @@
-'use strict';
-var Complex = require('complex.js');
-var format = require('../../utils/number').format;
-var isNumber = require('../../utils/number').isNumber;
+'use strict'
+var Complex = require('complex.js')
+var format = require('../../utils/number').format
+var isNumber = require('../../utils/number').isNumber
 
 function factory (type, config, load, typed, math) {
-
   /**
    * Attach type information
    */
-  Complex.prototype.type = 'Complex';
-  Complex.prototype.isComplex = true;
-
+  Complex.prototype.type = 'Complex'
+  Complex.prototype.isComplex = true
 
   /**
    * Get a JSON representation of the complex number
@@ -22,8 +20,8 @@ function factory (type, config, load, typed, math) {
       mathjs: 'Complex',
       re: this.re,
       im: this.im
-    };
-  };
+    }
+  }
 
   /*
    * Return the value of the complex number in polar notation
@@ -34,8 +32,8 @@ function factory (type, config, load, typed, math) {
     return {
       r: this.abs(),
       phi: this.arg()
-    };
-  };
+    }
+  }
 
   /**
    * Get a string representation of the complex number,
@@ -47,54 +45,54 @@ function factory (type, config, load, typed, math) {
    * @return {string} str
    */
   Complex.prototype.format = function (options) {
-    var str = '';
-    var im = this.im;
-    var re = this.re;
-    var strRe = format(this.re, options);
-    var strIm = format(this.im, options);
+    var str = ''
+    var im = this.im
+    var re = this.re
+    var strRe = format(this.re, options)
+    var strIm = format(this.im, options)
 
     // round either re or im when smaller than the configured precision
-    var precision = isNumber(options) ? options : options ? options.precision : null;
+    var precision = isNumber(options) ? options : options ? options.precision : null
     if (precision !== null) {
-      var epsilon = Math.pow(10, -precision);
+      var epsilon = Math.pow(10, -precision)
       if (Math.abs(re / im) < epsilon) {
-        re = 0;
+        re = 0
       }
       if (Math.abs(im / re) < epsilon) {
-        im = 0;
+        im = 0
       }
     }
 
     if (im == 0) {
       // real value
-      str = strRe;
+      str = strRe
     } else if (re == 0) {
       // purely complex value
       if (im == 1) {
-        str = 'i';
+        str = 'i'
       } else if (im == -1) {
-        str = '-i';
+        str = '-i'
       } else {
-        str = strIm + 'i';
+        str = strIm + 'i'
       }
     } else {
       // complex value
       if (im < 0) {
         if (im == -1) {
-          str = strRe + ' - i';
+          str = strRe + ' - i'
         } else {
-          str = strRe + ' - ' + strIm.substring(1) + 'i';
+          str = strRe + ' - ' + strIm.substring(1) + 'i'
         }
       } else {
         if (im == 1) {
-          str = strRe + ' + i';
+          str = strRe + ' + i'
         } else {
-          str = strRe + ' + ' + strIm + 'i';
+          str = strRe + ' + ' + strIm + 'i'
         }
       }
     }
-    return str;
-  };
+    return str
+  }
 
   /**
    * Create a complex number from polar coordinates
@@ -110,37 +108,36 @@ function factory (type, config, load, typed, math) {
   Complex.fromPolar = function (args) {
     switch (arguments.length) {
       case 1:
-        var arg = arguments[0];
+        var arg = arguments[0]
         if (typeof arg === 'object') {
-          return Complex(arg);
+          return Complex(arg)
         }
-        throw new TypeError('Input has to be an object with r and phi keys.');
+        throw new TypeError('Input has to be an object with r and phi keys.')
 
       case 2:
         var r = arguments[0],
-            phi = arguments[1];
+          phi = arguments[1]
         if (isNumber(r)) {
           if (type.isUnit(phi) && phi.hasBase('ANGLE')) {
             // convert unit to a number in radians
-            phi = phi.toNumber('rad');
+            phi = phi.toNumber('rad')
           }
 
           if (isNumber(phi)) {
-            return new Complex({r: r, phi: phi});
+            return new Complex({r: r, phi: phi})
           }
 
-          throw new TypeError('Phi is not a number nor an angle unit.');
+          throw new TypeError('Phi is not a number nor an angle unit.')
         } else {
-          throw new TypeError('Radius r is not a number.');
+          throw new TypeError('Radius r is not a number.')
         }
 
       default:
-        throw new SyntaxError('Wrong number of arguments in function fromPolar');
+        throw new SyntaxError('Wrong number of arguments in function fromPolar')
     }
-  };
+  }
 
-
-  Complex.prototype.valueOf = Complex.prototype.toString;
+  Complex.prototype.valueOf = Complex.prototype.toString
 
   /**
    * Create a Complex number from a JSON object
@@ -151,18 +148,18 @@ function factory (type, config, load, typed, math) {
    * @return {Complex} Returns a new Complex number
    */
   Complex.fromJSON = function (json) {
-    return new Complex(json);
-  };
+    return new Complex(json)
+  }
 
   // apply the current epsilon
-  Complex.EPSILON = config.epsilon;
+  Complex.EPSILON = config.epsilon
 
   // listen for changed in the configuration, automatically apply changed epsilon
   math.on('config', function (curr, prev) {
     if (curr.epsilon !== prev.epsilon) {
-      Complex.EPSILON = curr.epsilon;
+      Complex.EPSILON = curr.epsilon
     }
-  });
+  })
 
   /**
    * Compare two complex numbers, `a` and `b`:
@@ -180,19 +177,19 @@ function factory (type, config, load, typed, math) {
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
   Complex.compare = function (a, b) {
-    if (a.re > b.re) { return 1; }
-    if (a.re < b.re) { return -1; }
+    if (a.re > b.re) { return 1 }
+    if (a.re < b.re) { return -1 }
 
-    if (a.im > b.im) { return 1; }
-    if (a.im < b.im) { return -1; }
+    if (a.im > b.im) { return 1 }
+    if (a.im < b.im) { return -1 }
 
-    return 0;
+    return 0
   }
 
-  return Complex;
+  return Complex
 }
 
-exports.name = 'Complex';
-exports.path = 'type';
-exports.factory = factory;
-exports.math = true; // request access to the math namespace
+exports.name = 'Complex'
+exports.path = 'type'
+exports.factory = factory
+exports.math = true // request access to the math namespace

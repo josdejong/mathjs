@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
+var flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-
   /**
   * Computes the mode of a set of numbers or a list with values(numbers or characters).
   * If there are more than one modes, it returns a list of those values.
@@ -31,14 +30,14 @@ function factory (type, config, load, typed) {
   */
 
   var mode = typed('mode', {
-    'Array | Matrix' : _mode,
-    
+    'Array | Matrix': _mode,
+
     '...': function (args) {
-      return _mode(args);
+      return _mode(args)
     }
-  });
-  
-  return mode;
+  })
+
+  return mode
 
   /**
    * Calculates the mode in an 1-dimensional array
@@ -46,32 +45,31 @@ function factory (type, config, load, typed) {
    * @return {number} mode
    * @private
    */
-  function _mode(values) {
-    values = flatten(values.valueOf());
-    var num = values.length;
+  function _mode (values) {
+    values = flatten(values.valueOf())
+    var num = values.length
     if (num == 0) {
-      throw new Error('Cannot calculate mode of an empty array');
+      throw new Error('Cannot calculate mode of an empty array')
     }
-    
+
     var count = {},
-        mode = [],
-        max = 0;
+      mode = [],
+      max = 0
     for (var i in values) {
-      if (!(values[i] in count)){
-        count[values[i]] = 0;
+      if (!(values[i] in count)) {
+        count[values[i]] = 0
       }
-      count[values[i]]++;
-      if (count[values[i]] == max){
-        mode.push(values[i]);
-      }
-      else if (count[values[i]] > max) {
-        max = count[values[i]];
-        mode = [values[i]];
+      count[values[i]]++
+      if (count[values[i]] == max) {
+        mode.push(values[i])
+      } else if (count[values[i]] > max) {
+        max = count[values[i]]
+        mode = [values[i]]
       }
     }
-    return mode; 
+    return mode
   };
 }
 
-exports.name = 'mode';
-exports.factory = factory;
+exports.name = 'mode'
+exports.factory = factory

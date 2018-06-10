@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var getSafeProperty = require('../../utils/customs').getSafeProperty;
-var setSafeProperty = require('../../utils/customs').setSafeProperty;
+var getSafeProperty = require('../../utils/customs').getSafeProperty
+var setSafeProperty = require('../../utils/customs').setSafeProperty
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'));
-  var assign = load(require('./utils/assign'));
-  var access = load(require('./utils/access'));
+  var Node = load(require('./Node'))
+  var assign = load(require('./utils/assign'))
+  var access = load(require('./utils/access'))
 
-  var operators = require('../operators');
+  var operators = require('../operators')
 
   /**
    * @constructor AssignmentNode
@@ -36,27 +36,27 @@ function factory (type, config, load, typed) {
    *                                            global scope.
    * @param {Node} value                        The value to be assigned
    */
-  function AssignmentNode(object, index, value) {
+  function AssignmentNode (object, index, value) {
     if (!(this instanceof AssignmentNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    this.object = object;
-    this.index = value ? index : null;
-    this.value = value ? value : index;
+    this.object = object
+    this.index = value ? index : null
+    this.value = value || index
 
     // validate input
     if (!type.isSymbolNode(object) && !type.isAccessorNode(object)) {
-      throw new TypeError('SymbolNode or AccessorNode expected as "object"');
+      throw new TypeError('SymbolNode or AccessorNode expected as "object"')
     }
     if (type.isSymbolNode(object) && object.name === 'end') {
-      throw new Error('Cannot assign to symbol "end"');
+      throw new Error('Cannot assign to symbol "end"')
     }
     if (this.index && !type.isIndexNode(this.index)) { // index is optional
-      throw new TypeError('IndexNode expected as "index"');
+      throw new TypeError('IndexNode expected as "index"')
     }
     if (!type.isNode(this.value)) {
-      throw new TypeError('Node expected as "value"');
+      throw new TypeError('Node expected as "value"')
     }
 
     // readonly property name
@@ -64,30 +64,29 @@ function factory (type, config, load, typed) {
       get: function () {
         if (this.index) {
           return (this.index.isObjectProperty())
-              ? this.index.getObjectProperty()
-              : '';
-        }
-        else {
-          return this.object.name || '';
+            ? this.index.getObjectProperty()
+            : ''
+        } else {
+          return this.object.name || ''
         }
       }.bind(this),
       set: function () {
-        throw new Error('Cannot assign a new name, name is read-only');
+        throw new Error('Cannot assign a new name, name is read-only')
       }
-    });
+    })
   }
 
-  AssignmentNode.prototype = new Node();
+  AssignmentNode.prototype = new Node()
 
-  AssignmentNode.prototype.type = 'AssignmentNode';
+  AssignmentNode.prototype.type = 'AssignmentNode'
 
-  AssignmentNode.prototype.isAssignmentNode = true;
+  AssignmentNode.prototype.isAssignmentNode = true
 
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} math     Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -97,76 +96,72 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   AssignmentNode.prototype._compile = function (math, argNames) {
-    var size;
-    var evalObject = this.object._compile(math, argNames);
-    var evalIndex = this.index ? this.index._compile(math, argNames) : null;
-    var evalValue = this.value._compile(math, argNames);
-    var name = this.object.name;
-    
+    var size
+    var evalObject = this.object._compile(math, argNames)
+    var evalIndex = this.index ? this.index._compile(math, argNames) : null
+    var evalValue = this.value._compile(math, argNames)
+    var name = this.object.name
+
     if (!this.index) {
       // apply a variable to the scope, for example `a=2`
       if (!type.isSymbolNode(this.object)) {
-        throw new TypeError('SymbolNode expected as object');
+        throw new TypeError('SymbolNode expected as object')
       }
 
       return function evalAssignmentNode (scope, args, context) {
-        return setSafeProperty(scope, name, evalValue(scope, args, context));
-      };
-    }
-    else if (this.index.isObjectProperty()) {
+        return setSafeProperty(scope, name, evalValue(scope, args, context))
+      }
+    } else if (this.index.isObjectProperty()) {
       // apply an object property for example `a.b=2`
-      var prop = this.index.getObjectProperty();
+      var prop = this.index.getObjectProperty()
 
       return function evalAssignmentNode (scope, args, context) {
-        var object = evalObject(scope, args, context);
-        var value = evalValue(scope, args, context);
-        return setSafeProperty(object, prop, value);
-      };
-    }
-    else if (type.isSymbolNode(this.object)) {
-      // update a matrix subset, for example `a[2]=3`
-      return function evalAssignmentNode(scope, args, context) {
-        var childObject = evalObject(scope, args, context);
-        var value = evalValue(scope, args, context);
-        var index = evalIndex(scope, args, childObject); // Important:  we pass childObject instead of context
-        setSafeProperty(scope, name, assign(childObject, index, value));
-        return value;
+        var object = evalObject(scope, args, context)
+        var value = evalValue(scope, args, context)
+        return setSafeProperty(object, prop, value)
       }
-    }
-    else { // type.isAccessorNode(node.object) === true
+    } else if (type.isSymbolNode(this.object)) {
+      // update a matrix subset, for example `a[2]=3`
+      return function evalAssignmentNode (scope, args, context) {
+        var childObject = evalObject(scope, args, context)
+        var value = evalValue(scope, args, context)
+        var index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
+        setSafeProperty(scope, name, assign(childObject, index, value))
+        return value
+      }
+    } else { // type.isAccessorNode(node.object) === true
       // update a matrix subset, for example `a.b[2]=3`
 
       // we will not use the compile function of the AccessorNode, but compile it
       // ourselves here as we need the parent object of the AccessorNode:
       // wee need to apply the updated object to parent object
-      var evalParentObject = this.object.object._compile(math, argNames);
+      var evalParentObject = this.object.object._compile(math, argNames)
 
       if (this.object.index.isObjectProperty()) {
-        var parentProp = this.object.index.getObjectProperty();
+        var parentProp = this.object.index.getObjectProperty()
 
-        return function evalAssignmentNode(scope, args, context) {
-          var parent = evalParentObject(scope, args, context);
-          var childObject = getSafeProperty(parent, parentProp);
-          var index = evalIndex(scope, args, childObject); // Important: we pass childObject instead of context
-          var value = evalValue(scope, args, context);
-          setSafeProperty(parent, parentProp, assign(childObject, index, value));
-          return value;
+        return function evalAssignmentNode (scope, args, context) {
+          var parent = evalParentObject(scope, args, context)
+          var childObject = getSafeProperty(parent, parentProp)
+          var index = evalIndex(scope, args, childObject) // Important: we pass childObject instead of context
+          var value = evalValue(scope, args, context)
+          setSafeProperty(parent, parentProp, assign(childObject, index, value))
+          return value
         }
-      }
-      else {
+      } else {
         // if some parameters use the 'end' parameter, we need to calculate the size
-        var evalParentIndex = this.object.index._compile(math, argNames);
+        var evalParentIndex = this.object.index._compile(math, argNames)
 
-        return function evalAssignmentNode(scope, args, context) {
-          var parent = evalParentObject(scope, args, context);
-          var parentIndex = evalParentIndex(scope, args, parent); // Important: we pass parent instead of context
-          var childObject = access(parent, parentIndex);
-          var index = evalIndex(scope, args, childObject); // Important:  we pass childObject instead of context
-          var value = evalValue(scope, args, context);
+        return function evalAssignmentNode (scope, args, context) {
+          var parent = evalParentObject(scope, args, context)
+          var parentIndex = evalParentIndex(scope, args, parent) // Important: we pass parent instead of context
+          var childObject = access(parent, parentIndex)
+          var index = evalIndex(scope, args, childObject) // Important:  we pass childObject instead of context
+          var value = evalValue(scope, args, context)
 
-          assign(parent, parentIndex, assign(childObject, index, value));
+          assign(parent, parentIndex, assign(childObject, index, value))
 
-          return value;
+          return value
         }
       }
     }
@@ -177,12 +172,12 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   AssignmentNode.prototype.forEach = function (callback) {
-    callback(this.object, 'object', this);
+    callback(this.object, 'object', this)
     if (this.index) {
-      callback(this.index, 'index', this);
+      callback(this.index, 'index', this)
     }
-    callback(this.value, 'value', this);
-  };
+    callback(this.value, 'value', this)
+  }
 
   /**
    * Create a new AssignmentNode having it's childs be the results of calling
@@ -191,22 +186,22 @@ function factory (type, config, load, typed) {
    * @returns {AssignmentNode} Returns a transformed copy of the node
    */
   AssignmentNode.prototype.map = function (callback) {
-    var object = this._ifNode(callback(this.object, 'object', this));
+    var object = this._ifNode(callback(this.object, 'object', this))
     var index = this.index
-        ? this._ifNode(callback(this.index, 'index', this))
-        : null;
-    var value = this._ifNode(callback(this.value, 'value', this));
+      ? this._ifNode(callback(this.index, 'index', this))
+      : null
+    var value = this._ifNode(callback(this.value, 'value', this))
 
-    return new AssignmentNode(object, index, value);
-  };
+    return new AssignmentNode(object, index, value)
+  }
 
   /**
    * Create a clone of this node, a shallow copy
    * @return {AssignmentNode}
    */
-  AssignmentNode.prototype.clone = function() {
-    return new AssignmentNode(this.object, this.index, this.value);
-  };
+  AssignmentNode.prototype.clone = function () {
+    return new AssignmentNode(this.object, this.index, this.value)
+  }
 
   /*
    * Is parenthesis needed?
@@ -214,15 +209,15 @@ function factory (type, config, load, typed) {
    * @param {string} [parenthesis='keep']
    * @private
    */
-  function needParenthesis(node, parenthesis) {
+  function needParenthesis (node, parenthesis) {
     if (!parenthesis) {
-      parenthesis = 'keep';
+      parenthesis = 'keep'
     }
 
-    var precedence = operators.getPrecedence(node, parenthesis);
-    var exprPrecedence = operators.getPrecedence(node.value, parenthesis);
-    return (parenthesis === 'all')
-      || ((exprPrecedence !== null) && (exprPrecedence <= precedence));
+    var precedence = operators.getPrecedence(node, parenthesis)
+    var exprPrecedence = operators.getPrecedence(node.value, parenthesis)
+    return (parenthesis === 'all') ||
+      ((exprPrecedence !== null) && (exprPrecedence <= precedence))
   }
 
   /**
@@ -230,16 +225,16 @@ function factory (type, config, load, typed) {
    * @param {Object} options
    * @return {string}
    */
-  AssignmentNode.prototype._toString = function(options) {
-    var object = this.object.toString(options);
-    var index = this.index ? this.index.toString(options) : '';
-    var value = this.value.toString(options);
+  AssignmentNode.prototype._toString = function (options) {
+    var object = this.object.toString(options)
+    var index = this.index ? this.index.toString(options) : ''
+    var value = this.value.toString(options)
     if (needParenthesis(this, options && options.parenthesis)) {
-      value = '(' + value + ')';
+      value = '(' + value + ')'
     }
 
-    return object + index + ' = ' + value;
-  };
+    return object + index + ' = ' + value
+  }
 
   /**
    * Get a JSON representation of the node
@@ -251,8 +246,8 @@ function factory (type, config, load, typed) {
       object: this.object,
       index: this.index,
       value: this.value
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate an AssignmentNode from its JSON representation
@@ -262,44 +257,44 @@ function factory (type, config, load, typed) {
    * @returns {AssignmentNode}
    */
   AssignmentNode.fromJSON = function (json) {
-    return new AssignmentNode(json.object, json.index, json.value);
-  };
+    return new AssignmentNode(json.object, json.index, json.value)
+  }
 
   /**
    * Get HTML representation
    * @param {Object} options
    * @return {string}
    */
-  AssignmentNode.prototype.toHTML = function(options) {
-    var object = this.object.toHTML(options);
-    var index = this.index ? this.index.toHTML(options) : '';
-    var value = this.value.toHTML(options);
+  AssignmentNode.prototype.toHTML = function (options) {
+    var object = this.object.toHTML(options)
+    var index = this.index ? this.index.toHTML(options) : ''
+    var value = this.value.toHTML(options)
     if (needParenthesis(this, options && options.parenthesis)) {
-      value = '<span class="math-paranthesis math-round-parenthesis">(</span>' + value + '<span class="math-paranthesis math-round-parenthesis">)</span>';
+      value = '<span class="math-paranthesis math-round-parenthesis">(</span>' + value + '<span class="math-paranthesis math-round-parenthesis">)</span>'
     }
 
-    return object + index + '<span class="math-operator math-assignment-operator math-variable-assignment-operator math-binary-operator">=</span>' + value;
-  };
+    return object + index + '<span class="math-operator math-assignment-operator math-variable-assignment-operator math-binary-operator">=</span>' + value
+  }
 
   /**
    * Get LaTeX representation
    * @param {Object} options
    * @return {string}
    */
-  AssignmentNode.prototype._toTex = function(options) {
-    var object = this.object.toTex(options);
-    var index = this.index ? this.index.toTex(options) : '';
-    var value = this.value.toTex(options);
+  AssignmentNode.prototype._toTex = function (options) {
+    var object = this.object.toTex(options)
+    var index = this.index ? this.index.toTex(options) : ''
+    var value = this.value.toTex(options)
     if (needParenthesis(this, options && options.parenthesis)) {
-      value = '\\left(' + value + '\\right)';
+      value = '\\left(' + value + '\\right)'
     }
 
-    return object + index + ':=' + value;
-  };
+    return object + index + ':=' + value
+  }
 
-  return AssignmentNode;
+  return AssignmentNode
 }
 
-exports.name = 'AssignmentNode';
-exports.path = 'expression.node';
-exports.factory = factory;
+exports.name = 'AssignmentNode'
+exports.path = 'expression.node'
+exports.factory = factory

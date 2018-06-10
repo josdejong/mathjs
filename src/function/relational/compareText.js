@@ -1,13 +1,12 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var _typeof = load(require('../utils/typeof'))
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var _typeof = load(require('../utils/typeof'));
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-  
   /**
    * Compare two strings lexically. Comparison is case sensitive.
    * Returns 1 when x > y, -1 when x < y, and 0 when x == y.
@@ -40,43 +39,43 @@ function factory (type, config, load, typed) {
 
     'any, any': _compareText,
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, _compareText);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, _compareText)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return compareText(matrix(x), matrix(y)).valueOf();
+      return compareText(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return compareText(matrix(x), y);
+      return compareText(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return compareText(x, matrix(y));
+      return compareText(x, matrix(y))
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, _compareText, false);
+      return algorithm14(x, y, _compareText, false)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, _compareText, true);
+      return algorithm14(y, x, _compareText, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, _compareText, false).valueOf();
+      return algorithm14(matrix(x), y, _compareText, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, _compareText, true).valueOf();
+      return algorithm14(matrix(y), x, _compareText, true).valueOf()
     }
-  });
+  })
 
   /**
    * Compare two strings
@@ -85,26 +84,26 @@ function factory (type, config, load, typed) {
    * @returns {number}
    * @private
    */
-  function _compareText(x, y) {
+  function _compareText (x, y) {
     // we don't want to convert numbers to string, only accept string input
     if (!type.isString(x)) {
       throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)');
+          '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)')
     }
     if (!type.isString(y)) {
       throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)');
+          '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)')
     }
 
     return (x === y)
-        ? 0
-        : (x > y ? 1 : -1);
+      ? 0
+      : (x > y ? 1 : -1)
   }
 
-  compareText.toTex = undefined; // use default template
+  compareText.toTex = undefined // use default template
 
-  return compareText;
+  return compareText
 }
 
-exports.name = 'compareText';
-exports.factory = factory;
+exports.name = 'compareText'
+exports.factory = factory

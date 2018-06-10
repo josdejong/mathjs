@@ -11,4 +11,4 @@ module.exports = {
     'permutations(5, 3)'
   ],
   'seealso': ['combinations', 'factorial']
-};
+}

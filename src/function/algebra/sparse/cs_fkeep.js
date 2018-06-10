@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
 function factory () {
-
   /**
    * Keeps entries in the matrix when the callback function returns true, removes the entry otherwise
    *
@@ -19,47 +18,45 @@ function factory () {
    */
   var cs_fkeep = function (a, callback, other) {
     // a arrays
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var asize = a._size;
+    var avalues = a._values
+    var aindex = a._index
+    var aptr = a._ptr
+    var asize = a._size
     // columns
-    var n = asize[1];
+    var n = asize[1]
     // nonzero items
-    var nz = 0;
+    var nz = 0
     // loop columns
     for (var j = 0; j < n; j++) {
       // get current location of col j
-      var p = aptr[j];
+      var p = aptr[j]
       // record new location of col j
-      aptr[j] = nz;
-      for (; p < aptr[j+1]; p++) {
+      aptr[j] = nz
+      for (; p < aptr[j + 1]; p++) {
         // check we need to keep this item
         if (callback(aindex[p], j, avalues ? avalues[p] : 1, other)) {
           // keep A(i,j)
-          aindex[nz] = aindex[p];
+          aindex[nz] = aindex[p]
           // check we need to process values (pattern only)
-          if (avalues) 
-            avalues[nz] = avalues[p];
+          if (avalues) { avalues[nz] = avalues[p] }
           // increment nonzero items
-          nz++;
+          nz++
         }
       }
     }
     // finalize A
-    aptr[n] = nz;
+    aptr[n] = nz
     // trim arrays
-    aindex.splice(nz, aindex.length - nz);
+    aindex.splice(nz, aindex.length - nz)
     // check we need to process values (pattern only)
-    if (avalues)
-      avalues.splice(nz, avalues.length - nz);    
+    if (avalues) { avalues.splice(nz, avalues.length - nz) }
     // return number of nonzero items
-    return (nz);
-  };
-  
-  return cs_fkeep;
+    return (nz)
+  }
+
+  return cs_fkeep
 }
 
-exports.name = 'cs_fkeep';
-exports.path = 'sparse';
-exports.factory = factory;
+exports.name = 'cs_fkeep'
+exports.path = 'sparse'
+exports.factory = factory

@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -34,48 +33,48 @@ function factory (type, config, load, typed) {
    */
   var isPrime = typed('isPrime', {
     'number': function (x) {
-      if (x < 2){
-        return false;
+      if (x < 2) {
+        return false
       }
-      if (x == 2){
-        return true;
+      if (x == 2) {
+        return true
       }
-      if (x % 2 == 0){ 
-        return false;
+      if (x % 2 == 0) {
+        return false
       }
-      for (var i = 3; i * i <= x; i += 2){
-        if (x % i == 0){
-          return false;
+      for (var i = 3; i * i <= x; i += 2) {
+        if (x % i == 0) {
+          return false
         }
       }
-      return true;
+      return true
     },
 
     'BigNumber': function (x) {
-      if (x.lt(2)){
-        return false;
+      if (x.lt(2)) {
+        return false
       }
-      if (x.equals(2)){
-        return true;
+      if (x.equals(2)) {
+        return true
       }
-      if (x.mod(2).isZero()){
-        return false;
+      if (x.mod(2).isZero()) {
+        return false
       }
-      for(var i = type.BigNumber(3); i.times(i).lte(x); i = i.plus(1)){
-        if (x.mod(i).isZero()){
-          return false;
+      for (var i = type.BigNumber(3); i.times(i).lte(x); i = i.plus(1)) {
+        if (x.mod(i).isZero()) {
+          return false
         }
       }
-      return true;
+      return true
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isPrime);
+      return deepMap(x, isPrime)
     }
-  });
+  })
 
-  return isPrime;
+  return isPrime
 }
 
-exports.name = 'isPrime';
-exports.factory = factory;
+exports.name = 'isPrime'
+exports.factory = factory

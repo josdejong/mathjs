@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * Execute the callback function element wise for each element in array and any
@@ -12,14 +12,13 @@
  *
  * @return {Array | Matrix} res
  */
-module.exports = function deepMap(array, callback, skipZeros) {
+module.exports = function deepMap (array, callback, skipZeros) {
   if (array && (typeof array.map === 'function')) {
     // TODO: replace array.map with a for loop to improve performance
     return array.map(function (x) {
-      return deepMap(x, callback, skipZeros);
-    });
+      return deepMap(x, callback, skipZeros)
+    })
+  } else {
+    return callback(array)
   }
-  else {
-    return callback(array);
-  }
-};
+}

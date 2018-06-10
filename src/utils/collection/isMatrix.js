@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * Test whether a value is a Matrix
@@ -7,5 +7,5 @@
  *                    (like a DenseMatrix or SparseMatrix)
  */
 module.exports = function isMatrix (x) {
-  return x && x.constructor.prototype.isMatrix || false;
-};
+  return x && x.constructor.prototype.isMatrix || false
+}

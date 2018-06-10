@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * Bitwise not
  * @param {BigNumber} value
@@ -7,16 +7,16 @@
  */
 module.exports = function bitNot (x) {
   if (x.isFinite() && !x.isInteger()) {
-    throw new Error('Integer expected in function bitNot');
+    throw new Error('Integer expected in function bitNot')
   }
 
-  var BigNumber = x.constructor;
-  var prevPrec = BigNumber.precision;
-  BigNumber.config({precision: 1E9});
+  var BigNumber = x.constructor
+  var prevPrec = BigNumber.precision
+  BigNumber.config({precision: 1E9})
 
-  var x = x.plus(new BigNumber(1));
-  x.s = -x.s || null;
+  var x = x.plus(new BigNumber(1))
+  x.s = -x.s || null
 
-  BigNumber.config({precision: prevPrec});
-  return x;
-};
+  BigNumber.config({precision: prevPrec})
+  return x
+}

@@ -19,4 +19,4 @@ module.exports = {
     'pickRandom([1, 3, 1, 6], [2, 3, 2, 1], 2)'
   ],
   'seealso': ['random', 'randomInt']
-};
+}

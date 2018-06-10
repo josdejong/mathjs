@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -26,33 +26,33 @@ function factory (type, config, load, typed) {
    */
   var csc = typed('csc', {
     'number': function (x) {
-      return 1 / Math.sin(x);
+      return 1 / Math.sin(x)
     },
 
     'Complex': function (x) {
-      return x.csc();
+      return x.csc()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.sin());
+      return new type.BigNumber(1).div(x.sin())
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function csc is no angle');
+        throw new TypeError('Unit in function csc is no angle')
       }
-      return csc(x.value);
+      return csc(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, csc);
+      return deepMap(x, csc)
     }
-  });
+  })
 
-  csc.toTex = {1: '\\csc\\left(${args[0]}\\right)'};
+  csc.toTex = {1: '\\csc\\left(${args[0]}\\right)'}
 
-  return csc;
+  return csc
 }
 
-exports.name = 'csc';
-exports.factory = factory;
+exports.name = 'csc'
+exports.factory = factory

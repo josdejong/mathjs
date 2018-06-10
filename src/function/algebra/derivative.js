@@ -1,17 +1,17 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../../expression/parse'));
-  var simplify = load(require('./simplify'));
-  var equal = load(require('../relational/equal'));
-  var isZero = load(require('../utils/isZero'));
-  var getType = load(require('../utils/typeof'));
-  var numeric = load(require('../../type/numeric'));
-  var ConstantNode = load(require('../../expression/node/ConstantNode'));
-  var FunctionNode = load(require('../../expression/node/FunctionNode'));
-  var OperatorNode = load(require('../../expression/node/OperatorNode'));
-  var ParenthesisNode = load(require('../../expression/node/ParenthesisNode'));
-  var SymbolNode = load(require('../../expression/node/SymbolNode'));
+  var parse = load(require('../../expression/parse'))
+  var simplify = load(require('./simplify'))
+  var equal = load(require('../relational/equal'))
+  var isZero = load(require('../utils/isZero'))
+  var getType = load(require('../utils/typeof'))
+  var numeric = load(require('../../type/numeric'))
+  var ConstantNode = load(require('../../expression/node/ConstantNode'))
+  var FunctionNode = load(require('../../expression/node/FunctionNode'))
+  var OperatorNode = load(require('../../expression/node/OperatorNode'))
+  var ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
+  var SymbolNode = load(require('../../expression/node/SymbolNode'))
 
   /**
    * Takes the derivative of an expression expressed in parser Nodes.
@@ -53,10 +53,10 @@ function factory (type, config, load, typed) {
    */
   var derivative = typed('derivative', {
     'Node, SymbolNode, Object': function (expr, variable, options) {
-      var constNodes = {};
-      constTag(constNodes, expr, variable.name);
-      var res = _derivative(expr, constNodes);
-      return options.simplify ? simplify(res) : res;
+      var constNodes = {}
+      constTag(constNodes, expr, variable.name)
+      var res = _derivative(expr, constNodes)
+      return options.simplify ? simplify(res) : res
     },
     'Node, SymbolNode': function (expr, variable) {
       return derivative(expr, variable, {simplify: true})
@@ -96,44 +96,43 @@ function factory (type, config, load, typed) {
       return res;
     }
     */
-  });
+  })
 
   derivative._simplify = true
 
-  derivative.toTex = function(deriv) {
-    return _derivTex.apply(null, deriv.args);
+  derivative.toTex = function (deriv) {
+    return _derivTex.apply(null, deriv.args)
   }
 
   // NOTE: the optional "order" parameter here is currently unused
   var _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {
-      if(type.isConstantNode(expr) && getType(expr.value) == 'string') {
-        return _derivTex(parse(expr.value).toString(), x.toString(), 1);
+      if (type.isConstantNode(expr) && getType(expr.value) == 'string') {
+        return _derivTex(parse(expr.value).toString(), x.toString(), 1)
       } else {
-        return _derivTex(expr.toString(), x.toString(), 1);
+        return _derivTex(expr.toString(), x.toString(), 1)
       }
     },
     'Node, ConstantNode': function (expr, x) {
-      if(getType(x.value) == 'string') {
-        return _derivTex(expr, parse(x.value));
+      if (getType(x.value) == 'string') {
+        return _derivTex(expr, parse(x.value))
       } else {
-        throw new Error("The second parameter to 'derivative' is a non-string constant");
+        throw new Error("The second parameter to 'derivative' is a non-string constant")
       }
     },
     'Node, SymbolNode, ConstantNode': function (expr, x, order) {
-      return _derivTex(expr.toString(), x.name, order.value);
+      return _derivTex(expr.toString(), x.name, order.value)
     },
     'string, string, number': function (expr, x, order) {
-      var d;
+      var d
       if (order === 1) {
-        d = "{d\\over d" + x + "}";
+        d = '{d\\over d' + x + '}'
+      } else {
+        d = '{d^{' + order + '}\\over d' + x + '^{' + order + '}}'
       }
-      else {
-        d = "{d^{" + order + "}\\over d" + x + "^{" + order + "}}";
-      }
-      return d + "\\left[" + expr + "\\right]"
+      return d + '\\left[' + expr + '\\right]'
     }
-  });
+  })
 
   /**
    * Does a depth-first search on the expression tree to identify what Nodes
@@ -152,43 +151,43 @@ function factory (type, config, load, typed) {
   // TODO: can we rewrite constTag into a pure function?
   var constTag = typed('constTag', {
     'Object, ConstantNode, string': function (constNodes, node) {
-      return constNodes[node] = true;
+      return constNodes[node] = true
     },
 
     'Object, SymbolNode, string': function (constNodes, node, varName) {
       // Treat other variables like constants. For reasoning, see:
       //   https://en.wikipedia.org/wiki/Partial_derivative
       if (node.name !== varName) {
-        return constNodes[node] = true;
+        return constNodes[node] = true
       }
-      return false;
+      return false
     },
 
     'Object, ParenthesisNode, string': function (constNodes, node, varName) {
-      return constTag(constNodes, node.content, varName);
+      return constTag(constNodes, node.content, varName)
     },
 
     'Object, FunctionAssignmentNode, string': function (constNodes, node, varName) {
       if (node.params.indexOf(varName) === -1) {
-        return constNodes[node] = true;
+        return constNodes[node] = true
       }
-      return constTag(constNodes, node.expr, varName);
+      return constTag(constNodes, node.expr, varName)
     },
 
     'Object, FunctionNode | OperatorNode, string': function (constNodes, node, varName) {
       if (node.args.length > 0) {
-        var isConst = constTag(constNodes, node.args[0], varName);
+        var isConst = constTag(constNodes, node.args[0], varName)
         for (var i = 1; i < node.args.length; ++i) {
-          isConst = constTag(constNodes, node.args[i], varName) && isConst;
+          isConst = constTag(constNodes, node.args[i], varName) && isConst
         }
 
         if (isConst) {
-          return constNodes[node] = true;
+          return constNodes[node] = true
         }
       }
-      return false;
+      return false
     }
-  });
+  })
 
   /**
    * Applies differentiation rules.
@@ -199,47 +198,47 @@ function factory (type, config, load, typed) {
    */
   var _derivative = typed('_derivative', {
     'ConstantNode, Object': function (node) {
-       return createConstantNode(0);
+      return createConstantNode(0)
     },
 
     'SymbolNode, Object': function (node, constNodes) {
       if (constNodes[node] !== undefined) {
-        return createConstantNode(0);
+        return createConstantNode(0)
       }
-      return createConstantNode(1);
+      return createConstantNode(1)
     },
 
     'ParenthesisNode, Object': function (node, constNodes) {
-      return new ParenthesisNode(_derivative(node.content, constNodes));
+      return new ParenthesisNode(_derivative(node.content, constNodes))
     },
 
     'FunctionAssignmentNode, Object': function (node, constNodes) {
       if (constNodes[node] !== undefined) {
-        return createConstantNode(0);
+        return createConstantNode(0)
       }
-      return _derivative(node.expr, constNodes);
+      return _derivative(node.expr, constNodes)
     },
 
     'FunctionNode, Object': function (node, constNodes) {
       if (node.args.length !== 1) {
-        funcArgsCheck(node);
+        funcArgsCheck(node)
       }
 
       if (constNodes[node] !== undefined) {
-        return createConstantNode(0);
+        return createConstantNode(0)
       }
 
-      var arg0 = node.args[0];
-      var arg1;
+      var arg0 = node.args[0]
+      var arg1
 
-      var div = false;       // is output a fraction?
-      var negative = false;  // is output negative?
+      var div = false // is output a fraction?
+      var negative = false // is output negative?
 
-      var funcDerivative;
+      var funcDerivative
       switch (node.name) {
         case 'cbrt':
           // d/dx(cbrt(x)) = 1 / (3x^(2/3))
-          div = true;
+          div = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             createConstantNode(3),
             new OperatorNode('^', 'pow', [
@@ -249,102 +248,101 @@ function factory (type, config, load, typed) {
                 createConstantNode(3)
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'sqrt':
         case 'nthRoot':
           // d/dx(sqrt(x)) = 1 / (2*sqrt(x))
           if (node.args.length === 1) {
-            div = true;
+            div = true
             funcDerivative = new OperatorNode('*', 'multiply', [
               createConstantNode(2),
               new FunctionNode('sqrt', [arg0])
-            ]);
-          }
-          else if (node.args.length === 2) {
+            ])
+          } else if (node.args.length === 2) {
             // Rearrange from nthRoot(x, a) -> x^(1/a)
             arg1 = new OperatorNode('/', 'divide', [
               createConstantNode(1),
               node.args[1]
-            ]);
+            ])
 
             // Is a variable?
-            constNodes[arg1] = constNodes[node.args[1]];
+            constNodes[arg1] = constNodes[node.args[1]]
 
-            return _derivative(new OperatorNode('^', 'pow', [arg0, arg1]), constNodes);
+            return _derivative(new OperatorNode('^', 'pow', [arg0, arg1]), constNodes)
           }
-          break;
+          break
         case 'log10':
-          arg1 = createConstantNode(10);
+          arg1 = createConstantNode(10)
           /* fall through! */
         case 'log':
           if (!arg1 && node.args.length === 1) {
             // d/dx(log(x)) = 1 / x
-            funcDerivative = arg0.clone();
-            div = true;
+            funcDerivative = arg0.clone()
+            div = true
           } else if ((node.args.length === 1 && arg1) ||
               (node.args.length === 2 && constNodes[node.args[1]] !== undefined)) {
             // d/dx(log(x, c)) = 1 / (x*ln(c))
             funcDerivative = new OperatorNode('*', 'multiply', [
               arg0.clone(),
               new FunctionNode('log', [arg1 || node.args[1]])
-            ]);
-            div = true;
+            ])
+            div = true
           } else if (node.args.length === 2) {
             // d/dx(log(f(x), g(x))) = d/dx(log(f(x)) / log(g(x)))
             return _derivative(new OperatorNode('/', 'divide', [
-                new FunctionNode('log', [arg0]),
-                new FunctionNode('log', [node.args[1]])
-              ]), constNodes);
+              new FunctionNode('log', [arg0]),
+              new FunctionNode('log', [node.args[1]])
+            ]), constNodes)
           }
-          break;
+          break
         case 'exp':
           // d/dx(e^x) = e^x
-          funcDerivative = new FunctionNode('exp', [arg0.clone()]);
-          break;
+          funcDerivative = new FunctionNode('exp', [arg0.clone()])
+          break
         case 'sin':
           // d/dx(sin(x)) = cos(x)
-          funcDerivative = new FunctionNode('cos', [arg0.clone()]);
-          break;
+          funcDerivative = new FunctionNode('cos', [arg0.clone()])
+          break
         case 'cos':
           // d/dx(cos(x)) = -sin(x)
           funcDerivative = new OperatorNode('-', 'unaryMinus', [
             new FunctionNode('sin', [arg0.clone()])
-          ]);
-          break;
+          ])
+          break
         case 'tan':
           // d/dx(tan(x)) = sec(x)^2
           funcDerivative = new OperatorNode('^', 'pow', [
             new FunctionNode('sec', [arg0.clone()]),
             createConstantNode(2)
-          ]);
-          break;
+          ])
+          break
         case 'sec':
           // d/dx(sec(x)) = sec(x)tan(x)
           funcDerivative = new OperatorNode('*', 'multiply', [
             node,
             new FunctionNode('tan', [arg0.clone()])
-          ]);
-          break;
+          ])
+          break
         case 'csc':
           // d/dx(csc(x)) = -csc(x)cot(x)
-          negative = true;
+          negative = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             node,
             new FunctionNode('cot', [arg0.clone()])
-          ]);
-          break;
+          ])
+          break
         case 'cot':
           // d/dx(cot(x)) = -csc(x)^2
-          negative = true;
+          negative = true
           funcDerivative = new OperatorNode('^', 'pow', [
             new FunctionNode('csc', [arg0.clone()]),
             createConstantNode(2)
-          ]);
-          break;
+          ])
+          break
         case 'asin':
           // d/dx(asin(x)) = 1 / sqrt(1 - x^2)
-          div = true;
+          div = true
           funcDerivative = new FunctionNode('sqrt', [
             new OperatorNode('-', 'subtract', [
               createConstantNode(1),
@@ -353,12 +351,12 @@ function factory (type, config, load, typed) {
                 createConstantNode(2)
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'acos':
           // d/dx(acos(x)) = -1 / sqrt(1 - x^2)
-          div = true;
-          negative = true;
+          div = true
+          negative = true
           funcDerivative = new FunctionNode('sqrt', [
             new OperatorNode('-', 'subtract', [
               createConstantNode(1),
@@ -367,22 +365,22 @@ function factory (type, config, load, typed) {
                 createConstantNode(2)
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'atan':
           // d/dx(atan(x)) = 1 / (x^2 + 1)
-          div = true;
+          div = true
           funcDerivative = new OperatorNode('+', 'add', [
             new OperatorNode('^', 'pow', [
               arg0.clone(),
               createConstantNode(2)
             ]),
             createConstantNode(1)
-          ]);
-          break;
+          ])
+          break
         case 'asec':
           // d/dx(asec(x)) = 1 / (|x|*sqrt(x^2 - 1))
-          div = true;
+          div = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             new FunctionNode('abs', [arg0.clone()]),
             new FunctionNode('sqrt', [
@@ -394,12 +392,12 @@ function factory (type, config, load, typed) {
                 createConstantNode(1)
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'acsc':
           // d/dx(acsc(x)) = -1 / (|x|*sqrt(x^2 - 1))
-          div = true;
-          negative = true;
+          div = true
+          negative = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             new FunctionNode('abs', [arg0.clone()]),
             new FunctionNode('sqrt', [
@@ -411,62 +409,62 @@ function factory (type, config, load, typed) {
                 createConstantNode(1)
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'acot':
           // d/dx(acot(x)) = -1 / (x^2 + 1)
-          div = true;
-          negative = true;
+          div = true
+          negative = true
           funcDerivative = new OperatorNode('+', 'add', [
             new OperatorNode('^', 'pow', [
               arg0.clone(),
               createConstantNode(2)
             ]),
             createConstantNode(1)
-          ]);
-          break;
+          ])
+          break
         case 'sinh':
           // d/dx(sinh(x)) = cosh(x)
-          funcDerivative = new FunctionNode('cosh', [arg0.clone()]);
-          break;
+          funcDerivative = new FunctionNode('cosh', [arg0.clone()])
+          break
         case 'cosh':
           // d/dx(cosh(x)) = sinh(x)
-          funcDerivative = new FunctionNode('sinh', [arg0.clone()]);
-          break;
+          funcDerivative = new FunctionNode('sinh', [arg0.clone()])
+          break
         case 'tanh':
           // d/dx(tanh(x)) = sech(x)^2
           funcDerivative = new OperatorNode('^', 'pow', [
             new FunctionNode('sech', [arg0.clone()]),
             createConstantNode(2)
-          ]);
-          break;
+          ])
+          break
         case 'sech':
           // d/dx(sech(x)) = -sech(x)tanh(x)
-          negative = true;
+          negative = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             node,
             new FunctionNode('tanh', [arg0.clone()])
-          ]);
-          break;
+          ])
+          break
         case 'csch':
           // d/dx(csch(x)) = -csch(x)coth(x)
-          negative = true;
+          negative = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             node,
             new FunctionNode('coth', [arg0.clone()])
-          ]);
-          break;
+          ])
+          break
         case 'coth':
           // d/dx(coth(x)) = -csch(x)^2
-          negative = true;
+          negative = true
           funcDerivative = new OperatorNode('^', 'pow', [
             new FunctionNode('csch', [arg0.clone()]),
             createConstantNode(2)
-          ]);
-          break;
+          ])
+          break
         case 'asinh':
           // d/dx(asinh(x)) = 1 / sqrt(x^2 + 1)
-          div = true;
+          div = true
           funcDerivative = new FunctionNode('sqrt', [
             new OperatorNode('+', 'add', [
               new OperatorNode('^', 'pow', [
@@ -475,11 +473,11 @@ function factory (type, config, load, typed) {
               ]),
               createConstantNode(1)
             ])
-          ]);
-          break;
+          ])
+          break
         case 'acosh':
           // d/dx(acosh(x)) = 1 / sqrt(x^2 - 1); XXX potentially only for x >= 1 (the real spectrum)
-          div = true;
+          div = true
           funcDerivative = new FunctionNode('sqrt', [
             new OperatorNode('-', 'subtract', [
               new OperatorNode('^', 'pow', [
@@ -488,23 +486,23 @@ function factory (type, config, load, typed) {
               ]),
               createConstantNode(1)
             ])
-          ]);
-          break;
+          ])
+          break
         case 'atanh':
           // d/dx(atanh(x)) = 1 / (1 - x^2)
-          div = true;
+          div = true
           funcDerivative = new OperatorNode('-', 'subtract', [
             createConstantNode(1),
             new OperatorNode('^', 'pow', [
               arg0.clone(),
               createConstantNode(2)
             ])
-          ]);
-          break;
+          ])
+          break
         case 'asech':
           // d/dx(asech(x)) = -1 / (x*sqrt(1 - x^2))
-          div = true;
-          negative = true;
+          div = true
+          negative = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             arg0.clone(),
             new FunctionNode('sqrt', [
@@ -516,12 +514,12 @@ function factory (type, config, load, typed) {
                 ])
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'acsch':
           // d/dx(acsch(x)) = -1 / (|x|*sqrt(x^2 + 1))
-          div = true;
-          negative = true;
+          div = true
+          negative = true
           funcDerivative = new OperatorNode('*', 'multiply', [
             new FunctionNode('abs', [arg0.clone()]),
             new FunctionNode('sqrt', [
@@ -533,68 +531,68 @@ function factory (type, config, load, typed) {
                 createConstantNode(1)
               ])
             ])
-          ]);
-          break;
+          ])
+          break
         case 'acoth':
           // d/dx(acoth(x)) = -1 / (1 - x^2)
-          div = true;
-          negative = true;
+          div = true
+          negative = true
           funcDerivative = new OperatorNode('-', 'subtract', [
             createConstantNode(1),
             new OperatorNode('^', 'pow', [
               arg0.clone(),
               createConstantNode(2)
             ])
-          ]);
-          break;
+          ])
+          break
         case 'abs':
           // d/dx(abs(x)) = abs(x)/x
           funcDerivative = new OperatorNode('/', 'divide', [
             new FunctionNode(new SymbolNode('abs'), [arg0.clone()]),
             arg0.clone()
-          ]);
-          break;
-        case 'gamma':  // Needs digamma function, d/dx(gamma(x)) = gamma(x)digamma(x)
-        default: throw new Error('Function "' + node.name + '" is not supported by derivative, or a wrong number of arguments is passed');
+          ])
+          break
+        case 'gamma': // Needs digamma function, d/dx(gamma(x)) = gamma(x)digamma(x)
+        default: throw new Error('Function "' + node.name + '" is not supported by derivative, or a wrong number of arguments is passed')
       }
 
-      var op, func;
+      var op, func
       if (div) {
-        op = '/';
-        func = 'divide';
+        op = '/'
+        func = 'divide'
       } else {
-        op = '*';
-        func = 'multiply';
+        op = '*'
+        func = 'multiply'
       }
 
       /* Apply chain rule to all functions:
          F(x)  = f(g(x))
          F'(x) = g'(x)*f'(g(x)) */
-      var chainDerivative = _derivative(arg0, constNodes);
+      var chainDerivative = _derivative(arg0, constNodes)
       if (negative) {
-        chainDerivative = new OperatorNode('-', 'unaryMinus', [chainDerivative]);
+        chainDerivative = new OperatorNode('-', 'unaryMinus', [chainDerivative])
       }
-      return new OperatorNode(op, func, [chainDerivative, funcDerivative]);
+      return new OperatorNode(op, func, [chainDerivative, funcDerivative])
     },
 
     'OperatorNode, Object': function (node, constNodes) {
       if (constNodes[node] !== undefined) {
-        return createConstantNode(0);
+        return createConstantNode(0)
       }
 
       if (node.op === '+') {
         // d/dx(sum(f(x)) = sum(f'(x))
-        return new OperatorNode(node.op, node.fn, node.args.map(function(arg) {
-          return _derivative(arg, constNodes);
-        }));
+        return new OperatorNode(node.op, node.fn, node.args.map(function (arg) {
+          return _derivative(arg, constNodes)
+        }))
       }
 
       if (node.op === '-') {
         // d/dx(+/-f(x)) = +/-f'(x)
         if (node.isUnary()) {
           return new OperatorNode(node.op, node.fn, [
-              _derivative(node.args[0], constNodes)
-          ]);
+            _derivative(node.args[0], constNodes)
+          ])
         }
 
         // Linearity of differentiation, d/dx(f(x) +/- g(x)) = f'(x) +/- g'(x)
@@ -602,47 +600,47 @@ function factory (type, config, load, typed) {
           return new OperatorNode(node.op, node.fn, [
             _derivative(node.args[0], constNodes),
             _derivative(node.args[1], constNodes)
-          ]);
+          ])
         }
       }
 
       if (node.op === '*') {
         // d/dx(c*f(x)) = c*f'(x)
-        var constantTerms = node.args.filter(function(arg) {
-          return constNodes[arg] !== undefined;
-        });
+        var constantTerms = node.args.filter(function (arg) {
+          return constNodes[arg] !== undefined
+        })
 
         if (constantTerms.length > 0) {
-          var nonConstantTerms = node.args.filter(function(arg) {
-            return constNodes[arg] === undefined;
-          });
+          var nonConstantTerms = node.args.filter(function (arg) {
+            return constNodes[arg] === undefined
+          })
 
           var nonConstantNode = nonConstantTerms.length === 1
-              ? nonConstantTerms[0]
-              : new OperatorNode('*', 'multiply', nonConstantTerms);
+            ? nonConstantTerms[0]
+            : new OperatorNode('*', 'multiply', nonConstantTerms)
 
-          var newArgs = constantTerms.concat(_derivative(nonConstantNode, constNodes));
+          var newArgs = constantTerms.concat(_derivative(nonConstantNode, constNodes))
 
-          return new OperatorNode('*', 'multiply', newArgs);
+          return new OperatorNode('*', 'multiply', newArgs)
         }
 
         // Product Rule, d/dx(f(x)*g(x)) = f'(x)*g(x) + f(x)*g'(x)
-        return new OperatorNode('+', 'add', node.args.map(function(argOuter) {
-          return new OperatorNode('*', 'multiply', node.args.map(function(argInner) {
+        return new OperatorNode('+', 'add', node.args.map(function (argOuter) {
+          return new OperatorNode('*', 'multiply', node.args.map(function (argInner) {
             return (argInner === argOuter)
-                ? _derivative(argInner, constNodes)
-                : argInner.clone();
-          }));
-        }));
+              ? _derivative(argInner, constNodes)
+              : argInner.clone()
+          }))
+        }))
       }
 
       if (node.op === '/' && node.isBinary()) {
-        var arg0 = node.args[0];
-        var arg1 = node.args[1];
+        var arg0 = node.args[0]
+        var arg1 = node.args[1]
 
         // d/dx(f(x) / c) = f'(x) / c
         if (constNodes[arg1] !== undefined) {
-          return new OperatorNode('/', 'divide', [_derivative(arg0, constNodes), arg1]);
+          return new OperatorNode('/', 'divide', [_derivative(arg0, constNodes), arg1])
         }
 
         // Reciprocal Rule, d/dx(c / f(x)) = -c(f'(x)/f(x)^2)
@@ -653,7 +651,7 @@ function factory (type, config, load, typed) {
               _derivative(arg1, constNodes),
               new OperatorNode('^', 'pow', [arg1.clone(), createConstantNode(2)])
             ])
-          ]);
+          ])
         }
 
         // Quotient rule, d/dx(f(x) / g(x)) = (f'(x)g(x) - f(x)g'(x)) / g(x)^2
@@ -663,17 +661,17 @@ function factory (type, config, load, typed) {
             new OperatorNode('*', 'multiply', [arg0.clone(), _derivative(arg1, constNodes)])
           ]),
           new OperatorNode('^', 'pow', [arg1.clone(), createConstantNode(2)])
-        ]);
+        ])
       }
 
       if (node.op === '^' && node.isBinary()) {
-        var arg0 = node.args[0];
-        var arg1 = node.args[1];
+        var arg0 = node.args[0]
+        var arg1 = node.args[1]
 
         if (constNodes[arg0] !== undefined) {
           // If is secretly constant; 0^f(x) = 1 (in JS), 1^f(x) = 1
           if (type.isConstantNode(arg0) && (isZero(arg0.value) || equal(arg0.value, 1))) {
-            return createConstantNode(0);
+            return createConstantNode(0)
           }
 
           // d/dx(c^f(x)) = c^f(x)*ln(c)*f'(x)
@@ -683,29 +681,29 @@ function factory (type, config, load, typed) {
               new FunctionNode('log', [arg0.clone()]),
               _derivative(arg1.clone(), constNodes)
             ])
-          ]);
+          ])
         }
 
-          if (constNodes[arg1] !== undefined) {
-            if (type.isConstantNode(arg1)) {
-              // If is secretly constant; f(x)^0 = 1 -> d/dx(1) = 0
-              if (isZero(arg1.value)) {
-                return createConstantNode(0);
-              }
-              // Ignore exponent; f(x)^1 = f(x)
-              if (equal(arg1.value,1)) {
-                return _derivative(arg0, constNodes);
-              }
+        if (constNodes[arg1] !== undefined) {
+          if (type.isConstantNode(arg1)) {
+            // If is secretly constant; f(x)^0 = 1 -> d/dx(1) = 0
+            if (isZero(arg1.value)) {
+              return createConstantNode(0)
             }
+            // Ignore exponent; f(x)^1 = f(x)
+            if (equal(arg1.value, 1)) {
+              return _derivative(arg0, constNodes)
+            }
+          }
 
-            // Elementary Power Rule, d/dx(f(x)^c) = c*f'(x)*f(x)^(c-1)
-            var powMinusOne = new OperatorNode('^', 'pow', [
-              arg0.clone(),
-              new OperatorNode('-', 'subtract', [
-                arg1,
-                createConstantNode(1)
-              ])
-            ]);
+          // Elementary Power Rule, d/dx(f(x)^c) = c*f'(x)*f(x)^(c-1)
+          var powMinusOne = new OperatorNode('^', 'pow', [
+            arg0.clone(),
+            new OperatorNode('-', 'subtract', [
+              arg1,
+              createConstantNode(1)
+            ])
+          ])
 
           return new OperatorNode('*', 'multiply', [
             arg1.clone(),
@@ -713,7 +711,7 @@ function factory (type, config, load, typed) {
               _derivative(arg0, constNodes),
               powMinusOne
             ])
-          ]);
+          ])
         }
 
         // Functional Power Rule, d/dx(f^g) = f^g*[f'*(g/f) + g'ln(f)]
@@ -729,12 +727,12 @@ function factory (type, config, load, typed) {
               new FunctionNode('log', [arg0.clone()])
             ])
           ])
-        ]);
+        ])
       }
 
-      throw new Error('Operator "' + node.op + '" is not supported by derivative, or a wrong number of arguments is passed');
+      throw new Error('Operator "' + node.op + '" is not supported by derivative, or a wrong number of arguments is passed')
     }
-  });
+  })
 
   /**
    * Ensures the number of arguments for a function are correct,
@@ -742,10 +740,10 @@ function factory (type, config, load, typed) {
    *
    * @param {FunctionNode} node
    */
-  function funcArgsCheck(node) {
-    //TODO add min, max etc
+  function funcArgsCheck (node) {
+    // TODO add min, max etc
     if ((node.name === 'log' || node.name === 'nthRoot') && node.args.length === 2) {
-      return;
+      return
     }
 
     // There should be an incorrect number of arguments if we reach here
@@ -753,11 +751,11 @@ function factory (type, config, load, typed) {
     // Change all args to constants to avoid unidentified
     // symbol error when compiling function
     for (var i = 0; i < node.args.length; ++i) {
-      node.args[i] = createConstantNode(0);
+      node.args[i] = createConstantNode(0)
     }
 
-    node.compile().eval();
-    throw new Error('Expected TypeError, but none found');
+    node.compile().eval()
+    throw new Error('Expected TypeError, but none found')
   }
 
   /**
@@ -767,12 +765,12 @@ function factory (type, config, load, typed) {
    * @param {string} [valueType]
    * @return {ConstantNode}
    */
-  function createConstantNode(value, valueType) {
-    return new ConstantNode(numeric(value, valueType || config.number));
+  function createConstantNode (value, valueType) {
+    return new ConstantNode(numeric(value, valueType || config.number))
   }
 
-  return derivative;
+  return derivative
 }
 
-exports.name = 'derivative';
-exports.factory = factory;
+exports.name = 'derivative'
+exports.factory = factory

@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach');
+var deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'));
-  var multiply = load(require('../arithmetic/multiply'));
-  var divide = load(require('../arithmetic/divide'));
-  var factorial = load(require('../probability/factorial'));
-  var isInteger = load(require('../utils/isInteger'));
-  var isPositive = load(require('../utils/isPositive'));
+  var add = load(require('../arithmetic/add'))
+  var multiply = load(require('../arithmetic/multiply'))
+  var divide = load(require('../arithmetic/divide'))
+  var factorial = load(require('../probability/factorial'))
+  var isInteger = load(require('../utils/isInteger'))
+  var isPositive = load(require('../utils/isPositive'))
 
   /**
    * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
@@ -33,21 +33,21 @@ function factory (type, config, load, typed) {
    */
   return typed('multinomial', {
     'Array | Matrix': function (a) {
-      var sum = 0;
-      var denom = 1;
+      var sum = 0
+      var denom = 1
 
-      deepForEach(a, function(ai) {
-        if(!isInteger(ai) || !isPositive(ai)) {
-          throw new TypeError('Positive integer value expected in function multinomial');
+      deepForEach(a, function (ai) {
+        if (!isInteger(ai) || !isPositive(ai)) {
+          throw new TypeError('Positive integer value expected in function multinomial')
         }
-        sum = add(sum, ai);
-        denom = multiply(denom, factorial(ai));
-      });
+        sum = add(sum, ai)
+        denom = multiply(denom, factorial(ai))
+      })
 
-      return divide(factorial(sum), denom);
+      return divide(factorial(sum), denom)
     }
-  });
+  })
 }
 
-exports.name = 'multinomial';
-exports.factory = factory;
+exports.name = 'multinomial'
+exports.factory = factory

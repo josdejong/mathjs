@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
-var util = require('../../utils/index');
+var util = require('../../utils/index')
 
 function factory (type, config, load, typed) {
-  var matrix       = load(require('../../type/matrix/function/matrix'));
-  var divideScalar = load(require('../arithmetic/divideScalar'));
-  var addScalar    = load(require('../arithmetic/addScalar'));
-  var multiply     = load(require('../arithmetic/multiply'));
-  var unaryMinus   = load(require('../arithmetic/unaryMinus'));
-  var det          = load(require('../matrix/det'));
-  var identity          = load(require('./identity'));
-  var abs          = load(require('../arithmetic/abs'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var divideScalar = load(require('../arithmetic/divideScalar'))
+  var addScalar = load(require('../arithmetic/addScalar'))
+  var multiply = load(require('../arithmetic/multiply'))
+  var unaryMinus = load(require('../arithmetic/unaryMinus'))
+  var det = load(require('../matrix/det'))
+  var identity = load(require('./identity'))
+  var abs = load(require('../arithmetic/abs'))
 
   /**
    * Calculate the inverse of a square matrix.
@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
    */
   var inv = typed('inv', {
     'Array | Matrix': function (x) {
-      var size = type.isMatrix(x) ? x.size() : util.array.size(x);
+      var size = type.isMatrix(x) ? x.size() : util.array.size(x)
       switch (size.length) {
         case 1:
           // vector
@@ -42,52 +42,48 @@ function factory (type, config, load, typed) {
             if (type.isMatrix(x)) {
               return matrix([
                 divideScalar(1, x.valueOf()[0])
-              ]);
-            }
-            else {
+              ])
+            } else {
               return [
                 divideScalar(1, x[0])
-              ];
+              ]
             }
-          }
-          else {
+          } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + util.string.format(size) + ')');
+            '(size: ' + util.string.format(size) + ')')
           }
 
         case 2:
           // two dimensional array
-          var rows = size[0];
-          var cols = size[1];
+          var rows = size[0]
+          var cols = size[1]
           if (rows == cols) {
             if (type.isMatrix(x)) {
               return matrix(
-                  _inv(x.valueOf(), rows, cols),
-                  x.storage()
-              );
-            }
-            else {
+                _inv(x.valueOf(), rows, cols),
+                x.storage()
+              )
+            } else {
               // return an Array
-              return _inv(x, rows, cols);
+              return _inv(x, rows, cols)
             }
-          }
-          else {
+          } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + util.string.format(size) + ')');
+            '(size: ' + util.string.format(size) + ')')
           }
 
         default:
           // multi dimensional array
           throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + util.string.format(size) + ')');
+          '(size: ' + util.string.format(size) + ')')
       }
     },
 
     'any': function (x) {
       // scalar
-      return divideScalar(1, x); // FIXME: create a BigNumber one when configured for bignumbers
+      return divideScalar(1, x) // FIXME: create a BigNumber one when configured for bignumbers
     }
-  });
+  })
 
   /**
    * Calculate the inverse of a square matrix
@@ -97,24 +93,23 @@ function factory (type, config, load, typed) {
    * @return {Array[]} inv    Inverse matrix
    * @private
    */
-  function _inv (mat, rows, cols){
-    var r, s, f, value, temp;
+  function _inv (mat, rows, cols) {
+    var r, s, f, value, temp
 
     if (rows == 1) {
       // this is a 1 x 1 matrix
-      value = mat[0][0];
+      value = mat[0][0]
       if (value == 0) {
-        throw Error('Cannot calculate inverse, determinant is zero');
+        throw Error('Cannot calculate inverse, determinant is zero')
       }
       return [[
         divideScalar(1, value)
-      ]];
-    }
-    else if (rows == 2) {
+      ]]
+    } else if (rows == 2) {
       // this is a 2 x 2 matrix
-      var d = det(mat);
+      var d = det(mat)
       if (d == 0) {
-        throw Error('Cannot calculate inverse, determinant is zero');
+        throw Error('Cannot calculate inverse, determinant is zero')
       }
       return [
         [
@@ -125,9 +120,8 @@ function factory (type, config, load, typed) {
           divideScalar(unaryMinus(mat[1][0]), d),
           divideScalar(mat[0][0], d)
         ]
-      ];
-    }
-    else {
+      ]
+    } else {
       // this is a matrix of 3 x 3 or larger
       // calculate inverse using gauss-jordan elimination
       //      http://en.wikipedia.org/wiki/Gaussian_elimination
@@ -135,79 +129,78 @@ function factory (type, config, load, typed) {
       //      http://math.uww.edu/~mcfarlat/inverse.htm
 
       // make a copy of the matrix (only the arrays, not of the elements)
-      var A = mat.concat();
+      var A = mat.concat()
       for (r = 0; r < rows; r++) {
-        A[r] = A[r].concat();
+        A[r] = A[r].concat()
       }
 
       // create an identity matrix which in the end will contain the
       // matrix inverse
-      var B = identity(rows).valueOf();
+      var B = identity(rows).valueOf()
 
       // loop over all columns, and perform row reductions
       for (var c = 0; c < cols; c++) {
         // Pivoting: Swap row c with row r, where row r contains the largest element A[r][c]
-        var A_big = abs(A[c][c]);
-        var r_big = c;
-        r = c+1;
+        var A_big = abs(A[c][c])
+        var r_big = c
+        r = c + 1
         while (r < rows) {
-          if(abs(A[r][c]) > A_big) {
-            A_big = abs(A[r][c]);
-            r_big = r;
+          if (abs(A[r][c]) > A_big) {
+            A_big = abs(A[r][c])
+            r_big = r
           }
-          r++;
+          r++
         }
-        if(A_big == 0) {
-          throw Error('Cannot calculate inverse, determinant is zero');
+        if (A_big == 0) {
+          throw Error('Cannot calculate inverse, determinant is zero')
         }
-        r = r_big;
+        r = r_big
         if (r != c) {
-          temp = A[c]; A[c] = A[r]; A[r] = temp;
-          temp = B[c]; B[c] = B[r]; B[r] = temp;
+          temp = A[c]; A[c] = A[r]; A[r] = temp
+          temp = B[c]; B[c] = B[r]; B[r] = temp
         }
 
         // eliminate non-zero values on the other rows at column c
         var Ac = A[c],
-            Bc = B[c];
+          Bc = B[c]
         for (r = 0; r < rows; r++) {
           var Ar = A[r],
-              Br = B[r];
-          if(r != c) {
+            Br = B[r]
+          if (r != c) {
             // eliminate value at column c and row r
             if (Ar[c] != 0) {
-              f = divideScalar(unaryMinus(Ar[c]), Ac[c]);
+              f = divideScalar(unaryMinus(Ar[c]), Ac[c])
 
               // add (f * row c) to row r to eliminate the value
               // at column c
               for (s = c; s < cols; s++) {
-                Ar[s] = addScalar(Ar[s], multiply(f, Ac[s]));
+                Ar[s] = addScalar(Ar[s], multiply(f, Ac[s]))
               }
               for (s = 0; s < cols; s++) {
-                Br[s] = addScalar(Br[s],  multiply(f, Bc[s]));
+                Br[s] = addScalar(Br[s], multiply(f, Bc[s]))
               }
             }
-          }
-          else {
+          } else {
             // normalize value at Acc to 1,
             // divide each value on row r with the value at Acc
-            f = Ac[c];
+            f = Ac[c]
             for (s = c; s < cols; s++) {
-              Ar[s] = divideScalar(Ar[s], f);
+              Ar[s] = divideScalar(Ar[s], f)
             }
             for (s = 0; s < cols; s++) {
-              Br[s] = divideScalar(Br[s], f);
+              Br[s] = divideScalar(Br[s], f)
             }
           }
         }
       }
-      return B;
+      return B
     }
   }
 
-  inv.toTex = {1: '\\left(${args[0]}\\right)^{-1}'};
+  inv.toTex = {1: '\\left(${args[0]}\\right)^{-1}'}
 
-  return inv;
+  return inv
 }
 
-exports.name = 'inv';
-exports.factory = factory;
+exports.name = 'inv'
+exports.factory = factory

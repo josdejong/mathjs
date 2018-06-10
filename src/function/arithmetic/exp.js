@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -35,23 +35,23 @@ function factory (type, config, load, typed) {
     'number': Math.exp,
 
     'Complex': function (x) {
-      return x.exp();
+      return x.exp()
     },
 
     'BigNumber': function (x) {
-      return x.exp();
+      return x.exp()
     },
 
     'Array | Matrix': function (x) {
       // TODO: exp(sparse) should return a dense matrix since exp(0)==1
-      return deepMap(x, exp);
+      return deepMap(x, exp)
     }
-  });
+  })
 
-  exp.toTex = {1: '\\exp\\left(${args[0]}\\right)'};
+  exp.toTex = {1: '\\exp\\left(${args[0]}\\right)'}
 
-  return exp;
+  return exp
 }
 
-exports.name = 'exp';
-exports.factory = factory;
+exports.name = 'exp'
+exports.factory = factory

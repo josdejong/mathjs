@@ -13,4 +13,4 @@ module.exports = {
     'fix(-4.8)'
   ],
   'seealso': ['ceil', 'floor', 'round']
-};
+}

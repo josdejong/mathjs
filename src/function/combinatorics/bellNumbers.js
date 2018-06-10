@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'));
-  var stirlingS2 = load(require('./stirlingS2'));
-  var isNegative = load(require('../utils/isNegative'));
-  var isInteger = load(require('../utils/isInteger'));
+  var add = load(require('../arithmetic/add'))
+  var stirlingS2 = load(require('./stirlingS2'))
+  var isNegative = load(require('../utils/isNegative'))
+  var isInteger = load(require('../utils/isInteger'))
 
   /**
    * The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
@@ -29,25 +29,24 @@ function factory (type, config, load, typed) {
    */
   var bellNumbers = typed('bellNumbers', {
     'number | BigNumber': function (n) {
-
       if (!isInteger(n) || isNegative(n)) {
-        throw new TypeError('Non-negative integer value expected in function bellNumbers');
+        throw new TypeError('Non-negative integer value expected in function bellNumbers')
       }
 
       // Sum (k=0, n) S(n,k).
-      var result = 0;
-      for(var i = 0; i <= n; i++) {
-        result = add(result, stirlingS2(n, i));
+      var result = 0
+      for (var i = 0; i <= n; i++) {
+        result = add(result, stirlingS2(n, i))
       }
 
-      return result;
+      return result
     }
-  });
+  })
 
-  bellNumbers.toTex = {1: '\\mathrm{B}_{${args[0]}}'};
+  bellNumbers.toTex = {1: '\\mathrm{B}_{${args[0]}}'}
 
-  return bellNumbers;
+  return bellNumbers
 }
 
-exports.name = 'bellNumbers';
-exports.factory = factory;
+exports.name = 'bellNumbers'
+exports.factory = factory

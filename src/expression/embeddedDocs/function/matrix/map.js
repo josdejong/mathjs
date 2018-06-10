@@ -9,4 +9,4 @@ module.exports = {
     'map([1, 2, 3], square)'
   ],
   'seealso': ['filter', 'forEach']
-};
+}

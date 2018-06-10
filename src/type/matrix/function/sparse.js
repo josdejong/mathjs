@@ -1,8 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-
-  var SparseMatrix = type.SparseMatrix;
+  var SparseMatrix = type.SparseMatrix
 
   /**
    * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
@@ -33,29 +32,29 @@ function factory (type, config, load, typed) {
    */
   var sparse = typed('sparse', {
     '': function () {
-      return new SparseMatrix([]);
+      return new SparseMatrix([])
     },
-    
+
     'string': function (datatype) {
-      return new SparseMatrix([], datatype);
+      return new SparseMatrix([], datatype)
     },
 
     'Array | Matrix': function (data) {
-      return new SparseMatrix(data);
+      return new SparseMatrix(data)
     },
-    
+
     'Array | Matrix, string': function (data, datatype) {
-      return new SparseMatrix(data, datatype);
+      return new SparseMatrix(data, datatype)
     }
-  });
+  })
 
   sparse.toTex = {
     0: '\\begin{bsparse}\\end{bsparse}',
     1: '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return sparse;
+  return sparse
 }
 
-exports.name = 'sparse';
-exports.factory = factory;
+exports.name = 'sparse'
+exports.factory = factory

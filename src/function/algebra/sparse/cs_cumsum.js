@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
 function factory () {
-
   /**
    * It sets the p[i] equal to the sum of c[0] through c[i-1].
    *
@@ -13,26 +12,26 @@ function factory () {
    */
   var cs_cumsum = function (ptr, c, n) {
     // variables
-    var i;
-    var nz = 0;
+    var i
+    var nz = 0
 
     for (i = 0; i < n; i++) {
       // initialize ptr @ i
-      ptr[i] = nz;
+      ptr[i] = nz
       // increment number of nonzeros
-      nz += c[i];
+      nz += c[i]
       // also copy p[0..n-1] back into c[0..n-1]
-      c[i] = ptr[i];
+      c[i] = ptr[i]
     }
     // finalize ptr
-    ptr[n] = nz;
+    ptr[n] = nz
     // return sum (c [0..n-1])
-    return nz;
-  };
+    return nz
+  }
 
-  return cs_cumsum;
+  return cs_cumsum
 }
 
-exports.name = 'cs_cumsum';
-exports.path = 'sparse';
-exports.factory = factory;
+exports.name = 'cs_cumsum'
+exports.path = 'sparse'
+exports.factory = factory

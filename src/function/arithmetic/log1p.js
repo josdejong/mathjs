@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var divideScalar = load(require('./divideScalar'));
-  var log = load(require('./log'));
+  var divideScalar = load(require('./divideScalar'))
+  var log = load(require('./log'))
 
   /**
    * Calculate the logarithm of a `value+1`.
@@ -43,25 +43,24 @@ function factory (type, config, load, typed) {
     'Complex': _log1pComplex,
 
     'BigNumber': function (x) {
-      var y = x.plus(1);
+      var y = x.plus(1)
       if (!y.isNegative() || config.predictable) {
-        return y.ln();
-      }
-      else {
+        return y.ln()
+      } else {
         // downgrade to number, return Complex valued result
-        return _log1pComplex(new type.Complex(x.toNumber(), 0));
+        return _log1pComplex(new type.Complex(x.toNumber(), 0))
       }
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, log1p);
+      return deepMap(x, log1p)
     },
 
     'any, any': function (x, base) {
       // calculate logarithm for a specified base, log1p(x, base)
-      return divideScalar(log1p(x), log(base));
+      return divideScalar(log1p(x), log(base))
     }
-  });
+  })
 
   /**
    * Calculate the natural logarithm of a `number+1`
@@ -69,13 +68,12 @@ function factory (type, config, load, typed) {
    * @returns {number | Complex}
    * @private
    */
-  function _log1pNumber(x) {
+  function _log1pNumber (x) {
     if (x >= -1 || config.predictable) {
-      return (Math.log1p) ? Math.log1p(x) : Math.log(x+1);
-    }
-    else {
+      return (Math.log1p) ? Math.log1p(x) : Math.log(x + 1)
+    } else {
       // negative value -> complex value computation
-      return _log1pComplex(new type.Complex(x, 0));
+      return _log1pComplex(new type.Complex(x, 0))
     }
   }
 
@@ -85,21 +83,21 @@ function factory (type, config, load, typed) {
    * @returns {Complex}
    * @private
    */
-  function _log1pComplex(x) {
-    var x_re1p = x.re + 1;
-    return new type.Complex (
-        Math.log(Math.sqrt(x_re1p * x_re1p + x.im * x.im)),
-        Math.atan2(x.im, x_re1p)
-    );
+  function _log1pComplex (x) {
+    var x_re1p = x.re + 1
+    return new type.Complex(
+      Math.log(Math.sqrt(x_re1p * x_re1p + x.im * x.im)),
+      Math.atan2(x.im, x_re1p)
+    )
   }
 
   log1p.toTex = {
     1: '\\ln\\left(${args[0]}+1\\right)',
     2: '\\log_{${args[1]}}\\left(${args[0]}+1\\right)'
-  };
+  }
 
-  return log1p;
+  return log1p
 }
 
-exports.name = 'log1p';
-exports.factory = factory;
+exports.name = 'log1p'
+exports.factory = factory

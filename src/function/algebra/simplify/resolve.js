@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-function factory(type, config, load, typed, math) {
-  var Node = math.expression.node.Node;
-  var OperatorNode = math.expression.node.OperatorNode;
-  var FunctionNode = math.expression.node.FunctionNode;
-  var ParenthesisNode = math.expression.node.ParenthesisNode;
+function factory (type, config, load, typed, math) {
+  var Node = math.expression.node.Node
+  var OperatorNode = math.expression.node.OperatorNode
+  var FunctionNode = math.expression.node.FunctionNode
+  var ParenthesisNode = math.expression.node.ParenthesisNode
 
   /**
    * resolve(expr, scope) replaces variable nodes with their scoped values
@@ -23,37 +23,37 @@ function factory(type, config, load, typed, math) {
    *     The expression tree to be simplified
    * @param {Object} scope with variables to be resolved
    */
-  function resolve(node, scope) {
+  function resolve (node, scope) {
     if (!scope) {
-        return node;
+      return node
     }
     if (type.isSymbolNode(node)) {
-        var value = scope[node.name];
-        if (value instanceof Node) {
-            return resolve(value, scope);
-        } else if (typeof value === 'number') {
-            return math.parse(String(value));
-        }
+      var value = scope[node.name]
+      if (value instanceof Node) {
+        return resolve(value, scope)
+      } else if (typeof value === 'number') {
+        return math.parse(String(value))
+      }
     } else if (type.isOperatorNode(node)) {
-        var args = node.args.map(function (arg) {
-          return resolve(arg, scope)
-        });
-        return new OperatorNode(node.op, node.fn, args);
+      var args = node.args.map(function (arg) {
+        return resolve(arg, scope)
+      })
+      return new OperatorNode(node.op, node.fn, args)
     } else if (type.isParenthesisNode(node)) {
-        return new ParenthesisNode(resolve(node.content, scope));
+      return new ParenthesisNode(resolve(node.content, scope))
     } else if (type.isFunctionNode(node)) {
-        var args = node.args.map(function (arg) {
-          return resolve(arg, scope)
-        });
-        return new FunctionNode(node.name, args);
+      var args = node.args.map(function (arg) {
+        return resolve(arg, scope)
+      })
+      return new FunctionNode(node.name, args)
     }
-    return node;
+    return node
   }
 
-  return resolve;
+  return resolve
 }
 
-exports.math = true;
-exports.name = 'resolve';
-exports.path = 'algebra.simplify';
-exports.factory = factory;
+exports.math = true
+exports.name = 'resolve'
+exports.path = 'algebra.simplify'
+exports.factory = factory

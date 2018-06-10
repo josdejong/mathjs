@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap');
+var deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -30,43 +30,43 @@ function factory (type, config, load, typed) {
    */
   var bignumber = typed('bignumber', {
     '': function () {
-      return new type.BigNumber(0);
+      return new type.BigNumber(0)
     },
 
     'number': function (x) {
       // convert to string to prevent errors in case of >15 digits
-      return new type.BigNumber(x + '');
+      return new type.BigNumber(x + '')
     },
 
     'string': function (x) {
-      return new type.BigNumber(x);
+      return new type.BigNumber(x)
     },
 
     'BigNumber': function (x) {
       // we assume a BigNumber is immutable
-      return x;
+      return x
     },
 
     'Fraction': function (x) {
-      return new type.BigNumber(x.n).div(x.d);
+      return new type.BigNumber(x.n).div(x.d)
     },
 
     'null': function (x) {
-      return new type.BigNumber(0);
+      return new type.BigNumber(0)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, bignumber);
+      return deepMap(x, bignumber)
     }
-  });
+  })
 
   bignumber.toTex = {
     0: '0',
     1: '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return bignumber;
+  return bignumber
 }
 
-exports.name = 'bignumber';
-exports.factory = factory;
+exports.name = 'bignumber'
+exports.factory = factory

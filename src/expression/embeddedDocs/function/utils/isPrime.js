@@ -11,4 +11,4 @@ module.exports = {
     'isPrime([2, 17, 100])'
   ],
   'seealso': ['isInteger', 'isNumeric', 'isNegative', 'isZero']
-};
+}

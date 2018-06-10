@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./setCartesian'),
   require('./setDifference'),
@@ -10,4 +10,4 @@ module.exports = [
   require('./setSize'),
   require('./setSymDifference'),
   require('./setUnion')
-];
+]

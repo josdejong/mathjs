@@ -1,10 +1,9 @@
-'use strict';
-
+'use strict'
 
 function factory (type, config, load, typed) {
-  var transpose = load(require('./transpose'));
-  var conj = load(require('../complex/conj'));
-  var latex = require('../../utils/latex');
+  var transpose = load(require('./transpose'))
+  var conj = load(require('../complex/conj'))
+  var latex = require('../../utils/latex')
 
   /**
    * Transpose and complex conjugate a matrix. All values of the matrix are
@@ -31,14 +30,14 @@ function factory (type, config, load, typed) {
   var ctranspose = typed('ctranspose', {
 
     'any': function (x) {
-      return conj( transpose( x ) );
+      return conj(transpose(x))
     }
-  });
+  })
 
-  ctranspose.toTex = {1: '\\left(${args[0]}\\right)' + latex.operators['ctranspose']};
+  ctranspose.toTex = {1: '\\left(${args[0]}\\right)' + latex.operators['ctranspose']}
 
-  return ctranspose;
+  return ctranspose
 }
 
-exports.name = 'ctranspose';
-exports.factory = factory;
+exports.name = 'ctranspose'
+exports.factory = factory

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./mad'),
   require('./max'),
@@ -11,4 +11,4 @@ module.exports = [
   require('./std'),
   require('./sum'),
   require('./var')
-];
+]

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-var sign = require('../../utils/number').sign;
+var deepMap = require('../../utils/collection/deepMap')
+var sign = require('../../utils/number').sign
 
 function factory (type, config, load, typed) {
   /**
@@ -31,28 +31,28 @@ function factory (type, config, load, typed) {
     'number': _csch,
 
     'Complex': function (x) {
-      return x.csch();
+      return x.csch()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.sinh());
+      return new type.BigNumber(1).div(x.sinh())
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function csch is no angle');
+        throw new TypeError('Unit in function csch is no angle')
       }
-      return csch(x.value);
+      return csch(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, csch);
+      return deepMap(x, csch)
     }
-  });
+  })
 
-  csch.toTex = {1: '\\mathrm{csch}\\left(${args[0]}\\right)'};
+  csch.toTex = {1: '\\mathrm{csch}\\left(${args[0]}\\right)'}
 
-  return csch;
+  return csch
 }
 
 /**
@@ -61,15 +61,14 @@ function factory (type, config, load, typed) {
  * @returns {number}
  * @private
  */
-function _csch(x) {
+function _csch (x) {
   // consider values close to zero (+/-)
   if (x == 0) {
-    return Number.POSITIVE_INFINITY;
-  }
-  else {
-    return Math.abs(2 / (Math.exp(x) - Math.exp(-x))) * sign(x);
+    return Number.POSITIVE_INFINITY
+  } else {
+    return Math.abs(2 / (Math.exp(x) - Math.exp(-x))) * sign(x)
   }
 }
 
-exports.name = 'csch';
-exports.factory = factory;
+exports.name = 'csch'
+exports.factory = factory

@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var clone = require('../../utils/object').clone;
-var _flatten = require('../../utils/array').flatten;
+var clone = require('../../utils/object').clone
+var _flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Flatten a multi dimensional matrix into a single dimensional matrix.
@@ -26,20 +26,20 @@ function factory (type, config, load, typed) {
    */
   var flatten = typed('flatten', {
     'Array': function (x) {
-      return _flatten(clone(x));
+      return _flatten(clone(x))
     },
 
     'Matrix': function (x) {
-      var flat = _flatten(clone(x.toArray()));
+      var flat = _flatten(clone(x.toArray()))
       // TODO: return the same matrix type as x
-      return matrix(flat);
+      return matrix(flat)
     }
-  });
+  })
 
-  flatten.toTex = undefined; // use default template
+  flatten.toTex = undefined // use default template
 
-  return flatten;
+  return flatten
 }
 
-exports.name = 'flatten';
-exports.factory = factory;
+exports.name = 'flatten'
+exports.factory = factory

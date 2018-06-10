@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
   /**
@@ -40,25 +40,23 @@ function factory (type, config, load, typed) {
     '...number | string | BigNumber | Range | Array | Matrix': function (args) {
       var ranges = args.map(function (arg) {
         if (type.isBigNumber(arg)) {
-          return arg.toNumber(); // convert BigNumber to Number
-        }
-        else if (Array.isArray(arg) || type.isMatrix(arg)) {
+          return arg.toNumber() // convert BigNumber to Number
+        } else if (Array.isArray(arg) || type.isMatrix(arg)) {
           return arg.map(function (elem) {
             // convert BigNumber to Number
-            return type.isBigNumber(elem) ? elem.toNumber() : elem;
-          });
+            return type.isBigNumber(elem) ? elem.toNumber() : elem
+          })
+        } else {
+          return arg
         }
-        else {
-          return arg;
-        }
-      });
+      })
 
-      var res = new type.Index();
-      type.Index.apply(res, ranges);
-      return res;
+      var res = new type.Index()
+      type.Index.apply(res, ranges)
+      return res
     }
-  });
+  })
 }
 
-exports.name = 'index';
-exports.factory = factory;
+exports.name = 'index'
+exports.factory = factory

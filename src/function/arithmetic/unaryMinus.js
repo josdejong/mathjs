@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Inverse the sign of a value, apply a unary minus operation.
@@ -30,41 +30,41 @@ function factory (type, config, load, typed) {
    */
   var unaryMinus = typed('unaryMinus', {
     'number': function (x) {
-      return -x;
+      return -x
     },
 
     'Complex': function (x) {
-      return x.neg();
+      return x.neg()
     },
 
     'BigNumber': function (x) {
-      return x.neg();
+      return x.neg()
     },
 
     'Fraction': function (x) {
-      return x.neg();
+      return x.neg()
     },
 
     'Unit': function (x) {
-      var res = x.clone();
-      res.value = unaryMinus(x.value);
-      return res;
+      var res = x.clone()
+      res.value = unaryMinus(x.value)
+      return res
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since unaryMinus(0) = 0
-      return deepMap(x, unaryMinus, true);
+      return deepMap(x, unaryMinus, true)
     }
 
     // TODO: add support for string
-  });
+  })
 
   unaryMinus.toTex = {
     1: latex.operators['unaryMinus'] + '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return unaryMinus;
+  return unaryMinus
 }
 
-exports.name = 'unaryMinus';
-exports.factory = factory;
+exports.name = 'unaryMinus'
+exports.factory = factory

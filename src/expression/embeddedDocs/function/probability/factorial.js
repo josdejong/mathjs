@@ -12,4 +12,4 @@ module.exports = {
     '3!'
   ],
   'seealso': ['combinations', 'permutations', 'gamma']
-};
+}

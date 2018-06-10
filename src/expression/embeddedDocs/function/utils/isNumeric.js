@@ -16,4 +16,4 @@ module.exports = {
     'isNumeric([2.3, "foo", false])'
   ],
   'seealso': ['isInteger', 'isZero', 'isNegative', 'isPositive', 'isNaN']
-};
+}

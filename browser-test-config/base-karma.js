@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function (config) {
   return {
 
     basePath: '../',
@@ -7,15 +7,15 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'browser-test-config/browser-tests.test.js',
+      'browser-test-config/browser-tests.test.js'
     ],
 
     preprocessors: {
-      '**/*.js': ['webpack'],
+      '**/*.js': ['webpack']
     },
 
     captureTimeout: 210000,
-    browserDisconnectTolerance: 3, //this one helps
+    browserDisconnectTolerance: 3, // this one helps
     browserDisconnectTimeout: 210000,
     browserNoActivityTimeout: 210000,
 
@@ -50,7 +50,7 @@ module.exports = function(config) {
         extensions: ['.js', '.json'],
         // same as above, disallow 'module' field to prevent
         // decimal.mjs from breaking tests.
-        mainFields: ['browser', 'main'],
+        mainFields: ['browser', 'main']
       },
 
       module: {
@@ -61,8 +61,8 @@ module.exports = function(config) {
             use: 'babel-loader'
           }
         ]
-      },
-    },
+      }
+    }
 
-  };
-};
+  }
+}

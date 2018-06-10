@@ -12,4 +12,4 @@ module.exports = {
     '16 bytes in bits'
   ],
   'seealso': []
-};
+}

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount;
-var map = require('../../utils/array').map;
+var maxArgumentCount = require('../../utils/function').maxArgumentCount
+var map = require('../../utils/array').map
 
 /**
  * Attach a transform function to math.map
@@ -10,43 +10,42 @@ var map = require('../../utils/array').map;
  * This transform creates a one-based index instead of a zero-based index
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(require('./utils/compileInlineExpression'));
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var compileInlineExpression = load(require('./utils/compileInlineExpression'))
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  function mapTransform(args, math, scope) {
-    var x, callback;
+  function mapTransform (args, math, scope) {
+    var x, callback
 
     if (args[0]) {
-      x = args[0].compile().eval(scope);
+      x = args[0].compile().eval(scope)
     }
 
     if (args[1]) {
       if (type.isSymbolNode(args[1]) || type.isFunctionAssignmentNode(args[1])) {
         // a function pointer, like filter([3, -2, 5], myTestFunction);
-        callback = args[1].compile().eval(scope);
-      }
-      else {
+        callback = args[1].compile().eval(scope)
+      } else {
         // an expression like filter([3, -2, 5], x > 0)
-        callback = compileInlineExpression(args[1], math, scope);
+        callback = compileInlineExpression(args[1], math, scope)
       }
     }
 
-    return map(x, callback);
+    return map(x, callback)
   }
-  mapTransform.rawArgs = true;
+  mapTransform.rawArgs = true
 
   // one-based version of map function
   var map = typed('map', {
     'Array, function': function (x, callback) {
-      return _map(x, callback, x);
+      return _map(x, callback, x)
     },
 
     'Matrix, function': function (x, callback) {
-      return matrix(_map(x.valueOf(), callback, x));
+      return matrix(_map(x.valueOf(), callback, x))
     }
-  });
+  })
 
-  return mapTransform;
+  return mapTransform
 }
 
 /**
@@ -59,32 +58,29 @@ function factory (type, config, load, typed) {
  */
 function _map (array, callback, orig) {
   // figure out what number of arguments the callback function expects
-  var argsCount = maxArgumentCount(callback);
+  var argsCount = maxArgumentCount(callback)
 
-  function recurse(value, index) {
+  function recurse (value, index) {
     if (Array.isArray(value)) {
       return map(value, function (child, i) {
         // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i + 1)); // one based index, hence i + 1
-      });
-    }
-    else {
+        return recurse(child, index.concat(i + 1)) // one based index, hence i + 1
+      })
+    } else {
       // invoke the (typed) callback function with the right number of arguments
       if (argsCount === 1) {
-        return callback(value);
-      }
-      else if (argsCount === 2) {
-        return callback(value, index);
-      }
-      else { // 3 or -1
-        return callback(value, index, orig);
+        return callback(value)
+      } else if (argsCount === 2) {
+        return callback(value, index)
+      } else { // 3 or -1
+        return callback(value, index, orig)
       }
     }
   }
 
-  return recurse(array, []);
+  return recurse(array, [])
 }
 
-exports.name = 'map';
-exports.path = 'expression.transform';
-exports.factory = factory;
+exports.name = 'map'
+exports.path = 'expression.transform'
+exports.factory = factory

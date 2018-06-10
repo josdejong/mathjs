@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var object = require('../../utils/object');
-var array = require('../../utils/array');
+var object = require('../../utils/object')
+var array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
@@ -37,25 +37,25 @@ function factory (type, config, load, typed) {
    */
   var squeeze = typed('squeeze', {
     'Array': function (x) {
-      return array.squeeze(object.clone(x));
+      return array.squeeze(object.clone(x))
     },
 
     'Matrix': function (x) {
-      var res = array.squeeze(x.toArray());
+      var res = array.squeeze(x.toArray())
       // FIXME: return the same type of matrix as the input
-      return Array.isArray(res) ? matrix(res) : res;
+      return Array.isArray(res) ? matrix(res) : res
     },
 
     'any': function (x) {
       // scalar
-      return object.clone(x);
+      return object.clone(x)
     }
-  });
+  })
 
-  squeeze.toTex = undefined; // use default template
+  squeeze.toTex = undefined // use default template
 
-  return squeeze;
+  return squeeze
 }
 
-exports.name = 'squeeze';
-exports.factory = factory;
+exports.name = 'squeeze'
+exports.factory = factory

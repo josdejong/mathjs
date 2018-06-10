@@ -1,15 +1,14 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
-
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'));
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'));
-  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'));
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
+  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
+  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the nth root of a value.
@@ -40,117 +39,114 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} [root=2]    The root.
    * @return {number | Complex | Array | Matrix} Returns the nth root of `a`
    */
-  var complex_err = (''
-    + 'Complex number not supported in function nthRoot. '
-    + 'Use nthRoots instead.'
-  );
+  var complex_err = ('' +
+    'Complex number not supported in function nthRoot. ' +
+    'Use nthRoots instead.'
+  )
   var nthRoot = typed('nthRoot', {
-    
+
     'number': function (x) {
-      return _nthRoot(x, 2);
+      return _nthRoot(x, 2)
     },
     'number, number': _nthRoot,
 
     'BigNumber': function (x) {
-      return _bigNthRoot(x, new type.BigNumber(2));
+      return _bigNthRoot(x, new type.BigNumber(2))
     },
-    'Complex' : function(x) {
-      throw new Error(complex_err);
-    }, 
-    'Complex, number' : function(x, y) {
-      throw new Error(complex_err);
+    'Complex': function (x) {
+      throw new Error(complex_err)
+    },
+    'Complex, number': function (x, y) {
+      throw new Error(complex_err)
     },
     'BigNumber, BigNumber': _bigNthRoot,
 
     'Array | Matrix': function (x) {
-      return nthRoot(x, 2);
+      return nthRoot(x, 2)
     },
 
     'SparseMatrix, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse + sparse
-        return algorithm06(x, y, nthRoot);
-      }
-      else {
+        return algorithm06(x, y, nthRoot)
+      } else {
         // throw exception
-        throw new Error('Root must be non-zero');
+        throw new Error('Root must be non-zero')
       }
     },
 
     'SparseMatrix, DenseMatrix': function (x, y) {
-      return algorithm02(y, x, nthRoot, true);
+      return algorithm02(y, x, nthRoot, true)
     },
 
     'DenseMatrix, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // dense + sparse
-        return algorithm01(x, y, nthRoot, false);
-      }
-      else {
+        return algorithm01(x, y, nthRoot, false)
+      } else {
         // throw exception
-        throw new Error('Root must be non-zero');
+        throw new Error('Root must be non-zero')
       }
     },
 
     'DenseMatrix, DenseMatrix': function (x, y) {
-      return algorithm13(x, y, nthRoot);
+      return algorithm13(x, y, nthRoot)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), matrix(y)).valueOf();
+      return nthRoot(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), y);
+      return nthRoot(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return nthRoot(x, matrix(y));
+      return nthRoot(x, matrix(y))
     },
-    
+
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, nthRoot, false);
+      return algorithm11(x, y, nthRoot, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, nthRoot, false);
+      return algorithm14(x, y, nthRoot, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
       // density must be one (no zeros in matrix)
       if (y.density() === 1) {
         // sparse - scalar
-        return algorithm11(y, x, nthRoot, true);
-      }
-      else {
+        return algorithm11(y, x, nthRoot, true)
+      } else {
         // throw exception
-        throw new Error('Root must be non-zero');
+        throw new Error('Root must be non-zero')
       }
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, nthRoot, true);
+      return algorithm14(y, x, nthRoot, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return nthRoot(matrix(x), y).valueOf();
+      return nthRoot(matrix(x), y).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return nthRoot(x, matrix(y)).valueOf();
+      return nthRoot(x, matrix(y)).valueOf()
     }
-  });
+  })
 
-  nthRoot.toTex = {2: '\\sqrt[${args[1]}]{${args[0]}}'};
+  nthRoot.toTex = {2: '\\sqrt[${args[1]}]{${args[0]}}'}
 
-  return nthRoot;
+  return nthRoot
 
   /**
    * Calculate the nth root of a for BigNumbers, solve x^root == a
@@ -159,37 +155,37 @@ function factory (type, config, load, typed) {
    * @param {BigNumber} root
    * @private
    */
-  function _bigNthRoot(a, root) {
-    var precision = type.BigNumber.precision;
-    var Big = type.BigNumber.clone({precision: precision + 2});
-    var zero = new type.BigNumber(0);
+  function _bigNthRoot (a, root) {
+    var precision = type.BigNumber.precision
+    var Big = type.BigNumber.clone({precision: precision + 2})
+    var zero = new type.BigNumber(0)
 
-    var one = new Big(1);
-    var inv = root.isNegative();
+    var one = new Big(1)
+    var inv = root.isNegative()
     if (inv) {
-      root = root.neg();
+      root = root.neg()
     }
 
     if (root.isZero()) {
-      throw new Error('Root must be non-zero');
+      throw new Error('Root must be non-zero')
     }
     if (a.isNegative() && !root.abs().mod(2).equals(1)) {
-      throw new Error('Root must be odd when a is negative.');
+      throw new Error('Root must be odd when a is negative.')
     }
 
     // edge cases zero and infinity
     if (a.isZero()) {
-      return inv ? new Big(Infinity) : 0;
+      return inv ? new Big(Infinity) : 0
     }
     if (!a.isFinite()) {
-      return inv ? zero : a;
+      return inv ? zero : a
     }
 
-    var x = a.abs().pow(one.div(root));
+    var x = a.abs().pow(one.div(root))
     // If a < 0, we require that root is an odd integer,
     // so (-1) ^ (1/root) = -1
-    x = a.isNeg() ? x.neg() : x;
-    return new type.BigNumber((inv ? one.div(x) : x).toPrecision(precision));
+    x = a.isNeg() ? x.neg() : x
+    return new type.BigNumber((inv ? one.div(x) : x).toPrecision(precision))
   }
 }
 
@@ -200,32 +196,32 @@ function factory (type, config, load, typed) {
  * @param {number} root
  * @private
  */
-function _nthRoot(a, root) {
-  var inv = root < 0;
+function _nthRoot (a, root) {
+  var inv = root < 0
   if (inv) {
-    root = -root;
+    root = -root
   }
 
   if (root === 0) {
-    throw new Error('Root must be non-zero');
+    throw new Error('Root must be non-zero')
   }
   if (a < 0 && (Math.abs(root) % 2 != 1)) {
-    throw new Error('Root must be odd when a is negative.');
+    throw new Error('Root must be odd when a is negative.')
   }
 
   // edge cases zero and infinity
   if (a == 0) {
-    return inv ? Infinity : 0;
+    return inv ? Infinity : 0
   }
   if (!isFinite(a)) {
-    return inv ? 0 : a;
+    return inv ? 0 : a
   }
 
-  var x = Math.pow(Math.abs(a), 1/root);
+  var x = Math.pow(Math.abs(a), 1 / root)
   // If a < 0, we require that root is an odd integer,
   // so (-1) ^ (1/root) = -1
-  x = a < 0 ? -x : x;
-  return inv ? 1 / x : x;
+  x = a < 0 ? -x : x
+  return inv ? 1 / x : x
 
   // Very nice algorithm, but fails with nthRoot(-2, 3).
   // Newton's method has some well-known problems at times:
@@ -251,5 +247,5 @@ function _nthRoot(a, root) {
   */
 }
 
-exports.name = 'nthRoot';
-exports.factory = factory;
+exports.name = 'nthRoot'
+exports.factory = factory

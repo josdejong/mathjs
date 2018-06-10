@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./AccessorNode'),
   require('./ArrayNode'),
@@ -16,4 +16,4 @@ module.exports = [
   require('./RangeNode'),
   require('./SymbolNode'),
   require('./UpdateNode')
-];
+]

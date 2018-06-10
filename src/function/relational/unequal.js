@@ -1,19 +1,18 @@
-'use strict';
+'use strict'
 
-var nearlyEqual = require('../../utils/number').nearlyEqual;
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual');
+var nearlyEqual = require('../../utils/number').nearlyEqual
+var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'));
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'));
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Test whether two values are unequal.
@@ -59,111 +58,111 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
    */
   var unequal = typed('unequal', {
-    
+
     'any, any': function (x, y) {
       // strict equality for null and undefined?
-      if (x === null) { return y !== null; }
-      if (y === null) { return x !== null; }
-      if (x === undefined) { return y !== undefined; }
-      if (y === undefined) { return x !== undefined; }
+      if (x === null) { return y !== null }
+      if (y === null) { return x !== null }
+      if (x === undefined) { return y !== undefined }
+      if (y === undefined) { return x !== undefined }
 
-      return _unequal(x, y);
+      return _unequal(x, y)
     },
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm07(x, y, _unequal);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm07(x, y, _unequal)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm03(y, x, _unequal, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm03(y, x, _unequal, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm03(x, y, _unequal, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm03(x, y, _unequal, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, _unequal);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, _unequal)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return unequal(matrix(x), matrix(y)).valueOf();
+      return unequal(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return unequal(matrix(x), y);
+      return unequal(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return unequal(x, matrix(y));
+      return unequal(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, _unequal, false);
+      return algorithm12(x, y, _unequal, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, _unequal, false);
+      return algorithm14(x, y, _unequal, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, _unequal, true);
+      return algorithm12(y, x, _unequal, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, _unequal, true);
+      return algorithm14(y, x, _unequal, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, _unequal, false).valueOf();
+      return algorithm14(matrix(x), y, _unequal, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, _unequal, true).valueOf();
+      return algorithm14(matrix(y), x, _unequal, true).valueOf()
     }
-  });
+  })
 
   var _unequal = typed('_unequal', {
 
     'boolean, boolean': function (x, y) {
-      return x !== y;
+      return x !== y
     },
 
     'number, number': function (x, y) {
-      return !nearlyEqual(x, y, config.epsilon);
+      return !nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return !bigNearlyEqual(x, y, config.epsilon);
+      return !bigNearlyEqual(x, y, config.epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
-      return !x.equals(y);
+      return !x.equals(y)
     },
 
     'Complex, Complex': function (x, y) {
-      return !x.equals(y);
+      return !x.equals(y)
     },
 
     'Unit, Unit': function (x, y) {
       if (!x.equalBase(y)) {
-        throw new Error('Cannot compare units with different base');
+        throw new Error('Cannot compare units with different base')
       }
-      return unequal(x.value, y.value);
+      return unequal(x.value, y.value)
     }
-  });
+  })
 
   unequal.toTex = {
     2: '\\left(${args[0]}' + latex.operators['unequal'] + '${args[1]}\\right)'
-  };
+  }
 
-  return unequal;
+  return unequal
 }
 
-exports.name = 'unequal';
-exports.factory = factory;
+exports.name = 'unequal'
+exports.factory = factory

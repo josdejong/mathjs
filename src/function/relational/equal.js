@@ -1,17 +1,16 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var equalScalar = load(require('./equalScalar'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var equalScalar = load(require('./equalScalar'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'));
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'));
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
+  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Test whether two values are equal.
@@ -58,81 +57,81 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
    */
   var equal = typed('equal', {
-    
+
     'any, any': function (x, y) {
       // strict equality for null and undefined?
-      if (x === null) { return y === null; }
-      if (y === null) { return x === null; }
-      if (x === undefined) { return y === undefined; }
-      if (y === undefined) { return x === undefined; }
+      if (x === null) { return y === null }
+      if (y === null) { return x === null }
+      if (x === undefined) { return y === undefined }
+      if (y === undefined) { return x === undefined }
 
-      return equalScalar(x, y);
+      return equalScalar(x, y)
     },
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm07(x, y, equalScalar);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm07(x, y, equalScalar)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm03(y, x, equalScalar, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm03(y, x, equalScalar, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm03(x, y, equalScalar, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm03(x, y, equalScalar, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, equalScalar);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, equalScalar)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return equal(matrix(x), matrix(y)).valueOf();
+      return equal(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return equal(matrix(x), y);
+      return equal(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return equal(x, matrix(y));
+      return equal(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, equalScalar, false);
+      return algorithm12(x, y, equalScalar, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, equalScalar, false);
+      return algorithm14(x, y, equalScalar, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, equalScalar, true);
+      return algorithm12(y, x, equalScalar, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, equalScalar, true);
+      return algorithm14(y, x, equalScalar, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, equalScalar, false).valueOf();
+      return algorithm14(matrix(x), y, equalScalar, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, equalScalar, true).valueOf();
+      return algorithm14(matrix(y), x, equalScalar, true).valueOf()
     }
-  });
+  })
 
   equal.toTex = {
     2: '\\left(${args[0]}' + latex.operators['equal'] + '${args[1]}\\right)'
-  };
+  }
 
-  return equal;
+  return equal
 }
 
-exports.name = 'equal';
-exports.factory = factory;
+exports.name = 'equal'
+exports.factory = factory

@@ -1,5 +1,5 @@
-'use strict';
+'use strict'
 
-const testsContext = require.context('../test/', true, /.test\.js$/);
+const testsContext = require.context('../test/', true, /.test\.js$/)
 
-testsContext.keys().forEach(testsContext);
+testsContext.keys().forEach(testsContext)

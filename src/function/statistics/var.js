@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var DEFAULT_NORMALIZATION = 'unbiased';
+var DEFAULT_NORMALIZATION = 'unbiased'
 
-var deepForEach = require('../../utils/collection/deepForEach');
+var deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/addScalar'));
-  var subtract = load(require('../arithmetic/subtract'));
-  var multiply = load(require('../arithmetic/multiplyScalar'));
-  var divide = load(require('../arithmetic/divideScalar'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var add = load(require('../arithmetic/addScalar'))
+  var subtract = load(require('../arithmetic/subtract'))
+  var multiply = load(require('../arithmetic/multiplyScalar'))
+  var divide = load(require('../arithmetic/divideScalar'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the variance of a matrix or a  list with values.
@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
   var variance = typed('variance', {
     // var([a, b, c, d, ...])
     'Array | Matrix': function (array) {
-      return _var(array, DEFAULT_NORMALIZATION);
+      return _var(array, DEFAULT_NORMALIZATION)
     },
 
     // var([a, b, c, d, ...], normalization)
@@ -64,13 +64,13 @@ function factory (type, config, load, typed) {
 
     // var(a, b, c, d, ...)
     '...': function (args) {
-      return _var(args, DEFAULT_NORMALIZATION);
+      return _var(args, DEFAULT_NORMALIZATION)
     }
-  });
+  })
 
-  variance.toTex = '\\mathrm{Var}\\left(${args}\\right)';
+  variance.toTex = '\\mathrm{Var}\\left(${args}\\right)'
 
-  return variance;
+  return variance
 
   /**
    * Recursively calculate the variance of an n-dimensional array
@@ -83,52 +83,51 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber} variance
    * @private
    */
-  function _var(array, normalization) {
-    var sum = 0;
-    var num = 0;
+  function _var (array, normalization) {
+    var sum = 0
+    var num = 0
 
     if (array.length == 0) {
-      throw new SyntaxError('Function var requires one or more parameters (0 provided)');
+      throw new SyntaxError('Function var requires one or more parameters (0 provided)')
     }
 
     // calculate the mean and number of elements
     deepForEach(array, function (value) {
       try {
-        sum = add(sum, value);
-        num++;
+        sum = add(sum, value)
+        num++
+      } catch (err) {
+        throw improveErrorMessage(err, 'var', value)
       }
-      catch (err) {
-        throw improveErrorMessage(err, 'var', value);
-      }
-    });
-    if (num === 0) throw new Error('Cannot calculate var of an empty array');
+    })
+    if (num === 0) throw new Error('Cannot calculate var of an empty array')
 
-    var mean = divide(sum, num);
+    var mean = divide(sum, num)
 
     // calculate the variance
-    sum = 0;
+    sum = 0
     deepForEach(array, function (value) {
-      var diff = subtract(value, mean);
-      sum = add(sum, multiply(diff, diff));
-    });
+      var diff = subtract(value, mean)
+      sum = add(sum, multiply(diff, diff))
+    })
 
     switch (normalization) {
       case 'uncorrected':
-        return divide(sum, num);
+        return divide(sum, num)
 
       case 'biased':
-        return divide(sum, num + 1);
+        return divide(sum, num + 1)
 
       case 'unbiased':
-        var zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0;
-        return (num == 1) ? zero : divide(sum, num - 1);
+        var zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0
+        return (num == 1) ? zero : divide(sum, num - 1)
 
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' +
-        'Choose "unbiased" (default), "uncorrected", or "biased".');
+        'Choose "unbiased" (default), "uncorrected", or "biased".')
     }
   }
 }
 
-exports.name = 'var';
-exports.factory = factory;
+exports.name = 'var'
+exports.factory = factory

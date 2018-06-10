@@ -1,28 +1,28 @@
-'use strict';
+'use strict'
 
-var formatNumber = require('./number').format;
-var formatBigNumber = require('./bignumber/formatter').format;
-var isBigNumber = require('./bignumber/isBigNumber');
+var formatNumber = require('./number').format
+var formatBigNumber = require('./bignumber/formatter').format
+var isBigNumber = require('./bignumber/isBigNumber')
 
 /**
  * Test whether value is a string
  * @param {*} value
  * @return {boolean} isString
  */
-exports.isString = function(value) {
-  return typeof value === 'string';
-};
+exports.isString = function (value) {
+  return typeof value === 'string'
+}
 
 /**
  * Check if a text ends with a certain string.
  * @param {string} text
  * @param {string} search
  */
-exports.endsWith = function(text, search) {
-  var start = text.length - search.length;
-  var end = text.length;
-  return (text.substring(start, end) === search);
-};
+exports.endsWith = function (text, search) {
+  var start = text.length - search.length
+  var end = text.length
+  return (text.substring(start, end) === search)
+}
 
 /**
  * Format a value of any type into a string.
@@ -59,13 +59,13 @@ exports.endsWith = function(text, search) {
  *                                                options.
  * @return {string} str
  */
-exports.format = function(value, options) {
+exports.format = function (value, options) {
   if (typeof value === 'number') {
-    return formatNumber(value, options);
+    return formatNumber(value, options)
   }
 
   if (isBigNumber(value)) {
-    return formatBigNumber(value, options);
+    return formatBigNumber(value, options)
   }
 
   // note: we use unsafe duck-typing here to check for Fractions, this is
@@ -73,49 +73,46 @@ exports.format = function(value, options) {
   if (looksLikeFraction(value)) {
     if (!options || options.fraction !== 'decimal') {
       // output as ratio, like '1/3'
-      return (value.s * value.n) + '/' + value.d;
-    }
-    else {
+      return (value.s * value.n) + '/' + value.d
+    } else {
       // output as decimal, like '0.(3)'
-      return value.toString();
+      return value.toString()
     }
   }
 
   if (Array.isArray(value)) {
-    return formatArray(value, options);
+    return formatArray(value, options)
   }
 
   if (exports.isString(value)) {
-    return '"' + value + '"';
+    return '"' + value + '"'
   }
 
   if (typeof value === 'function') {
-    return value.syntax ? String(value.syntax) : 'function';
+    return value.syntax ? String(value.syntax) : 'function'
   }
 
   if (value && typeof value === 'object') {
     if (typeof value.format === 'function') {
-      return value.format(options);
-    }
-    else if (value && value.toString() !== {}.toString()) {
+      return value.format(options)
+    } else if (value && value.toString() !== {}.toString()) {
       // this object has a non-native toString method, use that one
-      return value.toString();
-    }
-    else {
-      var entries = [];
+      return value.toString()
+    } else {
+      var entries = []
 
       for (var key in value) {
         if (value.hasOwnProperty(key)) {
-          entries.push('"' + key + '": ' + exports.format(value[key], options));
+          entries.push('"' + key + '": ' + exports.format(value[key], options))
         }
       }
 
-      return '{' + entries.join(', ') + '}';
+      return '{' + entries.join(', ') + '}'
     }
   }
 
-  return String(value);
-};
+  return String(value)
+}
 
 /**
  * Stringify a value into a string enclosed in double quotes.
@@ -124,32 +121,30 @@ exports.format = function(value, options) {
  * @return {string}
  */
 exports.stringify = function (value) {
-  var text = String(value);
-  var escaped = '';
-  var i = 0;
+  var text = String(value)
+  var escaped = ''
+  var i = 0
   while (i < text.length) {
-    var c = text.charAt(i);
+    var c = text.charAt(i)
 
     if (c === '\\') {
-      escaped += c;
-      i++;
+      escaped += c
+      i++
 
-      c = text.charAt(i);
+      c = text.charAt(i)
       if (c === '' || '"\\/bfnrtu'.indexOf(c) === -1) {
-        escaped += '\\';  // no valid escape character -> escape it
+        escaped += '\\' // no valid escape character -> escape it
       }
-      escaped += c;
+      escaped += c
+    } else if (c === '"') {
+      escaped += '\\"'
+    } else {
+      escaped += c
     }
-    else if (c === '"') {
-      escaped += '\\"';
-    }
-    else {
-      escaped += c;
-    }
-    i++;
+    i++
   }
 
-  return '"' + escaped + '"';
+  return '"' + escaped + '"'
 }
 
 /**
@@ -158,14 +153,14 @@ exports.stringify = function (value) {
  * @return {string}
  */
 exports.escape = function (value) {
-  var text = String(value);
+  var text = String(value)
   text = text.replace(/&/g, '&amp;')
 			 .replace(/"/g, '&quot;')
 			 .replace(/'/g, '&#39;')
 			 .replace(/</g, '&lt;')
-			 .replace(/>/g, '&gt;');
-  
-  return text;
+			 .replace(/>/g, '&gt;')
+
+  return text
 }
 
 /**
@@ -180,19 +175,18 @@ exports.escape = function (value) {
  */
 function formatArray (array, options) {
   if (Array.isArray(array)) {
-    var str = '[';
-    var len = array.length;
+    var str = '['
+    var len = array.length
     for (var i = 0; i < len; i++) {
       if (i != 0) {
-        str += ', ';
+        str += ', '
       }
-      str += formatArray(array[i], options);
+      str += formatArray(array[i], options)
     }
-    str += ']';
-    return str;
-  }
-  else {
-    return exports.format(array, options);
+    str += ']'
+    return str
+  } else {
+    return exports.format(array, options)
   }
 }
 
@@ -206,5 +200,5 @@ function looksLikeFraction (value) {
       typeof value === 'object' &&
       typeof value.s === 'number' &&
       typeof value.n === 'number' &&
-      typeof value.d === 'number') || false;
+      typeof value.d === 'number') || false
 }

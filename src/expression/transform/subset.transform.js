@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var errorTransform = require('./error.transform').transform;
+var errorTransform = require('./error.transform').transform
 
 /**
  * Attach a transform function to math.subset
@@ -9,20 +9,19 @@ var errorTransform = require('./error.transform').transform;
  * This transform creates a range which includes the end value
  */
 function factory (type, config, load, typed) {
-  var subset = load(require('../../function/matrix/subset'));
+  var subset = load(require('../../function/matrix/subset'))
 
   return typed('subset', {
     '...any': function (args) {
       try {
-        return subset.apply(null, args);
-      }
-      catch (err) {
-        throw errorTransform(err);
+        return subset.apply(null, args)
+      } catch (err) {
+        throw errorTransform(err)
       }
     }
-  });
+  })
 }
 
-exports.name = 'subset';
-exports.path = 'expression.transform';
-exports.factory = factory;
+exports.name = 'subset'
+exports.path = 'expression.transform'
+exports.factory = factory

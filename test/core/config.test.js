@@ -1,6 +1,6 @@
-var assert = require('assert');
-var math = require('../../src/index');
+var assert = require('assert')
+var math = require('../../src/index')
 
-describe('config', function() {
+describe('config', function () {
   // TODO: test function config
-});
+})

@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
+var flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var abs      = load(require('../arithmetic/abs'));
-  var map      = load(require('../matrix/map'));
-  var median   = load(require('../statistics/median'));
-  var subtract = load(require('../arithmetic/subtract'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var abs = load(require('../arithmetic/abs'))
+  var map = load(require('../matrix/map'))
+  var median = load(require('../statistics/median'))
+  var subtract = load(require('../arithmetic/subtract'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the median absolute deviation of a matrix or a list with values.
@@ -39,37 +39,35 @@ function factory (type, config, load, typed) {
 
     // mad(a, b, c, d, ...)
     '...': function (args) {
-      return _mad(args);
+      return _mad(args)
     }
-  });
+  })
 
-  mad.toTex = undefined; // use default template
+  mad.toTex = undefined // use default template
 
-  return mad;
+  return mad
 
-  function _mad(array) {
-    array = flatten(array.valueOf());
+  function _mad (array) {
+    array = flatten(array.valueOf())
 
     if (array.length === 0) {
-      throw new Error('Cannot calculate median absolute deviation (mad) of an empty array');
+      throw new Error('Cannot calculate median absolute deviation (mad) of an empty array')
     }
 
     try {
-      var med = median(array);
+      var med = median(array)
       return median(map(array, function (value) {
-        return abs(subtract(value, med));
-      }));
-    }
-    catch (err) {
+        return abs(subtract(value, med))
+      }))
+    } catch (err) {
       if (err instanceof TypeError && err.message.indexOf('median') !== -1) {
-        throw new TypeError(err.message.replace('median', 'mad'));
-      }
-      else {
-        throw improveErrorMessage(err, 'mad');
+        throw new TypeError(err.message.replace('median', 'mad'))
+      } else {
+        throw improveErrorMessage(err, 'mad')
       }
     }
   }
 }
 
-exports.name = 'mad';
-exports.factory = factory;
+exports.name = 'mad'
+exports.factory = factory

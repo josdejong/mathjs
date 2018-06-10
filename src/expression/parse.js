@@ -1,25 +1,25 @@
-'use strict';
+'use strict'
 
-var ArgumentsError = require('../error/ArgumentsError');
-var deepMap = require('../utils/collection/deepMap');
+var ArgumentsError = require('../error/ArgumentsError')
+var deepMap = require('../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var numeric = load(require('../type/numeric'));
+  var numeric = load(require('../type/numeric'))
 
-  var AccessorNode            = load(require('./node/AccessorNode'));
-  var ArrayNode               = load(require('./node/ArrayNode'));
-  var AssignmentNode          = load(require('./node/AssignmentNode'));
-  var BlockNode               = load(require('./node/BlockNode'));
-  var ConditionalNode         = load(require('./node/ConditionalNode'));
-  var ConstantNode            = load(require('./node/ConstantNode'));
-  var FunctionAssignmentNode  = load(require('./node/FunctionAssignmentNode'));
-  var IndexNode               = load(require('./node/IndexNode'));
-  var ObjectNode              = load(require('./node/ObjectNode'));
-  var OperatorNode            = load(require('./node/OperatorNode'));
-  var ParenthesisNode         = load(require('./node/ParenthesisNode'));
-  var FunctionNode            = load(require('./node/FunctionNode'));
-  var RangeNode               = load(require('./node/RangeNode'));
-  var SymbolNode              = load(require('./node/SymbolNode'));
+  var AccessorNode = load(require('./node/AccessorNode'))
+  var ArrayNode = load(require('./node/ArrayNode'))
+  var AssignmentNode = load(require('./node/AssignmentNode'))
+  var BlockNode = load(require('./node/BlockNode'))
+  var ConditionalNode = load(require('./node/ConditionalNode'))
+  var ConstantNode = load(require('./node/ConstantNode'))
+  var FunctionAssignmentNode = load(require('./node/FunctionAssignmentNode'))
+  var IndexNode = load(require('./node/IndexNode'))
+  var ObjectNode = load(require('./node/ObjectNode'))
+  var OperatorNode = load(require('./node/OperatorNode'))
+  var ParenthesisNode = load(require('./node/ParenthesisNode'))
+  var FunctionNode = load(require('./node/FunctionNode'))
+  var RangeNode = load(require('./node/RangeNode'))
+  var SymbolNode = load(require('./node/SymbolNode'))
 
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
@@ -55,40 +55,38 @@ function factory (type, config, load, typed) {
    */
   function parse (expr, options) {
     if (arguments.length !== 1 && arguments.length !== 2) {
-      throw new ArgumentsError('parse', arguments.length, 1, 2);
+      throw new ArgumentsError('parse', arguments.length, 1, 2)
     }
 
     // pass extra nodes
-    extra_nodes = (options && options.nodes) ? options.nodes : {};
+    extra_nodes = (options && options.nodes) ? options.nodes : {}
 
     if (typeof expr === 'string') {
       // parse a single expression
-      expression = expr;
-      return parseStart();
-    }
-    else if (Array.isArray(expr) || expr instanceof type.Matrix) {
+      expression = expr
+      return parseStart()
+    } else if (Array.isArray(expr) || expr instanceof type.Matrix) {
       // parse an array or matrix with expressions
       return deepMap(expr, function (elem) {
-        if (typeof elem !== 'string') throw new TypeError('String expected');
+        if (typeof elem !== 'string') throw new TypeError('String expected')
 
-        expression = elem;
-        return parseStart();
-      });
-    }
-    else {
+        expression = elem
+        return parseStart()
+      })
+    } else {
       // oops
-      throw new TypeError('String or matrix expected');
+      throw new TypeError('String or matrix expected')
     }
   }
 
   // token types enumeration
   var TOKENTYPE = {
-    NULL : 0,
-    DELIMITER : 1,
-    NUMBER : 2,
-    SYMBOL : 3,
-    UNKNOWN : 4
-  };
+    NULL: 0,
+    DELIMITER: 1,
+    NUMBER: 2,
+    SYMBOL: 3,
+    UNKNOWN: 4
+  }
 
   // map with all delimiters
   var DELIMITERS = {
@@ -131,7 +129,7 @@ function factory (type, config, load, typed) {
     '<<': true,
     '>>': true,
     '>>>': true
-  };
+  }
 
   // map with all named delimiters
   var NAMED_DELIMITERS = {
@@ -142,7 +140,7 @@ function factory (type, config, load, typed) {
     'xor': true,
     'or': true,
     'not': true
-  };
+  }
 
   var CONSTANTS = {
     'true': true,
@@ -156,16 +154,16 @@ function factory (type, config, load, typed) {
     'Infinity'
   ]
 
-  var extra_nodes = {};             // current extra nodes
-  var expression = '';              // current expression
-  var comment = '';                 // last parsed comment
-  var index = 0;                    // current index in expr
-  var c = '';                       // current token character in expr
-  var token = '';                   // current token
-  var token_type = TOKENTYPE.NULL;  // type of the token
-  var nesting_level = 0;            // level of nesting inside parameters, used to ignore newline characters
-  var conditional_level = null;     // when a conditional is being parsed, the level of the conditional is stored here
-  var tokenStates = [];             // holds saved token states
+  var extra_nodes = {} // current extra nodes
+  var expression = '' // current expression
+  var comment = '' // last parsed comment
+  var index = 0 // current index in expr
+  var c = '' // current token character in expr
+  var token = '' // current token
+  var token_type = TOKENTYPE.NULL // type of the token
+  var nesting_level = 0 // level of nesting inside parameters, used to ignore newline characters
+  var conditional_level = null // when a conditional is being parsed, the level of the conditional is stored here
+  var tokenStates = [] // holds saved token states
 
   /**
    * Get the first character from the expression.
@@ -173,11 +171,11 @@ function factory (type, config, load, typed) {
    * reached, the function puts an empty string in c.
    * @private
    */
-  function first() {
-    index = 0;
-    c = expression.charAt(0);
-    nesting_level = 0;
-    conditional_level = null;
+  function first () {
+    index = 0
+    c = expression.charAt(0)
+    nesting_level = 0
+    conditional_level = null
   }
 
   /**
@@ -186,9 +184,9 @@ function factory (type, config, load, typed) {
    * reached, the function puts an empty string in c.
    * @private
    */
-  function next() {
-    index++;
-    c = expression.charAt(index);
+  function next () {
+    index++
+    c = expression.charAt(index)
   }
 
   /**
@@ -196,8 +194,8 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function prevPreview() {
-    return expression.charAt(index - 1);
+  function prevPreview () {
+    return expression.charAt(index - 1)
   }
 
   /**
@@ -205,8 +203,8 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function nextPreview() {
-    return expression.charAt(index + 1);
+  function nextPreview () {
+    return expression.charAt(index + 1)
   }
 
   /**
@@ -214,43 +212,43 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function nextNextPreview() {
-    return expression.charAt(index + 2);
+  function nextNextPreview () {
+    return expression.charAt(index + 2)
   }
 
   /**
    * Save the current token state so we can rewind later if necessary.
    * @private
    */
-  function pushTokenState() {
+  function pushTokenState () {
     tokenStates.push({
       token_type: token_type,
       token: token,
       comment: comment,
       index: index,
       c: c
-    });
+    })
   }
 
   /**
    * Rewind the parser by one token by restoring the last saved token state
    * @private
    */
-  function popTokenState() {
-    var restoredState = tokenStates.pop();
-    token_type = restoredState.token_type;
-    token = restoredState.token;
-    comment = restoredState.comment;
-    index = restoredState.index;
-    c = restoredState.c;
+  function popTokenState () {
+    var restoredState = tokenStates.pop()
+    token_type = restoredState.token_type
+    token = restoredState.token
+    comment = restoredState.comment
+    index = restoredState.index
+    c = restoredState.c
   }
 
   /**
    * Discard the most recent token state without restoring it
    * @private
    */
-  function discardTokenState() {
-    tokenStates.pop();
+  function discardTokenState () {
+    tokenStates.pop()
   }
 
   /**
@@ -258,157 +256,154 @@ function factory (type, config, load, typed) {
    * The token and token type are available as token and token_type
    * @private
    */
-  function getToken() {
-    token_type = TOKENTYPE.NULL;
-    token = '';
-    comment = '';
+  function getToken () {
+    token_type = TOKENTYPE.NULL
+    token = ''
+    comment = ''
 
     // skip over whitespaces
     // space, tab, and newline when inside parameters
     while (parse.isWhitespace(c, nesting_level)) {
-      next();
+      next()
     }
 
     // skip comment
     if (c === '#') {
       while (c !== '\n' && c !== '') {
-        comment += c;
-        next();
+        comment += c
+        next()
       }
     }
 
     // check for end of expression
     if (c === '') {
       // token is still empty
-      token_type = TOKENTYPE.DELIMITER;
-      return;
+      token_type = TOKENTYPE.DELIMITER
+      return
     }
 
     // check for new line character
     if (c === '\n' && !nesting_level) {
-      token_type = TOKENTYPE.DELIMITER;
-      token = c;
-      next();
-      return;
+      token_type = TOKENTYPE.DELIMITER
+      token = c
+      next()
+      return
     }
 
     // check for delimiters consisting of 3 characters
-    var c2 = c + nextPreview();
-    var c3 = c2 + nextNextPreview();
+    var c2 = c + nextPreview()
+    var c3 = c2 + nextNextPreview()
     if (c3.length === 3 && DELIMITERS[c3]) {
-      token_type = TOKENTYPE.DELIMITER;
-      token = c3;
-      next();
-      next();
-      next();
-      return;
+      token_type = TOKENTYPE.DELIMITER
+      token = c3
+      next()
+      next()
+      next()
+      return
     }
 
     // check for delimiters consisting of 2 characters
     if (c2.length === 2 && DELIMITERS[c2]) {
-      token_type = TOKENTYPE.DELIMITER;
-      token = c2;
-      next();
-      next();
-      return;
+      token_type = TOKENTYPE.DELIMITER
+      token = c2
+      next()
+      next()
+      return
     }
 
     // check for delimiters consisting of 1 character
     if (DELIMITERS[c]) {
-      token_type = TOKENTYPE.DELIMITER;
-      token = c;
-      next();
-      return;
+      token_type = TOKENTYPE.DELIMITER
+      token = c
+      next()
+      return
     }
 
     // check for a number
     if (parse.isDigitDot(c)) {
-      token_type = TOKENTYPE.NUMBER;
+      token_type = TOKENTYPE.NUMBER
 
       // get number, can have a single dot
       if (c === '.') {
-        token += c;
-        next();
+        token += c
+        next()
 
         if (!parse.isDigit(c)) {
           // this is no number, it is just a dot (can be dot notation)
-          token_type = TOKENTYPE.DELIMITER;
+          token_type = TOKENTYPE.DELIMITER
         }
-      }
-      else {
+      } else {
         while (parse.isDigit(c)) {
-          token += c;
-          next();
+          token += c
+          next()
         }
         if (parse.isDecimalMark(c, nextPreview())) {
-          token += c;
-          next();
+          token += c
+          next()
         }
       }
       while (parse.isDigit(c)) {
-        token += c;
-        next();
+        token += c
+        next()
       }
 
       // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
-      c2 = nextPreview();
+      c2 = nextPreview()
       if (c === 'E' || c === 'e') {
         if (parse.isDigit(c2) || c2 === '-' || c2 === '+') {
-          token += c;
-          next();
+          token += c
+          next()
 
           if (c === '+' || c === '-') {
-            token += c;
-            next();
+            token += c
+            next()
           }
 
           // Scientific notation MUST be followed by an exponent
           if (!parse.isDigit(c)) {
-            throw createSyntaxError('Digit expected, got "' + c + '"');
+            throw createSyntaxError('Digit expected, got "' + c + '"')
           }
 
           while (parse.isDigit(c)) {
-            token += c;
-            next();
+            token += c
+            next()
           }
 
           if (parse.isDecimalMark(c, nextPreview())) {
-            throw createSyntaxError('Digit expected, got "' + c + '"');
+            throw createSyntaxError('Digit expected, got "' + c + '"')
           }
-        }
-        else if (c2 === '.') {
-          next();
-          throw createSyntaxError('Digit expected, got "' + c + '"');
+        } else if (c2 === '.') {
+          next()
+          throw createSyntaxError('Digit expected, got "' + c + '"')
         }
       }
 
-      return;
+      return
     }
 
     // check for variables, functions, named operators
     if (parse.isAlpha(c, prevPreview(), nextPreview())) {
       while (parse.isAlpha(c, prevPreview(), nextPreview()) || parse.isDigit(c)) {
-        token += c;
-        next();
+        token += c
+        next()
       }
 
       if (NAMED_DELIMITERS.hasOwnProperty(token)) {
-        token_type = TOKENTYPE.DELIMITER;
-      }
-      else {
-        token_type = TOKENTYPE.SYMBOL;
+        token_type = TOKENTYPE.DELIMITER
+      } else {
+        token_type = TOKENTYPE.SYMBOL
       }
 
-      return;
+      return
     }
 
     // something unknown is found, wrong characters -> a syntax error
-    token_type = TOKENTYPE.UNKNOWN;
+    token_type = TOKENTYPE.UNKNOWN
     while (c !== '') {
-      token += c;
-      next();
+      token += c
+      next()
     }
-    throw createSyntaxError('Syntax error in part "' + token + '"');
+    throw createSyntaxError('Syntax error in part "' + token + '"')
   }
 
   /**
@@ -416,25 +411,25 @@ function factory (type, config, load, typed) {
    */
   function getTokenSkipNewline () {
     do {
-      getToken();
+      getToken()
     }
-    while (token === '\n');
+    while (token === '\n')
   }
 
   /**
    * Open parameters.
    * New line characters will be ignored until closeParams() is called
    */
-  function openParams() {
-    nesting_level++;
+  function openParams () {
+    nesting_level++
   }
 
   /**
    * Close parameters.
    * New line characters will no longer be ignored
    */
-  function closeParams() {
-    nesting_level--;
+  function closeParams () {
+    nesting_level--
   }
 
   /**
@@ -456,10 +451,10 @@ function factory (type, config, load, typed) {
    * @return {boolean}
    */
   parse.isAlpha = function isAlpha (c, cPrev, cNext) {
-    return parse.isValidLatinOrGreek(c)
-        || parse.isValidMathSymbol(c, cNext)
-        || parse.isValidMathSymbol(cPrev, c);
-  };
+    return parse.isValidLatinOrGreek(c) ||
+        parse.isValidMathSymbol(c, cNext) ||
+        parse.isValidMathSymbol(cPrev, c)
+  }
 
   /**
    * Test whether a character is a valid latin, greek, or letter-like character
@@ -467,8 +462,8 @@ function factory (type, config, load, typed) {
    * @return {boolean}
    */
   parse.isValidLatinOrGreek = function isValidLatinOrGreek (c) {
-    return /^[a-zA-Z_$\u00C0-\u02AF\u0370-\u03FF\u2100-\u214F]$/.test(c);
-  };
+    return /^[a-zA-Z_$\u00C0-\u02AF\u0370-\u03FF\u2100-\u214F]$/.test(c)
+  }
 
   /**
    * Test whether two given 16 bit characters form a surrogate pair of a
@@ -488,8 +483,8 @@ function factory (type, config, load, typed) {
   parse.isValidMathSymbol = function isValidMathSymbol (high, low) {
     return /^[\uD835]$/.test(high) &&
         /^[\uDC00-\uDFFF]$/.test(low) &&
-        /^[^\uDC55\uDC9D\uDCA0\uDCA1\uDCA3\uDCA4\uDCA7\uDCA8\uDCAD\uDCBA\uDCBC\uDCC4\uDD06\uDD0B\uDD0C\uDD15\uDD1D\uDD3A\uDD3F\uDD45\uDD47-\uDD49\uDD51\uDEA6\uDEA7\uDFCC\uDFCD]$/.test(low);
-  };
+        /^[^\uDC55\uDC9D\uDCA0\uDCA1\uDCA3\uDCA4\uDCA7\uDCA8\uDCAD\uDCBA\uDCBC\uDCC4\uDD06\uDD0B\uDD0C\uDD15\uDD1D\uDD3A\uDD3F\uDD45\uDD47-\uDD49\uDD51\uDEA6\uDEA7\uDFCC\uDFCD]$/.test(low)
+  }
 
   /**
    * Check whether given character c is a white space character: space, tab, or enter
@@ -499,8 +494,8 @@ function factory (type, config, load, typed) {
    */
   parse.isWhitespace = function isWhitespace (c, nestingLevel) {
     // TODO: also take '\r' carriage return as newline? Or does that give problems on mac?
-    return c === ' ' || c === '\t' || (c === '\n' && nestingLevel > 0);
-  };
+    return c === ' ' || c === '\t' || (c === '\n' && nestingLevel > 0)
+  }
 
   /**
    * Test whether the character c is a decimal mark (dot).
@@ -510,8 +505,8 @@ function factory (type, config, load, typed) {
    * @return {boolean}
    */
   parse.isDecimalMark = function isDecimalMark (c, cNext) {
-    return c === '.' && cNext !== '/' && cNext !== '*' && cNext !== '^';
-  };
+    return c === '.' && cNext !== '/' && cNext !== '*' && cNext !== '^'
+  }
 
   /**
    * checks if the given char c is a digit or dot
@@ -519,8 +514,8 @@ function factory (type, config, load, typed) {
    * @return {boolean}
    */
   parse.isDigitDot = function isDigitDot (c) {
-    return ((c >= '0' && c <= '9') || c === '.');
-  };
+    return ((c >= '0' && c <= '9') || c === '.')
+  }
 
   /**
    * checks if the given char c is a digit
@@ -528,8 +523,8 @@ function factory (type, config, load, typed) {
    * @return {boolean}
    */
   parse.isDigit = function isDigit (c) {
-    return (c >= '0' && c <= '9');
-  };
+    return (c >= '0' && c <= '9')
+  }
 
   /**
    * Start of the parse levels below, in order of precedence
@@ -538,11 +533,11 @@ function factory (type, config, load, typed) {
    */
   function parseStart () {
     // get the first character in expression
-    first();
+    first()
 
-    getToken();
+    getToken()
 
-    var node = parseBlock();
+    var node = parseBlock()
 
     // check for garbage at the end of the expression
     // an expression ends with a empty character '' and token_type DELIMITER
@@ -551,14 +546,13 @@ function factory (type, config, load, typed) {
         // user entered a not existing operator like "//"
 
         // TODO: give hints for aliases, for example with "<>" give as hint " did you mean !== ?"
-        throw createError('Unexpected operator ' + token);
-      }
-      else {
-        throw createSyntaxError('Unexpected part "' + token + '"');
+        throw createError('Unexpected operator ' + token)
+      } else {
+        throw createSyntaxError('Unexpected part "' + token + '"')
       }
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -569,45 +563,44 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseBlock () {
-    var node;
-    var blocks = [];
-    var visible;
+    var node
+    var blocks = []
+    var visible
 
     if (token !== '' && token !== '\n' && token !== ';') {
-      node = parseAssignment();
-      node.comment = comment;
+      node = parseAssignment()
+      node.comment = comment
     }
 
     // TODO: simplify this loop
     while (token === '\n' || token === ';') {
       if (blocks.length === 0 && node) {
-        visible = (token !== ';');
+        visible = (token !== ';')
         blocks.push({
           node: node,
           visible: visible
-        });
+        })
       }
 
-      getToken();
+      getToken()
       if (token !== '\n' && token !== ';' && token !== '') {
-        node = parseAssignment();
-        node.comment = comment;
+        node = parseAssignment()
+        node.comment = comment
 
-        visible = (token !== ';');
+        visible = (token !== ';')
         blocks.push({
           node: node,
           visible: visible
-        });
+        })
       }
     }
 
     if (blocks.length > 0) {
-      return new BlockNode(blocks);
-    }
-    else {
+      return new BlockNode(blocks)
+    } else {
       if (!node) {
-        node = new ConstantNode(undefined);
-        node.comment = comment;
+        node = new ConstantNode(undefined)
+        node.comment = comment
       }
 
       return node
@@ -623,50 +616,47 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseAssignment () {
-    var name, args, value, valid;
+    var name, args, value, valid
 
-    var node = parseConditional();
+    var node = parseConditional()
 
     if (token === '=') {
       if (type.isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
-        name = node.name;
-        getTokenSkipNewline();
-        value = parseAssignment();
-        return new AssignmentNode(new SymbolNode(name), value);
-      }
-      else if (type.isAccessorNode(node)) {
+        name = node.name
+        getTokenSkipNewline()
+        value = parseAssignment()
+        return new AssignmentNode(new SymbolNode(name), value)
+      } else if (type.isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
-        getTokenSkipNewline();
-        value = parseAssignment();
-        return new AssignmentNode(node.object, node.index, value);
-      }
-      else if (type.isFunctionNode(node) && type.isSymbolNode(node.fn)) {
+        getTokenSkipNewline()
+        value = parseAssignment()
+        return new AssignmentNode(node.object, node.index, value)
+      } else if (type.isFunctionNode(node) && type.isSymbolNode(node.fn)) {
         // parse function assignment like 'f(x) = x^2'
-        valid = true;
-        args = [];
+        valid = true
+        args = []
 
-        name = node.name;
+        name = node.name
         node.args.forEach(function (arg, index) {
           if (type.isSymbolNode(arg)) {
-            args[index] = arg.name;
+            args[index] = arg.name
+          } else {
+            valid = false
           }
-          else {
-            valid = false;
-          }
-        });
+        })
 
         if (valid) {
-          getTokenSkipNewline();
-          value = parseAssignment();
-          return new FunctionAssignmentNode(name, args, value);
+          getTokenSkipNewline()
+          value = parseAssignment()
+          return new FunctionAssignmentNode(name, args, value)
         }
       }
 
-      throw createSyntaxError('Invalid left hand side of assignment operator =');
+      throw createSyntaxError('Invalid left hand side of assignment operator =')
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -680,32 +670,32 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseConditional () {
-    var node = parseLogicalOr();
+    var node = parseLogicalOr()
 
     while (token === '?') {
       // set a conditional level, the range operator will be ignored as long
       // as conditional_level === nesting_level.
-      var prev = conditional_level;
-      conditional_level = nesting_level;
-      getTokenSkipNewline();
+      var prev = conditional_level
+      conditional_level = nesting_level
+      getTokenSkipNewline()
 
-      var condition = node;
-      var trueExpr = parseAssignment();
+      var condition = node
+      var trueExpr = parseAssignment()
 
-      if (token !== ':') throw createSyntaxError('False part of conditional expression expected');
+      if (token !== ':') throw createSyntaxError('False part of conditional expression expected')
 
-      conditional_level = null;
-      getTokenSkipNewline();
+      conditional_level = null
+      getTokenSkipNewline()
 
-      var falseExpr = parseAssignment(); // Note: check for conditional operator again, right associativity
+      var falseExpr = parseAssignment() // Note: check for conditional operator again, right associativity
 
-      node = new ConditionalNode(condition, trueExpr, falseExpr);
+      node = new ConditionalNode(condition, trueExpr, falseExpr)
 
       // restore the previous conditional level
-      conditional_level = prev;
+      conditional_level = prev
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -713,15 +703,15 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLogicalOr() {
-    var node = parseLogicalXor();
+  function parseLogicalOr () {
+    var node = parseLogicalXor()
 
     while (token === 'or') {
-      getTokenSkipNewline();
-      node = new OperatorNode('or', 'or', [node, parseLogicalXor()]);
+      getTokenSkipNewline()
+      node = new OperatorNode('or', 'or', [node, parseLogicalXor()])
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -729,15 +719,15 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLogicalXor() {
-    var node = parseLogicalAnd();
+  function parseLogicalXor () {
+    var node = parseLogicalAnd()
 
     while (token === 'xor') {
-      getTokenSkipNewline();
-      node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd()]);
+      getTokenSkipNewline()
+      node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd()])
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -745,15 +735,15 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLogicalAnd() {
-    var node = parseBitwiseOr();
+  function parseLogicalAnd () {
+    var node = parseBitwiseOr()
 
     while (token === 'and') {
-      getTokenSkipNewline();
-      node = new OperatorNode('and', 'and', [node, parseBitwiseOr()]);
+      getTokenSkipNewline()
+      node = new OperatorNode('and', 'and', [node, parseBitwiseOr()])
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -761,15 +751,15 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseBitwiseOr() {
-    var node = parseBitwiseXor();
+  function parseBitwiseOr () {
+    var node = parseBitwiseXor()
 
     while (token === '|') {
-      getTokenSkipNewline();
-      node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor()]);
+      getTokenSkipNewline()
+      node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor()])
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -777,15 +767,15 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseBitwiseXor() {
-    var node = parseBitwiseAnd();
+  function parseBitwiseXor () {
+    var node = parseBitwiseAnd()
 
     while (token === '^|') {
-      getTokenSkipNewline();
-      node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd()]);
+      getTokenSkipNewline()
+      node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd()])
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -794,14 +784,14 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseBitwiseAnd () {
-    var node = parseRelational();
+    var node = parseRelational()
 
     while (token === '&') {
-      getTokenSkipNewline();
-      node = new OperatorNode('&', 'bitAnd', [node, parseRelational()]);
+      getTokenSkipNewline()
+      node = new OperatorNode('&', 'bitAnd', [node, parseRelational()])
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -810,9 +800,9 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRelational () {
-    var node, operators, name, fn, params;
+    var node, operators, name, fn, params
 
-    node = parseShift();
+    node = parseShift()
 
     operators = {
       '==': 'equal',
@@ -821,17 +811,17 @@ function factory (type, config, load, typed) {
       '>': 'larger',
       '<=': 'smallerEq',
       '>=': 'largerEq'
-    };
+    }
     while (operators.hasOwnProperty(token)) {
-      name = token;
-      fn = operators[name];
+      name = token
+      fn = operators[name]
 
-      getTokenSkipNewline();
-      params = [node, parseShift()];
-      node = new OperatorNode(name, fn, params);
+      getTokenSkipNewline()
+      params = [node, parseShift()]
+      node = new OperatorNode(name, fn, params)
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -840,26 +830,26 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseShift () {
-    var node, operators, name, fn, params;
+    var node, operators, name, fn, params
 
-    node = parseConversion();
+    node = parseConversion()
 
     operators = {
-      '<<' : 'leftShift',
-      '>>' : 'rightArithShift',
-      '>>>' : 'rightLogShift'
-    };
-
-    while (operators.hasOwnProperty(token)) {
-      name = token;
-      fn = operators[name];
-
-      getTokenSkipNewline();
-      params = [node, parseConversion()];
-      node = new OperatorNode(name, fn, params);
+      '<<': 'leftShift',
+      '>>': 'rightArithShift',
+      '>>>': 'rightLogShift'
     }
 
-    return node;
+    while (operators.hasOwnProperty(token)) {
+      name = token
+      fn = operators[name]
+
+      getTokenSkipNewline()
+      params = [node, parseConversion()]
+      node = new OperatorNode(name, fn, params)
+    }
+
+    return node
   }
 
   /**
@@ -868,33 +858,32 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseConversion () {
-    var node, operators, name, fn, params;
+    var node, operators, name, fn, params
 
-    node = parseRange();
+    node = parseRange()
 
     operators = {
-      'to' : 'to',
-      'in' : 'to'   // alias of 'to'
-    };
+      'to': 'to',
+      'in': 'to' // alias of 'to'
+    }
 
     while (operators.hasOwnProperty(token)) {
-      name = token;
-      fn = operators[name];
+      name = token
+      fn = operators[name]
 
-      getTokenSkipNewline();
-      
+      getTokenSkipNewline()
+
       if (name === 'in' && token === '') {
         // end of expression -> this is the unit 'in' ('inch')
-        node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true);
-      }
-      else {
+        node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
+      } else {
         // operator 'a to b' or 'a in b'
-        params = [node, parseRange()];
-        node = new OperatorNode(name, fn, params);
+        params = [node, parseRange()]
+        node = new OperatorNode(name, fn, params)
       }
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -903,46 +892,43 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRange () {
-    var node, params = [];
+    var node, params = []
 
     if (token === ':') {
       // implicit start=1 (one-based)
-      node = new ConstantNode(1);
-    }
-    else {
+      node = new ConstantNode(1)
+    } else {
       // explicit start
-      node = parseAddSubtract();
+      node = parseAddSubtract()
     }
 
     if (token === ':' && (conditional_level !== nesting_level)) {
       // we ignore the range operator when a conditional operator is being processed on the same level
-      params.push(node);
+      params.push(node)
 
       // parse step and end
       while (token === ':' && params.length < 3) {
-        getTokenSkipNewline();
+        getTokenSkipNewline()
 
         if (token === ')' || token === ']' || token === ',' || token === '') {
           // implicit end
-          params.push(new SymbolNode('end'));
-        }
-        else {
+          params.push(new SymbolNode('end'))
+        } else {
           // explicit end
-          params.push(parseAddSubtract());
+          params.push(parseAddSubtract())
         }
       }
 
       if (params.length === 3) {
         // params = [start, step, end]
-        node = new RangeNode(params[0], params[2], params[1]); // start, end, step
-      }
-      else { // length === 2
+        node = new RangeNode(params[0], params[2], params[1]) // start, end, step
+      } else { // length === 2
         // params = [start, end]
-        node = new RangeNode(params[0], params[1]); // start, end
+        node = new RangeNode(params[0], params[1]) // start, end
       }
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -950,25 +936,25 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseAddSubtract ()  {
-    var node, operators, name, fn, params;
+  function parseAddSubtract () {
+    var node, operators, name, fn, params
 
-    node = parseMultiplyDivide();
+    node = parseMultiplyDivide()
 
     operators = {
       '+': 'add',
       '-': 'subtract'
-    };
+    }
     while (operators.hasOwnProperty(token)) {
-      name = token;
-      fn = operators[name];
+      name = token
+      fn = operators[name]
 
-      getTokenSkipNewline();
-      params = [node, parseMultiplyDivide()];
-      node = new OperatorNode(name, fn, params);
+      getTokenSkipNewline()
+      params = [node, parseMultiplyDivide()]
+      node = new OperatorNode(name, fn, params)
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -977,10 +963,10 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseMultiplyDivide () {
-    var node, last, operators, name, fn;
+    var node, last, operators, name, fn
 
-    node = parseImplicitMultiplication();
-    last = node;
+    node = parseImplicitMultiplication()
+    last = node
 
     operators = {
       '*': 'multiply',
@@ -989,37 +975,36 @@ function factory (type, config, load, typed) {
       './': 'dotDivide',
       '%': 'mod',
       'mod': 'mod'
-    };
+    }
 
     while (true) {
       if (operators.hasOwnProperty(token)) {
         // explicit operators
-        name = token;
-        fn = operators[name];
+        name = token
+        fn = operators[name]
 
-        getTokenSkipNewline();
+        getTokenSkipNewline()
 
-        last = parseImplicitMultiplication();
-        node = new OperatorNode(name, fn, [node, last]);
-      }
-      else {
-        break;
+        last = parseImplicitMultiplication()
+        node = new OperatorNode(name, fn, [node, last])
+      } else {
+        break
       }
     }
 
-    return node;
+    return node
   }
-  
+
   /**
    * implicit multiplication
    * @return {Node} node
    * @private
    */
   function parseImplicitMultiplication () {
-    var node, last;
+    var node, last
 
-    node = parseRule2();
-    last = node;
+    node = parseRule2()
+    last = node
 
     while (true) {
       if ((token_type === TOKENTYPE.SYMBOL) ||
@@ -1033,17 +1018,16 @@ function factory (type, config, load, typed) {
         // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
         // number:      implicit multiplication like '(2+3)2'
         // parenthesis: implicit multiplication like '2(3+4)', '(3+4)(1+2)'
-        last = parseRule2();
-        node = new OperatorNode('*', 'multiply', [node, last], true /*implicit*/);
-      }
-      else {
-        break;
+        last = parseRule2()
+        node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
+      } else {
+        break
       }
     }
 
-    return node;
+    return node
   }
-  
+
   /**
    * Infamous "rule 2" as described in https://github.com/josdejong/mathjs/issues/792#issuecomment-361065370
    * Explicit division gets higher precedence than implicit multiplication
@@ -1052,83 +1036,76 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRule2 () {
-    var node, last;
-    
-    node = parseUnary();
-    last = node;
-    
-    
-    while(true) {
-      
+    var node, last
+
+    node = parseUnary()
+    last = node
+
+    while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if(token === '/' && type.isConstantNode(last)) {
-        
+      if (token === '/' && type.isConstantNode(last)) {
         // Look ahead to see if the next token is a number
-        pushTokenState();
-        getTokenSkipNewline();
-        
-        // Match the "number / number" part of the pattern 
-        if(token_type === TOKENTYPE.NUMBER) {
-       
+        pushTokenState()
+        getTokenSkipNewline()
+
+        // Match the "number / number" part of the pattern
+        if (token_type === TOKENTYPE.NUMBER) {
           // Look ahead again
-          pushTokenState();
-          getTokenSkipNewline();
-          
+          pushTokenState()
+          getTokenSkipNewline()
+
           // Match the "symbol" part of the pattern, or a left parenthesis
-          if(token_type === TOKENTYPE.SYMBOL || token === '(') {
+          if (token_type === TOKENTYPE.SYMBOL || token === '(') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
-            popTokenState();
-            discardTokenState();
-            last = parseUnary();
-            node = new OperatorNode('/', 'divide', [node, last]);
-          }
-          else {
+            popTokenState()
+            discardTokenState()
+            last = parseUnary()
+            node = new OperatorNode('/', 'divide', [node, last])
+          } else {
             // Not a match, so rewind
-            popTokenState();
-            popTokenState();
-            break;
+            popTokenState()
+            popTokenState()
+            break
           }
-        } 
-        else {
+        } else {
           // Not a match, so rewind
-          popTokenState();
-          break;
+          popTokenState()
+          break
         }
-      }
-      else {
-        break;
+      } else {
+        break
       }
     }
-    
-    return node;
+
+    return node
   }
-  
+
   /**
    * Unary plus and minus, and logical and bitwise not
    * @return {Node} node
    * @private
    */
   function parseUnary () {
-    var name, params, fn;
+    var name, params, fn
     var operators = {
       '-': 'unaryMinus',
       '+': 'unaryPlus',
       '~': 'bitNot',
       'not': 'not'
-    };
-
-    if (operators.hasOwnProperty(token)) {
-      fn = operators[token];
-      name = token;
-
-      getTokenSkipNewline();
-      params = [parseUnary()];
-
-      return new OperatorNode(name, fn, params);
     }
 
-    return parsePow();
+    if (operators.hasOwnProperty(token)) {
+      fn = operators[token]
+      name = token
+
+      getTokenSkipNewline()
+      params = [parseUnary()]
+
+      return new OperatorNode(name, fn, params)
+    }
+
+    return parsePow()
   }
 
   /**
@@ -1138,20 +1115,20 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parsePow () {
-    var node, name, fn, params;
+    var node, name, fn, params
 
-    node = parseLeftHandOperators();
+    node = parseLeftHandOperators()
 
     if (token === '^' || token === '.^') {
-      name = token;
-      fn = (name === '^') ? 'pow' : 'dotPow';
+      name = token
+      fn = (name === '^') ? 'pow' : 'dotPow'
 
-      getTokenSkipNewline();
-      params = [node, parseUnary()]; // Go back to unary, we can have '2^-3'
-      node = new OperatorNode(name, fn, params);
+      getTokenSkipNewline()
+      params = [node, parseUnary()] // Go back to unary, we can have '2^-3'
+      node = new OperatorNode(name, fn, params)
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -1159,28 +1136,28 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLeftHandOperators ()  {
-    var node, operators, name, fn, params;
+  function parseLeftHandOperators () {
+    var node, operators, name, fn, params
 
-    node = parseCustomNodes();
+    node = parseCustomNodes()
 
     operators = {
       '!': 'factorial',
       '\'': 'ctranspose'
-    };
-
-    while (operators.hasOwnProperty(token)) {
-      name = token;
-      fn = operators[name];
-
-      getToken();
-      params = [node];
-
-      node = new OperatorNode(name, fn, params);
-      node = parseAccessors(node);
     }
 
-    return node;
+    while (operators.hasOwnProperty(token)) {
+      name = token
+      fn = operators[name]
+
+      getToken()
+      params = [node]
+
+      node = new OperatorNode(name, fn, params)
+      node = parseAccessors(node)
+    }
+
+    return node
   }
 
   /**
@@ -1212,43 +1189,43 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseCustomNodes () {
-    var params = [];
+    var params = []
 
     if (token_type === TOKENTYPE.SYMBOL && extra_nodes.hasOwnProperty(token)) {
-      var CustomNode = extra_nodes[token];
+      var CustomNode = extra_nodes[token]
 
-      getToken();
+      getToken()
 
       // parse parameters
       if (token === '(') {
-        params = [];
+        params = []
 
-        openParams();
-        getToken();
+        openParams()
+        getToken()
 
         if (token !== ')') {
-          params.push(parseAssignment());
+          params.push(parseAssignment())
 
           // parse a list with parameters
           while (token === ',') {
-            getToken();
-            params.push(parseAssignment());
+            getToken()
+            params.push(parseAssignment())
           }
         }
 
         if (token !== ')') {
-          throw createSyntaxError('Parenthesis ) expected');
+          throw createSyntaxError('Parenthesis ) expected')
         }
-        closeParams();
-        getToken();
+        closeParams()
+        getToken()
       }
 
       // create a new custom node
-      //noinspection JSValidateTypes
-      return new CustomNode(params);
+      // noinspection JSValidateTypes
+      return new CustomNode(params)
     }
 
-    return parseSymbol();
+    return parseSymbol()
   }
 
   /**
@@ -1257,30 +1234,28 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseSymbol () {
-    var node, name;
+    var node, name
 
     if (token_type === TOKENTYPE.SYMBOL ||
         (token_type === TOKENTYPE.DELIMITER && token in NAMED_DELIMITERS)) {
-      name = token;
+      name = token
 
-      getToken();
+      getToken()
 
       if (CONSTANTS.hasOwnProperty(name)) { // true, false, null, ...
-        node = new ConstantNode(CONSTANTS[name]);
-      }
-      else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
-        node = new ConstantNode(numeric(name));
-      }
-      else {
-        node = new SymbolNode(name);
+        node = new ConstantNode(CONSTANTS[name])
+      } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
+        node = new ConstantNode(numeric(name))
+      } else {
+        node = new SymbolNode(name)
       }
 
       // parse function parameters and matrix index
-      node = parseAccessors(node);
-      return node;
+      node = parseAccessors(node)
+      return node
     }
 
-    return parseString();
+    return parseString()
   }
 
   /**
@@ -1297,82 +1272,79 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseAccessors (node, types) {
-    var params;
+    var params
 
     while ((token === '(' || token === '[' || token === '.') &&
         (!types || types.indexOf(token) !== -1)) {
-      params = [];
+      params = []
 
       if (token === '(') {
         if (type.isSymbolNode(node) || type.isAccessorNode(node)) {
           // function invocation like fn(2, 3) or obj.fn(2, 3)
-          openParams();
-          getToken();
+          openParams()
+          getToken()
 
           if (token !== ')') {
-            params.push(parseAssignment());
+            params.push(parseAssignment())
 
             // parse a list with parameters
             while (token === ',') {
-              getToken();
-              params.push(parseAssignment());
+              getToken()
+              params.push(parseAssignment())
             }
           }
 
           if (token !== ')') {
-            throw createSyntaxError('Parenthesis ) expected');
+            throw createSyntaxError('Parenthesis ) expected')
           }
-          closeParams();
-          getToken();
+          closeParams()
+          getToken()
 
-          node = new FunctionNode(node, params);
-        }
-        else {
+          node = new FunctionNode(node, params)
+        } else {
           // implicit multiplication like (2+3)(4+5) or sqrt(2)(1+2)
           // don't parse it here but let it be handled by parseImplicitMultiplication
           // with correct precedence
-          return node;
+          return node
         }
-      }
-      else if (token === '[') {
+      } else if (token === '[') {
         // index notation like variable[2, 3]
-        openParams();
-        getToken();
+        openParams()
+        getToken()
 
         if (token !== ']') {
-          params.push(parseAssignment());
+          params.push(parseAssignment())
 
           // parse a list with parameters
           while (token === ',') {
-            getToken();
-            params.push(parseAssignment());
+            getToken()
+            params.push(parseAssignment())
           }
         }
 
         if (token !== ']') {
-          throw createSyntaxError('Parenthesis ] expected');
+          throw createSyntaxError('Parenthesis ] expected')
         }
-        closeParams();
-        getToken();
+        closeParams()
+        getToken()
 
-        node = new AccessorNode(node, new IndexNode(params));
-      }
-      else {
+        node = new AccessorNode(node, new IndexNode(params))
+      } else {
         // dot notation like variable.prop
-        getToken();
+        getToken()
 
         if (token_type !== TOKENTYPE.SYMBOL) {
-          throw createSyntaxError('Property name expected after dot');
+          throw createSyntaxError('Property name expected after dot')
         }
-        params.push(new ConstantNode(token));
-        getToken();
+        params.push(new ConstantNode(token))
+        getToken()
 
-        var dotNotation = true;
-        node = new AccessorNode(node, new IndexNode(params, dotNotation));
+        var dotNotation = true
+        node = new AccessorNode(node, new IndexNode(params, dotNotation))
       }
     }
 
-    return node;
+    return node
   }
 
   /**
@@ -1382,21 +1354,21 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseString () {
-    var node, str;
+    var node, str
 
     if (token === '"') {
-      str = parseStringToken();
+      str = parseStringToken()
 
       // create constant
-      node = new ConstantNode(str);
+      node = new ConstantNode(str)
 
       // parse index parameters
-      node = parseAccessors(node);
+      node = parseAccessors(node)
 
-      return node;
+      return node
     }
 
-    return parseMatrix();
+    return parseMatrix()
   }
 
   /**
@@ -1404,27 +1376,27 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   function parseStringToken () {
-    var str = '';
+    var str = ''
 
     while (c !== '' && c !== '\"') {
       if (c === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\"'
-        str += c;
-        next();
+        str += c
+        next()
       }
 
-      str += c;
-      next();
+      str += c
+      next()
     }
 
-    getToken();
+    getToken()
     if (token !== '"') {
-      throw createSyntaxError('End of string " expected');
+      throw createSyntaxError('End of string " expected')
     }
-    getToken();
+    getToken()
 
-    return JSON.parse('"' + str + '"'); // unescape escaped characters
+    return JSON.parse('"' + str + '"') // unescape escaped characters
   }
 
   /**
@@ -1433,69 +1405,67 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseMatrix () {
-    var array, params, rows, cols;
+    var array, params, rows, cols
 
     if (token === '[') {
       // matrix [...]
-      openParams();
-      getToken();
+      openParams()
+      getToken()
 
       if (token !== ']') {
         // this is a non-empty matrix
-        var row = parseRow();
+        var row = parseRow()
 
         if (token === ';') {
           // 2 dimensional array
-          rows = 1;
-          params = [row];
+          rows = 1
+          params = [row]
 
           // the rows of the matrix are separated by dot-comma's
           while (token === ';') {
-            getToken();
+            getToken()
 
-            params[rows] = parseRow();
-            rows++;
+            params[rows] = parseRow()
+            rows++
           }
 
           if (token !== ']') {
-            throw createSyntaxError('End of matrix ] expected');
+            throw createSyntaxError('End of matrix ] expected')
           }
-          closeParams();
-          getToken();
+          closeParams()
+          getToken()
 
           // check if the number of columns matches in all rows
-          cols = params[0].items.length;
+          cols = params[0].items.length
           for (var r = 1; r < rows; r++) {
             if (params[r].items.length !== cols) {
               throw createError('Column dimensions mismatch ' +
-                  '(' + params[r].items.length + ' !== ' + cols + ')');
+                  '(' + params[r].items.length + ' !== ' + cols + ')')
             }
           }
 
-          array = new ArrayNode(params);
-        }
-        else {
+          array = new ArrayNode(params)
+        } else {
           // 1 dimensional vector
           if (token !== ']') {
-            throw createSyntaxError('End of matrix ] expected');
+            throw createSyntaxError('End of matrix ] expected')
           }
-          closeParams();
-          getToken();
+          closeParams()
+          getToken()
 
-          array = row;
+          array = row
         }
-      }
-      else {
+      } else {
         // this is an empty matrix "[ ]"
-        closeParams();
-        getToken();
-        array = new ArrayNode([]);
+        closeParams()
+        getToken()
+        array = new ArrayNode([])
       }
 
-      return parseAccessors(array);
+      return parseAccessors(array)
     }
 
-    return parseObject();
+    return parseObject()
   }
 
   /**
@@ -1503,18 +1473,18 @@ function factory (type, config, load, typed) {
    * @return {ArrayNode} node
    */
   function parseRow () {
-    var params = [parseAssignment()];
-    var len = 1;
+    var params = [parseAssignment()]
+    var len = 1
 
     while (token === ',') {
-      getToken();
+      getToken()
 
       // parse expression
-      params[len] = parseAssignment();
-      len++;
+      params[len] = parseAssignment()
+      len++
     }
 
-    return new ArrayNode(params);
+    return new ArrayNode(params)
   }
 
   /**
@@ -1524,51 +1494,49 @@ function factory (type, config, load, typed) {
    */
   function parseObject () {
     if (token === '{') {
-      var key;
+      var key
 
-      var properties = {};
+      var properties = {}
       do {
-        getToken();
+        getToken()
 
         if (token !== '}') {
           // parse key
           if (token === '"') {
-            key = parseStringToken();
-          }
-          else if (token_type === TOKENTYPE.SYMBOL) {
-            key = token;
-            getToken();
-          }
-          else {
-            throw createSyntaxError('Symbol or string expected as object key');
+            key = parseStringToken()
+          } else if (token_type === TOKENTYPE.SYMBOL) {
+            key = token
+            getToken()
+          } else {
+            throw createSyntaxError('Symbol or string expected as object key')
           }
 
           // parse key/value separator
           if (token !== ':') {
-            throw createSyntaxError('Colon : expected after object key');
+            throw createSyntaxError('Colon : expected after object key')
           }
-          getToken();
+          getToken()
 
           // parse key
-          properties[key] = parseAssignment();
+          properties[key] = parseAssignment()
         }
       }
-      while (token === ',');
+      while (token === ',')
 
       if (token !== '}') {
-        throw createSyntaxError('Comma , or bracket } expected after object value');
+        throw createSyntaxError('Comma , or bracket } expected after object value')
       }
-      getToken();
+      getToken()
 
-      var node = new ObjectNode(properties);
+      var node = new ObjectNode(properties)
 
       // parse index parameters
-      node = parseAccessors(node);
+      node = parseAccessors(node)
 
-      return node;
+      return node
     }
 
-    return parseNumber();
+    return parseNumber()
   }
 
   /**
@@ -1577,17 +1545,17 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseNumber () {
-    var numberStr;
+    var numberStr
 
     if (token_type === TOKENTYPE.NUMBER) {
       // this is a number
-      numberStr = token;
-      getToken();
+      numberStr = token
+      getToken()
 
-      return new ConstantNode(numeric(numberStr, config.number));
+      return new ConstantNode(numeric(numberStr, config.number))
     }
 
-    return parseParentheses();
+    return parseParentheses()
   }
 
   /**
@@ -1596,28 +1564,28 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseParentheses () {
-    var node;
+    var node
 
     // check if it is a parenthesized expression
     if (token === '(') {
       // parentheses (...)
-      openParams();
-      getToken();
+      openParams()
+      getToken()
 
-      node = parseAssignment(); // start again
+      node = parseAssignment() // start again
 
       if (token !== ')') {
-        throw createSyntaxError('Parenthesis ) expected');
+        throw createSyntaxError('Parenthesis ) expected')
       }
-      closeParams();
-      getToken();
+      closeParams()
+      getToken()
 
-      node = new ParenthesisNode(node);
-      node = parseAccessors(node);
-      return node;
+      node = new ParenthesisNode(node)
+      node = parseAccessors(node)
+      return node
     }
 
-    return parseEnd();
+    return parseEnd()
   }
 
   /**
@@ -1628,11 +1596,11 @@ function factory (type, config, load, typed) {
   function parseEnd () {
     if (token === '') {
       // syntax error or unexpected end of expression
-      throw createSyntaxError('Unexpected end of expression');
+      throw createSyntaxError('Unexpected end of expression')
     } else if (token === "'") {
-      throw createSyntaxError('Value expected. Note: strings must be enclosed by double quotes');
+      throw createSyntaxError('Value expected. Note: strings must be enclosed by double quotes')
     } else {
-      throw createSyntaxError('Value expected');
+      throw createSyntaxError('Value expected')
     }
   }
 
@@ -1653,7 +1621,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function col () {
-    return index - token.length + 1;
+    return index - token.length + 1
   }
 
   /**
@@ -1663,11 +1631,11 @@ function factory (type, config, load, typed) {
    * @private
    */
   function createSyntaxError (message) {
-    var c = col();
-    var error = new SyntaxError(message + ' (char ' + c + ')');
-    error['char'] = c;
+    var c = col()
+    var error = new SyntaxError(message + ' (char ' + c + ')')
+    error['char'] = c
 
-    return error;
+    return error
   }
 
   /**
@@ -1677,16 +1645,16 @@ function factory (type, config, load, typed) {
    * @private
    */
   function createError (message) {
-    var c = col();
-    var error = new SyntaxError(message + ' (char ' + c + ')');
-    error['char'] = c;
+    var c = col()
+    var error = new SyntaxError(message + ' (char ' + c + ')')
+    error['char'] = c
 
-    return error;
+    return error
   }
 
-  return parse;
+  return parse
 }
 
-exports.name = 'parse';
-exports.path = 'expression';
-exports.factory = factory;
+exports.name = 'parse'
+exports.path = 'expression'
+exports.factory = factory

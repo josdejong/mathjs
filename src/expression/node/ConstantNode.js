@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var format = require('../../utils/string').format;
-var escapeLatex = require('../../utils/latex').escape;
+var format = require('../../utils/string').format
+var escapeLatex = require('../../utils/latex').escape
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'));
-  var getType = load(require('../../function/utils/typeof'));
+  var Node = load(require('./Node'))
+  var getType = load(require('../../function/utils/typeof'))
 
   /**
    * A ConstantNode holds a constant value like a number or string.
@@ -19,24 +19,24 @@ function factory (type, config, load, typed) {
    * @constructor ConstantNode
    * @extends {Node}
    */
-  function ConstantNode(value) {
+  function ConstantNode (value) {
     if (!(this instanceof ConstantNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     if (arguments.length === 2) {
       // TODO: remove deprecation error some day (created 2018-01-23)
-      throw new SyntaxError('new ConstantNode(valueStr, valueType) is not supported anymore since math v4.0.0. Use new ConstantNode(value) instead, where value is a non-stringified value.');
+      throw new SyntaxError('new ConstantNode(valueStr, valueType) is not supported anymore since math v4.0.0. Use new ConstantNode(value) instead, where value is a non-stringified value.')
     }
 
-    this.value = value;
+    this.value = value
   }
 
-  ConstantNode.prototype = new Node();
+  ConstantNode.prototype = new Node()
 
-  ConstantNode.prototype.type = 'ConstantNode';
+  ConstantNode.prototype.type = 'ConstantNode'
 
-  ConstantNode.prototype.isConstantNode = true;
+  ConstantNode.prototype.isConstantNode = true
 
   /**
    * Compile a node into a JavaScript function.
@@ -52,10 +52,10 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   ConstantNode.prototype._compile = function (math, argNames) {
-    var value = this.value;
+    var value = this.value
 
-    return function evalConstantNode() {
-      return value;
+    return function evalConstantNode () {
+      return value
     }
   }
 
@@ -65,7 +65,7 @@ function factory (type, config, load, typed) {
    */
   ConstantNode.prototype.forEach = function (callback) {
     // nothing to do, we don't have childs
-  };
+  }
 
   /**
    * Create a new ConstantNode having it's childs be the results of calling
@@ -74,16 +74,16 @@ function factory (type, config, load, typed) {
    * @returns {ConstantNode} Returns a clone of the node
    */
   ConstantNode.prototype.map = function (callback) {
-    return this.clone();
-  };
+    return this.clone()
+  }
 
   /**
    * Create a clone of this node, a shallow copy
    * @return {ConstantNode}
    */
   ConstantNode.prototype.clone = function () {
-    return new ConstantNode(this.value);
-  };
+    return new ConstantNode(this.value)
+  }
 
   /**
    * Get string representation
@@ -91,8 +91,8 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConstantNode.prototype._toString = function (options) {
-    return format (this.value, options);
-  };
+    return format(this.value, options)
+  }
 
   /**
    * Get HTML representation
@@ -100,26 +100,26 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConstantNode.prototype.toHTML = function (options) {
-    var value = this._toString(options);
+    var value = this._toString(options)
 
     switch (getType(this.value)) {
   	  case 'number':
   	  case 'BigNumber':
   	  case 'Fraction':
-	    return '<span class="math-number">' + value + '</span>';
+	    return '<span class="math-number">' + value + '</span>'
       case 'string':
-	    return '<span class="math-string">' + value + '</span>';
+	    return '<span class="math-string">' + value + '</span>'
       case 'boolean':
-	    return '<span class="math-boolean">' + value + '</span>';
+	    return '<span class="math-boolean">' + value + '</span>'
       case 'null':
-	    return '<span class="math-null-symbol">' + value + '</span>';
+	    return '<span class="math-null-symbol">' + value + '</span>'
       case 'undefined':
-	    return '<span class="math-undefined">' + value + '</span>';
+	    return '<span class="math-undefined">' + value + '</span>'
 
       default:
-        return '<span class="math-symbol">' + value + '</span>';
+        return '<span class="math-symbol">' + value + '</span>'
     }
-  };
+  }
 
   /**
    * Get a JSON representation of the node
@@ -129,8 +129,8 @@ function factory (type, config, load, typed) {
     return {
       mathjs: 'ConstantNode',
       value: this.value
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate a ConstantNode from its JSON representation
@@ -140,8 +140,8 @@ function factory (type, config, load, typed) {
    * @returns {ConstantNode}
    */
   ConstantNode.fromJSON = function (json) {
-    return new ConstantNode(json.value);
-  };
+    return new ConstantNode(json.value)
+  }
 
   /**
    * Get LaTeX representation
@@ -149,32 +149,32 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConstantNode.prototype._toTex = function (options) {
-    var value = this._toString(options);
+    var value = this._toString(options)
 
     switch (getType(this.value)) {
       case 'string':
-        return '\\mathtt{' + escapeLatex(value) + '}';
+        return '\\mathtt{' + escapeLatex(value) + '}'
 
       case 'number':
       case 'BigNumber':
-        var index = value.toLowerCase().indexOf('e');
+        var index = value.toLowerCase().indexOf('e')
         if (index !== -1) {
           return value.substring(0, index) + '\\cdot10^{' +
-              value.substring(index + 1) + '}';
+              value.substring(index + 1) + '}'
         }
-        return value;
+        return value
 
       case 'Fraction':
-        return this.value.toLatex();
+        return this.value.toLatex()
 
       default:
-        return value;
+        return value
     }
-  };
+  }
 
-  return ConstantNode;
+  return ConstantNode
 }
 
-exports.name = 'ConstantNode';
-exports.path = 'expression.node';
-exports.factory = factory;
+exports.name = 'ConstantNode'
+exports.path = 'expression.node'
+exports.factory = factory

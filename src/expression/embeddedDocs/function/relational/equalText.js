@@ -16,4 +16,4 @@ module.exports = {
   'seealso': [
     'compare', 'compareNatural', 'compareText', 'equal'
   ]
-};
+}

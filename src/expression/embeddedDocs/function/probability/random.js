@@ -17,4 +17,4 @@ module.exports = {
     'random([2, 3])'
   ],
   'seealso': ['pickRandom', 'randomInt']
-};
+}

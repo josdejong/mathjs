@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap');
+var deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,43 +31,43 @@ function factory (type, config, load, typed) {
   var fraction = typed('fraction', {
     'number': function (x) {
       if (!isFinite(x) || isNaN(x)) {
-        throw new Error(x + ' cannot be represented as a fraction');
+        throw new Error(x + ' cannot be represented as a fraction')
       }
 
-      return new type.Fraction(x);
+      return new type.Fraction(x)
     },
 
     'string': function (x) {
-      return new type.Fraction(x);
+      return new type.Fraction(x)
     },
 
     'number, number': function (numerator, denominator) {
-      return new type.Fraction(numerator, denominator);
+      return new type.Fraction(numerator, denominator)
     },
 
     'null': function (x) {
-      return new type.Fraction(0);
+      return new type.Fraction(0)
     },
 
     'BigNumber': function (x) {
-      return new type.Fraction(x.toString());
+      return new type.Fraction(x.toString())
     },
 
     'Fraction': function (x) {
-      return x; // fractions are immutable
+      return x // fractions are immutable
     },
 
     'Object': function (x) {
-      return new type.Fraction(x);
+      return new type.Fraction(x)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, fraction);
+      return deepMap(x, fraction)
     }
-  });
+  })
 
-  return fraction;
+  return fraction
 }
 
-exports.name = 'fraction';
-exports.factory = factory;
+exports.name = 'fraction'
+exports.factory = factory

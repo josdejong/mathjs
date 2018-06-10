@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach');
-var reduce = require('../../utils/collection/reduce');
-var containsCollections = require('../../utils/collection/containsCollections');
+var deepForEach = require('../../utils/collection/deepForEach')
+var reduce = require('../../utils/collection/reduce')
+var containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var larger = load(require('../relational/larger'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var larger = load(require('../relational/larger'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the maximum value of a matrix or a  list with values.
@@ -45,22 +45,22 @@ function factory (type, config, load, typed) {
 
     // max([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
-      return reduce(array, dim.valueOf(), _largest);
+      return reduce(array, dim.valueOf(), _largest)
     },
 
     // max(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function max');
+        throw new TypeError('Scalar values expected in function max')
       }
 
-      return _max(args);
+      return _max(args)
     }
-  });
+  })
 
-  max.toTex = '\\max\\left(${args}\\right)';
+  max.toTex = '\\max\\left(${args}\\right)'
 
-  return max;
+  return max
 
   /**
    * Return the largest of two values
@@ -69,12 +69,11 @@ function factory (type, config, load, typed) {
    * @returns {*} Returns x when x is largest, or y when y is largest
    * @private
    */
-  function _largest(x, y) {
+  function _largest (x, y) {
     try {
-      return larger(x, y) ? x : y;
-    }
-    catch (err) {
-      throw improveErrorMessage(err, 'max', y);
+      return larger(x, y) ? x : y
+    } catch (err) {
+      throw improveErrorMessage(err, 'max', y)
     }
   }
 
@@ -84,28 +83,26 @@ function factory (type, config, load, typed) {
    * @return {number} max
    * @private
    */
-  function _max(array) {
-    var max = undefined;
+  function _max (array) {
+    var max = undefined
 
     deepForEach(array, function (value) {
       try {
         if (max === undefined || larger(value, max)) {
-          max = value;
+          max = value
         }
+      } catch (err) {
+        throw improveErrorMessage(err, 'max', value)
       }
-      catch (err) {
-        throw improveErrorMessage(err, 'max', value);
-      }
-    });
+    })
 
     if (max === undefined) {
-      throw new Error('Cannot calculate max of an empty array');
+      throw new Error('Cannot calculate max of an empty array')
     }
 
-    return max;
+    return max
   }
-
 }
 
-exports.name = 'max';
-exports.factory = factory;
+exports.name = 'max'
+exports.factory = factory

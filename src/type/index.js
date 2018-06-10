@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./bignumber'),
   require('./boolean'),
@@ -10,4 +10,4 @@ module.exports = [
   require('./resultset'),
   require('./string'),
   require('./unit')
-];
+]

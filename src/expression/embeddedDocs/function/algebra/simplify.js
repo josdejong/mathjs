@@ -16,4 +16,4 @@ module.exports = {
   'seealso': [
     'derivative', 'parse', 'eval'
   ]
-};
+}

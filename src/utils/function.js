@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 // function utils
 
 /**
@@ -12,24 +12,24 @@
  *                                          Is JSON.stringify by default.
  * @return {function}                       Returns the memoized function
  */
-exports.memoize = function(fn, hasher) {
-  return function memoize() {
+exports.memoize = function (fn, hasher) {
+  return function memoize () {
     if (typeof memoize.cache !== 'object') {
-      memoize.cache = {};
+      memoize.cache = {}
     }
 
-    var args = [];
+    var args = []
     for (var i = 0; i < arguments.length; i++) {
-      args[i] = arguments[i];
+      args[i] = arguments[i]
     }
 
-    var hash = hasher ? hasher(args) : JSON.stringify(args);
+    var hash = hasher ? hasher(args) : JSON.stringify(args)
     if (!(hash in memoize.cache)) {
-      return memoize.cache[hash] = fn.apply(fn, args);
+      return memoize.cache[hash] = fn.apply(fn, args)
     }
-    return memoize.cache[hash];
-  };
-};
+    return memoize.cache[hash]
+  }
+}
 
 /**
  * Find the maximum number of arguments expected by a typed function.
@@ -39,11 +39,11 @@ exports.memoize = function(fn, hasher) {
  */
 exports.maxArgumentCount = function (fn) {
   return Object.keys(fn.signatures || {})
-      .reduce(function (args, signature) {
-        var count = (signature.match(/,/g) || []).length + 1;
-        return Math.max(args, count);
-      }, -1);
-};
+    .reduce(function (args, signature) {
+      var count = (signature.match(/,/g) || []).length + 1
+      return Math.max(args, count)
+    }, -1)
+}
 
 /**
  * Call a typed function with the
@@ -53,8 +53,8 @@ exports.maxArgumentCount = function (fn) {
  */
 exports.callWithRightArgumentCount = function (fn, args, argCount) {
   return Object.keys(fn.signatures || {})
-      .reduce(function (args, signature) {
-        var count = (signature.match(/,/g) || []).length + 1;
-        return Math.max(args, count);
-      }, -1);
-};
+    .reduce(function (args, signature) {
+      var count = (signature.match(/,/g) || []).length + 1
+      return Math.max(args, count)
+    }, -1)
+}

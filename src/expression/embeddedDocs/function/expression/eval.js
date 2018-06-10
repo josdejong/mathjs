@@ -11,4 +11,4 @@ module.exports = {
     'eval("sqrt(" + 4 + ")")'
   ],
   'seealso': []
-};
+}

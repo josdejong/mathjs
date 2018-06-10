@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
   /**
@@ -28,54 +28,54 @@ function factory (type, config, load, typed) {
    */
   var combinations = typed('combinations', {
     'number, number': function (n, k) {
-      var max, result, i;
+      var max, result, i
 
       if (!isInteger(n) || n < 0) {
-        throw new TypeError('Positive integer value expected in function combinations');
+        throw new TypeError('Positive integer value expected in function combinations')
       }
       if (!isInteger(k) || k < 0) {
-        throw new TypeError('Positive integer value expected in function combinations');
+        throw new TypeError('Positive integer value expected in function combinations')
       }
       if (k > n) {
-        throw new TypeError('k must be less than or equal to n');
+        throw new TypeError('k must be less than or equal to n')
       }
 
-      max = Math.max(k, n - k);
-      result = 1;
+      max = Math.max(k, n - k)
+      result = 1
       for (i = 1; i <= n - max; i++) {
-        result = result * (max + i) / i;
+        result = result * (max + i) / i
       }
 
-      return result;
+      return result
     },
 
     'BigNumber, BigNumber': function (n, k) {
-      var max, result, i, ii;
-      var one = new type.BigNumber(1);
+      var max, result, i, ii
+      var one = new type.BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
-        throw new TypeError('Positive integer value expected in function combinations');
+        throw new TypeError('Positive integer value expected in function combinations')
       }
       if (k.gt(n)) {
-        throw new TypeError('k must be less than n in function combinations');
+        throw new TypeError('k must be less than n in function combinations')
       }
 
-      max = n.minus(k);
-      if (k.lt(max)) max = k;
-      result = one;
+      max = n.minus(k)
+      if (k.lt(max)) max = k
+      result = one
       for (i = one, ii = n.minus(max); i.lte(ii); i = i.plus(1)) {
-        result = result.times(max.plus(i)).dividedBy(i);
+        result = result.times(max.plus(i)).dividedBy(i)
       }
 
-      return result;
+      return result
     }
 
     // TODO: implement support for collection in combinations
-  });
+  })
 
-  combinations.toTex = {2: '\\binom{${args[0]}}{${args[1]}}'};
+  combinations.toTex = {2: '\\binom{${args[0]}}{${args[1]}}'}
 
-  return combinations;
+  return combinations
 }
 
 /**
@@ -83,9 +83,9 @@ function factory (type, config, load, typed) {
  * @param {BigNumber} n
  * @returns {boolean} isPositiveInteger
  */
-function isPositiveInteger(n) {
-  return n.isInteger() && n.gte(0);
+function isPositiveInteger (n) {
+  return n.isInteger() && n.gte(0)
 }
 
-exports.name = 'combinations';
-exports.factory = factory;
+exports.name = 'combinations'
+exports.factory = factory

@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var object= require('../../utils/object');
+var object = require('../../utils/object')
 
 function factory (type, config, load, typed) {
   /**
@@ -23,12 +23,12 @@ function factory (type, config, load, typed) {
    */
   var clone = typed('clone', {
     'any': object.clone
-  });
+  })
 
-  clone.toTex = undefined; // use default template
+  clone.toTex = undefined // use default template
 
-  return clone;
+  return clone
 }
 
-exports.name = 'clone';
-exports.factory = factory;
+exports.name = 'clone'
+exports.factory = factory

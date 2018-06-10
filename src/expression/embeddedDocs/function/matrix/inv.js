@@ -13,4 +13,4 @@ module.exports = {
   'seealso': [
     'concat', 'det', 'diag', 'identity', 'ones', 'range', 'size', 'squeeze', 'subset', 'trace', 'transpose', 'zeros'
   ]
-};
+}

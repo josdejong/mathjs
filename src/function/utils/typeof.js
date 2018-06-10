@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
   /**
@@ -61,44 +61,44 @@ function factory (type, config, load, typed) {
    */
   var _typeof = typed('_typeof', {
     'any': function (x) {
-      var t = typeof x;
+      var t = typeof x
 
       if (t === 'object') {
         // JavaScript types
-        if (x === null)           return 'null';
-        if (Array.isArray(x))     return 'Array';
-        if (x instanceof Date)    return 'Date';
-        if (x instanceof RegExp)  return 'RegExp';
-        if (x instanceof Boolean) return 'boolean';
-        if (x instanceof Number)  return 'number';
-        if (x instanceof String)  return 'string';
+        if (x === null) return 'null'
+        if (Array.isArray(x)) return 'Array'
+        if (x instanceof Date) return 'Date'
+        if (x instanceof RegExp) return 'RegExp'
+        if (x instanceof Boolean) return 'boolean'
+        if (x instanceof Number) return 'number'
+        if (x instanceof String) return 'string'
 
         // math.js types
-        if (type.isBigNumber(x)) return 'BigNumber';
-        if (type.isComplex(x))   return 'Complex';
-        if (type.isFraction(x))  return 'Fraction';
-        if (type.isMatrix(x))    return 'Matrix';
-        if (type.isUnit(x))      return 'Unit';
-        if (type.isIndex(x))     return 'Index';
-        if (type.isRange(x))     return 'Range';
-        if (type.isResultSet(x)) return 'ResultSet';
-        if (type.isNode(x))      return x.type;
-        if (type.isChain(x))     return 'Chain';
-        if (type.isHelp(x))      return 'Help';
+        if (type.isBigNumber(x)) return 'BigNumber'
+        if (type.isComplex(x)) return 'Complex'
+        if (type.isFraction(x)) return 'Fraction'
+        if (type.isMatrix(x)) return 'Matrix'
+        if (type.isUnit(x)) return 'Unit'
+        if (type.isIndex(x)) return 'Index'
+        if (type.isRange(x)) return 'Range'
+        if (type.isResultSet(x)) return 'ResultSet'
+        if (type.isNode(x)) return x.type
+        if (type.isChain(x)) return 'Chain'
+        if (type.isHelp(x)) return 'Help'
 
-        return 'Object';
+        return 'Object'
       }
 
-      if (t === 'function') return 'Function';
+      if (t === 'function') return 'Function'
 
-      return t; // can be 'string', 'number', 'boolean', ...
+      return t // can be 'string', 'number', 'boolean', ...
     }
-  });
+  })
 
-  _typeof.toTex = undefined; // use default template
+  _typeof.toTex = undefined // use default template
 
-  return _typeof;
+  return _typeof
 }
 
-exports.name = 'typeof';
-exports.factory = factory;
+exports.name = 'typeof'
+exports.factory = factory

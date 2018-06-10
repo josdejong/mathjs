@@ -14,4 +14,4 @@ module.exports = {
     'sort(["10", "1", "2"], "natural")'
   ],
   'seealso': ['map', 'filter', 'forEach']
-};
+}

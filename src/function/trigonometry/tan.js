@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -30,30 +30,30 @@ function factory (type, config, load, typed) {
     'number': Math.tan,
 
     'Complex': function (x) {
-        return x.tan();
+      return x.tan()
     },
 
     'BigNumber': function (x) {
-      return x.tan();
+      return x.tan()
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function tan is no angle');
+        throw new TypeError('Unit in function tan is no angle')
       }
-      return tan(x.value);
+      return tan(x.value)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since tan(0) = 0
-      return deepMap(x, tan, true);
+      return deepMap(x, tan, true)
     }
-  });
+  })
 
-  tan.toTex = {1: '\\tan\\left(${args[0]}\\right)'};
+  tan.toTex = {1: '\\tan\\left(${args[0]}\\right)'}
 
-  return tan;
+  return tan
 }
 
-exports.name = 'tan';
-exports.factory = factory;
+exports.name = 'tan'
+exports.factory = factory

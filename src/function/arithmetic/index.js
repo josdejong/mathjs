@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./abs'),
   require('./add'),
@@ -35,4 +35,4 @@ module.exports = [
   require('./unaryMinus'),
   require('./unaryPlus'),
   require('./xgcd')
-];
+]

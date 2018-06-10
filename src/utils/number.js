@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var objectUtils = require('./object');
+var objectUtils = require('./object')
 
 /**
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue
@@ -11,38 +11,36 @@ var objectUtils = require('./object');
  * @param {*} value
  * @return {boolean} isNumber
  */
-exports.isNumber = function(value) {
-  return typeof value === 'number';
-};
+exports.isNumber = function (value) {
+  return typeof value === 'number'
+}
 
 /**
  * Check if a number is integer
  * @param {number | boolean} value
  * @return {boolean} isInteger
  */
-exports.isInteger = function(value) {
+exports.isInteger = function (value) {
   return isFinite(value)
-      ? (value == Math.round(value))
-      : false;
+    ? (value == Math.round(value))
+    : false
   // Note: we use ==, not ===, as we can have Booleans as well
-};
+}
 
 /**
  * Calculate the sign of a number
  * @param {number} x
  * @returns {*}
  */
-exports.sign = Math.sign || function(x) {
+exports.sign = Math.sign || function (x) {
   if (x > 0) {
-    return 1;
+    return 1
+  } else if (x < 0) {
+    return -1
+  } else {
+    return 0
   }
-  else if (x < 0) {
-    return -1;
-  }
-  else {
-    return 0;
-  }
-};
+}
 
 /**
  * Convert a number to a formatted string representation.
@@ -68,7 +66,7 @@ exports.sign = Math.sign || function(x) {
  *                                          For example '123.4e+0' and '14.0e+6'
  *                         'auto' (default) Regular number notation for numbers
  *                                          having an absolute value between
- *                                          `lowerExp` and `upperExp` bounds, and 
+ *                                          `lowerExp` and `upperExp` bounds, and
  *                                          uses exponential notation elsewhere.
  *                                          Lower bound is included, upper bound
  *                                          is excluded.
@@ -80,17 +78,17 @@ exports.sign = Math.sign || function(x) {
  *                                          number of significant digits returned.
  *                                          In case of notation 'fixed',
  *                                          `precision` defines the number of
- *                                          significant digits after the decimal 
+ *                                          significant digits after the decimal
  *                                          point.
  *                                          `precision` is undefined by default,
  *                                          not rounding any digits.
  *                     {number} lowerExp    Exponent determining the lower boundary
  *                                          for formatting a value with an exponent
- *                                          when `notation='auto`. 
+ *                                          when `notation='auto`.
  *                                          Default value is `-3`.
  *                     {number} upperExp    Exponent determining the upper boundary
  *                                          for formatting a value with an exponent
- *                                          when `notation='auto`. 
+ *                                          when `notation='auto`.
  *                                          Default value is `5`.
  *    {Function} fn    A custom formatting function. Can be used to override the
  *                     built-in notations. Function `fn` is called with `value` as
@@ -113,90 +111,87 @@ exports.sign = Math.sign || function(x) {
  * @param {Object | Function | number} [options]
  * @return {string} str The formatted value
  */
-exports.format = function(value, options) {
+exports.format = function (value, options) {
   if (typeof options === 'function') {
     // handle format(value, fn)
-    return options(value);
+    return options(value)
   }
 
   // handle special cases
   if (value === Infinity) {
-    return 'Infinity';
-  }
-  else if (value === -Infinity) {
-    return '-Infinity';
-  }
-  else if (isNaN(value)) {
-    return 'NaN';
+    return 'Infinity'
+  } else if (value === -Infinity) {
+    return '-Infinity'
+  } else if (isNaN(value)) {
+    return 'NaN'
   }
 
   // default values for options
-  var notation = 'auto';
-  var precision = undefined;
+  var notation = 'auto'
+  var precision = undefined
 
   if (options) {
     // determine notation from options
     if (options.notation) {
-      notation = options.notation;
+      notation = options.notation
     }
 
     // determine precision from options
     if (exports.isNumber(options)) {
-      precision = options;
-    }
-    else if (options.precision) {
-      precision = options.precision;
+      precision = options
+    } else if (options.precision) {
+      precision = options.precision
     }
   }
 
   // handle the various notations
   switch (notation) {
     case 'fixed':
-      return exports.toFixed(value, precision);
+      return exports.toFixed(value, precision)
 
     case 'exponential':
-      return exports.toExponential(value, precision);
+      return exports.toExponential(value, precision)
 
     case 'engineering':
-      return exports.toEngineering(value, precision);
+      return exports.toEngineering(value, precision)
 
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        var fixedOptions = objectUtils.map(options, function(x) { return x; });
-        fixedOptions.exponential = undefined;
+        var fixedOptions = objectUtils.map(options, function (x) { return x })
+        fixedOptions.exponential = undefined
         if (options.exponential.lower !== undefined) {
-          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10);
+          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
         }
         if (options.exponential.upper !== undefined) {
-          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10);
+          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10)
         }
 
-        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' + 
+        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' +
             '(minimum and maximum value) ' +
-            'are replaced with exponential.lowerExp and exponential.upperExp ' + 
-            '(minimum and maximum exponent) since version 4.0.0. ' + 
-            'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions));
+            'are replaced with exponential.lowerExp and exponential.upperExp ' +
+            '(minimum and maximum exponent) since version 4.0.0. ' +
+            'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
 
-        return exports.toPrecision(value, precision, fixedOptions);
+        return exports.toPrecision(value, precision, fixedOptions)
       }
 
       return exports
-          .toPrecision(value, precision, options && options)
+        .toPrecision(value, precision, options && options)
 
-          // remove trailing zeros after the decimal point
-          .replace(/((\.\d*?)(0+))($|e)/, function () {
-            var digits = arguments[2];
-            var e = arguments[4];
-            return (digits !== '.') ? digits + e : e;
-          });
+      // remove trailing zeros after the decimal point
+        .replace(/((\.\d*?)(0+))($|e)/, function () {
+          var digits = arguments[2]
+          var e = arguments[4]
+          return (digits !== '.') ? digits + e : e
+        })
 
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", or "fixed".');
+          'Choose "auto", "exponential", or "fixed".')
   }
-};
+}
 
 /**
  * Split a number into sign, coefficients, and exponent
@@ -206,43 +201,42 @@ exports.format = function(value, options) {
  */
 exports.splitNumber = function (value) {
   // parse the input value
-  var match = String(value).toLowerCase().match(/^0*?(-?)(\d+\.?\d*)(e([+-]?\d+))?$/);
+  var match = String(value).toLowerCase().match(/^0*?(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
   if (!match) {
-    throw new SyntaxError('Invalid number ' + value);
+    throw new SyntaxError('Invalid number ' + value)
   }
 
-  var sign         = match[1];
-  var digits       = match[2];
-  var exponent     = parseFloat(match[4] || '0');
+  var sign = match[1]
+  var digits = match[2]
+  var exponent = parseFloat(match[4] || '0')
 
-  var dot = digits.indexOf('.');
-  exponent += (dot !== -1) ? (dot - 1) : (digits.length - 1);
+  var dot = digits.indexOf('.')
+  exponent += (dot !== -1) ? (dot - 1) : (digits.length - 1)
 
   var coefficients = digits
-      .replace('.', '')  // remove the dot (must be removed before removing leading zeros)
-      .replace(/^0*/, function (zeros) {
-        // remove leading zeros, add their count to the exponent
-        exponent -= zeros.length;
-        return '';
-      })
-      .replace(/0*$/, '') // remove trailing zeros
-      .split('')
-      .map(function (d) {
-        return parseInt(d);
-      });
+    .replace('.', '') // remove the dot (must be removed before removing leading zeros)
+    .replace(/^0*/, function (zeros) {
+      // remove leading zeros, add their count to the exponent
+      exponent -= zeros.length
+      return ''
+    })
+    .replace(/0*$/, '') // remove trailing zeros
+    .split('')
+    .map(function (d) {
+      return parseInt(d)
+    })
 
   if (coefficients.length === 0) {
-    coefficients.push(0);
-    exponent++;
+    coefficients.push(0)
+    exponent++
   }
 
   return {
     sign: sign,
     coefficients: coefficients,
     exponent: exponent
-  };
-};
-
+  }
+}
 
 /**
  * Format a number in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
@@ -252,41 +246,41 @@ exports.splitNumber = function (value) {
  */
 exports.toEngineering = function (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
-    return String(value);
+    return String(value)
   }
-  
-  var rounded = exports.roundDigits(exports.splitNumber(value), precision);
 
-  var e = rounded.exponent;
-  var c = rounded.coefficients;
+  var rounded = exports.roundDigits(exports.splitNumber(value), precision)
+
+  var e = rounded.exponent
+  var c = rounded.coefficients
 
   // find nearest lower multiple of 3 for exponent
-  var newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3));
+  var newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
 
   // concatenate coefficients with necessary zeros
-  var significandsDiff = e >= 0 ? e : Math.abs(newExp);
+  var significandsDiff = e >= 0 ? e : Math.abs(newExp)
 
   // add zeros if necessary (for ex: 1e+8)
-  if (c.length - 1 < significandsDiff) c = c.concat(zeros(significandsDiff - (c.length - 1)));
+  if (c.length - 1 < significandsDiff) c = c.concat(zeros(significandsDiff - (c.length - 1)))
 
   // find difference in exponents
-  var expDiff = Math.abs(e - newExp);
+  var expDiff = Math.abs(e - newExp)
 
-  var decimalIdx = 1;
+  var decimalIdx = 1
 
   // push decimal index over by expDiff times
-  while (--expDiff >= 0) decimalIdx++;
+  while (--expDiff >= 0) decimalIdx++
 
   // if all coefficient values are zero after the decimal point, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
-  var decimals = c.slice(decimalIdx).join('');
-  var decimalVal = decimals.match(/[1-9]/) ? ('.' + decimals) : '';
+  var decimals = c.slice(decimalIdx).join('')
+  var decimalVal = decimals.match(/[1-9]/) ? ('.' + decimals) : ''
 
   var str = c.slice(0, decimalIdx).join('') +
       decimalVal +
-      'e' + (e >= 0 ? '+' : '') + newExp.toString();
-  return rounded.sign + str;
-};
+      'e' + (e >= 0 ? '+' : '') + newExp.toString()
+  return rounded.sign + str
+}
 
 /**
  * Format a number with fixed notation.
@@ -296,35 +290,35 @@ exports.toEngineering = function (value, precision) {
  */
 exports.toFixed = function (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
-    return String(value);
+    return String(value)
   }
 
   var splitValue = exports.splitNumber(value)
   var rounded = (typeof precision === 'number')
-      ? exports.roundDigits(splitValue, splitValue.exponent + 1 + precision)
-      : splitValue;
-  var c = rounded.coefficients;
-  var p = rounded.exponent + 1; // exponent may have changed
+    ? exports.roundDigits(splitValue, splitValue.exponent + 1 + precision)
+    : splitValue
+  var c = rounded.coefficients
+  var p = rounded.exponent + 1 // exponent may have changed
 
   // append zeros if needed
-  var pp = p + (precision || 0);
+  var pp = p + (precision || 0)
   if (c.length < pp) {
-    c = c.concat(zeros(pp - c.length));
+    c = c.concat(zeros(pp - c.length))
   }
 
   // prepend zeros if needed
   if (p < 0) {
-    c = zeros(-p + 1).concat(c);
-    p = 1;
+    c = zeros(-p + 1).concat(c)
+    p = 1
   }
 
   // insert a dot if needed
   if (p < c.length) {
-    c.splice(p, 0, (p === 0) ? '0.' : '.');
+    c.splice(p, 0, (p === 0) ? '0.' : '.')
   }
 
-  return rounded.sign + c.join('');
-};
+  return rounded.sign + c.join('')
+}
 
 /**
  * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
@@ -335,24 +329,24 @@ exports.toFixed = function (value, precision) {
  */
 exports.toExponential = function (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
-    return String(value);
+    return String(value)
   }
 
   // round if needed, else create a clone
   var split = exports.splitNumber(value)
-  var rounded = precision ? exports.roundDigits(split, precision) : split;
-  var c = rounded.coefficients;
-  var e = rounded.exponent;
+  var rounded = precision ? exports.roundDigits(split, precision) : split
+  var c = rounded.coefficients
+  var e = rounded.exponent
 
   // append zeros if needed
   if (c.length < precision) {
-    c = c.concat(zeros(precision - c.length));
+    c = c.concat(zeros(precision - c.length))
   }
 
   // format as `C.CCCe+EEE` or `C.CCCe-EEE`
-  var first = c.shift();
+  var first = c.shift()
   return rounded.sign + first + (c.length > 0 ? ('.' + c.join('')) : '') +
-      'e' + (e >= 0 ? '+' : '') + e;
+      'e' + (e >= 0 ? '+' : '') + e
 }
 
 /**
@@ -367,42 +361,41 @@ exports.toExponential = function (value, precision) {
  */
 exports.toPrecision = function (value, precision, options) {
   if (isNaN(value) || !isFinite(value)) {
-    return String(value);
+    return String(value)
   }
 
   // determine lower and upper bound for exponential notation.
-  var lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3;
-  var upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5;
+  var lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
+  var upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
 
   var split = exports.splitNumber(value)
   if (split.exponent < lowerExp || split.exponent >= upperExp) {
     // exponential notation
-    return exports.toExponential(value, precision);
-  }
-  else {
-    var rounded = precision ? exports.roundDigits(split, precision) : split;
-    var c = rounded.coefficients;
-    var e = rounded.exponent;
+    return exports.toExponential(value, precision)
+  } else {
+    var rounded = precision ? exports.roundDigits(split, precision) : split
+    var c = rounded.coefficients
+    var e = rounded.exponent
 
     // append trailing zeros
     if (c.length < precision) {
-      c = c.concat(zeros(precision - c.length));
+      c = c.concat(zeros(precision - c.length))
     }
 
     // append trailing zeros
     // TODO: simplify the next statement
     c = c.concat(zeros(e - c.length + 1 +
-        (c.length < precision ? precision - c.length : 0)));
+        (c.length < precision ? precision - c.length : 0)))
 
     // prepend zeros
-    c = zeros(-e).concat(c);
+    c = zeros(-e).concat(c)
 
-    var dot = e > 0 ? e : 0;
+    var dot = e > 0 ? e : 0
     if (dot < c.length - 1) {
-      c.splice(dot + 1, 0, '.');
+      c.splice(dot + 1, 0, '.')
     }
 
-    return rounded.sign + c.join('');
+    return rounded.sign + c.join('')
   }
 }
 
@@ -421,48 +414,48 @@ exports.roundDigits = function (split, precision) {
     coefficients: split.coefficients,
     exponent: split.exponent
   }
-  var c = rounded.coefficients;
+  var c = rounded.coefficients
 
   // prepend zeros if needed
   while (precision <= 0) {
-    c.unshift(0);
-    rounded.exponent++;
-    precision++;
+    c.unshift(0)
+    rounded.exponent++
+    precision++
   }
 
   if (c.length > precision) {
-    var removed = c.splice(precision, c.length - precision);
+    var removed = c.splice(precision, c.length - precision)
 
     if (removed[0] >= 5) {
-      var i = precision - 1;
-      c[i]++;
+      var i = precision - 1
+      c[i]++
       while (c[i] === 10) {
-        c.pop();
+        c.pop()
         if (i === 0) {
-          c.unshift(0);
-          rounded.exponent++;
-          i++;
+          c.unshift(0)
+          rounded.exponent++
+          i++
         }
-        i--;
-        c[i]++;
+        i--
+        c[i]++
       }
     }
   }
 
-  return rounded;
-};
+  return rounded
+}
 
 /**
  * Create an array filled with zeros.
  * @param {number} length
  * @return {Array}
  */
-function zeros(length) {
-  var arr = [];
+function zeros (length) {
+  var arr = []
   for (var i = 0; i < length; i++) {
-    arr.push(0);
+    arr.push(0)
   }
-  return arr;
+  return arr
 }
 
 /**
@@ -476,18 +469,18 @@ function zeros(length) {
  * @param {number} value
  * @return {number} digits   Number of significant digits
  */
-exports.digits = function(value) {
+exports.digits = function (value) {
   return value
-      .toExponential()
-      .replace(/e.*$/, '')          // remove exponential notation
-      .replace( /^0\.?0*|\./, '')   // remove decimal point and leading zeros
-      .length
-};
+    .toExponential()
+    .replace(/e.*$/, '') // remove exponential notation
+    .replace(/^0\.?0*|\./, '') // remove decimal point and leading zeros
+    .length
+}
 
 /**
  * Minimum number added to one that makes the result different than one
  */
-exports.DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16;
+exports.DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 
 /**
  * Compares two floating point numbers.
@@ -498,35 +491,34 @@ exports.DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16;
  *                            test whether x and y are exactly equal.
  * @return {boolean} whether the two numbers are nearly equal
 */
-exports.nearlyEqual = function(x, y, epsilon) {
+exports.nearlyEqual = function (x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
   if (epsilon == null) {
-    return x == y;
+    return x == y
   }
 
   // use "==" operator, handles infinities
   if (x == y) {
-    return true;
+    return true
   }
 
   // NaN
   if (isNaN(x) || isNaN(y)) {
-    return false;
+    return false
   }
 
   // at this point x and y should be finite
-  if(isFinite(x) && isFinite(y)) {
+  if (isFinite(x) && isFinite(y)) {
     // check numbers are very close, needed when comparing numbers near zero
-    var diff = Math.abs(x - y);
+    var diff = Math.abs(x - y)
     if (diff < exports.DBL_EPSILON) {
-      return true;
-    }
-    else {
+      return true
+    } else {
       // use relative error
-      return diff <= Math.max(Math.abs(x), Math.abs(y)) * epsilon;
+      return diff <= Math.max(Math.abs(x), Math.abs(y)) * epsilon
     }
   }
 
   // Infinite and Number or negative Infinite and positive Infinite cases
-  return false;
-};
+  return false
+}

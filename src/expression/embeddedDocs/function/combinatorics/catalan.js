@@ -10,4 +10,4 @@ module.exports = {
     'catalan(8)'
   ],
   'seealso': ['bellNumbers']
-};
+}

@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var getSafeProperty = require('../../utils/customs').getSafeProperty;
+var getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'));
-  var IndexNode = load(require('./IndexNode'));
-  var access = load(require('./utils/access'));
+  var Node = load(require('./Node'))
+  var IndexNode = load(require('./IndexNode'))
+  var access = load(require('./utils/access'))
 
   /**
    * @constructor AccessorNode
@@ -16,50 +16,49 @@ function factory (type, config, load, typed) {
    *                                      a property or subset.
    * @param {IndexNode} index             IndexNode containing ranges
    */
-  function AccessorNode(object, index) {
+  function AccessorNode (object, index) {
     if (!(this instanceof AccessorNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     if (!type.isNode(object)) {
-      throw new TypeError('Node expected for parameter "object"');
+      throw new TypeError('Node expected for parameter "object"')
     }
     if (!type.isIndexNode(index)) {
-      throw new TypeError('IndexNode expected for parameter "index"');
+      throw new TypeError('IndexNode expected for parameter "index"')
     }
 
-    this.object = object || null;
-    this.index = index;
+    this.object = object || null
+    this.index = index
 
     // readonly property name
     Object.defineProperty(this, 'name', {
       get: function () {
         if (this.index) {
           return (this.index.isObjectProperty())
-              ? this.index.getObjectProperty()
-              : '';
-        }
-        else {
-          return this.object.name || '';
+            ? this.index.getObjectProperty()
+            : ''
+        } else {
+          return this.object.name || ''
         }
       }.bind(this),
       set: function () {
-        throw new Error('Cannot assign a new name, name is read-only');
+        throw new Error('Cannot assign a new name, name is read-only')
       }
-    });
+    })
   }
 
-  AccessorNode.prototype = new Node();
+  AccessorNode.prototype = new Node()
 
-  AccessorNode.prototype.type = 'AccessorNode';
+  AccessorNode.prototype.type = 'AccessorNode'
 
-  AccessorNode.prototype.isAccessorNode = true;
+  AccessorNode.prototype.isAccessorNode = true
 
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} math     Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -69,21 +68,20 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   AccessorNode.prototype._compile = function (math, argNames) {
-    var evalObject = this.object._compile(math, argNames);
-    var evalIndex = this.index._compile(math, argNames);
+    var evalObject = this.object._compile(math, argNames)
+    var evalIndex = this.index._compile(math, argNames)
 
     if (this.index.isObjectProperty()) {
-      var prop = this.index.getObjectProperty();
-      return function evalAccessorNode(scope, args, context) {
-        return getSafeProperty(evalObject(scope, args, context), prop);
-      };
-    }
-    else {
+      var prop = this.index.getObjectProperty()
       return function evalAccessorNode (scope, args, context) {
-        var object = evalObject(scope, args, context);
-        var index = evalIndex(scope, args, object); // we pass object here instead of context
-        return access(object, index);
-      };
+        return getSafeProperty(evalObject(scope, args, context), prop)
+      }
+    } else {
+      return function evalAccessorNode (scope, args, context) {
+        var object = evalObject(scope, args, context)
+        var index = evalIndex(scope, args, object) // we pass object here instead of context
+        return access(object, index)
+      }
     }
   }
 
@@ -92,9 +90,9 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   AccessorNode.prototype.forEach = function (callback) {
-    callback(this.object, 'object', this);
-    callback(this.index, 'index', this);
-  };
+    callback(this.object, 'object', this)
+    callback(this.index, 'index', this)
+  }
 
   /**
    * Create a new AccessorNode having it's childs be the results of calling
@@ -104,18 +102,18 @@ function factory (type, config, load, typed) {
    */
   AccessorNode.prototype.map = function (callback) {
     return new AccessorNode(
-        this._ifNode(callback(this.object, 'object', this)),
-        this._ifNode(callback(this.index, 'index', this))
-    );
-  };
+      this._ifNode(callback(this.object, 'object', this)),
+      this._ifNode(callback(this.index, 'index', this))
+    )
+  }
 
   /**
    * Create a clone of this node, a shallow copy
    * @return {AccessorNode}
    */
   AccessorNode.prototype.clone = function () {
-    return new AccessorNode(this.object, this.index);
-  };
+    return new AccessorNode(this.object, this.index)
+  }
 
   /**
    * Get string representation
@@ -123,13 +121,13 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   AccessorNode.prototype._toString = function (options) {
-    var object = this.object.toString(options);
+    var object = this.object.toString(options)
     if (needParenthesis(this.object)) {
-      object = '(' + object + ')';
+      object = '(' + object + ')'
     }
 
-    return object + this.index.toString(options);
-  };
+    return object + this.index.toString(options)
+  }
 
   /**
    * Get HTML representation
@@ -137,13 +135,13 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   AccessorNode.prototype.toHTML = function (options) {
-    var object = this.object.toHTML(options);
+    var object = this.object.toHTML(options)
     if (needParenthesis(this.object)) {
-      object = '<span class="math-parenthesis math-round-parenthesis">(</span>' + object + '<span class="math-parenthesis math-round-parenthesis">)</span>';
+      object = '<span class="math-parenthesis math-round-parenthesis">(</span>' + object + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
 
-    return object + this.index.toHTML(options);
-  };
+    return object + this.index.toHTML(options)
+  }
 
   /**
    * Get LaTeX representation
@@ -151,13 +149,13 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   AccessorNode.prototype._toTex = function (options) {
-    var object = this.object.toTex(options);
+    var object = this.object.toTex(options)
     if (needParenthesis(this.object)) {
-      object = '\\left(' + object + '\\right)';
+      object = '\\left(' + object + '\\right)'
     }
 
-    return object + this.index.toTex(options);
-  };
+    return object + this.index.toTex(options)
+  }
 
   /**
    * Get a JSON representation of the node
@@ -168,8 +166,8 @@ function factory (type, config, load, typed) {
       mathjs: 'AccessorNode',
       object: this.object,
       index: this.index
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate an AccessorNode from its JSON representation
@@ -179,28 +177,28 @@ function factory (type, config, load, typed) {
    * @returns {AccessorNode}
    */
   AccessorNode.fromJSON = function (json) {
-    return new AccessorNode(json.object, json.index);
-  };
+    return new AccessorNode(json.object, json.index)
+  }
 
   /**
    * Are parenthesis needed?
    * @private
    */
-  function needParenthesis(node) {
+  function needParenthesis (node) {
     // TODO: maybe make a method on the nodes which tells whether they need parenthesis?
     return !(
-        type.isAccessorNode(node) ||
+      type.isAccessorNode(node) ||
         type.isArrayNode(node) ||
         type.isConstantNode(node) ||
         type.isFunctionNode(node) ||
         type.isObjectNode(node) ||
         type.isParenthesisNode(node) ||
-        type.isSymbolNode(node));
+        type.isSymbolNode(node))
   }
 
-  return AccessorNode;
+  return AccessorNode
 }
 
-exports.name = 'AccessorNode';
-exports.path = 'expression.node';
-exports.factory = factory;
+exports.name = 'AccessorNode'
+exports.path = 'expression.node'
+exports.factory = factory

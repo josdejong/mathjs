@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../parse'));
+  var parse = load(require('../parse'))
 
   /**
    * Evaluate an expression.
@@ -39,28 +39,28 @@ function factory (type, config, load, typed) {
    */
   return typed('compile', {
     'string': function (expr) {
-      var scope = {};
-      return parse(expr).compile().eval(scope);
+      var scope = {}
+      return parse(expr).compile().eval(scope)
     },
 
     'string, Object': function (expr, scope) {
-      return parse(expr).compile().eval(scope);
+      return parse(expr).compile().eval(scope)
     },
 
     'Array | Matrix': function (expr) {
-      var scope = {};
+      var scope = {}
       return deepMap(expr, function (entry) {
-        return parse(entry).compile().eval(scope);
-      });
+        return parse(entry).compile().eval(scope)
+      })
     },
 
     'Array | Matrix, Object': function (expr, scope) {
       return deepMap(expr, function (entry) {
-        return parse(entry).compile().eval(scope);
-      });
+        return parse(entry).compile().eval(scope)
+      })
     }
-  });
+  })
 }
 
-exports.name = 'eval';
-exports.factory = factory;
+exports.name = 'eval'
+exports.factory = factory

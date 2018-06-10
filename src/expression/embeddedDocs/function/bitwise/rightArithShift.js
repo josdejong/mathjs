@@ -14,4 +14,4 @@ module.exports = {
   'seealso': [
     'bitAnd', 'bitNot', 'bitOr', 'bitXor', 'leftShift', 'rightLogShift'
   ]
-};
+}

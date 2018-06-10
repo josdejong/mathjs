@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var acosh = typed.find(load(require('./acosh')), ['Complex']);
+  var acosh = typed.find(load(require('./acosh')), ['Complex'])
 
   /**
    * Calculate the hyperbolic arcsecant of a value,
@@ -29,17 +29,17 @@ function factory (type, config, load, typed) {
   var asech = typed('asech', {
     'number': function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
-        x = 1 / x;
+        x = 1 / x
 
-        var ret = Math.sqrt(x*x - 1);
+        var ret = Math.sqrt(x * x - 1)
         if (x > 0 || config.predictable) {
-          return Math.log(ret + x);
+          return Math.log(ret + x)
         }
 
-        return new type.Complex(Math.log(ret - x), Math.PI);
+        return new type.Complex(Math.log(ret - x), Math.PI)
       }
 
-      return new type.Complex(x, 0).asech();
+      return new type.Complex(x, 0).asech()
     },
 
     'Complex': function (x) {
@@ -47,18 +47,18 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).acosh();
+      return new type.BigNumber(1).div(x).acosh()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, asech);
+      return deepMap(x, asech)
     }
-  });
+  })
 
-  asech.toTex = {1: '\\mathrm{sech}^{-1}\\left(${args[0]}\\right)'};
+  asech.toTex = {1: '\\mathrm{sech}^{-1}\\left(${args[0]}\\right)'}
 
-  return asech;
+  return asech
 }
 
-exports.name = 'asech';
-exports.factory = factory;
+exports.name = 'asech'
+exports.factory = factory

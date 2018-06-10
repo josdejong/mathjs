@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap');
+var deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Split a unit in an array of units whose sum is equal to the original unit.
    *
@@ -24,14 +23,13 @@ function factory (type, config, load, typed) {
    * @return {Array} An array of units.
    */
   var splitUnit = typed('splitUnit', {
-    'Unit, Array': function(unit, parts) {
-      return unit.splitUnit(parts);
+    'Unit, Array': function (unit, parts) {
+      return unit.splitUnit(parts)
     }
-  });
+  })
 
-  return splitUnit;
-
+  return splitUnit
 }
 
-exports.name = 'splitUnit';
-exports.factory = factory;
+exports.name = 'splitUnit'
+exports.factory = factory

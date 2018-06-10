@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var sqrt       = load(require('../arithmetic/sqrt'));
-  var variance   = load(require('../statistics/var'));
+  var sqrt = load(require('../arithmetic/sqrt'))
+  var variance = load(require('../statistics/var'))
 
   /**
    * Compute the standard deviation of a matrix or a  list with values.
@@ -53,32 +53,30 @@ function factory (type, config, load, typed) {
 
     // std(a, b, c, d, ...)
     '...': function (args) {
-      return _std(args);
+      return _std(args)
     }
-  });
-  
-  std.toTex = undefined; // use default template
+  })
 
-  return std;
+  std.toTex = undefined // use default template
 
-  function _std(array, normalization) {
+  return std
+
+  function _std (array, normalization) {
     if (array.length == 0) {
-      throw new SyntaxError('Function std requires one or more parameters (0 provided)');
+      throw new SyntaxError('Function std requires one or more parameters (0 provided)')
     }
 
     try {
-      return sqrt(variance.apply(null, arguments));
-    }
-    catch (err) {
+      return sqrt(variance.apply(null, arguments))
+    } catch (err) {
       if (err instanceof TypeError && err.message.indexOf(' var') !== -1) {
-        throw new TypeError(err.message.replace(' var', ' std'));
-      }
-      else {
-        throw err;
+        throw new TypeError(err.message.replace(' var', ' std'))
+      } else {
+        throw err
       }
     }
   }
 }
 
-exports.name = 'std';
-exports.factory = factory;
+exports.name = 'std'
+exports.factory = factory

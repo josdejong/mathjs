@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -30,26 +30,26 @@ function factory (type, config, load, typed) {
    */
   var conj = typed('conj', {
     'number': function (x) {
-      return x;
+      return x
     },
 
     'BigNumber': function (x) {
-      return x;
+      return x
     },
 
     'Complex': function (x) {
-      return x.conjugate();
+      return x.conjugate()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, conj);
+      return deepMap(x, conj)
     }
-  });
+  })
 
-  conj.toTex = {1: '\\left(${args[0]}\\right)^*'};
+  conj.toTex = {1: '\\left(${args[0]}\\right)^*'}
 
-  return conj;
+  return conj
 }
 
-exports.name = 'conj';
-exports.factory = factory;
+exports.name = 'conj'
+exports.factory = factory

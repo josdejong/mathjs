@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,29 +31,29 @@ function factory (type, config, load, typed) {
     'number': _tanh,
 
     'Complex': function (x) {
-        return x.tanh();
+      return x.tanh()
     },
 
     'BigNumber': function (x) {
-      return x.tanh();
+      return x.tanh()
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function tanh is no angle');
+        throw new TypeError('Unit in function tanh is no angle')
       }
-      return tanh(x.value);
+      return tanh(x.value)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since tanh(0) = 0
-      return deepMap(x, tanh, true);
+      return deepMap(x, tanh, true)
     }
-  });
+  })
 
-  tanh.toTex = {1: '\\tanh\\left(${args[0]}\\right)'};
+  tanh.toTex = {1: '\\tanh\\left(${args[0]}\\right)'}
 
-  return tanh;
+  return tanh
 }
 
 /**
@@ -63,9 +63,9 @@ function factory (type, config, load, typed) {
  * @private
  */
 var _tanh = Math.tanh || function (x) {
-  var e = Math.exp(2 * x);
-  return (e - 1) / (e + 1);
-};
+  var e = Math.exp(2 * x)
+  return (e - 1) / (e + 1)
+}
 
-exports.name = 'tanh';
-exports.factory = factory;
+exports.name = 'tanh'
+exports.factory = factory

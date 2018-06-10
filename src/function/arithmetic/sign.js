@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var number = require('../../utils/number');
-var deepMap = require('../../utils/collection/deepMap');
+var number = require('../../utils/number')
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -38,32 +38,31 @@ function factory (type, config, load, typed) {
     'number': number.sign,
 
     'Complex': function (x) {
-      return x.sign();
+      return x.sign()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(x.cmp(0));
+      return new type.BigNumber(x.cmp(0))
     },
 
     'Fraction': function (x) {
-      return new type.Fraction(x.s, 1);
+      return new type.Fraction(x.s, 1)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since sign(0) = 0
-      return deepMap(x, sign, true);
+      return deepMap(x, sign, true)
     },
 
-    'Unit': function(x) {
-      return sign(x.value);
+    'Unit': function (x) {
+      return sign(x.value)
     }
-  });
+  })
 
-  sign.toTex = {1: '\\mathrm{${name}}\\left(${args[0]}\\right)'};
+  sign.toTex = {1: '\\mathrm{${name}}\\left(${args[0]}\\right)'}
 
-  return sign;
+  return sign
 }
 
-exports.name = 'sign';
-exports.factory = factory;
-
+exports.name = 'sign'
+exports.factory = factory

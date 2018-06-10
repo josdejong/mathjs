@@ -1,18 +1,17 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var latex = require('../../utils/latex');
+  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  var algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
+  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'));
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'));
-  var algorithm05 = load(require('../../type/matrix/utils/algorithm05'));
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'));
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-  
   /**
    * Calculates the modulus, the remainder of an integer division.
    *
@@ -53,76 +52,76 @@ function factory (type, config, load, typed) {
     'number, number': _mod,
 
     'BigNumber, BigNumber': function (x, y) {
-      return y.isZero() ? x : x.mod(y);
+      return y.isZero() ? x : x.mod(y)
     },
 
     'Fraction, Fraction': function (x, y) {
-      return x.mod(y);
+      return x.mod(y)
     },
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm05(x, y, mod, false);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm05(x, y, mod, false)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm02(y, x, mod, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm02(y, x, mod, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm03(x, y, mod, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm03(x, y, mod, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, mod);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, mod)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return mod(matrix(x), matrix(y)).valueOf();
+      return mod(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return mod(matrix(x), y);
+      return mod(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return mod(x, matrix(y));
+      return mod(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, mod, false);
+      return algorithm11(x, y, mod, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, mod, false);
+      return algorithm14(x, y, mod, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, mod, true);
+      return algorithm12(y, x, mod, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, mod, true);
+      return algorithm14(y, x, mod, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, mod, false).valueOf();
+      return algorithm14(matrix(x), y, mod, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, mod, true).valueOf();
+      return algorithm14(matrix(y), x, mod, true).valueOf()
     }
-  });
+  })
 
   mod.toTex = {
     2: '\\left(${args[0]}' + latex.operators['mod'] + '${args[1]}\\right)'
-  };
+  }
 
-  return mod;
+  return mod
 
   /**
    * Calculate the modulus of two numbers
@@ -131,22 +130,20 @@ function factory (type, config, load, typed) {
    * @returns {number} res
    * @private
    */
-  function _mod(x, y) {
+  function _mod (x, y) {
     if (y > 0) {
       // We don't use JavaScript's % operator here as this doesn't work
       // correctly for x < 0 and x == 0
       // see http://en.wikipedia.org/wiki/Modulo_operation
-      return x - y * Math.floor(x / y);
-    }
-    else if (y === 0) {
-      return x;
-    }
-    else { // y < 0
+      return x - y * Math.floor(x / y)
+    } else if (y === 0) {
+      return x
+    } else { // y < 0
       // TODO: implement mod for a negative divisor
-      throw new Error('Cannot calculate mod for a negative divisor');
+      throw new Error('Cannot calculate mod for a negative divisor')
     }
   }
 }
 
-exports.name = 'mod';
-exports.factory = factory;
+exports.name = 'mod'
+exports.factory = factory

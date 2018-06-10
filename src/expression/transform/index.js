@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./concat.transform'),
   require('./filter.transform'),
@@ -10,4 +10,4 @@ module.exports = [
   require('./min.transform'),
   require('./range.transform'),
   require('./subset.transform')
-];
+]

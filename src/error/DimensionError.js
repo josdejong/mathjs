@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * Create a range error with the message:
@@ -9,27 +9,27 @@
  *                                          and expected size: '!=', '<', etc.
  * @extends RangeError
  */
-function DimensionError(actual, expected, relation) {
+function DimensionError (actual, expected, relation) {
   if (!(this instanceof DimensionError)) {
-    throw new SyntaxError('Constructor must be called with the new operator');
+    throw new SyntaxError('Constructor must be called with the new operator')
   }
 
-  this.actual   = actual;
-  this.expected = expected;
-  this.relation = relation;
+  this.actual = actual
+  this.expected = expected
+  this.relation = relation
 
   this.message = 'Dimension mismatch (' +
       (Array.isArray(actual) ? ('[' + actual.join(', ') + ']') : actual) +
       ' ' + (this.relation || '!=') + ' ' +
       (Array.isArray(expected) ? ('[' + expected.join(', ') + ']') : expected) +
-      ')';
+      ')'
 
-  this.stack = (new Error()).stack;
+  this.stack = (new Error()).stack
 }
 
-DimensionError.prototype = new RangeError();
-DimensionError.prototype.constructor = RangeError;
-DimensionError.prototype.name = 'DimensionError';
-DimensionError.prototype.isDimensionError = true;
+DimensionError.prototype = new RangeError()
+DimensionError.prototype.constructor = RangeError
+DimensionError.prototype.name = 'DimensionError'
+DimensionError.prototype.isDimensionError = true
 
-module.exports = DimensionError;
+module.exports = DimensionError

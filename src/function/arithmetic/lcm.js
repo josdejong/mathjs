@@ -1,16 +1,15 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'));
-  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'));
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
+  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
+  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the least common multiple for two or more values or arrays.
@@ -47,80 +46,79 @@ function factory (type, config, load, typed) {
     'BigNumber, BigNumber': _lcmBigNumber,
 
     'Fraction, Fraction': function (x, y) {
-
-      return x.lcm(y);
+      return x.lcm(y)
     },
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm06(x, y, lcm);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm06(x, y, lcm)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm02(y, x, lcm, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm02(y, x, lcm, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm02(x, y, lcm, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm02(x, y, lcm, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, lcm);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, lcm)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return lcm(matrix(x), matrix(y)).valueOf();
+      return lcm(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return lcm(matrix(x), y);
+      return lcm(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return lcm(x, matrix(y));
+      return lcm(x, matrix(y))
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, lcm, false);
+      return algorithm11(x, y, lcm, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, lcm, false);
+      return algorithm14(x, y, lcm, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, lcm, true);
+      return algorithm11(y, x, lcm, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, lcm, true);
+      return algorithm14(y, x, lcm, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, lcm, false).valueOf();
+      return algorithm14(matrix(x), y, lcm, false).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, lcm, true).valueOf();
+      return algorithm14(matrix(y), x, lcm, true).valueOf()
     },
 
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      var res = lcm(a, b);
+      var res = lcm(a, b)
       for (var i = 0; i < args.length; i++) {
-        res = lcm(res, args[i]);
+        res = lcm(res, args[i])
       }
-      return res;
+      return res
     }
-  });
+  })
 
-  lcm.toTex = undefined;  // use default template
+  lcm.toTex = undefined // use default template
 
-  return lcm;
+  return lcm
 
   /**
    * Calculate lcm for two BigNumbers
@@ -129,24 +127,24 @@ function factory (type, config, load, typed) {
    * @returns {BigNumber} Returns the least common multiple of a and b
    * @private
    */
-  function _lcmBigNumber(a, b) {
+  function _lcmBigNumber (a, b) {
     if (!a.isInt() || !b.isInt()) {
-      throw new Error('Parameters in function lcm must be integer numbers');
+      throw new Error('Parameters in function lcm must be integer numbers')
     }
 
     if (a.isZero() || b.isZero()) {
-      return new type.BigNumber(0);
+      return new type.BigNumber(0)
     }
 
     // http://en.wikipedia.org/wiki/Euclidean_algorithm
     // evaluate lcm here inline to reduce overhead
-    var prod = a.times(b);
+    var prod = a.times(b)
     while (!b.isZero()) {
-      var t = b;
-      b = a.mod(t);
-      a = t;
+      var t = b
+      b = a.mod(t)
+      a = t
     }
-    return prod.div(a).abs();
+    return prod.div(a).abs()
   }
 }
 
@@ -159,24 +157,24 @@ function factory (type, config, load, typed) {
  */
 function _lcm (a, b) {
   if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function lcm must be integer numbers');
+    throw new Error('Parameters in function lcm must be integer numbers')
   }
 
   if (a == 0 || b == 0) {
-    return 0;
+    return 0
   }
 
   // http://en.wikipedia.org/wiki/Euclidean_algorithm
   // evaluate lcm here inline to reduce overhead
-  var t;
-  var prod = a * b;
+  var t
+  var prod = a * b
   while (b != 0) {
-    t = b;
-    b = a % t;
-    a = t;
+    t = b
+    b = a % t
+    a = t
   }
-  return Math.abs(prod / a);
+  return Math.abs(prod / a)
 }
 
-exports.name = 'lcm';
-exports.factory = factory;
+exports.name = 'lcm'
+exports.factory = factory

@@ -1,17 +1,16 @@
-'use strict';
+'use strict'
 
-var extend = require('../../utils/object').extend;
+var extend = require('../../utils/object').extend
 
 function factory (type, config, load, typed) {
+  var divideScalar = load(require('./divideScalar'))
+  var multiply = load(require('./multiply'))
+  var inv = load(require('../matrix/inv'))
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var divideScalar = load(require('./divideScalar'));
-  var multiply     = load(require('./multiply'));
-  var inv          = load(require('../matrix/inv'));
-  var matrix       = load(require('../../type/matrix/function/matrix'));
+  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-  
   /**
    * Divide two values, `x / y`.
    * To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.
@@ -51,31 +50,31 @@ function factory (type, config, load, typed) {
       // http://www.mathworks.nl/help/matlab/ref/mrdivide.html
       // http://www.gnu.org/software/octave/doc/interpreter/Arithmetic-Ops.html
       // http://stackoverflow.com/questions/12263932/how-does-gnu-octave-matrix-division-work-getting-unexpected-behaviour
-      return multiply(x, inv(y));
+      return multiply(x, inv(y))
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, divideScalar, false);
+      return algorithm14(x, y, divideScalar, false)
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, divideScalar, false);
+      return algorithm11(x, y, divideScalar, false)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, divideScalar, false).valueOf();
+      return algorithm14(matrix(x), y, divideScalar, false).valueOf()
     },
 
     'any, Array | Matrix': function (x, y) {
-      return multiply(x, inv(y));
+      return multiply(x, inv(y))
     }
-  }, divideScalar.signatures));
+  }, divideScalar.signatures))
 
-  divide.toTex = {2: '\\frac{${args[0]}}{${args[1]}}'};
+  divide.toTex = {2: '\\frac{${args[0]}}{${args[1]}}'}
 
-  return divide;
+  return divide
 }
 
-exports.name = 'divide';
-exports.factory = factory;
+exports.name = 'divide'
+exports.factory = factory

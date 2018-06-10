@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./algebra'),
   require('./arithmetic'),
@@ -17,4 +17,4 @@ module.exports = [
   require('./trigonometry'),
   require('./unit'),
   require('./utils')
-];
+]

@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var operators = require('../operators');
+var operators = require('../operators')
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'));
+  var Node = load(require('./Node'))
 
   /**
    * @constructor RangeNode
@@ -13,27 +13,27 @@ function factory (type, config, load, typed) {
    * @param {Node} end    included upper-bound
    * @param {Node} [step] optional step
    */
-  function RangeNode(start, end, step) {
+  function RangeNode (start, end, step) {
     if (!(this instanceof RangeNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     // validate inputs
-    if (!type.isNode(start)) throw new TypeError('Node expected');
-    if (!type.isNode(end)) throw new TypeError('Node expected');
-    if (step && !type.isNode(step)) throw new TypeError('Node expected');
-    if (arguments.length > 3) throw new Error('Too many arguments');
+    if (!type.isNode(start)) throw new TypeError('Node expected')
+    if (!type.isNode(end)) throw new TypeError('Node expected')
+    if (step && !type.isNode(step)) throw new TypeError('Node expected')
+    if (arguments.length > 3) throw new Error('Too many arguments')
 
-    this.start = start;         // included lower-bound
-    this.end = end;           // included upper-bound
-    this.step = step || null;  // optional step
+    this.start = start // included lower-bound
+    this.end = end // included upper-bound
+    this.step = step || null // optional step
   }
 
-  RangeNode.prototype = new Node();
+  RangeNode.prototype = new Node()
 
-  RangeNode.prototype.type = 'RangeNode';
+  RangeNode.prototype.type = 'RangeNode'
 
-  RangeNode.prototype.isRangeNode = true;
+  RangeNode.prototype.isRangeNode = true
 
   /**
    * Check whether the RangeNode needs the `end` symbol to be defined.
@@ -43,17 +43,17 @@ function factory (type, config, load, typed) {
   RangeNode.prototype.needsEnd = function () {
     // find all `end` symbols in this RangeNode
     var endSymbols = this.filter(function (node) {
-      return type.isSymbolNode(node) && (node.name === 'end');
-    });
+      return type.isSymbolNode(node) && (node.name === 'end')
+    })
 
-    return endSymbols.length > 0;
-  };
+    return endSymbols.length > 0
+  }
 
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} math     Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -63,27 +63,26 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   RangeNode.prototype._compile = function (math, argNames) {
-    var range = math.range;
-    var evalStart = this.start._compile(math, argNames);
-    var evalEnd = this.end._compile(math, argNames);
+    var range = math.range
+    var evalStart = this.start._compile(math, argNames)
+    var evalEnd = this.end._compile(math, argNames)
 
     if (this.step) {
-      var evalStep = this.step._compile(math, argNames);
-      
-      return function evalRangeNode(scope, args, context) {
+      var evalStep = this.step._compile(math, argNames)
+
+      return function evalRangeNode (scope, args, context) {
         return range(
-          evalStart(scope, args, context), 
-          evalEnd(scope, args, context), 
+          evalStart(scope, args, context),
+          evalEnd(scope, args, context),
           evalStep(scope, args, context)
-        );
+        )
       }
-    }
-    else {
-      return function evalRangeNode(scope, args, context) {
+    } else {
+      return function evalRangeNode (scope, args, context) {
         return range(
-          evalStart(scope, args, context), 
+          evalStart(scope, args, context),
           evalEnd(scope, args, context)
-        );
+        )
       }
     }
   }
@@ -93,12 +92,12 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   RangeNode.prototype.forEach = function (callback) {
-    callback(this.start, 'start', this);
-    callback(this.end, 'end', this);
+    callback(this.start, 'start', this)
+    callback(this.end, 'end', this)
     if (this.step) {
-      callback(this.step, 'step', this);
+      callback(this.step, 'step', this)
     }
-  };
+  }
 
   /**
    * Create a new RangeNode having it's childs be the results of calling
@@ -108,19 +107,19 @@ function factory (type, config, load, typed) {
    */
   RangeNode.prototype.map = function (callback) {
     return new RangeNode(
-        this._ifNode(callback(this.start, 'start', this)),
-        this._ifNode(callback(this.end, 'end', this)),
-        this.step && this._ifNode(callback(this.step, 'step', this))
-    );
-  };
+      this._ifNode(callback(this.start, 'start', this)),
+      this._ifNode(callback(this.end, 'end', this)),
+      this.step && this._ifNode(callback(this.step, 'step', this))
+    )
+  }
 
   /**
    * Create a clone of this node, a shallow copy
    * @return {RangeNode}
    */
   RangeNode.prototype.clone = function () {
-    return new RangeNode(this.start, this.end, this.step && this.step);
-  };
+    return new RangeNode(this.start, this.end, this.step && this.step)
+  }
 
   /**
    * Calculate the necessary parentheses
@@ -129,25 +128,25 @@ function factory (type, config, load, typed) {
    * @return {Object} parentheses
    * @private
    */
-  function calculateNecessaryParentheses(node, parenthesis) {
-    var precedence = operators.getPrecedence(node, parenthesis);
-    var parens = {};
+  function calculateNecessaryParentheses (node, parenthesis) {
+    var precedence = operators.getPrecedence(node, parenthesis)
+    var parens = {}
 
-    var startPrecedence = operators.getPrecedence(node.start, parenthesis);
-    parens.start = ((startPrecedence !== null) && (startPrecedence <= precedence))
-      || (parenthesis === 'all');
+    var startPrecedence = operators.getPrecedence(node.start, parenthesis)
+    parens.start = ((startPrecedence !== null) && (startPrecedence <= precedence)) ||
+      (parenthesis === 'all')
 
     if (node.step) {
-      var stepPrecedence = operators.getPrecedence(node.step, parenthesis);
-      parens.step = ((stepPrecedence !== null) && (stepPrecedence <= precedence))
-        || (parenthesis === 'all');
+      var stepPrecedence = operators.getPrecedence(node.step, parenthesis)
+      parens.step = ((stepPrecedence !== null) && (stepPrecedence <= precedence)) ||
+        (parenthesis === 'all')
     }
 
-    var endPrecedence = operators.getPrecedence(node.end, parenthesis);
-    parens.end = ((endPrecedence !== null) && (endPrecedence <= precedence))
-      || (parenthesis === 'all');
+    var endPrecedence = operators.getPrecedence(node.end, parenthesis)
+    parens.end = ((endPrecedence !== null) && (endPrecedence <= precedence)) ||
+      (parenthesis === 'all')
 
-    return parens;
+    return parens
   }
 
   /**
@@ -156,34 +155,34 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   RangeNode.prototype._toString = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
-    var parens = calculateNecessaryParentheses(this, parenthesis);
+    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    var parens = calculateNecessaryParentheses(this, parenthesis)
 
-    //format string as start:step:stop
-    var str;
+    // format string as start:step:stop
+    var str
 
-    var start = this.start.toString(options);
+    var start = this.start.toString(options)
     if (parens.start) {
-      start = '(' + start + ')';
+      start = '(' + start + ')'
     }
-    str = start;
+    str = start
 
     if (this.step) {
-      var step = this.step.toString(options);
+      var step = this.step.toString(options)
       if (parens.step) {
-        step = '(' + step + ')';
+        step = '(' + step + ')'
       }
-      str += ':' + step;
+      str += ':' + step
     }
 
-    var end = this.end.toString(options);
+    var end = this.end.toString(options)
     if (parens.end) {
-      end = '(' + end + ')';
+      end = '(' + end + ')'
     }
-    str += ':' + end;
+    str += ':' + end
 
-    return str;
-  };
+    return str
+  }
 
   /**
    * Get a JSON representation of the node
@@ -195,8 +194,8 @@ function factory (type, config, load, typed) {
       start: this.start,
       end: this.end,
       step: this.step
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate an RangeNode from its JSON representation
@@ -206,8 +205,8 @@ function factory (type, config, load, typed) {
    * @returns {RangeNode}
    */
   RangeNode.fromJSON = function (json) {
-    return new RangeNode(json.start, json.end, json.step);
-  };
+    return new RangeNode(json.start, json.end, json.step)
+  }
 
   /**
    * Get HTML representation
@@ -215,34 +214,34 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   RangeNode.prototype.toHTML = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
-    var parens = calculateNecessaryParentheses(this, parenthesis);
+    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    var parens = calculateNecessaryParentheses(this, parenthesis)
 
-    //format string as start:step:stop
-    var str;
+    // format string as start:step:stop
+    var str
 
-    var start = this.start.toHTML(options);
+    var start = this.start.toHTML(options)
     if (parens.start) {
-      start = '<span class="math-parenthesis math-round-parenthesis">(</span>' + start + '<span class="math-parenthesis math-round-parenthesis">)</span>';
+      start = '<span class="math-parenthesis math-round-parenthesis">(</span>' + start + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
-    str = start;
+    str = start
 
     if (this.step) {
-      var step = this.step.toHTML(options);
+      var step = this.step.toHTML(options)
       if (parens.step) {
-        step = '<span class="math-parenthesis math-round-parenthesis">(</span>' + step + '<span class="math-parenthesis math-round-parenthesis">)</span>';
+        step = '<span class="math-parenthesis math-round-parenthesis">(</span>' + step + '<span class="math-parenthesis math-round-parenthesis">)</span>'
       }
-      str += '<span class="math-operator math-range-operator">:</span>' + step;
+      str += '<span class="math-operator math-range-operator">:</span>' + step
     }
 
-    var end = this.end.toHTML(options);
+    var end = this.end.toHTML(options)
     if (parens.end) {
-      end = '<span class="math-parenthesis math-round-parenthesis">(</span>' + end + '<span class="math-parenthesis math-round-parenthesis">)</span>';
+      end = '<span class="math-parenthesis math-round-parenthesis">(</span>' + end + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
-    str += '<span class="math-operator math-range-operator">:</span>' + end;
+    str += '<span class="math-operator math-range-operator">:</span>' + end
 
-    return str;
-  };
+    return str
+  }
 
   /**
    * Get LaTeX representation
@@ -250,34 +249,34 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   RangeNode.prototype._toTex = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep';
-    var parens = calculateNecessaryParentheses(this, parenthesis);
+    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    var parens = calculateNecessaryParentheses(this, parenthesis)
 
-    var str = this.start.toTex(options);
+    var str = this.start.toTex(options)
     if (parens.start) {
-      str = '\\left(' + str + '\\right)';
+      str = '\\left(' + str + '\\right)'
     }
 
     if (this.step) {
-      var step = this.step.toTex(options);
+      var step = this.step.toTex(options)
       if (parens.step) {
-        step = '\\left(' + step + '\\right)';
+        step = '\\left(' + step + '\\right)'
       }
-      str += ':' + step;
+      str += ':' + step
     }
 
-    var end = this.end.toTex(options);
+    var end = this.end.toTex(options)
     if (parens.end) {
-      end = '\\left(' + end + '\\right)';
+      end = '\\left(' + end + '\\right)'
     }
-    str += ':' + end;
+    str += ':' + end
 
-    return str;
-  };
+    return str
+  }
 
-  return RangeNode;
+  return RangeNode
 }
 
-exports.name = 'RangeNode';
-exports.path = 'expression.node';
-exports.factory = factory;
+exports.name = 'RangeNode'
+exports.path = 'expression.node'
+exports.factory = factory

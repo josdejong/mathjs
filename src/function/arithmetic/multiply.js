@@ -1,21 +1,21 @@
-'use strict';
+'use strict'
 
-var extend = require('../../utils/object').extend;
-var array = require('../../utils/array');
+var extend = require('../../utils/object').extend
+var array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var addScalar = load(require('./addScalar'));
-  var multiplyScalar = load(require('./multiplyScalar'));
-  var equalScalar = load(require('../relational/equalScalar'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var addScalar = load(require('./addScalar'))
+  var multiplyScalar = load(require('./multiplyScalar'))
+  var equalScalar = load(require('../relational/equalScalar'))
 
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-  
-  var DenseMatrix = type.DenseMatrix;
-  var SparseMatrix = type.SparseMatrix;
+  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+
+  var DenseMatrix = type.DenseMatrix
+  var SparseMatrix = type.SparseMatrix
 
   /**
    * Multiply two or more values, `x * y`.
@@ -55,89 +55,89 @@ function factory (type, config, load, typed) {
 
     'Array, Array': function (x, y) {
       // check dimensions
-      _validateMatrixDimensions(array.size(x), array.size(y));
+      _validateMatrixDimensions(array.size(x), array.size(y))
 
       // use dense matrix implementation
-      var m = multiply(matrix(x), matrix(y));
+      var m = multiply(matrix(x), matrix(y))
       // return array or scalar
-      return type.isMatrix(m) ? m.valueOf() : m;
+      return type.isMatrix(m) ? m.valueOf() : m
     },
 
     'Matrix, Matrix': function (x, y) {
       // dimensions
-      var xsize = x.size();
-      var ysize = y.size();
+      var xsize = x.size()
+      var ysize = y.size()
 
       // check dimensions
-      _validateMatrixDimensions(xsize, ysize);
+      _validateMatrixDimensions(xsize, ysize)
 
       // process dimensions
       if (xsize.length === 1) {
         // process y dimensions
         if (ysize.length === 1) {
           // Vector * Vector
-          return _multiplyVectorVector(x, y, xsize[0]);
+          return _multiplyVectorVector(x, y, xsize[0])
         }
         // Vector * Matrix
-        return _multiplyVectorMatrix(x, y);
+        return _multiplyVectorMatrix(x, y)
       }
       // process y dimensions
       if (ysize.length === 1) {
         // Matrix * Vector
-        return _multiplyMatrixVector(x, y);
+        return _multiplyMatrixVector(x, y)
       }
       // Matrix * Matrix
-      return _multiplyMatrixMatrix(x, y);
+      return _multiplyMatrixMatrix(x, y)
     },
 
     'Matrix, Array': function (x, y) {
       // use Matrix * Matrix implementation
-      return multiply(x, matrix(y));
+      return multiply(x, matrix(y))
     },
 
     'Array, Matrix': function (x, y) {
       // use Matrix * Matrix implementation
-      return multiply(matrix(x, y.storage()), y);
+      return multiply(matrix(x, y.storage()), y)
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm11(x, y, multiplyScalar, false);
+      return algorithm11(x, y, multiplyScalar, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, multiplyScalar, false);
+      return algorithm14(x, y, multiplyScalar, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm11(y, x, multiplyScalar, true);
+      return algorithm11(y, x, multiplyScalar, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, multiplyScalar, true);
+      return algorithm14(y, x, multiplyScalar, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf();
+      return algorithm14(matrix(x), y, multiplyScalar, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf();
+      return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
     },
 
     'any, any': multiplyScalar,
 
     'any, any, ...any': function (x, y, rest) {
-      var result = multiply(x, y);
+      var result = multiply(x, y)
 
       for (var i = 0; i < rest.length; i++) {
-        result = multiply(result, rest[i]);
+        result = multiply(result, rest[i])
       }
-      
-      return result;
+
+      return result
     }
-  }, multiplyScalar.signatures));
+  }, multiplyScalar.signatures))
 
   var _validateMatrixDimensions = function (size1, size2) {
     // check left operand dimensions
@@ -149,20 +149,20 @@ function factory (type, config, load, typed) {
             // Vector x Vector
             if (size1[0] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Vectors must have the same length');
+              throw new RangeError('Dimension mismatch in multiplication. Vectors must have the same length')
             }
-            break;
+            break
           case 2:
             // Vector x Matrix
             if (size1[0] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Vector length (' + size1[0] + ') must match Matrix rows (' + size2[0] + ')');
+              throw new RangeError('Dimension mismatch in multiplication. Vector length (' + size1[0] + ') must match Matrix rows (' + size2[0] + ')')
             }
-            break;
+            break
           default:
-            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)');
+            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)')
         }
-        break;
+        break
       case 2:
         // check size2
         switch (size2.length) {
@@ -170,24 +170,24 @@ function factory (type, config, load, typed) {
             // Matrix x Vector
             if (size1[1] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Matrix columns (' + size1[1] + ') must match Vector length (' + size2[0] + ')');
+              throw new RangeError('Dimension mismatch in multiplication. Matrix columns (' + size1[1] + ') must match Vector length (' + size2[0] + ')')
             }
-            break;
+            break
           case 2:
             // Matrix x Matrix
             if (size1[1] !== size2[0]) {
               // throw error
-              throw new RangeError('Dimension mismatch in multiplication. Matrix A columns (' + size1[1] + ') must match Matrix B rows (' + size2[0] + ')');
+              throw new RangeError('Dimension mismatch in multiplication. Matrix A columns (' + size1[1] + ') must match Matrix B rows (' + size2[0] + ')')
             }
-            break;
+            break
           default:
-            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)');
+            throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix B has ' + size2.length + ' dimensions)')
         }
-        break;
+        break
       default:
-        throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix A has ' + size1.length + ' dimensions)');
+        throw new Error('Can only multiply a 1 or 2 dimensional matrix (Matrix A has ' + size1.length + ' dimensions)')
     }
-  };
+  }
 
   /**
    * C = A * B
@@ -199,41 +199,40 @@ function factory (type, config, load, typed) {
    */
   var _multiplyVectorVector = function (a, b, n) {
     // check empty vector
-    if (n === 0)
-      throw new Error('Cannot multiply two empty vectors');
+    if (n === 0) { throw new Error('Cannot multiply two empty vectors') }
 
     // a dense
-    var adata = a._data;
-    var adt = a._datatype;
+    var adata = a._data
+    var adt = a._datatype
     // b dense
-    var bdata = b._data;
-    var bdt = b._datatype;
+    var bdata = b._data
+    var bdt = b._datatype
 
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
     }
-    
+
     // result (do not initialize it with zero)
-    var c = mf(adata[0], bdata[0]);
+    var c = mf(adata[0], bdata[0])
     // loop data
     for (var i = 1; i < n; i++) {
       // multiply and accumulate
-      c = af(c, mf(adata[i], bdata[i]));
+      c = af(c, mf(adata[i], bdata[i]))
     }
-    return c;
-  };
+    return c
+  }
 
   /**
    * C = A * B
@@ -246,10 +245,10 @@ function factory (type, config, load, typed) {
   var _multiplyVectorMatrix = function (a, b) {
     // process storage
     if (b.storage() !== 'dense') {
-      throw new Error('Support for SparseMatrix not implemented');
+      throw new Error('Support for SparseMatrix not implemented')
     }
-    return _multiplyVectorDenseMatrix(a, b);
-  };
+    return _multiplyVectorDenseMatrix(a, b)
+  }
 
   /**
    * C = A * B
@@ -261,46 +260,46 @@ function factory (type, config, load, typed) {
    */
   var _multiplyVectorDenseMatrix = function (a, b) {
     // a dense
-    var adata = a._data;
-    var asize = a._size;
-    var adt = a._datatype;
+    var adata = a._data
+    var asize = a._size
+    var adt = a._datatype
     // b dense
-    var bdata = b._data;
-    var bsize = b._size;
-    var bdt = b._datatype;
+    var bdata = b._data
+    var bsize = b._size
+    var bdt = b._datatype
     // rows & columns
-    var alength = asize[0];
-    var bcolumns = bsize[1];
+    var alength = asize[0]
+    var bcolumns = bsize[1]
 
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
     }
 
     // result
-    var c = [];
+    var c = []
 
     // loop matrix columns
     for (var j = 0; j < bcolumns; j++) {
       // sum (do not initialize it with zero)
-      var sum = mf(adata[0], bdata[0][j]);      
+      var sum = mf(adata[0], bdata[0][j])
       // loop vector
       for (var i = 1; i < alength; i++) {
         // multiply & accumulate
-        sum = af(sum, mf(adata[i], bdata[i][j]));
+        sum = af(sum, mf(adata[i], bdata[i][j]))
       }
-      c[j] = sum;
+      c[j] = sum
     }
 
     // return matrix
@@ -308,8 +307,8 @@ function factory (type, config, load, typed) {
       data: c,
       size: [bcolumns],
       datatype: dt
-    });
-  };
+    })
+  }
 
   /**
    * C = A * B
@@ -322,7 +321,7 @@ function factory (type, config, load, typed) {
   var _multiplyMatrixVector = typed('_multiplyMatrixVector', {
     'DenseMatrix, any': _multiplyDenseMatrixVector,
     'SparseMatrix, any': _multiplySparseMatrixVector
-  });
+  })
 
   /**
    * C = A * B
@@ -337,7 +336,7 @@ function factory (type, config, load, typed) {
     'DenseMatrix, SparseMatrix': _multiplyDenseMatrixSparseMatrix,
     'SparseMatrix, DenseMatrix': _multiplySparseMatrixDenseMatrix,
     'SparseMatrix, SparseMatrix': _multiplySparseMatrixSparseMatrix
-  });
+  })
 
   /**
    * C = A * B
@@ -345,51 +344,51 @@ function factory (type, config, load, typed) {
    * @param {Matrix} a            DenseMatrix  (MxN)
    * @param {Matrix} b            Dense Vector (N)
    *
-   * @return {Matrix}             Dense Vector (M) 
-   */ 
-  function _multiplyDenseMatrixVector(a, b) {
+   * @return {Matrix}             Dense Vector (M)
+   */
+  function _multiplyDenseMatrixVector (a, b) {
     // a dense
-    var adata = a._data;
-    var asize = a._size;
-    var adt = a._datatype;
+    var adata = a._data
+    var asize = a._size
+    var adt = a._datatype
     // b dense
-    var bdata = b._data;
-    var bdt = b._datatype;
+    var bdata = b._data
+    var bdt = b._datatype
     // rows & columns
-    var arows = asize[0];
-    var acolumns = asize[1];
+    var arows = asize[0]
+    var acolumns = asize[1]
 
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
     }
 
     // result
-    var c = [];
+    var c = []
 
     // loop matrix a rows
     for (var i = 0; i < arows; i++) {
       // current row
-      var row = adata[i];
+      var row = adata[i]
       // sum (do not initialize it with zero)
-      var sum = mf(row[0], bdata[0]);
+      var sum = mf(row[0], bdata[0])
       // loop matrix a columns
       for (var j = 1; j < acolumns; j++) {
         // multiply & accumulate
-        sum = af(sum, mf(row[j], bdata[j]));
+        sum = af(sum, mf(row[j], bdata[j]))
       }
-      c[i] = sum;
+      c[i] = sum
     }
 
     // return matrix
@@ -397,7 +396,7 @@ function factory (type, config, load, typed) {
       data: c,
       size: [arows],
       datatype: dt
-    });
+    })
   }
 
   /**
@@ -410,53 +409,53 @@ function factory (type, config, load, typed) {
    */
   function _multiplyDenseMatrixDenseMatrix (a, b) {
     // a dense
-    var adata = a._data;
-    var asize = a._size;
-    var adt = a._datatype;
+    var adata = a._data
+    var asize = a._size
+    var adt = a._datatype
     // b dense
-    var bdata = b._data;
-    var bsize = b._size;
-    var bdt = b._datatype;
+    var bdata = b._data
+    var bsize = b._size
+    var bdt = b._datatype
     // rows & columns
-    var arows = asize[0];
-    var acolumns = asize[1];
-    var bcolumns = bsize[1];
+    var arows = asize[0]
+    var acolumns = asize[1]
+    var bcolumns = bsize[1]
 
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
     }
-    
+
     // result
-    var c = [];
+    var c = []
 
     // loop matrix a rows
     for (var i = 0; i < arows; i++) {
       // current row
-      var row = adata[i];
+      var row = adata[i]
       // initialize row array
-      c[i] = [];
+      c[i] = []
       // loop matrix b columns
       for (var j = 0; j < bcolumns; j++) {
         // sum (avoid initializing sum to zero)
-        var sum = mf(row[0], bdata[0][j]);
+        var sum = mf(row[0], bdata[0][j])
         // loop matrix a columns
         for (var x = 1; x < acolumns; x++) {
           // multiply & accumulate
-          sum = af(sum, mf(row[x], bdata[x][j]));
+          sum = af(sum, mf(row[x], bdata[x][j]))
         }
-        c[i][j] = sum;
+        c[i][j] = sum
       }
     }
 
@@ -465,7 +464,7 @@ function factory (type, config, load, typed) {
       data: c,
       size: [arows, bcolumns],
       datatype: dt
-    });
+    })
   }
 
   /**
@@ -478,105 +477,103 @@ function factory (type, config, load, typed) {
    */
   function _multiplyDenseMatrixSparseMatrix (a, b) {
     // a dense
-    var adata = a._data;
-    var asize = a._size;
-    var adt = a._datatype;
+    var adata = a._data
+    var asize = a._size
+    var adt = a._datatype
     // b sparse
-    var bvalues = b._values;
-    var bindex = b._index;
-    var bptr = b._ptr;
-    var bsize = b._size;
-    var bdt = b._datatype;
+    var bvalues = b._values
+    var bindex = b._index
+    var bptr = b._ptr
+    var bsize = b._size
+    var bdt = b._datatype
     // validate b matrix
-    if (!bvalues)
-      throw new Error('Cannot multiply Dense Matrix times Pattern only Matrix');
+    if (!bvalues) { throw new Error('Cannot multiply Dense Matrix times Pattern only Matrix') }
     // rows & columns
-    var arows = asize[0];
-    var bcolumns = bsize[1];
-    
+    var arows = asize[0]
+    var bcolumns = bsize[1]
+
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
     // equalScalar signature to use
-    var eq = equalScalar;
+    var eq = equalScalar
     // zero value
-    var zero = 0;
+    var zero = 0
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
-      eq = typed.find(equalScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
+      eq = typed.find(equalScalar, [dt, dt])
       // convert 0 to the same datatype
-      zero = typed.convert(0, dt);
+      zero = typed.convert(0, dt)
     }
 
     // result
-    var cvalues = [];
-    var cindex = [];
-    var cptr = [];
+    var cvalues = []
+    var cindex = []
+    var cptr = []
     // c matrix
     var c = new SparseMatrix({
-      values : cvalues,
+      values: cvalues,
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
       datatype: dt
-    });
+    })
 
     // loop b columns
     for (var jb = 0; jb < bcolumns; jb++) {
       // update ptr
-      cptr[jb] = cindex.length;
+      cptr[jb] = cindex.length
       // indeces in column jb
-      var kb0 = bptr[jb];
-      var kb1 = bptr[jb + 1];
+      var kb0 = bptr[jb]
+      var kb1 = bptr[jb + 1]
       // do not process column jb if no data exists
       if (kb1 > kb0) {
         // last row mark processed
-        var last = 0;
+        var last = 0
         // loop a rows
         for (var i = 0; i < arows; i++) {
           // column mark
-          var mark = i + 1;
+          var mark = i + 1
           // C[i, jb]
-          var cij;
+          var cij
           // values in b column j
           for (var kb = kb0; kb < kb1; kb++) {
             // row
-            var ib = bindex[kb];
+            var ib = bindex[kb]
             // check value has been initialized
             if (last !== mark) {
               // first value in column jb
-              cij = mf(adata[i][ib], bvalues[kb]);
+              cij = mf(adata[i][ib], bvalues[kb])
               // update mark
-              last = mark;
-            }
-            else {
+              last = mark
+            } else {
               // accumulate value
-              cij = af(cij, mf(adata[i][ib], bvalues[kb]));
+              cij = af(cij, mf(adata[i][ib], bvalues[kb]))
             }
           }
           // check column has been processed and value != 0
           if (last === mark && !eq(cij, zero)) {
             // push row & value
-            cindex.push(i);
-            cvalues.push(cij);
+            cindex.push(i)
+            cvalues.push(cij)
           }
         }
       }
     }
     // update ptr
-    cptr[bcolumns] = cindex.length;
+    cptr[bcolumns] = cindex.length
 
     // return sparse matrix
-    return c;
+    return c
   }
 
   /**
@@ -585,80 +582,78 @@ function factory (type, config, load, typed) {
    * @param {Matrix} a            SparseMatrix    (MxN)
    * @param {Matrix} b            Dense Vector (N)
    *
-   * @return {Matrix}             SparseMatrix    (M, 1) 
+   * @return {Matrix}             SparseMatrix    (M, 1)
    */
-  function _multiplySparseMatrixVector(a, b) {
+  function _multiplySparseMatrixVector (a, b) {
     // a sparse
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var adt = a._datatype;
+    var avalues = a._values
+    var aindex = a._index
+    var aptr = a._ptr
+    var adt = a._datatype
     // validate a matrix
-    if (!avalues)
-      throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix');
+    if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
     // b dense
-    var bdata = b._data;
-    var bdt = b._datatype;
+    var bdata = b._data
+    var bdt = b._datatype
     // rows & columns
-    var arows = a._size[0];
-    var brows = b._size[0];
+    var arows = a._size[0]
+    var brows = b._size[0]
     // result
-    var cvalues = [];
-    var cindex = [];
-    var cptr = [];
-    
+    var cvalues = []
+    var cindex = []
+    var cptr = []
+
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
     // equalScalar signature to use
-    var eq = equalScalar;
+    var eq = equalScalar
     // zero value
-    var zero = 0;
+    var zero = 0
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
-      eq = typed.find(equalScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
+      eq = typed.find(equalScalar, [dt, dt])
       // convert 0 to the same datatype
-      zero = typed.convert(0, dt);
+      zero = typed.convert(0, dt)
     }
 
     // workspace
-    var x = [];
+    var x = []
     // vector with marks indicating a value x[i] exists in a given column
-    var w = [];
+    var w = []
 
     // update ptr
-    cptr[0] = 0;
+    cptr[0] = 0
     // rows in b
     for (var ib = 0; ib < brows; ib++) {
       // b[ib]
-      var vbi = bdata[ib];
+      var vbi = bdata[ib]
       // check b[ib] != 0, avoid loops
       if (!eq(vbi, zero)) {
         // A values & index in ib column
         for (var ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
           // a row
-          var ia = aindex[ka];
+          var ia = aindex[ka]
           // check value exists in current j
           if (!w[ia]) {
             // ia is new entry in j
-            w[ia] = true;
+            w[ia] = true
             // add i to pattern of C
-            cindex.push(ia);
+            cindex.push(ia)
             // x(ia) = A
-            x[ia] = mf(vbi, avalues[ka]);
-          }
-          else {
+            x[ia] = mf(vbi, avalues[ka])
+          } else {
             // i exists in C already
-            x[ia] = af(x[ia], mf(vbi, avalues[ka]));
+            x[ia] = af(x[ia], mf(vbi, avalues[ka]))
           }
         }
       }
@@ -666,21 +661,21 @@ function factory (type, config, load, typed) {
     // copy values from x to column jb of c
     for (var p1 = cindex.length, p = 0; p < p1; p++) {
       // row
-      var ic = cindex[p];
+      var ic = cindex[p]
       // copy value
-      cvalues[p] = x[ic];
+      cvalues[p] = x[ic]
     }
     // update ptr
-    cptr[1] = cindex.length;
+    cptr[1] = cindex.length
 
     // return sparse matrix
     return new SparseMatrix({
-      values : cvalues,
+      values: cvalues,
       index: cindex,
       ptr: cptr,
       size: [arows, 1],
       datatype: dt
-    });
+    })
   }
 
   /**
@@ -691,92 +686,90 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix}             SparseMatrix      (MxC)
    */
-  function _multiplySparseMatrixDenseMatrix(a, b) {
+  function _multiplySparseMatrixDenseMatrix (a, b) {
     // a sparse
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var adt = a._datatype;
+    var avalues = a._values
+    var aindex = a._index
+    var aptr = a._ptr
+    var adt = a._datatype
     // validate a matrix
-    if (!avalues)
-      throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix');
+    if (!avalues) { throw new Error('Cannot multiply Pattern only Matrix times Dense Matrix') }
     // b dense
-    var bdata = b._data;
-    var bdt = b._datatype;
+    var bdata = b._data
+    var bdt = b._datatype
     // rows & columns
-    var arows = a._size[0];
-    var brows = b._size[0];
-    var bcolumns = b._size[1];
+    var arows = a._size[0]
+    var brows = b._size[0]
+    var bcolumns = b._size[1]
 
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
     // equalScalar signature to use
-    var eq = equalScalar;
+    var eq = equalScalar
     // zero value
-    var zero = 0;
+    var zero = 0
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
-      eq = typed.find(equalScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
+      eq = typed.find(equalScalar, [dt, dt])
       // convert 0 to the same datatype
-      zero = typed.convert(0, dt);
+      zero = typed.convert(0, dt)
     }
 
     // result
-    var cvalues = [];
-    var cindex = [];
-    var cptr = [];
+    var cvalues = []
+    var cindex = []
+    var cptr = []
     // c matrix
     var c = new SparseMatrix({
-      values : cvalues,
+      values: cvalues,
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
       datatype: dt
-    });
+    })
 
     // workspace
-    var x = [];
+    var x = []
     // vector with marks indicating a value x[i] exists in a given column
-    var w = [];
+    var w = []
 
     // loop b columns
     for (var jb = 0; jb < bcolumns; jb++) {
       // update ptr
-      cptr[jb] = cindex.length;
+      cptr[jb] = cindex.length
       // mark in workspace for current column
-      var mark = jb + 1;
+      var mark = jb + 1
       // rows in jb
       for (var ib = 0; ib < brows; ib++) {
         // b[ib, jb]
-        var vbij = bdata[ib][jb];
+        var vbij = bdata[ib][jb]
         // check b[ib, jb] != 0, avoid loops
         if (!eq(vbij, zero)) {
           // A values & index in ib column
           for (var ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
             // a row
-            var ia = aindex[ka];
+            var ia = aindex[ka]
             // check value exists in current j
             if (w[ia] !== mark) {
               // ia is new entry in j
-              w[ia] = mark;
+              w[ia] = mark
               // add i to pattern of C
-              cindex.push(ia);
+              cindex.push(ia)
               // x(ia) = A
-              x[ia] = mf(vbij, avalues[ka]);
-            }
-            else {
+              x[ia] = mf(vbij, avalues[ka])
+            } else {
               // i exists in C already
-              x[ia] = af(x[ia], mf(vbij, avalues[ka]));
+              x[ia] = af(x[ia], mf(vbij, avalues[ka]))
             }
           }
         }
@@ -784,16 +777,16 @@ function factory (type, config, load, typed) {
       // copy values from x to column jb of c
       for (var p0 = cptr[jb], p1 = cindex.length, p = p0; p < p1; p++) {
         // row
-        var ic = cindex[p];
+        var ic = cindex[p]
         // copy value
-        cvalues[p] = x[ic];
+        cvalues[p] = x[ic]
       }
     }
     // update ptr
-    cptr[bcolumns] = cindex.length;
+    cptr[bcolumns] = cindex.length
 
     // return sparse matrix
-    return c;
+    return c
   }
 
   /**
@@ -804,101 +797,99 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix}             SparseMatrix      (MxC)
    */
-  function _multiplySparseMatrixSparseMatrix(a, b) {
+  function _multiplySparseMatrixSparseMatrix (a, b) {
     // a sparse
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var adt = a._datatype;
+    var avalues = a._values
+    var aindex = a._index
+    var aptr = a._ptr
+    var adt = a._datatype
     // b sparse
-    var bvalues = b._values;
-    var bindex = b._index;
-    var bptr = b._ptr;
-    var bdt = b._datatype;
-    
+    var bvalues = b._values
+    var bindex = b._index
+    var bptr = b._ptr
+    var bdt = b._datatype
+
     // rows & columns
-    var arows = a._size[0];
-    var bcolumns = b._size[1];
+    var arows = a._size[0]
+    var bcolumns = b._size[1]
     // flag indicating both matrices (a & b) contain data
-    var values = avalues && bvalues;
+    var values = avalues && bvalues
 
     // datatype
-    var dt;
+    var dt
     // addScalar signature to use
-    var af = addScalar;
+    var af = addScalar
     // multiplyScalar signature to use
-    var mf = multiplyScalar;
+    var mf = multiplyScalar
 
     // process data types
     if (adt && bdt && adt === bdt && typeof adt === 'string') {
       // datatype
-      dt = adt;
+      dt = adt
       // find signatures that matches (dt, dt)
-      af = typed.find(addScalar, [dt, dt]);
-      mf = typed.find(multiplyScalar, [dt, dt]);
+      af = typed.find(addScalar, [dt, dt])
+      mf = typed.find(multiplyScalar, [dt, dt])
     }
-    
+
     // result
-    var cvalues = values ? [] : undefined;
-    var cindex = [];
-    var cptr = [];
+    var cvalues = values ? [] : undefined
+    var cindex = []
+    var cptr = []
     // c matrix
     var c = new SparseMatrix({
-      values : cvalues,
+      values: cvalues,
       index: cindex,
       ptr: cptr,
       size: [arows, bcolumns],
       datatype: dt
-    });
+    })
 
     // workspace
-    var x = values ? [] : undefined;
+    var x = values ? [] : undefined
     // vector with marks indicating a value x[i] exists in a given column
-    var w = [];
+    var w = []
     // variables
-    var ka, ka0, ka1, kb, kb0, kb1, ia, ib;
+    var ka, ka0, ka1, kb, kb0, kb1, ia, ib
     // loop b columns
     for (var jb = 0; jb < bcolumns; jb++) {
       // update ptr
-      cptr[jb] = cindex.length;
+      cptr[jb] = cindex.length
       // mark in workspace for current column
-      var mark = jb + 1;
+      var mark = jb + 1
       // B values & index in j
       for (kb0 = bptr[jb], kb1 = bptr[jb + 1], kb = kb0; kb < kb1; kb++) {
         // b row
-        ib = bindex[kb];
+        ib = bindex[kb]
         // check we need to process values
         if (values) {
           // loop values in a[:,ib]
           for (ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
             // row
-            ia = aindex[ka];
+            ia = aindex[ka]
             // check value exists in current j
             if (w[ia] !== mark) {
               // ia is new entry in j
-              w[ia] = mark;
+              w[ia] = mark
               // add i to pattern of C
-              cindex.push(ia);
+              cindex.push(ia)
               // x(ia) = A
-              x[ia] = mf(bvalues[kb], avalues[ka]);
-            }
-            else {
+              x[ia] = mf(bvalues[kb], avalues[ka])
+            } else {
               // i exists in C already
-              x[ia] = af(x[ia], mf(bvalues[kb], avalues[ka]));
+              x[ia] = af(x[ia], mf(bvalues[kb], avalues[ka]))
             }
           }
-        }
-        else {
+        } else {
           // loop values in a[:,ib]
           for (ka0 = aptr[ib], ka1 = aptr[ib + 1], ka = ka0; ka < ka1; ka++) {
             // row
-            ia = aindex[ka];
+            ia = aindex[ka]
             // check value exists in current j
             if (w[ia] !== mark) {
               // ia is new entry in j
-              w[ia] = mark;
+              w[ia] = mark
               // add i to pattern of C
-              cindex.push(ia);
+              cindex.push(ia)
             }
           }
         }
@@ -908,25 +899,25 @@ function factory (type, config, load, typed) {
         // copy values from x to column jb of c
         for (var p0 = cptr[jb], p1 = cindex.length, p = p0; p < p1; p++) {
           // row
-          var ic = cindex[p];
+          var ic = cindex[p]
           // copy value
-          cvalues[p] = x[ic];
+          cvalues[p] = x[ic]
         }
       }
     }
     // update ptr
-    cptr[bcolumns] = cindex.length;
+    cptr[bcolumns] = cindex.length
 
     // return sparse matrix
-    return c;
+    return c
   }
 
   multiply.toTex = {
     2: '\\left(${args[0]}' + latex.operators['multiply'] + '${args[1]}\\right)'
-  };
+  }
 
-  return multiply;
+  return multiply
 }
 
-exports.name = 'multiply';
-exports.factory = factory;
+exports.name = 'multiply'
+exports.factory = factory

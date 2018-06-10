@@ -16,4 +16,4 @@ module.exports = {
   'seealso': [
     'size', 'subset', 'squeeze', 'reshape'
   ]
-};
+}

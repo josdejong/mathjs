@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('./../utils/collection/deepMap');
+var deepMap = require('./../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -30,54 +30,54 @@ function factory (type, config, load, typed) {
    */
   var number = typed('number', {
     '': function () {
-      return 0;
+      return 0
     },
 
     'number': function (x) {
-      return x;
+      return x
     },
 
     'string': function (x) {
-      var num = Number(x);
+      var num = Number(x)
       if (isNaN(num)) {
-        throw new SyntaxError('String "' + x + '" is no valid number');
+        throw new SyntaxError('String "' + x + '" is no valid number')
       }
-      return num;
+      return num
     },
 
     'BigNumber': function (x) {
-      return x.toNumber();
+      return x.toNumber()
     },
 
     'Fraction': function (x) {
-      return x.valueOf();
+      return x.valueOf()
     },
 
     'Unit': function (x) {
-      throw new Error('Second argument with valueless unit expected');
+      throw new Error('Second argument with valueless unit expected')
     },
 
     'null': function (x) {
-      return 0;
+      return 0
     },
 
     'Unit, string | Unit': function (unit, valuelessUnit) {
-      return unit.toNumber(valuelessUnit);
+      return unit.toNumber(valuelessUnit)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, number);
+      return deepMap(x, number)
     }
-  });
+  })
 
   number.toTex = {
     0: '0',
     1: '\\left(${args[0]}\\right)',
     2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
-  };
+  }
 
-  return number;
+  return number
 }
 
-exports.name = 'number';
-exports.factory = factory;
+exports.name = 'number'
+exports.factory = factory

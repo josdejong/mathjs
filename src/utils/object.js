@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var isBigNumber = require('./bignumber/isBigNumber');
+var isBigNumber = require('./bignumber/isBigNumber')
 
 /**
  * Clone an object
@@ -13,37 +13,37 @@ var isBigNumber = require('./bignumber/isBigNumber');
  * @param {*} x
  * @return {*} clone
  */
-exports.clone = function clone(x) {
-  var type = typeof x;
+exports.clone = function clone (x) {
+  var type = typeof x
 
   // immutable primitive types
   if (type === 'number' || type === 'string' || type === 'boolean' ||
       x === null || x === undefined) {
-    return x;
+    return x
   }
 
   // use clone function of the object when available
   if (typeof x.clone === 'function') {
-    return x.clone();
+    return x.clone()
   }
 
   // array
   if (Array.isArray(x)) {
     return x.map(function (value) {
-      return clone(value);
-    });
+      return clone(value)
+    })
   }
 
-  if (x instanceof Number)    return new Number(x.valueOf());
-  if (x instanceof String)    return new String(x.valueOf());
-  if (x instanceof Boolean)   return new Boolean(x.valueOf());
-  if (x instanceof Date)      return new Date(x.valueOf());
-  if (isBigNumber(x))         return x; // bignumbers are immutable
-  if (x instanceof RegExp)  throw new TypeError('Cannot clone ' + x);  // TODO: clone a RegExp
+  if (x instanceof Number) return new Number(x.valueOf())
+  if (x instanceof String) return new String(x.valueOf())
+  if (x instanceof Boolean) return new Boolean(x.valueOf())
+  if (x instanceof Date) return new Date(x.valueOf())
+  if (isBigNumber(x)) return x // bignumbers are immutable
+  if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x) // TODO: clone a RegExp
 
   // object
-  return exports.map(x, clone);
-};
+  return exports.map(x, clone)
+}
 
 /**
  * Apply map to all properties of an object
@@ -51,16 +51,16 @@ exports.clone = function clone(x) {
  * @param {function} callback
  * @return {Object} Returns a copy of the object with mapped properties
  */
-exports.map = function(object, callback) {
-  var clone = {};
+exports.map = function (object, callback) {
+  var clone = {}
 
   for (var key in object) {
     if (exports.hasOwnProperty(object, key)) {
-      clone[key] = callback(object[key]);
+      clone[key] = callback(object[key])
     }
   }
 
-  return clone;
+  return clone
 }
 
 /**
@@ -69,14 +69,14 @@ exports.map = function(object, callback) {
  * @param {Object} b
  * @return {Object} a
  */
-exports.extend = function(a, b) {
+exports.extend = function (a, b) {
   for (var prop in b) {
     if (exports.hasOwnProperty(b, prop)) {
-      a[prop] = b[prop];
+      a[prop] = b[prop]
     }
   }
-  return a;
-};
+  return a
+}
 
 /**
  * Deep extend an object a with the properties of object b
@@ -87,30 +87,29 @@ exports.extend = function(a, b) {
 exports.deepExtend = function deepExtend (a, b) {
   // TODO: add support for Arrays to deepExtend
   if (Array.isArray(b)) {
-    throw new TypeError('Arrays are not supported by deepExtend');
+    throw new TypeError('Arrays are not supported by deepExtend')
   }
 
   for (var prop in b) {
     if (exports.hasOwnProperty(b, prop)) {
       if (b[prop] && b[prop].constructor === Object) {
         if (a[prop] === undefined) {
-          a[prop] = {};
+          a[prop] = {}
         }
         if (a[prop].constructor === Object) {
-          deepExtend(a[prop], b[prop]);
-        }
-        else {
-          a[prop] = b[prop];
+          deepExtend(a[prop], b[prop])
+        } else {
+          a[prop] = b[prop]
         }
       } else if (Array.isArray(b[prop])) {
-        throw new TypeError('Arrays are not supported by deepExtend');
+        throw new TypeError('Arrays are not supported by deepExtend')
       } else {
-        a[prop] = b[prop];
+        a[prop] = b[prop]
       }
     }
   }
-  return a;
-};
+  return a
+}
 
 /**
  * Deep test equality of all fields in two pairs of arrays or objects.
@@ -119,46 +118,44 @@ exports.deepExtend = function deepExtend (a, b) {
  * @returns {boolean}
  */
 exports.deepEqual = function deepEqual (a, b) {
-  var prop, i, len;
+  var prop, i, len
   if (Array.isArray(a)) {
     if (!Array.isArray(b)) {
-      return false;
+      return false
     }
 
     if (a.length != b.length) {
-      return false;
+      return false
     }
 
     for (i = 0, len = a.length; i < len; i++) {
       if (!exports.deepEqual(a[i], b[i])) {
-        return false;
+        return false
       }
     }
-    return true;
-  }
-  else if (a instanceof Object) {
+    return true
+  } else if (a instanceof Object) {
     if (Array.isArray(b) || !(b instanceof Object)) {
-      return false;
+      return false
     }
 
     for (prop in a) {
-      //noinspection JSUnfilteredForInLoop
+      // noinspection JSUnfilteredForInLoop
       if (!exports.deepEqual(a[prop], b[prop])) {
-        return false;
+        return false
       }
     }
     for (prop in b) {
-      //noinspection JSUnfilteredForInLoop
+      // noinspection JSUnfilteredForInLoop
       if (!exports.deepEqual(a[prop], b[prop])) {
-        return false;
+        return false
       }
     }
-    return true;
+    return true
+  } else {
+    return (typeof a === typeof b) && (a == b)
   }
-  else {
-    return (typeof a === typeof b) && (a == b);
-  }
-};
+}
 
 /**
  * Test whether the current JavaScript engine supports Object.defineProperty
@@ -168,13 +165,13 @@ exports.canDefineProperty = function () {
   // test needed for broken IE8 implementation
   try {
     if (Object.defineProperty) {
-      Object.defineProperty({}, 'x', { get: function () {} });
-      return true;
+      Object.defineProperty({}, 'x', { get: function () {} })
+      return true
     }
   } catch (e) {}
 
-  return false;
-};
+  return false
+}
 
 /**
  * Attach a lazy loading property to a constant.
@@ -188,31 +185,30 @@ exports.canDefineProperty = function () {
  */
 exports.lazy = function (object, prop, fn) {
   if (exports.canDefineProperty()) {
-    var _uninitialized = true;
-    var _value;
+    var _uninitialized = true
+    var _value
     Object.defineProperty(object, prop, {
       get: function () {
         if (_uninitialized) {
-          _value = fn();
-          _uninitialized = false;
+          _value = fn()
+          _uninitialized = false
         }
-        return _value;
+        return _value
       },
 
       set: function (value) {
-        _value = value;
-        _uninitialized = false;
+        _value = value
+        _uninitialized = false
       },
 
       configurable: true,
       enumerable: true
-    });
-  }
-  else {
+    })
+  } else {
     // fall back to immediate evaluation
-    object[prop] = fn();
+    object[prop] = fn()
   }
-};
+}
 
 /**
  * Traverse a path into an object.
@@ -221,22 +217,22 @@ exports.lazy = function (object, prop, fn) {
  * @param {string} path   A dot separated string like 'name.space'
  * @return {Object} Returns the object at the end of the path
  */
-exports.traverse = function(object, path) {
-  var obj = object;
+exports.traverse = function (object, path) {
+  var obj = object
 
   if (path) {
-    var names = path.split('.');
+    var names = path.split('.')
     for (var i = 0; i < names.length; i++) {
-      var name = names[i];
+      var name = names[i]
       if (!(name in obj)) {
-        obj[name] = {};
+        obj[name] = {}
       }
-      obj = obj[name];
+      obj = obj[name]
     }
   }
 
-  return obj;
-};
+  return obj
+}
 
 /**
  * A safe hasOwnProperty
@@ -244,7 +240,7 @@ exports.traverse = function(object, path) {
  * @param {string} property
  */
 exports.hasOwnProperty = function (object, property) {
-  return object && Object.hasOwnProperty.call(object, property);
+  return object && Object.hasOwnProperty.call(object, property)
 }
 
 /**
@@ -260,5 +256,5 @@ exports.hasOwnProperty = function (object, property) {
  * @returns {boolean}
  */
 exports.isFactory = function (object) {
-  return object && typeof object.factory === 'function';
-};
+  return object && typeof object.factory === 'function'
+}

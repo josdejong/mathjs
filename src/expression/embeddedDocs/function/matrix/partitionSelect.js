@@ -11,4 +11,4 @@ module.exports = {
     'partitionSelect(["C", "B", "A", "D"], 1)'
   ],
   'seealso': ['sort']
-};
+}

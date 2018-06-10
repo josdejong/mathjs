@@ -1,11 +1,11 @@
-'use strict';
-var Fraction = require('fraction.js');
+'use strict'
+var Fraction = require('fraction.js')
 
 /**
  * Attach type information
  */
-Fraction.prototype.type = 'Fraction';
-Fraction.prototype.isFraction = true;
+Fraction.prototype.type = 'Fraction'
+Fraction.prototype.isFraction = true
 
 /**
  * Get a JSON representation of a Fraction containing type information
@@ -17,8 +17,8 @@ Fraction.prototype.toJSON = function () {
     mathjs: 'Fraction',
     n: this.s * this.n,
     d: this.d
-  };
-};
+  }
+}
 
 /**
  * Instantiate a Fraction from a JSON object
@@ -27,14 +27,13 @@ Fraction.prototype.toJSON = function () {
  * @return {BigNumber}
  */
 Fraction.fromJSON = function (json) {
-  return new Fraction(json);
-};
-
-
-function factory (type, config, load, typed) {
-  return Fraction;
+  return new Fraction(json)
 }
 
-exports.name = 'Fraction';
-exports.path = 'type';
-exports.factory = factory;
+function factory (type, config, load, typed) {
+  return Fraction
+}
+
+exports.name = 'Fraction'
+exports.path = 'type'
+exports.factory = factory

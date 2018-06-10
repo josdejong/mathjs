@@ -1,8 +1,7 @@
 var baseKarma = require('./base-karma')
 
-module.exports = function(config) {
-
-  var baseConfig = baseKarma(config);
+module.exports = function (config) {
+  var baseConfig = baseKarma(config)
 
   config.set(Object.assign(baseConfig, {
     browsers: ['FirefoxHeadless'],
@@ -12,9 +11,8 @@ module.exports = function(config) {
     client: {
       captureConsole: true,
       mocha: {
-        reporter: 'html',
+        reporter: 'html'
       }
-    },
-  }));
-
-};
+    }
+  }))
+}

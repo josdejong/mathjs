@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   // type
   require('./Unit'),
@@ -14,4 +14,4 @@ module.exports = [
 
   // physical constants
   require('./physicalConstants')
-];
+]

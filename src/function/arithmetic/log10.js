@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,36 +31,34 @@ function factory (type, config, load, typed) {
   var log10 = typed('log10', {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
-        return _log10(x);
-      }
-      else {
+        return _log10(x)
+      } else {
         // negative value -> complex value computation
-        return new type.Complex(x, 0).log().div(Math.LN10);
+        return new type.Complex(x, 0).log().div(Math.LN10)
       }
     },
 
     'Complex': function (x) {
-      return new type.Complex(x).log().div(Math.LN10);
+      return new type.Complex(x).log().div(Math.LN10)
     },
 
     'BigNumber': function (x) {
       if (!x.isNegative() || config.predictable) {
-        return x.log();
-      }
-      else {
+        return x.log()
+      } else {
         // downgrade to number, return Complex valued result
-        return new type.Complex(x.toNumber(), 0).log().div(Math.LN10);
+        return new type.Complex(x.toNumber(), 0).log().div(Math.LN10)
       }
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, log10);
+      return deepMap(x, log10)
     }
-  });
+  })
 
-  log10.toTex = {1: '\\log_{10}\\left(${args[0]}\\right)'};
+  log10.toTex = {1: '\\log_{10}\\left(${args[0]}\\right)'}
 
-  return log10;
+  return log10
 }
 
 /**
@@ -70,9 +68,8 @@ function factory (type, config, load, typed) {
  * @private
  */
 var _log10 = Math.log10 || function (x) {
-  return Math.log(x) / Math.LN10;
-};
+  return Math.log(x) / Math.LN10
+}
 
-exports.name = 'log10';
-exports.factory = factory;
-
+exports.name = 'log10'
+exports.factory = factory

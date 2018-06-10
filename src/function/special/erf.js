@@ -1,8 +1,7 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-var sign = require('../../utils/number').sign;
-
+var deepMap = require('../../utils/collection/deepMap')
+var sign = require('../../utils/number').sign
 
 function factory (type, config, load, typed) {
   /**
@@ -31,35 +30,35 @@ function factory (type, config, load, typed) {
    */
   var erf = typed('erf', {
     'number': function (x) {
-      var y = Math.abs(x);
+      var y = Math.abs(x)
 
       if (y >= MAX_NUM) {
-        return sign(x);
+        return sign(x)
       }
       if (y <= THRESH) {
-        return sign(x) * erf1(y);
+        return sign(x) * erf1(y)
       }
       if (y <= 4.0) {
-        return sign(x) * (1 - erfc2(y));
+        return sign(x) * (1 - erfc2(y))
       }
-      return sign(x) * (1 - erfc3(y));
+      return sign(x) * (1 - erfc3(y))
     },
 
     // TODO: Not sure if there's a way to guarantee some degree of accuracy here.
     //  Perhaps it would be best to set the precision of the number to that which
     //  is guaranteed by erf()
     'BigNumber': function (n) {
-      return new type.BigNumber(erf(n.toNumber()));
+      return new type.BigNumber(erf(n.toNumber()))
     },
 
     'Array | Matrix': function (n) {
-      return deepMap(n, erf);
+      return deepMap(n, erf)
     }
 
     // TODO: For complex numbers, use the approximation for the Faddeeva function
     //  from "More Efficient Computation of the Complex Error Function" (AMS)
 
-  });
+  })
 
   /**
    * Approximates the error function erf() for x <= 0.46875 using this function:
@@ -67,17 +66,17 @@ function factory (type, config, load, typed) {
    * erf(x) = x * sum (p_j * x^(2j)) / (q_j * x^(2j))
    *              j=0
    */
-  function erf1(y) {
-    var ysq = y * y;
-    var xnum = P[0][4]*ysq;
-    var xden = ysq;
-    var i;
+  function erf1 (y) {
+    var ysq = y * y
+    var xnum = P[0][4] * ysq
+    var xden = ysq
+    var i
 
     for (i = 0; i < 3; i += 1) {
-      xnum = (xnum + P[0][i]) * ysq;
-      xden = (xden + Q[0][i]) * ysq;
+      xnum = (xnum + P[0][i]) * ysq
+      xden = (xden + Q[0][i]) * ysq
     }
-    return y * (xnum + P[0][3]) / (xden + Q[0][3]);
+    return y * (xnum + P[0][3]) / (xden + Q[0][3])
   }
 
   /**
@@ -87,19 +86,19 @@ function factory (type, config, load, typed) {
    * erfc(x) = e^(-x^2) * sum (p_j * x^j) / (q_j * x^j)
    *                      j=0
    */
-  function erfc2(y) {
-    var xnum = P[1][8] * y;
-    var xden = y;
-    var i;
+  function erfc2 (y) {
+    var xnum = P[1][8] * y
+    var xden = y
+    var i
 
     for (i = 0; i < 7; i += 1) {
-      xnum = (xnum + P[1][i]) * y;
-      xden = (xden + Q[1][i]) * y;
+      xnum = (xnum + P[1][i]) * y
+      xden = (xden + Q[1][i]) * y
     }
-    var result = (xnum + P[1][7]) / (xden + Q[1][7]);
-    var ysq = parseInt(y * 16) / 16;
-    var del = (y - ysq) * (y + ysq);
-    return Math.exp(-ysq*ysq) * Math.exp(-del) * result;
+    var result = (xnum + P[1][7]) / (xden + Q[1][7])
+    var ysq = parseInt(y * 16) / 16
+    var del = (y - ysq) * (y + ysq)
+    return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
 
   /**
@@ -111,39 +110,39 @@ function factory (type, config, load, typed) {
    *    1/(x^2) * sum (p_j * x^(-2j)) / (q_j * x^(-2j)) ]
    *              j=0
    */
-  function erfc3(y) {
-    var ysq = 1 / (y * y);
-    var xnum = P[2][5] * ysq;
-    var xden = ysq;
-    var i;
+  function erfc3 (y) {
+    var ysq = 1 / (y * y)
+    var xnum = P[2][5] * ysq
+    var xden = ysq
+    var i
 
     for (i = 0; i < 4; i += 1) {
-      xnum = (xnum + P[2][i]) * ysq;
-      xden = (xden + Q[2][i]) * ysq;
+      xnum = (xnum + P[2][i]) * ysq
+      xden = (xden + Q[2][i]) * ysq
     }
-    var result = ysq * (xnum + P[2][4]) / (xden + Q[2][4]);
-    result = (SQRPI - result) / y;
-    ysq = parseInt(y * 16) / 16;
-    var del = (y - ysq) * (y + ysq);
-    return Math.exp(-ysq*ysq) * Math.exp(-del) * result;
+    var result = ysq * (xnum + P[2][4]) / (xden + Q[2][4])
+    result = (SQRPI - result) / y
+    ysq = parseInt(y * 16) / 16
+    var del = (y - ysq) * (y + ysq)
+    return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
 
-  erf.toTex = {1: 'erf\\left(${args[0]}\\right)'};
+  erf.toTex = {1: 'erf\\left(${args[0]}\\right)'}
 
-  return erf;
+  return erf
 }
 
 /**
  * Upper bound for the first approximation interval, 0 <= x <= THRESH
  * @constant
  */
-var THRESH = 0.46875;
+var THRESH = 0.46875
 
 /**
  * Constant used by W. J. Cody's Fortran77 implementation to denote sqrt(pi)
  * @constant
  */
-var SQRPI = 5.6418958354775628695e-1;
+var SQRPI = 5.6418958354775628695e-1
 
 /**
  * Coefficients for each term of the numerator sum (p_j) for each approximation
@@ -164,7 +163,7 @@ var P = [[
   3.05326634961232344e-1, 3.60344899949804439e-1,
   1.25781726111229246e-1, 1.60837851487422766e-2,
   6.58749161529837803e-4, 1.63153871373020978e-2
-]];
+]]
 
 /**
  * Coefficients for each term of the denominator sum (q_j) for each approximation
@@ -183,15 +182,14 @@ var Q = [[
   2.56852019228982242e00, 1.87295284992346047e00,
   5.27905102951428412e-1, 6.05183413124413191e-2,
   2.33520497626869185e-3
-]];
+]]
 
 /**
  * Maximum/minimum safe numbers to input to erf() (in ES6+, this number is
  * Number.[MAX|MIN]_SAFE_INTEGER). erf() for all numbers beyond this limit will
  * return 1
  */
-var MAX_NUM = Math.pow(2, 53);
+var MAX_NUM = Math.pow(2, 53)
 
-
-exports.name = 'erf';
-exports.factory = factory;
+exports.name = 'erf'
+exports.factory = factory

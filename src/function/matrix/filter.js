@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
-var filter = require('../../utils/array').filter;
-var filterRegExp = require('../../utils/array').filterRegExp;
-var maxArgumentCount = require('../../utils/function').maxArgumentCount;
+var filter = require('../../utils/array').filter
+var filterRegExp = require('../../utils/array').filterRegExp
+var maxArgumentCount = require('../../utils/function').maxArgumentCount
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  
+  var matrix = load(require('../../type/matrix/function/matrix'))
+
   /**
    * Filter the items in an array or one dimensional matrix.
    *
@@ -40,19 +40,19 @@ function factory (type, config, load, typed) {
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
-      return matrix(_filterCallback(x.toArray(), test));
+      return matrix(_filterCallback(x.toArray(), test))
     },
 
     'Array, RegExp': filterRegExp,
 
     'Matrix, RegExp': function (x, test) {
-      return matrix(filterRegExp(x.toArray(), test));
+      return matrix(filterRegExp(x.toArray(), test))
     }
-  });
+  })
 
-  filter.toTex = undefined; // use default template
+  filter.toTex = undefined // use default template
 
-  return filter;
+  return filter
 }
 
 /**
@@ -64,21 +64,19 @@ function factory (type, config, load, typed) {
  */
 function _filterCallback (x, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback);
+  var args = maxArgumentCount(callback)
 
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments
     if (args === 1) {
-      return callback(value);
+      return callback(value)
+    } else if (args === 2) {
+      return callback(value, [index])
+    } else { // 3 or -1
+      return callback(value, [index], array)
     }
-    else if (args === 2) {
-      return callback(value, [index]);
-    }
-    else { // 3 or -1
-      return callback(value, [index], array);
-    }
-  });
+  })
 }
 
-exports.name = 'filter';
-exports.factory = factory;
+exports.name = 'filter'
+exports.factory = factory

@@ -1,20 +1,20 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
-var toFixed = require('../../utils/number').toFixed;
-var deepMap = require('../../utils/collection/deepMap');
+var isInteger = require('../../utils/number').isInteger
+var toFixed = require('../../utils/number').toFixed
+var deepMap = require('../../utils/collection/deepMap')
 
-var NO_INT = 'Number of decimals in function round must be an integer';
+var NO_INT = 'Number of decimals in function round must be an integer'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var equalScalar = load(require('../relational/equalScalar'));
-  var zeros = load(require('../matrix/zeros'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var equalScalar = load(require('../relational/equalScalar'))
+  var zeros = load(require('../matrix/zeros'))
 
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'));
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-  
+  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+
   /**
    * Round a value towards the nearest integer.
    * For matrices, the function is evaluated element wise.
@@ -51,102 +51,102 @@ function factory (type, config, load, typed) {
     'number': Math.round,
 
     'number, number': function (x, n) {
-      if (!isInteger(n))   {throw new TypeError(NO_INT);}
-      if (n < 0 || n > 15) {throw new Error('Number of decimals in function round must be in te range of 0-15');}
+      if (!isInteger(n)) { throw new TypeError(NO_INT) }
+      if (n < 0 || n > 15) { throw new Error('Number of decimals in function round must be in te range of 0-15') }
 
-      return _round(x, n);
+      return _round(x, n)
     },
 
     'Complex': function (x) {
-      return x.round();
+      return x.round()
     },
 
     'Complex, number': function (x, n) {
-      if (n % 1) {throw new TypeError(NO_INT);}
-      
-      return x.round(n);
+      if (n % 1) { throw new TypeError(NO_INT) }
+
+      return x.round(n)
     },
 
     'Complex, BigNumber': function (x, n) {
-      if (!n.isInteger()) {throw new TypeError(NO_INT);}
+      if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      var _n = n.toNumber();
-      return x.round(_n);
+      var _n = n.toNumber()
+      return x.round(_n)
     },
 
     'number, BigNumber': function (x, n) {
-      if (!n.isInteger()) {throw new TypeError(NO_INT);}
+      if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      return new type.BigNumber(x).toDecimalPlaces(n.toNumber());
+      return new type.BigNumber(x).toDecimalPlaces(n.toNumber())
     },
 
     'BigNumber': function (x) {
-      return x.toDecimalPlaces(0);
+      return x.toDecimalPlaces(0)
     },
 
     'BigNumber, BigNumber': function (x, n) {
-      if (!n.isInteger()) {throw new TypeError(NO_INT);}
+      if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      return x.toDecimalPlaces(n.toNumber());
+      return x.toDecimalPlaces(n.toNumber())
     },
 
     'Fraction': function (x) {
-      return x.round();
+      return x.round()
     },
 
     'Fraction, number': function (x, n) {
-      if (n % 1) {throw new TypeError(NO_INT);}
-      return x.round(n);
+      if (n % 1) { throw new TypeError(NO_INT) }
+      return x.round(n)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since round(0) = 0
-      return deepMap(x, round, true);
+      return deepMap(x, round, true)
     },
 
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm11(x, y, round, false);
+      return algorithm11(x, y, round, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, round, false);
+      return algorithm14(x, y, round, false)
     },
 
     'number | Complex | BigNumber, SparseMatrix': function (x, y) {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
-        return zeros(y.size(), y.storage());
+        return zeros(y.size(), y.storage())
       }
-      return algorithm12(y, x, round, true);
+      return algorithm12(y, x, round, true)
     },
 
     'number | Complex | BigNumber, DenseMatrix': function (x, y) {
       // check scalar is zero
       if (equalScalar(x, 0)) {
         // do not execute algorithm, result will be a zero matrix
-        return zeros(y.size(), y.storage());
+        return zeros(y.size(), y.storage())
       }
-      return algorithm14(y, x, round, true);
+      return algorithm14(y, x, round, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, round, false).valueOf();
+      return algorithm14(matrix(x), y, round, false).valueOf()
     },
 
     'number | Complex | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, round, true).valueOf();
+      return algorithm14(matrix(y), x, round, true).valueOf()
     }
-  });
+  })
 
   round.toTex = {
     1: '\\left\\lfloor${args[0]}\\right\\rceil',
-    2: undefined  // use default template
-  };
+    2: undefined // use default template
+  }
 
-  return round;
+  return round
 }
 
 /**
@@ -158,8 +158,8 @@ function factory (type, config, load, typed) {
  * @private
  */
 function _round (value, decimals) {
-  return parseFloat(toFixed(value, decimals));
+  return parseFloat(toFixed(value, decimals))
 }
 
-exports.name = 'round';
-exports.factory = factory;
+exports.name = 'round'
+exports.factory = factory

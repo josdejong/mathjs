@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var objectUtils = require('../object');
+var objectUtils = require('../object')
 
 /**
  * Convert a BigNumber to a formatted string representation.
@@ -36,16 +36,16 @@ var objectUtils = require('../object');
  *                                          number of significant digits returned.
  *                                          In case of notation 'fixed',
  *                                          `precision` defines the number of
- *                                          significant digits after the decimal 
- *                                          point. 
+ *                                          significant digits after the decimal
+ *                                          point.
  *                                          `precision` is undefined by default.
  *                     {number} lowerExp    Exponent determining the lower boundary
  *                                          for formatting a value with an exponent
- *                                          when `notation='auto`. 
+ *                                          when `notation='auto`.
  *                                          Default value is `-3`.
  *                     {number} upperExp    Exponent determining the upper boundary
  *                                          for formatting a value with an exponent
- *                                          when `notation='auto`. 
+ *                                          when `notation='auto`.
  *                                          Default value is `5`.
  *    {Function} fn    A custom formatting function. Can be used to override the
  *                     built-in notations. Function `fn` is called with `value` as
@@ -71,95 +71,93 @@ var objectUtils = require('../object');
 exports.format = function (value, options) {
   if (typeof options === 'function') {
     // handle format(value, fn)
-    return options(value);
+    return options(value)
   }
 
   // handle special cases
   if (!value.isFinite()) {
-    return value.isNaN() ? 'NaN' : (value.gt(0) ? 'Infinity' : '-Infinity');
+    return value.isNaN() ? 'NaN' : (value.gt(0) ? 'Infinity' : '-Infinity')
   }
 
   // default values for options
-  var notation = 'auto';
-  var precision = undefined;
+  var notation = 'auto'
+  var precision = undefined
 
   if (options !== undefined) {
     // determine notation from options
     if (options.notation) {
-      notation = options.notation;
+      notation = options.notation
     }
 
     // determine precision from options
     if (typeof options === 'number') {
-      precision = options;
-    }
-    else if (options.precision) {
-      precision = options.precision;
+      precision = options
+    } else if (options.precision) {
+      precision = options.precision
     }
   }
 
   // handle the various notations
   switch (notation) {
     case 'fixed':
-      return exports.toFixed(value, precision);
+      return exports.toFixed(value, precision)
 
     case 'exponential':
-      return exports.toExponential(value, precision);
+      return exports.toExponential(value, precision)
 
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        var fixedOptions = objectUtils.map(options, function (x) { return x; });
-        fixedOptions.exponential = undefined;
+        var fixedOptions = objectUtils.map(options, function (x) { return x })
+        fixedOptions.exponential = undefined
         if (options.exponential.lower !== undefined) {
-          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10);
+          fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
         }
         if (options.exponential.upper !== undefined) {
-          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10);
+          fixedOptions.upperExp = Math.round(Math.log(options.exponential.upper) / Math.LN10)
         }
 
-        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' + 
+        console.warn('Deprecation warning: Formatting options exponential.lower and exponential.upper ' +
             '(minimum and maximum value) ' +
-            'are replaced with exponential.lowerExp and exponential.upperExp ' + 
-            '(minimum and maximum exponent) since version 4.0.0. ' + 
-            'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions));
+            'are replaced with exponential.lowerExp and exponential.upperExp ' +
+            '(minimum and maximum exponent) since version 4.0.0. ' +
+            'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
 
-        return exports.format(value, fixedOptions);
+        return exports.format(value, fixedOptions)
       }
 
       // determine lower and upper bound for exponential notation.
       // TODO: implement support for upper and lower to be BigNumbers themselves
-      var lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3;
-      var upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5;
+      var lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
+      var upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
 
       // handle special case zero
-      if (value.isZero()) return '0';
+      if (value.isZero()) return '0'
 
       // determine whether or not to output exponential notation
-      var str;
-      var exp = value.logarithm();
+      var str
+      var exp = value.logarithm()
       if (exp.gte(lowerExp) && exp.lt(upperExp)) {
         // normal number notation
-        str = value.toSignificantDigits(precision).toFixed();
-      }
-      else {
+        str = value.toSignificantDigits(precision).toFixed()
+      } else {
         // exponential notation
-        str = exports.toExponential(value, precision);
+        str = exports.toExponential(value, precision)
       }
 
       // remove trailing zeros after the decimal point
       return str.replace(/((\.\d*?)(0+))($|e)/, function () {
-        var digits = arguments[2];
-        var e = arguments[4];
-        return (digits !== '.') ? digits + e : e;
-      });
+        var digits = arguments[2]
+        var e = arguments[4]
+        return (digits !== '.') ? digits + e : e
+      })
 
     default:
       throw new Error('Unknown notation "' + notation + '". ' +
-          'Choose "auto", "exponential", or "fixed".');
+          'Choose "auto", "exponential", or "fixed".')
   }
-};
+}
 
 /**
  * Format a number in exponential notation. Like '1.23e+5', '2.3e+0', '3.500e-3'
@@ -171,12 +169,11 @@ exports.format = function (value, options) {
  */
 exports.toExponential = function (value, precision) {
   if (precision !== undefined) {
-    return value.toExponential(precision - 1); // Note the offset of one
+    return value.toExponential(precision - 1) // Note the offset of one
+  } else {
+    return value.toExponential()
   }
-  else {
-    return value.toExponential();
-  }
-};
+}
 
 /**
  * Format a number with fixed notation.
@@ -185,5 +182,5 @@ exports.toExponential = function (value, precision) {
  *                                       decimal point. Undefined by default.
  */
 exports.toFixed = function (value, precision) {
-  return value.toFixed(precision);
-};
+  return value.toFixed(precision)
+}

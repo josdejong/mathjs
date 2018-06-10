@@ -9,4 +9,4 @@ module.exports = {
     'null'
   ],
   'seealso': ['true', 'false']
-};
+}

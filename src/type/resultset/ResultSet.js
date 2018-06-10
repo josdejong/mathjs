@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
   /**
@@ -7,19 +7,19 @@ function factory (type, config, load, typed) {
    * @param {Array} entries
    * @constructor ResultSet
    */
-  function ResultSet(entries) {
+  function ResultSet (entries) {
     if (!(this instanceof ResultSet)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    this.entries = entries || [];
+    this.entries = entries || []
   }
 
   /**
    * Attach type information
    */
-  ResultSet.prototype.type = 'ResultSet';
-  ResultSet.prototype.isResultSet = true;
+  ResultSet.prototype.type = 'ResultSet'
+  ResultSet.prototype.isResultSet = true
 
   /**
    * Returns the array with results hold by this ResultSet
@@ -27,8 +27,8 @@ function factory (type, config, load, typed) {
    * @returns {Array} entries
    */
   ResultSet.prototype.valueOf = function () {
-    return this.entries;
-  };
+    return this.entries
+  }
 
   /**
    * Returns the stringified results of the ResultSet
@@ -36,8 +36,8 @@ function factory (type, config, load, typed) {
    * @returns {string} string
    */
   ResultSet.prototype.toString = function () {
-    return '[' + this.entries.join(', ') + ']';
-  };
+    return '[' + this.entries.join(', ') + ']'
+  }
 
   /**
    * Get a JSON representation of the ResultSet
@@ -49,8 +49,8 @@ function factory (type, config, load, typed) {
     return {
       mathjs: 'ResultSet',
       entries: this.entries
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate a ResultSet from a JSON object
@@ -60,12 +60,12 @@ function factory (type, config, load, typed) {
    * @return {ResultSet}
    */
   ResultSet.fromJSON = function (json) {
-    return new ResultSet(json.entries);
-  };
+    return new ResultSet(json.entries)
+  }
 
-  return ResultSet;
+  return ResultSet
 }
 
-exports.name = 'ResultSet';
-exports.path = 'type';
-exports.factory = factory;
+exports.name = 'ResultSet'
+exports.path = 'type'
+exports.factory = factory

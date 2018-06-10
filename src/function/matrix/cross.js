@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var array = require('../../utils/array');
+var array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix   = load(require('../../type/matrix/function/matrix'));
-  var subtract = load(require('../arithmetic/subtract'));
-  var multiply = load(require('../arithmetic/multiply'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var subtract = load(require('../arithmetic/subtract'))
+  var multiply = load(require('../arithmetic/multiply'))
 
   /**
    * Calculate the cross product for two vectors in three dimensional space.
@@ -42,25 +42,25 @@ function factory (type, config, load, typed) {
    */
   var cross = typed('cross', {
     'Matrix, Matrix': function (x, y) {
-      return matrix(_cross(x.toArray(), y.toArray()));
+      return matrix(_cross(x.toArray(), y.toArray()))
     },
 
     'Matrix, Array': function (x, y) {
-      return matrix(_cross(x.toArray(), y));
+      return matrix(_cross(x.toArray(), y))
     },
 
     'Array, Matrix': function (x, y) {
-      return matrix(_cross(x, y.toArray()));
+      return matrix(_cross(x, y.toArray()))
     },
 
     'Array, Array': _cross
-  });
+  })
 
   cross.toTex = {
     2: '\\left(${args[0]}\\right)\\times\\left(${args[1]}\\right)'
-  };
+  }
 
-  return cross;
+  return cross
 
   /**
    * Calculate the cross product for two arrays
@@ -69,33 +69,33 @@ function factory (type, config, load, typed) {
    * @returns {Array} Returns the cross product of x and y
    * @private
    */
-  function _cross(x, y) {
-    var highestDimension = Math.max(array.size(x).length, array.size(y).length);
+  function _cross (x, y) {
+    var highestDimension = Math.max(array.size(x).length, array.size(y).length)
 
-    x = array.squeeze(x);
-    y = array.squeeze(y);
+    x = array.squeeze(x)
+    y = array.squeeze(y)
 
-    var xSize = array.size(x);
-    var ySize = array.size(y);
+    var xSize = array.size(x)
+    var ySize = array.size(y)
 
     if (xSize.length != 1 || ySize.length != 1 || xSize[0] != 3 || ySize[0] != 3) {
       throw new RangeError('Vectors with length 3 expected ' +
-      '(Size A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])');
+      '(Size A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])')
     }
 
     var product = [
       subtract(multiply(x[1], y[2]), multiply(x[2], y[1])),
       subtract(multiply(x[2], y[0]), multiply(x[0], y[2])),
       subtract(multiply(x[0], y[1]), multiply(x[1], y[0]))
-    ];
+    ]
 
     if (highestDimension > 1) {
-      return [product];
+      return [product]
     } else {
-      return product;
+      return product
     }
   }
 }
 
-exports.name = 'cross';
-exports.factory = factory;
+exports.name = 'cross'
+exports.factory = factory

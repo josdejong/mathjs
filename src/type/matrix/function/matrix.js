@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
   /**
@@ -35,37 +35,37 @@ function factory (type, config, load, typed) {
    */
   var matrix = typed('matrix', {
     '': function () {
-      return _create([]);
+      return _create([])
     },
 
     'string': function (format) {
-      return _create([], format);
+      return _create([], format)
     },
-    
+
     'string, string': function (format, datatype) {
-      return _create([], format, datatype);
+      return _create([], format, datatype)
     },
 
     'Array': function (data) {
-      return _create(data);
+      return _create(data)
     },
-      
+
     'Matrix': function (data) {
-      return _create(data, data.storage());
+      return _create(data, data.storage())
     },
-    
+
     'Array | Matrix, string': _create,
-    
+
     'Array | Matrix, string, string': _create
-  });
+  })
 
   matrix.toTex = {
     0: '\\begin{bmatrix}\\end{bmatrix}',
     1: '\\left(${args[0]}\\right)',
     2: '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return matrix;
+  return matrix
 
   /**
    * Create a new Matrix with given storage format
@@ -75,14 +75,14 @@ function factory (type, config, load, typed) {
    * @returns {Matrix} Returns a new Matrix
    * @private
    */
-  function _create(data, format, datatype) {
+  function _create (data, format, datatype) {
     // get storage format constructor
-    var M = type.Matrix.storage(format || 'default');
+    var M = type.Matrix.storage(format || 'default')
 
     // create instance
-    return new M(data, datatype);
+    return new M(data, datatype)
   }
 }
 
-exports.name = 'matrix';
-exports.factory = factory;
+exports.name = 'matrix'
+exports.factory = factory

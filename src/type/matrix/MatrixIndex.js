@@ -1,10 +1,9 @@
-'use strict';
+'use strict'
 
-var clone = require('../../utils/object').clone;
-var isInteger = require('../../utils/number').isInteger;
+var clone = require('../../utils/object').clone
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type) {
-  
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.
@@ -25,42 +24,39 @@ function factory (type) {
    * @Constructor Index
    * @param {...*} ranges
    */
-  function Index(ranges) {
+  function Index (ranges) {
     if (!(this instanceof Index)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    this._dimensions = [];
-    this._isScalar = true;
+    this._dimensions = []
+    this._isScalar = true
 
     for (var i = 0, ii = arguments.length; i < ii; i++) {
-      var arg = arguments[i];
+      var arg = arguments[i]
 
       if (type.isRange(arg)) {
-        this._dimensions.push(arg);
-        this._isScalar = false;
-      }
-      else if (Array.isArray(arg) || type.isMatrix(arg)) {
+        this._dimensions.push(arg)
+        this._isScalar = false
+      } else if (Array.isArray(arg) || type.isMatrix(arg)) {
         // create matrix
-        var m = _createImmutableMatrix(arg.valueOf());
-        this._dimensions.push(m);
+        var m = _createImmutableMatrix(arg.valueOf())
+        this._dimensions.push(m)
         // size
-        var size = m.size();
+        var size = m.size()
         // scalar
         if (size.length !== 1 || size[0] !== 1) {
-          this._isScalar = false;
+          this._isScalar = false
         }
-      }
-      else if (typeof arg === 'number') {
-        this._dimensions.push(_createImmutableMatrix([arg]));
-      }
-      else if (typeof arg === 'string') {
+      } else if (typeof arg === 'number') {
+        this._dimensions.push(_createImmutableMatrix([arg]))
+      } else if (typeof arg === 'string') {
         // object property (arguments.count should be 1)
-        this._dimensions.push(arg);
+        this._dimensions.push(arg)
       }
       // TODO: implement support for wildcard '*'
       else {
-        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range');
+        throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
       }
     }
   }
@@ -68,18 +64,18 @@ function factory (type) {
   /**
    * Attach type information
    */
-  Index.prototype.type = 'Index';
-  Index.prototype.isIndex = true;
+  Index.prototype.type = 'Index'
+  Index.prototype.isIndex = true
 
-  function _createImmutableMatrix(arg) {
+  function _createImmutableMatrix (arg) {
     // loop array elements
     for (var i = 0, l = arg.length; i < l; i++) {
       if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
-        throw new TypeError('Index parameters must be positive integer numbers');
+        throw new TypeError('Index parameters must be positive integer numbers')
       }
     }
     // create matrix
-    return new type.ImmutableDenseMatrix(arg);
+    return new type.ImmutableDenseMatrix(arg)
   }
 
   /**
@@ -88,11 +84,11 @@ function factory (type) {
    * @return {Index} clone
    */
   Index.prototype.clone = function () {
-    var index = new Index();
-    index._dimensions = clone(this._dimensions);
-    index._isScalar = this._isScalar;
-    return index;
-  };
+    var index = new Index()
+    index._dimensions = clone(this._dimensions)
+    index._isScalar = this._isScalar
+    return index
+  }
 
   /**
    * Create an index from an array with ranges/numbers
@@ -102,10 +98,10 @@ function factory (type) {
    * @private
    */
   Index.create = function (ranges) {
-    var index = new Index();
-    Index.apply(index, ranges);
-    return index;
-  };
+    var index = new Index()
+    Index.apply(index, ranges)
+    return index
+  }
 
   /**
    * Retrieve the size of the index, the number of elements for each dimension.
@@ -113,15 +109,15 @@ function factory (type) {
    * @returns {number[]} size
    */
   Index.prototype.size = function () {
-    var size = [];
+    var size = []
 
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var d = this._dimensions[i];
-      size[i] = (typeof d === 'string') ? 1 : d.size()[0];
+      var d = this._dimensions[i]
+      size[i] = (typeof d === 'string') ? 1 : d.size()[0]
     }
 
-    return size;
-  };
+    return size
+  }
 
   /**
    * Get the maximum value for each of the indexes ranges.
@@ -129,15 +125,15 @@ function factory (type) {
    * @returns {number[]} max
    */
   Index.prototype.max = function () {
-    var values = [];
+    var values = []
 
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var range = this._dimensions[i];
-      values[i] = (typeof range === 'string') ? range : range.max();
+      var range = this._dimensions[i]
+      values[i] = (typeof range === 'string') ? range : range.max()
     }
 
-    return values;
-  };
+    return values
+  }
 
   /**
    * Get the minimum value for each of the indexes ranges.
@@ -145,15 +141,15 @@ function factory (type) {
    * @returns {number[]} min
    */
   Index.prototype.min = function () {
-    var values = [];
+    var values = []
 
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var range = this._dimensions[i];
-      values[i] = (typeof range === 'string') ? range : range.min();
+      var range = this._dimensions[i]
+      values[i] = (typeof range === 'string') ? range : range.min()
     }
 
-    return values;
-  };
+    return values
+  }
 
   /**
    * Loop over each of the ranges of the index
@@ -164,9 +160,9 @@ function factory (type) {
    */
   Index.prototype.forEach = function (callback) {
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      callback(this._dimensions[i], i, this);
+      callback(this._dimensions[i], i, this)
     }
-  };
+  }
 
   /**
    * Retrieve the dimension for the given index
@@ -175,16 +171,16 @@ function factory (type) {
    * @returns {Range | null} range
    */
   Index.prototype.dimension = function (dim) {
-    return this._dimensions[dim] || null;
-  };
+    return this._dimensions[dim] || null
+  }
 
   /**
    * Test whether this index contains an object property
    * @returns {boolean} Returns true if the index is an object property
    */
   Index.prototype.isObjectProperty = function () {
-    return this._dimensions.length === 1 && typeof this._dimensions[0] === 'string';
-  };
+    return this._dimensions.length === 1 && typeof this._dimensions[0] === 'string'
+  }
 
   /**
    * Returns the object property name when the Index holds a single object property,
@@ -192,8 +188,8 @@ function factory (type) {
    * @returns {string | null}
    */
   Index.prototype.getObjectProperty = function () {
-    return this.isObjectProperty() ? this._dimensions[0] : null;
-  };
+    return this.isObjectProperty() ? this._dimensions[0] : null
+  }
 
   /**
    * Test whether this index contains only a single value.
@@ -204,8 +200,8 @@ function factory (type) {
    * @return {boolean} isScalar
    */
   Index.prototype.isScalar = function () {
-    return this._isScalar;
-  };
+    return this._isScalar
+  }
 
   /**
    * Expand the Index into an array.
@@ -214,13 +210,13 @@ function factory (type) {
    * @returns {Array} array
    */
   Index.prototype.toArray = function () {
-    var array = [];
+    var array = []
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var dimension = this._dimensions[i];
-      array.push((typeof dimension === 'string') ? dimension : dimension.toArray());
+      var dimension = this._dimensions[i]
+      array.push((typeof dimension === 'string') ? dimension : dimension.toArray())
     }
-    return array;
-  };
+    return array
+  }
 
   /**
    * Get the primitive value of the Index, a two dimensional array.
@@ -228,7 +224,7 @@ function factory (type) {
    * @memberof Index
    * @returns {Array} array
    */
-  Index.prototype.valueOf = Index.prototype.toArray;
+  Index.prototype.valueOf = Index.prototype.toArray
 
   /**
    * Get the string representation of the index, for example '[2:6]' or '[0:2:10, 4:7, [1,2,3]]'
@@ -236,20 +232,19 @@ function factory (type) {
    * @returns {String} str
    */
   Index.prototype.toString = function () {
-    var strings = [];
+    var strings = []
 
     for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var dimension = this._dimensions[i];
+      var dimension = this._dimensions[i]
       if (typeof dimension === 'string') {
-        strings.push(JSON.stringify(dimension));
-      }
-      else {
-        strings.push(dimension.toString());
+        strings.push(JSON.stringify(dimension))
+      } else {
+        strings.push(dimension.toString())
       }
     }
 
-    return '[' + strings.join(', ') + ']';
-  };
+    return '[' + strings.join(', ') + ']'
+  }
 
   /**
    * Get a JSON representation of the Index
@@ -261,8 +256,8 @@ function factory (type) {
     return {
       mathjs: 'Index',
       dimensions: this._dimensions
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate an Index from a JSON object
@@ -272,12 +267,12 @@ function factory (type) {
    * @return {Index}
    */
   Index.fromJSON = function (json) {
-    return Index.create(json.dimensions);
-  };
+    return Index.create(json.dimensions)
+  }
 
-  return Index;
+  return Index
 }
 
-exports.name = 'Index';
-exports.path = 'type';
-exports.factory = factory;
+exports.name = 'Index'
+exports.path = 'type'
+exports.factory = factory

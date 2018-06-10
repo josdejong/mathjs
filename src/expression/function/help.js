@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var getSafeProperty = require('../../utils/customs').getSafeProperty;
+var getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed, math) {
-  var docs = load(require('../embeddedDocs'));
+  var docs = load(require('../embeddedDocs'))
 
   /**
    * Retrieve help on a function or data type.
@@ -25,15 +25,15 @@ function factory (type, config, load, typed, math) {
    */
   return typed('help', {
     'any': function (search) {
-      var prop;
-      var name = search;
+      var prop
+      var name = search
 
       if (typeof search !== 'string') {
         for (prop in math) {
           // search in functions and constants
           if (math.hasOwnProperty(prop) && (search === math[prop])) {
-            name = prop;
-            break;
+            name = prop
+            break
           }
         }
 
@@ -52,15 +52,15 @@ function factory (type, config, load, typed, math) {
          */
       }
 
-      var doc = getSafeProperty(docs, name);
+      var doc = getSafeProperty(docs, name)
       if (!doc) {
-        throw new Error('No documentation found on "' + name + '"');
+        throw new Error('No documentation found on "' + name + '"')
       }
-      return new type.Help(doc);
+      return new type.Help(doc)
     }
-  });
+  })
 }
 
-exports.math = true; // request access to the math namespace as 5th argument of the factory function
-exports.name = 'help';
-exports.factory = factory;
+exports.math = true // request access to the math namespace as 5th argument of the factory function
+exports.name = 'help'
+exports.factory = factory

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var deepMap = require('./../utils/collection/deepMap');
-var number = require('../utils/number');
+var deepMap = require('./../utils/collection/deepMap')
+var number = require('../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,39 +31,39 @@ function factory (type, config, load, typed) {
    */
   var string = typed('string', {
     '': function () {
-      return '';
+      return ''
     },
 
     'number': number.format,
 
     'null': function (x) {
-      return 'null';
+      return 'null'
     },
 
     'boolean': function (x) {
-      return x + '';
+      return x + ''
     },
 
     'string': function (x) {
-      return x;
+      return x
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, string);
+      return deepMap(x, string)
     },
 
     'any': function (x) {
-      return String(x);
+      return String(x)
     }
-  });
+  })
 
   string.toTex = {
     0: '\\mathtt{""}',
     1: '\\mathrm{string}\\left(${args[0]}\\right)'
-  };
+  }
 
-  return string;
+  return string
 }
 
-exports.name = 'string';
-exports.factory = factory;
+exports.name = 'string'
+exports.factory = factory

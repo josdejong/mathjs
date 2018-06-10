@@ -9,4 +9,4 @@ module.exports = {
     'forEach([1, 2, 3], function(val) { console.log(val) })'
   ],
   'seealso': ['map', 'sort', 'filter']
-};
+}

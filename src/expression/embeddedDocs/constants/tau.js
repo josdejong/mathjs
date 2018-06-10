@@ -10,4 +10,4 @@ module.exports = {
     '2 * pi'
   ],
   'seealso': ['pi']
-};
+}

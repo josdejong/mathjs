@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,30 +31,29 @@ function factory (type, config, load, typed) {
     'number': _sqrtNumber,
 
     'Complex': function (x) {
-        return x.sqrt();
+      return x.sqrt()
     },
 
     'BigNumber': function (x) {
       if (!x.isNegative() || config.predictable) {
-        return x.sqrt();
-      }
-      else {
+        return x.sqrt()
+      } else {
         // negative value -> downgrade to number to do complex value computation
-        return _sqrtNumber(x.toNumber());
+        return _sqrtNumber(x.toNumber())
       }
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since sqrt(0) = 0
-      return deepMap(x, sqrt, true);
+      return deepMap(x, sqrt, true)
     },
 
     'Unit': function (x) {
       // Someday will work for complex units when they are implemented
-      return x.pow(0.5);
+      return x.pow(0.5)
     }
 
-  });
+  })
 
   /**
    * Calculate sqrt for a number
@@ -62,19 +61,18 @@ function factory (type, config, load, typed) {
    * @returns {number | Complex} Returns the square root of x
    * @private
    */
-  function _sqrtNumber(x) {
+  function _sqrtNumber (x) {
     if (x >= 0 || config.predictable) {
-      return Math.sqrt(x);
-    }
-    else {
-      return new type.Complex(x, 0).sqrt();
+      return Math.sqrt(x)
+    } else {
+      return new type.Complex(x, 0).sqrt()
     }
   }
 
-  sqrt.toTex = {1: '\\sqrt{${args[0]}}'};
+  sqrt.toTex = {1: '\\sqrt{${args[0]}}'}
 
-  return sqrt;
+  return sqrt
 }
 
-exports.name = 'sqrt';
-exports.factory = factory;
+exports.name = 'sqrt'
+exports.factory = factory

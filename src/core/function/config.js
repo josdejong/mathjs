@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var object = require('../../utils/object');
+var object = require('../../utils/object')
 
 function factory (type, config, load, typed, math) {
-  var MATRIX = ['Matrix', 'Array'];                   // valid values for option matrix
-  var NUMBER = ['number', 'BigNumber', 'Fraction'];   // valid values for option number
+  var MATRIX = ['Matrix', 'Array'] // valid values for option matrix
+  var NUMBER = ['number', 'BigNumber', 'Fraction'] // valid values for option number
 
   /**
    * Set configuration options for math.js, and get current options.
@@ -40,36 +40,35 @@ function factory (type, config, load, typed, math) {
    *                              Set to null to randomly seed.
    * @return {Object} Returns the current configuration
    */
-  function _config(options) {
+  function _config (options) {
     if (options) {
-      var prev = object.map(config, object.clone);
+      var prev = object.map(config, object.clone)
 
       // validate some of the options
-      validateOption(options, 'matrix', MATRIX);
-      validateOption(options, 'number', NUMBER);
+      validateOption(options, 'matrix', MATRIX)
+      validateOption(options, 'number', NUMBER)
 
       // merge options
-      object.deepExtend(config, options);
+      object.deepExtend(config, options)
 
-      var curr = object.map(config, object.clone);
+      var curr = object.map(config, object.clone)
 
-      var changes = object.map(options, object.clone);
+      var changes = object.map(options, object.clone)
 
       // emit 'config' event
-      math.emit('config', curr, prev, changes);
+      math.emit('config', curr, prev, changes)
 
-      return curr;
-    }
-    else {
-      return object.map(config, object.clone);
+      return curr
+    } else {
+      return object.map(config, object.clone)
     }
   }
 
   // attach the valid options to the function so they can be extended
-  _config.MATRIX = MATRIX;
-  _config.NUMBER = NUMBER;
+  _config.MATRIX = MATRIX
+  _config.NUMBER = NUMBER
 
-  return _config;
+  return _config
 }
 
 /**
@@ -79,7 +78,7 @@ function factory (type, config, load, typed, math) {
  * @return {boolean}
  */
 function contains (array, item) {
-  return array.indexOf(item) !== -1;
+  return array.indexOf(item) !== -1
 }
 
 /**
@@ -90,10 +89,10 @@ function contains (array, item) {
  */
 function findIndex (array, item) {
   return array
-      .map(function (i) {
-        return i.toLowerCase();
-      })
-      .indexOf(item.toLowerCase());
+    .map(function (i) {
+      return i.toLowerCase()
+    })
+    .indexOf(item.toLowerCase())
 }
 
 /**
@@ -102,23 +101,22 @@ function findIndex (array, item) {
  * @param {string} name            Name of the option to validate
  * @param {Array.<string>} values  Array with valid values for this option
  */
-function validateOption(options, name, values) {
+function validateOption (options, name, values) {
   if (options[name] !== undefined && !contains(values, options[name])) {
-    var index = findIndex(values, options[name]);
+    var index = findIndex(values, options[name])
     if (index !== -1) {
       // right value, wrong casing
       // TODO: lower case values are deprecated since v3, remove this warning some day.
-      console.warn('Warning: Wrong casing for configuration option "' + name + '", should be "' + values[index] + '" instead of "' + options[name] + '".');
+      console.warn('Warning: Wrong casing for configuration option "' + name + '", should be "' + values[index] + '" instead of "' + options[name] + '".')
 
-      options[name] = values[index]; // change the option to the right casing
-    }
-    else {
+      options[name] = values[index] // change the option to the right casing
+    } else {
       // unknown value
-      console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". Available options: ' + values.map(JSON.stringify).join(', ') + '.');
+      console.warn('Warning: Unknown value "' + options[name] + '" for configuration option "' + name + '". Available options: ' + values.map(JSON.stringify).join(', ') + '.')
     }
   }
 }
 
-exports.name = 'config';
-exports.math = true; // request the math namespace as fifth argument
-exports.factory = factory;
+exports.name = 'config'
+exports.math = true // request the math namespace as fifth argument
+exports.factory = factory

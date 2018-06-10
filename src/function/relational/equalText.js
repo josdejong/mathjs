@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var compareText = load(require('./compareText'));
-  var isZero = load(require('../utils/isZero'));
+  var compareText = load(require('./compareText'))
+  var isZero = load(require('../utils/isZero'))
 
   /**
    * Check equality of two strings. Comparison is case sensitive.
@@ -33,15 +33,15 @@ function factory (type, config, load, typed) {
   var equalText = typed('equalText', {
 
     'any, any': function (x, y) {
-      return isZero(compareText(x, y));
+      return isZero(compareText(x, y))
     }
 
-  });
+  })
 
-  equalText.toTex = undefined; // use default template
+  equalText.toTex = undefined // use default template
 
-  return equalText;
+  return equalText
 }
 
-exports.name = 'equalText';
-exports.factory = factory;
+exports.name = 'equalText'
+exports.factory = factory

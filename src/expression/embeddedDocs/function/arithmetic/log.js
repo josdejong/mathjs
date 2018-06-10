@@ -22,4 +22,4 @@ module.exports = {
     'log2',
     'log10'
   ]
-};
+}

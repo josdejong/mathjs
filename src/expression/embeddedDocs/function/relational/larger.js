@@ -19,4 +19,4 @@ module.exports = {
   'seealso': [
     'equal', 'unequal', 'smaller', 'smallerEq', 'largerEq', 'compare'
   ]
-};
+}

@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var number = require('../../utils/number');
+var number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -32,40 +32,31 @@ function factory (type, config, load, typed) {
    * @param {number} end    excluded upper bound
    * @param {number} [step] step size, default value is 1
    */
-  function Range(start, end, step) {
+  function Range (start, end, step) {
     if (!(this instanceof Range)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     if (start != null) {
-      if (type.isBigNumber(start))
-        start = start.toNumber();
-      else if (typeof start !== 'number')
-        throw new TypeError('Parameter start must be a number');
+      if (type.isBigNumber(start)) { start = start.toNumber() } else if (typeof start !== 'number') { throw new TypeError('Parameter start must be a number') }
     }
     if (end != null) {
-      if (type.isBigNumber(end))
-        end = end.toNumber();
-      else if (typeof end !== 'number')
-        throw new TypeError('Parameter end must be a number');
+      if (type.isBigNumber(end)) { end = end.toNumber() } else if (typeof end !== 'number') { throw new TypeError('Parameter end must be a number') }
     }
     if (step != null) {
-      if (type.isBigNumber(step))
-        step = step.toNumber();
-      else if (typeof step !== 'number')
-        throw new TypeError('Parameter step must be a number');
+      if (type.isBigNumber(step)) { step = step.toNumber() } else if (typeof step !== 'number') { throw new TypeError('Parameter step must be a number') }
     }
 
-    this.start = (start != null) ? parseFloat(start) : 0;
-    this.end   = (end != null)   ? parseFloat(end)   : 0;
-    this.step  = (step != null)  ? parseFloat(step)  : 1;
+    this.start = (start != null) ? parseFloat(start) : 0
+    this.end = (end != null) ? parseFloat(end) : 0
+    this.step = (step != null) ? parseFloat(step) : 1
   }
 
   /**
    * Attach type information
    */
-  Range.prototype.type = 'Range';
-  Range.prototype.isRange = true;
+  Range.prototype.type = 'Range'
+  Range.prototype.isRange = true
 
   /**
    * Parse a string into a range,
@@ -78,38 +69,38 @@ function factory (type, config, load, typed) {
    */
   Range.parse = function (str) {
     if (typeof str !== 'string') {
-      return null;
+      return null
     }
 
-    var args = str.split(':');
+    var args = str.split(':')
     var nums = args.map(function (arg) {
-      return parseFloat(arg);
-    });
+      return parseFloat(arg)
+    })
 
     var invalid = nums.some(function (num) {
-      return isNaN(num);
-    });
+      return isNaN(num)
+    })
     if (invalid) {
-      return null;
+      return null
     }
 
     switch (nums.length) {
       case 2:
-        return new Range(nums[0], nums[1]);
+        return new Range(nums[0], nums[1])
       case 3:
-        return new Range(nums[0], nums[2], nums[1]);
+        return new Range(nums[0], nums[2], nums[1])
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   /**
    * Create a clone of the range
    * @return {Range} clone
    */
   Range.prototype.clone = function () {
-    return new Range(this.start, this.end, this.step);
-  };
+    return new Range(this.start, this.end, this.step)
+  }
 
   /**
    * Retrieve the size of the range.
@@ -119,23 +110,22 @@ function factory (type, config, load, typed) {
    */
   Range.prototype.size = function () {
     var len = 0,
-        start = this.start,
-        step = this.step,
-        end = this.end,
-        diff = end - start;
+      start = this.start,
+      step = this.step,
+      end = this.end,
+      diff = end - start
 
     if (number.sign(step) == number.sign(diff)) {
-      len = Math.ceil((diff) / step);
-    }
-    else if (diff == 0) {
-      len = 0;
+      len = Math.ceil((diff) / step)
+    } else if (diff == 0) {
+      len = 0
     }
 
     if (isNaN(len)) {
-      len = 0;
+      len = 0
     }
-    return [len];
-  };
+    return [len]
+  }
 
   /**
    * Calculate the minimum value in the range
@@ -143,22 +133,20 @@ function factory (type, config, load, typed) {
    * @return {number | undefined} min
    */
   Range.prototype.min = function () {
-    var size = this.size()[0];
+    var size = this.size()[0]
 
     if (size > 0) {
       if (this.step > 0) {
         // positive step
-        return this.start;
-      }
-      else {
+        return this.start
+      } else {
         // negative step
-        return this.start + (size - 1) * this.step;
+        return this.start + (size - 1) * this.step
       }
+    } else {
+      return undefined
     }
-    else {
-      return undefined;
-    }
-  };
+  }
 
   /**
    * Calculate the maximum value in the range
@@ -166,23 +154,20 @@ function factory (type, config, load, typed) {
    * @return {number | undefined} max
    */
   Range.prototype.max = function () {
-    var size = this.size()[0];
+    var size = this.size()[0]
 
     if (size > 0) {
       if (this.step > 0) {
         // positive step
-        return this.start + (size - 1) * this.step;
-      }
-      else {
+        return this.start + (size - 1) * this.step
+      } else {
         // negative step
-        return this.start;
+        return this.start
       }
+    } else {
+      return undefined
     }
-    else {
-      return undefined;
-    }
-  };
-
+  }
 
   /**
    * Execute a callback function for each value in the range.
@@ -192,26 +177,25 @@ function factory (type, config, load, typed) {
    *                              of the element, and the Range being traversed.
    */
   Range.prototype.forEach = function (callback) {
-    var x = this.start;
-    var step = this.step;
-    var end = this.end;
-    var i = 0;
+    var x = this.start
+    var step = this.step
+    var end = this.end
+    var i = 0
 
     if (step > 0) {
       while (x < end) {
-        callback(x, [i], this);
-        x += step;
-        i++;
+        callback(x, [i], this)
+        x += step
+        i++
       }
-    }
-    else if (step < 0) {
+    } else if (step < 0) {
       while (x > end) {
-        callback(x, [i], this);
-        x += step;
-        i++;
+        callback(x, [i], this)
+        x += step
+        i++
       }
     }
-  };
+  }
 
   /**
    * Execute a callback function for each value in the Range, and return the
@@ -223,12 +207,12 @@ function factory (type, config, load, typed) {
    * @returns {Array} array
    */
   Range.prototype.map = function (callback) {
-    var array = [];
+    var array = []
     this.forEach(function (value, index, obj) {
-      array[index[0]] = callback(value, index, obj);
-    });
-    return array;
-  };
+      array[index[0]] = callback(value, index, obj)
+    })
+    return array
+  }
 
   /**
    * Create an Array with a copy of the Ranges data
@@ -236,12 +220,12 @@ function factory (type, config, load, typed) {
    * @returns {Array} array
    */
   Range.prototype.toArray = function () {
-    var array = [];
+    var array = []
     this.forEach(function (value, index) {
-      array[index[0]] = value;
-    });
-    return array;
-  };
+      array[index[0]] = value
+    })
+    return array
+  }
 
   /**
    * Get the primitive value of the Range, a one dimensional array
@@ -250,8 +234,8 @@ function factory (type, config, load, typed) {
    */
   Range.prototype.valueOf = function () {
     // TODO: implement a caching mechanism for range.valueOf()
-    return this.toArray();
-  };
+    return this.toArray()
+  }
 
   /**
    * Get a string representation of the range, with optional formatting options.
@@ -264,14 +248,14 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   Range.prototype.format = function (options) {
-    var str = number.format(this.start, options);
+    var str = number.format(this.start, options)
 
     if (this.step != 1) {
-      str += ':' + number.format(this.step, options);
+      str += ':' + number.format(this.step, options)
     }
-    str += ':' + number.format(this.end, options);
-    return str;
-  };
+    str += ':' + number.format(this.end, options)
+    return str
+  }
 
   /**
    * Get a string representation of the range.
@@ -279,8 +263,8 @@ function factory (type, config, load, typed) {
    * @returns {string}
    */
   Range.prototype.toString = function () {
-    return this.format();
-  };
+    return this.format()
+  }
 
   /**
    * Get a JSON representation of the range
@@ -294,8 +278,8 @@ function factory (type, config, load, typed) {
       start: this.start,
       end: this.end,
       step: this.step
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate a Range from a JSON object
@@ -305,12 +289,12 @@ function factory (type, config, load, typed) {
    * @return {Range}
    */
   Range.fromJSON = function (json) {
-    return new Range(json.start, json.end, json.step);
-  };
+    return new Range(json.start, json.end, json.step)
+  }
 
-  return Range;
+  return Range
 }
 
-exports.name = 'Range';
-exports.path = 'type';
-exports.factory = factory;
+exports.name = 'Range'
+exports.path = 'type'
+exports.factory = factory

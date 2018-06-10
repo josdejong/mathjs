@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Logical `not`. Flips boolean value of a given parameter.
@@ -32,32 +32,32 @@ function factory (type, config, load, typed) {
    */
   var not = typed('not', {
     'number': function (x) {
-      return !x;
+      return !x
     },
 
     'Complex': function (x) {
-      return x.re === 0 && x.im === 0;
+      return x.re === 0 && x.im === 0
     },
 
     'BigNumber': function (x) {
-      return x.isZero() || x.isNaN();
+      return x.isZero() || x.isNaN()
     },
 
     'Unit': function (x) {
-      return x.value !== null ? not(x.value) : true;
+      return x.value !== null ? not(x.value) : true
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, not);
+      return deepMap(x, not)
     }
-  });
+  })
 
   not.toTex = {
     1: latex.operators['not'] + '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return not;
+  return not
 }
 
-exports.name = 'not';
-exports.factory = factory;
+exports.name = 'not'
+exports.factory = factory

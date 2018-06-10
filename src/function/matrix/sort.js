@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var size = require('../../utils/array').size;
+var size = require('../../utils/array').size
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var compareAsc = load(require('../relational/compare'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var compareAsc = load(require('../relational/compare'))
   var compareDesc = function (a, b) {
-    return -compareAsc(a, b);
-  };
-  var compareNatural = load(require('../relational/compareNatural'));
+    return -compareAsc(a, b)
+  }
+  var compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Sort the items in a matrix.
@@ -43,37 +43,37 @@ function factory (type, config, load, typed) {
    */
   var sort = typed('sort', {
     'Array': function (x) {
-      _arrayIsVector(x);
-      return x.sort(compareAsc);
+      _arrayIsVector(x)
+      return x.sort(compareAsc)
     },
 
     'Matrix': function (x) {
-      _matrixIsVector(x);
-      return matrix(x.toArray().sort(compareAsc), x.storage());
+      _matrixIsVector(x)
+      return matrix(x.toArray().sort(compareAsc), x.storage())
     },
 
     'Array, function': function (x, _comparator) {
-      _arrayIsVector(x);
-      return x.sort(_comparator);
+      _arrayIsVector(x)
+      return x.sort(_comparator)
     },
 
     'Matrix, function': function (x, _comparator) {
-      _matrixIsVector(x);
-      return matrix(x.toArray().sort(_comparator), x.storage());
+      _matrixIsVector(x)
+      return matrix(x.toArray().sort(_comparator), x.storage())
     },
 
     'Array, string': function (x, order) {
-      _arrayIsVector(x);
-      return x.sort(_comparator(order));
+      _arrayIsVector(x)
+      return x.sort(_comparator(order))
     },
 
     'Matrix, string': function (x, order) {
-      _matrixIsVector(x);
-      return matrix(x.toArray().sort(_comparator(order)), x.storage());
+      _matrixIsVector(x)
+      return matrix(x.toArray().sort(_comparator(order)), x.storage())
     }
-  });
+  })
 
-  sort.toTex = undefined; // use default template
+  sort.toTex = undefined // use default template
 
   /**
    * Get the comparator for given order ('asc', 'desc', 'natural')
@@ -82,16 +82,13 @@ function factory (type, config, load, typed) {
    */
   function _comparator (order) {
     if (order === 'asc') {
-      return compareAsc;
-    }
-    else if (order === 'desc') {
-      return compareDesc;
-    }
-    else if (order === 'natural') {
-      return compareNatural;
-    }
-    else {
-      throw new Error('String "asc", "desc", or "natural" expected');
+      return compareAsc
+    } else if (order === 'desc') {
+      return compareDesc
+    } else if (order === 'natural') {
+      return compareNatural
+    } else {
+      throw new Error('String "asc", "desc", or "natural" expected')
     }
   }
 
@@ -103,7 +100,7 @@ function factory (type, config, load, typed) {
    */
   function _arrayIsVector (array) {
     if (size(array).length !== 1) {
-      throw new Error('One dimensional array expected');
+      throw new Error('One dimensional array expected')
     }
   }
 
@@ -115,12 +112,12 @@ function factory (type, config, load, typed) {
    */
   function _matrixIsVector (matrix) {
     if (matrix.size().length !== 1) {
-      throw new Error('One dimensional matrix expected');
+      throw new Error('One dimensional matrix expected')
     }
   }
 
-  return sort;
+  return sort
 }
 
-exports.name = 'sort';
-exports.factory = factory;
+exports.name = 'sort'
+exports.factory = factory

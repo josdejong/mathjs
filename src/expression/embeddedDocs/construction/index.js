@@ -22,4 +22,4 @@ module.exports = {
   'seealso': [
     'bignumber', 'boolean', 'complex', 'matrix,', 'number', 'range', 'string', 'unit'
   ]
-};
+}

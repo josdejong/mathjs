@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
+var flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var abs = load(require('./abs'));
-  var add = load(require('./addScalar'));
-  var divide = load(require('./divideScalar'));
-  var multiply = load(require('./multiplyScalar'));
-  var sqrt = load(require('./sqrt'));
-  var smaller = load(require('../relational/smaller'));
-  var isPositive = load(require('../utils/isPositive'));
+  var abs = load(require('./abs'))
+  var add = load(require('./addScalar'))
+  var divide = load(require('./divideScalar'))
+  var multiply = load(require('./multiplyScalar'))
+  var sqrt = load(require('./sqrt'))
+  var smaller = load(require('../relational/smaller'))
+  var isPositive = load(require('../utils/isPositive'))
 
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
@@ -43,13 +43,13 @@ function factory (type, config, load, typed) {
     '... number | BigNumber': _hypot,
 
     'Array': function (x) {
-      return hypot.apply(hypot, flatten(x));
+      return hypot.apply(hypot, flatten(x))
     },
 
     'Matrix': function (x) {
-      return hypot.apply(hypot, flatten(x.toArray()));
+      return hypot.apply(hypot, flatten(x.toArray()))
     }
-  });
+  })
 
   /**
    * Calculate the hypotenusa for an Array with values
@@ -60,27 +60,27 @@ function factory (type, config, load, typed) {
   function _hypot (args) {
     // code based on `hypot` from es6-shim:
     // https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1619-L1633
-    var result = 0;
-    var largest = 0;
+    var result = 0
+    var largest = 0
 
     for (var i = 0; i < args.length; i++) {
-      var value = abs(args[i]);
+      var value = abs(args[i])
       if (smaller(largest, value)) {
-        result = multiply(result, multiply(divide(largest, value), divide(largest, value)));
-        result = add(result, 1);
-        largest = value;
+        result = multiply(result, multiply(divide(largest, value), divide(largest, value)))
+        result = add(result, 1)
+        largest = value
       } else {
-        result = add(result, isPositive(value) ? multiply(divide(value, largest), divide(value, largest)) : value);
+        result = add(result, isPositive(value) ? multiply(divide(value, largest), divide(value, largest)) : value)
       }
     }
 
-    return multiply(largest, sqrt(result));
+    return multiply(largest, sqrt(result))
   }
 
-  hypot.toTex = '\\hypot\\left(${args}\\right)';
+  hypot.toTex = '\\hypot\\left(${args}\\right)'
 
-  return hypot;
+  return hypot
 }
 
-exports.name = 'hypot';
-exports.factory = factory;
+exports.name = 'hypot'
+exports.factory = factory

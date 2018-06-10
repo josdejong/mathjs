@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach');
-var reduce = require('../../utils/collection/reduce');
-var containsCollections = require('../../utils/collection/containsCollections');
+var deepForEach = require('../../utils/collection/deepForEach')
+var reduce = require('../../utils/collection/reduce')
+var containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var smaller = load(require('../relational/smaller'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
-  
+  var smaller = load(require('../relational/smaller'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+
   /**
    * Compute the maximum value of a matrix or a  list of values.
    * In case of a multi dimensional array, the maximum of the flattened array
@@ -45,22 +45,22 @@ function factory (type, config, load, typed) {
 
     // min([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
-      return reduce(array, dim.valueOf(), _smallest);
+      return reduce(array, dim.valueOf(), _smallest)
     },
 
     // min(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function min');
+        throw new TypeError('Scalar values expected in function min')
       }
 
-      return _min(args);
+      return _min(args)
     }
-  });
+  })
 
-  min.toTex = '\\min\\left(${args}\\right)';
+  min.toTex = '\\min\\left(${args}\\right)'
 
-  return min;
+  return min
 
   /**
    * Return the smallest of two values
@@ -69,12 +69,11 @@ function factory (type, config, load, typed) {
    * @returns {*} Returns x when x is smallest, or y when y is smallest
    * @private
    */
-  function _smallest(x, y) {
+  function _smallest (x, y) {
     try {
-      return smaller(x, y) ? x : y;
-    }
-    catch (err) {
-      throw improveErrorMessage(err, 'min', y);
+      return smaller(x, y) ? x : y
+    } catch (err) {
+      throw improveErrorMessage(err, 'min', y)
     }
   }
 
@@ -84,27 +83,26 @@ function factory (type, config, load, typed) {
    * @return {number} min
    * @private
    */
-  function _min(array) {
-    var min = undefined;
+  function _min (array) {
+    var min = undefined
 
     deepForEach(array, function (value) {
       try {
         if (min === undefined || smaller(value, min)) {
-          min = value;
+          min = value
         }
+      } catch (err) {
+        throw improveErrorMessage(err, 'min', value)
       }
-      catch (err) {
-        throw improveErrorMessage(err, 'min', value);
-      }
-    });
+    })
 
     if (min === undefined) {
-      throw new Error('Cannot calculate min of an empty array');
+      throw new Error('Cannot calculate min of an empty array')
     }
 
-    return min;
+    return min
   }
 }
 
-exports.name = 'min';
-exports.factory = factory;
+exports.name = 'min'
+exports.factory = factory

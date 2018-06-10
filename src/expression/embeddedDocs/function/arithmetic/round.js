@@ -16,4 +16,4 @@ module.exports = {
     'round(123.45678, 2)'
   ],
   'seealso': ['ceil', 'floor', 'fix']
-};
+}

@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the hyperbolic arccotangent of a value,
    * defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
@@ -28,28 +27,28 @@ function factory (type, config, load, typed) {
   var acoth = typed('acoth', {
     'number': function (x) {
       if (x >= 1 || x <= -1 || config.predictable) {
-        return isFinite(x) ? (Math.log((x+1)/x) + Math.log(x/(x-1))) / 2 : 0;
+        return isFinite(x) ? (Math.log((x + 1) / x) + Math.log(x / (x - 1))) / 2 : 0
       }
-      return new type.Complex(x, 0).acoth();
+      return new type.Complex(x, 0).acoth()
     },
 
     'Complex': function (x) {
-      return x.acoth();
+      return x.acoth()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).atanh();
+      return new type.BigNumber(1).div(x).atanh()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acoth);
+      return deepMap(x, acoth)
     }
-  });
+  })
 
-  acoth.toTex = {1: '\\coth^{-1}\\left(${args[0]}\\right)'};
+  acoth.toTex = {1: '\\coth^{-1}\\left(${args[0]}\\right)'}
 
-  return acoth;
+  return acoth
 }
 
-exports.name = 'acoth';
-exports.factory = factory;
+exports.name = 'acoth'
+exports.factory = factory

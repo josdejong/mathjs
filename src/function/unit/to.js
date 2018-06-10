@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Change the unit of a value.
@@ -35,56 +35,56 @@ function factory (type, config, load, typed) {
   var to = typed('to', {
 
     'Unit, Unit | string': function (x, unit) {
-      return x.to(unit);
+      return x.to(unit)
     },
 
     'Matrix, Matrix': function (x, y) {
       // SparseMatrix does not support Units
-      return algorithm13(x, y, to);
+      return algorithm13(x, y, to)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return to(matrix(x), matrix(y)).valueOf();
+      return to(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return to(matrix(x), y);
+      return to(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return to(x, matrix(y));
+      return to(x, matrix(y))
     },
 
     'Matrix, any': function (x, y) {
       // SparseMatrix does not support Units
-      return algorithm14(x, y, to, false);
+      return algorithm14(x, y, to, false)
     },
 
     'any, Matrix': function (x, y) {
       // SparseMatrix does not support Units
-      return algorithm14(y, x, to, true);
+      return algorithm14(y, x, to, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, to, false).valueOf();
+      return algorithm14(matrix(x), y, to, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, to, true).valueOf();
+      return algorithm14(matrix(y), x, to, true).valueOf()
     }
-  });
+  })
 
   to.toTex = {
     2: '\\left(${args[0]}' + latex.operators['to'] + '${args[1]}\\right)'
-  };
+  }
 
-  return to;
+  return to
 }
 
-exports.name = 'to';
-exports.factory = factory;
+exports.name = 'to'
+exports.factory = factory

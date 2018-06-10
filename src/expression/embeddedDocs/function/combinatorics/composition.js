@@ -9,4 +9,4 @@ module.exports = {
     'composition(5, 3)'
   ],
   'seealso': ['combinations']
-};
+}

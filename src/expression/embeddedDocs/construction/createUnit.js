@@ -15,4 +15,4 @@ module.exports = {
   'seealso': [
     'unit', 'splitUnit'
   ]
-};
+}

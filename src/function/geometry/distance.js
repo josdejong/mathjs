@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var add = load(require('../arithmetic/addScalar'));
-  var subtract = load(require('../arithmetic/subtract'));
-  var multiply = load(require('../arithmetic/multiplyScalar'));
-  var divide = load(require('../arithmetic/divideScalar'));
-  var negate = load(require('../arithmetic/unaryMinus'));
-  var sqrt = load(require('../arithmetic/sqrt'));
-  var abs = load(require('../arithmetic/abs'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var add = load(require('../arithmetic/addScalar'))
+  var subtract = load(require('../arithmetic/subtract'))
+  var multiply = load(require('../arithmetic/multiplyScalar'))
+  var divide = load(require('../arithmetic/divideScalar'))
+  var negate = load(require('../arithmetic/unaryMinus'))
+  var sqrt = load(require('../arithmetic/sqrt'))
+  var abs = load(require('../arithmetic/abs'))
 
   /**
     * Calculates:
@@ -63,253 +63,237 @@ function factory (type, config, load, typed) {
   */
 
   var distance = typed('distance', {
-    'Array, Array, Array': function(x, y, z){
+    'Array, Array, Array': function (x, y, z) {
       // Point to Line 2D; (x=Point, y=LinePoint1, z=LinePoint2)
-      if (x.length == 2 && y.length == 2 && z.length == 2){
-        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument'); }
-        if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument'); }
-        if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument'); }
-        var m = divide(subtract(z[1], z[0]), subtract(y[1], y[0]));
-        var xCoeff = multiply(multiply(m, m), y[0]);
-        var yCoeff = negate(multiply(m, y[0]));
-        var constant = x[1];
+      if (x.length == 2 && y.length == 2 && z.length == 2) {
+        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
+        if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
+        if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
+        var m = divide(subtract(z[1], z[0]), subtract(y[1], y[0]))
+        var xCoeff = multiply(multiply(m, m), y[0])
+        var yCoeff = negate(multiply(m, y[0]))
+        var constant = x[1]
 
-        return _distancePointLine2D(x[0], x[1], xCoeff, yCoeff, constant);
-      }
-      else{
-        throw new TypeError('Invalid Arguments: Try again');
+        return _distancePointLine2D(x[0], x[1], xCoeff, yCoeff, constant)
+      } else {
+        throw new TypeError('Invalid Arguments: Try again')
       }
     },
-    'Object, Object, Object': function(x, y, z){
-      if (Object.keys(x).length == 2 && Object.keys(y).length == 2 && Object.keys(z).length == 2){
-        if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers'); }
-        if (!_2d(y)) { throw new TypeError('Values of lineOnePtX and lineOnePtY should be numbers or BigNumbers'); }
-        if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers'); }
+    'Object, Object, Object': function (x, y, z) {
+      if (Object.keys(x).length == 2 && Object.keys(y).length == 2 && Object.keys(z).length == 2) {
+        if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
+        if (!_2d(y)) { throw new TypeError('Values of lineOnePtX and lineOnePtY should be numbers or BigNumbers') }
+        if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('lineOnePtX') &&
-          y.hasOwnProperty('lineOnePtY') && z.hasOwnProperty('lineTwoPtX') && z.hasOwnProperty('lineTwoPtY')){
-          var m = divide(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX));
-          var xCoeff = multiply(multiply(m, m), y.lineOnePtX);
-          var yCoeff = negate(multiply(m, y.lineOnePtX));
-          var constant = x.pointX;
+          y.hasOwnProperty('lineOnePtY') && z.hasOwnProperty('lineTwoPtX') && z.hasOwnProperty('lineTwoPtY')) {
+          var m = divide(subtract(z.lineTwoPtY, z.lineTwoPtX), subtract(y.lineOnePtY, y.lineOnePtX))
+          var xCoeff = multiply(multiply(m, m), y.lineOnePtX)
+          var yCoeff = negate(multiply(m, y.lineOnePtX))
+          var constant = x.pointX
 
-          return _distancePointLine2D(x.pointX, x.pointY, xCoeff, yCoeff, constant);
+          return _distancePointLine2D(x.pointX, x.pointY, xCoeff, yCoeff, constant)
+        } else {
+          throw new TypeError('Key names do not match')
         }
-        else{
-          throw new TypeError('Key names do not match');
-        }
-      }
-      else{
-        throw new TypeError('Invalid Arguments: Try again');
+      } else {
+        throw new TypeError('Invalid Arguments: Try again')
       }
     },
-    'Array, Array': function(x, y){
+    'Array, Array': function (x, y) {
       // Point to Line 2D; (x=[pointX, pointY], y=[x-coeff, y-coeff, const])
-      if (x.length == 2 && y.length == 3){
-        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument'); }
-        if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument'); }
+      if (x.length == 2 && y.length == 3) {
+        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
+        if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
 
-        return _distancePointLine2D(x[0], x[1], y[0], y[1], y[2]);
+        return _distancePointLine2D(x[0], x[1], y[0], y[1], y[2])
       }
       // Point to Line 3D
-      else if (x.length == 3 && y.length == 6){
-        if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument'); }
-        if (!_parametricLine(y)) { throw new TypeError('Array with 6 numbers or BigNumbers expected for second argument'); }
+      else if (x.length == 3 && y.length == 6) {
+        if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
+        if (!_parametricLine(y)) { throw new TypeError('Array with 6 numbers or BigNumbers expected for second argument') }
 
-        return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5]);
+        return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
       }
       // Point to Point 2D
-      else if (x.length == 2 && y.length == 2){
-        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument'); }
-        if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument'); }
+      else if (x.length == 2 && y.length == 2) {
+        if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
+        if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
 
-        return _distance2d(x[0], x[1], y[0], y[1]);
+        return _distance2d(x[0], x[1], y[0], y[1])
       }
       // Point to Point 3D
-      else if(x.length == 3 && y.length == 3){
-        if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument'); }
-        if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument'); }
+      else if (x.length == 3 && y.length == 3) {
+        if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
+        if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
 
-        return _distance3d(x[0], x[1], x[2], y[0], y[1], y[2]);
-      }
-      else{
-        throw new TypeError('Invalid Arguments: Try again');
+        return _distance3d(x[0], x[1], x[2], y[0], y[1], y[2])
+      } else {
+        throw new TypeError('Invalid Arguments: Try again')
       }
     },
-    'Object, Object': function(x, y){
-      if (Object.keys(x).length == 2 && Object.keys(y).length == 3){
-        if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers'); }
-        if (!_3d(y)) { throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers'); }
+    'Object, Object': function (x, y) {
+      if (Object.keys(x).length == 2 && Object.keys(y).length == 3) {
+        if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
+        if (!_3d(y)) { throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('xCoeffLine') &&
-          y.hasOwnProperty('yCoeffLine') && y.hasOwnProperty('constant')){
-
-          return _distancePointLine2D(x.pointX, x.pointY, y.xCoeffLine, y.yCoeffLine, y.constant);
-        }
-        else{
-          throw new TypeError('Key names do not match');
+          y.hasOwnProperty('yCoeffLine') && y.hasOwnProperty('constant')) {
+          return _distancePointLine2D(x.pointX, x.pointY, y.xCoeffLine, y.yCoeffLine, y.constant)
+        } else {
+          throw new TypeError('Key names do not match')
         }
       }
       // Point to Line 3D
-      else if (Object.keys(x).length == 3 && Object.keys(y).length == 6){
-        if (!_3d(x)) { throw new TypeError('Values of pointX, pointY and pointZ should be numbers or BigNumbers'); }
-        if (!_parametricLine(y)) { throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers'); }
+      else if (Object.keys(x).length == 3 && Object.keys(y).length == 6) {
+        if (!_3d(x)) { throw new TypeError('Values of pointX, pointY and pointZ should be numbers or BigNumbers') }
+        if (!_parametricLine(y)) { throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('x0') &&
           y.hasOwnProperty('y0') && y.hasOwnProperty('z0') && y.hasOwnProperty('a') &&
-          y.hasOwnProperty('b') && y.hasOwnProperty('c')){
-
-          return _distancePointLine3D(x.pointX, x.pointY, x.pointZ, y.x0, y.y0, y.z0, y.a, y.b, y.c);
-        }
-        else{
-          throw new TypeError('Key names do not match');
+          y.hasOwnProperty('b') && y.hasOwnProperty('c')) {
+          return _distancePointLine3D(x.pointX, x.pointY, x.pointZ, y.x0, y.y0, y.z0, y.a, y.b, y.c)
+        } else {
+          throw new TypeError('Key names do not match')
         }
       }
       // Point to Point 2D
-      else if (Object.keys(x).length == 2 && Object.keys(y).length == 2){
-        if (!_2d(x)) { throw new TypeError('Values of pointOneX and pointOneY should be numbers or BigNumbers'); }
-        if (!_2d(y)) { throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers'); }
+      else if (Object.keys(x).length == 2 && Object.keys(y).length == 2) {
+        if (!_2d(x)) { throw new TypeError('Values of pointOneX and pointOneY should be numbers or BigNumbers') }
+        if (!_2d(y)) { throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') &&
-          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY')){
-
-          return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY);
-        }
-        else{
-          throw new TypeError('Key names do not match');
+          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY')) {
+          return _distance2d(x.pointOneX, x.pointOneY, y.pointTwoX, y.pointTwoY)
+        } else {
+          throw new TypeError('Key names do not match')
         }
       }
       // Point to Point 3D
-      else if(Object.keys(x).length == 3 && Object.keys(y).length == 3){
-        if (!_3d(x)) { throw new TypeError('Values of pointOneX, pointOneY and pointOneZ should be numbers or BigNumbers'); }
-        if (!_3d(y)) { throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers'); }
+      else if (Object.keys(x).length == 3 && Object.keys(y).length == 3) {
+        if (!_3d(x)) { throw new TypeError('Values of pointOneX, pointOneY and pointOneZ should be numbers or BigNumbers') }
+        if (!_3d(y)) { throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') && x.hasOwnProperty('pointOneZ') &&
-          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY') && y.hasOwnProperty('pointTwoZ')){
-
-          return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ);
+          y.hasOwnProperty('pointTwoX') && y.hasOwnProperty('pointTwoY') && y.hasOwnProperty('pointTwoZ')) {
+          return _distance3d(x.pointOneX, x.pointOneY, x.pointOneZ, y.pointTwoX, y.pointTwoY, y.pointTwoZ)
+        } else {
+          throw new TypeError('Key names do not match')
         }
-        else {
-          throw new TypeError('Key names do not match');
-        }
-      }
-      else{
-        throw new TypeError('Invalid Arguments: Try again');
+      } else {
+        throw new TypeError('Invalid Arguments: Try again')
       }
     },
-    'Array': function(arr){
-      if (!_pairwise(arr)) { throw new TypeError('Incorrect array format entered for pairwise distance calculation'); }
+    'Array': function (arr) {
+      if (!_pairwise(arr)) { throw new TypeError('Incorrect array format entered for pairwise distance calculation') }
 
-      return _distancePairwise(arr);
+      return _distancePairwise(arr)
     }
-  });
+  })
 
-  function _isNumber(a) {
+  function _isNumber (a) {
     // distance supports numbers and bignumbers
-    return (typeof a === 'number' || type.isBigNumber(a));
+    return (typeof a === 'number' || type.isBigNumber(a))
   }
 
-  function _2d(a){
+  function _2d (a) {
     // checks if the number of arguments are correct in count and are valid (should be numbers)
-    if (a.constructor !== Array){
-      a = _objectToArray(a);
+    if (a.constructor !== Array) {
+      a = _objectToArray(a)
     }
-    return _isNumber(a[0]) && _isNumber(a[1]);
+    return _isNumber(a[0]) && _isNumber(a[1])
   }
 
-  function _3d(a){
+  function _3d (a) {
     // checks if the number of arguments are correct in count and are valid (should be numbers)
-    if (a.constructor !== Array){
-      a = _objectToArray(a);
+    if (a.constructor !== Array) {
+      a = _objectToArray(a)
     }
-    return _isNumber(a[0]) && _isNumber(a[1]) &&  _isNumber(a[2]);
+    return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2])
   }
 
-  function _parametricLine(a){
-    if (a.constructor !== Array){
-      a = _objectToArray(a);
+  function _parametricLine (a) {
+    if (a.constructor !== Array) {
+      a = _objectToArray(a)
     }
     return _isNumber(a[0]) && _isNumber(a[1]) && _isNumber(a[2]) &&
-      _isNumber(a[3]) && _isNumber(a[4]) && _isNumber(a[5]);
+      _isNumber(a[3]) && _isNumber(a[4]) && _isNumber(a[5])
   }
 
-  function _objectToArray(o){
-    var keys = Object.keys(o);
-    var a = [];
+  function _objectToArray (o) {
+    var keys = Object.keys(o)
+    var a = []
     for (var i = 0; i < keys.length; i++) {
-      a.push(o[keys[i]]);
+      a.push(o[keys[i]])
     }
-    return a;
+    return a
   }
 
-  function _pairwise(a){
-    //checks for valid arguments passed to _distancePairwise(Array)
-    if (a[0].length == 2 && _isNumber(a[0][0]) && _isNumber(a[0][1])){
-      for(var i in a){
-        if (a[i].length != 2 || !_isNumber(a[i][0]) || !_isNumber(a[i][1])){
-          return false;
+  function _pairwise (a) {
+    // checks for valid arguments passed to _distancePairwise(Array)
+    if (a[0].length == 2 && _isNumber(a[0][0]) && _isNumber(a[0][1])) {
+      for (var i in a) {
+        if (a[i].length != 2 || !_isNumber(a[i][0]) || !_isNumber(a[i][1])) {
+          return false
         }
       }
-    }
-    else if (a[0].length == 3 && _isNumber(a[0][0]) && _isNumber(a[0][1]) && _isNumber(a[0][2])){
-      for(var i in a){
-        if (a[i].length != 3 || !_isNumber(a[i][0]) || !_isNumber(a[i][1]) || !_isNumber(a[i][2])){
-          return false;
+    } else if (a[0].length == 3 && _isNumber(a[0][0]) && _isNumber(a[0][1]) && _isNumber(a[0][2])) {
+      for (var i in a) {
+        if (a[i].length != 3 || !_isNumber(a[i][0]) || !_isNumber(a[i][1]) || !_isNumber(a[i][2])) {
+          return false
         }
       }
+    } else {
+      return false
     }
-    else{
-      return false;
-    }
-    return true;
+    return true
   }
 
-  function _distancePointLine2D(x, y, a, b, c){
-    var num =  abs(add(add(multiply(a, x), multiply(b, y)), c));
-    var den = sqrt(add(multiply(a, a), multiply(b, b)));
-    var result = divide(num, den);
-    return result;
+  function _distancePointLine2D (x, y, a, b, c) {
+    var num = abs(add(add(multiply(a, x), multiply(b, y)), c))
+    var den = sqrt(add(multiply(a, a), multiply(b, b)))
+    var result = divide(num, den)
+    return result
   }
 
-  function _distancePointLine3D(x, y, z, x0, y0, z0, a, b, c){
+  function _distancePointLine3D (x, y, z, x0, y0, z0, a, b, c) {
     var num = [ subtract(multiply(subtract(y0, y), c), multiply(subtract(z0, z), b)),
-                subtract(multiply(subtract(z0, z), a), multiply(subtract(x0, x), c)),
-                subtract(multiply(subtract(x0, x), b), multiply(subtract(y0, y), a)) ];
-    num = sqrt(add(add(multiply(num[0], num[0]), multiply(num[1], num[1])), multiply(num[2], num[2])));
-    var den = sqrt(add(add(multiply(a, a), multiply(b, b)), multiply(c, c)));
-    var result = divide(num, den);
-    return result;
+      subtract(multiply(subtract(z0, z), a), multiply(subtract(x0, x), c)),
+      subtract(multiply(subtract(x0, x), b), multiply(subtract(y0, y), a)) ]
+    num = sqrt(add(add(multiply(num[0], num[0]), multiply(num[1], num[1])), multiply(num[2], num[2])))
+    var den = sqrt(add(add(multiply(a, a), multiply(b, b)), multiply(c, c)))
+    var result = divide(num, den)
+    return result
   }
 
-  function _distance2d(x1, y1, x2, y2){
-    var yDiff = subtract(y2, y1);
-    var xDiff = subtract(x2, x1);
-    var radicant = add(multiply(yDiff, yDiff), multiply(xDiff, xDiff));
-    var result = sqrt(radicant);
-    return result;
+  function _distance2d (x1, y1, x2, y2) {
+    var yDiff = subtract(y2, y1)
+    var xDiff = subtract(x2, x1)
+    var radicant = add(multiply(yDiff, yDiff), multiply(xDiff, xDiff))
+    var result = sqrt(radicant)
+    return result
   }
 
-  function _distance3d(x1, y1, z1, x2, y2, z2){
-    var zDiff = subtract(z2, z1);
-    var yDiff = subtract(y2, y1);
-    var xDiff = subtract(x2, x1);
-    var radicant = add(add(multiply(zDiff, zDiff), multiply(yDiff, yDiff)), multiply(xDiff, xDiff));
-    var result = sqrt(radicant);
-    return result;
+  function _distance3d (x1, y1, z1, x2, y2, z2) {
+    var zDiff = subtract(z2, z1)
+    var yDiff = subtract(y2, y1)
+    var xDiff = subtract(x2, x1)
+    var radicant = add(add(multiply(zDiff, zDiff), multiply(yDiff, yDiff)), multiply(xDiff, xDiff))
+    var result = sqrt(radicant)
+    return result
   }
 
-  function _distancePairwise(a){
-    var result = [];
-    for(var i = 0; i < a.length-1; i++){
-      for(var j = i+1; j < a.length; j++){
-        if (a[0].length == 2){
-          result.push(_distance2d(a[i][0], a[i][1], a[j][0], a[j][1]));
-        }
-        else if (a[0].length == 3){
-          result.push(_distance3d(a[i][0], a[i][1], a[i][2], a[j][0], a[j][1], a[j][2]));
+  function _distancePairwise (a) {
+    var result = []
+    for (var i = 0; i < a.length - 1; i++) {
+      for (var j = i + 1; j < a.length; j++) {
+        if (a[0].length == 2) {
+          result.push(_distance2d(a[i][0], a[i][1], a[j][0], a[j][1]))
+        } else if (a[0].length == 3) {
+          result.push(_distance3d(a[i][0], a[i][1], a[i][2], a[j][0], a[j][1], a[j][2]))
         }
       }
     }
-    return result;
+    return result
   }
 
-  return distance;
+  return distance
 }
 
-exports.name = 'distance';
-exports.factory = factory;
+exports.name = 'distance'
+exports.factory = factory

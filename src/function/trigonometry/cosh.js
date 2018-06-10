@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -28,28 +28,28 @@ function factory (type, config, load, typed) {
     'number': _cosh,
 
     'Complex': function (x) {
-      return x.cosh();
+      return x.cosh()
     },
 
     'BigNumber': function (x) {
-      return x.cosh();
+      return x.cosh()
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function cosh is no angle');
+        throw new TypeError('Unit in function cosh is no angle')
       }
-      return cosh(x.value);
+      return cosh(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, cosh);
+      return deepMap(x, cosh)
     }
-  });
+  })
 
-  cosh.toTex = {1: '\\cosh\\left(${args[0]}\\right)'};
+  cosh.toTex = {1: '\\cosh\\left(${args[0]}\\right)'}
 
-  return cosh;
+  return cosh
 }
 
 /**
@@ -59,8 +59,8 @@ function factory (type, config, load, typed) {
  * @private
  */
 var _cosh = Math.cosh || function (x) {
-  return (Math.exp(x) + Math.exp(-x)) / 2;
-};
+  return (Math.exp(x) + Math.exp(-x)) / 2
+}
 
-exports.name = 'cosh';
-exports.factory = factory;
+exports.name = 'cosh'
+exports.factory = factory

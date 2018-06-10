@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var forEach = require('../../utils/array').forEach;
-var map = require('../../utils/array').map;
+var forEach = require('../../utils/array').forEach
+var map = require('../../utils/array').map
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'));
-  var ResultSet = load(require('../../type/resultset/ResultSet'));
+  var Node = load(require('./Node'))
+  var ResultSet = load(require('../../type/resultset/ResultSet'))
 
   /**
    * @constructor BlockNode
@@ -16,38 +16,38 @@ function factory (type, config, load, typed) {
    *            with properties block, which is a Node, and visible, which is
    *            a boolean. The property visible is optional and is true by default
    */
-  function BlockNode(blocks) {
+  function BlockNode (blocks) {
     if (!(this instanceof BlockNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     // validate input, copy blocks
-    if (!Array.isArray(blocks)) throw new Error('Array expected');
+    if (!Array.isArray(blocks)) throw new Error('Array expected')
     this.blocks = blocks.map(function (block) {
-      var node = block && block.node;
-      var visible = block && block.visible !== undefined ? block.visible : true;
+      var node = block && block.node
+      var visible = block && block.visible !== undefined ? block.visible : true
 
-      if (!type.isNode(node)) throw new TypeError('Property "node" must be a Node');
-      if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean');
+      if (!type.isNode(node)) throw new TypeError('Property "node" must be a Node')
+      if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean')
 
       return {
         node: node,
         visible: visible
       }
-    });
+    })
   }
 
-  BlockNode.prototype = new Node();
+  BlockNode.prototype = new Node()
 
-  BlockNode.prototype.type = 'BlockNode';
+  BlockNode.prototype.type = 'BlockNode'
 
-  BlockNode.prototype.isBlockNode = true;
+  BlockNode.prototype.isBlockNode = true
 
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} math     Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -61,20 +61,20 @@ function factory (type, config, load, typed) {
       return {
         eval: block.node._compile(math, argNames),
         visible: block.visible
-      };
-    });
+      }
+    })
 
     return function evalBlockNodes (scope, args, context) {
-      var results = [];
+      var results = []
 
-      forEach(evalBlocks, function evalBlockNode(block) {
+      forEach(evalBlocks, function evalBlockNode (block) {
         var result = block.eval(scope, args, context)
         if (block.visible) {
-          results.push(result);
+          results.push(result)
         }
-      });
+      })
 
-      return new ResultSet(results);
+      return new ResultSet(results)
     }
   }
 
@@ -84,9 +84,9 @@ function factory (type, config, load, typed) {
    */
   BlockNode.prototype.forEach = function (callback) {
     for (var i = 0; i < this.blocks.length; i++) {
-      callback(this.blocks[i].node, 'blocks[' + i + '].node', this);
+      callback(this.blocks[i].node, 'blocks[' + i + '].node', this)
     }
-  };
+  }
 
   /**
    * Create a new BlockNode having it's childs be the results of calling
@@ -95,17 +95,17 @@ function factory (type, config, load, typed) {
    * @returns {BlockNode} Returns a transformed copy of the node
    */
   BlockNode.prototype.map = function (callback) {
-    var blocks = [];
+    var blocks = []
     for (var i = 0; i < this.blocks.length; i++) {
-      var block = this.blocks[i];
-      var node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this));
+      var block = this.blocks[i]
+      var node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this))
       blocks[i] = {
         node: node,
         visible: block.visible
-      };
+      }
     }
-    return new BlockNode(blocks);
-  };
+    return new BlockNode(blocks)
+  }
 
   /**
    * Create a clone of this node, a shallow copy
@@ -116,11 +116,11 @@ function factory (type, config, load, typed) {
       return {
         node: block.node,
         visible: block.visible
-      };
-    });
+      }
+    })
 
-    return new BlockNode(blocks);
-  };
+    return new BlockNode(blocks)
+  }
 
   /**
    * Get string representation
@@ -130,9 +130,9 @@ function factory (type, config, load, typed) {
    */
   BlockNode.prototype._toString = function (options) {
     return this.blocks.map(function (param) {
-      return param.node.toString(options) + (param.visible ? '' : ';');
-    }).join('\n');
-  };
+      return param.node.toString(options) + (param.visible ? '' : ';')
+    }).join('\n')
+  }
 
   /**
    * Get a JSON representation of the node
@@ -142,8 +142,8 @@ function factory (type, config, load, typed) {
     return {
       mathjs: 'BlockNode',
       blocks: this.blocks
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate an BlockNode from its JSON representation
@@ -153,8 +153,8 @@ function factory (type, config, load, typed) {
    * @returns {BlockNode}
    */
   BlockNode.fromJSON = function (json) {
-    return new BlockNode(json.blocks);
-  };
+    return new BlockNode(json.blocks)
+  }
 
   /**
    * Get HTML representation
@@ -164,9 +164,9 @@ function factory (type, config, load, typed) {
    */
   BlockNode.prototype.toHTML = function (options) {
     return this.blocks.map(function (param) {
-      return param.node.toHTML(options) + (param.visible ? '' : '<span class="math-separator">;</span>');
-    }).join('<span class="math-separator"><br /></span>');
-  };
+      return param.node.toHTML(options) + (param.visible ? '' : '<span class="math-separator">;</span>')
+    }).join('<span class="math-separator"><br /></span>')
+  }
 
   /**
    * Get LaTeX representation
@@ -175,13 +175,13 @@ function factory (type, config, load, typed) {
    */
   BlockNode.prototype._toTex = function (options) {
     return this.blocks.map(function (param) {
-      return param.node.toTex(options) + (param.visible ? '' : ';');
-    }).join('\\;\\;\n');
-  };
+      return param.node.toTex(options) + (param.visible ? '' : ';')
+    }).join('\\;\\;\n')
+  }
 
-  return BlockNode;
+  return BlockNode
 }
 
-exports.name = 'BlockNode';
-exports.path = 'expression.node';
-exports.factory = factory;
+exports.name = 'BlockNode'
+exports.path = 'expression.node'
+exports.factory = factory

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount;
-var forEach = require('../../utils/array').forEach;
+var maxArgumentCount = require('../../utils/function').maxArgumentCount
+var forEach = require('../../utils/array').forEach
 
 function factory (type, config, load, typed) {
   /**
@@ -31,13 +31,13 @@ function factory (type, config, load, typed) {
     'Array, function': _forEach,
 
     'Matrix, function': function (x, callback) {
-      return x.forEach(callback);
+      return x.forEach(callback)
     }
-  });
+  })
 
-  forEach.toTex = undefined; // use default template
+  forEach.toTex = undefined // use default template
 
-  return forEach;
+  return forEach
 }
 
 /**
@@ -48,30 +48,27 @@ function factory (type, config, load, typed) {
  */
 function _forEach (array, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback);
+  var args = maxArgumentCount(callback)
 
   var recurse = function (value, index) {
     if (Array.isArray(value)) {
       forEach(value, function (child, i) {
         // we create a copy of the index array and append the new index value
-        recurse(child, index.concat(i));
-      });
-    }
-    else {
+        recurse(child, index.concat(i))
+      })
+    } else {
       // invoke the callback function with the right number of arguments
       if (args === 1) {
-        callback(value);
-      }
-      else if (args === 2) {
-        callback(value, index);
-      }
-      else { // 3 or -1
-        callback(value, index, array);
+        callback(value)
+      } else if (args === 2) {
+        callback(value, index)
+      } else { // 3 or -1
+        callback(value, index, array)
       }
     }
-  };
-  recurse(array, []);
+  }
+  recurse(array, [])
 }
 
-exports.name = 'forEach';
-exports.factory = factory;
+exports.name = 'forEach'
+exports.factory = factory

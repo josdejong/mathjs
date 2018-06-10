@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
+var flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var index = load(require('../../type/matrix/MatrixIndex'));
-  var concat = load(require('../matrix/concat'));
-  var size = load(require('../matrix/size'));
-  var subset = load(require('../matrix/subset'));
-  var setDifference = load(require('../set/setDifference'));
-  
+  var index = load(require('../../type/matrix/MatrixIndex'))
+  var concat = load(require('../matrix/concat'))
+  var size = load(require('../matrix/size'))
+  var subset = load(require('../matrix/subset'))
+  var setDifference = load(require('../set/setDifference'))
+
   /**
    * Create the symmetric difference of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -33,19 +33,18 @@ function factory (type, config, load, typed) {
   var setSymDifference = typed('setSymDifference', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
       if (subset(size(a1), new index(0)) === 0) { // if any of them is empty, return the other one
-        return flatten(a2);
+        return flatten(a2)
+      } else if (subset(size(a2), new index(0)) === 0) {
+        return flatten(a1)
       }
-      else if (subset(size(a2), new index(0)) === 0) {
-        return flatten(a1);
-      }
-      var b1 = flatten(a1);
-      var b2 = flatten(a2);
-      return concat(setDifference(b1, b2), setDifference(b2, b1));
+      var b1 = flatten(a1)
+      var b2 = flatten(a2)
+      return concat(setDifference(b1, b2), setDifference(b2, b1))
     }
-  });
+  })
 
-  return setSymDifference;
+  return setSymDifference
 }
 
-exports.name = 'setSymDifference';
-exports.factory = factory;
+exports.name = 'setSymDifference'
+exports.factory = factory

@@ -1,14 +1,13 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./derivative'),
 
   // simplify
   require('./simplify'),
 
-  // polynomial 
+  // polynomial
   require('./rationalize'),
-    
-  
+
   // decomposition
   require('./decomposition/qr'),
   require('./decomposition/lup'),
@@ -18,4 +17,4 @@ module.exports = [
   require('./solver/lsolve'),
   require('./solver/lusolve'),
   require('./solver/usolve')
-];
+]

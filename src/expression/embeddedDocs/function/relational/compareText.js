@@ -20,4 +20,4 @@ module.exports = {
   'seealso': [
     'compare', 'compareNatural'
   ]
-};
+}

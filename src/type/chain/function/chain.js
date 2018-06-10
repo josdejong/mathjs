@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
   /**
@@ -37,15 +37,15 @@ function factory (type, config, load, typed) {
    * @return {math.type.Chain} The created chain
    */
   return typed('chain', {
-    '': function() {
-      return new type.Chain();
+    '': function () {
+      return new type.Chain()
     },
 
-    'any': function(value) {
-      return new type.Chain(value);
+    'any': function (value) {
+      return new type.Chain(value)
     }
-  });
+  })
 }
 
-exports.name = 'chain';
-exports.factory = factory;
+exports.name = 'chain'
+exports.factory = factory

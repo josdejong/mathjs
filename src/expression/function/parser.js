@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed, math) {
-  var Parser = load(require('../Parser'));
+  var Parser = load(require('../Parser'))
 
   /**
    * Create a parser. The function creates a new `math.expression.Parser` object.
@@ -48,11 +48,11 @@ function factory (type, config, load, typed, math) {
    */
   return typed('parser', {
     '': function () {
-      return new Parser(math);
+      return new Parser(math)
     }
-  });
+  })
 }
 
-exports.name = 'parser';
-exports.factory = factory;
-exports.math = true; // requires the math namespace as 5th argument
+exports.name = 'parser'
+exports.factory = factory
+exports.math = true // requires the math namespace as 5th argument

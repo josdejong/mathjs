@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var divideScalar = load(require('./divideScalar'));
+  var divideScalar = load(require('./divideScalar'))
 
   /**
    * Calculate the logarithm of a value.
@@ -42,45 +42,43 @@ function factory (type, config, load, typed) {
   var log = typed('log', {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
-        return Math.log(x);
-      }
-      else {
+        return Math.log(x)
+      } else {
         // negative value -> complex value computation
-        return new type.Complex(x, 0).log();
+        return new type.Complex(x, 0).log()
       }
     },
 
     'Complex': function (x) {
-      return x.log();
+      return x.log()
     },
 
     'BigNumber': function (x) {
       if (!x.isNegative() || config.predictable) {
-        return x.ln();
-      }
-      else {
+        return x.ln()
+      } else {
         // downgrade to number, return Complex valued result
-        return new type.Complex(x.toNumber(), 0).log();
+        return new type.Complex(x.toNumber(), 0).log()
       }
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, log);
+      return deepMap(x, log)
     },
 
     'any, any': function (x, base) {
       // calculate logarithm for a specified base, log(x, base)
-      return divideScalar(log(x), log(base));
+      return divideScalar(log(x), log(base))
     }
-  });
+  })
 
   log.toTex = {
     1: '\\ln\\left(${args[0]}\\right)',
     2: '\\log_{${args[1]}}\\left(${args[0]}\\right)'
-  };
+  }
 
-  return log;
+  return log
 }
 
-exports.name = 'log';
-exports.factory = factory;
+exports.name = 'log'
+exports.factory = factory

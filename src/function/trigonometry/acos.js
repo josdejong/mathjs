@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the inverse cosine of a value.
    *
@@ -30,30 +29,29 @@ function factory (type, config, load, typed) {
   var acos = typed('acos', {
     'number': function (x) {
       if ((x >= -1 && x <= 1) || config.predictable) {
-        return Math.acos(x);
-      }
-      else {
-        return new type.Complex(x, 0).acos();
+        return Math.acos(x)
+      } else {
+        return new type.Complex(x, 0).acos()
       }
     },
 
     'Complex': function (x) {
-      return x.acos();
+      return x.acos()
     },
 
     'BigNumber': function (x) {
-      return x.acos();
+      return x.acos()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acos);
+      return deepMap(x, acos)
     }
-  });
+  })
 
-  acos.toTex = {1: '\\cos^{-1}\\left(${args[0]}\\right)'};
+  acos.toTex = {1: '\\cos^{-1}\\left(${args[0]}\\right)'}
 
-  return acos;
+  return acos
 }
 
-exports.name = 'acos';
-exports.factory = factory;
+exports.name = 'acos'
+exports.factory = factory

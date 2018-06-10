@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../parse'));
+  var parse = load(require('../parse'))
 
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
@@ -45,8 +45,8 @@ function factory (type, config, load, typed) {
   return typed('parse', {
     'string | Array | Matrix': parse,
     'string | Array | Matrix, Object': parse
-  });
+  })
 }
 
-exports.name = 'parse';
-exports.factory = factory;
+exports.name = 'parse'
+exports.factory = factory

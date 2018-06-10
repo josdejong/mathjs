@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('./../utils/collection/deepMap');
+var deepMap = require('./../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -32,51 +32,50 @@ function factory (type, config, load, typed) {
    */
   var bool = typed('bool', {
     '': function () {
-      return false;
+      return false
     },
 
     'boolean': function (x) {
-      return x;
+      return x
     },
 
     'number': function (x) {
-      return !!x;
+      return !!x
     },
 
     'null': function (x) {
-      return false;
+      return false
     },
 
     'BigNumber': function (x) {
-      return !x.isZero();
+      return !x.isZero()
     },
 
     'string': function (x) {
       // try case insensitive
-      var lcase = x.toLowerCase();
+      var lcase = x.toLowerCase()
       if (lcase === 'true') {
-        return true;
-      }
-      else if (lcase === 'false') {
-        return false;
+        return true
+      } else if (lcase === 'false') {
+        return false
       }
 
       // test whether value is a valid number
-      var num = Number(x);
+      var num = Number(x)
       if (x != '' && !isNaN(num)) {
-        return !!num;
+        return !!num
       }
 
-      throw new Error('Cannot convert "' + x + '" to a boolean');
+      throw new Error('Cannot convert "' + x + '" to a boolean')
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, bool);
+      return deepMap(x, bool)
     }
-  });
+  })
 
-  return bool;
+  return bool
 }
 
-exports.name = 'boolean';
-exports.factory = factory;
+exports.name = 'boolean'
+exports.factory = factory

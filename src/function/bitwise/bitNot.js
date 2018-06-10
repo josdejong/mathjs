@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-var bigBitNot = require('../../utils/bignumber/bitNot');
-var isInteger = require('../../utils/number').isInteger;
+var deepMap = require('../../utils/collection/deepMap')
+var bigBitNot = require('../../utils/bignumber/bitNot')
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Bitwise NOT value, `~x`.
@@ -32,25 +32,25 @@ function factory (type, config, load, typed) {
   var bitNot = typed('bitNot', {
     'number': function (x) {
       if (!isInteger(x)) {
-        throw new Error('Integer expected in function bitNot');
+        throw new Error('Integer expected in function bitNot')
       }
 
-      return ~x;
+      return ~x
     },
 
     'BigNumber': bigBitNot,
 
     'Array | Matrix': function (x) {
-      return deepMap(x, bitNot);
+      return deepMap(x, bitNot)
     }
-  });
+  })
 
   bitNot.toTex = {
     1: latex.operators['bitNot'] + '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return bitNot;
+  return bitNot
 }
 
-exports.name = 'bitNot';
-exports.factory = factory;
+exports.name = 'bitNot'
+exports.factory = factory

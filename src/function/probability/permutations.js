@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var factorial = load(require('./factorial'));
+  var factorial = load(require('./factorial'))
 
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
@@ -34,51 +34,51 @@ function factory (type, config, load, typed) {
     'number | BigNumber': factorial,
 
     'number, number': function (n, k) {
-      var result, i;
+      var result, i
 
       if (!isInteger(n) || n < 0) {
-        throw new TypeError('Positive integer value expected in function permutations');
+        throw new TypeError('Positive integer value expected in function permutations')
       }
       if (!isInteger(k) || k < 0) {
-        throw new TypeError('Positive integer value expected in function permutations');
+        throw new TypeError('Positive integer value expected in function permutations')
       }
       if (k > n) {
-        throw new TypeError('second argument k must be less than or equal to first argument n');
+        throw new TypeError('second argument k must be less than or equal to first argument n')
       }
 
       // Permute n objects, k at a time
-      result = 1;
+      result = 1
       for (i = n - k + 1; i <= n; i++) {
-        result = result * i;
+        result = result * i
       }
 
-      return result;
+      return result
     },
 
     'BigNumber, BigNumber': function (n, k) {
-      var result, i;
+      var result, i
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
-        throw new TypeError('Positive integer value expected in function permutations');
+        throw new TypeError('Positive integer value expected in function permutations')
       }
       if (k.gt(n)) {
-        throw new TypeError('second argument k must be less than or equal to first argument n');
+        throw new TypeError('second argument k must be less than or equal to first argument n')
       }
 
-      result = new type.BigNumber(1);
+      result = new type.BigNumber(1)
       for (i = n.minus(k).plus(1); i.lte(n); i = i.plus(1)) {
-        result = result.times(i);
+        result = result.times(i)
       }
 
-      return result;
+      return result
     }
 
     // TODO: implement support for collection in permutations
-  });
+  })
 
-  permutations.toTex = undefined; // use default template
+  permutations.toTex = undefined // use default template
 
-  return permutations;
+  return permutations
 }
 
 /**
@@ -86,9 +86,9 @@ function factory (type, config, load, typed) {
  * @param {BigNumber} n
  * @returns {boolean} isPositiveInteger
  */
-function isPositiveInteger(n) {
-  return n.isInteger() && n.gte(0);
+function isPositiveInteger (n) {
+  return n.isInteger() && n.gte(0)
 }
 
-exports.name = 'permutations';
-exports.factory = factory;
+exports.name = 'permutations'
+exports.factory = factory

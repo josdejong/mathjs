@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var DimensionError = require('../../error/DimensionError');
-var ArgumentsError = require('../../error/ArgumentsError');
+var DimensionError = require('../../error/DimensionError')
+var ArgumentsError = require('../../error/ArgumentsError')
 
-var isInteger = require('../../utils/number').isInteger;
-var format = require('../../utils/string').format;
-var clone = require('../../utils/object').clone;
-var array = require('../../utils/array');
+var isInteger = require('../../utils/number').isInteger
+var format = require('../../utils/string').format
+var clone = require('../../utils/object').clone
+var array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Resize a matrix
@@ -40,57 +40,56 @@ function factory (type, config, load, typed) {
   // TODO: rework resize to a typed-function
   var resize = function resize (x, size, defaultValue) {
     if (arguments.length != 2 && arguments.length != 3) {
-      throw new ArgumentsError('resize', arguments.length, 2, 3);
+      throw new ArgumentsError('resize', arguments.length, 2, 3)
     }
 
     if (type.isMatrix(size)) {
-      size = size.valueOf(); // get Array
+      size = size.valueOf() // get Array
     }
 
     if (type.isBigNumber(size[0])) {
       // convert bignumbers to numbers
       size = size.map(function (value) {
-        return type.isBigNumber(value) ? value.toNumber() : value;
-      });
+        return type.isBigNumber(value) ? value.toNumber() : value
+      })
     }
-    
+
     // check x is a Matrix
     if (type.isMatrix(x)) {
       // use optimized matrix implementation, return copy
-      return x.resize(size, defaultValue, true);
+      return x.resize(size, defaultValue, true)
     }
-    
+
     if (typeof x === 'string') {
       // resize string
-      return _resizeString(x, size, defaultValue);
+      return _resizeString(x, size, defaultValue)
     }
-    
+
     // check result should be a matrix
-    var asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array');
+    var asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
 
     if (size.length == 0) {
       // output a scalar
       while (Array.isArray(x)) {
-        x = x[0];
+        x = x[0]
       }
 
-      return clone(x);
-    }
-    else {
+      return clone(x)
+    } else {
       // output an array/matrix
       if (!Array.isArray(x)) {
-        x = [x];
+        x = [x]
       }
-      x = clone(x);
+      x = clone(x)
 
-      var res = array.resize(x, size, defaultValue);
-      return asMatrix ? matrix(res) : res;
+      var res = array.resize(x, size, defaultValue)
+      return asMatrix ? matrix(res) : res
     }
-  };
+  }
 
-  resize.toTex = undefined; // use default template
+  resize.toTex = undefined // use default template
 
-  return resize;
+  return resize
 
   /**
    * Resize a string
@@ -99,40 +98,37 @@ function factory (type, config, load, typed) {
    * @param {string} [defaultChar=' ']
    * @private
    */
-  function _resizeString(str, size, defaultChar) {
+  function _resizeString (str, size, defaultChar) {
     if (defaultChar !== undefined) {
       if (typeof defaultChar !== 'string' || defaultChar.length !== 1) {
-        throw new TypeError('Single character expected as defaultValue');
+        throw new TypeError('Single character expected as defaultValue')
       }
-    }
-    else {
-      defaultChar = ' ';
+    } else {
+      defaultChar = ' '
     }
 
     if (size.length !== 1) {
-      throw new DimensionError(size.length, 1);
+      throw new DimensionError(size.length, 1)
     }
-    var len = size[0];
+    var len = size[0]
     if (typeof len !== 'number' || !isInteger(len)) {
       throw new TypeError('Invalid size, must contain positive integers ' +
-          '(size: ' + format(size) + ')');
+          '(size: ' + format(size) + ')')
     }
 
     if (str.length > len) {
-      return str.substring(0, len);
-    }
-    else if (str.length < len) {
-      var res = str;
+      return str.substring(0, len)
+    } else if (str.length < len) {
+      var res = str
       for (var i = 0, ii = len - str.length; i < ii; i++) {
-        res += defaultChar;
+        res += defaultChar
       }
-      return res;
-    }
-    else {
-      return str;
+      return res
+    } else {
+      return str
     }
   }
 }
 
-exports.name = 'resize';
-exports.factory = factory;
+exports.name = 'resize'
+exports.factory = factory

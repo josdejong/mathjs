@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var gamma = load(require('./gamma'));
-  var latex = require('../../utils/latex');
+  var gamma = load(require('./gamma'))
+  var latex = require('../../utils/latex')
 
   /**
    * Compute the factorial of a value
@@ -31,31 +31,31 @@ function factory (type, config, load, typed) {
   var factorial = typed('factorial', {
     'number': function (n) {
       if (n < 0) {
-        throw new Error('Value must be non-negative');
+        throw new Error('Value must be non-negative')
       }
 
-      return gamma(n + 1);
+      return gamma(n + 1)
     },
 
     'BigNumber': function (n) {
       if (n.isNegative()) {
-        throw new Error('Value must be non-negative');
+        throw new Error('Value must be non-negative')
       }
 
-      return gamma(n.plus(1));
+      return gamma(n.plus(1))
     },
 
     'Array | Matrix': function (n) {
-      return deepMap(n, factorial);
+      return deepMap(n, factorial)
     }
-  });
+  })
 
   factorial.toTex = {
     1: '\\left(${args[0]}\\right)' + latex.operators['factorial']
-  };
+  }
 
-  return factorial;
+  return factorial
 }
 
-exports.name = 'factorial';
-exports.factory = factory;
+exports.name = 'factorial'
+exports.factory = factory

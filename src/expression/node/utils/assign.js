@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var errorTransform = require('../../transform/error.transform').transform;
-var setSafeProperty = require('../../../utils/customs').setSafeProperty;
+var errorTransform = require('../../transform/error.transform').transform
+var setSafeProperty = require('../../../utils/customs').setSafeProperty
 
 function factory (type, config, load, typed) {
-  var subset = load(require('../../../function/matrix/subset'));
-  var matrix = load(require('../../../type/matrix/function/matrix'));
+  var subset = load(require('../../../function/matrix/subset'))
+  var matrix = load(require('../../../type/matrix/function/matrix'))
 
   /**
    * Replace part of an object:
@@ -21,33 +21,28 @@ function factory (type, config, load, typed) {
    *                                            except in case of a string
    */
   // TODO: change assign to return the value instead of the object
-  return function assign(object, index, value) {
+  return function assign (object, index, value) {
     try {
       if (Array.isArray(object)) {
-        return matrix(object).subset(index, value).valueOf();
-      }
-      else if (object && typeof object.subset === 'function') { // Matrix
-        return object.subset(index, value);
-      }
-      else if (typeof object === 'string') {
+        return matrix(object).subset(index, value).valueOf()
+      } else if (object && typeof object.subset === 'function') { // Matrix
+        return object.subset(index, value)
+      } else if (typeof object === 'string') {
         // TODO: move setStringSubset into a separate util file, use that
-        return subset(object, index, value);
-      }
-      else if (typeof object === 'object') {
+        return subset(object, index, value)
+      } else if (typeof object === 'object') {
         if (!index.isObjectProperty()) {
-          throw TypeError('Cannot apply a numeric index as object property');
+          throw TypeError('Cannot apply a numeric index as object property')
         }
-        setSafeProperty(object, index.getObjectProperty(), value);
-        return object;
+        setSafeProperty(object, index.getObjectProperty(), value)
+        return object
+      } else {
+        throw new TypeError('Cannot apply index: unsupported type of object')
       }
-      else {
-        throw new TypeError('Cannot apply index: unsupported type of object');
-      }
-    }
-    catch (err) {
-        throw errorTransform(err);
+    } catch (err) {
+      throw errorTransform(err)
     }
   }
 }
 
-exports.factory = factory;
+exports.factory = factory

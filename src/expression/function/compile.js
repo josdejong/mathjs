@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../parse'));
+  var parse = load(require('../parse'))
 
   /**
    * Parse and compile an expression.
@@ -41,16 +41,16 @@ function factory (type, config, load, typed) {
    */
   return typed('compile', {
     'string': function (expr) {
-      return parse(expr).compile();
+      return parse(expr).compile()
     },
 
     'Array | Matrix': function (expr) {
       return deepMap(expr, function (entry) {
-        return parse(entry).compile();
-      });
+        return parse(entry).compile()
+      })
     }
-  });
+  })
 }
 
-exports.name = 'compile';
-exports.factory = factory;
+exports.name = 'compile'
+exports.factory = factory

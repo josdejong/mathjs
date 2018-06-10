@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-var clone = require('../../utils/object').clone;
-var validateIndex = require('../../utils/array').validateIndex;
-var getSafeProperty = require('../../utils/customs').getSafeProperty;
-var setSafeProperty = require('../../utils/customs').setSafeProperty;
-var DimensionError = require('../../error/DimensionError');
+var clone = require('../../utils/object').clone
+var validateIndex = require('../../utils/array').validateIndex
+var getSafeProperty = require('../../utils/customs').getSafeProperty
+var setSafeProperty = require('../../utils/customs').setSafeProperty
+var DimensionError = require('../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Get or set a subset of a matrix or string.
@@ -46,15 +46,15 @@ function factory (type, config, load, typed) {
   var subset = typed('subset', {
     // get subset
     'Array, Index': function (value, index) {
-      var m = matrix(value);
-      var subset = m.subset(index);       // returns a Matrix
+      var m = matrix(value)
+      var subset = m.subset(index) // returns a Matrix
       return index.isScalar()
-          ? subset
-          : subset.valueOf();  // return an Array (like the input)
+        ? subset
+        : subset.valueOf() // return an Array (like the input)
     },
 
     'Matrix, Index': function (value, index) {
-      return value.subset(index);
+      return value.subset(index)
     },
 
     'Object, Index': _getObjectProperty,
@@ -64,32 +64,32 @@ function factory (type, config, load, typed) {
     // set subset
     'Array, Index, any': function (value, index, replacement) {
       return matrix(clone(value))
-          .subset(index, replacement, undefined)
-          .valueOf();
+        .subset(index, replacement, undefined)
+        .valueOf()
     },
 
     'Array, Index, any, any': function (value, index, replacement, defaultValue) {
       return matrix(clone(value))
-          .subset(index, replacement, defaultValue)
-          .valueOf();
+        .subset(index, replacement, defaultValue)
+        .valueOf()
     },
 
     'Matrix, Index, any': function (value, index, replacement) {
-      return value.clone().subset(index, replacement);
+      return value.clone().subset(index, replacement)
     },
 
     'Matrix, Index, any, any': function (value, index, replacement, defaultValue) {
-      return value.clone().subset(index, replacement, defaultValue);
+      return value.clone().subset(index, replacement, defaultValue)
     },
 
     'string, Index, string': _setSubstring,
     'string, Index, string, string': _setSubstring,
     'Object, Index, any': _setObjectProperty
-  });
+  })
 
-  subset.toTex = undefined; // use default template
+  subset.toTex = undefined // use default template
 
-  return subset;
+  return subset
 
   /**
    * Retrieve a subset of a string
@@ -98,28 +98,28 @@ function factory (type, config, load, typed) {
    * @returns {string} substring
    * @private
    */
-  function _getSubstring(str, index) {
+  function _getSubstring (str, index) {
     if (!type.isIndex(index)) {
       // TODO: better error message
-      throw new TypeError('Index expected');
+      throw new TypeError('Index expected')
     }
     if (index.size().length != 1) {
-      throw new DimensionError(index.size().length, 1);
+      throw new DimensionError(index.size().length, 1)
     }
 
     // validate whether the range is out of range
-    var strLen = str.length;
-    validateIndex(index.min()[0], strLen);
-    validateIndex(index.max()[0], strLen);
+    var strLen = str.length
+    validateIndex(index.min()[0], strLen)
+    validateIndex(index.max()[0], strLen)
 
-    var range = index.dimension(0);
+    var range = index.dimension(0)
 
-    var substr = '';
+    var substr = ''
     range.forEach(function (v) {
-      substr += str.charAt(v);
-    });
+      substr += str.charAt(v)
+    })
 
-    return substr;
+    return substr
   }
 
   /**
@@ -132,55 +132,54 @@ function factory (type, config, load, typed) {
    * @returns {string} result
    * @private
    */
-  function _setSubstring(str, index, replacement, defaultValue) {
+  function _setSubstring (str, index, replacement, defaultValue) {
     if (!index || index.isIndex !== true) {
       // TODO: better error message
-      throw new TypeError('Index expected');
+      throw new TypeError('Index expected')
     }
     if (index.size().length != 1) {
-      throw new DimensionError(index.size().length, 1);
+      throw new DimensionError(index.size().length, 1)
     }
     if (defaultValue !== undefined) {
       if (typeof defaultValue !== 'string' || defaultValue.length !== 1) {
-        throw new TypeError('Single character expected as defaultValue');
+        throw new TypeError('Single character expected as defaultValue')
       }
-    }
-    else {
-      defaultValue = ' ';
+    } else {
+      defaultValue = ' '
     }
 
-    var range = index.dimension(0);
-    var len = range.size()[0];
+    var range = index.dimension(0)
+    var len = range.size()[0]
 
     if (len != replacement.length) {
-      throw new DimensionError(range.size()[0], replacement.length);
+      throw new DimensionError(range.size()[0], replacement.length)
     }
 
     // validate whether the range is out of range
-    var strLen = str.length;
-    validateIndex(index.min()[0]);
-    validateIndex(index.max()[0]);
+    var strLen = str.length
+    validateIndex(index.min()[0])
+    validateIndex(index.max()[0])
 
     // copy the string into an array with characters
-    var chars = [];
+    var chars = []
     for (var i = 0; i < strLen; i++) {
-      chars[i] = str.charAt(i);
+      chars[i] = str.charAt(i)
     }
 
     range.forEach(function (v, i) {
-      chars[v] = replacement.charAt(i[0]);
-    });
+      chars[v] = replacement.charAt(i[0])
+    })
 
     // initialize undefined characters with a space
     if (chars.length > strLen) {
       for (i = strLen - 1, len = chars.length; i < len; i++) {
         if (!chars[i]) {
-          chars[i] = defaultValue;
+          chars[i] = defaultValue
         }
       }
     }
 
-    return chars.join('');
+    return chars.join('')
   }
 }
 
@@ -193,15 +192,15 @@ function factory (type, config, load, typed) {
  */
 function _getObjectProperty (object, index) {
   if (index.size().length !== 1) {
-    throw new DimensionError(index.size(), 1);
+    throw new DimensionError(index.size(), 1)
   }
 
-  var key = index.dimension(0);
+  var key = index.dimension(0)
   if (typeof key !== 'string') {
-    throw new TypeError('String expected as index to retrieve an object property');
+    throw new TypeError('String expected as index to retrieve an object property')
   }
 
-  return getSafeProperty(object, key);
+  return getSafeProperty(object, key)
 }
 
 /**
@@ -214,20 +213,20 @@ function _getObjectProperty (object, index) {
  */
 function _setObjectProperty (object, index, replacement) {
   if (index.size().length !== 1) {
-    throw new DimensionError(index.size(), 1);
+    throw new DimensionError(index.size(), 1)
   }
 
-  var key = index.dimension(0);
+  var key = index.dimension(0)
   if (typeof key !== 'string') {
-    throw new TypeError('String expected as index to retrieve an object property');
+    throw new TypeError('String expected as index to retrieve an object property')
   }
 
   // clone the object, and apply the property to the clone
-  var updated = clone(object);
-  setSafeProperty(updated, key, replacement);
+  var updated = clone(object)
+  setSafeProperty(updated, key, replacement)
 
-  return updated;
+  return updated
 }
 
-exports.name = 'subset';
-exports.factory = factory;
+exports.name = 'subset'
+exports.factory = factory

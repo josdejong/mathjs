@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   // types
   require('./Matrix'),
@@ -14,4 +14,4 @@ module.exports = [
   require('./function/index'),
   require('./function/matrix'),
   require('./function/sparse')
-];
+]

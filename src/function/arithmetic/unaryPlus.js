@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
   /**
    * Unary plus operation.
@@ -31,42 +31,42 @@ function factory (type, config, load, typed) {
    */
   var unaryPlus = typed('unaryPlus', {
     'number': function (x) {
-      return x;
+      return x
     },
 
     'Complex': function (x) {
-      return x; // complex numbers are immutable
+      return x // complex numbers are immutable
     },
 
     'BigNumber': function (x) {
-      return x; // bignumbers are immutable
+      return x // bignumbers are immutable
     },
 
     'Fraction': function (x) {
-      return x; // fractions are immutable
+      return x // fractions are immutable
     },
 
     'Unit': function (x) {
-      return x.clone();
+      return x.clone()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since unaryPlus(0) = 0
-      return deepMap(x, unaryPlus, true);
+      return deepMap(x, unaryPlus, true)
     },
 
     'boolean | string': function (x) {
       // convert to a number or bignumber
-      return (config.number == 'BigNumber') ? new type.BigNumber(+x): +x;
+      return (config.number == 'BigNumber') ? new type.BigNumber(+x) : +x
     }
-  });
+  })
 
   unaryPlus.toTex = {
     1: latex.operators['unaryPlus'] + '\\left(${args[0]}\\right)'
-  };
+  }
 
-  return unaryPlus;
+  return unaryPlus
 }
 
-exports.name = 'unaryPlus';
-exports.factory = factory;
+exports.name = 'unaryPlus'
+exports.factory = factory

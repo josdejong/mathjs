@@ -1,8 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type) {
-
-  var SparseMatrix = type.SparseMatrix;
+  var SparseMatrix = type.SparseMatrix
 
   /**
    * Permutes a sparse matrix C = P * A * Q
@@ -18,41 +17,40 @@ function factory (type) {
    */
   var cs_permute = function (a, pinv, q, values) {
     // a arrays
-    var avalues = a._values;
-    var aindex = a._index;
-    var aptr = a._ptr;
-    var asize = a._size;
-    var adt = a._datatype;
+    var avalues = a._values
+    var aindex = a._index
+    var aptr = a._ptr
+    var asize = a._size
+    var adt = a._datatype
     // rows & columns
-    var m = asize[0];
-    var n = asize[1];
+    var m = asize[0]
+    var n = asize[1]
     // c arrays
-    var cvalues = values && a._values ? [] : null;
-    var cindex = []; // (aptr[n]);
-    var cptr = []; // (n + 1);
+    var cvalues = values && a._values ? [] : null
+    var cindex = [] // (aptr[n]);
+    var cptr = [] // (n + 1);
     // initialize vars
-    var nz = 0;
-    // loop columns    
+    var nz = 0
+    // loop columns
     for (var k = 0; k < n; k++) {
       // column k of C is column q[k] of A
-      cptr[k] = nz;
+      cptr[k] = nz
       // apply column permutation
-      var j = q ? (q[k]) : k;
+      var j = q ? (q[k]) : k
       // loop values in column j of A
       for (var t0 = aptr[j], t1 = aptr[j + 1], t = t0; t < t1; t++) {
         // row i of A is row pinv[i] of C
-        var r = pinv ? pinv[aindex[t]] : aindex[t];
+        var r = pinv ? pinv[aindex[t]] : aindex[t]
         // index
-        cindex[nz] = r;
+        cindex[nz] = r
         // check we need to populate values
-        if (cvalues) 
-          cvalues[nz] = avalues[t];
+        if (cvalues) { cvalues[nz] = avalues[t] }
         // increment number of nonzero elements
-        nz++;
+        nz++
       }
     }
     // finalize the last column of C
-    cptr[n] = nz;
+    cptr[n] = nz
     // return C matrix
     return new SparseMatrix({
       values: cvalues,
@@ -60,12 +58,12 @@ function factory (type) {
       ptr: cptr,
       size: [m, n],
       datatype: adt
-    });
-  };
+    })
+  }
 
-  return cs_permute;
+  return cs_permute
 }
 
-exports.name = 'cs_permute';
-exports.path = 'sparse';
-exports.factory = factory;
+exports.name = 'cs_permute'
+exports.path = 'sparse'
+exports.factory = factory

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-var number = require('../../utils/number');
+var deepMap = require('../../utils/collection/deepMap')
+var number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -39,32 +39,32 @@ function factory (type, config, load, typed) {
    */
   var isZero = typed('isZero', {
     'number': function (x) {
-      return x === 0;
+      return x === 0
     },
 
     'BigNumber': function (x) {
-      return x.isZero();
+      return x.isZero()
     },
 
     'Complex': function (x) {
-      return x.re === 0 && x.im === 0;
+      return x.re === 0 && x.im === 0
     },
 
     'Fraction': function (x) {
-      return x.d === 1 && x.n === 0;
+      return x.d === 1 && x.n === 0
     },
 
     'Unit': function (x) {
-      return isZero(x.value);
+      return isZero(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isZero);
+      return deepMap(x, isZero)
     }
-  });
+  })
 
-  return isZero;
+  return isZero
 }
 
-exports.name = 'isZero';
-exports.factory = factory;
+exports.name = 'isZero'
+exports.factory = factory

@@ -10,4 +10,4 @@ module.exports = {
     'bellNumbers(8)'
   ],
   'seealso': ['stirlingS2']
-};
+}

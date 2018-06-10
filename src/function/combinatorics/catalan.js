@@ -1,13 +1,12 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'));
-  var divide = load(require('../arithmetic/divide'));
-  var multiply = load(require('../arithmetic/multiply'));
-  var combinations = load(require('../probability/combinations'));
-  var isNegative = load(require('../utils/isNegative'));
-  var isInteger = load(require('../utils/isInteger'));
-
+  var add = load(require('../arithmetic/add'))
+  var divide = load(require('../arithmetic/divide'))
+  var multiply = load(require('../arithmetic/multiply'))
+  var combinations = load(require('../probability/combinations'))
+  var isNegative = load(require('../utils/isNegative'))
+  var isInteger = load(require('../utils/isInteger'))
 
   /**
    * The Catalan Numbers enumerate combinatorial structures of many different types.
@@ -32,20 +31,18 @@ function factory (type, config, load, typed) {
    */
   var catalan = typed('catalan', {
     'number | BigNumber': function (n) {
-
       if (!isInteger(n) || isNegative(n)) {
-        throw new TypeError('Non-negative integer value expected in function catalan');
+        throw new TypeError('Non-negative integer value expected in function catalan')
       }
-       
-      return divide(combinations(multiply(n,2), n), add(n,1));
 
+      return divide(combinations(multiply(n, 2), n), add(n, 1))
     }
-  });
+  })
 
-  catalan.toTex = {1: '\\mathrm{C}_{${args[0]}}'};
+  catalan.toTex = {1: '\\mathrm{C}_{${args[0]}}'}
 
-  return catalan;
+  return catalan
 }
 
-exports.name = 'catalan';
-exports.factory = factory;
+exports.name = 'catalan'
+exports.factory = factory

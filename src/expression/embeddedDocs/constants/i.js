@@ -11,4 +11,4 @@ module.exports = {
     'sqrt(-1)'
   ],
   'seealso': []
-};
+}

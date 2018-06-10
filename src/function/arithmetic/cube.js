@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Compute the cube of a value, `x * x * x`.
    * For matrices, the function is evaluated element wise.
@@ -30,35 +29,35 @@ function factory (type, config, load, typed) {
    */
   var cube = typed('cube', {
     'number': function (x) {
-      return x * x * x;
+      return x * x * x
     },
 
     'Complex': function (x) {
-      return x.mul(x).mul(x); // Is faster than pow(x, 3)
+      return x.mul(x).mul(x) // Is faster than pow(x, 3)
     },
 
     'BigNumber': function (x) {
-      return x.times(x).times(x);
+      return x.times(x).times(x)
     },
 
     'Fraction': function (x) {
-      return x.pow(3); // Is faster than mul()mul()mul()
+      return x.pow(3) // Is faster than mul()mul()mul()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since cube(0) = 0
-      return deepMap(x, cube, true);
+      return deepMap(x, cube, true)
     },
 
-    'Unit': function(x) {
-      return x.pow(3);
+    'Unit': function (x) {
+      return x.pow(3)
     }
-  });
+  })
 
-  cube.toTex = {1: '\\left(${args[0]}\\right)^3'};
+  cube.toTex = {1: '\\left(${args[0]}\\right)^3'}
 
-  return cube;
+  return cube
 }
 
-exports.name = 'cube';
-exports.factory = factory;
+exports.name = 'cube'
+exports.factory = factory

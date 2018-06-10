@@ -13,4 +13,4 @@ module.exports = {
     'print("Values: $0, $1, $2", [6, 9, 4])'
   ],
   'seealso': ['format']
-};
+}

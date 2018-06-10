@@ -1,5 +1,5 @@
-'use strict';
-var memoize = require('../function').memoize;
+'use strict'
+var memoize = require('../function').memoize
 
 /**
  * Calculate BigNumber e
@@ -7,8 +7,8 @@ var memoize = require('../function').memoize;
  * @returns {BigNumber} Returns e
  */
 exports.e = memoize(function (BigNumber) {
-  return new BigNumber(1).exp();
-}, hasher);
+  return new BigNumber(1).exp()
+}, hasher)
 
 /**
  * Calculate BigNumber golden ratio, phi = (1+sqrt(5))/2
@@ -16,8 +16,8 @@ exports.e = memoize(function (BigNumber) {
  * @returns {BigNumber} Returns phi
  */
 exports.phi = memoize(function (BigNumber) {
-  return new BigNumber(1).plus(new BigNumber(5).sqrt()).div(2);
-}, hasher);
+  return new BigNumber(1).plus(new BigNumber(5).sqrt()).div(2)
+}, hasher)
 
 /**
  * Calculate BigNumber pi.
@@ -25,8 +25,8 @@ exports.phi = memoize(function (BigNumber) {
  * @returns {BigNumber} Returns pi
  */
 exports.pi = memoize(function (BigNumber) {
-  return BigNumber.acos(-1);
-}, hasher);
+  return BigNumber.acos(-1)
+}, hasher)
 
 /**
  * Calculate BigNumber tau, tau = 2 * pi
@@ -34,8 +34,8 @@ exports.pi = memoize(function (BigNumber) {
  * @returns {BigNumber} Returns tau
  */
 exports.tau = memoize(function (BigNumber) {
-  return exports.pi(BigNumber).times(2);
-}, hasher);
+  return exports.pi(BigNumber).times(2)
+}, hasher)
 
 /**
  * Create a hash for a BigNumber constructor function. The created has is
@@ -46,5 +46,5 @@ exports.tau = memoize(function (BigNumber) {
  * @private
  */
 function hasher (args) {
-  return args[0].precision;
+  return args[0].precision
 }

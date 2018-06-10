@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach');
+var deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var multiply = load(require('../arithmetic/multiplyScalar'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var multiply = load(require('../arithmetic/multiplyScalar'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the product of a matrix or a list with values.
@@ -38,19 +38,19 @@ function factory (type, config, load, typed) {
     // prod([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
       // TODO: implement prod(A, dim)
-      throw new Error('prod(A, dim) is not yet supported');
-      //return reduce(arguments[0], arguments[1], math.prod);
+      throw new Error('prod(A, dim) is not yet supported')
+      // return reduce(arguments[0], arguments[1], math.prod);
     },
 
     // prod(a, b, c, d, ...)
     '...': function (args) {
-      return _prod(args);
+      return _prod(args)
     }
-  });
+  })
 
-  prod.toTex = undefined; // use default template
+  prod.toTex = undefined // use default template
 
-  return prod;
+  return prod
 
   /**
    * Recursively calculate the product of an n-dimensional array
@@ -58,25 +58,24 @@ function factory (type, config, load, typed) {
    * @return {number} prod
    * @private
    */
-  function _prod(array) {
-    var prod = undefined;
+  function _prod (array) {
+    var prod = undefined
 
     deepForEach(array, function (value) {
       try {
-        prod = (prod === undefined) ? value : multiply(prod, value);
+        prod = (prod === undefined) ? value : multiply(prod, value)
+      } catch (err) {
+        throw improveErrorMessage(err, 'prod', value)
       }
-      catch (err) {
-        throw improveErrorMessage(err, 'prod', value);
-      }
-    });
+    })
 
     if (prod === undefined) {
-      throw new Error('Cannot calculate prod of an empty array');
+      throw new Error('Cannot calculate prod of an empty array')
     }
 
-    return prod;
+    return prod
   }
 }
 
-exports.name = 'prod';
-exports.factory = factory;
+exports.name = 'prod'
+exports.factory = factory

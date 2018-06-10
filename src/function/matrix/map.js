@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount;
+var maxArgumentCount = require('../../utils/function').maxArgumentCount
 
 function factory (type, config, load, typed) {
   /**
@@ -31,13 +31,13 @@ function factory (type, config, load, typed) {
     'Array, function': _map,
 
     'Matrix, function': function (x, callback) {
-      return x.map(callback);
+      return x.map(callback)
     }
-  });
+  })
 
-  map.toTex = undefined; // use default template
+  map.toTex = undefined // use default template
 
-  return map;
+  return map
 }
 
 /**
@@ -49,31 +49,28 @@ function factory (type, config, load, typed) {
  */
 function _map (array, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback);
+  var args = maxArgumentCount(callback)
 
   var recurse = function (value, index) {
     if (Array.isArray(value)) {
       return value.map(function (child, i) {
         // we create a copy of the index array and append the new index value
-        return recurse(child, index.concat(i));
-      });
-    }
-    else {
+        return recurse(child, index.concat(i))
+      })
+    } else {
       // invoke the callback function with the right number of arguments
       if (args === 1) {
-        return callback(value);
-      }
-      else if (args === 2) {
-        return callback(value, index);
-      }
-      else { // 3 or -1
-        return callback(value, index, array);
+        return callback(value)
+      } else if (args === 2) {
+        return callback(value, index)
+      } else { // 3 or -1
+        return callback(value, index, array)
       }
     }
-  };
+  }
 
-  return recurse(array, []);
+  return recurse(array, [])
 }
 
-exports.name = 'map';
-exports.factory = factory;
+exports.name = 'map'
+exports.factory = factory

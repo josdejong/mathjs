@@ -14,4 +14,4 @@ module.exports = {
   'examples': [
   ],
   'seealso': ['random', 'randomInt']
-};
+}

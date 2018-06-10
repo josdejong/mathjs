@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var distribution = load(require('./distribution'));
+  var distribution = load(require('./distribution'))
 
   /**
    * Return a random integer number larger or equal to `min` and smaller than `max`
@@ -32,12 +32,12 @@ function factory (type, config, load, typed) {
    * @return {number | Array | Matrix} A random integer value
    */
   // TODO: rework randomInt to a typed-function
-  var randomInt = distribution('uniform').randomInt;
+  var randomInt = distribution('uniform').randomInt
 
-  randomInt.toTex = undefined; // use default template
+  randomInt.toTex = undefined // use default template
 
-  return randomInt;
+  return randomInt
 }
 
-exports.name = 'randomInt';
-exports.factory = factory;
+exports.name = 'randomInt'
+exports.factory = factory

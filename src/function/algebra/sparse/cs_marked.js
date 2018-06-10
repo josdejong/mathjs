@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
 function factory () {
-
   /**
    * Checks if the node at w[j] is marked
    *
@@ -12,12 +11,12 @@ function factory () {
    */
   var cs_marked = function (w, j) {
     // check node is marked
-    return w[j] < 0;
-  };
+    return w[j] < 0
+  }
 
-  return cs_marked;
+  return cs_marked
 }
 
-exports.name = 'cs_marked';
-exports.path = 'sparse';
-exports.factory = factory;
+exports.name = 'cs_marked'
+exports.path = 'sparse'
+exports.factory = factory

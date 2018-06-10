@@ -10,4 +10,4 @@ module.exports = {
     'log(10)'
   ],
   'seealso': []
-};
+}

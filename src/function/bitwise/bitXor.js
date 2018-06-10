@@ -1,18 +1,18 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
-var bigBitXor = require('../../utils/bignumber/bitXor');
+var isInteger = require('../../utils/number').isInteger
+var bigBitXor = require('../../utils/bignumber/bitXor')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'));
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'));
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
+  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Bitwise XOR two values, `x ^ y`.
@@ -40,78 +40,78 @@ function factory (type, config, load, typed) {
 
     'number, number': function (x, y) {
       if (!isInteger(x) || !isInteger(y)) {
-        throw new Error('Integers expected in function bitXor');
+        throw new Error('Integers expected in function bitXor')
       }
 
-      return x ^ y;
+      return x ^ y
     },
 
     'BigNumber, BigNumber': bigBitXor,
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm07(x, y, bitXor);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm07(x, y, bitXor)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm03(y, x, bitXor, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm03(y, x, bitXor, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm03(x, y, bitXor, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm03(x, y, bitXor, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, bitXor);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, bitXor)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return bitXor(matrix(x), matrix(y)).valueOf();
+      return bitXor(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return bitXor(matrix(x), y);
+      return bitXor(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return bitXor(x, matrix(y));
+      return bitXor(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, bitXor, false);
+      return algorithm12(x, y, bitXor, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, bitXor, false);
+      return algorithm14(x, y, bitXor, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, bitXor, true);
+      return algorithm12(y, x, bitXor, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, bitXor, true);
+      return algorithm14(y, x, bitXor, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, bitXor, false).valueOf();
+      return algorithm14(matrix(x), y, bitXor, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, bitXor, true).valueOf();
+      return algorithm14(matrix(y), x, bitXor, true).valueOf()
     }
-  });
+  })
 
   bitXor.toTex = {
     2: '\\left(${args[0]}' + latex.operators['bitXor'] + '${args[1]}\\right)'
-  };
+  }
 
-  return bitXor;
+  return bitXor
 }
 
-exports.name = 'bitXor';
-exports.factory = factory;
+exports.name = 'bitXor'
+exports.factory = factory

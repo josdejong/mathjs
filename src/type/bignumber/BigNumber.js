@@ -1,14 +1,14 @@
-'use strict';
-var Decimal = require('decimal.js/decimal.js'); // make sure to pick the es5 version
+'use strict'
+var Decimal = require('decimal.js/decimal.js') // make sure to pick the es5 version
 
 function factory (type, config, load, typed, math) {
-  var BigNumber = Decimal.clone({precision: config.precision});
+  var BigNumber = Decimal.clone({precision: config.precision})
 
   /**
    * Attach type information
    */
-  BigNumber.prototype.type = 'BigNumber';
-  BigNumber.prototype.isBigNumber = true;
+  BigNumber.prototype.type = 'BigNumber'
+  BigNumber.prototype.isBigNumber = true
 
   /**
    * Get a JSON representation of a BigNumber containing
@@ -20,8 +20,8 @@ function factory (type, config, load, typed, math) {
     return {
       mathjs: 'BigNumber',
       value: this.toString()
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate a BigNumber from a JSON object
@@ -30,20 +30,20 @@ function factory (type, config, load, typed, math) {
    * @return {BigNumber}
    */
   BigNumber.fromJSON = function (json) {
-    return new BigNumber(json.value);
-  };
+    return new BigNumber(json.value)
+  }
 
   // listen for changed in the configuration, automatically apply changed precision
   math.on('config', function (curr, prev) {
     if (curr.precision !== prev.precision) {
-      BigNumber.config({ precision: curr.precision });
+      BigNumber.config({ precision: curr.precision })
     }
-  });
+  })
 
-  return BigNumber;
+  return BigNumber
 }
 
-exports.name = 'BigNumber';
-exports.path = 'type';
-exports.factory = factory;
-exports.math = true; // request access to the math namespace
+exports.name = 'BigNumber'
+exports.path = 'type'
+exports.factory = factory
+exports.math = true // request access to the math namespace

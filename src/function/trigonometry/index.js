@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./acos'),
   require('./acosh'),
@@ -25,4 +25,4 @@ module.exports = [
   require('./sinh'),
   require('./tan'),
   require('./tanh')
-];
+]

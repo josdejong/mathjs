@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var ZERO = new type.BigNumber(0);
-  var ONE = new type.BigNumber(1);
+  var ZERO = new type.BigNumber(0)
+  var ONE = new type.BigNumber(1)
 
   /**
    * Create an array from a range.
@@ -56,67 +56,66 @@ function factory (type, config, load, typed) {
     'string': _strRange,
     'string, boolean': _strRange,
 
-    'number, number':  function (start, end) {
-      return _out(_rangeEx(start, end, 1));
+    'number, number': function (start, end) {
+      return _out(_rangeEx(start, end, 1))
     },
     'number, number, number': function (start, end, step) {
-      return _out(_rangeEx(start, end, step));
+      return _out(_rangeEx(start, end, step))
     },
     'number, number, boolean': function (start, end, includeEnd) {
       return includeEnd
-          ? _out(_rangeInc(start, end, 1))
-          : _out(_rangeEx(start, end, 1));
+        ? _out(_rangeInc(start, end, 1))
+        : _out(_rangeEx(start, end, 1))
     },
     'number, number, number, boolean': function (start, end, step, includeEnd) {
       return includeEnd
-          ? _out(_rangeInc(start, end, step))
-          : _out(_rangeEx(start, end, step));
+        ? _out(_rangeInc(start, end, step))
+        : _out(_rangeEx(start, end, step))
     },
 
-    'BigNumber, BigNumber':  function (start, end) {
-      return _out(_bigRangeEx(start, end, ONE));
+    'BigNumber, BigNumber': function (start, end) {
+      return _out(_bigRangeEx(start, end, ONE))
     },
     'BigNumber, BigNumber, BigNumber': function (start, end, step) {
-      return _out(_bigRangeEx(start, end, step));
+      return _out(_bigRangeEx(start, end, step))
     },
     'BigNumber, BigNumber, boolean': function (start, end, includeEnd) {
       return includeEnd
-          ? _out(_bigRangeInc(start, end, ONE))
-          : _out(_bigRangeEx(start, end, ONE));
+        ? _out(_bigRangeInc(start, end, ONE))
+        : _out(_bigRangeEx(start, end, ONE))
     },
     'BigNumber, BigNumber, BigNumber, boolean': function (start, end, step, includeEnd) {
       return includeEnd
-          ? _out(_bigRangeInc(start, end, step))
-          : _out(_bigRangeEx(start, end, step));
+        ? _out(_bigRangeInc(start, end, step))
+        : _out(_bigRangeEx(start, end, step))
     }
 
-  });
+  })
 
-  range.toTex = undefined; // use default template
+  range.toTex = undefined // use default template
 
-  return range;
+  return range
 
-  function _out(arr) {
-    return config.matrix === 'Array' ? arr : matrix(arr);
+  function _out (arr) {
+    return config.matrix === 'Array' ? arr : matrix(arr)
   }
 
   function _strRange (str, includeEnd) {
-    var r = _parse(str);
-    if (!r){
-      throw new SyntaxError('String "' + str + '" is no valid range');
+    var r = _parse(str)
+    if (!r) {
+      throw new SyntaxError('String "' + str + '" is no valid range')
     }
 
-    var fn;
+    var fn
     if (config.number === 'BigNumber') {
-      fn = includeEnd ? _bigRangeInc : _bigRangeEx;
+      fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
-          new type.BigNumber(r.start),
-          new type.BigNumber(r.end),
-          new type.BigNumber(r.step)));
-    }
-    else {
-      fn = includeEnd ? _rangeInc : _rangeEx;
-      return _out(fn(r.start, r.end, r.step));
+        new type.BigNumber(r.start),
+        new type.BigNumber(r.end),
+        new type.BigNumber(r.step)))
+    } else {
+      fn = includeEnd ? _rangeInc : _rangeEx
+      return _out(fn(r.start, r.end, r.step))
     }
   }
 
@@ -130,21 +129,20 @@ function factory (type, config, load, typed) {
    */
   function _rangeEx (start, end, step) {
     var array = [],
-        x = start;
+      x = start
     if (step > 0) {
       while (x < end) {
-        array.push(x);
-        x += step;
+        array.push(x)
+        x += step
       }
-    }
-    else if (step < 0) {
+    } else if (step < 0) {
       while (x > end) {
-        array.push(x);
-        x += step;
+        array.push(x)
+        x += step
       }
     }
 
-    return array;
+    return array
   }
 
   /**
@@ -157,21 +155,20 @@ function factory (type, config, load, typed) {
    */
   function _rangeInc (start, end, step) {
     var array = [],
-        x = start;
+      x = start
     if (step > 0) {
       while (x <= end) {
-        array.push(x);
-        x += step;
+        array.push(x)
+        x += step
       }
-    }
-    else if (step < 0) {
+    } else if (step < 0) {
       while (x >= end) {
-        array.push(x);
-        x += step;
+        array.push(x)
+        x += step
       }
     }
 
-    return array;
+    return array
   }
 
   /**
@@ -184,21 +181,20 @@ function factory (type, config, load, typed) {
    */
   function _bigRangeEx (start, end, step) {
     var array = [],
-        x = start;
+      x = start
     if (step.gt(ZERO)) {
       while (x.lt(end)) {
-        array.push(x);
-        x = x.plus(step);
+        array.push(x)
+        x = x.plus(step)
       }
-    }
-    else if (step.lt(ZERO)) {
+    } else if (step.lt(ZERO)) {
       while (x.gt(end)) {
-        array.push(x);
-        x = x.plus(step);
+        array.push(x)
+        x = x.plus(step)
       }
     }
 
-    return array;
+    return array
   }
 
   /**
@@ -211,21 +207,20 @@ function factory (type, config, load, typed) {
    */
   function _bigRangeInc (start, end, step) {
     var array = [],
-        x = start;
+      x = start
     if (step.gt(ZERO)) {
       while (x.lte(end)) {
-        array.push(x);
-        x = x.plus(step);
+        array.push(x)
+        x = x.plus(step)
       }
-    }
-    else if (step.lt(ZERO)) {
+    } else if (step.lt(ZERO)) {
       while (x.gte(end)) {
-        array.push(x);
-        x = x.plus(step);
+        array.push(x)
+        x = x.plus(step)
       }
     }
 
-    return array;
+    return array
   }
 
   /**
@@ -238,19 +233,19 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _parse (str) {
-    var args = str.split(':');
+    var args = str.split(':')
 
     // number
     var nums = args.map(function (arg) {
       // use Number and not parseFloat as Number returns NaN on invalid garbage in the string
-      return Number(arg);
-    });
+      return Number(arg)
+    })
 
     var invalid = nums.some(function (num) {
-      return isNaN(num);
-    });
-    if(invalid) {
-      return null;
+      return isNaN(num)
+    })
+    if (invalid) {
+      return null
     }
 
     switch (nums.length) {
@@ -259,21 +254,20 @@ function factory (type, config, load, typed) {
           start: nums[0],
           end: nums[1],
           step: 1
-        };
+        }
 
       case 3:
         return {
           start: nums[0],
           end: nums[2],
           step: nums[1]
-        };
+        }
 
       default:
-        return null;
+        return null
     }
   }
-
 }
 
-exports.name = 'range';
-exports.factory = factory;
+exports.name = 'range'
+exports.factory = factory

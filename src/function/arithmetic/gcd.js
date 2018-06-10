@@ -1,16 +1,15 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
-
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'));
-  var algorithm04 = load(require('../../type/matrix/utils/algorithm04'));
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
+  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  var algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
+  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -44,79 +43,79 @@ function factory (type, config, load, typed) {
     'BigNumber, BigNumber': _gcdBigNumber,
 
     'Fraction, Fraction': function (x, y) {
-      return x.gcd(y);
+      return x.gcd(y)
     },
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm04(x, y, gcd);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm04(x, y, gcd)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm01(y, x, gcd, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm01(y, x, gcd, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm01(x, y, gcd, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm01(x, y, gcd, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, gcd);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, gcd)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return gcd(matrix(x), matrix(y)).valueOf();
+      return gcd(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return gcd(matrix(x), y);
+      return gcd(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return gcd(x, matrix(y));
+      return gcd(x, matrix(y))
     },
-    
+
     'SparseMatrix, number | BigNumber': function (x, y) {
-      return algorithm10(x, y, gcd, false);
+      return algorithm10(x, y, gcd, false)
     },
 
     'DenseMatrix, number | BigNumber': function (x, y) {
-      return algorithm14(x, y, gcd, false);
+      return algorithm14(x, y, gcd, false)
     },
 
     'number | BigNumber, SparseMatrix': function (x, y) {
-      return algorithm10(y, x, gcd, true);
+      return algorithm10(y, x, gcd, true)
     },
 
     'number | BigNumber, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, gcd, true);
+      return algorithm14(y, x, gcd, true)
     },
 
     'Array, number | BigNumber': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, gcd, false).valueOf();
+      return algorithm14(matrix(x), y, gcd, false).valueOf()
     },
 
     'number | BigNumber, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, gcd, true).valueOf();
+      return algorithm14(matrix(y), x, gcd, true).valueOf()
     },
 
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      var res = gcd(a, b);
+      var res = gcd(a, b)
       for (var i = 0; i < args.length; i++) {
-        res = gcd(res, args[i]);
+        res = gcd(res, args[i])
       }
-      return res;
+      return res
     }
-  });
+  })
 
-  gcd.toTex = '\\gcd\\left(${args}\\right)';
+  gcd.toTex = '\\gcd\\left(${args}\\right)'
 
-  return gcd;
+  return gcd
 
   /**
    * Calculate gcd for BigNumbers
@@ -125,19 +124,19 @@ function factory (type, config, load, typed) {
    * @returns {BigNumber} Returns greatest common denominator of a and b
    * @private
    */
-  function _gcdBigNumber(a, b) {
+  function _gcdBigNumber (a, b) {
     if (!a.isInt() || !b.isInt()) {
-      throw new Error('Parameters in function gcd must be integer numbers');
+      throw new Error('Parameters in function gcd must be integer numbers')
     }
 
     // http://en.wikipedia.org/wiki/Euclidean_algorithm
-    var zero = new type.BigNumber(0);
+    var zero = new type.BigNumber(0)
     while (!b.isZero()) {
-      var r = a.mod(b);
-      a = b;
-      b = r;
+      var r = a.mod(b)
+      a = b
+      b = r
     }
-    return a.lt(zero) ? a.neg() : a;
+    return a.lt(zero) ? a.neg() : a
   }
 }
 
@@ -148,20 +147,20 @@ function factory (type, config, load, typed) {
  * @returns {number} Returns the greatest common denominator of a and b
  * @private
  */
-function _gcd(a, b) {
+function _gcd (a, b) {
   if (!isInteger(a) || !isInteger(b)) {
-    throw new Error('Parameters in function gcd must be integer numbers');
+    throw new Error('Parameters in function gcd must be integer numbers')
   }
 
   // http://en.wikipedia.org/wiki/Euclidean_algorithm
-  var r;
+  var r
   while (b != 0) {
-    r = a % b;
-    a = b;
-    b = r;
+    r = a % b
+    a = b
+    b = r
   }
-  return (a < 0) ? -a : a;
+  return (a < 0) ? -a : a
 }
 
-exports.name = 'gcd';
-exports.factory = factory;
+exports.name = 'gcd'
+exports.factory = factory

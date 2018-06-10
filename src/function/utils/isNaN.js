@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-var number = require('../../utils/number');
+var deepMap = require('../../utils/collection/deepMap')
+var number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -35,32 +35,32 @@ function factory (type, config, load, typed) {
    */
   var isNaN = typed('isNaN', {
     'number': function (x) {
-      return Number.isNaN(x);
+      return Number.isNaN(x)
     },
 
     'BigNumber': function (x) {
-      return x.isNaN();
+      return x.isNaN()
     },
 
     'Fraction': function (x) {
-      return false;
+      return false
     },
 
     'Complex': function (x) {
-      return x.isNaN();
+      return x.isNaN()
     },
 
     'Unit': function (x) {
-      return Number.isNaN(x.value);
+      return Number.isNaN(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, Number.isNaN);
+      return deepMap(x, Number.isNaN)
     }
-  });
+  })
 
-  return isNaN;
+  return isNaN
 }
 
-exports.name = 'isNaN';
-exports.factory = factory;
+exports.name = 'isNaN'
+exports.factory = factory

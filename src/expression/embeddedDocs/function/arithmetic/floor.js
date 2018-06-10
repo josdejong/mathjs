@@ -12,4 +12,4 @@ module.exports = {
     'floor(-4.2)'
   ],
   'seealso': ['ceil', 'fix', 'round']
-};
+}

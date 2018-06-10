@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the inverse sine of a value.
    *
@@ -30,31 +29,30 @@ function factory (type, config, load, typed) {
   var asin = typed('asin', {
     'number': function (x) {
       if ((x >= -1 && x <= 1) || config.predictable) {
-        return Math.asin(x);
-      }
-      else {
-        return new type.Complex(x, 0).asin();
+        return Math.asin(x)
+      } else {
+        return new type.Complex(x, 0).asin()
       }
     },
 
     'Complex': function (x) {
-      return x.asin();
+      return x.asin()
     },
 
     'BigNumber': function (x) {
-      return x.asin();
+      return x.asin()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since asin(0) = 0
-      return deepMap(x, asin, true);
+      return deepMap(x, asin, true)
     }
-  });
+  })
 
-  asin.toTex = {1: '\\sin^{-1}\\left(${args[0]}\\right)'};
+  asin.toTex = {1: '\\sin^{-1}\\left(${args[0]}\\right)'}
 
-  return asin;
+  return asin
 }
 
-exports.name = 'asin';
-exports.factory = factory;
+exports.name = 'asin'
+exports.factory = factory

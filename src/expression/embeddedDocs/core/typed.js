@@ -12,4 +12,4 @@ module.exports = {
     'double("hello")'
   ],
   'seealso': []
-};
+}

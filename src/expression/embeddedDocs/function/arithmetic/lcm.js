@@ -11,4 +11,4 @@ module.exports = {
     'lcm(6, 21, 5)'
   ],
   'seealso': [ 'gcd' ]
-};
+}

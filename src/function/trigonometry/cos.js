@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the cosine of a value.
    *
@@ -34,29 +33,29 @@ function factory (type, config, load, typed) {
     'number': Math.cos,
 
     'Complex': function (x) {
-      return x.cos();
+      return x.cos()
     },
 
     'BigNumber': function (x) {
-      return x.cos();
+      return x.cos()
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function cos is no angle');
+        throw new TypeError('Unit in function cos is no angle')
       }
-      return cos(x.value);
+      return cos(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, cos);
+      return deepMap(x, cos)
     }
-  });
+  })
 
-  cos.toTex = {1: '\\cos\\left(${args[0]}\\right)'};
+  cos.toTex = {1: '\\cos\\left(${args[0]}\\right)'}
 
-  return cos;
+  return cos
 }
 
-exports.name = 'cos';
-exports.factory = factory;
+exports.name = 'cos'
+exports.factory = factory

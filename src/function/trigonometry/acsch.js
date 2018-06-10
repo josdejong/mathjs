@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the hyperbolic arccosecant of a value,
    * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
@@ -27,27 +26,27 @@ function factory (type, config, load, typed) {
    */
   var acsch = typed('acsch', {
     'number': function (x) {
-      x = 1 / x;
-      return Math.log(x + Math.sqrt(x*x + 1));
+      x = 1 / x
+      return Math.log(x + Math.sqrt(x * x + 1))
     },
 
     'Complex': function (x) {
-      return x.acsch();
+      return x.acsch()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).asinh();
+      return new type.BigNumber(1).div(x).asinh()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acsch);
+      return deepMap(x, acsch)
     }
-  });
+  })
 
-  acsch.toTex = {1: '\\mathrm{csch}^{-1}\\left(${args[0]}\\right)'};
+  acsch.toTex = {1: '\\mathrm{csch}^{-1}\\left(${args[0]}\\right)'}
 
-  return acsch;
+  return acsch
 }
 
-exports.name = 'acsch';
-exports.factory = factory;
+exports.name = 'acsch'
+exports.factory = factory

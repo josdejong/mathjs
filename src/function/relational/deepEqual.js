@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var equal = load(require('./equal'));
+  var equal = load(require('./equal'))
 
   /**
    * Test element wise whether two matrices are equal.
@@ -34,13 +34,13 @@ function factory (type, config, load, typed) {
    */
   var deepEqual = typed('deepEqual', {
     'any, any': function (x, y) {
-      return _deepEqual(x.valueOf(), y.valueOf());
+      return _deepEqual(x.valueOf(), y.valueOf())
     }
-  });
+  })
 
-  deepEqual.toTex = undefined; // use default template
+  deepEqual.toTex = undefined // use default template
 
-  return deepEqual;
+  return deepEqual
 
   /**
    * Test whether two arrays have the same size and all elements are equal
@@ -48,36 +48,33 @@ function factory (type, config, load, typed) {
    * @param {Array | *} y
    * @return {boolean} Returns true if both arrays are deep equal
    */
-  function _deepEqual(x, y) {
+  function _deepEqual (x, y) {
     if (Array.isArray(x)) {
       if (Array.isArray(y)) {
-        var len = x.length;
+        var len = x.length
         if (len !== y.length) {
-          return false;
+          return false
         }
 
         for (var i = 0; i < len; i++) {
           if (!_deepEqual(x[i], y[i])) {
-            return false;
+            return false
           }
         }
 
-        return true;
+        return true
+      } else {
+        return false
       }
-      else {
-        return false;
-      }
-    }
-    else {
+    } else {
       if (Array.isArray(y)) {
-        return false;
-      }
-      else {
-        return equal(x, y);
+        return false
+      } else {
+        return equal(x, y)
       }
     }
   }
 }
 
-exports.name = 'deepEqual';
-exports.factory = factory;
+exports.name = 'deepEqual'
+exports.factory = factory

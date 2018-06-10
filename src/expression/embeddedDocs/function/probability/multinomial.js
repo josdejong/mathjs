@@ -9,4 +9,4 @@ module.exports = {
     'multinomial([1, 2, 1])'
   ],
   'seealso': ['combinations', 'factorial']
-};
+}

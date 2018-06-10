@@ -15,4 +15,4 @@ module.exports = {
     'square',
     'multiply'
   ]
-};
+}

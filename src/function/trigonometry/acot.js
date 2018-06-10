@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
    *
@@ -29,26 +28,26 @@ function factory (type, config, load, typed) {
    */
   var acot = typed('acot', {
     'number': function (x) {
-      return Math.atan(1 / x);
+      return Math.atan(1 / x)
     },
 
     'Complex': function (x) {
-      return x.acot();
+      return x.acot()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).atan();
+      return new type.BigNumber(1).div(x).atan()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acot);
+      return deepMap(x, acot)
     }
-  });
+  })
 
-  acot.toTex = {1: '\\cot^{-1}\\left(${args[0]}\\right)'};
+  acot.toTex = {1: '\\cot^{-1}\\left(${args[0]}\\right)'}
 
-  return acot;
+  return acot
 }
 
-exports.name = 'acot';
-exports.factory = factory;
+exports.name = 'acot'
+exports.factory = factory

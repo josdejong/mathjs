@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-function factory(type, config, load, typed) {
-  var multiplyScalar = load(require('./multiplyScalar'));
+function factory (type, config, load, typed) {
+  var multiplyScalar = load(require('./multiplyScalar'))
 
   /**
    * Divide two scalar values, `x / y`.
@@ -18,42 +18,42 @@ function factory(type, config, load, typed) {
    */
   var divideScalar = typed('divide', {
     'number, number': function (x, y) {
-      return x / y;
+      return x / y
     },
 
     'Complex, Complex': function (x, y) {
-      return x.div(y);
+      return x.div(y)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.div(y);
+      return x.div(y)
     },
 
     'Fraction, Fraction': function (x, y) {
-      return x.div(y);
+      return x.div(y)
     },
 
     'Unit, number | Fraction | BigNumber': function (x, y) {
-      var res = x.clone();
+      var res = x.clone()
       // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = divideScalar(((res.value === null) ? res._normalize(1) : res.value), y);
-      return res;
+      res.value = divideScalar(((res.value === null) ? res._normalize(1) : res.value), y)
+      return res
     },
 
     'number | Fraction | BigNumber, Unit': function (x, y) {
-      var res = y.pow(-1);
+      var res = y.pow(-1)
       // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = multiplyScalar(((res.value === null) ? res._normalize(1) : res.value), x);
-      return res;
+      res.value = multiplyScalar(((res.value === null) ? res._normalize(1) : res.value), x)
+      return res
     },
 
     'Unit, Unit': function (x, y) {
-      return x.divide(y);
+      return x.divide(y)
     }
 
-  });
+  })
 
-  return divideScalar;
+  return divideScalar
 }
 
-exports.factory = factory;
+exports.factory = factory

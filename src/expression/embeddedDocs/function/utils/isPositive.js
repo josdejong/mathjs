@@ -12,4 +12,4 @@ module.exports = {
     'isPositive([3, 0.5, -2])'
   ],
   'seealso': ['isInteger', 'isNumeric', 'isNegative', 'isZero']
-};
+}

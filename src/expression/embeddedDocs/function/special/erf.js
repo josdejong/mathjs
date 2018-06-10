@@ -11,4 +11,4 @@ module.exports = {
     'erf(4)'
   ],
   'seealso': []
-};
+}

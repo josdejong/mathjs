@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
-var containsCollections = require('../../utils/collection/containsCollections');
+var flatten = require('../../utils/array').flatten
+var containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/addScalar'));
-  var divide = load(require('../arithmetic/divideScalar'));
-  var compare = load(require('../relational/compare'));
-  var partitionSelect = load(require('../matrix/partitionSelect'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var add = load(require('../arithmetic/addScalar'))
+  var divide = load(require('../arithmetic/divideScalar'))
+  var compare = load(require('../relational/compare'))
+  var partitionSelect = load(require('../matrix/partitionSelect'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the median of a matrix or a list with values. The values are
@@ -43,20 +43,19 @@ function factory (type, config, load, typed) {
     // median([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
       // TODO: implement median(A, dim)
-      throw new Error('median(A, dim) is not yet supported');
-      //return reduce(arguments[0], arguments[1], ...);
+      throw new Error('median(A, dim) is not yet supported')
+      // return reduce(arguments[0], arguments[1], ...);
     },
 
     // median(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-          throw new TypeError('Scalar values expected in function median');
+        throw new TypeError('Scalar values expected in function median')
       }
 
-      return _median(args);
+      return _median(args)
     }
-  });
-
+  })
 
   /**
    * Recursively calculate the median of an n-dimensional array
@@ -64,60 +63,58 @@ function factory (type, config, load, typed) {
    * @return {Number} median
    * @private
    */
-  function _median(array) {
+  function _median (array) {
     try {
-      array = flatten(array.valueOf());
+      array = flatten(array.valueOf())
 
-      var num = array.length;
+      var num = array.length
       if (num == 0) {
-        throw new Error('Cannot calculate median of an empty array');
+        throw new Error('Cannot calculate median of an empty array')
       }
 
       if (num % 2 == 0) {
         // even: return the average of the two middle values
-        var mid = num / 2 - 1;
-        var right = partitionSelect(array, mid + 1);
+        var mid = num / 2 - 1
+        var right = partitionSelect(array, mid + 1)
 
         // array now partitioned at mid + 1, take max of left part
-        var left = array[mid];
+        var left = array[mid]
         for (var i = 0; i < mid; ++i) {
           if (compare(array[i], left) > 0) {
-            left = array[i];
+            left = array[i]
           }
         }
 
-        return middle2(left, right);
-      }
-      else {
+        return middle2(left, right)
+      } else {
         // odd: return the middle value
-        var m = partitionSelect(array, (num - 1) / 2);
+        var m = partitionSelect(array, (num - 1) / 2)
 
-        return middle(m);
+        return middle(m)
       }
-    }
-    catch (err) {
-      throw improveErrorMessage(err, 'median');
+    } catch (err) {
+      throw improveErrorMessage(err, 'median')
     }
   }
 
   // helper function to type check the middle value of the array
   var middle = typed({
     'number | BigNumber | Complex | Unit': function (value) {
-      return value;
+      return value
     }
-  });
+  })
 
   // helper function to type check the two middle value of the array
   var middle2 = typed({
     'number | BigNumber | Complex | Unit, number | BigNumber | Complex | Unit': function (left, right) {
-      return divide(add(left, right), 2);
+      return divide(add(left, right), 2)
     }
-  });
+  })
 
-  median.toTex = undefined; // use default template
+  median.toTex = undefined // use default template
 
-  return median;
+  return median
 }
 
-exports.name = 'median';
-exports.factory = factory;
+exports.name = 'median'
+exports.factory = factory

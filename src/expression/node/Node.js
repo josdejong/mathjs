@@ -1,17 +1,16 @@
-'use strict';
+'use strict'
 
-var keywords = require('../keywords');
-var deepEqual= require('../../utils/object').deepEqual;
-var hasOwnProperty = require('../../utils/object').hasOwnProperty;
+var keywords = require('../keywords')
+var deepEqual = require('../../utils/object').deepEqual
+var hasOwnProperty = require('../../utils/object').hasOwnProperty
 
 function factory (type, config, load, typed, math) {
-
   /**
    * Node
    */
-  function Node() {
+  function Node () {
     if (!(this instanceof Node)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
   }
 
@@ -20,41 +19,41 @@ function factory (type, config, load, typed, math) {
    * @param {Object} [scope]  Scope to read/write variables
    * @return {*}              Returns the result
    */
-  Node.prototype.eval = function(scope) {
-    return this.compile().eval(scope);
-  };
+  Node.prototype.eval = function (scope) {
+    return this.compile().eval(scope)
+  }
 
-  Node.prototype.type = 'Node';
+  Node.prototype.type = 'Node'
 
-  Node.prototype.isNode = true;
+  Node.prototype.isNode = true
 
-  Node.prototype.comment = '';
+  Node.prototype.comment = ''
 
   /**
-   * Compile the node into an optimized, evauatable JavaScript function 
+   * Compile the node into an optimized, evauatable JavaScript function
    * @return {{eval: function([Object])}} expr  Returns an object with a function 'eval',
    *                                  which can be invoked as expr.eval([scope: Object]),
    *                                  where scope is an optional object with
    *                                  variables.
    */
   Node.prototype.compile = function () {
-    var expr = this._compile(math.expression.mathWithTransform, {});
-    var args = {};
-    var context = null;
+    var expr = this._compile(math.expression.mathWithTransform, {})
+    var args = {}
+    var context = null
     return {
-      eval: function evalNode(scope) {
-        var s = scope ? scope : {};
-        _validateScope(s);
-        return expr(s, args, context);
+      eval: function evalNode (scope) {
+        var s = scope || {}
+        _validateScope(s)
+        return expr(s, args, context)
       }
     }
-  };
-  
+  }
+
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} math     Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -64,7 +63,7 @@ function factory (type, config, load, typed, math) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   Node.prototype._compile = function (math, argNames) {
-    throw new Error('Method _compile should be implemented by type ' + this.type);
+    throw new Error('Method _compile should be implemented by type ' + this.type)
   }
 
   /**
@@ -73,8 +72,8 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.forEach = function (callback) {
     // must be implemented by each of the Node implementations
-    throw new Error('Cannot run forEach on a Node interface');
-  };
+    throw new Error('Cannot run forEach on a Node interface')
+  }
 
   /**
    * Create a new Node having it's childs be the results of calling
@@ -84,8 +83,8 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.map = function (callback) {
     // must be implemented by each of the Node implementations
-    throw new Error('Cannot run map on a Node interface');
-  };
+    throw new Error('Cannot run map on a Node interface')
+  }
 
   /**
    * Validate whether an object is a Node, for use with map
@@ -95,11 +94,11 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype._ifNode = function (node) {
     if (!type.isNode(node)) {
-      throw new TypeError('Callback function must return a Node');
+      throw new TypeError('Callback function must return a Node')
     }
 
-    return node;
-  };
+    return node
+  }
 
   /**
    * Recursively traverse all nodes in a node tree. Executes given callback for
@@ -109,18 +108,18 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.traverse = function (callback) {
     // execute callback for itself
-    callback(this, null, null);
+    callback(this, null, null)
 
     // recursively traverse over all childs of a node
-    function _traverse(node, callback) {
+    function _traverse (node, callback) {
       node.forEach(function (child, path, parent) {
-        callback(child, path, parent);
-        _traverse(child, callback);
-      });
+        callback(child, path, parent)
+        _traverse(child, callback)
+      })
     }
 
-    _traverse(this, callback);
-  };
+    _traverse(this, callback)
+  }
 
   /**
    * Recursively transform a node tree via a transform function.
@@ -146,15 +145,15 @@ function factory (type, config, load, typed, math) {
   Node.prototype.transform = function (callback) {
     // traverse over all childs
     function _transform (node, callback) {
-      return node.map(function(child, path, parent) {
-        var replacement = callback(child, path, parent);
-        return _transform(replacement, callback);
-      });
+      return node.map(function (child, path, parent) {
+        var replacement = callback(child, path, parent)
+        return _transform(replacement, callback)
+      })
     }
 
-    var replacement = callback(this, null, null);
-    return _transform(replacement, callback);
-  };
+    var replacement = callback(this, null, null)
+    return _transform(replacement, callback)
+  }
 
   /**
    * Find any node in the node tree matching given filter function. For example, to
@@ -171,26 +170,26 @@ function factory (type, config, load, typed, math) {
    * @return {Node[]} nodes       An array with nodes matching given filter criteria
    */
   Node.prototype.filter = function (callback) {
-    var nodes = [];
+    var nodes = []
 
     this.traverse(function (node, path, parent) {
       if (callback(node, path, parent)) {
-        nodes.push(node);
+        nodes.push(node)
       }
-    });
+    })
 
-    return nodes;
-  };
+    return nodes
+  }
 
   // TODO: deprecated since version 1.1.0, remove this some day
   Node.prototype.find = function () {
-    throw new Error('Function Node.find is deprecated. Use Node.filter instead.');
-  };
+    throw new Error('Function Node.find is deprecated. Use Node.filter instead.')
+  }
 
   // TODO: deprecated since version 1.1.0, remove this some day
   Node.prototype.match = function () {
-    throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.transform, Node.traverse.');
-  };
+    throw new Error('Function Node.match is deprecated. See functions Node.filter, Node.transform, Node.traverse.')
+  }
 
   /**
    * Create a shallow clone of this node
@@ -198,8 +197,8 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.clone = function () {
     // must be implemented by each of the Node implementations
-    throw new Error('Cannot clone a Node interface');
-  };
+    throw new Error('Cannot clone a Node interface')
+  }
 
   /**
    * Create a deep clone of this node
@@ -207,9 +206,9 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.cloneDeep = function () {
     return this.map(function (node) {
-      return node.cloneDeep();
-    });
-  };
+      return node.cloneDeep()
+    })
+  }
 
   /**
    * Deep compare this node with another node.
@@ -219,9 +218,9 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.equals = function (other) {
     return other
-        ? deepEqual(this, other)
-        : false
-  };
+      ? deepEqual(this, other)
+      : false
+  }
 
   /**
    * Get string representation. (wrapper function)
@@ -239,26 +238,26 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Node.prototype.toString = function (options) {
-    var customString;
+    var customString
     if (options && typeof options === 'object') {
-        switch (typeof options.handler) {
-          case 'object':
-          case 'undefined':
-            break;
-          case 'function':
-            customString = options.handler(this, options);
-            break;
-          default:
-            throw new TypeError('Object or function expected as callback');
-        }
+      switch (typeof options.handler) {
+        case 'object':
+        case 'undefined':
+          break
+        case 'function':
+          customString = options.handler(this, options)
+          break
+        default:
+          throw new TypeError('Object or function expected as callback')
+      }
     }
 
     if (typeof customString !== 'undefined') {
-      return customString;
+      return customString
     }
 
-    return this._toString(options);
-  };
+    return this._toString(options)
+  }
 
   /**
    * Get a JSON representation of the node
@@ -267,8 +266,8 @@ function factory (type, config, load, typed, math) {
    * @returns {Object}
    */
   Node.prototype.toJSON = function () {
-    throw new Error('Cannot serialize object: toJSON not implemented by ' + this.type);
-  };
+    throw new Error('Cannot serialize object: toJSON not implemented by ' + this.type)
+  }
 
   /**
    * Get HTML representation. (wrapper function)
@@ -286,26 +285,26 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Node.prototype.toHTML = function (options) {
-    var customString;
+    var customString
     if (options && typeof options === 'object') {
-        switch (typeof options.handler) {
-          case 'object':
-          case 'undefined':
-            break;
-          case 'function':
-            customString = options.handler(this, options);
-            break;
-          default:
-            throw new TypeError('Object or function expected as callback');
-        }
+      switch (typeof options.handler) {
+        case 'object':
+        case 'undefined':
+          break
+        case 'function':
+          customString = options.handler(this, options)
+          break
+        default:
+          throw new TypeError('Object or function expected as callback')
+      }
     }
 
     if (typeof customString !== 'undefined') {
-      return customString;
+      return customString
     }
 
-    return this.toHTML(options);
-  };
+    return this.toHTML(options)
+  }
 
   /**
    * Internal function to generate the string output.
@@ -314,9 +313,9 @@ function factory (type, config, load, typed, math) {
    * @throws {Error}
    */
   Node.prototype._toString = function () {
-    //must be implemented by each of the Node implementations
-    throw new Error('_toString not implemented for ' + this.type);
-  };
+    // must be implemented by each of the Node implementations
+    throw new Error('_toString not implemented for ' + this.type)
+  }
 
   /**
    * Get LaTeX representation. (wrapper function)
@@ -334,26 +333,26 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Node.prototype.toTex = function (options) {
-    var customTex;
-    if (options && typeof options == 'object') {
+    var customTex
+    if (options && typeof options === 'object') {
       switch (typeof options.handler) {
         case 'object':
         case 'undefined':
-          break;
+          break
         case 'function':
-          customTex = options.handler(this, options);
-          break;
+          customTex = options.handler(this, options)
+          break
         default:
-          throw new TypeError('Object or function expected as callback');
+          throw new TypeError('Object or function expected as callback')
       }
     }
 
     if (typeof customTex !== 'undefined') {
-      return customTex;
+      return customTex
     }
 
-    return this._toTex(options);
-  };
+    return this._toTex(options)
+  }
 
   /**
    * Internal function to generate the LaTeX output.
@@ -363,45 +362,45 @@ function factory (type, config, load, typed, math) {
    * @throws {Error}
    */
   Node.prototype._toTex = function (options) {
-    //must be implemented by each of the Node implementations
-    throw new Error('_toTex not implemented for ' + this.type);
-  };
+    // must be implemented by each of the Node implementations
+    throw new Error('_toTex not implemented for ' + this.type)
+  }
 
   /**
    * Get identifier.
    * @return {string}
    */
   Node.prototype.getIdentifier = function () {
-    return this.type;
-  };
+    return this.type
+  }
 
   /**
    * Get the content of the current Node.
    * @return {Node} node
    **/
   Node.prototype.getContent = function () {
-    return this;
-  };
+    return this
+  }
 
   /**
    * Validate the symbol names of a scope.
    * Throws an error when the scope contains an illegal symbol.
    * @param {Object} scope
    */
-  function _validateScope(scope) {
+  function _validateScope (scope) {
     for (var symbol in scope) {
       if (hasOwnProperty(scope, symbol)) {
         if (symbol in keywords) {
-          throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword');
+          throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword')
         }
       }
     }
   }
 
-  return Node;
+  return Node
 }
 
-exports.name = 'Node';
-exports.path = 'expression.node';
-exports.math = true; // request access to the math namespace as 5th argument of the factory function
-exports.factory = factory;
+exports.name = 'Node'
+exports.path = 'expression.node'
+exports.math = true // request access to the math namespace as 5th argument of the factory function
+exports.factory = factory

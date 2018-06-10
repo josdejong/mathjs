@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 module.exports = [
-  //require('./distribution'), // TODO: rethink math.distribution
+  // require('./distribution'), // TODO: rethink math.distribution
   require('./combinations'),
   require('./factorial'),
   require('./gamma'),
@@ -10,4 +10,4 @@ module.exports = [
   require('./pickRandom'),
   require('./random'),
   require('./randomInt')
-];
+]

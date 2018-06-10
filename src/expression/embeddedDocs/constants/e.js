@@ -12,4 +12,4 @@ module.exports = {
     'log(e)'
   ],
   'seealso': ['exp']
-};
+}

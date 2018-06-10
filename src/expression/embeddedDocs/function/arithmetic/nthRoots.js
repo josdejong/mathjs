@@ -5,11 +5,11 @@ module.exports = {
     'nthRoots(A)',
     'nthRoots(A, root)'
   ],
-  'description': (''
-      + 'Calculate the nth roots of a value. '
-      + 'An nth root of a positive real number A, '
-      + 'is a positive real solution of the equation "x^root = A". '
-      + 'This function returns an array of complex values.'
+  'description': ('' +
+      'Calculate the nth roots of a value. ' +
+      'An nth root of a positive real number A, ' +
+      'is a positive real solution of the equation "x^root = A". ' +
+      'This function returns an array of complex values.'
   ),
   'examples': [
     'nthRoots(1)',
@@ -20,4 +20,4 @@ module.exports = {
     'pow',
     'nthRoot'
   ]
-};
+}

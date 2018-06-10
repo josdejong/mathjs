@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
-function factory(type, config, load, typed) {
-
+function factory (type, config, load, typed) {
   // TODO: expose this function to mathjs, add documentation
 
   /**
@@ -14,37 +13,34 @@ function factory(type, config, load, typed) {
    */
   return function numeric (value, valueType) {
     if (valueType === 'BigNumber') {
-      return new type.BigNumber(value);
-    }
-    else if (valueType === 'Fraction') {
-      return new type.Fraction(value);
-    }
-    else {
+      return new type.BigNumber(value)
+    } else if (valueType === 'Fraction') {
+      return new type.Fraction(value)
+    } else {
       // valueType === 'number' or undefined // TODO: check this
       if (typeof value === 'number') {
-        return value;
-      }
-      else {
+        return value
+      } else {
         if (value === 'Infinity') {
-          return Infinity;
+          return Infinity
         }
 
         if (value === 'NaN') {
-          return NaN;
+          return NaN
         }
 
         // The following regexp is relatively permissive
         if (!/^[\-+]?((\d+\.?\d*)|(\d*\.?\d+))([eE][+\-]?\d+)?$/.test(value)) {
-          throw new Error('Invalid numeric value "' + value + '"');
+          throw new Error('Invalid numeric value "' + value + '"')
         }
 
         // remove leading zeros like '003.2' which are not allowed by JavaScript
         return parseFloat(value.replace(/^(0*)[0-9]/, function (match, zeros) {
-          return match.substring(zeros.length);
-        }));
+          return match.substring(zeros.length)
+        }))
       }
     }
   }
 }
 
-exports.factory = factory;
+exports.factory = factory

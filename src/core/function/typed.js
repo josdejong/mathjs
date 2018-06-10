@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 // Note: this file is here purely for generation of documentation for `math.typed`
 
@@ -40,8 +40,8 @@ function factory (type, config, load, typed, math) {
    * @param {Object<string, function>} signatures   Object with one ore multiple function signatures
    * @returns {function} The created typed-function.
    */
-  return typed;
+  return typed
 }
 
-exports.name = 'typed';
-exports.factory = factory;
+exports.name = 'typed'
+exports.factory = factory

@@ -12,4 +12,4 @@ module.exports = {
   'seealso': [
     'multiply', 'dot', 'cross'
   ]
-};
+}

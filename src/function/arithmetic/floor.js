@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -34,27 +34,27 @@ function factory (type, config, load, typed) {
     'number': Math.floor,
 
     'Complex': function (x) {
-      return x.floor();
+      return x.floor()
     },
 
     'BigNumber': function (x) {
-      return x.floor();
+      return x.floor()
     },
 
     'Fraction': function (x) {
-      return x.floor();
+      return x.floor()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since floor(0) = 0
-      return deepMap(x, floor, true);
+      return deepMap(x, floor, true)
     }
-  });
+  })
 
-  floor.toTex = {1: '\\left\\lfloor${args[0]}\\right\\rfloor'};
+  floor.toTex = {1: '\\left\\lfloor${args[0]}\\right\\rfloor'}
 
-  return floor;
+  return floor
 }
 
-exports.name = 'floor';
-exports.factory = factory;
+exports.name = 'floor'
+exports.factory = factory

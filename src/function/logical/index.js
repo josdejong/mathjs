@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./and'),
   require('./not'),
   require('./or'),
   require('./xor')
-];
+]

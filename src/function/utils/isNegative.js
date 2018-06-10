@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-var number = require('../../utils/number');
+var deepMap = require('../../utils/collection/deepMap')
+var number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -35,28 +35,28 @@ function factory (type, config, load, typed) {
    */
   var isNegative = typed('isNegative', {
     'number': function (x) {
-      return x < 0;
+      return x < 0
     },
 
     'BigNumber': function (x) {
-      return x.isNeg() && !x.isZero() && !x.isNaN();
+      return x.isNeg() && !x.isZero() && !x.isNaN()
     },
 
     'Fraction': function (x) {
-      return x.s < 0; // It's enough to decide on the sign
+      return x.s < 0 // It's enough to decide on the sign
     },
 
     'Unit': function (x) {
-      return isNegative(x.value);
+      return isNegative(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, isNegative);
+      return deepMap(x, isNegative)
     }
-  });
+  })
 
-  return isNegative;
+  return isNegative
 }
 
-exports.name = 'isNegative';
-exports.factory = factory;
+exports.name = 'isNegative'
+exports.factory = factory

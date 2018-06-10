@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -32,28 +32,28 @@ function factory (type, config, load, typed) {
    */
   var arg = typed('arg', {
     'number': function (x) {
-      return Math.atan2(0, x);
+      return Math.atan2(0, x)
     },
 
     'BigNumber': function (x) {
-      return type.BigNumber.atan2(0, x);
+      return type.BigNumber.atan2(0, x)
     },
 
     'Complex': function (x) {
-      return x.arg();
+      return x.arg()
     },
 
     // TODO: implement BigNumber support for function arg
 
     'Array | Matrix': function (x) {
-      return deepMap(x, arg);
+      return deepMap(x, arg)
     }
-  });
+  })
 
-  arg.toTex = {1: '\\arg\\left(${args[0]}\\right)'};
+  arg.toTex = {1: '\\arg\\left(${args[0]}\\right)'}
 
-  return arg;
+  return arg
 }
 
-exports.name = 'arg';
-exports.factory = factory;
+exports.name = 'arg'
+exports.factory = factory

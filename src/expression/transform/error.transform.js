@@ -1,5 +1,5 @@
-'use strict';
-var IndexError = require('../../error/IndexError');
+'use strict'
+var IndexError = require('../../error/IndexError')
 
 /**
  * Transform zero-based indices to one-based indices in errors
@@ -9,10 +9,10 @@ var IndexError = require('../../error/IndexError');
 exports.transform = function (err) {
   if (err && err.isIndexError) {
     return new IndexError(
-        err.index + 1,
-        err.min + 1,
-        err.max !== undefined ? err.max + 1 : undefined);
+      err.index + 1,
+      err.min + 1,
+      err.max !== undefined ? err.max + 1 : undefined)
   }
 
-  return err;
-};
+  return err
+}

@@ -14,4 +14,4 @@ module.exports = {
   'seealso': [
     'lup', 'lusolve', 'usolve', 'matrix', 'sparse'
   ]
-};
+}

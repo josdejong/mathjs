@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap');
+var deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../../utils/latex');
+  var latex = require('../../../utils/latex')
 
   /**
    * Create a complex value or convert a value to a complex value.
@@ -45,60 +45,60 @@ function factory (type, config, load, typed) {
    */
   var complex = typed('complex', {
     '': function () {
-      return type.Complex.ZERO;
+      return type.Complex.ZERO
     },
 
     'number': function (x) {
-      return new type.Complex(x, 0);
+      return new type.Complex(x, 0)
     },
 
     'number, number': function (re, im) {
-      return new type.Complex(re, im);
+      return new type.Complex(re, im)
     },
 
     // TODO: this signature should be redundant
     'BigNumber, BigNumber': function (re, im) {
-      return new type.Complex(re.toNumber(), im.toNumber());
+      return new type.Complex(re.toNumber(), im.toNumber())
     },
 
     'Complex': function (x) {
-      return x.clone();
+      return x.clone()
     },
 
     'string': function (x) {
-      return type.Complex(x); // for example '2 + 3i'
+      return type.Complex(x) // for example '2 + 3i'
     },
 
     'null': function (x) {
-      return type.Complex(0);
+      return type.Complex(0)
     },
 
     'Object': function (x) {
-      if('re' in x && 'im' in x) {
-        return new type.Complex(x.re, x.im);
+      if ('re' in x && 'im' in x) {
+        return new type.Complex(x.re, x.im)
       }
 
       if ('r' in x && 'phi' in x) {
-        return new type.Complex(x);
+        return new type.Complex(x)
       }
 
-      throw new Error('Expected object with either properties re and im, or properties r and phi.');
+      throw new Error('Expected object with either properties re and im, or properties r and phi.')
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, complex);
+      return deepMap(x, complex)
     }
-  });
+  })
 
   complex.toTex = {
     0: '0',
     1: '\\left(${args[0]}\\right)',
-    2: '\\left(\\left(${args[0]}\\right)+'
-      + latex.symbols['i'] + '\\cdot\\left(${args[1]}\\right)\\right)'
-  };
+    2: '\\left(\\left(${args[0]}\\right)+' +
+      latex.symbols['i'] + '\\cdot\\left(${args[1]}\\right)\\right)'
+  }
 
-  return complex;
+  return complex
 }
 
-exports.name = 'complex';
-exports.factory = factory;
+exports.name = 'complex'
+exports.factory = factory

@@ -45,7 +45,6 @@ for (prop in docs) {
 // done. Output results
 if (undocumentedCount === 0 && nonExistingCount === 0) {
   gutil.log('Validation successful: all functions are documented.')
-}
-else {
+} else {
   gutil.log('Validation failed: not all functions are documented.')
 }

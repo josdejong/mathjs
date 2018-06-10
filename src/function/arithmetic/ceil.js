@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -35,27 +35,27 @@ function factory (type, config, load, typed) {
     'number': Math.ceil,
 
     'Complex': function (x) {
-      return x.ceil();
+      return x.ceil()
     },
 
     'BigNumber': function (x) {
-      return x.ceil();
+      return x.ceil()
     },
 
     'Fraction': function (x) {
-      return x.ceil();
+      return x.ceil()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since ceil(0) = 0
-      return deepMap(x, ceil, true);
+      return deepMap(x, ceil, true)
     }
-  });
+  })
 
-  ceil.toTex = {1: '\\left\\lceil${args[0]}\\right\\rceil'};
+  ceil.toTex = {1: '\\left\\lceil${args[0]}\\right\\rceil'}
 
-  return ceil;
+  return ceil
 }
 
-exports.name = 'ceil';
-exports.factory = factory;
+exports.name = 'ceil'
+exports.factory = factory

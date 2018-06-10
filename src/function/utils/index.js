@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./clone'),
   require('./isInteger'),
@@ -9,4 +9,4 @@ module.exports = [
   require('./isZero'),
   require('./isNaN'),
   require('./typeof')
-];
+]

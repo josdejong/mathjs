@@ -17,4 +17,4 @@ module.exports = {
     'isOdd(3)'
   ],
   'seealso': ['divide']
-};
+}

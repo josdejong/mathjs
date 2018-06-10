@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
+var flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var compareNatural = load(require('../relational/compareNatural'));
-  var index = load(require('../../type/matrix/MatrixIndex'));
-  var size = load(require('../matrix/size'));
-  var subset = load(require('../matrix/subset'));
-  
+  var compareNatural = load(require('../relational/compareNatural'))
+  var index = load(require('../../type/matrix/MatrixIndex'))
+  var size = load(require('../matrix/size'))
+  var subset = load(require('../matrix/subset'))
+
   /**
    * Count the multiplicity of an element in a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -32,21 +32,21 @@ function factory (type, config, load, typed) {
   var setMultiplicity = typed('setMultiplicity', {
     'number | BigNumber | Fraction | Complex, Array | Matrix': function (e, a) {
       if (subset(size(a), new index(0)) === 0) { // if empty, return 0
-        return 0;
+        return 0
       }
-      var b = flatten(Array.isArray(a) ? a : a.toArray());
-      var count = 0;
-      for (var i=0; i<b.length; i++) {
+      var b = flatten(Array.isArray(a) ? a : a.toArray())
+      var count = 0
+      for (var i = 0; i < b.length; i++) {
         if (compareNatural(b[i], e) === 0) {
-          count++;
+          count++
         }
       }
-      return count;
+      return count
     }
-  });
+  })
 
-  return setMultiplicity;
+  return setMultiplicity
 }
 
-exports.name = 'setMultiplicity';
-exports.factory = factory;
+exports.name = 'setMultiplicity'
+exports.factory = factory

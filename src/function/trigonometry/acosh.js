@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the hyperbolic arccos of a value,
    * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
@@ -28,30 +27,30 @@ function factory (type, config, load, typed) {
   var acosh = typed('acosh', {
     'number': function (x) {
       if (x >= 1 || config.predictable) {
-        return _acosh(x);
+        return _acosh(x)
       }
       if (x <= -1) {
-        return new type.Complex(Math.log(Math.sqrt(x*x - 1) - x), Math.PI);
+        return new type.Complex(Math.log(Math.sqrt(x * x - 1) - x), Math.PI)
       }
-      return new type.Complex(x, 0).acosh();
+      return new type.Complex(x, 0).acosh()
     },
 
     'Complex': function (x) {
-      return x.acosh();
+      return x.acosh()
     },
 
     'BigNumber': function (x) {
-      return x.acosh();
+      return x.acosh()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acosh);
+      return deepMap(x, acosh)
     }
-  });
+  })
 
-  acosh.toTex = {1: '\\cosh^{-1}\\left(${args[0]}\\right)'};
+  acosh.toTex = {1: '\\cosh^{-1}\\left(${args[0]}\\right)'}
 
-  return acosh;
+  return acosh
 }
 
 /**
@@ -61,8 +60,8 @@ function factory (type, config, load, typed) {
  * @private
  */
 var _acosh = Math.acosh || function (x) {
-  return Math.log(Math.sqrt(x*x - 1) + x)
-};
+  return Math.log(Math.sqrt(x * x - 1) + x)
+}
 
-exports.name = 'acosh';
-exports.factory = factory;
+exports.name = 'acosh'
+exports.factory = factory

@@ -1,24 +1,24 @@
-'use strict';
+'use strict'
 
-var endsWith = require('../../utils/string').endsWith;
-var clone = require('../../utils/object').clone;
-var constants = require('../../utils/bignumber/constants');
+var endsWith = require('../../utils/string').endsWith
+var clone = require('../../utils/object').clone
+var constants = require('../../utils/bignumber/constants')
 
 function factory (type, config, load, typed, math) {
-  var add       = load(require('../../function/arithmetic/addScalar'));
-  var subtract  = load(require('../../function/arithmetic/subtract'));
-  var multiply  = load(require('../../function/arithmetic/multiplyScalar'));
-  var divide    = load(require('../../function/arithmetic/divideScalar'));
-  var pow       = load(require('../../function/arithmetic/pow'));
-  var abs       = load(require('../../function/arithmetic/abs'));
-  var fix       = load(require('../../function/arithmetic/fix'));
-  var round     = load(require('../../function/arithmetic/round'));
-  var equal     = load(require('../../function/relational/equal'));
-  var isNumeric = load(require('../../function/utils/isNumeric'));
-  var format    = load(require('../../function/string/format'));
-  var getTypeOf = load(require('../../function/utils/typeof'));
-  var toNumber  = load(require('../../type/number'));
-  var Complex   = load(require('../../type/complex/Complex'));
+  var add = load(require('../../function/arithmetic/addScalar'))
+  var subtract = load(require('../../function/arithmetic/subtract'))
+  var multiply = load(require('../../function/arithmetic/multiplyScalar'))
+  var divide = load(require('../../function/arithmetic/divideScalar'))
+  var pow = load(require('../../function/arithmetic/pow'))
+  var abs = load(require('../../function/arithmetic/abs'))
+  var fix = load(require('../../function/arithmetic/fix'))
+  var round = load(require('../../function/arithmetic/round'))
+  var equal = load(require('../../function/relational/equal'))
+  var isNumeric = load(require('../../function/utils/isNumeric'))
+  var format = load(require('../../function/string/format'))
+  var getTypeOf = load(require('../../function/utils/typeof'))
+  var toNumber = load(require('../../type/number'))
+  var Complex = load(require('../../type/complex/Complex'))
 
   /**
    * A unit can be constructed in the following ways:
@@ -37,190 +37,184 @@ function factory (type, config, load, typed, math) {
    * @param {number | BigNumber | Fraction | Complex | boolean} [value]  A value like 5.2
    * @param {string} [name]   A unit name like "cm" or "inch", or a derived unit of the form: "u1[^ex1] [u2[^ex2] ...] [/ u3[^ex3] [u4[^ex4]]]", such as "kg m^2/s^2", where each unit appearing after the forward slash is taken to be in the denominator. "kg m^2 s^-2" is a synonym and is also acceptable. Any of the units can include a prefix.
    */
-  function Unit(value, name) {
+  function Unit (value, name) {
     if (!(this instanceof Unit)) {
-      throw new Error('Constructor must be called with the new operator');
+      throw new Error('Constructor must be called with the new operator')
     }
 
     if (!(value == undefined || isNumeric(value) || type.isComplex(value))) {
-      throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined');
+      throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
     if (name != undefined && (typeof name !== 'string' || name === '')) {
-      throw new TypeError('Second parameter in Unit constructor must be a string');
+      throw new TypeError('Second parameter in Unit constructor must be a string')
     }
 
     if (name != undefined) {
-      var u = Unit.parse(name);
-      this.units = u.units;
-      this.dimensions = u.dimensions;
-    }
-    else {
+      var u = Unit.parse(name)
+      this.units = u.units
+      this.dimensions = u.dimensions
+    } else {
       this.units = [
         {
           unit: UNIT_NONE,
-          prefix: PREFIXES.NONE,  // link to a list with supported prefixes
+          prefix: PREFIXES.NONE, // link to a list with supported prefixes
           power: 0
         }
-      ];
-      this.dimensions = []; 
-      for(var i=0; i<BASE_DIMENSIONS.length; i++) {
-        this.dimensions[i] = 0;
+      ]
+      this.dimensions = []
+      for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+        this.dimensions[i] = 0
       }
     }
 
-    this.value = (value != undefined) ? this._normalize(value) : null;
+    this.value = (value != undefined) ? this._normalize(value) : null
 
-    this.fixPrefix = false; // if true, function format will not search for the
-                            // best prefix but leave it as initially provided.
-                            // fixPrefix is set true by the method Unit.to
+    this.fixPrefix = false // if true, function format will not search for the
+    // best prefix but leave it as initially provided.
+    // fixPrefix is set true by the method Unit.to
 
     // The justification behind this is that if the constructor is explicitly called,
     // the caller wishes the units to be returned exactly as he supplied.
-    this.isUnitListSimplified = true;
-
+    this.isUnitListSimplified = true
   }
 
   /**
    * Attach type information
    */
-  Unit.prototype.type = 'Unit';
-  Unit.prototype.isUnit = true;
+  Unit.prototype.type = 'Unit'
+  Unit.prototype.isUnit = true
 
   // private variables and functions for the Unit parser
-  var text, index, c;
+  var text, index, c
 
-  function skipWhitespace() {
+  function skipWhitespace () {
     while (c == ' ' || c == '\t') {
-      next();
+      next()
     }
   }
 
-  function isDigitDot(c) {
-    return ((c >= '0' && c <= '9') || c == '.');
+  function isDigitDot (c) {
+    return ((c >= '0' && c <= '9') || c == '.')
   }
 
-  function isDigit(c) {
-    return ((c >= '0' && c <= '9'));
+  function isDigit (c) {
+    return ((c >= '0' && c <= '9'))
   }
 
-  function next() {
-    index++;
-    c = text.charAt(index);
+  function next () {
+    index++
+    c = text.charAt(index)
   }
 
-  function revert(oldIndex) {
-    index = oldIndex;
-    c = text.charAt(index);
+  function revert (oldIndex) {
+    index = oldIndex
+    c = text.charAt(index)
   }
 
-  function parseNumber() {
-    var number = '';
-    var oldIndex;
-    oldIndex = index;
+  function parseNumber () {
+    var number = ''
+    var oldIndex
+    oldIndex = index
 
     if (c == '+') {
-      next();
-    }
-    else if (c == '-') {
-      number += c;
-      next();
+      next()
+    } else if (c == '-') {
+      number += c
+      next()
     }
 
     if (!isDigitDot(c)) {
       // a + or - must be followed by a digit
-      revert(oldIndex);
-      return null;
+      revert(oldIndex)
+      return null
     }
 
     // get number, can have a single dot
     if (c == '.') {
-      number += c;
-      next();
+      number += c
+      next()
       if (!isDigit(c)) {
         // this is no legal number, it is just a dot
-        revert(oldIndex);
-        return null;
+        revert(oldIndex)
+        return null
       }
-    }
-    else {
+    } else {
       while (isDigit(c)) {
-        number += c;
-        next();
+        number += c
+        next()
       }
       if (c == '.') {
-        number += c;
-        next();
+        number += c
+        next()
       }
     }
     while (isDigit(c)) {
-      number += c;
-      next();
+      number += c
+      next()
     }
 
     // check for exponential notation like "2.3e-4" or "1.23e50"
     if (c == 'E' || c == 'e') {
       // The grammar branches here. This could either be part of an exponent or the start of a unit that begins with the letter e, such as "4exabytes"
 
-      var tentativeNumber = '';
-      var tentativeIndex = index;
+      var tentativeNumber = ''
+      var tentativeIndex = index
 
-      tentativeNumber += c;
-      next();
+      tentativeNumber += c
+      next()
 
       if (c == '+' || c == '-') {
-        tentativeNumber += c;
-        next();
+        tentativeNumber += c
+        next()
       }
 
       // Scientific notation MUST be followed by an exponent (otherwise we assume it is not scientific notation)
       if (!isDigit(c)) {
         // The e or E must belong to something else, so return the number without the e or E.
-        revert(tentativeIndex);
-        return number;
+        revert(tentativeIndex)
+        return number
       }
-      
+
       // We can now safely say that this is scientific notation.
-      number = number + tentativeNumber;
+      number = number + tentativeNumber
       while (isDigit(c)) {
-        number += c;
-        next();
+        number += c
+        next()
       }
     }
 
-    return number;
+    return number
   }
 
-  function parseUnit() {
-    var unitName = '';
+  function parseUnit () {
+    var unitName = ''
 
     // Alphanumeric characters only; matches [a-zA-Z0-9]
-    var code = text.charCodeAt(index);
-    while ( (code >= 48 && code <= 57) ||
+    var code = text.charCodeAt(index)
+    while ((code >= 48 && code <= 57) ||
             (code >= 65 && code <= 90) ||
             (code >= 97 && code <= 122)) {
-      unitName += c;
-      next();
-      code = text.charCodeAt(index);
+      unitName += c
+      next()
+      code = text.charCodeAt(index)
     }
 
     // Must begin with [a-zA-Z]
-    code = unitName.charCodeAt(0);
+    code = unitName.charCodeAt(0)
     if ((code >= 65 && code <= 90) ||
         (code >= 97 && code <= 122)) {
-        return unitName || null;
-    } 
-    else {
-      return null;
+      return unitName || null
+    } else {
+      return null
     }
   }
 
-  function parseCharacter(toFind) {
+  function parseCharacter (toFind) {
     if (c === toFind) {
-      next();
-      return toFind;
-    }
-    else {
-      return null;
+      next()
+      return toFind
+    } else {
+      return null
     }
   }
 
@@ -235,20 +229,20 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} unit
    */
   Unit.parse = function (str, options) {
-    options = options || {};
-    text = str;
-    index = -1;
-    c = '';
+    options = options || {}
+    text = str
+    index = -1
+    c = ''
 
     if (typeof text !== 'string') {
-      throw new TypeError('Invalid argument in Unit.parse, string expected');
+      throw new TypeError('Invalid argument in Unit.parse, string expected')
     }
 
-    var unit = new Unit();
-    unit.units = [];
+    var unit = new Unit()
+    unit.units = []
 
-    var powerMultiplierCurrent = 1;
-    var expectingUnit = false;
+    var powerMultiplierCurrent = 1
+    var expectingUnit = false
 
     // A unit should follow this pattern:
     // [number] ...[ [*/] unit[^number] ]
@@ -264,163 +258,157 @@ function factory (type, config, load, typed, math) {
     // it is not good form. If a unit starts with e, then it could be confused as a floating point number:
     //   4erg
 
-    next();
-    skipWhitespace();
+    next()
+    skipWhitespace()
 
     // Optional number at the start of the string
-    var valueStr = parseNumber();
-    var value = null;
-    if(valueStr) {
+    var valueStr = parseNumber()
+    var value = null
+    if (valueStr) {
       if (config.number === 'BigNumber') {
-        value = new type.BigNumber(valueStr);
-      }
-      else if (config.number === 'Fraction') {
-        value = new type.Fraction(valueStr);
-      }
-      else { // number
-        value = parseFloat(valueStr);
+        value = new type.BigNumber(valueStr)
+      } else if (config.number === 'Fraction') {
+        value = new type.Fraction(valueStr)
+      } else { // number
+        value = parseFloat(valueStr)
       }
 
-      skipWhitespace();    // Whitespace is not required here
+      skipWhitespace() // Whitespace is not required here
 
       // handle multiplication or division right after the value, like '1/s'
       if (parseCharacter('*')) {
-        powerMultiplierCurrent = 1;
-        expectingUnit = true;
-      }
-      else if (parseCharacter('/')) {
-        powerMultiplierCurrent = -1;
-        expectingUnit = true;
+        powerMultiplierCurrent = 1
+        expectingUnit = true
+      } else if (parseCharacter('/')) {
+        powerMultiplierCurrent = -1
+        expectingUnit = true
       }
     }
 
     // Stack to keep track of powerMultipliers applied to each parentheses group
-    var powerMultiplierStack = [];
+    var powerMultiplierStack = []
 
     // Running product of all elements in powerMultiplierStack
-    var powerMultiplierStackProduct = 1;
+    var powerMultiplierStackProduct = 1
 
     while (true) {
-      skipWhitespace();
+      skipWhitespace()
 
       // Check for and consume opening parentheses, pushing powerMultiplierCurrent to the stack
       // A '(' will always appear directly before a unit.
       while (c === '(') {
-        powerMultiplierStack.push(powerMultiplierCurrent);
-        powerMultiplierStackProduct *= powerMultiplierCurrent;
-        powerMultiplierCurrent = 1;
-        next();
-        skipWhitespace();
+        powerMultiplierStack.push(powerMultiplierCurrent)
+        powerMultiplierStackProduct *= powerMultiplierCurrent
+        powerMultiplierCurrent = 1
+        next()
+        skipWhitespace()
       }
 
       // Is there something here?
-      if(c) {
-        var oldC = c;
-        var uStr = parseUnit();
-        if(uStr == null) {
-          throw new SyntaxError('Unexpected "' + oldC + '" in "' + text + '" at index ' + index.toString());
+      if (c) {
+        var oldC = c
+        var uStr = parseUnit()
+        if (uStr == null) {
+          throw new SyntaxError('Unexpected "' + oldC + '" in "' + text + '" at index ' + index.toString())
         }
-      }
-      else {
+      } else {
         // End of input.
-        break;
+        break
       }
 
       // Verify the unit exists and get the prefix (if any)
-      var res = _findUnit(uStr);
-      if(res == null) {
+      var res = _findUnit(uStr)
+      if (res == null) {
         // Unit not found.
-        throw new SyntaxError('Unit "' + uStr + '" not found.');
+        throw new SyntaxError('Unit "' + uStr + '" not found.')
       }
 
-      var power = powerMultiplierCurrent * powerMultiplierStackProduct;
+      var power = powerMultiplierCurrent * powerMultiplierStackProduct
       // Is there a "^ number"?
-      skipWhitespace();
+      skipWhitespace()
       if (parseCharacter('^')) {
-        skipWhitespace();
-        var p = parseNumber();
-        if(p == null) {
+        skipWhitespace()
+        var p = parseNumber()
+        if (p == null) {
           // No valid number found for the power!
-          throw new SyntaxError('In "' + str + '", "^" must be followed by a floating-point number');
+          throw new SyntaxError('In "' + str + '", "^" must be followed by a floating-point number')
         }
-        power *= p;
+        power *= p
       }
 
       // Add the unit to the list
-      unit.units.push( {
+      unit.units.push({
         unit: res.unit,
         prefix: res.prefix,
         power: power
-      });
-      for(var i=0; i<BASE_DIMENSIONS.length; i++) {
-        unit.dimensions[i] += (res.unit.dimensions[i] || 0) * power;
+      })
+      for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+        unit.dimensions[i] += (res.unit.dimensions[i] || 0) * power
       }
 
       // Check for and consume closing parentheses, popping from the stack.
       // A ')' will always follow a unit.
-      skipWhitespace();
+      skipWhitespace()
       while (c === ')') {
-        if(powerMultiplierStack.length === 0) {
-          throw new SyntaxError('Unmatched ")" in "' + text + '" at index ' + index.toString());
+        if (powerMultiplierStack.length === 0) {
+          throw new SyntaxError('Unmatched ")" in "' + text + '" at index ' + index.toString())
         }
-        powerMultiplierStackProduct /= powerMultiplierStack.pop();
-        next();
-        skipWhitespace();
+        powerMultiplierStackProduct /= powerMultiplierStack.pop()
+        next()
+        skipWhitespace()
       }
 
       // "*" and "/" should mean we are expecting something to come next.
       // Is there a forward slash? If so, negate powerMultiplierCurrent. The next unit or paren group is in the denominator.
-      expectingUnit = false;
+      expectingUnit = false
 
       if (parseCharacter('*')) {
         // explicit multiplication
-        powerMultiplierCurrent = 1;
-        expectingUnit = true;
-      }
-      else if (parseCharacter('/')) {
+        powerMultiplierCurrent = 1
+        expectingUnit = true
+      } else if (parseCharacter('/')) {
         // division
-        powerMultiplierCurrent = -1;
-        expectingUnit = true;
-      }
-      else {
+        powerMultiplierCurrent = -1
+        expectingUnit = true
+      } else {
         // implicit multiplication
-        powerMultiplierCurrent = 1;
+        powerMultiplierCurrent = 1
       }
 
       // Replace the unit into the auto unit system
-      if(res.unit.base) {
-        var baseDim = res.unit.base.key;
+      if (res.unit.base) {
+        var baseDim = res.unit.base.key
         UNIT_SYSTEMS.auto[baseDim] = {
           unit: res.unit,
           prefix: res.prefix
-        };
+        }
       }
     }
-    
+
     // Has the string been entirely consumed?
-    skipWhitespace();
-    if(c) {
-      throw new SyntaxError('Could not parse: "' + str + '"');
+    skipWhitespace()
+    if (c) {
+      throw new SyntaxError('Could not parse: "' + str + '"')
     }
 
     // Is there a trailing slash?
-    if(expectingUnit) {
-      throw new SyntaxError('Trailing characters: "' + str + '"');
+    if (expectingUnit) {
+      throw new SyntaxError('Trailing characters: "' + str + '"')
     }
 
     // Is the parentheses stack empty?
-    if(powerMultiplierStack.length !== 0) {
-      throw new SyntaxError('Unmatched "(" in "' + text + '"');
+    if (powerMultiplierStack.length !== 0) {
+      throw new SyntaxError('Unmatched "(" in "' + text + '"')
     }
 
     // Are there any units at all?
-    if(unit.units.length == 0 && !options.allowNoUnits) {
-      throw new SyntaxError('"' + str + '" contains no units');
+    if (unit.units.length == 0 && !options.allowNoUnits) {
+      throw new SyntaxError('"' + str + '" contains no units')
     }
 
-    unit.value = (value != undefined) ? unit._normalize(value) : null;
-    return unit;
-  };
+    unit.value = (value != undefined) ? unit._normalize(value) : null
+    return unit
+  }
 
   /**
    * create a copy of this unit
@@ -428,37 +416,37 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} Returns a cloned version of the unit
    */
   Unit.prototype.clone = function () {
-    var unit = new Unit();
+    var unit = new Unit()
 
-    unit.fixPrefix = this.fixPrefix;
-    unit.isUnitListSimplified = this.isUnitListSimplified;
+    unit.fixPrefix = this.fixPrefix
+    unit.isUnitListSimplified = this.isUnitListSimplified
 
-    unit.value = clone(this.value);
-    unit.dimensions = this.dimensions.slice(0);
-    unit.units = [];
-    for(var i = 0; i < this.units.length; i++) {
-      unit.units[i] = { };
+    unit.value = clone(this.value)
+    unit.dimensions = this.dimensions.slice(0)
+    unit.units = []
+    for (var i = 0; i < this.units.length; i++) {
+      unit.units[i] = { }
       for (var p in this.units[i]) {
         if (this.units[i].hasOwnProperty(p)) {
-          unit.units[i][p] = this.units[i][p];
+          unit.units[i][p] = this.units[i][p]
         }
       }
     }
 
-    return unit;
-  };
+    return unit
+  }
 
   /**
    * Return whether the unit is derived (such as m/s, or cm^2, but not N)
    * @memberof Unit
    * @return {boolean} True if the unit is derived
    */
-  Unit.prototype._isDerived = function() {
-    if(this.units.length === 0) {
-      return false;
+  Unit.prototype._isDerived = function () {
+    if (this.units.length === 0) {
+      return false
     }
-    return this.units.length > 1 || Math.abs(this.units[0].power - 1.0) > 1e-15;
-  };
+    return this.units.length > 1 || Math.abs(this.units[0].power - 1.0) > 1e-15
+  }
 
   /**
    * Normalize a value, based on its currently set unit(s)
@@ -468,38 +456,36 @@ function factory (type, config, load, typed, math) {
    * @private
    */
   Unit.prototype._normalize = function (value) {
-    var unitValue, unitOffset, unitPower, unitPrefixValue;
-    var convert;
+    var unitValue, unitOffset, unitPower, unitPrefixValue
+    var convert
 
     if (value == null || this.units.length === 0) {
-      return value;
-    }
-    else if (this._isDerived()) {
+      return value
+    } else if (this._isDerived()) {
       // This is a derived unit, so do not apply offsets.
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
-      var res = value;
-      convert = Unit._getNumberConverter(getTypeOf(value)); // convert to Fraction or BigNumber if needed
+      var res = value
+      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
 
-      for(var i=0; i < this.units.length; i++) {
-        unitValue       = convert(this.units[i].unit.value);
-        unitPrefixValue = convert(this.units[i].prefix.value);
-        unitPower       = convert(this.units[i].power);
-        res = multiply(res, pow(multiply(unitValue, unitPrefixValue), unitPower));
+      for (var i = 0; i < this.units.length; i++) {
+        unitValue = convert(this.units[i].unit.value)
+        unitPrefixValue = convert(this.units[i].prefix.value)
+        unitPower = convert(this.units[i].power)
+        res = multiply(res, pow(multiply(unitValue, unitPrefixValue), unitPower))
       }
 
-      return res;
-    }
-    else {
+      return res
+    } else {
       // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(getTypeOf(value)); // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
 
-      unitValue       = convert(this.units[0].unit.value);
-      unitOffset      = convert(this.units[0].unit.offset);
-      unitPrefixValue = convert(this.units[0].prefix.value);
+      unitValue = convert(this.units[0].unit.value)
+      unitOffset = convert(this.units[0].unit.offset)
+      unitPrefixValue = convert(this.units[0].prefix.value)
 
-      return multiply(add(value, unitOffset), multiply(unitValue, unitPrefixValue));
+      return multiply(add(value, unitOffset), multiply(unitValue, unitPrefixValue))
     }
-  };
+  }
 
   /**
    * Denormalize a value, based on its currently set unit(s)
@@ -510,44 +496,41 @@ function factory (type, config, load, typed, math) {
    * @private
    */
   Unit.prototype._denormalize = function (value, prefixValue) {
-    var unitValue, unitOffset, unitPower, unitPrefixValue;
-    var convert;
+    var unitValue, unitOffset, unitPower, unitPrefixValue
+    var convert
 
     if (value == null || this.units.length === 0) {
-      return value;
-    }
-    else if (this._isDerived()) {
+      return value
+    } else if (this._isDerived()) {
       // This is a derived unit, so do not apply offsets.
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
       // Also, prefixValue is ignored--but we will still use the prefix value stored in each unit, since kg is usually preferable to g unless the user decides otherwise.
-      var res = value;
-      convert = Unit._getNumberConverter(getTypeOf(value)); // convert to Fraction or BigNumber if needed
+      var res = value
+      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
 
       for (var i = 0; i < this.units.length; i++) {
-        unitValue       = convert(this.units[i].unit.value);
-        unitPrefixValue = convert(this.units[i].prefix.value);
-        unitPower       = convert(this.units[i].power);
-        res = divide(res, pow(multiply(unitValue, unitPrefixValue), unitPower));
+        unitValue = convert(this.units[i].unit.value)
+        unitPrefixValue = convert(this.units[i].prefix.value)
+        unitPower = convert(this.units[i].power)
+        res = divide(res, pow(multiply(unitValue, unitPrefixValue), unitPower))
       }
 
-      return res;
-    }
-    else {
+      return res
+    } else {
       // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(getTypeOf(value)); // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
 
-      unitValue       = convert(this.units[0].unit.value);
-      unitPrefixValue = convert(this.units[0].prefix.value);
-      unitOffset      = convert(this.units[0].unit.offset);
+      unitValue = convert(this.units[0].unit.value)
+      unitPrefixValue = convert(this.units[0].prefix.value)
+      unitOffset = convert(this.units[0].unit.offset)
 
       if (prefixValue == undefined) {
-        return subtract(divide(divide(value, unitValue), unitPrefixValue), unitOffset);
-      }
-      else {
-        return subtract(divide(divide(value, unitValue), prefixValue), unitOffset);
+        return subtract(divide(divide(value, unitValue), unitPrefixValue), unitOffset)
+      } else {
+        return subtract(divide(divide(value, unitValue), prefixValue), unitOffset)
       }
     }
-  };
+  }
 
   /**
    * Find a unit from a string
@@ -557,12 +540,11 @@ function factory (type, config, load, typed, math) {
    *                                  prefix is returned. Else, null is returned.
    * @private
    */
-  function _findUnit(str) {
-  
+  function _findUnit (str) {
     // First, match units names exactly. For example, a user could define 'mm' as 10^-4 m, which is silly, but then we would want 'mm' to match the user-defined unit.
-    if(UNITS.hasOwnProperty(str)) {
-      var unit = UNITS[str];
-      var prefix = unit.prefixes[''];
+    if (UNITS.hasOwnProperty(str)) {
+      var unit = UNITS[str]
+      var prefix = unit.prefixes['']
       return {
         unit: unit,
         prefix: prefix
@@ -572,24 +554,24 @@ function factory (type, config, load, typed, math) {
     for (var name in UNITS) {
       if (UNITS.hasOwnProperty(name)) {
         if (endsWith(str, name)) {
-          var unit = UNITS[name];
-          var prefixLen = (str.length - name.length);
-          var prefixName = str.substring(0, prefixLen);
+          var unit = UNITS[name]
+          var prefixLen = (str.length - name.length)
+          var prefixName = str.substring(0, prefixLen)
           var prefix = unit.prefixes.hasOwnProperty(prefixName)
-              ? unit.prefixes[prefixName]
-              : undefined;
+            ? unit.prefixes[prefixName]
+            : undefined
           if (prefix !== undefined) {
             // store unit, prefix, and value
             return {
               unit: unit,
               prefix: prefix
-            };
+            }
           }
         }
       }
     }
 
-    return null;
+    return null
   }
 
   /**
@@ -601,8 +583,8 @@ function factory (type, config, load, typed, math) {
    * @return {boolean}      true if the given string is a unit
    */
   Unit.isValuelessUnit = function (name) {
-    return (_findUnit(name) != null);
-  };
+    return (_findUnit(name) != null)
+  }
 
   /**
    * check if this unit has given base unit
@@ -611,24 +593,20 @@ function factory (type, config, load, typed, math) {
    * @param {BASE_UNITS | string | undefined} base
    */
   Unit.prototype.hasBase = function (base) {
-
-    if(typeof(base) === "string") {
-      base = BASE_UNITS[base];
+    if (typeof (base) === 'string') {
+      base = BASE_UNITS[base]
     }
 
-    if(!base)
-      return false;
-
+    if (!base) { return false }
 
     // All dimensions must be the same
-    for(var i=0; i<BASE_DIMENSIONS.length; i++) {
+    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       if (Math.abs((this.dimensions[i] || 0) - (base.dimensions[i] || 0)) > 1e-12) {
-        return false;
+        return false
       }
     }
-    return true;
-
-  };
+    return true
+  }
 
   /**
    * Check if this unit has a base or bases equal to another base or bases
@@ -639,13 +617,13 @@ function factory (type, config, load, typed, math) {
    */
   Unit.prototype.equalBase = function (other) {
     // All dimensions must be the same
-    for(var i=0; i<BASE_DIMENSIONS.length; i++) {
+    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       if (Math.abs((this.dimensions[i] || 0) - (other.dimensions[i] || 0)) > 1e-12) {
-        return false;
+        return false
       }
     }
-    return true;
-  };
+    return true
+  }
 
   /**
    * Check if this unit equals another unit
@@ -654,8 +632,8 @@ function factory (type, config, load, typed, math) {
    * @return {boolean} true if both units are equal
    */
   Unit.prototype.equals = function (other) {
-    return (this.equalBase(other) && equal(this.value, other.value));
-  };
+    return (this.equalBase(other) && equal(this.value, other.value))
+  }
 
   /**
    * Multiply this unit with another one
@@ -664,38 +642,37 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} product of this unit and the other unit
    */
   Unit.prototype.multiply = function (other) {
-    var res = this.clone();
-    
-    for(var i = 0; i<BASE_DIMENSIONS.length; i++) {
+    var res = this.clone()
+
+    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
-      res.dimensions[i] = (this.dimensions[i] || 0) + (other.dimensions[i] || 0);
+      res.dimensions[i] = (this.dimensions[i] || 0) + (other.dimensions[i] || 0)
     }
 
     // Append other's units list onto res (simplify later in Unit.prototype.format)
-    for(var i=0; i<other.units.length; i++) {
+    for (var i = 0; i < other.units.length; i++) {
       // Make a deep copy
-      var inverted = {};
-      for(var key in other.units[i]) {
-        inverted[key] = other.units[i][key];
+      var inverted = {}
+      for (var key in other.units[i]) {
+        inverted[key] = other.units[i][key]
       }
-      res.units.push(inverted);
+      res.units.push(inverted)
     }
 
     // If at least one operand has a value, then the result should also have a value
-    if(this.value != null || other.value != null) {
-      var valThis = this.value == null ? this._normalize(1) : this.value;
-      var valOther = other.value == null ? other._normalize(1) : other.value;
-      res.value = multiply(valThis, valOther);
-    }
-    else {
-      res.value = null;
+    if (this.value != null || other.value != null) {
+      var valThis = this.value == null ? this._normalize(1) : this.value
+      var valOther = other.value == null ? other._normalize(1) : other.value
+      res.value = multiply(valThis, valOther)
+    } else {
+      res.value = null
     }
 
     // Trigger simplification of the unit list at some future time
-    res.isUnitListSimplified = false;
+    res.isUnitListSimplified = false
 
-    return getNumericIfUnitless(res);
-  };
+    return getNumericIfUnitless(res)
+  }
 
   /**
    * Divide this unit by another one
@@ -704,39 +681,38 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} result of dividing this unit by the other unit
    */
   Unit.prototype.divide = function (other) {
-    var res = this.clone();
-    
-    for(var i=0; i<BASE_DIMENSIONS.length; i++) {
+    var res = this.clone()
+
+    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
-      res.dimensions[i] = (this.dimensions[i] || 0) - (other.dimensions[i] || 0);
+      res.dimensions[i] = (this.dimensions[i] || 0) - (other.dimensions[i] || 0)
     }
 
     // Invert and append other's units list onto res (simplify later in Unit.prototype.format)
-    for(var i=0; i<other.units.length; i++) {
+    for (var i = 0; i < other.units.length; i++) {
       // Make a deep copy
-      var inverted = {};
-      for(var key in other.units[i]) {
-        inverted[key] = other.units[i][key];
+      var inverted = {}
+      for (var key in other.units[i]) {
+        inverted[key] = other.units[i][key]
       }
-      inverted.power = -inverted.power;
-      res.units.push(inverted);
+      inverted.power = -inverted.power
+      res.units.push(inverted)
     }
 
     // If at least one operand has a value, the result should have a value
     if (this.value != null || other.value != null) {
-      var valThis = this.value == null ? this._normalize(1) : this.value;
-      var valOther = other.value == null ? other._normalize(1) : other.value;
-      res.value = divide(valThis, valOther);
-    }
-    else {
-      res.value = null;
+      var valThis = this.value == null ? this._normalize(1) : this.value
+      var valOther = other.value == null ? other._normalize(1) : other.value
+      res.value = divide(valThis, valOther)
+    } else {
+      res.value = null
     }
 
     // Trigger simplification of the unit list at some future time
-    res.isUnitListSimplified = false;
+    res.isUnitListSimplified = false
 
-    return getNumericIfUnitless(res);
-  };
+    return getNumericIfUnitless(res)
+  }
 
   /**
    * Calculate the power of a unit
@@ -745,51 +721,48 @@ function factory (type, config, load, typed, math) {
    * @returns {Unit}      The result: this^p
    */
   Unit.prototype.pow = function (p) {
-    var res = this.clone();
-    
-    for(var i=0; i<BASE_DIMENSIONS.length; i++) {
+    var res = this.clone()
+
+    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
-      res.dimensions[i] = (this.dimensions[i] || 0) * p;
+      res.dimensions[i] = (this.dimensions[i] || 0) * p
     }
 
     // Adjust the power of each unit in the list
-    for(var i=0; i<res.units.length; i++) {
-      res.units[i].power *= p;
+    for (var i = 0; i < res.units.length; i++) {
+      res.units[i].power *= p
     }
 
-    if(res.value != null) {
-      res.value = pow(res.value, p);
+    if (res.value != null) {
+      res.value = pow(res.value, p)
 
       // only allow numeric output, we don't want to return a Complex number
-      //if (!isNumeric(res.value)) {
+      // if (!isNumeric(res.value)) {
       //  res.value = NaN;
-      //}
+      // }
       // Update: Complex supported now
-    }
-    else {
-      res.value = null;
+    } else {
+      res.value = null
     }
 
     // Trigger lazy evaluation of the unit list
-    res.isUnitListSimplified = false;
+    res.isUnitListSimplified = false
 
-    return getNumericIfUnitless(res);
-  };
+    return getNumericIfUnitless(res)
+  }
 
   /**
    * Return the numeric value of this unit if it is dimensionless, has a value, and config.predictable == false; or the original unit otherwise
    * @param {Unit} unit
    * @returns {number | Fraction | BigNumber | Unit}  The numeric value of the unit if conditions are met, or the original unit otherwise
    */
-  var getNumericIfUnitless = function(unit) {
-    if(unit.equalBase(BASE_UNITS.NONE) && unit.value !== null && !config.predictable) {
-      return unit.value;
-    }
-    else {
-      return unit;
+  var getNumericIfUnitless = function (unit) {
+    if (unit.equalBase(BASE_UNITS.NONE) && unit.value !== null && !config.predictable) {
+      return unit.value
+    } else {
+      return unit
     }
   }
-    
 
   /**
    * Calculate the absolute value of a unit
@@ -800,17 +773,17 @@ function factory (type, config, load, typed, math) {
   Unit.prototype.abs = function () {
     // This gives correct, but unexpected, results for units with an offset.
     // For example, abs(-283.15 degC) = -263.15 degC !!!
-    var ret = this.clone();
-    ret.value = ret.value !== null ? abs(ret.value) : null;
+    var ret = this.clone()
+    ret.value = ret.value !== null ? abs(ret.value) : null
 
-    for(var i in ret.units) {
-      if(ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
-        ret.units[i].unit = UNITS["W"];
+    for (var i in ret.units) {
+      if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
+        ret.units[i].unit = UNITS['W']
       }
     }
 
-    return ret;
-  };
+    return ret
+  }
 
   /**
    * Convert the unit to a specific unit name.
@@ -819,40 +792,38 @@ function factory (type, config, load, typed, math) {
    * @returns {Unit} Returns a clone of the unit with a fixed prefix and unit.
    */
   Unit.prototype.to = function (valuelessUnit) {
-    var other;
-    var value = this.value == null ? this._normalize(1) : this.value;
+    var other
+    var value = this.value == null ? this._normalize(1) : this.value
     if (typeof valuelessUnit === 'string') {
-      //other = new Unit(null, valuelessUnit);
-      other = Unit.parse(valuelessUnit);
+      // other = new Unit(null, valuelessUnit);
+      other = Unit.parse(valuelessUnit)
       if (!this.equalBase(other)) {
-        throw new Error('Units do not match');
+        throw new Error('Units do not match')
       }
       if (other.value !== null) {
-        throw new Error('Cannot convert to a unit with a value');
+        throw new Error('Cannot convert to a unit with a value')
       }
 
-      other.value = clone(value);
-      other.fixPrefix = true;
-      other.isUnitListSimplified = true;
-      return other;
-    }
-    else if (type.isUnit(valuelessUnit)) {
+      other.value = clone(value)
+      other.fixPrefix = true
+      other.isUnitListSimplified = true
+      return other
+    } else if (type.isUnit(valuelessUnit)) {
       if (!this.equalBase(valuelessUnit)) {
-        throw new Error('Units do not match');
+        throw new Error('Units do not match')
       }
       if (valuelessUnit.value !== null) {
-        throw new Error('Cannot convert to a unit with a value');
+        throw new Error('Cannot convert to a unit with a value')
       }
-      other = valuelessUnit.clone();
-      other.value = clone(value);
-      other.fixPrefix = true;
-      other.isUnitListSimplified = true;
-      return other;
+      other = valuelessUnit.clone()
+      other.value = clone(value)
+      other.fixPrefix = true
+      other.isUnitListSimplified = true
+      return other
+    } else {
+      throw new Error('String or Unit expected as parameter')
     }
-    else {
-      throw new Error('String or Unit expected as parameter');
-    }
-  };
+  }
 
   /**
    * Return the value of the unit when represented with given valueless unit
@@ -862,8 +833,8 @@ function factory (type, config, load, typed, math) {
    */
   // TODO: deprecate Unit.toNumber? It's always better to use toNumeric
   Unit.prototype.toNumber = function (valuelessUnit) {
-    return toNumber(this.toNumeric(valuelessUnit));
-  };
+    return toNumber(this.toNumeric(valuelessUnit))
+  }
 
   /**
    * Return the value of the unit in the original numeric type
@@ -872,21 +843,20 @@ function factory (type, config, load, typed, math) {
    * @return {number | BigNumber | Fraction} Returns the unit value
    */
   Unit.prototype.toNumeric = function (valuelessUnit) {
-    var other = this;
-    if(valuelessUnit) {
+    var other = this
+    if (valuelessUnit) {
       // Allow getting the numeric value without converting to a different unit
-      other = this.to(valuelessUnit);
+      other = this.to(valuelessUnit)
     }
 
-    other.simplifyUnitListLazy();
+    other.simplifyUnitListLazy()
 
-    if(other._isDerived()) {
-      return other._denormalize(other.value);
+    if (other._isDerived()) {
+      return other._denormalize(other.value)
+    } else {
+      return other._denormalize(other.value, other.units[0].prefix.value)
     }
-    else {
-      return other._denormalize(other.value, other.units[0].prefix.value);
-    }
-  };
+  }
 
   /**
    * Get a string representation of the unit.
@@ -894,8 +864,8 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Unit.prototype.toString = function () {
-    return this.format();
-  };
+    return this.format()
+  }
 
   /**
    * Get a JSON representation of the unit
@@ -909,8 +879,8 @@ function factory (type, config, load, typed, math) {
       value: this._denormalize(this.value),
       unit: this.formatUnits(),
       fixPrefix: this.fixPrefix
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate a Unit from a JSON object
@@ -920,124 +890,117 @@ function factory (type, config, load, typed, math) {
    * @return {Unit}
    */
   Unit.fromJSON = function (json) {
-    var unit = new Unit(json.value, json.unit);
-    unit.fixPrefix = json.fixPrefix || false;
-    return unit;
-  };
+    var unit = new Unit(json.value, json.unit)
+    unit.fixPrefix = json.fixPrefix || false
+    return unit
+  }
 
   /**
    * Returns the string representation of the unit.
    * @memberof Unit
    * @return {string}
    */
-  Unit.prototype.valueOf = Unit.prototype.toString;
+  Unit.prototype.valueOf = Unit.prototype.toString
 
   /**
    * Attempt to simplify the list of units for this unit according to the dimensions array and the current unit system. After the call, this Unit will contain a list of the "best" units for formatting.
    * Intended to be evaluated lazily. You must set isUnitListSimplified = false before the call! After the call, isUnitListSimplified will be set to true.
    */
-  Unit.prototype.simplifyUnitListLazy = function() {
-
+  Unit.prototype.simplifyUnitListLazy = function () {
     if (this.isUnitListSimplified || this.value == null) {
-      return;
+      return
     }
 
-    var proposedUnitList = [];
+    var proposedUnitList = []
 
     // Search for a matching base
-    var matchingBase;
-    for(var key in currentUnitSystem) {
-      if(this.hasBase(BASE_UNITS[key])) {
-        matchingBase = key;
-        break;
+    var matchingBase
+    for (var key in currentUnitSystem) {
+      if (this.hasBase(BASE_UNITS[key])) {
+        matchingBase = key
+        break
       }
     }
 
-    if(matchingBase === 'NONE')
-    {
-      this.units = [];
-    }
-    else {
-      var matchingUnit;
-      if(matchingBase) {
+    if (matchingBase === 'NONE') {
+      this.units = []
+    } else {
+      var matchingUnit
+      if (matchingBase) {
         // Does the unit system have a matching unit?
-        if(currentUnitSystem.hasOwnProperty(matchingBase)) {
-          matchingUnit = currentUnitSystem[matchingBase];
+        if (currentUnitSystem.hasOwnProperty(matchingBase)) {
+          matchingUnit = currentUnitSystem[matchingBase]
         }
       }
-      var value;
-      var str;
-      if(matchingUnit) {
+      var value
+      var str
+      if (matchingUnit) {
         this.units = [{
           unit: matchingUnit.unit,
           prefix: matchingUnit.prefix,
           power: 1.0
-        }];
-      }
-      else {
+        }]
+      } else {
         // Multiple units or units with powers are formatted like this:
         // 5 (kg m^2) / (s^3 mol)
         // Build an representation from the base units of the current unit system
-        var missingBaseDim = false;
-        for(var i=0; i<BASE_DIMENSIONS.length; i++) {
-          var baseDim = BASE_DIMENSIONS[i];
-          if(Math.abs(this.dimensions[i] || 0) > 1e-12) {
-            if(currentUnitSystem.hasOwnProperty(baseDim)) {
+        var missingBaseDim = false
+        for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+          var baseDim = BASE_DIMENSIONS[i]
+          if (Math.abs(this.dimensions[i] || 0) > 1e-12) {
+            if (currentUnitSystem.hasOwnProperty(baseDim)) {
               proposedUnitList.push({
                 unit: currentUnitSystem[baseDim].unit,
                 prefix: currentUnitSystem[baseDim].prefix,
                 power: this.dimensions[i] || 0
-              });
-            }
-            else {
-              missingBaseDim = true;
+              })
+            } else {
+              missingBaseDim = true
             }
           }
         }
 
         // Is the proposed unit list "simpler" than the existing one?
-        if(proposedUnitList.length < this.units.length && !missingBaseDim) {
+        if (proposedUnitList.length < this.units.length && !missingBaseDim) {
           // Replace this unit list with the proposed list
-          this.units = proposedUnitList;
+          this.units = proposedUnitList
         }
       }
     }
 
-    this.isUnitListSimplified = true;
-  };
+    this.isUnitListSimplified = true
+  }
 
-  Unit.prototype.toSI = function() {
+  Unit.prototype.toSI = function () {
+    var ret = this.clone()
 
-    var ret = this.clone();
-
-    var proposedUnitList = [];
+    var proposedUnitList = []
 
     // Multiple units or units with powers are formatted like this:
     // 5 (kg m^2) / (s^3 mol)
     // Build an representation from the base units of the SI unit system
-    var missingBaseDim = false;
-    for(var i=0; i<BASE_DIMENSIONS.length; i++) {
-      var baseDim = BASE_DIMENSIONS[i];
-      if(Math.abs(ret.dimensions[i] || 0) > 1e-12) {
-        if(UNIT_SYSTEMS["si"].hasOwnProperty(baseDim)) {
+    var missingBaseDim = false
+    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+      var baseDim = BASE_DIMENSIONS[i]
+      if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
+        if (UNIT_SYSTEMS['si'].hasOwnProperty(baseDim)) {
           proposedUnitList.push({
-            unit: UNIT_SYSTEMS["si"][baseDim].unit,
-            prefix: UNIT_SYSTEMS["si"][baseDim].prefix,
+            unit: UNIT_SYSTEMS['si'][baseDim].unit,
+            prefix: UNIT_SYSTEMS['si'][baseDim].prefix,
             power: ret.dimensions[i] || 0
-          });
-        }
-        else {
-          throw new Error("Cannot express custom unit " + baseDim + " in SI units");
+          })
+        } else {
+          throw new Error('Cannot express custom unit ' + baseDim + ' in SI units')
         }
       }
     }
 
     // Replace this unit list with the proposed list
-    ret.units = proposedUnitList;
+    ret.units = proposedUnitList
 
-    ret.isUnitListSimplified = true;
+    ret.isUnitListSimplified = true
 
-    return ret;
+    return ret
   }
 
   /**
@@ -1046,64 +1009,61 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Unit.prototype.formatUnits = function () {
-
     // Lazy evaluation of the unit list
-    this.simplifyUnitListLazy();
+    this.simplifyUnitListLazy()
 
-    var strNum = "";
-    var strDen = "";
-    var nNum = 0;
-    var nDen = 0;
+    var strNum = ''
+    var strDen = ''
+    var nNum = 0
+    var nDen = 0
 
-    for(var i=0; i<this.units.length; i++) {
-      if(this.units[i].power > 0) {
-        nNum++;
-        strNum += " " + this.units[i].prefix.name + this.units[i].unit.name;
-        if(Math.abs(this.units[i].power - 1.0) > 1e-15) {
-          strNum += "^" + this.units[i].power;
+    for (var i = 0; i < this.units.length; i++) {
+      if (this.units[i].power > 0) {
+        nNum++
+        strNum += ' ' + this.units[i].prefix.name + this.units[i].unit.name
+        if (Math.abs(this.units[i].power - 1.0) > 1e-15) {
+          strNum += '^' + this.units[i].power
         }
-      }
-      else if(this.units[i].power < 0) {
-        nDen++;
+      } else if (this.units[i].power < 0) {
+        nDen++
       }
     }
 
-    if(nDen > 0) {
-      for(var i=0; i<this.units.length; i++) {
-        if(this.units[i].power < 0) {
-          if(nNum > 0) {
-            strDen += " " + this.units[i].prefix.name + this.units[i].unit.name;
-            if(Math.abs(this.units[i].power + 1.0) > 1e-15) {
-              strDen += "^" + (-this.units[i].power);
+    if (nDen > 0) {
+      for (var i = 0; i < this.units.length; i++) {
+        if (this.units[i].power < 0) {
+          if (nNum > 0) {
+            strDen += ' ' + this.units[i].prefix.name + this.units[i].unit.name
+            if (Math.abs(this.units[i].power + 1.0) > 1e-15) {
+              strDen += '^' + (-this.units[i].power)
             }
-          }
-          else {
-            strDen += " " + this.units[i].prefix.name + this.units[i].unit.name;
-            strDen += "^" + (this.units[i].power);
+          } else {
+            strDen += ' ' + this.units[i].prefix.name + this.units[i].unit.name
+            strDen += '^' + (this.units[i].power)
           }
         }
       }
     }
     // Remove leading " "
-    strNum = strNum.substr(1);
-    strDen = strDen.substr(1);
+    strNum = strNum.substr(1)
+    strDen = strDen.substr(1)
 
     // Add parans for better copy/paste back into the eval, for example, or for better pretty print formatting
-    if(nNum > 1 && nDen > 0) {
-      strNum = "(" + strNum + ")";
+    if (nNum > 1 && nDen > 0) {
+      strNum = '(' + strNum + ')'
     }
-    if(nDen > 1 && nNum > 0) {
-      strDen = "(" + strDen + ")";
+    if (nDen > 1 && nNum > 0) {
+      strDen = '(' + strDen + ')'
     }
 
-    var str = strNum;
-    if(nNum > 0 && nDen > 0) {
-      str += " / ";
+    var str = strNum
+    if (nNum > 0 && nDen > 0) {
+      str += ' / '
     }
-    str += strDen;
+    str += strDen
 
-    return str;
-  };
+    return str
+  }
 
   /**
    * Get a string representation of the Unit, with optional formatting options.
@@ -1115,30 +1075,27 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Unit.prototype.format = function (options) {
-
     // Simplfy the unit list, if necessary
-    this.simplifyUnitListLazy();
+    this.simplifyUnitListLazy()
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
-    var isImaginary = false;
-    var isReal = true;
-    if(typeof(this.value) !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
+    var isImaginary = false
+    var isReal = true
+    if (typeof (this.value) !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
-      isImaginary = Math.abs(this.value.re) < 1e-14;
-      isReal = Math.abs(this.value.im) < 1e-14;
+      isImaginary = Math.abs(this.value.re) < 1e-14
+      isReal = Math.abs(this.value.im) < 1e-14
     }
-    
-    for(var i in this.units) {
-      if(this.units[i].unit) {
-        if(this.units[i].unit.name === 'VA' && isImaginary) {
-          this.units[i].unit = UNITS["VAR"];
-        }
-        else if(this.units[i].unit.name === 'VAR' && !isImaginary) {
-          this.units[i].unit = UNITS["VA"];
+
+    for (var i in this.units) {
+      if (this.units[i].unit) {
+        if (this.units[i].unit.name === 'VA' && isImaginary) {
+          this.units[i].unit = UNITS['VAR']
+        } else if (this.units[i].unit.name === 'VAR' && !isImaginary) {
+          this.units[i].unit = UNITS['VA']
         }
       }
     }
-
 
     // Now apply the best prefix
     // Units must have only one unit and not have the fixPrefix flag set
@@ -1147,24 +1104,23 @@ function factory (type, config, load, typed, math) {
       // outputted value by not-an-integer-power-of-ten
       if (Math.abs(this.units[0].power - Math.round(this.units[0].power)) < 1e-14) {
         // Apply the best prefix
-        this.units[0].prefix = this._bestPrefix();
+        this.units[0].prefix = this._bestPrefix()
       }
     }
 
-
-    var value = this._denormalize(this.value);
-    var str = (this.value !== null) ? format(value, options || {}) : '';
-    var unitStr = this.formatUnits();
-    if(this.value && type.isComplex(this.value)) {
-      str = "(" + str + ")";    // Surround complex values with ( ) to enable better parsing 
+    var value = this._denormalize(this.value)
+    var str = (this.value !== null) ? format(value, options || {}) : ''
+    var unitStr = this.formatUnits()
+    if (this.value && type.isComplex(this.value)) {
+      str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
-    if(unitStr.length > 0 && str.length > 0) {
-      str += " ";
+    if (unitStr.length > 0 && str.length > 0) {
+      str += ' '
     }
-    str += unitStr;
+    str += unitStr
 
-    return str;
-  };
+    return str
+  }
 
   /**
    * Calculate the best prefix using current value.
@@ -1174,10 +1130,10 @@ function factory (type, config, load, typed, math) {
    */
   Unit.prototype._bestPrefix = function () {
     if (this.units.length !== 1) {
-      throw new Error("Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!");
+      throw new Error('Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!')
     }
     if (Math.abs(this.units[0].power - Math.round(this.units[0].power)) >= 1e-14) {
-      throw new Error("Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!");
+      throw new Error('Can only compute the best prefix for single units with integer powers, like kg, s^2, N^-1, and so forth!')
     }
 
     // find the best prefix value (resulting in the value of which
@@ -1188,43 +1144,42 @@ function factory (type, config, load, typed, math) {
     // Note: the units value can be any numeric type, but to find the best
     // prefix it's enough to work with limited precision of a regular number
     // Update: using mathjs abs since we also allow complex numbers
-    var absValue = this.value !== null ? abs(this.value) : 0;
-    var absUnitValue = abs(this.units[0].unit.value);
-    var bestPrefix = this.units[0].prefix;
+    var absValue = this.value !== null ? abs(this.value) : 0
+    var absUnitValue = abs(this.units[0].unit.value)
+    var bestPrefix = this.units[0].prefix
     if (absValue === 0) {
-      return bestPrefix;
+      return bestPrefix
     }
-    var power = this.units[0].power;
-    var bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - 1.2;
-    if(bestDiff > -2.200001 && bestDiff < 1.800001) return bestPrefix;    // Allow the original prefix
-    bestDiff = Math.abs(bestDiff);
-    var prefixes = this.units[0].unit.prefixes;
+    var power = this.units[0].power
+    var bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - 1.2
+    if (bestDiff > -2.200001 && bestDiff < 1.800001) return bestPrefix // Allow the original prefix
+    bestDiff = Math.abs(bestDiff)
+    var prefixes = this.units[0].unit.prefixes
     for (var p in prefixes) {
       if (prefixes.hasOwnProperty(p)) {
-        var prefix = prefixes[p];
+        var prefix = prefixes[p]
         if (prefix.scientific) {
-
           var diff = Math.abs(
-              Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - 1.2);
+            Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - 1.2)
 
-          if (diff < bestDiff
-              || (diff === bestDiff && prefix.name.length < bestPrefix.name.length)) {
-                // choose the prefix with the smallest diff, or if equal, choose the one
-                // with the shortest name (can happen with SHORTLONG for example)
-                bestPrefix = prefix;
-                bestDiff = diff;
+          if (diff < bestDiff ||
+              (diff === bestDiff && prefix.name.length < bestPrefix.name.length)) {
+            // choose the prefix with the smallest diff, or if equal, choose the one
+            // with the shortest name (can happen with SHORTLONG for example)
+            bestPrefix = prefix
+            bestDiff = diff
           }
         }
       }
     }
 
-    return bestPrefix;
-  };
+    return bestPrefix
+  }
 
   /**
    * Returns an array of units whose sum is equal to this unit
    * @memberof Unit
-   * @param {Array} [parts] An array of strings or valueless units. 
+   * @param {Array} [parts] An array of strings or valueless units.
    *
    *   Example:
    *
@@ -1234,51 +1189,49 @@ function factory (type, config, load, typed, math) {
    *
    * @return {Array} An array of units.
    */
-  Unit.prototype.splitUnit = function(parts) {
-
-    var x = this.clone();
-    var ret = [];
-    for(var i=0; i<parts.length; i++) {
+  Unit.prototype.splitUnit = function (parts) {
+    var x = this.clone()
+    var ret = []
+    for (var i = 0; i < parts.length; i++) {
       // Convert x to the requested unit
-      x = x.to(parts[i]);
-      if(i==parts.length-1) break;
+      x = x.to(parts[i])
+      if (i == parts.length - 1) break
 
       // Get the numeric value of this unit
-      var xNumeric = x.toNumeric();
+      var xNumeric = x.toNumeric()
 
       // Check to see if xNumeric is nearly equal to an integer,
       // since fix can incorrectly round down if there is round-off error
-      var xRounded = round(xNumeric);
-      var xFixed;
-      var isNearlyEqual = equal(xRounded, xNumeric);
+      var xRounded = round(xNumeric)
+      var xFixed
+      var isNearlyEqual = equal(xRounded, xNumeric)
       if (isNearlyEqual) {
-        xFixed = xRounded;
-      }
-      else {
-        xFixed = fix(x.toNumeric());
+        xFixed = xRounded
+      } else {
+        xFixed = fix(x.toNumeric())
       }
 
-      var y = new Unit(xFixed, parts[i].toString());
-      ret.push(y);
-      x = subtract(x, y);
+      var y = new Unit(xFixed, parts[i].toString())
+      ret.push(y)
+      x = subtract(x, y)
     }
 
     // This little bit fixes a bug where the remainder should be 0 but is a little bit off.
     // But instead of comparing x, the remainder, with zero--we will compare the sum of
     // all the parts so far with the original value. If they are nearly equal,
     // we set the remainder to 0.
-    var testSum = 0;
-    for(var i=0; i<ret.length; i++) {
-      testSum = add(testSum, ret[i].value);
+    var testSum = 0
+    for (var i = 0; i < ret.length; i++) {
+      testSum = add(testSum, ret[i].value)
     }
-    if(equal(testSum, this.value)) {
-      x.value = 0;
+    if (equal(testSum, this.value)) {
+      x.value = 0
     }
 
-    ret.push(x);
+    ret.push(x)
 
-    return ret;
-  };
+    return ret
+  }
 
   var PREFIXES = {
     NONE: {
@@ -1425,21 +1378,21 @@ function factory (type, config, load, typed, math) {
       'yobi': {name: 'yobi', value: Math.pow(1024, 8), scientific: true}
     },
     BTU: {
-      '':   {name: '',   value: 1,   scientific: true},
+      '': {name: '', value: 1, scientific: true},
       'MM': {name: 'MM', value: 1e6, scientific: true}
     }
-  };
+  }
 
   // Add a prefix list for both short and long prefixes (for example for ohm and bar which support both Mohm and megaohm, mbar and millibar):
-  PREFIXES.SHORTLONG = {};
+  PREFIXES.SHORTLONG = {}
   for (var key in PREFIXES.SHORT) {
-    if(PREFIXES.SHORT.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.SHORT[key];
+    if (PREFIXES.SHORT.hasOwnProperty(key)) {
+      PREFIXES.SHORTLONG[key] = PREFIXES.SHORT[key]
     }
   }
   for (var key in PREFIXES.LONG) {
-    if(PREFIXES.LONG.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.LONG[key];
+    if (PREFIXES.LONG.hasOwnProperty(key)) {
+      PREFIXES.SHORTLONG[key] = PREFIXES.LONG[key]
     }
   }
 
@@ -1459,7 +1412,7 @@ function factory (type, config, load, typed, math) {
    *
    */
 
-  var BASE_DIMENSIONS = ["MASS", "LENGTH", "TIME", "CURRENT", "TEMPERATURE", "LUMINOUS_INTENSITY", "AMOUNT_OF_SUBSTANCE", "ANGLE", "BIT"];
+  var BASE_DIMENSIONS = ['MASS', 'LENGTH', 'TIME', 'CURRENT', 'TEMPERATURE', 'LUMINOUS_INTENSITY', 'AMOUNT_OF_SUBSTANCE', 'ANGLE', 'BIT']
 
   var BASE_UNITS = {
     NONE: {
@@ -1540,15 +1493,15 @@ function factory (type, config, load, typed, math) {
     BIT: {
       dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 1]
     }
-  };
-
-  for(var key in BASE_UNITS) {
-    BASE_UNITS[key].key = key;
   }
 
-  var BASE_UNIT_NONE = {};
+  for (var key in BASE_UNITS) {
+    BASE_UNITS[key].key = key
+  }
 
-  var UNIT_NONE = {name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: [0,0,0,0,0,0,0,0,0]};
+  var BASE_UNIT_NONE = {}
+
+  var UNIT_NONE = {name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0]}
 
   var UNITS = {
     // length
@@ -1816,21 +1769,21 @@ function factory (type, config, load, typed, math) {
       value: 0.000015,
       offset: 0
     }, // 15 mL
-    //{name: 'cup', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.000240, offset: 0}, // 240 mL  // not possible, we have already another cup
+    // {name: 'cup', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.000240, offset: 0}, // 240 mL  // not possible, we have already another cup
     drop: {
       name: 'drop',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
       value: 5e-8,
       offset: 0
-    },  // 0.05 mL = 5e-8 m3
+    }, // 0.05 mL = 5e-8 m3
     gtt: {
       name: 'gtt',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
       value: 5e-8,
       offset: 0
-    },  // 0.05 mL = 5e-8 m3
+    }, // 0.05 mL = 5e-8 m3
 
     // Liquid volume
     minim: {
@@ -1846,7 +1799,7 @@ function factory (type, config, load, typed, math) {
       prefixes: PREFIXES.NONE,
       value: 0.0000036966911,
       offset: 0
-    },  // 3.696691 mL
+    }, // 3.696691 mL
     fluidounce: {
       name: 'fluidounce',
       base: BASE_UNITS.VOLUME,
@@ -1918,14 +1871,14 @@ function factory (type, config, load, typed, math) {
       offset: 0
     }, // 238.4810 L
 
-    //{name: 'min', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.00000006161152, offset: 0}, // 0.06161152 mL // min is already in use as minute
+    // {name: 'min', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.00000006161152, offset: 0}, // 0.06161152 mL // min is already in use as minute
     fldr: {
       name: 'fldr',
       base: BASE_UNITS.VOLUME,
       prefixes: PREFIXES.NONE,
       value: 0.0000036966911,
       offset: 0
-    },  // 3.696691 mL
+    }, // 3.696691 mL
     floz: {
       name: 'floz',
       base: BASE_UNITS.VOLUME,
@@ -1982,7 +1935,7 @@ function factory (type, config, load, typed, math) {
       value: 0.1589873,
       offset: 0
     }, // 158.9873 L
-    //{name: 'hogshead', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.2384810, offset: 0}, // 238.4810 L // TODO: hh?
+    // {name: 'hogshead', base: BASE_UNITS.VOLUME, prefixes: PREFIXES.NONE, value: 0.2384810, offset: 0}, // 238.4810 L // TODO: hh?
 
     // Mass
     g: {
@@ -2162,42 +2115,42 @@ function factory (type, config, load, typed, math) {
       name: 'week',
       base: BASE_UNITS.TIME,
       prefixes: PREFIXES.NONE,
-      value: 7*86400,
+      value: 7 * 86400,
       offset: 0
     },
     month: {
       name: 'month',
       base: BASE_UNITS.TIME,
       prefixes: PREFIXES.NONE,
-      value: 2629800, //1/12th of Julian year
+      value: 2629800, // 1/12th of Julian year
       offset: 0
     },
     year: {
       name: 'year',
       base: BASE_UNITS.TIME,
       prefixes: PREFIXES.NONE,
-      value: 31557600, //Julian year
+      value: 31557600, // Julian year
       offset: 0
     },
     decade: {
       name: 'decade',
       base: BASE_UNITS.TIME,
       prefixes: PREFIXES.NONE,
-      value: 315576000, //Julian decade
+      value: 315576000, // Julian decade
       offset: 0
     },
     century: {
       name: 'century',
       base: BASE_UNITS.TIME,
       prefixes: PREFIXES.NONE,
-      value: 3155760000, //Julian century
+      value: 3155760000, // Julian century
       offset: 0
     },
     millennium: {
       name: 'millennium',
       base: BASE_UNITS.TIME,
       prefixes: PREFIXES.NONE,
-      value: 31557600000, //Julian millennium
+      value: 31557600000, // Julian millennium
       offset: 0
     },
 
@@ -2288,7 +2241,7 @@ function factory (type, config, load, typed, math) {
       value: null, // will be filled in by calculateAngleValues()
       offset: 0
     },
-    
+
     // Electric current
     A: {
       name: 'A',
@@ -2398,8 +2351,8 @@ function factory (type, config, load, typed, math) {
       offset: 0
     },
     // TODO: units STERADIAN
-    //{name: 'sr', base: BASE_UNITS.STERADIAN, prefixes: PREFIXES.NONE, value: 1, offset: 0},
-    //{name: 'steradian', base: BASE_UNITS.STERADIAN, prefixes: PREFIXES.NONE, value: 1, offset: 0},
+    // {name: 'sr', base: BASE_UNITS.STERADIAN, prefixes: PREFIXES.NONE, value: 1, offset: 0},
+    // {name: 'steradian', base: BASE_UNITS.STERADIAN, prefixes: PREFIXES.NONE, value: 1, offset: 0},
 
     // Force
     N: {
@@ -2451,7 +2404,7 @@ function factory (type, config, load, typed, math) {
       value: 4448.2216,
       offset: 0
     },
-	
+
     // Energy
     J: {
       name: 'J',
@@ -2503,7 +2456,6 @@ function factory (type, config, load, typed, math) {
       offset: 0
     },
 
-
     // Power
     W: {
       name: 'W',
@@ -2535,7 +2487,7 @@ function factory (type, config, load, typed, math) {
       value: Complex.I,
       offset: 0
     },
-    
+
     VA: {
       name: 'VA',
       base: BASE_UNITS.POWER,
@@ -2651,7 +2603,7 @@ function factory (type, config, load, typed, math) {
     ohm: {
       name: 'ohm',
       base: BASE_UNITS.ELECTRIC_RESISTANCE,
-      prefixes: PREFIXES.SHORTLONG,    // Both Mohm and megaohm are acceptable
+      prefixes: PREFIXES.SHORTLONG, // Both Mohm and megaohm are acceptable
       value: 1,
       offset: 0
     },
@@ -2755,7 +2707,7 @@ function factory (type, config, load, typed, math) {
       value: 8,
       offset: 0
     }
-  };
+  }
 
   // aliases (formerly plurals)
   var ALIASES = {
@@ -2799,7 +2751,7 @@ function factory (type, config, load, typed, math) {
     sticks: 'stick',
     lb: 'lbm',
     lbs: 'lbm',
-	
+
     kips: 'kip',
 
     acres: 'acre',
@@ -2853,7 +2805,7 @@ function factory (type, config, load, typed, math) {
     electronvolts: 'electronvolt',
     moles: 'mole'
 
-  };
+  }
 
   /**
    * Calculate the values for the angle units.
@@ -2862,38 +2814,37 @@ function factory (type, config, load, typed, math) {
    */
   function calculateAngleValues (config) {
     if (config.number === 'BigNumber') {
-      var pi = constants.pi(type.BigNumber);
-      UNITS.rad.value = new type.BigNumber(1);
-      UNITS.deg.value = pi.div(180);        // 2 * pi / 360;
-      UNITS.grad.value = pi.div(200);       // 2 * pi / 400;
-      UNITS.cycle.value = pi.times(2);      // 2 * pi
-      UNITS.arcsec.value = pi.div(648000);  // 2 * pi / 360 / 3600
-      UNITS.arcmin.value = pi.div(10800);   // 2 * pi / 360 / 60
-    }
-    else { // number
-      UNITS.rad.value = 1;
-      UNITS.deg.value = Math.PI / 180;        // 2 * pi / 360;
-      UNITS.grad.value = Math.PI / 200;       // 2 * pi / 400;
-      UNITS.cycle.value = Math.PI * 2;        // 2 * pi
-      UNITS.arcsec.value = Math.PI / 648000;  // 2 * pi / 360 / 3600;
-      UNITS.arcmin.value = Math.PI / 10800;   // 2 * pi / 360 / 60;
+      var pi = constants.pi(type.BigNumber)
+      UNITS.rad.value = new type.BigNumber(1)
+      UNITS.deg.value = pi.div(180) // 2 * pi / 360;
+      UNITS.grad.value = pi.div(200) // 2 * pi / 400;
+      UNITS.cycle.value = pi.times(2) // 2 * pi
+      UNITS.arcsec.value = pi.div(648000) // 2 * pi / 360 / 3600
+      UNITS.arcmin.value = pi.div(10800) // 2 * pi / 360 / 60
+    } else { // number
+      UNITS.rad.value = 1
+      UNITS.deg.value = Math.PI / 180 // 2 * pi / 360;
+      UNITS.grad.value = Math.PI / 200 // 2 * pi / 400;
+      UNITS.cycle.value = Math.PI * 2 // 2 * pi
+      UNITS.arcsec.value = Math.PI / 648000 // 2 * pi / 360 / 3600;
+      UNITS.arcmin.value = Math.PI / 10800 // 2 * pi / 360 / 60;
     }
 
     // copy to the full names of the angles
-    UNITS.radian.value = UNITS.rad.value;
-    UNITS.degree.value = UNITS.deg.value;
-    UNITS.gradian.value = UNITS.grad.value;
+    UNITS.radian.value = UNITS.rad.value
+    UNITS.degree.value = UNITS.deg.value
+    UNITS.gradian.value = UNITS.grad.value
   }
 
   // apply the angle values now
-  calculateAngleValues(config);
+  calculateAngleValues(config)
 
   // recalculate the values on change of configuration
   math.on('config', function (curr, prev) {
     if (curr.number !== prev.number) {
-      calculateAngleValues(curr);
+      calculateAngleValues(curr)
     }
-  });
+  })
 
   /**
    * A unit system is a set of dimensionally independent base units plus a set of derived units, formed by multiplication and division of the base units, that are by convention used with the unit system.
@@ -2903,86 +2854,83 @@ function factory (type, config, load, typed, math) {
   var UNIT_SYSTEMS = {
     si: {
       // Base units
-      NONE:                  {unit: UNIT_NONE, prefix: PREFIXES.NONE['']},
-      LENGTH:                {unit: UNITS.m,   prefix: PREFIXES.SHORT['']},
-      MASS:                  {unit: UNITS.g,   prefix: PREFIXES.SHORT['k']}, 
-      TIME:                  {unit: UNITS.s,   prefix: PREFIXES.SHORT['']}, 
-      CURRENT:               {unit: UNITS.A,   prefix: PREFIXES.SHORT['']}, 
-      TEMPERATURE:           {unit: UNITS.K,   prefix: PREFIXES.SHORT['']}, 
-      LUMINOUS_INTENSITY:    {unit: UNITS.cd,  prefix: PREFIXES.SHORT['']}, 
-      AMOUNT_OF_SUBSTANCE:   {unit: UNITS.mol, prefix: PREFIXES.SHORT['']}, 
-      ANGLE:                 {unit: UNITS.rad, prefix: PREFIXES.SHORT['']}, 
-      BIT:                   {unit: UNITS.bit, prefix: PREFIXES.SHORT['']}, 
+      NONE: {unit: UNIT_NONE, prefix: PREFIXES.NONE['']},
+      LENGTH: {unit: UNITS.m, prefix: PREFIXES.SHORT['']},
+      MASS: {unit: UNITS.g, prefix: PREFIXES.SHORT['k']},
+      TIME: {unit: UNITS.s, prefix: PREFIXES.SHORT['']},
+      CURRENT: {unit: UNITS.A, prefix: PREFIXES.SHORT['']},
+      TEMPERATURE: {unit: UNITS.K, prefix: PREFIXES.SHORT['']},
+      LUMINOUS_INTENSITY: {unit: UNITS.cd, prefix: PREFIXES.SHORT['']},
+      AMOUNT_OF_SUBSTANCE: {unit: UNITS.mol, prefix: PREFIXES.SHORT['']},
+      ANGLE: {unit: UNITS.rad, prefix: PREFIXES.SHORT['']},
+      BIT: {unit: UNITS.bit, prefix: PREFIXES.SHORT['']},
 
       // Derived units
-      FORCE:                 {unit: UNITS.N,   prefix: PREFIXES.SHORT['']}, 
-      ENERGY:                {unit: UNITS.J,   prefix: PREFIXES.SHORT['']},
-      POWER:                 {unit: UNITS.W,   prefix: PREFIXES.SHORT['']},
-      PRESSURE:              {unit: UNITS.Pa,  prefix: PREFIXES.SHORT['']},
-      ELECTRIC_CHARGE:       {unit: UNITS.C,   prefix: PREFIXES.SHORT['']},
-      ELECTRIC_CAPACITANCE:  {unit: UNITS.F,   prefix: PREFIXES.SHORT['']},
-      ELECTRIC_POTENTIAL:    {unit: UNITS.V,   prefix: PREFIXES.SHORT['']},
-      ELECTRIC_RESISTANCE:   {unit: UNITS.ohm, prefix: PREFIXES.SHORT['']},
-      ELECTRIC_INDUCTANCE:   {unit: UNITS.H,   prefix: PREFIXES.SHORT['']},
-      ELECTRIC_CONDUCTANCE:  {unit: UNITS.S,   prefix: PREFIXES.SHORT['']},
-      MAGNETIC_FLUX:         {unit: UNITS.Wb,  prefix: PREFIXES.SHORT['']},
-      MAGNETIC_FLUX_DENSITY: {unit: UNITS.T,   prefix: PREFIXES.SHORT['']},
-      FREQUENCY:             {unit: UNITS.Hz,  prefix: PREFIXES.SHORT['']}
+      FORCE: {unit: UNITS.N, prefix: PREFIXES.SHORT['']},
+      ENERGY: {unit: UNITS.J, prefix: PREFIXES.SHORT['']},
+      POWER: {unit: UNITS.W, prefix: PREFIXES.SHORT['']},
+      PRESSURE: {unit: UNITS.Pa, prefix: PREFIXES.SHORT['']},
+      ELECTRIC_CHARGE: {unit: UNITS.C, prefix: PREFIXES.SHORT['']},
+      ELECTRIC_CAPACITANCE: {unit: UNITS.F, prefix: PREFIXES.SHORT['']},
+      ELECTRIC_POTENTIAL: {unit: UNITS.V, prefix: PREFIXES.SHORT['']},
+      ELECTRIC_RESISTANCE: {unit: UNITS.ohm, prefix: PREFIXES.SHORT['']},
+      ELECTRIC_INDUCTANCE: {unit: UNITS.H, prefix: PREFIXES.SHORT['']},
+      ELECTRIC_CONDUCTANCE: {unit: UNITS.S, prefix: PREFIXES.SHORT['']},
+      MAGNETIC_FLUX: {unit: UNITS.Wb, prefix: PREFIXES.SHORT['']},
+      MAGNETIC_FLUX_DENSITY: {unit: UNITS.T, prefix: PREFIXES.SHORT['']},
+      FREQUENCY: {unit: UNITS.Hz, prefix: PREFIXES.SHORT['']}
     }
-  };
+  }
 
   // Clone to create the other unit systems
-  UNIT_SYSTEMS.cgs = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si));
-  UNIT_SYSTEMS.cgs.LENGTH = {unit: UNITS.m,   prefix: PREFIXES.SHORT['c']};
-  UNIT_SYSTEMS.cgs.MASS =   {unit: UNITS.g,   prefix: PREFIXES.SHORT['']};
-  UNIT_SYSTEMS.cgs.FORCE =  {unit: UNITS.dyn, prefix: PREFIXES.SHORT['']};
-  UNIT_SYSTEMS.cgs.ENERGY = {unit: UNITS.erg, prefix: PREFIXES.NONE['']};
+  UNIT_SYSTEMS.cgs = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si))
+  UNIT_SYSTEMS.cgs.LENGTH = {unit: UNITS.m, prefix: PREFIXES.SHORT['c']}
+  UNIT_SYSTEMS.cgs.MASS = {unit: UNITS.g, prefix: PREFIXES.SHORT['']}
+  UNIT_SYSTEMS.cgs.FORCE = {unit: UNITS.dyn, prefix: PREFIXES.SHORT['']}
+  UNIT_SYSTEMS.cgs.ENERGY = {unit: UNITS.erg, prefix: PREFIXES.NONE['']}
   // there are wholly 4 unique cgs systems for electricity and magnetism,
   // so let's not worry about it unless somebody complains
-  
-  UNIT_SYSTEMS.us = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si));
-  UNIT_SYSTEMS.us.LENGTH =      {unit: UNITS.ft,   prefix: PREFIXES.NONE['']};
-  UNIT_SYSTEMS.us.MASS =        {unit: UNITS.lbm,  prefix: PREFIXES.NONE['']};
-  UNIT_SYSTEMS.us.TEMPERATURE = {unit: UNITS.degF, prefix: PREFIXES.NONE['']};
-  UNIT_SYSTEMS.us.FORCE =       {unit: UNITS.lbf,  prefix: PREFIXES.NONE['']};
-  UNIT_SYSTEMS.us.ENERGY =      {unit: UNITS.BTU,  prefix: PREFIXES.BTU['']};
-  UNIT_SYSTEMS.us.POWER =       {unit: UNITS.hp,   prefix: PREFIXES.NONE['']};
-  UNIT_SYSTEMS.us.PRESSURE =    {unit: UNITS.psi,  prefix: PREFIXES.NONE['']};
+
+  UNIT_SYSTEMS.us = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si))
+  UNIT_SYSTEMS.us.LENGTH = {unit: UNITS.ft, prefix: PREFIXES.NONE['']}
+  UNIT_SYSTEMS.us.MASS = {unit: UNITS.lbm, prefix: PREFIXES.NONE['']}
+  UNIT_SYSTEMS.us.TEMPERATURE = {unit: UNITS.degF, prefix: PREFIXES.NONE['']}
+  UNIT_SYSTEMS.us.FORCE = {unit: UNITS.lbf, prefix: PREFIXES.NONE['']}
+  UNIT_SYSTEMS.us.ENERGY = {unit: UNITS.BTU, prefix: PREFIXES.BTU['']}
+  UNIT_SYSTEMS.us.POWER = {unit: UNITS.hp, prefix: PREFIXES.NONE['']}
+  UNIT_SYSTEMS.us.PRESSURE = {unit: UNITS.psi, prefix: PREFIXES.NONE['']}
 
   // Add additional unit systems here.
 
-
-
   // Choose a unit system to seed the auto unit system.
-  UNIT_SYSTEMS.auto = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si));
+  UNIT_SYSTEMS.auto = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si))
 
   // Set the current unit system
-  var currentUnitSystem = UNIT_SYSTEMS.auto;
+  var currentUnitSystem = UNIT_SYSTEMS.auto
 
   /**
    * Set a unit system for formatting derived units.
    * @param {string} [name] The name of the unit system.
    */
-  Unit.setUnitSystem = function(name) {
-    if(UNIT_SYSTEMS.hasOwnProperty(name)) {
-      currentUnitSystem = UNIT_SYSTEMS[name];
+  Unit.setUnitSystem = function (name) {
+    if (UNIT_SYSTEMS.hasOwnProperty(name)) {
+      currentUnitSystem = UNIT_SYSTEMS[name]
+    } else {
+      throw new Error('Unit system ' + name + ' does not exist. Choices are: ' + Object.keys(UNIT_SYSTEMS).join(', '))
     }
-    else {
-      throw new Error('Unit system ' + name + ' does not exist. Choices are: ' + Object.keys(UNIT_SYSTEMS).join(', '));
-    }
-  };
+  }
 
   /**
    * Return the current unit system.
    * @return {string} The current unit system.
    */
-  Unit.getUnitSystem = function() {
-    for(var key in UNIT_SYSTEMS) {
-      if(UNIT_SYSTEMS[key] === currentUnitSystem) {
-        return key;
+  Unit.getUnitSystem = function () {
+    for (var key in UNIT_SYSTEMS) {
+      if (UNIT_SYSTEMS[key] === currentUnitSystem) {
+        return key
       }
     }
-  };
+  }
 
   /**
    * Converters to convert from number to an other numeric type like BigNumber
@@ -2990,21 +2938,21 @@ function factory (type, config, load, typed, math) {
    */
   Unit.typeConverters = {
     BigNumber: function (x) {
-      return new type.BigNumber(x + ''); // stringify to prevent constructor error
+      return new type.BigNumber(x + '') // stringify to prevent constructor error
     },
 
     Fraction: function (x) {
-      return new type.Fraction(x);
+      return new type.Fraction(x)
     },
 
     Complex: function (x) {
-      return x;
+      return x
     },
 
     number: function (x) {
-      return x;
+      return x
     }
-  };
+  }
 
   /**
    * Retrieve the right convertor function corresponding with the type
@@ -3016,58 +2964,55 @@ function factory (type, config, load, typed, math) {
    */
   Unit._getNumberConverter = function (type) {
     if (!Unit.typeConverters[type]) {
-      throw new TypeError('Unsupported type "' + type + '"');
+      throw new TypeError('Unsupported type "' + type + '"')
     }
 
-    return Unit.typeConverters[type];
-  };
+    return Unit.typeConverters[type]
+  }
 
   // Add dimensions to each built-in unit
   for (var key in UNITS) {
-    var unit = UNITS[key];
-    unit.dimensions = unit.base.dimensions;
-  }    
+    var unit = UNITS[key]
+    unit.dimensions = unit.base.dimensions
+  }
 
   // Create aliases
   for (var name in ALIASES) {
-    if(ALIASES.hasOwnProperty(name)) {
-      var unit = UNITS[ALIASES[name]];
-      var alias = {};
-      for(var key in unit) {
-        if(unit.hasOwnProperty(key)) {
-          alias[key] = unit[key];
+    if (ALIASES.hasOwnProperty(name)) {
+      var unit = UNITS[ALIASES[name]]
+      var alias = {}
+      for (var key in unit) {
+        if (unit.hasOwnProperty(key)) {
+          alias[key] = unit[key]
         }
       }
-      alias.name = name;
-      UNITS[name] = alias;
+      alias.name = name
+      UNITS[name] = alias
     }
   }
 
-  function assertUnitNameIsValid(name) {
-    for(var i=0; i<name.length; i++) {
-      var c = name.charAt(i);
-       
-      var isValidAlpha = function (p) {
-        return /^[a-zA-Z]$/.test(p);
-      };
+  function assertUnitNameIsValid (name) {
+    for (var i = 0; i < name.length; i++) {
+      var c = name.charAt(i)
 
-      var isDigit = function (c) {
-        return (c >= '0' && c <= '9');
+      var isValidAlpha = function (p) {
+        return /^[a-zA-Z]$/.test(p)
       }
 
-      if(i === 0 && !isValidAlpha(c))
-        throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"');
+      var isDigit = function (c) {
+        return (c >= '0' && c <= '9')
+      }
 
-      if(i > 0 && !( isValidAlpha(c)
-                  || isDigit(c)))
-        throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"');
+      if (i === 0 && !isValidAlpha(c)) { throw new Error('Invalid unit name (must begin with alpha character): "' + name + '"') }
 
+      if (i > 0 && !(isValidAlpha(c) ||
+                  isDigit(c))) { throw new Error('Invalid unit name (only alphanumeric characters are allowed): "' + name + '"') }
     }
   }
 
   /**
    * Wrapper around createUnitSingle.
-   * Example: 
+   * Example:
    *  createUnit({
    *    foo: { },
    *    bar: {
@@ -3076,46 +3021,45 @@ function factory (type, config, load, typed, math) {
    *      offset: 200
    *    },
    *    baz: '4 bar'
-   *  }, 
+   *  },
    *  {
    *    override: true;
    *  });
    * @param {object} obj      Object map. Each key becomes a unit which is defined by its value.
    * @param {object} options
    */
-  Unit.createUnit = function(obj, options) {
-    
-    if(typeof(obj) !== 'object') {
-      throw new TypeError("createUnit expects first parameter to be of type 'Object'");
+  Unit.createUnit = function (obj, options) {
+    if (typeof (obj) !== 'object') {
+      throw new TypeError("createUnit expects first parameter to be of type 'Object'")
     }
 
     // Remove all units and aliases we are overriding
-    if(options && options.override) {
-      for(var key in obj) {
-        if(obj.hasOwnProperty(key)) {
-          Unit.deleteUnit(key);
+    if (options && options.override) {
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          Unit.deleteUnit(key)
         }
-        if(obj[key].aliases) {
-          for(var i=0; i<obj[key].aliases.length; i++) {
-            Unit.deleteUnit(obj[key].aliases[i]);
+        if (obj[key].aliases) {
+          for (var i = 0; i < obj[key].aliases.length; i++) {
+            Unit.deleteUnit(obj[key].aliases[i])
           }
         }
       }
     }
 
     // TODO: traverse multiple times until all units have been added
-    var lastUnit;
-    for(var key in obj) {
-      if(obj.hasOwnProperty(key)) {
-        lastUnit = Unit.createUnitSingle(key, obj[key]);
+    var lastUnit
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        lastUnit = Unit.createUnitSingle(key, obj[key])
       }
     }
-    return lastUnit;
-  };
+    return lastUnit
+  }
 
   /**
    * Create a user-defined unit and register it with the Unit type.
-   * Example: 
+   * Example:
    *  createUnitSingle('knot', '0.514444444 m/s')
    *  createUnitSingle('acre', new Unit(43560, 'ft^2'))
    *
@@ -3126,108 +3070,98 @@ function factory (type, config, load, typed, math) {
    *     aliases {Array} Array of strings. Example: ['knots', 'kt', 'kts']
    *     offset {Numeric} An offset to apply when converting from the unit. For example, the offset for celsius is 273.15 and the offset for farhenheit is 459.67. Default is 0.
    *
-   * @return {Unit} 
+   * @return {Unit}
    */
-  Unit.createUnitSingle = function(name, obj, options) {
+  Unit.createUnitSingle = function (name, obj, options) {
+    if (typeof (obj) === 'undefined' || obj === null) {
+      obj = {}
+    }
 
-    if(typeof(obj) === 'undefined' || obj === null) {
-      obj = {};
+    if (typeof (name) !== 'string') {
+      throw new TypeError("createUnitSingle expects first parameter to be of type 'string'")
     }
-    
-    if(typeof(name) !== 'string') {
-      throw new TypeError("createUnitSingle expects first parameter to be of type 'string'");
-    }
-   
+
     // Check collisions with existing units
-    if(UNITS.hasOwnProperty(name)) {
-      throw new Error('Cannot create unit "' + name + '": a unit with that name already exists');
+    if (UNITS.hasOwnProperty(name)) {
+      throw new Error('Cannot create unit "' + name + '": a unit with that name already exists')
     }
 
     // TODO: Validate name for collisions with other built-in functions (like abs or cos, for example), and for acceptable variable names. For example, '42' is probably not a valid unit. Nor is '%', since it is also an operator.
 
-    assertUnitNameIsValid(name);
+    assertUnitNameIsValid(name)
 
-    var defUnit = null;   // The Unit from which the new unit will be created.
-    var aliases = [];
-    var offset = 0;
-    var definition;
-    var prefixes;
-    if(obj && obj.type === 'Unit') {
-      defUnit = obj.clone();
-    }
-    else if(typeof(obj) === 'string') {
-      if(obj !== '') {
-        definition = obj;
+    var defUnit = null // The Unit from which the new unit will be created.
+    var aliases = []
+    var offset = 0
+    var definition
+    var prefixes
+    if (obj && obj.type === 'Unit') {
+      defUnit = obj.clone()
+    } else if (typeof (obj) === 'string') {
+      if (obj !== '') {
+        definition = obj
       }
-    }
-    else if(typeof(obj) === 'object') {
-      definition = obj.definition;
-      prefixes = obj.prefixes; 
-      offset = obj.offset;
+    } else if (typeof (obj) === 'object') {
+      definition = obj.definition
+      prefixes = obj.prefixes
+      offset = obj.offset
       if (obj.aliases) {
-        aliases = obj.aliases.valueOf(); // aliases could be a Matrix, so convert to Array
+        aliases = obj.aliases.valueOf() // aliases could be a Matrix, so convert to Array
       }
-    }
-    else {
-      throw new TypeError('Cannot create unit "' + name + '" from "' + obj.toString() + '": expecting "string" or "Unit" or "Object"');
+    } else {
+      throw new TypeError('Cannot create unit "' + name + '" from "' + obj.toString() + '": expecting "string" or "Unit" or "Object"')
     }
 
-    if(aliases) {
-      for (var i=0; i<aliases.length; i++) {
-        if(UNITS.hasOwnProperty(aliases[i])) {
-          throw new Error('Cannot create alias "' + aliases[i] + '": a unit with that name already exists');
+    if (aliases) {
+      for (var i = 0; i < aliases.length; i++) {
+        if (UNITS.hasOwnProperty(aliases[i])) {
+          throw new Error('Cannot create alias "' + aliases[i] + '": a unit with that name already exists')
         }
       }
     }
 
-    if(definition && typeof(definition) === 'string' && !defUnit) {
+    if (definition && typeof (definition) === 'string' && !defUnit) {
       try {
-        defUnit = Unit.parse(definition, {allowNoUnits: true});
+        defUnit = Unit.parse(definition, {allowNoUnits: true})
+      } catch (ex) {
+        ex.message = 'Could not create unit "' + name + '" from "' + definition + '": ' + ex.message
+        throw (ex)
       }
-      catch (ex) {
-        ex.message = 'Could not create unit "' + name + '" from "' + definition + '": ' + ex.message;
-        throw(ex);
-      }
-    }
-    else if(definition && definition.type === 'Unit') {
-      defUnit = definition.clone();
+    } else if (definition && definition.type === 'Unit') {
+      defUnit = definition.clone()
     }
 
-    aliases = aliases || [];
-    offset = offset || 0;
-    if(prefixes && prefixes.toUpperCase) 
-      prefixes = PREFIXES[prefixes.toUpperCase()] || PREFIXES.NONE;
-    else
-      prefixes = PREFIXES.NONE;
-
+    aliases = aliases || []
+    offset = offset || 0
+    if (prefixes && prefixes.toUpperCase) { prefixes = PREFIXES[prefixes.toUpperCase()] || PREFIXES.NONE } else { prefixes = PREFIXES.NONE }
 
     // If defUnit is null, it is because the user did not
     // specify a defintion. So create a new base dimension.
-    var newUnit = {};
-    if(!defUnit) {
+    var newUnit = {}
+    if (!defUnit) {
       // Add a new base dimension
-      var baseName = name + "_STUFF";   // foo --> foo_STUFF, or the essence of foo
-      if(BASE_DIMENSIONS.indexOf(baseName) >= 0) {
-        throw new Error('Cannot create new base unit "' + name + '": a base unit with that name already exists (and cannot be overridden)');
+      var baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
+      if (BASE_DIMENSIONS.indexOf(baseName) >= 0) {
+        throw new Error('Cannot create new base unit "' + name + '": a base unit with that name already exists (and cannot be overridden)')
       }
-      BASE_DIMENSIONS.push(baseName);
+      BASE_DIMENSIONS.push(baseName)
 
       // Push 0 onto existing base units
-      for(var b in BASE_UNITS) {
-        if(BASE_UNITS.hasOwnProperty(b)) {
-          BASE_UNITS[b].dimensions[BASE_DIMENSIONS.length-1] = 0;
+      for (var b in BASE_UNITS) {
+        if (BASE_UNITS.hasOwnProperty(b)) {
+          BASE_UNITS[b].dimensions[BASE_DIMENSIONS.length - 1] = 0
         }
       }
 
       // Add the new base unit
-      var newBaseUnit = { dimensions: [] };
-      for(var i=0; i<BASE_DIMENSIONS.length; i++) {
-        newBaseUnit.dimensions[i] = 0;
+      var newBaseUnit = { dimensions: [] }
+      for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+        newBaseUnit.dimensions[i] = 0
       }
-      newBaseUnit.dimensions[BASE_DIMENSIONS.length-1] = 1;
-      newBaseUnit.key = baseName;
-      BASE_UNITS[baseName] = newBaseUnit;
-       
+      newBaseUnit.dimensions[BASE_DIMENSIONS.length - 1] = 1
+      newBaseUnit.key = baseName
+      BASE_UNITS[baseName] = newBaseUnit
+
       newUnit = {
         name: name,
         value: 1,
@@ -3235,89 +3169,86 @@ function factory (type, config, load, typed, math) {
         prefixes: prefixes,
         offset: offset,
         base: baseName
-      };
+      }
 
       currentUnitSystem[baseName] = {
         unit: newUnit,
         prefix: PREFIXES.NONE['']
-      };
-
-    }
-    else {
-
+      }
+    } else {
       newUnit = {
         name: name,
         value: defUnit.value,
         dimensions: defUnit.dimensions.slice(0),
         prefixes: prefixes,
-        offset: offset,
-      };
-      
+        offset: offset
+      }
+
       // Create a new base if no matching base exists
-      var anyMatch = false;
-      for(var i in BASE_UNITS) {
-        if(BASE_UNITS.hasOwnProperty(i)) {
-          var match = true;
-          for(var j=0; j<BASE_DIMENSIONS.length; j++) {
+      var anyMatch = false
+      for (var i in BASE_UNITS) {
+        if (BASE_UNITS.hasOwnProperty(i)) {
+          var match = true
+          for (var j = 0; j < BASE_DIMENSIONS.length; j++) {
             if (Math.abs((newUnit.dimensions[j] || 0) - (BASE_UNITS[i].dimensions[j] || 0)) > 1e-12) {
-              match = false;
-              break;
+              match = false
+              break
             }
           }
-          if(match) {
-            anyMatch = true;
-            break;
+          if (match) {
+            anyMatch = true
+            break
           }
         }
       }
-      if(!anyMatch) {
-        var baseName = name + "_STUFF";   // foo --> foo_STUFF, or the essence of foo
+      if (!anyMatch) {
+        var baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
         // Add the new base unit
-        var newBaseUnit = { dimensions: defUnit.dimensions.slice(0) };
-        newBaseUnit.key = baseName;
-        BASE_UNITS[baseName] = newBaseUnit;
+        var newBaseUnit = { dimensions: defUnit.dimensions.slice(0) }
+        newBaseUnit.key = baseName
+        BASE_UNITS[baseName] = newBaseUnit
 
         currentUnitSystem[baseName] = {
           unit: newUnit,
           prefix: PREFIXES.NONE['']
-        };
+        }
 
-        newUnit.base = baseName;
+        newUnit.base = baseName
       }
     }
 
-    Unit.UNITS[name] = newUnit;
+    Unit.UNITS[name] = newUnit
 
-    for (var i=0; i<aliases.length; i++) {
-      var aliasName = aliases[i];
-      var alias = {};
-      for(var key in newUnit) {
-        if(newUnit.hasOwnProperty(key)) {
-          alias[key] = newUnit[key];
+    for (var i = 0; i < aliases.length; i++) {
+      var aliasName = aliases[i]
+      var alias = {}
+      for (var key in newUnit) {
+        if (newUnit.hasOwnProperty(key)) {
+          alias[key] = newUnit[key]
         }
       }
-      alias.name = aliasName;
-      Unit.UNITS[aliasName] = alias;
+      alias.name = aliasName
+      Unit.UNITS[aliasName] = alias
     }
 
-    return new Unit(null, name);
-  };
+    return new Unit(null, name)
+  }
 
-  Unit.deleteUnit = function(name) {
-    delete Unit.UNITS[name];
-  };
+  Unit.deleteUnit = function (name) {
+    delete Unit.UNITS[name]
+  }
 
   // expose arrays with prefixes, dimensions, units, systems
-  Unit.PREFIXES = PREFIXES;
-  Unit.BASE_DIMENSIONS = BASE_DIMENSIONS;
-  Unit.BASE_UNITS = BASE_UNITS;
-  Unit.UNIT_SYSTEMS = UNIT_SYSTEMS;
-  Unit.UNITS = UNITS;
+  Unit.PREFIXES = PREFIXES
+  Unit.BASE_DIMENSIONS = BASE_DIMENSIONS
+  Unit.BASE_UNITS = BASE_UNITS
+  Unit.UNIT_SYSTEMS = UNIT_SYSTEMS
+  Unit.UNITS = UNITS
 
-  return Unit;
+  return Unit
 }
 
-exports.name = 'Unit';
-exports.path = 'type';
-exports.factory = factory;
-exports.math = true; // request access to the math namespace
+exports.name = 'Unit'
+exports.path = 'type'
+exports.factory = factory
+exports.math = true // request access to the math namespace

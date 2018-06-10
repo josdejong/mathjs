@@ -1,12 +1,12 @@
-'use strict';
+'use strict'
 
-var DimensionError = require('../../error/DimensionError');
+var DimensionError = require('../../error/DimensionError')
 
-var isInteger = require('../../utils/number').isInteger;
-var array = require('../../utils/array');
+var isInteger = require('../../utils/number').isInteger
+var array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Reshape a multi dimensional array to fit the specified dimensions
@@ -47,28 +47,28 @@ function factory (type, config, load, typed) {
   var reshape = typed('reshape', {
 
     'Matrix, Array': function (x, sizes) {
-      if(x.reshape) {
-        return x.reshape(sizes);
+      if (x.reshape) {
+        return x.reshape(sizes)
       } else {
-        return matrix(array.reshape(x.valueOf(), sizes));
+        return matrix(array.reshape(x.valueOf(), sizes))
       }
     },
 
     'Array, Array': function (x, sizes) {
       sizes.forEach(function (size) {
         if (!isInteger(size)) {
-          throw new TypeError('Invalid size for dimension: ' + size);
+          throw new TypeError('Invalid size for dimension: ' + size)
         }
-      });
-      return array.reshape(x, sizes);
+      })
+      return array.reshape(x, sizes)
     }
 
-  });
+  })
 
-  reshape.toTex = undefined; // use default template
+  reshape.toTex = undefined // use default template
 
-  return reshape;
+  return reshape
 }
 
-exports.name = 'reshape';
-exports.factory = factory;
+exports.name = 'reshape'
+exports.factory = factory

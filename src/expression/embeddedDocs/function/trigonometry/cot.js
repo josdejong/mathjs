@@ -14,4 +14,4 @@ module.exports = {
     'csc',
     'tan'
   ]
-};
+}

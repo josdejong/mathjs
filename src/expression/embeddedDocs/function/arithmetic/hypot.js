@@ -13,4 +13,4 @@ module.exports = {
     'hypot([3, 4, 5])'
   ],
   'seealso': [ 'abs', 'norm' ]
-};
+}

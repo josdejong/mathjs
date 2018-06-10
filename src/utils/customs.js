@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var hasOwnProperty = require('./object').hasOwnProperty;
+var hasOwnProperty = require('./object').hasOwnProperty
 
 /**
  * Get a property of a plain object
@@ -13,14 +13,14 @@ var hasOwnProperty = require('./object').hasOwnProperty;
 function getSafeProperty (object, prop) {
   // only allow getting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
-    return object[prop];
+    return object[prop]
   }
 
   if (typeof object[prop] === 'function' && isSafeMethod(object, prop)) {
-    throw new Error('Cannot access method "' + prop + '" as a property');
+    throw new Error('Cannot access method "' + prop + '" as a property')
   }
 
-  throw new Error('No access to property "' + prop + '"');
+  throw new Error('No access to property "' + prop + '"')
 }
 
 /**
@@ -36,10 +36,10 @@ function getSafeProperty (object, prop) {
 function setSafeProperty (object, prop, value) {
   // only allow setting safe properties of a plain object
   if (isPlainObject(object) && isSafeProperty(object, prop)) {
-    return object[prop] = value;
+    return object[prop] = value
   }
 
-  throw new Error('No access to property "' + prop + '"');
+  throw new Error('No access to property "' + prop + '"')
 }
 
 /**
@@ -50,12 +50,12 @@ function setSafeProperty (object, prop, value) {
  */
 function isSafeProperty (object, prop) {
   if (!object || typeof object !== 'object') {
-    return false;
+    return false
   }
   // SAFE: whitelisted
   // e.g length
   if (hasOwnProperty(safeNativeProperties, prop)) {
-    return true;
+    return true
   }
   // UNSAFE: inherited from Object prototype
   // e.g constructor
@@ -63,7 +63,7 @@ function isSafeProperty (object, prop) {
     // 'in' is used instead of hasOwnProperty for nodejs v0.10
     // which is inconsistent on root prototypes. It is safe
     // here because Object.prototype is a root object
-    return false;
+    return false
   }
   // UNSAFE: inherited from Function prototype
   // e.g call, apply
@@ -71,9 +71,9 @@ function isSafeProperty (object, prop) {
     // 'in' is used instead of hasOwnProperty for nodejs v0.10
     // which is inconsistent on root prototypes. It is safe
     // here because Function.prototype is a root object
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
 /**
@@ -85,7 +85,7 @@ function isSafeProperty (object, prop) {
 // TODO: merge this function into assign.js?
 function validateSafeMethod (object, method) {
   if (!isSafeMethod(object, method)) {
-    throw new Error('No access to method "' + method + '"');
+    throw new Error('No access to method "' + method + '"')
   }
 }
 
@@ -98,19 +98,19 @@ function validateSafeMethod (object, method) {
  */
 function isSafeMethod (object, method) {
   if (!object || typeof object[method] !== 'function') {
-    return false;
+    return false
   }
   // UNSAFE: ghosted
   // e.g overridden toString
   // Note that IE10 doesn't support __proto__ and we can't do this check there.
   if (hasOwnProperty(object, method) &&
       (object.__proto__ && (method in object.__proto__))) {
-    return false;
+    return false
   }
   // SAFE: whitelisted
   // e.g toString
   if (hasOwnProperty(safeNativeMethods, method)) {
-    return true;
+    return true
   }
   // UNSAFE: inherited from Object prototype
   // e.g constructor
@@ -118,7 +118,7 @@ function isSafeMethod (object, method) {
     // 'in' is used instead of hasOwnProperty for nodejs v0.10
     // which is inconsistent on root prototypes. It is safe
     // here because Object.prototype is a root object
-    return false;
+    return false
   }
   // UNSAFE: inherited from Function prototype
   // e.g call, apply
@@ -126,29 +126,29 @@ function isSafeMethod (object, method) {
     // 'in' is used instead of hasOwnProperty for nodejs v0.10
     // which is inconsistent on root prototypes. It is safe
     // here because Function.prototype is a root object
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
 function isPlainObject (object) {
-  return typeof object === 'object' && object && object.constructor === Object;
+  return typeof object === 'object' && object && object.constructor === Object
 }
 
 var safeNativeProperties = {
   length: true,
   name: true
-};
+}
 
 var safeNativeMethods = {
   toString: true,
   valueOf: true,
   toLocaleString: true
-};
+}
 
-exports.getSafeProperty = getSafeProperty;
-exports.setSafeProperty = setSafeProperty;
-exports.isSafeProperty = isSafeProperty;
-exports.validateSafeMethod = validateSafeMethod;
-exports.isSafeMethod = isSafeMethod;
-exports.isPlainObject = isPlainObject;
+exports.getSafeProperty = getSafeProperty
+exports.setSafeProperty = setSafeProperty
+exports.isSafeProperty = isSafeProperty
+exports.validateSafeMethod = validateSafeMethod
+exports.isSafeMethod = isSafeMethod
+exports.isPlainObject = isPlainObject

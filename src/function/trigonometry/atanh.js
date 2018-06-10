@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -27,28 +27,28 @@ function factory (type, config, load, typed) {
   var atanh = typed('atanh', {
     'number': function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
-        return _atanh(x);
+        return _atanh(x)
       }
-      return new type.Complex(x, 0).atanh();
+      return new type.Complex(x, 0).atanh()
     },
 
     'Complex': function (x) {
-      return x.atanh();
+      return x.atanh()
     },
 
     'BigNumber': function (x) {
-      return x.atanh();
+      return x.atanh()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since atanh(0) = 0
-      return deepMap(x, atanh, true);
+      return deepMap(x, atanh, true)
     }
-  });
+  })
 
-  atanh.toTex = {1: '\\tanh^{-1}\\left(${args[0]}\\right)'};
+  atanh.toTex = {1: '\\tanh^{-1}\\left(${args[0]}\\right)'}
 
-  return atanh;
+  return atanh
 }
 
 /**
@@ -58,8 +58,8 @@ function factory (type, config, load, typed) {
  * @private
  */
 var _atanh = Math.atanh || function (x) {
-  return Math.log((1 + x)/(1 - x)) / 2
-};
+  return Math.log((1 + x) / (1 - x)) / 2
+}
 
-exports.name = 'atanh';
-exports.factory = factory;
+exports.name = 'atanh'
+exports.factory = factory

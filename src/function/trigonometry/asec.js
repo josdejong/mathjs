@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
    *
@@ -30,28 +29,28 @@ function factory (type, config, load, typed) {
   var asec = typed('asec', {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
-        return Math.acos(1 / x);
+        return Math.acos(1 / x)
       }
-      return new type.Complex(x, 0).asec();
+      return new type.Complex(x, 0).asec()
     },
 
     'Complex': function (x) {
-      return x.asec();
+      return x.asec()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).acos();
+      return new type.BigNumber(1).div(x).acos()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, asec);
+      return deepMap(x, asec)
     }
-  });
+  })
 
-  asec.toTex = {1: '\\sec^{-1}\\left(${args[0]}\\right)'};
+  asec.toTex = {1: '\\sec^{-1}\\left(${args[0]}\\right)'}
 
-  return asec;
+  return asec
 }
 
-exports.name = 'asec';
-exports.factory = factory;
+exports.name = 'asec'
+exports.factory = factory

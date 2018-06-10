@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var isCollection = require('./isCollection');
+var isCollection = require('./isCollection')
 
 /**
  * Test whether an array contains collections
@@ -11,8 +11,8 @@ var isCollection = require('./isCollection');
 module.exports = function containsCollections (array) {
   for (var i = 0; i < array.length; i++) {
     if (isCollection(array[i])) {
-      return true;
+      return true
     }
   }
-  return false;
-};
+  return false
+}

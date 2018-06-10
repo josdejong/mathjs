@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-var isInteger = require('../../utils/number').isInteger;
+var isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var asc = load(require('../relational/compare'));
-  function desc(a, b) {
-    return -asc(a, b);
+  var asc = load(require('../relational/compare'))
+  function desc (a, b) {
+    return -asc(a, b)
   }
 
   /**
@@ -42,39 +42,37 @@ function factory (type, config, load, typed) {
    */
   return typed('partitionSelect', {
     'Array | Matrix, number': function (x, k) {
-      return _partitionSelect(x, k, asc);
+      return _partitionSelect(x, k, asc)
     },
 
     'Array | Matrix, number, string': function (x, k, compare) {
       if (compare === 'asc') {
-        return _partitionSelect(x, k, asc);
-      }
-      else if (compare === 'desc') {
-        return _partitionSelect(x, k, desc);
-      }
-      else {
-        throw new Error('Compare string must be "asc" or "desc"');
+        return _partitionSelect(x, k, asc)
+      } else if (compare === 'desc') {
+        return _partitionSelect(x, k, desc)
+      } else {
+        throw new Error('Compare string must be "asc" or "desc"')
       }
     },
 
     'Array | Matrix, number, function': _partitionSelect
-  });
+  })
 
-  function _partitionSelect(x, k, compare) {
+  function _partitionSelect (x, k, compare) {
     if (!isInteger(k) || k < 0) {
-      throw new Error('k must be a non-negative integer');
+      throw new Error('k must be a non-negative integer')
     }
 
     if (type.isMatrix(x)) {
-      var size = x.size();
+      var size = x.size()
       if (size.length > 1) {
-        throw new Error('Only one dimensional matrices supported');
+        throw new Error('Only one dimensional matrices supported')
       }
-      return quickSelect(x.valueOf(), k, compare);
+      return quickSelect(x.valueOf(), k, compare)
     }
 
     if (Array.isArray(x)) {
-      return quickSelect(x, k, compare);
+      return quickSelect(x, k, compare)
     }
   }
 
@@ -88,49 +86,49 @@ function factory (type, config, load, typed) {
    * @param {Function} compare
    * @private
    */
-  function quickSelect(arr, k, compare) {
+  function quickSelect (arr, k, compare) {
     if (k >= arr.length) {
-      throw new Error('k out of bounds');
+      throw new Error('k out of bounds')
     }
 
-    var from = 0;
-    var to = arr.length - 1;
+    var from = 0
+    var to = arr.length - 1
 
     // if from == to we reached the kth element
     while (from < to) {
-      var r = from;
-      var w = to;
-      var pivot = arr[Math.floor(Math.random() * (to - from + 1)) + from];
+      var r = from
+      var w = to
+      var pivot = arr[Math.floor(Math.random() * (to - from + 1)) + from]
 
       // stop if the reader and writer meets
       while (r < w) {
         // arr[r] >= pivot
         if (compare(arr[r], pivot) >= 0) { // put the large values at the end
-          var tmp = arr[w];
-          arr[w] = arr[r];
-          arr[r] = tmp;
-          --w;
+          var tmp = arr[w]
+          arr[w] = arr[r]
+          arr[r] = tmp
+          --w
         } else { // the value is smaller than the pivot, skip
-          ++r;
+          ++r
         }
       }
 
       // if we stepped up (r++) we need to step one down (arr[r] > pivot)
       if (compare(arr[r], pivot) > 0) {
-        --r;
+        --r
       }
 
       // the r pointer is on the end of the first k elements
       if (k <= r) {
-        to = r;
+        to = r
       } else {
-        from = r + 1;
+        from = r + 1
       }
     }
 
-    return arr[k];
+    return arr[k]
   }
 }
 
-exports.name = 'partitionSelect';
-exports.factory = factory;
+exports.name = 'partitionSelect'
+exports.factory = factory

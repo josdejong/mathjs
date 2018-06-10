@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
+var flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var compareNatural = load(require('../relational/compareNatural'));
-  
+  var compareNatural = load(require('../relational/compareNatural'))
+
   /**
    * Count the number of elements of a (multi)set. When a second parameter is 'true', count only the unique values.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -28,27 +28,26 @@ function factory (type, config, load, typed) {
    */
   var setSize = typed('setSize', {
     'Array | Matrix': function (a) {
-      return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length;
+      return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length
     },
     'Array | Matrix, boolean': function (a, unique) {
       if (unique === false || a.length === 0) {
-        return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length;
-      }
-      else {
-        var b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural);
-        var count = 1;
-        for (var i=1; i<b.length; i++) {
-          if (compareNatural(b[i], b[i-1]) !== 0) {
-            count++;
+        return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length
+      } else {
+        var b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
+        var count = 1
+        for (var i = 1; i < b.length; i++) {
+          if (compareNatural(b[i], b[i - 1]) !== 0) {
+            count++
           }
         }
-        return count;
+        return count
       }
     }
-  });
+  })
 
-  return setSize;
+  return setSize
 }
 
-exports.name = 'setSize';
-exports.factory = factory;
+exports.name = 'setSize'
+exports.factory = factory

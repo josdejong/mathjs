@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var flatten = require('../../utils/array').flatten;
-var identify = require('../../utils/array').identify;
+var flatten = require('../../utils/array').flatten
+var identify = require('../../utils/array').identify
 
 function factory (type, config, load, typed) {
-  var index = load(require('../../type/matrix/MatrixIndex'));
-  var size = load(require('../matrix/size'));
-  var subset = load(require('../matrix/subset'));
-  var compareNatural = load(require('../relational/compareNatural'));
-  
+  var index = load(require('../../type/matrix/MatrixIndex'))
+  var size = load(require('../matrix/size'))
+  var subset = load(require('../matrix/subset'))
+  var compareNatural = load(require('../relational/compareNatural'))
+
   /**
    * Check whether a (multi)set is a subset of another (multi)set. (Every element of set1 is the element of set2.)
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -33,32 +33,31 @@ function factory (type, config, load, typed) {
   var setIsSubset = typed('setIsSubset', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
       if (subset(size(a1), new index(0)) === 0) { // empty is a subset of anything
-        return true;
+        return true
+      } else if (subset(size(a2), new index(0)) === 0) { // anything is not a subset of empty
+        return false
       }
-      else if (subset(size(a2), new index(0)) === 0) { // anything is not a subset of empty
-        return false;
-      }
-      var b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural));
-      var b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural));
-      var inb2;
-      for (var i=0; i<b1.length; i++) {
-        inb2 = false;
-        for (var j=0; j<b2.length; j++) {
+      var b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
+      var b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural))
+      var inb2
+      for (var i = 0; i < b1.length; i++) {
+        inb2 = false
+        for (var j = 0; j < b2.length; j++) {
           if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
-            inb2 = true;
-            break;
+            inb2 = true
+            break
           }
         }
         if (inb2 === false) {
-          return false;
+          return false
         }
       }
-      return true;
+      return true
     }
-  });
+  })
 
-  return setIsSubset;
+  return setIsSubset
 }
 
-exports.name = 'setIsSubset';
-exports.factory = factory;
+exports.name = 'setIsSubset'
+exports.factory = factory

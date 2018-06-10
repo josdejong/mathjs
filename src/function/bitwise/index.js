@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./bitAnd'),
   require('./bitNot'),
@@ -7,4 +7,4 @@ module.exports = [
   require('./leftShift'),
   require('./rightArithShift'),
   require('./rightLogShift')
-];
+]

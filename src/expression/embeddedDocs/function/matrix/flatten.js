@@ -14,4 +14,4 @@ module.exports = {
   'seealso': [
     'concat', 'resize', 'size', 'squeeze'
   ]
-};
+}

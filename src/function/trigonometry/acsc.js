@@ -1,10 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
-
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
    *
@@ -31,28 +29,28 @@ function factory (type, config, load, typed) {
   var acsc = typed('acsc', {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
-        return Math.asin(1 / x);
+        return Math.asin(1 / x)
       }
-      return new type.Complex(x, 0).acsc();
+      return new type.Complex(x, 0).acsc()
     },
 
     'Complex': function (x) {
-      return x.acsc();
+      return x.acsc()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).asin();
+      return new type.BigNumber(1).div(x).asin()
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, acsc);
+      return deepMap(x, acsc)
     }
-  });
+  })
 
-  acsc.toTex = {1: '\\csc^{-1}\\left(${args[0]}\\right)'};
+  acsc.toTex = {1: '\\csc^{-1}\\left(${args[0]}\\right)'}
 
-  return acsc;
+  return acsc
 }
 
-exports.name = 'acsc';
-exports.factory = factory;
+exports.name = 'acsc'
+exports.factory = factory

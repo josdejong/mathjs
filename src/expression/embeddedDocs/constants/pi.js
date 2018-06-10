@@ -10,4 +10,4 @@ module.exports = {
     'sin(pi/2)'
   ],
   'seealso': ['tau']
-};
+}

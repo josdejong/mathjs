@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
-function factory(type, config, load, typed) {
-
+function factory (type, config, load, typed) {
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function
@@ -18,34 +17,34 @@ function factory(type, config, load, typed) {
   var add = typed('add', {
 
     'number, number': function (x, y) {
-      return x + y;
+      return x + y
     },
 
     'Complex, Complex': function (x, y) {
-      return x.add(y);
+      return x.add(y)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.plus(y);
+      return x.plus(y)
     },
 
     'Fraction, Fraction': function (x, y) {
-      return x.add(y);
+      return x.add(y)
     },
 
     'Unit, Unit': function (x, y) {
-      if (x.value == null) throw new Error('Parameter x contains a unit with undefined value');
-      if (y.value == null) throw new Error('Parameter y contains a unit with undefined value');
-      if (!x.equalBase(y)) throw new Error('Units do not match');
+      if (x.value == null) throw new Error('Parameter x contains a unit with undefined value')
+      if (y.value == null) throw new Error('Parameter y contains a unit with undefined value')
+      if (!x.equalBase(y)) throw new Error('Units do not match')
 
-      var res = x.clone();
-      res.value = add(res.value, y.value);
-      res.fixPrefix = false;
-      return res;
+      var res = x.clone()
+      res.value = add(res.value, y.value)
+      res.fixPrefix = false
+      return res
     }
-  });
+  })
 
-  return add;
+  return add
 }
 
-exports.factory = factory;
+exports.factory = factory

@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -30,28 +30,28 @@ function factory (type, config, load, typed) {
     'number': _sech,
 
     'Complex': function (x) {
-      return x.sech();
+      return x.sech()
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.cosh());
+      return new type.BigNumber(1).div(x.cosh())
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function sech is no angle');
+        throw new TypeError('Unit in function sech is no angle')
       }
-      return sech(x.value);
+      return sech(x.value)
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, sech);
+      return deepMap(x, sech)
     }
-  });
+  })
 
-  sech.toTex = {1: '\\mathrm{sech}\\left(${args[0]}\\right)'};
+  sech.toTex = {1: '\\mathrm{sech}\\left(${args[0]}\\right)'}
 
-  return sech;
+  return sech
 }
 
 /**
@@ -60,9 +60,9 @@ function factory (type, config, load, typed) {
  * @returns {number}
  * @private
  */
-function _sech(x) {
-  return 2 / (Math.exp(x) + Math.exp(-x));
+function _sech (x) {
+  return 2 / (Math.exp(x) + Math.exp(-x))
 }
 
-exports.name = 'sech';
-exports.factory = factory;
+exports.name = 'sech'
+exports.factory = factory

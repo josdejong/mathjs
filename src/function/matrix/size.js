@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var array = require('../../utils/array');
+var array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Calculate the size of a matrix or scalar.
@@ -31,25 +31,25 @@ function factory (type, config, load, typed) {
   var size = typed('size', {
     'Matrix': function (x) {
       // TODO: return the same matrix type as the input
-      return matrix(x.size());
+      return matrix(x.size())
     },
 
     'Array': array.size,
 
     'string': function (x) {
-      return (config.matrix === 'Array') ? [x.length] : matrix([x.length]);
+      return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
     },
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {
       // scalar
-      return (config.matrix === 'Array') ? [] : matrix([]);
+      return (config.matrix === 'Array') ? [] : matrix([])
     }
-  });
+  })
 
-  size.toTex = undefined; // use default template
+  size.toTex = undefined // use default template
 
-  return size;
+  return size
 }
 
-exports.name = 'size';
-exports.factory = factory;
+exports.name = 'size'
+exports.factory = factory

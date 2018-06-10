@@ -11,4 +11,4 @@ module.exports = {
     'help("complex")'
   ],
   'seealso': []
-};
+}

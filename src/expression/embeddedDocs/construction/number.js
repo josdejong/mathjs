@@ -21,4 +21,4 @@ module.exports = {
   'seealso': [
     'bignumber', 'boolean', 'complex', 'fraction', 'index', 'matrix', 'string', 'unit'
   ]
-};
+}

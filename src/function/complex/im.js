@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -32,26 +32,26 @@ function factory (type, config, load, typed) {
    */
   var im = typed('im', {
     'number': function (x) {
-      return 0;
+      return 0
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(0);
+      return new type.BigNumber(0)
     },
 
     'Complex': function (x) {
-      return x.im;
+      return x.im
     },
 
     'Array | Matrix': function (x) {
-      return deepMap(x, im);
+      return deepMap(x, im)
     }
-  });
+  })
 
-  im.toTex = {1: '\\Im\\left\\lbrace${args[0]}\\right\\rbrace'};
+  im.toTex = {1: '\\Im\\left\\lbrace${args[0]}\\right\\rbrace'}
 
-  return im;
+  return im
 }
 
-exports.name = 'im';
-exports.factory = factory;
+exports.name = 'im'
+exports.factory = factory

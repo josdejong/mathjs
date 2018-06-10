@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var util = require('../../utils/index');
+var util = require('../../utils/index')
 
-var string = util.string;
+var string = util.string
 
-var isString = string.isString;
+var isString = string.isString
 
 function factory (type, config, load, typed) {
   /**
@@ -27,17 +27,17 @@ function factory (type, config, load, typed) {
    *     matrix.subset([1,2])       // 3 (indexes are zero-based)
    *
    */
-  function Matrix() {
+  function Matrix () {
     if (!(this instanceof Matrix)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
   }
 
   /**
    * Attach type information
    */
-  Matrix.prototype.type = 'Matrix';
-  Matrix.prototype.isMatrix = true;
+  Matrix.prototype.type = 'Matrix'
+  Matrix.prototype.isMatrix = true
 
   /**
    * Get the Matrix storage constructor for the given format.
@@ -49,21 +49,21 @@ function factory (type, config, load, typed) {
   Matrix.storage = function (format) {
     // check storage format is a string
     if (!isString(format)) {
-      throw new TypeError('format must be a string value');
+      throw new TypeError('format must be a string value')
     }
 
     // get storage format constructor
-    var constructor = Matrix._storage[format];
+    var constructor = Matrix._storage[format]
     if (!constructor) {
-      throw new SyntaxError('Unsupported matrix storage format: ' + format);
+      throw new SyntaxError('Unsupported matrix storage format: ' + format)
     }
 
     // return storage constructor
-    return constructor;
-  };
+    return constructor
+  }
 
   // a map with all constructors for all storage types
-  Matrix._storage = {};
+  Matrix._storage = {}
 
   /**
    * Get the storage format used by the matrix.
@@ -75,9 +75,9 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.storage = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke storage on a Matrix interface');
-  };
-  
+    throw new Error('Cannot invoke storage on a Matrix interface')
+  }
+
   /**
    * Get the datatype of the data stored in the matrix.
    *
@@ -88,8 +88,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.datatype = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke datatype on a Matrix interface');
-  };
+    throw new Error('Cannot invoke datatype on a Matrix interface')
+  }
 
   /**
    * Create a new Matrix With the type of the current matrix instance
@@ -97,8 +97,8 @@ function factory (type, config, load, typed) {
    * @param {string} [datatype]
    */
   Matrix.prototype.create = function (data, datatype) {
-    throw new Error('Cannot invoke create on a Matrix interface');
-  };
+    throw new Error('Cannot invoke create on a Matrix interface')
+  }
 
   /**
    * Get a subset of the matrix, or replace a subset of the matrix.
@@ -115,8 +115,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.subset = function (index, replacement, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke subset on a Matrix interface');
-  };
+    throw new Error('Cannot invoke subset on a Matrix interface')
+  }
 
   /**
    * Get a single element from the matrix.
@@ -125,8 +125,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.get = function (index) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke get on a Matrix interface');
-  };
+    throw new Error('Cannot invoke get on a Matrix interface')
+  }
 
   /**
    * Replace a single element in the matrix.
@@ -139,11 +139,11 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.set = function (index, value, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke set on a Matrix interface');
-  };
+    throw new Error('Cannot invoke set on a Matrix interface')
+  }
 
   /**
-   * Resize the matrix to the given size. Returns a copy of the matrix when 
+   * Resize the matrix to the given size. Returns a copy of the matrix when
    * `copy=true`, otherwise return the matrix itself (resize in place).
    *
    * @param {number[]} size           The new size the matrix should have.
@@ -156,8 +156,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.resize = function (size, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke resize on a Matrix interface');
-  };
+    throw new Error('Cannot invoke resize on a Matrix interface')
+  }
 
   /**
    * Reshape the matrix to the given size. Returns a copy of the matrix when
@@ -170,8 +170,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.reshape = function (size, defaultValue) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke reshape on a Matrix interface');
-  };
+    throw new Error('Cannot invoke reshape on a Matrix interface')
+  }
 
   /**
    * Create a clone of the matrix
@@ -179,17 +179,17 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.clone = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke clone on a Matrix interface');
-  };
+    throw new Error('Cannot invoke clone on a Matrix interface')
+  }
 
   /**
    * Retrieve the size of the matrix.
    * @returns {number[]} size
    */
-  Matrix.prototype.size = function() {
+  Matrix.prototype.size = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke size on a Matrix interface');
-  };
+    throw new Error('Cannot invoke size on a Matrix interface')
+  }
 
   /**
    * Create a new matrix with the results of the callback function executed on
@@ -203,8 +203,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.map = function (callback, skipZeros) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke map on a Matrix interface');
-  };
+    throw new Error('Cannot invoke map on a Matrix interface')
+  }
 
   /**
    * Execute a callback function on each entry of the matrix.
@@ -214,8 +214,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.forEach = function (callback) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke forEach on a Matrix interface');
-  };
+    throw new Error('Cannot invoke forEach on a Matrix interface')
+  }
 
   /**
    * Create an Array with a copy of the data of the Matrix
@@ -223,8 +223,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.toArray = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke toArray on a Matrix interface');
-  };
+    throw new Error('Cannot invoke toArray on a Matrix interface')
+  }
 
   /**
    * Get the primitive value of the Matrix: a multidimensional array
@@ -232,8 +232,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.valueOf = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke valueOf on a Matrix interface');
-  };
+    throw new Error('Cannot invoke valueOf on a Matrix interface')
+  }
 
   /**
    * Get a string representation of the matrix, with optional formatting options.
@@ -245,8 +245,8 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.format = function (options) {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke format on a Matrix interface');
-  };
+    throw new Error('Cannot invoke format on a Matrix interface')
+  }
 
   /**
    * Get a string representation of the matrix
@@ -254,13 +254,13 @@ function factory (type, config, load, typed) {
    */
   Matrix.prototype.toString = function () {
     // must be implemented by each of the Matrix implementations
-    throw new Error('Cannot invoke toString on a Matrix interface');
-  };
-   
+    throw new Error('Cannot invoke toString on a Matrix interface')
+  }
+
   // exports
-  return Matrix;
+  return Matrix
 }
 
-exports.name = 'Matrix';
-exports.path = 'type';
-exports.factory = factory;
+exports.name = 'Matrix'
+exports.path = 'type'
+exports.factory = factory

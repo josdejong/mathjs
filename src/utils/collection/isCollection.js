@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var isMatrix = require('./isMatrix');
+var isMatrix = require('./isMatrix')
 
 /**
  * Test whether a value is a collection: an Array or Matrix
@@ -8,5 +8,5 @@ var isMatrix = require('./isMatrix');
  * @returns {boolean} isCollection
  */
 module.exports = function isCollection (x) {
-  return Array.isArray(x) || isMatrix(x);
-};
+  return Array.isArray(x) || isMatrix(x)
+}

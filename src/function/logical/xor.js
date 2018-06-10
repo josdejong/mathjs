@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex');
+  var latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'));
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'));
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'));
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'));
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'));
-  
+  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+
   /**
    * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.
    * For matrices, the function is evaluated element wise.
@@ -40,87 +40,87 @@ function factory (type, config, load, typed) {
    *            Returns true when one and only one input is defined with a nonzero/nonempty value.
    */
   var xor = typed('xor', {
- 
+
     'number, number': function (x, y) {
-      return !!x !== !!y;
+      return !!x !== !!y
     },
 
     'Complex, Complex': function (x, y) {
-      return ((x.re !== 0 || x.im !== 0) !== (y.re !== 0 || y.im !== 0));
+      return ((x.re !== 0 || x.im !== 0) !== (y.re !== 0 || y.im !== 0))
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return ((!x.isZero() && !x.isNaN()) !== (!y.isZero() && !y.isNaN()));
+      return ((!x.isZero() && !x.isNaN()) !== (!y.isZero() && !y.isNaN()))
     },
 
     'Unit, Unit': function (x, y) {
-      return xor(x.value || 0, y.value || 0);
+      return xor(x.value || 0, y.value || 0)
     },
 
-    'SparseMatrix, SparseMatrix': function(x, y) {
-      return algorithm07(x, y, xor);
+    'SparseMatrix, SparseMatrix': function (x, y) {
+      return algorithm07(x, y, xor)
     },
 
-    'SparseMatrix, DenseMatrix': function(x, y) {
-      return algorithm03(y, x, xor, true);
+    'SparseMatrix, DenseMatrix': function (x, y) {
+      return algorithm03(y, x, xor, true)
     },
 
-    'DenseMatrix, SparseMatrix': function(x, y) {
-      return algorithm03(x, y, xor, false);
+    'DenseMatrix, SparseMatrix': function (x, y) {
+      return algorithm03(x, y, xor, false)
     },
 
-    'DenseMatrix, DenseMatrix': function(x, y) {
-      return algorithm13(x, y, xor);
+    'DenseMatrix, DenseMatrix': function (x, y) {
+      return algorithm13(x, y, xor)
     },
 
     'Array, Array': function (x, y) {
       // use matrix implementation
-      return xor(matrix(x), matrix(y)).valueOf();
+      return xor(matrix(x), matrix(y)).valueOf()
     },
 
     'Array, Matrix': function (x, y) {
       // use matrix implementation
-      return xor(matrix(x), y);
+      return xor(matrix(x), y)
     },
 
     'Matrix, Array': function (x, y) {
       // use matrix implementation
-      return xor(x, matrix(y));
+      return xor(x, matrix(y))
     },
 
     'SparseMatrix, any': function (x, y) {
-      return algorithm12(x, y, xor, false);
+      return algorithm12(x, y, xor, false)
     },
 
     'DenseMatrix, any': function (x, y) {
-      return algorithm14(x, y, xor, false);
+      return algorithm14(x, y, xor, false)
     },
 
     'any, SparseMatrix': function (x, y) {
-      return algorithm12(y, x, xor, true);
+      return algorithm12(y, x, xor, true)
     },
 
     'any, DenseMatrix': function (x, y) {
-      return algorithm14(y, x, xor, true);
+      return algorithm14(y, x, xor, true)
     },
 
     'Array, any': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(x), y, xor, false).valueOf();
+      return algorithm14(matrix(x), y, xor, false).valueOf()
     },
 
     'any, Array': function (x, y) {
       // use matrix implementation
-      return algorithm14(matrix(y), x, xor, true).valueOf();
+      return algorithm14(matrix(y), x, xor, true).valueOf()
     }
-  });
+  })
 
   xor.toTex = {
     2: '\\left(${args[0]}' + latex.operators['xor'] + '${args[1]}\\right)'
-  };
+  }
 
-  return xor;
+  return xor
 }
 
-exports.name = 'xor';
-exports.factory = factory;
+exports.name = 'xor'
+exports.factory = factory

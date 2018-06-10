@@ -13,4 +13,4 @@ module.exports = {
   'seealso': [
     'setUnion', 'setIntersect', 'setSymDifference'
   ]
-};
+}

@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./compare'),
   require('./compareNatural'),
@@ -11,4 +11,4 @@ module.exports = [
   require('./smaller'),
   require('./smallerEq'),
   require('./unequal')
-];
+]

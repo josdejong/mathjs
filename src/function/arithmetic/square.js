@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,35 +31,35 @@ function factory (type, config, load, typed) {
    */
   var square = typed('square', {
     'number': function (x) {
-      return x * x;
+      return x * x
     },
 
     'Complex': function (x) {
-      return x.mul(x);
+      return x.mul(x)
     },
 
     'BigNumber': function (x) {
-      return x.times(x);
+      return x.times(x)
     },
 
     'Fraction': function (x) {
-      return x.mul(x);
+      return x.mul(x)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since square(0) = 0
-      return deepMap(x, square, true);
+      return deepMap(x, square, true)
     },
 
-    'Unit': function(x) {
-      return x.pow(2);
+    'Unit': function (x) {
+      return x.pow(2)
     }
-  });
+  })
 
-  square.toTex = {1: '\\left(${args[0]}\\right)^2'};
+  square.toTex = {1: '\\left(${args[0]}\\right)^2'}
 
-  return square;
+  return square
 }
 
-exports.name = 'square';
-exports.factory = factory;
+exports.name = 'square'
+exports.factory = factory

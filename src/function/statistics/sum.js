@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach');
+var deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/addScalar'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var add = load(require('../arithmetic/addScalar'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the sum of a matrix or a list with values.
@@ -32,24 +32,24 @@ function factory (type, config, load, typed) {
   var sum = typed('sum', {
     'Array | Matrix': function (args) {
       // sum([a, b, c, d, ...])
-      return _sum(args);
+      return _sum(args)
     },
 
     'Array | Matrix, number | BigNumber': function () {
       // sum([a, b, c, d, ...], dim)
       // TODO: implement sum(A, dim)
-      throw new Error('sum(A, dim) is not yet supported');
+      throw new Error('sum(A, dim) is not yet supported')
     },
 
     '...': function (args) {
       // sum(a, b, c, d, ...)
-      return _sum(args);
+      return _sum(args)
     }
-  });
+  })
 
-  sum.toTex = undefined; // use default template
+  sum.toTex = undefined // use default template
 
-  return sum;
+  return sum
 
   /**
    * Recursively calculate the sum of an n-dimensional array
@@ -57,34 +57,33 @@ function factory (type, config, load, typed) {
    * @return {number} sum
    * @private
    */
-  function _sum(array) {
-    var sum = undefined;
+  function _sum (array) {
+    var sum = undefined
 
     deepForEach(array, function (value) {
       try {
-        sum = (sum === undefined) ? value : add(sum, value);
+        sum = (sum === undefined) ? value : add(sum, value)
+      } catch (err) {
+        throw improveErrorMessage(err, 'sum', value)
       }
-      catch (err) {
-        throw improveErrorMessage(err, 'sum', value);
-      }
-    });
+    })
 
     if (sum === undefined) {
       switch (config.number) {
         case 'number':
-          return 0;
+          return 0
         case 'BigNumber':
-          return new type.BigNumber(0);
+          return new type.BigNumber(0)
         case 'Fraction':
-          return new type.Fraction(0);
+          return new type.Fraction(0)
         default:
-          return 0;
+          return 0
       }
     }
 
-    return sum;
+    return sum
   }
 }
 
-exports.name = 'sum';
-exports.factory = factory;
+exports.name = 'sum'
+exports.factory = factory

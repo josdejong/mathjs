@@ -13,4 +13,4 @@ module.exports = {
     'format(pi, 3)'
   ],
   'seealso': ['print']
-};
+}

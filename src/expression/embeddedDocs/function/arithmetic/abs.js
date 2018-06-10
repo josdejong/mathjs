@@ -10,4 +10,4 @@ module.exports = {
     'abs(-4.2)'
   ],
   'seealso': ['sign']
-};
+}

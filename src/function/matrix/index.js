@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = [
   require('./concat'),
   require('./cross'),
@@ -28,4 +28,4 @@ module.exports = [
   require('./trace'),
   require('./transpose'),
   require('./zeros')
-];
+]

@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-
   /**
    * Calculate the sine of a value.
    *
@@ -34,30 +33,30 @@ function factory (type, config, load, typed) {
     'number': Math.sin,
 
     'Complex': function (x) {
-      return x.sin();
+      return x.sin()
     },
 
     'BigNumber': function (x) {
-      return x.sin();
+      return x.sin()
     },
 
     'Unit': function (x) {
       if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
-        throw new TypeError ('Unit in function sin is no angle');
+        throw new TypeError('Unit in function sin is no angle')
       }
-      return sin(x.value);
+      return sin(x.value)
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since sin(0) = 0
-      return deepMap(x, sin, true);
+      return deepMap(x, sin, true)
     }
-  });
+  })
 
-  sin.toTex = {1: '\\sin\\left(${args[0]}\\right)'};
+  sin.toTex = {1: '\\sin\\left(${args[0]}\\right)'}
 
-  return sin;
+  return sin
 }
 
-exports.name = 'sin';
-exports.factory = factory;
+exports.name = 'sin'
+exports.factory = factory

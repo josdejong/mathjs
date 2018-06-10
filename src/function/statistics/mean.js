@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-var size = require('../../utils/array').size;
-var deepForEach = require('../../utils/collection/deepForEach');
-var reduce = require('../../utils/collection/reduce');
-var containsCollections = require('../../utils/collection/containsCollections');
+var size = require('../../utils/array').size
+var deepForEach = require('../../utils/collection/deepForEach')
+var reduce = require('../../utils/collection/reduce')
+var containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'));
-  var divide = load(require('../arithmetic/divide'));
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'));
+  var add = load(require('../arithmetic/add'))
+  var divide = load(require('../arithmetic/divide'))
+  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the mean value of matrix or a list with values.
@@ -38,25 +38,25 @@ function factory (type, config, load, typed) {
    * @return {*} The mean of all values
    */
   var mean = typed('mean', {
-      // mean([a, b, c, d, ...])
+    // mean([a, b, c, d, ...])
     'Array | Matrix': _mean,
 
-      // mean([a, b, c, d, ...], dim)
+    // mean([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': _nmeanDim,
 
     // mean(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function mean');
+        throw new TypeError('Scalar values expected in function mean')
       }
 
-      return _mean(args);
+      return _mean(args)
     }
-  });
+  })
 
-  mean.toTex = undefined; // use default template
+  mean.toTex = undefined // use default template
 
-  return mean;
+  return mean
 
   /**
    * Calculate the mean value in an n-dimensional array, returning a
@@ -66,14 +66,13 @@ function factory (type, config, load, typed) {
    * @return {number} mean
    * @private
    */
-  function _nmeanDim(array, dim) {
+  function _nmeanDim (array, dim) {
     try {
-      var sum = reduce(array, dim, add);
-      var s = Array.isArray(array) ? size(array) : array.size();
-      return divide(sum, s[dim]);
-    }
-    catch (err) {
-      throw improveErrorMessage(err, 'mean');
+      var sum = reduce(array, dim, add)
+      var s = Array.isArray(array) ? size(array) : array.size()
+      return divide(sum, s[dim])
+    } catch (err) {
+      throw improveErrorMessage(err, 'mean')
     }
   }
 
@@ -83,27 +82,26 @@ function factory (type, config, load, typed) {
    * @return {number} mean
    * @private
    */
-  function _mean(array) {
-    var sum = 0;
-    var num = 0;
+  function _mean (array) {
+    var sum = 0
+    var num = 0
 
     deepForEach(array, function (value) {
       try {
-        sum = add(sum, value);
-        num++;
+        sum = add(sum, value)
+        num++
+      } catch (err) {
+        throw improveErrorMessage(err, 'mean', value)
       }
-      catch (err) {
-        throw improveErrorMessage(err, 'mean', value);
-      }
-    });
+    })
 
     if (num === 0) {
-      throw new Error('Cannot calculate mean of an empty array');
+      throw new Error('Cannot calculate mean of an empty array')
     }
 
-    return divide(sum, num);
+    return divide(sum, num)
   }
 }
 
-exports.name = 'mean';
-exports.factory = factory;
+exports.name = 'mean'
+exports.factory = factory

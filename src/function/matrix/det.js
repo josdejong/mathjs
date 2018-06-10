@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
-var util = require('../../utils/index');
-var object = util.object;
-var string = util.string;
+var util = require('../../utils/index')
+var object = util.object
+var string = util.string
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'));
-  var add = load(require('../arithmetic/add'));
-  var subtract = load(require('../arithmetic/subtract'));
-  var multiply = load(require('../arithmetic/multiply'));
-  var unaryMinus = load(require('../arithmetic/unaryMinus'));
-  var lup = load(require('../algebra/decomposition/lup'));
+  var matrix = load(require('../../type/matrix/function/matrix'))
+  var add = load(require('../arithmetic/add'))
+  var subtract = load(require('../arithmetic/subtract'))
+  var multiply = load(require('../arithmetic/multiply'))
+  var unaryMinus = load(require('../arithmetic/unaryMinus'))
+  var lup = load(require('../algebra/decomposition/lup'))
 
   /**
    * Calculate the determinant of a matrix.
@@ -39,61 +39,57 @@ function factory (type, config, load, typed) {
    */
   var det = typed('det', {
     'any': function (x) {
-      return object.clone(x);
+      return object.clone(x)
     },
 
     'Array | Matrix': function det (x) {
-      var size;
+      var size
       if (type.isMatrix(x)) {
-        size = x.size();
-      }
-      else if (Array.isArray(x)) {
-        x = matrix(x);
-        size = x.size();
-      }
-      else {
+        size = x.size()
+      } else if (Array.isArray(x)) {
+        x = matrix(x)
+        size = x.size()
+      } else {
         // a scalar
-        size = [];
+        size = []
       }
 
       switch (size.length) {
         case 0:
           // scalar
-          return object.clone(x);
+          return object.clone(x)
 
         case 1:
           // vector
           if (size[0] == 1) {
-            return object.clone(x.valueOf()[0]);
-          }
-          else {
+            return object.clone(x.valueOf()[0])
+          } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')');
+            '(size: ' + string.format(size) + ')')
           }
 
         case 2:
           // two dimensional array
-          var rows = size[0];
-          var cols = size[1];
+          var rows = size[0]
+          var cols = size[1]
           if (rows == cols) {
-            return _det(x.clone().valueOf(), rows, cols);
-          }
-          else {
+            return _det(x.clone().valueOf(), rows, cols)
+          } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')');
+            '(size: ' + string.format(size) + ')')
           }
 
         default:
           // multi dimensional array
           throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + string.format(size) + ')');
+          '(size: ' + string.format(size) + ')')
       }
     }
-  });
+  })
 
-  det.toTex = {1: '\\det\\left(${args[0]}\\right)'};
+  det.toTex = {1: '\\det\\left(${args[0]}\\right)'}
 
-  return det;
+  return det
 
   /**
    * Calculate the determinant of a matrix
@@ -106,55 +102,50 @@ function factory (type, config, load, typed) {
   function _det (matrix, rows, cols) {
     if (rows == 1) {
       // this is a 1 x 1 matrix
-      return object.clone(matrix[0][0]);
-    }
-    else if (rows == 2) {
+      return object.clone(matrix[0][0])
+    } else if (rows == 2) {
       // this is a 2 x 2 matrix
       // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
       return subtract(
-          multiply(matrix[0][0], matrix[1][1]),
-          multiply(matrix[1][0], matrix[0][1])
-      );
-    }
-    else {
-
+        multiply(matrix[0][0], matrix[1][1]),
+        multiply(matrix[1][0], matrix[0][1])
+      )
+    } else {
       // Compute the LU decomposition
-      var decomp = lup(matrix);
+      var decomp = lup(matrix)
 
       // The determinant is the product of the diagonal entries of U (and those of L, but they are all 1)
-      var det = decomp.U[0][0];
-      for(var i=1; i<rows; i++) {
-        det = multiply(det, decomp.U[i][i]);
+      var det = decomp.U[0][0]
+      for (var i = 1; i < rows; i++) {
+        det = multiply(det, decomp.U[i][i])
       }
 
       // The determinant will be multiplied by 1 or -1 depending on the parity of the permutation matrix.
       // This can be determined by counting the cycles. This is roughly a linear time algorithm.
-      var evenCycles=0;
-      var i=0;
-      var visited=[];
-      while(true) {
-        while(visited[i]) {
-         i++;
+      var evenCycles = 0
+      var i = 0
+      var visited = []
+      while (true) {
+        while (visited[i]) {
+          i++
         }
-        if(i >= rows) break;
-        var j=i;
-        var cycleLen = 0;
-        while(!visited[decomp.p[j]]) {
-          visited[decomp.p[j]] = true;
-          j = decomp.p[j];
-          cycleLen++;
+        if (i >= rows) break
+        var j = i
+        var cycleLen = 0
+        while (!visited[decomp.p[j]]) {
+          visited[decomp.p[j]] = true
+          j = decomp.p[j]
+          cycleLen++
         }
-        if(cycleLen % 2 === 0) {
-          evenCycles++;
+        if (cycleLen % 2 === 0) {
+          evenCycles++
         }
       }
 
-      return evenCycles % 2 === 0 ? det : unaryMinus(det);
-
+      return evenCycles % 2 === 0 ? det : unaryMinus(det)
     }
   }
 }
 
-exports.name = 'det';
-exports.factory = factory;
-
+exports.name = 'det'
+exports.factory = factory

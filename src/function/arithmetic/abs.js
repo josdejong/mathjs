@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var deepMap = require('../../utils/collection/deepMap');
+var deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -31,31 +31,31 @@ function factory (type, config, load, typed) {
     'number': Math.abs,
 
     'Complex': function (x) {
-      return x.abs();
+      return x.abs()
     },
 
     'BigNumber': function (x) {
-      return x.abs();
+      return x.abs()
     },
 
     'Fraction': function (x) {
-      return x.abs();
+      return x.abs()
     },
 
     'Array | Matrix': function (x) {
       // deep map collection, skip zeros since abs(0) = 0
-      return deepMap(x, abs, true);
+      return deepMap(x, abs, true)
     },
 
-    'Unit': function(x) {
-      return x.abs();
+    'Unit': function (x) {
+      return x.abs()
     }
-  });
+  })
 
-  abs.toTex = {1: '\\left|${args[0]}\\right|'};
+  abs.toTex = {1: '\\left|${args[0]}\\right|'}
 
-  return abs;
+  return abs
 }
 
-exports.name = 'abs';
-exports.factory = factory;
+exports.name = 'abs'
+exports.factory = factory

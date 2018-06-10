@@ -12,4 +12,4 @@ module.exports = {
     'gcd(25, 15, -10)'
   ],
   'seealso': [ 'lcm', 'xgcd' ]
-};
+}

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'));
+  var Node = load(require('./Node'))
 
   /**
    * @constructor ParenthesisNode
@@ -10,30 +10,30 @@ function factory (type, config, load, typed) {
    * @param {Node} content
    * @extends {Node}
    */
-  function ParenthesisNode(content) {
+  function ParenthesisNode (content) {
     if (!(this instanceof ParenthesisNode)) {
-      throw new SyntaxError('Constructor must be called with the new operator');
+      throw new SyntaxError('Constructor must be called with the new operator')
     }
 
     // validate input
     if (!type.isNode(content)) {
-      throw new TypeError('Node expected for parameter "content"');
+      throw new TypeError('Node expected for parameter "content"')
     }
 
-    this.content = content;
+    this.content = content
   }
 
-  ParenthesisNode.prototype = new Node();
+  ParenthesisNode.prototype = new Node()
 
-  ParenthesisNode.prototype.type = 'ParenthesisNode';
+  ParenthesisNode.prototype.type = 'ParenthesisNode'
 
-  ParenthesisNode.prototype.isParenthesisNode = true;
+  ParenthesisNode.prototype.isParenthesisNode = true
 
   /**
    * Compile a node into a JavaScript function.
    * This basically pre-calculates as much as possible and only leaves open
    * calculations which depend on a dynamic scope with variables.
-   * @param {Object} math     Math.js namespace with functions and constants. 
+   * @param {Object} math     Math.js namespace with functions and constants.
    * @param {Object} argNames An object with argument names as key and `true`
    *                          as value. Used in the SymbolNode to optimize
    *                          for arguments from user assigned functions
@@ -43,7 +43,7 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   ParenthesisNode.prototype._compile = function (math, argNames) {
-    return this.content._compile(math, argNames);
+    return this.content._compile(math, argNames)
   }
 
   /**
@@ -52,16 +52,16 @@ function factory (type, config, load, typed) {
    * @override
    **/
   ParenthesisNode.prototype.getContent = function () {
-    return this.content.getContent();
-  };
+    return this.content.getContent()
+  }
 
   /**
    * Execute a callback for each of the child nodes of this node
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   ParenthesisNode.prototype.forEach = function (callback) {
-    callback(this.content, 'content', this);
-  };
+    callback(this.content, 'content', this)
+  }
 
   /**
    * Create a new ParenthesisNode having it's childs be the results of calling
@@ -70,17 +70,17 @@ function factory (type, config, load, typed) {
    * @returns {ParenthesisNode} Returns a clone of the node
    */
   ParenthesisNode.prototype.map = function (callback) {
-    var content = callback(this.content, 'content', this);
-    return new ParenthesisNode(content);
-  };
+    var content = callback(this.content, 'content', this)
+    return new ParenthesisNode(content)
+  }
 
   /**
    * Create a clone of this node, a shallow copy
    * @return {ParenthesisNode}
    */
-  ParenthesisNode.prototype.clone = function() {
-    return new ParenthesisNode(this.content);
-  };
+  ParenthesisNode.prototype.clone = function () {
+    return new ParenthesisNode(this.content)
+  }
 
   /**
    * Get string representation
@@ -88,12 +88,12 @@ function factory (type, config, load, typed) {
    * @return {string} str
    * @override
    */
-  ParenthesisNode.prototype._toString = function(options) {
+  ParenthesisNode.prototype._toString = function (options) {
     if ((!options) || (options && !options.parenthesis) || (options && options.parenthesis === 'keep')) {
-      return '(' + this.content.toString(options) + ')';
+      return '(' + this.content.toString(options) + ')'
     }
-    return this.content.toString(options);
-  };
+    return this.content.toString(options)
+  }
 
   /**
    * Get a JSON representation of the node
@@ -103,8 +103,8 @@ function factory (type, config, load, typed) {
     return {
       mathjs: 'ParenthesisNode',
       content: this.content
-    };
-  };
+    }
+  }
 
   /**
    * Instantiate an ParenthesisNode from its JSON representation
@@ -114,8 +114,8 @@ function factory (type, config, load, typed) {
    * @returns {ParenthesisNode}
    */
   ParenthesisNode.fromJSON = function (json) {
-    return new ParenthesisNode(json.content);
-  };
+    return new ParenthesisNode(json.content)
+  }
 
   /**
    * Get HTML representation
@@ -123,12 +123,12 @@ function factory (type, config, load, typed) {
    * @return {string} str
    * @override
    */
-  ParenthesisNode.prototype.toHTML = function(options) {
+  ParenthesisNode.prototype.toHTML = function (options) {
     if ((!options) || (options && !options.parenthesis) || (options && options.parenthesis === 'keep')) {
-      return '<span class="math-parenthesis math-round-parenthesis">(</span>' + this.content.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>';
+      return '<span class="math-parenthesis math-round-parenthesis">(</span>' + this.content.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
-    return this.content.toHTML(options);
-  };
+    return this.content.toHTML(options)
+  }
 
   /**
    * Get LaTeX representation
@@ -136,16 +136,16 @@ function factory (type, config, load, typed) {
    * @return {string} str
    * @override
    */
-  ParenthesisNode.prototype._toTex = function(options) {
+  ParenthesisNode.prototype._toTex = function (options) {
     if ((!options) || (options && !options.parenthesis) || (options && options.parenthesis === 'keep')) {
-      return '\\left(' + this.content.toTex(options) + '\\right)';
+      return '\\left(' + this.content.toTex(options) + '\\right)'
     }
-    return this.content.toTex(options);
-  };
+    return this.content.toTex(options)
+  }
 
-  return ParenthesisNode;
+  return ParenthesisNode
 }
 
-exports.name = 'ParenthesisNode';
-exports.path = 'expression.node';
-exports.factory = factory;
+exports.name = 'ParenthesisNode'
+exports.path = 'expression.node'
+exports.factory = factory
