@@ -17,6 +17,8 @@
 - Dropped support for bower. Use npm or an other package manages instead.
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow.
   Thanks @dakotablair.
+- Fixed #1103: Calling `toTex` on node that contains `derivative` causing
+  an exception. Thanks @joelhoover.
 
 
 ## 2018-06-02, version 4.4.2
