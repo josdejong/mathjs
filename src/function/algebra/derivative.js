@@ -5,6 +5,7 @@ function factory (type, config, load, typed) {
   var simplify = load(require('./simplify'));
   var equal = load(require('../relational/equal'));
   var isZero = load(require('../utils/isZero'));
+  var getType = load(require('../utils/typeof'));
   var numeric = load(require('../../type/numeric'));
   var ConstantNode = load(require('../../expression/node/ConstantNode'));
   var FunctionNode = load(require('../../expression/node/FunctionNode'));
@@ -103,9 +104,21 @@ function factory (type, config, load, typed) {
     return _derivTex.apply(null, deriv.args);
   }
 
+  // NOTE: the optional "order" parameter here is currently unused
   var _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {
-      return _derivTex(expr.toString(), x.toString(), 1);
+      if(type.isConstantNode(expr) && getType(expr.value) == 'string') {
+        return _derivTex(parse(expr.value).toString(), x.toString(), 1);
+      } else {
+        return _derivTex(expr.toString(), x.toString(), 1);
+      }
+    },
+    'Node, ConstantNode': function (expr, x) {
+      if(getType(x.value) == 'string') {
+        return _derivTex(expr, parse(x.value));
+      } else {
+        throw new Error("The second parameter to 'derivative' is a non-string constant");
+      }
     },
     'Node, SymbolNode, ConstantNode': function (expr, x, order) {
       return _derivTex(expr.toString(), x.name, order.value);
