@@ -240,13 +240,13 @@ function factory (type, config, load, typed) {
   IndexNode.prototype.toHTML = function (options) {
     // format the parameters like "[1, 0:5]"
     var dimensions = []
-    for (var i = 0; i < this.dimensions.length; i++)	{
-	  dimensions[i] = this.dimensions[i].toHTML()
+    for (var i = 0; i < this.dimensions.length; i++)  {
+      dimensions[i] = this.dimensions[i].toHTML()
     }
     if (this.dotNotation) {
-	  return '<span class="math-operator math-accessor-operator">.</span>' + '<span class="math-symbol math-property">' + escape(this.getObjectProperty()) + '</span>'
+      return '<span class="math-operator math-accessor-operator">.</span>' + '<span class="math-symbol math-property">' + escape(this.getObjectProperty()) + '</span>'
     } else {
-	  return '<span class="math-parenthesis math-square-parenthesis">[</span>' + dimensions.join('<span class="math-separator">,</span>') + '<span class="math-parenthesis math-square-parenthesis">]</span>'
+      return '<span class="math-parenthesis math-square-parenthesis">[</span>' + dimensions.join('<span class="math-separator">,</span>') + '<span class="math-parenthesis math-square-parenthesis">]</span>'
     }
   }
 

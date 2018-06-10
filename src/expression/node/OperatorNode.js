@@ -477,11 +477,11 @@ function factory (type, config, load, typed) {
         rhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' + rhs + '<span class="math-parenthesis math-round-parenthesis">)</span>'
       }
 
-	  if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit == 'hide')) {
-	    return lhs + '<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>' + rhs
-	  }
+      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit == 'hide')) {
+        return lhs + '<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>' + rhs
+      }
 
-	  return lhs + '<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>' + rhs
+      return lhs + '<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>' + rhs
     } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
       var stringifiedArgs = args.map(function (arg, index) {
         arg = arg.toHTML(options)

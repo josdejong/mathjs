@@ -191,8 +191,8 @@ function factory (type, config, load, typed) {
   FunctionAssignmentNode.prototype.toHTML = function (options) {
     var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
     var params = []
-    for (var i = 0; i < this.params.length; i++)	{
-	  params.push('<span class="math-symbol math-parameter">' + escape(this.params[i]) + '</span>')
+    for (var i = 0; i < this.params.length; i++)  {
+      params.push('<span class="math-symbol math-parameter">' + escape(this.params[i]) + '</span>')
     }
     var expr = this.expr.toHTML(options)
     if (needParenthesis(this, parenthesis)) {
