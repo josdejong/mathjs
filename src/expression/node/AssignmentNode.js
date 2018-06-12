@@ -286,7 +286,7 @@ function factory (type, config, load, typed) {
     var index = this.index ? this.index.toTex(options) : ''
     var value = this.value.toTex(options)
     if (needParenthesis(this, options && options.parenthesis)) {
-      value = '\\left(' + value + '\\right)'
+      value = `\\left(${value}\\right)`
     }
 
     return object + index + ':=' + value

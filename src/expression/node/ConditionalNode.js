@@ -238,7 +238,7 @@ function factory (type, config, load, typed) {
     }
 
     throw new TypeError('Unsupported type of condition "' + mathTypeOf(condition) + '"')
-  };
+  }
 
   return ConditionalNode
 }

@@ -182,7 +182,7 @@ function factory (type, config, load, typed) {
   }
 
   pow.toTex = {
-    2: '\\left(${args[0]}\\right)' + latex.operators['pow'] + '{${args[1]}}'
+    2: `\\left(\${args[0]}\\right)${latex.operators['pow']}{\${args[1]}}`
   }
 
   return pow

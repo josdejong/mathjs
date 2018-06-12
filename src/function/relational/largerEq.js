@@ -129,7 +129,7 @@ function factory (type, config, load, typed) {
   })
 
   largerEq.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['largerEq'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['largerEq']}\${args[1]}\\right)`
   }
 
   return largerEq

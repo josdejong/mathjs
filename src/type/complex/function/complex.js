@@ -92,9 +92,8 @@ function factory (type, config, load, typed) {
 
   complex.toTex = {
     0: '0',
-    1: '\\left(${args[0]}\\right)',
-    2: '\\left(\\left(${args[0]}\\right)+' +
-      latex.symbols['i'] + '\\cdot\\left(${args[1]}\\right)\\right)'
+    1: `\\left(\${args[0]}\\right)`,
+    2: `\\left(\\left(\${args[0]}\\right)+${latex.symbols['i']}\\cdot\\left(\${args[1]}\\right)\\right)`
   }
 
   return complex

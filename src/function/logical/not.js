@@ -53,7 +53,7 @@ function factory (type, config, load, typed) {
   })
 
   not.toTex = {
-    1: latex.operators['not'] + '\\left(${args[0]}\\right)'
+    1: latex.operators['not'] + `\\left(\${args[0]}\\right)`
   }
 
   return not

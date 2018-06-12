@@ -68,7 +68,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  variance.toTex = '\\mathrm{Var}\\left(${args}\\right)'
+  variance.toTex = `\\mathrm{Var}\\left(\${args}\\right)`
 
   return variance
 

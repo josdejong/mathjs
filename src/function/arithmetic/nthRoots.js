@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
     },
     'Complex, number': _nthComplexRoots
   })
-  nthRoots.toTex = {2: '\\{y : $y^{args[1]} = {${args[0]}}\\}'}
+  nthRoots.toTex = {2: `\\{y : \$y^{args[1]} = {\${args[0]}}\\}`}
   return nthRoots
 }
 

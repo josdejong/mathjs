@@ -163,7 +163,7 @@ function factory (type, config, load, typed) {
       qfac * qfac / (twoqfac * twoqp1fac)
   }
 
-  expm.toTex = {1: '\\exp\\left(${args[0]}\\right)'}
+  expm.toTex = {1: `\\exp\\left(\${args[0]}\\right)`}
 
   return expm
 }

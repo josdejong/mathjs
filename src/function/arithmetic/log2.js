@@ -70,7 +70,7 @@ function factory (type, config, load, typed) {
     )
   }
 
-  log2.toTex = '\\log_{2}\\left(${args[0]}\\right)'
+  log2.toTex = `\\log_{2}\\left(\${args[0]}\\right)`
 
   return log2
 }

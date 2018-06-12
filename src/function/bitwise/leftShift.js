@@ -128,7 +128,7 @@ function factory (type, config, load, typed) {
   })
 
   leftShift.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['leftShift'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['leftShift']}\${args[1]}\\right)`
   }
 
   return leftShift

@@ -113,7 +113,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  gcd.toTex = '\\gcd\\left(${args}\\right)'
+  gcd.toTex = `\\gcd\\left(\${args}\\right)`
 
   return gcd
 

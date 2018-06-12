@@ -102,7 +102,7 @@ function factory (type, config, load, typed) {
   })
 
   dotDivide.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['dotDivide'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['dotDivide']}\${args[1]}\\right)`
   }
 
   return dotDivide

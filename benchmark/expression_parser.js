@@ -77,4 +77,4 @@ function assertApproxEqual (actual, expected, tolerance) {
   var diff = Math.abs(expected - actual)
   if (diff > tolerance) assert.equal(actual, expected)
   else assert.ok(diff <= tolerance, actual + ' === ' + expected)
-};
+}

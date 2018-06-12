@@ -116,7 +116,7 @@ function factory (type, config, load, typed) {
   })
 
   xor.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['xor'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['xor']}\${args[1]}\\right)`
   }
 
   return xor

@@ -121,7 +121,7 @@ function factory (type, config, load, typed) {
   }, addScalar.signatures))
 
   add.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['add'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['add']}\${args[1]}\\right)`
   }
 
   return add

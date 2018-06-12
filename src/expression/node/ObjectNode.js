@@ -189,7 +189,7 @@ function factory (type, config, load, typed) {
         entries.push('\\mathbf{' + key + ':} & ' + this.properties[key].toTex(options) + '\\\\')
       }
     }
-    return '\\left\\{\\begin{array}{ll}' + entries.join('\n') + '\\end{array}\\right\\}'
+    return `\\left\\{\\begin{array}{ll}${entries.join('\n')}\\end{array}\\right\\}`
   }
 
   return ObjectNode

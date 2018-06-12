@@ -108,7 +108,7 @@ function factory (type, config, load, typed) {
   })
 
   bitOr.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['bitOr'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['bitOr']}\${args[1]}\\right)`
   }
 
   return bitOr

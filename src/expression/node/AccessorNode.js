@@ -151,7 +151,7 @@ function factory (type, config, load, typed) {
   AccessorNode.prototype._toTex = function (options) {
     var object = this.object.toTex(options)
     if (needParenthesis(this.object)) {
-      object = '\\left(' + object + '\\right)'
+      object = `\\left(' + object + '\\right)`
     }
 
     return object + this.index.toTex(options)

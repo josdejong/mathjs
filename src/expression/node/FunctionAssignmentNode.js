@@ -210,7 +210,7 @@ function factory (type, config, load, typed) {
     var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
     var expr = this.expr.toTex(options)
     if (needParenthesis(this, parenthesis)) {
-      expr = '\\left(' + expr + '\\right)'
+      expr = `\\left(${expr}\\right)`
     }
 
     return '\\mathrm{' + this.name +

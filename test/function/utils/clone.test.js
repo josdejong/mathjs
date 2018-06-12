@@ -16,6 +16,7 @@ describe('clone', function () {
     var a = 1
     var b = math.clone(a)
     a = 2
+    assert.strictEqual(a, 2)
     assert.strictEqual(b, 1)
   })
 

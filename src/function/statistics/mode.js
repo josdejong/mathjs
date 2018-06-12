@@ -68,7 +68,7 @@ function factory (type, config, load, typed) {
       }
     }
     return mode
-  };
+  }
 }
 
 exports.name = 'mode'

@@ -62,7 +62,7 @@ function factory (type, config, load, typed) {
 
   bignumber.toTex = {
     0: '0',
-    1: '\\left(${args[0]}\\right)'
+    1: `\\left(\${args[0]}\\right)`
   }
 
   return bignumber

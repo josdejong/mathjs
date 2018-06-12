@@ -254,20 +254,20 @@ function factory (type, config, load, typed) {
 
     var str = this.start.toTex(options)
     if (parens.start) {
-      str = '\\left(' + str + '\\right)'
+      str = `\\left(${str}\\right)`
     }
 
     if (this.step) {
       var step = this.step.toTex(options)
       if (parens.step) {
-        step = '\\left(' + step + '\\right)'
+        step = `\\left(${step}\\right)`
       }
       str += ':' + step
     }
 
     var end = this.end.toTex(options)
     if (parens.end) {
-      end = '\\left(' + end + '\\right)'
+      end = `\\left(${end}\\right)`
     }
     str += ':' + end
 

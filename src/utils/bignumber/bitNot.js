@@ -1,7 +1,7 @@
 'use strict'
 /**
  * Bitwise not
- * @param {BigNumber} value
+ * @param {BigNumber} x
  * @return {BigNumber} Result of ~`x`, fully precise
  *
  */

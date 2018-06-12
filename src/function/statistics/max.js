@@ -58,7 +58,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  max.toTex = '\\max\\left(${args}\\right)'
+  max.toTex = `\\max\\left(\${args}\\right)`
 
   return max
 

@@ -2,8 +2,8 @@
 
 # Function qr
 
-Calculate the Matrix QR decomposition. Matrix `A` is decomposed in 
-two matrices (`Q`, `R`) where `Q` is an 
+Calculate the Matrix QR decomposition. Matrix `A` is decomposed in
+two matrices (`Q`, `R`) where `Q` is an
 orthogonal matrix and `R` is an upper triangular matrix.
 
 

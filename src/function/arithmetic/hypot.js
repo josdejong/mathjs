@@ -77,7 +77,7 @@ function factory (type, config, load, typed) {
     return multiply(largest, sqrt(result))
   }
 
-  hypot.toTex = '\\hypot\\left(${args}\\right)'
+  hypot.toTex = `\\hypot\\left(\${args}\\right)`
 
   return hypot
 }

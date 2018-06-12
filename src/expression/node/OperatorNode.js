@@ -521,7 +521,7 @@ function factory (type, config, load, typed) {
 
       var operand = args[0].toTex(options)
       if (parens[0]) {
-        operand = '\\left(' + operand + '\\right)'
+        operand = `\\left(${operand}\\right)`
       }
 
       if (assoc === 'right') { // prefix operator
@@ -536,13 +536,13 @@ function factory (type, config, load, typed) {
       var lhs = args[0] // left hand side
       var lhsTex = lhs.toTex(options)
       if (parens[0]) {
-        lhsTex = '\\left(' + lhsTex + '\\right)'
+        lhsTex = `\\left(${lhsTex}\\right)`
       }
 
       var rhs = args[1] // right hand side
       var rhsTex = rhs.toTex(options)
       if (parens[1]) {
-        rhsTex = '\\left(' + rhsTex + '\\right)'
+        rhsTex = `\\left(${rhsTex}\\right)`
       }
 
       // handle some exceptions (due to the way LaTeX works)
@@ -563,7 +563,7 @@ function factory (type, config, load, typed) {
           switch (lhsIdentifier) {
             case 'ConditionalNode': //
             case 'OperatorNode:divide':
-              lhsTex = '\\left(' + lhsTex + '\\right)'
+              lhsTex = `\\left(${lhsTex}\\right)`
           }
         case 'OperatorNode:multiply':
           if (this.implicit && (implicit === 'hide')) {
@@ -575,7 +575,7 @@ function factory (type, config, load, typed) {
       var texifiedArgs = args.map(function (arg, index) {
         arg = arg.toTex(options)
         if (parens[index]) {
-          arg = '\\left(' + arg + '\\right)'
+          arg = `\\left(${arg}\\right)`
         }
         return arg
       })

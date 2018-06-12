@@ -60,7 +60,7 @@ function factory (type, config, load, typed) {
   })
 
   unaryMinus.toTex = {
-    1: latex.operators['unaryMinus'] + '\\left(${args[0]}\\right)'
+    1: `${latex.operators['unaryMinus']}\\left(\${args[0]}\\right)`
   }
 
   return unaryMinus

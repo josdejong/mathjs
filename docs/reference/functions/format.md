@@ -44,10 +44,10 @@ math.format(value, callback)
      significant digits after the decimal point.
      `precision` is undefined by default.
    - `lowerExp: number`
-     Exponent determining the lower boundary for formatting a value with 
+     Exponent determining the lower boundary for formatting a value with
      an exponent when `notation='auto`. Default value is `-3`.
-   - `upperExp: number` 
-     Exponent determining the upper boundary for formatting a value with 
+   - `upperExp: number`
+     Exponent determining the upper boundary for formatting a value with
      an exponent when `notation='auto`. Default value is `5`.
    - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
      For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is

@@ -142,7 +142,7 @@ function factory (type, config, load, typed) {
   })
 
   round.toTex = {
-    1: '\\left\\lfloor${args[0]}\\right\\rceil',
+    1: `\\left\\lfloor\${args[0]}\\right\\rceil`,
     2: undefined // use default template
   }
 

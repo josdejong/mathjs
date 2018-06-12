@@ -73,8 +73,8 @@ function factory (type, config, load, typed) {
   })
 
   log.toTex = {
-    1: '\\ln\\left(${args[0]}\\right)',
-    2: '\\log_{${args[1]}}\\left(${args[0]}\\right)'
+    1: `\\ln\\left(\${args[0]}\\right)`,
+    2: `\\log_{\${args[1]}}\\left(\${args[0]}\\right)`
   }
 
   return log

@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
   })
 
   cross.toTex = {
-    2: '\\left(${args[0]}\\right)\\times\\left(${args[1]}\\right)'
+    2: `\\left(\${args[0]}\\right)\\times\\left(\${args[1]}\\right)`
   }
 
   return cross

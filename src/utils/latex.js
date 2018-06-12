@@ -108,7 +108,7 @@ exports.operators = {
   'or': '\\vee'
 }
 
-exports.defaultTemplate = '\\mathrm{${name}}\\left(${args}\\right)'
+exports.defaultTemplate = `\\mathrm{\${name}}\\left(\${args}\\right)`
 
 var units = {
   deg: '^\\circ'

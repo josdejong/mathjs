@@ -272,7 +272,7 @@ function factory (type, config, load, typed) {
       type.isBigNumber(end) ? end.toNumber() : end,
       type.isBigNumber(step) ? step.toNumber() : step
     )
-  };
+  }
 
   return IndexNode
 }

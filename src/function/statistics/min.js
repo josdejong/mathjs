@@ -58,7 +58,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  min.toTex = '\\min\\left(${args}\\right)'
+  min.toTex = `\\min\\left(\${args}\\right)`
 
   return min
 

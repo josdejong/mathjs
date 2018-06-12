@@ -65,7 +65,7 @@ function factory (type, config, load, typed) {
       : x + x * x / 2 + x * x * x / 6
   }
 
-  expm1.toTex = '\\left(e' + latex.operators['pow'] + '{${args[0]}}-1\\right)'
+  expm1.toTex = `\\left(e${latex.operators['pow']}{\${args[0]}}-1\\right)`
 
   return expm1
 }

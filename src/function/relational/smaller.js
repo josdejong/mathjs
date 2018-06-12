@@ -133,7 +133,7 @@ function factory (type, config, load, typed) {
   })
 
   smaller.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['smaller'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['smaller']}\${args[1]}\\right)`
   }
 
   return smaller

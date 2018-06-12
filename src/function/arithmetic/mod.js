@@ -118,7 +118,7 @@ function factory (type, config, load, typed) {
   })
 
   mod.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['mod'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['mod']}\${args[1]}\\right)`
   }
 
   return mod

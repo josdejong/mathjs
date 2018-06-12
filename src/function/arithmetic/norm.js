@@ -204,7 +204,7 @@ function factory (type, config, load, typed) {
   }
 
   norm.toTex = {
-    1: '\\left\\|${args[0]}\\right\\|',
+    1: `\\left\\|\${args[0]}\\right\\|`,
     2: undefined // use default template
   }
 

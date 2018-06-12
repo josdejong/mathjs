@@ -50,8 +50,8 @@ function factory (type, config, load, typed) {
   })
 
   unit.toTex = {
-    1: '\\left(${args[0]}\\right)',
-    2: '\\left(\\left(${args[0]}\\right)${args[1]}\\right)'
+    1: `\\left(\${args[0]}\\right)`,
+    2: `\\left(\\left(\${args[0]}\\right)\${args[1]}\\right)`
   }
 
   return unit

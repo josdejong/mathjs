@@ -107,7 +107,7 @@ function factory (type, config, load, typed) {
   })
 
   bitAnd.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['bitAnd'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['bitAnd']}\${args[1]}\\right)`
   }
 
   return bitAnd

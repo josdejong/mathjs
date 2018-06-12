@@ -127,7 +127,7 @@ function factory (type, config, load, typed) {
   })
 
   equal.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['equal'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['equal']}\${args[1]}\\right)`
   }
 
   return equal

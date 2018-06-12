@@ -138,7 +138,7 @@ function factory (type, config, load, typed) {
    */
   ParenthesisNode.prototype._toTex = function (options) {
     if ((!options) || (options && !options.parenthesis) || (options && options.parenthesis === 'keep')) {
-      return '\\left(' + this.content.toTex(options) + '\\right)'
+      return `\\left(${this.content.toTex(options)}\\right)`
     }
     return this.content.toTex(options)
   }

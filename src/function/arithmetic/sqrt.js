@@ -69,7 +69,7 @@ function factory (type, config, load, typed) {
     }
   }
 
-  sqrt.toTex = {1: '\\sqrt{${args[0]}}'}
+  sqrt.toTex = {1: `\\sqrt{\${args[0]}}`}
 
   return sqrt
 }

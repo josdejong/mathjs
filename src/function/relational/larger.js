@@ -133,7 +133,7 @@ function factory (type, config, load, typed) {
   })
 
   larger.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['larger'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['larger']}\${args[1]}\\right)`
   }
 
   return larger

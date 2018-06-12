@@ -98,7 +98,7 @@ function factory (type, config, load, typed) {
   })
 
   dotPow.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['dotPow'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['dotPow']}\${args[1]}\\right)`
   }
 
   return dotPow

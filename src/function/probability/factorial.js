@@ -51,7 +51,7 @@ function factory (type, config, load, typed) {
   })
 
   factorial.toTex = {
-    1: '\\left(${args[0]}\\right)' + latex.operators['factorial']
+    1: `\\left(\${args[0]}\\right)${latex.operators['factorial']}`
   }
 
   return factorial

@@ -913,7 +913,7 @@ function factory (type, config, load, typed) {
   }
 
   multiply.toTex = {
-    2: '\\left(${args[0]}' + latex.operators['multiply'] + '${args[1]}\\right)'
+    2: `\\left(\${args[0]}${latex.operators['multiply']}\${args[1]}\\right)`
   }
 
   return multiply

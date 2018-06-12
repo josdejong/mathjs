@@ -130,7 +130,7 @@ function factory (type, config, load, typed) {
       } else {
         d = '{d^{' + order + '}\\over d' + x + '^{' + order + '}}'
       }
-      return d + '\\left[' + expr + '\\right]'
+      return d + `\\left[${expr}\\right]`
     }
   })
 

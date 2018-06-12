@@ -50,7 +50,7 @@ function factory (type, config, load, typed) {
 
   sparse.toTex = {
     0: '\\begin{bsparse}\\end{bsparse}',
-    1: '\\left(${args[0]}\\right)'
+    1: `\\left(\${args[0]}\\right)`
   }
 
   return sparse

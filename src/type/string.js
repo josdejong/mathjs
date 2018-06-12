@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
 
   string.toTex = {
     0: '\\mathtt{""}',
-    1: '\\mathrm{string}\\left(${args[0]}\\right)'
+    1: `\\mathrm{string}\\left(\${args[0]}\\right)`
   }
 
   return string
