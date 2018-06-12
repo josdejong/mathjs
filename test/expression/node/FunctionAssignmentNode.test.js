@@ -54,7 +54,7 @@ describe('FunctionAssignmentNode', function () {
     var a = new ConstantNode(2)
     var x = new SymbolNode('x')
     var o = new OperatorNode('+', 'add', [a, x])
-    var n = new FunctionAssignmentNode('f', [{name: 'x', type: 'number' }], o)
+    var n = new FunctionAssignmentNode('f', [{name: 'x', type: 'number'}], o)
 
     var expr = n.compile()
     var scope = {}

@@ -1150,7 +1150,7 @@ describe('Unit', function () {
     })
 
     it('should override prefixed built-in units', function () {
-      Unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short'}) // User is being silly
+      Unit.createUnitSingle('mm', {definition: '1e-4 m', prefixes: 'short'}) // User is being silly
       assert.equal(new Unit(1e-3, 'mm').toString(), '1 mmm') // Use the user's new definition
       assert.equal(new Unit(1e-3, 'mm').to('m').format(4), '1e-7 m') // Use the user's new definition
     })

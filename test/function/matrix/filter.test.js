@@ -27,9 +27,9 @@ describe('filter', function () {
     }).valueOf()
 
     assert.deepEqual(log, [
-      [1, [0], true ],
-      [2, [1], true ],
-      [3, [2], true ]
+      [1, [0], true],
+      [2, [1], true],
+      [3, [2], true]
     ])
   })
 

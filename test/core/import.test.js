@@ -61,7 +61,7 @@ describe('import', function () {
   })
 
   it('should wrap custom functions if wrap = true', function () {
-    math.import({ getSizeWrapped: getSize }, { wrap: true})
+    math.import({ getSizeWrapped: getSize }, { wrap: true })
     assert.strictEqual(math.getSizeWrapped([1, 2, 3]), 3)
     assert.strictEqual(math.getSizeWrapped(math.matrix([1, 2, 3])), 3)
   })

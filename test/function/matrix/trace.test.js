@@ -9,11 +9,11 @@ describe('trace', function () {
     approx.equal(math.trace([
       [-2, 2, 3],
       [-1, 1, 3],
-      [ 2, 0, -1]
+      [2, 0, -1]
     ]), -2)
     approx.equal(math.trace([
-      [ 1, 4, 7],
-      [ 3, 0, 5],
+      [1, 4, 7],
+      [3, 0, 5],
       [-1, 9, 11]
     ]), 12)
     approx.equal(math.trace([
@@ -35,15 +35,15 @@ describe('trace', function () {
           [
             [-2, 2, 3],
             [-1, 1, 3],
-            [ 2, 0, -1]
+            [2, 0, -1]
           ])),
       -2)
     approx.equal(
       math.trace(
         math.matrix(
           [
-            [ 1, 4, 7],
-            [ 3, 0, 5],
+            [1, 4, 7],
+            [3, 0, 5],
             [-1, 9, 11]
           ])),
       12)
@@ -71,7 +71,7 @@ describe('trace', function () {
           [
             [-2, 2, 3],
             [-1, 1, 3],
-            [ 2, 0, -1]
+            [2, 0, -1]
           ],
           'sparse')),
       -2)
@@ -79,8 +79,8 @@ describe('trace', function () {
       math.trace(
         math.matrix(
           [
-            [ 1, 4, 7],
-            [ 3, 0, 5],
+            [1, 4, 7],
+            [3, 0, 5],
             [-1, 9, 11]
           ],
           'sparse')),

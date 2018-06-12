@@ -290,7 +290,7 @@ describe('number', function () {
       it('auto notation with very large custom lower bound', function () {
         assert.equal(number.format(1, { lowerExp: -2 }), '1')
         assert.equal(number.format(1e-1, { lowerExp: -2 }), '0.1')
-        assert.equal(number.format(1e-2, { lowerExp: -2}), '0.01')
+        assert.equal(number.format(1e-2, { lowerExp: -2 }), '0.01')
         assert.equal(number.format(1e-3, { lowerExp: -2 }), '1e-3')
       })
 

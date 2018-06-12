@@ -245,33 +245,33 @@ function factory (type, config, load, typed) {
       {l: '1*n', r: 'n'}]
 
     var rulesFirst = [
-      { l: '(-n1)/(-n2)', r: 'n1/n2' }, // Unary division
-      { l: '(-n1)*(-n2)', r: 'n1*n2' }, // Unary multiplication
-      { l: 'n1--n2', r: 'n1+n2'}, // '--' elimination
-      { l: 'n1-n2', r: 'n1+(-n2)'}, // Subtraction turn into add with un�ry minus
-      { l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)' }, // Distributive 1
-      { l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)' }, // Distributive 2
-      { l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
-      { l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
-      { l: '-v*c', r: '-c*v'}, // Inversion constant and variable 2
-      { l: 'v*-c', r: '-c*v'}, // Inversion constant and variable 3
-      { l: 'v*c', r: 'c*v'}, // Inversion constant and variable 4
-      { l: '-(-n1*n2)', r: '(n1*n2)'}, // Unary propagation
-      { l: '-(n1*n2)', r: '(-n1*n2)'}, // Unary propagation
-      { l: '-(-n1+n2)', r: '(n1-n2)'}, // Unary propagation
-      { l: '-(n1+n2)', r: '(-n1-n2)'}, // Unary propagation
-      { l: '(n1^n2)^n3', r: '(n1^(n2*n3))'}, // Power to Power
-      { l: '-(-n1/n2)', r: '(n1/n2)'}, // Division and Unary
-      { l: '-(n1/n2)', r: '(-n1/n2)'} ] // Divisao and Unary
+      {l: '(-n1)/(-n2)', r: 'n1/n2'}, // Unary division
+      {l: '(-n1)*(-n2)', r: 'n1*n2'}, // Unary multiplication
+      {l: 'n1--n2', r: 'n1+n2'}, // '--' elimination
+      {l: 'n1-n2', r: 'n1+(-n2)'}, // Subtraction turn into add with un�ry minus
+      {l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)'}, // Distributive 1
+      {l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)'}, // Distributive 2
+      {l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
+      {l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
+      {l: '-v*c', r: '-c*v'}, // Inversion constant and variable 2
+      {l: 'v*-c', r: '-c*v'}, // Inversion constant and variable 3
+      {l: 'v*c', r: 'c*v'}, // Inversion constant and variable 4
+      {l: '-(-n1*n2)', r: '(n1*n2)'}, // Unary propagation
+      {l: '-(n1*n2)', r: '(-n1*n2)'}, // Unary propagation
+      {l: '-(-n1+n2)', r: '(n1-n2)'}, // Unary propagation
+      {l: '-(n1+n2)', r: '(-n1-n2)'}, // Unary propagation
+      {l: '(n1^n2)^n3', r: '(n1^(n2*n3))'}, // Power to Power
+      {l: '-(-n1/n2)', r: '(n1/n2)'}, // Division and Unary
+      {l: '-(n1/n2)', r: '(-n1/n2)'}] // Divisao and Unary
 
     var rulesDistrDiv = [
-      { l: '(n1/n2 + n3/n4)', r: '((n1*n4 + n3*n2)/(n2*n4))' }, // Sum of fractions
-      { l: '(n1/n2 + n3)', r: '((n1 + n3*n2)/n2)' }, // Sum fraction with number 1
-      { l: '(n1 + n2/n3)', r: '((n1*n3 + n2)/n3)' } ] // Sum fraction with number 1
+      {l: '(n1/n2 + n3/n4)', r: '((n1*n4 + n3*n2)/(n2*n4))'}, // Sum of fractions
+      {l: '(n1/n2 + n3)', r: '((n1 + n3*n2)/n2)'}, // Sum fraction with number 1
+      {l: '(n1 + n2/n3)', r: '((n1*n3 + n2)/n3)'}] // Sum fraction with number 1
 
     var rulesSucDiv = [
-      { l: '(n1/(n2/n3))', r: '((n1*n3)/n2)'}, // Division simplification
-      { l: '(n1/n2/n3)', r: '(n1/(n2*n3))' } ]
+      {l: '(n1/(n2/n3))', r: '((n1*n3)/n2)'}, // Division simplification
+      {l: '(n1/n2/n3)', r: '(n1/(n2*n3))'}]
 
     var setRules = {} // rules set in 4 steps.
 
@@ -288,26 +288,26 @@ function factory (type, config, load, typed) {
     // Second rule set.
     // There is no aggregate expression with parentesis, but the only variable can be scattered.
     setRules.finalRules = [ simplifyCore, // simplify.rules[0]
-      { l: 'n*-n', r: '-n^2' }, // Joining multiply with power 1
-      { l: 'n*n', r: 'n^2' }, // Joining multiply with power 2
+      {l: 'n*-n', r: '-n^2'}, // Joining multiply with power 1
+      {l: 'n*n', r: 'n^2'}, // Joining multiply with power 2
       simplifyConstant, // simplify.rules[14] old 3rd index in oldRules
-      { l: 'n*-n^n1', r: '-n^(n1+1)' }, // Joining multiply with power 3
-      { l: 'n*n^n1', r: 'n^(n1+1)' }, // Joining multiply with power 4
-      { l: 'n^n1*-n^n2', r: '-n^(n1+n2)' }, // Joining multiply with power 5
-      { l: 'n^n1*n^n2', r: 'n^(n1+n2)' }, // Joining multiply with power 6
-      { l: 'n^n1*-n', r: '-n^(n1+1)' }, // Joining multiply with power 7
-      { l: 'n^n1*n', r: 'n^(n1+1)' }, // Joining multiply with power 8
-      { l: 'n^n1/-n', r: '-n^(n1-1)' }, // Joining multiply with power 8
-      { l: 'n^n1/n', r: 'n^(n1-1)' }, // Joining division with power 1
-      { l: 'n/-n^n1', r: '-n^(1-n1)' }, // Joining division with power 2
-      { l: 'n/n^n1', r: 'n^(1-n1)' }, // Joining division with power 3
-      { l: 'n^n1/-n^n2', r: 'n^(n1-n2)' }, // Joining division with power 4
-      { l: 'n^n1/n^n2', r: 'n^(n1-n2)' }, // Joining division with power 5
-      { l: 'n1+(-n2*n3)', r: 'n1-n2*n3' }, // Solving useless parenthesis 1
-      { l: 'v*(-c)', r: '-c*v' }, // Solving useless unary 2
-      { l: 'n1+-n2', r: 'n1-n2' }, // Solving +- together (new!)
-      { l: 'v*c', r: 'c*v' }, // inversion constant with variable
-      { l: '(n1^n2)^n3', r: '(n1^(n2*n3))'} // Power to Power
+      {l: 'n*-n^n1', r: '-n^(n1+1)'}, // Joining multiply with power 3
+      {l: 'n*n^n1', r: 'n^(n1+1)'}, // Joining multiply with power 4
+      {l: 'n^n1*-n^n2', r: '-n^(n1+n2)'}, // Joining multiply with power 5
+      {l: 'n^n1*n^n2', r: 'n^(n1+n2)'}, // Joining multiply with power 6
+      {l: 'n^n1*-n', r: '-n^(n1+1)'}, // Joining multiply with power 7
+      {l: 'n^n1*n', r: 'n^(n1+1)'}, // Joining multiply with power 8
+      {l: 'n^n1/-n', r: '-n^(n1-1)'}, // Joining multiply with power 8
+      {l: 'n^n1/n', r: 'n^(n1-1)'}, // Joining division with power 1
+      {l: 'n/-n^n1', r: '-n^(1-n1)'}, // Joining division with power 2
+      {l: 'n/n^n1', r: 'n^(1-n1)'}, // Joining division with power 3
+      {l: 'n^n1/-n^n2', r: 'n^(n1-n2)'}, // Joining division with power 4
+      {l: 'n^n1/n^n2', r: 'n^(n1-n2)'}, // Joining division with power 5
+      {l: 'n1+(-n2*n3)', r: 'n1-n2*n3'}, // Solving useless parenthesis 1
+      {l: 'v*(-c)', r: '-c*v'}, // Solving useless unary 2
+      {l: 'n1+-n2', r: 'n1-n2'}, // Solving +- together (new!)
+      {l: 'v*c', r: 'c*v'}, // inversion constant with variable
+      {l: '(n1^n2)^n3', r: '(n1^(n2*n3))'} // Power to Power
 
     ]
     return setRules

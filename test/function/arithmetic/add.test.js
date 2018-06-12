@@ -42,7 +42,7 @@ describe('add', function () {
 
     it('should add array and sparse matrix correctly', function () {
       var a = [[1, 2, 3], [4, 5, 6]]
-      var b = math.sparse([[6, 5, 4], [ 3, 2, 1]])
+      var b = math.sparse([[6, 5, 4], [3, 2, 1]])
       var c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)

@@ -56,8 +56,8 @@ describe('mode', function () {
 
   it('should return the mode of a 2D matrix', function () {
     assert.deepEqual(mode(new DenseMatrix([
-      [ 1, 4, 0],
-      [ 3, 0, 5]
+      [1, 4, 0],
+      [3, 0, 5]
     ])), [0])
   })
 })

@@ -556,7 +556,7 @@ describe('FunctionNode', function () {
 
   it('should LaTeX templates with string properties', function () {
     var customMath = math.create()
-    customMath.add.toTex = `{${name}`
+    customMath.add.toTex = `\${name}`
 
     assert.equal(customMath.parse('add(1,2)').toTex(), 'add')
   })

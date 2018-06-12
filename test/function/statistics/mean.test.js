@@ -42,12 +42,12 @@ describe('mean', function () {
 
   it('should return the mean for each vector on the last dimension', function () {
     assert.deepEqual(mean([
-      [ 2, 4],
-      [ 6, 8]
+      [2, 4],
+      [6, 8]
     ]), 5)
     assert.deepEqual(mean(new DenseMatrix([
-      [ 2, 4],
-      [ 6, 8]
+      [2, 4],
+      [6, 8]
     ])), 5)
   })
 
@@ -55,7 +55,7 @@ describe('mean', function () {
     [ [10, 20], [30, 40], [50, 60] ],
     [ [70, 80], [90, 100], [110, 120] ],
     [ [130, 140], [150, 160], [170, 180] ],
-    [ [190, 200], [210, 220], [230, 240]]
+    [ [190, 200], [210, 220], [230, 240] ]
   ]
 
   it('should return the mean value along a dimension on a matrix', function () {
@@ -66,9 +66,9 @@ describe('mean', function () {
       [2, 6],
       [4, 10]], 0), [3, 8])
     assert.deepEqual(mean(inputMatrix, 0),
-      [ [100, 110], [120, 130], [140, 150] ])
+      [[100, 110], [120, 130], [140, 150]])
     assert.deepEqual(mean(inputMatrix, 1),
-      [ [30, 40], [90, 100], [150, 160], [210, 220]])
+      [[30, 40], [90, 100], [150, 160], [210, 220]])
     assert.deepEqual(mean(inputMatrix, 2),
       [[15, 35, 55], [75, 95, 115], [135, 155, 175], [195, 215, 235]])
   })

@@ -70,7 +70,7 @@ describe('dotDivide', function () {
     })
 
     it('should divide 1 over a array element-wise', function () {
-      approx.deepEqual(dotDivide(1, [[1, 4, 7], [ 3, 0, 5], [-1, 9, 11]]), [[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]])
+      approx.deepEqual(dotDivide(1, [[1, 4, 7], [3, 0, 5], [-1, 9, 11]]), [[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]])
     })
 
     it('should perform (array ./ array) element-wise matrix division', function () {
@@ -105,7 +105,7 @@ describe('dotDivide', function () {
     })
 
     it('should divide 1 over a dense matrix element-wise', function () {
-      approx.deepEqual(dotDivide(1, math.matrix([[1, 4, 7], [ 3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
+      approx.deepEqual(dotDivide(1, math.matrix([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
     })
 
     it('should perform (dense matrix ./ array) element-wise matrix division', function () {
@@ -140,7 +140,7 @@ describe('dotDivide', function () {
     })
 
     it('should divide 1 over a sparse matrix element-wise', function () {
-      approx.deepEqual(dotDivide(1, math.sparse([[1, 4, 7], [ 3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
+      approx.deepEqual(dotDivide(1, math.sparse([[1, 4, 7], [3, 0, 5], [-1, 9, 11]])), math.matrix([[1, 0.25, 1 / 7], [1 / 3, Infinity, 0.2], [-1, 1 / 9, 1 / 11]]))
     })
 
     it('should perform (sparse matrix ./ array) element-wise matrix division', function () {

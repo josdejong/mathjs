@@ -18,11 +18,11 @@ describe('det', function () {
     approx.equal(det([
       [-2, 2, 3],
       [-1, 1, 3],
-      [ 2, 0, -1]
+      [2, 0, -1]
     ]), 6)
     approx.equal(det([
-      [ 1, 4, 7],
-      [ 3, 0, 5],
+      [1, 4, 7],
+      [3, 0, 5],
       [-1, 9, 11]
     ]), -8)
     approx.equal(det([

@@ -138,7 +138,7 @@ describe('bitAnd', function () {
 
     // sparse - sparse pattern
     b = new math.type.SparseMatrix({
-      index: [ 0, 1],
+      index: [ 0, 1 ],
       ptr: [ 0, 1, 2 ],
       size: [ 2, 2 ]
     })
@@ -146,7 +146,7 @@ describe('bitAnd', function () {
     assert.deepEqual(
       c,
       new math.type.SparseMatrix({
-        index: [ 0, 1],
+        index: [ 0, 1 ],
         ptr: [ 0, 1, 2 ],
         size: [ 2, 2 ]
       }))
@@ -156,7 +156,7 @@ describe('bitAnd', function () {
     assert.deepEqual(
       c,
       new math.type.SparseMatrix({
-        index: [ 0, 1],
+        index: [ 0, 1 ],
         ptr: [ 0, 1, 2 ],
         size: [ 2, 2 ]
       }))

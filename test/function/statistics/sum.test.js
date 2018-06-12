@@ -47,16 +47,16 @@ describe('sum', function () {
 
   it('should return the sum element from a 2d array', function () {
     assert.deepEqual(sum([
-      [ 1, 4, 7],
-      [ 3, 0, 5],
+      [1, 4, 7],
+      [3, 0, 5],
       [-1, 11, 9]
     ]), 39)
   })
 
   it('should return the sum element from a 2d matrix', function () {
     assert.deepEqual(sum(new DenseMatrix([
-      [ 1, 4, 7],
-      [ 3, 0, 5],
+      [1, 4, 7],
+      [3, 0, 5],
       [-1, 11, 9]
     ])), 39)
   })

@@ -222,10 +222,10 @@ describe('lusolve', function () {
   it('should solve linear system 4 x 4, permutations, matrix - Issue 437', function () {
     var m = math.matrix(
       [
-        [ -1, 1, -1, 1],
-        [ 0, 0, 0, 1],
-        [ 1, 1, 1, 1],
-        [ 8, 4, 2, 1]
+        [ -1, 1, -1, 1 ],
+        [ 0, 0, 0, 1 ],
+        [ 1, 1, 1, 1 ],
+        [ 8, 4, 2, 1 ]
       ])
 
     var b = [0.1, 0.2, 0.15, 0.1]
@@ -238,10 +238,10 @@ describe('lusolve', function () {
   it('should solve linear system 4 x 4, permutations, sparse - Issue 437', function () {
     var m = math.sparse(
       [
-        [ -1, 1, -1, 1],
-        [ 0, 0, 0, 1],
-        [ 1, 1, 1, 1],
-        [ 8, 4, 2, 1]
+        [ -1, 1, -1, 1 ],
+        [ 0, 0, 0, 1 ],
+        [ 1, 1, 1, 1 ],
+        [ 8, 4, 2, 1 ]
       ])
 
     var b = [0.1, 0.2, 0.15, 0.1]

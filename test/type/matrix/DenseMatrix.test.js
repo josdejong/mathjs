@@ -694,14 +694,14 @@ describe('DenseMatrix', function () {
         m2.toArray(),
         [
           [
-            [1, [0, 0], true ],
-            [2, [0, 1], true ],
-            [3, [0, 2], true ]
+            [1, [0, 0], true],
+            [2, [0, 1], true],
+            [3, [0, 2], true]
           ],
           [
-            [4, [1, 0], true ],
-            [5, [1, 1], true ],
-            [6, [1, 2], true ]
+            [4, [1, 0], true],
+            [5, [1, 1], true],
+            [6, [1, 2], true]
           ]
         ])
     })
@@ -748,12 +748,12 @@ describe('DenseMatrix', function () {
         }
       )
       assert.deepEqual(output, [
-        [1, [0, 0], true ],
-        [2, [0, 1], true ],
-        [3, [0, 2], true ],
-        [4, [1, 0], true ],
-        [5, [1, 1], true ],
-        [6, [1, 2], true ]
+        [1, [0, 0], true],
+        [2, [0, 1], true],
+        [3, [0, 2], true],
+        [4, [1, 0], true],
+        [5, [1, 1], true],
+        [6, [1, 2], true]
       ])
     })
   })

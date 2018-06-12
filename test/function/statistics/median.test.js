@@ -55,15 +55,15 @@ describe('median', function () {
 
   it('should return the median from a 2d array', function () {
     approx.equal(median([
-      [ 1, 4, 7],
-      [ 3, 0, 5]
+      [1, 4, 7],
+      [3, 0, 5]
     ]), 3.5)
   })
 
   it('should return the median from a 2d matrix', function () {
     approx.equal(median(new DenseMatrix([
-      [ 1, 4, 7],
-      [ 3, 0, 5]
+      [1, 4, 7],
+      [3, 0, 5]
     ])), 3.5)
   })
 

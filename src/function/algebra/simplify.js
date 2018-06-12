@@ -196,7 +196,7 @@ function factory (type, config, load, typed, math) {
     { l: 'n/n1', r: 'n*n1^-1' },
 
     // expand nested exponentiation
-    { l: '(n ^ n1) ^ n2', r: 'n ^ (n1 * n2)'},
+    { l: '(n ^ n1) ^ n2', r: 'n ^ (n1 * n2)' },
 
     // collect like factors
     { l: 'n*n', r: 'n^2' },

@@ -267,7 +267,7 @@ describe('ObjectNode', function () {
 
     assert.deepEqual(json, {
       mathjs: 'ObjectNode',
-      properties: { b: b, c: c}
+      properties: {b: b, c: c}
     })
 
     var parsed = ObjectNode.fromJSON(json)

@@ -38,15 +38,15 @@ describe('prod', function () {
 
   it('should return the prod element from a 2d array', function () {
     assert.deepEqual(prod([
-      [ 1, 7, 2],
-      [ 3, 5, 4]
+      [1, 7, 2],
+      [3, 5, 4]
     ]), 840)
   })
 
   it('should return the prod element from a 2d matrix', function () {
     assert.deepEqual(prod(new DenseMatrix([
-      [ 1, 7, 2],
-      [ 3, 5, 4]
+      [1, 7, 2],
+      [3, 5, 4]
     ])), 840)
   })
 
