@@ -1,5 +1,6 @@
 // test object utils
-const assert = require('assert'), approx = require('../../tools/approx'), object = require('../../src/utils/object')
+const assert = require('assert')
+const object = require('../../src/utils/object')
 
 describe('object', function () {
   describe('clone', function () {

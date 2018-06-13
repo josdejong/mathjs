@@ -1,5 +1,8 @@
 // test ones
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), ones = math.ones, matrix = math.matrix
+const assert = require('assert')
+const math = require('../../../src/main')
+const ones = math.ones
+const matrix = math.matrix
 
 describe('ones', function () {
   it('should create an empty matrix', function () {

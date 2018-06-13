@@ -226,7 +226,9 @@ describe('Complex', function () {
     })
 
     it('should accept angle units for phi properly', function () {
-      const fromDeg = Complex.fromPolar(1, new Unit(90, 'deg')), fromRad = Complex.fromPolar(1, new Unit(0, 'rad')), fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'))
+      const fromDeg = Complex.fromPolar(1, new Unit(90, 'deg'))
+      const fromRad = Complex.fromPolar(1, new Unit(0, 'rad'))
+      const fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'))
       assert.equal(fromDeg.im, 1)
       assert.equal(fromGrad.im, 1)
       assert.equal(fromRad.im, 0)

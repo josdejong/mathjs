@@ -1,4 +1,6 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), bellNumbers = math.bellNumbers
+const assert = require('assert')
+const math = require('../../../src/main')
+const bellNumbers = math.bellNumbers
 
 describe('bellNumbers', function () {
   it('should calculate the number of partitions of a set', function () {

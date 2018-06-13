@@ -1,4 +1,6 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), permutations = math.permutations
+const assert = require('assert')
+const math = require('../../../src/main')
+const permutations = math.permutations
 
 describe('permutations', function () {
   it('should calculate the permutations of a number', function () {

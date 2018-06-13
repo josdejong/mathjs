@@ -1,4 +1,16 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, asinh = math.asinh, sinh = math.sinh, complex = math.complex, matrix = math.matrix, unit = math.unit, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({precision: 21}), asinhBig = bigmath.asinh, Big = bigmath.bignumber
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const asinh = math.asinh
+const sinh = math.sinh
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 21})
+const asinhBig = bigmath.asinh
+const Big = bigmath.bignumber
 
 describe('asinh', function () {
   it('should return the hyperbolic arcsin of a boolean', function () {

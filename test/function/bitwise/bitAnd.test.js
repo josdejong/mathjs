@@ -1,5 +1,8 @@
 // test bitAnd
-const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, bitAnd = math.bitAnd
+const assert = require('assert')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const bitAnd = math.bitAnd
 
 describe('bitAnd', function () {
   it('should bitwise and two numbers', function () {

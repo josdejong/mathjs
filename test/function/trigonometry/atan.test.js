@@ -1,4 +1,15 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, atan = math.atan, tan = math.tan, bigmath = math.create({number: 'BigNumber', precision: 20}), atanBig = bigmath.atan, Big = bigmath.bignumber
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const atan = math.atan
+const tan = math.tan
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const atanBig = bigmath.atan
+const Big = bigmath.bignumber
 
 describe('atan', function () {
   it('should return the arctan of a boolean', function () {
@@ -59,7 +70,8 @@ describe('atan', function () {
   })
 
   it('should return the arctan of a complex number', function () {
-    const re = 1.409921049596575, im = 0.229072682968539
+    const re = 1.409921049596575
+    const im = 0.229072682968539
     approx.deepEqual(atan(complex('2+3i')), complex(re, im))
     approx.deepEqual(atan(complex('2-3i')), complex(re, -im))
     approx.deepEqual(atan(complex('-2+3i')), complex(-re, im))

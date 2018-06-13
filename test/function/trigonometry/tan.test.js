@@ -1,4 +1,15 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, tan = math.tan, piBigmath = math.create({number: 'BigNumber', precision: 21}), bigmath = math.create({precision: 20}), Big = bigmath.bignumber, bigTan = bigmath.tan
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const tan = math.tan
+const piBigmath = math.create({number: 'BigNumber', precision: 21})
+const bigmath = math.create({precision: 20})
+const Big = bigmath.bignumber
+const bigTan = bigmath.tan
 
 describe('tan', function () {
   it('should return the tangent of a boolean', function () {
@@ -31,7 +42,8 @@ describe('tan', function () {
   })
 
   it('should return the tangent of a complex number', function () {
-    const re = 0.00376402564150425, im = 1.00323862735360980
+    const re = 0.00376402564150425
+    const im = 1.00323862735360980
     approx.deepEqual(tan(complex('2+3i')), complex(-re, im))
     approx.deepEqual(tan(complex('2-3i')), complex(-re, -im))
     approx.deepEqual(tan(complex('-2+3i')), complex(re, im))

@@ -1,5 +1,9 @@
 // test gcd
-const assert = require('assert'), math = require('../../../src/main'), matrix = math.matrix, sparse = math.sparse, gcd = math.gcd
+const assert = require('assert')
+const math = require('../../../src/main')
+const matrix = math.matrix
+const sparse = math.sparse
+const gcd = math.gcd
 
 describe('gcd', function () {
   it('should find the greatest common divisor of two or more numbers', function () {

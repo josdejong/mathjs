@@ -1,4 +1,8 @@
-const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/main'), bigUtil = require('../../../src/utils/index').bignumber, bignumber = math.bignumber, gamma = math.gamma
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const gamma = math.gamma
 
 describe('gamma', function () {
   it('should calculate the gamma of an integer number', function () {

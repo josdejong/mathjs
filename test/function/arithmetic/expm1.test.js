@@ -1,5 +1,12 @@
 // test expm1
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, expm1 = math.expm1
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/main')
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const expm1 = math.expm1
 
 describe('expm1', function () {
   it('should exponentiate a boolean', function () {

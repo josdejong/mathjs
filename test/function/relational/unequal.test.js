@@ -1,5 +1,12 @@
 // test unequal
-const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, unequal = math.unequal
+const assert = require('assert')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const unequal = math.unequal
 
 describe('unequal', function () {
   it('should compare two numbers correctly', function () {

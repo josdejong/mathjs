@@ -1,4 +1,8 @@
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main'), bignumber = math.bignumber, quantileSeq = math.quantileSeq
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const quantileSeq = math.quantileSeq
 
 describe('quantileSeq', function () {
   it('should return the quantileSeq from an array with number probability', function () {

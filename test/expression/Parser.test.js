@@ -1,6 +1,9 @@
 // test parser
 
-const assert = require('assert'), approx = require('../../tools/approx'), math = require('../../src/main'), Parser = math.expression.Parser
+const assert = require('assert')
+const approx = require('../../tools/approx')
+const math = require('../../src/main')
+const Parser = math.expression.Parser
 
 describe('parser', function () {
   it('should create a parser', function () {

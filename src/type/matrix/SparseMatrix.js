@@ -325,7 +325,8 @@ function factory (type, config, load, typed) {
     }
 
     // get index size and check whether the index contains a single value
-    const iSize = index.size(), isScalar = index.isScalar()
+    const iSize = index.size()
+    const isScalar = index.isScalar()
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     let sSize

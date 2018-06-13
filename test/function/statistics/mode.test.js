@@ -1,4 +1,7 @@
-const assert = require('assert'), math = require('../../../src/main'), mode = math.mode, DenseMatrix = math.type.DenseMatrix
+const assert = require('assert')
+const math = require('../../../src/main')
+const mode = math.mode
+const DenseMatrix = math.type.DenseMatrix
 
 describe('mode', function () {
   it('should return the mode accurately for one dimensional array', function () {

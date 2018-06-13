@@ -1,5 +1,6 @@
 // test resize
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), Matrix = math.type.Matrix
+const assert = require('assert')
+const math = require('../../../src/main')
 
 describe('resize', function () {
   it('should resize an array', function () {

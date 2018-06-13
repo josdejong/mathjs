@@ -1,5 +1,12 @@
 // test or
-const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, or = math.or
+const assert = require('assert')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const or = math.or
 
 describe('or', function () {
   it('should or two numbers correctly', function () {

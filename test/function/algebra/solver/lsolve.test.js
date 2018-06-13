@@ -1,5 +1,7 @@
 // test lsolve
-const assert = require('assert'), approx = require('../../../../tools/approx'), math = require('../../../../src/main')
+const assert = require('assert')
+const approx = require('../../../../tools/approx')
+const math = require('../../../../src/main')
 
 describe('lsolve', function () {
   it('should solve linear system 4 x 4, arrays', function () {

@@ -192,7 +192,8 @@ function factory (type, config, load, typed, math) {
 
           if (isCommutative(fn)) {
             // commutative binary operator
-            const consts = [], vars = []
+            const consts = []
+            const vars = []
 
             for (let i = 0; i < args.length; i++) {
               if (!type.isNode(args[i])) {

@@ -1,4 +1,6 @@
-const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber
+const assert = require('assert')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
 
 describe('diag', function () {
   it('should return a diagonal matrix on the default diagonal', function () {

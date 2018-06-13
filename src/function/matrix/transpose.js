@@ -8,7 +8,8 @@ function factory (type, config, load, typed) {
 
   const matrix = load(require('../../type/matrix/function/matrix'))
 
-  const DenseMatrix = type.DenseMatrix, SparseMatrix = type.SparseMatrix
+  const DenseMatrix = type.DenseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Transpose a matrix. All values of the matrix are reflected over its

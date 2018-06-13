@@ -282,7 +282,8 @@ function factory (type, config, load, typed) {
     }
 
     // get index size and check whether the index contains a single value
-    const iSize = index.size(), isScalar = index.isScalar()
+    const iSize = index.size()
+    const isScalar = index.isScalar()
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     let sSize
@@ -338,7 +339,8 @@ function factory (type, config, load, typed) {
       _fit(matrix, size, defaultValue)
 
       // insert the sub matrix
-      const dims = iSize.length, dim = 0
+      const dims = iSize.length
+      const dim = 0
       _setSubmatrix(matrix._data, index, submatrix, dims, dim)
     }
 
@@ -356,7 +358,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _setSubmatrix (data, index, submatrix, dims, dim) {
-    const last = (dim === dims - 1), range = index.dimension(dim)
+    const last = (dim === dims - 1)
+    const range = index.dimension(dim)
 
     if (last) {
       range.forEach(function (dataIndex, subIndex) {

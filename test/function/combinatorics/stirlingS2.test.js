@@ -1,4 +1,6 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), stirlingS2 = math.stirlingS2
+const assert = require('assert')
+const math = require('../../../src/main')
+const stirlingS2 = math.stirlingS2
 
 describe('stirlingS2', function () {
   it('should calculate the number of ways to partition a set of n objects into k non-empty subsets', function () {

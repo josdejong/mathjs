@@ -161,9 +161,11 @@ function factory (type, config, load, typed) {
         }
 
         // eliminate non-zero values on the other rows at column c
-        const Ac = A[c], Bc = B[c]
+        const Ac = A[c]
+        const Bc = B[c]
         for (r = 0; r < rows; r++) {
-          const Ar = A[r], Br = B[r]
+          const Ar = A[r]
+          const Br = B[r]
           if (r !== c) {
             // eliminate value at column c and row r
             if (Ar[c] !== 0) {

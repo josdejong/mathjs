@@ -1,4 +1,12 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, sin = math.sin, bigmath = math.create({precision: 242})
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const sin = math.sin
+const bigmath = math.create({precision: 242})
 
 describe('sin', function () {
   it('should return the sine of a boolean', function () {
@@ -59,7 +67,8 @@ describe('sin', function () {
   })
 
   it('should return the sine of a complex number', function () {
-    const re = 9.15449914691143, im = 4.16890695996656
+    const re = 9.15449914691143
+    const im = 4.16890695996656
     approx.deepEqual(sin(complex('2+3i')), complex(re, -im))
     approx.deepEqual(sin(complex('2-3i')), complex(re, im))
     approx.deepEqual(sin(complex('-2+3i')), complex(-re, -im))

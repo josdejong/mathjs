@@ -1,5 +1,12 @@
 // test exp
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, exp = math.exp
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/main')
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const exp = math.exp
 
 describe('exp', function () {
   it('should exponentiate a boolean', function () {
@@ -43,7 +50,9 @@ describe('exp', function () {
     approx.deepEqual(exp(complex(1, 0)), complex('2.71828182845905'))
 
     // test some logic identities
-    const multiply = math.multiply, pi = math.pi, i = math.i
+    const multiply = math.multiply
+    const pi = math.pi
+    const i = math.i
     approx.deepEqual(exp(multiply(0.5, multiply(pi, i))), complex(0, 1))
     approx.deepEqual(exp(multiply(1, multiply(pi, i))), complex(-1, 0))
     approx.deepEqual(exp(multiply(1.5, multiply(pi, i))), complex(0, -1))

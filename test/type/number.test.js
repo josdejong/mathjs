@@ -1,4 +1,7 @@
-const assert = require('assert'), error = require('../../src/error/index'), math = require('../../src/main'), approx = require('../../tools/approx'), number = math.number
+const assert = require('assert')
+const math = require('../../src/main')
+const approx = require('../../tools/approx')
+const number = math.number
 
 describe('number', function () {
   it('should be 0 if called with no argument', function () {

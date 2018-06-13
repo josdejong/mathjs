@@ -1,4 +1,6 @@
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main')
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/main')
 
 describe('trace', function () {
   it('should calculate correctly the trace of a NxN array', function () {

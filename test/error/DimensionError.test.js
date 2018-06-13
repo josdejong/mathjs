@@ -1,4 +1,5 @@
-const assert = require('assert'), DimensionError = require('../../src/error/DimensionError')
+const assert = require('assert')
+const DimensionError = require('../../src/error/DimensionError')
 
 describe('DimensionError', function () {
   it('should construct a DimensionError with numbers', function () {

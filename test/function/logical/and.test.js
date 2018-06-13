@@ -1,5 +1,12 @@
 // test and
-const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, and = math.and
+const assert = require('assert')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const and = math.and
 
 describe('and', function () {
   it('should and two numbers correctly', function () {

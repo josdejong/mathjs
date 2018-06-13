@@ -1,4 +1,5 @@
-const approx = require('../../../../tools/approx'), math = require('../../../../src/main')
+const approx = require('../../../../tools/approx')
+const math = require('../../../../src/main')
 
 describe('slu', function () {
   it('should decompose matrix, 4 x 4, natural ordering (order=0), partial pivoting', function () {

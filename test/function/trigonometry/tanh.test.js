@@ -1,4 +1,12 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, tanh = math.tanh, bigmath = math.create({number: 'BigNumber', precision: 20})
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const tanh = math.tanh
+const bigmath = math.create({number: 'BigNumber', precision: 20})
 
 describe('tanh', function () {
   it('should return the tanh of a boolean', function () {

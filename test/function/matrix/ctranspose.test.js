@@ -1,5 +1,7 @@
 // test transpose
-const assert = require('assert'), math = require('../../../src/main'), ctranspose = math.ctranspose
+const assert = require('assert')
+const math = require('../../../src/main')
+const ctranspose = math.ctranspose
 
 describe('ctranspose', function () {
   it('should transpose a real scalar', function () {

@@ -83,7 +83,9 @@ describe('distribution', function () {
     })
 
     it('should pick uniformly distributed random array, with elements in [0, 1]', function () {
-      const picked = [], matrices = [], size = [2, 3, 4]
+      const picked = []
+      const matrices = []
+      const size = [2, 3, 4]
 
       _.times(100, function () {
         matrices.push(uniformDistrib.random(size))
@@ -103,7 +105,9 @@ describe('distribution', function () {
     })
 
     it('should pick uniformly distributed random array, with elements in [0, max]', function () {
-      const picked = [], matrices = [], size = [2, 3, 4]
+      const picked = []
+      const matrices = []
+      const size = [2, 3, 4]
 
       _.times(100, function () {
         matrices.push(uniformDistrib.random(size, 8))
@@ -123,7 +127,9 @@ describe('distribution', function () {
     })
 
     it('should pick uniformly distributed random matrix, with elements in [0, 1]', function () {
-      const picked = [], matrices = [], size = math.matrix([2, 3, 4])
+      const picked = []
+      const matrices = []
+      const size = math.matrix([2, 3, 4])
 
       _.times(100, function () {
         matrices.push(uniformDistrib.random(size))
@@ -143,7 +149,9 @@ describe('distribution', function () {
     })
 
     it('should pick uniformly distributed random array, with elements in [min, max]', function () {
-      const picked = [], matrices = [], size = [2, 3, 4]
+      const picked = []
+      const matrices = []
+      const size = [2, 3, 4]
 
       _.times(100, function () {
         matrices.push(uniformDistrib.random(size, -103, 8))
@@ -181,7 +189,9 @@ describe('distribution', function () {
     })
 
     it('should pick uniformly distributed random array, with elements in [min, max)', function () {
-      const picked = [], matrices = [], size = [2, 3, 4]
+      const picked = []
+      const matrices = []
+      const size = [2, 3, 4]
 
       _.times(1000, function () {
         matrices.push(uniformDistrib.randomInt(size, -14.9, -2))
@@ -217,7 +227,9 @@ describe('distribution', function () {
     })
 
     it('should throw an error if the length of the weights does not match the length of the possibles', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4], number = 2
+      const possibles = [11, 22, 33, 44, 55]
+      const weights = [1, 5, 2, 4]
+      const number = 2
 
       assert.throws(function () {
         uniformDistrib.pickRandom(possibles, weights)
@@ -249,7 +261,8 @@ describe('distribution', function () {
     })
 
     it('should return a single value if no number argument was passed', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4, 6]
+      const possibles = [11, 22, 33, 44, 55]
+      const weights = [1, 5, 2, 4, 6]
 
       assert.notEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles)), -1)
       assert.notEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles, weights)), -1)
@@ -262,7 +275,9 @@ describe('distribution', function () {
     })
 
     it('should return the given array if the given number is equal its length', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4, 6], number = 5
+      const possibles = [11, 22, 33, 44, 55]
+      const weights = [1, 5, 2, 4, 6]
+      const number = 5
 
       assert.equal(uniformDistrib.pickRandom(possibles, number), possibles)
       assert.equal(uniformDistrib.pickRandom(possibles, number, weights), possibles)
@@ -270,7 +285,9 @@ describe('distribution', function () {
     })
 
     it('should return the given array if the given number is greater than its length', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4, 6], number = 6
+      const possibles = [11, 22, 33, 44, 55]
+      const weights = [1, 5, 2, 4, 6]
+      const number = 6
 
       assert.equal(uniformDistrib.pickRandom(possibles, number), possibles)
       assert.equal(uniformDistrib.pickRandom(possibles, number, weights), possibles)
@@ -278,7 +295,9 @@ describe('distribution', function () {
     })
 
     it('should return an empty array if the given number is 0', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4, 6], number = 0
+      const possibles = [11, 22, 33, 44, 55]
+      const weights = [1, 5, 2, 4, 6]
+      const number = 0
 
       assert.equal(uniformDistrib.pickRandom(possibles, number).length, 0)
       assert.equal(uniformDistrib.pickRandom(possibles, number, weights).length, 0)
@@ -286,7 +305,9 @@ describe('distribution', function () {
     })
 
     it('should return an array of length 1 if the number passed is 1', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4, 6], number = 1
+      const possibles = [11, 22, 33, 44, 55]
+      const  weights = [1, 5, 2, 4, 6]
+      const number = 1
 
       assert(Array.isArray(uniformDistrib.pickRandom(possibles, number)))
       assert(Array.isArray(uniformDistrib.pickRandom(possibles, number, weights)))
@@ -298,7 +319,9 @@ describe('distribution', function () {
     })
 
     it('should pick the given number of values from the given array', function () {
-      const possibles = [11, 22, 33, 44, 55], weights = [1, 5, 2, 4, 6], number = 3
+      const possibles = [11, 22, 33, 44, 55]
+      const weights = [1, 5, 2, 4, 6]
+      const number = 3
 
       assert.equal(uniformDistrib.pickRandom(possibles, number).length, number)
       assert.equal(uniformDistrib.pickRandom(possibles, number, weights).length, number)

@@ -1,5 +1,7 @@
 // test matrix construction
-const assert = require('assert'), math = require('../../../../src/main'), sparse = math.sparse
+const assert = require('assert')
+const math = require('../../../../src/main')
+const sparse = math.sparse
 
 describe('sparse', function () {
   it('should create empty matrix', function () {

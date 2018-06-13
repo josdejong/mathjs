@@ -1,4 +1,16 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, acot = math.acot, cot = math.cot, bigmath = math.create({number: 'BigNumber', precision: 20}), acotBig = bigmath.acot, cotBig = bigmath.cot, Big = bigmath.bignumber
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const acot = math.acot
+const cot = math.cot
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const acotBig = bigmath.acot
+const cotBig = bigmath.cot
+const Big = bigmath.bignumber
 
 describe('acot', function () {
   it('should return the arccot of a boolean', function () {

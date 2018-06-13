@@ -1,5 +1,13 @@
 // test dotMultiply (element-wise multiply)
-const assert = require('assert'), math = require('../../../src/main'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), dotMultiply = math.dotMultiply, divide = math.divide, matrix = math.matrix, sparse = math.sparse, complex = math.complex, range = math.range, i = math.i, unit = math.unit
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const dotMultiply = math.dotMultiply
+const divide = math.divide
+const matrix = math.matrix
+const sparse = math.sparse
+const complex = math.complex
+const unit = math.unit
 
 describe('dotMultiply', function () {
   it('should multiply 2 numbers', function () {

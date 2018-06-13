@@ -1,4 +1,5 @@
-const assert = require('assert'), math = require('../../../src/main')
+const assert = require('assert')
+const math = require('../../../src/main')
 
 describe('seed', function () {
   after(function () {

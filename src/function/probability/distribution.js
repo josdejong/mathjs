@@ -39,7 +39,8 @@ function factory (type, config, load, typed, math) {
   function distribution (name) {
     if (!distributions.hasOwnProperty(name)) { throw new Error('Unknown distribution ' + name) }
 
-    const args = Array.prototype.slice.call(arguments, 1), distribution = distributions[name].apply(this, args)
+    const args = Array.prototype.slice.call(arguments, 1)
+    const distribution = distributions[name].apply(this, args)
 
     return (function (distribution) {
       // This is the public API for all distributions
@@ -271,7 +272,9 @@ function factory (type, config, load, typed, math) {
     // so that 99.7% values are in [0, 1].
     normal: function () {
       return function () {
-        let u1, u2, picked = -1
+        let u1
+        let u2
+        let picked = -1
         // We reject values outside of the interval [0, 1]
         // TODO: check if it is ok to do that?
         while (picked < 0 || picked > 1) {

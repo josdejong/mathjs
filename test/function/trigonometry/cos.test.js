@@ -1,4 +1,13 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cos = math.cos, bigmath = math.create({number: 'BigNumber', precision: 15}), biggermath = math.create({number: 'BigNumber', precision: 238})
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const cos = math.cos
+const bigmath = math.create({number: 'BigNumber', precision: 15})
+const biggermath = math.create({number: 'BigNumber', precision: 238})
 
 describe('cos', function () {
   it('should return the cosine of a boolean', function () {
@@ -60,7 +69,8 @@ describe('cos', function () {
   })
 
   it('should return the cosine of a complex number', function () {
-    const re = 4.18962569096881, im = 9.10922789375534
+    const re = 4.18962569096881
+    const im = 9.10922789375534
     approx.deepEqual(cos(complex('2+3i')), complex(-re, -im))
     approx.deepEqual(cos(complex('2-3i')), complex(-re, im))
     approx.deepEqual(cos(complex('-2+3i')), complex(-re, im))

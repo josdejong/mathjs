@@ -1,4 +1,5 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main')
+const assert = require('assert')
+const math = require('../../../src/main')
 
 describe('forEach', function () {
   it('should iterate over all elements of the matrix', function () {

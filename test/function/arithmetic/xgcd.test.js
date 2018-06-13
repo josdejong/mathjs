@@ -1,5 +1,8 @@
 // test xgcd
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main').create({matrix: 'Array'}), gcd = math.gcd, xgcd = math.xgcd
+const assert = require('assert')
+const math = require('../../../src/main').create({matrix: 'Array'})
+const gcd = math.gcd
+const xgcd = math.xgcd
 
 describe('xgcd', function () {
   it('should return extended greatest common divisor of two numbers', function () {

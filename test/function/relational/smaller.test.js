@@ -1,5 +1,12 @@
 // test smaller
-const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, smaller = math.smaller
+const assert = require('assert')
+const math = require('../../../src/main')
+const bignumber = math.bignumber
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const smaller = math.smaller
 
 describe('smaller', function () {
   it('should compare two numbers correctly', function () {

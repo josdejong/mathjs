@@ -1,5 +1,6 @@
 // test number utils
-const assert = require('assert'), approx = require('../../tools/approx'), number = require('../../src/utils/number')
+const assert = require('assert')
+const number = require('../../src/utils/number')
 
 describe('number', function () {
   it('isInteger', function () {

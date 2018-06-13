@@ -1,5 +1,6 @@
 // test norm
-const assert = require('assert'), math = require('../../../src/main')
+const assert = require('assert')
+const math = require('../../../src/main')
 
 describe('norm', function () {
   it('should return the absolute value of a boolean', function () {

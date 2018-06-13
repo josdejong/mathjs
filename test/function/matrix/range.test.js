@@ -1,4 +1,8 @@
-const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/main'), range = math.range, matrix = math.matrix, bignumber = math.bignumber
+const assert = require('assert')
+const math = require('../../../src/main')
+const range = math.range
+const matrix = math.matrix
+const bignumber = math.bignumber
 
 describe('range', function () {
   it('should parse a valid string correctly', function () {

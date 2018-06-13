@@ -1,5 +1,10 @@
 // test bitXor
-const assert = require('assert'), math = require('../../../src/main'), matrix = math.matrix, sparse = math.sparse, bignumber = math.bignumber, bitXor = math.bitXor
+const assert = require('assert')
+const math = require('../../../src/main')
+const matrix = math.matrix
+const sparse = math.sparse
+const bignumber = math.bignumber
+const bitXor = math.bitXor
 
 describe('bitXor', function () {
   it('should xor two numbers', function () {

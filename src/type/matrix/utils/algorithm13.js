@@ -1,9 +1,6 @@
 'use strict'
 
-const util = require('../../../utils/index')
 const DimensionError = require('../../../error/DimensionError')
-
-const string = util.string, isString = string.isString
 
 function factory (type, config, load, typed) {
   const DenseMatrix = type.DenseMatrix

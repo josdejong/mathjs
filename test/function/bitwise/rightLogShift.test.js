@@ -1,5 +1,9 @@
 // test rightLogShift
-const assert = require('assert'), math = require('../../../src/main'), matrix = math.matrix, sparse = math.sparse, rightLogShift = math.rightLogShift
+const assert = require('assert')
+const math = require('../../../src/main')
+const matrix = math.matrix
+const sparse = math.sparse
+const rightLogShift = math.rightLogShift
 
 describe('rightLogShift', function () {
   it('should right logically shift a number by a given amount', function () {

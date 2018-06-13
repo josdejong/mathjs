@@ -1,4 +1,7 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), matrix = math.matrix, flatten = math.flatten
+const assert = require('assert')
+const math = require('../../../src/main')
+const matrix = math.matrix
+const flatten = math.flatten
 
 describe('flatten', function () {
   it('should flatten an empty array', function () {

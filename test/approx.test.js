@@ -1,5 +1,6 @@
 // test approx itself...
-const assert = require('assert'), approx = require('../tools/approx')
+const assert = require('assert')
+const approx = require('../tools/approx')
 
 describe('approx', function () {
   it('should test equality of positive values', function () {

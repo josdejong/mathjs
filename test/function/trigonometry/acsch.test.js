@@ -1,4 +1,15 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, acsch = math.acsch, csch = math.csch, complex = math.complex, matrix = math.matrix, unit = math.unit, bigmath = math.create({number: 'BigNumber', precision: 20}), acschBig = bigmath.acsch, Big = bigmath.bignumber
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const acsch = math.acsch
+const csch = math.csch
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const acschBig = bigmath.acsch
+const Big = bigmath.bignumber
 
 describe('acsch', function () {
   it('should return the hyperbolic arccsc of a boolean', function () {

@@ -2,7 +2,8 @@
 
 const util = require('../../../utils/index')
 
-const number = util.number, isInteger = number.isInteger
+const number = util.number
+const isInteger = number.isInteger
 
 function factory (type, config, load, typed) {
   const cs_sqr = load(require('../../algebra/sparse/cs_sqr'))

@@ -1,4 +1,13 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, sec = math.sec, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert')
+const math = require('../../../src/main')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const sec = math.sec
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('sec', function () {
   it('should return the secant of a boolean', function () {
@@ -49,7 +58,8 @@ describe('sec', function () {
   })
 
   it('should return the secant of a complex number', function () {
-    const re = 0.0416749644111443, im = 0.0906111371962376
+    const re = 0.0416749644111443
+    const im = 0.0906111371962376
     approx.deepEqual(sec(complex('2+3i')), complex(-re, im))
     approx.deepEqual(sec(complex('2-3i')), complex(-re, -im))
     approx.deepEqual(sec(complex('-2+3i')), complex(-re, -im))

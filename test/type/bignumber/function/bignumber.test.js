@@ -1,4 +1,7 @@
-const assert = require('assert'), error = require('../../../../src/error/index'), math = require('../../../../src/main'), bignumber = math.bignumber, BigNumber = math.type.BigNumber
+const assert = require('assert')
+const math = require('../../../../src/main')
+const bignumber = math.bignumber
+const BigNumber = math.type.BigNumber
 
 describe('bignumber', function () {
   it('should create a bignumber', function () {
