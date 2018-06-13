@@ -9,16 +9,16 @@
  * has room for improvements, it's not a fully fletched benchmark suite.
  */
 
-var Benchmark = require('benchmark')
-var padRight = require('pad-right')
-var suite = new Benchmark.Suite()
+const Benchmark = require('benchmark')
+const padRight = require('pad-right')
+const suite = new Benchmark.Suite()
 
 function pad (text) {
   return padRight(text, 40, ' ')
 }
 
 // fiedler matrix 25 x 25
-var fiedler = [
+const fiedler = [
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
   [1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
   [2, 1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
@@ -48,8 +48,8 @@ var fiedler = [
 
 // mathjs
 (function () {
-  var math = require('../index')
-  var A = math.matrix(fiedler)
+  const math = require('../index')
+  const A = math.matrix(fiedler)
 
   suite.add(pad('matrix operations mathjs A+A'), function () { return math.add(A, A) })
   suite.add(pad('matrix operations mathjs A*A'), function () { return math.multiply(A, A) })
@@ -59,8 +59,8 @@ var fiedler = [
 
 // sylvester
 (function () {
-  var sylvester = require('sylvester')
-  var A = sylvester.Matrix.create(fiedler)
+  const sylvester = require('sylvester')
+  const A = sylvester.Matrix.create(fiedler)
 
   suite.add(pad('matrix operations sylvester A+A'), function () { return A.add(A) })
   suite.add(pad('matrix operations sylvester A*A'), function () { return A.multiply(A) })
@@ -70,8 +70,8 @@ var fiedler = [
 
 // numericjs
 (function () {
-  var numeric = require('numericjs')
-  var A = fiedler
+  const numeric = require('numericjs')
+  const A = fiedler
 
   suite.add(pad('matrix operations numericjs A+A'), function () { return numeric.add(A, A) })
   suite.add(pad('matrix operations numericjs A*A'), function () { return numeric.dot(A, A) })
@@ -81,27 +81,27 @@ var fiedler = [
 
 // ndarray
 (function () {
-  var ndarray = require('ndarray')
-  var gemm = require('ndarray-gemm')
-  var zeros = require('zeros')
-  var ops = require('ndarray-ops')
-  var pack = require('ndarray-pack')
-  var det = require('ndarray-determinant')
+  const ndarray = require('ndarray')
+  const gemm = require('ndarray-gemm')
+  const zeros = require('zeros')
+  const ops = require('ndarray-ops')
+  const pack = require('ndarray-pack')
+  const det = require('ndarray-determinant')
 
-  var A = pack(fiedler)
-  var B = zeros([25, 25])
+  const A = pack(fiedler)
+  const B = zeros([25, 25])
 
   suite.add(pad('matrix operations ndarray A+A'), function () { return ops.add(B, A, A) })
   suite.add(pad('matrix operations ndarray A*A'), function () { return gemm(B, A, A) })
   suite.add(pad('matrix operations ndarray A\''), function () { return ops.assign(B, A); B.transpose(1, 0) })
   suite.add(pad('matrix operations ndarray det(A)'), function () { return det(A) })
-})()
+})();
 
-var durations = []
+const durations = []
 
 suite
   .on('cycle', function (event) {
-    var benchmark = event.target
+    const benchmark = event.target
     console.log(String(event.target))
     durations.push(benchmark.name + ' avg duration per operation: ' + Math.round(benchmark.stats.mean * 1e6) + ' microseconds')
   })

@@ -1,12 +1,5 @@
 // test unequal
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  unequal = math.unequal
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, unequal = math.unequal
 
 describe('unequal', function () {
   it('should compare two numbers correctly', function () {
@@ -132,7 +125,7 @@ describe('unequal', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     assert.equal(mymath.unequal(1, 0.991), true)
     assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), true)
 
@@ -234,7 +227,7 @@ describe('unequal', function () {
   })
 
   it('should LaTeX unequal', function () {
-    var expression = math.parse('unequal(1,0)')
+    const expression = math.parse('unequal(1,0)')
     assert.equal(expression.toTex(), '\\left(1\\neq0\\right)')
   })
 })

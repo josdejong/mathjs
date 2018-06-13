@@ -28,12 +28,12 @@ module.exports = function nearlyEqual (x, y, epsilon) {
   // at this point x and y should be finite
   if (x.isFinite() && y.isFinite()) {
     // check numbers are very close, needed when comparing numbers near zero
-    var diff = x.minus(y).abs()
+    const diff = x.minus(y).abs()
     if (diff.isZero()) {
       return true
     } else {
       // use relative error
-      var max = x.constructor.max(x.abs(), y.abs())
+      const max = x.constructor.max(x.abs(), y.abs())
       return diff.lte(max.times(epsilon))
     }
   }

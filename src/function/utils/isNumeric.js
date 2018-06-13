@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var number = require('../../utils/number')
+const deepMap = require('../../utils/collection/deepMap')
+const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,13 +15,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.isNumeric(2);                     // returns true
-   *    math.isNumeric(0);                     // returns true
-   *    math.isNumeric(math.bignumber(500));   // returns true
-   *    math.isNumeric(math.fraction(4));      // returns true
-   *    math.isNumeric(math.complex('2-4i');   // returns false
-   *    math.isNumeric('3');                   // returns false
-   *    math.isNumeric([2.3, 'foo', false]);   // returns [true, false, true]
+   *    math.isNumeric(2)                     // returns true
+   *    math.isNumeric(0)                     // returns true
+   *    math.isNumeric(math.bignumber(500))   // returns true
+   *    math.isNumeric(math.fraction(4))      // returns true
+   *    math.isNumeric(math.complex('2-4i')   // returns false
+   *    math.isNumeric('3')                   // returns false
+   *    math.isNumeric([2.3, 'foo', false])   // returns [true, false, true]
    *
    * See also:
    *
@@ -32,7 +32,7 @@ function factory (type, config, load, typed) {
    *                    `Fraction`, or `boolean`. Returns false for other types.
    *                    Throws an error in case of unknown types.
    */
-  var isNumeric = typed('isNumeric', {
+  const isNumeric = typed('isNumeric', {
     'number | BigNumber | Fraction | boolean': function () {
       return true
     },

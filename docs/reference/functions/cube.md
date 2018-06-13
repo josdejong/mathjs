@@ -28,12 +28,12 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 ## Examples
 
 ```js
-math.cube(2);            // returns number 8
-math.pow(2, 3);          // returns number 8
-math.cube(4);            // returns number 64
-4 * 4 * 4;               // returns number 64
+math.cube(2)            // returns number 8
+math.pow(2, 3)          // returns number 8
+math.cube(4)            // returns number 64
+4 * 4 * 4               // returns number 64
 
-math.cube([1, 2, 3, 4]); // returns Array [1, 8, 27, 64]
+math.cube([1, 2, 3, 4]) // returns Array [1, 8, 27, 64]
 ```
 
 

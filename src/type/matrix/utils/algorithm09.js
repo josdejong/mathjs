@@ -1,11 +1,11 @@
 'use strict'
 
-var DimensionError = require('../../../error/DimensionError')
+const DimensionError = require('../../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var equalScalar = load(require('../../../function/relational/equalScalar'))
+  const equalScalar = load(require('../../../function/relational/equalScalar'))
 
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Iterates over SparseMatrix A and invokes the callback function f(Aij, Bij).
@@ -25,19 +25,19 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  var algorithm09 = function (a, b, callback) {
+  const algorithm09 = function (a, b, callback) {
     // sparse matrix arrays
-    var avalues = a._values
-    var aindex = a._index
-    var aptr = a._ptr
-    var asize = a._size
-    var adt = a._datatype
+    const avalues = a._values
+    const aindex = a._index
+    const aptr = a._ptr
+    const asize = a._size
+    const adt = a._datatype
     // sparse matrix arrays
-    var bvalues = b._values
-    var bindex = b._index
-    var bptr = b._ptr
-    var bsize = b._size
-    var bdt = b._datatype
+    const bvalues = b._values
+    const bindex = b._index
+    const bptr = b._ptr
+    const bsize = b._size
+    const bdt = b._datatype
 
     // validate dimensions
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
@@ -46,17 +46,17 @@ function factory (type, config, load, typed) {
     if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
 
     // rows & columns
-    var rows = asize[0]
-    var columns = asize[1]
+    const rows = asize[0]
+    const columns = asize[1]
 
     // datatype
-    var dt
+    let dt
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
     // callback signature to use
-    var cf = callback
+    let cf = callback
 
     // process data types
     if (typeof adt === 'string' && adt === bdt) {
@@ -71,11 +71,11 @@ function factory (type, config, load, typed) {
     }
 
     // result arrays
-    var cvalues = avalues && bvalues ? [] : undefined
-    var cindex = []
-    var cptr = []
+    const cvalues = avalues && bvalues ? [] : undefined
+    const cindex = []
+    const cptr = []
     // matrix
-    var c = new SparseMatrix({
+    const c = new SparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -84,19 +84,19 @@ function factory (type, config, load, typed) {
     })
 
     // workspaces
-    var x = cvalues ? [] : undefined
+    const x = cvalues ? [] : undefined
     // marks indicating we have a value in x for a given column
-    var w = []
+    const w = []
 
     // vars
-    var i, j, k, k0, k1
+    let i, j, k, k0, k1
 
     // loop columns
     for (j = 0; j < columns; j++) {
       // update cptr
       cptr[j] = cindex.length
       // column mark
-      var mark = j + 1
+      const mark = j + 1
       // check we need to process values
       if (x) {
         // loop B(:,j)
@@ -115,9 +115,9 @@ function factory (type, config, load, typed) {
         // check we need to process values
         if (x) {
           // b value @ i,j
-          var vb = w[i] === mark ? x[i] : zero
+          const vb = w[i] === mark ? x[i] : zero
           // invoke f
-          var vc = cf(avalues[k], vb)
+          const vc = cf(avalues[k], vb)
           // check zero value
           if (!eq(vc, zero)) {
             // push index

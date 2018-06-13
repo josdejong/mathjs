@@ -27,7 +27,7 @@ Matrix &#124; Array | Returns the flattened matrix
 ## Examples
 
 ```js
-math.flatten([[1,2], [3,4]]);   // returns [1, 2, 3, 4]
+math.flatten([[1,2], [3,4]])   // returns [1, 2, 3, 4]
 ```
 
 

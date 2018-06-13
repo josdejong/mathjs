@@ -1,7 +1,7 @@
 // objects
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // create an object. Keys can be symbols or strings
 print(math.eval('{x: 2 + 1, y: 4}')) // {"x": 3, "y": 4}
@@ -10,7 +10,7 @@ print(math.eval('{"name": "John"}')) // {"name": "John"}
 // create an object containing an object
 print(math.eval('{a: 2, b: {c: 3, d: 4}}')) // {"a": 2, "b": {"c": 3, "d": 4}}
 
-var scope = {
+let scope = {
   obj: {
     prop: 42
   }
@@ -30,6 +30,6 @@ print(scope.obj) // {"prop": 43}
  * @param {*} value
  */
 function print (value) {
-  var precision = 14
+  const precision = 14
   console.log(math.format(value, precision))
 }

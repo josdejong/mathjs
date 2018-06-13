@@ -1,9 +1,9 @@
 // test string utils
-var assert = require('assert')
-var approx = require('../../tools/approx')
-var BigNumber = require('decimal.js')
-var math = require('../../src/index')
-var string = require('../../src/utils/string')
+const assert = require('assert')
+const approx = require('../../tools/approx')
+const BigNumber = require('decimal.js')
+const math = require('../../src/index')
+const string = require('../../src/utils/string')
 
 describe('string', function () {
   it('isString', function () {
@@ -47,7 +47,7 @@ describe('string', function () {
     })
 
     it('should format a bignumber', function () {
-      var B = BigNumber.config({
+      const B = BigNumber.config({
         precision: 20
       })
       assert.equal(string.format(new B(1).div(3)), '0.33333333333333333333')
@@ -84,7 +84,7 @@ describe('string', function () {
     })
 
     it('should format an object', function () {
-      var obj = {
+      const obj = {
         a: 1.1111,
         b: math.complex(2.2222, 3)
       }
@@ -94,9 +94,9 @@ describe('string', function () {
     })
 
     it('should format an object with its own format function', function () {
-      var obj = {
+      const obj = {
         format: function (options) {
-          var str = 'obj'
+          let str = 'obj'
           if (options !== undefined) {
             str += ' ' + JSON.stringify(options)
           }
@@ -111,7 +111,7 @@ describe('string', function () {
 
     it('should format a function', function () {
       assert.equal(string.format(function (a, b) { return a + b }), 'function')
-      var f = function (a, b) { return a + b }
+      const f = function (a, b) { return a + b }
       f.syntax = 'f(x, y)'
       assert.equal(string.format(f), 'f(x, y)')
     })

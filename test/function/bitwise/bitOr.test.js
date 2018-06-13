@@ -1,8 +1,5 @@
 // test bitOr
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  bitOr = math.bitOr
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, bitOr = math.bitOr
 
 describe('bitOr', function () {
   it('should bitwise or two numbers', function () {
@@ -80,11 +77,11 @@ describe('bitOr', function () {
   })
 
   it('should bitwise or arrays correctly', function () {
-    var a = [[1, 4], [3, 2]]
+    const a = [[1, 4], [3, 2]]
 
     // array - array
-    var b = [[5, 8], [7, 6]]
-    var c = bitOr(a, b)
+    let b = [[5, 8], [7, 6]]
+    let c = bitOr(a, b)
     assert.deepEqual(c, [[5, 12], [7, 6]])
 
     // array - dense
@@ -99,11 +96,11 @@ describe('bitOr', function () {
   })
 
   it('should bitwise or dense matrix correctly', function () {
-    var a = math.matrix([[1, 4], [3, 2]])
+    const a = math.matrix([[1, 4], [3, 2]])
 
     // dense - array
-    var b = [[5, 8], [7, 6]]
-    var c = bitOr(a, b)
+    let b = [[5, 8], [7, 6]]
+    let c = bitOr(a, b)
     assert.deepEqual(c, math.matrix([[5, 12], [7, 6]]))
 
     // dense - dense
@@ -118,11 +115,11 @@ describe('bitOr', function () {
   })
 
   it('should bitwise or sparse matrix correctly', function () {
-    var a = math.sparse([[1, 4], [3, 2]])
+    let a = math.sparse([[1, 4], [3, 2]])
 
     // sparse - array
-    var b = [[5, 8], [7, 6]]
-    var c = bitOr(a, b)
+    let b = [[5, 8], [7, 6]]
+    let c = bitOr(a, b)
     assert.deepEqual(c, math.matrix([[5, 12], [7, 6]]))
 
     // sparse - dense
@@ -163,13 +160,13 @@ describe('bitOr', function () {
   })
 
   it('should bitwise or matrices correctly', function () {
-    var a2 = math.matrix([[1, 2], [3, 4]])
-    var a3 = math.matrix([[5, 6], [7, 8]])
-    var a4 = bitOr(a2, a3)
+    const a2 = math.matrix([[1, 2], [3, 4]])
+    const a3 = math.matrix([[5, 6], [7, 8]])
+    const a4 = bitOr(a2, a3)
     assert.ok(a4 instanceof math.type.Matrix)
     assert.deepEqual(a4.size(), [2, 2])
     assert.deepEqual(a4.valueOf(), [[5, 6], [7, 12]])
-    var a5 = math.pow(a2, 2)
+    const a5 = math.pow(a2, 2)
     assert.ok(a5 instanceof math.type.Matrix)
     assert.deepEqual(a5.size(), [2, 2])
     assert.deepEqual(a5.valueOf(), [[7, 10], [15, 22]])
@@ -186,9 +183,9 @@ describe('bitOr', function () {
   })
 
   it('should bitwise or a matrix and an array correctly', function () {
-    var a = [6, 4, 28]
-    var b = math.matrix([13, 92, 101])
-    var c = bitOr(a, b)
+    const a = [6, 4, 28]
+    const b = math.matrix([13, 92, 101])
+    const c = bitOr(a, b)
 
     assert.ok(c instanceof math.type.Matrix)
     assert.deepEqual(c, math.matrix([15, 92, 125]))
@@ -208,7 +205,7 @@ describe('bitOr', function () {
   })
 
   it('should LaTeX bitOr', function () {
-    var expression = math.parse('bitOr(2,3)')
+    const expression = math.parse('bitOr(2,3)')
     assert.equal(expression.toTex(), '\\left(2|3\\right)')
   })
 })

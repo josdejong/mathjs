@@ -30,8 +30,8 @@ Matrix &#124; array | Transformed map of x
 
 ```js
 math.map([1, 2, 3], function(value) {
-  return value * value;
-});  // returns [1, 4, 9]
+  return value * value
+})  // returns [1, 4, 9]
 ```
 
 

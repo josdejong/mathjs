@@ -36,15 +36,15 @@ number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | Returns the
 ## Examples
 
 ```js
-math.mod(8, 3);                // returns 2
-math.mod(11, 2);               // returns 1
+math.mod(8, 3)                // returns 2
+math.mod(11, 2)               // returns 1
 
 function isOdd(x) {
-  return math.mod(x, 2) != 0;
+  return math.mod(x, 2) != 0
 }
 
-isOdd(2);                      // returns false
-isOdd(3);                      // returns true
+isOdd(2)                      // returns false
+isOdd(3)                      // returns true
 ```
 
 

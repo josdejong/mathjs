@@ -1,10 +1,10 @@
 // test equalText
-var assert = require('assert')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var matrix = math.matrix
-var sparse = math.sparse
-var equalText = math.equalText
+const assert = require('assert')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const matrix = math.matrix
+const sparse = math.sparse
+const equalText = math.equalText
 
 describe('equalText', function () {
   it('should perform lexical comparison for two strings', function () {
@@ -62,7 +62,7 @@ describe('equalText', function () {
   })
 
   it('should LaTeX compare', function () {
-    var expression = math.parse('equalText(1,2)')
+    const expression = math.parse('equalText(1,2)')
     assert.equal(expression.toTex(), '\\mathrm{equalText}\\left(1,2\\right)')
   })
 })

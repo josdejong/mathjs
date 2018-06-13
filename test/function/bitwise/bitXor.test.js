@@ -1,10 +1,5 @@
 // test bitXor
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  bignumber = math.bignumber,
-  bitXor = math.bitXor
+const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, bignumber = math.bignumber, bitXor = math.bitXor
 
 describe('bitXor', function () {
   it('should xor two numbers', function () {
@@ -154,7 +149,7 @@ describe('bitXor', function () {
   })
 
   it('should LaTeX bitXor', function () {
-    var expression = math.parse('bitXor(2,3)')
+    const expression = math.parse('bitXor(2,3)')
     assert.equal(expression.toTex(), '\\left(2\\underline{|}3\\right)')
   })
 })

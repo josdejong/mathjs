@@ -1,10 +1,10 @@
 'use strict'
 
-var object = require('../../utils/object')
+const object = require('../../utils/object')
 
 function factory (type, config, load, typed, math) {
-  var MATRIX = ['Matrix', 'Array'] // valid values for option matrix
-  var NUMBER = ['number', 'BigNumber', 'Fraction'] // valid values for option number
+  const MATRIX = ['Matrix', 'Array'] // valid values for option matrix
+  const NUMBER = ['number', 'BigNumber', 'Fraction'] // valid values for option number
 
   /**
    * Set configuration options for math.js, and get current options.
@@ -16,10 +16,10 @@ function factory (type, config, load, typed, math) {
    *
    * Examples:
    *
-   *     math.config().number;                // outputs 'number'
-   *     math.eval('0.4');                    // outputs number 0.4
-   *     math.config({number: 'Fraction'});
-   *     math.eval('0.4');                    // outputs Fraction 2/5
+   *     math.config().number                // outputs 'number'
+   *     math.eval('0.4')                    // outputs number 0.4
+   *     math.config({number: 'Fraction'})
+   *     math.eval('0.4')                    // outputs Fraction 2/5
    *
    * @param {Object} [options] Available options:
    *                            {number} epsilon
@@ -42,7 +42,7 @@ function factory (type, config, load, typed, math) {
    */
   function _config (options) {
     if (options) {
-      var prev = object.map(config, object.clone)
+      const prev = object.map(config, object.clone)
 
       // validate some of the options
       validateOption(options, 'matrix', MATRIX)
@@ -51,9 +51,9 @@ function factory (type, config, load, typed, math) {
       // merge options
       object.deepExtend(config, options)
 
-      var curr = object.map(config, object.clone)
+      const curr = object.map(config, object.clone)
 
-      var changes = object.map(options, object.clone)
+      const changes = object.map(options, object.clone)
 
       // emit 'config' event
       math.emit('config', curr, prev, changes)
@@ -103,7 +103,7 @@ function findIndex (array, item) {
  */
 function validateOption (options, name, values) {
   if (options[name] !== undefined && !contains(values, options[name])) {
-    var index = findIndex(values, options[name])
+    const index = findIndex(values, options[name])
     if (index !== -1) {
       // right value, wrong casing
       // TODO: lower case values are deprecated since v3, remove this warning some day.

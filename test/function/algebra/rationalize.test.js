@@ -1,7 +1,7 @@
 'use strict'
 
-var assert = require('assert')
-var math = require('../../../src/index')
+const assert = require('assert')
+const math = require('../../../src/index')
 
 /**
    * Transform node, array and single type value in a string with no spaces inside.
@@ -28,9 +28,9 @@ function stri (arg) {
    * @return {array}          Arrey of sorted properties converted to strings
    */
 function objToStrings (obj) {
-  var vet = Object.keys(obj).sort()
-  var strObj = {}
-  for (var i = 0; i < vet.length; i++) { strObj[vet[i]] = stri(obj[vet[i]]) }
+  const vet = Object.keys(obj).sort()
+  const strObj = {}
+  for (let i = 0; i < vet.length; i++) { strObj[vet[i]] = stri(obj[vet[i]]) }
   return strObj
 }
 
@@ -117,7 +117,7 @@ describe('rationalize', function () {
       '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
     assert.equal(stri(math.rationalize('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )')),
       '(-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/(-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)')
-    var no = math.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
+    const no = math.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
     assert.equal(stri(math.rationalize(no)), '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
   })
 

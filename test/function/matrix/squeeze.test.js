@@ -1,14 +1,9 @@
 // test squeeze
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  squeeze = math.squeeze,
-  size = math.size,
-  matrix = math.matrix
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), squeeze = math.squeeze, size = math.size, matrix = math.matrix
 
 describe('squeeze', function () {
   it('should squeeze an matrix', function () {
-    var m = math.ones(matrix([1, 3, 2]))
+    let m = math.ones(matrix([1, 3, 2]))
     assert.deepEqual(size(m), matrix([1, 3, 2]))
     assert.deepEqual(size(m.valueOf()), [1, 3, 2])
     assert.deepEqual(size(squeeze(m)), matrix([3, 2]))
@@ -32,7 +27,7 @@ describe('squeeze', function () {
   })
 
   it('should LaTeX squeeze', function () {
-    var expression = math.parse('squeeze([[0],[0]])')
+    const expression = math.parse('squeeze([[0],[0]])')
     assert.equal(expression.toTex(), '\\mathrm{squeeze}\\left(\\begin{bmatrix}0\\\\0\\\\\\end{bmatrix}\\right)')
   })
 })

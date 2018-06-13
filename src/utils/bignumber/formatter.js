@@ -1,6 +1,6 @@
 'use strict'
 
-var objectUtils = require('../object')
+const objectUtils = require('../object')
 
 /**
  * Convert a BigNumber to a formatted string representation.
@@ -54,15 +54,15 @@ var objectUtils = require('../object')
  *
  * Examples:
  *
- *    format(6.4);                                        // '6.4'
- *    format(1240000);                                    // '1.24e6'
- *    format(1/3);                                        // '0.3333333333333333'
- *    format(1/3, 3);                                     // '0.333'
- *    format(21385, 2);                                   // '21000'
- *    format(12e8, {notation: 'fixed'});                  // returns '1200000000'
- *    format(2.3,    {notation: 'fixed', precision: 4});  // returns '2.3000'
- *    format(52.8,   {notation: 'exponential'});          // returns '5.28e+1'
- *    format(12400,  {notation: 'engineering'});          // returns '12.400e+3'
+ *    format(6.4)                                        // '6.4'
+ *    format(1240000)                                    // '1.24e6'
+ *    format(1/3)                                        // '0.3333333333333333'
+ *    format(1/3, 3)                                     // '0.333'
+ *    format(21385, 2)                                   // '21000'
+ *    format(12e8, {notation: 'fixed'})                  // returns '1200000000'
+ *    format(2.3,    {notation: 'fixed', precision: 4})  // returns '2.3000'
+ *    format(52.8,   {notation: 'exponential'})          // returns '5.28e+1'
+ *    format(12400,  {notation: 'engineering'})          // returns '12.400e+3'
  *
  * @param {BigNumber} value
  * @param {Object | Function | number} [options]
@@ -80,8 +80,8 @@ exports.format = function (value, options) {
   }
 
   // default values for options
-  var notation = 'auto'
-  var precision = undefined
+  let notation = 'auto'
+  let precision
 
   if (options !== undefined) {
     // determine notation from options
@@ -109,7 +109,7 @@ exports.format = function (value, options) {
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        var fixedOptions = objectUtils.map(options, function (x) { return x })
+        const fixedOptions = objectUtils.map(options, function (x) { return x })
         fixedOptions.exponential = undefined
         if (options.exponential.lower !== undefined) {
           fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
@@ -129,15 +129,15 @@ exports.format = function (value, options) {
 
       // determine lower and upper bound for exponential notation.
       // TODO: implement support for upper and lower to be BigNumbers themselves
-      var lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
-      var upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
+      const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
+      const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
 
       // handle special case zero
       if (value.isZero()) return '0'
 
       // determine whether or not to output exponential notation
-      var str
-      var exp = value.logarithm()
+      let str
+      const exp = value.logarithm()
       if (exp.gte(lowerExp) && exp.lt(upperExp)) {
         // normal number notation
         str = value.toSignificantDigits(precision).toFixed()
@@ -148,8 +148,8 @@ exports.format = function (value, options) {
 
       // remove trailing zeros after the decimal point
       return str.replace(/((\.\d*?)(0+))($|e)/, function () {
-        var digits = arguments[2]
-        var e = arguments[4]
+        const digits = arguments[2]
+        const e = arguments[4]
         return (digits !== '.') ? digits + e : e
       })
 

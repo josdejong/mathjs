@@ -30,17 +30,17 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 ## Examples
 
 ```js
-math.round(3.2);              // returns number 3
-math.round(3.8);              // returns number 4
-math.round(-4.2);             // returns number -4
-math.round(-4.7);             // returns number -5
-math.round(math.pi, 3);       // returns number 3.142
-math.round(123.45678, 2);     // returns number 123.46
+math.round(3.2)              // returns number 3
+math.round(3.8)              // returns number 4
+math.round(-4.2)             // returns number -4
+math.round(-4.7)             // returns number -5
+math.round(math.pi, 3)       // returns number 3.142
+math.round(123.45678, 2)     // returns number 123.46
 
-var c = math.complex(3.2, -2.7);
-math.round(c);                // returns Complex 3 - 3i
+const c = math.complex(3.2, -2.7)
+math.round(c)                // returns Complex 3 - 3i
 
-math.round([3.2, 3.8, -4.7]); // returns Array [3, 4, -5]
+math.round([3.2, 3.8, -4.7]) // returns Array [3, 4, -5]
 ```
 
 

@@ -17,25 +17,27 @@
  * Note that the query parameter `expr` should be properly url encoded.
  */
 
+let express
+let workerpool
 try {
-  var express = require('express')
-  var workerpool = require('workerpool')
+  express = require('express')
+  workerpool = require('workerpool')
 } catch (err) {
   console.log('Error: To run this example, install express and workerpool first via:\n\n' +
       '    npm install express workerpool\n')
   process.exit()
 }
 
-var app = express()
-var pool = workerpool.pool(__dirname + '/math_worker.js')
+const app = express()
+const pool = workerpool.pool(__dirname + '/math_worker.js')
 
-var TIMEOUT = 10000 // milliseconds
+const TIMEOUT = 10000 // milliseconds
 
 /**
  * GET /mathjs?expr=...
  */
 app.get('/mathjs', function (req, res) {
-  var expr = req.query.expr
+  const expr = req.query.expr
   if (expr === undefined) {
     return res.status(400).send('Error: Required query parameter "expr" missing in url.')
   }
@@ -70,7 +72,7 @@ process.on('uncaughtException', function (err) {
 })
 
 // start the server
-var PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080
 app.listen(PORT, function () {
   console.log('Listening at http://localhost:' + PORT)
   console.log('Example request:\n    GET http://localhost:' + PORT + '/mathjs?expr=sqrt(16)')

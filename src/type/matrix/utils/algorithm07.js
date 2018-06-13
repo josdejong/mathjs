@@ -1,9 +1,9 @@
 'use strict'
 
-var DimensionError = require('../../../error/DimensionError')
+const DimensionError = require('../../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var DenseMatrix = type.DenseMatrix
+  const DenseMatrix = type.DenseMatrix
 
   /**
    * Iterates over SparseMatrix A and SparseMatrix B items (zero and nonzero) and invokes the callback function f(Aij, Bij).
@@ -19,13 +19,13 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97620294
    */
-  var algorithm07 = function (a, b, callback) {
+  const algorithm07 = function (a, b, callback) {
     // sparse matrix arrays
-    var asize = a._size
-    var adt = a._datatype
+    const asize = a._size
+    const adt = a._datatype
     // sparse matrix arrays
-    var bsize = b._size
-    var bdt = b._datatype
+    const bsize = b._size
+    const bdt = b._datatype
 
     // validate dimensions
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
@@ -34,15 +34,15 @@ function factory (type, config, load, typed) {
     if (asize[0] !== bsize[0] || asize[1] !== bsize[1]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
 
     // rows & columns
-    var rows = asize[0]
-    var columns = asize[1]
+    const rows = asize[0]
+    const columns = asize[1]
 
     // datatype
-    var dt
+    let dt
     // zero value
-    var zero = 0
+    let zero = 0
     // callback signature to use
-    var cf = callback
+    let cf = callback
 
     // process data types
     if (typeof adt === 'string' && adt === bdt) {
@@ -55,31 +55,31 @@ function factory (type, config, load, typed) {
     }
 
     // vars
-    var i, j
+    let i, j
 
     // result arrays
-    var cdata = []
+    const cdata = []
     // initialize c
     for (i = 0; i < rows; i++) { cdata[i] = [] }
 
     // matrix
-    var c = new DenseMatrix({
+    const c = new DenseMatrix({
       data: cdata,
       size: [rows, columns],
       datatype: dt
     })
 
     // workspaces
-    var xa = []
-    var xb = []
+    const xa = []
+    const xb = []
     // marks indicating we have a value in x for a given column
-    var wa = []
-    var wb = []
+    const wa = []
+    const wb = []
 
     // loop columns
     for (j = 0; j < columns; j++) {
       // columns mark
-      var mark = j + 1
+      const mark = j + 1
       // scatter the values of A(:,j) into workspace
       _scatter(a, j, wa, xa, mark)
       // scatter the values of B(:,j) into workspace
@@ -87,8 +87,8 @@ function factory (type, config, load, typed) {
       // loop rows
       for (i = 0; i < rows; i++) {
         // matrix values @ i,j
-        var va = wa[i] === mark ? xa[i] : zero
-        var vb = wb[i] === mark ? xb[i] : zero
+        const va = wa[i] === mark ? xa[i] : zero
+        const vb = wb[i] === mark ? xb[i] : zero
         // invoke callback
         cdata[i][j] = cf(va, vb)
       }
@@ -98,15 +98,15 @@ function factory (type, config, load, typed) {
     return c
   }
 
-  var _scatter = function (m, j, w, x, mark) {
+  function _scatter (m, j, w, x, mark) {
     // a arrays
-    var values = m._values
-    var index = m._index
-    var ptr = m._ptr
+    const values = m._values
+    const index = m._index
+    const ptr = m._ptr
     // loop values in column j
-    for (var k = ptr[j], k1 = ptr[j + 1]; k < k1; k++) {
+    for (let k = ptr[j], k1 = ptr[j + 1]; k < k1; k++) {
       // row
-      var i = index[k]
+      const i = index[k]
       // update workspace
       w[i] = mark
       x[i] = values[k]

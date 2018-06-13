@@ -1,10 +1,10 @@
 // test hypot
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var hypot = math.hypot
-var bignumber = math.bignumber
-var fraction = math.fraction
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const hypot = math.hypot
+const bignumber = math.bignumber
+const fraction = math.fraction
 
 describe('hypot', function () {
   it('should return the hypot of numbers', function () {
@@ -49,7 +49,7 @@ describe('hypot', function () {
   })
 
   it('should LaTeX hypot', function () {
-    var expression = math.parse('hypot(3,4)')
+    const expression = math.parse('hypot(3,4)')
     assert.equal(expression.toTex(), '\\hypot\\left(3,4\\right)')
   })
 })

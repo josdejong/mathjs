@@ -1,11 +1,11 @@
-var assert = require('assert')
-var math = require('../../../../src/index')
-var createUnit = math.createUnit
-var Unit = math.type.Unit
+const assert = require('assert')
+const math = require('../../../../src/index')
+const createUnit = math.createUnit
+const Unit = math.type.Unit
 
 describe('createUnit', function () {
   it('should create a unit', function () {
-    var u = createUnit('flibbity', '4 hogshead')
+    const u = createUnit('flibbity', '4 hogshead')
     assert.equal(math.eval('2 flibbity to hogshead').toString(), '8 hogshead')
   })
 

@@ -1,10 +1,10 @@
 // test compareText
-var assert = require('assert')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var matrix = math.matrix
-var sparse = math.sparse
-var compareText = math.compareText
+const assert = require('assert')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const matrix = math.matrix
+const sparse = math.sparse
+const compareText = math.compareText
 
 describe('compareText', function () {
   it('should perform lexical comparison for two strings', function () {
@@ -61,7 +61,7 @@ describe('compareText', function () {
   })
 
   it('should LaTeX compare', function () {
-    var expression = math.parse('compareText(1,2)')
+    const expression = math.parse('compareText(1,2)')
     assert.equal(expression.toTex(), '\\mathrm{compareText}\\left(1,2\\right)')
   })
 })

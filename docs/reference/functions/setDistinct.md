@@ -28,7 +28,7 @@ Array &#124; Matrix | A set containing the distinc elements of the multiset
 ## Examples
 
 ```js
-math.setDistinct([1, 1, 1, 2, 2, 3]);        // returns [1, 2, 3]
+math.setDistinct([1, 1, 1, 2, 2, 3])        // returns [1, 2, 3]
 ```
 
 

@@ -1,6 +1,6 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var Spa = math.type.Spa
+const assert = require('assert')
+const math = require('../../../src/index')
+const Spa = math.type.Spa
 
 describe('Spa', function () {
   describe('constructor', function () {
@@ -9,19 +9,19 @@ describe('Spa', function () {
     })
 
     it('should have a property isSpa', function () {
-      var a = new Spa()
+      const a = new Spa()
       assert.strictEqual(a.isSpa, true)
     })
 
     it('should have a property type', function () {
-      var a = new Spa()
+      const a = new Spa()
       assert.strictEqual(a.type, 'Spa')
     })
   })
 
   describe('test', function () {
     it('should add value when no value exists for row', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
@@ -29,7 +29,7 @@ describe('Spa', function () {
     })
 
     it('should set value when value exists for row', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
@@ -43,22 +43,22 @@ describe('Spa', function () {
 
   describe('get', function () {
     it('should get zero when no value exists for row', function () {
-      var spa = new Spa(10)
-      var v = spa.get(5)
+      const spa = new Spa(10)
+      const v = spa.get(5)
       assert.equal(v, 0)
     })
 
     it('should get value when value exists for row', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
-      var v = spa.get(5)
+      const v = spa.get(5)
       assert.equal(v, 0.5)
     })
   })
 
   describe('accumulate', function () {
     it('should add value when no value exists for row', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.accumulate(5, 0.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
@@ -66,7 +66,7 @@ describe('Spa', function () {
     })
 
     it('should accumulate value when value exists for row', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
       spa.accumulate(5, 1.5)
       assert(spa._values[5])
@@ -77,7 +77,7 @@ describe('Spa', function () {
 
   describe('swap', function () {
     it('should swap two existing values', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
       spa.set(2, 0.2)
       spa.swap(2, 5)
@@ -90,7 +90,7 @@ describe('Spa', function () {
     })
 
     it('should swap an existing and non existing values', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
       spa.swap(5, 2)
       assert(!spa._values[5])
@@ -100,7 +100,7 @@ describe('Spa', function () {
     })
 
     it('should swap a non existing and existing values', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(5, 0.5)
       spa.swap(2, 5)
       assert(!spa._values[5])
@@ -110,7 +110,7 @@ describe('Spa', function () {
     })
 
     it('should swap two non existing values', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.swap(2, 5)
       assert(!spa._values[5])
       assert(!spa._values[2])
@@ -119,13 +119,13 @@ describe('Spa', function () {
 
   describe('forEach', function () {
     it('should enumerate values in correct order', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(2, 2)
       spa.set(3, 3)
       spa.set(4, 4)
       spa.set(1, 2)
-      var x
-      var c = 0
+      let x
+      let c = 0
       spa.forEach(0, 9, function (i) {
         if (!x) {
           assert.equal(i, 1)
@@ -143,13 +143,13 @@ describe('Spa', function () {
     })
 
     it('should enumerate values in interval', function () {
-      var spa = new Spa(10)
+      const spa = new Spa(10)
       spa.set(2, 2)
       spa.set(3, 3)
       spa.set(4, 4)
       spa.set(1, 2)
-      var x
-      var c = 0
+      let x
+      let c = 0
       spa.forEach(2, 3, function (i) {
         if (!x) {
           assert.equal(i, 2)

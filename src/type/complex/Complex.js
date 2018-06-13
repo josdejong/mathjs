@@ -1,7 +1,7 @@
 'use strict'
-var Complex = require('complex.js')
-var format = require('../../utils/number').format
-var isNumber = require('../../utils/number').isNumber
+const Complex = require('complex.js')
+const format = require('../../utils/number').format
+const isNumber = require('../../utils/number').isNumber
 
 function factory (type, config, load, typed, math) {
   /**
@@ -45,16 +45,16 @@ function factory (type, config, load, typed, math) {
    * @return {string} str
    */
   Complex.prototype.format = function (options) {
-    var str = ''
-    var im = this.im
-    var re = this.re
-    var strRe = format(this.re, options)
-    var strIm = format(this.im, options)
+    let str = ''
+    let im = this.im
+    let re = this.re
+    const strRe = format(this.re, options)
+    const strIm = format(this.im, options)
 
     // round either re or im when smaller than the configured precision
-    var precision = isNumber(options) ? options : options ? options.precision : null
+    const precision = isNumber(options) ? options : options ? options.precision : null
     if (precision !== null) {
-      var epsilon = Math.pow(10, -precision)
+      const epsilon = Math.pow(10, -precision)
       if (Math.abs(re / im) < epsilon) {
         re = 0
       }
@@ -108,15 +108,15 @@ function factory (type, config, load, typed, math) {
   Complex.fromPolar = function (args) {
     switch (arguments.length) {
       case 1:
-        var arg = arguments[0]
+        const arg = arguments[0]
         if (typeof arg === 'object') {
           return Complex(arg)
         }
         throw new TypeError('Input has to be an object with r and phi keys.')
 
       case 2:
-        var r = arguments[0],
-          phi = arguments[1]
+        const r = arguments[0]
+        let phi = arguments[1]
         if (isNumber(r)) {
           if (type.isUnit(phi) && phi.hasBase('ANGLE')) {
             // convert unit to a number in radians

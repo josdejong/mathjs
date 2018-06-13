@@ -1,31 +1,31 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var acsc = math.acsc
-var csc = math.csc
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 21})
-var predmath = math.create({predictable: true})
-var acscBig = bigmath.acsc
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const acsc = math.acsc
+const csc = math.csc
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 21})
+const predmath = math.create({predictable: true})
+const acscBig = bigmath.acsc
+const Big = bigmath.bignumber
 
 describe('acsc', function () {
   it('should return the arccsc of a boolean', function () {
     approx.equal(acsc(true), pi / 2)
     assert.deepEqual(acsc(false), complex(pi / 2, Infinity))
-    // assert.ok(isNaN(acsc(false)));
+    // assert.ok(isNaN(acsc(false)))
   })
 
   it('should return the arccsc of a number', function () {
     approx.equal(acsc(-2) / pi, -1 / 6)
     approx.equal(acsc(-1) / pi, -0.5)
     assert.deepEqual(acsc(0), complex(pi / 2, Infinity))
-    // assert.ok(isNaN(acsc(0)));
+    // assert.ok(isNaN(acsc(0)))
     approx.equal(acsc(1) / pi, 0.5)
     approx.equal(acsc(2) / pi, 1 / 6)
   })
@@ -36,9 +36,9 @@ describe('acsc', function () {
   })
 
   it('should return the arccsc of a bignumber', function () {
-    var arg1 = Big(-2)
-    var arg2 = Big(-1.71)
-    var arg3 = Big(-1)
+    const arg1 = Big(-2)
+    const arg2 = Big(-1.71)
+    const arg3 = Big(-1)
 
     assert.deepEqual(acscBig(arg1), Big('-0.52359877559829887308'))
     // wolfram:                          -0.52359877559829887307710723054658381403286156656251763682915743205130273438103483310467247089035284466369134775
@@ -56,7 +56,7 @@ describe('acsc', function () {
     // Hit Newton's method case
     bigmath.config({precision: 61})
 
-    var arg4 = Big(1.00000001)
+    const arg4 = Big(1.00000001)
     assert.deepEqual(acscBig(arg4), Big('1.570654905439248565373629613450057180739125884090554026623514'))
     // wolfram 1.5706549054392485653736296134500571807391258840905540266235145245693842219005187990359787187421573662444504948773
     assert.deepEqual(arg4, Big(1.00000001))
@@ -95,8 +95,8 @@ describe('acsc', function () {
   })
 
   it('should return the arccsc of a complex number', function () {
-    var re = 0.150385604327861963
-    var im = 0.231334698573973315
+    const re = 0.150385604327861963
+    const im = 0.231334698573973315
     approx.deepEqual(acsc(complex('2+3i')), complex(re, -im))
     approx.deepEqual(acsc(complex('2-3i')), complex(re, im))
     approx.deepEqual(acsc(complex('-2+3i')), complex(-re, -im))
@@ -121,7 +121,7 @@ describe('acsc', function () {
   })
 
   it('should calculate the arccsc element-wise for arrays and matrices', function () {
-    var acsc123 = [pi / 2, pi / 6, 0.339836909454]
+    const acsc123 = [pi / 2, pi / 6, 0.339836909454]
     approx.deepEqual(acsc([1, 2, 3]), acsc123)
     approx.deepEqual(acsc(matrix([1, 2, 3])), matrix(acsc123))
   })
@@ -132,7 +132,7 @@ describe('acsc', function () {
   })
 
   it('should LaTex acsc', function () {
-    var expression = math.parse('acsc(2)')
+    const expression = math.parse('acsc(2)')
     assert.equal(expression.toTex(), '\\csc^{-1}\\left(2\\right)')
   })
 })

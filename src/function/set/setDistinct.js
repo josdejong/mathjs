@@ -1,13 +1,13 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var index = load(require('../../type/matrix/MatrixIndex'))
-  var matrix = load(require('../../type/matrix/DenseMatrix'))
-  var size = load(require('../matrix/size'))
-  var subset = load(require('../matrix/subset'))
-  var compareNatural = load(require('../relational/compareNatural'))
+  const index = load(require('../../type/matrix/MatrixIndex'))
+  const matrix = load(require('../../type/matrix/DenseMatrix'))
+  const size = load(require('../matrix/size'))
+  const subset = load(require('../matrix/subset'))
+  const compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Collect the distinct elements of a multiset.
@@ -19,7 +19,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.setDistinct([1, 1, 1, 2, 2, 3]);        // returns [1, 2, 3]
+   *    math.setDistinct([1, 1, 1, 2, 2, 3])        // returns [1, 2, 3]
    *
    * See also:
    *
@@ -28,15 +28,16 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a  A multiset
    * @return {Array | Matrix}    A set containing the distinc elements of the multiset
    */
-  var setDistinct = typed('setDistinct', {
+  const setDistinct = typed('setDistinct', {
     'Array | Matrix': function (a) {
+      let result
       if (subset(size(a), new index(0)) === 0) { // if empty, return empty
-        var result = []
+        result = []
       } else {
-        var b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
-        var result = []
+        const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
+        result = []
         result.push(b[0])
-        for (var i = 1; i < b.length; i++) {
+        for (let i = 1; i < b.length; i++) {
           if (compareNatural(b[i], b[i - 1]) !== 0) {
             result.push(b[i])
           }

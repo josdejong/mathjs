@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var max = math.max
+const assert = require('assert')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const max = math.max
 
 describe('max', function () {
   it('should return the max of numbers', function () {
@@ -97,7 +97,7 @@ describe('max', function () {
   })
 
   it('should LaTeX max', function () {
-    var expression = math.parse('max(1,2,3)')
+    const expression = math.parse('max(1,2,3)')
     assert.equal(expression.toTex(), '\\max\\left(1,2,3\\right)')
   })
 })

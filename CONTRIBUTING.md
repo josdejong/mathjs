@@ -6,12 +6,11 @@ ideas and suggestions, and contribute to the code.
 
 There are a few preferences regarding code contributions:
 
-- Math.js follows the node.js code style as described
-  [here](https://github.com/felixge/node-style-guide).
+- The code of math.js follows the JavaScript Standard Style as described on http://standardjs.com/.
 - Make sure you properly unit test your changes.
 - Before creating a pull request, run the unit tests to make sure they all pass.
-- Only commit changes done in the source files under `lib`, not to the builds
-  which are located in the folder `dist`.
+- Only commit changes done in the source files under `src`, not to the generated builds
+  which are located in the folders `dist` and `lib`.
 - Send pull requests to the `develop` branch, not the `master` branch.
 
 What can I do?

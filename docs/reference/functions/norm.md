@@ -31,19 +31,19 @@ number &#124; BigNumber | the p-norm
 ## Examples
 
 ```js
-math.abs(-3.5);                         // returns 3.5
-math.norm(-3.5);                        // returns 3.5
+math.abs(-3.5)                         // returns 3.5
+math.norm(-3.5)                        // returns 3.5
 
-math.norm(math.complex(3, -4));         // returns 5
+math.norm(math.complex(3, -4))         // returns 5
 
-math.norm([1, 2, -3], Infinity);        // returns 3
-math.norm([1, 2, -3], -Infinity);       // returns 1
+math.norm([1, 2, -3], Infinity)        // returns 3
+math.norm([1, 2, -3], -Infinity)       // returns 1
 
-math.norm([3, 4], 2);                   // returns 5
+math.norm([3, 4], 2)                   // returns 5
 
 math.norm([[1, 2], [3, 4]], 1)          // returns 6
-math.norm([[1, 2], [3, 4]], 'inf');     // returns 7
-math.norm([[1, 2], [3, 4]], 'fro');     // returns 5.477225575051661
+math.norm([[1, 2], [3, 4]], 'inf')     // returns 7
+math.norm([[1, 2], [3, 4]], 'fro')     // returns 5.477225575051661
 ```
 
 

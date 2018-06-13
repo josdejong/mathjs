@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -16,8 +16,8 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    // sech(x) = 1/ cosh(x)
-   *    math.sech(0.5);       // returns 0.886818883970074
-   *    1 / math.cosh(0.5);   // returns 0.886818883970074
+   *    math.sech(0.5)       // returns 0.886818883970074
+   *    1 / math.cosh(0.5)   // returns 0.886818883970074
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic secant of x
    */
-  var sech = typed('sech', {
+  const sech = typed('sech', {
     'number': _sech,
 
     'Complex': function (x) {

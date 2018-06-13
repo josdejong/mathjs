@@ -8,7 +8,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_flip = function (i) {
+  const cs_flip = function (i) {
     // flip the value
     return -i - 2
   }

@@ -1,18 +1,18 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var zeros = load(require('../matrix/zeros'))
-  var not = load(require('./not'))
-  var isZero = load(require('../utils/isZero'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const zeros = load(require('../matrix/zeros'))
+  const not = load(require('./not'))
+  const isZero = load(require('../utils/isZero'))
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Logical `and`. Test whether two values are both defined with a nonzero/nonempty value.
@@ -24,14 +24,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.and(2, 4);   // returns true
+   *    math.and(2, 4)   // returns true
    *
-   *    a = [2, 0, 0];
-   *    b = [3, 7, 0];
-   *    c = 0;
+   *    a = [2, 0, 0]
+   *    b = [3, 7, 0]
+   *    c = 0
    *
-   *    math.and(a, b);   // returns [true, false, false]
-   *    math.and(a, c);   // returns [false, false, false]
+   *    math.and(a, b)   // returns [true, false, false]
+   *    math.and(a, c)   // returns [false, false, false]
    *
    * See also:
    *
@@ -42,7 +42,7 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when both inputs are defined with a nonzero/nonempty value.
    */
-  var and = typed('and', {
+  const and = typed('and', {
 
     'number, number': function (x, y) {
       return !!(x && y)

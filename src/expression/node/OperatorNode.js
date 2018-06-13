@@ -1,14 +1,14 @@
 'use strict'
 
-var latex = require('../../utils/latex')
-var map = require('../../utils/array').map
-var escape = require('../../utils/string').escape
-var isSafeMethod = require('../../utils/customs').isSafeMethod
-var getSafeProperty = require('../../utils/customs').getSafeProperty
-var operators = require('../operators')
+const latex = require('../../utils/latex')
+const map = require('../../utils/array').map
+const escape = require('../../utils/string').escape
+const isSafeMethod = require('../../utils/customs').isSafeMethod
+const getSafeProperty = require('../../utils/customs').getSafeProperty
+const operators = require('../operators')
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
+  const Node = load(require('./Node'))
 
   /**
    * @constructor OperatorNode
@@ -71,19 +71,19 @@ function factory (type, config, load, typed) {
       }
     }
 
-    var fn = getSafeProperty(math, this.fn)
-    var evalArgs = map(this.args, function (arg) {
+    const fn = getSafeProperty(math, this.fn)
+    const evalArgs = map(this.args, function (arg) {
       return arg._compile(math, argNames)
     })
 
     if (evalArgs.length === 1) {
-      var evalArg0 = evalArgs[0]
+      const evalArg0 = evalArgs[0]
       return function evalOperatorNode (scope, args, context) {
         return fn(evalArg0(scope, args, context))
       }
     } else if (evalArgs.length === 2) {
-      var evalArg0 = evalArgs[0]
-      var evalArg1 = evalArgs[1]
+      const evalArg0 = evalArgs[0]
+      const evalArg1 = evalArgs[1]
       return function evalOperatorNode (scope, args, context) {
         return fn(evalArg0(scope, args, context), evalArg1(scope, args, context))
       }
@@ -101,7 +101,7 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   OperatorNode.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.args.length; i++) {
+    for (let i = 0; i < this.args.length; i++) {
       callback(this.args[i], 'args[' + i + ']', this)
     }
   }
@@ -113,8 +113,8 @@ function factory (type, config, load, typed) {
    * @returns {OperatorNode} Returns a transformed copy of the node
    */
   OperatorNode.prototype.map = function (callback) {
-    var args = []
-    for (var i = 0; i < this.args.length; i++) {
+    const args = []
+    for (let i = 0; i < this.args.length; i++) {
       args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
     }
     return new OperatorNode(this.op, this.fn, args, this.implicit)
@@ -161,11 +161,11 @@ function factory (type, config, load, typed) {
    */
   function calculateNecessaryParentheses (root, parenthesis, implicit, args, latex) {
     // precedence of the root OperatorNode
-    var precedence = operators.getPrecedence(root, parenthesis)
-    var associativity = operators.getAssociativity(root, parenthesis)
+    const precedence = operators.getPrecedence(root, parenthesis)
+    const associativity = operators.getAssociativity(root, parenthesis)
 
     if ((parenthesis === 'all') || ((args.length > 2) && (root.getIdentifier() !== 'OperatorNode:add') && (root.getIdentifier() !== 'OperatorNode:multiply'))) {
-      var parens = args.map(function (arg) {
+      const parens = args.map(function (arg) {
         switch (arg.getContent().type) { // Nodes that don't need extra parentheses
           case 'ArrayNode':
           case 'ConstantNode':
@@ -180,7 +180,7 @@ function factory (type, config, load, typed) {
       return parens
     }
 
-    var result = undefined
+    let result
     switch (args.length) {
       case 0:
         result = []
@@ -188,12 +188,12 @@ function factory (type, config, load, typed) {
 
       case 1: // unary operators
         // precedence of the operand
-        var operandPrecedence = operators.getPrecedence(args[0], parenthesis)
+        const operandPrecedence = operators.getPrecedence(args[0], parenthesis)
 
         // handle special cases for LaTeX, where some of the parentheses aren't needed
         if (latex && (operandPrecedence !== null)) {
-          var operandIdentifier
-          var rootIdentifier
+          let operandIdentifier
+          let rootIdentifier
           if (parenthesis === 'keep') {
             operandIdentifier = args[0].getIdentifier()
             rootIdentifier = root.getIdentifier()
@@ -230,11 +230,11 @@ function factory (type, config, load, typed) {
         break
 
       case 2: // binary operators
-        var lhsParens // left hand side needs parenthesis?
+        let lhsParens // left hand side needs parenthesis?
         // precedence of the left hand side
-        var lhsPrecedence = operators.getPrecedence(args[0], parenthesis)
+        const lhsPrecedence = operators.getPrecedence(args[0], parenthesis)
         // is the root node associative with the left hand side
-        var assocWithLhs = operators.isAssociativeWith(root, args[0], parenthesis)
+        const assocWithLhs = operators.isAssociativeWith(root, args[0], parenthesis)
 
         if (lhsPrecedence === null) {
           // if the left hand side has no defined precedence, no parens are needed
@@ -252,11 +252,11 @@ function factory (type, config, load, typed) {
           lhsParens = false
         }
 
-        var rhsParens // right hand side needs parenthesis?
+        let rhsParens // right hand side needs parenthesis?
         // precedence of the right hand side
-        var rhsPrecedence = operators.getPrecedence(args[1], parenthesis)
+        const rhsPrecedence = operators.getPrecedence(args[1], parenthesis)
         // is the root node associative with the right hand side?
-        var assocWithRhs = operators.isAssociativeWith(root, args[1], parenthesis)
+        const assocWithRhs = operators.isAssociativeWith(root, args[1], parenthesis)
 
         if (rhsPrecedence === null) {
           // if the right hand side has no defined precedence, no parens are needed
@@ -276,9 +276,9 @@ function factory (type, config, load, typed) {
 
         // handle special cases for LaTeX, where some of the parentheses aren't needed
         if (latex) {
-          var rootIdentifier
-          var lhsIdentifier
-          var rhsIdentifier
+          let rootIdentifier
+          let lhsIdentifier
+          let rhsIdentifier
           if (parenthesis === 'keep') {
             rootIdentifier = root.getIdentifier()
             lhsIdentifier = root.args[0].getIdentifier()
@@ -316,10 +316,10 @@ function factory (type, config, load, typed) {
 
       default:
         if ((root.getIdentifier() === 'OperatorNode:add') || (root.getIdentifier() === 'OperatorNode:multiply')) {
-          var result = args.map(function (arg) {
-            var argPrecedence = operators.getPrecedence(arg, parenthesis)
-            var assocWithArg = operators.isAssociativeWith(root, arg, parenthesis)
-            var argAssociativity = operators.getAssociativity(arg, parenthesis)
+          result = args.map(function (arg) {
+            const argPrecedence = operators.getPrecedence(arg, parenthesis)
+            const assocWithArg = operators.isAssociativeWith(root, arg, parenthesis)
+            const argAssociativity = operators.getAssociativity(arg, parenthesis)
             if (argPrecedence === null) {
               // if the argument has no defined precedence, no parens are needed
               return false
@@ -340,7 +340,7 @@ function factory (type, config, load, typed) {
     // printed.
     if ((args.length >= 2) && (root.getIdentifier() === 'OperatorNode:multiply') && root.implicit && (parenthesis === 'auto') && (implicit === 'hide')) {
       result = args.map(function (arg, index) {
-        var isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode')
+        const isParenthesisNode = (arg.getIdentifier() === 'ParenthesisNode')
         if (result[index] || isParenthesisNode) { // put in parenthesis?
           return true
         }
@@ -358,15 +358,15 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   OperatorNode.prototype._toString = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var implicit = (options && options.implicit) ? options.implicit : 'hide'
-    var args = this.args
-    var parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const implicit = (options && options.implicit) ? options.implicit : 'hide'
+    const args = this.args
+    const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
 
     if (args.length === 1) { // unary operators
-      var assoc = operators.getAssociativity(this, parenthesis)
+      const assoc = operators.getAssociativity(this, parenthesis)
 
-      var operand = args[0].toString(options)
+      let operand = args[0].toString(options)
       if (parens[0]) {
         operand = '(' + operand + ')'
       }
@@ -380,8 +380,8 @@ function factory (type, config, load, typed) {
       // fall back to postfix
       return operand + this.op
     } else if (args.length == 2) {
-      var lhs = args[0].toString(options) // left hand side
-      var rhs = args[1].toString(options) // right hand side
+      let lhs = args[0].toString(options) // left hand side
+      let rhs = args[1].toString(options) // right hand side
       if (parens[0]) { // left hand side in parenthesis?
         lhs = '(' + lhs + ')'
       }
@@ -395,7 +395,7 @@ function factory (type, config, load, typed) {
 
       return lhs + ' ' + this.op + ' ' + rhs
     } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
-      var stringifiedArgs = args.map(function (arg, index) {
+      const stringifiedArgs = args.map(function (arg, index) {
         arg = arg.toString(options)
         if (parens[index]) { // put in parenthesis?
           arg = '(' + arg + ')'
@@ -446,15 +446,15 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   OperatorNode.prototype.toHTML = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var implicit = (options && options.implicit) ? options.implicit : 'hide'
-    var args = this.args
-    var parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const implicit = (options && options.implicit) ? options.implicit : 'hide'
+    const args = this.args
+    const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, false)
 
     if (args.length === 1) { // unary operators
-      var assoc = operators.getAssociativity(this, parenthesis)
+      const assoc = operators.getAssociativity(this, parenthesis)
 
-      var operand = args[0].toHTML(options)
+      let operand = args[0].toHTML(options)
       if (parens[0]) {
         operand = '<span class="math-parenthesis math-round-parenthesis">(</span>' + operand + '<span class="math-parenthesis math-round-parenthesis">)</span>'
       }
@@ -468,8 +468,8 @@ function factory (type, config, load, typed) {
       // fall back to postfix
       return '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>' + operand
     } else if (args.length == 2) { // binary operatoes
-      var lhs = args[0].toHTML(options) // left hand side
-      var rhs = args[1].toHTML(options) // right hand side
+      let lhs = args[0].toHTML(options) // left hand side
+      let rhs = args[1].toHTML(options) // right hand side
       if (parens[0]) { // left hand side in parenthesis?
         lhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' + lhs + '<span class="math-parenthesis math-round-parenthesis">)</span>'
       }
@@ -483,7 +483,7 @@ function factory (type, config, load, typed) {
 
       return lhs + '<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>' + rhs
     } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
-      var stringifiedArgs = args.map(function (arg, index) {
+      const stringifiedArgs = args.map(function (arg, index) {
         arg = arg.toHTML(options)
         if (parens[index]) { // put in parenthesis?
           arg = '<span class="math-parenthesis math-round-parenthesis">(</span>' + arg + '<span class="math-parenthesis math-round-parenthesis">)</span>'
@@ -509,17 +509,17 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   OperatorNode.prototype._toTex = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var implicit = (options && options.implicit) ? options.implicit : 'hide'
-    var args = this.args
-    var parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
-    var op = latex.operators[this.fn]
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const implicit = (options && options.implicit) ? options.implicit : 'hide'
+    const args = this.args
+    const parens = calculateNecessaryParentheses(this, parenthesis, implicit, args, true)
+    let op = latex.operators[this.fn]
     op = typeof op === 'undefined' ? this.op : op // fall back to using this.op
 
     if (args.length === 1) { // unary operators
-      var assoc = operators.getAssociativity(this, parenthesis)
+      const assoc = operators.getAssociativity(this, parenthesis)
 
-      var operand = args[0].toTex(options)
+      let operand = args[0].toTex(options)
       if (parens[0]) {
         operand = `\\left(${operand}\\right)`
       }
@@ -533,20 +533,20 @@ function factory (type, config, load, typed) {
       // fall back to postfix
       return operand + op
     } else if (args.length === 2) { // binary operators
-      var lhs = args[0] // left hand side
-      var lhsTex = lhs.toTex(options)
+      const lhs = args[0] // left hand side
+      let lhsTex = lhs.toTex(options)
       if (parens[0]) {
         lhsTex = `\\left(${lhsTex}\\right)`
       }
 
-      var rhs = args[1] // right hand side
-      var rhsTex = rhs.toTex(options)
+      const rhs = args[1] // right hand side
+      let rhsTex = rhs.toTex(options)
       if (parens[1]) {
         rhsTex = `\\left(${rhsTex}\\right)`
       }
 
       // handle some exceptions (due to the way LaTeX works)
-      var lhsIdentifier
+      let lhsIdentifier
       if (parenthesis === 'keep') {
         lhsIdentifier = lhs.getIdentifier()
       } else {
@@ -572,7 +572,7 @@ function factory (type, config, load, typed) {
       }
       return lhsTex + op + rhsTex
     } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
-      var texifiedArgs = args.map(function (arg, index) {
+      const texifiedArgs = args.map(function (arg, index) {
         arg = arg.toTex(options)
         if (parens[index]) {
           arg = `\\left(${arg}\\right)`

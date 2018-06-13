@@ -1,11 +1,11 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var combinations = load(require('../probability/combinations'))
-  var add = load(require('../arithmetic/addScalar'))
-  var isPositive = load(require('../utils/isPositive'))
-  var isInteger = load(require('../utils/isInteger'))
-  var larger = load(require('../relational/larger'))
+  const combinations = load(require('../probability/combinations'))
+  const add = load(require('../arithmetic/addScalar'))
+  const isPositive = load(require('../utils/isPositive'))
+  const isInteger = load(require('../utils/isInteger'))
+  const larger = load(require('../relational/larger'))
 
   /**
    * The composition counts of n into k parts.
@@ -19,7 +19,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.composition(5, 3); // returns 6
+   *    math.composition(5, 3) // returns 6
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @param {Number | BigNumber} k    Number of objects in the subset
    * @return {Number | BigNumber}     Returns the composition counts of n into k parts.
    */
-  var composition = typed('composition', {
+  const composition = typed('composition', {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || !isPositive(n) || !isInteger(k) || !isPositive(k)) {
         throw new TypeError('Positive integer value expected in function composition')

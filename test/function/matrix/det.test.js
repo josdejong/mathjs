@@ -1,14 +1,14 @@
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var SparseMatrix = math.type.SparseMatrix
-var det = math.det
-var diag = math.diag
-var identity = math.identity
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const SparseMatrix = math.type.SparseMatrix
+const det = math.det
+const diag = math.diag
+const identity = math.identity
 
 describe('det', function () {
   it('should calculate correctly the determinant of a NxN matrix', function () {
@@ -81,8 +81,8 @@ describe('det', function () {
   it('should calculate the determinant for a scalar', function () {
     assert.equal(det(7), 7)
 
-    var c1 = new Complex(2, 3)
-    var c2 = det(c1)
+    const c1 = new Complex(2, 3)
+    const c2 = det(c1)
     assert.deepEqual(c1, c2)
 
     // c2 should be a clone
@@ -92,8 +92,8 @@ describe('det', function () {
   })
 
   it('should calculate the determinant for a 1x1 matrix', function () {
-    var c1 = new Complex(2, 3)
-    var c2 = det([[c1]])
+    const c1 = new Complex(2, 3)
+    const c2 = det([[c1]])
     assert.deepEqual(c1, c2)
 
     // c2 should be a clone
@@ -134,7 +134,7 @@ describe('det', function () {
   })
 
   it('should not change the value of the initial matrix', function () {
-    var m_test = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    const m_test = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     det(m_test)
     assert.deepEqual(m_test, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   })
@@ -151,7 +151,7 @@ describe('det', function () {
   })
 
   it('should LaTeX det', function () {
-    var expression = math.parse('det([1])')
+    const expression = math.parse('det([1])')
     assert.equal(expression.toTex(), '\\det\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
   })
 })

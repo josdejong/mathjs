@@ -1,12 +1,5 @@
 // test largerEq
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  largerEq = math.largerEq
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, largerEq = math.largerEq
 
 describe('largerEq', function () {
   it('should compare two numbers correctly', function () {
@@ -92,7 +85,7 @@ describe('largerEq', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     assert.equal(mymath.largerEq(1, 1.01), false)
     assert.equal(mymath.largerEq(math.bignumber(1), math.bignumber(1.01)), false)
 
@@ -204,7 +197,7 @@ describe('largerEq', function () {
   })
 
   it('should LaTeX largerEq', function () {
-    var expression = math.parse('largerEq(1,2)')
+    const expression = math.parse('largerEq(1,2)')
     assert.equal(expression.toTex(), '\\left(1\\geq2\\right)')
   })
 })

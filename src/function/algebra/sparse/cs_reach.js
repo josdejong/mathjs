@@ -1,9 +1,9 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_dfs = load(require('./cs_dfs'))
-  var cs_marked = load(require('./cs_marked'))
-  var cs_mark = load(require('./cs_mark'))
+  const cs_dfs = load(require('./cs_dfs'))
+  const cs_marked = load(require('./cs_marked'))
+  const cs_mark = load(require('./cs_mark'))
 
   /**
    * The cs_reach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1
@@ -21,23 +21,23 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_reach = function (g, b, k, xi, pinv) {
+  const cs_reach = function (g, b, k, xi, pinv) {
     // g arrays
-    var gptr = g._ptr
-    var gsize = g._size
+    const gptr = g._ptr
+    const gsize = g._size
     // b arrays
-    var bindex = b._index
-    var bptr = b._ptr
+    const bindex = b._index
+    const bptr = b._ptr
     // columns
-    var n = gsize[1]
+    const n = gsize[1]
     // vars
-    var p, p0, p1
+    let p, p0, p1
     // initialize top
-    var top = n
+    let top = n
     // loop column indeces in B
     for (p0 = bptr[k], p1 = bptr[k + 1], p = p0; p < p1; p++) {
       // node i
-      var i = bindex[p]
+      const i = bindex[p]
       // check node i is marked
       if (!cs_marked(gptr, i)) {
         // start a dfs at unmarked node i

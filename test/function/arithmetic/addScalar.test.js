@@ -1,9 +1,9 @@
 // test add
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var BigNumber = require('decimal.js')
-var add = math.add
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const BigNumber = require('decimal.js')
+const add = math.add
 
 // TODO: make unit tests independent of math
 describe('addScalar', function () {
@@ -65,7 +65,7 @@ describe('addScalar', function () {
   })
 
   it('should add two fractions', function () {
-    var a = math.fraction(1, 3)
+    const a = math.fraction(1, 3)
     assert.equal(add(a, math.fraction(1, 6)).toString(), '0.5')
     assert.equal(a.toString(), '0.(3)')
     assert.equal(add(math.fraction(1, 5), math.fraction(2, 5)).toString(), '0.6')
@@ -145,7 +145,7 @@ describe('addScalar', function () {
   })
 
   it('should LaTeX add', function () {
-    var expression = math.parse('add(1,2)')
+    const expression = math.parse('add(1,2)')
     assert.equal(expression.toTex(), '\\left(1+2\\right)')
   })
 })

@@ -1,6 +1,6 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
 
 describe('distance', function () {
   it('should calculate the distance of two 2D points', function () {
@@ -90,9 +90,9 @@ describe('distance', function () {
   })
 
   it('should calculate the distance if coordinates are bignumbers', function () {
-    var bigmath = math.create({number: 'BigNumber', precision: 32})
-    var bigdistance = bigmath.distance
-    var bignumber = bigmath.bignumber
+    const bigmath = math.create({number: 'BigNumber', precision: 32})
+    const bigdistance = bigmath.distance
+    const bignumber = bigmath.bignumber
 
     assert.deepEqual(bigmath.eval('distance([1, 2], [4, 6])'), bignumber(5))
     assert.deepEqual(bigdistance([bignumber(1), bignumber(2)], [bignumber(4), bignumber(6)]), bignumber(5))

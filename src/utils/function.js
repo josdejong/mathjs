@@ -18,12 +18,12 @@ exports.memoize = function (fn, hasher) {
       memoize.cache = {}
     }
 
-    var args = []
-    for (var i = 0; i < arguments.length; i++) {
+    const args = []
+    for (let i = 0; i < arguments.length; i++) {
       args[i] = arguments[i]
     }
 
-    var hash = hasher ? hasher(args) : JSON.stringify(args)
+    const hash = hasher ? hasher(args) : JSON.stringify(args)
     if (!(hash in memoize.cache)) {
       return memoize.cache[hash] = fn.apply(fn, args)
     }
@@ -40,7 +40,7 @@ exports.memoize = function (fn, hasher) {
 exports.maxArgumentCount = function (fn) {
   return Object.keys(fn.signatures || {})
     .reduce(function (args, signature) {
-      var count = (signature.match(/,/g) || []).length + 1
+      const count = (signature.match(/,/g) || []).length + 1
       return Math.max(args, count)
     }, -1)
 }
@@ -54,7 +54,7 @@ exports.maxArgumentCount = function (fn) {
 exports.callWithRightArgumentCount = function (fn, args, argCount) {
   return Object.keys(fn.signatures || {})
     .reduce(function (args, signature) {
-      var count = (signature.match(/,/g) || []).length + 1
+      const count = (signature.match(/,/g) || []).length + 1
       return Math.max(args, count)
     }, -1)
 }

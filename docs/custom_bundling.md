@@ -11,11 +11,11 @@ contains functions `import` and `config`.
 
 ```js
 // Load the math.js core
-var core = require('mathjs/core');
+const core = require('mathjs/core')
 
 // Create a new, empty math.js instance
 // It will only contain methods `import` and `config`
-var math = core.create();
+const math = core.create()
 ```
 
 Then, use `math.import` to load the needed data types and functions. 
@@ -29,25 +29,25 @@ data types.
 //
 // To load all data types:
 //
-//     math.import(require('mathjs/lib/type'));
+//     math.import(require('mathjs/lib/type'))
 //
-math.import(require('mathjs/lib/type/fraction'));
+math.import(require('mathjs/lib/type/fraction'))
 
 // Load the functions you need.
 //
 // To load all functions:
 //
-//     math.import(require('mathjs/lib/function'));
+//     math.import(require('mathjs/lib/function'))
 //
 // To load all functions of a specific category:
 //
-//     math.import(require('mathjs/lib/function/arithmetic'));
+//     math.import(require('mathjs/lib/function/arithmetic'))
 //
-math.import(require('mathjs/lib/function/arithmetic/add'));
-math.import(require('mathjs/lib/function/arithmetic/subtract'));
-math.import(require('mathjs/lib/function/arithmetic/multiply'));
-math.import(require('mathjs/lib/function/arithmetic/divide'));
-math.import(require('mathjs/lib/function/string/format'));
+math.import(require('mathjs/lib/function/arithmetic/add'))
+math.import(require('mathjs/lib/function/arithmetic/subtract'))
+math.import(require('mathjs/lib/function/arithmetic/multiply'))
+math.import(require('mathjs/lib/function/arithmetic/divide'))
+math.import(require('mathjs/lib/function/string/format'))
 ```
 
 To see which data types and categories are available, explore the `index.js` 
@@ -57,10 +57,10 @@ The imported functions and data types can now be used:
 
 ```js
 // Use the loaded functions
-var a = math.fraction(1, 3);
-var b = math.fraction(3, 7);
-var c = math.add(a, b);
-console.log('result:', math.format(c)); // outputs "result: 16/21"
+const a = math.fraction(1, 3)
+const b = math.fraction(3, 7)
+const c = math.add(a, b)
+console.log('result:', math.format(c)) // outputs "result: 16/21"
 ```
 
 Suppose the custom loading code (loading `mathjs/core` and doing the imports)

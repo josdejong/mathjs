@@ -1,5 +1,5 @@
-var assert = require('assert')
-var error = require('../../src/error/index')
+const assert = require('assert')
+const error = require('../../src/error/index')
 
 describe('index.js', function () {
   it('should contain error factory functions', function () {

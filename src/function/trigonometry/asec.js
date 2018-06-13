@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.asec(0.5);           // returns 1.0471975511965979
-   *    math.asec(math.sec(1.5)); // returns 1.5
+   *    math.asec(0.5)           // returns 1.0471975511965979
+   *    math.asec(math.sec(1.5)) // returns 1.5
    *
-   *    math.asec(2);             // returns 0 + 1.3169578969248166 i
+   *    math.asec(2)             // returns 0 + 1.3169578969248166 i
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} The arc secant of x
    */
-  var asec = typed('asec', {
+  const asec = typed('asec', {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return Math.acos(1 / x)

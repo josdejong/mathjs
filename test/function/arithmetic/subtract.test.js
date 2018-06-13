@@ -1,9 +1,9 @@
 // test subtract
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var subtract = math.subtract
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const subtract = math.subtract
 
 describe('subtract', function () {
   it('should subtract two numbers correctly', function () {
@@ -71,7 +71,7 @@ describe('subtract', function () {
   })
 
   it('should subtract two fractions', function () {
-    var a = math.fraction(1, 3)
+    const a = math.fraction(1, 3)
     assert.equal(subtract(a, math.fraction(1, 6)).toString(), '0.1(6)')
     assert.equal(a.toString(), '0.(3)')
 
@@ -126,9 +126,9 @@ describe('subtract', function () {
 
   describe('Array', function () {
     it('should subtract arrays correctly', function () {
-      var a2 = [[10, 20], [30, 40]]
-      var a3 = [[5, 6], [7, 8]]
-      var a4 = subtract(a2, a3)
+      const a2 = [[10, 20], [30, 40]]
+      const a3 = [[5, 6], [7, 8]]
+      const a4 = subtract(a2, a3)
       assert.deepEqual(a4, [[5, 14], [23, 32]])
     })
 
@@ -140,18 +140,18 @@ describe('subtract', function () {
     })
 
     it('should subtract array and dense matrix correctly', function () {
-      var a = [1, 2, 3]
-      var b = math.matrix([3, 2, 1])
-      var c = subtract(a, b)
+      const a = [1, 2, 3]
+      const b = math.matrix([3, 2, 1])
+      const c = subtract(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c, math.matrix([-2, 0, 2]))
     })
 
     it('should subtract array and dense matrix correctly', function () {
-      var a = [[1, 2, 3], [4, 5, 6]]
-      var b = math.sparse([[6, 5, 4], [3, 2, 1]])
-      var c = subtract(a, b)
+      const a = [[1, 2, 3], [4, 5, 6]]
+      const b = math.sparse([[6, 5, 4], [3, 2, 1]])
+      const c = subtract(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c, math.matrix([[-5, -3, -1], [1, 3, 5]]))
@@ -160,9 +160,9 @@ describe('subtract', function () {
 
   describe('DenseMatrix', function () {
     it('should subtract matrices correctly', function () {
-      var a2 = math.matrix([[10, 20], [30, 40]])
-      var a3 = math.matrix([[5, 6], [7, 8]])
-      var a4 = subtract(a2, a3)
+      const a2 = math.matrix([[10, 20], [30, 40]])
+      const a3 = math.matrix([[5, 6], [7, 8]])
+      const a4 = subtract(a2, a3)
       assert.ok(a4 instanceof math.type.Matrix)
       assert.deepEqual(a4.size(), [2, 2])
       assert.deepEqual(a4.valueOf(), [[5, 14], [23, 32]])
@@ -174,18 +174,18 @@ describe('subtract', function () {
     })
 
     it('should subtract matrix and array correctly', function () {
-      var a = math.matrix([1, 2, 3])
-      var b = [3, 2, 1]
-      var c = subtract(a, b)
+      const a = math.matrix([1, 2, 3])
+      const b = [3, 2, 1]
+      const c = subtract(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c, math.matrix([-2, 0, 2]))
     })
 
     it('should subtract dense and sparse matrices correctly', function () {
-      var a = math.matrix([[1, 2, 3], [1, 0, 0]])
-      var b = math.sparse([[3, 2, 1], [0, 0, 1]])
-      var c = subtract(a, b)
+      const a = math.matrix([[1, 2, 3], [1, 0, 0]])
+      const b = math.sparse([[3, 2, 1], [0, 0, 1]])
+      const c = subtract(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c, math.matrix([[-2, 0, 2], [1, 0, -1]]))
@@ -194,9 +194,9 @@ describe('subtract', function () {
 
   describe('SparseMatrix', function () {
     it('should subtract matrices correctly', function () {
-      var a2 = math.matrix([[10, 20], [30, 0]], 'sparse')
-      var a3 = math.matrix([[5, 6], [30, 8]], 'sparse')
-      var a4 = subtract(a2, a3)
+      const a2 = math.matrix([[10, 20], [30, 0]], 'sparse')
+      const a3 = math.matrix([[5, 6], [30, 8]], 'sparse')
+      const a4 = subtract(a2, a3)
       assert.ok(a4 instanceof math.type.Matrix)
       assert.deepEqual(a4, math.sparse([[5, 14], [0, -8]]))
     })
@@ -209,18 +209,18 @@ describe('subtract', function () {
     })
 
     it('should subtract matrix and array correctly', function () {
-      var a = math.matrix([[1, 2, 3], [1, 0, 0]], 'sparse')
-      var b = [[3, 2, 1], [0, 0, 1]]
-      var c = subtract(a, b)
+      const a = math.matrix([[1, 2, 3], [1, 0, 0]], 'sparse')
+      const b = [[3, 2, 1], [0, 0, 1]]
+      const c = subtract(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c.valueOf(), [[-2, 0, 2], [1, 0, -1]])
     })
 
     it('should subtract sparse and dense matrices correctly', function () {
-      var a = math.sparse([[1, 2, 3], [1, 0, 0]])
-      var b = math.matrix([[3, 2, 1], [0, 0, 1]])
-      var c = subtract(a, b)
+      const a = math.sparse([[1, 2, 3], [1, 0, 0]])
+      const b = math.matrix([[3, 2, 1], [0, 0, 1]])
+      const c = subtract(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c, math.matrix([[-2, 0, 2], [1, 0, -1]]))
@@ -237,7 +237,7 @@ describe('subtract', function () {
   })
 
   it('should LaTeX subtract', function () {
-    var expression = math.parse('subtract(2,1)')
+    const expression = math.parse('subtract(2,1)')
     assert.equal(expression.toTex(), '\\left(2-1\\right)')
   })
 })

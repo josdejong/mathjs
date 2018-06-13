@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Inverse the sign of a value, apply a unary minus operation.
@@ -18,8 +18,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.unaryMinus(3.5);      // returns -3.5
-   *    math.unaryMinus(-4.2);     // returns 4.2
+   *    math.unaryMinus(3.5)      // returns -3.5
+   *    math.unaryMinus(-4.2)     // returns 4.2
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} x Number to be inverted.
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Returns the value with inverted sign.
    */
-  var unaryMinus = typed('unaryMinus', {
+  const unaryMinus = typed('unaryMinus', {
     'number': function (x) {
       return -x
     },
@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      var res = x.clone()
+      const res = x.clone()
       res.value = unaryMinus(x.value)
       return res
     },

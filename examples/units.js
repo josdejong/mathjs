@@ -1,13 +1,13 @@
 // units
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // units can be created by providing a value and unit name, or by providing
 // a string with a valued unit.
 console.log('create units')
-var a = math.unit(45, 'cm')
-var b = math.unit('0.1m')
+const a = math.unit(45, 'cm')
+const b = math.unit('0.1m')
 print(a) // 45 cm
 print(b) // 0.1 m
 console.log()
@@ -48,10 +48,10 @@ console.log()
 
 // example engineering calculations
 console.log('compute molar volume of ideal gas at 65 Fahrenheit, 14.7 psi in L/mol')
-var Rg = math.unit('8.314 N m / (mol K)')
-var T = math.unit('65 degF')
-var P = math.unit('14.7 psi')
-var v = math.divide(math.multiply(Rg, T), P)
+const Rg = math.unit('8.314 N m / (mol K)')
+const T = math.unit('65 degF')
+const P = math.unit('14.7 psi')
+const v = math.divide(math.multiply(Rg, T), P)
 console.log('gas constant (Rg) = ', format(Rg))
 console.log('P = ' + format(P))
 console.log('T = ' + format(T))
@@ -60,32 +60,32 @@ console.log('v = Rg * T / P = ' + format(math.to(v, 'L/mol')))
 console.log()
 
 console.log('compute speed of fluid flowing out of hole in a container')
-var g = math.unit('9.81 m / s^2')
-var h = math.unit('1 m')
-var v = math.pow(math.multiply(2, math.multiply(g, h)), 0.5) // Can also use math.sqrt
+const g = math.unit('9.81 m / s^2')
+const h = math.unit('1 m')
+const v2 = math.pow(math.multiply(2, math.multiply(g, h)), 0.5) // Can also use math.sqrt
 console.log('g = ' + format(g))
 console.log('h = ' + format(h))
-console.log('v = (2 g h) ^ 0.5 = ' + format(v))
+console.log('v = (2 g h) ^ 0.5 = ' + format(v2))
 // 4.42944691807 m / s
 console.log()
 
 console.log('electrical power consumption:')
-var expr = '460 V * 20 A * 30 days to kWh'
-console.log(expr + ' = ' + math.eval(expr)) // 6624 kWh
+const expr1 = '460 V * 20 A * 30 days to kWh'
+console.log(expr1 + ' = ' + math.eval(expr1)) // 6624 kWh
 console.log()
 
 console.log('circuit design:')
-var expr = '24 V / (6 mA)'
-console.log(expr + ' = ' + math.eval(expr)) // 4 kohm
+const expr2 = '24 V / (6 mA)'
+console.log(expr2 + ' = ' + math.eval(expr2)) // 4 kohm
 console.log()
 
 console.log('operations on arrays:')
-var B = math.eval('[1, 0, 0] T')
-var v = math.eval('[0, 1, 0] m/s')
-var q = math.eval('1 C')
-var F = math.multiply(q, math.cross(v, B))
+const B = math.eval('[1, 0, 0] T')
+const v3 = math.eval('[0, 1, 0] m/s')
+const q = math.eval('1 C')
+const F = math.multiply(q, math.cross(v3, B))
 console.log('B (magnetic field strength) = ' + format(B)) // [1 T, 0 T, 0 T]
-console.log('v (particle velocity) = ' + format(v)) // [0 m / s, 1 m / s, 0 m / s]
+console.log('v (particle velocity) = ' + format(v3)) // [0 m / s, 1 m / s, 0 m / s]
 console.log('q (particle charge) = ' + format(q)) // 1 C
 console.log('F (force) = q (v cross B) = ' + format(F)) // [0 N, 0 N, -1 N]
 
@@ -103,6 +103,6 @@ function print (value) {
  * @return {string} Returns the formatted value
  */
 function format (value) {
-  var precision = 14
+  const precision = 14
   return math.format(value, precision)
 }

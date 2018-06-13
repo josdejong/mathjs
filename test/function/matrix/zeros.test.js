@@ -1,8 +1,5 @@
 // test zeros
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  zeros = math.zeros,
-  matrix = math.matrix
+const assert = require('assert'), math = require('../../../src/index'), zeros = math.zeros, matrix = math.matrix
 
 describe('zeros', function () {
   it('should create an empty matrix', function () {
@@ -25,8 +22,8 @@ describe('zeros', function () {
   })
 
   it('should create a matrix with bignumber zeros', function () {
-    var zero = math.bignumber(0)
-    var three = math.bignumber(3)
+    const zero = math.bignumber(0)
+    const three = math.bignumber(3)
     assert.deepEqual(zeros(three), matrix([zero, zero, zero]))
     assert.deepEqual(zeros([three]), [zero, zero, zero])
   })
@@ -43,7 +40,7 @@ describe('zeros', function () {
   })
 
   it('should create a 3D matrix with zeros', function () {
-    var res = [
+    const res = [
       [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
@@ -64,14 +61,14 @@ describe('zeros', function () {
   // TODO: test setting `matrix`
 
   it('should create a matrix with zeros with the same size as original matrix', function () {
-    var a = matrix([[1, 2, 3], [4, 5, 6]])
+    const a = matrix([[1, 2, 3], [4, 5, 6]])
     assert.deepEqual(zeros(math.size(a)).size(), a.size())
   })
 
   // TODO: test with invalid input
 
   it('should LaTeX zeros', function () {
-    var expression = math.parse('zeros(2,3)')
+    const expression = math.parse('zeros(2,3)')
     assert.equal(expression.toTex(), '\\mathrm{zeros}\\left(2,3\\right)')
   })
 })

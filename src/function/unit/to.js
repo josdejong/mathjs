@@ -1,12 +1,12 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Change the unit of a value.
@@ -19,9 +19,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.to(math.unit('2 inch'), 'cm');                   // returns Unit 5.08 cm
-   *    math.to(math.unit('2 inch'), math.unit(null, 'cm'));  // returns Unit 5.08 cm
-   *    math.to(math.unit(16, 'bytes'), 'bits');              // returns Unit 128 bits
+   *    math.to(math.unit('2 inch'), 'cm')                   // returns Unit 5.08 cm
+   *    math.to(math.unit('2 inch'), math.unit(null, 'cm'))  // returns Unit 5.08 cm
+   *    math.to(math.unit(16, 'bytes'), 'bits')              // returns Unit 128 bits
    *
    * See also:
    *
@@ -32,7 +32,7 @@ function factory (type, config, load, typed) {
    *                                      or a unit without value.
    * @return {Unit | Array | Matrix} value with changed, fixed unit.
    */
-  var to = typed('to', {
+  const to = typed('to', {
 
     'Unit, Unit | string': function (x, unit) {
       return x.to(unit)

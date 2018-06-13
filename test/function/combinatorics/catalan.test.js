@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  catalan = math.catalan
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), catalan = math.catalan
 
 describe('catalan', function () {
   it('should calculate the nth catalan number', function () {
@@ -36,7 +33,7 @@ describe('catalan', function () {
   })
 
   it('should LaTeX catalan', function () {
-    var expression = math.parse('catalan(3)')
+    const expression = math.parse('catalan(3)')
     assert.equal(expression.toTex(), '\\mathrm{C}_{3}')
   })
 })

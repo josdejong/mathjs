@@ -6,7 +6,7 @@
  * *transform* for the function. A transform is a function wrapping around a
  * function to be transformed or completely replaces a function.
  */
-var math = require('../../index')
+const math = require('../../index')
 
 // create a function
 function addIt (a, b) {
@@ -18,7 +18,7 @@ addIt.transform = function (a, b) {
   console.log('input: a=' + a + ', b=' + b)
   // we can manipulate the input arguments here before executing addIt
 
-  var res = addIt(a, b)
+  const res = addIt(a, b)
 
   console.log('result: ' + res)
   // we can manipulate the result here before returning

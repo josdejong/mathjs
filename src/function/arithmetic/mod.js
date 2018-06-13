@@ -1,16 +1,16 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var latex = require('../../utils/latex')
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const latex = require('../../utils/latex')
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculates the modulus, the remainder of an integer division.
@@ -29,15 +29,15 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.mod(8, 3);                // returns 2
-   *    math.mod(11, 2);               // returns 1
+   *    math.mod(8, 3)                // returns 2
+   *    math.mod(11, 2)               // returns 1
    *
    *    function isOdd(x) {
-   *      return math.mod(x, 2) != 0;
+   *      return math.mod(x, 2) != 0
    *    }
    *
-   *    isOdd(2);                      // returns false
-   *    isOdd(3);                      // returns true
+   *    isOdd(2)                      // returns false
+   *    isOdd(3)                      // returns true
    *
    * See also:
    *
@@ -47,7 +47,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
    */
-  var mod = typed('mod', {
+  const mod = typed('mod', {
 
     'number, number': _mod,
 

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.asin(0.5);           // returns number 0.5235987755982989
-   *    math.asin(math.sin(1.5)); // returns number ~1.5
+   *    math.asin(0.5)           // returns number 0.5235987755982989
+   *    math.asin(math.sin(1.5)) // returns number ~1.5
    *
-   *    math.asin(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.asin(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
    */
-  var asin = typed('asin', {
+  const asin = typed('asin', {
     'number': function (x) {
       if ((x >= -1 && x <= 1) || config.predictable) {
         return Math.asin(x)

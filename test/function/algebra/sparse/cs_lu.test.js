@@ -1,20 +1,20 @@
-var assert = require('assert')
-var approx = require('../../../../tools/approx')
-var math = require('../../../../src/index').create()
+const assert = require('assert')
+const approx = require('../../../../tools/approx')
+const math = require('../../../../src/index').create()
 math.import(require('../../../../src/function/algebra/sparse/cs_permute'))
 math.import(require('../../../../src/function/algebra/sparse/cs_lu'))
 math.import(require('../../../../src/function/algebra/sparse/cs_sqr'))
 
-var cs_permute = math.sparse.cs_permute
-var cs_lu = math.sparse.cs_lu
-var cs_sqr = math.sparse.cs_sqr
+const cs_permute = math.sparse.cs_permute
+const cs_lu = math.sparse.cs_lu
+const cs_sqr = math.sparse.cs_sqr
 
 describe('cs_lu', function () {
   it('should decompose matrix, 2 x 2, no symbolic ordering and analysis, partial pivoting', function () {
-    var m = math.sparse([[2, 1], [1, 4]])
+    const m = math.sparse([[2, 1], [1, 4]])
 
     // partial pivoting
-    var r = cs_lu(m, null, 1)
+    const r = cs_lu(m, null, 1)
 
     // L
     assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
@@ -27,7 +27,7 @@ describe('cs_lu', function () {
   })
 
   it('should decompose matrix, 4 x 4, natural ordering (order=0), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -36,17 +36,17 @@ describe('cs_lu', function () {
       ])
 
     // symbolic ordering and analysis, order = 0
-    var s = cs_sqr(0, m, false)
+    const s = cs_sqr(0, m, false)
 
     // partial pivoting
-    var r = cs_lu(m, s, 1)
+    const r = cs_lu(m, s, 1)
 
     // verify
     approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A+A\') (order=1), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -55,17 +55,17 @@ describe('cs_lu', function () {
       ])
 
     // symbolic ordering and analysis, order = 1
-    var s = cs_sqr(1, m, false)
+    const s = cs_sqr(1, m, false)
 
     // partial pivoting
-    var r = cs_lu(m, s, 1)
+    const r = cs_lu(m, s, 1)
 
     // verify
     approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A\'*A) (order=2), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -74,17 +74,17 @@ describe('cs_lu', function () {
       ])
 
     // symbolic ordering and analysis, order = 2
-    var s = cs_sqr(2, m, false)
+    const s = cs_sqr(2, m, false)
 
     // partial pivoting
-    var r = cs_lu(m, s, 1)
+    const r = cs_lu(m, s, 1)
 
     // verify
     approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A\'*A) (order=3), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -93,10 +93,10 @@ describe('cs_lu', function () {
       ])
 
     // symbolic ordering and analysis, order = 3
-    var s = cs_sqr(3, m, false)
+    const s = cs_sqr(3, m, false)
 
     // partial pivoting
-    var r = cs_lu(m, s, 1)
+    const r = cs_lu(m, s, 1)
 
     // verify
     approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())

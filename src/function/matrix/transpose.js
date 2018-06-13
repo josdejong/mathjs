@@ -1,15 +1,14 @@
 'use strict'
 
-var clone = require('../../utils/object').clone
-var format = require('../../utils/string').format
+const clone = require('../../utils/object').clone
+const format = require('../../utils/string').format
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var DenseMatrix = type.DenseMatrix,
-    SparseMatrix = type.SparseMatrix
+  const DenseMatrix = type.DenseMatrix, SparseMatrix = type.SparseMatrix
 
   /**
    * Transpose a matrix. All values of the matrix are reflected over its
@@ -23,8 +22,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     var A = [[1, 2, 3], [4, 5, 6]];
-   *     math.transpose(A);               // returns [[1, 4], [2, 5], [3, 6]]
+   *     const A = [[1, 2, 3], [4, 5, 6]]
+   *     math.transpose(A)               // returns [[1, 4], [2, 5], [3, 6]]
    *
    * See also:
    *
@@ -33,7 +32,7 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix} x  Matrix to be transposed
    * @return {Array | Matrix}   The transposed matrix
    */
-  var transpose = typed('transpose', {
+  const transpose = typed('transpose', {
 
     'Array': function (x) {
       // use dense matrix implementation
@@ -42,10 +41,10 @@ function factory (type, config, load, typed) {
 
     'Matrix': function (x) {
       // matrix size
-      var size = x.size()
+      const size = x.size()
 
       // result
-      var c
+      let c
 
       // process dimensions
       switch (size.length) {
@@ -56,8 +55,8 @@ function factory (type, config, load, typed) {
 
         case 2:
           // rows and columns
-          var rows = size[0]
-          var columns = size[1]
+          const rows = size[0]
+          const columns = size[1]
 
           // check columns
           if (columns === 0) {
@@ -89,18 +88,18 @@ function factory (type, config, load, typed) {
     }
   })
 
-  var _denseTranspose = function (m, rows, columns) {
+  function _denseTranspose (m, rows, columns) {
     // matrix array
-    var data = m._data
+    const data = m._data
     // transposed matrix data
-    var transposed = []
-    var transposedRow
+    const transposed = []
+    let transposedRow
     // loop columns
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // initialize row
       transposedRow = transposed[j] = []
       // loop rows
-      for (var i = 0; i < rows; i++) {
+      for (let i = 0; i < rows; i++) {
         // set data
         transposedRow[i] = clone(data[i][j])
       }
@@ -113,29 +112,29 @@ function factory (type, config, load, typed) {
     })
   }
 
-  var _sparseTranspose = function (m, rows, columns) {
+  function _sparseTranspose (m, rows, columns) {
     // matrix arrays
-    var values = m._values
-    var index = m._index
-    var ptr = m._ptr
+    const values = m._values
+    const index = m._index
+    const ptr = m._ptr
     // result matrices
-    var cvalues = values ? [] : undefined
-    var cindex = []
-    var cptr = []
+    const cvalues = values ? [] : undefined
+    const cindex = []
+    const cptr = []
     // row counts
-    var w = []
-    for (var x = 0; x < rows; x++) { w[x] = 0 }
+    const w = []
+    for (let x = 0; x < rows; x++) { w[x] = 0 }
     // vars
-    var p, l, j
+    let p, l, j
     // loop values in matrix
     for (p = 0, l = index.length; p < l; p++) {
       // number of values in row
       w[index[p]]++
     }
     // cumulative sum
-    var sum = 0
+    let sum = 0
     // initialize cptr with the cummulative sum of row counts
-    for (var i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i++) {
       // update cptr
       cptr.push(sum)
       // update sum
@@ -148,9 +147,9 @@ function factory (type, config, load, typed) {
     // loop columns
     for (j = 0; j < columns; j++) {
       // values & index in column
-      for (var k0 = ptr[j], k1 = ptr[j + 1], k = k0; k < k1; k++) {
+      for (let k0 = ptr[j], k1 = ptr[j + 1], k = k0; k < k1; k++) {
         // C values & index
-        var q = w[index[k]]++
+        const q = w[index[k]]++
         // C[j, i] = A[i, j]
         cindex[q] = j
         // check we need to process values (pattern matrix)

@@ -1,15 +1,15 @@
 'use strict'
 
-var extend = require('../../utils/object').extend
+const extend = require('../../utils/object').extend
 
 function factory (type, config, load, typed) {
-  var divideScalar = load(require('./divideScalar'))
-  var multiply = load(require('./multiply'))
-  var inv = load(require('../matrix/inv'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const divideScalar = load(require('./divideScalar'))
+  const multiply = load(require('./multiply'))
+  const inv = load(require('../matrix/inv'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Divide two values, `x / y`.
@@ -21,18 +21,18 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.divide(2, 3);            // returns number 0.6666666666666666
+   *    math.divide(2, 3)            // returns number 0.6666666666666666
    *
-   *    var a = math.complex(5, 14);
-   *    var b = math.complex(4, 1);
-   *    math.divide(a, b);            // returns Complex 2 + 3i
+   *    const a = math.complex(5, 14)
+   *    const b = math.complex(4, 1)
+   *    math.divide(a, b)            // returns Complex 2 + 3i
    *
-   *    var c = [[7, -6], [13, -4]];
-   *    var d = [[1, 2], [4, 3]];
-   *    math.divide(c, d);            // returns Array [[-9, 4], [-11, 6]]
+   *    const c = [[7, -6], [13, -4]]
+   *    const d = [[1, 2], [4, 3]]
+   *    math.divide(c, d)            // returns Array [[-9, 4], [-11, 6]]
    *
-   *    var e = math.unit('18 km');
-   *    math.divide(e, 4.5);          // returns Unit 4 km
+   *    const e = math.unit('18 km')
+   *    math.divide(e, 4.5)          // returns Unit 4 km
    *
    * See also:
    *
@@ -42,7 +42,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} y          Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                      Quotient, `x / y`
    */
-  var divide = typed('divide', extend({
+  const divide = typed('divide', extend({
     // we extend the signatures of divideScalar with signatures dealing with matrices
 
     'Array | Matrix, Array | Matrix': function (x, y) {

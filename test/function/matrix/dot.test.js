@@ -1,6 +1,6 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
 
 describe('dot', function () {
   it('should calculate dot product for two arrays', function () {
@@ -35,7 +35,7 @@ describe('dot', function () {
   })
 
   it('should LaTeX dot', function () {
-    var expression = math.parse('dot([1,2],[3,4])')
+    const expression = math.parse('dot([1,2],[3,4])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

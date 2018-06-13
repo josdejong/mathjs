@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.acsc(0.5);           // returns number 0.5235987755982989
-   *    math.acsc(math.csc(1.5)); // returns number ~1.5
+   *    math.acsc(0.5)           // returns number 0.5235987755982989
+   *    math.acsc(math.csc(1.5)) // returns number ~1.5
    *
-   *    math.acsc(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.acsc(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cosecant of x
    */
-  var acsc = typed('acsc', {
+  const acsc = typed('acsc', {
     'number': function (x) {
       if (x <= -1 || x >= 1 || config.predictable) {
         return Math.asin(1 / x)

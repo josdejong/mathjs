@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var number = require('../../utils/number')
+const deepMap = require('../../utils/collection/deepMap')
+const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -16,14 +16,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.isNaN(3);                     // returns false
-   *    math.isNaN(NaN);                   // returns true
-   *    math.isNaN(0);                     // returns false
-   *    math.isNaN(math.bignumber(NaN));   // returns true
-   *    math.isNaN(math.bignumber(0));     // returns false
-   *    math.isNaN(math.fraction(-2, 5));  // returns false
-   *    math.isNaN('-2');                  // returns false
-   *    math.isNaN([2, 0, -3, NaN]');      // returns [false, false, false, true]
+   *    math.isNaN(3)                     // returns false
+   *    math.isNaN(NaN)                   // returns true
+   *    math.isNaN(0)                     // returns false
+   *    math.isNaN(math.bignumber(NaN))   // returns true
+   *    math.isNaN(math.bignumber(0))     // returns false
+   *    math.isNaN(math.fraction(-2, 5))  // returns false
+   *    math.isNaN('-2')                  // returns false
+   *    math.isNaN([2, 0, -3, NaN]')      // returns [false, false, false, true]
    *
    * See also:
    *
@@ -33,7 +33,7 @@ function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is NaN.
    *                    Throws an error in case of an unknown data type.
    */
-  var isNaN = typed('isNaN', {
+  const isNaN = typed('isNaN', {
     'number': function (x) {
       return Number.isNaN(x)
     },

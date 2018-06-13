@@ -1,15 +1,15 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var abs = load(require('./abs'))
-  var add = load(require('./addScalar'))
-  var divide = load(require('./divideScalar'))
-  var multiply = load(require('./multiplyScalar'))
-  var sqrt = load(require('./sqrt'))
-  var smaller = load(require('../relational/smaller'))
-  var isPositive = load(require('../utils/isPositive'))
+  const abs = load(require('./abs'))
+  const add = load(require('./addScalar'))
+  const divide = load(require('./divideScalar'))
+  const multiply = load(require('./multiplyScalar'))
+  const sqrt = load(require('./sqrt'))
+  const smaller = load(require('../relational/smaller'))
+  const isPositive = load(require('../utils/isPositive'))
 
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
@@ -25,10 +25,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.hypot(3, 4);      // 5
-   *     math.hypot(3, 4, 5);   // 7.0710678118654755
-   *     math.hypot([3, 4, 5]); // 7.0710678118654755
-   *     math.hypot(-2);        // 2
+   *     math.hypot(3, 4)      // 5
+   *     math.hypot(3, 4, 5)   // 7.0710678118654755
+   *     math.hypot([3, 4, 5]) // 7.0710678118654755
+   *     math.hypot(-2)        // 2
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    *                                                          single number for the whole matrix.
    * @return {number | BigNumber} Returns the hypothenusa of the input values.
    */
-  var hypot = typed('hypot', {
+  const hypot = typed('hypot', {
     '... number | BigNumber': _hypot,
 
     'Array': function (x) {
@@ -60,11 +60,11 @@ function factory (type, config, load, typed) {
   function _hypot (args) {
     // code based on `hypot` from es6-shim:
     // https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1619-L1633
-    var result = 0
-    var largest = 0
+    let result = 0
+    let largest = 0
 
-    for (var i = 0; i < args.length; i++) {
-      var value = abs(args[i])
+    for (let i = 0; i < args.length; i++) {
+      const value = abs(args[i])
       if (smaller(largest, value)) {
         result = multiply(result, multiply(divide(largest, value), divide(largest, value)))
         result = add(result, 1)

@@ -1,6 +1,6 @@
-var assert = require('assert')
-var math = require('../../../../src/index')
-var Chain = math.type.Chain
+const assert = require('assert')
+const math = require('../../../../src/index')
+const Chain = math.type.Chain
 
 describe('chain', function () {
   it('should construct a chain', function () {
@@ -10,7 +10,7 @@ describe('chain', function () {
   })
 
   it('should LaTeX chain', function () {
-    var expression = math.parse('chain(1)')
+    const expression = math.parse('chain(1)')
     assert.equal(expression.toTex(), '\\mathrm{chain}\\left(1\\right)')
   })
 })

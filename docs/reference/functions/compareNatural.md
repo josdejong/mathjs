@@ -50,33 +50,33 @@ number | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 
 ## Examples
 
 ```js
-math.compareNatural(6, 1);              // returns 1
-math.compareNatural(2, 3);              // returns -1
-math.compareNatural(7, 7);              // returns 0
+math.compareNatural(6, 1)              // returns 1
+math.compareNatural(2, 3)              // returns -1
+math.compareNatural(7, 7)              // returns 0
 
-math.compareNatural('10', '2');         // returns 1
-math.compareText('10', '2');            // returns -1
-math.compare('10', '2');                // returns 1
+math.compareNatural('10', '2')         // returns 1
+math.compareText('10', '2')            // returns -1
+math.compare('10', '2')                // returns 1
 
-math.compareNatural('Answer: 10', 'Answer: 2'); // returns 1
-math.compareText('Answer: 10', 'Answer: 2');    // returns -1
-math.compare('Answer: 10', 'Answer: 2');
+math.compareNatural('Answer: 10', 'Answer: 2') // returns 1
+math.compareText('Answer: 10', 'Answer: 2')    // returns -1
+math.compare('Answer: 10', 'Answer: 2')
     // Error: Cannot convert "Answer: 10" to a number
 
-var a = math.unit('5 cm');
-var b = math.unit('40 mm');
-math.compareNatural(a, b);              // returns 1
+const a = math.unit('5 cm')
+const b = math.unit('40 mm')
+math.compareNatural(a, b)              // returns 1
 
-var c = math.complex('2 + 3i');
-var d = math.complex('2 + 4i');
-math.compareNatural(c, d);              // returns -1
+const c = math.complex('2 + 3i')
+const d = math.complex('2 + 4i')
+math.compareNatural(c, d)              // returns -1
 
-math.compareNatural([1, 2, 4], [1, 2, 3]); // returns 1
-math.compareNatural([1, 2, 3], [1, 2]);    // returns 1
-math.compareNatural([1, 5], [1, 2, 3]);    // returns 1
-math.compareNatural([1, 2], [1, 2]);       // returns 0
+math.compareNatural([1, 2, 4], [1, 2, 3]) // returns 1
+math.compareNatural([1, 2, 3], [1, 2])    // returns 1
+math.compareNatural([1, 5], [1, 2, 3])    // returns 1
+math.compareNatural([1, 2], [1, 2])       // returns 0
 
-math.compareNatural({a: 2}, {a: 4});       // returns -1
+math.compareNatural({a: 2}, {a: 4})       // returns -1
 ```
 
 

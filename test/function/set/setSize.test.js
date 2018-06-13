@@ -1,6 +1,6 @@
 // test setSize
-var assert = require('assert')
-var math = require('../../../src/index')
+const assert = require('assert')
+const math = require('../../../src/index')
 
 describe('setSize', function () {
   it('should return the number of elements of a set', function () {

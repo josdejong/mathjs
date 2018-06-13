@@ -1,9 +1,9 @@
 'use strict'
 
-var lazy = require('../../utils/object').lazy
-var isFactory = require('../../utils/object').isFactory
-var traverse = require('../../utils/object').traverse
-var ArgumentsError = require('../../error/ArgumentsError')
+const lazy = require('../../utils/object').lazy
+const isFactory = require('../../utils/object').isFactory
+const traverse = require('../../utils/object').traverse
+const ArgumentsError = require('../../error/ArgumentsError')
 
 function factory (type, config, load, typed, math) {
   /**
@@ -36,25 +36,25 @@ function factory (type, config, load, typed, math) {
    *    math.import({
    *      myvalue: 42,
    *      hello: function (name) {
-   *        return 'hello, ' + name + '!';
+   *        return 'hello, ' + name + '!'
    *      }
-   *    });
+   *    })
    *
    *    // use the imported function and variable
-   *    math.myvalue * 2;               // 84
-   *    math.hello('user');             // 'hello, user!'
+   *    math.myvalue * 2               // 84
+   *    math.hello('user')             // 'hello, user!'
    *
    *    // import the npm module 'numbers'
    *    // (must be installed first with `npm install numbers`)
-   *    math.import(require('numbers'), {wrap: true});
+   *    math.import(require('numbers'), {wrap: true})
    *
-   *    math.fibonacci(7); // returns 13
+   *    math.fibonacci(7) // returns 13
    *
    * @param {Object | Array} object   Object with functions to be imported.
    * @param {Object} [options]        Import options.
    */
   function math_import (object, options) {
-    var num = arguments.length
+    const num = arguments.length
     if (num !== 1 && num !== 2) {
       throw new ArgumentsError('import', num, 1, 2)
     }
@@ -73,9 +73,9 @@ function factory (type, config, load, typed, math) {
       })
     } else if (typeof object === 'object') {
       // a map with functions
-      for (var name in object) {
+      for (const name in object) {
         if (object.hasOwnProperty(name)) {
-          var value = object[name]
+          const value = object[name]
           if (isSupportedType(value)) {
             _import(name, value, options)
           } else if (isFactory(object)) {
@@ -160,10 +160,10 @@ function factory (type, config, load, typed, math) {
    * @private
    */
   function _wrap (fn) {
-    var wrapper = function wrapper () {
-      var args = []
-      for (var i = 0, len = arguments.length; i < len; i++) {
-        var arg = arguments[i]
+    const wrapper = function wrapper () {
+      const args = []
+      for (let i = 0, len = arguments.length; i < len; i++) {
+        const arg = arguments[i]
         args[i] = arg && arg.valueOf()
       }
       return fn.apply(math, args)
@@ -184,13 +184,13 @@ function factory (type, config, load, typed, math) {
    */
   function _importFactory (factory, options) {
     if (typeof factory.name === 'string') {
-      var name = factory.name
-      var existingTransform = name in math.expression.transform
-      var namespace = factory.path ? traverse(math, factory.path) : math
-      var existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
+      const name = factory.name
+      const existingTransform = name in math.expression.transform
+      const namespace = factory.path ? traverse(math, factory.path) : math
+      const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
-      var resolver = function () {
-        var instance = load(factory)
+      const resolver = function () {
+        let instance = load(factory)
         if (instance && typeof instance.transform === 'function') {
           throw new Error('Transforms cannot be attached to factory functions. ' +
               'Please create a separate function for it with exports.path="expression.transform"')
@@ -280,7 +280,7 @@ function factory (type, config, load, typed, math) {
   }
 
   // namespaces and functions not available in the parser for safety reasons
-  var unsafe = {
+  const unsafe = {
     'expression': true,
     'type': true,
     'docs': true,

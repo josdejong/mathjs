@@ -1,5 +1,5 @@
 'use strict'
-var bitwise = require('./bitwise')
+const bitwise = require('./bitwise')
 
 /**
  * Bitwise and for Bignumbers
@@ -27,7 +27,7 @@ module.exports = function bitAnd (x, y) {
     throw new Error('Integers expected in function bitAnd')
   }
 
-  var BigNumber = x.constructor
+  const BigNumber = x.constructor
   if (x.isNaN() || y.isNaN()) {
     return new BigNumber(NaN)
   }

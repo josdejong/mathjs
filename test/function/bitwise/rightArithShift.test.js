@@ -1,10 +1,5 @@
 // test rightArithShift
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  bignumber = math.bignumber,
-  rightArithShift = math.rightArithShift
+const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, bignumber = math.bignumber, rightArithShift = math.rightArithShift
 
 describe('rightArithShift', function () {
   it('should right arithmetically shift a number by a given amount', function () {
@@ -172,7 +167,7 @@ describe('rightArithShift', function () {
   })
 
   it('should LaTeX rightArithShift', function () {
-    var expression = math.parse('rightArithShift(3,2)')
+    const expression = math.parse('rightArithShift(3,2)')
     assert.equal(expression.toTex(), '\\left(3>>2\\right)')
   })
 })

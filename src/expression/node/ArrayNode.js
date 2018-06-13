@@ -1,9 +1,9 @@
 'use strict'
 
-var map = require('../../utils/array').map
+const map = require('../../utils/array').map
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
+  const Node = load(require('./Node'))
 
   /**
    * @constructor ArrayNode
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
     }
 
     // TODO: deprecated since v3, remove some day
-    var deprecated = function () {
+    const deprecated = function () {
       throw new Error('Property `ArrayNode.nodes` is deprecated, use `ArrayNode.items` instead')
     }
     Object.defineProperty(this, 'nodes', { get: deprecated, set: deprecated })
@@ -50,13 +50,13 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   ArrayNode.prototype._compile = function (math, argNames) {
-    var evalItems = map(this.items, function (item) {
+    const evalItems = map(this.items, function (item) {
       return item._compile(math, argNames)
     })
 
-    var asMatrix = (math.config().matrix !== 'Array')
+    const asMatrix = (math.config().matrix !== 'Array')
     if (asMatrix) {
-      var matrix = math.matrix
+      const matrix = math.matrix
       return function evalArrayNode (scope, args, context) {
         return matrix(map(evalItems, function (evalItem) {
           return evalItem(scope, args, context)
@@ -76,8 +76,8 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   ArrayNode.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.items.length; i++) {
-      var node = this.items[i]
+    for (let i = 0; i < this.items.length; i++) {
+      const node = this.items[i]
       callback(node, 'items[' + i + ']', this)
     }
   }
@@ -89,8 +89,8 @@ function factory (type, config, load, typed) {
    * @returns {ArrayNode} Returns a transformed copy of the node
    */
   ArrayNode.prototype.map = function (callback) {
-    var items = []
-    for (var i = 0; i < this.items.length; i++) {
+    const items = []
+    for (let i = 0; i < this.items.length; i++) {
       items[i] = this._ifNode(callback(this.items[i], 'items[' + i + ']', this))
     }
     return new ArrayNode(items)
@@ -111,7 +111,7 @@ function factory (type, config, load, typed) {
    * @override
    */
   ArrayNode.prototype._toString = function (options) {
-    var items = this.items.map(function (node) {
+    const items = this.items.map(function (node) {
       return node.toString(options)
     })
     return '[' + items.join(', ') + ']'
@@ -146,7 +146,7 @@ function factory (type, config, load, typed) {
    * @override
    */
   ArrayNode.prototype.toHTML = function (options) {
-    var items = this.items.map(function (node) {
+    const items = this.items.map(function (node) {
       return node.toHTML(options)
     })
     return '<span class="math-parenthesis math-square-parenthesis">[</span>' + items.join('<span class="math-separator">,</span>') + '<span class="math-parenthesis math-square-parenthesis">]</span>'
@@ -158,7 +158,7 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ArrayNode.prototype._toTex = function (options) {
-    var s = '\\begin{bmatrix}'
+    let s = '\\begin{bmatrix}'
 
     this.items.forEach(function (node) {
       if (node.items) {

@@ -10,26 +10,26 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_etree = function (a, ata) {
+  const cs_etree = function (a, ata) {
     // check inputs
     if (!a) { return null }
     // a arrays
-    var aindex = a._index
-    var aptr = a._ptr
-    var asize = a._size
+    const aindex = a._index
+    const aptr = a._ptr
+    const asize = a._size
     // rows & columns
-    var m = asize[0]
-    var n = asize[1]
+    const m = asize[0]
+    const n = asize[1]
 
     // allocate result
-    var parent = [] // (n)
+    const parent = [] // (n)
 
     // allocate workspace
-    var w = [] // (n + (ata ? m : 0))
-    var ancestor = 0 // first n entries in w
-    var prev = n // last m entries (ata = true)
+    const w = [] // (n + (ata ? m : 0))
+    const ancestor = 0 // first n entries in w
+    const prev = n // last m entries (ata = true)
 
-    var i, inext
+    let i, inext
 
     // check we are calculating A'A
     if (ata) {
@@ -37,15 +37,15 @@ function factory () {
       for (i = 0; i < m; i++) { w[prev + i] = -1 }
     }
     // loop columns
-    for (var k = 0; k < n; k++) {
+    for (let k = 0; k < n; k++) {
       // node k has no parent yet
       parent[k] = -1
       // nor does k have an ancestor
       w[ancestor + k] = -1
       // values in column k
-      for (var p0 = aptr[k], p1 = aptr[k + 1], p = p0; p < p1; p++) {
+      for (let p0 = aptr[k], p1 = aptr[k + 1], p = p0; p < p1; p++) {
         // row
-        var r = aindex[p]
+        const r = aindex[p]
         // node
         i = ata ? (w[prev + r]) : r
         // traverse from i to k

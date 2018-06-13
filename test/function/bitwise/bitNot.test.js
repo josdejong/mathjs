@@ -1,8 +1,5 @@
 // test bitNot
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  bitNot = math.bitNot
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, bitNot = math.bitNot
 
 describe('bitNot', function () {
   it('should return bitwise not of a boolean', function () {
@@ -59,7 +56,7 @@ describe('bitNot', function () {
   })
 
   it('should LaTeX bitNot', function () {
-    var expression = math.parse('bitNot(4)')
+    const expression = math.parse('bitNot(4)')
     assert.equal(expression.toTex(), '~\\left(4\\right)')
   })
 })

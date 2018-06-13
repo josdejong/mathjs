@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,7 +15,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.cosh(0.5);       // returns number 1.1276259652063807
+   *    math.cosh(0.5)       // returns number 1.1276259652063807
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic cosine of x
    */
-  var cosh = typed('cosh', {
+  const cosh = typed('cosh', {
     'number': _cosh,
 
     'Complex': function (x) {
@@ -58,7 +58,7 @@ function factory (type, config, load, typed) {
  * @returns {number}
  * @private
  */
-var _cosh = Math.cosh || function (x) {
+const _cosh = Math.cosh || function (x) {
   return (Math.exp(x) + Math.exp(-x)) / 2
 }
 

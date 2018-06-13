@@ -1,10 +1,5 @@
 // test leftShift
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  bignumber = math.bignumber,
-  leftShift = math.leftShift
+const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, bignumber = math.bignumber, leftShift = math.leftShift
 
 describe('leftShift', function () {
   it('should left shift a number by a given amount', function () {
@@ -168,7 +163,7 @@ describe('leftShift', function () {
   })
 
   it('should LaTeX leftShift', function () {
-    var expression = math.parse('leftShift(2,3)')
+    const expression = math.parse('leftShift(2,3)')
     assert.equal(expression.toTex(), '\\left(2<<3\\right)')
   })
 })

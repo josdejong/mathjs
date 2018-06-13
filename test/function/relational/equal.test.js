@@ -1,12 +1,5 @@
 // test equal
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  equal = math.equal
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, equal = math.equal
 
 describe('equal', function () {
   it('should compare two numbers correctly', function () {
@@ -97,7 +90,7 @@ describe('equal', function () {
   })
 
   it('should compare two fractions', function () {
-    var a = math.fraction(3)
+    const a = math.fraction(3)
     assert.strictEqual(equal(a, math.fraction(2)).valueOf(), false)
     assert.equal(a.toString(), '3')
 
@@ -146,7 +139,7 @@ describe('equal', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     assert.equal(mymath.equal(1, 0.991), false)
     assert.equal(mymath.equal(math.bignumber(1), math.bignumber(0.991)), false)
 
@@ -234,7 +227,7 @@ describe('equal', function () {
   })
 
   it('should LaTeX equal', function () {
-    var expression = math.parse('equal(1,2)')
+    const expression = math.parse('equal(1,2)')
     assert.equal(expression.toTex(), '\\left(1=2\\right)')
   })
 })

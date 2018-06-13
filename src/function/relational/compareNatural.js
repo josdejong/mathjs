@@ -1,12 +1,12 @@
 'use strict'
 
-var naturalSort = require('javascript-natural-sort')
+const naturalSort = require('javascript-natural-sort')
 
 function factory (type, config, load, typed) {
-  var getTypeOf = load(require('../utils/typeof'))
-  var compare = load(require('./compare'))
+  const getTypeOf = load(require('../utils/typeof'))
+  const compare = load(require('./compare'))
 
-  var compareBooleans = compare.signatures['boolean,boolean']
+  const compareBooleans = compare.signatures['boolean,boolean']
 
   /**
    * Compare two values of any type in a deterministic, natural way.
@@ -39,33 +39,33 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.compareNatural(6, 1);              // returns 1
-   *    math.compareNatural(2, 3);              // returns -1
-   *    math.compareNatural(7, 7);              // returns 0
+   *    math.compareNatural(6, 1)              // returns 1
+   *    math.compareNatural(2, 3)              // returns -1
+   *    math.compareNatural(7, 7)              // returns 0
    *
-   *    math.compareNatural('10', '2');         // returns 1
-   *    math.compareText('10', '2');            // returns -1
-   *    math.compare('10', '2');                // returns 1
+   *    math.compareNatural('10', '2')         // returns 1
+   *    math.compareText('10', '2')            // returns -1
+   *    math.compare('10', '2')                // returns 1
    *
-   *    math.compareNatural('Answer: 10', 'Answer: 2'); // returns 1
-   *    math.compareText('Answer: 10', 'Answer: 2');    // returns -1
-   *    math.compare('Answer: 10', 'Answer: 2');
+   *    math.compareNatural('Answer: 10', 'Answer: 2') // returns 1
+   *    math.compareText('Answer: 10', 'Answer: 2')    // returns -1
+   *    math.compare('Answer: 10', 'Answer: 2')
    *        // Error: Cannot convert "Answer: 10" to a number
    *
-   *    var a = math.unit('5 cm');
-   *    var b = math.unit('40 mm');
-   *    math.compareNatural(a, b);              // returns 1
+   *    const a = math.unit('5 cm')
+   *    const b = math.unit('40 mm')
+   *    math.compareNatural(a, b)              // returns 1
    *
-   *    var c = math.complex('2 + 3i');
-   *    var d = math.complex('2 + 4i');
-   *    math.compareNatural(c, d);              // returns -1
+   *    const c = math.complex('2 + 3i')
+   *    const d = math.complex('2 + 4i')
+   *    math.compareNatural(c, d)              // returns -1
    *
-   *    math.compareNatural([1, 2, 4], [1, 2, 3]); // returns 1
-   *    math.compareNatural([1, 2, 3], [1, 2]);    // returns 1
-   *    math.compareNatural([1, 5], [1, 2, 3]);    // returns 1
-   *    math.compareNatural([1, 2], [1, 2]);       // returns 0
+   *    math.compareNatural([1, 2, 4], [1, 2, 3]) // returns 1
+   *    math.compareNatural([1, 2, 3], [1, 2])    // returns 1
+   *    math.compareNatural([1, 5], [1, 2, 3])    // returns 1
+   *    math.compareNatural([1, 2], [1, 2])       // returns 0
    *
-   *    math.compareNatural({a: 2}, {a: 4});       // returns -1
+   *    math.compareNatural({a: 2}, {a: 4})       // returns -1
    *
    * See also:
    *
@@ -76,11 +76,11 @@ function factory (type, config, load, typed) {
    * @return {number} Returns the result of the comparison:
    *                  1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  var compareNatural = typed('compareNatural', {
+  const compareNatural = typed('compareNatural', {
     'any, any': function (x, y) {
-      var typeX = getTypeOf(x)
-      var typeY = getTypeOf(y)
-      var c
+      const typeX = getTypeOf(x)
+      const typeY = getTypeOf(y)
+      let c
 
       // numeric types
       if ((typeX === 'number' || typeX === 'BigNumber' || typeX === 'Fraction') &&
@@ -202,8 +202,8 @@ function factory (type, config, load, typed) {
    */
   function compareArrays (x, y) {
     // compare each value
-    for (var i = 0, ii = Math.min(x.length, y.length); i < ii; i++) {
-      var v = compareNatural(x[i], y[i])
+    for (let i = 0, ii = Math.min(x.length, y.length); i < ii; i++) {
+      const v = compareNatural(x[i], y[i])
       if (v !== 0) {
         return v
       }
@@ -228,20 +228,20 @@ function factory (type, config, load, typed) {
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
   function compareObjects (x, y) {
-    var keysX = Object.keys(x)
-    var keysY = Object.keys(y)
+    const keysX = Object.keys(x)
+    const keysY = Object.keys(y)
 
     // compare keys
     keysX.sort(naturalSort)
     keysY.sort(naturalSort)
-    var c = compareArrays(keysX, keysY)
+    const c = compareArrays(keysX, keysY)
     if (c !== 0) {
       return c
     }
 
     // compare values
-    for (var i = 0; i < keysX.length; i++) {
-      var v = compareNatural(x[keysX[i]], y[keysY[i]])
+    for (let i = 0; i < keysX.length; i++) {
+      const v = compareNatural(x[keysX[i]], y[keysY[i]])
       if (v !== 0) {
         return v
       }

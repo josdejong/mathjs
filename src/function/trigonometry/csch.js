@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var sign = require('../../utils/number').sign
+const deepMap = require('../../utils/collection/deepMap')
+const sign = require('../../utils/number').sign
 
 function factory (type, config, load, typed) {
   /**
@@ -17,8 +17,8 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    // csch(x) = 1/ sinh(x)
-   *    math.csch(0.5);       // returns 1.9190347513349437
-   *    1 / math.sinh(0.5);   // returns 1.9190347513349437
+   *    math.csch(0.5)       // returns 1.9190347513349437
+   *    1 / math.sinh(0.5)   // returns 1.9190347513349437
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cosecant of x
    */
-  var csch = typed('csch', {
+  const csch = typed('csch', {
     'number': _csch,
 
     'Complex': function (x) {

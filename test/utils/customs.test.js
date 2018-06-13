@@ -1,8 +1,8 @@
 // test boolean utils
-var assert = require('assert')
-var approx = require('../../tools/approx')
-var customs = require('../../src/utils/customs')
-var math = require('../../src/index')
+const assert = require('assert')
+const approx = require('../../tools/approx')
+const customs = require('../../src/utils/customs')
+const math = require('../../src/index')
 
 describe('customs', function () {
   describe('isSafeMethod', function () {
@@ -31,32 +31,32 @@ describe('customs', function () {
       var object = {
         foo: function () {}
       }
-      var object2 = Object.create(object)
+      const object2 = Object.create(object)
       assert.equal(customs.isSafeMethod(object2, 'foo'), true)
 
       // ghosted native method
-      var object3 = {}
+      const object3 = {}
       object3.toString = function () {}
       assert.equal(customs.isSafeMethod(object3, 'toString'), false)
     })
 
     it('function objects', function () {
-      var f = function () {}
+      const f = function () {}
 
       assert.equal(customs.isSafeMethod(f, 'call'), false)
       assert.equal(customs.isSafeMethod(f, 'bind'), false)
     })
 
     it('classes', function () {
-      var matrix = math.matrix()
+      const matrix = math.matrix()
       assert.equal(customs.isSafeMethod(matrix, 'get'), true)
       assert.equal(customs.isSafeMethod(matrix, 'toString'), true)
 
-      var complex = math.complex()
+      const complex = math.complex()
       assert.equal(customs.isSafeMethod(complex, 'sqrt'), true)
       assert.equal(customs.isSafeMethod(complex, 'toString'), true)
 
-      var unit = math.unit('5cm')
+      const unit = math.unit('5cm')
       assert.equal(customs.isSafeMethod(unit, 'toNumeric'), true)
       assert.equal(customs.isSafeMethod(unit, 'toString'), true)
 
@@ -90,7 +90,7 @@ describe('customs', function () {
 
   describe('isSafeProperty', function () {
     it('should test properties on plain objects', function () {
-      var object = {}
+      const object = {}
 
       /* From Object.prototype:
         Object.getOwnPropertyNames(Object.prototype).forEach(
@@ -116,8 +116,8 @@ describe('customs', function () {
     })
 
     it('should test inherited properties on plain objects ', function () {
-      var object1 = {}
-      var object2 = Object.create(object1)
+      const object1 = {}
+      const object2 = Object.create(object1)
       object1.foo = true
       object2.bar = true
       assert.equal(customs.isSafeProperty(object2, 'foo'), true)
@@ -131,16 +131,16 @@ describe('customs', function () {
     })
 
     it('should test for ghosted native property', function () {
-      var array1 = []
-      var array2 = Object.create(array1)
+      const array1 = []
+      const array2 = Object.create(array1)
       array2.length = Infinity
       assert.equal(customs.isSafeProperty(array2, 'length'), true)
     })
   })
 
   it('should distinguish plain objects', function () {
-    var a = {}
-    var b = Object.create(a)
+    const a = {}
+    const b = Object.create(a)
     assert.equal(customs.isPlainObject(a), true)
     assert.equal(customs.isPlainObject(b), true)
 

@@ -34,11 +34,11 @@ number &#124; Array | Returns a single random value from array when number is 1 
 ## Examples
 
 ```js
-math.pickRandom([3, 6, 12, 2]);                  // returns one of the values in the array
-math.pickRandom([3, 6, 12, 2], 2);               // returns an array of two of the values in the array
-math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1]);    // returns one of the values in the array with weighted distribution
-math.pickRandom([3, 6, 12, 2], 2, [1, 3, 2, 1]); // returns an array of two of the values in the array with weighted distribution
-math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1], 2); // returns an array of two of the values in the array with weighted distribution
+math.pickRandom([3, 6, 12, 2])                  // returns one of the values in the array
+math.pickRandom([3, 6, 12, 2], 2)               // returns an array of two of the values in the array
+math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1])    // returns one of the values in the array with weighted distribution
+math.pickRandom([3, 6, 12, 2], 2, [1, 3, 2, 1]) // returns an array of two of the values in the array with weighted distribution
+math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1], 2) // returns an array of two of the values in the array with weighted distribution
 ```
 
 

@@ -30,7 +30,7 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Hyperbolic c
 ## Examples
 
 ```js
-math.cosh(0.5);       // returns number 1.1276259652063807
+math.cosh(0.5)       // returns number 1.1276259652063807
 ```
 
 

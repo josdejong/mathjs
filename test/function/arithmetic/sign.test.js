@@ -1,10 +1,10 @@
 // test sign
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var fraction = math.fraction
-var complex = math.complex
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const fraction = math.fraction
+const complex = math.complex
 
 describe('sign', function () {
   it('should calculate the sign of a boolean', function () {
@@ -25,7 +25,7 @@ describe('sign', function () {
   })
 
   it('should calculate the sign of a fraction', function () {
-    var a = fraction(0.5)
+    const a = fraction(0.5)
     assert(math.sign(a) instanceof math.type.Fraction)
     assert.equal(math.sign(a).toString(), '1')
     assert.equal(math.sign(fraction(-0.5)).toString(), '-1')
@@ -74,7 +74,7 @@ describe('sign', function () {
   })
 
   it('should LaTeX sign', function () {
-    var expression = math.parse('sign(-4)')
+    const expression = math.parse('sign(-4)')
     assert.equal(expression.toTex(), '\\mathrm{sign}\\left(-4\\right)')
   })
 })

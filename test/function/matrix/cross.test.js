@@ -1,6 +1,6 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
 
 describe('cross', function () {
   it('should calculate cross product for two arrays', function () {
@@ -44,7 +44,7 @@ describe('cross', function () {
   })
 
   it('should LaTeX cross', function () {
-    var expression = math.parse('cross([1],[2])')
+    const expression = math.parse('cross([1],[2])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)\\times\\left(\\begin{bmatrix}2\\\\\\end{bmatrix}\\right)')
   })
 })

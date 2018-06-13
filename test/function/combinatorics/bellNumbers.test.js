@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  bellNumbers = math.bellNumbers
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), bellNumbers = math.bellNumbers
 
 describe('bellNumbers', function () {
   it('should calculate the number of partitions of a set', function () {
@@ -36,7 +33,7 @@ describe('bellNumbers', function () {
   })
 
   it('should LaTeX bellNumbers', function () {
-    var expression = math.parse('bellNumbers(3)')
+    const expression = math.parse('bellNumbers(3)')
     assert.equal(expression.toTex(), '\\mathrm{B}_{3}')
   })
 })

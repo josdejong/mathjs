@@ -27,14 +27,14 @@ number | The determinant of `x`
 ## Examples
 
 ```js
-math.det([[1, 2], [3, 4]]); // returns -2
+math.det([[1, 2], [3, 4]]) // returns -2
 
-var A = [
+const A = [
   [-2, 2, 3],
   [-1, 1, 3],
   [2, 0, -1]
 ]
-math.det(A); // returns 6
+math.det(A) // returns 6
 ```
 
 

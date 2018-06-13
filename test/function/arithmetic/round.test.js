@@ -1,12 +1,12 @@
 // test round
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var fraction = math.fraction
-var matrix = math.matrix
-var sparse = math.sparse
-var round = math.round
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const fraction = math.fraction
+const matrix = math.matrix
+const sparse = math.sparse
+const round = math.round
 
 describe('round', function () {
   it('should round a number to te given number of decimals', function () {
@@ -59,7 +59,7 @@ describe('round', function () {
   })
 
   it('should round fractions', function () {
-    var a = fraction('2/3')
+    const a = fraction('2/3')
     assert(round(a) instanceof math.type.Fraction)
     assert.equal(a.toString(), '0.(6)')
 
@@ -129,8 +129,8 @@ describe('round', function () {
   })
 
   it('should LaTeX round', function () {
-    var expr1 = math.parse('round(1.1)')
-    var expr2 = math.parse('round(1.1,2)')
+    const expr1 = math.parse('round(1.1)')
+    const expr2 = math.parse('round(1.1,2)')
 
     assert.equal(expr1.toTex(), '\\left\\lfloor1.1\\right\\rceil')
     assert.equal(expr2.toTex(), '\\mathrm{round}\\left(1.1,2\\right)')

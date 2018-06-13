@@ -86,7 +86,7 @@ describe('expm', function () {
   })
 
   it('should LaTeX transpose', function () {
-    var expression = math.parse('expm([[1,2],[3,4]])')
+    const expression = math.parse('expm([[1,2],[3,4]])')
     assert.equal(expression.toTex(), '\\exp\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)')
   })
 })

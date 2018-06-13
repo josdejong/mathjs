@@ -1,16 +1,16 @@
 'use strict'
 
-var util = require('../../utils/index')
+const util = require('../../utils/index')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var divideScalar = load(require('../arithmetic/divideScalar'))
-  var addScalar = load(require('../arithmetic/addScalar'))
-  var multiply = load(require('../arithmetic/multiply'))
-  var unaryMinus = load(require('../arithmetic/unaryMinus'))
-  var det = load(require('../matrix/det'))
-  var identity = load(require('./identity'))
-  var abs = load(require('../arithmetic/abs'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const divideScalar = load(require('../arithmetic/divideScalar'))
+  const addScalar = load(require('../arithmetic/addScalar'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const unaryMinus = load(require('../arithmetic/unaryMinus'))
+  const det = load(require('../matrix/det'))
+  const identity = load(require('./identity'))
+  const abs = load(require('../arithmetic/abs'))
 
   /**
    * Calculate the inverse of a square matrix.
@@ -21,9 +21,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.inv([[1, 2], [3, 4]]);  // returns [[-2, 1], [1.5, -0.5]]
-   *     math.inv(4);                 // returns 0.25
-   *     1 / 4;                       // returns 0.25
+   *     math.inv([[1, 2], [3, 4]])  // returns [[-2, 1], [1.5, -0.5]]
+   *     math.inv(4)                 // returns 0.25
+   *     1 / 4                       // returns 0.25
    *
    * See also:
    *
@@ -32,9 +32,9 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x     Matrix to be inversed
    * @return {number | Complex | Array | Matrix} The inverse of `x`.
    */
-  var inv = typed('inv', {
+  const inv = typed('inv', {
     'Array | Matrix': function (x) {
-      var size = type.isMatrix(x) ? x.size() : util.array.size(x)
+      const size = type.isMatrix(x) ? x.size() : util.array.size(x)
       switch (size.length) {
         case 1:
           // vector
@@ -55,8 +55,8 @@ function factory (type, config, load, typed) {
 
         case 2:
           // two dimensional array
-          var rows = size[0]
-          var cols = size[1]
+          const rows = size[0]
+          const cols = size[1]
           if (rows == cols) {
             if (type.isMatrix(x)) {
               return matrix(
@@ -94,7 +94,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _inv (mat, rows, cols) {
-    var r, s, f, value, temp
+    let r, s, f, value, temp
 
     if (rows == 1) {
       // this is a 1 x 1 matrix
@@ -107,7 +107,7 @@ function factory (type, config, load, typed) {
       ]]
     } else if (rows == 2) {
       // this is a 2 x 2 matrix
-      var d = det(mat)
+      const d = det(mat)
       if (d == 0) {
         throw Error('Cannot calculate inverse, determinant is zero')
       }
@@ -129,20 +129,20 @@ function factory (type, config, load, typed) {
       //      http://math.uww.edu/~mcfarlat/inverse.htm
 
       // make a copy of the matrix (only the arrays, not of the elements)
-      var A = mat.concat()
+      const A = mat.concat()
       for (r = 0; r < rows; r++) {
         A[r] = A[r].concat()
       }
 
       // create an identity matrix which in the end will contain the
       // matrix inverse
-      var B = identity(rows).valueOf()
+      const B = identity(rows).valueOf()
 
       // loop over all columns, and perform row reductions
-      for (var c = 0; c < cols; c++) {
+      for (let c = 0; c < cols; c++) {
         // Pivoting: Swap row c with row r, where row r contains the largest element A[r][c]
-        var A_big = abs(A[c][c])
-        var r_big = c
+        let A_big = abs(A[c][c])
+        let r_big = c
         r = c + 1
         while (r < rows) {
           if (abs(A[r][c]) > A_big) {
@@ -161,11 +161,9 @@ function factory (type, config, load, typed) {
         }
 
         // eliminate non-zero values on the other rows at column c
-        var Ac = A[c],
-          Bc = B[c]
+        const Ac = A[c], Bc = B[c]
         for (r = 0; r < rows; r++) {
-          var Ar = A[r],
-            Br = B[r]
+          const Ar = A[r], Br = B[r]
           if (r != c) {
             // eliminate value at column c and row r
             if (Ar[c] != 0) {

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,8 +14,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.sec(2);      // returns number -2.4029979617223822
-   *    1 / math.cos(2);  // returns number -2.4029979617223822
+   *    math.sec(2)      // returns number -2.4029979617223822
+   *    1 / math.cos(2)  // returns number -2.4029979617223822
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Secant of x
    */
-  var sec = typed('sec', {
+  const sec = typed('sec', {
     'number': function (x) {
       return 1 / Math.cos(x)
     },

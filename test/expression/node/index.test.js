@@ -1,6 +1,6 @@
 // test the contents of index.js
-var assert = require('assert')
-var index = require('../../../src/expression/node/index')
+const assert = require('assert')
+const index = require('../../../src/expression/node/index')
 
 describe('node/index', function () {
   it('should contain all nodes', function () {

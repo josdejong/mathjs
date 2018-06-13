@@ -32,7 +32,7 @@ number &#124; BigNumber | Number of possible combinations.
 ## Examples
 
 ```js
-math.combinations(7, 5); // returns 21
+math.combinations(7, 5) // returns 21
 ```
 
 

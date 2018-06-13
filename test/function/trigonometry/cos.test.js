@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  cos = math.cos,
-  bigmath = math.create({number: 'BigNumber', precision: 15}),
-  biggermath = math.create({number: 'BigNumber', precision: 238})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cos = math.cos, bigmath = math.create({number: 'BigNumber', precision: 15}), biggermath = math.create({number: 'BigNumber', precision: 238})
 
 describe('cos', function () {
   it('should return the cosine of a boolean', function () {
@@ -34,12 +24,12 @@ describe('cos', function () {
     assert.deepEqual(bigmath.cos(biggermath.bignumber(0)).toString(), '1')
 
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
-    var result_val = '-0.99947004918247698171247470962484532559534008595265991588' +
+    const result_val = '-0.99947004918247698171247470962484532559534008595265991588' +
                         '25959085696348870383952892132851183764863885182646678036' +
                         '80857263937361947475191126604630777331941809888320749410' +
                         '59494006339537812110786663367929884637840572887762249921' +
                         '8425619255481'
-    var cos_val = biggermath.cos(biggermath.bignumber(103.64))
+    let cos_val = biggermath.cos(biggermath.bignumber(103.64))
     assert.equal(biggermath.bignumber(103.64).constructor.precision, 238)
     assert.equal(cos_val.constructor.precision, 238)
     assert.deepEqual(cos_val.toString(), result_val)
@@ -49,14 +39,14 @@ describe('cos', function () {
     assert.deepEqual(cos_val.toString(), result_val)
 
     biggermath.config({precision: 16})
-    var bigPi = biggermath.pi
+    const bigPi = biggermath.pi
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau
     assert.deepEqual(bigmath.cos(bigmath.bignumber(6)).toString(), '0.960170286650366')
     assert.deepEqual(bigmath.cos(bigmath.bignumber(7)).toString(), '0.753902254343305')
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
-    for (var x = -20; x < 20; x += 1) {
+    for (let x = -20; x < 20; x += 1) {
       approx.equal(bigmath.cos(bigmath.bignumber(x)).toNumber(), Math.cos(x))
     }
 
@@ -70,8 +60,7 @@ describe('cos', function () {
   })
 
   it('should return the cosine of a complex number', function () {
-    var re = 4.18962569096881,
-      im = 9.10922789375534
+    const re = 4.18962569096881, im = 9.10922789375534
     approx.deepEqual(cos(complex('2+3i')), complex(-re, -im))
     approx.deepEqual(cos(complex('2-3i')), complex(-re, im))
     approx.deepEqual(cos(complex('-2+3i')), complex(-re, im))
@@ -100,7 +89,7 @@ describe('cos', function () {
     assert.throws(function () { cos('string') })
   })
 
-  var cos123 = [0.540302305868140, -0.41614683654714, -0.989992496600445]
+  const cos123 = [0.540302305868140, -0.41614683654714, -0.989992496600445]
 
   it('should return the cos of each element of a matrix', function () {
     approx.deepEqual(cos(matrix([1, 2, 3])), matrix(cos123))
@@ -116,7 +105,7 @@ describe('cos', function () {
   })
 
   it('should LaTeX cos', function () {
-    var expression = math.parse('cos(1)')
+    const expression = math.parse('cos(1)')
     assert.equal(expression.toTex(), '\\cos\\left(1\\right)')
   })
 })

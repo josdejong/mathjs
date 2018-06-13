@@ -1,10 +1,10 @@
 'use strict'
 
-var size = require('../../utils/array').size
+const size = require('../../utils/array').size
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var multiplyScalar = load(require('../arithmetic/multiplyScalar'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const multiplyScalar = load(require('../arithmetic/multiplyScalar'))
   /**
      * Calculates the kronecker product of 2 matrices or vectors.
      *
@@ -18,10 +18,10 @@ function factory (type, config, load, typed) {
      *
      * Examples:
      *
-     *    math.kron([[1, 0], [0, 1]], [[1, 2], [3, 4]]);
+     *    math.kron([[1, 0], [0, 1]], [[1, 2], [3, 4]])
      *    // returns [ [ 1, 2, 0, 0 ], [ 3, 4, 0, 0 ], [ 0, 0, 1, 2 ], [ 0, 0, 3, 4 ] ]
      *
-     *    math.kron([1,1], [2,3,4]);
+     *    math.kron([1,1], [2,3,4])
      *    // returns [ [ 2, 3, 4, 2, 3, 4 ] ]
      *
      * See also:
@@ -32,7 +32,7 @@ function factory (type, config, load, typed) {
      * @param  {Array | Matrix} y     Second vector
      * @return {Array | Matrix}       Returns the kronecker product of `x` and `y`
      */
-  var kron = typed('kron', {
+  const kron = typed('kron', {
     'Matrix, Matrix': function (x, y) {
       return matrix(_kron(x.toArray(), y.toArray()))
     },
@@ -71,8 +71,8 @@ function factory (type, config, load, typed) {
       throw new RangeError('Vectors with dimensions greater then 2 are not supported expected ' +
             '(Size x = ' + JSON.stringify(a.length) + ', y = ' + JSON.stringify(b.length) + ')')
     }
-    var t = []
-    var r = []
+    let t = []
+    let r = []
 
     return a.map(function (a) {
       return b.map(function (b) {

@@ -1,18 +1,18 @@
 'use strict'
 
-var nearlyEqual = require('../../utils/number').nearlyEqual
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Test whether value x is larger than y.
@@ -30,12 +30,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.larger(2, 3);             // returns false
-   *    math.larger(5, 2 + 2);         // returns true
+   *    math.larger(2, 3)             // returns false
+   *    math.larger(5, 2 + 2)         // returns true
    *
-   *    var a = math.unit('5 cm');
-   *    var b = math.unit('2 inch');
-   *    math.larger(a, b);             // returns false
+   *    const a = math.unit('5 cm')
+   *    const b = math.unit('2 inch')
+   *    math.larger(a, b)             // returns false
    *
    * See also:
    *
@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger than y, else returns false
    */
-  var larger = typed('larger', {
+  const larger = typed('larger', {
 
     'boolean, boolean': function (x, y) {
       return x > y

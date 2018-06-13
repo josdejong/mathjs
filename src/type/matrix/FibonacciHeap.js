@@ -1,10 +1,10 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var smaller = load(require('../../function/relational/smaller'))
-  var larger = load(require('../../function/relational/larger'))
+  const smaller = load(require('../../function/relational/smaller'))
+  const larger = load(require('../../function/relational/larger'))
 
-  var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0)
+  const oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0)
 
   /**
    * Fibonacci Heap implementation, used interally for Matrix math.
@@ -33,7 +33,7 @@ function factory (type, config, load, typed) {
    */
   FibonacciHeap.prototype.insert = function (key, value) {
     // create node
-    var node = {
+    const node = {
       key: key,
       value: value,
       degree: 0
@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
     // check we have a node in the minimum
     if (this._minimum) {
       // minimum node
-      var minimum = this._minimum
+      const minimum = this._minimum
       // update left & right of node
       node.left = minimum
       node.right = minimum.right
@@ -97,19 +97,19 @@ function factory (type, config, load, typed) {
    */
   FibonacciHeap.prototype.extractMinimum = function () {
     // node to remove
-    var node = this._minimum
+    const node = this._minimum
     // check we have a minimum
     if (node === null) { return node }
     // current minimum
-    var minimum = this._minimum
+    let minimum = this._minimum
     // get number of children
-    var numberOfChildren = node.degree
+    let numberOfChildren = node.degree
     // pointer to the first child
-    var x = node.child
+    let x = node.child
     // for each child of node do...
     while (numberOfChildren > 0) {
       // store node in right side
-      var tempRight = x.right
+      const tempRight = x.right
       // remove x from child list
       x.left.right = x.right
       x.right.left = x.left
@@ -164,11 +164,11 @@ function factory (type, config, load, typed) {
    * Running time: O(1) amortized.
    * @memberof FibonacciHeap
    */
-  var _decreaseKey = function (minimum, node, key) {
+  function _decreaseKey (minimum, node, key) {
     // set node key
     node.key = key
     // get parent node
-    var parent = node.parent
+    const parent = node.parent
     if (parent && smaller(node.key, parent.key)) {
       // remove node from parent
       _cut(minimum, node, parent)
@@ -186,7 +186,7 @@ function factory (type, config, load, typed) {
    * This method assumes that min is non-null. Running time: O(1).
    * @memberof FibonacciHeap
    */
-  var _cut = function (minimum, node, parent) {
+  function _cut (minimum, node, parent) {
     // remove node from parent children and decrement Degree[parent]
     node.left.right = node.right
     node.right.left = node.left
@@ -212,9 +212,9 @@ function factory (type, config, load, typed) {
    * Running time: O(log n); O(1) excluding the recursion.
    * @memberof FibonacciHeap
    */
-  var _cascadingCut = function (minimum, node) {
+  function _cascadingCut (minimum, node) {
     // store parent node
-    var parent = node.parent
+    const parent = node.parent
     // if there's a parent...
     if (!parent) { return }
     // if node is unmarked, set it marked
@@ -232,7 +232,7 @@ function factory (type, config, load, typed) {
    * Make the first node a child of the second one. Running time: O(1) actual.
    * @memberof FibonacciHeap
    */
-  var _linkNodes = function (node, parent) {
+  const _linkNodes = function (node, parent) {
     // remove node from root list of heap
     node.left.right = node.right
     node.right.left = node.left
@@ -254,14 +254,14 @@ function factory (type, config, load, typed) {
     node.mark = false
   }
 
-  var _findMinimumNode = function (minimum, size) {
+  function _findMinimumNode (minimum, size) {
     // to find trees of the same degree efficiently we use an array of length O(log n) in which we keep a pointer to one root of each degree
-    var arraySize = Math.floor(Math.log(size) * oneOverLogPhi) + 1
+    const arraySize = Math.floor(Math.log(size) * oneOverLogPhi) + 1
     // create list with initial capacity
-    var array = new Array(arraySize)
+    const array = new Array(arraySize)
     // find the number of root nodes.
-    var numRoots = 0
-    var x = minimum
+    let numRoots = 0
+    let x = minimum
     if (x) {
       numRoots++
       x = x.right
@@ -271,13 +271,13 @@ function factory (type, config, load, typed) {
       }
     }
     // vars
-    var y
+    let y
     // For each node in root list do...
     while (numRoots > 0) {
       // access this node's degree..
-      var d = x.degree
+      let d = x.degree
       // get next node
-      var next = x.right
+      const next = x.right
       // check if there is a node already in array with the same degree
       while (true) {
         // get node with the same degree is any
@@ -285,7 +285,7 @@ function factory (type, config, load, typed) {
         if (!y) { break }
         // make one node with the same degree a child of the other, do this based on the key value.
         if (larger(x.key, y.key)) {
-          var temp = y
+          const temp = y
           y = x
           x = temp
         }
@@ -304,7 +304,7 @@ function factory (type, config, load, typed) {
     // Set min to null (effectively losing the root list) and reconstruct the root list from the array entries in array[].
     minimum = null
     // loop nodes in array
-    for (var i = 0; i < arraySize; i++) {
+    for (let i = 0; i < arraySize; i++) {
       // get current node
       y = array[i]
       if (!y) { continue }

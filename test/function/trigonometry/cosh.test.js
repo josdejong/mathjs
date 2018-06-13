@@ -1,13 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  cosh = math.cosh,
-  bigmath = math.create({number: 'BigNumber', precision: 20})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cosh = math.cosh, bigmath = math.create({number: 'BigNumber', precision: 20})
 
 describe('cosh', function () {
   it('should return the cosh of a boolean', function () {
@@ -24,12 +15,12 @@ describe('cosh', function () {
   })
 
   it('should return the cosh of a bignumber', function () {
-    var coshBig = bigmath.cosh
-    var Big = bigmath.bignumber
+    const coshBig = bigmath.cosh
+    const Big = bigmath.bignumber
 
-    var arg1 = Big(-3)
-    var arg9 = Big(Infinity)
-    var arg10 = Big(-Infinity)
+    const arg1 = Big(-3)
+    const arg9 = Big(Infinity)
+    const arg10 = Big(-Infinity)
     assert.deepEqual(coshBig(arg1), Big('10.067661995777765842'))
     assert.deepEqual(coshBig(Big(-2)), Big('3.7621956910836314596'))
     assert.deepEqual(coshBig(Big(-1)), Big('1.5430806348152437785'))
@@ -71,7 +62,7 @@ describe('cosh', function () {
     assert.throws(function () { cosh('string') })
   })
 
-  var cosh123 = [1.5430806348152, 3.7621956910836, 10.067661995778]
+  const cosh123 = [1.5430806348152, 3.7621956910836, 10.067661995778]
 
   it('should return the cosh of each element of an array', function () {
     approx.deepEqual(cosh([1, 2, 3]), cosh123)
@@ -87,7 +78,7 @@ describe('cosh', function () {
   })
 
   it('should LaTeX cosh', function () {
-    var expression = math.parse('cosh(1)')
+    const expression = math.parse('cosh(1)')
     assert.equal(expression.toTex(), '\\cosh\\left(1\\right)')
   })
 })

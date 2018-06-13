@@ -1,14 +1,14 @@
 // test log1p
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var mathPredictable = math.create({predictable: true})
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var range = math.range
-var log1p = math.log1p
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const mathPredictable = math.create({predictable: true})
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const range = math.range
+const log1p = math.log1p
 
 describe('log1p', function () {
   it('should return the log1p of a boolean value', function () {
@@ -50,7 +50,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of positive bignumbers', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     assert.deepEqual(bigmath.log1p(bigmath.bignumber(-1)).toString(), '-Infinity')
     assert.deepEqual(bigmath.log1p(bigmath.bignumber(0)), bigmath.bignumber('0'))
@@ -62,7 +62,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of negative bignumbers', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     approx.deepEqual(bigmath.log1p(bigmath.bignumber(-2)), complex('0.000000000000000 + 3.141592653589793i'))
     approx.deepEqual(bigmath.log1p(bigmath.bignumber(-3)), complex('0.693147180559945 + 3.141592653589793i'))
@@ -92,7 +92,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of each element of a matrix', function () {
-    var res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891]
+    const res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891]
     approx.deepEqual(log1p([0, 1, 2, 3]), res)
     approx.deepEqual(log1p(matrix([0, 1, 2, 3])), matrix(res))
     approx.deepEqual(log1p(matrix([[0, 1], [2, 3]])),
@@ -100,8 +100,8 @@ describe('log1p', function () {
   })
 
   it('should LaTeX log1p', function () {
-    var expr1 = math.parse('log1p(e)')
-    var expr2 = math.parse('log1p(32,2)')
+    const expr1 = math.parse('log1p(e)')
+    const expr2 = math.parse('log1p(32,2)')
 
     assert.equal(expr1.toTex(), '\\ln\\left( e+1\\right)')
     assert.equal(expr2.toTex(), '\\log_{2}\\left(32+1\\right)')

@@ -1,9 +1,5 @@
 // test xgcd
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index').create({matrix: 'Array'}),
-  gcd = math.gcd,
-  xgcd = math.xgcd
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index').create({matrix: 'Array'}), gcd = math.gcd, xgcd = math.xgcd
 
 describe('xgcd', function () {
   it('should return extended greatest common divisor of two numbers', function () {
@@ -79,10 +75,10 @@ describe('xgcd', function () {
   })
 
   it('should return a matrix when configured to use matrices', function () {
-    var math1 = math.create({matrix: 'Matrix'})
+    const math1 = math.create({matrix: 'Matrix'})
     assert.deepEqual(math1.xgcd(65, 40), math.matrix([5, -3, 5]))
 
-    var math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({matrix: 'Array'})
     assert.deepEqual(math2.xgcd(65, 40), [5, -3, 5])
   })
 
@@ -114,7 +110,7 @@ describe('xgcd', function () {
   })
 
   it('should LaTeX xgcd', function () {
-    var expression = math.parse('xgcd(2,3)')
+    const expression = math.parse('xgcd(2,3)')
     assert.equal(expression.toTex(), '\\mathrm{xgcd}\\left(2,3\\right)')
   })
 })

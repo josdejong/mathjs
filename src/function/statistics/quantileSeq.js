@@ -1,15 +1,15 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var isNumber = require('../../utils/number').isNumber
-var flatten = require('../../utils/array').flatten
-var isCollection = require('../../utils/collection/isCollection')
+const isInteger = require('../../utils/number').isInteger
+const isNumber = require('../../utils/number').isNumber
+const flatten = require('../../utils/array').flatten
+const isCollection = require('../../utils/collection/isCollection')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'))
-  var multiply = load(require('../arithmetic/multiply'))
-  var partitionSelect = load(require('../matrix/partitionSelect'))
-  var compare = load(require('../relational/compare'))
+  const add = load(require('../arithmetic/add'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const partitionSelect = load(require('../matrix/partitionSelect'))
+  const compare = load(require('../relational/compare'))
 
   /**
    * Compute the prob order quantile of a matrix or a list with values.
@@ -28,10 +28,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.quantileSeq([3, -1, 5, 7], 0.5);         // returns 4
-   *     math.quantileSeq([3, -1, 5, 7], [1/3, 2/3]);  // returns [3, 5]
-   *     math.quantileSeq([3, -1, 5, 7], 2);           // returns [3, 5]
-   *     math.quantileSeq([-1, 3, 5, 7], 0.5, true);   // returns 4
+   *     math.quantileSeq([3, -1, 5, 7], 0.5)         // returns 4
+   *     math.quantileSeq([3, -1, 5, 7], [1/3, 2/3])  // returns [3, 5]
+   *     math.quantileSeq([3, -1, 5, 7], 2)           // returns [3, 5]
+   *     math.quantileSeq([-1, 3, 5, 7], 0.5, true)   // returns 4
    *
    * See also:
    *
@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
    * @return {Number, BigNumber, Unit, Array}   Quantile(s)
    */
   function quantileSeq (data, probOrN, sorted) {
-    var probArr, dataArr, one
+    let probArr, dataArr, one
 
     if (arguments.length < 2 || arguments.length > 3) {
       throw new SyntaxError('Function quantileSeq requires two or three parameters')
@@ -72,9 +72,9 @@ function factory (type, config, load, typed) {
               throw new Error('N must be a positive integer')
             }
 
-            var nPlusOne = probOrN + 1
+            const nPlusOne = probOrN + 1
             probArr = new Array(probOrN)
-            for (var i = 0; i < probOrN;) {
+            for (let i = 0; i < probOrN;) {
               probArr[i] = _quantileSeq(dataArr, (++i) / nPlusOne, sorted)
             }
             return probArr
@@ -99,16 +99,16 @@ function factory (type, config, load, typed) {
               throw new Error('N must be a positive integer')
             }
 
-            // largest possible Array length is 2^32-1;
+            // largest possible Array length is 2^32-1
             // 2^32 < 10^15, thus safe conversion guaranteed
-            var intN = probOrN.toNumber()
+            const intN = probOrN.toNumber()
             if (intN > 4294967295) {
               throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
             }
 
-            var nPlusOne = new type.BigNumber(intN + 1)
+            const nPlusOne = new type.BigNumber(intN + 1)
             probArr = new Array(intN)
-            for (var i = 0; i < intN;) {
+            for (let i = 0; i < intN;) {
               probArr[i] = _quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted)
             }
             return probArr
@@ -118,8 +118,8 @@ function factory (type, config, load, typed) {
         if (Array.isArray(probOrN)) {
           // quantileSeq([a, b, c, d, ...], [prob1, prob2, ...][,sorted])
           probArr = new Array(probOrN.length)
-          for (var i = 0; i < probArr.length; ++i) {
-            var currProb = probOrN[i]
+          for (let i = 0; i < probArr.length; ++i) {
+            const currProb = probOrN[i]
             if (isNumber(currProb)) {
               if (currProb < 0 || currProb > 1) {
                 throw new Error('Probability must be between 0 and 1, inclusive')
@@ -157,26 +157,27 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _quantileSeq (array, prob, sorted) {
-    var flat = flatten(array)
-    var len = flat.length
+    const flat = flatten(array)
+    const len = flat.length
     if (len === 0) {
       throw new Error('Cannot calculate quantile of an empty sequence')
     }
 
     if (isNumber(prob)) {
-      var index = prob * (len - 1)
-      var fracPart = index % 1
+      const index = prob * (len - 1)
+      const fracPart = index % 1
       if (fracPart === 0) {
-        var value = sorted ? flat[index] : partitionSelect(flat, index)
+        const value = sorted ? flat[index] : partitionSelect(flat, index)
 
         validate(value)
 
         return value
       }
 
-      var integerPart = Math.floor(index)
+      const integerPart = Math.floor(index)
 
-      var left, right
+      let left
+      let right
       if (sorted) {
         left = flat[integerPart]
         right = flat[integerPart + 1]
@@ -185,7 +186,7 @@ function factory (type, config, load, typed) {
 
         // max of partition is kth largest
         left = flat[integerPart]
-        for (var i = 0; i < integerPart; ++i) {
+        for (let i = 0; i < integerPart; ++i) {
           if (compare(flat[i], left) > 0) {
             left = flat[i]
           }
@@ -200,21 +201,22 @@ function factory (type, config, load, typed) {
     }
 
     // If prob is a BigNumber
-    var index = prob.times(len - 1)
+    let index = prob.times(len - 1)
     if (index.isInteger()) {
       index = index.toNumber()
-      var value = sorted ? flat[index] : partitionSelect(flat, index)
+      const value = sorted ? flat[index] : partitionSelect(flat, index)
 
       validate(value)
 
       return value
     }
 
-    var integerPart = index.floor()
-    var fracPart = index.minus(integerPart)
-    var integerPartNumber = integerPart.toNumber()
+    const integerPart = index.floor()
+    const fracPart = index.minus(integerPart)
+    const integerPartNumber = integerPart.toNumber()
 
-    var left, right
+    let left
+    let right
     if (sorted) {
       left = flat[integerPartNumber]
       right = flat[integerPartNumber + 1]
@@ -223,7 +225,7 @@ function factory (type, config, load, typed) {
 
       // max of partition is kth largest
       left = flat[integerPartNumber]
-      for (var i = 0; i < integerPartNumber; ++i) {
+      for (let i = 0; i < integerPartNumber; ++i) {
         if (compare(flat[i], left) > 0) {
           left = flat[i]
         }
@@ -234,7 +236,7 @@ function factory (type, config, load, typed) {
     validate(right)
 
     // Q(prob) = (1-f)*A[floor(index)] + f*A[floor(index)+1]
-    var one = new fracPart.constructor(1)
+    const one = new fracPart.constructor(1)
     return add(multiply(left, one.minus(fracPart)), multiply(right, fracPart))
   }
 
@@ -244,7 +246,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Unit} x
    * @private
    */
-  var validate = typed({
+  const validate = typed({
     'number | BigNumber | Unit': function (x) {
       return x
     }

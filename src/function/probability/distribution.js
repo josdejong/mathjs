@@ -1,17 +1,17 @@
 'use strict'
 
-var ArgumentsError = require('../../error/ArgumentsError')
-var isCollection = require('../../utils/collection/isCollection')
-var isNumber = require('../../utils/number').isNumber
+const ArgumentsError = require('../../error/ArgumentsError')
+const isCollection = require('../../utils/collection/isCollection')
+const isNumber = require('../../utils/number').isNumber
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
 function factory (type, config, load, typed, math) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var array = require('../../utils/array')
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const array = require('../../utils/array')
 
   // seeded pseudo random number generator
-  var rng = load(require('./seededRNG'))
+  const rng = load(require('./seededRNG'))
 
   /**
    * Create a distribution object with a set of random functions for given
@@ -23,8 +23,8 @@ function factory (type, config, load, typed, math) {
    *
    * Examples:
    *
-   *     var normalDist = math.distribution('normal'); // create a normal distribution
-   *     normalDist.random(0, 10);                     // get a random value between 0 and 10
+   *     const normalDist = math.distribution('normal') // create a normal distribution
+   *     normalDist.random(0, 10)                     // get a random value between 0 and 10
    *
    * See also:
    *
@@ -39,15 +39,14 @@ function factory (type, config, load, typed, math) {
   function distribution (name) {
     if (!distributions.hasOwnProperty(name)) { throw new Error('Unknown distribution ' + name) }
 
-    var args = Array.prototype.slice.call(arguments, 1),
-      distribution = distributions[name].apply(this, args)
+    const args = Array.prototype.slice.call(arguments, 1), distribution = distributions[name].apply(this, args)
 
     return (function (distribution) {
       // This is the public API for all distributions
-      var randFunctions = {
+      const randFunctions = {
 
         random: function (arg1, arg2, arg3) {
-          var size, min, max
+          let size, min, max
 
           if (arguments.length > 3) {
             throw new ArgumentsError('random', arguments.length, 0, 3)
@@ -82,7 +81,7 @@ function factory (type, config, load, typed, math) {
           if (max === undefined) max = 1
           if (min === undefined) min = 0
           if (size !== undefined) {
-            var res = _randomDataForMatrix(size.valueOf(), min, max, _random)
+            const res = _randomDataForMatrix(size.valueOf(), min, max, _random)
             return type.isMatrix(size) ? matrix(res) : res
           }
           return _random(min, max)
@@ -90,33 +89,33 @@ function factory (type, config, load, typed, math) {
 
         randomInt: typed({
           'number | Array': function (arg) {
-            var min = 0
+            const min = 0
 
             if (isCollection(arg)) {
-              var size = arg
-              var max = 1
-              var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
+              const size = arg
+              const max = 1
+              const res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
               return type.isMatrix(size) ? matrix(res) : res
             } else {
-              var max = arg
+              const max = arg
               return _randomInt(min, max)
             }
           },
           'number | Array, number': function (arg1, arg2) {
             if (isCollection(arg1)) {
-              var size = arg1
-              var max = arg2
-              var min = 0
-              var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
+              const size = arg1
+              const max = arg2
+              const min = 0
+              const res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
               return type.isMatrix(size) ? matrix(res) : res
             } else {
-              var min = arg1
-              var max = arg2
+              const min = arg1
+              const max = arg2
               return _randomInt(min, max)
             }
           },
           'Array, number, number': function (size, min, max) {
-            var res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
+            const res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
             return (size && size.isMatrix === true) ? matrix(res) : res
           }
         }),
@@ -126,7 +125,7 @@ function factory (type, config, load, typed, math) {
             return _pickRandom(possibles)
           },
           'Array, number | Array': function (possibles, arg2) {
-            var number, weights
+            let number, weights
 
             if (Array.isArray(arg2)) {
               weights = arg2
@@ -139,7 +138,7 @@ function factory (type, config, load, typed, math) {
             return _pickRandom(possibles, number, weights)
           },
           'Array, number | Array, Array | number': function (possibles, arg2, arg3) {
-            var number, weights
+            let number, weights
 
             if (Array.isArray(arg2)) {
               weights = arg2
@@ -158,8 +157,8 @@ function factory (type, config, load, typed, math) {
         })
       }
 
-      var _pickRandom = function (possibles, number, weights) {
-        var single = (typeof number === 'undefined')
+      function _pickRandom (possibles, number, weights) {
+        const single = (typeof number === 'undefined')
 
         if (single) {
           number = 1
@@ -175,14 +174,14 @@ function factory (type, config, load, typed, math) {
           throw new Error('Only one dimensional vectors supported')
         }
 
+        let totalWeights = 0
+
         if (typeof weights !== 'undefined') {
           if (weights.length != possibles.length) {
             throw new Error('Weights must have the same length as possibles')
           }
 
-          var totalWeights = 0
-
-          for (var i = 0, len = weights.length; i < len; i++) {
+          for (let i = 0, len = weights.length; i < len; i++) {
             if (!isNumber(weights[i]) || weights[i] < 0) {
               throw new Error('Weights must be an array of positive numbers')
             }
@@ -191,7 +190,7 @@ function factory (type, config, load, typed, math) {
           }
         }
 
-        var length = possibles.length
+        const length = possibles.length
 
         if (length == 0) {
           return []
@@ -199,16 +198,16 @@ function factory (type, config, load, typed, math) {
           return number > 1 ? possibles : possibles[0]
         }
 
-        var result = []
-        var pick
+        const result = []
+        let pick
 
         while (result.length < number) {
           if (typeof weights === 'undefined') {
             pick = possibles[Math.floor(rng() * length)]
           } else {
-            var randKey = rng() * totalWeights
+            let randKey = rng() * totalWeights
 
-            for (var i = 0, len = possibles.length; i < len; i++) {
+            for (let i = 0, len = possibles.length; i < len; i++) {
               randKey -= weights[i]
 
               if (randKey < 0) {
@@ -228,25 +227,25 @@ function factory (type, config, load, typed, math) {
         // TODO: add support for multi dimensional matrices
       }
 
-      var _random = function (min, max) {
+      function _random (min, max) {
         return min + distribution() * (max - min)
       }
 
-      var _randomInt = function (min, max) {
+      function _randomInt (min, max) {
         return Math.floor(min + distribution() * (max - min))
       }
 
       // This is a function for generating a random matrix recursively.
-      var _randomDataForMatrix = function (size, min, max, randFunc) {
-        var data = [], length, i
+      function _randomDataForMatrix (size, min, max, randFunc) {
+        const data = []
         size = size.slice(0)
 
         if (size.length > 1) {
-          for (var i = 0, length = size.shift(); i < length; i++) {
+          for (let i = 0, length = size.shift(); i < length; i++) {
             data.push(_randomDataForMatrix(size, min, max, randFunc))
           }
         } else {
-          for (var i = 0, length = size.shift(); i < length; i++) {
+          for (let i = 0, length = size.shift(); i < length; i++) {
             data.push(randFunc(min, max))
           }
         }
@@ -260,7 +259,7 @@ function factory (type, config, load, typed, math) {
 
   // Each distribution is a function that takes no argument and when called returns
   // a number between 0 and 1.
-  var distributions = {
+  let distributions = {
 
     uniform: function () {
       return rng
@@ -272,8 +271,7 @@ function factory (type, config, load, typed, math) {
     // so that 99.7% values are in [0, 1].
     normal: function () {
       return function () {
-        var u1, u2,
-          picked = -1
+        let u1, u2, picked = -1
         // We reject values outside of the interval [0, 1]
         // TODO: check if it is ok to do that?
         while (picked < 0 || picked > 1) {

@@ -1,7 +1,7 @@
-var assert = require('assert')
-var math = require('../../../../src/index')
-var splitUnit = math.splitUnit
-var Unit = math.type.Unit
+const assert = require('assert')
+const math = require('../../../../src/index')
+const splitUnit = math.splitUnit
+const Unit = math.type.Unit
 
 describe('splitUnit', function () {
   it('should split a unit into parts', function () {

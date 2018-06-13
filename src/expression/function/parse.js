@@ -1,11 +1,11 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../parse'))
+  const parse = load(require('../parse'))
 
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
-   * invoking node.eval();
+   * invoking node.eval().
    *
    * Note the evaluating arbitrary expressions may involve security risks,
    * see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
@@ -19,18 +19,18 @@ function factory (type, config, load, typed) {
    *
    * Example:
    *
-   *     var node = math.parse('sqrt(3^2 + 4^2)');
-   *     node.compile().eval(); // 5
+   *     const node1 = math.parse('sqrt(3^2 + 4^2)')
+   *     node1.compile().eval() // 5
    *
-   *     var scope = {a:3, b:4}
-   *     var node = math.parse('a * b'); // 12
-   *     var code = node.compile();
-   *     code.eval(scope); // 12
-   *     scope.a = 5;
-   *     code.eval(scope); // 20
+   *     let scope = {a:3, b:4}
+   *     const node2 = math.parse('a * b') // 12
+   *     const code2 = node2.compile()
+   *     code2.eval(scope) // 12
+   *     scope.a = 5
+   *     code2.eval(scope) // 20
    *
-   *     var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
-   *     nodes[2].compile().eval(); // 12
+   *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
+   *     nodes[2].compile().eval() // 12
    *
    * See also:
    *

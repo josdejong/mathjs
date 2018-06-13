@@ -1,12 +1,8 @@
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  quantileSeq = math.quantileSeq
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), bignumber = math.bignumber, quantileSeq = math.quantileSeq
 
 describe('quantileSeq', function () {
   it('should return the quantileSeq from an array with number probability', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     assert.equal(quantileSeq(lst, 0), 1.3)
     assert.equal(quantileSeq(lst, 0.1), 1.75)
     assert.equal(quantileSeq(lst, 0.2), 2.2)
@@ -24,7 +20,7 @@ describe('quantileSeq', function () {
   })
 
   it('should return the quantileSeq from an ascending array with number probability', function () {
-    var lst = [1.3, 2.2, 2.7, 3.1, 3.3, 3.7]
+    const lst = [1.3, 2.2, 2.7, 3.1, 3.3, 3.7]
     assert.equal(quantileSeq(lst, 0, true), 1.3)
     assert.equal(quantileSeq(lst, 0.1, true), 1.75)
     assert.equal(quantileSeq(lst, 0.2, true), 2.2)
@@ -41,7 +37,7 @@ describe('quantileSeq', function () {
   })
 
   it('should return the quantileSeq from an array with BigNumber probability', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     assert.equal(quantileSeq(lst, bignumber(0)), 1.3)
     assert.equal(quantileSeq(lst, bignumber(0.1)), 1.75)
     assert.equal(quantileSeq(lst, bignumber(0.2)), 2.2)
@@ -109,14 +105,14 @@ describe('quantileSeq', function () {
   })
 
   it('should return list quantiles for list of number probabilities', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     approx.deepEqual(quantileSeq(lst, [0.25, 0.5, 0.75]), [2.325, 2.9, 3.25])
     approx.deepEqual(quantileSeq(lst, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]),
       [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
   it('should return list quantiles for list of BigNumber probabilities', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     assert.deepEqual(quantileSeq(lst, [bignumber(0.25), bignumber(0.5), bignumber(0.75)]),
       [bignumber(2.325), bignumber(2.9), bignumber(3.25)])
     assert.equal(quantileSeq(lst, [bignumber(0.1), bignumber(0.2), bignumber(0.3), bignumber(0.4),
@@ -125,20 +121,20 @@ describe('quantileSeq', function () {
   })
 
   it('should return list quantiles for list of number and BigNumber probabilities', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     approx.deepEqual(quantileSeq(lst, [0.25, bignumber(0.5), 0.75]), [2.325, 2.9, 3.25])
     approx.deepEqual(quantileSeq(lst, [0.1, 0.2, bignumber(0.3), 0.4, 0.5, 0.6, 0.7, bignumber(0.8), 0.9]),
       [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
   it('should return the evenly number spaced quantiles of an array', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     approx.deepEqual(quantileSeq(lst, 3), [2.325, 2.9, 3.25])
     approx.deepEqual(quantileSeq(lst, 9), [1.75, 2.2, 2.45, 2.7, 2.9, 3.1, 3.2, 3.3, 3.5])
   })
 
   it('should return the evenly BigNumber spaced quantiles of an array', function () {
-    var lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
+    const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
     assert.deepEqual(quantileSeq(lst, bignumber(3)), [bignumber(2.325), bignumber(2.9), bignumber(3.25)])
     assert.equal(quantileSeq(lst, bignumber(9)).toString(), '1.75,2.2,2.45,2.7,2.9,3.1,3.2,3.3,3.5')
   })
@@ -175,7 +171,7 @@ describe('quantileSeq', function () {
   })
 
   it('should not mutate the input', function () {
-    var a = [3, 2, 1]
+    const a = [3, 2, 1]
     quantileSeq(a, 0.2)
     quantileSeq(a, 2)
     quantileSeq(a, [0.1, 0.3])
@@ -184,8 +180,8 @@ describe('quantileSeq', function () {
 
   /*
   it('should LaTeX quantileSeq', function () {
-    var expression = math.parse('quantileSeq(1,2,3,4,0.3)');
-    assert.equal(expression.toTex(), '\\mathrm{quantile}\\left(1,2,3,4,0.3\\right)');
-  });
+    const expression = math.parse('quantileSeq(1,2,3,4,0.3)')
+    assert.equal(expression.toTex(), '\\mathrm{quantile}\\left(1,2,3,4,0.3\\right)')
+  })
   */
 })

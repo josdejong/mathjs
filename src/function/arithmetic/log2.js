@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.log2(0.03125);           // returns -5
-   *    math.log2(16);                // returns 4
-   *    math.log2(16) / math.log2(2); // returns 4
-   *    math.pow(2, 4);               // returns 16
+   *    math.log2(0.03125)           // returns -5
+   *    math.log2(16)                // returns 4
+   *    math.log2(16) / math.log2(2) // returns 4
+   *    math.pow(2, 4)               // returns 16
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 2-base logarithm of `x`
    */
-  var log2 = typed('log2', {
+  const log2 = typed('log2', {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
         return (Math.log2)
@@ -63,7 +63,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _log2Complex (x) {
-    var newX = Math.sqrt(x.re * x.re + x.im * x.im)
+    const newX = Math.sqrt(x.re * x.re + x.im * x.im)
     return new type.Complex(
       (Math.log2) ? Math.log2(newX) : Math.log(newX) / Math.LN2,
       Math.atan2(x.im, x.re) / Math.LN2

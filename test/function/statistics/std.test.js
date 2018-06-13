@@ -1,11 +1,11 @@
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var std = math.std
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const std = math.std
 
 describe('std', function () {
   it('should return the standard deviation of numbers', function () {
@@ -82,7 +82,7 @@ describe('std', function () {
   })
 
   it('should LaTeX std', function () {
-    var expression = math.parse('std(1,2,3)')
+    const expression = math.parse('std(1,2,3)')
     assert.equal(expression.toTex(), '\\mathrm{std}\\left(1,2,3\\right)')
   })
 })

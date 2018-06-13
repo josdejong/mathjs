@@ -1,8 +1,8 @@
 'use strict'
 
-var ArgumentsError = require('./ArgumentsError')
-var DimensionError = require('./DimensionError')
-var IndexError = require('./IndexError')
+const ArgumentsError = require('./ArgumentsError')
+const DimensionError = require('./DimensionError')
+const IndexError = require('./IndexError')
 
 module.exports = [
   {

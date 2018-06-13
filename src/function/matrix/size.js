@@ -1,9 +1,9 @@
 'use strict'
 
-var array = require('../../utils/array')
+const array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Calculate the size of a matrix or scalar.
@@ -14,12 +14,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.size(2.3);                  // returns []
-   *     math.size('hello world');        // returns [11]
+   *     math.size(2.3)                  // returns []
+   *     math.size('hello world')        // returns [11]
    *
-   *     var A = [[1, 2, 3], [4, 5, 6]];
-   *     math.size(A);                    // returns [2, 3]
-   *     math.size(math.range(1,6));      // returns [5]
+   *     const A = [[1, 2, 3], [4, 5, 6]]
+   *     math.size(A)                    // returns [2, 3]
+   *     math.size(math.range(1,6))      // returns [5]
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
    * @return {Array | Matrix} A vector with size of `x`.
    */
-  var size = typed('size', {
+  const size = typed('size', {
     'Matrix': function (x) {
       // TODO: return the same matrix type as the input
       return matrix(x.size())

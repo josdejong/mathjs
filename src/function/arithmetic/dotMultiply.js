@@ -1,15 +1,15 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var multiplyScalar = load(require('./multiplyScalar'))
-  var latex = require('../../utils/latex')
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const multiplyScalar = load(require('./multiplyScalar'))
+  const latex = require('../../utils/latex')
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm09 = load(require('../../type/matrix/utils/algorithm09'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm09 = load(require('../../type/matrix/utils/algorithm09'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Multiply two matrices element wise. The function accepts both matrices and
@@ -21,13 +21,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.dotMultiply(2, 4); // returns 8
+   *    math.dotMultiply(2, 4) // returns 8
    *
-   *    a = [[9, 5], [6, 1]];
-   *    b = [[3, 2], [5, 2]];
+   *    a = [[9, 5], [6, 1]]
+   *    b = [[3, 2], [5, 2]]
    *
-   *    math.dotMultiply(a, b); // returns [[27, 10], [30, 2]]
-   *    math.multiply(a, b);    // returns [[52, 28], [23, 14]]
+   *    math.dotMultiply(a, b) // returns [[27, 10], [30, 2]]
+   *    math.multiply(a, b)    // returns [[52, 28], [23, 14]]
    *
    * See also:
    *
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Right hand value
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Multiplication of `x` and `y`
    */
-  var dotMultiply = typed('dotMultiply', {
+  const dotMultiply = typed('dotMultiply', {
 
     'any, any': multiplyScalar,
 

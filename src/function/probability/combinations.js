@@ -1,6 +1,6 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
   /**
@@ -16,7 +16,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.combinations(7, 5); // returns 21
+   *    math.combinations(7, 5) // returns 21
    *
    * See also:
    *
@@ -26,9 +26,9 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} k    Number of objects in the subset
    * @return {number | BigNumber}     Number of possible combinations.
    */
-  var combinations = typed('combinations', {
+  const combinations = typed('combinations', {
     'number, number': function (n, k) {
-      var max, result, i
+      let max, result, i
 
       if (!isInteger(n) || n < 0) {
         throw new TypeError('Positive integer value expected in function combinations')
@@ -50,8 +50,8 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber, BigNumber': function (n, k) {
-      var max, result, i, ii
-      var one = new type.BigNumber(1)
+      let max, result, i, ii
+      const one = new type.BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
         throw new TypeError('Positive integer value expected in function combinations')

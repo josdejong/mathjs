@@ -1,6 +1,6 @@
 'use strict'
 
-var isBigNumber = require('./bignumber/isBigNumber')
+const isBigNumber = require('./bignumber/isBigNumber')
 
 /**
  * Clone an object
@@ -14,7 +14,7 @@ var isBigNumber = require('./bignumber/isBigNumber')
  * @return {*} clone
  */
 exports.clone = function clone (x) {
-  var type = typeof x
+  const type = typeof x
 
   // immutable primitive types
   if (type === 'number' || type === 'string' || type === 'boolean' ||
@@ -52,9 +52,9 @@ exports.clone = function clone (x) {
  * @return {Object} Returns a copy of the object with mapped properties
  */
 exports.map = function (object, callback) {
-  var clone = {}
+  const clone = {}
 
-  for (var key in object) {
+  for (const key in object) {
     if (exports.hasOwnProperty(object, key)) {
       clone[key] = callback(object[key])
     }
@@ -70,7 +70,7 @@ exports.map = function (object, callback) {
  * @return {Object} a
  */
 exports.extend = function (a, b) {
-  for (var prop in b) {
+  for (const prop in b) {
     if (exports.hasOwnProperty(b, prop)) {
       a[prop] = b[prop]
     }
@@ -90,7 +90,7 @@ exports.deepExtend = function deepExtend (a, b) {
     throw new TypeError('Arrays are not supported by deepExtend')
   }
 
-  for (var prop in b) {
+  for (const prop in b) {
     if (exports.hasOwnProperty(b, prop)) {
       if (b[prop] && b[prop].constructor === Object) {
         if (a[prop] === undefined) {
@@ -118,7 +118,7 @@ exports.deepExtend = function deepExtend (a, b) {
  * @returns {boolean}
  */
 exports.deepEqual = function deepEqual (a, b) {
-  var prop, i, len
+  let prop, i, len
   if (Array.isArray(a)) {
     if (!Array.isArray(b)) {
       return false
@@ -185,8 +185,8 @@ exports.canDefineProperty = function () {
  */
 exports.lazy = function (object, prop, fn) {
   if (exports.canDefineProperty()) {
-    var _uninitialized = true
-    var _value
+    let _uninitialized = true
+    let _value
     Object.defineProperty(object, prop, {
       get: function () {
         if (_uninitialized) {
@@ -218,12 +218,12 @@ exports.lazy = function (object, prop, fn) {
  * @return {Object} Returns the object at the end of the path
  */
 exports.traverse = function (object, path) {
-  var obj = object
+  let obj = object
 
   if (path) {
-    var names = path.split('.')
-    for (var i = 0; i < names.length; i++) {
-      var name = names[i]
+    const names = path.split('.')
+    for (let i = 0; i < names.length; i++) {
+      const name = names[i]
       if (!(name in obj)) {
         obj[name] = {}
       }

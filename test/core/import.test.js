@@ -1,10 +1,10 @@
 // test import
-var assert = require('assert')
-var mathjs = require('../../src/index')
-var approx = require('../../tools/approx')
+const assert = require('assert')
+const mathjs = require('../../src/index')
+const approx = require('../../tools/approx')
 
 describe('import', function () {
-  var math = null
+  let math = null
 
   beforeEach(function () {
     math = mathjs.create()
@@ -43,14 +43,14 @@ describe('import', function () {
 
   it('should parse the user defined members', function () {
     if (math.parser) {
-      var parser = math.parser()
+      const parser = math.parser()
       math.add(math.myvalue, 10)
       parser.eval('myvalue + 10') // 52
       parser.eval('hello("user")') // 'hello, user!'
     }
   })
 
-  var getSize = function (array) {
+  const getSize = function (array) {
     return array.length
   }
 
@@ -241,7 +241,7 @@ describe('import', function () {
       math.import({
         name: 'foo2',
         factory: function () {
-          var fn = function () {}
+          const fn = function () {}
           fn.transform = function () {}
           return fn
         }
@@ -272,7 +272,7 @@ describe('import', function () {
   })
 
   it('should LaTeX import', function () {
-    var expression = math.parse('import(object)')
+    const expression = math.parse('import(object)')
     assert.equal(expression.toTex(), '\\mathrm{import}\\left( object\\right)')
   })
 })

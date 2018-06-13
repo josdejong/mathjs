@@ -1,8 +1,8 @@
 'use strict'
 
-var keywords = require('../keywords')
-var deepEqual = require('../../utils/object').deepEqual
-var hasOwnProperty = require('../../utils/object').hasOwnProperty
+const keywords = require('../keywords')
+const deepEqual = require('../../utils/object').deepEqual
+const hasOwnProperty = require('../../utils/object').hasOwnProperty
 
 function factory (type, config, load, typed, math) {
   /**
@@ -37,12 +37,12 @@ function factory (type, config, load, typed, math) {
    *                                  variables.
    */
   Node.prototype.compile = function () {
-    var expr = this._compile(math.expression.mathWithTransform, {})
-    var args = {}
-    var context = null
+    const expr = this._compile(math.expression.mathWithTransform, {})
+    const args = {}
+    const context = null
     return {
       eval: function evalNode (scope) {
-        var s = scope || {}
+        const s = scope || {}
         _validateScope(s)
         return expr(s, args, context)
       }
@@ -127,14 +127,14 @@ function factory (type, config, load, typed, math) {
    * For example, to replace all nodes of type SymbolNode having name 'x' with a
    * ConstantNode with value 2:
    *
-   *     var res = Node.transform(function (node, path, parent) {
+   *     const res = Node.transform(function (node, path, parent) {
    *       if (node && node.isSymbolNode) && (node.name == 'x')) {
-   *         return new ConstantNode(2);
+   *         return new ConstantNode(2)
    *       }
    *       else {
-   *         return node;
+   *         return node
    *       }
-   *     });
+   *     })
    *
    * @param {function(node: Node, path: string, parent: Node) : Node} callback
    *          A mapping function accepting a node, and returning
@@ -146,12 +146,12 @@ function factory (type, config, load, typed, math) {
     // traverse over all childs
     function _transform (node, callback) {
       return node.map(function (child, path, parent) {
-        var replacement = callback(child, path, parent)
+        const replacement = callback(child, path, parent)
         return _transform(replacement, callback)
       })
     }
 
-    var replacement = callback(this, null, null)
+    const replacement = callback(this, null, null)
     return _transform(replacement, callback)
   }
 
@@ -159,9 +159,9 @@ function factory (type, config, load, typed, math) {
    * Find any node in the node tree matching given filter function. For example, to
    * find all nodes of type SymbolNode having name 'x':
    *
-   *     var results = Node.filter(function (node) {
-   *       return (node && node.isSymbolNode) && (node.name == 'x');
-   *     });
+   *     const results = Node.filter(function (node) {
+   *       return (node && node.isSymbolNode) && (node.name == 'x')
+   *     })
    *
    * @param {function(node: Node, path: string, parent: Node) : Node} callback
    *            A test function returning true when a node matches, and false
@@ -170,7 +170,7 @@ function factory (type, config, load, typed, math) {
    * @return {Node[]} nodes       An array with nodes matching given filter criteria
    */
   Node.prototype.filter = function (callback) {
-    var nodes = []
+    const nodes = []
 
     this.traverse(function (node, path, parent) {
       if (callback(node, path, parent)) {
@@ -238,7 +238,7 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Node.prototype.toString = function (options) {
-    var customString
+    let customString
     if (options && typeof options === 'object') {
       switch (typeof options.handler) {
         case 'object':
@@ -285,7 +285,7 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Node.prototype.toHTML = function (options) {
-    var customString
+    let customString
     if (options && typeof options === 'object') {
       switch (typeof options.handler) {
         case 'object':
@@ -333,7 +333,7 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   Node.prototype.toTex = function (options) {
-    var customTex
+    let customTex
     if (options && typeof options === 'object') {
       switch (typeof options.handler) {
         case 'object':
@@ -388,7 +388,7 @@ function factory (type, config, load, typed, math) {
    * @param {Object} scope
    */
   function _validateScope (scope) {
-    for (var symbol in scope) {
+    for (const symbol in scope) {
       if (hasOwnProperty(scope, symbol)) {
         if (symbol in keywords) {
           throw new Error('Scope contains an illegal symbol, "' + symbol + '" is a reserved keyword')

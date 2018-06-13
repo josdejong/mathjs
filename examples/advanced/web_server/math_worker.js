@@ -1,5 +1,5 @@
-var math = require('mathjs')
-var workerpool = require('workerpool')
+const math = require('mathjs')
+const workerpool = require('workerpool')
 
 // disable the import function so the math.js instance cannot be changed
 function noImport () {
@@ -13,7 +13,7 @@ math.import({'import': noImport}, {override: true})
  * @return {string} result
  */
 function evaluate (expr) {
-  var ans = math.eval(expr)
+  const ans = math.eval(expr)
   return math.format(ans)
 }
 

@@ -1,12 +1,12 @@
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var Unit = math.type.Unit
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const Unit = math.type.Unit
 
 describe('Unit', function () {
   describe('constructor', function () {
     it('should create unit correctly', function () {
-      var unit1 = new Unit(5000, 'cm')
+      let unit1 = new Unit(5000, 'cm')
       assert.equal(unit1.value, 50)
       assert.equal(unit1.units[0].unit.name, 'm')
 
@@ -30,31 +30,31 @@ describe('Unit', function () {
     })
 
     it('should create a unit with Fraction value', function () {
-      var unit1 = new Unit(math.fraction(1000, 3), 'cm')
+      const unit1 = new Unit(math.fraction(1000, 3), 'cm')
       assert.deepEqual(unit1.value, math.fraction(10, 3))
       assert.equal(unit1.units[0].unit.name, 'm')
     })
 
     it('should create a unit with BigNumber value', function () {
-      var unit1 = new Unit(math.bignumber(5000), 'cm')
+      const unit1 = new Unit(math.bignumber(5000), 'cm')
       assert.deepEqual(unit1.value, math.bignumber(50))
       assert.equal(unit1.units[0].unit.name, 'm')
     })
 
     it('should create a unit with Complex value', function () {
-      var unit1 = new Unit(math.complex(500, 600), 'cm')
+      const unit1 = new Unit(math.complex(500, 600), 'cm')
       assert.deepEqual(unit1.value, math.complex(5, 6))
       assert.equal(unit1.units[0].unit.name, 'm')
     })
 
     it('should create square meter correctly', function () {
-      var unit1 = new Unit(0.000001, 'km2')
+      const unit1 = new Unit(0.000001, 'km2')
       assert.equal(unit1.value, 1)
       assert.equal(unit1.units[0].unit.name, 'm2')
     })
 
     it('should create cubic meter correctly', function () {
-      var unit1 = new Unit(0.000000001, 'km3')
+      const unit1 = new Unit(0.000000001, 'km3')
       assert.equal(unit1.value, 1)
       assert.equal(unit1.units[0].unit.name, 'm3')
     })
@@ -106,12 +106,12 @@ describe('Unit', function () {
 
   describe('type', function () {
     it('should have a property isUnit', function () {
-      var a = new math.type.Unit(5, 'cm')
+      const a = new math.type.Unit(5, 'cm')
       assert.strictEqual(a.isUnit, true)
     })
 
     it('should have a property type', function () {
-      var a = new math.type.Unit(5, 'cm')
+      const a = new math.type.Unit(5, 'cm')
       assert.strictEqual(a.type, 'Unit')
     })
   })
@@ -167,38 +167,38 @@ describe('Unit', function () {
 
   describe('clone', function () {
     it('should clone a unit', function () {
-      var u1 = new Unit(100, 'cm')
-      var u2 = u1.clone()
+      const u1 = new Unit(100, 'cm')
+      const u2 = u1.clone()
       assert(u1 !== u2)
       assert.deepEqual(u1, u2)
 
-      var u3 = new Unit(100, 'cm').to('inch')
-      var u4 = u3.clone()
+      const u3 = new Unit(100, 'cm').to('inch')
+      const u4 = u3.clone()
       assert(u3 !== u4)
       assert.deepEqual(u3, u4)
 
-      var u5 = new Unit(null, 'cm').to('inch')
-      var u6 = u5.clone()
+      const u5 = new Unit(null, 'cm').to('inch')
+      const u6 = u5.clone()
       assert(u5 !== u6)
       assert.deepEqual(u5, u6)
 
-      var u7 = new Unit(8.314, 'kg m^2 / s^2 K mol')
-      var u8 = u7.clone()
+      const u7 = new Unit(8.314, 'kg m^2 / s^2 K mol')
+      const u8 = u7.clone()
       assert(u7 !== u8)
       assert.deepEqual(u7, u8)
     })
 
     it('should clone a with a Fraction', function () {
-      var u1 = new Unit(math.fraction(1, 3), 'cm')
-      var u2 = u1.clone()
+      const u1 = new Unit(math.fraction(1, 3), 'cm')
+      const u2 = u1.clone()
       assert(u1 !== u2)
       assert.deepEqual(u1, u2)
       assert(u1.value !== u2.value) // should be cloned
     })
 
     it('should clone a Complex unit', function () {
-      var u1 = new Unit(math.complex(1, 3), 'cm')
-      var u2 = u1.clone()
+      const u1 = new Unit(math.complex(1, 3), 'cm')
+      const u2 = u1.clone()
       assert(u1 !== u2)
       assert.deepEqual(u1, u2)
       assert(u1.value !== u2.value) // should be cloned
@@ -207,7 +207,7 @@ describe('Unit', function () {
 
   describe('toNumber', function () {
     it('should convert a unit to a number', function () {
-      var u = new Unit(5000, 'cm')
+      const u = new Unit(5000, 'cm')
       approx.equal(u.toNumber('mm'), 50000)
 
       approx.equal(new Unit(5.08, 'cm').toNumber('inch'), 2)
@@ -216,57 +216,57 @@ describe('Unit', function () {
     })
 
     it('should convert a unit with fixed prefix to a number', function () {
-      var u1 = new Unit(5000, 'cm')
-      var u2 = u1.to('km')
+      const u1 = new Unit(5000, 'cm')
+      const u2 = u1.to('km')
       approx.equal(u2.toNumber('mm'), 50000)
 
-      var u1 = new Unit(981, 'cm/s^2')
-      var u2 = u1.to('km/ms^2')
-      approx.equal(u2.toNumber('m/s^2'), 9.81)
+      const u3 = new Unit(981, 'cm/s^2')
+      const u4 = u3.to('km/ms^2')
+      approx.equal(u4.toNumber('m/s^2'), 9.81)
     })
 
     it('should convert a unit with fraction to a number', function () {
-      var u = new Unit(math.fraction(5), 'cm')
+      const u = new Unit(math.fraction(5), 'cm')
       assert.strictEqual(u.toNumber('mm'), 50)
     })
   })
 
   describe('toNumeric', function () {
     it('should convert a unit to a numeric value', function () {
-      var u = new Unit(math.fraction(1, 3), 'cm')
+      const u = new Unit(math.fraction(1, 3), 'cm')
       assert.deepEqual(u.toNumeric('mm'), math.fraction(10, 3))
     })
     it('should simplify units before returning a numeric value', function () {
-      var cm = new Unit(1, 'gram')
-      var m = new Unit(1, 'kilogram')
-      var product = cm.multiply(m)
+      const cm = new Unit(1, 'gram')
+      const m = new Unit(1, 'kilogram')
+      const product = cm.multiply(m)
       assert.deepEqual(product.toNumeric(), 0.001)
     })
   })
 
   describe('to', function () {
     it('should convert a unit to a fixed unitName', function () {
-      var u1 = new Unit(5000, 'cm')
+      const u1 = new Unit(5000, 'cm')
       assert.equal(u1.value, 50)
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'c')
       assert.equal(u1.fixPrefix, false)
 
-      var u2 = u1.to('inch')
+      const u2 = u1.to('inch')
       assert.notStrictEqual(u1, u2) // u2 must be a clone
       assert.equal(u2.value, 50)
       assert.equal(u2.units[0].unit.name, 'inch')
       assert.equal(u2.units[0].prefix.name, '')
       assert.equal(u2.fixPrefix, true)
 
-      var u3 = new Unit(299792.458, 'km/s')
+      const u3 = new Unit(299792.458, 'km/s')
       assert.equal(u3.value, 299792458)
       assert.equal(u3.units[0].unit.name, 'm')
       assert.equal(u3.units[1].unit.name, 's')
       assert.equal(u3.units[0].prefix.name, 'k')
       assert.equal(u3.fixPrefix, false)
 
-      var u4 = u3.to('mi/h')
+      const u4 = u3.to('mi/h')
       assert.notStrictEqual(u3, u4) // u4 must be a clone
       assert.equal(u4.value, 299792458)
       assert.equal(u4.units[0].unit.name, 'mi')
@@ -276,9 +276,9 @@ describe('Unit', function () {
     })
 
     it('should convert a unit with a fraction', function () {
-      var u1 = new Unit(math.fraction(1, 3), 'm')
+      const u1 = new Unit(math.fraction(1, 3), 'm')
 
-      var u2 = u1.to('cm')
+      const u2 = u1.to('cm')
       assert.deepEqual(u2.value, math.fraction(1, 3))
       assert(math.type.isFraction(u2.value))
       assert.equal(u2.units[0].unit.name, 'm')
@@ -287,70 +287,70 @@ describe('Unit', function () {
     })
 
     it('should convert a Complex unit', function () {
-      var u1 = new Unit(math.complex(300, 400), 'kPa')
-      var u2 = u1.to('lbf/in^2')
+      const u1 = new Unit(math.complex(300, 400), 'kPa')
+      const u2 = u1.to('lbf/in^2')
       approx.deepEqual(u2.value, math.complex(300000, 400000))
       assert.deepEqual(u2.toString(), '(43.511321319062766 + 58.01509509208368i) lbf / in^2')
     })
 
     it('should convert a unit to a fixed unit', function () {
-      var u1 = new Unit(5000, 'cm')
+      const u1 = new Unit(5000, 'cm')
       assert.equal(u1.value, 50)
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, 'c')
       assert.equal(u1.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'km'))
+      const u2 = u1.to(new Unit(null, 'km'))
       assert.notStrictEqual(u1, u2) // u2 must be a clone
       assert.equal(u2.value, 50)
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'k')
       assert.equal(u2.fixPrefix, true)
 
-      var u1 = new Unit(5000, 'cm/s')
-      assert.equal(u1.value, 50)
-      assert.equal(u1.units[0].unit.name, 'm')
-      assert.equal(u1.units[1].unit.name, 's')
-      assert.equal(u1.units[0].prefix.name, 'c')
-      assert.equal(u1.fixPrefix, false)
+      const u3 = new Unit(5000, 'cm/s')
+      assert.equal(u3.value, 50)
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[1].unit.name, 's')
+      assert.equal(u3.units[0].prefix.name, 'c')
+      assert.equal(u3.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'km/h'))
-      assert.notStrictEqual(u1, u2) // u2 must be a clone
-      assert.equal(u2.value, 50)
-      assert.equal(u2.units[0].unit.name, 'm')
-      assert.equal(u2.units[1].unit.name, 'h')
-      assert.equal(u2.units[0].prefix.name, 'k')
-      assert.equal(u2.fixPrefix, true)
+      const u4 = u3.to(new Unit(null, 'km/h'))
+      assert.notStrictEqual(u3, u4) // u4 must be a clone
+      assert.equal(u4.value, 50)
+      assert.equal(u4.units[0].unit.name, 'm')
+      assert.equal(u4.units[1].unit.name, 'h')
+      assert.equal(u4.units[0].prefix.name, 'k')
+      assert.equal(u4.fixPrefix, true)
     })
 
     it('should convert a valueless unit', function () {
-      var u1 = new Unit(null, 'm')
+      const u1 = new Unit(null, 'm')
       assert.equal(u1.value, null)
       assert.equal(u1.units[0].unit.name, 'm')
       assert.equal(u1.units[0].prefix.name, '')
       assert.equal(u1.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'cm'))
+      const u2 = u1.to(new Unit(null, 'cm'))
       assert.notStrictEqual(u1, u2) // u2 must be a clone
       assert.equal(u2.value, 1) // u2 must have a value
       assert.equal(u2.units[0].unit.name, 'm')
       assert.equal(u2.units[0].prefix.name, 'c')
       assert.equal(u2.fixPrefix, true)
 
-      var u1 = new Unit(null, 'm/s')
-      assert.equal(u1.value, null)
-      assert.equal(u1.units[0].unit.name, 'm')
-      assert.equal(u1.units[1].unit.name, 's')
-      assert.equal(u1.units[0].prefix.name, '')
-      assert.equal(u1.fixPrefix, false)
+      const u3 = new Unit(null, 'm/s')
+      assert.equal(u3.value, null)
+      assert.equal(u3.units[0].unit.name, 'm')
+      assert.equal(u3.units[1].unit.name, 's')
+      assert.equal(u3.units[0].prefix.name, '')
+      assert.equal(u3.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'cm/s'))
-      assert.notStrictEqual(u1, u2) // u2 must be a clone
-      assert.equal(u2.value, 1) // u2 must have a value
-      assert.equal(u2.units[0].unit.name, 'm')
-      assert.equal(u2.units[1].unit.name, 's')
-      assert.equal(u2.units[0].prefix.name, 'c')
-      assert.equal(u2.fixPrefix, true)
+      const u4 = u3.to(new Unit(null, 'cm/s'))
+      assert.notStrictEqual(u3, u4) // u4 must be a clone
+      assert.equal(u4.value, 1) // u4 must have a value
+      assert.equal(u4.units[0].unit.name, 'm')
+      assert.equal(u4.units[1].unit.name, 's')
+      assert.equal(u4.units[0].prefix.name, 'c')
+      assert.equal(u4.fixPrefix, true)
     })
 
     it('should convert a binary prefixes (1)', function () {
@@ -384,13 +384,13 @@ describe('Unit', function () {
     })
 
     it('should convert a binary prefixes (2)', function () {
-      var u1 = new Unit(1, 'kb')
+      const u1 = new Unit(1, 'kb')
       assert.equal(u1.value, 1000)
       assert.equal(u1.units[0].unit.name, 'b')
       assert.equal(u1.units[0].prefix.name, 'k')
       assert.equal(u1.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'b'))
+      const u2 = u1.to(new Unit(null, 'b'))
       assert.notStrictEqual(u1, u2) // u2 must be a clone
       assert.equal(u2.value, 1000) // u2 must have a value
       assert.equal(u2.units[0].unit.name, 'b')
@@ -399,8 +399,8 @@ describe('Unit', function () {
     })
 
     it('should set isUnitListSimplified to true', function () {
-      var u1 = new Unit(1, 'ft lbf')
-      var u2 = u1.to('in lbf')
+      const u1 = new Unit(1, 'ft lbf')
+      const u2 = u1.to('in lbf')
       assert.equal(u2.isUnitListSimplified, true)
       assert.equal(u2.toString(), '12 in lbf')
     })
@@ -413,12 +413,12 @@ describe('Unit', function () {
     })
 
     it('should throw an error when converting to a unit having a value', function () {
-      var u1 = new Unit(5000, 'cm')
+      const u1 = new Unit(5000, 'cm')
       assert.throws(function () { u1.to(new Unit(4, 'm')) }, /Cannot convert to a unit with a value/)
     })
 
     it('should throw an error when converting to an unsupported type of argument', function () {
-      var u1 = new Unit(5000, 'cm')
+      const u1 = new Unit(5000, 'cm')
       assert.throws(function () { u1.to(new Date()) }, /String or Unit expected as parameter/)
     })
   })
@@ -477,7 +477,7 @@ describe('Unit', function () {
     })
 
     it('should not render best prefix if "fixPrefix" is set', function () {
-      var u = new Unit(5e-3, 'm')
+      const u = new Unit(5e-3, 'm')
       u.fixPrefix = true
       assert.equal(u.toString(), '0.005 m')
       u.fixPrefix = false
@@ -495,7 +495,7 @@ describe('Unit', function () {
 
   describe('simplifyUnitListLazy', function () {
     it('should not simplify units created with new Unit()', function () {
-      var unit1 = new Unit(10, 'kg m/s^2')
+      const unit1 = new Unit(10, 'kg m/s^2')
       assert.equal(unit1.units[0].unit.name, 'g')
       assert.equal(unit1.units[1].unit.name, 'm')
       assert.equal(unit1.units[2].unit.name, 's')
@@ -503,7 +503,7 @@ describe('Unit', function () {
     })
 
     it('should only simplify units with values', function () {
-      var unit1 = new Unit(null, 'kg m mol / s^2 / mol')
+      let unit1 = new Unit(null, 'kg m mol / s^2 / mol')
       unit1.isUnitListSimplified = false
       unit1.simplifyUnitListLazy()
       assert.equal(unit1.toString(), '(kg m mol) / (s^2 mol)')
@@ -512,9 +512,9 @@ describe('Unit', function () {
     })
 
     it('should simplify units resulting from multiply/divide/power functions only when formatting for output', function () {
-      var unit1 = new Unit(2, 'kg')
-      var unit2 = new Unit(5, 'm/s^2')
-      var unit3 = math.multiply(unit1, unit2)
+      const unit1 = new Unit(2, 'kg')
+      const unit2 = new Unit(5, 'm/s^2')
+      const unit3 = math.multiply(unit1, unit2)
       assert.equal(unit3.units[0].unit.name, 'g')
       assert.equal(unit3.units[1].unit.name, 'm')
       assert.equal(unit3.units[2].unit.name, 's')
@@ -523,41 +523,41 @@ describe('Unit', function () {
     })
 
     it('should simplify units when they cancel out with {predictable: true}', function () {
-      var origConfig = math.config()
+      const origConfig = math.config()
       math.config({predictable: true})
-      var unit1 = new Unit(2, 'Hz')
-      var unit2 = new Unit(2, 's')
-      var unit3 = math.multiply(unit1, unit2)
+      const unit1 = new Unit(2, 'Hz')
+      const unit2 = new Unit(2, 's')
+      const unit3 = math.multiply(unit1, unit2)
       assert.equal(unit3.toString(), '4')
       assert.equal(unit3.units.length, 0)
 
-      var nounit = math.eval('40m * 40N / (40J)')
+      const nounit = math.eval('40m * 40N / (40J)')
       assert.equal(nounit.toString(), '40')
       assert.equal(nounit.units.length, 0)
 
-      var a = math.unit('3 s^-1')
-      var b = math.unit('4 s')
+      const a = math.unit('3 s^-1')
+      const b = math.unit('4 s')
       assert.equal(math.multiply(a, b).type, 'Unit')
 
-      var c = math.unit('8.314 J / mol / K')
+      const c = math.unit('8.314 J / mol / K')
       assert.equal(math.pow(c, 0).type, 'Unit')
 
-      var d = math.unit('60 minute')
-      var e = math.unit('1 s')
+      const d = math.unit('60 minute')
+      const e = math.unit('1 s')
       assert.equal(math.divide(d, e).type, 'Unit')
 
       math.config(origConfig)
     })
 
     it('should convert units to appropriate _numeric_ values when they cancel out with {predictable: false}', function () {
-      var origConfig = math.config()
+      const origConfig = math.config()
       math.config({predictable: false})
 
       assert.equal(typeof (math.eval('40 m * 40 N / (40 J)')), 'number')
 
-      var bigunit = math.unit(math.bignumber(1), 'km')
-      var smallunit = math.unit(math.bignumber(3000000), 'mm')
-      var verybignumber = math.divide(bigunit, smallunit)
+      let bigunit = math.unit(math.bignumber(1), 'km')
+      let smallunit = math.unit(math.bignumber(3000000), 'mm')
+      let verybignumber = math.divide(bigunit, smallunit)
       assert.equal(verybignumber.type, 'BigNumber')
       assert.equal(verybignumber.toString(), '0.3333333333333333333333333333333333333333333333333333333333333333')
 
@@ -567,22 +567,22 @@ describe('Unit', function () {
       assert.equal(verybignumber.type, 'Fraction')
       assert.equal(verybignumber.toFraction(), '1/3')
 
-      var a = math.unit('3 s^-1')
-      var b = math.unit('4 s')
+      const a = math.unit('3 s^-1')
+      const b = math.unit('4 s')
       assert.equal(typeof (math.multiply(a, b)), 'number')
 
-      var c = math.unit('8.314 J / mol / K')
+      const c = math.unit('8.314 J / mol / K')
       assert.equal(typeof (math.pow(c, 0)), 'number')
 
-      var d = math.unit('60 minute')
-      var e = math.unit('1 s')
+      const d = math.unit('60 minute')
+      const e = math.unit('1 s')
       assert.equal(typeof (math.divide(d, e)), 'number')
 
       math.config(origConfig)
     })
 
     it('should simplify units according to chosen unit system', function () {
-      var unit1 = new Unit(10, 'N')
+      const unit1 = new Unit(10, 'N')
       Unit.setUnitSystem('us')
       unit1.isUnitListSimplified = false
       assert.equal(unit1.toString(), '2.248089430997105 lbf')
@@ -596,7 +596,7 @@ describe('Unit', function () {
 
     it('should correctly simplify units when unit system is "auto"', function () {
       Unit.setUnitSystem('auto')
-      var unit1 = new Unit(5, 'lbf min / s')
+      const unit1 = new Unit(5, 'lbf min / s')
       unit1.isUnitListSimplified = false
       assert.equal(unit1.toString(), '300 lbf')
     })
@@ -636,30 +636,30 @@ describe('Unit', function () {
           fixPrefix: false
         })
 
-      var str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'))
+      const str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'))
       assert.deepEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}')
 
-      var cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'))
+      const cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'))
       assert.equal(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g","fixPrefix":false}')
     })
 
     it('fromJSON', function () {
-      var u1 = new Unit(5, 'cm')
-      var u2 = Unit.fromJSON({'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false})
+      const u1 = new Unit(5, 'cm')
+      const u2 = Unit.fromJSON({'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false})
       assert.ok(u2 instanceof Unit)
       assert.deepEqual(u2, u1)
 
-      var u3 = new Unit(5, 'cm').to('mm')
-      var u4 = Unit.fromJSON({'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true})
+      const u3 = new Unit(5, 'cm').to('mm')
+      const u4 = Unit.fromJSON({'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true})
       assert.ok(u4 instanceof Unit)
       assert.deepEqual(u4, u3)
 
-      var u5 = new Unit(5, 'kN').to('kg m/s^2')
-      var u6 = Unit.fromJSON({'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true})
+      const u5 = new Unit(5, 'kN').to('kg m/s^2')
+      const u6 = Unit.fromJSON({'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true})
       assert.ok(u6 instanceof Unit)
       assert.deepEqual(u5, u6)
 
-      var u7 = Unit.fromJSON({
+      const u7 = Unit.fromJSON({
         mathjs: 'Unit',
         value: math.fraction(0.375), // Note that value is already a Fraction at this point, that will be done by JSON.parse(str, reviver)
         unit: 'cm',
@@ -667,7 +667,7 @@ describe('Unit', function () {
       })
       assert.deepEqual(u7, new Unit(math.fraction(0.375), 'cm'))
 
-      var u8 = Unit.fromJSON({
+      const u8 = Unit.fromJSON({
         mathjs: 'Unit',
         value: math.complex(2, 4),
         unit: 'g',
@@ -677,8 +677,8 @@ describe('Unit', function () {
     })
 
     it('toJSON -> fromJSON should recover an "equal" unit', function () {
-      var unit1 = Unit.parse('1.23(m/(s/(kg mol)/(lbm/h)K))')
-      var unit2 = Unit.fromJSON(unit1.toJSON())
+      const unit1 = Unit.parse('1.23(m/(s/(kg mol)/(lbm/h)K))')
+      const unit2 = Unit.fromJSON(unit1.toJSON())
       assert.equal(unit1.equals(unit2), true)
     })
   })
@@ -739,7 +739,7 @@ describe('Unit', function () {
 
   describe('parse', function () {
     it('should parse units correctly', function () {
-      var unit1
+      let unit1
 
       unit1 = Unit.parse('5kg')
       assert.equal(unit1.value, 5)
@@ -886,7 +886,7 @@ describe('Unit', function () {
     })
 
     it('should parse units with correct precedence', function () {
-      var unit1 = Unit.parse('1  m^3 / kg s^2') // implicit multiplication
+      const unit1 = Unit.parse('1  m^3 / kg s^2') // implicit multiplication
 
       approx.equal(unit1.value, 1)
       assert.equal(unit1.units[0].unit.name, 'm')
@@ -917,7 +917,7 @@ describe('Unit', function () {
     })
 
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function () {
-      var origConfig = math.config()
+      const origConfig = math.config()
 
       math.config({number: 'Fraction'})
       var unit1 = Unit.parse('5kg')
@@ -952,7 +952,7 @@ describe('Unit', function () {
       assert.equal(Unit.parse('34 kg^2')._isDerived(), true)
       assert.equal(Unit.parse('34 N')._isDerived(), false)
       assert.equal(Unit.parse('34 kg m / s^2')._isDerived(), true)
-      var unit1 = Unit.parse('34 kg m / s^2')
+      const unit1 = Unit.parse('34 kg m / s^2')
       assert.equal(unit1._isDerived(), true)
       unit1.isUnitListSimplified = false
       unit1.simplifyUnitListLazy()
@@ -962,60 +962,60 @@ describe('Unit', function () {
 
   describe('multiply, divide, and pow', function () {
     it('should flag the unit as requiring simplification', function () {
-      var unit1 = new Unit(10, 'kg')
-      var unit2 = new Unit(9.81, 'm/s^2')
+      const unit1 = new Unit(10, 'kg')
+      const unit2 = new Unit(9.81, 'm/s^2')
       assert.equal(unit1.multiply(unit2).isUnitListSimplified, false)
       assert.equal(unit1.divide(unit2).isUnitListSimplified, false)
       assert.equal(unit1.pow(2).isUnitListSimplified, false)
     })
 
     it('should retain the units of their operands without simplifying', function () {
-      var unit1 = new Unit(10, 'N/s')
-      var unit2 = new Unit(10, 'h')
-      var unitM = unit1.multiply(unit2)
+      const unit1 = new Unit(10, 'N/s')
+      const unit2 = new Unit(10, 'h')
+      const unitM = unit1.multiply(unit2)
       assert.equal(unitM.units[0].unit.name, 'N')
       assert.equal(unitM.units[1].unit.name, 's')
       assert.equal(unitM.units[2].unit.name, 'h')
 
-      var unit3 = new Unit(14.7, 'lbf')
-      var unit4 = new Unit(1, 'in in')
-      var unitD = unit3.divide(unit4)
+      const unit3 = new Unit(14.7, 'lbf')
+      const unit4 = new Unit(1, 'in in')
+      const unitD = unit3.divide(unit4)
       assert.equal(unitD.units[0].unit.name, 'lbf')
       assert.equal(unitD.units[1].unit.name, 'in')
       assert.equal(unitD.units[2].unit.name, 'in')
 
-      var unit5 = new Unit(1, 'N h/s')
-      var unitP = unit5.pow(-3.5)
+      const unit5 = new Unit(1, 'N h/s')
+      const unitP = unit5.pow(-3.5)
       assert.equal(unitP.units[0].unit.name, 'N')
       assert.equal(unitP.units[1].unit.name, 'h')
       assert.equal(unitP.units[2].unit.name, 's')
     })
 
     it('should keep the same numeric type for the units value', function () {
-      var unit1 = new Unit(math.bignumber(10), 'N/s')
-      var unit2 = new Unit(math.bignumber(10), 'h')
-      var unitM = unit1.multiply(unit2)
+      const unit1 = new Unit(math.bignumber(10), 'N/s')
+      const unit2 = new Unit(math.bignumber(10), 'h')
+      const unitM = unit1.multiply(unit2)
       assert(math.type.isBigNumber(unitM.value))
 
-      var unit3 = new Unit(math.bignumber(14.7), 'lbf')
-      var unit4 = new Unit(math.bignumber(1), 'in in')
-      var unitD = unit3.divide(unit4)
+      const unit3 = new Unit(math.bignumber(14.7), 'lbf')
+      const unit4 = new Unit(math.bignumber(1), 'in in')
+      const unitD = unit3.divide(unit4)
       assert(math.type.isBigNumber(unitD.value))
 
-      var unit5 = new Unit(math.bignumber(1), 'N h/s')
-      var unitP = unit5.pow(math.bignumber(-3.5))
+      const unit5 = new Unit(math.bignumber(1), 'N h/s')
+      const unitP = unit5.pow(math.bignumber(-3.5))
       assert(math.type.isBigNumber(unitP.value))
     })
   })
 
   describe('plurals', function () {
     it('should support plurals', function () {
-      var unit1 = new Unit(5, 'meters')
+      const unit1 = new Unit(5, 'meters')
       assert.equal(unit1.value, 5)
       assert.equal(unit1.units[0].unit.name, 'meters')
       assert.equal(unit1.units[0].prefix.name, '')
 
-      var unit2 = new Unit(5, 'kilometers')
+      const unit2 = new Unit(5, 'kilometers')
       assert.equal(unit2.value, 5000)
       assert.equal(unit2.units[0].unit.name, 'meters')
       assert.equal(unit2.units[0].prefix.name, 'kilo')
@@ -1038,12 +1038,12 @@ describe('Unit', function () {
 
   describe('aliases', function () {
     it('should support aliases', function () {
-      var unit1 = new Unit(5, 'lt')
+      const unit1 = new Unit(5, 'lt')
       assert.equal(unit1.value, 5e-3)
       assert.equal(unit1.units[0].unit.name, 'lt')
       assert.equal(unit1.units[0].prefix.name, '')
 
-      var unit2 = new Unit(1, 'lb')
+      const unit2 = new Unit(1, 'lb')
       assert.equal(unit2.value, 453.59237e-3)
       assert.equal(unit2.units[0].unit.name, 'lb')
       assert.equal(unit2.units[0].prefix.name, '')
@@ -1067,7 +1067,7 @@ describe('Unit', function () {
     })
 
     it("For each built-in unit, 'name' should match key", function () {
-      for (var key in Unit.UNITS) {
+      for (const key in Unit.UNITS) {
         assert.equal(key, Unit.UNITS[key].name)
       }
     })
@@ -1116,7 +1116,7 @@ describe('Unit', function () {
     })
 
     it('should create a custom unit from a Unit definition', function () {
-      var Unit1 = new Unit(5, 'N/woggle')
+      const Unit1 = new Unit(5, 'N/woggle')
       Unit.createUnitSingle('gadget', Unit1)
       assert.equal(new Unit(1, 'gadget').equals(new Unit(5, 'N/woggle')), true)
     })
@@ -1127,8 +1127,8 @@ describe('Unit', function () {
     })
 
     it('should return the new (value-less) unit', function () {
-      var Unit2 = new Unit(1000, 'N h kg^-2 bytes^-2')
-      var newUnit = Unit.createUnitSingle('whimsy', '8 gadget hours')
+      const Unit2 = new Unit(1000, 'N h kg^-2 bytes^-2')
+      const newUnit = Unit.createUnitSingle('whimsy', '8 gadget hours')
       assert.equal(Unit2.to(newUnit).toString(), '2500 whimsy')
     })
 
@@ -1167,9 +1167,9 @@ describe('Unit', function () {
     })
 
     it('should create new base units', function () {
-      var fooBase_unit = Unit.createUnitSingle('fooBase')
+      const fooBase_unit = Unit.createUnitSingle('fooBase')
       assert.equal(fooBase_unit.dimensions.toString(), Unit.BASE_UNITS['fooBase_STUFF'].dimensions.toString())
-      var testUnit = new Unit(5, 'fooBase')
+      const testUnit = new Unit(5, 'fooBase')
       assert.equal(testUnit.toString(), '5 fooBase')
     })
 
@@ -1232,8 +1232,8 @@ describe('Unit', function () {
 
   describe('toSI', function () {
     it('should return a clone of the unit', function () {
-      var u1 = Unit.parse('3 ft')
-      var u2 = u1.toSI()
+      const u1 = Unit.parse('3 ft')
+      const u2 = u1.toSI()
       assert.equal(u1 === u2, false)
     })
 

@@ -1,18 +1,18 @@
 'use strict'
 
-var nearlyEqual = require('../../utils/number').nearlyEqual
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Test whether two values are unequal.
@@ -35,20 +35,20 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.unequal(2 + 2, 3);       // returns true
-   *    math.unequal(2 + 2, 4);       // returns false
+   *    math.unequal(2 + 2, 3)       // returns true
+   *    math.unequal(2 + 2, 4)       // returns false
    *
-   *    var a = math.unit('50 cm');
-   *    var b = math.unit('5 m');
-   *    math.unequal(a, b);           // returns false
+   *    const a = math.unit('50 cm')
+   *    const b = math.unit('5 m')
+   *    math.unequal(a, b)           // returns false
    *
-   *    var c = [2, 5, 1];
-   *    var d = [2, 7, 1];
+   *    const c = [2, 5, 1]
+   *    const d = [2, 7, 1]
    *
-   *    math.unequal(c, d);           // returns [false, true, false]
-   *    math.deepEqual(c, d);         // returns false
+   *    math.unequal(c, d)           // returns [false, true, false]
+   *    math.deepEqual(c, d)         // returns false
    *
-   *    math.unequal(0, null);        // returns true
+   *    math.unequal(0, null)        // returns true
    * See also:
    *
    *    equal, deepEqual, smaller, smallerEq, larger, largerEq, compare
@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit | string | Array | Matrix | undefined} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are unequal, else returns false
    */
-  var unequal = typed('unequal', {
+  const unequal = typed('unequal', {
 
     'any, any': function (x, y) {
       // strict equality for null and undefined?
@@ -127,7 +127,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  var _unequal = typed('_unequal', {
+  let _unequal = typed('_unequal', {
 
     'boolean, boolean': function (x, y) {
       return x !== y

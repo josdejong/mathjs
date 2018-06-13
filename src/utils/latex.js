@@ -1,6 +1,6 @@
 'use strict'
 
-var escape_latex = require('escape-latex')
+const escape_latex = require('escape-latex')
 
 exports.symbols = {
   // GREEK LETTERS
@@ -110,7 +110,7 @@ exports.operators = {
 
 exports.defaultTemplate = `\\mathrm{\${name}}\\left(\${args}\\right)`
 
-var units = {
+const units = {
   deg: '^\\circ'
 }
 

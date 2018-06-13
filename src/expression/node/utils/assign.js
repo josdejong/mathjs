@@ -1,11 +1,11 @@
 'use strict'
 
-var errorTransform = require('../../transform/error.transform').transform
-var setSafeProperty = require('../../../utils/customs').setSafeProperty
+const errorTransform = require('../../transform/error.transform').transform
+const setSafeProperty = require('../../../utils/customs').setSafeProperty
 
 function factory (type, config, load, typed) {
-  var subset = load(require('../../../function/matrix/subset'))
-  var matrix = load(require('../../../type/matrix/function/matrix'))
+  const subset = load(require('../../../function/matrix/subset'))
+  const matrix = load(require('../../../type/matrix/function/matrix'))
 
   /**
    * Replace part of an object:

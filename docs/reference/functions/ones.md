@@ -36,12 +36,12 @@ Array &#124; Matrix &#124; number | A matrix filled with ones
 ## Examples
 
 ```js
-math.ones(3);                   // returns [1, 1, 1]
-math.ones(3, 2);                // returns [[1, 1], [1, 1], [1, 1]]
-math.ones(3, 2, 'dense');       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
+math.ones(3)                   // returns [1, 1, 1]
+math.ones(3, 2)                // returns [[1, 1], [1, 1], [1, 1]]
+math.ones(3, 2, 'dense')       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
 
-var A = [[1, 2, 3], [4, 5, 6]];
-math.ones(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
+const A = [[1, 2, 3], [4, 5, 6]]
+math.ones(math.size(A))       // returns [[1, 1, 1], [1, 1, 1]]
 ```
 
 

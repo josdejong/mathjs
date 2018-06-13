@@ -1,12 +1,12 @@
 'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach')
-var reduce = require('../../utils/collection/reduce')
-var containsCollections = require('../../utils/collection/containsCollections')
+const deepForEach = require('../../utils/collection/deepForEach')
+const reduce = require('../../utils/collection/reduce')
+const containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var larger = load(require('../relational/larger'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const larger = load(require('../relational/larger'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the maximum value of a matrix or a  list with values.
@@ -22,15 +22,15 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.max(2, 1, 4, 3);                  // returns 4
-   *     math.max([2, 1, 4, 3]);                // returns 4
+   *     math.max(2, 1, 4, 3)                  // returns 4
+   *     math.max([2, 1, 4, 3])                // returns 4
    *
    *     // maximum over a specified dimension (zero-based)
-   *     math.max([[2, 5], [4, 3], [1, 7]], 0); // returns [4, 7]
-   *     math.max([[2, 5], [4, 3]], [1, 7], 1); // returns [5, 4, 7]
+   *     math.max([[2, 5], [4, 3], [1, 7]], 0) // returns [4, 7]
+   *     math.max([[2, 5], [4, 3]], [1, 7], 1) // returns [5, 4, 7]
    *
-   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
-   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
+   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1)    // returns 7.1
+   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1)    // returns -4.5
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The maximum value
    */
-  var max = typed('max', {
+  const max = typed('max', {
     // max([a, b, c, d, ...])
     'Array | Matrix': _max,
 
@@ -84,7 +84,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _max (array) {
-    var max = undefined
+    let max
 
     deepForEach(array, function (value) {
       try {

@@ -1,11 +1,11 @@
 'use strict'
 
-var forEach = require('../../utils/array').forEach
-var map = require('../../utils/array').map
+const forEach = require('../../utils/array').forEach
+const map = require('../../utils/array').map
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
-  var ResultSet = load(require('../../type/resultset/ResultSet'))
+  const Node = load(require('./Node'))
+  const ResultSet = load(require('../../type/resultset/ResultSet'))
 
   /**
    * @constructor BlockNode
@@ -24,8 +24,8 @@ function factory (type, config, load, typed) {
     // validate input, copy blocks
     if (!Array.isArray(blocks)) throw new Error('Array expected')
     this.blocks = blocks.map(function (block) {
-      var node = block && block.node
-      var visible = block && block.visible !== undefined ? block.visible : true
+      const node = block && block.node
+      const visible = block && block.visible !== undefined ? block.visible : true
 
       if (!type.isNode(node)) throw new TypeError('Property "node" must be a Node')
       if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean')
@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   BlockNode.prototype._compile = function (math, argNames) {
-    var evalBlocks = map(this.blocks, function (block) {
+    const evalBlocks = map(this.blocks, function (block) {
       return {
         eval: block.node._compile(math, argNames),
         visible: block.visible
@@ -65,10 +65,10 @@ function factory (type, config, load, typed) {
     })
 
     return function evalBlockNodes (scope, args, context) {
-      var results = []
+      const results = []
 
       forEach(evalBlocks, function evalBlockNode (block) {
-        var result = block.eval(scope, args, context)
+        const result = block.eval(scope, args, context)
         if (block.visible) {
           results.push(result)
         }
@@ -83,7 +83,7 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   BlockNode.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.blocks.length; i++) {
+    for (let i = 0; i < this.blocks.length; i++) {
       callback(this.blocks[i].node, 'blocks[' + i + '].node', this)
     }
   }
@@ -95,10 +95,10 @@ function factory (type, config, load, typed) {
    * @returns {BlockNode} Returns a transformed copy of the node
    */
   BlockNode.prototype.map = function (callback) {
-    var blocks = []
-    for (var i = 0; i < this.blocks.length; i++) {
-      var block = this.blocks[i]
-      var node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this))
+    const blocks = []
+    for (let i = 0; i < this.blocks.length; i++) {
+      const block = this.blocks[i]
+      const node = this._ifNode(callback(block.node, 'blocks[' + i + '].node', this))
       blocks[i] = {
         node: node,
         visible: block.visible
@@ -112,7 +112,7 @@ function factory (type, config, load, typed) {
    * @return {BlockNode}
    */
   BlockNode.prototype.clone = function () {
-    var blocks = this.blocks.map(function (block) {
+    const blocks = this.blocks.map(function (block) {
       return {
         node: block.node,
         visible: block.visible

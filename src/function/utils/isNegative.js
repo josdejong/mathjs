@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var number = require('../../utils/number')
+const deepMap = require('../../utils/collection/deepMap')
+const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -16,14 +16,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.isNegative(3);                     // returns false
-   *    math.isNegative(-2);                    // returns true
-   *    math.isNegative(0);                     // returns false
-   *    math.isNegative(-0);                    // returns false
-   *    math.isNegative(math.bignumber(2));     // returns false
-   *    math.isNegative(math.fraction(-2, 5));  // returns true
-   *    math.isNegative('-2');                  // returns true
-   *    math.isNegative([2, 0, -3]');           // returns [false, false, true]
+   *    math.isNegative(3)                     // returns false
+   *    math.isNegative(-2)                    // returns true
+   *    math.isNegative(0)                     // returns false
+   *    math.isNegative(-0)                    // returns false
+   *    math.isNegative(math.bignumber(2))     // returns false
+   *    math.isNegative(math.fraction(-2, 5))  // returns true
+   *    math.isNegative('-2')                  // returns true
+   *    math.isNegative([2, 0, -3]')           // returns [false, false, true]
    *
    * See also:
    *
@@ -33,7 +33,7 @@ function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isNegative = typed('isNegative', {
+  const isNegative = typed('isNegative', {
     'number': function (x) {
       return x < 0
     },

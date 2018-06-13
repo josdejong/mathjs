@@ -1,16 +1,14 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
 
 describe('help', function () {
   it('should find documentation for a function by its name', function () {
-    var help = math.help('sin')
+    const help = math.help('sin')
     assert.ok(help instanceof math.type.Help)
     assert.deepEqual(help.doc, math.expression.docs.sin)
   })
 
   it('should find documentation for a function by the function itself', function () {
-    var help = math.help(math.sin)
+    const help = math.help(math.sin)
     assert.ok(help instanceof math.type.Help)
     assert.deepEqual(help.doc, math.expression.docs.sin)
   })
@@ -21,25 +19,25 @@ describe('help', function () {
   })
 
   it('should find help from a function name', function () {
-    var help = math.help('sin')
+    const help = math.help('sin')
     assert(help instanceof math.type.Help)
     assert.equal(help.doc.name, 'sin')
   })
 
   it('should find help from a function', function () {
-    var help = math.help(math.sin)
+    const help = math.help(math.sin)
     assert(help instanceof math.type.Help)
     assert.equal(help.doc.name, 'sin')
   })
 
   it('should find help from a constant name', function () {
-    var help = math.help('pi')
+    const help = math.help('pi')
     assert(help instanceof math.type.Help)
     assert.equal(help.doc.name, 'pi')
   })
 
   it('should find help from a constant', function () {
-    var help = math.help(math.pi)
+    const help = math.help(math.pi)
     assert(help instanceof math.type.Help)
     assert.equal(help.doc.name, 'pi')
   })
@@ -56,7 +54,7 @@ describe('help', function () {
   })
 
   it('should LaTeX help', function () {
-    var expression = math.parse('help(parse)')
+    const expression = math.parse('help(parse)')
     assert.equal(expression.toTex(), '\\mathrm{help}\\left( parse\\right)')
   })
 })

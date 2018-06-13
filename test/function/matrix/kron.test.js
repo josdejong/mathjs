@@ -1,6 +1,5 @@
 // test kronecker product
-var assert = require('assert'),
-  math = require('../../../src/index')
+const assert = require('assert'), math = require('../../../src/index')
 
 describe('kron', function () {
   it('should calculate the kronecker product of two arrays', function () {
@@ -66,15 +65,17 @@ describe('kron', function () {
   })
 
   describe('DenseMatrix', function () {
-    it('should calculate the kronecker product of a 2d matrix', function () {
-      var y = math.matrix([[1, 1], [1, 1]])
-      var x = math.matrix([[1, 0], [0, 1]])
-      var product = math.kron(x, y)
+    it('should calculate the kronecker product of a 2d matrix (1)', function () {
+      const y = math.matrix([[1, 1], [1, 1]])
+      const x = math.matrix([[1, 0], [0, 1]])
+      const product = math.kron(x, y)
       assert.deepEqual(product.valueOf(), [[1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 1, 1], [0, 0, 1, 1]])
+    })
 
-      var y = math.matrix([[1, 2], [55, -1]])
-      var x = math.matrix([[13, 0], [0, -1]])
-      var product = math.kron(x, y)
+    it('should calculate the kronecker product of a 2d matrix (2)', function () {
+      const y = math.matrix([[1, 2], [55, -1]])
+      const x = math.matrix([[13, 0], [0, -1]])
+      const product = math.kron(x, y)
       assert.deepEqual(product.toArray(), [[13, 26, 0, 0], [715, -13, 0, -0], [0, 0, -1, -2], [0, 0, -55, 1]])
     })
 
@@ -86,15 +87,17 @@ describe('kron', function () {
   })
 
   describe('SparseMatrix', function () {
-    it('should calculate the kronecker product of a 2d matrix', function () {
-      var y = math.sparse([[1, 1], [1, 1]])
-      var x = math.sparse([[1, 0], [0, 1]])
-      var product = math.kron(x, y)
+    it('should calculate the kronecker product of a 2d matrix (1)', function () {
+      const y = math.sparse([[1, 1], [1, 1]])
+      const x = math.sparse([[1, 0], [0, 1]])
+      const product = math.kron(x, y)
       assert.deepEqual(product.valueOf(), [[1, 1, 0, 0], [1, 1, 0, 0], [0, 0, 1, 1], [0, 0, 1, 1]])
+    })
 
-      var y = math.matrix([[1, 2], [55, -1]], 'sparse')
-      var x = math.matrix([[13, 0], [0, -1]], 'sparse')
-      var product = math.kron(x, y)
+    it('should calculate the kronecker product of a 2d matrix (2)', function () {
+      const y = math.matrix([[1, 2], [55, -1]], 'sparse')
+      const x = math.matrix([[13, 0], [0, -1]], 'sparse')
+      const product = math.kron(x, y)
       assert.deepEqual(product.toArray(), [[13, 26, 0, 0], [715, -13, 0, -0], [0, 0, -1, -2], [0, 0, -55, 1]])
     })
   })

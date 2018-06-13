@@ -8,7 +8,7 @@ function factory (type, config, load, typed, math) {
    * @returns {*} Returns the revived object
    */
   return function reviver (key, value) {
-    var constructor = type[value && value.mathjs] ||
+    const constructor = type[value && value.mathjs] ||
         (math.expression && math.expression.node[value && value.mathjs])
     // TODO: instead of checking math.expression.node, expose all Node classes on math.type too
 

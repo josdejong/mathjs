@@ -1,6 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
 
 describe('filter', function () {
   it('should filter an array with a filter function', function () {
@@ -18,8 +16,8 @@ describe('filter', function () {
   })
 
   it('should invoke callback with parameters value, index, obj', function () {
-    var arr = [1, 2, 3]
-    var log = []
+    const arr = [1, 2, 3]
+    const log = []
 
     math.filter(arr, function (value, index, obj) {
       log.push([value, index, obj === arr])
@@ -34,7 +32,7 @@ describe('filter', function () {
   })
 
   it('should invoke a typed function with correct number of arguments (1)', function () {
-    var output = []
+    const output = []
     math.filter([1, 2, 3], math.typed('callback', {
       'number': function (value) {
         output.push(value + 2)
@@ -44,7 +42,7 @@ describe('filter', function () {
   })
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
-    var output = []
+    const output = []
     math.filter([1, 2, 3], math.typed('callback', {
       'number, Array': function (value, index) {
         output.push(value + 2)
@@ -54,7 +52,7 @@ describe('filter', function () {
   })
 
   it('should invoke a typed function with correct number of arguments (3)', function () {
-    var output = []
+    const output = []
     math.filter([1, 2, 3], math.typed('callback', {
       'number, Array, Array': function (value, index, array) {
         output.push(value + 2)
@@ -91,7 +89,7 @@ describe('filter', function () {
   })
 
   it('should LaTeX filter', function () {
-    var expression = math.parse('filter(1,test)')
+    const expression = math.parse('filter(1,test)')
     assert.equal(expression.toTex(), '\\mathrm{filter}\\left(1, test\\right)')
   })
 })

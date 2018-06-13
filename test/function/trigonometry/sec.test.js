@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  sec = math.sec,
-  bigmath = math.create({number: 'BigNumber', precision: 20}),
-  biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, sec = math.sec, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('sec', function () {
   it('should return the secant of a boolean', function () {
@@ -39,9 +29,9 @@ describe('sec', function () {
   })
 
   it('should return the secant of a bignumber', function () {
-    var Big = bigmath.bignumber
-    var bigPi = bigmath.pi
-    var sqrt2 = bigmath.SQRT2.toString()
+    const Big = bigmath.bignumber
+    let bigPi = bigmath.pi
+    const sqrt2 = bigmath.SQRT2.toString()
 
     assert.deepEqual(bigmath.sec(Big(0)), Big(1))
     assert.deepEqual(bigmath.sec(bigPi.div(8)).toString(), '1.0823922002923939688')
@@ -59,8 +49,7 @@ describe('sec', function () {
   })
 
   it('should return the secant of a complex number', function () {
-    var re = 0.0416749644111443,
-      im = 0.0906111371962376
+    const re = 0.0416749644111443, im = 0.0906111371962376
     approx.deepEqual(sec(complex('2+3i')), complex(-re, im))
     approx.deepEqual(sec(complex('2-3i')), complex(-re, -im))
     approx.deepEqual(sec(complex('-2+3i')), complex(-re, -im))
@@ -88,7 +77,7 @@ describe('sec', function () {
     assert.throws(function () { sec('string') })
   })
 
-  var sec123 = [1.85081571768093, -2.40299796172238, -1.01010866590799]
+  const sec123 = [1.85081571768093, -2.40299796172238, -1.01010866590799]
 
   it('should return the secant of each element of an array', function () {
     approx.deepEqual(sec([1, 2, 3]), sec123)
@@ -104,7 +93,7 @@ describe('sec', function () {
   })
 
   it('should LaTeX sec', function () {
-    var expression = math.parse('sec(1)')
+    const expression = math.parse('sec(1)')
     assert.equal(expression.toTex(), '\\sec\\left(1\\right)')
   })
 })

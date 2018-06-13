@@ -1,5 +1,5 @@
 'use strict'
-var bitNot = require('./bitNot')
+const bitNot = require('./bitNot')
 
 /**
  * Applies bitwise function to numbers
@@ -9,14 +9,14 @@ var bitNot = require('./bitNot')
  * @return {BigNumber}
  */
 module.exports = function bitwise (x, y, func) {
-  var BigNumber = x.constructor
+  const BigNumber = x.constructor
 
-  var xBits, yBits
-  var xSign = +(x.s < 0)
-  var ySign = +(y.s < 0)
+  let xBits, yBits
+  const xSign = +(x.s < 0)
+  const ySign = +(y.s < 0)
   if (xSign) {
     xBits = decCoefficientToBinaryString(bitNot(x))
-    for (var i = 0; i < xBits.length; ++i) {
+    for (let i = 0; i < xBits.length; ++i) {
       xBits[i] ^= 1
     }
   } else {
@@ -24,14 +24,14 @@ module.exports = function bitwise (x, y, func) {
   }
   if (ySign) {
     yBits = decCoefficientToBinaryString(bitNot(y))
-    for (var i = 0; i < yBits.length; ++i) {
+    for (let i = 0; i < yBits.length; ++i) {
       yBits[i] ^= 1
     }
   } else {
     yBits = decCoefficientToBinaryString(y)
   }
 
-  var minBits, maxBits, minSign
+  let minBits, maxBits, minSign
   if (xBits.length <= yBits.length) {
     minBits = xBits
     maxBits = yBits
@@ -42,14 +42,14 @@ module.exports = function bitwise (x, y, func) {
     minSign = ySign
   }
 
-  var shortLen = minBits.length
-  var longLen = maxBits.length
-  var expFuncVal = func(xSign, ySign) ^ 1
-  var outVal = new BigNumber(expFuncVal ^ 1)
-  var twoPower = new BigNumber(1)
-  var two = new BigNumber(2)
+  let shortLen = minBits.length
+  let longLen = maxBits.length
+  const expFuncVal = func(xSign, ySign) ^ 1
+  let outVal = new BigNumber(expFuncVal ^ 1)
+  let twoPower = new BigNumber(1)
+  const two = new BigNumber(2)
 
-  var prevPrec = BigNumber.precision
+  const prevPrec = BigNumber.precision
   BigNumber.config({precision: 1E9})
 
   while (shortLen > 0) {
@@ -76,40 +76,48 @@ module.exports = function bitwise (x, y, func) {
 /* Extracted from decimal.js, and edited to specialize. */
 function decCoefficientToBinaryString (x) {
   // Convert to string
-  var a = x.d // array with digits
-  var r = a[0] + ''
+  const a = x.d // array with digits
+  let r = a[0] + ''
 
-  for (var i = 1; i < a.length; ++i) {
-    var s = a[i] + ''
-    for (var z = 7 - s.length; z--;) {
+  for (let i = 1; i < a.length; ++i) {
+    let s = a[i] + ''
+    for (let z = 7 - s.length; z--;) {
       s = '0' + s
     }
 
     r += s
   }
 
-  var j
-  for (j = r.length - 1; r.charAt(j) == '0'; --j);
+  let j = r.length
+  while (r.charAt(j) === '0') {
+    j--
+  }
 
-  var xe = x.e
-  var str = r.slice(0, j + 1 || 1)
-  var strL = str.length
+  let xe = x.e
+  let str = r.slice(0, j + 1 || 1)
+  const strL = str.length
   if (xe > 0) {
     if (++xe > strL) {
       // Append zeros.
-      for (xe -= strL; xe--; str += '0');
+      xe -= strL
+      while (xe--) {
+        str += '0'
+      }
     } else if (xe < strL) {
       str = str.slice(0, xe) + '.' + str.slice(xe)
     }
   }
 
   // Convert from base 10 (decimal) to base 2
-  var arr = [0]
-  for (var i = 0; i < str.length;) {
-    for (var arrL = arr.length; arrL--; arr[arrL] *= 10);
+  const arr = [0]
+  for (let i = 0; i < str.length;) {
+    let arrL = arr.length
+    while (arrL--) {
+      arr[arrL] *= 10
+    }
 
-    arr[0] += str.charAt(i++) << 0 // convert to int
-    for (var j = 0; j < arr.length; ++j) {
+    arr[0] += parseInt(str.charAt(i++)) // convert to int
+    for (let j = 0; j < arr.length; ++j) {
       if (arr[j] > 1) {
         if (arr[j + 1] == null) {
           arr[j + 1] = 0

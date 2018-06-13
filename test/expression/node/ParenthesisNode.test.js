@@ -1,24 +1,24 @@
 // test SymbolNode
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var Node = math.expression.node.Node
-var ConstantNode = math.expression.node.ConstantNode
-var OperatorNode = math.expression.node.OperatorNode
-var ParenthesisNode = math.expression.node.ParenthesisNode
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const Node = math.expression.node.Node
+const ConstantNode = math.expression.node.ConstantNode
+const OperatorNode = math.expression.node.OperatorNode
+const ParenthesisNode = math.expression.node.ParenthesisNode
 
 describe('ParenthesisNode', function () {
   it('should create a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
+    const a = new ConstantNode(1)
 
-    var n = new ParenthesisNode(a)
+    const n = new ParenthesisNode(a)
     assert(n instanceof ParenthesisNode)
     assert(n instanceof Node)
     assert.equal(n.type, 'ParenthesisNode')
   })
 
   it('should throw an error when calling without new operator', function () {
-    var a = new ConstantNode(1)
+    const a = new ConstantNode(1)
     assert.throws(function () { ParenthesisNode(a) }, SyntaxError)
   })
 
@@ -28,15 +28,15 @@ describe('ParenthesisNode', function () {
   })
 
   it('should compile a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
-    var n = new ParenthesisNode(a)
+    const a = new ConstantNode(1)
+    const n = new ParenthesisNode(a)
 
     assert.equal(n.compile().eval.toString(), a.compile().eval.toString())
   })
 
   it('should filter a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
-    var n = new ParenthesisNode(a)
+    const a = new ConstantNode(1)
+    const n = new ParenthesisNode(a)
 
     assert.deepEqual(n.filter(function (node) { return node instanceof ParenthesisNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node.content instanceof ConstantNode }), [n])
@@ -50,10 +50,10 @@ describe('ParenthesisNode', function () {
   })
 
   it('should run forEach on a ParenthesisNode', function () {
-    var count = 0
-    var a = new ConstantNode(1)
+    let count = 0
+    const a = new ConstantNode(1)
 
-    var n = new ParenthesisNode(a)
+    const n = new ParenthesisNode(a)
     n.forEach(function (node, path, _parent) {
       assert.equal(node.type, 'ConstantNode')
       assert.equal(path, 'content')
@@ -65,12 +65,12 @@ describe('ParenthesisNode', function () {
   })
 
   it('should map a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
-    var b = new ParenthesisNode(a)
+    const a = new ConstantNode(1)
+    const b = new ParenthesisNode(a)
 
-    var count = 0
+    let count = 0
 
-    var c = b.map(function (node, path, _parent) {
+    const c = b.map(function (node, path, _parent) {
       count++
       assert.equal(node.type, 'ConstantNode')
       assert.equal(node.value, 1)
@@ -82,28 +82,28 @@ describe('ParenthesisNode', function () {
   })
 
   it('should transform a ParenthesisNode', function () {
-    var c1 = new ConstantNode(1)
-    var c2 = new ConstantNode(2)
+    const c1 = new ConstantNode(1)
+    const c2 = new ConstantNode(2)
 
-    var a = new ParenthesisNode(c1)
-    var b = new ParenthesisNode(c2)
+    const a = new ParenthesisNode(c1)
+    const b = new ParenthesisNode(c2)
 
-    var c = a.transform(function (node) {
+    const c = a.transform(function (node) {
       return node instanceof ParenthesisNode && node.content.value == 1 ? b : node
     })
     assert.deepEqual(c, b)
 
     // no match should leave the constant as is
-    var d = a.transform(function (node) {
+    const d = a.transform(function (node) {
       return node instanceof ParenthesisNode && node.name == 2 ? b : node
     })
     assert.deepEqual(d, a)
   })
 
   it('should clone a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
-    var n = new ParenthesisNode(a)
-    var clone = n.clone()
+    const a = new ConstantNode(1)
+    const n = new ParenthesisNode(a)
+    const clone = n.clone()
 
     assert(clone instanceof ParenthesisNode)
     assert.deepEqual(n, clone)
@@ -112,10 +112,10 @@ describe('ParenthesisNode', function () {
   })
 
   it('test equality another Node', function () {
-    var a = new ParenthesisNode(new ConstantNode(1))
-    var b = new ParenthesisNode(new ConstantNode(1))
-    var c = new ParenthesisNode(new ConstantNode(2))
-    var d = new ConstantNode(2)
+    const a = new ParenthesisNode(new ConstantNode(1))
+    const b = new ParenthesisNode(new ConstantNode(1))
+    const c = new ParenthesisNode(new ConstantNode(2))
+    const d = new ConstantNode(2)
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -125,9 +125,9 @@ describe('ParenthesisNode', function () {
   })
 
   it('should get the content of a ParenthesisNode', function () {
-    var c = new math.expression.node.ConstantNode(1)
-    var p1 = new math.expression.node.ParenthesisNode(c)
-    var p2 = new math.expression.node.ParenthesisNode(p1)
+    const c = new math.expression.node.ConstantNode(1)
+    const p1 = new math.expression.node.ParenthesisNode(c)
+    const p2 = new math.expression.node.ParenthesisNode(p1)
 
     assert.equal(p1.content, c)
     assert.equal(p1.getContent(), c)
@@ -137,76 +137,76 @@ describe('ParenthesisNode', function () {
   })
 
   it('should stringify a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
-    var n = new ParenthesisNode(a)
+    const a = new ConstantNode(1)
+    const n = new ParenthesisNode(a)
 
     assert.equal(n.toString(), '(1)')
     assert.equal(n.toString({}), '(1)')
   })
 
   it('should stringify a ParenthesisNode when not in keep mode', function () {
-    var c = new math.expression.node.ConstantNode(1)
+    const c = new math.expression.node.ConstantNode(1)
 
-    var p = new math.expression.node.ParenthesisNode(c)
+    const p = new math.expression.node.ParenthesisNode(c)
 
     assert.equal(p.toString({parenthesis: 'all'}), '1')
     assert.equal(p.toString({parenthesis: 'auto'}), '1')
   })
 
   it('should stringify a ParenthesisNode with custom toString', function () {
-    var customFunction = function (node, options) {
+    const customFunction = function (node, options) {
       if (node.type === 'ParenthesisNode') {
         return '[' + node.content.toString(options) + ']'
       }
     }
 
-    var c = new math.expression.node.ConstantNode(1)
-    var n = new math.expression.node.ParenthesisNode(c)
+    const c = new math.expression.node.ConstantNode(1)
+    const n = new math.expression.node.ParenthesisNode(c)
 
     assert.equal(n.toString({handler: customFunction}), '[1]')
   })
 
   it('toJSON and fromJSON', function () {
-    var b = new ConstantNode(2)
-    var node = new ParenthesisNode(b)
+    const b = new ConstantNode(2)
+    const node = new ParenthesisNode(b)
 
-    var json = node.toJSON()
+    const json = node.toJSON()
 
     assert.deepEqual(json, {
       mathjs: 'ParenthesisNode',
       content: b
     })
 
-    var parsed = ParenthesisNode.fromJSON(json)
+    const parsed = ParenthesisNode.fromJSON(json)
     assert.deepEqual(parsed, node)
   })
 
   it('should LaTeX a ParenthesisNode', function () {
-    var a = new ConstantNode(1)
-    var n = new ParenthesisNode(a)
+    const a = new ConstantNode(1)
+    const n = new ParenthesisNode(a)
 
     assert.equal(n.toTex(), '\\left(1\\right)')
     assert.equal(n.toTex({}), '\\left(1\\right)')
   })
 
   it('should LaTeX a ParenthesisNode when not in keep mode', function () {
-    var c = new math.expression.node.ConstantNode(1)
+    const c = new math.expression.node.ConstantNode(1)
 
-    var p = new math.expression.node.ParenthesisNode(c)
+    const p = new math.expression.node.ParenthesisNode(c)
 
     assert.equal(p.toTex({parenthesis: 'all'}), '1')
     assert.equal(p.toTex({parenthesis: 'auto'}), '1')
   })
 
   it('should LaTeX a ParenthesisNode with custom toTex', function () {
-    var customFunction = function (node, options) {
+    const customFunction = function (node, options) {
       if (node.type === 'ParenthesisNode') {
         return '\\left[' + node.content.toTex(options) + '\\right]'
       }
     }
 
-    var c = new math.expression.node.ConstantNode(1)
-    var n = new math.expression.node.ParenthesisNode(c)
+    const c = new math.expression.node.ConstantNode(1)
+    const n = new math.expression.node.ParenthesisNode(c)
 
     assert.equal(n.toTex({handler: customFunction}), '\\left[1\\right]')
   })

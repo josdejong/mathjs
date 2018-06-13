@@ -29,10 +29,10 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The arc cosi
 ## Examples
 
 ```js
-math.acos(0.5);           // returns number 1.0471975511965979
-math.acos(math.cos(1.5)); // returns number 1.5
+math.acos(0.5)           // returns number 1.0471975511965979
+math.acos(math.cos(1.5)) // returns number 1.5
 
-math.acos(2);             // returns Complex 0 + 1.3169578969248166 i
+math.acos(2)             // returns Complex 0 + 1.3169578969248166 i
 ```
 
 

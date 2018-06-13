@@ -9,7 +9,7 @@ describe('multiply', function () {
       market.import('tools/matrices/fpga_dcop_01.tar.gz', ['fpga_dcop_01/fpga_dcop_01.mtx'])
         .then(function (matrices) {
           // matrix
-          var m = matrices[0]
+          const m = matrices[0]
           // multiply matrices, used to compare performance in different implementations
           math.multiply(m, m)
           // indicate test has completed

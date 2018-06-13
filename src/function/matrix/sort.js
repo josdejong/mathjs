@@ -1,14 +1,14 @@
 'use strict'
 
-var size = require('../../utils/array').size
+const size = require('../../utils/array').size
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var compareAsc = load(require('../relational/compare'))
-  var compareDesc = function (a, b) {
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const compareAsc = load(require('../relational/compare'))
+  const compareDesc = function (a, b) {
     return -compareAsc(a, b)
   }
-  var compareNatural = load(require('../relational/compareNatural'))
+  const compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Sort the items in a matrix.
@@ -20,14 +20,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.sort([5, 10, 1]); // returns [1, 5, 10]
-   *    math.sort(['C', 'B', 'A', 'D'], math.compareNatural);
+   *    math.sort([5, 10, 1]) // returns [1, 5, 10]
+   *    math.sort(['C', 'B', 'A', 'D'], math.compareNatural)
    *    // returns ['A', 'B', 'C', 'D']
    *
    *    function sortByLength (a, b) {
-   *      return a.length - b.length;
+   *      return a.length - b.length
    *    }
-   *    math.sort(['Langdon', 'Tom', 'Sara'], sortByLength);
+   *    math.sort(['Langdon', 'Tom', 'Sara'], sortByLength)
    *    // returns ['Tom', 'Sara', 'Langdon']
    *
    * See also:
@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
    *        and 0 when a == b.
    * @return {Matrix | Array} Returns the sorted matrix.
    */
-  var sort = typed('sort', {
+  const sort = typed('sort', {
     'Array': function (x) {
       _arrayIsVector(x)
       return x.sort(compareAsc)

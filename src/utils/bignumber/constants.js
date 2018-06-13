@@ -1,5 +1,5 @@
 'use strict'
-var memoize = require('../function').memoize
+const memoize = require('../function').memoize
 
 /**
  * Calculate BigNumber e

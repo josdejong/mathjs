@@ -1,8 +1,8 @@
 // test chain
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var Chain = math.type.Chain
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const Chain = math.type.Chain
 
 describe('Chain', function () {
   it('should chain operations with numbers', function () {
@@ -11,19 +11,19 @@ describe('Chain', function () {
   })
 
   it('should have a property isChain', function () {
-    var a = new math.type.Chain(5)
+    const a = new math.type.Chain(5)
     assert.strictEqual(a.isChain, true)
   })
 
   it('should have a property type', function () {
-    var a = new math.type.Chain(5)
+    const a = new math.type.Chain(5)
     assert.strictEqual(a.type, 'Chain')
   })
 
   it('should not contain constants, only functions', function () {
     assert(typeof Chain.pi, 'undefined')
 
-    var chain = new Chain(math.bignumber(3))
+    const chain = new Chain(math.bignumber(3))
 
     assert(typeof chain.pi, 'undefined')
     assert(typeof chain.sin, 'function')
@@ -43,16 +43,16 @@ describe('Chain', function () {
   })
 
   it('toJSON and fromJSON', function () {
-    var node = new Chain(2.3)
+    const node = new Chain(2.3)
 
-    var json = node.toJSON()
+    const json = node.toJSON()
 
     assert.deepEqual(json, {
       mathjs: 'Chain',
       value: 2.3
     })
 
-    var parsed = Chain.fromJSON(json)
+    const parsed = Chain.fromJSON(json)
     assert.deepEqual(parsed, node)
   })
 
@@ -62,15 +62,15 @@ describe('Chain', function () {
   })
 
   it('should create a chain from a chain', function () {
-    var a = new Chain(2.3)
-    var b = new Chain(a)
+    const a = new Chain(2.3)
+    const b = new Chain(a)
     assert.equal(a.done(), 2.3)
     assert.equal(b.done(), 2.3)
   })
 
   it('should create a proxy for imported functions', function () {
     math.import({hello: function (a) { return a + '!' }})
-    var a = new Chain('hello').hello().done()
+    const a = new Chain('hello').hello().done()
     assert.strictEqual(a, 'hello!')
   })
 
@@ -91,7 +91,7 @@ describe('Chain', function () {
   it('should not clear inherited properties', function () {
     Object.prototype.foo = 'bar'
 
-    var chain = new Chain()
+    const chain = new Chain()
 
     assert.equal(chain.foo, 'bar')
     assert.equal(chain.hasOwnProperty('foo'), false)

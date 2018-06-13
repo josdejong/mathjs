@@ -1,12 +1,12 @@
 'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach')
-var reduce = require('../../utils/collection/reduce')
-var containsCollections = require('../../utils/collection/containsCollections')
+const deepForEach = require('../../utils/collection/deepForEach')
+const reduce = require('../../utils/collection/reduce')
+const containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var smaller = load(require('../relational/smaller'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const smaller = load(require('../relational/smaller'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the maximum value of a matrix or a  list of values.
@@ -22,15 +22,15 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.min(2, 1, 4, 3);                  // returns 1
-   *     math.min([2, 1, 4, 3]);                // returns 1
+   *     math.min(2, 1, 4, 3)                  // returns 1
+   *     math.min([2, 1, 4, 3])                // returns 1
    *
    *     // maximum over a specified dimension (zero-based)
-   *     math.min([[2, 5], [4, 3], [1, 7]], 0); // returns [1, 3]
-   *     math.min([[2, 5], [4, 3], [1, 7]], 1); // returns [2, 3, 1]
+   *     math.min([[2, 5], [4, 3], [1, 7]], 0) // returns [1, 3]
+   *     math.min([[2, 5], [4, 3], [1, 7]], 1) // returns [2, 3, 1]
    *
-   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
-   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
+   *     math.max(2.7, 7.1, -4.5, 2.0, 4.1)    // returns 7.1
+   *     math.min(2.7, 7.1, -4.5, 2.0, 4.1)    // returns -4.5
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The minimum value
    */
-  var min = typed('min', {
+  const min = typed('min', {
     // min([a, b, c, d, ...])
     'Array | Matrix': _min,
 
@@ -84,7 +84,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _min (array) {
-    var min = undefined
+    let min
 
     deepForEach(array, function (value) {
       try {

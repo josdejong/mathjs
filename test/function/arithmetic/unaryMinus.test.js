@@ -1,9 +1,9 @@
 // test unary minus
-var assert = require('assert')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var fraction = math.fraction
-var complex = math.complex
+const assert = require('assert')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const fraction = math.fraction
+const complex = math.complex
 
 describe('unaryMinus', function () {
   it('should return unary minus of a boolean', function () {
@@ -13,7 +13,7 @@ describe('unaryMinus', function () {
 
   // TODO: unary minus should return bignumber on boolean input when configured for bignumber
   it.skip('should return bignumber unary minus of a boolean', function () {
-    var bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({number: 'BigNumber'})
     assert.deepEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1))
     assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(0))
   })
@@ -72,7 +72,7 @@ describe('unaryMinus', function () {
   })
 
   it('should LaTeX unaryMinus', function () {
-    var expression = math.parse('unaryMinus(1)')
+    const expression = math.parse('unaryMinus(1)')
     assert.equal(expression.toTex(), '-\\left(1\\right)')
   })
 })

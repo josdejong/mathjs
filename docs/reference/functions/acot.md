@@ -29,10 +29,10 @@ number &#124; Complex &#124; Array &#124; Matrix | The arc cotangent of x
 ## Examples
 
 ```js
-math.acot(0.5);           // returns number 0.4636476090008061
-math.acot(math.cot(1.5)); // returns number 1.5
+math.acot(0.5)           // returns number 0.4636476090008061
+math.acot(math.cot(1.5)) // returns number 1.5
 
-math.acot(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+math.acot(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
 ```
 
 

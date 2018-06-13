@@ -1,7 +1,7 @@
-var assert = require('assert')
-var error = require('../../../../src/error/index')
-var math = require('../../../../src/index')
-var complex = math.complex
+const assert = require('assert')
+const error = require('../../../../src/error/index')
+const math = require('../../../../src/index')
+const complex = math.complex
 
 describe('complex', function () {
   it('should return 0 + 0i if called with no argument', function () {
@@ -33,12 +33,12 @@ describe('complex', function () {
   })
 
   it('should clone a complex value', function () {
-    var b = complex(complex(2, 3))
+    const b = complex(complex(2, 3))
     assert.deepEqual(b, new math.type.Complex(2, 3))
   })
 
   it('should convert the elements of a matrix or array to complex values', function () {
-    var result = [
+    const result = [
       new math.type.Complex(2, 0),
       new math.type.Complex(1, 0),
       new math.type.Complex(2, 3)
@@ -48,7 +48,7 @@ describe('complex', function () {
   })
 
   it('should accept polar coordinates as input', function () {
-    var polar = complex({r: 1, phi: 1})
+    const polar = complex({r: 1, phi: 1})
     assert.deepEqual(polar, new math.type.Complex.fromPolar(1, 1))
   })
 
@@ -85,9 +85,9 @@ describe('complex', function () {
   })
 
   it('should LaTeX complex', function () {
-    var expr1 = math.parse('complex()')
-    var expr2 = math.parse('complex(1)')
-    var expr3 = math.parse('complex(1,2)')
+    const expr1 = math.parse('complex()')
+    const expr2 = math.parse('complex(1)')
+    const expr3 = math.parse('complex(1,2)')
 
     assert.equal(expr1.toTex(), '0')
     assert.equal(expr2.toTex(), '\\left(1\\right)')

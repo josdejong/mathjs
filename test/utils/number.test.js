@@ -1,7 +1,5 @@
 // test number utils
-var assert = require('assert'),
-  approx = require('../../tools/approx'),
-  number = require('../../src/utils/number')
+const assert = require('assert'), approx = require('../../tools/approx'), number = require('../../src/utils/number')
 
 describe('number', function () {
   it('isInteger', function () {
@@ -126,7 +124,7 @@ describe('number', function () {
 
     describe('should apply options', function () {
       it('fixed notation', function () {
-        var options = {notation: 'fixed'}
+        const options = {notation: 'fixed'}
         assert.equal(number.format(0, options), '0')
         assert.equal(number.format(123, options), '123')
         assert.equal(number.format(123.456, options), '123.456')
@@ -151,7 +149,7 @@ describe('number', function () {
       })
 
       it('fixed notation with precision', function () {
-        var options = {notation: 'fixed', precision: 2}
+        const options = {notation: 'fixed', precision: 2}
 
         assert.equal(number.format(0, options), '0.00')
         assert.equal(number.format(123, options), '123.00')
@@ -182,7 +180,7 @@ describe('number', function () {
       })
 
       it('exponential notation', function () {
-        var options = {notation: 'exponential'}
+        const options = {notation: 'exponential'}
         assert.equal(number.format(0, options), '0e+0')
         assert.equal(number.format(123, options), '1.23e+2')
         assert.equal(number.format(123.456, options), '1.23456e+2')
@@ -193,7 +191,7 @@ describe('number', function () {
       })
 
       it('exponential notation with precision', function () {
-        var options = {notation: 'exponential', precision: 3}
+        const options = {notation: 'exponential', precision: 3}
         assert.equal(number.format(123, options), '1.23e+2')
         assert.equal(number.format(123.456, options), '1.23e+2')
         assert.equal(number.format(2, options), '2.00e+0')
@@ -203,7 +201,7 @@ describe('number', function () {
         assert.equal(number.format(2 / 7), '0.2857142857142857')
         assert.equal(number.format(0.10400), '0.104')
         assert.equal(number.format(1000), '1000')
-        // assert.equal(number.format(-0.005), '-0.005');
+        // assert.equal(number.format(-0.005), '-0.005')
         assert.equal(number.format(-2300), '-2300')
         assert.equal(number.format(-1.2e12), '-1.2e+12')
 
@@ -265,7 +263,7 @@ describe('number', function () {
       })
 
       it('auto notation with custom lower and upper bound', function () {
-        var options = {
+        const options = {
           lowerExp: -6,
           upperExp: 9
         }
@@ -281,7 +279,7 @@ describe('number', function () {
       })
 
       it('auto notation with custom lower bound', function () {
-        var options = { lowerExp: -6 }
+        const options = { lowerExp: -6 }
         assert.equal(number.format(0, options), '0')
         assert.equal(number.format(1e-6, options), '0.000001')
         assert.equal(number.format(0.999e-6, options), '9.99e-7')
@@ -305,7 +303,7 @@ describe('number', function () {
       })
 
       it('auto notation with custom upper bound', function () {
-        var options = { upperExp: 9 }
+        const options = { upperExp: 9 }
         assert.equal(number.format(1e+9, options), '1e+9')
         assert.equal(number.format(1e+9 - 1, options), '999999999')
       })
@@ -328,7 +326,7 @@ describe('number', function () {
       })
 
       it('auto notation with custom precision, lower, and upper bound', function () {
-        var options = {
+        const options = {
           precision: 4,
           lowerExp: -6,
           upperExp: 9
@@ -354,7 +352,7 @@ describe('number', function () {
         assert.deepEqual(number.splitNumber(0), {sign: '', coefficients: [0], exponent: 0})
         assert.deepEqual(number.splitNumber(2.3), {sign: '', coefficients: [2, 3], exponent: 0})
 
-        var a = number.splitNumber(2.3)
+        const a = number.splitNumber(2.3)
         assert.strictEqual(a.coefficients[0], 2)
         assert.strictEqual(a.coefficients[1], 3)
         assert.strictEqual(a.exponent, 0)
@@ -501,7 +499,7 @@ describe('number', function () {
 
   describe('nearlyEqual', function () {
     it('should test whether two numbers are nearly equal', function () {
-      var epsilon = 1e-2
+      const epsilon = 1e-2
       assert.equal(number.nearlyEqual(1, 0.9, epsilon), false)
       assert.equal(number.nearlyEqual(1, 0.95, epsilon), false)
       assert.equal(number.nearlyEqual(1, 0.98, epsilon), false)
@@ -513,7 +511,7 @@ describe('number', function () {
       assert.equal(number.nearlyEqual(1, 1, epsilon), true)
 
       // smaller epsilon
-      var epsilon2 = 1e-4
+      const epsilon2 = 1e-4
       assert.equal(number.nearlyEqual(1, 0.99, epsilon2), false)
       assert.equal(number.nearlyEqual(1, 0.999, epsilon2), false)
       assert.equal(number.nearlyEqual(1, 0.9999, epsilon2), true)
@@ -524,7 +522,7 @@ describe('number', function () {
     })
 
     it('should test whether a positive and negative number are nearly equal', function () {
-      var epsilon = 1e-3
+      const epsilon = 1e-3
       assert.equal(number.nearlyEqual(1.2, 1.2, epsilon), true)
       assert.equal(number.nearlyEqual(1.2, -1.2, epsilon), false)
       assert.equal(number.nearlyEqual(-1.2, 1.2, epsilon), false)
@@ -532,7 +530,7 @@ describe('number', function () {
     })
 
     it('should test whether two large numbers are nearly equal', function () {
-      var epsilon = 1e-2
+      const epsilon = 1e-2
       assert.equal(number.nearlyEqual(1e200, 0.90e200, epsilon), false)
       assert.equal(number.nearlyEqual(1e200, 0.95e200, epsilon), false)
       assert.equal(number.nearlyEqual(1e200, 0.98e200, epsilon), false)
@@ -540,13 +538,13 @@ describe('number', function () {
     })
 
     it('should test whether two small numbers are nearly equal (always true)', function () {
-      var epsilon = 1e-2
+      const epsilon = 1e-2
       assert.equal(number.nearlyEqual(1e-200, 0.99e-200, epsilon), true)
       assert.equal(number.nearlyEqual(1e-200, 10e-200, epsilon), true) // FIXME: why is this true?
     })
 
     it('should compare with zero', function () {
-      var epsilon = 1e-3
+      const epsilon = 1e-3
       assert.equal(number.nearlyEqual(0, 0, epsilon), true)
       assert.equal(number.nearlyEqual(0, -0, epsilon), true)
       assert.equal(number.nearlyEqual(0, 1.2, epsilon), false)
@@ -555,7 +553,7 @@ describe('number', function () {
     })
 
     it('should compare with Infinity', function () {
-      var epsilon = 1e-3
+      const epsilon = 1e-3
 
       assert.equal(number.nearlyEqual(1.2, Infinity, epsilon), false)
       assert.equal(number.nearlyEqual(Infinity, 1.2, epsilon), false)
@@ -566,7 +564,7 @@ describe('number', function () {
     })
 
     it('should compare with NaN', function () {
-      var epsilon = 1e-3
+      const epsilon = 1e-3
       assert.equal(number.nearlyEqual(1.2, NaN, epsilon), false)
       assert.equal(number.nearlyEqual(NaN, 1.2, epsilon), false)
       assert.equal(number.nearlyEqual(NaN, NaN, epsilon), false)

@@ -1,11 +1,11 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var unaryMinus = load(require('./unaryMinus'))
-  var isNegative = load(require('../utils/isNegative'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const unaryMinus = load(require('./unaryMinus'))
+  const isNegative = load(require('../utils/isNegative'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Calculate the cubic root of a value.
@@ -19,15 +19,15 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.cbrt(27);                  // returns 3
-   *    math.cube(3);                   // returns 27
-   *    math.cbrt(-64);                 // returns -4
-   *    math.cbrt(math.unit('27 m^3')); // returns Unit 3 m
-   *    math.cbrt([27, 64, 125]);       // returns [3, 4, 5]
+   *    math.cbrt(27)                  // returns 3
+   *    math.cube(3)                   // returns 27
+   *    math.cbrt(-64)                 // returns -4
+   *    math.cbrt(math.unit('27 m^3')) // returns Unit 3 m
+   *    math.cbrt([27, 64, 125])       // returns [3, 4, 5]
    *
-   *    var x = math.complex('8i');
-   *    math.cbrt(x);                   // returns Complex 1.7320508075689 + i
-   *    math.cbrt(x, true);             // returns Matrix [
+   *    const x = math.complex('8i')
+   *    math.cbrt(x)                   // returns Complex 1.7320508075689 + i
+   *    math.cbrt(x, true)             // returns Matrix [
    *                                    //    1.7320508075689 + i
    *                                    //   -1.7320508075689 + i
    *                                    //   -2i
@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}
    *            Returns the cubic root of `x`
    */
-  var cbrt = typed('cbrt', {
+  const cbrt = typed('cbrt', {
     'number': _cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
@@ -79,15 +79,15 @@ function factory (type, config, load, typed) {
   function _cbrtComplex (x, allRoots) {
     // https://www.wikiwand.com/en/Cube_root#/Complex_numbers
 
-    var arg_3 = x.arg() / 3
-    var abs = x.abs()
+    const arg_3 = x.arg() / 3
+    const abs = x.abs()
 
     // principal root:
-    var principal = new type.Complex(_cbrtNumber(abs), 0).mul(
+    const principal = new type.Complex(_cbrtNumber(abs), 0).mul(
       new type.Complex(0, arg_3).exp())
 
     if (allRoots) {
-      var all = [
+      const all = [
         principal,
         new type.Complex(_cbrtNumber(abs), 0).mul(
           new type.Complex(0, arg_3 + Math.PI * 2 / 3).exp()),
@@ -109,19 +109,19 @@ function factory (type, config, load, typed) {
    */
   function _cbrtUnit (x) {
     if (x.value && type.isComplex(x.value)) {
-      var result = x.clone()
+      let result = x.clone()
       result.value = 1.0
       result = result.pow(1.0 / 3) // Compute the units
       result.value = _cbrtComplex(x.value) // Compute the value
       return result
     } else {
-      var negate = isNegative(x.value)
+      const negate = isNegative(x.value)
       if (negate) {
         x.value = unaryMinus(x.value)
       }
 
       // TODO: create a helper function for this
-      var third
+      let third
       if (type.isBigNumber(x.value)) {
         third = new type.BigNumber(1).div(3)
       } else if (type.isFraction(x.value)) {
@@ -130,7 +130,7 @@ function factory (type, config, load, typed) {
         third = 1 / 3
       }
 
-      var result = x.pow(third)
+      let result = x.pow(third)
 
       if (negate) {
         result.value = unaryMinus(result.value)
@@ -155,13 +155,13 @@ function factory (type, config, load, typed) {
  * @returns {number | Complex} Returns the cubic root of x
  * @private
  */
-var _cbrtNumber = Math.cbrt || function (x) {
+const _cbrtNumber = Math.cbrt || function (x) {
   if (x === 0) {
     return x
   }
 
-  var negate = x < 0
-  var result
+  const negate = x < 0
+  let result
   if (negate) {
     x = -x
   }

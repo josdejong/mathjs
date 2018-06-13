@@ -1,12 +1,5 @@
 // test smaller
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  smaller = math.smaller
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, smaller = math.smaller
 
 describe('smaller', function () {
   it('should compare two numbers correctly', function () {
@@ -61,8 +54,8 @@ describe('smaller', function () {
     assert.deepEqual(smaller(bignumber(2), 3), true)
     assert.deepEqual(smaller(2, bignumber(2)), false)
 
-    // assert.equal(smaller(1/3, bignumber(1).div(3)), false);
-    // assert.equal(smaller(bignumber(1).div(3), 1/3), false);
+    // assert.equal(smaller(1/3, bignumber(1).div(3)), false)
+    // assert.equal(smaller(bignumber(1).div(3), 1/3), false)
 
     assert.throws(function () { smaller(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { smaller(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
@@ -97,7 +90,7 @@ describe('smaller', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     assert.equal(mymath.smaller(0.991, 1), true)
     assert.equal(mymath.smaller(math.bignumber(0.991), math.bignumber(1)), true)
 
@@ -209,7 +202,7 @@ describe('smaller', function () {
   })
 
   it('should LaTeX smaller', function () {
-    var expression = math.parse('smaller(1,2)')
+    const expression = math.parse('smaller(1,2)')
     assert.equal(expression.toTex(), '\\left(1<2\\right)')
   })
 })

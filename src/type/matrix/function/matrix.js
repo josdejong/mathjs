@@ -18,10 +18,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var m = math.matrix([[1, 2], [3, 4]]);
-   *    m.size();                        // Array [2, 2]
-   *    m.resize([3, 2], 5);
-   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+   *    let m = math.matrix([[1, 2], [3, 4]])
+   *    m.size()                        // Array [2, 2]
+   *    m.resize([3, 2], 5)
+   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
    *    m.get([1, 0])                    // number 3
    *
    * See also:
@@ -33,7 +33,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix} The created matrix
    */
-  var matrix = typed('matrix', {
+  const matrix = typed('matrix', {
     '': function () {
       return _create([])
     },
@@ -77,7 +77,7 @@ function factory (type, config, load, typed) {
    */
   function _create (data, format, datatype) {
     // get storage format constructor
-    var M = type.Matrix.storage(format || 'default')
+    const M = type.Matrix.storage(format || 'default')
 
     // create instance
     return new M(data, datatype)

@@ -5,6 +5,6 @@
  * help interactive debugging.
  **/
 math = require('../index')
-var repl = require('repl')
+const repl = require('repl')
 
 repl.start({useGlobal: true})

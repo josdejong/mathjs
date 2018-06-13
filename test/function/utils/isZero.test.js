@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var isZero = math.isZero
-var bignumber = math.bignumber
-var fraction = math.fraction
-var complex = math.complex
-var unit = math.unit
+const assert = require('assert')
+const math = require('../../../src/index')
+const isZero = math.isZero
+const bignumber = math.bignumber
+const fraction = math.fraction
+const complex = math.complex
+const unit = math.unit
 
 describe('isZero', function () {
   it('should test whether a number is zero', function () {

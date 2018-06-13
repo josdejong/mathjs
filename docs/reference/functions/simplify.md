@@ -9,7 +9,7 @@ no further changes are made.
 It's possible to pass a custom set of rules to the function as second
 argument. A rule can be specified as an object, string, or function:
 
-    var rules = [
+    const rules = [
       { l: 'n1*n3 + n2*n3', r: '(n1+n2)*n3' },
       'n1*n3 + n2*n3 -> (n1+n2)*n3',
       function (node) {
@@ -63,10 +63,10 @@ Node | Returns the simplified form of `expr`
 ## Examples
 
 ```js
-math.simplify('2 * 1 * x ^ (2 - 1)');      // Node {2 * x}
-math.simplify('2 * 3 * x', {x: 4});        // Node {24}
-var f = math.parse('2 * 1 * x ^ (2 - 1)');
-math.simplify(f);                          // Node {2 * x}
+math.simplify('2 * 1 * x ^ (2 - 1)')      // Node {2 * x}
+math.simplify('2 * 3 * x', {x: 4})        // Node {24}
+const f = math.parse('2 * 1 * x ^ (2 - 1)')
+math.simplify(f)                          // Node {2 * x}
 ```
 
 

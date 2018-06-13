@@ -1,12 +1,12 @@
 'use strict'
 require('./../utils/polyfills')
 
-var isFactory = require('./../utils/object').isFactory
-var typedFactory = require('./typed')
-var emitter = require('./../utils/emitter')
+const isFactory = require('./../utils/object').isFactory
+const typedFactory = require('./typed')
+const emitter = require('./../utils/emitter')
 
-var importFactory = require('./function/import')
-var configFactory = require('./function/config')
+const importFactory = require('./function/import')
+const configFactory = require('./function/config')
 
 /**
  * Math.js core. Creates a new, empty math.js instance
@@ -45,11 +45,11 @@ exports.create = function create (options) {
   }
 
   // cached factories and instances
-  var factories = []
-  var instances = []
+  const factories = []
+  const instances = []
 
   // create a namespace for the mathjs instance, and attach emitter functions
-  var math = emitter.mixin({})
+  const math = emitter.mixin({})
   math.type = {}
   math.expression = {
     transform: {},
@@ -60,7 +60,7 @@ exports.create = function create (options) {
   math.typed = typedFactory.create(math.type)
 
   // create configuration options. These are private
-  var _config = {
+  const _config = {
     // minimum relative difference between two compared values,
     // used by all comparison functions
     epsilon: 1e-12,
@@ -97,8 +97,8 @@ exports.create = function create (options) {
       throw new Error('Factory object with properties `type`, `name`, and `factory` expected')
     }
 
-    var index = factories.indexOf(factory)
-    var instance
+    const index = factories.indexOf(factory)
+    let instance
     if (index === -1) {
       // doesn't yet exist
       if (factory.math === true) {

@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  mode = math.mode,
-  DenseMatrix = math.type.DenseMatrix
+const assert = require('assert'), math = require('../../../src/index'), mode = math.mode, DenseMatrix = math.type.DenseMatrix
 
 describe('mode', function () {
   it('should return the mode accurately for one dimensional array', function () {
@@ -45,9 +42,9 @@ describe('mode', function () {
 
   /* TODO :
   it('should throw appropriate error if parameters contain array of arrays or nested arrays', function(){
-    assert.throws(function() {mode([1][3][3])});
-    assert.throws(function() {mode([a[b, a]])});
-  });
+    assert.throws(function() {mode([1][3][3])})
+    assert.throws(function() {mode([a[b, a]])})
+  })
   */
 
   it('should return the mode of a 1D matrix', function () {

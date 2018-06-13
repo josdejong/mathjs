@@ -1,11 +1,11 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var isNaN = math.isNaN
-var bignumber = math.bignumber
-var fraction = math.fraction
-var complex = math.complex
-var Unit = math.type.Unit
-var Fraction = math.type.Fraction
+const assert = require('assert')
+const math = require('../../../src/index')
+const isNaN = math.isNaN
+const bignumber = math.bignumber
+const fraction = math.fraction
+const complex = math.complex
+const Unit = math.type.Unit
+const Fraction = math.type.Fraction
 
 describe('isNegative', function () {
   it('should test whether a number is NaN', function () {

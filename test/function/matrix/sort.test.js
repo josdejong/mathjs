@@ -1,6 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
 
 describe('sort', function () {
   it('should sort an array with numbers', function () {
@@ -54,7 +52,7 @@ describe('sort', function () {
   })
 
   it('should LaTeX sort', function () {
-    var expression = math.parse('sort([3,2,1])')
+    const expression = math.parse('sort([3,2,1])')
     assert.equal(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)')
   })
 })

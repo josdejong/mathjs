@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var multiplyScalar = load(require('./multiplyScalar'))
+  const multiplyScalar = load(require('./multiplyScalar'))
 
   /**
    * Divide two scalar values, `x / y`.
@@ -16,7 +16,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit}                      Quotient, `x / y`
    * @private
    */
-  var divideScalar = typed('divide', {
+  const divideScalar = typed('divide', {
     'number, number': function (x, y) {
       return x / y
     },
@@ -34,14 +34,14 @@ function factory (type, config, load, typed) {
     },
 
     'Unit, number | Fraction | BigNumber': function (x, y) {
-      var res = x.clone()
+      const res = x.clone()
       // TODO: move the divide function to Unit.js, it uses internals of Unit
       res.value = divideScalar(((res.value === null) ? res._normalize(1) : res.value), y)
       return res
     },
 
     'number | Fraction | BigNumber, Unit': function (x, y) {
-      var res = y.pow(-1)
+      const res = y.pow(-1)
       // TODO: move the divide function to Unit.js, it uses internals of Unit
       res.value = multiplyScalar(((res.value === null) ? res._normalize(1) : res.value), x)
       return res

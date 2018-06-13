@@ -1,9 +1,9 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var equalScalar = load(require('../../../function/relational/equalScalar'))
+  const equalScalar = load(require('../../../function/relational/equalScalar'))
 
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
@@ -24,29 +24,29 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  var algorithm11 = function (s, b, callback, inverse) {
+  const algorithm11 = function (s, b, callback, inverse) {
     // sparse matrix arrays
-    var avalues = s._values
-    var aindex = s._index
-    var aptr = s._ptr
-    var asize = s._size
-    var adt = s._datatype
+    const avalues = s._values
+    const aindex = s._index
+    const aptr = s._ptr
+    const asize = s._size
+    const adt = s._datatype
 
     // sparse matrix cannot be a Pattern matrix
     if (!avalues) { throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value') }
 
     // rows & columns
-    var rows = asize[0]
-    var columns = asize[1]
+    const rows = asize[0]
+    const columns = asize[1]
 
     // datatype
-    var dt
+    let dt
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
     // callback signature to use
-    var cf = callback
+    let cf = callback
 
     // process data types
     if (typeof adt === 'string') {
@@ -63,11 +63,11 @@ function factory (type, config, load, typed) {
     }
 
     // result arrays
-    var cvalues = []
-    var cindex = []
-    var cptr = []
+    const cvalues = []
+    const cindex = []
+    const cptr = []
     // matrix
-    var c = new SparseMatrix({
+    const c = new SparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -76,15 +76,15 @@ function factory (type, config, load, typed) {
     })
 
     // loop columns
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // initialize ptr
       cptr[j] = cindex.length
       // values in j
-      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+      for (let k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
         // row
-        var i = aindex[k]
+        const i = aindex[k]
         // invoke callback
-        var v = inverse ? cf(b, avalues[k]) : cf(avalues[k], b)
+        const v = inverse ? cf(b, avalues[k]) : cf(avalues[k], b)
         // check value is zero
         if (!eq(v, zero)) {
           // push index & value

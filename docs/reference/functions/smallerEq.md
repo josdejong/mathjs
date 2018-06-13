@@ -35,8 +35,8 @@ boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, 
 ## Examples
 
 ```js
-math.smaller(1 + 2, 3);        // returns false
-math.smallerEq(1 + 2, 3);      // returns true
+math.smaller(1 + 2, 3)        // returns false
+math.smallerEq(1 + 2, 3)      // returns true
 ```
 
 

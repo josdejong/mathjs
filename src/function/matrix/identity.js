@@ -1,10 +1,10 @@
 'use strict'
 
-var array = require('../../utils/array')
-var isInteger = require('../../utils/number').isInteger
+const array = require('../../utils/array')
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
@@ -21,11 +21,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.identity(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-   *    math.identity(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
+   *    math.identity(3)                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+   *    math.identity(3, 2)                 // returns [[1, 0], [0, 1], [0, 0]]
    *
-   *    var A = [[1, 2, 3], [4, 5, 6]];
-   *    math.identity(math.size(A));         // returns [[1, 0, 0], [0, 1, 0]]
+   *    const A = [[1, 2, 3], [4, 5, 6]]
+   *    math.identity(math.size(A))         // returns [[1, 0, 0], [0, 1, 0]]
    *
    * See also:
    *
@@ -36,7 +36,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix | Array | number} A matrix with ones on the diagonal.
    */
-  var identity = typed('identity', {
+  const identity = typed('identity', {
     '': function () {
       return (config.matrix === 'Matrix') ? matrix([]) : []
     },
@@ -101,7 +101,7 @@ function factory (type, config, load, typed) {
    */
   function _identity (rows, cols, format) {
     // BigNumber constructor with the right precision
-    var Big = (type.isBigNumber(rows) || type.isBigNumber(cols))
+    const Big = (type.isBigNumber(rows) || type.isBigNumber(cols))
       ? type.BigNumber
       : null
 
@@ -115,24 +115,24 @@ function factory (type, config, load, typed) {
       throw new Error('Parameters in function identity must be positive integers')
     }
 
-    var one = Big ? new type.BigNumber(1) : 1
-    var defaultValue = Big ? new Big(0) : 0
-    var size = [rows, cols]
+    const one = Big ? new type.BigNumber(1) : 1
+    const defaultValue = Big ? new Big(0) : 0
+    const size = [rows, cols]
 
     // check we need to return a matrix
     if (format) {
       // get matrix storage constructor
-      var F = type.Matrix.storage(format)
+      const F = type.Matrix.storage(format)
       // create diagonal matrix (use optimized implementation for storage format)
       return F.diagonal(size, one, 0, defaultValue)
     }
 
     // create and resize array
-    var res = array.resize([], size, defaultValue)
+    const res = array.resize([], size, defaultValue)
     // fill in ones on the diagonal
-    var minimum = rows < cols ? rows : cols
+    const minimum = rows < cols ? rows : cols
     // fill diagonal
-    for (var d = 0; d < minimum; d++) {
+    for (let d = 0; d < minimum; d++) {
       res[d][d] = one
     }
     return res

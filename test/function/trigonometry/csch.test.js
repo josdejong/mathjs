@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  csch = math.csch,
-  bigmath = math.create({precision: 20}),
-  biggermath = math.create({number: 'BigNumber', precision: 22})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, csch = math.csch, bigmath = math.create({precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 22})
 
 describe('csch', function () {
   it('should return the csch of a boolean', function () {
@@ -27,8 +17,8 @@ describe('csch', function () {
   })
 
   it('should return the csch of a bignumber', function () {
-    var cschBig = bigmath.csch
-    var Big = bigmath.bignumber
+    const cschBig = bigmath.csch
+    const Big = bigmath.bignumber
 
     assert.deepEqual(cschBig(Big(0)).toString(), 'Infinity')
     assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154512'))
@@ -63,7 +53,7 @@ describe('csch', function () {
     assert.throws(function () { csch('string') })
   })
 
-  var csch123 = [0.85091812823932, 0.27572056477178, 0.099821569668823]
+  const csch123 = [0.85091812823932, 0.27572056477178, 0.099821569668823]
 
   it('should return the csch of each element of an array', function () {
     approx.deepEqual(csch([1, 2, 3]), csch123)
@@ -79,7 +69,7 @@ describe('csch', function () {
   })
 
   it('should LaTeX csch', function () {
-    var expression = math.parse('csch(1)')
+    const expression = math.parse('csch(1)')
     assert.equal(expression.toTex(), '\\mathrm{csch}\\left(1\\right)')
   })
 })

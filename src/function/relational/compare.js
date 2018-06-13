@@ -1,16 +1,16 @@
 'use strict'
 
-var nearlyEqual = require('../../utils/number').nearlyEqual
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
@@ -28,17 +28,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.compare(6, 1);           // returns 1
-   *    math.compare(2, 3);           // returns -1
-   *    math.compare(7, 7);           // returns 0
-   *    math.compare('10', '2');      // returns 1
-   *    math.compare('1000', '1e3');  // returns 0
+   *    math.compare(6, 1)           // returns 1
+   *    math.compare(2, 3)           // returns -1
+   *    math.compare(7, 7)           // returns 0
+   *    math.compare('10', '2')      // returns 1
+   *    math.compare('1000', '1e3')  // returns 0
    *
-   *    var a = math.unit('5 cm');
-   *    var b = math.unit('40 mm');
-   *    math.compare(a, b);           // returns 1
+   *    const a = math.unit('5 cm')
+   *    const b = math.unit('40 mm')
+   *    math.compare(a, b)           // returns 1
    *
-   *    math.compare(2, [1, 2, 3]);   // returns [1, 0, -1]
+   *    math.compare(2, [1, 2, 3])   // returns [1, 0, -1]
    *
    * See also:
    *
@@ -49,7 +49,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison:
    *                                                          1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  var compare = typed('compare', {
+  const compare = typed('compare', {
 
     'boolean, boolean': function (x, y) {
       return x === y ? 0 : (x > y ? 1 : -1)

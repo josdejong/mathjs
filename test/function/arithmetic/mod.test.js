@@ -1,11 +1,11 @@
 // test mod
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var matrix = math.matrix
-var sparse = math.sparse
-var mod = math.mod
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const matrix = math.matrix
+const sparse = math.sparse
+const mod = math.mod
 
 describe('mod', function () {
   it('should calculate the modulus of booleans correctly', function () {
@@ -95,8 +95,8 @@ describe('mod', function () {
   })
 
   it('should calculate modulus of two fractions', function () {
-    var b = math.fraction(8)
-    var a = mod(b, math.fraction(3))
+    const b = math.fraction(8)
+    const a = mod(b, math.fraction(3))
     assert.equal(a.toString(), '2')
     assert.equal(b.toString(), '8')
     assert(a instanceof math.type.Fraction)
@@ -167,7 +167,7 @@ describe('mod', function () {
   })
 
   it('should LaTeX mod', function () {
-    var expression = math.parse('mod(11,2)')
+    const expression = math.parse('mod(11,2)')
     assert.equal(expression.toTex(), '\\left(11\\mod2\\right)')
   })
 })

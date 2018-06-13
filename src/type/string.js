@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('./../utils/collection/deepMap')
-var number = require('../utils/number')
+const deepMap = require('./../utils/collection/deepMap')
+const number = require('../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,13 +14,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.string(4.2);               // returns string '4.2'
-   *    math.string(math.complex(3, 2); // returns string '3 + 2i'
+   *    math.string(4.2)               // returns string '4.2'
+   *    math.string(math.complex(3, 2) // returns string '3 + 2i'
    *
-   *    var u = math.unit(5, 'km');
-   *    math.string(u.to('m'));         // returns string '5000 m'
+   *    const u = math.unit(5, 'km')
+   *    math.string(u.to('m'))         // returns string '5000 m'
    *
-   *    math.string([true, false]);     // returns ['true', 'false']
+   *    math.string([true, false])     // returns ['true', 'false']
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @param {* | Array | Matrix | null} [value]  A value to convert to a string
    * @return {string | Array | Matrix} The created string
    */
-  var string = typed('string', {
+  const string = typed('string', {
     '': function () {
       return ''
     },

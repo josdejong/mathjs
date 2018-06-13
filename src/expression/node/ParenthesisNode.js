@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
+  const Node = load(require('./Node'))
 
   /**
    * @constructor ParenthesisNode
@@ -70,7 +70,7 @@ function factory (type, config, load, typed) {
    * @returns {ParenthesisNode} Returns a clone of the node
    */
   ParenthesisNode.prototype.map = function (callback) {
-    var content = callback(this.content, 'content', this)
+    const content = callback(this.content, 'content', this)
     return new ParenthesisNode(content)
   }
 

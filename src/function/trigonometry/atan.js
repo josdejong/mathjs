@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.atan(0.5);           // returns number 0.4636476090008061
-   *    math.atan(math.tan(1.5)); // returns number 1.5
+   *    math.atan(0.5)           // returns number 0.4636476090008061
+   *    math.atan(math.tan(1.5)) // returns number 1.5
    *
-   *    math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.atan(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc tangent of x
    */
-  var atan = typed('atan', {
+  const atan = typed('atan', {
     'number': function (x) {
       return Math.atan(x)
     },

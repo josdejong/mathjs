@@ -1,9 +1,8 @@
-var approx = require('../../../../tools/approx'),
-  math = require('../../../../src/index')
+const approx = require('../../../../tools/approx'), math = require('../../../../src/index')
 
 describe('slu', function () {
   it('should decompose matrix, 4 x 4, natural ordering (order=0), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -12,14 +11,14 @@ describe('slu', function () {
       ])
 
     // partial pivoting
-    var r = math.slu(m, 0, 1)
+    const r = math.slu(m, 0, 1)
 
     // verify M[p,q]=L*U
     approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A+A\') (order=1)', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -28,14 +27,14 @@ describe('slu', function () {
       ])
 
     // partial pivoting
-    var r = math.slu(m, 1, 1)
+    const r = math.slu(m, 1, 1)
 
     // verify M[p,q]=L*U
     approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A\'*A) (order=2), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -44,14 +43,14 @@ describe('slu', function () {
       ])
 
     // partial pivoting
-    var r = math.slu(m, 2, 1)
+    const r = math.slu(m, 2, 1)
 
     // verify M[p,q]=L*U
     approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
 
   it('should decompose matrix, 4 x 4, amd(A\'*A) (order=3), partial pivoting', function () {
-    var m = math.sparse(
+    const m = math.sparse(
       [
         [4.5, 0, 3.2, 0],
         [3.1, 2.9, 0, 0.9],
@@ -60,7 +59,7 @@ describe('slu', function () {
       ])
 
     // partial pivoting
-    var r = math.slu(m, 3, 1)
+    const r = math.slu(m, 3, 1)
 
     // verify M[p,q]=L*U
     approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
@@ -69,25 +68,25 @@ describe('slu', function () {
   /**
    * C = A(p,q) where p is the row permutation vector and q the column permutation vector.
    */
-  var _permute = function (A, pinv, q) {
+  function _permute (A, pinv, q) {
     // matrix arrays
-    var values = A._values
-    var index = A._index
-    var ptr = A._ptr
-    var size = A._size
+    const values = A._values
+    const index = A._index
+    const ptr = A._ptr
+    const size = A._size
     // columns
-    var n = size[1]
+    const n = size[1]
     // c arrays
-    var cvalues = []
-    var cindex = []
-    var cptr = []
+    const cvalues = []
+    const cindex = []
+    const cptr = []
     // loop columns
-    for (var k = 0; k < n; k++) {
+    for (let k = 0; k < n; k++) {
       cptr[k] = cindex.length
       // column in C
-      var j = q ? (q[k]) : k
+      const j = q ? (q[k]) : k
       // values in column j
-      for (var t = ptr[j]; t < ptr[j + 1]; t++) {
+      for (let t = ptr[j]; t < ptr[j + 1]; t++) {
         cvalues.push(values[t])
         cindex.push(pinv ? (pinv[index[t]]) : index[t])
       }

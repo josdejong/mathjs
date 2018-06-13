@@ -1,21 +1,21 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var equalScalar = load(require('../relational/equalScalar'))
-  var zeros = load(require('../matrix/zeros'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const equalScalar = load(require('../relational/equalScalar'))
+  const zeros = load(require('../matrix/zeros'))
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm08 = load(require('../../type/matrix/utils/algorithm08'))
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm08 = load(require('../../type/matrix/utils/algorithm08'))
+  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Bitwise right logical shift of value x by y number of bits, `x >>> y`.
@@ -28,9 +28,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.rightLogShift(4, 2);               // returns number 1
+   *    math.rightLogShift(4, 2)               // returns number 1
    *
-   *    math.rightLogShift([16, -32, 64], 4);   // returns Array [1, 2, 3]
+   *    math.rightLogShift([16, -32, 64], 4)   // returns Array [1, 2, 3]
    *
    * See also:
    *
@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
    * @return {number | Array | Matrix} `x` zero-filled shifted right `y` times
    */
 
-  var rightLogShift = typed('rightLogShift', {
+  const rightLogShift = typed('rightLogShift', {
 
     'number, number': function (x, y) {
       if (!isInteger(x) || !isInteger(y)) {

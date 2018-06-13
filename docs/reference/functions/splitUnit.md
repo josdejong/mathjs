@@ -27,7 +27,7 @@ Array | An array of units.
 ## Examples
 
 ```js
-math.splitUnit(new Unit(1, 'm'), ['feet', 'inch']);
+math.splitUnit(new Unit(1, 'm'), ['feet', 'inch'])
 // [ 3 feet, 3.3700787401575 inch ]
 ```
 

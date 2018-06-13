@@ -1,17 +1,17 @@
 // test compile
-var assert = require('assert')
-var math = require('../../../src/index')
+const assert = require('assert')
+const math = require('../../../src/index')
 
 describe('compile', function () {
   it('should compile an expression', function () {
-    var code = math.compile('(5+3)/4')
+    const code = math.compile('(5+3)/4')
     assert.ok(code instanceof Object)
     assert.ok(code.eval instanceof Function)
     assert.equal(code.eval(), 2)
   })
 
   it('should parse multiple expressions', function () {
-    var codes = math.compile(['2+3', '4+5'])
+    const codes = math.compile(['2+3', '4+5'])
     assert.ok(Array.isArray(codes))
     assert.equal(codes.length, 2)
 
@@ -29,7 +29,7 @@ describe('compile', function () {
   })
 
   it('should LaTeX compile', function () {
-    var expression = math.parse('compile(1)')
+    const expression = math.parse('compile(1)')
     assert.equal(expression.toTex(), '\\mathrm{compile}\\left(1\\right)')
   })
 })

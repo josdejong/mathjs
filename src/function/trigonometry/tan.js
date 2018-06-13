@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.tan(0.5);                    // returns number 0.5463024898437905
-   *    math.sin(0.5) / math.cos(0.5);    // returns number 0.5463024898437905
-   *    math.tan(math.pi / 4);            // returns number 1
-   *    math.tan(math.unit(45, 'deg'));   // returns number 1
+   *    math.tan(0.5)                    // returns number 0.5463024898437905
+   *    math.sin(0.5) / math.cos(0.5)    // returns number 0.5463024898437905
+   *    math.tan(math.pi / 4)            // returns number 1
+   *    math.tan(math.unit(45, 'deg'))   // returns number 1
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Tangent of x
    */
-  var tan = typed('tan', {
+  const tan = typed('tan', {
     'number': Math.tan,
 
     'Complex': function (x) {

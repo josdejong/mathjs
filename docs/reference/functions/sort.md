@@ -29,14 +29,14 @@ Matrix &#124; Array | Returns the sorted matrix.
 ## Examples
 
 ```js
-math.sort([5, 10, 1]); // returns [1, 5, 10]
-math.sort(['C', 'B', 'A', 'D'], math.compareNatural);
+math.sort([5, 10, 1]) // returns [1, 5, 10]
+math.sort(['C', 'B', 'A', 'D'], math.compareNatural)
 // returns ['A', 'B', 'C', 'D']
 
 function sortByLength (a, b) {
-  return a.length - b.length;
+  return a.length - b.length
 }
-math.sort(['Langdon', 'Tom', 'Sara'], sortByLength);
+math.sort(['Langdon', 'Tom', 'Sara'], sortByLength)
 // returns ['Tom', 'Sara', 'Langdon']
 ```
 

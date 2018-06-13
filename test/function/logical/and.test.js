@@ -1,12 +1,5 @@
 // test and
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  and = math.and
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, and = math.and
 
 describe('and', function () {
   it('should and two numbers correctly', function () {
@@ -182,7 +175,7 @@ describe('and', function () {
   })
 
   it('should LaTeX and', function () {
-    var expression = math.parse('and(1,2)')
+    const expression = math.parse('and(1,2)')
     assert.equal(expression.toTex(), '\\left(1\\wedge2\\right)')
   })
 })

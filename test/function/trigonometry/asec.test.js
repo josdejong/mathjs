@@ -1,24 +1,24 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var asec = math.asec
-var sec = math.sec
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 21})
-var predmath = math.create({predictable: true})
-var asecBig = bigmath.asec
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const asec = math.asec
+const sec = math.sec
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 21})
+const predmath = math.create({predictable: true})
+const asecBig = bigmath.asec
+const Big = bigmath.bignumber
 
 describe('asec', function () {
   it('should return the arcsec of a boolean', function () {
     assert.equal(asec(true), 0)
     assert.deepEqual(asec(false), complex(0, Infinity))
-    // assert.ok(isNaN(asec(false)));
+    // assert.ok(isNaN(asec(false)))
   })
 
   it('should return the arcsec of a number', function () {
@@ -37,8 +37,8 @@ describe('asec', function () {
   })
 
   it('should return the arcsec of a bignumber', function () {
-    var arg1 = Big(-2)
-    var arg2 = Big(-1)
+    const arg1 = Big(-2)
+    const arg2 = Big(-1)
     assert.deepEqual(asecBig(arg1).toString(), bigmath.tau.div(3).toString())
     assert.deepEqual(asecBig(arg2).toString(), bigmath.pi.toString())
     assert.deepEqual(asecBig(Big(1)), Big(0))
@@ -50,7 +50,7 @@ describe('asec', function () {
 
     // Hit Newton's method case
     bigmath.config({precision: 64})
-    var arg = Big('3.00000001')
+    const arg = Big('3.00000001')
     assert.deepEqual(asecBig(Big(3)), bigmath.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
     // wolfram:                  asec(3) = 1.2309594173407746821349291782479873757103400093550948390555483336639923144782560878532516201708609211389442794492
     assert.deepEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265441'))
@@ -102,7 +102,7 @@ describe('asec', function () {
   })
 
   it('should calculate the arcsec element-wise for arrays and matrices', function () {
-    var asec123 = [0, pi / 3, 1.23095941734077468]
+    const asec123 = [0, pi / 3, 1.23095941734077468]
     approx.deepEqual(asec([1, 2, 3]), asec123)
     approx.deepEqual(asec(matrix([1, 2, 3])), matrix(asec123))
   })
@@ -113,7 +113,7 @@ describe('asec', function () {
   })
 
   it('should LaTeX asec', function () {
-    var expression = math.parse('asec(2)')
+    const expression = math.parse('asec(2)')
     assert.equal(expression.toTex(), '\\sec^{-1}\\left(2\\right)')
   })
 })

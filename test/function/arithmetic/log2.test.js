@@ -1,13 +1,13 @@
 // test exp
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var mathPredictable = math.create({predictable: true})
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var range = math.range
-var log2 = math.log2
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const mathPredictable = math.create({predictable: true})
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const range = math.range
+const log2 = math.log2
 
 describe('log2', function () {
   it('should return the log base 2 of a boolean', function () {
@@ -42,7 +42,7 @@ describe('log2', function () {
   })
 
   it('should return the log of positive bignumbers', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     assert.deepEqual(bigmath.log2(bigmath.bignumber(1)), bigmath.bignumber(0))
     assert.deepEqual(bigmath.log2(bigmath.bignumber(2)), bigmath.bignumber(1))
@@ -53,7 +53,7 @@ describe('log2', function () {
   })
 
   it('should return the log of negative bignumbers', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     approx.deepEqual(bigmath.log2(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 4.532360141827194i'))
     approx.deepEqual(bigmath.log2(bigmath.bignumber(-2)), bigmath.complex('1 + 4.532360141827194i'))
@@ -61,7 +61,7 @@ describe('log2', function () {
   })
 
   it('should return the log of a bignumber with value zero', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     assert.deepEqual(bigmath.log2(bigmath.bignumber(0)).toString(), '-Infinity')
   })
@@ -90,7 +90,7 @@ describe('log2', function () {
   })
 
   it('should return the log base 2 of each element of a matrix', function () {
-    var res = [0, 1, 1.584962500721156, 2]
+    const res = [0, 1, 1.584962500721156, 2]
     approx.deepEqual(log2([1, 2, 3, 4]), res)
     approx.deepEqual(log2(matrix([1, 2, 3, 4])), matrix(res))
     approx.deepEqual(math.divide(log2(matrix([1, 2, 3, 4])), math.LOG2E),
@@ -100,7 +100,7 @@ describe('log2', function () {
   })
 
   it('should LaTeX log2', function () {
-    var expression = math.parse('log2(10)')
+    const expression = math.parse('log2(10)')
     assert.equal(expression.toTex(), '\\log_{2}\\left(10\\right)')
   })
 })

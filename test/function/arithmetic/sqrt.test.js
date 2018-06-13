@@ -1,11 +1,11 @@
 // test sqrt
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var mathPredictable = math.create({predictable: true})
-var sqrt = math.sqrt
-var bignumber = math.bignumber
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const mathPredictable = math.create({predictable: true})
+const sqrt = math.sqrt
+const bignumber = math.bignumber
 
 describe('sqrt', function () {
   it('should return the square root of a boolean', function () {
@@ -42,7 +42,7 @@ describe('sqrt', function () {
     assert.deepEqual(sqrt(bignumber(25)), bignumber(5))
 
     // validate whether we are really working at high precision
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
     assert.deepEqual(bigmath.sqrt(bigmath.bignumber(2)), bigmath.bignumber('1.414213562373095048801688724209698078569671875376948073176679737990732478462107038850387534327641573'))
   })
 
@@ -67,7 +67,7 @@ describe('sqrt', function () {
 
   it('should return a Unit with a Complex value when computing the square root of a negative unit', function () {
     // Update this when support for complex units is added
-    // assert.equal(sqrt(math.unit('-25 m^2/s^2')).toString(), 'NaN m / s');
+    // assert.equal(sqrt(math.unit('-25 m^2/s^2')).toString(), 'NaN m / s')
     assert.equal(math.format(sqrt(math.unit('-25 m^2/s^2')), 14), '(5i) m / s')
   })
 
@@ -93,7 +93,7 @@ describe('sqrt', function () {
   })
 
   it('should LaTeX sqrt', function () {
-    var expression = math.parse('sqrt(2)')
+    const expression = math.parse('sqrt(2)')
     assert.equal(expression.toTex(), '\\sqrt{2}')
   })
 })

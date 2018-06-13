@@ -33,7 +33,7 @@ Number &#124; BigNumber | S(n,k)
 ## Examples
 
 ```js
-math.stirlingS2(5, 3); //returns 25
+math.stirlingS2(5, 3) //returns 25
 ```
 
 

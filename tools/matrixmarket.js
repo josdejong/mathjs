@@ -1,45 +1,35 @@
 'use strict'
 
-var fs = require('fs'),
-  zlib = require('zlib'),
-  tar = require('tar'),
-  math = require('../src/index'),
-  Q = require('q'),
-  typed = require('typed-function'),
+const fs = require('fs'), zlib = require('zlib'), tar = require('tar'), math = require('../src/index'), Q = require('q'), typed = require('typed-function'), Spa = math.type.Spa, DenseMatrix = math.type.DenseMatrix, SparseMatrix = math.type.SparseMatrix, FibonacciHeap = math.type.FibonacciHeap
 
-  Spa = math.type.Spa,
-  DenseMatrix = math.type.DenseMatrix,
-  SparseMatrix = math.type.SparseMatrix,
-  FibonacciHeap = math.type.FibonacciHeap
-
-var _importFromStream = function (stream, deferred) {
+const _importFromStream = function (stream, deferred) {
   // header regex
-  var headerRegex = /%%MatrixMarket ([a-zA-Z]+) ([a-zA-Z]+) ([a-zA-Z]+) ([a-zA-Z]+)/
-  var coordinateHeaderRegex = /(\d+) (\d+) (\d+)/
-  var coordinateDataRegex = /(\d+) (\d+) (.*)/
-  var coordinatePatternRegex = /(\d+) (\d+)/
-  var arrayHeaderRegex = /(\d+) (\d+)/
-  var arrayDataRegex = /(\d+)/
+  const headerRegex = /%%MatrixMarket ([a-zA-Z]+) ([a-zA-Z]+) ([a-zA-Z]+) ([a-zA-Z]+)/
+  const coordinateHeaderRegex = /(\d+) (\d+) (\d+)/
+  const coordinateDataRegex = /(\d+) (\d+) (.*)/
+  const coordinatePatternRegex = /(\d+) (\d+)/
+  const arrayHeaderRegex = /(\d+) (\d+)/
+  const arrayDataRegex = /(\d+)/
 
   // Matrix Market supported formats
-  var typecodes = ['matrix']
-  var formats = ['coordinate', 'array']
-  var datatypes = ['real', 'pattern']
-  var qualifiers = ['general', 'symmetric']
+  const typecodes = ['matrix']
+  const formats = ['coordinate', 'array']
+  const datatypes = ['real', 'pattern']
+  const qualifiers = ['general', 'symmetric']
 
   // matrix data
-  var mm = null
-  var buffer = ''
+  let mm = null
+  let buffer = ''
 
-  var readHeader = function (line) {
+  const readHeader = function (line) {
     // check line is a header
-    var matches = line.match(headerRegex)
+    const matches = line.match(headerRegex)
     if (matches !== null) {
       // get matches values
-      var typecode = matches[1]
-      var format = matches[2]
-      var datatype = matches[3]
-      var qualifier = matches[4]
+      const typecode = matches[1]
+      const format = matches[2]
+      const datatype = matches[3]
+      const qualifier = matches[4]
       // check typecode
       if (typecodes.indexOf(typecode) === -1) {
         // typecode not supported
@@ -84,9 +74,9 @@ var _importFromStream = function (stream, deferred) {
     }
   }
 
-  var readStructure = function (line) {
+  const readStructure = function (line) {
     // vars
-    var matches
+    let matches
     // check matrix format
     switch (mm.format) {
       case 'coordinate':
@@ -114,7 +104,7 @@ var _importFromStream = function (stream, deferred) {
     }
   }
 
-  var readValue = function (text) {
+  const readValue = function (text) {
     // check datatype
     switch (mm.datatype) {
       case 'real':
@@ -124,21 +114,21 @@ var _importFromStream = function (stream, deferred) {
     }
   }
 
-  var readData = function (line) {
+  const readData = function (line) {
     // vars
-    var matches
+    let matches
     // check matrix format
     switch (mm.format) {
       case 'coordinate':
         // regex to use
-        var rx = mm.datatype !== 'pattern' ? coordinateDataRegex : coordinatePatternRegex
+        const rx = mm.datatype !== 'pattern' ? coordinateDataRegex : coordinatePatternRegex
         // check data line is correct
         matches = line.match(rx)
         if (matches !== null) {
           // row, columns, value
-          var r = parseInt(matches[1]) - 1
-          var c = parseInt(matches[2]) - 1
-          var v = readValue(matches.length === 4 ? matches[3] : null)
+          const r = parseInt(matches[1]) - 1
+          const c = parseInt(matches[2]) - 1
+          const v = readValue(matches.length === 4 ? matches[3] : null)
           // insert entry
           mm.data.insert(c, {i: r, j: c, v: v})
           // check matrix is simmetric
@@ -153,8 +143,8 @@ var _importFromStream = function (stream, deferred) {
         matches = line.match(arrayDataRegex)
         if (matches !== null) {
           // get values in row
-          var values = []
-          for (var j = 1; j < matches.length; j++) { values.push(readValue(matches[j])) }
+          const values = []
+          for (let j = 1; j < matches.length; j++) { values.push(readValue(matches[j])) }
           // push entry
           mm.data.push(values)
         }
@@ -162,7 +152,7 @@ var _importFromStream = function (stream, deferred) {
     }
   }
 
-  var processLine = function (line) {
+  const processLine = function (line) {
     // check this is the first line
     if (mm !== null) {
       // skip all comments
@@ -186,11 +176,11 @@ var _importFromStream = function (stream, deferred) {
     // concatenate chunk
     buffer += chunk
     // eol
-    var index = buffer.indexOf('\n')
+    let index = buffer.indexOf('\n')
     // process lines
     while (index !== -1) {
       // extract line
-      var line = buffer.substr(0, index)
+      const line = buffer.substr(0, index)
       // process line
       processLine(line.trim())
       // update buffer
@@ -207,23 +197,23 @@ var _importFromStream = function (stream, deferred) {
       switch (mm.format) {
         case 'coordinate':
           // CCS structure
-          var values = mm.datatype !== 'pattern' ? [] : undefined
-          var index = []
-          var ptr = []
-          var datatype = mm.datatype === 'real' ? 'number' : undefined
+          const values = mm.datatype !== 'pattern' ? [] : undefined
+          const index = []
+          const ptr = []
+          const datatype = mm.datatype === 'real' ? 'number' : undefined
           // mm data & pointer
-          var d = mm.data
-          var p = -1
-          var spa = new Spa(mm.rows)
+          const d = mm.data
+          let p = -1
+          let spa = new Spa(mm.rows)
           // push value
-          var pushValue = function (i, v) {
+          const pushValue = function (i, v) {
             // push row
             index.push(i)
             // check there is a value (pattern matrix)
             if (values) { values.push(v) }
           }
           // extract node (column sorted)
-          var n = d.extractMinimum()
+          let n = d.extractMinimum()
           // loop all nodes
           while (n !== null) {
             // check column changed
@@ -231,7 +221,7 @@ var _importFromStream = function (stream, deferred) {
               // process sparse accumulator
               spa.forEach(0, mm.rows, pushValue)
               // process columns from p + 1 to n.j
-              for (var j = p + 1; j <= n.key; j++) {
+              for (let j = p + 1; j <= n.key; j++) {
                 // ptr update
                 ptr.push(index.length)
               }
@@ -275,10 +265,10 @@ var _importFromStream = function (stream, deferred) {
   })
 }
 
-var _importFile = function (filename, deferred) {
+const _importFile = function (filename, deferred) {
   return function () {
     // input stream
-    var input = fs.createReadStream(filename)
+    const input = fs.createReadStream(filename)
     // import from stream
     _importFromStream(input, deferred)
   }
@@ -287,16 +277,16 @@ var _importFile = function (filename, deferred) {
 /**
  * Imports a Matrix Market matrix from the filesystem. (http://math.nist.gov/MatrixMarket/)
  */
-var _import = typed('importMatrix', {
+const _import = typed('importMatrix', {
   'Array': function (files) {
     // array of promises
-    var promises = []
+    const promises = []
     // loop files
-    for (var i = 0; i < files.length; i++) {
+    for (let i = 0; i < files.length; i++) {
       // file name
-      var filename = files[i]
+      const filename = files[i]
       // create deferred instance
-      var deferred = Q.defer()
+      const deferred = Q.defer()
       // check file exists, import file
       fs.exists(filename, _importFile(filename, deferred))
       // import file
@@ -307,18 +297,18 @@ var _import = typed('importMatrix', {
   },
   'string, Array': function (archive, files) {
     // array of deferrred & promises
-    var deferred = []
-    var promises = []
+    const deferred = []
+    const promises = []
     // initialize promises
-    for (var i = 0; i < files.length; i++) {
-      var d = Q.defer()
+    for (let i = 0; i < files.length; i++) {
+      const d = Q.defer()
       deferred[i] = d
       promises[i] = d.promise
     }
     // check archive exists
     fs.exists(archive, function () {
       // input stream
-      var input = fs.createReadStream(archive)
+      let input = fs.createReadStream(archive)
       // gz
       input = input.pipe(zlib.createUnzip())
       // tar
@@ -326,10 +316,10 @@ var _import = typed('importMatrix', {
       // process entries
       input.on('entry', function (e) {
         // check we need to process entry
-        var index = files.indexOf(e.path)
+        const index = files.indexOf(e.path)
         if (index !== -1) {
           // current deferred instance
-          var d = deferred[index]
+          const d = deferred[index]
           // process entry
           _importFromStream(e, d)
         }
@@ -337,10 +327,10 @@ var _import = typed('importMatrix', {
       // error
       input.on('error', function (e) {
         // check error is in one of the files
-        var index = files.indexOf(e.path)
+        const index = files.indexOf(e.path)
         if (index !== -1) {
           // current deferred instance
-          var d = deferred[index]
+          const d = deferred[index]
           // reject promise with error
           d.reject(new Error(e))
         }

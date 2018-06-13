@@ -1,9 +1,9 @@
 'use strict'
 
-var getSafeProperty = require('../../utils/customs').getSafeProperty
+const getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed, math) {
-  var docs = load(require('../embeddedDocs'))
+  const docs = load(require('../embeddedDocs'))
 
   /**
    * Retrieve help on a function or data type.
@@ -15,9 +15,9 @@ function factory (type, config, load, typed, math) {
    *
    * Examples:
    *
-   *    console.log(math.help('sin').toString());
-   *    console.log(math.help(math.add).toString());
-   *    console.log(math.help(math.add).toJSON());
+   *    console.log(math.help('sin').toString())
+   *    console.log(math.help(math.add).toString())
+   *    console.log(math.help(math.add).toJSON())
    *
    * @param {Function | string | Object} search   A function or function name
    *                                              for which to get help
@@ -25,8 +25,8 @@ function factory (type, config, load, typed, math) {
    */
   return typed('help', {
     'any': function (search) {
-      var prop
-      var name = search
+      let prop
+      let name = search
 
       if (typeof search !== 'string') {
         for (prop in math) {
@@ -43,8 +43,8 @@ function factory (type, config, load, typed, math) {
          for (prop in math.type) {
          if (math.type.hasOwnProperty(prop)) {
          if (search === math.type[prop]) {
-         text = prop;
-         break;
+         text = prop
+         break
          }
          }
          }
@@ -52,7 +52,7 @@ function factory (type, config, load, typed, math) {
          */
       }
 
-      var doc = getSafeProperty(docs, name)
+      const doc = getSafeProperty(docs, name)
       if (!doc) {
         throw new Error('No documentation found on "' + name + '"')
       }

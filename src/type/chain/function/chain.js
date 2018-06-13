@@ -26,12 +26,12 @@ function factory (type, config, load, typed) {
    *     math.chain(3)
    *         .add(4)
    *         .subtract(2)
-   *         .done();     // 5
+   *         .done()     // 5
    *
    *     math.chain( [[1, 2], [3, 4]] )
    *         .subset(math.index(0, 0), 8)
    *         .multiply(3)
-   *         .done();     // [[24, 6], [9, 12]]
+   *         .done()     // [[24, 6], [9, 12]]
    *
    * @param {*} [value]   A value of any type on which to start a chained operation.
    * @return {math.type.Chain} The created chain

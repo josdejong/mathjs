@@ -1,25 +1,22 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../../type/matrix/function/matrix'))
-  var zeros = load(require('../../matrix/zeros'))
-  var identity = load(require('../../matrix/identity'))
-  var clone = load(require('../../utils/clone'))
+  const matrix = load(require('../../../type/matrix/function/matrix'))
+  const zeros = load(require('../../matrix/zeros'))
+  const identity = load(require('../../matrix/identity'))
 
-  var isZero = load(require('../../utils/isZero'))
-  var isPositive = load(require('../../utils/isPositive'))
-  var unequal = load(require('../../relational/unequal'))
+  const isZero = load(require('../../utils/isZero'))
+  const unequal = load(require('../../relational/unequal'))
 
-  var abs = load(require('../../arithmetic/abs'))
-  var sign = load(require('../../arithmetic/sign'))
-  var sqrt = load(require('../../arithmetic/sqrt'))
-  var conj = load(require('../../complex/conj'))
+  const sign = load(require('../../arithmetic/sign'))
+  const sqrt = load(require('../../arithmetic/sqrt'))
+  const conj = load(require('../../complex/conj'))
 
-  var unaryMinus = load(require('../../arithmetic/unaryMinus'))
-  var addScalar = load(require('../../arithmetic/addScalar'))
-  var divideScalar = load(require('../../arithmetic/divideScalar'))
-  var multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
-  var subtract = load(require('../../arithmetic/subtract'))
+  const unaryMinus = load(require('../../arithmetic/unaryMinus'))
+  const addScalar = load(require('../../arithmetic/addScalar'))
+  const divideScalar = load(require('../../arithmetic/divideScalar'))
+  const multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
+  const subtract = load(require('../../arithmetic/subtract'))
 
   /**
    * Calculate the Matrix QR decomposition. Matrix `A` is decomposed in
@@ -28,17 +25,17 @@ function factory (type, config, load, typed) {
    *
    * Syntax:
    *
-   *    math.qr(A);
+   *    math.qr(A)
    *
    * Example:
    *
-   *    var m = [
+   *    const m = [
    *      [1, -1,  4],
    *      [1,  4, -2],
    *      [1,  4,  2],
    *      [1,  -1, 0]
-   *    ];
-   *    var result = math.qr(m);
+   *    ]
+   *    const result = math.qr(m)
    *    // r = {
    *    //   Q: [
    *    //     [0.5, -0.5,   0.5],
@@ -64,7 +61,7 @@ function factory (type, config, load, typed) {
    * @return {{Q: Array | Matrix, R: Array | Matrix}} Q: the orthogonal
    * matrix and R: the upper triangular matrix
    */
-  var qr = typed('qr', {
+  const qr = typed('qr', {
 
     'DenseMatrix': function (m) {
       return _denseQR(m)
@@ -76,9 +73,9 @@ function factory (type, config, load, typed) {
 
     'Array': function (a) {
       // create dense matrix from array
-      var m = matrix(a)
+      const m = matrix(a)
       // lup, use matrix implementation
-      var r = _denseQR(m)
+      const r = _denseQR(m)
       // result
       return {
         Q: r.Q.valueOf(),
@@ -87,21 +84,21 @@ function factory (type, config, load, typed) {
     }
   })
 
-  var _denseQR = function (m) {
+  function _denseQR (m) {
     // rows & columns (m x n)
-    var rows = m._size[0] // m
-    var cols = m._size[1] // n
+    const rows = m._size[0] // m
+    const cols = m._size[1] // n
 
-    var Q = identity([rows], 'dense')
-    var Qdata = Q._data
+    const Q = identity([rows], 'dense')
+    const Qdata = Q._data
 
-    var R = m.clone()
-    var Rdata = R._data
+    const R = m.clone()
+    const Rdata = R._data
 
     // vars
-    var i, j, k
+    let i, j, k
 
-    var w = zeros([rows], '')
+    const w = zeros([rows], '')
 
     for (k = 0; k < Math.min(cols, rows); ++k) {
       /*
@@ -128,21 +125,21 @@ function factory (type, config, load, typed) {
        *
        */
 
-      var pivot = Rdata[k][k]
-      var sgn = unaryMinus(sign(pivot))
-      var conjSgn = conj(sgn)
+      const pivot = Rdata[k][k]
+      const sgn = unaryMinus(sign(pivot))
+      const conjSgn = conj(sgn)
 
-      var alphaSquared = 0
+      let alphaSquared = 0
 
       for (i = k; i < rows; i++) {
         alphaSquared = addScalar(alphaSquared, multiplyScalar(Rdata[i][k], conj(Rdata[i][k])))
       }
 
-      var alpha = multiplyScalar(sgn, sqrt(alphaSquared))
+      const alpha = multiplyScalar(sgn, sqrt(alphaSquared))
 
       if (!isZero(alpha)) {
         // first element in vector u
-        var u1 = subtract(pivot, alpha)
+        const u1 = subtract(pivot, alpha)
 
         // w = v * u1 / |u|    (only elements k to (rows-1) are used)
         w[k] = 1
@@ -152,9 +149,9 @@ function factory (type, config, load, typed) {
         }
 
         // tau = - conj(u1 / alpha)
-        var tau = unaryMinus(conj(divideScalar(u1, alpha)))
+        const tau = unaryMinus(conj(divideScalar(u1, alpha)))
 
-        var s
+        let s
 
         /*
          * tau and w have been choosen so that
@@ -238,7 +235,7 @@ function factory (type, config, load, typed) {
     }
   }
 
-  var _sparseQR = function (m) {
+  function _sparseQR (m) {
     throw new Error('qr not implemented for sparse matrices yet')
   }
 

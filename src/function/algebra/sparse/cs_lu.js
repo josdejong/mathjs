@@ -1,16 +1,16 @@
 'use strict'
 
 function factory (type, config, load) {
-  var abs = load(require('../../arithmetic/abs'))
-  var divideScalar = load(require('../../arithmetic/divideScalar'))
-  var multiply = load(require('../../arithmetic/multiply'))
+  const abs = load(require('../../arithmetic/abs'))
+  const divideScalar = load(require('../../arithmetic/divideScalar'))
+  const multiply = load(require('../../arithmetic/multiply'))
 
-  var larger = load(require('../../relational/larger'))
-  var largerEq = load(require('../../relational/largerEq'))
+  const larger = load(require('../../relational/larger'))
+  const largerEq = load(require('../../relational/largerEq'))
 
-  var cs_spsolve = load(require('./cs_spsolve'))
+  const cs_spsolve = load(require('./cs_spsolve'))
 
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Computes the numeric LU factorization of the sparse matrix A. Implements a Left-looking LU factorization
@@ -27,17 +27,17 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_lu = function (m, s, tol) {
+  const cs_lu = function (m, s, tol) {
     // validate input
     if (!m) { return null }
     // m arrays
-    var size = m._size
+    const size = m._size
     // columns
-    var n = size[1]
+    const n = size[1]
     // symbolic analysis result
-    var q
-    var lnz = 100
-    var unz = 100
+    let q
+    let lnz = 100
+    let unz = 100
     // update symbolic analysis parameters
     if (s) {
       q = s.q
@@ -45,34 +45,34 @@ function factory (type, config, load) {
       unz = s.unz || unz
     }
     // L arrays
-    var lvalues = [] // (lnz)
-    var lindex = [] // (lnz);
-    var lptr = [] // (n + 1);
+    const lvalues = [] // (lnz)
+    const lindex = [] // (lnz)
+    const lptr = [] // (n + 1)
     // L
-    var L = new SparseMatrix({
+    const L = new SparseMatrix({
       values: lvalues,
       index: lindex,
       ptr: lptr,
       size: [n, n]
     })
     // U arrays
-    var uvalues = [] // (unz);
-    var uindex = [] // (unz);
-    var uptr = [] // (n + 1);
+    const uvalues = [] // (unz)
+    const uindex = [] // (unz)
+    const uptr = [] // (n + 1)
     // U
-    var U = new SparseMatrix({
+    const U = new SparseMatrix({
       values: uvalues,
       index: uindex,
       ptr: uptr,
       size: [n, n]
     })
     // inverse of permutation vector
-    var pinv = [] // (n);
+    const pinv = [] // (n)
     // vars
-    var i, p
+    let i, p
     // allocate arrays
-    var x = [] // (n);
-    var xi = [] // (2 * n);
+    const x = [] // (n)
+    const xi = [] // (2 * n)
     // initialize variables
     for (i = 0; i < n; i++) {
       // clear workspace
@@ -86,17 +86,17 @@ function factory (type, config, load) {
     lnz = 0
     unz = 0
     // compute L(:,k) and U(:,k)
-    for (var k = 0; k < n; k++) {
+    for (let k = 0; k < n; k++) {
       // update ptr
       lptr[k] = lnz
       uptr[k] = unz
       // apply column permutations if needed
-      var col = q ? q[k] : k
+      const col = q ? q[k] : k
       // solve triangular system, x = L\A(:,col)
-      var top = cs_spsolve(L, m, col, xi, x, pinv, 1)
+      const top = cs_spsolve(L, m, col, xi, x, pinv, 1)
       // find pivot
-      var ipiv = -1
-      var a = -1
+      let ipiv = -1
+      let a = -1
       // loop xi[] from top -> n
       for (p = top; p < n; p++) {
         // x[i] is nonzero
@@ -104,7 +104,7 @@ function factory (type, config, load) {
         // check row i is not yet pivotal
         if (pinv[i] < 0) {
           // absolute value of x[i]
-          var xabs = abs(x[i])
+          const xabs = abs(x[i])
           // check absoulte value is greater than pivot value
           if (larger(xabs, a)) {
             // largest pivot candidate so far
@@ -122,7 +122,7 @@ function factory (type, config, load) {
       // update actual pivot column, give preference to diagonal value
       if (pinv[col] < 0 && largerEq(abs(x[col]), multiply(a, tol))) { ipiv = col }
       // the chosen pivot
-      var pivot = x[ipiv]
+      const pivot = x[ipiv]
       // last entry in U(:,k) is U(k,k)
       uindex[unz] = k
       uvalues[unz++] = pivot

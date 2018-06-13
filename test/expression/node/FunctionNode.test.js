@@ -1,76 +1,76 @@
 // test FunctionNode
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index').create()
-var Node = math.expression.node.Node
-var ConstantNode = math.expression.node.ConstantNode
-var SymbolNode = math.expression.node.SymbolNode
-var FunctionNode = math.expression.node.FunctionNode
-var OperatorNode = math.expression.node.OperatorNode
-var RangeNode = math.expression.node.RangeNode
-var IndexNode = math.expression.node.IndexNode
-var AccessorNode = math.expression.node.AccessorNode
-var FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index').create()
+const Node = math.expression.node.Node
+const ConstantNode = math.expression.node.ConstantNode
+const SymbolNode = math.expression.node.SymbolNode
+const FunctionNode = math.expression.node.FunctionNode
+const OperatorNode = math.expression.node.OperatorNode
+const RangeNode = math.expression.node.RangeNode
+const IndexNode = math.expression.node.IndexNode
+const AccessorNode = math.expression.node.AccessorNode
+const FunctionAssignmentNode = math.expression.node.FunctionAssignmentNode
 
 describe('FunctionNode', function () {
   it('should create a FunctionNode', function () {
-    var c = new ConstantNode(4)
-    var n = new FunctionNode(new SymbolNode('sqrt'), [c])
+    const c = new ConstantNode(4)
+    const n = new FunctionNode(new SymbolNode('sqrt'), [c])
     assert(n instanceof FunctionNode)
     assert(n instanceof Node)
     assert.equal(n.type, 'FunctionNode')
   })
 
   it('should have isFunctionNode', function () {
-    var c = new ConstantNode(1)
-    var node = new FunctionNode(new SymbolNode('square'), [c])
+    const c = new ConstantNode(1)
+    const node = new FunctionNode(new SymbolNode('square'), [c])
     assert(node.isFunctionNode)
   })
 
   it('should throw an error when calling without new operator', function () {
-    var s = new SymbolNode('sqrt')
-    var c = new ConstantNode(4)
+    const s = new SymbolNode('sqrt')
+    const c = new ConstantNode(4)
     assert.throws(function () { FunctionNode(s, [c]) }, SyntaxError)
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    var s = new SymbolNode('sqrt')
-    var c = new ConstantNode(4)
+    const s = new SymbolNode('sqrt')
+    const c = new ConstantNode(4)
     assert.throws(function () { new FunctionNode(new Date(), []) }, TypeError)
     assert.throws(function () { new FunctionNode(s, [2, 3]) }, TypeError)
     assert.throws(function () { new FunctionNode(s, [c, 3]) }, TypeError)
   })
 
   it('should get the name of a FunctionNode', function () {
-    var n1 = new FunctionNode(new SymbolNode('sqrt'), [new ConstantNode(4)])
+    const n1 = new FunctionNode(new SymbolNode('sqrt'), [new ConstantNode(4)])
     assert.equal(n1.name, 'sqrt')
 
-    var n = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('toString')]))
-    var n2 = new FunctionNode(n, [new ConstantNode(4)])
+    const n = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('toString')]))
+    const n2 = new FunctionNode(n, [new ConstantNode(4)])
     assert.equal(n2.name, 'toString')
 
-    var n3 = new FunctionNode(new OperatorNode('+', 'add', []), [new ConstantNode(4)])
+    const n3 = new FunctionNode(new OperatorNode('+', 'add', []), [new ConstantNode(4)])
     assert.equal(n3.name, '')
   })
 
   it('should compile a FunctionNode', function () {
-    var s = new SymbolNode('sqrt')
-    var c = new ConstantNode(4)
-    var n = new FunctionNode(s, [c])
+    const s = new SymbolNode('sqrt')
+    const c = new ConstantNode(4)
+    const n = new FunctionNode(s, [c])
 
-    var scope = {}
+    let scope = {}
     assert.equal(n.compile().eval(scope), 2)
   })
 
   it('should compile a FunctionNode containing an index', function () {
-    var s = new SymbolNode('foo')
-    var range = [new ConstantNode('bar')]
-    var i = new IndexNode(range)
-    var a = new AccessorNode(s, i)
-    var c = new ConstantNode(4)
-    var n = new FunctionNode(a, [c])
+    const s = new SymbolNode('foo')
+    const range = [new ConstantNode('bar')]
+    const i = new IndexNode(range)
+    const a = new AccessorNode(s, i)
+    const c = new ConstantNode(4)
+    const n = new FunctionNode(a, [c])
 
-    var scope = {
+    let scope = {
       foo: {
         bar: function (x) {
           return x * x
@@ -81,13 +81,13 @@ describe('FunctionNode', function () {
   })
 
   it('should execute a FunctionNode with the right context', function () {
-    var s = new SymbolNode('foo')
-    var i = new IndexNode([new ConstantNode('getCount')])
-    var a = new AccessorNode(s, i)
-    var c = new ConstantNode(4)
-    var n = new FunctionNode(a, [c])
+    const s = new SymbolNode('foo')
+    const i = new IndexNode([new ConstantNode('getCount')])
+    const a = new AccessorNode(s, i)
+    const c = new ConstantNode(4)
+    const n = new FunctionNode(a, [c])
 
-    var scope = {
+    let scope = {
       foo: {
         count: 42,
         getCount: function () {
@@ -99,7 +99,7 @@ describe('FunctionNode', function () {
   })
 
   it.skip('should compile a FunctionNode with a raw function', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.equal(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
@@ -111,17 +111,17 @@ describe('FunctionNode', function () {
     myFunction.rawArgs = true
     mymath.import({myFunction: myFunction})
 
-    var s = new SymbolNode('myFunction')
-    var a = new mymath.expression.node.ConstantNode(4)
-    var b = new mymath.expression.node.ConstantNode(5)
-    var n = new mymath.expression.node.FunctionNode(s, [a, b])
+    const s = new SymbolNode('myFunction')
+    const a = new mymath.expression.node.ConstantNode(4)
+    const b = new mymath.expression.node.ConstantNode(5)
+    const n = new mymath.expression.node.FunctionNode(s, [a, b])
 
-    var scope = {}
+    let scope = {}
     assert.equal(n.compile().eval(scope), 'myFunction(4, 5)')
   })
 
   it.skip('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.equal(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
@@ -132,15 +132,15 @@ describe('FunctionNode', function () {
     }
     myFunction.rawArgs = true
 
-    var obj = new SymbolNode('obj')
-    var prop = new ConstantNode('myFunction')
-    var i = new IndexNode([prop])
-    var a = new AccessorNode(obj, i)
-    var b = new mymath.expression.node.ConstantNode(4)
-    var c = new mymath.expression.node.ConstantNode(5)
-    var n = new mymath.expression.node.FunctionNode(a, [b, c])
+    const obj = new SymbolNode('obj')
+    const prop = new ConstantNode('myFunction')
+    const i = new IndexNode([prop])
+    const a = new AccessorNode(obj, i)
+    const b = new mymath.expression.node.ConstantNode(4)
+    const c = new mymath.expression.node.ConstantNode(5)
+    const n = new mymath.expression.node.FunctionNode(a, [b, c])
 
-    var scope = {
+    let scope = {
       obj: {
         myFunction: myFunction
       }
@@ -149,19 +149,19 @@ describe('FunctionNode', function () {
   })
 
   it('should compile a FunctionNode with overloaded a raw function', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.ok(false, 'should not be executed')
     }
     myFunction.rawArgs = true
     mymath.import({myFunction: myFunction})
 
-    var s = new mymath.expression.node.SymbolNode('myFunction')
-    var a = new mymath.expression.node.ConstantNode(4)
-    var b = new mymath.expression.node.ConstantNode(5)
-    var n = new mymath.expression.node.FunctionNode(s, [a, b])
+    const s = new mymath.expression.node.SymbolNode('myFunction')
+    const a = new mymath.expression.node.ConstantNode(4)
+    const b = new mymath.expression.node.ConstantNode(5)
+    const n = new mymath.expression.node.FunctionNode(s, [a, b])
 
-    var scope = {
+    let scope = {
       myFunction: function () {
         return 42
       }
@@ -170,10 +170,10 @@ describe('FunctionNode', function () {
   })
 
   it('should filter a FunctionNode', function () {
-    var s = new SymbolNode('a')
-    var b = new ConstantNode(2)
-    var c = new ConstantNode(1)
-    var n = new FunctionNode(s, [b, c])
+    const s = new SymbolNode('a')
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(1)
+    const n = new FunctionNode(s, [b, c])
 
     assert.deepEqual(n.filter(function (node) { return node instanceof FunctionNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
@@ -184,15 +184,15 @@ describe('FunctionNode', function () {
 
   it('should run forEach on a FunctionNode', function () {
     // multiply(x + 2, x)
-    var s = new SymbolNode('multiply')
-    var a = new SymbolNode('x')
-    var b = new ConstantNode(2)
-    var c = new OperatorNode('+', 'add', [a, b])
-    var d = new SymbolNode('x')
-    var f = new FunctionNode(s, [c, d])
+    const s = new SymbolNode('multiply')
+    const a = new SymbolNode('x')
+    const b = new ConstantNode(2)
+    const c = new OperatorNode('+', 'add', [a, b])
+    const d = new SymbolNode('x')
+    const f = new FunctionNode(s, [c, d])
 
-    var nodes = []
-    var paths = []
+    const nodes = []
+    const paths = []
     f.forEach(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
@@ -207,17 +207,17 @@ describe('FunctionNode', function () {
 
   it('should map a FunctionNode', function () {
     // multiply(x + 2, x)
-    var s = new SymbolNode('multiply')
-    var a = new SymbolNode('x')
-    var b = new ConstantNode(2)
-    var c = new OperatorNode('+', 'add', [a, b])
-    var d = new SymbolNode('x')
-    var f = new FunctionNode(s, [c, d])
+    const s = new SymbolNode('multiply')
+    const a = new SymbolNode('x')
+    const b = new ConstantNode(2)
+    const c = new OperatorNode('+', 'add', [a, b])
+    const d = new SymbolNode('x')
+    const f = new FunctionNode(s, [c, d])
 
-    var nodes = []
-    var paths = []
-    var g = new ConstantNode(3)
-    var h = f.map(function (node, path, parent) {
+    const nodes = []
+    const paths = []
+    const g = new ConstantNode(3)
+    const h = f.map(function (node, path, parent) {
       nodes.push(node)
       paths.push(path)
       assert.strictEqual(parent, f)
@@ -239,9 +239,9 @@ describe('FunctionNode', function () {
   })
 
   it('should throw an error when the map callback does not return a node', function () {
-    var s = new SymbolNode('factorial')
-    var b = new ConstantNode(2)
-    var f = new FunctionNode(s, [b])
+    const s = new SymbolNode('factorial')
+    const b = new ConstantNode(2)
+    const f = new FunctionNode(s, [b])
 
     assert.throws(function () {
       f.map(function () {})
@@ -250,15 +250,15 @@ describe('FunctionNode', function () {
 
   it('should transform a FunctionNodes (nested) parameters', function () {
     // multiply(x + 2, x)
-    var s = new SymbolNode('multiply')
-    var a = new SymbolNode('x')
-    var b = new ConstantNode(2)
-    var c = new OperatorNode('+', 'add', [a, b])
-    var d = new SymbolNode('x')
-    var f = new FunctionNode(s, [c, d])
+    const s = new SymbolNode('multiply')
+    const a = new SymbolNode('x')
+    const b = new ConstantNode(2)
+    const c = new OperatorNode('+', 'add', [a, b])
+    const d = new SymbolNode('x')
+    const f = new FunctionNode(s, [c, d])
 
-    var g = new ConstantNode(3)
-    var h = f.transform(function (node) {
+    const g = new ConstantNode(3)
+    const h = f.transform(function (node) {
       return node instanceof SymbolNode && node.name == 'x' ? g : node
     })
 
@@ -271,12 +271,12 @@ describe('FunctionNode', function () {
 
   it('should transform a FunctionNodes name', function () {
     // add(2, 3)
-    var s = new SymbolNode('add')
-    var b = new ConstantNode(2)
-    var c = new ConstantNode(3)
-    var d = new FunctionNode(s, [b, c])
+    const s = new SymbolNode('add')
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+    const d = new FunctionNode(s, [b, c])
 
-    var f = d.transform(function (node) {
+    const f = d.transform(function (node) {
       if (node instanceof FunctionNode) {
         node.fn = new SymbolNode('subtract')
       }
@@ -289,13 +289,13 @@ describe('FunctionNode', function () {
 
   it('should transform a FunctionNode itself', function () {
     // add(2, 3)
-    var s = new SymbolNode('add')
-    var b = new ConstantNode(2)
-    var c = new ConstantNode(3)
-    var d = new FunctionNode(s, [b, c])
+    const s = new SymbolNode('add')
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+    const d = new FunctionNode(s, [b, c])
 
-    var e = new ConstantNode(5)
-    var f = d.transform(function (node) {
+    const e = new ConstantNode(5)
+    const f = d.transform(function (node) {
       return node instanceof FunctionNode ? e : node
     })
 
@@ -304,12 +304,12 @@ describe('FunctionNode', function () {
 
   it('should traverse a FunctionNode', function () {
     // add(2, 3)
-    var s = new SymbolNode('add')
-    var b = new ConstantNode(2)
-    var c = new ConstantNode(3)
-    var d = new FunctionNode(s, [b, c])
+    const s = new SymbolNode('add')
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+    const d = new FunctionNode(s, [b, c])
 
-    var count = 0
+    let count = 0
     d.traverse(function (node, path, parent) {
       count++
 
@@ -339,12 +339,12 @@ describe('FunctionNode', function () {
 
   it('should clone a FunctionNode', function () {
     // add(2, 3)
-    var s = new SymbolNode('add')
-    var b = new ConstantNode(2)
-    var c = new ConstantNode(3)
-    var d = new FunctionNode(s, [b, c])
+    const s = new SymbolNode('add')
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(3)
+    const d = new FunctionNode(s, [b, c])
 
-    var e = d.clone()
+    const e = d.clone()
     assert(e instanceof FunctionNode)
     assert.deepEqual(e, d)
     assert.notStrictEqual(e, d)
@@ -355,11 +355,11 @@ describe('FunctionNode', function () {
   })
 
   it('test equality another Node', function () {
-    var a = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)])
-    var b = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)])
-    var c = new FunctionNode(new SymbolNode('subtract'), [new ConstantNode(2), new ConstantNode(3)])
-    var d = new FunctionNode(new SymbolNode('add'), [new ConstantNode(4), new ConstantNode(3)])
-    var e = new SymbolNode('add')
+    const a = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)])
+    const b = new FunctionNode(new SymbolNode('add'), [new ConstantNode(2), new ConstantNode(3)])
+    const c = new FunctionNode(new SymbolNode('subtract'), [new ConstantNode(2), new ConstantNode(3)])
+    const d = new FunctionNode(new SymbolNode('add'), [new ConstantNode(4), new ConstantNode(3)])
+    const e = new SymbolNode('add')
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -370,38 +370,38 @@ describe('FunctionNode', function () {
   })
 
   it('should stringify a FunctionNode', function () {
-    var s = new SymbolNode('sqrt')
-    var c = new ConstantNode(4)
-    var n = new FunctionNode(s, [c])
+    const s = new SymbolNode('sqrt')
+    const c = new ConstantNode(4)
+    const n = new FunctionNode(s, [c])
 
     assert.equal(n.toString(), 'sqrt(4)')
   })
 
   it('should stringify a FunctionNode with an immediately invoked function assignment', function () {
-    var f = new FunctionAssignmentNode('f', ['x'], new SymbolNode('x')) // f(x) = x
-    var c = new ConstantNode(4)
-    var n = new FunctionNode(f, [c])
+    const f = new FunctionAssignmentNode('f', ['x'], new SymbolNode('x')) // f(x) = x
+    const c = new ConstantNode(4)
+    const n = new FunctionNode(f, [c])
 
     assert.equal(n.toString(), '(f(x) = x)(4)')
   })
 
   it('should pass options when stringifying a FunctionNode', function () {
-    var s = new SymbolNode('sqrt')
-    var a = new ConstantNode(2)
-    var b = new SymbolNode('x')
-    var c = new OperatorNode('*', 'multiply', [a, b], true) // implicit
-    var n = new FunctionNode(s, [c])
+    const s = new SymbolNode('sqrt')
+    const a = new ConstantNode(2)
+    const b = new SymbolNode('x')
+    const c = new OperatorNode('*', 'multiply', [a, b], true) // implicit
+    const n = new FunctionNode(s, [c])
 
     assert.equal(n.toString(), 'sqrt(2 x)')
-    var options = {implicit: 'show'}
+    const options = {implicit: 'show'}
     assert.equal(n.toString(options), 'sqrt(2 * x)')
   })
 
   it('should stringify a FunctionNode with custom toString', function () {
     // Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, options) {
+    const customFunction = function (node, options) {
       if (node.type === 'FunctionNode') {
-        var string = '[' + node.name + ']('
+        let string = '[' + node.name + ']('
         node.args.forEach(function (arg) {
           string += arg.toString(options) + ', '
         })
@@ -412,11 +412,11 @@ describe('FunctionNode', function () {
       }
     }
 
-    var a = new ConstantNode(1)
-    var b = new ConstantNode(2)
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
 
-    var n1 = new FunctionNode(new SymbolNode('add'), [a, b])
-    var n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
+    const n1 = new FunctionNode(new SymbolNode('add'), [a, b])
+    const n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
 
     assert.equal(n1.toString({handler: customFunction}), '[add](const(1, number), const(2, number), )')
     assert.equal(n2.toString({handler: customFunction}), '[subtract](const(1, number), const(2, number), )')
@@ -424,7 +424,7 @@ describe('FunctionNode', function () {
 
   it('should stringify a FunctionNode with custom toString for a single function', function () {
     // Also checks if the custom functions get passed on to the children
-    var customFunction = {
+    const customFunction = {
       'add': function (node, options) {
         return node.args[0].toString(options) +
           ' ' + node.name + ' ' +
@@ -432,21 +432,21 @@ describe('FunctionNode', function () {
       }
     }
 
-    var s = new SymbolNode('add')
-    var a = new ConstantNode(1)
-    var b = new ConstantNode(2)
-    var n = new FunctionNode(s, [a, b])
+    const s = new SymbolNode('add')
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const n = new FunctionNode(s, [a, b])
 
     assert.equal(n.toString({handler: customFunction}), '1 add 2')
   })
 
   it('toJSON and fromJSON', function () {
-    var a = new SymbolNode('add')
-    var b = new ConstantNode(2)
-    var c = new ConstantNode(4)
-    var node = new FunctionNode(a, [b, c])
+    const a = new SymbolNode('add')
+    const b = new ConstantNode(2)
+    const c = new ConstantNode(4)
+    const node = new FunctionNode(a, [b, c])
 
-    var json = node.toJSON()
+    const json = node.toJSON()
 
     assert.deepEqual(json, {
       mathjs: 'FunctionNode',
@@ -454,39 +454,39 @@ describe('FunctionNode', function () {
       args: [b, c]
     })
 
-    var parsed = FunctionNode.fromJSON(json)
+    const parsed = FunctionNode.fromJSON(json)
     assert.deepEqual(parsed, node)
   })
 
   it('should LaTeX a FunctionNode', function () {
-    var s = new SymbolNode('sqrt')
-    var c1 = new ConstantNode(4)
-    var c2 = new ConstantNode(5)
-    var n = new FunctionNode(s, [c1])
+    const s = new SymbolNode('sqrt')
+    const c1 = new ConstantNode(4)
+    const c2 = new ConstantNode(5)
+    const n = new FunctionNode(s, [c1])
     assert.equal(n.toTex(), '\\sqrt{4}')
 
     // test permutations
-    var n2 = new FunctionNode(new SymbolNode('permutations'), [c1])
+    const n2 = new FunctionNode(new SymbolNode('permutations'), [c1])
     assert.equal(n2.toTex(), '\\mathrm{permutations}\\left(4\\right)')
 
-    var o = new OperatorNode('+', 'add', [c1, c2])
-    var n3 = new FunctionNode(new SymbolNode('permutations'), [o])
+    const o = new OperatorNode('+', 'add', [c1, c2])
+    const n3 = new FunctionNode(new SymbolNode('permutations'), [o])
     assert.equal(n3.toTex(), '\\mathrm{permutations}\\left(4+5\\right)')
   })
 
   it('should have an identifier', function () {
-    var s = new SymbolNode('factorial')
-    var a = new ConstantNode(2)
-    var n = new FunctionNode(s, [a])
+    const s = new SymbolNode('factorial')
+    const a = new ConstantNode(2)
+    const n = new FunctionNode(s, [a])
 
     assert.equal(n.getIdentifier(), 'FunctionNode:factorial')
   })
 
   it('should LaTeX a FunctionNode with custom toTex', function () {
     // Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, options) {
+    const customFunction = function (node, options) {
       if (node.type === 'FunctionNode') {
-        var latex = '\\mbox{' + node.name + '}\\left('
+        let latex = '\\mbox{' + node.name + '}\\left('
         node.args.forEach(function (arg) {
           latex += arg.toTex(options) + ', '
         })
@@ -497,11 +497,11 @@ describe('FunctionNode', function () {
       }
     }
 
-    var a = new ConstantNode(1)
-    var b = new ConstantNode(2)
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
 
-    var n1 = new FunctionNode(new SymbolNode('add'), [a, b])
-    var n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
+    const n1 = new FunctionNode(new SymbolNode('add'), [a, b])
+    const n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
 
     assert.equal(n1.toTex({handler: customFunction}), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)')
     assert.equal(n2.toTex({handler: customFunction}), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)')
@@ -509,7 +509,7 @@ describe('FunctionNode', function () {
 
   it('should LaTeX a FunctionNode with custom toTex for a single function', function () {
     // Also checks if the custom functions get passed on to the children
-    var customFunction = {
+    const customFunction = {
       'add': function (node, options) {
         return node.args[0].toTex(options) +
           ' ' + node.name + ' ' +
@@ -517,16 +517,16 @@ describe('FunctionNode', function () {
       }
     }
 
-    var s = new SymbolNode('add')
-    var a = new ConstantNode(1)
-    var b = new ConstantNode(2)
-    var n = new FunctionNode(s, [a, b])
+    const s = new SymbolNode('add')
+    const a = new ConstantNode(1)
+    const b = new ConstantNode(2)
+    const n = new FunctionNode(s, [a, b])
 
     assert.equal(n.toTex({handler: customFunction}), '1 add 2')
   })
 
   it('should LaTeX a FunctionNode with callback attached to the function', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = function (node, options) {
       return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options)
     }
@@ -535,14 +535,14 @@ describe('FunctionNode', function () {
   })
 
   it('should LaTeX a FunctionNode with template string attached to the function', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${args[0]} plus \${args[1]}`
 
     assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2')
   })
 
   it('should LaTeX a FunctionNode with object of callbacks attached to the function', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.sum.toTex = {
       2: `\${args[0]}+\${args[1]}`,
       3: function (node, options) {
@@ -555,37 +555,37 @@ describe('FunctionNode', function () {
   })
 
   it('should LaTeX templates with string properties', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${name}`
 
     assert.equal(customMath.parse('add(1,2)').toTex(), 'add')
   })
 
   it('should LaTeX templates with node properties', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${args[0]} plus \${args[1]}`
 
     assert.equal(customMath.parse('add(1,2)').toTex(), '1 plus 2')
   })
 
   it('should LaTeX templates with properties that are arrays of Nodes', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${args}`
 
     assert.equal(customMath.parse('add(1,2)').toTex(), '1,2')
   })
 
   it('should throw an Error for templates with properties that don\'t exist', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${some_property}`
 
     assert.throws(function () { customMath.parse('add(1,2)').toTex() }, ReferenceError)
   })
 
   it('should throw an Error for templates with properties that aren\'t Nodes or Strings or Arrays of Nodes', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${some_property}`
-    var tree = customMath.parse('add(1,2)')
+    const tree = customMath.parse('add(1,2)')
 
     tree.some_property = {}
     assert.throws(function () { tree.toTex() }, TypeError)
@@ -596,9 +596,9 @@ describe('FunctionNode', function () {
   })
 
   it('should throw an Error for templates with properties that are arrays of non Nodes', function () {
-    var customMath = math.create()
+    const customMath = math.create()
     customMath.add.toTex = `\${some_property}`
-    var tree = customMath.parse('add(1,2)')
+    const tree = customMath.parse('add(1,2)')
     tree.some_property = [1, 2]
 
     assert.throws(function () { tree.toTex() }, TypeError)

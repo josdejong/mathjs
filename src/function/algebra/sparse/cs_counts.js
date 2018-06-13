@@ -1,9 +1,9 @@
 'use strict'
 
 function factory (type, config, load) {
-  var transpose = load(require('../../matrix/transpose'))
+  const transpose = load(require('../../matrix/transpose'))
 
-  var cs_leaf = load(require('./cs_leaf'))
+  const cs_leaf = load(require('./cs_leaf'))
 
   /**
    * Computes the column counts using the upper triangular part of A.
@@ -17,38 +17,38 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_counts = function (a, parent, post, ata) {
+  const cs_counts = function (a, parent, post, ata) {
     // check inputs
     if (!a || !parent || !post) { return null }
     // a matrix arrays
-    var asize = a._size
+    const asize = a._size
     // rows and columns
-    var m = asize[0]
-    var n = asize[1]
+    const m = asize[0]
+    const n = asize[1]
     // variables
-    var i, j, k, J, p, p0, p1
+    let i, j, k, J, p, p0, p1
 
     // workspace size
-    var s = 4 * n + (ata ? (n + m + 1) : 0)
+    const s = 4 * n + (ata ? (n + m + 1) : 0)
     // allocate workspace
-    var w = [] // (s)
-    var ancestor = 0 // first n entries
-    var maxfirst = n // next n entries
-    var prevleaf = 2 * n // next n entries
-    var first = 3 * n // next n entries
-    var head = 4 * n // next n + 1 entries (used when ata is true)
-    var next = 5 * n + 1 // last entries in workspace
+    const w = [] // (s)
+    const ancestor = 0 // first n entries
+    const maxfirst = n // next n entries
+    const prevleaf = 2 * n // next n entries
+    const first = 3 * n // next n entries
+    const head = 4 * n // next n + 1 entries (used when ata is true)
+    const next = 5 * n + 1 // last entries in workspace
     // clear workspace w[0..s-1]
     for (k = 0; k < s; k++) { w[k] = -1 }
 
     // allocate result
-    var colcount = [] // (n);
+    const colcount = [] // (n)
 
     // AT = A'
-    var at = transpose(a)
+    const at = transpose(a)
     // at arrays
-    var tindex = at._index
-    var tptr = at._ptr
+    const tindex = at._index
+    const tptr = at._ptr
 
     // find w[first + j]
     for (k = 0; k < n; k++) {
@@ -85,7 +85,7 @@ function factory (type, config, load) {
       for (J = (ata ? w[head + k] : j); J != -1; J = (ata ? w[next + J] : -1)) {
         for (p = tptr[J]; p < tptr[J + 1]; p++) {
           i = tindex[p]
-          var r = cs_leaf(i, j, w, first, maxfirst, prevleaf, ancestor)
+          const r = cs_leaf(i, j, w, first, maxfirst, prevleaf, ancestor)
           // check A(i,j) is in skeleton
           if (r.jleaf >= 1) { colcount[j]++ }
           // check account for overlap in q

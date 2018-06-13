@@ -1,11 +1,11 @@
 // test divide
-var assert = require('assert')
-var math = require('../../../src/index')
-var error = require('../../../src/error/index')
-var approx = require('../../../tools/approx')
-var divide = math.divide
-var bignumber = math.bignumber
-var complex = math.complex
+const assert = require('assert')
+const math = require('../../../src/index')
+const error = require('../../../src/error/index')
+const approx = require('../../../tools/approx')
+const divide = math.divide
+const bignumber = math.bignumber
+const complex = math.complex
 
 describe('divide', function () {
   it('should divide two numbers', function () {
@@ -98,7 +98,7 @@ describe('divide', function () {
   })
 
   it('should divide two fractions', function () {
-    var a = math.fraction(1, 4)
+    const a = math.fraction(1, 4)
     assert.equal(divide(a, math.fraction(1, 2)).toString(), '0.5')
     assert.equal(a.toString(), '0.25')
   })
@@ -130,12 +130,12 @@ describe('divide', function () {
   it('should divide two units', function () {
     assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute')
 
-    var a = math.unit(math.fraction(75), 'mi/h')
-    var b = math.unit(math.fraction(40), 'mi/gal')
+    const a = math.unit(math.fraction(75), 'mi/h')
+    const b = math.unit(math.fraction(40), 'mi/gal')
     assert.equal(divide(a, b).to('gal/minute').toString(), '1/32 gal / minute')
 
-    var c = math.unit(math.complex(21, 1), 'kg')
-    var d = math.unit(math.complex(2, -3), 's')
+    const c = math.unit(math.complex(21, 1), 'kg')
+    const d = math.unit(math.complex(2, -3), 's')
     assert.equal(divide(c, d).toString(), '(3 + 5.000000000000001i) kg / s')
   })
 
@@ -188,12 +188,12 @@ describe('divide', function () {
   /*
   // These are supported now --ericman314
   it('should throw an error if dividing a number by a unit', function() {
-    assert.throws(function () {divide(10, math.unit('5 m')).toString()});
-  });
+    assert.throws(function () {divide(10, math.unit('5 m')).toString()})
+  })
 
   it('should throw an error if dividing a unit by a non-number', function() {
-    assert.throws(function () {divide(math.unit('5 m'), math.unit('5cm')).toString()});
-  });
+    assert.throws(function () {divide(math.unit('5 m'), math.unit('5cm')).toString()})
+  })
   */
 
   it('should throw an error if there\'s wrong number of arguments', function () {
@@ -206,7 +206,7 @@ describe('divide', function () {
   })
 
   it('should LaTeX divide', function () {
-    var expression = math.parse('divide(1,2)')
+    const expression = math.parse('divide(1,2)')
     assert.equal(expression.toTex(), '\\frac{1}{2}')
   })
 })

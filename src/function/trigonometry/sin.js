@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,13 +14,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.sin(2);                      // returns number 0.9092974268256813
-   *    math.sin(math.pi / 4);            // returns number 0.7071067811865475
-   *    math.sin(math.unit(90, 'deg'));   // returns number 1
-   *    math.sin(math.unit(30, 'deg'));   // returns number 0.5
+   *    math.sin(2)                      // returns number 0.9092974268256813
+   *    math.sin(math.pi / 4)            // returns number 0.7071067811865475
+   *    math.sin(math.unit(90, 'deg'))   // returns number 1
+   *    math.sin(math.unit(30, 'deg'))   // returns number 0.5
    *
-   *    var angle = 0.2;
-   *    math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2); // returns number ~1
+   *    const angle = 0.2
+   *    math.pow(math.sin(angle), 2) + math.pow(math.cos(angle), 2) // returns number ~1
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Sine of x
    */
-  var sin = typed('sin', {
+  const sin = typed('sin', {
     'number': Math.sin,
 
     'Complex': function (x) {

@@ -1,6 +1,6 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var conj = math.conj
+const assert = require('assert')
+const math = require('../../../src/index')
+const conj = math.conj
 
 describe('conj', function () {
   it('should compute the conjugate of a boolean', function () {
@@ -45,7 +45,7 @@ describe('conj', function () {
   })
 
   it('should LaTeX conj', function () {
-    var expression = math.parse('conj(1+i)')
+    const expression = math.parse('conj(1+i)')
     assert.equal(expression.toTex(), '\\left(1+ i\\right)^*')
   })
 })

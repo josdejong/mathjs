@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap')
+const deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,9 +15,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var a = math.unit(5, 'cm');    // returns Unit 50 mm
-   *    var b = math.unit('23 kg');    // returns Unit 23 kg
-   *    a.to('m');                     // returns Unit 0.05 m
+   *    const a = math.unit(5, 'cm')    // returns Unit 50 mm
+   *    const b = math.unit('23 kg')    // returns Unit 23 kg
+   *    a.to('m')                       // returns Unit 0.05 m
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @return {Unit | Array | Matrix}    The created unit
    */
 
-  var unit = typed('unit', {
+  const unit = typed('unit', {
     'Unit': function (x) {
       return x.clone()
     },

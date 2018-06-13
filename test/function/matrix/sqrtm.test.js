@@ -1,14 +1,12 @@
 // test sqrtm
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  math = require('../../../src/index')
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index')
 
 describe('sqrtm', function () {
-  var A = [[5, 2], [4, 7]]
-  var AA = [[33, 24], [48, 57]]
+  const A = [[5, 2], [4, 7]]
+  const AA = [[33, 24], [48, 57]]
 
-  var B = [[1.5667, 1.7408], [2.6112, 4.1779]]
-  var BB = [[7, 10], [15, 22]]
+  const B = [[1.5667, 1.7408], [2.6112, 4.1779]]
+  const BB = [[7, 10], [15, 22]]
 
   it('should return the principal square root of a matrix', function () {
     approx.deepEqual(math.sqrtm(AA), A)
@@ -52,7 +50,7 @@ describe('sqrtm', function () {
   })
 
   it('should LaTeX sqrtm', function () {
-    var expression = math.parse('sqrtm([[33, 24], [48, 57]])')
+    const expression = math.parse('sqrtm([[33, 24], [48, 57]])')
     assert.equal(expression.toTex(), '{\\begin{bmatrix}33&24\\\\48&57\\\\\\end{bmatrix}}^{\\frac{1}{2}}')
   })
 

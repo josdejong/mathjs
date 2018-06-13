@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Logical `not`. Flips boolean value of a given parameter.
@@ -15,12 +15,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.not(2);      // returns false
-   *    math.not(0);      // returns true
-   *    math.not(true);   // returns false
+   *    math.not(2)      // returns false
+   *    math.not(0)      // returns true
+   *    math.not(true)   // returns false
    *
-   *    a = [2, -7, 0];
-   *    math.not(a);      // returns [false, false, true]
+   *    a = [2, -7, 0]
+   *    math.not(a)      // returns [false, false, true]
    *
    * See also:
    *
@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when input is a zero or empty value.
    */
-  var not = typed('not', {
+  const not = typed('not', {
     'number': function (x) {
       return !x
     },

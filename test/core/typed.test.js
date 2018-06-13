@@ -1,6 +1,6 @@
-var assert = require('assert')
-var math = require('../../src/index')
-var math2 = math.create()
+const assert = require('assert')
+const math = require('../../src/index')
+const math2 = math.create()
 
 describe('typed', function () {
   it('should test whether a value is a number', function () {
@@ -229,9 +229,9 @@ describe('typed', function () {
   })
 
   it('should test whether a value is an AssignmentNode', function () {
-    var s = new math.expression.node.SymbolNode('')
-    var i = new math.expression.node.IndexNode([])
-    var v = new math.expression.node.ConstantNode(2)
+    const s = new math.expression.node.SymbolNode('')
+    const i = new math.expression.node.IndexNode([])
+    const v = new math.expression.node.ConstantNode(2)
 
     assert.strictEqual(math.type.isAssignmentNode(new math.expression.node.AssignmentNode(s, i, v)), true)
     assert.strictEqual(math.type.isAssignmentNode(new math2.expression.node.AssignmentNode(s, i, v)), true)
@@ -241,8 +241,8 @@ describe('typed', function () {
   })
 
   it('should test whether a value is an AccessorNode', function () {
-    var a = new math.expression.node.SymbolNode('a')
-    var index = new math.expression.node.IndexNode([new math.expression.node.ConstantNode('b')])
+    const a = new math.expression.node.SymbolNode('a')
+    const index = new math.expression.node.IndexNode([new math.expression.node.ConstantNode('b')])
 
     assert.strictEqual(math.type.isAccessorNode(new math.expression.node.AccessorNode(a, index)), true)
     assert.strictEqual(math.type.isAccessorNode(new math2.expression.node.AccessorNode(a, index)), true)
@@ -268,9 +268,9 @@ describe('typed', function () {
   })
 
   it('should test whether a value is a ConditionalNode', function () {
-    var c = new math.expression.node.SymbolNode('')
-    var t = new math.expression.node.ConstantNode(1)
-    var f = new math.expression.node.ConstantNode(2)
+    const c = new math.expression.node.SymbolNode('')
+    const t = new math.expression.node.ConstantNode(1)
+    const f = new math.expression.node.ConstantNode(2)
 
     assert.strictEqual(math.type.isConditionalNode(new math.expression.node.ConditionalNode(c, t, f)), true)
     assert.strictEqual(math.type.isConditionalNode(new math2.expression.node.ConditionalNode(c, t, f)), true)
@@ -288,8 +288,8 @@ describe('typed', function () {
   })
 
   it('should test whether a value is a RangeNode', function () {
-    var s = new math.expression.node.ConstantNode(1)
-    var e = new math.expression.node.ConstantNode(10)
+    const s = new math.expression.node.ConstantNode(1)
+    const e = new math.expression.node.ConstantNode(10)
 
     assert.strictEqual(math.type.isRangeNode(new math.expression.node.RangeNode(s, e)), true)
     assert.strictEqual(math.type.isRangeNode(new math2.expression.node.RangeNode(s, e)), true)
@@ -299,8 +299,8 @@ describe('typed', function () {
   })
 
   it('should test whether a value is a Node', function () {
-    var s = new math.expression.node.ConstantNode(1)
-    var e = new math.expression.node.ConstantNode(10)
+    const s = new math.expression.node.ConstantNode(1)
+    const e = new math.expression.node.ConstantNode(10)
 
     assert.strictEqual(math.type.isNode(new math.expression.node.ConstantNode(1)), true)
     assert.strictEqual(math.type.isNode(new math2.expression.node.ConstantNode(1)), true)

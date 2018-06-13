@@ -1,17 +1,17 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var acos = math.acos
-var cos = math.cos
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var mathPredictable = math.create({predictable: true})
-var acosBig = bigmath.acos
-var cosBig = bigmath.cos
-var Big = bigmath.bignumber
+const assert = require('assert')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const acos = math.acos
+const cos = math.cos
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const mathPredictable = math.create({predictable: true})
+const acosBig = bigmath.acos
+const cosBig = bigmath.cos
+const Big = bigmath.bignumber
 
 describe('acos', function () {
   it('should return the arccos of a boolean', function () {
@@ -36,7 +36,7 @@ describe('acos', function () {
   })
 
   it('should return the arccos of a bignumber', function () {
-    var arg = Big(-1)
+    const arg = Big(-1)
     assert.deepEqual(acosBig(arg).toString(), bigmath.pi.toString())
     assert.deepEqual(acosBig(Big(-0.5)), Big('2.0943951023931954923'))
     assert.deepEqual(acosBig(Big(0)), Big('1.5707963267948966192'))
@@ -95,7 +95,7 @@ describe('acos', function () {
   it('should calculate the arccos element-wise for arrays and matrices', function () {
     // note: the results of acos(2) and acos(3) differs in octave
     // the next tests are verified with mathematica
-    var acos123 = [0, complex(0, 1.316957896924817), complex(0, 1.762747174039086)]
+    const acos123 = [0, complex(0, 1.316957896924817), complex(0, 1.762747174039086)]
     approx.deepEqual(acos([1, 2, 3]), acos123)
     approx.deepEqual(acos(matrix([1, 2, 3])), matrix(acos123))
   })
@@ -106,7 +106,7 @@ describe('acos', function () {
   })
 
   it('should LaTeX acos', function () {
-    var expression = math.parse('acos(1)')
+    const expression = math.parse('acos(1)')
     assert.equal(expression.toTex(), '\\cos^{-1}\\left(1\\right)')
   })
 })

@@ -1,13 +1,13 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_flip = load(require('./cs_flip'))
-  var cs_fkeep = load(require('./cs_fkeep'))
-  var cs_tdfs = load(require('./cs_tdfs'))
+  const cs_flip = load(require('./cs_flip'))
+  const cs_fkeep = load(require('./cs_fkeep'))
+  const cs_tdfs = load(require('./cs_tdfs'))
 
-  var add = load(require('../../arithmetic/add'))
-  var multiply = load(require('../../arithmetic/multiply'))
-  var transpose = load(require('../../matrix/transpose'))
+  const add = load(require('../../arithmetic/add'))
+  const multiply = load(require('../../arithmetic/multiply'))
+  const transpose = load(require('../../matrix/transpose'))
 
   /**
    * Approximate minimum degree ordering. The minimum degree algorithm is a widely used
@@ -22,58 +22,58 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_amd = function (order, a) {
+  const cs_amd = function (order, a) {
     // check input parameters
     if (!a || order <= 0 || order > 3) { return null }
     // a matrix arrays
-    var asize = a._size
+    const asize = a._size
     // rows and columns
-    var m = asize[0]
-    var n = asize[1]
+    const m = asize[0]
+    const n = asize[1]
     // initialize vars
-    var lemax = 0
+    let lemax = 0
     // dense threshold
-    var dense = Math.max(16, 10 * Math.sqrt(n))
+    let dense = Math.max(16, 10 * Math.sqrt(n))
     dense = Math.min(n - 2, dense)
     // create target matrix C
-    var cm = _createTargetMatrix(order, a, m, n, dense)
+    const cm = _createTargetMatrix(order, a, m, n, dense)
     // drop diagonal entries
     cs_fkeep(cm, _diag, null)
     // C matrix arrays
-    var cindex = cm._index
-    var cptr = cm._ptr
+    const cindex = cm._index
+    const cptr = cm._ptr
 
     // number of nonzero elements in C
-    var cnz = cptr[n]
+    let cnz = cptr[n]
 
     // allocate result (n+1)
-    var P = []
+    const P = []
 
     // create workspace (8 * (n + 1))
-    var W = []
-    var len = 0 // first n + 1 entries
-    var nv = n + 1 // next n + 1 entries
-    var next = 2 * (n + 1) // next n + 1 entries
-    var head = 3 * (n + 1) // next n + 1 entries
-    var elen = 4 * (n + 1) // next n + 1 entries
-    var degree = 5 * (n + 1) // next n + 1 entries
-    var w = 6 * (n + 1) // next n + 1 entries
-    var hhead = 7 * (n + 1) // last n + 1 entries
+    const W = []
+    const len = 0 // first n + 1 entries
+    const nv = n + 1 // next n + 1 entries
+    const next = 2 * (n + 1) // next n + 1 entries
+    const head = 3 * (n + 1) // next n + 1 entries
+    const elen = 4 * (n + 1) // next n + 1 entries
+    const degree = 5 * (n + 1) // next n + 1 entries
+    const w = 6 * (n + 1) // next n + 1 entries
+    const hhead = 7 * (n + 1) // last n + 1 entries
 
     // use P as workspace for last
-    var last = P
+    const last = P
 
     // initialize quotient graph
-    var mark = _initializeQuotientGraph(n, cptr, W, len, head, last, next, hhead, nv, w, elen, degree)
+    let mark = _initializeQuotientGraph(n, cptr, W, len, head, last, next, hhead, nv, w, elen, degree)
 
     // initialize degree lists
-    var nel = _initializeDegreeLists(n, cptr, W, degree, elen, w, dense, nv, head, last, next)
+    let nel = _initializeDegreeLists(n, cptr, W, degree, elen, w, dense, nv, head, last, next)
 
     // minimum degree node
-    var mindeg = 0
+    let mindeg = 0
 
     // vars
-    var i, j, k, k1, k2, e, pj, ln, nvi, pk, eln, p1, p2, pn, h, d
+    let i, j, k, k1, k2, e, pj, ln, nvi, pk, eln, p1, p2, pn, h, d
 
     // while (selecting pivots) do
     while (nel < n) {
@@ -85,22 +85,22 @@ function factory (type, config, load) {
       // remove k from degree list
       W[head + mindeg] = W[next + k]
       // elenk = |Ek|
-      var elenk = W[elen + k]
+      const elenk = W[elen + k]
       // # of nodes k represents
-      var nvk = W[nv + k]
+      let nvk = W[nv + k]
       // W[nv + k] nodes of A eliminated
       nel += nvk
 
       // Construct a new element. The new element Lk is constructed in place if |Ek| = 0. nv[i] is
       // negated for all nodes i in Lk to flag them as members of this set. Each node i is removed from the
       // degree lists. All elements e in Ek are absorved into element k.
-      var dk = 0
+      let dk = 0
       // flag k as in Lk
       W[nv + k] = -nvk
-      var p = cptr[k]
+      let p = cptr[k]
       // do in place if W[elen + k] == 0
-      var pk1 = (elenk === 0) ? p : cnz
-      var pk2 = pk1
+      const pk1 = (elenk === 0) ? p : cnz
+      let pk2 = pk1
       for (k1 = 1; k1 <= elenk + 1; k1++) {
         if (k1 > elenk) {
           // search the nodes in k
@@ -159,7 +159,7 @@ function factory (type, config, load) {
         if ((eln = W[elen + i]) <= 0) { continue }
         // W[nv + i] was negated
         nvi = -W[nv + i]
-        var wnvi = mark - nvi
+        const wnvi = mark - nvi
         // scan Ei
         for (p = cptr[i], p1 = cptr[i] + eln - 1; p <= p1; p++) {
           e = cindex[p]
@@ -190,7 +190,7 @@ function factory (type, config, load) {
           // check e is an unabsorbed element
           if (W[w + e] !== 0) {
             // dext = |Le\Lk|
-            var dext = W[w + e] - mark
+            const dext = W[w + e] - mark
             if (dext > 0) {
               // sum up the set differences
               d += dext
@@ -208,13 +208,13 @@ function factory (type, config, load) {
         }
         // W[elen + i] = |Ei|
         W[elen + i] = pn - p1 + 1
-        var p3 = pn
-        var p4 = p1 + W[len + i]
+        const p3 = pn
+        const p4 = p1 + W[len + i]
         // prune edges in Ai
         for (p = p2 + 1; p < p4; p++) {
           j = cindex[p]
           // check node j dead or in Lk
-          var nvj = W[nv + j]
+          const nvj = W[nv + j]
           if (nvj <= 0) { continue }
           // degree(i) += |j|
           d += nvj
@@ -277,10 +277,10 @@ function factory (type, config, load) {
           ln = W[len + i]
           eln = W[elen + i]
           for (p = cptr[i] + 1; p <= cptr[i] + ln - 1; p++) { W[w + cindex[p]] = mark }
-          var jlast = i
+          let jlast = i
           // compare i with all j
           for (j = W[next + i]; j != -1;) {
-            var ok = W[len + j] === ln && W[elen + j] === eln
+            let ok = W[len + j] === ln && W[elen + j] === eln
             for (p = cptr[j] + 1; ok && p <= cptr[j] + ln - 1; p++) {
               // compare i and j
               if (W[w + cindex[p]] != mark) { ok = 0 }
@@ -397,9 +397,9 @@ function factory (type, config, load) {
    *   This is best used for QR factorization or LU factorization is matrix M has no dense rows. A dense row is a row with more than 10*sqr(columns) entries.
    *   P = M' * M
    */
-  var _createTargetMatrix = function (order, a, m, n, dense) {
+  function _createTargetMatrix (order, a, m, n, dense) {
     // compute A'
-    var at = transpose(a)
+    const at = transpose(a)
 
     // check order = 1, matrix must be square
     if (order === 1 && n === m) {
@@ -410,20 +410,20 @@ function factory (type, config, load) {
     // check order = 2, drop dense columns from M'
     if (order == 2) {
       // transpose arrays
-      var tindex = at._index
-      var tptr = at._ptr
+      const tindex = at._index
+      const tptr = at._ptr
       // new column index
-      var p2 = 0
+      let p2 = 0
       // loop A' columns (rows)
-      for (var j = 0; j < m; j++) {
+      for (let j = 0; j < m; j++) {
         // column j of AT starts here
-        var p = tptr[j]
+        let p = tptr[j]
         // new column j starts here
         tptr[j] = p2
         // skip dense col j
         if (tptr[j + 1] - p > dense) { continue }
         // map rows in column j of A
-        for (var p1 = tptr[j + 1]; p < p1; p++) { tindex[p2++] = tindex[p] }
+        for (const p1 = tptr[j + 1]; p < p1; p++) { tindex[p2++] = tindex[p] }
       }
       // finalize AT
       tptr[m] = p2
@@ -445,12 +445,12 @@ function factory (type, config, load) {
    *  - A live element e is one that is in the graph, having been formed when node e was selected as the pivot.
    *  - A dead element e is one that has benn absorved into a subsequent element s = flip(ptr[e]).
    */
-  var _initializeQuotientGraph = function (n, cptr, W, len, head, last, next, hhead, nv, w, elen, degree) {
+  function _initializeQuotientGraph (n, cptr, W, len, head, last, next, hhead, nv, w, elen, degree) {
     // Initialize quotient graph
-    for (var k = 0; k < n; k++) { W[len + k] = cptr[k + 1] - cptr[k] }
+    for (let k = 0; k < n; k++) { W[len + k] = cptr[k + 1] - cptr[k] }
     W[len + n] = 0
     // initialize workspace
-    for (var i = 0; i <= n; i++) {
+    for (let i = 0; i <= n; i++) {
       // degree list i is empty
       W[head + i] = -1
       last[i] = -1
@@ -467,7 +467,7 @@ function factory (type, config, load) {
       W[degree + i] = W[len + i]
     }
     // clear w
-    var mark = _wclear(0, 0, W, w, n)
+    const mark = _wclear(0, 0, W, w, n)
     // n is a dead element
     W[elen + n] = -2
     // n is a root of assembly tree
@@ -483,13 +483,13 @@ function factory (type, config, load) {
    * degree >= dense are alsol eliminated and merged into a placeholder node n, a dead element. Thes nodes will appera last in the
    * output permutation p.
    */
-  var _initializeDegreeLists = function (n, cptr, W, degree, elen, w, dense, nv, head, last, next) {
+  function _initializeDegreeLists (n, cptr, W, degree, elen, w, dense, nv, head, last, next) {
     // result
-    var nel = 0
+    let nel = 0
     // loop columns
-    for (var i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
       // degree @ i
-      var d = W[degree + i]
+      const d = W[degree + i]
       // check node i is empty
       if (d === 0) {
         // element i is dead
@@ -507,7 +507,7 @@ function factory (type, config, load) {
         cptr[i] = cs_flip(n)
         W[nv + n]++
       } else {
-        var h = W[head + d]
+        const h = W[head + d]
         if (h != -1) { last[h] = i }
         // put node i in degree list d
         W[next + i] = W[head + d]
@@ -517,9 +517,9 @@ function factory (type, config, load) {
     return nel
   }
 
-  var _wclear = function (mark, lemax, W, w, n) {
+  function _wclear (mark, lemax, W, w, n) {
     if (mark < 2 || (mark + lemax < 0)) {
-      for (var k = 0; k < n; k++) {
+      for (let k = 0; k < n; k++) {
         if (W[w + k] !== 0) { W[w + k] = 1 }
       }
       mark = 2
@@ -528,7 +528,7 @@ function factory (type, config, load) {
     return mark
   }
 
-  var _diag = function (i, j) {
+  function _diag (i, j) {
     return i != j
   }
 

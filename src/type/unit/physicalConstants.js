@@ -1,10 +1,10 @@
 'use strict'
-var lazy = require('../../utils/object').lazy
+const lazy = require('../../utils/object').lazy
 
 function factory (type, config, load, typed, math) {
   // helper function to create a unit with a fixed prefix
   function fixedUnit (str) {
-    var unit = type.Unit.parse(str)
+    const unit = type.Unit.parse(str)
     unit.fixPrefix = true
     return unit
   }
@@ -29,7 +29,7 @@ function factory (type, config, load, typed, math) {
   setLazyConstant(math, 'magneticFluxQuantum', function () { return fixedUnit('2.06783375846e-15 Wb') })
   setLazyConstant(math, 'nuclearMagneton', function () { return fixedUnit('5.0507835311e-27 J T^-1') })
   setLazyConstant(math, 'klitzing', function () { return fixedUnit('25812.807443484 ohm') })
-  // setLazyConstant(math, 'josephson',                 function () {return fixedUnit('4.8359787011e-14 Hz V^-1')});  // TODO: support for Hz needed
+  // setLazyConstant(math, 'josephson',                 function () {return fixedUnit('4.8359787011e-14 Hz V^-1')})  // TODO: support for Hz needed
 
   // Atomic and nuclear constants
   setLazyConstant(math, 'bohrRadius', function () { return fixedUnit('5.291772109217e-11 m') })
@@ -53,7 +53,7 @@ function factory (type, config, load, typed, math) {
   setLazyConstant(math, 'boltzmann', function () { return fixedUnit('1.380648813e-23 J K^-1') })
   setLazyConstant(math, 'faraday', function () { return fixedUnit('96485.336521 C mol^-1') })
   setLazyConstant(math, 'firstRadiation', function () { return fixedUnit('3.7417715317e-16 W m^2') })
-  // setLazyConstant(math, 'spectralRadiance',   function () {return fixedUnit('1.19104286953e-16 W m^2 sr^-1')}); // TODO spectralRadiance
+  // setLazyConstant(math, 'spectralRadiance',   function () {return fixedUnit('1.19104286953e-16 W m^2 sr^-1')}) // TODO spectralRadiance
   setLazyConstant(math, 'loschmidt', function () { return fixedUnit('2.686780524e25 m^-3') })
   setLazyConstant(math, 'gasConstant', function () { return fixedUnit('8.314462175 J K^-1 mol^-1') })
   setLazyConstant(math, 'molarPlanckConstant', function () { return fixedUnit('3.990312717628e-10 J s mol^-1') })

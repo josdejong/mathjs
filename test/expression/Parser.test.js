@@ -1,47 +1,44 @@
 // test parser
 
-var assert = require('assert'),
-  approx = require('../../tools/approx'),
-  math = require('../../src/index'),
-  Parser = math.expression.Parser
+const assert = require('assert'), approx = require('../../tools/approx'), math = require('../../src/index'), Parser = math.expression.Parser
 
 describe('parser', function () {
   it('should create a parser', function () {
-    var parser = new Parser()
+    const parser = new Parser()
     assert.ok(parser instanceof Parser)
   })
 
   it('should have a property isParser', function () {
-    var a = new Parser()
+    const a = new Parser()
     assert.strictEqual(a.isParser, true)
   })
 
   it('should have a property type', function () {
-    var a = new Parser()
+    const a = new Parser()
     assert.strictEqual(a.type, 'Parser')
   })
 
   it('should throw an error when using deprecated function parse', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     assert.throws(function () { parser.parse('2 + 3') }, /is deprecated/)
   })
 
   it('should throw an error when using deprecated function compile', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     assert.throws(function () { parser.compile('2 + 3') }, /is deprecated/)
   })
 
   it('should evaluate an expression', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
-    var result = parser.eval('2 + 3')
+    const result = parser.eval('2 + 3')
     assert.equal(result, 5)
   })
 
   it('should get variables from the parsers namespace ', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     parser.eval('a = 3')
     parser.eval('b = a + 2')
@@ -52,7 +49,7 @@ describe('parser', function () {
   })
 
   it('should get all variables from the parsers namespace ', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     parser.eval('a = 3')
     parser.eval('b = a + 2')
@@ -63,13 +60,13 @@ describe('parser', function () {
   })
 
   it('should return undefined when getting a non existing variable', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     assert.strictEqual(parser.get('non_existing_variable'), undefined)
   })
 
   it('should set variables in the parsers namespace ', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     assert.equal(parser.set('a', 3), 3)
     assert.equal(parser.eval('a'), 3)
@@ -85,7 +82,7 @@ describe('parser', function () {
   })
 
   it('should remove a variable from the parsers namespace ', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     assert.equal(parser.set('qq', 3), 3)
     assert.equal(parser.eval('qq'), 3)
@@ -103,7 +100,7 @@ describe('parser', function () {
   })
 
   it('should clear the parsers namespace ', function () {
-    var parser = new Parser()
+    const parser = new Parser()
 
     assert.equal(parser.eval('xx = yy = zz = 5'), 5)
 
@@ -135,7 +132,7 @@ describe('parser', function () {
   describe('security', function () {
     it('should throw an error when accessing inherited properties', function () {
       try {
-        var parser = new Parser()
+        const parser = new Parser()
 
         Object.prototype.foo = 'bar'
 
@@ -149,7 +146,7 @@ describe('parser', function () {
 
     it('should throw an error when assigning an inherited property', function () {
       try {
-        var parser = new Parser()
+        const parser = new Parser()
         assert.throws(function () { parser.set('toString', null) }, /No access/)
       } finally {
         delete Object.prototype.foo

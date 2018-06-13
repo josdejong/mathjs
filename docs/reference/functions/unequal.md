@@ -40,20 +40,20 @@ boolean &#124; Array &#124; Matrix | Returns true when the compared values are u
 ## Examples
 
 ```js
-math.unequal(2 + 2, 3);       // returns true
-math.unequal(2 + 2, 4);       // returns false
+math.unequal(2 + 2, 3)       // returns true
+math.unequal(2 + 2, 4)       // returns false
 
-var a = math.unit('50 cm');
-var b = math.unit('5 m');
-math.unequal(a, b);           // returns false
+const a = math.unit('50 cm')
+const b = math.unit('5 m')
+math.unequal(a, b)           // returns false
 
-var c = [2, 5, 1];
-var d = [2, 7, 1];
+const c = [2, 5, 1]
+const d = [2, 7, 1]
 
-math.unequal(c, d);           // returns [false, true, false]
-math.deepEqual(c, d);         // returns false
+math.unequal(c, d)           // returns [false, true, false]
+math.deepEqual(c, d)         // returns false
 
-math.unequal(0, null);        // returns true
+math.unequal(0, null)        // returns true
 ```
 
 

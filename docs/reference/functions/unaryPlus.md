@@ -30,8 +30,8 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 ## Examples
 
 ```js
-math.unaryPlus(3.5);      // returns 3.5
-math.unaryPlus(1);     // returns 1
+math.unaryPlus(3.5)      // returns 3.5
+math.unaryPlus(1)     // returns 1
 ```
 
 

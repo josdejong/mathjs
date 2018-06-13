@@ -32,10 +32,10 @@ Array &#124; Matrix | Returns the kronecker product of `x` and `y`
 ## Examples
 
 ```js
-math.kron([[1, 0], [0, 1]], [[1, 2], [3, 4]]);
+math.kron([[1, 0], [0, 1]], [[1, 2], [3, 4]])
 // returns [ [ 1, 2, 0, 0 ], [ 3, 4, 0, 0 ], [ 0, 0, 1, 2 ], [ 0, 0, 3, 4 ] ]
 
-math.kron([1,1], [2,3,4]);
+math.kron([1,1], [2,3,4])
 // returns [ [ 2, 3, 4, 2, 3, 4 ] ]
 ```
 

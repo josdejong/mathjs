@@ -10,13 +10,13 @@ module.exports = function bitNot (x) {
     throw new Error('Integer expected in function bitNot')
   }
 
-  var BigNumber = x.constructor
-  var prevPrec = BigNumber.precision
+  const BigNumber = x.constructor
+  const prevPrec = BigNumber.precision
   BigNumber.config({precision: 1E9})
 
-  var x = x.plus(new BigNumber(1))
-  x.s = -x.s || null
+  let result = x.plus(new BigNumber(1))
+  result.s = -result.s || null
 
   BigNumber.config({precision: prevPrec})
-  return x
+  return result
 }

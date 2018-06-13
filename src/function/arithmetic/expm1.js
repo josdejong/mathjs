@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Calculate the value of subtracting 1 from the exponential value.
@@ -15,11 +15,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.expm1(2);                      // returns number 6.38905609893065
-   *    math.pow(math.e, 2) - 1;            // returns number 6.3890560989306495
-   *    math.log(math.expm1(2) + 1);        // returns number 2
+   *    math.expm1(2)                      // returns number 6.38905609893065
+   *    math.pow(math.e, 2) - 1            // returns number 6.3890560989306495
+   *    math.log(math.expm1(2) + 1)        // returns number 2
    *
-   *    math.expm1([1, 2, 3]);
+   *    math.expm1([1, 2, 3])
    *    // returns Array [
    *    //   1.718281828459045,
    *    //   6.3890560989306495,
@@ -33,11 +33,11 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to apply expm1
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  var expm1 = typed('expm1', {
+  const expm1 = typed('expm1', {
     'number': Math.expm1 || _expm1,
 
     'Complex': function (x) {
-      var r = Math.exp(x.re)
+      const r = Math.exp(x.re)
       return new type.Complex(
         r * Math.cos(x.im) - 1,
         r * Math.sin(x.im)

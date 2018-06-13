@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  combinations = math.combinations
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), combinations = math.combinations
 
 describe('combinations', function () {
   it('should calculate the combinations of a number taking k at a time', function () {
@@ -36,7 +33,7 @@ describe('combinations', function () {
   })
 
   it('should LaTeX combinations', function () {
-    var expression = math.parse('combinations(3,2)')
+    const expression = math.parse('combinations(3,2)')
     assert.equal(expression.toTex(), '\\binom{3}{2}')
   })
 })

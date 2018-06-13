@@ -19,7 +19,7 @@ math.partitionSelect(x, k, compare)
 Parameter | Type | Description
 --------- | ---- | -----------
 `x` | Matrix &#124; Array | A one dimensional matrix or array to sort
-`k` | Number | The kth smallest value to be retrieved; zero-based index
+`k` | Number | The kth smallest value to be retrieved zero-based index
 `compare` | Function &#124; 'asc' &#124; 'desc' |  An optional comparator function. The function is called as `compare(a, b)`, and must return 1 when a > b, -1 when a < b, and 0 when a == b. Default value: 'asc'.
 
 ### Returns
@@ -32,13 +32,13 @@ Type | Description
 ## Examples
 
 ```js
-math.partitionSelect([5, 10, 1], 2);           // returns 10
-math.partitionSelect(['C', 'B', 'A', 'D'], 1); // returns 'B'
+math.partitionSelect([5, 10, 1], 2)           // returns 10
+math.partitionSelect(['C', 'B', 'A', 'D'], 1) // returns 'B'
 
 function sortByLength (a, b) {
-  return a.length - b.length;
+  return a.length - b.length
 }
-math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength); // returns 'Langdon'
+math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength) // returns 'Langdon'
 ```
 
 

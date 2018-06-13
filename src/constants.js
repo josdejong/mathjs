@@ -1,7 +1,7 @@
 'use strict'
 
-var object = require('./utils/object')
-var bigConstants = require('./utils/bignumber/constants')
+const object = require('./utils/object')
+const bigConstants = require('./utils/bignumber/constants')
 
 function factory (type, config, load, typed, math) {
   // listen for changed in the configuration, automatically reload

@@ -1,12 +1,12 @@
 // test cube
-var assert = require('assert')
-var math = require('../../../src/index')
-var unit = math.unit
-var bignumber = math.bignumber
-var fraction = math.fraction
-var matrix = math.matrix
-var range = math.range
-var cube = math.cube
+const assert = require('assert')
+const math = require('../../../src/index')
+const unit = math.unit
+const bignumber = math.bignumber
+const fraction = math.fraction
+const matrix = math.matrix
+const range = math.range
+const cube = math.cube
 
 describe('cube', function () {
   it('should return the cube of a boolean', function () {
@@ -27,7 +27,7 @@ describe('cube', function () {
   })
 
   it('should return the cube of a fraction', function () {
-    var a = fraction(0.5)
+    const a = fraction(0.5)
     assert(cube(a) instanceof math.type.Fraction)
     assert.equal(cube(a).toString(), '0.125')
     assert.equal(a.toString(), '0.5')
@@ -67,7 +67,7 @@ describe('cube', function () {
   })
 
   it('should LaTeX cube', function () {
-    var expression = math.parse('cube(2)')
+    const expression = math.parse('cube(2)')
     assert.equal(expression.toTex(), '\\left(2\\right)^3')
   })
 })

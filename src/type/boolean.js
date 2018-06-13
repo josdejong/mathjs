@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('./../utils/collection/deepMap')
+const deepMap = require('./../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -16,12 +16,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.boolean(0);     // returns false
-   *    math.boolean(1);     // returns true
-   *    math.boolean(-3);     // returns true
-   *    math.boolean('true');     // returns true
-   *    math.boolean('false');     // returns false
-   *    math.boolean([1, 0, 1, 1]);     // returns [true, false, true, true]
+   *    math.boolean(0)     // returns false
+   *    math.boolean(1)     // returns true
+   *    math.boolean(-3)     // returns true
+   *    math.boolean('true')     // returns true
+   *    math.boolean('false')     // returns false
+   *    math.boolean([1, 0, 1, 1])     // returns [true, false, true, true]
    *
    * See also:
    *
@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    * @param {string | number | boolean | Array | Matrix | null} value  A value of any type
    * @return {boolean | Array | Matrix} The boolean value
    */
-  var bool = typed('bool', {
+  const bool = typed('bool', {
     '': function () {
       return false
     },
@@ -53,7 +53,7 @@ function factory (type, config, load, typed) {
 
     'string': function (x) {
       // try case insensitive
-      var lcase = x.toLowerCase()
+      const lcase = x.toLowerCase()
       if (lcase === 'true') {
         return true
       } else if (lcase === 'false') {
@@ -61,7 +61,7 @@ function factory (type, config, load, typed) {
       }
 
       // test whether value is a valid number
-      var num = Number(x)
+      const num = Number(x)
       if (x != '' && !isNaN(num)) {
         return !!num
       }

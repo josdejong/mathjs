@@ -29,9 +29,9 @@ number &#124; BigNumber &#124; Array &#124; Matrix | NOT of `x`
 ## Examples
 
 ```js
-math.bitNot(1);               // returns number -2
+math.bitNot(1)               // returns number -2
 
-math.bitNot([2, -3, 4]);      // returns Array [-3, 2, 5]
+math.bitNot([2, -3, 4])      // returns Array [-3, 2, 5]
 ```
 
 

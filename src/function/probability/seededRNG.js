@@ -1,6 +1,6 @@
 'use strict'
 
-var seedrandom = require('seed-random')
+const seedrandom = require('seed-random')
 
 // create a random seed here to prevent an infinite loop from seed-random
 // inside the factory. Reason is that math.random is defined as a getter/setter
@@ -8,10 +8,10 @@ var seedrandom = require('seed-random')
 // defined object including `math` itself. That means that whilst getting
 // math.random, it tries to get math.random, etc... an infinite loop.
 // See https://github.com/ForbesLindesay/seed-random/issues/6
-var singletonRandom = seedrandom()
+const singletonRandom = seedrandom()
 
 function factory (type, config, load, typed, math) {
-  var random
+  let random
 
   // create a new random generator with given seed
   function setSeed (seed) {

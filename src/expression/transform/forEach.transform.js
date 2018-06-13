@@ -1,7 +1,7 @@
 'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount
-var forEach = require('../../utils/array').forEach
+const maxArgumentCount = require('../../utils/function').maxArgumentCount
+const forEach = require('../../utils/array').forEach
 
 /**
  * Attach a transform function to math.forEach
@@ -10,10 +10,10 @@ var forEach = require('../../utils/array').forEach
  * This transform creates a one-based index instead of a zero-based index
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(require('./utils/compileInlineExpression'))
+  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
 
   function forEachTransform (args, math, scope) {
-    var x, callback
+    let x, callback
 
     if (args[0]) {
       x = args[0].compile().eval(scope)
@@ -21,7 +21,7 @@ function factory (type, config, load, typed) {
 
     if (args[1]) {
       if (type.isSymbolNode(args[1]) || type.isFunctionAssignmentNode(args[1])) {
-        // a function pointer, like forEach([3, -2, 5], myTestFunction);
+        // a function pointer, like forEach([3, -2, 5], myTestFunction)
         callback = args[1].compile().eval(scope)
       } else {
         // an expression like forEach([3, -2, 5], x > 0 ? callback1(x) : callback2(x) )
@@ -34,12 +34,12 @@ function factory (type, config, load, typed) {
   forEachTransform.rawArgs = true
 
   // one-based version of forEach
-  var _forEach = typed('forEach', {
+  let _forEach = typed('forEach', {
     'Array | Matrix, function': function (array, callback) {
       // figure out what number of arguments the callback function expects
-      var args = maxArgumentCount(callback)
+      const args = maxArgumentCount(callback)
 
-      var recurse = function (value, index) {
+      const recurse = function (value, index) {
         if (Array.isArray(value)) {
           forEach(value, function (child, i) {
             // we create a copy of the index array and append the new index value

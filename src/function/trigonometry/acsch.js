@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,7 +15,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.acsch(0.5);       // returns 1.4436354751788103
+   *    math.acsch(0.5)       // returns 1.4436354751788103
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
-  var acsch = typed('acsch', {
+  const acsch = typed('acsch', {
     'number': function (x) {
       x = 1 / x
       return Math.log(x + Math.sqrt(x * x + 1))

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,8 +14,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.cot(2);      // returns number -0.45765755436028577
-   *    1 / math.tan(2);  // returns number -0.45765755436028577
+   *    math.cot(2)      // returns number -0.45765755436028577
+   *    1 / math.tan(2)  // returns number -0.45765755436028577
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Cotangent of x
    */
-  var cot = typed('cot', {
+  const cot = typed('cot', {
     'number': function (x) {
       return 1 / Math.tan(x)
     },

@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var getType = load(require('../../utils/typeof'))
+  const getType = load(require('../../utils/typeof'))
 
   /**
    * Improve error messages for statistics functions. Errors are typically
@@ -15,7 +15,7 @@ function factory (type, config, load, typed) {
    */
   return function improveErrorMessage (err, fnName, value) {
     // TODO: add information with the index (also needs transform in expression parser)
-    var details
+    let details
 
     if (String(err).indexOf('Unexpected type') !== -1) {
       details = arguments.length > 2

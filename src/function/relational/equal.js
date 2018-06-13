@@ -1,16 +1,16 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var equalScalar = load(require('./equalScalar'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const equalScalar = load(require('./equalScalar'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Test whether two values are equal.
@@ -32,21 +32,21 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.equal(2 + 2, 3);         // returns false
-   *    math.equal(2 + 2, 4);         // returns true
+   *    math.equal(2 + 2, 3)         // returns false
+   *    math.equal(2 + 2, 4)         // returns true
    *
-   *    var a = math.unit('50 cm');
-   *    var b = math.unit('5 m');
-   *    math.equal(a, b);             // returns true
+   *    const a = math.unit('50 cm')
+   *    const b = math.unit('5 m')
+   *    math.equal(a, b)             // returns true
    *
-   *    var c = [2, 5, 1];
-   *    var d = [2, 7, 1];
+   *    const c = [2, 5, 1]
+   *    const d = [2, 7, 1]
    *
-   *    math.equal(c, d);             // returns [true, false, true]
-   *    math.deepEqual(c, d);         // returns false
+   *    math.equal(c, d)             // returns [true, false, true]
+   *    math.deepEqual(c, d)         // returns false
    *
-   *    math.equal("1000", "1e3");    // returns true
-   *    math.equal(0, null);          // returns false
+   *    math.equal("1000", "1e3")    // returns true
+   *    math.equal(0, null)          // returns false
    *
    * See also:
    *
@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
    */
-  var equal = typed('equal', {
+  const equal = typed('equal', {
 
     'any, any': function (x, y) {
       // strict equality for null and undefined?

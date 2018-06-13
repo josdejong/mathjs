@@ -34,12 +34,12 @@ Array &#124; Matrix | A matrix filled with zeros
 ## Examples
 
 ```js
-math.zeros(3);                  // returns [0, 0, 0]
-math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
-math.zeros(3, 'dense');         // returns [0, 0, 0]
+math.zeros(3)                  // returns [0, 0, 0]
+math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
+math.zeros(3, 'dense')         // returns [0, 0, 0]
 
-var A = [[1, 2, 3], [4, 5, 6]];
-math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
+const A = [[1, 2, 3], [4, 5, 6]]
+math.zeros(math.size(A))       // returns [[0, 0, 0], [0, 0, 0]]
 ```
 
 

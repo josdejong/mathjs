@@ -1,8 +1,8 @@
 'use strict'
 
-var arraySize = require('../array').size
-var isMatrix = require('../collection/isMatrix')
-var IndexError = require('../../error/IndexError')
+const arraySize = require('../array').size
+const isMatrix = require('../collection/isMatrix')
+const IndexError = require('../../error/IndexError')
 
 /**
  * Reduce a given matrix or array to a new matrix or
@@ -14,7 +14,7 @@ var IndexError = require('../../error/IndexError')
  * @return {Array | Matrix} res
  */
 module.exports = function (mat, dim, callback) {
-  var size = Array.isArray(mat) ? arraySize(mat) : mat.size()
+  const size = Array.isArray(mat) ? arraySize(mat) : mat.size()
   if (dim < 0 || (dim >= size.length)) {
     // TODO: would be more clear when throwing a DimensionError here
     throw new IndexError(dim, size.length)
@@ -36,7 +36,7 @@ module.exports = function (mat, dim, callback) {
  * @private
  */
 function _reduce (mat, dim, callback) {
-  var i, ret, val, tran
+  let i, ret, val, tran
 
   if (dim <= 0) {
     if (!Array.isArray(mat[0])) {
@@ -69,12 +69,12 @@ function _reduce (mat, dim, callback) {
  * @private
  */
 function _switch (mat) {
-  var I = mat.length
-  var J = mat[0].length
-  var i, j
-  var ret = []
+  const I = mat.length
+  const J = mat[0].length
+  let i, j
+  const ret = []
   for (j = 0; j < J; j++) {
-    var tmp = []
+    const tmp = []
     for (i = 0; i < I; i++) {
       tmp.push(mat[i][j])
     }

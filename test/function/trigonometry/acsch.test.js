@@ -1,16 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  acsch = math.acsch,
-  csch = math.csch,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  bigmath = math.create({number: 'BigNumber', precision: 20}),
-  acschBig = bigmath.acsch,
-  Big = bigmath.bignumber
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, acsch = math.acsch, csch = math.csch, complex = math.complex, matrix = math.matrix, unit = math.unit, bigmath = math.create({number: 'BigNumber', precision: 20}), acschBig = bigmath.acsch, Big = bigmath.bignumber
 
 describe('acsch', function () {
   it('should return the hyperbolic arccsc of a boolean', function () {
@@ -28,7 +16,7 @@ describe('acsch', function () {
   })
 
   it('should return the hyperbolic arccsc of a bignumber', function () {
-    var arg = Big(-2)
+    const arg = Big(-2)
     assert.deepEqual(acschBig(arg), Big('-0.4812118250596034475'))
     assert.deepEqual(acschBig(Big(-1)), Big('-0.88137358701954302523'))
     assert.deepEqual(acschBig(Big(0)).toString(), 'Infinity')
@@ -79,7 +67,7 @@ describe('acsch', function () {
   })
 
   it('should calculate the arccsc element-wise for arrays and matrices', function () {
-    var acsch123 = [0.881373587019543025, 0.481211825059603447, 0.32745015023725844]
+    const acsch123 = [0.881373587019543025, 0.481211825059603447, 0.32745015023725844]
     approx.deepEqual(acsch([1, 2, 3]), acsch123)
     approx.deepEqual(acsch(matrix([1, 2, 3])), matrix(acsch123))
   })
@@ -90,7 +78,7 @@ describe('acsch', function () {
   })
 
   it('should LaTeX acsch', function () {
-    var expression = math.parse('acsch(2)')
+    const expression = math.parse('acsch(2)')
     assert.equal(expression.toTex(), '\\mathrm{csch}^{-1}\\left(2\\right)')
   })
 })

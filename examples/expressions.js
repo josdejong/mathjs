@@ -8,7 +8,7 @@
  */
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // 1. using the function math.eval
 //
@@ -36,7 +36,7 @@ print(math.eval([
 
 // provide a scope (just a regular JavaScript Object)
 console.log('\nevaluate expressions providing a scope with variables and functions')
-var scope = {
+let scope = {
   a: 3,
   b: 4
 }
@@ -55,7 +55,7 @@ scope.hello = function (name) {
 print(math.eval('hello("hero")', scope)) // "hello, hero!"
 
 // define a function as an expression
-var f = math.eval('f(x) = x ^ a', scope)
+const f = math.eval('f(x) = x ^ a', scope)
 print(f(2)) // 8
 print(scope.f(2)) // 8
 
@@ -72,7 +72,7 @@ console.log('\n2. USING FUNCTION MATH.PARSE')
 
 // parse an expression
 console.log('\nparse an expression into a node tree')
-var node1 = math.parse('sqrt(3^2 + 4^2)')
+const node1 = math.parse('sqrt(3^2 + 4^2)')
 print(node1.toString()) // "sqrt((3 ^ 2) + (4 ^ 2))"
 
 // compile and evaluate the compiled code
@@ -81,18 +81,18 @@ print(node1.eval()) // 5
 
 // provide a scope
 console.log('\nprovide a scope')
-var node2 = math.parse('x^a')
-var code2 = node2.compile()
+const node2 = math.parse('x^a')
+const code2 = node2.compile()
 print(node2.toString()) // "x ^ a"
-var scope = {
+let scope2 = {
   x: 3,
   a: 2
 }
-print(code2.eval(scope)) // 9
+print(code2.eval(scope2)) // 9
 
 // change a value in the scope and re-evaluate the node
 scope.a = 3
-print(code2.eval(scope)) // 27
+print(code2.eval(scope2)) // 27
 
 // 3. using function math.compile
 //
@@ -107,19 +107,19 @@ console.log('\n3. USING FUNCTION MATH.COMPILE')
 
 // parse an expression
 console.log('\ncompile an expression')
-var code3 = math.compile('sqrt(3^2 + 4^2)')
+const code3 = math.compile('sqrt(3^2 + 4^2)')
 
 // evaluate the compiled code
 print(code3.eval()) // 5
 
 // provide a scope for the variable assignment
 console.log('\nprovide a scope')
-var code2 = math.compile('a = a + 3')
-var scope = {
+const code4 = math.compile('a = a + 3')
+let scope3 = {
   a: 7
 }
-code2.eval(scope)
-print(scope.a) // 10
+code4.eval(scope3)
+print(scope3.a) // 10
 
 // 4. using a parser
 //
@@ -128,7 +128,7 @@ print(scope.a) // 10
 // keeps a scope with assigned variables in memory. The parser also contains
 // some convenience methods to get, set, and remove variables from memory.
 console.log('\n4. USING A PARSER')
-var parser = math.parser()
+const parser = math.parser()
 
 // evaluate with parser
 console.log('\nevaluate expressions')
@@ -141,8 +141,8 @@ print(parser.eval('cos(45 deg)')) // 0.70710678118655
 console.log('\ndefine variables and functions')
 print(parser.eval('x = 7 / 2')) // 3.5
 print(parser.eval('x + 3')) // 6.5
-print(parser.eval('f(x, y) = x^y')) // f(x, y)
-print(parser.eval('f(2, 3)')) // 8
+print(parser.eval('f2(x, y) = x^y')) // f2(x, y)
+print(parser.eval('f2(2, 3)')) // 8
 
 // manipulate matrices
 // Note that matrix indexes in the expression parser are one-based with the
@@ -161,15 +161,15 @@ print(parser.eval('n = m[:, 1]')) // [[19], [43]]
 
 // get and set variables and functions
 console.log('\nget and set variables and function in the scope of the parser')
-var x = parser.get('x')
+const x = parser.get('x')
 console.log('x =', x) // x = 7
-var f = parser.get('f')
-console.log('f =', math.format(f)) // f = f(x, y)
-var g = f(3, 3)
-console.log('g =', g) // g = 27
+const f2 = parser.get('f2')
+console.log('f2 =', math.format(f2)) // f2 = f2(x, y)
+const h = f2(3, 3)
+console.log('h =', h) // g = 27
 
-parser.set('h', 500)
-print(parser.eval('h / 2')) // 250
+parser.set('i', 500)
+print(parser.eval('i / 2')) // 250
 parser.set('hello', function (name) {
   return 'hello, ' + name + '!'
 })
@@ -183,6 +183,6 @@ parser.clear()
  * @param {*} value
  */
 function print (value) {
-  var precision = 14
+  const precision = 14
   console.log(math.format(value, precision))
 }

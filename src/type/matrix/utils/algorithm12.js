@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var DenseMatrix = type.DenseMatrix
+  const DenseMatrix = type.DenseMatrix
 
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
@@ -22,25 +22,25 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97626813
    */
-  var algorithm12 = function (s, b, callback, inverse) {
+  const algorithm12 = function (s, b, callback, inverse) {
     // sparse matrix arrays
-    var avalues = s._values
-    var aindex = s._index
-    var aptr = s._ptr
-    var asize = s._size
-    var adt = s._datatype
+    const avalues = s._values
+    const aindex = s._index
+    const aptr = s._ptr
+    const asize = s._size
+    const adt = s._datatype
 
     // sparse matrix cannot be a Pattern matrix
     if (!avalues) { throw new Error('Cannot perform operation on Pattern Sparse Matrix and Scalar value') }
 
     // rows & columns
-    var rows = asize[0]
-    var columns = asize[1]
+    const rows = asize[0]
+    const columns = asize[1]
 
     // datatype
-    var dt
+    let dt
     // callback signature to use
-    var cf = callback
+    let cf = callback
 
     // process data types
     if (typeof adt === 'string') {
@@ -53,33 +53,33 @@ function factory (type, config, load, typed) {
     }
 
     // result arrays
-    var cdata = []
+    const cdata = []
     // matrix
-    var c = new DenseMatrix({
+    const c = new DenseMatrix({
       data: cdata,
       size: [rows, columns],
       datatype: dt
     })
 
     // workspaces
-    var x = []
+    const x = []
     // marks indicating we have a value in x for a given column
-    var w = []
+    const w = []
 
     // loop columns
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // columns mark
-      var mark = j + 1
+      const mark = j + 1
       // values in j
-      for (var k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
+      for (let k0 = aptr[j], k1 = aptr[j + 1], k = k0; k < k1; k++) {
         // row
-        var r = aindex[k]
+        const r = aindex[k]
         // update workspace
         x[r] = avalues[k]
         w[r] = mark
       }
       // loop rows
-      for (var i = 0; i < rows; i++) {
+      for (let i = 0; i < rows; i++) {
         // initialize C on first column
         if (j === 0) {
           // create row array

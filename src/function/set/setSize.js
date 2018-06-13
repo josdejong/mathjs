@@ -1,9 +1,9 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var compareNatural = load(require('../relational/compareNatural'))
+  const compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Count the number of elements of a (multi)set. When a second parameter is 'true', count only the unique values.
@@ -16,8 +16,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.setSize([1, 2, 2, 4]);          // returns 4
-   *    math.setSize([1, 2, 2, 4], true);    // returns 3
+   *    math.setSize([1, 2, 2, 4])          // returns 4
+   *    math.setSize([1, 2, 2, 4], true)    // returns 3
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a  A multiset
    * @return {number}            The number of elements of the (multi)set
    */
-  var setSize = typed('setSize', {
+  const setSize = typed('setSize', {
     'Array | Matrix': function (a) {
       return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length
     },
@@ -34,9 +34,9 @@ function factory (type, config, load, typed) {
       if (unique === false || a.length === 0) {
         return Array.isArray(a) ? flatten(a).length : flatten(a.toArray()).length
       } else {
-        var b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
-        var count = 1
-        for (var i = 1; i < b.length; i++) {
+        const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
+        let count = 1
+        for (let i = 1; i < b.length; i++) {
           if (compareNatural(b[i], b[i - 1]) !== 0) {
             count++
           }

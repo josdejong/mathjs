@@ -1,6 +1,6 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
   /**
@@ -14,8 +14,8 @@ function factory (type, config, load, typed) {
   *
   * Examples:
   *
-  *     math.mode(2, 1, 4, 3, 1);                            // returns [1]
-  *     math.mode([1, 2.7, 3.2, 4, 2.7]);                    // returns [2.7]
+  *     math.mode(2, 1, 4, 3, 1)                            // returns [1]
+  *     math.mode([1, 2.7, 3.2, 4, 2.7])                    // returns [2.7]
   *     math.mode(1, 4, 6, 1, 6)                             // returns [1, 6]
   *     math.mode('a','a','b','c')                           // returns ["a"]
   *     math.mode(1, 1.5, 'abc')                             // returns [1, 1.5, "abc"]
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
   * @return {*} The mode of all values
   */
 
-  var mode = typed('mode', {
+  const mode = typed('mode', {
     'Array | Matrix': _mode,
 
     '...': function (args) {
@@ -47,15 +47,15 @@ function factory (type, config, load, typed) {
    */
   function _mode (values) {
     values = flatten(values.valueOf())
-    var num = values.length
+    const num = values.length
     if (num == 0) {
       throw new Error('Cannot calculate mode of an empty array')
     }
 
-    var count = {},
-      mode = [],
-      max = 0
-    for (var i in values) {
+    const count = {}
+    let mode = []
+    let max = 0
+    for (const i in values) {
       if (!(values[i] in count)) {
         count[values[i]] = 0
       }

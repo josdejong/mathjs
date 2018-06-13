@@ -1,7 +1,7 @@
 'use strict'
 
-var number = require('../../utils/number')
-var deepMap = require('../../utils/collection/deepMap')
+const number = require('../../utils/number')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -19,11 +19,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.sign(3.5);               // returns 1
-   *    math.sign(-4.2);              // returns -1
-   *    math.sign(0);                 // returns 0
+   *    math.sign(3.5)               // returns 1
+   *    math.sign(-4.2)              // returns -1
+   *    math.sign(0)                 // returns 0
    *
-   *    math.sign([3, 5, -2, 0, 2]);  // returns [1, 1, -1, 0, 1]
+   *    math.sign([3, 5, -2, 0, 2])  // returns [1, 1, -1, 0, 1]
    *
    * See also:
    *
@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}e
    *            The sign of `x`
    */
-  var sign = typed('sign', {
+  const sign = typed('sign', {
     'number': number.sign,
 
     'Complex': function (x) {

@@ -35,9 +35,9 @@ number &#124; Complex &#124; Array &#124; Matrix | Returns the nth root of `a`
 ## Examples
 
 ```js
-math.nthRoot(9, 2);    // returns 3, as 3^2 == 9
-math.sqrt(9);          // returns 3, as 3^2 == 9
-math.nthRoot(64, 3);   // returns 4, as 4^3 == 64
+math.nthRoot(9, 2)    // returns 3, as 3^2 == 9
+math.sqrt(9)          // returns 3, as 3^2 == 9
+math.nthRoot(64, 3)   // returns 4, as 4^3 == 64
 ```
 
 

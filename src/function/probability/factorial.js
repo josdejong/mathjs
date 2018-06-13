@@ -1,10 +1,10 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var gamma = load(require('./gamma'))
-  var latex = require('../../utils/latex')
+  const gamma = load(require('./gamma'))
+  const latex = require('../../utils/latex')
 
   /**
    * Compute the factorial of a value
@@ -18,8 +18,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.factorial(5);    // returns 120
-   *    math.factorial(3);    // returns 6
+   *    math.factorial(5)    // returns 120
+   *    math.factorial(3)    // returns 6
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
-  var factorial = typed('factorial', {
+  const factorial = typed('factorial', {
     'number': function (n) {
       if (n < 0) {
         throw new Error('Value must be non-negative')

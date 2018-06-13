@@ -1,20 +1,20 @@
 'use strict'
 
-var digits = require('./../../../utils/number').digits
+const digits = require('./../../../utils/number').digits
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 function factory (type, config, load, typed, math) {
-  var util = load(require('./util'))
-  var isNumeric = load(require('../../utils/isNumeric'))
-  var isCommutative = util.isCommutative
-  var isAssociative = util.isAssociative
-  var allChildren = util.allChildren
-  var createMakeNodeFunction = util.createMakeNodeFunction
-  var ConstantNode = math.expression.node.ConstantNode
-  var OperatorNode = math.expression.node.OperatorNode
-  var FunctionNode = math.expression.node.FunctionNode
+  const util = load(require('./util'))
+  const isNumeric = load(require('../../utils/isNumeric'))
+  const isCommutative = util.isCommutative
+  const isAssociative = util.isAssociative
+  const allChildren = util.allChildren
+  const createMakeNodeFunction = util.createMakeNodeFunction
+  const ConstantNode = math.expression.node.ConstantNode
+  const OperatorNode = math.expression.node.OperatorNode
+  const FunctionNode = math.expression.node.FunctionNode
 
   function simplifyConstant (expr) {
-    var res = foldFraction(expr)
+    const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }
 
@@ -33,7 +33,7 @@ function factory (type, config, load, typed, math) {
     }
   }
 
-  var _toNode = typed({
+  const _toNode = typed({
     'Fraction': _fractionToNode,
     'number': function (n) {
       if (n < 0) {
@@ -55,7 +55,7 @@ function factory (type, config, load, typed, math) {
   // convert a number to a fraction only if it can be expressed exactly
   function _exactFraction (n) {
     if (isFinite(n)) {
-      var f = math.fraction(n)
+      const f = math.fraction(n)
       if (f.valueOf() === n) {
         return f
       }
@@ -65,7 +65,7 @@ function factory (type, config, load, typed, math) {
 
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
-  var _toNumber = typed({
+  const _toNumber = typed({
     'string': function (s) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
@@ -97,8 +97,8 @@ function factory (type, config, load, typed, math) {
   }
 
   function _fractionToNode (f) {
-    var n
-    var vn = f.s * f.n
+    let n
+    const vn = f.s * f.n
     if (vn < 0) {
       n = new OperatorNode('-', 'unaryMinus', [new ConstantNode(-vn)])
     } else {
@@ -155,9 +155,9 @@ function factory (type, config, load, typed, math) {
         }
 
         // Process operators as OperatorNode
-        var operatorFunctions = [ 'add', 'multiply' ]
+        const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
-          var args = node.args.map(foldFraction)
+          let args = node.args.map(foldFraction)
 
           // If all args are numbers
           if (!args.some(type.isNode)) {
@@ -176,10 +176,10 @@ function factory (type, config, load, typed, math) {
         }
         /* falls through */
       case 'OperatorNode':
-        var fn = node.fn.toString()
-        var args
-        var res
-        var makeNode = createMakeNodeFunction(node)
+        const fn = node.fn.toString()
+        let args
+        let res
+        const makeNode = createMakeNodeFunction(node)
         if (node.isUnary()) {
           args = [foldFraction(node.args[0])]
           if (!type.isNode(args[0])) {
@@ -193,9 +193,9 @@ function factory (type, config, load, typed, math) {
 
           if (isCommutative(fn)) {
             // commutative binary operator
-            var consts = [], vars = []
+            const consts = [], vars = []
 
-            for (var i = 0; i < args.length; i++) {
+            for (let i = 0; i < args.length; i++) {
               if (!type.isNode(args[i])) {
                 consts.push(args[i])
               } else {

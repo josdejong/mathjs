@@ -7,24 +7,12 @@ const babel = require('gulp-babel')
 const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 
-var ENTRY = './src/index.js',
-  HEADER = './src/header.js',
-  VERSION = './src/version.js',
-  COMPILE_SRC = './src/**/*.js',
-  COMPILE_LIB = './lib',
-  FILE = 'math.js',
-  FILE_MIN = 'math.min.js',
-  FILE_MAP = 'math.min.map',
-  DIST = __dirname + '/dist',
-  REF_SRC = './lib/',
-  REF_DEST = './docs/reference/functions/',
-  REF_ROOT = './docs/reference/',
-  MATH_JS = DIST + '/' + FILE
+const ENTRY = './src/index.js', HEADER = './src/header.js', VERSION = './src/version.js', COMPILE_SRC = './src/**/*.js', COMPILE_LIB = './lib', FILE = 'math.js', FILE_MIN = 'math.min.js', FILE_MAP = 'math.min.map', DIST = __dirname + '/dist', REF_SRC = './lib/', REF_DEST = './docs/reference/functions/', REF_ROOT = './docs/reference/', MATH_JS = DIST + '/' + FILE
 
 // generate banner with today's date and correct version
 function createBanner () {
-  var today = gutil.date(new Date(), 'yyyy-mm-dd') // today, formatted as yyyy-mm-dd
-  var version = require('./package.json').version
+  const today = gutil.date(new Date(), 'yyyy-mm-dd') // today, formatted as yyyy-mm-dd
+  const version = require('./package.json').version
 
   return String(fs.readFileSync(HEADER))
     .replace('@@date', today)
@@ -33,7 +21,7 @@ function createBanner () {
 
 // generate a js file containing the version number
 function updateVersionFile () {
-  var version = require('./package.json').version
+  const version = require('./package.json').version
 
   // generate file with version number
   fs.writeFileSync(VERSION, 'module.exports = \'' + version + '\';\n' +
@@ -41,13 +29,13 @@ function updateVersionFile () {
       '// Changes made in this file will be overwritten.\n')
 }
 
-var bannerPlugin = new webpack.BannerPlugin({
+const bannerPlugin = new webpack.BannerPlugin({
   banner: createBanner(),
   entryOnly: true,
   raw: true
 })
 
-var webpackConfig = {
+const webpackConfig = {
   entry: ENTRY,
   output: {
     library: 'math',
@@ -79,7 +67,7 @@ var webpackConfig = {
   cache: true
 }
 
-var uglifyConfig = {
+const uglifyConfig = {
   sourceMap: {
     filename: FILE,
     url: FILE_MAP
@@ -90,7 +78,7 @@ var uglifyConfig = {
 }
 
 // create a single instance of the compiler to allow caching
-var compiler = webpack(webpackConfig)
+const compiler = webpack(webpackConfig)
 
 gulp.task('bundle', [], function (cb) {
   // update the banner contents (has a date in it which should stay up to date)
@@ -116,11 +104,11 @@ gulp.task('compile', function () {
 })
 
 gulp.task('minify', ['bundle'], function () {
-  var oldCwd = process.cwd()
+  const oldCwd = process.cwd()
   process.chdir(DIST)
 
   try {
-    var result = uglify.minify({
+    const result = uglify.minify({
       'math.js': fs.readFileSync(FILE, 'utf8')
     }, uglifyConfig)
 
@@ -142,7 +130,7 @@ gulp.task('minify', ['bundle'], function () {
 
 // test whether the docs for the expression parser are complete
 gulp.task('validate', ['minify'], function (cb) {
-  var child_process = require('child_process')
+  const child_process = require('child_process')
 
   // this is run in a separate process as the modules need to be reloaded
   // with every validation (and required modules stay in cache).

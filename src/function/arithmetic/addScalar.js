@@ -14,7 +14,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit}                      Sum of `x` and `y`
    * @private
    */
-  var add = typed('add', {
+  const add = typed('add', {
 
     'number, number': function (x, y) {
       return x + y
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
       if (y.value == null) throw new Error('Parameter y contains a unit with undefined value')
       if (!x.equalBase(y)) throw new Error('Units do not match')
 
-      var res = x.clone()
+      const res = x.clone()
       res.value = add(res.value, y.value)
       res.fixPrefix = false
       return res

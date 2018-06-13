@@ -18,8 +18,8 @@
 // functionality, these functions can be disabled, as demonstrated in this
 // example.
 
-var math = require('../../index')
-var limitedEval = math.eval
+const math = require('../../index')
+const limitedEval = math.eval
 
 math.import({
   'import': function () { throw new Error('Function import is disabled') },

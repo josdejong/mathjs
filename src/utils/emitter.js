@@ -1,5 +1,5 @@
 'use strict'
-var Emitter = require('tiny-emitter')
+const Emitter = require('tiny-emitter')
 
 /**
  * Extend given object with emitter functions `on`, `off`, `once`, `emit`
@@ -8,7 +8,7 @@ var Emitter = require('tiny-emitter')
  */
 exports.mixin = function (obj) {
   // create event emitter
-  var emitter = new Emitter()
+  const emitter = new Emitter()
 
   // bind methods to obj (we don't want to expose the emitter.e Array...)
   obj.on = emitter.on.bind(emitter)

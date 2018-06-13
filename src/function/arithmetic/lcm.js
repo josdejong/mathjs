@@ -1,15 +1,15 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the least common multiple for two or more values or arrays.
@@ -27,11 +27,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.lcm(4, 6);               // returns 12
-   *    math.lcm(6, 21);              // returns 42
-   *    math.lcm(6, 21, 5);           // returns 210
+   *    math.lcm(4, 6)               // returns 12
+   *    math.lcm(6, 21)              // returns 42
+   *    math.lcm(6, 21, 5)           // returns 210
    *
-   *    math.lcm([4, 6], [6, 21]);    // returns [12, 42]
+   *    math.lcm([4, 6], [6, 21])    // returns [12, 42]
    *
    * See also:
    *
@@ -40,7 +40,7 @@ function factory (type, config, load, typed) {
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
-  var lcm = typed('lcm', {
+  const lcm = typed('lcm', {
     'number, number': _lcm,
 
     'BigNumber, BigNumber': _lcmBigNumber,
@@ -108,8 +108,8 @@ function factory (type, config, load, typed) {
 
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      var res = lcm(a, b)
-      for (var i = 0; i < args.length; i++) {
+      let res = lcm(a, b)
+      for (let i = 0; i < args.length; i++) {
         res = lcm(res, args[i])
       }
       return res
@@ -138,9 +138,9 @@ function factory (type, config, load, typed) {
 
     // http://en.wikipedia.org/wiki/Euclidean_algorithm
     // evaluate lcm here inline to reduce overhead
-    var prod = a.times(b)
+    const prod = a.times(b)
     while (!b.isZero()) {
-      var t = b
+      const t = b
       b = a.mod(t)
       a = t
     }
@@ -166,8 +166,8 @@ function _lcm (a, b) {
 
   // http://en.wikipedia.org/wiki/Euclidean_algorithm
   // evaluate lcm here inline to reduce overhead
-  var t
-  var prod = a * b
+  let t
+  const prod = a * b
   while (b != 0) {
     t = b
     b = a % t

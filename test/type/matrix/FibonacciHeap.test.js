@@ -1,22 +1,22 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var FibonacciHeap = math.type.FibonacciHeap
+const assert = require('assert')
+const math = require('../../../src/index')
+const FibonacciHeap = math.type.FibonacciHeap
 
 describe('FibonacciHeap', function () {
   describe('constructor', function () {
     it('should create heap', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       assert.equal(h._size, 0)
       assert(h._minimum === null)
     })
 
     it('should have a property isFibonacciHeap', function () {
-      var a = new FibonacciHeap()
+      const a = new FibonacciHeap()
       assert.strictEqual(a.isFibonacciHeap, true)
     })
 
     it('should have a property type', function () {
-      var a = new FibonacciHeap()
+      const a = new FibonacciHeap()
       assert.strictEqual(a.type, 'FibonacciHeap')
     })
 
@@ -27,7 +27,7 @@ describe('FibonacciHeap', function () {
 
   describe('insert', function () {
     it('should insert node when heap is empty', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(1, 'v1')
       assert.equal(h._size, 1)
       assert(h._minimum !== null)
@@ -36,7 +36,7 @@ describe('FibonacciHeap', function () {
     })
 
     it('should insert two nodes when heap is empty', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(1, 'v1')
       h.insert(10, 'v10')
       assert.equal(h._size, 2)
@@ -46,7 +46,7 @@ describe('FibonacciHeap', function () {
     })
 
     it('should insert two nodes when heap is empty, reverse order', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(10, 'v10')
       h.insert(1, 'v1')
       assert.equal(h._size, 2)
@@ -58,9 +58,9 @@ describe('FibonacciHeap', function () {
 
   describe('extractMinimum', function () {
     it('should extract node from heap, one node', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(1, 'v1')
-      var n = h.extractMinimum()
+      const n = h.extractMinimum()
       assert.equal(n.key, 1)
       assert.equal(n.value, 'v1')
       assert.equal(h._size, 0)
@@ -68,10 +68,10 @@ describe('FibonacciHeap', function () {
     })
 
     it('should extract node from heap, two nodes', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(1, 'v1')
       h.insert(10, 'v10')
-      var n = h.extractMinimum()
+      const n = h.extractMinimum()
       assert.equal(n.key, 1)
       assert.equal(n.value, 'v1')
       assert.equal(h._size, 1)
@@ -80,16 +80,16 @@ describe('FibonacciHeap', function () {
     })
 
     it('should extract nodes in ascending order', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(5, 'v5')
       h.insert(4, 'v4')
       h.insert(1, 'v1')
       h.insert(3, 'v3')
       h.insert(2, 'v2')
       // extract all nodes
-      var n
-      var l = h.extractMinimum()
-      var s = h._size
+      let n
+      let l = h.extractMinimum()
+      let s = h._size
       while (true) {
         n = h.extractMinimum()
         if (!n) { break }
@@ -104,17 +104,17 @@ describe('FibonacciHeap', function () {
 
   describe('remove', function () {
     it('should remove node, one node', function () {
-      var h = new FibonacciHeap()
-      var n = h.insert(1, 'v1')
+      const h = new FibonacciHeap()
+      const n = h.insert(1, 'v1')
       h.remove(n)
       assert.equal(h._size, 0)
       assert(h._minimum === null)
     })
 
     it('should remove node with smaller key', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(20, 'v20')
-      var n = h.insert(1, 'v1')
+      const n = h.insert(1, 'v1')
       h.insert(10, 'v10')
       h.insert(5, 'v5')
       h.insert(4, 'v4')
@@ -123,10 +123,10 @@ describe('FibonacciHeap', function () {
     })
 
     it('should remove node with largest key', function () {
-      var h = new FibonacciHeap()
+      const h = new FibonacciHeap()
       h.insert(1, 'v1')
       h.insert(10, 'v10')
-      var n = h.insert(20, 'v20')
+      const n = h.insert(20, 'v20')
       h.insert(5, 'v5')
       h.insert(4, 'v4')
       h.remove(n)
@@ -135,7 +135,7 @@ describe('FibonacciHeap', function () {
   })
 
   it('should check whether emtpy', function () {
-    var h = new FibonacciHeap()
+    const h = new FibonacciHeap()
     assert.equal(h.isEmpty(), true)
     assert.equal(h.size(), 0)
 

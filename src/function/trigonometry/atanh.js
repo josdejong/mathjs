@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,7 +15,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.atanh(0.5);       // returns 0.5493061443340549
+   *    math.atanh(0.5)       // returns 0.5493061443340549
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
    */
-  var atanh = typed('atanh', {
+  const atanh = typed('atanh', {
     'number': function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
         return _atanh(x)
@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
  * @return {number}
  * @private
  */
-var _atanh = Math.atanh || function (x) {
+const _atanh = Math.atanh || function (x) {
   return Math.log((1 + x) / (1 - x)) / 2
 }
 

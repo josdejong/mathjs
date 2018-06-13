@@ -1,9 +1,9 @@
 // test data type Complex
 
-var assert = require('assert')
-var math = require('../../../src/index')
-var Unit = math.type.Unit
-var Complex = math.type.Complex
+const assert = require('assert')
+const math = require('../../../src/index')
+const Unit = math.type.Unit
+const Complex = math.type.Complex
 
 describe('Complex', function () {
   function assertComplex (complex, re, im) {
@@ -14,20 +14,20 @@ describe('Complex', function () {
 
   describe('constructor', function () {
     it('should create a complex number correctly', function () {
-      var complex1 = new Complex(3, -4)
+      const complex1 = new Complex(3, -4)
       assertComplex(complex1, 3, -4)
 
-      var complex2 = new Complex()
+      const complex2 = new Complex()
       assertComplex(complex2, 0, 0)
     })
 
     it('should have a property isComplex', function () {
-      var a = new math.type.Complex(2, 3)
+      const a = new math.type.Complex(2, 3)
       assert.strictEqual(a.isComplex, true)
     })
 
     it('should have a property type', function () {
-      var a = new math.type.Complex(2, 3)
+      const a = new math.type.Complex(2, 3)
       assert.strictEqual(a.type, 'Complex')
     })
 
@@ -169,8 +169,8 @@ describe('Complex', function () {
 
   describe('clone', function () {
     it('should clone the complex properly', function () {
-      var complex1 = new Complex(3, -4)
-      var clone = complex1.clone()
+      const complex1 = new Complex(3, -4)
+      const clone = complex1.clone()
       clone.re = 100
       clone.im = 200
       assert.notEqual(complex1, clone)
@@ -193,7 +193,7 @@ describe('Complex', function () {
     })
 
     it('should use the epsilon configured with math.js', function () {
-      var old = math.config()
+      const old = math.config()
 
       assert.equal(Complex.EPSILON, math.config().epsilon)
       assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), false)
@@ -207,11 +207,11 @@ describe('Complex', function () {
 
   describe('fromPolar', function () {
     it('should save polar coordinates input correctly', function () {
-      var complex1 = Complex.fromPolar({r: 0, phi: 4})
-      var complex2 = Complex.fromPolar({r: 5, phi: 0})
-      var complex3 = Complex.fromPolar({r: 1, phi: Math.PI})
-      var complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2})
-      var complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2})
+      const complex1 = Complex.fromPolar({r: 0, phi: 4})
+      const complex2 = Complex.fromPolar({r: 5, phi: 0})
+      const complex3 = Complex.fromPolar({r: 1, phi: Math.PI})
+      const complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2})
+      const complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2})
       assertComplex(complex1, -0, -0)
       assertComplex(complex2, 5, 0)
       assert.equal(complex3.re, -1)
@@ -220,15 +220,13 @@ describe('Complex', function () {
     })
 
     it('should have the same value for the different import ways', function () {
-      var way1 = Complex.fromPolar(1, 1)
-      var way2 = Complex.fromPolar({r: 1, phi: 1})
+      const way1 = Complex.fromPolar(1, 1)
+      const way2 = Complex.fromPolar({r: 1, phi: 1})
       assert(way1.equals(way2))
     })
 
     it('should accept angle units for phi properly', function () {
-      var fromDeg = Complex.fromPolar(1, new Unit(90, 'deg')),
-        fromRad = Complex.fromPolar(1, new Unit(0, 'rad')),
-        fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'))
+      const fromDeg = Complex.fromPolar(1, new Unit(90, 'deg')), fromRad = Complex.fromPolar(1, new Unit(0, 'rad')), fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'))
       assert.equal(fromDeg.im, 1)
       assert.equal(fromGrad.im, 1)
       assert.equal(fromRad.im, 0)
@@ -244,12 +242,12 @@ describe('Complex', function () {
 
   describe('toPolar', function () {
     it('should return polar coordinates properly', function () {
-      var polar0 = (new Complex(0, 0)).toPolar()
-      var polar1 = (new Complex(3, 4)).toPolar()
-      var polar2 = (new Complex(-3, 4)).toPolar()
-      var polar3 = (new Complex(3, -4)).toPolar()
-      var polar4 = (new Complex(-3, -4)).toPolar()
-      var polar5 = (new Complex(0, -1)).toPolar()
+      const polar0 = (new Complex(0, 0)).toPolar()
+      const polar1 = (new Complex(3, 4)).toPolar()
+      const polar2 = (new Complex(-3, 4)).toPolar()
+      const polar3 = (new Complex(3, -4)).toPolar()
+      const polar4 = (new Complex(-3, -4)).toPolar()
+      const polar5 = (new Complex(0, -1)).toPolar()
       assert.equal(polar0.r, 0)
       assert.equal(polar1.r, 5)
       assert.equal(polar2.r, 5)
@@ -271,12 +269,12 @@ describe('Complex', function () {
   })
 
   it('fromJSON', function () {
-    var c1 = Complex.fromJSON({re: 2, im: 4})
+    const c1 = Complex.fromJSON({re: 2, im: 4})
     assert.ok(c1 instanceof Complex)
     assert.strictEqual(c1.re, 2)
     assert.strictEqual(c1.im, 4)
 
-    var c2 = Complex.fromJSON({re: 3, im: 0})
+    const c2 = Complex.fromJSON({re: 3, im: 0})
     assert.ok(c2 instanceof Complex)
     assert.strictEqual(c2.re, 3)
     assert.strictEqual(c2.im, 0)

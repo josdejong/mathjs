@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -16,9 +16,9 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    // tanh(x) = sinh(x) / cosh(x) = 1 / coth(x)
-   *    math.tanh(0.5);                   // returns 0.46211715726000974
-   *    math.sinh(0.5) / math.cosh(0.5);  // returns 0.46211715726000974
-   *    1 / math.coth(0.5);               // returns 0.46211715726000974
+   *    math.tanh(0.5)                   // returns 0.46211715726000974
+   *    math.sinh(0.5) / math.cosh(0.5)  // returns 0.46211715726000974
+   *    1 / math.coth(0.5)               // returns 0.46211715726000974
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic tangent of x
    */
-  var tanh = typed('tanh', {
+  const tanh = typed('tanh', {
     'number': _tanh,
 
     'Complex': function (x) {
@@ -62,8 +62,8 @@ function factory (type, config, load, typed) {
  * @returns {number}
  * @private
  */
-var _tanh = Math.tanh || function (x) {
-  var e = Math.exp(2 * x)
+const _tanh = Math.tanh || function (x) {
+  const e = Math.exp(2 * x)
   return (e - 1) / (e + 1)
 }
 

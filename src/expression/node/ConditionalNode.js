@@ -1,10 +1,10 @@
 'use strict'
 
-var operators = require('../operators')
+const operators = require('../operators')
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
-  var mathTypeOf = load(require('../../function/utils/typeof'))
+  const Node = load(require('./Node'))
+  const mathTypeOf = load(require('../../function/utils/typeof'))
 
   /**
    * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
@@ -49,9 +49,9 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   ConditionalNode.prototype._compile = function (math, argNames) {
-    var evalCondition = this.condition._compile(math, argNames)
-    var evalTrueExpr = this.trueExpr._compile(math, argNames)
-    var evalFalseExpr = this.falseExpr._compile(math, argNames)
+    const evalCondition = this.condition._compile(math, argNames)
+    const evalTrueExpr = this.trueExpr._compile(math, argNames)
+    const evalFalseExpr = this.falseExpr._compile(math, argNames)
 
     return function evalConditionalNode (scope, args, context) {
       return testCondition(evalCondition(scope, args, context))
@@ -98,31 +98,31 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConditionalNode.prototype._toString = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var precedence = operators.getPrecedence(this, parenthesis)
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const precedence = operators.getPrecedence(this, parenthesis)
 
     // Enclose Arguments in parentheses if they are an OperatorNode
     // or have lower or equal precedence
     // NOTE: enclosing all OperatorNodes in parentheses is a decision
     // purely based on aesthetics and readability
-    var condition = this.condition.toString(options)
-    var conditionPrecedence = operators.getPrecedence(this.condition, parenthesis)
+    let condition = this.condition.toString(options)
+    const conditionPrecedence = operators.getPrecedence(this.condition, parenthesis)
     if ((parenthesis === 'all') ||
         (this.condition.type === 'OperatorNode') ||
         ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
       condition = '(' + condition + ')'
     }
 
-    var trueExpr = this.trueExpr.toString(options)
-    var truePrecedence = operators.getPrecedence(this.trueExpr, parenthesis)
+    let trueExpr = this.trueExpr.toString(options)
+    const truePrecedence = operators.getPrecedence(this.trueExpr, parenthesis)
     if ((parenthesis === 'all') ||
         (this.trueExpr.type === 'OperatorNode') ||
         ((truePrecedence !== null) && (truePrecedence <= precedence))) {
       trueExpr = '(' + trueExpr + ')'
     }
 
-    var falseExpr = this.falseExpr.toString(options)
-    var falsePrecedence = operators.getPrecedence(this.falseExpr, parenthesis)
+    let falseExpr = this.falseExpr.toString(options)
+    const falsePrecedence = operators.getPrecedence(this.falseExpr, parenthesis)
     if ((parenthesis === 'all') ||
         (this.falseExpr.type === 'OperatorNode') ||
         ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
@@ -161,31 +161,31 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConditionalNode.prototype.toHTML = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var precedence = operators.getPrecedence(this, parenthesis)
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const precedence = operators.getPrecedence(this, parenthesis)
 
     // Enclose Arguments in parentheses if they are an OperatorNode
     // or have lower or equal precedence
     // NOTE: enclosing all OperatorNodes in parentheses is a decision
     // purely based on aesthetics and readability
-    var condition = this.condition.toHTML(options)
-    var conditionPrecedence = operators.getPrecedence(this.condition, parenthesis)
+    let condition = this.condition.toHTML(options)
+    const conditionPrecedence = operators.getPrecedence(this.condition, parenthesis)
     if ((parenthesis === 'all') ||
         (this.condition.type === 'OperatorNode') ||
         ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
       condition = '<span class="math-parenthesis math-round-parenthesis">(</span>' + condition + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
 
-    var trueExpr = this.trueExpr.toHTML(options)
-    var truePrecedence = operators.getPrecedence(this.trueExpr, parenthesis)
+    let trueExpr = this.trueExpr.toHTML(options)
+    const truePrecedence = operators.getPrecedence(this.trueExpr, parenthesis)
     if ((parenthesis === 'all') ||
         (this.trueExpr.type === 'OperatorNode') ||
         ((truePrecedence !== null) && (truePrecedence <= precedence))) {
       trueExpr = '<span class="math-parenthesis math-round-parenthesis">(</span>' + trueExpr + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
 
-    var falseExpr = this.falseExpr.toHTML(options)
-    var falsePrecedence = operators.getPrecedence(this.falseExpr, parenthesis)
+    let falseExpr = this.falseExpr.toHTML(options)
+    const falsePrecedence = operators.getPrecedence(this.falseExpr, parenthesis)
     if ((parenthesis === 'all') ||
         (this.falseExpr.type === 'OperatorNode') ||
         ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {

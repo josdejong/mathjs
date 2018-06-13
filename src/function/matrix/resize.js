@@ -1,15 +1,15 @@
 'use strict'
 
-var DimensionError = require('../../error/DimensionError')
-var ArgumentsError = require('../../error/ArgumentsError')
+const DimensionError = require('../../error/DimensionError')
+const ArgumentsError = require('../../error/ArgumentsError')
 
-var isInteger = require('../../utils/number').isInteger
-var format = require('../../utils/string').format
-var clone = require('../../utils/object').clone
-var array = require('../../utils/array')
+const isInteger = require('../../utils/number').isInteger
+const format = require('../../utils/string').format
+const clone = require('../../utils/object').clone
+const array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Resize a matrix
@@ -21,10 +21,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.resize([1, 2, 3, 4, 5], [3]); // returns Array  [1, 2, 3]
-   *     math.resize([1, 2, 3], [5], 0);    // returns Array  [1, 2, 3, 0, 0]
-   *     math.resize(2, [2, 3], 0);         // returns Matrix [[2, 0, 0], [0, 0, 0]]
-   *     math.resize("hello", [8], "!");    // returns string 'hello!!!'
+   *     math.resize([1, 2, 3, 4, 5], [3]) // returns Array  [1, 2, 3]
+   *     math.resize([1, 2, 3], [5], 0)    // returns Array  [1, 2, 3, 0, 0]
+   *     math.resize(2, [2, 3], 0)         // returns Matrix [[2, 0, 0], [0, 0, 0]]
+   *     math.resize("hello", [8], "!")    // returns string 'hello!!!'
    *
    * See also:
    *
@@ -38,7 +38,7 @@ function factory (type, config, load, typed) {
    * @return {* | Array | Matrix} A resized clone of matrix `x`
    */
   // TODO: rework resize to a typed-function
-  var resize = function resize (x, size, defaultValue) {
+  const resize = function resize (x, size, defaultValue) {
     if (arguments.length != 2 && arguments.length != 3) {
       throw new ArgumentsError('resize', arguments.length, 2, 3)
     }
@@ -66,7 +66,7 @@ function factory (type, config, load, typed) {
     }
 
     // check result should be a matrix
-    var asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
+    const asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
 
     if (size.length == 0) {
       // output a scalar
@@ -82,7 +82,7 @@ function factory (type, config, load, typed) {
       }
       x = clone(x)
 
-      var res = array.resize(x, size, defaultValue)
+      const res = array.resize(x, size, defaultValue)
       return asMatrix ? matrix(res) : res
     }
   }
@@ -110,7 +110,7 @@ function factory (type, config, load, typed) {
     if (size.length !== 1) {
       throw new DimensionError(size.length, 1)
     }
-    var len = size[0]
+    const len = size[0]
     if (typeof len !== 'number' || !isInteger(len)) {
       throw new TypeError('Invalid size, must contain positive integers ' +
           '(size: ' + format(size) + ')')
@@ -119,8 +119,8 @@ function factory (type, config, load, typed) {
     if (str.length > len) {
       return str.substring(0, len)
     } else if (str.length < len) {
-      var res = str
-      for (var i = 0, ii = len - str.length; i < ii; i++) {
+      let res = str
+      for (let i = 0, ii = len - str.length; i < ii; i++) {
         res += defaultChar
       }
       return res

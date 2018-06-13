@@ -33,8 +33,8 @@ Matrix | The exponential of x
 ## Examples
 
 ```js
-var A = [[0,2],[0,0]]
-math.expm(A);        // returns [[1,2],[0,1]]
+const A = [[0,2],[0,0]]
+math.expm(A)        // returns [[1,2],[0,1]]
 ```
 
 

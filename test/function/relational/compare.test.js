@@ -1,12 +1,5 @@
 // test compare
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  compare = math.compare
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, compare = math.compare
 
 describe('compare', function () {
   it('should compare two numbers correctly', function () {
@@ -69,8 +62,8 @@ describe('compare', function () {
   })
 
   it('should compare two fractions', function () {
-    var a = math.fraction(1, 3)
-    var b = math.fraction(1, 6)
+    const a = math.fraction(1, 3)
+    const b = math.fraction(1, 6)
     assert(compare(a, b) instanceof math.type.Fraction)
     assert.equal(a.toString(), '0.(3)')
     assert.equal(b.toString(), '0.1(6)')
@@ -169,7 +162,7 @@ describe('compare', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
 
     assert.equal(mymath.compare(1, 0.991), 1)
     assert.equal(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
@@ -201,7 +194,7 @@ describe('compare', function () {
   })
 
   it('should LaTeX compare', function () {
-    var expression = math.parse('compare(1,2)')
+    const expression = math.parse('compare(1,2)')
     assert.equal(expression.toTex(), '\\mathrm{compare}\\left(1,2\\right)')
   })
 })

@@ -30,7 +30,7 @@ Array &#124; Matrix | The principal square root of matrix `A`
 ## Examples
 
 ```js
-math.sqrtm([[1, 2], [3, 4]]); // returns [[-2, 1], [1.5, -0.5]]
+math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
 ```
 
 

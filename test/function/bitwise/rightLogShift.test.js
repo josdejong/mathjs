@@ -1,9 +1,5 @@
 // test rightLogShift
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  rightLogShift = math.rightLogShift
+const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, rightLogShift = math.rightLogShift
 
 describe('rightLogShift', function () {
   it('should right logically shift a number by a given amount', function () {
@@ -134,7 +130,7 @@ describe('rightLogShift', function () {
   })
 
   it('should LaTeX rightLogShift', function () {
-    var expression = math.parse('rightLogShift(1,2)')
+    const expression = math.parse('rightLogShift(1,2)')
     assert.equal(expression.toTex(), '\\left(1>>>2\\right)')
   })
 })

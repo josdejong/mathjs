@@ -1,6 +1,6 @@
 'use strict'
-var bitwise = require('./bitwise')
-var bitNot = require('./bitNot')
+const bitwise = require('./bitwise')
+const bitNot = require('./bitNot')
 
 /**
  * Bitwise XOR for BigNumbers
@@ -26,7 +26,7 @@ module.exports = function bitXor (x, y) {
     throw new Error('Integers expected in function bitXor')
   }
 
-  var BigNumber = x.constructor
+  const BigNumber = x.constructor
   if (x.isNaN() || y.isNaN()) {
     return new BigNumber(NaN)
   }
@@ -41,7 +41,7 @@ module.exports = function bitXor (x, y) {
     return new BigNumber(0)
   }
 
-  var negOne = new BigNumber(-1)
+  const negOne = new BigNumber(-1)
   if (x.eq(negOne)) {
     return bitNot(y)
   }

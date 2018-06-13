@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap')
+const deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -13,12 +13,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    0.1 + 0.2;                                  // returns number 0.30000000000000004
-   *    math.bignumber(0.1) + math.bignumber(0.2);  // returns BigNumber 0.3
+   *    0.1 + 0.2                                  // returns number 0.30000000000000004
+   *    math.bignumber(0.1) + math.bignumber(0.2)  // returns BigNumber 0.3
    *
    *
-   *    7.2e500;                                    // returns number Infinity
-   *    math.bignumber('7.2e500');                  // returns BigNumber 7.2e500
+   *    7.2e500                                    // returns number Infinity
+   *    math.bignumber('7.2e500')                  // returns BigNumber 7.2e500
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    *                                                    0 by default.
    * @returns {BigNumber} The created bignumber
    */
-  var bignumber = typed('bignumber', {
+  const bignumber = typed('bignumber', {
     '': function () {
       return new type.BigNumber(0)
     },

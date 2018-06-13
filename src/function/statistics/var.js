@@ -1,15 +1,15 @@
 'use strict'
 
-var DEFAULT_NORMALIZATION = 'unbiased'
+const DEFAULT_NORMALIZATION = 'unbiased'
 
-var deepForEach = require('../../utils/collection/deepForEach')
+const deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/addScalar'))
-  var subtract = load(require('../arithmetic/subtract'))
-  var multiply = load(require('../arithmetic/multiplyScalar'))
-  var divide = load(require('../arithmetic/divideScalar'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const add = load(require('../arithmetic/addScalar'))
+  const subtract = load(require('../arithmetic/subtract'))
+  const multiply = load(require('../arithmetic/multiplyScalar'))
+  const divide = load(require('../arithmetic/divideScalar'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the variance of a matrix or a  list with values.
@@ -35,12 +35,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.var(2, 4, 6);                     // returns 4
-   *     math.var([2, 4, 6, 8]);                // returns 6.666666666666667
-   *     math.var([2, 4, 6, 8], 'uncorrected'); // returns 5
-   *     math.var([2, 4, 6, 8], 'biased');      // returns 4
+   *     math.var(2, 4, 6)                     // returns 4
+   *     math.var([2, 4, 6, 8])                // returns 6.666666666666667
+   *     math.var([2, 4, 6, 8], 'uncorrected') // returns 5
+   *     math.var([2, 4, 6, 8], 'biased')      // returns 4
    *
-   *     math.var([[1, 2, 3], [4, 5, 6]]);      // returns 3.5
+   *     math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
    *
    * See also:
    *
@@ -53,7 +53,7 @@ function factory (type, config, load, typed) {
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The variance
    */
-  var variance = typed('variance', {
+  const variance = typed('variance', {
     // var([a, b, c, d, ...])
     'Array | Matrix': function (array) {
       return _var(array, DEFAULT_NORMALIZATION)
@@ -84,8 +84,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _var (array, normalization) {
-    var sum = 0
-    var num = 0
+    let sum = 0
+    let num = 0
 
     if (array.length == 0) {
       throw new SyntaxError('Function var requires one or more parameters (0 provided)')
@@ -102,12 +102,12 @@ function factory (type, config, load, typed) {
     })
     if (num === 0) throw new Error('Cannot calculate var of an empty array')
 
-    var mean = divide(sum, num)
+    const mean = divide(sum, num)
 
     // calculate the variance
     sum = 0
     deepForEach(array, function (value) {
-      var diff = subtract(value, mean)
+      const diff = subtract(value, mean)
       sum = add(sum, multiply(diff, diff))
     })
 
@@ -119,7 +119,7 @@ function factory (type, config, load, typed) {
         return divide(sum, num + 1)
 
       case 'unbiased':
-        var zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0
+        const zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0
         return (num == 1) ? zero : divide(sum, num - 1)
 
       default:

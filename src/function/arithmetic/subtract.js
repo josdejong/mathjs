@@ -1,20 +1,20 @@
 'use strict'
 
-var DimensionError = require('../../error/DimensionError')
+const DimensionError = require('../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var addScalar = load(require('./addScalar'))
-  var unaryMinus = load(require('./unaryMinus'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const addScalar = load(require('./addScalar'))
+  const unaryMinus = load(require('./unaryMinus'))
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
+  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   // TODO: split function subtract in two: subtract and subtractScalar
 
@@ -28,17 +28,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.subtract(5.3, 2);        // returns number 3.3
+   *    math.subtract(5.3, 2)        // returns number 3.3
    *
-   *    var a = math.complex(2, 3);
-   *    var b = math.complex(4, 1);
-   *    math.subtract(a, b);          // returns Complex -2 + 2i
+   *    const a = math.complex(2, 3)
+   *    const b = math.complex(4, 1)
+   *    math.subtract(a, b)          // returns Complex -2 + 2i
    *
-   *    math.subtract([5, 7, 4], 4);  // returns Array [1, 3, 0]
+   *    math.subtract([5, 7, 4], 4)  // returns Array [1, 3, 0]
    *
-   *    var c = math.unit('2.1 km');
-   *    var d = math.unit('500m');
-   *    math.subtract(c, d);          // returns Unit 1.6 km
+   *    const c = math.unit('2.1 km')
+   *    const d = math.unit('500m')
+   *    math.subtract(c, d)          // returns Unit 1.6 km
    *
    * See also:
    *
@@ -51,7 +51,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Subtraction of `x` and `y`
    */
-  var subtract = typed('subtract', {
+  const subtract = typed('subtract', {
 
     'number, number': function (x, y) {
       return x - y
@@ -82,7 +82,7 @@ function factory (type, config, load, typed) {
         throw new Error('Units do not match')
       }
 
-      var res = x.clone()
+      const res = x.clone()
       res.value = subtract(res.value, y.value)
       res.fixPrefix = false
 
@@ -165,8 +165,8 @@ function factory (type, config, load, typed) {
  * @param {Matrix} y
  */
 function checkEqualDimensions (x, y) {
-  var xsize = x.size()
-  var ysize = y.size()
+  const xsize = x.size()
+  const ysize = y.size()
 
   if (xsize.length !== ysize.length) {
     throw new DimensionError(xsize.length, ysize.length)

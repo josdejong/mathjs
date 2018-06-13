@@ -1,22 +1,22 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var bigLeftShift = require('../../utils/bignumber/leftShift')
+const isInteger = require('../../utils/number').isInteger
+const bigLeftShift = require('../../utils/bignumber/leftShift')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var equalScalar = load(require('../relational/equalScalar'))
-  var zeros = load(require('../matrix/zeros'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const equalScalar = load(require('../relational/equalScalar'))
+  const zeros = load(require('../matrix/zeros'))
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm08 = load(require('../../type/matrix/utils/algorithm08'))
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm08 = load(require('../../type/matrix/utils/algorithm08'))
+  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Bitwise left logical shift of a value x by y number of bits, `x << y`.
@@ -29,9 +29,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.leftShift(1, 2);               // returns number 4
+   *    math.leftShift(1, 2)               // returns number 4
    *
-   *    math.leftShift([1, 2, 3], 4);       // returns Array [16, 32, 64]
+   *    math.leftShift([1, 2, 3], 4)       // returns Array [16, 32, 64]
    *
    * See also:
    *
@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber} y Amount of shifts
    * @return {number | BigNumber | Array | Matrix} `x` shifted left `y` times
    */
-  var leftShift = typed('leftShift', {
+  const leftShift = typed('leftShift', {
 
     'number, number': function (x, y) {
       if (!isInteger(x) || !isInteger(y)) {

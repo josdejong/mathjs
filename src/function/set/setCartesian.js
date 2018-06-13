@@ -1,13 +1,13 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var index = load(require('../../type/matrix/MatrixIndex'))
-  var matrix = load(require('../../type/matrix/DenseMatrix'))
-  var size = load(require('../matrix/size'))
-  var subset = load(require('../matrix/subset'))
-  var compareNatural = load(require('../relational/compareNatural'))
+  const index = load(require('../../type/matrix/MatrixIndex'))
+  const matrix = load(require('../../type/matrix/DenseMatrix'))
+  const size = load(require('../matrix/size'))
+  const subset = load(require('../matrix/subset'))
+  const compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Create the cartesian product of two (multi)sets.
@@ -19,7 +19,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.setCartesian([1, 2], [3, 4]);        // returns [[1, 3], [1, 4], [2, 3], [2, 4]]
+   *    math.setCartesian([1, 2], [3, 4])        // returns [[1, 3], [1, 4], [2, 3], [2, 4]]
    *
    * See also:
    *
@@ -29,16 +29,16 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {Array | Matrix}    The cartesian product of two (multi)sets
    */
-  var setCartesian = typed('setCartesian', {
+  const setCartesian = typed('setCartesian', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new index(0)) === 0 || subset(size(a2), new index(0)) === 0) { // if any of them is empty, return empty
-        var result = []
-      } else {
-        var b1 = flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural)
-        var b2 = flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural)
-        var result = []
-        for (var i = 0; i < b1.length; i++) {
-          for (var j = 0; j < b2.length; j++) {
+      let result = []
+
+      if (subset(size(a1), new index(0)) !== 0 && subset(size(a2), new index(0)) !== 0) { // if any of them is empty, return empty
+        const b1 = flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural)
+        const b2 = flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural)
+        result = []
+        for (let i = 0; i < b1.length; i++) {
+          for (let j = 0; j < b2.length; j++) {
             result.push([b1[i], b2[j]])
           }
         }

@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  csc = math.csc,
-  bigmath = math.create({number: 'BigNumber', precision: 20}),
-  biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, csc = math.csc, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('csc', function () {
   it('should return the cosecant of a boolean', function () {
@@ -31,9 +21,9 @@ describe('csc', function () {
   })
 
   it('should return the cosecant of a bignumber', function () {
-    var Big = bigmath.bignumber
-    var bigPi = bigmath.pi
-    var sqrt2 = bigmath.SQRT2.toString()
+    const Big = bigmath.bignumber
+    const bigPi = bigmath.pi
+    const sqrt2 = bigmath.SQRT2.toString()
 
     assert.deepEqual(bigmath.csc(Big(0)).toString(), 'Infinity')
     assert.deepEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557')
@@ -44,8 +34,8 @@ describe('csc', function () {
   })
 
   it('should return the cosecant of a complex number', function () {
-    var re = 0.0904732097532074
-    var im = 0.0412009862885741
+    const re = 0.0904732097532074
+    const im = 0.0412009862885741
     approx.deepEqual(csc(complex('2+3i')), complex(re, im))
     approx.deepEqual(csc(complex('2-3i')), complex(re, -im))
     approx.deepEqual(csc(complex('-2+3i')), complex(-re, im))
@@ -73,7 +63,7 @@ describe('csc', function () {
     assert.throws(function () { csc('string') })
   })
 
-  var csc123 = [1.18839510577812, 1.09975017029462, 7.08616739573719]
+  const csc123 = [1.18839510577812, 1.09975017029462, 7.08616739573719]
 
   it('should return the cosecant of each element of an array', function () {
     approx.deepEqual(csc([1, 2, 3]), csc123)
@@ -89,7 +79,7 @@ describe('csc', function () {
   })
 
   it('should LaTeX csc', function () {
-    var expression = math.parse('csc(1)')
+    const expression = math.parse('csc(1)')
     assert.equal(expression.toTex(), '\\csc\\left(1\\right)')
   })
 })

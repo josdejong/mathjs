@@ -1,6 +1,6 @@
 // test abs
-var assert = require('assert')
-var math = require('../../../src/index')
+const assert = require('assert')
+const math = require('../../../src/index')
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {
@@ -31,7 +31,7 @@ describe('abs', function () {
   })
 
   it('should return the absolute value of a fraction', function () {
-    var a = math.fraction('-1/3')
+    const a = math.fraction('-1/3')
     assert.equal(math.abs(a).toString(), '0.(3)')
     assert.equal(a.toString(), '-0.(3)')
     assert.equal(math.abs(math.fraction('1/3')).toString(), '0.(3)')
@@ -42,7 +42,7 @@ describe('abs', function () {
   })
 
   it('should return the absolute value of all elements in an Array', function () {
-    var a1 = math.abs([1, -2, 3])
+    let a1 = math.abs([1, -2, 3])
     assert.ok(Array.isArray(a1))
     assert.deepEqual(a1, [1, 2, 3])
     a1 = math.abs([-2, -1, 0, 1, 2])
@@ -59,7 +59,7 @@ describe('abs', function () {
   })
 
   it('should return the absolute value of all elements in a matrix', function () {
-    var a1 = math.abs(math.matrix([1, -2, 3]))
+    let a1 = math.abs(math.matrix([1, -2, 3]))
     assert.ok(a1 instanceof math.type.Matrix)
     assert.deepEqual(a1.size(), [3])
     assert.deepEqual(a1.valueOf(), [1, 2, 3])
@@ -70,7 +70,7 @@ describe('abs', function () {
   })
 
   it('should return the absolute value of a unit', function () {
-    var u = math.abs(math.unit('5 m'))
+    let u = math.abs(math.unit('5 m'))
     assert.equal(u.toString(), '5 m')
 
     u = math.abs(math.unit('-5 m'))
@@ -102,7 +102,7 @@ describe('abs', function () {
   })
 
   it('should LaTeX abs', function () {
-    var expression = math.parse('abs(-1)')
+    const expression = math.parse('abs(-1)')
     assert.equal(expression.toTex(), '\\left|-1\\right|')
   })
 })

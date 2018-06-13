@@ -1,36 +1,38 @@
 'use strict'
 
-var endsWith = require('../../utils/string').endsWith
-var clone = require('../../utils/object').clone
-var constants = require('../../utils/bignumber/constants')
+const endsWith = require('../../utils/string').endsWith
+const clone = require('../../utils/object').clone
+const constants = require('../../utils/bignumber/constants')
 
 function factory (type, config, load, typed, math) {
-  var add = load(require('../../function/arithmetic/addScalar'))
-  var subtract = load(require('../../function/arithmetic/subtract'))
-  var multiply = load(require('../../function/arithmetic/multiplyScalar'))
-  var divide = load(require('../../function/arithmetic/divideScalar'))
-  var pow = load(require('../../function/arithmetic/pow'))
-  var abs = load(require('../../function/arithmetic/abs'))
-  var fix = load(require('../../function/arithmetic/fix'))
-  var round = load(require('../../function/arithmetic/round'))
-  var equal = load(require('../../function/relational/equal'))
-  var isNumeric = load(require('../../function/utils/isNumeric'))
-  var format = load(require('../../function/string/format'))
-  var getTypeOf = load(require('../../function/utils/typeof'))
-  var toNumber = load(require('../../type/number'))
-  var Complex = load(require('../../type/complex/Complex'))
+  const add = load(require('../../function/arithmetic/addScalar'))
+  const subtract = load(require('../../function/arithmetic/subtract'))
+  const multiply = load(require('../../function/arithmetic/multiplyScalar'))
+  const divide = load(require('../../function/arithmetic/divideScalar'))
+  const pow = load(require('../../function/arithmetic/pow'))
+  const abs = load(require('../../function/arithmetic/abs'))
+  const fix = load(require('../../function/arithmetic/fix'))
+  const round = load(require('../../function/arithmetic/round'))
+  const equal = load(require('../../function/relational/equal'))
+  const isNumeric = load(require('../../function/utils/isNumeric'))
+  const format = load(require('../../function/string/format'))
+  const getTypeOf = load(require('../../function/utils/typeof'))
+  const toNumber = load(require('../../type/number'))
+  const Complex = load(require('../../type/complex/Complex'))
 
   /**
    * A unit can be constructed in the following ways:
-   *     var a = new Unit(value, name);
-   *     var b = new Unit(null, name);
-   *     var c = Unit.parse(str);
+   *
+   *     const a = new Unit(value, name)
+   *     const b = new Unit(null, name)
+   *     const c = Unit.parse(str)
    *
    * Example usage:
-   *     var a = new Unit(5, 'cm');               // 50 mm
-   *     var b = Unit.parse('23 kg');             // 23 kg
-   *     var c = math.in(a, new Unit(null, 'm');  // 0.05 m
-   *     var d = new Unit(9.81, "m/s^2");         // 9.81 m/s^2
+   *
+   *     const a = new Unit(5, 'cm')               // 50 mm
+   *     const b = Unit.parse('23 kg')             // 23 kg
+   *     const c = math.in(a, new Unit(null, 'm')  // 0.05 m
+   *     const d = new Unit(9.81, "m/s^2")         // 9.81 m/s^2
    *
    * @class Unit
    * @constructor Unit
@@ -50,7 +52,7 @@ function factory (type, config, load, typed, math) {
     }
 
     if (name != undefined) {
-      var u = Unit.parse(name)
+      const u = Unit.parse(name)
       this.units = u.units
       this.dimensions = u.dimensions
     } else {
@@ -62,7 +64,7 @@ function factory (type, config, load, typed, math) {
         }
       ]
       this.dimensions = []
-      for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         this.dimensions[i] = 0
       }
     }
@@ -85,7 +87,7 @@ function factory (type, config, load, typed, math) {
   Unit.prototype.isUnit = true
 
   // private variables and functions for the Unit parser
-  var text, index, c
+  let text, index, c
 
   function skipWhitespace () {
     while (c == ' ' || c == '\t') {
@@ -112,8 +114,8 @@ function factory (type, config, load, typed, math) {
   }
 
   function parseNumber () {
-    var number = ''
-    var oldIndex
+    let number = ''
+    let oldIndex
     oldIndex = index
 
     if (c == '+') {
@@ -157,8 +159,8 @@ function factory (type, config, load, typed, math) {
     if (c == 'E' || c == 'e') {
       // The grammar branches here. This could either be part of an exponent or the start of a unit that begins with the letter e, such as "4exabytes"
 
-      var tentativeNumber = ''
-      var tentativeIndex = index
+      let tentativeNumber = ''
+      const tentativeIndex = index
 
       tentativeNumber += c
       next()
@@ -187,10 +189,10 @@ function factory (type, config, load, typed, math) {
   }
 
   function parseUnit () {
-    var unitName = ''
+    let unitName = ''
 
     // Alphanumeric characters only; matches [a-zA-Z0-9]
-    var code = text.charCodeAt(index)
+    let code = text.charCodeAt(index)
     while ((code >= 48 && code <= 57) ||
             (code >= 65 && code <= 90) ||
             (code >= 97 && code <= 122)) {
@@ -238,11 +240,11 @@ function factory (type, config, load, typed, math) {
       throw new TypeError('Invalid argument in Unit.parse, string expected')
     }
 
-    var unit = new Unit()
+    const unit = new Unit()
     unit.units = []
 
-    var powerMultiplierCurrent = 1
-    var expectingUnit = false
+    let powerMultiplierCurrent = 1
+    let expectingUnit = false
 
     // A unit should follow this pattern:
     // [number] ...[ [*/] unit[^number] ]
@@ -262,8 +264,8 @@ function factory (type, config, load, typed, math) {
     skipWhitespace()
 
     // Optional number at the start of the string
-    var valueStr = parseNumber()
-    var value = null
+    const valueStr = parseNumber()
+    let value = null
     if (valueStr) {
       if (config.number === 'BigNumber') {
         value = new type.BigNumber(valueStr)
@@ -286,10 +288,10 @@ function factory (type, config, load, typed, math) {
     }
 
     // Stack to keep track of powerMultipliers applied to each parentheses group
-    var powerMultiplierStack = []
+    const powerMultiplierStack = []
 
     // Running product of all elements in powerMultiplierStack
-    var powerMultiplierStackProduct = 1
+    let powerMultiplierStackProduct = 1
 
     while (true) {
       skipWhitespace()
@@ -305,9 +307,10 @@ function factory (type, config, load, typed, math) {
       }
 
       // Is there something here?
+      let uStr
       if (c) {
-        var oldC = c
-        var uStr = parseUnit()
+        const oldC = c
+        uStr = parseUnit()
         if (uStr == null) {
           throw new SyntaxError('Unexpected "' + oldC + '" in "' + text + '" at index ' + index.toString())
         }
@@ -317,18 +320,18 @@ function factory (type, config, load, typed, math) {
       }
 
       // Verify the unit exists and get the prefix (if any)
-      var res = _findUnit(uStr)
+      const res = _findUnit(uStr)
       if (res == null) {
         // Unit not found.
         throw new SyntaxError('Unit "' + uStr + '" not found.')
       }
 
-      var power = powerMultiplierCurrent * powerMultiplierStackProduct
+      let power = powerMultiplierCurrent * powerMultiplierStackProduct
       // Is there a "^ number"?
       skipWhitespace()
       if (parseCharacter('^')) {
         skipWhitespace()
-        var p = parseNumber()
+        const p = parseNumber()
         if (p == null) {
           // No valid number found for the power!
           throw new SyntaxError('In "' + str + '", "^" must be followed by a floating-point number')
@@ -342,7 +345,7 @@ function factory (type, config, load, typed, math) {
         prefix: res.prefix,
         power: power
       })
-      for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         unit.dimensions[i] += (res.unit.dimensions[i] || 0) * power
       }
 
@@ -377,7 +380,7 @@ function factory (type, config, load, typed, math) {
 
       // Replace the unit into the auto unit system
       if (res.unit.base) {
-        var baseDim = res.unit.base.key
+        const baseDim = res.unit.base.key
         UNIT_SYSTEMS.auto[baseDim] = {
           unit: res.unit,
           prefix: res.prefix
@@ -416,7 +419,7 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} Returns a cloned version of the unit
    */
   Unit.prototype.clone = function () {
-    var unit = new Unit()
+    const unit = new Unit()
 
     unit.fixPrefix = this.fixPrefix
     unit.isUnitListSimplified = this.isUnitListSimplified
@@ -424,9 +427,9 @@ function factory (type, config, load, typed, math) {
     unit.value = clone(this.value)
     unit.dimensions = this.dimensions.slice(0)
     unit.units = []
-    for (var i = 0; i < this.units.length; i++) {
+    for (let i = 0; i < this.units.length; i++) {
       unit.units[i] = { }
-      for (var p in this.units[i]) {
+      for (const p in this.units[i]) {
         if (this.units[i].hasOwnProperty(p)) {
           unit.units[i][p] = this.units[i][p]
         }
@@ -456,18 +459,18 @@ function factory (type, config, load, typed, math) {
    * @private
    */
   Unit.prototype._normalize = function (value) {
-    var unitValue, unitOffset, unitPower, unitPrefixValue
-    var convert
+    let unitValue, unitOffset, unitPower, unitPrefixValue
+    let convert
 
     if (value == null || this.units.length === 0) {
       return value
     } else if (this._isDerived()) {
       // This is a derived unit, so do not apply offsets.
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
-      var res = value
+      let res = value
       convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
 
-      for (var i = 0; i < this.units.length; i++) {
+      for (let i = 0; i < this.units.length; i++) {
         unitValue = convert(this.units[i].unit.value)
         unitPrefixValue = convert(this.units[i].prefix.value)
         unitPower = convert(this.units[i].power)
@@ -496,8 +499,8 @@ function factory (type, config, load, typed, math) {
    * @private
    */
   Unit.prototype._denormalize = function (value, prefixValue) {
-    var unitValue, unitOffset, unitPower, unitPrefixValue
-    var convert
+    let unitValue, unitOffset, unitPower, unitPrefixValue
+    let convert
 
     if (value == null || this.units.length === 0) {
       return value
@@ -505,10 +508,10 @@ function factory (type, config, load, typed, math) {
       // This is a derived unit, so do not apply offsets.
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
       // Also, prefixValue is ignored--but we will still use the prefix value stored in each unit, since kg is usually preferable to g unless the user decides otherwise.
-      var res = value
+      let res = value
       convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
 
-      for (var i = 0; i < this.units.length; i++) {
+      for (let i = 0; i < this.units.length; i++) {
         unitValue = convert(this.units[i].unit.value)
         unitPrefixValue = convert(this.units[i].prefix.value)
         unitPower = convert(this.units[i].power)
@@ -543,28 +546,28 @@ function factory (type, config, load, typed, math) {
   function _findUnit (str) {
     // First, match units names exactly. For example, a user could define 'mm' as 10^-4 m, which is silly, but then we would want 'mm' to match the user-defined unit.
     if (UNITS.hasOwnProperty(str)) {
-      var unit = UNITS[str]
-      var prefix = unit.prefixes['']
+      const unit = UNITS[str]
+      const prefix = unit.prefixes['']
       return {
-        unit: unit,
-        prefix: prefix
+        unit,
+        prefix
       }
     }
 
-    for (var name in UNITS) {
+    for (const name in UNITS) {
       if (UNITS.hasOwnProperty(name)) {
         if (endsWith(str, name)) {
-          var unit = UNITS[name]
-          var prefixLen = (str.length - name.length)
-          var prefixName = str.substring(0, prefixLen)
-          var prefix = unit.prefixes.hasOwnProperty(prefixName)
+          const unit = UNITS[name]
+          const prefixLen = (str.length - name.length)
+          const prefixName = str.substring(0, prefixLen)
+          const prefix = unit.prefixes.hasOwnProperty(prefixName)
             ? unit.prefixes[prefixName]
             : undefined
           if (prefix !== undefined) {
             // store unit, prefix, and value
             return {
-              unit: unit,
-              prefix: prefix
+              unit,
+              prefix
             }
           }
         }
@@ -600,7 +603,7 @@ function factory (type, config, load, typed, math) {
     if (!base) { return false }
 
     // All dimensions must be the same
-    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+    for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       if (Math.abs((this.dimensions[i] || 0) - (base.dimensions[i] || 0)) > 1e-12) {
         return false
       }
@@ -617,7 +620,7 @@ function factory (type, config, load, typed, math) {
    */
   Unit.prototype.equalBase = function (other) {
     // All dimensions must be the same
-    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+    for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       if (Math.abs((this.dimensions[i] || 0) - (other.dimensions[i] || 0)) > 1e-12) {
         return false
       }
@@ -642,18 +645,18 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} product of this unit and the other unit
    */
   Unit.prototype.multiply = function (other) {
-    var res = this.clone()
+    const res = this.clone()
 
-    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+    for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
       res.dimensions[i] = (this.dimensions[i] || 0) + (other.dimensions[i] || 0)
     }
 
     // Append other's units list onto res (simplify later in Unit.prototype.format)
-    for (var i = 0; i < other.units.length; i++) {
+    for (let i = 0; i < other.units.length; i++) {
       // Make a deep copy
-      var inverted = {}
-      for (var key in other.units[i]) {
+      const inverted = {}
+      for (const key in other.units[i]) {
         inverted[key] = other.units[i][key]
       }
       res.units.push(inverted)
@@ -661,8 +664,8 @@ function factory (type, config, load, typed, math) {
 
     // If at least one operand has a value, then the result should also have a value
     if (this.value != null || other.value != null) {
-      var valThis = this.value == null ? this._normalize(1) : this.value
-      var valOther = other.value == null ? other._normalize(1) : other.value
+      const valThis = this.value == null ? this._normalize(1) : this.value
+      const valOther = other.value == null ? other._normalize(1) : other.value
       res.value = multiply(valThis, valOther)
     } else {
       res.value = null
@@ -681,18 +684,18 @@ function factory (type, config, load, typed, math) {
    * @return {Unit} result of dividing this unit by the other unit
    */
   Unit.prototype.divide = function (other) {
-    var res = this.clone()
+    const res = this.clone()
 
-    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+    for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
       res.dimensions[i] = (this.dimensions[i] || 0) - (other.dimensions[i] || 0)
     }
 
     // Invert and append other's units list onto res (simplify later in Unit.prototype.format)
-    for (var i = 0; i < other.units.length; i++) {
+    for (let i = 0; i < other.units.length; i++) {
       // Make a deep copy
-      var inverted = {}
-      for (var key in other.units[i]) {
+      const inverted = {}
+      for (const key in other.units[i]) {
         inverted[key] = other.units[i][key]
       }
       inverted.power = -inverted.power
@@ -701,8 +704,8 @@ function factory (type, config, load, typed, math) {
 
     // If at least one operand has a value, the result should have a value
     if (this.value != null || other.value != null) {
-      var valThis = this.value == null ? this._normalize(1) : this.value
-      var valOther = other.value == null ? other._normalize(1) : other.value
+      const valThis = this.value == null ? this._normalize(1) : this.value
+      const valOther = other.value == null ? other._normalize(1) : other.value
       res.value = divide(valThis, valOther)
     } else {
       res.value = null
@@ -721,15 +724,15 @@ function factory (type, config, load, typed, math) {
    * @returns {Unit}      The result: this^p
    */
   Unit.prototype.pow = function (p) {
-    var res = this.clone()
+    const res = this.clone()
 
-    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+    for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
       res.dimensions[i] = (this.dimensions[i] || 0) * p
     }
 
     // Adjust the power of each unit in the list
-    for (var i = 0; i < res.units.length; i++) {
+    for (let i = 0; i < res.units.length; i++) {
       res.units[i].power *= p
     }
 
@@ -738,7 +741,7 @@ function factory (type, config, load, typed, math) {
 
       // only allow numeric output, we don't want to return a Complex number
       // if (!isNumeric(res.value)) {
-      //  res.value = NaN;
+      //  res.value = NaN
       // }
       // Update: Complex supported now
     } else {
@@ -756,7 +759,7 @@ function factory (type, config, load, typed, math) {
    * @param {Unit} unit
    * @returns {number | Fraction | BigNumber | Unit}  The numeric value of the unit if conditions are met, or the original unit otherwise
    */
-  var getNumericIfUnitless = function (unit) {
+  function getNumericIfUnitless (unit) {
     if (unit.equalBase(BASE_UNITS.NONE) && unit.value !== null && !config.predictable) {
       return unit.value
     } else {
@@ -773,10 +776,10 @@ function factory (type, config, load, typed, math) {
   Unit.prototype.abs = function () {
     // This gives correct, but unexpected, results for units with an offset.
     // For example, abs(-283.15 degC) = -263.15 degC !!!
-    var ret = this.clone()
+    const ret = this.clone()
     ret.value = ret.value !== null ? abs(ret.value) : null
 
-    for (var i in ret.units) {
+    for (const i in ret.units) {
       if (ret.units[i].unit.name === 'VA' || ret.units[i].unit.name === 'VAR') {
         ret.units[i].unit = UNITS['W']
       }
@@ -792,10 +795,10 @@ function factory (type, config, load, typed, math) {
    * @returns {Unit} Returns a clone of the unit with a fixed prefix and unit.
    */
   Unit.prototype.to = function (valuelessUnit) {
-    var other
-    var value = this.value == null ? this._normalize(1) : this.value
+    let other
+    const value = this.value == null ? this._normalize(1) : this.value
     if (typeof valuelessUnit === 'string') {
-      // other = new Unit(null, valuelessUnit);
+      // other = new Unit(null, valuelessUnit)
       other = Unit.parse(valuelessUnit)
       if (!this.equalBase(other)) {
         throw new Error('Units do not match')
@@ -843,7 +846,7 @@ function factory (type, config, load, typed, math) {
    * @return {number | BigNumber | Fraction} Returns the unit value
    */
   Unit.prototype.toNumeric = function (valuelessUnit) {
-    var other = this
+    let other = this
     if (valuelessUnit) {
       // Allow getting the numeric value without converting to a different unit
       other = this.to(valuelessUnit)
@@ -890,7 +893,7 @@ function factory (type, config, load, typed, math) {
    * @return {Unit}
    */
   Unit.fromJSON = function (json) {
-    var unit = new Unit(json.value, json.unit)
+    const unit = new Unit(json.value, json.unit)
     unit.fixPrefix = json.fixPrefix || false
     return unit
   }
@@ -911,11 +914,11 @@ function factory (type, config, load, typed, math) {
       return
     }
 
-    var proposedUnitList = []
+    const proposedUnitList = []
 
     // Search for a matching base
-    var matchingBase
-    for (var key in currentUnitSystem) {
+    let matchingBase
+    for (const key in currentUnitSystem) {
       if (this.hasBase(BASE_UNITS[key])) {
         matchingBase = key
         break
@@ -925,15 +928,15 @@ function factory (type, config, load, typed, math) {
     if (matchingBase === 'NONE') {
       this.units = []
     } else {
-      var matchingUnit
+      let matchingUnit
       if (matchingBase) {
         // Does the unit system have a matching unit?
         if (currentUnitSystem.hasOwnProperty(matchingBase)) {
           matchingUnit = currentUnitSystem[matchingBase]
         }
       }
-      var value
-      var str
+      let value
+      let str
       if (matchingUnit) {
         this.units = [{
           unit: matchingUnit.unit,
@@ -944,9 +947,9 @@ function factory (type, config, load, typed, math) {
         // Multiple units or units with powers are formatted like this:
         // 5 (kg m^2) / (s^3 mol)
         // Build an representation from the base units of the current unit system
-        var missingBaseDim = false
-        for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
-          var baseDim = BASE_DIMENSIONS[i]
+        let missingBaseDim = false
+        for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
+          const baseDim = BASE_DIMENSIONS[i]
           if (Math.abs(this.dimensions[i] || 0) > 1e-12) {
             if (currentUnitSystem.hasOwnProperty(baseDim)) {
               proposedUnitList.push({
@@ -972,16 +975,16 @@ function factory (type, config, load, typed, math) {
   }
 
   Unit.prototype.toSI = function () {
-    var ret = this.clone()
+    const ret = this.clone()
 
-    var proposedUnitList = []
+    const proposedUnitList = []
 
     // Multiple units or units with powers are formatted like this:
     // 5 (kg m^2) / (s^3 mol)
     // Build an representation from the base units of the SI unit system
-    var missingBaseDim = false
-    for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
-      var baseDim = BASE_DIMENSIONS[i]
+    const missingBaseDim = false
+    for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
+      const baseDim = BASE_DIMENSIONS[i]
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
         if (UNIT_SYSTEMS['si'].hasOwnProperty(baseDim)) {
           proposedUnitList.push({
@@ -1012,12 +1015,12 @@ function factory (type, config, load, typed, math) {
     // Lazy evaluation of the unit list
     this.simplifyUnitListLazy()
 
-    var strNum = ''
-    var strDen = ''
-    var nNum = 0
-    var nDen = 0
+    let strNum = ''
+    let strDen = ''
+    let nNum = 0
+    let nDen = 0
 
-    for (var i = 0; i < this.units.length; i++) {
+    for (let i = 0; i < this.units.length; i++) {
       if (this.units[i].power > 0) {
         nNum++
         strNum += ' ' + this.units[i].prefix.name + this.units[i].unit.name
@@ -1030,7 +1033,7 @@ function factory (type, config, load, typed, math) {
     }
 
     if (nDen > 0) {
-      for (var i = 0; i < this.units.length; i++) {
+      for (let i = 0; i < this.units.length; i++) {
         if (this.units[i].power < 0) {
           if (nNum > 0) {
             strDen += ' ' + this.units[i].prefix.name + this.units[i].unit.name
@@ -1056,7 +1059,7 @@ function factory (type, config, load, typed, math) {
       strDen = '(' + strDen + ')'
     }
 
-    var str = strNum
+    let str = strNum
     if (nNum > 0 && nDen > 0) {
       str += ' / '
     }
@@ -1079,15 +1082,15 @@ function factory (type, config, load, typed, math) {
     this.simplifyUnitListLazy()
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
-    var isImaginary = false
-    var isReal = true
+    let isImaginary = false
+    let isReal = true
     if (typeof (this.value) !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
       isImaginary = Math.abs(this.value.re) < 1e-14
       isReal = Math.abs(this.value.im) < 1e-14
     }
 
-    for (var i in this.units) {
+    for (const i in this.units) {
       if (this.units[i].unit) {
         if (this.units[i].unit.name === 'VA' && isImaginary) {
           this.units[i].unit = UNITS['VAR']
@@ -1108,9 +1111,9 @@ function factory (type, config, load, typed, math) {
       }
     }
 
-    var value = this._denormalize(this.value)
-    var str = (this.value !== null) ? format(value, options || {}) : ''
-    var unitStr = this.formatUnits()
+    const value = this._denormalize(this.value)
+    let str = (this.value !== null) ? format(value, options || {}) : ''
+    const unitStr = this.formatUnits()
     if (this.value && type.isComplex(this.value)) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
@@ -1144,22 +1147,22 @@ function factory (type, config, load, typed, math) {
     // Note: the units value can be any numeric type, but to find the best
     // prefix it's enough to work with limited precision of a regular number
     // Update: using mathjs abs since we also allow complex numbers
-    var absValue = this.value !== null ? abs(this.value) : 0
-    var absUnitValue = abs(this.units[0].unit.value)
-    var bestPrefix = this.units[0].prefix
+    const absValue = this.value !== null ? abs(this.value) : 0
+    const absUnitValue = abs(this.units[0].unit.value)
+    let bestPrefix = this.units[0].prefix
     if (absValue === 0) {
       return bestPrefix
     }
-    var power = this.units[0].power
-    var bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - 1.2
+    const power = this.units[0].power
+    let bestDiff = Math.log(absValue / Math.pow(bestPrefix.value * absUnitValue, power)) / Math.LN10 - 1.2
     if (bestDiff > -2.200001 && bestDiff < 1.800001) return bestPrefix // Allow the original prefix
     bestDiff = Math.abs(bestDiff)
-    var prefixes = this.units[0].unit.prefixes
-    for (var p in prefixes) {
+    const prefixes = this.units[0].unit.prefixes
+    for (const p in prefixes) {
       if (prefixes.hasOwnProperty(p)) {
-        var prefix = prefixes[p]
+        const prefix = prefixes[p]
         if (prefix.scientific) {
-          var diff = Math.abs(
+          const diff = Math.abs(
             Math.log(absValue / Math.pow(prefix.value * absUnitValue, power)) / Math.LN10 - 1.2)
 
           if (diff < bestDiff ||
@@ -1183,35 +1186,35 @@ function factory (type, config, load, typed, math) {
    *
    *   Example:
    *
-   *   var u = new Unit(1, 'm');
-   *   u.splitUnit(['feet', 'inch']);
+   *   const u = new Unit(1, 'm')
+   *   u.splitUnit(['feet', 'inch'])
    *     [ 3 feet, 3.3700787401575 inch ]
    *
    * @return {Array} An array of units.
    */
   Unit.prototype.splitUnit = function (parts) {
-    var x = this.clone()
-    var ret = []
-    for (var i = 0; i < parts.length; i++) {
+    let x = this.clone()
+    const ret = []
+    for (let i = 0; i < parts.length; i++) {
       // Convert x to the requested unit
       x = x.to(parts[i])
       if (i == parts.length - 1) break
 
       // Get the numeric value of this unit
-      var xNumeric = x.toNumeric()
+      const xNumeric = x.toNumeric()
 
       // Check to see if xNumeric is nearly equal to an integer,
       // since fix can incorrectly round down if there is round-off error
-      var xRounded = round(xNumeric)
-      var xFixed
-      var isNearlyEqual = equal(xRounded, xNumeric)
+      const xRounded = round(xNumeric)
+      let xFixed
+      const isNearlyEqual = equal(xRounded, xNumeric)
       if (isNearlyEqual) {
         xFixed = xRounded
       } else {
         xFixed = fix(x.toNumeric())
       }
 
-      var y = new Unit(xFixed, parts[i].toString())
+      const y = new Unit(xFixed, parts[i].toString())
       ret.push(y)
       x = subtract(x, y)
     }
@@ -1220,8 +1223,8 @@ function factory (type, config, load, typed, math) {
     // But instead of comparing x, the remainder, with zero--we will compare the sum of
     // all the parts so far with the original value. If they are nearly equal,
     // we set the remainder to 0.
-    var testSum = 0
-    for (var i = 0; i < ret.length; i++) {
+    let testSum = 0
+    for (let i = 0; i < ret.length; i++) {
       testSum = add(testSum, ret[i].value)
     }
     if (equal(testSum, this.value)) {
@@ -1233,7 +1236,7 @@ function factory (type, config, load, typed, math) {
     return ret
   }
 
-  var PREFIXES = {
+  const PREFIXES = {
     NONE: {
       '': {name: '', value: 1, scientific: true}
     },
@@ -1385,12 +1388,12 @@ function factory (type, config, load, typed, math) {
 
   // Add a prefix list for both short and long prefixes (for example for ohm and bar which support both Mohm and megaohm, mbar and millibar):
   PREFIXES.SHORTLONG = {}
-  for (var key in PREFIXES.SHORT) {
+  for (let key in PREFIXES.SHORT) {
     if (PREFIXES.SHORT.hasOwnProperty(key)) {
       PREFIXES.SHORTLONG[key] = PREFIXES.SHORT[key]
     }
   }
-  for (var key in PREFIXES.LONG) {
+  for (let key in PREFIXES.LONG) {
     if (PREFIXES.LONG.hasOwnProperty(key)) {
       PREFIXES.SHORTLONG[key] = PREFIXES.LONG[key]
     }
@@ -1412,9 +1415,9 @@ function factory (type, config, load, typed, math) {
    *
    */
 
-  var BASE_DIMENSIONS = ['MASS', 'LENGTH', 'TIME', 'CURRENT', 'TEMPERATURE', 'LUMINOUS_INTENSITY', 'AMOUNT_OF_SUBSTANCE', 'ANGLE', 'BIT']
+  const BASE_DIMENSIONS = ['MASS', 'LENGTH', 'TIME', 'CURRENT', 'TEMPERATURE', 'LUMINOUS_INTENSITY', 'AMOUNT_OF_SUBSTANCE', 'ANGLE', 'BIT']
 
-  var BASE_UNITS = {
+  const BASE_UNITS = {
     NONE: {
       dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
@@ -1495,15 +1498,15 @@ function factory (type, config, load, typed, math) {
     }
   }
 
-  for (var key in BASE_UNITS) {
+  for (let key in BASE_UNITS) {
     BASE_UNITS[key].key = key
   }
 
-  var BASE_UNIT_NONE = {}
+  const BASE_UNIT_NONE = {}
 
-  var UNIT_NONE = {name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0]}
+  const UNIT_NONE = {name: '', base: BASE_UNIT_NONE, value: 1, offset: 0, dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0]}
 
-  var UNITS = {
+  const UNITS = {
     // length
     meter: {
       name: 'meter',
@@ -2710,7 +2713,7 @@ function factory (type, config, load, typed, math) {
   }
 
   // aliases (formerly plurals)
-  var ALIASES = {
+  const ALIASES = {
     meters: 'meter',
     inches: 'inch',
     feet: 'foot',
@@ -2814,20 +2817,20 @@ function factory (type, config, load, typed, math) {
    */
   function calculateAngleValues (config) {
     if (config.number === 'BigNumber') {
-      var pi = constants.pi(type.BigNumber)
+      const pi = constants.pi(type.BigNumber)
       UNITS.rad.value = new type.BigNumber(1)
-      UNITS.deg.value = pi.div(180) // 2 * pi / 360;
-      UNITS.grad.value = pi.div(200) // 2 * pi / 400;
+      UNITS.deg.value = pi.div(180) // 2 * pi / 360
+      UNITS.grad.value = pi.div(200) // 2 * pi / 400
       UNITS.cycle.value = pi.times(2) // 2 * pi
       UNITS.arcsec.value = pi.div(648000) // 2 * pi / 360 / 3600
       UNITS.arcmin.value = pi.div(10800) // 2 * pi / 360 / 60
     } else { // number
       UNITS.rad.value = 1
-      UNITS.deg.value = Math.PI / 180 // 2 * pi / 360;
-      UNITS.grad.value = Math.PI / 200 // 2 * pi / 400;
+      UNITS.deg.value = Math.PI / 180 // 2 * pi / 360
+      UNITS.grad.value = Math.PI / 200 // 2 * pi / 400
       UNITS.cycle.value = Math.PI * 2 // 2 * pi
-      UNITS.arcsec.value = Math.PI / 648000 // 2 * pi / 360 / 3600;
-      UNITS.arcmin.value = Math.PI / 10800 // 2 * pi / 360 / 60;
+      UNITS.arcsec.value = Math.PI / 648000 // 2 * pi / 360 / 3600
+      UNITS.arcmin.value = Math.PI / 10800 // 2 * pi / 360 / 60
     }
 
     // copy to the full names of the angles
@@ -2851,7 +2854,7 @@ function factory (type, config, load, typed, math) {
    * A user perhaps could issue a command to select a preferred unit system, or use the default (see below).
    * Auto unit system: The default unit system is updated on the fly anytime a unit is parsed. The corresponding unit in the default unit system is updated, so that answers are given in the same units the user supplies.
    */
-  var UNIT_SYSTEMS = {
+  const UNIT_SYSTEMS = {
     si: {
       // Base units
       NONE: {unit: UNIT_NONE, prefix: PREFIXES.NONE['']},
@@ -2906,7 +2909,7 @@ function factory (type, config, load, typed, math) {
   UNIT_SYSTEMS.auto = JSON.parse(JSON.stringify(UNIT_SYSTEMS.si))
 
   // Set the current unit system
-  var currentUnitSystem = UNIT_SYSTEMS.auto
+  let currentUnitSystem = UNIT_SYSTEMS.auto
 
   /**
    * Set a unit system for formatting derived units.
@@ -2925,7 +2928,7 @@ function factory (type, config, load, typed, math) {
    * @return {string} The current unit system.
    */
   Unit.getUnitSystem = function () {
-    for (var key in UNIT_SYSTEMS) {
+    for (const key in UNIT_SYSTEMS) {
       if (UNIT_SYSTEMS[key] === currentUnitSystem) {
         return key
       }
@@ -2971,17 +2974,17 @@ function factory (type, config, load, typed, math) {
   }
 
   // Add dimensions to each built-in unit
-  for (var key in UNITS) {
-    var unit = UNITS[key]
+  for (let key in UNITS) {
+    const unit = UNITS[key]
     unit.dimensions = unit.base.dimensions
   }
 
   // Create aliases
-  for (var name in ALIASES) {
+  for (const name in ALIASES) {
     if (ALIASES.hasOwnProperty(name)) {
-      var unit = UNITS[ALIASES[name]]
-      var alias = {}
-      for (var key in unit) {
+      const unit = UNITS[ALIASES[name]]
+      const alias = {}
+      for (let key in unit) {
         if (unit.hasOwnProperty(key)) {
           alias[key] = unit[key]
         }
@@ -2992,14 +2995,14 @@ function factory (type, config, load, typed, math) {
   }
 
   function assertUnitNameIsValid (name) {
-    for (var i = 0; i < name.length; i++) {
-      var c = name.charAt(i)
+    for (let i = 0; i < name.length; i++) {
+      const c = name.charAt(i)
 
-      var isValidAlpha = function (p) {
+      const isValidAlpha = function (p) {
         return /^[a-zA-Z]$/.test(p)
       }
 
-      var isDigit = function (c) {
+      const isDigit = function (c) {
         return (c >= '0' && c <= '9')
       }
 
@@ -3023,8 +3026,8 @@ function factory (type, config, load, typed, math) {
    *    baz: '4 bar'
    *  },
    *  {
-   *    override: true;
-   *  });
+   *    override: true
+   *  })
    * @param {object} obj      Object map. Each key becomes a unit which is defined by its value.
    * @param {object} options
    */
@@ -3035,12 +3038,12 @@ function factory (type, config, load, typed, math) {
 
     // Remove all units and aliases we are overriding
     if (options && options.override) {
-      for (var key in obj) {
+      for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           Unit.deleteUnit(key)
         }
         if (obj[key].aliases) {
-          for (var i = 0; i < obj[key].aliases.length; i++) {
+          for (let i = 0; i < obj[key].aliases.length; i++) {
             Unit.deleteUnit(obj[key].aliases[i])
           }
         }
@@ -3048,8 +3051,8 @@ function factory (type, config, load, typed, math) {
     }
 
     // TODO: traverse multiple times until all units have been added
-    var lastUnit
-    for (var key in obj) {
+    let lastUnit
+    for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
         lastUnit = Unit.createUnitSingle(key, obj[key])
       }
@@ -3090,11 +3093,11 @@ function factory (type, config, load, typed, math) {
 
     assertUnitNameIsValid(name)
 
-    var defUnit = null // The Unit from which the new unit will be created.
-    var aliases = []
-    var offset = 0
-    var definition
-    var prefixes
+    let defUnit = null // The Unit from which the new unit will be created.
+    let aliases = []
+    let offset = 0
+    let definition
+    let prefixes
     if (obj && obj.type === 'Unit') {
       defUnit = obj.clone()
     } else if (typeof (obj) === 'string') {
@@ -3113,7 +3116,7 @@ function factory (type, config, load, typed, math) {
     }
 
     if (aliases) {
-      for (var i = 0; i < aliases.length; i++) {
+      for (let i = 0; i < aliases.length; i++) {
         if (UNITS.hasOwnProperty(aliases[i])) {
           throw new Error('Cannot create alias "' + aliases[i] + '": a unit with that name already exists')
         }
@@ -3137,25 +3140,25 @@ function factory (type, config, load, typed, math) {
 
     // If defUnit is null, it is because the user did not
     // specify a defintion. So create a new base dimension.
-    var newUnit = {}
+    let newUnit = {}
     if (!defUnit) {
       // Add a new base dimension
-      var baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
+      const baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
       if (BASE_DIMENSIONS.indexOf(baseName) >= 0) {
         throw new Error('Cannot create new base unit "' + name + '": a base unit with that name already exists (and cannot be overridden)')
       }
       BASE_DIMENSIONS.push(baseName)
 
       // Push 0 onto existing base units
-      for (var b in BASE_UNITS) {
+      for (const b in BASE_UNITS) {
         if (BASE_UNITS.hasOwnProperty(b)) {
           BASE_UNITS[b].dimensions[BASE_DIMENSIONS.length - 1] = 0
         }
       }
 
       // Add the new base unit
-      var newBaseUnit = { dimensions: [] }
-      for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
+      let newBaseUnit = { dimensions: [] }
+      for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
         newBaseUnit.dimensions[i] = 0
       }
       newBaseUnit.dimensions[BASE_DIMENSIONS.length - 1] = 1
@@ -3185,11 +3188,11 @@ function factory (type, config, load, typed, math) {
       }
 
       // Create a new base if no matching base exists
-      var anyMatch = false
-      for (var i in BASE_UNITS) {
+      let anyMatch = false
+      for (let i in BASE_UNITS) {
         if (BASE_UNITS.hasOwnProperty(i)) {
-          var match = true
-          for (var j = 0; j < BASE_DIMENSIONS.length; j++) {
+          let match = true
+          for (let j = 0; j < BASE_DIMENSIONS.length; j++) {
             if (Math.abs((newUnit.dimensions[j] || 0) - (BASE_UNITS[i].dimensions[j] || 0)) > 1e-12) {
               match = false
               break
@@ -3202,9 +3205,9 @@ function factory (type, config, load, typed, math) {
         }
       }
       if (!anyMatch) {
-        var baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
+        const baseName = name + '_STUFF' // foo --> foo_STUFF, or the essence of foo
         // Add the new base unit
-        var newBaseUnit = { dimensions: defUnit.dimensions.slice(0) }
+        let newBaseUnit = { dimensions: defUnit.dimensions.slice(0) }
         newBaseUnit.key = baseName
         BASE_UNITS[baseName] = newBaseUnit
 
@@ -3219,10 +3222,10 @@ function factory (type, config, load, typed, math) {
 
     Unit.UNITS[name] = newUnit
 
-    for (var i = 0; i < aliases.length; i++) {
-      var aliasName = aliases[i]
-      var alias = {}
-      for (var key in newUnit) {
+    for (let i = 0; i < aliases.length; i++) {
+      const aliasName = aliases[i]
+      const alias = {}
+      for (const key in newUnit) {
         if (newUnit.hasOwnProperty(key)) {
           alias[key] = newUnit[key]
         }

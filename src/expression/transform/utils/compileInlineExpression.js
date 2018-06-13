@@ -10,7 +10,7 @@ function factory (type, config, load, typed) {
    */
   return function compileInlineExpression (expression, math, scope) {
     // find an undefined symbol
-    var symbol = expression.filter(function (node) {
+    const symbol = expression.filter(function (node) {
       return type.isSymbolNode(node) &&
           !(node.name in math) &&
           !(node.name in scope)
@@ -21,9 +21,9 @@ function factory (type, config, load, typed) {
     }
 
     // create a test function for this equation
-    var name = symbol.name // variable name
-    var subScope = Object.create(scope)
-    var eq = expression.compile()
+    const name = symbol.name // variable name
+    const subScope = Object.create(scope)
+    const eq = expression.compile()
     return function inlineExpression (x) {
       subScope[name] = x
       return eq.eval(subScope)

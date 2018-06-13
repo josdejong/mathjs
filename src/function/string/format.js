@@ -1,6 +1,6 @@
 'use strict'
 
-var string = require('../../utils/string')
+const string = require('../../utils/string')
 
 function factory (type, config, load, typed) {
   /**
@@ -75,25 +75,25 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.format(6.4);                                        // returns '6.4'
-   *    math.format(1240000);                                    // returns '1.24e6'
-   *    math.format(1/3);                                        // returns '0.3333333333333333'
-   *    math.format(1/3, 3);                                     // returns '0.333'
-   *    math.format(21385, 2);                                   // returns '21000'
-   *    math.format(12e8, {notation: 'fixed'});                  // returns '1200000000'
-   *    math.format(2.3,  {notation: 'fixed', precision: 4});    // returns '2.3000'
-   *    math.format(52.8, {notation: 'exponential'});            // returns '5.28e+1'
-   *    math.format(12400,{notation: 'engineering'});            // returns '12.400e+3'
-   *    math.format(2000, {lowerExp: -2, upperExp: 2});          // returns '2e+3'
+   *    math.format(6.4)                                        // returns '6.4'
+   *    math.format(1240000)                                    // returns '1.24e6'
+   *    math.format(1/3)                                        // returns '0.3333333333333333'
+   *    math.format(1/3, 3)                                     // returns '0.333'
+   *    math.format(21385, 2)                                   // returns '21000'
+   *    math.format(12e8, {notation: 'fixed'})                  // returns '1200000000'
+   *    math.format(2.3,  {notation: 'fixed', precision: 4})    // returns '2.3000'
+   *    math.format(52.8, {notation: 'exponential'})            // returns '5.28e+1'
+   *    math.format(12400,{notation: 'engineering'})            // returns '12.400e+3'
+   *    math.format(2000, {lowerExp: -2, upperExp: 2})          // returns '2e+3'
    *
    *    function formatCurrency(value) {
    *      // return currency notation with two digits:
-   *      return '$' + value.toFixed(2);
+   *      return '$' + value.toFixed(2)
    *
    *      // you could also use math.format inside the callback:
-   *      // return '$' + math.format(value, {notation: 'fixed', precision: 2});
+   *      // return '$' + math.format(value, {notation: 'fixed', precision: 2})
    *    }
-   *    math.format([2.1, 3, 0.016], formatCurrency};            // returns '[$2.10, $3.00, $0.02]'
+   *    math.format([2.1, 3, 0.016], formatCurrency}            // returns '[$2.10, $3.00, $0.02]'
    *
    * See also:
    *
@@ -103,7 +103,7 @@ function factory (type, config, load, typed) {
    * @param {Object | Function | number} [options]  Formatting options
    * @return {string} The formatted value
    */
-  var format = typed('format', {
+  const format = typed('format', {
     'any': string.format,
     'any, Object | function | number': string.format
   })

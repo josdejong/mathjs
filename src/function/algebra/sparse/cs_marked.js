@@ -9,7 +9,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_marked = function (w, j) {
+  const cs_marked = function (w, j) {
     // check node is marked
     return w[j] < 0
   }

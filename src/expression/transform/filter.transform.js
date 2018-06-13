@@ -1,8 +1,8 @@
 'use strict'
 
-var filter = require('../../utils/array').filter
-var filterRegExp = require('../../utils/array').filterRegExp
-var maxArgumentCount = require('../../utils/function').maxArgumentCount
+const filter = require('../../utils/array').filter
+const filterRegExp = require('../../utils/array').filterRegExp
+const maxArgumentCount = require('../../utils/function').maxArgumentCount
 
 /**
  * Attach a transform function to math.filter
@@ -12,11 +12,11 @@ var maxArgumentCount = require('../../utils/function').maxArgumentCount
  * so you can do something like 'filter([3, -2, 5], x > 0)'.
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(require('./utils/compileInlineExpression'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   function filterTransform (args, math, scope) {
-    var x, callback
+    let x, callback
 
     if (args[0]) {
       x = args[0].compile().eval(scope)
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
 
     if (args[1]) {
       if (type.isSymbolNode(args[1]) || type.isFunctionAssignmentNode(args[1])) {
-        // a function pointer, like filter([3, -2, 5], myTestFunction);
+        // a function pointer, like filter([3, -2, 5], myTestFunction)
         callback = args[1].compile().eval(scope)
       } else {
         // an expression like filter([3, -2, 5], x > 0)
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
   filterTransform.rawArgs = true
 
   // one based version of function filter
-  var filter = typed('filter', {
+  let filter = typed('filter', {
     'Array, function': _filter,
 
     'Matrix, function': function (x, test) {
@@ -68,7 +68,7 @@ function factory (type, config, load, typed) {
  */
 function _filter (x, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback)
+  const args = maxArgumentCount(callback)
 
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments

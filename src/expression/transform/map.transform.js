@@ -1,7 +1,7 @@
 'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount
-var map = require('../../utils/array').map
+const maxArgumentCount = require('../../utils/function').maxArgumentCount
+const map = require('../../utils/array').map
 
 /**
  * Attach a transform function to math.map
@@ -10,11 +10,11 @@ var map = require('../../utils/array').map
  * This transform creates a one-based index instead of a zero-based index
  */
 function factory (type, config, load, typed) {
-  var compileInlineExpression = load(require('./utils/compileInlineExpression'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   function mapTransform (args, math, scope) {
-    var x, callback
+    let x, callback
 
     if (args[0]) {
       x = args[0].compile().eval(scope)
@@ -22,7 +22,7 @@ function factory (type, config, load, typed) {
 
     if (args[1]) {
       if (type.isSymbolNode(args[1]) || type.isFunctionAssignmentNode(args[1])) {
-        // a function pointer, like filter([3, -2, 5], myTestFunction);
+        // a function pointer, like filter([3, -2, 5], myTestFunction)
         callback = args[1].compile().eval(scope)
       } else {
         // an expression like filter([3, -2, 5], x > 0)
@@ -35,7 +35,7 @@ function factory (type, config, load, typed) {
   mapTransform.rawArgs = true
 
   // one-based version of map function
-  var map = typed('map', {
+  let map = typed('map', {
     'Array, function': function (x, callback) {
       return _map(x, callback, x)
     },
@@ -58,7 +58,7 @@ function factory (type, config, load, typed) {
  */
 function _map (array, callback, orig) {
   // figure out what number of arguments the callback function expects
-  var argsCount = maxArgumentCount(callback)
+  const argsCount = maxArgumentCount(callback)
 
   function recurse (value, index) {
     if (Array.isArray(value)) {

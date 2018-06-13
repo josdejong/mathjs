@@ -1,5 +1,5 @@
 'use strict'
-var IndexError = require('../../error/IndexError')
+const IndexError = require('../../error/IndexError')
 
 /**
  * Transform zero-based indices to one-based indices in errors

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -13,12 +13,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.square(2);           // returns number 4
-   *    math.square(3);           // returns number 9
-   *    math.pow(3, 2);           // returns number 9
-   *    math.multiply(3, 3);      // returns number 9
+   *    math.square(2)           // returns number 4
+   *    math.square(3)           // returns number 9
+   *    math.pow(3, 2)           // returns number 9
+   *    math.multiply(3, 3)      // returns number 9
    *
-   *    math.square([1, 2, 3, 4]);  // returns Array [1, 4, 9, 16]
+   *    math.square([1, 2, 3, 4])  // returns Array [1, 4, 9, 16]
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Squared value
    */
-  var square = typed('square', {
+  const square = typed('square', {
     'number': function (x) {
       return x * x
     },

@@ -1,10 +1,10 @@
 'use strict'
 
-var size = require('../../utils/array').size
+const size = require('../../utils/array').size
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'))
-  var multiply = load(require('../arithmetic/multiply'))
+  const add = load(require('../arithmetic/add'))
+  const multiply = load(require('../arithmetic/multiply'))
 
   /**
    * Calculate the dot product of two vectors. The dot product of
@@ -18,8 +18,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.dot([2, 4, 1], [2, 2, 3]);       // returns number 15
-   *    math.multiply([2, 4, 1], [2, 2, 3]);  // returns number 15
+   *    math.dot([2, 4, 1], [2, 2, 3])       // returns number 15
+   *    math.multiply([2, 4, 1], [2, 2, 3])  // returns number 15
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @param  {Array | Matrix} y     Second vector
    * @return {number}               Returns the dot product of `x` and `y`
    */
-  var dot = typed('dot', {
+  const dot = typed('dot', {
     'Matrix, Matrix': function (x, y) {
       return _dot(x.toArray(), y.toArray())
     },
@@ -58,16 +58,16 @@ function factory (type, config, load, typed) {
    */
   // TODO: double code with math.multiply
   function _dot (x, y) {
-    var xSize = size(x)
-    var ySize = size(y)
-    var len = xSize[0]
+    const xSize = size(x)
+    const ySize = size(y)
+    const len = xSize[0]
 
     if (xSize.length !== 1 || ySize.length !== 1) throw new RangeError('Vector expected') // TODO: better error message
     if (xSize[0] != ySize[0]) throw new RangeError('Vectors must have equal length (' + xSize[0] + ' != ' + ySize[0] + ')')
     if (len == 0) throw new RangeError('Cannot calculate the dot product of empty vectors')
 
-    var prod = 0
-    for (var i = 0; i < len; i++) {
+    let prod = 0
+    for (let i = 0; i < len; i++) {
       prod = add(prod, multiply(x[i], y[i]))
     }
 

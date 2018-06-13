@@ -1,12 +1,5 @@
 // test expm1
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  math = require('../../../src/index'),
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  expm1 = math.expm1
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, expm1 = math.expm1
 
 describe('expm1', function () {
   it('should exponentiate a boolean', function () {
@@ -33,7 +26,7 @@ describe('expm1', function () {
   })
 
   it('should exponentiate a bignumber', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     assert.deepEqual(bigmath.expm1(bigmath.bignumber(1)), bigmath.bignumber('1.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427'))
   })
@@ -53,9 +46,9 @@ describe('expm1', function () {
     approx.deepEqual(expm1(complex(1, 0)), complex('1.71828182845905'))
 
     // test some logic identities
-    var multiply = math.multiply
-    var pi = math.pi
-    var i = math.i
+    const multiply = math.multiply
+    const pi = math.pi
+    const i = math.i
     approx.deepEqual(expm1(multiply(0.5, multiply(pi, i))), complex(-1, 1))
     approx.deepEqual(expm1(multiply(1, multiply(pi, i))), complex(-2, 0))
     approx.deepEqual(expm1(multiply(1.5, multiply(pi, i))), complex(-1, -1))
@@ -84,7 +77,7 @@ describe('expm1', function () {
   })
 
   it('should LaTeX expm1', function () {
-    var expression = math.parse('expm1(0)')
+    const expression = math.parse('expm1(0)')
     assert.equal(expression.toTex(), '\\left(e^{0}-1\\right)')
   })
 })

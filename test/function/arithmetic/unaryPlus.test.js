@@ -1,9 +1,9 @@
 // test unary plus
-var assert = require('assert')
-var math = require('../../../src/index')
-var error = require('../../../src/error/index')
-var bignumber = math.bignumber
-var fraction = math.fraction
+const assert = require('assert')
+const math = require('../../../src/index')
+const error = require('../../../src/error/index')
+const bignumber = math.bignumber
+const fraction = math.fraction
 
 describe('unaryPlus', function () {
   it('should return unary plus of a boolean', function () {
@@ -12,7 +12,7 @@ describe('unaryPlus', function () {
   })
 
   it('should return bignumber unary plus of a boolean', function () {
-    var bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({number: 'BigNumber'})
     assert.deepEqual(bigmath.unaryPlus(true), bigmath.bignumber(1))
     assert.deepEqual(bigmath.unaryPlus(false), bigmath.bignumber(0))
   })
@@ -23,19 +23,19 @@ describe('unaryPlus', function () {
   })
 
   it('should return bignumber unary plus on a string', function () {
-    var bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({number: 'BigNumber'})
     assert.deepEqual(bigmath.unaryPlus('2'), bigmath.bignumber(2))
     assert.deepEqual(bigmath.unaryPlus('-2'), bigmath.bignumber(-2))
   })
 
   // TODO: this is temporary until the test above works again
   it('should return bignumber unary plus on a string', function () {
-    var bigmath = math.create({number: 'BigNumber'})
-    var a = bigmath.unaryPlus('2')
+    const bigmath = math.create({number: 'BigNumber'})
+    const a = bigmath.unaryPlus('2')
     assert(a instanceof math.type.BigNumber)
     assert.deepEqual(a.toString(), '2')
 
-    var b = bigmath.unaryPlus('-2')
+    const b = bigmath.unaryPlus('-2')
     assert(b instanceof math.type.BigNumber)
     assert.deepEqual(b.toString(), '-2')
   })
@@ -53,7 +53,7 @@ describe('unaryPlus', function () {
   })
 
   it('should perform unary plus of a fraction', function () {
-    var a = fraction(0.5)
+    const a = fraction(0.5)
     assert(math.unaryPlus(a) instanceof math.type.Fraction)
     assert.equal(a.toString(), '0.5')
 
@@ -92,7 +92,7 @@ describe('unaryPlus', function () {
   })
 
   it('should LaTeX unaryPlus', function () {
-    var expression = math.parse('unaryPlus(1)')
+    const expression = math.parse('unaryPlus(1)')
     assert.equal(expression.toTex(), '+\\left(1\\right)')
   })
 })

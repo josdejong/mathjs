@@ -2,14 +2,14 @@
 
 module.exports = function scatter (a, j, w, x, u, mark, c, f, inverse, update, value) {
   // a arrays
-  var avalues = a._values
-  var aindex = a._index
-  var aptr = a._ptr
+  const avalues = a._values
+  const aindex = a._index
+  const aptr = a._ptr
   // c arrays
-  var cindex = c._index
+  const cindex = c._index
 
   // vars
-  var k, k0, k1, i
+  let k, k0, k1, i
 
   // check we need to process values (pattern matrix)
   if (x) {

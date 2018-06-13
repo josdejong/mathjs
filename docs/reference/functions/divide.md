@@ -29,18 +29,18 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 ## Examples
 
 ```js
-math.divide(2, 3);            // returns number 0.6666666666666666
+math.divide(2, 3)            // returns number 0.6666666666666666
 
-var a = math.complex(5, 14);
-var b = math.complex(4, 1);
-math.divide(a, b);            // returns Complex 2 + 3i
+const a = math.complex(5, 14)
+const b = math.complex(4, 1)
+math.divide(a, b)            // returns Complex 2 + 3i
 
-var c = [[7, -6], [13, -4]];
-var d = [[1, 2], [4, 3]];
-math.divide(c, d);            // returns Array [[-9, 4], [-11, 6]]
+const c = [[7, -6], [13, -4]]
+const d = [[1, 2], [4, 3]]
+math.divide(c, d)            // returns Array [[-9, 4], [-11, 6]]
 
-var e = math.unit('18 km');
-math.divide(e, 4.5);          // returns Unit 4 km
+const e = math.unit('18 km')
+math.divide(e, 4.5)          // returns Unit 4 km
 ```
 
 

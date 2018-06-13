@@ -1,14 +1,14 @@
 // test ceil
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var complex = math.complex
-var fraction = math.fraction
-var matrix = math.matrix
-var unit = math.unit
-var range = math.range
-var ceil = math.ceil
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const complex = math.complex
+const fraction = math.fraction
+const matrix = math.matrix
+const unit = math.unit
+const range = math.range
+const ceil = math.ceil
 
 describe('ceil', function () {
   it('should return the ceil of a boolean', function () {
@@ -51,7 +51,7 @@ describe('ceil', function () {
   })
 
   it('should return the ceil of a number', function () {
-    var a = fraction('2/3')
+    const a = fraction('2/3')
     assert(ceil(a) instanceof math.type.Fraction)
     assert.equal(a.toString(), '0.(6)')
 
@@ -90,7 +90,7 @@ describe('ceil', function () {
   })
 
   it('should LaTeX ceil', function () {
-    var expression = math.parse('ceil(0.5)')
+    const expression = math.parse('ceil(0.5)')
     assert.equal(expression.toTex(), '\\left\\lceil0.5\\right\\rceil')
   })
 })

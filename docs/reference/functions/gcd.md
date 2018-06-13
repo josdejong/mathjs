@@ -30,11 +30,11 @@ number &#124; BigNumber &#124; Fraction &#124; Array &#124; Matrix | The greates
 ## Examples
 
 ```js
-math.gcd(8, 12);              // returns 4
-math.gcd(-4, 6);              // returns 2
-math.gcd(25, 15, -10);        // returns 5
+math.gcd(8, 12)              // returns 4
+math.gcd(-4, 6)              // returns 2
+math.gcd(25, 15, -10)        // returns 5
 
-math.gcd([8, -4], [12, 6]);   // returns [4, 2]
+math.gcd([8, -4], [12, 6])   // returns [4, 2]
 ```
 
 

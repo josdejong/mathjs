@@ -10,7 +10,7 @@ orthogonal matrix and `R` is an upper triangular matrix.
 ## Syntax
 
 ```js
-math.qr(A);
+math.qr(A)
 ```
 
 ### Parameters
@@ -29,13 +29,13 @@ Type | Description
 ## Examples
 
 ```js
-var m = [
+const m = [
   [1, -1,  4],
   [1,  4, -2],
   [1,  4,  2],
   [1,  -1, 0]
-];
-var result = math.qr(m);
+]
+const result = math.qr(m)
 // r = {
 //   Q: [
 //     [0.5, -0.5,   0.5],

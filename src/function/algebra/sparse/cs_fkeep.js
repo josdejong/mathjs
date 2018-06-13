@@ -16,20 +16,20 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_fkeep = function (a, callback, other) {
+  const cs_fkeep = function (a, callback, other) {
     // a arrays
-    var avalues = a._values
-    var aindex = a._index
-    var aptr = a._ptr
-    var asize = a._size
+    const avalues = a._values
+    const aindex = a._index
+    const aptr = a._ptr
+    const asize = a._size
     // columns
-    var n = asize[1]
+    const n = asize[1]
     // nonzero items
-    var nz = 0
+    let nz = 0
     // loop columns
-    for (var j = 0; j < n; j++) {
+    for (let j = 0; j < n; j++) {
       // get current location of col j
-      var p = aptr[j]
+      let p = aptr[j]
       // record new location of col j
       aptr[j] = nz
       for (; p < aptr[j + 1]; p++) {

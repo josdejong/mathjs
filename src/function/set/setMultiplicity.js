@@ -1,12 +1,12 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var compareNatural = load(require('../relational/compareNatural'))
-  var index = load(require('../../type/matrix/MatrixIndex'))
-  var size = load(require('../matrix/size'))
-  var subset = load(require('../matrix/subset'))
+  const compareNatural = load(require('../relational/compareNatural'))
+  const index = load(require('../../type/matrix/MatrixIndex'))
+  const size = load(require('../matrix/size'))
+  const subset = load(require('../matrix/subset'))
 
   /**
    * Count the multiplicity of an element in a multiset.
@@ -18,8 +18,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.setMultiplicity(1, [1, 2, 2, 4]);    // returns 1
-   *    math.setMultiplicity(2, [1, 2, 2, 4]);    // returns 2
+   *    math.setMultiplicity(1, [1, 2, 2, 4])    // returns 1
+   *    math.setMultiplicity(2, [1, 2, 2, 4])    // returns 2
    *
    * See also:
    *
@@ -29,14 +29,14 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}     a  A multiset
    * @return {number}            The number of how many times the multiset contains the element
    */
-  var setMultiplicity = typed('setMultiplicity', {
+  const setMultiplicity = typed('setMultiplicity', {
     'number | BigNumber | Fraction | Complex, Array | Matrix': function (e, a) {
       if (subset(size(a), new index(0)) === 0) { // if empty, return 0
         return 0
       }
-      var b = flatten(Array.isArray(a) ? a : a.toArray())
-      var count = 0
-      for (var i = 0; i < b.length; i++) {
+      const b = flatten(Array.isArray(a) ? a : a.toArray())
+      let count = 0
+      for (let i = 0; i < b.length; i++) {
         if (compareNatural(b[i], e) === 0) {
           count++
         }

@@ -1,12 +1,5 @@
 // test exp
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  math = require('../../../src/index'),
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  dotPow = math.dotPow
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, dotPow = math.dotPow
 
 describe('dotPow', function () {
   it('should elevate a number to the given power', function () {
@@ -165,7 +158,7 @@ describe('dotPow', function () {
   })
 
   it('should LaTeX dotPow', function () {
-    var expression = math.parse('dotPow([1,2],[3,4])')
+    const expression = math.parse('dotPow([1,2],[3,4])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

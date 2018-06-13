@@ -1,9 +1,5 @@
 // test gcd
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  gcd = math.gcd
+const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, gcd = math.gcd
 
 describe('gcd', function () {
   it('should find the greatest common divisor of two or more numbers', function () {
@@ -57,7 +53,7 @@ describe('gcd', function () {
   })
 
   it('should find the greatest common divisor of fractions', function () {
-    var a = math.fraction(5, 8)
+    const a = math.fraction(5, 8)
     assert.equal(gcd(a, math.fraction(3, 7)).toString(), '0.017(857142)')
     assert.equal(a.toString(), '0.625')
   })
@@ -157,7 +153,7 @@ describe('gcd', function () {
   })
 
   it('should LaTeX gcd', function () {
-    var expression = math.parse('gcd(2,3)')
+    const expression = math.parse('gcd(2,3)')
     assert.equal(expression.toTex(), '\\gcd\\left(2,3\\right)')
   })
 })

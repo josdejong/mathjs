@@ -1,8 +1,8 @@
 'use strict'
 
 function factory (type, config, load) {
-  var add = load(require('../../function/arithmetic/add'))
-  var equalScalar = load(require('../../function/relational/equalScalar'))
+  const add = load(require('../../function/arithmetic/add'))
+  const equalScalar = load(require('../../function/relational/equalScalar'))
 
   /**
    * An ordered Sparse Accumulator is a representation for a sparse vector that includes a dense array
@@ -32,7 +32,7 @@ function factory (type, config, load) {
     // check we have a value @ i
     if (!this._values[i]) {
       // insert in heap
-      var node = this._heap.insert(i, v)
+      const node = this._heap.insert(i, v)
       // set the value @ i
       this._values[i] = node
     } else {
@@ -42,14 +42,14 @@ function factory (type, config, load) {
   }
 
   Spa.prototype.get = function (i) {
-    var node = this._values[i]
+    const node = this._values[i]
     if (node) { return node.value }
     return 0
   }
 
   Spa.prototype.accumulate = function (i, v) {
     // node @ i
-    var node = this._values[i]
+    let node = this._values[i]
     if (!node) {
       // insert in heap
       node = this._heap.insert(i, v)
@@ -63,12 +63,12 @@ function factory (type, config, load) {
 
   Spa.prototype.forEach = function (from, to, callback) {
     // references
-    var heap = this._heap
-    var values = this._values
+    const heap = this._heap
+    const values = this._values
     // nodes
-    var nodes = []
+    const nodes = []
     // node with minimum key, save it
-    var node = heap.extractMinimum()
+    let node = heap.extractMinimum()
     if (node) { nodes.push(node) }
     // extract nodes from heap (ordered)
     while (node && node.key <= to) {
@@ -85,9 +85,9 @@ function factory (type, config, load) {
       if (node) { nodes.push(node) }
     }
     // reinsert all nodes in heap
-    for (var i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++) {
       // current node
-      var n = nodes[i]
+      const n = nodes[i]
       // insert node in heap
       node = heap.insert(n.key, n.value)
       // update values
@@ -97,8 +97,8 @@ function factory (type, config, load) {
 
   Spa.prototype.swap = function (i, j) {
     // node @ i and j
-    var nodei = this._values[i]
-    var nodej = this._values[j]
+    let nodei = this._values[i]
+    let nodej = this._values[j]
     // check we need to insert indeces
     if (!nodei && nodej) {
       // insert in heap
@@ -118,7 +118,7 @@ function factory (type, config, load) {
       this._values[i] = undefined
     } else if (nodei && nodej) {
       // swap values
-      var v = nodei.value
+      const v = nodei.value
       nodei.value = nodej.value
       nodej.value = v
     }

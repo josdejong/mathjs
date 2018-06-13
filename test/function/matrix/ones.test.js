@@ -1,9 +1,5 @@
 // test ones
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  ones = math.ones,
-  matrix = math.matrix
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), ones = math.ones, matrix = math.matrix
 
 describe('ones', function () {
   it('should create an empty matrix', function () {
@@ -37,14 +33,14 @@ describe('ones', function () {
   })
 
   it('should create a matrix with bignumber ones', function () {
-    var one = math.bignumber(1)
-    var three = math.bignumber(3)
+    const one = math.bignumber(1)
+    const three = math.bignumber(3)
     assert.deepEqual(ones(three), matrix([one, one, one]))
     assert.deepEqual(ones([three]), [one, one, one])
   })
 
   it('should create a 3D matrix with ones', function () {
-    var res = [
+    const res = [
       [
         [1, 1, 1, 1],
         [1, 1, 1, 1],
@@ -64,14 +60,14 @@ describe('ones', function () {
   // TODO: test setting `matrix`
 
   it('should create a matrix with ones with the same size as original matrix', function () {
-    var a = matrix([[1, 2, 3], [4, 5, 6]])
+    const a = matrix([[1, 2, 3], [4, 5, 6]])
     assert.deepEqual(ones(math.size(a)).size(), a.size())
   })
 
   // TODO: test with invalid input
 
   it('should LaTeX ones', function () {
-    var expression = math.parse('ones(2)')
+    const expression = math.parse('ones(2)')
     assert.equal(expression.toTex(), '\\mathrm{ones}\\left(2\\right)')
   })
 })

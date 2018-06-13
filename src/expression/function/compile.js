@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../parse'))
+  const parse = load(require('../parse'))
 
   /**
    * Parse and compile an expression.
@@ -17,17 +17,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     var code = math.compile('sqrt(3^2 + 4^2)');
-   *     code.eval(); // 5
+   *     const code1 = math.compile('sqrt(3^2 + 4^2)')
+   *     code1.eval() // 5
    *
-   *     var scope = {a: 3, b: 4}
-   *     var code = math.compile('a * b'); // 12
-   *     code.eval(scope); // 12
-   *     scope.a = 5;
-   *     code.eval(scope); // 20
+   *     let scope = {a: 3, b: 4}
+   *     const code2 = math.compile('a * b') // 12
+   *     code2.eval(scope) // 12
+   *     scope.a = 5
+   *     code2.eval(scope) // 20
    *
-   *     var nodes = math.compile(['a = 3', 'b = 4', 'a * b']);
-   *     nodes[2].eval(); // 12
+   *     const nodes = math.compile(['a = 3', 'b = 4', 'a * b'])
+   *     nodes[2].eval() // 12
    *
    * See also:
    *

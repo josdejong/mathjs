@@ -14,7 +14,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit}                      Multiplication of `x` and `y`
    * @private
    */
-  var multiplyScalar = typed('multiplyScalar', {
+  const multiplyScalar = typed('multiplyScalar', {
 
     'number, number': function (x, y) {
       return x * y
@@ -33,13 +33,13 @@ function factory (type, config, load, typed) {
     },
 
     'number | Fraction | BigNumber | Complex, Unit': function (x, y) {
-      var res = y.clone()
+      const res = y.clone()
       res.value = (res.value === null) ? res._normalize(x) : multiplyScalar(res.value, x)
       return res
     },
 
     'Unit, number | Fraction | BigNumber | Complex': function (x, y) {
-      var res = x.clone()
+      const res = x.clone()
       res.value = (res.value === null) ? res._normalize(y) : multiplyScalar(res.value, y)
       return res
     },

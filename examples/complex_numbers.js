@@ -1,11 +1,11 @@
 // complex numbers
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // create a complex number with a numeric real and complex part
 console.log('create and manipulate complex numbers')
-var a = math.complex(2, 3)
+const a = math.complex(2, 3)
 print(a) // 2 + 3i
 
 // read the real and complex parts of the complex number
@@ -13,7 +13,7 @@ print(a.re) // 2
 print(a.im) // 3
 
 // clone a complex value
-var clone = a.clone()
+const clone = a.clone()
 print(clone) // 2 + 3i
 
 // adjust the complex value
@@ -21,7 +21,7 @@ a.re = 5
 print(a) // 5 + 3i
 
 // create a complex number by providing a string with real and complex parts
-var b = math.complex('3-7i')
+const b = math.complex('3-7i')
 print(b) // 3 - 7i
 console.log()
 
@@ -37,11 +37,11 @@ print(math.sqrt(-4)) // 2i
 
 // create a complex number from polar coordinates
 console.log('create complex numbers with polar coordinates')
-var c = math.complex({r: math.sqrt(2), phi: math.pi / 4})
+const c = math.complex({r: math.sqrt(2), phi: math.pi / 4})
 print(c) // 1 + i
 
 // get polar coordinates of a complex number
-var d = math.complex(3, 4)
+const d = math.complex(3, 4)
 console.log(d.abs(), d.arg()) // radius = 5, phi = 0.9272952180016122
 
 // comparision operations
@@ -50,7 +50,7 @@ console.log(d.abs(), d.arg()) // radius = 5, phi = 0.9272952180016122
 // the natural sorting can be used
 console.log('\ncomparision and sorting operations')
 console.log('equal', math.equal(a, b)) // returns false
-var values = [a, b, c]
+const values = [a, b, c]
 console.log('values:', math.format(values, 14)) // [5 + 3i, 3 - 7i, 1 + i]
 math.sort(values, 'natural')
 console.log('sorted:', math.format(values, 14)) // [1 + i, 3 - 7i, 5 + 3i]
@@ -60,6 +60,6 @@ console.log('sorted:', math.format(values, 14)) // [1 + i, 3 - 7i, 5 + 3i]
  * @param {*} value
  */
 function print (value) {
-  var precision = 14
+  const precision = 14
   console.log(math.format(value, precision))
 }

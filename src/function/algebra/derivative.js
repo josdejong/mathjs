@@ -1,17 +1,17 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var parse = load(require('../../expression/parse'))
-  var simplify = load(require('./simplify'))
-  var equal = load(require('../relational/equal'))
-  var isZero = load(require('../utils/isZero'))
-  var getType = load(require('../utils/typeof'))
-  var numeric = load(require('../../type/numeric'))
-  var ConstantNode = load(require('../../expression/node/ConstantNode'))
-  var FunctionNode = load(require('../../expression/node/FunctionNode'))
-  var OperatorNode = load(require('../../expression/node/OperatorNode'))
-  var ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
-  var SymbolNode = load(require('../../expression/node/SymbolNode'))
+  const parse = load(require('../../expression/parse'))
+  const simplify = load(require('./simplify'))
+  const equal = load(require('../relational/equal'))
+  const isZero = load(require('../utils/isZero'))
+  const getType = load(require('../utils/typeof'))
+  const numeric = load(require('../../type/numeric'))
+  const ConstantNode = load(require('../../expression/node/ConstantNode'))
+  const FunctionNode = load(require('../../expression/node/FunctionNode'))
+  const OperatorNode = load(require('../../expression/node/OperatorNode'))
+  const ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
+  const SymbolNode = load(require('../../expression/node/SymbolNode'))
 
   /**
    * Takes the derivative of an expression expressed in parser Nodes.
@@ -30,14 +30,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.derivative('x^2', 'x');                     // Node {2 * x}
-   *     math.derivative('x^2', 'x', {simplify: false});  // Node {2 * 1 * x ^ (2 - 1)
-   *     math.derivative('sin(2x)', 'x'));                // Node {2 * cos(2 * x)}
-   *     math.derivative('2*x', 'x').eval();              // number 2
-   *     math.derivative('x^2', 'x').eval({x: 4});        // number 8
-   *     var f = math.parse('x^2');
-   *     var x = math.parse('x');
-   *     math.derivative(f, x);                           // Node {2 * x}
+   *     math.derivative('x^2', 'x')                     // Node {2 * x}
+   *     math.derivative('x^2', 'x', {simplify: false})  // Node {2 * 1 * x ^ (2 - 1)
+   *     math.derivative('sin(2x)', 'x'))                // Node {2 * cos(2 * x)}
+   *     math.derivative('2*x', 'x').eval()              // number 2
+   *     math.derivative('x^2', 'x').eval({x: 4})        // number 8
+   *     const f = math.parse('x^2')
+   *     const x = math.parse('x')
+   *     math.derivative(f, x)                           // Node {2 * x}
    *
    * See also:
    *
@@ -51,11 +51,11 @@ function factory (type, config, load, typed) {
    *                         be simplified.
    * @return {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode}    The derivative of `expr`
    */
-  var derivative = typed('derivative', {
+  const derivative = typed('derivative', {
     'Node, SymbolNode, Object': function (expr, variable, options) {
-      var constNodes = {}
+      const constNodes = {}
       constTag(constNodes, expr, variable.name)
-      var res = _derivative(expr, constNodes)
+      const res = _derivative(expr, constNodes)
       return options.simplify ? simplify(res) : res
     },
     'Node, SymbolNode': function (expr, variable) {
@@ -87,13 +87,13 @@ function factory (type, config, load, typed) {
 
     /* TODO: implement and test syntax with order of derivatives -> implement as an option {order: number}
     'Node, SymbolNode, ConstantNode': function (expr, variable, {order}) {
-      var res = expr;
-      for (var i = 0; i < order; i++) {
-        var constNodes = {};
-        constTag(constNodes, expr, variable.name);
-        res = _derivative(res, constNodes);
+      let res = expr
+      for (let i = 0; i < order; i++) {
+        let constNodes = {}
+        constTag(constNodes, expr, variable.name)
+        res = _derivative(res, constNodes)
       }
-      return res;
+      return res
     }
     */
   })
@@ -105,7 +105,7 @@ function factory (type, config, load, typed) {
   }
 
   // NOTE: the optional "order" parameter here is currently unused
-  var _derivTex = typed('_derivTex', {
+  const _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {
       if (type.isConstantNode(expr) && getType(expr.value) == 'string') {
         return _derivTex(parse(expr.value).toString(), x.toString(), 1)
@@ -124,7 +124,7 @@ function factory (type, config, load, typed) {
       return _derivTex(expr.toString(), x.name, order.value)
     },
     'string, string, number': function (expr, x, order) {
-      var d
+      let d
       if (order === 1) {
         d = '{d\\over d' + x + '}'
       } else {
@@ -149,7 +149,7 @@ function factory (type, config, load, typed) {
    * @return {boolean}  if node is constant
    */
   // TODO: can we rewrite constTag into a pure function?
-  var constTag = typed('constTag', {
+  const constTag = typed('constTag', {
     'Object, ConstantNode, string': function (constNodes, node) {
       return constNodes[node] = true
     },
@@ -176,8 +176,8 @@ function factory (type, config, load, typed) {
 
     'Object, FunctionNode | OperatorNode, string': function (constNodes, node, varName) {
       if (node.args.length > 0) {
-        var isConst = constTag(constNodes, node.args[0], varName)
-        for (var i = 1; i < node.args.length; ++i) {
+        let isConst = constTag(constNodes, node.args[0], varName)
+        for (let i = 1; i < node.args.length; ++i) {
           isConst = constTag(constNodes, node.args[i], varName) && isConst
         }
 
@@ -196,7 +196,7 @@ function factory (type, config, load, typed) {
    * @param  {Object} constNodes  Holds the nodes that are constant
    * @return {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode}    The derivative of `expr`
    */
-  var _derivative = typed('_derivative', {
+  const _derivative = typed('_derivative', {
     'ConstantNode, Object': function (node) {
       return createConstantNode(0)
     },
@@ -228,13 +228,13 @@ function factory (type, config, load, typed) {
         return createConstantNode(0)
       }
 
-      var arg0 = node.args[0]
-      var arg1
+      const arg0 = node.args[0]
+      let arg1
 
-      var div = false // is output a fraction?
-      var negative = false // is output negative?
+      let div = false // is output a fraction?
+      let negative = false // is output negative?
 
-      var funcDerivative
+      let funcDerivative
       switch (node.name) {
         case 'cbrt':
           // d/dx(cbrt(x)) = 1 / (3x^(2/3))
@@ -556,7 +556,7 @@ function factory (type, config, load, typed) {
         default: throw new Error('Function "' + node.name + '" is not supported by derivative, or a wrong number of arguments is passed')
       }
 
-      var op, func
+      let op, func
       if (div) {
         op = '/'
         func = 'divide'
@@ -568,7 +568,7 @@ function factory (type, config, load, typed) {
       /* Apply chain rule to all functions:
          F(x)  = f(g(x))
          F'(x) = g'(x)*f'(g(x)) */
-      var chainDerivative = _derivative(arg0, constNodes)
+      let chainDerivative = _derivative(arg0, constNodes)
       if (negative) {
         chainDerivative = new OperatorNode('-', 'unaryMinus', [chainDerivative])
       }
@@ -606,20 +606,20 @@ function factory (type, config, load, typed) {
 
       if (node.op === '*') {
         // d/dx(c*f(x)) = c*f'(x)
-        var constantTerms = node.args.filter(function (arg) {
+        const constantTerms = node.args.filter(function (arg) {
           return constNodes[arg] !== undefined
         })
 
         if (constantTerms.length > 0) {
-          var nonConstantTerms = node.args.filter(function (arg) {
+          const nonConstantTerms = node.args.filter(function (arg) {
             return constNodes[arg] === undefined
           })
 
-          var nonConstantNode = nonConstantTerms.length === 1
+          const nonConstantNode = nonConstantTerms.length === 1
             ? nonConstantTerms[0]
             : new OperatorNode('*', 'multiply', nonConstantTerms)
 
-          var newArgs = constantTerms.concat(_derivative(nonConstantNode, constNodes))
+          const newArgs = constantTerms.concat(_derivative(nonConstantNode, constNodes))
 
           return new OperatorNode('*', 'multiply', newArgs)
         }
@@ -635,8 +635,8 @@ function factory (type, config, load, typed) {
       }
 
       if (node.op === '/' && node.isBinary()) {
-        var arg0 = node.args[0]
-        var arg1 = node.args[1]
+        const arg0 = node.args[0]
+        const arg1 = node.args[1]
 
         // d/dx(f(x) / c) = f'(x) / c
         if (constNodes[arg1] !== undefined) {
@@ -665,8 +665,8 @@ function factory (type, config, load, typed) {
       }
 
       if (node.op === '^' && node.isBinary()) {
-        var arg0 = node.args[0]
-        var arg1 = node.args[1]
+        const arg0 = node.args[0]
+        const arg1 = node.args[1]
 
         if (constNodes[arg0] !== undefined) {
           // If is secretly constant; 0^f(x) = 1 (in JS), 1^f(x) = 1
@@ -697,7 +697,7 @@ function factory (type, config, load, typed) {
           }
 
           // Elementary Power Rule, d/dx(f(x)^c) = c*f'(x)*f(x)^(c-1)
-          var powMinusOne = new OperatorNode('^', 'pow', [
+          const powMinusOne = new OperatorNode('^', 'pow', [
             arg0.clone(),
             new OperatorNode('-', 'subtract', [
               arg1,
@@ -750,7 +750,7 @@ function factory (type, config, load, typed) {
 
     // Change all args to constants to avoid unidentified
     // symbol error when compiling function
-    for (var i = 0; i < node.args.length; ++i) {
+    for (let i = 0; i < node.args.length; ++i) {
       node.args[i] = createConstantNode(0)
     }
 

@@ -29,18 +29,18 @@
 A unit can be constructed in the following ways:
 
 ```js
-var a = new Unit(value, name);
-var b = new Unit(null, name);
-var c = Unit.parse(str);
+const a = new Unit(value, name)
+const b = new Unit(null, name)
+const c = Unit.parse(str)
 ```
 
 Example usage:
 
 ```js
-var a = new Unit(5, 'cm');               // 50 mm
-var b = Unit.parse('23 kg');             // 23 kg
-var c = math.in(a, new Unit(null, 'm');  // 0.05 m
-var d = new Unit(9.81, "m/s^2");         // 9.81 m/s^2
+const a = new Unit(5, 'cm')               // 50 mm
+const b = Unit.parse('23 kg')             // 23 kg
+const c = math.in(a, new Unit(null, 'm')  // 0.05 m
+const d = new Unit(9.81, "m/s^2")         // 9.81 m/s^2
 ```
 
 | Param | Type | Description |

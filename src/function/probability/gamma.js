@@ -1,11 +1,11 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var isInteger = require('../../utils/number').isInteger
+const deepMap = require('../../utils/collection/deepMap')
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var multiply = load(require('../arithmetic/multiply'))
-  var pow = load(require('../arithmetic/pow'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const pow = load(require('../arithmetic/pow'))
 
   /**
    * Compute the gamma function of a value using Lanczos approximation for
@@ -19,9 +19,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.gamma(5);       // returns 24
-   *    math.gamma(-0.5);    // returns -3.5449077018110335
-   *    math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
+   *    math.gamma(5)       // returns 24
+   *    math.gamma(-0.5)    // returns -3.5449077018110335
+   *    math.gamma(math.i)  // returns -0.15494982830180973 - 0.49801566811835596i
    *
    * See also:
    *
@@ -30,9 +30,9 @@ function factory (type, config, load, typed) {
    * @param {number | Array | Matrix} n   A real or complex number
    * @return {number | Array | Matrix}    The gamma of `n`
    */
-  var gamma = typed('gamma', {
+  const gamma = typed('gamma', {
     'number': function (n) {
-      var t, x
+      let t, x
 
       if (isInteger(n)) {
         if (n <= 0) {
@@ -43,8 +43,8 @@ function factory (type, config, load, typed) {
           return Infinity // Will overflow
         }
 
-        var value = n - 2
-        var res = n - 1
+        let value = n - 2
+        let res = n - 1
         while (value > 1) {
           res *= value
           value--
@@ -66,10 +66,10 @@ function factory (type, config, load, typed) {
       }
 
       if (n > 85.0) { // Extended Stirling Approx
-        var twoN = n * n
-        var threeN = twoN * n
-        var fourN = threeN * n
-        var fiveN = fourN * n
+        const twoN = n * n
+        const threeN = twoN * n
+        const fourN = threeN * n
+        const fiveN = fourN * n
         return Math.sqrt(2 * Math.PI / n) * Math.pow((n / Math.E), n) *
             (1 + 1 / (12 * n) + 1 / (288 * twoN) - 139 / (51840 * threeN) -
             571 / (2488320 * fourN) + 163879 / (209018880 * fiveN) +
@@ -78,7 +78,7 @@ function factory (type, config, load, typed) {
 
       --n
       x = p[0]
-      for (var i = 1; i < p.length; ++i) {
+      for (let i = 1; i < p.length; ++i) {
         x += p[i] / (n + i)
       }
 
@@ -87,7 +87,7 @@ function factory (type, config, load, typed) {
     },
 
     'Complex': function (n) {
-      var t, x
+      let t, x
 
       if (n.im == 0) {
         return gamma(n.re)
@@ -95,9 +95,9 @@ function factory (type, config, load, typed) {
 
       n = new type.Complex(n.re - 1, n.im)
       x = new type.Complex(p[0], 0)
-      for (var i = 1; i < p.length; ++i) {
-        var real = n.re + i // x += p[i]/(n+i)
-        var den = real * real + n.im * n.im
+      for (let i = 1; i < p.length; ++i) {
+        const real = n.re + i // x += p[i]/(n+i)
+        const den = real * real + n.im * n.im
         if (den != 0) {
           x.re += p[i] * real / den
           x.im += -(p[i] * n.im) / den
@@ -109,10 +109,10 @@ function factory (type, config, load, typed) {
       }
 
       t = new type.Complex(n.re + g + 0.5, n.im)
-      var twoPiSqrt = Math.sqrt(2 * Math.PI)
+      const twoPiSqrt = Math.sqrt(2 * Math.PI)
 
       n.re += 0.5
-      var result = pow(t, n)
+      const result = pow(t, n)
       if (result.im == 0) { // sqrt(2*PI)*result
         result.re *= twoPiSqrt
       } else if (result.re == 0) {
@@ -122,7 +122,7 @@ function factory (type, config, load, typed) {
         result.im *= twoPiSqrt
       }
 
-      var r = Math.exp(-t.re) // exp(-t)
+      const r = Math.exp(-t.re) // exp(-t)
       t.re = r * Math.cos(-t.im)
       t.im = r * Math.sin(-t.im)
 
@@ -158,11 +158,11 @@ function factory (type, config, load, typed) {
       return new type.BigNumber(1) // 0! is per definition 1
     }
 
-    var precision = config.precision + (Math.log(n.toNumber()) | 0)
-    var Big = type.BigNumber.clone({precision: precision})
+    const precision = config.precision + (Math.log(n.toNumber()) | 0)
+    const Big = type.BigNumber.clone({precision: precision})
 
-    var res = new Big(n)
-    var value = n.toNumber() - 1 // number
+    let res = new Big(n)
+    let value = n.toNumber() - 1 // number
     while (value > 1) {
       res = res.times(value)
       value--
@@ -178,9 +178,9 @@ function factory (type, config, load, typed) {
 
 // TODO: comment on the variables g and p
 
-var g = 4.7421875
+const g = 4.7421875
 
-var p = [
+const p = [
   0.99999999999999709182,
   57.156235665862923517,
   -59.597960355475491248,

@@ -1,11 +1,11 @@
 'use strict'
 
-var array = require('../../utils/array')
+const array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var subtract = load(require('../arithmetic/subtract'))
-  var multiply = load(require('../arithmetic/multiply'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const subtract = load(require('../arithmetic/subtract'))
+  const multiply = load(require('../arithmetic/multiply'))
 
   /**
    * Calculate the cross product for two vectors in three dimensional space.
@@ -27,10 +27,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.cross([1, 1, 0],   [0, 1, 1]);       // Returns [1, -1, 1]
-   *    math.cross([3, -3, 1],  [4, 9, 2]);       // Returns [-15, -2, 39]
-   *    math.cross([2, 3, 4],   [5, 6, 7]);       // Returns [-3, 6, -3]
-   *    math.cross([[1, 2, 3]], [[4], [5], [6]]); // Returns [[-3, 6, -3]]
+   *    math.cross([1, 1, 0],   [0, 1, 1])       // Returns [1, -1, 1]
+   *    math.cross([3, -3, 1],  [4, 9, 2])       // Returns [-15, -2, 39]
+   *    math.cross([2, 3, 4],   [5, 6, 7])       // Returns [-3, 6, -3]
+   *    math.cross([[1, 2, 3]], [[4], [5], [6]]) // Returns [[-3, 6, -3]]
    *
    * See also:
    *
@@ -40,7 +40,7 @@ function factory (type, config, load, typed) {
    * @param  {Array | Matrix} y   Second vector
    * @return {Array | Matrix}     Returns the cross product of `x` and `y`
    */
-  var cross = typed('cross', {
+  const cross = typed('cross', {
     'Matrix, Matrix': function (x, y) {
       return matrix(_cross(x.toArray(), y.toArray()))
     },
@@ -70,20 +70,20 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _cross (x, y) {
-    var highestDimension = Math.max(array.size(x).length, array.size(y).length)
+    const highestDimension = Math.max(array.size(x).length, array.size(y).length)
 
     x = array.squeeze(x)
     y = array.squeeze(y)
 
-    var xSize = array.size(x)
-    var ySize = array.size(y)
+    const xSize = array.size(x)
+    const ySize = array.size(y)
 
     if (xSize.length != 1 || ySize.length != 1 || xSize[0] != 3 || ySize[0] != 3) {
       throw new RangeError('Vectors with length 3 expected ' +
       '(Size A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])')
     }
 
-    var product = [
+    const product = [
       subtract(multiply(x[1], y[2]), multiply(x[2], y[1])),
       subtract(multiply(x[2], y[0]), multiply(x[0], y[2])),
       subtract(multiply(x[0], y[1]), multiply(x[1], y[0]))

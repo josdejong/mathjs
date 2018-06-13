@@ -1,13 +1,12 @@
 'use strict'
 
-var util = require('../../../utils/index')
-var DimensionError = require('../../../error/DimensionError')
+const util = require('../../../utils/index')
+const DimensionError = require('../../../error/DimensionError')
 
-var string = util.string,
-  isString = string.isString
+const string = util.string, isString = string.isString
 
 function factory (type, config, load, typed) {
-  var DenseMatrix = type.DenseMatrix
+  const DenseMatrix = type.DenseMatrix
 
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z).
@@ -23,23 +22,23 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97658658
    */
-  var algorithm13 = function (a, b, callback) {
+  const algorithm13 = function (a, b, callback) {
     // a arrays
-    var adata = a._data
-    var asize = a._size
-    var adt = a._datatype
+    const adata = a._data
+    const asize = a._size
+    const adt = a._datatype
     // b arrays
-    var bdata = b._data
-    var bsize = b._size
-    var bdt = b._datatype
+    const bdata = b._data
+    const bsize = b._size
+    const bdt = b._datatype
     // c arrays
-    var csize = []
+    const csize = []
 
     // validate dimensions
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
 
     // validate each one of the dimension sizes
-    for (var s = 0; s < asize.length; s++) {
+    for (let s = 0; s < asize.length; s++) {
       // must match
       if (asize[s] !== bsize[s]) { throw new RangeError('Dimension mismatch. Matrix A (' + asize + ') must match Matrix B (' + bsize + ')') }
       // update dimension in c
@@ -47,9 +46,9 @@ function factory (type, config, load, typed) {
     }
 
     // datatype
-    var dt
+    let dt
     // callback signature to use
-    var cf = callback
+    let cf = callback
 
     // process data types
     if (typeof adt === 'string' && adt === bdt) {
@@ -62,7 +61,7 @@ function factory (type, config, load, typed) {
     }
 
     // populate cdata, iterate through dimensions
-    var cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : []
+    const cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : []
 
     // c matrix
     return new DenseMatrix({
@@ -73,19 +72,19 @@ function factory (type, config, load, typed) {
   }
 
   // recursive function
-  var _iterate = function (f, level, s, n, av, bv) {
+  function _iterate (f, level, s, n, av, bv) {
     // initialize array for this level
-    var cv = []
+    const cv = []
     // check we reach the last level
     if (level === s.length - 1) {
       // loop arrays in last level
-      for (var i = 0; i < n; i++) {
+      for (let i = 0; i < n; i++) {
         // invoke callback and store value
         cv[i] = f(av[i], bv[i])
       }
     } else {
       // iterate current level
-      for (var j = 0; j < n; j++) {
+      for (let j = 0; j < n; j++) {
         // iterate next level
         cv[j] = _iterate(f, level + 1, s, s[level + 1], av[j], bv[j])
       }

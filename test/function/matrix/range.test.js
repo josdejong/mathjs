@@ -1,10 +1,4 @@
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  range = math.range,
-  matrix = math.matrix,
-  bignumber = math.bignumber
+const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/index'), range = math.range, matrix = math.matrix, bignumber = math.bignumber
 
 describe('range', function () {
   it('should parse a valid string correctly', function () {
@@ -42,7 +36,7 @@ describe('range', function () {
   })
 
   it('should output an array when setting matrix==="array"', function () {
-    var math2 = math.create({
+    const math2 = math.create({
       matrix: 'Array'
     })
 
@@ -74,14 +68,14 @@ describe('range', function () {
   })
 
   it('should parse a range with bignumbers', function () {
-    var bigmath = math.create({number: 'BigNumber'})
-    var bignumber = bigmath.bignumber
+    const bigmath = math.create({number: 'BigNumber'})
+    const bignumber = bigmath.bignumber
     assert.deepEqual(bigmath.range('1:3'), matrix([bignumber(1), bignumber(2)]))
     assert.deepEqual(bigmath.range('3:-1:0'), matrix([bignumber(3), bignumber(2), bignumber(1)]))
   })
 
   it('should throw an error when parsing a an invalid string to a bignumber range', function () {
-    var bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({number: 'BigNumber'})
     assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
   })
 
@@ -147,7 +141,7 @@ describe('range', function () {
   })
 
   it('should LaTeX range', function () {
-    var expression = math.parse('range(1,10)')
+    const expression = math.parse('range(1,10)')
     assert.equal(expression.toTex(), '\\mathrm{range}\\left(1,10\\right)')
   })
 })

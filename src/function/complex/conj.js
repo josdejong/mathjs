@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,9 +15,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.conj(math.complex('2 + 3i'));  // returns Complex 2 - 3i
-   *    math.conj(math.complex('2 - 3i'));  // returns Complex 2 + 3i
-   *    math.conj(math.complex('-5.2i'));  // returns Complex 5.2i
+   *    math.conj(math.complex('2 + 3i'))  // returns Complex 2 - 3i
+   *    math.conj(math.complex('2 - 3i'))  // returns Complex 2 + 3i
+   *    math.conj(math.complex('-5.2i'))  // returns Complex 5.2i
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            The complex conjugate of x
    */
-  var conj = typed('conj', {
+  const conj = typed('conj', {
     'number': function (x) {
       return x
     },

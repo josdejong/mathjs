@@ -1,6 +1,4 @@
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber
 
 describe('diag', function () {
   it('should return a diagonal matrix on the default diagonal', function () {
@@ -43,8 +41,8 @@ describe('diag', function () {
   })
 
   describe('bignumber', function () {
-    var array123 = [bignumber(1), bignumber(2), bignumber(3)]
-    var array123456 = [
+    const array123 = [bignumber(1), bignumber(2), bignumber(3)]
+    const array123456 = [
       [bignumber(1), bignumber(2), bignumber(3)],
       [bignumber(4), bignumber(5), bignumber(6)]
     ]
@@ -117,8 +115,8 @@ describe('diag', function () {
   })
 
   it('should LaTeX diag', function () {
-    var expr1 = math.parse('diag([1,2,3])')
-    var expr2 = math.parse('diag([1,2,3],1)')
+    const expr1 = math.parse('diag([1,2,3])')
+    const expr2 = math.parse('diag([1,2,3],1)')
 
     assert.equal(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
     assert.equal(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1\\right)')

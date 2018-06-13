@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var prod = math.prod
+const assert = require('assert')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const prod = math.prod
 
 describe('prod', function () {
   it('should return the product of numbers', function () {
@@ -69,7 +69,7 @@ describe('prod', function () {
   })
 
   it('should LaTeX prod', function () {
-    var expression = math.parse('prod(1,2,3)')
+    const expression = math.parse('prod(1,2,3)')
     assert.equal(expression.toTex(), '\\mathrm{prod}\\left(1,2,3\\right)')
   })
 })

@@ -1,12 +1,12 @@
 'use strict'
 
-var DimensionError = require('../../error/DimensionError')
+const DimensionError = require('../../error/DimensionError')
 
-var isInteger = require('../../utils/number').isInteger
-var array = require('../../utils/array')
+const isInteger = require('../../utils/number').isInteger
+const array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Reshape a multi dimensional array to fit the specified dimensions
@@ -17,17 +17,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.reshape([1, 2, 3, 4, 5, 6], [2, 3]);
+   *     math.reshape([1, 2, 3, 4, 5, 6], [2, 3])
    *     // returns Array  [[1, 2, 3], [4, 5, 6]]
    *
-   *     math.reshape([[1, 2], [3, 4]], [1, 4]);
+   *     math.reshape([[1, 2], [3, 4]], [1, 4])
    *     // returns Array  [[1, 2, 3, 4]]
    *
-   *     math.reshape([[1, 2], [3, 4]], [4]);
+   *     math.reshape([[1, 2], [3, 4]], [4])
    *     // returns Array [1, 2, 3, 4]
    *
-   *     var x = math.matrix([1, 2, 3, 4, 5, 6, 7, 8]);
-   *     math.reshape(x, [2, 2, 2]);
+   *     const x = math.matrix([1, 2, 3, 4, 5, 6, 7, 8])
+   *     math.reshape(x, [2, 2, 2])
    *     // returns Matrix [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
    *
    * See also:
@@ -44,7 +44,7 @@ function factory (type, config, load, typed) {
    * @throws {DimensionError}       If the product of the new dimension sizes does
    *                                not equal that of the old ones
    */
-  var reshape = typed('reshape', {
+  const reshape = typed('reshape', {
 
     'Matrix, Array': function (x, sizes) {
       if (x.reshape) {

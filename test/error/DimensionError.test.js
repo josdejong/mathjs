@@ -1,9 +1,8 @@
-var assert = require('assert'),
-  DimensionError = require('../../src/error/DimensionError')
+const assert = require('assert'), DimensionError = require('../../src/error/DimensionError')
 
 describe('DimensionError', function () {
   it('should construct a DimensionError with numbers', function () {
-    var err = new DimensionError(3, 5)
+    const err = new DimensionError(3, 5)
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof DimensionError)
@@ -14,7 +13,7 @@ describe('DimensionError', function () {
   })
 
   it('should construct a DimensionError with numbers and a custom relation', function () {
-    var err = new DimensionError(3, 5, '<')
+    const err = new DimensionError(3, 5, '<')
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof DimensionError)
@@ -25,7 +24,7 @@ describe('DimensionError', function () {
   })
 
   it('should construct a DimensionError with arrays', function () {
-    var err = new DimensionError([2, 3], [1, 3])
+    const err = new DimensionError([2, 3], [1, 3])
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof DimensionError)
@@ -36,7 +35,7 @@ describe('DimensionError', function () {
   })
 
   it('should construct a DimensionError with arrays and a custom relation', function () {
-    var err = new DimensionError([2, 3], [1, 3], '<')
+    const err = new DimensionError([2, 3], [1, 3], '<')
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof DimensionError)

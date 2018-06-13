@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  coth = math.coth,
-  bigmath = math.create({precision: 20}),
-  biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, coth = math.coth, bigmath = math.create({precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('coth', function () {
   it('should return the coth of a boolean', function () {
@@ -25,8 +15,8 @@ describe('coth', function () {
   })
 
   it('should return the coth of a bignumber', function () {
-    var cothBig = bigmath.coth
-    var Big = bigmath.bignumber
+    const cothBig = bigmath.coth
+    const Big = bigmath.bignumber
     assert.deepEqual(cothBig(Big(0)).toString(), 'Infinity')
     assert.deepEqual(cothBig(Big(1)), Big('1.3130352854993313036'))
     assert.deepEqual(cothBig(Big(2)), Big('1.0373147207275480959'))
@@ -60,7 +50,7 @@ describe('coth', function () {
     assert.throws(function () { coth('string') })
   })
 
-  var coth123 = [1.3130352854993, 1.0373147207275, 1.0049698233137]
+  const coth123 = [1.3130352854993, 1.0373147207275, 1.0049698233137]
 
   it('should return the coth of each element of an array', function () {
     approx.deepEqual(coth([1, 2, 3]), coth123)
@@ -76,7 +66,7 @@ describe('coth', function () {
   })
 
   it('should LaTeX coth', function () {
-    var expression = math.parse('coth(1)')
+    const expression = math.parse('coth(1)')
     assert.equal(expression.toTex(), '\\coth\\left(1\\right)')
   })
 })

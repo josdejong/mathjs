@@ -1,9 +1,9 @@
 // test data type Index
-var assert = require('assert')
-var math = require('../../../src/index')
-var Index = math.type.Index
-var Range = math.type.Range
-var ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
+const assert = require('assert')
+const math = require('../../../src/index')
+const Index = math.type.Index
+const Range = math.type.Range
+const ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
 
 describe('Index', function () {
   it('should create an Index', function () {
@@ -41,13 +41,13 @@ describe('Index', function () {
   })
 
   it('should create an Index from an array with ranges', function () {
-    var index = Index.create([new Range(0, 10), new Range(4)])
+    const index = Index.create([new Range(0, 10), new Range(4)])
     assert(index instanceof Index)
     assert.deepEqual(index._dimensions, [new Range(0, 10), new Range(4)])
   })
 
   it('should create an Index from an array with sets', function () {
-    var index = Index.create([new ImmutableDenseMatrix([0, 10]), new ImmutableDenseMatrix([4])])
+    const index = Index.create([new ImmutableDenseMatrix([0, 10]), new ImmutableDenseMatrix([4])])
     assert(index instanceof Index)
     assert.deepEqual(index._dimensions, [new ImmutableDenseMatrix([0, 10]), new ImmutableDenseMatrix([4])])
   })
@@ -107,8 +107,8 @@ describe('Index', function () {
   })
 
   it('should clone an Index', function () {
-    var index1 = new Index(2, new Range(0, 4), new ImmutableDenseMatrix([0, 2]))
-    var index2 = index1.clone(0)
+    const index1 = new Index(2, new Range(0, 4), new ImmutableDenseMatrix([0, 2]))
+    const index2 = index1.clone(0)
 
     assert.deepEqual(index1, index2)
     assert.notStrictEqual(index1, index2)
@@ -138,20 +138,20 @@ describe('Index', function () {
   })
 
   it('fromJSON', function () {
-    var json = {dimensions: [
+    const json = {dimensions: [
       new Range(0, 10, 1),
       new ImmutableDenseMatrix([2]),
       new ImmutableDenseMatrix([1, 2, 3])
     ]}
-    var i1 = new Index(new Range(0, 10), 2, new ImmutableDenseMatrix([1, 2, 3]))
+    const i1 = new Index(new Range(0, 10), 2, new ImmutableDenseMatrix([1, 2, 3]))
 
-    var i2 = Index.fromJSON(json)
+    const i2 = Index.fromJSON(json)
     assert.ok(i2 instanceof Index)
     assert.deepEqual(i2, i1)
   })
 
   it('should get the range for a given dimension', function () {
-    var index = new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), new ImmutableDenseMatrix([1, 2, 3]))
+    const index = new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), new ImmutableDenseMatrix([1, 2, 3]))
 
     assert(index.dimension(0) instanceof ImmutableDenseMatrix)
     assert.deepEqual(index.dimension(0), new ImmutableDenseMatrix([2]))
@@ -169,9 +169,9 @@ describe('Index', function () {
   })
 
   it('should iterate over all ranges', function () {
-    var index = new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), [1, 2, 3])
+    const index = new Index(2, new Range(0, 8, 2), new Range(3, -1, -1), [1, 2, 3])
 
-    var log = []
+    const log = []
     index.forEach(function (d, i, obj) {
       log.push({
         dimension: d,
@@ -189,12 +189,12 @@ describe('Index', function () {
   })
 
   it('should have a property isIndex', function () {
-    var a = new math.type.Index([2, 5])
+    const a = new math.type.Index([2, 5])
     assert.strictEqual(a.isIndex, true)
   })
 
   it('should have a property type', function () {
-    var a = new math.type.Index([2, 5])
+    const a = new math.type.Index([2, 5])
     assert.strictEqual(a.type, 'Index')
   })
 

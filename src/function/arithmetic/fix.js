@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -13,15 +13,15 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.fix(3.2);                // returns number 3
-   *    math.fix(3.8);                // returns number 3
-   *    math.fix(-4.2);               // returns number -4
-   *    math.fix(-4.7);               // returns number -4
+   *    math.fix(3.2)                // returns number 3
+   *    math.fix(3.8)                // returns number 3
+   *    math.fix(-4.2)               // returns number -4
+   *    math.fix(-4.7)               // returns number -4
    *
-   *    var c = math.complex(3.2, -2.7);
-   *    math.fix(c);                  // returns Complex 3 - 2i
+   *    const c = math.complex(3.2, -2.7)
+   *    math.fix(c)                  // returns Complex 3 - 2i
    *
-   *    math.fix([3.2, 3.8, -4.7]);   // returns Array [3, 3, -4]
+   *    math.fix([3.2, 3.8, -4.7])   // returns Array [3, 3, -4]
    *
    * See also:
    *
@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
-  var fix = typed('fix', {
+  const fix = typed('fix', {
     'number': function (x) {
       return (x > 0) ? Math.floor(x) : Math.ceil(x)
     },

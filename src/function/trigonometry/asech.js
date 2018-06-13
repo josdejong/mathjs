@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var acosh = typed.find(load(require('./acosh')), ['Complex'])
+  const acosh = typed.find(load(require('./acosh')), ['Complex'])
 
   /**
    * Calculate the hyperbolic arcsecant of a value,
@@ -17,7 +17,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.asech(0.5);       // returns 1.3169578969248166
+   *    math.asech(0.5)       // returns 1.3169578969248166
    *
    * See also:
    *
@@ -26,12 +26,12 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsecant of x
    */
-  var asech = typed('asech', {
+  const asech = typed('asech', {
     'number': function (x) {
       if ((x <= 1 && x >= -1) || config.predictable) {
         x = 1 / x
 
-        var ret = Math.sqrt(x * x - 1)
+        const ret = Math.sqrt(x * x - 1)
         if (x > 0 || config.predictable) {
           return Math.log(ret + x)
         }

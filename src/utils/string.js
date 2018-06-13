@@ -1,8 +1,8 @@
 'use strict'
 
-var formatNumber = require('./number').format
-var formatBigNumber = require('./bignumber/formatter').format
-var isBigNumber = require('./bignumber/isBigNumber')
+const formatNumber = require('./number').format
+const formatBigNumber = require('./bignumber/formatter').format
+const isBigNumber = require('./bignumber/isBigNumber')
 
 /**
  * Test whether value is a string
@@ -19,8 +19,8 @@ exports.isString = function (value) {
  * @param {string} search
  */
 exports.endsWith = function (text, search) {
-  var start = text.length - search.length
-  var end = text.length
+  const start = text.length - search.length
+  const end = text.length
   return (text.substring(start, end) === search)
 }
 
@@ -47,10 +47,10 @@ exports.endsWith = function (text, search) {
  *   return JSON object notation like '{"a": 2, "b": 3}'.
  *
  * Example usage:
- *     math.format(2/7);                // '0.2857142857142857'
- *     math.format(math.pi, 3);         // '3.14'
- *     math.format(new Complex(2, 3));  // '2 + 3i'
- *     math.format('hello');            // '"hello"'
+ *     math.format(2/7)                // '0.2857142857142857'
+ *     math.format(math.pi, 3)         // '3.14'
+ *     math.format(new Complex(2, 3))  // '2 + 3i'
+ *     math.format('hello')            // '"hello"'
  *
  * @param {*} value             Value to be stringified
  * @param {Object | number | Function} [options]  Formatting options. See
@@ -99,9 +99,9 @@ exports.format = function (value, options) {
       // this object has a non-native toString method, use that one
       return value.toString()
     } else {
-      var entries = []
+      const entries = []
 
-      for (var key in value) {
+      for (const key in value) {
         if (value.hasOwnProperty(key)) {
           entries.push('"' + key + '": ' + exports.format(value[key], options))
         }
@@ -121,11 +121,11 @@ exports.format = function (value, options) {
  * @return {string}
  */
 exports.stringify = function (value) {
-  var text = String(value)
-  var escaped = ''
-  var i = 0
+  const text = String(value)
+  let escaped = ''
+  let i = 0
   while (i < text.length) {
-    var c = text.charAt(i)
+    let c = text.charAt(i)
 
     if (c === '\\') {
       escaped += c
@@ -153,7 +153,7 @@ exports.stringify = function (value) {
  * @return {string}
  */
 exports.escape = function (value) {
-  var text = String(value)
+  let text = String(value)
   text = text.replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;')
@@ -175,9 +175,9 @@ exports.escape = function (value) {
  */
 function formatArray (array, options) {
   if (Array.isArray(array)) {
-    var str = '['
-    var len = array.length
-    for (var i = 0; i < len; i++) {
+    let str = '['
+    const len = array.length
+    for (let i = 0; i < len; i++) {
       if (i != 0) {
         str += ', '
       }

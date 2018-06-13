@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var sum = math.sum
+const assert = require('assert')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const sum = math.sum
 
 describe('sum', function () {
   it('should return the sum of numbers', function () {
@@ -70,11 +70,11 @@ describe('sum', function () {
   })
 
   it('should return zero if called with an empty array', function () {
-    var bigMath = math.create({number: 'BigNumber'})
-    var fracMath = math.create({number: 'Fraction'})
+    const bigMath = math.create({number: 'BigNumber'})
+    const fracMath = math.create({number: 'Fraction'})
 
-    var big = bigMath.sum([])
-    var frac = fracMath.sum([])
+    const big = bigMath.sum([])
+    const frac = fracMath.sum([])
 
     assert.equal(sum([]), 0)
     assert.equal(big.type, 'BigNumber')
@@ -90,7 +90,7 @@ describe('sum', function () {
   })
 
   it('should LaTeX sum', function () {
-    var expression = math.parse('sum(1,2,3)')
+    const expression = math.parse('sum(1,2,3)')
     assert.equal(expression.toTex(), '\\mathrm{sum}\\left(1,2,3\\right)')
   })
 })

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -16,8 +16,8 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    // coth(x) = 1 / tanh(x)
-   *    math.coth(2);         // returns 1.0373147207275482
-   *    1 / math.tanh(2);     // returns 1.0373147207275482
+   *    math.coth(2)         // returns 1.0373147207275482
+   *    1 / math.tanh(2)     // returns 1.0373147207275482
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
    */
-  var coth = typed('coth', {
+  const coth = typed('coth', {
     'number': _coth,
 
     'Complex': function (x) {
@@ -61,7 +61,7 @@ function factory (type, config, load, typed) {
  * @private
  */
 function _coth (x) {
-  var e = Math.exp(2 * x)
+  const e = Math.exp(2 * x)
   return (e + 1) / (e - 1)
 }
 

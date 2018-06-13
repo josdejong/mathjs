@@ -1,17 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  acot = math.acot,
-  cot = math.cot,
-  bigmath = math.create({number: 'BigNumber', precision: 20}),
-  acotBig = bigmath.acot,
-  cotBig = bigmath.cot,
-  Big = bigmath.bignumber
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, acot = math.acot, cot = math.cot, bigmath = math.create({number: 'BigNumber', precision: 20}), acotBig = bigmath.acot, cotBig = bigmath.cot, Big = bigmath.bignumber
 
 describe('acot', function () {
   it('should return the arccot of a boolean', function () {
@@ -31,11 +18,11 @@ describe('acot', function () {
   })
 
   it('should return the arccot of a bignumber', function () {
-    var arg2 = Big(-1)
-    var arg3 = Big(-0.5)
-    var arg4 = Big(0)
-    var arg7 = Big(2)
-    var arg8 = Big(Infinity)
+    const arg2 = Big(-1)
+    const arg3 = Big(-0.5)
+    const arg4 = Big(0)
+    const arg7 = Big(2)
+    const arg8 = Big(Infinity)
 
     assert.deepEqual(acotBig(Big(-2)), Big('-0.46364760900080611621'))
     assert.deepEqual(acotBig(arg2), Big('-0.78539816339744830962'))
@@ -77,8 +64,8 @@ describe('acot', function () {
   })
 
   it('should return the arccot of a complex number', function () {
-    var re = 0.160875277198321
-    var im = 0.229072682968539
+    const re = 0.160875277198321
+    const im = 0.229072682968539
     approx.deepEqual(acot(complex('2+3i')), complex(re, -im))
     approx.deepEqual(acot(complex('2-3i')), complex(re, im))
     approx.deepEqual(acot(complex('-2+3i')), complex(-re, -im))
@@ -99,7 +86,7 @@ describe('acot', function () {
 
   it('should calculate the arccot element-wise for arrays and matrices', function () {
     // matrix, array, range
-    var acot123 = [pi / 4, 0.4636476090008, 0.3217505543966]
+    const acot123 = [pi / 4, 0.4636476090008, 0.3217505543966]
     approx.deepEqual(acot([1, 2, 3]), acot123)
     approx.deepEqual(acot(matrix([1, 2, 3])), matrix(acot123))
   })
@@ -110,7 +97,7 @@ describe('acot', function () {
   })
 
   it('should LaTeX acot', function () {
-    var expression = math.parse('acot(2)')
+    const expression = math.parse('acot(2)')
     assert.equal(expression.toTex(), '\\cot^{-1}\\left(2\\right)')
   })
 })

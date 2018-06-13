@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var sign = require('../../utils/number').sign
+const deepMap = require('../../utils/collection/deepMap')
+const sign = require('../../utils/number').sign
 
 function factory (type, config, load, typed) {
   /**
@@ -21,16 +21,16 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.erf(0.2);    // returns 0.22270258921047847
-   *    math.erf(-0.5);   // returns -0.5204998778130465
-   *    math.erf(4);      // returns 0.9999999845827421
+   *    math.erf(0.2)    // returns 0.22270258921047847
+   *    math.erf(-0.5)   // returns -0.5204998778130465
+   *    math.erf(4)      // returns 0.9999999845827421
    *
    * @param {number | Array | Matrix} x   A real number
    * @return {number | Array | Matrix}    The erf of `x`
    */
-  var erf = typed('erf', {
+  const erf = typed('erf', {
     'number': function (x) {
-      var y = Math.abs(x)
+      const y = Math.abs(x)
 
       if (y >= MAX_NUM) {
         return sign(x)
@@ -67,10 +67,10 @@ function factory (type, config, load, typed) {
    *              j=0
    */
   function erf1 (y) {
-    var ysq = y * y
-    var xnum = P[0][4] * ysq
-    var xden = ysq
-    var i
+    const ysq = y * y
+    let xnum = P[0][4] * ysq
+    let xden = ysq
+    let i
 
     for (i = 0; i < 3; i += 1) {
       xnum = (xnum + P[0][i]) * ysq
@@ -87,17 +87,17 @@ function factory (type, config, load, typed) {
    *                      j=0
    */
   function erfc2 (y) {
-    var xnum = P[1][8] * y
-    var xden = y
-    var i
+    let xnum = P[1][8] * y
+    let xden = y
+    let i
 
     for (i = 0; i < 7; i += 1) {
       xnum = (xnum + P[1][i]) * y
       xden = (xden + Q[1][i]) * y
     }
-    var result = (xnum + P[1][7]) / (xden + Q[1][7])
-    var ysq = parseInt(y * 16) / 16
-    var del = (y - ysq) * (y + ysq)
+    const result = (xnum + P[1][7]) / (xden + Q[1][7])
+    const ysq = parseInt(y * 16) / 16
+    const del = (y - ysq) * (y + ysq)
     return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
 
@@ -111,19 +111,19 @@ function factory (type, config, load, typed) {
    *              j=0
    */
   function erfc3 (y) {
-    var ysq = 1 / (y * y)
-    var xnum = P[2][5] * ysq
-    var xden = ysq
-    var i
+    let ysq = 1 / (y * y)
+    let xnum = P[2][5] * ysq
+    let xden = ysq
+    let i
 
     for (i = 0; i < 4; i += 1) {
       xnum = (xnum + P[2][i]) * ysq
       xden = (xden + Q[2][i]) * ysq
     }
-    var result = ysq * (xnum + P[2][4]) / (xden + Q[2][4])
+    let result = ysq * (xnum + P[2][4]) / (xden + Q[2][4])
     result = (SQRPI - result) / y
     ysq = parseInt(y * 16) / 16
-    var del = (y - ysq) * (y + ysq)
+    const del = (y - ysq) * (y + ysq)
     return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
 
@@ -136,20 +136,20 @@ function factory (type, config, load, typed) {
  * Upper bound for the first approximation interval, 0 <= x <= THRESH
  * @constant
  */
-var THRESH = 0.46875
+const THRESH = 0.46875
 
 /**
  * Constant used by W. J. Cody's Fortran77 implementation to denote sqrt(pi)
  * @constant
  */
-var SQRPI = 5.6418958354775628695e-1
+const SQRPI = 5.6418958354775628695e-1
 
 /**
  * Coefficients for each term of the numerator sum (p_j) for each approximation
  * interval (see W. J. Cody's paper for more details)
  * @constant
  */
-var P = [[
+const P = [[
   3.16112374387056560e00, 1.13864154151050156e02,
   3.77485237685302021e02, 3.20937758913846947e03,
   1.85777706184603153e-1
@@ -170,7 +170,7 @@ var P = [[
  * interval (see W. J. Cody's paper for more details)
  * @constant
  */
-var Q = [[
+const Q = [[
   2.36012909523441209e01, 2.44024637934444173e02,
   1.28261652607737228e03, 2.84423683343917062e03
 ], [
@@ -189,7 +189,7 @@ var Q = [[
  * Number.[MAX|MIN]_SAFE_INTEGER). erf() for all numbers beyond this limit will
  * return 1
  */
-var MAX_NUM = Math.pow(2, 53)
+const MAX_NUM = Math.pow(2, 53)
 
 exports.name = 'erf'
 exports.factory = factory

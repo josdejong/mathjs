@@ -1,6 +1,6 @@
 'use strict'
 
-var isMatrix = require('./isMatrix')
+const isMatrix = require('./isMatrix')
 
 /**
  * Test whether a value is a collection: an Array or Matrix

@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var divideScalar = load(require('./divideScalar'))
+  const divideScalar = load(require('./divideScalar'))
 
   /**
    * Calculate the logarithm of a value.
@@ -17,15 +17,15 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.log(3.5);                  // returns 1.252762968495368
-   *    math.exp(math.log(2.4));        // returns 2.4
+   *    math.log(3.5)                  // returns 1.252762968495368
+   *    math.exp(math.log(2.4))        // returns 2.4
    *
-   *    math.pow(10, 4);                // returns 10000
-   *    math.log(10000, 10);            // returns 4
-   *    math.log(10000) / math.log(10); // returns 4
+   *    math.pow(10, 4)                // returns 10000
+   *    math.log(10000, 10)            // returns 4
+   *    math.log(10000) / math.log(10) // returns 4
    *
-   *    math.log(1024, 2);              // returns 10
-   *    math.pow(2, 10);                // returns 1024
+   *    math.log(1024, 2)              // returns 10
+   *    math.pow(2, 10)                // returns 1024
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x`
    */
-  var log = typed('log', {
+  const log = typed('log', {
     'number': function (x) {
       if (x >= 0 || config.predictable) {
         return Math.log(x)

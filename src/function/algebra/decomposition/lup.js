@@ -1,23 +1,23 @@
 'use strict'
 
-var util = require('../../../utils/index')
+const util = require('../../../utils/index')
 
-var object = util.object
+const object = util.object
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../../type/matrix/function/matrix'))
-  var abs = load(require('../../arithmetic/abs'))
-  var addScalar = load(require('../../arithmetic/addScalar'))
-  var divideScalar = load(require('../../arithmetic/divideScalar'))
-  var multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
-  var subtract = load(require('../../arithmetic/subtract'))
-  var larger = load(require('../../relational/larger'))
-  var equalScalar = load(require('../../relational/equalScalar'))
-  var unaryMinus = load(require('../../arithmetic/unaryMinus'))
+  const matrix = load(require('../../../type/matrix/function/matrix'))
+  const abs = load(require('../../arithmetic/abs'))
+  const addScalar = load(require('../../arithmetic/addScalar'))
+  const divideScalar = load(require('../../arithmetic/divideScalar'))
+  const multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
+  const subtract = load(require('../../arithmetic/subtract'))
+  const larger = load(require('../../relational/larger'))
+  const equalScalar = load(require('../../relational/equalScalar'))
+  const unaryMinus = load(require('../../arithmetic/unaryMinus'))
 
-  var SparseMatrix = type.SparseMatrix
-  var DenseMatrix = type.DenseMatrix
-  var Spa = type.Spa
+  const SparseMatrix = type.SparseMatrix
+  const DenseMatrix = type.DenseMatrix
+  const Spa = type.Spa
 
   /**
    * Calculate the Matrix LU decomposition with partial pivoting. Matrix `A` is decomposed in two matrices (`L`, `U`) and a
@@ -25,12 +25,12 @@ function factory (type, config, load, typed) {
    *
    * Syntax:
    *
-   *    math.lup(A);
+   *    math.lup(A)
    *
    * Example:
    *
-   *    var m = [[2, 1], [1, 4]];
-   *    var r = math.lup(m);
+   *    const m = [[2, 1], [1, 4]]
+   *    const r = math.lup(m)
    *    // r = {
    *    //   L: [[1, 0], [0.5, 1]],
    *    //   U: [[2, 1], [0, 3.5]],
@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
    *
    * @return {{L: Array | Matrix, U: Array | Matrix, P: Array.<number>}} The lower triangular matrix, the upper triangular matrix and the permutation matrix.
    */
-  var lup = typed('lup', {
+  const lup = typed('lup', {
 
     'DenseMatrix': function (m) {
       return _denseLUP(m)
@@ -57,9 +57,9 @@ function factory (type, config, load, typed) {
 
     'Array': function (a) {
       // create dense matrix from array
-      var m = matrix(a)
+      const m = matrix(a)
       // lup, use matrix implementation
-      var r = _denseLUP(m)
+      const r = _denseLUP(m)
       // result
       return {
         L: r.L.valueOf(),
@@ -69,24 +69,24 @@ function factory (type, config, load, typed) {
     }
   })
 
-  var _denseLUP = function (m) {
+  function _denseLUP (m) {
     // rows & columns
-    var rows = m._size[0]
-    var columns = m._size[1]
+    const rows = m._size[0]
+    const columns = m._size[1]
     // minimum rows and columns
-    var n = Math.min(rows, columns)
+    let n = Math.min(rows, columns)
     // matrix array, clone original data
-    var data = object.clone(m._data)
+    const data = object.clone(m._data)
     // l matrix arrays
-    var ldata = []
-    var lsize = [rows, n]
+    const ldata = []
+    const lsize = [rows, n]
     // u matrix arrays
-    var udata = []
-    var usize = [n, columns]
+    const udata = []
+    const usize = [n, columns]
     // vars
-    var i, j, k
+    let i, j, k
     // permutation vector
-    var p = []
+    const p = []
     for (i = 0; i < rows; i++) { p[i] = i }
     // loop columns
     for (j = 0; j < columns; j++) {
@@ -95,9 +95,9 @@ function factory (type, config, load, typed) {
         // loop rows
         for (i = 0; i < rows; i++) {
           // min i,j
-          var min = Math.min(i, j)
+          const min = Math.min(i, j)
           // v[i, j]
-          var s = 0
+          let s = 0
           // loop up to min
           for (k = 0; k < min; k++) {
             // s = l[i, k] - data[k, j]
@@ -107,15 +107,15 @@ function factory (type, config, load, typed) {
         }
       }
       // row with larger value in cvector, row >= j
-      var pi = j
-      var pabsv = 0
-      var vjj = 0
+      let pi = j
+      let pabsv = 0
+      let vjj = 0
       // loop rows
       for (i = j; i < rows; i++) {
         // data @ i, j
-        var v = data[i][j]
+        const v = data[i][j]
         // absolute value
-        var absv = abs(v)
+        const absv = abs(v)
         // value is greater than pivote value
         if (larger(absv, pabsv)) {
           // store row
@@ -138,7 +138,7 @@ function factory (type, config, load, typed) {
         // loop rows (lower triangular matrix)
         for (i = j + 1; i < rows; i++) {
           // value @ i, j
-          var vij = data[i][j]
+          const vij = data[i][j]
           if (!equalScalar(vij, 0)) {
             // update data
             data[i][j] = divideScalar(data[i][j], vjj)
@@ -201,17 +201,17 @@ function factory (type, config, load, typed) {
       }
     }
     // l matrix
-    var l = new DenseMatrix({
+    const l = new DenseMatrix({
       data: ldata,
       size: lsize
     })
     // u matrix
-    var u = new DenseMatrix({
+    const u = new DenseMatrix({
       data: udata,
       size: usize
     })
     // p vector
-    var pv = []
+    const pv = []
     for (i = 0, n = p.length; i < n; i++) { pv[p[i]] = i }
     // return matrices
     return {
@@ -224,40 +224,40 @@ function factory (type, config, load, typed) {
     }
   }
 
-  var _sparseLUP = function (m) {
+  function _sparseLUP (m) {
     // rows & columns
-    var rows = m._size[0]
-    var columns = m._size[1]
+    const rows = m._size[0]
+    const columns = m._size[1]
     // minimum rows and columns
-    var n = Math.min(rows, columns)
+    const n = Math.min(rows, columns)
     // matrix arrays (will not be modified, thanks to permutation vector)
-    var values = m._values
-    var index = m._index
-    var ptr = m._ptr
+    const values = m._values
+    const index = m._index
+    const ptr = m._ptr
     // l matrix arrays
-    var lvalues = []
-    var lindex = []
-    var lptr = []
-    var lsize = [rows, n]
+    const lvalues = []
+    const lindex = []
+    const lptr = []
+    const lsize = [rows, n]
     // u matrix arrays
-    var uvalues = []
-    var uindex = []
-    var uptr = []
-    var usize = [n, columns]
+    const uvalues = []
+    const uindex = []
+    const uptr = []
+    const usize = [n, columns]
     // vars
-    var i, j, k
+    let i, j, k
     // permutation vectors, (current index -> original index) and (original index -> current index)
-    var pv_co = []
-    var pv_oc = []
+    const pv_co = []
+    const pv_oc = []
     for (i = 0; i < rows; i++) {
       pv_co[i] = i
       pv_oc[i] = i
     }
     // swap indices in permutation vectors (condition x < y)!
-    var swapIndeces = function (x, y) {
+    const swapIndeces = function (x, y) {
       // find pv indeces getting data from x and y
-      var kx = pv_oc[x]
-      var ky = pv_oc[y]
+      const kx = pv_oc[x]
+      const ky = pv_oc[y]
       // update permutation vector current -> original
       pv_co[kx] = y
       pv_co[ky] = x
@@ -268,7 +268,7 @@ function factory (type, config, load, typed) {
     // loop columns
     for (j = 0; j < columns; j++) {
       // sparse accumulator
-      var spa = new Spa()
+      const spa = new Spa()
       // check lower triangular matrix has a value @ column j
       if (j < rows) {
         // update ptr
@@ -280,8 +280,8 @@ function factory (type, config, load, typed) {
       // update ptr
       uptr.push(uvalues.length)
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = ptr[j]
-      var k1 = ptr[j + 1]
+      const k0 = ptr[j]
+      const k1 = ptr[j + 1]
       // copy column j into sparse accumulator
       for (k = k0; k < k1; k++) {
         // row
@@ -304,13 +304,13 @@ function factory (type, config, load, typed) {
         })
       }
       // row with larger value in spa, row >= j
-      var pi = j
-      var vjj = spa.get(j)
-      var pabsv = abs(vjj)
+      let pi = j
+      let vjj = spa.get(j)
+      let pabsv = abs(vjj)
       // loop values in spa (order by row, below diagonal)
       spa.forEach(j + 1, rows - 1, function (x, v) {
         // absolute value
-        var absv = abs(v)
+        const absv = abs(v)
         // value is greater than pivote value
         if (larger(absv, pabsv)) {
           // store row

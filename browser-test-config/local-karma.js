@@ -1,7 +1,7 @@
-var baseKarma = require('./base-karma')
+const baseKarma = require('./base-karma')
 
 module.exports = function (config) {
-  var baseConfig = baseKarma(config)
+  const baseConfig = baseKarma(config)
 
   config.set(Object.assign(baseConfig, {
     browsers: ['FirefoxHeadless'],

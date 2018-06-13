@@ -1,11 +1,11 @@
 'use strict'
-var typedFunction = require('typed-function')
-var digits = require('./../utils/number').digits
-var isBigNumber = require('./../utils/bignumber/isBigNumber')
-var isMatrix = require('./../utils/collection/isMatrix')
+const typedFunction = require('typed-function')
+const digits = require('./../utils/number').digits
+const isBigNumber = require('./../utils/bignumber/isBigNumber')
+const isMatrix = require('./../utils/collection/isMatrix')
 
 // returns a new instance of typed-function
-var createTyped = function () {
+let createTyped = function () {
   // initially, return the original instance of typed-function
   // consecutively, return a new instance from typed.create.
   createTyped = typedFunction.create
@@ -79,7 +79,7 @@ exports.create = function create (type) {
   type.isChain = function (x) { return x && x.constructor.prototype.isChain || false }
 
   // get a new instance of typed-function
-  var typed = createTyped()
+  const typed = createTyped()
 
   // define all types. The order of the types determines in which order function
   // arguments are type-checked (so for performance it's important to put the
@@ -172,7 +172,7 @@ exports.create = function create (type) {
       from: 'number',
       to: 'Fraction',
       convert: function (x) {
-        var f = new type.Fraction(x)
+        const f = new type.Fraction(x)
         if (f.valueOf() !== x) {
           throw new TypeError('Cannot implicitly convert a number to a Fraction when there will be a loss of precision ' +
               '(value: ' + x + '). ' +
@@ -185,13 +185,13 @@ exports.create = function create (type) {
     //  from: 'Fraction',
     //  to: 'number',
     //  convert: function (x) {
-    //    return x.valueOf();
+    //    return x.valueOf()
     //  }
     // }, {
       from: 'string',
       to: 'number',
       convert: function (x) {
-        var n = Number(x)
+        const n = Number(x)
         if (isNaN(n)) {
           throw new Error('Cannot convert "' + x + '" to a number')
         }

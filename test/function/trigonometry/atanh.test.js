@@ -1,18 +1,18 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var atanh = math.atanh
-var tanh = math.tanh
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 21})
-var predmath = math.create({predictable: true})
-var atanhBig = bigmath.atanh
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const atanh = math.atanh
+const tanh = math.tanh
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 21})
+const predmath = math.create({predictable: true})
+const atanhBig = bigmath.atanh
+const Big = bigmath.bignumber
 
 describe('atanh', function () {
   it('should return the hyperbolic arctan of a boolean', function () {
@@ -23,8 +23,8 @@ describe('atanh', function () {
   it('should return the hyperbolic arctan of a number', function () {
     approx.deepEqual(atanh(-2), complex(-0.54930614433405485, pi / 2))
     approx.deepEqual(atanh(2), complex(0.54930614433405485, -pi / 2))
-    // assert.ok(isNaN(atanh(-2)));
-    // assert.ok(isNaN(atanh(2)));
+    // assert.ok(isNaN(atanh(-2)))
+    // assert.ok(isNaN(atanh(2)))
 
     approx.equal(atanh(-1), -Infinity)
     approx.equal(atanh(-0.5), -0.54930614433405484569762261846)
@@ -39,8 +39,8 @@ describe('atanh', function () {
   })
 
   it('should return the hyperbolic arctan of a bignumber', function () {
-    var arg1 = Big(-1)
-    var arg2 = Big(-0.5)
+    const arg1 = Big(-1)
+    const arg2 = Big(-0.5)
     assert.deepEqual(atanhBig(arg1).toString(), '-Infinity')
     assert.deepEqual(atanhBig(arg2), Big('-0.5493061443340548457'))
     assert.deepEqual(atanhBig(Big(0)), Big(0))
@@ -65,7 +65,7 @@ describe('atanh', function () {
     assert.deepEqual(atanhBig(bigmath.tanh(Big(0.5))), Big(0.5))
 
     /* Pass in more digits to pi. */
-    var arg = Big(-1)
+    const arg = Big(-1)
     assert.deepEqual(atanhBig(biggermath.tanh(arg)), Big(-1))
     assert.deepEqual(atanhBig(biggermath.tanh(Big(0.1))), Big(0.1))
     assert.deepEqual(arg, Big(-1))
@@ -97,7 +97,7 @@ describe('atanh', function () {
   })
 
   it('should calculate the arctan element-wise for arrays and matrices', function () {
-    var atanh101 = [-Infinity, 0, Infinity]
+    const atanh101 = [-Infinity, 0, Infinity]
     assert.deepEqual(atanh([-1, 0, 1]), atanh101)
     assert.deepEqual(atanh(matrix([-1, 0, 1])), matrix(atanh101))
   })
@@ -108,7 +108,7 @@ describe('atanh', function () {
   })
 
   it('should LaTeX atanh', function () {
-    var expression = math.parse('atanh(0.5)')
+    const expression = math.parse('atanh(0.5)')
     assert.equal(expression.toTex(), '\\tanh^{-1}\\left(0.5\\right)')
   })
 })

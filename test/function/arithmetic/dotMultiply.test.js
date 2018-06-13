@@ -1,16 +1,5 @@
 // test dotMultiply (element-wise multiply)
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  error = require('../../../src/error/index'),
-  dotMultiply = math.dotMultiply,
-  divide = math.divide,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  complex = math.complex,
-  range = math.range,
-  i = math.i,
-  unit = math.unit
+const assert = require('assert'), math = require('../../../src/index'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), dotMultiply = math.dotMultiply, divide = math.divide, matrix = math.matrix, sparse = math.sparse, complex = math.complex, range = math.range, i = math.i, unit = math.unit
 
 describe('dotMultiply', function () {
   it('should multiply 2 numbers', function () {
@@ -65,10 +54,10 @@ describe('dotMultiply', function () {
   })
 
   describe('Array', function () {
-    var a = [[1, 0], [3, 4]]
-    var b = [[5, 6], [0, 8]]
-    var c = [[5], [6]]
-    var d = [[5, 6]]
+    const a = [[1, 0], [3, 4]]
+    const b = [[5, 6], [0, 8]]
+    const c = [[5], [6]]
+    const d = [[5, 6]]
 
     it('should multiply a all elements in a array by a number', function () {
       // matrix, array, range
@@ -101,10 +90,10 @@ describe('dotMultiply', function () {
   })
 
   describe('DenseMatrix', function () {
-    var a = matrix([[1, 0], [3, 4]])
-    var b = matrix([[5, 6], [0, 8]])
-    var c = matrix([[5], [6]])
-    var d = matrix([[5, 6]])
+    const a = matrix([[1, 0], [3, 4]])
+    const b = matrix([[5, 6], [0, 8]])
+    const c = matrix([[5], [6]])
+    const d = matrix([[5, 6]])
 
     it('should multiply a all elements in a dense matrix by a number', function () {
       // matrix, array, range
@@ -137,10 +126,10 @@ describe('dotMultiply', function () {
   })
 
   describe('SparseMatrix', function () {
-    var a = sparse([[1, 0], [3, 4]])
-    var b = sparse([[5, 6], [0, 8]])
-    var c = sparse([[5], [6]])
-    var d = sparse([[5, 6]])
+    const a = sparse([[1, 0], [3, 4]])
+    const b = sparse([[5, 6], [0, 8]])
+    const c = sparse([[5], [6]])
+    const d = sparse([[5, 6]])
 
     it('should multiply a all elements in a sparse matrix by a number', function () {
       // matrix, array, range
@@ -178,7 +167,7 @@ describe('dotMultiply', function () {
   })
 
   it('should LaTeX dotMultiply', function () {
-    var expression = math.parse('dotMultiply([1,2],[3,4])')
+    const expression = math.parse('dotMultiply([1,2],[3,4])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

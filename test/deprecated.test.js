@@ -1,6 +1,6 @@
 // test error messages for deprecated functions
-var assert = require('assert')
-var math = require('../src/index')
+const assert = require('assert')
+const math = require('../src/index')
 
 describe('deprecated stuff', function () {
   it('should throw a deprecation error when using UpdateNode', function () {

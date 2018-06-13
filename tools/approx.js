@@ -1,6 +1,6 @@
-var assert = require('assert')
+const assert = require('assert')
 
-var EPSILON = 0.0001
+const EPSILON = 0.0001
 
 /**
  * Test whether a value is a number
@@ -33,9 +33,9 @@ exports.equal = function equal (a, b, epsilon) {
     } else if (b === 0) {
       assert.ok(Math.abs(a) < epsilon, (a + ' ~= ' + b))
     } else {
-      var diff = Math.abs(a - b)
-      var max = Math.max(a, b)
-      var max_diff = Math.abs(max * epsilon)
+      const diff = Math.abs(a - b)
+      const max = Math.max(a, b)
+      const max_diff = Math.abs(max * epsilon)
       assert.ok(diff <= max_diff, (a + ' ~= ' + b))
     }
   } else {
@@ -50,7 +50,7 @@ exports.equal = function equal (a, b, epsilon) {
  * @param {*} b
  */
 exports.deepEqual = function deepEqual (a, b) {
-  var prop, i, len
+  let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
     assert.equal(a.length, b.length, a + ' ~= ' + b)

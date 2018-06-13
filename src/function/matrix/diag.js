@@ -1,11 +1,11 @@
 'use strict'
 
-var array = require('../../utils/array')
-var clone = require('../../utils/object').clone
-var isInteger = require('../../utils/number').isInteger
+const array = require('../../utils/array')
+const clone = require('../../utils/object').clone
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix
@@ -25,13 +25,13 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *     // create a diagonal matrix
-   *     math.diag([1, 2, 3]);      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
-   *     math.diag([1, 2, 3], 1);   // returns [[0, 1, 0, 0], [0, 0, 2, 0], [0, 0, 0, 3]]
-   *     math.diag([1, 2, 3], -1);  // returns [[0, 0, 0], [1, 0, 0], [0, 2, 0], [0, 0, 3]]
+   *     math.diag([1, 2, 3])      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
+   *     math.diag([1, 2, 3], 1)   // returns [[0, 1, 0, 0], [0, 0, 2, 0], [0, 0, 0, 3]]
+   *     math.diag([1, 2, 3], -1)  // returns [[0, 0, 0], [1, 0, 0], [0, 2, 0], [0, 0, 3]]
    *
    *    // retrieve the diagonal from a matrix
-   *    var a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-   *    math.diag(a);   // returns [1, 5, 9]
+   *    const a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+   *    math.diag(a)   // returns [1, 5, 9]
    *
    * See also:
    *
@@ -44,7 +44,7 @@ function factory (type, config, load, typed) {
    *
    * @returns {Matrix | Array} Diagonal matrix from input vector, or diagonal from input matrix.
    */
-  var diag = typed('diag', {
+  const diag = typed('diag', {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
     'Array': function (x) {
@@ -114,8 +114,8 @@ function factory (type, config, load, typed) {
       throw new TypeError('Second parameter in function diag must be an integer')
     }
 
-    var kSuper = k > 0 ? k : 0
-    var kSub = k < 0 ? -k : 0
+    const kSuper = k > 0 ? k : 0
+    const kSub = k < 0 ? -k : 0
 
     // check dimensions
     switch (size.length) {
@@ -129,11 +129,11 @@ function factory (type, config, load, typed) {
 
   function _createDiagonalMatrix (x, k, format, l, kSub, kSuper) {
     // matrix size
-    var ms = [l + kSub, l + kSuper]
+    const ms = [l + kSub, l + kSuper]
     // get matrix constructor
-    var F = type.Matrix.storage(format || 'dense')
+    const F = type.Matrix.storage(format || 'dense')
     // create diagonal matrix
-    var m = F.diagonal(ms, x, k)
+    const m = F.diagonal(ms, x, k)
     // check we need to return a matrix
     return format !== null ? m : m.valueOf()
   }
@@ -142,7 +142,7 @@ function factory (type, config, load, typed) {
     // check x is a Matrix
     if (type.isMatrix(x)) {
       // get diagonal matrix
-      var dm = x.diagonal(k)
+      const dm = x.diagonal(k)
       // check we need to return a matrix
       if (format !== null) {
         // check we need to change matrix format
@@ -152,11 +152,11 @@ function factory (type, config, load, typed) {
       return dm.valueOf()
     }
     // vector size
-    var n = Math.min(s[0] - kSub, s[1] - kSuper)
+    const n = Math.min(s[0] - kSub, s[1] - kSuper)
     // diagonal values
-    var vector = []
+    const vector = []
     // loop diagonal
-    for (var i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
       vector[i] = x[i + kSub][i + kSuper]
     }
     // check we need to return a matrix

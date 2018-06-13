@@ -29,9 +29,9 @@ number &#124; BigNumber &#124; Array &#124; Matrix | AND of `x` and `y`
 ## Examples
 
 ```js
-math.bitAnd(53, 131);               // returns number 1
+math.bitAnd(53, 131)               // returns number 1
 
-math.bitAnd([1, 12, 31], 42);       // returns Array [0, 8, 10]
+math.bitAnd([1, 12, 31], 42)       // returns Array [0, 8, 10]
 ```
 
 

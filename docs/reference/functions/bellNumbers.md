@@ -29,8 +29,8 @@ Number &#124; BigNumber | B(n)
 ## Examples
 
 ```js
-math.bellNumbers(3); // returns 5;
-math.bellNumbers(8); // returns 4140;
+math.bellNumbers(3) // returns 5
+math.bellNumbers(8) // returns 4140
 ```
 
 

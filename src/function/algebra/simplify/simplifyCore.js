@@ -1,22 +1,22 @@
 'use strict'
 
 function factory (type, config, load, typed, math) {
-  var equal = load(require('../../relational/equal'))
-  var isZero = load(require('../../utils/isZero'))
-  var isNumeric = load(require('../../utils/isNumeric'))
-  var add = load(require('../../arithmetic/add'))
-  var subtract = load(require('../../arithmetic/subtract'))
-  var multiply = load(require('../../arithmetic/multiply'))
-  var divide = load(require('../../arithmetic/divide'))
-  var pow = load(require('../../arithmetic/pow'))
+  const equal = load(require('../../relational/equal'))
+  const isZero = load(require('../../utils/isZero'))
+  const isNumeric = load(require('../../utils/isNumeric'))
+  const add = load(require('../../arithmetic/add'))
+  const subtract = load(require('../../arithmetic/subtract'))
+  const multiply = load(require('../../arithmetic/multiply'))
+  const divide = load(require('../../arithmetic/divide'))
+  const pow = load(require('../../arithmetic/pow'))
 
-  var ConstantNode = math.expression.node.ConstantNode
-  var OperatorNode = math.expression.node.OperatorNode
-  var FunctionNode = math.expression.node.FunctionNode
-  var ParenthesisNode = math.expression.node.ParenthesisNode
+  const ConstantNode = math.expression.node.ConstantNode
+  const OperatorNode = math.expression.node.OperatorNode
+  const FunctionNode = math.expression.node.FunctionNode
+  const ParenthesisNode = math.expression.node.ParenthesisNode
 
-  var node0 = new ConstantNode(0)
-  var node1 = new ConstantNode(1)
+  const node0 = new ConstantNode(0)
+  const node1 = new ConstantNode(1)
 
   /**
    * simplifyCore() performs single pass simplification suitable for
@@ -30,9 +30,9 @@ function factory (type, config, load, typed, math) {
    *
    * Examples:
    *
-   *     var f = math.parse('2 * 1 * x ^ (2 - 1)');
-   *     math.simplify.simpifyCore(f);                          // Node {2 * x}
-   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplify.simpifyCore]); // Node {2 * x};
+   *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
+   *     math.simplify.simpifyCore(f)                          // Node {2 * x}
+   *     math.simplify('2 * 1 * x ^ (2 - 1)', [math.simplify.simpifyCore]) // Node {2 * x}
    *
    * See also:
    *
@@ -43,7 +43,7 @@ function factory (type, config, load, typed, math) {
    */
   function simplifyCore (node) {
     if (type.isOperatorNode(node) && node.isUnary()) {
-      var a0 = simplifyCore(node.args[0])
+      const a0 = simplifyCore(node.args[0])
 
       if (node.op === '+') { // unary plus
         return a0
@@ -60,8 +60,8 @@ function factory (type, config, load, typed, math) {
         return new OperatorNode(node.op, node.fn, [a0])
       }
     } else if (type.isOperatorNode(node) && node.isBinary()) {
-      var a0 = simplifyCore(node.args[0])
-      var a1 = simplifyCore(node.args[1])
+      const a0 = simplifyCore(node.args[0])
+      const a1 = simplifyCore(node.args[1])
 
       if (node.op === '+') {
         if (type.isConstantNode(a0)) {
@@ -112,9 +112,9 @@ function factory (type, config, load, typed, math) {
           } else if (equal(a1.value, 1)) {
             return a0
           } else if (type.isOperatorNode(a0) && a0.isBinary() && a0.op === node.op) {
-            var a00 = a0.args[0]
+            const a00 = a0.args[0]
             if (type.isConstantNode(a00)) {
-              var a00_a1 = new ConstantNode(multiply(a00.value, a1.value))
+              const a00_a1 = new ConstantNode(multiply(a00.value, a1.value))
               return new OperatorNode(node.op, node.fn, [a00_a1, a0.args[1]]) // constants on left
             }
           }
@@ -142,7 +142,7 @@ function factory (type, config, load, typed, math) {
               // fold constant
               return new ConstantNode(pow(a0.value, a1.value))
             } else if (type.isOperatorNode(a0) && a0.isBinary() && a0.op === '^') {
-              var a01 = a0.args[1]
+              const a01 = a0.args[1]
               if (type.isConstantNode(a01)) {
                 return new OperatorNode(node.op, node.fn, [
                   a0.args[0],
@@ -155,13 +155,13 @@ function factory (type, config, load, typed, math) {
         return new OperatorNode(node.op, node.fn, [a0, a1])
       }
     } else if (type.isParenthesisNode(node)) {
-      var c = simplifyCore(node.content)
+      const c = simplifyCore(node.content)
       if (type.isParenthesisNode(c) || type.isSymbolNode(c) || type.isConstantNode(c)) {
         return c
       }
       return new ParenthesisNode(c)
     } else if (type.isFunctionNode(node)) {
-      var args = node.args
+      const args = node.args
         .map(simplifyCore)
         .map(function (arg) {
           return type.isParenthesisNode(arg) ? arg.content : arg

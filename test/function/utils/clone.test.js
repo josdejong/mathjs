@@ -1,6 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
 
 describe('clone', function () {
   it('should clone a boolean', function () {
@@ -13,8 +11,8 @@ describe('clone', function () {
   })
 
   it('should clone a number', function () {
-    var a = 1
-    var b = math.clone(a)
+    let a = 1
+    const b = math.clone(a)
     a = 2
     assert.strictEqual(a, 2)
     assert.strictEqual(b, 1)
@@ -26,22 +24,22 @@ describe('clone', function () {
   })
 
   it('should clone a bignumber', function () {
-    var a = math.bignumber('2.3e500')
-    var b = math.clone(a)
+    const a = math.bignumber('2.3e500')
+    const b = math.clone(a)
     assert.deepEqual(a, b)
   })
 
   it('should clone a string', function () {
-    var a = 'hello world'
-    var b = math.clone(a)
+    let a = 'hello world'
+    const b = math.clone(a)
     a = 'bye!'
     assert.strictEqual(a, 'bye!')
     assert.strictEqual(b, 'hello world')
   })
 
   it('should clone a complex number', function () {
-    var a = math.complex(2, 3)
-    var b = math.clone(a)
+    const a = math.complex(2, 3)
+    const b = math.clone(a)
     assert.notEqual(a, b)
     a.re = 5
     assert.strictEqual(a.toString(), '5 + 3i')
@@ -49,29 +47,29 @@ describe('clone', function () {
   })
 
   it('should clone a unit', function () {
-    var a = math.unit('5mm')
-    var b = math.clone(a)
+    const a = math.unit('5mm')
+    const b = math.clone(a)
     a.value = 10
     assert.equal(a.toString(), '10 m')
     assert.equal(b.toString(), '5 mm')
   })
 
   it('should clone a fraction', function () {
-    var a = math.fraction(2, 3)
-    var b = math.clone(a)
+    const a = math.fraction(2, 3)
+    const b = math.clone(a)
     assert.deepEqual(a, b)
   })
 
   it('should clone an array', function () {
-    var a = [1, 2, [3, 4]]
-    var b = math.clone(a)
+    const a = [1, 2, [3, 4]]
+    const b = math.clone(a)
     a[2][1] = 5
     assert.equal(b[2][1], 4)
   })
 
   it('should clone a matrix', function () {
-    var a = math.matrix([[1, 2], [3, 4]])
-    var b = math.clone(a)
+    let a = math.matrix([[1, 2], [3, 4]])
+    let b = math.clone(a)
     a.valueOf()[0][0] = 5
     assert.equal(b.valueOf()[0][0], 1)
 
@@ -82,7 +80,7 @@ describe('clone', function () {
   })
 
   it('should LaTeX clone', function () {
-    var expression = math.parse('clone(1)')
+    const expression = math.parse('clone(1)')
     assert.equal(expression.toTex(), '\\mathrm{clone}\\left(1\\right)')
   })
 })

@@ -1,15 +1,15 @@
 'use strict'
 
-var latex = require('../../utils/latex')
-var escape = require('../../utils/string').escape
-var hasOwnProperty = require('../../utils/object').hasOwnProperty
-var map = require('../../utils/array').map
-var validateSafeMethod = require('../../utils/customs').validateSafeMethod
-var getSafeProperty = require('../../utils/customs').getSafeProperty
+const latex = require('../../utils/latex')
+const escape = require('../../utils/string').escape
+const hasOwnProperty = require('../../utils/object').hasOwnProperty
+const map = require('../../utils/array').map
+const validateSafeMethod = require('../../utils/customs').validateSafeMethod
+const getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed, math) {
-  var Node = load(require('./Node'))
-  var SymbolNode = load(require('./SymbolNode'))
+  const Node = load(require('./Node'))
+  const SymbolNode = load(require('./SymbolNode'))
 
   /**
    * @constructor FunctionNode
@@ -48,7 +48,7 @@ function factory (type, config, load, typed, math) {
     })
 
     // TODO: deprecated since v3, remove some day
-    var deprecated = function () {
+    const deprecated = function () {
       throw new Error('Property `FunctionNode.object` is deprecated, use `FunctionNode.fn` instead')
     }
     Object.defineProperty(this, 'object', { get: deprecated, set: deprecated })
@@ -79,35 +79,34 @@ function factory (type, config, load, typed, math) {
     }
 
     // compile arguments
-    var evalArgs = map(this.args, function (arg) {
+    const evalArgs = map(this.args, function (arg) {
       return arg._compile(math, argNames)
     })
-    // var jsScope = compileScope(defs, args); // TODO: jsScope
-    var argsName
+    // const jsScope = compileScope(defs, args) // TODO: jsScope
 
     if (type.isSymbolNode(this.fn)) {
       // we can statically determine whether the function has an rawArgs property
-      var name = this.fn.name
-      var fn = name in math ? getSafeProperty(math, name) : undefined
-      var isRaw = (typeof fn === 'function') && (fn.rawArgs == true)
+      const name = this.fn.name
+      const fn = name in math ? getSafeProperty(math, name) : undefined
+      const isRaw = (typeof fn === 'function') && (fn.rawArgs === true)
 
       if (isRaw) {
         // pass unevaluated parameters (nodes) to the function
         // "raw" evaluation
-        var rawArgs = this.args
+        const rawArgs = this.args
         return function evalFunctionNode (scope, args, context) {
           return (name in scope ? getSafeProperty(scope, name) : fn)(rawArgs, math, scope)
         }
       } else {
         // "regular" evaluation
         if (evalArgs.length === 1) {
-          var evalArg0 = evalArgs[0]
+          const evalArg0 = evalArgs[0]
           return function evalFunctionNode (scope, args, context) {
             return (name in scope ? getSafeProperty(scope, name) : fn)(evalArg0(scope, args, context))
           }
         } else if (evalArgs.length === 2) {
-          var evalArg0 = evalArgs[0]
-          var evalArg1 = evalArgs[1]
+          const evalArg0 = evalArgs[0]
+          const evalArg1 = evalArgs[1]
           return function evalFunctionNode (scope, args, context) {
             return (name in scope ? getSafeProperty(scope, name) : fn)(evalArg0(scope, args, context), evalArg1(scope, args, context))
           }
@@ -123,14 +122,14 @@ function factory (type, config, load, typed, math) {
         type.isIndexNode(this.fn.index) && this.fn.index.isObjectProperty()) {
       // execute the function with the right context: the object of the AccessorNode
 
-      var evalObject = this.fn.object._compile(math, argNames)
-      var prop = this.fn.index.getObjectProperty()
-      var rawArgs = this.args
+      const evalObject = this.fn.object._compile(math, argNames)
+      const prop = this.fn.index.getObjectProperty()
+      const rawArgs = this.args
 
       return function evalFunctionNode (scope, args, context) {
-        var object = evalObject(scope, args, context)
+        const object = evalObject(scope, args, context)
         validateSafeMethod(object, prop)
-        var isRaw = object[prop] && object[prop].rawArgs
+        const isRaw = object[prop] && object[prop].rawArgs
 
         return isRaw
           ? object[prop](rawArgs, math, scope) // "raw" evaluation
@@ -140,11 +139,12 @@ function factory (type, config, load, typed, math) {
       }
     } else { // node.fn.isAccessorNode && !node.fn.index.isObjectProperty()
       // we have to dynamically determine whether the function has a rawArgs property
-      var evalFn = this.fn._compile(math, argNames)
+      const evalFn = this.fn._compile(math, argNames)
+      const rawArgs = this.args
 
       return function evalFunctionNode (scope, args, context) {
-        var fn = evalFn(scope, args, context)
-        var isRaw = fn && fn.rawArgs
+        const fn = evalFn(scope, args, context)
+        const isRaw = fn && fn.rawArgs
 
         return isRaw
           ? fn(rawArgs, math, scope) // "raw" evaluation
@@ -160,7 +160,7 @@ function factory (type, config, load, typed, math) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   FunctionNode.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.args.length; i++) {
+    for (let i = 0; i < this.args.length; i++) {
       callback(this.args[i], 'args[' + i + ']', this)
     }
   }
@@ -172,9 +172,9 @@ function factory (type, config, load, typed, math) {
    * @returns {FunctionNode} Returns a transformed copy of the node
    */
   FunctionNode.prototype.map = function (callback) {
-    var fn = this.fn.map(callback)
-    var args = []
-    for (var i = 0; i < this.args.length; i++) {
+    const fn = this.fn.map(callback)
+    const args = []
+    for (let i = 0; i < this.args.length; i++) {
       args[i] = this._ifNode(callback(this.args[i], 'args[' + i + ']', this))
     }
     return new FunctionNode(fn, args)
@@ -190,7 +190,7 @@ function factory (type, config, load, typed, math) {
 
   // backup Node's toString function
   // @private
-  var nodeToString = FunctionNode.prototype.toString
+  const nodeToString = FunctionNode.prototype.toString
 
   /**
    * Get string representation. (wrapper function)
@@ -205,8 +205,8 @@ function factory (type, config, load, typed, math) {
    * @override
    */
   FunctionNode.prototype.toString = function (options) {
-    var customString
-    var name = this.fn.toString(options)
+    let customString
+    const name = this.fn.toString(options)
     if (options && (typeof options.handler === 'object') && hasOwnProperty(options.handler, name)) {
       // callback is a map of callback functions
       customString = options.handler[name](this, options)
@@ -226,11 +226,11 @@ function factory (type, config, load, typed, math) {
    * @return {string} str
    */
   FunctionNode.prototype._toString = function (options) {
-    var args = this.args.map(function (arg) {
+    const args = this.args.map(function (arg) {
       return arg.toString(options)
     })
 
-    var fn = type.isFunctionAssignmentNode(this.fn)
+    const fn = type.isFunctionAssignmentNode(this.fn)
       ? ('(' + this.fn.toString(options) + ')')
       : this.fn.toString(options)
 
@@ -267,7 +267,7 @@ function factory (type, config, load, typed, math) {
    * @return {string} str
    */
   FunctionNode.prototype.toHTML = function (options) {
-    var args = this.args.map(function (arg) {
+    const args = this.args.map(function (arg) {
       return arg.toHTML(options)
     })
 
@@ -284,14 +284,14 @@ function factory (type, config, load, typed, math) {
    * @private
    **/
   function expandTemplate (template, node, options) {
-    var latex = ''
+    let latex = ''
 
     // Match everything of the form ${identifier} or ${identifier[2]} or $$
     // while submatching identifier and 2 (in the second case)
-    var regex = new RegExp('\\$(?:\\{([a-z_][a-z_0-9]*)(?:\\[([0-9]+)\\])?\\}|\\$)', 'ig')
+    const regex = new RegExp('\\$(?:\\{([a-z_][a-z_0-9]*)(?:\\[([0-9]+)\\])?\\}|\\$)', 'ig')
 
-    var inputPos = 0 // position in the input string
-    var match
+    let inputPos = 0 // position in the input string
+    let match
     while ((match = regex.exec(template)) !== null) { // go through all matches
       // add everything in front of the match to the LaTeX string
       latex += template.substring(inputPos, match.index)
@@ -302,7 +302,7 @@ function factory (type, config, load, typed, math) {
         inputPos++
       } else { // template parameter
         inputPos += match[0].length
-        var property = node[match[1]]
+        const property = node[match[1]]
         if (!property) {
           throw new ReferenceError('Template: Property ' + match[1] + ' does not exist.')
         }
@@ -345,7 +345,7 @@ function factory (type, config, load, typed, math) {
 
   // backup Node's toTex function
   // @private
-  var nodeToTex = FunctionNode.prototype.toTex
+  const nodeToTex = FunctionNode.prototype.toTex
 
   /**
    * Get LaTeX representation. (wrapper function)
@@ -359,7 +359,7 @@ function factory (type, config, load, typed, math) {
    * @return {string}
    */
   FunctionNode.prototype.toTex = function (options) {
-    var customTex
+    let customTex
     if (options && (typeof options.handler === 'object') && hasOwnProperty(options.handler, this.name)) {
       // callback is a map of callback functions
       customTex = options.handler[this.name](this, options)
@@ -379,18 +379,18 @@ function factory (type, config, load, typed, math) {
    * @return {string} str
    */
   FunctionNode.prototype._toTex = function (options) {
-    var args = this.args.map(function (arg) { // get LaTeX of the arguments
+    const args = this.args.map(function (arg) { // get LaTeX of the arguments
       return arg.toTex(options)
     })
 
-    var latexConverter
+    let latexConverter
 
     if (math[this.name] && ((typeof math[this.name].toTex === 'function') || (typeof math[this.name].toTex === 'object') || (typeof math[this.name].toTex === 'string'))) {
       // .toTex is a callback function
       latexConverter = math[this.name].toTex
     }
 
-    var customToTex
+    let customToTex
     switch (typeof latexConverter) {
       case 'function': // a callback function
         customToTex = latexConverter(this, options)

@@ -1,8 +1,8 @@
 'use strict'
 
-var Complex = require('../../type/complex/Complex')
-var typed = require('../../core/typed')
-var complex = Complex.factory(
+const Complex = require('../../type/complex/Complex')
+const typed = require('../../core/typed')
+const complex = Complex.factory(
   'Complex', {}, '', typed, {on: function (x, y) {}}
 )
 
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Fraction | Complex | Array | Matrix} x Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix}            Rounded value
    */
-  var nthRoots = typed('nthRoots', {
+  const nthRoots = typed('nthRoots', {
     'Complex': function (x) {
       return _nthComplexRoots(x, 2)
     },
@@ -55,7 +55,7 @@ function factory (type, config, load, typed) {
  * @return {Complex} val, i*val, -val or -i*val for index 0, 1, 2, 3
  */
 // This is used to fix float artifacts for zero-valued components.
-var _calculateExactResult = [
+const _calculateExactResult = [
   function realPos (val) { return complex(val) },
   function imagPos (val) { return complex(0, val) },
   function realNeg (val) { return complex(-val) },
@@ -73,8 +73,8 @@ function _nthComplexRoots (a, root) {
   if (root === 0) throw new Error('Root must be non-zero')
   if (root % 1 !== 0) throw new Error('Root must be an integer')
   if (a === 0 || a.abs() === 0) return [complex(0)]
-  var aIsNumeric = typeof (a) === 'number'
-  var offset
+  const aIsNumeric = typeof (a) === 'number'
+  let offset
   // determine the offset (argument of a)/(pi/2)
   if (aIsNumeric || a.re === 0 || a.im === 0) {
     if (aIsNumeric) {
@@ -85,12 +85,12 @@ function _nthComplexRoots (a, root) {
       offset = 2 * (+(a.im < 0)) + 1 // complex value on the imaginary axis
     }
   }
-  var arg = a.arg()
-  var abs = a.abs()
-  var roots = []
-  var r = Math.pow(abs, 1 / root)
-  for (var k = 0; k < root; k++) {
-    var halfPiFactor = (offset + 4 * k) / root
+  const arg = a.arg()
+  const abs = a.abs()
+  const roots = []
+  const r = Math.pow(abs, 1 / root)
+  for (let k = 0; k < root; k++) {
+    const halfPiFactor = (offset + 4 * k) / root
     /**
      * If (offset + 4*k)/root is an integral multiple of pi/2
      * then we can produce a more exact result.

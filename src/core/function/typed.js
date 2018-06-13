@@ -20,21 +20,21 @@ function factory (type, config, load, typed, math) {
    * Examples:
    *
    *     // create a typed function with multiple types per argument (type union)
-   *     var fn2 = typed({
+   *     const fn2 = typed({
    *       'number | boolean': function (b) {
-   *         return 'b is a number or boolean';
+   *         return 'b is a number or boolean'
    *       },
    *       'string, number | boolean': function (a, b) {
-   *         return 'a is a string, b is a number or boolean';
+   *         return 'a is a string, b is a number or boolean'
    *       }
-   *     });
+   *     })
    *
    *     // create a typed function with an any type argument
-   *     var log = typed({
+   *     const log = typed({
    *       'string, any': function (event, data) {
-   *         console.log('event: ' + event + ', data: ' + JSON.stringify(data));
+   *         console.log('event: ' + event + ', data: ' + JSON.stringify(data))
    *       }
-   *     });
+   *     })
    *
    * @param {string} [name]                          Optional name for the typed-function
    * @param {Object<string, function>} signatures   Object with one ore multiple function signatures

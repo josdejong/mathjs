@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var isPositive = math.isPositive
-var bignumber = math.bignumber
-var fraction = math.fraction
-var complex = math.complex
-var unit = math.unit
+const assert = require('assert')
+const math = require('../../../src/index')
+const isPositive = math.isPositive
+const bignumber = math.bignumber
+const fraction = math.fraction
+const complex = math.complex
+const unit = math.unit
 
 describe('isPositive', function () {
   it('should test whether a number is positive', function () {

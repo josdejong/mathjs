@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  permutations = math.permutations
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), permutations = math.permutations
 
 describe('permutations', function () {
   it('should calculate the permutations of a number', function () {
@@ -57,7 +54,7 @@ describe('permutations', function () {
   })
 
   it('should LaTeX permutations', function () {
-    var expression = math.parse('permutations(2)')
+    const expression = math.parse('permutations(2)')
     assert.equal(expression.toTex(), '\\mathrm{permutations}\\left(2\\right)')
   })
 })

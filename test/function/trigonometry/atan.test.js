@@ -1,16 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  atan = math.atan,
-  tan = math.tan,
-  bigmath = math.create({number: 'BigNumber', precision: 20}),
-  atanBig = bigmath.atan,
-  Big = bigmath.bignumber
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, atan = math.atan, tan = math.tan, bigmath = math.create({number: 'BigNumber', precision: 20}), atanBig = bigmath.atan, Big = bigmath.bignumber
 
 describe('atan', function () {
   it('should return the arctan of a boolean', function () {
@@ -27,11 +15,11 @@ describe('atan', function () {
   })
 
   it('should return the arctan of a bignumber', function () {
-    var arg1 = Big(-1)
-    var arg2 = Big(-0.5)
-    var arg3 = Big(0)
-    var arg6 = Big(2)
-    var arg7 = Big(Infinity)
+    const arg1 = Big(-1)
+    const arg2 = Big(-0.5)
+    const arg3 = Big(0)
+    const arg6 = Big(2)
+    const arg7 = Big(Infinity)
     assert.deepEqual(atanBig(arg1), Big('-0.78539816339744830962'))
     assert.deepEqual(atanBig(arg2), Big('-0.46364760900080611621'))
     assert.deepEqual(atanBig(arg3), Big(0))
@@ -71,8 +59,7 @@ describe('atan', function () {
   })
 
   it('should return the arctan of a complex number', function () {
-    var re = 1.409921049596575,
-      im = 0.229072682968539
+    const re = 1.409921049596575, im = 0.229072682968539
     approx.deepEqual(atan(complex('2+3i')), complex(re, im))
     approx.deepEqual(atan(complex('2-3i')), complex(re, -im))
     approx.deepEqual(atan(complex('-2+3i')), complex(-re, im))
@@ -94,7 +81,7 @@ describe('atan', function () {
 
   it('should calculate the arctan element-wise for arrays and matrices', function () {
     // matrix, array, range
-    var atan123 = [0.785398163397448, 1.107148717794090, 1.249045772398254]
+    const atan123 = [0.785398163397448, 1.107148717794090, 1.249045772398254]
     approx.deepEqual(atan([1, 2, 3]), atan123)
     approx.deepEqual(atan(matrix([1, 2, 3])), matrix(atan123))
   })
@@ -105,7 +92,7 @@ describe('atan', function () {
   })
 
   it('should LaTeX atan', function () {
-    var expression = math.parse('atan(10)')
+    const expression = math.parse('atan(10)')
     assert.equal(expression.toTex(), '\\tan^{-1}\\left(10\\right)')
   })
 })

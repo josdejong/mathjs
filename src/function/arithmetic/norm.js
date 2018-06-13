@@ -1,18 +1,18 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var abs = load(require('../arithmetic/abs'))
-  var add = load(require('../arithmetic/add'))
-  var pow = load(require('../arithmetic/pow'))
-  var conj = load(require('../complex/conj'))
-  var sqrt = load(require('../arithmetic/sqrt'))
-  var multiply = load(require('../arithmetic/multiply'))
-  var equalScalar = load(require('../relational/equalScalar'))
-  var larger = load(require('../relational/larger'))
-  var smaller = load(require('../relational/smaller'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var trace = load(require('../matrix/trace'))
-  var transpose = load(require('../matrix/transpose'))
+  const abs = load(require('../arithmetic/abs'))
+  const add = load(require('../arithmetic/add'))
+  const pow = load(require('../arithmetic/pow'))
+  const conj = load(require('../complex/conj'))
+  const sqrt = load(require('../arithmetic/sqrt'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const equalScalar = load(require('../relational/equalScalar'))
+  const larger = load(require('../relational/larger'))
+  const smaller = load(require('../relational/smaller'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const trace = load(require('../matrix/trace'))
+  const transpose = load(require('../matrix/transpose'))
 
   /**
    * Calculate the norm of a number, vector or matrix.
@@ -26,19 +26,19 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.abs(-3.5);                         // returns 3.5
-   *    math.norm(-3.5);                        // returns 3.5
+   *    math.abs(-3.5)                         // returns 3.5
+   *    math.norm(-3.5)                        // returns 3.5
    *
-   *    math.norm(math.complex(3, -4));         // returns 5
+   *    math.norm(math.complex(3, -4))         // returns 5
    *
-   *    math.norm([1, 2, -3], Infinity);        // returns 3
-   *    math.norm([1, 2, -3], -Infinity);       // returns 1
+   *    math.norm([1, 2, -3], Infinity)        // returns 3
+   *    math.norm([1, 2, -3], -Infinity)       // returns 1
    *
-   *    math.norm([3, 4], 2);                   // returns 5
+   *    math.norm([3, 4], 2)                   // returns 5
    *
    *    math.norm([[1, 2], [3, 4]], 1)          // returns 6
-   *    math.norm([[1, 2], [3, 4]], 'inf');     // returns 7
-   *    math.norm([[1, 2], [3, 4]], 'fro');     // returns 5.477225575051661
+   *    math.norm([[1, 2], [3, 4]], 'inf')     // returns 7
+   *    math.norm([[1, 2], [3, 4]], 'fro')     // returns 5.477225575051661
    *
    * See also:
    *
@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
    *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
    * @return {number | BigNumber} the p-norm
    */
-  var norm = typed('norm', {
+  const norm = typed('norm', {
     'number': Math.abs,
 
     'Complex': function (x) {
@@ -100,18 +100,18 @@ function factory (type, config, load, typed) {
    */
   function _norm (x, p) {
     // size
-    var sizeX = x.size()
+    const sizeX = x.size()
 
     // check if it is a vector
     if (sizeX.length == 1) {
       // check p
       if (p === Number.POSITIVE_INFINITY || p === 'inf') {
         // norm(x, Infinity) = max(abs(x))
-        var pinf = 0
+        let pinf = 0
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value) {
-            var v = abs(value)
+            const v = abs(value)
             if (larger(v, pinf)) { pinf = v }
           },
           true)
@@ -119,11 +119,11 @@ function factory (type, config, load, typed) {
       }
       if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
         // norm(x, -Infinity) = min(abs(x))
-        var ninf
+        let ninf
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value) {
-            var v = abs(value)
+            const v = abs(value)
             if (!ninf || smaller(v, ninf)) { ninf = v }
           },
           true)
@@ -136,7 +136,7 @@ function factory (type, config, load, typed) {
         // check p != 0
         if (!equalScalar(p, 0)) {
           // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
-          var n = 0
+          let n = 0
           // skip zeros since abs(0) == 0
           x.forEach(
             function (value) {
@@ -155,14 +155,14 @@ function factory (type, config, load, typed) {
       // check p
       if (p === 1) {
         // norm(x) = the largest column sum
-        var c = []
+        const c = []
         // result
-        var maxc = 0
+        let maxc = 0
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value, index) {
-            var j = index[1]
-            var cj = add(c[j] || 0, abs(value))
+            const j = index[1]
+            const cj = add(c[j] || 0, abs(value))
             if (larger(cj, maxc)) { maxc = cj }
             c[j] = cj
           },
@@ -171,14 +171,14 @@ function factory (type, config, load, typed) {
       }
       if (p === Number.POSITIVE_INFINITY || p === 'inf') {
         // norm(x) = the largest row sum
-        var r = []
+        const r = []
         // result
-        var maxr = 0
+        let maxr = 0
         // skip zeros since abs(0) == 0
         x.forEach(
           function (value, index) {
-            var i = index[0]
-            var ri = add(r[i] || 0, abs(value))
+            const i = index[0]
+            const ri = add(r[i] || 0, abs(value))
             if (larger(ri, maxr)) { maxr = ri }
             r[i] = ri
           },
@@ -187,7 +187,7 @@ function factory (type, config, load, typed) {
       }
       if (p === 'fro') {
         // norm(x) = sqrt(sum(diag(x'x)))
-        var fro = 0
+        let fro = 0
         x.forEach(
           function (value, index) {
             fro = add(fro, multiply(value, conj(value)))

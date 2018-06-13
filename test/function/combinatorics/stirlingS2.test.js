@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  stirlingS2 = math.stirlingS2
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), stirlingS2 = math.stirlingS2
 
 describe('stirlingS2', function () {
   it('should calculate the number of ways to partition a set of n objects into k non-empty subsets', function () {
@@ -31,7 +28,7 @@ describe('stirlingS2', function () {
   })
 
   it('should LaTeX stirlingS2', function () {
-    var expression = math.parse('stirlingS2(3,2)')
+    const expression = math.parse('stirlingS2(3,2)')
     assert.equal(expression.toTex(), '\\mathrm{S}\\left(3,2\\right)')
   })
 })

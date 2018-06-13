@@ -1,7 +1,5 @@
 // test format
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
 
 describe('format', function () {
   it('should format numbers', function () {
@@ -17,7 +15,7 @@ describe('format', function () {
 
   it('should format arrays', function () {
     assert.equal(math.format([[1, 2], [3, 4]]), '[[1, 2], [3, 4]]')
-    var array = [[math.unit(2 / 3, 'm'), 2 / 7], ['hi', math.complex(2, 1 / 3)]]
+    const array = [[math.unit(2 / 3, 'm'), 2 / 7], ['hi', math.complex(2, 1 / 3)]]
     assert.equal(math.format(array, 5), '[[0.66667 m, 0.28571], ["hi", 2 + 0.33333i]]')
   })
 
@@ -108,7 +106,7 @@ describe('format', function () {
   })
 
   describe('bignumber', function () {
-    var bigmath = math.create({precision: 20}) // ensure the precision is 20 digits
+    const bigmath = math.create({precision: 20}) // ensure the precision is 20 digits
 
     it('should format big numbers', function () {
       assert.equal(math.format(bigmath.bignumber(2).dividedBy(7)), '0.28571428571428571429')
@@ -118,7 +116,7 @@ describe('format', function () {
     })
 
     it('should format big numbers with given precision', function () {
-      var oneThird = bigmath.bignumber(1).div(3)
+      const oneThird = bigmath.bignumber(1).div(3)
       assert.equal(bigmath.format(oneThird), '0.33333333333333333333') // 20 digits
       assert.equal(bigmath.format(oneThird, 3), '0.333')
       assert.equal(bigmath.format(oneThird, 4), '0.3333')
@@ -133,7 +131,7 @@ describe('format', function () {
   })
 
   it('should LaTeX format', function () {
-    var expression = math.parse('format(1)')
+    const expression = math.parse('format(1)')
     assert.equal(expression.toTex(), '\\mathrm{format}\\left(1\\right)')
   })
 })

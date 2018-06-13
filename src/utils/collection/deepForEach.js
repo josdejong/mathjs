@@ -1,6 +1,6 @@
 'use strict'
 
-var isMatrix = require('./isMatrix')
+const isMatrix = require('./isMatrix')
 
 /**
  * Recursively loop over all elements in a given multi dimensional array
@@ -14,8 +14,8 @@ module.exports = function deepForEach (array, callback) {
     array = array.valueOf()
   }
 
-  for (var i = 0, ii = array.length; i < ii; i++) {
-    var value = array[i]
+  for (let i = 0, ii = array.length; i < ii; i++) {
+    const value = array[i]
 
     if (Array.isArray(value)) {
       deepForEach(value, callback)

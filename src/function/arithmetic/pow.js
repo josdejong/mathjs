@@ -1,15 +1,15 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var size = require('../../utils/array').size
+const isInteger = require('../../utils/number').isInteger
+const size = require('../../utils/array').size
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
-  var identity = load(require('../matrix/identity'))
-  var multiply = load(require('./multiply'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var fraction = load(require('../../type/fraction/function/fraction'))
-  var number = load(require('../../type/number'))
+  const latex = require('../../utils/latex')
+  const identity = load(require('../matrix/identity'))
+  const multiply = load(require('./multiply'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const fraction = load(require('../../type/fraction/function/fraction'))
+  const number = load(require('../../type/number'))
 
   /**
    * Calculates the power of x to y, `x ^ y`.
@@ -27,13 +27,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.pow(2, 3);               // returns number 8
+   *    math.pow(2, 3)               // returns number 8
    *
-   *    var a = math.complex(2, 3);
+   *    const a = math.complex(2, 3)
    *    math.pow(a, 2)                // returns Complex -5 + 12i
    *
-   *    var b = [[1, 2], [4, 3]];
-   *    math.pow(b, 2);               // returns Array [[9, 8], [16, 17]]
+   *    const b = [[1, 2], [4, 3]]
+   *    math.pow(b, 2)               // returns Array [[9, 8], [16, 17]]
    *
    * See also:
    *
@@ -43,7 +43,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Complex} y                   The exponent
    * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
    */
-  var pow = typed('pow', {
+  const pow = typed('pow', {
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
@@ -101,8 +101,8 @@ function factory (type, config, load, typed) {
     if (config.predictable && !isInteger(y) && x < 0) {
       // Check to see if y can be represented as a fraction
       try {
-        var yFrac = fraction(y)
-        var yNum = number(yFrac)
+        const yFrac = fraction(y)
+        const yNum = number(yFrac)
         if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
           if (yFrac.d % 2 === 1) {
             return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y)
@@ -150,7 +150,7 @@ function factory (type, config, load, typed) {
       throw new TypeError('For A^b, b must be a positive integer (value is ' + y + ')')
     }
     // verify that A is a 2 dimensional square matrix
-    var s = size(x)
+    const s = size(x)
     if (s.length != 2) {
       throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)')
     }
@@ -158,8 +158,8 @@ function factory (type, config, load, typed) {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
     }
 
-    var res = identity(s[0]).valueOf()
-    var px = x
+    let res = identity(s[0]).valueOf()
+    let px = x
     while (y >= 1) {
       if ((y & 1) == 1) {
         res = multiply(px, res)

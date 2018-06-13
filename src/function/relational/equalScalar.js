@@ -1,7 +1,7 @@
 'use strict'
 
-var nearlyEqual = require('../../utils/number').nearlyEqual
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
   /**
@@ -12,7 +12,7 @@ function factory (type, config, load, typed) {
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
-  var equalScalar = typed('equalScalar', {
+  const equalScalar = typed('equalScalar', {
 
     'boolean, boolean': function (x, y) {
       return x === y

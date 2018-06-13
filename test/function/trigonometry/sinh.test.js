@@ -1,14 +1,14 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var sinh = math.sinh
-var bigmath = math.create({number: 'BigNumber', precision: 20})
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const sinh = math.sinh
+const bigmath = math.create({number: 'BigNumber', precision: 20})
 
-var EPSILON = 1e-14
+const EPSILON = 1e-14
 
 describe('sinh', function () {
   it('should return the sinh of a boolean', function () {
@@ -46,12 +46,12 @@ describe('sinh', function () {
   }
 
   it('should return the sinh of a bignumber', function () {
-    var sinhBig = bigmath.sinh
-    var Big = bigmath.bignumber
+    const sinhBig = bigmath.sinh
+    const Big = bigmath.bignumber
 
-    var arg1 = Big(-Infinity)
-    var arg2 = Big(-1)
-    var arg7 = Big(Infinity)
+    const arg1 = Big(-Infinity)
+    const arg2 = Big(-1)
+    const arg7 = Big(Infinity)
     assert.deepEqual(sinhBig(arg1).toString(), '-Infinity')
     assert.deepEqual(sinhBig(arg2), Big('-1.1752011936438014569'))
     assert.deepEqual(sinhBig(Big(-1e-10)), Big(-1e-10))
@@ -93,7 +93,7 @@ describe('sinh', function () {
     assert.throws(function () { sinh('string') })
   })
 
-  var sinh123 = [1.1752011936438014, 3.626860407847, 10.01787492741]
+  const sinh123 = [1.1752011936438014, 3.626860407847, 10.01787492741]
 
   it('should return the sinh of each element of an array', function () {
     approx.deepEqual(sinh([1, 2, 3]), sinh123, EPSILON)
@@ -113,7 +113,7 @@ describe('sinh', function () {
   })
 
   it('should LaTeX sinh', function () {
-    var expression = math.parse('sinh(1)')
+    const expression = math.parse('sinh(1)')
     assert.equal(expression.toTex(), '\\sinh\\left(1\\right)')
   })
 })

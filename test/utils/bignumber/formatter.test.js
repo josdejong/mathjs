@@ -1,10 +1,10 @@
-var assert = require('assert')
-var BigNumber = require('decimal.js')
-var formatter = require('../../../src/utils/bignumber/formatter')
+const assert = require('assert')
+const BigNumber = require('decimal.js')
+const formatter = require('../../../src/utils/bignumber/formatter')
 
 describe('format', function () {
   describe('format', function () {
-    var B = null
+    let B = null
 
     before(function () {
       B = BigNumber.clone({precision: 20}) // ensure the precision is 20 digits
@@ -90,7 +90,7 @@ describe('format', function () {
       })
 
       it('auto notation with custom lower and upper bound', function () {
-        var options = {
+        const options = {
           lowerExp: -6,
           upperExp: 9
         }
@@ -115,7 +115,7 @@ describe('format', function () {
     })
 
     it('should format bignumbers in exponential notation', function () {
-      var options = {
+      const options = {
         notation: 'exponential'
       }
       assert.deepEqual(formatter.format(new B('1.23456'), options), '1.23456e+0')
@@ -127,7 +127,7 @@ describe('format', function () {
     })
 
     it('should format bignumbers in exponential notation with precision', function () {
-      var options = {
+      const options = {
         notation: 'exponential',
         precision: 18
       }
@@ -135,9 +135,9 @@ describe('format', function () {
     })
 
     it('should format bignumbers with custom precision, lower, and upper bound', function () {
-      var Big = BigNumber.clone({precision: 100})
+      const Big = BigNumber.clone({precision: 100})
 
-      var options = {
+      const options = {
         notation: 'auto',
         precision: 50,
         lowerExp: -50,
@@ -154,7 +154,7 @@ describe('format', function () {
     })
 
     it('auto notation with custom lower bound', function () {
-      var options = {
+      const options = {
         lowerExp: -6
       }
       assert.equal(formatter.format(new BigNumber(0), options), '0')
@@ -165,7 +165,7 @@ describe('format', function () {
     })
 
     it('auto notation with custom upper bound', function () {
-      var options = {
+      const options = {
         upperExp: 9
       }
       assert.equal(formatter.format(new BigNumber(1e+9), options), '1e+9')
@@ -173,7 +173,7 @@ describe('format', function () {
     })
 
     it('should format bignumbers in fixed notation', function () {
-      var options = {
+      const options = {
         notation: 'fixed'
       }
 
@@ -203,7 +203,7 @@ describe('format', function () {
   })
 
   it('should format a bignumber using toFixed', function () {
-    var Big = BigNumber.clone({precision: 100})
+    const Big = BigNumber.clone({precision: 100})
 
     assert.equal(formatter.toFixed(new Big(2.34)), '2.34')
     assert.equal(formatter.toFixed(new Big(2.34), 1), '2.3')
@@ -214,7 +214,7 @@ describe('format', function () {
   })
 
   it('should format a bignumber using toExponential', function () {
-    var Big = BigNumber.clone({precision: 100})
+    const Big = BigNumber.clone({precision: 100})
 
     assert.equal(formatter.toExponential(new Big(2.34)), '2.34e+0')
     assert.equal(formatter.toExponential(new Big(2.34e+3)), '2.34e+3')

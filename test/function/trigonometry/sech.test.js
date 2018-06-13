@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  sech = math.sech,
-  bigmath = math.create({precision: 20}),
-  biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, sech = math.sech, bigmath = math.create({precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('sech', function () {
   it('should return the sech of a boolean', function () {
@@ -25,8 +15,8 @@ describe('sech', function () {
   })
 
   it('should return the sech of a bignumber', function () {
-    var sechBig = bigmath.sech
-    var Big = bigmath.bignumber
+    const sechBig = bigmath.sech
+    const Big = bigmath.bignumber
 
     assert.deepEqual(sechBig(Big(0)), Big(1))
     assert.deepEqual(sechBig(Big(1)), Big('0.64805427366388539957'))
@@ -61,7 +51,7 @@ describe('sech', function () {
     assert.throws(function () { sech('string') })
   })
 
-  var sech123 = [0.64805427366389, 0.26580222883408, 0.099327927419433]
+  const sech123 = [0.64805427366389, 0.26580222883408, 0.099327927419433]
 
   it('should return the sech of each element of an array', function () {
     approx.deepEqual(sech([1, 2, 3]), sech123)
@@ -77,7 +67,7 @@ describe('sech', function () {
   })
 
   it('should LaTeX sech', function () {
-    var expression = math.parse('sech(1)')
+    const expression = math.parse('sech(1)')
     assert.equal(expression.toTex(), '\\mathrm{sech}\\left(1\\right)')
   })
 })

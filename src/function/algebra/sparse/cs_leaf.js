@@ -17,12 +17,12 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_leaf = function (i, j, w, first, maxfirst, prevleaf, ancestor) {
-    var s, sparent, jprev
+  const cs_leaf = function (i, j, w, first, maxfirst, prevleaf, ancestor) {
+    let s, sparent, jprev
 
     // our result
-    var jleaf = 0
-    var q
+    let jleaf = 0
+    let q
 
     // check j is a leaf
     if (i <= j || w[first + j] <= w[maxfirst + i]) { return (-1) }

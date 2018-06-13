@@ -1,26 +1,20 @@
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  Unit = math.type.Unit,
-  unit = math.unit
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, Unit = math.type.Unit, unit = math.unit
 
 describe('to', function () {
   it('should perform the given unit conversion', function () {
-    var a = math.unit('500 cm'); a.fixPrefix = true
+    const a = math.unit('500 cm'); a.fixPrefix = true
     approx.deepEqual(math.to(unit('5m'), unit('cm')), a)
 
-    var b = math.unit('1 foot'); b.fixPrefix = true
+    const b = math.unit('1 foot'); b.fixPrefix = true
     approx.deepEqual(math.to(unit('12 inch'), unit('foot')), b)
 
-    var c = math.unit('1 inch'); c.fixPrefix = true
+    const c = math.unit('1 inch'); c.fixPrefix = true
     approx.deepEqual(math.to(unit('2.54 cm'), unit('inch')), c)
 
-    var d = math.unit('68 fahrenheit'); d.fixPrefix = true
+    const d = math.unit('68 fahrenheit'); d.fixPrefix = true
     approx.deepEqual(math.to(unit('20 celsius'), unit('fahrenheit')), d)
 
-    var e = math.unit('0.002 m3'); e.fixPrefix = true
+    const e = math.unit('0.002 m3'); e.fixPrefix = true
     approx.deepEqual(math.to(unit('2 litre'), unit('m3')), e)
   })
 
@@ -79,7 +73,7 @@ describe('to', function () {
   })
 
   it('should LaTeX to', function () {
-    var expression = math.parse('to(2cm,m)')
+    const expression = math.parse('to(2cm,m)')
     assert.equal(expression.toTex(), '\\left(2~\\mathrm{cm}\\rightarrow\\mathrm{m}\\right)')
   })
 })

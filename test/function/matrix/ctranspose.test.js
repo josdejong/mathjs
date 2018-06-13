@@ -1,7 +1,5 @@
 // test transpose
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  ctranspose = math.ctranspose
+const assert = require('assert'), math = require('../../../src/index'), ctranspose = math.ctranspose
 
 describe('ctranspose', function () {
   it('should transpose a real scalar', function () {
@@ -18,12 +16,12 @@ describe('ctranspose', function () {
   })
 
   it('should conjgate a complex vector', function () {
-    var a = math.complex(1, 2)
-    var b = math.complex(3, 4)
-    var c = math.complex(5, 6)
-    var aH = math.complex(1, -2)
-    var bH = math.complex(3, -4)
-    var cH = math.complex(5, -6)
+    const a = math.complex(1, 2)
+    const b = math.complex(3, 4)
+    const c = math.complex(5, 6)
+    const aH = math.complex(1, -2)
+    const bH = math.complex(3, -4)
+    const cH = math.complex(5, -6)
     assert.deepEqual(ctranspose([a, b, c]), [aH, bH, cH])
     assert.deepEqual(ctranspose(math.matrix([a, b, c])).toArray(), [aH, bH, cH])
   })
@@ -36,18 +34,18 @@ describe('ctranspose', function () {
   })
 
   it('should conjugate transpose a 2d complex matrix', function () {
-    var a = math.complex(1, 2)
-    var b = math.complex(3, 4)
-    var c = math.complex(5, 6)
-    var d = math.complex(7, 8)
-    var e = math.complex(9, 10)
-    var f = math.complex(11, 12)
-    var aH = math.complex(1, -2)
-    var bH = math.complex(3, -4)
-    var cH = math.complex(5, -6)
-    var dH = math.complex(7, -8)
-    var eH = math.complex(9, -10)
-    var fH = math.complex(11, -12)
+    const a = math.complex(1, 2)
+    const b = math.complex(3, 4)
+    const c = math.complex(5, 6)
+    const d = math.complex(7, 8)
+    const e = math.complex(9, 10)
+    const f = math.complex(11, 12)
+    const aH = math.complex(1, -2)
+    const bH = math.complex(3, -4)
+    const cH = math.complex(5, -6)
+    const dH = math.complex(7, -8)
+    const eH = math.complex(9, -10)
+    const fH = math.complex(11, -12)
     assert.deepEqual(ctranspose([[a, b, c], [d, e, f]]), [[aH, dH], [bH, eH], [cH, fH]])
     assert.deepEqual(ctranspose(math.matrix([[a, b, c], [d, e, f]])).toArray(), [[aH, dH], [bH, eH], [cH, fH]])
     assert.deepEqual(ctranspose([[a, b], [c, d]]), [[aH, cH], [bH, dH]])
@@ -70,20 +68,20 @@ describe('ctranspose', function () {
 
   describe('DenseMatrix', function () {
     it('should transpose a 2d matrix', function () {
-      var a = math.complex(1, 2)
-      var b = math.complex(3, 4)
-      var c = math.complex(5, 6)
-      var d = math.complex(7, 8)
-      var e = math.complex(9, 10)
-      var f = math.complex(11, 12)
-      var aH = math.complex(1, -2)
-      var bH = math.complex(3, -4)
-      var cH = math.complex(5, -6)
-      var dH = math.complex(7, -8)
-      var eH = math.complex(9, -10)
-      var fH = math.complex(11, -12)
-      var m = math.matrix([[a, b, c], [d, e, f]])
-      var t = ctranspose(m)
+      const a = math.complex(1, 2)
+      const b = math.complex(3, 4)
+      const c = math.complex(5, 6)
+      const d = math.complex(7, 8)
+      const e = math.complex(9, 10)
+      const f = math.complex(11, 12)
+      const aH = math.complex(1, -2)
+      const bH = math.complex(3, -4)
+      const cH = math.complex(5, -6)
+      const dH = math.complex(7, -8)
+      const eH = math.complex(9, -10)
+      const fH = math.complex(11, -12)
+      let m = math.matrix([[a, b, c], [d, e, f]])
+      let t = ctranspose(m)
       assert.deepEqual(t.valueOf(), [[aH, dH], [bH, eH], [cH, fH]])
 
       m = math.matrix([[a, b], [c, d], [e, f]])
@@ -105,7 +103,7 @@ describe('ctranspose', function () {
     })
 
     it('should throw an error for invalid matrix transpose', function () {
-      var m = math.matrix([[]])
+      let m = math.matrix([[]])
       assert.throws(function () { transpose(m) })
 
       m = math.matrix([[[1], [2]], [[3], [4]]])
@@ -115,20 +113,20 @@ describe('ctranspose', function () {
 
   describe('SparseMatrix', function () {
     it('should transpose a 2d matrix', function () {
-      var a = math.complex(1, 2)
-      var b = math.complex(3, 4)
-      var c = math.complex(5, 6)
-      var d = math.complex(7, 8)
-      var e = math.complex(9, 10)
-      var f = math.complex(11, 12)
-      var aH = math.complex(1, -2)
-      var bH = math.complex(3, -4)
-      var cH = math.complex(5, -6)
-      var dH = math.complex(7, -8)
-      var eH = math.complex(9, -10)
-      var fH = math.complex(11, -12)
-      var m = math.sparse([[a, b, c], [d, e, f]])
-      var t = ctranspose(m)
+      const a = math.complex(1, 2)
+      const b = math.complex(3, 4)
+      const c = math.complex(5, 6)
+      const d = math.complex(7, 8)
+      const e = math.complex(9, 10)
+      const f = math.complex(11, 12)
+      const aH = math.complex(1, -2)
+      const bH = math.complex(3, -4)
+      const cH = math.complex(5, -6)
+      const dH = math.complex(7, -8)
+      const eH = math.complex(9, -10)
+      const fH = math.complex(11, -12)
+      let m = math.sparse([[a, b, c], [d, e, f]])
+      let t = ctranspose(m)
       assert.deepEqual(t.valueOf(), [[aH, dH], [bH, eH], [cH, fH]])
 
       m = math.sparse([[a, b], [c, d], [e, f]])
@@ -141,21 +139,21 @@ describe('ctranspose', function () {
 
       /* Failing test, but I'm not sure if would be expected to pass */
       /*
-      m = math.sparse([[1,2,3,4]], 'number');
-      t = ctranspose(m);
-      assert.deepEqual(t.valueOf(), [[1],[2],[3],[4]]);
-      assert.ok(t.datatype() === 'number');
+      m = math.sparse([[1,2,3,4]], 'number')
+      t = ctranspose(m)
+      assert.deepEqual(t.valueOf(), [[1],[2],[3],[4]])
+      assert.ok(t.datatype() === 'number')
       */
     })
 
     it('should throw an error for invalid matrix transpose', function () {
-      var m = math.matrix([[]], 'sparse')
+      const m = math.matrix([[]], 'sparse')
       assert.throws(function () { transpose(m) })
     })
   })
 
   it('should LaTeX transpose', function () {
-    var expression = math.parse('ctranspose([[1+2i,3+4i],[5+6i,7+8i]])')
+    const expression = math.parse('ctranspose([[1+2i,3+4i],[5+6i,7+8i]])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1+2~ i&3+4~ i\\\\5+6~ i&7+8~ i\\\\\\end{bmatrix}\\right)^H')
   })
 })

@@ -1,12 +1,12 @@
 importScripts('../../../dist/math.js')
 
 // create a parser
-var parser = math.parser()
+const parser = math.parser()
 
 self.addEventListener('message', function (event) {
-  var request = JSON.parse(event.data),
-    result = null,
-    err = null
+  const request = JSON.parse(event.data)
+  let result = null
+  let err = null
 
   try {
     // evaluate the expression
@@ -17,7 +17,7 @@ self.addEventListener('message', function (event) {
   }
 
   // build a response
-  var response = {
+  const response = {
     id: request.id,
     result: result,
     err: err

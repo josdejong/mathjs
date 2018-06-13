@@ -1,6 +1,5 @@
 // test norm
-var assert = require('assert'),
-  math = require('../../../src/index')
+const assert = require('assert'), math = require('../../../src/index')
 
 describe('norm', function () {
   it('should return the absolute value of a boolean', function () {
@@ -103,8 +102,8 @@ describe('norm', function () {
   })
 
   it('should LaTeX norm', function () {
-    var expr1 = math.parse('norm(a)')
-    var expr2 = math.parse('norm(a,2)')
+    const expr1 = math.parse('norm(a)')
+    const expr2 = math.parse('norm(a,2)')
 
     assert.equal(expr1.toTex(), '\\left\\| a\\right\\|')
     assert.equal(expr2.toTex(), '\\mathrm{norm}\\left( a,2\\right)')

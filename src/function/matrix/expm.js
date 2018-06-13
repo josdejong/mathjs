@@ -1,15 +1,15 @@
 'use strict'
 
-var format = require('../../utils/string').format
+const format = require('../../utils/string').format
 
 function factory (type, config, load, typed) {
-  var abs = load(require('../arithmetic/abs'))
-  var add = load(require('../arithmetic/add'))
-  var identity = load(require('./identity'))
-  var inv = load(require('./inv'))
-  var multiply = load(require('../arithmetic/multiply'))
+  const abs = load(require('../arithmetic/abs'))
+  const add = load(require('../arithmetic/add'))
+  const identity = load(require('./identity'))
+  const inv = load(require('./inv'))
+  const multiply = load(require('../arithmetic/multiply'))
 
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Compute the matrix exponential, expm(A) = e^A. The matrix must be square.
@@ -26,8 +26,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     var A = [[0,2],[0,0]]
-   *     math.expm(A);        // returns [[1,2],[0,1]]
+   *     const A = [[0,2],[0,0]]
+   *     math.expm(A)        // returns [[1,2],[0,1]]
    *
    * See also:
    *
@@ -36,22 +36,22 @@ function factory (type, config, load, typed) {
    * @param {Matrix} x  A square Matrix
    * @return {Matrix}   The exponential of x
    */
-  var expm = typed('expm', {
+  const expm = typed('expm', {
 
     'Matrix': function (A) {
       // Check matrix size
-      var size = A.size()
+      const size = A.size()
 
       if (size.length !== 2 || size[0] !== size[1]) {
         throw new RangeError('Matrix must be square ' +
           '(size: ' + format(size) + ')')
       }
 
-      var n = size[0]
+      const n = size[0]
 
       // Desired accuracy of the approximant (The actual accuracy
       // will be affected by round-off error)
-      var eps = 1e-15
+      const eps = 1e-15
 
       // The Padé approximant is not so accurate when the values of A
       // are "large", so scale A by powers of two. Then compute the
@@ -59,13 +59,13 @@ function factory (type, config, load, typed) {
       // the identity e^A = (e^(A/m))^m
 
       // Compute infinity-norm of A, ||A||, to see how "big" it is
-      var infNorm = infinityNorm(A)
+      const infNorm = infinityNorm(A)
 
       // Find the optimal scaling factor and number of terms in the
       // Padé approximant to reach the desired accuracy
-      var params = findParams(infNorm, eps)
-      var q = params.q
-      var j = params.j
+      const params = findParams(infNorm, eps)
+      const q = params.q
+      const j = params.j
 
       // The Pade approximation to e^A is:
       // Rqq(A) = Dqq(A) ^ -1 * Nqq(A)
@@ -74,20 +74,20 @@ function factory (type, config, load, typed) {
       // Dqq(A) = sum(i=0, q, (2q-i)!q! / [ (2q)!i!(q-i)! ] (-A)^i
 
       // Scale A by 1 / 2^j
-      var Apos = multiply(A, Math.pow(2, -j))
+      const Apos = multiply(A, Math.pow(2, -j))
 
       // The i=0 term is just the identity matrix
-      var N = identity(n)
-      var D = identity(n)
+      let N = identity(n)
+      let D = identity(n)
 
       // Initialization (i=0)
-      var factor = 1
+      let factor = 1
 
       // Initialization (i=1)
-      var Apos_to_i = Apos // Cloning not necessary
-      var alternate = -1
+      let Apos_to_i = Apos // Cloning not necessary
+      let alternate = -1
 
-      for (var i = 1; i <= q; i++) {
+      for (let i = 1; i <= q; i++) {
         if (i > 1) {
           Apos_to_i = multiply(Apos_to_i, Apos)
           alternate = -alternate
@@ -98,10 +98,10 @@ function factory (type, config, load, typed) {
         D = add(D, multiply(factor * alternate, Apos_to_i))
       }
 
-      var R = multiply(inv(D), N)
+      let R = multiply(inv(D), N)
 
       // Square j times
-      for (var i = 0; i < j; i++) {
+      for (let i = 0; i < j; i++) {
         R = multiply(R, R)
       }
 
@@ -113,11 +113,11 @@ function factory (type, config, load, typed) {
   })
 
   function infinityNorm (A) {
-    var n = A.size()[0]
-    var infNorm = 0
-    for (var i = 0; i < n; i++) {
-      var rowSum = 0
-      for (var j = 0; j < n; j++) {
+    const n = A.size()[0]
+    let infNorm = 0
+    for (let i = 0; i < n; i++) {
+      let rowSum = 0
+      for (let j = 0; j < n; j++) {
         rowSum += abs(A.get([i, j]))
       }
       infNorm = Math.max(rowSum, infNorm)
@@ -131,10 +131,10 @@ function factory (type, config, load, typed) {
    * combination in order of increasing computational load.
    */
   function findParams (infNorm, eps) {
-    var maxSearchSize = 30
-    for (var k = 0; k < maxSearchSize; k++) {
-      for (var q = 0; q <= k; q++) {
-        var j = k - q
+    const maxSearchSize = 30
+    for (let k = 0; k < maxSearchSize; k++) {
+      for (let q = 0; q <= k; q++) {
+        const j = k - q
         if (errorEstimate(infNorm, q, j) < eps) {
           return {q: q, j: j}
         }
@@ -148,15 +148,15 @@ function factory (type, config, load, typed) {
    * parameters.
    */
   function errorEstimate (infNorm, q, j) {
-    var qfac = 1
-    for (var i = 2; i <= q; i++) {
+    let qfac = 1
+    for (let i = 2; i <= q; i++) {
       qfac *= i
     }
-    var twoqfac = qfac
-    for (var i = q + 1; i <= 2 * q; i++) {
+    let twoqfac = qfac
+    for (let i = q + 1; i <= 2 * q; i++) {
       twoqfac *= i
     }
-    var twoqp1fac = twoqfac * (2 * q + 1)
+    const twoqp1fac = twoqfac * (2 * q + 1)
 
     return 8.0 *
       Math.pow(infNorm / Math.pow(2, j), 2 * q) *

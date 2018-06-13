@@ -1,13 +1,13 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var abs = load(require('../arithmetic/abs'))
-  var map = load(require('../matrix/map'))
-  var median = load(require('../statistics/median'))
-  var subtract = load(require('../arithmetic/subtract'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const abs = load(require('../arithmetic/abs'))
+  const map = load(require('../matrix/map'))
+  const median = load(require('../statistics/median'))
+  const subtract = load(require('../arithmetic/subtract'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the median absolute deviation of a matrix or a list with values.
@@ -21,9 +21,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.mad(10, 20, 30);             // returns 10
-   *     math.mad([1, 2, 3]);              // returns 1
-   *     math.mad([[1, 2, 3], [4, 5, 6]]); // returns 1.5
+   *     math.mad(10, 20, 30)             // returns 10
+   *     math.mad([1, 2, 3])              // returns 1
+   *     math.mad([[1, 2, 3], [4, 5, 6]]) // returns 1.5
    *
    * See also:
    *
@@ -33,7 +33,7 @@ function factory (type, config, load, typed) {
    *                        A single matrix or multiple scalar values.
    * @return {*} The median absolute deviation.
    */
-  var mad = typed('mad', {
+  const mad = typed('mad', {
     // mad([a, b, c, d, ...])
     'Array | Matrix': _mad,
 
@@ -55,7 +55,7 @@ function factory (type, config, load, typed) {
     }
 
     try {
-      var med = median(array)
+      const med = median(array)
       return median(map(array, function (value) {
         return abs(subtract(value, med))
       }))

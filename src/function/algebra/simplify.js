@@ -1,25 +1,25 @@
 'use strict'
 
 function factory (type, config, load, typed, math) {
-  var parse = load(require('../../expression/parse'))
-  var equal = load(require('../relational/equal'))
-  var ConstantNode = load(require('../../expression/node/ConstantNode'))
-  var FunctionNode = load(require('../../expression/node/FunctionNode'))
-  var OperatorNode = load(require('../../expression/node/OperatorNode'))
-  var ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
-  var SymbolNode = load(require('../../expression/node/SymbolNode'))
-  var Node = load(require('../../expression/node/Node'))
-  var simplifyConstant = load(require('./simplify/simplifyConstant'))
-  var simplifyCore = load(require('./simplify/simplifyCore'))
-  var resolve = load(require('./simplify/resolve'))
+  const parse = load(require('../../expression/parse'))
+  const equal = load(require('../relational/equal'))
+  const ConstantNode = load(require('../../expression/node/ConstantNode'))
+  const FunctionNode = load(require('../../expression/node/FunctionNode'))
+  const OperatorNode = load(require('../../expression/node/OperatorNode'))
+  const ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
+  const SymbolNode = load(require('../../expression/node/SymbolNode'))
+  const Node = load(require('../../expression/node/Node'))
+  const simplifyConstant = load(require('./simplify/simplifyConstant'))
+  const simplifyCore = load(require('./simplify/simplifyCore'))
+  const resolve = load(require('./simplify/resolve'))
 
-  var util = load(require('./simplify/util'))
-  var isCommutative = util.isCommutative
-  var isAssociative = util.isAssociative
-  var flatten = util.flatten
-  var unflattenr = util.unflattenr
-  var unflattenl = util.unflattenl
-  var createMakeNodeFunction = util.createMakeNodeFunction
+  const util = load(require('./simplify/util'))
+  const isCommutative = util.isCommutative
+  const isAssociative = util.isAssociative
+  const flatten = util.flatten
+  const unflattenr = util.unflattenr
+  const unflattenl = util.unflattenl
+  const createMakeNodeFunction = util.createMakeNodeFunction
 
   /**
    * Simplify an expression tree.
@@ -29,7 +29,7 @@ function factory (type, config, load, typed, math) {
    * It's possible to pass a custom set of rules to the function as second
    * argument. A rule can be specified as an object, string, or function:
    *
-   *     var rules = [
+   *     const rules = [
    *       { l: 'n1*n3 + n2*n3', r: '(n1+n2)*n3' },
    *       'n1*n3 + n2*n3 -> (n1+n2)*n3',
    *       function (node) {
@@ -65,10 +65,10 @@ function factory (type, config, load, typed, math) {
    *
    * Examples:
    *
-   *     math.simplify('2 * 1 * x ^ (2 - 1)');      // Node {2 * x}
-   *     math.simplify('2 * 3 * x', {x: 4});        // Node {24}
-   *     var f = math.parse('2 * 1 * x ^ (2 - 1)');
-   *     math.simplify(f);                          // Node {2 * x}
+   *     math.simplify('2 * 1 * x ^ (2 - 1)')      // Node {2 * x}
+   *     math.simplify('2 * 3 * x', {x: 4})        // Node {24}
+   *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
+   *     math.simplify(f)                          // Node {2 * x}
    *
    * See also:
    *
@@ -80,7 +80,7 @@ function factory (type, config, load, typed, math) {
    *            Optional list with custom rules
    * @return {Node} Returns the simplified form of `expr`
    */
-  var simplify = typed('simplify', {
+  const simplify = typed('simplify', {
     'string': function (expr) {
       return simplify(parse(expr), simplify.rules, {})
     },
@@ -112,15 +112,15 @@ function factory (type, config, load, typed, math) {
     'Node, Array, Object': function (expr, rules, scope) {
       rules = _buildRules(rules)
 
-      var res = resolve(expr, scope)
-      var res = removeParens(res)
-      var visited = {}
+      let res = resolve(expr, scope)
+      res = removeParens(res)
+      let visited = {}
 
-      var str = res.toString({parenthesis: 'all'})
+      let str = res.toString({parenthesis: 'all'})
       while (!visited[str]) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
-        for (var i = 0; i < rules.length; i++) {
+        for (let i = 0; i < rules.length; i++) {
           if (typeof rules[i] === 'function') {
             res = rules[i](res)
           } else {
@@ -147,7 +147,7 @@ function factory (type, config, load, typed, math) {
   }
 
   // All constants that are allowed in rules
-  var SUPPORTED_CONSTANTS = {
+  const SUPPORTED_CONSTANTS = {
     true: true,
     false: true,
     e: true,
@@ -254,14 +254,14 @@ function factory (type, config, load, typed, math) {
    */
   function _buildRules (rules) {
     // Array of rules to be used to simplify expressions
-    var ruleSet = []
-    for (var i = 0; i < rules.length; i++) {
-      var rule = rules[i]
-      var newRule
-      var ruleType = typeof rule
+    const ruleSet = []
+    for (let i = 0; i < rules.length; i++) {
+      let rule = rules[i]
+      let newRule
+      const ruleType = typeof rule
       switch (ruleType) {
         case 'string':
-          var lr = rule.split('->')
+          const lr = rule.split('->')
           if (lr.length !== 2) {
             throw SyntaxError('Could not parse rule: ' + rule)
           }
@@ -280,8 +280,8 @@ function factory (type, config, load, typed, math) {
           }
 
           if (isAssociative(newRule.l)) {
-            var makeNode = createMakeNodeFunction(newRule.l)
-            var expandsym = _getExpandPlaceholderSymbol()
+            const makeNode = createMakeNodeFunction(newRule.l)
+            const expandsym = _getExpandPlaceholderSymbol()
             newRule.expanded = {}
             newRule.expanded.l = makeNode([newRule.l.clone(), expandsym])
             // Push the expandsym into the deepest possible branch.
@@ -297,14 +297,14 @@ function factory (type, config, load, typed, math) {
         default:
           throw TypeError('Unsupported type of rule: ' + ruleType)
       }
-      // console.log('Adding rule: ' + rules[i]);
-      // console.log(newRule);
+      // console.log('Adding rule: ' + rules[i])
+      // console.log(newRule)
       ruleSet.push(newRule)
     }
     return ruleSet
   }
 
-  var _lastsym = 0
+  let _lastsym = 0
   function _getExpandPlaceholderSymbol () {
     return new SymbolNode('_p' + _lastsym++)
   }
@@ -315,19 +315,19 @@ function factory (type, config, load, typed, math) {
    * @param  {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} node
    * @return {ConstantNode | SymbolNode | ParenthesisNode | FunctionNode | OperatorNode} The simplified form of `expr`, or the original node if no simplification was possible.
    */
-  var applyRule = typed('applyRule', {
+  const applyRule = typed('applyRule', {
     'Node, Object': function (node, rule) {
-      // console.log('Entering applyRule(' + node.toString() + ')');
+      // console.log('Entering applyRule(' + node.toString() + ')')
 
       // Do not clone node unless we find a match
-      var res = node
+      let res = node
 
       // First replace our child nodes with their simplified versions
       // If a child could not be simplified, the assignments will have
       // no effect since the node is returned unchanged
       if (res instanceof OperatorNode || res instanceof FunctionNode) {
         if (res.args) {
-          for (var i = 0; i < res.args.length; i++) {
+          for (let i = 0; i < res.args.length; i++) {
             res.args[i] = applyRule(res.args[i], rule)
           }
         }
@@ -338,8 +338,8 @@ function factory (type, config, load, typed, math) {
       }
 
       // Try to match a rule against this node
-      var repl = rule.r
-      var matches = _ruleMatch(rule.l, res)[0]
+      let repl = rule.r
+      let matches = _ruleMatch(rule.l, res)[0]
 
       // If the rule is associative operator, we can try matching it while allowing additional terms.
       // This allows us to match rules like 'n+n' to the expression '(1+x)+x' or even 'x+1+x' if the operator is commutative.
@@ -349,13 +349,13 @@ function factory (type, config, load, typed, math) {
       }
 
       if (matches) {
-        // var before = res.toString({parenthesis: 'all'});
+        // const before = res.toString({parenthesis: 'all'})
 
         // Create a new node by cloning the rhs of the matched rule
         res = repl.clone()
 
         // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
-        var _transform = function (node) {
+        const _transform = function (node) {
           if (node.isSymbolNode && matches.placeholders.hasOwnProperty(node.name)) {
             return matches.placeholders[node.name].clone()
           } else {
@@ -365,8 +365,8 @@ function factory (type, config, load, typed, math) {
 
         res = _transform(res)
 
-        // var after = res.toString({parenthesis: 'all'});
-        // console.log('Simplified ' + before + ' to ' + after);
+        // const after = res.toString({parenthesis: 'all'})
+        // console.log('Simplified ' + before + ' to ' + after)
       }
 
       return res
@@ -382,11 +382,11 @@ function factory (type, config, load, typed, math) {
    *
    */
   function getSplits (node, context) {
-    var res = []
-    var right, rightArgs
-    var makeNode = createMakeNodeFunction(node)
+    const res = []
+    let right, rightArgs
+    const makeNode = createMakeNodeFunction(node)
     if (isCommutative(node, context)) {
-      for (var i = 0; i < node.args.length; i++) {
+      for (let i = 0; i < node.args.length; i++) {
         rightArgs = node.args.slice(0)
         rightArgs.splice(i, 1)
         right = (rightArgs.length === 1) ? rightArgs[0] : makeNode(rightArgs)
@@ -404,7 +404,7 @@ function factory (type, config, load, typed, math) {
    * Returns the set union of two match-placeholders or null if there is a conflict.
    */
   function mergeMatch (match1, match2) {
-    var res = {placeholders: {}}
+    const res = {placeholders: {}}
 
     // Some matches may not have placeholders; this is OK
     if (!match1.placeholders && !match2.placeholders) {
@@ -416,7 +416,7 @@ function factory (type, config, load, typed, math) {
     }
 
     // Placeholders with the same key must match exactly
-    for (var key in match1.placeholders) {
+    for (let key in match1.placeholders) {
       res.placeholders[key] = match1.placeholders[key]
       if (match2.placeholders.hasOwnProperty(key)) {
         if (!_exactMatch(match1.placeholders[key], match2.placeholders[key])) {
@@ -425,7 +425,7 @@ function factory (type, config, load, typed, math) {
       }
     }
 
-    for (var key in match2.placeholders) {
+    for (let key in match2.placeholders) {
       res.placeholders[key] = match2.placeholders[key]
     }
 
@@ -437,15 +437,15 @@ function factory (type, config, load, typed, math) {
    * Each list represents matches found in one child of a node.
    */
   function combineChildMatches (list1, list2) {
-    var res = []
+    const res = []
 
     if (list1.length === 0 || list2.length === 0) {
       return res
     }
 
-    var merged
-    for (var i1 = 0; i1 < list1.length; i1++) {
-      for (var i2 = 0; i2 < list2.length; i2++) {
+    let merged
+    for (let i1 = 0; i1 < list1.length; i1++) {
+      for (let i2 = 0; i2 < list2.length; i2++) {
         merged = mergeMatch(list1[i1], list2[i2])
         if (merged) {
           res.push(merged)
@@ -465,11 +465,11 @@ function factory (type, config, load, typed, math) {
       return childMatches
     }
 
-    var sets = childMatches.reduce(combineChildMatches)
-    var uniqueSets = []
-    var unique = {}
-    for (var i = 0; i < sets.length; i++) {
-      var s = JSON.stringify(sets[i])
+    const sets = childMatches.reduce(combineChildMatches)
+    const uniqueSets = []
+    const unique = {}
+    for (let i = 0; i < sets.length; i++) {
+      const s = JSON.stringify(sets[i])
       if (!unique[s]) {
         unique[s] = true
         uniqueSets.push(sets[i])
@@ -486,12 +486,12 @@ function factory (type, config, load, typed, math) {
    * @return {Object} Information about the match, if it exists.
    */
   function _ruleMatch (rule, node, isSplit) {
-    //    console.log('Entering _ruleMatch(' + JSON.stringify(rule) + ', ' + JSON.stringify(node) + ')');
-    //    console.log('rule = ' + rule);
-    //    console.log('node = ' + node);
+    //    console.log('Entering _ruleMatch(' + JSON.stringify(rule) + ', ' + JSON.stringify(node) + ')')
+    //    console.log('rule = ' + rule)
+    //    console.log('node = ' + node)
 
-    //    console.log('Entering _ruleMatch(' + rule.toString() + ', ' + node.toString() + ')');
-    var res = [{placeholders: {}}]
+    //    console.log('Entering _ruleMatch(' + rule.toString() + ', ' + node.toString() + ')')
+    let res = [{placeholders: {}}]
 
     if (rule instanceof OperatorNode && node instanceof OperatorNode ||
      rule instanceof FunctionNode && node instanceof FunctionNode) {
@@ -509,9 +509,9 @@ function factory (type, config, load, typed, math) {
       // rule and node match. Search the children of rule and node.
       if (node.args.length === 1 && rule.args.length === 1 || !isAssociative(node) || isSplit) {
         // Expect non-associative operators to match exactly
-        var childMatches = []
-        for (var i = 0; i < rule.args.length; i++) {
-          var childMatch = _ruleMatch(rule.args[i], node.args[i])
+        const childMatches = []
+        for (let i = 0; i < rule.args.length; i++) {
+          const childMatch = _ruleMatch(rule.args[i], node.args[i])
           if (childMatch.length === 0) {
             // Child did not match, so stop searching immediately
             return []
@@ -523,10 +523,10 @@ function factory (type, config, load, typed, math) {
       } else if (node.args.length >= 2 && rule.args.length === 2) { // node is flattened, rule is not
         // Associative operators/functions can be split in different ways so we check if the rule matches each
         // them and return their union.
-        var splits = getSplits(node, rule.context)
-        var splitMatches = []
-        for (var i = 0; i < splits.length; i++) {
-          var matchSet = _ruleMatch(rule, splits[i], true) // recursing at the same tree depth here
+        const splits = getSplits(node, rule.context)
+        let splitMatches = []
+        for (let i = 0; i < splits.length; i++) {
+          const matchSet = _ruleMatch(rule, splits[i], true) // recursing at the same tree depth here
           splitMatches = splitMatches.concat(matchSet)
         }
         return splitMatches
@@ -589,7 +589,7 @@ function factory (type, config, load, typed, math) {
 
     // It's a match!
 
-    // console.log('_ruleMatch(' + rule.toString() + ', ' + node.toString() + ') found a match');
+    // console.log('_ruleMatch(' + rule.toString() + ', ' + node.toString() + ') found a match')
     return res
   }
 
@@ -625,7 +625,7 @@ function factory (type, config, load, typed, math) {
         return false
       }
 
-      for (var i = 0; i < p.args.length; i++) {
+      for (let i = 0; i < p.args.length; i++) {
         if (!_exactMatch(p.args[i], q.args[i])) {
           return false
         }

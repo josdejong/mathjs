@@ -1,15 +1,15 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
-var identify = require('../../utils/array').identify
-var generalize = require('../../utils/array').generalize
+const flatten = require('../../utils/array').flatten
+const identify = require('../../utils/array').identify
+const generalize = require('../../utils/array').generalize
 
 function factory (type, config, load, typed) {
-  var index = load(require('../../type/matrix/MatrixIndex'))
-  var matrix = load(require('../../type/matrix/DenseMatrix'))
-  var size = load(require('../matrix/size'))
-  var subset = load(require('../matrix/subset'))
-  var compareNatural = load(require('../relational/compareNatural'))
+  const index = load(require('../../type/matrix/MatrixIndex'))
+  const matrix = load(require('../../type/matrix/DenseMatrix'))
+  const size = load(require('../matrix/size'))
+  const subset = load(require('../matrix/subset'))
+  const compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
@@ -21,8 +21,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.setDifference([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [1, 2]
-   *    math.setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [1, 2]
+   *    math.setDifference([1, 2, 3, 4], [3, 4, 5, 6])            // returns [1, 2]
+   *    math.setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]])    // returns [1, 2]
    *
    * See also:
    *
@@ -32,20 +32,21 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {Array | Matrix}    The difference of two (multi)sets
    */
-  var setDifference = typed('setDifference', {
+  const setDifference = typed('setDifference', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
+      let result
       if (subset(size(a1), new index(0)) === 0) { // empty-anything=empty
-        var result = []
+        result = []
       } else if (subset(size(a2), new index(0)) === 0) { // anything-empty=anything
         return flatten(a1.toArray())
       } else {
-        var b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
-        var b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural))
-        var result = []
-        var inb2
-        for (var i = 0; i < b1.length; i++) {
+        const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
+        const b2 = identify(flatten(Array.isArray(a2) ? a2 : a2.toArray()).sort(compareNatural))
+        result = []
+        let inb2
+        for (let i = 0; i < b1.length; i++) {
           inb2 = false
-          for (var j = 0; j < b2.length; j++) {
+          for (let j = 0; j < b2.length; j++) {
             if (compareNatural(b1[i].value, b2[j].value) === 0 && b1[i].identifier === b2[j].identifier) { // the identifier is always a decimal int
               inb2 = true
               break

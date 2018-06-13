@@ -1,15 +1,15 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Logical `xor`. Test whether one and only one value is defined with a nonzero/nonempty value.
@@ -21,14 +21,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.xor(2, 4);   // returns false
+   *    math.xor(2, 4)   // returns false
    *
-   *    a = [2, 0, 0];
-   *    b = [2, 7, 0];
-   *    c = 0;
+   *    a = [2, 0, 0]
+   *    b = [2, 7, 0]
+   *    c = 0
    *
-   *    math.xor(a, b);   // returns [false, true, false]
-   *    math.xor(a, c);   // returns [true, false, false]
+   *    math.xor(a, b)   // returns [false, true, false]
+   *    math.xor(a, c)   // returns [true, false, false]
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when one and only one input is defined with a nonzero/nonempty value.
    */
-  var xor = typed('xor', {
+  const xor = typed('xor', {
 
     'number, number': function (x, y) {
       return !!x !== !!y

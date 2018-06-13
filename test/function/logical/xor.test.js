@@ -1,12 +1,5 @@
 // test xor
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  xor = math.xor
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, xor = math.xor
 
 describe('xor', function () {
   it('should xor two numbers correctly', function () {
@@ -202,7 +195,7 @@ describe('xor', function () {
   })
 
   it('should LaTeX xor', function () {
-    var expression = math.parse('xor(1,2)')
+    const expression = math.parse('xor(1,2)')
     assert.equal(expression.toTex(), '\\left(1\\veebar2\\right)')
   })
 })

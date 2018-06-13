@@ -1,6 +1,6 @@
 'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount
+const maxArgumentCount = require('../../utils/function').maxArgumentCount
 
 function factory (type, config, load, typed) {
   /**
@@ -14,8 +14,8 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    math.map([1, 2, 3], function(value) {
-   *      return value * value;
-   *    });  // returns [1, 4, 9]
+   *      return value * value
+   *    })  // returns [1, 4, 9]
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    *                              of the element, and the matrix being traversed.
    * @return {Matrix | array}     Transformed map of x
    */
-  var map = typed('map', {
+  const map = typed('map', {
     'Array, function': _map,
 
     'Matrix, function': function (x, callback) {
@@ -49,9 +49,9 @@ function factory (type, config, load, typed) {
  */
 function _map (array, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback)
+  const args = maxArgumentCount(callback)
 
-  var recurse = function (value, index) {
+  const recurse = function (value, index) {
     if (Array.isArray(value)) {
       return value.map(function (child, i) {
         // we create a copy of the index array and append the new index value

@@ -1,9 +1,5 @@
 // test size
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  size = math.size,
-  matrix = math.matrix
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), size = math.size, matrix = math.matrix
 
 describe('size', function () {
   it('should calculate the size of an array', function () {
@@ -39,7 +35,7 @@ describe('size', function () {
   })
 
   it('should calculate the size of a scalar with setting matrix=="array"', function () {
-    var math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({matrix: 'Array'})
     assert.deepEqual(math2.size(2), [])
     assert.deepEqual(math2.size(math2.bignumber(2)), [])
     assert.deepEqual(math2.size(math2.complex(2, 3)), [])
@@ -61,7 +57,7 @@ describe('size', function () {
   })
 
   it('should LaTeX size', function () {
-    var expression = math.parse('size(1)')
+    const expression = math.parse('size(1)')
     assert.equal(expression.toTex(), '\\mathrm{size}\\left(1\\right)')
   })
 })

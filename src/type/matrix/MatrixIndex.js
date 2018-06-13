@@ -1,7 +1,7 @@
 'use strict'
 
-var clone = require('../../utils/object').clone
-var isInteger = require('../../utils/number').isInteger
+const clone = require('../../utils/object').clone
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type) {
   /**
@@ -9,7 +9,7 @@ function factory (type) {
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.
    *
    * Usage:
-   *     var index = new Index(range1, range2, matrix1, array1, ...);
+   *     const index = new Index(range1, range2, matrix1, array1, ...)
    *
    * Where each parameter can be any of:
    *     A number
@@ -32,18 +32,18 @@ function factory (type) {
     this._dimensions = []
     this._isScalar = true
 
-    for (var i = 0, ii = arguments.length; i < ii; i++) {
-      var arg = arguments[i]
+    for (let i = 0, ii = arguments.length; i < ii; i++) {
+      const arg = arguments[i]
 
       if (type.isRange(arg)) {
         this._dimensions.push(arg)
         this._isScalar = false
       } else if (Array.isArray(arg) || type.isMatrix(arg)) {
         // create matrix
-        var m = _createImmutableMatrix(arg.valueOf())
+        const m = _createImmutableMatrix(arg.valueOf())
         this._dimensions.push(m)
         // size
-        var size = m.size()
+        const size = m.size()
         // scalar
         if (size.length !== 1 || size[0] !== 1) {
           this._isScalar = false
@@ -69,7 +69,7 @@ function factory (type) {
 
   function _createImmutableMatrix (arg) {
     // loop array elements
-    for (var i = 0, l = arg.length; i < l; i++) {
+    for (let i = 0, l = arg.length; i < l; i++) {
       if (typeof arg[i] !== 'number' || !isInteger(arg[i])) {
         throw new TypeError('Index parameters must be positive integer numbers')
       }
@@ -84,7 +84,7 @@ function factory (type) {
    * @return {Index} clone
    */
   Index.prototype.clone = function () {
-    var index = new Index()
+    const index = new Index()
     index._dimensions = clone(this._dimensions)
     index._isScalar = this._isScalar
     return index
@@ -98,7 +98,7 @@ function factory (type) {
    * @private
    */
   Index.create = function (ranges) {
-    var index = new Index()
+    const index = new Index()
     Index.apply(index, ranges)
     return index
   }
@@ -109,10 +109,10 @@ function factory (type) {
    * @returns {number[]} size
    */
   Index.prototype.size = function () {
-    var size = []
+    const size = []
 
-    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var d = this._dimensions[i]
+    for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
+      const d = this._dimensions[i]
       size[i] = (typeof d === 'string') ? 1 : d.size()[0]
     }
 
@@ -125,10 +125,10 @@ function factory (type) {
    * @returns {number[]} max
    */
   Index.prototype.max = function () {
-    var values = []
+    const values = []
 
-    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var range = this._dimensions[i]
+    for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
+      const range = this._dimensions[i]
       values[i] = (typeof range === 'string') ? range : range.max()
     }
 
@@ -141,10 +141,10 @@ function factory (type) {
    * @returns {number[]} min
    */
   Index.prototype.min = function () {
-    var values = []
+    const values = []
 
-    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var range = this._dimensions[i]
+    for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
+      const range = this._dimensions[i]
       values[i] = (typeof range === 'string') ? range : range.min()
     }
 
@@ -159,7 +159,7 @@ function factory (type) {
    *                              index object as third.
    */
   Index.prototype.forEach = function (callback) {
-    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
+    for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
       callback(this._dimensions[i], i, this)
     }
   }
@@ -210,9 +210,9 @@ function factory (type) {
    * @returns {Array} array
    */
   Index.prototype.toArray = function () {
-    var array = []
-    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var dimension = this._dimensions[i]
+    const array = []
+    for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
+      const dimension = this._dimensions[i]
       array.push((typeof dimension === 'string') ? dimension : dimension.toArray())
     }
     return array
@@ -232,10 +232,10 @@ function factory (type) {
    * @returns {String} str
    */
   Index.prototype.toString = function () {
-    var strings = []
+    const strings = []
 
-    for (var i = 0, ii = this._dimensions.length; i < ii; i++) {
-      var dimension = this._dimensions[i]
+    for (let i = 0, ii = this._dimensions.length; i < ii; i++) {
+      const dimension = this._dimensions[i]
       if (typeof dimension === 'string') {
         strings.push(JSON.stringify(dimension))
       } else {

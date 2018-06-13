@@ -1,15 +1,15 @@
 'use strict'
 
-var keywords = require('../keywords')
-var escape = require('../../utils/string').escape
-var forEach = require('../../utils/array').forEach
-var join = require('../../utils/array').join
-var latex = require('../../utils/latex')
-var operators = require('../operators')
-var setSafeProperty = require('../../utils/customs').setSafeProperty
+const keywords = require('../keywords')
+const escape = require('../../utils/string').escape
+const forEach = require('../../utils/array').forEach
+const join = require('../../utils/array').join
+const latex = require('../../utils/latex')
+const operators = require('../operators')
+const setSafeProperty = require('../../utils/customs').setSafeProperty
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
+  const Node = load(require('./Node'))
 
   /**
    * @constructor FunctionAssignmentNode
@@ -64,30 +64,30 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   FunctionAssignmentNode.prototype._compile = function (math, argNames) {
-    var childArgNames = Object.create(argNames)
+    const childArgNames = Object.create(argNames)
     forEach(this.params, function (param) {
       childArgNames[param] = true
     })
 
     // compile the function expression with the child args
-    var evalExpr = this.expr._compile(math, childArgNames)
-    var name = this.name
-    var params = this.params
-    var signature = join(this.types, ',')
-    var syntax = name + '(' + join(this.params, ', ') + ')'
+    const evalExpr = this.expr._compile(math, childArgNames)
+    const name = this.name
+    const params = this.params
+    const signature = join(this.types, ',')
+    const syntax = name + '(' + join(this.params, ', ') + ')'
 
     return function evalFunctionAssignmentNode (scope, args, context) {
-      var signatures = {}
+      const signatures = {}
       signatures[signature] = function () {
-        var childArgs = Object.create(args)
+        const childArgs = Object.create(args)
 
-        for (var i = 0; i < params.length; i++) {
+        for (let i = 0; i < params.length; i++) {
           childArgs[params[i]] = arguments[i]
         }
 
         return evalExpr(scope, childArgs, context)
       }
-      var fn = typed(name, signatures)
+      const fn = typed(name, signatures)
       fn.syntax = syntax
 
       setSafeProperty(scope, name, fn)
@@ -111,7 +111,7 @@ function factory (type, config, load, typed) {
    * @returns {FunctionAssignmentNode} Returns a transformed copy of the node
    */
   FunctionAssignmentNode.prototype.map = function (callback) {
-    var expr = this._ifNode(callback(this.expr, 'expr', this))
+    const expr = this._ifNode(callback(this.expr, 'expr', this))
 
     return new FunctionAssignmentNode(this.name, this.params.slice(0), expr)
   }
@@ -131,8 +131,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function needParenthesis (node, parenthesis) {
-    var precedence = operators.getPrecedence(node, parenthesis)
-    var exprPrecedence = operators.getPrecedence(node.expr, parenthesis)
+    const precedence = operators.getPrecedence(node, parenthesis)
+    const exprPrecedence = operators.getPrecedence(node.expr, parenthesis)
 
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
@@ -144,8 +144,8 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   FunctionAssignmentNode.prototype._toString = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var expr = this.expr.toString(options)
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    let expr = this.expr.toString(options)
     if (needParenthesis(this, parenthesis)) {
       expr = '(' + expr + ')'
     }
@@ -157,7 +157,7 @@ function factory (type, config, load, typed) {
    * @returns {Object}
    */
   FunctionAssignmentNode.prototype.toJSON = function () {
-    var types = this.types
+    const types = this.types
 
     return {
       mathjs: 'FunctionAssignmentNode',
@@ -189,12 +189,12 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   FunctionAssignmentNode.prototype.toHTML = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var params = []
-    for (var i = 0; i < this.params.length; i++)  {
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const params = []
+    for (let i = 0; i < this.params.length; i++) {
       params.push('<span class="math-symbol math-parameter">' + escape(this.params[i]) + '</span>')
     }
-    var expr = this.expr.toHTML(options)
+    let expr = this.expr.toHTML(options)
     if (needParenthesis(this, parenthesis)) {
       expr = '<span class="math-parenthesis math-round-parenthesis">(</span>' + expr + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
@@ -207,8 +207,8 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   FunctionAssignmentNode.prototype._toTex = function (options) {
-    var parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
-    var expr = this.expr.toTex(options)
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    let expr = this.expr.toTex(options)
     if (needParenthesis(this, parenthesis)) {
       expr = `\\left(${expr}\\right)`
     }

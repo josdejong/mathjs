@@ -1,22 +1,22 @@
 'use strict'
 
-var util = require('../../utils/index')
-var DimensionError = require('../../error/DimensionError')
+const util = require('../../utils/index')
+const DimensionError = require('../../error/DimensionError')
 
-var string = util.string
-var array = util.array
-var object = util.object
-var number = util.number
+const string = util.string
+const array = util.array
+const object = util.object
+const number = util.number
 
-var isArray = Array.isArray
-var isNumber = number.isNumber
-var isInteger = number.isInteger
-var isString = string.isString
+const isArray = Array.isArray
+const isNumber = number.isNumber
+const isInteger = number.isInteger
+const isString = string.isString
 
-var validateIndex = array.validateIndex
+const validateIndex = array.validateIndex
 
 function factory (type, config, load, typed) {
-  var Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
+  const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
 
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -76,7 +76,7 @@ function factory (type, config, load, typed) {
    * Get the storage format used by the matrix.
    *
    * Usage:
-   *     var format = matrix.storage()                   // retrieve storage format
+   *     const format = matrix.storage()  // retrieve storage format
    *
    * @memberof DenseMatrix
    * @return {string}           The storage format.
@@ -89,7 +89,7 @@ function factory (type, config, load, typed) {
    * Get the datatype of the data stored in the matrix.
    *
    * Usage:
-   *     var format = matrix.datatype()                   // retrieve matrix datatype
+   *     const format = matrix.datatype()   // retrieve matrix datatype
    *
    * @memberof DenseMatrix
    * @return {string}           The datatype.
@@ -112,8 +112,8 @@ function factory (type, config, load, typed) {
    * Get a subset of the matrix, or replace a subset of the matrix.
    *
    * Usage:
-   *     var subset = matrix.subset(index)               // retrieve subset
-   *     var value = matrix.subset(index, replacement)   // replace subset
+   *     const subset = matrix.subset(index)               // retrieve subset
+   *     const value = matrix.subset(index, replacement)   // replace subset
    *
    * @memberof DenseMatrix
    * @param {Index} index
@@ -148,11 +148,11 @@ function factory (type, config, load, typed) {
     if (index.length != this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check index
-    for (var x = 0; x < index.length; x++) { validateIndex(index[x], this._size[x]) }
+    for (let x = 0; x < index.length; x++) { validateIndex(index[x], this._size[x]) }
 
-    var data = this._data
-    for (var i = 0, ii = index.length; i < ii; i++) {
-      var index_i = index[i]
+    let data = this._data
+    for (let i = 0, ii = index.length; i < ii; i++) {
+      const index_i = index[i]
       validateIndex(index_i, data.length)
       data = data[index_i]
     }
@@ -174,16 +174,16 @@ function factory (type, config, load, typed) {
     if (!isArray(index)) { throw new TypeError('Array expected') }
     if (index.length < this._size.length) { throw new DimensionError(index.length, this._size.length, '<') }
 
-    var i, ii, index_i
+    let i, ii, index_i
 
     // enlarge matrix when needed
-    var size = index.map(function (i) {
+    const size = index.map(function (i) {
       return i + 1
     })
     _fit(this, size, defaultValue)
 
     // traverse over the dimensions
-    var data = this._data
+    let data = this._data
     for (i = 0, ii = index.length - 1; i < ii; i++) {
       index_i = index[i]
       validateIndex(index_i, data.length)
@@ -210,21 +210,21 @@ function factory (type, config, load, typed) {
       throw new TypeError('Invalid index')
     }
 
-    var isScalar = index.isScalar()
+    const isScalar = index.isScalar()
     if (isScalar) {
       // return a scalar
       return matrix.get(index.min())
     } else {
       // validate dimensions
-      var size = index.size()
+      const size = index.size()
       if (size.length != matrix._size.length) {
         throw new DimensionError(size.length, matrix._size.length)
       }
 
       // validate if any of the ranges in the index is out of range
-      var min = index.min()
-      var max = index.max()
-      for (var i = 0, ii = matrix._size.length; i < ii; i++) {
+      const min = index.min()
+      const max = index.max()
+      for (let i = 0, ii = matrix._size.length; i < ii; i++) {
         validateIndex(min[i], matrix._size[i])
         validateIndex(max[i], matrix._size[i])
       }
@@ -247,8 +247,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _getSubmatrix (data, index, dims, dim) {
-    var last = (dim === dims - 1)
-    var range = index.dimension(dim)
+    const last = (dim === dims - 1)
+    const range = index.dimension(dim)
 
     if (last) {
       return range.map(function (i) {
@@ -258,7 +258,7 @@ function factory (type, config, load, typed) {
     } else {
       return range.map(function (i) {
         validateIndex(i, data.length)
-        var child = data[i]
+        const child = data[i]
         return _getSubmatrix(child, index, dims, dim + 1)
       }).valueOf()
     }
@@ -282,11 +282,10 @@ function factory (type, config, load, typed) {
     }
 
     // get index size and check whether the index contains a single value
-    var iSize = index.size(),
-      isScalar = index.isScalar()
+    const iSize = index.size(), isScalar = index.isScalar()
 
     // calculate the size of the submatrix, and convert it into an Array if needed
-    var sSize
+    let sSize
     if (type.isMatrix(submatrix)) {
       sSize = submatrix.size()
       submatrix = submatrix.valueOf()
@@ -313,8 +312,8 @@ function factory (type, config, load, typed) {
 
       if (sSize.length < iSize.length) {
         // calculate number of missing outer dimensions
-        var i = 0
-        var outer = 0
+        let i = 0
+        let outer = 0
         while (iSize[i] === 1 && sSize[i] === 1) {
           i++
         }
@@ -333,14 +332,13 @@ function factory (type, config, load, typed) {
       }
 
       // enlarge matrix when needed
-      var size = index.max().map(function (i) {
+      const size = index.max().map(function (i) {
         return i + 1
       })
       _fit(matrix, size, defaultValue)
 
       // insert the sub matrix
-      var dims = iSize.length,
-        dim = 0
+      const dims = iSize.length, dim = 0
       _setSubmatrix(matrix._data, index, submatrix, dims, dim)
     }
 
@@ -358,8 +356,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _setSubmatrix (data, index, submatrix, dims, dim) {
-    var last = (dim === dims - 1),
-      range = index.dimension(dim)
+    const last = (dim === dims - 1), range = index.dimension(dim)
 
     if (last) {
       range.forEach(function (dataIndex, subIndex) {
@@ -392,16 +389,16 @@ function factory (type, config, load, typed) {
     if (!isArray(size)) { throw new TypeError('Array expected') }
 
     // matrix to resize
-    var m = copy ? this.clone() : this
+    const m = copy ? this.clone() : this
     // resize matrix
     return _resize(m, size, defaultValue)
   }
 
-  var _resize = function (matrix, size, defaultValue) {
+  function _resize (matrix, size, defaultValue) {
     // check size
     if (size.length === 0) {
       // first value in matrix
-      var v = matrix._data
+      let v = matrix._data
       // go deep
       while (isArray(v)) {
         v = v[0]
@@ -430,7 +427,7 @@ function factory (type, config, load, typed) {
    * @return {Matrix}                 The reshaped matrix
    */
   DenseMatrix.prototype.reshape = function (size, copy) {
-    var m = copy ? this.clone() : this
+    const m = copy ? this.clone() : this
 
     m._data = array.reshape(m._data, size)
     m._size = size.slice(0)
@@ -447,8 +444,10 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _fit (matrix, size, defaultValue) {
-    var newSize = matrix._size.slice(0), // copy the array
-      changed = false
+    const // copy the array
+      newSize = matrix._size.slice(0)
+
+    let changed = false
 
     // add dimensions when needed
     while (newSize.length < size.length) {
@@ -457,7 +456,7 @@ function factory (type, config, load, typed) {
     }
 
     // enlarge size when needed
-    for (var i = 0, ii = size.length; i < ii; i++) {
+    for (let i = 0, ii = size.length; i < ii; i++) {
       if (size[i] > newSize[i]) {
         newSize[i] = size[i]
         changed = true
@@ -476,7 +475,7 @@ function factory (type, config, load, typed) {
    * @return {DenseMatrix} clone
    */
   DenseMatrix.prototype.clone = function () {
-    var m = new DenseMatrix({
+    const m = new DenseMatrix({
       data: object.clone(this._data),
       size: object.clone(this._size),
       datatype: this._datatype
@@ -505,8 +504,8 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix.prototype.map = function (callback) {
     // matrix instance
-    var me = this
-    var recurse = function (value, index) {
+    const me = this
+    const recurse = function (value, index) {
       if (isArray(value)) {
         return value.map(function (child, i) {
           return recurse(child, index.concat(i))
@@ -532,8 +531,8 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix.prototype.forEach = function (callback) {
     // matrix instance
-    var me = this
-    var recurse = function (value, index) {
+    const me = this
+    const recurse = function (value, index) {
       if (isArray(value)) {
         value.forEach(function (child, i) {
           recurse(child, index.concat(i))
@@ -621,21 +620,21 @@ function factory (type, config, load, typed) {
       k = 0
     }
 
-    var kSuper = k > 0 ? k : 0
-    var kSub = k < 0 ? -k : 0
+    const kSuper = k > 0 ? k : 0
+    const kSub = k < 0 ? -k : 0
 
     // rows & columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    const rows = this._size[0]
+    const columns = this._size[1]
 
     // number diagonal values
-    var n = Math.min(rows - kSub, columns - kSuper)
+    const n = Math.min(rows - kSub, columns - kSuper)
 
     // x is a matrix get diagonal from matrix
-    var data = []
+    const data = []
 
     // loop rows
-    for (var i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
       data[i] = this._data[i + kSub][i + kSuper]
     }
 
@@ -694,18 +693,18 @@ function factory (type, config, load, typed) {
       defaultValue = typed.convert(defaultValue, datatype)
     }
 
-    var kSuper = k > 0 ? k : 0
-    var kSub = k < 0 ? -k : 0
+    const kSuper = k > 0 ? k : 0
+    const kSub = k < 0 ? -k : 0
 
     // rows and columns
-    var rows = size[0]
-    var columns = size[1]
+    const rows = size[0]
+    const columns = size[1]
 
     // number of non-zero items
-    var n = Math.min(rows - kSub, columns - kSuper)
+    const n = Math.min(rows - kSub, columns - kSuper)
 
     // value extraction function
-    var _value
+    let _value
 
     // check value
     if (isArray(value)) {
@@ -721,7 +720,7 @@ function factory (type, config, load, typed) {
       }
     } else if (type.isMatrix(value)) {
       // matrix size
-      var ms = value.size()
+      const ms = value.size()
       // validate matrix
       if (ms.length !== 1 || ms[0] !== n) {
         // number of values in array must be n
@@ -747,14 +746,14 @@ function factory (type, config, load, typed) {
     }
 
     // empty array
-    var data = []
+    let data = []
 
     // check we need to resize array
     if (size.length > 0) {
       // resize array
       data = array.resize(data, size, defaultValue)
       // fill diagonal
-      for (var d = 0; d < n; d++) {
+      for (let d = 0; d < n; d++) {
         data[d + kSub][d + kSuper] = _value(d)
       }
     }
@@ -814,7 +813,7 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix._swapRows = function (i, j, data) {
     // swap values i <-> j
-    var vi = data[i]
+    const vi = data[i]
     data[i] = data[j]
     data[j] = vi
   }
@@ -827,8 +826,8 @@ function factory (type, config, load, typed) {
    * @return {Array} data
    */
   function preprocess (data) {
-    for (var i = 0, ii = data.length; i < ii; i++) {
-      var elem = data[i]
+    for (let i = 0, ii = data.length; i < ii; i++) {
+      const elem = data[i]
       if (isArray(elem)) {
         data[i] = preprocess(elem)
       } else if (elem && elem.isMatrix === true) {

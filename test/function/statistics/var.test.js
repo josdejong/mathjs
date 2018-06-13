@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var variance = math['var']
+const assert = require('assert')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const variance = math['var']
 
 describe('variance', function () {
   it('should return the variance of numbers', function () {
@@ -80,7 +80,7 @@ describe('variance', function () {
   })
 
   it('should LaTeX var', function () {
-    var expression = math.parse('var(1,2,3)')
+    const expression = math.parse('var(1,2,3)')
     assert.equal(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
   })
 })

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap')
+const deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.fraction(1, 3);
-   *     math.fraction('2/3');
-   *     math.fraction({n: 2, d: 3});
-   *     math.fraction([0.2, 0.25, 1.25]);
+   *     math.fraction(1, 3)
+   *     math.fraction('2/3')
+   *     math.fraction({n: 2, d: 3})
+   *     math.fraction([0.2, 0.25, 1.25])
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    *            the fraction
    * @return {Fraction | Array | Matrix} Returns a fraction
    */
-  var fraction = typed('fraction', {
+  const fraction = typed('fraction', {
     'number': function (x) {
       if (!isFinite(x) || isNaN(x)) {
         throw new Error(x + ' cannot be represented as a fraction')

@@ -34,11 +34,11 @@ Matrix &#124; Array &#124; number | A matrix with ones on the diagonal.
 ## Examples
 
 ```js
-math.identity(3);                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-math.identity(3, 2);                 // returns [[1, 0], [0, 1], [0, 0]]
+math.identity(3)                    // returns [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+math.identity(3, 2)                 // returns [[1, 0], [0, 1], [0, 0]]
 
-var A = [[1, 2, 3], [4, 5, 6]];
-math.identity(math.size(A));         // returns [[1, 0, 0], [0, 1, 0]]
+const A = [[1, 2, 3], [4, 5, 6]]
+math.identity(math.size(A))         // returns [[1, 0, 0], [0, 1, 0]]
 ```
 
 

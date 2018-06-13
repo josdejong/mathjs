@@ -1,11 +1,11 @@
 // test cbrt
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var cbrt = math.cbrt
-var bignumber = math.bignumber
-var complex = math.complex
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const cbrt = math.cbrt
+const bignumber = math.bignumber
+const complex = math.complex
 
 describe('cbrt', function () {
   it('should return the cubic root of a boolean', function () {
@@ -129,7 +129,7 @@ describe('cbrt', function () {
   })
 
   it('should LaTeX cbrt', function () {
-    var expression = math.parse('cbrt(2)')
+    const expression = math.parse('cbrt(2)')
     assert.equal(expression.toTex(), '\\sqrt[3]{2}')
   })
 })

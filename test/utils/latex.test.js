@@ -1,5 +1,4 @@
-var assert = require('assert'),
-  latex = require('../../src/utils/latex')
+const assert = require('assert'), latex = require('../../src/utils/latex')
 
 describe('util.latex', function () {
   it('should convert symbols with underscores', function () {
@@ -15,7 +14,7 @@ describe('util.latex', function () {
   })
 
   it('should escape strings', function () {
-    var string = 'space tab\tunderscore_bla$/'
+    const string = 'space tab\tunderscore_bla$/'
 
     assert.equal(latex.toSymbol(string), 'space~tab\\qquad{}underscore\\_bla\\$/')
   })

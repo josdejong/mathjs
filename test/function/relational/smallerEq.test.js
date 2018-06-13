@@ -1,12 +1,5 @@
 // test smaller
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  smallerEq = math.smallerEq
+const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, smallerEq = math.smallerEq
 
 describe('smallerEq', function () {
   it('should compare two numbers correctly', function () {
@@ -95,7 +88,7 @@ describe('smallerEq', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
     assert.equal(mymath.smallerEq(1.01, 1), false)
     assert.equal(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), false)
 
@@ -209,7 +202,7 @@ describe('smallerEq', function () {
   })
 
   it('should LaTeX smallerEq', function () {
-    var expression = math.parse('smallerEq(1,2)')
+    const expression = math.parse('smallerEq(1,2)')
     assert.equal(expression.toTex(), '\\left(1\\leq2\\right)')
   })
 })

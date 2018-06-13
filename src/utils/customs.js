@@ -1,6 +1,6 @@
 'use strict'
 
-var hasOwnProperty = require('./object').hasOwnProperty
+const hasOwnProperty = require('./object').hasOwnProperty
 
 /**
  * Get a property of a plain object
@@ -135,12 +135,12 @@ function isPlainObject (object) {
   return typeof object === 'object' && object && object.constructor === Object
 }
 
-var safeNativeProperties = {
+const safeNativeProperties = {
   length: true,
   name: true
 }
 
-var safeNativeMethods = {
+const safeNativeMethods = {
   toString: true,
   valueOf: true,
   toLocaleString: true

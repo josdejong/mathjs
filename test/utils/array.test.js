@@ -1,8 +1,4 @@
-var assert = require('assert'),
-  array = require('../../src/utils/array'),
-  resize = array.resize,
-  reshape = array.reshape,
-  size = array.size
+const assert = require('assert'), array = require('../../src/utils/array'), resize = array.resize, reshape = array.reshape, size = array.size
 
 describe('util.array', function () {
   describe('size', function () {
@@ -44,7 +40,7 @@ describe('util.array', function () {
 
   describe('resize', function () {
     it('should resize a 1 dimensional array', function () {
-      var a = []
+      let a = []
 
       // resize with a default value
       a = resize(a, [3], 100)
@@ -59,7 +55,7 @@ describe('util.array', function () {
     })
 
     it('should resize a 1 dimensional array with null as defaultValue', function () {
-      var a = []
+      let a = []
 
       // resize with default value undefined
       a = resize(a, [3], null)
@@ -67,7 +63,7 @@ describe('util.array', function () {
     })
 
     it('should resize a 2 dimensional array', function () {
-      var a = [
+      let a = [
         [0, 1],
         [2, 3]
       ]
@@ -107,7 +103,7 @@ describe('util.array', function () {
     })
 
     it('should resize a 2 dimensional array with default value', function () {
-      var a = [
+      let a = [
         [0, 1],
         [2, 3]
       ]
@@ -147,7 +143,7 @@ describe('util.array', function () {
     })
 
     it('should resize a 1 dimensional array to 2 dimensional', function () {
-      var a = [1, 2]
+      let a = [1, 2]
 
       a = resize(a, [4], 3)
       assert.deepEqual(a, [1, 2, 3, 3])
@@ -161,7 +157,7 @@ describe('util.array', function () {
       ])
 
       // without default value
-      var b = [1, 2]
+      let b = [1, 2]
 
       b = resize(b, [4])
       assert.deepEqual(b, [1, 2, 0, 0])
@@ -177,7 +173,7 @@ describe('util.array', function () {
     })
 
     it('should resize a 2 dimensional array to 1 dimensional', function () {
-      var a = [[1, 2], [3, 4], [5, 6], [7, 8]]
+      let a = [[1, 2], [3, 4], [5, 6], [7, 8]]
       a = resize(a, [6])
       assert.deepEqual(a, [1, 3, 5, 7, 0, 0])
 
@@ -191,7 +187,7 @@ describe('util.array', function () {
     })
 
     it('should resize a 3 dimensional array', function () {
-      var a = []
+      let a = []
       a = resize(a, [2, 3], 5)
       assert.deepEqual(a, [[5, 5, 5], [5, 5, 5]])
 
@@ -203,7 +199,7 @@ describe('util.array', function () {
     })
 
     it('should resize to an empty array', function () {
-      var a = []
+      let a = []
       a = resize(a, [2, 3], 5)
       assert.deepEqual(a, [[5, 5, 5], [5, 5, 5]])
 
@@ -212,7 +208,7 @@ describe('util.array', function () {
     })
 
     it('should throw an error when resizing to a scalar', function () {
-      var a = []
+      let a = []
       assert.throws(function () { a = resize(a, []) }, /Resizing to scalar is not supported/)
     })
 
@@ -224,7 +220,7 @@ describe('util.array', function () {
 
   describe('reshape', function () {
     it('should reshape a 1 dimensional array into a 2 dimensional array', function () {
-      var a = [1, 2, 3, 4, 5, 6, 7, 8]
+      const a = [1, 2, 3, 4, 5, 6, 7, 8]
 
       assert.deepEqual(
         reshape(a, [2, 4]),
@@ -249,7 +245,7 @@ describe('util.array', function () {
     })
 
     it('should reshape a 2 dimensional array into a 1 dimensional array', function () {
-      var a = [
+      const a = [
         [0, 1],
         [2, 3]
       ]
@@ -261,7 +257,7 @@ describe('util.array', function () {
     })
 
     it('should reshape a 3 dimensional array', function () {
-      var a = [[[1, 2],
+      const a = [[[1, 2],
         [3, 4]],
 
       [[5, 6],
@@ -290,7 +286,7 @@ describe('util.array', function () {
     })
 
     it('should throw an error when reshaping to a size that differs from the original', function () {
-      var a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      const a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
       assert.deepEqual(
         reshape(a, [3, 3]),
@@ -341,8 +337,8 @@ describe('util.array', function () {
     })
 
     it('should adjust size when squeezing an array', function () {
-      var a = [[[1], [2]], [[3], [4]]]
-      var size = [2, 2, 1]
+      let a = [[[1], [2]], [[3], [4]]]
+      let size = [2, 2, 1]
       a = array.squeeze(a, size)
       assert.deepEqual(a, [[1, 2], [3, 4]])
       assert.deepEqual(size, [2, 2])
@@ -394,8 +390,8 @@ describe('util.array', function () {
     })
 
     it('should adjust size when unsqueezing an array', function () {
-      var a = [[1, 2], [3, 4]]
-      var size = [2, 2]
+      let a = [[1, 2], [3, 4]]
+      let size = [2, 2]
       array.unsqueeze(a, 3, 0, size)
       assert.deepEqual(a, [[[1], [2]], [[3], [4]]])
       assert.deepEqual(size, [2, 2, 1])
@@ -563,8 +559,8 @@ describe('util.array', function () {
     })
 
     it('should return a new array', function () {
-      var input = [3, 2, 1]
-      var flat = array.flatten(input)
+      const input = [3, 2, 1]
+      const flat = array.flatten(input)
       flat.sort()
       assert.deepEqual(input, [3, 2, 1])
     })

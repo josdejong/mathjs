@@ -1,10 +1,10 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'))
-  var stirlingS2 = load(require('./stirlingS2'))
-  var isNegative = load(require('../utils/isNegative'))
-  var isInteger = load(require('../utils/isInteger'))
+  const add = load(require('../arithmetic/add'))
+  const stirlingS2 = load(require('./stirlingS2'))
+  const isNegative = load(require('../utils/isNegative'))
+  const isInteger = load(require('../utils/isInteger'))
 
   /**
    * The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
@@ -17,8 +17,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.bellNumbers(3); // returns 5;
-   *    math.bellNumbers(8); // returns 4140;
+   *    math.bellNumbers(3) // returns 5
+   *    math.bellNumbers(8) // returns 4140
    *
    * See also:
    *
@@ -27,15 +27,15 @@ function factory (type, config, load, typed) {
    * @param {Number | BigNumber} n    Total number of objects in the set
    * @return {Number | BigNumber}     B(n)
    */
-  var bellNumbers = typed('bellNumbers', {
+  const bellNumbers = typed('bellNumbers', {
     'number | BigNumber': function (n) {
       if (!isInteger(n) || isNegative(n)) {
         throw new TypeError('Non-negative integer value expected in function bellNumbers')
       }
 
       // Sum (k=0, n) S(n,k).
-      var result = 0
-      for (var i = 0; i <= n; i++) {
+      let result = 0
+      for (let i = 0; i <= n; i++) {
         result = add(result, stirlingS2(n, i))
       }
 

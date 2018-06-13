@@ -1,12 +1,12 @@
 'use strict'
 
-var flatten = require('../../utils/array').flatten
+const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  var index = load(require('../../type/matrix/MatrixIndex'))
-  var size = load(require('../matrix/size'))
-  var subset = load(require('../matrix/subset'))
-  var compareNatural = load(require('../relational/compareNatural'))
+  const index = load(require('../../type/matrix/MatrixIndex'))
+  const size = load(require('../matrix/size'))
+  const subset = load(require('../matrix/subset'))
+  const compareNatural = load(require('../relational/compareNatural'))
 
   /**
    * Create the powerset of a (multi)set. (The powerset contains very possible subsets of a (multi)set.)
@@ -18,7 +18,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.setPowerset([1, 2, 3]);        // returns [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
+   *    math.setPowerset([1, 2, 3])        // returns [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
    *
    * See also:
    *
@@ -27,14 +27,14 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a  A (multi)set
    * @return {Array}    The powerset of the (multi)set
    */
-  var setPowerset = typed('setPowerset', {
+  const setPowerset = typed('setPowerset', {
     'Array | Matrix': function (a) {
       if (subset(size(a), new index(0)) === 0) { // if empty, return empty
         return []
       }
-      var b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
-      var result = []
-      var number = 0
+      const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)
+      const result = []
+      let number = 0
       while (number.toString(2).length <= b.length) {
         result.push(_subset(b, number.toString(2).split('').reverse()))
         number++
@@ -48,8 +48,8 @@ function factory (type, config, load, typed) {
 
   // create subset
   function _subset (array, bitarray) {
-    var result = []
-    for (var i = 0; i < bitarray.length; i++) {
+    const result = []
+    for (let i = 0; i < bitarray.length; i++) {
       if (bitarray[i] === '1') {
         result.push(array[i])
       }
@@ -59,9 +59,9 @@ function factory (type, config, load, typed) {
 
   // sort subsests by length
   function _sort (array) {
-    var temp = []
-    for (var i = array.length - 1; i > 0; i--) {
-      for (var j = 0; j < i; j++) {
+    let temp = []
+    for (let i = array.length - 1; i > 0; i--) {
+      for (let j = 0; j < i; j++) {
         if (array[j].length > array[j + 1].length) {
           temp = array[j]
           array[j] = array[j + 1]

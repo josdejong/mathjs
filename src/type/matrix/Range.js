@@ -1,6 +1,6 @@
 'use strict'
 
-var number = require('../../utils/number')
+const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -8,23 +8,25 @@ function factory (type, config, load, typed) {
    * to iterate over the range.
    *
    * A range can be constructed as:
-   *     var range = new Range(start, end);
-   *     var range = new Range(start, end, step);
+   *
+   *     const range = new Range(start, end)
+   *     const range = new Range(start, end, step)
    *
    * To get the result of the range:
    *     range.forEach(function (x) {
-   *         console.log(x);
-   *     });
+   *         console.log(x)
+   *     })
    *     range.map(function (x) {
-   *         return math.sin(x);
-   *     });
-   *     range.toArray();
+   *         return math.sin(x)
+   *     })
+   *     range.toArray()
    *
    * Example usage:
-   *     var c = new Range(2, 6);         // 2:1:5
-   *     c.toArray();                     // [2, 3, 4, 5]
-   *     var d = new Range(2, -3, -1);    // 2:-1:-2
-   *     d.toArray();                     // [2, 1, 0, -1, -2]
+   *
+   *     const c = new Range(2, 6)       // 2:1:5
+   *     c.toArray()                     // [2, 3, 4, 5]
+   *     const d = new Range(2, -3, -1)  // 2:-1:-2
+   *     d.toArray()                     // [2, 1, 0, -1, -2]
    *
    * @class Range
    * @constructor Range
@@ -72,12 +74,12 @@ function factory (type, config, load, typed) {
       return null
     }
 
-    var args = str.split(':')
-    var nums = args.map(function (arg) {
+    const args = str.split(':')
+    const nums = args.map(function (arg) {
       return parseFloat(arg)
     })
 
-    var invalid = nums.some(function (num) {
+    const invalid = nums.some(function (num) {
       return isNaN(num)
     })
     if (invalid) {
@@ -109,11 +111,11 @@ function factory (type, config, load, typed) {
    * @returns {number[]} size
    */
   Range.prototype.size = function () {
-    var len = 0,
-      start = this.start,
-      step = this.step,
-      end = this.end,
-      diff = end - start
+    let len = 0
+    const start = this.start
+    const step = this.step
+    const end = this.end
+    const diff = end - start
 
     if (number.sign(step) == number.sign(diff)) {
       len = Math.ceil((diff) / step)
@@ -133,7 +135,7 @@ function factory (type, config, load, typed) {
    * @return {number | undefined} min
    */
   Range.prototype.min = function () {
-    var size = this.size()[0]
+    const size = this.size()[0]
 
     if (size > 0) {
       if (this.step > 0) {
@@ -154,7 +156,7 @@ function factory (type, config, load, typed) {
    * @return {number | undefined} max
    */
   Range.prototype.max = function () {
-    var size = this.size()[0]
+    const size = this.size()[0]
 
     if (size > 0) {
       if (this.step > 0) {
@@ -177,10 +179,10 @@ function factory (type, config, load, typed) {
    *                              of the element, and the Range being traversed.
    */
   Range.prototype.forEach = function (callback) {
-    var x = this.start
-    var step = this.step
-    var end = this.end
-    var i = 0
+    let x = this.start
+    const step = this.step
+    const end = this.end
+    let i = 0
 
     if (step > 0) {
       while (x < end) {
@@ -207,7 +209,7 @@ function factory (type, config, load, typed) {
    * @returns {Array} array
    */
   Range.prototype.map = function (callback) {
-    var array = []
+    const array = []
     this.forEach(function (value, index, obj) {
       array[index[0]] = callback(value, index, obj)
     })
@@ -220,7 +222,7 @@ function factory (type, config, load, typed) {
    * @returns {Array} array
    */
   Range.prototype.toArray = function () {
-    var array = []
+    const array = []
     this.forEach(function (value, index) {
       array[index[0]] = value
     })
@@ -248,7 +250,7 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   Range.prototype.format = function (options) {
-    var str = number.format(this.start, options)
+    let str = number.format(this.start, options)
 
     if (this.step != 1) {
       str += ':' + number.format(this.step, options)

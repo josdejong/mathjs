@@ -1,20 +1,10 @@
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  bigUtil = require('../../../src/utils/index').bignumber,
-  bignumber = math.bignumber,
-  subtract = math.subtract,
-  abs = math.abs,
-  smaller = math.smaller,
-  erf = math.erf,
-  actualErfValues = require('./erf.values.json')
+const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/index'), bigUtil = require('../../../src/utils/index').bignumber, bignumber = math.bignumber, subtract = math.subtract, abs = math.abs, smaller = math.smaller, erf = math.erf, actualErfValues = require('./erf.values.json')
 
-var DIFF_THRESH = 5e-16
+const DIFF_THRESH = 5e-16
 
 describe('erf', function () {
   it('should calculate erf(x), |x| < 0.46875', function () {
-    var i, diff, actual, expected
+    let i, diff, actual, expected
     for (i = -4; i <= 4; i += 1) {
       actual = erf(i / 10)
       expected = actualErfValues[(i / 10).toFixed(1)]
@@ -24,7 +14,7 @@ describe('erf', function () {
   })
 
   it('should calculate erf(x), 0.46875 <= |x| <= 4', function () {
-    var i, diff, actual, expected
+    let i, diff, actual, expected
     for (i = -40; i < -4; i += 1) {
       actual = erf(i / 10)
       expected = actualErfValues[(i / 10).toFixed(1)]
@@ -40,7 +30,7 @@ describe('erf', function () {
   })
 
   it('should calculate erf(x), |x| > 4', function () {
-    var i, diff, actual, expected
+    let i, diff, actual, expected
     for (i = -70; i < -40; i += 1) {
       actual = erf(i / 10)
       expected = actualErfValues[(i / 10).toFixed(1)]
@@ -83,7 +73,7 @@ describe('erf', function () {
       DIFF_THRESH
     ))
 
-    var bigmath = math.create({ precision: 15 })
+    const bigmath = math.create({ precision: 15 })
     assert.ok(smaller(
       abs(subtract(bigmath.erf(bignumber(-1.5)), bigmath.bignumber(actualErfValues['-1.5']))),
       DIFF_THRESH
@@ -133,7 +123,7 @@ describe('erf', function () {
   })
 
   it('should LaTeX erf', function () {
-    var expression = math.parse('erf(2.5)')
+    const expression = math.parse('erf(2.5)')
     assert.equal(expression.toTex(), 'erf\\left(2.5\\right)')
   })
 

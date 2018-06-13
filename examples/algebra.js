@@ -5,7 +5,7 @@
 // simplification and derivation on this tree.
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // simplify an expression
 console.log('simplify expressions')
@@ -16,8 +16,8 @@ console.log(math.simplify('x^2 + x + 3 + x^2').toString()) // '2 * x ^ 2 + x + 3
 console.log(math.simplify('x * y * -x / (x ^ 2)').toString()) // '-y'
 
 // work with an expression tree, evaluate results
-var f = math.parse('2x + x')
-var simplified = math.simplify(f)
+const f = math.parse('2x + x')
+const simplified = math.simplify(f)
 console.log(simplified.toString()) // '3 * x'
 console.log(simplified.eval({x: 4})) // 12
 console.log()
@@ -28,7 +28,7 @@ console.log(math.derivative('2x^2 + 3x + 4', 'x').toString()) // '4 * x + 3'
 console.log(math.derivative('sin(2x)', 'x').toString()) // '2 * cos(2 * x)'
 
 // work with an expression tree, evaluate results
-var h = math.parse('x^2 + x')
-var dh = math.derivative(h, 'x')
+const h = math.parse('x^2 + x')
+const dh = math.derivative(h, 'x')
 console.log(dh.toString()) // '2 * x + 1'
 console.log(dh.eval({x: 3})) // '7'

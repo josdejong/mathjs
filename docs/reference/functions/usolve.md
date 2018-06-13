@@ -10,7 +10,7 @@ Solves the linear equation system by backward substitution. Matrix must be an up
 ## Syntax
 
 ```js
-math.usolve(U, b);
+math.usolve(U, b)
 ```
 
 ### Parameters
@@ -30,9 +30,9 @@ DenseMatrix &#124; Array | A column vector with the linear system solution (x)
 ## Examples
 
 ```js
-var a = [[-2, 3], [2, 1]];
-var b = [11, 9];
-var x = usolve(a, b);  // [[8], [9]]
+const a = [[-2, 3], [2, 1]]
+const b = [11, 9]
+const x = usolve(a, b)  // [[8], [9]]
 ```
 
 

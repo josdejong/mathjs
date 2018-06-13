@@ -1,7 +1,7 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var matrix = math.matrix
-var identity = math.identity
+const assert = require('assert')
+const math = require('../../../src/index')
+const matrix = math.matrix
+const identity = math.identity
 
 describe('identity', function () {
   it('should create an empty matrix', function () {
@@ -35,10 +35,10 @@ describe('identity', function () {
   })
 
   it('should create an identity matrix with bignumbers', function () {
-    var zero = math.bignumber(0)
-    var one = math.bignumber(1)
-    var two = math.bignumber(2)
-    var three = math.bignumber(3)
+    const zero = math.bignumber(0)
+    const one = math.bignumber(1)
+    const two = math.bignumber(2)
+    const three = math.bignumber(3)
     assert.deepEqual(identity(two), matrix([[one, zero], [zero, one]]))
     // assert.deepEqual(identity(two, 'sparse'), matrix([[one,zero],[zero,one]], 'sparse')); // FIXME: identity css
     assert.deepEqual(identity(two, three), matrix([[one, zero, zero], [zero, one, zero]]))
@@ -46,7 +46,7 @@ describe('identity', function () {
   })
 
   it('should return an array when setting matrix=="array"', function () {
-    var math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({matrix: 'Array'})
     assert.deepEqual(math2.identity(2), [[1, 0], [0, 1]])
   })
 
@@ -64,7 +64,7 @@ describe('identity', function () {
   })
 
   it('should LaTeX identity', function () {
-    var expression = math.parse('identity(2)')
+    const expression = math.parse('identity(2)')
     assert.equal(expression.toTex(), '\\mathrm{identity}\\left(2\\right)')
   })
 

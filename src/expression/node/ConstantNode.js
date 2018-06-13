@@ -1,19 +1,19 @@
 'use strict'
 
-var format = require('../../utils/string').format
-var escapeLatex = require('../../utils/latex').escape
+const format = require('../../utils/string').format
+const escapeLatex = require('../../utils/latex').escape
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
-  var getType = load(require('../../function/utils/typeof'))
+  const Node = load(require('./Node'))
+  const getType = load(require('../../function/utils/typeof'))
 
   /**
    * A ConstantNode holds a constant value like a number or string.
    *
    * Usage:
    *
-   *     new ConstantNode(2.3);
-   *     new ConstantNode('hello');
+   *     new ConstantNode(2.3)
+   *     new ConstantNode('hello')
    *
    * @param {*} value    Value can be any type (number, BigNumber, string, ...)
    * @constructor ConstantNode
@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   ConstantNode.prototype._compile = function (math, argNames) {
-    var value = this.value
+    const value = this.value
 
     return function evalConstantNode () {
       return value
@@ -100,7 +100,7 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConstantNode.prototype.toHTML = function (options) {
-    var value = this._toString(options)
+    const value = this._toString(options)
 
     switch (getType(this.value)) {
       case 'number':
@@ -149,7 +149,7 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ConstantNode.prototype._toTex = function (options) {
-    var value = this._toString(options)
+    const value = this._toString(options)
 
     switch (getType(this.value)) {
       case 'string':
@@ -157,7 +157,7 @@ function factory (type, config, load, typed) {
 
       case 'number':
       case 'BigNumber':
-        var index = value.toLowerCase().indexOf('e')
+        const index = value.toLowerCase().indexOf('e')
         if (index !== -1) {
           return value.substring(0, index) + '\\cdot10^{' +
               value.substring(index + 1) + '}'

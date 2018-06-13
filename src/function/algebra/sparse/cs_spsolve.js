@@ -1,11 +1,11 @@
 'use strict'
 
 function factory (type, config, load) {
-  var divideScalar = load(require('../../arithmetic/divideScalar'))
-  var multiply = load(require('../../arithmetic/multiply'))
-  var subtract = load(require('../../arithmetic/subtract'))
+  const divideScalar = load(require('../../arithmetic/divideScalar'))
+  const multiply = load(require('../../arithmetic/multiply'))
+  const subtract = load(require('../../arithmetic/subtract'))
 
-  var cs_reach = load(require('./cs_reach'))
+  const cs_reach = load(require('./cs_reach'))
 
   /**
    * The function cs_spsolve() computes the solution to G * x = bk, where bk is the
@@ -26,32 +26,32 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_spsolve = function (g, b, k, xi, x, pinv, lo) {
+  const cs_spsolve = function (g, b, k, xi, x, pinv, lo) {
     // g arrays
-    var gvalues = g._values
-    var gindex = g._index
-    var gptr = g._ptr
-    var gsize = g._size
+    const gvalues = g._values
+    const gindex = g._index
+    const gptr = g._ptr
+    const gsize = g._size
     // columns
-    var n = gsize[1]
+    const n = gsize[1]
     // b arrays
-    var bvalues = b._values
-    var bindex = b._index
-    var bptr = b._ptr
+    const bvalues = b._values
+    const bindex = b._index
+    const bptr = b._ptr
     // vars
-    var p, p0, p1, q
+    let p, p0, p1, q
     // xi[top..n-1] = cs_reach(B(:,k))
-    var top = cs_reach(g, b, k, xi, pinv)
+    const top = cs_reach(g, b, k, xi, pinv)
     // clear x
     for (p = top; p < n; p++) { x[xi[p]] = 0 }
     // scatter b
     for (p0 = bptr[k], p1 = bptr[k + 1], p = p0; p < p1; p++) { x[bindex[p]] = bvalues[p] }
     // loop columns
-    for (var px = top; px < n; px++) {
+    for (let px = top; px < n; px++) {
       // x array index for px
-      var j = xi[px]
+      const j = xi[px]
       // apply permutation vector (U x = b), j maps to column J of G
-      var J = pinv ? pinv[j] : j
+      const J = pinv ? pinv[j] : j
       // check column J is empty
       if (J < 0) { continue }
       // column value indeces in G, p0 <= p < p1
@@ -65,7 +65,7 @@ function factory (type, config, load) {
       // loop
       for (; p < q; p++) {
         // row
-        var i = gindex[p]
+        const i = gindex[p]
         // x(i) -= G(i,j) * x(j)
         x[i] = subtract(x[i], multiply(gvalues[p], x[j]))
       }

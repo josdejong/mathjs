@@ -1,21 +1,21 @@
-var assert = require('assert')
-var functionUtils = require('../../src/utils/function')
+const assert = require('assert')
+const functionUtils = require('../../src/utils/function')
 
 describe('util.function', function () {
   describe('memoize', function () {
     it('should memoize a function with one argument', function () {
-      var f = function (x) { return x * x }
+      const f = function (x) { return x * x }
 
-      var m = functionUtils.memoize(f)
+      const m = functionUtils.memoize(f)
 
       assert.strictEqual(m(2), 4)
       assert.strictEqual(m(3), 9)
     })
 
     it('should memoize a function with two arguments', function () {
-      var f = function (x, y) { return x * y }
+      const f = function (x, y) { return x * y }
 
-      var m = functionUtils.memoize(f)
+      const m = functionUtils.memoize(f)
 
       assert.strictEqual(m(2, 3), 6)
 
@@ -25,9 +25,9 @@ describe('util.function', function () {
     })
 
     it('should memoize a function with objects as arguments', function () {
-      var f = function (obj) { return obj.x * obj.y }
+      const f = function (obj) { return obj.x * obj.y }
 
-      var m = functionUtils.memoize(f)
+      const m = functionUtils.memoize(f)
 
       assert.strictEqual(m({x: 2, y: 3}), 6)
       assert.deepEqual(Object.keys(m.cache), ['[{"x":2,"y":3}]'])
@@ -35,12 +35,12 @@ describe('util.function', function () {
     })
 
     it('should memoize a function with a custom hashIt function', function () {
-      var f = function (obj) { return obj.id }
-      var hashIt = function (args) {
+      const f = function (obj) { return obj.id }
+      const hashIt = function (args) {
         return 'id:' + args[0].id
       }
 
-      var m = functionUtils.memoize(f, hashIt)
+      const m = functionUtils.memoize(f, hashIt)
 
       assert.strictEqual(m({id: 2}), 2)
       assert.deepEqual(Object.keys(m.cache), ['id:2'])
@@ -48,10 +48,10 @@ describe('util.function', function () {
     })
 
     it('should really return the cached result', function () {
-      var a = 2
-      var f = function (x) { return a } // trick: no pure function
+      let a = 2
+      const f = function (x) { return a } // trick: no pure function
 
-      var m = functionUtils.memoize(f)
+      const m = functionUtils.memoize(f)
 
       assert.strictEqual(m(4), 2)
       a = 3
@@ -61,28 +61,28 @@ describe('util.function', function () {
 
   describe('maxArgumentCount', function () {
     it('should calculate the max argument count of a typed function', function () {
-      var a = function () {}
+      const a = function () {}
       a.signatures = {
         'number, number': function () {},
         'number': function () {}
       }
       assert.equal(functionUtils.maxArgumentCount(a), 2)
 
-      var b = function () {}
+      const b = function () {}
       b.signatures = {
         'number': function () {},
         'number, number': function () {}
       }
       assert.equal(functionUtils.maxArgumentCount(b), 2)
 
-      var c = function () {}
+      const c = function () {}
       c.signatures = {
         'number': function () {},
         'BigNumber': function () {}
       }
       assert.equal(functionUtils.maxArgumentCount(c), 1)
 
-      var d = function () {}
+      const d = function () {}
       d.signatures = {
         'number,number': function () {},
         'number': function () {},

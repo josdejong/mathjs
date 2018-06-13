@@ -35,12 +35,12 @@ boolean &#124; Array &#124; Matrix | Returns true when the x is larger than y, e
 ## Examples
 
 ```js
-math.larger(2, 3);             // returns false
-math.larger(5, 2 + 2);         // returns true
+math.larger(2, 3)             // returns false
+math.larger(5, 2 + 2)         // returns true
 
-var a = math.unit('5 cm');
-var b = math.unit('2 inch');
-math.larger(a, b);             // returns false
+const a = math.unit('5 cm')
+const b = math.unit('2 inch')
+math.larger(a, b)             // returns false
 ```
 
 

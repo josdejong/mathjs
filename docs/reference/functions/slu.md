@@ -10,7 +10,7 @@ Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `
 ## Syntax
 
 ```js
-math.slu(A, order, threshold);
+math.slu(A, order, threshold)
 ```
 
 ### Parameters
@@ -31,7 +31,7 @@ Object | The lower triangular matrix, the upper triangular matrix and the permut
 ## Examples
 
 ```js
-var A = math.sparse([[4,3], [6, 3]])
+const A = math.sparse([[4,3], [6, 3]])
 math.slu(A, 1, 0.001)
 // returns:
 // {

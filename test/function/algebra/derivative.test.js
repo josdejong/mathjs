@@ -1,10 +1,10 @@
 // test derivative
-var assert = require('assert')
-var math = require('../../../src/index')
-var OperatorNode = math.expression.node.OperatorNode
-var ConstantNode = math.expression.node.ConstantNode
-var SymbolNode = math.expression.node.SymbolNode
-var derivative = math.derivative
+const assert = require('assert')
+const math = require('../../../src/index')
+const OperatorNode = math.expression.node.OperatorNode
+const ConstantNode = math.expression.node.ConstantNode
+const SymbolNode = math.expression.node.SymbolNode
+const derivative = math.derivative
 
 describe('derivative', function () {
   function derivativeWithoutSimplify (expr, value) {
@@ -45,15 +45,15 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('f(y) = 5y + 2', 'x'), '0')
 
     // non-embedded example
-    var f_of_x = math.parse('f(x) = x + 2')
-    var newFunc = new OperatorNode('+', 'add', [math.parse('5x'), f_of_x])
+    const f_of_x = math.parse('f(x) = x + 2')
+    const newFunc = new OperatorNode('+', 'add', [math.parse('5x'), f_of_x])
     assert.equal(derivativeWithoutSimplify(newFunc, 'x'), '5 * 1 + 1 + 0')
   })
 
   it('should take the derivative of a OperatorNodes with ConstantNodes', function () {
     compareString(derivativeWithoutSimplify('1 + 2', 'x'), '0')
     compareString(derivativeWithoutSimplify('-100^2 + 3*3/2 - 12', 'x'), '0')
-    var threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('7^4'), math.parse('123.124')])
+    const threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('7^4'), math.parse('123.124')])
     compareString(derivativeWithoutSimplify(threeArgMultiplyConstant, 'x'), 0)
   })
 
@@ -63,7 +63,7 @@ describe('derivative', function () {
     // d/dx(+4x) = +4*1 = +4
     compareString(derivativeWithoutSimplify('+4x', 'x'), '+4 * 1')
 
-    var threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('x'), math.parse('sin(x)')])
+    const threeArgMultiplyConstant = new OperatorNode('*', 'multiply', [math.parse('3'), math.parse('x'), math.parse('sin(x)')])
     compareString(derivativeWithoutSimplify(threeArgMultiplyConstant, 'x'), '3 * (1 * sin(x) + x * 1 * cos(x))')
 
     // Linearity of differentiation
@@ -72,10 +72,10 @@ describe('derivative', function () {
     // With '-': d/dx(5x - x - 2) = 5*1 - 1 - 0 = 4
     compareString(derivativeWithoutSimplify('5x - x - 2', 'x'), '5 * 1 - 1 - 0')
 
-    var threeArgAddition = new OperatorNode('+', 'add', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')])
+    const threeArgAddition = new OperatorNode('+', 'add', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')])
     compareString(derivativeWithoutSimplify(threeArgAddition, 'x'), '1 + 1 * cos(x) + 5 * 1')
 
-    var threeArgMultiplication = new OperatorNode('*', 'multiply', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')])
+    const threeArgMultiplication = new OperatorNode('*', 'multiply', [math.parse('x'), math.parse('sin(x)'), math.parse('5x')])
     compareString(derivativeWithoutSimplify(threeArgMultiplication, 'x'), '1 * sin(x) * 5 x + x * 1 * cos(x) * 5 x + x * sin(x) * 5 * 1')
 
     // d/dx(2*(x + x)) = 2*(1 + 1)
@@ -177,7 +177,7 @@ describe('derivative', function () {
   })
 
   it('should function properly even without being called within an eval', function () {
-    var f = math.parse('2x^3')
+    const f = math.parse('2x^3')
 
     // 2*3*1*x^(3-1) = 6x^2
     compareString(derivativeWithoutSimplify(f, 'x').toString(), '2 * 3 * 1 * x ^ (3 - 1)')
@@ -193,14 +193,14 @@ describe('derivative', function () {
 
   describe('expression parser', function () {
     it('should evaluate a derivative containing string value', function () {
-      var res = math.eval('derivative("x^2", "x")')
+      const res = math.eval('derivative("x^2", "x")')
       assert.ok(res && res.isNode)
 
       assert.equal(res.toString(), '2 * x')
     })
 
     it('should evaluate a derivative containing nodes', function () {
-      var res = math.eval('derivative(parse("x^2"), parse("x"))')
+      const res = math.eval('derivative(parse("x^2"), parse("x"))')
       assert.ok(res && res.isNode)
 
       assert.equal(res.toString(), '2 * x')
@@ -211,17 +211,17 @@ describe('derivative', function () {
     // This case cannot happen when parsing via the expression parser,
     // but it can when you create your own operator nodes. See #1014
 
-    var c12 = new ConstantNode(12)
-    var c4 = new ConstantNode(4)
-    var x = new SymbolNode('x')
+    const c12 = new ConstantNode(12)
+    const c4 = new ConstantNode(4)
+    const x = new SymbolNode('x')
 
     assert.throws(function () {
-      var node = new OperatorNode('/', 'myDivide', [c12, c4, x])
+      const node = new OperatorNode('/', 'myDivide', [c12, c4, x])
       derivative(node, 'x')
     }, /Error: Operator "\/" is not supported by derivative, or a wrong number of arguments is passed/)
 
     assert.throws(function () {
-      var node = new OperatorNode('^', 'myPow', [c12, c4, x])
+      const node = new OperatorNode('^', 'myPow', [c12, c4, x])
       derivative(node, 'x')
     }, /Error: Operator "\^" is not supported by derivative, or a wrong number of arguments is passed/)
   })

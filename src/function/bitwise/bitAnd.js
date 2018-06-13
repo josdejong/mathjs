@@ -1,18 +1,18 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var bigBitAnd = require('../../utils/bignumber/bitAnd')
+const isInteger = require('../../utils/number').isInteger
+const bigBitAnd = require('../../utils/bignumber/bitAnd')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Bitwise AND two values, `x & y`.
@@ -24,9 +24,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.bitAnd(53, 131);               // returns number 1
+   *    math.bitAnd(53, 131)               // returns number 1
    *
-   *    math.bitAnd([1, 12, 31], 42);       // returns Array [0, 8, 10]
+   *    math.bitAnd([1, 12, 31], 42)       // returns Array [0, 8, 10]
    *
    * See also:
    *
@@ -36,7 +36,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} y Second value to and
    * @return {number | BigNumber | Array | Matrix} AND of `x` and `y`
    */
-  var bitAnd = typed('bitAnd', {
+  const bitAnd = typed('bitAnd', {
 
     'number, number': function (x, y) {
       if (!isInteger(x) || !isInteger(y)) {

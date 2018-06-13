@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('./../utils/collection/deepMap')
+const deepMap = require('./../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,11 +14,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.number(2);                         // returns number 2
-   *    math.number('7.2');                     // returns number 7.2
-   *    math.number(true);                      // returns number 1
-   *    math.number([true, false, true, true]); // returns [1, 0, 1, 1]
-   *    math.number(math.unit('52cm'), 'm');    // returns 0.52
+   *    math.number(2)                         // returns number 2
+   *    math.number('7.2')                     // returns number 7.2
+   *    math.number(true)                      // returns number 1
+   *    math.number([true, false, true, true]) // returns [1, 0, 1, 1]
+   *    math.number(math.unit('52cm'), 'm')    // returns 0.52
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @param {Unit | string} [valuelessUnit] A valueless unit, used to convert a unit to a number
    * @return {number | Array | Matrix} The created number
    */
-  var number = typed('number', {
+  const number = typed('number', {
     '': function () {
       return 0
     },
@@ -38,7 +38,7 @@ function factory (type, config, load, typed) {
     },
 
     'string': function (x) {
-      var num = Number(x)
+      const num = Number(x)
       if (isNaN(num)) {
         throw new SyntaxError('String "' + x + '" is no valid number')
       }

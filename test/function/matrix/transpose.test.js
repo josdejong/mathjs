@@ -1,7 +1,5 @@
 // test transpose
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  transpose = math.transpose
+const assert = require('assert'), math = require('../../../src/index'), transpose = math.transpose
 
 describe('transpose', function () {
   it('should transpose a scalar', function () {
@@ -36,8 +34,8 @@ describe('transpose', function () {
 
   describe('DenseMatrix', function () {
     it('should transpose a 2d matrix', function () {
-      var m = math.matrix([[1, 2, 3], [4, 5, 6]])
-      var t = transpose(m)
+      let m = math.matrix([[1, 2, 3], [4, 5, 6]])
+      let t = transpose(m)
       assert.deepEqual(t.valueOf(), [[1, 4], [2, 5], [3, 6]])
 
       m = math.matrix([[1, 4], [2, 5], [3, 6]])
@@ -59,7 +57,7 @@ describe('transpose', function () {
     })
 
     it('should throw an error for invalid matrix transpose', function () {
-      var m = math.matrix([[]])
+      let m = math.matrix([[]])
       assert.throws(function () { transpose(m) })
 
       m = math.matrix([[[1], [2]], [[3], [4]]])
@@ -69,8 +67,8 @@ describe('transpose', function () {
 
   describe('SparseMatrix', function () {
     it('should transpose a 2d matrix', function () {
-      var m = math.sparse([[1, 2, 3], [4, 5, 6]])
-      var t = transpose(m)
+      let m = math.sparse([[1, 2, 3], [4, 5, 6]])
+      let t = transpose(m)
       assert.deepEqual(t.valueOf(), [[1, 4], [2, 5], [3, 6]])
 
       m = math.sparse([[1, 4], [2, 5], [3, 6]])
@@ -88,13 +86,13 @@ describe('transpose', function () {
     })
 
     it('should throw an error for invalid matrix transpose', function () {
-      var m = math.matrix([[]], 'sparse')
+      const m = math.matrix([[]], 'sparse')
       assert.throws(function () { transpose(m) })
     })
   })
 
   it('should LaTeX transpose', function () {
-    var expression = math.parse('transpose([[1,2],[3,4]])')
+    const expression = math.parse('transpose([[1,2],[3,4]])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^\\top')
   })
 })

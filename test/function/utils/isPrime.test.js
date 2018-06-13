@@ -1,8 +1,8 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var isPrime = math.isPrime
-var bignumber = math.bignumber
-var complex = math.complex
+const assert = require('assert')
+const math = require('../../../src/index')
+const isPrime = math.isPrime
+const bignumber = math.bignumber
+const complex = math.complex
 
 describe('isPrime', function () {
   it('should test whether a number is prime', function () {

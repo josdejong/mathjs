@@ -1,7 +1,7 @@
 'use strict'
 
-var maxArgumentCount = require('../../utils/function').maxArgumentCount
-var forEach = require('../../utils/array').forEach
+const maxArgumentCount = require('../../utils/function').maxArgumentCount
+const forEach = require('../../utils/array').forEach
 
 function factory (type, config, load, typed) {
   /**
@@ -14,8 +14,8 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    math.forEach([1, 2, 3], function(value) {
-   *      console.log(value);
-   *    });
+   *      console.log(value)
+   *    })
    *    // outputs 1, 2, 3
    *
    * See also:
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix/array being traversed.
    */
-  var forEach = typed('forEach', {
+  const forEach = typed('forEach', {
     'Array, function': _forEach,
 
     'Matrix, function': function (x, callback) {
@@ -48,9 +48,9 @@ function factory (type, config, load, typed) {
  */
 function _forEach (array, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback)
+  const args = maxArgumentCount(callback)
 
-  var recurse = function (value, index) {
+  const recurse = function (value, index) {
     if (Array.isArray(value)) {
       forEach(value, function (child, i) {
         // we create a copy of the index array and append the new index value

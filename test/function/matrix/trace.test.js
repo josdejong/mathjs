@@ -1,6 +1,4 @@
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  math = require('../../../src/index')
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index')
 
 describe('trace', function () {
   it('should calculate correctly the trace of a NxN array', function () {
@@ -108,8 +106,8 @@ describe('trace', function () {
   it('should calculate the trace for a scalar', function () {
     assert.equal(math.trace(7), 7)
 
-    var c1 = math.complex(2, 3)
-    var c2 = math.trace(c1)
+    const c1 = math.complex(2, 3)
+    const c2 = math.trace(c1)
     assert.deepEqual(c1, c2)
 
     // c2 should be a clone
@@ -119,8 +117,8 @@ describe('trace', function () {
   })
 
   it('should calculate the trace for a 1x1 array', function () {
-    var c1 = math.complex(2, 3)
-    var c2 = math.trace([[c1]])
+    const c1 = math.complex(2, 3)
+    const c2 = math.trace([[c1]])
     assert.deepEqual(c1, c2)
 
     // c2 should be a clone
@@ -130,8 +128,8 @@ describe('trace', function () {
   })
 
   it('should calculate the trace for a 1x1 matrix', function () {
-    var c1 = math.complex(2, 3)
-    var c2 = math.trace(math.matrix([[c1]]))
+    const c1 = math.complex(2, 3)
+    const c2 = math.trace(math.matrix([[c1]]))
     assert.deepEqual(c1, c2)
 
     // c2 should be a clone
@@ -141,8 +139,8 @@ describe('trace', function () {
   })
 
   it('should calculate the trace for a 1x1 matrix, sparse', function () {
-    var c1 = math.complex(2, 3)
-    var c2 = math.trace(math.matrix([[c1]], 'sparse'))
+    const c1 = math.complex(2, 3)
+    const c2 = math.trace(math.matrix([[c1]], 'sparse'))
     assert.deepEqual(c1, c2)
 
     // c2 should be a clone
@@ -152,7 +150,7 @@ describe('trace', function () {
   })
 
   it('should calculate correctly the trace of a matrix with bignumbers', function () {
-    var bignumber = math.bignumber
+    const bignumber = math.bignumber
 
     // 1x1
     assert.deepEqual(math.trace([bignumber(5)]), bignumber(5))
@@ -178,7 +176,7 @@ describe('trace', function () {
   })
 
   it('should calculate the trace of a matrix with mixed numbers and bignumbers', function () {
-    var bignumber = math.bignumber
+    const bignumber = math.bignumber
     assert.deepEqual(math.trace([
       [bignumber(2), 1],
       [bignumber(3), 4]
@@ -186,7 +184,7 @@ describe('trace', function () {
   })
 
   it('should not change the value of the initial matrix', function () {
-    var m_test = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    const m_test = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     math.trace(m_test)
     assert.deepEqual(m_test, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   })
@@ -205,13 +203,13 @@ describe('trace', function () {
   })
 
   it('should LaTeX trace', function () {
-    var expression = math.parse('trace([[1,2],[3,4]])')
+    const expression = math.parse('trace([[1,2],[3,4]])')
     assert.equal(expression.toTex(), '\\mathrm{tr}\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)')
   })
 
   describe('DenseMatrix', function () {
     it('should calculate trace on a square matrix', function () {
-      var m = math.matrix([
+      let m = math.matrix([
         [1, 2],
         [4, -2]
       ])
@@ -235,7 +233,7 @@ describe('trace', function () {
     })
 
     it('should throw an error for invalid matrix', function () {
-      var m = math.matrix([
+      const m = math.matrix([
         [1, 2, 3],
         [4, 5, 6]
       ])
@@ -245,7 +243,7 @@ describe('trace', function () {
 
   describe('SparseMatrix', function () {
     it('should calculate trace on a square matrix', function () {
-      var m = math.matrix([
+      let m = math.matrix([
         [1, 2],
         [4, -2]
       ], 'sparse')
@@ -269,7 +267,7 @@ describe('trace', function () {
     })
 
     it('should throw an error for invalid matrix', function () {
-      var m = math.matrix([
+      const m = math.matrix([
         [1, 2, 3],
         [4, 5, 6]
       ], 'sparse')

@@ -1,8 +1,8 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_marked = load(require('./cs_marked'))
-  var cs_mark = load(require('./cs_mark'))
+  const cs_marked = load(require('./cs_marked'))
+  const cs_mark = load(require('./cs_mark'))
 
   /**
    * Find nonzero pattern of Cholesky L(k,1:k-1) using etree and triu(A(:,k))
@@ -17,23 +17,23 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_ereach = function (a, k, parent, w) {
+  const cs_ereach = function (a, k, parent, w) {
     // a arrays
-    var aindex = a._index
-    var aptr = a._ptr
-    var asize = a._size
+    const aindex = a._index
+    const aptr = a._ptr
+    const asize = a._size
     // columns
-    var n = asize[1]
+    const n = asize[1]
     // initialize top
-    var top = n
+    let top = n
     // vars
-    var p, p0, p1, len
+    let p, p0, p1, len
     // mark node k as visited
     cs_mark(w, k)
     // loop values & index for column k
     for (p0 = aptr[k], p1 = aptr[k + 1], p = p0; p < p1; p++) {
       // A(i,k) is nonzero
-      var i = aindex[p]
+      let i = aindex[p]
       // only use upper triangular part of A
       if (i > k) { continue }
       // traverse up etree

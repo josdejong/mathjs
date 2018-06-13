@@ -1,9 +1,9 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var transpose = load(require('./transpose'))
-  var conj = load(require('../complex/conj'))
-  var latex = require('../../utils/latex')
+  const transpose = load(require('./transpose'))
+  const conj = load(require('../complex/conj'))
+  const latex = require('../../utils/latex')
 
   /**
    * Transpose and complex conjugate a matrix. All values of the matrix are
@@ -17,8 +17,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     var A = [[1, 2, 3], [4, 5, math.complex(6,7)]];
-   *     math.ctranspose(A);               // returns [[1, 4], [2, 5], [3, {re:6,im:7}]]
+   *     const A = [[1, 2, 3], [4, 5, math.complex(6,7)]]
+   *     math.ctranspose(A)               // returns [[1, 4], [2, 5], [3, {re:6,im:7}]]
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix} x  Matrix to be ctransposed
    * @return {Array | Matrix}   The ctransposed matrix
    */
-  var ctranspose = typed('ctranspose', {
+  const ctranspose = typed('ctranspose', {
 
     'any': function (x) {
       return conj(transpose(x))

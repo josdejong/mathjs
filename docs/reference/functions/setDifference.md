@@ -29,8 +29,8 @@ Array &#124; Matrix | The difference of two (multi)sets
 ## Examples
 
 ```js
-math.setDifference([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [1, 2]
-math.setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [1, 2]
+math.setDifference([1, 2, 3, 4], [3, 4, 5, 6])            // returns [1, 2]
+math.setDifference([[1, 2], [3, 4]], [[3, 4], [5, 6]])    // returns [1, 2]
 ```
 
 

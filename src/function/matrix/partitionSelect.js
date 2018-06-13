@@ -1,9 +1,9 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var asc = load(require('../relational/compare'))
+  const asc = load(require('../relational/compare'))
   function desc (a, b) {
     return -asc(a, b)
   }
@@ -20,20 +20,20 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.partitionSelect([5, 10, 1], 2);           // returns 10
-   *    math.partitionSelect(['C', 'B', 'A', 'D'], 1); // returns 'B'
+   *    math.partitionSelect([5, 10, 1], 2)           // returns 10
+   *    math.partitionSelect(['C', 'B', 'A', 'D'], 1) // returns 'B'
    *
    *    function sortByLength (a, b) {
-   *      return a.length - b.length;
+   *      return a.length - b.length
    *    }
-   *    math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength); // returns 'Langdon'
+   *    math.partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength) // returns 'Langdon'
    *
    * See also:
    *
    *    sort
    *
    * @param {Matrix | Array} x    A one dimensional matrix or array to sort
-   * @param {Number} k            The kth smallest value to be retrieved; zero-based index
+   * @param {Number} k            The kth smallest value to be retrieved zero-based index
    * @param {Function | 'asc' | 'desc'} [compare='asc']
    *        An optional comparator function. The function is called as
    *        `compare(a, b)`, and must return 1 when a > b, -1 when a < b,
@@ -64,7 +64,7 @@ function factory (type, config, load, typed) {
     }
 
     if (type.isMatrix(x)) {
-      var size = x.size()
+      const size = x.size()
       if (size.length > 1) {
         throw new Error('Only one dimensional matrices supported')
       }
@@ -91,20 +91,20 @@ function factory (type, config, load, typed) {
       throw new Error('k out of bounds')
     }
 
-    var from = 0
-    var to = arr.length - 1
+    let from = 0
+    let to = arr.length - 1
 
     // if from == to we reached the kth element
     while (from < to) {
-      var r = from
-      var w = to
-      var pivot = arr[Math.floor(Math.random() * (to - from + 1)) + from]
+      let r = from
+      let w = to
+      const pivot = arr[Math.floor(Math.random() * (to - from + 1)) + from]
 
       // stop if the reader and writer meets
       while (r < w) {
         // arr[r] >= pivot
         if (compare(arr[r], pivot) >= 0) { // put the large values at the end
-          var tmp = arr[w]
+          const tmp = arr[w]
           arr[w] = arr[r]
           arr[r] = tmp
           --w

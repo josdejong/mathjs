@@ -23,7 +23,7 @@ module.exports = function leftShift (x, y) {
     throw new Error('Integers expected in function leftShift')
   }
 
-  var BigNumber = x.constructor
+  const BigNumber = x.constructor
   if (x.isNaN() || y.isNaN() || (y.isNegative() && !y.isZero())) {
     return new BigNumber(NaN)
   }

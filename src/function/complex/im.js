@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,12 +15,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var a = math.complex(2, 3);
-   *    math.re(a);                     // returns number 2
-   *    math.im(a);                     // returns number 3
+   *    const a = math.complex(2, 3)
+   *    math.re(a)                     // returns number 2
+   *    math.im(a)                     // returns number 3
    *
-   *    math.re(math.complex('-5.2i')); // returns number -5.2
-   *    math.re(math.complex(2.4));     // returns number 0
+   *    math.re(math.complex('-5.2i')) // returns number -5.2
+   *    math.re(math.complex(2.4))     // returns number 0
    *
    * See also:
    *
@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
-  var im = typed('im', {
+  const im = typed('im', {
     'number': function (x) {
       return 0
     },

@@ -1,10 +1,10 @@
 'use strict'
 
-var object = require('../utils/object')
-var string = require('../utils/string')
+const object = require('../utils/object')
+const string = require('../utils/string')
 
 function factory (type, config, load, typed) {
-  var parser = load(require('./function/parser'))()
+  const parser = load(require('./function/parser'))()
 
   /**
    * Documentation object
@@ -39,8 +39,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   Help.prototype.toString = function () {
-    var doc = this.doc || {}
-    var desc = '\n'
+    const doc = this.doc || {}
+    let desc = '\n'
 
     if (doc.name) {
       desc += 'Name: ' + doc.name + '\n\n'
@@ -56,11 +56,11 @@ function factory (type, config, load, typed) {
     }
     if (doc.examples) {
       desc += 'Examples:\n'
-      for (var i = 0; i < doc.examples.length; i++) {
-        var expr = doc.examples[i]
+      for (let i = 0; i < doc.examples.length; i++) {
+        const expr = doc.examples[i]
         desc += '    ' + expr + '\n'
 
-        var res
+        let res
         try {
           // note: res can be undefined when `expr` is an empty string
           res = parser.eval(expr)
@@ -84,7 +84,7 @@ function factory (type, config, load, typed) {
    * Export the help object to JSON
    */
   Help.prototype.toJSON = function () {
-    var obj = object.clone(this.doc)
+    const obj = object.clone(this.doc)
     obj.mathjs = 'Help'
     return obj
   }
@@ -95,8 +95,8 @@ function factory (type, config, load, typed) {
    * @returns {Help} Returns a new Help object
    */
   Help.fromJSON = function (json) {
-    var doc = {}
-    for (var prop in json) {
+    const doc = {}
+    for (const prop in json) {
       if (prop !== 'mathjs') { // ignore mathjs field
         doc[prop] = json[prop]
       }

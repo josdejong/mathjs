@@ -27,12 +27,12 @@ Array &#124; Matrix | A vector with size of `x`.
 ## Examples
 
 ```js
-math.size(2.3);                  // returns []
-math.size('hello world');        // returns [11]
+math.size(2.3)                  // returns []
+math.size('hello world')        // returns [11]
 
-var A = [[1, 2, 3], [4, 5, 6]];
-math.size(A);                    // returns [2, 3]
-math.size(math.range(1,6));      // returns [5]
+const A = [[1, 2, 3], [4, 5, 6]]
+math.size(A)                    // returns [2, 3]
+math.size(math.range(1,6))      // returns [5]
 ```
 
 

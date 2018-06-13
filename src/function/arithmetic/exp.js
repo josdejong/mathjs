@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -13,11 +13,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.exp(2);                  // returns number 7.3890560989306495
-   *    math.pow(math.e, 2);          // returns number 7.3890560989306495
-   *    math.log(math.exp(2));        // returns number 2
+   *    math.exp(2)                  // returns number 7.3890560989306495
+   *    math.pow(math.e, 2)          // returns number 7.3890560989306495
+   *    math.log(math.exp(2))        // returns number 2
    *
-   *    math.exp([1, 2, 3]);
+   *    math.exp([1, 2, 3])
    *    // returns Array [
    *    //   2.718281828459045,
    *    //   7.3890560989306495,
@@ -31,7 +31,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to exponentiate
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  var exp = typed('exp', {
+  const exp = typed('exp', {
     'number': Math.exp,
 
     'Complex': function (x) {

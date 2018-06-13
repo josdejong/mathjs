@@ -1,16 +1,16 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var pow = load(require('./pow'))
-  var latex = require('../../utils/latex')
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const pow = load(require('./pow'))
+  const latex = require('../../utils/latex')
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculates the power of x to y element wise.
@@ -21,11 +21,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.dotPow(2, 3);            // returns number 8
+   *    math.dotPow(2, 3)            // returns number 8
    *
-   *    var a = [[1, 2], [4, 3]];
-   *    math.dotPow(a, 2);            // returns Array [[1, 4], [16, 9]]
-   *    math.pow(a, 2);               // returns Array [[9, 8], [16, 17]]
+   *    const a = [[1, 2], [4, 3]]
+   *    math.dotPow(a, 2)            // returns Array [[1, 4], [16, 9]]
+   *    math.pow(a, 2)               // returns Array [[9, 8], [16, 17]]
    *
    * See also:
    *
@@ -35,7 +35,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Complex | Unit | Array | Matrix} y  The exponent
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}                     The value of `x` to the power `y`
    */
-  var dotPow = typed('dotPow', {
+  const dotPow = typed('dotPow', {
 
     'any, any': pow,
 

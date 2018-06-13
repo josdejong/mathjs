@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../src/error/index'),
-  math = require('../../src/index'),
-  string = math.string
+const assert = require('assert'), error = require('../../src/error/index'), math = require('../../src/index'), string = math.string
 
 describe('string', function () {
   it('should be \'\' if called with no argument', function () {

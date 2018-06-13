@@ -1,5 +1,5 @@
-var assert = require('assert')
-var math = require('../../src/index')
+const assert = require('assert')
+const math = require('../../src/index')
 
 describe('security', function () {
   it('should not allow calling Function via constructor', function () {
@@ -84,7 +84,7 @@ describe('security', function () {
   })
 
   it('should not allow disguising forbidden properties with unicode characters', function () {
-    var scope = {
+    let scope = {
       a: {}
     }
 
@@ -102,7 +102,7 @@ describe('security', function () {
 
   it('should not allow calling Function via imported, overridden function', function () {
     assert.throws(function () {
-      var math2 = math.create()
+      const math2 = math.create()
       math2.eval('import({matrix:cos.constructor},{override:1});x=["console.log(\'hacked...\')"];x()')
     }, /Error: No access to property "constructor"/)
   })
@@ -322,7 +322,7 @@ describe('security', function () {
     // - there is a typed function created which unsecurely evaluates JS code with the function name in it
     //   -> when the function name contains JS code it can be executed, example:
     //
-    //         var fn = typed("(){}+console.log(`hacked...`);function a", { "": function () { } })
+    //         const fn = typed("(){}+console.log(`hacked...`);function a", { "": function () { } })
 
     assert.throws(function () {
       math.eval('[]["(){}+console.log(`hacked...`);function a"]()=0')
@@ -364,7 +364,7 @@ describe('security', function () {
 
   it('should not have access to specific namespaces', function () {
     Object.keys(math.expression.mathWithTransform).forEach(function (name) {
-      var value = math.expression.mathWithTransform[name]
+      const value = math.expression.mathWithTransform[name]
 
       // only plain functions allowed, no constructor functions
       if (typeof value === 'function') {

@@ -1,10 +1,10 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var divideScalar = load(require('./divideScalar'))
-  var log = load(require('./log'))
+  const divideScalar = load(require('./divideScalar'))
+  const log = load(require('./log'))
 
   /**
    * Calculate the logarithm of a `value+1`.
@@ -18,12 +18,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.log1p(2.5);                 // returns 1.252762968495368
-   *    math.exp(math.log1p(1.4));       // returns 2.4
+   *    math.log1p(2.5)                 // returns 1.252762968495368
+   *    math.exp(math.log1p(1.4))       // returns 2.4
    *
-   *    math.pow(10, 4);                 // returns 10000
-   *    math.log1p(9999, 10);            // returns 4
-   *    math.log1p(9999) / math.log(10); // returns 4
+   *    math.pow(10, 4)                 // returns 10000
+   *    math.log1p(9999, 10)            // returns 4
+   *    math.log1p(9999) / math.log(10) // returns 4
    *
    * See also:
    *
@@ -37,13 +37,13 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x+1`
    */
-  var log1p = typed('log1p', {
+  const log1p = typed('log1p', {
     'number': _log1pNumber,
 
     'Complex': _log1pComplex,
 
     'BigNumber': function (x) {
-      var y = x.plus(1)
+      const y = x.plus(1)
       if (!y.isNegative() || config.predictable) {
         return y.ln()
       } else {
@@ -84,7 +84,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _log1pComplex (x) {
-    var x_re1p = x.re + 1
+    const x_re1p = x.re + 1
     return new type.Complex(
       Math.log(Math.sqrt(x_re1p * x_re1p + x.im * x.im)),
       Math.atan2(x.im, x_re1p)

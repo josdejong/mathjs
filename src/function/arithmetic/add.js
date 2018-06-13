@@ -1,17 +1,17 @@
 'use strict'
 
-var extend = require('../../utils/object').extend
+const extend = require('../../utils/object').extend
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var addScalar = load(require('./addScalar'))
-  var latex = require('../../utils/latex.js')
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const addScalar = load(require('./addScalar'))
+  const latex = require('../../utils/latex.js')
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
+  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Add two or more values, `x + y`.
@@ -24,20 +24,20 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.add(2, 3);               // returns number 5
-   *    math.add(2, 3, 4);            // returns number 9
+   *    math.add(2, 3)               // returns number 5
+   *    math.add(2, 3, 4)            // returns number 9
    *
-   *    var a = math.complex(2, 3);
-   *    var b = math.complex(-4, 1);
-   *    math.add(a, b);               // returns Complex -2 + 4i
+   *    const a = math.complex(2, 3)
+   *    const b = math.complex(-4, 1)
+   *    math.add(a, b)               // returns Complex -2 + 4i
    *
-   *    math.add([1, 2, 3], 4);       // returns Array [5, 6, 7]
+   *    math.add([1, 2, 3], 4)       // returns Array [5, 6, 7]
    *
-   *    var c = math.unit('5 cm');
-   *    var d = math.unit('2.1 mm');
-   *    math.add(c, d);               // returns Unit 52.1 mm
+   *    const c = math.unit('5 cm')
+   *    const d = math.unit('2.1 mm')
+   *    math.add(c, d)               // returns Unit 52.1 mm
    *
-   *    math.add("2.3", "4");         // returns number 6.3
+   *    math.add("2.3", "4")         // returns number 6.3
    *
    * See also:
    *
@@ -47,7 +47,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
-  var add = typed('add', extend({
+  const add = typed('add', extend({
     // we extend the signatures of addScalar with signatures dealing with matrices
 
     'DenseMatrix, DenseMatrix': function (x, y) {
@@ -110,9 +110,9 @@ function factory (type, config, load, typed) {
     'any, any': addScalar,
 
     'any, any, ...any': function (x, y, rest) {
-      var result = add(x, y)
+      let result = add(x, y)
 
-      for (var i = 0; i < rest.length; i++) {
+      for (let i = 0; i < rest.length; i++) {
         result = add(result, rest[i])
       }
 

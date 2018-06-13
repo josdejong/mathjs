@@ -1,29 +1,29 @@
 'use strict'
 
-var ArgumentsError = require('../error/ArgumentsError')
-var deepMap = require('../utils/collection/deepMap')
+const ArgumentsError = require('../error/ArgumentsError')
+const deepMap = require('../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var numeric = load(require('../type/numeric'))
+  const numeric = load(require('../type/numeric'))
 
-  var AccessorNode = load(require('./node/AccessorNode'))
-  var ArrayNode = load(require('./node/ArrayNode'))
-  var AssignmentNode = load(require('./node/AssignmentNode'))
-  var BlockNode = load(require('./node/BlockNode'))
-  var ConditionalNode = load(require('./node/ConditionalNode'))
-  var ConstantNode = load(require('./node/ConstantNode'))
-  var FunctionAssignmentNode = load(require('./node/FunctionAssignmentNode'))
-  var IndexNode = load(require('./node/IndexNode'))
-  var ObjectNode = load(require('./node/ObjectNode'))
-  var OperatorNode = load(require('./node/OperatorNode'))
-  var ParenthesisNode = load(require('./node/ParenthesisNode'))
-  var FunctionNode = load(require('./node/FunctionNode'))
-  var RangeNode = load(require('./node/RangeNode'))
-  var SymbolNode = load(require('./node/SymbolNode'))
+  const AccessorNode = load(require('./node/AccessorNode'))
+  const ArrayNode = load(require('./node/ArrayNode'))
+  const AssignmentNode = load(require('./node/AssignmentNode'))
+  const BlockNode = load(require('./node/BlockNode'))
+  const ConditionalNode = load(require('./node/ConditionalNode'))
+  const ConstantNode = load(require('./node/ConstantNode'))
+  const FunctionAssignmentNode = load(require('./node/FunctionAssignmentNode'))
+  const IndexNode = load(require('./node/IndexNode'))
+  const ObjectNode = load(require('./node/ObjectNode'))
+  const OperatorNode = load(require('./node/OperatorNode'))
+  const ParenthesisNode = load(require('./node/ParenthesisNode'))
+  const FunctionNode = load(require('./node/FunctionNode'))
+  const RangeNode = load(require('./node/RangeNode'))
+  const SymbolNode = load(require('./node/SymbolNode'))
 
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
-   * invoking node.eval();
+   * invoking node.eval().
    *
    * Syntax:
    *
@@ -34,18 +34,18 @@ function factory (type, config, load, typed) {
    *
    * Example:
    *
-   *     var node = parse('sqrt(3^2 + 4^2)');
-   *     node.compile(math).eval(); // 5
+   *     const node = parse('sqrt(3^2 + 4^2)')
+   *     node.compile(math).eval() // 5
    *
-   *     var scope = {a:3, b:4}
-   *     var node = parse('a * b'); // 12
-   *     var code = node.compile(math);
-   *     code.eval(scope); // 12
-   *     scope.a = 5;
-   *     code.eval(scope); // 20
+   *     let scope = {a:3, b:4}
+   *     const node = parse('a * b') // 12
+   *     const code = node.compile(math)
+   *     code.eval(scope) // 12
+   *     scope.a = 5
+   *     code.eval(scope) // 20
    *
-   *     var nodes = math.parse(['a = 3', 'b = 4', 'a * b']);
-   *     nodes[2].compile(math).eval(); // 12
+   *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
+   *     nodes[2].compile(math).eval() // 12
    *
    * @param {string | string[] | Matrix} expr
    * @param {{nodes: Object<string, Node>}} [options]  Available options:
@@ -80,7 +80,7 @@ function factory (type, config, load, typed) {
   }
 
   // token types enumeration
-  var TOKENTYPE = {
+  const TOKENTYPE = {
     NULL: 0,
     DELIMITER: 1,
     NUMBER: 2,
@@ -89,7 +89,7 @@ function factory (type, config, load, typed) {
   }
 
   // map with all delimiters
-  var DELIMITERS = {
+  const DELIMITERS = {
     ',': true,
     '(': true,
     ')': true,
@@ -132,7 +132,7 @@ function factory (type, config, load, typed) {
   }
 
   // map with all named delimiters
-  var NAMED_DELIMITERS = {
+  const NAMED_DELIMITERS = {
     'mod': true,
     'to': true,
     'in': true,
@@ -142,28 +142,28 @@ function factory (type, config, load, typed) {
     'not': true
   }
 
-  var CONSTANTS = {
+  const CONSTANTS = {
     'true': true,
     'false': false,
     'null': null,
     'undefined': undefined
   }
 
-  var NUMERIC_CONSTANTS = [
+  const NUMERIC_CONSTANTS = [
     'NaN',
     'Infinity'
   ]
 
-  var extra_nodes = {} // current extra nodes
-  var expression = '' // current expression
-  var comment = '' // last parsed comment
-  var index = 0 // current index in expr
-  var c = '' // current token character in expr
-  var token = '' // current token
-  var token_type = TOKENTYPE.NULL // type of the token
-  var nesting_level = 0 // level of nesting inside parameters, used to ignore newline characters
-  var conditional_level = null // when a conditional is being parsed, the level of the conditional is stored here
-  var tokenStates = [] // holds saved token states
+  let extra_nodes = {} // current extra nodes
+  let expression = '' // current expression
+  let comment = '' // last parsed comment
+  let index = 0 // current index in expr
+  let c = '' // current token character in expr
+  let token = '' // current token
+  let token_type = TOKENTYPE.NULL // type of the token
+  let nesting_level = 0 // level of nesting inside parameters, used to ignore newline characters
+  let conditional_level = null // when a conditional is being parsed, the level of the conditional is stored here
+  const tokenStates = [] // holds saved token states
 
   /**
    * Get the first character from the expression.
@@ -235,7 +235,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function popTokenState () {
-    var restoredState = tokenStates.pop()
+    const restoredState = tokenStates.pop()
     token_type = restoredState.token_type
     token = restoredState.token
     comment = restoredState.comment
@@ -291,8 +291,8 @@ function factory (type, config, load, typed) {
     }
 
     // check for delimiters consisting of 3 characters
-    var c2 = c + nextPreview()
-    var c3 = c2 + nextNextPreview()
+    let c2 = c + nextPreview()
+    const c3 = c2 + nextNextPreview()
     if (c3.length === 3 && DELIMITERS[c3]) {
       token_type = TOKENTYPE.DELIMITER
       token = c3
@@ -537,7 +537,7 @@ function factory (type, config, load, typed) {
 
     getToken()
 
-    var node = parseBlock()
+    const node = parseBlock()
 
     // check for garbage at the end of the expression
     // an expression ends with a empty character '' and token_type DELIMITER
@@ -563,9 +563,9 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseBlock () {
-    var node
-    var blocks = []
-    var visible
+    let node
+    const blocks = []
+    let visible
 
     if (token !== '' && token !== '\n' && token !== ';') {
       node = parseAssignment()
@@ -616,9 +616,9 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseAssignment () {
-    var name, args, value, valid
+    let name, args, value, valid
 
-    var node = parseConditional()
+    const node = parseConditional()
 
     if (token === '=') {
       if (type.isSymbolNode(node)) {
@@ -670,24 +670,24 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseConditional () {
-    var node = parseLogicalOr()
+    let node = parseLogicalOr()
 
     while (token === '?') {
       // set a conditional level, the range operator will be ignored as long
       // as conditional_level === nesting_level.
-      var prev = conditional_level
+      const prev = conditional_level
       conditional_level = nesting_level
       getTokenSkipNewline()
 
-      var condition = node
-      var trueExpr = parseAssignment()
+      const condition = node
+      const trueExpr = parseAssignment()
 
       if (token !== ':') throw createSyntaxError('False part of conditional expression expected')
 
       conditional_level = null
       getTokenSkipNewline()
 
-      var falseExpr = parseAssignment() // Note: check for conditional operator again, right associativity
+      const falseExpr = parseAssignment() // Note: check for conditional operator again, right associativity
 
       node = new ConditionalNode(condition, trueExpr, falseExpr)
 
@@ -704,7 +704,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseLogicalOr () {
-    var node = parseLogicalXor()
+    let node = parseLogicalXor()
 
     while (token === 'or') {
       getTokenSkipNewline()
@@ -720,7 +720,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseLogicalXor () {
-    var node = parseLogicalAnd()
+    let node = parseLogicalAnd()
 
     while (token === 'xor') {
       getTokenSkipNewline()
@@ -736,7 +736,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseLogicalAnd () {
-    var node = parseBitwiseOr()
+    let node = parseBitwiseOr()
 
     while (token === 'and') {
       getTokenSkipNewline()
@@ -752,7 +752,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseBitwiseOr () {
-    var node = parseBitwiseXor()
+    let node = parseBitwiseXor()
 
     while (token === '|') {
       getTokenSkipNewline()
@@ -768,7 +768,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseBitwiseXor () {
-    var node = parseBitwiseAnd()
+    let node = parseBitwiseAnd()
 
     while (token === '^|') {
       getTokenSkipNewline()
@@ -784,7 +784,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseBitwiseAnd () {
-    var node = parseRelational()
+    let node = parseRelational()
 
     while (token === '&') {
       getTokenSkipNewline()
@@ -800,7 +800,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRelational () {
-    var node, operators, name, fn, params
+    let node, operators, name, fn, params
 
     node = parseShift()
 
@@ -830,7 +830,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseShift () {
-    var node, operators, name, fn, params
+    let node, operators, name, fn, params
 
     node = parseConversion()
 
@@ -858,7 +858,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseConversion () {
-    var node, operators, name, fn, params
+    let node, operators, name, fn, params
 
     node = parseRange()
 
@@ -892,7 +892,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRange () {
-    var node, params = []
+    let node
+    const params = []
 
     if (token === ':') {
       // implicit start=1 (one-based)
@@ -937,7 +938,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseAddSubtract () {
-    var node, operators, name, fn, params
+    let node, operators, name, fn, params
 
     node = parseMultiplyDivide()
 
@@ -963,7 +964,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseMultiplyDivide () {
-    var node, last, operators, name, fn
+    let node, last, operators, name, fn
 
     node = parseImplicitMultiplication()
     last = node
@@ -1001,7 +1002,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseImplicitMultiplication () {
-    var node, last
+    let node, last
 
     node = parseRule2()
     last = node
@@ -1036,7 +1037,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRule2 () {
-    var node, last
+    let node, last
 
     node = parseUnary()
     last = node
@@ -1087,8 +1088,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseUnary () {
-    var name, params, fn
-    var operators = {
+    let name, params, fn
+    const operators = {
       '-': 'unaryMinus',
       '+': 'unaryPlus',
       '~': 'bitNot',
@@ -1115,7 +1116,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parsePow () {
-    var node, name, fn, params
+    let node, name, fn, params
 
     node = parseLeftHandOperators()
 
@@ -1137,7 +1138,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseLeftHandOperators () {
-    var node, operators, name, fn, params
+    let node, operators, name, fn, params
 
     node = parseCustomNodes()
 
@@ -1175,24 +1176,24 @@ function factory (type, config, load, typed) {
    *
    *     nodes = {
    *       'plot': PlotHandler
-   *     };
+   *     }
    *
    * The constructor of the handler is called as:
    *
-   *     node = new PlotHandler(params);
+   *     node = new PlotHandler(params)
    *
    * The handler will be invoked when evaluating an expression like:
    *
-   *     node = math.parse('plot(sin(x), x)', nodes);
+   *     node = math.parse('plot(sin(x), x)', nodes)
    *
    * @return {Node} node
    * @private
    */
   function parseCustomNodes () {
-    var params = []
+    let params = []
 
     if (token_type === TOKENTYPE.SYMBOL && extra_nodes.hasOwnProperty(token)) {
-      var CustomNode = extra_nodes[token]
+      const CustomNode = extra_nodes[token]
 
       getToken()
 
@@ -1234,7 +1235,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseSymbol () {
-    var node, name
+    let node, name
 
     if (token_type === TOKENTYPE.SYMBOL ||
         (token_type === TOKENTYPE.DELIMITER && token in NAMED_DELIMITERS)) {
@@ -1272,7 +1273,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseAccessors (node, types) {
-    var params
+    let params
 
     while ((token === '(' || token === '[' || token === '.') &&
         (!types || types.indexOf(token) !== -1)) {
@@ -1339,7 +1340,7 @@ function factory (type, config, load, typed) {
         params.push(new ConstantNode(token))
         getToken()
 
-        var dotNotation = true
+        const dotNotation = true
         node = new AccessorNode(node, new IndexNode(params, dotNotation))
       }
     }
@@ -1354,7 +1355,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseString () {
-    var node, str
+    let node, str
 
     if (token === '"') {
       str = parseStringToken()
@@ -1376,7 +1377,7 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   function parseStringToken () {
-    var str = ''
+    let str = ''
 
     while (c !== '' && c !== '\"') {
       if (c === '\\') {
@@ -1405,7 +1406,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseMatrix () {
-    var array, params, rows, cols
+    let array, params, rows, cols
 
     if (token === '[') {
       // matrix [...]
@@ -1414,7 +1415,7 @@ function factory (type, config, load, typed) {
 
       if (token !== ']') {
         // this is a non-empty matrix
-        var row = parseRow()
+        const row = parseRow()
 
         if (token === ';') {
           // 2 dimensional array
@@ -1437,7 +1438,7 @@ function factory (type, config, load, typed) {
 
           // check if the number of columns matches in all rows
           cols = params[0].items.length
-          for (var r = 1; r < rows; r++) {
+          for (let r = 1; r < rows; r++) {
             if (params[r].items.length !== cols) {
               throw createError('Column dimensions mismatch ' +
                   '(' + params[r].items.length + ' !== ' + cols + ')')
@@ -1473,8 +1474,8 @@ function factory (type, config, load, typed) {
    * @return {ArrayNode} node
    */
   function parseRow () {
-    var params = [parseAssignment()]
-    var len = 1
+    const params = [parseAssignment()]
+    let len = 1
 
     while (token === ',') {
       getToken()
@@ -1494,9 +1495,9 @@ function factory (type, config, load, typed) {
    */
   function parseObject () {
     if (token === '{') {
-      var key
+      let key
 
-      var properties = {}
+      const properties = {}
       do {
         getToken()
 
@@ -1528,7 +1529,7 @@ function factory (type, config, load, typed) {
       }
       getToken()
 
-      var node = new ObjectNode(properties)
+      let node = new ObjectNode(properties)
 
       // parse index parameters
       node = parseAccessors(node)
@@ -1545,7 +1546,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseNumber () {
-    var numberStr
+    let numberStr
 
     if (token_type === TOKENTYPE.NUMBER) {
       // this is a number
@@ -1564,7 +1565,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseParentheses () {
-    var node
+    let node
 
     // check if it is a parenthesized expression
     if (token === '(') {
@@ -1611,7 +1612,7 @@ function factory (type, config, load, typed) {
    */
   /* TODO: implement keeping track on the row number
   function row () {
-    return null;
+    return null
   }
   */
 
@@ -1631,8 +1632,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function createSyntaxError (message) {
-    var c = col()
-    var error = new SyntaxError(message + ' (char ' + c + ')')
+    const c = col()
+    const error = new SyntaxError(message + ' (char ' + c + ')')
     error['char'] = c
 
     return error
@@ -1645,8 +1646,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function createError (message) {
-    var c = col()
-    var error = new SyntaxError(message + ' (char ' + c + ')')
+    const c = col()
+    const error = new SyntaxError(message + ' (char ' + c + ')')
     error['char'] = c
 
     return error

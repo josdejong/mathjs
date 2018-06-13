@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,13 +15,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.isPrime(3);                     // returns true
-   *    math.isPrime(-2);                    // returns false
-   *    math.isPrime(0);                     // returns false
-   *    math.isPrime(-0);                    // returns false
-   *    math.isPrime(0.5);                   // returns false
-   *    math.isPrime('2');                   // returns true
-   *    math.isPrime([2, 17, 100]);           // returns [true, true, false]
+   *    math.isPrime(3)                     // returns true
+   *    math.isPrime(-2)                    // returns false
+   *    math.isPrime(0)                     // returns false
+   *    math.isPrime(-0)                    // returns false
+   *    math.isPrime(0.5)                   // returns false
+   *    math.isPrime('2')                   // returns true
+   *    math.isPrime([2, 17, 100])           // returns [true, true, false]
    *
    * See also:
    *
@@ -31,7 +31,7 @@ function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isPrime = typed('isPrime', {
+  const isPrime = typed('isPrime', {
     'number': function (x) {
       if (x < 2) {
         return false
@@ -42,7 +42,7 @@ function factory (type, config, load, typed) {
       if (x % 2 == 0) {
         return false
       }
-      for (var i = 3; i * i <= x; i += 2) {
+      for (let i = 3; i * i <= x; i += 2) {
         if (x % i == 0) {
           return false
         }
@@ -60,7 +60,7 @@ function factory (type, config, load, typed) {
       if (x.mod(2).isZero()) {
         return false
       }
-      for (var i = type.BigNumber(3); i.times(i).lte(x); i = i.plus(1)) {
+      for (let i = type.BigNumber(3); i.times(i).lte(x); i = i.plus(1)) {
         if (x.mod(i).isZero()) {
           return false
         }

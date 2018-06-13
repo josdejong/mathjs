@@ -1,8 +1,8 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var isNumeric = math.isNumeric
-var bignumber = math.bignumber
-var fraction = math.fraction
+const assert = require('assert')
+const math = require('../../../src/index')
+const isNumeric = math.isNumeric
+const bignumber = math.bignumber
+const fraction = math.fraction
 
 describe('isNumeric', function () {
   it('should test whether a value is numeric', function () {

@@ -1,5 +1,5 @@
 'use strict'
-var bitwise = require('./bitwise')
+const bitwise = require('./bitwise')
 
 /**
  * Bitwise OR for BigNumbers
@@ -26,12 +26,12 @@ module.exports = function bitOr (x, y) {
     throw new Error('Integers expected in function bitOr')
   }
 
-  var BigNumber = x.constructor
+  const BigNumber = x.constructor
   if (x.isNaN() || y.isNaN()) {
     return new BigNumber(NaN)
   }
 
-  var negOne = new BigNumber(-1)
+  const negOne = new BigNumber(-1)
   if (x.isZero() || y.eq(negOne) || x.eq(y)) {
     return y
   }

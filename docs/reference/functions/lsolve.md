@@ -10,7 +10,7 @@ Solves the linear equation system by forwards substitution. Matrix must be a low
 ## Syntax
 
 ```js
-math.lsolve(L, b);
+math.lsolve(L, b)
 ```
 
 ### Parameters
@@ -30,9 +30,9 @@ DenseMatrix &#124; Array | A column vector with the linear system solution (x)
 ## Examples
 
 ```js
-var a = [[-2, 3], [2, 1]];
-var b = [11, 9];
-var x = lsolve(a, b);  // [[-5.5], [20]]
+const a = [[-2, 3], [2, 1]]
+const b = [11, 9]
+const x = lsolve(a, b)  // [[-5.5], [20]]
 ```
 
 

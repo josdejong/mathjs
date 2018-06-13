@@ -72,42 +72,42 @@
 
 
 <script>
-  var expr = document.getElementById('expr'),
-      pretty = document.getElementById('pretty'),
-      result = document.getElementById('result'),
-      parenthesis = 'keep',
-      implicit = 'hide';
+  const expr = document.getElementById('expr')
+  const pretty = document.getElementById('pretty')
+  const result = document.getElementById('result')
+  let parenthesis = 'keep'
+  let implicit = 'hide'
 
   // initialize with an example expression
-  expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2';
-  pretty.innerHTML = '$$' + math.parse(expr.value).toTex({parenthesis: parenthesis}) + '$$';
-  result.innerHTML = math.format(math.eval(expr.value));
+  expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2'
+  pretty.innerHTML = '$$' + math.parse(expr.value).toTex({parenthesis: parenthesis}) + '$$'
+  result.innerHTML = math.format(math.eval(expr.value))
 
   expr.oninput = function () {
-    var node = null;
+    let node = null
 
     try {
       // parse the expression
-      node = math.parse(expr.value);
+      node = math.parse(expr.value)
 
       // evaluate the result of the expression
-      result.innerHTML = math.format(node.compile().eval());
+      result.innerHTML = math.format(node.compile().eval())
     }
     catch (err) {
-      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';
+      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>'
     }
 
     try {
       // export the expression to LaTeX
-        var latex = node ? node.toTex({parenthesis: parenthesis, implicit: implicit}) : '';
-      console.log('LaTeX expression:', latex);
+      const latex = node ? node.toTex({parenthesis: parenthesis, implicit: implicit}) : ''
+      console.log('LaTeX expression:', latex)
 
       // display and re-render the expression
-      var elem = MathJax.Hub.getAllJax('pretty')[0];
-      MathJax.Hub.Queue(['Text', elem, latex]);
+      const elem = MathJax.Hub.getAllJax('pretty')[0]
+      MathJax.Hub.Queue(['Text', elem, latex])
     }
     catch (err) {}
-  };
+  }
 </script>
 
 </body>

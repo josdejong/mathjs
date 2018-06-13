@@ -1,15 +1,15 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm09 = load(require('../../type/matrix/utils/algorithm09'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm09 = load(require('../../type/matrix/utils/algorithm09'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the inverse tangent function with two arguments, y/x.
@@ -24,13 +24,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.atan2(2, 2) / math.pi;       // returns number 0.25
+   *    math.atan2(2, 2) / math.pi       // returns number 0.25
    *
-   *    var angle = math.unit(60, 'deg'); // returns Unit 60 deg
-   *    var x = math.cos(angle);
-   *    var y = math.sin(angle);
+   *    const angle = math.unit(60, 'deg') // returns Unit 60 deg
+   *    const x = math.cos(angle)
+   *    const y = math.sin(angle)
    *
-   *    math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.atan(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
    *
    * See also:
    *
@@ -40,7 +40,7 @@ function factory (type, config, load, typed) {
    * @param {number | Array | Matrix} x  First dimension
    * @return {number | Array | Matrix} Four-quadrant inverse tangent
    */
-  var atan2 = typed('atan2', {
+  const atan2 = typed('atan2', {
 
     'number, number': Math.atan2,
 

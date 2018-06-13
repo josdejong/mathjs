@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap')
+const deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -12,7 +12,7 @@ function factory (type, config, load, typed) {
    *
    * Example:
    *
-   *     math.splitUnit(new Unit(1, 'm'), ['feet', 'inch']);
+   *     math.splitUnit(new Unit(1, 'm'), ['feet', 'inch'])
    *     // [ 3 feet, 3.3700787401575 inch ]
    *
    * See also:
@@ -22,7 +22,7 @@ function factory (type, config, load, typed) {
    * @param {Array} [parts] An array of strings or valueless units.
    * @return {Array} An array of units.
    */
-  var splitUnit = typed('splitUnit', {
+  const splitUnit = typed('splitUnit', {
     'Unit, Array': function (unit, parts) {
       return unit.splitUnit(parts)
     }

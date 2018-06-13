@@ -1,6 +1,4 @@
-var approx = require('../../../../tools/approx'),
-  math = require('../../../../src/index'),
-  market = require('../../../../tools/matrixmarket')
+const approx = require('../../../../tools/approx'), math = require('../../../../src/index'), market = require('../../../../tools/matrixmarket')
 
 describe('slu - matrix market', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
@@ -8,10 +6,10 @@ describe('slu - matrix market', function () {
     market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
       .then(function (matrices) {
         // matrix
-        var m = matrices[0]
+        const m = matrices[0]
 
         // full pivoting
-        var r = math.slu(m, 0, 0.001)
+        const r = math.slu(m, 0, 0.001)
 
         // verify M[p,q]=L*U
         approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
@@ -30,10 +28,10 @@ describe('slu - matrix market', function () {
     market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
       .then(function (matrices) {
         // matrix
-        var m = matrices[0]
+        const m = matrices[0]
 
         // full pivoting
-        var r = math.slu(m, 1, 0.001)
+        const r = math.slu(m, 1, 0.001)
 
         // verify M[p,q]=L*U
         approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
@@ -52,10 +50,10 @@ describe('slu - matrix market', function () {
     market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
       .then(function (matrices) {
         // matrix
-        var m = matrices[0]
+        const m = matrices[0]
 
         // full pivoting
-        var r = math.slu(m, 2, 0.001)
+        const r = math.slu(m, 2, 0.001)
 
         // verify M[p,q]=L*U
         approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
@@ -74,10 +72,10 @@ describe('slu - matrix market', function () {
     market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
       .then(function (matrices) {
         // matrix
-        var m = matrices[0]
+        const m = matrices[0]
 
         // full pivoting
-        var r = math.slu(m, 3, 0.001)
+        const r = math.slu(m, 3, 0.001)
 
         // verify M[p,q]=L*U
         approx.deepEqual(_permute(m, r.p, r.q).valueOf(), math.multiply(r.L, r.U).valueOf())
@@ -94,25 +92,25 @@ describe('slu - matrix market', function () {
   /**
    * C = A(p,q) where p is the row permutation vector and q the column permutation vector.
    */
-  var _permute = function (A, pinv, q) {
+  function _permute (A, pinv, q) {
     // matrix arrays
-    var values = A._values
-    var index = A._index
-    var ptr = A._ptr
-    var size = A._size
+    const values = A._values
+    const index = A._index
+    const ptr = A._ptr
+    const size = A._size
     // columns
-    var n = size[1]
+    const n = size[1]
     // c arrays
-    var cvalues = []
-    var cindex = []
-    var cptr = []
+    const cvalues = []
+    const cindex = []
+    const cptr = []
     // loop columns
-    for (var k = 0; k < n; k++) {
+    for (let k = 0; k < n; k++) {
       cptr[k] = cindex.length
       // column in C
-      var j = q ? (q[k]) : k
+      const j = q ? (q[k]) : k
       // values in column j
-      for (var t = ptr[j]; t < ptr[j + 1]; t++) {
+      for (let t = ptr[j]; t < ptr[j + 1]; t++) {
         cvalues.push(values[t])
         cindex.push(pinv ? (pinv[index[t]]) : index[t])
       }

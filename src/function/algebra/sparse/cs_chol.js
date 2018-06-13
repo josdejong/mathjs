@@ -1,20 +1,20 @@
 'use strict'
 
 function factory (type, config, load) {
-  var divideScalar = load(require('../../arithmetic/divideScalar'))
-  var sqrt = load(require('../../arithmetic/sqrt'))
-  var subtract = load(require('../../arithmetic/subtract'))
-  var multiply = load(require('../../arithmetic/multiply'))
-  var im = load(require('../../complex/im'))
-  var re = load(require('../../complex/re'))
-  var conj = load(require('../../complex/conj'))
-  var equal = load(require('../../relational/equal'))
-  var smallerEq = load(require('../../relational/smallerEq'))
+  const divideScalar = load(require('../../arithmetic/divideScalar'))
+  const sqrt = load(require('../../arithmetic/sqrt'))
+  const subtract = load(require('../../arithmetic/subtract'))
+  const multiply = load(require('../../arithmetic/multiply'))
+  const im = load(require('../../complex/im'))
+  const re = load(require('../../complex/re'))
+  const conj = load(require('../../complex/conj'))
+  const equal = load(require('../../relational/equal'))
+  const smallerEq = load(require('../../relational/smallerEq'))
 
-  var cs_symperm = load(require('./cs_symperm'))
-  var cs_ereach = load(require('./cs_ereach'))
+  const cs_symperm = load(require('./cs_symperm'))
+  const cs_ereach = load(require('./cs_ereach'))
 
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Computes the Cholesky factorization of matrix A. It computes L and P so
@@ -27,45 +27,45 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_chol = function (m, s) {
+  const cs_chol = function (m, s) {
     // validate input
     if (!m) { return null }
     // m arrays
-    var size = m._size
+    const size = m._size
     // columns
-    var n = size[1]
+    const n = size[1]
     // symbolic analysis result
-    var parent = s.parent
-    var cp = s.cp
-    var pinv = s.pinv
+    const parent = s.parent
+    const cp = s.cp
+    const pinv = s.pinv
     // L arrays
-    var lvalues = []
-    var lindex = []
-    var lptr = []
+    const lvalues = []
+    const lindex = []
+    const lptr = []
     // L
-    var L = new SparseMatrix({
+    const L = new SparseMatrix({
       values: lvalues,
       index: lindex,
       ptr: lptr,
       size: [n, n]
     })
     // vars
-    var c = [] // (2 * n)
-    var x = [] // (n);
+    const c = [] // (2 * n)
+    const x = [] // (n)
     // compute C = P * A * P'
-    var cm = pinv ? cs_symperm(m, pinv, 1) : m
+    const cm = pinv ? cs_symperm(m, pinv, 1) : m
     // C matrix arrays
-    var cvalues = cm._values
-    var cindex = cm._index
-    var cptr = cm._ptr
+    const cvalues = cm._values
+    const cindex = cm._index
+    const cptr = cm._ptr
     // vars
-    var k, p
+    let k, p
     // initialize variables
     for (k = 0; k < n; k++) { lptr[k] = c[k] = cp[k] }
     // compute L(k,:) for L*L' = C
     for (k = 0; k < n; k++) {
       // nonzero pattern of L(k,:)
-      var top = cs_ereach(cm, k, parent, c)
+      let top = cs_ereach(cm, k, parent, c)
       // x (0:k) is now zero
       x[k] = 0
       // x = full(triu(C(:,k)))
@@ -73,20 +73,20 @@ function factory (type, config, load) {
         if (cindex[p] <= k) { x[cindex[p]] = cvalues[p] }
       }
       // d = C(k,k)
-      var d = x[k]
+      let d = x[k]
       // clear x for k+1st iteration
       x[k] = 0
       // solve L(0:k-1,0:k-1) * x = C(:,k)
       for (; top < n; top++) {
         // s[top..n-1] is pattern of L(k,:)
-        var i = s[top]
+        const i = s[top]
         // L(k,i) = x (i) / L(i,i)
-        var lki = divideScalar(x[i], lvalues[lptr[i]])
+        const lki = divideScalar(x[i], lvalues[lptr[i]])
         // clear x for k+1st iteration
         x[i] = 0
         for (p = lptr[i] + 1; p < c[i]; p++) {
           // row
-          var r = lindex[p]
+          const r = lindex[p]
           // update x[r]
           x[r] = subtract(x[r], multiply(lvalues[p], lki))
         }
@@ -110,13 +110,13 @@ function factory (type, config, load) {
     // finalize L
     lptr[n] = cp[n]
     // P matrix
-    var P
+    let P
     // check we need to calculate P
     if (pinv) {
       // P arrays
-      var pvalues = []
-      var pindex = []
-      var pptr = []
+      const pvalues = []
+      const pindex = []
+      const pptr = []
       // create P matrix
       for (p = 0; p < n; p++) {
         // initialize ptr (one value per column)

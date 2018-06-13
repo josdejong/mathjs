@@ -1,8 +1,8 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var matrix = math.matrix
-var partitionSelect = math.partitionSelect
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const matrix = math.matrix
+const partitionSelect = math.partitionSelect
 
 describe('partitionSelect', function () {
   it('should sort an array with numbers', function () {
@@ -39,20 +39,20 @@ describe('partitionSelect', function () {
   })
 
   it('should mutate the input array, leaving it partitioned at k', function () {
-    var arr = [3, 2, 4, 6, -2, 5]
+    const arr = [3, 2, 4, 6, -2, 5]
     partitionSelect(arr, 3)
 
-    for (var i = 0; i < 3; ++i) {
+    for (let i = 0; i < 3; ++i) {
       assert.ok(arr[i] <= arr[3])
     }
     assert.ok(arr[3] === 4)
-    for (var i = 4; i < arr.length; ++i) {
+    for (let i = 4; i < arr.length; ++i) {
       assert.ok(arr[3] <= arr[i])
     }
   })
 
   it('should mutate the input matrix, leaving it partitioned at k', function () {
-    var m = matrix([3, 2, 4, 6, -2, 5])
+    const m = matrix([3, 2, 4, 6, -2, 5])
     partitionSelect(m, 3)
 
     m.forEach(function (value, index, matrix) {
@@ -93,8 +93,8 @@ describe('partitionSelect', function () {
 
   /*
   it('should LaTeX sort', function () {
-    var expression = math.parse('sort([3,2,1])');
-    assert.equal(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)');
-  });
+    const expression = math.parse('sort([3,2,1])')
+    assert.equal(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)')
+  })
   */
 })

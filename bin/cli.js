@@ -45,10 +45,10 @@
  * the License.
  */
 
-var scope = {}
-var fs = require('fs')
+let scope = {}
+const fs = require('fs')
 
-var PRECISION = 14 // decimals
+const PRECISION = 14 // decimals
 
 /**
  * "Lazy" load math.js: only require when we actually start using it.
@@ -66,7 +66,7 @@ function getMath () {
  * @param {*} value
  */
 function format (value) {
-  var math = getMath()
+  const math = getMath()
 
   return math.format(value, {
     fn: function (value) {
@@ -86,15 +86,14 @@ function format (value) {
  * @return {[Array, String]} completions
  */
 function completer (text) {
-  var math = getMath()
-  var name
-  var matches = []
-  var m = /[a-zA-Z_0-9]+$/.exec(text)
+  const math = getMath()
+  let matches = []
+  const m = /[a-zA-Z_0-9]+$/.exec(text)
   if (m) {
-    var keyword = m[0]
+    const keyword = m[0]
 
     // scope variables
-    for (var def in scope) {
+    for (const def in scope) {
       if (scope.hasOwnProperty(def)) {
         if (def.indexOf(keyword) == 0) {
           matches.push(def)
@@ -110,8 +109,8 @@ function completer (text) {
     })
 
     // math functions and constants
-    var ignore = ['expr', 'type']
-    for (var func in math) {
+    const ignore = ['expr', 'type']
+    for (const func in math) {
       if (math.hasOwnProperty(func)) {
         if (func.indexOf(keyword) == 0 && ignore.indexOf(func) == -1) {
           matches.push(func)
@@ -120,24 +119,24 @@ function completer (text) {
     }
 
     // units
-    var Unit = math.type.Unit
-    for (name in Unit.UNITS) {
+    const Unit = math.type.Unit
+    for (let name in Unit.UNITS) {
       if (Unit.UNITS.hasOwnProperty(name)) {
         if (name.indexOf(keyword) == 0) {
           matches.push(name)
         }
       }
     }
-    for (name in Unit.PREFIXES) {
+    for (let name in Unit.PREFIXES) {
       if (Unit.PREFIXES.hasOwnProperty(name)) {
-        var prefixes = Unit.PREFIXES[name]
-        for (var prefix in prefixes) {
+        const prefixes = Unit.PREFIXES[name]
+        for (const prefix in prefixes) {
           if (prefixes.hasOwnProperty(prefix)) {
             if (prefix.indexOf(keyword) == 0) {
               matches.push(prefix)
             } else if (keyword.indexOf(prefix) == 0) {
-              var unitKeyword = keyword.substring(prefix.length)
-              for (var n in Unit.UNITS) {
+              const unitKeyword = keyword.substring(prefix.length)
+              for (const n in Unit.UNITS) {
                 if (Unit.UNITS.hasOwnProperty(n)) {
                   if (n.indexOf(unitKeyword) == 0 &&
                       Unit.isValuelessUnit(prefix + n)) {
@@ -170,7 +169,7 @@ function completer (text) {
  * @param parenthesis Parenthesis option
  */
 function runStream (input, output, mode, parenthesis) {
-  var readline = require('readline'),
+  const readline = require('readline'),
     rl = readline.createInterface({
       input: input || process.stdin,
       output: output || process.stdout,
@@ -183,12 +182,12 @@ function runStream (input, output, mode, parenthesis) {
   }
 
   // load math.js now, right *after* loading the prompt.
-  var math = getMath()
+  const math = getMath()
 
   // TODO: automatic insertion of 'ans' before operators like +, -, *, /
 
   rl.on('line', function (line) {
-    var expr = line.trim()
+    const expr = line.trim()
 
     switch (expr.toLowerCase()) {
       case 'quit':
@@ -214,8 +213,8 @@ function runStream (input, output, mode, parenthesis) {
           case 'eval':
             // evaluate expression
             try {
-              var node = math.parse(expr)
-              var res = node.eval(scope)
+              let node = math.parse(expr)
+              let res = node.eval(scope)
 
               if (math.type.isResultSet(res)) {
                 // we can have 0 or 1 results in the ResultSet, as the CLI
@@ -228,7 +227,7 @@ function runStream (input, output, mode, parenthesis) {
 
               if (node) {
                 if (math.type.isAssignmentNode(node)) {
-                  var name = findSymbolName(node)
+                  const name = findSymbolName(node)
                   if (name != null) {
                     scope.ans = scope[name]
                     console.log(name + ' = ' + format(scope[name]))
@@ -250,7 +249,7 @@ function runStream (input, output, mode, parenthesis) {
 
           case 'string':
             try {
-              var string = math.parse(expr).toString({parenthesis: parenthesis})
+              const string = math.parse(expr).toString({parenthesis: parenthesis})
               console.log(string)
             } catch (err) {
               console.log(err.toString())
@@ -259,7 +258,7 @@ function runStream (input, output, mode, parenthesis) {
 
           case 'tex':
             try {
-              var tex = math.parse(expr).toTex({parenthesis: parenthesis})
+              const tex = math.parse(expr).toTex({parenthesis: parenthesis})
               console.log(tex)
             } catch (err) {
               console.log(err.toString())
@@ -287,8 +286,8 @@ function runStream (input, output, mode, parenthesis) {
  * @return {string | null} Returns the name when found, else returns null.
  */
 function findSymbolName (node) {
-  var math = getMath()
-  var n = node
+  const math = getMath()
+  let n = node
 
   while (n) {
     if (math.type.isSymbolNode(n)) {
@@ -309,8 +308,8 @@ function outputVersion () {
     if (err) {
       console.log(err.toString())
     } else {
-      var pkg = JSON.parse(data)
-      var version = pkg && pkg.version ? pkg.version : 'unknown'
+      const pkg = JSON.parse(data)
+      const version = pkg && pkg.version ? pkg.version : 'unknown'
       console.log(version)
     }
     process.exit(0)
@@ -354,11 +353,11 @@ function outputHelp () {
 /**
  * Process input and output, based on the command line arguments
  */
-var scripts = [] // queue of scripts that need to be processed
-var mode = 'eval' // one of 'eval', 'tex' or 'string'
-var parenthesis = 'keep'
-var version = false
-var help = false
+const scripts = [] // queue of scripts that need to be processed
+let mode = 'eval' // one of 'eval', 'tex' or 'string'
+let parenthesis = 'keep'
+let version = false
+let help = false
 
 process.argv.forEach(function (arg, index) {
   if (index < 2) {

@@ -1,16 +1,16 @@
 'use strict'
 
-var util = require('../../utils/index')
-var object = util.object
-var string = util.string
+const util = require('../../utils/index')
+const object = util.object
+const string = util.string
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var add = load(require('../arithmetic/add'))
-  var subtract = load(require('../arithmetic/subtract'))
-  var multiply = load(require('../arithmetic/multiply'))
-  var unaryMinus = load(require('../arithmetic/unaryMinus'))
-  var lup = load(require('../algebra/decomposition/lup'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const add = load(require('../arithmetic/add'))
+  const subtract = load(require('../arithmetic/subtract'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const unaryMinus = load(require('../arithmetic/unaryMinus'))
+  const lup = load(require('../algebra/decomposition/lup'))
 
   /**
    * Calculate the determinant of a matrix.
@@ -21,14 +21,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.det([[1, 2], [3, 4]]); // returns -2
+   *    math.det([[1, 2], [3, 4]]) // returns -2
    *
-   *    var A = [
+   *    const A = [
    *      [-2, 2, 3],
    *      [-1, 1, 3],
    *      [2, 0, -1]
    *    ]
-   *    math.det(A); // returns 6
+   *    math.det(A) // returns 6
    *
    * See also:
    *
@@ -37,13 +37,13 @@ function factory (type, config, load, typed) {
    * @param {Array | Matrix} x  A matrix
    * @return {number} The determinant of `x`
    */
-  var det = typed('det', {
+  const det = typed('det', {
     'any': function (x) {
       return object.clone(x)
     },
 
     'Array | Matrix': function det (x) {
-      var size
+      let size
       if (type.isMatrix(x)) {
         size = x.size()
       } else if (Array.isArray(x)) {
@@ -70,8 +70,8 @@ function factory (type, config, load, typed) {
 
         case 2:
           // two dimensional array
-          var rows = size[0]
-          var cols = size[1]
+          const rows = size[0]
+          const cols = size[1]
           if (rows == cols) {
             return _det(x.clone().valueOf(), rows, cols)
           } else {
@@ -112,26 +112,26 @@ function factory (type, config, load, typed) {
       )
     } else {
       // Compute the LU decomposition
-      var decomp = lup(matrix)
+      const decomp = lup(matrix)
 
       // The determinant is the product of the diagonal entries of U (and those of L, but they are all 1)
-      var det = decomp.U[0][0]
-      for (var i = 1; i < rows; i++) {
+      let det = decomp.U[0][0]
+      for (let i = 1; i < rows; i++) {
         det = multiply(det, decomp.U[i][i])
       }
 
       // The determinant will be multiplied by 1 or -1 depending on the parity of the permutation matrix.
       // This can be determined by counting the cycles. This is roughly a linear time algorithm.
-      var evenCycles = 0
-      var i = 0
-      var visited = []
+      let evenCycles = 0
+      let i = 0
+      const visited = []
       while (true) {
         while (visited[i]) {
           i++
         }
         if (i >= rows) break
-        var j = i
-        var cycleLen = 0
+        let j = i
+        let cycleLen = 0
         while (!visited[decomp.p[j]]) {
           visited[decomp.p[j]] = true
           j = decomp.p[j]

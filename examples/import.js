@@ -5,7 +5,7 @@
  */
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 /**
  * Define new functions and variables
@@ -31,7 +31,7 @@ print(math.eval('hello("user")')) // 'hello, user!'
  */
 try {
   // load the numbers.js library
-  var numbers = require('numbers')
+  const numbers = require('numbers')
 
   // import the numbers.js library into math.js
   math.import(numbers, {wrap: true, silent: true})
@@ -53,18 +53,18 @@ try {
  */
 try {
   // load the numeric.js library
-  var numeric = require('numeric')
+  const numeric = require('numeric')
 
   // import the numeric.js library into math.js
   math.import(numeric, {wrap: true, silent: true})
 
   if (math.eig) {
     // calculate eigenvalues of a matrix
-    print(math.eval('eig([1, 2; 4, 3])').lambda.x) // [5, -1];
+    print(math.eval('eig([1, 2; 4, 3])').lambda.x) // [5, -1]
 
     // solve AX = b
-    var A = math.eval('[1, 2, 3; 2, -1, 1; 3, 0, -1]')
-    var b = [9, 8, 3]
+    const A = math.eval('[1, 2, 3; 2, -1, 1; 3, 0, -1]')
+    const b = [9, 8, 3]
     print(math.solve(A, b)) // [2, -1, 3]
   }
 } catch (err) {
@@ -89,6 +89,6 @@ print(math.pi) // returns 3.14 instead of 3.141592653589793
  * @param {*} value
  */
 function print (value) {
-  var precision = 14
+  const precision = 14
   console.log(math.format(value, precision))
 }

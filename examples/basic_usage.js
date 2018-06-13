@@ -1,7 +1,7 @@
 // basic usage
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // functions and constants
 console.log('functions and constants')
@@ -24,7 +24,7 @@ console.log()
 
 // chained operations
 console.log('chained operations')
-var a = math.chain(3)
+const a = math.chain(3)
   .add(4)
   .multiply(2)
   .done()
@@ -44,6 +44,6 @@ console.log()
  * @param {*} value
  */
 function print (value) {
-  var precision = 14
+  const precision = 14
   console.log(math.format(value, precision))
 }

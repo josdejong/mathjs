@@ -1,21 +1,21 @@
 'use strict'
 
-var array = require('../../utils/array')
-var latex = require('../../utils/latex')
-var string = require('../../utils/string')
+const array = require('../../utils/array')
+const latex = require('../../utils/latex')
+const string = require('../../utils/string')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var abs = load(require('../arithmetic/abs'))
-  var add = load(require('../arithmetic/add'))
-  var divide = load(require('../arithmetic/divide'))
-  var multiply = load(require('../arithmetic/multiply'))
-  var sqrt = load(require('../arithmetic/sqrt'))
-  var subtract = load(require('../arithmetic/subtract'))
-  var inv = load(require('../matrix/inv'))
-  var size = load(require('../matrix/size'))
-  var max = load(require('../statistics/max'))
-  var identity = load(require('./identity'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const abs = load(require('../arithmetic/abs'))
+  const add = load(require('../arithmetic/add'))
+  const divide = load(require('../arithmetic/divide'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const sqrt = load(require('../arithmetic/sqrt'))
+  const subtract = load(require('../arithmetic/subtract'))
+  const inv = load(require('../matrix/inv'))
+  const size = load(require('../matrix/size'))
+  const max = load(require('../statistics/max'))
+  const identity = load(require('./identity'))
 
   /**
    * Calculate the principal square root of a square matrix.
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.sqrtm([[1, 2], [3, 4]]); // returns [[-2, 1], [1.5, -0.5]]
+   *     math.sqrtm([[1, 2], [3, 4]]) // returns [[-2, 1], [1.5, -0.5]]
    *
    * See also:
    *
@@ -38,9 +38,9 @@ function factory (type, config, load, typed) {
    * @param  {Array | Matrix} A   The square matrix `A`
    * @return {Array | Matrix}     The principal square root of matrix `A`
    */
-  var sqrtm = typed('sqrtm', {
+  const sqrtm = typed('sqrtm', {
     'Array | Matrix': function (A) {
-      var size = type.isMatrix(A) ? A.size() : array.size(A)
+      const size = type.isMatrix(A) ? A.size() : array.size(A)
       switch (size.length) {
         case 1:
           // Single element Array | Matrix
@@ -53,8 +53,8 @@ function factory (type, config, load, typed) {
 
         case 2:
           // Two-dimensional Array | Matrix
-          var rows = size[0]
-          var cols = size[1]
+          const rows = size[0]
+          const cols = size[1]
           if (rows == cols) {
             return _denmanBeavers(A)
           } else {
@@ -65,8 +65,8 @@ function factory (type, config, load, typed) {
     }
   })
 
-  var _maxIterations = 1e3
-  var _tolerance = 1e-6
+  const _maxIterations = 1e3
+  const _tolerance = 1e-6
 
   /**
    * Calculate the principal square root matrix using the Denman–Beavers iterative method
@@ -78,14 +78,14 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _denmanBeavers (A) {
-    var error
-    var iterations = 0
+    let error
+    let iterations = 0
 
-    var Y = A
-    var Z = identity(size(A))
+    let Y = A
+    let Z = identity(size(A))
 
     do {
-      var Y_k = Y
+      const Y_k = Y
       Y = multiply(0.5, add(Y_k, inv(Z)))
       Z = multiply(0.5, add(Z, inv(Y_k)))
 

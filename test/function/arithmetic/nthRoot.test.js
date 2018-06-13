@@ -1,13 +1,13 @@
 // test nthRoot
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var matrix = math.matrix
-var sparse = math.sparse
-var unit = math.unit
-var nthRoot = math.nthRoot
-var big = math.bignumber
-var complex = math.complex
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const nthRoot = math.nthRoot
+const big = math.bignumber
+const complex = math.complex
 
 describe('nthRoot', function () {
   it('should return the nthRoot of a boolean value', function () {
@@ -186,7 +186,7 @@ describe('nthRoot', function () {
   })
 
   it('should LaTeX nthRoot', function () {
-    var expression = math.parse('nthRoot(8,3)')
+    const expression = math.parse('nthRoot(8,3)')
     assert.equal(expression.toTex(), '\\sqrt[3]{8}')
   })
 })

@@ -1,14 +1,14 @@
 // test log
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var mathPredictable = math.create({predictable: true})
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var range = math.range
-var log = math.log
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const mathPredictable = math.create({predictable: true})
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const range = math.range
+const log = math.log
 
 describe('log', function () {
   it('should return the log of a boolean value', function () {
@@ -56,7 +56,7 @@ describe('log', function () {
   })
 
   it('should return the log of positive bignumbers', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     assert.deepEqual(bigmath.log(bigmath.bignumber(1)), bigmath.bignumber('0'))
     assert.deepEqual(bigmath.log(bigmath.bignumber(2)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'))
@@ -67,7 +67,7 @@ describe('log', function () {
   })
 
   it('should return the log of negative bignumbers', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     approx.deepEqual(bigmath.log(bigmath.bignumber(-1)), complex('0.000000000000000 + 3.141592653589793i'))
     approx.deepEqual(bigmath.log(bigmath.bignumber(-2)), complex('0.693147180559945 + 3.141592653589793i'))
@@ -79,7 +79,7 @@ describe('log', function () {
   })
 
   it('should return the log of a bignumber with value zero', function () {
-    var bigmath = math.create({precision: 100})
+    const bigmath = math.create({precision: 100})
 
     assert.deepEqual(bigmath.log(bigmath.bignumber(0)).toString(), '-Infinity')
   })
@@ -103,7 +103,7 @@ describe('log', function () {
   })
 
   it('should return the log of each element of a matrix', function () {
-    var res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891]
+    const res = [0, 0.693147180559945, 1.098612288668110, 1.386294361119891]
     approx.deepEqual(log([1, 2, 3, 4]), res)
     approx.deepEqual(log(matrix([1, 2, 3, 4])), matrix(res))
     approx.deepEqual(log(matrix([[1, 2], [3, 4]])),
@@ -111,8 +111,8 @@ describe('log', function () {
   })
 
   it('should LaTeX log', function () {
-    var expr1 = math.parse('log(e)')
-    var expr2 = math.parse('log(32,2)')
+    const expr1 = math.parse('log(e)')
+    const expr2 = math.parse('log(32,2)')
 
     assert.equal(expr1.toTex(), '\\ln\\left( e\\right)')
     assert.equal(expr2.toTex(), '\\log_{2}\\left(32\\right)')

@@ -1,17 +1,17 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var divideScalar = load(require('./divideScalar'))
-  var latex = require('../../utils/latex')
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const divideScalar = load(require('./divideScalar'))
+  const latex = require('../../utils/latex')
 
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and
@@ -23,13 +23,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.dotDivide(2, 4);   // returns 0.5
+   *    math.dotDivide(2, 4)   // returns 0.5
    *
-   *    a = [[9, 5], [6, 1]];
-   *    b = [[3, 2], [5, 2]];
+   *    a = [[9, 5], [6, 1]]
+   *    b = [[3, 2], [5, 2]]
    *
-   *    math.dotDivide(a, b);   // returns [[3, 2.5], [1.2, 0.5]]
-   *    math.divide(a, b);      // returns [[1.75, 0.75], [-1.75, 2.25]]
+   *    math.dotDivide(a, b)   // returns [[3, 2.5], [1.2, 0.5]]
+   *    math.divide(a, b)      // returns [[1.75, 0.75], [-1.75, 2.25]]
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
-  var dotDivide = typed('dotDivide', {
+  const dotDivide = typed('dotDivide', {
 
     'any, any': divideScalar,
 

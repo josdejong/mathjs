@@ -1,17 +1,17 @@
 'use strict'
 
-var util = require('../../utils/index')
+const util = require('../../utils/index')
 
-var string = util.string
-var object = util.object
+const string = util.string
+const object = util.object
 
-var isArray = Array.isArray
-var isString = string.isString
+const isArray = Array.isArray
+const isString = string.isString
 
 function factory (type, config, load) {
-  var DenseMatrix = load(require('./DenseMatrix'))
+  const DenseMatrix = load(require('./DenseMatrix'))
 
-  var smaller = load(require('../../function/relational/smaller'))
+  const smaller = load(require('../../function/relational/smaller'))
 
   function ImmutableDenseMatrix (data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
@@ -19,7 +19,7 @@ function factory (type, config, load) {
 
     if (type.isMatrix(data) || isArray(data)) {
       // use DenseMatrix implementation
-      var matrix = new DenseMatrix(data, datatype)
+      const matrix = new DenseMatrix(data, datatype)
       // internal structures
       this._data = matrix._data
       this._size = matrix._size
@@ -58,8 +58,8 @@ function factory (type, config, load) {
    * Get a subset of the matrix, or replace a subset of the matrix.
    *
    * Usage:
-   *     var subset = matrix.subset(index)               // retrieve subset
-   *     var value = matrix.subset(index, replacement)   // replace subset
+   *     const subset = matrix.subset(index)               // retrieve subset
+   *     const value = matrix.subset(index, replacement)   // replace subset
    *
    * @param {Index} index
    * @param {Array | ImmutableDenseMatrix | *} [replacement]
@@ -71,7 +71,7 @@ function factory (type, config, load) {
     switch (arguments.length) {
       case 1:
         // use base implementation
-        var m = DenseMatrix.prototype.subset.call(this, index)
+        const m = DenseMatrix.prototype.subset.call(this, index)
         // check result is a matrix
         if (type.isMatrix(m)) {
           // return immutable matrix
@@ -136,7 +136,7 @@ function factory (type, config, load) {
    * @return {ImmutableDenseMatrix} clone
    */
   ImmutableDenseMatrix.prototype.clone = function () {
-    var m = new ImmutableDenseMatrix({
+    const m = new ImmutableDenseMatrix({
       data: object.clone(this._data),
       size: object.clone(this._size),
       datatype: this._datatype
@@ -188,7 +188,7 @@ function factory (type, config, load) {
     // check min has been calculated before
     if (this._min === null) {
       // minimum
-      var m = null
+      let m = null
       // compute min
       this.forEach(function (v) {
         if (m === null || smaller(v, m)) { m = v }
@@ -206,7 +206,7 @@ function factory (type, config, load) {
     // check max has been calculated before
     if (this._max === null) {
       // maximum
-      var m = null
+      let m = null
       // compute max
       this.forEach(function (v) {
         if (m === null || smaller(m, v)) { m = v }

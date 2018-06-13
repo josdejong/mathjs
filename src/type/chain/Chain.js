@@ -1,7 +1,7 @@
 'use strict'
 
-var format = require('../../utils/string').format
-var lazy = require('../../utils/object').lazy
+const format = require('../../utils/string').format
+const lazy = require('../../utils/object').lazy
 
 function factory (type, config, load, typed, math) {
   /**
@@ -110,7 +110,7 @@ function factory (type, config, load, typed, math) {
    */
   function createLazyProxy (name, resolver) {
     lazy(Chain.prototype, name, function outerResolver () {
-      var fn = resolver()
+      const fn = resolver()
       if (typeof fn === 'function') {
         return chainify(fn)
       }
@@ -127,8 +127,8 @@ function factory (type, config, load, typed, math) {
    */
   function chainify (fn) {
     return function () {
-      var args = [this.value] // `this` will be the context of a Chain instance
-      for (var i = 0; i < arguments.length; i++) {
+      const args = [this.value] // `this` will be the context of a Chain instance
+      for (let i = 0; i < arguments.length; i++) {
         args[i + 1] = arguments[i]
       }
 
@@ -140,7 +140,7 @@ function factory (type, config, load, typed, math) {
    * Create a proxy for a single method, or an object with multiple methods.
    * Example usage:
    *
-   *   Chain.createProxy('add', function add (x, y) {...});
+   *   Chain.createProxy('add', function add (x, y) {...})
    *   Chain.createProxy({
    *     add:      function add (x, y) {...},
    *     subtract: function subtract (x, y) {...}
@@ -156,7 +156,7 @@ function factory (type, config, load, typed, math) {
       createProxy(arg0, arg1)
     } else {
       // createProxy(values)
-      for (var prop in arg0) {
+      for (const prop in arg0) {
         if (arg0.hasOwnProperty(prop)) {
           createProxy(prop, arg0[prop])
         }

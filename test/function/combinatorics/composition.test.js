@@ -1,7 +1,7 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var composition = math.composition
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const composition = math.composition
 
 describe('composition', function () {
   it('should calculate the number of ways to compose a set of n objects into k non-empty subsets', function () {

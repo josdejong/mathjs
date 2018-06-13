@@ -1,10 +1,10 @@
 'use strict'
 
-var errorTransform = require('../../transform/error.transform').transform
-var getSafeProperty = require('../../../utils/customs').getSafeProperty
+const errorTransform = require('../../transform/error.transform').transform
+const getSafeProperty = require('../../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed) {
-  var subset = load(require('../../../function/matrix/subset'))
+  const subset = load(require('../../../function/matrix/subset'))
 
   /**
    * Retrieve part of an object:

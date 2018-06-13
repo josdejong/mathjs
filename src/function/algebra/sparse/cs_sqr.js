@@ -1,11 +1,11 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_amd = load(require('./cs_amd'))
-  var cs_permute = load(require('./cs_permute'))
-  var cs_etree = load(require('./cs_etree'))
-  var cs_post = load(require('./cs_post'))
-  var cs_counts = load(require('./cs_counts'))
+  const cs_amd = load(require('./cs_amd'))
+  const cs_permute = load(require('./cs_permute'))
+  const cs_etree = load(require('./cs_etree'))
+  const cs_post = load(require('./cs_post'))
+  const cs_counts = load(require('./cs_counts'))
 
   /**
    * Symbolic ordering and analysis for QR and LU decompositions.
@@ -19,16 +19,16 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_sqr = function (order, a, qr) {
+  const cs_sqr = function (order, a, qr) {
     // a arrays
-    var aptr = a._ptr
-    var asize = a._size
+    const aptr = a._ptr
+    const asize = a._size
     // columns
-    var n = asize[1]
+    const n = asize[1]
     // vars
-    var k
+    let k
     // symbolic analysis result
-    var s = {}
+    const s = {}
     // fill-reducing ordering
     s.q = cs_amd(order, a)
     // validate results
@@ -36,11 +36,11 @@ function factory (type, config, load) {
     // QR symbolic analysis
     if (qr) {
       // apply permutations if needed
-      var c = order ? cs_permute(a, null, s.q, 0) : a
+      const c = order ? cs_permute(a, null, s.q, 0) : a
       // etree of C'*C, where C=A(:,q)
       s.parent = cs_etree(c, 1)
       // post order elimination tree
-      var post = cs_post(s.parent, n)
+      const post = cs_post(s.parent, n)
       // col counts chol(C'*C)
       s.cp = cs_counts(c, s.parent, post, 1)
       // check we have everything needed to calculate number of nonzero elements
@@ -60,29 +60,29 @@ function factory (type, config, load) {
   /**
    * Compute nnz(V) = s.lnz, s.pinv, s.leftmost, s.m2 from A and s.parent
    */
-  var _vcount = function (a, s) {
+  function _vcount (a, s) {
     // a arrays
-    var aptr = a._ptr
-    var aindex = a._index
-    var asize = a._size
+    const aptr = a._ptr
+    const aindex = a._index
+    const asize = a._size
     // rows & columns
-    var m = asize[0]
-    var n = asize[1]
+    const m = asize[0]
+    const n = asize[1]
     // initialize s arrays
-    s.pinv = [] // (m + n);
-    s.leftmost = [] // (m);
+    s.pinv = [] // (m + n)
+    s.leftmost = [] // (m)
     // vars
-    var parent = s.parent
-    var pinv = s.pinv
-    var leftmost = s.leftmost
+    const parent = s.parent
+    const pinv = s.pinv
+    const leftmost = s.leftmost
     // workspace, next: first m entries, head: next n entries, tail: next n entries, nque: next n entries
-    var w = [] // (m + 3 * n);
-    var next = 0
-    var head = m
-    var tail = m + n
-    var nque = m + 2 * n
+    const w = [] // (m + 3 * n)
+    const next = 0
+    const head = m
+    const tail = m + n
+    const nque = m + 2 * n
     // vars
-    var i, k, p, p0, p1
+    let i, k, p, p0, p1
     // initialize w
     for (k = 0; k < n; k++) {
       // queue k is empty
@@ -130,7 +130,7 @@ function factory (type, config, load) {
       // nque[k] is nnz (V(k+1:m,k))
       s.lnz += w[nque + k]
       // move all rows to parent of k
-      var pa = parent[k]
+      const pa = parent[k]
       if (pa != -1) {
         if (w[nque + pa] === 0) { w[tail + pa] = w[tail + k] }
         w[next + w[tail + k]] = w[head + pa]

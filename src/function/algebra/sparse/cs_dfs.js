@@ -1,9 +1,9 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_marked = load(require('./cs_marked'))
-  var cs_mark = load(require('./cs_mark'))
-  var cs_unflip = load(require('./cs_unflip'))
+  const cs_marked = load(require('./cs_marked'))
+  const cs_mark = load(require('./cs_mark'))
+  const cs_unflip = load(require('./cs_unflip'))
 
   /**
    * Depth-first search computes the nonzero pattern xi of the directed graph G (Matrix) starting
@@ -21,17 +21,17 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_dfs = function (j, g, top, xi, pinv) {
+  const cs_dfs = function (j, g, top, xi, pinv) {
     // g arrays
-    var index = g._index
-    var ptr = g._ptr
-    var size = g._size
+    const index = g._index
+    const ptr = g._ptr
+    const size = g._size
     // columns
-    var n = size[1]
+    const n = size[1]
     // vars
-    var i, p, p2
+    let i, p, p2
     // initialize head
-    var head = 0
+    let head = 0
     // initialize the recursion stack
     xi[0] = j
     // loop
@@ -39,7 +39,7 @@ function factory (type, config, load) {
       // get j from the top of the recursion stack
       j = xi[head]
       // apply permutation vector
-      var jnew = pinv ? pinv[j] : j
+      const jnew = pinv ? pinv[j] : j
       // check node j is marked
       if (!cs_marked(ptr, j)) {
         // mark node j as visited
@@ -48,7 +48,7 @@ function factory (type, config, load) {
         xi[n + head] = jnew < 0 ? 0 : cs_unflip(ptr[jnew])
       }
       // node j done if no unvisited neighbors
-      var done = 1
+      let done = 1
       // examine all neighbors of j, stack (last n entries in xi)
       for (p = xi[n + head], p2 = jnew < 0 ? 0 : cs_unflip(ptr[jnew + 1]); p < p2; p++) {
         // consider neighbor node i

@@ -1,14 +1,8 @@
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  subset = math.subset,
-  matrix = math.matrix,
-  Range = math.type.Range,
-  Set = math.type.Set,
-  index = math.index
+const assert = require('assert'), math = require('../../../src/index'), subset = math.subset, matrix = math.matrix, Range = math.type.Range, Set = math.type.Set, index = math.index
 
 describe('subset', function () {
-  var a = [[1, 2], [3, 4]]
-  var b = math.matrix(a)
+  const a = [[1, 2], [3, 4]]
+  const b = math.matrix(a)
 
   it('should get the right subset of an array', function () {
     assert.deepEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
@@ -24,14 +18,14 @@ describe('subset', function () {
   })
 
   it('should get the right subset of an object', function () {
-    var obj = {'foo': 'bar'}
+    const obj = {'foo': 'bar'}
     assert.deepEqual(subset(obj, index('foo')), 'bar')
     assert.deepEqual(subset(obj, index('bla')), undefined)
   })
 
   it('should throw an error in case of an invalid subset for an object', function () {
-    var obj = {'foo': 'bar'}
-    var i = index('a', 'b')
+    const obj = {'foo': 'bar'}
+    const i = index('a', 'b')
     assert.throws(function () { subset(obj, i) }, /DimensionError/)
   })
 
@@ -55,8 +49,8 @@ describe('subset', function () {
     assert.throws(function () { subset(b, index(1.3, 0)) }, TypeError)
   })
 
-  var d = [[1, 2], [3, 4]]
-  var g = matrix([[1, 2], [3, 4]])
+  const d = [[1, 2], [3, 4]]
+  const g = matrix([[1, 2], [3, 4]])
 
   // TODO: test getting subset of an array and matrix
 
@@ -70,7 +64,7 @@ describe('subset', function () {
   })
 
   it('should set a subset of an array with undefined default value', function () {
-    var a = []
+    const a = []
     assert.deepEqual(subset(a, index(2), 1), [0, 0, 1])
     assert.deepEqual(subset(a, index(2), 1, null), [null, null, 1])
   })
@@ -99,14 +93,14 @@ describe('subset', function () {
     })
 
     it('should throw an error if trying to access an invalid subset of a string', function () {
-      // assert.throws(function () {subset('hello', 1);}, TypeError);
+      // assert.throws(function () {subset('hello', 1);}, TypeError)
       assert.throws(function () { subset('hello', index([6])) }, RangeError)
       assert.throws(function () { subset('hello', index([-2])) }, RangeError)
       assert.throws(function () { subset('hello', index([1.3])) }, TypeError)
     })
 
     it('should set the right subset of a string', function () {
-      var j = 'hello'
+      const j = 'hello'
       assert.deepEqual(subset(j, index(0), 'H'), 'Hello')
       assert.deepEqual(j, 'hello')
       assert.deepEqual(subset(j, index(5), '!'), 'hello!')
@@ -121,14 +115,14 @@ describe('subset', function () {
     })
 
     it('should set the right subset of a string with resizing', function () {
-      var j = ''
-      var defaultValue = 'i'
+      const j = ''
+      const defaultValue = 'i'
       assert.deepEqual(subset(j, index(5), '!', defaultValue), 'iiiii!')
     })
 
     it('should set a property of an object', function () {
-      var obj = {}
-      var res = subset(obj, index('foo'), 'bar')
+      const obj = {}
+      const res = subset(obj, index('foo'), 'bar')
       assert.deepEqual(res, {foo: 'bar'})
       assert.deepEqual(obj, {}) // should leave the original object untouched
     })
@@ -161,12 +155,12 @@ describe('subset', function () {
 
   it('should throw an error in case of invalid type of arguments', function () {
     assert.throws(function () { subset([1, 2], [0]) }, /TypeError: Unexpected type of argument/)
-    // assert.throws(function () {subset(new Date(), index(0));}, /TypeError: Unexpected type of argument/); // FIXME: should fail too. Problem is, Date is also an Object
-    // assert.throws(function () {subset(/foo/, index(0));}, /TypeError: Unexpected type of argument/); // FIXME: should fail too. Problem is, Date is also an Object
+    // assert.throws(function () {subset(new Date(), index(0))}, /TypeError: Unexpected type of argument/) // FIXME: should fail too. Problem is, Date is also an Object
+    // assert.throws(function () {subset(/foo/, index(0))}, /TypeError: Unexpected type of argument/) // FIXME: should fail too. Problem is, Date is also an Object
   })
 
   it('should LaTeX subset', function () {
-    var expression = math.parse('subset([1],index(0,0))')
+    const expression = math.parse('subset([1],index(0,0))')
     assert.equal(expression.toTex(), '\\mathrm{subset}\\left(\\begin{bmatrix}1\\\\\\end{bmatrix},\\mathrm{index}\\left(0,0\\right)\\right)')
   })
 })

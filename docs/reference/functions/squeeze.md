@@ -27,18 +27,18 @@ Matrix &#124; Array | Squeezed matrix
 ## Examples
 
 ```js
-math.squeeze([3]);           // returns 3
-math.squeeze([[3]]);         // returns 3
+math.squeeze([3])           // returns 3
+math.squeeze([[3]])         // returns 3
 
-var A = math.zeros(3, 1);    // returns [[0], [0], [0]] (size 3x1)
-math.squeeze(A);             // returns [0, 0, 0] (size 3)
+const A = math.zeros(3, 1)    // returns [[0], [0], [0]] (size 3x1)
+math.squeeze(A)             // returns [0, 0, 0] (size 3)
 
-var B = math.zeros(1, 3);    // returns [[0, 0, 0]] (size 1x3)
-math.squeeze(B);             // returns [0, 0, 0] (size 3)
+const B = math.zeros(1, 3)    // returns [[0, 0, 0]] (size 1x3)
+math.squeeze(B)             // returns [0, 0, 0] (size 3)
 
 // only inner and outer dimensions are removed
-var C = math.zeros(2, 1, 3); // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
-math.squeeze(C);             // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
+const C = math.zeros(2, 1, 3) // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
+math.squeeze(C)             // returns [[[0, 0, 0]], [[0, 0, 0]]] (size 2x1x3)
 ```
 
 

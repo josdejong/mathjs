@@ -1,13 +1,13 @@
 // test typeof
-var assert = require('assert')
-var math = require('../../../src/index')
-var Index = math.type.Index
-var Range = math.type.Range
-var Matrix = math.type.Matrix
-var Help = math.type.Help
-var Unit = math.type.Unit
-var Complex = math.type.Complex
-var Fraction = math.type.Fraction
+const assert = require('assert')
+const math = require('../../../src/index')
+const Index = math.type.Index
+const Range = math.type.Range
+const Matrix = math.type.Matrix
+const Help = math.type.Help
+const Unit = math.type.Unit
+const Complex = math.type.Complex
+const Fraction = math.type.Fraction
 
 describe('typeof', function () {
   it('should return number type for a number', function () {
@@ -94,9 +94,9 @@ describe('typeof', function () {
   })
 
   it('should return function type for nodes', function () {
-    var constantNode = new math.expression.node.ConstantNode(2)
-    var symbolNode = new math.expression.node.SymbolNode('x')
-    var indexNode = new math.expression.node.IndexNode([])
+    const constantNode = new math.expression.node.ConstantNode(2)
+    const symbolNode = new math.expression.node.SymbolNode('x')
+    const indexNode = new math.expression.node.IndexNode([])
 
     assert.equal(math.typeof(new math.expression.node.AccessorNode(symbolNode, indexNode)), 'AccessorNode')
     assert.equal(math.typeof(new math.expression.node.ArrayNode([])), 'ArrayNode')
@@ -136,7 +136,7 @@ describe('typeof', function () {
   })
 
   it('should LaTeX typeof', function () {
-    var expression = math.parse('typeof(1)')
+    const expression = math.parse('typeof(1)')
     assert.equal(expression.toTex(), '\\mathrm{typeof}\\left(1\\right)')
   })
 

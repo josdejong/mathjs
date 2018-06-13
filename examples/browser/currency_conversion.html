@@ -49,40 +49,40 @@
 <script>
   fetchAndImportCurrencies()
       .then(function (currencies) {
-        document.getElementById('expr').oninput = evaluate;
-        document.getElementById('form').style.display = '';
-        document.getElementById('info').innerHTML = 'Available currencies: ' + currencies.join(', ');
+        document.getElementById('expr').oninput = evaluate
+        document.getElementById('form').style.display = ''
+        document.getElementById('info').innerHTML = 'Available currencies: ' + currencies.join(', ')
 
-        evaluate();
+        evaluate()
       })
 
   function fetchAndImportCurrencies () {
     // fetch actual currency conversion rates
     return fetch('https://api.fixer.io/latest')
         .then(function (response) {
-          return response.json();
+          return response.json()
         }).then(function (data) {
           // import the currencies
           math.createUnit(data.base)
           Object.keys(data.rates).forEach(function (currency) {
-            math.createUnit(currency, math.unit(1 / data.rates[currency], data.base));
-          });
+            math.createUnit(currency, math.unit(1 / data.rates[currency], data.base))
+          })
 
           // return an array with all available currencies
-          return Object.keys(data.rates).concat(data.base);
-        });
+          return Object.keys(data.rates).concat(data.base)
+        })
   }
 
   function evaluate () {
-    var expr = document.getElementById('expr');
-    var result = document.getElementById('result');
+    const expr = document.getElementById('expr')
+    const result = document.getElementById('result')
 
     try {
-      var resultStr = math.format(math.eval(expr.value), {notation: 'fixed', precision: 2})
-      result.innerHTML = '<span style="color: dodgerblue;">' + resultStr + '</span>';
+      const resultStr = math.format(math.eval(expr.value), {notation: 'fixed', precision: 2})
+      result.innerHTML = '<span style="color: dodgerblue;">' + resultStr + '</span>'
     }
     catch (err) {
-      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';
+      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>'
     }
   }
 </script>

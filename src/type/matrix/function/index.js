@@ -21,13 +21,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var math = math.js
+   *    const math = require('mathjs')
    *
-   *    var b = [1, 2, 3, 4, 5];
-   *    math.subset(b, math.index([1, 2, 3]));     // returns [2, 3, 4]
+   *    const b = [1, 2, 3, 4, 5]
+   *    math.subset(b, math.index([1, 2, 3]))     // returns [2, 3, 4]
    *
-   *    var a = math.matrix([[1, 2], [3, 4]]);
-   *    a.subset(math.index(0, 1));             // returns 2
+   *    const a = math.matrix([[1, 2], [3, 4]])
+   *    a.subset(math.index(0, 1))             // returns 2
    *
    * See also:
    *
@@ -38,7 +38,7 @@ function factory (type, config, load, typed) {
    */
   return typed('index', {
     '...number | string | BigNumber | Range | Array | Matrix': function (args) {
-      var ranges = args.map(function (arg) {
+      const ranges = args.map(function (arg) {
         if (type.isBigNumber(arg)) {
           return arg.toNumber() // convert BigNumber to Number
         } else if (Array.isArray(arg) || type.isMatrix(arg)) {
@@ -51,7 +51,7 @@ function factory (type, config, load, typed) {
         }
       })
 
-      var res = new type.Index()
+      const res = new type.Index()
       type.Index.apply(res, ranges)
       return res
     }

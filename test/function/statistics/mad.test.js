@@ -1,10 +1,10 @@
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var DenseMatrix = math.type.DenseMatrix
-var Complex = math.type.Complex
-var mad = math.mad
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const DenseMatrix = math.type.DenseMatrix
+const Complex = math.type.Complex
+const mad = math.mad
 
 describe('mad', function () {
   it('should return the median absolute deviation of numbers', function () {
@@ -62,7 +62,7 @@ describe('mad', function () {
   })
 
   it('should LaTeX mad', function () {
-    var expression = math.parse('mad(1,2,3)')
+    const expression = math.parse('mad(1,2,3)')
     assert.equal(expression.toTex(), '\\mathrm{mad}\\left(1,2,3\\right)')
   })
 })

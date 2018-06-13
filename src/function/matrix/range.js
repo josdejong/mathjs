@@ -1,10 +1,10 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var ZERO = new type.BigNumber(0)
-  var ONE = new type.BigNumber(1)
+  const ZERO = new type.BigNumber(0)
+  const ONE = new type.BigNumber(1)
 
   /**
    * Create an array from a range.
@@ -37,10 +37,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.range(2, 6);        // [2, 3, 4, 5]
-   *     math.range(2, -3, -1);   // [2, 1, 0, -1, -2]
-   *     math.range('2:1:6');     // [2, 3, 4, 5]
-   *     math.range(2, 6, true);  // [2, 3, 4, 5, 6]
+   *     math.range(2, 6)        // [2, 3, 4, 5]
+   *     math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
+   *     math.range('2:1:6')     // [2, 3, 4, 5]
+   *     math.range(2, 6, true)  // [2, 3, 4, 5, 6]
    *
    * See also:
    *
@@ -49,7 +49,7 @@ function factory (type, config, load, typed) {
    * @param {*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
    * @return {Array | Matrix} range
    */
-  var range = typed('range', {
+  const range = typed('range', {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
     // TODO: a number or boolean should not be converted to string here
@@ -101,12 +101,12 @@ function factory (type, config, load, typed) {
   }
 
   function _strRange (str, includeEnd) {
-    var r = _parse(str)
+    const r = _parse(str)
     if (!r) {
       throw new SyntaxError('String "' + str + '" is no valid range')
     }
 
-    var fn
+    let fn
     if (config.number === 'BigNumber') {
       fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
@@ -128,8 +128,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _rangeEx (start, end, step) {
-    var array = [],
-      x = start
+    const array = []
+    let x = start
     if (step > 0) {
       while (x < end) {
         array.push(x)
@@ -154,8 +154,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _rangeInc (start, end, step) {
-    var array = [],
-      x = start
+    const array = []
+    let x = start
     if (step > 0) {
       while (x <= end) {
         array.push(x)
@@ -180,8 +180,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _bigRangeEx (start, end, step) {
-    var array = [],
-      x = start
+    const array = []
+    let x = start
     if (step.gt(ZERO)) {
       while (x.lt(end)) {
         array.push(x)
@@ -206,8 +206,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _bigRangeInc (start, end, step) {
-    var array = [],
-      x = start
+    const array = []
+    let x = start
     if (step.gt(ZERO)) {
       while (x.lte(end)) {
         array.push(x)
@@ -233,15 +233,15 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _parse (str) {
-    var args = str.split(':')
+    const args = str.split(':')
 
     // number
-    var nums = args.map(function (arg) {
+    const nums = args.map(function (arg) {
       // use Number and not parseFloat as Number returns NaN on invalid garbage in the string
       return Number(arg)
     })
 
-    var invalid = nums.some(function (num) {
+    const invalid = nums.some(function (num) {
       return isNaN(num)
     })
     if (invalid) {

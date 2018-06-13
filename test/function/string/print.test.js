@@ -1,7 +1,5 @@
 // test print
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
 
 describe('print', function () {
   it('should interpolate values in a template (object template)', function () {
@@ -101,7 +99,7 @@ describe('print', function () {
   })
 
   it('should LaTeX print', function () {
-    var expression = math.parse('print(template,values)')
+    const expression = math.parse('print(template,values)')
     assert.equal(expression.toTex(), '\\mathrm{print}\\left( template, values\\right)')
   })
 })

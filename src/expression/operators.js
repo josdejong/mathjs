@@ -18,7 +18,7 @@
 //                  left argument doesn't need to be enclosed
 //                  in parentheses
 // latexRightParens: the same for the right argument
-var properties = [
+const properties = [
   { // assignment
     'AssignmentNode': {},
     'FunctionAssignmentNode': {}
@@ -216,13 +216,13 @@ var properties = [
  * @return {number|null}
  */
 function getPrecedence (_node, parenthesis) {
-  var node = _node
+  let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
     node = _node.getContent()
   }
-  var identifier = node.getIdentifier()
-  for (var i = 0; i < properties.length; i++) {
+  const identifier = node.getIdentifier()
+  for (let i = 0; i < properties.length; i++) {
     if (identifier in properties[i]) {
       return i
     }
@@ -241,18 +241,18 @@ function getPrecedence (_node, parenthesis) {
  * @throws {Error}
  */
 function getAssociativity (_node, parenthesis) {
-  var node = _node
+  let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
     node = _node.getContent()
   }
-  var identifier = node.getIdentifier()
-  var index = getPrecedence(node, parenthesis)
+  const identifier = node.getIdentifier()
+  const index = getPrecedence(node, parenthesis)
   if (index === null) {
     // node isn't in the list
     return null
   }
-  var property = properties[index][identifier]
+  const property = properties[index][identifier]
 
   if (property.hasOwnProperty('associativity')) {
     if (property.associativity === 'left') {
@@ -280,25 +280,21 @@ function getAssociativity (_node, parenthesis) {
  * @return {bool|null}
  */
 function isAssociativeWith (nodeA, nodeB, parenthesis) {
-  var a = nodeA
-  var b = nodeB
-  if (parenthesis !== 'keep') {
-    // ParenthesisNodes are only ignored when not in 'keep' mode
-    var a = nodeA.getContent()
-    var b = nodeB.getContent()
-  }
-  var identifierA = a.getIdentifier()
-  var identifierB = b.getIdentifier()
-  var index = getPrecedence(a, parenthesis)
+  // ParenthesisNodes are only ignored when not in 'keep' mode
+  const a = (parenthesis !== 'keep') ? nodeA.getContent() : nodeA
+  const b = (parenthesis !== 'keep') ? nodeA.getContent() : nodeB
+  const identifierA = a.getIdentifier()
+  const identifierB = b.getIdentifier()
+  const index = getPrecedence(a, parenthesis)
   if (index === null) {
     // node isn't in the list
     return null
   }
-  var property = properties[index][identifierA]
+  const property = properties[index][identifierA]
 
   if (property.hasOwnProperty('associativeWith') &&
       (property.associativeWith instanceof Array)) {
-    for (var i = 0; i < property.associativeWith.length; i++) {
+    for (let i = 0; i < property.associativeWith.length; i++) {
       if (property.associativeWith[i] === identifierB) {
         return true
       }

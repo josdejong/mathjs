@@ -1,19 +1,19 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var toFixed = require('../../utils/number').toFixed
-var deepMap = require('../../utils/collection/deepMap')
+const isInteger = require('../../utils/number').isInteger
+const toFixed = require('../../utils/number').toFixed
+const deepMap = require('../../utils/collection/deepMap')
 
-var NO_INT = 'Number of decimals in function round must be an integer'
+const NO_INT = 'Number of decimals in function round must be an integer'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var equalScalar = load(require('../relational/equalScalar'))
-  var zeros = load(require('../matrix/zeros'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const equalScalar = load(require('../relational/equalScalar'))
+  const zeros = load(require('../matrix/zeros'))
 
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Round a value towards the nearest integer.
@@ -26,17 +26,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.round(3.2);              // returns number 3
-   *    math.round(3.8);              // returns number 4
-   *    math.round(-4.2);             // returns number -4
-   *    math.round(-4.7);             // returns number -5
-   *    math.round(math.pi, 3);       // returns number 3.142
-   *    math.round(123.45678, 2);     // returns number 123.46
+   *    math.round(3.2)              // returns number 3
+   *    math.round(3.8)              // returns number 4
+   *    math.round(-4.2)             // returns number -4
+   *    math.round(-4.7)             // returns number -5
+   *    math.round(math.pi, 3)       // returns number 3.142
+   *    math.round(123.45678, 2)     // returns number 123.46
    *
-   *    var c = math.complex(3.2, -2.7);
-   *    math.round(c);                // returns Complex 3 - 3i
+   *    const c = math.complex(3.2, -2.7)
+   *    math.round(c)                // returns Complex 3 - 3i
    *
-   *    math.round([3.2, 3.8, -4.7]); // returns Array [3, 4, -5]
+   *    math.round([3.2, 3.8, -4.7]) // returns Array [3, 4, -5]
    *
    * See also:
    *
@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  var round = typed('round', {
+  const round = typed('round', {
 
     'number': Math.round,
 
@@ -70,7 +70,7 @@ function factory (type, config, load, typed) {
     'Complex, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      var _n = n.toNumber()
+      const _n = n.toNumber()
       return x.round(_n)
     },
 

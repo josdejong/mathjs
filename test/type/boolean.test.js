@@ -1,7 +1,4 @@
-var assert = require('assert'),
-  error = require('../../src/error/index'),
-  math = require('../../src/index'),
-  bool = math['boolean']
+const assert = require('assert'), error = require('../../src/error/index'), math = require('../../src/index'), bool = math['boolean']
 
 describe('boolean', function () {
   it('should convert a boolean to a boolean', function () {
@@ -68,7 +65,7 @@ describe('boolean', function () {
   })
 
   it('should LaTeX boolean', function () {
-    var expression = math.parse('boolean(1)')
+    const expression = math.parse('boolean(1)')
     assert.equal(expression.toTex(), '\\mathrm{boolean}\\left(1\\right)')
   })
 })

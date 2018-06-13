@@ -1,16 +1,16 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var abs = load(require('../arithmetic/abs'))
-  var add = load(require('../arithmetic/add'))
-  var addScalar = load(require('../arithmetic/addScalar'))
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var multiply = load(require('../arithmetic/multiply'))
-  var multiplyScalar = load(require('../arithmetic/multiplyScalar'))
-  var divideScalar = load(require('../arithmetic/divideScalar'))
-  var subtract = load(require('../arithmetic/subtract'))
-  var smaller = load(require('../relational/smaller'))
-  var equalScalar = load(require('../relational/equalScalar'))
+  const abs = load(require('../arithmetic/abs'))
+  const add = load(require('../arithmetic/add'))
+  const addScalar = load(require('../arithmetic/addScalar'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const multiply = load(require('../arithmetic/multiply'))
+  const multiplyScalar = load(require('../arithmetic/multiplyScalar'))
+  const divideScalar = load(require('../arithmetic/divideScalar'))
+  const subtract = load(require('../arithmetic/subtract'))
+  const smaller = load(require('../relational/smaller'))
+  const equalScalar = load(require('../relational/equalScalar'))
 
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
@@ -27,9 +27,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.intersect([0, 0], [10, 10], [10, 0], [0, 10]);              // Returns [5, 5]
-   *    math.intersect([0, 0, 0], [10, 10, 0], [10, 0, 0], [0, 10, 0]);  // Returns [5, 5, 0]
-   *    math.intersect([1, 0, 1],  [4, -2, 2], [1, 1, 1, 6]);            // Returns [7, -4, 3]
+   *    math.intersect([0, 0], [10, 10], [10, 0], [0, 10])              // Returns [5, 5]
+   *    math.intersect([0, 0, 0], [10, 10, 0], [10, 0, 0], [0, 10, 0])  // Returns [5, 5, 0]
+   *    math.intersect([1, 0, 1],  [4, -2, 2], [1, 1, 1, 6])            // Returns [7, -4, 3]
    *
    * @param  {Array | Matrix} w   Co-ordinates of first end-point of first line
    * @param  {Array | Matrix} x   Co-ordinates of second end-point of first line
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    *                              OR null if the calculation is for line and plane
    * @return {Array}              Returns the point of intersection of lines/lines-planes
    */
-  var intersect = typed('intersect', {
+  const intersect = typed('intersect', {
     'Array, Array, Array': function (x, y, plane) {
       if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
       if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
@@ -96,47 +96,47 @@ function factory (type, config, load, typed) {
   }
 
   function _intersect2d (p1a, p1b, p2a, p2b) {
-    var o1 = p1a
-    var o2 = p2a
-    var d1 = subtract(o1, p1b)
-    var d2 = subtract(o2, p2b)
-    var det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
+    const o1 = p1a
+    const o2 = p2a
+    const d1 = subtract(o1, p1b)
+    const d2 = subtract(o2, p2b)
+    const det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
     if (smaller(abs(det), config.epsilon)) {
       return null
     }
-    var d20o11 = multiplyScalar(d2[0], o1[1])
-    var d21o10 = multiplyScalar(d2[1], o1[0])
-    var d20o21 = multiplyScalar(d2[0], o2[1])
-    var d21o20 = multiplyScalar(d2[1], o2[0])
-    var t = divideScalar(addScalar(subtract(subtract(d20o11, d21o10), d20o21), d21o20), det)
+    const d20o11 = multiplyScalar(d2[0], o1[1])
+    const d21o10 = multiplyScalar(d2[1], o1[0])
+    const d20o21 = multiplyScalar(d2[0], o2[1])
+    const d21o20 = multiplyScalar(d2[1], o2[0])
+    const t = divideScalar(addScalar(subtract(subtract(d20o11, d21o10), d20o21), d21o20), det)
     return add(multiply(d1, t), o1)
   }
 
   function _intersect3dHelper (a, b, c, d, e, f, g, h, i, j, k, l) {
     // (a - b)*(c - d) + (e - f)*(g - h) + (i - j)*(k - l)
-    var add1 = multiplyScalar(subtract(a, b), subtract(c, d))
-    var add2 = multiplyScalar(subtract(e, f), subtract(g, h))
-    var add3 = multiplyScalar(subtract(i, j), subtract(k, l))
+    const add1 = multiplyScalar(subtract(a, b), subtract(c, d))
+    const add2 = multiplyScalar(subtract(e, f), subtract(g, h))
+    const add3 = multiplyScalar(subtract(i, j), subtract(k, l))
     return addScalar(addScalar(add1, add2), add3)
   }
 
   function _intersect3d (x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4) {
-    var d1343 = _intersect3dHelper(x1, x3, x4, x3, y1, y3, y4, y3, z1, z3, z4, z3)
-    var d4321 = _intersect3dHelper(x4, x3, x2, x1, y4, y3, y2, y1, z4, z3, z2, z1)
-    var d1321 = _intersect3dHelper(x1, x3, x2, x1, y1, y3, y2, y1, z1, z3, z2, z1)
-    var d4343 = _intersect3dHelper(x4, x3, x4, x3, y4, y3, y4, y3, z4, z3, z4, z3)
-    var d2121 = _intersect3dHelper(x2, x1, x2, x1, y2, y1, y2, y1, z2, z1, z2, z1)
-    var ta = divideScalar(
+    const d1343 = _intersect3dHelper(x1, x3, x4, x3, y1, y3, y4, y3, z1, z3, z4, z3)
+    const d4321 = _intersect3dHelper(x4, x3, x2, x1, y4, y3, y2, y1, z4, z3, z2, z1)
+    const d1321 = _intersect3dHelper(x1, x3, x2, x1, y1, y3, y2, y1, z1, z3, z2, z1)
+    const d4343 = _intersect3dHelper(x4, x3, x4, x3, y4, y3, y4, y3, z4, z3, z4, z3)
+    const d2121 = _intersect3dHelper(x2, x1, x2, x1, y2, y1, y2, y1, z2, z1, z2, z1)
+    const ta = divideScalar(
       subtract(multiplyScalar(d1343, d4321), multiplyScalar(d1321, d4343)),
       subtract(multiplyScalar(d2121, d4343), multiplyScalar(d4321, d4321)))
-    var tb = divideScalar(addScalar(d1343, multiplyScalar(ta, d4321)), d4343)
+    const tb = divideScalar(addScalar(d1343, multiplyScalar(ta, d4321)), d4343)
 
-    var pax = addScalar(x1, multiplyScalar(ta, subtract(x2, x1)))
-    var pay = addScalar(y1, multiplyScalar(ta, subtract(y2, y1)))
-    var paz = addScalar(z1, multiplyScalar(ta, subtract(z2, z1)))
-    var pbx = addScalar(x3, multiplyScalar(tb, subtract(x4, x3)))
-    var pby = addScalar(y3, multiplyScalar(tb, subtract(y4, y3)))
-    var pbz = addScalar(z3, multiplyScalar(tb, subtract(z4, z3)))
+    const pax = addScalar(x1, multiplyScalar(ta, subtract(x2, x1)))
+    const pay = addScalar(y1, multiplyScalar(ta, subtract(y2, y1)))
+    const paz = addScalar(z1, multiplyScalar(ta, subtract(z2, z1)))
+    const pbx = addScalar(x3, multiplyScalar(tb, subtract(x4, x3)))
+    const pby = addScalar(y3, multiplyScalar(tb, subtract(y4, y3)))
+    const pbz = addScalar(z3, multiplyScalar(tb, subtract(z4, z3)))
     if (equalScalar(pax, pbx) && equalScalar(pay, pby) && equalScalar(paz, pbz)) {
       return [pax, pay, paz]
     } else {
@@ -145,18 +145,18 @@ function factory (type, config, load, typed) {
   }
 
   function _intersectLinePlane (x1, y1, z1, x2, y2, z2, x, y, z, c) {
-    var x1x = multiplyScalar(x1, x)
-    var x2x = multiplyScalar(x2, x)
-    var y1y = multiplyScalar(y1, y)
-    var y2y = multiplyScalar(y2, y)
-    var z1z = multiplyScalar(z1, z)
-    var z2z = multiplyScalar(z2, z)
-    var t = divideScalar(
+    const x1x = multiplyScalar(x1, x)
+    const x2x = multiplyScalar(x2, x)
+    const y1y = multiplyScalar(y1, y)
+    const y2y = multiplyScalar(y2, y)
+    const z1z = multiplyScalar(z1, z)
+    const z2z = multiplyScalar(z2, z)
+    const t = divideScalar(
       subtract(subtract(subtract(c, x1x), y1y), z1z),
       subtract(subtract(subtract(addScalar(addScalar(x2x, y2y), z2z), x1x), y1y), z1z))
-    var px = addScalar(x1, multiplyScalar(t, subtract(x2, x1)))
-    var py = addScalar(y1, multiplyScalar(t, subtract(y2, y1)))
-    var pz = addScalar(z1, multiplyScalar(t, subtract(z2, z1)))
+    const px = addScalar(x1, multiplyScalar(t, subtract(x2, x1)))
+    const py = addScalar(y1, multiplyScalar(t, subtract(y2, y1)))
+    const pz = addScalar(z1, multiplyScalar(t, subtract(z2, z1)))
     return [px, py, pz]
     // TODO: Add cases when line is parallel to the plane:
     //       (a) no intersection,

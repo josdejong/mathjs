@@ -30,11 +30,11 @@ Type | Description
 ## Examples
 
 ```js
-math.multiply(2, 3);           // returns 6
-math.prod(2, 3);               // returns 6
-math.prod(2, 3, 4);            // returns 24
-math.prod([2, 3, 4]);          // returns 24
-math.prod([[2, 5], [4, 3]]);   // returns 120
+math.multiply(2, 3)           // returns 6
+math.prod(2, 3)               // returns 6
+math.prod(2, 3, 4)            // returns 24
+math.prod([2, 3, 4])          // returns 24
+math.prod([[2, 5], [4, 3]])   // returns 120
 ```
 
 

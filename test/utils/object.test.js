@@ -1,7 +1,5 @@
 // test object utils
-var assert = require('assert'),
-  approx = require('../../tools/approx'),
-  object = require('../../src/utils/object')
+const assert = require('assert'), approx = require('../../tools/approx'), object = require('../../src/utils/object')
 
 describe('object', function () {
   describe('clone', function () {
@@ -34,8 +32,8 @@ describe('object', function () {
     })
 
     it('should (deep) clone objects', function () {
-      var obj = {a: {b: 'c', d: new Date(2014, 0, 1)}}
-      var clone = object.clone(obj)
+      const obj = {a: {b: 'c', d: new Date(2014, 0, 1)}}
+      const clone = object.clone(obj)
 
       assert.deepEqual(obj, clone)
 
@@ -49,17 +47,17 @@ describe('object', function () {
     })
 
     it('should clone dates', function () {
-      var d1 = new Date(2014, 1, 1)
-      var d2 = object.clone(d1)
+      const d1 = new Date(2014, 1, 1)
+      const d2 = object.clone(d1)
       assert.equal(d1.valueOf(), d2.valueOf())
       d1.setMonth(2)
       assert.notEqual(d1, d2)
     })
 
     it('should (deep) clone arrays', function () {
-      var d = new Date(2014, 0, 1)
-      var arr = [1, 2, d, {a: 3}]
-      var clone = object.clone(arr)
+      const d = new Date(2014, 0, 1)
+      const arr = [1, 2, d, {a: 3}]
+      const clone = object.clone(arr)
 
       assert.deepEqual(arr, clone)
       assert.notStrictEqual(arr, clone)
@@ -81,10 +79,10 @@ describe('object', function () {
 
   describe('extend', function () {
     it('should extend an object with all properties of an other object', function () {
-      var e = {}
-      var o1 = {a: 2, b: 3}
-      var o2 = {a: 4, b: null, c: undefined, d: 5, e: e}
-      var o3 = object.extend(o1, o2)
+      const e = {}
+      const o1 = {a: 2, b: 3}
+      const o2 = {a: 4, b: null, c: undefined, d: 5, e: e}
+      const o3 = object.extend(o1, o2)
 
       assert.strictEqual(o1, o3)
       assert.strictEqual(o1.e, o3.e)
@@ -94,8 +92,8 @@ describe('object', function () {
 
     it('should ignore inherited properties when extending an object', function () {
       Object.prototype.foo = 'bar'
-      var o1 = {a: 2, b: 3}
-      var o2 = object.extend({}, o1)
+      const o1 = {a: 2, b: 3}
+      const o2 = object.extend({}, o1)
 
       assert.equal(o2['foo'], 'bar')
       assert.equal(o2.hasOwnProperty('foo'), false)
@@ -106,10 +104,10 @@ describe('object', function () {
 
   describe('deepExtend', function () {
     it('should deep extend an object with all properties of an other object', function () {
-      var e = {f: {g: 3}}
-      var o1 = {a: 2, b: 3}
-      var o2 = {a: 4, b: null, c: undefined, d: 5, e: e}
-      var o3 = object.deepExtend(o1, o2)
+      const e = {f: {g: 3}}
+      const o1 = {a: 2, b: 3}
+      const o2 = {a: 4, b: null, c: undefined, d: 5, e: e}
+      const o3 = object.deepExtend(o1, o2)
 
       assert.strictEqual(o1, o3)
       assert.notStrictEqual(o3.e, o2.e)
@@ -129,8 +127,8 @@ describe('object', function () {
 
     it('should ignore inherited properties when deep extending an object', function () {
       Object.prototype.foo = 'bar'
-      var o1 = {a: 2, b: 3}
-      var o2 = object.deepExtend({}, o1)
+      const o1 = {a: 2, b: 3}
+      const o2 = object.deepExtend({}, o1)
 
       assert.equal(o2['foo'], 'bar')
       assert.equal(o2.hasOwnProperty('foo'), false)
@@ -208,39 +206,39 @@ describe('object', function () {
 
   describe('lazy', function () {
     it('should get a lazy property', function () {
-      var obj = {}
-      var count = 0
+      const obj = {}
+      let count = 0
       object.lazy(obj, 'x', function () {
         count++
         return 2
       })
 
-      var x = obj.x
+      const x = obj.x
       assert.equal(x, 2)
       assert.equal(count, 1)
 
-      var x2 = obj.x
+      const x2 = obj.x
       assert.equal(x2, 2)
       assert.equal(count, 1)
     })
 
     it('should set a lazy property', function () {
-      var obj = {}
+      const obj = {}
       object.lazy(obj, 'x', function () {
         return 2
       })
 
       obj.x = 3
-      var x = obj.x
+      const x = obj.x
       assert.equal(x, 3)
     })
   })
 
   describe('traverse', function () {
     it('should traverse an existing path into an object', function () {
-      var a = {}
-      var b = {a: a}
-      var c = {b: b}
+      const a = {}
+      const b = {a: a}
+      const c = {b: b}
 
       assert.strictEqual(object.traverse(c), c)
       assert.strictEqual(object.traverse(c, ''), c)
@@ -249,9 +247,9 @@ describe('object', function () {
     })
 
     it('should append missing piece of a path', function () {
-      var a = {}
-      var b = {a: a}
-      var c = {b: b}
+      const a = {}
+      const b = {a: a}
+      const c = {b: b}
 
       assert.strictEqual(object.traverse(c), c)
       assert.strictEqual(object.traverse(c, ''), c)

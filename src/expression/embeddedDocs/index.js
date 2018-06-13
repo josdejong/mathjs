@@ -1,5 +1,5 @@
 function factory (construction, config, load, typed) {
-  var docs = {}
+  const docs = {}
 
   // construction functions
   docs.bignumber = require('./construction/bignumber')
@@ -51,7 +51,7 @@ function factory (construction, config, load, typed) {
   docs.bohrMagneton = {description: 'Borh magneton', examples: ['bohrMagneton']}
   docs.conductanceQuantum = {description: 'Conductance quantum', examples: ['conductanceQuantum']}
   docs.inverseConductanceQuantum = {description: 'Inverse conductance quantum', examples: ['inverseConductanceQuantum']}
-  // docs.josephson = {description: 'Josephson constant', examples: ['josephson']};
+  // docs.josephson = {description: 'Josephson constant', examples: ['josephson']}
   docs.magneticFluxQuantum = {description: 'Magnetic flux quantum', examples: ['magneticFluxQuantum']}
   docs.nuclearMagneton = {description: 'Nuclear magneton', examples: ['nuclearMagneton']}
   docs.klitzing = {description: 'Von Klitzing constant', examples: ['klitzing']}
@@ -84,7 +84,7 @@ function factory (construction, config, load, typed) {
   docs.secondRadiation = {description: 'Second radiation constant', examples: ['secondRadiation']}
   docs.stefanBoltzmann = {description: 'Stefan-Boltzmann constant', examples: ['stefanBoltzmann']}
   docs.wienDisplacement = {description: 'Wien displacement law constant', examples: ['wienDisplacement']}
-  // docs.spectralRadiance = {description: 'First radiation constant for spectral radiance', examples: ['spectralRadiance']};
+  // docs.spectralRadiance = {description: 'First radiation constant for spectral radiance', examples: ['spectralRadiance']}
 
   docs.molarMass = {description: 'Molar mass constant', examples: ['molarMass']}
   docs.molarMassC12 = {description: 'Molar mass constant of carbon-12', examples: ['molarMassC12']}
@@ -214,7 +214,7 @@ function factory (construction, config, load, typed) {
 
   // functions - probability
   docs.combinations = require('./function/probability/combinations')
-  // docs.distribution = require('./function/probability/distribution');
+  // docs.distribution = require('./function/probability/distribution')
   docs.factorial = require('./function/probability/factorial')
   docs.gamma = require('./function/probability/gamma')
   docs.kldivergence = require('./function/probability/kldivergence')
@@ -305,7 +305,7 @@ function factory (construction, config, load, typed) {
   docs.isPositive = require('./function/utils/isPositive')
   docs.isPrime = require('./function/utils/isPrime')
   docs.isZero = require('./function/utils/isZero')
-  // docs.print = require('./function/utils/print'); // TODO: add documentation for print as soon as the parser supports objects.
+  // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
   docs['typeof'] = require('./function/utils/typeof')
 
   return docs

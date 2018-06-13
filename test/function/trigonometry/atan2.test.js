@@ -1,17 +1,5 @@
 // test atan2
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  sparse = math.sparse,
-  unit = math.unit,
-  divide = math.divide,
-  atan2 = math.atan2,
-  bigmath = math.create({precision: 20}),
-  Big = bigmath.bignumber,
-  atan2Big = bigmath.atan2
+const assert = require('assert'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, divide = math.divide, atan2 = math.atan2, bigmath = math.create({precision: 20}), Big = bigmath.bignumber, atan2Big = bigmath.atan2
 
 describe('atan2', function () {
   it('should calculate atan2 correctly', function () {
@@ -154,7 +142,7 @@ describe('atan2', function () {
   })
 
   it('should LaTeX atan2', function () {
-    var expression = math.parse('atan2(1,1)')
+    const expression = math.parse('atan2(1,1)')
     assert.equal(expression.toTex(), '\\mathrm{atan2}\\left(1,1\\right)')
   })
 })

@@ -1,14 +1,14 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  var algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  var algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
+  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
+  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the nth root of a value.
@@ -26,9 +26,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.nthRoot(9, 2);    // returns 3, as 3^2 == 9
-   *     math.sqrt(9);          // returns 3, as 3^2 == 9
-   *     math.nthRoot(64, 3);   // returns 4, as 4^3 == 64
+   *     math.nthRoot(9, 2)    // returns 3, as 3^2 == 9
+   *     math.sqrt(9)          // returns 3, as 3^2 == 9
+   *     math.nthRoot(64, 3)   // returns 4, as 4^3 == 64
    *
    * See also:
    *
@@ -39,11 +39,11 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} [root=2]    The root.
    * @return {number | Complex | Array | Matrix} Returns the nth root of `a`
    */
-  var complex_err = ('' +
+  const complex_err = ('' +
     'Complex number not supported in function nthRoot. ' +
     'Use nthRoots instead.'
   )
-  var nthRoot = typed('nthRoot', {
+  const nthRoot = typed('nthRoot', {
 
     'number': function (x) {
       return _nthRoot(x, 2)
@@ -156,12 +156,12 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _bigNthRoot (a, root) {
-    var precision = type.BigNumber.precision
-    var Big = type.BigNumber.clone({precision: precision + 2})
-    var zero = new type.BigNumber(0)
+    const precision = type.BigNumber.precision
+    const Big = type.BigNumber.clone({precision: precision + 2})
+    const zero = new type.BigNumber(0)
 
-    var one = new Big(1)
-    var inv = root.isNegative()
+    const one = new Big(1)
+    const inv = root.isNegative()
     if (inv) {
       root = root.neg()
     }
@@ -181,7 +181,7 @@ function factory (type, config, load, typed) {
       return inv ? zero : a
     }
 
-    var x = a.abs().pow(one.div(root))
+    let x = a.abs().pow(one.div(root))
     // If a < 0, we require that root is an odd integer,
     // so (-1) ^ (1/root) = -1
     x = a.isNeg() ? x.neg() : x
@@ -197,7 +197,7 @@ function factory (type, config, load, typed) {
  * @private
  */
 function _nthRoot (a, root) {
-  var inv = root < 0
+  const inv = root < 0
   if (inv) {
     root = -root
   }
@@ -217,7 +217,7 @@ function _nthRoot (a, root) {
     return inv ? 0 : a
   }
 
-  var x = Math.pow(Math.abs(a), 1 / root)
+  let x = Math.pow(Math.abs(a), 1 / root)
   // If a < 0, we require that root is an odd integer,
   // so (-1) ^ (1/root) = -1
   x = a < 0 ? -x : x
@@ -227,23 +227,23 @@ function _nthRoot (a, root) {
   // Newton's method has some well-known problems at times:
   // https://en.wikipedia.org/wiki/Newton%27s_method#Failure_analysis
   /*
-  var x = 1; // Initial guess
-  var xPrev = 1;
-  var i = 0;
-  var iMax = 10000;
+  let x = 1 // Initial guess
+  let xPrev = 1
+  let i = 0
+  const iMax = 10000
   do {
-    var delta = (a / Math.pow(x, root - 1) - x) / root;
-    xPrev = x;
-    x = x + delta;
-    i++;
+    const delta = (a / Math.pow(x, root - 1) - x) / root
+    xPrev = x
+    x = x + delta
+    i++
   }
-  while (xPrev !== x && i < iMax);
+  while (xPrev !== x && i < iMax)
 
   if (xPrev !== x) {
-    throw new Error('Function nthRoot failed to converge');
+    throw new Error('Function nthRoot failed to converge')
   }
 
-  return inv ? 1 / x : x;
+  return inv ? 1 / x : x
   */
 }
 

@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_tdfs = load(require('./cs_tdfs'))
+  const cs_tdfs = load(require('./cs_tdfs'))
 
   /**
    * Post order a tree of forest
@@ -11,19 +11,19 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_post = function (parent, n) {
+  const cs_post = function (parent, n) {
     // check inputs
     if (!parent) { return null }
     // vars
-    var k = 0
-    var j
+    let k = 0
+    let j
     // allocate result
-    var post = [] // (n);
+    const post = [] // (n)
     // workspace, head: first n entries, next: next n entries, stack: last n entries
-    var w = [] // (3 * n);
-    var head = 0
-    var next = n
-    var stack = 2 * n
+    const w = [] // (3 * n)
+    const head = 0
+    const next = n
+    const stack = 2 * n
     // initialize workspace
     for (j = 0; j < n; j++) {
       // empty linked lists

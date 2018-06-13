@@ -1,10 +1,10 @@
 'use strict'
 
 function factory (type, config, load) {
-  var cs_cumsum = load(require('./cs_cumsum'))
-  var conj = load(require('../../complex/conj'))
+  const cs_cumsum = load(require('./cs_cumsum'))
+  const conj = load(require('../../complex/conj'))
 
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Computes the symmetric permutation of matrix A accessing only
@@ -20,22 +20,22 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_symperm = function (a, pinv, values) {
+  const cs_symperm = function (a, pinv, values) {
     // A matrix arrays
-    var avalues = a._values
-    var aindex = a._index
-    var aptr = a._ptr
-    var asize = a._size
+    const avalues = a._values
+    const aindex = a._index
+    const aptr = a._ptr
+    const asize = a._size
     // columns
-    var n = asize[1]
+    const n = asize[1]
     // C matrix arrays
-    var cvalues = values && avalues ? [] : null
-    var cindex = [] // (nz);
-    var cptr = [] // (n + 1);
+    const cvalues = values && avalues ? [] : null
+    const cindex = [] // (nz)
+    const cptr = [] // (n + 1)
     // variables
-    var i, i2, j, j2, p, p0, p1
+    let i, i2, j, j2, p, p0, p1
     // create workspace vector
-    var w = [] // (n);
+    const w = [] // (n)
     // count entries in each column of C
     for (j = 0; j < n; j++) {
       // column j of A is column j2 of C
@@ -67,7 +67,7 @@ function factory (type, config, load) {
         // row i of A is row i2 of C
         i2 = pinv ? pinv[i] : i
         // C index for column j2
-        var q = w[Math.max(i2, j2)]++
+        const q = w[Math.max(i2, j2)]++
         // update C index for entry q
         cindex[q] = Math.min(i2, j2)
         // check we need to process values

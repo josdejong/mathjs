@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,10 +14,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.acot(0.5);           // returns number 0.4636476090008061
-   *    math.acot(math.cot(1.5)); // returns number 1.5
+   *    math.acot(0.5)           // returns number 0.4636476090008061
+   *    math.acot(math.cot(1.5)) // returns number 1.5
    *
-   *    math.acot(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+   *    math.acot(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
    *
    * See also:
    *
@@ -26,7 +26,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x   Function input
    * @return {number | Complex | Array | Matrix} The arc cotangent of x
    */
-  var acot = typed('acot', {
+  const acot = typed('acot', {
     'number': function (x) {
       return Math.atan(1 / x)
     },

@@ -1,7 +1,7 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var number = require('../../utils/number')
+const deepMap = require('../../utils/collection/deepMap')
+const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**
@@ -17,17 +17,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.isZero(0);                     // returns true
-   *    math.isZero(2);                     // returns false
-   *    math.isZero(0.5);                   // returns false
-   *    math.isZero(math.bignumber(0));     // returns true
-   *    math.isZero(math.fraction(0));      // returns true
-   *    math.isZero(math.fraction(1,3));    // returns false
-   *    math.isZero(math.complex('2 - 4i'); // returns false
-   *    math.isZero(math.complex('0i');     // returns true
-   *    math.isZero('0');                   // returns true
-   *    math.isZero('2');                   // returns false
-   *    math.isZero([2, 0, -3]');           // returns [false, true, false]
+   *    math.isZero(0)                     // returns true
+   *    math.isZero(2)                     // returns false
+   *    math.isZero(0.5)                   // returns false
+   *    math.isZero(math.bignumber(0))     // returns true
+   *    math.isZero(math.fraction(0))      // returns true
+   *    math.isZero(math.fraction(1,3))    // returns false
+   *    math.isZero(math.complex('2 - 4i') // returns false
+   *    math.isZero(math.complex('0i')     // returns true
+   *    math.isZero('0')                   // returns true
+   *    math.isZero('2')                   // returns false
+   *    math.isZero([2, 0, -3]')           // returns [false, true, false]
    *
    * See also:
    *
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is zero.
    *                    Throws an error in case of an unknown data type.
    */
-  var isZero = typed('isZero', {
+  const isZero = typed('isZero', {
     'number': function (x) {
       return x === 0
     },

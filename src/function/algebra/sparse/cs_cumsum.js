@@ -10,10 +10,10 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_cumsum = function (ptr, c, n) {
+  const cs_cumsum = function (ptr, c, n) {
     // variables
-    var i
-    var nz = 0
+    let i
+    let nz = 0
 
     for (i = 0; i < n; i++) {
       // initialize ptr @ i

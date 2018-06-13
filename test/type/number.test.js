@@ -1,8 +1,4 @@
-var assert = require('assert'),
-  error = require('../../src/error/index'),
-  math = require('../../src/index'),
-  approx = require('../../tools/approx'),
-  number = math.number
+const assert = require('assert'), error = require('../../src/error/index'), math = require('../../src/index'), approx = require('../../tools/approx'), number = math.number
 
 describe('number', function () {
   it('should be 0 if called with no argument', function () {
@@ -72,9 +68,9 @@ describe('number', function () {
   })
 
   it('should LaTeX number', function () {
-    var expr1 = math.parse('number()')
-    var expr2 = math.parse('number(1)')
-    var expr3 = math.parse('number(1,cm)')
+    const expr1 = math.parse('number()')
+    const expr2 = math.parse('number(1)')
+    const expr3 = math.parse('number(1,cm)')
 
     assert.equal(expr1.toTex(), '0')
     assert.equal(expr2.toTex(), '\\left(1\\right)')

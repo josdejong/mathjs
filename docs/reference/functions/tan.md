@@ -29,10 +29,10 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Tangent of x
 ## Examples
 
 ```js
-math.tan(0.5);                    // returns number 0.5463024898437905
-math.sin(0.5) / math.cos(0.5);    // returns number 0.5463024898437905
-math.tan(math.pi / 4);            // returns number 1
-math.tan(math.unit(45, 'deg'));   // returns number 1
+math.tan(0.5)                    // returns number 0.5463024898437905
+math.sin(0.5) / math.cos(0.5)    // returns number 0.5463024898437905
+math.tan(math.pi / 4)            // returns number 1
+math.tan(math.unit(45, 'deg'))   // returns number 1
 ```
 
 

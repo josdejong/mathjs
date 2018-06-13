@@ -1,9 +1,5 @@
 // test inv
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  inv = math.inv
+const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/index'), inv = math.inv
 
 describe('inv', function () {
   it('should return the inverse of a number', function () {
@@ -120,7 +116,7 @@ describe('inv', function () {
   })
 
   it('should  LaTeX inv', function () {
-    var expression = math.parse('inv([[1,2],[3,4]])')
+    const expression = math.parse('inv([[1,2],[3,4]])')
     assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^{-1}')
   })
 })

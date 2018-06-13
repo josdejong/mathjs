@@ -1,7 +1,7 @@
 'use strict'
 
-var errorTransform = require('./error.transform').transform
-var isCollection = require('../../utils/collection/isCollection')
+const errorTransform = require('./error.transform').transform
+const isCollection = require('../../utils/collection/isCollection')
 
 /**
  * Attach a transform function to math.max
@@ -11,13 +11,13 @@ var isCollection = require('../../utils/collection/isCollection')
  * from one-based to zero based
  */
 function factory (type, config, load, typed) {
-  var max = load(require('../../function/statistics/max'))
+  const max = load(require('../../function/statistics/max'))
 
   return typed('max', {
     '...any': function (args) {
       // change last argument dim from one-based to zero-based
       if (args.length == 2 && isCollection(args[0])) {
-        var dim = args[1]
+        const dim = args[1]
         if (type.isNumber(dim)) {
           args[1] = dim - 1
         } else if (type.isBigNumber(dim)) {

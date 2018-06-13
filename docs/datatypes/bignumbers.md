@@ -9,7 +9,7 @@ datatype. BigNumber support is powered by
 A BigNumber can be created using the function `bignumber`:
 
 ```js
-math.bignumber('2.3e+500'); // BigNumber, 2.3e+500
+math.bignumber('2.3e+500') // BigNumber, 2.3e+500
 ```
 
 Most functions can determine the type of output from the type of input:
@@ -24,10 +24,10 @@ math.config({
   number: 'BigNumber', // Default type of number:
                        // 'number' (default), 'BigNumber', or 'Fraction'
   precision: 64        // Number of significant digits for BigNumbers
-});
+})
 
 // use math
-math.eval('0.1 + 0.2'); // BigNumber, 0.3
+math.eval('0.1 + 0.2') // BigNumber, 0.3
 ```
 
 The default precision for BigNumber is 64 digits, and can be configured with
@@ -48,12 +48,12 @@ precision, it is less likely that round-off errors occur:
 
 ```js
 // round-off errors with numbers
-math.add(0.1, 0.2);                                     // Number, 0.30000000000000004
-math.divide(0.3, 0.2);                                  // Number, 1.4999999999999998
+math.add(0.1, 0.2)                                     // Number, 0.30000000000000004
+math.divide(0.3, 0.2)                                  // Number, 1.4999999999999998
 
 // no round-off errors with BigNumbers :)
-math.add(math.bignumber(0.1), math.bignumber(0.2));     // BigNumber, 0.3
-math.divide(math.bignumber(0.3), math.bignumber(0.2));  // BigNumber, 1.5
+math.add(math.bignumber(0.1), math.bignumber(0.2))     // BigNumber, 0.3
+math.divide(math.bignumber(0.3), math.bignumber(0.2))  // BigNumber, 1.5
 ```
 
 
@@ -66,14 +66,14 @@ can store a much larger number of digits, the amount of digits remains limited
 if only to keep calculations fast enough to remain practical.
 
 ```js
-var one = math.bignumber(1);
-var three = math.bignumber(3);
-var third = math.divide(one, three);
-console.log(third.toString());
+const one = math.bignumber(1)
+const three = math.bignumber(3)
+const third = math.divide(one, three)
+console.log(third.toString())
 // outputs 0.3333333333333333333333333333333333333333333333333333333333333333
 
-var ans = math.multiply(third, three);
-console.log(ans.toString());
+const ans = math.multiply(third, three)
+console.log(ans.toString())
 // outputs 0.9999999999999999999999999999999999999999999999999999999999999999
 // this should be 1 again, but `third` is rounded to a limited number of digits 3
 ```
@@ -88,15 +88,15 @@ as Number, it will be initialized as `Infinity`.
 
 ```js
 // converting numbers and BigNumbers
-var a = math.number(0.3);                         // number, 0.3
-var b = math.bignumber(a);                        // BigNumber, 0.3
-var c = math.number(b);                           // number, 0.3
+const a = math.number(0.3)                         // number, 0.3
+const b = math.bignumber(a)                        // BigNumber, 0.3
+const c = math.number(b)                           // number, 0.3
 
 // exceeding the maximum of a number
-var d = math.bignumber('1.2e500');                // BigNumber, 1.2e+500
-var e = math.number(d);                           // number, Infinity
+const d = math.bignumber('1.2e500')                // BigNumber, 1.2e+500
+const e = math.number(d)                           // number, Infinity
 
 // loosing precision when converting to number
-var f = math.bignumber('0.2222222222222222222');  // BigNumber, 0.2222222222222222222
-var g = math.number(f);                           // number,    0.2222222222222222
+const f = math.bignumber('0.2222222222222222222')  // BigNumber, 0.2222222222222222222
+const g = math.number(f)                           // number,    0.2222222222222222
 ```

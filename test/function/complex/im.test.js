@@ -1,5 +1,5 @@
-var assert = require('assert')
-var math = require('../../../src/index')
+const assert = require('assert')
+const math = require('../../../src/index')
 
 describe('im', function () {
   it('should return the imaginary part of a complex number', function () {
@@ -42,7 +42,7 @@ describe('im', function () {
   })
 
   it('should LaTeX im', function () {
-    var expression = math.parse('im(1+i)')
+    const expression = math.parse('im(1+i)')
     assert.equal(expression.toTex(), '\\Im\\left\\lbrace1+ i\\right\\rbrace')
   })
 })

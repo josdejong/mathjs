@@ -29,8 +29,8 @@ Array &#124; Matrix | The intersection of two (multi)sets
 ## Examples
 
 ```js
-math.setIntersect([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [3, 4]
-math.setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [3, 4]
+math.setIntersect([1, 2, 3, 4], [3, 4, 5, 6])            // returns [3, 4]
+math.setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]])    // returns [3, 4]
 ```
 
 

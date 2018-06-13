@@ -1,13 +1,13 @@
 'use strict'
 
-var clone = require('../../utils/object').clone
-var validateIndex = require('../../utils/array').validateIndex
-var getSafeProperty = require('../../utils/customs').getSafeProperty
-var setSafeProperty = require('../../utils/customs').setSafeProperty
-var DimensionError = require('../../error/DimensionError')
+const clone = require('../../utils/object').clone
+const validateIndex = require('../../utils/array').validateIndex
+const getSafeProperty = require('../../utils/customs').getSafeProperty
+const setSafeProperty = require('../../utils/customs').setSafeProperty
+const DimensionError = require('../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Get or set a subset of a matrix or string.
@@ -19,14 +19,14 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *     // get a subset
-   *     var d = [[1, 2], [3, 4]];
-   *     math.subset(d, math.index(1, 0));        // returns 3
-   *     math.subset(d, math.index([0, 2], 1));   // returns [[2], [4]]
+   *     const d = [[1, 2], [3, 4]]
+   *     math.subset(d, math.index(1, 0))        // returns 3
+   *     math.subset(d, math.index([0, 2], 1))   // returns [[2], [4]]
    *
    *     // replace a subset
-   *     var e = [];
-   *     var f = math.subset(e, math.index(0, [0, 2]), [5, 6]);  // f = [[5, 6]]
-   *     var g = math.subset(f, math.index(1, 1), 7, 0);         // g = [[5, 6], [0, 7]]
+   *     const e = []
+   *     const f = math.subset(e, math.index(0, [0, 2]), [5, 6])  // f = [[5, 6]]
+   *     const g = math.subset(f, math.index(1, 1), 7, 0)         // g = [[5, 6], [0, 7]]
    *
    * See also:
    *
@@ -43,11 +43,11 @@ function factory (type, config, load, typed) {
    *                                          math.matrix elements will be left undefined.
    * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
    */
-  var subset = typed('subset', {
+  const subset = typed('subset', {
     // get subset
     'Array, Index': function (value, index) {
-      var m = matrix(value)
-      var subset = m.subset(index) // returns a Matrix
+      const m = matrix(value)
+      const subset = m.subset(index) // returns a Matrix
       return index.isScalar()
         ? subset
         : subset.valueOf() // return an Array (like the input)
@@ -108,13 +108,13 @@ function factory (type, config, load, typed) {
     }
 
     // validate whether the range is out of range
-    var strLen = str.length
+    const strLen = str.length
     validateIndex(index.min()[0], strLen)
     validateIndex(index.max()[0], strLen)
 
-    var range = index.dimension(0)
+    const range = index.dimension(0)
 
-    var substr = ''
+    let substr = ''
     range.forEach(function (v) {
       substr += str.charAt(v)
     })
@@ -148,21 +148,21 @@ function factory (type, config, load, typed) {
       defaultValue = ' '
     }
 
-    var range = index.dimension(0)
-    var len = range.size()[0]
+    const range = index.dimension(0)
+    const len = range.size()[0]
 
-    if (len != replacement.length) {
+    if (len !== replacement.length) {
       throw new DimensionError(range.size()[0], replacement.length)
     }
 
     // validate whether the range is out of range
-    var strLen = str.length
+    const strLen = str.length
     validateIndex(index.min()[0])
     validateIndex(index.max()[0])
 
     // copy the string into an array with characters
-    var chars = []
-    for (var i = 0; i < strLen; i++) {
+    const chars = []
+    for (let i = 0; i < strLen; i++) {
       chars[i] = str.charAt(i)
     }
 
@@ -172,7 +172,7 @@ function factory (type, config, load, typed) {
 
     // initialize undefined characters with a space
     if (chars.length > strLen) {
-      for (i = strLen - 1, len = chars.length; i < len; i++) {
+      for (let i = strLen - 1, len = chars.length; i < len; i++) {
         if (!chars[i]) {
           chars[i] = defaultValue
         }
@@ -195,7 +195,7 @@ function _getObjectProperty (object, index) {
     throw new DimensionError(index.size(), 1)
   }
 
-  var key = index.dimension(0)
+  const key = index.dimension(0)
   if (typeof key !== 'string') {
     throw new TypeError('String expected as index to retrieve an object property')
   }
@@ -216,13 +216,13 @@ function _setObjectProperty (object, index, replacement) {
     throw new DimensionError(index.size(), 1)
   }
 
-  var key = index.dimension(0)
+  const key = index.dimension(0)
   if (typeof key !== 'string') {
     throw new TypeError('String expected as index to retrieve an object property')
   }
 
   // clone the object, and apply the property to the clone
-  var updated = clone(object)
+  const updated = clone(object)
   setSafeProperty(updated, key, replacement)
 
   return updated

@@ -1,17 +1,14 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  bignumber = math.bignumber
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), bignumber = math.bignumber
 
 describe('concat', function () {
-  var a = [[1, 2], [3, 4]]
-  var b = [[5, 6], [7, 8]]
-  var c = [[9, 10], [11, 12]]
-  var d = [
+  const a = [[1, 2], [3, 4]]
+  const b = [[5, 6], [7, 8]]
+  const c = [[9, 10], [11, 12]]
+  const d = [
     [ [1, 2], [3, 4] ],
     [ [5, 6], [7, 8] ]
   ]
-  var e = [
+  const e = [
     [ [9, 10], [11, 12] ],
     [ [13, 14], [15, 16] ]
   ]
@@ -104,7 +101,7 @@ describe('concat', function () {
   })
 
   it('should LaTeX concat', function () {
-    var expression = math.parse('concat([1],[2])')
+    const expression = math.parse('concat([1],[2])')
     assert.equal(expression.toTex(), '\\mathrm{concat}\\left(\\begin{bmatrix}1\\\\\\end{bmatrix},\\begin{bmatrix}2\\\\\\end{bmatrix}\\right)')
   })
 })

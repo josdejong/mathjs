@@ -1,13 +1,13 @@
 'use strict'
 
-var map = require('../../utils/array').map
-var escape = require('../../utils/string').escape
+const map = require('../../utils/array').map
+const escape = require('../../utils/string').escape
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
-  var Range = load(require('../../type/matrix/Range'))
+  const Node = load(require('./Node'))
+  const Range = load(require('../../type/matrix/Range'))
 
-  var isArray = Array.isArray
+  const isArray = Array.isArray
 
   /**
    * @constructor IndexNode
@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
     }
 
     // TODO: deprecated since v3, remove some day
-    var deprecated = function () {
+    const deprecated = function () {
       throw new Error('Property `IndexNode.object` is deprecated, use `IndexNode.fn` instead')
     }
     Object.defineProperty(this, 'object', { get: deprecated, set: deprecated })
@@ -74,22 +74,22 @@ function factory (type, config, load, typed) {
     //       we can beforehand resolve the zero-based value
 
     // optimization for a simple object property
-    var evalDimensions = map(this.dimensions, function (range, i) {
+    const evalDimensions = map(this.dimensions, function (range, i) {
       if (type.isRangeNode(range)) {
         if (range.needsEnd()) {
           // create a range containing end (like '4:end')
-          var childArgNames = Object.create(argNames)
+          const childArgNames = Object.create(argNames)
           childArgNames['end'] = true
 
-          var evalStart = range.start._compile(math, childArgNames)
-          var evalEnd = range.end._compile(math, childArgNames)
-          var evalStep = range.step
+          const evalStart = range.start._compile(math, childArgNames)
+          const evalEnd = range.end._compile(math, childArgNames)
+          const evalStep = range.step
             ? range.step._compile(math, childArgNames)
             : function () { return 1 }
 
           return function evalDimension (scope, args, context) {
-            var size = math.size(context).valueOf()
-            var childArgs = Object.create(args)
+            const size = math.size(context).valueOf()
+            const childArgs = Object.create(args)
             childArgs['end'] = size[i]
 
             return createRange(
@@ -100,9 +100,9 @@ function factory (type, config, load, typed) {
           }
         } else {
           // create range
-          var evalStart = range.start._compile(math, argNames)
-          var evalEnd = range.end._compile(math, argNames)
-          var evalStep = range.step
+          const evalStart = range.start._compile(math, argNames)
+          const evalEnd = range.end._compile(math, argNames)
+          const evalStep = range.step
             ? range.step._compile(math, argNames)
             : function () { return 1 }
 
@@ -116,21 +116,21 @@ function factory (type, config, load, typed) {
         }
       } else if (type.isSymbolNode(range) && range.name === 'end') {
         // SymbolNode 'end'
-        var childArgNames = Object.create(argNames)
+        const childArgNames = Object.create(argNames)
         childArgNames['end'] = true
 
-        var evalRange = range._compile(math, childArgNames)
+        const evalRange = range._compile(math, childArgNames)
 
         return function evalDimension (scope, args, context) {
-          var size = math.size(context).valueOf()
-          var childArgs = Object.create(args)
+          const size = math.size(context).valueOf()
+          const childArgs = Object.create(args)
           childArgs['end'] = size[i]
 
           return evalRange(scope, childArgs, context)
         }
       } else {
         // ConstantNode
-        var evalRange = range._compile(math, argNames)
+        const evalRange = range._compile(math, argNames)
         return function evalDimension (scope, args, context) {
           return evalRange(scope, args, context)
         }
@@ -138,7 +138,7 @@ function factory (type, config, load, typed) {
     })
 
     return function evalIndexNode (scope, args, context) {
-      var dimensions = map(evalDimensions, function (evalDimension) {
+      const dimensions = map(evalDimensions, function (evalDimension) {
         return evalDimension(scope, args, context)
       })
       return math.index.apply(math, dimensions)
@@ -150,7 +150,7 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   IndexNode.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.dimensions.length; i++) {
+    for (let i = 0; i < this.dimensions.length; i++) {
       callback(this.dimensions[i], 'dimensions[' + i + ']', this)
     }
   }
@@ -162,8 +162,8 @@ function factory (type, config, load, typed) {
    * @returns {IndexNode} Returns a transformed copy of the node
    */
   IndexNode.prototype.map = function (callback) {
-    var dimensions = []
-    for (var i = 0; i < this.dimensions.length; i++) {
+    const dimensions = []
+    for (let i = 0; i < this.dimensions.length; i++) {
       dimensions[i] = this._ifNode(callback(this.dimensions[i], 'dimensions[' + i + ']', this))
     }
 
@@ -239,8 +239,8 @@ function factory (type, config, load, typed) {
    */
   IndexNode.prototype.toHTML = function (options) {
     // format the parameters like "[1, 0:5]"
-    var dimensions = []
-    for (var i = 0; i < this.dimensions.length; i++)  {
+    const dimensions = []
+    for (let i = 0; i < this.dimensions.length; i++) {
       dimensions[i] = this.dimensions[i].toHTML()
     }
     if (this.dotNotation) {
@@ -256,7 +256,7 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   IndexNode.prototype._toTex = function (options) {
-    var dimensions = this.dimensions.map(function (range) {
+    const dimensions = this.dimensions.map(function (range) {
       return range.toTex(options)
     })
 

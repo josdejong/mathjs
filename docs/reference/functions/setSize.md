@@ -29,8 +29,8 @@ number | The number of elements of the (multi)set
 ## Examples
 
 ```js
-math.setSize([1, 2, 2, 4]);          // returns 4
-math.setSize([1, 2, 2, 4], true);    // returns 3
+math.setSize([1, 2, 2, 4])          // returns 4
+math.setSize([1, 2, 2, 4], true)    // returns 3
 ```
 
 

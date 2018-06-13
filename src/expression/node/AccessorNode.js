@@ -1,11 +1,11 @@
 'use strict'
 
-var getSafeProperty = require('../../utils/customs').getSafeProperty
+const getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
-  var IndexNode = load(require('./IndexNode'))
-  var access = load(require('./utils/access'))
+  const Node = load(require('./Node'))
+  const IndexNode = load(require('./IndexNode'))
+  const access = load(require('./utils/access'))
 
   /**
    * @constructor AccessorNode
@@ -68,18 +68,18 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   AccessorNode.prototype._compile = function (math, argNames) {
-    var evalObject = this.object._compile(math, argNames)
-    var evalIndex = this.index._compile(math, argNames)
+    const evalObject = this.object._compile(math, argNames)
+    const evalIndex = this.index._compile(math, argNames)
 
     if (this.index.isObjectProperty()) {
-      var prop = this.index.getObjectProperty()
+      const prop = this.index.getObjectProperty()
       return function evalAccessorNode (scope, args, context) {
         return getSafeProperty(evalObject(scope, args, context), prop)
       }
     } else {
       return function evalAccessorNode (scope, args, context) {
-        var object = evalObject(scope, args, context)
-        var index = evalIndex(scope, args, object) // we pass object here instead of context
+        const object = evalObject(scope, args, context)
+        const index = evalIndex(scope, args, object) // we pass object here instead of context
         return access(object, index)
       }
     }
@@ -121,7 +121,7 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   AccessorNode.prototype._toString = function (options) {
-    var object = this.object.toString(options)
+    let object = this.object.toString(options)
     if (needParenthesis(this.object)) {
       object = '(' + object + ')'
     }
@@ -135,7 +135,7 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   AccessorNode.prototype.toHTML = function (options) {
-    var object = this.object.toHTML(options)
+    let object = this.object.toHTML(options)
     if (needParenthesis(this.object)) {
       object = '<span class="math-parenthesis math-round-parenthesis">(</span>' + object + '<span class="math-parenthesis math-round-parenthesis">)</span>'
     }
@@ -149,7 +149,7 @@ function factory (type, config, load, typed) {
    * @return {string}
    */
   AccessorNode.prototype._toTex = function (options) {
-    var object = this.object.toTex(options)
+    let object = this.object.toTex(options)
     if (needParenthesis(this.object)) {
       object = `\\left(' + object + '\\right)`
     }

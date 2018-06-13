@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var distribution = load(require('./distribution'))
+  const distribution = load(require('./distribution'))
 
   /**
    * Random pick one or more values from a one dimensional array.
@@ -17,11 +17,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.pickRandom([3, 6, 12, 2]);                  // returns one of the values in the array
-   *     math.pickRandom([3, 6, 12, 2], 2);               // returns an array of two of the values in the array
-   *     math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1]);    // returns one of the values in the array with weighted distribution
-   *     math.pickRandom([3, 6, 12, 2], 2, [1, 3, 2, 1]); // returns an array of two of the values in the array with weighted distribution
-   *     math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1], 2); // returns an array of two of the values in the array with weighted distribution
+   *     math.pickRandom([3, 6, 12, 2])                  // returns one of the values in the array
+   *     math.pickRandom([3, 6, 12, 2], 2)               // returns an array of two of the values in the array
+   *     math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1])    // returns one of the values in the array with weighted distribution
+   *     math.pickRandom([3, 6, 12, 2], 2, [1, 3, 2, 1]) // returns an array of two of the values in the array with weighted distribution
+   *     math.pickRandom([3, 6, 12, 2], [1, 3, 2, 1], 2) // returns an array of two of the values in the array with weighted distribution
    *
    * See also:
    *
@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
    *                          Returns an array with the configured number of elements when number is > 1.
    */
   // TODO: rework pickRandom to a typed-function
-  var pickRandom = distribution('uniform').pickRandom
+  const pickRandom = distribution('uniform').pickRandom
 
   pickRandom.toTex = undefined // use default template
 

@@ -1,30 +1,28 @@
 // test matrix construction
-var assert = require('assert'),
-  math = require('../../../../src/index'),
-  sparse = math.sparse
+const assert = require('assert'), math = require('../../../../src/index'), sparse = math.sparse
 
 describe('sparse', function () {
   it('should create empty matrix', function () {
-    var a = sparse()
+    const a = sparse()
     assert.ok(a instanceof math.type.Matrix)
   })
 
   it('should create empty matrix, number datatype', function () {
-    var a = sparse('number')
+    const a = sparse('number')
     assert.ok(a instanceof math.type.Matrix)
     assert.ok(a.datatype() === 'number')
   })
 
   it('should be the identity if called with a matrix', function () {
-    var b = sparse([[1, 2], [3, 4]])
-    var c = sparse(b)
+    const b = sparse([[1, 2], [3, 4]])
+    const c = sparse(b)
     assert.ok(c._values != b._values) // data should be cloned
     assert.deepEqual(c, sparse([[1, 2], [3, 4]]))
   })
 
   it('should be the identity if called with a matrix, number datatype', function () {
-    var b = sparse([[1, 2], [3, 4]], 'number')
-    var c = sparse(b)
+    const b = sparse([[1, 2], [3, 4]], 'number')
+    const c = sparse(b)
     assert.ok(c._values != b._values) // data should be cloned
     assert.deepEqual(c.valueOf(), b.valueOf())
     assert.ok(c.datatype() === 'number')
@@ -43,8 +41,8 @@ describe('sparse', function () {
   })
 
   it('should LaTeX matrix', function () {
-    var expr1 = math.parse('sparse()')
-    var expr2 = math.parse('sparse([1])')
+    const expr1 = math.parse('sparse()')
+    const expr2 = math.parse('sparse([1])')
 
     assert.equal(expr1.toTex(), '\\begin{bsparse}\\end{bsparse}')
     assert.equal(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')

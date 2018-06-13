@@ -29,11 +29,11 @@ Matrix &#124; Array | Returns the filtered matrix.
 
 ```js
 function isPositive (x) {
-  return x > 0;
+  return x > 0
 }
-math.filter([6, -2, -1, 4, 3], isPositive); // returns [6, 4, 3]
+math.filter([6, -2, -1, 4, 3], isPositive) // returns [6, 4, 3]
 
-math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/); // returns ["23", "100", "55"]
+math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/) // returns ["23", "100", "55"]
 ```
 
 

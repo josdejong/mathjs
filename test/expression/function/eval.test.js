@@ -1,11 +1,11 @@
 // test eval
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var Complex = math.type.Complex
-var Matrix = math.type.Matrix
-var Unit = math.type.Unit
-var ResultSet = math.type.ResultSet
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const Complex = math.type.Complex
+const Matrix = math.type.Matrix
+const Unit = math.type.Unit
+const ResultSet = math.type.ResultSet
 
 describe('eval', function () {
   it('should evaluate expressions', function () {
@@ -44,7 +44,7 @@ describe('eval', function () {
   })
 
   it('should handle the given scope', function () {
-    var scope = {
+    let scope = {
       a: 3,
       b: 4
     }
@@ -68,8 +68,8 @@ describe('eval', function () {
   })
 
   it('should LaTeX eval', function () {
-    var expr1 = math.parse('eval(expr)')
-    var expr2 = math.parse('eval(expr,scope)')
+    const expr1 = math.parse('eval(expr)')
+    const expr2 = math.parse('eval(expr,scope)')
 
     assert.equal(expr1.toTex(), '\\mathrm{eval}\\left( expr\\right)')
     assert.equal(expr2.toTex(), '\\mathrm{eval}\\left( expr, scope\\right)')

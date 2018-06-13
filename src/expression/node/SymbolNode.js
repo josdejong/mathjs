@@ -1,12 +1,12 @@
 'use strict'
 
-var latex = require('../../utils/latex')
-var escape = require('../../utils/string').escape
-var hasOwnProperty = require('../../utils/object').hasOwnProperty
-var getSafeProperty = require('../../utils/customs').getSafeProperty
+const latex = require('../../utils/latex')
+const escape = require('../../utils/string').escape
+const hasOwnProperty = require('../../utils/object').hasOwnProperty
+const getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed, math) {
-  var Node = load(require('./Node'))
+  const Node = load(require('./Node'))
 
   /**
    * Check whether some name is a valueless unit like "inch".
@@ -55,7 +55,7 @@ function factory (type, config, load, typed, math) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   SymbolNode.prototype._compile = function (math, argNames) {
-    var name = this.name
+    const name = this.name
 
     if (hasOwnProperty(argNames, name)) {
       // this is a FunctionAssignment argument
@@ -70,7 +70,7 @@ function factory (type, config, load, typed, math) {
           : getSafeProperty(math, name)
       }
     } else {
-      var isUnit = isValuelessUnit(name)
+      const isUnit = isValuelessUnit(name)
 
       return function (scope, args, context) {
         return name in scope
@@ -133,7 +133,7 @@ function factory (type, config, load, typed, math) {
    * @override
    */
   SymbolNode.prototype.toHTML = function (options) {
-    var name = escape(this.name)
+    const name = escape(this.name)
 
     if (name == 'true' || name == 'false') {
       return '<span class="math-symbol math-boolean">' + name + '</span>'
@@ -181,11 +181,11 @@ function factory (type, config, load, typed, math) {
    * @override
    */
   SymbolNode.prototype._toTex = function (options) {
-    var isUnit = false
+    let isUnit = false
     if ((typeof math[this.name] === 'undefined') && isValuelessUnit(this.name)) {
       isUnit = true
     }
-    var symbol = latex.toSymbol(this.name, isUnit)
+    const symbol = latex.toSymbol(this.name, isUnit)
     if (symbol[0] === '\\') {
       // no space needed if the symbol starts with '\'
       return symbol

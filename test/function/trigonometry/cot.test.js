@@ -1,14 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  cot = math.cot,
-  bigmath = math.create({number: 'BigNumber', precision: 20}),
-  biggermath = math.create({number: 'BigNumber', precision: 22})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cot = math.cot, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 22})
 
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {
@@ -30,17 +20,17 @@ describe('cot', function () {
   })
 
   it('should return the cotan of a bignumber', function () {
-    var Big = bigmath.bignumber
-    var bigPi = bigmath.pi
-    var sqrt2 = bigmath.SQRT2.toString()
+    const Big = bigmath.bignumber
+    const bigPi = bigmath.pi
+    const sqrt2 = bigmath.SQRT2.toString()
 
-    var arg1 = Big(0)
-    var result1 = bigmath.cot(arg1)
+    const arg1 = Big(0)
+    const result1 = bigmath.cot(arg1)
     assert.ok(!result1.isFinite())
     assert.equal(result1.constructor.precision, 20)
     assert.deepEqual(arg1, Big(0))
 
-    var result2 = bigmath.cot(bigPi.div(8))
+    const result2 = bigmath.cot(bigPi.div(8))
     assert.deepEqual(result2.toString(), '2.4142135623730950488')
     assert.equal(result2.constructor.precision, 20)
     assert.equal(bigPi.constructor.precision, 20)
@@ -50,8 +40,8 @@ describe('cot', function () {
   })
 
   it('should return the cotan of a complex number', function () {
-    var re = 0.00373971037633696
-    var im = 0.99675779656935837
+    const re = 0.00373971037633696
+    const im = 0.99675779656935837
     approx.deepEqual(cot(complex('2+3i')), complex(-re, -im))
     approx.deepEqual(cot(complex('2-3i')), complex(-re, im))
     approx.deepEqual(cot(complex('-2+3i')), complex(re, -im))
@@ -79,7 +69,7 @@ describe('cot', function () {
     assert.throws(function () { cot('string') })
   })
 
-  var cot123 = [0.642092615934331, -0.457657554360286, -7.015252551434534]
+  const cot123 = [0.642092615934331, -0.457657554360286, -7.015252551434534]
 
   it('should return the cotan of each element of an array', function () {
     approx.deepEqual(cot([1, 2, 3]), cot123)
@@ -95,7 +85,7 @@ describe('cot', function () {
   })
 
   it('should LaTeX cot', function () {
-    var expression = math.parse('cot(1)')
+    const expression = math.parse('cot(1)')
     assert.equal(expression.toTex(), '\\cot\\left(1\\right)')
   })
 })

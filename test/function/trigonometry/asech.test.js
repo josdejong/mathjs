@@ -1,18 +1,18 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var asech = math.asech
-var sech = math.sech
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 22})
-var predmath = math.create({predictable: true})
-var asechBig = bigmath.asech
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const asech = math.asech
+const sech = math.sech
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 22})
+const predmath = math.create({predictable: true})
+const asechBig = bigmath.asech
+const Big = bigmath.bignumber
 
 describe('asech', function () {
   it('should return the hyperbolic arcsec of a boolean', function () {
@@ -23,8 +23,8 @@ describe('asech', function () {
   it('should return the hyperbolic arcsec of a number', function () {
     approx.deepEqual(asech(-0.5), complex(1.3169578969, pi))
     approx.deepEqual(asech(2), complex(0, pi / 3))
-    // assert.ok(isNaN(asech(-0.5)));
-    // assert.ok(isNaN(asech(2)));
+    // assert.ok(isNaN(asech(-0.5)))
+    // assert.ok(isNaN(asech(2)))
 
     assert.equal(asech(0), Infinity)
     approx.equal(asech(0.25), 2.0634370688955605467272811726201)
@@ -39,8 +39,8 @@ describe('asech', function () {
   })
 
   it('should return the hyperbolic arcsec of a bignumber', function () {
-    var arg1 = Big(0)
-    var arg2 = Big(0.25)
+    const arg1 = Big(0)
+    const arg2 = Big(0.25)
     assert.deepEqual(asechBig(arg1).toString(), 'Infinity')
     assert.deepEqual(asechBig(arg2), Big('2.0634370688955605467'))
     assert.deepEqual(asechBig(Big(0.5)), Big('1.3169578969248167086'))
@@ -99,7 +99,7 @@ describe('asech', function () {
   })
 
   it('should calculate the arcsec element-wise for arrays and matrices', function () {
-    var asech01 = [Infinity, 0]
+    const asech01 = [Infinity, 0]
     assert.deepEqual(asech([0, 1]), asech01)
     assert.deepEqual(asech(matrix([0, 1])), matrix(asech01))
   })
@@ -110,7 +110,7 @@ describe('asech', function () {
   })
 
   it('should LaTeX asech', function () {
-    var expression = math.parse('asech(1)')
+    const expression = math.parse('asech(1)')
     assert.equal(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
   })
 })

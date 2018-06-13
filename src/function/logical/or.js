@@ -1,15 +1,15 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
@@ -21,14 +21,14 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.or(2, 4);   // returns true
+   *    math.or(2, 4)   // returns true
    *
-   *    a = [2, 5, 0];
-   *    b = [0, 22, 0];
-   *    c = 0;
+   *    a = [2, 5, 0]
+   *    b = [0, 22, 0]
+   *    c = 0
    *
-   *    math.or(a, b);   // returns [true, true, false]
-   *    math.or(b, c);   // returns [false, true, false]
+   *    math.or(a, b)   // returns [true, true, false]
+   *    math.or(b, c)   // returns [false, true, false]
    *
    * See also:
    *
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
    */
-  var or = typed('or', {
+  const or = typed('or', {
 
     'number, number': function (x, y) {
       return !!(x || y)

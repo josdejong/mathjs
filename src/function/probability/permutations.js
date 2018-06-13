@@ -1,9 +1,9 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var factorial = load(require('./factorial'))
+  const factorial = load(require('./factorial'))
 
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
@@ -19,8 +19,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.permutations(5);     // 120
-   *    math.permutations(5, 3);  // 60
+   *    math.permutations(5)     // 120
+   *    math.permutations(5, 3)  // 60
    *
    * See also:
    *
@@ -30,11 +30,11 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} [k] The number of objects in the subset
    * @return {number | BigNumber}    The number of permutations
    */
-  var permutations = typed('permutations', {
+  const permutations = typed('permutations', {
     'number | BigNumber': factorial,
 
     'number, number': function (n, k) {
-      var result, i
+      let result, i
 
       if (!isInteger(n) || n < 0) {
         throw new TypeError('Positive integer value expected in function permutations')
@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
     },
 
     'BigNumber, BigNumber': function (n, k) {
-      var result, i
+      let result, i
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
         throw new TypeError('Positive integer value expected in function permutations')

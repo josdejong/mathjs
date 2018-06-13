@@ -1,12 +1,12 @@
 'use strict'
 
-var stringify = require('../../utils/string').stringify
-var escape = require('../../utils/string').escape
-var isSafeProperty = require('../../utils/customs').isSafeProperty
-var hasOwnProperty = require('../../utils/object').hasOwnProperty
+const stringify = require('../../utils/string').stringify
+const escape = require('../../utils/string').escape
+const isSafeProperty = require('../../utils/customs').isSafeProperty
+const hasOwnProperty = require('../../utils/object').hasOwnProperty
 
 function factory (type, config, load, typed) {
-  var Node = load(require('./Node'))
+  const Node = load(require('./Node'))
 
   /**
    * @constructor ObjectNode
@@ -51,14 +51,14 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   ObjectNode.prototype._compile = function (math, argNames) {
-    var evalEntries = {}
+    const evalEntries = {}
 
-    for (var key in this.properties) {
+    for (const key in this.properties) {
       if (hasOwnProperty(this.properties, key)) {
         // we stringify/parse the key here to resolve unicode characters,
         // so you cannot create a key like {"co\\u006Estructor": null}
-        var stringifiedKey = stringify(key)
-        var parsedKey = JSON.parse(stringifiedKey)
+        const stringifiedKey = stringify(key)
+        const parsedKey = JSON.parse(stringifiedKey)
         if (!isSafeProperty(this.properties, parsedKey)) {
           throw new Error('No access to property "' + parsedKey + '"')
         }
@@ -68,9 +68,9 @@ function factory (type, config, load, typed) {
     }
 
     return function evalObjectNode (scope, args, context) {
-      var obj = {}
+      const obj = {}
 
-      for (var key in evalEntries) {
+      for (const key in evalEntries) {
         if (hasOwnProperty(evalEntries, key)) {
           obj[key] = evalEntries[key](scope, args, context)
         }
@@ -85,7 +85,7 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   ObjectNode.prototype.forEach = function (callback) {
-    for (var key in this.properties) {
+    for (const key in this.properties) {
       if (this.properties.hasOwnProperty(key)) {
         callback(this.properties[key], 'properties[' + stringify(key) + ']', this)
       }
@@ -99,8 +99,8 @@ function factory (type, config, load, typed) {
    * @returns {ObjectNode} Returns a transformed copy of the node
    */
   ObjectNode.prototype.map = function (callback) {
-    var properties = {}
-    for (var key in this.properties) {
+    const properties = {}
+    for (const key in this.properties) {
       if (this.properties.hasOwnProperty(key)) {
         properties[key] = this._ifNode(callback(this.properties[key],
           'properties[' + stringify(key) + ']', this))
@@ -114,8 +114,8 @@ function factory (type, config, load, typed) {
    * @return {ObjectNode}
    */
   ObjectNode.prototype.clone = function () {
-    var properties = {}
-    for (var key in this.properties) {
+    const properties = {}
+    for (const key in this.properties) {
       if (this.properties.hasOwnProperty(key)) {
         properties[key] = this.properties[key]
       }
@@ -130,8 +130,8 @@ function factory (type, config, load, typed) {
    * @override
    */
   ObjectNode.prototype._toString = function (options) {
-    var entries = []
-    for (var key in this.properties) {
+    const entries = []
+    for (const key in this.properties) {
       if (this.properties.hasOwnProperty(key)) {
         entries.push(stringify(key) + ': ' + this.properties[key].toString(options))
       }
@@ -168,8 +168,8 @@ function factory (type, config, load, typed) {
    * @override
    */
   ObjectNode.prototype.toHTML = function (options) {
-    var entries = []
-    for (var key in this.properties) {
+    const entries = []
+    for (const key in this.properties) {
       if (this.properties.hasOwnProperty(key)) {
         entries.push('<span class="math-symbol math-property">' + escape(key) + '</span>' + '<span class="math-operator math-assignment-operator math-property-assignment-operator math-binary-operator">:</span>' + this.properties[key].toHTML(options))
       }
@@ -183,8 +183,8 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   ObjectNode.prototype._toTex = function (options) {
-    var entries = []
-    for (var key in this.properties) {
+    const entries = []
+    for (const key in this.properties) {
       if (this.properties.hasOwnProperty(key)) {
         entries.push('\\mathbf{' + key + ':} & ' + this.properties[key].toTex(options) + '\\\\')
       }

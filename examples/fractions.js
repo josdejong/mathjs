@@ -1,7 +1,7 @@
 // Fractions
 
 // load math.js (using node.js)
-var math = require('../index')
+const math = require('../index')
 
 // configure the default type of numbers as Fractions
 math.config({
@@ -44,7 +44,7 @@ console.log()
 
 // output formatting
 console.log('output formatting of fractions')
-var a = math.fraction('2/3')
+const a = math.fraction('2/3')
 console.log(math.format(a)) // Fraction,  2/3
 console.log(math.format(a, {fraction: 'ratio'})) // Fraction,  2/3
 console.log(math.format(a, {fraction: 'decimal'})) // Fraction,  0.(6)

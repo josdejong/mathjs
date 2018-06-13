@@ -1,31 +1,31 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var acosh = math.acosh
-var cosh = math.cosh
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 22})
-var predmath = math.create({predictable: true})
-var acoshBig = bigmath.acosh
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const acosh = math.acosh
+const cosh = math.cosh
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 22})
+const predmath = math.create({predictable: true})
+const acoshBig = bigmath.acosh
+const Big = bigmath.bignumber
 
 describe('acosh', function () {
   it('should return the hyperbolic arccos of a boolean', function () {
     assert.equal(acosh(true), 0)
     approx.deepEqual(acosh(false), complex(0, pi / 2))
-    // assert.ok(isNaN(acosh(false)));
+    // assert.ok(isNaN(acosh(false)))
   })
 
   it('should return the hyperbolic arccos of a number', function () {
     approx.deepEqual(acosh(-2), complex(1.31695789692481670862504634730797, pi))
     approx.deepEqual(acosh(0), complex(0, pi / 2))
-    // assert.ok(isNaN(acosh(-2)));
-    // assert.ok(isNaN(acosh(0)));
+    // assert.ok(isNaN(acosh(-2)))
+    // assert.ok(isNaN(acosh(0)))
 
     approx.equal(acosh(1), 0)
     approx.equal(acosh(2), 1.31695789692481670862504634730797)
@@ -39,7 +39,7 @@ describe('acosh', function () {
   })
 
   it('should return the hyperbolic arccos of a bignumber', function () {
-    var arg = Big(1)
+    const arg = Big(1)
     assert.deepEqual(acosh(arg), Big(0))
     assert.deepEqual(acoshBig(Big(2)), Big('1.3169578969248167086'))
     assert.deepEqual(acoshBig(Big(3)), Big('1.7627471740390860505'))
@@ -63,7 +63,7 @@ describe('acosh', function () {
     assert.deepEqual(acoshBig(bigmath.cosh(Big(2))), Big(2))
 
     // Pass in extra digit
-    var arg = Big(0.1)
+    const arg = Big(0.1)
     assert.deepEqual(acoshBig(biggermath.cosh(arg)), Big('0.10000000000000000012'))
     assert.deepEqual(acoshBig(biggermath.cosh(Big(0.5))), Big('0.49999999999999999995'))
     assert.deepEqual(arg, Big(0.1))
@@ -95,7 +95,7 @@ describe('acosh', function () {
   })
 
   it('should calculate the arccos element-wise for arrays and matrices', function () {
-    var acosh123 = [0, 1.3169578969248167, 1.7627471740390860504]
+    const acosh123 = [0, 1.3169578969248167, 1.7627471740390860504]
     approx.deepEqual(acosh([1, 2, 3]), acosh123)
     approx.deepEqual(acosh(matrix([1, 2, 3])), matrix(acosh123))
   })
@@ -106,7 +106,7 @@ describe('acosh', function () {
   })
 
   it('should LaTeX acosh', function () {
-    var expression = math.parse('acosh(1)')
+    const expression = math.parse('acosh(1)')
     assert.equal(expression.toTex(), '\\cosh^{-1}\\left(1\\right)')
   })
 })

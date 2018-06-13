@@ -14,17 +14,17 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  var cs_tdfs = function (j, k, w, head, next, post, stack) {
+  const cs_tdfs = function (j, k, w, head, next, post, stack) {
     // variables
-    var top = 0
+    let top = 0
     // place j on the stack
     w[stack] = j
     // while (stack is not empty)
     while (top >= 0) {
       // p = top of stack
-      var p = w[stack + top]
+      const p = w[stack + top]
       // i = youngest child of p
-      var i = w[head + p]
+      const i = w[head + p]
       if (i == -1) {
         // p has no unordered children left
         top--

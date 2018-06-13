@@ -9,11 +9,11 @@ function factory () {
    *
    * @return {Array}            The output vector x = P'b
    */
-  var cs_ipvec = function (p, b, n) {
+  function cs_ipvec (p, b) {
     // vars
-    var k
-    var n = b.length
-    var x = []
+    let k
+    const n = b.length
+    const x = []
     // check permutation vector was provided, p = null denotes identity
     if (p) {
       // loop vector

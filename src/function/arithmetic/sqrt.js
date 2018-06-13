@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -14,9 +14,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.sqrt(25);                // returns 5
-   *    math.square(5);               // returns 25
-   *    math.sqrt(-4);                // returns Complex 2i
+   *    math.sqrt(25)                // returns 5
+   *    math.square(5)               // returns 25
+   *    math.sqrt(-4)                // returns Complex 2i
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix | Unit}
    *            Returns the square root of `x`
    */
-  var sqrt = typed('sqrt', {
+  const sqrt = typed('sqrt', {
     'number': _sqrtNumber,
 
     'Complex': function (x) {

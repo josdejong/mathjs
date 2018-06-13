@@ -1,6 +1,4 @@
-var assert = require('assert'),
-  math = require('../src/index'),
-  approx = require('../tools/approx')
+const assert = require('assert'), math = require('../src/index'), approx = require('../tools/approx')
 
 describe('constants', function () {
   describe('number', function () {
@@ -62,7 +60,7 @@ describe('constants', function () {
   })
 
   describe('bignumber', function () {
-    var bigmath = math.create({number: 'BigNumber', precision: 64})
+    const bigmath = math.create({number: 'BigNumber', precision: 64})
 
     it('should have bignumber pi', function () {
       assert.equal(bigmath.pi.toString(), '3.141592653589793238462643383279502884197169399375105820974944592')

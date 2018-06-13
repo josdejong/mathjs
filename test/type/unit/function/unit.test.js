@@ -1,11 +1,11 @@
-var assert = require('assert')
-var math = require('../../../../src/index')
-var unit = math.unit
-var Unit = math.type.Unit
+const assert = require('assert')
+const math = require('../../../../src/index')
+const unit = math.unit
+const Unit = math.type.Unit
 
 describe('unit', function () {
   it('should construct a unit', function () {
-    var u = unit('5 cm')
+    const u = unit('5 cm')
     assert.deepEqual(u, new Unit(5, 'cm'))
   })
 
@@ -16,8 +16,8 @@ describe('unit', function () {
   })
 
   it('should clone a unit', function () {
-    var a = math.unit('5cm')
-    var b = math.unit(a)
+    const a = math.unit('5cm')
+    const b = math.unit(a)
     assert.deepEqual(b.toString(), '5 cm')
   })
 
@@ -72,8 +72,8 @@ describe('unit', function () {
   })
 
   it('should LaTeX unit', function () {
-    var expr1 = math.parse('unit(cm)')
-    var expr2 = math.parse('unit(1,cm)')
+    const expr1 = math.parse('unit(cm)')
+    const expr2 = math.parse('unit(1,cm)')
 
     assert.equal(expr1.toTex(), '\\left(\\mathrm{cm}\\right)')
     assert.equal(expr2.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')

@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -13,12 +13,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.cube(2);            // returns number 8
-   *    math.pow(2, 3);          // returns number 8
-   *    math.cube(4);            // returns number 64
-   *    4 * 4 * 4;               // returns number 64
+   *    math.cube(2)            // returns number 8
+   *    math.pow(2, 3)          // returns number 8
+   *    math.cube(4)            // returns number 64
+   *    4 * 4 * 4               // returns number 64
    *
-   *    math.cube([1, 2, 3, 4]); // returns Array [1, 8, 27, 64]
+   *    math.cube([1, 2, 3, 4]) // returns Array [1, 8, 27, 64]
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} x  Number for which to calculate the cube
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit} Cube of x
    */
-  var cube = typed('cube', {
+  const cube = typed('cube', {
     'number': function (x) {
       return x * x * x
     },

@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var distribution = load(require('./distribution'))
+  const distribution = load(require('./distribution'))
 
   /**
    * Return a random integer number larger or equal to `min` and smaller than `max`
@@ -17,9 +17,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.randomInt(100);    // returns a random integer between 0 and 100
-   *     math.randomInt(30, 40); // returns a random integer between 30 and 40
-   *     math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 and 1
+   *     math.randomInt(100)    // returns a random integer between 0 and 100
+   *     math.randomInt(30, 40) // returns a random integer between 30 and 40
+   *     math.randomInt([2, 3]) // returns a 2x3 matrix with random integers between 0 and 1
    *
    * See also:
    *
@@ -32,7 +32,7 @@ function factory (type, config, load, typed) {
    * @return {number | Array | Matrix} A random integer value
    */
   // TODO: rework randomInt to a typed-function
-  var randomInt = distribution('uniform').randomInt
+  const randomInt = distribution('uniform').randomInt
 
   randomInt.toTex = undefined // use default template
 

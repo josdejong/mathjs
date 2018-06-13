@@ -29,8 +29,8 @@ Number &#124; BigNumber | Cn(n)
 ## Examples
 
 ```js
-math.catalan(3); // returns 5;
-math.catalan(8); // returns 1430;
+math.catalan(3) // returns 5
+math.catalan(8) // returns 1430
 ```
 
 

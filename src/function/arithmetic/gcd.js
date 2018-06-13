@@ -1,15 +1,15 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
+  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
@@ -23,11 +23,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.gcd(8, 12);              // returns 4
-   *    math.gcd(-4, 6);              // returns 2
-   *    math.gcd(25, 15, -10);        // returns 5
+   *    math.gcd(8, 12)              // returns 4
+   *    math.gcd(-4, 6)              // returns 2
+   *    math.gcd(25, 15, -10)        // returns 5
    *
-   *    math.gcd([8, -4], [12, 6]);   // returns [4, 2]
+   *    math.gcd([8, -4], [12, 6])   // returns [4, 2]
    *
    * See also:
    *
@@ -36,7 +36,7 @@ function factory (type, config, load, typed) {
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
-  var gcd = typed('gcd', {
+  const gcd = typed('gcd', {
 
     'number, number': _gcd,
 
@@ -105,8 +105,8 @@ function factory (type, config, load, typed) {
 
     // TODO: need a smarter notation here
     'Array | Matrix | number | BigNumber, Array | Matrix | number | BigNumber, ...Array | Matrix | number | BigNumber': function (a, b, args) {
-      var res = gcd(a, b)
-      for (var i = 0; i < args.length; i++) {
+      let res = gcd(a, b)
+      for (let i = 0; i < args.length; i++) {
         res = gcd(res, args[i])
       }
       return res
@@ -130,9 +130,9 @@ function factory (type, config, load, typed) {
     }
 
     // http://en.wikipedia.org/wiki/Euclidean_algorithm
-    var zero = new type.BigNumber(0)
+    const zero = new type.BigNumber(0)
     while (!b.isZero()) {
-      var r = a.mod(b)
+      const r = a.mod(b)
       a = b
       b = r
     }
@@ -153,7 +153,7 @@ function _gcd (a, b) {
   }
 
   // http://en.wikipedia.org/wiki/Euclidean_algorithm
-  var r
+  let r
   while (b != 0) {
     r = a % b
     a = b

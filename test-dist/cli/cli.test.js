@@ -1,5 +1,5 @@
-var assert = require('assert')
-var cp = require('child_process')
+const assert = require('assert')
+const cp = require('child_process')
 
 function run (args, done) {
   cp.exec('bin/cli.js "' + args + '"', function (e, r) {

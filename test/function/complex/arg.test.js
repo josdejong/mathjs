@@ -1,7 +1,7 @@
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var arg = math.arg
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const arg = math.arg
 
 describe('arg', function () {
   it('should compute the argument of a boolean', function () {
@@ -67,7 +67,7 @@ describe('arg', function () {
   })
 
   it('should LaTeX arg', function () {
-    var expression = math.parse('arg(1+i)')
+    const expression = math.parse('arg(1+i)')
     assert.equal(expression.toTex(), '\\arg\\left(1+ i\\right)')
   })
 })

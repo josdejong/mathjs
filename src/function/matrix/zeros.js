@@ -1,10 +1,10 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var resize = require('../../utils/array').resize
+const isInteger = require('../../utils/number').isInteger
+const resize = require('../../utils/array').resize
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
@@ -21,12 +21,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.zeros(3);                  // returns [0, 0, 0]
-   *    math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
-   *    math.zeros(3, 'dense');         // returns [0, 0, 0]
+   *    math.zeros(3)                  // returns [0, 0, 0]
+   *    math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
+   *    math.zeros(3, 'dense')         // returns [0, 0, 0]
    *
-   *    var A = [[1, 2, 3], [4, 5, 6]];
-   *    math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
+   *    const A = [[1, 2, 3], [4, 5, 6]]
+   *    math.zeros(math.size(A))       // returns [[0, 0, 0], [0, 0, 0]]
    *
    * See also:
    *
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Array | Matrix}           A matrix filled with zeros
    */
-  var zeros = typed('zeros', {
+  const zeros = typed('zeros', {
     '': function () {
       return (config.matrix === 'Array')
         ? _zeros([])
@@ -47,9 +47,9 @@ function factory (type, config, load, typed) {
     // math.zeros(m, n, p, ..., format)
     // TODO: more accurate signature '...number | BigNumber, string' as soon as typed-function supports this
     '...number | BigNumber | string': function (size) {
-      var last = size[size.length - 1]
+      const last = size[size.length - 1]
       if (typeof last === 'string') {
-        var format = size.pop()
+        const format = size.pop()
         return _zeros(size, format)
       } else if (config.matrix === 'Array') {
         return _zeros(size)
@@ -61,7 +61,7 @@ function factory (type, config, load, typed) {
     'Array': _zeros,
 
     'Matrix': function (size) {
-      var format = size.storage()
+      const format = size.storage()
       return _zeros(size.valueOf(), format)
     },
 
@@ -82,20 +82,20 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _zeros (size, format) {
-    var hasBigNumbers = _normalize(size)
-    var defaultValue = hasBigNumbers ? new type.BigNumber(0) : 0
+    const hasBigNumbers = _normalize(size)
+    const defaultValue = hasBigNumbers ? new type.BigNumber(0) : 0
     _validate(size)
 
     if (format) {
       // return a matrix
-      var m = matrix(format)
+      const m = matrix(format)
       if (size.length > 0) {
         return m.resize(size, defaultValue)
       }
       return m
     } else {
       // return an Array
-      var arr = []
+      const arr = []
       if (size.length > 0) {
         return resize(arr, size, defaultValue)
       }
@@ -105,7 +105,7 @@ function factory (type, config, load, typed) {
 
   // replace BigNumbers with numbers, returns true if size contained BigNumbers
   function _normalize (size) {
-    var hasBigNumbers = false
+    let hasBigNumbers = false
     size.forEach(function (value, index, arr) {
       if (type.isBigNumber(value)) {
         hasBigNumbers = true

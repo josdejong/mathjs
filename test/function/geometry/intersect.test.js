@@ -1,6 +1,6 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
 
 describe('intersect', function () {
   it('should calculate the intersection point of two 2D lines', function () {
@@ -47,9 +47,9 @@ describe('intersect', function () {
   })
 
   it('should calculate the intersection point if coordinates are bignumbers', function () {
-    var bigmath = math.create({number: 'BigNumber', precision: 32})
-    var bigintersect = bigmath.intersect
-    var bignumber = bigmath.bignumber
+    const bigmath = math.create({number: 'BigNumber', precision: 32})
+    const bigintersect = bigmath.intersect
+    const bignumber = bigmath.bignumber
 
     assert.deepEqual(bigmath.eval('intersect([0, 0], [10, 10], [10, 0], [0, 10])'), math.matrix([bignumber(5), bignumber(5)]))
     assert.deepEqual(bigintersect([bignumber(0), bignumber(0)], [bignumber(10), bignumber(10)], [bignumber(10), bignumber(0)], [bignumber(0), bignumber(10)]),

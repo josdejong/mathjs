@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,7 +15,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.sinh(0.5);       // returns number 0.5210953054937474
+   *    math.sinh(0.5)       // returns number 0.5210953054937474
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
    */
-  var sinh = typed('sinh', {
+  const sinh = typed('sinh', {
     'number': _sinh,
 
     'Complex': function (x) {
@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
  * @returns {number}
  * @private
  */
-var _sinh = Math.sinh || function (x) {
+const _sinh = Math.sinh || function (x) {
   return (Math.exp(x) - Math.exp(-x)) / 2
 }
 

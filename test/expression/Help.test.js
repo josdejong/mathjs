@@ -1,10 +1,10 @@
 // test Help
-var assert = require('assert')
-var math = require('../../src/index')
-var Help = math.type.Help
+const assert = require('assert')
+const math = require('../../src/index')
+const Help = math.type.Help
 
 describe('help', function () {
-  var doc = {
+  const doc = {
     'name': 'add',
     'category': 'Operators',
     'syntax': [
@@ -22,7 +22,7 @@ describe('help', function () {
   }
 
   it('should generate the help for a function', function () {
-    var help = new Help(doc)
+    const help = new Help(doc)
 
     assert(help instanceof Help)
     assert.deepEqual(help.doc.name, 'add')
@@ -42,17 +42,17 @@ describe('help', function () {
   })
 
   it('should have a property isHelp', function () {
-    var a = new Help(doc)
+    const a = new Help(doc)
     assert.strictEqual(a.isHelp, true)
   })
 
   it('should have a property type', function () {
-    var a = new Help(doc)
+    const a = new Help(doc)
     assert.strictEqual(a.type, 'Help')
   })
 
   it('should stringify a help', function () {
-    var help = new Help(doc)
+    const help = new Help(doc)
     assert.equal(help.toString(),
       '\nName: add\n' +
         '\n' +
@@ -75,12 +75,12 @@ describe('help', function () {
   })
 
   it('should stringify a help with empty doc', function () {
-    var help = new Help({})
+    const help = new Help({})
     assert.equal(help.toString(), '\n')
   })
 
   it('should stringify a doc with empty example', function () {
-    var help = new Help({
+    const help = new Help({
       'name': 'add',
       'examples': [
         '2 + 3',
@@ -99,7 +99,7 @@ describe('help', function () {
   })
 
   it('should stringify a doc with example throwing an error', function () {
-    var help = new Help({
+    const help = new Help({
       'name': 'add',
       'examples': [
         '2 ^^ 3'
@@ -116,7 +116,7 @@ describe('help', function () {
   })
 
   it('should return string representation on valueOf', function () {
-    var help = new Help({
+    const help = new Help({
       'name': 'add',
       'examples': [
         '2 ^^ 3'
@@ -133,8 +133,8 @@ describe('help', function () {
   })
 
   it('should export doc to JSON', function () {
-    var help = new Help(doc)
-    var json = help.toJSON()
+    const help = new Help(doc)
+    const json = help.toJSON()
     assert.deepEqual(json, {
       'mathjs': 'Help',
       'name': 'add',
@@ -159,7 +159,7 @@ describe('help', function () {
   })
 
   it('should instantiate Help from json using fromJSON', function () {
-    var doc = {
+    const doc = {
       'name': 'add',
       'category': 'Operators',
       'syntax': [
@@ -176,10 +176,10 @@ describe('help', function () {
       ]
     }
 
-    var json = Object.create(doc)
+    const json = Object.create(doc)
     json['mathjs'] = 'Help'
 
-    var help = Help.fromJSON(json)
+    const help = Help.fromJSON(json)
     assert(help instanceof Help)
     assert.deepEqual(doc, help.doc)
   })

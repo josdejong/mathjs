@@ -5,13 +5,13 @@
  * The tool can parse documentation information from the block comment in the
  * functions code, and generate a markdown file with the documentation.
  */
-var fs = require('fs')
-var glob = require('glob')
-var mkdirp = require('mkdirp')
-var gutil = require('gulp-util')
+const fs = require('fs')
+const glob = require('glob')
+const mkdirp = require('mkdirp')
+const gutil = require('gulp-util')
 
 // special cases for function syntax
-var SYNTAX = {
+const SYNTAX = {
   cbrt: 'math.cbrt(x [, allRoots])',
   createUnit: 'math.createUnit(units)',
   gcd: 'math.gcd(a, b)',
@@ -40,11 +40,11 @@ var SYNTAX = {
   print: 'math.print(template, values [, precision])'
 }
 
-var IGNORE_FUNCTIONS = {
+const IGNORE_FUNCTIONS = {
   distribution: true
 }
 
-var IGNORE_WARNINGS = {
+const IGNORE_WARNINGS = {
   seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed',
     'distance', 'kldivergence', 'erf'],
   parameters: ['parser'],
@@ -60,20 +60,20 @@ var IGNORE_WARNINGS = {
  */
 function generateDoc (name, code) {
   // get block comment from code
-  var match = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//.exec(code)
+  const match = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//.exec(code)
 
   if (!match) {
     return null
   }
 
   // get text content inside block comment
-  var comment = match[0].replace('/**', '')
+  const comment = match[0].replace('/**', '')
     .replace('*/', '')
     .replace(/\n\s*\* ?/g, '\n')
     .replace(/\r/g, '')
 
-  var lines = comment.split('\n'),
-    line = ''
+  const lines = comment.split('\n')
+  let line = ''
 
   // get next line
   function next () {
@@ -105,10 +105,10 @@ function generateDoc (name, code) {
   }
 
   function stripLeadingSpaces (lines) {
-    var spaces = null
+    let spaces = null
     lines.forEach(function (line) {
-      var match = /^ +/.exec(line)
-      var s = match && match[0] && match[0].length
+      const match = /^ +/.exec(line)
+      const s = match && match[0] && match[0].length
       if (s > 0 && (spaces == null || s < spaces)) {
         spaces = s
       }
@@ -122,7 +122,7 @@ function generateDoc (name, code) {
   }
 
   function parseDescription () {
-    var description = ''
+    let description = ''
 
     while (exists() && !isHeader() && !isAnnotation()) {
       description += line + '\n'
@@ -201,7 +201,7 @@ function generateDoc (name, code) {
       skipEmptyLines()
 
       while (exists() && !empty()) {
-        var names = line.split(',')
+        const names = line.split(',')
         doc.seeAlso = doc.seeAlso.concat(names.map(function (name) {
           return name.trim()
         }))
@@ -225,14 +225,15 @@ function generateDoc (name, code) {
   }
 
   function parseParameters () {
-    var count = 0
+    let count = 0
+    let match
     do {
-      var match = /\s*@param\s*\{(.*)}\s*\[?(\w*)]?\s*(.*)?$/.exec(line)
+      match = /\s*@param\s*\{(.*)}\s*\[?(\w*)]?\s*(.*)?$/.exec(line)
       if (match) {
         next()
 
         count++
-        var annotation = {
+        const annotation = {
           name: match[2] || '',
           description: (match[3] || '').trim(),
           types: match[1].split('|').map(trim).map(escapeTags)
@@ -240,8 +241,8 @@ function generateDoc (name, code) {
         doc.parameters.push(annotation)
 
         // TODO: this is an ugly hack to extract the default value
-        var index = annotation.description.indexOf(']')
-        var defaultValue = null
+        const index = annotation.description.indexOf(']')
+        let defaultValue = null
         if (index != -1) {
           defaultValue = annotation.description.substring(1, index).trim()
           annotation.description = annotation.description.substring(index + 1).trim()
@@ -249,8 +250,8 @@ function generateDoc (name, code) {
 
         // multi line description (must be non-empty and not start with @param or @return)
         while (exists() && !empty() && !/^\s*@/.test(line)) {
-          var lineTrim = line.trim()
-          var separator = (lineTrim[0] === '-' ? '</br>' : ' ')
+          const lineTrim = line.trim()
+          const separator = (lineTrim[0] === '-' ? '</br>' : ' ')
           annotation.description += separator + lineTrim
           next()
         }
@@ -265,7 +266,7 @@ function generateDoc (name, code) {
   }
 
   function parseReturns () {
-    var match = /\s*@returns?\s*\{(.*)}\s*(.*)?$/.exec(line)
+    const match = /\s*@returns?\s*\{(.*)}\s*(.*)?$/.exec(line)
     if (match) {
       next()
 
@@ -286,7 +287,7 @@ function generateDoc (name, code) {
   }
 
   // initialize doc
-  var doc = {
+  let doc = {
     name: name,
     description: '',
     syntax: [],
@@ -304,7 +305,7 @@ function generateDoc (name, code) {
   do {
     skipEmptyLines()
 
-    var handled = parseSyntax() ||
+    const handled = parseSyntax() ||
         parseWhere() ||
         parseExamples() ||
         parseSeeAlso() ||
@@ -326,7 +327,7 @@ function generateDoc (name, code) {
  * @return {String[]} issues
  */
 function validateDoc (doc) {
-  var issues = []
+  let issues = []
 
   function ignore (field) {
     return IGNORE_WARNINGS[field].indexOf(doc.name) !== -1
@@ -396,7 +397,7 @@ function validateDoc (doc) {
  * @returns {string} markdown   Markdown contents
  */
 function generateMarkdown (doc, functions) {
-  var text = ''
+  let text = ''
 
   // TODO: should escape HTML characters in text
 
@@ -466,13 +467,13 @@ function iteratePath (inputPath, outputPath, outputRoot) {
 
   glob(inputPath + '**/*.js', null, function (err, files) {
     // generate path information for each of the files
-    var functions = {} // TODO: change to array
+    let functions = {} // TODO: change to array
 
     files.forEach(function (fullPath) {
-      var path = fullPath.split('/')
-      var name = path.pop().replace(/.js$/, '')
-      var functionIndex = path.indexOf('function')
-      var category
+      const path = fullPath.split('/')
+      const name = path.pop().replace(/.js$/, '')
+      const functionIndex = path.indexOf('function')
+      let category
 
       // Note: determining whether a file is a function and what it's category
       // is is a bit tricky and quite specific to the structure of the code,
@@ -507,24 +508,24 @@ function iteratePath (inputPath, outputPath, outputRoot) {
     })
 
     // loop over all files, generate a doc for each of them
-    var issues = []
-    for (var name in functions) {
+    let issues = []
+    for (const name in functions) {
       if (functions.hasOwnProperty(name)) {
-        var fn = functions[name]
-        var code = String(fs.readFileSync(fn.fullPath))
+        const fn = functions[name]
+        const code = String(fs.readFileSync(fn.fullPath))
 
-        var isFunction = code.indexOf('exports.name') !== -1 &&
+        const isFunction = code.indexOf('exports.name') !== -1 &&
             code.indexOf('exports.factory') !== -1 &&
             code.indexOf('exports.path') === -1
-        var doc = isFunction && generateDoc(name, code)
+        const doc = isFunction && generateDoc(name, code)
 
         if (isFunction && doc) {
           fn.doc = doc
           issues = issues.concat(validateDoc(doc))
-          var markdown = generateMarkdown(doc, functions)
+          const markdown = generateMarkdown(doc, functions)
           fs.writeFileSync(outputPath + '/' + fn.name + '.md', markdown)
         } else {
-          // gutil.log('Ignoring', fn.fullPath);
+          // gutil.log('Ignoring', fn.fullPath)
           delete functions[name]
         }
       }
@@ -537,8 +538,8 @@ function iteratePath (inputPath, outputPath, outputRoot) {
      * @returns {string}    Returns a markdown list entry
      */
     function functionEntry (name) {
-      var fn = functions[name]
-      var syntax = SYNTAX[name] || fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name
+      const fn = functions[name]
+      let syntax = SYNTAX[name] || fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name
       syntax = syntax
         // .replace(/^math\./, '')
         .replace(/\s+\/\/.*$/, '')
@@ -547,7 +548,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         syntax = syntax.replace(/ /g, '&nbsp;')
       }
 
-      var description = ''
+      let description = ''
       if (fn.doc.description) {
         description = fn.doc.description.replace(/\n/g, ' ').split('.')[0] + '.'
       }
@@ -563,33 +564,33 @@ function iteratePath (inputPath, outputPath, outputRoot) {
       return text[0].toUpperCase() + text.slice(1)
     }
 
-    var order = ['core', 'construction', 'expression'] // and then the rest
+    const order = ['core', 'construction', 'expression'] // and then the rest
     function categoryIndex (entry) {
-      var index = order.indexOf(entry)
+      const index = order.indexOf(entry)
       return index === -1 ? Infinity : index
     }
     function compareAsc (a, b) {
       return a > b ? 1 : (a < b ? -1 : 0)
     }
     function compareCategory (a, b) {
-      var indexA = categoryIndex(a)
-      var indexB = categoryIndex(b)
+      const indexA = categoryIndex(a)
+      const indexB = categoryIndex(b)
       return (indexA > indexB) ? 1 : (indexA < indexB ? -1 : compareAsc(a, b))
     }
 
     // generate categorical page with all functions
-    var categories = {}
+    let categories = {}
     Object.keys(functions).forEach(function (name) {
-      var fn = functions[name]
-      var category = categories[fn.category]
+      const fn = functions[name]
+      const category = categories[fn.category]
       if (!category) {
         categories[fn.category] = {}
       }
       categories[fn.category][name] = fn
     })
-    var categorical = '# Function reference\n\n'
+    let categorical = '# Function reference\n\n'
     categorical += Object.keys(categories).sort(compareCategory).map(function (category) {
-      var functions = categories[category]
+      const functions = categories[category]
 
       return '## ' + toCapital(category) + ' functions\n\n' +
           'Function | Description\n' +

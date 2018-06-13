@@ -1,8 +1,4 @@
-var assert = require('assert'),
-  approx = require('../../../tools/approx'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  factorial = math.factorial
+const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/index'), factorial = math.factorial
 
 describe('factorial', function () {
   it('should calculate the factorial of a number', function () {
@@ -17,9 +13,9 @@ describe('factorial', function () {
   })
 
   it('should calculate the factorial of a bignumber', function () {
-    var bigmath = math.create({number: 'BigNumber', precision: 5})
-    var bigfactorial = bigmath.factorial
-    var bignumber = bigmath.bignumber
+    const bigmath = math.create({number: 'BigNumber', precision: 5})
+    const bigfactorial = bigmath.factorial
+    const bignumber = bigmath.bignumber
 
     assert.deepEqual(bigfactorial(bignumber(0)), bignumber(1))
     assert.deepEqual(bigfactorial(bignumber(Infinity)).toString(), 'Infinity')
@@ -89,7 +85,7 @@ describe('factorial', function () {
   })
 
   it('should LaTeX factorial', function () {
-    var expression = math.parse('factorial(6)')
+    const expression = math.parse('factorial(6)')
     assert.equal(expression.toTex(), '\\left(6\\right)!')
   })
 })

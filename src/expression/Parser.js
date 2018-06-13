@@ -1,10 +1,10 @@
 'use strict'
 
-var extend = require('../utils/object').extend
-var customs = require('../utils/customs')
+const extend = require('../utils/object').extend
+const customs = require('../utils/customs')
 
 function factory (type, config, load, typed, math) {
-  var _parse = load(require('./parse'))
+  const _parse = load(require('./parse'))
 
   /**
    * @constructor Parser
@@ -14,44 +14,44 @@ function factory (type, config, load, typed, math) {
    * evaluations.
    *
    * Methods:
-   *    var result = parser.eval(expr);    // evaluate an expression
-   *    var value = parser.get(name);      // retrieve a variable from the parser
-   *    var values = parser.getAll();      // retrieve all defined variables
-   *    parser.set(name, value);           // set a variable in the parser
-   *    parser.remove(name);               // clear a variable from the
-   *                                       // parsers scope
-   *    parser.clear();                    // clear the parsers scope
+   *    const result = parser.eval(expr)  // evaluate an expression
+   *    const value = parser.get(name)    // retrieve a variable from the parser
+   *    const values = parser.getAll()    // retrieve all defined variables
+   *    parser.set(name, value)           // set a variable in the parser
+   *    parser.remove(name)               // clear a variable from the
+   *                                      // parsers scope
+   *    parser.clear()                    // clear the parsers scope
    *
    * Example usage:
-   *    var parser = new Parser();
+   *    const parser = new Parser()
    *    // Note: there is a convenience method which can be used instead:
-   *    // var parser = new math.parser();
+   *    // const parser = new math.parser()
    *
    *    // evaluate expressions
-   *    parser.eval('sqrt(3^2 + 4^2)');         // 5
-   *    parser.eval('sqrt(-4)');                // 2i
-   *    parser.eval('2 inch in cm');            // 5.08 cm
-   *    parser.eval('cos(45 deg)');             // 0.7071067811865476
+   *    parser.eval('sqrt(3^2 + 4^2)')         // 5
+   *    parser.eval('sqrt(-4)')                // 2i
+   *    parser.eval('2 inch in cm')            // 5.08 cm
+   *    parser.eval('cos(45 deg)')             // 0.7071067811865476
    *
    *    // define variables and functions
-   *    parser.eval('x = 7 / 2');               // 3.5
-   *    parser.eval('x + 3');                   // 6.5
-   *    parser.eval('function f(x, y) = x^y');  // f(x, y)
-   *    parser.eval('f(2, 3)');                 // 8
+   *    parser.eval('x = 7 / 2')               // 3.5
+   *    parser.eval('x + 3')                   // 6.5
+   *    parser.eval('function f(x, y) = x^y')  // f(x, y)
+   *    parser.eval('f(2, 3)')                 // 8
    *
    *    // get and set variables and functions
-   *    var x = parser.get('x');                // 7
-   *    var f = parser.get('f');                // function
-   *    var g = f(3, 2);                        // 9
-   *    parser.set('h', 500);
-   *    var i = parser.eval('h / 2');           // 250
+   *    const x = parser.get('x')              // 7
+   *    const f = parser.get('f')              // function
+   *    const g = f(3, 2)                      // 9
+   *    parser.set('h', 500)
+   *    const i = parser.eval('h / 2')         // 250
    *    parser.set('hello', function (name) {
-   *        return 'hello, ' + name + '!';
-   *    });
-   *    parser.eval('hello("user")');           // "hello, user!"
+   *        return 'hello, ' + name + '!'
+   *    })
+   *    parser.eval('hello("user")')           // "hello, user!"
    *
    *    // clear defined functions and variables
-   *    parser.clear();
+   *    parser.clear()
    *
    */
   function Parser () {
@@ -148,7 +148,7 @@ function factory (type, config, load, typed, math) {
    * Clear the scope with variables and functions
    */
   Parser.prototype.clear = function () {
-    for (var name in this.scope) {
+    for (const name in this.scope) {
       if (this.scope.hasOwnProperty(name)) {
         delete this.scope[name]
       }

@@ -1,18 +1,18 @@
 'use strict'
 
-var nearlyEqual = require('../../utils/number').nearlyEqual
-var bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+const nearlyEqual = require('../../utils/number').nearlyEqual
+const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  var algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  var algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
+  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
+  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Test whether value x is larger or equal to y.
@@ -30,8 +30,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.larger(2, 1 + 1);         // returns false
-   *    math.largerEq(2, 1 + 1);       // returns true
+   *    math.larger(2, 1 + 1)         // returns false
+   *    math.largerEq(2, 1 + 1)       // returns true
    *
    * See also:
    *
@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
    */
-  var largerEq = typed('largerEq', {
+  const largerEq = typed('largerEq', {
 
     'boolean, boolean': function (x, y) {
       return x >= y

@@ -1,12 +1,12 @@
 // test square
-var assert = require('assert')
-var math = require('../../../src/index')
-var unit = math.unit
-var bignumber = math.bignumber
-var fraction = math.fraction
-var matrix = math.matrix
-var range = math.range
-var square = math.square
+const assert = require('assert')
+const math = require('../../../src/index')
+const unit = math.unit
+const bignumber = math.bignumber
+const fraction = math.fraction
+const matrix = math.matrix
+const range = math.range
+const square = math.square
 
 describe('square', function () {
   it('should return the square of a boolean', function () {
@@ -27,7 +27,7 @@ describe('square', function () {
   })
 
   it('should return the square of a fraction', function () {
-    var a = fraction(0.5)
+    const a = fraction(0.5)
     assert(square(a) instanceof math.type.Fraction)
     assert.equal(square(a).toString(), '0.25')
     assert.equal(a.toString(), '0.5')
@@ -65,7 +65,7 @@ describe('square', function () {
   })
 
   it('should LaTeX square', function () {
-    var expression = math.parse('square(4)')
+    const expression = math.parse('square(4)')
     assert.equal(expression.toTex(), '\\left(4\\right)^2')
   })
 })

@@ -1,42 +1,42 @@
 // test data type Range
 
-var assert = require('assert')
-var math = require('../../../src/index')
-var Range = math.type.Range
+const assert = require('assert')
+const math = require('../../../src/index')
+const Range = math.type.Range
 
 describe('range', function () {
   describe('create', function () {
     it('should create a range', function () {
-      var r = new Range(2, 6)
+      const r = new Range(2, 6)
       assert.deepEqual(r.toArray(), [2, 3, 4, 5])
       assert.equal(r.size(), 4)
     })
 
     it('should create a range with custom step', function () {
-      var r = new Range(10, 4, -1)
+      const r = new Range(10, 4, -1)
       assert.deepEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
       assert.equal(r.size(), 6)
     })
 
     it('should create a range with floating points', function () {
-      var r = new Range(1, 5.5, 1.5)
+      const r = new Range(1, 5.5, 1.5)
       assert.deepEqual(r.toArray(), [1, 2.5, 4])
       assert.equal(r.size(), 3)
     })
 
     it('should create an empty range', function () {
-      var r = new Range()
+      const r = new Range()
       assert.deepEqual(r.toArray(), [])
     })
 
     it('should create a range with only one value', function () {
-      var r = new Range(0, 1)
+      const r = new Range(0, 1)
       assert.deepEqual(r.toArray(), [0])
       assert.equal(r.size(), 1)
     })
 
     it('should create an empty range because of wrong step size', function () {
-      var r = new Range(0, 10, 0)
+      let r = new Range(0, 10, 0)
       assert.deepEqual(r.toArray(), [])
       assert.equal(r.size(), 0)
 
@@ -58,7 +58,7 @@ describe('range', function () {
 
   describe('parse', function () {
     it('should create a range from a string', function () {
-      var r = Range.parse('10:-1:4')
+      let r = Range.parse('10:-1:4')
       assert.deepEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
       assert.equal(r.size(), 6)
 
@@ -156,8 +156,8 @@ describe('range', function () {
 
   describe('clone', function () {
     it('should clone a Range', function () {
-      var r1 = new Range(0, 10, 2)
-      var r2 = r1.clone()
+      const r1 = new Range(0, 10, 2)
+      const r2 = r1.clone()
 
       assert.deepEqual(r1, r2)
       assert.notStrictEqual(r1, r2)
@@ -178,19 +178,19 @@ describe('range', function () {
 
   describe('type', function () {
     it('should have a property isRange', function () {
-      var a = new math.type.Range(0, 10)
+      const a = new math.type.Range(0, 10)
       assert.strictEqual(a.isRange, true)
     })
 
     it('should have a property type', function () {
-      var a = new math.type.Range(0, 10)
+      const a = new math.type.Range(0, 10)
       assert.strictEqual(a.type, 'Range')
     })
   })
 
   describe('map', function () {
     it('should perform a transformation on all values in the range', function () {
-      var r = new Range(2, 6)
+      const r = new Range(2, 6)
       assert.deepEqual(r.map(function (value, index, range) {
         assert.strictEqual(range, r)
         return 'range[' + index[0] + ']=' + value
@@ -205,8 +205,8 @@ describe('range', function () {
 
   describe('forEach', function () {
     it('should perform a given callback on all values in the range', function () {
-      var r = new Range(2, 6)
-      var log = []
+      const r = new Range(2, 6)
+      const log = []
       r.forEach(function (value, index, range) {
         assert.strictEqual(range, r)
         log.push('range[' + index[0] + ']=' + value)
@@ -254,13 +254,13 @@ describe('range', function () {
   })
 
   it('fromJSON', function () {
-    var r1 = Range.fromJSON({start: 2, end: 4})
+    const r1 = Range.fromJSON({start: 2, end: 4})
     assert.ok(r1 instanceof Range)
     assert.strictEqual(r1.start, 2)
     assert.strictEqual(r1.end, 4)
     assert.strictEqual(r1.step, 1)
 
-    var r2 = Range.fromJSON({start: 0, end: 10, step: 2})
+    const r2 = Range.fromJSON({start: 0, end: 10, step: 2})
     assert.ok(r2 instanceof Range)
     assert.strictEqual(r2.start, 0)
     assert.strictEqual(r2.end, 10)

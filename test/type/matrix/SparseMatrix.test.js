@@ -1,16 +1,16 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var index = math.index
-var Matrix = math.type.Matrix
-var SparseMatrix = math.type.SparseMatrix
-var DenseMatrix = math.type.DenseMatrix
-var Complex = math.type.Complex
-var Range = math.type.Range
+const assert = require('assert')
+const math = require('../../../src/index')
+const index = math.index
+const Matrix = math.type.Matrix
+const SparseMatrix = math.type.SparseMatrix
+const DenseMatrix = math.type.DenseMatrix
+const Complex = math.type.Complex
+const Range = math.type.Range
 
 describe('SparseMatrix', function () {
   describe('constructor', function () {
     it('should create empty matrix if called with no argument', function () {
-      var m = new SparseMatrix()
+      const m = new SparseMatrix()
       assert.deepEqual(m._size, [0, 0])
       assert.deepEqual(m._values, [])
       assert.deepEqual(m._index, [])
@@ -18,7 +18,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from an array', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [10, 0, 0, 0, -2, 0],
           [3, 9, 0, 0, 0, 3],
@@ -35,7 +35,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from an array, number datatype', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [10, 0, 0, 0, -2, 0],
           [3, 9, 0, 0, 0, 3],
@@ -52,7 +52,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from an array, empty column', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0],
           [0, 0, 1]
@@ -64,7 +64,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from an array, empty row', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0],
           [0, 0],
@@ -77,7 +77,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create an empty Sparse Matrix from an array', function () {
-      var m = new SparseMatrix([])
+      const m = new SparseMatrix([])
       assert.deepEqual(m._size, [0, 0])
       assert.deepEqual(m._values, [])
       assert.deepEqual(m._index, [])
@@ -85,7 +85,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from a vector', function () {
-      var m = new SparseMatrix([1, 2, 3])
+      const m = new SparseMatrix([1, 2, 3])
       assert.deepEqual(m._size, [3, 1])
       assert.deepEqual(m._values, [1, 2, 3])
       assert.deepEqual(m._index, [0, 1, 2])
@@ -93,14 +93,14 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from another Sparse Matrix', function () {
-      var m1 = new SparseMatrix(
+      const m1 = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ])
-      var m2 = new SparseMatrix(m1)
+      const m2 = new SparseMatrix(m1)
       assert.deepEqual(m1._size, m2._size)
       assert.deepEqual(m1._values, m2._values)
       assert.deepEqual(m1._index, m2._index)
@@ -108,14 +108,14 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from another Sparse Matrix, number datatype', function () {
-      var m1 = new SparseMatrix(
+      const m1 = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ], 'number')
-      var m2 = new SparseMatrix(m1)
+      const m2 = new SparseMatrix(m1)
       assert.deepEqual(m1._size, m2._size)
       assert.deepEqual(m1._values, m2._values)
       assert.deepEqual(m1._index, m2._index)
@@ -124,44 +124,44 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a Sparse Matrix from a Dense Matrix', function () {
-      var m1 = math.matrix(
+      const m1 = math.matrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ])
-      var m2 = new SparseMatrix(m1)
+      const m2 = new SparseMatrix(m1)
       assert.deepEqual(m1.size(), m2.size())
       assert.deepEqual(m1.toArray(), m2.toArray())
     })
 
     it('should create a Sparse Matrix from a Dense Matrix, number datatype', function () {
-      var m1 = new DenseMatrix(
+      const m1 = new DenseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
           [7, 8, 9],
           [10, 11, 12]
         ], 'number')
-      var m2 = new SparseMatrix(m1)
+      const m2 = new SparseMatrix(m1)
       assert.deepEqual(m1.size(), m2.size())
       assert.deepEqual(m1.toArray(), m2.toArray())
       assert.deepEqual(m1._datatype, m2._datatype)
     })
 
     it('should have a property isMatrix', function () {
-      var a = new SparseMatrix()
+      const a = new SparseMatrix()
       assert.strictEqual(a.isMatrix, true)
     })
 
     it('should have a property isSparseMatrix', function () {
-      var a = new SparseMatrix()
+      const a = new SparseMatrix()
       assert.strictEqual(a.isSparseMatrix, true)
     })
 
     it('should have a property type', function () {
-      var a = new SparseMatrix()
+      const a = new SparseMatrix()
       assert.strictEqual(a.type, 'SparseMatrix')
     })
 
@@ -183,13 +183,13 @@ describe('SparseMatrix', function () {
     })
 
     it('should create a SparseMatrix using method create', function () {
-      var a = new SparseMatrix([[1, 2, 3]])
+      const a = new SparseMatrix([[1, 2, 3]])
 
-      var b = a.create([[4, 5, 6]])
+      const b = a.create([[4, 5, 6]])
       assert.equal(b.isSparseMatrix, true)
       assert.deepEqual(b, new SparseMatrix([[4, 5, 6]]))
 
-      var c = a.create([[7, 8, 9]], 'number')
+      const c = a.create([[7, 8, 9]], 'number')
       assert.deepEqual(c, new SparseMatrix([[7, 8, 9]], 'number'))
     })
 
@@ -248,14 +248,14 @@ describe('SparseMatrix', function () {
 
   describe('fromJSON', function () {
     it('should deserialize Matrix', function () {
-      var json = {
+      const json = {
         mathjs: 'SparseMatrix',
         values: [1, 3, 2, 4],
         index: [0, 1, 0, 1],
         ptr: [0, 2, 4],
         size: [2, 2]
       }
-      var m = SparseMatrix.fromJSON(json)
+      const m = SparseMatrix.fromJSON(json)
       assert.ok(m instanceof Matrix)
 
       assert.deepEqual(m._size, [2, 2])
@@ -268,7 +268,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should deserialize Matrix, number datatype', function () {
-      var json = {
+      const json = {
         mathjs: 'SparseMatrix',
         values: [1, 3, 2, 4],
         index: [0, 1, 0, 1],
@@ -276,7 +276,7 @@ describe('SparseMatrix', function () {
         size: [2, 2],
         datatype: 'number'
       }
-      var m = SparseMatrix.fromJSON(json)
+      const m = SparseMatrix.fromJSON(json)
       assert.ok(m instanceof Matrix)
 
       assert.deepEqual(m._size, [2, 2])
@@ -290,14 +290,14 @@ describe('SparseMatrix', function () {
     })
 
     it('should deserialize Pattern Matrix', function () {
-      var json = {
+      const json = {
         mathjs: 'SparseMatrix',
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       }
-      var m = SparseMatrix.fromJSON(json)
+      const m = SparseMatrix.fromJSON(json)
       assert.ok(m instanceof Matrix)
 
       assert.deepEqual(m._size, [3, 3])
@@ -313,7 +313,7 @@ describe('SparseMatrix', function () {
 
   describe('format', function () {
     it('should format matrix', function () {
-      var m = new SparseMatrix(
+      let m = new SparseMatrix(
         [
           [0, 0],
           [0, 1 / 3]
@@ -336,7 +336,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should format pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -349,7 +349,7 @@ describe('SparseMatrix', function () {
 
   describe('resize', function () {
     it('should increase columns as needed, zero value', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -368,7 +368,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should increase columns as needed, non zero value', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -387,7 +387,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should increase rows as needed, zero value', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -407,7 +407,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should increase rows as needed, non zero value', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -427,7 +427,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should increase rows & columns as needed, zero value, empty Sparse Matrix', function () {
-      var m = new SparseMatrix([])
+      const m = new SparseMatrix([])
       m.resize([2, 2])
       assert.deepEqual(m._size, [2, 2])
       assert.deepEqual(m._values, [])
@@ -442,7 +442,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should increase rows & columns as needed, non zero value, empty Sparse Matrix', function () {
-      var m = new SparseMatrix([])
+      const m = new SparseMatrix([])
       m.resize([2, 2], 100)
       assert.deepEqual(m._size, [2, 2])
       assert.deepEqual(m._values, [100, 100, 100, 100])
@@ -457,7 +457,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should decrease columns as needed', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
@@ -476,7 +476,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should decrease columns as needed, zero matrix', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0, 0],
           [0, 0, 0]
@@ -495,7 +495,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should decrease rows as needed', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2],
           [3, 4]
@@ -513,7 +513,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should decrease rows as needed, zero Sparse Matrix', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0],
           [0, 0]
@@ -531,7 +531,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should decrease rows & columns as needed, zero Sparse Matrix', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0, 0, 0],
           [0, 0, 0, 0],
@@ -552,14 +552,14 @@ describe('SparseMatrix', function () {
     })
 
     it('should return a different matrix when copy=true', function () {
-      var m1 = new SparseMatrix(
+      const m1 = new SparseMatrix(
         [
           [0, 0, 0, 0],
           [0, 0, 0, 0],
           [0, 0, 0, 0],
           [0, 0, 0, 0]
         ])
-      var m2 = m1.resize([2, 2], 0, true)
+      const m2 = m1.resize([2, 2], 0, true)
       assert(m1 !== m2)
       // original matrix cannot be modified
       assert.deepEqual(m1._size, [4, 4])
@@ -590,7 +590,7 @@ describe('SparseMatrix', function () {
 
   describe('reshape', function () {
     it('should reshape the matrix properly', function () {
-      var m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
+      const m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
       m.reshape([3, 2])
       assert.deepEqual(m.valueOf(), [[1, 2], [3, 4], [5, 6]])
       m.reshape([6, 1])
@@ -598,9 +598,9 @@ describe('SparseMatrix', function () {
     })
 
     it('should return a copy only when specified', function () {
-      var m1 = new SparseMatrix([[1, 2], [3, 4]])
-      var m2 = m1.reshape([4, 1])
-      var m3 = m2.reshape([1, 4], true)
+      const m1 = new SparseMatrix([[1, 2], [3, 4]])
+      const m2 = m1.reshape([4, 1])
+      const m3 = m2.reshape([1, 4], true)
 
       assert.strictEqual(m2, m1)
       assert.deepEqual(m2.valueOf(), [[1], [2], [3], [4]])
@@ -612,8 +612,8 @@ describe('SparseMatrix', function () {
     })
 
     it('should update the size of the reshaped matrix', function () {
-      var m1 = new SparseMatrix([[1, 2], [3, 4]])
-      var m2 = m1.reshape([4, 1], true)
+      const m1 = new SparseMatrix([[1, 2], [3, 4]])
+      const m2 = m1.reshape([4, 1], true)
 
       assert.deepEqual(m1.size(), [2, 2])
 
@@ -624,18 +624,18 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw on attempting to reshape to != 2 dimensions', function () {
-      var m1 = new SparseMatrix([[1, 2], [3, 4]])
+      const m1 = new SparseMatrix([[1, 2], [3, 4]])
       assert.throws(function () { m1.reshape([4]) }, /Sparse matrices can only be reshaped in two dimensions/)
       assert.throws(function () { m1.reshape([2, 2, 1]) }, /Sparse matrices can only be reshaped in two dimensions/)
     })
 
     it('should throw when reshaping will change the number of elements', function () {
-      var m1 = new SparseMatrix([[1, 2], [3, 4]])
+      const m1 = new SparseMatrix([[1, 2], [3, 4]])
       assert.throws(function () { m1.reshape([2, 5]) }, /Reshaping sparse matrix will result in the wrong number of elements/)
     })
 
     it('should throw for invalid arguments', function () {
-      var m1 = new SparseMatrix([[1, 2], [3, 4]])
+      const m1 = new SparseMatrix([[1, 2], [3, 4]])
       assert.throws(function () { m1.reshape() }, /Array expected/)
       assert.throws(function () { m1.reshape(42) }, /Array expected/)
       assert.throws(function () { m1.reshape(['hello', 'world']) }, /Invalid size, must contain positive integers/)
@@ -645,7 +645,7 @@ describe('SparseMatrix', function () {
 
   describe('get', function () {
     it('should throw on invalid element position', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -661,12 +661,12 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error in case of dimension mismatch', function () {
-      var m = new SparseMatrix([[0, 1], [2, 3]])
+      const m = new SparseMatrix([[0, 1], [2, 3]])
       assert.throws(function () { m.get([0, 2, 0, 2, 0, 2]) }, /Dimension mismatch/)
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -676,7 +676,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get matrix element', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -692,7 +692,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get matrix element - Issue #450', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         mathjs: 'SparseMatrix',
         values: [ 3, 10, 3, 9, 7, 4, 8, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, -1, 13 ],
         index: [ 1, 0, 3, 1, 2, 5, 4, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 5, 4 ],
@@ -712,7 +712,7 @@ describe('SparseMatrix', function () {
 
   describe('set', function () {
     it('should throw on invalid element position', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -727,7 +727,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should remove matrix element', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -753,7 +753,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should update matrix element (non zero)', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -779,7 +779,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should update matrix element (zero)', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [10, 0, 0, 0, -2, 0],
         [3, 9, 0, 0, 0, 3],
         [0, 7, 8, 7, 0, 0],
@@ -805,7 +805,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should add rows as meeded', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [1, 2],
         [3, 4]
       ])
@@ -833,7 +833,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should add columns as meeded', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [1, 2],
         [3, 4]
       ])
@@ -856,7 +856,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should add rows & columns as meeded', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [1, 2],
         [3, 4]
       ])
@@ -884,7 +884,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should add rows as meeded, non zero default', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [1, 2],
         [3, 4]
       ])
@@ -912,7 +912,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should add columns as meeded, non zero default', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [1, 2],
         [3, 4]
       ])
@@ -935,7 +935,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should add rows & columns as meeded, non zero default', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [1, 2],
         [3, 4]
       ])
@@ -963,7 +963,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -975,7 +975,7 @@ describe('SparseMatrix', function () {
 
   describe('get subset', function () {
     it('should get the right subset of the matrix', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -997,19 +997,19 @@ describe('SparseMatrix', function () {
 
     /* TODO: implement!
     it('should squeeze the output when index contains a scalar', function() {
-      var m = new SparseMatrix(math.range(0, 10));
-      // assert.deepEqual(m.subset(index(1)), 1);
-      assert.deepEqual(m.subset(index([1, 2])), new SparseMatrix([1]));
+      let m = new SparseMatrix(math.range(0, 10))
+      // assert.deepEqual(m.subset(index(1)), 1)
+      assert.deepEqual(m.subset(index([1, 2])), new SparseMatrix([1]))
 
-      m = new SparseMatrix([[1,2], [3, 4]]);
-      assert.deepEqual(m.subset(index(1, 1)), 4);
-      assert.deepEqual(m.subset(index([1, 2], 1)), new SparseMatrix([[4]]));
-      assert.deepEqual(m.subset(index(1, [1, 2])), new SparseMatrix([[4]]));
-      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new SparseMatrix([[4]]));
-    });
+      m = new SparseMatrix([[1,2], [3, 4]])
+      assert.deepEqual(m.subset(index(1, 1)), 4)
+      assert.deepEqual(m.subset(index([1, 2], 1)), new SparseMatrix([[4]]))
+      assert.deepEqual(m.subset(index(1, [1, 2])), new SparseMatrix([[4]]))
+      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new SparseMatrix([[4]]))
+    })
     */
     it('should throw an error if the given subset is invalid', function () {
-      var m = new SparseMatrix()
+      let m = new SparseMatrix()
       assert.throws(function () { m.subset([-1]) })
 
       m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
@@ -1020,18 +1020,18 @@ describe('SparseMatrix', function () {
 
     /* TODO: implement!
     it('should throw an error in case of wrong number of arguments', function() {
-      var m = new SparseMatrix();
-      assert.throws(function () { m.subset();}, /Wrong number of arguments/);
-      assert.throws(function () { m.subset(1, 2, 3, 4); }, /Wrong number of arguments/);
-    });
+      const m = new SparseMatrix()
+      assert.throws(function () { m.subset()}, /Wrong number of arguments/)
+      assert.throws(function () { m.subset(1, 2, 3, 4) }, /Wrong number of arguments/)
+    })
     */
     it('should throw an error in case of dimension mismatch', function () {
-      var m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
+      const m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
       assert.throws(function () { m.subset(index([0, 2])) }, /Dimension mismatch/)
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -1043,7 +1043,7 @@ describe('SparseMatrix', function () {
 
   describe('set subset', function () {
     it('should set scalar value', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [0, 0],
         [0, 0]
       ])
@@ -1066,7 +1066,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should set scalar value growing matrix', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [0, 0],
         [0, 1]
       ])
@@ -1082,7 +1082,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should set scalar value growing matrix, default value', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [0, 0],
         [0, 1]
       ])
@@ -1098,7 +1098,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should set vector value', function () {
-      var m = new SparseMatrix([
+      const m = new SparseMatrix([
         [0, 0],
         [0, 0]
       ])
@@ -1122,7 +1122,7 @@ describe('SparseMatrix', function () {
 
     it('should set subset', function () {
       // set 2-dimensional
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0, 0],
           [0, 0, 0],
@@ -1159,7 +1159,7 @@ describe('SparseMatrix', function () {
 
     it('should set subset growing matrix', function () {
       // set 2-dimensional
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0, 0],
           [0, 0, 0],
@@ -1201,7 +1201,7 @@ describe('SparseMatrix', function () {
 
     it('should set subset growing matrix, default value', function () {
       // set 2-dimensional
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0, 0],
           [0, 0, 0],
@@ -1250,7 +1250,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -1262,7 +1262,7 @@ describe('SparseMatrix', function () {
 
   describe('map', function () {
     it('should apply the given function to all elements in the matrix', function () {
-      var m, m2
+      let m, m2
 
       m = new SparseMatrix([
         [1, 2, 3, 4],
@@ -1288,19 +1288,19 @@ describe('SparseMatrix', function () {
     })
 
     it('should work on empty matrices', function () {
-      var m = new SparseMatrix([])
-      var m2 = m.map(function (value) { return value * 2 })
+      const m = new SparseMatrix([])
+      const m2 = m.map(function (value) { return value * 2 })
       assert.deepEqual(m2.toArray(), [])
     })
 
     it('should process all values (zero and non-zero)', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 0],
           [0, 0]
         ]
       )
-      var m2 = m.map(function (value) { return value + 2 })
+      const m2 = m.map(function (value) { return value + 2 })
       assert.deepEqual(
         m2.toArray(),
         [
@@ -1310,15 +1310,15 @@ describe('SparseMatrix', function () {
     })
 
     it('should process non-zero values', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0],
           [0, 0]
         ]
       )
-      var counter = 0
+      let counter = 0
 
-      var m2 = m.map(
+      const m2 = m.map(
         function (value) {
           counter++
           return value + 2
@@ -1336,9 +1336,9 @@ describe('SparseMatrix', function () {
     })
 
     it('should invoke callback with parameters value, index, obj', function () {
-      var m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
+      const m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
 
-      var m2 = m.map(
+      const m2 = m.map(
         function (value, index, obj) {
           return value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0)
         }
@@ -1353,7 +1353,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -1365,7 +1365,7 @@ describe('SparseMatrix', function () {
 
   describe('forEach', function () {
     it('should run on all elements of the matrix', function () {
-      var m, output
+      let m, output
 
       m = new SparseMatrix([
         [1, 2, 3, 4],
@@ -1389,28 +1389,28 @@ describe('SparseMatrix', function () {
     })
 
     it('should work on empty matrices', function () {
-      var m = new SparseMatrix([])
-      var output = []
+      const m = new SparseMatrix([])
+      const output = []
       m.forEach(function (value) { output.push(value) })
       assert.deepEqual(output, [])
     })
 
     it('should process non-zero values', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0],
           [0, 0]
         ]
       )
-      var counter = 0
+      let counter = 0
 
       m.forEach(function () { counter++ }, true)
       assert(counter === 1)
     })
 
     it('should invoke callback with parameters value, index, obj', function () {
-      var m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
-      var output = []
+      const m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
+      const output = []
       m.forEach(
         function (value, index, obj) {
           output.push(value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0))
@@ -1420,7 +1420,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
@@ -1432,26 +1432,26 @@ describe('SparseMatrix', function () {
 
   describe('clone', function () {
     it('should clone the matrix properly', function () {
-      var m1 = new SparseMatrix(
+      const m1 = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6]
         ])
 
-      var m2 = m1.clone()
+      const m2 = m1.clone()
 
       assert.deepEqual(m1.toArray(), m2.toArray())
     })
 
     it('should clone pattern matrix', function () {
-      var m1 = new SparseMatrix({
+      const m1 = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],
         size: [3, 3]
       })
 
-      var m2 = m1.clone()
+      const m2 = m1.clone()
 
       assert.deepEqual(m1.toArray(), m2.toArray())
     })
@@ -1459,14 +1459,14 @@ describe('SparseMatrix', function () {
 
   describe('toArray', function () {
     it('should return array', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1],
         index: [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5],
         ptr: [0, 3, 7, 9, 12, 16, 19],
         size: [6, 6]
       })
 
-      var a = m.toArray()
+      const a = m.toArray()
 
       assert.deepEqual(
         a,
@@ -1481,14 +1481,14 @@ describe('SparseMatrix', function () {
     })
 
     it('should return array, empty column', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: [1, 1],
         index: [0, 1],
         ptr: [0, 1, 1, 2],
         size: [2, 3]
       })
 
-      var a = m.toArray()
+      const a = m.toArray()
 
       assert.deepEqual(
         a,
@@ -1499,14 +1499,14 @@ describe('SparseMatrix', function () {
     })
 
     it('should return array, complex numbers', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: [new Complex(1, 1), new Complex(4, 4), new Complex(5, 5), new Complex(2, 2), new Complex(3, 3), new Complex(6, 6)],
         index: [0, 2, 2, 0, 1, 2],
         ptr: [0, 2, 3, 6],
         size: [3, 3]
       })
 
-      var a = m.toArray()
+      const a = m.toArray()
 
       assert.deepEqual(
         a,
@@ -1520,7 +1520,7 @@ describe('SparseMatrix', function () {
 
   describe('diagonal', function () {
     it('should create Sparse Matrix (n x n)', function () {
-      var m = SparseMatrix.diagonal([3, 3], 1)
+      const m = SparseMatrix.diagonal([3, 3], 1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 1, 1])
@@ -1537,7 +1537,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), k > 0', function () {
-      var m = SparseMatrix.diagonal([3, 3], 1, 1)
+      const m = SparseMatrix.diagonal([3, 3], 1, 1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 1])
@@ -1554,7 +1554,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), k < 0', function () {
-      var m = SparseMatrix.diagonal([3, 3], 1, -1)
+      const m = SparseMatrix.diagonal([3, 3], 1, -1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 1])
@@ -1571,7 +1571,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), vector value', function () {
-      var m = SparseMatrix.diagonal([3, 3], [1, 2, 3])
+      const m = SparseMatrix.diagonal([3, 3], [1, 2, 3])
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 2, 3])
@@ -1588,7 +1588,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), vector value, k > 0', function () {
-      var m = SparseMatrix.diagonal([3, 3], [1, 2], 1)
+      const m = SparseMatrix.diagonal([3, 3], [1, 2], 1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 2])
@@ -1605,7 +1605,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), vector value, k < 0', function () {
-      var m = SparseMatrix.diagonal([3, 3], [1, 2], -1)
+      const m = SparseMatrix.diagonal([3, 3], [1, 2], -1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 2])
@@ -1622,7 +1622,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), matrix vector value', function () {
-      var m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2, 3]))
+      const m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2, 3]))
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 2, 3])
@@ -1639,7 +1639,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), matrix vector value, k > 0', function () {
-      var m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2]), 1)
+      const m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2]), 1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 2])
@@ -1656,7 +1656,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), matrix vector value, k < 0', function () {
-      var m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2]), -1)
+      const m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2]), -1)
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [1, 2])
@@ -1673,7 +1673,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (n x n), complex number', function () {
-      var m = SparseMatrix.diagonal([3, 3], new Complex(1, 1))
+      const m = SparseMatrix.diagonal([3, 3], new Complex(1, 1))
 
       assert.deepEqual(m._size, [3, 3])
       assert.deepEqual(m._values, [new Complex(1, 1), new Complex(1, 1), new Complex(1, 1)])
@@ -1682,7 +1682,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m > n', function () {
-      var m = SparseMatrix.diagonal([4, 3], 1)
+      const m = SparseMatrix.diagonal([4, 3], 1)
 
       assert.deepEqual(m._size, [4, 3])
       assert.deepEqual(m._values, [1, 1, 1])
@@ -1700,7 +1700,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m > n, k > 0', function () {
-      var m = SparseMatrix.diagonal([4, 3], 1, 1)
+      const m = SparseMatrix.diagonal([4, 3], 1, 1)
 
       assert.deepEqual(m._size, [4, 3])
       assert.deepEqual(m._values, [1, 1])
@@ -1718,7 +1718,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m > n, k < 0', function () {
-      var m = SparseMatrix.diagonal([4, 3], 1, -1)
+      const m = SparseMatrix.diagonal([4, 3], 1, -1)
 
       assert.deepEqual(m._size, [4, 3])
       assert.deepEqual(m._values, [1, 1, 1])
@@ -1736,7 +1736,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m > n, vector value', function () {
-      var m = SparseMatrix.diagonal([4, 3], [1, 2, 3])
+      const m = SparseMatrix.diagonal([4, 3], [1, 2, 3])
 
       assert.deepEqual(m._size, [4, 3])
       assert.deepEqual(m._values, [1, 2, 3])
@@ -1754,7 +1754,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m > n, vector value, k > 0', function () {
-      var m = SparseMatrix.diagonal([4, 3], [1, 2], 1)
+      const m = SparseMatrix.diagonal([4, 3], [1, 2], 1)
 
       assert.deepEqual(m._size, [4, 3])
       assert.deepEqual(m._values, [1, 2])
@@ -1772,7 +1772,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m > n, vector value, k < 0', function () {
-      var m = SparseMatrix.diagonal([4, 3], [1, 2, 3], -1)
+      const m = SparseMatrix.diagonal([4, 3], [1, 2, 3], -1)
 
       assert.deepEqual(m._size, [4, 3])
       assert.deepEqual(m._values, [1, 2, 3])
@@ -1790,7 +1790,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m < n', function () {
-      var m = SparseMatrix.diagonal([3, 4], 1)
+      const m = SparseMatrix.diagonal([3, 4], 1)
 
       assert.deepEqual(m._size, [3, 4])
       assert.deepEqual(m._values, [1, 1, 1])
@@ -1807,7 +1807,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m < n, k > 0', function () {
-      var m = SparseMatrix.diagonal([3, 4], 1, 1)
+      const m = SparseMatrix.diagonal([3, 4], 1, 1)
 
       assert.deepEqual(m._size, [3, 4])
       assert.deepEqual(m._values, [1, 1, 1])
@@ -1824,7 +1824,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m < n, k < 0', function () {
-      var m = SparseMatrix.diagonal([3, 4], 1, -1)
+      const m = SparseMatrix.diagonal([3, 4], 1, -1)
 
       assert.deepEqual(m._size, [3, 4])
       assert.deepEqual(m._values, [1, 1])
@@ -1841,7 +1841,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m < n, vector value', function () {
-      var m = SparseMatrix.diagonal([3, 4], [1, 2, 3])
+      const m = SparseMatrix.diagonal([3, 4], [1, 2, 3])
 
       assert.deepEqual(m._size, [3, 4])
       assert.deepEqual(m._values, [1, 2, 3])
@@ -1858,7 +1858,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m < n, vector value, k > 0', function () {
-      var m = SparseMatrix.diagonal([3, 4], [1, 2, 3], 1)
+      const m = SparseMatrix.diagonal([3, 4], [1, 2, 3], 1)
 
       assert.deepEqual(m._size, [3, 4])
       assert.deepEqual(m._values, [1, 2, 3])
@@ -1875,7 +1875,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should create Sparse Matrix (m x n), m < n, vector value, k < 0', function () {
-      var m = SparseMatrix.diagonal([3, 4], [1, 2], -1)
+      const m = SparseMatrix.diagonal([3, 4], [1, 2], -1)
 
       assert.deepEqual(m._size, [3, 4])
       assert.deepEqual(m._values, [1, 2])
@@ -1892,7 +1892,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (n x n)', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0],
           [0, 1, 0],
@@ -1903,7 +1903,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (n x n), k > 0', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 0],
           [0, 1, 3],
@@ -1914,7 +1914,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (n x n), k < 0', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0],
           [2, 1, 0],
@@ -1925,7 +1925,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (m x n), m > n', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0],
           [0, 1, 0],
@@ -1937,7 +1937,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (m x n), m > n, k > 0', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 0],
           [0, 1, 3],
@@ -1949,7 +1949,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (m x n), m > n, k < 0', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0],
           [2, 1, 0],
@@ -1961,7 +1961,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (m x n), m < n', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0, 0],
           [0, 1, 0, 0],
@@ -1972,7 +1972,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (m x n), m < n, k > 0', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 0, 0],
           [0, 1, 3, 0],
@@ -1983,7 +1983,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should get Sparse Matrix diagonal (m x n), m < n, k < 0', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 0, 0, 0],
           [2, 1, 0, 0],
@@ -1998,7 +1998,7 @@ describe('SparseMatrix', function () {
 
   describe('swapRows', function () {
     it('should swap rows with values', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -2017,7 +2017,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should swap row with value and no values', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -2036,7 +2036,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should swap row with no value and values', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [4, 5, 6],
@@ -2055,7 +2055,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should swap rows with missing values', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [0, 5, 0],
@@ -2074,7 +2074,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should swap last row with another row', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [1, 2, 3],
           [0, 5, 0],
@@ -2093,7 +2093,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should swap first row with another row', function () {
-      var m = new SparseMatrix(
+      const m = new SparseMatrix(
         [
           [0, 2, 0],
           [0, 5, 0],
@@ -2112,7 +2112,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should swap rows on a pattern matrix', function () {
-      var m = new SparseMatrix({
+      const m = new SparseMatrix({
         values: undefined,
         index: [0, 1, 2, 0],
         ptr: [0, 2, 3, 4],

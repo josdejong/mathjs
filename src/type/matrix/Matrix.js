@@ -1,10 +1,10 @@
 'use strict'
 
-var util = require('../../utils/index')
+const util = require('../../utils/index')
 
-var string = util.string
+const string = util.string
 
-var isString = string.isString
+const isString = string.isString
 
 function factory (type, config, load, typed) {
   /**
@@ -12,7 +12,8 @@ function factory (type, config, load, typed) {
    *
    * A Matrix is a wrapper around an Array. A matrix can hold a multi dimensional
    * array. A matrix can be constructed as:
-   *     var matrix = math.matrix(data)
+   *
+   *     let matrix = math.matrix(data)
    *
    * Matrix contains the functions to resize, get and set values, get the size,
    * clone the matrix and to convert the matrix to a vector, array, or scalar.
@@ -20,10 +21,11 @@ function factory (type, config, load, typed) {
    * The internal Array of the Matrix can be accessed using the function valueOf.
    *
    * Example usage:
-   *     var matrix = math.matrix([[1, 2], [3, 4]]);
-   *     matix.size();              // [2, 2]
-   *     matrix.resize([3, 2], 5);
-   *     matrix.valueOf();          // [[1, 2], [3, 4], [5, 5]]
+   *
+   *     let matrix = math.matrix([[1, 2], [3, 4]])
+   *     matix.size()              // [2, 2]
+   *     matrix.resize([3, 2], 5)
+   *     matrix.valueOf()          // [[1, 2], [3, 4], [5, 5]]
    *     matrix.subset([1,2])       // 3 (indexes are zero-based)
    *
    */
@@ -53,7 +55,7 @@ function factory (type, config, load, typed) {
     }
 
     // get storage format constructor
-    var constructor = Matrix._storage[format]
+    const constructor = Matrix._storage[format]
     if (!constructor) {
       throw new SyntaxError('Unsupported matrix storage format: ' + format)
     }
@@ -69,7 +71,7 @@ function factory (type, config, load, typed) {
    * Get the storage format used by the matrix.
    *
    * Usage:
-   *     var format = matrix.storage()                   // retrieve storage format
+   *     const format = matrix.storage()   // retrieve storage format
    *
    * @return {string}           The storage format.
    */
@@ -82,7 +84,7 @@ function factory (type, config, load, typed) {
    * Get the datatype of the data stored in the matrix.
    *
    * Usage:
-   *     var format = matrix.datatype()                   // retrieve matrix datatype
+   *     const format = matrix.datatype()    // retrieve matrix datatype
    *
    * @return {string}           The datatype.
    */
@@ -104,8 +106,8 @@ function factory (type, config, load, typed) {
    * Get a subset of the matrix, or replace a subset of the matrix.
    *
    * Usage:
-   *     var subset = matrix.subset(index)               // retrieve subset
-   *     var value = matrix.subset(index, replacement)   // replace subset
+   *     const subset = matrix.subset(index)               // retrieve subset
+   *     const value = matrix.subset(index, replacement)   // replace subset
    *
    * @param {Index} index
    * @param {Array | Matrix | *} [replacement]

@@ -30,9 +30,9 @@ Type | Description
 ## Examples
 
 ```js
-math.mad(10, 20, 30);             // returns 10
-math.mad([1, 2, 3]);              // returns 1
-math.mad([[1, 2, 3], [4, 5, 6]]); // returns 1.5
+math.mad(10, 20, 30)             // returns 10
+math.mad([1, 2, 3])              // returns 1
+math.mad([[1, 2, 3], [4, 5, 6]]) // returns 1.5
 ```
 
 

@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var min = math.min
+const assert = require('assert')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const min = math.min
 
 describe('min', function () {
   it('should return the min between several numbers', function () {
@@ -106,7 +106,7 @@ describe('min', function () {
   })
 
   it('should LaTeX min', function () {
-    var expression = math.parse('min(1,2,3)')
+    const expression = math.parse('min(1,2,3)')
     assert.equal(expression.toTex(), '\\min\\left(1,2,3\\right)')
   })
 })

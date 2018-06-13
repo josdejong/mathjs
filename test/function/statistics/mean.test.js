@@ -1,10 +1,10 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var mean = math.mean
+const assert = require('assert')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const mean = math.mean
 
 describe('mean', function () {
   it('should return the mean value of some numbers', function () {
@@ -51,7 +51,7 @@ describe('mean', function () {
     ])), 5)
   })
 
-  var inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
+  const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
     [ [10, 20], [30, 40], [50, 60] ],
     [ [70, 80], [90, 100], [110, 120] ],
     [ [130, 140], [150, 160], [170, 180] ],
@@ -100,7 +100,7 @@ describe('mean', function () {
   })
 
   it('should LaTeX mean', function () {
-    var expression = math.parse('mean(1,2,3,4)')
+    const expression = math.parse('mean(1,2,3,4)')
     assert.equal(expression.toTex(), '\\mathrm{mean}\\left(1,2,3,4\\right)')
   })
 })

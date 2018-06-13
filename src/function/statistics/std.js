@@ -1,8 +1,8 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var sqrt = load(require('../arithmetic/sqrt'))
-  var variance = load(require('../statistics/var'))
+  const sqrt = load(require('../arithmetic/sqrt'))
+  const variance = load(require('../statistics/var'))
 
   /**
    * Compute the standard deviation of a matrix or a  list with values.
@@ -26,12 +26,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.std(2, 4, 6);                     // returns 2
-   *     math.std([2, 4, 6, 8]);                // returns 2.581988897471611
-   *     math.std([2, 4, 6, 8], 'uncorrected'); // returns 2.23606797749979
-   *     math.std([2, 4, 6, 8], 'biased');      // returns 2
+   *     math.std(2, 4, 6)                     // returns 2
+   *     math.std([2, 4, 6, 8])                // returns 2.581988897471611
+   *     math.std([2, 4, 6, 8], 'uncorrected') // returns 2.23606797749979
+   *     math.std([2, 4, 6, 8], 'biased')      // returns 2
    *
-   *     math.std([[1, 2, 3], [4, 5, 6]]);      // returns 1.8708286933869707
+   *     math.std([[1, 2, 3], [4, 5, 6]])      // returns 1.8708286933869707
    *
    * See also:
    *
@@ -44,7 +44,7 @@ function factory (type, config, load, typed) {
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The standard deviation
    */
-  var std = typed('std', {
+  const std = typed('std', {
     // std([a, b, c, d, ...])
     'Array | Matrix': _std,
 

@@ -1,19 +1,19 @@
 'use strict'
 
 function factory (type, config, load, typed, math) {
-  var FunctionNode = math.expression.node.FunctionNode
-  var OperatorNode = math.expression.node.OperatorNode
-  var SymbolNode = math.expression.node.SymbolNode
+  const FunctionNode = math.expression.node.FunctionNode
+  const OperatorNode = math.expression.node.OperatorNode
+  const SymbolNode = math.expression.node.SymbolNode
 
   // TODO commutative/associative properties rely on the arguments
   // e.g. multiply is not commutative for matrices
   // The properties should be calculated from an argument to simplify, or possibly something in math.config
   // the other option is for typed() to specify a return type so that we can evaluate the type of arguments
-  var commutative = {
+  const commutative = {
     'add': true,
     'multiply': true
   }
-  var associative = {
+  const associative = {
     'add': true,
     'multiply': true
   }
@@ -22,7 +22,7 @@ function factory (type, config, load, typed, math) {
     if (!type.isOperatorNode(node)) {
       return true
     }
-    var name = node.fn.toString()
+    const name = node.fn.toString()
     if (context && context.hasOwnProperty(name) && context[name].hasOwnProperty('commutative')) {
       return context[name].commutative
     }
@@ -33,7 +33,7 @@ function factory (type, config, load, typed, math) {
     if (!type.isOperatorNode(node)) {
       return false
     }
-    var name = node.fn.toString()
+    const name = node.fn.toString()
     if (context && context.hasOwnProperty(name) && context[name].hasOwnProperty('associative')) {
       return context[name].associative
     }
@@ -49,7 +49,7 @@ function factory (type, config, load, typed, math) {
       return node
     }
     node.args = allChildren(node)
-    for (var i = 0; i < node.args.length; i++) {
+    for (let i = 0; i < node.args.length; i++) {
       flatten(node.args[i])
     }
   }
@@ -59,11 +59,11 @@ function factory (type, config, load, typed, math) {
    * TODO implement for FunctionNodes
    */
   function allChildren (node) {
-    var op
-    var children = []
-    var findChildren = function (node) {
-      for (var i = 0; i < node.args.length; i++) {
-        var child = node.args[i]
+    let op
+    const children = []
+    const findChildren = function (node) {
+      for (let i = 0; i < node.args.length; i++) {
+        const child = node.args[i]
         if (type.isOperatorNode(child) && op === child.op) {
           findChildren(child)
         } else {
@@ -88,13 +88,13 @@ function factory (type, config, load, typed, math) {
     if (!node.args || node.args.length === 0) {
       return
     }
-    var makeNode = createMakeNodeFunction(node)
-    var l = node.args.length
-    for (var i = 0; i < l; i++) {
+    const makeNode = createMakeNodeFunction(node)
+    const l = node.args.length
+    for (let i = 0; i < l; i++) {
       unflattenr(node.args[i])
     }
     if (l > 2 && isAssociative(node)) {
-      var curnode = node.args.pop()
+      let curnode = node.args.pop()
       while (node.args.length > 0) {
         curnode = makeNode([node.args.pop(), curnode])
       }
@@ -109,13 +109,13 @@ function factory (type, config, load, typed, math) {
     if (!node.args || node.args.length === 0) {
       return
     }
-    var makeNode = createMakeNodeFunction(node)
-    var l = node.args.length
-    for (var i = 0; i < l; i++) {
+    const makeNode = createMakeNodeFunction(node)
+    const l = node.args.length
+    for (let i = 0; i < l; i++) {
       unflattenl(node.args[i])
     }
     if (l > 2 && isAssociative(node)) {
-      var curnode = node.args.shift()
+      let curnode = node.args.shift()
       while (node.args.length > 0) {
         curnode = makeNode([curnode, node.args.shift()])
       }

@@ -1,13 +1,13 @@
 'use strict'
 
-var clone = require('../../utils/object').clone
-var isInteger = require('../../utils/number').isInteger
-var array = require('../../utils/array')
-var IndexError = require('../../error/IndexError')
-var DimensionError = require('../../error/DimensionError')
+const clone = require('../../utils/object').clone
+const isInteger = require('../../utils/number').isInteger
+const array = require('../../utils/array')
+const IndexError = require('../../error/IndexError')
+const DimensionError = require('../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Concatenate two or more matrices.
@@ -24,12 +24,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var A = [[1, 2], [5, 6]];
-   *    var B = [[3, 4], [7, 8]];
+   *    const A = [[1, 2], [5, 6]]
+   *    const B = [[3, 4], [7, 8]]
    *
-   *    math.concat(A, B);                  // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
-   *    math.concat(A, B, 0);               // returns [[1, 2], [5, 6], [3, 4], [7, 8]]
-   *    math.concat('hello', ' ', 'world'); // returns 'hello world'
+   *    math.concat(A, B)                  // returns [[1, 2, 3, 4], [5, 6, 7, 8]]
+   *    math.concat(A, B, 0)               // returns [[1, 2], [5, 6], [3, 4], [7, 8]]
+   *    math.concat('hello', ' ', 'world') // returns 'hello world'
    *
    * See also:
    *
@@ -38,18 +38,18 @@ function factory (type, config, load, typed) {
    * @param {... Array | Matrix} args     Two or more matrices
    * @return {Array | Matrix} Concatenated matrix
    */
-  var concat = typed('concat', {
+  const concat = typed('concat', {
     // TODO: change signature to '...Array | Matrix, dim?' when supported
     '...Array | Matrix | number | BigNumber': function (args) {
-      var i
-      var len = args.length
-      var dim = -1 // zero-based dimension
-      var prevDim
-      var asMatrix = false
-      var matrices = [] // contains multi dimensional arrays
+      let i
+      const len = args.length
+      let dim = -1 // zero-based dimension
+      let prevDim
+      let asMatrix = false
+      const matrices = [] // contains multi dimensional arrays
 
       for (i = 0; i < len; i++) {
-        var arg = args[i]
+        const arg = args[i]
 
         // test whether we need to return a Matrix (if not we return an Array)
         if (type.isMatrix(arg)) {
@@ -75,8 +75,8 @@ function factory (type, config, load, typed) {
           }
         } else {
           // this is a matrix or array
-          var m = clone(arg).valueOf()
-          var size = array.size(m)
+          const m = clone(arg).valueOf()
+          const size = array.size(m)
           matrices[i] = m
           prevDim = dim
           dim = size.length - 1
@@ -92,7 +92,7 @@ function factory (type, config, load, typed) {
         throw new SyntaxError('At least one matrix expected')
       }
 
-      var res = matrices.shift()
+      let res = matrices.shift()
       while (matrices.length) {
         res = _concat(res, matrices.shift(), dim, 0)
       }
@@ -127,8 +127,8 @@ function _concat (a, b, concatDim, dim) {
       throw new DimensionError(a.length, b.length)
     }
 
-    var c = []
-    for (var i = 0; i < a.length; i++) {
+    const c = []
+    for (let i = 0; i < a.length; i++) {
       c[i] = _concat(a[i], b[i], concatDim, dim + 1)
     }
     return c

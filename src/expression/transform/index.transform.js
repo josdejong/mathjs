@@ -8,9 +8,9 @@
  */
 function factory (type, config, load) {
   return function indexTransform () {
-    var args = []
-    for (var i = 0, ii = arguments.length; i < ii; i++) {
-      var arg = arguments[i]
+    const args = []
+    for (let i = 0, ii = arguments.length; i < ii; i++) {
+      let arg = arguments[i]
 
       // change from one-based to zero based, and convert BigNumber to number
       if (type.isRange(arg)) {
@@ -33,7 +33,7 @@ function factory (type, config, load) {
       args[i] = arg
     }
 
-    var res = new type.Index()
+    const res = new type.Index()
     type.Index.apply(res, args)
     return res
   }

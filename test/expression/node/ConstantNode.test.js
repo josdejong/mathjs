@@ -1,16 +1,16 @@
 // test ConstantNode
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bigmath = require('../../../src/index').create({number: 'BigNumber'})
-var Node = math.expression.node.Node
-var ConstantNode = math.expression.node.ConstantNode
-var SymbolNode = math.expression.node.SymbolNode
-var Fraction = require('../../../src/type/fraction/Fraction')
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bigmath = require('../../../src/index').create({number: 'BigNumber'})
+const Node = math.expression.node.Node
+const ConstantNode = math.expression.node.ConstantNode
+const SymbolNode = math.expression.node.SymbolNode
+const Fraction = require('../../../src/type/fraction/Fraction')
 
 describe('ConstantNode', function () {
   it('should create a ConstantNode', function () {
-    var a = new ConstantNode(3)
+    const a = new ConstantNode(3)
     assert(a instanceof Node)
     assert.equal(a.type, 'ConstantNode')
     // TODO: extensively test each of the supported types
@@ -24,7 +24,7 @@ describe('ConstantNode', function () {
   })
 
   it('should have isConstantNode', function () {
-    var node = new ConstantNode(1)
+    const node = new ConstantNode(1)
     assert(node.isConstantNode)
   })
 
@@ -33,7 +33,7 @@ describe('ConstantNode', function () {
   })
 
   it('should compile a ConstantNode', function () {
-    var expr = new ConstantNode(2.3).compile()
+    let expr = new ConstantNode(2.3).compile()
     assert.strictEqual(expr.eval(), 2.3)
 
     expr = new ConstantNode(2.3).compile()
@@ -53,14 +53,14 @@ describe('ConstantNode', function () {
   })
 
   it('should compile a ConstantNode with bigmath', function () {
-    var constantNode = bigmath.parse('2.3')
+    const constantNode = bigmath.parse('2.3')
     assert.ok(constantNode.isConstantNode)
-    var expr = constantNode.compile()
+    const expr = constantNode.compile()
     assert.deepEqual(expr.eval(), new bigmath.type.BigNumber(2.3))
   })
 
   it('should find a ConstantNode', function () {
-    var a = new ConstantNode(2)
+    const a = new ConstantNode(2)
     assert.deepEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
     assert.deepEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
   })
@@ -71,21 +71,21 @@ describe('ConstantNode', function () {
   })
 
   it('should find a ConstantNode', function () {
-    var a = new ConstantNode(2)
+    const a = new ConstantNode(2)
     assert.deepEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
     assert.deepEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
   })
 
   it('should run forEach on a ConstantNode', function () {
-    var a = new ConstantNode(2)
+    const a = new ConstantNode(2)
     a.forEach(function () {
       assert.ok(false, 'should not execute, constant has no childs')
     })
   })
 
   it('should map a ConstantNode', function () {
-    var a = new ConstantNode(2)
-    var b = a.map(function () {
+    const a = new ConstantNode(2)
+    const b = a.map(function () {
       assert.ok(false, 'should not execute, constant has no childs')
     })
 
@@ -94,15 +94,15 @@ describe('ConstantNode', function () {
   })
 
   it('should transform a ConstantNode', function () {
-    var a = new ConstantNode(2)
-    var b = new ConstantNode(3)
-    var c = a.transform(function (node) {
+    const a = new ConstantNode(2)
+    const b = new ConstantNode(3)
+    const c = a.transform(function (node) {
       return node instanceof ConstantNode && node.value == '2' ? b : node
     })
     assert.deepEqual(c, b)
 
     // no match should leave the node as is
-    var d = a.transform(function (node) {
+    const d = a.transform(function (node) {
       return node instanceof ConstantNode && node.value == '99' ? b : node
     })
     assert.notStrictEqual(d, a)
@@ -110,8 +110,8 @@ describe('ConstantNode', function () {
   })
 
   it('should clone a ConstantNode', function () {
-    var a = new ConstantNode(2)
-    var b = a.clone()
+    const a = new ConstantNode(2)
+    const b = a.clone()
 
     assert(b instanceof ConstantNode)
     assert.deepEqual(a, b)
@@ -121,7 +121,7 @@ describe('ConstantNode', function () {
   })
 
   it('test equality another Node', function () {
-    var a = new ConstantNode(2)
+    const a = new ConstantNode(2)
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -146,28 +146,28 @@ describe('ConstantNode', function () {
 
   it('should stringify a ConstantNode with custom toString', function () {
     // Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, options) {
+    const customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ')'
       }
     }
 
-    var n = new ConstantNode(1)
+    const n = new ConstantNode(1)
 
     assert.equal(n.toString({handler: customFunction}), 'const(1)')
   })
 
   it('toJSON and fromJSON', function () {
-    var a = new ConstantNode(2.3)
+    const a = new ConstantNode(2.3)
 
-    var json = a.toJSON()
+    const json = a.toJSON()
 
     assert.deepEqual(json, {
       mathjs: 'ConstantNode',
       value: 2.3
     })
 
-    var parsed = ConstantNode.fromJSON(json)
+    const parsed = ConstantNode.fromJSON(json)
     assert.deepEqual(parsed, a)
   })
 
@@ -183,33 +183,33 @@ describe('ConstantNode', function () {
   })
 
   it('should LaTeX a ConstantNode in exponential notation', function () {
-    var n = new ConstantNode(1e10)
+    const n = new ConstantNode(1e10)
     assert.equal(n.toTex(), '1\\cdot10^{+10}')
   })
 
   it('should LaTeX a ConstantNode with custom toTex', function () {
     // Also checks if the custom functions get passed on to the children
-    var customFunction = function (node, options) {
+    const customFunction = function (node, options) {
       if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + '\\right)'
       }
     }
 
-    var n = new ConstantNode(1)
+    const n = new ConstantNode(1)
 
     assert.equal(n.toTex({handler: customFunction}), 'const\\left(1\\right)')
   })
 
   it('should LaTeX a ConstantNode with a fraction', function () {
-    var positive = new ConstantNode(new math.type.Fraction(1.5))
-    var negative = new ConstantNode(new math.type.Fraction(-1.5))
+    const positive = new ConstantNode(new math.type.Fraction(1.5))
+    const negative = new ConstantNode(new math.type.Fraction(-1.5))
 
     assert.equal(positive.toTex(), '\\frac{3}{2}')
     assert.equal(negative.toTex(), '-\\frac{3}{2}')
   })
 
   it('should escape strings in toTex', function () {
-    var n = new ConstantNode('space tab\tunderscore_bla$/')
+    const n = new ConstantNode('space tab\tunderscore_bla$/')
 
     assert.equal(n.toTex(), '\\mathtt{"space~tab\\qquad{}underscore\\_bla\\$/"}')
   })

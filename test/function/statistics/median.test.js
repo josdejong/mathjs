@@ -1,11 +1,11 @@
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var BigNumber = math.type.BigNumber
-var Complex = math.type.Complex
-var DenseMatrix = math.type.DenseMatrix
-var Unit = math.type.Unit
-var median = math.median
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const BigNumber = math.type.BigNumber
+const Complex = math.type.Complex
+const DenseMatrix = math.type.DenseMatrix
+const Unit = math.type.Unit
+const median = math.median
 
 describe('median', function () {
   it('should return the median of an even number of numbers', function () {
@@ -95,13 +95,13 @@ describe('median', function () {
   })
 
   it('should not mutate the input', function () {
-    var a = [3, 2, 1]
-    var b = median(a)
+    const a = [3, 2, 1]
+    const b = median(a)
     assert.deepEqual(a, [3, 2, 1])
   })
 
   it('should LaTeX median', function () {
-    var expression = math.parse('median(1,2,3,4)')
+    const expression = math.parse('median(1,2,3,4)')
     assert.equal(expression.toTex(), '\\mathrm{median}\\left(1,2,3,4\\right)')
   })
 })

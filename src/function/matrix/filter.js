@@ -1,11 +1,11 @@
 'use strict'
 
-var filter = require('../../utils/array').filter
-var filterRegExp = require('../../utils/array').filterRegExp
-var maxArgumentCount = require('../../utils/function').maxArgumentCount
+const filter = require('../../utils/array').filter
+const filterRegExp = require('../../utils/array').filterRegExp
+const maxArgumentCount = require('../../utils/function').maxArgumentCount
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Filter the items in an array or one dimensional matrix.
@@ -17,11 +17,11 @@ function factory (type, config, load, typed) {
    * Examples:
    *
    *    function isPositive (x) {
-   *      return x > 0;
+   *      return x > 0
    *    }
-   *    math.filter([6, -2, -1, 4, 3], isPositive); // returns [6, 4, 3]
+   *    math.filter([6, -2, -1, 4, 3], isPositive) // returns [6, 4, 3]
    *
-   *    math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/); // returns ["23", "100", "55"]
+   *    math.filter(["23", "foo", "100", "55", "bar"], /[0-9]+/) // returns ["23", "100", "55"]
    *
    * See also:
    *
@@ -36,7 +36,7 @@ function factory (type, config, load, typed) {
    *        matrix/array being traversed. The function must return a boolean.
    * @return {Matrix | Array} Returns the filtered matrix.
    */
-  var filter = typed('filter', {
+  const filter = typed('filter', {
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
@@ -64,7 +64,7 @@ function factory (type, config, load, typed) {
  */
 function _filterCallback (x, callback) {
   // figure out what number of arguments the callback function expects
-  var args = maxArgumentCount(callback)
+  const args = maxArgumentCount(callback)
 
   return filter(x, function (value, index, array) {
     // invoke the callback function with the right number of arguments

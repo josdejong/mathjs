@@ -120,50 +120,50 @@
 	</tr>
 </table>
 <script>
-  var expr = document.getElementById('expr');
-  var output = document.getElementById('output');
-  var code = document.getElementById('code');
-  var result = document.getElementById('result');
-  var options = {parenthesis: 'keep', implicit: 'hide'};
+  const expr = document.getElementById('expr')
+  const output = document.getElementById('output')
+  const code = document.getElementById('code')
+  const result = document.getElementById('result')
+  let options = {parenthesis: 'keep', implicit: 'hide'}
 
   // initialize with an example expression
-  expr.value = 'sqrt(75/3)+det([[-1,2],[3,1]])-sin(pi/4)^2';
+  expr.value = 'sqrt(75/3)+det([[-1,2],[3,1]])-sin(pi/4)^2'
 
   function print () {
-    var parsed = null;
+    let parsed = null
 
     try {
       // parse the expression
-      parsed = math.parse(expr.value);
+      parsed = math.parse(expr.value)
 
       // evaluate the result of the expression
-      result.innerHTML = math.format(parsed.compile().eval());
+      result.innerHTML = math.format(parsed.compile().eval())
 
       // print the HTML output
-      var html = math.parse(expr.value).toHTML(options);
-      output.innerHTML = html;
+      const html = math.parse(expr.value).toHTML(options)
+      output.innerHTML = html
 
       // print the HTML code
       code.innerHTML = html.replace(/</g, '&lt;').
       replace(/>/g, '&gt;').
-      replace(/&lt;\/span&gt;/g, '&lt;/span&gt;<br />');
+      replace(/&lt;\/span&gt;/g, '&lt;/span&gt;<br />')
     }
     catch (err) {
-      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';
+      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>'
     }
   }
 
-  window.onload = print;
-  expr.oninput = print;
+  window.onload = print
+  expr.oninput = print
 
   // make the controls work
-  var controls = document.querySelectorAll('input[type=radio]');
+  const controls = document.querySelectorAll('input[type=radio]')
   controls.forEach(function (control) {
     control.onclick = function() {
-      options[control.name] = control.value;
-      print();
-    };
-  });
+      options[control.name] = control.value
+      print()
+    }
+  })
 </script>
 </body>
 </html>

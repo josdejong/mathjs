@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -13,10 +13,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.abs(3.5);                // returns number 3.5
-   *    math.abs(-4.2);               // returns number 4.2
+   *    math.abs(3.5)                // returns number 3.5
+   *    math.abs(-4.2)               // returns number 4.2
    *
-   *    math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
+   *    math.abs([3, -5, -1, 0, 2])  // returns Array [3, 5, 1, 0, 2]
    *
    * See also:
    *
@@ -27,7 +27,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Absolute value of `x`
    */
-  var abs = typed('abs', {
+  const abs = typed('abs', {
     'number': Math.abs,
 
     'Complex': function (x) {

@@ -28,10 +28,10 @@ Object | Returns the current configuration
 ## Examples
 
 ```js
-math.config().number;                // outputs 'number'
-math.eval('0.4');                    // outputs number 0.4
-math.config({number: 'Fraction'});
-math.eval('0.4');                    // outputs Fraction 2/5
+math.config().number                // outputs 'number'
+math.eval('0.4')                    // outputs number 0.4
+math.config({number: 'Fraction'})
+math.eval('0.4')                    // outputs Fraction 2/5
 ```
 
 

@@ -1,9 +1,8 @@
-var assert = require('assert'),
-  ArgumentsError = require('../../src/error/ArgumentsError')
+const assert = require('assert'), ArgumentsError = require('../../src/error/ArgumentsError')
 
 describe('ArgumentsError', function () {
   it('should construct an ArgumentsError without max', function () {
-    var err = new ArgumentsError('myfunction', 1, 2)
+    const err = new ArgumentsError('myfunction', 1, 2)
     assert(err instanceof Error)
     assert(err instanceof ArgumentsError)
     assert.equal(err.fn, 'myfunction')
@@ -14,7 +13,7 @@ describe('ArgumentsError', function () {
   })
 
   it('should construct an ArgumentsError with max', function () {
-    var err = new ArgumentsError('myfunction', 1, 2, 3)
+    const err = new ArgumentsError('myfunction', 1, 2, 3)
     assert(err instanceof Error)
     assert(err instanceof ArgumentsError)
     assert.equal(err.fn, 'myfunction')

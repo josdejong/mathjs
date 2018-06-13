@@ -1,9 +1,9 @@
 // test bignumber utils
-var assert = require('assert')
-var BigNumber = require('decimal.js')
-var Big32 = BigNumber.clone({precision: 32})
-var Big64 = BigNumber.clone({precision: 64})
-var constants = require('../../../src/utils/bignumber/constants')
+const assert = require('assert')
+const BigNumber = require('decimal.js')
+const Big32 = BigNumber.clone({precision: 32})
+const Big64 = BigNumber.clone({precision: 64})
+const constants = require('../../../src/utils/bignumber/constants')
 
 describe('bignumber', function () {
   it('should calculate a bignumber e', function () {
@@ -29,7 +29,7 @@ describe('bignumber', function () {
 
   it('should calculate a bignumber phi', function () {
     // FIXME: round-off error
-    // assert.equal(bignumber.phi(32), '1.6180339887498948482045868343656');
+    // assert.equal(bignumber.phi(32), '1.6180339887498948482045868343656')
     assert.equal(constants.phi(Big32),
       '1.6180339887498948482045868343657')
     assert.equal(constants.phi(Big64),

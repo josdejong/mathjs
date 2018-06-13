@@ -1,31 +1,31 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var acoth = math.acoth
-var coth = math.coth
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 21})
-var predmath = math.create({predictable: true})
-var acothBig = bigmath.acoth
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const acoth = math.acoth
+const coth = math.coth
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 21})
+const predmath = math.create({predictable: true})
+const acothBig = bigmath.acoth
+const Big = bigmath.bignumber
 
 describe('acoth', function () {
   it('should return the hyperbolic arccot of a boolean', function () {
     assert.equal(acoth(true), Infinity)
     approx.deepEqual(acoth(false), complex(0, pi / 2))
-    // assert.ok(isNaN(acoth(false)));
+    // assert.ok(isNaN(acoth(false)))
   })
 
   it('should return the hyperbolic arccot of a number', function () {
     approx.deepEqual(acoth(0), complex(0, pi / 2))
     approx.deepEqual(acoth(0.5), complex(0.5493061443340548, -1.5707963267949))
-    // assert.ok(isNaN(acoth(0)));
-    // assert.ok(isNaN(acoth(0.5)));
+    // assert.ok(isNaN(acoth(0)))
+    // assert.ok(isNaN(acoth(0.5)))
 
     approx.equal(acoth(-2), -0.54930614433405484569762261846)
     assert.equal(acoth(-1), -Infinity)
@@ -40,8 +40,8 @@ describe('acoth', function () {
   })
 
   it('should return the hyperbolic arccot of a bignumber', function () {
-    var arg2 = Big(-2)
-    var arg3 = Big(-1)
+    const arg2 = Big(-2)
+    const arg3 = Big(-1)
     assert.deepEqual(acothBig(Big(-Infinity)), Big('-0'))
     assert.deepEqual(acothBig(arg2), Big('-0.5493061443340548457'))
     assert.deepEqual(acothBig(arg3).toString(), '-Infinity')
@@ -98,7 +98,7 @@ describe('acoth', function () {
   })
 
   it('should calculate the arccot element-wise for arrays and matrices', function () {
-    var acoth123 = [Infinity, 0.54930614433405, 0.34657359027997]
+    const acoth123 = [Infinity, 0.54930614433405, 0.34657359027997]
     approx.deepEqual(acoth([1, 2, 3]), acoth123)
     approx.deepEqual(acoth(matrix([1, 2, 3])), matrix(acoth123))
   })
@@ -109,7 +109,7 @@ describe('acoth', function () {
   })
 
   it('should LaTeX acoth', function () {
-    var expression = math.parse('acoth(2)')
+    const expression = math.parse('acoth(2)')
     assert.equal(expression.toTex(), '\\coth^{-1}\\left(2\\right)')
   })
 })

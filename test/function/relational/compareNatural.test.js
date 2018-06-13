@@ -1,12 +1,12 @@
 // test compareNatural
-var assert = require('assert')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var complex = math.complex
-var matrix = math.matrix
-var sparse = math.sparse
-var unit = math.unit
-var compareNatural = math.compareNatural
+const assert = require('assert')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const complex = math.complex
+const matrix = math.matrix
+const sparse = math.sparse
+const unit = math.unit
+const compareNatural = math.compareNatural
 
 describe('compareNatural', function () {
   it('should compare two numbers correctly', function () {
@@ -50,8 +50,8 @@ describe('compareNatural', function () {
   })
 
   it('should compare two fractions', function () {
-    var a = math.fraction(1, 3)
-    var b = math.fraction(1, 6)
+    const a = math.fraction(1, 3)
+    const b = math.fraction(1, 6)
     assert.equal(typeof compareNatural(a, b), 'number')
     assert.equal(a.toString(), '0.(3)')
     assert.equal(b.toString(), '0.1(6)')
@@ -219,7 +219,7 @@ describe('compareNatural', function () {
   })
 
   it('should apply configuration option epsilon', function () {
-    var mymath = math.create()
+    const mymath = math.create()
 
     assert.equal(mymath.compareNatural(1, 0.991), 1)
     assert.equal(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
@@ -241,7 +241,7 @@ describe('compareNatural', function () {
   })
 
   it('should LaTeX compare', function () {
-    var expression = math.parse('compareNatural(1,2)')
+    const expression = math.parse('compareNatural(1,2)')
     assert.equal(expression.toTex(), '\\mathrm{compareNatural}\\left(1,2\\right)')
   })
 })

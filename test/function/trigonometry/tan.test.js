@@ -1,16 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  tan = math.tan,
-  piBigmath = math.create({number: 'BigNumber', precision: 21}),
-  bigmath = math.create({precision: 20}),
-  Big = bigmath.bignumber,
-  bigTan = bigmath.tan
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, tan = math.tan, piBigmath = math.create({number: 'BigNumber', precision: 21}), bigmath = math.create({precision: 20}), Big = bigmath.bignumber, bigTan = bigmath.tan
 
 describe('tan', function () {
   it('should return the tangent of a boolean', function () {
@@ -32,7 +20,7 @@ describe('tan', function () {
   })
 
   it('should return the tangent of a bignumber', function () {
-    var bigPi = piBigmath.pi
+    const bigPi = piBigmath.pi
 
     assert.deepEqual(bigTan(Big(0)), Big(0))
     assert.deepEqual(bigTan(Big(-1)), Big('-1.5574077246549022305'))
@@ -43,8 +31,7 @@ describe('tan', function () {
   })
 
   it('should return the tangent of a complex number', function () {
-    var re = 0.00376402564150425,
-      im = 1.00323862735360980
+    const re = 0.00376402564150425, im = 1.00323862735360980
     approx.deepEqual(tan(complex('2+3i')), complex(-re, im))
     approx.deepEqual(tan(complex('2-3i')), complex(-re, -im))
     approx.deepEqual(tan(complex('-2+3i')), complex(re, im))
@@ -72,7 +59,7 @@ describe('tan', function () {
     assert.throws(function () { tan('string') })
   })
 
-  var tan123 = [1.557407724654902, -2.185039863261519, -0.142546543074278]
+  const tan123 = [1.557407724654902, -2.185039863261519, -0.142546543074278]
 
   it('should return the tan of each element of an array', function () {
     approx.deepEqual(tan([1, 2, 3]), tan123)
@@ -88,7 +75,7 @@ describe('tan', function () {
   })
 
   it('should LaTeX tan', function () {
-    var expression = math.parse('tan(1)')
+    const expression = math.parse('tan(1)')
     assert.equal(expression.toTex(), '\\tan\\left(1\\right)')
   })
 })

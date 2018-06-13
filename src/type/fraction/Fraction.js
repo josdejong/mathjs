@@ -1,5 +1,5 @@
 'use strict'
-var Fraction = require('fraction.js')
+const Fraction = require('fraction.js')
 
 /**
  * Attach type information

@@ -1,14 +1,12 @@
 'use strict'
 
-var util = require('../../../utils/index')
+const util = require('../../../utils/index')
 
-var number = util.number,
-
-  isInteger = number.isInteger
+const number = util.number, isInteger = number.isInteger
 
 function factory (type, config, load, typed) {
-  var cs_sqr = load(require('../../algebra/sparse/cs_sqr'))
-  var cs_lu = load(require('../../algebra/sparse/cs_lu'))
+  const cs_sqr = load(require('../../algebra/sparse/cs_sqr'))
+  const cs_lu = load(require('../../algebra/sparse/cs_lu'))
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where
@@ -17,11 +15,11 @@ function factory (type, config, load, typed) {
    *
    * Syntax:
    *
-   *    math.slu(A, order, threshold);
+   *    math.slu(A, order, threshold)
    *
    * Examples:
    *
-   *    var A = math.sparse([[4,3], [6, 3]])
+   *    const A = math.sparse([[4,3], [6, 3]])
    *    math.slu(A, 1, 0.001)
    *    // returns:
    *    // {
@@ -47,7 +45,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Object} The lower triangular matrix, the upper triangular matrix and the permutation vectors.
    */
-  var slu = typed('slu', {
+  const slu = typed('slu', {
 
     'SparseMatrix, number, number': function (a, order, threshold) {
       // verify order
@@ -56,10 +54,10 @@ function factory (type, config, load, typed) {
       if (threshold < 0 || threshold > 1) { throw new Error('Partial pivoting threshold must be a number from 0 to 1') }
 
       // perform symbolic ordering and analysis
-      var s = cs_sqr(order, a, false)
+      const s = cs_sqr(order, a, false)
 
       // perform lu decomposition
-      var f = cs_lu(a, s, threshold)
+      const f = cs_lu(a, s, threshold)
 
       // return decomposition
       return {

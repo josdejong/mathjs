@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../../utils/collection/deepMap')
+const deepMap = require('../../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../../utils/latex')
+  const latex = require('../../../utils/latex')
 
   /**
    * Create a complex value or convert a value to a complex value.
@@ -28,12 +28,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var a = math.complex(3, -4);     // a = Complex 3 - 4i
-   *    a.re = 5;                        // a = Complex 5 - 4i
-   *    var i = a.im;                    // Number -4;
-   *    var b = math.complex('2 + 6i');  // Complex 2 + 6i
-   *    var c = math.complex();          // Complex 0 + 0i
-   *    var d = math.add(a, b);          // Complex 5 + 2i
+   *    const a = math.complex(3, -4)     // a = Complex 3 - 4i
+   *    a.re = 5                          // a = Complex 5 - 4i
+   *    const i = a.im                    // Number -4
+   *    const b = math.complex('2 + 6i')  // Complex 2 + 6i
+   *    const c = math.complex()          // Complex 0 + 0i
+   *    const d = math.add(a, b)          // Complex 5 + 2i
    *
    * See also:
    *
@@ -43,7 +43,7 @@ function factory (type, config, load, typed) {
    *            Arguments specifying the real and imaginary part of the complex number
    * @return {Complex | Array | Matrix} Returns a complex value
    */
-  var complex = typed('complex', {
+  const complex = typed('complex', {
     '': function () {
       return type.Complex.ZERO
     },

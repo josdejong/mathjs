@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var equal = load(require('./equal'))
+  const equal = load(require('./equal'))
 
   /**
    * Test element wise whether two matrices are equal.
@@ -15,13 +15,13 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.deepEqual(2, 4);   // returns false
+   *    math.deepEqual(2, 4)   // returns false
    *
-   *    a = [2, 5, 1];
-   *    b = [2, 7, 1];
+   *    a = [2, 5, 1]
+   *    b = [2, 7, 1]
    *
-   *    math.deepEqual(a, b);   // returns false
-   *    math.equal(a, b);       // returns [true, false, true]
+   *    math.deepEqual(a, b)   // returns false
+   *    math.equal(a, b)       // returns [true, false, true]
    *
    * See also:
    *
@@ -32,7 +32,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns true when the input matrices have the same size and each of their elements is equal.
    */
-  var deepEqual = typed('deepEqual', {
+  const deepEqual = typed('deepEqual', {
     'any, any': function (x, y) {
       return _deepEqual(x.valueOf(), y.valueOf())
     }
@@ -51,12 +51,12 @@ function factory (type, config, load, typed) {
   function _deepEqual (x, y) {
     if (Array.isArray(x)) {
       if (Array.isArray(y)) {
-        var len = x.length
+        const len = x.length
         if (len !== y.length) {
           return false
         }
 
-        for (var i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
           if (!_deepEqual(x[i], y[i])) {
             return false
           }

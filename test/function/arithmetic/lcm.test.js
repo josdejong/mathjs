@@ -1,8 +1,4 @@
-var assert = require('assert'),
-  math = require('../../../src/index'),
-  matrix = math.matrix,
-  sparse = math.sparse,
-  lcm = math.lcm
+const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, lcm = math.lcm
 
 describe('lcm', function () {
   it('should find the lowest common multiple of two or more numbers', function () {
@@ -74,7 +70,7 @@ describe('lcm', function () {
   })
 
   it('should find the least common multiple of fractions', function () {
-    var a = math.fraction(5, 8)
+    const a = math.fraction(5, 8)
     assert.equal(lcm(a, math.fraction(3, 7)).toString(), '15')
     assert.equal(a.toString(), '0.625')
   })
@@ -156,7 +152,7 @@ describe('lcm', function () {
   })
 
   it('should LaTeX lcm', function () {
-    var expression = math.parse('lcm(2,3)')
+    const expression = math.parse('lcm(2,3)')
     assert.equal(expression.toTex(), '\\mathrm{lcm}\\left(2,3\\right)')
   })
 })

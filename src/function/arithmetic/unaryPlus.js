@@ -1,9 +1,9 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Unary plus operation.
@@ -17,8 +17,8 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.unaryPlus(3.5);      // returns 3.5
-   *    math.unaryPlus(1);     // returns 1
+   *    math.unaryPlus(3.5)      // returns 3.5
+   *    math.unaryPlus(1)     // returns 1
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
-  var unaryPlus = typed('unaryPlus', {
+  const unaryPlus = typed('unaryPlus', {
     'number': function (x) {
       return x
     },

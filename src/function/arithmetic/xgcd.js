@@ -1,9 +1,9 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
    * Calculate the extended greatest common divisor for two values.
@@ -15,9 +15,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.xgcd(8, 12);             // returns [4, -1, 1]
-   *    math.gcd(8, 12);              // returns 4
-   *    math.xgcd(36163, 21199);      // returns [1247, -7, 12]
+   *    math.xgcd(8, 12)             // returns [4, -1, 1]
+   *    math.gcd(8, 12)              // returns 4
+   *    math.xgcd(36163, 21199)      // returns [1247, -7, 12]
    *
    * See also:
    *
@@ -28,7 +28,7 @@ function factory (type, config, load, typed) {
    * @return {Array}              Returns an array containing 3 integers `[div, m, n]`
    *                              where `div = gcd(a, b)` and `a*m + b*n = div`
    */
-  var xgcd = typed('xgcd', {
+  const xgcd = typed('xgcd', {
     'number, number': _xgcd,
     'BigNumber, BigNumber': _xgcdBigNumber
     // TODO: implement support for Fraction
@@ -47,11 +47,16 @@ function factory (type, config, load, typed) {
    */
   function _xgcd (a, b) {
     // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-    var t, // used to swap two variables
-      q, // quotient
-      r, // remainder
-      x = 0, lastx = 1,
-      y = 1, lasty = 0
+    let // used to swap two variables
+      t,
+      // quotient
+      q,
+      // remainder
+      r,
+      x = 0,
+      lastx = 1,
+      y = 1,
+      lasty = 0
 
     if (!isInteger(a) || !isInteger(b)) {
       throw new Error('Parameters in function xgcd must be integer numbers')
@@ -73,7 +78,7 @@ function factory (type, config, load, typed) {
       b = r
     }
 
-    var res
+    let res
     if (a < 0) {
       res = [-a, -lastx, -lasty]
     } else {
@@ -91,15 +96,21 @@ function factory (type, config, load, typed) {
    */
   function _xgcdBigNumber (a, b) {
     // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-    var t, // used to swap two variables
-      q, // quotient
-      r, // remainder
-      zero = new type.BigNumber(0),
-      one = new type.BigNumber(1),
-      x = zero,
-      lastx = one,
-      y = one,
-      lasty = zero
+    let // used to swap two variables
+      t
+
+    let // quotient
+      q
+
+    let // remainder
+      r
+
+    const zero = new type.BigNumber(0)
+    const one = new type.BigNumber(1)
+    let x = zero
+    let lastx = one
+    let y = one
+    let lasty = zero
 
     if (!a.isInt() || !b.isInt()) {
       throw new Error('Parameters in function xgcd must be integer numbers')
@@ -121,7 +132,7 @@ function factory (type, config, load, typed) {
       b = r
     }
 
-    var res
+    let res
     if (a.lt(zero)) {
       res = [a.neg(), lastx.neg(), lasty.neg()]
     } else {

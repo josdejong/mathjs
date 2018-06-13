@@ -49,19 +49,19 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.typeof(3.5);                     // returns 'number'
-   *    math.typeof(math.complex('2-4i'));    // returns 'Complex'
-   *    math.typeof(math.unit('45 deg'));     // returns 'Unit'
-   *    math.typeof('hello world');           // returns 'string'
+   *    math.typeof(3.5)                     // returns 'number'
+   *    math.typeof(math.complex('2-4i'))    // returns 'Complex'
+   *    math.typeof(math.unit('45 deg'))     // returns 'Unit'
+   *    math.typeof('hello world')           // returns 'string'
    *
    * @param {*} x     The variable for which to test the type.
    * @return {string} Returns the name of the type. Primitive types are lower case,
    *                  non-primitive types are upper-camel-case.
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
-  var _typeof = typed('_typeof', {
+  const _typeof = typed('_typeof', {
     'any': function (x) {
-      var t = typeof x
+      const t = typeof x
 
       if (t === 'object') {
         // JavaScript types

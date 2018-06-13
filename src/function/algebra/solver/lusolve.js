@@ -1,17 +1,17 @@
 'use strict'
 
-var isArray = Array.isArray
+const isArray = Array.isArray
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../../type/matrix/function/matrix'))
-  var lup = load(require('../decomposition/lup'))
-  var slu = load(require('../decomposition/slu'))
-  var cs_ipvec = load(require('../sparse/cs_ipvec'))
+  const matrix = load(require('../../../type/matrix/function/matrix'))
+  const lup = load(require('../decomposition/lup'))
+  const slu = load(require('../decomposition/slu'))
+  const cs_ipvec = load(require('../sparse/cs_ipvec'))
 
-  var solveValidation = load(require('./utils/solveValidation'))
+  const solveValidation = load(require('./utils/solveValidation'))
 
-  var usolve = load(require('./usolve'))
-  var lsolve = load(require('./lsolve'))
+  const usolve = load(require('./usolve'))
+  const lsolve = load(require('./lsolve'))
 
   /**
    * Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
@@ -23,17 +23,17 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var m = [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]];
+   *    const m = [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]]
    *
-   *    var x = math.lusolve(m, [-1, -1, -1, -1]);        // x = [[-1], [-0.5], [-1/3], [-0.25]]
+   *    const x = math.lusolve(m, [-1, -1, -1, -1])        // x = [[-1], [-0.5], [-1/3], [-0.25]]
    *
-   *    var f = math.lup(m);
-   *    var x1 = math.lusolve(f, [-1, -1, -1, -1]);       // x1 = [[-1], [-0.5], [-1/3], [-0.25]]
-   *    var x2 = math.lusolve(f, [1, 2, 1, -1]);          // x2 = [[1], [1], [1/3], [-0.25]]
+   *    const f = math.lup(m)
+   *    const x1 = math.lusolve(f, [-1, -1, -1, -1])       // x1 = [[-1], [-0.5], [-1/3], [-0.25]]
+   *    const x2 = math.lusolve(f, [1, 2, 1, -1])          // x2 = [[1], [1], [1/3], [-0.25]]
    *
-   *    var a = [[-2, 3], [2, 1]];
-   *    var b = [11, 9];
-   *    var x = math.lusolve(a, b);  // [[2], [5]]
+   *    const a = [[-2, 3], [2, 1]]
+   *    const b = [11, 9]
+   *    const x = math.lusolve(a, b)  // [[2], [5]]
    *
    * See also:
    *
@@ -46,36 +46,36 @@ function factory (type, config, load, typed) {
    *
    * @return {DenseMatrix | Array}           Column vector with the solution to the linear system A * x = b
    */
-  var lusolve = typed('lusolve', {
+  const lusolve = typed('lusolve', {
 
     'Array, Array | Matrix': function (a, b) {
       // convert a to matrix
       a = matrix(a)
       // matrix lup decomposition
-      var d = lup(a)
+      const d = lup(a)
       // solve
-      var x = _lusolve(d.L, d.U, d.p, null, b)
+      const x = _lusolve(d.L, d.U, d.p, null, b)
       // convert result to array
       return x.valueOf()
     },
 
     'DenseMatrix, Array | Matrix': function (a, b) {
       // matrix lup decomposition
-      var d = lup(a)
+      const d = lup(a)
       // solve
       return _lusolve(d.L, d.U, d.p, null, b)
     },
 
     'SparseMatrix, Array | Matrix': function (a, b) {
       // matrix lup decomposition
-      var d = lup(a)
+      const d = lup(a)
       // solve
       return _lusolve(d.L, d.U, d.p, null, b)
     },
 
     'SparseMatrix, Array | Matrix, number, number': function (a, b, order, threshold) {
       // matrix lu decomposition
-      var d = slu(a, order, threshold)
+      const d = slu(a, order, threshold)
       // solve
       return _lusolve(d.L, d.U, d.p, d.q, b)
     },
@@ -86,7 +86,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  var _toMatrix = function (a) {
+  const _toMatrix = function (a) {
     // check it is a matrix
     if (type.isMatrix(a)) { return a }
     // check array
@@ -95,7 +95,7 @@ function factory (type, config, load, typed) {
     throw new TypeError('Invalid Matrix LU decomposition')
   }
 
-  var _lusolve = function (l, u, p, q, b) {
+  function _lusolve (l, u, p, q, b) {
     // verify L, U, P
     l = _toMatrix(l)
     u = _toMatrix(u)
@@ -104,9 +104,9 @@ function factory (type, config, load, typed) {
     // apply row permutations if needed (b is a DenseMatrix)
     if (p) { b._data = cs_ipvec(p, b._data) }
     // use forward substitution to resolve L * y = b
-    var y = lsolve(l, b)
+    const y = lsolve(l, b)
     // use backward substitution to resolve U * x = y
-    var x = usolve(u, y)
+    const x = usolve(u, y)
     // apply column permutations if needed (x is a DenseMatrix)
     if (q) { x._data = cs_ipvec(q, x._data) }
     // return solution

@@ -1,10 +1,10 @@
 'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach')
+const deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/addScalar'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const add = load(require('../arithmetic/addScalar'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the sum of a matrix or a list with values.
@@ -18,9 +18,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.sum(2, 1, 4, 3);               // returns 10
-   *     math.sum([2, 1, 4, 3]);             // returns 10
-   *     math.sum([[2, 5], [4, 3], [1, 7]]); // returns 22
+   *     math.sum(2, 1, 4, 3)               // returns 10
+   *     math.sum([2, 1, 4, 3])             // returns 10
+   *     math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The sum of all values
    */
-  var sum = typed('sum', {
+  const sum = typed('sum', {
     'Array | Matrix': function (args) {
       // sum([a, b, c, d, ...])
       return _sum(args)
@@ -58,7 +58,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _sum (array) {
-    var sum = undefined
+    let sum
 
     deepForEach(array, function (value) {
       try {

@@ -28,11 +28,11 @@ number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-math.dotPow(2, 3);            // returns number 8
+math.dotPow(2, 3)            // returns number 8
 
-var a = [[1, 2], [4, 3]];
-math.dotPow(a, 2);            // returns Array [[1, 4], [16, 9]]
-math.pow(a, 2);               // returns Array [[9, 8], [16, 17]]
+const a = [[1, 2], [4, 3]]
+math.dotPow(a, 2)            // returns Array [[1, 4], [16, 9]]
+math.pow(a, 2)               // returns Array [[9, 8], [16, 17]]
 ```
 
 

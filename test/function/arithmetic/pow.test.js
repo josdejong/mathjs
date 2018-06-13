@@ -1,16 +1,16 @@
 // test exp
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var mathPredictable = math.create({predictable: true})
-var bignumber = math.bignumber
-var fraction = math.fraction
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var range = math.range
-var pow = math.pow
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const mathPredictable = math.create({predictable: true})
+const bignumber = math.bignumber
+const fraction = math.fraction
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const range = math.range
+const pow = math.pow
 
 describe('pow', function () {
   it('should exponentiate a number to the given power', function () {
@@ -31,7 +31,7 @@ describe('pow', function () {
   })
 
   it('should exponentiate a negative number to a non-integer power with predictable:true', function () {
-    var res = mathPredictable.pow(-2, 1.5)
+    const res = mathPredictable.pow(-2, 1.5)
     assert.equal(typeof res, 'number')
     assert(isNaN(res))
     assert.strictEqual(mathPredictable.pow(-8, 1 / 3), -2)
@@ -132,7 +132,7 @@ describe('pow', function () {
   })
 
   it('should handle infinite exponents', function () {
-    var Ptbl = mathPredictable
+    const Ptbl = mathPredictable
 
     // TODO replace isNaN with complexInfinity when complex.js updates
 
@@ -207,8 +207,8 @@ describe('pow', function () {
   })
 
   it('should return a cloned value and not affect the argument', function () {
-    var unit1 = unit('2 m')
-    var unit2 = pow(unit1, 2)
+    const unit1 = unit('2 m')
+    const unit2 = pow(unit1, 2)
 
     assert.equal(unit1.toString(), '2 m')
     assert.equal(unit2.toString(), '4 m^2')
@@ -228,15 +228,15 @@ describe('pow', function () {
   })
 
   it('should raise a square matrix to the power 2', function () {
-    var a = [[1, 2], [3, 4]]
-    var res = [[7, 10], [15, 22]]
+    const a = [[1, 2], [3, 4]]
+    const res = [[7, 10], [15, 22]]
     approx.deepEqual(pow(a, 2), res)
     approx.deepEqual(pow(matrix(a), 2), matrix(res))
   })
 
   it('should return identity matrix for power 0', function () {
-    var a = [[1, 2], [3, 4]]
-    var res = [[1, 0], [0, 1]]
+    const a = [[1, 2], [3, 4]]
+    const res = [[1, 0], [0, 1]]
     approx.deepEqual(pow(a, 0), res)
     approx.deepEqual(pow(matrix(a), 0), matrix(res))
   })
@@ -244,7 +244,7 @@ describe('pow', function () {
   it('should compute large size of square matrix', function () {
     this.timeout(10000)
 
-    var a = math.identity(30).valueOf()
+    const a = math.identity(30).valueOf()
     approx.deepEqual(pow(a, 1000), a)
     approx.deepEqual(pow(matrix(a), 1000), matrix(a))
   })
@@ -256,13 +256,13 @@ describe('pow', function () {
   })
 
   it('should throw an error when raising a matrix to a non-integer power', function () {
-    var a = [[1, 2], [3, 4]]
+    const a = [[1, 2], [3, 4]]
     assert.throws(function () { pow(a, 2.5) })
     assert.throws(function () { pow(a, [2, 3]) })
   })
 
   it('should LaTeX pow', function () {
-    var expression = math.parse('pow(2,10)')
+    const expression = math.parse('pow(2,10)')
     assert.equal(expression.toTex(), '\\left(2\\right)^{10}')
   })
 })

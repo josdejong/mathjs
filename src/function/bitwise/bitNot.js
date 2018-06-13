@@ -1,11 +1,11 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
-var bigBitNot = require('../../utils/bignumber/bitNot')
-var isInteger = require('../../utils/number').isInteger
+const deepMap = require('../../utils/collection/deepMap')
+const bigBitNot = require('../../utils/bignumber/bitNot')
+const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
   /**
    * Bitwise NOT value, `~x`.
@@ -18,9 +18,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.bitNot(1);               // returns number -2
+   *    math.bitNot(1)               // returns number -2
    *
-   *    math.bitNot([2, -3, 4]);      // returns Array [-3, 2, 5]
+   *    math.bitNot([2, -3, 4])      // returns Array [-3, 2, 5]
    *
    * See also:
    *
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} x Value to not
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
-  var bitNot = typed('bitNot', {
+  const bitNot = typed('bitNot', {
     'number': function (x) {
       if (!isInteger(x)) {
         throw new Error('Integer expected in function bitNot')

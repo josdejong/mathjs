@@ -31,12 +31,12 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the
 ## Examples
 
 ```js
-math.log1p(2.5);                 // returns 1.252762968495368
-math.exp(math.log1p(1.4));       // returns 2.4
+math.log1p(2.5)                 // returns 1.252762968495368
+math.exp(math.log1p(1.4))       // returns 2.4
 
-math.pow(10, 4);                 // returns 10000
-math.log1p(9999, 10);            // returns 4
-math.log1p(9999) / math.log(10); // returns 4
+math.pow(10, 4)                 // returns 10000
+math.log1p(9999, 10)            // returns 4
+math.log1p(9999) / math.log(10) // returns 4
 ```
 
 

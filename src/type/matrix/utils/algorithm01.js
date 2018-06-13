@@ -1,9 +1,9 @@
 'use strict'
 
-var DimensionError = require('../../../error/DimensionError')
+const DimensionError = require('../../../error/DimensionError')
 
 function factory (type, config, load, typed) {
-  var DenseMatrix = type.DenseMatrix
+  const DenseMatrix = type.DenseMatrix
 
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
@@ -24,17 +24,17 @@ function factory (type, config, load, typed) {
    *
    * see https://github.com/josdejong/mathjs/pull/346#issuecomment-97477571
    */
-  var algorithm01 = function (denseMatrix, sparseMatrix, callback, inverse) {
+  const algorithm01 = function (denseMatrix, sparseMatrix, callback, inverse) {
     // dense matrix arrays
-    var adata = denseMatrix._data
-    var asize = denseMatrix._size
-    var adt = denseMatrix._datatype
+    const adata = denseMatrix._data
+    const asize = denseMatrix._size
+    const adt = denseMatrix._datatype
     // sparse matrix arrays
-    var bvalues = sparseMatrix._values
-    var bindex = sparseMatrix._index
-    var bptr = sparseMatrix._ptr
-    var bsize = sparseMatrix._size
-    var bdt = sparseMatrix._datatype
+    const bvalues = sparseMatrix._values
+    const bindex = sparseMatrix._index
+    const bptr = sparseMatrix._ptr
+    const bsize = sparseMatrix._size
+    const bdt = sparseMatrix._datatype
 
     // validate dimensions
     if (asize.length !== bsize.length) { throw new DimensionError(asize.length, bsize.length) }
@@ -46,33 +46,33 @@ function factory (type, config, load, typed) {
     if (!bvalues) { throw new Error('Cannot perform operation on Dense Matrix and Pattern Sparse Matrix') }
 
     // rows & columns
-    var rows = asize[0]
-    var columns = asize[1]
+    const rows = asize[0]
+    const columns = asize[1]
 
     // process data types
-    var dt = typeof adt === 'string' && adt === bdt ? adt : undefined
+    const dt = typeof adt === 'string' && adt === bdt ? adt : undefined
     // callback function
-    var cf = dt ? typed.find(callback, [dt, dt]) : callback
+    const cf = dt ? typed.find(callback, [dt, dt]) : callback
 
     // vars
-    var i, j
+    let i, j
 
     // result (DenseMatrix)
-    var cdata = []
+    const cdata = []
     // initialize c
     for (i = 0; i < rows; i++) { cdata[i] = [] }
 
     // workspace
-    var x = []
+    const x = []
     // marks indicating we have a value in x for a given column
-    var w = []
+    const w = []
 
     // loop columns in b
     for (j = 0; j < columns; j++) {
       // column mark
-      var mark = j + 1
+      const mark = j + 1
       // values in column j
-      for (var k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
+      for (let k0 = bptr[j], k1 = bptr[j + 1], k = k0; k < k1; k++) {
         // row
         i = bindex[k]
         // update workspace

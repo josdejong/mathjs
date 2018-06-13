@@ -1,11 +1,11 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var matrix = load(require('../../type/matrix/function/matrix'))
-  var _typeof = load(require('../utils/typeof'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
+  const _typeof = load(require('../utils/typeof'))
 
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Compare two strings lexically. Comparison is case sensitive.
@@ -19,12 +19,12 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.compareText('B', 'A');     // returns 1
-   *    math.compareText('2', '10');    // returns 1
-   *    math.compare('2', '10');        // returns -1
-   *    math.compareNatural('2', '10'); // returns -1
+   *    math.compareText('B', 'A')     // returns 1
+   *    math.compareText('2', '10')    // returns 1
+   *    math.compare('2', '10')        // returns -1
+   *    math.compareNatural('2', '10') // returns -1
    *
-   *    math.compareText('B', ['A', 'B', 'C']); // returns [1, 0, -1]
+   *    math.compareText('B', ['A', 'B', 'C']) // returns [1, 0, -1]
    *
    * See also:
    *
@@ -35,7 +35,7 @@ function factory (type, config, load, typed) {
    * @return {number | Array | DenseMatrix} Returns the result of the comparison:
    *                                        1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  var compareText = typed('compareText', {
+  const compareText = typed('compareText', {
 
     'any, any': _compareText,
 

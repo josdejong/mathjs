@@ -31,17 +31,17 @@ DenseMatrix &#124; Array | Column vector with the solution to the linear system 
 ## Examples
 
 ```js
-var m = [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]];
+const m = [[1, 0, 0, 0], [0, 2, 0, 0], [0, 0, 3, 0], [0, 0, 0, 4]]
 
-var x = math.lusolve(m, [-1, -1, -1, -1]);        // x = [[-1], [-0.5], [-1/3], [-0.25]]
+const x = math.lusolve(m, [-1, -1, -1, -1])        // x = [[-1], [-0.5], [-1/3], [-0.25]]
 
-var f = math.lup(m);
-var x1 = math.lusolve(f, [-1, -1, -1, -1]);       // x1 = [[-1], [-0.5], [-1/3], [-0.25]]
-var x2 = math.lusolve(f, [1, 2, 1, -1]);          // x2 = [[1], [1], [1/3], [-0.25]]
+const f = math.lup(m)
+const x1 = math.lusolve(f, [-1, -1, -1, -1])       // x1 = [[-1], [-0.5], [-1/3], [-0.25]]
+const x2 = math.lusolve(f, [1, 2, 1, -1])          // x2 = [[1], [1], [1/3], [-0.25]]
 
-var a = [[-2, 3], [2, 1]];
-var b = [11, 9];
-var x = math.lusolve(a, b);  // [[2], [5]]
+const a = [[-2, 3], [2, 1]]
+const b = [11, 9]
+const x = math.lusolve(a, b)  // [[2], [5]]
 ```
 
 

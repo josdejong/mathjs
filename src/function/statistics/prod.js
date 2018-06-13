@@ -1,10 +1,10 @@
 'use strict'
 
-var deepForEach = require('../../utils/collection/deepForEach')
+const deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
-  var multiply = load(require('../arithmetic/multiplyScalar'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const multiply = load(require('../arithmetic/multiplyScalar'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the product of a matrix or a list with values.
@@ -18,11 +18,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.multiply(2, 3);           // returns 6
-   *     math.prod(2, 3);               // returns 6
-   *     math.prod(2, 3, 4);            // returns 24
-   *     math.prod([2, 3, 4]);          // returns 24
-   *     math.prod([[2, 5], [4, 3]]);   // returns 120
+   *     math.multiply(2, 3)           // returns 6
+   *     math.prod(2, 3)               // returns 6
+   *     math.prod(2, 3, 4)            // returns 24
+   *     math.prod([2, 3, 4])          // returns 24
+   *     math.prod([[2, 5], [4, 3]])   // returns 120
    *
    * See also:
    *
@@ -31,7 +31,7 @@ function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The product of all values
    */
-  var prod = typed('prod', {
+  const prod = typed('prod', {
     // prod([a, b, c, d, ...])
     'Array | Matrix': _prod,
 
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
     'Array | Matrix, number | BigNumber': function (array, dim) {
       // TODO: implement prod(A, dim)
       throw new Error('prod(A, dim) is not yet supported')
-      // return reduce(arguments[0], arguments[1], math.prod);
+      // return reduce(arguments[0], arguments[1], math.prod)
     },
 
     // prod(a, b, c, d, ...)
@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _prod (array) {
-    var prod = undefined
+    let prod
 
     deepForEach(array, function (value) {
       try {

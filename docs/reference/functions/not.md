@@ -28,12 +28,12 @@ boolean &#124; Array &#124; Matrix |  Returns true when input is a zero or empty
 ## Examples
 
 ```js
-math.not(2);      // returns false
-math.not(0);      // returns true
-math.not(true);   // returns false
+math.not(2)      // returns false
+math.not(0)      // returns true
+math.not(true)   // returns false
 
-a = [2, -7, 0];
-math.not(a);      // returns [false, false, true]
+a = [2, -7, 0]
+math.not(a)      // returns [false, false, true]
 ```
 
 

@@ -1,14 +1,14 @@
 'use strict'
 
-var size = require('../../utils/array').size
-var deepForEach = require('../../utils/collection/deepForEach')
-var reduce = require('../../utils/collection/reduce')
-var containsCollections = require('../../utils/collection/containsCollections')
+const size = require('../../utils/array').size
+const deepForEach = require('../../utils/collection/deepForEach')
+const reduce = require('../../utils/collection/reduce')
+const containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
-  var add = load(require('../arithmetic/add'))
-  var divide = load(require('../arithmetic/divide'))
-  var improveErrorMessage = load(require('./utils/improveErrorMessage'))
+  const add = load(require('../arithmetic/add'))
+  const divide = load(require('../arithmetic/divide'))
+  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
    * Compute the mean value of matrix or a list with values.
@@ -24,11 +24,11 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.mean(2, 1, 4, 3);                     // returns 2.5
-   *     math.mean([1, 2.7, 3.2, 4]);               // returns 2.725
+   *     math.mean(2, 1, 4, 3)                     // returns 2.5
+   *     math.mean([1, 2.7, 3.2, 4])               // returns 2.725
    *
-   *     math.mean([[2, 5], [6, 3], [1, 7]], 0);    // returns [3, 5]
-   *     math.mean([[2, 5], [6, 3], [1, 7]], 1);    // returns [3.5, 4.5, 4]
+   *     math.mean([[2, 5], [6, 3], [1, 7]], 0)    // returns [3, 5]
+   *     math.mean([[2, 5], [6, 3], [1, 7]], 1)    // returns [3.5, 4.5, 4]
    *
    * See also:
    *
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The mean of all values
    */
-  var mean = typed('mean', {
+  const mean = typed('mean', {
     // mean([a, b, c, d, ...])
     'Array | Matrix': _mean,
 
@@ -68,8 +68,8 @@ function factory (type, config, load, typed) {
    */
   function _nmeanDim (array, dim) {
     try {
-      var sum = reduce(array, dim, add)
-      var s = Array.isArray(array) ? size(array) : array.size()
+      const sum = reduce(array, dim, add)
+      const s = Array.isArray(array) ? size(array) : array.size()
       return divide(sum, s[dim])
     } catch (err) {
       throw improveErrorMessage(err, 'mean')
@@ -83,8 +83,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _mean (array) {
-    var sum = 0
-    var num = 0
+    let sum = 0
+    let num = 0
 
     deepForEach(array, function (value) {
       try {

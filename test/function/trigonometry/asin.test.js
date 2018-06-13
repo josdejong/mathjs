@@ -1,18 +1,18 @@
-var assert = require('assert')
-var error = require('../../../src/error/index')
-var math = require('../../../src/index')
-var approx = require('../../../tools/approx')
-var pi = math.pi
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var asin = math.asin
-var sin = math.sin
-var bigmath = math.create({number: 'BigNumber', precision: 20})
-var biggermath = math.create({precision: 21})
-var predmath = math.create({predictable: true})
-var asinBig = bigmath.asin
-var Big = bigmath.bignumber
+const assert = require('assert')
+const error = require('../../../src/error/index')
+const math = require('../../../src/index')
+const approx = require('../../../tools/approx')
+const pi = math.pi
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const asin = math.asin
+const sin = math.sin
+const bigmath = math.create({number: 'BigNumber', precision: 20})
+const biggermath = math.create({precision: 21})
+const predmath = math.create({predictable: true})
+const asinBig = bigmath.asin
+const Big = bigmath.bignumber
 
 describe('asin', function () {
   it('should return the arcsin of a boolean', function () {
@@ -37,9 +37,9 @@ describe('asin', function () {
   })
 
   it('should return the arcsin of a bignumber', function () {
-    var arg1 = Big(-1)
-    var arg2 = Big(-0.581)
-    var arg3 = Big(-0.5)
+    const arg1 = Big(-1)
+    const arg2 = Big(-0.581)
+    const arg3 = Big(-0.5)
 
     assert.deepEqual(asinBig(arg1), Big('-1.5707963267948966192'))
     assert.deepEqual(asinBig(arg2), Big('-0.61995679945225370036'))
@@ -57,7 +57,7 @@ describe('asin', function () {
     // Hit Newton's method case
     bigmath.config({precision: 61})
 
-    var arg4 = Big(0.00000001)
+    const arg4 = Big(0.00000001)
     assert.deepEqual(asinBig(arg4), Big('1.00000000000000001666666666666666741666666666666671130952381e-8'))
     assert.deepEqual(arg4, Big(0.00000001))
   })
@@ -94,8 +94,8 @@ describe('asin', function () {
   })
 
   it('should return the arcsin of a complex number', function () {
-    var re = 0.570652784321099
-    var im = 1.983387029916536
+    const re = 0.570652784321099
+    const im = 1.983387029916536
     approx.deepEqual(asin(complex('2+3i')), complex(re, im))
     approx.deepEqual(asin(complex('2-3i')), complex(re, -im))
     approx.deepEqual(asin(complex('-2+3i')), complex(-re, im))
@@ -117,7 +117,7 @@ describe('asin', function () {
   it('should calculate the arcsin element-wise for arrays and matrices', function () {
     // note: the results of asin(2) and asin(3) differs in octave
     // the next tests are verified with mathematica
-    var asin123 = [
+    const asin123 = [
       1.57079632679490,
       complex(1.57079632679490, -1.31695789692482),
       complex(1.57079632679490, -1.76274717403909)]
@@ -131,7 +131,7 @@ describe('asin', function () {
   })
 
   it('should LaTeX asin', function () {
-    var expression = math.parse('asin(0.5)')
+    const expression = math.parse('asin(0.5)')
     assert.equal(expression.toTex(), '\\sin^{-1}\\left(0.5\\right)')
   })
 })

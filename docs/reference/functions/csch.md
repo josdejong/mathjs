@@ -31,8 +31,8 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cosecant of x
 
 ```js
 // csch(x) = 1/ sinh(x)
-math.csch(0.5);       // returns 1.9190347513349437
-1 / math.sinh(0.5);   // returns 1.9190347513349437
+math.csch(0.5)       // returns 1.9190347513349437
+1 / math.sinh(0.5)   // returns 1.9190347513349437
 ```
 
 

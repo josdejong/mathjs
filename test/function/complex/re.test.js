@@ -1,5 +1,5 @@
-var assert = require('assert')
-var math = require('../../../src/index')
+const assert = require('assert')
+const math = require('../../../src/index')
 
 describe('re', function () {
   it('should return the real part of a complex number', function () {
@@ -37,7 +37,7 @@ describe('re', function () {
   })
 
   it('should LaTeX re', function () {
-    var expression = math.parse('re(1+i)')
+    const expression = math.parse('re(1+i)')
     assert.equal(expression.toTex(), '\\Re\\left\\lbrace1+ i\\right\\rbrace')
   })
 })

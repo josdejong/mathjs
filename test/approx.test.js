@@ -1,6 +1,5 @@
 // test approx itself...
-var assert = require('assert'),
-  approx = require('../tools/approx')
+const assert = require('assert'), approx = require('../tools/approx')
 
 describe('approx', function () {
   it('should test equality of positive values', function () {
@@ -34,8 +33,8 @@ describe('approx', function () {
 
   it('should test equality of NaN numbers', function () {
     // NaN values
-    var a = NaN
-    var b = NaN
+    const a = NaN
+    const b = NaN
     approx.equal(a, b)
     assert.throws(function () { approx.equal(NaN, 3) }, assert.AssertionError)
     assert.throws(function () { approx.equal(NaN, 'nonumber') }, assert.AssertionError)

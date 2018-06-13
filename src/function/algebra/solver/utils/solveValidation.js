@@ -1,14 +1,14 @@
 'use strict'
 
-var util = require('../../../../utils/index')
+const util = require('../../../../utils/index')
 
-var string = util.string
-var array = util.array
+const string = util.string
+const array = util.array
 
-var isArray = Array.isArray
+const isArray = Array.isArray
 
 function factory (type) {
-  var DenseMatrix = type.DenseMatrix
+  const DenseMatrix = type.DenseMatrix
 
   /**
    * Validates matrix and column vector b for backward/forward substitution algorithms.
@@ -19,22 +19,22 @@ function factory (type) {
    *
    * @return {DenseMatrix}        Dense column vector b
    */
-  var solveValidation = function (m, b, copy) {
+  const solveValidation = function (m, b, copy) {
     // matrix size
-    var size = m.size()
+    const size = m.size()
     // validate matrix dimensions
     if (size.length !== 2) { throw new RangeError('Matrix must be two dimensional (size: ' + string.format(size) + ')') }
     // rows & columns
-    var rows = size[0]
-    var columns = size[1]
+    const rows = size[0]
+    const columns = size[1]
     // validate rows & columns
     if (rows !== columns) { throw new RangeError('Matrix must be square (size: ' + string.format(size) + ')') }
     // vars
-    var data, i, bdata
+    let data, i, bdata
     // check b is matrix
     if (type.isMatrix(b)) {
       // matrix size
-      var msize = b.size()
+      const msize = b.size()
       // vector
       if (msize.length === 1) {
         // check vector length
@@ -86,11 +86,11 @@ function factory (type) {
         data = []
         for (i = 0; i < rows; i++) { data[i] = [0] }
         // sparse matrix arrays
-        var values = b._values
-        var index = b._index
-        var ptr = b._ptr
+        const values = b._values
+        const index = b._index
+        const ptr = b._ptr
         // loop values in column 0
-        for (var k1 = ptr[1], k = ptr[0]; k < k1; k++) {
+        for (let k1 = ptr[1], k = ptr[0]; k < k1; k++) {
           // row
           i = index[k]
           // add to data
@@ -109,7 +109,7 @@ function factory (type) {
     // check b is array
     if (isArray(b)) {
       // size
-      var asize = array.size(b)
+      const asize = array.size(b)
       // check matrix dimensions, vector
       if (asize.length === 1) {
         // check vector length

@@ -1,14 +1,14 @@
 // test fix
-var assert = require('assert')
-var approx = require('../../../tools/approx')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var complex = math.complex
-var fraction = math.fraction
-var matrix = math.matrix
-var unit = math.unit
-var range = math.range
-var fix = math.fix
+const assert = require('assert')
+const approx = require('../../../tools/approx')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const complex = math.complex
+const fraction = math.fraction
+const matrix = math.matrix
+const unit = math.unit
+const range = math.range
+const fix = math.fix
 
 describe('fix', function () {
   it('should round booleans correctly', function () {
@@ -52,7 +52,7 @@ describe('fix', function () {
   })
 
   it('should round fractions correctly', function () {
-    var a = fraction('2/3')
+    const a = fraction('2/3')
     assert(fix(a) instanceof math.type.Fraction)
     assert.equal(a.toString(), '0.(6)')
 
@@ -93,7 +93,7 @@ describe('fix', function () {
   })
 
   it('should LaTeX fix', function () {
-    var expression = math.parse('fix(0.6)')
+    const expression = math.parse('fix(0.6)')
     assert.equal(expression.toTex(), '\\mathrm{fix}\\left(0.6\\right)')
   })
 })

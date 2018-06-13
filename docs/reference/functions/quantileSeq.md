@@ -37,10 +37,10 @@ Number, BigNumber, Unit, Array | Quantile(s)
 ## Examples
 
 ```js
-math.quantileSeq([3, -1, 5, 7], 0.5);         // returns 4
-math.quantileSeq([3, -1, 5, 7], [1/3, 2/3]);  // returns [3, 5]
-math.quantileSeq([3, -1, 5, 7], 2);           // returns [3, 5]
-math.quantileSeq([-1, 3, 5, 7], 0.5, true);   // returns 4
+math.quantileSeq([3, -1, 5, 7], 0.5)         // returns 4
+math.quantileSeq([3, -1, 5, 7], [1/3, 2/3])  // returns [3, 5]
+math.quantileSeq([3, -1, 5, 7], 2)           // returns [3, 5]
+math.quantileSeq([-1, 3, 5, 7], 0.5, true)   // returns 4
 ```
 
 

@@ -1,18 +1,18 @@
 'use strict'
 
-var isInteger = require('../../utils/number').isInteger
-var bigBitOr = require('../../utils/bignumber/bitOr')
+const isInteger = require('../../utils/number').isInteger
+const bigBitOr = require('../../utils/bignumber/bitOr')
 
 function factory (type, config, load, typed) {
-  var latex = require('../../utils/latex')
+  const latex = require('../../utils/latex')
 
-  var matrix = load(require('../../type/matrix/function/matrix'))
+  const matrix = load(require('../../type/matrix/function/matrix'))
 
-  var algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  var algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  var algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  var algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  var algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
+  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
+  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
+  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
+  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
 
   /**
    * Bitwise OR two values, `x | y`.
@@ -25,9 +25,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.bitOr(1, 2);               // returns number 3
+   *    math.bitOr(1, 2)               // returns number 3
    *
-   *    math.bitOr([1, 2, 3], 4);       // returns Array [5, 6, 7]
+   *    math.bitOr([1, 2, 3], 4)       // returns Array [5, 6, 7]
    *
    * See also:
    *
@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} y Second value to or
    * @return {number | BigNumber | Array | Matrix} OR of `x` and `y`
    */
-  var bitOr = typed('bitOr', {
+  const bitOr = typed('bitOr', {
 
     'number, number': function (x, y) {
       if (!isInteger(x) || !isInteger(y)) {

@@ -1,7 +1,7 @@
 'use strict'
 
-var isString = require('../../utils/string').isString
-var format = require('../../utils/string').format
+const isString = require('../../utils/string').isString
+const format = require('../../utils/string').format
 
 function factory (type, config, load, typed) {
   /**
@@ -16,10 +16,10 @@ function factory (type, config, load, typed) {
    * Example usage:
    *
    *     // the following outputs: 'Lucy is 5 years old'
-   *     math.print('Lucy is $age years old', {age: 5});
+   *     math.print('Lucy is $age years old', {age: 5})
    *
    *     // the following outputs: 'The value of pi is 3.141592654'
-   *     math.print('The value of pi is $pi', {pi: math.pi}, 10);
+   *     math.print('The value of pi is $pi', {pi: math.pi}, 10)
    *
    *     // the following outputs: 'hello Mary! The date is 2013-03-23'
    *     math.print('Hello $user.name! The date is $date', {
@@ -27,13 +27,13 @@ function factory (type, config, load, typed) {
    *         name: 'Mary',
    *       },
    *       date: new Date(2013, 2, 23).toISOString().substring(0, 10)
-   *     });
+   *     })
    *
    *     // the following outputs: 'My favorite fruits are apples and bananas !'
    *     math.print('My favorite fruits are $0 and $1 !', [
    *       'apples',
    *       'bananas'
-   *     ]);
+   *     ])
    *
    * See also:
    *
@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
    *                                of all options.
    * @return {string} Interpolated string
    */
-  var print = typed('print', {
+  const print = typed('print', {
     // note: Matrix will be converted automatically to an Array
     'string, Object | Array': _print,
     'string, Object | Array, number | Object': _print
@@ -69,10 +69,10 @@ function factory (type, config, load, typed) {
  */
 function _print (template, values, options) {
   return template.replace(/\$([\w\.]+)/g, function (original, key) {
-    var keys = key.split('.')
-    var value = values[keys.shift()]
+    const keys = key.split('.')
+    let value = values[keys.shift()]
     while (keys.length && value !== undefined) {
-      var k = keys.shift()
+      const k = keys.shift()
       value = k ? value[k] : value + '.'
     }
 

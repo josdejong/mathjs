@@ -1,14 +1,14 @@
 // test not
-var assert = require('assert')
-var math = require('../../../src/index')
-var bignumber = math.bignumber
-var complex = math.complex
-var matrix = math.matrix
-var unit = math.unit
-var not = math.not
-var FunctionNode = math.expression.node.FunctionNode
-var ConstantNode = math.expression.node.ConstantNode
-var SymbolNode = math.expression.node.SymbolNode
+const assert = require('assert')
+const math = require('../../../src/index')
+const bignumber = math.bignumber
+const complex = math.complex
+const matrix = math.matrix
+const unit = math.unit
+const not = math.not
+const FunctionNode = math.expression.node.FunctionNode
+const ConstantNode = math.expression.node.ConstantNode
+const SymbolNode = math.expression.node.SymbolNode
 
 describe('not', function () {
   it('should not numbers correctly', function () {
@@ -83,8 +83,8 @@ describe('not', function () {
   })
 
   it('should LaTeX not', function () {
-    var c = new ConstantNode(1)
-    var node = new FunctionNode(new SymbolNode('not'), [c])
+    const c = new ConstantNode(1)
+    const node = new FunctionNode(new SymbolNode('not'), [c])
     assert.equal(node.toTex(), '\\neg\\left(1\\right)')
   })
 })

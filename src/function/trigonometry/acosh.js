@@ -1,6 +1,6 @@
 'use strict'
 
-var deepMap = require('../../utils/collection/deepMap')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   /**
@@ -15,7 +15,7 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    math.acosh(1.5);       // returns 0.9624236501192069
+   *    math.acosh(1.5)       // returns 0.9624236501192069
    *
    * See also:
    *
@@ -24,7 +24,7 @@ function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
    */
-  var acosh = typed('acosh', {
+  const acosh = typed('acosh', {
     'number': function (x) {
       if (x >= 1 || config.predictable) {
         return _acosh(x)
@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
  * @return {number}
  * @private
  */
-var _acosh = Math.acosh || function (x) {
+const _acosh = Math.acosh || function (x) {
   return Math.log(Math.sqrt(x * x - 1) + x)
 }
 

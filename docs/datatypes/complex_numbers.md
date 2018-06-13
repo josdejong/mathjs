@@ -39,13 +39,13 @@ math.complex(str: string) : Complex
 Examples:
 
 ```js
-var a = math.complex(2, 3);     // Complex 2 + 3i
-a.re;                           // Number 2
-a.im;                           // Number 3
+const a = math.complex(2, 3)     // Complex 2 + 3i
+a.re                             // Number 2
+a.im                             // Number 3
 
-var b = math.complex('4 - 2i'); // Complex 4 - 2i
-b.re = 5;                       // Number 5
-b;                              // Complex 5 - 2i
+const b = math.complex('4 - 2i') // Complex 4 - 2i
+b.re = 5                         // Number 5
+b                                // Complex 5 - 2i
 ```
 
 ## Calculations
@@ -54,16 +54,16 @@ Most functions of math.js support complex numbers. Complex and real numbers
 can be used together.
 
 ```js
-var a = math.complex(2, 3);     // Complex 2 + 3i
-var b = math.complex('4 - 2i'); // Complex 4 - 2i
+const a = math.complex(2, 3)     // Complex 2 + 3i
+const b = math.complex('4 - 2i') // Complex 4 - 2i
 
-math.re(a);                     // Number 2
-math.im(a);                     // Number 3
-math.conj(a);                   // Complex 2 - 3i
+math.re(a)                       // Number 2
+math.im(a)                       // Number 3
+math.conj(a)                     // Complex 2 - 3i
 
-math.add(a, b);                 // Complex 6 + i
-math.multiply(a, 2);            // Complex 4 + 6i
-math.sqrt(-4);                  // Complex 2i
+math.add(a, b)                   // Complex 6 + i
+math.multiply(a, 2)              // Complex 4 + 6i
+math.sqrt(-4)                    // Complex 2i
 ```
 
 ## API

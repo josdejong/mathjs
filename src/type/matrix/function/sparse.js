@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var SparseMatrix = type.SparseMatrix
+  const SparseMatrix = type.SparseMatrix
 
   /**
    * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
@@ -16,10 +16,10 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *    var m = math.sparse([[1, 2], [3, 4]]);
-   *    m.size();                        // Array [2, 2]
-   *    m.resize([3, 2], 5);
-   *    m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+   *    let m = math.sparse([[1, 2], [3, 4]])
+   *    m.size()                        // Array [2, 2]
+   *    m.resize([3, 2], 5)
+   *    m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
    *    m.get([1, 0])                    // number 3
    *
    * See also:
@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix} The created matrix
    */
-  var sparse = typed('sparse', {
+  const sparse = typed('sparse', {
     '': function () {
       return new SparseMatrix([])
     },

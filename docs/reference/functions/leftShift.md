@@ -30,9 +30,9 @@ number &#124; BigNumber &#124; Array &#124; Matrix | `x` shifted left `y` times
 ## Examples
 
 ```js
-math.leftShift(1, 2);               // returns number 4
+math.leftShift(1, 2)               // returns number 4
 
-math.leftShift([1, 2, 3], 4);       // returns Array [16, 32, 64]
+math.leftShift([1, 2, 3], 4)       // returns Array [16, 32, 64]
 ```
 
 

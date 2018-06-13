@@ -1,23 +1,23 @@
 'use strict'
 
-var util = require('../../utils/index')
-var DimensionError = require('../../error/DimensionError')
+const util = require('../../utils/index')
+const DimensionError = require('../../error/DimensionError')
 
-var array = util.array
-var object = util.object
-var string = util.string
-var number = util.number
+const array = util.array
+const object = util.object
+const string = util.string
+const number = util.number
 
-var isArray = Array.isArray
-var isNumber = number.isNumber
-var isInteger = number.isInteger
-var isString = string.isString
+const isArray = Array.isArray
+const isNumber = number.isNumber
+const isInteger = number.isInteger
+const isString = string.isString
 
-var validateIndex = array.validateIndex
+const validateIndex = array.validateIndex
 
 function factory (type, config, load, typed) {
-  var Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
-  var equalScalar = load(require('../../function/relational/equalScalar'))
+  const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
+  const equalScalar = load(require('../../function/relational/equalScalar'))
 
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
@@ -54,7 +54,7 @@ function factory (type, config, load, typed) {
     }
   }
 
-  var _createFromMatrix = function (matrix, source, datatype) {
+  function _createFromMatrix (matrix, source, datatype) {
     // check matrix type
     if (source.type === 'SparseMatrix') {
       // clone arrays
@@ -69,20 +69,20 @@ function factory (type, config, load, typed) {
     }
   }
 
-  var _createFromArray = function (matrix, data, datatype) {
+  function _createFromArray (matrix, data, datatype) {
     // initialize fields
     matrix._values = []
     matrix._index = []
     matrix._ptr = []
     matrix._datatype = datatype
     // discover rows & columns, do not use math.size() to avoid looping array twice
-    var rows = data.length
-    var columns = 0
+    const rows = data.length
+    let columns = 0
 
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
 
     if (isString(datatype)) {
       // find signature that matches (datatype, datatype)
@@ -94,14 +94,14 @@ function factory (type, config, load, typed) {
     // check we have rows (empty array)
     if (rows > 0) {
       // column index
-      var j = 0
+      let j = 0
       do {
         // store pointer to values index
         matrix._ptr.push(matrix._index.length)
         // loop rows
-        for (var i = 0; i < rows; i++) {
+        for (let i = 0; i < rows; i++) {
           // current row
-          var row = data[i]
+          const row = data[i]
           // check row is an array
           if (isArray(row)) {
             // update columns if needed (only on first column)
@@ -109,7 +109,7 @@ function factory (type, config, load, typed) {
             // check row has column
             if (j < row.length) {
               // value
-              var v = row[j]
+              const v = row[j]
               // check value != 0
               if (!eq(v, zero)) {
                 // store value
@@ -153,7 +153,7 @@ function factory (type, config, load, typed) {
    * Get the storage format used by the matrix.
    *
    * Usage:
-   *     var format = matrix.storage()                   // retrieve storage format
+   *     const format = matrix.storage()   // retrieve storage format
    *
    * @memberof SparseMatrix
    * @return {string}           The storage format.
@@ -166,7 +166,7 @@ function factory (type, config, load, typed) {
    * Get the datatype of the data stored in the matrix.
    *
    * Usage:
-   *     var format = matrix.datatype()                   // retrieve matrix datatype
+   *     const format = matrix.datatype()    // retrieve matrix datatype
    *
    * @memberof SparseMatrix
    * @return {string}           The datatype.
@@ -189,15 +189,15 @@ function factory (type, config, load, typed) {
    * Get the matrix density.
    *
    * Usage:
-   *     var density = matrix.density()                   // retrieve matrix density
+   *     const density = matrix.density()                   // retrieve matrix density
    *
    * @memberof SparseMatrix
    * @return {number}           The matrix density.
    */
   SparseMatrix.prototype.density = function () {
     // rows & columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    const rows = this._size[0]
+    const columns = this._size[1]
     // calculate density
     return rows !== 0 && columns !== 0 ? (this._index.length / (rows * columns)) : 0
   }
@@ -206,8 +206,8 @@ function factory (type, config, load, typed) {
    * Get a subset of the matrix, or replace a subset of the matrix.
    *
    * Usage:
-   *     var subset = matrix.subset(index)               // retrieve subset
-   *     var value = matrix.subset(index, replacement)   // replace subset
+   *     const subset = matrix.subset(index)               // retrieve subset
+   *     const value = matrix.subset(index, replacement)   // replace subset
    *
    * @memberof SparseMatrix
    * @param {Index} index
@@ -234,46 +234,46 @@ function factory (type, config, load, typed) {
     }
   }
 
-  var _getsubset = function (matrix, idx) {
+  function _getsubset (matrix, idx) {
     // check idx
     if (!type.isIndex(idx)) {
       throw new TypeError('Invalid index')
     }
 
-    var isScalar = idx.isScalar()
+    const isScalar = idx.isScalar()
     if (isScalar) {
       // return a scalar
       return matrix.get(idx.min())
     }
     // validate dimensions
-    var size = idx.size()
+    const size = idx.size()
     if (size.length != matrix._size.length) {
       throw new DimensionError(size.length, matrix._size.length)
     }
 
     // vars
-    var i, ii, k, kk
+    let i, ii, k, kk
 
     // validate if any of the ranges in the index is out of range
-    var min = idx.min()
-    var max = idx.max()
+    const min = idx.min()
+    const max = idx.max()
     for (i = 0, ii = matrix._size.length; i < ii; i++) {
       validateIndex(min[i], matrix._size[i])
       validateIndex(max[i], matrix._size[i])
     }
 
     // matrix arrays
-    var mvalues = matrix._values
-    var mindex = matrix._index
-    var mptr = matrix._ptr
+    const mvalues = matrix._values
+    const mindex = matrix._index
+    const mptr = matrix._ptr
 
     // rows & columns dimensions for result matrix
-    var rows = idx.dimension(0)
-    var columns = idx.dimension(1)
+    const rows = idx.dimension(0)
+    const columns = idx.dimension(1)
 
     // workspace & permutation vector
-    var w = []
-    var pv = []
+    const w = []
+    const pv = []
 
     // loop rows in resulting matrix
     rows.forEach(function (i, r) {
@@ -284,9 +284,9 @@ function factory (type, config, load, typed) {
     })
 
     // result matrix arrays
-    var values = mvalues ? [] : undefined
-    var index = []
-    var ptr = []
+    const values = mvalues ? [] : undefined
+    const index = []
+    const ptr = []
 
     // loop columns in result matrix
     columns.forEach(function (j) {
@@ -318,18 +318,17 @@ function factory (type, config, load, typed) {
     })
   }
 
-  var _setsubset = function (matrix, index, submatrix, defaultValue) {
+  function _setsubset (matrix, index, submatrix, defaultValue) {
     // check index
     if (!index || index.isIndex !== true) {
       throw new TypeError('Invalid index')
     }
 
     // get index size and check whether the index contains a single value
-    var iSize = index.size(),
-      isScalar = index.isScalar()
+    const iSize = index.size(), isScalar = index.isScalar()
 
     // calculate the size of the submatrix, and convert it into an Array if needed
-    var sSize
+    let sSize
     if (type.isMatrix(submatrix)) {
       // submatrix size
       sSize = submatrix.size()
@@ -357,8 +356,8 @@ function factory (type, config, load, typed) {
       // check submatrix and index have the same dimensions
       if (sSize.length < iSize.length) {
         // calculate number of missing outer dimensions
-        var i = 0
-        var outer = 0
+        let i = 0
+        let outer = 0
         while (iSize[i] === 1 && sSize[i] === 1) {
           i++
         }
@@ -376,19 +375,19 @@ function factory (type, config, load, typed) {
       }
 
       // offsets
-      var x0 = index.min()[0]
-      var y0 = index.min()[1]
+      const x0 = index.min()[0]
+      const y0 = index.min()[1]
 
       // submatrix rows and columns
-      var m = sSize[0]
-      var n = sSize[1]
+      const m = sSize[0]
+      const n = sSize[1]
 
       // loop submatrix
-      for (var x = 0; x < m; x++) {
+      for (let x = 0; x < m; x++) {
         // loop columns
-        for (var y = 0; y < n; y++) {
+        for (let y = 0; y < n; y++) {
           // value at i, j
-          var v = submatrix[x][y]
+          const v = submatrix[x][y]
           // invoke set (zero value will remove entry from matrix)
           matrix.set([x + x0, y + y0], v, defaultValue)
         }
@@ -411,15 +410,15 @@ function factory (type, config, load, typed) {
     if (!this._values) { throw new Error('Cannot invoke get on a Pattern only matrix') }
 
     // row and column
-    var i = index[0]
-    var j = index[1]
+    const i = index[0]
+    const j = index[1]
 
     // check i, j are valid
     validateIndex(i, this._size[0])
     validateIndex(j, this._size[1])
 
     // find value index
-    var k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index)
+    const k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index)
     // check k is prior to next column k and it is in the correct row
     if (k < this._ptr[j + 1] && this._index[k] === i) { return this._values[k] }
 
@@ -444,17 +443,17 @@ function factory (type, config, load, typed) {
     if (!this._values) { throw new Error('Cannot invoke set on a Pattern only matrix') }
 
     // row and column
-    var i = index[0]
-    var j = index[1]
+    const i = index[0]
+    const j = index[1]
 
     // rows & columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    let rows = this._size[0]
+    let columns = this._size[1]
 
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
 
     if (isString(this._datatype)) {
       // find signature that matches (datatype, datatype)
@@ -477,7 +476,7 @@ function factory (type, config, load, typed) {
     validateIndex(j, columns)
 
     // find value index
-    var k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index)
+    const k = _getValueIndex(i, this._ptr[j], this._ptr[j + 1], this._index)
     // check k is prior to next column k and it is in the correct row
     if (k < this._ptr[j + 1] && this._index[k] === i) {
       // check value != 0
@@ -496,11 +495,11 @@ function factory (type, config, load, typed) {
     return this
   }
 
-  var _getValueIndex = function (i, top, bottom, index) {
+  function _getValueIndex (i, top, bottom, index) {
     // check row is on the bottom side
     if (bottom - top === 0) { return bottom }
     // loop rows [top, bottom[
-    for (var r = top; r < bottom; r++) {
+    for (let r = top; r < bottom; r++) {
       // check we found value index
       if (index[r] === i) { return r }
     }
@@ -508,21 +507,21 @@ function factory (type, config, load, typed) {
     return top
   }
 
-  var _remove = function (k, j, values, index, ptr) {
+  function _remove (k, j, values, index, ptr) {
     // remove value @ k
     values.splice(k, 1)
     index.splice(k, 1)
     // update pointers
-    for (var x = j + 1; x < ptr.length; x++) { ptr[x]-- }
+    for (let x = j + 1; x < ptr.length; x++) { ptr[x]-- }
   }
 
-  var _insert = function (k, i, j, v, values, index, ptr) {
+  function _insert (k, i, j, v, values, index, ptr) {
     // insert value
     values.splice(k, 0, v)
     // update row for k
     index.splice(k, 0, i)
     // update column pointers
-    for (var x = j + 1; x < ptr.length; x++) { ptr[x]++ }
+    for (let x = j + 1; x < ptr.length; x++) { ptr[x]++ }
   }
 
   /**
@@ -552,19 +551,19 @@ function factory (type, config, load, typed) {
     })
 
     // matrix to resize
-    var m = copy ? this.clone() : this
+    const m = copy ? this.clone() : this
     // resize matrix
     return _resize(m, size[0], size[1], defaultValue)
   }
 
-  var _resize = function (matrix, rows, columns, defaultValue) {
+  function _resize (matrix, rows, columns, defaultValue) {
     // value to insert at the time of growing matrix
-    var value = defaultValue || 0
+    let value = defaultValue || 0
 
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
 
     if (isString(matrix._datatype)) {
       // find signature that matches (datatype, datatype)
@@ -576,13 +575,13 @@ function factory (type, config, load, typed) {
     }
 
     // should we insert the value?
-    var ins = !eq(value, zero)
+    const ins = !eq(value, zero)
 
     // old columns and rows
-    var r = matrix._size[0]
-    var c = matrix._size[1]
+    const r = matrix._size[0]
+    let c = matrix._size[1]
 
-    var i, j, k
+    let i, j, k
 
     // check we need to increase columns
     if (columns > c) {
@@ -618,7 +617,7 @@ function factory (type, config, load, typed) {
       // check we have to insert values
       if (ins) {
         // inserts
-        var n = 0
+        let n = 0
         // loop columns
         for (j = 0; j < c; j++) {
           // update matrix._ptr for current column
@@ -626,7 +625,7 @@ function factory (type, config, load, typed) {
           // where to insert matrix._values
           k = matrix._ptr[j + 1] + n
           // pointer
-          var p = 0
+          let p = 0
           // loop new rows, initialize pointer
           for (i = r; i < rows; i++, p++) {
             // add value
@@ -642,14 +641,14 @@ function factory (type, config, load, typed) {
       }
     } else if (rows < r) {
       // deletes
-      var d = 0
+      let d = 0
       // loop columns
       for (j = 0; j < c; j++) {
         // update matrix._ptr for current column
         matrix._ptr[j] = matrix._ptr[j] - d
         // where matrix._values start for next column
-        var k0 = matrix._ptr[j]
-        var k1 = matrix._ptr[j + 1] - d
+        const k0 = matrix._ptr[j]
+        const k1 = matrix._ptr[j + 1] - d
         // loop matrix._index
         for (k = k0; k < k1; k++) {
           // row
@@ -708,7 +707,7 @@ function factory (type, config, load, typed) {
     }
 
     // matrix to reshape
-    var m = copy ? this.clone() : this
+    const m = copy ? this.clone() : this
 
     // return unchanged if the same shape
     if (this._size[0] === size[0] && this._size[1] === size[1]) {
@@ -716,24 +715,24 @@ function factory (type, config, load, typed) {
     }
 
     // Convert to COO format (generate a column index)
-    var colIndex = []
-    for (var i = 0; i < m._ptr.length; i++) {
-      for (var j = 0; j < m._ptr[i + 1] - m._ptr[i]; j++) {
+    const colIndex = []
+    for (let i = 0; i < m._ptr.length; i++) {
+      for (let j = 0; j < m._ptr[i + 1] - m._ptr[i]; j++) {
         colIndex.push(i)
       }
     }
 
     // Clone the values array
-    var values = m._values.slice()
+    const values = m._values.slice()
 
     // Clone the row index array
-    var rowIndex = m._index.slice()
+    const rowIndex = m._index.slice()
 
     // Transform the (row, column) indices
-    for (var i = 0; i < m._index.length; i++) {
-      var r1 = rowIndex[i]
-      var c1 = colIndex[i]
-      var flat = r1 * m._size[1] + c1
+    for (let i = 0; i < m._index.length; i++) {
+      const r1 = rowIndex[i]
+      const c1 = colIndex[i]
+      const flat = r1 * m._size[1] + c1
       colIndex[i] = flat % size[1]
       rowIndex[i] = Math.floor(flat / size[1])
     }
@@ -749,17 +748,17 @@ function factory (type, config, load, typed) {
     m._index.length = 0
     m._ptr.length = size[1] + 1
     m._size = size.slice()
-    for (var i = 0; i < m._ptr.length; i++) {
+    for (let i = 0; i < m._ptr.length; i++) {
       m._ptr[i] = 0
     }
 
     // 2. Re-insert all elements in the proper order (simplified code from SparseMatrix.prototype.set)
     // This step is probably the most time-consuming
-    for (var h = 0; h < values.length; h++) {
-      var i = rowIndex[h]
-      var j = colIndex[h]
-      var v = values[h]
-      var k = _getValueIndex(i, m._ptr[j], m._ptr[j + 1], m._index)
+    for (let h = 0; h < values.length; h++) {
+      const i = rowIndex[h]
+      const j = colIndex[h]
+      const v = values[h]
+      const k = _getValueIndex(i, m._ptr[j], m._ptr[j + 1], m._index)
       _insert(k, i, j, v, m._values, m._index, m._ptr)
     }
 
@@ -774,7 +773,7 @@ function factory (type, config, load, typed) {
    * @return {SparseMatrix} clone
    */
   SparseMatrix.prototype.clone = function () {
-    var m = new SparseMatrix({
+    const m = new SparseMatrix({
       values: this._values ? object.clone(this._values) : undefined,
       index: object.clone(this._index),
       ptr: object.clone(this._ptr),
@@ -808,12 +807,12 @@ function factory (type, config, load, typed) {
     // check it is a pattern matrix
     if (!this._values) { throw new Error('Cannot invoke map on a Pattern only matrix') }
     // matrix instance
-    var me = this
+    const me = this
     // rows and columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    const rows = this._size[0]
+    const columns = this._size[1]
     // invoke callback
-    var invoke = function (v, i, j) {
+    const invoke = function (v, i, j) {
       // invoke callback
       return callback(v, [i, j], me)
     }
@@ -825,16 +824,16 @@ function factory (type, config, load, typed) {
    * Create a new matrix with the results of the callback function executed on the interval
    * [minRow..maxRow, minColumn..maxColumn].
    */
-  var _map = function (matrix, minRow, maxRow, minColumn, maxColumn, callback, skipZeros) {
+  function _map (matrix, minRow, maxRow, minColumn, maxColumn, callback, skipZeros) {
     // result arrays
-    var values = []
-    var index = []
-    var ptr = []
+    const values = []
+    const index = []
+    const ptr = []
 
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
 
     if (isString(matrix._datatype)) {
       // find signature that matches (datatype, datatype)
@@ -844,7 +843,7 @@ function factory (type, config, load, typed) {
     }
 
     // invoke callback
-    var invoke = function (v, x, y) {
+    const invoke = function (v, x, y) {
       // invoke callback
       v = callback(v, x, y)
       // check value != 0
@@ -856,23 +855,23 @@ function factory (type, config, load, typed) {
       }
     }
     // loop columns
-    for (var j = minColumn; j <= maxColumn; j++) {
+    for (let j = minColumn; j <= maxColumn; j++) {
       // store pointer to values index
       ptr.push(values.length)
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = matrix._ptr[j]
-      var k1 = matrix._ptr[j + 1]
+      const k0 = matrix._ptr[j]
+      const k1 = matrix._ptr[j + 1]
       // row pointer
-      var p = minRow
+      let p = minRow
       // loop k within [k0, k1[
-      for (var k = k0; k < k1; k++) {
+      for (let k = k0; k < k1; k++) {
         // row index
-        var i = matrix._index[k]
+        const i = matrix._index[k]
         // check i is in range
         if (i >= minRow && i <= maxRow) {
           // zero values
           if (!skipZeros) {
-            for (var x = p; x < i; x++) { invoke(0, x - minRow, j - minColumn) }
+            for (let x = p; x < i; x++) { invoke(0, x - minRow, j - minColumn) }
           }
           // value @ k
           invoke(matrix._values[k], i - minRow, j - minColumn)
@@ -882,7 +881,7 @@ function factory (type, config, load, typed) {
       }
       // zero values
       if (!skipZeros) {
-        for (var y = p; y <= maxRow; y++) { invoke(0, y - minRow, j - minColumn) }
+        for (let y = p; y <= maxRow; y++) { invoke(0, y - minRow, j - minColumn) }
       }
     }
     // store number of values in ptr
@@ -908,25 +907,25 @@ function factory (type, config, load, typed) {
     // check it is a pattern matrix
     if (!this._values) { throw new Error('Cannot invoke forEach on a Pattern only matrix') }
     // matrix instance
-    var me = this
+    const me = this
     // rows and columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    const rows = this._size[0]
+    const columns = this._size[1]
     // loop columns
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = this._ptr[j]
-      var k1 = this._ptr[j + 1]
+      const k0 = this._ptr[j]
+      const k1 = this._ptr[j + 1]
       // column pointer
-      var p = 0
+      let p = 0
       // loop k within [k0, k1[
-      for (var k = k0; k < k1; k++) {
+      for (let k = k0; k < k1; k++) {
         // row index
-        var i = this._index[k]
+        const i = this._index[k]
         // check we need to process zeros
         if (!skipZeros) {
           // zero values
-          for (var x = p; x < i; x++) { callback(0, [x, j], me) }
+          for (let x = p; x < i; x++) { callback(0, [x, j], me) }
         }
         // value @ k
         callback(this._values[k], [i, j], me)
@@ -936,7 +935,7 @@ function factory (type, config, load, typed) {
       // check we need to process zeros
       if (!skipZeros) {
         // zero values
-        for (var y = p; y < rows; y++) { callback(0, [y, j], me) }
+        for (let y = p; y < rows; y++) { callback(0, [y, j], me) }
       }
     }
   }
@@ -959,14 +958,14 @@ function factory (type, config, load, typed) {
     return _toArray(this._values, this._index, this._ptr, this._size, false)
   }
 
-  var _toArray = function (values, index, ptr, size, copy) {
+  function _toArray (values, index, ptr, size, copy) {
     // rows and columns
-    var rows = size[0]
-    var columns = size[1]
+    const rows = size[0]
+    const columns = size[1]
     // result
-    var a = []
+    const a = []
     // vars
-    var i, j
+    let i, j
     // initialize array
     for (i = 0; i < rows; i++) {
       a[i] = []
@@ -976,10 +975,10 @@ function factory (type, config, load, typed) {
     // loop columns
     for (j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = ptr[j]
-      var k1 = ptr[j + 1]
+      const k0 = ptr[j]
+      const k1 = ptr[j + 1]
       // loop k within [k0, k1[
-      for (var k = k0; k < k1; k++) {
+      for (let k = k0; k < k1; k++) {
         // row index
         i = index[k]
         // set value (use one for pattern matrix)
@@ -1000,21 +999,21 @@ function factory (type, config, load, typed) {
    */
   SparseMatrix.prototype.format = function (options) {
     // rows and columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    const rows = this._size[0]
+    const columns = this._size[1]
     // density
-    var density = this.density()
+    const density = this.density()
     // rows & columns
-    var str = 'Sparse Matrix [' + string.format(rows, options) + ' x ' + string.format(columns, options) + '] density: ' + string.format(density, options) + '\n'
+    let str = 'Sparse Matrix [' + string.format(rows, options) + ' x ' + string.format(columns, options) + '] density: ' + string.format(density, options) + '\n'
     // loop columns
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = this._ptr[j]
-      var k1 = this._ptr[j + 1]
+      const k0 = this._ptr[j]
+      const k1 = this._ptr[j + 1]
       // loop k within [k0, k1[
-      for (var k = k0; k < k1; k++) {
+      for (let k = k0; k < k1; k++) {
         // row index
-        var i = this._index[k]
+        const i = this._index[k]
         // append value
         str += '\n    (' + string.format(i, options) + ', ' + string.format(j, options) + ') ==> ' + (this._values ? string.format(this._values[k], options) : 'X')
       }
@@ -1069,31 +1068,31 @@ function factory (type, config, load, typed) {
       k = 0
     }
 
-    var kSuper = k > 0 ? k : 0
-    var kSub = k < 0 ? -k : 0
+    const kSuper = k > 0 ? k : 0
+    const kSub = k < 0 ? -k : 0
 
     // rows & columns
-    var rows = this._size[0]
-    var columns = this._size[1]
+    const rows = this._size[0]
+    const columns = this._size[1]
 
     // number diagonal values
-    var n = Math.min(rows - kSub, columns - kSuper)
+    const n = Math.min(rows - kSub, columns - kSuper)
 
     // diagonal arrays
-    var values = []
-    var index = []
-    var ptr = []
+    const values = []
+    const index = []
+    const ptr = []
     // initial ptr value
     ptr[0] = 0
     // loop columns
-    for (var j = kSuper; j < columns && values.length < n; j++) {
+    for (let j = kSuper; j < columns && values.length < n; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = this._ptr[j]
-      var k1 = this._ptr[j + 1]
+      const k0 = this._ptr[j]
+      const k1 = this._ptr[j + 1]
       // loop x within [k0, k1[
-      for (var x = k0; x < k1; x++) {
+      for (let x = k0; x < k1; x++) {
         // row index
-        var i = this._index[x]
+        const i = this._index[x]
         // check row
         if (i === j - kSuper + kSub) {
           // value on this column
@@ -1171,9 +1170,9 @@ function factory (type, config, load, typed) {
     }
 
     // equal signature to use
-    var eq = equalScalar
+    let eq = equalScalar
     // zero value
-    var zero = 0
+    let zero = 0
 
     if (isString(datatype)) {
       // find signature that matches (datatype, datatype)
@@ -1182,18 +1181,18 @@ function factory (type, config, load, typed) {
       zero = typed.convert(0, datatype)
     }
 
-    var kSuper = k > 0 ? k : 0
-    var kSub = k < 0 ? -k : 0
+    const kSuper = k > 0 ? k : 0
+    const kSub = k < 0 ? -k : 0
 
     // rows and columns
-    var rows = size[0]
-    var columns = size[1]
+    const rows = size[0]
+    const columns = size[1]
 
     // number of non-zero items
-    var n = Math.min(rows - kSub, columns - kSuper)
+    const n = Math.min(rows - kSub, columns - kSuper)
 
     // value extraction function
-    var _value
+    let _value
 
     // check value
     if (isArray(value)) {
@@ -1209,7 +1208,7 @@ function factory (type, config, load, typed) {
       }
     } else if (type.isMatrix(value)) {
       // matrix size
-      var ms = value.size()
+      const ms = value.size()
       // validate matrix
       if (ms.length !== 1 || ms[0] !== n) {
         // number of values in array must be n
@@ -1229,20 +1228,20 @@ function factory (type, config, load, typed) {
     }
 
     // create arrays
-    var values = []
-    var index = []
-    var ptr = []
+    const values = []
+    const index = []
+    const ptr = []
 
     // loop items
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // number of rows with value
       ptr.push(values.length)
       // diagonal index
-      var i = j - kSuper
+      const i = j - kSuper
       // check we need to set diagonal value
       if (i >= 0 && i < n) {
         // get value @ i
-        var v = _value(i)
+        const v = _value(i)
         // check for zero
         if (!eq(v, zero)) {
           // column
@@ -1302,10 +1301,10 @@ function factory (type, config, load, typed) {
    */
   SparseMatrix._forEachRow = function (j, values, index, ptr, callback) {
     // indeces for column j
-    var k0 = ptr[j]
-    var k1 = ptr[j + 1]
+    const k0 = ptr[j]
+    const k1 = ptr[j + 1]
     // loop
-    for (var k = k0; k < k1; k++) {
+    for (let k = k0; k < k1; k++) {
       // invoke callback
       callback(index[k], values[k])
     }
@@ -1323,19 +1322,19 @@ function factory (type, config, load, typed) {
    */
   SparseMatrix._swapRows = function (x, y, columns, values, index, ptr) {
     // loop columns
-    for (var j = 0; j < columns; j++) {
+    for (let j = 0; j < columns; j++) {
       // k0 <= k < k1 where k0 = _ptr[j] && k1 = _ptr[j+1]
-      var k0 = ptr[j]
-      var k1 = ptr[j + 1]
+      const k0 = ptr[j]
+      const k1 = ptr[j + 1]
       // find value index @ x
-      var kx = _getValueIndex(x, k0, k1, index)
+      const kx = _getValueIndex(x, k0, k1, index)
       // find value index @ x
-      var ky = _getValueIndex(y, k0, k1, index)
+      const ky = _getValueIndex(y, k0, k1, index)
       // check both rows exist in matrix
       if (kx < k1 && ky < k1 && index[kx] === x && index[ky] === y) {
         // swap values (check for pattern matrix)
         if (values) {
-          var v = values[kx]
+          const v = values[kx]
           values[kx] = values[ky]
           values[ky] = v
         }
@@ -1345,7 +1344,7 @@ function factory (type, config, load, typed) {
       // check x row exist & no y row
       if (kx < k1 && index[kx] === x && (ky >= k1 || index[ky] !== y)) {
         // value @ x (check for pattern matrix)
-        var vx = values ? values[kx] : undefined
+        const vx = values ? values[kx] : undefined
         // insert value @ y
         index.splice(ky, 0, y)
         if (values) { values.splice(ky, 0, vx) }
@@ -1358,7 +1357,7 @@ function factory (type, config, load, typed) {
       // check y row exist & no x row
       if (ky < k1 && index[ky] === y && (kx >= k1 || index[kx] !== x)) {
         // value @ y (check for pattern matrix)
-        var vy = values ? values[ky] : undefined
+        const vy = values ? values[ky] : undefined
         // insert value @ x
         index.splice(kx, 0, x)
         if (values) { values.splice(kx, 0, vy) }

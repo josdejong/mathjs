@@ -1,8 +1,8 @@
-var assert = require('assert')
-var math = require('../../../src/index')
-var isInteger = math.isInteger
-var bignumber = math.bignumber
-var fraction = math.fraction
+const assert = require('assert')
+const math = require('../../../src/index')
+const isInteger = math.isInteger
+const bignumber = math.bignumber
+const fraction = math.fraction
 
 describe('isInteger', function () {
   it('should test whether a number is an integer', function () {

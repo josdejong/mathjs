@@ -1,13 +1,4 @@
-var assert = require('assert'),
-  error = require('../../../src/error/index'),
-  math = require('../../../src/index'),
-  approx = require('../../../tools/approx'),
-  pi = math.pi,
-  complex = math.complex,
-  matrix = math.matrix,
-  unit = math.unit,
-  tanh = math.tanh,
-  bigmath = math.create({number: 'BigNumber', precision: 20})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, tanh = math.tanh, bigmath = math.create({number: 'BigNumber', precision: 20})
 
 describe('tanh', function () {
   it('should return the tanh of a boolean', function () {
@@ -24,12 +15,12 @@ describe('tanh', function () {
   })
 
   it('should return the tanh of a bignumber', function () {
-    var tanhBig = bigmath.tanh
-    var Big = bigmath.bignumber
+    const tanhBig = bigmath.tanh
+    const Big = bigmath.bignumber
 
-    var arg1 = Big(-Infinity)
-    var arg2 = Big(-3)
-    var arg10 = Big(Infinity)
+    const arg1 = Big(-Infinity)
+    const arg2 = Big(-3)
+    const arg10 = Big(Infinity)
     assert.deepEqual(tanhBig(arg1), Big(-1))
     assert.deepEqual(tanhBig(arg2), Big('-0.99505475368673045133'))
     assert.deepEqual(tanhBig(Big(-2)), Big('-0.96402758007581688395'))
@@ -71,7 +62,7 @@ describe('tanh', function () {
     assert.throws(function () { tanh('string') })
   })
 
-  var tanh123 = [0.76159415595576, 0.96402758007582, 0.99505475368673]
+  const tanh123 = [0.76159415595576, 0.96402758007582, 0.99505475368673]
 
   it('should return the tanh of each element of an array', function () {
     approx.deepEqual(tanh([1, 2, 3]), tanh123)
@@ -87,7 +78,7 @@ describe('tanh', function () {
   })
 
   it('should LaTeX tanh', function () {
-    var expression = math.parse('tanh(1)')
+    const expression = math.parse('tanh(1)')
     assert.equal(expression.toTex(), '\\tanh\\left(1\\right)')
   })
 })

@@ -1,15 +1,15 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  var simplify = load(require('./simplify'))
-  var simplifyCore = load(require('./simplify/simplifyCore'))
-  var simplifyConstant = load(require('./simplify/simplifyConstant'))
-  var ArgumentsError = require('../../error/ArgumentsError')
-  var parse = load(require('../../expression/function/parse'))
-  var number = require('../../utils/number')
-  var ConstantNode = load(require('../../expression/node/ConstantNode'))
-  var OperatorNode = load(require('../../expression/node/OperatorNode'))
-  var SymbolNode = load(require('../../expression/node/SymbolNode'))
+  const simplify = load(require('./simplify'))
+  const simplifyCore = load(require('./simplify/simplifyCore'))
+  const simplifyConstant = load(require('./simplify/simplifyConstant'))
+  const ArgumentsError = require('../../error/ArgumentsError')
+  const parse = load(require('../../expression/function/parse'))
+  const number = require('../../utils/number')
+  const ConstantNode = load(require('../../expression/node/ConstantNode'))
+  const OperatorNode = load(require('../../expression/node/OperatorNode'))
+  const SymbolNode = load(require('../../expression/node/SymbolNode'))
 
   /**
    * Transform a rationalizable expression in a rational fraction.
@@ -61,7 +61,7 @@ function factory (type, config, load, typed) {
    *           {Expression Node}  node simplified expression
    *
    */
-  var rationalize = typed('rationalize', {
+  const rationalize = typed('rationalize', {
     'string': function (expr) {
       return rationalize(parse(expr), {}, false)
     },
@@ -91,18 +91,18 @@ function factory (type, config, load, typed) {
     },
 
     'Node, Object, boolean': function (expr, scope, detailed) {
-      var polyRet = polynomial(expr, scope, true) // Check if expression is a rationalizable polynomial
-      var nVars = polyRet.variables.length
-      var expr = polyRet.expression
+      const polyRet = polynomial(expr, scope, true) // Check if expression is a rationalizable polynomial
+      const nVars = polyRet.variables.length
+      expr = polyRet.expression
 
       if (nVars >= 1) { // If expression in not a constant
-        var setRules = rulesRationalize() // Rules for change polynomial in near canonical form
+        const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
         expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
-        var redoInic = true // If has change after start, redo the beginning
-        var s = '' // New expression
-        var sBefore // Previous expression
-        var rules
-        var eDistrDiv = true
+        let redoInic = true // If has change after start, redo the beginning
+        let s = '' // New expression
+        let sBefore // Previous expression
+        let rules
+        let eDistrDiv = true
 
         expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
         s = expr.toString()
@@ -125,8 +125,8 @@ function factory (type, config, load, typed) {
         expr = simplify(expr, setRules.finalRules) // Aplly final rules
       } // NVars >= 1
 
-      var coefficients = []
-      var retRationalize = {}
+      const coefficients = []
+      const retRationalize = {}
 
       if (expr.type === 'OperatorNode' && expr.isBinary() && expr.op === '/') { // Separate numerator from denominator
         if (nVars == 1) {
@@ -138,7 +138,9 @@ function factory (type, config, load, typed) {
           retRationalize.denominator = expr.args[1]
         }
       } else {
-        if (nVars == 1) expr = polyToCanonical(expr, coefficients)
+        if (nVars == 1) {
+          expr = polyToCanonical(expr, coefficients)
+        }
         if (detailed) {
           retRationalize.numerator = expr
           retRationalize.denominator = null
@@ -174,13 +176,13 @@ function factory (type, config, load, typed) {
    *            {Array}  variables:  variable names
    */
   function polynomial (expr, scope, extended) {
-    var variables = []
-    var node = simplify(expr, scope) // Resolves any variables and functions with all defined parameters
+    const variables = []
+    const node = simplify(expr, scope) // Resolves any variables and functions with all defined parameters
     extended = !!extended
 
-    var oper = '+-*' + (extended ? '/' : '')
+    const oper = '+-*' + (extended ? '/' : '')
     recPoly(node)
-    var retFunc = {}
+    const retFunc = {}
     retFunc.expression = node
     retFunc.variables = variables
     return retFunc
@@ -203,20 +205,20 @@ function factory (type, config, load, typed) {
      * @return                           nothing, throw an exception if error
      */
     function recPoly (node) {
-      var tp = node.type // node type
+      const tp = node.type // node type
       if (tp === 'FunctionNode') { throw new ArgumentsError('There is an unsolved function call') } // No function call in polynomial expression
       else if (tp === 'OperatorNode') {
         if (node.op === '^' && node.isBinary()) {
           if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) { throw new ArgumentsError('There is a non-integer exponent') } else { recPoly(node.args[0]) }
         } else {
           if (oper.indexOf(node.op) === -1) throw new ArgumentsError('Operator ' + node.op + ' invalid in polynomial expression')
-          for (var i = 0; i < node.args.length; i++) {
+          for (let i = 0; i < node.args.length; i++) {
             recPoly(node.args[i])
           }
         } // type of operator
       } else if (tp === 'SymbolNode') {
-        var name = node.name // variable name
-        var pos = variables.indexOf(name)
+        const name = node.name // variable name
+        const pos = variables.indexOf(name)
         if (pos === -1) // new variable in expression
         { variables.push(name) }
       } else if (tp === 'ParenthesisNode') { recPoly(node.content) } else if (tp !== 'ConstantNode') { throw new ArgumentsError('type ' + tp + ' is not allowed in polynomial expression') }
@@ -234,7 +236,7 @@ function factory (type, config, load, typed) {
    * @return {array}        rule set to rationalize an polynomial expression
    */
   function rulesRationalize () {
-    var oldRules = [simplifyCore, // sCore
+    const oldRules = [simplifyCore, // sCore
       {l: 'n+n', r: '2*n'},
       {l: 'n+-n', r: '0'},
       simplifyConstant, // sConstant
@@ -244,7 +246,7 @@ function factory (type, config, load, typed) {
       {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
       {l: '1*n', r: 'n'}]
 
-    var rulesFirst = [
+    const rulesFirst = [
       {l: '(-n1)/(-n2)', r: 'n1/n2'}, // Unary division
       {l: '(-n1)*(-n2)', r: 'n1*n2'}, // Unary multiplication
       {l: 'n1--n2', r: 'n1+n2'}, // '--' elimination
@@ -264,19 +266,19 @@ function factory (type, config, load, typed) {
       {l: '-(-n1/n2)', r: '(n1/n2)'}, // Division and Unary
       {l: '-(n1/n2)', r: '(-n1/n2)'}] // Divisao and Unary
 
-    var rulesDistrDiv = [
+    const rulesDistrDiv = [
       {l: '(n1/n2 + n3/n4)', r: '((n1*n4 + n3*n2)/(n2*n4))'}, // Sum of fractions
       {l: '(n1/n2 + n3)', r: '((n1 + n3*n2)/n2)'}, // Sum fraction with number 1
       {l: '(n1 + n2/n3)', r: '((n1*n3 + n2)/n3)'}] // Sum fraction with number 1
 
-    var rulesSucDiv = [
+    const rulesSucDiv = [
       {l: '(n1/(n2/n3))', r: '((n1*n3)/n2)'}, // Division simplification
       {l: '(n1/n2/n3)', r: '(n1/(n2*n3))'}]
 
-    var setRules = {} // rules set in 4 steps.
+    const setRules = {} // rules set in 4 steps.
 
     // All rules => infinite loop
-    // setRules.allRules =oldRules.concat(rulesFirst,rulesDistrDiv,rulesSucDiv);
+    // setRules.allRules =oldRules.concat(rulesFirst,rulesDistrDiv,rulesSucDiv)
 
     setRules.firstRules = oldRules.concat(rulesFirst, rulesSucDiv) // First rule set
     setRules.distrDivRules = rulesDistrDiv // Just distr. div. rules
@@ -330,16 +332,17 @@ function factory (type, config, load, typed) {
    * @return {node}        node expression with all powers expanded.
    */
   function expandPower (node, parent, indParent) {
-    var tp = node.type
-    var internal = (arguments.length > 1) // TRUE in internal calls
+    const tp = node.type
+    const internal = (arguments.length > 1) // TRUE in internal calls
 
     if (tp === 'OperatorNode' && node.isBinary()) {
-      var does = false
+      let does = false
+      let val
       if (node.op === '^') { // First operator: Parenthesis or UnaryMinus
         if ((node.args[0].type === 'ParenthesisNode' ||
             node.args[0].type === 'OperatorNode') &&
             (node.args[1].type === 'ConstantNode')) { // Second operator: Constant
-          var val = parseFloat(node.args[1].value)
+          val = parseFloat(node.args[1].value)
           does = (val >= 2 && number.isInteger(val))
         }
       }
@@ -358,8 +361,8 @@ function factory (type, config, load, typed) {
           //             pow
           //                 constant - 1
           //
-          var nEsqTopo = node.args[0]
-          var nDirTopo = new OperatorNode('^', 'pow', [node.args[0].cloneDeep(), new ConstantNode(val - 1)])
+          const nEsqTopo = node.args[0]
+          const nDirTopo = new OperatorNode('^', 'pow', [node.args[0].cloneDeep(), new ConstantNode(val - 1)])
           node = new OperatorNode('*', 'multiply', [nEsqTopo, nDirTopo])
         } else // Expo = 2 - no power
 
@@ -379,7 +382,7 @@ function factory (type, config, load, typed) {
 
     if (tp === 'ParenthesisNode') // Recursion
     { expandPower(node.content, node, 'content') } else if (tp !== 'ConstantNode' && tp !== 'SymbolNode') {
-      for (var i = 0; i < node.args.length; i++) { expandPower(node.args[i], node, i) }
+      for (let i = 0; i < node.args.length; i++) { expandPower(node.args[i], node, i) }
     }
 
     if (!internal) return node // return the root node
@@ -409,12 +412,10 @@ function factory (type, config, load, typed) {
    * @return {node}        new node tree with one variable polynomial or string error.
    */
   function polyToCanonical (node, coefficients) {
-    var i
-
     if (coefficients === undefined) { coefficients = [] } // coefficients.
 
     coefficients[0] = 0 // index is the exponent
-    var o = {}
+    const o = {}
     o.cte = 1
     o.oper = '+'
 
@@ -422,29 +423,29 @@ function factory (type, config, load, typed) {
     //       It is used to deduce the exponent: 1 for *, 0 for "".
     o.fire = ''
 
-    var maxExpo = 0 // maximum exponent
-    var varname = '' // var name
+    let maxExpo = 0 // maximum exponent
+    let varname = '' // variable name
 
     recurPol(node, null, o)
     maxExpo = coefficients.length - 1
-    var first = true
+    let first = true
+    let no
 
-    for (i = maxExpo; i >= 0; i--) {
+    for (let i = maxExpo; i >= 0; i--) {
       if (coefficients[i] === 0) continue
-      var n1 = new ConstantNode(
+      let n1 = new ConstantNode(
         first ? coefficients[i] : Math.abs(coefficients[i]))
-      var op = coefficients[i] < 0 ? '-' : '+'
+      const op = coefficients[i] < 0 ? '-' : '+'
 
       if (i > 0) { // Is not a constant without variable
-        var n2 = new SymbolNode(varname)
+        let n2 = new SymbolNode(varname)
         if (i > 1) {
-          var n3 = new ConstantNode(i)
+          const n3 = new ConstantNode(i)
           n2 = new OperatorNode('^', 'pow', [n2, n3])
         }
         if (coefficients[i] === -1 && first) { n1 = new OperatorNode('-', 'unaryMinus', [n2]) } else if (Math.abs(coefficients[i]) === 1) { n1 = n2 } else { n1 = new OperatorNode('*', 'multiply', [n1, n2]) }
       }
 
-      var no
       if (first) { no = n1 } else if (op === '+') { no = new OperatorNode('+', 'add', [no, n1]) } else { no = new OperatorNode('-', 'subtract', [no, n1]) }
 
       first = false
@@ -467,7 +468,7 @@ function factory (type, config, load, typed) {
      * @return {}                    No return. If error, throws an exception
      */
     function recurPol (node, noPai, o) {
-      var tp = node.type
+      const tp = node.type
       if (tp === 'FunctionNode') // ***** FunctionName *****
       // No function call in polynomial expression
       { throw new ArgumentsError('There is an unsolved function call') } else if (tp === 'OperatorNode') { // ***** OperatorName *****
@@ -490,7 +491,7 @@ function factory (type, config, load, typed) {
         // Firers: ^,*       Old:   ^,&,-(unary): firers
         if (node.op === '^' || node.op === '*') o.fire = node.op
 
-        for (var i = 0; i < node.args.length; i++) {
+        for (let i = 0; i < node.args.length; i++) {
           // +,-: reset fire
           if (node.fn === 'unaryMinus') o.oper = '-'
           if (node.op === '+' || node.fn === 'subtract') {
@@ -522,7 +523,7 @@ function factory (type, config, load, typed) {
           maxExpo = Math.max(1, maxExpo)
         }
       } else if (tp === 'ConstantNode') {
-        var valor = parseFloat(node.value)
+        const valor = parseFloat(node.value)
         if (noPai === null) {
           coefficients[0] = valor
           return
@@ -533,7 +534,7 @@ function factory (type, config, load, typed) {
 
           if (!number.isInteger(valor) || valor <= 0) { throw new ArgumentsError('Non-integer exponent is not allowed') }
 
-          for (var i = maxExpo + 1; i < valor; i++) coefficients[i] = 0
+          for (let i = maxExpo + 1; i < valor; i++) coefficients[i] = 0
           if (valor > maxExpo) coefficients[valor] = 0
           coefficients[valor] += o.cte * (o.oper === '+' ? 1 : -1)
           maxExpo = Math.max(valor, maxExpo)
