@@ -34,20 +34,20 @@ exports.create = function create (type) {
   //   for security reasons, so these functions are not exposed in the expression
   //   parser.
   type.isNumber = function (x) { return typeof x === 'number' }
-  type.isComplex = function (x) { return type.Complex && x instanceof type.Complex || false }
+  type.isComplex = function (x) { return (type.Complex && x instanceof type.Complex) || false }
   type.isBigNumber = isBigNumber
-  type.isFraction = function (x) { return type.Fraction && x instanceof type.Fraction || false }
-  type.isUnit = function (x) { return x && x.constructor.prototype.isUnit || false }
+  type.isFraction = function (x) { return (type.Fraction && x instanceof type.Fraction) || false }
+  type.isUnit = function (x) { return (x && x.constructor.prototype.isUnit) || false }
   type.isString = function (x) { return typeof x === 'string' }
   type.isArray = Array.isArray
   type.isMatrix = isMatrix
-  type.isDenseMatrix = function (x) { return x && x.isDenseMatrix && x.constructor.prototype.isMatrix || false }
-  type.isSparseMatrix = function (x) { return x && x.isSparseMatrix && x.constructor.prototype.isMatrix || false }
-  type.isRange = function (x) { return x && x.constructor.prototype.isRange || false }
-  type.isIndex = function (x) { return x && x.constructor.prototype.isIndex || false }
+  type.isDenseMatrix = function (x) { return (x && x.isDenseMatrix && x.constructor.prototype.isMatrix) || false }
+  type.isSparseMatrix = function (x) { return (x && x.isSparseMatrix && x.constructor.prototype.isMatrix) || false }
+  type.isRange = function (x) { return (x && x.constructor.prototype.isRange) || false }
+  type.isIndex = function (x) { return (x && x.constructor.prototype.isIndex) || false }
   type.isBoolean = function (x) { return typeof x === 'boolean' }
-  type.isResultSet = function (x) { return x && x.constructor.prototype.isResultSet || false }
-  type.isHelp = function (x) { return x && x.constructor.prototype.isHelp || false }
+  type.isResultSet = function (x) { return (x && x.constructor.prototype.isResultSet) || false }
+  type.isHelp = function (x) { return (x && x.constructor.prototype.isHelp) || false }
   type.isFunction = function (x) { return typeof x === 'function' }
   type.isDate = function (x) { return x instanceof Date }
   type.isRegExp = function (x) { return x instanceof RegExp }
@@ -60,23 +60,23 @@ exports.create = function create (type) {
   type.isNull = function (x) { return x === null }
   type.isUndefined = function (x) { return x === undefined }
 
-  type.isAccessorNode = function (x) { return x && x.isAccessorNode && x.constructor.prototype.isNode || false }
-  type.isArrayNode = function (x) { return x && x.isArrayNode && x.constructor.prototype.isNode || false }
-  type.isAssignmentNode = function (x) { return x && x.isAssignmentNode && x.constructor.prototype.isNode || false }
-  type.isBlockNode = function (x) { return x && x.isBlockNode && x.constructor.prototype.isNode || false }
-  type.isConditionalNode = function (x) { return x && x.isConditionalNode && x.constructor.prototype.isNode || false }
-  type.isConstantNode = function (x) { return x && x.isConstantNode && x.constructor.prototype.isNode || false }
-  type.isFunctionAssignmentNode = function (x) { return x && x.isFunctionAssignmentNode && x.constructor.prototype.isNode || false }
-  type.isFunctionNode = function (x) { return x && x.isFunctionNode && x.constructor.prototype.isNode || false }
-  type.isIndexNode = function (x) { return x && x.isIndexNode && x.constructor.prototype.isNode || false }
-  type.isNode = function (x) { return x && x.isNode && x.constructor.prototype.isNode || false }
-  type.isObjectNode = function (x) { return x && x.isObjectNode && x.constructor.prototype.isNode || false }
-  type.isOperatorNode = function (x) { return x && x.isOperatorNode && x.constructor.prototype.isNode || false }
-  type.isParenthesisNode = function (x) { return x && x.isParenthesisNode && x.constructor.prototype.isNode || false }
-  type.isRangeNode = function (x) { return x && x.isRangeNode && x.constructor.prototype.isNode || false }
-  type.isSymbolNode = function (x) { return x && x.isSymbolNode && x.constructor.prototype.isNode || false }
+  type.isAccessorNode = function (x) { return (x && x.isAccessorNode && x.constructor.prototype.isNode) || false }
+  type.isArrayNode = function (x) { return (x && x.isArrayNode && x.constructor.prototype.isNode) || false }
+  type.isAssignmentNode = function (x) { return (x && x.isAssignmentNode && x.constructor.prototype.isNode) || false }
+  type.isBlockNode = function (x) { return (x && x.isBlockNode && x.constructor.prototype.isNode) || false }
+  type.isConditionalNode = function (x) { return (x && x.isConditionalNode && x.constructor.prototype.isNode) || false }
+  type.isConstantNode = function (x) { return (x && x.isConstantNode && x.constructor.prototype.isNode) || false }
+  type.isFunctionAssignmentNode = function (x) { return (x && x.isFunctionAssignmentNode && x.constructor.prototype.isNode) || false }
+  type.isFunctionNode = function (x) { return (x && x.isFunctionNode && x.constructor.prototype.isNode) || false }
+  type.isIndexNode = function (x) { return (x && x.isIndexNode && x.constructor.prototype.isNode) || false }
+  type.isNode = function (x) { return (x && x.isNode && x.constructor.prototype.isNode) || false }
+  type.isObjectNode = function (x) { return (x && x.isObjectNode && x.constructor.prototype.isNode) || false }
+  type.isOperatorNode = function (x) { return (x && x.isOperatorNode && x.constructor.prototype.isNode) || false }
+  type.isParenthesisNode = function (x) { return (x && x.isParenthesisNode && x.constructor.prototype.isNode) || false }
+  type.isRangeNode = function (x) { return (x && x.isRangeNode && x.constructor.prototype.isNode) || false }
+  type.isSymbolNode = function (x) { return (x && x.isSymbolNode && x.constructor.prototype.isNode) || false }
 
-  type.isChain = function (x) { return x && x.constructor.prototype.isChain || false }
+  type.isChain = function (x) { return (x && x.constructor.prototype.isChain) || false }
 
   // get a new instance of typed-function
   const typed = createTyped()

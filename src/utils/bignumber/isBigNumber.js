@@ -5,5 +5,5 @@
  * @return {boolean}
  */
 module.exports = function isBigNumber (x) {
-  return x && x.constructor.prototype.isBigNumber || false
+  return (x && x.constructor.prototype.isBigNumber) || false
 }

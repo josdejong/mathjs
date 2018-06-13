@@ -493,8 +493,8 @@ function factory (type, config, load, typed, math) {
     //    console.log('Entering _ruleMatch(' + rule.toString() + ', ' + node.toString() + ')')
     let res = [{placeholders: {}}]
 
-    if (rule instanceof OperatorNode && node instanceof OperatorNode ||
-     rule instanceof FunctionNode && node instanceof FunctionNode) {
+    if ((rule instanceof OperatorNode && node instanceof OperatorNode) ||
+      (rule instanceof FunctionNode && node instanceof FunctionNode)) {
       // If the rule is an OperatorNode or a FunctionNode, then node must match exactly
       if (rule instanceof OperatorNode) {
         if (rule.op !== node.op || rule.fn !== node.fn) {
@@ -507,7 +507,7 @@ function factory (type, config, load, typed, math) {
       }
 
       // rule and node match. Search the children of rule and node.
-      if (node.args.length === 1 && rule.args.length === 1 || !isAssociative(node) || isSplit) {
+      if ((node.args.length === 1 && rule.args.length === 1) || !isAssociative(node) || isSplit) {
         // Expect non-associative operators to match exactly
         const childMatches = []
         for (let i = 0; i < rule.args.length; i++) {
@@ -609,8 +609,8 @@ function factory (type, config, load, typed, math) {
       if (p.name !== q.name) {
         return false
       }
-    } else if (p instanceof OperatorNode && q instanceof OperatorNode ||
-         p instanceof FunctionNode && q instanceof FunctionNode) {
+    } else if ((p instanceof OperatorNode && q instanceof OperatorNode) ||
+        (p instanceof FunctionNode && q instanceof FunctionNode)) {
       if (p instanceof OperatorNode) {
         if (p.op !== q.op || p.fn !== q.fn) {
           return false

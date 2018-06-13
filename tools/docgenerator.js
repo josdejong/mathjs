@@ -539,7 +539,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
      */
     function functionEntry (name) {
       const fn = functions[name]
-      let syntax = SYNTAX[name] || fn.doc && fn.doc.syntax && fn.doc.syntax[0] || name
+      let syntax = SYNTAX[name] || (fn.doc && fn.doc.syntax && fn.doc.syntax[0]) || name
       syntax = syntax
         // .replace(/^math\./, '')
         .replace(/\s+\/\/.*$/, '')

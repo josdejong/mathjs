@@ -36,10 +36,10 @@ function factory (type, config, load, typed) {
 
     this.name = name
     this.params = params.map(function (param) {
-      return param && param.name || param
+      return (param && param.name) || param
     })
     this.types = params.map(function (param) {
-      return param && param.type || 'any'
+      return (param && param.type) || 'any'
     })
     this.expr = expr
   }
