@@ -31,7 +31,7 @@ describe('help', function () {
 
   it('should throw an error when constructed without new operator', function () {
     assert.throws(function () {
-      Help(math.expression.docs.sin)
+      console.log(Help(math.expression.docs.sin))
     }, /Constructor must be called with the new operator/)
   })
 

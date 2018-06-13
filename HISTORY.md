@@ -14,6 +14,8 @@
 - Upgraded dependencies:
   - `decimal.js` from `9.0.1` to `10.0.1`
   - Upgraded dev dependencies
+- Changed code style to https://standardjs.com/, run linter on `npm test`.
+  See #1110.
 - Dropped support for bower. Use npm or an other package manages instead.
 - Dropped support for (non-primitive) instances of `Number`, `Boolean`, and
   `String` from functions `clone` and `typeof`.
