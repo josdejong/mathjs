@@ -108,7 +108,7 @@ function factory (type, config, load, typed, math) {
    */
   Node.prototype.traverse = function (callback) {
     // execute callback for itself
-    callback(this, null, null)
+    callback(this, null, null) // eslint-disable-line standard/no-callback-literal
 
     // recursively traverse over all childs of a node
     function _traverse (node, callback) {
@@ -151,7 +151,7 @@ function factory (type, config, load, typed, math) {
       })
     }
 
-    const replacement = callback(this, null, null)
+    const replacement = callback(this, null, null) // eslint-disable-line standard/no-callback-literal
     return _transform(replacement, callback)
   }
 

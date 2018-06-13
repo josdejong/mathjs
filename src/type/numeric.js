@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
         }
 
         // The following regexp is relatively permissive
-        if (!/^[\-+]?((\d+\.?\d*)|(\d*\.?\d+))([eE][+\-]?\d+)?$/.test(value)) {
+        if (!/^[-+]?((\d+\.?\d*)|(\d*\.?\d+))([eE][+-]?\d+)?$/.test(value)) {
           throw new Error('Invalid numeric value "' + value + '"')
         }
 

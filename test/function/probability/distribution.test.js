@@ -62,8 +62,6 @@ describe('distribution', function () {
   })
 
   describe('random', function () {
-    let originalRandom
-
     it('should pick uniformly distributed numbers in [0, 1]', function () {
       const picked = []
 

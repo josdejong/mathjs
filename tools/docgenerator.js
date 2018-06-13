@@ -60,7 +60,7 @@ const IGNORE_WARNINGS = {
  */
 function generateDoc (name, code) {
   // get block comment from code
-  const match = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//.exec(code)
+  const match = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code)
 
   if (!match) {
     return null

@@ -67,7 +67,6 @@ function factory (type, config, load, typed, math) {
     if (isFactory(object)) {
       _importFactory(object, options)
     } else if (Array.isArray(object)) {
-
       object.forEach(function (entry) {
         mathImport(entry, options)
       })

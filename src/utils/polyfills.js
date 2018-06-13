@@ -9,5 +9,5 @@ Number.isFinite = Number.isFinite || function (value) {
 // Polyfill for IE 11
 // source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN
 Number.isNaN = Number.isNaN || function (value) {
-  return value !== value
+  return value !== value // eslint-disable-line no-self-compare
 }

@@ -97,7 +97,7 @@ function factory (type, config, load, typed) {
     ']': true,
     '{': true,
     '}': true,
-    '\"': true,
+    '"': true,
     ';': true,
 
     '+': true,
@@ -1379,7 +1379,7 @@ function factory (type, config, load, typed) {
   function parseStringToken () {
     let str = ''
 
-    while (c !== '' && c !== '\"') {
+    while (c !== '' && c !== '"') {
       if (c === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\"'

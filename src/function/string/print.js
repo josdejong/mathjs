@@ -39,13 +39,13 @@ function factory (type, config, load, typed) {
    *
    *     format
    *
-   * @param {string} template       A string containing variable placeholders.
-   * @param {Object | Array | Matrix} values An object or array containing variables
-   *                                which will be filled in in the template.
-   * @param {number | Object} [options]  Formatting options,
-   *                                or the number of digits to format numbers.
-   *                                See function math.format for a description
-   *                                of all options.
+   * @param {string} template           A string containing variable placeholders.
+   * @param {Object | Array | Matrix}   values An object or array containing variables
+   *                                    which will be filled in in the template.
+   * @param {number | Object} [options] Formatting options,
+   *                                    or the number of digits to format numbers.
+   *                                    See function math.format for a description
+   *                                    of all options.
    * @return {string} Interpolated string
    */
   const print = typed('print', {
@@ -68,7 +68,7 @@ function factory (type, config, load, typed) {
  * @private
  */
 function _print (template, values, options) {
-  return template.replace(/\$([\w\.]+)/g, function (original, key) {
+  return template.replace(/\$([\w.]+)/g, function (original, key) {
     const keys = key.split('.')
     let value = values[keys.shift()]
     while (keys.length && value !== undefined) {

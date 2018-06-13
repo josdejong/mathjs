@@ -566,6 +566,7 @@ function factory (type, config, load, typed) {
             case 'OperatorNode:divide':
               lhsTex = `\\left(${lhsTex}\\right)`
           }
+          break
         case 'OperatorNode:multiply':
           if (this.implicit && (implicit === 'hide')) {
             return lhsTex + '~' + rhsTex

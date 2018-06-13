@@ -379,7 +379,6 @@ function factory (type, config, load, typed) {
           const nDirTopo = new OperatorNode('^', 'pow', [node.args[0].cloneDeep(), new ConstantNode(val - 1)])
           node = new OperatorNode('*', 'multiply', [nEsqTopo, nDirTopo])
         } else { // Expo = 2 - no power
-
           // AFTER:  (exponent =  2)
           //             operator A --> Subtree
           // parent   oper

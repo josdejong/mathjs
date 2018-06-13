@@ -926,7 +926,7 @@ function factory (type, config, load, typed) {
         // check we need to process zeros
         if (!skipZeros) {
           // zero values
-          for (let x = p; x < i; x++) { callback(0, [x, j], me) }
+          for (let x = p; x < i; x++) { callback(0, [x, j], me) } // eslint-disable-line standard/no-callback-literal
         }
         // value @ k
         callback(this._values[k], [i, j], me)
@@ -936,7 +936,7 @@ function factory (type, config, load, typed) {
       // check we need to process zeros
       if (!skipZeros) {
         // zero values
-        for (let y = p; y < rows; y++) { callback(0, [y, j], me) }
+        for (let y = p; y < rows; y++) { callback(0, [y, j], me) } // eslint-disable-line standard/no-callback-literal
       }
     }
   }

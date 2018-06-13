@@ -94,7 +94,7 @@ const fiedler = [
   suite.add(pad('matrix operations ndarray A*A'), function () { return gemm(B, A, A) })
   suite.add(pad('matrix operations ndarray A\''), function () { ops.assign(B, A); return B.transpose(1, 0) })
   suite.add(pad('matrix operations ndarray det(A)'), function () { return det(A) })
-})();
+})()
 
 const durations = []
 
