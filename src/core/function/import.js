@@ -63,11 +63,11 @@ function factory (type, config, load, typed, math) {
       options = {}
     }
 
+    // TODO: allow a typed-function with name too
     if (isFactory(object)) {
       _importFactory(object, options)
-    }
-    // TODO: allow a typed-function with name too
-    else if (Array.isArray(object)) {
+    } else if (Array.isArray(object)) {
+
       object.forEach(function (entry) {
         mathImport(entry, options)
       })

@@ -206,12 +206,20 @@ function factory (type, config, load, typed) {
      */
     function recPoly (node) {
       const tp = node.type // node type
-      if (tp === 'FunctionNode') { throw new ArgumentsError('There is an unsolved function call') } // No function call in polynomial expression
-      else if (tp === 'OperatorNode') {
+      if (tp === 'FunctionNode') {
+        // No function call in polynomial expression
+        throw new ArgumentsError('There is an unsolved function call')
+      } else if (tp === 'OperatorNode') {
         if (node.op === '^' && node.isBinary()) {
-          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) { throw new ArgumentsError('There is a non-integer exponent') } else { recPoly(node.args[0]) }
+          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
+            throw new ArgumentsError('There is a non-integer exponent')
+          } else {
+            recPoly(node.args[0])
+          }
         } else {
-          if (oper.indexOf(node.op) === -1) throw new ArgumentsError('Operator ' + node.op + ' invalid in polynomial expression')
+          if (oper.indexOf(node.op) === -1) {
+            throw new ArgumentsError('Operator ' + node.op + ' invalid in polynomial expression')
+          }
           for (let i = 0; i < node.args.length; i++) {
             recPoly(node.args[i])
           }
@@ -219,9 +227,15 @@ function factory (type, config, load, typed) {
       } else if (tp === 'SymbolNode') {
         const name = node.name // variable name
         const pos = variables.indexOf(name)
-        if (pos === -1) // new variable in expression
-        { variables.push(name) }
-      } else if (tp === 'ParenthesisNode') { recPoly(node.content) } else if (tp !== 'ConstantNode') { throw new ArgumentsError('type ' + tp + ' is not allowed in polynomial expression') }
+        if (pos === -1) {
+          // new variable in expression
+          variables.push(name)
+        }
+      } else if (tp === 'ParenthesisNode') {
+        recPoly(node.content)
+      } else if (tp !== 'ConstantNode') {
+        throw new ArgumentsError('type ' + tp + ' is not allowed in polynomial expression')
+      }
     } // end of recPoly
   } // end of polynomial
 
@@ -364,28 +378,36 @@ function factory (type, config, load, typed) {
           const nEsqTopo = node.args[0]
           const nDirTopo = new OperatorNode('^', 'pow', [node.args[0].cloneDeep(), new ConstantNode(val - 1)])
           node = new OperatorNode('*', 'multiply', [nEsqTopo, nDirTopo])
-        } else // Expo = 2 - no power
+        } else { // Expo = 2 - no power
 
-        // AFTER:  (exponent =  2)
-        //             operator A --> Subtree
-        // parent   oper
-        //            deep clone (operator A --> Subtree)
-        //
-        { node = new OperatorNode('*', 'multiply', [node.args[0], node.args[0].cloneDeep()]) }
+          // AFTER:  (exponent =  2)
+          //             operator A --> Subtree
+          // parent   oper
+          //            deep clone (operator A --> Subtree)
+          //
+          node = new OperatorNode('*', 'multiply', [node.args[0], node.args[0].cloneDeep()])
+        }
 
-        if (internal) // Change parent references in internal recursive calls
-        {
+        if (internal) {
+          // Change parent references in internal recursive calls
           if (indParent === 'content') { parent.content = node } else { parent.args[indParent] = node }
         }
       } // does
     } // binary OperatorNode
 
-    if (tp === 'ParenthesisNode') // Recursion
-    { expandPower(node.content, node, 'content') } else if (tp !== 'ConstantNode' && tp !== 'SymbolNode') {
-      for (let i = 0; i < node.args.length; i++) { expandPower(node.args[i], node, i) }
+    if (tp === 'ParenthesisNode') {
+      // Recursion
+      expandPower(node.content, node, 'content')
+    } else if (tp !== 'ConstantNode' && tp !== 'SymbolNode') {
+      for (let i = 0; i < node.args.length; i++) {
+        expandPower(node.args[i], node, i)
+      }
     }
 
-    if (!internal) return node // return the root node
+    if (!internal) {
+      // return the root node
+      return node
+    }
   } // End expandPower
 
   // ---------------------------------------------------------------------------------------
@@ -469,9 +491,12 @@ function factory (type, config, load, typed) {
      */
     function recurPol (node, noPai, o) {
       const tp = node.type
-      if (tp === 'FunctionNode') // ***** FunctionName *****
-      // No function call in polynomial expression
-      { throw new ArgumentsError('There is an unsolved function call') } else if (tp === 'OperatorNode') { // ***** OperatorName *****
+      if (tp === 'FunctionNode') {
+        // ***** FunctionName *****
+        // No function call in polynomial expression
+        throw new ArgumentsError('There is an unsolved function call')
+      } else if (tp === 'OperatorNode') {
+        // ***** OperatorName *****
         if ('+-*^'.indexOf(node.op) === -1) throw new ArgumentsError('Operator ' + node.op + ' invalid')
 
         if (noPai !== null) {
@@ -489,7 +514,9 @@ function factory (type, config, load, typed) {
         } // Has parent
 
         // Firers: ^,*       Old:   ^,&,-(unary): firers
-        if (node.op === '^' || node.op === '*') o.fire = node.op
+        if (node.op === '^' || node.op === '*') {
+          o.fire = node.op
+        }
 
         for (let i = 0; i < node.args.length; i++) {
           // +,-: reset fire

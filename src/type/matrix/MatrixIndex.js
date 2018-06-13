@@ -53,11 +53,10 @@ function factory (type) {
       } else if (typeof arg === 'string') {
         // object property (arguments.count should be 1)
         this._dimensions.push(arg)
-      }
-      // TODO: implement support for wildcard '*'
-      else {
+      } else {
         throw new TypeError('Dimension must be an Array, Matrix, number, string, or Range')
       }
+      // TODO: implement support for wildcard '*'
     }
   }
 
