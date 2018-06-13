@@ -1,7 +1,6 @@
 'use strict'
 
 const deepMap = require('../../utils/collection/deepMap')
-const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
   /**

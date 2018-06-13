@@ -25,7 +25,7 @@ exports.memoize = function (fn, hasher) {
 
     const hash = hasher ? hasher(args) : JSON.stringify(args)
     if (!(hash in memoize.cache)) {
-      return memoize.cache[hash] = fn.apply(fn, args)
+      memoize.cache[hash] = fn.apply(fn, args)
     }
     return memoize.cache[hash]
   }

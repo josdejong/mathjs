@@ -151,14 +151,16 @@ function factory (type, config, load, typed) {
   // TODO: can we rewrite constTag into a pure function?
   const constTag = typed('constTag', {
     'Object, ConstantNode, string': function (constNodes, node) {
-      return constNodes[node] = true
+      constNodes[node] = true
+      return true
     },
 
     'Object, SymbolNode, string': function (constNodes, node, varName) {
       // Treat other variables like constants. For reasoning, see:
       //   https://en.wikipedia.org/wiki/Partial_derivative
       if (node.name !== varName) {
-        return constNodes[node] = true
+        constNodes[node] = true
+        return true
       }
       return false
     },
@@ -169,7 +171,8 @@ function factory (type, config, load, typed) {
 
     'Object, FunctionAssignmentNode, string': function (constNodes, node, varName) {
       if (node.params.indexOf(varName) === -1) {
-        return constNodes[node] = true
+        constNodes[node] = true
+        return true
       }
       return constTag(constNodes, node.expr, varName)
     },
@@ -182,7 +185,8 @@ function factory (type, config, load, typed) {
         }
 
         if (isConst) {
-          return constNodes[node] = true
+          constNodes[node] = true
+          return true
         }
       }
       return false

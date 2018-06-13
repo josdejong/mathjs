@@ -1080,7 +1080,6 @@ function factory (type, config, load, typed, math) {
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false
-    let isReal = true
     if (typeof (this.value) !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
       isImaginary = Math.abs(this.value.re) < 1e-14

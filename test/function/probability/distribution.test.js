@@ -305,7 +305,7 @@ describe('distribution', function () {
 
     it('should return an array of length 1 if the number passed is 1', function () {
       const possibles = [11, 22, 33, 44, 55]
-      const  weights = [1, 5, 2, 4, 6]
+      const weights = [1, 5, 2, 4, 6]
       const number = 1
 
       assert(Array.isArray(uniformDistrib.pickRandom(possibles, number)))

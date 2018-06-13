@@ -76,13 +76,15 @@ function factory (type, config, load, typed) {
 
     return a.map(function (a) {
       return b.map(function (b) {
+        r = []
+        t.push(r)
         return a.map(function (y) {
           return b.map(function (x) {
             return r.push(multiplyScalar(y, x))
           })
-        }, t.push(r = []))
+        })
       })
-    }, t = []) && t
+    }) && t
   }
 }
 

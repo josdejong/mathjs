@@ -38,12 +38,10 @@ describe('typeof', function () {
 
   it('should return array type for an array', function () {
     assert.equal(math.typeof([1, 2, 3]), 'Array')
-    assert.equal(math.typeof(new Array()), 'Array')
   })
 
   it('should return array type for an array', function () {
     assert.equal(math.typeof([1, 2, 3]), 'Array')
-    assert.equal(math.typeof(new Array()), 'Array')
   })
 
   it('should return matrix type for a matrix', function () {
