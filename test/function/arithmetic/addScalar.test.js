@@ -1,7 +1,7 @@
 // test add
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const BigNumber = require('decimal.js')
 const add = math.add
 

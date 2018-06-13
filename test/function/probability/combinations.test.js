@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), combinations = math.combinations
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), combinations = math.combinations
 
 describe('combinations', function () {
   it('should calculate the combinations of a number taking k at a time', function () {

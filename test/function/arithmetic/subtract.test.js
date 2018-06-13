@@ -1,7 +1,7 @@
 // test subtract
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const bignumber = math.bignumber
 const subtract = math.subtract
 

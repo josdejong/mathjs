@@ -1,5 +1,5 @@
 // test sqrtm
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index')
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main')
 
 describe('sqrtm', function () {
   const A = [[5, 2], [4, 7]]

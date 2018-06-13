@@ -1,7 +1,7 @@
 // test hypot
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const hypot = math.hypot
 const bignumber = math.bignumber
 const fraction = math.fraction

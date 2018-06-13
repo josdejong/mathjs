@@ -1,6 +1,6 @@
 // test setCartesian
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('setCartesian', function () {
   it('should return the cartesian product of two sets', function () {

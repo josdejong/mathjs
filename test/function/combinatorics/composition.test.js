@@ -1,6 +1,6 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const composition = math.composition
 
 describe('composition', function () {

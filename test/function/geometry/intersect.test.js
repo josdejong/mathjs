@@ -1,6 +1,6 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('intersect', function () {
   it('should calculate the intersection point of two 2D lines', function () {

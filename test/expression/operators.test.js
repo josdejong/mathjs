@@ -1,6 +1,6 @@
 const assert = require('assert')
 
-const math = require('../../src/index')
+const math = require('../../src/main')
 const operators = require('../../src/expression/operators')
 const OperatorNode = math.expression.node.OperatorNode
 const AssignmentNode = math.expression.node.AssignmentNode

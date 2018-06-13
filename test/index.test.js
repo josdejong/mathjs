@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../src/index')
+const math = require('../src/main')
 
 describe('factory', function () {
   it('should get a default instance of mathjs', function () {

@@ -1,7 +1,7 @@
 const assert = require('assert')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
-const math = require('../../../../src/index').create()
+const math = require('../../../../src/main').create()
 math.import(require('../../../../src/function/algebra/sparse/cs_amd'))
 
 const cs_amd = math.sparse.cs_amd

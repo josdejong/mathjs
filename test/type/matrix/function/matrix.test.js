@@ -1,5 +1,5 @@
 // test matrix construction
-const assert = require('assert'), math = require('../../../../src/index'), matrix = math.matrix
+const assert = require('assert'), math = require('../../../../src/main'), matrix = math.matrix
 
 describe('matrix', function () {
   it('should create an empty matrix with one dimension if called without argument', function () {

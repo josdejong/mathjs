@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const index = math.index
 const Matrix = math.type.Matrix
 const SparseMatrix = math.type.SparseMatrix

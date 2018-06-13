@@ -1,6 +1,6 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {

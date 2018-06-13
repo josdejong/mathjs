@@ -1,7 +1,7 @@
 // test exp
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const mathPredictable = math.create({predictable: true})
 const complex = math.complex
 const matrix = math.matrix

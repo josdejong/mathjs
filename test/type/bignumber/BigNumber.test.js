@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('BigNumber', function () {
   it('should have a property isBigNumber', function () {

@@ -1,5 +1,5 @@
 // test exp
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, dotPow = math.dotPow
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, dotPow = math.dotPow
 
 describe('dotPow', function () {
   it('should elevate a number to the given power', function () {

@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, sec = math.sec, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, sec = math.sec, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('sec', function () {
   it('should return the secant of a boolean', function () {

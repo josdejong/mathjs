@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), Matrix = math.type.Matrix
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), Matrix = math.type.Matrix
 
 describe('reshape', function () {
   it('should reshape an array', function () {

@@ -1,6 +1,6 @@
 // test Help
 const assert = require('assert')
-const math = require('../../src/index')
+const math = require('../../src/main')
 const Help = math.type.Help
 
 describe('help', function () {

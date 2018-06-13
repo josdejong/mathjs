@@ -1,5 +1,5 @@
 // test largerEq
-const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, largerEq = math.largerEq
+const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, largerEq = math.largerEq
 
 describe('largerEq', function () {
   it('should compare two numbers correctly', function () {

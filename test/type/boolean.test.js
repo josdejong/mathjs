@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../src/error/index'), math = require('../../src/index'), bool = math['boolean']
+const assert = require('assert'), error = require('../../src/error/index'), math = require('../../src/main'), bool = math['boolean']
 
 describe('boolean', function () {
   it('should convert a boolean to a boolean', function () {

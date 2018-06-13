@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), multinomial = math.multinomial, _ = require('underscore')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), multinomial = math.multinomial, _ = require('underscore')
 
 describe('multinomial', function () {
   it('should calculate the multinomial of an array of numbers', function () {

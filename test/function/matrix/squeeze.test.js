@@ -1,5 +1,5 @@
 // test squeeze
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), squeeze = math.squeeze, size = math.size, matrix = math.matrix
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), squeeze = math.squeeze, size = math.size, matrix = math.matrix
 
 describe('squeeze', function () {
   it('should squeeze an matrix', function () {

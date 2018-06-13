@@ -1,5 +1,5 @@
 // test inv
-const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/index'), inv = math.inv
+const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/main'), inv = math.inv
 
 describe('inv', function () {
   it('should return the inverse of a number', function () {

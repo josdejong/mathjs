@@ -1,6 +1,6 @@
 // test simplify
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('simplify', function () {
   function simplifyAndCompare (left, right, scope) {

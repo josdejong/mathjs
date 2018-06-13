@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../src/index')
+const math = require('../../src/main')
 const reviver = math.json.reviver
 const Range = math.type.Range
 

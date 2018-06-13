@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cot = math.cot, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 22})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cot = math.cot, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 22})
 
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {

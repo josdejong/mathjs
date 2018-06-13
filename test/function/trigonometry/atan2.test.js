@@ -1,5 +1,5 @@
 // test atan2
-const assert = require('assert'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, divide = math.divide, atan2 = math.atan2, bigmath = math.create({precision: 20}), Big = bigmath.bignumber, atan2Big = bigmath.atan2
+const assert = require('assert'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, divide = math.divide, atan2 = math.atan2, bigmath = math.create({precision: 20}), Big = bigmath.bignumber, atan2Big = bigmath.atan2
 
 describe('atan2', function () {
   it('should calculate atan2 correctly', function () {

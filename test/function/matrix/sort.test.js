@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main')
 
 describe('sort', function () {
   it('should sort an array with numbers', function () {

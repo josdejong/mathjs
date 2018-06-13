@@ -1,6 +1,6 @@
 // test import
 const assert = require('assert')
-const mathjs = require('../../src/index')
+const mathjs = require('../../src/main')
 const approx = require('../../tools/approx')
 
 describe('import', function () {

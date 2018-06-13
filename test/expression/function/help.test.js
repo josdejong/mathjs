@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main')
 
 describe('help', function () {
   it('should find documentation for a function by its name', function () {

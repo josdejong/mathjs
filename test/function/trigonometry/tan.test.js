@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, tan = math.tan, piBigmath = math.create({number: 'BigNumber', precision: 21}), bigmath = math.create({precision: 20}), Big = bigmath.bignumber, bigTan = bigmath.tan
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, tan = math.tan, piBigmath = math.create({number: 'BigNumber', precision: 21}), bigmath = math.create({precision: 20}), Big = bigmath.bignumber, bigTan = bigmath.tan
 
 describe('tan', function () {
   it('should return the tangent of a boolean', function () {

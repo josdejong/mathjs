@@ -1,6 +1,6 @@
 const assert = require('assert')
 const approx = require('../../../../tools/approx')
-const math = require('../../../../src/index').create()
+const math = require('../../../../src/main').create()
 math.import(require('../../../../src/function/algebra/sparse/cs_permute'))
 math.import(require('../../../../src/function/algebra/sparse/cs_lu'))
 math.import(require('../../../../src/function/algebra/sparse/cs_sqr'))

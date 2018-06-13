@@ -1,7 +1,7 @@
 // test data type Complex
 
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const Unit = math.type.Unit
 const Complex = math.type.Complex
 

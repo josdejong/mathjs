@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('kldivergence', function () {
   it('should return 0, cause distributions is equals', function () {

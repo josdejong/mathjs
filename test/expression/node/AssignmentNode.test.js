@@ -1,7 +1,7 @@
 // test AssignmentNode
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const Node = math.expression.node.Node
 const AccessorNode = math.expression.node.AccessorNode
 const ConstantNode = math.expression.node.ConstantNode

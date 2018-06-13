@@ -1,6 +1,6 @@
 // test derivative
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const OperatorNode = math.expression.node.OperatorNode
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode

@@ -1,6 +1,6 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const approx = require('../../../tools/approx')
 const pi = math.pi
 const atanh = math.atanh

@@ -1,5 +1,5 @@
 // test exp
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, exp = math.exp
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main'), complex = math.complex, matrix = math.matrix, sparse = math.sparse, unit = math.unit, exp = math.exp
 
 describe('exp', function () {
   it('should exponentiate a boolean', function () {

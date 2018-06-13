@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../tools/approx')
 const BigNumber = require('decimal.js')
-const math = require('../../src/index')
+const math = require('../../src/main')
 const string = require('../../src/utils/string')
 
 describe('string', function () {

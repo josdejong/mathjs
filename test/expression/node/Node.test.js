@@ -1,7 +1,7 @@
 // test Node
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const Node = math.expression.node.Node
 
 describe('Node', function () {

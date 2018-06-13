@@ -1,6 +1,6 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('dot', function () {
   it('should calculate dot product for two arrays', function () {

@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const Parser = math.expression.Parser
 
 describe('parser', function () {

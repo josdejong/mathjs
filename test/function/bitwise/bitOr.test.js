@@ -1,5 +1,5 @@
 // test bitOr
-const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, bitOr = math.bitOr
+const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, bitOr = math.bitOr
 
 describe('bitOr', function () {
   it('should bitwise or two numbers', function () {

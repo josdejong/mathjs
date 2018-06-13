@@ -1,6 +1,6 @@
 const assert = require('assert')
 const isCollection = require('../../../src/utils/collection/isCollection')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const DenseMatrix = math.type.DenseMatrix
 const SparseMatrix = math.type.SparseMatrix
 

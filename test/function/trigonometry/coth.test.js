@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, coth = math.coth, bigmath = math.create({precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, coth = math.coth, bigmath = math.create({precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('coth', function () {
   it('should return the coth of a boolean', function () {

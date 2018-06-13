@@ -1,4 +1,4 @@
-const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, lcm = math.lcm
+const assert = require('assert'), math = require('../../../src/main'), matrix = math.matrix, sparse = math.sparse, lcm = math.lcm
 
 describe('lcm', function () {
   it('should find the lowest common multiple of two or more numbers', function () {

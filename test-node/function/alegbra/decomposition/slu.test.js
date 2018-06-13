@@ -1,4 +1,4 @@
-const approx = require('../../../../tools/approx'), math = require('../../../../src/index'), market = require('../../../../tools/matrixmarket')
+const approx = require('../../../../tools/approx'), math = require('../../../../src/main'), market = require('../../../../tools/matrixmarket')
 
 describe('slu - matrix market', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {

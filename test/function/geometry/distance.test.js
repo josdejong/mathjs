@@ -1,6 +1,6 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('distance', function () {
   it('should calculate the distance of two 2D points', function () {

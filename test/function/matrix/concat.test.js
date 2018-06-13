@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), bignumber = math.bignumber
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), bignumber = math.bignumber
 
 describe('concat', function () {
   const a = [[1, 2], [3, 4]]

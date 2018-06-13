@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('re', function () {
   it('should return the real part of a complex number', function () {

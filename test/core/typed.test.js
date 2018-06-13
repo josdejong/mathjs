@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../src/index')
+const math = require('../../src/main')
 const math2 = math.create()
 
 describe('typed', function () {

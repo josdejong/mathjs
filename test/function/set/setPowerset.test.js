@@ -1,6 +1,6 @@
 // test setPowerset
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('setPowerset', function () {
   it('should return the powerset of a set', function () {

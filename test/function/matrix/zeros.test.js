@@ -1,5 +1,5 @@
 // test zeros
-const assert = require('assert'), math = require('../../../src/index'), zeros = math.zeros, matrix = math.matrix
+const assert = require('assert'), math = require('../../../src/main'), zeros = math.zeros, matrix = math.matrix
 
 describe('zeros', function () {
   it('should create an empty matrix', function () {

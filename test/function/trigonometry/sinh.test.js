@@ -1,6 +1,6 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const approx = require('../../../tools/approx')
 const complex = math.complex
 const matrix = math.matrix

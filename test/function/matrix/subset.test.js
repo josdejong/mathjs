@@ -1,4 +1,4 @@
-const assert = require('assert'), math = require('../../../src/index'), subset = math.subset, matrix = math.matrix, Range = math.type.Range, Set = math.type.Set, index = math.index
+const assert = require('assert'), math = require('../../../src/main'), subset = math.subset, matrix = math.matrix, Range = math.type.Range, Set = math.type.Set, index = math.index
 
 describe('subset', function () {
   const a = [[1, 2], [3, 4]]

@@ -1,5 +1,5 @@
 // test bitNot
-const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, bitNot = math.bitNot
+const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, bitNot = math.bitNot
 
 describe('bitNot', function () {
   it('should return bitwise not of a boolean', function () {

@@ -1,5 +1,5 @@
 // test dotDivide (element-wise divide)
-const assert = require('assert'), math = require('../../../src/index'), approx = require('../../../tools/approx'), dotDivide = math.dotDivide, complex = math.complex
+const assert = require('assert'), math = require('../../../src/main'), approx = require('../../../tools/approx'), dotDivide = math.dotDivide, complex = math.complex
 
 describe('dotDivide', function () {
   it('should divide two numbers', function () {

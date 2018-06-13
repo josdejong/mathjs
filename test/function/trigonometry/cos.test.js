@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cos = math.cos, bigmath = math.create({number: 'BigNumber', precision: 15}), biggermath = math.create({number: 'BigNumber', precision: 238})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cos = math.cos, bigmath = math.create({number: 'BigNumber', precision: 15}), biggermath = math.create({number: 'BigNumber', precision: 238})
 
 describe('cos', function () {
   it('should return the cosine of a boolean', function () {

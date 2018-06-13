@@ -1,7 +1,7 @@
 const assert = require('assert')
 const error = require('../../../src/error/index')
 const _ = require('underscore')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 math.import(require('../../../src/function/probability/distribution'))
 
 const Matrix = math.type.Matrix

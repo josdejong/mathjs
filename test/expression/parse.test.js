@@ -1,7 +1,7 @@
 // test parse
 const assert = require('assert')
 const approx = require('../../tools/approx')
-const math = require('../../src/index')
+const math = require('../../src/main')
 const ArgumentsError = require('../../src/error/ArgumentsError')
 const parse = math.expression.parse
 const ConditionalNode = math.expression.node.ConditionalNode

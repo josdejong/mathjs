@@ -1,4 +1,4 @@
-const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/index'), factorial = math.factorial
+const assert = require('assert'), approx = require('../../../tools/approx'), error = require('../../../src/error/index'), math = require('../../../src/main'), factorial = math.factorial
 
 describe('factorial', function () {
   it('should calculate the factorial of a number', function () {

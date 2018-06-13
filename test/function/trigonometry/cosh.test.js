@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cosh = math.cosh, bigmath = math.create({number: 'BigNumber', precision: 20})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, cosh = math.cosh, bigmath = math.create({number: 'BigNumber', precision: 20})
 
 describe('cosh', function () {
   it('should return the cosh of a boolean', function () {

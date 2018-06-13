@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, atan = math.atan, tan = math.tan, bigmath = math.create({number: 'BigNumber', precision: 20}), atanBig = bigmath.atan, Big = bigmath.bignumber
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, atan = math.atan, tan = math.tan, bigmath = math.create({number: 'BigNumber', precision: 20}), atanBig = bigmath.atan, Big = bigmath.bignumber
 
 describe('atan', function () {
   it('should return the arctan of a boolean', function () {

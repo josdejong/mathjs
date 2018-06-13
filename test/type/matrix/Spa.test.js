@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const Spa = math.type.Spa
 
 describe('Spa', function () {

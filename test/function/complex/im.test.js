@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('im', function () {
   it('should return the imaginary part of a complex number', function () {

@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../src/index')
+const math = require('../../src/main')
 
 describe('security', function () {
   it('should not allow calling Function via constructor', function () {

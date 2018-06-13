@@ -1,5 +1,5 @@
 // test leftShift
-const assert = require('assert'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, bignumber = math.bignumber, leftShift = math.leftShift
+const assert = require('assert'), math = require('../../../src/main'), matrix = math.matrix, sparse = math.sparse, bignumber = math.bignumber, leftShift = math.leftShift
 
 describe('leftShift', function () {
   it('should left shift a number by a given amount', function () {

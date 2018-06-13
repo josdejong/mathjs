@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const isNegative = math.isNegative
 const bignumber = math.bignumber
 const fraction = math.fraction

@@ -1,5 +1,5 @@
 // test size
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), size = math.size, matrix = math.matrix
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), size = math.size, matrix = math.matrix
 
 describe('size', function () {
   it('should calculate the size of an array', function () {

@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, csc = math.csc, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), approx = require('../../../tools/approx'), pi = math.pi, complex = math.complex, matrix = math.matrix, unit = math.unit, csc = math.csc, bigmath = math.create({number: 'BigNumber', precision: 20}), biggermath = math.create({number: 'BigNumber', precision: 21})
 
 describe('csc', function () {
   it('should return the cosecant of a boolean', function () {

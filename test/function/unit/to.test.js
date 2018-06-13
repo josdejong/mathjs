@@ -1,4 +1,4 @@
-const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/index'), matrix = math.matrix, sparse = math.sparse, Unit = math.type.Unit, unit = math.unit
+const assert = require('assert'), approx = require('../../../tools/approx'), math = require('../../../src/main'), matrix = math.matrix, sparse = math.sparse, Unit = math.type.Unit, unit = math.unit
 
 describe('to', function () {
   it('should perform the given unit conversion', function () {

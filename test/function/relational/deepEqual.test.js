@@ -1,5 +1,5 @@
 // test deepEqual
-const assert = require('assert'), math = require('../../../src/index'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, unit = math.unit, deepEqual = math.deepEqual
+const assert = require('assert'), math = require('../../../src/main'), bignumber = math.bignumber, complex = math.complex, matrix = math.matrix, unit = math.unit, deepEqual = math.deepEqual
 
 describe('deepEqual', function () {
   it('should compare scalars correctly', function () {

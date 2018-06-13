@@ -1,5 +1,5 @@
 // test format
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main')
 
 describe('format', function () {
   it('should format numbers', function () {

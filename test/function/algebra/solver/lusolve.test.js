@@ -1,5 +1,5 @@
 // test lusolve
-const assert = require('assert'), approx = require('../../../../tools/approx'), math = require('../../../../src/index')
+const assert = require('assert'), approx = require('../../../../tools/approx'), math = require('../../../../src/main')
 
 describe('lusolve', function () {
   it('should solve linear system 4 x 4, arrays', function () {

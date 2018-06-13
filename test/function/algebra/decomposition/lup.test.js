@@ -1,5 +1,5 @@
 // test lup
-const assert = require('assert'), approx = require('../../../../tools/approx'), math = require('../../../../src/index')
+const assert = require('assert'), approx = require('../../../../tools/approx'), math = require('../../../../src/main')
 
 describe('lup', function () {
   it('should decompose matrix, n x n, no permutations, array', function () {

@@ -1,4 +1,4 @@
-const assert = require('assert'), math = require('../src/index'), approx = require('../tools/approx')
+const assert = require('assert'), math = require('../src/main'), approx = require('../tools/approx')
 
 describe('constants', function () {
   describe('number', function () {

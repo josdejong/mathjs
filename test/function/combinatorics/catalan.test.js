@@ -1,4 +1,4 @@
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index'), catalan = math.catalan
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main'), catalan = math.catalan
 
 describe('catalan', function () {
   it('should calculate the nth catalan number', function () {

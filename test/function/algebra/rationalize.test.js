@@ -1,7 +1,7 @@
 'use strict'
 
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 /**
    * Transform node, array and single type value in a string with no spaces inside.

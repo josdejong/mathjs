@@ -1,5 +1,5 @@
 // test multiply
-const assert = require('assert'), math = require('../../../src/index'), approx = require('../../../tools/approx'), multiply = math.multiply, divide = math.divide, matrix = math.matrix, complex = math.complex, bignumber = math.bignumber, i = math.i, unit = math.unit
+const assert = require('assert'), math = require('../../../src/main'), approx = require('../../../tools/approx'), multiply = math.multiply, divide = math.divide, matrix = math.matrix, complex = math.complex, bignumber = math.bignumber, i = math.i, unit = math.unit
 
 describe('multiply', function () {
   describe('Scalar', function () {

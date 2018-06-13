@@ -1,6 +1,6 @@
 'use strict'
 
-const fs = require('fs'), zlib = require('zlib'), tar = require('tar'), math = require('../src/index'), Q = require('q'), typed = require('typed-function'), Spa = math.type.Spa, DenseMatrix = math.type.DenseMatrix, SparseMatrix = math.type.SparseMatrix, FibonacciHeap = math.type.FibonacciHeap
+const fs = require('fs'), zlib = require('zlib'), tar = require('tar'), math = require('../src/main'), Q = require('q'), typed = require('typed-function'), Spa = math.type.Spa, DenseMatrix = math.type.DenseMatrix, SparseMatrix = math.type.SparseMatrix, FibonacciHeap = math.type.FibonacciHeap
 
 const _importFromStream = function (stream, deferred) {
   // header regex

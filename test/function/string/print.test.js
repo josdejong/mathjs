@@ -1,5 +1,5 @@
 // test print
-const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/index')
+const assert = require('assert'), error = require('../../../src/error/index'), math = require('../../../src/main')
 
 describe('print', function () {
   it('should interpolate values in a template (object template)', function () {

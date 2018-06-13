@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../tools/approx')
 const customs = require('../../src/utils/customs')
-const math = require('../../src/index')
+const math = require('../../src/main')
 
 describe('customs', function () {
   describe('isSafeMethod', function () {

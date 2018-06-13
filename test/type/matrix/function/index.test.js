@@ -1,5 +1,5 @@
 // test index construction
-const assert = require('assert'), math = require('../../../../src/index'), Range = math.type.Range, ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
+const assert = require('assert'), math = require('../../../../src/main'), Range = math.type.Range, ImmutableDenseMatrix = math.type.ImmutableDenseMatrix
 
 describe('index', function () {
   it('should create an index', function () {

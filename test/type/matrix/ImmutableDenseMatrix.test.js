@@ -1,5 +1,5 @@
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 const Matrix = math.type.Matrix
 const DenseMatrix = math.type.DenseMatrix
 const ImmutableDenseMatrix = math.type.ImmutableDenseMatrix

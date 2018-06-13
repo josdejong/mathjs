@@ -1,6 +1,6 @@
 // test setIntersect
 const assert = require('assert')
-const math = require('../../../src/index')
+const math = require('../../../src/main')
 
 describe('setIntersect', function () {
   it('should return the intersection of two sets', function () {
