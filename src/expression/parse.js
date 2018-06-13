@@ -413,7 +413,7 @@ function factory (type, config, load, typed) {
     do {
       getToken()
     }
-    while (token === '\n')
+    while (token === '\n') // eslint-disable-line no-unmodified-loop-condition
   }
 
   /**
@@ -573,7 +573,7 @@ function factory (type, config, load, typed) {
     }
 
     // TODO: simplify this loop
-    while (token === '\n' || token === ';') {
+    while (token === '\n' || token === ';') { // eslint-disable-line no-unmodified-loop-condition
       if (blocks.length === 0 && node) {
         visible = (token !== ';')
         blocks.push({
@@ -672,7 +672,7 @@ function factory (type, config, load, typed) {
   function parseConditional () {
     let node = parseLogicalOr()
 
-    while (token === '?') {
+    while (token === '?') { // eslint-disable-line no-unmodified-loop-condition
       // set a conditional level, the range operator will be ignored as long
       // as conditionalLevel === nestingLevel.
       const prev = conditionalLevel
@@ -706,7 +706,7 @@ function factory (type, config, load, typed) {
   function parseLogicalOr () {
     let node = parseLogicalXor()
 
-    while (token === 'or') {
+    while (token === 'or') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline()
       node = new OperatorNode('or', 'or', [node, parseLogicalXor()])
     }
@@ -722,7 +722,7 @@ function factory (type, config, load, typed) {
   function parseLogicalXor () {
     let node = parseLogicalAnd()
 
-    while (token === 'xor') {
+    while (token === 'xor') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline()
       node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd()])
     }
@@ -738,7 +738,7 @@ function factory (type, config, load, typed) {
   function parseLogicalAnd () {
     let node = parseBitwiseOr()
 
-    while (token === 'and') {
+    while (token === 'and') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline()
       node = new OperatorNode('and', 'and', [node, parseBitwiseOr()])
     }
@@ -754,7 +754,7 @@ function factory (type, config, load, typed) {
   function parseBitwiseOr () {
     let node = parseBitwiseXor()
 
-    while (token === '|') {
+    while (token === '|') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline()
       node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor()])
     }
@@ -770,7 +770,7 @@ function factory (type, config, load, typed) {
   function parseBitwiseXor () {
     let node = parseBitwiseAnd()
 
-    while (token === '^|') {
+    while (token === '^|') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline()
       node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd()])
     }
@@ -786,7 +786,7 @@ function factory (type, config, load, typed) {
   function parseBitwiseAnd () {
     let node = parseRelational()
 
-    while (token === '&') {
+    while (token === '&') { // eslint-disable-line no-unmodified-loop-condition
       getTokenSkipNewline()
       node = new OperatorNode('&', 'bitAnd', [node, parseRelational()])
     }
@@ -908,7 +908,7 @@ function factory (type, config, load, typed) {
       params.push(node)
 
       // parse step and end
-      while (token === ':' && params.length < 3) {
+      while (token === ':' && params.length < 3) { // eslint-disable-line no-unmodified-loop-condition
         getTokenSkipNewline()
 
         if (token === ')' || token === ']' || token === ',' || token === '') {
@@ -1208,7 +1208,7 @@ function factory (type, config, load, typed) {
           params.push(parseAssignment())
 
           // parse a list with parameters
-          while (token === ',') {
+          while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
             getToken()
             params.push(parseAssignment())
           }
@@ -1276,7 +1276,7 @@ function factory (type, config, load, typed) {
     let params
 
     while ((token === '(' || token === '[' || token === '.') &&
-        (!types || types.indexOf(token) !== -1)) {
+        (!types || types.indexOf(token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
       params = []
 
       if (token === '(') {
@@ -1289,7 +1289,7 @@ function factory (type, config, load, typed) {
             params.push(parseAssignment())
 
             // parse a list with parameters
-            while (token === ',') {
+            while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
               getToken()
               params.push(parseAssignment())
             }
@@ -1317,7 +1317,7 @@ function factory (type, config, load, typed) {
           params.push(parseAssignment())
 
           // parse a list with parameters
-          while (token === ',') {
+          while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
             getToken()
             params.push(parseAssignment())
           }
@@ -1423,7 +1423,7 @@ function factory (type, config, load, typed) {
           params = [row]
 
           // the rows of the matrix are separated by dot-comma's
-          while (token === ';') {
+          while (token === ';') { // eslint-disable-line no-unmodified-loop-condition
             getToken()
 
             params[rows] = parseRow()
@@ -1477,7 +1477,7 @@ function factory (type, config, load, typed) {
     const params = [parseAssignment()]
     let len = 1
 
-    while (token === ',') {
+    while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
       getToken()
 
       // parse expression
@@ -1522,7 +1522,7 @@ function factory (type, config, load, typed) {
           properties[key] = parseAssignment()
         }
       }
-      while (token === ',')
+      while (token === ',') // eslint-disable-line no-unmodified-loop-condition
 
       if (token !== '}') {
         throw createSyntaxError('Comma , or bracket } expected after object value')
