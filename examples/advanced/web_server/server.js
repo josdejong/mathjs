@@ -16,6 +16,7 @@
  *
  * Note that the query parameter `expr` should be properly url encoded.
  */
+const path = require('path')
 
 let express
 let workerpool
@@ -29,7 +30,7 @@ try {
 }
 
 const app = express()
-const pool = workerpool.pool(__dirname + '/math_worker.js')
+const pool = workerpool.pool(path.join(__dirname, '/math_worker.js'))
 
 const TIMEOUT = 10000 // milliseconds
 

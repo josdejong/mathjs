@@ -466,6 +466,11 @@ function iteratePath (inputPath, outputPath, outputRoot) {
   }
 
   glob(inputPath + '**/*.js', null, function (err, files) {
+    if (err) {
+      console.error(err)
+      return
+    }
+
     // generate path information for each of the files
     let functions = {} // TODO: change to array
 

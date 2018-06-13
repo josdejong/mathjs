@@ -46,7 +46,7 @@ function factory (type, config, load, typed, math) {
       return new ConstantNode(n.toString(), 'number')
     },
     'Complex': function (s) {
-      throw 'Cannot convert Complex number to Node'
+      throw new Error('Cannot convert Complex number to Node')
     }
   })
 
@@ -244,7 +244,7 @@ function factory (type, config, load, typed, math) {
       case 'ConditionalNode':
         /* falls through */
       default:
-        throw 'Unimplemented node type in simplifyConstant: ' + node.type
+        throw new Error(`Unimplemented node type in simplifyConstant: ${node.type}`)
     }
   }
 

@@ -47,6 +47,7 @@
 
 let scope = {}
 const fs = require('fs')
+const path = require('path')
 
 const PRECISION = 14 // decimals
 
@@ -305,7 +306,7 @@ function findSymbolName (node) {
  * Version number is read version from package.json.
  */
 function outputVersion () {
-  fs.readFile(__dirname + '/../package.json', function (err, data) {
+  fs.readFile(path.join(__dirname, '/../package.json'), function (err, data) {
     if (err) {
       console.log(err.toString())
     } else {

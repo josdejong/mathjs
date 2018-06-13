@@ -274,15 +274,6 @@ const _importFromStream = function (stream, deferred) {
   })
 }
 
-const _importFile = function (filename, deferred) {
-  return function () {
-    // input stream
-    const input = fs.createReadStream(filename)
-    // import from stream
-    _importFromStream(input, deferred)
-  }
-}
-
 /**
  * Imports a Matrix Market matrix from the filesystem. (http://math.nist.gov/MatrixMarket/)
  */
@@ -297,7 +288,15 @@ const _import = typed('importMatrix', {
       // create deferred instance
       const deferred = Q.defer()
       // check file exists, import file
-      fs.exists(filename, _importFile(filename, deferred))
+      try {
+        fs.accessSync(filename, fs.constants.R_OK)
+        // input stream
+        const input = fs.createReadStream(filename)
+        // import from stream
+        _importFromStream(input, deferred)
+      } catch (err) {
+        // doesn't exist or no access
+      }
       // import file
       promises.push(deferred.promise)
     }
@@ -315,7 +314,8 @@ const _import = typed('importMatrix', {
       promises[i] = d.promise
     }
     // check archive exists
-    fs.exists(archive, function () {
+    try {
+      fs.accessSync(archive, fs.constants.R_OK)
       // input stream
       let input = fs.createReadStream(archive)
       // gz
@@ -344,7 +344,9 @@ const _import = typed('importMatrix', {
           d.reject(new Error(e))
         }
       })
-    })
+    } catch (err) {
+      // doesn't exist or no access
+    }
     // return promise
     return Q.all(promises)
   }

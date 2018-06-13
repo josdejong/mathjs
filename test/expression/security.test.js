@@ -395,7 +395,7 @@ describe('security', function () {
 function isPlainObject (object) {
   return typeof object === 'object' && object &&
       object.constructor === Object &&
-      object.__proto__ === Object.prototype
+      Object.getPrototypeOf(object) === Object.prototype
 }
 
 function isPlainFunction (fn) {

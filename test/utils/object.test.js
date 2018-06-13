@@ -85,7 +85,7 @@ describe('object', function () {
     })
 
     it('should ignore inherited properties when extending an object', function () {
-      Object.prototype.foo = 'bar'
+      Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
       const o1 = {a: 2, b: 3}
       const o2 = object.extend({}, o1)
 
@@ -120,7 +120,7 @@ describe('object', function () {
     })
 
     it('should ignore inherited properties when deep extending an object', function () {
-      Object.prototype.foo = 'bar'
+      Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
       const o1 = {a: 2, b: 3}
       const o2 = object.deepExtend({}, o1)
 
@@ -183,7 +183,7 @@ describe('object', function () {
     })
 
     it('should not ignore inherited properties during comparison', function () {
-      Object.prototype.foo = 'bar'
+      Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
       assert.equal(object.deepEqual({}, {}), true)
       assert.equal(object.deepEqual({foo: 'bar'}, {}), true)

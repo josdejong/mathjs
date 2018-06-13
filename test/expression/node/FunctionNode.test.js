@@ -103,7 +103,7 @@ describe('FunctionNode', function () {
       assert.equal(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
       assert(args[1] instanceof mymath.expression.node.Node)
-      assert.deepEqual(_math.__proto__, mymath)
+      assert.strictEqual(Object.getPrototypeOf(_math), mymath)
       assert.deepEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
@@ -125,7 +125,7 @@ describe('FunctionNode', function () {
       assert.equal(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
       assert(args[1] instanceof mymath.expression.node.Node)
-      assert.deepEqual(_math.__proto__, mymath)
+      assert.strictEqual(Object.getPrototypeOf(_math), mymath)
       assert.deepEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }

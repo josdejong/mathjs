@@ -96,7 +96,7 @@ describe('import', function () {
   })
 
   it('should ignore properties on Object', function () {
-    Object.prototype.foo = 'bar'
+    Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
     math.import({bar: 456})
 

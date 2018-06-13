@@ -1,4 +1,4 @@
-const math = require('mathjs')
+const math = require('../../../index')
 const workerpool = require('workerpool')
 
 // disable the import function so the math.js instance cannot be changed

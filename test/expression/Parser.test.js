@@ -137,7 +137,7 @@ describe('parser', function () {
       try {
         const parser = new Parser()
 
-        Object.prototype.foo = 'bar'
+        Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
         parser.clear()
 

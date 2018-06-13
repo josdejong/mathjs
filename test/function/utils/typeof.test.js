@@ -77,8 +77,8 @@ describe('typeof', function () {
   })
 
   it('should return function type for a function', function () {
-    assert.equal(math.typeof(function () {}), 'Function')
-    assert.equal(math.typeof(new Function()), 'Function')
+    function f1 () {}
+    assert.equal(math.typeof(f1), 'Function')
   })
 
   it('should return function type for a chain', function () {
@@ -124,7 +124,6 @@ describe('typeof', function () {
 
   it('should return object type for an object', function () {
     assert.equal(math.typeof({}), 'Object')
-    assert.equal(math.typeof(new Object()), 'Object')
   })
 
   it('should throw an error if called with a wrong number of arguments', function () {

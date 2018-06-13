@@ -60,7 +60,7 @@ describe('Unit', function () {
     })
 
     it('should ignore properties on Object.prototype', function () {
-      Object.prototype.foo = Unit.UNITS['meter']
+      Object.prototype.foo = Unit.UNITS['meter'] // eslint-disable-line no-extend-native
 
       assert.throws(function () { console.log(new Unit(1, 'foo')) }, /Unit "foo" not found/)
 
@@ -729,7 +729,7 @@ describe('Unit', function () {
     })
 
     it('should ignore properties in Object.prototype when finding the best prefix', function () {
-      Object.prototype.foo = 'bar'
+      Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
       assert.equal(new Unit(5e5, 'cm').format(), '5 km')
 

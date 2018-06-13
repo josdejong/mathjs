@@ -88,7 +88,7 @@ describe('Chain', function () {
   })
 
   it('should not clear inherited properties', function () {
-    Object.prototype.foo = 'bar'
+    Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
     const chain = new Chain()
 

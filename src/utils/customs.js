@@ -105,7 +105,7 @@ function isSafeMethod (object, method) {
   // e.g overridden toString
   // Note that IE10 doesn't support __proto__ and we can't do this check there.
   if (hasOwnProperty(object, method) &&
-      (object.__proto__ && (method in object.__proto__))) {
+      (Object.getPrototypeOf && (method in Object.getPrototypeOf(object)))) {
     return false
   }
   // SAFE: whitelisted
