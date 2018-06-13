@@ -8,7 +8,6 @@ function factory (type, config, load, typed, math) {
   const OperatorNode = load(require('../../expression/node/OperatorNode'))
   const ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
   const SymbolNode = load(require('../../expression/node/SymbolNode'))
-  const Node = load(require('../../expression/node/Node'))
   const simplifyConstant = load(require('./simplify/simplifyConstant'))
   const simplifyCore = load(require('./simplify/simplifyCore'))
   const resolve = load(require('./simplify/resolve'))

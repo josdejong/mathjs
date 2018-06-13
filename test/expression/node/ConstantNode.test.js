@@ -1,12 +1,10 @@
 // test ConstantNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const bigmath = require('../../../src/main').create({number: 'BigNumber'})
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode
-const Fraction = require('../../../src/type/fraction/Fraction')
 
 describe('ConstantNode', function () {
   it('should create a ConstantNode', function () {
@@ -146,7 +144,7 @@ describe('ConstantNode', function () {
 
   it('should stringify a ConstantNode with custom toString', function () {
     // Also checks if the custom functions get passed on to the children
-    const customFunction = function (node, options) {
+    const customFunction = function (node) {
       if (node.type === 'ConstantNode') {
         return 'const(' + node.value + ')'
       }

@@ -1,7 +1,5 @@
 'use strict'
 
-const DimensionError = require('../../error/DimensionError')
-
 const array = require('../../utils/array')
 
 function factory (type, config, load, typed) {

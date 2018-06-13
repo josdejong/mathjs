@@ -1,7 +1,5 @@
 'use strict'
 
-const deepMap = require('../../../utils/collection/deepMap')
-
 function factory (type, config, load, typed) {
   /**
    * Split a unit in an array of units whose sum is equal to the original unit.

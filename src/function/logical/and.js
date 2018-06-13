@@ -6,7 +6,6 @@ function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const zeros = load(require('../matrix/zeros'))
   const not = load(require('./not'))
-  const isZero = load(require('../utils/isZero'))
 
   const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
   const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))

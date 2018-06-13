@@ -1,8 +1,6 @@
 // test ArrayNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode
 const RangeNode = math.expression.node.RangeNode
@@ -98,7 +96,6 @@ describe('ArrayNode', function () {
     const b = new ConstantNode(2)
     const c = new ArrayNode([a, b])
 
-    const d = new ConstantNode(3)
     const nodes = []
     const paths = []
     c.forEach(function (node, path, parent) {

@@ -106,8 +106,7 @@
     const data_stage2 =     sim.eval("transpose(concat( transpose(    result_stage2[:,4] - phi0) * r0 / rad / km, (    transpose(result_stage2[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
     const data_unpowered =  sim.eval("transpose(concat( transpose( result_unpowered[:,4] - phi0) * r0 / rad / km, ( transpose(result_unpowered[:,1]) - r0) / km, 1 ))").toArray().map(function(e) { return {x: e[0], y: e[1]} })
 
-console.log(data_stage1)
-    const chart = new Chart(document.getElementById('canvas1'), {
+    window['chart'] = new Chart(document.getElementById('canvas1'), {
       type: 'line',
       data: {
         datasets: [{

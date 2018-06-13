@@ -3,7 +3,6 @@ const math = require('../../../src/main')
 const BigNumber = math.type.BigNumber
 const Complex = math.type.Complex
 const DenseMatrix = math.type.DenseMatrix
-const Unit = math.type.Unit
 const mean = math.mean
 
 describe('mean', function () {

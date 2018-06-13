@@ -6,7 +6,6 @@ const string = util.string
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
-  const add = load(require('../arithmetic/add'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiply'))
   const unaryMinus = load(require('../arithmetic/unaryMinus'))

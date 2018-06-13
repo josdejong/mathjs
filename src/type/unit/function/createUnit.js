@@ -1,7 +1,5 @@
 'use strict'
 
-const deepMap = require('../../../utils/collection/deepMap')
-
 function factory (type, config, load, typed) {
   /**
    * Create a user-defined unit and register it with the Unit type.

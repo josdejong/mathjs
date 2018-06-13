@@ -98,6 +98,7 @@ describe('median', function () {
     const a = [3, 2, 1]
     const b = median(a)
     assert.deepEqual(a, [3, 2, 1])
+    assert.deepEqual(b, 2)
   })
 
   it('should LaTeX median', function () {

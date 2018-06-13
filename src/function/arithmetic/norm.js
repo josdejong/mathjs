@@ -11,8 +11,6 @@ function factory (type, config, load, typed) {
   const larger = load(require('../relational/larger'))
   const smaller = load(require('../relational/smaller'))
   const matrix = load(require('../../type/matrix/function/matrix'))
-  const trace = load(require('../matrix/trace'))
-  const transpose = load(require('../matrix/transpose'))
 
   /**
    * Calculate the norm of a number, vector or matrix.

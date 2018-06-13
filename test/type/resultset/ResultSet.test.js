@@ -2,7 +2,6 @@
 
 const assert = require('assert')
 const math = require('../../../src/main')
-const Unit = math.type.Unit
 const Complex = math.type.Complex
 const ResultSet = math.type.ResultSet
 

@@ -96,7 +96,6 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   AssignmentNode.prototype._compile = function (math, argNames) {
-    let size
     const evalObject = this.object._compile(math, argNames)
     const evalIndex = this.index ? this.index._compile(math, argNames) : null
     const evalValue = this.value._compile(math, argNames)

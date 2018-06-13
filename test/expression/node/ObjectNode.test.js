@@ -1,8 +1,6 @@
 // test ObjectNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode
 const RangeNode = math.expression.node.RangeNode

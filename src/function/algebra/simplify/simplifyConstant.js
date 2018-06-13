@@ -3,7 +3,6 @@
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 function factory (type, config, load, typed, math) {
   const util = load(require('./util'))
-  const isNumeric = load(require('../../utils/isNumeric'))
   const isCommutative = util.isCommutative
   const isAssociative = util.isAssociative
   const allChildren = util.allChildren

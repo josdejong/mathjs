@@ -1,6 +1,5 @@
 // test OperatorNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
@@ -236,7 +235,6 @@ describe('OperatorNode', function () {
     it('should stringify an OperatorNode', function () {
       const a = new ConstantNode(2)
       const b = new ConstantNode(3)
-      const c = new ConstantNode(4)
 
       const n = new OperatorNode('+', 'add', [a, b])
       assert.equal(n.toString(), '2 + 3')
@@ -433,7 +431,6 @@ describe('OperatorNode', function () {
   it('should LaTeX an OperatorNode', function () {
     const a = new ConstantNode(2)
     const b = new ConstantNode(3)
-    const c = new ConstantNode(4)
 
     const n = new OperatorNode('+', 'add', [a, b])
     assert.equal(n.toTex(), '2+3')

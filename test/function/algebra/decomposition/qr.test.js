@@ -114,7 +114,7 @@ describe('qr', function () {
   it('should throw a helpfull error for sparse matricies', function () {
     const m = math.matrix([[15, 42], [20, 81]], 'sparse')
 
-    const r = assert.throws(math.qr.bind(null, m))
+    assert.throws(math.qr.bind(null, m))
   })
 
   it('should decompose matrix, n x n, dense format', function () {
@@ -193,7 +193,7 @@ describe('qr', function () {
 
     const r2 = math.qr(m2)
 
-    assertValidQRDecomposition(m, r.Q, r.R)
+    assertValidQRDecomposition(m2, r2.Q, r2.R)
   })
 
   it('should decompose matrix, m x n, m > n, dense format', function () {

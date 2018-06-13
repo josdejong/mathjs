@@ -172,7 +172,6 @@ function factory (type, config, load, typed) {
           case 'SymbolNode':
           case 'ParenthesisNode':
             return false
-            break
           default:
             return true
         }

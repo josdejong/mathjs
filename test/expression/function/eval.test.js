@@ -3,7 +3,6 @@ const assert = require('assert')
 const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Complex = math.type.Complex
-const Matrix = math.type.Matrix
 const Unit = math.type.Unit
 const ResultSet = math.type.ResultSet
 

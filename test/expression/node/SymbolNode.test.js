@@ -1,6 +1,5 @@
 // test SymbolNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
@@ -66,7 +65,6 @@ describe('SymbolNode', function () {
 
   it('should map a SymbolNode', function () {
     const a = new SymbolNode('a')
-    const c = new SymbolNode('c')
     const b = a.map(function () {
       assert.ok(false, 'should not execute, symbol has no childs')
     })

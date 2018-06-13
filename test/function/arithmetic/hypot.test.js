@@ -4,7 +4,6 @@ const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const hypot = math.hypot
 const bignumber = math.bignumber
-const fraction = math.fraction
 
 describe('hypot', function () {
   it('should return the hypot of numbers', function () {

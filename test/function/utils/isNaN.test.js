@@ -5,7 +5,6 @@ const bignumber = math.bignumber
 const fraction = math.fraction
 const complex = math.complex
 const Unit = math.type.Unit
-const Fraction = math.type.Fraction
 
 describe('isNegative', function () {
   it('should test whether a number is NaN', function () {

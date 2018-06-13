@@ -784,7 +784,7 @@ describe('parse', function () {
     it('should not parse a function assignment in an accessor node', function () {
       assert.throws(function () {
         let scope = {}
-        const obj = parseAndEval('a["b"](x)=x^2', scope)
+        parseAndEval('a["b"](x)=x^2', scope)
       }, /SyntaxError: Invalid left hand side of assignment operator =/)
     })
 

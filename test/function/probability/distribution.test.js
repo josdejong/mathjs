@@ -45,7 +45,7 @@ const assertUniformDistributionInt = function (values, min, max) {
 }
 
 describe('distribution', function () {
-  let originalRandom, uniformDistrib
+  let uniformDistrib
 
   before(function () {
     // Seed Random Number Generator for Reproducibility
@@ -247,7 +247,6 @@ describe('distribution', function () {
     it('should throw an error if the weights array contains a non number or negative value', function () {
       const possibles = [11, 22, 33, 44, 55]
       let weights = [1, 5, 2, -1, 6]
-      const number = 2
 
       assert.throws(function () {
         uniformDistrib.pickRandom(possibles, weights)

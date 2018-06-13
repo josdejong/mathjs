@@ -1,6 +1,5 @@
 // test transforms
 const assert = require('assert')
-const approx = require('../../tools/approx')
 const math = require('../../src/main')
 const parse = math.expression.parse
 

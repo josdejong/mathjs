@@ -1,6 +1,5 @@
 // test RangeNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode

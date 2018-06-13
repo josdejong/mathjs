@@ -1,6 +1,5 @@
 // test FunctionAssignmentNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main').create()
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
@@ -44,7 +43,7 @@ describe('FunctionAssignmentNode', function () {
 
     const expr = n.compile()
     let scope = {}
-    const f = expr.eval(scope)
+    expr.eval(scope)
     assert.equal(typeof scope.f, 'function')
     assert.equal(scope.f(3), 5)
     assert.equal(scope.f(5), 7)
@@ -58,7 +57,7 @@ describe('FunctionAssignmentNode', function () {
 
     const expr = n.compile()
     let scope = {}
-    const f = expr.eval(scope)
+    expr.eval(scope)
     assert.equal(typeof scope.f, 'function')
     assert.equal(scope.f(3), 5)
     assert.equal(scope.f(5), 7)

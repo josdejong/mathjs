@@ -1,6 +1,5 @@
 // test IndexNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
@@ -249,8 +248,6 @@ describe('IndexNode', function () {
         return node.dimensions.map(function (range) {
           return range.toTex(options)
         }).join(', ')
-
-        return latex
       } else if (node.type === 'ConstantNode') {
         return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
       }

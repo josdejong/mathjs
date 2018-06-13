@@ -39,6 +39,7 @@ assertApproxEqual(compiled.eval(scope), correctResult, 1e-7)
 assertApproxEqual(compiledPlainJs.eval(scope), correctResult, 1e-7)
 
 let total = 0
+let nodes = []
 
 const suite = new Benchmark.Suite()
 suite
@@ -54,9 +55,11 @@ suite
   })
   .add(pad('(mathjs) parse, compile'), function () {
     const node = math.parse(expr).compile()
+    nodes.push(node)
   })
   .add(pad('(mathjs) parse'), function () {
     const node = math.parse(expr)
+    nodes.push(node)
   })
 
   .on('cycle', function (event) {

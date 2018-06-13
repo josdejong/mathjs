@@ -1,6 +1,5 @@
 // test boolean utils
 const assert = require('assert')
-const approx = require('../../tools/approx')
 const customs = require('../../src/utils/customs')
 const math = require('../../src/main')
 

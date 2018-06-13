@@ -3,7 +3,6 @@
 function factory (type, config, load, typed, math) {
   const equal = load(require('../../relational/equal'))
   const isZero = load(require('../../utils/isZero'))
-  const isNumeric = load(require('../../utils/isNumeric'))
   const add = load(require('../../arithmetic/add'))
   const subtract = load(require('../../arithmetic/subtract'))
   const multiply = load(require('../../arithmetic/multiply'))

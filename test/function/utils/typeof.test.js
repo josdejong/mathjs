@@ -3,7 +3,6 @@ const assert = require('assert')
 const math = require('../../../src/main')
 const Index = math.type.Index
 const Range = math.type.Range
-const Matrix = math.type.Matrix
 const Help = math.type.Help
 const Unit = math.type.Unit
 const Complex = math.type.Complex

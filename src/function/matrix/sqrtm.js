@@ -5,10 +5,8 @@ const latex = require('../../utils/latex')
 const string = require('../../utils/string')
 
 function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
   const abs = load(require('../arithmetic/abs'))
   const add = load(require('../arithmetic/add'))
-  const divide = load(require('../arithmetic/divide'))
   const multiply = load(require('../arithmetic/multiply'))
   const sqrt = load(require('../arithmetic/sqrt'))
   const subtract = load(require('../arithmetic/subtract'))

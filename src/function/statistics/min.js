@@ -84,7 +84,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _min (array) {
-    let min
+    let min = undefined
 
     deepForEach(array, function (value) {
       try {

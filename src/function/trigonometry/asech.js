@@ -3,8 +3,6 @@
 const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
-  const acosh = typed.find(load(require('./acosh')), ['Complex'])
-
   /**
    * Calculate the hyperbolic arcsecant of a value,
    * defined as `asech(x) = acosh(1/x) = ln(sqrt(1/x^2 - 1) + 1/x)`.

@@ -1,6 +1,5 @@
 // test chain
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Chain = math.type.Chain
 

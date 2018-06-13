@@ -935,8 +935,6 @@ function factory (type, config, load, typed, math) {
           matchingUnit = currentUnitSystem[matchingBase]
         }
       }
-      let value
-      let str
       if (matchingUnit) {
         this.units = [{
           unit: matchingUnit.unit,
@@ -982,7 +980,6 @@ function factory (type, config, load, typed, math) {
     // Multiple units or units with powers are formatted like this:
     // 5 (kg m^2) / (s^3 mol)
     // Build an representation from the base units of the SI unit system
-    const missingBaseDim = false
     for (let i = 0; i < BASE_DIMENSIONS.length; i++) {
       const baseDim = BASE_DIMENSIONS[i]
       if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
@@ -1087,7 +1084,6 @@ function factory (type, config, load, typed, math) {
     if (typeof (this.value) !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
       isImaginary = Math.abs(this.value.re) < 1e-14
-      isReal = Math.abs(this.value.im) < 1e-14
     }
 
     for (const i in this.units) {

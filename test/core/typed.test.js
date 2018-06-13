@@ -299,9 +299,6 @@ describe('typed', function () {
   })
 
   it('should test whether a value is a Node', function () {
-    const s = new math.expression.node.ConstantNode(1)
-    const e = new math.expression.node.ConstantNode(10)
-
     assert.strictEqual(math.type.isNode(new math.expression.node.ConstantNode(1)), true)
     assert.strictEqual(math.type.isNode(new math2.expression.node.ConstantNode(1)), true)
     assert.strictEqual(math.type.isNode(new math.expression.node.SymbolNode('a')), true)

@@ -4,7 +4,6 @@ const getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed) {
   const Node = load(require('./Node'))
-  const IndexNode = load(require('./IndexNode'))
   const access = load(require('./utils/access'))
 
   /**

@@ -1,7 +1,6 @@
 'use strict'
 
 const array = require('../../utils/array')
-const clone = require('../../utils/object').clone
 const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {

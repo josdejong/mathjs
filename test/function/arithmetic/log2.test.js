@@ -6,7 +6,6 @@ const mathPredictable = math.create({predictable: true})
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const range = math.range
 const log2 = math.log2
 
 describe('log2', function () {

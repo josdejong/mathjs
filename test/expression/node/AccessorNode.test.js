@@ -1,6 +1,5 @@
 // test AccessorNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const bigmath = require('../../../src/main').create({number: 'BigNumber'})
 const Node = math.expression.node.Node

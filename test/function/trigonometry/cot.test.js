@@ -30,7 +30,6 @@ describe('cot', function () {
   it('should return the cotan of a bignumber', function () {
     const Big = bigmath.bignumber
     const bigPi = bigmath.pi
-    const sqrt2 = bigmath.SQRT2.toString()
 
     const arg1 = Big(0)
     const result1 = bigmath.cot(arg1)

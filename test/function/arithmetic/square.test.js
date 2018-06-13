@@ -1,11 +1,9 @@
 // test square
 const assert = require('assert')
 const math = require('../../../src/main')
-const unit = math.unit
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix
-const range = math.range
 const square = math.square
 
 describe('square', function () {

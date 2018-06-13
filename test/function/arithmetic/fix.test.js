@@ -7,7 +7,6 @@ const complex = math.complex
 const fraction = math.fraction
 const matrix = math.matrix
 const unit = math.unit
-const range = math.range
 const fix = math.fix
 
 describe('fix', function () {

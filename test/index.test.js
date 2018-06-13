@@ -74,7 +74,7 @@ describe('factory', function () {
     Object.create = undefined // fake missing Object.create function
 
     assert.throws(function () {
-      const math1 = math.create()
+      math.create()
     }, /ES5 not supported/)
 
     // restore Object.create

@@ -1,13 +1,11 @@
 // test AssignmentNode
 const assert = require('assert')
-const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
 const Node = math.expression.node.Node
 const AccessorNode = math.expression.node.AccessorNode
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode
 const RangeNode = math.expression.node.RangeNode
-const ArrayNode = math.expression.node.ArrayNode
 const AssignmentNode = math.expression.node.AssignmentNode
 const OperatorNode = math.expression.node.OperatorNode
 const IndexNode = math.expression.node.IndexNode

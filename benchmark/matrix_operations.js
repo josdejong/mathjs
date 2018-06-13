@@ -81,7 +81,6 @@ const fiedler = [
 
 // ndarray
 (function () {
-  const ndarray = require('ndarray')
   const gemm = require('ndarray-gemm')
   const zeros = require('zeros')
   const ops = require('ndarray-ops')
@@ -93,7 +92,7 @@ const fiedler = [
 
   suite.add(pad('matrix operations ndarray A+A'), function () { return ops.add(B, A, A) })
   suite.add(pad('matrix operations ndarray A*A'), function () { return gemm(B, A, A) })
-  suite.add(pad('matrix operations ndarray A\''), function () { return ops.assign(B, A); B.transpose(1, 0) })
+  suite.add(pad('matrix operations ndarray A\''), function () { ops.assign(B, A); return B.transpose(1, 0) })
   suite.add(pad('matrix operations ndarray det(A)'), function () { return det(A) })
 })();
 

@@ -11,6 +11,7 @@ const b = math.multiply(a, a)
 const c = math.multiply(b, math.complex(2, 2))
 const d = math.transpose(c)
 const e = math.multiply(d, a)
+console.log('size(e)=', e.size())
 
 // we will not print the output, but doing the same operations
 // with a dense matrix are very slow, try it for yourself.

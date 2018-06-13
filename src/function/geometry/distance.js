@@ -1,7 +1,6 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
   const add = load(require('../arithmetic/addScalar'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
