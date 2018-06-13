@@ -3,7 +3,7 @@
 const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  const index = load(require('../../type/matrix/MatrixIndex'))
+  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
   const compareNatural = load(require('../relational/compareNatural'))
@@ -29,7 +29,7 @@ function factory (type, config, load, typed) {
    */
   const setPowerset = typed('setPowerset', {
     'Array | Matrix': function (a) {
-      if (subset(size(a), new index(0)) === 0) { // if empty, return empty
+      if (subset(size(a), new MatrixIndex(0)) === 0) { // if empty, return empty
         return []
       }
       const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)

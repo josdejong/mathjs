@@ -3,7 +3,7 @@
 const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  const index = load(require('../../type/matrix/MatrixIndex'))
+  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const matrix = load(require('../../type/matrix/DenseMatrix'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
@@ -31,7 +31,7 @@ function factory (type, config, load, typed) {
   const setDistinct = typed('setDistinct', {
     'Array | Matrix': function (a) {
       let result
-      if (subset(size(a), new index(0)) === 0) { // if empty, return empty
+      if (subset(size(a), new MatrixIndex(0)) === 0) { // if empty, return empty
         result = []
       } else {
         const b = flatten(Array.isArray(a) ? a : a.toArray()).sort(compareNatural)

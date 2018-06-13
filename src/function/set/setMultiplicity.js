@@ -4,7 +4,7 @@ const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
   const compareNatural = load(require('../relational/compareNatural'))
-  const index = load(require('../../type/matrix/MatrixIndex'))
+  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
 
@@ -31,7 +31,7 @@ function factory (type, config, load, typed) {
    */
   const setMultiplicity = typed('setMultiplicity', {
     'number | BigNumber | Fraction | Complex, Array | Matrix': function (e, a) {
-      if (subset(size(a), new index(0)) === 0) { // if empty, return 0
+      if (subset(size(a), new MatrixIndex(0)) === 0) { // if empty, return 0
         return 0
       }
       const b = flatten(Array.isArray(a) ? a : a.toArray())

@@ -4,7 +4,7 @@ const flatten = require('../../utils/array').flatten
 const identify = require('../../utils/array').identify
 
 function factory (type, config, load, typed) {
-  const index = load(require('../../type/matrix/MatrixIndex'))
+  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
   const compareNatural = load(require('../relational/compareNatural'))
@@ -32,9 +32,9 @@ function factory (type, config, load, typed) {
    */
   const setIsSubset = typed('setIsSubset', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new index(0)) === 0) { // empty is a subset of anything
+      if (subset(size(a1), new MatrixIndex(0)) === 0) { // empty is a subset of anything
         return true
-      } else if (subset(size(a2), new index(0)) === 0) { // anything is not a subset of empty
+      } else if (subset(size(a2), new MatrixIndex(0)) === 0) { // anything is not a subset of empty
         return false
       }
       const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))

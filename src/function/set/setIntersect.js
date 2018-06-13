@@ -5,7 +5,7 @@ const identify = require('../../utils/array').identify
 const generalize = require('../../utils/array').generalize
 
 function factory (type, config, load, typed) {
-  const index = load(require('../../type/matrix/MatrixIndex'))
+  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const matrix = load(require('../../type/matrix/DenseMatrix'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
@@ -35,7 +35,7 @@ function factory (type, config, load, typed) {
   const setIntersect = typed('setIntersect', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
       let result
-      if (subset(size(a1), new index(0)) === 0 || subset(size(a2), new index(0)) === 0) { // of any of them is empty, return empty
+      if (subset(size(a1), new MatrixIndex(0)) === 0 || subset(size(a2), new MatrixIndex(0)) === 0) { // of any of them is empty, return empty
         result = []
       } else {
         const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))

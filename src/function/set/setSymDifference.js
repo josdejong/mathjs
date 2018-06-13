@@ -3,7 +3,7 @@
 const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
-  const index = load(require('../../type/matrix/MatrixIndex'))
+  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const concat = load(require('../matrix/concat'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
@@ -32,9 +32,9 @@ function factory (type, config, load, typed) {
    */
   const setSymDifference = typed('setSymDifference', {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
-      if (subset(size(a1), new index(0)) === 0) { // if any of them is empty, return the other one
+      if (subset(size(a1), new MatrixIndex(0)) === 0) { // if any of them is empty, return the other one
         return flatten(a2)
-      } else if (subset(size(a2), new index(0)) === 0) {
+      } else if (subset(size(a2), new MatrixIndex(0)) === 0) {
         return flatten(a1)
       }
       const b1 = flatten(a1)
