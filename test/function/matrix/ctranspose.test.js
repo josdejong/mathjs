@@ -106,10 +106,10 @@ describe('ctranspose', function () {
 
     it('should throw an error for invalid matrix transpose', function () {
       let m = math.matrix([[]])
-      assert.throws(function () { transpose(m) })
+      assert.throws(function () { ctranspose(m) })
 
       m = math.matrix([[[1], [2]], [[3], [4]]])
-      assert.throws(function () { transpose(m) })
+      assert.throws(function () { ctranspose(m) })
     })
   })
 
@@ -150,7 +150,7 @@ describe('ctranspose', function () {
 
     it('should throw an error for invalid matrix transpose', function () {
       const m = math.matrix([[]], 'sparse')
-      assert.throws(function () { transpose(m) })
+      assert.throws(function () { ctranspose(m) })
     })
   })
 

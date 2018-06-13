@@ -181,6 +181,7 @@ describe('divide', function () {
   })
 
   it('should divide a matrix by a matrix containing a scalar', function () {
+    const a = math.matrix([[1, 2], [3, 4]])
     assert.throws(function () { divide(a, [[1]]) })
   })
 

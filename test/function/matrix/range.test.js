@@ -141,7 +141,7 @@ describe('range', function () {
   // FIXME: should give the right error
   it.skip('should not cast a single number or boolean to string', function () {
     assert.throws(function () { range(2) }, /TypeError: Too few arguments/)
-    assert.throws(function () { range(boolean) }, /TypeError: Unexpected type of argument/)
+    assert.throws(function () { range(true) }, /TypeError: Unexpected type of argument/)
   })
 
   it('should LaTeX range', function () {

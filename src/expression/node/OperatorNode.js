@@ -481,7 +481,7 @@ function factory (type, config, load, typed) {
       }
 
       return lhs + '<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>' + rhs
-    } else if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
+    } else {
       const stringifiedArgs = args.map(function (arg, index) {
         arg = arg.toHTML(options)
         if (parens[index]) { // put in parenthesis?
@@ -491,14 +491,16 @@ function factory (type, config, load, typed) {
         return arg
       })
 
-      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
-        return stringifiedArgs.join('<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>')
-      }
+      if ((args.length > 2) && ((this.getIdentifier() === 'OperatorNode:add') || (this.getIdentifier() === 'OperatorNode:multiply'))) {
+        if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
+          return stringifiedArgs.join('<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>')
+        }
 
-      return stringifiedArgs.join('<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>')
-    } else {
-      // fallback to formatting as a function call
-      return '<span class="math-function">' + escape(this.fn) + '</span><span class="math-paranthesis math-round-parenthesis">(</span>' + stringifiedArgs.join('<span class="math-separator">,</span>') + '<span class="math-paranthesis math-round-parenthesis">)</span>'
+        return stringifiedArgs.join('<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(this.op) + '</span>')
+      } else {
+        // fallback to formatting as a function call
+        return '<span class="math-function">' + escape(this.fn) + '</span><span class="math-paranthesis math-round-parenthesis">(</span>' + stringifiedArgs.join('<span class="math-separator">,</span>') + '<span class="math-paranthesis math-round-parenthesis">)</span>'
+      }
     }
   }
 

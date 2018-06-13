@@ -1,7 +1,7 @@
 importScripts('../../../dist/math.js')
 
 // create a parser
-const parser = math.parser()
+const parser = self.math.parser()
 
 self.addEventListener('message', function (event) {
   const request = JSON.parse(event.data)

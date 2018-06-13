@@ -84,7 +84,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _max (array) {
-    let max = undefined
+    let max
 
     deepForEach(array, function (value) {
       try {
