@@ -6,7 +6,7 @@ const generalize = require('../../utils/array').generalize
 
 function factory (type, config, load, typed) {
   const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const matrix = load(require('../../type/matrix/DenseMatrix'))
+  const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
   const compareNatural = load(require('../relational/compareNatural'))
@@ -55,7 +55,7 @@ function factory (type, config, load, typed) {
         return generalize(result)
       }
       // return a matrix otherwise
-      return new matrix(generalize(result))
+      return new DenseMatrix(generalize(result))
     }
   })
 
