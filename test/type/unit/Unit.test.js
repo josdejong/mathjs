@@ -354,33 +354,33 @@ describe('Unit', function () {
     })
 
     it('should convert a binary prefixes (1)', function () {
-      var u1 = new Unit(1, 'Kib')
+      const u1 = new Unit(1, 'Kib')
       assert.equal(u1.value, 1024)
       assert.equal(u1.units[0].unit.name, 'b')
       assert.equal(u1.units[0].prefix.name, 'Ki')
       assert.equal(u1.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'b'))
+      const u2 = u1.to(new Unit(null, 'b'))
       assert.notStrictEqual(u1, u2) // u2 must be a clone
       assert.equal(u2.value, 1024) // u2 must have a value
       assert.equal(u2.units[0].unit.name, 'b')
       assert.equal(u2.units[0].prefix.name, '')
       assert.equal(u2.fixPrefix, true)
 
-      var u1 = new Unit(1, 'Kib/s')
-      assert.equal(u1.value, 1024)
-      assert.equal(u1.units[0].unit.name, 'b')
-      assert.equal(u1.units[1].unit.name, 's')
-      assert.equal(u1.units[0].prefix.name, 'Ki')
-      assert.equal(u1.fixPrefix, false)
+      const u3 = new Unit(1, 'Kib/s')
+      assert.equal(u3.value, 1024)
+      assert.equal(u3.units[0].unit.name, 'b')
+      assert.equal(u3.units[1].unit.name, 's')
+      assert.equal(u3.units[0].prefix.name, 'Ki')
+      assert.equal(u3.fixPrefix, false)
 
-      var u2 = u1.to(new Unit(null, 'b/s'))
-      assert.notStrictEqual(u1, u2) // u2 must be a clone
-      assert.equal(u2.value, 1024) // u2 must have a value
-      assert.equal(u2.units[0].unit.name, 'b')
-      assert.equal(u2.units[1].unit.name, 's')
-      assert.equal(u2.units[0].prefix.name, '')
-      assert.equal(u2.fixPrefix, true)
+      const u4 = u3.to(new Unit(null, 'b/s'))
+      assert.notStrictEqual(u3, u4) // u4 must be a clone
+      assert.equal(u4.value, 1024) // u4 must have a value
+      assert.equal(u4.units[0].unit.name, 'b')
+      assert.equal(u4.units[1].unit.name, 's')
+      assert.equal(u4.units[0].prefix.name, '')
+      assert.equal(u4.fixPrefix, true)
     })
 
     it('should convert a binary prefixes (2)', function () {
@@ -406,10 +406,10 @@ describe('Unit', function () {
     })
 
     it('should throw an error when converting to an incompatible unit', function () {
-      var u1 = new Unit(5000, 'cm')
+      const u1 = new Unit(5000, 'cm')
       assert.throws(function () { u1.to('kg') }, /Units do not match/)
-      var u1 = new Unit(5000, 'N s')
-      assert.throws(function () { u1.to('kg^5 / s') }, /Units do not match/)
+      const u2 = new Unit(5000, 'N s')
+      assert.throws(function () { u2.to('kg^5 / s') }, /Units do not match/)
     })
 
     it('should throw an error when converting to a unit having a value', function () {
@@ -920,12 +920,12 @@ describe('Unit', function () {
       const origConfig = math.config()
 
       math.config({number: 'Fraction'})
-      var unit1 = Unit.parse('5kg')
+      const unit1 = Unit.parse('5kg')
       assert(math.type.isFraction(unit1.value))
 
       math.config({number: 'BigNumber'})
-      var unit1 = Unit.parse('5kg')
-      assert(math.type.isBigNumber(unit1.value))
+      const unit2 = Unit.parse('5kg')
+      assert(math.type.isBigNumber(unit2.value))
 
       math.config(origConfig)
     })
@@ -1020,15 +1020,15 @@ describe('Unit', function () {
       assert.equal(unit2.units[0].unit.name, 'meters')
       assert.equal(unit2.units[0].prefix.name, 'kilo')
 
-      var unit3 = new Unit(5, 'inches')
+      const unit3 = new Unit(5, 'inches')
       approx.equal(unit3.value, 0.127)
       assert.equal(unit3.units[0].unit.name, 'inches')
       assert.equal(unit3.units[0].prefix.name, '')
 
-      var unit3 = new Unit(9.81, 'meters/second^2')
-      approx.equal(unit3.value, 9.81)
-      assert.equal(unit3.units[0].unit.name, 'meters')
-      assert.equal(unit3.units[0].prefix.name, '')
+      const unit4 = new Unit(9.81, 'meters/second^2')
+      approx.equal(unit4.value, 9.81)
+      assert.equal(unit4.units[0].unit.name, 'meters')
+      assert.equal(unit4.units[0].prefix.name, '')
 
       assert.equal(new Unit(10, 'decades').toNumeric('decade'), 10)
       assert.equal(new Unit(10, 'centuries').toNumeric('century'), 10)

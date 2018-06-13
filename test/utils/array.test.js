@@ -181,13 +181,13 @@ describe('util.array', function () {
       a = resize(a, [6])
       assert.deepEqual(a, [1, 3, 5, 7, 0, 0])
 
-      var b = [[], []]
+      let b = [[], []]
       b = resize(b, [2], 8)
       assert.deepEqual(b, [undefined, undefined])
 
-      var b = []
-      b = resize(b, [2], 8)
-      assert.deepEqual(b, [8, 8])
+      let c = []
+      c = resize(c, [2], 8)
+      assert.deepEqual(c, [8, 8])
     })
 
     it('should resize a 3 dimensional array', function () {

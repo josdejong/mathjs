@@ -7,7 +7,7 @@ const math = require('../../src/main')
 describe('customs', function () {
   describe('isSafeMethod', function () {
     it('plain objects', function () {
-      var object = {
+      let object = {
         fn: function () {}
       }
       assert.equal(customs.isSafeMethod(object, 'fn'), true)
@@ -28,10 +28,10 @@ describe('customs', function () {
       assert.equal(customs.isSafeMethod(object, 'foo'), false)
 
       // custom inherited method
-      var object = {
+      let object1 = {
         foo: function () {}
       }
-      const object2 = Object.create(object)
+      const object2 = Object.create(object1)
       assert.equal(customs.isSafeMethod(object2, 'foo'), true)
 
       // ghosted native method
@@ -61,14 +61,14 @@ describe('customs', function () {
       assert.equal(customs.isSafeMethod(unit, 'toString'), true)
 
       // extend the class instance with a custom method
-      var object = math.matrix()
+      let object = math.matrix()
       object.foo = function () {}
       assert.equal(customs.isSafeMethod(object, 'foo'), true)
 
       // extend the class instance with a ghosted method
-      var object = math.matrix()
-      object.toJSON = function () {}
-      assert.equal(customs.isSafeMethod(object, 'toJSON'), false)
+      let object2 = math.matrix()
+      object2.toJSON = function () {}
+      assert.equal(customs.isSafeMethod(object2, 'toJSON'), false)
 
       // unsafe native methods
       assert.equal(customs.isSafeMethod(matrix, 'constructor'), false)
