@@ -1,6 +1,5 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const error = require('../../../src/error/index')
 const math = require('../../../src/main')
 const BigNumber = math.type.BigNumber
 const Complex = math.type.Complex

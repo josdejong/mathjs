@@ -31,16 +31,16 @@ describe('AssignmentNode', function () {
 
   it('should throw an error when creating an AssignmentNode with a reserved keyword', function () {
     assert.throws(function () {
-      new AssignmentNode(new SymbolNode('end'), new Node())
+      console.log(new AssignmentNode(new SymbolNode('end'), new Node()))
     }, /Cannot assign to symbol "end"/)
   })
 
   it('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () { new AssignmentNode() }, TypeError)
-    assert.throws(function () { new AssignmentNode(new Node(), new Node()) }, TypeError)
-    assert.throws(function () { new AssignmentNode('a', new Node()) }, TypeError)
-    assert.throws(function () { new AssignmentNode(2, new Node()) }, TypeError)
-    assert.throws(function () { new AssignmentNode(new Node(), new Node(), new Node()) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode()) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node())) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode('a', new Node())) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(2, new Node())) }, TypeError)
+    assert.throws(function () { console.log(new AssignmentNode(new Node(), new Node(), new Node())) }, TypeError)
   })
 
   it('should get the name of an AssignmentNode', function () {

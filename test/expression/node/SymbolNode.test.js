@@ -25,8 +25,8 @@ describe('SymbolNode', function () {
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    assert.throws(function () { new SymbolNode() }, TypeError)
-    assert.throws(function () { new SymbolNode(2) }, TypeError)
+    assert.throws(function () { console.log(new SymbolNode()) }, TypeError)
+    assert.throws(function () { console.log(new SymbolNode(2)) }, TypeError)
   })
 
   it('should throw an error when evaluating an undefined symbol', function () {

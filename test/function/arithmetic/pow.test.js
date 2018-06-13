@@ -1,7 +1,6 @@
 // test exp
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const error = require('../../../src/error/index')
 const math = require('../../../src/main')
 const mathPredictable = math.create({predictable: true})
 const bignumber = math.bignumber
@@ -9,7 +8,6 @@ const fraction = math.fraction
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const range = math.range
 const pow = math.pow
 
 describe('pow', function () {

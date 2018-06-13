@@ -167,18 +167,18 @@ describe('SparseMatrix', function () {
 
     // TODO: add some more input validations to SparseMatrix
     it.skip('should throw an error when input array does not have two dimensions', function () {
-      assert.throws(function () { new SparseMatrix([1, 2, 3]) }, /DimensionError: Two dimensional array expected/)
-      assert.throws(function () { new SparseMatrix([[[1]], [[2]], [[3]]]) }, /DimensionError: Two dimensional array expected/)
+      assert.throws(function () { console.log(new SparseMatrix([1, 2, 3])) }, /DimensionError: Two dimensional array expected/)
+      assert.throws(function () { console.log(new SparseMatrix([[[1]], [[2]], [[3]]])) }, /DimensionError: Two dimensional array expected/)
     })
 
     // TODO: add some more input validations to SparseMatrix
     it.skip('should throw an error when the dimensions of the input array are invalid', function () {
       assert.throws(function () {
-        new SparseMatrix(
+        console.log(new SparseMatrix(
           [
             [1, 2],
             [4, 5, 6]
-          ])
+          ]))
       }, /DimensionError: Dimension mismatch \(3 != 2\)/)
     })
 
@@ -198,7 +198,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error when called with invalid datatype', function () {
-      assert.throws(function () { new SparseMatrix([], 1) })
+      assert.throws(function () { console.log(new SparseMatrix([], 1)) })
     })
   })
 
@@ -1242,11 +1242,11 @@ describe('SparseMatrix', function () {
     })
 
     it('should throw an error in case of wrong type of index', function () {
-      assert.throws(function () { new SparseMatrix().subset('no index', 2) }, /Invalid index/)
+      assert.throws(function () { console.log(new SparseMatrix().subset('no index', 2)) }, /Invalid index/)
     })
 
     it('should throw an error in case of wrong size of submatrix', function () {
-      assert.throws(function () { new SparseMatrix().subset(index(0), [2, 3]) }, /Scalar expected/)
+      assert.throws(function () { console.log(new SparseMatrix().subset(index(0), [2, 3])) }, /Scalar expected/)
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {

@@ -23,8 +23,8 @@ describe('ParenthesisNode', function () {
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    assert.throws(function () { new ParenthesisNode() }, TypeError)
-    assert.throws(function () { new ParenthesisNode(2) }, TypeError)
+    assert.throws(function () { console.log(new ParenthesisNode()) }, TypeError)
+    assert.throws(function () { console.log(new ParenthesisNode(2)) }, TypeError)
   })
 
   it('should compile a ParenthesisNode', function () {

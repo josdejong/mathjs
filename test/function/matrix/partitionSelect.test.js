@@ -1,5 +1,4 @@
 const assert = require('assert')
-const error = require('../../../src/error/index')
 const math = require('../../../src/main')
 const matrix = math.matrix
 const partitionSelect = math.partitionSelect

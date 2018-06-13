@@ -22,10 +22,10 @@ describe('IndexNode', function () {
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    assert.throws(function () { new IndexNode() }, TypeError)
-    assert.throws(function () { new IndexNode('a') }, TypeError)
-    assert.throws(function () { new IndexNode(new Node()) }, TypeError)
-    assert.throws(function () { new IndexNode([new Node(), 3]) }, TypeError)
+    assert.throws(function () { console.log(new IndexNode()) }, TypeError)
+    assert.throws(function () { console.log(new IndexNode('a')) }, TypeError)
+    assert.throws(function () { console.log(new IndexNode(new Node())) }, TypeError)
+    assert.throws(function () { console.log(new IndexNode([new Node(), 3])) }, TypeError)
   })
 
   it('should throw an error when calling without new operator', function () {

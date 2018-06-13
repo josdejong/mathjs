@@ -1,7 +1,5 @@
 // test sqrt
 const assert = require('assert')
-const approx = require('../../../tools/approx')
-const error = require('../../../src/error/index')
 const math = require('../../../src/main')
 const mathPredictable = math.create({predictable: true})
 const sqrt = math.sqrt

@@ -243,13 +243,13 @@ describe('Index', function () {
   })
 
   it('should throw an error on non-integer ranges', function () {
-    assert.throws(function () { new Index([0, 4.5]) })
-    assert.throws(function () { new Index([0.1, 4]) })
-    assert.throws(function () { new Index([4, 2, 0.1]) })
+    assert.throws(function () { console.log(new Index([0, 4.5])) })
+    assert.throws(function () { console.log(new Index([0.1, 4])) })
+    assert.throws(function () { console.log(new Index([4, 2, 0.1])) })
   })
 
   it('should throw an error on unsupported type of arguments', function () {
-    assert.throws(function () { new Index({}) }, TypeError)
-    assert.throws(function () { new Index(new Date()) }, TypeError)
+    assert.throws(function () { console.log(new Index({})) }, TypeError)
+    assert.throws(function () { console.log(new Index(new Date())) }, TypeError)
   })
 })

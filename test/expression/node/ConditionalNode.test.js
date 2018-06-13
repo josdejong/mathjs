@@ -34,10 +34,10 @@ describe('ConditionalNode', function () {
   })
 
   it('should throw an error when creating without arguments', function () {
-    assert.throws(function () { new ConditionalNode() }, TypeError)
-    assert.throws(function () { new ConditionalNode(condition) }, TypeError)
-    assert.throws(function () { new ConditionalNode(condition, a) }, TypeError)
-    assert.throws(function () { new ConditionalNode(condition, null, b) }, TypeError)
+    assert.throws(function () { console.log(new ConditionalNode()) }, TypeError)
+    assert.throws(function () { console.log(new ConditionalNode(condition)) }, TypeError)
+    assert.throws(function () { console.log(new ConditionalNode(condition, a)) }, TypeError)
+    assert.throws(function () { console.log(new ConditionalNode(condition, null, b)) }, TypeError)
   })
 
   it('should lazy evaluate a ConditionalNode', function () {

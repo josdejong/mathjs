@@ -50,9 +50,9 @@ describe('range', function () {
     })
 
     it('should throw an error for wrong type of arguments', function () {
-      assert.throws(function () { new Range('str', 10, 1) }, /Parameter start must be a number/)
-      assert.throws(function () { new Range(0, 'str', 1) }, /Parameter end must be a number/)
-      assert.throws(function () { new Range(0, 10, 'str') }, /Parameter step must be a number/)
+      assert.throws(function () { console.log(new Range('str', 10, 1)) }, /Parameter start must be a number/)
+      assert.throws(function () { console.log(new Range(0, 'str', 1)) }, /Parameter end must be a number/)
+      assert.throws(function () { console.log(new Range(0, 10, 'str')) }, /Parameter step must be a number/)
     })
   })
 

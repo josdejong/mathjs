@@ -143,11 +143,11 @@ describe('DenseMatrix', function () {
 
     it('should throw an error when the dimensions of the input array are invalid', function () {
       assert.throws(function () {
-        new DenseMatrix(
+        console.log(new DenseMatrix(
           [
             [1, 2],
             [4, 5, 6]
-          ])
+          ]))
       }, /DimensionError: Dimension mismatch \(3 != 2\)/)
     })
 
@@ -156,7 +156,7 @@ describe('DenseMatrix', function () {
     })
 
     it('should throw an error when called with invalid datatype', function () {
-      assert.throws(function () { new DenseMatrix([], 1) })
+      assert.throws(function () { console.log(new DenseMatrix([], 1)) })
     })
   })
 
@@ -635,11 +635,11 @@ describe('DenseMatrix', function () {
     })
 
     it('should throw an error in case of wrong type of index', function () {
-      assert.throws(function () { new DenseMatrix().subset('no index', 2) }, /Invalid index/)
+      assert.throws(function () { console.log(new DenseMatrix().subset('no index', 2)) }, /Invalid index/)
     })
 
     it('should throw an error in case of wrong size of submatrix', function () {
-      assert.throws(function () { new DenseMatrix().subset(index(0), [2, 3]) }, /Scalar expected/)
+      assert.throws(function () { console.log(new DenseMatrix().subset(index(0), [2, 3])) }, /Scalar expected/)
     })
 
     it('should throw an error in case of dimension mismatch', function () {

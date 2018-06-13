@@ -37,7 +37,7 @@ describe('help', function () {
 
   it('should throw an error when constructed without doc argument', function () {
     assert.throws(function () {
-      new Help()
+      console.log(new Help())
     }, /Argument "doc" missing/)
   })
 

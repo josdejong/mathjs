@@ -36,9 +36,9 @@ describe('FunctionNode', function () {
   it('should throw an error when calling with wrong arguments', function () {
     const s = new SymbolNode('sqrt')
     const c = new ConstantNode(4)
-    assert.throws(function () { new FunctionNode(new Date(), []) }, TypeError)
-    assert.throws(function () { new FunctionNode(s, [2, 3]) }, TypeError)
-    assert.throws(function () { new FunctionNode(s, [c, 3]) }, TypeError)
+    assert.throws(function () { console.log(new FunctionNode(new Date(), [])) }, TypeError)
+    assert.throws(function () { console.log(new FunctionNode(s, [2, 3])) }, TypeError)
+    assert.throws(function () { console.log(new FunctionNode(s, [c, 3])) }, TypeError)
   })
 
   it('should get the name of a FunctionNode', function () {

@@ -62,7 +62,7 @@ describe('Unit', function () {
     it('should ignore properties on Object.prototype', function () {
       Object.prototype.foo = Unit.UNITS['meter']
 
-      assert.throws(function () { new Unit(1, 'foo') }, /Unit "foo" not found/)
+      assert.throws(function () { console.log(new Unit(1, 'foo')) }, /Unit "foo" not found/)
 
       delete Object.prototype.foo
     })
@@ -74,10 +74,10 @@ describe('Unit', function () {
     })
 
     it('should throw an error if called with wrong type of arguments', function () {
-      assert.throws(function () { new Unit('24', 'inch') })
-      assert.throws(function () { new Unit(0, 'bla') })
-      assert.throws(function () { new Unit(4, '') })
-      assert.throws(function () { new Unit(0, 3) })
+      assert.throws(function () { console.log(new Unit('24', 'inch')) })
+      assert.throws(function () { console.log(new Unit(0, 'bla')) })
+      assert.throws(function () { console.log(new Unit(4, '')) })
+      assert.throws(function () { console.log(new Unit(0, 3)) })
     })
 
     it('should flag unit as already simplified', function () {

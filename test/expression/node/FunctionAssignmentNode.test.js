@@ -30,10 +30,10 @@ describe('FunctionAssignmentNode', function () {
   })
 
   it('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () { new FunctionAssignmentNode() }, TypeError)
-    assert.throws(function () { new FunctionAssignmentNode('a') }, TypeError)
-    assert.throws(function () { new FunctionAssignmentNode('a', ['x']) }, TypeError)
-    assert.throws(function () { new FunctionAssignmentNode(null, ['x'], new ConstantNode(2)) }, TypeError)
+    assert.throws(function () { console.log(new FunctionAssignmentNode()) }, TypeError)
+    assert.throws(function () { console.log(new FunctionAssignmentNode('a')) }, TypeError)
+    assert.throws(function () { console.log(new FunctionAssignmentNode('a', ['x'])) }, TypeError)
+    assert.throws(function () { console.log(new FunctionAssignmentNode(null, ['x'], new ConstantNode(2))) }, TypeError)
   })
 
   it('should compile a FunctionAssignmentNode', function () {
@@ -213,7 +213,7 @@ describe('FunctionAssignmentNode', function () {
 
   it('should throw an error when creating a FunctionAssignmentNode with a reserved keyword', function () {
     assert.throws(function () {
-      new FunctionAssignmentNode('end', ['x'], new ConstantNode(2))
+      console.log(new FunctionAssignmentNode('end', ['x'], new ConstantNode(2)))
     }, /Illegal function name/)
   })
 

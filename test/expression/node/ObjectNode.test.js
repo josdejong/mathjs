@@ -32,8 +32,8 @@ describe('ObjectNode', function () {
   })
 
   it('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () { new ObjectNode(2) }, TypeError)
-    assert.throws(function () { new ObjectNode({a: 2, b: 3}) }, TypeError)
+    assert.throws(function () { console.log(new ObjectNode(2)) }, TypeError)
+    assert.throws(function () { console.log(new ObjectNode({a: 2, b: 3})) }, TypeError)
   })
 
   it('should evaluate an ObjectNode', function () {

@@ -1,7 +1,6 @@
 // test divide
 const assert = require('assert')
 const math = require('../../../src/main')
-const error = require('../../../src/error/index')
 const approx = require('../../../tools/approx')
 const divide = math.divide
 const bignumber = math.bignumber

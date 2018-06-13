@@ -25,10 +25,10 @@ describe('AccessorNode', function () {
   })
 
   it('should throw an error when calling with wrong arguments', function () {
-    assert.throws(function () { new AccessorNode() }, TypeError)
-    assert.throws(function () { new AccessorNode('a', new IndexNode([])) }, TypeError)
-    assert.throws(function () { new AccessorNode(new Node(), new IndexNode([2, 3])) }, TypeError)
-    assert.throws(function () { new AccessorNode(new Node(), new IndexNode([new Node(), 3])) }, TypeError)
+    assert.throws(function () { console.log(new AccessorNode()) }, TypeError)
+    assert.throws(function () { console.log(new AccessorNode('a', new IndexNode([]))) }, TypeError)
+    assert.throws(function () { console.log(new AccessorNode(new Node(), new IndexNode([2, 3]))) }, TypeError)
+    assert.throws(function () { console.log(new AccessorNode(new Node(), new IndexNode([new Node(), 3]))) }, TypeError)
   })
 
   it('should throw an error when calling without new operator', function () {

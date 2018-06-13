@@ -1,13 +1,11 @@
 // test log
 const assert = require('assert')
 const approx = require('../../../tools/approx')
-const error = require('../../../src/error/index')
 const math = require('../../../src/main')
 const mathPredictable = math.create({predictable: true})
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const range = math.range
 const log = math.log
 
 describe('log', function () {

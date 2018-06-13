@@ -80,8 +80,8 @@ describe('Chain', function () {
   })
 
   it('should throw an error if called with wrong input', function () {
-    assert.throws(function () { new Chain().add(2).done() }, TypeError)
-    assert.throws(function () { new Chain(undefined).add(2).done() }, TypeError)
+    assert.throws(function () { console.log(new Chain().add(2).done()) }, TypeError)
+    assert.throws(function () { console.log(new Chain(undefined).add(2).done()) }, TypeError)
   })
 
   it('should throw an error if constructed without new keyword', function () {

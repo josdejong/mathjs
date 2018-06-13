@@ -36,11 +36,11 @@ describe('RangeNode', function () {
     const start = new ConstantNode(0)
     const end = new ConstantNode(10)
 
-    assert.throws(function () { new RangeNode() }, TypeError)
-    assert.throws(function () { new RangeNode(start) }, TypeError)
-    assert.throws(function () { new RangeNode([]) }, TypeError)
-    assert.throws(function () { new RangeNode(start, end, start, end) }, Error)
-    assert.throws(function () { new RangeNode(0, 10) }, TypeError)
+    assert.throws(function () { console.log(new RangeNode()) }, TypeError)
+    assert.throws(function () { console.log(new RangeNode(start)) }, TypeError)
+    assert.throws(function () { console.log(new RangeNode([])) }, TypeError)
+    assert.throws(function () { console.log(new RangeNode(start, end, start, end)) }, Error)
+    assert.throws(function () { console.log(new RangeNode(0, 10)) }, TypeError)
   })
 
   it('should compile a RangeNode', function () {

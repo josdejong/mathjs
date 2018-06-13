@@ -30,8 +30,8 @@ describe('ArrayNode', function () {
   })
 
   it('should throw an error on wrong constructor arguments', function () {
-    assert.throws(function () { new ArrayNode(2) }, TypeError)
-    assert.throws(function () { new ArrayNode([2, 3]) }, TypeError)
+    assert.throws(function () { console.log(new ArrayNode(2)) }, TypeError)
+    assert.throws(function () { console.log(new ArrayNode([2, 3])) }, TypeError)
   })
 
   it('should evaluate an ArrayNode', function () {

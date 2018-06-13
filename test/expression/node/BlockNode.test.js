@@ -29,10 +29,10 @@ describe('BlockNode', function () {
   })
 
   it('should throw an error when adding invalid blocks', function () {
-    assert.throws(function () { new BlockNode() }, /Array expected/)
-    assert.throws(function () { new BlockNode([2]) }, /Property "node" must be a Node/)
-    assert.throws(function () { new BlockNode([{node: 2, visible: true}]) }, /Property "node" must be a Node/)
-    assert.throws(function () { new BlockNode([{node: new Node(), visible: 2}]) }, /Property "visible" must be a boolean/)
+    assert.throws(function () { console.log(new BlockNode()) }, /Array expected/)
+    assert.throws(function () { console.log(new BlockNode([2])) }, /Property "node" must be a Node/)
+    assert.throws(function () { console.log(new BlockNode([{node: 2, visible: true}])) }, /Property "node" must be a Node/)
+    assert.throws(function () { console.log(new BlockNode([{node: new Node(), visible: 2}])) }, /Property "visible" must be a boolean/)
   })
 
   it('should compile and evaluate a BlockNode', function () {

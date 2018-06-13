@@ -100,7 +100,7 @@ describe('ImmutableDenseMatrix', function () {
     })
 
     it('should throw an error when called with invalid datatype', function () {
-      assert.throws(function () { new ImmutableDenseMatrix([], 1) })
+      assert.throws(function () { console.log(new ImmutableDenseMatrix([], 1)) })
     })
   })
 
