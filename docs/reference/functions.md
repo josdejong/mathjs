@@ -5,6 +5,7 @@
 Function | Description
 ---- | -----------
 [math.config(config:&nbsp;Object):&nbsp;Object](functions/config.md) | Set configuration options for math.
+[math.import(object,&nbsp;override)](functions/import.md) | Import functions from an object or a module.
 [math.typed(name,&nbsp;signatures)&nbsp;:&nbsp;function](functions/typed.md) | Create a typed-function which checks the types of the arguments and can match them against multiple provided signatures.
 
 ## Construction functions

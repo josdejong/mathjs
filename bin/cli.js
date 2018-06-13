@@ -88,9 +88,10 @@ function format (value) {
 function completer (text) {
   const math = getMath()
   let matches = []
+  let keyword
   const m = /[a-zA-Z_0-9]+$/.exec(text)
   if (m) {
-    const keyword = m[0]
+    keyword = m[0]
 
     // scope variables
     for (const def in scope) {

@@ -7,7 +7,19 @@ const babel = require('gulp-babel')
 const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 
-const ENTRY = './src/index.js', HEADER = './src/header.js', VERSION = './src/version.js', COMPILE_SRC = './src/**/*.js', COMPILE_LIB = './lib', FILE = 'math.js', FILE_MIN = 'math.min.js', FILE_MAP = 'math.min.map', DIST = __dirname + '/dist', REF_SRC = './lib/', REF_DEST = './docs/reference/functions/', REF_ROOT = './docs/reference/', MATH_JS = DIST + '/' + FILE
+const ENTRY = './src/index.js'
+const HEADER = './src/header.js'
+const VERSION = './src/version.js'
+const COMPILE_SRC = './src/**/*.js'
+const COMPILE_LIB = './lib'
+const FILE = 'math.js'
+const FILE_MIN = 'math.min.js'
+const FILE_MAP = 'math.min.map'
+const DIST = __dirname + '/dist'
+const REF_SRC = './lib/'
+const REF_DEST = './docs/reference/functions'
+const REF_ROOT = './docs/reference'
+const MATH_JS = DIST + '/' + FILE
 
 // generate banner with today's date and correct version
 function createBanner () {
