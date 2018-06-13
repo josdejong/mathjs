@@ -70,11 +70,11 @@ function factory (type, config, load, typed) {
     },
 
     'Unit, Unit': function (x, y) {
-      if (x.value == null) {
+      if (x.value === null) {
         throw new Error('Parameter x contains a unit with undefined value')
       }
 
-      if (y.value == null) {
+      if (y.value === null) {
         throw new Error('Parameter y contains a unit with undefined value')
       }
 

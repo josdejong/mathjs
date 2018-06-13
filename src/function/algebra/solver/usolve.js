@@ -75,7 +75,7 @@ function factory (type, config, load, typed) {
       const bj = bdata[j][0] || 0
       // x[j]
       let xj
-      // backward substitution (outer product) avoids inner looping when bj == 0
+      // backward substitution (outer product) avoids inner looping when bj === 0
       if (!equalScalar(bj, 0)) {
         // value @ [j, j]
         const vjj = data[j][j]
@@ -125,7 +125,7 @@ function factory (type, config, load, typed) {
     for (let j = columns - 1; j >= 0; j--) {
       // b[j]
       const bj = bdata[j][0] || 0
-      // backward substitution (outer product) avoids inner looping when bj == 0
+      // backward substitution (outer product) avoids inner looping when bj === 0
       if (!equalScalar(bj, 0)) {
         // value @ [j, j]
         let vjj = 0

@@ -124,7 +124,7 @@ exports.deepEqual = function deepEqual (a, b) {
       return false
     }
 
-    if (a.length != b.length) {
+    if (a.length !== b.length) {
       return false
     }
 
@@ -153,7 +153,7 @@ exports.deepEqual = function deepEqual (a, b) {
     }
     return true
   } else {
-    return (typeof a === typeof b) && (a == b)
+    return (a === b)
   }
 }
 

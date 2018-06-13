@@ -45,7 +45,7 @@ describe('reshape', function () {
     assert.throws(function () { math.reshape([], 2) }, TypeError)
     assert.throws(function () { math.reshape([], [], 4) }, /Too many arguments/)
 
-    assert.throws(function () { math.reshape([], ['no number']) }, /Invalid size/)
+    assert.throws(function () { math.reshape([], ['no number']) }, /Cannot convert/)
     assert.throws(function () { math.reshape([], [2.3]) }, /Invalid size/)
 
     assert.throws(function () { math.reshape([1, 2], []) }, error.DimensionError)

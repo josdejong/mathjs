@@ -96,7 +96,7 @@ function completer (text) {
     // scope variables
     for (const def in scope) {
       if (scope.hasOwnProperty(def)) {
-        if (def.indexOf(keyword) == 0) {
+        if (def.indexOf(keyword) === 0) {
           matches.push(def)
         }
       }
@@ -104,7 +104,7 @@ function completer (text) {
 
     // commandline keywords
     ['exit', 'quit', 'clear'].forEach(function (cmd) {
-      if (cmd.indexOf(keyword) == 0) {
+      if (cmd.indexOf(keyword) === 0) {
         matches.push(cmd)
       }
     })
@@ -113,7 +113,7 @@ function completer (text) {
     const ignore = ['expr', 'type']
     for (const func in math) {
       if (math.hasOwnProperty(func)) {
-        if (func.indexOf(keyword) == 0 && ignore.indexOf(func) == -1) {
+        if (func.indexOf(keyword) === 0 && ignore.indexOf(func) === -1) {
           matches.push(func)
         }
       }
@@ -123,7 +123,7 @@ function completer (text) {
     const Unit = math.type.Unit
     for (let name in Unit.UNITS) {
       if (Unit.UNITS.hasOwnProperty(name)) {
-        if (name.indexOf(keyword) == 0) {
+        if (name.indexOf(keyword) === 0) {
           matches.push(name)
         }
       }
@@ -133,13 +133,13 @@ function completer (text) {
         const prefixes = Unit.PREFIXES[name]
         for (const prefix in prefixes) {
           if (prefixes.hasOwnProperty(prefix)) {
-            if (prefix.indexOf(keyword) == 0) {
+            if (prefix.indexOf(keyword) === 0) {
               matches.push(prefix)
-            } else if (keyword.indexOf(prefix) == 0) {
+            } else if (keyword.indexOf(prefix) === 0) {
               const unitKeyword = keyword.substring(prefix.length)
               for (const n in Unit.UNITS) {
                 if (Unit.UNITS.hasOwnProperty(n)) {
-                  if (n.indexOf(unitKeyword) == 0 &&
+                  if (n.indexOf(unitKeyword) === 0 &&
                       Unit.isValuelessUnit(prefix + n)) {
                     matches.push(prefix + n)
                   }
@@ -153,7 +153,7 @@ function completer (text) {
 
     // remove duplicates
     matches = matches.filter(function (elem, pos, arr) {
-      return arr.indexOf(elem) == pos
+      return arr.indexOf(elem) === pos
     })
   }
 
@@ -229,7 +229,7 @@ function runStream (input, output, mode, parenthesis) {
               if (node) {
                 if (math.type.isAssignmentNode(node)) {
                   const name = findSymbolName(node)
-                  if (name != null) {
+                  if (name !== null) {
                     scope.ans = scope[name]
                     console.log(name + ' = ' + format(scope[name]))
                   } else {

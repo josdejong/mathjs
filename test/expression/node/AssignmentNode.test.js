@@ -267,7 +267,7 @@ describe('AssignmentNode', function () {
       paths.push(path)
       assert.strictEqual(parent, n)
 
-      return node instanceof SymbolNode && node.name == 'x' ? e : node
+      return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
     assert.equal(nodes.length, 3)
@@ -296,7 +296,7 @@ describe('AssignmentNode', function () {
       nodes.push(node)
       paths.push(path)
       assert.strictEqual(parent, d)
-      return node instanceof SymbolNode && node.name == 'x' ? e : node
+      return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
     assert.equal(nodes.length, 2)
@@ -334,7 +334,7 @@ describe('AssignmentNode', function () {
 
     const e = new ConstantNode(3)
     const f = d.transform(function (node) {
-      return node.isSymbolNode && node.name == 'x' ? e : node
+      return node.isSymbolNode && node.name === 'x' ? e : node
     })
 
     assert.notStrictEqual(f, d)

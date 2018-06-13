@@ -69,7 +69,7 @@ describe('ObjectNode', function () {
     assert.deepEqual(d.filter(function (node) { return node instanceof SymbolNode }), [b])
     assert.deepEqual(d.filter(function (node) { return node instanceof RangeNode }), [])
     assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode }), [a, c])
-    assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [c])
+    assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [c])
   })
 
   it('should run forEach on an ObjectNode', function () {
@@ -104,7 +104,7 @@ describe('ObjectNode', function () {
       paths.push(path)
       assert.strictEqual(parent, c)
 
-      return (node instanceof SymbolNode) && (node.name == 'x') ? d : node
+      return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
     })
 
     assert.deepEqual(paths, ['properties["a"]', 'properties["b"]'])
@@ -134,7 +134,7 @@ describe('ObjectNode', function () {
 
     const d = new ConstantNode(3)
     const e = c.transform(function (node) {
-      return (node instanceof SymbolNode) && (node.name == 'x') ? d : node
+      return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
     })
 
     assert.notStrictEqual(e, c)

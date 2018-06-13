@@ -1,13 +1,13 @@
 'use strict'
 
 const clone = require('../../utils/object').clone
-const isInteger = require('../../utils/number').isInteger
 const array = require('../../utils/array')
 const IndexError = require('../../error/IndexError')
 const DimensionError = require('../../error/DimensionError')
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
+  const isInteger = load(require('../utils/isInteger'))
 
   /**
    * Concatenate two or more matrices.
@@ -82,13 +82,13 @@ function factory (type, config, load, typed) {
           dim = size.length - 1
 
           // verify whether each of the matrices has the same number of dimensions
-          if (i > 0 && dim != prevDim) {
+          if (i > 0 && dim !== prevDim) {
             throw new DimensionError(prevDim + 1, dim + 1)
           }
         }
       }
 
-      if (matrices.length == 0) {
+      if (matrices.length === 0) {
         throw new SyntaxError('At least one matrix expected')
       }
 
@@ -123,7 +123,7 @@ function factory (type, config, load, typed) {
 function _concat (a, b, concatDim, dim) {
   if (dim < concatDim) {
     // recurse into next dimension
-    if (a.length != b.length) {
+    if (a.length !== b.length) {
       throw new DimensionError(a.length, b.length)
     }
 

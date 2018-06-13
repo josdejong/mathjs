@@ -54,8 +54,8 @@ function factory (type, config, load) {
     for (k = 0; k < n; k++) {
       j = post[k]
       // colcount[j]=1 if j is a leaf
-      colcount[j] = (w[first + j] == -1) ? 1 : 0
-      for (; j != -1 && w[first + j] == -1; j = parent[j]) { w[first + j] = k }
+      colcount[j] = (w[first + j] === -1) ? 1 : 0
+      for (; j !== -1 && w[first + j] === -1; j = parent[j]) { w[first + j] = k }
     }
 
     // initialize ata if needed
@@ -79,24 +79,24 @@ function factory (type, config, load) {
       // j is the kth node in postordered etree
       j = post[k]
       // check j is not a root
-      if (parent[j] != -1) { colcount[parent[j]]-- }
+      if (parent[j] !== -1) { colcount[parent[j]]-- }
 
       // J=j for LL'=A case
-      for (J = (ata ? w[head + k] : j); J != -1; J = (ata ? w[next + J] : -1)) {
+      for (J = (ata ? w[head + k] : j); J !== -1; J = (ata ? w[next + J] : -1)) {
         for (p = tptr[J]; p < tptr[J + 1]; p++) {
           i = tindex[p]
           const r = cs_leaf(i, j, w, first, maxfirst, prevleaf, ancestor)
           // check A(i,j) is in skeleton
           if (r.jleaf >= 1) { colcount[j]++ }
           // check account for overlap in q
-          if (r.jleaf == 2) { colcount[r.q]-- }
+          if (r.jleaf === 2) { colcount[r.q]-- }
         }
       }
-      if (parent[j] != -1) { w[ancestor + j] = parent[j] }
+      if (parent[j] !== -1) { w[ancestor + j] = parent[j] }
     }
     // sum up colcount's of each child
     for (j = 0; j < n; j++) {
-      if (parent[j] != -1) { colcount[parent[j]] += colcount[j] }
+      if (parent[j] !== -1) { colcount[parent[j]] += colcount[j] }
     }
     return colcount
   }

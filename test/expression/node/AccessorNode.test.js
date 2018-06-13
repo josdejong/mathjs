@@ -210,8 +210,8 @@ describe('AccessorNode', function () {
     assert.deepEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
     assert.deepEqual(n.filter(function (node) { return node.isRangeNode }), [])
     assert.deepEqual(n.filter(function (node) { return node.isConstantNode }), [b, c])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode && node.value == '2' }), [b])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode && node.value == '4' }), [])
+    assert.deepEqual(n.filter(function (node) { return node.isConstantNode && node.value === 2 }), [b])
+    assert.deepEqual(n.filter(function (node) { return node.isConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an empty AccessorNode', function () {
@@ -307,7 +307,7 @@ describe('AccessorNode', function () {
 
     const e = new SymbolNode('c')
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '1' ? e : node
+      return node instanceof ConstantNode && node.value === 1 ? e : node
     })
 
     assert.notStrictEqual(f, n)

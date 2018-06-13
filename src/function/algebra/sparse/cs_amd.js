@@ -80,8 +80,8 @@ function factory (type, config, load) {
       // select node of minimum approximate degree. amd() is now ready to start eliminating the graph. It first
       // finds a node k of minimum degree and removes it from its degree list. The variable nel keeps track of thow
       // many nodes have been eliminated.
-      for (k = -1; mindeg < n && (k = W[head + mindeg]) == -1; mindeg++);
-      if (W[next + k] != -1) { last[W[next + k]] = -1 }
+      for (k = -1; mindeg < n && (k = W[head + mindeg]) === -1; mindeg++);
+      if (W[next + k] !== -1) { last[W[next + k]] = -1 }
       // remove k from degree list
       W[head + mindeg] = W[next + k]
       // elenk = |Ek|
@@ -98,7 +98,7 @@ function factory (type, config, load) {
       // flag k as in Lk
       W[nv + k] = -nvk
       let p = cptr[k]
-      // do in place if W[elen + k] == 0
+      // do in place if W[elen + k] === 0
       const pk1 = (elenk === 0) ? p : cnz
       let pk2 = pk1
       for (k1 = 1; k1 <= elenk + 1; k1++) {
@@ -126,11 +126,11 @@ function factory (type, config, load) {
           W[nv + i] = -nvi
           // place i in Lk
           cindex[pk2++] = i
-          if (W[next + i] != -1) { last[W[next + i]] = last[i] }
+          if (W[next + i] !== -1) { last[W[next + i]] = last[i] }
           // check we need to remove i from degree list
-          if (last[i] != -1) { W[next + last[i]] = W[next + i] } else { W[head + W[degree + i]] = W[next + i] }
+          if (last[i] !== -1) { W[next + last[i]] = W[next + i] } else { W[head + W[degree + i]] = W[next + i] }
         }
-        if (e != k) {
+        if (e !== k) {
           // absorb e into k
           cptr[e] = cs_flip(k)
           // e is now a dead element
@@ -273,17 +273,17 @@ function factory (type, config, load) {
         i = W[hhead + h]
         // hash bucket will be empty
         W[hhead + h] = -1
-        for (; i != -1 && W[next + i] != -1; i = W[next + i], mark++) {
+        for (; i !== -1 && W[next + i] !== -1; i = W[next + i], mark++) {
           ln = W[len + i]
           eln = W[elen + i]
           for (p = cptr[i] + 1; p <= cptr[i] + ln - 1; p++) { W[w + cindex[p]] = mark }
           let jlast = i
           // compare i with all j
-          for (j = W[next + i]; j != -1;) {
+          for (j = W[next + i]; j !== -1;) {
             let ok = W[len + j] === ln && W[elen + j] === eln
             for (p = cptr[j] + 1; ok && p <= cptr[j] + ln - 1; p++) {
               // compare i and j
-              if (W[w + cindex[p]] != mark) { ok = 0 }
+              if (W[w + cindex[p]] !== mark) { ok = 0 }
             }
             // check i and j are identical
             if (ok) {
@@ -316,7 +316,7 @@ function factory (type, config, load) {
         // compute external degree(i)
         d = W[degree + i] + dk - nvi
         d = Math.min(d, n - nel - nvi)
-        if (W[head + d] != -1) { last[W[head + d]] = i }
+        if (W[head + d] !== -1) { last[W[head + d]] = i }
         // put i back in degree list
         W[next + i] = W[head + d]
         last[i] = -1
@@ -362,7 +362,7 @@ function factory (type, config, load) {
     for (e = n; e >= 0; e--) {
       // skip unless e is an element
       if (W[nv + e] <= 0) { continue }
-      if (cptr[e] != -1) {
+      if (cptr[e] !== -1) {
         // place e in list of its parent
         W[next + e] = W[head + cptr[e]]
         W[head + cptr[e]] = e
@@ -370,7 +370,7 @@ function factory (type, config, load) {
     }
     // postorder the assembly tree
     for (k = 0, i = 0; i <= n; i++) {
-      if (cptr[i] == -1) { k = cs_tdfs(i, k, W, head, next, P, w) }
+      if (cptr[i] === -1) { k = cs_tdfs(i, k, W, head, next, P, w) }
     }
     // remove last item in array
     P.splice(P.length - 1, 1)
@@ -408,7 +408,7 @@ function factory (type, config, load) {
     }
 
     // check order = 2, drop dense columns from M'
-    if (order == 2) {
+    if (order === 2) {
       // transpose arrays
       const tindex = at._index
       const tptr = at._ptr
@@ -508,7 +508,7 @@ function factory (type, config, load) {
         W[nv + n]++
       } else {
         const h = W[head + d]
-        if (h != -1) { last[h] = i }
+        if (h !== -1) { last[h] = i }
         // put node i in degree list d
         W[next + i] = W[head + d]
         W[head + d] = i
@@ -529,7 +529,7 @@ function factory (type, config, load) {
   }
 
   function _diag (i, j) {
-    return i != j
+    return i !== j
   }
 
   return cs_amd

@@ -38,7 +38,7 @@ function factory (type, config, load, typed) {
       switch (size.length) {
         case 1:
           // vector
-          if (size[0] == 1) {
+          if (size[0] === 1) {
             if (type.isMatrix(x)) {
               return matrix([
                 divideScalar(1, x.valueOf()[0])
@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
           // two dimensional array
           const rows = size[0]
           const cols = size[1]
-          if (rows == cols) {
+          if (rows === cols) {
             if (type.isMatrix(x)) {
               return matrix(
                 _inv(x.valueOf(), rows, cols),
@@ -96,19 +96,19 @@ function factory (type, config, load, typed) {
   function _inv (mat, rows, cols) {
     let r, s, f, value, temp
 
-    if (rows == 1) {
+    if (rows === 1) {
       // this is a 1 x 1 matrix
       value = mat[0][0]
-      if (value == 0) {
+      if (value === 0) {
         throw Error('Cannot calculate inverse, determinant is zero')
       }
       return [[
         divideScalar(1, value)
       ]]
-    } else if (rows == 2) {
+    } else if (rows === 2) {
       // this is a 2 x 2 matrix
       const d = det(mat)
-      if (d == 0) {
+      if (d === 0) {
         throw Error('Cannot calculate inverse, determinant is zero')
       }
       return [
@@ -151,11 +151,11 @@ function factory (type, config, load, typed) {
           }
           r++
         }
-        if (A_big == 0) {
+        if (A_big === 0) {
           throw Error('Cannot calculate inverse, determinant is zero')
         }
         r = r_big
-        if (r != c) {
+        if (r !== c) {
           temp = A[c]; A[c] = A[r]; A[r] = temp
           temp = B[c]; B[c] = B[r]; B[r] = temp
         }
@@ -164,9 +164,9 @@ function factory (type, config, load, typed) {
         const Ac = A[c], Bc = B[c]
         for (r = 0; r < rows; r++) {
           const Ar = A[r], Br = B[r]
-          if (r != c) {
+          if (r !== c) {
             // eliminate value at column c and row r
-            if (Ar[c] != 0) {
+            if (Ar[c] !== 0) {
               f = divideScalar(unaryMinus(Ar[c]), Ac[c])
 
               // add (f * row c) to row r to eliminate the value

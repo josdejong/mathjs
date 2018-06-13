@@ -44,14 +44,14 @@ function factory (type, config, load, typed, math) {
       throw new Error('Constructor must be called with the new operator')
     }
 
-    if (!(value == undefined || isNumeric(value) || type.isComplex(value))) {
+    if (!(value === null || value === undefined || isNumeric(value) || type.isComplex(value))) {
       throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
-    if (name != undefined && (typeof name !== 'string' || name === '')) {
+    if (name !== undefined && (typeof name !== 'string' || name === '')) {
       throw new TypeError('Second parameter in Unit constructor must be a string')
     }
 
-    if (name != undefined) {
+    if (name !== undefined) {
       const u = Unit.parse(name)
       this.units = u.units
       this.dimensions = u.dimensions
@@ -69,7 +69,7 @@ function factory (type, config, load, typed, math) {
       }
     }
 
-    this.value = (value != undefined) ? this._normalize(value) : null
+    this.value = (value !== undefined && value !== null) ? this._normalize(value) : null
 
     this.fixPrefix = false // if true, function format will not search for the
     // best prefix but leave it as initially provided.
@@ -90,13 +90,13 @@ function factory (type, config, load, typed, math) {
   let text, index, c
 
   function skipWhitespace () {
-    while (c == ' ' || c == '\t') {
+    while (c === ' ' || c === '\t') {
       next()
     }
   }
 
   function isDigitDot (c) {
-    return ((c >= '0' && c <= '9') || c == '.')
+    return ((c >= '0' && c <= '9') || c === '.')
   }
 
   function isDigit (c) {
@@ -118,9 +118,9 @@ function factory (type, config, load, typed, math) {
     let oldIndex
     oldIndex = index
 
-    if (c == '+') {
+    if (c === '+') {
       next()
-    } else if (c == '-') {
+    } else if (c === '-') {
       number += c
       next()
     }
@@ -132,7 +132,7 @@ function factory (type, config, load, typed, math) {
     }
 
     // get number, can have a single dot
-    if (c == '.') {
+    if (c === '.') {
       number += c
       next()
       if (!isDigit(c)) {
@@ -145,7 +145,7 @@ function factory (type, config, load, typed, math) {
         number += c
         next()
       }
-      if (c == '.') {
+      if (c === '.') {
         number += c
         next()
       }
@@ -156,7 +156,7 @@ function factory (type, config, load, typed, math) {
     }
 
     // check for exponential notation like "2.3e-4" or "1.23e50"
-    if (c == 'E' || c == 'e') {
+    if (c === 'E' || c === 'e') {
       // The grammar branches here. This could either be part of an exponent or the start of a unit that begins with the letter e, such as "4exabytes"
 
       let tentativeNumber = ''
@@ -165,7 +165,7 @@ function factory (type, config, load, typed, math) {
       tentativeNumber += c
       next()
 
-      if (c == '+' || c == '-') {
+      if (c === '+' || c === '-') {
         tentativeNumber += c
         next()
       }
@@ -311,7 +311,7 @@ function factory (type, config, load, typed, math) {
       if (c) {
         const oldC = c
         uStr = parseUnit()
-        if (uStr == null) {
+        if (uStr === null) {
           throw new SyntaxError('Unexpected "' + oldC + '" in "' + text + '" at index ' + index.toString())
         }
       } else {
@@ -321,7 +321,7 @@ function factory (type, config, load, typed, math) {
 
       // Verify the unit exists and get the prefix (if any)
       const res = _findUnit(uStr)
-      if (res == null) {
+      if (res === null) {
         // Unit not found.
         throw new SyntaxError('Unit "' + uStr + '" not found.')
       }
@@ -332,7 +332,7 @@ function factory (type, config, load, typed, math) {
       if (parseCharacter('^')) {
         skipWhitespace()
         const p = parseNumber()
-        if (p == null) {
+        if (p === null) {
           // No valid number found for the power!
           throw new SyntaxError('In "' + str + '", "^" must be followed by a floating-point number')
         }
@@ -405,11 +405,11 @@ function factory (type, config, load, typed, math) {
     }
 
     // Are there any units at all?
-    if (unit.units.length == 0 && !options.allowNoUnits) {
+    if (unit.units.length === 0 && !options.allowNoUnits) {
       throw new SyntaxError('"' + str + '" contains no units')
     }
 
-    unit.value = (value != undefined) ? unit._normalize(value) : null
+    unit.value = (value !== undefined) ? unit._normalize(value) : null
     return unit
   }
 
@@ -462,7 +462,7 @@ function factory (type, config, load, typed, math) {
     let unitValue, unitOffset, unitPower, unitPrefixValue
     let convert
 
-    if (value == null || this.units.length === 0) {
+    if (value === null || value === undefined || this.units.length === 0) {
       return value
     } else if (this._isDerived()) {
       // This is a derived unit, so do not apply offsets.
@@ -502,7 +502,7 @@ function factory (type, config, load, typed, math) {
     let unitValue, unitOffset, unitPower, unitPrefixValue
     let convert
 
-    if (value == null || this.units.length === 0) {
+    if (value === null || value === undefined || this.units.length === 0) {
       return value
     } else if (this._isDerived()) {
       // This is a derived unit, so do not apply offsets.
@@ -527,7 +527,7 @@ function factory (type, config, load, typed, math) {
       unitPrefixValue = convert(this.units[0].prefix.value)
       unitOffset = convert(this.units[0].unit.offset)
 
-      if (prefixValue == undefined) {
+      if (prefixValue === undefined || prefixValue === null) {
         return subtract(divide(divide(value, unitValue), unitPrefixValue), unitOffset)
       } else {
         return subtract(divide(divide(value, unitValue), prefixValue), unitOffset)
@@ -586,7 +586,7 @@ function factory (type, config, load, typed, math) {
    * @return {boolean}      true if the given string is a unit
    */
   Unit.isValuelessUnit = function (name) {
-    return (_findUnit(name) != null)
+    return (_findUnit(name) !== null)
   }
 
   /**
@@ -663,9 +663,9 @@ function factory (type, config, load, typed, math) {
     }
 
     // If at least one operand has a value, then the result should also have a value
-    if (this.value != null || other.value != null) {
-      const valThis = this.value == null ? this._normalize(1) : this.value
-      const valOther = other.value == null ? other._normalize(1) : other.value
+    if (this.value !== null || other.value !== null) {
+      const valThis = this.value === null ? this._normalize(1) : this.value
+      const valOther = other.value === null ? other._normalize(1) : other.value
       res.value = multiply(valThis, valOther)
     } else {
       res.value = null
@@ -703,9 +703,9 @@ function factory (type, config, load, typed, math) {
     }
 
     // If at least one operand has a value, the result should have a value
-    if (this.value != null || other.value != null) {
-      const valThis = this.value == null ? this._normalize(1) : this.value
-      const valOther = other.value == null ? other._normalize(1) : other.value
+    if (this.value !== null || other.value !== null) {
+      const valThis = this.value === null ? this._normalize(1) : this.value
+      const valOther = other.value === null ? other._normalize(1) : other.value
       res.value = divide(valThis, valOther)
     } else {
       res.value = null
@@ -736,7 +736,7 @@ function factory (type, config, load, typed, math) {
       res.units[i].power *= p
     }
 
-    if (res.value != null) {
+    if (res.value !== null) {
       res.value = pow(res.value, p)
 
       // only allow numeric output, we don't want to return a Complex number
@@ -796,7 +796,7 @@ function factory (type, config, load, typed, math) {
    */
   Unit.prototype.to = function (valuelessUnit) {
     let other
-    const value = this.value == null ? this._normalize(1) : this.value
+    const value = this.value === null ? this._normalize(1) : this.value
     if (typeof valuelessUnit === 'string') {
       // other = new Unit(null, valuelessUnit)
       other = Unit.parse(valuelessUnit)
@@ -910,7 +910,7 @@ function factory (type, config, load, typed, math) {
    * Intended to be evaluated lazily. You must set isUnitListSimplified = false before the call! After the call, isUnitListSimplified will be set to true.
    */
   Unit.prototype.simplifyUnitListLazy = function () {
-    if (this.isUnitListSimplified || this.value == null) {
+    if (this.isUnitListSimplified || this.value === null) {
       return
     }
 
@@ -1198,7 +1198,7 @@ function factory (type, config, load, typed, math) {
     for (let i = 0; i < parts.length; i++) {
       // Convert x to the requested unit
       x = x.to(parts[i])
-      if (i == parts.length - 1) break
+      if (i === parts.length - 1) break
 
       // Get the numeric value of this unit
       const xNumeric = x.toNumeric()

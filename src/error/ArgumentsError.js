@@ -21,7 +21,7 @@ function ArgumentsError (fn, count, min, max) {
 
   this.message = 'Wrong number of arguments in function ' + fn +
       ' (' + count + ' provided, ' +
-      min + ((max != undefined) ? ('-' + max) : '') + ' expected)'
+      min + ((max !== undefined && max !== null) ? ('-' + max) : '') + ' expected)'
 
   this.stack = (new Error()).stack
 }

@@ -2,11 +2,11 @@
 
 const DimensionError = require('../../error/DimensionError')
 
-const isInteger = require('../../utils/number').isInteger
 const array = require('../../utils/array')
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
+  const isInteger = load(require('../utils/isInteger'))
 
   /**
    * Reshape a multi dimensional array to fit the specified dimensions

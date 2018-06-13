@@ -25,7 +25,7 @@ function factory () {
       const p = w[stack + top]
       // i = youngest child of p
       const i = w[head + p]
-      if (i == -1) {
+      if (i === -1) {
         // p has no unordered children left
         top--
         // node p is the kth postordered node

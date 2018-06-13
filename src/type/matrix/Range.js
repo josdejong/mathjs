@@ -39,19 +39,35 @@ function factory (type, config, load, typed) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    if (start != null) {
-      if (type.isBigNumber(start)) { start = start.toNumber() } else if (typeof start !== 'number') { throw new TypeError('Parameter start must be a number') }
+    const hasStart = start !== null && start !== undefined
+    const hasEnd = end !== null && end !== undefined
+    const hasStep = step !== null && step !== undefined
+
+    if (hasStart) {
+      if (type.isBigNumber(start)) {
+        start = start.toNumber()
+      } else if (typeof start !== 'number') {
+        throw new TypeError('Parameter start must be a number')
+      }
     }
-    if (end != null) {
-      if (type.isBigNumber(end)) { end = end.toNumber() } else if (typeof end !== 'number') { throw new TypeError('Parameter end must be a number') }
+    if (hasEnd) {
+      if (type.isBigNumber(end)) {
+        end = end.toNumber()
+      } else if (typeof end !== 'number') {
+        throw new TypeError('Parameter end must be a number')
+      }
     }
-    if (step != null) {
-      if (type.isBigNumber(step)) { step = step.toNumber() } else if (typeof step !== 'number') { throw new TypeError('Parameter step must be a number') }
+    if (hasStep) {
+      if (type.isBigNumber(step)) {
+        step = step.toNumber()
+      } else if (typeof step !== 'number') {
+        throw new TypeError('Parameter step must be a number')
+      }
     }
 
-    this.start = (start != null) ? parseFloat(start) : 0
-    this.end = (end != null) ? parseFloat(end) : 0
-    this.step = (step != null) ? parseFloat(step) : 1
+    this.start = hasStart ? parseFloat(start) : 0
+    this.end = hasEnd ? parseFloat(end) : 0
+    this.step = hasStep ? parseFloat(step) : 1
   }
 
   /**
@@ -117,9 +133,9 @@ function factory (type, config, load, typed) {
     const end = this.end
     const diff = end - start
 
-    if (number.sign(step) == number.sign(diff)) {
+    if (number.sign(step) === number.sign(diff)) {
       len = Math.ceil((diff) / step)
-    } else if (diff == 0) {
+    } else if (diff === 0) {
       len = 0
     }
 
@@ -252,7 +268,7 @@ function factory (type, config, load, typed) {
   Range.prototype.format = function (options) {
     let str = number.format(this.start, options)
 
-    if (this.step != 1) {
+    if (this.step !== 1) {
       str += ':' + number.format(this.step, options)
     }
     str += ':' + number.format(this.end, options)

@@ -52,8 +52,8 @@ describe('SymbolNode', function () {
   it('should filter a SymbolNode', function () {
     const n = new SymbolNode('x')
     assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.name == 'x' }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.name == 'q' }), [])
+    assert.deepEqual(n.filter(function (node) { return node.name === 'x' }), [n])
+    assert.deepEqual(n.filter(function (node) { return node.name === 'q' }), [])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [])
   })
 
@@ -79,13 +79,13 @@ describe('SymbolNode', function () {
     const a = new SymbolNode('x')
     const b = new SymbolNode('y')
     const c = a.transform(function (node) {
-      return node instanceof SymbolNode && node.name == 'x' ? b : node
+      return node instanceof SymbolNode && node.name === 'x' ? b : node
     })
     assert.deepEqual(c, b)
 
     // no match should leave the symbol as is
     const d = a.transform(function (node) {
-      return node instanceof SymbolNode && node.name == 'q' ? b : node
+      return node instanceof SymbolNode && node.name === 'q' ? b : node
     })
     assert.deepEqual(d, a)
   })

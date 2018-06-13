@@ -103,12 +103,12 @@ function factory (type, config, load, typed) {
     const sizeX = x.size()
 
     // check if it is a vector
-    if (sizeX.length == 1) {
+    if (sizeX.length === 1) {
       // check p
       if (p === Number.POSITIVE_INFINITY || p === 'inf') {
         // norm(x, Infinity) = max(abs(x))
         let pinf = 0
-        // skip zeros since abs(0) == 0
+        // skip zeros since abs(0) === 0
         x.forEach(
           function (value) {
             const v = abs(value)
@@ -120,7 +120,7 @@ function factory (type, config, load, typed) {
       if (p === Number.NEGATIVE_INFINITY || p === '-inf') {
         // norm(x, -Infinity) = min(abs(x))
         let ninf
-        // skip zeros since abs(0) == 0
+        // skip zeros since abs(0) === 0
         x.forEach(
           function (value) {
             const v = abs(value)
@@ -137,7 +137,7 @@ function factory (type, config, load, typed) {
         if (!equalScalar(p, 0)) {
           // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
           let n = 0
-          // skip zeros since abs(0) == 0
+          // skip zeros since abs(0) === 0
           x.forEach(
             function (value) {
               n = add(pow(abs(value), p), n)
@@ -151,7 +151,7 @@ function factory (type, config, load, typed) {
       throw new Error('Unsupported parameter value')
     }
     // MxN matrix
-    if (sizeX.length == 2) {
+    if (sizeX.length === 2) {
       // check p
       if (p === 1) {
         // norm(x) = the largest column sum

@@ -177,7 +177,7 @@ function factory (type, config, load, typed, math) {
         let totalWeights = 0
 
         if (typeof weights !== 'undefined') {
-          if (weights.length != possibles.length) {
+          if (weights.length !== possibles.length) {
             throw new Error('Weights must have the same length as possibles')
           }
 
@@ -192,7 +192,7 @@ function factory (type, config, load, typed, math) {
 
         const length = possibles.length
 
-        if (length == 0) {
+        if (length === 0) {
           return []
         } else if (number >= length) {
           return number > 1 ? possibles : possibles[0]
@@ -217,7 +217,7 @@ function factory (type, config, load, typed, math) {
             }
           }
 
-          if (result.indexOf(pick) == -1) {
+          if (result.indexOf(pick) === -1) {
             result.push(pick)
           }
         }

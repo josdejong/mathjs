@@ -40,8 +40,8 @@ describe('IndexNode', function () {
     assert.deepEqual(n.filter(function (node) { return node instanceof IndexNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [b, c])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [b])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '4' }), [])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [b])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an empty IndexNode', function () {

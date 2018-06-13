@@ -45,7 +45,7 @@ console.log()
 console.log('Replace all symbol nodes "x" in expression "x^2 + 5*x" with a constant 3')
 const node2 = math.parse('x^2 + 5*x')
 const transformed = node2.transform(function (node, path, parent) {
-  if (node.isSymbolNode && node.name == 'x') {
+  if (node.isSymbolNode && node.name === 'x') {
     return new math.expression.node.ConstantNode(3)
   } else {
     return node

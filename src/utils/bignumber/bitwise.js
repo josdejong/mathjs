@@ -53,13 +53,13 @@ module.exports = function bitwise (x, y, func) {
   BigNumber.config({precision: 1E9})
 
   while (shortLen > 0) {
-    if (func(minBits[--shortLen], maxBits[--longLen]) == expFuncVal) {
+    if (func(minBits[--shortLen], maxBits[--longLen]) === expFuncVal) {
       outVal = outVal.plus(twoPower)
     }
     twoPower = twoPower.times(two)
   }
   while (longLen > 0) {
-    if (func(minSign, maxBits[--longLen]) == expFuncVal) {
+    if (func(minSign, maxBits[--longLen]) === expFuncVal) {
       outVal = outVal.plus(twoPower)
     }
     twoPower = twoPower.times(two)
@@ -67,7 +67,7 @@ module.exports = function bitwise (x, y, func) {
 
   BigNumber.config({precision: prevPrec})
 
-  if (expFuncVal == 0) {
+  if (expFuncVal === 0) {
     outVal.s = -outVal.s
   }
   return outVal
@@ -119,7 +119,7 @@ function decCoefficientToBinaryString (x) {
     arr[0] += parseInt(str.charAt(i++)) // convert to int
     for (let j = 0; j < arr.length; ++j) {
       if (arr[j] > 1) {
-        if (arr[j + 1] == null) {
+        if (arr[j + 1] === null || arr[j + 1] === undefined) {
           arr[j + 1] = 0
         }
 

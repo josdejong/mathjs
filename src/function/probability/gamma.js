@@ -50,7 +50,7 @@ function factory (type, config, load, typed) {
           value--
         }
 
-        if (res == 0) {
+        if (res === 0) {
           res = 1 // 0! is per definition 1
         }
 
@@ -89,7 +89,7 @@ function factory (type, config, load, typed) {
     'Complex': function (n) {
       let t, x
 
-      if (n.im == 0) {
+      if (n.im === 0) {
         return gamma(n.re)
       }
 
@@ -98,7 +98,7 @@ function factory (type, config, load, typed) {
       for (let i = 1; i < p.length; ++i) {
         const real = n.re + i // x += p[i]/(n+i)
         const den = real * real + n.im * n.im
-        if (den != 0) {
+        if (den !== 0) {
           x.re += p[i] * real / den
           x.im += -(p[i] * n.im) / den
         } else {
@@ -113,9 +113,9 @@ function factory (type, config, load, typed) {
 
       n.re += 0.5
       const result = pow(t, n)
-      if (result.im == 0) { // sqrt(2*PI)*result
+      if (result.im === 0) { // sqrt(2*PI)*result
         result.re *= twoPiSqrt
-      } else if (result.re == 0) {
+      } else if (result.re === 0) {
         result.im *= twoPiSqrt
       } else {
         result.re *= twoPiSqrt

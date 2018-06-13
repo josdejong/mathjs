@@ -41,7 +41,7 @@ module.exports = function bitAnd (x, y) {
 
   if (!x.isFinite() || !y.isFinite()) {
     if (!x.isFinite() && !y.isFinite()) {
-      if (x.isNegative() == y.isNegative()) {
+      if (x.isNegative() === y.isNegative()) {
         return x
       }
       return new BigNumber(0)

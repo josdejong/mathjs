@@ -68,11 +68,11 @@ function factory (type, config, load, typed) {
       array = flatten(array.valueOf())
 
       const num = array.length
-      if (num == 0) {
+      if (num === 0) {
         throw new Error('Cannot calculate median of an empty array')
       }
 
-      if (num % 2 == 0) {
+      if (num % 2 === 0) {
         // even: return the average of the two middle values
         const mid = num / 2 - 1
         const right = partitionSelect(array, mid + 1)

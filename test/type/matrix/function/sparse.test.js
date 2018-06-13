@@ -16,14 +16,14 @@ describe('sparse', function () {
   it('should be the identity if called with a matrix', function () {
     const b = sparse([[1, 2], [3, 4]])
     const c = sparse(b)
-    assert.ok(c._values != b._values) // data should be cloned
+    assert.ok(c._values !== b._values) // data should be cloned
     assert.deepEqual(c, sparse([[1, 2], [3, 4]]))
   })
 
   it('should be the identity if called with a matrix, number datatype', function () {
     const b = sparse([[1, 2], [3, 4]], 'number')
     const c = sparse(b)
-    assert.ok(c._values != b._values) // data should be cloned
+    assert.ok(c._values !== b._values) // data should be cloned
     assert.deepEqual(c.valueOf(), b.valueOf())
     assert.ok(c.datatype() === 'number')
   })

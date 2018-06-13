@@ -517,7 +517,7 @@ describe('number', function () {
       assert.equal(number.nearlyEqual(1, 0.9999, epsilon2), true)
 
       // test one of these famous round-off errors
-      assert.equal((0.1 + 0.2) == 0.3, false)
+      assert.equal((0.1 + 0.2) === 0.3, false)
       assert.equal(number.nearlyEqual(0.1 + 0.2, 0.3, 1e-14), true)
     })
 

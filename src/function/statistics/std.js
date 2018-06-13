@@ -62,7 +62,7 @@ function factory (type, config, load, typed) {
   return std
 
   function _std (array, normalization) {
-    if (array.length == 0) {
+    if (array.length === 0) {
       throw new SyntaxError('Function std requires one or more parameters (0 provided)')
     }
 

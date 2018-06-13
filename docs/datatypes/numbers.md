@@ -84,7 +84,7 @@ where:
  - `EPSILON` is the relative difference between x and y. Epsilon is configurable
    and is `1e-14` by default. See [Configuration](../core/configuration.md).
  - `DBL_EPSILON` is the minimum positive floating point number such that
-   `1.0 + DBL_EPSILON != 1.0`. This is a constant with a value of approximately
+   `1.0 + DBL_EPSILON !== 1.0`. This is a constant with a value of approximately
    `2.2204460492503130808472633361816e-16`.
 
 Note that the relational functions cannot be used to compare small values
@@ -94,11 +94,11 @@ Examples:
 
 ```js
 // compare values having a round-off error
-console.log(0.1 + 0.2 == 0.3)            // false
+console.log(0.1 + 0.2 === 0.3)           // false
 console.log(math.equal(0.1 + 0.2, 0.3))  // true
 
 // small values (< 2.22e-16) cannot be compared
-console.log(3e-20 == 3.1e-20)            // false
+console.log(3e-20 === 3.1e-20)           // false
 console.log(math.equal(3e-20, 3.1e-20))  // true
 ```
 

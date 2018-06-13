@@ -65,7 +65,7 @@ function factory (type, config, load, typed) {
   const distance = typed('distance', {
     'Array, Array, Array': function (x, y, z) {
       // Point to Line 2D (x=Point, y=LinePoint1, z=LinePoint2)
-      if (x.length == 2 && y.length == 2 && z.length == 2) {
+      if (x.length === 2 && y.length === 2 && z.length === 2) {
         if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
         if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
         if (!_2d(z)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for third argument') }
@@ -80,7 +80,7 @@ function factory (type, config, load, typed) {
       }
     },
     'Object, Object, Object': function (x, y, z) {
-      if (Object.keys(x).length == 2 && Object.keys(y).length == 2 && Object.keys(z).length == 2) {
+      if (Object.keys(x).length === 2 && Object.keys(y).length === 2 && Object.keys(z).length === 2) {
         if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
         if (!_2d(y)) { throw new TypeError('Values of lineOnePtX and lineOnePtY should be numbers or BigNumbers') }
         if (!_2d(z)) { throw new TypeError('Values of lineTwoPtX and lineTwoPtY should be numbers or BigNumbers') }
@@ -101,28 +101,28 @@ function factory (type, config, load, typed) {
     },
     'Array, Array': function (x, y) {
       // Point to Line 2D (x=[pointX, pointY], y=[x-coeff, y-coeff, const])
-      if (x.length == 2 && y.length == 3) {
+      if (x.length === 2 && y.length === 3) {
         if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
         if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
 
         return _distancePointLine2D(x[0], x[1], y[0], y[1], y[2])
       }
       // Point to Line 3D
-      else if (x.length == 3 && y.length == 6) {
+      else if (x.length === 3 && y.length === 6) {
         if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
         if (!_parametricLine(y)) { throw new TypeError('Array with 6 numbers or BigNumbers expected for second argument') }
 
         return _distancePointLine3D(x[0], x[1], x[2], y[0], y[1], y[2], y[3], y[4], y[5])
       }
       // Point to Point 2D
-      else if (x.length == 2 && y.length == 2) {
+      else if (x.length === 2 && y.length === 2) {
         if (!_2d(x)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for first argument') }
         if (!_2d(y)) { throw new TypeError('Array with 2 numbers or BigNumbers expected for second argument') }
 
         return _distance2d(x[0], x[1], y[0], y[1])
       }
       // Point to Point 3D
-      else if (x.length == 3 && y.length == 3) {
+      else if (x.length === 3 && y.length === 3) {
         if (!_3d(x)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for first argument') }
         if (!_3d(y)) { throw new TypeError('Array with 3 numbers or BigNumbers expected for second argument') }
 
@@ -132,7 +132,7 @@ function factory (type, config, load, typed) {
       }
     },
     'Object, Object': function (x, y) {
-      if (Object.keys(x).length == 2 && Object.keys(y).length == 3) {
+      if (Object.keys(x).length === 2 && Object.keys(y).length === 3) {
         if (!_2d(x)) { throw new TypeError('Values of pointX and pointY should be numbers or BigNumbers') }
         if (!_3d(y)) { throw new TypeError('Values of xCoeffLine, yCoeffLine and constant should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('xCoeffLine') &&
@@ -143,7 +143,7 @@ function factory (type, config, load, typed) {
         }
       }
       // Point to Line 3D
-      else if (Object.keys(x).length == 3 && Object.keys(y).length == 6) {
+      else if (Object.keys(x).length === 3 && Object.keys(y).length === 6) {
         if (!_3d(x)) { throw new TypeError('Values of pointX, pointY and pointZ should be numbers or BigNumbers') }
         if (!_parametricLine(y)) { throw new TypeError('Values of x0, y0, z0, a, b and c should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointX') && x.hasOwnProperty('pointY') && y.hasOwnProperty('x0') &&
@@ -155,7 +155,7 @@ function factory (type, config, load, typed) {
         }
       }
       // Point to Point 2D
-      else if (Object.keys(x).length == 2 && Object.keys(y).length == 2) {
+      else if (Object.keys(x).length === 2 && Object.keys(y).length === 2) {
         if (!_2d(x)) { throw new TypeError('Values of pointOneX and pointOneY should be numbers or BigNumbers') }
         if (!_2d(y)) { throw new TypeError('Values of pointTwoX and pointTwoY should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') &&
@@ -166,7 +166,7 @@ function factory (type, config, load, typed) {
         }
       }
       // Point to Point 3D
-      else if (Object.keys(x).length == 3 && Object.keys(y).length == 3) {
+      else if (Object.keys(x).length === 3 && Object.keys(y).length === 3) {
         if (!_3d(x)) { throw new TypeError('Values of pointOneX, pointOneY and pointOneZ should be numbers or BigNumbers') }
         if (!_3d(y)) { throw new TypeError('Values of pointTwoX, pointTwoY and pointTwoZ should be numbers or BigNumbers') }
         if (x.hasOwnProperty('pointOneX') && x.hasOwnProperty('pointOneY') && x.hasOwnProperty('pointOneZ') &&
@@ -226,15 +226,15 @@ function factory (type, config, load, typed) {
 
   function _pairwise (a) {
     // checks for valid arguments passed to _distancePairwise(Array)
-    if (a[0].length == 2 && _isNumber(a[0][0]) && _isNumber(a[0][1])) {
+    if (a[0].length === 2 && _isNumber(a[0][0]) && _isNumber(a[0][1])) {
       for (let i in a) {
-        if (a[i].length != 2 || !_isNumber(a[i][0]) || !_isNumber(a[i][1])) {
+        if (a[i].length !== 2 || !_isNumber(a[i][0]) || !_isNumber(a[i][1])) {
           return false
         }
       }
-    } else if (a[0].length == 3 && _isNumber(a[0][0]) && _isNumber(a[0][1]) && _isNumber(a[0][2])) {
+    } else if (a[0].length === 3 && _isNumber(a[0][0]) && _isNumber(a[0][1]) && _isNumber(a[0][2])) {
       for (let i in a) {
-        if (a[i].length != 3 || !_isNumber(a[i][0]) || !_isNumber(a[i][1]) || !_isNumber(a[i][2])) {
+        if (a[i].length !== 3 || !_isNumber(a[i][0]) || !_isNumber(a[i][1]) || !_isNumber(a[i][2])) {
           return false
         }
       }
@@ -282,9 +282,9 @@ function factory (type, config, load, typed) {
     const result = []
     for (let i = 0; i < a.length - 1; i++) {
       for (let j = i + 1; j < a.length; j++) {
-        if (a[0].length == 2) {
+        if (a[0].length === 2) {
           result.push(_distance2d(a[i][0], a[i][1], a[j][0], a[j][1]))
-        } else if (a[0].length == 3) {
+        } else if (a[0].length === 3) {
           result.push(_distance3d(a[i][0], a[i][1], a[i][2], a[j][0], a[j][1], a[j][2]))
         }
       }

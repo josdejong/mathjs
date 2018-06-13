@@ -78,7 +78,7 @@ function factory (type, config, load, typed) {
     const xSize = array.size(x)
     const ySize = array.size(y)
 
-    if (xSize.length != 1 || ySize.length != 1 || xSize[0] != 3 || ySize[0] != 3) {
+    if (xSize.length !== 1 || ySize.length !== 1 || xSize[0] !== 3 || ySize[0] !== 3) {
       throw new RangeError('Vectors with length 3 expected ' +
       '(Size A = [' + xSize.join(', ') + '], B = [' + ySize.join(', ') + '])')
     }

@@ -379,7 +379,7 @@ function factory (type, config, load, typed) {
 
       // fall back to postfix
       return operand + this.op
-    } else if (args.length == 2) {
+    } else if (args.length === 2) {
       let lhs = args[0].toString(options) // left hand side
       let rhs = args[1].toString(options) // right hand side
       if (parens[0]) { // left hand side in parenthesis?
@@ -389,7 +389,7 @@ function factory (type, config, load, typed) {
         rhs = '(' + rhs + ')'
       }
 
-      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit == 'hide')) {
+      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
         return lhs + ' ' + rhs
       }
 
@@ -467,7 +467,7 @@ function factory (type, config, load, typed) {
 
       // fall back to postfix
       return '<span class="math-operator math-unary-operator math-righthand-unary-operator">' + escape(this.op) + '</span>' + operand
-    } else if (args.length == 2) { // binary operatoes
+    } else if (args.length === 2) { // binary operatoes
       let lhs = args[0].toHTML(options) // left hand side
       let rhs = args[1].toHTML(options) // right hand side
       if (parens[0]) { // left hand side in parenthesis?
@@ -477,7 +477,7 @@ function factory (type, config, load, typed) {
         rhs = '<span class="math-parenthesis math-round-parenthesis">(</span>' + rhs + '<span class="math-parenthesis math-round-parenthesis">)</span>'
       }
 
-      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit == 'hide')) {
+      if (this.implicit && (this.getIdentifier() === 'OperatorNode:multiply') && (implicit === 'hide')) {
         return lhs + '<span class="math-operator math-binary-operator math-implicit-binary-operator"></span>' + rhs
       }
 

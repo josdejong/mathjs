@@ -36,14 +36,14 @@ function factory (type, config, load, typed) {
       if (x < 2) {
         return false
       }
-      if (x == 2) {
+      if (x === 2) {
         return true
       }
-      if (x % 2 == 0) {
+      if (x % 2 === 0) {
         return false
       }
       for (let i = 3; i * i <= x; i += 2) {
-        if (x % i == 0) {
+        if (x % i === 0) {
           return false
         }
       }

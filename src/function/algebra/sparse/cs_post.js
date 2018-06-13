@@ -32,7 +32,7 @@ function factory (type, config, load) {
     // traverse nodes in reverse order
     for (j = n - 1; j >= 0; j--) {
       // check j is a root
-      if (parent[j] == -1) { continue }
+      if (parent[j] === -1) { continue }
       // add j to list of its parent
       w[next + j] = w[head + parent[j]]
       w[head + parent[j]] = j
@@ -40,7 +40,7 @@ function factory (type, config, load) {
     // loop nodes
     for (j = 0; j < n; j++) {
       // skip j if it is not a root
-      if (parent[j] != -1) { continue }
+      if (parent[j] !== -1) { continue }
       // depth-first search
       k = cs_tdfs(j, k, w, head, next, post, stack)
     }

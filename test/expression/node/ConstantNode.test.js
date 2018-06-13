@@ -97,13 +97,13 @@ describe('ConstantNode', function () {
     const a = new ConstantNode(2)
     const b = new ConstantNode(3)
     const c = a.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '2' ? b : node
+      return node instanceof ConstantNode && node.value === 2 ? b : node
     })
     assert.deepEqual(c, b)
 
     // no match should leave the node as is
     const d = a.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '99' ? b : node
+      return node instanceof ConstantNode && node.value === 99 ? b : node
     })
     assert.notStrictEqual(d, a)
     assert.deepEqual(d, a)

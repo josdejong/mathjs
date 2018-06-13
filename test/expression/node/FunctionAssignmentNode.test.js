@@ -207,8 +207,8 @@ describe('FunctionAssignmentNode', function () {
     assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [x])
     assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [a])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '4' }), [])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should throw an error when creating a FunctionAssignmentNode with a reserved keyword', function () {
@@ -253,7 +253,7 @@ describe('FunctionAssignmentNode', function () {
       paths.push(path)
       assert.strictEqual(parent, n)
 
-      return node instanceof SymbolNode && node.name == 'x' ? e : node
+      return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
     assert.equal(nodes.length, 1)
@@ -282,7 +282,7 @@ describe('FunctionAssignmentNode', function () {
 
     const e = new ConstantNode(3)
     const f = n.transform(function (node) {
-      return node instanceof SymbolNode && node.name == 'x' ? e : node
+      return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
     assert.notStrictEqual(f, n)

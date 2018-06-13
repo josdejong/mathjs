@@ -937,7 +937,7 @@ describe('parse', function () {
       assert.throws(function () {
         parseAndEval('g(3)', scope)
       }, function (err) {
-        return (err instanceof Error) && (err.toString() == 'Error: Undefined symbol q')
+        return (err instanceof Error) && (err.toString() === 'Error: Undefined symbol q')
       })
     })
 

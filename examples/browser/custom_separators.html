@@ -61,7 +61,7 @@
     // replace the custom separators in the input with the default separators
     const expr = expression.value
         .replace(new RegExp('\\' + decimals.value + '|\\' + args.value, 'g'), function (match) {
-          return match == decimals.value ? '.': ','
+          return match === decimals.value ? '.': ','
         })
 
     // do the actual evaluation
@@ -70,7 +70,7 @@
     // replace the default separators in the output with custom separators
     result.innerHTML = res.toString()
         .replace(new RegExp(',|\\.', 'g'), function (match) {
-          return match == '.' ? decimals.value : args.value
+          return match === '.' ? decimals.value : args.value
         })
   }
 </script>

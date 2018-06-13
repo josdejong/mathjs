@@ -145,7 +145,7 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix.prototype.get = function (index) {
     if (!isArray(index)) { throw new TypeError('Array expected') }
-    if (index.length != this._size.length) { throw new DimensionError(index.length, this._size.length) }
+    if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check index
     for (let x = 0; x < index.length; x++) { validateIndex(index[x], this._size[x]) }
@@ -217,7 +217,7 @@ function factory (type, config, load, typed) {
     } else {
       // validate dimensions
       const size = index.size()
-      if (size.length != matrix._size.length) {
+      if (size.length !== matrix._size.length) {
         throw new DimensionError(size.length, matrix._size.length)
       }
 

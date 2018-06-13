@@ -135,17 +135,17 @@ function factory (type, config, load, typed, math) {
   SymbolNode.prototype.toHTML = function (options) {
     const name = escape(this.name)
 
-    if (name == 'true' || name == 'false') {
+    if (name === 'true' || name === 'false') {
       return '<span class="math-symbol math-boolean">' + name + '</span>'
-    } else if (name == 'i') {
+    } else if (name === 'i') {
       return '<span class="math-symbol math-imaginary-symbol">' + name + '</span>'
-    } else if (name == 'Infinity') {
+    } else if (name === 'Infinity') {
       return '<span class="math-symbol math-infinity-symbol">' + name + '</span>'
-    } else if (name == 'NaN') {
+    } else if (name === 'NaN') {
       return '<span class="math-symbol math-nan-symbol">' + name + '</span>'
-    } else if (name == 'null') {
+    } else if (name === 'null') {
       return '<span class="math-symbol math-null-symbol">' + name + '</span>'
-    } else if (name == 'undefined') {
+    } else if (name === 'undefined') {
       return '<span class="math-symbol math-undefined-symbol">' + name + '</span>'
     }
 

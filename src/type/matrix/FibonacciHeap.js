@@ -127,7 +127,7 @@ function factory (type, config, load, typed) {
     node.left.right = node.right
     node.right.left = node.left
     // update minimum
-    if (node == node.right) {
+    if (node === node.right) {
       // empty
       minimum = null
     } else {
@@ -192,7 +192,7 @@ function factory (type, config, load, typed) {
     node.right.left = node.left
     parent.degree--
     // reset y.child if necessary
-    if (parent.child == node) { parent.child = node.right }
+    if (parent.child === node) { parent.child = node.right }
     // remove child if degree is 0
     if (parent.degree === 0) { parent.child = null }
     // add node to root list of heap

@@ -62,8 +62,8 @@ describe('RangeNode', function () {
     assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [start, end, step])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [step])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '4' }), [])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [step])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should run forEach on a RangeNode', function () {
@@ -101,7 +101,7 @@ describe('RangeNode', function () {
       paths.push(path)
       assert.strictEqual(parent, n)
 
-      return node instanceof ConstantNode && node.value == '0' ? e : node
+      return node instanceof ConstantNode && node.value === 0 ? e : node
     })
 
     assert.equal(nodes.length, 3)
@@ -135,7 +135,7 @@ describe('RangeNode', function () {
 
     const e = new ConstantNode(3)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '0' ? e : node
+      return node instanceof ConstantNode && node.value === 0 ? e : node
     })
 
     assert.notStrictEqual(f, n)
@@ -152,7 +152,7 @@ describe('RangeNode', function () {
 
     const e = new ConstantNode(3)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '10' ? e : node
+      return node instanceof ConstantNode && node.value === 10 ? e : node
     })
 
     assert.notStrictEqual(f, n)
@@ -169,7 +169,7 @@ describe('RangeNode', function () {
 
     const e = new ConstantNode(3)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '2' ? e : node
+      return node instanceof ConstantNode && node.value === 2 ? e : node
     })
 
     assert.notStrictEqual(f, n)
@@ -185,7 +185,7 @@ describe('RangeNode', function () {
 
     const e = new ConstantNode(3)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '10' ? e : node
+      return node instanceof ConstantNode && node.value === 10 ? e : node
     })
 
     assert.notStrictEqual(f, n)

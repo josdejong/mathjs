@@ -128,7 +128,7 @@ function factory (type, config, load, typed, math) {
    * ConstantNode with value 2:
    *
    *     const res = Node.transform(function (node, path, parent) {
-   *       if (node && node.isSymbolNode) && (node.name == 'x')) {
+   *       if (node && node.isSymbolNode) && (node.name === 'x')) {
    *         return new ConstantNode(2)
    *       }
    *       else {
@@ -160,7 +160,7 @@ function factory (type, config, load, typed, math) {
    * find all nodes of type SymbolNode having name 'x':
    *
    *     const results = Node.filter(function (node) {
-   *       return (node && node.isSymbolNode) && (node.name == 'x')
+   *       return (node && node.isSymbolNode) && (node.name === 'x')
    *     })
    *
    * @param {function(node: Node, path: string, parent: Node) : Node} callback

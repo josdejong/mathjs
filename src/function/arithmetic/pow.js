@@ -151,17 +151,17 @@ function factory (type, config, load, typed) {
     }
     // verify that A is a 2 dimensional square matrix
     const s = size(x)
-    if (s.length != 2) {
+    if (s.length !== 2) {
       throw new Error('For A^b, A must be 2 dimensional (A has ' + s.length + ' dimensions)')
     }
-    if (s[0] != s[1]) {
+    if (s[0] !== s[1]) {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
     }
 
     let res = identity(s[0]).valueOf()
     let px = x
     while (y >= 1) {
-      if ((y & 1) == 1) {
+      if ((y & 1) === 1) {
         res = multiply(px, res)
       }
       y >>= 1

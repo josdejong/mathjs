@@ -41,10 +41,10 @@ describe('ParenthesisNode', function () {
     assert.deepEqual(n.filter(function (node) { return node instanceof ParenthesisNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node.content instanceof ConstantNode }), [n])
     assert.deepEqual(n.filter(function (node) {
-      return (typeof node.content !== 'undefined') && (node.content.value == '1')
+      return (typeof node.content !== 'undefined') && (node.content.value === 1)
     }), [n])
     assert.deepEqual(n.filter(function (node) {
-      return (typeof node.content !== 'undefined') && (node.content.type == 'ConstantNode')
+      return (typeof node.content !== 'undefined') && (node.content.type === 'ConstantNode')
     }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a])
   })
@@ -89,13 +89,13 @@ describe('ParenthesisNode', function () {
     const b = new ParenthesisNode(c2)
 
     const c = a.transform(function (node) {
-      return node instanceof ParenthesisNode && node.content.value == 1 ? b : node
+      return node instanceof ParenthesisNode && node.content.value === 1 ? b : node
     })
     assert.deepEqual(c, b)
 
     // no match should leave the constant as is
     const d = a.transform(function (node) {
-      return node instanceof ParenthesisNode && node.name == 2 ? b : node
+      return node instanceof ParenthesisNode && node.name === 2 ? b : node
     })
     assert.deepEqual(d, a)
   })

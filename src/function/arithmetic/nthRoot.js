@@ -205,12 +205,12 @@ function _nthRoot (a, root) {
   if (root === 0) {
     throw new Error('Root must be non-zero')
   }
-  if (a < 0 && (Math.abs(root) % 2 != 1)) {
+  if (a < 0 && (Math.abs(root) % 2 !== 1)) {
     throw new Error('Root must be odd when a is negative.')
   }
 
   // edge cases zero and infinity
-  if (a == 0) {
+  if (a === 0) {
     return inv ? Infinity : 0
   }
   if (!isFinite(a)) {

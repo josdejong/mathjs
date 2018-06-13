@@ -108,7 +108,7 @@ describe('ConditionalNode', function () {
 
     assert.deepEqual(n.filter(function (node) { return node instanceof ConditionalNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [condition, two, three])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [two])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [two])
   })
 
   it('should run forEach on a ConditionalNode', function () {
@@ -146,7 +146,7 @@ describe('ConditionalNode', function () {
       paths.push(path)
       assert.strictEqual(parent, n)
 
-      return node instanceof ConstantNode && node.value == '1' ? e : node
+      return node instanceof ConstantNode && node.value === 1 ? e : node
     })
 
     assert.equal(nodes.length, 3)
@@ -180,7 +180,7 @@ describe('ConditionalNode', function () {
 
     const e = new ConstantNode(4)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '1' ? e : node
+      return node instanceof ConstantNode && node.value === 1 ? e : node
     })
 
     assert.notStrictEqual(f, n)
@@ -197,7 +197,7 @@ describe('ConditionalNode', function () {
 
     const e = new ConstantNode(4)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '2' ? e : node
+      return node instanceof ConstantNode && node.value === 2 ? e : node
     })
 
     assert.notStrictEqual(f, n)
@@ -214,7 +214,7 @@ describe('ConditionalNode', function () {
 
     const e = new ConstantNode(4)
     const f = n.transform(function (node) {
-      return node instanceof ConstantNode && node.value == '3' ? e : node
+      return node instanceof ConstantNode && node.value === 3 ? e : node
     })
 
     assert.notStrictEqual(f, n)

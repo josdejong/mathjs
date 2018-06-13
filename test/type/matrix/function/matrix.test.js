@@ -36,7 +36,7 @@ describe('matrix', function () {
   it('should be the identity if called with a matrix, dense format', function () {
     const b = matrix([[1, 2], [3, 4]], 'dense')
     const c = matrix(b, 'dense')
-    assert.ok(c._data != b._data) // data should be cloned
+    assert.ok(c._data !== b._data) // data should be cloned
     assert.deepEqual(c, matrix([[1, 2], [3, 4]], 'dense'))
     assert.deepEqual(math.size(c), matrix([2, 2], 'dense'))
   })
@@ -44,8 +44,8 @@ describe('matrix', function () {
   it('should be the identity if called with a matrix, dense format, number datatype', function () {
     const b = matrix([[1, 2], [3, 4]], 'dense', 'number')
     const c = matrix(b, 'dense')
-    assert.ok(c._data != b._data) // data should be cloned
-    assert.ok(c._size != b._size)
+    assert.ok(c._data !== b._data) // data should be cloned
+    assert.ok(c._size !== b._size)
     assert.deepEqual(c._data, b._data)
     assert.deepEqual(c._size, b._size)
     assert.ok(c.datatype() === 'number')
@@ -54,14 +54,14 @@ describe('matrix', function () {
   it('should be the identity if called with a matrix, sparse', function () {
     const b = matrix([[1, 2], [3, 4]], 'sparse')
     const c = matrix(b, 'sparse')
-    assert.ok(c._values != b._values) // data should be cloned
+    assert.ok(c._values !== b._values) // data should be cloned
     assert.deepEqual(c, matrix([[1, 2], [3, 4]], 'sparse'))
   })
 
   it('should be the identity if called with a matrix, sparse, number datatype', function () {
     const b = matrix([[1, 2], [3, 4]], 'sparse', 'number')
     const c = matrix(b, 'sparse')
-    assert.ok(c._values != b._values) // data should be cloned
+    assert.ok(c._values !== b._values) // data should be cloned
     assert.deepEqual(c.valueOf(), b.valueOf())
     assert.ok(c.datatype() === 'number')
   })

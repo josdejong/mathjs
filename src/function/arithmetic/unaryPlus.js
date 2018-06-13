@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
 
     'boolean | string': function (x) {
       // convert to a number or bignumber
-      return (config.number == 'BigNumber') ? new type.BigNumber(+x) : +x
+      return (config.number === 'BigNumber') ? new type.BigNumber(+x) : +x
     }
   })
 

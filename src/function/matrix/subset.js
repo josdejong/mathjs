@@ -103,7 +103,7 @@ function factory (type, config, load, typed) {
       // TODO: better error message
       throw new TypeError('Index expected')
     }
-    if (index.size().length != 1) {
+    if (index.size().length !== 1) {
       throw new DimensionError(index.size().length, 1)
     }
 
@@ -137,7 +137,7 @@ function factory (type, config, load, typed) {
       // TODO: better error message
       throw new TypeError('Index expected')
     }
-    if (index.size().length != 1) {
+    if (index.size().length !== 1) {
       throw new DimensionError(index.size().length, 1)
     }
     if (defaultValue !== undefined) {

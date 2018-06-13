@@ -79,8 +79,8 @@ describe('OperatorNode', function () {
     assert.deepEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a, b])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [a])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '4' }), [])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an OperatorNode without contents', function () {
@@ -128,7 +128,7 @@ describe('OperatorNode', function () {
       paths.push(path)
       assert.strictEqual(parent, e)
 
-      return node instanceof SymbolNode && node.name == 'x' ? f : node
+      return node instanceof SymbolNode && node.name === 'x' ? f : node
     })
 
     assert.equal(nodes.length, 2)
@@ -171,7 +171,7 @@ describe('OperatorNode', function () {
 
     const f = new ConstantNode(3)
     const g = e.transform(function (node) {
-      return node instanceof SymbolNode && node.name == 'x' ? f : node
+      return node instanceof SymbolNode && node.name === 'x' ? f : node
     })
 
     assert.deepEqual(g.args[1], f)

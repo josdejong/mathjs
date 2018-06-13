@@ -53,7 +53,7 @@ module.exports = function bitXor (x, y) {
     if (!x.isFinite() && !y.isFinite()) {
       return negOne
     }
-    return new BigNumber(x.isNegative() == y.isNegative()
+    return new BigNumber(x.isNegative() === y.isNegative()
       ? Infinity
       : -Infinity)
   }

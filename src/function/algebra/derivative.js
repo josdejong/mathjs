@@ -107,14 +107,14 @@ function factory (type, config, load, typed) {
   // NOTE: the optional "order" parameter here is currently unused
   const _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {
-      if (type.isConstantNode(expr) && getType(expr.value) == 'string') {
+      if (type.isConstantNode(expr) && getType(expr.value) === 'string') {
         return _derivTex(parse(expr.value).toString(), x.toString(), 1)
       } else {
         return _derivTex(expr.toString(), x.toString(), 1)
       }
     },
     'Node, ConstantNode': function (expr, x) {
-      if (getType(x.value) == 'string') {
+      if (getType(x.value) === 'string') {
         return _derivTex(expr, parse(x.value))
       } else {
         throw new Error("The second parameter to 'derivative' is a non-string constant")

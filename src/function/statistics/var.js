@@ -87,7 +87,7 @@ function factory (type, config, load, typed) {
     let sum = 0
     let num = 0
 
-    if (array.length == 0) {
+    if (array.length === 0) {
       throw new SyntaxError('Function var requires one or more parameters (0 provided)')
     }
 
@@ -120,7 +120,7 @@ function factory (type, config, load, typed) {
 
       case 'unbiased':
         const zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0
-        return (num == 1) ? zero : divide(sum, num - 1)
+        return (num === 1) ? zero : divide(sum, num - 1)
 
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' +

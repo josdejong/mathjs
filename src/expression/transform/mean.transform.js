@@ -16,7 +16,7 @@ function factory (type, config, load, typed) {
   return typed('mean', {
     '...any': function (args) {
       // change last argument dim from one-based to zero-based
-      if (args.length == 2 && isCollection(args[0])) {
+      if (args.length === 2 && isCollection(args[0])) {
         const dim = args[1]
         if (type.isNumber(dim)) {
           args[1] = dim - 1

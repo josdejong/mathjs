@@ -61,7 +61,7 @@ function factory (type, config, load, typed) {
 
         case 1:
           // vector
-          if (size[0] == 1) {
+          if (size[0] === 1) {
             return object.clone(x.valueOf()[0])
           } else {
             throw new RangeError('Matrix must be square ' +
@@ -72,7 +72,7 @@ function factory (type, config, load, typed) {
           // two dimensional array
           const rows = size[0]
           const cols = size[1]
-          if (rows == cols) {
+          if (rows === cols) {
             return _det(x.clone().valueOf(), rows, cols)
           } else {
             throw new RangeError('Matrix must be square ' +
@@ -100,10 +100,10 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _det (matrix, rows, cols) {
-    if (rows == 1) {
+    if (rows === 1) {
       // this is a 1 x 1 matrix
       return object.clone(matrix[0][0])
-    } else if (rows == 2) {
+    } else if (rows === 2) {
       // this is a 2 x 2 matrix
       // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12
       return subtract(

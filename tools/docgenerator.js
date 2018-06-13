@@ -109,7 +109,7 @@ function generateDoc (name, code) {
     lines.forEach(function (line) {
       const match = /^ +/.exec(line)
       const s = match && match[0] && match[0].length
-      if (s > 0 && (spaces == null || s < spaces)) {
+      if (s > 0 && (spaces === null || s < spaces)) {
         spaces = s
       }
     })
@@ -131,7 +131,7 @@ function generateDoc (name, code) {
     }
 
     // remove trailing returns
-    while (description.charAt(description.length - 1) == '\n') {
+    while (description.charAt(description.length - 1) === '\n') {
       description = description.substring(0, description.length - 1)
     }
 
@@ -178,13 +178,13 @@ function generateDoc (name, code) {
       next()
       skipEmptyLines()
 
-      while (exists() && (empty() || line.charAt(0) == ' ')) {
+      while (exists() && (empty() || line.charAt(0) === ' ')) {
         doc.examples.push(line)
         next()
       }
       stripLeadingSpaces(doc.examples)
 
-      if (doc.examples.length > 0 && doc.examples[doc.examples.length - 1].trim() == '') {
+      if (doc.examples.length > 0 && doc.examples[doc.examples.length - 1].trim() === '') {
         doc.examples.pop()
       }
 
@@ -243,7 +243,7 @@ function generateDoc (name, code) {
         // TODO: this is an ugly hack to extract the default value
         const index = annotation.description.indexOf(']')
         let defaultValue = null
-        if (index != -1) {
+        if (index !== -1) {
           defaultValue = annotation.description.substring(1, index).trim()
           annotation.description = annotation.description.substring(index + 1).trim()
         }
@@ -341,11 +341,11 @@ function validateDoc (doc) {
     issues.push('function "' + doc.name + '": description missing')
   }
 
-  if (!doc.syntax || doc.syntax.length == 0) {
+  if (!doc.syntax || doc.syntax.length === 0) {
     issues.push('function "' + doc.name + '": syntax missing')
   }
 
-  if (!doc.examples || doc.examples.length == 0) {
+  if (!doc.examples || doc.examples.length === 0) {
     issues.push('function "' + doc.name + '": examples missing')
   }
 
@@ -380,7 +380,7 @@ function validateDoc (doc) {
     }
   }
 
-  if (!doc.seeAlso || doc.seeAlso.length == 0) {
+  if (!doc.seeAlso || doc.seeAlso.length === 0) {
     if (!ignore('seeAlso')) {
       issues.push('function "' + doc.name + '": seeAlso missing')
     }

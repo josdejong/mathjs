@@ -63,14 +63,14 @@ function factory (type, config, load, typed, math) {
       }
     }
 
-    if (im == 0) {
+    if (im === 0) {
       // real value
       str = strRe
-    } else if (re == 0) {
+    } else if (re === 0) {
       // purely complex value
-      if (im == 1) {
+      if (im === 1) {
         str = 'i'
-      } else if (im == -1) {
+      } else if (im === -1) {
         str = '-i'
       } else {
         str = strIm + 'i'
@@ -78,13 +78,13 @@ function factory (type, config, load, typed, math) {
     } else {
       // complex value
       if (im < 0) {
-        if (im == -1) {
+        if (im === -1) {
           str = strRe + ' - i'
         } else {
           str = strRe + ' - ' + strIm.substring(1) + 'i'
         }
       } else {
-        if (im == 1) {
+        if (im === 1) {
           str = strRe + ' + i'
         } else {
           str = strRe + ' + ' + strIm + 'i'

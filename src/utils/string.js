@@ -178,7 +178,7 @@ function formatArray (array, options) {
     let str = '['
     const len = array.length
     for (let i = 0; i < len; i++) {
-      if (i != 0) {
+      if (i !== 0) {
         str += ', '
       }
       str += formatArray(array[i], options)

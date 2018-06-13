@@ -49,13 +49,13 @@ function factory () {
         // node
         i = ata ? (w[prev + r]) : r
         // traverse from i to k
-        for (; i != -1 && i < k; i = inext) {
+        for (; i !== -1 && i < k; i = inext) {
           // inext = ancestor of i
           inext = w[ancestor + i]
           // path compression
           w[ancestor + i] = k
           // check no anc., parent is k
-          if (inext == -1) { parent[i] = k }
+          if (inext === -1) { parent[i] = k }
         }
         if (ata) { w[prev + r] = k }
       }

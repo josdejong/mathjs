@@ -62,7 +62,7 @@ function factory (type, config, load, typed) {
 
       // test whether value is a valid number
       const num = Number(x)
-      if (x != '' && !isNaN(num)) {
+      if (x !== '' && !isNaN(num)) {
         return !!num
       }
 

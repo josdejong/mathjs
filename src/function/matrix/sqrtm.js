@@ -44,7 +44,7 @@ function factory (type, config, load, typed) {
       switch (size.length) {
         case 1:
           // Single element Array | Matrix
-          if (size[0] == 1) {
+          if (size[0] === 1) {
             return sqrt(A)
           } else {
             throw new RangeError('Matrix must be square ' +
@@ -55,7 +55,7 @@ function factory (type, config, load, typed) {
           // Two-dimensional Array | Matrix
           const rows = size[0]
           const cols = size[1]
-          if (rows == cols) {
+          if (rows === cols) {
             return _denmanBeavers(A)
           } else {
             throw new RangeError('Matrix must be square ' +

@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
   function _mode (values) {
     values = flatten(values.valueOf())
     const num = values.length
-    if (num == 0) {
+    if (num === 0) {
       throw new Error('Cannot calculate mode of an empty array')
     }
 
@@ -60,7 +60,7 @@ function factory (type, config, load, typed) {
         count[values[i]] = 0
       }
       count[values[i]]++
-      if (count[values[i]] == max) {
+      if (count[values[i]] === max) {
         mode.push(values[i])
       } else if (count[values[i]] > max) {
         max = count[values[i]]

@@ -106,7 +106,7 @@ function factory (type, config, load) {
       pinv[i] = -1
       k = leftmost[i]
       // check row i is empty
-      if (k == -1) { continue }
+      if (k === -1) { continue }
       // first row in queue k
       if (w[nque + k]++ === 0) { w[tail + k] = i }
       // put i at head of queue k
@@ -131,7 +131,7 @@ function factory (type, config, load) {
       s.lnz += w[nque + k]
       // move all rows to parent of k
       const pa = parent[k]
-      if (pa != -1) {
+      if (pa !== -1) {
         if (w[nque + pa] === 0) { w[tail + pa] = w[tail + k] }
         w[next + w[tail + k]] = w[head + pa]
         w[head + pa] = w[next + i]

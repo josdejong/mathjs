@@ -133,7 +133,7 @@ function factory (type, config, load, typed) {
   function _mod (x, y) {
     if (y > 0) {
       // We don't use JavaScript's % operator here as this doesn't work
-      // correctly for x < 0 and x == 0
+      // correctly for x < 0 and x === 0
       // see http://en.wikipedia.org/wiki/Modulo_operation
       return x - y * Math.floor(x / y)
     } else if (y === 0) {

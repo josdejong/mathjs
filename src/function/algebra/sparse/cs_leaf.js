@@ -41,8 +41,8 @@ function factory () {
       // update jleaf
       jleaf = 2
       // q = least common ancester (jprev,j)
-      for (q = jprev; q != w[ancestor + q]; q = w[ancestor + q]);
-      for (s = jprev; s != q; s = sparent) {
+      for (q = jprev; q !== w[ancestor + q]; q = w[ancestor + q]);
+      for (s = jprev; s !== q; s = sparent) {
         // path compression
         sparent = w[ancestor + s]
         w[ancestor + s] = q

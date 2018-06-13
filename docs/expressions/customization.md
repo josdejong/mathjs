@@ -285,13 +285,13 @@ function customLaTeX(node, options) {
     return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options)
   }
   else if (node.type === 'ConstantNode') {
-    if (node.value == 0) {
+    if (node.value === 0) {
         return '\\mbox{zero}'
     }
-    else if (node.value == 1) {
+    else if (node.value === 1) {
         return '\\mbox{one}'
     }
-    else if (node.value == 2) {
+    else if (node.value === 2) {
         return '\\mbox{two}'
     }
     else {

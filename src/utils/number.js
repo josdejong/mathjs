@@ -21,8 +21,12 @@ exports.isNumber = function (value) {
  * @return {boolean} isInteger
  */
 exports.isInteger = function (value) {
+  if (typeof value === 'boolean') {
+    return true
+  }
+
   return isFinite(value)
-    ? (value == Math.round(value))
+    ? (value === Math.round(value))
     : false
   // Note: we use ==, not ===, as we can have Booleans as well
 }
@@ -493,12 +497,11 @@ exports.DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 */
 exports.nearlyEqual = function (x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
-  if (epsilon == null) {
-    return x == y
+  if (epsilon === null || epsilon === undefined) {
+    return x === y
   }
 
-  // use "==" operator, handles infinities
-  if (x == y) {
+  if (x === y) {
     return true
   }
 

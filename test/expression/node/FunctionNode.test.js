@@ -178,8 +178,8 @@ describe('FunctionNode', function () {
     assert.deepEqual(n.filter(function (node) { return node instanceof FunctionNode }), [n])
     assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
     assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [b, c])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '2' }), [b])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value == '4' }), [])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [b])
+    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should run forEach on a FunctionNode', function () {
@@ -222,7 +222,7 @@ describe('FunctionNode', function () {
       paths.push(path)
       assert.strictEqual(parent, f)
 
-      return node instanceof SymbolNode && node.name == 'x' ? g : node
+      return node instanceof SymbolNode && node.name === 'x' ? g : node
     })
 
     assert.equal(nodes.length, 2)
@@ -259,7 +259,7 @@ describe('FunctionNode', function () {
 
     const g = new ConstantNode(3)
     const h = f.transform(function (node) {
-      return node instanceof SymbolNode && node.name == 'x' ? g : node
+      return node instanceof SymbolNode && node.name === 'x' ? g : node
     })
 
     assert.notStrictEqual(h, f)

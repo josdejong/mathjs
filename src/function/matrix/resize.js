@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    */
   // TODO: rework resize to a typed-function
   const resize = function resize (x, size, defaultValue) {
-    if (arguments.length != 2 && arguments.length != 3) {
+    if (arguments.length !== 2 && arguments.length !== 3) {
       throw new ArgumentsError('resize', arguments.length, 2, 3)
     }
 
@@ -68,7 +68,7 @@ function factory (type, config, load, typed) {
     // check result should be a matrix
     const asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
 
-    if (size.length == 0) {
+    if (size.length === 0) {
       // output a scalar
       while (Array.isArray(x)) {
         x = x[0]

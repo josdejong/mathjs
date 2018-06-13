@@ -63,8 +63,8 @@ function factory (type, config, load, typed) {
     const len = xSize[0]
 
     if (xSize.length !== 1 || ySize.length !== 1) throw new RangeError('Vector expected') // TODO: better error message
-    if (xSize[0] != ySize[0]) throw new RangeError('Vectors must have equal length (' + xSize[0] + ' != ' + ySize[0] + ')')
-    if (len == 0) throw new RangeError('Cannot calculate the dot product of empty vectors')
+    if (xSize[0] !== ySize[0]) throw new RangeError('Vectors must have equal length (' + xSize[0] + ' != ' + ySize[0] + ')')
+    if (len === 0) throw new RangeError('Cannot calculate the dot product of empty vectors')
 
     let prod = 0
     for (let i = 0; i < len; i++) {

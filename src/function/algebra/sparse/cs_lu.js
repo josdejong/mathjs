@@ -118,7 +118,7 @@ function factory (type, config, load) {
         }
       }
       // validate we found a valid pivot
-      if (ipiv == -1 || a <= 0) { return null }
+      if (ipiv === -1 || a <= 0) { return null }
       // update actual pivot column, give preference to diagonal value
       if (pinv[col] < 0 && largerEq(abs(x[col]), multiply(a, tol))) { ipiv = col }
       // the chosen pivot

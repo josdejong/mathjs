@@ -154,7 +154,7 @@ function _gcd (a, b) {
 
   // http://en.wikipedia.org/wiki/Euclidean_algorithm
   let r
-  while (b != 0) {
+  while (b !== 0) {
     r = a % b
     a = b
     b = r

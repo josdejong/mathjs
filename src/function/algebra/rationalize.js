@@ -129,7 +129,7 @@ function factory (type, config, load, typed) {
       const retRationalize = {}
 
       if (expr.type === 'OperatorNode' && expr.isBinary() && expr.op === '/') { // Separate numerator from denominator
-        if (nVars == 1) {
+        if (nVars === 1) {
           expr.args[0] = polyToCanonical(expr.args[0], coefficients)
           expr.args[1] = polyToCanonical(expr.args[1])
         }
@@ -138,7 +138,7 @@ function factory (type, config, load, typed) {
           retRationalize.denominator = expr.args[1]
         }
       } else {
-        if (nVars == 1) {
+        if (nVars === 1) {
           expr = polyToCanonical(expr, coefficients)
         }
         if (detailed) {

@@ -247,7 +247,7 @@ function factory (type, config, load, typed) {
     }
     // validate dimensions
     const size = idx.size()
-    if (size.length != matrix._size.length) {
+    if (size.length !== matrix._size.length) {
       throw new DimensionError(size.length, matrix._size.length)
     }
 
@@ -404,7 +404,7 @@ function factory (type, config, load, typed) {
    */
   SparseMatrix.prototype.get = function (index) {
     if (!isArray(index)) { throw new TypeError('Array expected') }
-    if (index.length != this._size.length) { throw new DimensionError(index.length, this._size.length) }
+    if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check it is a pattern matrix
     if (!this._values) { throw new Error('Cannot invoke get on a Pattern only matrix') }
@@ -437,7 +437,7 @@ function factory (type, config, load, typed) {
    */
   SparseMatrix.prototype.set = function (index, v, defaultValue) {
     if (!isArray(index)) { throw new TypeError('Array expected') }
-    if (index.length != this._size.length) { throw new DimensionError(index.length, this._size.length) }
+    if (index.length !== this._size.length) { throw new DimensionError(index.length, this._size.length) }
 
     // check it is a pattern matrix
     if (!this._values) { throw new Error('Cannot invoke set on a Pattern only matrix') }
