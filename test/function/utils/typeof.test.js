@@ -11,8 +11,8 @@ const Fraction = math.type.Fraction
 describe('typeof', function () {
   it('should return number type for a number', function () {
     assert.equal(math.typeof(2), 'number')
-    assert.equal(math.typeof(new Number(2)), 'number')
-    assert.equal(math.typeof(new Number(2.3)), 'number')
+    assert.equal(math.typeof(Number(2)), 'number')
+    assert.equal(math.typeof(Number(2.3)), 'number')
     assert.equal(math.typeof(NaN), 'number')
   })
 
@@ -23,7 +23,7 @@ describe('typeof', function () {
 
   it('should return string type for a string', function () {
     assert.equal(math.typeof('hello there'), 'string')
-    assert.equal(math.typeof(new String('hello there')), 'string')
+    assert.equal(math.typeof(String('hello there')), 'string')
   })
 
   it('should return complex type for a complex number', function () {
@@ -57,7 +57,7 @@ describe('typeof', function () {
   it('should return boolean type for a boolean', function () {
     assert.equal(math.typeof(true), 'boolean')
     assert.equal(math.typeof(false), 'boolean')
-    assert.equal(math.typeof(new Boolean(true)), 'boolean')
+    assert.equal(math.typeof(Boolean(true)), 'boolean')
   })
 
   it('should return null type for null', function () {

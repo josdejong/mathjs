@@ -12,9 +12,5 @@ describe('boolean', function () {
     assert.equal(boolean.isBoolean([]), false)
     assert.equal(boolean.isBoolean({}), false)
     assert.equal(boolean.isBoolean(new Date()), false)
-
-    // we don't support non primitive Boolean anymore
-    assert.equal(boolean.isBoolean(new Boolean(true)), false)
-    assert.equal(boolean.isBoolean(new Boolean(false)), false)
   })
 })

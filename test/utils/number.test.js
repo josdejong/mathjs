@@ -37,9 +37,6 @@ describe('number', function () {
     assert.equal(number.isNumber(null), false)
     assert.equal(number.isNumber(undefined), false)
     assert.equal(number.isNumber(), false)
-
-    // we don't support non primitive Numbers anymore
-    assert.equal(number.isNumber(new Number(23)), false)
   })
 
   it('sign', function () {

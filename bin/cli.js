@@ -170,12 +170,12 @@ function completer (text) {
  * @param parenthesis Parenthesis option
  */
 function runStream (input, output, mode, parenthesis) {
-  const readline = require('readline'),
-    rl = readline.createInterface({
-      input: input || process.stdin,
-      output: output || process.stdout,
-      completer: completer
-    })
+  const readline = require('readline')
+  const rl = readline.createInterface({
+    input: input || process.stdin,
+    output: output || process.stdout,
+    completer: completer
+  })
 
   if (rl.output.isTTY) {
     rl.setPrompt('> ')

@@ -15,6 +15,8 @@
   - `decimal.js` from `9.0.1` to `10.0.1`
   - Upgraded dev dependencies
 - Dropped support for bower. Use npm or an other package manages instead.
+- Dropped support for (non-primitive) instances of `Number`, `Boolean`, and
+  `String` from functions `clone` and `typeof`.
 - Fixed #851: More consistent behavior of sqrt, nthRoot, and pow.
   Thanks @dakotablair.
 - Fixed #1103: Calling `toTex` on node that contains `derivative` causing

@@ -34,9 +34,6 @@ exports.clone = function clone (x) {
     })
   }
 
-  if (x instanceof Number) return new Number(x.valueOf())
-  if (x instanceof String) return new String(x.valueOf())
-  if (x instanceof Boolean) return new Boolean(x.valueOf())
   if (x instanceof Date) return new Date(x.valueOf())
   if (isBigNumber(x)) return x // bignumbers are immutable
   if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x) // TODO: clone a RegExp

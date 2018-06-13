@@ -69,9 +69,6 @@ function factory (type, config, load, typed) {
         if (Array.isArray(x)) return 'Array'
         if (x instanceof Date) return 'Date'
         if (x instanceof RegExp) return 'RegExp'
-        if (x instanceof Boolean) return 'boolean'
-        if (x instanceof Number) return 'number'
-        if (x instanceof String) return 'string'
 
         // math.js types
         if (type.isBigNumber(x)) return 'BigNumber'

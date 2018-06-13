@@ -47,16 +47,13 @@ function factory (type, config, load, typed) {
    */
   function _xgcd (a, b) {
     // source: http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-    let // used to swap two variables
-      t,
-      // quotient
-      q,
-      // remainder
-      r,
-      x = 0,
-      lastx = 1,
-      y = 1,
-      lasty = 0
+    let t // used to swap two variables
+    let q // quotient
+    let r // remainder
+    let x = 0
+    let lastx = 1
+    let y = 1
+    let lasty = 0
 
     if (!isInteger(a) || !isInteger(b)) {
       throw new Error('Parameters in function xgcd must be integer numbers')

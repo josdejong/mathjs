@@ -12,9 +12,6 @@ describe('string', function () {
     assert.equal(string.isString(23), false)
     assert.equal(string.isString(true), false)
     assert.equal(string.isString(new Date()), false)
-
-    // we don't support non primitive Strings anymore
-    assert.equal(string.isString(new String('hi')), false)
   })
 
   it('endsWith', function () {
