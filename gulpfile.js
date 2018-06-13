@@ -142,11 +142,11 @@ gulp.task('minify', ['bundle'], function () {
 
 // test whether the docs for the expression parser are complete
 gulp.task('validate', ['minify'], function (cb) {
-  const child_process = require('child_process')
+  const childProcess = require('child_process')
 
   // this is run in a separate process as the modules need to be reloaded
   // with every validation (and required modules stay in cache).
-  child_process.execFile('node', ['./tools/validate'], function (err, stdout, stderr) {
+  childProcess.execFile('node', ['./tools/validate'], function (err, stdout, stderr) {
     if (err instanceof Error) {
       throw err
     }

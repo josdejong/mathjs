@@ -1,9 +1,9 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_flip = load(require('./cs_flip'))
-  const cs_fkeep = load(require('./cs_fkeep'))
-  const cs_tdfs = load(require('./cs_tdfs'))
+  const csFlip = load(require('./csFlip'))
+  const csFkeep = load(require('./csFkeep'))
+  const csTdfs = load(require('./csTdfs'))
 
   const add = load(require('../../arithmetic/add'))
   const multiply = load(require('../../arithmetic/multiply'))
@@ -22,7 +22,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_amd = function (order, a) {
+  const csAmd = function (order, a) {
     // check input parameters
     if (!a || order <= 0 || order > 3) { return null }
     // a matrix arrays
@@ -38,7 +38,7 @@ function factory (type, config, load) {
     // create target matrix C
     const cm = _createTargetMatrix(order, a, m, n, dense)
     // drop diagonal entries
-    cs_fkeep(cm, _diag, null)
+    csFkeep(cm, _diag, null)
     // C matrix arrays
     const cindex = cm._index
     const cptr = cm._ptr
@@ -132,7 +132,7 @@ function factory (type, config, load) {
         }
         if (e !== k) {
           // absorb e into k
-          cptr[e] = cs_flip(k)
+          cptr[e] = csFlip(k)
           // e is now a dead element
           W[w + e] = 0
         }
@@ -200,7 +200,7 @@ function factory (type, config, load) {
               h += e
             } else {
               // aggressive absorb. e->k
-              cptr[e] = cs_flip(k)
+              cptr[e] = csFlip(k)
               // e is a dead element
               W[w + e] = 0
             }
@@ -226,7 +226,7 @@ function factory (type, config, load) {
         // check for mass elimination
         if (d === 0) {
           // absorb i into k
-          cptr[i] = cs_flip(k)
+          cptr[i] = csFlip(k)
           nvi = -W[nv + i]
           // |Lk| -= |i|
           dk -= nvi
@@ -288,7 +288,7 @@ function factory (type, config, load) {
             // check i and j are identical
             if (ok) {
               // absorb j into i
-              cptr[j] = cs_flip(i)
+              cptr[j] = csFlip(i)
               W[nv + i] += W[nv + j]
               W[nv + j] = 0
               // node j is dead
@@ -348,7 +348,7 @@ function factory (type, config, load) {
     // is computed. The tree is restored by unflipping all of ptr.
 
     // fix assembly tree
-    for (i = 0; i < n; i++) { cptr[i] = cs_flip(cptr[i]) }
+    for (i = 0; i < n; i++) { cptr[i] = csFlip(cptr[i]) }
     for (j = 0; j <= n; j++) { W[head + j] = -1 }
     // place unordered nodes in lists
     for (j = n; j >= 0; j--) {
@@ -370,7 +370,7 @@ function factory (type, config, load) {
     }
     // postorder the assembly tree
     for (k = 0, i = 0; i <= n; i++) {
-      if (cptr[i] === -1) { k = cs_tdfs(i, k, W, head, next, P, w) }
+      if (cptr[i] === -1) { k = csTdfs(i, k, W, head, next, P, w) }
     }
     // remove last item in array
     P.splice(P.length - 1, 1)
@@ -504,7 +504,7 @@ function factory (type, config, load) {
         // node i is dead
         W[elen + i] = -1
         nel++
-        cptr[i] = cs_flip(n)
+        cptr[i] = csFlip(n)
         W[nv + n]++
       } else {
         const h = W[head + d]
@@ -532,9 +532,9 @@ function factory (type, config, load) {
     return i !== j
   }
 
-  return cs_amd
+  return csAmd
 }
 
-exports.name = 'cs_amd'
-exports.path = 'sparse'
+exports.name = 'csAmd'
+exports.path = 'algebra.sparse'
 exports.factory = factory

@@ -14,7 +14,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_tdfs = function (j, k, w, head, next, post, stack) {
+  const csTdfs = function (j, k, w, head, next, post, stack) {
     // variables
     let top = 0
     // place j on the stack
@@ -42,9 +42,9 @@ function factory () {
     return k
   }
 
-  return cs_tdfs
+  return csTdfs
 }
 
-exports.name = 'cs_tdfs'
-exports.path = 'sparse'
+exports.name = 'csTdfs'
+exports.path = 'algebra.sparse'
 exports.factory = factory

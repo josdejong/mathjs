@@ -1167,8 +1167,8 @@ describe('Unit', function () {
     })
 
     it('should create new base units', function () {
-      const fooBase_unit = Unit.createUnitSingle('fooBase')
-      assert.equal(fooBase_unit.dimensions.toString(), Unit.BASE_UNITS['fooBase_STUFF'].dimensions.toString())
+      const fooBaseUnit = Unit.createUnitSingle('fooBase')
+      assert.equal(fooBaseUnit.dimensions.toString(), Unit.BASE_UNITS['fooBase_STUFF'].dimensions.toString())
       const testUnit = new Unit(5, 'fooBase')
       assert.equal(testUnit.toString(), '5 fooBase')
     })

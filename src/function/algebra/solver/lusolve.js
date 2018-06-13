@@ -6,7 +6,7 @@ function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
   const lup = load(require('../decomposition/lup'))
   const slu = load(require('../decomposition/slu'))
-  const cs_ipvec = load(require('../sparse/cs_ipvec'))
+  const csIpvec = load(require('../sparse/csIpvec'))
 
   const solveValidation = load(require('./utils/solveValidation'))
 
@@ -102,13 +102,13 @@ function factory (type, config, load, typed) {
     // validate matrix and vector
     b = solveValidation(l, b, false)
     // apply row permutations if needed (b is a DenseMatrix)
-    if (p) { b._data = cs_ipvec(p, b._data) }
+    if (p) { b._data = csIpvec(p, b._data) }
     // use forward substitution to resolve L * y = b
     const y = lsolve(l, b)
     // use backward substitution to resolve U * x = y
     const x = usolve(u, y)
     // apply column permutations if needed (x is a DenseMatrix)
-    if (q) { x._data = cs_ipvec(q, x._data) }
+    if (q) { x._data = csIpvec(q, x._data) }
     // return solution
     return x
   }

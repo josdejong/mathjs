@@ -8,7 +8,7 @@ function factory (type, config, load) {
   const larger = load(require('../../relational/larger'))
   const largerEq = load(require('../../relational/largerEq'))
 
-  const cs_spsolve = load(require('./cs_spsolve'))
+  const csSpsolve = load(require('./csSpsolve'))
 
   const SparseMatrix = type.SparseMatrix
 
@@ -19,7 +19,7 @@ function factory (type, config, load) {
    * L * U = A(p, q), where p is the inverse of pinv.
    *
    * @param {Matrix}  m               The A Matrix to factorize
-   * @param {Object}  s               The symbolic analysis from cs_sqr(). Provides the fill-reducing
+   * @param {Object}  s               The symbolic analysis from csSqr(). Provides the fill-reducing
    *                                  column ordering q
    * @param {Number}  tol             Partial pivoting threshold (1 for partial pivoting)
    *
@@ -27,7 +27,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_lu = function (m, s, tol) {
+  const csLu = function (m, s, tol) {
     // validate input
     if (!m) { return null }
     // m arrays
@@ -93,7 +93,7 @@ function factory (type, config, load) {
       // apply column permutations if needed
       const col = q ? q[k] : k
       // solve triangular system, x = L\A(:,col)
-      const top = cs_spsolve(L, m, col, xi, x, pinv, 1)
+      const top = csSpsolve(L, m, col, xi, x, pinv, 1)
       // find pivot
       let ipiv = -1
       let a = -1
@@ -164,9 +164,9 @@ function factory (type, config, load) {
     }
   }
 
-  return cs_lu
+  return csLu
 }
 
-exports.name = 'cs_lu'
-exports.path = 'sparse'
+exports.name = 'csLu'
+exports.path = 'algebra.sparse'
 exports.factory = factory

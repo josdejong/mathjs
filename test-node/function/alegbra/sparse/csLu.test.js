@@ -1,17 +1,16 @@
-const assert = require('assert')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
 const math = require('../../../../src/main').create()
 
-math.import(require('../../../../src/function/algebra/sparse/cs_permute'))
-math.import(require('../../../../src/function/algebra/sparse/cs_lu'))
-math.import(require('../../../../src/function/algebra/sparse/cs_sqr'))
+math.import(require('../../../../src/function/algebra/sparse/csPermute'))
+math.import(require('../../../../src/function/algebra/sparse/csLu'))
+math.import(require('../../../../src/function/algebra/sparse/csSqr'))
 
-const cs_permute = math.sparse.cs_permute
-const cs_lu = math.sparse.cs_lu
-const cs_sqr = math.sparse.cs_sqr
+const csPermute = math.algebra.sparse.csPermute
+const csLu = math.algebra.sparse.csLu
+const csSqr = math.algebra.sparse.csSqr
 
-describe('cs_lu', function () {
+describe('csLu', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
     // import matrix
     market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
@@ -20,13 +19,13 @@ describe('cs_lu', function () {
         const m = matrices[0]
 
         // symbolic ordering and analysis, order = 0
-        const s = cs_sqr(0, m, false)
+        const s = csSqr(0, m, false)
 
         // full pivoting
-        const r = cs_lu(m, s, 0.001)
+        const r = csLu(m, s, 0.001)
 
         // verify
-        approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
+        approx.deepEqual(csPermute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
 
         // indicate test has completed
         done()
@@ -45,13 +44,13 @@ describe('cs_lu', function () {
         const m = matrices[0]
 
         // symbolic ordering and analysis, order = 1
-        const s = cs_sqr(1, m, false)
+        const s = csSqr(1, m, false)
 
         // full pivoting
-        const r = cs_lu(m, s, 0.001)
+        const r = csLu(m, s, 0.001)
 
         // verify
-        approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
+        approx.deepEqual(csPermute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
 
         // indicate test has completed
         done()
@@ -70,13 +69,13 @@ describe('cs_lu', function () {
         const m = matrices[0]
 
         // symbolic ordering and analysis, order = 2
-        const s = cs_sqr(2, m, false)
+        const s = csSqr(2, m, false)
 
         // full pivoting
-        const r = cs_lu(m, s, 0.001)
+        const r = csLu(m, s, 0.001)
 
         // verify
-        approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
+        approx.deepEqual(csPermute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
 
         // indicate test has completed
         done()
@@ -95,13 +94,13 @@ describe('cs_lu', function () {
         const m = matrices[0]
 
         // symbolic ordering and analysis, order = 3
-        const s = cs_sqr(3, m, false)
+        const s = csSqr(3, m, false)
 
         // full pivoting
-        const r = cs_lu(m, s, 0.001)
+        const r = csLu(m, s, 0.001)
 
         // verify
-        approx.deepEqual(cs_permute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
+        approx.deepEqual(csPermute(m, r.pinv, s.q, true).valueOf(), math.multiply(r.L, r.U).valueOf())
 
         // indicate test has completed
         done()

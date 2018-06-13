@@ -17,7 +17,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_leaf = function (i, j, w, first, maxfirst, prevleaf, ancestor) {
+  const csLeaf = function (i, j, w, first, maxfirst, prevleaf, ancestor) {
     let s, sparent, jprev
 
     // our result
@@ -54,9 +54,9 @@ function factory () {
     }
   }
 
-  return cs_leaf
+  return csLeaf
 }
 
-exports.name = 'cs_leaf'
-exports.path = 'sparse'
+exports.name = 'csLeaf'
+exports.path = 'algebra.sparse'
 exports.factory = factory

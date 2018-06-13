@@ -1,16 +1,16 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_amd = load(require('./cs_amd'))
-  const cs_permute = load(require('./cs_permute'))
-  const cs_etree = load(require('./cs_etree'))
-  const cs_post = load(require('./cs_post'))
-  const cs_counts = load(require('./cs_counts'))
+  const csAmd = load(require('./csAmd'))
+  const csPermute = load(require('./csPermute'))
+  const csEtree = load(require('./csEtree'))
+  const csPost = load(require('./csPost'))
+  const csCounts = load(require('./csCounts'))
 
   /**
    * Symbolic ordering and analysis for QR and LU decompositions.
    *
-   * @param {Number}  order           The ordering strategy (see cs_amd for more details)
+   * @param {Number}  order           The ordering strategy (see csAmd for more details)
    * @param {Matrix}  a               The A matrix
    * @param {boolean} qr              Symbolic ordering and analysis for QR decomposition (true) or
    *                                  symbolic ordering and analysis for LU decomposition (false)
@@ -19,7 +19,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_sqr = function (order, a, qr) {
+  const csSqr = function (order, a, qr) {
     // a arrays
     const aptr = a._ptr
     const asize = a._size
@@ -30,19 +30,19 @@ function factory (type, config, load) {
     // symbolic analysis result
     const s = {}
     // fill-reducing ordering
-    s.q = cs_amd(order, a)
+    s.q = csAmd(order, a)
     // validate results
     if (order && !s.q) { return null }
     // QR symbolic analysis
     if (qr) {
       // apply permutations if needed
-      const c = order ? cs_permute(a, null, s.q, 0) : a
+      const c = order ? csPermute(a, null, s.q, 0) : a
       // etree of C'*C, where C=A(:,q)
-      s.parent = cs_etree(c, 1)
+      s.parent = csEtree(c, 1)
       // post order elimination tree
-      const post = cs_post(s.parent, n)
+      const post = csPost(s.parent, n)
       // col counts chol(C'*C)
-      s.cp = cs_counts(c, s.parent, post, 1)
+      s.cp = csCounts(c, s.parent, post, 1)
       // check we have everything needed to calculate number of nonzero elements
       if (c && s.parent && s.cp && _vcount(c, s)) {
         // calculate number of nonzero elements
@@ -144,9 +144,9 @@ function factory (type, config, load) {
     return true
   }
 
-  return cs_sqr
+  return csSqr
 }
 
-exports.name = 'cs_sqr'
-exports.path = 'sparse'
+exports.name = 'csSqr'
+exports.path = 'algebra.sparse'
 exports.factory = factory

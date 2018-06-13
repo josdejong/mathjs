@@ -45,8 +45,8 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('f(y) = 5y + 2', 'x'), '0')
 
     // non-embedded example
-    const f_of_x = math.parse('f(x) = x + 2')
-    const newFunc = new OperatorNode('+', 'add', [math.parse('5x'), f_of_x])
+    const f = math.parse('f(x) = x + 2')
+    const newFunc = new OperatorNode('+', 'add', [math.parse('5x'), f])
     assert.equal(derivativeWithoutSimplify(newFunc, 'x'), '5 * 1 + 1 + 0')
   })
 

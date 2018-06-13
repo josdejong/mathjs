@@ -5,10 +5,10 @@ function factory (type, config, load) {
   const multiply = load(require('../../arithmetic/multiply'))
   const subtract = load(require('../../arithmetic/subtract'))
 
-  const cs_reach = load(require('./cs_reach'))
+  const csReach = load(require('./csReach'))
 
   /**
-   * The function cs_spsolve() computes the solution to G * x = bk, where bk is the
+   * The function csSpsolve() computes the solution to G * x = bk, where bk is the
    * kth column of B. When lo is true, the function assumes G = L is lower triangular with the
    * diagonal entry as the first entry in each column. When lo is true, the function assumes G = U
    * is upper triangular with the diagonal entry as the last entry in each column.
@@ -26,7 +26,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_spsolve = function (g, b, k, xi, x, pinv, lo) {
+  const csSpsolve = function (g, b, k, xi, x, pinv, lo) {
     // g arrays
     const gvalues = g._values
     const gindex = g._index
@@ -40,8 +40,8 @@ function factory (type, config, load) {
     const bptr = b._ptr
     // vars
     let p, p0, p1, q
-    // xi[top..n-1] = cs_reach(B(:,k))
-    const top = cs_reach(g, b, k, xi, pinv)
+    // xi[top..n-1] = csReach(B(:,k))
+    const top = csReach(g, b, k, xi, pinv)
     // clear x
     for (p = top; p < n; p++) { x[xi[p]] = 0 }
     // scatter b
@@ -74,9 +74,9 @@ function factory (type, config, load) {
     return top
   }
 
-  return cs_spsolve
+  return csSpsolve
 }
 
-exports.name = 'cs_spsolve'
-exports.path = 'sparse'
+exports.name = 'csSpsolve'
+exports.path = 'algebra.sparse'
 exports.factory = factory

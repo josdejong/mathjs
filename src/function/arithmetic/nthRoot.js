@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} [root=2]    The root.
    * @return {number | Complex | Array | Matrix} Returns the nth root of `a`
    */
-  const complex_err = ('' +
+  const complexErr = ('' +
     'Complex number not supported in function nthRoot. ' +
     'Use nthRoots instead.'
   )
@@ -54,10 +54,10 @@ function factory (type, config, load, typed) {
       return _bigNthRoot(x, new type.BigNumber(2))
     },
     'Complex': function (x) {
-      throw new Error(complex_err)
+      throw new Error(complexErr)
     },
     'Complex, number': function (x, y) {
-      throw new Error(complex_err)
+      throw new Error(complexErr)
     },
     'BigNumber, BigNumber': _bigNthRoot,
 

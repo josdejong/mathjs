@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_cumsum = load(require('./cs_cumsum'))
+  const csCumsum = load(require('./csCumsum'))
   const conj = load(require('../../complex/conj'))
 
   const SparseMatrix = type.SparseMatrix
@@ -20,7 +20,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_symperm = function (a, pinv, values) {
+  const csSymperm = function (a, pinv, values) {
     // A matrix arrays
     const avalues = a._values
     const aindex = a._index
@@ -53,7 +53,7 @@ function factory (type, config, load) {
       }
     }
     // compute column pointers of C
-    cs_cumsum(cptr, w, n)
+    csCumsum(cptr, w, n)
     // loop columns
     for (j = 0; j < n; j++) {
       // column j of A is column j2 of C
@@ -83,9 +83,9 @@ function factory (type, config, load) {
     })
   }
 
-  return cs_symperm
+  return csSymperm
 }
 
-exports.name = 'cs_symperm'
-exports.path = 'sparse'
+exports.name = 'csSymperm'
+exports.path = 'algebra.sparse'
 exports.factory = factory

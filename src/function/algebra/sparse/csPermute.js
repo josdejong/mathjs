@@ -15,7 +15,7 @@ function factory (type) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_permute = function (a, pinv, q, values) {
+  const csPermute = function (a, pinv, q, values) {
     // a arrays
     const avalues = a._values
     const aindex = a._index
@@ -61,9 +61,9 @@ function factory (type) {
     })
   }
 
-  return cs_permute
+  return csPermute
 }
 
-exports.name = 'cs_permute'
-exports.path = 'sparse'
+exports.name = 'csPermute'
+exports.path = 'algebra.sparse'
 exports.factory = factory

@@ -8,14 +8,14 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_flip = function (i) {
+  const csFlip = function (i) {
     // flip the value
     return -i - 2
   }
 
-  return cs_flip
+  return csFlip
 }
 
-exports.name = 'cs_flip'
-exports.path = 'sparse'
+exports.name = 'csFlip'
+exports.path = 'algebra.sparse'
 exports.factory = factory

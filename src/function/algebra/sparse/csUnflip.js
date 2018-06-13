@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_flip = load(require('./cs_flip'))
+  const csFlip = load(require('./csFlip'))
 
   /**
    * Flips the value if it is negative of returns the same value otherwise.
@@ -10,14 +10,14 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_unflip = function (i) {
+  const csUnflip = function (i) {
     // flip the value if it is negative
-    return i < 0 ? cs_flip(i) : i
+    return i < 0 ? csFlip(i) : i
   }
 
-  return cs_unflip
+  return csUnflip
 }
 
-exports.name = 'cs_unflip'
-exports.path = 'sparse'
+exports.name = 'csUnflip'
+exports.path = 'algebra.sparse'
 exports.factory = factory

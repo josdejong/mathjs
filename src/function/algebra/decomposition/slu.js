@@ -6,8 +6,8 @@ const number = util.number
 const isInteger = number.isInteger
 
 function factory (type, config, load, typed) {
-  const cs_sqr = load(require('../../algebra/sparse/cs_sqr'))
-  const cs_lu = load(require('../../algebra/sparse/cs_lu'))
+  const csSqr = load(require('../../algebra/sparse/csSqr'))
+  const csLu = load(require('../../algebra/sparse/csLu'))
 
   /**
    * Calculate the Sparse Matrix LU decomposition with full pivoting. Sparse Matrix `A` is decomposed in two matrices (`L`, `U`) and two permutation vectors (`pinv`, `q`) where
@@ -55,10 +55,10 @@ function factory (type, config, load, typed) {
       if (threshold < 0 || threshold > 1) { throw new Error('Partial pivoting threshold must be a number from 0 to 1') }
 
       // perform symbolic ordering and analysis
-      const s = cs_sqr(order, a, false)
+      const s = csSqr(order, a, false)
 
       // perform lu decomposition
-      const f = cs_lu(a, s, threshold)
+      const f = csLu(a, s, threshold)
 
       // return decomposition
       return {

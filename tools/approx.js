@@ -35,8 +35,8 @@ exports.equal = function equal (a, b, epsilon) {
     } else {
       const diff = Math.abs(a - b)
       const max = Math.max(a, b)
-      const max_diff = Math.abs(max * epsilon)
-      assert.ok(diff <= max_diff, (a + ' ~= ' + b))
+      const maxDiff = Math.abs(max * epsilon)
+      assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
   } else {
     assert.equal(a, b)

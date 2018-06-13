@@ -79,20 +79,20 @@ function factory (type, config, load, typed) {
   function _cbrtComplex (x, allRoots) {
     // https://www.wikiwand.com/en/Cube_root#/Complex_numbers
 
-    const arg_3 = x.arg() / 3
+    const arg3 = x.arg() / 3
     const abs = x.abs()
 
     // principal root:
     const principal = new type.Complex(_cbrtNumber(abs), 0).mul(
-      new type.Complex(0, arg_3).exp())
+      new type.Complex(0, arg3).exp())
 
     if (allRoots) {
       const all = [
         principal,
         new type.Complex(_cbrtNumber(abs), 0).mul(
-          new type.Complex(0, arg_3 + Math.PI * 2 / 3).exp()),
+          new type.Complex(0, arg3 + Math.PI * 2 / 3).exp()),
         new type.Complex(_cbrtNumber(abs), 0).mul(
-          new type.Complex(0, arg_3 - Math.PI * 2 / 3).exp())
+          new type.Complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
       return (config.matrix === 'Array') ? all : matrix(all)

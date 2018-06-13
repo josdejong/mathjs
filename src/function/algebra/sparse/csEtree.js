@@ -10,7 +10,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_etree = function (a, ata) {
+  const csEtree = function (a, ata) {
     // check inputs
     if (!a) { return null }
     // a arrays
@@ -63,9 +63,9 @@ function factory () {
     return parent
   }
 
-  return cs_etree
+  return csEtree
 }
 
-exports.name = 'cs_etree'
-exports.path = 'sparse'
+exports.name = 'csEtree'
+exports.path = 'algebra.sparse'
 exports.factory = factory

@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_flip = load(require('./cs_flip'))
+  const csFlip = load(require('./csFlip'))
 
   /**
    * Marks the node at w[j]
@@ -11,14 +11,14 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_mark = function (w, j) {
+  const csMark = function (w, j) {
     // mark w[j]
-    w[j] = cs_flip(w[j])
+    w[j] = csFlip(w[j])
   }
 
-  return cs_mark
+  return csMark
 }
 
-exports.name = 'cs_mark'
-exports.path = 'sparse'
+exports.name = 'csMark'
+exports.path = 'algebra.sparse'
 exports.factory = factory

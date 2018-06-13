@@ -85,11 +85,11 @@ function factory (type, config, load, typed) {
     let Z = identity(size(A))
 
     do {
-      const Y_k = Y
-      Y = multiply(0.5, add(Y_k, inv(Z)))
-      Z = multiply(0.5, add(Z, inv(Y_k)))
+      const Yk = Y
+      Y = multiply(0.5, add(Yk, inv(Z)))
+      Z = multiply(0.5, add(Z, inv(Yk)))
 
-      error = max(abs(subtract(Y, Y_k)))
+      error = max(abs(subtract(Y, Yk)))
 
       if (error > _tolerance && ++iterations > _maxIterations) {
         throw new Error('computing square root of matrix: iterative method could not converge')

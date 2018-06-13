@@ -3,7 +3,7 @@
 function factory (type, config, load) {
   const transpose = load(require('../../matrix/transpose'))
 
-  const cs_leaf = load(require('./cs_leaf'))
+  const csLeaf = load(require('./csLeaf'))
 
   /**
    * Computes the column counts using the upper triangular part of A.
@@ -17,7 +17,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_counts = function (a, parent, post, ata) {
+  const csCounts = function (a, parent, post, ata) {
     // check inputs
     if (!a || !parent || !post) { return null }
     // a matrix arrays
@@ -85,7 +85,7 @@ function factory (type, config, load) {
       for (J = (ata ? w[head + k] : j); J !== -1; J = (ata ? w[next + J] : -1)) {
         for (p = tptr[J]; p < tptr[J + 1]; p++) {
           i = tindex[p]
-          const r = cs_leaf(i, j, w, first, maxfirst, prevleaf, ancestor)
+          const r = csLeaf(i, j, w, first, maxfirst, prevleaf, ancestor)
           // check A(i,j) is in skeleton
           if (r.jleaf >= 1) { colcount[j]++ }
           // check account for overlap in q
@@ -101,9 +101,9 @@ function factory (type, config, load) {
     return colcount
   }
 
-  return cs_counts
+  return csCounts
 }
 
-exports.name = 'cs_counts'
-exports.path = 'sparse'
+exports.name = 'csCounts'
+exports.path = 'algebra.sparse'
 exports.factory = factory

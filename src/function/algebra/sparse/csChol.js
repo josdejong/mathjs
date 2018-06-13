@@ -11,8 +11,8 @@ function factory (type, config, load) {
   const equal = load(require('../../relational/equal'))
   const smallerEq = load(require('../../relational/smallerEq'))
 
-  const cs_symperm = load(require('./cs_symperm'))
-  const cs_ereach = load(require('./cs_ereach'))
+  const csSymperm = load(require('./csSymperm'))
+  const csEreach = load(require('./csEreach'))
 
   const SparseMatrix = type.SparseMatrix
 
@@ -27,7 +27,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_chol = function (m, s) {
+  const csChol = function (m, s) {
     // validate input
     if (!m) { return null }
     // m arrays
@@ -53,7 +53,7 @@ function factory (type, config, load) {
     const c = [] // (2 * n)
     const x = [] // (n)
     // compute C = P * A * P'
-    const cm = pinv ? cs_symperm(m, pinv, 1) : m
+    const cm = pinv ? csSymperm(m, pinv, 1) : m
     // C matrix arrays
     const cvalues = cm._values
     const cindex = cm._index
@@ -65,7 +65,7 @@ function factory (type, config, load) {
     // compute L(k,:) for L*L' = C
     for (k = 0; k < n; k++) {
       // nonzero pattern of L(k,:)
-      let top = cs_ereach(cm, k, parent, c)
+      let top = csEreach(cm, k, parent, c)
       // x (0:k) is now zero
       x[k] = 0
       // x = full(triu(C(:,k)))
@@ -143,9 +143,9 @@ function factory (type, config, load) {
     }
   }
 
-  return cs_chol
+  return csChol
 }
 
-exports.name = 'cs_chol'
-exports.path = 'sparse'
+exports.name = 'csChol'
+exports.path = 'algebra.sparse'
 exports.factory = factory

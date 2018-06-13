@@ -186,9 +186,9 @@ describe('trace', function () {
   })
 
   it('should not change the value of the initial matrix', function () {
-    const m_test = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    math.trace(m_test)
-    assert.deepEqual(m_test, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    const m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    math.trace(m)
+    assert.deepEqual(m, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   })
 
   it('should not accept a non-square matrix', function () {

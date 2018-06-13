@@ -84,10 +84,10 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _log1pComplex (x) {
-    const x_re1p = x.re + 1
+    const xRe1p = x.re + 1
     return new type.Complex(
-      Math.log(Math.sqrt(x_re1p * x_re1p + x.im * x.im)),
-      Math.atan2(x.im, x_re1p)
+      Math.log(Math.sqrt(xRe1p * xRe1p + x.im * x.im)),
+      Math.atan2(x.im, xRe1p)
     )
   }
 

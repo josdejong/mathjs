@@ -1,12 +1,12 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_dfs = load(require('./cs_dfs'))
-  const cs_marked = load(require('./cs_marked'))
-  const cs_mark = load(require('./cs_mark'))
+  const csDfs = load(require('./csDfs'))
+  const csMarked = load(require('./csMarked'))
+  const csMark = load(require('./csMark'))
 
   /**
-   * The cs_reach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1
+   * The csReach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1
    * sparse column of vector b. The function returns the set of nodes reachable from any node in B. The
    * nonzero pattern xi of the solution x to the sparse linear system Lx=b is given by X=Reach(B).
    *
@@ -21,7 +21,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_reach = function (g, b, k, xi, pinv) {
+  const csReach = function (g, b, k, xi, pinv) {
     // g arrays
     const gptr = g._ptr
     const gsize = g._size
@@ -39,22 +39,22 @@ function factory (type, config, load) {
       // node i
       const i = bindex[p]
       // check node i is marked
-      if (!cs_marked(gptr, i)) {
+      if (!csMarked(gptr, i)) {
         // start a dfs at unmarked node i
-        top = cs_dfs(i, g, top, xi, pinv)
+        top = csDfs(i, g, top, xi, pinv)
       }
     }
     // loop columns from top -> n - 1
     for (p = top; p < n; p++) {
       // restore G
-      cs_mark(gptr, xi[p])
+      csMark(gptr, xi[p])
     }
     return top
   }
 
-  return cs_reach
+  return csReach
 }
 
-exports.name = 'cs_reach'
-exports.path = 'sparse'
+exports.name = 'csReach'
+exports.path = 'algebra.sparse'
 exports.factory = factory

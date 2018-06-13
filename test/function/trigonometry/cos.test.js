@@ -33,19 +33,19 @@ describe('cos', function () {
     assert.deepEqual(bigmath.cos(biggermath.bignumber(0)).toString(), '1')
 
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
-    const result_val = '-0.99947004918247698171247470962484532559534008595265991588' +
+    const resultVal = '-0.99947004918247698171247470962484532559534008595265991588' +
                         '25959085696348870383952892132851183764863885182646678036' +
                         '80857263937361947475191126604630777331941809888320749410' +
                         '59494006339537812110786663367929884637840572887762249921' +
                         '8425619255481'
-    let cos_val = biggermath.cos(biggermath.bignumber(103.64))
+    let cosVal = biggermath.cos(biggermath.bignumber(103.64))
     assert.equal(biggermath.bignumber(103.64).constructor.precision, 238)
-    assert.equal(cos_val.constructor.precision, 238)
-    assert.deepEqual(cos_val.toString(), result_val)
+    assert.equal(cosVal.constructor.precision, 238)
+    assert.deepEqual(cosVal.toString(), resultVal)
 
-    cos_val = biggermath.cos(biggermath.bignumber(-103.64))
-    assert.equal(cos_val.constructor.precision, 238)
-    assert.deepEqual(cos_val.toString(), result_val)
+    cosVal = biggermath.cos(biggermath.bignumber(-103.64))
+    assert.equal(cosVal.constructor.precision, 238)
+    assert.deepEqual(cosVal.toString(), resultVal)
 
     biggermath.config({precision: 16})
     const bigPi = biggermath.pi

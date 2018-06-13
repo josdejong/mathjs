@@ -16,7 +16,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_fkeep = function (a, callback, other) {
+  const csFkeep = function (a, callback, other) {
     // a arrays
     const avalues = a._values
     const aindex = a._index
@@ -54,9 +54,9 @@ function factory () {
     return (nz)
   }
 
-  return cs_fkeep
+  return csFkeep
 }
 
-exports.name = 'cs_fkeep'
-exports.path = 'sparse'
+exports.name = 'csFkeep'
+exports.path = 'algebra.sparse'
 exports.factory = factory

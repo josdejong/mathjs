@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
     }
 
     // pass extra nodes
-    extra_nodes = (options && options.nodes) ? options.nodes : {}
+    extraNodes = (options && options.nodes) ? options.nodes : {}
 
     if (typeof expr === 'string') {
       // parse a single expression
@@ -154,15 +154,15 @@ function factory (type, config, load, typed) {
     'Infinity'
   ]
 
-  let extra_nodes = {} // current extra nodes
+  let extraNodes = {} // current extra nodes
   let expression = '' // current expression
   let comment = '' // last parsed comment
   let index = 0 // current index in expr
   let c = '' // current token character in expr
   let token = '' // current token
-  let token_type = TOKENTYPE.NULL // type of the token
-  let nesting_level = 0 // level of nesting inside parameters, used to ignore newline characters
-  let conditional_level = null // when a conditional is being parsed, the level of the conditional is stored here
+  let tokenType = TOKENTYPE.NULL // type of the token
+  let nestingLevel = 0 // level of nesting inside parameters, used to ignore newline characters
+  let conditionalLevel = null // when a conditional is being parsed, the level of the conditional is stored here
   const tokenStates = [] // holds saved token states
 
   /**
@@ -174,8 +174,8 @@ function factory (type, config, load, typed) {
   function first () {
     index = 0
     c = expression.charAt(0)
-    nesting_level = 0
-    conditional_level = null
+    nestingLevel = 0
+    conditionalLevel = null
   }
 
   /**
@@ -222,7 +222,7 @@ function factory (type, config, load, typed) {
    */
   function pushTokenState () {
     tokenStates.push({
-      token_type: token_type,
+      tokenType: tokenType,
       token: token,
       comment: comment,
       index: index,
@@ -236,7 +236,7 @@ function factory (type, config, load, typed) {
    */
   function popTokenState () {
     const restoredState = tokenStates.pop()
-    token_type = restoredState.token_type
+    tokenType = restoredState.tokenType
     token = restoredState.token
     comment = restoredState.comment
     index = restoredState.index
@@ -253,17 +253,17 @@ function factory (type, config, load, typed) {
 
   /**
    * Get next token in the current string expr.
-   * The token and token type are available as token and token_type
+   * The token and token type are available as token and tokenType
    * @private
    */
   function getToken () {
-    token_type = TOKENTYPE.NULL
+    tokenType = TOKENTYPE.NULL
     token = ''
     comment = ''
 
     // skip over whitespaces
     // space, tab, and newline when inside parameters
-    while (parse.isWhitespace(c, nesting_level)) {
+    while (parse.isWhitespace(c, nestingLevel)) {
       next()
     }
 
@@ -278,13 +278,13 @@ function factory (type, config, load, typed) {
     // check for end of expression
     if (c === '') {
       // token is still empty
-      token_type = TOKENTYPE.DELIMITER
+      tokenType = TOKENTYPE.DELIMITER
       return
     }
 
     // check for new line character
-    if (c === '\n' && !nesting_level) {
-      token_type = TOKENTYPE.DELIMITER
+    if (c === '\n' && !nestingLevel) {
+      tokenType = TOKENTYPE.DELIMITER
       token = c
       next()
       return
@@ -294,7 +294,7 @@ function factory (type, config, load, typed) {
     let c2 = c + nextPreview()
     const c3 = c2 + nextNextPreview()
     if (c3.length === 3 && DELIMITERS[c3]) {
-      token_type = TOKENTYPE.DELIMITER
+      tokenType = TOKENTYPE.DELIMITER
       token = c3
       next()
       next()
@@ -304,7 +304,7 @@ function factory (type, config, load, typed) {
 
     // check for delimiters consisting of 2 characters
     if (c2.length === 2 && DELIMITERS[c2]) {
-      token_type = TOKENTYPE.DELIMITER
+      tokenType = TOKENTYPE.DELIMITER
       token = c2
       next()
       next()
@@ -313,7 +313,7 @@ function factory (type, config, load, typed) {
 
     // check for delimiters consisting of 1 character
     if (DELIMITERS[c]) {
-      token_type = TOKENTYPE.DELIMITER
+      tokenType = TOKENTYPE.DELIMITER
       token = c
       next()
       return
@@ -321,7 +321,7 @@ function factory (type, config, load, typed) {
 
     // check for a number
     if (parse.isDigitDot(c)) {
-      token_type = TOKENTYPE.NUMBER
+      tokenType = TOKENTYPE.NUMBER
 
       // get number, can have a single dot
       if (c === '.') {
@@ -330,7 +330,7 @@ function factory (type, config, load, typed) {
 
         if (!parse.isDigit(c)) {
           // this is no number, it is just a dot (can be dot notation)
-          token_type = TOKENTYPE.DELIMITER
+          tokenType = TOKENTYPE.DELIMITER
         }
       } else {
         while (parse.isDigit(c)) {
@@ -389,16 +389,16 @@ function factory (type, config, load, typed) {
       }
 
       if (NAMED_DELIMITERS.hasOwnProperty(token)) {
-        token_type = TOKENTYPE.DELIMITER
+        tokenType = TOKENTYPE.DELIMITER
       } else {
-        token_type = TOKENTYPE.SYMBOL
+        tokenType = TOKENTYPE.SYMBOL
       }
 
       return
     }
 
     // something unknown is found, wrong characters -> a syntax error
-    token_type = TOKENTYPE.UNKNOWN
+    tokenType = TOKENTYPE.UNKNOWN
     while (c !== '') {
       token += c
       next()
@@ -421,7 +421,7 @@ function factory (type, config, load, typed) {
    * New line characters will be ignored until closeParams() is called
    */
   function openParams () {
-    nesting_level++
+    nestingLevel++
   }
 
   /**
@@ -429,7 +429,7 @@ function factory (type, config, load, typed) {
    * New line characters will no longer be ignored
    */
   function closeParams () {
-    nesting_level--
+    nestingLevel--
   }
 
   /**
@@ -540,9 +540,9 @@ function factory (type, config, load, typed) {
     const node = parseBlock()
 
     // check for garbage at the end of the expression
-    // an expression ends with a empty character '' and token_type DELIMITER
+    // an expression ends with a empty character '' and tokenType DELIMITER
     if (token !== '') {
-      if (token_type === TOKENTYPE.DELIMITER) {
+      if (tokenType === TOKENTYPE.DELIMITER) {
         // user entered a not existing operator like "//"
 
         // TODO: give hints for aliases, for example with "<>" give as hint " did you mean !== ?"
@@ -674,9 +674,9 @@ function factory (type, config, load, typed) {
 
     while (token === '?') {
       // set a conditional level, the range operator will be ignored as long
-      // as conditional_level === nesting_level.
-      const prev = conditional_level
-      conditional_level = nesting_level
+      // as conditionalLevel === nestingLevel.
+      const prev = conditionalLevel
+      conditionalLevel = nestingLevel
       getTokenSkipNewline()
 
       const condition = node
@@ -684,7 +684,7 @@ function factory (type, config, load, typed) {
 
       if (token !== ':') throw createSyntaxError('False part of conditional expression expected')
 
-      conditional_level = null
+      conditionalLevel = null
       getTokenSkipNewline()
 
       const falseExpr = parseAssignment() // Note: check for conditional operator again, right associativity
@@ -692,7 +692,7 @@ function factory (type, config, load, typed) {
       node = new ConditionalNode(condition, trueExpr, falseExpr)
 
       // restore the previous conditional level
-      conditional_level = prev
+      conditionalLevel = prev
     }
 
     return node
@@ -903,7 +903,7 @@ function factory (type, config, load, typed) {
       node = parseAddSubtract()
     }
 
-    if (token === ':' && (conditional_level !== nesting_level)) {
+    if (token === ':' && (conditionalLevel !== nestingLevel)) {
       // we ignore the range operator when a conditional operator is being processed on the same level
       params.push(node)
 
@@ -1008,9 +1008,9 @@ function factory (type, config, load, typed) {
     last = node
 
     while (true) {
-      if ((token_type === TOKENTYPE.SYMBOL) ||
+      if ((tokenType === TOKENTYPE.SYMBOL) ||
           (token === 'in' && type.isConstantNode(node)) ||
-          (token_type === TOKENTYPE.NUMBER &&
+          (tokenType === TOKENTYPE.NUMBER &&
               !type.isConstantNode(last) &&
               (!type.isOperatorNode(last) || last.op === '!')) ||
           (token === '(')) {
@@ -1050,13 +1050,13 @@ function factory (type, config, load, typed) {
         getTokenSkipNewline()
 
         // Match the "number / number" part of the pattern
-        if (token_type === TOKENTYPE.NUMBER) {
+        if (tokenType === TOKENTYPE.NUMBER) {
           // Look ahead again
           pushTokenState()
           getTokenSkipNewline()
 
           // Match the "symbol" part of the pattern, or a left parenthesis
-          if (token_type === TOKENTYPE.SYMBOL || token === '(') {
+          if (tokenType === TOKENTYPE.SYMBOL || token === '(') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
             popTokenState()
@@ -1192,8 +1192,8 @@ function factory (type, config, load, typed) {
   function parseCustomNodes () {
     let params = []
 
-    if (token_type === TOKENTYPE.SYMBOL && extra_nodes.hasOwnProperty(token)) {
-      const CustomNode = extra_nodes[token]
+    if (tokenType === TOKENTYPE.SYMBOL && extraNodes.hasOwnProperty(token)) {
+      const CustomNode = extraNodes[token]
 
       getToken()
 
@@ -1237,8 +1237,8 @@ function factory (type, config, load, typed) {
   function parseSymbol () {
     let node, name
 
-    if (token_type === TOKENTYPE.SYMBOL ||
-        (token_type === TOKENTYPE.DELIMITER && token in NAMED_DELIMITERS)) {
+    if (tokenType === TOKENTYPE.SYMBOL ||
+        (tokenType === TOKENTYPE.DELIMITER && token in NAMED_DELIMITERS)) {
       name = token
 
       getToken()
@@ -1334,7 +1334,7 @@ function factory (type, config, load, typed) {
         // dot notation like variable.prop
         getToken()
 
-        if (token_type !== TOKENTYPE.SYMBOL) {
+        if (tokenType !== TOKENTYPE.SYMBOL) {
           throw createSyntaxError('Property name expected after dot')
         }
         params.push(new ConstantNode(token))
@@ -1505,7 +1505,7 @@ function factory (type, config, load, typed) {
           // parse key
           if (token === '"') {
             key = parseStringToken()
-          } else if (token_type === TOKENTYPE.SYMBOL) {
+          } else if (tokenType === TOKENTYPE.SYMBOL) {
             key = token
             getToken()
           } else {
@@ -1548,7 +1548,7 @@ function factory (type, config, load, typed) {
   function parseNumber () {
     let numberStr
 
-    if (token_type === TOKENTYPE.NUMBER) {
+    if (tokenType === TOKENTYPE.NUMBER) {
       // this is a number
       numberStr = token
       getToken()

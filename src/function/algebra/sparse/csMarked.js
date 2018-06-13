@@ -9,14 +9,14 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_marked = function (w, j) {
+  const csMarked = function (w, j) {
     // check node is marked
     return w[j] < 0
   }
 
-  return cs_marked
+  return csMarked
 }
 
-exports.name = 'cs_marked'
-exports.path = 'sparse'
+exports.name = 'csMarked'
+exports.path = 'algebra.sparse'
 exports.factory = factory

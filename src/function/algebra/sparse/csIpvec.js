@@ -9,7 +9,7 @@ function factory () {
    *
    * @return {Array}            The output vector x = P'b
    */
-  function cs_ipvec (p, b) {
+  function csIpvec (p, b) {
     // vars
     let k
     const n = b.length
@@ -31,9 +31,9 @@ function factory () {
     return x
   }
 
-  return cs_ipvec
+  return csIpvec
 }
 
-exports.name = 'cs_ipvec'
-exports.path = 'sparse'
+exports.name = 'csIpvec'
+exports.path = 'algebra.sparse'
 exports.factory = factory

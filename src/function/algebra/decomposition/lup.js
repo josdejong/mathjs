@@ -247,23 +247,23 @@ function factory (type, config, load, typed) {
     // vars
     let i, j, k
     // permutation vectors, (current index -> original index) and (original index -> current index)
-    const pv_co = []
-    const pv_oc = []
+    const pvCo = []
+    const pvOc = []
     for (i = 0; i < rows; i++) {
-      pv_co[i] = i
-      pv_oc[i] = i
+      pvCo[i] = i
+      pvOc[i] = i
     }
     // swap indices in permutation vectors (condition x < y)!
     const swapIndeces = function (x, y) {
       // find pv indeces getting data from x and y
-      const kx = pv_oc[x]
-      const ky = pv_oc[y]
+      const kx = pvOc[x]
+      const ky = pvOc[y]
       // update permutation vector current -> original
-      pv_co[kx] = y
-      pv_co[ky] = x
+      pvCo[kx] = y
+      pvCo[ky] = x
       // update permutation vector original -> current
-      pv_oc[x] = ky
-      pv_oc[y] = kx
+      pvOc[x] = ky
+      pvOc[y] = kx
     }
     // loop columns
     for (j = 0; j < columns; j++) {
@@ -287,7 +287,7 @@ function factory (type, config, load, typed) {
         // row
         i = index[k]
         // copy column values into sparse accumulator (use permutation vector)
-        spa.set(pv_co[i], values[k])
+        spa.set(pvCo[i], values[k])
       }
       // skip first column in upper triangular matrix
       if (j > 0) {
@@ -369,7 +369,7 @@ function factory (type, config, load, typed) {
         ptr: uptr,
         size: usize
       }),
-      p: pv_co,
+      p: pvCo,
       toString: function () {
         return 'L: ' + this.L.toString() + '\nU: ' + this.U.toString() + '\nP: ' + this.p
       }

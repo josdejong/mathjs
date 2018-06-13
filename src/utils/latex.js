@@ -1,6 +1,6 @@
 'use strict'
 
-const escape_latex = require('escape-latex')
+const escapeLatex = require('escape-latex')
 
 exports.symbols = {
   // GREEK LETTERS
@@ -115,7 +115,7 @@ const units = {
 }
 
 exports.escape = function (string) {
-  return escape_latex(string, {'preserveFormatting': true})
+  return escapeLatex(string, {'preserveFormatting': true})
 }
 
 // @param {string} name

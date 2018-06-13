@@ -10,7 +10,7 @@ function factory () {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_cumsum = function (ptr, c, n) {
+  const csCumsum = function (ptr, c, n) {
     // variables
     let i
     let nz = 0
@@ -29,9 +29,9 @@ function factory () {
     return nz
   }
 
-  return cs_cumsum
+  return csCumsum
 }
 
-exports.name = 'cs_cumsum'
-exports.path = 'sparse'
+exports.name = 'csCumsum'
+exports.path = 'algebra.sparse'
 exports.factory = factory

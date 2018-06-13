@@ -1,13 +1,13 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_marked = load(require('./cs_marked'))
-  const cs_mark = load(require('./cs_mark'))
-  const cs_unflip = load(require('./cs_unflip'))
+  const csMarked = load(require('./csMarked'))
+  const csMark = load(require('./csMark'))
+  const csUnflip = load(require('./csUnflip'))
 
   /**
    * Depth-first search computes the nonzero pattern xi of the directed graph G (Matrix) starting
-   * at nodes in B (see cs_reach()).
+   * at nodes in B (see csReach()).
    *
    * @param {Number}  j               The starting node for the DFS algorithm
    * @param {Matrix}  g               The G matrix to search, ptr array modified, then restored
@@ -21,7 +21,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_dfs = function (j, g, top, xi, pinv) {
+  const csDfs = function (j, g, top, xi, pinv) {
     // g arrays
     const index = g._index
     const ptr = g._ptr
@@ -41,20 +41,20 @@ function factory (type, config, load) {
       // apply permutation vector
       const jnew = pinv ? pinv[j] : j
       // check node j is marked
-      if (!cs_marked(ptr, j)) {
+      if (!csMarked(ptr, j)) {
         // mark node j as visited
-        cs_mark(ptr, j)
+        csMark(ptr, j)
         // update stack (last n entries in xi)
-        xi[n + head] = jnew < 0 ? 0 : cs_unflip(ptr[jnew])
+        xi[n + head] = jnew < 0 ? 0 : csUnflip(ptr[jnew])
       }
       // node j done if no unvisited neighbors
       let done = 1
       // examine all neighbors of j, stack (last n entries in xi)
-      for (p = xi[n + head], p2 = jnew < 0 ? 0 : cs_unflip(ptr[jnew + 1]); p < p2; p++) {
+      for (p = xi[n + head], p2 = jnew < 0 ? 0 : csUnflip(ptr[jnew + 1]); p < p2; p++) {
         // consider neighbor node i
         i = index[p]
         // check we have visited node i, skip it
-        if (cs_marked(ptr, i)) { continue }
+        if (csMarked(ptr, i)) { continue }
         // pause depth-first search of node j, update stack (last n entries in xi)
         xi[n + head] = p
         // start dfs at node i
@@ -75,9 +75,9 @@ function factory (type, config, load) {
     return top
   }
 
-  return cs_dfs
+  return csDfs
 }
 
-exports.name = 'cs_dfs'
-exports.path = 'sparse'
+exports.name = 'csDfs'
+exports.path = 'algebra.sparse'
 exports.factory = factory

@@ -152,9 +152,9 @@ function factory (type, config, load, typed) {
 
     let data = this._data
     for (let i = 0, ii = index.length; i < ii; i++) {
-      const index_i = index[i]
-      validateIndex(index_i, data.length)
-      data = data[index_i]
+      const indexI = index[i]
+      validateIndex(indexI, data.length)
+      data = data[indexI]
     }
 
     return data
@@ -174,7 +174,7 @@ function factory (type, config, load, typed) {
     if (!isArray(index)) { throw new TypeError('Array expected') }
     if (index.length < this._size.length) { throw new DimensionError(index.length, this._size.length, '<') }
 
-    let i, ii, index_i
+    let i, ii, indexI
 
     // enlarge matrix when needed
     const size = index.map(function (i) {
@@ -185,15 +185,15 @@ function factory (type, config, load, typed) {
     // traverse over the dimensions
     let data = this._data
     for (i = 0, ii = index.length - 1; i < ii; i++) {
-      index_i = index[i]
-      validateIndex(index_i, data.length)
-      data = data[index_i]
+      indexI = index[i]
+      validateIndex(indexI, data.length)
+      data = data[indexI]
     }
 
     // set new value
-    index_i = index[index.length - 1]
-    validateIndex(index_i, data.length)
-    data[index_i] = value
+    indexI = index[index.length - 1]
+    validateIndex(indexI, data.length)
+    data[indexI] = value
 
     return this
   }

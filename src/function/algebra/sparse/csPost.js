@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load) {
-  const cs_tdfs = load(require('./cs_tdfs'))
+  const csTdfs = load(require('./csTdfs'))
 
   /**
    * Post order a tree of forest
@@ -11,7 +11,7 @@ function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const cs_post = function (parent, n) {
+  const csPost = function (parent, n) {
     // check inputs
     if (!parent) { return null }
     // vars
@@ -42,14 +42,14 @@ function factory (type, config, load) {
       // skip j if it is not a root
       if (parent[j] !== -1) { continue }
       // depth-first search
-      k = cs_tdfs(j, k, w, head, next, post, stack)
+      k = csTdfs(j, k, w, head, next, post, stack)
     }
     return post
   }
 
-  return cs_post
+  return csPost
 }
 
-exports.name = 'cs_post'
-exports.path = 'sparse'
+exports.name = 'csPost'
+exports.path = 'algebra.sparse'
 exports.factory = factory

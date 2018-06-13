@@ -53,7 +53,7 @@ function factory (type, config, load, typed, math) {
    * @param {Object | Array} object   Object with functions to be imported.
    * @param {Object} [options]        Import options.
    */
-  function math_import (object, options) {
+  function mathImport (object, options) {
     const num = arguments.length
     if (num !== 1 && num !== 2) {
       throw new ArgumentsError('import', num, 1, 2)
@@ -69,7 +69,7 @@ function factory (type, config, load, typed, math) {
     // TODO: allow a typed-function with name too
     else if (Array.isArray(object)) {
       object.forEach(function (entry) {
-        math_import(entry, options)
+        mathImport(entry, options)
       })
     } else if (typeof object === 'object') {
       // a map with functions
@@ -81,7 +81,7 @@ function factory (type, config, load, typed, math) {
           } else if (isFactory(object)) {
             _importFactory(object, options)
           } else {
-            math_import(value, options)
+            mathImport(value, options)
           }
         }
       }
@@ -289,7 +289,7 @@ function factory (type, config, load, typed, math) {
     'chain': true // chain method not supported. Note that there is a unit chain too.
   }
 
-  return math_import
+  return mathImport
 }
 
 exports.math = true // request access to the math namespace as 5th argument of the factory function

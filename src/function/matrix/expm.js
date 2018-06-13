@@ -84,18 +84,18 @@ function factory (type, config, load, typed) {
       let factor = 1
 
       // Initialization (i=1)
-      let Apos_to_i = Apos // Cloning not necessary
+      let AposToI = Apos // Cloning not necessary
       let alternate = -1
 
       for (let i = 1; i <= q; i++) {
         if (i > 1) {
-          Apos_to_i = multiply(Apos_to_i, Apos)
+          AposToI = multiply(AposToI, Apos)
           alternate = -alternate
         }
         factor = factor * (q - i + 1) / ((2 * q - i + 1) * i)
 
-        N = add(N, multiply(factor, Apos_to_i))
-        D = add(D, multiply(factor * alternate, Apos_to_i))
+        N = add(N, multiply(factor, AposToI))
+        D = add(D, multiply(factor * alternate, AposToI))
       }
 
       let R = multiply(inv(D), N)

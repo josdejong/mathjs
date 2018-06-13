@@ -141,20 +141,20 @@ function factory (type, config, load, typed) {
       // loop over all columns, and perform row reductions
       for (let c = 0; c < cols; c++) {
         // Pivoting: Swap row c with row r, where row r contains the largest element A[r][c]
-        let A_big = abs(A[c][c])
-        let r_big = c
+        let ABig = abs(A[c][c])
+        let rBig = c
         r = c + 1
         while (r < rows) {
-          if (abs(A[r][c]) > A_big) {
-            A_big = abs(A[r][c])
-            r_big = r
+          if (abs(A[r][c]) > ABig) {
+            ABig = abs(A[r][c])
+            rBig = r
           }
           r++
         }
-        if (A_big === 0) {
+        if (ABig === 0) {
           throw Error('Cannot calculate inverse, determinant is zero')
         }
-        r = r_big
+        r = rBig
         if (r !== c) {
           temp = A[c]; A[c] = A[r]; A[r] = temp
           temp = B[c]; B[c] = B[r]; B[r] = temp

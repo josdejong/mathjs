@@ -114,8 +114,8 @@ function factory (type, config, load, typed, math) {
           } else if (type.isOperatorNode(a0) && a0.isBinary() && a0.op === node.op) {
             const a00 = a0.args[0]
             if (type.isConstantNode(a00)) {
-              const a00_a1 = new ConstantNode(multiply(a00.value, a1.value))
-              return new OperatorNode(node.op, node.fn, [a00_a1, a0.args[1]]) // constants on left
+              const a00a1 = new ConstantNode(multiply(a00.value, a1.value))
+              return new OperatorNode(node.op, node.fn, [a00a1, a0.args[1]]) // constants on left
             }
           }
           return new OperatorNode(node.op, node.fn, [a1, a0]) // constants on left
