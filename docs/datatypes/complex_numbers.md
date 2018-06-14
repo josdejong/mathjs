@@ -68,7 +68,7 @@ math.sqrt(-4)                    // Complex 2i
 ```
 
 ## API
-A `Complex` object created from `math.complex` contains the following properties and functions:
+A `Complex` object created by `math.complex` contains the following properties and functions:
 
 ### complex.re
 
@@ -91,11 +91,11 @@ Test whether a complex number equals another complex value.
 
 ### complex.neg()
 
-Returns a complex number with a real part and an imaginary part equal in magnitude but opposite in sign.
+Returns a complex number with a real part and an imaginary part equal in magnitude but opposite in sign to the current complex number.
 
 ### complex.conjugate()
 
-Returns a complex number with an equal real part and an imaginary part equal in magnitude but opposite in sign.
+Returns a complex number with an equal real part and an imaginary part equal in magnitude but opposite in sign to the current complex number.
 
 ### complex.inverse()
 
@@ -130,7 +130,7 @@ Get a string representation of the complex number,
   number of digits.
 
 ## Static methods
-Following static methods can be accessed using `math.type.Complex`
+The following static methods can be accessed using `math.type.Complex`
 
 
 ### Complex.fromJSON(json)
