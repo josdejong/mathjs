@@ -82,7 +82,7 @@ function factory (type, config, load, typed) {
         return new type.Complex(x)
       }
 
-      throw new Error('Expected object with either properties re and im, or properties r/abs and phi/arg.')
+      throw new Error('Expected object with properties (re and im) or (r and phi) or (abs and arg)')
     },
 
     'Array | Matrix': function (x) {
