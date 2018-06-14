@@ -33,6 +33,7 @@ math.complex(re: number, im: number) : Complex
 math.complex(complex: Complex) : Complex
 math.complex({re: Number, im: Number}) : Complex
 math.complex({r: number, phi: number}) : Complex
+math.complex({abs: number, arg: number}) : Complex
 math.complex(str: string) : Complex
 ```
 
@@ -67,7 +68,7 @@ math.sqrt(-4)                    // Complex 2i
 ```
 
 ## API
-A `Complex` object contains the following properties and functions:
+A `Complex` object created from `math.complex` contains the following properties and functions:
 
 ### complex.re
 
@@ -87,24 +88,22 @@ Test whether a complex number equals another complex value.
 
   Two complex numbers are equal when both their real and imaginary parts are
   equal.
-  
-### complex.format([precision: number])
 
-Get a string representation of the complex number,
-  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
-  If precision is defined, the units value will be rounded to the provided
-  number of digits.
-  
-### complex.fromJSON(json)
+### complex.neg()
 
-Revive a complex number from a JSON object. Accepts
-  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
-  `mathjs` is optional.
-  Used when deserializing a complex number, see [Serialization](../core/serialization.md).
+Returns a complex number with a real part and an imaginary part equal in magnitude but opposite in sign.
 
-### complex.fromPolar(r: number, phi: number)
+### complex.conjugate()
 
-Create a complex number from polar coordinates.
+Returns a complex number with an equal real part and an imaginary part equal in magnitude but opposite in sign.
+
+### complex.inverse()
+
+Returns a complex number that is inverse of the current complex number.
+
+### complex.toVector()
+
+Get the vector representation of the current complex number. Returns an array of size 2.
 
 ### complex.toJSON()
 
@@ -122,7 +121,31 @@ Get the polar coordinates of the complex number, returns
 Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
 
-### complex.compare(a: Complex, b: Complex)
+
+### complex.format([precision: number])
+
+Get a string representation of the complex number,
+  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
+  If precision is defined, the units value will be rounded to the provided
+  number of digits.
+
+## Static methods
+Following static methods can be accessed using math.type.Complex
+
+
+### Complex.fromJSON(json)
+
+Revive a complex number from a JSON object. Accepts
+  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
+  `mathjs` is optional.
+  Used when deserializing a complex number, see [Serialization](../core/serialization.md).
+
+### Complex.fromPolar(r: number, phi: number)
+
+Create a complex number from polar coordinates.
+
+
+### Complex.compare(a: Complex, b: Complex)
 
 Returns the comparision result of two complex number:
 
