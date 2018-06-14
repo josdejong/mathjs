@@ -73,7 +73,10 @@ See the [Getting Started](http://mathjs.org/docs/getting_started.html) for a mor
 
 ## Browser support
 
-Math.js works on any ES5 compatible JavaScript engine: node.js 0.10, and Internet Explorer 9 and newer, and all other browsers (Chrome, Firefox, Safari). If support for old browsers like Internet Explorer 8 is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+Math.js works on any ES5 compatible JavaScript engine: node.js 4 or newer, Chrome, Firefox, Safari, Edge, and IE11.
+
+Though there is no official support for older browsers,
+math.js should still work when using the [es5-shim](https://github.com/kriskowal/es5-shim).
 
 
 ## Documentation
