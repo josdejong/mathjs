@@ -130,7 +130,7 @@ Get a string representation of the complex number,
   number of digits.
 
 ## Static methods
-Following static methods can be accessed using math.type.Complex
+Following static methods can be accessed using `math.type.Complex`
 
 
 ### Complex.fromJSON(json)
@@ -156,3 +156,13 @@ Returns the comparision result of two complex number:
 - Returns -1 when the real parts are equal
   and the imaginary part of `a` is smaller than the imaginary part of `b`
 - Returns 0 when both real and imaginary parts are equal.
+
+Example:
+```js
+var a = math.complex(2, 3);     // Complex 2 + 3i
+var b = math.complex(2, 1);     // Complex 2 + 1i
+math.type.Complex.compare(a,b); // returns 1
+
+//create from json 
+var c = math.type.Complex.fromJSON({mathjs: 'Complex', re: 4, im: 3});  // Complex 4 + 3i
+```
