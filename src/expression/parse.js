@@ -166,8 +166,6 @@ function factory (type, config, load, typed) {
     conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
   }
 
-  const tokenStates = [] // holds saved token states
-
   /**
    * Get the first character from the expression.
    * The character is stored into the char c. If the end of the expression is
@@ -217,32 +215,6 @@ function factory (type, config, load, typed) {
    */
   function nextNextPreview () {
     return state.expression.charAt(state.index + 2)
-  }
-
-  /**
-   * Save the current token state so we can rewind later if necessary.
-   * @private
-   */
-  function pushTokenState () {
-    const stateCopy = Object.assign({}, state)
-    tokenStates.push(stateCopy)
-  }
-
-  /**
-   * Rewind the parser by one token by restoring the last saved token state
-   * @private
-   */
-  function popTokenState () {
-    const restoredState = tokenStates.pop()
-    Object.assign(state, restoredState)
-  }
-
-  /**
-   * Discard the most recent token state without restoring it
-   * @private
-   */
-  function discardTokenState () {
-    tokenStates.pop()
   }
 
   /**
@@ -1031,41 +1003,40 @@ function factory (type, config, load, typed) {
    * @private
    */
   function parseRule2 () {
-    let node, last
-
-    node = parseUnary()
-    last = node
+    let node = parseUnary()
+    let last = node
+    let tokenStates = []
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
       if (state.token === '/' && type.isConstantNode(last)) {
         // Look ahead to see if the next token is a number
-        pushTokenState()
+        tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline()
 
         // Match the "number / number" part of the pattern
         if (state.tokenType === TOKENTYPE.NUMBER) {
           // Look ahead again
-          pushTokenState()
+          tokenStates.push(Object.assign({}, state))
           getTokenSkipNewline()
 
           // Match the "symbol" part of the pattern, or a left parenthesis
           if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
-            popTokenState()
-            discardTokenState()
+            Object.assign(state, tokenStates.pop())
+            tokenStates.pop()
             last = parseUnary()
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
-            popTokenState()
-            popTokenState()
+            tokenStates.pop()
+            Object.assign(state, tokenStates.pop())
             break
           }
         } else {
           // Not a match, so rewind
-          popTokenState()
+          Object.assign(state, tokenStates.pop())
           break
         }
       } else {
