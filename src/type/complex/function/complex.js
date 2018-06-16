@@ -78,11 +78,11 @@ function factory (type, config, load, typed) {
         return new type.Complex(x.re, x.im)
       }
 
-      if ('r' in x && 'phi' in x) {
+      if (('r' in x && 'phi' in x) || ('abs' in x && 'arg' in x)) {
         return new type.Complex(x)
       }
 
-      throw new Error('Expected object with either properties re and im, or properties r and phi.')
+      throw new Error('Expected object with properties (re and im) or (r and phi) or (abs and arg)')
     },
 
     'Array | Matrix': function (x) {

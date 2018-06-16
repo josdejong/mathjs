@@ -47,8 +47,8 @@ describe('complex', function () {
   })
 
   it('should accept polar coordinates as input', function () {
-    const polar = complex({r: 1, phi: 1})
-    assert.deepEqual(polar, math.type.Complex.fromPolar(1, 1))
+    assert.deepEqual(complex({r: 1, phi: 1}), math.type.Complex.fromPolar(1, 1))
+    assert.deepEqual(complex({abs: 1, arg: 1}), math.type.Complex.fromPolar(1, 1))
   })
 
   it('should accept an object with im and re as keys', function () {
