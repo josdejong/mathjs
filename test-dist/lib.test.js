@@ -6,6 +6,11 @@ describe('lib', function () {
     const math = require('../lib/main')
 
     assert.equal(math.add(2, 3), 5)
+  })
+
+  it('should have the correct version number', function () {
+    const math = require('../lib/main')
+
     assert.equal(math.version, version)
   })
 })

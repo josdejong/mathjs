@@ -139,10 +139,6 @@ describe('constants', function () {
     assert.strictEqual(math['null'], null)
   })
 
-  it('should have version number', function () {
-    assert.equal(math.version, require('../package.json').version)
-  })
-
   it('should return message when uninitialized', function () {
     assert.equal(math.uninitialized, 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
   })

@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "4.4.2",
+  "version": "5.0.0",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -158,7 +158,7 @@
   ],
   "scripts": {
     "build": "gulp",
-    "build-and-test": "npm run build && npm run test:dist",
+    "build-and-test": "npm run build && npm run test:src && npm run test:dist && npm run lint",
     "compile": "gulp compile",
     "watch": "gulp watch",
     "docs": "gulp docs",
@@ -169,7 +169,7 @@
     "test:browser": "karma start ./browser-test-config/local-karma.js",
     "test:browserstack": "karma start ./browser-test-config/browserstack-karma.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test test-node --recursive --require babel-core/register; echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
-    "prepublishOnly": "npm test && npm run build-and-test"
+    "prepublishOnly": "npm run build-and-test"
   },
   "bin": {
     "mathjs": "./bin/cli.js"
