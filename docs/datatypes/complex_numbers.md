@@ -159,10 +159,10 @@ Returns the comparision result of two complex number:
 
 Example:
 ```js
-var a = math.complex(2, 3);     // Complex 2 + 3i
-var b = math.complex(2, 1);     // Complex 2 + 1i
-math.type.Complex.compare(a,b); // returns 1
+const a = math.complex(2, 3)   // Complex 2 + 3i
+const b = math.complex(2, 1)   // Complex 2 + 1i
+math.type.Complex.compare(a,b) // returns 1
 
 //create from json 
-var c = math.type.Complex.fromJSON({mathjs: 'Complex', re: 4, im: 3});  // Complex 4 + 3i
+const c = math.type.Complex.fromJSON({mathjs: 'Complex', re: 4, im: 3})  // Complex 4 + 3i
 ```

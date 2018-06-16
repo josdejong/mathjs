@@ -26,7 +26,7 @@ print(math.bignumber('1.2e+500')) // BigNumber, 1.2e+500
 console.log()
 
 console.log('BigNumbers still have a limited precision and are no silve bullet')
-const third = math.divide(math.bignumber(1), math.bignumber(3));
+const third = math.divide(math.bignumber(1), math.bignumber(3))
 const total = math.add(third, third, third)
 print(total) // BigNumber, 0.99999999999999999999
 console.log()

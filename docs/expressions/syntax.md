@@ -278,7 +278,7 @@ When outputting results, the function `math.format` can be used to hide
 these round-off errors when outputting results for the user:
 
 ```js
-const ans = math.eval('0.1 + 0.2')    //  0.30000000000000004
+const ans = math.eval('0.1 + 0.2')  //  0.30000000000000004
 math.format(ans, {precision: 14})   // "0.3"
 ```
 
@@ -370,7 +370,7 @@ math.eval('5.4 kg')                     // Unit, 5.4 kg
 // convert a unit
 math.eval('2 inch to cm')               // Unit, 5.08 cm
 math.eval('20 celsius in fahrenheit')   // Unit, ~68 fahrenheit
-math.eval('90 km/h to m/s');			// Unit, 25 m / s
+math.eval('90 km/h to m/s')             // Unit, 25 m / s
 
 // convert a unit to a number
 // A second parameter with the unit for the exported number must be provided

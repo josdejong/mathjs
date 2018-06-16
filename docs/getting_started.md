@@ -21,6 +21,18 @@ and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
 [Configuration](configuration.md).
 
+### ES6 modules
+
+Load math.js using ES6 import:
+
+```js
+// load math.js
+import * as math from 'mathjs'
+
+// use math.js
+math.sqrt(-4) // 2i
+```
+
 ### Node.js
 
 Load math.js in [node.js](http://nodejs.org/):

@@ -13,7 +13,7 @@ Math.js types can be serialized using JavaScript's built-in `JSON.stringify`
 function:
 
 ```js
-const x   = math.complex('2 + 3i')
+const x = math.complex('2 + 3i')
 const str = JSON.stringify(x)
 console.log(str)
 // outputs a string '{"mathjs":"Complex","re":2,"im":3}'
@@ -25,7 +25,7 @@ be called with the reviver function of math.js:
 
 ```js
 const json = '{"mathjs":"Unit","value":5,"unit":"cm","fixPrefix":false}'
-const x    = JSON.parse(json, math.json.reviver)   // Unit 5 cm
+const x = JSON.parse(json, math.json.reviver)   // Unit 5 cm
 ```
 
 Note that if math.js is used in conjunction with other data types, it is
