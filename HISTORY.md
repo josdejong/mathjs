@@ -8,6 +8,8 @@
   Thanks @jackschmidt.
 - Changed the behavior of `A'` (transpose) in the expression parser to
   calculate the complex conjugate transpose. See #1097. Thanks @jackschmidt.
+- Added support for `complex({abs: 1, arg: 1})`, and improved the docs on
+  complex numbers. Thanks @ssaket.
 - Renamed `eye` to `identity`, see #1054.
 - Math.js code can now contain ES6. The ES6 source code is moved from `lib`
   to `src`, and `lib` now contains the compiled ES5 code.
