@@ -34,6 +34,7 @@ print(math.sin(a)) // -9.6541254768548 + 2.8416922956064i
 // some operations will return a complex number depending on the arguments
 print(math.sqrt(4)) // 2
 print(math.sqrt(-4)) // 2i
+console.log()
 
 // create a complex number from polar coordinates
 console.log('create complex numbers with polar coordinates')
@@ -43,6 +44,7 @@ print(c) // 1 + i
 // get polar coordinates of a complex number
 const d = math.complex(3, 4)
 console.log(d.abs(), d.arg()) // radius = 5, phi = 0.9272952180016122
+console.log()
 
 // comparision operations
 // note that there is no mathematical ordering defined for complex numbers

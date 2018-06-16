@@ -42,7 +42,7 @@ try {
     print(math.eval('fibonacci(7)')) // 13
   }
 } catch (err) {
-  console.log('Warning: To import numbers.js, the library must ' +
+  console.log('Warning: To use numbers.js, the library must ' +
       'be installed first via `npm install numbers`.')
 }
 
@@ -68,7 +68,7 @@ try {
     print(math.solve(A, b)) // [2, -1, 3]
   }
 } catch (err) {
-  console.log('Warning: To import numeric.js, the library must ' +
+  console.log('Warning: To use numeric.js, the library must ' +
       'be installed first via `npm install numeric`.')
 }
 

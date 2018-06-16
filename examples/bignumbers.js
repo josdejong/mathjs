@@ -25,6 +25,12 @@ print(math.bignumber(1.2e+500)) // BigNumber, Infinity      WRONG
 print(math.bignumber('1.2e+500')) // BigNumber, 1.2e+500
 console.log()
 
+console.log('BigNumbers still have a limited precision and are no silve bullet')
+const third = math.divide(math.bignumber(1), math.bignumber(3));
+const total = math.add(third, third, third)
+print(total) // BigNumber, 0.99999999999999999999
+console.log()
+
 // one can work conveniently with BigNumbers using the expression parser.
 // note though that BigNumbers are only supported in arithmetic functions
 console.log('use BigNumbers in the expression parser')

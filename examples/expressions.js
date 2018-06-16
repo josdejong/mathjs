@@ -162,7 +162,7 @@ print(parser.eval('n = m[:, 1]')) // [[19], [43]]
 // get and set variables and functions
 console.log('\nget and set variables and function in the scope of the parser')
 const x = parser.get('x')
-console.log('x =', x) // x = 7
+console.log('x =', x) // x = 3.5
 const f2 = parser.get('f2')
 console.log('f2 =', math.format(f2)) // f2 = f2(x, y)
 const h = f2(3, 3)

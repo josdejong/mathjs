@@ -52,4 +52,4 @@ const transformed = node2.transform(function (node, path, parent) {
   }
 })
 console.log(transformed.toString())
-// outputs: '(3 ^ 2) + (5 * 3)'
+// outputs: '3 ^ 2 + 5 * 3'
