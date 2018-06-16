@@ -38,11 +38,11 @@ number &#124; BigNumber &#124; Array &#124; Matrix | The least common multiple
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.lcm(4, 6);               // returns 12
-math.lcm(6, 21);              // returns 42
-math.lcm(6, 21, 5);           // returns 210
+math.lcm(4, 6)               // returns 12
+math.lcm(6, 21)              // returns 42
+math.lcm(6, 21, 5)           // returns 210
 
-math.lcm([4, 6], [6, 21]);    // returns [12, 42]
+math.lcm([4, 6], [6, 21])    // returns [12, 42]
 ```
 
 

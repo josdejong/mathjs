@@ -9,6 +9,7 @@ layout: default
 Function | Description
 ---- | -----------
 [math.config(config:&nbsp;Object):&nbsp;Object](functions/config.html) | Set configuration options for math.
+[math.import(object,&nbsp;override)](functions/import.html) | Import functions from an object or a module.
 [math.typed(name,&nbsp;signatures)&nbsp;:&nbsp;function](functions/typed.html) | Create a typed-function which checks the types of the arguments and can match them against multiple provided signatures.
 
 <h2 id="construction-functions">Construction functions <a href="#construction-functions" title="Permalink">#</a></h2>
@@ -81,6 +82,7 @@ Function | Description
 [math.multiply(x,&nbsp;y)](functions/multiply.html) | Multiply two or more values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.html) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.html) | Calculate the nth root of a value.
+[math.nthRoots(x)](functions/nthRoots.html) | Calculate the nth roots of a value.
 [math.pow(x,&nbsp;y)](functions/pow.html) | Calculates the power of x to y, `x ^ y`.
 [math.round(x&nbsp;[,&nbsp;n])](functions/round.html) | Round a value towards the nearest integer.
 [math.sign(x)](functions/sign.html) | Compute the sign of a value.
@@ -143,14 +145,15 @@ Function | Description
 ---- | -----------
 [math.concat(a,&nbsp;b,&nbsp;c,&nbsp;...&nbsp;[,&nbsp;dim])](functions/concat.html) | Concatenate two or more matrices.
 [math.cross(x,&nbsp;y)](functions/cross.html) | Calculate the cross product for two vectors in three dimensional space.
+[math.ctranspose(x)](functions/ctranspose.html) | Transpose and complex conjugate a matrix.
 [math.det(x)](functions/det.html) | Calculate the determinant of a matrix.
 [math.diag(X)](functions/diag.html) | Create a diagonal matrix or retrieve the diagonal of a matrix  When `x` is a vector, a matrix with vector `x` on the diagonal will be returned.
 [math.dot(x,&nbsp;y)](functions/dot.html) | Calculate the dot product of two vectors.
 [math.expm(x)](functions/expm.html) | Compute the matrix exponential, expm(A) = e^A.
-[math.eye(n)](functions/eye.html) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.filter(x,&nbsp;test)](functions/filter.html) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.html) | Flatten a multi dimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.html) | Iterate over all elements of a matrix/array, and executes the given callback function.
+[math.identity(n)](functions/identity.html) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.inv(x)](functions/inv.html) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.html) | Calculates the kronecker product of 2 matrices or vectors.
 [math.map(x,&nbsp;callback)](functions/map.html) | Create a new matrix or array with the results of the callback function executed on each entry of the matrix/array.

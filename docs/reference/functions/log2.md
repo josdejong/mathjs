@@ -33,10 +33,10 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.log2(0.03125);           // returns -5
-math.log2(16);                // returns 4
-math.log2(16) / math.log2(2); // returns 4
-math.pow(2, 4);               // returns 16
+math.log2(0.03125)           // returns -5
+math.log2(16)                // returns 4
+math.log2(16) / math.log2(2) // returns 4
+math.pow(2, 4)               // returns 16
 ```
 
 

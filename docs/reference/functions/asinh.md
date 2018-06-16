@@ -34,7 +34,7 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arcsine of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.asinh(0.5);       // returns 0.48121182505960347
+math.asinh(0.5)       // returns 0.48121182505960347
 ```
 
 

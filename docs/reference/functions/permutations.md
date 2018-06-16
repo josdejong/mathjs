@@ -37,8 +37,8 @@ number &#124; BigNumber | The number of permutations
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.permutations(5);     // 120
-math.permutations(5, 3);  // 60
+math.permutations(5)     // 120
+math.permutations(5, 3)  // 60
 ```
 
 

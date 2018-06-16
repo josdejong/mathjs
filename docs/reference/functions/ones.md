@@ -40,18 +40,18 @@ Array &#124; Matrix &#124; number | A matrix filled with ones
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.ones(3);                   // returns [1, 1, 1]
-math.ones(3, 2);                // returns [[1, 1], [1, 1], [1, 1]]
-math.ones(3, 2, 'dense');       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
+math.ones(3)                   // returns [1, 1, 1]
+math.ones(3, 2)                // returns [[1, 1], [1, 1], [1, 1]]
+math.ones(3, 2, 'dense')       // returns Dense Matrix [[1, 1], [1, 1], [1, 1]]
 
-var A = [[1, 2, 3], [4, 5, 6]];
-math.ones(math.size(A));       // returns [[1, 1, 1], [1, 1, 1]]
+const A = [[1, 2, 3], [4, 5, 6]]
+math.ones(math.size(A))       // returns [[1, 1, 1], [1, 1, 1]]
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [zeros](zeros.html),
-[eye](eye.html),
+[identity](identity.html),
 [size](size.html),
 [range](range.html)

@@ -35,12 +35,12 @@ number &#124; Array &#124; DenseMatrix | Returns the result of the comparison: 1
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.compareText('B', 'A');     // returns 1
-math.compareText('2', '10');    // returns 1
-math.compare('2', '10');        // returns -1
-math.compareNatural('2', '10'); // returns -1
+math.compareText('B', 'A')     // returns 1
+math.compareText('2', '10')    // returns 1
+math.compare('2', '10')        // returns -1
+math.compareNatural('2', '10') // returns -1
 
-math.compareText('B', ['A', 'B', 'C']); // returns [1, 0, -1]
+math.compareText('B', ['A', 'B', 'C']) // returns [1, 0, -1]
 ```
 
 

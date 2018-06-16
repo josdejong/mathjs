@@ -34,9 +34,9 @@ number &#124; BigNumber &#124; Array &#124; Matrix | OR of `x` and `y`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.bitOr(1, 2);               // returns number 3
+math.bitOr(1, 2)               // returns number 3
 
-math.bitOr([1, 2, 3], 4);       // returns Array [5, 6, 7]
+math.bitOr([1, 2, 3], 4)       // returns Array [5, 6, 7]
 ```
 
 

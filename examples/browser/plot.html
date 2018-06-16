@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>math.js | plot</title>
-  <script src="https://unpkg.com/mathjs@4.4.2/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.0.0/dist/math.min.js"></script>
 
   <script src="https://cdn.plot.ly/plotly-1.35.2.min.js"></script>
 
@@ -41,36 +41,36 @@
   function draw() {
     try {
       // compile the expression once
-      var expression = document.getElementById('eq').value;
-      var expr = math.compile(expression);
+      const expression = document.getElementById('eq').value
+      const expr = math.compile(expression)
 
       // evaluate the expression repeatedly for different values of x
-      var xValues = math.range(-10, 10, 0.5).toArray();
-      var yValues = xValues.map(function (x) {
-        return expr.eval({x: x});
-      });
+      const xValues = math.range(-10, 10, 0.5).toArray()
+      const yValues = xValues.map(function (x) {
+        return expr.eval({x: x})
+      })
 
       // render the plot using plotly
-      var trace1 = {
+      const trace1 = {
         x: xValues,
         y: yValues,
         type: 'scatter'
-      };
-      var data = [trace1];
-      Plotly.newPlot('plot', data);
+      }
+      const data = [trace1]
+      Plotly.newPlot('plot', data)
     }
     catch (err) {
-      console.error(err);
-      alert(err);
+      console.error(err)
+      alert(err)
     }
   }
 
   document.getElementById('form').onsubmit = function (event) {
-    event.preventDefault();
-    draw();
-  };
+    event.preventDefault()
+    draw()
+  }
 
-  draw();
+  draw()
 </script>
 
 </body>

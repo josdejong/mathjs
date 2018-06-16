@@ -35,7 +35,7 @@ Number &#124; BigNumber | Returns the composition counts of n into k parts.
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.composition(5, 3); // returns 6
+math.composition(5, 3) // returns 6
 ```
 
 

@@ -10,7 +10,7 @@ configure math.js:
 - Configure an existing instance of math.js using `math.config(options)`,
   for example `math.config({number: 'BigNumber'})` to change to BigNumbers.
 - Create and configure a new instance of math.js using `math.create([options])`,
-  for example `var bigmath = math.create({number: 'BigNumber'})` to create a new
+  for example `const bigmath = math.create({number: 'BigNumber'})` to create a new
   instance configured to use BigNumbers.
 
 The following configuration options are available:
@@ -66,37 +66,37 @@ This section shows a number of configuration examples.
 
 ```js
 // load the default instance of math.js
-var math = require('mathjs');
+const math = require('mathjs')
 
 // range will output a Matrix
-math.range(0, 4);       // Matrix [0, 1, 2, 3]
+math.range(0, 4)        // Matrix [0, 1, 2, 3]
 
 
 // create a new instance configured to use Arrays
-var math2 = math.create({
+const math2 = math.create({
   matrix: 'Array'       // Choose 'Matrix' (default) or 'Array'
-});
+})
 
 // range will output an Array
-math2.range(0, 4);      // Array [0, 1, 2, 3]
+math2.range(0, 4)       // Array [0, 1, 2, 3]
 
 // change the configuration of math2 from Arrays to Matrices
 math2.config({
   matrix: 'Matrix'      // Choose 'Matrix' (default) or 'Array'
-});
+})
 
 // range will output a Matrix
-math2.range(0, 4);      // Matrix [0, 1, 2, 3]
+math2.range(0, 4)       // Matrix [0, 1, 2, 3]
 
 
 // create an instance of math.js with BigNumber configuration
-var bigmath = math.create({
+const bigmath = math.create({
   number: 'BigNumber',  // Choose 'number' (default), 'BigNumber', or 'Fraction'
   precision: 32         // 64 by default, only applicable for BigNumbers
-});
+})
 
 // parser will parse numbers as BigNumber now:
-bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
+bigmath.eval('1 / 3')   // BigNumber, 0.33333333333333333333333333333333
 ```
 
 <h3 id="browser">browser <a href="#browser" title="Permalink">#</a></h3>
@@ -113,24 +113,24 @@ bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
     // the default instance of math.js is available as 'math'
 
     // range will output a Matrix
-    math.range(0, 4);       // Matrix [0, 1, 2, 3]
+    math.range(0, 4)        // Matrix [0, 1, 2, 3]
 
     // change the configuration of math from Matrices to Arrays
     math.config({
-      matrix: 'Array'      // Choose 'Matrix' (default) or 'Array'
-    });
+      matrix: 'Array'       // Choose 'Matrix' (default) or 'Array'
+    })
 
     // range will output an Array
-    math.range(0, 4);       // Array [0, 1, 2, 3]
+    math.range(0, 4)        // Array [0, 1, 2, 3]
 
     // create a new instance of math.js with bignumber configuration
-    var bigmath = math.create({
+    const bigmath = math.create({
       number: 'BigNumber',  // Choose 'number' (default), 'BigNumber', or 'Fraction'
       precision: 32         // 64 by default, only applicable for BigNumbers
-    });
+    })
 
     // parser will parse numbers as BigNumber now:
-    bigmath.eval('1 / 3');  // BigNumber, 0.33333333333333333333333333333333
+    bigmath.eval('1 / 3')   // BigNumber, 0.33333333333333333333333333333333
   </script>
 </body>
 </html>

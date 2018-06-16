@@ -39,9 +39,9 @@ number &#124; Array &#124; Matrix | The erf of `x`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.erf(0.2);    // returns 0.22270258921047847
-math.erf(-0.5);   // returns -0.5204998778130465
-math.erf(4);      // returns 0.9999999845827421
+math.erf(0.2)    // returns 0.22270258921047847
+math.erf(-0.5)   // returns -0.5204998778130465
+math.erf(4)      // returns 0.9999999845827421
 ```
 
 

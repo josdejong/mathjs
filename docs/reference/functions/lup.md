@@ -13,7 +13,7 @@ row permutation vector `p` where `A[p,:] = L * U`
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.lup(A);
+math.lup(A)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -32,8 +32,8 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var m = [[2, 1], [1, 4]];
-var r = math.lup(m);
+const m = [[2, 1], [1, 4]]
+const r = math.lup(m)
 // r = {
 //   L: [[1, 0], [0.5, 1]],
 //   U: [[2, 1], [0, 3.5]],

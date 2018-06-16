@@ -7,22 +7,22 @@ layout: default
 File: [index.js](index.js) (click for a live demo)
 
 ```js
-var math = require('../../../index');
+const math = require('../../../index')
 
 // import the new type MyType and the function `add` in math.js
-math.import(require('./MyType'));
-math.import(require('./myAdd'));
+math.import(require('./MyType'))
+math.import(require('./myAdd'))
 
 // create a shortcut to the new type.
-var MyType = math.type.MyType;
+const MyType = math.type.MyType
 
 // use the new type
-var ans1 = math.add(new MyType(2), new MyType(3));  // returns MyType(5)
-console.log(ans1.toString());                       // outputs 'MyType:5'
+const ans1 = math.add(new MyType(2), new MyType(3)) // returns MyType(5)
+console.log(ans1.toString()) // outputs 'MyType:5'
 
 // numbers will be converted to MyType
-var ans2 = math.add(new MyType(4), 7);              // returns MyType(11)
-console.log(ans2.toString());                       // outputs 'MyType:11'
+const ans2 = math.add(new MyType(4), 7) // returns MyType(11)
+console.log(ans2.toString()) // outputs 'MyType:11'
 
 ```
 
@@ -31,27 +31,25 @@ File: [MyType.js](MyType.js) (click for a live demo)
 ```js
 // Note: This file is used by the file ./index.js
 
-
 // factory function which defines a new data type MyType
-function factory(type, config, load, typed) {
-
+function factory (type, config, load, typed) {
   // create a new data type
   function MyType (value) {
-    this.value = value;
+    this.value = value
   }
-  MyType.prototype.isMyType = true;
+  MyType.prototype.isMyType = true
   MyType.prototype.toString = function () {
-    return 'MyType:' + this.value;
-  };
+    return 'MyType:' + this.value
+  }
 
   // define a new data type
   typed.addType({
     name: 'MyType',
     test: function (x) {
       // test whether x is of type MyType
-      return x && x.isMyType;
+      return x && x.isMyType
     }
-  });
+  })
 
   // define conversions if applicable
   typed.addConversion({
@@ -59,20 +57,20 @@ function factory(type, config, load, typed) {
     to: 'MyType',
     convert: function (x) {
       // convert a number to MyType
-      return new MyType(x);
+      return new MyType(x)
     }
-  });
+  })
 
   // return the construction function, this will
   // be added to math.type.MyType when imported
-  return MyType;
+  return MyType
 }
 
-exports.name = 'MyType';
-exports.path = 'type';        // will be imported into math.type.MyType
-exports.factory = factory;
-exports.lazy = false;         // disable lazy loading as this factory has side
-                              // effects: it adds a type and a conversion.
+exports.name = 'MyType'
+exports.path = 'type' // will be imported into math.type.MyType
+exports.factory = factory
+exports.lazy = false // disable lazy loading as this factory has side
+// effects: it adds a type and a conversion.
 
 ```
 
@@ -81,20 +79,19 @@ File: [myAdd.js](myAdd.js) (click for a live demo)
 ```js
 // Note: This file is used by the file ./index.js
 
-
 function factory (type, config, load, typed) {
   // create a new typed function using MyType
   // when imported in math.js, this will extend the
   // existing function `add` with support for MyType
   return typed('add', {
     'MyType, MyType': function (a, b) {
-      return new type.MyType(a.value + b.value);
+      return new type.MyType(a.value + b.value)
     }
-  });
+  })
 }
 
-exports.name = 'add';
-exports.factory = factory;
+exports.name = 'add'
+exports.factory = factory
 
 ```
 

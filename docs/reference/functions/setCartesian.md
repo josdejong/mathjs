@@ -33,7 +33,7 @@ Array &#124; Matrix | The cartesian product of two (multi)sets
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.setCartesian([1, 2], [3, 4]);        // returns [[1, 3], [1, 4], [2, 3], [2, 4]]
+math.setCartesian([1, 2], [3, 4])        // returns [[1, 3], [1, 4], [2, 3], [2, 4]]
 ```
 
 

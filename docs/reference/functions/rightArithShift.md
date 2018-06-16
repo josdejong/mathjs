@@ -34,9 +34,9 @@ number &#124; BigNumber &#124; Array &#124; Matrix | `x` sign-filled shifted rig
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.rightArithShift(4, 2);               // returns number 1
+math.rightArithShift(4, 2)               // returns number 1
 
-math.rightArithShift([16, -32, 64], 4);   // returns Array [1, -2, 3]
+math.rightArithShift([16, -32, 64], 4)   // returns Array [1, -2, 3]
 ```
 
 

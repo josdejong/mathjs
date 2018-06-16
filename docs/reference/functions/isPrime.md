@@ -34,13 +34,13 @@ boolean | Returns true when `x` is larger than zero. Throws an error in case of 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.isPrime(3);                     // returns true
-math.isPrime(-2);                    // returns false
-math.isPrime(0);                     // returns false
-math.isPrime(-0);                    // returns false
-math.isPrime(0.5);                   // returns false
-math.isPrime('2');                   // returns true
-math.isPrime([2, 17, 100]);           // returns [true, true, false]
+math.isPrime(3)                     // returns true
+math.isPrime(-2)                    // returns false
+math.isPrime(0)                     // returns false
+math.isPrime(-0)                    // returns false
+math.isPrime(0.5)                   // returns false
+math.isPrime('2')                   // returns true
+math.isPrime([2, 17, 100])           // returns [true, true, false]
 ```
 
 

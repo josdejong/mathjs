@@ -38,8 +38,8 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.median(5, 2, 7);        // returns 5
-math.median([3, -1, 5, 7]);  // returns 4
+math.median(5, 2, 7)        // returns 5
+math.median([3, -1, 5, 7])  // returns 4
 ```
 
 

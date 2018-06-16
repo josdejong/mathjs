@@ -34,9 +34,9 @@ Unit &#124; Array &#124; Matrix | value with changed, fixed unit.
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.to(math.unit('2 inch'), 'cm');                   // returns Unit 5.08 cm
-math.to(math.unit('2 inch'), math.unit(null, 'cm'));  // returns Unit 5.08 cm
-math.to(math.unit(16, 'bytes'), 'bits');              // returns Unit 128 bits
+math.to(math.unit('2 inch'), 'cm')                   // returns Unit 5.08 cm
+math.to(math.unit('2 inch'), math.unit(null, 'cm'))  // returns Unit 5.08 cm
+math.to(math.unit(16, 'bytes'), 'bits')              // returns Unit 128 bits
 ```
 
 

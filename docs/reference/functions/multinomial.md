@@ -34,7 +34,7 @@ Number &#124; BigNumber | Multinomial coefficient.
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.multinomial([1,2,1]); // returns 12
+math.multinomial([1,2,1]) // returns 12
 ```
 
 

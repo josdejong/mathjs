@@ -40,13 +40,13 @@ Index | Returns the created index
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var math = math.js
+const math = require('mathjs')
 
-var b = [1, 2, 3, 4, 5];
-math.subset(b, math.index([1, 2, 3]));     // returns [2, 3, 4]
+const b = [1, 2, 3, 4, 5]
+math.subset(b, math.index([1, 2, 3]))     // returns [2, 3, 4]
 
-var a = math.matrix([[1, 2], [3, 4]]);
-a.subset(math.index(0, 1));             // returns 2
+const a = math.matrix([[1, 2], [3, 4]])
+a.subset(math.index(0, 1))             // returns 2
 ```
 
 

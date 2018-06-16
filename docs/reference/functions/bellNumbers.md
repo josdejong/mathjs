@@ -33,8 +33,8 @@ Number &#124; BigNumber | B(n)
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.bellNumbers(3); // returns 5;
-math.bellNumbers(8); // returns 4140;
+math.bellNumbers(3) // returns 5
+math.bellNumbers(8) // returns 4140
 ```
 
 

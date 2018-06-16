@@ -32,14 +32,14 @@ number | The trace of `x`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.trace([[1, 2], [3, 4]]); // returns 5
+math.trace([[1, 2], [3, 4]]) // returns 5
 
-var A = [
+const A = [
   [1, 2, 3],
   [-1, 2, 3],
   [2, 0, 3]
 ]
-math.trace(A); // returns 6
+math.trace(A) // returns 6
 ```
 
 

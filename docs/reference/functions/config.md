@@ -32,10 +32,10 @@ Object | Returns the current configuration
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.config().number;                // outputs 'number'
-math.eval('0.4');                    // outputs number 0.4
-math.config({number: 'Fraction'});
-math.eval('0.4');                    // outputs Fraction 2/5
+math.config().number                // outputs 'number'
+math.eval('0.4')                    // outputs number 0.4
+math.config({number: 'Fraction'})
+math.eval('0.4')                    // outputs Fraction 2/5
 ```
 
 

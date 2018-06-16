@@ -32,7 +32,7 @@ Array &#124; Matrix | A set containing the distinc elements of the multiset
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.setDistinct([1, 1, 1, 2, 2, 3]);        // returns [1, 2, 3]
+math.setDistinct([1, 1, 1, 2, 2, 3])        // returns [1, 2, 3]
 ```
 
 

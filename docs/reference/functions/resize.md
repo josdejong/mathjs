@@ -34,10 +34,10 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.resize([1, 2, 3, 4, 5], [3]); // returns Array  [1, 2, 3]
-math.resize([1, 2, 3], [5], 0);    // returns Array  [1, 2, 3, 0, 0]
-math.resize(2, [2, 3], 0);         // returns Matrix [[2, 0, 0], [0, 0, 0]]
-math.resize("hello", [8], "!");    // returns string 'hello!!!'
+math.resize([1, 2, 3, 4, 5], [3]) // returns Array  [1, 2, 3]
+math.resize([1, 2, 3], [5], 0)    // returns Array  [1, 2, 3, 0, 0]
+math.resize(2, [2, 3], 0)         // returns Matrix [[2, 0, 0], [0, 0, 0]]
+math.resize("hello", [8], "!")    // returns string 'hello!!!'
 ```
 
 

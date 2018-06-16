@@ -38,18 +38,18 @@ Array &#124; Matrix | A matrix filled with zeros
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.zeros(3);                  // returns [0, 0, 0]
-math.zeros(3, 2);               // returns [[0, 0], [0, 0], [0, 0]]
-math.zeros(3, 'dense');         // returns [0, 0, 0]
+math.zeros(3)                  // returns [0, 0, 0]
+math.zeros(3, 2)               // returns [[0, 0], [0, 0], [0, 0]]
+math.zeros(3, 'dense')         // returns [0, 0, 0]
 
-var A = [[1, 2, 3], [4, 5, 6]];
-math.zeros(math.size(A));       // returns [[0, 0, 0], [0, 0, 0]]
+const A = [[1, 2, 3], [4, 5, 6]]
+math.zeros(math.size(A))       // returns [[0, 0, 0], [0, 0, 0]]
 ```
 
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
 [ones](ones.html),
-[eye](eye.html),
+[identity](identity.html),
 [size](size.html),
 [range](range.html)

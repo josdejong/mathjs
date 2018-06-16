@@ -37,7 +37,7 @@ Number &#124; BigNumber | S(n,k)
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.stirlingS2(5, 3); //returns 25
+math.stirlingS2(5, 3) //returns 25
 ```
 
 

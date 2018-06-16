@@ -34,9 +34,9 @@ number &#124; Array &#124; Matrix | `x` zero-filled shifted right `y` times
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.rightLogShift(4, 2);               // returns number 1
+math.rightLogShift(4, 2)               // returns number 1
 
-math.rightLogShift([16, -32, 64], 4);   // returns Array [1, 2, 3]
+math.rightLogShift([16, -32, 64], 4)   // returns Array [1, 2, 3]
 ```
 
 

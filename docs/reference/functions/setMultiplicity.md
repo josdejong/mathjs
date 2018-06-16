@@ -33,8 +33,8 @@ number | The number of how many times the multiset contains the element
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.setMultiplicity(1, [1, 2, 2, 4]);    // returns 1
-math.setMultiplicity(2, [1, 2, 2, 4]);    // returns 2
+math.setMultiplicity(1, [1, 2, 2, 4])    // returns 1
+math.setMultiplicity(2, [1, 2, 2, 4])    // returns 2
 ```
 
 

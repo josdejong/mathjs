@@ -34,12 +34,12 @@ number &#124; Array &#124; DenseMatrix | Returns true if the values are equal, a
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.equalText('Hello', 'Hello');     // returns true
-math.equalText('a', 'A');     // returns false
-math.equal('2e3', '2000');        // returns true
-math.equalText('2e3', '2000');        // returns false
+math.equalText('Hello', 'Hello')     // returns true
+math.equalText('a', 'A')             // returns false
+math.equal('2e3', '2000')            // returns true
+math.equalText('2e3', '2000')        // returns false
 
-math.equalText('B', ['A', 'B', 'C']); // returns [false, true, false]
+math.equalText('B', ['A', 'B', 'C']) // returns [false, true, false]
 ```
 
 

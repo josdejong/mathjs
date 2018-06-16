@@ -32,11 +32,11 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.expm1(2);                      // returns number 6.38905609893065
-math.pow(math.e, 2) - 1;            // returns number 6.3890560989306495
-math.log(math.expm1(2) + 1);        // returns number 2
+math.expm1(2)                      // returns number 6.38905609893065
+math.pow(math.e, 2) - 1            // returns number 6.3890560989306495
+math.log(math.expm1(2) + 1)        // returns number 2
 
-math.expm1([1, 2, 3]);
+math.expm1([1, 2, 3])
 // returns Array [
 //   1.718281828459045,
 //   6.3890560989306495,

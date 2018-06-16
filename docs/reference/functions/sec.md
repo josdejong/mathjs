@@ -33,8 +33,8 @@ number &#124; Complex &#124; Array &#124; Matrix | Secant of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.sec(2);      // returns number -2.4029979617223822
-1 / math.cos(2);  // returns number -2.4029979617223822
+math.sec(2)      // returns number -2.4029979617223822
+1 / math.cos(2)  // returns number -2.4029979617223822
 ```
 
 

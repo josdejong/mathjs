@@ -5,26 +5,11 @@ layout: default
 <h1 id="install">Install <a href="#install" title="Permalink">#</a></h1>
 
 
-Math.js can be installed via various package managers:
+Math.js can be installed via [npm](https://npmjs.org/):
 
-<table>
-  <thead>
-    <tr>
-      <th>Package Manager</th>
-      <th>Installation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="http://npmjs.org/">npm</a> (recommended)</td>
-      <td><pre class="highlight">npm install mathjs</pre></td>
-    </tr>
-    <tr>
-      <td><a href="http://bower.io/">bower</a> (deprecated)</td>
-      <td><pre class="highlight">bower install mathjs</pre></td>
-    </tr>
-  </tbody>
-</table>
+```
+npm install mathjs
+```
 
 When installed globally with [npm](https://npmjs.org/) (using the `-g` option), math.js is available as a command line application `mathjs`, see documentation on [Command Line Interface](docs/command_line_interface.html).
 
@@ -43,7 +28,7 @@ Math.js can be downloaded or linked from various content delivery networks:
   <tbody>
     <tr>
       <td>unpkg</td>
-      <td><a href="https://unpkg.com/mathjs@4.4.2/">https://unpkg.com/mathjs@4.4.2/</a></td>
+      <td><a href="https://unpkg.com/mathjs@5.0.0/">https://unpkg.com/mathjs@5.0.0/</a></td>
     </tr>
     <tr>
       <td>cdnjs</td>
@@ -61,22 +46,22 @@ Here some direct download links from [unpkg](https://unpkg.com):
 <table class="download">
   <tr>
     <td>
-      <a href="https://unpkg.com/mathjs@4.4.2/dist/math.js">
-        Development (version 4.4.2)
+      <a href="https://unpkg.com/mathjs@5.0.0/dist/math.js">
+        Development (version 5.0.0)
       </a>
     </td>
     <td>
-      <span id="development-size">1664 kB</span>, uncompressed with comments
+      <span id="development-size">1683 kB</span>, uncompressed with comments
     </td>
   </tr>
   <tr>
     <td>
-      <a href="https://unpkg.com/mathjs@4.4.2/dist/math.min.js">
-        Production (version 4.4.2)
+      <a href="https://unpkg.com/mathjs@5.0.0/dist/math.min.js">
+        Production (version 5.0.0)
       </a>
     </td>
     <td>
-      <span id="production-size">131 kB</span>, minified and gzipped
+      <span id="production-size">133 kB</span>, minified and gzipped
     </td>
   </tr>
 </table>
@@ -125,7 +110,11 @@ A changelog describing the changes with each release is available on the page [H
 
 <h1 id="browsersupport">Browser support <a href="#browsersupport" title="Permalink">#</a></h1>
 
-Math.js works on any ES5 compatible JavaScript engine: node.js 4 and newer and IE11 and newer. If support for old browsers is required, the [es5-shim](https://github.com/kriskowal/es5-shim) library has to be loaded.
+
+Math.js works on any ES5 compatible JavaScript engine: node.js 4 or newer, Chrome, Firefox, Safari, Edge, and IE11.
+
+Though there is no official support for older browsers, math.js should still work on older browsers
+when using the [es5-shim](https://github.com/kriskowal/es5-shim).
 
 
 <h1 id="source-code">Source code <a href="#source-code" title="Permalink">#</a></h1>

@@ -33,8 +33,8 @@ Array &#124; Matrix | The intersection of two (multi)sets
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.setIntersect([1, 2, 3, 4], [3, 4, 5, 6]);            // returns [3, 4]
-math.setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]]);    // returns [3, 4]
+math.setIntersect([1, 2, 3, 4], [3, 4, 5, 6])            // returns [3, 4]
+math.setIntersect([[1, 2], [3, 4]], [[3, 4], [5, 6]])    // returns [3, 4]
 ```
 
 

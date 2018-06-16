@@ -53,10 +53,10 @@ Array &#124; Matrix | range
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.range(2, 6);        // [2, 3, 4, 5]
-math.range(2, -3, -1);   // [2, 1, 0, -1, -2]
-math.range('2:1:6');     // [2, 3, 4, 5]
-math.range(2, 6, true);  // [2, 3, 4, 5, 6]
+math.range(2, 6)        // [2, 3, 4, 5]
+math.range(2, -3, -1)   // [2, 1, 0, -1, -2]
+math.range('2:1:6')     // [2, 3, 4, 5]
+math.range(2, 6, true)  // [2, 3, 4, 5, 6]
 ```
 
 

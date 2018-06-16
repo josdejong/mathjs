@@ -14,7 +14,7 @@ Solves the linear equation system by backward substitution. Matrix must be an up
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.usolve(U, b);
+math.usolve(U, b)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -34,9 +34,9 @@ DenseMatrix &#124; Array | A column vector with the linear system solution (x)
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var a = [[-2, 3], [2, 1]];
-var b = [11, 9];
-var x = usolve(a, b);  // [[8], [9]]
+const a = [[-2, 3], [2, 1]]
+const b = [11, 9]
+const x = usolve(a, b)  // [[8], [9]]
 ```
 
 

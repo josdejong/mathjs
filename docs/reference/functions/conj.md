@@ -34,9 +34,9 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  The complex
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.conj(math.complex('2 + 3i'));  // returns Complex 2 - 3i
-math.conj(math.complex('2 - 3i'));  // returns Complex 2 + 3i
-math.conj(math.complex('-5.2i'));  // returns Complex 5.2i
+math.conj(math.complex('2 + 3i'))  // returns Complex 2 - 3i
+math.conj(math.complex('2 - 3i'))  // returns Complex 2 + 3i
+math.conj(math.complex('-5.2i'))  // returns Complex 5.2i
 ```
 
 

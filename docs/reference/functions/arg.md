@@ -34,12 +34,12 @@ number &#124; BigNumber &#124; Array &#124; Matrix | The argument of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var a = math.complex(2, 2);
-math.arg(a) / math.pi;          // returns number 0.25
+const a = math.complex(2, 2)
+math.arg(a) / math.pi          // returns number 0.25
 
-var b = math.complex('2 + 3i');
-math.arg(b);                    // returns number 0.982793723247329
-math.atan2(3, 2);               // returns number 0.982793723247329
+const b = math.complex('2 + 3i')
+math.arg(b)                    // returns number 0.982793723247329
+math.atan2(3, 2)               // returns number 0.982793723247329
 ```
 
 

@@ -8,11 +8,11 @@
 
 <script>
   // load math.js using require.js
-  require(['https://unpkg.com/mathjs@4.4.2/dist/math.min.js'], function (math) {
+  require(['https://unpkg.com/mathjs@5.0.0/dist/math.min.js'], function (math) {
     // evaluate some expression
-    var result = math.eval('1.2 * (2 + 4.5)');
-    document.write(result);
-  });
+    const result = math.eval('1.2 * (2 + 4.5)')
+    document.write(result)
+  })
 </script>
 
 </body>

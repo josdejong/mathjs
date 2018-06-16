@@ -43,10 +43,10 @@ Array &#124; Matrix | Returns the cross product of `x` and `y`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.cross([1, 1, 0],   [0, 1, 1]);       // Returns [1, -1, 1]
-math.cross([3, -3, 1],  [4, 9, 2]);       // Returns [-15, -2, 39]
-math.cross([2, 3, 4],   [5, 6, 7]);       // Returns [-3, 6, -3]
-math.cross([[1, 2, 3]], [[4], [5], [6]]); // Returns [[-3, 6, -3]]
+math.cross([1, 1, 0],   [0, 1, 1])       // Returns [1, -1, 1]
+math.cross([3, -3, 1],  [4, 9, 2])       // Returns [-15, -2, 39]
+math.cross([2, 3, 4],   [5, 6, 7])       // Returns [-3, 6, -3]
+math.cross([[1, 2, 3]], [[4], [5], [6]]) // Returns [[-3, 6, -3]]
 ```
 
 

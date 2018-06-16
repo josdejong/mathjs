@@ -48,10 +48,10 @@ math.format(value, callback)
      significant digits after the decimal point.
      `precision` is undefined by default.
    - `lowerExp: number`
-     Exponent determining the lower boundary for formatting a value with 
+     Exponent determining the lower boundary for formatting a value with
      an exponent when `notation='auto`. Default value is `-3`.
-   - `upperExp: number` 
-     Exponent determining the upper boundary for formatting a value with 
+   - `upperExp: number`
+     Exponent determining the upper boundary for formatting a value with
      an exponent when `notation='auto`. Default value is `5`.
    - `fraction: string`. Available values: 'ratio' (default) or 'decimal'.
      For example `format(fraction(1, 3))` will output '1/3' when 'ratio' is
@@ -80,25 +80,25 @@ string | The formatted value
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.format(6.4);                                        // returns '6.4'
-math.format(1240000);                                    // returns '1.24e6'
-math.format(1/3);                                        // returns '0.3333333333333333'
-math.format(1/3, 3);                                     // returns '0.333'
-math.format(21385, 2);                                   // returns '21000'
-math.format(12e8, {notation: 'fixed'});                  // returns '1200000000'
-math.format(2.3,  {notation: 'fixed', precision: 4});    // returns '2.3000'
-math.format(52.8, {notation: 'exponential'});            // returns '5.28e+1'
-math.format(12400,{notation: 'engineering'});            // returns '12.400e+3'
-math.format(2000, {lowerExp: -2, upperExp: 2});          // returns '2e+3'
+math.format(6.4)                                        // returns '6.4'
+math.format(1240000)                                    // returns '1.24e6'
+math.format(1/3)                                        // returns '0.3333333333333333'
+math.format(1/3, 3)                                     // returns '0.333'
+math.format(21385, 2)                                   // returns '21000'
+math.format(12e8, {notation: 'fixed'})                  // returns '1200000000'
+math.format(2.3,  {notation: 'fixed', precision: 4})    // returns '2.3000'
+math.format(52.8, {notation: 'exponential'})            // returns '5.28e+1'
+math.format(12400,{notation: 'engineering'})            // returns '12.400e+3'
+math.format(2000, {lowerExp: -2, upperExp: 2})          // returns '2e+3'
 
 function formatCurrency(value) {
   // return currency notation with two digits:
-  return '$' + value.toFixed(2);
+  return '$' + value.toFixed(2)
 
   // you could also use math.format inside the callback:
-  // return '$' + math.format(value, {notation: 'fixed', precision: 2});
+  // return '$' + math.format(value, {notation: 'fixed', precision: 2})
 }
-math.format([2.1, 3, 0.016], formatCurrency};            // returns '[$2.10, $3.00, $0.02]'
+math.format([2.1, 3, 0.016], formatCurrency}            // returns '[$2.10, $3.00, $0.02]'
 ```
 
 

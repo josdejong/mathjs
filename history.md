@@ -4,6 +4,33 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180616-version-500">2018-06-16, version 5.0.0 <a href="#20180616-version-500" title="Permalink">#</a></h2>
+
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+- Implemented complex conjugate transpose `math.ctranspose`. See <a href="https://github.com/josdejong/mathjs/issues/1097">#1097</a>.
+  Thanks <a href="https://github.com/jackschmidt">@jackschmidt</a>.
+- Changed the behavior of `A'` (transpose) in the expression parser to
+  calculate the complex conjugate transpose. See <a href="https://github.com/josdejong/mathjs/issues/1097">#1097</a>. Thanks <a href="https://github.com/jackschmidt">@jackschmidt</a>.
+- Added support for `complex({abs: 1, arg: 1})`, and improved the docs on
+  complex numbers. Thanks <a href="https://github.com/ssaket">@ssaket</a>.
+- Renamed `eye` to `identity`, see <a href="https://github.com/josdejong/mathjs/issues/1054">#1054</a>.
+- Math.js code can now contain ES6. The ES6 source code is moved from `lib`
+  to `src`, and `lib` now contains the compiled ES5 code.
+- Upgraded dependencies:
+  - `decimal.js` from `9.0.1` to `10.0.1`
+  - Upgraded dev dependencies
+- Changed code style to https://standardjs.com/, run linter on `npm test`.
+  See <a href="https://github.com/josdejong/mathjs/issues/1110">#1110</a>.
+- Dropped support for bower. Use npm or an other package manages instead.
+- Dropped support for (non-primitive) instances of `Number`, `Boolean`, and
+  `String` from functions `clone` and `typeof`.
+- Dropped official support for IE9 (probably still works, but it's not tested).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/851">#851</a>: More consistent behavior of sqrt, nthRoot, and pow.
+  Thanks <a href="https://github.com/dakotablair">@dakotablair</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1103">#1103</a>: Calling `toTex` on node that contains `derivative` causing
+  an exception. Thanks <a href="https://github.com/joelhoover">@joelhoover</a>.
+
 
 <h2 id="20180602-version-442">2018-06-02, version 4.4.2 <a href="#20180602-version-442" title="Permalink">#</a></h2>
 

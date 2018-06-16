@@ -34,12 +34,12 @@ number &#124; BigNumber &#124; Array &#124; Matrix | The imaginary part of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var a = math.complex(2, 3);
-math.re(a);                     // returns number 2
-math.im(a);                     // returns number 3
+const a = math.complex(2, 3)
+math.re(a)                     // returns number 2
+math.im(a)                     // returns number 3
 
-math.re(math.complex('-5.2i')); // returns number -5.2
-math.re(math.complex(2.4));     // returns number 0
+math.re(math.complex('-5.2i')) // returns number -5.2
+math.re(math.complex(2.4))     // returns number 0
 ```
 
 

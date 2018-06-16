@@ -40,9 +40,9 @@ Array | Returns the point of intersection of lines/lines-planes
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.intersect([0, 0], [10, 10], [10, 0], [0, 10]);              // Returns [5, 5]
-math.intersect([0, 0, 0], [10, 10, 0], [10, 0, 0], [0, 10, 0]);  // Returns [5, 5, 0]
-math.intersect([1, 0, 1],  [4, -2, 2], [1, 1, 1, 6]);            // Returns [7, -4, 3]
+math.intersect([0, 0], [10, 10], [10, 0], [0, 10])              // Returns [5, 5]
+math.intersect([0, 0, 0], [10, 10, 0], [10, 0, 0], [0, 10, 0])  // Returns [5, 5, 0]
+math.intersect([1, 0, 1],  [4, -2, 2], [1, 1, 1, 6])            // Returns [7, -4, 3]
 ```
 
 

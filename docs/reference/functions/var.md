@@ -47,12 +47,12 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.var(2, 4, 6);                     // returns 4
-math.var([2, 4, 6, 8]);                // returns 6.666666666666667
-math.var([2, 4, 6, 8], 'uncorrected'); // returns 5
-math.var([2, 4, 6, 8], 'biased');      // returns 4
+math.var(2, 4, 6)                     // returns 4
+math.var([2, 4, 6, 8])                // returns 6.666666666666667
+math.var([2, 4, 6, 8], 'uncorrected') // returns 5
+math.var([2, 4, 6, 8], 'biased')      // returns 4
 
-math.var([[1, 2, 3], [4, 5, 6]]);      // returns 3.5
+math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
 ```
 
 

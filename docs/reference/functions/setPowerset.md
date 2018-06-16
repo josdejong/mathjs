@@ -32,7 +32,7 @@ Array | The powerset of the (multi)set
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.setPowerset([1, 2, 3]);        // returns [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
+math.setPowerset([1, 2, 3])        // returns [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
 ```
 
 

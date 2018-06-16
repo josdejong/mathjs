@@ -33,8 +33,8 @@ number &#124; Complex &#124; Array &#124; Matrix | Cotangent of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.cot(2);      // returns number -0.45765755436028577
-1 / math.tan(2);  // returns number -0.45765755436028577
+math.cot(2)      // returns number -0.45765755436028577
+1 / math.tan(2)  // returns number -0.45765755436028577
 ```
 
 

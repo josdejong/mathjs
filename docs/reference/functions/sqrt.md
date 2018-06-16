@@ -33,9 +33,9 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit | 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.sqrt(25);                // returns 5
-math.square(5);               // returns 25
-math.sqrt(-4);                // returns Complex 2i
+math.sqrt(25)                // returns 5
+math.square(5)               // returns 25
+math.sqrt(-4)                // returns Complex 2i
 ```
 
 

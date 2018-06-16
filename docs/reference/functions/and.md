@@ -33,14 +33,14 @@ boolean &#124; Array &#124; Matrix |  Returns true when both inputs are defined 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.and(2, 4);   // returns true
+math.and(2, 4)   // returns true
 
-a = [2, 0, 0];
-b = [3, 7, 0];
-c = 0;
+a = [2, 0, 0]
+b = [3, 7, 0]
+c = 0
 
-math.and(a, b);   // returns [true, false, false]
-math.and(a, c);   // returns [false, false, false]
+math.and(a, b)   // returns [true, false, false]
+math.and(a, c)   // returns [false, false, false]
 ```
 
 

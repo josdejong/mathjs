@@ -35,8 +35,8 @@ number | Returns the dot product of `x` and `y`
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.dot([2, 4, 1], [2, 2, 3]);       // returns number 15
-math.multiply([2, 4, 1], [2, 2, 3]);  // returns number 15
+math.dot([2, 4, 1], [2, 2, 3])       // returns number 15
+math.multiply([2, 4, 1], [2, 2, 3])  // returns number 15
 ```
 
 

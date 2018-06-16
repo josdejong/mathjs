@@ -7,10 +7,6 @@ title: Home
 
 Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices. Powerful and easy to use.
 
-<div class="info-warning">
-Math.js version 4.0.0 has been released on 2018-02-25. This version contains breaking changes, so be careful when upgrading. Check out the <a href="http://mathjs.org/history.html">History</a> page for details.
-</div>
-
 <h1 id="features">Features <a href="#features" title="Permalink">#</a></h1>
 
 - Supports numbers, big numbers, complex numbers, fractions, units, strings, arrays, and matrices.
@@ -32,26 +28,26 @@ Math.js version 4.0.0 has been released on 2018-02-25. This version contains bre
     </p>
     <div>
 <pre class="highlight"><code class="language-js" data-lang="js"><span class="c1">// functions and constants</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">e</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>            <span class="c1">// 2.718</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p">;</span>      <span class="c1">// 0.75</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>              <span class="c1">// 4</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">);</span>                    <span class="c1">// 2i</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">derivative</span><span class="p">(</span><span class="s1">'x^2 + x'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">);</span>  <span class="c1">// 2*x+1</span>
-<span class="nx">math</span><span class="p">.</span><span class="nx">pow</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="mi">2</span><span class="p">);</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">math</span><span class="p">.</span><span class="nx">e</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>            <span class="c1">// 2.718</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">atan2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="nx">math</span><span class="p">.</span><span class="nx">pi</span><span class="p"></span>      <span class="c1">// 0.75</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>              <span class="c1">// 4</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>                    <span class="c1">// 2i</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">derivative</span><span class="p">(</span><span class="s1">'x^2 + x'</span><span class="p">,</span> <span class="s1">'x'</span><span class="p">)</span>  <span class="c1">// 2*x+1</span>
+<span class="nx">math</span><span class="p">.</span><span class="nx">pow</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="mi">2</span><span class="p">)</span>
      <span class="c1">// [[7, 0], [0, 7]]</span>
 
 <span class="c1">// expressions</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'1.2 * (2 + 4.5)'</span><span class="p">);</span>     <span class="c1">// 7.8</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'12.7 cm to inch'</span><span class="p">);</span>     <span class="c1">// 5 inch</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'sin(45 deg) ^ 2'</span><span class="p">);</span>     <span class="c1">// 0.5</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'9 / 3 + 2i'</span><span class="p">);</span>          <span class="c1">// 3 + 2i</span>
-<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'det([-1, 2; 3, 1])'</span><span class="p">);</span>  <span class="c1">// -7</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'1.2 * (2 + 4.5)'</span><span class="p">)</span>     <span class="c1">// 7.8</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'12.7 cm to inch'</span><span class="p">)</span>     <span class="c1">// 5 inch</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'sin(45 deg) ^ 2'</span><span class="p">)</span>     <span class="c1">// 0.5</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'9 / 3 + 2i'</span><span class="p">)</span>          <span class="c1">// 3 + 2i</span>
+<span class="nx">math</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="s1">'det([-1, 2; 3, 1])'</span><span class="p">)</span>  <span class="c1">// -7</span>
 
 <span class="c1">// chaining</span>
 <span class="nx">math</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">multiply</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">done</span><span class="p">();</span> <span class="c1">// 14</span></code></pre>
+    <span class="p">.</span><span class="nx">done</span><span class="p">()</span> <span class="c1">// 14</span></code></pre>
   </div>
   </div>
   <div class="right">

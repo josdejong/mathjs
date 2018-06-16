@@ -26,8 +26,8 @@ Parameter | Type | Description
 
 ```js
 math.forEach([1, 2, 3], function(value) {
-  console.log(value);
-});
+  console.log(value)
+})
 // outputs 1, 2, 3
 ```
 

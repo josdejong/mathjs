@@ -36,7 +36,7 @@ number &#124; BigNumber | Number of possible combinations.
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.combinations(7, 5); // returns 21
+math.combinations(7, 5) // returns 21
 ```
 
 

@@ -43,17 +43,17 @@ The following code example shows how to import a function and a value into math.
 math.import({
   myvalue: 42,
   hello: function (name) {
-    return 'hello, ' + name + '!';
+    return 'hello, ' + name + '!'
   }
-});
+})
 
 // defined functions can be used in both JavaScript as well as the parser
-math.myvalue * 2;               // 84
-math.hello('user');             // 'hello, user!'
+math.myvalue * 2               // 84
+math.hello('user')             // 'hello, user!'
 
-var parser = math.parser();
-parser.eval('myvalue + 10');    // 52
-parser.eval('hello("user")');   // 'hello, user!'
+const parser = math.parser()
+parser.eval('myvalue + 10')    // 52
+parser.eval('hello("user")')   // 'hello, user!'
 ```
 
 <h2 id="import-external-libraries">Import external libraries <a href="#import-external-libraries" title="Permalink">#</a></h2>
@@ -72,15 +72,15 @@ like `Array`, the imported functions can be wrapped by enabling `{wrap: true}`.
 
 ```js
 // import the numbers.js and numeric.js libraries into math.js
-math.import(require('numbers'), {wrap: true, silent: true});
-math.import(require('numeric'), {wrap: true, silent: true});
+math.import(require('numbers'), {wrap: true, silent: true})
+math.import(require('numeric'), {wrap: true, silent: true})
 
 // use functions from numbers.js
-math.fibonacci(7);                          // 13
-math.eval('fibonacci(7)');                  // 13
+math.fibonacci(7)                          // 13
+math.eval('fibonacci(7)')                  // 13
 
 // use functions from numeric.js
-math.eval('eig([1, 2; 4, 3])').lambda.x;    // [5, -1]
+math.eval('eig([1, 2; 4, 3])').lambda.x    // [5, -1]
 ```
 
 
@@ -93,15 +93,15 @@ And can automatically convert input types where needed.
 A typed function can be created like:
 
 ```js
-var max = typed('max', {
+const max = typed('max', {
   'number, number': function (a, b) {
-    return Math.max(a, b);
+    return Math.max(a, b)
   },
 
   'BigNumber, BigNumber': function (a, b) {
-    return a.greaterThan(b) ? a : b;
+    return a.greaterThan(b) ? a : b
   }
-});
+})
 ```
 
 Typed functions can be merged as long as there are no conflicts in the signatures.
@@ -111,11 +111,11 @@ data types.
 ```js
 // create a new data type
 function MyType (value) {
-  this.value = value;
+  this.value = value
 }
-MyType.prototype.isMyType = true;
+MyType.prototype.isMyType = true
 MyType.prototype.toString = function () {
-  return 'MyType:' + this.value;
+  return 'MyType:' + this.value
 }
 
 // define a new datatype
@@ -123,23 +123,23 @@ math.typed.addType({
   name: 'MyType',
   test: function (x) {
     // test whether x is of type MyType
-    return x && x.isMyType;
+    return x && x.isMyType
   }
 })
 
 // use the type in a new typed function
-var add = typed('add', {
+const add = typed('add', {
   'MyType, MyType': function (a, b) {
-    return new MyType(a.value + b.value);
+    return new MyType(a.value + b.value)
   }
-});
+})
 
 // import in math.js, extend the existing function `add` with support for MyType
-math.import({add: add});
+math.import({add: add})
 
 // use the new type
-var ans = math.add(new MyType(2), new MyType(3)); // returns MyType(5)
-console.log(ans);                                 // outputs 'MyType:5'
+const ans = math.add(new MyType(2), new MyType(3)) // returns MyType(5)
+console.log(ans)                                 // outputs 'MyType:5'
 ```
 
 Detailed information on typed functions is available here:
@@ -157,7 +157,7 @@ math.import({
   myFunction: function (a, b) {
      // ...
   }
-});
+})
 ```
 
 The function can be stored in a separate file:
@@ -171,7 +171,7 @@ exports.myFunction = function (a, b) {
 Which can be imported like:
 
 ```js
-math.import(require('./myFunction.js'));
+math.import(require('./myFunction.js'))
 ```
 
 An issue arises when `myFunction` needs functionality from math.js:
@@ -180,12 +180,12 @@ Factory functions can be used to solve this issue. A file exporting a factory fu
 looks like:
 
 ```js
-exports.name = 'myFunction';
+exports.name = 'myFunction'
 exports.factory = function (type, config, load, typed) {
   return function myFunction (a, b) {
     // ...
   }
-};
+}
 ```
 
 The file exports a name and a factory function. When running `math.import`, the factory
@@ -199,12 +199,12 @@ function is invoked by math.js with four arguments:
 
     ```js
     exports.factory = function (type, config, load, typed) {
-      var add = load(require('mathjs/lib/function/arithmetic/add'));
+      const add = load(require('mathjs/lib/function/arithmetic/add'))
 
       return myFunction (a, b) {
         // ...
       }
-    };
+    }
     ```
 
 -   `typed: function`:  function to create typed-functions.
@@ -236,5 +236,5 @@ math.import([
   require('./myFactoryFunction2.js'),
   require('./myFactoryFunction3.js'),
   // ...
-]);
+])
 ```

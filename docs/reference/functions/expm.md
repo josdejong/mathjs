@@ -37,8 +37,8 @@ Matrix | The exponential of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var A = [[0,2],[0,0]]
-math.expm(A);        // returns [[1,2],[0,1]]
+const A = [[0,2],[0,0]]
+math.expm(A)        // returns [[1,2],[0,1]]
 ```
 
 

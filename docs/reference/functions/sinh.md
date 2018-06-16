@@ -34,7 +34,7 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Hyperbolic s
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.sinh(0.5);       // returns number 0.5210953054937474
+math.sinh(0.5)       // returns number 0.5210953054937474
 ```
 
 

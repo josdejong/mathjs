@@ -32,9 +32,9 @@ Help | A help object
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-console.log(math.help('sin').toString());
-console.log(math.help(math.add).toString());
-console.log(math.help(math.add).toJSON());
+console.log(math.help('sin').toString())
+console.log(math.help(math.add).toString())
+console.log(math.help(math.add).toJSON())
 ```
 
 

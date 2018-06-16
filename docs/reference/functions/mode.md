@@ -33,8 +33,8 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.mode(2, 1, 4, 3, 1);                            // returns [1]
-math.mode([1, 2.7, 3.2, 4, 2.7]);                    // returns [2.7]
+math.mode(2, 1, 4, 3, 1)                            // returns [1]
+math.mode([1, 2.7, 3.2, 4, 2.7])                    // returns [2.7]
 math.mode(1, 4, 6, 1, 6)                             // returns [1, 6]
 math.mode('a','a','b','c')                           // returns ["a"]
 math.mode(1, 1.5, 'abc')                             // returns [1, 1.5, "abc"]

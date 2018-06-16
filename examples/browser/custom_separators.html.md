@@ -23,7 +23,7 @@ File: [custom_separators.html](custom_separators.html) (click for a live demo)
     }
   </style>
 
-  <script src="https://unpkg.com/mathjs@4.4.2/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.0.0/dist/math.min.js"></script>
 </head>
 <body>
 
@@ -59,29 +59,29 @@ File: [custom_separators.html](custom_separators.html) (click for a live demo)
 
 <script>
   // pointers to the input elements
-  var expression = document.getElementById('expression');
-  var evaluate   = document.getElementById('evaluate');
-  var result     = document.getElementById('result');
-  var args       = document.getElementById('args');
-  var decimals   = document.getElementById('decimals');
+  const expression = document.getElementById('expression')
+  const evaluate   = document.getElementById('evaluate')
+  const result     = document.getElementById('result')
+  const args       = document.getElementById('args')
+  const decimals   = document.getElementById('decimals')
 
   // attach event handler to the button
   evaluate.onclick = function () {
     // replace the custom separators in the input with the default separators
-    var expr = expression.value
+    const expr = expression.value
         .replace(new RegExp('\\' + decimals.value + '|\\' + args.value, 'g'), function (match) {
-          return match == decimals.value ? '.': ',';
-        });
+          return match === decimals.value ? '.': ','
+        })
 
     // do the actual evaluation
-    var res = math.eval(expr);
+    const res = math.eval(expr)
 
     // replace the default separators in the output with custom separators
     result.innerHTML = res.toString()
         .replace(new RegExp(',|\\.', 'g'), function (match) {
-          return match == '.' ? decimals.value : args.value;
-        });
-  };
+          return match === '.' ? decimals.value : args.value
+        })
+  }
 </script>
 
 

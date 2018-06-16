@@ -36,10 +36,10 @@ number &#124; BigNumber | Returns the hypothenusa of the input values.
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.hypot(3, 4);      // 5
-math.hypot(3, 4, 5);   // 7.0710678118654755
-math.hypot([3, 4, 5]); // 7.0710678118654755
-math.hypot(-2);        // 2
+math.hypot(3, 4)      // 5
+math.hypot(3, 4, 5)   // 7.0710678118654755
+math.hypot([3, 4, 5]) // 7.0710678118654755
+math.hypot(-2)        // 2
 ```
 
 

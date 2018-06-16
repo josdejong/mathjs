@@ -39,8 +39,8 @@ boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.smaller(1 + 2, 3);        // returns false
-math.smallerEq(1 + 2, 3);      // returns true
+math.smaller(1 + 2, 3)        // returns false
+math.smallerEq(1 + 2, 3)      // returns true
 ```
 
 

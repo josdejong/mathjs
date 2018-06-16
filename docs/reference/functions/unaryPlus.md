@@ -34,8 +34,8 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.unaryPlus(3.5);      // returns 3.5
-math.unaryPlus(1);     // returns 1
+math.unaryPlus(3.5)      // returns 3.5
+math.unaryPlus(1)     // returns 1
 ```
 
 

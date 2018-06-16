@@ -34,7 +34,7 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccosine of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.acosh(1.5);       // returns 0.9624236501192069
+math.acosh(1.5)       // returns 0.9624236501192069
 ```
 
 

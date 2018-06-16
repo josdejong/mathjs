@@ -32,10 +32,10 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.abs(3.5);                // returns number 3.5
-math.abs(-4.2);               // returns number 4.2
+math.abs(3.5)                // returns number 3.5
+math.abs(-4.2)               // returns number 4.2
 
-math.abs([3, -5, -1, 0, 2]);  // returns Array [3, 5, 1, 0, 2]
+math.abs([3, -5, -1, 0, 2])  // returns Array [3, 5, 1, 0, 2]
 ```
 
 

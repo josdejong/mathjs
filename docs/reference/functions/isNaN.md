@@ -34,14 +34,14 @@ boolean | Returns true when `x` is NaN. Throws an error in case of an unknown da
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.isNaN(3);                     // returns false
-math.isNaN(NaN);                   // returns true
-math.isNaN(0);                     // returns false
-math.isNaN(math.bignumber(NaN));   // returns true
-math.isNaN(math.bignumber(0));     // returns false
-math.isNaN(math.fraction(-2, 5));  // returns false
-math.isNaN('-2');                  // returns false
-math.isNaN([2, 0, -3, NaN]');      // returns [false, false, false, true]
+math.isNaN(3)                     // returns false
+math.isNaN(NaN)                   // returns true
+math.isNaN(0)                     // returns false
+math.isNaN(math.bignumber(NaN))   // returns true
+math.isNaN(math.bignumber(0))     // returns false
+math.isNaN(math.fraction(-2, 5))  // returns false
+math.isNaN('-2')                  // returns false
+math.isNaN([2, 0, -3, NaN]')      // returns [false, false, false, true]
 ```
 
 

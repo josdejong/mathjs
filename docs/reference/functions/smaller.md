@@ -39,12 +39,12 @@ boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, 
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.smaller(2, 3);            // returns true
-math.smaller(5, 2 * 2);        // returns false
+math.smaller(2, 3)            // returns true
+math.smaller(5, 2 * 2)        // returns false
 
-var a = math.unit('5 cm');
-var b = math.unit('2 inch');
-math.smaller(a, b);            // returns true
+const a = math.unit('5 cm')
+const b = math.unit('2 inch')
+math.smaller(a, b)            // returns true
 ```
 
 

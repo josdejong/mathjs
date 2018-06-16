@@ -34,9 +34,9 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.sum(2, 1, 4, 3);               // returns 10
-math.sum([2, 1, 4, 3]);             // returns 10
-math.sum([[2, 5], [4, 3], [1, 7]]); // returns 22
+math.sum(2, 1, 4, 3)               // returns 10
+math.sum([2, 1, 4, 3])             // returns 10
+math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
 ```
 
 

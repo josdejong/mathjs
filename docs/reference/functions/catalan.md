@@ -33,8 +33,8 @@ Number &#124; BigNumber | Cn(n)
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.catalan(3); // returns 5;
-math.catalan(8); // returns 1430;
+math.catalan(3) // returns 5
+math.catalan(8) // returns 1430
 ```
 
 

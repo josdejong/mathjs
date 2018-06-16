@@ -11,7 +11,7 @@ be used to analyze, manipulate, and evaluate expressions.
 Example:
 
 ```js
-var node = math.parse('sqrt(2 + x)');
+const node = math.parse('sqrt(2 + x)')
 ```
 
 In this case, the expression `sqrt(2 + x)` is parsed as:
@@ -27,10 +27,10 @@ In this case, the expression `sqrt(2 + x)` is parsed as:
 Alternatively, this expression tree can be build by manually creating nodes:
 
 ```js
-var node1 = new math.expression.node.ConstantNode(2);
-var node2 = new math.expression.node.SymbolNode('x');
-var node3 = new math.expression.node.OperatorNode('+', 'add', [node1, node2]);
-var node4 = new math.expression.node.FunctionNode('sqrt', [node3]);
+const node1 = new math.expression.node.ConstantNode(2)
+const node2 = new math.expression.node.SymbolNode('x')
+const node3 = new math.expression.node.OperatorNode('+', 'add', [node1, node2])
+const node4 = new math.expression.node.FunctionNode('sqrt', [node3])
 ```
 
 The resulting expression tree with root node `node4` is equal to the expression
@@ -55,23 +55,23 @@ All nodes have the following methods:
 
 -   `compile() : Object`
 
-    Compile an expression into optimized JavaScript code. `compile` returns an 
+    Compile an expression into optimized JavaScript code. `compile` returns an
     object with a function `eval([scope])` to evaluate. Example:
-    
+
     ```js
-    var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var code = node.compile();      // returns {eval: function (scope) {...}}
-    var eval = code.eval({x: 3});   // returns 5
+    const node = math.parse('2 + x') // returns the root Node of an expression tree
+    const code = node.compile()      // returns {eval: function (scope) {...}}
+    const eval = code.eval({x: 3})   // returns 5
     ```
 
 -   `eval([scope]) : Object`
 
-    Compile and eval an expression, this is the equivalent of doing 
+    Compile and eval an expression, this is the equivalent of doing
     `node.compile().eval(scope)`. Example:
-    
+
     ```js
-    var node = math.parse('2 + x'); // returns the root Node of an expression tree
-    var eval = node.eval({x: 3});   // returns 5
+    const node = math.parse('2 + x') // returns the root Node of an expression tree
+    const eval = node.eval({x: 3})   // returns 5
     ```
 
 -   `equals(other: Node) : boolean`
@@ -86,14 +86,14 @@ All nodes have the following methods:
     every node in the tree, and must return a boolean. The function `filter`
     returns an array with nodes for which the test returned true.
     Parameter `path` is a string containing a relative JSON Path.
-    
+
     Example:
 
     ```js
-    var node = math.parse('x^2 + x/4 + 3*y');
-    var filtered = node.filter(function (node) {
-      return node.isSymbolNode && node.name === 'x';
-    });
+    const node = math.parse('x^2 + x/4 + 3*y')
+    const filtered = node.filter(function (node) {
+      return node.isSymbolNode && node.name === 'x'
+    })
     // returns an array with two entries: two SymbolNodes 'x'
     ```
 
@@ -102,21 +102,28 @@ All nodes have the following methods:
     Execute a callback for each of the child nodes of this node. The `callback`
     function is called as `callback(child: Node, path: string, parent: Node)`.
     Parameter `path` is a string containing a relative JSON Path.
-    
+
     See also `traverse`, which is a recursive version of `forEach`.
-    
+
     Example:
-    
+
     ```js
-    var node = math.parse('3 * x + 2');
+    const node = math.parse('3 * x + 2')
     node.forEach(function (node, path, parent) {
       switch (node.type) {
-        case 'OperatorNode': console.log(node.type, node.op);    break;
-        case 'ConstantNode': console.log(node.type, node.value); break;
-        case 'SymbolNode':   console.log(node.type, node.name);  break;
-        default:             console.log(node.type);
+        case 'OperatorNode':
+          console.log(node.type, node.op)
+          break
+        case 'ConstantNode':
+          console.log(node.type, node.value)
+          break
+        case 'SymbolNode':
+          console.log(node.type, node.name)
+          break
+        default:
+          console.log(node.type)
       }
-    });
+    })
     // outputs:
     //   OperatorNode *
     //   ConstantNode 2
@@ -129,16 +136,16 @@ All nodes have the following methods:
     node. The `callback` function is called as `callback(child: Node, path: string,
     parent: Node)` and must return a Node. Parameter `path` is a string containing
     a relative JSON Path.
-    
+
     See also `transform`, which is a recursive version of `map`.
-	
+
 -	`toHTML(options: object): string`
 
 	Get a HTML representation of the parsed expression. Example:
 
     ```js
-    var node = math.parse('sqrt(2/3)');
-    node.toString();
+    const node = math.parse('sqrt(2/3)')
+    node.toString()
 	// returns
 	// <span class="math-function">sqrt</span>
 	// <span class="math-paranthesis math-round-parenthesis">(</span>
@@ -147,7 +154,7 @@ All nodes have the following methods:
 	// <span class="math-number">3</span>
 	// <span class="math-paranthesis math-round-parenthesis">)</span>
     ```
-	
+
     Information about the available HTML classes in [HTML Classes](html_classes.html).
     Information about the options in [Customization](customization.html#custom-html-latex-and-string-output).
 
@@ -157,8 +164,8 @@ All nodes have the following methods:
     the same as the original input. Example:
 
     ```js
-    var node = math.parse('3+4*2');
-    node.toString();  // returns '3 + (4 * 2)'
+    const node = math.parse('3+4*2')
+    node.toString()  // returns '3 + (4 * 2)'
     ```
 
     Information about the options in [Customization](customization.html#custom-html-latex-and-string-output).
@@ -169,8 +176,8 @@ All nodes have the following methods:
     expression. Example:
 
     ```js
-    var node = math.parse('sqrt(2/3)');
-    node.toTex(); // returns '\sqrt{\frac{2}{3}}'
+    const node = math.parse('sqrt(2/3)')
+    node.toTex() // returns '\sqrt{\frac{2}{3}}'
     ```
 
     Information about the options in [Customization](customization.html#custom-html-latex-and-string-output).
@@ -189,16 +196,16 @@ All nodes have the following methods:
     ConstantNode with value `3`:
 
     ```js
-    var node = math.parse('x^2 + 5*x');
-    var transformed = node.transform(function (node, path, parent) {
+    const node = math.parse('x^2 + 5*x')
+    const transformed = node.transform(function (node, path, parent) {
       if (node.isSymbolNode && node.name === 'x') {
-        return new math.expression.node.ConstantNode(3);
+        return new math.expression.node.ConstantNode(3)
       }
       else {
-        return node;
+        return node
       }
-    });
-    transformed.toString(); // returns '3 ^ 2 + 5 * 3'
+    })
+    transformed.toString() // returns '3 ^ 2 + 5 * 3'
     ```
 
 -   `traverse(callback)`
@@ -213,15 +220,22 @@ All nodes have the following methods:
     Example:
 
     ```js
-    var node = math.parse('3 * x + 2');
+    const node = math.parse('3 * x + 2')
     node.traverse(function (node, path, parent) {
       switch (node.type) {
-        case 'OperatorNode': console.log(node.type, node.op);    break;
-        case 'ConstantNode': console.log(node.type, node.value); break;
-        case 'SymbolNode':   console.log(node.type, node.name);  break;
-        default:             console.log(node.type);
+        case 'OperatorNode':
+          console.log(node.type, node.op)
+          break
+        case 'ConstantNode':
+          console.log(node.type, node.value)
+          break
+        case 'SymbolNode':
+          console.log(node.type, node.name)
+          break
+        default:
+          console.log(node.type)
       }
-    });
+    })
     // outputs:
     //   OperatorNode +
     //   OperatorNode *
@@ -243,9 +257,9 @@ Each `Node` has the following properties:
 
 -   `isNode: true`
 
-    Is defined with value `true` on Nodes. Additionally, each type of node 
-    adds it's own flag, for example a `SymbolNode` as has a property 
-    `isSymbolNode: true`. 
+    Is defined with value `true` on Nodes. Additionally, each type of node
+    adds it's own flag, for example a `SymbolNode` as has a property
+    `isSymbolNode: true`.
 
 -   `type: string`
 
@@ -275,11 +289,11 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('a[3]');
+const node1 = math.parse('a[3]')
 
-var object = new math.expression.node.SymbolNode('a');
-var index = new math.expression.node.IndexNode([3]);
-var node2 = new math.expression.node.AccessorNode(object, index);
+const object = new math.expression.node.SymbolNode('a')
+const index = new math.expression.node.IndexNode([3])
+const node2 = new math.expression.node.AccessorNode(object, index)
 ```
 
 
@@ -298,12 +312,12 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('[1, 2, 3]');
+const node1 = math.parse('[1, 2, 3]')
 
-var one    = new math.expression.node.ConstantNode(1);
-var two    = new math.expression.node.ConstantNode(2);
-var three  = new math.expression.node.ConstantNode(3);
-var node2  = new math.expression.node.ArrayNode([one, two, three]);
+const one    = new math.expression.node.ConstantNode(1)
+const two    = new math.expression.node.ConstantNode(2)
+const three  = new math.expression.node.ConstantNode(3)
+const node2  = new math.expression.node.ArrayNode([one, two, three])
 ```
 
 
@@ -326,11 +340,11 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('a = 3');
+const node1 = math.parse('a = 3')
 
-var object = new math.expression.node.SymbolNode('a');
-var value = new math.expression.node.ConstantNode(3);
-var node2 = new math.expression.node.AssignmentNode(object, value);
+const object = new math.expression.node.SymbolNode('a')
+const value = new math.expression.node.ConstantNode(3)
+const node2 = new math.expression.node.AssignmentNode(object, value)
 ```
 
 
@@ -355,25 +369,25 @@ Properties:
 Examples:
 
 ```js
-var block1 = math.parse('a=1; b=2; c=3');
+const block1 = math.parse('a=1; b=2; c=3')
 
-var a = new math.expression.node.SymbolNode('a');
-var one = new math.expression.node.ConstantNode(1);
-var ass1 = new math.expression.node.AssignmentNode(a, one);
+const a = new math.expression.node.SymbolNode('a')
+const one = new math.expression.node.ConstantNode(1)
+const ass1 = new math.expression.node.AssignmentNode(a, one)
 
-var b = new math.expression.node.SymbolNode('b');
-var two = new math.expression.node.ConstantNode(2);
-var ass2 = new math.expression.node.AssignmentNode(b, two);
+const b = new math.expression.node.SymbolNode('b')
+const two = new math.expression.node.ConstantNode(2)
+const ass2 = new math.expression.node.AssignmentNode(b, two)
 
-var c = new math.expression.node.SymbolNode('c');
-var three = new math.expression.node.ConstantNode(3);
-var ass3 = new math.expression.node.AssignmentNode(c, three);
+const c = new math.expression.node.SymbolNode('c')
+const three = new math.expression.node.ConstantNode(3)
+const ass3 = new math.expression.node.AssignmentNode(c, three)
 
-var block2 = new BlockNode([
+const block2 = new BlockNode([
   {node: ass1, visible: false},
   {node: ass2, visible: false},
   {node: ass3, visible: true}
-]);
+])
 ```
 
 
@@ -394,14 +408,14 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('a > 0 ? a : -a');
+const node1 = math.parse('a > 0 ? a : -a')
 
-var a         = new math.expression.node.SymbolNode('a');
-var zero      = new math.expression.node.ConstantNode(0);
-var condition = new math.expression.node.OperatorNode('>', 'larger', [a, zero]);
-var trueExpr  = a;
-var falseExpr = new math.expression.node.OperatorNode('-', 'unaryMinus', [a]);
-var node2     = new math.expression.node.ConditionalNode(condition, trueExpr, falseExpr);
+const a         = new math.expression.node.SymbolNode('a')
+const zero      = new math.expression.node.ConstantNode(0)
+const condition = new math.expression.node.OperatorNode('>', 'larger', [a, zero])
+const trueExpr  = a
+const falseExpr = new math.expression.node.OperatorNode('-', 'unaryMinus', [a])
+const node2     = new math.expression.node.ConditionalNode(condition, trueExpr, falseExpr)
 ```
 
 <h3 id="constantnode">ConstantNode <a href="#constantnode" title="Permalink">#</a></h3>
@@ -419,10 +433,10 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('2.4');
+const node1 = math.parse('2.4')
 
-var node2 = new math.expression.node.ConstantNode(2.4);
-var node3 = new math.expression.node.ConstantNode('foo');
+const node2 = new math.expression.node.ConstantNode(2.4)
+const node3 = new math.expression.node.ConstantNode('foo')
 ```
 
 
@@ -443,12 +457,12 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('f(x) = x^2');
+const node1 = math.parse('f(x) = x^2')
 
-var x      = new math.expression.node.SymbolNode('x');
-var two    = new math.expression.node.ConstantNode(2);
-var expr   = new math.expression.node.OperatorNode('^', 'pow', [x, 2]);
-var node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr);
+const x      = new math.expression.node.SymbolNode('x')
+const two    = new math.expression.node.ConstantNode(2)
+const expr   = new math.expression.node.OperatorNode('^', 'pow', [x, 2])
+const node2  = new math.expression.node.FunctionAssignmentNode('f', ['x'], expr)
 ```
 
 
@@ -468,10 +482,10 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('sqrt(4)');
+const node1 = math.parse('sqrt(4)')
 
-var four  = new math.expression.node.ConstantNode(4);
-var node3 = new math.expression.node.FunctionNode(new SymbolNode('sqrt'), [four]);
+const four  = new math.expression.node.ConstantNode(4)
+const node3 = new math.expression.node.FunctionNode(new SymbolNode('sqrt'), [four])
 ```
 
 
@@ -500,16 +514,16 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('A[1:3, 2]');
+const node1 = math.parse('A[1:3, 2]')
 
-var A     = new math.expression.node.SymbolNode('A');
-var one   = new math.expression.node.ConstantNode(1);
-var two   = new math.expression.node.ConstantNode(2);
-var three = new math.expression.node.ConstantNode(3);
+const A     = new math.expression.node.SymbolNode('A')
+const one   = new math.expression.node.ConstantNode(1)
+const two   = new math.expression.node.ConstantNode(2)
+const three = new math.expression.node.ConstantNode(3)
 
-var range = new math.expression.node.RangeNode(one, three);
-var index = new math.expression.node.IndexNode([range, two]);
-var node2 = new math.expression.node.AccessNode(A, index);
+const range = new math.expression.node.RangeNode(one, three)
+const index = new math.expression.node.IndexNode([range, two])
+const node2 = new math.expression.node.AccessNode(A, index)
 ```
 
 <h3 id="objectnode">ObjectNode <a href="#objectnode" title="Permalink">#</a></h3>
@@ -527,12 +541,12 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('{a: 1, b: 2, c: 3}');
+const node1 = math.parse('{a: 1, b: 2, c: 3}')
 
-var a = new math.expression.node.ConstantNode(1);
-var b = new math.expression.node.ConstantNode(2);
-var c = new math.expression.node.ConstantNode(3);
-var node2 = new math.expression.node.ObjectNode({a: a, b: b, c: c});
+const a = new math.expression.node.ConstantNode(1)
+const b = new math.expression.node.ConstantNode(2)
+const c = new math.expression.node.ConstantNode(3)
+const node2 = new math.expression.node.ObjectNode({a: a, b: b, c: c})
 ```
 
 
@@ -552,9 +566,9 @@ Additional methods:
     like with a unary minus:
 
     ```js
-    var a = new math.expression.node.ConstantNode(2);
-    var b = new math.expression.node.OperatorNode('-', 'unaryMinus', [a]);`
-    b.isUnary(); // true
+    const a = new math.expression.node.ConstantNode(2)
+    const b = new math.expression.node.OperatorNode('-', 'unaryMinus', [a])
+    b.isUnary() // true
     ```
 
 -   `isBinary() : boolean`
@@ -563,10 +577,10 @@ Additional methods:
     like with most regular operators:
 
     ```js
-    var a = new math.expression.node.ConstantNode(2);
-    var b = new math.expression.node.ConstantNode(3);
-    var c = new math.expression.node.OperatorNode('+', 'add', [a, b]);`
-    c.isBinary(); // true
+    const a = new math.expression.node.ConstantNode(2)
+    const b = new math.expression.node.ConstantNode(3)
+    const c = new math.expression.node.OperatorNode('+', 'add', [a, b])
+    c.isBinary() // true
     ```
 
 Properties:
@@ -578,11 +592,11 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('2.3 + 5');
+const node1 = math.parse('2.3 + 5')
 
-var a     = new math.expression.node.ConstantNode(2.3);
-var b     = new math.expression.node.ConstantNode(5);
-var node2 = new math.expression.node.OperatorNode('+', 'add', [a, b]);
+const a     = new math.expression.node.ConstantNode(2.3)
+const b     = new math.expression.node.ConstantNode(5)
+const node2 = new math.expression.node.OperatorNode('+', 'add', [a, b])
 ```
 
 <h3 id="parenthesisnode">ParenthesisNode <a href="#parenthesisnode" title="Permalink">#</a></h3>
@@ -600,10 +614,10 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('(1)');
+const node1 = math.parse('(1)')
 
-var a     = new math.expression.node.ConstantNode(1);
-var node2 = new math.expression.node.ParenthesisNode(a);
+const a     = new math.expression.node.ConstantNode(1)
+const node2 = new math.expression.node.ParenthesisNode(a)
 ```
 
 <h3 id="rangenode">RangeNode <a href="#rangenode" title="Permalink">#</a></h3>
@@ -623,16 +637,16 @@ Properties:
 Examples:
 
 ```js
-var node1 = math.parse('1:10');
-var node2 = math.parse('0:2:10');
+const node1 = math.parse('1:10')
+const node2 = math.parse('0:2:10')
 
-var zero = new math.expression.node.ConstantNode(0);
-var one = new math.expression.node.ConstantNode(1);
-var two = new math.expression.node.ConstantNode(2);
-var ten = new math.expression.node.ConstantNode(10);
+const zero = new math.expression.node.ConstantNode(0)
+const one = new math.expression.node.ConstantNode(1)
+const two = new math.expression.node.ConstantNode(2)
+const ten = new math.expression.node.ConstantNode(10)
 
-var node3 = new math.expression.node.RangeNode(one, ten);
-var node4 = new math.expression.node.RangeNode(zero, ten, two);
+const node3 = new math.expression.node.RangeNode(one, ten)
+const node4 = new math.expression.node.RangeNode(zero, ten, two)
 ```
 
 
@@ -651,7 +665,7 @@ Properties:
 Examples:
 
 ```js
-var node = math.parse('x');
+const node = math.parse('x')
 
-var x = new math.expression.node.SymbolNode('x');
+const x = new math.expression.node.SymbolNode('x')
 ```

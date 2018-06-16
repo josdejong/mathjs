@@ -70,10 +70,10 @@ string | Returns the name of the type. Primitive types are lower case, non-primi
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.typeof(3.5);                     // returns 'number'
-math.typeof(math.complex('2-4i'));    // returns 'Complex'
-math.typeof(math.unit('45 deg'));     // returns 'Unit'
-math.typeof('hello world');           // returns 'string'
+math.typeof(3.5)                     // returns 'number'
+math.typeof(math.complex('2-4i'))    // returns 'Complex'
+math.typeof(math.unit('45 deg'))     // returns 'Unit'
+math.typeof('hello world')           // returns 'string'
 ```
 
 

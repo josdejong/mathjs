@@ -34,7 +34,7 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccosecant of x
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.acsch(0.5);       // returns 1.4436354751788103
+math.acsch(0.5)       // returns 1.4436354751788103
 ```
 
 

@@ -33,8 +33,8 @@ number | The number of elements of the (multi)set
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-math.setSize([1, 2, 2, 4]);          // returns 4
-math.setSize([1, 2, 2, 4], true);    // returns 3
+math.setSize([1, 2, 2, 4])          // returns 4
+math.setSize([1, 2, 2, 4], true)    // returns 3
 ```
 
 

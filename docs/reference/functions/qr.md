@@ -6,15 +6,15 @@ layout: default
 
 <h1 id="function-qr">Function qr <a href="#function-qr" title="Permalink">#</a></h1>
 
-Calculate the Matrix QR decomposition. Matrix `A` is decomposed in 
-two matrices (`Q`, `R`) where `Q` is an 
+Calculate the Matrix QR decomposition. Matrix `A` is decomposed in
+two matrices (`Q`, `R`) where `Q` is an
 orthogonal matrix and `R` is an upper triangular matrix.
 
 
 <h2 id="syntax">Syntax <a href="#syntax" title="Permalink">#</a></h2>
 
 ```js
-math.qr(A);
+math.qr(A)
 ```
 
 <h3 id="parameters">Parameters <a href="#parameters" title="Permalink">#</a></h3>
@@ -33,13 +33,13 @@ Type | Description
 <h2 id="examples">Examples <a href="#examples" title="Permalink">#</a></h2>
 
 ```js
-var m = [
+const m = [
   [1, -1,  4],
   [1,  4, -2],
   [1,  4,  2],
   [1,  -1, 0]
-];
-var result = math.qr(m);
+]
+const result = math.qr(m)
 // r = {
 //   Q: [
 //     [0.5, -0.5,   0.5],
