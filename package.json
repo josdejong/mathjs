@@ -168,7 +168,7 @@
     "test:browser": "karma start ./browser-test-config/local-karma.js",
     "test:browserstack": "karma start ./browser-test-config/browserstack-karma.js",
     "coverage": "nyc --reporter=lcov --reporter=text-summary mocha test test-node --recursive --require babel-core/register; echo \"\nDetailed coverage report is available at ./coverage/lcov-report/index.html\"",
-    "prepublishOnly": "npm test:src && npm run build-and-test"
+    "prepublishOnly": "npm test && npm run build-and-test"
   },
   "bin": {
     "mathjs": "./bin/cli.js"
