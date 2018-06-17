@@ -9,6 +9,8 @@ stages:
   - test
   - browser-test
 
+script: npm run test:src
+
 # NAME env var is purely cosmetic, only way to identify builds until
 # https://github.com/travis-ci/travis-ci/issues/5898 is fixed.
 
@@ -17,8 +19,6 @@ jobs:
     - stage: lint
       node_js: 8
       script: npm run lint
-    - stage: test
-      script: npm run test:src
     - stage: browser-test
       node_js: 8
       script: npm run test:browser
