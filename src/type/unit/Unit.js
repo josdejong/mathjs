@@ -801,7 +801,7 @@ function factory (type, config, load, typed, math) {
       // other = new Unit(null, valuelessUnit)
       other = Unit.parse(valuelessUnit)
       if (!this.equalBase(other)) {
-        throw new Error('Units do not match')
+        throw new Error(`Units do not match ('${other.toString()}' != '${this.toString()}')`)
       }
       if (other.value !== null) {
         throw new Error('Cannot convert to a unit with a value')
@@ -813,7 +813,7 @@ function factory (type, config, load, typed, math) {
       return other
     } else if (type.isUnit(valuelessUnit)) {
       if (!this.equalBase(valuelessUnit)) {
-        throw new Error('Units do not match')
+        throw new Error(`Units do not match ('${valuelessUnit.toString()}' != '${this.toString()}')`)
       }
       if (valuelessUnit.value !== null) {
         throw new Error('Cannot convert to a unit with a value')
