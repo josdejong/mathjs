@@ -1,5 +1,10 @@
 # History
 
+## not yet released, version 5.0.1
+
+- Improved error messaging when converting units. Thanks @gap777.
+
+
 ## 2018-06-16, version 5.0.0
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
