@@ -36,8 +36,6 @@ function objToStrings (obj) {
 
 /// ////////////////// rationalize ///////////////////////
 describe('rationalize', function () {
-  this.timeout(120000)
-
   it('invalid expression', function () {
     assert.throws(function () { math.rationalize('(x*/2)') }, /Value expected \(char 4\)/)
   })
