@@ -64,13 +64,13 @@ function factory (type, config, load, typed) {
     if (typeof expr === 'string') {
       // parse a single expression
 
-      return parseStart(initialState({ extraNodes, expression: expr }))
+      return parseStart(expr, extraNodes)
     } else if (Array.isArray(expr) || expr instanceof type.Matrix) {
       // parse an array or matrix with expressions
       return deepMap(expr, function (elem) {
         if (typeof elem !== 'string') throw new TypeError('String expected')
 
-        return parseStart(initialState({ extraNodes, expression: elem }))
+        return parseStart(elem, extraNodes)
       })
     } else {
       // oops
@@ -153,34 +153,18 @@ function factory (type, config, load, typed) {
     'Infinity'
   ]
 
-  function initialState (obj) {
-    return Object.assign(
-      {
-        extraNodes: {}, // current extra nodes, must be careful not to mutate
-        expression: '', // current expression
-        comment: '', // last parsed comment
-        index: 0, // current index in expr
-        c: '', // current token character in expr
-        token: '', // current token
-        tokenType: TOKENTYPE.NULL, // type of the token
-        nestingLevel: 0, // level of nesting inside parameters, used to ignore newline characters
-        conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
-      },
-      obj
-    )
-  }
-
-  /**
-   * Get the first character from the expression.
-   * The character is stored into the char c. If the end of the expression is
-   * reached, the function puts an empty string in c.
-   * @private
-   */
-  function first (state) {
-    state.index = 0
-    state.c = state.expression.charAt(0)
-    state.nestingLevel = 0
-    state.conditionalLevel = null
+  function initialState () {
+    return {
+      extraNodes: {}, // current extra nodes, must be careful not to mutate
+      expression: '', // current expression
+      comment: '', // last parsed comment
+      index: 0, // current index in expr
+      c: '', // current token character in expr
+      token: '', // current token
+      tokenType: TOKENTYPE.NULL, // type of the token
+      nestingLevel: 0, // level of nesting inside parameters, used to ignore newline characters
+      conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
+    }
   }
 
   /**
@@ -501,10 +485,10 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseStart (state) {
-    // get the first character in expression
-    first(state)
-
+  function parseStart (expression, extraNodes) {
+    const state = initialState()
+    Object.assign(state, { expression, extraNodes })
+    state.c = state.expression.charAt(state.index)
     getToken(state)
 
     const node = parseBlock(state)
