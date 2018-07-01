@@ -1,8 +1,9 @@
 # History
 
-## not yet released, version 5.0.1
+## 2018-07-01, version 5.0.1
 
 - Improved error messaging when converting units. Thanks @gap777.
+- Upgraded devDependencies (`kerma`, `uglify-js`, `webpack`).
 
 
 ## 2018-06-16, version 5.0.0
