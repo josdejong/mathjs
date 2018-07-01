@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h2 id="20180701-version-501">2018-07-01, version 5.0.1 <a href="#20180701-version-501" title="Permalink">#</a></h2>
+
+- Improved error messaging when converting units. Thanks <a href="https://github.com/gap777">@gap777</a>.
+- Upgraded devDependencies (`kerma`, `uglify-js`, `webpack`).
+
+
 <h2 id="20180616-version-500">2018-06-16, version 5.0.0 <a href="#20180616-version-500" title="Permalink">#</a></h2>
 
 !!! BE CAREFUL: BREAKING CHANGES !!!
