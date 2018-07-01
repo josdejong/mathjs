@@ -127,7 +127,7 @@ function factory (type, config, load, typed, math) {
     if (type.isOperatorNode(node)) {
       return function (args) {
         try {
-          return new OperatorNode(node.op, node.fn, args)
+          return new OperatorNode(node.op, node.fn, args, node.implicit)
         } catch (err) {
           console.error(err)
           return []

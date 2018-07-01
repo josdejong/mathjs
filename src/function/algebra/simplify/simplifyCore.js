@@ -117,9 +117,9 @@ function factory (type, config, load, typed, math) {
               return new OperatorNode(node.op, node.fn, [a00a1, a0.args[1]]) // constants on left
             }
           }
-          return new OperatorNode(node.op, node.fn, [a1, a0]) // constants on left
+          return new OperatorNode(node.op, node.fn, [a1, a0], node.implicit) // constants on left
         }
-        return new OperatorNode(node.op, node.fn, [a0, a1])
+        return new OperatorNode(node.op, node.fn, [a0, a1], node.implicit)
       } else if (node.op === '/') {
         if (type.isConstantNode(a0)) {
           if (isZero(a0.value)) {

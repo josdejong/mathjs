@@ -299,6 +299,13 @@ describe('simplify', function () {
     // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
   })
 
+  it.only('should keep implicit multiplication implicit', function () {
+    const f = math.parse('2x')
+    assert.equal(f.toString({implicit: 'hide'}), '2 x')
+    const simplified = math.simplify(f)
+    assert.equal(simplified.toString({implicit: 'hide'}), '2 x')
+  })
+
   describe('expression parser', function () {
     it('should evaluate simplify containing string value', function () {
       const res = math.eval('simplify("2x + 3x")')
