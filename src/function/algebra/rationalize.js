@@ -97,7 +97,7 @@ function factory (type, config, load, typed) {
       if (nVars >= 1) { // If expression in not a constant
         const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
         expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
-        let sBefore = undefined // Previous expression
+        let sBefore // Previous expression
 
         while (true) { // Apply alternately  successive division rules and distr.div.rules
           expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
@@ -199,8 +199,8 @@ function factory (type, config, load, typed) {
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         if (node.op === '^' && node.isBinary()) {
-          if (node.args[1].op === '-' && node.args[1].isUnary()){
-            if(node.args[1].args[0].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].args[0].value))){
+          if (node.args[1].op === '-' && node.args[1].isUnary()) {
+            if (node.args[1].args[0].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].args[0].value))) {
               throw new Error('There is a non-integer exponent')
             } else {
               recPoly(node.args[0])
@@ -251,7 +251,7 @@ function factory (type, config, load, typed) {
       {l: 'n*(n1^-1)', r: 'n/n1'},
       {l: 'n*n1^-n2', r: 'n/n1^n2'},
       {l: 'n1^-1', r: '1/n1'},
-      {l: 'n1^-n2', r:'1/n1^n2'},
+      {l: 'n1^-n2', r: '1/n1^n2'},
       {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
       {l: '1*n', r: 'n'}]
 
