@@ -82,7 +82,6 @@ function factory (type, config, load, typed, math) {
     const evalArgs = map(this.args, function (arg) {
       return arg._compile(math, argNames)
     })
-    // const jsScope = compileScope(defs, args) // TODO: jsScope
 
     if (type.isSymbolNode(this.fn)) {
       // we can statically determine whether the function has an rawArgs property
@@ -95,7 +94,7 @@ function factory (type, config, load, typed, math) {
         // "raw" evaluation
         const rawArgs = this.args
         return function evalFunctionNode (scope, args, context) {
-          return (name in scope ? getSafeProperty(scope, name) : fn)(rawArgs, math, scope)
+          return (name in scope ? getSafeProperty(scope, name) : fn)(rawArgs, math, Object.assign({}, scope, args))
         }
       } else {
         // "regular" evaluation
@@ -132,7 +131,7 @@ function factory (type, config, load, typed, math) {
         const isRaw = object[prop] && object[prop].rawArgs
 
         return isRaw
-          ? object[prop](rawArgs, math, scope) // "raw" evaluation
+          ? object[prop](rawArgs, math, Object.assign({}, scope, args)) // "raw" evaluation
           : object[prop].apply(object, map(evalArgs, function (evalArg) { // "regular" evaluation
             return evalArg(scope, args, context)
           }))
@@ -147,7 +146,7 @@ function factory (type, config, load, typed, math) {
         const isRaw = fn && fn.rawArgs
 
         return isRaw
-          ? fn(rawArgs, math, scope) // "raw" evaluation
+          ? fn(rawArgs, math, Object.assign({}, scope, args)) // "raw" evaluation
           : fn.apply(fn, map(evalArgs, function (evalArg) { // "regular" evaluation
             return evalArg(scope, args, context)
           }))
