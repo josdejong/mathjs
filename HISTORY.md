@@ -3,8 +3,10 @@
 
 ## not yet released, version 5.0.2
 
-- Fixed #1088: function arguments not being passed to `rawArgs` functions.
 - Fixed #1136: rocket trajectory example broken (since v4.0.0).
+- Fixed #1146: `rationalize` throwing exceptions for some input with decimals.
+  Thanks @maruta.
+- Fixed #1088: function arguments not being passed to `rawArgs` functions.
 - Fixed advanced example `add_new_datatypes`.
 - Upgraded to `typed-function@1.0.4`.
 - Upgraded devDependencies (`uglify-js`, `expr-eval`).

@@ -124,6 +124,12 @@ describe('rationalize', function () {
       '(-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/(-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)')
   })
 
+  it('should handle non integer powers correctly', function () {
+    assert.equal(stri(math.rationalize('1/x^2+1')), '(x^2+1)/x^2')
+    assert.equal(stri(math.rationalize('1/(0.1x+1)+1')), '(10*x+200)/(10*x+100)')
+    assert.equal(stri(math.rationalize('1/(0.125x+1)+1')), '(8*x+128)/(8*x+64)')
+  })
+
   it('testing scope', function () {
     assert.equal(stri(math.rationalize('x+x+x+y', {y: 1})), '3*x+1')
     assert.equal(stri(math.rationalize('x+x+x+y', {})), '3*x+y')

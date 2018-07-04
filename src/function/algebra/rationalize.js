@@ -4,7 +4,6 @@ function factory (type, config, load, typed) {
   const simplify = load(require('./simplify'))
   const simplifyCore = load(require('./simplify/simplifyCore'))
   const simplifyConstant = load(require('./simplify/simplifyConstant'))
-  const ArgumentsError = require('../../error/ArgumentsError')
   const parse = load(require('../../expression/function/parse'))
   const number = require('../../utils/number')
   const ConstantNode = load(require('../../expression/node/ConstantNode'))
@@ -98,31 +97,20 @@ function factory (type, config, load, typed) {
       if (nVars >= 1) { // If expression in not a constant
         const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
         expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
-        let redoInic = true // If has change after start, redo the beginning
-        let s = '' // New expression
-        let sBefore // Previous expression
-        let rules
-        let eDistrDiv = true
-
-        expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
-        s = expr.toString()
+        let sBefore = undefined // Previous expression
 
         while (true) { // Apply alternately  successive division rules and distr.div.rules
-          rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
-          expr = simplify(expr, rules) // until no more changes
-          eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
+          expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
+          expr = simplify(expr, setRules.distrDivRules) // and distr.div.rules until no more changes
 
-          s = expr.toString()
+          const s = expr.toString()
           if (s === sBefore) break // No changes : end of the loop
 
-          redoInic = true
           sBefore = s
         }
 
-        if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
-          expr = simplify(expr, setRules.firstRulesAgain)
-        }
-        expr = simplify(expr, setRules.finalRules) // Aplly final rules
+        expr = simplify(expr, setRules.firstRulesAgain)
+        expr = simplify(expr, setRules.finalRules) // Apply final rules
       } // NVars >= 1
 
       const coefficients = []
@@ -208,17 +196,23 @@ function factory (type, config, load, typed) {
       const tp = node.type // node type
       if (tp === 'FunctionNode') {
         // No function call in polynomial expression
-        throw new ArgumentsError('There is an unsolved function call')
+        throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         if (node.op === '^' && node.isBinary()) {
-          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
-            throw new ArgumentsError('There is a non-integer exponent')
+          if (node.args[1].op === '-' && node.args[1].isUnary()){
+            if(node.args[1].args[0].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].args[0].value))){
+              throw new Error('There is a non-integer exponent')
+            } else {
+              recPoly(node.args[0])
+            }
+          } else if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
+            throw new Error('There is a non-integer exponent')
           } else {
             recPoly(node.args[0])
           }
         } else {
           if (oper.indexOf(node.op) === -1) {
-            throw new ArgumentsError('Operator ' + node.op + ' invalid in polynomial expression')
+            throw new Error('Operator ' + node.op + ' invalid in polynomial expression')
           }
           for (let i = 0; i < node.args.length; i++) {
             recPoly(node.args[i])
@@ -234,7 +228,7 @@ function factory (type, config, load, typed) {
       } else if (tp === 'ParenthesisNode') {
         recPoly(node.content)
       } else if (tp !== 'ConstantNode') {
-        throw new ArgumentsError('type ' + tp + ' is not allowed in polynomial expression')
+        throw new Error('type ' + tp + ' is not allowed in polynomial expression')
       }
     } // end of recPoly
   } // end of polynomial
@@ -257,6 +251,7 @@ function factory (type, config, load, typed) {
       {l: 'n*(n1^-1)', r: 'n/n1'},
       {l: 'n*n1^-n2', r: 'n/n1^n2'},
       {l: 'n1^-1', r: '1/n1'},
+      {l: 'n1^-n2', r:'1/n1^n2'},
       {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
       {l: '1*n', r: 'n'}]
 
@@ -493,23 +488,23 @@ function factory (type, config, load, typed) {
       if (tp === 'FunctionNode') {
         // ***** FunctionName *****
         // No function call in polynomial expression
-        throw new ArgumentsError('There is an unsolved function call')
+        throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
         // ***** OperatorName *****
-        if ('+-*^'.indexOf(node.op) === -1) throw new ArgumentsError('Operator ' + node.op + ' invalid')
+        if ('+-*^'.indexOf(node.op) === -1) throw new Error('Operator ' + node.op + ' invalid')
 
         if (noPai !== null) {
           // -(unary),^  : children of *,+,-
           if ((node.fn === 'unaryMinus' || node.fn === 'pow') && noPai.fn !== 'add' &&
-                                noPai.fn !== 'subtract' && noPai.fn !== 'multiply') { throw new ArgumentsError('Invalid ' + node.op + ' placing') }
+                                noPai.fn !== 'subtract' && noPai.fn !== 'multiply') { throw new Error('Invalid ' + node.op + ' placing') }
 
           // -,+,* : children of +,-
           if ((node.fn === 'subtract' || node.fn === 'add' || node.fn === 'multiply') &&
-              noPai.fn !== 'add' && noPai.fn !== 'subtract') { throw new ArgumentsError('Invalid ' + node.op + ' placing') }
+              noPai.fn !== 'add' && noPai.fn !== 'subtract') { throw new Error('Invalid ' + node.op + ' placing') }
 
           // -,+ : first child
           if ((node.fn === 'subtract' || node.fn === 'add' ||
-            node.fn === 'unaryMinus') && o.noFil !== 0) { throw new ArgumentsError('Invalid ' + node.op + ' placing') }
+            node.fn === 'unaryMinus') && o.noFil !== 0) { throw new Error('Invalid ' + node.op + ' placing') }
         } // Has parent
 
         // Firers: ^,*       Old:   ^,&,-(unary): firers
@@ -529,7 +524,7 @@ function factory (type, config, load, typed) {
           recurPol(node.args[i], node, o)
         } // for in children
       } else if (tp === 'SymbolNode') { // ***** SymbolName *****
-        if (node.name !== varname && varname !== '') { throw new ArgumentsError('There is more than one variable') }
+        if (node.name !== varname && varname !== '') { throw new Error('There is more than one variable') }
         varname = node.name
         if (noPai === null) {
           coefficients[1] = 1
@@ -537,10 +532,10 @@ function factory (type, config, load, typed) {
         }
 
         // ^: Symbol is First child
-        if (noPai.op === '^' && o.noFil !== 0) { throw new ArgumentsError('In power the variable should be the first parameter') }
+        if (noPai.op === '^' && o.noFil !== 0) { throw new Error('In power the variable should be the first parameter') }
 
         // *: Symbol is Second child
-        if (noPai.op === '*' && o.noFil !== 1) { throw new ArgumentsError('In multiply the variable should be the second parameter') }
+        if (noPai.op === '*' && o.noFil !== 1) { throw new Error('In multiply the variable should be the second parameter') }
 
         // Symbol: firers '',* => it means there is no exponent above, so it's 1 (cte * var)
         if (o.fire === '' || o.fire === '*') {
@@ -556,9 +551,9 @@ function factory (type, config, load, typed) {
         }
         if (noPai.op === '^') {
           // cte: second  child of power
-          if (o.noFil !== 1) throw new ArgumentsError('Constant cannot be powered')
+          if (o.noFil !== 1) throw new Error('Constant cannot be powered')
 
-          if (!number.isInteger(valor) || valor <= 0) { throw new ArgumentsError('Non-integer exponent is not allowed') }
+          if (!number.isInteger(valor) || valor <= 0) { throw new Error('Non-integer exponent is not allowed') }
 
           for (let i = maxExpo + 1; i < valor; i++) coefficients[i] = 0
           if (valor > maxExpo) coefficients[valor] = 0
@@ -570,7 +565,7 @@ function factory (type, config, load, typed) {
 
         // Cte: firer '' => There is no exponent and no multiplication, so the exponent is 0.
         if (o.fire === '') { coefficients[0] += o.cte * (o.oper === '+' ? 1 : -1) }
-      } else { throw new ArgumentsError('Type ' + tp + ' is not allowed') }
+      } else { throw new Error('Type ' + tp + ' is not allowed') }
     } // End of recurPol
   } // End of polyToCanonical
 
