@@ -1,5 +1,11 @@
 # History
 
+
+## not yet released, version 5.0.2
+
+- Fixed #1136: rocket trajectory example broken (since v4.0.0).
+
+
 ## 2018-07-01, version 5.0.1
 
 - Improved error messaging when converting units. Thanks @gap777.
