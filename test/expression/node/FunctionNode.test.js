@@ -97,13 +97,12 @@ describe('FunctionNode', function () {
     assert.equal(n.compile().eval(scope), 42)
   })
 
-  it.skip('should compile a FunctionNode with a raw function', function () {
+  it('should compile a FunctionNode with a raw function', function () {
     const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.equal(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
       assert(args[1] instanceof mymath.expression.node.Node)
-      assert.strictEqual(Object.getPrototypeOf(_math), mymath)
       assert.deepEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
@@ -119,13 +118,16 @@ describe('FunctionNode', function () {
     assert.equal(n.compile().eval(scope), 'myFunction(4, 5)')
   })
 
-  it.skip('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
+  it.only('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
+    let scope = {
+      obj: {}
+    }
+
     const mymath = math.create()
     function myFunction (args, _math, _scope) {
       assert.equal(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
       assert(args[1] instanceof mymath.expression.node.Node)
-      assert.strictEqual(Object.getPrototypeOf(_math), mymath)
       assert.deepEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
@@ -139,11 +141,8 @@ describe('FunctionNode', function () {
     const c = new mymath.expression.node.ConstantNode(5)
     const n = new mymath.expression.node.FunctionNode(a, [b, c])
 
-    let scope = {
-      obj: {
-        myFunction: myFunction
-      }
-    }
+    scope.obj.myFunction = myFunction
+
     assert.equal(n.compile().eval(scope), 'myFunction(4, 5)')
   })
 
