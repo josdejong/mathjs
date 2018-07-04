@@ -118,7 +118,7 @@ describe('FunctionNode', function () {
     assert.equal(n.compile().eval(scope), 'myFunction(4, 5)')
   })
 
-  it.only('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
+  it('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
     let scope = {
       obj: {}
     }
