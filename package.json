@@ -104,7 +104,7 @@
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
-    "typed-function": "1.0.3"
+    "typed-function": "1.0.4"
   },
   "devDependencies": {
     "babel-core": "6.26.3",
@@ -112,7 +112,7 @@
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-preset-env": "1.7.0",
     "benchmark": "2.1.4",
-    "expr-eval": "1.2.1",
+    "expr-eval": "1.2.2",
     "glob": "7.1.2",
     "gulp": "3.9.1",
     "gulp-babel": "7.0.1",
@@ -140,7 +140,7 @@
     "standard": "11.0.1",
     "sylvester": "0.0.21",
     "tar": "4.4.4",
-    "uglify-js": "3.4.2",
+    "uglify-js": "3.4.3",
     "underscore": "1.9.1",
     "webpack": "4.14.0",
     "zeros": "1.0.0"

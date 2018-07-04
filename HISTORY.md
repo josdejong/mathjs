@@ -4,6 +4,9 @@
 ## not yet released, version 5.0.2
 
 - Fixed #1136: rocket trajectory example broken (since v4.0.0).
+- Fixed advanced example `add_new_datatypes`.
+- Upgraded to `typed-function@1.0.4`.
+- Upgraded devDependencies (`uglify-js`, `expr-eval`).
 
 
 ## 2018-07-01, version 5.0.1
