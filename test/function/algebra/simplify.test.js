@@ -228,8 +228,8 @@ describe('simplify', function () {
   })
 
   it('should not run into an infinite recursive loop', function () {
-    simplifyAndCompare('2n - 1', '2 * n - 1')
-    simplifyAndCompare('16n - 1', '16 * n - 1')
+    simplifyAndCompare('2n - 1', '2 n - 1')
+    simplifyAndCompare('16n - 1', '16 n - 1')
     simplifyAndCompare('16n / 1', '16 * n')
     simplifyAndCompare('8 / 5n', 'n * 8 / 5')
     simplifyAndCompare('8n - 4n', '4 * n')
@@ -299,7 +299,7 @@ describe('simplify', function () {
     // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
   })
 
-  it.only('should keep implicit multiplication implicit', function () {
+  it('should keep implicit multiplication implicit', function () {
     const f = math.parse('2x')
     assert.equal(f.toString({implicit: 'hide'}), '2 x')
     const simplified = math.simplify(f)

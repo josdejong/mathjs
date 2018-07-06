@@ -27,7 +27,7 @@ describe('derivative', function () {
   })
 
   it('should create a function node', function () {
-    compareString(derivative('sin(2x)', 'x'), '2 * cos(2 * x)')
+    compareString(derivative('sin(2x)', 'x'), '2 * cos(2 x)')
   })
 
   it('should take the derivative of a SymbolNodes', function () {

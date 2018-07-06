@@ -114,7 +114,7 @@ function factory (type, config, load, typed, math) {
             const a00 = a0.args[0]
             if (type.isConstantNode(a00)) {
               const a00a1 = new ConstantNode(multiply(a00.value, a1.value))
-              return new OperatorNode(node.op, node.fn, [a00a1, a0.args[1]]) // constants on left
+              return new OperatorNode(node.op, node.fn, [a00a1, a0.args[1]], node.implicit) // constants on left
             }
           }
           return new OperatorNode(node.op, node.fn, [a1, a0], node.implicit) // constants on left

@@ -351,7 +351,12 @@ function factory (type, config, load, typed, math) {
         // const before = res.toString({parenthesis: 'all'})
 
         // Create a new node by cloning the rhs of the matched rule
+        // we keep any implicit multiplication state if relevant
+        const implicit = res.implicit
         res = repl.clone()
+        if (implicit && 'implicit' in repl) {
+          res.implicit = true
+        }
 
         // Replace placeholders with their respective nodes without traversing deeper into the replaced nodes
         const _transform = function (node) {

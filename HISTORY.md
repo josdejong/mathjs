@@ -4,6 +4,8 @@
 ## not yet released, version 5.0.2
 
 - Fixed #1136: rocket trajectory example broken (since v4.0.0).
+- Fixed #1137: `simplify` unnecessarily replacing implicit multiplication with
+  explicit multiplication.
 - Fixed #1146: `rationalize` throwing exceptions for some input with decimals.
   Thanks @maruta.
 - Fixed #1088: function arguments not being passed to `rawArgs` functions.

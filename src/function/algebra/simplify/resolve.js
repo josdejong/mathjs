@@ -38,7 +38,7 @@ function factory (type, config, load, typed, math) {
       const args = node.args.map(function (arg) {
         return resolve(arg, scope)
       })
-      return new OperatorNode(node.op, node.fn, args)
+      return new OperatorNode(node.op, node.fn, args, node.implicit)
     } else if (type.isParenthesisNode(node)) {
       return new ParenthesisNode(resolve(node.content, scope))
     } else if (type.isFunctionNode(node)) {
