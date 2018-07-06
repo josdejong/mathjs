@@ -120,7 +120,7 @@ exports.create = function create (type) {
     { name: 'RangeNode', test: type.isRangeNode },
     { name: 'Node', test: type.isNode },
 
-    { name: 'Object', test: type.isObject } // order 'Object' last, it's a tricky one
+    { name: 'Object', test: type.isObject } // order 'Object' last, it matches on other classes too
   ]
 
   // TODO: add conversion from BigNumber to number?

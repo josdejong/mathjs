@@ -1,8 +1,21 @@
 # History
 
-## not yet released, version 5.0.1
+
+## not yet released, version 5.0.2
+
+- Fixed #1136: rocket trajectory example broken (since v4.0.0).
+- Fixed #1146: `rationalize` throwing exceptions for some input with decimals.
+  Thanks @maruta.
+- Fixed #1088: function arguments not being passed to `rawArgs` functions.
+- Fixed advanced example `add_new_datatypes`.
+- Upgraded to `typed-function@1.0.4`.
+- Upgraded devDependencies (`uglify-js`, `expr-eval`).
+
+
+## 2018-07-01, version 5.0.1
 
 - Improved error messaging when converting units. Thanks @gap777.
+- Upgraded devDependencies (`kerma`, `uglify-js`, `webpack`).
 
 
 ## 2018-06-16, version 5.0.0
