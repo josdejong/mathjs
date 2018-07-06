@@ -97,7 +97,7 @@
     "unit"
   ],
   "dependencies": {
-    "complex.js": "2.0.10",
+    "complex.js": "2.0.11",
     "decimal.js": "10.0.1",
     "escape-latex": "1.1.0",
     "fraction.js": "4.0.8",
@@ -108,7 +108,7 @@
   },
   "devDependencies": {
     "babel-core": "6.26.3",
-    "babel-loader": "7.1.4",
+    "babel-loader": "7.1.5",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-preset-env": "1.7.0",
     "benchmark": "2.1.4",
@@ -142,7 +142,7 @@
     "tar": "4.4.4",
     "uglify-js": "3.4.3",
     "underscore": "1.9.1",
-    "webpack": "4.14.0",
+    "webpack": "4.15.1",
     "zeros": "1.0.0"
   },
   "main": "./index",

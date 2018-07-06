@@ -10,8 +10,9 @@
   Thanks @maruta.
 - Fixed #1088: function arguments not being passed to `rawArgs` functions.
 - Fixed advanced example `add_new_datatypes`.
-- Upgraded to `typed-function@1.0.4`.
-- Upgraded devDependencies (`uglify-js`, `expr-eval`).
+- Upgraded dependencies (`typed-function@1.0.4`, `complex.js@2.0.11`).
+- Upgraded devDependencies (`babel-loader@7.1.5 `, `uglify-js@3.4.3`,
+  `expr-eval@1.2.2`, `webpack@4.15.1`).
 
 
 ## 2018-07-01, version 5.0.1
