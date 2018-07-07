@@ -10,6 +10,8 @@
   Thanks @maruta.
 - Fixed #1088: function arguments not being passed to `rawArgs` functions.
 - Fixed advanced example `add_new_datatypes`.
+- Fixed mathjs core constants not working without complex numbers.
+  Thanks @ChristopherChudzicki.
 - Fixed a broken link in the documentation on units. Thanks @stropitek.
 - Upgraded dependencies (`typed-function@1.0.4`, `complex.js@2.0.11`).
 - Upgraded devDependencies (`babel-loader@7.1.5 `, `uglify-js@3.4.3`,
