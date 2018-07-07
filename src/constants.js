@@ -56,7 +56,9 @@ function factory (type, config, load, typed, math) {
   }
 
   // complex i
-  setConstant(math, 'i', type.Complex.I)
+  if (type.Complex) {
+    setConstant(math, 'i', type.Complex.I)
+  }
 
   // meta information
   setConstant(math, 'version', require('./version'))

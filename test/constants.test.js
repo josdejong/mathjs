@@ -1,69 +1,72 @@
 const assert = require('assert')
+const core = require('../src/core/core')
 const math = require('../src/main')
 const approx = require('../tools/approx')
+const constants = require('../src/constants')
 
 describe('constants', function () {
+  const bigmath = math.create({number: 'BigNumber', precision: 64})
+  const realmath = core.create()
+  realmath.import(constants)
+
   describe('number', function () {
-    it('should have pi', function () {
-      approx.equal(math.pi, 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664)
-      approx.equal(math.sin(math.pi / 2), 1)
-      approx.equal(math.PI, math.pi)
-    })
+    [math, realmath].forEach(function (instance) {
+      it('should have pi', function () {
+        approx.equal(instance.pi, 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664)
+        approx.equal(instance.PI, instance.pi)
+      })
 
-    it('should have tau', function () {
-      approx.equal(math.tau, 6.28318530717959)
-    })
+      it('should have tau', function () {
+        approx.equal(instance.tau, 6.28318530717959)
+      })
 
-    it('should have phi, golden ratio', function () {
-      approx.equal(math.phi, 1.61803398874989484820458683436563811772030917980576286213545)
-    })
+      it('should have phi, golden ratio', function () {
+        approx.equal(instance.phi, 1.61803398874989484820458683436563811772030917980576286213545)
+      })
 
-    it('should have e (euler constant)', function () {
-      approx.equal(math.e, 2.71828182845905)
-      assert.equal(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0)
-      assert.equal(math.round(math.eval('1+e^(pi*i)'), 5), 0)
-    })
+      it('should have e (euler constant)', function () {
+        approx.equal(instance.e, 2.71828182845905)
+      })
 
-    it('should have LN2', function () {
-      approx.equal(math.LN2, 0.69314718055994530941723212145817656807550013436025525412068000949339362196969471560586332699641868754200148102057068573)
-    })
+      it('should have LN2', function () {
+        approx.equal(instance.LN2, 0.69314718055994530941723212145817656807550013436025525412068000949339362196969471560586332699641868754200148102057068573)
+      })
 
-    it('should have LN10', function () {
-      approx.equal(math.LN10, 2.30258509299404568401799145468436420760110148862877297603332790096757260967735248023599720508959829834196778404228624863)
-    })
+      it('should have LN10', function () {
+        approx.equal(instance.LN10, 2.30258509299404568401799145468436420760110148862877297603332790096757260967735248023599720508959829834196778404228624863)
+      })
 
-    it('should have LOG2E', function () {
-      approx.equal(math.LOG2E, 1.44269504088896340735992468100189213742664595415298593413544940693110921918118507988552662289350634449699751830965254425)
-    })
+      it('should have LOG2E', function () {
+        approx.equal(instance.LOG2E, 1.44269504088896340735992468100189213742664595415298593413544940693110921918118507988552662289350634449699751830965254425)
+      })
 
-    it('should have LOG10E', function () {
-      approx.equal(math.LOG10E, 0.43429448190325182765112891891660508229439700580366656611445378316586464920887077472922494933843174831870610674476630373)
-    })
+      it('should have LOG10E', function () {
+        approx.equal(instance.LOG10E, 0.43429448190325182765112891891660508229439700580366656611445378316586464920887077472922494933843174831870610674476630373)
+      })
 
-    it('should have PI', function () {
-      approx.equal(math.PI, 3.14159265358979)
-    })
+      it('should have PI', function () {
+        approx.equal(instance.PI, 3.14159265358979)
+      })
 
-    it('should have SQRT1_2', function () {
-      approx.equal(math.SQRT1_2, 0.70710678118654752440084436210484903928483593768847403658833986899536623923105351942519376716382078636750692311545614851)
-    })
+      it('should have SQRT1_2', function () {
+        approx.equal(instance.SQRT1_2, 0.70710678118654752440084436210484903928483593768847403658833986899536623923105351942519376716382078636750692311545614851)
+      })
 
-    it('should have SQRT2', function () {
-      approx.equal(math.SQRT2, 1.41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157273501384623091229702)
-    })
+      it('should have SQRT2', function () {
+        approx.equal(instance.SQRT2, 1.41421356237309504880168872420969807856967187537694807317667973799073247846210703885038753432764157273501384623091229702)
+      })
 
-    it('should have Infinity', function () {
-      assert.strictEqual(math.Infinity, Infinity)
-    })
+      it('should have Infinity', function () {
+        assert.strictEqual(instance.Infinity, Infinity)
+      })
 
-    it('should have NaN', function () {
-      assert.ok(isNaN(math.NaN))
+      it('should have NaN', function () {
+        assert.ok(isNaN(instance.NaN))
+      })
     })
   })
 
-  describe('bignumber', function () {
-    const bigmath = math.create({number: 'BigNumber', precision: 64})
-
+  describe('bignumbers', function () {
     it('should have bignumber pi', function () {
       assert.equal(bigmath.pi.toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
     })
@@ -120,26 +123,50 @@ describe('constants', function () {
     })
   })
 
-  it('should have i', function () {
-    assert.equal(math.i.re, 0)
-    assert.equal(math.i.im, 1)
-    assert.deepEqual(math.i, math.complex(0, 1))
+  describe('complex', function () {
+    [math, bigmath].forEach(function (math) {
+      it('should have i', function () {
+        assert.equal(math.i.re, 0)
+        assert.equal(math.i.im, 1)
+        assert.deepEqual(math.i, math.complex(0, 1))
+      })
+    })
+  })
+
+  describe('real', function () {
+    it('does not have i', function () {
+      assert.equal(realmath.i, undefined)
+    })
+  })
+
+  describe('universal behavior', function () {
+    [math, bigmath, realmath].forEach(function (instance) {
+      it('should have true and false', function () {
+        assert.strictEqual(instance.true, true)
+        assert.strictEqual(instance.false, false)
+      })
+
+      it('should have null', function () {
+        assert.strictEqual(instance['null'], null)
+      })
+
+      it('should return message when uninitialized', function () {
+        assert.equal(instance.uninitialized, 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
+      })
+    })
+  })
+
+  describe('evaluation with constants', function () {
+    // Do these tests really belong in constants.test.js ?
+    approx.equal(math.sin(math.pi / 2), 1)
+
+    assert.equal(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0)
+    assert.equal(math.round(math.eval('1+e^(pi*i)'), 5), 0)
+
     assert.deepEqual(math.sqrt(-1), math.i)
     assert.deepEqual(math.eval('i'), math.complex(0, 1))
-  })
 
-  it('should have true and false', function () {
-    assert.strictEqual(math.true, true)
-    assert.strictEqual(math.false, false)
     assert.strictEqual(math.eval('true'), true)
     assert.strictEqual(math.eval('false'), false)
-  })
-
-  it('should have null', function () {
-    assert.strictEqual(math['null'], null)
-  })
-
-  it('should return message when uninitialized', function () {
-    assert.equal(math.uninitialized, 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
   })
 })
