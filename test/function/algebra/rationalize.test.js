@@ -110,6 +110,8 @@ describe('rationalize', function () {
   })
 
   it('processing tougher expressions', function () {
+    this.timeout(5000) // For IE/Edge
+
     assert.equal(stri(math.rationalize('2x/(x+2) - x/(x+1)')), 'x^2/(x^2+3*x+2)')
     assert.equal(stri(math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')),
       '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
@@ -136,6 +138,8 @@ describe('rationalize', function () {
   })
 
   it('testing complete form', function () {
+    this.timeout(5000) // For IE/Edge
+
     assert.deepEqual(objToStrings(math.rationalize('x+x+x+y', {}, true)), {
       coefficients: '',
       denominator: null,
