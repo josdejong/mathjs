@@ -183,7 +183,7 @@ when they have the same base and same value when normalized to SI units.
 
 ### unit.format([options])
 Get a string representation of the unit. The function
-will determine the best fitting prefix for the unit. See the [Format](../functions/format.md)
+will determine the best fitting prefix for the unit. See the [Format](../reference/functions/format.md)
 page for available options.
 
 ### unit.fromJSON(json)
