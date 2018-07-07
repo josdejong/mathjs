@@ -12,7 +12,7 @@ File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
 <head>
   <title>math.js | rocket trajectory optimization</title>
 
-  <script src="https://unpkg.com/mathjs@5.0.1/dist/math.min.js"></script>
+  <script src="https://unpkg.com/mathjs@5.0.2/dist/math.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
   <style>
@@ -77,9 +77,9 @@ File: [rocket_trajectory_optimization.html](rocket_trajectory_optimization.html)
 
     // Define the equations of motion. It is important to maintain the same argument order for each of these functions.
     sim.eval("drdt(r, v, m, phi, gamma) = v sin(gamma)")
-    sim.eval("dvdt(r, v, m, phi, gamma) = -mu / r^2 sin(gamma) + T / m")
+    sim.eval("dvdt(r, v, m, phi, gamma) = -mu / r^2 * sin(gamma) + T / m")
     sim.eval("dmdt(r, v, m, phi, gamma) = -T/g0/isp")
-    sim.eval("dphidt(r, v, m, phi, gamma) = v/r cos(gamma) * rad")
+    sim.eval("dphidt(r, v, m, phi, gamma) = v/r * cos(gamma) * rad")
     sim.eval("dgammadt(r, v, m, phi, gamma) = (1/r * (v - mu / (r v)) * cos(gamma)) * rad")
 
     // Again, remember to maintain the same variable order in the call to ndsolve.

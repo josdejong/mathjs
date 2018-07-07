@@ -20,16 +20,6 @@ function factory (type, config, load, typed) {
     }
   })
 
-  // define conversions if applicable
-  typed.addConversion({
-    from: 'number',
-    to: 'MyType',
-    convert: function (x) {
-      // convert a number to MyType
-      return new MyType(x)
-    }
-  })
-
   // return the construction function, this will
   // be added to math.type.MyType when imported
   return MyType

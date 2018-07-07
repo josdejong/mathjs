@@ -17,12 +17,8 @@ math.import(require('./myAdd'))
 const MyType = math.type.MyType
 
 // use the new type
-const ans1 = math.add(new MyType(2), new MyType(3)) // returns MyType(5)
-console.log(ans1.toString()) // outputs 'MyType:5'
-
-// numbers will be converted to MyType
-const ans2 = math.add(new MyType(4), 7) // returns MyType(11)
-console.log(ans2.toString()) // outputs 'MyType:11'
+const ans = math.add(new MyType(2), new MyType(3)) // returns MyType(5)
+console.log(ans.toString()) // outputs 'MyType:5'
 
 ```
 
@@ -48,16 +44,6 @@ function factory (type, config, load, typed) {
     test: function (x) {
       // test whether x is of type MyType
       return x && x.isMyType
-    }
-  })
-
-  // define conversions if applicable
-  typed.addConversion({
-    from: 'number',
-    to: 'MyType',
-    convert: function (x) {
-      // convert a number to MyType
-      return new MyType(x)
     }
   })
 

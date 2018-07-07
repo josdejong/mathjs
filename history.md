@@ -4,6 +4,24 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+
+<h2 id="20180707-version-502">2018-07-07, version 5.0.2 <a href="#20180707-version-502" title="Permalink">#</a></h2>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1136">#1136</a>: rocket trajectory example broken (since v4.0.0).
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1137">#1137</a>: `simplify` unnecessarily replacing implicit multiplication with
+  explicit multiplication.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1146">#1146</a>: `rationalize` throwing exceptions for some input with decimals.
+  Thanks <a href="https://github.com/maruta">@maruta</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1088">#1088</a>: function arguments not being passed to `rawArgs` functions.
+- Fixed advanced example `add_new_datatypes`.
+- Fixed mathjs core constants not working without complex numbers.
+  Thanks <a href="https://github.com/ChristopherChudzicki">@ChristopherChudzicki</a>.
+- Fixed a broken link in the documentation on units. Thanks <a href="https://github.com/stropitek">@stropitek</a>.
+- Upgraded dependencies (`typed-function@1.0.4`, `complex.js@2.0.11`).
+- Upgraded devDependencies (`babel-loader@7.1.5 `, `uglify-js@3.4.3`,
+  `expr-eval@1.2.2`, `webpack@4.15.1`).
+
+
 <h2 id="20180701-version-501">2018-07-01, version 5.0.1 <a href="#20180701-version-501" title="Permalink">#</a></h2>
 
 - Improved error messaging when converting units. Thanks <a href="https://github.com/gap777">@gap777</a>.

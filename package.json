@@ -6,16 +6,16 @@
     "url": "https://github.com/josdejong/mathjs.git"
   },
   "dependencies": {
-    "mathjs": "5.0.1"
+    "mathjs": "5.0.2"
   },
   "devDependencies": {
-    "glob": "^4.3.5",
+    "glob": "^7.1.2",
     "gulp": "^3.8.10",
-    "gulp-header": "^1.2.2",
+    "gulp-header": "^2.0.5",
     "gulp-rename": "^1.2.0",
-    "gulp-replace": "^0.5.2",
+    "gulp-replace": "^1.0.0",
     "gulp-util": "^3.0.2",
-    "handlebars": "^2.0.0",
+    "handlebars": "^4.0.11",
     "rimraf": "^2.2.8"
   },
   "scripts": {
