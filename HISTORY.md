@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 5.0.2
+## 2018-07-07, version 5.0.2
 
 - Fixed #1136: rocket trajectory example broken (since v4.0.0).
 - Fixed #1137: `simplify` unnecessarily replacing implicit multiplication with

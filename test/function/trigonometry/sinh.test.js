@@ -38,7 +38,7 @@ describe('sinh', function () {
 
     it('should return the sinh of very large numbers (avoid returning zero)', function () {
       // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
-      console.log('process.version=', process.version)
+      // console.log('process.version=', process.version)
       assert(sinh(1e-50) !== 0)
       assert(Math.abs(sinh(1e-50) - 1e-50) < EPSILON)
     })
