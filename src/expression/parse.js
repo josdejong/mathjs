@@ -159,12 +159,34 @@ function factory (type, config, load, typed) {
       expression: '', // current expression
       comment: '', // last parsed comment
       index: 0, // current index in expr
-      c: '', // current token character in expr
       token: '', // current token
       tokenType: TOKENTYPE.NULL, // type of the token
       nestingLevel: 0, // level of nesting inside parameters, used to ignore newline characters
       conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
     }
+  }
+
+  /**
+   * View upto `length` characters of the expression starting at the current character.
+   *
+   * @param {State} state
+   * @param {number} [length=1] Number of characters to view
+   * @returns {string}
+   * @private
+   */
+  function currentString (state, length) {
+    return state.expression.substr(state.index, length)
+  }
+
+  /**
+   * View the current character. Returns '' if end of expression is reached.
+   *
+   * @param {State} state
+   * @returns {string}
+   * @private
+   */
+  function currentCharacter (state) {
+    return currentString(state, 1)
   }
 
   /**
@@ -175,7 +197,6 @@ function factory (type, config, load, typed) {
    */
   function next (state) {
     state.index++
-    state.c = state.expression.charAt(state.index)
   }
 
   /**
@@ -197,15 +218,6 @@ function factory (type, config, load, typed) {
   }
 
   /**
-   * Preview the second next character from the expression.
-   * @return {string} cNext
-   * @private
-   */
-  function nextNextCharacter (state) {
-    return state.expression.charAt(state.index + 2)
-  }
-
-  /**
    * Get next token in the current string expr.
    * The token and token type are available as token and tokenType
    * @private
@@ -217,36 +229,36 @@ function factory (type, config, load, typed) {
 
     // skip over whitespaces
     // space, tab, and newline when inside parameters
-    while (parse.isWhitespace(state.c, state.nestingLevel)) {
+    while (parse.isWhitespace(currentCharacter(state), state.nestingLevel)) {
       next(state)
     }
 
     // skip comment
-    if (state.c === '#') {
-      while (state.c !== '\n' && state.c !== '') {
-        state.comment += state.c
+    if (currentCharacter(state) === '#') {
+      while (currentCharacter(state) !== '\n' && currentCharacter(state) !== '') {
+        state.comment += currentCharacter(state)
         next(state)
       }
     }
 
     // check for end of expression
-    if (state.c === '') {
+    if (currentCharacter(state) === '') {
       // token is still empty
       state.tokenType = TOKENTYPE.DELIMITER
       return
     }
 
     // check for new line character
-    if (state.c === '\n' && !state.nestingLevel) {
+    if (currentCharacter(state) === '\n' && !state.nestingLevel) {
       state.tokenType = TOKENTYPE.DELIMITER
-      state.token = state.c
+      state.token = currentCharacter(state)
       next(state)
       return
     }
 
-    // check for delimiters consisting of 3 characters
-    let c2 = state.c + nextCharacter(state)
-    const c3 = c2 + nextNextCharacter(state)
+    const c1 = currentCharacter(state)
+    const c2 = currentString(state, 2)
+    const c3 = currentString(state, 3)
     if (c3.length === 3 && DELIMITERS[c3]) {
       state.tokenType = TOKENTYPE.DELIMITER
       state.token = c3
@@ -266,69 +278,67 @@ function factory (type, config, load, typed) {
     }
 
     // check for delimiters consisting of 1 character
-    if (DELIMITERS[state.c]) {
+    if (DELIMITERS[c1]) {
       state.tokenType = TOKENTYPE.DELIMITER
-      state.token = state.c
+      state.token = c1
       next(state)
       return
     }
 
     // check for a number
-    if (parse.isDigitDot(state.c)) {
+    if (parse.isDigitDot(c1)) {
       state.tokenType = TOKENTYPE.NUMBER
 
       // get number, can have a single dot
-      if (state.c === '.') {
-        state.token += state.c
+      if (currentCharacter(state) === '.') {
+        state.token += currentCharacter(state)
         next(state)
 
-        if (!parse.isDigit(state.c)) {
+        if (!parse.isDigit(currentCharacter(state))) {
           // this is no number, it is just a dot (can be dot notation)
           state.tokenType = TOKENTYPE.DELIMITER
         }
       } else {
-        while (parse.isDigit(state.c)) {
-          state.token += state.c
+        while (parse.isDigit(currentCharacter(state))) {
+          state.token += currentCharacter(state)
           next(state)
         }
-        if (parse.isDecimalMark(state.c, nextCharacter(state))) {
-          state.token += state.c
+        if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
+          state.token += currentCharacter(state)
           next(state)
         }
       }
-      while (parse.isDigit(state.c)) {
-        state.token += state.c
+
+      while (parse.isDigit(currentCharacter(state))) {
+        state.token += currentCharacter(state)
         next(state)
       }
-
       // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
-      c2 = nextCharacter(state)
-      if (state.c === 'E' || state.c === 'e') {
-        if (parse.isDigit(c2) || c2 === '-' || c2 === '+') {
-          state.token += state.c
+      if (currentCharacter(state) === 'E' || currentCharacter(state) === 'e') {
+        if (parse.isDigit(nextCharacter(state)) || nextCharacter(state) === '-' || nextCharacter(state) === '+') {
+          state.token += currentCharacter(state)
           next(state)
 
-          if (state.c === '+' || state.c === '-') {
-            state.token += state.c
+          if (currentCharacter(state) === '+' || currentCharacter(state) === '-') {
+            state.token += currentCharacter(state)
             next(state)
           }
-
           // Scientific notation MUST be followed by an exponent
-          if (!parse.isDigit(state.c)) {
-            throw createSyntaxError(state, 'Digit expected, got "' + state.c + '"')
+          if (!parse.isDigit(currentCharacter(state))) {
+            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
           }
 
-          while (parse.isDigit(state.c)) {
-            state.token += state.c
+          while (parse.isDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
             next(state)
           }
 
-          if (parse.isDecimalMark(state.c, nextCharacter(state))) {
-            throw createSyntaxError(state, 'Digit expected, got "' + state.c + '"')
+          if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
+            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
           }
-        } else if (c2 === '.') {
+        } else if (nextCharacter(state) === '.') {
           next(state)
-          throw createSyntaxError(state, 'Digit expected, got "' + state.c + '"')
+          throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
         }
       }
 
@@ -336,9 +346,9 @@ function factory (type, config, load, typed) {
     }
 
     // check for variables, functions, named operators
-    if (parse.isAlpha(state.c, prevCharacter(state), nextCharacter(state))) {
-      while (parse.isAlpha(state.c, prevCharacter(state), nextCharacter(state)) || parse.isDigit(state.c)) {
-        state.token += state.c
+    if (parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state))) {
+      while (parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state)) || parse.isDigit(currentCharacter(state))) {
+        state.token += currentCharacter(state)
         next(state)
       }
 
@@ -353,8 +363,8 @@ function factory (type, config, load, typed) {
 
     // something unknown is found, wrong characters -> a syntax error
     state.tokenType = TOKENTYPE.UNKNOWN
-    while (state.c !== '') {
-      state.token += state.c
+    while (currentCharacter(state) !== '') {
+      state.token += currentCharacter(state)
       next(state)
     }
     throw createSyntaxError(state, 'Syntax error in part "' + state.token + '"')
@@ -488,7 +498,6 @@ function factory (type, config, load, typed) {
   function parseStart (expression, extraNodes) {
     const state = initialState()
     Object.assign(state, { expression, extraNodes })
-    state.c = state.expression.charAt(state.index)
     getToken(state)
 
     const node = parseBlock(state)
@@ -1332,15 +1341,15 @@ function factory (type, config, load, typed) {
   function parseStringToken (state) {
     let str = ''
 
-    while (state.c !== '' && state.c !== '"') {
-      if (state.c === '\\') {
+    while (currentCharacter(state) !== '' && currentCharacter(state) !== '"') {
+      if (currentCharacter(state) === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\"'
-        str += state.c
+        str += currentCharacter(state)
         next(state)
       }
 
-      str += state.c
+      str += currentCharacter(state)
       next(state)
     }
 
