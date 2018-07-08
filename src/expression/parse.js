@@ -183,7 +183,7 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function prevPreview (state) {
+  function prevCharacter (state) {
     return state.expression.charAt(state.index - 1)
   }
 
@@ -192,7 +192,7 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function nextPreview (state) {
+  function nextCharacter (state) {
     return state.expression.charAt(state.index + 1)
   }
 
@@ -201,7 +201,7 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function nextNextPreview (state) {
+  function nextNextCharacter (state) {
     return state.expression.charAt(state.index + 2)
   }
 
@@ -245,8 +245,8 @@ function factory (type, config, load, typed) {
     }
 
     // check for delimiters consisting of 3 characters
-    let c2 = state.c + nextPreview(state)
-    const c3 = c2 + nextNextPreview(state)
+    let c2 = state.c + nextCharacter(state)
+    const c3 = c2 + nextNextCharacter(state)
     if (c3.length === 3 && DELIMITERS[c3]) {
       state.tokenType = TOKENTYPE.DELIMITER
       state.token = c3
@@ -291,7 +291,7 @@ function factory (type, config, load, typed) {
           state.token += state.c
           next(state)
         }
-        if (parse.isDecimalMark(state.c, nextPreview(state))) {
+        if (parse.isDecimalMark(state.c, nextCharacter(state))) {
           state.token += state.c
           next(state)
         }
@@ -302,7 +302,7 @@ function factory (type, config, load, typed) {
       }
 
       // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
-      c2 = nextPreview(state)
+      c2 = nextCharacter(state)
       if (state.c === 'E' || state.c === 'e') {
         if (parse.isDigit(c2) || c2 === '-' || c2 === '+') {
           state.token += state.c
@@ -323,7 +323,7 @@ function factory (type, config, load, typed) {
             next(state)
           }
 
-          if (parse.isDecimalMark(state.c, nextPreview(state))) {
+          if (parse.isDecimalMark(state.c, nextCharacter(state))) {
             throw createSyntaxError(state, 'Digit expected, got "' + state.c + '"')
           }
         } else if (c2 === '.') {
@@ -336,8 +336,8 @@ function factory (type, config, load, typed) {
     }
 
     // check for variables, functions, named operators
-    if (parse.isAlpha(state.c, prevPreview(state), nextPreview(state))) {
-      while (parse.isAlpha(state.c, prevPreview(state), nextPreview(state)) || parse.isDigit(state.c)) {
+    if (parse.isAlpha(state.c, prevCharacter(state), nextCharacter(state))) {
+      while (parse.isAlpha(state.c, prevCharacter(state), nextCharacter(state)) || parse.isDigit(state.c)) {
         state.token += state.c
         next(state)
       }
