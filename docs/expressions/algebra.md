@@ -17,7 +17,7 @@ console.log(math.simplify('x^2 + x + 3 + x^2').toString())      // '2 * x ^ 2 + 
 console.log(math.simplify('x * y * -x / (x ^ 2)').toString())   // '-y'
 ```
 
-The function accepts either a string or an expression tree (`Node`) as input, and outputs a simplified expression tree (`Node`). This node tree can be transformed and evaluated as described in detail on the page [Expression trees]('./expression_trees.md').
+The function accepts either a string or an expression tree (`Node`) as input, and outputs a simplified expression tree (`Node`). This node tree can be transformed and evaluated as described in detail on the page [Expression trees](expression_trees.md).
 
 ```js
 // work with an expression tree, evaluate results

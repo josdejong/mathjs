@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    *
    * See also:
    *
-   *    Bell numbers
+   *    bellNumbers
    *
    * @param {Number | BigNumber} n    Total number of objects in the set
    * @param {Number | BigNumber} k    Number of objects in the subset
