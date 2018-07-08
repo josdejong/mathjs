@@ -25,7 +25,7 @@ function factory (type, config, load, typed) {
     const asize = a._size
     const adt = a._datatype
     // b arrays
-    let bdata = b._data
+    const bdata = b._data
     const bsize = b._size
     const bdt = b._datatype
     // c arrays
@@ -51,8 +51,6 @@ function factory (type, config, load, typed) {
     if (typeof adt === 'string' && adt === bdt) {
       // datatype
       dt = adt
-      // convert b to the same datatype
-      bdata = typed.convert(b, dt)._data
       // callback
       cf = typed.find(callback, [dt, dt])
     }

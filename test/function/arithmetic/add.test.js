@@ -93,6 +93,26 @@ describe('add', function () {
       assert.ok(c instanceof math.type.Matrix)
       assert.deepEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
+
+    it('should add matrices with a datatype correctly', function () {
+      const a2 = math.matrix([[1, 2], [3, 4]], 'dense', 'number')
+      const a3 = math.matrix([[5, 6], [7, 8]], 'dense', 'number')
+      const a4 = add(a2, a3)
+      assert.ok(a4 instanceof math.type.Matrix)
+      assert.equal(a4._datatype, 'number')
+      assert.deepEqual(a4.size(), [2, 2])
+      assert.deepEqual(a4.valueOf(), [[6, 8], [10, 12]])
+    })
+
+    it('should add matrices with a datatype correctly', function () {
+      const a2 = math.matrix([math.bignumber(3), math.bignumber(4)], 'dense', 'BigNumber')
+      const a3 = math.matrix([math.bignumber(5), math.bignumber(6)], 'dense', 'BigNumber')
+      const a4 = add(a2, a3)
+      assert.ok(a4 instanceof math.type.Matrix)
+      assert.equal(a4._datatype, 'BigNumber')
+      assert.deepEqual(a4.size(), [2])
+      assert.deepEqual(a4.valueOf(), [math.bignumber(8), math.bignumber(10)])
+    })
   })
 
   describe('SparseMatrix', function () {

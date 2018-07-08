@@ -3,6 +3,8 @@
 
 ## not yet released, version 5.0.3
 
+- Fixed many functions (for example `add` and `subtract`) not working
+  with matrices having a `datatype` defined.
 - Fixed broken links in the documentation. Thanks @stropitek.
 - Refactored the code of `parse` into a functional approach.
   Thanks @harrysarson.
