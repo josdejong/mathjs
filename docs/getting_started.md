@@ -19,7 +19,7 @@ Other ways to install math.js are described on the [website](http://mathjs.org/d
 Math.js can be used in node.js and in the browser. The library must be loaded
 and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
-[Configuration](configuration.md).
+[Configuration](core/configuration.md).
 
 ### ES6 modules
 
@@ -91,7 +91,7 @@ require(['mathjs'], function (math) {
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate expressions (see [Expressions](expressions/index.md)) and
-supports chaining (see [Chaining](chaining.md)).
+supports chaining (see [Chaining](core/chaining.md)).
 
 The example code below shows how to use math.js. More examples can be found in the
 section [Examples](http://mathjs.org/examples/index.html).
