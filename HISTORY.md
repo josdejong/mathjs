@@ -249,7 +249,7 @@ Non breaking changes:
 
 - Upgraded to `typed-function@0.10.7` (bug-fix release).
 - Fixed option `implicit` not being copied from an `OperatorNode`
-  when applying function `map`. Thanks @HarraySarson.
+  when applying function `map`. Thanks @HarrySarson.
 - Fixed #995: spaces and underscores not property being escaped
   in `toTex()`. Thanks @FSMaxB.
 
