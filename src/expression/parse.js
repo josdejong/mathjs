@@ -59,19 +59,18 @@ function factory (type, config, load, typed) {
     }
 
     // pass extra nodes
-    extraNodes = (options && options.nodes) ? options.nodes : {}
+    let extraNodes = (options && options.nodes) ? options.nodes : {}
 
     if (typeof expr === 'string') {
       // parse a single expression
-      expression = expr
-      return parseStart()
+
+      return parseStart(expr, extraNodes)
     } else if (Array.isArray(expr) || expr instanceof type.Matrix) {
       // parse an array or matrix with expressions
       return deepMap(expr, function (elem) {
         if (typeof elem !== 'string') throw new TypeError('String expected')
 
-        expression = elem
-        return parseStart()
+        return parseStart(elem, extraNodes)
       })
     } else {
       // oops
@@ -154,28 +153,40 @@ function factory (type, config, load, typed) {
     'Infinity'
   ]
 
-  let extraNodes = {} // current extra nodes
-  let expression = '' // current expression
-  let comment = '' // last parsed comment
-  let index = 0 // current index in expr
-  let c = '' // current token character in expr
-  let token = '' // current token
-  let tokenType = TOKENTYPE.NULL // type of the token
-  let nestingLevel = 0 // level of nesting inside parameters, used to ignore newline characters
-  let conditionalLevel = null // when a conditional is being parsed, the level of the conditional is stored here
-  const tokenStates = [] // holds saved token states
+  function initialState () {
+    return {
+      extraNodes: {}, // current extra nodes, must be careful not to mutate
+      expression: '', // current expression
+      comment: '', // last parsed comment
+      index: 0, // current index in expr
+      token: '', // current token
+      tokenType: TOKENTYPE.NULL, // type of the token
+      nestingLevel: 0, // level of nesting inside parameters, used to ignore newline characters
+      conditionalLevel: null // when a conditional is being parsed, the level of the conditional is stored here
+    }
+  }
 
   /**
-   * Get the first character from the expression.
-   * The character is stored into the char c. If the end of the expression is
-   * reached, the function puts an empty string in c.
+   * View upto `length` characters of the expression starting at the current character.
+   *
+   * @param {State} state
+   * @param {number} [length=1] Number of characters to view
+   * @returns {string}
    * @private
    */
-  function first () {
-    index = 0
-    c = expression.charAt(0)
-    nestingLevel = 0
-    conditionalLevel = null
+  function currentString (state, length) {
+    return state.expression.substr(state.index, length)
+  }
+
+  /**
+   * View the current character. Returns '' if end of expression is reached.
+   *
+   * @param {State} state
+   * @returns {string}
+   * @private
+   */
+  function currentCharacter (state) {
+    return currentString(state, 1)
   }
 
   /**
@@ -184,9 +195,8 @@ function factory (type, config, load, typed) {
    * reached, the function puts an empty string in c.
    * @private
    */
-  function next () {
-    index++
-    c = expression.charAt(index)
+  function next (state) {
+    state.index++
   }
 
   /**
@@ -194,8 +204,8 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function prevPreview () {
-    return expression.charAt(index - 1)
+  function prevCharacter (state) {
+    return state.expression.charAt(state.index - 1)
   }
 
   /**
@@ -203,52 +213,8 @@ function factory (type, config, load, typed) {
    * @return {string} cNext
    * @private
    */
-  function nextPreview () {
-    return expression.charAt(index + 1)
-  }
-
-  /**
-   * Preview the second next character from the expression.
-   * @return {string} cNext
-   * @private
-   */
-  function nextNextPreview () {
-    return expression.charAt(index + 2)
-  }
-
-  /**
-   * Save the current token state so we can rewind later if necessary.
-   * @private
-   */
-  function pushTokenState () {
-    tokenStates.push({
-      tokenType: tokenType,
-      token: token,
-      comment: comment,
-      index: index,
-      c: c
-    })
-  }
-
-  /**
-   * Rewind the parser by one token by restoring the last saved token state
-   * @private
-   */
-  function popTokenState () {
-    const restoredState = tokenStates.pop()
-    tokenType = restoredState.tokenType
-    token = restoredState.token
-    comment = restoredState.comment
-    index = restoredState.index
-    c = restoredState.c
-  }
-
-  /**
-   * Discard the most recent token state without restoring it
-   * @private
-   */
-  function discardTokenState () {
-    tokenStates.pop()
+  function nextCharacter (state) {
+    return state.expression.charAt(state.index + 1)
   }
 
   /**
@@ -256,125 +222,123 @@ function factory (type, config, load, typed) {
    * The token and token type are available as token and tokenType
    * @private
    */
-  function getToken () {
-    tokenType = TOKENTYPE.NULL
-    token = ''
-    comment = ''
+  function getToken (state) {
+    state.tokenType = TOKENTYPE.NULL
+    state.token = ''
+    state.comment = ''
 
     // skip over whitespaces
     // space, tab, and newline when inside parameters
-    while (parse.isWhitespace(c, nestingLevel)) {
-      next()
+    while (parse.isWhitespace(currentCharacter(state), state.nestingLevel)) {
+      next(state)
     }
 
     // skip comment
-    if (c === '#') {
-      while (c !== '\n' && c !== '') {
-        comment += c
-        next()
+    if (currentCharacter(state) === '#') {
+      while (currentCharacter(state) !== '\n' && currentCharacter(state) !== '') {
+        state.comment += currentCharacter(state)
+        next(state)
       }
     }
 
     // check for end of expression
-    if (c === '') {
+    if (currentCharacter(state) === '') {
       // token is still empty
-      tokenType = TOKENTYPE.DELIMITER
+      state.tokenType = TOKENTYPE.DELIMITER
       return
     }
 
     // check for new line character
-    if (c === '\n' && !nestingLevel) {
-      tokenType = TOKENTYPE.DELIMITER
-      token = c
-      next()
+    if (currentCharacter(state) === '\n' && !state.nestingLevel) {
+      state.tokenType = TOKENTYPE.DELIMITER
+      state.token = currentCharacter(state)
+      next(state)
       return
     }
 
-    // check for delimiters consisting of 3 characters
-    let c2 = c + nextPreview()
-    const c3 = c2 + nextNextPreview()
+    const c1 = currentCharacter(state)
+    const c2 = currentString(state, 2)
+    const c3 = currentString(state, 3)
     if (c3.length === 3 && DELIMITERS[c3]) {
-      tokenType = TOKENTYPE.DELIMITER
-      token = c3
-      next()
-      next()
-      next()
+      state.tokenType = TOKENTYPE.DELIMITER
+      state.token = c3
+      next(state)
+      next(state)
+      next(state)
       return
     }
 
     // check for delimiters consisting of 2 characters
     if (c2.length === 2 && DELIMITERS[c2]) {
-      tokenType = TOKENTYPE.DELIMITER
-      token = c2
-      next()
-      next()
+      state.tokenType = TOKENTYPE.DELIMITER
+      state.token = c2
+      next(state)
+      next(state)
       return
     }
 
     // check for delimiters consisting of 1 character
-    if (DELIMITERS[c]) {
-      tokenType = TOKENTYPE.DELIMITER
-      token = c
-      next()
+    if (DELIMITERS[c1]) {
+      state.tokenType = TOKENTYPE.DELIMITER
+      state.token = c1
+      next(state)
       return
     }
 
     // check for a number
-    if (parse.isDigitDot(c)) {
-      tokenType = TOKENTYPE.NUMBER
+    if (parse.isDigitDot(c1)) {
+      state.tokenType = TOKENTYPE.NUMBER
 
       // get number, can have a single dot
-      if (c === '.') {
-        token += c
-        next()
+      if (currentCharacter(state) === '.') {
+        state.token += currentCharacter(state)
+        next(state)
 
-        if (!parse.isDigit(c)) {
+        if (!parse.isDigit(currentCharacter(state))) {
           // this is no number, it is just a dot (can be dot notation)
-          tokenType = TOKENTYPE.DELIMITER
+          state.tokenType = TOKENTYPE.DELIMITER
         }
       } else {
-        while (parse.isDigit(c)) {
-          token += c
-          next()
+        while (parse.isDigit(currentCharacter(state))) {
+          state.token += currentCharacter(state)
+          next(state)
         }
-        if (parse.isDecimalMark(c, nextPreview())) {
-          token += c
-          next()
+        if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
+          state.token += currentCharacter(state)
+          next(state)
         }
-      }
-      while (parse.isDigit(c)) {
-        token += c
-        next()
       }
 
+      while (parse.isDigit(currentCharacter(state))) {
+        state.token += currentCharacter(state)
+        next(state)
+      }
       // check for exponential notation like "2.3e-4", "1.23e50" or "2e+4"
-      c2 = nextPreview()
-      if (c === 'E' || c === 'e') {
-        if (parse.isDigit(c2) || c2 === '-' || c2 === '+') {
-          token += c
-          next()
+      if (currentCharacter(state) === 'E' || currentCharacter(state) === 'e') {
+        if (parse.isDigit(nextCharacter(state)) || nextCharacter(state) === '-' || nextCharacter(state) === '+') {
+          state.token += currentCharacter(state)
+          next(state)
 
-          if (c === '+' || c === '-') {
-            token += c
-            next()
+          if (currentCharacter(state) === '+' || currentCharacter(state) === '-') {
+            state.token += currentCharacter(state)
+            next(state)
           }
-
           // Scientific notation MUST be followed by an exponent
-          if (!parse.isDigit(c)) {
-            throw createSyntaxError('Digit expected, got "' + c + '"')
+          if (!parse.isDigit(currentCharacter(state))) {
+            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
           }
 
-          while (parse.isDigit(c)) {
-            token += c
-            next()
+          while (parse.isDigit(currentCharacter(state))) {
+            state.token += currentCharacter(state)
+            next(state)
           }
 
-          if (parse.isDecimalMark(c, nextPreview())) {
-            throw createSyntaxError('Digit expected, got "' + c + '"')
+          if (parse.isDecimalMark(currentCharacter(state), nextCharacter(state))) {
+            throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
           }
-        } else if (c2 === '.') {
-          next()
-          throw createSyntaxError('Digit expected, got "' + c + '"')
+        } else if (nextCharacter(state) === '.') {
+          next(state)
+          throw createSyntaxError(state, 'Digit expected, got "' + currentCharacter(state) + '"')
         }
       }
 
@@ -382,54 +346,54 @@ function factory (type, config, load, typed) {
     }
 
     // check for variables, functions, named operators
-    if (parse.isAlpha(c, prevPreview(), nextPreview())) {
-      while (parse.isAlpha(c, prevPreview(), nextPreview()) || parse.isDigit(c)) {
-        token += c
-        next()
+    if (parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state))) {
+      while (parse.isAlpha(currentCharacter(state), prevCharacter(state), nextCharacter(state)) || parse.isDigit(currentCharacter(state))) {
+        state.token += currentCharacter(state)
+        next(state)
       }
 
-      if (NAMED_DELIMITERS.hasOwnProperty(token)) {
-        tokenType = TOKENTYPE.DELIMITER
+      if (NAMED_DELIMITERS.hasOwnProperty(state.token)) {
+        state.tokenType = TOKENTYPE.DELIMITER
       } else {
-        tokenType = TOKENTYPE.SYMBOL
+        state.tokenType = TOKENTYPE.SYMBOL
       }
 
       return
     }
 
     // something unknown is found, wrong characters -> a syntax error
-    tokenType = TOKENTYPE.UNKNOWN
-    while (c !== '') {
-      token += c
-      next()
+    state.tokenType = TOKENTYPE.UNKNOWN
+    while (currentCharacter(state) !== '') {
+      state.token += currentCharacter(state)
+      next(state)
     }
-    throw createSyntaxError('Syntax error in part "' + token + '"')
+    throw createSyntaxError(state, 'Syntax error in part "' + state.token + '"')
   }
 
   /**
    * Get next token and skip newline tokens
    */
-  function getTokenSkipNewline () {
+  function getTokenSkipNewline (state) {
     do {
-      getToken()
+      getToken(state)
     }
-    while (token === '\n') // eslint-disable-line no-unmodified-loop-condition
+    while (state.token === '\n') // eslint-disable-line no-unmodified-loop-condition
   }
 
   /**
    * Open parameters.
-   * New line characters will be ignored until closeParams() is called
+   * New line characters will be ignored until closeParams(state) is called
    */
-  function openParams () {
-    nestingLevel++
+  function openParams (state) {
+    state.nestingLevel++
   }
 
   /**
    * Close parameters.
    * New line characters will no longer be ignored
    */
-  function closeParams () {
-    nestingLevel--
+  function closeParams (state) {
+    state.nestingLevel--
   }
 
   /**
@@ -531,24 +495,23 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseStart () {
-    // get the first character in expression
-    first()
+  function parseStart (expression, extraNodes) {
+    const state = initialState()
+    Object.assign(state, { expression, extraNodes })
+    getToken(state)
 
-    getToken()
-
-    const node = parseBlock()
+    const node = parseBlock(state)
 
     // check for garbage at the end of the expression
     // an expression ends with a empty character '' and tokenType DELIMITER
-    if (token !== '') {
-      if (tokenType === TOKENTYPE.DELIMITER) {
+    if (state.token !== '') {
+      if (state.tokenType === TOKENTYPE.DELIMITER) {
         // user entered a not existing operator like "//"
 
         // TODO: give hints for aliases, for example with "<>" give as hint " did you mean !== ?"
-        throw createError('Unexpected operator ' + token)
+        throw createError(state, 'Unexpected operator ' + state.token)
       } else {
-        throw createSyntaxError('Unexpected part "' + token + '"')
+        throw createSyntaxError(state, 'Unexpected part "' + state.token + '"')
       }
     }
 
@@ -562,32 +525,32 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseBlock () {
+  function parseBlock (state) {
     let node
     const blocks = []
     let visible
 
-    if (token !== '' && token !== '\n' && token !== ';') {
-      node = parseAssignment()
-      node.comment = comment
+    if (state.token !== '' && state.token !== '\n' && state.token !== ';') {
+      node = parseAssignment(state)
+      node.comment = state.comment
     }
 
     // TODO: simplify this loop
-    while (token === '\n' || token === ';') { // eslint-disable-line no-unmodified-loop-condition
+    while (state.token === '\n' || state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
       if (blocks.length === 0 && node) {
-        visible = (token !== ';')
+        visible = (state.token !== ';')
         blocks.push({
           node: node,
           visible: visible
         })
       }
 
-      getToken()
-      if (token !== '\n' && token !== ';' && token !== '') {
-        node = parseAssignment()
-        node.comment = comment
+      getToken(state)
+      if (state.token !== '\n' && state.token !== ';' && state.token !== '') {
+        node = parseAssignment(state)
+        node.comment = state.comment
 
-        visible = (token !== ';')
+        visible = (state.token !== ';')
         blocks.push({
           node: node,
           visible: visible
@@ -600,7 +563,7 @@ function factory (type, config, load, typed) {
     } else {
       if (!node) {
         node = new ConstantNode(undefined)
-        node.comment = comment
+        node.comment = state.comment
       }
 
       return node
@@ -615,22 +578,22 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseAssignment () {
+  function parseAssignment (state) {
     let name, args, value, valid
 
-    const node = parseConditional()
+    const node = parseConditional(state)
 
-    if (token === '=') {
+    if (state.token === '=') {
       if (type.isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
         name = node.name
-        getTokenSkipNewline()
-        value = parseAssignment()
+        getTokenSkipNewline(state)
+        value = parseAssignment(state)
         return new AssignmentNode(new SymbolNode(name), value)
       } else if (type.isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
-        getTokenSkipNewline()
-        value = parseAssignment()
+        getTokenSkipNewline(state)
+        value = parseAssignment(state)
         return new AssignmentNode(node.object, node.index, value)
       } else if (type.isFunctionNode(node) && type.isSymbolNode(node.fn)) {
         // parse function assignment like 'f(x) = x^2'
@@ -647,13 +610,13 @@ function factory (type, config, load, typed) {
         })
 
         if (valid) {
-          getTokenSkipNewline()
-          value = parseAssignment()
+          getTokenSkipNewline(state)
+          value = parseAssignment(state)
           return new FunctionAssignmentNode(name, args, value)
         }
       }
 
-      throw createSyntaxError('Invalid left hand side of assignment operator =')
+      throw createSyntaxError(state, 'Invalid left hand side of assignment operator =')
     }
 
     return node
@@ -669,30 +632,30 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseConditional () {
-    let node = parseLogicalOr()
+  function parseConditional (state) {
+    let node = parseLogicalOr(state)
 
-    while (token === '?') { // eslint-disable-line no-unmodified-loop-condition
+    while (state.token === '?') { // eslint-disable-line no-unmodified-loop-condition
       // set a conditional level, the range operator will be ignored as long
-      // as conditionalLevel === nestingLevel.
-      const prev = conditionalLevel
-      conditionalLevel = nestingLevel
-      getTokenSkipNewline()
+      // as conditionalLevel === state.nestingLevel.
+      const prev = state.conditionalLevel
+      state.conditionalLevel = state.nestingLevel
+      getTokenSkipNewline(state)
 
       const condition = node
-      const trueExpr = parseAssignment()
+      const trueExpr = parseAssignment(state)
 
-      if (token !== ':') throw createSyntaxError('False part of conditional expression expected')
+      if (state.token !== ':') throw createSyntaxError(state, 'False part of conditional expression expected')
 
-      conditionalLevel = null
-      getTokenSkipNewline()
+      state.conditionalLevel = null
+      getTokenSkipNewline(state)
 
-      const falseExpr = parseAssignment() // Note: check for conditional operator again, right associativity
+      const falseExpr = parseAssignment(state) // Note: check for conditional operator again, right associativity
 
       node = new ConditionalNode(condition, trueExpr, falseExpr)
 
       // restore the previous conditional level
-      conditionalLevel = prev
+      state.conditionalLevel = prev
     }
 
     return node
@@ -703,12 +666,12 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLogicalOr () {
-    let node = parseLogicalXor()
+  function parseLogicalOr (state) {
+    let node = parseLogicalXor(state)
 
-    while (token === 'or') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline()
-      node = new OperatorNode('or', 'or', [node, parseLogicalXor()])
+    while (state.token === 'or') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('or', 'or', [node, parseLogicalXor(state)])
     }
 
     return node
@@ -719,12 +682,12 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLogicalXor () {
-    let node = parseLogicalAnd()
+  function parseLogicalXor (state) {
+    let node = parseLogicalAnd(state)
 
-    while (token === 'xor') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline()
-      node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd()])
+    while (state.token === 'xor') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('xor', 'xor', [node, parseLogicalAnd(state)])
     }
 
     return node
@@ -735,12 +698,12 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLogicalAnd () {
-    let node = parseBitwiseOr()
+  function parseLogicalAnd (state) {
+    let node = parseBitwiseOr(state)
 
-    while (token === 'and') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline()
-      node = new OperatorNode('and', 'and', [node, parseBitwiseOr()])
+    while (state.token === 'and') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('and', 'and', [node, parseBitwiseOr(state)])
     }
 
     return node
@@ -751,12 +714,12 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseBitwiseOr () {
-    let node = parseBitwiseXor()
+  function parseBitwiseOr (state) {
+    let node = parseBitwiseXor(state)
 
-    while (token === '|') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline()
-      node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor()])
+    while (state.token === '|') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('|', 'bitOr', [node, parseBitwiseXor(state)])
     }
 
     return node
@@ -767,12 +730,12 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseBitwiseXor () {
-    let node = parseBitwiseAnd()
+  function parseBitwiseXor (state) {
+    let node = parseBitwiseAnd(state)
 
-    while (token === '^|') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline()
-      node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd()])
+    while (state.token === '^|') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('^|', 'bitXor', [node, parseBitwiseAnd(state)])
     }
 
     return node
@@ -783,12 +746,12 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseBitwiseAnd () {
-    let node = parseRelational()
+  function parseBitwiseAnd (state) {
+    let node = parseRelational(state)
 
-    while (token === '&') { // eslint-disable-line no-unmodified-loop-condition
-      getTokenSkipNewline()
-      node = new OperatorNode('&', 'bitAnd', [node, parseRelational()])
+    while (state.token === '&') { // eslint-disable-line no-unmodified-loop-condition
+      getTokenSkipNewline(state)
+      node = new OperatorNode('&', 'bitAnd', [node, parseRelational(state)])
     }
 
     return node
@@ -799,10 +762,10 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseRelational () {
+  function parseRelational (state) {
     let node, operators, name, fn, params
 
-    node = parseShift()
+    node = parseShift(state)
 
     operators = {
       '==': 'equal',
@@ -812,12 +775,12 @@ function factory (type, config, load, typed) {
       '<=': 'smallerEq',
       '>=': 'largerEq'
     }
-    while (operators.hasOwnProperty(token)) {
-      name = token
+    while (operators.hasOwnProperty(state.token)) {
+      name = state.token
       fn = operators[name]
 
-      getTokenSkipNewline()
-      params = [node, parseShift()]
+      getTokenSkipNewline(state)
+      params = [node, parseShift(state)]
       node = new OperatorNode(name, fn, params)
     }
 
@@ -829,10 +792,10 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseShift () {
+  function parseShift (state) {
     let node, operators, name, fn, params
 
-    node = parseConversion()
+    node = parseConversion(state)
 
     operators = {
       '<<': 'leftShift',
@@ -840,12 +803,12 @@ function factory (type, config, load, typed) {
       '>>>': 'rightLogShift'
     }
 
-    while (operators.hasOwnProperty(token)) {
-      name = token
+    while (operators.hasOwnProperty(state.token)) {
+      name = state.token
       fn = operators[name]
 
-      getTokenSkipNewline()
-      params = [node, parseConversion()]
+      getTokenSkipNewline(state)
+      params = [node, parseConversion(state)]
       node = new OperatorNode(name, fn, params)
     }
 
@@ -857,28 +820,28 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseConversion () {
+  function parseConversion (state) {
     let node, operators, name, fn, params
 
-    node = parseRange()
+    node = parseRange(state)
 
     operators = {
       'to': 'to',
       'in': 'to' // alias of 'to'
     }
 
-    while (operators.hasOwnProperty(token)) {
-      name = token
+    while (operators.hasOwnProperty(state.token)) {
+      name = state.token
       fn = operators[name]
 
-      getTokenSkipNewline()
+      getTokenSkipNewline(state)
 
-      if (name === 'in' && token === '') {
+      if (name === 'in' && state.token === '') {
         // end of expression -> this is the unit 'in' ('inch')
         node = new OperatorNode('*', 'multiply', [node, new SymbolNode('in')], true)
       } else {
         // operator 'a to b' or 'a in b'
-        params = [node, parseRange()]
+        params = [node, parseRange(state)]
         node = new OperatorNode(name, fn, params)
       }
     }
@@ -891,32 +854,32 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseRange () {
+  function parseRange (state) {
     let node
     const params = []
 
-    if (token === ':') {
+    if (state.token === ':') {
       // implicit start=1 (one-based)
       node = new ConstantNode(1)
     } else {
       // explicit start
-      node = parseAddSubtract()
+      node = parseAddSubtract(state)
     }
 
-    if (token === ':' && (conditionalLevel !== nestingLevel)) {
+    if (state.token === ':' && (state.conditionalLevel !== state.nestingLevel)) {
       // we ignore the range operator when a conditional operator is being processed on the same level
       params.push(node)
 
       // parse step and end
-      while (token === ':' && params.length < 3) { // eslint-disable-line no-unmodified-loop-condition
-        getTokenSkipNewline()
+      while (state.token === ':' && params.length < 3) { // eslint-disable-line no-unmodified-loop-condition
+        getTokenSkipNewline(state)
 
-        if (token === ')' || token === ']' || token === ',' || token === '') {
+        if (state.token === ')' || state.token === ']' || state.token === ',' || state.token === '') {
           // implicit end
           params.push(new SymbolNode('end'))
         } else {
           // explicit end
-          params.push(parseAddSubtract())
+          params.push(parseAddSubtract(state))
         }
       }
 
@@ -937,21 +900,21 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseAddSubtract () {
+  function parseAddSubtract (state) {
     let node, operators, name, fn, params
 
-    node = parseMultiplyDivide()
+    node = parseMultiplyDivide(state)
 
     operators = {
       '+': 'add',
       '-': 'subtract'
     }
-    while (operators.hasOwnProperty(token)) {
-      name = token
+    while (operators.hasOwnProperty(state.token)) {
+      name = state.token
       fn = operators[name]
 
-      getTokenSkipNewline()
-      params = [node, parseMultiplyDivide()]
+      getTokenSkipNewline(state)
+      params = [node, parseMultiplyDivide(state)]
       node = new OperatorNode(name, fn, params)
     }
 
@@ -963,10 +926,10 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseMultiplyDivide () {
+  function parseMultiplyDivide (state) {
     let node, last, operators, name, fn
 
-    node = parseImplicitMultiplication()
+    node = parseImplicitMultiplication(state)
     last = node
 
     operators = {
@@ -979,14 +942,14 @@ function factory (type, config, load, typed) {
     }
 
     while (true) {
-      if (operators.hasOwnProperty(token)) {
+      if (operators.hasOwnProperty(state.token)) {
         // explicit operators
-        name = token
+        name = state.token
         fn = operators[name]
 
-        getTokenSkipNewline()
+        getTokenSkipNewline(state)
 
-        last = parseImplicitMultiplication()
+        last = parseImplicitMultiplication(state)
         node = new OperatorNode(name, fn, [node, last])
       } else {
         break
@@ -1001,25 +964,25 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseImplicitMultiplication () {
+  function parseImplicitMultiplication (state) {
     let node, last
 
-    node = parseRule2()
+    node = parseRule2(state)
     last = node
 
     while (true) {
-      if ((tokenType === TOKENTYPE.SYMBOL) ||
-          (token === 'in' && type.isConstantNode(node)) ||
-          (tokenType === TOKENTYPE.NUMBER &&
+      if ((state.tokenType === TOKENTYPE.SYMBOL) ||
+          (state.token === 'in' && type.isConstantNode(node)) ||
+          (state.tokenType === TOKENTYPE.NUMBER &&
               !type.isConstantNode(last) &&
               (!type.isOperatorNode(last) || last.op === '!')) ||
-          (token === '(')) {
+          (state.token === '(')) {
         // parse implicit multiplication
         //
         // symbol:      implicit multiplication like '2a', '(2+3)a', 'a b'
         // number:      implicit multiplication like '(2+3)2'
         // parenthesis: implicit multiplication like '2(3+4)', '(3+4)(1+2)'
-        last = parseRule2()
+        last = parseRule2(state)
         node = new OperatorNode('*', 'multiply', [node, last], true /* implicit */)
       } else {
         break
@@ -1036,42 +999,41 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseRule2 () {
-    let node, last
-
-    node = parseUnary()
-    last = node
+  function parseRule2 (state) {
+    let node = parseUnary(state)
+    let last = node
+    let tokenStates = []
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (token === '/' && type.isConstantNode(last)) {
+      if (state.token === '/' && type.isConstantNode(last)) {
         // Look ahead to see if the next token is a number
-        pushTokenState()
-        getTokenSkipNewline()
+        tokenStates.push(Object.assign({}, state))
+        getTokenSkipNewline(state)
 
         // Match the "number / number" part of the pattern
-        if (tokenType === TOKENTYPE.NUMBER) {
+        if (state.tokenType === TOKENTYPE.NUMBER) {
           // Look ahead again
-          pushTokenState()
-          getTokenSkipNewline()
+          tokenStates.push(Object.assign({}, state))
+          getTokenSkipNewline(state)
 
           // Match the "symbol" part of the pattern, or a left parenthesis
-          if (tokenType === TOKENTYPE.SYMBOL || token === '(') {
+          if (state.tokenType === TOKENTYPE.SYMBOL || state.token === '(') {
             // We've matched the pattern "number / number symbol".
             // Rewind once and build the "number / number" node; the symbol will be consumed later
-            popTokenState()
-            discardTokenState()
-            last = parseUnary()
+            Object.assign(state, tokenStates.pop())
+            tokenStates.pop()
+            last = parseUnary(state)
             node = new OperatorNode('/', 'divide', [node, last])
           } else {
             // Not a match, so rewind
-            popTokenState()
-            popTokenState()
+            tokenStates.pop()
+            Object.assign(state, tokenStates.pop())
             break
           }
         } else {
           // Not a match, so rewind
-          popTokenState()
+          Object.assign(state, tokenStates.pop())
           break
         }
       } else {
@@ -1087,7 +1049,7 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseUnary () {
+  function parseUnary (state) {
     let name, params, fn
     const operators = {
       '-': 'unaryMinus',
@@ -1096,17 +1058,17 @@ function factory (type, config, load, typed) {
       'not': 'not'
     }
 
-    if (operators.hasOwnProperty(token)) {
-      fn = operators[token]
-      name = token
+    if (operators.hasOwnProperty(state.token)) {
+      fn = operators[state.token]
+      name = state.token
 
-      getTokenSkipNewline()
-      params = [parseUnary()]
+      getTokenSkipNewline(state)
+      params = [parseUnary(state)]
 
       return new OperatorNode(name, fn, params)
     }
 
-    return parsePow()
+    return parsePow(state)
   }
 
   /**
@@ -1115,17 +1077,17 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parsePow () {
+  function parsePow (state) {
     let node, name, fn, params
 
-    node = parseLeftHandOperators()
+    node = parseLeftHandOperators(state)
 
-    if (token === '^' || token === '.^') {
-      name = token
+    if (state.token === '^' || state.token === '.^') {
+      name = state.token
       fn = (name === '^') ? 'pow' : 'dotPow'
 
-      getTokenSkipNewline()
-      params = [node, parseUnary()] // Go back to unary, we can have '2^-3'
+      getTokenSkipNewline(state)
+      params = [node, parseUnary(state)] // Go back to unary, we can have '2^-3'
       node = new OperatorNode(name, fn, params)
     }
 
@@ -1137,25 +1099,25 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseLeftHandOperators () {
+  function parseLeftHandOperators (state) {
     let node, operators, name, fn, params
 
-    node = parseCustomNodes()
+    node = parseCustomNodes(state)
 
     operators = {
       '!': 'factorial',
       '\'': 'ctranspose'
     }
 
-    while (operators.hasOwnProperty(token)) {
-      name = token
+    while (operators.hasOwnProperty(state.token)) {
+      name = state.token
       fn = operators[name]
 
-      getToken()
+      getToken(state)
       params = [node]
 
       node = new OperatorNode(name, fn, params)
-      node = parseAccessors(node)
+      node = parseAccessors(state, node)
     }
 
     return node
@@ -1189,36 +1151,36 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseCustomNodes () {
+  function parseCustomNodes (state) {
     let params = []
 
-    if (tokenType === TOKENTYPE.SYMBOL && extraNodes.hasOwnProperty(token)) {
-      const CustomNode = extraNodes[token]
+    if (state.tokenType === TOKENTYPE.SYMBOL && state.extraNodes.hasOwnProperty(state.token)) {
+      const CustomNode = state.extraNodes[state.token]
 
-      getToken()
+      getToken(state)
 
       // parse parameters
-      if (token === '(') {
+      if (state.token === '(') {
         params = []
 
-        openParams()
-        getToken()
+        openParams(state)
+        getToken(state)
 
-        if (token !== ')') {
-          params.push(parseAssignment())
+        if (state.token !== ')') {
+          params.push(parseAssignment(state))
 
           // parse a list with parameters
-          while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
-            getToken()
-            params.push(parseAssignment())
+          while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
+            getToken(state)
+            params.push(parseAssignment(state))
           }
         }
 
-        if (token !== ')') {
-          throw createSyntaxError('Parenthesis ) expected')
+        if (state.token !== ')') {
+          throw createSyntaxError(state, 'Parenthesis ) expected')
         }
-        closeParams()
-        getToken()
+        closeParams(state)
+        getToken(state)
       }
 
       // create a new custom node
@@ -1226,7 +1188,7 @@ function factory (type, config, load, typed) {
       return new CustomNode(params)
     }
 
-    return parseSymbol()
+    return parseSymbol(state)
   }
 
   /**
@@ -1234,14 +1196,14 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseSymbol () {
+  function parseSymbol (state) {
     let node, name
 
-    if (tokenType === TOKENTYPE.SYMBOL ||
-        (tokenType === TOKENTYPE.DELIMITER && token in NAMED_DELIMITERS)) {
-      name = token
+    if (state.tokenType === TOKENTYPE.SYMBOL ||
+        (state.tokenType === TOKENTYPE.DELIMITER && state.token in NAMED_DELIMITERS)) {
+      name = state.token
 
-      getToken()
+      getToken(state)
 
       if (CONSTANTS.hasOwnProperty(name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
@@ -1252,11 +1214,11 @@ function factory (type, config, load, typed) {
       }
 
       // parse function parameters and matrix index
-      node = parseAccessors(node)
+      node = parseAccessors(state, node)
       return node
     }
 
-    return parseString()
+    return parseString(state)
   }
 
   /**
@@ -1272,34 +1234,34 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseAccessors (node, types) {
+  function parseAccessors (state, node, types) {
     let params
 
-    while ((token === '(' || token === '[' || token === '.') &&
-        (!types || types.indexOf(token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
+    while ((state.token === '(' || state.token === '[' || state.token === '.') &&
+        (!types || types.indexOf(state.token) !== -1)) { // eslint-disable-line no-unmodified-loop-condition
       params = []
 
-      if (token === '(') {
+      if (state.token === '(') {
         if (type.isSymbolNode(node) || type.isAccessorNode(node)) {
           // function invocation like fn(2, 3) or obj.fn(2, 3)
-          openParams()
-          getToken()
+          openParams(state)
+          getToken(state)
 
-          if (token !== ')') {
-            params.push(parseAssignment())
+          if (state.token !== ')') {
+            params.push(parseAssignment(state))
 
             // parse a list with parameters
-            while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
-              getToken()
-              params.push(parseAssignment())
+            while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
+              getToken(state)
+              params.push(parseAssignment(state))
             }
           }
 
-          if (token !== ')') {
-            throw createSyntaxError('Parenthesis ) expected')
+          if (state.token !== ')') {
+            throw createSyntaxError(state, 'Parenthesis ) expected')
           }
-          closeParams()
-          getToken()
+          closeParams(state)
+          getToken(state)
 
           node = new FunctionNode(node, params)
         } else {
@@ -1308,37 +1270,37 @@ function factory (type, config, load, typed) {
           // with correct precedence
           return node
         }
-      } else if (token === '[') {
+      } else if (state.token === '[') {
         // index notation like variable[2, 3]
-        openParams()
-        getToken()
+        openParams(state)
+        getToken(state)
 
-        if (token !== ']') {
-          params.push(parseAssignment())
+        if (state.token !== ']') {
+          params.push(parseAssignment(state))
 
           // parse a list with parameters
-          while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
-            getToken()
-            params.push(parseAssignment())
+          while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
+            getToken(state)
+            params.push(parseAssignment(state))
           }
         }
 
-        if (token !== ']') {
-          throw createSyntaxError('Parenthesis ] expected')
+        if (state.token !== ']') {
+          throw createSyntaxError(state, 'Parenthesis ] expected')
         }
-        closeParams()
-        getToken()
+        closeParams(state)
+        getToken(state)
 
         node = new AccessorNode(node, new IndexNode(params))
       } else {
         // dot notation like variable.prop
-        getToken()
+        getToken(state)
 
-        if (tokenType !== TOKENTYPE.SYMBOL) {
-          throw createSyntaxError('Property name expected after dot')
+        if (state.tokenType !== TOKENTYPE.SYMBOL) {
+          throw createSyntaxError(state, 'Property name expected after dot')
         }
-        params.push(new ConstantNode(token))
-        getToken()
+        params.push(new ConstantNode(state.token))
+        getToken(state)
 
         const dotNotation = true
         node = new AccessorNode(node, new IndexNode(params, dotNotation))
@@ -1354,48 +1316,48 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseString () {
+  function parseString (state) {
     let node, str
 
-    if (token === '"') {
-      str = parseStringToken()
+    if (state.token === '"') {
+      str = parseStringToken(state)
 
       // create constant
       node = new ConstantNode(str)
 
       // parse index parameters
-      node = parseAccessors(node)
+      node = parseAccessors(state, node)
 
       return node
     }
 
-    return parseMatrix()
+    return parseMatrix(state)
   }
 
   /**
    * Parse a string surrounded by double quotes "..."
    * @return {string}
    */
-  function parseStringToken () {
+  function parseStringToken (state) {
     let str = ''
 
-    while (c !== '' && c !== '"') {
-      if (c === '\\') {
+    while (currentCharacter(state) !== '' && currentCharacter(state) !== '"') {
+      if (currentCharacter(state) === '\\') {
         // escape character, immediately process the next
         // character to prevent stopping at a next '\"'
-        str += c
-        next()
+        str += currentCharacter(state)
+        next(state)
       }
 
-      str += c
-      next()
+      str += currentCharacter(state)
+      next(state)
     }
 
-    getToken()
-    if (token !== '"') {
-      throw createSyntaxError('End of string " expected')
+    getToken(state)
+    if (state.token !== '"') {
+      throw createSyntaxError(state, 'End of string " expected')
     }
-    getToken()
+    getToken(state)
 
     return JSON.parse('"' + str + '"') // unescape escaped characters
   }
@@ -1405,42 +1367,42 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseMatrix () {
+  function parseMatrix (state) {
     let array, params, rows, cols
 
-    if (token === '[') {
+    if (state.token === '[') {
       // matrix [...]
-      openParams()
-      getToken()
+      openParams(state)
+      getToken(state)
 
-      if (token !== ']') {
+      if (state.token !== ']') {
         // this is a non-empty matrix
-        const row = parseRow()
+        const row = parseRow(state)
 
-        if (token === ';') {
+        if (state.token === ';') {
           // 2 dimensional array
           rows = 1
           params = [row]
 
           // the rows of the matrix are separated by dot-comma's
-          while (token === ';') { // eslint-disable-line no-unmodified-loop-condition
-            getToken()
+          while (state.token === ';') { // eslint-disable-line no-unmodified-loop-condition
+            getToken(state)
 
-            params[rows] = parseRow()
+            params[rows] = parseRow(state)
             rows++
           }
 
-          if (token !== ']') {
-            throw createSyntaxError('End of matrix ] expected')
+          if (state.token !== ']') {
+            throw createSyntaxError(state, 'End of matrix ] expected')
           }
-          closeParams()
-          getToken()
+          closeParams(state)
+          getToken(state)
 
           // check if the number of columns matches in all rows
           cols = params[0].items.length
           for (let r = 1; r < rows; r++) {
             if (params[r].items.length !== cols) {
-              throw createError('Column dimensions mismatch ' +
+              throw createError(state, 'Column dimensions mismatch ' +
                   '(' + params[r].items.length + ' !== ' + cols + ')')
             }
           }
@@ -1448,40 +1410,40 @@ function factory (type, config, load, typed) {
           array = new ArrayNode(params)
         } else {
           // 1 dimensional vector
-          if (token !== ']') {
-            throw createSyntaxError('End of matrix ] expected')
+          if (state.token !== ']') {
+            throw createSyntaxError(state, 'End of matrix ] expected')
           }
-          closeParams()
-          getToken()
+          closeParams(state)
+          getToken(state)
 
           array = row
         }
       } else {
         // this is an empty matrix "[ ]"
-        closeParams()
-        getToken()
+        closeParams(state)
+        getToken(state)
         array = new ArrayNode([])
       }
 
-      return parseAccessors(array)
+      return parseAccessors(state, array)
     }
 
-    return parseObject()
+    return parseObject(state)
   }
 
   /**
    * Parse a single comma-separated row from a matrix, like 'a, b, c'
    * @return {ArrayNode} node
    */
-  function parseRow () {
-    const params = [parseAssignment()]
+  function parseRow (state) {
+    const params = [parseAssignment(state)]
     let len = 1
 
-    while (token === ',') { // eslint-disable-line no-unmodified-loop-condition
-      getToken()
+    while (state.token === ',') { // eslint-disable-line no-unmodified-loop-condition
+      getToken(state)
 
       // parse expression
-      params[len] = parseAssignment()
+      params[len] = parseAssignment(state)
       len++
     }
 
@@ -1493,51 +1455,51 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseObject () {
-    if (token === '{') {
+  function parseObject (state) {
+    if (state.token === '{') {
       let key
 
       const properties = {}
       do {
-        getToken()
+        getToken(state)
 
-        if (token !== '}') {
+        if (state.token !== '}') {
           // parse key
-          if (token === '"') {
-            key = parseStringToken()
-          } else if (tokenType === TOKENTYPE.SYMBOL) {
-            key = token
-            getToken()
+          if (state.token === '"') {
+            key = parseStringToken(state)
+          } else if (state.tokenType === TOKENTYPE.SYMBOL) {
+            key = state.token
+            getToken(state)
           } else {
-            throw createSyntaxError('Symbol or string expected as object key')
+            throw createSyntaxError(state, 'Symbol or string expected as object key')
           }
 
           // parse key/value separator
-          if (token !== ':') {
-            throw createSyntaxError('Colon : expected after object key')
+          if (state.token !== ':') {
+            throw createSyntaxError(state, 'Colon : expected after object key')
           }
-          getToken()
+          getToken(state)
 
           // parse key
-          properties[key] = parseAssignment()
+          properties[key] = parseAssignment(state)
         }
       }
-      while (token === ',') // eslint-disable-line no-unmodified-loop-condition
+      while (state.token === ',') // eslint-disable-line no-unmodified-loop-condition
 
-      if (token !== '}') {
-        throw createSyntaxError('Comma , or bracket } expected after object value')
+      if (state.token !== '}') {
+        throw createSyntaxError(state, 'Comma , or bracket } expected after object value')
       }
-      getToken()
+      getToken(state)
 
       let node = new ObjectNode(properties)
 
       // parse index parameters
-      node = parseAccessors(node)
+      node = parseAccessors(state, node)
 
       return node
     }
 
-    return parseNumber()
+    return parseNumber(state)
   }
 
   /**
@@ -1545,18 +1507,18 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseNumber () {
+  function parseNumber (state) {
     let numberStr
 
-    if (tokenType === TOKENTYPE.NUMBER) {
+    if (state.tokenType === TOKENTYPE.NUMBER) {
       // this is a number
-      numberStr = token
-      getToken()
+      numberStr = state.token
+      getToken(state)
 
       return new ConstantNode(numeric(numberStr, config.number))
     }
 
-    return parseParentheses()
+    return parseParentheses(state)
   }
 
   /**
@@ -1564,29 +1526,29 @@ function factory (type, config, load, typed) {
    * @return {Node} node
    * @private
    */
-  function parseParentheses () {
+  function parseParentheses (state) {
     let node
 
     // check if it is a parenthesized expression
-    if (token === '(') {
+    if (state.token === '(') {
       // parentheses (...)
-      openParams()
-      getToken()
+      openParams(state)
+      getToken(state)
 
-      node = parseAssignment() // start again
+      node = parseAssignment(state) // start again
 
-      if (token !== ')') {
-        throw createSyntaxError('Parenthesis ) expected')
+      if (state.token !== ')') {
+        throw createSyntaxError(state, 'Parenthesis ) expected')
       }
-      closeParams()
-      getToken()
+      closeParams(state)
+      getToken(state)
 
       node = new ParenthesisNode(node)
-      node = parseAccessors(node)
+      node = parseAccessors(state, node)
       return node
     }
 
-    return parseEnd()
+    return parseEnd(state)
   }
 
   /**
@@ -1594,14 +1556,14 @@ function factory (type, config, load, typed) {
    * @return {Node} res
    * @private
    */
-  function parseEnd () {
-    if (token === '') {
+  function parseEnd (state) {
+    if (state.token === '') {
       // syntax error or unexpected end of expression
-      throw createSyntaxError('Unexpected end of expression')
-    } else if (token === "'") {
-      throw createSyntaxError('Value expected. Note: strings must be enclosed by double quotes')
+      throw createSyntaxError(state, 'Unexpected end of expression')
+    } else if (state.token === "'") {
+      throw createSyntaxError(state, 'Value expected. Note: strings must be enclosed by double quotes')
     } else {
-      throw createSyntaxError('Value expected')
+      throw createSyntaxError(state, 'Value expected')
     }
   }
 
@@ -1618,11 +1580,11 @@ function factory (type, config, load, typed) {
 
   /**
    * Shortcut for getting the current col value (one based)
-   * Returns the column (position) where the last token starts
+   * Returns the column (position) where the last state.token starts
    * @private
    */
-  function col () {
-    return index - token.length + 1
+  function col (state) {
+    return state.index - state.token.length + 1
   }
 
   /**
@@ -1631,8 +1593,8 @@ function factory (type, config, load, typed) {
    * @return {SyntaxError} instantiated error
    * @private
    */
-  function createSyntaxError (message) {
-    const c = col()
+  function createSyntaxError (state, message) {
+    const c = col(state)
     const error = new SyntaxError(message + ' (char ' + c + ')')
     error['char'] = c
 
@@ -1645,8 +1607,8 @@ function factory (type, config, load, typed) {
    * @return {Error} instantiated error
    * @private
    */
-  function createError (message) {
-    const c = col()
+  function createError (state, message) {
+    const c = col(state)
     const error = new SyntaxError(message + ' (char ' + c + ')')
     error['char'] = c
 
