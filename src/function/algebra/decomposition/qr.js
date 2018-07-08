@@ -53,7 +53,7 @@ function factory (type, config, load, typed) {
    *
    * See also:
    *
-   *    lusolve
+   *    lup, lusolve
    *
    * @param {Matrix | Array} A    A two dimensional matrix or array
    * for which to get the QR decomposition.
