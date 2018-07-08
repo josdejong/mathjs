@@ -25,7 +25,7 @@ function factory (type, config, load, typed) {
     const asize = a._size
     const adt = a._datatype
     // b arrays
-    const bdata = b._data
+    let bdata = b._data
     const bsize = b._size
     const bdt = b._datatype
     // c arrays
@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
       // datatype
       dt = adt
       // convert b to the same datatype
-      b = typed.convert(b, dt)
+      bdata = typed.convert(b, dt)._data
       // callback
       cf = typed.find(callback, [dt, dt])
     }

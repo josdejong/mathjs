@@ -49,12 +49,23 @@ const fiedler = [
 // mathjs
 (function () {
   const math = require('../index')
+  const A = math.matrix(fiedler, 'dense', 'number')
+
+  suite.add(pad('matrix operations mathjs (number) A+A'), function () { return math.add(A, A) })
+  suite.add(pad('matrix operations mathjs (number) A*A'), function () { return math.multiply(A, A) })
+  suite.add(pad('matrix operations mathjs (number) A\''), function () { return math.transpose(A) })
+  suite.add(pad('matrix operations mathjs (number) det(A)'), function () { return math.det(A) })
+})();
+
+// mathjs
+(function () {
+  const math = require('../index')
   const A = math.matrix(fiedler)
 
-  suite.add(pad('matrix operations mathjs A+A'), function () { return math.add(A, A) })
-  suite.add(pad('matrix operations mathjs A*A'), function () { return math.multiply(A, A) })
-  suite.add(pad('matrix operations mathjs A\''), function () { return math.transpose(A) })
-  suite.add(pad('matrix operations mathjs det(A)'), function () { return math.det(A) })
+  suite.add(pad('matrix operations mathjs (generic) A+A'), function () { return math.add(A, A) })
+  suite.add(pad('matrix operations mathjs (generic) A*A'), function () { return math.multiply(A, A) })
+  suite.add(pad('matrix operations mathjs (generic) A\''), function () { return math.transpose(A) })
+  suite.add(pad('matrix operations mathjs (generic) det(A)'), function () { return math.det(A) })
 })();
 
 // sylvester
