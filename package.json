@@ -1,6 +1,6 @@
 {
   "name": "mathjs",
-  "version": "5.0.2",
+  "version": "5.0.4",
   "description": "Math.js is an extensive math library for JavaScript and Node.js. It features a flexible expression parser with support for symbolic computation, comes with a large set of built-in functions and constants, and offers an integrated solution to work with different data types like numbers, big numbers, complex numbers, fractions, units, and matrices.",
   "author": "Jos de Jong <wjosdejong@gmail.com> (https://github.com/josdejong)",
   "contributors": [
@@ -8,6 +8,7 @@
     "Alexander Beyn (https://github.com/AlexanderBeyn)",
     "Andy Pan (https://github.com/andy0130tw)",
     "Bart Kiers (https://github.com/bkiers)",
+    "Ben Weinshel (https://github.com/weinshel)",
     "Brett Jurgens (https://github.com/brettjurgens)",
     "Bryan Cuccioli (https://github.com/bcuccioli)",
     "Chris Chudzicki (https://github.com/ChristopherChudzicki)",
@@ -29,6 +30,7 @@
     "Gary Passero (https://github.com/gap777)",
     "Harry Sarson (https://github.com/HarrySarson)",
     "Holman Gao (https://github.com/golmansax)",
+    "Honybar (https://github.com/honeybar)",
     "Guillermo Indalecio Fernández (https://github.com/guillermobox)",
     "Gulfaraz (https://github.com/gulfaraz)",
     "hamadu (https://github.com/hamadu)",
@@ -38,6 +40,7 @@
     "Ivan Vergiliev (IvanVergiliev)",
     "jean-emmanuel (https://github.com/jean-emmanuel)",
     "Jack Schmidt (https://github.com/jackschmidt)",
+    "Jason Shin (https://github.com/JasonShin)",
     "Jim Garrison (https://github.com/garrison)",
     "Joel Hoover (https://github.com/joelhoover)",
     "Karl Lew (https://github.com/firepick1)",
@@ -106,7 +109,7 @@
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
-    "typed-function": "1.0.4"
+    "typed-function": "1.1.0"
   },
   "devDependencies": {
     "babel-core": "6.26.3",
@@ -121,7 +124,7 @@
     "gulp-util": "3.0.8",
     "istanbul": "0.4.5",
     "jsep": "0.3.4",
-    "karma": "2.0.4",
+    "karma": "2.0.5",
     "karma-browserstack-launcher": "1.3.0",
     "karma-firefox-launcher": "1.1.0",
     "karma-mocha": "1.3.0",
@@ -141,10 +144,10 @@
     "q": "1.5.1",
     "standard": "11.0.1",
     "sylvester": "0.0.21",
-    "tar": "4.4.4",
-    "uglify-js": "3.4.3",
+    "tar": "4.4.6",
+    "uglify-js": "3.4.6",
     "underscore": "1.9.1",
-    "webpack": "4.15.1",
+    "webpack": "4.16.4",
     "zeros": "1.0.0"
   },
   "main": "./index",
