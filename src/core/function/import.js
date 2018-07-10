@@ -151,6 +151,15 @@ function factory (type, config, load, typed, math) {
     }
   }
 
+  function _deleteTransform (name) {
+    delete math.expression.transform[name]
+    if (allowedInExpressions(name)) {
+      math.expression.mathWithTransform[name] = math[name]
+    } else {
+      delete math.expression.mathWithTransform[name]
+    }
+  }
+
   /**
    * Create a wrapper a round an function which converts the arguments
    * to their primitive values (like convert a Matrix to Array)
@@ -218,7 +227,9 @@ function factory (type, config, load, typed, math) {
       if (factory.lazy !== false) {
         lazy(namespace, name, resolver)
 
-        if (!existingTransform) {
+        if (existingTransform) {
+          _deleteTransform(name)
+        } else {
           if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
             lazy(math.expression.mathWithTransform, name, resolver)
           }
@@ -226,7 +237,9 @@ function factory (type, config, load, typed, math) {
       } else {
         namespace[name] = resolver()
 
-        if (!existingTransform) {
+        if (existingTransform) {
+          _deleteTransform(name)
+        } else {
           if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
             math.expression.mathWithTransform[name] = resolver()
           }

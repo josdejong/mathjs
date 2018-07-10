@@ -5,6 +5,8 @@
 
 - Fixed many functions (for example `add` and `subtract`) not working
   with matrices having a `datatype` defined.
+- Fixed #1162: transform functions not being cleaned up when overriding
+  it by importing a factory function with the same name.
 - Fixed broken links in the documentation. Thanks @stropitek.
 - Refactored the code of `parse` into a functional approach.
   Thanks @harrysarson.
