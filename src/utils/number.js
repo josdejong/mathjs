@@ -260,11 +260,10 @@ exports.toEngineering = function (value, precision) {
   // find nearest lower multiple of 3 for exponent
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
 
-  if(exports.isNumber(precision)) {
+  if (exports.isNumber(precision)) {
     // add zeroes to give correct sig figs
     if (precision > c.length) c = c.concat(zeros(precision - c.length))
-  }
-  else {
+  } else {
     // concatenate coefficients with necessary zeros
     const significandsDiff = e >= 0 ? e : Math.abs(newExp)
 
