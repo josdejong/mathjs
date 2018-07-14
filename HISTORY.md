@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 5.0.3
+## 2018-07-14, version 5.0.3
 
 - Fixed many functions (for example `add` and `subtract`) not working
   with matrices having a `datatype` defined.

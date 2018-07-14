@@ -55,4 +55,5 @@ const result = math.qr(m)
 
 ## See also
 
-[lu](lu.md)
+[lup](lup.md),
+[lusolve](lusolve.md)
