@@ -245,8 +245,7 @@ exports.splitNumber = function (value) {
 /**
  * Format a number in engineering notation. Like '1.23e+6', '2.3e+0', '3.500e-3'
  * @param {number | string} value
- * @param {number} [precision=0]        Optional number of decimals after the
- *                                      decimal point. Zero by default.
+ * @param {number} [precision]        Optional number of significant figures to return.
  */
 exports.toEngineering = function (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
@@ -261,11 +260,16 @@ exports.toEngineering = function (value, precision) {
   // find nearest lower multiple of 3 for exponent
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
 
-  // concatenate coefficients with necessary zeros
-  const significandsDiff = e >= 0 ? e : Math.abs(newExp)
+  if (exports.isNumber(precision)) {
+    // add zeroes to give correct sig figs
+    if (precision > c.length) c = c.concat(zeros(precision - c.length))
+  } else {
+    // concatenate coefficients with necessary zeros
+    const significandsDiff = e >= 0 ? e : Math.abs(newExp)
 
-  // add zeros if necessary (for ex: 1e+8)
-  if (c.length - 1 < significandsDiff) c = c.concat(zeros(significandsDiff - (c.length - 1)))
+    // add zeros if necessary (for ex: 1e+8)
+    if (c.length - 1 < significandsDiff) c = c.concat(zeros(significandsDiff - (c.length - 1)))
+  }
 
   // find difference in exponents
   let expDiff = Math.abs(e - newExp)
@@ -275,10 +279,10 @@ exports.toEngineering = function (value, precision) {
   // push decimal index over by expDiff times
   while (--expDiff >= 0) decimalIdx++
 
-  // if all coefficient values are zero after the decimal point, don't add a decimal value.
+  // if all coefficient values are zero after the decimal point and precision is unset, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
   const decimals = c.slice(decimalIdx).join('')
-  const decimalVal = decimals.match(/[1-9]/) ? ('.' + decimals) : ''
+  const decimalVal = ((exports.isNumber(precision) && decimals.length) || decimals.match(/[1-9]/)) ? ('.' + decimals) : ''
 
   const str = c.slice(0, decimalIdx).join('') +
       decimalVal +
