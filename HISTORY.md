@@ -10,6 +10,7 @@
 - Fixed broken links in the documentation. Thanks @stropitek.
 - Refactored the code of `parse` into a functional approach.
   Thanks @harrysarson.
+- Changed `decimal.js` import to ES6. Thanks @weinshel.
 
 
 ## 2018-07-07, version 5.0.2
