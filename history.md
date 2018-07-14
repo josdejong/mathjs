@@ -5,6 +5,20 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180714-version-503">2018-07-14, version 5.0.3 <a href="#20180714-version-503" title="Permalink">#</a></h2>
+
+- Fixed many functions (for example `add` and `subtract`) not working
+  with matrices having a `datatype` defined.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1147">#1147</a>: bug in `format` with `engineering` notation in outputting
+  the correct number of significant figures. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1162">#1162</a>: transform functions not being cleaned up when overriding
+  it by importing a factory function with the same name.
+- Fixed broken links in the documentation. Thanks <a href="https://github.com/stropitek">@stropitek</a>.
+- Refactored the code of `parse` into a functional approach.
+  Thanks <a href="https://github.com/harrysarson">@harrysarson</a>.
+- Changed `decimal.js` import to ES6. Thanks <a href="https://github.com/weinshel">@weinshel</a>.
+
+
 <h2 id="20180707-version-502">2018-07-07, version 5.0.2 <a href="#20180707-version-502" title="Permalink">#</a></h2>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1136">#1136</a>: rocket trajectory example broken (since v4.0.0).
@@ -253,7 +267,7 @@ Non breaking changes:
 
 - Upgraded to `typed-function@0.10.7` (bug-fix release).
 - Fixed option `implicit` not being copied from an `OperatorNode`
-  when applying function `map`. Thanks <a href="https://github.com/HarraySarson">@HarraySarson</a>.
+  when applying function `map`. Thanks <a href="https://github.com/HarrySarson">@HarrySarson</a>.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/995">#995</a>: spaces and underscores not property being escaped
   in `toTex()`. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
 

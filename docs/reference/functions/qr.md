@@ -59,4 +59,5 @@ const result = math.qr(m)
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[lu](lu.html)
+[lup](lup.html),
+[lusolve](lusolve.html)

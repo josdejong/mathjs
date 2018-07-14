@@ -43,4 +43,4 @@ math.stirlingS2(5, 3) //returns 25
 
 <h2 id="see-also">See also <a href="#see-also" title="Permalink">#</a></h2>
 
-[Bell numbers](Bell numbers.md)
+[bellNumbers](bellNumbers.html)

@@ -42,8 +42,8 @@ math.format(value, callback)
        For example '123.4' and '1.4e7'.
    - `precision: number`
      A number between 0 and 16 to round the digits of the number. In case
-     of notations 'exponential' and 'auto', `precision` defines the total
-     number of significant digits returned.
+     of notations 'exponential', 'engineering', and 'auto', `precision`
+     defines the total number of significant digits returned.
      In case of notation 'fixed', `precision` defines the number of
      significant digits after the decimal point.
      `precision` is undefined by default.
