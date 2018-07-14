@@ -25,22 +25,25 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.rationalize('sin(x)+y')  //  Error: There is an unsolved function call
-   *     math.rationalize('2x/y - y/(x+1)')  // (2*x^2-y^2+2*x)/(x*y+y)
+   *     math.rationalize('sin(x)+y')
+   *                   //  Error: There is an unsolved function call
+   *     math.rationalize('2x/y - y/(x+1)')
+   *                   // (2*x^2-y^2+2*x)/(x*y+y)
    *     math.rationalize('(2x+1)^6')
-   *                   //     64*x^6+192*x^5+240*x^4+160*x^3+60*x^2+12*x+1
+   *                   // 64*x^6+192*x^5+240*x^4+160*x^3+60*x^2+12*x+1
    *     math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
-   *                   //    -20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)
+   *                   // -20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)
    *     math.rationalize('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )') =
-   *                   //  (-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/
-   *                   //   (-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)
+   *                   // (-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/
+   *                   //     (-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)
    *
    *     math.rationalize('x+x+x+y',{y:1}) // 3*x+1
    *     math.rationalize('x+x+x+y',{})    // 3*x+y
-   *     ret = math.rationalize('x+x+x+y',{},true)
-   *                          // ret.expression=3*x+y,  ret.variables = ["x","y"]
-   *     ret = math.rationalize('-2+5x^2',{},true)
-   *                          // ret.expression=5*x^2-2,  ret.variables = ["x"], ret.coefficients=[-2,0,5]
+   *
+   *     const ret = math.rationalize('x+x+x+y',{},true)
+   *                   // ret.expression=3*x+y, ret.variables = ["x","y"]
+   *     const ret = math.rationalize('-2+5x^2',{},true)
+   *                   // ret.expression=5*x^2-2, ret.variables = ["x"], ret.coefficients=[-2,0,5]
    *
    * See also:
    *
