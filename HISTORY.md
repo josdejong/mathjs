@@ -5,6 +5,8 @@
 
 - Fixed many functions (for example `add` and `subtract`) not working
   with matrices having a `datatype` defined.
+- Fixed #1147: bug in `format` with `engineering` notation in outputting
+  the correct number of significant figures. Thanks @ericman314.
 - Fixed #1162: transform functions not being cleaned up when overriding
   it by importing a factory function with the same name.
 - Fixed broken links in the documentation. Thanks @stropitek.
