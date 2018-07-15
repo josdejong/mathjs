@@ -6,7 +6,7 @@ const isInteger = require('../../utils/number').isInteger
 function factory (type, config, load, typed) {
   const multiply = load(require('../arithmetic/multiply'))
   const pow = load(require('../arithmetic/pow'))
-
+  const floor = load(require('../arithmetic/floor'))
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -30,7 +30,11 @@ function factory (type, config, load, typed) {
    * @param {number | Array | Matrix} n   A real or complex number
    * @return {number | Array | Matrix}    The gamma of `n`
    */
+
+
+
   const gamma = typed('gamma', {
+
     'number': function (n) {
       let t, x
 
@@ -45,16 +49,7 @@ function factory (type, config, load, typed) {
 
         let value = n - 2
         let res = n - 1
-        while (value > 1) {
-          res *= value
-          value--
-        }
-
-        if (res === 0) {
-          res = 1 // 0! is per definition 1
-        }
-
-        return res
+        return product(1, n-1)
       }
 
       if (n < 0.5) {
@@ -153,22 +148,42 @@ function factory (type, config, load, typed) {
    * @param {BigNumber} n
    * @returns {BigNumber} Returns the factorial of n
    */
+
+  function productBig(i, n, one, two) {
+      let half
+      if (n.lt(i)) {
+        return one
+      }
+      if (n.gt(i) ) {
+        half =  floor(n.plus(i).dividedBy(two))
+        return productBig(i, half, one, two).times( productBig( (half).plus(one), n , one, two))
+      }
+
+      return n
+  } 
+
+  function product(i, n) {
+      let half
+      if (n < i) {
+          return 1
+      } 
+      if (n == i) {
+        return n
+      }
+      half = floor( (n + i) / 2 )
+      return product(i, half) * product(half + 1, n)
+  }
+
   function bigFactorial (n) {
     if (n.isZero()) {
       return new type.BigNumber(1) // 0! is per definition 1
     }
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
-    const Big = type.BigNumber.clone({precision: precision})
 
-    let res = new Big(n)
-    let value = n.toNumber() - 1 // number
-    while (value > 1) {
-      res = res.times(value)
-      value--
-    }
-
-    return new type.BigNumber(res.toPrecision(type.BigNumber.precision))
+    let one = new type.BigNumber(1)
+    let two = new type.BigNumber(2)
+    return productBig(one, n, one, two)
   }
 
   gamma.toTex = {1: `\\Gamma\\left(\${args[0]}\\right)`}
