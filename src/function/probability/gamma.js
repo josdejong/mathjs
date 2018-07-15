@@ -145,7 +145,6 @@ function factory (type, config, load, typed) {
    * @returns {BigNumber} Returns the factorial of n
    */
 
-
   function bigFactorial (n) {
     if (n.isZero()) {
       return new type.BigNumber(1) // 0! is per definition 1

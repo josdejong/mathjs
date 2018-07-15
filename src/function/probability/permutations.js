@@ -32,9 +32,7 @@ function factory (type, config, load, typed) {
    */
   const permutations = typed('permutations', {
     'number | BigNumber': factorial,
-
     'number, number': function (n, k) {
-
       if (!isInteger(n) || n < 0) {
         throw new TypeError('Positive integer value expected in function permutations')
       }
@@ -44,7 +42,6 @@ function factory (type, config, load, typed) {
       if (k > n) {
         throw new TypeError('second argument k must be less than or equal to first argument n')
       }
-
       // Permute n objects, k at a time
       return product((n - k) + 1, n)
     },
