@@ -31,8 +31,6 @@ function factory (type, config, load, typed) {
    * @return {number | Array | Matrix}    The gamma of `n`
    */
 
-
-
   const gamma = typed('gamma', {
 
     'number': function (n) {
@@ -47,8 +45,6 @@ function factory (type, config, load, typed) {
           return Infinity // Will overflow
         }
 
-        let value = n - 2
-        let res = n - 1
         return product(1, n-1)
       }
 
@@ -149,29 +145,29 @@ function factory (type, config, load, typed) {
    * @returns {BigNumber} Returns the factorial of n
    */
 
-  function productBig(i, n, one, two) {
-      let half
-      if (n.lt(i)) {
-        return one
-      }
-      if (n.gt(i) ) {
-        half =  floor(n.plus(i).dividedBy(two))
-        return productBig(i, half, one, two).times( productBig( (half).plus(one), n , one, two))
-      }
+  function productBig (i, n, one, two) {
+    let half
+    if (n.lt(i)) {
+      return one
+    }
+    if (n.gt(i)) {
+      half = floor(n.plus(i).dividedBy(two))
+      return productBig(i, half, one, two).times(productBig((half).plus(one), n, one, two))
+    }
 
+    return n
+  }
+
+  function product (i, n) {
+    let half
+    if (n < i) {
+      return 1
+    }
+    if (n === i) {
       return n
-  } 
-
-  function product(i, n) {
-      let half
-      if (n < i) {
-          return 1
-      } 
-      if (n == i) {
-        return n
-      }
-      half = floor( (n + i) / 2 )
-      return product(i, half) * product(half + 1, n)
+    }
+    half = floor((n + i) / 2)
+    return product(i, half) * product(half + 1, n)
   }
 
   function bigFactorial (n) {
@@ -180,10 +176,12 @@ function factory (type, config, load, typed) {
     }
 
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
+    const Big = type.BigNumber.clone({precision: precision})
 
-    let one = new type.BigNumber(1)
-    let two = new type.BigNumber(2)
-    return productBig(one, n, one, two)
+    let bigN = new Big(n)
+    let one = new Big(1)
+    let two = new Big(2)
+    return new type.BigNumber(productBig(one, bigN, one, two).toPrecision(type.BigNumber.precision))
   }
 
   gamma.toTex = {1: `\\Gamma\\left(\${args[0]}\\right)`}
