@@ -178,10 +178,14 @@ function factory (type, config, load, typed) {
     const precision = config.precision + (Math.log(n.toNumber()) | 0)
     const Big = type.BigNumber.clone({precision: precision})
 
-    let bigN = new Big(n)
-    let one = new Big(1)
-    let two = new Big(2)
-    return new type.BigNumber(productBig(one, bigN, one, two).toPrecision(type.BigNumber.precision))
+    let res = new Big(n)
+    let value = n.toNumber() - 1 // number
+    while (value > 1) {
+      res = res.times(value)
+      value--
+    }
+
+    return new type.BigNumber(res.toPrecision(type.BigNumber.precision))
   }
 
   gamma.toTex = {1: `\\Gamma\\left(\${args[0]}\\right)`}
