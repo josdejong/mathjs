@@ -4,7 +4,7 @@ const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
   const factorial = load(require('./factorial'))
-  const product = require('./productrange')
+  const product = require('./product')
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
    * from a set of `n` elements.

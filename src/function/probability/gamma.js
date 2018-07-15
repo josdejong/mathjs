@@ -6,7 +6,7 @@ const isInteger = require('../../utils/number').isInteger
 function factory (type, config, load, typed) {
   const multiply = load(require('../arithmetic/multiply'))
   const pow = load(require('../arithmetic/pow'))
-  const product = require('./productrange')
+  const product = require('./product')
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.

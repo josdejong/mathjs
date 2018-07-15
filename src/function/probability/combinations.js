@@ -1,7 +1,7 @@
 'use strict'
 
 const isInteger = require('../../utils/number').isInteger
-const product = require('./productrange')
+const product = require('./product')
 function factory (type, config, load, typed) {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
