@@ -1,5 +1,6 @@
-/** input: integer i and integer n
-  * output : product of i to n
+/** @param {integer} i
+ *  @param {integer} n
+ *  @returns : product of i to n
  */
 function product (i, n) {
   let half
