@@ -145,19 +145,6 @@ function factory (type, config, load, typed) {
    * @returns {BigNumber} Returns the factorial of n
    */
 
-  function productBig (i, n, one, two) {
-    let half
-    if (n.lt(i)) {
-      return one
-    }
-    if (n.gt(i)) {
-      half = floor(n.plus(i).dividedBy(two))
-      return productBig(i, half, one, two).times(productBig((half).plus(one), n, one, two))
-    }
-
-    return n
-  }
-
   function product (i, n) {
     let half
     if (n < i) {
