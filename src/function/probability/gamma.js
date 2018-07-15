@@ -6,7 +6,7 @@ const isInteger = require('../../utils/number').isInteger
 function factory (type, config, load, typed) {
   const multiply = load(require('../arithmetic/multiply'))
   const pow = load(require('../arithmetic/pow'))
-  const floor = load(require('../arithmetic/floor'))
+  const product = require('./productrange')
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
           return Infinity // Will overflow
         }
 
-        return product(1, n-1)
+        return product(1, n - 1)
       }
 
       if (n < 0.5) {
@@ -145,17 +145,6 @@ function factory (type, config, load, typed) {
    * @returns {BigNumber} Returns the factorial of n
    */
 
-  function product (i, n) {
-    let half
-    if (n < i) {
-      return 1
-    }
-    if (n === i) {
-      return n
-    }
-    half = floor((n + i) / 2)
-    return product(i, half) * product(half + 1, n)
-  }
 
   function bigFactorial (n) {
     if (n.isZero()) {
