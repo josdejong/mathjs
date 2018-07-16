@@ -1,7 +1,7 @@
 'use strict'
 
 const isInteger = require('../../utils/number').isInteger
-
+const product = require('./product')
 function factory (type, config, load, typed) {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
@@ -26,9 +26,10 @@ function factory (type, config, load, typed) {
    * @param {number | BigNumber} k    Number of objects in the subset
    * @return {number | BigNumber}     Number of possible combinations.
    */
+
   const combinations = typed('combinations', {
     'number, number': function (n, k) {
-      let max, result, i
+      let prodrange, nMinusk
 
       if (!isInteger(n) || n < 0) {
         throw new TypeError('Positive integer value expected in function combinations')
@@ -40,13 +41,14 @@ function factory (type, config, load, typed) {
         throw new TypeError('k must be less than or equal to n')
       }
 
-      max = Math.max(k, n - k)
-      result = 1
-      for (i = 1; i <= n - max; i++) {
-        result = result * (max + i) / i
-      }
+      nMinusk = n - k
 
-      return result
+      if (k < nMinusk) {
+        prodrange = product(nMinusk + 1, n)
+        return prodrange / product(1, k)
+      }
+      prodrange = product(k + 1, n)
+      return prodrange / product(1, nMinusk)
     },
 
     'BigNumber, BigNumber': function (n, k) {
