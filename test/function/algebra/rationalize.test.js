@@ -99,9 +99,9 @@ describe('rationalize', function () {
   })
 
   it('aditional simple expressions',function() {
-     assert.equal(stri(math.rationalize('1/(0.1x+1)+1')),'(x+20)/(x+10)')
-     assert.equal(stri(math.rationalize('1/x^2+1')),'(x^2+1)/x^2')
-     assert.equal(stri(math.rationalize('1/(x/10+1)+1')),'(x+20)/(x+10)')
+    assert.equal(stri(math.rationalize('1/(0.1x+1)+1')), '(x+20)/(x+10)')
+    assert.equal(stri(math.rationalize('1/x^2+1')), '(x^2+1)/x^2')
+    assert.equal(stri(math.rationalize('1/(x/10+1)+1')), '(x+20)/(x+10)')
   })
 
   it('processing 2 variable expressions', function () {

@@ -93,7 +93,7 @@ function factory (type, config, load, typed) {
     },
 
     'Node, Object, boolean': function (expr, scope, detailed) {
-      const setRules = rulesRationalize();   // Rules for change polynomial in near canonical form 
+      const setRules = rulesRationalize() // Rules for change polynomial in near canonical form 
       const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
       const nVars = polyRet.variables.length
       expr = polyRet.expression
@@ -103,24 +103,24 @@ function factory (type, config, load, typed) {
         let sBefore // Previous expression
         let rules
         let eDistrDiv = true
-
+        let redoInic = false
         expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
-        s = expr.toString()
-         while (true) { // Apply alternately  successive division rules and distr.div.rules
+        let s = expr.toString()
+        while (true) { // Apply alternately  successive division rules and distr.div.rules
           rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
           expr = simplify(expr, rules) // until no more changes
           eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
 
           const s = expr.toString()
           if (s === sBefore) {
-              break // No changes : end of the loop
+            break // No changes : end of the loop
           } 
 
           redoInic = true;
           sBefore = s;
         }
 
-        if (redoInic)  {         // Apply first rules again without succ div rules (if there are changes)
+        if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
           expr = simplify(expr, setRules.firstRulesAgain)
         }
         expr = simplify(expr, setRules.finalRules) // Apply final rules
@@ -216,7 +216,7 @@ function factory (type, config, load, typed) {
           if (node.args[1].fn === 'unaryMinus') {
             node = node.args[0]
           } 
-          if (node.args[1].type!=='ConstantNode' ||  ! number.isInteger(parseFloat(node.args[1].value))) {
+          if (node.args[1].type!=='ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {
             recPoly(node.args[0])
@@ -262,7 +262,7 @@ function factory (type, config, load, typed) {
       {l: 'n*(n1^-1)', r: 'n/n1'},
       {l: 'n*n1^-n2', r: 'n/n1^n2'},
       {l: 'n1^-1', r: '1/n1'},
-       {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
+      {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
       {l: '1*n', r: 'n'}]
 
     const rulesFirst = [
@@ -273,8 +273,8 @@ function factory (type, config, load, typed) {
       {l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)'}, // Distributive 1
       {l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)'}, // Distributive 2
       {l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
-      {l: 'v/c', r: '(1/c)*v'} ,       // variable/constant (new!)
-      {l: 'v/-c', r: '-(1/c)*v'} ,      // variable/constant (new!)
+      {l: 'v/c', r: '(1/c)*v'}, // variable/constant (new!)
+      {l: 'v/-c', r: '-(1/c)*v'}, // variable/constant (new!)
       {l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
       {l: '-v*c', r: '-c*v'}, // Inversion constant and variable 2
       {l: 'v*-c', r: '-c*v'}, // Inversion constant and variable 3
