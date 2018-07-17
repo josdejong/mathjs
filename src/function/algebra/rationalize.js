@@ -255,7 +255,8 @@ function factory (type, config, load, typed) {
    * @return {array}        rule set to rationalize an polynomial expression
    */
   function rulesRationalize () {
-    const oldRules = [simplifyCore, // sCore
+    const oldRules = ['exactFractOff',
+      simplifyCore, // sCore
       {l: 'n+n', r: '2*n'},
       {l: 'n+-n', r: '0'},
       simplifyConstant, // sConstant
