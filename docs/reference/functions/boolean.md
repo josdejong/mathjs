@@ -31,12 +31,12 @@ boolean &#124; Array &#124; Matrix | The boolean value
 ## Examples
 
 ```js
-math.boolean(0);     // returns false
-math.boolean(1);     // returns true
-math.boolean(-3);     // returns true
-math.boolean('true');     // returns true
-math.boolean('false');     // returns false
-math.boolean([1, 0, 1, 1]);     // returns [true, false, true, true]
+math.boolean(0)     // returns false
+math.boolean(1)     // returns true
+math.boolean(-3)     // returns true
+math.boolean('true')     // returns true
+math.boolean('false')     // returns false
+math.boolean([1, 0, 1, 1])     // returns [true, false, true, true]
 ```
 
 

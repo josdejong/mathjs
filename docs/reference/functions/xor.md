@@ -29,14 +29,14 @@ boolean &#124; Array &#124; Matrix |  Returns true when one and only one input i
 ## Examples
 
 ```js
-math.xor(2, 4);   // returns false
+math.xor(2, 4)   // returns false
 
-a = [2, 0, 0];
-b = [2, 7, 0];
-c = 0;
+a = [2, 0, 0]
+b = [2, 7, 0]
+c = 0
 
-math.xor(a, b);   // returns [false, true, false]
-math.xor(a, c);   // returns [true, false, false]
+math.xor(a, b)   // returns [false, true, false]
+math.xor(a, c)   // returns [true, false, false]
 ```
 
 

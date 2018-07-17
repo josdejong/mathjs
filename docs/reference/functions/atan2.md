@@ -32,13 +32,13 @@ number &#124; Array &#124; Matrix | Four-quadrant inverse tangent
 ## Examples
 
 ```js
-math.atan2(2, 2) / math.pi;       // returns number 0.25
+math.atan2(2, 2) / math.pi       // returns number 0.25
 
-var angle = math.unit(60, 'deg'); // returns Unit 60 deg
-var x = math.cos(angle);
-var y = math.sin(angle);
+const angle = math.unit(60, 'deg') // returns Unit 60 deg
+const x = math.cos(angle)
+const y = math.sin(angle)
 
-math.atan(2);             // returns Complex 1.5707963267948966 -1.3169578969248166 i
+math.atan(2)             // returns Complex 1.5707963267948966 -1.3169578969248166 i
 ```
 
 

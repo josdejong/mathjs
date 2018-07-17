@@ -28,11 +28,11 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Exponent of 
 ## Examples
 
 ```js
-math.exp(2);                  // returns number 7.3890560989306495
-math.pow(math.e, 2);          // returns number 7.3890560989306495
-math.log(math.exp(2));        // returns number 2
+math.exp(2)                  // returns number 7.3890560989306495
+math.pow(math.e, 2)          // returns number 7.3890560989306495
+math.log(math.exp(2))        // returns number 2
 
-math.exp([1, 2, 3]);
+math.exp([1, 2, 3])
 // returns Array [
 //   2.718281828459045,
 //   7.3890560989306495,
@@ -43,5 +43,6 @@ math.exp([1, 2, 3]);
 
 ## See also
 
+[expm1](expm1.md),
 [log](log.md),
 [pow](pow.md)

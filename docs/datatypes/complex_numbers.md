@@ -33,19 +33,20 @@ math.complex(re: number, im: number) : Complex
 math.complex(complex: Complex) : Complex
 math.complex({re: Number, im: Number}) : Complex
 math.complex({r: number, phi: number}) : Complex
+math.complex({abs: number, arg: number}) : Complex
 math.complex(str: string) : Complex
 ```
 
 Examples:
 
 ```js
-var a = math.complex(2, 3);     // Complex 2 + 3i
-a.re;                           // Number 2
-a.im;                           // Number 3
+const a = math.complex(2, 3)     // Complex 2 + 3i
+a.re                             // Number 2
+a.im                             // Number 3
 
-var b = math.complex('4 - 2i'); // Complex 4 - 2i
-b.re = 5;                       // Number 5
-b;                              // Complex 5 - 2i
+const b = math.complex('4 - 2i') // Complex 4 - 2i
+b.re = 5                         // Number 5
+b                                // Complex 5 - 2i
 ```
 
 ## Calculations
@@ -54,20 +55,20 @@ Most functions of math.js support complex numbers. Complex and real numbers
 can be used together.
 
 ```js
-var a = math.complex(2, 3);     // Complex 2 + 3i
-var b = math.complex('4 - 2i'); // Complex 4 - 2i
+const a = math.complex(2, 3)     // Complex 2 + 3i
+const b = math.complex('4 - 2i') // Complex 4 - 2i
 
-math.re(a);                     // Number 2
-math.im(a);                     // Number 3
-math.conj(a);                   // Complex 2 - 3i
+math.re(a)                       // Number 2
+math.im(a)                       // Number 3
+math.conj(a)                     // Complex 2 - 3i
 
-math.add(a, b);                 // Complex 6 + i
-math.multiply(a, 2);            // Complex 4 + 6i
-math.sqrt(-4);                  // Complex 2i
+math.add(a, b)                   // Complex 6 + i
+math.multiply(a, 2)              // Complex 4 + 6i
+math.sqrt(-4)                    // Complex 2i
 ```
 
 ## API
-A `Complex` object contains the following properties and functions:
+A `Complex` object created by `math.complex` contains the following properties and functions:
 
 ### complex.re
 
@@ -87,24 +88,22 @@ Test whether a complex number equals another complex value.
 
   Two complex numbers are equal when both their real and imaginary parts are
   equal.
-  
-### complex.format([precision: number])
 
-Get a string representation of the complex number,
-  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
-  If precision is defined, the units value will be rounded to the provided
-  number of digits.
-  
-### complex.fromJSON(json)
+### complex.neg()
 
-Revive a complex number from a JSON object. Accepts
-  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
-  `mathjs` is optional.
-  Used when deserializing a complex number, see [Serialization](../core/serialization.md).
+Returns a complex number with a real part and an imaginary part equal in magnitude but opposite in sign to the current complex number.
 
-### complex.fromPolar(r: number, phi: number)
+### complex.conjugate()
 
-Create a complex number from polar coordinates.
+Returns a complex number with an equal real part and an imaginary part equal in magnitude but opposite in sign to the current complex number.
+
+### complex.inverse()
+
+Returns a complex number that is inverse of the current complex number.
+
+### complex.toVector()
+
+Get the vector representation of the current complex number. Returns an array of size 2.
 
 ### complex.toJSON()
 
@@ -122,7 +121,31 @@ Get the polar coordinates of the complex number, returns
 Returns a string representation of the complex number, formatted
   as `a + bi` where `a` is the real part and `b` the imaginary part.
 
-### complex.compare(a: Complex, b: Complex)
+
+### complex.format([precision: number])
+
+Get a string representation of the complex number,
+  formatted as `a + bi` where `a` is the real part and `b` the imaginary part.
+  If precision is defined, the units value will be rounded to the provided
+  number of digits.
+
+## Static methods
+The following static methods can be accessed using `math.type.Complex`
+
+
+### Complex.fromJSON(json)
+
+Revive a complex number from a JSON object. Accepts
+  An object `{mathjs: 'Complex', re: number, im: number}`, where the property
+  `mathjs` is optional.
+  Used when deserializing a complex number, see [Serialization](../core/serialization.md).
+
+### Complex.fromPolar(r: number, phi: number)
+
+Create a complex number from polar coordinates.
+
+
+### Complex.compare(a: Complex, b: Complex)
 
 Returns the comparision result of two complex number:
 
@@ -133,3 +156,13 @@ Returns the comparision result of two complex number:
 - Returns -1 when the real parts are equal
   and the imaginary part of `a` is smaller than the imaginary part of `b`
 - Returns 0 when both real and imaginary parts are equal.
+
+Example:
+```js
+const a = math.complex(2, 3)   // Complex 2 + 3i
+const b = math.complex(2, 1)   // Complex 2 + 1i
+math.type.Complex.compare(a,b) // returns 1
+
+//create from json 
+const c = math.type.Complex.fromJSON({mathjs: 'Complex', re: 4, im: 3})  // Complex 4 + 3i
+```

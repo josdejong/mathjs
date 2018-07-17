@@ -1,6 +1,6 @@
-var assert = require('assert');
+const assert = require('assert')
 
-var EPSILON = 0.0001;
+const EPSILON = 0.0001
 
 /**
  * Test whether a value is a number
@@ -8,7 +8,7 @@ var EPSILON = 0.0001;
  * @returns {boolean}
  */
 function isNumber (value) {
-  return (value instanceof Number || typeof value === 'number');
+  return (value instanceof Number || typeof value === 'number')
 }
 
 /**
@@ -18,35 +18,30 @@ function isNumber (value) {
  * @param {Number} b
  * @param {Number} [epsilon]
  */
-exports.equal = function equal(a, b, epsilon) {
+exports.equal = function equal (a, b, epsilon) {
   if (epsilon === undefined) {
-    epsilon = EPSILON;
+    epsilon = EPSILON
   }
 
   if (isNumber(a) && isNumber(b)) {
     if (a === b) {
       // great, we're done :)
+    } else if (isNaN(a)) {
+      assert.equal(a.toString(), b.toString())
+    } else if (a === 0) {
+      assert.ok(Math.abs(b) < epsilon, (a + ' ~= ' + b))
+    } else if (b === 0) {
+      assert.ok(Math.abs(a) < epsilon, (a + ' ~= ' + b))
+    } else {
+      const diff = Math.abs(a - b)
+      const max = Math.max(a, b)
+      const maxDiff = Math.abs(max * epsilon)
+      assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
-    else if (isNaN(a)) {
-      assert.equal(a.toString(), b.toString());
-    }
-    else if (a === 0) {
-      assert.ok(Math.abs(b) < epsilon, (a + ' ~= ' + b));
-    }
-    else if (b === 0) {
-      assert.ok(Math.abs(a) < epsilon, (a + ' ~= ' + b));
-    }
-    else {
-      var diff = Math.abs(a - b);
-      var max = Math.max(a, b);
-      var max_diff = Math.abs(max * epsilon);
-      assert.ok(diff <= max_diff, (a + ' ~= ' + b));
-    }
+  } else {
+    assert.equal(a, b)
   }
-  else {
-    assert.equal(a, b);
-  }
-};
+}
 
 /**
  * Test whether all values in two objects or arrays are approximately equal.
@@ -54,31 +49,29 @@ exports.equal = function equal(a, b, epsilon) {
  * @param {*} a
  * @param {*} b
  */
-exports.deepEqual = function deepEqual(a, b) {
-  var prop, i, len;
+exports.deepEqual = function deepEqual (a, b) {
+  let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    assert.equal(a.length, b.length, a + ' ~= ' + b);
+    assert.equal(a.length, b.length, a + ' ~= ' + b)
     for (i = 0, len = a.length; i < len; i++) {
-      deepEqual(a[i], b[i]);
+      deepEqual(a[i], b[i])
     }
-  }
-  else if (a instanceof Object && b instanceof Object) {
+  } else if (a instanceof Object && b instanceof Object) {
     for (prop in a) {
       if (a.hasOwnProperty(prop)) {
-        assert.ok(b.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop]);
-        deepEqual(a[prop], b[prop]);
+        assert.ok(b.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop])
+        deepEqual(a[prop], b[prop])
       }
     }
 
     for (prop in b) {
       if (b.hasOwnProperty(prop)) {
-        assert.ok(a.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop]);
-        deepEqual(a[prop], b[prop]);
+        assert.ok(a.hasOwnProperty(prop), a[prop] + ' ~= ' + b[prop])
+        deepEqual(a[prop], b[prop])
       }
     }
+  } else {
+    exports.equal(a, b)
   }
-  else {
-    exports.equal(a, b);
-  }
-};
+}

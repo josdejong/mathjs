@@ -35,10 +35,10 @@ number &#124; Array &#124; Matrix | A random number
 ## Examples
 
 ```js
-math.random();       // returns a random number between 0 and 1
-math.random(100);    // returns a random number between 0 and 100
-math.random(30, 40); // returns a random number between 30 and 40
-math.random([2, 3]); // returns a 2x3 matrix with random numbers between 0 and 1
+math.random()       // returns a random number between 0 and 1
+math.random(100)    // returns a random number between 0 and 100
+math.random(30, 40) // returns a random number between 30 and 40
+math.random([2, 3]) // returns a 2x3 matrix with random numbers between 0 and 1
 ```
 
 

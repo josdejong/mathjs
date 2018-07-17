@@ -1,7 +1,11 @@
 .idea
+.vscode
 .c9
 _site
 coverage
 *swp
 node_modules
 *.log
+dist
+lib
+.nyc_output

@@ -27,9 +27,9 @@ number &#124; Complex &#124; Array &#124; Matrix | The inverse of `x`.
 ## Examples
 
 ```js
-math.inv([[1, 2], [3, 4]]);  // returns [[-2, 1], [1.5, -0.5]]
-math.inv(4);                 // returns 0.25
-1 / 4;                       // returns 0.25
+math.inv([[1, 2], [3, 4]])  // returns [[-2, 1], [1.5, -0.5]]
+math.inv(4)                 // returns 0.25
+1 / 4                       // returns 0.25
 ```
 
 

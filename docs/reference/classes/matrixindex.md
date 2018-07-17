@@ -23,7 +23,7 @@ Matrix.get, Matrix.set, and math.subset accept an Index as input.
 
 Usage:
 ```js
-var index = new Index(range1, range2, matrix1, array1, ...);
+const index = new Index(range1, range2, matrix1, array1, ...)
 ```
 
 Where each parameter can be any of:

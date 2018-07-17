@@ -33,11 +33,11 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 ## Examples
 
 ```js
-math.sign(3.5);               // returns 1
-math.sign(-4.2);              // returns -1
-math.sign(0);                 // returns 0
+math.sign(3.5)               // returns 1
+math.sign(-4.2)              // returns -1
+math.sign(0)                 // returns 0
 
-math.sign([3, 5, -2, 0, 2]);  // returns [1, 1, -1, 0, 1]
+math.sign([3, 5, -2, 0, 2])  // returns [1, 1, -1, 0, 1]
 ```
 
 

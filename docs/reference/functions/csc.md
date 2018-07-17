@@ -29,8 +29,8 @@ number &#124; Complex &#124; Array &#124; Matrix | Cosecant of x
 ## Examples
 
 ```js
-math.csc(2);      // returns number 1.099750170294617
-1 / math.sin(2);  // returns number 1.099750170294617
+math.csc(2)      // returns number 1.099750170294617
+1 / math.sin(2)  // returns number 1.099750170294617
 ```
 
 

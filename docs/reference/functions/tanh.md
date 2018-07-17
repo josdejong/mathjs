@@ -31,9 +31,9 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | Hyperbolic t
 
 ```js
 // tanh(x) = sinh(x) / cosh(x) = 1 / coth(x)
-math.tanh(0.5);                   // returns 0.46211715726000974
-math.sinh(0.5) / math.cosh(0.5);  // returns 0.46211715726000974
-1 / math.coth(0.5);               // returns 0.46211715726000974
+math.tanh(0.5)                   // returns 0.46211715726000974
+math.sinh(0.5) / math.cosh(0.5)  // returns 0.46211715726000974
+1 / math.coth(0.5)               // returns 0.46211715726000974
 ```
 
 

@@ -29,9 +29,9 @@ number &#124; BigNumber &#124; Array &#124; Matrix | XOR of `x` and `y`
 ## Examples
 
 ```js
-math.bitXor(1, 2);               // returns number 3
+math.bitXor(1, 2)               // returns number 3
 
-math.bitXor([2, 3, 4], 4);       // returns Array [6, 7, 0]
+math.bitXor([2, 3, 4], 4)       // returns Array [6, 7, 0]
 ```
 
 

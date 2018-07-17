@@ -30,19 +30,19 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 ## Examples
 
 ```js
-math.multiply(4, 5.2);        // returns number 20.8
-math.multiply(2, 3, 4);       // returns number 24
+math.multiply(4, 5.2)        // returns number 20.8
+math.multiply(2, 3, 4)       // returns number 24
 
-var a = math.complex(2, 3);
-var b = math.complex(4, 1);
-math.multiply(a, b);          // returns Complex 5 + 14i
+const a = math.complex(2, 3)
+const b = math.complex(4, 1)
+math.multiply(a, b)          // returns Complex 5 + 14i
 
-var c = [[1, 2], [4, 3]];
-var d = [[1, 2, 3], [3, -4, 7]];
-math.multiply(c, d);          // returns Array [[7, -6, 17], [13, -4, 33]]
+const c = [[1, 2], [4, 3]]
+const d = [[1, 2, 3], [3, -4, 7]]
+math.multiply(c, d)          // returns Array [[7, -6, 17], [13, -4, 33]]
 
-var e = math.unit('2.1 km');
-math.multiply(3, e);          // returns Unit 6.3 km
+const e = math.unit('2.1 km')
+math.multiply(3, e)          // returns Unit 6.3 km
 ```
 
 

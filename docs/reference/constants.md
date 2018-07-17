@@ -18,12 +18,12 @@ Constant        | Description | Value
 `SQRT1_2`       | Returns the square root of 1/2. | `0.7071067811865476`
 `SQRT2`         | Returns the square root of 2. | `1.4142135623730951`
 `tau`           | Tau is the ratio constant of a circle\'s circumference to radius, equal to `2 * pi`. | `6.283185307179586`
-`uninitialized` | Constant used as default value when resizing a matrix to leave new entries uninitialized.
+`undefined`     | An undefined value. Preferably, use `null` to indicate undefined values. | `undefined`
 `version`       | Returns the version number of math.js. | For example `0.24.1`
 
 Example usage:
 
 ```js
-math.sin(math.pi / 4);          // 0.70711
-math.multiply(math.i, math.i);  // -1
+math.sin(math.pi / 4)          // 0.70711
+math.multiply(math.i, math.i)  // -1
 ```

@@ -30,7 +30,7 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccosine of x
 ## Examples
 
 ```js
-math.acosh(1.5);       // returns 0.9624236501192069
+math.acosh(1.5)       // returns 0.9624236501192069
 ```
 
 

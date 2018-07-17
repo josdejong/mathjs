@@ -13,7 +13,7 @@ In case of complex numbers, x.re must equal y.re, and x.im must equal y.im.
 
 Values `null` and `undefined` are compared strictly, thus `null` is only
 equal to `null` and nothing else, and `undefined` is only equal to
-`undefined` and nothing else.
+`undefined` and nothing else. Strings are compared by their numerical value.
 
 
 ## Syntax
@@ -39,20 +39,21 @@ boolean &#124; Array &#124; Matrix | Returns true when the compared values are e
 ## Examples
 
 ```js
-math.equal(2 + 2, 3);         // returns false
-math.equal(2 + 2, 4);         // returns true
+math.equal(2 + 2, 3)         // returns false
+math.equal(2 + 2, 4)         // returns true
 
-var a = math.unit('50 cm');
-var b = math.unit('5 m');
-math.equal(a, b);             // returns true
+const a = math.unit('50 cm')
+const b = math.unit('5 m')
+math.equal(a, b)             // returns true
 
-var c = [2, 5, 1];
-var d = [2, 7, 1];
+const c = [2, 5, 1]
+const d = [2, 7, 1]
 
-math.equal(c, d);             // returns [true, false, true]
-math.deepEqual(c, d);         // returns false
+math.equal(c, d)             // returns [true, false, true]
+math.deepEqual(c, d)         // returns false
 
-math.equal(0, null);          // returns false
+math.equal("1000", "1e3")    // returns true
+math.equal(0, null)          // returns false
 ```
 
 
@@ -64,4 +65,5 @@ math.equal(0, null);          // returns false
 [larger](larger.md),
 [largerEq](largerEq.md),
 [compare](compare.md),
-[deepEqual](deepEqual.md)
+[deepEqual](deepEqual.md),
+[equalText](equalText.md)

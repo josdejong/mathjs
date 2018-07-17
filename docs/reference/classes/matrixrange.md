@@ -24,29 +24,29 @@ to iterate over the range.
 A range can be constructed as:
 
 ```js
-var range = new Range(start, end);
-var range = new Range(start, end, step);
+const range = new Range(start, end) 
+const range = new Range(start, end, step) 
 ```
 
 To get the result of the range:
 
 ```js
 range.forEach(function (x) {
-    console.log(x);
-});
+    console.log(x) 
+}) 
 range.map(function (x) {
-    return math.sin(x);
-});
-range.toArray();
+    return math.sin(x) 
+}) 
+range.toArray() 
 ```
 
 Example usage:
 
 ```js
-var c = new Range(2, 6);         // 2:1:5
-c.toArray();                     // [2, 3, 4, 5]
-var d = new Range(2, -3, -1);    // 2:-1:-2
-d.toArray();                     // [2, 1, 0, -1, -2]
+const c = new Range(2, 6)        // 2:1:5
+c.toArray()                      // [2, 3, 4, 5]
+const d = new Range(2, -3, -1)   // 2:-1:-2
+d.toArray()                      // [2, 1, 0, -1, -2]
 ```
 
 | Param | Type | Description |

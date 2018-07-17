@@ -1,11 +1,9 @@
 // test keywords
-var assert = require('assert'),
-    keywords = require('../../lib/expression/keywords');
+const assert = require('assert')
+const keywords = require('../../src/expression/keywords')
 
-describe('keywords', function() {
-
-  it('should return a map with reserved keywords', function() {
-    assert.deepEqual(Object.keys(keywords).sort(), ['end'].sort());
-  });
-
-});
+describe('keywords', function () {
+  it('should return a map with reserved keywords', function () {
+    assert.deepEqual(Object.keys(keywords).sort(), ['end'].sort())
+  })
+})

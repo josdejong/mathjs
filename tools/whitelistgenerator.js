@@ -1,19 +1,19 @@
 // generates a whitelist of safe methods and functions
 
 // math.js functions (can be used when chaining
-var math = require('../index')
-var chain = {
+const math = require('../index')
+const chain = {
   done: true,
   valueOf: true,
   toString: true
 }
-for (var name in math) {
+for (const name in math) {
   if (math.hasOwnProperty(name) && typeof math[name] === 'function') {
-    chain[name] = true;
+    chain[name] = true
   }
 }
 
-var groups = [
+const groups = [
   chain,
 
   // Unit
@@ -286,19 +286,19 @@ var groups = [
     'transform': true,
     'traverse': true
   }
-];
+]
 
 // merge all groups into a single whitelist
-var whitelist = groups.reduce(function (whitelist, group) {
-  return Object.assign(whitelist, group);
+const whitelist = groups.reduce(function (whitelist, group) {
+  return Object.assign(whitelist, group)
 }, {})
 
-var keys = Object.keys(whitelist).sort();
-var orderedWhitelist = keys.reduce(function (whitelist, key) {
-  whitelist[key] = true;
-  return whitelist;
-}, {});
+const keys = Object.keys(whitelist).sort()
+const orderedWhitelist = keys.reduce(function (whitelist, key) {
+  whitelist[key] = true
+  return whitelist
+}, {})
 
-console.log(orderedWhitelist);
-console.log('number of methods/functions:', keys.length);
-console.log('copy this object with safe methods into the file customs.js.');
+console.log(orderedWhitelist)
+console.log('number of methods/functions:', keys.length)
+console.log('copy this object with safe methods into the file customs.js.')

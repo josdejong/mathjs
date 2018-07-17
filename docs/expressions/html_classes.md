@@ -18,7 +18,6 @@ highlight the syntax or change the default layout (e.g. spaces around operators)
   - `math-null-symbol` (`null`)
   - `math-nan-symbol` (`NaN`)
   - `math-infinity-symbol` (`Infinity`)
-  - `math-uninitialized-symbol` (`uninitialized`)
   - `math-imaginary-symbol` (`i`)
 - `math-operator`
   - `math-unary-operator`
@@ -36,4 +35,4 @@ highlight the syntax or change the default layout (e.g. spaces around operators)
   -`math-round-parenthesis` (`(` and `)`)
   -`math-square-parenthesis` (`[` and `]`)
   -`math-curly-parenthesis` (`{` and `}`)
-- `math-separator` (ÿ,`, `;` and `<br />`)
+- `math-separator` (ï¿½,`, `;` and <code>&lt;br /&gt;</code>)

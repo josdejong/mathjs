@@ -30,7 +30,7 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arctangent of x
 ## Examples
 
 ```js
-math.atanh(0.5);       // returns 0.5493061443340549
+math.atanh(0.5)       // returns 0.5493061443340549
 ```
 
 

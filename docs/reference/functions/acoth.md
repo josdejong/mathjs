@@ -30,7 +30,7 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic arccotangent of x
 ## Examples
 
 ```js
-math.acoth(0.5);       // returns 0.8047189562170503
+math.acoth(0.5)       // returns 0.8047189562170503
 ```
 
 

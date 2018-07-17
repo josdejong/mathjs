@@ -31,10 +31,10 @@ Matrix | The created matrix
 ## Examples
 
 ```js
-var m = math.sparse([[1, 2], [3, 4]]);
-m.size();                        // Array [2, 2]
-m.resize([3, 2], 5);
-m.valueOf();                     // Array [[1, 2], [3, 4], [5, 5]]
+let m = math.sparse([[1, 2], [3, 4]])
+m.size()                        // Array [2, 2]
+m.resize([3, 2], 5)
+m.valueOf()                     // Array [[1, 2], [3, 4], [5, 5]]
 m.get([1, 0])                    // number 3
 ```
 

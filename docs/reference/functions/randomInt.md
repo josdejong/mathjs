@@ -34,9 +34,9 @@ number &#124; Array &#124; Matrix | A random integer value
 ## Examples
 
 ```js
-math.randomInt(100);    // returns a random integer between 0 and 100
-math.randomInt(30, 40); // returns a random integer between 30 and 40
-math.randomInt([2, 3]); // returns a 2x3 matrix with random integers between 0 and 1
+math.randomInt(100)    // returns a random integer between 0 and 100
+math.randomInt(30, 40) // returns a random integer between 30 and 40
+math.randomInt([2, 3]) // returns a 2x3 matrix with random integers between 0 and 1
 ```
 
 

@@ -30,16 +30,16 @@ boolean | Returns true when `x` is larger than zero. Throws an error in case of 
 ## Examples
 
 ```js
-math.isPositive(3);                     // returns true
-math.isPositive(-2);                    // returns false
-math.isPositive(0);                     // returns false
-math.isPositive(-0);                    // returns false
-math.isPositive(0.5);                   // returns true
-math.isPositive(math.bignumber(2));     // returns true
-math.isPositive(math.fraction(-2, 5));  // returns false
-math.isPositive(math.fraction(1,3));    // returns false
-math.isPositive('2');                   // returns true
-math.isPositive([2, 0, -3]');           // returns [true, false, false]
+math.isPositive(3)                     // returns true
+math.isPositive(-2)                    // returns false
+math.isPositive(0)                     // returns false
+math.isPositive(-0)                    // returns false
+math.isPositive(0.5)                   // returns true
+math.isPositive(math.bignumber(2))     // returns true
+math.isPositive(math.fraction(-2, 5))  // returns false
+math.isPositive(math.fraction(1,3))    // returns false
+math.isPositive('2')                   // returns true
+math.isPositive([2, 0, -3]')           // returns [true, false, false]
 ```
 
 

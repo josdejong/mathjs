@@ -29,17 +29,17 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 ## Examples
 
 ```js
-math.subtract(5.3, 2);        // returns number 3.3
+math.subtract(5.3, 2)        // returns number 3.3
 
-var a = math.complex(2, 3);
-var b = math.complex(4, 1);
-math.subtract(a, b);          // returns Complex -2 + 2i
+const a = math.complex(2, 3)
+const b = math.complex(4, 1)
+math.subtract(a, b)          // returns Complex -2 + 2i
 
-math.subtract([5, 7, 4], 4);  // returns Array [1, 3, 0]
+math.subtract([5, 7, 4], 4)  // returns Array [1, 3, 0]
 
-var c = math.unit('2.1 km');
-var d = math.unit('500m');
-math.subtract(c, d);          // returns Unit 1.6 km
+const c = math.unit('2.1 km')
+const d = math.unit('500m')
+math.subtract(c, d)          // returns Unit 1.6 km
 ```
 
 

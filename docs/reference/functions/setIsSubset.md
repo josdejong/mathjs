@@ -29,8 +29,8 @@ boolean | true | false
 ## Examples
 
 ```js
-math.setIsSubset([1, 2], [3, 4, 5, 6]);        // returns false
-math.setIsSubset([3, 4], [3, 4, 5, 6]);        // returns true
+math.setIsSubset([1, 2], [3, 4, 5, 6])        // returns false
+math.setIsSubset([3, 4], [3, 4, 5, 6])        // returns true
 ```
 
 

@@ -28,9 +28,9 @@ Help | A help object
 ## Examples
 
 ```js
-console.log(math.help('sin').toString());
-console.log(math.help(math.add).toString());
-console.log(math.help(math.add).toJSON());
+console.log(math.help('sin').toString())
+console.log(math.help(math.add).toString())
+console.log(math.help(math.add).toJSON())
 ```
 
 

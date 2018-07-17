@@ -41,12 +41,12 @@ Type | Description
 ## Examples
 
 ```js
-math.std(2, 4, 6);                     // returns 2
-math.std([2, 4, 6, 8]);                // returns 2.581988897471611
-math.std([2, 4, 6, 8], 'uncorrected'); // returns 2.23606797749979
-math.std([2, 4, 6, 8], 'biased');      // returns 2
+math.std(2, 4, 6)                     // returns 2
+math.std([2, 4, 6, 8])                // returns 2.581988897471611
+math.std([2, 4, 6, 8], 'uncorrected') // returns 2.23606797749979
+math.std([2, 4, 6, 8], 'biased')      // returns 2
 
-math.std([[1, 2, 3], [4, 5, 6]]);      // returns 1.8708286933869707
+math.std([[1, 2, 3], [4, 5, 6]])      // returns 1.8708286933869707
 ```
 
 

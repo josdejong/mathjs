@@ -5,16 +5,23 @@ performance improvements of math.js.
 
 ## How to run
 
+First build the source code once:
+
+```
+$ npm install
+$ npm run build
+```
+
 To run all benchmarks:
 
 ```
-node index.js
+$ node index.js
 ```
 
 To run a single set of benchmarks:
 
 ```
-node expression_parser.js
+$ node expression_parser.js
 ```
 
 ## Python benchmarks
@@ -22,7 +29,7 @@ node expression_parser.js
 Install python, and the python library `numpy`, then run the benchmarks:
 
 ```
-python matrix_operations_python.py
+$ python matrix_operations_python.py
 ```
 
 ## Octave benchmarks

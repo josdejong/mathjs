@@ -16,6 +16,12 @@ approximately 2.22e-16.
 For Complex numbers, first the real parts are compared. If equal,
 the imaginary parts are compared.
 
+Strings are compared with a natural sorting algorithm, which
+orders strings in a "logic" way following some heuristics.
+This differs from the function `compare`, which converts the string
+into a numeric value and compares that. The function `compareText`
+on the other hand compares text lexically.
+
 Arrays and Matrices are compared value by value until there is an
 unequal pair of values encountered. Objects are compared by sorted
 keys until the keys or their values are unequal.
@@ -38,41 +44,43 @@ Parameter | Type | Description
 
 Type | Description
 ---- | -----------
-number | Returns the result of the comparison: 1, 0 or -1.
+number | Returns the result of the comparison: 1 when x > y, -1 when x < y, and 0 when x == y.
 
 
 ## Examples
 
 ```js
-math.compareNatural(6, 1);              // returns 1
-math.compareNatural(2, 3);              // returns -1
-math.compareNatural(7, 7);              // returns 0
+math.compareNatural(6, 1)              // returns 1
+math.compareNatural(2, 3)              // returns -1
+math.compareNatural(7, 7)              // returns 0
 
-math.compareNatural('10', '2');         // returns 1
+math.compareNatural('10', '2')         // returns 1
+math.compareText('10', '2')            // returns -1
+math.compare('10', '2')                // returns 1
 
-var a = math.unit('5 cm');
-var b = math.unit('40 mm');
-math.compareNatural(a, b);              // returns 1
+math.compareNatural('Answer: 10', 'Answer: 2') // returns 1
+math.compareText('Answer: 10', 'Answer: 2')    // returns -1
+math.compare('Answer: 10', 'Answer: 2')
+    // Error: Cannot convert "Answer: 10" to a number
 
-var c = math.complex('2 + 3i');
-var d = math.complex('2 + 4i');
-math.compareNatural(c, d);              // returns -1
+const a = math.unit('5 cm')
+const b = math.unit('40 mm')
+math.compareNatural(a, b)              // returns 1
 
-math.compareNatural([1, 2, 4], [1, 2, 3]); // returns 1
-math.compareNatural([1, 2, 3], [1, 2]);    // returns 1
-math.compareNatural([1, 5], [1, 2, 3]);    // returns 1
-math.compareNatural([1, 2], [1, 2]);       // returns 0
+const c = math.complex('2 + 3i')
+const d = math.complex('2 + 4i')
+math.compareNatural(c, d)              // returns -1
 
-math.compareNatural({a: 2}, {a: 4});       // returns -1
+math.compareNatural([1, 2, 4], [1, 2, 3]) // returns 1
+math.compareNatural([1, 2, 3], [1, 2])    // returns 1
+math.compareNatural([1, 5], [1, 2, 3])    // returns 1
+math.compareNatural([1, 2], [1, 2])       // returns 0
+
+math.compareNatural({a: 2}, {a: 4})       // returns -1
 ```
 
 
 ## See also
 
-[equal](equal.md),
-[unequal](unequal.md),
-[smaller](smaller.md),
-[smallerEq](smallerEq.md),
-[larger](larger.md),
-[largerEq](largerEq.md),
-[compare](compare.md)
+[compare](compare.md),
+[compareText](compareText.md)

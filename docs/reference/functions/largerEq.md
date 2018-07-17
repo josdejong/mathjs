@@ -9,6 +9,7 @@ difference between x and y is smaller than the configured epsilon. The
 function cannot be used to compare values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
+Strings are compared by their numerical value.
 
 
 ## Syntax
@@ -34,8 +35,8 @@ boolean &#124; Array &#124; Matrix | Returns true when the x is larger or equal 
 ## Examples
 
 ```js
-math.larger(2, 1 + 1);         // returns false
-math.largerEq(2, 1 + 1);       // returns true
+math.larger(2, 1 + 1)         // returns false
+math.largerEq(2, 1 + 1)       // returns true
 ```
 
 

@@ -30,10 +30,10 @@ Fraction &#124; Array &#124; Matrix | Returns a fraction
 ## Examples
 
 ```js
-math.fraction(1, 3);
-math.fraction('2/3');
-math.fraction({n: 2, d: 3});
-math.fraction([0.2, 0.25, 1.25]);
+math.fraction(1, 3)
+math.fraction('2/3')
+math.fraction({n: 2, d: 3})
+math.fraction([0.2, 0.25, 1.25])
 ```
 
 

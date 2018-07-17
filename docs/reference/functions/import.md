@@ -42,19 +42,19 @@ Parameter | Type | Description
 math.import({
   myvalue: 42,
   hello: function (name) {
-    return 'hello, ' + name + '!';
+    return 'hello, ' + name + '!'
   }
-});
+})
 
 // use the imported function and variable
-math.myvalue * 2;               // 84
-math.hello('user');             // 'hello, user!'
+math.myvalue * 2               // 84
+math.hello('user')             // 'hello, user!'
 
 // import the npm module 'numbers'
 // (must be installed first with `npm install numbers`)
-math.import(require('numbers'), {wrap: true});
+math.import(require('numbers'), {wrap: true})
 
-math.fibonacci(7); // returns 13
+math.fibonacci(7) // returns 13
 ```
 
 

@@ -26,20 +26,20 @@ which can be a string `'Matrix'` (default) or `'Array'`.
 
 ```js
 // create an array and a matrix
-var array = [[2, 0], [-1, 3]];                // Array
-var matrix = math.matrix([[7, 1], [-2, 3]]);  // Matrix
+const array = [[2, 0], [-1, 3]]               // Array
+const matrix = math.matrix([[7, 1], [-2, 3]]) // Matrix
 
 // perform a calculation on an array and matrix
-math.square(array);                           // Array,  [[4, 0], [1, 9]]
-math.square(matrix);                          // Matrix, [[49, 1], [4, 9]]
+math.square(array)                            // Array,  [[4, 0], [1, 9]]
+math.square(matrix)                           // Matrix, [[49, 1], [4, 9]]
 
 // perform calculations with mixed array and matrix input
-math.add(array, matrix);                      // Matrix, [[9, 1], [-3, 6]]
-math.multiply(array, matrix);                 // Matrix, [[14, 2], [-13, 8]]
+math.add(array, matrix)                       // Matrix, [[9, 1], [-3, 6]]
+math.multiply(array, matrix)                  // Matrix, [[14, 2], [-13, 8]]
 
 // create a matrix. Type of output of function ones is determined by the
 // configuration option `matrix`
-math.ones(2, 3);                              // Matrix, [[1, 1, 1], [1, 1, 1]]
+math.ones(2, 3)                               // Matrix, [[1, 1, 1], [1, 1, 1]]
 ```
 
 
@@ -51,9 +51,9 @@ created.
 
 ```js
 // create matrices
-math.matrix();                          // Matrix, size [0]
-math.matrix([0, 1, 2]);                 // Matrix, size [3]
-math.matrix([[0, 1], [2, 3], [4, 5]]);  // Matrix, size [3, 2]
+math.matrix()                           // Matrix, size [0]
+math.matrix([0, 1, 2])                  // Matrix, size [3]
+math.matrix([[0, 1], [2, 3], [4, 5]])   // Matrix, size [3, 2]
 ```
 
 Math.js supports regular Arrays. Multiple dimensions can be created
@@ -61,9 +61,9 @@ by nesting Arrays in each other.
 
 ```js
 // create arrays
-[];                                     // Array, size [0]
-[0, 1, 2] ;                             // Array, size [3]
-[[0, 1], [2, 3], [4, 5]];               // Array, size [3, 2]
+[]                                      // Array, size [0]
+[0, 1, 2]                               // Array, size [3]
+[[0, 1], [2, 3], [4, 5]]                // Array, size [3, 2]
 ```
 
 Matrices can contain different types of values: numbers, complex numbers,
@@ -71,32 +71,32 @@ units, or strings. Different types can be mixed together in a single matrix.
 
 ```js
 // create a matrix with mixed types
-var a = math.matrix([2.3, 'hello', math.complex(3, -4), math.unit('5.2 mm')]);
-a.subset(math.index(1)); // 'hello'
+const a = math.matrix([2.3, 'hello', math.complex(3, -4), math.unit('5.2 mm')]) 
+a.subset(math.index(1))  // 'hello'
 ```
 
 
 There are a number of functions to create a matrix with a specific size and
-content: `ones`, `zeros`, `eye`.
+content: `ones`, `zeros`, `identity`.
 
 ```js
 // zeros creates a matrix filled with zeros
-math.zeros(3);          // Matrix, size [3],    [0, 0, 0]
-math.zeros(3, 2);       // Matrix, size [3, 2], [[0, 0], [0, 0], [0, 0]]
-math.zeros(2, 2, 2);    // Matrix, size [2, 2, 2],
+math.zeros(3)           // Matrix, size [3],    [0, 0, 0]
+math.zeros(3, 2)        // Matrix, size [3, 2], [[0, 0], [0, 0], [0, 0]]
+math.zeros(2, 2, 2)     // Matrix, size [2, 2, 2],
                         //   [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
 
 // ones creates a matrix filled with ones
-math.ones(3);                       // Matrix, size [3],    [1, 1, 1]
-math.multiply(math.ones(2, 2), 5);  // Matrix, size [2, 2], [[5, 5], [5, 5]]
+math.ones(3)                        // Matrix, size [3],    [1, 1, 1]
+math.multiply(math.ones(2, 2), 5)   // Matrix, size [2, 2], [[5, 5], [5, 5]]
 
-// eye creates an identity matrix
-math.eye(3);     // Matrix, size [3, 3], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
-math.eye(2, 3);  // Matrix, size [2, 3], [[1, 0, 0], [0, 1, 0]]
+// identity creates an identity matrix
+math.identity(3)      // Matrix, size [3, 3], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+math.identity(2, 3)   // Matrix, size [2, 3], [[1, 0, 0], [0, 1, 0]]
 ```
 
 
-The functions `ones`, `zeros`, and `eye` also accept a single array
+The functions `ones`, `zeros`, and `identity` also accept a single array
 or matrix containing the dimensions for the matrix. When the input is an Array,
 the functions will output an Array. When the input is a Matrix, the output will
 be a Matrix. Note that in case of numbers as arguments, the output is
@@ -105,8 +105,8 @@ determined by the option `matrix` as discussed in section
 
 ```js
 // Array as input gives Array as output
-math.ones([2, 3]);              // Array,  size [3, 2], [[1, 1, 1], [1, 1, 1]]
-math.ones(math.matrix([2, 3])); // Matrix, size [3, 2], [[1, 1, 1], [1, 1, 1]]
+math.ones([2, 3])               // Array,  size [3, 2], [[1, 1, 1], [1, 1, 1]]
+math.ones(math.matrix([2, 3]))  // Matrix, size [3, 2], [[1, 1, 1], [1, 1, 1]]
 ```
 
 Ranges can be created using the function `range`. The function `range` is
@@ -114,9 +114,9 @@ called with parameters start and end, and optionally a parameter step.
 The start of the range is included, the end of the range is excluded.
 
 ```js
-math.range(0, 4);       // [0, 1, 2, 3]
-math.range(0, 8, 2);    // [0, 2, 4, 6]
-math.range(3, -1, -1);  // [3, 2, 1, 0]
+math.range(0, 4)        // [0, 1, 2, 3]
+math.range(0, 8, 2)     // [0, 2, 4, 6]
+math.range(3, -1, -1)   // [3, 2, 1, 0]
 ```
 
 
@@ -126,24 +126,24 @@ All relevant functions of math.js support matrices and arrays.
 
 ```js
 // perform a calculation on a matrix
-var a = math.matrix([1, 4, 9, 16, 25]);   // Matrix, [1, 4, 9, 16, 25]
-math.sqrt(a);                             // Matrix, [1, 2, 3, 4, 5]
+const a = math.matrix([1, 4, 9, 16, 25])  // Matrix, [1, 4, 9, 16, 25]
+math.sqrt(a)                              // Matrix, [1, 2, 3, 4, 5]
 
 // perform a calculation on an array
-var b = [1, 2, 3, 4, 5];
-math.factorial(b);                        // Array,  [1, 2, 6, 24, 120]
+const b = [1, 2, 3, 4, 5] 
+math.factorial(b)                         // Array,  [1, 2, 6, 24, 120]
 
 // multiply an array with a matrix
-var c = [[2, 0], [-1, 3]];                // Array
-var d = math.matrix([[7, 1], [-2, 3]]);   // Matrix
-math.multiply(c, d);                      // Matrix, [[14, 2], [-13, 8]]
+const c = [[2, 0], [-1, 3]]               // Array
+const d = math.matrix([[7, 1], [-2, 3]])  // Matrix
+math.multiply(c, d)                       // Matrix, [[14, 2], [-13, 8]]
 
 // add a number to a matrix
-math.add(c, 2);                           // Array, [[4, 2], [1, 5]]
+math.add(c, 2)                            // Array, [[4, 2], [1, 5]]
 
 // calculate the determinant of a matrix
-math.det(c);                              // 6
-math.det(d);                              // 23
+math.det(c)                               // 6
+math.det(d)                               // 23
 ```
 
 
@@ -162,26 +162,26 @@ an Array.
 
 ```js
 // get the size of a scalar
-math.size(2.4);                               // Matrix, []
-math.size(math.complex(3, 2));                // Matrix, []
-math.size(math.unit('5.3 mm'));               // Matrix, []
+math.size(2.4)                                // Matrix, []
+math.size(math.complex(3, 2))                 // Matrix, []
+math.size(math.unit('5.3 mm'))                // Matrix, []
 
 // get the size of a one-dimensional matrix (a vector) and a string
-math.size([0, 1, 2, 3]);                      // Array, [4]
-math.size('hello world');                     // Matrix, [11]
+math.size([0, 1, 2, 3])                       // Array, [4]
+math.size('hello world')                      // Matrix, [11]
 
 // get the size of a two-dimensional matrix
-var a = [[0, 1, 2, 3]];                       // Array
-var b = math.matrix([[0, 1, 2], [3, 4, 5]]);  // Matrix
-math.size(a);                                 // Array, [1, 4]
-math.size(b);                                 // Matrix, [2, 3]
+const a = [[0, 1, 2, 3]]                      // Array
+const b = math.matrix([[0, 1, 2], [3, 4, 5]]) // Matrix
+math.size(a)                                  // Array, [1, 4]
+math.size(b)                                  // Matrix, [2, 3]
 
 // matrices have a function size (always returns an Array)
-b.size();                                     // Array, [2, 3]
+b.size()                                      // Array, [2, 3]
 
 // get the size of a multi-dimensional matrix
-var c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]];
-math.size(c);                                 // Array, [2, 2, 3]
+const c = [[[0, 1, 2], [3, 4, 5]], [[6, 7, 8], [9, 10, 11]]]
+math.size(c)                                  // Array, [2, 2, 3]
 ```
 
 
@@ -189,20 +189,20 @@ math.size(c);                                 // Array, [2, 2, 3]
 
 Matrices can be resized using their `resize` function. This function is called
 with an Array with the new size as the first argument, and accepts an optional
-default value. If no default value is provided, new entries will be filled with
-zero. To leave new entries uninitialized, specify `math.uninitialized` as the
-default value.
+default value. By default, new entries will be set to `0`, but it is possible
+to pass a different default value like `null` to clearly indicate that
+the entries haven't been explicitly set.
 
 ```js
-var a = math.matrix();  // Matrix, size [0],       []
-a.resize([2, 3]);       // Matrix, size [2, 3],    [[0, 0, 0], [0, 0, 0]]
-a.resize([2, 2, 2]);    // Matrix, size [2, 2, 2],
+const a = math.matrix() // Matrix, size [0],       []
+a.resize([2, 3])        // Matrix, size [2, 3],    [[0, 0, 0], [0, 0, 0]]
+a.resize([2, 2, 2])     // Matrix, size [2, 2, 2],
                         //   [[[0, 0], [0, 0]], [[0, 0], [0, 0]]]
 
-var b = math.matrix();
-b.resize([3], 7);       // Matrix, size [3],    [7, 7, 7]
-b.resize([5], 9);       // Matrix, size [5],    [7, 7, 7, 9, 9]
-b.resize([2]);          // Matrix, size [2],    [7, 7]
+const b = math.matrix()
+b.resize([3], 7)        // Matrix, size [3],    [7, 7, 7]
+b.resize([5], 9)        // Matrix, size [5],    [7, 7, 7, 9, 9]
+b.resize([2])           // Matrix, size [2],    [7, 7]
 ```
 
 
@@ -212,13 +212,13 @@ or unsqueezed.
 
 ```js
 // squeeze a matrix
-var a = [[[0, 1, 2]]];
-math.squeeze(a);        // [0, 1, 2]
-math.squeeze([[3]]);    // 3
+const a = [[[0, 1, 2]]]
+math.squeeze(a)         // [0, 1, 2]
+math.squeeze([[3]])     // 3
 
 // subsets are automatically squeezed
-var b = math.matrix([[0, 1], [2, 3]]);
-b.subset([1, 0]);       // 2
+const b = math.matrix([[0, 1], [2, 3]])
+b.subset([1, 0])        // 2
 ```
 
 
@@ -242,33 +242,33 @@ as they use one-based indexes.
 
 ```js
 // create some matrices
-var a = [0, 1, 2, 3];
-var b = [[0, 1], [2, 3]];
-var c = math.zeros(2, 2);
-var d = math.matrix([[0, 1, 2], [3, 4, 5], [6, 7, 8]]);
-var e = math.matrix();
+const a = [0, 1, 2, 3]
+const b = [[0, 1], [2, 3]]
+const c = math.zeros(2, 2)
+const d = math.matrix([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+const e = math.matrix()
 
 // get a subset
-math.subset(a, math.index(1));                // 1
-math.subset(a, math.index([2, 3]));           // Array, [2, 3]
-math.subset(a, math.index(math.range(0,4)));  // Array, [0, 1, 2, 3]
-math.subset(b, math.index(1, 0));             // 2
-math.subset(b, math.index(1, [0, 1]));        // Array, [2, 3]
-math.subset(b, math.index([0, 1], 0));        // Matrix, [[0], [2]]
+math.subset(a, math.index(1))                 // 1
+math.subset(a, math.index([2, 3]))            // Array, [2, 3]
+math.subset(a, math.index(math.range(0,4)))   // Array, [0, 1, 2, 3]
+math.subset(b, math.index(1, 0))              // 2
+math.subset(b, math.index(1, [0, 1]))         // Array, [2, 3]
+math.subset(b, math.index([0, 1], 0))         // Matrix, [[0], [2]]
 
 // get a subset
-d.subset(math.index([1, 2], [0, 1]));         // Matrix, [[3, 4], [6, 7]]
-d.subset(math.index(1, 2));                   // 5
+d.subset(math.index([1, 2], [0, 1]))          // Matrix, [[3, 4], [6, 7]]
+d.subset(math.index(1, 2))                    // 5
 
 // replace a subset. The subset will be applied to a clone of the matrix
-math.subset(b, math.index(1, 0), 9);          // Array, [[0, 1], [9, 3]]
-math.subset(b, math.index(2, [0, 1]), [4, 5]);// Array, [[0, 1], [2, 3], [4, 5]]
+math.subset(b, math.index(1, 0), 9)           // Array, [[0, 1], [9, 3]]
+math.subset(b, math.index(2, [0, 1]), [4, 5]) // Array, [[0, 1], [2, 3], [4, 5]]
 
 // replace a subset. The subset will be applied to the matrix itself
-c.subset(math.index(0, 1),1);                 // Matrix, [[0, 1], [0, 0]]
-c.subset(math.index(1, [0, 1]), [2, 3]);      // Matrix, [[0, 1], [2, 3]]
-e.resize([2, 3], 0);                          // Matrix, [[0, 0, 0], [0, 0, 0]]
-e.subset(math.index(1, 2), 5);                // Matrix, [[0, 0, 0], [0, 0, 5]]
+c.subset(math.index(0, 1),1)                  // Matrix, [[0, 1], [0, 0]]
+c.subset(math.index(1, [0, 1]), [2, 3])       // Matrix, [[0, 1], [2, 3]]
+e.resize([2, 3], 0)                           // Matrix, [[0, 0, 0], [0, 0, 0]]
+e.subset(math.index(1, 2), 5)                 // Matrix, [[0, 0, 0], [0, 0, 5]]
 ```
 
 ## Iterating
@@ -282,7 +282,7 @@ functions of native JavaScript Arrays, except that the index is no number but
 an Array with numbers for each dimension.
 
 ```js
-var a = math.matrix([[0, 1], [2, 3], [4, 5]]);
+const a = math.matrix([[0, 1], [2, 3], [4, 5]])
 
 // The iteration below will output the following in the console:
 //    value: 0 index: [0, 0]
@@ -292,22 +292,22 @@ var a = math.matrix([[0, 1], [2, 3], [4, 5]]);
 //    value: 4 index: [2, 0]
 //    value: 5 index: [2, 1]
 a.forEach(function (value, index, matrix) {
-  console.log('value:', value, 'index:', index);
-});
+  console.log('value:', value, 'index:', index) 
+}) 
 
 // Apply a transformation on the matrix
-var b = a.map(function (value, index, matrix) {
-  return math.multiply(math.sin(value), math.exp(math.abs(value)));
-});
-console.log(b.format(5)); // [[0, 2.2874], [6.7188, 2.8345], [-41.32, -142.32]]
+const b = a.map(function (value, index, matrix) {
+  return math.multiply(math.sin(value), math.exp(math.abs(value))) 
+}) 
+console.log(b.format(5))  // [[0, 2.2874], [6.7188, 2.8345], [-41.32, -142.32]]
 
 // Create a matrix with the cumulative of all elements
-var count = 0;
-var cum = a.map(function (value, index, matrix) {
-  count += value;
-  return count;
-});
-console.log(cum.toString()); // [[0, 1], [3, 6], [10, 15]]
+let count = 0
+const cum = a.map(function (value, index, matrix) {
+  count += value 
+  return count 
+}) 
+console.log(cum.toString())  // [[0, 1], [3, 6], [10, 15]]
 ```
 
 ## Storage types
@@ -319,19 +319,19 @@ Math.js supports two type of matrices:
 - Dense matrix (`'dense'`, `default`) A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
 - Sparse matrix (`'sparse'`): A two dimensional sparse matrix implementation.
 
-The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `eye`, `ones`, and `zeros`.
+The type of matrix can be selected when creating a matrix using the construction functions `matrix`, `diag`, `identity`, `ones`, and `zeros`.
 
 ```js
 // create sparse matrices
-var m1 = math.matrix([[0, 1], [0, 0]], 'sparse');
-var m2 = math.eye(1000, 1000, 'sparse');
+const m1 = math.matrix([[0, 1], [0, 0]], 'sparse')
+const m2 = math.identity(1000, 1000, 'sparse')
 ```
 
 ## API
 
 All relevant functions in math.js support Matrices and Arrays. Functions like `math.add` and `math.subtract`, `math.sqrt` handle matrices element wise. There is a set of functions specifically for creating or manipulating matrices, such as:
 
-- Functions like `math.matrix` and `math.sparse`, `math.ones`, `math.zeros`, and `math.eye` to create a matrix.
+- Functions like `math.matrix` and `math.sparse`, `math.ones`, `math.zeros`, and `math.identity` to create a matrix.
 - Functions like `math.subset` and `math.index` to get or replace a part of a matrix
 - Functions like `math.transpose` and `math.diag` to manipulate matrices.
 

@@ -8,7 +8,7 @@
  */
 
 // load math.js (using node.js)
-var math = require('../index');
+const math = require('../index')
 
 // 1. using the function math.eval
 //
@@ -17,49 +17,47 @@ var math = require('../index');
 // containing a scope with variables and functions. The scope is a regular
 // JavaScript Object. The scope will be used to resolve symbols, and to write
 // assigned variables or function.
-console.log('1. USING FUNCTION MATH.EVAL');
+console.log('1. USING FUNCTION MATH.EVAL')
 
 // evaluate expressions
-console.log('\nevaluate expressions');
-print(math.eval('sqrt(3^2 + 4^2)'));        // 5
-print(math.eval('sqrt(-4)'));               // 2i
-print(math.eval('2 inch to cm'));           // 5.08 cm
-print(math.eval('cos(45 deg)'));            // 0.70711
+console.log('\nevaluate expressions')
+print(math.eval('sqrt(3^2 + 4^2)')) // 5
+print(math.eval('sqrt(-4)')) // 2i
+print(math.eval('2 inch to cm')) // 5.08 cm
+print(math.eval('cos(45 deg)')) // 0.70711
 
 // evaluate multiple expressions at once
-console.log('\nevaluate multiple expressions at once');
+console.log('\nevaluate multiple expressions at once')
 print(math.eval([
   'f = 3',
   'g = 4',
   'f * g'
-]));                                        // [3, 4, 12]
+])) // [3, 4, 12]
 
 // provide a scope (just a regular JavaScript Object)
-console.log('\nevaluate expressions providing a scope with variables and functions');
-var scope = {
+console.log('\nevaluate expressions providing a scope with variables and functions')
+let scope = {
   a: 3,
   b: 4
-};
+}
 
 // variables can be read from the scope
-print(math.eval('a * b', scope));           // 12
+print(math.eval('a * b', scope)) // 12
 
 // variable assignments are written to the scope
-print(math.eval('c = 2.3 + 4.5', scope));   // 6.8
-print(scope.c);                             // 6.8
+print(math.eval('c = 2.3 + 4.5', scope)) // 6.8
+print(scope.c) // 6.8
 
 // scope can contain both variables and functions
 scope.hello = function (name) {
-  return 'hello, ' + name + '!';
-};
-print(math.eval('hello("hero")', scope));   // "hello, hero!"
+  return 'hello, ' + name + '!'
+}
+print(math.eval('hello("hero")', scope)) // "hello, hero!"
 
 // define a function as an expression
-var f = math.eval('f(x) = x ^ a', scope);
-print(f(2));                                // 8
-print(scope.f(2));                          // 8
-
-
+const f = math.eval('f(x) = x ^ a', scope)
+print(f(2)) // 8
+print(scope.f(2)) // 8
 
 // 2. using function math.parse
 //
@@ -70,32 +68,31 @@ print(scope.f(2));                          // 8
 // then can be compiled against math, and then evaluated against an (optional
 // scope. This scope is a regular JavaScript Object. The scope will be used
 // to resolve symbols, and to write assigned variables or function.
-console.log('\n2. USING FUNCTION MATH.PARSE');
+console.log('\n2. USING FUNCTION MATH.PARSE')
 
 // parse an expression
-console.log('\nparse an expression into a node tree');
-var node1 = math.parse('sqrt(3^2 + 4^2)');
-print(node1.toString());                    // "sqrt((3 ^ 2) + (4 ^ 2))"
+console.log('\nparse an expression into a node tree')
+const node1 = math.parse('sqrt(3^2 + 4^2)')
+print(node1.toString()) // "sqrt((3 ^ 2) + (4 ^ 2))"
 
 // compile and evaluate the compiled code
 // you could also do this in two steps: node1.compile().eval()
-print(node1.eval());                        // 5
+print(node1.eval()) // 5
 
 // provide a scope
-console.log('\nprovide a scope');
-var node2 = math.parse('x^a');
-var code2 = node2.compile();
-print(node2.toString());                    // "x ^ a"
-var scope = {
+console.log('\nprovide a scope')
+const node2 = math.parse('x^a')
+const code2 = node2.compile()
+print(node2.toString()) // "x ^ a"
+let scope2 = {
   x: 3,
   a: 2
-};
-print(code2.eval(scope));                   // 9
+}
+print(code2.eval(scope2)) // 9
 
 // change a value in the scope and re-evaluate the node
-scope.a = 3;
-print(code2.eval(scope));                   // 27
-
+scope.a = 3
+print(code2.eval(scope2)) // 27
 
 // 3. using function math.compile
 //
@@ -106,24 +103,23 @@ print(code2.eval(scope));                   // 27
 // to evaluate the compiled expression. On evaluation, an optional scope can
 // be provided. This scope will be used to resolve symbols, and to write
 // assigned variables or function.
-console.log('\n3. USING FUNCTION MATH.COMPILE');
+console.log('\n3. USING FUNCTION MATH.COMPILE')
 
 // parse an expression
-console.log('\ncompile an expression');
-var code3 = math.compile('sqrt(3^2 + 4^2)');
+console.log('\ncompile an expression')
+const code3 = math.compile('sqrt(3^2 + 4^2)')
 
 // evaluate the compiled code
-print(code3.eval());                        // 5
+print(code3.eval()) // 5
 
 // provide a scope for the variable assignment
-console.log('\nprovide a scope');
-var code2 = math.compile('a = a + 3');
-var scope = {
+console.log('\nprovide a scope')
+const code4 = math.compile('a = a + 3')
+let scope3 = {
   a: 7
-};
-code2.eval(scope);
-print(scope.a);                             // 10
-
+}
+code4.eval(scope3)
+print(scope3.a) // 10
 
 // 4. using a parser
 //
@@ -131,61 +127,62 @@ print(scope.a);                             // 10
 // contains a parser with functions `eval` and `parse`, which automatically
 // keeps a scope with assigned variables in memory. The parser also contains
 // some convenience methods to get, set, and remove variables from memory.
-console.log('\n4. USING A PARSER');
-var parser = math.parser();
+console.log('\n4. USING A PARSER')
+const parser = math.parser()
 
 // evaluate with parser
-console.log('\nevaluate expressions');
-print(parser.eval('sqrt(3^2 + 4^2)'));          // 5
-print(parser.eval('sqrt(-4)'));                 // 2i
-print(parser.eval('2 inch to cm'));             // 5.08 cm
-print(parser.eval('cos(45 deg)'));              // 0.70711
+console.log('\nevaluate expressions')
+print(parser.eval('sqrt(3^2 + 4^2)')) // 5
+print(parser.eval('sqrt(-4)')) // 2i
+print(parser.eval('2 inch to cm')) // 5.08 cm
+print(parser.eval('cos(45 deg)')) // 0.70710678118655
 
 // define variables and functions
-console.log('\ndefine variables and functions');
-print(parser.eval('x = 7 / 2'));                // 3.5
-print(parser.eval('x + 3'));                    // 6.5
-print(parser.eval('f(x, y) = x^y'));            // f(x, y)
-print(parser.eval('f(2, 3)'));                  // 8
+console.log('\ndefine variables and functions')
+print(parser.eval('x = 7 / 2')) // 3.5
+print(parser.eval('x + 3')) // 6.5
+print(parser.eval('f2(x, y) = x^y')) // f2(x, y)
+print(parser.eval('f2(2, 3)')) // 8
 
 // manipulate matrices
 // Note that matrix indexes in the expression parser are one-based with the
 // upper-bound included. On a JavaScript level however, math.js uses zero-based
 // indexes with an excluded upper-bound.
-console.log('\nmanipulate matrices');
-print(parser.eval('k = [1, 2; 3, 4]'));         // [[1, 2], [3, 4]]
-print(parser.eval('l = zeros(2, 2)'));          // [[0, 0], [0, 0]]
-print(parser.eval('l[1, 1:2] = [5, 6]'));       // [[5, 6], [0, 0]]
-print(parser.eval('l[2, :] = [7, 8]'));         // [[5, 6], [7, 8]]
-print(parser.eval('m = k * l'));                // [[19, 22], [43, 50]]
-print(parser.eval('n = m[2, 1]'));              // 43
-print(parser.eval('n = m[:, 1]'));              // [[19], [43]]
+console.log('\nmanipulate matrices')
+print(parser.eval('k = [1, 2; 3, 4]')) // [[1, 2], [3, 4]]
+print(parser.eval('l = zeros(2, 2)')) // [[0, 0], [0, 0]]
+print(parser.eval('l[1, 1:2] = [5, 6]')) // [5, 6]
+print(parser.eval('l')) // [[5, 6], [0, 0]]
+print(parser.eval('l[2, :] = [7, 8]')) // [7, 8]
+print(parser.eval('l')) // [[5, 6], [7, 8]]
+print(parser.eval('m = k * l')) // [[19, 22], [43, 50]]
+print(parser.eval('n = m[2, 1]')) // 43
+print(parser.eval('n = m[:, 1]')) // [[19], [43]]
 
 // get and set variables and functions
-console.log('\nget and set variables and function in the scope of the parser');
-var x = parser.get('x');
-console.log('x =', x);                          // x = 7
-var f = parser.get('f');
-console.log('f =', math.format(f));             // f = f(x, y)
-var g = f(3, 3);
-console.log('g =', g);                          // g = 27
+console.log('\nget and set variables and function in the scope of the parser')
+const x = parser.get('x')
+console.log('x =', x) // x = 3.5
+const f2 = parser.get('f2')
+console.log('f2 =', math.format(f2)) // f2 = f2(x, y)
+const h = f2(3, 3)
+console.log('h =', h) // g = 27
 
-parser.set('h', 500);
-print(parser.eval('h / 2'));                    // 250
+parser.set('i', 500)
+print(parser.eval('i / 2')) // 250
 parser.set('hello', function (name) {
-  return 'hello, ' + name + '!';
-});
-print(parser.eval('hello("hero")'));            // "hello, hero!"
+  return 'hello, ' + name + '!'
+})
+print(parser.eval('hello("hero")')) // "hello, hero!"
 
 // clear defined functions and variables
-parser.clear();
-
+parser.clear()
 
 /**
  * Helper function to output a value in the console. Value will be formatted.
  * @param {*} value
  */
 function print (value) {
-  var precision = 14;
-  console.log(math.format(value, precision));
+  const precision = 14
+  console.log(math.format(value, precision))
 }

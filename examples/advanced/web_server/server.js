@@ -16,40 +16,42 @@
  *
  * Note that the query parameter `expr` should be properly url encoded.
  */
+const path = require('path')
 
+let express
+let workerpool
 try {
-  var express = require('express');
-  var workerpool = require('workerpool');
-}
-catch (err) {
+  express = require('express')
+  workerpool = require('workerpool')
+} catch (err) {
   console.log('Error: To run this example, install express and workerpool first via:\n\n' +
-      '    npm install express workerpool\n');
-  process.exit();
+      '    npm install express workerpool\n')
+  process.exit()
 }
 
-var app = express();
-var pool = workerpool.pool(__dirname + '/math_worker.js');
+const app = express()
+const pool = workerpool.pool(path.join(__dirname, '/math_worker.js'))
 
-var TIMEOUT = 10000; // milliseconds
+const TIMEOUT = 10000 // milliseconds
 
 /**
  * GET /mathjs?expr=...
  */
 app.get('/mathjs', function (req, res) {
-  var expr = req.query.expr;
+  const expr = req.query.expr
   if (expr === undefined) {
-    return res.status(400).send('Error: Required query parameter "expr" missing in url.');
+    return res.status(400).send('Error: Required query parameter "expr" missing in url.')
   }
 
   pool.exec('evaluate', [expr])
-      .timeout(TIMEOUT)
-      .then(function (result) {
-        res.send(result);
-      })
-      .catch(function (err) {
-        res.status(400).send(formatError(err));
-      });
-});
+    .timeout(TIMEOUT)
+    .then(function (result) {
+      res.send(result)
+    })
+    .catch(function (err) {
+      res.status(400).send(formatError(err))
+    })
+})
 
 /**
  * Format error messages as string
@@ -58,22 +60,21 @@ app.get('/mathjs', function (req, res) {
  */
 function formatError (err) {
   if (err instanceof workerpool.Promise.TimeoutError) {
-    return 'TimeoutError: Evaluation exceeded maximum duration of ' + TIMEOUT / 1000 + ' seconds';
-  }
-  else {
-    return err.toString();
+    return 'TimeoutError: Evaluation exceeded maximum duration of ' + TIMEOUT / 1000 + ' seconds'
+  } else {
+    return err.toString()
   }
 }
 
 // handle uncaught exceptions so the application cannot crash
-process.on('uncaughtException', function(err) {
-  console.log('Caught exception: ' + err);
-  console.trace();
-});
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err)
+  console.trace()
+})
 
 // start the server
-var PORT = process.env.PORT || 8080;
-app.listen(PORT, function() {
-  console.log('Listening at http://localhost:' + PORT);
-  console.log('Example request:\n    GET http://localhost:' + PORT + '/mathjs?expr=sqrt(16)');
-});
+const PORT = process.env.PORT || 8080
+app.listen(PORT, function () {
+  console.log('Listening at http://localhost:' + PORT)
+  console.log('Example request:\n    GET http://localhost:' + PORT + '/mathjs?expr=sqrt(16)')
+})

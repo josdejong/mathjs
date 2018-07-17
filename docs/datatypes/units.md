@@ -22,43 +22,37 @@ math.unit(unit: Unit) : Unit
 Example usage:
 
 ```js
-var a = math.unit(45, 'cm');            // Unit 450 mm
-var b = math.unit('0.1 kilogram');      // Unit 100 gram
-var c = math.unit('2 inch');            // Unit 2 inch
-var d = math.unit('90 km/h');           // Unit 90 km/h
-var e = math.unit('101325 kg/(m s^2)'); // Unit 101325 kg / (m s^2)
-```
+const a = math.unit(45, 'cm')             // Unit 450 mm
+const b = math.unit('0.1 kilogram')       // Unit 100 gram
+const c = math.unit('2 inch')             // Unit 2 inch
+const d = math.unit('90 km/h')            // Unit 90 km/h
+const e = math.unit('101325 kg/(m s^2)')  // Unit 101325 kg / (m s^2)
 
-```js
-var a = math.unit(55, 'cm');        // Unit 550 mm
-var b = math.unit('0.1 kilogram');  // Unit 100 gram
-var c = math.unit('2 inch');        // Unit 100 millimeter
+const d = c.to('cm')                      // Unit 5.08 cm
+b.toNumber('gram')                        // Number 100
+math.number(b, 'gram')                    // Number 100
 
-var d = c.to('cm');                 // Unit 5.08 cm
-b.toNumber('gram');                 // Number 100
-math.number(b, 'gram');             // Number 100
+c.equals(a)                               // false
+c.equals(d)                               // true
+c.equalBase(a)                            // true
+c.equalBase(b)                            // false
 
-c.equals(a);                        // false
-c.equals(d);                        // true
-c.equalBase(a);                     // true
-c.equalBase(b);                     // false
-
-d.toString();                       // String "5.08 cm"
+d.toString()                              // String "5.08 cm"
 ```
 
 Use care when creating a unit with multiple terms in the denominator. Implicit multiplication has the same operator precedence as explicit multiplication and division, which means these three expressions are identical:
 
 ```js
 // These three are identical
-var correct1 = math.unit('8.314 m^3 Pa / mol / K');         // Unit 8.314 (m^3 Pa) / (mol K)
-var correct2 = math.unit('8.314 (m^3 Pa) / (mol K)');       // Unit 8.314 (m^3 Pa) / (mol K)
-var correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)');   // Unit 8.314 (m^3 Pa) / (mol K)
+const correct1 = math.unit('8.314 m^3 Pa / mol / K')          // Unit 8.314 (m^3 Pa) / (mol K)
+const correct2 = math.unit('8.314 (m^3 Pa) / (mol K)')        // Unit 8.314 (m^3 Pa) / (mol K)
+const correct3 = math.unit('8.314 (m^3 * Pa) / (mol * K)')    // Unit 8.314 (m^3 Pa) / (mol K)
 ```
 But this expression, which omits the second `/` between `mol` and `K`, results in the wrong value:
 
 ```js
 // Missing the second '/' between 'mol' and 'K'
-var incorrect = math.unit('8.314 m^3 Pa / mol K');          // Unit 8.314 (m^3 Pa K) / mol
+const incorrect = math.unit('8.314 m^3 Pa / mol K')           // Unit 8.314 (m^3 Pa K) / mol
 ```
 
 ## Calculations
@@ -67,18 +61,18 @@ The operations that support units are `add`, `subtract`, `multiply`, `divide`, `
 Trigonometric functions like `cos` are also supported when the argument is an angle.
 
 ```js
-var a = math.unit(45, 'cm');        // Unit 450 mm
-var b = math.unit('0.1m');          // Unit 100 mm
-math.add(a, b);                     // Unit 0.65 m
-math.multiply(b, 2);                // Unit 200 mm
+const a = math.unit(45, 'cm')       // Unit 450 mm
+const b = math.unit('0.1m')         // Unit 100 mm
+math.add(a, b)                      // Unit 0.65 m
+math.multiply(b, 2)                 // Unit 200 mm
 
-var c = math.unit(45, 'deg');       // Unit 45 deg
-math.cos(c);                        // Number 0.7071067811865476
+const c = math.unit(45, 'deg')      // Unit 45 deg
+math.cos(c)                         // Number 0.7071067811865476
 
 // Kinetic energy of average sedan on highway
-var d = math.unit('80 mi/h')        // Unit 80 mi/h
-var e = math.unit('2 tonne')        // Unit 2 tonne
-var f = math.multiply(0.5, math.multipy(math.pow(d, 2), e));
+const d = math.unit('80 mi/h')      // Unit 80 mi/h
+const e = math.unit('2 tonne')      // Unit 2 tonne
+const f = math.multiply(0.5, math.multipy(math.pow(d, 2), e)) 
                                     // 1.2790064742399996 MJ
 ```
 
@@ -86,11 +80,11 @@ Operations with arrays are supported too:
 
 ```js
 // Force on a charged particle moving through a magnetic field
-var B = math.eval('[1, 0, 0] T');            // [1 T, 0 T, 0 T]
-var v = math.eval('[0, 1, 0] m/s');          // [0 m / s, 1 m / s, 0 m / s]
-var q = math.eval('1 C');                    // 1 C
+const B = math.eval('[1, 0, 0] T')             // [1 T, 0 T, 0 T]
+const v = math.eval('[0, 1, 0] m/s')           // [0 m / s, 1 m / s, 0 m / s]
+const q = math.eval('1 C')                     // 1 C
 
-var F = math.multiply(q, math.cross(v, B));  // [0 N, 0 N, -1 N]
+const F = math.multiply(q, math.cross(v, B))   // [0 N, 0 N, -1 N]
 ```
 
 All arithmetic operators act on the value of the unit as it is represented in SI units.
@@ -99,14 +93,14 @@ In general you should avoid calculations using `celsius` and `fahrenheit`. Rathe
 This example highlights some problems when using `celsius` and `fahrenheit` in calculations:
 
 ```js
-var T_14F = math.unit('14 degF');          // Unit 14 degF (263.15 K)
-var T_28F = math.multiply(T1, 2);          // Unit 487.67 degF (526.3 K), not 28 degF
+const T_14F = math.unit('14 degF')           // Unit 14 degF (263.15 K)
+const T_28F = math.multiply(T1, 2)           // Unit 487.67 degF (526.3 K), not 28 degF
 
-var Tnegative = math.unit(-13, 'degF');    // Unit -13 degF (248.15 K)
-var Tpositive = math.abs(T1);              // Unit -13 degF (248.15 K), not 13 degF
+const Tnegative = math.unit(-13, 'degF')     // Unit -13 degF (248.15 K)
+const Tpositive = math.abs(T1)               // Unit -13 degF (248.15 K), not 13 degF
 
-var Trate1 = math.eval('5 (degC/hour)');   // Unit 5 degC/hour
-var Trate2 = math.eval('(5 degC)/hour');   // Unit 278.15 degC/hour
+const Trate1 = math.eval('5 (degC/hour)')    // Unit 5 degC/hour
+const Trate2 = math.eval('(5 degC)/hour')    // Unit 278.15 degC/hour
 ```
 
 The expression parser supports units too. This is described in the section about
@@ -117,16 +111,16 @@ units on the page [Syntax](../expressions/syntax.md#units).
 You can add your own units to Math.js using the `math.createUnit` function. The following example defines a new unit `furlong`, then uses the user-defined unit in a calculation:
 
 ```js
-math.createUnit('furlong', '220 yards');
-math.eval('1 mile to furlong');            // 8 furlong
+math.createUnit('furlong', '220 yards') 
+math.eval('1 mile to furlong')             // 8 furlong
 ```
 
 If you cannot express the new unit in terms of any existing unit, then the second argument can be omitted. In this case, a new base unit is created:
 
 ```js
 // A 'foo' cannot be expressed in terms of any other unit.
-math.createUnit('foo');
-math.eval('8 foo * 4 feet');               // 32 foo feet
+math.createUnit('foo') 
+math.eval('8 foo * 4 feet')                // 32 foo feet
 ```
 
 The second argument to `createUnit` can also be a configuration object consisting of the following properties:
@@ -140,7 +134,7 @@ An optional `options` object can also be supplied as the last argument to `creat
 
 ```js
 // Redefine the mile (would not be the first time in history)
-math.createUnit('mile', '1609.347218694', {override: true}});
+math.createUnit('mile', '1609.347218694', {override: true}})
 ```
 Base units created without specifying a definition cannot be overridden.
 
@@ -161,8 +155,8 @@ math.createUnit( {
 },
 {
   override: true
-});
-math.eval('50000 kilofoo/s');   // 4.5 gigabaz
+})
+math.eval('50000 kilofoo/s')   // 4.5 gigabaz
 ```
 
 ### Return Value
@@ -189,7 +183,7 @@ when they have the same base and same value when normalized to SI units.
 
 ### unit.format([options])
 Get a string representation of the unit. The function
-will determine the best fitting prefix for the unit. See the [Format](../functions/format.md)
+will determine the best fitting prefix for the unit. See the [Format](../reference/functions/format.md)
 page for available options.
 
 ### unit.fromJSON(json)
@@ -202,8 +196,8 @@ Used when deserializing a unit, see [Serialization](../core/serialization.md).
 Split a unit into the specified parts. For example:
 
 ```js
-var u = math.unit(1, 'm');
-u.splitUnit(['ft', 'in']);    // 3 feet,3.3700787401574765 inch
+const u = math.unit(1, 'm')
+u.splitUnit(['ft', 'in'])    // 3 feet,3.3700787401574765 inch
 ```
 
 ### unit.to(unitName)

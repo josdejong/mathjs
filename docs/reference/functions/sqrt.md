@@ -29,9 +29,9 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix &#124; Unit | 
 ## Examples
 
 ```js
-math.sqrt(25);                // returns 5
-math.square(5);               // returns 25
-math.sqrt(-4);                // returns Complex 2i
+math.sqrt(25)                // returns 5
+math.square(5)               // returns 25
+math.sqrt(-4)                // returns Complex 2i
 ```
 
 
@@ -40,4 +40,5 @@ math.sqrt(-4);                // returns Complex 2i
 [square](square.md),
 [multiply](multiply.md),
 [cube](cube.md),
-[cbrt](cbrt.md)
+[cbrt](cbrt.md),
+[sqrtm](sqrtm.md)

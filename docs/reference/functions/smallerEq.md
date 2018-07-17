@@ -7,7 +7,9 @@ Test whether value x is smaller or equal to y.
 The function returns true when x is smaller than y or the relative
 difference between x and y is smaller than the configured epsilon. The
 function cannot be used to compare values smaller than approximately 2.22e-16.
+
 For matrices, the function is evaluated element wise.
+Strings are compared by their numerical value.
 
 
 ## Syntax
@@ -33,8 +35,8 @@ boolean &#124; Array &#124; Matrix | Returns true when the x is smaller than y, 
 ## Examples
 
 ```js
-math.smaller(1 + 2, 3);        // returns false
-math.smallerEq(1 + 2, 3);      // returns true
+math.smaller(1 + 2, 3)        // returns false
+math.smallerEq(1 + 2, 3)      // returns true
 ```
 
 

@@ -30,11 +30,11 @@ number &#124; Array &#124; Matrix | The created number
 ## Examples
 
 ```js
-math.number(2);                         // returns number 2
-math.number('7.2');                     // returns number 7.2
-math.number(true);                      // returns number 1
-math.number([true, false, true, true]); // returns [1, 0, 1, 1]
-math.number(math.unit('52cm'), 'm');    // returns 0.52
+math.number(2)                         // returns number 2
+math.number('7.2')                     // returns number 7.2
+math.number(true)                      // returns number 1
+math.number([true, false, true, true]) // returns [1, 0, 1, 1]
+math.number(math.unit('52cm'), 'm')    // returns 0.52
 ```
 
 

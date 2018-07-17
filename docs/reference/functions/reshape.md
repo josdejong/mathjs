@@ -28,17 +28,17 @@ Type | Description
 ## Examples
 
 ```js
-math.reshape([1, 2, 3, 4, 5, 6], [2, 3]);
+math.reshape([1, 2, 3, 4, 5, 6], [2, 3])
 // returns Array  [[1, 2, 3], [4, 5, 6]]
 
-math.reshape([[1, 2], [3, 4]], [1, 4]);
+math.reshape([[1, 2], [3, 4]], [1, 4])
 // returns Array  [[1, 2, 3, 4]]
 
-math.reshape([[1, 2], [3, 4]], [4]);
+math.reshape([[1, 2], [3, 4]], [4])
 // returns Array [1, 2, 3, 4]
 
-var x = math.matrix([1, 2, 3, 4, 5, 6, 7, 8]);
-math.reshape(x, [2, 2, 2]);
+const x = math.matrix([1, 2, 3, 4, 5, 6, 7, 8])
+math.reshape(x, [2, 2, 2])
 // returns Matrix [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
 ```
 

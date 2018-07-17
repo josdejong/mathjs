@@ -1,36 +1,83 @@
 // test performance of the expression parser in node.js
 
-var Benchmark = require('benchmark');
-var padRight = require('pad-right');
-var math = require('../index');
+// browserify benchmark/expression_parser.js -o ./benchmark_expression_parser.js
 
-function pad (text) {
-  return padRight(text, 40, ' ');
+const assert = require('assert')
+const Benchmark = require('benchmark')
+const padRight = require('pad-right')
+const math = require('../index')
+const getSafeProperty = require('../lib/utils/customs').getSafeProperty
+
+// expose on window when using bundled in a browser
+if (typeof window !== 'undefined') {
+  window['Benchmark'] = Benchmark
 }
 
-var expr = '2 + 3 * sin(pi / 4) - 4x';
-var scope = {x: 2};
-var compiled = math.parse(expr).compile();
+function pad (text) {
+  return padRight(text, 40, ' ')
+}
 
-console.log('expression:', expr);
+const expr = '2 + 3 * sin(pi / 4) - 4x'
+let scope = {x: 2}
+const compiled = math.parse(expr).compile(math, {})
 
-var suite = new Benchmark.Suite();
+const sin = getSafeProperty(math, 'sin')
+const pi = getSafeProperty(math, 'pi')
+const compiledPlainJs = {
+  eval: function (scope) {
+    return 2 + 3 * ('sin' in scope ? getSafeProperty(scope, 'sin') : sin)(('pi' in scope ? getSafeProperty(scope, 'pi') : pi) / 4) - 4 * scope['x']
+  }
+}
+
+const correctResult = -3.878679656440358
+
+console.log('expression:', expr)
+console.log('scope:', scope)
+console.log('result:', correctResult)
+
+assertApproxEqual(compiled.eval(scope), correctResult, 1e-7)
+assertApproxEqual(compiledPlainJs.eval(scope), correctResult, 1e-7)
+
+let total = 0
+let nodes = []
+
+const suite = new Benchmark.Suite()
 suite
-    .add(pad('expression parse and evaluate'), function() {
-      var res = math.eval(expr, scope);
-    })
-    .add(pad('expression parse and compile'), function() {
-      var c = math.parse('2 + 3 * sin(pi / 4) - 4x').compile();
-    })
-    .add(pad('expression parse'), function() {
-      var node = math.parse('2 + 3 * sin(pi / 4) - 4x');
-    })
-    .add(pad('evaluate'), function() {
-      var res = compiled.eval(scope);
-    })
-    .on('cycle', function(event) {
-      console.log(String(event.target));
-    })
-    .on('complete', function() {
-    })
-    .run();
+  .add(pad('(plain js) evaluate'), function () {
+    total += compiledPlainJs.eval(scope)
+  })
+
+  .add(pad('(mathjs) evaluate'), function () {
+    total += compiled.eval(scope)
+  })
+  .add(pad('(mathjs) parse, compile, evaluate'), function () {
+    total += math.parse(expr).compile().eval(scope)
+  })
+  .add(pad('(mathjs) parse, compile'), function () {
+    const node = math.parse(expr).compile()
+    nodes.push(node)
+  })
+  .add(pad('(mathjs) parse'), function () {
+    const node = math.parse(expr)
+    nodes.push(node)
+  })
+
+  .on('cycle', function (event) {
+    console.log(String(event.target))
+  })
+  .on('complete', function () {
+    // we count at total to prevent the browsers from not executing
+    // the benchmarks ("dead code") when the results would not be used.
+    if (total > 1e6) {
+      console.log('')
+    } else {
+      console.log('')
+    }
+  })
+  .run()
+
+function assertApproxEqual (actual, expected, tolerance) {
+  const diff = Math.abs(expected - actual)
+  if (diff > tolerance) assert.equal(actual, expected)
+  else assert.ok(diff <= tolerance, actual + ' === ' + expected)
+}

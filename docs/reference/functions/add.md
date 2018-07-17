@@ -30,20 +30,20 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 ## Examples
 
 ```js
-math.add(2, 3);               // returns number 5
-math.add(2, 3, 4);            // returns number 9
+math.add(2, 3)               // returns number 5
+math.add(2, 3, 4)            // returns number 9
 
-var a = math.complex(2, 3);
-var b = math.complex(-4, 1);
-math.add(a, b);               // returns Complex -2 + 4i
+const a = math.complex(2, 3)
+const b = math.complex(-4, 1)
+math.add(a, b)               // returns Complex -2 + 4i
 
-math.add([1, 2, 3], 4);       // returns Array [5, 6, 7]
+math.add([1, 2, 3], 4)       // returns Array [5, 6, 7]
 
-var c = math.unit('5 cm');
-var d = math.unit('2.1 mm');
-math.add(c, d);               // returns Unit 52.1 mm
+const c = math.unit('5 cm')
+const d = math.unit('2.1 mm')
+math.add(c, d)               // returns Unit 52.1 mm
 
-math.add("2.3", "4");         // returns number 6.3
+math.add("2.3", "4")         // returns number 6.3
 ```
 
 

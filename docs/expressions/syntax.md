@@ -22,6 +22,7 @@ the lower level syntax of math.js. Differences are:
 - There are custom operators like `x + y` instead of `add(x, y)`.
 - Some operators are different. For example  `^` is used for exponentiation,
   not bitwise xor.
+- Implicit multiplication, like `2 pi`, is supported and has special rules.
 
 
 ## Operators
@@ -33,12 +34,12 @@ Round parentheses can be used to override the default precedence of operators.
 
 ```js
 // use operators
-math.eval('2 + 3'); // 5
-math.eval('2 * 3'); // 6
+math.eval('2 + 3')       // 5
+math.eval('2 * 3')       // 6
 
 // use parentheses to override the default precedence
-math.eval('2 + 3 * 4');   // 14
-math.eval('(2 + 3) * 4'); // 20
+math.eval('2 + 3 * 4')   // 14
+math.eval('(2 + 3) * 4') // 20
 ```
 
 The following operators are available:
@@ -69,7 +70,7 @@ Operator    | Name                    | Syntax      | Associativity | Example   
 `&`         | Bitwise and             | `x & y`     | Left to right | `5 & 3`               | `1`
 `~`         | Bitwise not             | `~x`        | Right to left | `~2`                  | `-3`
 <code>&#124;</code>  | Bitwise or     | <code>x &#124; y</code>   | Left to right | <code>5 &#124; 3</code>  | `7`
-<code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `6`
+<code>^&#124;</code> | Bitwise xor    | <code>x ^&#124; y</code>  | Left to right | <code>5 ^&#124; 2</code> | `7`
 `<<`        | Left shift              | `x << y`    | Left to right | `4 << 1`              | `8`
 `>>`        | Right arithmetic shift  | `x >> y`    | Left to right | `8 >> 1`              | `4`
 `>>>`       | Right logical shift     | `x >>> y`   | Left to right | `-8 >>> 1`            | `2147483644`
@@ -101,8 +102,8 @@ Operators                         | Description
 `!`                               | Factorial
 `^`, `.^`                         | Exponentiation
 `+`, `-`, `~`, `not`              | Unary plus, unary minus, bitwise not, logical not
-`x unit`                          | Unit
-`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus, implicit multiply
+See section below                 | Implicit multiplication
+`*`, `/`, `.*`, `./`, `%`, `mod`  | Multiply, divide, modulus
 `+`, `-`                          | Add, subtract
 `:`                               | Range
 `to`, `in`                        | Unit conversion
@@ -128,9 +129,9 @@ arguments enclosed by parentheses. All available functions are listed on the
 page [Functions](../reference/functions.md).
 
 ```js
-math.eval('sqrt(25)');          // 5
-math.eval('log(10000, 3 + 7)'); // 4
-math.eval('sin(pi / 4)');       // 0.7071067811865475
+math.eval('sqrt(25)')           // 5
+math.eval('log(10000, 3 + 7)')  // 4
+math.eval('sin(pi / 4)')        // 0.7071067811865475
 ```
 
 New functions can be defined using the `function` keyword. Functions can be
@@ -138,14 +139,14 @@ defined with multiple variables. Function assignments are limited: they can
 only be defined on a single line.
 
 ```js
-var parser = math.parser();
+const parser = math.parser()
 
-parser.eval('f(x) = x ^ 2 - 5');
-parser.eval('f(2)');    // -1
-parser.eval('f(3)');    // 4
+parser.eval('f(x) = x ^ 2 - 5')
+parser.eval('f(2)')     // -1
+parser.eval('f(3)')     // 4
 
-parser.eval('g(x, y) = x ^ y');
-parser.eval('g(2, 3)'); // 8
+parser.eval('g(x, y) = x ^ y')
+parser.eval('g(2, 3)')  // 8
 ```
 
 Math.js itself heavily uses typed functions, which ensure correct inputs and
@@ -154,9 +155,9 @@ a [typed-function](https://github.com/josdejong/typed-function) in the
 expression parser like:
 
 ```js
-var parser = math.parser();
+const parser = math.parser()
 
-parser.eval('f = typed({"number": f(x) = x ^ 2 - 5})');
+parser.eval('f = typed({"number": f(x) = x ^ 2 - 5})')
 ```
 
 
@@ -168,24 +169,24 @@ All available constants are listed on he page
 
 ```js
 // use constants
-math.eval('pi');                // 3.141592653589793
-math.eval('e ^ 2');             // 7.3890560989306495
-math.eval('log(e)');            // 1
-math.eval('e ^ (pi * i) + 1');  // ~0 (Euler)
+math.eval('pi')                 // 3.141592653589793
+math.eval('e ^ 2')              // 7.3890560989306495
+math.eval('log(e)')             // 1
+math.eval('e ^ (pi * i) + 1')   // ~0 (Euler)
 ```
 
 Variables can be defined using the assignment operator `=`, and can be used
 like constants.
 
 ```js
-var parser = math.parser();
+const parser = math.parser()
 
 // define variables
-parser.eval('a = 3.4');     // 3.4
-parser.eval('b = 5 / 2');   // 2.5
+parser.eval('a = 3.4')      // 3.4
+parser.eval('b = 5 / 2')    // 2.5
 
 // use variables
-parser.eval('a * b');       // 8.5
+parser.eval('a * b')        // 8.5
 ```
 
 Variable names must:
@@ -216,9 +217,9 @@ Booleans `true` and `false` can be used in expressions.
 
 ```js
 // use booleans
-math.eval('true');              // true
-math.eval('false');             // false
-math.eval('(2 == 3) == false'); // true
+math.eval('true')               // true
+math.eval('false')              // false
+math.eval('(2 == 3) == false')  // true
 ```
 
 Booleans can be converted to numbers and strings and vice versa using the
@@ -226,10 +227,10 @@ functions `number` and `boolean`, and `string`.
 
 ```js
 // convert booleans
-math.eval('number(true)');      // 1
-math.eval('string(false)');     // "false"
-math.eval('boolean(1)');        // true
-math.eval('boolean("false")');  // false
+math.eval('number(true)')       // 1
+math.eval('string(false)')      // "false"
+math.eval('boolean(1)')         // true
+math.eval('boolean("false")')   // false
 ```
 
 
@@ -241,10 +242,10 @@ Examples:
 
 ```js
 // numbers in math.js
-math.eval('2');       // 2
-math.eval('3.14');    // 3.14
-math.eval('1.4e3');   // 1400
-math.eval('22e-3');   // 0.022
+math.eval('2')        // 2
+math.eval('3.14')     // 3.14
+math.eval('1.4e3')    // 1400
+math.eval('22e-3')    // 0.022
 ```
 
 A number can be converted to a string and vice versa using the functions
@@ -252,8 +253,8 @@ A number can be converted to a string and vice versa using the functions
 
 ```js
 // convert a string into a number
-math.eval('number("2.3")');   // 2.3
-math.eval('string(2.3)');     // "2.3"
+math.eval('number("2.3")')    // 2.3
+math.eval('string(2.3)')      // "2.3"
 ```
 
 Math.js uses regular JavaScript numbers, which are floating points with a
@@ -261,24 +262,24 @@ limited precision and limited range. The limitations are described in detail
 on the page [Numbers](../datatypes/numbers.md).
 
 ```js
-math.eval('1e-325');  // 0
-math.eval('1e309');   // Infinity
-math.eval('-1e309');  // -Infinity
+math.eval('1e-325')   // 0
+math.eval('1e309')    // Infinity
+math.eval('-1e309')   // -Infinity
 ```
 
 When doing calculations with floats, one can very easily get round-off errors:
 
 ```js
 // round-off error due to limited floating point precision
-math.eval('0.1 + 0.2'); // 0.30000000000000004
+math.eval('0.1 + 0.2')  // 0.30000000000000004
 ```
 
 When outputting results, the function `math.format` can be used to hide
 these round-off errors when outputting results for the user:
 
 ```js
-var ans = math.eval('0.1 + 0.2');   //  0.30000000000000004
-math.format(ans, {precision: 14});  // "0.3"
+const ans = math.eval('0.1 + 0.2')  //  0.30000000000000004
+math.format(ans, {precision: 14})   // "0.3"
 ```
 
 
@@ -294,7 +295,7 @@ numbers are supported only by arithmetic functions.
 BigNumbers can be created using the `bignumber` function:
 
 ```js
-math.eval('bignumber(0.1) + bignumber(0.2)'); // BigNumber, 0.3
+math.eval('bignumber(0.1) + bignumber(0.2)')  // BigNumber, 0.3
 ```
 
 The default number type of the expression parser can be changed at instantiation
@@ -302,10 +303,10 @@ of math.js. The expression parser parses numbers as BigNumber by default:
 
 ```js
 // Configure the type of number: 'number' (default), 'BigNumber', or 'Fraction'
-math.config({number: 'BigNumber'});
+math.config({number: 'BigNumber'})
 
 // all numbers are parsed as BigNumber
-math.eval('0.1 + 0.2'); // BigNumber, 0.3
+math.eval('0.1 + 0.2')  // BigNumber, 0.3
 ```
 
 BigNumbers can be converted to numbers and vice versa using the functions
@@ -321,21 +322,21 @@ as `i^2 = -1`. Complex numbers have a real and complex part, which can be
 retrieved using the functions `re` and `im`.
 
 ```js
-var parser = math.parser();
+const parser = math.parser()
 
 // create complex numbers
-parser.eval('a = 2 + 3i');  // Complex, 2 + 3i
-parser.eval('b = 4 - i');   // Complex, 4 - i
+parser.eval('a = 2 + 3i')   // Complex, 2 + 3i
+parser.eval('b = 4 - i')    // Complex, 4 - i
 
 // get real and imaginary part of a complex number
-parser.eval('re(a)');       // Number,  2
-parser.eval('im(a)');       // Number,  3
+parser.eval('re(a)')        // Number,  2
+parser.eval('im(a)')        // Number,  3
 
 // calculations with complex numbers
-parser.eval('a + b');       // Complex, 6 + 2i
-parser.eval('a * b');       // Complex, 11 + 10i
-parser.eval('i * i');       // Number,  -1
-parser.eval('sqrt(-4)');    // Complex, 2i
+parser.eval('a + b')        // Complex, 6 + 2i
+parser.eval('a * b')        // Complex, 11 + 10i
+parser.eval('i * i')        // Number,  -1
+parser.eval('sqrt(-4)')     // Complex, 2i
 ```
 
 Math.js does not automatically convert complex numbers with an imaginary part
@@ -344,11 +345,11 @@ of zero to numbers. They can be converted to a number using the function
 
 ```js
 // convert a complex number to a number
-var parser = math.parser();
-parser.eval('a = 2 + 3i');  // Complex, 2 + 3i
-parser.eval('b = a - 3i');  // Complex, 2 + 0i
-parser.eval('number(b)');   // Number,  2
-parser.eval('number(a)');   // Error: 2 + i is no valid number
+const parser = math.parser()
+parser.eval('a = 2 + 3i')   // Complex, 2 + 3i
+parser.eval('b = a - 3i')   // Complex, 2 + 0i
+parser.eval('number(b)')    // Number,  2
+parser.eval('number(a)')    // Error: 2 + i is no valid number
 ```
 
 
@@ -364,23 +365,23 @@ Units can be converted using the operator `to` or `in`.
 
 ```js
 // create a unit
-math.eval('5.4 kg');                    // Unit, 5.4 kg
+math.eval('5.4 kg')                     // Unit, 5.4 kg
 
 // convert a unit
-math.eval('2 inch to cm');              // Unit, 5.08 cm
-math.eval('20 celsius in fahrenheit');  // Unit, ~68 fahrenheit
-math.eval('90 km/h to m/s');			// Unit, 25 m / s
+math.eval('2 inch to cm')               // Unit, 5.08 cm
+math.eval('20 celsius in fahrenheit')   // Unit, ~68 fahrenheit
+math.eval('90 km/h to m/s')             // Unit, 25 m / s
 
 // convert a unit to a number
 // A second parameter with the unit for the exported number must be provided
-math.eval('number(5 cm, mm)');          // Number, 50
+math.eval('number(5 cm, mm)')           // Number, 50
 
 // calculations with units
-math.eval('0.5kg + 33g');               // Unit, 0.533 kg
-math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
-math.eval('3 inch + 2 cm');             // Unit, 3.7874 inch
-math.eval('12 seconds * 2');            // Unit, 24 seconds
-math.eval('sin(45 deg)');               // Number, 0.7071067811865475
+math.eval('0.5kg + 33g')                // Unit, 0.533 kg
+math.eval('3 inch + 2 cm')              // Unit, 3.7874 inch
+math.eval('3 inch + 2 cm')              // Unit, 3.7874 inch
+math.eval('12 seconds * 2')             // Unit, 24 seconds
+math.eval('sin(45 deg)')                // Number, 0.7071067811865475
 math.eval('9.81 m/s^2 * 5 s to mi/h')   // Unit, 109.72172512527 mi / h
 ```
 
@@ -399,29 +400,29 @@ characters is returned.
 
 
 ```js
-var parser = math.parser();
+const parser = math.parser()
 
 // create a string
-parser.eval('"hello"');                       // String, "hello"
+parser.eval('"hello"')                        // String, "hello"
 
 // string manipulation
-parser.eval('a = concat("hello", " world")'); // String, "hello world"
-parser.eval('size(a)');                       // Matrix [11]
-parser.eval('a[1:5]');                        // String, "hello"
-parser.eval('a[1] = "H"');                    // String, "H"
-parser.eval('a[7:12] = "there!"');            // String, "there!"
-parser.eval('a');                             // String, "Hello there!"
+parser.eval('a = concat("hello", " world")')  // String, "hello world"
+parser.eval('size(a)')                        // Matrix [11]
+parser.eval('a[1:5]')                         // String, "hello"
+parser.eval('a[1] = "H"')                     // String, "H"
+parser.eval('a[7:12] = "there!"')             // String, "there!"
+parser.eval('a')                              // String, "Hello there!"
 
 // string conversion
-parser.eval('number("300")');                 // Number, 300
-parser.eval('string(300)');                   // String, "300"
+parser.eval('number("300")')                  // Number, 300
+parser.eval('string(300)')                    // String, "300"
 ```
 
 Strings can be used in the `eval` function, to parse expressions inside
 the expression parser:
 
 ```js
-math.eval('eval("2 + 3")'); // 5
+math.eval('eval("2 + 3")')  // 5
 ```
 
 
@@ -436,29 +437,29 @@ can be used to separate rows in a matrix.
 
 ```js
 // create a matrix
-math.eval('[1, 2, 3]');                               // Matrix, size [3]
-math.eval('[[1, 2, 3], [4, 5, 6]]');                  // Matrix, size [2, 3]
-math.eval('[[[1, 2], [3, 4]], [[5, 6], [7, 8]]]');    // Matrix, size [2, 2, 2]
+math.eval('[1, 2, 3]')                                // Matrix, size [3]
+math.eval('[[1, 2, 3], [4, 5, 6]]')                   // Matrix, size [2, 3]
+math.eval('[[[1, 2], [3, 4]], [[5, 6], [7, 8]]]')     // Matrix, size [2, 2, 2]
 
 // create a two dimensional matrix
-math.eval('[1, 2, 3; 4, 5, 6]');                      // Matrix, size [2, 3]
+math.eval('[1, 2, 3; 4, 5, 6]')                       // Matrix, size [2, 3]
 ```
 
 Another way to create filled matrices is using the functions `zeros`, `ones`,
-`eye`, and `range`.
+`identity`, and `range`.
 
 ```js
 // initialize a matrix with ones or zeros
-math.eval('zeros(3, 2)');     // Matrix, [[0, 0], [0, 0], [0, 0]],  size [3, 2]
-math.eval('ones(3)');         // Matrix, [1, 1, 1],                 size [3]
-math.eval('5 * ones(2, 2)');  // Matrix, [[5, 5], [5, 5]],          size [2, 2]
+math.eval('zeros(3, 2)')      // Matrix, [[0, 0], [0, 0], [0, 0]],  size [3, 2]
+math.eval('ones(3)')          // Matrix, [1, 1, 1],                 size [3]
+math.eval('5 * ones(2, 2)')   // Matrix, [[5, 5], [5, 5]],          size [2, 2]
 
 // create an identity matrix
-math.eval('eye(2)');          // Matrix, [[1, 0], [0, 1]],          size [2, 2]
+math.eval('identity(2)')      // Matrix, [[1, 0], [0, 1]],          size [2, 2]
 
 // create a range
-math.eval('1:4');             // Matrix, [1, 2, 3, 4],              size [4]
-math.eval('0:2:10');          // Matrix, [0, 2, 4, 6, 8, 10],       size [6]
+math.eval('1:4')              // Matrix, [1, 2, 3, 4],              size [4]
+math.eval('0:2:10')           // Matrix, [0, 2, 4, 6, 8, 10],       size [6]
 ```
 
 A subset can be retrieved from a matrix using indexes and a subset of a matrix
@@ -474,24 +475,24 @@ in JavaScript: They are one-based with an included upper-bound, similar to most
 math applications.*
 
 ```js
-parser = math.parser();
+parser = math.parser()
 
 // create matrices
-parser.eval('a = [1, 2; 3, 4]');      // Matrix, [[1, 2], [3, 4]]
-parser.eval('b = zeros(2, 2)');       // Matrix, [[0, 0], [0, 0]]
-parser.eval('c = 5:9');               // Matrix, [5, 6, 7, 8, 9]
+parser.eval('a = [1, 2; 3, 4]')       // Matrix, [[1, 2], [3, 4]]
+parser.eval('b = zeros(2, 2)')        // Matrix, [[0, 0], [0, 0]]
+parser.eval('c = 5:9')                // Matrix, [5, 6, 7, 8, 9]
 
 // replace a subset in a matrix
-parser.eval('b[1, 1:2] = [5, 6]');    // Matrix, [[5, 6], [0, 0]]
-parser.eval('b[2, :] = [7, 8]');      // Matrix, [[5, 6], [7, 8]]
+parser.eval('b[1, 1:2] = [5, 6]')     // Matrix, [[5, 6], [0, 0]]
+parser.eval('b[2, :] = [7, 8]')       // Matrix, [[5, 6], [7, 8]]
 
 // perform a matrix calculation
-parser.eval('d = a * b');             // Matrix, [[19, 22], [43, 50]]
+parser.eval('d = a * b')              // Matrix, [[19, 22], [43, 50]]
 
 // retrieve a subset of a matrix
-parser.eval('d[2, 1]');               // 43
-parser.eval('d[2, 1:end]');           // Matrix, [[43, 50]]
-parser.eval('c[end - 1 : -1 : 2]');   // Matrix, [8, 7, 6]
+parser.eval('d[2, 1]')                // 43
+parser.eval('d[2, 1:end]')            // Matrix, [[43, 50]]
+parser.eval('c[end - 1 : -1 : 2]')    // Matrix, [8, 7, 6]
 ```
 
 ## Objects
@@ -502,14 +503,14 @@ comma separated key/value pairs. Keys and values are separated by a colon `:`.
 Keys can be a symbol like `prop` or a string like `"prop"`.
 
 ```js
-math.eval('{a: 2 + 1, b: 4}');        // {a: 3, b: 4}
-math.eval('{"a": 2 + 1, "b": 4}');    // {a: 3, b: 4}
+math.eval('{a: 2 + 1, b: 4}')         // {a: 3, b: 4}
+math.eval('{"a": 2 + 1, "b": 4}')     // {a: 3, b: 4}
 ```
 
 Objects can contain objects:
 
 ```js
-math.eval('{a: 2, b: {c: 3, d: 4}}'); // {a: 2, b: {c: 3, d: 4}}
+math.eval('{a: 2, b: {c: 3, d: 4}}')  // {a: 2, b: {c: 3, d: 4}}
 ```
 
 Object properties can be retrieved or replaced using dot notation or bracket 
@@ -517,20 +518,20 @@ notation. Unlike JavaScript, when setting a property value, the whole object
 is returned, not the property value
 
 ```js
-var scope = {
+let scope = {
   obj: {
     prop: 42
   }
-};
+}
 
 // retrieve properties
-math.eval('obj.prop', scope);         // 42
-math.eval('obj["prop"]', scope);      // 42
+math.eval('obj.prop', scope)          // 42
+math.eval('obj["prop"]', scope)       // 42
 
 // set properties (returns the whole object, not the property value!)
-math.eval('obj.prop = 43', scope);    // {prop: 43}
-math.eval('obj["prop"] = 43', scope); // {prop: 43}
-scope.obj;                            // {prop: 43}
+math.eval('obj.prop = 43', scope)     // {prop: 43}
+math.eval('obj["prop"] = 43', scope)  // {prop: 43}
+scope.obj                             // {prop: 43}
 ```
 
 
@@ -544,14 +545,14 @@ with an entry for every visible statement.
 
 ```js
 // a multi-line expression
-math.eval('1 * 3 \n 2 * 3 \n 3 * 3');   // ResultSet, [3, 6, 9]
+math.eval('1 * 3 \n 2 * 3 \n 3 * 3')    // ResultSet, [3, 6, 9]
 
 // semicolon statements are hidden from the output
-math.eval('a=3; b=4; a + b \n a * b');  // ResultSet, [7, 12]
+math.eval('a=3; b=4; a + b \n a * b')   // ResultSet, [7, 12]
 
 // single expression spread over multiple lines
-math.eval('a = 2 +\n  3');              // 5
-math.eval('[\n  1, 2;\n  3, 4\n]');     // Matrix, [[1, 2], [3, 4]]
+math.eval('a = 2 +\n  3')               // 5
+math.eval('[\n  1, 2;\n  3, 4\n]')      // Matrix, [[1, 2], [3, 4]]
 ```
 
 The results can be read from a `ResultSet` via the property `ResultSet.entries`
@@ -561,27 +562,47 @@ array with results.
 
 ## Implicit multiplication
 
-The expression parser supports implicit multiplication. Implicit multiplication
-has the same precedence as explicit multiplications and divisions, so `3/4 mm`
-is evaluated as `(3 / 4) * mm`.
+*Implicit multiplication* means the multiplication of two symbols, numbers, or a grouped expression inside parentheses without using the `*` operator. This type of syntax allows a more natural way to enter expressions. For example:
+
+```js
+math.eval('2 pi')         // 6.283185307179586
+math.eval('(1+2)(3+4)')   // 21
+```
 
 Parentheses are parsed as a function call when there is a symbol or accessor on
 the left hand side, like `sqrt(4)` or `obj.method(4)`. In other cases the
 parentheses are interpreted as an implicit multiplication.
 
-Implicit multiplication can be tricky as there is ambiguity on how an expression
-is evaluated. Use it carefully.
+Math.js will always evaluate implicit multiplication before explicit multiplication `*`, so that the expression `x * y z` is parsed as `x * (y * z)`. Math.js also gives implicit multiplication higher precedence than division, *except* when the division matches the pattern `[number] / [number] [symbol]` or `[number] / [number] [left paren]`. In that special case, the division is evaluated first:
 
-Here some examples:
+```js
+math.eval('20 kg / 4 kg')   // 5      Evaluated as (20 kg) / (4 kg)
+math.eval('20 / 4 kg')      // 5 kg   Evaluated as (20 / 4) kg
+```
 
-Expression      | Evaluated as      | Result
---------------- | ----------------- | ------------------
-(1 + 3) pi      | (1 + 3) * pi      | 12.566370614359172
-(4 - 1) 2       | (4 - 1) * 2       | 6
-3 / 4 mm        | (3 / 4) * mm      | 0.75 mm
-2 + 3 i         | 2 + (3 * i)       | 2 + 3i
-(1 + 2) (4 - 2) | (1 + 2) * (4 - 2) | 6
-sqrt(4) (1 + 2) | sqrt(4) * (1 + 2) | 6
+The behavior of implicit multiplication can be summarized by these operator precedence rules, listed from highest to lowest precedence:
+
+- Function calls: `[symbol] [left paren]`
+- Explicit division `/` when the division matches this pattern: `[number] / [number] [symbol]` or `[number] / [number] [left paren]`
+- Implicit multiplication
+- All other division `/` and multiplication `*`
+
+Implicit multiplication is tricky as there can appear to be ambiguity in how an expression will be evaluated. Experience has shown that the above rules most closely match user intent when entering expressions that could be interpreted different ways. It's also possible that these rules could be tweaked in future major releases.  Use implicit multiplication carefully. If you don't like the uncertainty introduced by implicit multiplication, use explicit `*` operators and parentheses to ensure your expression is evaluated the way you intend.
+
+Here are some more examples using implicit multiplication:  
+
+Expression      | Evaluated as        | Result
+--------------- | ------------------- | ------------------
+(1 + 3) pi      | (1 + 3) * pi        | 12.566370614359172
+(4 - 1) 2       | (4 - 1) * 2         | 6
+3 / 4 mm        | (3 / 4) * mm        | 0.75 mm
+2 + 3 i         | 2 + (3 * i)         | 2 + 3i
+(1 + 2) (4 - 2) | (1 + 2) * (4 - 2)   | 6
+sqrt(4) (1 + 2) | sqrt(4) * (1 + 2)   | 6
+8 pi / 2 pi     | (8 * pi) / (2 * pi) | 4
+pi / 2 pi       | pi / (2 * pi)       | 0.5
+1 / 2i          | (1 / 2) * i         | 0.5 i
+8.314 J / mol K | 8.314 J / (mol * K) | 8.314 J / (mol * K)
 
 
 ## Comments
@@ -591,10 +612,10 @@ starts with a sharp sign character `#`, and ends at the end of the line. A line
 can contain a comment only, or can contain an expression followed by a comment.
 
 ```js
-var parser = math.parser();
+const parser = math.parser()
 
-parser.eval('# define some variables');
-parser.eval('width = 3');                             // 3
-parser.eval('height = 4');                            // 4
-parser.eval('width * height   # calculate the area'); // 12
+parser.eval('# define some variables')
+parser.eval('width = 3')                              // 3
+parser.eval('height = 4')                             // 4
+parser.eval('width * height   # calculate the area')  // 12
 ```

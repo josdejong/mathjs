@@ -4,7 +4,7 @@
  * This simply preloads mathjs and drops you into a REPL to
  * help interactive debugging.
  **/
-math = require('../index');
-var repl = require('repl');
+global.math = require('../index')
+const repl = require('repl')
 
-repl.start({useGlobal: true});
+repl.start({useGlobal: true})

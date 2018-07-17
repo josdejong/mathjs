@@ -31,15 +31,15 @@ number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | 
 ## Examples
 
 ```js
-math.cbrt(27);                  // returns 3
-math.cube(3);                   // returns 27
-math.cbrt(-64);                 // returns -4
-math.cbrt(math.unit('27 m^3')); // returns Unit 3 m
-math.cbrt([27, 64, 125]);       // returns [3, 4, 5]
+math.cbrt(27)                  // returns 3
+math.cube(3)                   // returns 27
+math.cbrt(-64)                 // returns -4
+math.cbrt(math.unit('27 m^3')) // returns Unit 3 m
+math.cbrt([27, 64, 125])       // returns [3, 4, 5]
 
-var x = math.complex('8i');
-math.cbrt(x);                   // returns Complex 1.7320508075689 + i
-math.cbrt(x, true);             // returns Matrix [
+const x = math.complex('8i')
+math.cbrt(x)                   // returns Complex 1.7320508075689 + i
+math.cbrt(x, true)             // returns Matrix [
                                 //    1.7320508075689 + i
                                 //   -1.7320508075689 + i
                                 //   -2i

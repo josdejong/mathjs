@@ -29,14 +29,14 @@ boolean &#124; Array &#124; Matrix |  Returns true when one of the inputs is def
 ## Examples
 
 ```js
-math.or(2, 4);   // returns true
+math.or(2, 4)   // returns true
 
-a = [2, 5, 0];
-b = [0, 22, 0];
-c = 0;
+a = [2, 5, 0]
+b = [0, 22, 0]
+c = 0
 
-math.or(a, b);   // returns [true, true, false]
-math.or(b, c);   // returns [false, true, false]
+math.or(a, b)   // returns [true, true, false]
+math.or(b, c)   // returns [false, true, false]
 ```
 
 

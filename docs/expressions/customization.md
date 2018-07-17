@@ -27,49 +27,49 @@ error message) from zero-based to one-based.
 
 ```js
 // using plain JavaScript, indices are zero-based:
-var a = [[1, 2], [3, 4]]; // a 2x2 matrix
-math.subset(a, math.index(0, 1)); // returns 2
+const a = [[1, 2], [3, 4]]       // a 2x2 matrix
+math.subset(a, math.index(0, 1)) // returns 2
 
 // using the expression parser, indices are transformed to one-based:
-var a = [[1, 2], [3, 4]]; // a 2x2 matrix
-var scope = {
+const a = [[1, 2], [3, 4]] // a 2x2 matrix
+let scope = {
   a: a
-};
-math.eval('subset(a, index(1, 2))', scope); // returns 2
+}
+math.eval('subset(a, index(1, 2))', scope) // returns 2
 ```
 
 To create a transform for a function, the transform function must be attached
 to the function as property `transform`:
 
 ```js
-var math = require('../index');
+const math = require('../index')
 
 // create a function
 function addIt(a, b) {
-  return a + b;
+  return a + b
 }
 
 // attach a transform function to the function addIt
 addIt.transform = function (a, b) {
-  console.log('input: a=' + a + ', b=' + b);
+  console.log('input: a=' + a + ', b=' + b)
   // we can manipulate input here before executing addIt
 
-  var res = addIt(a, b);
+  const res = addIt(a, b)
 
-  console.log('result: ' + res);
+  console.log('result: ' + res)
   // we can manipulate result here before returning
 
-  return res;
-};
+  return res
+}
 
 // import the function into math.js
 math.import({
   addIt: addIt
-});
+})
 
 // use the function via the expression parser
-console.log('Using expression parser:');
-console.log('2+4=' + math.eval('addIt(2, 4)'));
+console.log('Using expression parser:')
+console.log('2+4=' + math.eval('addIt(2, 4)'))
 // This will output:
 //
 //     input: a=2, b=4
@@ -77,9 +77,9 @@ console.log('2+4=' + math.eval('addIt(2, 4)'));
 //     2+4=6
 
 // when used via plain JavaScript, the transform is not invoked
-console.log('');
-console.log('Using plain JavaScript:');
-console.log('2+4=' + math.addIt(2, 4));
+console.log('')
+console.log('Using plain JavaScript:')
+console.log('2+4=' + math.addIt(2, 4))
 // This will output:
 //
 //     6
@@ -124,20 +124,20 @@ A simple example:
 ```js
 function myFunction(args, math, scope) {
   // get string representation of the arguments
-  var str = args.map(function (arg) {
-    return arg.toString();
+  const str = args.map(function (arg) {
+    return arg.toString()
   })
 
   // evaluate the arguments
-  var res = args.map(function (arg) {
-    return arg.compile().eval(scope);
-  });
+  const res = args.map(function (arg) {
+    return arg.compile().eval(scope)
+  })
 
-  return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',');
+  return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',')
 }
 
 // mark the function as "rawArgs", so it will be called with unevaluated arguments
-myFunction.rawArgs = true;
+myFunction.rawArgs = true
 
 // import the new function in the math namespace
 math.import({
@@ -145,7 +145,7 @@ math.import({
 })
 
 // use the function
-math.eval('myFunction(2 + 3, sqrt(4))');
+math.eval('myFunction(2 + 3, sqrt(4))')
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
 
@@ -165,29 +165,29 @@ or a template string similar to ES6 templates.
 #### Example
 
 ```js
-var customFunctions = {
+const customFunctions = {
   plus: function (a, b) {
-    return a + b;
+    return a + b
   },
   minus: function (a, b) {
-    return a - b;
+    return a - b
   },
   binom: function (n, k) {
-    return 1;
+    return 1
   }
-};
+}
 
-customFunctions.plus.toTex = '${args[0]}+${args[1]}'; //template string
-customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)'; //template string
+customFunctions.plus.toTex = '${args[0]}+${args[1]}' //template string
+customFunctions.binom.toTex = '\\mathrm{${name}}\\left(${args}\\right)' //template string
 customFunctions.minus.toTex = function (node, options) { //handler function
-  return node.args[0].toTex(options) + node.name + node.args[1].toTex(options);
-};
+  return node.args[0].toTex(options) + node.name + node.args[1].toTex(options)
+}
 
-math.import(customFunctions);
+math.import(customFunctions)
 
-math.parse('plus(1,2)').toTex();    //'1+2'
-math.parse('binom(1,2)').toTex();   // '\\mathrm{binom}\\left(1,2\\right)'
-math.parse('minus(1,2)').toTex();   // '1minus2'
+math.parse('plus(1,2)').toTex()    // '1+2'
+math.parse('binom(1,2)').toTex()   // '\\mathrm{binom}\\left(1,2\\right)'
+math.parse('minus(1,2)').toTex()   // '1minus2'
 ```
 
 ## Custom HTML, LaTeX and string output
@@ -197,9 +197,9 @@ The functions `toHTML`, `toTex` and `toString` accept an `options` argument to c
 
 ```js
 {
-  parenthesis: 'keep',   // parenthesis option
+  parenthesis: 'keep',    // parenthesis option
   handler: someHandler,   // handler to change the output
-  implicit: 'hide' // how to treat implicit multiplication
+  implicit: 'hide'        // how to treat implicit multiplication
 }
 ```
 
@@ -218,12 +218,12 @@ functions of that name.
 2. Pass a function to `toTex`. This function will then be used for every node.
 
 ```js
-var expression = math.parse('(1+1+1)');
+const expression = math.parse('(1+1+1)')
 
-expression.toString(); //(1 + 1 + 1)
-expression.toString({parenthesis: 'keep'}); //(1 + 1 + 1)
-expression.toString({parenthesis: 'auto'}); //1 + 1 + 1
-expression.toString({parenthesis: 'all'});  //(1 + 1) + 1
+expression.toString()                      // (1 + 1 + 1)
+expression.toString({parenthesis: 'keep'}) // (1 + 1 + 1)
+expression.toString({parenthesis: 'auto'}) // 1 + 1 + 1
+expression.toString({parenthesis: 'all'})  // (1 + 1) + 1
 ```
 
 ### Handler
@@ -236,7 +236,7 @@ You can provide the `toTex` and `toString` functions of an expression with your 
 A callback function has the following form:
 
 ```js
-var callback = function (node, options) {
+function callback (node, options) {
   ...
 }
 ```
@@ -249,83 +249,83 @@ If a callback returns nothing, the standard output will be used. If your callbac
 #### Examples for option 1
 
 ```js
-var customFunctions = {
+const customFunctions = {
   binomial: function (n, k) {
     //calculate n choose k
     // (do some stuff)
-    return result;
+    return result
   }
-};
+}
 
-var customLaTeX = {
+const customLaTeX = {
   'binomial': function (node, options) { //provide toTex for your own custom function
-    return '\\binom{' + node.args[0].toTex(options) + '}{' + node.args[1].toTex(options) + '}';
+    return '\\binom{' + node.args[0].toTex(options) + '}{' + node.args[1].toTex(options) + '}'
   },
   'factorial': function (node, options) { //override toTex for builtin functions
-  	return 'factorial\\left(' + node.args[0] + '\\right)';
+  	return 'factorial\\left(' + node.args[0] + '\\right)'
   }
-};
+}
 ```
 
 You can simply use your custom toTex functions by passing them to `toTex`:
 
 ```js
-math.import(customFunctions);
-var expression = math.parse('binomial(factorial(2),1)');
-var latex = expression.toTex({handler: customLaTeX});
-//latex now contains "\binom{factorial\\left(2\\right)}{1}"
+math.import(customFunctions)
+const expression = math.parse('binomial(factorial(2),1)')
+const latex = expression.toTex({handler: customLaTeX})
+// latex now contains "\binom{factorial\\left(2\\right)}{1}"
 ```
 
 #### Examples for option 2:
 
 ```js
-var customLaTeX = function (node, options) {
+function customLaTeX(node, options) {
   if ((node.type === 'OperatorNode') && (node.fn === 'add')) {
     //don't forget to pass the options to the toTex functions
-    return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options);
+    return node.args[0].toTex(options) + ' plus ' + node.args[1].toTex(options)
   }
   else if (node.type === 'ConstantNode') {
-    if (node.value == 0) {
-        return '\\mbox{zero}';
+    if (node.value === 0) {
+        return '\\mbox{zero}'
     }
-    else if (node.value == 1) {
-        return '\\mbox{one}';
+    else if (node.value === 1) {
+        return '\\mbox{one}'
     }
-    else if (node.value == 2) {
-        return '\\mbox{two}';
+    else if (node.value === 2) {
+        return '\\mbox{two}'
     }
     else {
-        return node.value;
+        return node.value
     }
   }
-};
+}
 
-var expression = math.parse('1+2');
-var latex = expression.toTex({handler: customLaTeX});
-//latex now contains '\mbox{one} plus \mbox{two}'
+const expression = math.parse('1+2')
+const latex = expression.toTex({handler: customLaTeX})
+// latex now contains '\mbox{one} plus \mbox{two}'
 ```
 
 Another example in conjunction with custom functions:
 
 ```js
-var customFunctions = {
+const customFunctions = {
   binomial: function (n, k) {
     //calculate n choose k
     // (do some stuff)
-    return result;
+    return result
   }
-};
+}
 
-var customLaTeX = function (node, options) {
+function customLaTeX(node, options) {
   if ((node.type === 'FunctionNode') && (node.name === 'binomial')) {
-      return '\\binom{' + node.args[0].toTex(options) + '}{' + node.args[1].toTex(options) + '}';
+      return '\\binom{' + node.args[0].toTex(options) + '}{' + node.args[1].toTex(options) + '}'
   }
-};
+}
 
-math.import(customFunctions);
-var expression = math.parse('binomial(2,1)');
-var latex = expression.toTex({handler: customLaTeX});
-//latex now contains "\binom{2}{1}"
+math.import(customFunctions)
+const expression = math.parse('binomial(2,1)')
+const latex = expression.toTex({handler: customLaTeX})
+// latex now contains "\binom{2}{1}"
 ```
 
 ### Implicit multiplication
@@ -335,15 +335,15 @@ You can change the way that implicit multiplication is converted to a string or 
 Example:
 
 ```js
-var node = math.parse('2a');
+const node = math.parse('2a')
 
-node.toString(); //'2 a'
-node.toString({implicit: 'hide'}); //'2 a'
-node.toString({implicit: 'show'}); //'2 * a'
+node.toString()                   // '2 a'
+node.toString({implicit: 'hide'}) // '2 a'
+node.toString({implicit: 'show'}) // '2 * a'
 
-node.toTex(); //'2~ a'
-node.toTex({implicit: 'hide'}); //'2~ a'
-node.toTex({implicit: 'show'}); //'2\\cdot a'
+node.toTex()                      // '2~ a'
+node.toTex({implicit: 'hide'})    // '2~ a'
+node.toTex({implicit: 'show'})    // '2\\cdot a'
 ```
 
 
@@ -365,12 +365,12 @@ For example, the phone character <code>&#9742;</code> is not supported by defaul
 by replacing the `isAlpha` function:
 
 ```js
-var isAlphaOriginal = math.expression.parse.isAlpha;
+const isAlphaOriginal = math.expression.parse.isAlpha
 math.expression.parse.isAlpha = function (c, cPrev, cNext) {
-  return isAlphaOriginal(c, cPrev, cNext) || (c === '\u260E');
-};
+  return isAlphaOriginal(c, cPrev, cNext) || (c === '\u260E')
+}
 
 // now we can use the \u260E (phone) character in expressions
-var result = math.eval('\u260Efoo', {'\u260Efoo': 42}); // returns 42
-console.log(result);
+const result = math.eval('\u260Efoo', {'\u260Efoo': 42}) // returns 42
+console.log(result)
 ```

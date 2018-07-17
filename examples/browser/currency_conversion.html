@@ -23,6 +23,9 @@
       padding: 5px;
       width: 400px;
     }
+    button {
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
@@ -33,13 +36,21 @@
   This example demonstrates how you can fetch actual currencies from <a href="http://fixer.io">fixer.io</a> and use them in math.js.
 </p>
 
-<p id="info">
-  fetching currencies...
-</p>
 <p>
-  <label for="expr">Enter an expression with currencies:</label>
+  Create a (free) account at <a href="http://fixer.io">fixer.io</a> and fill in your API access key below:
+</p>
+
+<form id="fetchForm">
+    <input type="text" id="apiKey" placeholder="fixer.io API access key..." />
+    <button type="submit" id="ok">Fetch currencies</button>
+</form>
+
+<p id="info">
 </p>
 <div id="form" style="display: none;">
+  <p>
+    <label for="expr">Enter an expression with currencies:</label>
+  </p>
   <p>
     <input id="expr" value="5 EUR + 2 * 3 EUR in USD" /><br/>
   </p>
@@ -47,42 +58,65 @@
 </div>
 
 <script>
-  fetchAndImportCurrencies()
+  const accessKey = document.getElementById('apiKey')
+  const fetchForm = document.getElementById('fetchForm')
+
+  fetchForm.onsubmit = function (event) {
+    event.preventDefault()
+
+    document.getElementById('info').innerHTML = 'Fetching currencies...'
+
+    fetchAndImportCurrencies(accessKey.value)
       .then(function (currencies) {
-        document.getElementById('expr').oninput = evaluate;
-        document.getElementById('form').style.display = '';
-        document.getElementById('info').innerHTML = 'Available currencies: ' + currencies.join(', ');
+        document.getElementById('expr').oninput = evaluate
+        document.getElementById('form').style.display = ''
+        document.getElementById('info').innerHTML = 'Available currencies: ' + currencies.join(', ')
 
-        evaluate();
+        evaluate()
       })
+      .catch(function (err) {
+        console.error(err)
+        document.getElementById('info').innerHTML = '<span style="color: red;">' + err.toString() + '</span>'
+      })
+  }
 
-  function fetchAndImportCurrencies () {
+  function fetchAndImportCurrencies (accessKey) {
     // fetch actual currency conversion rates
-    return fetch('https://api.fixer.io/latest')
-        .then(function (response) {
-          return response.json();
-        }).then(function (data) {
+    return fetch('http://data.fixer.io/api/latest?access_key=' + accessKey)
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (data) {
+        if (data.success) {
           // import the currencies
           math.createUnit(data.base)
-          Object.keys(data.rates).forEach(function (currency) {
-            math.createUnit(currency, math.unit(1 / data.rates[currency], data.base));
-          });
+          Object.keys(data.rates)
+            .filter(function (currency) {
+              return currency !== data.base
+            })
+            .forEach(function (currency) {
+              math.createUnit(currency, math.unit(1 / data.rates[currency], data.base))
+            })
 
           // return an array with all available currencies
-          return Object.keys(data.rates).concat(data.base);
-        });
+          return Object.keys(data.rates).concat(data.base)
+        }
+        else {
+          throw new Error(data.error.info)
+        }
+      })
   }
 
   function evaluate () {
-    var expr = document.getElementById('expr');
-    var result = document.getElementById('result');
+    const expr = document.getElementById('expr')
+    const result = document.getElementById('result')
 
     try {
-      var resultStr = math.format(math.eval(expr.value), {notation: 'fixed', precision: 2})
-      result.innerHTML = '<span style="color: dodgerblue;">' + resultStr + '</span>';
+      const resultStr = math.format(math.eval(expr.value), {notation: 'fixed', precision: 2})
+      result.innerHTML = '<span style="color: dodgerblue;">' + resultStr + '</span>'
     }
     catch (err) {
-      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>';
+      result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>'
     }
   }
 </script>

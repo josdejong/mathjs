@@ -11,15 +11,22 @@ the code server side.
 A user could try to inject malicious JavaScript code via the expression
 parser. The expression parser of mathjs offers a sandboxed environment
 to execute expressions which should make this impossible. It's possible
-though that there is an unknown security hole, so it's important to be
-careful, especially when allowing server side execution of arbitrary
-expressions.
+though that there are unknown security vulnerabilties, so it's important
+to be careful, especially when allowing server side execution of
+arbitrary expressions.
 
 The expression parser of mathjs parses the input in a controlled
-way into an expression tree, then compiles it into fast performing
-JavaScript using JavaScript's `eval` before actually evaluating the
-expression. The parser actively prevents access to JavaScripts internal
-`eval` and `new Function` which are the main cause of security attacks.
+way into an expression tree or abstract syntax tree (AST).
+In a "compile" step, it does as much as possible preprocessing on the
+static parts of the expression, and creates a fast performing function
+which can be used to evaluate the expression repeatedly using a
+dynamically passed scope.
+
+The parser actively prevents access to JavaScripts internal `eval` and
+`new Function` which are the main cause of security attacks. Mathjs
+versions 4 and newer does not use JavaScript's `eval` under the hood.
+Version 3 and older did use `eval` for the compile step. This is not
+directly a security issue but results in a larger possible attack surface.
 
 When running a node.js server, it's good to be aware of the different
 types of security risks. The risk whe running inside a browser may be
@@ -40,8 +47,8 @@ To make the expression parser less vulnerable whilst still supporting
 most functionality, these functions can be disabled:
 
 ```js
-var math = require('mathjs');
-var limitedEval = math.eval;
+const math = require('mathjs')
+const limitedEval = math.eval
 
 math.import({
   'import':     function () { throw new Error('Function import is disabled') },
@@ -50,10 +57,10 @@ math.import({
   'parse':      function () { throw new Error('Function parse is disabled') },
   'simplify':   function () { throw new Error('Function simplify is disabled') },
   'derivative': function () { throw new Error('Function derivative is disabled') }
-}, {override: true});
+}, {override: true})
 
-console.log(limitedEval('sqrt(16)'));     // Ok, 4
-console.log(limitedEval('parse("2+3")')); // Error: Function parse is disabled
+console.log(limitedEval('sqrt(16)'))     // Ok, 4
+console.log(limitedEval('parse("2+3")')) // Error: Function parse is disabled
 ```
 
 

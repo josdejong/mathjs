@@ -30,9 +30,9 @@ number &#124; Array &#124; Matrix | The gamma of `n`
 ## Examples
 
 ```js
-math.gamma(5);       // returns 24
-math.gamma(-0.5);    // returns -3.5449077018110335
-math.gamma(math.i);  // returns -0.15494982830180973 - 0.49801566811835596i
+math.gamma(5)       // returns 24
+math.gamma(-0.5)    // returns -3.5449077018110335
+math.gamma(math.i)  // returns -0.15494982830180973 - 0.49801566811835596i
 ```
 
 

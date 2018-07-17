@@ -29,15 +29,15 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 ## Examples
 
 ```js
-math.ceil(3.2);               // returns number 4
-math.ceil(3.8);               // returns number 4
-math.ceil(-4.2);              // returns number -4
-math.ceil(-4.7);              // returns number -4
+math.ceil(3.2)               // returns number 4
+math.ceil(3.8)               // returns number 4
+math.ceil(-4.2)              // returns number -4
+math.ceil(-4.7)              // returns number -4
 
-var c = math.complex(3.2, -2.7);
-math.ceil(c);                 // returns Complex 4 - 2i
+const c = math.complex(3.2, -2.7)
+math.ceil(c)                 // returns Complex 4 - 2i
 
-math.ceil([3.2, 3.8, -4.7]);  // returns Array [4, 4, -4]
+math.ceil([3.2, 3.8, -4.7])  // returns Array [4, 4, -4]
 ```
 
 

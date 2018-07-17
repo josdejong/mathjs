@@ -5,7 +5,7 @@ This getting started describes how to install, load, and use math.js.
 
 ## Install
 
-Math.js can be installed using various package managers like [npm](https://npmjs.org/) and [bower](http://bower.io/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
+Math.js can be installed using various package managers like [npm](https://npmjs.org/), or by just downloading the library from the website: [http://mathjs.org/download.html](http://mathjs.org/download.html).
 
 To install via npm, run:
 
@@ -19,7 +19,19 @@ Other ways to install math.js are described on the [website](http://mathjs.org/d
 Math.js can be used in node.js and in the browser. The library must be loaded
 and instantiated. When creating an instance, one can optionally provide
 configuration options as described in
-[Configuration](configuration.md).
+[Configuration](core/configuration.md).
+
+### ES6 modules
+
+Load math.js using ES6 import:
+
+```js
+// load math.js
+import * as math from 'mathjs'
+
+// use math.js
+math.sqrt(-4) // 2i
+```
 
 ### Node.js
 
@@ -27,10 +39,10 @@ Load math.js in [node.js](http://nodejs.org/):
 
 ```js
 // load math.js
-var math = require('mathjs');
+const math = require('mathjs')
 
 // use math.js
-math.sqrt(-4); // 2i
+math.sqrt(-4) // 2i
 ```
 
 
@@ -48,7 +60,7 @@ variable `math` to access the libary once loaded:
 <body>
   <script type="text/javascript">
     // use the math.js libary
-    math.sqrt(-4); // 2i
+    math.sqrt(-4) // 2i
   </script>
 </body>
 </html>
@@ -68,42 +80,42 @@ require.config({
   paths: {
     mathjs: 'path/to/mathjs',
   }
-});
+})
 require(['mathjs'], function (math) {
   // use math.js
-  math.sqrt(-4); // 2i
-});
+  math.sqrt(-4) // 2i
+})
 ```
 
 ## Use
 
 Math.js can be used similar to JavaScript's built-in Math library. Besides that,
 math.js can evaluate expressions (see [Expressions](expressions/index.md)) and
-supports chaining (see [Chaining](chaining.md)).
+supports chaining (see [Chaining](core/chaining.md)).
 
 The example code below shows how to use math.js. More examples can be found in the
 section [Examples](http://mathjs.org/examples/index.html).
 
 ```js
 // functions and constants
-math.round(math.e, 3);            // 2.718
-math.atan2(3, -3) / math.pi;      // 0.75
-math.log(10000, 10);              // 4
-math.sqrt(-4);                    // 2i
-math.pow([[-1, 2], [3, 1]], 2);   // [[7, 0], [0, 7]]
+math.round(math.e, 3)            // 2.718
+math.atan2(3, -3) / math.pi      // 0.75
+math.log(10000, 10)              // 4
+math.sqrt(-4)                    // 2i
+math.pow([[-1, 2], [3, 1]], 2)   // [[7, 0], [0, 7]]
 
 // expressions
-math.eval('12 / (2.3 + 0.7)');    // 4
-math.eval('12.7 cm to inch');     // 5 inch
-math.eval('sin(45 deg) ^ 2');     // 0.5
-math.eval('9 / 3 + 2i');          // 3 + 2i
-math.eval('det([-1, 2; 3, 1])');  // -7
+math.eval('12 / (2.3 + 0.7)')    // 4
+math.eval('12.7 cm to inch')     // 5 inch
+math.eval('sin(45 deg) ^ 2')     // 0.5
+math.eval('9 / 3 + 2i')          // 3 + 2i
+math.eval('det([-1, 2; 3, 1])')  // -7
 
 // chained operations
 math.chain(3)
     .add(4)
     .multiply(2)
-    .done(); // 14
+    .done() // 14
 ```
 
 ## Next

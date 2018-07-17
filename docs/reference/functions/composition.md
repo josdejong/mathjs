@@ -31,7 +31,7 @@ Number &#124; BigNumber | Returns the composition counts of n into k parts.
 ## Examples
 
 ```js
-math.composition(5, 3); // returns 6
+math.composition(5, 3) // returns 6
 ```
 
 

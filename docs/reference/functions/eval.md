@@ -34,13 +34,13 @@ Type | Description
 ## Examples
 
 ```js
-math.eval('(2+3)/4');                // 1.25
-math.eval('sqrt(3^2 + 4^2)');        // 5
-math.eval('sqrt(-4)');               // 2i
-math.eval(['a=3', 'b=4', 'a*b']);,   // [3, 4, 12]
+math.eval('(2+3)/4')                // 1.25
+math.eval('sqrt(3^2 + 4^2)')        // 5
+math.eval('sqrt(-4)')               // 2i
+math.eval(['a=3', 'b=4', 'a*b'])    // [3, 4, 12]
 
-var scope = {a:3, b:4};
-math.eval('a * b', scope);           // 12
+let scope = {a:3, b:4}
+math.eval('a * b', scope)           // 12
 ```
 
 

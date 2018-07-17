@@ -14,31 +14,17 @@ Update the date and version number in the file HISTORY.md. Verify whether all
 changes in the new version are described.
 
 
-## Build library
+## Build and test
 
-Build the distribution files ./dist/math.js and ./dist/math.min.js by running:
+Build the distribution files in folders `dist` and `lib`, and test everything by running:
 
-    npm run build
+    npm run build-and-test
 
 After the build is complete, verify if the files are created and contain the
 correct date and version number in the header.
 
 Check whether there are new markdown files generated in `./docs` and add if
 so add them to git.
-
-
-## Test
-
-Test whether the library works correctly by running the tests:
-
-    npm test
-
-Test whether the npm library is ok by installing it locally:
-
-    cd ../tmp-folder
-    npm install ../mathjs
-
-Check whether the library works and looks ok.
 
 
 ## Commit
@@ -63,12 +49,9 @@ Publish to npm:
 
     npm publish
 
-No need to publish for bower: The library is already published because of the
-new version tag.
+or directly pass a valid one time password (two factor authentication):
 
-No need to publish at cdnjs: should be updated automatically by the owners
-of cdnjs. This is currently done manually and can easily take up to a day
-before updated.
+    npm publish --otp 123456
 
 
 ## Test published libraries
@@ -77,7 +60,6 @@ Install the libraries locally and test whether they work correctly:
 
     cd tmp-folder
     npm install mathjs
-    bower install mathjs
 
 
 ## Update the website

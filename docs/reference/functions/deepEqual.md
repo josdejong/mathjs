@@ -5,6 +5,8 @@
 Test element wise whether two matrices are equal.
 The function accepts both matrices and scalar values.
 
+Strings are compared by their numerical value.
+
 
 ## Syntax
 
@@ -29,13 +31,13 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Unit &#124; Array 
 ## Examples
 
 ```js
-math.deepEqual(2, 4);   // returns false
+math.deepEqual(2, 4)   // returns false
 
-a = [2, 5, 1];
-b = [2, 7, 1];
+a = [2, 5, 1]
+b = [2, 7, 1]
 
-math.deepEqual(a, b);   // returns false
-math.equal(a, b);       // returns [true, false, true]
+math.deepEqual(a, b)   // returns false
+math.equal(a, b)       // returns [true, false, true]
 ```
 
 

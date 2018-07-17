@@ -31,19 +31,21 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix |  Returns the
 ## Examples
 
 ```js
-math.log(3.5);                  // returns 1.252762968495368
-math.exp(math.log(2.4));        // returns 2.4
+math.log(3.5)                  // returns 1.252762968495368
+math.exp(math.log(2.4))        // returns 2.4
 
-math.pow(10, 4);                // returns 10000
-math.log(10000, 10);            // returns 4
-math.log(10000) / math.log(10); // returns 4
+math.pow(10, 4)                // returns 10000
+math.log(10000, 10)            // returns 4
+math.log(10000) / math.log(10) // returns 4
 
-math.log(1024, 2);              // returns 10
-math.pow(2, 10);                // returns 1024
+math.log(1024, 2)              // returns 10
+math.pow(2, 10)                // returns 1024
 ```
 
 
 ## See also
 
 [exp](exp.md),
-[log10](log10.md)
+[log2](log2.md),
+[log10](log10.md),
+[log1p](log1p.md)

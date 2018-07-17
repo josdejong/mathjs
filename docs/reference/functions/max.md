@@ -32,15 +32,15 @@ Type | Description
 ## Examples
 
 ```js
-math.max(2, 1, 4, 3);                  // returns 4
-math.max([2, 1, 4, 3]);                // returns 4
+math.max(2, 1, 4, 3)                  // returns 4
+math.max([2, 1, 4, 3])                // returns 4
 
 // maximum over a specified dimension (zero-based)
-math.max([[2, 5], [4, 3], [1, 7]], 0); // returns [4, 7]
-math.max([[2, 5], [4, 3]], [1, 7], 1); // returns [5, 4, 7]
+math.max([[2, 5], [4, 3], [1, 7]], 0) // returns [4, 7]
+math.max([[2, 5], [4, 3]], [1, 7], 1) // returns [5, 4, 7]
 
-math.max(2.7, 7.1, -4.5, 2.0, 4.1);    // returns 7.1
-math.min(2.7, 7.1, -4.5, 2.0, 4.1);    // returns -4.5
+math.max(2.7, 7.1, -4.5, 2.0, 4.1)    // returns 7.1
+math.min(2.7, 7.1, -4.5, 2.0, 4.1)    // returns -4.5
 ```
 
 

@@ -29,9 +29,9 @@ Array | Returns an array containing 3 integers `[div, m, n]` where `div = gcd(a,
 ## Examples
 
 ```js
-math.xgcd(8, 12);             // returns [4, -1, 1]
-math.gcd(8, 12);              // returns 4
-math.xgcd(36163, 21199);      // returns [1247, -7, 12]
+math.xgcd(8, 12)             // returns [4, -1, 1]
+math.gcd(8, 12)              // returns 4
+math.xgcd(36163, 21199)      // returns [1247, -7, 12]
 ```
 
 

@@ -33,7 +33,7 @@ Get the storage format used by the matrix.
 
 Usage:
 ```js
-var format = matrix.storage()                   // retrieve storage format
+const format = matrix.storage()  // retrieve storage format
 ```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
@@ -44,7 +44,7 @@ Get the datatype of the data stored in the matrix.
 
 Usage:
 ```js
-var format = matrix.datatype()                   // retrieve matrix datatype
+const format = matrix.datatype()  // retrieve matrix datatype
 ```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
@@ -66,7 +66,7 @@ Get the matrix density.
 
 Usage:
 ```js
-var density = matrix.density()                   // retrieve matrix density
+const density = matrix.density()  // retrieve matrix density
 ```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  
@@ -77,8 +77,8 @@ Get a subset of the matrix, or replace a subset of the matrix.
 
 Usage:
 ```js
-var subset = matrix.subset(index)               // retrieve subset
-var value = matrix.subset(index, replacement)   // replace subset
+const subset = matrix.subset(index)               // retrieve subset
+const value = matrix.subset(index, replacement)   // replace subset
 ```
 
 **Kind**: instance method of <code>[SparseMatrix](#SparseMatrix)</code>  

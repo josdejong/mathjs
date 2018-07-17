@@ -30,7 +30,7 @@ Number &#124; BigNumber | Multinomial coefficient.
 ## Examples
 
 ```js
-math.multinomial([1,2,1]); // returns 12
+math.multinomial([1,2,1]) // returns 12
 ```
 
 

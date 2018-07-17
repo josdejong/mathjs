@@ -10,10 +10,11 @@ values smaller than approximately 2.22e-16.
 
 For matrices, the function is evaluated element wise.
 In case of complex numbers, x.re must unequal y.re, or x.im must unequal y.im.
+Strings are compared by their numerical value.
 
 Values `null` and `undefined` are compared strictly, thus `null` is unequal
-with everything except `null`, and `undefined` is unequal with everying
-except. `undefined`.
+with everything except `null`, and `undefined` is unequal with everything
+except `undefined`.
 
 
 ## Syntax
@@ -39,20 +40,20 @@ boolean &#124; Array &#124; Matrix | Returns true when the compared values are u
 ## Examples
 
 ```js
-math.unequal(2 + 2, 3);       // returns true
-math.unequal(2 + 2, 4);       // returns false
+math.unequal(2 + 2, 3)       // returns true
+math.unequal(2 + 2, 4)       // returns false
 
-var a = math.unit('50 cm');
-var b = math.unit('5 m');
-math.unequal(a, b);           // returns false
+const a = math.unit('50 cm')
+const b = math.unit('5 m')
+math.unequal(a, b)           // returns false
 
-var c = [2, 5, 1];
-var d = [2, 7, 1];
+const c = [2, 5, 1]
+const d = [2, 7, 1]
 
-math.unequal(c, d);           // returns [false, true, false]
-math.deepEqual(c, d);         // returns false
+math.unequal(c, d)           // returns [false, true, false]
+math.deepEqual(c, d)         // returns false
 
-math.unequal(0, null);        // returns true
+math.unequal(0, null)        // returns true
 ```
 
 

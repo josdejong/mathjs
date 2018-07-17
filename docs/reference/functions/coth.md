@@ -31,8 +31,8 @@ number &#124; Complex &#124; Array &#124; Matrix | Hyperbolic cotangent of x
 
 ```js
 // coth(x) = 1 / tanh(x)
-math.coth(2);         // returns 1.0373147207275482
-1 / math.tanh(2);     // returns 1.0373147207275482
+math.coth(2)         // returns 1.0373147207275482
+1 / math.tanh(2)     // returns 1.0373147207275482
 ```
 
 

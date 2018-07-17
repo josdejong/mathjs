@@ -35,13 +35,13 @@ number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The value of
 ## Examples
 
 ```js
-math.pow(2, 3);               // returns number 8
+math.pow(2, 3)               // returns number 8
 
-var a = math.complex(2, 3);
+const a = math.complex(2, 3)
 math.pow(a, 2)                // returns Complex -5 + 12i
 
-var b = [[1, 2], [4, 3]];
-math.pow(b, 2);               // returns Array [[9, 8], [16, 17]]
+const b = [[1, 2], [4, 3]]
+math.pow(b, 2)               // returns Array [[9, 8], [16, 17]]
 ```
 
 

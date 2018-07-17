@@ -30,9 +30,9 @@ Unit &#124; Array &#124; Matrix | The created unit
 ## Examples
 
 ```js
-var a = math.unit(5, 'cm');    // returns Unit 50 mm
-var b = math.unit('23 kg');    // returns Unit 23 kg
-a.to('m');                     // returns Unit 0.05 m
+const a = math.unit(5, 'cm')    // returns Unit 50 mm
+const b = math.unit('23 kg')    // returns Unit 23 kg
+a.to('m')                       // returns Unit 0.05 m
 ```
 
 

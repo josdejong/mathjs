@@ -28,15 +28,15 @@ number &#124; BigNumber &#124; Fraction &#124; Complex &#124; Array &#124; Matri
 ## Examples
 
 ```js
-math.floor(3.2);              // returns number 3
-math.floor(3.8);              // returns number 3
-math.floor(-4.2);             // returns number -5
-math.floor(-4.7);             // returns number -5
+math.floor(3.2)              // returns number 3
+math.floor(3.8)              // returns number 3
+math.floor(-4.2)             // returns number -5
+math.floor(-4.7)             // returns number -5
 
-var c = math.complex(3.2, -2.7);
-math.floor(c);                // returns Complex 3 - 3i
+const c = math.complex(3.2, -2.7)
+math.floor(c)                // returns Complex 3 - 3i
 
-math.floor([3.2, 3.8, -4.7]); // returns Array [3, 3, -5]
+math.floor([3.2, 3.8, -4.7]) // returns Array [3, 3, -5]
 ```
 
 

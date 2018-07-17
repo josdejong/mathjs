@@ -38,13 +38,13 @@ Matrix &#124; Array | Diagonal matrix from input vector, or diagonal from input 
 
 ```js
  // create a diagonal matrix
- math.diag([1, 2, 3]);      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
- math.diag([1, 2, 3], 1);   // returns [[0, 1, 0, 0], [0, 0, 2, 0], [0, 0, 0, 3]]
- math.diag([1, 2, 3], -1);  // returns [[0, 0, 0], [1, 0, 0], [0, 2, 0], [0, 0, 3]]
+ math.diag([1, 2, 3])      // returns [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
+ math.diag([1, 2, 3], 1)   // returns [[0, 1, 0, 0], [0, 0, 2, 0], [0, 0, 0, 3]]
+ math.diag([1, 2, 3], -1)  // returns [[0, 0, 0], [1, 0, 0], [0, 2, 0], [0, 0, 3]]
 
 // retrieve the diagonal from a matrix
-var a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-math.diag(a);   // returns [1, 5, 9]
+const a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+math.diag(a)   // returns [1, 5, 9]
 ```
 
 
@@ -52,4 +52,4 @@ math.diag(a);   // returns [1, 5, 9]
 
 [ones](ones.md),
 [zeros](zeros.md),
-[eye](eye.md)
+[identity](identity.md)

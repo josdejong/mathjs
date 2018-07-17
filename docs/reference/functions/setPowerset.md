@@ -28,7 +28,7 @@ Array | The powerset of the (multi)set
 ## Examples
 
 ```js
-math.setPowerset([1, 2, 3]);        // returns [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
+math.setPowerset([1, 2, 3])        // returns [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]
 ```
 
 
