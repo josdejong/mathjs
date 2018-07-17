@@ -12,8 +12,8 @@ function factory (type, config, load, typed, math) {
   const FunctionNode = math.expression.node.FunctionNode
   let isExactFract // local variable for the blocks and inner blocks
 
-  function simplifyConstant (expr, ExactFract = "") {
-    isExactFract = ExactFract !== ""
+  function simplifyConstant (expr, ExactFract = '') {
+    isExactFract = ExactFract !== ''
     const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }

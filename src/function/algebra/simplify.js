@@ -19,6 +19,7 @@ function factory (type, config, load, typed, math) {
   const unflattenr = util.unflattenr
   const unflattenl = util.unflattenl
   const createMakeNodeFunction = util.createMakeNodeFunction
+  let listCommStrings = ['exactFractOff'] // valid string commands in Simplify. 
 
   /**
    * Simplify an expression tree.
@@ -109,20 +110,18 @@ function factory (type, config, load, typed, math) {
     },
 
     'Node, Array, Object': function (expr, rules, scope) {
-      let listCommStrings = ['exactFractOff'] // valid string commands in Simplify. 
       let exactFract = '' // flag: if "" generates exact fractions from decimals
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
       let visited = {}
-
       let str = res.toString({parenthesis: 'all'})
       while (!visited[str]) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
         for (let i = 0; i < rules.length; i++) {
           if (typeof rules[i] === 'string') {
-            if (rules[i]==='exactFractOff') {
+            if (rules[i] === 'exactFractOff') {
               exactFract = 'Off'
             }
           } else if (typeof rules[i] === 'function') {
@@ -266,16 +265,16 @@ function factory (type, config, load, typed, math) {
       switch (ruleType) {
         case 'string':
           const lr = rule.split('->')
-          if (lr.length == 2) {
+          if (lr.length === 2) {
             rule = {l: lr[0], r: lr[1]}
           } else {
-            if ((lr.length !== 1) || (factory.listCommStrings.indexOf(rule)===-1)) {
-              throw SyntaxError('Could not parse rule: ' + rule) 
+            if ((lr.length !== 1) || (listCommStrings.indexOf(rule) === -1)) {
+              throw SyntaxError('Could not parse rule: ' + rule)
             }
             newRule = rule
             break
           }
-           
+    
           /* falls through */
         case 'object':
           newRule = {

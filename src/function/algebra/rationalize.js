@@ -93,7 +93,7 @@ function factory (type, config, load, typed) {
     },
 
     'Node, Object, boolean': function (expr, scope, detailed) {
-      const setRules = rulesRationalize() // Rules for change polynomial in near canonical form 
+      const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
       const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
       const nVars = polyRet.variables.length
       expr = polyRet.expression
@@ -105,19 +105,19 @@ function factory (type, config, load, typed) {
         let eDistrDiv = true
         let redoInic = false
         expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
-        let s = expr.toString()
+        let s
         while (true) { // Apply alternately  successive division rules and distr.div.rules
           rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
           expr = simplify(expr, rules) // until no more changes
           eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
 
-          const s = expr.toString()
+          s = expr.toString()
           if (s === sBefore) {
             break // No changes : end of the loop
-          } 
+          }
 
-          redoInic = true;
-          sBefore = s;
+          redoInic = true
+          sBefore = s
         }
 
         if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
@@ -170,7 +170,7 @@ function factory (type, config, load, typed) {
    * @param  {Node | string} expr     The expression to simplify and check if is polynomial expression
    * @param  {object} scope           Optional scope for expression simplification
    * @param  {boolean} extended       Optional. Default is false. When true allows divide operator.
-   * @param  {array}  rules           Optional. Default is no rule. 
+   * @param  {array}  rules           Optional. Default is no rule.
    *
    *
    * @return {Object}
@@ -215,8 +215,8 @@ function factory (type, config, load, typed) {
         if (node.op === '^') {
           if (node.args[1].fn === 'unaryMinus') {
             node = node.args[0]
-          } 
-          if (node.args[1].type!=='ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
+          }
+          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {
             recPoly(node.args[0])
