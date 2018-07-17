@@ -10,8 +10,10 @@ function factory (type, config, load, typed, math) {
   const ConstantNode = math.expression.node.ConstantNode
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
+  let isExactFract  // local variable for the blocks and inner blocks 
 
-  function simplifyConstant (expr) {
+  function simplifyConstant (expr, ExactFract="") {
+    isExactFract = ExactFract!=""
     const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }
@@ -52,7 +54,7 @@ function factory (type, config, load, typed, math) {
 
   // convert a number to a fraction only if it can be expressed exactly
   function _exactFraction (n) {
-    if (isFinite(n)) {
+    if (isExactFract && isFinite(n)) {
       const f = math.fraction(n)
       if (f.valueOf() === n) {
         return f

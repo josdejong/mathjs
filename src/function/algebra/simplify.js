@@ -109,8 +109,9 @@ function factory (type, config, load, typed, math) {
     },
 
     'Node, Array, Object': function (expr, rules, scope) {
+      let listCommStrings = ['exactFractOff']   // valid string commands in Simplify. 
+      let exactFract = ""  // flag: if "" generates exact fractions from decimals
       rules = _buildRules(rules)
-
       let res = resolve(expr, scope)
       res = removeParens(res)
       let visited = {}
@@ -120,8 +121,12 @@ function factory (type, config, load, typed, math) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
         for (let i = 0; i < rules.length; i++) {
-          if (typeof rules[i] === 'function') {
-            res = rules[i](res)
+          if (typeof rules[i] === 'string') {
+            if (rules[i]=="exactFractOff") {
+               exactFract = "Off"
+            }
+          } else if (typeof rules[i] === 'function') {
+            res = rules[i](res,exactFract)
           } else {
             flatten(res)
             res = applyRule(res, rules[i])
@@ -261,10 +266,14 @@ function factory (type, config, load, typed, math) {
       switch (ruleType) {
         case 'string':
           const lr = rule.split('->')
-          if (lr.length !== 2) {
+          if (lr.length == 2) {
+            rule = {l: lr[0], r: lr[1]}
+          } else if ((lr.length != 1) || (listCommStrings.indexOf(rule)==-1)) {
             throw SyntaxError('Could not parse rule: ' + rule)
+            newRule = rule
+            break
           }
-          rule = {l: lr[0], r: lr[1]}
+           
           /* falls through */
         case 'object':
           newRule = {
