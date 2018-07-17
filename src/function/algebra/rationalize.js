@@ -311,7 +311,8 @@ function factory (type, config, load, typed) {
 
     // Second rule set.
     // There is no aggregate expression with parentesis, but the only variable can be scattered.
-    setRules.finalRules = [ simplifyCore, // simplify.rules[0]
+    setRules.finalRules = ['exactFractOff',
+      simplifyCore, // simplify.rules[0]
       {l: 'n*-n', r: '-n^2'}, // Joining multiply with power 1
       {l: 'n*n', r: 'n^2'}, // Joining multiply with power 2
       simplifyConstant, // simplify.rules[14] old 3rd index in oldRules
