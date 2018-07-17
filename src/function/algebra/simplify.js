@@ -19,7 +19,7 @@ function factory (type, config, load, typed, math) {
   const unflattenr = util.unflattenr
   const unflattenl = util.unflattenl
   const createMakeNodeFunction = util.createMakeNodeFunction
-  let listCommStrings = ['exactFractOff'] // valid string commands in Simplify. 
+  let listCommStrings = ['exactFractOff'] // valid string commands in Simplify.
 
   /**
    * Simplify an expression tree.
@@ -274,7 +274,6 @@ function factory (type, config, load, typed, math) {
             newRule = rule
             break
           }
-    
           /* falls through */
         case 'object':
           newRule = {
