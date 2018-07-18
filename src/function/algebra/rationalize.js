@@ -274,9 +274,9 @@ function factory (type, config, load, typed) {
       {l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)'}, // Distributive 1
       {l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)'}, // Distributive 2
       {l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
-      {l: 'c1*n + n', r: '(c1+1)*n'},     // Joining constants
+      {l: 'c1*n + n', r: '(c1+1)*n'}, // Joining constants
       {l: 'c1*n - c2*n', r: '(c1-c2)*n'}, // Joining constants
-      {l: 'c1*n + n', r: '(c1-1)*n'},     // Joining constants
+      {l: 'c1*n + n', r: '(c1-1)*n'}, // Joining constants
       {l: 'v/c', r: '(1/c)*v'}, // variable/constant (new!)
       {l: 'v/-c', r: '-(1/c)*v'}, // variable/constant (new!)
       {l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
