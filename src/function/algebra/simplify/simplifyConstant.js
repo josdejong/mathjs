@@ -45,7 +45,7 @@ function factory (type, config, load, typed, math) {
       if (n < 0) {
         return unaryMinusNode(new ConstantNode(n.negated().toString(), 'number'))
       }
-      return new ConstantNode(n.toString(), 'number')
+      return new ConstantNode(n) //(n.toString(), 'number')
     },
     'Complex': function (s) {
       throw new Error('Cannot convert Complex number to Node')
