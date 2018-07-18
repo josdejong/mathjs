@@ -145,7 +145,7 @@ function factory (type, config, load, typed, math) {
       case 'SymbolNode':
         return node
       case 'ConstantNode':
-        if (typeof node.value === 'number') {
+        if (typeof node.value === 'number' || !isNaN(node.value)) {
           return _toNumber(node.value)
         }
         return node
