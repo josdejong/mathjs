@@ -276,7 +276,7 @@ function factory (type, config, load, typed) {
       {l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
       {l: 'c1*n + n', r: '(c1+1)*n'}, // Joining constants
       {l: 'c1*n - c2*n', r: '(c1-c2)*n'}, // Joining constants
-      {l: 'c1*n + n', r: '(c1-1)*n'}, // Joining constants
+      {l: 'c1*n - n', r: '(c1-1)*n'}, // Joining constants
       {l: 'v/c', r: '(1/c)*v'}, // variable/constant (new!)
       {l: 'v/-c', r: '-(1/c)*v'}, // variable/constant (new!)
       {l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
