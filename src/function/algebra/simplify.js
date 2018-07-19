@@ -123,7 +123,7 @@ function factory (type, config, load, typed, math) {
 
     'Node, Array, Object': function (expr, rules, scope) {
       return simplify(expr, rules, scope, {})
-    }
+    },
 
     'Node, Array, Object, Object': function (expr, rules, scope, opts) {
       if (opts.exactFractions === undefined) {
