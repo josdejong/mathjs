@@ -196,15 +196,12 @@ div.cols .end {
 #content table {
   border-collapse: collapse;
   margin: 15px 0;
-  table-layout: fixed;
-  width: 100%;
 }
 
 #content table th,
 #content table td {
   border: 1px solid #ddd;
   padding: 6px 13px;
-  word-wrap: break-word;
 }
 
 #content table tr:nth-child(2n) {
