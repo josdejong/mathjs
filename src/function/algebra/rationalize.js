@@ -104,7 +104,7 @@ function factory (type, config, load, typed) {
         let rules
         let eDistrDiv = true
         let redoInic = false
-        expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
+        expr = simplify(expr, setRules.firstRules, {}, {exactFractions:false}) // Apply the initial rules, including succ div rules
         let s
         while (true) { // Apply alternately  successive division rules and distr.div.rules
           rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
@@ -121,9 +121,9 @@ function factory (type, config, load, typed) {
         }
 
         if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
-          expr = simplify(expr, setRules.firstRulesAgain)
+          expr = simplify(expr, setRules.firstRulesAgain, {}, {exactFractions:false})
         }
-        expr = simplify(expr, setRules.finalRules) // Apply final rules
+        expr = simplify(expr, setRules.finalRules, {}, {exactFractions:false}) // Apply final rules
       } // NVars >= 1
 
       const coefficients = []
@@ -179,7 +179,7 @@ function factory (type, config, load, typed) {
    */
   function polynomial (expr, scope, extended, rules) {
     const variables = []
-    const node = simplify(expr, rules, scope) // Resolves any variables and functions with all defined parameters
+    const node = simplify(expr, rules, scope, {exactFractions:true}) // Resolves any variables and functions with all defined parameters
     extended = !!extended
 
     const oper = '+-*' + (extended ? '/' : '')
@@ -255,8 +255,7 @@ function factory (type, config, load, typed) {
    * @return {array}        rule set to rationalize an polynomial expression
    */
   function rulesRationalize () {
-    const oldRules = ['exactFractOff',
-      simplifyCore, // sCore
+    const oldRules = [simplifyCore, // sCore
       {l: 'n+n', r: '2*n'},
       {l: 'n+-n', r: '0'},
       simplifyConstant, // sConstant
@@ -314,8 +313,7 @@ function factory (type, config, load, typed) {
 
     // Second rule set.
     // There is no aggregate expression with parentesis, but the only variable can be scattered.
-    setRules.finalRules = ['exactFractOff',
-      simplifyCore, // simplify.rules[0]
+    setRules.finalRules = [simplifyCore, // simplify.rules[0]
       {l: 'n*-n', r: '-n^2'}, // Joining multiply with power 1
       {l: 'n*n', r: 'n^2'}, // Joining multiply with power 2
       simplifyConstant, // simplify.rules[14] old 3rd index in oldRules
