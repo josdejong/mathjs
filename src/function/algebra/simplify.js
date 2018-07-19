@@ -19,7 +19,6 @@ function factory (type, config, load, typed, math) {
   const unflattenr = util.unflattenr
   const unflattenl = util.unflattenl
   const createMakeNodeFunction = util.createMakeNodeFunction
-  let listCommStrings = ['exactFractOff'] // valid string commands in Simplify.
 
   /**
    * Simplify an expression tree.
@@ -287,7 +286,7 @@ function factory (type, config, load, typed, math) {
           if (lr.length === 2) {
             rule = {l: lr[0], r: lr[1]}
           } else {
-            throw SyntaxError('Could not parse rule: ' + rule) 
+            throw SyntaxError('Could not parse rule: ' + rule)
           }
           /* falls through */
         case 'object':
