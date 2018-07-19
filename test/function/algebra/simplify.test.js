@@ -292,12 +292,12 @@ describe('simplify', function () {
   })
 
   it('new options parameters', function () {
-    simplifyAndCompare('0.1*x', 'x/10', [math.simplify.simplifyConstant])
-    simplifyAndCompare('0.1*x', 'x/10', [math.simplify.simplifyConstant], {exactFractions: true})
-    simplifyAndCompare('0.1*x', '0.1*x', [math.simplify.simplifyConstant], {exactFractions: false})
-    simplifyAndCompare('y+0.1*x', '1+x/10', {y: 1}, [math.simplify.simplifyConstant])
-    simplifyAndCompare('y+0.1*x', '1+x/10', {y: 1}, [math.simplify.simplifyConstant], {exactFractions: true})
-    simplifyAndCompare('y+0.1*x', '1+0.1*x', {y: 1}, [math.simplify.simplifyConstant], {exactFractions: false})
+    simplifyAndCompare('0.1*x', 'x/10', math.simplify.rules)
+    simplifyAndCompare('0.1*x', 'x/10', math.simplify.rules, {exactFractions: true})
+    simplifyAndCompare('0.1*x', '0.1*x', math.simplify.rules, {exactFractions: false})
+    simplifyAndCompare('y+0.1*x', '1+x/10', {y: 1}, math.simplify.rules)
+    simplifyAndCompare('y+0.1*x', '1+x/10', {y: 1}, math.simplify.rules, {exactFractions: true})
+    simplifyAndCompare('y+0.1*x', '1+0.1*x', {y: 1}, math.simplify.rules, {exactFractions: false})
   })
 
   it('resolve() should substitute scoped constants', function () {
