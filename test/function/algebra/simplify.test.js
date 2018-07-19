@@ -1,14 +1,29 @@
 // test simplify
 const assert = require('assert')
 const math = require('../../../src/main')
+const simplifyConstant = load(require('../../../src/function/algebra/simplify/simplifyConstant'))
 
 describe('simplify', function () {
-  function simplifyAndCompare (left, right, scope) {
+  function simplifyAndCompare (left, right, rules, scope, opt) {
     try {
-      if (scope) {
-        assert.equal(math.simplify(left, scope).toString(), math.parse(right).toString())
+      if (Array.isArray(rules)) {
+       if (opt) {
+         assert.equal(math.simplify(left, rules, scope, opt).toString(), math.parse(right).toString())
+       } else if (scope)  {
+         assert.equal(math.simplify(left, rules, scope).toString(), math.parse(right).toString())
+       } else {
+         assert.equal(math.simplify(left, rules).toString(), math.parse(right).toString())
+       }
       } else {
-        assert.equal(math.simplify(left).toString(), math.parse(right).toString())
+        if (scope) opt = scope
+        if (rules) scope = rules
+        if (opt) {
+         assert.equal(math.simplify(left, scope, opt).toString(), math.parse(right).toString())
+        } else if (scope)  {
+         assert.equal(math.simplify(left, scope).toString(), math.parse(right).toString())
+        } else {
+         assert.equal(math.simplify(left).toString(), math.parse(right).toString())
+        }
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -276,6 +291,15 @@ describe('simplify', function () {
     simplifyAndCompare('x+0', 'x')
     simplifyAndCompare('x-0', 'x')
   })
+
+  it('new options parameters', function () {
+    simplifyAndCompare('0.1*x', 'x/10', [simplifyConstant]) 
+    simplifyAndCompare('0.1*x', 'x/10', [simplifyConstant], {exactFractions:true}) 
+    simplifyAndCompare('0.1*x', '0.1*x', [simplifyConstant], {exactFractions:false}) 
+    simplifyAndCompare('y+0.1*x', '1+x/10', {y:1}, [simplifyConstant]) 
+    simplifyAndCompare('y+0.1*x', '1+x/10', {y:1}, [simplifyConstant], {exactFractions:true}) 
+    simplifyAndCompare('y+0.1*x', '1+0.1*x', {y:1},[simplifyConstant], {exactFractions:false}) 
+  })    
 
   it('resolve() should substitute scoped constants', function () {
     assert.equal(

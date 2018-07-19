@@ -58,7 +58,7 @@ function factory (type, config, load, typed, math) {
    *
    * Syntax:
    *
-   *     simplify(expr)
+   *     simplify(expr)n
    *     simplify(expr, rules)
    *     simplify(expr, rules, scope)
    *     simplify(expr, scope)
@@ -82,35 +82,55 @@ function factory (type, config, load, typed, math) {
    */
   const simplify = typed('simplify', {
     'string': function (expr) {
-      return simplify(parse(expr), simplify.rules, {})
+      return simplify(parse(expr), simplify.rules, {}, {})
     },
 
     'string, Object': function (expr, scope) {
-      return simplify(parse(expr), simplify.rules, scope)
+      return simplify(parse(expr), simplify.rules, scope, {})
+    },
+
+   'string, Object, Object': function (expr, scope, opts) {
+      return simplify(parse(expr), simplify.rules, scope, opts)
     },
 
     'string, Array': function (expr, rules) {
-      return simplify(parse(expr), rules, {})
+      return simplify(parse(expr), rules, {}, {}) 
     },
 
     'string, Array, Object': function (expr, rules, scope) {
-      return simplify(parse(expr), rules, scope)
+      return simplify(parse(expr), rules, scope, {})
+    },
+
+    'string, Array, Object, Object': function (expr, rules, scope, opts) {
+      return simplify(parse(expr), rules, scope, opts)
     },
 
     'Node, Object': function (expr, scope) {
-      return simplify(expr, simplify.rules, scope)
+      return simplify(expr, simplify.rules, scope, {})
+    },
+
+    'Node, Object, Object': function (expr, scope, opts) {
+      return simplify(expr, simplify.rules, scope, opts)
     },
 
     'Node': function (expr) {
-      return simplify(expr, simplify.rules, {})
+      return simplify(expr, simplify.rules, {}, {})
     },
 
     'Node, Array': function (expr, rules) {
-      return simplify(expr, rules, {})
+      return simplify(expr, rules, {}, {})
     },
 
     'Node, Array, Object': function (expr, rules, scope) {
-      let exactFract = '' // flag: if "" generates exact fractions from decimals
+      return simplify(expr, rules, scope, {})
+    }
+
+    'Node, Array, Object, Object': function (expr, rules, scope, opts) {
+      if (opts.exactFractions === undefined) {
+        exactFract = true
+      } else {
+        exactFract = opts.exactFractions
+      }
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
@@ -120,19 +140,20 @@ function factory (type, config, load, typed, math) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
         for (let i = 0; i < rules.length; i++) {
-          if (typeof rules[i] === 'string') {
-            if (rules[i] === 'exactFractOff') {
-              exactFract = 'Off'
+          if (typeof rules[i] === 'function') {
+            if (rules[i]===simplifyConstant) {
+              res = rules[i](res, exactFract)
+            } else {
+              res = rules[i](res)
             }
-          } else if (typeof rules[i] === 'function') {
-            res = rules[i](res, exactFract)
+
           } else {
             flatten(res)
             res = applyRule(res, rules[i])
           }
           unflattenl(res) // using left-heavy binary tree here since custom rule functions may expect it
         }
-        str = res.toString({parenthesis: 'all'})
+         str = res.toString({parenthesis: 'all'})
       }
 
       return res
@@ -268,11 +289,7 @@ function factory (type, config, load, typed, math) {
           if (lr.length === 2) {
             rule = {l: lr[0], r: lr[1]}
           } else {
-            if ((lr.length !== 1) || (listCommStrings.indexOf(rule) === -1)) {
-              throw SyntaxError('Could not parse rule: ' + rule)
-            }
-            newRule = rule
-            break
+            throw SyntaxError('Could not parse rule: ' + rule) 
           }
           /* falls through */
         case 'object':

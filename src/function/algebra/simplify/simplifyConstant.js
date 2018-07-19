@@ -12,8 +12,8 @@ function factory (type, config, load, typed, math) {
   const FunctionNode = math.expression.node.FunctionNode
   let isExactFract // local variable for the blocks and inner blocks
 
-  function simplifyConstant (expr, ExactFract = '') {
-    isExactFract = ExactFract === ''
+  function simplifyConstant (expr, exactFract) {
+    isExactFract = exactFract // out of local scope 
     const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }
@@ -43,7 +43,7 @@ function factory (type, config, load, typed, math) {
     },
     'BigNumber': function (n) {
       if (n < 0) {
-        return unaryMinusNode(new ConstantNode(n.negated().toString(), 'number'))
+        return unaryMinusNode(new ConstantNode(-n))
       }
       return new ConstantNode(n) // old parameters: (n.toString(), 'number')
     },
