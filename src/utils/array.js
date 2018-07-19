@@ -253,9 +253,6 @@ export function reshape (array, sizes) {
  * @param {Array.<number>} sizes  List of sizes for each dimension
  * @returns {Array}               Array whose data has been formatted to fit the
  *                                specified dimensions
- *
- * @throws {DimensionError}       If the product of the new dimension sizes does
- *                                not equal that of the old ones
  */
 
 function _reshape (array, sizes) {
