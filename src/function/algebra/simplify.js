@@ -89,12 +89,12 @@ function factory (type, config, load, typed, math) {
       return simplify(parse(expr), simplify.rules, scope, {})
     },
 
-   'string, Object, Object': function (expr, scope, opts) {
+    'string, Object, Object': function (expr, scope, opts) {
       return simplify(parse(expr), simplify.rules, scope, opts)
     },
 
     'string, Array': function (expr, rules) {
-      return simplify(parse(expr), rules, {}, {}) 
+      return simplify(parse(expr), rules, {}, {})
     },
 
     'string, Array, Object': function (expr, rules, scope) {
@@ -126,8 +126,8 @@ function factory (type, config, load, typed, math) {
     },
 
     'Node, Array, Object, Object': function (expr, rules, scope, opts) {
-      if (opts.exactFractions === undefined) {
-        exactFract = true
+      let exactFract = true
+      if (opts.exactFractions !== undefined) {
       } else {
         exactFract = opts.exactFractions
       }
@@ -141,21 +141,19 @@ function factory (type, config, load, typed, math) {
         _lastsym = 0 // counter for placeholder symbols
         for (let i = 0; i < rules.length; i++) {
           if (typeof rules[i] === 'function') {
-            if (rules[i]===simplifyConstant) {
+            if (rules[i] === simplifyConstant) {
               res = rules[i](res, exactFract)
             } else {
               res = rules[i](res)
             }
-
           } else {
             flatten(res)
             res = applyRule(res, rules[i])
           }
           unflattenl(res) // using left-heavy binary tree here since custom rule functions may expect it
         }
-         str = res.toString({parenthesis: 'all'})
+        str = res.toString({parenthesis: 'all'})
       }
-
       return res
     }
   })
