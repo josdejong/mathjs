@@ -179,7 +179,7 @@ function factory (type, config, load, typed) {
    */
   function polynomial (expr, scope, extended, rules) {
     const variables = []
-    const node = simplify(expr, rules, scope, {exactFractions: true}) // Resolves any variables and functions with all defined parameters
+    const node = simplify(expr, rules, scope, {exactFractions: false}) // Resolves any variables and functions with all defined parameters
     extended = !!extended
 
     const oper = '+-*' + (extended ? '/' : '')
