@@ -57,7 +57,7 @@ function factory (type, config, load, typed, math) {
    *
    * Syntax:
    *
-   *     simplify(expr)n
+   *     simplify(expr)
    *     simplify(expr, rules)
    *     simplify(expr, rules, scope)
    *     simplify(expr, scope)
