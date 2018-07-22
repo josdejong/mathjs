@@ -125,10 +125,6 @@ function factory (type, config, load, typed, math) {
     },
 
     'Node, Array, Object, Object': function (expr, rules, scope, options) {
-//      let exactFract = true
-//      if (options.exactFractions !== undefined) {
-//        exactFract = options.exactFractions
-//      }
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
