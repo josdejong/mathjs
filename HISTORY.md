@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 5.0.4
+## 2018-07-22, version 5.0.4
 
 - Strongly improved the performance of functions `factorial` for numbers.
   This improves performance of functions `gamma`, `permutation`, and
