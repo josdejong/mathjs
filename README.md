@@ -7,7 +7,8 @@ Math.js is an extensive math library for JavaScript and Node.js. It features a f
 [![Version](https://img.shields.io/npm/v/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Downloads](https://img.shields.io/npm/dm/mathjs.svg)](https://www.npmjs.com/package/mathjs)
 [![Build Status](https://img.shields.io/travis/josdejong/mathjs.svg)](https://travis-ci.org/josdejong/mathjs)
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+[![Greenkeeper badge](https://badges.greenkeeper.io/josdejong/mathjs.svg)](https://greenkeeper.io/)
+[![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)]()
 [![License](https://img.shields.io/github/license/josdejong/mathjs.svg)](https://github.com/josdejong/mathjs/blob/master/LICENSE)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosdejong%2Fmathjs?ref=badge_shield)
 [![Slack](https://slack.bri.im/badge.svg)](https://slack.bri.im)
@@ -139,7 +140,7 @@ Continuous integration tests are run on [Travis CI](https://travis-ci.org/) and 
 The test results can be checked on https://travis-ci.org/josdejong/mathjs. Travis CI runs the tests for different versions of node.js, and BrowserStack runs the tests are run on all major browsers.
 
 [![Travis CI](https://raw.github.com/josdejong/mathjs/develop/misc/Travis-CI-logo.png)](https://travis-ci.org/) &nbsp;&nbsp;&nbsp;
-[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com) [![Greenkeeper badge](https://badges.greenkeeper.io/josdejong/mathjs.svg)](https://greenkeeper.io/)
+[![BrowserStack](https://raw.github.com/josdejong/mathjs/master/misc/browserstack.png)](https://www.browserstack.com)
 
 Thanks Travis CI and BrowserStack for the generous free hosting of this open source project!
 
