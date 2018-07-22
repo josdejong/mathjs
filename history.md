@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180722-version-504">2018-07-22, version 5.0.4 <a href="#20180722-version-504" title="Permalink">#</a></h2>
+
+- Strongly improved the performance of functions `factorial` for numbers.
+  This improves performance of functions `gamma`, `permutation`, and
+  `combination` too. See <a href="https://github.com/josdejong/mathjs/issues/1170">#1170</a>. Thanks <a href="https://github.com/honeybar">@honeybar</a>.
+- Strongly improved the performance of function `reshape`, thanks to a 
+  friend of <a href="https://github.com/honeybar">@honeybar</a>.
+
+
 <h2 id="20180714-version-503">2018-07-14, version 5.0.3 <a href="#20180714-version-503" title="Permalink">#</a></h2>
 
 - Fixed many functions (for example `add` and `subtract`) not working
