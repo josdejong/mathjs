@@ -121,7 +121,7 @@ Additionally, the tests can be run on FireFox using [headless mode](https://deve
 
     npm run test:browser
 
-To run the tests on remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
+To run the tests remotely on BrowserStack, first set the environment variables `BROWSER_STACK_USERNAME` and `BROWSER_STACK_ACCESS_KEY` with your username and access key and then execute:
 
     npm run test:browserstack
 
