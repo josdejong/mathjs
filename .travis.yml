@@ -4,11 +4,6 @@ node_js:
   - 8
   - 10
 
-stages:
-  - lint
-  - test
-  - browser-test
-
 before_install:
   - npm install -g npm@6
   - npm install -g greenkeeper-lockfile@1
@@ -26,16 +21,13 @@ after_script: greenkeeper-lockfile-upload
 
 jobs:
   include:
-    - stage: lint
+    - stage: other
       node_js: 8
       script: npm run lint
-    - stage: browser-test
-      node_js: 8
-      script: npm run test:browser
+      env: NAME=lint
+    - script: npm run test:browser
       env: NAME=local browser
-    - # second script to run in the browser-tests stage
-      node_js: 8
-      script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
+    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
       env: NAME=browserstack
 
 git:
