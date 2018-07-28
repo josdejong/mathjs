@@ -108,7 +108,7 @@
     "javascript-natural-sort": "0.7.1",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
-    "typed-function": "1.0.4"
+    "typed-function": "1.1.0"
   },
   "devDependencies": {
     "babel-core": "6.26.3",
