@@ -29,6 +29,8 @@ jobs:
       env: NAME=local browser
     - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
       env: NAME=browserstack
+    - script: npm run build && npm run test:dist
+      env: NAME=test bundling
 
 git:
   depth: 5
