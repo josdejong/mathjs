@@ -47,4 +47,5 @@ function factory (type, config, load, typed) {
   return add
 }
 
+exports.name = 'addScalar'
 exports.factory = factory

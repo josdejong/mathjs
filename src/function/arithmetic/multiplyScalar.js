@@ -53,4 +53,5 @@ function factory (type, config, load, typed) {
   return multiplyScalar
 }
 
+exports.name = 'multiplyScalar'
 exports.factory = factory

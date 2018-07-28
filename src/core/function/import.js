@@ -75,7 +75,9 @@ function factory (type, config, load, typed, math) {
       for (const name in object) {
         if (object.hasOwnProperty(name)) {
           const value = object[name]
-          if (isSupportedType(value)) {
+          if (isDependencyFactory(value)) {
+            _importDependencyFactory(name, value, options)
+          } else if (isSupportedType(value)) {
             _import(name, value, options)
           } else if (isFactory(object)) {
             _importFactory(object, options)
@@ -103,6 +105,13 @@ function factory (type, config, load, typed, math) {
     if (options.wrap && typeof value === 'function') {
       // create a wrapper around the function
       value = _wrap(value)
+    }
+
+    if (hasTypedFunctionSignature(value)) {
+      // TODO: move this functionality into typed function?
+      value = typed(name, {
+        [value.signature]: value
+      })
     }
 
     if (isTypedFunction(math[name]) && isTypedFunction(value)) {
@@ -255,6 +264,70 @@ function factory (type, config, load, typed, math) {
   }
 
   /**
+   * Import an instance of a factory into math.js
+   * @param {string} name
+   * @param {function(math: object)} factory
+   * @param {Object} options  See import for a description of the options
+   * @private
+   */
+  function _importDependencyFactory (name, factory, options) {
+    const existingTransform = name in math.expression.transform
+    const namespace = factory.path ? traverse(math, factory.path) : math
+    const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
+
+    const resolver = function () {
+      let instance = factory(math)
+      if (instance && typeof instance.transform === 'function') {
+        throw new Error('Transforms cannot be attached to factory functions. ' +
+            'Please create a separate function for it with exports.path="expression.transform"')
+      }
+
+      if (isTypedFunction(existing) && isTypedFunction(instance)) {
+        if (options.override) {
+          // replace the existing typed function (nothing to do)
+        } else {
+          // merge the existing and new typed function
+          instance = typed(existing, instance)
+        }
+
+        return instance
+      }
+
+      if (existing === undefined || options.override) {
+        return instance
+      }
+
+      if (!options.silent) {
+        throw new Error('Cannot import "' + name + '": already exists')
+      }
+    }
+
+    if (factory.lazy !== false) {
+      lazy(namespace, name, resolver)
+
+      if (existingTransform) {
+        _deleteTransform(name)
+      } else {
+        if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          lazy(math.expression.mathWithTransform, name, resolver)
+        }
+      }
+    } else {
+      namespace[name] = resolver()
+
+      if (existingTransform) {
+        _deleteTransform(name)
+      } else {
+        if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          math.expression.mathWithTransform[name] = resolver()
+        }
+      }
+    }
+
+    math.emit('import', name, resolver, factory.path)
+  }
+
+  /**
    * Check whether given object is a type which can be imported
    * @param {Function | number | string | boolean | null | Unit | Complex} object
    * @return {boolean}
@@ -281,6 +354,15 @@ function factory (type, config, load, typed, math) {
    */
   function isTypedFunction (fn) {
     return typeof fn === 'function' && typeof fn.signatures === 'object'
+  }
+
+  // TODO: find a better name
+  function isDependencyFactory (obj) {
+    return obj && Array.isArray(obj.dependencies)
+  }
+
+  function hasTypedFunctionSignature (fn) {
+    return typeof fn === 'function' && typeof fn.signature === 'string'
   }
 
   function allowedInExpressions (name) {

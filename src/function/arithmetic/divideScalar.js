@@ -56,4 +56,5 @@ function factory (type, config, load, typed) {
   return divideScalar
 }
 
+exports.name = 'divideScalar'
 exports.factory = factory

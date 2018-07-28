@@ -16,5 +16,7 @@ module.exports = [
   require('./string'),
   require('./trigonometry'),
   require('./unit'),
-  require('./utils')
+  require('./utils'),
+
+  require('./arithmetic/indexModular')
 ]
