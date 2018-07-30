@@ -22,15 +22,18 @@ after_script: greenkeeper-lockfile-upload
 jobs:
   include:
     - stage: other
-      script: $SCRIPT
-      env: SCRIPT='npm run lint'
+      script: npm run lint
       node_js: lts/*
-    - env: SCRIPT='npm run test:browser'
+      env: NAME=lint
+    - script: npm run test:browser
       node_js: lts/*
-    - env:  SCRIPT='if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
+      env: NAME=local browser test
+    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
       node_js: lts/*
-    - env:   SCRIPT='npm run build && npm run test:dist'
+      env: NAME=browserstack test
+    - script: npm run build && npm run test:dist
       node_js: lts/*
+      env: NAME=bundling test
 
 git:
   depth: 5
