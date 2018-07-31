@@ -13,14 +13,14 @@ function factory (type, config, load, typed, math) {
   let optionsGlobal // local variable for the blocks and inner blocks
 
   function simplifyConstant (expr, options) {
-    optionsGlobal = options // Storing options of a local variable from factory, simplifyConstant wrap
-    const res = foldFraction(expr)
+//    optionsGlobal = options // Storing options of a local variable from factory, simplifyConstant wrap
+    const res = foldFraction(expr, options)
     return type.isNode(res) ? res : _toNode(res)
   }
 
-  function _eval (fnname, args) {
+  function _eval (fnname, options, args) {
     try {
-      return _toNumber(math[fnname].apply(null, args))
+      return _toNumber(math[fnname].apply(null, args), options)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
@@ -29,7 +29,7 @@ function factory (type, config, load, typed, math) {
         }
         return x
       })
-      return _toNumber(math[fnname].apply(null, args))
+      return _toNumber(math[fnname].apply(null, args), options)
     }
   }
 
@@ -68,29 +68,29 @@ function factory (type, config, load, typed, math) {
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
   const _toNumber = typed({
-    'string': function (s) {
+     'string, object': function (s, options) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
       } else if (config.number === 'Fraction') {
         return math.fraction(s)
       } else {
-        return _exactFraction(parseFloat(s))
+        return _exactFraction(parseFloat(s), options)
       }
     },
 
-    'Fraction': function (s) { return s },
+    'Fraction, object': function (s,options) { return s },
 
-    'BigNumber': function (s) { return s },
+    'BigNumber, object': function (s, options) { return s },
 
-    'number': function (s) {
-      return _exactFraction(s)
+    'number, object': function (s, options) {
+      return _exactFraction(s, options)
     },
 
-    'Complex': function (s) {
+    'Complex, object': function (s, options) {
       if (s.im !== 0) {
         return s
       }
-      return _exactFraction(s.re)
+      return _exactFraction(s.re, options)
     }
   })
 
@@ -127,7 +127,7 @@ function factory (type, config, load, typed, math) {
     return args.reduce(function (a, b) {
       if (!type.isNode(a) && !type.isNode(b)) {
         try {
-          return _eval(fn, [a, b])
+          return _eval(fn, {}, [a, b])
         } catch (ignoreandcontinue) {}
         a = _toNode(a)
         b = _toNode(b)
@@ -142,13 +142,13 @@ function factory (type, config, load, typed, math) {
   }
 
   // destroys the original node and returns a folded one
-  function foldFraction (node) {
+  function foldFraction (node, options) {
     switch (node.type) {
       case 'SymbolNode':
         return node
       case 'ConstantNode':
         if (typeof node.value === 'number' || !isNaN(node.value)) {
-          return _toNumber(node.value)
+          return _toNumber(node.value, options)
         }
         return node
       case 'FunctionNode':
@@ -160,11 +160,11 @@ function factory (type, config, load, typed, math) {
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
           let args = node.args.map(foldFraction)
-
+ 
           // If all args are numbers
           if (!args.some(type.isNode)) {
             try {
-              return _eval(node.name, args)
+              return _eval(node.name, options, args)
             } catch (ignoreandcontine) {}
           }
 
@@ -185,7 +185,7 @@ function factory (type, config, load, typed, math) {
         if (node.isUnary()) {
           args = [foldFraction(node.args[0])]
           if (!type.isNode(args[0])) {
-            res = _eval(fn, args)
+            res = _eval(fn, options, args)
           } else {
             res = makeNode(args)
           }
