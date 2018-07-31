@@ -158,12 +158,8 @@ function factory (type, config, load, typed, math) {
         // Process operators as OperatorNode
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
-          let args
-          for (let i=0;i<node.args.length,i++) {
-            args[i] = foldFraction(node.args[i], options)
-          }
-          // args = node.args.map(foldFraction)
-
+          let args = node.args.map(foldFraction)
+ 
           // If all args are numbers
           if (!args.some(type.isNode)) {
             try {
@@ -186,7 +182,7 @@ function factory (type, config, load, typed, math) {
         let res
         const makeNode = createMakeNodeFunction(node)
         if (node.isUnary()) {
-          args = [foldFraction(node.args[0], options)]
+          args = [foldFraction(node.args[0])]
           if (!type.isNode(args[0])) {
             res = _eval(fn, options, args)
           } else {
@@ -194,10 +190,7 @@ function factory (type, config, load, typed, math) {
           }
         } else if (isAssociative(node)) {
           args = allChildren(node)
-          for (let i=0;i<args.length,i++) {
-            args[i] = foldFraction(args[i], options)
-          }
-          // args = args.map(foldFraction)
+          args = args.map(foldFraction)
 
           if (isCommutative(fn)) {
             // commutative binary operator
@@ -226,17 +219,13 @@ function factory (type, config, load, typed, math) {
           }
         } else {
           // non-associative binary operator
-          let args
-          for (let i=0;i<node.args.length,i++) {
-            args[i] = foldFraction(node.args[i], options)
-          }
-          // args = node.args.map(foldFraction)
+          args = node.args.map(foldFraction)
           res = foldOp(fn, args, makeNode)
         }
         return res
       case 'ParenthesisNode':
         // remove the uneccessary parenthesis
-        return foldFraction(node.content, options)
+        return foldFraction(node.content)
       case 'AccessorNode':
         /* falls through */
       case 'ArrayNode':
