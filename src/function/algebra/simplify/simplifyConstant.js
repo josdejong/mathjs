@@ -13,7 +13,7 @@ function factory (type, config, load, typed, math) {
 
   let optionsGlobal // Global options for "simplifyConstant"
   function simplifyConstant (expr, options) {
-    optionsGlobal = (options===undefined ? {} : options)
+    optionsGlobal = (options === undefined ? {} : options)
     const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }
@@ -68,7 +68,7 @@ function factory (type, config, load, typed, math) {
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
   const _toNumber = typed({
-     'string': function (s) {
+    'string': function (s) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
       } else if (config.number === 'Fraction') {
@@ -159,7 +159,7 @@ function factory (type, config, load, typed, math) {
         // Process operators as OperatorNode
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
-          args = node.args.map(foldFraction)
+          let args = node.args.map(foldFraction)
 
           // If all args are numbers
           if (!args.some(type.isNode)) {
