@@ -10,10 +10,10 @@ function factory (type, config, load, typed, math) {
   const ConstantNode = math.expression.node.ConstantNode
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
-  let isExactFract // local variable for the blocks and inner blocks
 
-  function simplifyConstant (expr, exactFract) {
-    isExactFract = exactFract === undefined || exactFract === true // out of local scope
+  let optionsGlobal 
+  function simplifyConstant (expr, options) {
+    optionsGlobal = (options===undefined ? {} : options)
     const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }
@@ -54,7 +54,9 @@ function factory (type, config, load, typed, math) {
 
   // convert a number to a fraction only if it can be expressed exactly
   function _exactFraction (n) {
-    if (isExactFract && isFinite(n)) {
+    // optionGlobal is declared in simplifyConstant's factory function
+    const exactFraction = (optionsGlobal.exactFractions !== false)
+    if (exactFraction && isFinite(n)) {
       const f = math.fraction(n)
       if (f.valueOf() === n) {
         return f
@@ -66,7 +68,7 @@ function factory (type, config, load, typed, math) {
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
   const _toNumber = typed({
-    'string': function (s) {
+     'string, any': function (s) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
       } else if (config.number === 'Fraction') {
@@ -76,15 +78,15 @@ function factory (type, config, load, typed, math) {
       }
     },
 
-    'Fraction': function (s) { return s },
+    'Fraction, any': function (s) { return s },
 
-    'BigNumber': function (s) { return s },
+    'BigNumber, any': function (s) { return s },
 
-    'number': function (s) {
+    'number, any': function (s) {
       return _exactFraction(s)
     },
 
-    'Complex': function (s) {
+    'Complex, any': function (s) {
       if (s.im !== 0) {
         return s
       }
@@ -157,7 +159,7 @@ function factory (type, config, load, typed, math) {
         // Process operators as OperatorNode
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
-          let args = node.args.map(foldFraction)
+          args = node.args.map(foldFraction)
 
           // If all args are numbers
           if (!args.some(type.isNode)) {
