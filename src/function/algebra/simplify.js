@@ -88,8 +88,8 @@ function factory (type, config, load, typed, math) {
       return simplify(parse(expr), simplify.rules, scope, {})
     },
 
-    'string, Object, Object': function (expr, scope, options) {
-      return simplify(parse(expr), simplify.rules, scope, options)
+    'string, Object, Object': function (expr, scope, opts) {
+      return simplify(parse(expr), simplify.rules, scope, opts)
     },
 
     'string, Array': function (expr, rules) {
@@ -100,16 +100,16 @@ function factory (type, config, load, typed, math) {
       return simplify(parse(expr), rules, scope, {})
     },
 
-    'string, Array, Object, Object': function (expr, rules, scope, options) {
-      return simplify(parse(expr), rules, scope, options)
+    'string, Array, Object, Object': function (expr, rules, scope, opts) {
+      return simplify(parse(expr), rules, scope, opts)
     },
 
     'Node, Object': function (expr, scope) {
       return simplify(expr, simplify.rules, scope, {})
     },
 
-    'Node, Object, Object': function (expr, scope, options) {
-      return simplify(expr, simplify.rules, scope, options)
+    'Node, Object, Object': function (expr, scope, opts) {
+      return simplify(expr, simplify.rules, scope, opts)
     },
 
     'Node': function (expr) {
@@ -124,11 +124,11 @@ function factory (type, config, load, typed, math) {
       return simplify(expr, rules, scope, {})
     },
 
-    'Node, Array, Object, Object': function (expr, rules, scope, options) {
-//      let exactFract = true
-//      if (options.exactFractions !== undefined) {
-//        exactFract = options.exactFractions
-//      }
+    'Node, Array, Object, Object': function (expr, rules, scope, opts) {
+      let exactFract = true
+      if (opts.exactFractions !== undefined) {
+        exactFract = opts.exactFractions
+      }
       rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
@@ -139,7 +139,11 @@ function factory (type, config, load, typed, math) {
         _lastsym = 0 // counter for placeholder symbols
         for (let i = 0; i < rules.length; i++) {
           if (typeof rules[i] === 'function') {
-            res = rules[i](res, options)
+            if (rules[i] === simplifyConstant) {
+              res = rules[i](res, exactFract)
+            } else {
+              res = rules[i](res)
+            }
           } else {
             flatten(res)
             res = applyRule(res, rules[i])
