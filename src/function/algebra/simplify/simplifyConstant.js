@@ -12,7 +12,7 @@ function factory (type, config, load, typed, math) {
   const FunctionNode = math.expression.node.FunctionNode
 
   function simplifyConstant (expr, options) {
-    options = (options===undefined ? {} : options)
+//    optionsGlobal = options // Storing options of a local variable from factory, simplifyConstant wrap
     const res = foldFraction(expr, options)
     return type.isNode(res) ? res : _toNode(res)
   }
