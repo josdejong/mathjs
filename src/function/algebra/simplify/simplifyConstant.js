@@ -126,7 +126,7 @@ function factory (type, config, load, typed, math) {
     return args.reduce(function (a, b) {
       if (!type.isNode(a) && !type.isNode(b)) {
         try {
-          return _eval(fn, [a, b])
+          return _eval(fn, {}, [a, b])
         } catch (ignoreandcontinue) {}
         a = _toNode(a)
         b = _toNode(b)
