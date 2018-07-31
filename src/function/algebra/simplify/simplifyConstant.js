@@ -11,7 +11,7 @@ function factory (type, config, load, typed, math) {
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
 
-  let optionsGlobal 
+  let optionsGlobal // Global options for "simplifyConstant"
   function simplifyConstant (expr, options) {
     optionsGlobal = (options===undefined ? {} : options)
     const res = foldFraction(expr)
@@ -54,7 +54,7 @@ function factory (type, config, load, typed, math) {
 
   // convert a number to a fraction only if it can be expressed exactly
   function _exactFraction (n) {
-    // optionGlobal is declared in simplifyConstant's factory function
+    // 'optionGlobal' is declared in simplifyConstant's factory function
     const exactFraction = (optionsGlobal.exactFractions !== false)
     if (exactFraction && isFinite(n)) {
       const f = math.fraction(n)
@@ -68,7 +68,7 @@ function factory (type, config, load, typed, math) {
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
   const _toNumber = typed({
-     'string, any': function (s) {
+     'string': function (s) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
       } else if (config.number === 'Fraction') {
@@ -78,15 +78,15 @@ function factory (type, config, load, typed, math) {
       }
     },
 
-    'Fraction, any': function (s) { return s },
+    'Fraction': function (s) { return s },
 
-    'BigNumber, any': function (s) { return s },
+    'BigNumber': function (s) { return s },
 
-    'number, any': function (s) {
+    'number': function (s) {
       return _exactFraction(s)
     },
 
-    'Complex, any': function (s) {
+    'Complex': function (s) {
       if (s.im !== 0) {
         return s
       }
