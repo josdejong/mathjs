@@ -159,7 +159,7 @@ function factory (type, config, load, typed, math) {
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
           let args
-          for (let i=0; i<node.args.length; i++) {
+          for (let i=0;i<node.args.length,i++) {
             args[i] = foldFraction(node.args[i], options)
           }
           // args = node.args.map(foldFraction)
@@ -194,7 +194,7 @@ function factory (type, config, load, typed, math) {
           }
         } else if (isAssociative(node)) {
           args = allChildren(node)
-          for (let i=0; i<args.length; i++) {
+          for (let i=0;i<args.length,i++) {
             args[i] = foldFraction(args[i], options)
           }
           // args = args.map(foldFraction)
@@ -227,7 +227,7 @@ function factory (type, config, load, typed, math) {
         } else {
           // non-associative binary operator
           let args
-          for (let i=0; i<node.args.length; i++) {
+          for (let i=0;i<node.args.length,i++) {
             args[i] = foldFraction(node.args[i], options)
           }
           // args = node.args.map(foldFraction)
