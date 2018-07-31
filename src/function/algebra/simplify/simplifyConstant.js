@@ -158,7 +158,7 @@ function factory (type, config, load, typed, math) {
         // Process operators as OperatorNode
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
-          let args=[]
+          let args
           for (let i=0; i<node.args.length; i++) {
             args[i] = foldFraction(node.args[i], options)
           }
@@ -226,7 +226,7 @@ function factory (type, config, load, typed, math) {
           }
         } else {
           // non-associative binary operator
-          let args=[]
+          let args
           for (let i=0; i<node.args.length; i++) {
             args[i] = foldFraction(node.args[i], options)
           }
