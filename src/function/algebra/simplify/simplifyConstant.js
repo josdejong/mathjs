@@ -10,7 +10,6 @@ function factory (type, config, load, typed, math) {
   const ConstantNode = math.expression.node.ConstantNode
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
-  let optionsGlobal // local variable for the blocks and inner blocks
 
   function simplifyConstant (expr, options) {
 //    optionsGlobal = options // Storing options of a local variable from factory, simplifyConstant wrap
@@ -53,9 +52,9 @@ function factory (type, config, load, typed, math) {
   })
 
   // convert a number to a fraction only if it can be expressed exactly
-  function _exactFraction (n) {
+  function _exactFraction (n, options) {
     // optionGlobal is declared in simplifyConstant's factory function
-    const exactFraction = (optionsGlobal.exactFractions !== false)
+    const exactFraction = (options.exactFractions !== false)
     if (exactFraction && isFinite(n)) {
       const f = math.fraction(n)
       if (f.valueOf() === n) {
@@ -68,7 +67,7 @@ function factory (type, config, load, typed, math) {
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
   const _toNumber = typed({
-     'string, object': function (s, options) {
+     'string, any': function (s, options) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
       } else if (config.number === 'Fraction') {
@@ -78,15 +77,15 @@ function factory (type, config, load, typed, math) {
       }
     },
 
-    'Fraction, object': function (s,options) { return s },
+    'Fraction, any': function (s,options) { return s },
 
-    'BigNumber, object': function (s, options) { return s },
+    'BigNumber, any': function (s, options) { return s },
 
-    'number, object': function (s, options) {
+    'number, any': function (s, options) {
       return _exactFraction(s, options)
     },
 
-    'Complex, object': function (s, options) {
+    'Complex, any': function (s, options) {
       if (s.im !== 0) {
         return s
       }
