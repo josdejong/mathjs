@@ -11,16 +11,14 @@ function factory (type, config, load, typed, math) {
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
 
-  let optionsGlobal // Global options for "simplifyConstant"
   function simplifyConstant (expr, options) {
-    optionsGlobal = (options === undefined ? {} : options)
-    const res = foldFraction(expr)
+    const res = foldFraction(expr, options)
     return type.isNode(res) ? res : _toNode(res)
   }
 
-  function _eval (fnname, args) {
+  function _eval (fnname, args, options) {
     try {
-      return _toNumber(math[fnname].apply(null, args))
+      return _toNumber(math[fnname].apply(null, args), options)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
@@ -29,7 +27,7 @@ function factory (type, config, load, typed, math) {
         }
         return x
       })
-      return _toNumber(math[fnname].apply(null, args))
+      return _toNumber(math[fnname].apply(null, args), options)
     }
   }
 
@@ -53,10 +51,9 @@ function factory (type, config, load, typed, math) {
   })
 
   // convert a number to a fraction only if it can be expressed exactly
-  function _exactFraction (n) {
-    // 'optionGlobal' is declared in simplifyConstant's factory function
-    const exactFraction = (optionsGlobal.exactFractions !== false)
-    if (exactFraction && isFinite(n)) {
+  function _exactFraction (n, options) {
+    const exactFractions = (options && options.exactFractions !== false)
+    if (exactFractions && isFinite(n)) {
       const f = math.fraction(n)
       if (f.valueOf() === n) {
         return f
@@ -68,29 +65,30 @@ function factory (type, config, load, typed, math) {
   // Convert numbers to a preferred number type in preference order: Fraction, number, Complex
   // BigNumbers are left alone
   const _toNumber = typed({
-    'string': function (s) {
+    'string, Object': function (s, options) {
       if (config.number === 'BigNumber') {
         return math.bignumber(s)
       } else if (config.number === 'Fraction') {
         return math.fraction(s)
       } else {
-        return _exactFraction(parseFloat(s))
+        const n = parseFloat(s)
+        return _exactFraction(n, options)
       }
     },
 
-    'Fraction': function (s) { return s },
+    'Fraction, Object': function (s, options) { return s }, // we don't need options here
 
-    'BigNumber': function (s) { return s },
+    'BigNumber, Object': function (s, options) { return s },// we don't need options here
 
-    'number': function (s) {
-      return _exactFraction(s)
+    'number, Object': function (s, options) {
+      return _exactFraction(s, options)
     },
 
-    'Complex': function (s) {
+    'Complex, Object': function (s, options) {
       if (s.im !== 0) {
         return s
       }
-      return _exactFraction(s.re)
+      return _exactFraction(s.re, options)
     }
   })
 
@@ -123,11 +121,11 @@ function factory (type, config, load, typed, math) {
    * if args.length is 1, returns args[0]
    * @return - Either a Node representing a binary expression or Fraction
    */
-  function foldOp (fn, args, makeNode) {
+  function foldOp (fn, args, makeNode, options) {
     return args.reduce(function (a, b) {
       if (!type.isNode(a) && !type.isNode(b)) {
         try {
-          return _eval(fn, [a, b])
+          return _eval(fn, [a, b], options)
         } catch (ignoreandcontinue) {}
         a = _toNode(a)
         b = _toNode(b)
@@ -142,13 +140,13 @@ function factory (type, config, load, typed, math) {
   }
 
   // destroys the original node and returns a folded one
-  function foldFraction (node) {
+  function foldFraction (node, options) {
     switch (node.type) {
       case 'SymbolNode':
         return node
       case 'ConstantNode':
         if (typeof node.value === 'number' || !isNaN(node.value)) {
-          return _toNumber(node.value)
+          return _toNumber(node.value, options)
         }
         return node
       case 'FunctionNode':
@@ -159,12 +157,12 @@ function factory (type, config, load, typed, math) {
         // Process operators as OperatorNode
         const operatorFunctions = [ 'add', 'multiply' ]
         if (operatorFunctions.indexOf(node.name) === -1) {
-          let args = node.args.map(foldFraction)
+          let args = node.args.map(arg => foldFraction(arg, options))
 
           // If all args are numbers
           if (!args.some(type.isNode)) {
             try {
-              return _eval(node.name, args)
+              return _eval(node.name, args, options)
             } catch (ignoreandcontine) {}
           }
 
@@ -183,15 +181,15 @@ function factory (type, config, load, typed, math) {
         let res
         const makeNode = createMakeNodeFunction(node)
         if (node.isUnary()) {
-          args = [foldFraction(node.args[0])]
+          args = [foldFraction(node.args[0], options)]
           if (!type.isNode(args[0])) {
-            res = _eval(fn, args)
+            res = _eval(fn, args, options)
           } else {
             res = makeNode(args)
           }
         } else if (isAssociative(node)) {
           args = allChildren(node)
-          args = args.map(foldFraction)
+          args = args.map(arg => foldFraction(arg, options))
 
           if (isCommutative(fn)) {
             // commutative binary operator
@@ -207,26 +205,26 @@ function factory (type, config, load, typed, math) {
             }
 
             if (consts.length > 1) {
-              res = foldOp(fn, consts, makeNode)
+              res = foldOp(fn, consts, makeNode, options)
               vars.unshift(res)
-              res = foldOp(fn, vars, makeNode)
+              res = foldOp(fn, vars, makeNode, options)
             } else {
               // we won't change the children order since it's not neccessary
-              res = foldOp(fn, args, makeNode)
+              res = foldOp(fn, args, makeNode, options)
             }
           } else {
             // non-commutative binary operator
-            res = foldOp(fn, args, makeNode)
+            res = foldOp(fn, args, makeNode, options)
           }
         } else {
           // non-associative binary operator
-          args = node.args.map(foldFraction)
-          res = foldOp(fn, args, makeNode)
+          args = node.args.map(arg => foldFraction(arg, options))
+          res = foldOp(fn, args, makeNode, options)
         }
         return res
       case 'ParenthesisNode':
         // remove the uneccessary parenthesis
-        return foldFraction(node.content)
+        return foldFraction(node.content, options)
       case 'AccessorNode':
         /* falls through */
       case 'ArrayNode':
