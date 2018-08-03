@@ -55,23 +55,32 @@ function factory (type, config, load, typed, math) {
    * - [Strategies for simplifying math expressions (Stackoverflow)](http://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
    * - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
    *
+   *  An optional `options` argument can be passed as last argument of `simplify`.
+   *  There is currently one option available: `exactFractions`, a boolean which
+   *  is `true` by default.
+   *
    * Syntax:
    *
    *     simplify(expr)
    *     simplify(expr, rules)
+   *     simplify(expr, rules)
    *     simplify(expr, rules, scope)
+   *     simplify(expr, rules, scope, options)
    *     simplify(expr, scope)
+   *     simplify(expr, scope, options)
    *
    * Examples:
    *
-   *     math.simplify('2 * 1 * x ^ (2 - 1)')      // Node {2 * x}
-   *     math.simplify('2 * 3 * x', {x: 4})        // Node {24}
+   *     math.simplify('2 * 1 * x ^ (2 - 1)')      // Node "2 * x"
+   *     math.simplify('2 * 3 * x', {x: 4})        // Node "24"
    *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
-   *     math.simplify(f)                          // Node {2 * x}
+   *     math.simplify(f)                          // Node "2 * x"
+   *     math.simplify('0.4 * x', {}, {exactFractions: true})  // Node "x * 2 / 5"
+   *     math.simplify('0.4 * x', {}, {exactFractions: false}) // Node "0.4 * x"
    *
    * See also:
    *
-   *     derivative, parse, eval
+   *     derivative, parse, eval, rationalize
    *
    * @param {Node | string} expr
    *            The expression to be simplified

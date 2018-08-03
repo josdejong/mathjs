@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 5.1.0
+
+- Implemented new `options` argument in `simplify`. Thanks @paulobuchsbaum.
+- Bug fixes in `rationalize`, see #1173. Thanks @paulobuchsbaum.
+
+
 ## 2018-07-22, version 5.0.4
 
 - Strongly improved the performance of functions `factorial` for numbers.
