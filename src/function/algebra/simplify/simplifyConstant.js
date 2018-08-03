@@ -11,7 +11,9 @@ function factory (type, config, load, typed, math) {
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
 
-  function simplifyConstant (expr) {
+  let optionsGlobal // Global options for "simplifyConstant"
+  function simplifyConstant (expr, options) {
+    optionsGlobal = (options === undefined ? {} : options)
     const res = foldFraction(expr)
     return type.isNode(res) ? res : _toNode(res)
   }
@@ -41,9 +43,9 @@ function factory (type, config, load, typed, math) {
     },
     'BigNumber': function (n) {
       if (n < 0) {
-        return unaryMinusNode(new ConstantNode(n.negated().toString(), 'number'))
+        return unaryMinusNode(new ConstantNode(-n))
       }
-      return new ConstantNode(n.toString(), 'number')
+      return new ConstantNode(n) // old parameters: (n.toString(), 'number')
     },
     'Complex': function (s) {
       throw new Error('Cannot convert Complex number to Node')
@@ -52,7 +54,9 @@ function factory (type, config, load, typed, math) {
 
   // convert a number to a fraction only if it can be expressed exactly
   function _exactFraction (n) {
-    if (isFinite(n)) {
+    // 'optionGlobal' is declared in simplifyConstant's factory function
+    const exactFraction = (optionsGlobal.exactFractions !== false)
+    if (exactFraction && isFinite(n)) {
       const f = math.fraction(n)
       if (f.valueOf() === n) {
         return f
@@ -143,7 +147,7 @@ function factory (type, config, load, typed, math) {
       case 'SymbolNode':
         return node
       case 'ConstantNode':
-        if (typeof node.value === 'number') {
+        if (typeof node.value === 'number' || !isNaN(node.value)) {
           return _toNumber(node.value)
         }
         return node

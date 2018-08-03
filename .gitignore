@@ -9,3 +9,4 @@ node_modules
 dist
 lib
 .nyc_output
+*.bak

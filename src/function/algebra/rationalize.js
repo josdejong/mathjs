@@ -93,27 +93,37 @@ function factory (type, config, load, typed) {
     },
 
     'Node, Object, boolean': function (expr, scope, detailed) {
-      const polyRet = polynomial(expr, scope, true) // Check if expression is a rationalizable polynomial
+      const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
+      const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
       const nVars = polyRet.variables.length
       expr = polyRet.expression
 
       if (nVars >= 1) { // If expression in not a constant
-        const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
         expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
         let sBefore // Previous expression
-
+        let rules
+        let eDistrDiv = true
+        let redoInic = false
+        expr = simplify(expr, setRules.firstRules, {}, {exactFractions: false}) // Apply the initial rules, including succ div rules
+        let s
         while (true) { // Apply alternately  successive division rules and distr.div.rules
-          expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
-          expr = simplify(expr, setRules.distrDivRules) // and distr.div.rules until no more changes
+          rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
+          expr = simplify(expr, rules) // until no more changes
+          eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
 
-          const s = expr.toString()
-          if (s === sBefore) break // No changes : end of the loop
+          s = expr.toString()
+          if (s === sBefore) {
+            break // No changes : end of the loop
+          }
 
+          redoInic = true
           sBefore = s
         }
 
-        expr = simplify(expr, setRules.firstRulesAgain)
-        expr = simplify(expr, setRules.finalRules) // Apply final rules
+        if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
+          expr = simplify(expr, setRules.firstRulesAgain, {}, {exactFractions: false})
+        }
+        expr = simplify(expr, setRules.finalRules, {}, {exactFractions: false}) // Apply final rules
       } // NVars >= 1
 
       const coefficients = []
@@ -155,20 +165,21 @@ function factory (type, config, load, typed) {
    *
    * Syntax:
    *
-   *     polynomial(expr,scope,extended)
+   *     polynomial(expr,scope,extended, rules)
    *
    * @param  {Node | string} expr     The expression to simplify and check if is polynomial expression
    * @param  {object} scope           Optional scope for expression simplification
    * @param  {boolean} extended       Optional. Default is false. When true allows divide operator.
+   * @param  {array}  rules           Optional. Default is no rule.
    *
    *
    * @return {Object}
    *            {Object} node:   node simplified expression
    *            {Array}  variables:  variable names
    */
-  function polynomial (expr, scope, extended) {
+  function polynomial (expr, scope, extended, rules) {
     const variables = []
-    const node = simplify(expr, scope) // Resolves any variables and functions with all defined parameters
+    const node = simplify(expr, rules, scope, {exactFractions: false}) // Resolves any variables and functions with all defined parameters
     extended = !!extended
 
     const oper = '+-*' + (extended ? '/' : '')
@@ -201,14 +212,11 @@ function factory (type, config, load, typed) {
         // No function call in polynomial expression
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
-        if (node.op === '^' && node.isBinary()) {
-          if (node.args[1].op === '-' && node.args[1].isUnary()) {
-            if (node.args[1].args[0].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].args[0].value))) {
-              throw new Error('There is a non-integer exponent')
-            } else {
-              recPoly(node.args[0])
-            }
-          } else if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
+        if (node.op === '^') {
+          if (node.args[1].fn === 'unaryMinus') {
+            node = node.args[0]
+          }
+          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {
             recPoly(node.args[0])
@@ -254,7 +262,6 @@ function factory (type, config, load, typed) {
       {l: 'n*(n1^-1)', r: 'n/n1'},
       {l: 'n*n1^-n2', r: 'n/n1^n2'},
       {l: 'n1^-1', r: '1/n1'},
-      {l: 'n1^-n2', r: '1/n1^n2'},
       {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
       {l: '1*n', r: 'n'}]
 
@@ -266,6 +273,11 @@ function factory (type, config, load, typed) {
       {l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)'}, // Distributive 1
       {l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)'}, // Distributive 2
       {l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
+      {l: 'c1*n + n', r: '(c1+1)*n'}, // Joining constants
+      {l: 'c1*n - c2*n', r: '(c1-c2)*n'}, // Joining constants
+      {l: 'c1*n - n', r: '(c1-1)*n'}, // Joining constants
+      {l: 'v/c', r: '(1/c)*v'}, // variable/constant (new!)
+      {l: 'v/-c', r: '-(1/c)*v'}, // variable/constant (new!)
       {l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
       {l: '-v*c', r: '-c*v'}, // Inversion constant and variable 2
       {l: 'v*-c', r: '-c*v'}, // Inversion constant and variable 3
@@ -301,7 +313,7 @@ function factory (type, config, load, typed) {
 
     // Second rule set.
     // There is no aggregate expression with parentesis, but the only variable can be scattered.
-    setRules.finalRules = [ simplifyCore, // simplify.rules[0]
+    setRules.finalRules = [simplifyCore, // simplify.rules[0]
       {l: 'n*-n', r: '-n^2'}, // Joining multiply with power 1
       {l: 'n*n', r: 'n^2'}, // Joining multiply with power 2
       simplifyConstant, // simplify.rules[14] old 3rd index in oldRules
