@@ -78,7 +78,7 @@ function factory (type, config, load, typed, math) {
 
     'Fraction, Object': function (s, options) { return s }, // we don't need options here
 
-    'BigNumber, Object': function (s, options) { return s },// we don't need options here
+    'BigNumber, Object': function (s, options) { return s }, // we don't need options here
 
     'number, Object': function (s, options) {
       return _exactFraction(s, options)
