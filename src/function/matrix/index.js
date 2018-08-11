@@ -27,5 +27,7 @@ module.exports = [
   require('./subset'),
   require('./trace'),
   require('./transpose'),
-  require('./zeros')
+  require('./zeros'),
+	require('./linspace'),
+	require('./logspace')
 ]
