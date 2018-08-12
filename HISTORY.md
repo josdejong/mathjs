@@ -3,6 +3,8 @@
 
 ## not yet released, version 5.1.0
 
+- Implemented support for strings enclosed in single quotes.
+  Thanks @jean-emmanuel.
 - Implemented new `options` argument in `simplify`. Thanks @paulobuchsbaum.
 - Bug fixes in `rationalize`, see #1173. Thanks @paulobuchsbaum.
 
