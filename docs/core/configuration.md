@@ -13,7 +13,7 @@ The following configuration options are available:
 
 - `epsilon`. The minimum relative difference used to test equality between two
   compared values. This value is used by all relational functions.
-  Default value is `1e-14`.
+  Default value is `1e-12`.
 
 - `matrix`. The default type of matrix output for functions.
   Available values are: `'Matrix'` (default) or `'Array'`.

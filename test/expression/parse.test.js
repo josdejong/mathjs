@@ -296,7 +296,7 @@ describe('parse', function () {
     })
   })
 
-  describe('string', function () {
+  describe('string (double quotes)', function () {
     it('should parse a string', function () {
       assert.deepEqual(parseAndEval('"hello"'), 'hello')
       assert.deepEqual(parseAndEval('   "hi" '), 'hi')
@@ -348,6 +348,62 @@ describe('parse', function () {
       assert.deepEqual(parseAndEval('a.c', scope), 'Hello world')
       assert.deepEqual(scope.a, {c: 'Hello world'})
       assert.deepEqual(parseAndEval('a.c[end] = "D"', scope), 'D')
+      assert.deepEqual(scope.a, {c: 'Hello worlD'})
+    })
+  })
+
+  describe('string (single quotes)', function () {
+    it('should parse a string', function () {
+      assert.deepEqual(parseAndEval('\'hello\''), 'hello')
+      assert.deepEqual(parseAndEval('   \'hi\' '), 'hi')
+    })
+
+    it('should parse a with escaped characters', function () {
+      assert.deepEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
+      assert.deepEqual(parseAndEval('\'line end\\n\''), 'line end\n')
+      assert.deepEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
+      assert.deepEqual(parseAndEval('\'tab\\t\''), 'tab\t')
+      assert.deepEqual(parseAndEval('\'escaped backslash\\\\next\''), 'escaped backslash\\next')
+      assert.deepEqual(parseAndEval('\'escaped backslash\\\\\''), 'escaped backslash\\')
+    })
+
+    it('should throw an error with invalid strings', function () {
+      assert.throws(function () { parseAndEval('\'hi') }, SyntaxError)
+      assert.throws(function () { parseAndEval(' hi\' ') }, Error)
+    })
+
+    it('should get a string subset', function () {
+      let scope = {}
+      assert.deepEqual(parseAndEval('c=\'hello\'', scope), 'hello')
+      assert.deepEqual(parseAndEval('c[2:4]', scope), 'ell')
+      assert.deepEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
+      assert.deepEqual(parseAndEval('c[end-2:-1:1]', scope), 'leh')
+      assert.deepEqual(parseAndEval('\'hello\'[2:4]', scope), 'ell')
+    })
+
+    it('should set a string subset', function () {
+      let scope = {}
+      assert.deepEqual(parseAndEval('c=\'hello\'', scope), 'hello')
+      assert.deepEqual(parseAndEval('c[1] = \'H\'', scope), 'H')
+      assert.deepEqual(scope.c, 'Hello')
+      assert.deepEqual(parseAndEval('c', scope), 'Hello')
+      assert.deepEqual(parseAndEval('c[6:11] = \' world\'', scope), ' world')
+      assert.deepEqual(scope.c, 'Hello world')
+      assert.deepEqual(parseAndEval('c[end] = \'D\'', scope), 'D')
+      assert.deepEqual(scope.c, 'Hello worlD')
+    })
+
+    it('should set a string subset on an object', function () {
+      let scope = { a: {} }
+      assert.deepEqual(parseAndEval('a.c=\'hello\'', scope), 'hello')
+      assert.deepEqual(parseAndEval('a.c[1] = \'H\'', scope), 'H')
+      assert.deepEqual(scope.a, {c: 'Hello'})
+      assert.deepEqual(parseAndEval('a.c', scope), 'Hello')
+      assert.deepEqual(parseAndEval('a.c[6:11] = \' world\'', scope), ' world')
+      assert.deepEqual(scope.a, {c: 'Hello world'})
+      assert.deepEqual(parseAndEval('a.c', scope), 'Hello world')
+      assert.deepEqual(scope.a, {c: 'Hello world'})
+      assert.deepEqual(parseAndEval('a.c[end] = \'D\'', scope), 'D')
       assert.deepEqual(scope.a, {c: 'Hello worlD'})
     })
   })
