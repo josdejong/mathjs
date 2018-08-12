@@ -43,5 +43,4 @@ function factory (type, config, load, typed) {
  * @param array
  * @return string
  */
-exports.name = 'getArrayDataType'
 exports.factory = factory
