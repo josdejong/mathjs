@@ -5,6 +5,7 @@
 
 - Implemented support for strings enclosed in single quotes.
   Thanks @jean-emmanuel.
+- Implemented function `getMatrixDataType`. Thanks @JasonShin.
 - Implemented new `options` argument in `simplify`. Thanks @paulobuchsbaum.
 - Bug fixes in `rationalize`, see #1173. Thanks @paulobuchsbaum.
 
