@@ -5,6 +5,15 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180812-version-510">2018-08-12, version 5.1.0 <a href="#20180812-version-510" title="Permalink">#</a></h2>
+
+- Implemented support for strings enclosed in single quotes.
+  Thanks <a href="https://github.com/jean-emmanuel">@jean-emmanuel</a>.
+- Implemented function `getMatrixDataType`. Thanks <a href="https://github.com/JasonShin">@JasonShin</a>.
+- Implemented new `options` argument in `simplify`. Thanks <a href="https://github.com/paulobuchsbaum">@paulobuchsbaum</a>.
+- Bug fixes in `rationalize`, see <a href="https://github.com/josdejong/mathjs/issues/1173">#1173</a>. Thanks <a href="https://github.com/paulobuchsbaum">@paulobuchsbaum</a>.
+
+
 <h2 id="20180722-version-504">2018-07-22, version 5.0.4 <a href="#20180722-version-504" title="Permalink">#</a></h2>
 
 - Strongly improved the performance of functions `factorial` for numbers.
