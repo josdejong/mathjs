@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 5.1.0
+## 2018-08-12, version 5.1.0
 
 - Implemented support for strings enclosed in single quotes.
   Thanks @jean-emmanuel.

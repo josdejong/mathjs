@@ -3,9 +3,10 @@
 function factory (type, config, load, typed) {
   const getArrayDataType = load(require('../../type/matrix/utils/getArrayDataType'))
   /**
-   * Iterate over all elements of a DenseMatrix/SparseMatrix/array,
-   * and retrieves a Matrix data type. If it finds multiple data types within the matrix,
-   * it will return 'mixed'
+   * Find the data type of all elements in a matrix or array,
+   * for example 'number' if all items are a number and 'Complex' if all values
+   * are complex numbers.
+   * If a matrix contains more than one data type, it will return 'mixed'.
    *
    * Syntax:
    *

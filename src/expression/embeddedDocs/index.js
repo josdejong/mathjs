@@ -192,6 +192,7 @@ function factory (construction, config, load, typed) {
   docs.det = require('./function/matrix/det')
   docs.diag = require('./function/matrix/diag')
   docs.dot = require('./function/matrix/dot')
+  docs.getMatrixDataType = require('./function/matrix/getMatrixDataType')
   docs.identity = require('./function/matrix/identity')
   docs.filter = require('./function/matrix/filter')
   docs.flatten = require('./function/matrix/flatten')
