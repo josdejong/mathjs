@@ -18,7 +18,7 @@ const validateIndex = array.validateIndex
 function factory (type, config, load, typed) {
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
   const equalScalar = load(require('../../function/relational/equalScalar'))
-  const getArrayDataType = load(require('../../utils/collection/getArrayDataType'))
+  const getArrayDataType = load(require('./utils/getArrayDataType'))
 
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format

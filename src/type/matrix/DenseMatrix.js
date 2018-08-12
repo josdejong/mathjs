@@ -16,7 +16,7 @@ const isString = string.isString
 const validateIndex = array.validateIndex
 
 function factory (type, config, load, typed) {
-  const getArrayDataType = load(require('../../utils/collection/getArrayDataType'))
+  const getArrayDataType = load(require('./utils/getArrayDataType'))
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
 
   /**
