@@ -55,23 +55,32 @@ function factory (type, config, load, typed, math) {
    * - [Strategies for simplifying math expressions (Stackoverflow)](http://stackoverflow.com/questions/7540227/strategies-for-simplifying-math-expressions)
    * - [Symbolic computation - Simplification (Wikipedia)](https://en.wikipedia.org/wiki/Symbolic_computation#Simplification)
    *
+   *  An optional `options` argument can be passed as last argument of `simplify`.
+   *  There is currently one option available: `exactFractions`, a boolean which
+   *  is `true` by default.
+   *
    * Syntax:
    *
    *     simplify(expr)
    *     simplify(expr, rules)
+   *     simplify(expr, rules)
    *     simplify(expr, rules, scope)
+   *     simplify(expr, rules, scope, options)
    *     simplify(expr, scope)
+   *     simplify(expr, scope, options)
    *
    * Examples:
    *
-   *     math.simplify('2 * 1 * x ^ (2 - 1)')      // Node {2 * x}
-   *     math.simplify('2 * 3 * x', {x: 4})        // Node {24}
+   *     math.simplify('2 * 1 * x ^ (2 - 1)')      // Node "2 * x"
+   *     math.simplify('2 * 3 * x', {x: 4})        // Node "24"
    *     const f = math.parse('2 * 1 * x ^ (2 - 1)')
-   *     math.simplify(f)                          // Node {2 * x}
+   *     math.simplify(f)                          // Node "2 * x"
+   *     math.simplify('0.4 * x', {}, {exactFractions: true})  // Node "x * 2 / 5"
+   *     math.simplify('0.4 * x', {}, {exactFractions: false}) // Node "0.4 * x"
    *
    * See also:
    *
-   *     derivative, parse, eval
+   *     derivative, parse, eval, rationalize
    *
    * @param {Node | string} expr
    *            The expression to be simplified
@@ -81,47 +90,61 @@ function factory (type, config, load, typed, math) {
    */
   const simplify = typed('simplify', {
     'string': function (expr) {
-      return simplify(parse(expr), simplify.rules, {})
+      return simplify(parse(expr), simplify.rules, {}, {})
     },
 
     'string, Object': function (expr, scope) {
-      return simplify(parse(expr), simplify.rules, scope)
+      return simplify(parse(expr), simplify.rules, scope, {})
+    },
+
+    'string, Object, Object': function (expr, scope, options) {
+      return simplify(parse(expr), simplify.rules, scope, options)
     },
 
     'string, Array': function (expr, rules) {
-      return simplify(parse(expr), rules, {})
+      return simplify(parse(expr), rules, {}, {})
     },
 
     'string, Array, Object': function (expr, rules, scope) {
-      return simplify(parse(expr), rules, scope)
+      return simplify(parse(expr), rules, scope, {})
+    },
+
+    'string, Array, Object, Object': function (expr, rules, scope, options) {
+      return simplify(parse(expr), rules, scope, options)
     },
 
     'Node, Object': function (expr, scope) {
-      return simplify(expr, simplify.rules, scope)
+      return simplify(expr, simplify.rules, scope, {})
+    },
+
+    'Node, Object, Object': function (expr, scope, options) {
+      return simplify(expr, simplify.rules, scope, options)
     },
 
     'Node': function (expr) {
-      return simplify(expr, simplify.rules, {})
+      return simplify(expr, simplify.rules, {}, {})
     },
 
     'Node, Array': function (expr, rules) {
-      return simplify(expr, rules, {})
+      return simplify(expr, rules, {}, {})
     },
 
     'Node, Array, Object': function (expr, rules, scope) {
-      rules = _buildRules(rules)
+      return simplify(expr, rules, scope, {})
+    },
 
+    'Node, Array, Object, Object': function (expr, rules, scope, options) {
+      rules = _buildRules(rules)
       let res = resolve(expr, scope)
       res = removeParens(res)
       let visited = {}
-
       let str = res.toString({parenthesis: 'all'})
       while (!visited[str]) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
         for (let i = 0; i < rules.length; i++) {
           if (typeof rules[i] === 'function') {
-            res = rules[i](res)
+            res = rules[i](res, options)
           } else {
             flatten(res)
             res = applyRule(res, rules[i])
@@ -130,7 +153,6 @@ function factory (type, config, load, typed, math) {
         }
         str = res.toString({parenthesis: 'all'})
       }
-
       return res
     }
   })
@@ -261,10 +283,11 @@ function factory (type, config, load, typed, math) {
       switch (ruleType) {
         case 'string':
           const lr = rule.split('->')
-          if (lr.length !== 2) {
+          if (lr.length === 2) {
+            rule = {l: lr[0], r: lr[1]}
+          } else {
             throw SyntaxError('Could not parse rule: ' + rule)
           }
-          rule = {l: lr[0], r: lr[1]}
           /* falls through */
         case 'object':
           newRule = {

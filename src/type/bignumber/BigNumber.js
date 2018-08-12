@@ -1,5 +1,6 @@
 'use strict'
-const Decimal = require('decimal.js/decimal.js') // make sure to pick the es5 version
+
+import Decimal from 'decimal.js'
 
 function factory (type, config, load, typed, math) {
   const BigNumber = Decimal.clone({precision: config.precision})

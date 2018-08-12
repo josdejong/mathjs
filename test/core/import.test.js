@@ -236,6 +236,27 @@ describe('import', function () {
     assert.strictEqual(math.expression.mathWithTransform.mean, mean)
   })
 
+  it('should override a function with transform for a factory function without', function () {
+    const math2 = math.create()
+
+    function mean () {
+      return 'test'
+    }
+
+    const meanFactory = {
+      name: 'mean',
+      factory: () => mean
+    }
+
+    console.log('start')
+    math2.import([meanFactory], {override: true})
+
+    assert(math2.hasOwnProperty('mean'))
+    assert.strictEqual(math2.mean, mean)
+    assert.strictEqual(math2.expression.transform.mean, undefined)
+    assert.strictEqual(math2.expression.mathWithTransform.mean, mean)
+  })
+
   it('should throw an error when a factory function has a transform', function () {
     assert.throws(function () {
       math.import({

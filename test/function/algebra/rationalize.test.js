@@ -98,6 +98,12 @@ describe('rationalize', function () {
     assert.equal(stri(math.rationalize('x*5')), '5*x')
   })
 
+  it('aditional simple expressions', function () {
+    assert.equal(stri(math.rationalize('1/(0.1x+1)+1')), '(0.1*x+2)/(0.1*x+1)')
+    assert.equal(stri(math.rationalize('1/x^2+1')), '(x^2+1)/x^2')
+    assert.equal(stri(math.rationalize('1/(x/10+1)+1')), '(0.1*x+2)/(0.1*x+1)')
+  })
+
   it('processing 2 variable expressions', function () {
     assert.equal(stri(math.rationalize('x+y')), 'x+y')
     assert.equal(stri(math.rationalize('x^2 + 2*x*y + 3')), 'x^2+2*x*y+3')
@@ -124,12 +130,6 @@ describe('rationalize', function () {
 
     assert.equal(stri(math.rationalize('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )')),
       '(-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/(-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)')
-  })
-
-  it('should handle non integer powers correctly', function () {
-    assert.equal(stri(math.rationalize('1/x^2+1')), '(x^2+1)/x^2')
-    assert.equal(stri(math.rationalize('1/(0.1x+1)+1')), '(10*x+200)/(10*x+100)')
-    assert.equal(stri(math.rationalize('1/(0.125x+1)+1')), '(8*x+128)/(8*x+64)')
   })
 
   it('testing scope', function () {
