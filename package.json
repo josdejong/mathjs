@@ -144,7 +144,7 @@
     "standard": "11.0.1",
     "sylvester": "0.0.21",
     "tar": "4.4.6",
-    "uglify-js": "3.4.6",
+    "uglify-js": "3.4.7",
     "underscore": "1.9.1",
     "webpack": "4.16.5",
     "zeros": "1.0.0"
