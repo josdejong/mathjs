@@ -3,10 +3,22 @@ function factory (type, config, load, typed) {
   const _typeof = load(require('../../../function/utils/typeof'))
 
   function getArrayDataType (array) {
-    let _type
+    let _type // to hold type info
+    let _length = 0 // to hold length value to ensure it has consistent sizes
     for (let i = 0; i < array.length; i++) {
       const item = array[i]
-      const itemType = Array.isArray(item)
+      const isArray = Array.isArray(item)
+
+      // Saving the target matrix row size
+      if (i === 0 && isArray) {
+        _length = item.length
+      }
+      // If the current item is an array but the length does not equal the targetVectorSize
+      if (isArray && item.length !== _length) {
+        return undefined
+      }
+
+      const itemType = isArray
         ? getArrayDataType(item) // recurse into a nested array
         : _typeof(item)
       if (_type === undefined) {

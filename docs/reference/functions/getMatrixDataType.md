@@ -31,9 +31,9 @@ string | A string representation of the matrix type
 ```js
 const x = [ [1, 2, 3], [4, 5, 6] ]
 const mixedX = [ [1, true], [2, 3] ]
-const fractionX = [ [math.fraction(1, 3)], [math.fraciton(1, 3] ]
+const fractionX = [ [math.fraction(1, 3)], [math.fraction(1, 3] ]
 const unitX = [ [math.unit('5cm')], [math.unit('5cm')] ]
-const bigNumberX = [ [math.bignumber(1)], [math.unit(0)] ]
+const bigNumberX = [ [math.bignumber(1)], [math.bignumber(0)] ]
 const sparse = math.sparse(x)
 const dense = math.matrix(x)
 math.getMatrixDataType(x)   // returns 'number'

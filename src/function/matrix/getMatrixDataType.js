@@ -1,7 +1,7 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  const getArrayDataType = load(require('../../utils/collection/getArrayDataType'))
+  const getArrayDataType = load(require('../../type/matrix/utils/getArrayDataType'))
   /**
    * Iterate over all elements of a DenseMatrix/SparseMatrix/array,
    * and retrieves a Matrix data type. If it finds multiple data types within the matrix,
