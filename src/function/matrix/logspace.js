@@ -1,22 +1,24 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-	const pow = load(require('../arithmetic/pow'))
-	const log10 = load(require('../arithmetic/log10'))
-	const equal = load(require('../relational/equal'))
-	const linspace = load(require('../matrix/linspace'))
-	
+  const bignumber = load(require('../../type/bignumber/function/bignumber'))
+  const bigconstants = load(require('../../utils/bignumber/constants'))
+  const pow = load(require('../arithmetic/pow'))
+  const log10 = load(require('../arithmetic/log10'))
+  const equal = load(require('../relational/equal'))
+  const linspace = load(require('../matrix/linspace'))
+
   /**
-   * Create an array of logarithmically equally spaced points from 10^start to 10^end.
+   * Create an array of logarithmically n equally spaced points from 10^start to 10^end.
    * By default, the logspace generates a array of 100 logarithmically equally spaced points from start 
-	 * to end. The number of points can be changed by the extra parameter `n`. For `n = 1` logspace returns 
-	 * the end. If end is pi, then the points are from 10^start to pi.
+   * to end. The number of points can be changed by the extra parameter `n`. For `n = 1` logspace returns 
+   * the end. If end is pi, then the points are from 10^start to pi.
    *
    * Syntax:
    *
    *     math.logspace(start, end)                    // Create a logspace from start to 
-	 *																									// end with 100 points.
-   *     math.logspace(start, end [, n])        		  // Create a logspace from start to
+   *                                                  // end with 100 points.
+   *     math.logspace(start, end [, n])              // Create a logspace from start to
    *                                                  // end with n points.
    *
    * Where:
@@ -30,9 +32,9 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.logspace(-1,2)        	// [0.1, 0.1149..., 0.1232..., ..., 100]
-	 *		 math.logspace(-1,2,4)				// [0.1, 1, 10, 100]
-	 *		 math.logspace(-1,math.pi,3) 	// [0.1, 0.3155..., 0.9956..., ..., pi]
+   *     math.logspace(-1,2)          // [0.1, 0.1149..., 0.1232..., ..., 100]
+   *     math.logspace(-1,2,4)        // [0.1, 1, 10, 100]
+   *     math.logspace(-1,math.pi,4)   // [0.1, 0.3155..., 0.9956..., pi]
    *
    * See also:
    *
@@ -47,7 +49,13 @@ function factory (type, config, load, typed) {
     },
     'number, number, number': function (start, end, n) {
       return _logspace(start, end, n)
-    }
+    },
+    'BigNumber, BigNumber': function (start, end) {
+      return _bigLogspace(start, end, bignumber(100));
+    },
+    'BigNumber, BigNumber, BigNumber': function (start, end, n) {
+      return _bigLogspace(start, end, n)
+    }    
   })
 
   logspace.toTex = undefined // use default template
@@ -63,12 +71,28 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _logspace (start, end, n) {
-		if (equal(end,Math.PI)) {
-			end = log10(end)
-		}
+    if (equal(end,Math.PI)) {
+      end = log10(end)
+    }
 
-		return linspace(start, end, n).map(function(x) { return pow(10,x); });
+    return linspace(start, end, n).map(function(x) { return pow(10,x); });
   }
+  
+  /**
+   * Create a logspace with numbers.
+   * @param {number} start
+   * @param {number} end
+   * @param {number} n
+   * @returns {Array} logspace
+   * @private
+   */
+  function _bigLogspace (start, end, n) {
+    if (equal(end,bigconstants.pi)) {
+      end = log10(end)
+    }
+
+    return linspace(start, end, n).map(function(x) { return pow(10,x); });
+  }  
 }
 
 exports.name = 'logspace'
