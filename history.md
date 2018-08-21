@@ -5,6 +5,17 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180821-version-511">2018-08-21, version 5.1.1 <a href="#20180821-version-511" title="Permalink">#</a></h2>
+
+- Function `isNumeric` now recognizes more types.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1214">#1214</a>: functions `sqrt`, `max`, `min`, `var`, `std`, `mode`, `mad`,
+  `median`, and `partitionSelect` not neatly handling `NaN` inputs. In some
+  cases (`median`, `mad`, and `partitionSelect`) this resulted in an infinite
+  loop.
+- Upgraded dependencies (`escape-latex@1.1.1`)
+- Upgraded devDependencies (`webpack@4.17.0`)
+
+
 <h2 id="20180812-version-510">2018-08-12, version 5.1.0 <a href="#20180812-version-510" title="Permalink">#</a></h2>
 
 - Implemented support for strings enclosed in single quotes.
