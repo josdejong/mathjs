@@ -70,7 +70,7 @@ describe('sqrt', function () {
   })
 
   it('should return NaN if input is NaN', function () {
-    assert.strictEqual(sqrt(NaN), NaN)
+    assert(isNaN(sqrt(NaN)))
   })
 
   it('should throw an error when used with a string', function () {
