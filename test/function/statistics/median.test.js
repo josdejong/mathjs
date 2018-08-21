@@ -68,12 +68,12 @@ describe('median', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.strictEqual(median([NaN]), NaN)
-    assert.strictEqual(median([1, NaN]), NaN)
-    assert.strictEqual(median([NaN, 1]), NaN)
-    assert.strictEqual(median([1, 3, NaN]), NaN)
-    assert.strictEqual(median([NaN, NaN, NaN]), NaN)
-    assert.strictEqual(median(NaN, NaN, NaN), NaN)
+    assert(isNaN(median([NaN])))
+    assert(isNaN(median([1, NaN])))
+    assert(isNaN(median([NaN, 1])))
+    assert(isNaN(median([1, 3, NaN])))
+    assert(isNaN(median([NaN, NaN, NaN])))
+    assert(isNaN(median(NaN, NaN, NaN)))
   })
 
   it('should throw an error if called with invalid number of arguments', function () {

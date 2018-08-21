@@ -90,8 +90,7 @@ function factory (type, config, load, typed) {
       try {
         if (isNaN(value) && typeof value === 'number') {
           min = NaN
-        }
-        else if (min === undefined || smaller(value, min)) {
+        } else if (min === undefined || smaller(value, min)) {
           min = value
         }
       } catch (err) {

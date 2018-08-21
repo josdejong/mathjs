@@ -73,12 +73,12 @@ describe('mean', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.strictEqual(mean([NaN]), NaN)
-    assert.strictEqual(mean([1, NaN]), NaN)
-    assert.strictEqual(mean([NaN, 1]), NaN)
-    assert.strictEqual(mean([1, 3, NaN]), NaN)
-    assert.strictEqual(mean([NaN, NaN, NaN]), NaN)
-    assert.strictEqual(mean(NaN, NaN, NaN), NaN)
+    assert(isNaN(mean([NaN])))
+    assert(isNaN(mean([1, NaN])))
+    assert(isNaN(mean([NaN, 1])))
+    assert(isNaN(mean([1, 3, NaN])))
+    assert(isNaN(mean([NaN, NaN, NaN])))
+    assert(isNaN(mean(NaN, NaN)))
   })
 
   it('should throw an error if called with invalid number of arguments', function () {

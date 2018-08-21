@@ -43,12 +43,12 @@ describe('std', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.strictEqual(std([NaN]), NaN)
-    assert.strictEqual(std([1, NaN]), NaN)
-    assert.strictEqual(std([NaN, 1]), NaN)
-    assert.strictEqual(std([1, 3, NaN]), NaN)
-    assert.strictEqual(std([NaN, NaN, NaN]), NaN)
-    assert.strictEqual(std(NaN, NaN, NaN), NaN)
+    assert(isNaN(std([NaN])))
+    assert(isNaN(std([1, NaN])))
+    assert(isNaN(std([NaN, 1])))
+    assert(isNaN(std([1, 3, NaN])))
+    assert(isNaN(std([NaN, NaN, NaN])))
+    assert(isNaN(std(NaN, NaN, NaN)))
   })
 
   it('should throw an error in case of unknown type of normalization', function () {

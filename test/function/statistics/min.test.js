@@ -76,12 +76,12 @@ describe('min', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.strictEqual(min([NaN]), NaN)
-    assert.strictEqual(min([1, NaN]), NaN)
-    assert.strictEqual(min([NaN, 1]), NaN)
-    assert.strictEqual(min([1, 3, NaN]), NaN)
-    assert.strictEqual(min([NaN, NaN, NaN]), NaN)
-    assert.strictEqual(min(NaN, NaN, NaN), NaN)
+    assert(isNaN(min([NaN])))
+    assert(isNaN(min([1, NaN])))
+    assert(isNaN(min([NaN, 1])))
+    assert(isNaN(min([1, 3, NaN])))
+    assert(isNaN(min([NaN, NaN, NaN])))
+    assert(isNaN(min(NaN, NaN, NaN)))
   })
 
   it('should throw an error when called multiple arrays or matrices', function () {

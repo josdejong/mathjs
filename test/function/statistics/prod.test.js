@@ -50,12 +50,12 @@ describe('prod', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.strictEqual(prod([NaN]), NaN)
-    assert.strictEqual(prod([1, NaN]), NaN)
-    assert.strictEqual(prod([NaN, 1]), NaN)
-    assert.strictEqual(prod([1, 3, NaN]), NaN)
-    assert.strictEqual(prod([NaN, NaN, NaN]), NaN)
-    assert.strictEqual(prod(NaN, NaN, NaN), NaN)
+    assert(isNaN(prod([NaN])))
+    assert(isNaN(prod([1, NaN])))
+    assert(isNaN(prod([NaN, 1])))
+    assert(isNaN(prod([1, 3, NaN])))
+    assert(isNaN(prod([NaN, NaN, NaN])))
+    assert(isNaN(prod(NaN, NaN, NaN)))
   })
 
   it('should throw an error if called with invalid number of arguments', function () {

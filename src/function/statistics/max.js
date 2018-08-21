@@ -90,8 +90,7 @@ function factory (type, config, load, typed) {
       try {
         if (isNaN(value) && typeof value === 'number') {
           max = NaN
-        }
-        else if (max === undefined || larger(value, max)) {
+        } else if (max === undefined || larger(value, max)) {
           max = value
         }
       } catch (err) {

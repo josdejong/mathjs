@@ -64,8 +64,7 @@ function factory (type, config, load, typed) {
   function _sqrtNumber (x) {
     if (isNaN(x)) {
       return NaN
-    }
-    else if (x >= 0 || config.predictable) {
+    } else if (x >= 0 || config.predictable) {
       return Math.sqrt(x)
     } else {
       return new type.Complex(x, 0).sqrt()

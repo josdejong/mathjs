@@ -41,12 +41,12 @@ describe('variance', function () {
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
-    assert.strictEqual(variance([NaN]), NaN)
-    assert.strictEqual(variance([1, NaN]), NaN)
-    assert.strictEqual(variance([NaN, 1]), NaN)
-    assert.strictEqual(variance([1, 3, NaN]), NaN)
-    assert.strictEqual(variance([NaN, NaN, NaN]), NaN)
-    assert.strictEqual(variance(NaN, NaN, NaN), NaN)
+    assert(isNaN(variance([NaN])))
+    assert(isNaN(variance([1, NaN])))
+    assert(isNaN(variance([NaN, 1])))
+    assert(isNaN(variance([1, 3, NaN])))
+    assert(isNaN(variance([NaN, NaN, NaN])))
+    assert(isNaN(variance(NaN, NaN, NaN)))
   })
 
   it('should throw an error in case of unknown type of normalization', function () {
