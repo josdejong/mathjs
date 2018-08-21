@@ -88,7 +88,10 @@ function factory (type, config, load, typed) {
 
     deepForEach(array, function (value) {
       try {
-        if (max === undefined || larger(value, max)) {
+        if (isNaN(value) && typeof value === 'number') {
+          max = NaN
+        }
+        else if (max === undefined || larger(value, max)) {
           max = value
         }
       } catch (err) {

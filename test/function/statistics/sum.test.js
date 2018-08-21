@@ -61,6 +61,15 @@ describe('sum', function () {
     ])), 39)
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.strictEqual(sum([NaN]), NaN)
+    assert.strictEqual(sum([1, NaN]), NaN)
+    assert.strictEqual(sum([NaN, 1]), NaN)
+    assert.strictEqual(sum([1, 3, NaN]), NaN)
+    assert.strictEqual(sum([NaN, NaN, NaN]), NaN)
+    assert.strictEqual(sum(NaN, NaN, NaN), NaN)
+  })
+
   it('should throw an error if called with invalid number of arguments', function () {
     assert.throws(function () { sum() })
   })

@@ -3,6 +3,9 @@
 const flatten = require('../../utils/array').flatten
 
 function factory (type, config, load, typed) {
+  const isNaN = load(require('../utils/isNaN'))
+  const isNumeric = load(require('../utils/isNumeric'))
+
   /**
   * Computes the mode of a set of numbers or a list with values(numbers or characters).
   * If there are more than one modes, it returns a list of those values.
@@ -42,7 +45,7 @@ function factory (type, config, load, typed) {
   /**
    * Calculates the mode in an 1-dimensional array
    * @param {Array} values
-   * @return {number} mode
+   * @return {Array} mode
    * @private
    */
   function _mode (values) {
@@ -55,16 +58,24 @@ function factory (type, config, load, typed) {
     const count = {}
     let mode = []
     let max = 0
-    for (const i in values) {
-      if (!(values[i] in count)) {
-        count[values[i]] = 0
+    for (let i = 0; i < values.length; i++) {
+      const value = values[i]
+
+      if (isNumeric(value) && isNaN(value)) {
+        throw new Error('Cannot calculate mode of an array containing NaN values')
       }
-      count[values[i]]++
-      if (count[values[i]] === max) {
-        mode.push(values[i])
-      } else if (count[values[i]] > max) {
-        max = count[values[i]]
-        mode = [values[i]]
+
+      if (!(value in count)) {
+        count[value] = 0
+      }
+
+      count[value]++
+
+      if (count[value] === max) {
+        mode.push(value)
+      } else if (count[value] > max) {
+        max = count[value]
+        mode = [value]
       }
     }
     return mode

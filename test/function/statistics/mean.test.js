@@ -72,6 +72,15 @@ describe('mean', function () {
       [[15, 35, 55], [75, 95, 115], [135, 155, 175], [195, 215, 235]])
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.strictEqual(mean([NaN]), NaN)
+    assert.strictEqual(mean([1, NaN]), NaN)
+    assert.strictEqual(mean([NaN, 1]), NaN)
+    assert.strictEqual(mean([1, 3, NaN]), NaN)
+    assert.strictEqual(mean([NaN, NaN, NaN]), NaN)
+    assert.strictEqual(mean(NaN, NaN, NaN), NaN)
+  })
+
   it('should throw an error if called with invalid number of arguments', function () {
     assert.throws(function () { mean() })
     assert.throws(function () { mean([], 2, 3) })

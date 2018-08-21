@@ -38,6 +38,12 @@ describe('mode', function () {
     assert.deepEqual(mode([], 0), [0])
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.throws(function () { mode(NaN) }, /Cannot calculate mode/)
+    assert.throws(function () { mode([NaN]) }, /Cannot calculate mode/)
+    assert.throws(function () { mode([1, NaN]) }, /Cannot calculate mode/)
+  })
+
   it('should throw appropriate error if no parameters are assigned', function () {
     assert.throws(function () { mode([]) })
     assert.throws(function () { mode() })

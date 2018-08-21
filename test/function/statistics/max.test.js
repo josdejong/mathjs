@@ -66,6 +66,15 @@ describe('max', function () {
     [[2, 4, 6], [7, 9, 11]])
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.strictEqual(max([NaN]), NaN)
+    assert.strictEqual(max([1, NaN]), NaN)
+    assert.strictEqual(max([NaN, 1]), NaN)
+    assert.strictEqual(max([1, 3, NaN]), NaN)
+    assert.strictEqual(max([NaN, NaN, NaN]), NaN)
+    assert.strictEqual(max(NaN, NaN, NaN), NaN)
+  })
+
   it('should throw an error when called multiple arrays or matrices', function () {
     assert.throws(function () { max([1, 2], [3, 4]) }, /Scalar values expected/)
     assert.throws(function () { max(math.matrix([1, 2]), math.matrix([3, 4])) }, /Scalar values expected/)

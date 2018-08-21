@@ -69,6 +69,10 @@ describe('sqrt', function () {
     assert.equal(math.format(sqrt(math.unit('-25 m^2/s^2')), 14), '(5i) m / s')
   })
 
+  it('should return NaN if input is NaN', function () {
+    assert.strictEqual(sqrt(NaN), NaN)
+  })
+
   it('should throw an error when used with a string', function () {
     assert.throws(function () {
       sqrt('a string')

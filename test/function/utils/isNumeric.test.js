@@ -15,6 +15,9 @@ describe('isNumeric', function () {
     assert.strictEqual(isNumeric('foo'), false)
     assert.strictEqual(isNumeric(math.complex(2, 3)), false)
     assert.strictEqual(isNumeric(math.unit('5 cm')), false)
+    assert.strictEqual(isNumeric(null), false)
+    assert.strictEqual(isNumeric(undefined), false)
+    assert.strictEqual(isNumeric(math.parse('2+4')), false)
   })
 
   it('should test isNumeric element wise on an Array', function () {

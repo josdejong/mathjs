@@ -9,6 +9,7 @@ function factory (type, config, load, typed) {
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
   const divide = load(require('../arithmetic/divideScalar'))
+  const isNaN = load(require('../utils/isNaN'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
@@ -110,6 +111,10 @@ function factory (type, config, load, typed) {
       const diff = subtract(value, mean)
       sum = add(sum, multiply(diff, diff))
     })
+
+    if (isNaN(sum)) {
+      return sum
+    }
 
     switch (normalization) {
       case 'uncorrected':

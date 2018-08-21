@@ -3,6 +3,11 @@
 
 ## not yet released, version 5.1.1
 
+- Function `isNumeric` now recognizes more types.
+- Fixed #1214: functions `sqrt`, `max`, `min`, `var`, `std`, `mode`, `mad`,
+  `median`, and `partitionSelect` not neatly handling `NaN` inputs. In some
+  cases (`median`, `mad`, and `partitionSelect`) this resulted in an infinite
+  loop.
 - Upgraded dependencies (`escape-latex@1.1.1`)
 - Upgraded devDependencies (`webpack@4.17.0`)
 

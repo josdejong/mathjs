@@ -248,7 +248,6 @@ describe('import', function () {
       factory: () => mean
     }
 
-    console.log('start')
     math2.import([meanFactory], {override: true})
 
     assert(math2.hasOwnProperty('mean'))

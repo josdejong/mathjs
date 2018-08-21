@@ -65,6 +65,14 @@ describe('partitionSelect', function () {
     })
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.strictEqual(partitionSelect([NaN], 0), NaN)
+    assert.strictEqual(partitionSelect([1, NaN], 0), NaN)
+    assert.strictEqual(partitionSelect([NaN, 1], 0), NaN)
+    assert.strictEqual(partitionSelect([1, 3, NaN], 1), NaN)
+    assert.strictEqual(partitionSelect([NaN, NaN, NaN], 1), NaN)
+  })
+
   it('should throw an error if called with a multi dimensional matrix', function () {
     assert.throws(function () { partitionSelect(matrix([[1, 2], [3, 4]]), 2) }, /Only one dimensional matrices supported/)
   })

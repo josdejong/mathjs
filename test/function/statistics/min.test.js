@@ -75,6 +75,15 @@ describe('min', function () {
     [[1, 2], [3, 4], [5, 6]])
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.strictEqual(min([NaN]), NaN)
+    assert.strictEqual(min([1, NaN]), NaN)
+    assert.strictEqual(min([NaN, 1]), NaN)
+    assert.strictEqual(min([1, 3, NaN]), NaN)
+    assert.strictEqual(min([NaN, NaN, NaN]), NaN)
+    assert.strictEqual(min(NaN, NaN, NaN), NaN)
+  })
+
   it('should throw an error when called multiple arrays or matrices', function () {
     assert.throws(function () { min([1, 2], [3, 4]) }, /Scalar values expected/)
     assert.throws(function () { min(math.matrix([1, 2]), math.matrix([3, 4])) }, /Scalar values expected/)

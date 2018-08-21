@@ -43,6 +43,15 @@ describe('mad', function () {
     ])), 1.5)
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert.strictEqual(mad([NaN]), NaN)
+    assert.strictEqual(mad([1, NaN]), NaN)
+    assert.strictEqual(mad([NaN, 1]), NaN)
+    assert.strictEqual(mad([1, 3, NaN]), NaN)
+    assert.strictEqual(mad([NaN, NaN, NaN]), NaN)
+    assert.strictEqual(mad(NaN, NaN, NaN), NaN)
+  })
+
   it('should throw an error if called with invalid number of arguments', function () {
     assert.throws(function () { mad() })
   })
