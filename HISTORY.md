@@ -1,7 +1,7 @@
 # History
 
 
-## not yet released, version 5.1.1
+## 2018-08-21, version 5.1.1
 
 - Function `isNumeric` now recognizes more types.
 - Fixed #1214: functions `sqrt`, `max`, `min`, `var`, `std`, `mode`, `mad`,
