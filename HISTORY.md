@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 5.1.1
+
+- Upgraded dependencies (`escape-latex@1.1.1`)
+- Upgraded devDependencies (`webpack@4.17.0`)
+
+
 ## 2018-08-12, version 5.1.0
 
 - Implemented support for strings enclosed in single quotes.
