@@ -147,7 +147,7 @@
     "tar": "4.4.6",
     "uglify-js": "3.4.7",
     "underscore": "1.9.1",
-    "webpack": "4.17.0",
+    "webpack": "4.17.1",
     "zeros": "1.0.0"
   },
   "main": "./index",
