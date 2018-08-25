@@ -1,6 +1,12 @@
 # History
 
 
+## not yet released, version 5.1.2
+
+- Fixed #1222: a typo in the docs of `subset`.
+- Upgraded devDependencies (`uglify-js@3.4.8`, `webpack@4.17.1`).
+
+
 ## 2018-08-21, version 5.1.1
 
 - Function `isNumeric` now recognizes more types.
