@@ -113,7 +113,7 @@
   },
   "devDependencies": {
     "babel-core": "6.26.3",
-    "babel-loader": "7.1.5",
+    "babel-loader": "8.0.0",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-preset-env": "1.7.0",
     "benchmark": "2.1.4",
