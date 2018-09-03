@@ -118,7 +118,7 @@ const code1 = node1.compile()
 code1.eval()  // 5
 
 // provide a scope
-const node2 = math.parse('x^a', scope)
+const node2 = math.parse('x^a')
 const code2 = node2.compile()
 let scope = {
     x: 3,
