@@ -66,21 +66,21 @@ describe('util.function', function () {
         'number, number': function () {},
         'number': function () {}
       }
-      assert.equal(functionUtils.maxArgumentCount(a), 2)
+      assert.strictEqual(functionUtils.maxArgumentCount(a), 2)
 
       const b = function () {}
       b.signatures = {
         'number': function () {},
         'number, number': function () {}
       }
-      assert.equal(functionUtils.maxArgumentCount(b), 2)
+      assert.strictEqual(functionUtils.maxArgumentCount(b), 2)
 
       const c = function () {}
       c.signatures = {
         'number': function () {},
         'BigNumber': function () {}
       }
-      assert.equal(functionUtils.maxArgumentCount(c), 1)
+      assert.strictEqual(functionUtils.maxArgumentCount(c), 1)
 
       const d = function () {}
       d.signatures = {
@@ -88,11 +88,11 @@ describe('util.function', function () {
         'number': function () {},
         'number,any,number': function () {}
       }
-      assert.equal(functionUtils.maxArgumentCount(d), 3)
+      assert.strictEqual(functionUtils.maxArgumentCount(d), 3)
     })
 
     it('should return -1 for regular functions', function () {
-      assert.equal(functionUtils.maxArgumentCount(function () {}), -1)
+      assert.strictEqual(functionUtils.maxArgumentCount(function () {}), -1)
     })
   })
 })

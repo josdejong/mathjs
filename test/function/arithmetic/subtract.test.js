@@ -19,17 +19,17 @@ describe('subtract', function () {
   })
 
   it('should subtract booleans', function () {
-    assert.equal(subtract(true, true), 0)
-    assert.equal(subtract(true, false), 1)
-    assert.equal(subtract(false, true), -1)
-    assert.equal(subtract(false, false), 0)
+    assert.strictEqual(subtract(true, true), 0)
+    assert.strictEqual(subtract(true, false), 1)
+    assert.strictEqual(subtract(false, true), -1)
+    assert.strictEqual(subtract(false, false), 0)
   })
 
   it('should subtract mixed numbers and booleans', function () {
-    assert.equal(subtract(2, true), 1)
-    assert.equal(subtract(2, false), 2)
-    assert.equal(subtract(true, 2), -1)
-    assert.equal(subtract(false, 2), -2)
+    assert.strictEqual(subtract(2, true), 1)
+    assert.strictEqual(subtract(2, false), 2)
+    assert.strictEqual(subtract(true, 2), -1)
+    assert.strictEqual(subtract(false, 2), -2)
   })
 
   it('should subtract bignumbers', function () {
@@ -72,11 +72,11 @@ describe('subtract', function () {
 
   it('should subtract two fractions', function () {
     const a = math.fraction(1, 3)
-    assert.equal(subtract(a, math.fraction(1, 6)).toString(), '0.1(6)')
-    assert.equal(a.toString(), '0.(3)')
+    assert.strictEqual(subtract(a, math.fraction(1, 6)).toString(), '0.1(6)')
+    assert.strictEqual(a.toString(), '0.(3)')
 
-    assert.equal(subtract(math.fraction(3, 5), math.fraction(1, 5)).toString(), '0.4')
-    assert.equal(subtract(math.fraction(1), math.fraction(1, 3)).toString(), '0.(6)')
+    assert.strictEqual(subtract(math.fraction(3, 5), math.fraction(1, 5)).toString(), '0.4')
+    assert.strictEqual(subtract(math.fraction(1), math.fraction(1, 3)).toString(), '0.(6)')
   })
 
   it('should subtract mixed fractions and numbers', function () {
@@ -238,6 +238,6 @@ describe('subtract', function () {
 
   it('should LaTeX subtract', function () {
     const expression = math.parse('subtract(2,1)')
-    assert.equal(expression.toTex(), '\\left(2-1\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2-1\\right)')
   })
 })

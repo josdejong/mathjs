@@ -27,7 +27,7 @@ exports.equal = function equal (a, b, epsilon) {
     if (a === b) {
       // great, we're done :)
     } else if (isNaN(a)) {
-      assert.equal(a.toString(), b.toString())
+      assert.strictEqual(a.toString(), b.toString())
     } else if (a === 0) {
       assert.ok(Math.abs(b) < epsilon, (a + ' ~= ' + b))
     } else if (b === 0) {
@@ -39,7 +39,7 @@ exports.equal = function equal (a, b, epsilon) {
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
   } else {
-    assert.equal(a, b)
+    assert.strictEqual(a, b)
   }
 }
 
@@ -53,7 +53,7 @@ exports.deepEqual = function deepEqual (a, b) {
   let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    assert.equal(a.length, b.length, a + ' ~= ' + b)
+    assert.strictEqual(a.length, b.length, a + ' ~= ' + b)
     for (i = 0, len = a.length; i < len; i++) {
       deepEqual(a[i], b[i])
     }

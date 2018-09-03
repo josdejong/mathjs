@@ -72,9 +72,9 @@ describe('xgcd', function () {
   })
 
   it('should give same results as gcd', function () {
-    assert.equal(gcd(1239, 735), xgcd(1239, 735)[0])
-    assert.equal(gcd(105, 252), xgcd(105, 252)[0])
-    assert.equal(gcd(7, 13), xgcd(7, 13)[0])
+    assert.strictEqual(gcd(1239, 735), xgcd(1239, 735)[0])
+    assert.strictEqual(gcd(105, 252), xgcd(105, 252)[0])
+    assert.strictEqual(gcd(7, 13), xgcd(7, 13)[0])
   })
 
   it('should return a matrix when configured to use matrices', function () {
@@ -114,6 +114,6 @@ describe('xgcd', function () {
 
   it('should LaTeX xgcd', function () {
     const expression = math.parse('xgcd(2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{xgcd}\\left(2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{xgcd}\\left(2,3\\right)')
   })
 })

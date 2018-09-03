@@ -4,11 +4,11 @@ const combinations = math.combinations
 
 describe('combinations', function () {
   it('should calculate the combinations of a number taking k at a time', function () {
-    assert.equal(combinations(0, 0), 1)
-    assert.equal(combinations(7, 5), 21)
-    assert.equal(combinations(20, 15), 15504)
-    assert.equal(combinations(63, 7), 553270671)
-    assert.equal(combinations(25, 6), 177100)
+    assert.strictEqual(combinations(0, 0), 1)
+    assert.strictEqual(combinations(7, 5), 21)
+    assert.strictEqual(combinations(20, 15), 15504)
+    assert.strictEqual(combinations(63, 7), 553270671)
+    assert.strictEqual(combinations(25, 6), 177100)
   })
 
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {
@@ -36,6 +36,6 @@ describe('combinations', function () {
 
   it('should LaTeX combinations', function () {
     const expression = math.parse('combinations(3,2)')
-    assert.equal(expression.toTex(), '\\binom{3}{2}')
+    assert.strictEqual(expression.toTex(), '\\binom{3}{2}')
   })
 })

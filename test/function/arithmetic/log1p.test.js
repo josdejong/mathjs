@@ -11,14 +11,14 @@ const log1p = math.log1p
 describe('log1p', function () {
   it('should return the log1p of a boolean value', function () {
     approx.equal(log1p(true), 0.6931471805599)
-    assert.equal(log1p(false), 0)
-    assert.equal(log1p(1, false), 0)
+    assert.strictEqual(log1p(false), 0)
+    assert.strictEqual(log1p(1, false), 0)
   })
 
   it('should return the log1p of positive numbers', function () {
-    assert.equal(log1p(-1), -Infinity)
-    assert.equal(log1p(-0), -0)
-    assert.equal(log1p(+0), +0)
+    assert.strictEqual(log1p(-1), -Infinity)
+    assert.strictEqual(log1p(-0), -0)
+    assert.strictEqual(log1p(+0), +0)
     approx.deepEqual(log1p(1), 0.693147180559945)
     approx.deepEqual(log1p(2), 1.098612288668110)
     approx.deepEqual(math.exp(log1p(99)), 100)
@@ -31,7 +31,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of negative numbers with predictable: true', function () {
-    assert.equal(typeof mathPredictable.log1p(-2), 'number')
+    assert.strictEqual(typeof mathPredictable.log1p(-2), 'number')
     assert(isNaN(mathPredictable.log1p(-2)))
   })
 
@@ -101,7 +101,7 @@ describe('log1p', function () {
     const expr1 = math.parse('log1p(e)')
     const expr2 = math.parse('log1p(32,2)')
 
-    assert.equal(expr1.toTex(), '\\ln\\left( e+1\\right)')
-    assert.equal(expr2.toTex(), '\\log_{2}\\left(32+1\\right)')
+    assert.strictEqual(expr1.toTex(), '\\ln\\left( e+1\\right)')
+    assert.strictEqual(expr2.toTex(), '\\log_{2}\\left(32+1\\right)')
   })
 })

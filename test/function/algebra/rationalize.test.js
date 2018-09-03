@@ -57,84 +57,84 @@ describe('rationalize', function () {
   })
 
   it('processing constant expressions', function () {
-    assert.equal(stri(math.rationalize('-2+3+32-32')), '1')
-    assert.equal(stri(math.rationalize('1^2 + 20 + 3')), '24')
+    assert.strictEqual(stri(math.rationalize('-2+3+32-32')), '1')
+    assert.strictEqual(stri(math.rationalize('1^2 + 20 + 3')), '24')
   })
 
   it('processing simple expressions', function () {
-    assert.equal(stri(math.rationalize('x')), 'x')
-    assert.equal(stri(math.rationalize('-x')), '-x')
-    assert.equal(stri(math.rationalize('2x')), '2*x')
-    assert.equal(stri(math.rationalize('-2x')), '-2*x')
-    assert.equal(stri(math.rationalize('x^2')), 'x^2')
-    assert.equal(stri(math.rationalize('2x^2')), '2*x^2')
-    assert.equal(stri(math.rationalize('-2x^2')), '-2*x^2')
-    assert.equal(stri(math.rationalize('x+1')), 'x+1')
-    assert.equal(stri(math.rationalize('2x+1')), '2*x+1')
-    assert.equal(stri(math.rationalize('-2x+1')), '-2*x+1')
-    assert.equal(stri(math.rationalize('-2x-1')), '-2*x-1')
-    assert.equal(stri(math.rationalize('x^2-2x-5')), 'x^2-2*x-5')
-    assert.equal(stri(math.rationalize('3x^2-2x-5')), '3*x^2-2*x-5')
-    assert.equal(stri(math.rationalize('-3x^2-2x-5')), '-3*x^2-2*x-5')
-    assert.equal(stri(math.rationalize('4x^4-3x^2-2x-5')), '4*x^4-3*x^2-2*x-5')
-    assert.equal(stri(math.rationalize('-4x^4+3x^2-2x-5')), '-4*x^4+3*x^2-2*x-5')
-    assert.equal(stri(math.rationalize('-4x^4+3x^2-2x-1')), '-4*x^4+3*x^2-2*x-1')
-    assert.equal(stri(math.rationalize('-4x^4+3x^2-2x')), '-4*x^4+3*x^2-2*x')
+    assert.strictEqual(stri(math.rationalize('x')), 'x')
+    assert.strictEqual(stri(math.rationalize('-x')), '-x')
+    assert.strictEqual(stri(math.rationalize('2x')), '2*x')
+    assert.strictEqual(stri(math.rationalize('-2x')), '-2*x')
+    assert.strictEqual(stri(math.rationalize('x^2')), 'x^2')
+    assert.strictEqual(stri(math.rationalize('2x^2')), '2*x^2')
+    assert.strictEqual(stri(math.rationalize('-2x^2')), '-2*x^2')
+    assert.strictEqual(stri(math.rationalize('x+1')), 'x+1')
+    assert.strictEqual(stri(math.rationalize('2x+1')), '2*x+1')
+    assert.strictEqual(stri(math.rationalize('-2x+1')), '-2*x+1')
+    assert.strictEqual(stri(math.rationalize('-2x-1')), '-2*x-1')
+    assert.strictEqual(stri(math.rationalize('x^2-2x-5')), 'x^2-2*x-5')
+    assert.strictEqual(stri(math.rationalize('3x^2-2x-5')), '3*x^2-2*x-5')
+    assert.strictEqual(stri(math.rationalize('-3x^2-2x-5')), '-3*x^2-2*x-5')
+    assert.strictEqual(stri(math.rationalize('4x^4-3x^2-2x-5')), '4*x^4-3*x^2-2*x-5')
+    assert.strictEqual(stri(math.rationalize('-4x^4+3x^2-2x-5')), '-4*x^4+3*x^2-2*x-5')
+    assert.strictEqual(stri(math.rationalize('-4x^4+3x^2-2x-1')), '-4*x^4+3*x^2-2*x-1')
+    assert.strictEqual(stri(math.rationalize('-4x^4+3x^2-2x')), '-4*x^4+3*x^2-2*x')
   })
 
   it('processing simple and reducible expressions', function () {
-    assert.equal(stri(math.rationalize('x+x+x')), '3*x')
-    assert.equal(stri(math.rationalize('x-x')), '0')
-    assert.equal(stri(math.rationalize('5x^2-5x^2')), '0')
-    assert.equal(stri(math.rationalize('2-3x')), '-3*x+2')
-    assert.equal(stri(math.rationalize('5x^2-3x-5x^2')), '-3*x')
-    assert.equal(stri(math.rationalize('-5x^2-3x+5x^2')), '-3*x')
-    assert.equal(stri(math.rationalize('-5 -2x^2 + 4x^4')), '4*x^4-2*x^2-5')
-    assert.equal(stri(math.rationalize('-5 -2x^2 + 4x^4+5+2x^2-2x^4')), '2*x^4')
-    assert.equal(stri(math.rationalize('-5 -2x^2 + 4x^4+5+2x^2-4x^4')), '0')
-    assert.equal(stri(math.rationalize('-5 -2x^3 + 5*x^2 + 3*x^6 - 17x^4 + 2 x^5')), '3*x^6+2*x^5-17*x^4-2*x^3+5*x^2-5')
-    assert.equal(stri(math.rationalize('x^2^2')), 'x^4')
-    assert.equal(stri(math.rationalize('x*2*2')), '4*x')
-    assert.equal(stri(math.rationalize('x*5')), '5*x')
+    assert.strictEqual(stri(math.rationalize('x+x+x')), '3*x')
+    assert.strictEqual(stri(math.rationalize('x-x')), '0')
+    assert.strictEqual(stri(math.rationalize('5x^2-5x^2')), '0')
+    assert.strictEqual(stri(math.rationalize('2-3x')), '-3*x+2')
+    assert.strictEqual(stri(math.rationalize('5x^2-3x-5x^2')), '-3*x')
+    assert.strictEqual(stri(math.rationalize('-5x^2-3x+5x^2')), '-3*x')
+    assert.strictEqual(stri(math.rationalize('-5 -2x^2 + 4x^4')), '4*x^4-2*x^2-5')
+    assert.strictEqual(stri(math.rationalize('-5 -2x^2 + 4x^4+5+2x^2-2x^4')), '2*x^4')
+    assert.strictEqual(stri(math.rationalize('-5 -2x^2 + 4x^4+5+2x^2-4x^4')), '0')
+    assert.strictEqual(stri(math.rationalize('-5 -2x^3 + 5*x^2 + 3*x^6 - 17x^4 + 2 x^5')), '3*x^6+2*x^5-17*x^4-2*x^3+5*x^2-5')
+    assert.strictEqual(stri(math.rationalize('x^2^2')), 'x^4')
+    assert.strictEqual(stri(math.rationalize('x*2*2')), '4*x')
+    assert.strictEqual(stri(math.rationalize('x*5')), '5*x')
   })
 
   it('aditional simple expressions', function () {
-    assert.equal(stri(math.rationalize('1/(0.1x+1)+1')), '(0.1*x+2)/(0.1*x+1)')
-    assert.equal(stri(math.rationalize('1/x^2+1')), '(x^2+1)/x^2')
-    assert.equal(stri(math.rationalize('1/(x/10+1)+1')), '(0.1*x+2)/(0.1*x+1)')
+    assert.strictEqual(stri(math.rationalize('1/(0.1x+1)+1')), '(0.1*x+2)/(0.1*x+1)')
+    assert.strictEqual(stri(math.rationalize('1/x^2+1')), '(x^2+1)/x^2')
+    assert.strictEqual(stri(math.rationalize('1/(x/10+1)+1')), '(0.1*x+2)/(0.1*x+1)')
   })
 
   it('processing 2 variable expressions', function () {
-    assert.equal(stri(math.rationalize('x+y')), 'x+y')
-    assert.equal(stri(math.rationalize('x^2 + 2*x*y + 3')), 'x^2+2*x*y+3')
-    assert.equal(stri(math.rationalize('2x/y - y/(x+1)')), '(2*x^2-y^2+2*x)/(x*y+y)')
+    assert.strictEqual(stri(math.rationalize('x+y')), 'x+y')
+    assert.strictEqual(stri(math.rationalize('x^2 + 2*x*y + 3')), 'x^2+2*x*y+3')
+    assert.strictEqual(stri(math.rationalize('2x/y - y/(x+1)')), '(2*x^2-y^2+2*x)/(x*y+y)')
   })
 
   it('processing power expressions', function () {
-    assert.equal(stri(math.rationalize('(2x+1)^3')), '8*x^3+12*x^2+6*x+1')
-    assert.equal(stri(math.rationalize('(2x+1)^3/(x-2)^3')), '(8*x^3+12*x^2+6*x+1)/(x^3-6*x^2+12*x-8)')
+    assert.strictEqual(stri(math.rationalize('(2x+1)^3')), '8*x^3+12*x^2+6*x+1')
+    assert.strictEqual(stri(math.rationalize('(2x+1)^3/(x-2)^3')), '(8*x^3+12*x^2+6*x+1)/(x^3-6*x^2+12*x-8)')
   })
 
   it('processing tougher expressions', function () {
     this.timeout(5000) // For IE/Edge
 
-    assert.equal(stri(math.rationalize('2x/(x+2) - x/(x+1)')), 'x^2/(x^2+3*x+2)')
-    assert.equal(stri(math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')),
+    assert.strictEqual(stri(math.rationalize('2x/(x+2) - x/(x+1)')), 'x^2/(x^2+3*x+2)')
+    assert.strictEqual(stri(math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')),
       '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
     const no = math.parse('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
-    assert.equal(stri(math.rationalize(no)), '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
+    assert.strictEqual(stri(math.rationalize(no)), '(-20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)')
   })
 
   it.skip('processes a really complex expression', function () {
     // note this test passes but takes for ever to complete
 
-    assert.equal(stri(math.rationalize('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )')),
+    assert.strictEqual(stri(math.rationalize('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )')),
       '(-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/(-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)')
   })
 
   it('testing scope', function () {
-    assert.equal(stri(math.rationalize('x+x+x+y', { y: 1 })), '3*x+1')
-    assert.equal(stri(math.rationalize('x+x+x+y', {})), '3*x+y')
+    assert.strictEqual(stri(math.rationalize('x+x+x+y', { y: 1 })), '3*x+1')
+    assert.strictEqual(stri(math.rationalize('x+x+x+y', {})), '3*x+y')
   })
 
   it('testing complete form', function () {

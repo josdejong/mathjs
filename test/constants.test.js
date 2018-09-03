@@ -68,47 +68,47 @@ describe('constants', function () {
 
   describe('bignumbers', function () {
     it('should have bignumber pi', function () {
-      assert.equal(bigmath.pi.toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
+      assert.strictEqual(bigmath.pi.toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
     })
 
     it('should have bignumber tau', function () {
-      assert.equal(bigmath.tau.toString(), '6.283185307179586476925286766559005768394338798750211641949889184')
+      assert.strictEqual(bigmath.tau.toString(), '6.283185307179586476925286766559005768394338798750211641949889184')
     })
 
     it('should have bignumber phi, golden ratio', function () {
-      assert.equal(bigmath.phi.toString(), '1.618033988749894848204586834365638117720309179805762862135448623')
+      assert.strictEqual(bigmath.phi.toString(), '1.618033988749894848204586834365638117720309179805762862135448623')
     })
 
     it('should have bignumber e', function () {
-      assert.equal(bigmath.e.toString(), '2.718281828459045235360287471352662497757247093699959574966967628')
+      assert.strictEqual(bigmath.e.toString(), '2.718281828459045235360287471352662497757247093699959574966967628')
     })
 
     it('should have bignumber LN2', function () {
-      assert.equal(bigmath.LN2.toString(), '0.6931471805599453094172321214581765680755001343602552541206800095')
+      assert.strictEqual(bigmath.LN2.toString(), '0.6931471805599453094172321214581765680755001343602552541206800095')
     })
 
     it('should have bignumber LN10', function () {
-      assert.equal(bigmath.LN10.toString(), '2.302585092994045684017991454684364207601101488628772976033327901')
+      assert.strictEqual(bigmath.LN10.toString(), '2.302585092994045684017991454684364207601101488628772976033327901')
     })
 
     it('should have bignumber LOG2E', function () {
-      assert.equal(bigmath.LOG2E.toString(), '1.442695040888963407359924681001892137426645954152985934135449407')
+      assert.strictEqual(bigmath.LOG2E.toString(), '1.442695040888963407359924681001892137426645954152985934135449407')
     })
 
     it('should have bignumber LOG10E', function () {
-      assert.equal(bigmath.LOG10E.toString(), '0.4342944819032518276511289189166050822943970058036665661144537832')
+      assert.strictEqual(bigmath.LOG10E.toString(), '0.4342944819032518276511289189166050822943970058036665661144537832')
     })
 
     it('should have bignumber PI (upper case)', function () {
-      assert.equal(bigmath.PI.toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
+      assert.strictEqual(bigmath.PI.toString(), '3.141592653589793238462643383279502884197169399375105820974944592')
     })
 
     it('should have bignumber SQRT1_2', function () {
-      assert.equal(bigmath.SQRT1_2.toString(), '0.707106781186547524400844362104849039284835937688474036588339869')
+      assert.strictEqual(bigmath.SQRT1_2.toString(), '0.707106781186547524400844362104849039284835937688474036588339869')
     })
 
     it('should have bignumber SQRT2', function () {
-      assert.equal(bigmath.SQRT2.toString(), '1.414213562373095048801688724209698078569671875376948073176679738')
+      assert.strictEqual(bigmath.SQRT2.toString(), '1.414213562373095048801688724209698078569671875376948073176679738')
     })
 
     it('should have bignumber Infinity', function () {
@@ -118,7 +118,7 @@ describe('constants', function () {
 
     it('should have bignumber NaN', function () {
       assert(bigmath.NaN instanceof bigmath.type.BigNumber)
-      assert.equal(bigmath.NaN.toString(), 'NaN')
+      assert.strictEqual(bigmath.NaN.toString(), 'NaN')
       assert.ok(isNaN(bigmath.NaN))
     })
   })
@@ -126,8 +126,8 @@ describe('constants', function () {
   describe('complex', function () {
     [math, bigmath].forEach(function (math) {
       it('should have i', function () {
-        assert.equal(math.i.re, 0)
-        assert.equal(math.i.im, 1)
+        assert.strictEqual(math.i.re, 0)
+        assert.strictEqual(math.i.im, 1)
         assert.deepEqual(math.i, math.complex(0, 1))
       })
     })
@@ -135,7 +135,7 @@ describe('constants', function () {
 
   describe('real', function () {
     it('does not have i', function () {
-      assert.equal(realmath.i, undefined)
+      assert.strictEqual(realmath.i, undefined)
     })
   })
 
@@ -151,7 +151,7 @@ describe('constants', function () {
       })
 
       it('should return message when uninitialized', function () {
-        assert.equal(instance.uninitialized, 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
+        assert.strictEqual(instance.uninitialized, 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
       })
     })
   })
@@ -160,8 +160,8 @@ describe('constants', function () {
     // Do these tests really belong in constants.test.js ?
     approx.equal(math.sin(math.pi / 2), 1)
 
-    assert.equal(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0)
-    assert.equal(math.round(math.eval('1+e^(pi*i)'), 5), 0)
+    assert.strictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0)
+    assert.strictEqual(math.round(math.eval('1+e^(pi*i)'), 5), 0)
 
     assert.deepEqual(math.sqrt(-1), math.i)
     assert.deepEqual(math.eval('i'), math.complex(0, 1))

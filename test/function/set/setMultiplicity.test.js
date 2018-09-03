@@ -14,7 +14,7 @@ describe('setMultiplicity', function () {
   })
 
   it('should return a number', function () {
-    assert.equal(math.typeof(math.setMultiplicity(3, [3, 4, 5])), 'number')
+    assert.strictEqual(math.typeof(math.setMultiplicity(3, [3, 4, 5])), 'number')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

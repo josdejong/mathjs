@@ -11,8 +11,8 @@ const floor = math.floor
 
 describe('floor', function () {
   it('should round booleans correctly', function () {
-    assert.equal(floor(true), 1)
-    assert.equal(floor(false), 0)
+    assert.strictEqual(floor(true), 1)
+    assert.strictEqual(floor(false), 0)
   })
 
   it('should floor numbers correctly', function () {
@@ -52,18 +52,18 @@ describe('floor', function () {
   it('should floor fractions correctly', function () {
     const a = fraction('2/3')
     assert(floor(a) instanceof math.type.Fraction)
-    assert.equal(a.toString(), '0.(6)')
+    assert.strictEqual(a.toString(), '0.(6)')
 
-    assert.equal(floor(fraction(0)).toString(), '0')
-    assert.equal(floor(fraction(1)).toString(), '1')
-    assert.equal(floor(fraction(1.3)).toString(), '1')
-    assert.equal(floor(fraction(1.8)).toString(), '1')
-    assert.equal(floor(fraction(2)).toString(), '2')
-    assert.equal(floor(fraction(-1)).toString(), '-1')
-    assert.equal(floor(fraction(-1.3)).toString(), '-2')
-    assert.equal(floor(fraction(-1.8)).toString(), '-2')
-    assert.equal(floor(fraction(-2)).toString(), '-2')
-    assert.equal(floor(fraction(-2.1)).toString(), '-3')
+    assert.strictEqual(floor(fraction(0)).toString(), '0')
+    assert.strictEqual(floor(fraction(1)).toString(), '1')
+    assert.strictEqual(floor(fraction(1.3)).toString(), '1')
+    assert.strictEqual(floor(fraction(1.8)).toString(), '1')
+    assert.strictEqual(floor(fraction(2)).toString(), '2')
+    assert.strictEqual(floor(fraction(-1)).toString(), '-1')
+    assert.strictEqual(floor(fraction(-1.3)).toString(), '-2')
+    assert.strictEqual(floor(fraction(-1.8)).toString(), '-2')
+    assert.strictEqual(floor(fraction(-2)).toString(), '-2')
+    assert.strictEqual(floor(fraction(-2.1)).toString(), '-3')
   })
 
   it('should throw an error with a unit', function () {
@@ -90,6 +90,6 @@ describe('floor', function () {
 
   it('should LaTeX floor', function () {
     const expression = math.parse('floor(0.6)')
-    assert.equal(expression.toTex(), '\\left\\lfloor0.6\\right\\rfloor')
+    assert.strictEqual(expression.toTex(), '\\left\\lfloor0.6\\right\\rfloor')
   })
 })

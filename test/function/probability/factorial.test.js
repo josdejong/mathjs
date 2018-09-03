@@ -5,12 +5,12 @@ const factorial = math.factorial
 
 describe('factorial', function () {
   it('should calculate the factorial of a number', function () {
-    assert.equal(factorial(0), 1)
-    assert.equal(factorial(1), 1)
-    assert.equal(factorial(2), 2)
-    assert.equal(factorial(3), 6)
-    assert.equal(factorial(4), 24)
-    assert.equal(factorial(5), 120)
+    assert.strictEqual(factorial(0), 1)
+    assert.strictEqual(factorial(1), 1)
+    assert.strictEqual(factorial(2), 2)
+    assert.strictEqual(factorial(3), 6)
+    assert.strictEqual(factorial(4), 24)
+    assert.strictEqual(factorial(5), 120)
     assert.ok(!isFinite(factorial(Number.MAX_VALUE))) // shouldn't stall
     assert.ok(!isFinite(factorial(Infinity)))
   })
@@ -47,8 +47,8 @@ describe('factorial', function () {
   })
 
   it('should calculate the factorial of a boolean', function () {
-    assert.equal(factorial(true), 1)
-    assert.equal(factorial(false), 1)
+    assert.strictEqual(factorial(true), 1)
+    assert.strictEqual(factorial(false), 1)
   })
 
   it('should calculate the factorial of each element in a matrix', function () {
@@ -89,6 +89,6 @@ describe('factorial', function () {
 
   it('should LaTeX factorial', function () {
     const expression = math.parse('factorial(6)')
-    assert.equal(expression.toTex(), '\\left(6\\right)!')
+    assert.strictEqual(expression.toTex(), '\\left(6\\right)!')
   })
 })

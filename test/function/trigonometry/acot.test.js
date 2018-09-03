@@ -15,18 +15,18 @@ const Big = bigmath.bignumber
 describe('acot', function () {
   it('should return the arccot of a boolean', function () {
     approx.equal(acot(true), pi / 4)
-    assert.equal(acot(false), pi / 2)
+    assert.strictEqual(acot(false), pi / 2)
   })
 
   it('should return the arccot of a number', function () {
     approx.equal(acot(-1) / pi, -0.25)
     approx.equal(acot(-0.5), -1.107148717794)
-    assert.equal(acot(0), pi / 2)
+    assert.strictEqual(acot(0), pi / 2)
     approx.equal(acot(0.5), 1.107148717794)
     approx.equal(acot(1) / pi, 0.25)
 
-    assert.equal(acot(-Infinity), 0)
-    assert.equal(acot(Infinity), 0)
+    assert.strictEqual(acot(-Infinity), 0)
+    assert.strictEqual(acot(Infinity), 0)
   })
 
   it('should return the arccot of a bignumber', function () {
@@ -110,6 +110,6 @@ describe('acot', function () {
 
   it('should LaTeX acot', function () {
     const expression = math.parse('acot(2)')
-    assert.equal(expression.toTex(), '\\cot^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\cot^{-1}\\left(2\\right)')
   })
 })

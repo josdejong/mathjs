@@ -9,19 +9,19 @@ describe('range', function () {
     it('should create a range', function () {
       const r = new Range(2, 6)
       assert.deepEqual(r.toArray(), [2, 3, 4, 5])
-      assert.equal(r.size(), 4)
+      assert.strictEqual(r.size(), 4)
     })
 
     it('should create a range with custom step', function () {
       const r = new Range(10, 4, -1)
       assert.deepEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.equal(r.size(), 6)
+      assert.strictEqual(r.size(), 6)
     })
 
     it('should create a range with floating points', function () {
       const r = new Range(1, 5.5, 1.5)
       assert.deepEqual(r.toArray(), [1, 2.5, 4])
-      assert.equal(r.size(), 3)
+      assert.strictEqual(r.size(), 3)
     })
 
     it('should create an empty range', function () {
@@ -32,17 +32,17 @@ describe('range', function () {
     it('should create a range with only one value', function () {
       const r = new Range(0, 1)
       assert.deepEqual(r.toArray(), [0])
-      assert.equal(r.size(), 1)
+      assert.strictEqual(r.size(), 1)
     })
 
     it('should create an empty range because of wrong step size', function () {
       let r = new Range(0, 10, 0)
       assert.deepEqual(r.toArray(), [])
-      assert.equal(r.size(), 0)
+      assert.strictEqual(r.size(), 0)
 
       r = new Range(0, 10, -1)
       assert.deepEqual(r.toArray(), [])
-      assert.equal(r.size(), 0)
+      assert.strictEqual(r.size(), 0)
     })
 
     it('should throw an error when created without new keyword', function () {
@@ -60,18 +60,18 @@ describe('range', function () {
     it('should create a range from a string', function () {
       let r = Range.parse('10:-1:4')
       assert.deepEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.equal(r.size(), 6)
+      assert.strictEqual(r.size(), 6)
 
       r = Range.parse('2 : 6')
       assert.deepEqual(r.toArray(), [2, 3, 4, 5])
-      assert.equal(r.size(), 4)
+      assert.strictEqual(r.size(), 4)
     })
 
     it('should return null when parsing an invalid string', function () {
-      assert.equal(Range.parse('a:4'), null)
-      assert.equal(Range.parse('3'), null)
-      assert.equal(Range.parse(''), null)
-      assert.equal(Range.parse(2), null)
+      assert.strictEqual(Range.parse('a:4'), null)
+      assert.strictEqual(Range.parse('3'), null)
+      assert.strictEqual(Range.parse(''), null)
+      assert.strictEqual(Range.parse(2), null)
     })
   })
 
@@ -143,14 +143,14 @@ describe('range', function () {
 
   describe('toString', function () {
     it('should stringify a range to format start:step:end', function () {
-      assert.equal(new math.type.Range(0, 10).toString(), '0:10')
-      assert.equal(new math.type.Range(0, 10, 2).toString(), '0:2:10')
+      assert.strictEqual(new math.type.Range(0, 10).toString(), '0:10')
+      assert.strictEqual(new math.type.Range(0, 10, 2).toString(), '0:2:10')
     })
 
     it('should stringify a range to format start:step:end with given precision', function () {
-      assert.equal(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1.33')
-      assert.equal(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1.333')
-      assert.equal(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1.3333333333333')
+      assert.strictEqual(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(3), '0.333:0.667:1.33')
+      assert.strictEqual(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(4), '0.3333:0.6667:1.333')
+      assert.strictEqual(new math.type.Range(1 / 3, 4 / 3, 2 / 3).format(14), '0.33333333333333:0.66666666666667:1.3333333333333')
     })
   })
 
@@ -167,12 +167,12 @@ describe('range', function () {
       r1.end = 8
       r1.step = 1
 
-      assert.equal(r1.start, 2)
-      assert.equal(r1.end, 8)
-      assert.equal(r1.step, 1)
-      assert.equal(r2.start, 0)
-      assert.equal(r2.end, 10)
-      assert.equal(r2.step, 2)
+      assert.strictEqual(r1.start, 2)
+      assert.strictEqual(r1.end, 8)
+      assert.strictEqual(r1.step, 1)
+      assert.strictEqual(r2.start, 0)
+      assert.strictEqual(r2.end, 10)
+      assert.strictEqual(r2.step, 2)
     })
   })
 
@@ -223,12 +223,12 @@ describe('range', function () {
 
   describe('format', function () {
     it('should format a range as string', function () {
-      assert.equal(new Range(0, 4).format(), '0:4')
-      assert.equal(new Range(0, 4, 2).format(), '0:2:4')
+      assert.strictEqual(new Range(0, 4).format(), '0:4')
+      assert.strictEqual(new Range(0, 4, 2).format(), '0:2:4')
 
-      assert.equal(new Range(0.01, 0.09, 0.02).format(), '0.01:0.02:0.09')
+      assert.strictEqual(new Range(0.01, 0.09, 0.02).format(), '0.01:0.02:0.09')
 
-      assert.equal(new Range(0.01, 0.09, 0.02).format({
+      assert.strictEqual(new Range(0.01, 0.09, 0.02).format({
         notation: 'exponential'
       }), '1e-2:2e-2:9e-2')
     })

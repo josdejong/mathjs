@@ -65,7 +65,7 @@ describe('identity', function () {
 
   it('should LaTeX identity', function () {
     const expression = math.parse('identity(2)')
-    assert.equal(expression.toTex(), '\\mathrm{identity}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{identity}\\left(2\\right)')
   })
 
   it('should throw an error when using the deprecated function eye', function () {

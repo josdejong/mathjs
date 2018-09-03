@@ -6,20 +6,20 @@ const gamma = math.gamma
 
 describe('gamma', function () {
   it('should calculate the gamma of an integer number', function () {
-    assert.equal(gamma(1), 1)
-    assert.equal(gamma(2), 1)
-    assert.equal(gamma(3), 2)
-    assert.equal(gamma(4), 6)
-    assert.equal(gamma(5), 24)
-    assert.equal(gamma(6), 120)
-    assert.equal(gamma(Infinity), Infinity) // shouldn't stall
+    assert.strictEqual(gamma(1), 1)
+    assert.strictEqual(gamma(2), 1)
+    assert.strictEqual(gamma(3), 2)
+    assert.strictEqual(gamma(4), 6)
+    assert.strictEqual(gamma(5), 24)
+    assert.strictEqual(gamma(6), 120)
+    assert.strictEqual(gamma(Infinity), Infinity) // shouldn't stall
   })
 
   it('should calculate the gamma of a nonpositive integer', function () {
-    assert.equal(gamma(0), Infinity)
-    assert.equal(gamma(-1), Infinity)
-    assert.equal(gamma(-2), Infinity)
-    assert.equal(gamma(-100000), Infinity)
+    assert.strictEqual(gamma(0), Infinity)
+    assert.strictEqual(gamma(-1), Infinity)
+    assert.strictEqual(gamma(-2), Infinity)
+    assert.strictEqual(gamma(-100000), Infinity)
     assert.ok(isNaN(gamma(-Infinity)))
   })
 
@@ -127,8 +127,8 @@ describe('gamma', function () {
   })
 
   it('should calculate the gamma of a boolean', function () {
-    assert.equal(gamma(true), 1)
-    assert.equal(gamma(false), Infinity)
+    assert.strictEqual(gamma(true), 1)
+    assert.strictEqual(gamma(false), Infinity)
   })
 
   it('should calculate the gamma of each element in a matrix', function () {
@@ -151,6 +151,6 @@ describe('gamma', function () {
 
   it('should LaTeX gamma', function () {
     const expression = math.parse('gamma(2.5)')
-    assert.equal(expression.toTex(), '\\Gamma\\left(2.5\\right)')
+    assert.strictEqual(expression.toTex(), '\\Gamma\\left(2.5\\right)')
   })
 })

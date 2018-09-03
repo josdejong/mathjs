@@ -11,9 +11,9 @@ const complex = math.complex
 
 describe('nthRoot', function () {
   it('should return the nthRoot of a boolean value', function () {
-    assert.equal(nthRoot(true), 1)
-    assert.equal(nthRoot(false), 0)
-    assert.equal(nthRoot(1, true), 1)
+    assert.strictEqual(nthRoot(true), 1)
+    assert.strictEqual(nthRoot(false), 0)
+    assert.strictEqual(nthRoot(1, true), 1)
   })
 
   it('should return the nthRoot for numbers', function () {
@@ -51,8 +51,8 @@ describe('nthRoot', function () {
   })
 
   it('should return the nthRoot for zero', function () {
-    assert.equal(nthRoot(0, 2), 0)
-    assert.equal(nthRoot(0, -2), Infinity)
+    assert.strictEqual(nthRoot(0, 2), 0)
+    assert.strictEqual(nthRoot(0, -2), Infinity)
   })
 
   it('should return the nthRoot for infinity', function () {
@@ -187,6 +187,6 @@ describe('nthRoot', function () {
 
   it('should LaTeX nthRoot', function () {
     const expression = math.parse('nthRoot(8,3)')
-    assert.equal(expression.toTex(), '\\sqrt[3]{8}')
+    assert.strictEqual(expression.toTex(), '\\sqrt[3]{8}')
   })
 })

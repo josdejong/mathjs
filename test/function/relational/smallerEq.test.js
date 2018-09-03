@@ -10,44 +10,44 @@ const smallerEq = math.smallerEq
 
 describe('smallerEq', function () {
   it('should compare two numbers correctly', function () {
-    assert.equal(smallerEq(2, 3), true)
-    assert.equal(smallerEq(2, 2), true)
-    assert.equal(smallerEq(2, 1), false)
-    assert.equal(smallerEq(0, 0), true)
-    assert.equal(smallerEq(-2, 2), true)
-    assert.equal(smallerEq(-2, -3), false)
-    assert.equal(smallerEq(-2, -2), true)
-    assert.equal(smallerEq(-3, -2), true)
+    assert.strictEqual(smallerEq(2, 3), true)
+    assert.strictEqual(smallerEq(2, 2), true)
+    assert.strictEqual(smallerEq(2, 1), false)
+    assert.strictEqual(smallerEq(0, 0), true)
+    assert.strictEqual(smallerEq(-2, 2), true)
+    assert.strictEqual(smallerEq(-2, -3), false)
+    assert.strictEqual(smallerEq(-2, -2), true)
+    assert.strictEqual(smallerEq(-3, -2), true)
   })
 
   it('should compare two floating point numbers correctly', function () {
     // Infinity
-    assert.equal(smallerEq(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), true)
-    assert.equal(smallerEq(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), true)
-    assert.equal(smallerEq(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), false)
-    assert.equal(smallerEq(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true)
-    assert.equal(smallerEq(Number.POSITIVE_INFINITY, 2.0), false)
-    assert.equal(smallerEq(2.0, Number.POSITIVE_INFINITY), true)
-    assert.equal(smallerEq(Number.NEGATIVE_INFINITY, 2.0), true)
-    assert.equal(smallerEq(2.0, Number.NEGATIVE_INFINITY), false)
+    assert.strictEqual(smallerEq(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), true)
+    assert.strictEqual(smallerEq(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), true)
+    assert.strictEqual(smallerEq(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), false)
+    assert.strictEqual(smallerEq(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true)
+    assert.strictEqual(smallerEq(Number.POSITIVE_INFINITY, 2.0), false)
+    assert.strictEqual(smallerEq(2.0, Number.POSITIVE_INFINITY), true)
+    assert.strictEqual(smallerEq(Number.NEGATIVE_INFINITY, 2.0), true)
+    assert.strictEqual(smallerEq(2.0, Number.NEGATIVE_INFINITY), false)
     // floating point numbers
-    assert.equal(smallerEq(0.3 - 0.2, 0.1), true)
+    assert.strictEqual(smallerEq(0.3 - 0.2, 0.1), true)
   })
 
   it('should compare two booleans', function () {
-    assert.equal(smallerEq(true, true), true)
-    assert.equal(smallerEq(true, false), false)
-    assert.equal(smallerEq(false, true), true)
-    assert.equal(smallerEq(false, false), true)
+    assert.strictEqual(smallerEq(true, true), true)
+    assert.strictEqual(smallerEq(true, false), false)
+    assert.strictEqual(smallerEq(false, true), true)
+    assert.strictEqual(smallerEq(false, false), true)
   })
 
   it('should compare mixed numbers and booleans', function () {
-    assert.equal(smallerEq(2, true), false)
-    assert.equal(smallerEq(1, true), true)
-    assert.equal(smallerEq(0, true), true)
-    assert.equal(smallerEq(true, 2), true)
-    assert.equal(smallerEq(true, 1), true)
-    assert.equal(smallerEq(false, 2), true)
+    assert.strictEqual(smallerEq(2, true), false)
+    assert.strictEqual(smallerEq(1, true), true)
+    assert.strictEqual(smallerEq(0, true), true)
+    assert.strictEqual(smallerEq(true, 2), true)
+    assert.strictEqual(smallerEq(true, 1), true)
+    assert.strictEqual(smallerEq(false, 2), true)
   })
 
   it('should compare bignumbers', function () {
@@ -88,20 +88,20 @@ describe('smallerEq', function () {
   })
 
   it('should compare two measures of the same unit correctly', function () {
-    assert.equal(smallerEq(unit('100cm'), unit('10inch')), false)
-    assert.equal(smallerEq(unit('99cm'), unit('1m')), true)
-    // assert.equal(smallerEq(unit('100cm'), unit('1m')), true); // dangerous, round-off errors
-    assert.equal(smallerEq(unit('101cm'), unit('1m')), false)
+    assert.strictEqual(smallerEq(unit('100cm'), unit('10inch')), false)
+    assert.strictEqual(smallerEq(unit('99cm'), unit('1m')), true)
+    // assert.strictEqual(smallerEq(unit('100cm'), unit('1m')), true); // dangerous, round-off errors
+    assert.strictEqual(smallerEq(unit('101cm'), unit('1m')), false)
   })
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
-    assert.equal(mymath.smallerEq(1.01, 1), false)
-    assert.equal(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), false)
+    assert.strictEqual(mymath.smallerEq(1.01, 1), false)
+    assert.strictEqual(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), false)
 
     mymath.config({ epsilon: 1e-2 })
-    assert.equal(mymath.smallerEq(1.01, 1), true)
-    assert.equal(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), true)
+    assert.strictEqual(mymath.smallerEq(1.01, 1), true)
+    assert.strictEqual(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), true)
   })
 
   it('should throw an error if comparing a unit with a number', function () {
@@ -119,9 +119,9 @@ describe('smallerEq', function () {
   })
 
   it('should compare two strings by their numerical value', function () {
-    assert.equal(smallerEq('0', 0), true)
-    assert.equal(smallerEq('10', '2'), false)
-    assert.equal(smallerEq('1e3', '1000'), true)
+    assert.strictEqual(smallerEq('0', 0), true)
+    assert.strictEqual(smallerEq('10', '2'), false)
+    assert.strictEqual(smallerEq('1e3', '1000'), true)
 
     assert.throws(function () { smallerEq('A', 'B') }, /Cannot convert "A" to a number/)
   })
@@ -210,6 +210,6 @@ describe('smallerEq', function () {
 
   it('should LaTeX smallerEq', function () {
     const expression = math.parse('smallerEq(1,2)')
-    assert.equal(expression.toTex(), '\\left(1\\leq2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1\\leq2\\right)')
   })
 })

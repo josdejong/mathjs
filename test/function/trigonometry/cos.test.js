@@ -39,12 +39,12 @@ describe('cos', function () {
                         '59494006339537812110786663367929884637840572887762249921' +
                         '8425619255481'
     let cosVal = biggermath.cos(biggermath.bignumber(103.64))
-    assert.equal(biggermath.bignumber(103.64).constructor.precision, 238)
-    assert.equal(cosVal.constructor.precision, 238)
+    assert.strictEqual(biggermath.bignumber(103.64).constructor.precision, 238)
+    assert.strictEqual(cosVal.constructor.precision, 238)
     assert.deepEqual(cosVal.toString(), resultVal)
 
     cosVal = biggermath.cos(biggermath.bignumber(-103.64))
-    assert.equal(cosVal.constructor.precision, 238)
+    assert.strictEqual(cosVal.constructor.precision, 238)
     assert.deepEqual(cosVal.toString(), resultVal)
 
     biggermath.config({ precision: 16 })
@@ -116,6 +116,6 @@ describe('cos', function () {
 
   it('should LaTeX cos', function () {
     const expression = math.parse('cos(1)')
-    assert.equal(expression.toTex(), '\\cos\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\cos\\left(1\\right)')
   })
 })

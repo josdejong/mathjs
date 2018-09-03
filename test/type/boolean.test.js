@@ -4,28 +4,28 @@ const bool = math['boolean']
 
 describe('boolean', function () {
   it('should convert a boolean to a boolean', function () {
-    assert.equal(bool(true), true)
-    assert.equal(bool(false), false)
+    assert.strictEqual(bool(true), true)
+    assert.strictEqual(bool(false), false)
   })
 
   it('should convert null to a boolean', function () {
-    assert.equal(bool(null), false)
+    assert.strictEqual(bool(null), false)
   })
 
   it('should convert a number into a boolean', function () {
-    assert.equal(bool(-2), true)
-    assert.equal(bool(-1), true)
-    assert.equal(bool(0), false)
-    assert.equal(bool(1), true)
-    assert.equal(bool(2), true)
+    assert.strictEqual(bool(-2), true)
+    assert.strictEqual(bool(-1), true)
+    assert.strictEqual(bool(0), false)
+    assert.strictEqual(bool(1), true)
+    assert.strictEqual(bool(2), true)
   })
 
   it('should convert a bignumber into a boolean', function () {
-    assert.equal(bool(math.bignumber(-2)), true)
-    assert.equal(bool(math.bignumber(-1)), true)
-    assert.equal(bool(math.bignumber(0)), false)
-    assert.equal(bool(math.bignumber(1)), true)
-    assert.equal(bool(math.bignumber(2)), true)
+    assert.strictEqual(bool(math.bignumber(-2)), true)
+    assert.strictEqual(bool(math.bignumber(-1)), true)
+    assert.strictEqual(bool(math.bignumber(0)), false)
+    assert.strictEqual(bool(math.bignumber(1)), true)
+    assert.strictEqual(bool(math.bignumber(2)), true)
   })
 
   it('should convert the elements of a matrix or array to booleans', function () {
@@ -34,19 +34,19 @@ describe('boolean', function () {
   })
 
   it('should convert a string into a boolean', function () {
-    assert.equal(bool('true'), true)
-    assert.equal(bool('false'), false)
+    assert.strictEqual(bool('true'), true)
+    assert.strictEqual(bool('false'), false)
 
-    assert.equal(bool('True'), true)
-    assert.equal(bool('False'), false)
+    assert.strictEqual(bool('True'), true)
+    assert.strictEqual(bool('False'), false)
 
-    assert.equal(bool('1'), true)
-    assert.equal(bool('0'), false)
-    assert.equal(bool(' 0 '), false)
+    assert.strictEqual(bool('1'), true)
+    assert.strictEqual(bool('0'), false)
+    assert.strictEqual(bool(' 0 '), false)
 
-    assert.equal(bool('2'), true)
-    assert.equal(bool(' 4e2 '), true)
-    assert.equal(bool(' -4e2 '), true)
+    assert.strictEqual(bool('2'), true)
+    assert.strictEqual(bool(' 4e2 '), true)
+    assert.strictEqual(bool(' -4e2 '), true)
   })
 
   it('should throw an error if the string is not a valid number', function () {
@@ -68,6 +68,6 @@ describe('boolean', function () {
 
   it('should LaTeX boolean', function () {
     const expression = math.parse('boolean(1)')
-    assert.equal(expression.toTex(), '\\mathrm{boolean}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{boolean}\\left(1\\right)')
   })
 })

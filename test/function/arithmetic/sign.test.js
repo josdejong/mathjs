@@ -8,14 +8,14 @@ const complex = math.complex
 
 describe('sign', function () {
   it('should calculate the sign of a boolean', function () {
-    assert.equal(math.sign(true), 1)
-    assert.equal(math.sign(false), 0)
+    assert.strictEqual(math.sign(true), 1)
+    assert.strictEqual(math.sign(false), 0)
   })
 
   it('should calculate the sign of a number', function () {
-    assert.equal(math.sign(3), 1)
-    assert.equal(math.sign(-3), -1)
-    assert.equal(math.sign(0), 0)
+    assert.strictEqual(math.sign(3), 1)
+    assert.strictEqual(math.sign(-3), -1)
+    assert.strictEqual(math.sign(0), 0)
   })
 
   it('should calculate the sign of a big number', function () {
@@ -27,9 +27,9 @@ describe('sign', function () {
   it('should calculate the sign of a fraction', function () {
     const a = fraction(0.5)
     assert(math.sign(a) instanceof math.type.Fraction)
-    assert.equal(math.sign(a).toString(), '1')
-    assert.equal(math.sign(fraction(-0.5)).toString(), '-1')
-    assert.equal(a.toString(), '0.5')
+    assert.strictEqual(math.sign(a).toString(), '1')
+    assert.strictEqual(math.sign(fraction(-0.5)).toString(), '-1')
+    assert.strictEqual(a.toString(), '0.5')
   })
 
   it('should calculate the sign of a complex value', function () {
@@ -37,12 +37,12 @@ describe('sign', function () {
   })
 
   it('should calculate the sign of a unit', function () {
-    assert.equal(math.sign(math.unit('5 cm')), 1)
-    assert.equal(math.sign(math.unit('-5 kg')), -1)
-    assert.equal(math.sign(math.unit('0 mol/s')), 0)
-    assert.equal(math.sign(math.unit('-283.15 degC')), -1)
-    assert.equal(math.sign(math.unit('-273.15 degC')), 0)
-    assert.equal(math.sign(math.unit('-263.15 degC')), 1)
+    assert.strictEqual(math.sign(math.unit('5 cm')), 1)
+    assert.strictEqual(math.sign(math.unit('-5 kg')), -1)
+    assert.strictEqual(math.sign(math.unit('0 mol/s')), 0)
+    assert.strictEqual(math.sign(math.unit('-283.15 degC')), -1)
+    assert.strictEqual(math.sign(math.unit('-273.15 degC')), 0)
+    assert.strictEqual(math.sign(math.unit('-263.15 degC')), 1)
 
     assert.deepEqual(math.sign(math.unit(bignumber(5), 'cm')), bignumber(1))
     assert.deepEqual(math.sign(math.unit(bignumber(-5), 'cm')), bignumber(-1))
@@ -75,6 +75,6 @@ describe('sign', function () {
 
   it('should LaTeX sign', function () {
     const expression = math.parse('sign(-4)')
-    assert.equal(expression.toTex(), '\\mathrm{sign}\\left(-4\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sign}\\left(-4\\right)')
   })
 })

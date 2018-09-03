@@ -91,6 +91,6 @@ describe('filter', function () {
 
   it('should LaTeX filter', function () {
     const expression = math.parse('filter(1,test)')
-    assert.equal(expression.toTex(), '\\mathrm{filter}\\left(1, test\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{filter}\\left(1, test\\right)')
   })
 })

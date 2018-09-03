@@ -10,34 +10,34 @@ const compareNatural = math.compareNatural
 
 describe('compareNatural', function () {
   it('should compare two numbers correctly', function () {
-    assert.equal(compareNatural(2, 3), -1)
-    assert.equal(compareNatural(2, 2), 0)
-    assert.equal(compareNatural(2, 1), 1)
-    assert.equal(compareNatural(0, 0), 0)
-    assert.equal(compareNatural(-2, 2), -1)
-    assert.equal(compareNatural(-2, -3), 1)
-    assert.equal(compareNatural(-3, -2), -1)
+    assert.strictEqual(compareNatural(2, 3), -1)
+    assert.strictEqual(compareNatural(2, 2), 0)
+    assert.strictEqual(compareNatural(2, 1), 1)
+    assert.strictEqual(compareNatural(0, 0), 0)
+    assert.strictEqual(compareNatural(-2, 2), -1)
+    assert.strictEqual(compareNatural(-2, -3), 1)
+    assert.strictEqual(compareNatural(-3, -2), -1)
   })
 
   it('should compare two floating point numbers correctly', function () {
     // Infinity
-    assert.equal(compareNatural(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
-    assert.equal(compareNatural(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0)
-    assert.equal(compareNatural(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1)
-    assert.equal(compareNatural(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1)
-    assert.equal(compareNatural(Number.POSITIVE_INFINITY, 2.0), 1)
-    assert.equal(compareNatural(2.0, Number.POSITIVE_INFINITY), -1)
-    assert.equal(compareNatural(Number.NEGATIVE_INFINITY, 2.0), -1)
-    assert.equal(compareNatural(2.0, Number.NEGATIVE_INFINITY), 1)
+    assert.strictEqual(compareNatural(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
+    assert.strictEqual(compareNatural(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0)
+    assert.strictEqual(compareNatural(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1)
+    assert.strictEqual(compareNatural(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1)
+    assert.strictEqual(compareNatural(Number.POSITIVE_INFINITY, 2.0), 1)
+    assert.strictEqual(compareNatural(2.0, Number.POSITIVE_INFINITY), -1)
+    assert.strictEqual(compareNatural(Number.NEGATIVE_INFINITY, 2.0), -1)
+    assert.strictEqual(compareNatural(2.0, Number.NEGATIVE_INFINITY), 1)
     // floating point numbers
-    assert.equal(compareNatural(0.3 - 0.2, 0.1), 0)
+    assert.strictEqual(compareNatural(0.3 - 0.2, 0.1), 0)
   })
 
   it('should compare two booleans', function () {
-    assert.equal(compareNatural(true, true), 0)
-    assert.equal(compareNatural(true, false), 1)
-    assert.equal(compareNatural(false, true), -1)
-    assert.equal(compareNatural(false, false), 0)
+    assert.strictEqual(compareNatural(true, true), 0)
+    assert.strictEqual(compareNatural(true, false), 1)
+    assert.strictEqual(compareNatural(false, true), -1)
+    assert.strictEqual(compareNatural(false, false), 0)
   })
 
   it('should compare bignumbers', function () {
@@ -46,19 +46,19 @@ describe('compareNatural', function () {
     assert.strictEqual(compareNatural(bignumber(3), bignumber(2)), 1)
     assert.strictEqual(compareNatural(bignumber(0), bignumber(0)), 0)
     assert.strictEqual(compareNatural(bignumber(-2), bignumber(2)), -1)
-    assert.equal(typeof compareNatural(bignumber(-2), bignumber(2)), 'number')
+    assert.strictEqual(typeof compareNatural(bignumber(-2), bignumber(2)), 'number')
   })
 
   it('should compare two fractions', function () {
     const a = math.fraction(1, 3)
     const b = math.fraction(1, 6)
-    assert.equal(typeof compareNatural(a, b), 'number')
-    assert.equal(a.toString(), '0.(3)')
-    assert.equal(b.toString(), '0.1(6)')
+    assert.strictEqual(typeof compareNatural(a, b), 'number')
+    assert.strictEqual(a.toString(), '0.(3)')
+    assert.strictEqual(b.toString(), '0.1(6)')
 
-    assert.equal(compareNatural(math.fraction(3), math.fraction(2)).valueOf(), 1)
-    assert.equal(compareNatural(math.fraction(2), math.fraction(3)).valueOf(), -1)
-    assert.equal(compareNatural(math.fraction(3), math.fraction(3)).valueOf(), 0)
+    assert.strictEqual(compareNatural(math.fraction(3), math.fraction(2)).valueOf(), 1)
+    assert.strictEqual(compareNatural(math.fraction(2), math.fraction(3)).valueOf(), -1)
+    assert.strictEqual(compareNatural(math.fraction(3), math.fraction(3)).valueOf(), 0)
 
     assert.strictEqual(compareNatural(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), 0) // this would fail with numbers
   })
@@ -221,18 +221,18 @@ describe('compareNatural', function () {
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
 
-    assert.equal(mymath.compareNatural(1, 0.991), 1)
-    assert.equal(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
+    assert.strictEqual(mymath.compareNatural(1, 0.991), 1)
+    assert.strictEqual(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
 
     mymath.config({ epsilon: 1e-2 })
-    assert.equal(mymath.compareNatural(1, 0.991), 0)
-    assert.equal(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)), 0)
+    assert.strictEqual(mymath.compareNatural(1, 0.991), 0)
+    assert.strictEqual(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)), 0)
   })
 
   it('should compare complex numbers', function () {
-    assert.equal(compareNatural(complex(1, 1), complex(1, 1)), 0)
-    assert.equal(compareNatural(complex(2, 1), complex(1, 2)), 1)
-    assert.equal(compareNatural(complex(0, 1), complex(1, 2)), -1)
+    assert.strictEqual(compareNatural(complex(1, 1), complex(1, 1)), 0)
+    assert.strictEqual(compareNatural(complex(2, 1), complex(1, 2)), 1)
+    assert.strictEqual(compareNatural(complex(0, 1), complex(1, 2)), -1)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -242,6 +242,6 @@ describe('compareNatural', function () {
 
   it('should LaTeX compare', function () {
     const expression = math.parse('compareNatural(1,2)')
-    assert.equal(expression.toTex(), '\\mathrm{compareNatural}\\left(1,2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{compareNatural}\\left(1,2\\right)')
   })
 })

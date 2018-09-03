@@ -75,7 +75,7 @@ describe('unit', function () {
     const expr1 = math.parse('unit(cm)')
     const expr2 = math.parse('unit(1,cm)')
 
-    assert.equal(expr1.toTex(), '\\left(\\mathrm{cm}\\right)')
-    assert.equal(expr2.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
+    assert.strictEqual(expr1.toTex(), '\\left(\\mathrm{cm}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
   })
 })

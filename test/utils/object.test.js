@@ -34,16 +34,16 @@ describe('object', function () {
       // check whether the clone remains unchanged when changing the original object
       obj.a.b = 'cc'
 
-      assert.equal(clone.a.b, 'c')
+      assert.strictEqual(clone.a.b, 'c')
 
       obj.a.d.setMonth(2)
-      assert.equal(clone.a.d.valueOf(), new Date(2014, 0, 1).valueOf())
+      assert.strictEqual(clone.a.d.valueOf(), new Date(2014, 0, 1).valueOf())
     })
 
     it('should clone dates', function () {
       const d1 = new Date(2014, 1, 1)
       const d2 = object.clone(d1)
-      assert.equal(d1.valueOf(), d2.valueOf())
+      assert.strictEqual(d1.valueOf(), d2.valueOf())
       d1.setMonth(2)
       assert.notEqual(d1, d2)
     })
@@ -62,8 +62,8 @@ describe('object', function () {
       arr[2] = null
       arr[3].a = 1
       d.setMonth(2)
-      assert.equal(clone[2].valueOf(), new Date(2014, 0, 1).valueOf())
-      assert.equal(clone[3].a, 3)
+      assert.strictEqual(clone[2].valueOf(), new Date(2014, 0, 1).valueOf())
+      assert.strictEqual(clone[3].a, 3)
     })
 
     it('should throw an error in case of an unsupported type', function () {
@@ -89,8 +89,8 @@ describe('object', function () {
       const o1 = { a: 2, b: 3 }
       const o2 = object.extend({}, o1)
 
-      assert.equal(o2['foo'], 'bar')
-      assert.equal(o2.hasOwnProperty('foo'), false)
+      assert.strictEqual(o2['foo'], 'bar')
+      assert.strictEqual(o2.hasOwnProperty('foo'), false)
 
       delete Object.prototype.foo
     })
@@ -124,8 +124,8 @@ describe('object', function () {
       const o1 = { a: 2, b: 3 }
       const o2 = object.deepExtend({}, o1)
 
-      assert.equal(o2['foo'], 'bar')
-      assert.equal(o2.hasOwnProperty('foo'), false)
+      assert.strictEqual(o2['foo'], 'bar')
+      assert.strictEqual(o2.hasOwnProperty('foo'), false)
 
       delete Object.prototype.foo
     })
@@ -133,60 +133,60 @@ describe('object', function () {
 
   describe('deepEqual', function () {
     it('should deep compare two objects', function () {
-      assert.equal(object.deepEqual({}, {}), true)
+      assert.strictEqual(object.deepEqual({}, {}), true)
 
-      assert.equal(object.deepEqual({ a: 2, b: 3 }, { a: 2, b: 3 }), true)
-      assert.equal(object.deepEqual({ a: 2, b: 3 }, { a: 2, b: 4 }), false)
-      assert.equal(object.deepEqual({ a: 2, b: 3 }, { a: 2 }), false)
-      assert.equal(object.deepEqual({ a: 2 }, { a: 2, b: 3 }), false)
-      assert.equal(object.deepEqual({ a: 2, b: 3 }, { a: 2, b: {} }), false)
-      assert.equal(object.deepEqual({ a: 2, b: {} }, { a: 2, b: {} }), true)
+      assert.strictEqual(object.deepEqual({ a: 2, b: 3 }, { a: 2, b: 3 }), true)
+      assert.strictEqual(object.deepEqual({ a: 2, b: 3 }, { a: 2, b: 4 }), false)
+      assert.strictEqual(object.deepEqual({ a: 2, b: 3 }, { a: 2 }), false)
+      assert.strictEqual(object.deepEqual({ a: 2 }, { a: 2, b: 3 }), false)
+      assert.strictEqual(object.deepEqual({ a: 2, b: 3 }, { a: 2, b: {} }), false)
+      assert.strictEqual(object.deepEqual({ a: 2, b: {} }, { a: 2, b: {} }), true)
 
-      assert.equal(object.deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 4 } }), true)
-      assert.equal(object.deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }), false)
-      assert.equal(object.deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }), false)
-      assert.equal(object.deepEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
+      assert.strictEqual(object.deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 4 } }), true)
+      assert.strictEqual(object.deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }), false)
+      assert.strictEqual(object.deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }), false)
+      assert.strictEqual(object.deepEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
     })
 
     it('should deep compare two arrays', function () {
-      assert.equal(object.deepEqual([], []), true)
-      assert.equal(object.deepEqual([1, 2], [1, 2]), true)
-      assert.equal(object.deepEqual([1, 2], [1, 2, 3]), false)
-      assert.equal(object.deepEqual([1, 0, 3], [1, 2, 3]), false)
+      assert.strictEqual(object.deepEqual([], []), true)
+      assert.strictEqual(object.deepEqual([1, 2], [1, 2]), true)
+      assert.strictEqual(object.deepEqual([1, 2], [1, 2, 3]), false)
+      assert.strictEqual(object.deepEqual([1, 0, 3], [1, 2, 3]), false)
 
-      assert.equal(object.deepEqual([1, 2, [3, 4]], [1, 2, [3, 4]]), true)
-      assert.equal(object.deepEqual([1, 2, [3]], [1, 2, [3, 4]]), false)
-      assert.equal(object.deepEqual([1, 2, [3, 4]], [1, 2, [3]]), false)
-      assert.equal(object.deepEqual([1, 2, null], [1, 2, [3]]), false)
-      assert.equal(object.deepEqual([1, 2, [3]], [1, 2, null]), false)
-      assert.equal(object.deepEqual([1, 2, 3], [1, 2, [3]]), false)
-      assert.equal(object.deepEqual([1, 2, [3]], [1, 2, 3]), false)
+      assert.strictEqual(object.deepEqual([1, 2, [3, 4]], [1, 2, [3, 4]]), true)
+      assert.strictEqual(object.deepEqual([1, 2, [3]], [1, 2, [3, 4]]), false)
+      assert.strictEqual(object.deepEqual([1, 2, [3, 4]], [1, 2, [3]]), false)
+      assert.strictEqual(object.deepEqual([1, 2, null], [1, 2, [3]]), false)
+      assert.strictEqual(object.deepEqual([1, 2, [3]], [1, 2, null]), false)
+      assert.strictEqual(object.deepEqual([1, 2, 3], [1, 2, [3]]), false)
+      assert.strictEqual(object.deepEqual([1, 2, [3]], [1, 2, 3]), false)
     })
 
     it('should deep compare mixed objects an arrays', function () {
-      assert.equal(object.deepEqual({}, []), false)
-      assert.equal(object.deepEqual({ a: {} }, { a: [] }), false)
+      assert.strictEqual(object.deepEqual({}, []), false)
+      assert.strictEqual(object.deepEqual({ a: {} }, { a: [] }), false)
 
-      assert.equal(object.deepEqual({ a: [1, 2, 3] }, { a: [1, 2, 3] }), true)
-      assert.equal(object.deepEqual({ a: [1, 2, {}] }, { a: [1, 2, {}] }), true)
-      assert.equal(object.deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 4 }] }), true)
-      assert.equal(object.deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 5 }] }), false)
-      assert.equal(object.deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, {}] }), false)
+      assert.strictEqual(object.deepEqual({ a: [1, 2, 3] }, { a: [1, 2, 3] }), true)
+      assert.strictEqual(object.deepEqual({ a: [1, 2, {}] }, { a: [1, 2, {}] }), true)
+      assert.strictEqual(object.deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 4 }] }), true)
+      assert.strictEqual(object.deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 5 }] }), false)
+      assert.strictEqual(object.deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, {}] }), false)
 
-      assert.equal(object.deepEqual([1, 2, {}], [1, 2, {}]), true)
-      assert.equal(object.deepEqual([1, 2, { a: 3 }], [1, 2, { a: 3 }]), true)
-      assert.equal(object.deepEqual([1, 2, { a: 3 }], [1, 2, { a: 4 }]), false)
-      assert.equal(object.deepEqual([1, 2, { a: 3 }], [1, 2, 3]), false)
-      assert.equal(object.deepEqual([1, 2, 3], [1, 2, { a: 3 }]), false)
-      assert.equal(object.deepEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4] }]), true)
-      assert.equal(object.deepEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4, 5] }]), false)
+      assert.strictEqual(object.deepEqual([1, 2, {}], [1, 2, {}]), true)
+      assert.strictEqual(object.deepEqual([1, 2, { a: 3 }], [1, 2, { a: 3 }]), true)
+      assert.strictEqual(object.deepEqual([1, 2, { a: 3 }], [1, 2, { a: 4 }]), false)
+      assert.strictEqual(object.deepEqual([1, 2, { a: 3 }], [1, 2, 3]), false)
+      assert.strictEqual(object.deepEqual([1, 2, 3], [1, 2, { a: 3 }]), false)
+      assert.strictEqual(object.deepEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4] }]), true)
+      assert.strictEqual(object.deepEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4, 5] }]), false)
     })
 
     it('should not ignore inherited properties during comparison', function () {
       Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
-      assert.equal(object.deepEqual({}, {}), true)
-      assert.equal(object.deepEqual({ foo: 'bar' }, {}), true)
+      assert.strictEqual(object.deepEqual({}, {}), true)
+      assert.strictEqual(object.deepEqual({ foo: 'bar' }, {}), true)
 
       delete Object.prototype.foo
     })
@@ -194,7 +194,7 @@ describe('object', function () {
 
   describe('canDefineProperty', function () {
     it('should test whether defineProperty is available', function () {
-      assert.equal(object.canDefineProperty(), true)
+      assert.strictEqual(object.canDefineProperty(), true)
     })
   })
 
@@ -208,12 +208,12 @@ describe('object', function () {
       })
 
       const x = obj.x
-      assert.equal(x, 2)
-      assert.equal(count, 1)
+      assert.strictEqual(x, 2)
+      assert.strictEqual(count, 1)
 
       const x2 = obj.x
-      assert.equal(x2, 2)
-      assert.equal(count, 1)
+      assert.strictEqual(x2, 2)
+      assert.strictEqual(count, 1)
     })
 
     it('should set a lazy property', function () {
@@ -224,7 +224,7 @@ describe('object', function () {
 
       obj.x = 3
       const x = obj.x
-      assert.equal(x, 3)
+      assert.strictEqual(x, 3)
     })
   })
 
@@ -256,15 +256,15 @@ describe('object', function () {
 
   describe('isFactory', function () {
     it('should test whether an object is a factory', function () {
-      assert.equal(object.isFactory({}), false)
-      assert.equal(object.isFactory({ foo: true }), false)
-      assert.equal(object.isFactory({ name: 'foo' }), false)
-      assert.equal(object.isFactory({ name: 'foo', factory: 'bar' }), false)
-      assert.equal(object.isFactory({ name: 2, factory: function () {} }), true)
-      assert.equal(object.isFactory({ factory: function () {} }), true)
+      assert.strictEqual(object.isFactory({}), false)
+      assert.strictEqual(object.isFactory({ foo: true }), false)
+      assert.strictEqual(object.isFactory({ name: 'foo' }), false)
+      assert.strictEqual(object.isFactory({ name: 'foo', factory: 'bar' }), false)
+      assert.strictEqual(object.isFactory({ name: 2, factory: function () {} }), true)
+      assert.strictEqual(object.isFactory({ factory: function () {} }), true)
 
-      assert.equal(object.isFactory({ name: 'foo', factory: function () {} }), true)
-      assert.equal(object.isFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
+      assert.strictEqual(object.isFactory({ name: 'foo', factory: function () {} }), true)
+      assert.strictEqual(object.isFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
     })
   })
 })

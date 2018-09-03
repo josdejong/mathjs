@@ -30,7 +30,7 @@ describe('pow', function () {
 
   it('should exponentiate a negative number to a non-integer power with predictable:true', function () {
     const res = mathPredictable.pow(-2, 1.5)
-    assert.equal(typeof res, 'number')
+    assert.strictEqual(typeof res, 'number')
     assert(isNaN(res))
     assert.strictEqual(mathPredictable.pow(-8, 1 / 3), -2)
   })
@@ -60,17 +60,17 @@ describe('pow', function () {
   })
 
   it('should exponentiate booleans to the given power', function () {
-    assert.equal(pow(true, true), 1)
-    assert.equal(pow(true, false), 1)
-    assert.equal(pow(false, true), 0)
-    assert.equal(pow(false, false), 1)
+    assert.strictEqual(pow(true, true), 1)
+    assert.strictEqual(pow(true, false), 1)
+    assert.strictEqual(pow(false, true), 0)
+    assert.strictEqual(pow(false, false), 1)
   })
 
   it('should exponentiate mixed numbers and booleans', function () {
-    assert.equal(pow(2, true), 2)
-    assert.equal(pow(2, false), 1)
-    assert.equal(pow(true, 2), 1)
-    assert.equal(pow(false, 2), 0)
+    assert.strictEqual(pow(2, true), 2)
+    assert.strictEqual(pow(2, false), 1)
+    assert.strictEqual(pow(true, 2), 1)
+    assert.strictEqual(pow(false, 2), 0)
   })
 
   it('should exponentiate bignumbers', function () {
@@ -134,23 +134,23 @@ describe('pow', function () {
 
     // TODO replace isNaN with complexInfinity when complex.js updates
 
-    assert.equal(math.pow(3, Infinity), Infinity)
-    assert.equal(math.pow(3, -Infinity), 0)
+    assert.strictEqual(math.pow(3, Infinity), Infinity)
+    assert.strictEqual(math.pow(3, -Infinity), 0)
     assert(isNaN(Ptbl.pow(-3, Infinity)))
     assert(math.pow(-3, Infinity).isNaN())
-    assert.equal(math.pow(-3, -Infinity), 0)
+    assert.strictEqual(math.pow(-3, -Infinity), 0)
 
-    assert.equal(math.pow(0.3, Infinity), 0)
-    assert.equal(math.pow(0.3, -Infinity), Infinity)
-    assert.equal(math.pow(-0.3, Infinity), 0)
+    assert.strictEqual(math.pow(0.3, Infinity), 0)
+    assert.strictEqual(math.pow(0.3, -Infinity), Infinity)
+    assert.strictEqual(math.pow(-0.3, Infinity), 0)
     assert(isNaN(Ptbl.pow(-0.3, -Infinity)))
     assert(math.pow(-0.3, -Infinity).isNaN())
 
-    assert.equal(math.pow(Infinity, Infinity), Infinity)
-    assert.equal(math.pow(Infinity, -Infinity), 0) // https://www.wolframalpha.com/input/?i=infinity%5E(-infinity)
+    assert.strictEqual(math.pow(Infinity, Infinity), Infinity)
+    assert.strictEqual(math.pow(Infinity, -Infinity), 0) // https://www.wolframalpha.com/input/?i=infinity%5E(-infinity)
     assert(isNaN(Ptbl.pow(-Infinity, Infinity)))
     assert(math.pow(-Infinity, Infinity).isNaN())
-    assert.equal(math.pow(-Infinity, -Infinity), 0)
+    assert.strictEqual(math.pow(-Infinity, -Infinity), 0)
   })
 
   it('should exponentiate a complex number to the given power', function () {
@@ -199,21 +199,21 @@ describe('pow', function () {
   })
 
   it('should correctly calculate unit ^ number', function () {
-    assert.equal(pow(unit('4 N'), 2).toString(), '16 N^2')
-    assert.equal(pow(unit('0.25 m/s'), -0.5).toString(), '2 s^0.5 / m^0.5')
-    assert.equal(pow(unit('123 hogshead'), 0).toString(), '1')
+    assert.strictEqual(pow(unit('4 N'), 2).toString(), '16 N^2')
+    assert.strictEqual(pow(unit('0.25 m/s'), -0.5).toString(), '2 s^0.5 / m^0.5')
+    assert.strictEqual(pow(unit('123 hogshead'), 0).toString(), '1')
   })
 
   it('should return a cloned value and not affect the argument', function () {
     const unit1 = unit('2 m')
     const unit2 = pow(unit1, 2)
 
-    assert.equal(unit1.toString(), '2 m')
-    assert.equal(unit2.toString(), '4 m^2')
+    assert.strictEqual(unit1.toString(), '2 m')
+    assert.strictEqual(unit2.toString(), '4 m^2')
   })
 
   it('should return a valuelessUnit when calculating valuelessUnit ^ number', function () {
-    assert.equal(pow(unit('kg^0.5 m^0.5 s^-1'), 2).toString(), '(kg m) / s^2')
+    assert.strictEqual(pow(unit('kg^0.5 m^0.5 s^-1'), 2).toString(), '(kg m) / s^2')
   })
 
   it('should throw an error when doing number ^ unit', function () {
@@ -261,6 +261,6 @@ describe('pow', function () {
 
   it('should LaTeX pow', function () {
     const expression = math.parse('pow(2,10)')
-    assert.equal(expression.toTex(), '\\left(2\\right)^{10}')
+    assert.strictEqual(expression.toTex(), '\\left(2\\right)^{10}')
   })
 })

@@ -8,27 +8,27 @@ const bitXor = math.bitXor
 
 describe('bitXor', function () {
   it('should xor two numbers', function () {
-    assert.equal(bitXor(53, 131), 182)
-    assert.equal(bitXor(2, 3), 1)
-    assert.equal(bitXor(-2, 3), -3)
-    assert.equal(bitXor(2, -3), -1)
-    assert.equal(bitXor(-5, -3), 6)
+    assert.strictEqual(bitXor(53, 131), 182)
+    assert.strictEqual(bitXor(2, 3), 1)
+    assert.strictEqual(bitXor(-2, 3), -3)
+    assert.strictEqual(bitXor(2, -3), -1)
+    assert.strictEqual(bitXor(-5, -3), 6)
   })
 
   it('should xor booleans', function () {
-    assert.equal(bitXor(true, true), 0)
-    assert.equal(bitXor(true, false), 1)
-    assert.equal(bitXor(false, true), 1)
-    assert.equal(bitXor(false, false), 0)
+    assert.strictEqual(bitXor(true, true), 0)
+    assert.strictEqual(bitXor(true, false), 1)
+    assert.strictEqual(bitXor(false, true), 1)
+    assert.strictEqual(bitXor(false, false), 0)
   })
 
   it('should xor mixed numbers and booleans', function () {
-    assert.equal(bitXor(0, true), 1)
-    assert.equal(bitXor(0, false), 0)
-    assert.equal(bitXor(true, 0), 1)
-    assert.equal(bitXor(false, 0), 0)
-    assert.equal(bitXor(true, 1), 0)
-    assert.equal(bitXor(false, 1), 1)
+    assert.strictEqual(bitXor(0, true), 1)
+    assert.strictEqual(bitXor(0, false), 0)
+    assert.strictEqual(bitXor(true, 0), 1)
+    assert.strictEqual(bitXor(false, 0), 0)
+    assert.strictEqual(bitXor(true, 1), 0)
+    assert.strictEqual(bitXor(false, 1), 1)
   })
 
   it('should bitwise xor bignumbers', function () {
@@ -155,6 +155,6 @@ describe('bitXor', function () {
 
   it('should LaTeX bitXor', function () {
     const expression = math.parse('bitXor(2,3)')
-    assert.equal(expression.toTex(), '\\left(2\\underline{|}3\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2\\underline{|}3\\right)')
   })
 })

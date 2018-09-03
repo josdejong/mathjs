@@ -7,19 +7,19 @@ const min = math.min
 
 describe('min', function () {
   it('should return the min between several numbers', function () {
-    assert.equal(min(5), 5)
-    assert.equal(min(1, 3), 1)
-    assert.equal(min(3, 1), 1)
-    assert.equal(min(1, 3, 5, -5, 2), -5)
-    assert.equal(min(0, 0, 0, 0), 0)
+    assert.strictEqual(min(5), 5)
+    assert.strictEqual(min(1, 3), 1)
+    assert.strictEqual(min(3, 1), 1)
+    assert.strictEqual(min(1, 3, 5, -5, 2), -5)
+    assert.strictEqual(min(0, 0, 0, 0), 0)
   })
 
   it('should return the min of strings by their numerical value', function () {
-    assert.equal(min('10', '3', '4', '2'), '2')
+    assert.strictEqual(min('10', '3', '4', '2'), '2')
   })
 
   it('should return the min element from a vector', function () {
-    assert.equal(min([1, 3, 5, -5, 2]), -5)
+    assert.strictEqual(min([1, 3, 5, -5, 2]), -5)
   })
 
   it('should return the min of big numbers', function () {
@@ -28,7 +28,7 @@ describe('min', function () {
   })
 
   it('should return the min element from a vector array', function () {
-    assert.equal(min(new DenseMatrix([1, 3, 5, -5, 2])), -5)
+    assert.strictEqual(min(new DenseMatrix([1, 3, 5, -5, 2])), -5)
   })
 
   it('should return the max element from a 2d matrix', function () {
@@ -115,6 +115,6 @@ describe('min', function () {
 
   it('should LaTeX min', function () {
     const expression = math.parse('min(1,2,3)')
-    assert.equal(expression.toTex(), '\\min\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\min\\left(1,2,3\\right)')
   })
 })

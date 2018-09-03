@@ -15,8 +15,8 @@ describe('setPowerset', function () {
   })
 
   it('should always return an array', function () {
-    assert.equal(math.typeof(math.setPowerset([1, 2, 3])), 'Array')
-    assert.equal(math.typeof(math.setPowerset(math.matrix([1, 2, 3]))), 'Array')
+    assert.strictEqual(math.typeof(math.setPowerset([1, 2, 3])), 'Array')
+    assert.strictEqual(math.typeof(math.setPowerset(math.matrix([1, 2, 3]))), 'Array')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

@@ -10,41 +10,41 @@ const compare = math.compare
 
 describe('compare', function () {
   it('should compare two numbers correctly', function () {
-    assert.equal(compare(2, 3), -1)
-    assert.equal(compare(2, 2), 0)
-    assert.equal(compare(2, 1), 1)
-    assert.equal(compare(0, 0), 0)
-    assert.equal(compare(-2, 2), -1)
-    assert.equal(compare(-2, -3), 1)
-    assert.equal(compare(-3, -2), -1)
+    assert.strictEqual(compare(2, 3), -1)
+    assert.strictEqual(compare(2, 2), 0)
+    assert.strictEqual(compare(2, 1), 1)
+    assert.strictEqual(compare(0, 0), 0)
+    assert.strictEqual(compare(-2, 2), -1)
+    assert.strictEqual(compare(-2, -3), 1)
+    assert.strictEqual(compare(-3, -2), -1)
   })
 
   it('should compare two floating point numbers correctly', function () {
     // Infinity
-    assert.equal(compare(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
-    assert.equal(compare(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0)
-    assert.equal(compare(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1)
-    assert.equal(compare(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1)
-    assert.equal(compare(Number.POSITIVE_INFINITY, 2.0), 1)
-    assert.equal(compare(2.0, Number.POSITIVE_INFINITY), -1)
-    assert.equal(compare(Number.NEGATIVE_INFINITY, 2.0), -1)
-    assert.equal(compare(2.0, Number.NEGATIVE_INFINITY), 1)
+    assert.strictEqual(compare(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), 0)
+    assert.strictEqual(compare(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), 0)
+    assert.strictEqual(compare(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), 1)
+    assert.strictEqual(compare(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), -1)
+    assert.strictEqual(compare(Number.POSITIVE_INFINITY, 2.0), 1)
+    assert.strictEqual(compare(2.0, Number.POSITIVE_INFINITY), -1)
+    assert.strictEqual(compare(Number.NEGATIVE_INFINITY, 2.0), -1)
+    assert.strictEqual(compare(2.0, Number.NEGATIVE_INFINITY), 1)
     // floating point numbers
-    assert.equal(compare(0.3 - 0.2, 0.1), 0)
+    assert.strictEqual(compare(0.3 - 0.2, 0.1), 0)
   })
 
   it('should compare two booleans', function () {
-    assert.equal(compare(true, true), 0)
-    assert.equal(compare(true, false), 1)
-    assert.equal(compare(false, true), -1)
-    assert.equal(compare(false, false), 0)
+    assert.strictEqual(compare(true, true), 0)
+    assert.strictEqual(compare(true, false), 1)
+    assert.strictEqual(compare(false, true), -1)
+    assert.strictEqual(compare(false, false), 0)
   })
 
   it('should compare mixed numbers and booleans', function () {
-    assert.equal(compare(2, true), 1)
-    assert.equal(compare(0, true), -1)
-    assert.equal(compare(true, 2), -1)
-    assert.equal(compare(false, 2), -1)
+    assert.strictEqual(compare(2, true), 1)
+    assert.strictEqual(compare(0, true), -1)
+    assert.strictEqual(compare(true, 2), -1)
+    assert.strictEqual(compare(false, 2), -1)
   })
 
   it('should compare bignumbers', function () {
@@ -72,12 +72,12 @@ describe('compare', function () {
     const a = math.fraction(1, 3)
     const b = math.fraction(1, 6)
     assert(compare(a, b) instanceof math.type.Fraction)
-    assert.equal(a.toString(), '0.(3)')
-    assert.equal(b.toString(), '0.1(6)')
+    assert.strictEqual(a.toString(), '0.(3)')
+    assert.strictEqual(b.toString(), '0.1(6)')
 
-    assert.equal(compare(math.fraction(3), math.fraction(2)).valueOf(), 1)
-    assert.equal(compare(math.fraction(2), math.fraction(3)).valueOf(), -1)
-    assert.equal(compare(math.fraction(3), math.fraction(3)).valueOf(), 0)
+    assert.strictEqual(compare(math.fraction(3), math.fraction(2)).valueOf(), 1)
+    assert.strictEqual(compare(math.fraction(2), math.fraction(3)).valueOf(), -1)
+    assert.strictEqual(compare(math.fraction(3), math.fraction(3)).valueOf(), 0)
 
     assert.strictEqual(compare(math.add(math.fraction(0.1), math.fraction(0.2)), math.fraction(0.3)).valueOf(), 0) // this would fail with numbers
   })
@@ -88,10 +88,10 @@ describe('compare', function () {
   })
 
   it('should add two measures of the same unit', function () {
-    assert.equal(compare(unit('100cm'), unit('10inch')), 1)
-    assert.equal(compare(unit('99cm'), unit('1m')), -1)
-    assert.equal(compare(unit('1m'), unit('1m')), bignumber(0))
-    assert.equal(compare(unit('101cm'), unit('1m')), 1)
+    assert.strictEqual(compare(unit('100cm'), unit('10inch')), 1)
+    assert.strictEqual(compare(unit('99cm'), unit('1m')), -1)
+    assert.strictEqual(compare(unit('1m'), unit('1m')), bignumber(0))
+    assert.strictEqual(compare(unit('101cm'), unit('1m')), 1)
   })
 
   it('should throw an error if comparing a unit with a number', function () {
@@ -107,8 +107,8 @@ describe('compare', function () {
   })
 
   it('should compare two strings', function () {
-    assert.equal(compare('0', 0), 0)
-    assert.equal(compare('10', '2'), 1)
+    assert.strictEqual(compare('0', 0), 0)
+    assert.strictEqual(compare('10', '2'), 1)
   })
 
   describe('Array', function () {
@@ -171,12 +171,12 @@ describe('compare', function () {
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
 
-    assert.equal(mymath.compare(1, 0.991), 1)
-    assert.equal(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
+    assert.strictEqual(mymath.compare(1, 0.991), 1)
+    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
 
     mymath.config({ epsilon: 1e-2 })
-    assert.equal(mymath.compare(1, 0.991), 0)
-    assert.equal(mymath.compare(math.bignumber(1), math.bignumber(0.991)), 0)
+    assert.strictEqual(mymath.compare(1, 0.991), 0)
+    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)), 0)
   })
 
   it('should throw an error when comparing complex numbers', function () {
@@ -202,6 +202,6 @@ describe('compare', function () {
 
   it('should LaTeX compare', function () {
     const expression = math.parse('compare(1,2)')
-    assert.equal(expression.toTex(), '\\mathrm{compare}\\left(1,2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{compare}\\left(1,2\\right)')
   })
 })

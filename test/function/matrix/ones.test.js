@@ -71,6 +71,6 @@ describe('ones', function () {
 
   it('should LaTeX ones', function () {
     const expression = math.parse('ones(2)')
-    assert.equal(expression.toTex(), '\\mathrm{ones}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{ones}\\left(2\\right)')
   })
 })

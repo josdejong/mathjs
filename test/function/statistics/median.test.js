@@ -9,17 +9,17 @@ const median = math.median
 
 describe('median', function () {
   it('should return the median of an even number of numbers', function () {
-    assert.equal(median(3, 1), 2)
-    assert.equal(median(1, 3), 2)
+    assert.strictEqual(median(3, 1), 2)
+    assert.strictEqual(median(1, 3), 2)
     approx.equal(median(1, 3, 5, 2), 2.5)
-    assert.equal(median(0, 0, 0, 0), 0)
+    assert.strictEqual(median(0, 0, 0, 0), 0)
   })
 
   it('should return the median of an odd number of numbers', function () {
-    assert.equal(median(0), 0)
-    assert.equal(median(5), 5)
+    assert.strictEqual(median(0), 0)
+    assert.strictEqual(median(5), 5)
     approx.equal(median(1, 3, 5, 2, -1), 2)
-    assert.equal(median(0, 0, 0), 0)
+    assert.strictEqual(median(0, 0, 0), 0)
   })
 
   it('should return the median of an even number of new BigNumbers', function () {
@@ -41,7 +41,7 @@ describe('median', function () {
   })
 
   it('should return the median from an array', function () {
-    assert.equal(median([1, 3, 5, 2, -5]), 2)
+    assert.strictEqual(median([1, 3, 5, 2, -5]), 2)
   })
 
   it('should return the median of units', function () {
@@ -50,7 +50,7 @@ describe('median', function () {
   })
 
   it('should return the median from an 1d matrix', function () {
-    assert.equal(median(new DenseMatrix([1, 3, 5, 2, -5])), 2)
+    assert.strictEqual(median(new DenseMatrix([1, 3, 5, 2, -5])), 2)
   })
 
   it('should return the median from a 2d array', function () {
@@ -112,6 +112,6 @@ describe('median', function () {
 
   it('should LaTeX median', function () {
     const expression = math.parse('median(1,2,3,4)')
-    assert.equal(expression.toTex(), '\\mathrm{median}\\left(1,2,3,4\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{median}\\left(1,2,3,4\\right)')
   })
 })

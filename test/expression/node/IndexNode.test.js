@@ -12,7 +12,7 @@ describe('IndexNode', function () {
     const n = new IndexNode([])
     assert(n instanceof IndexNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'IndexNode')
+    assert.strictEqual(n.type, 'IndexNode')
   })
 
   it('should have isIndexNode', function () {
@@ -63,7 +63,7 @@ describe('IndexNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], b)
     assert.strictEqual(nodes[1], c)
     assert.deepEqual(paths, ['dimensions[0]', 'dimensions[1]'])
@@ -85,7 +85,7 @@ describe('IndexNode', function () {
       return node.isConstantNode && node.value === 1 ? e : node
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], b)
     assert.strictEqual(nodes[1], c)
     assert.deepEqual(paths, ['dimensions[0]', 'dimensions[1]'])
@@ -172,17 +172,17 @@ describe('IndexNode', function () {
     ]
 
     const n = new IndexNode(dimensions)
-    assert.equal(n.toString(), '[2, 1]')
+    assert.strictEqual(n.toString(), '[2, 1]')
 
     const n2 = new IndexNode([])
-    assert.equal(n2.toString(), '[]')
+    assert.strictEqual(n2.toString(), '[]')
   })
 
   it('should stringify an IndexNode with dot notation', function () {
     const dimensions = [new ConstantNode('a')]
 
     const n = new IndexNode(dimensions, true)
-    assert.equal(n.toString(), '.a')
+    assert.strictEqual(n.toString(), '.a')
   })
 
   it('should stringify an IndexNode with custom toString', function () {
@@ -202,7 +202,7 @@ describe('IndexNode', function () {
 
     const n = new IndexNode([b, c])
 
-    assert.equal(n.toString({ handler: customFunction }), 'const(1, number), const(2, number)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'const(1, number), const(2, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -228,17 +228,17 @@ describe('IndexNode', function () {
     ]
 
     const n = new IndexNode(dimensions)
-    assert.equal(n.toTex(), '_{2,1}')
+    assert.strictEqual(n.toTex(), '_{2,1}')
 
     const n2 = new IndexNode([])
-    assert.equal(n2.toTex(), '_{}')
+    assert.strictEqual(n2.toTex(), '_{}')
   })
 
   it('should LaTeX an IndexNode with dot notation', function () {
     const dimensions = [new ConstantNode('a')]
 
     const n = new IndexNode(dimensions, true)
-    assert.equal(n.toString(), '.a')
+    assert.strictEqual(n.toString(), '.a')
   })
 
   it('should LaTeX an IndexNode with custom toTex', function () {
@@ -257,6 +257,6 @@ describe('IndexNode', function () {
     const c = new ConstantNode(2)
     const n = new IndexNode([b, c])
 
-    assert.equal(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right), const\\left(2, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right), const\\left(2, number\\right)')
   })
 })

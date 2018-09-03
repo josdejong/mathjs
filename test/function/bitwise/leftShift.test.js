@@ -8,37 +8,37 @@ const leftShift = math.leftShift
 
 describe('leftShift', function () {
   it('should left shift a number by a given amount', function () {
-    assert.equal(leftShift(0, 1000), 0)
-    assert.equal(leftShift(2, 0), 2)
-    assert.equal(leftShift(2, 3), 16)
-    assert.equal(leftShift(2, 4), 32)
-    assert.equal(leftShift(-2, 2), -8)
-    assert.equal(leftShift(3, 3), 24)
-    assert.equal(leftShift(-3, 2), -12)
-    assert.equal(leftShift(-3, 3), -24)
+    assert.strictEqual(leftShift(0, 1000), 0)
+    assert.strictEqual(leftShift(2, 0), 2)
+    assert.strictEqual(leftShift(2, 3), 16)
+    assert.strictEqual(leftShift(2, 4), 32)
+    assert.strictEqual(leftShift(-2, 2), -8)
+    assert.strictEqual(leftShift(3, 3), 24)
+    assert.strictEqual(leftShift(-3, 2), -12)
+    assert.strictEqual(leftShift(-3, 3), -24)
   })
 
   it('should left shift booleans by a boolean amount', function () {
-    assert.equal(leftShift(true, true), 2)
-    assert.equal(leftShift(true, false), 1)
-    assert.equal(leftShift(false, true), 0)
-    assert.equal(leftShift(false, false), 0)
+    assert.strictEqual(leftShift(true, true), 2)
+    assert.strictEqual(leftShift(true, false), 1)
+    assert.strictEqual(leftShift(false, true), 0)
+    assert.strictEqual(leftShift(false, false), 0)
   })
 
   it('should left shift with a mix of numbers and booleans', function () {
-    assert.equal(leftShift(2, true), 4)
-    assert.equal(leftShift(2, false), 2)
-    assert.equal(leftShift(true, 2), 4)
-    assert.equal(leftShift(false, 2), 0)
+    assert.strictEqual(leftShift(2, true), 4)
+    assert.strictEqual(leftShift(2, false), 2)
+    assert.strictEqual(leftShift(true, 2), 4)
+    assert.strictEqual(leftShift(false, 2), 0)
   })
 
   it('should left shift bignumbers', function () {
     assert.deepEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16))
     assert.deepEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'))
     assert.deepEqual(leftShift(bignumber(-1), bignumber(2)), bignumber(-4))
-    assert.equal(leftShift(bignumber(0), bignumber(-2)).isNaN(), true)
+    assert.strictEqual(leftShift(bignumber(0), bignumber(-2)).isNaN(), true)
     assert.deepEqual(leftShift(bignumber(Infinity), bignumber(2)).toString(), 'Infinity')
-    assert.equal(leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
+    assert.strictEqual(leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
   })
 
   it('should left shift mixed numbers and bignumbers', function () {
@@ -47,8 +47,8 @@ describe('leftShift', function () {
     assert.deepEqual(leftShift(2, bignumber(3)), bignumber(16))
     assert.deepEqual(leftShift(-1, bignumber(2)), bignumber(-4))
     assert.deepEqual(leftShift(bignumber(-1), 2), bignumber(-4))
-    assert.equal(leftShift(bignumber(0), -2).isNaN(), true)
-    assert.equal(leftShift(bignumber(Infinity), Infinity).isNaN(), true)
+    assert.strictEqual(leftShift(bignumber(0), -2).isNaN(), true)
+    assert.strictEqual(leftShift(bignumber(Infinity), Infinity).isNaN(), true)
   })
 
   it('should left shift mixed booleans and bignumbers', function () {
@@ -169,6 +169,6 @@ describe('leftShift', function () {
 
   it('should LaTeX leftShift', function () {
     const expression = math.parse('leftShift(2,3)')
-    assert.equal(expression.toTex(), '\\left(2<<3\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2<<3\\right)')
   })
 })

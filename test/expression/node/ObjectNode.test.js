@@ -15,8 +15,8 @@ describe('ObjectNode', function () {
     const b = new ObjectNode()
     assert(a instanceof ObjectNode)
     assert(b instanceof ObjectNode)
-    assert.equal(a.type, 'ObjectNode')
-    assert.equal(b.type, 'ObjectNode')
+    assert.strictEqual(a.type, 'ObjectNode')
+    assert.strictEqual(b.type, 'ObjectNode')
   })
 
   it('should have isObjectNode', function () {
@@ -84,7 +84,7 @@ describe('ObjectNode', function () {
     })
 
     assert.deepEqual(paths, ['properties["a"]', 'properties["b"]'])
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], b)
   })
@@ -106,7 +106,7 @@ describe('ObjectNode', function () {
     })
 
     assert.deepEqual(paths, ['properties["a"]', 'properties["b"]'])
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], b)
 
@@ -198,7 +198,7 @@ describe('ObjectNode', function () {
       }
     })
 
-    assert.equal(count, 5)
+    assert.strictEqual(count, 5)
   })
 
   it('should clone an ObjectNode', function () {
@@ -238,7 +238,7 @@ describe('ObjectNode', function () {
     const n1 = new ObjectNode({ a: a, b: b })
     const n2 = new ObjectNode({ c: c, n1: n1 })
 
-    assert.equal(n2.toString(), '{"c": 3, "n1": {"a": 1, "b": 2}}')
+    assert.strictEqual(n2.toString(), '{"c": 3, "n1": {"a": 1, "b": 2}}')
   })
 
   it('should stringify an ObjectNode with custom toString', function () {
@@ -252,7 +252,7 @@ describe('ObjectNode', function () {
     const b = new ConstantNode(2)
     const n = new ObjectNode({ a: a, b: b })
 
-    assert.equal(n.toString({ handler: customFunction }), '{"a": const(1, number), "b": const(2, number)}')
+    assert.strictEqual(n.toString({ handler: customFunction }), '{"a": const(1, number), "b": const(2, number)}')
   })
 
   it('toJSON and fromJSON', function () {
@@ -279,7 +279,7 @@ describe('ObjectNode', function () {
     const n1 = new ObjectNode({ a: a, b: b })
     const n2 = new ObjectNode({ c: c, n1: n1 })
 
-    assert.equal(n2.toTex(), '\\left\\{\\begin{array}{ll}\\mathbf{c:} & 3\\\\\n\\mathbf{n1:} & \\left\\{\\begin{array}{ll}\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{array}\\right\\}\\\\\\end{array}\\right\\}')
+    assert.strictEqual(n2.toTex(), '\\left\\{\\begin{array}{ll}\\mathbf{c:} & 3\\\\\n\\mathbf{n1:} & \\left\\{\\begin{array}{ll}\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{array}\\right\\}\\\\\\end{array}\\right\\}')
   })
 
   it('should LaTeX an ObjectNode with custom toTex', function () {
@@ -293,6 +293,6 @@ describe('ObjectNode', function () {
     const b = new ConstantNode(2)
     const n = new ObjectNode({ a: a, b: b })
 
-    assert.equal(n.toTex({ handler: customFunction }), '\\left\\{\\begin{array}{ll}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{array}\\right\\}')
+    assert.strictEqual(n.toTex({ handler: customFunction }), '\\left\\{\\begin{array}{ll}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{array}\\right\\}')
   })
 })

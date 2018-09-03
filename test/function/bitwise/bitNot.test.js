@@ -6,8 +6,8 @@ const bitNot = math.bitNot
 
 describe('bitNot', function () {
   it('should return bitwise not of a boolean', function () {
-    assert.equal(bitNot(true), -2)
-    assert.equal(bitNot(false), -1)
+    assert.strictEqual(bitNot(true), -2)
+    assert.strictEqual(bitNot(false), -1)
   })
 
   it('should perform bitwise not of a number', function () {
@@ -60,6 +60,6 @@ describe('bitNot', function () {
 
   it('should LaTeX bitNot', function () {
     const expression = math.parse('bitNot(4)')
-    assert.equal(expression.toTex(), '~\\left(4\\right)')
+    assert.strictEqual(expression.toTex(), '~\\left(4\\right)')
   })
 })

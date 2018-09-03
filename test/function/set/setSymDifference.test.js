@@ -16,8 +16,8 @@ describe('setSymDifference', function () {
   })
 
   it('should return the same type of output as the inputs', function () {
-    assert.equal(math.typeof(math.setSymDifference([1, 2, 3], [3, 4, 5])), 'Array')
-    assert.equal(math.typeof(math.setSymDifference(math.matrix([1, 2, 3]), math.matrix([3, 4, 5]))), 'Matrix')
+    assert.strictEqual(math.typeof(math.setSymDifference([1, 2, 3], [3, 4, 5])), 'Array')
+    assert.strictEqual(math.typeof(math.setSymDifference(math.matrix([1, 2, 3]), math.matrix([3, 4, 5]))), 'Matrix')
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

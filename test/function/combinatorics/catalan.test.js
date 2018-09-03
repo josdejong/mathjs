@@ -4,9 +4,9 @@ const catalan = math.catalan
 
 describe('catalan', function () {
   it('should calculate the nth catalan number', function () {
-    assert.equal(catalan(3), 5)
-    assert.equal(catalan(0), 1)
-    assert.equal(catalan(8), 1430)
+    assert.strictEqual(catalan(3), 5)
+    assert.strictEqual(catalan(0), 1)
+    assert.strictEqual(catalan(8), 1430)
   })
 
   it('should calculate the nth catalan number with BigNumbers', function () {
@@ -36,6 +36,6 @@ describe('catalan', function () {
 
   it('should LaTeX catalan', function () {
     const expression = math.parse('catalan(3)')
-    assert.equal(expression.toTex(), '\\mathrm{C}_{3}')
+    assert.strictEqual(expression.toTex(), '\\mathrm{C}_{3}')
   })
 })

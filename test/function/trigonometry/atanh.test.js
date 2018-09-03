@@ -15,8 +15,8 @@ const Big = bigmath.bignumber
 
 describe('atanh', function () {
   it('should return the hyperbolic arctan of a boolean', function () {
-    assert.equal(atanh(true), Infinity)
-    assert.equal(atanh(false), 0)
+    assert.strictEqual(atanh(true), Infinity)
+    assert.strictEqual(atanh(false), 0)
   })
 
   it('should return the hyperbolic arctan of a number', function () {
@@ -33,7 +33,7 @@ describe('atanh', function () {
   })
 
   it('should return the hyperbolic arctan of a number when predictable:true', function () {
-    assert.equal(typeof predmath.atanh(-2), 'number')
+    assert.strictEqual(typeof predmath.atanh(-2), 'number')
     assert(isNaN(predmath.atanh(-2)))
   })
 
@@ -108,6 +108,6 @@ describe('atanh', function () {
 
   it('should LaTeX atanh', function () {
     const expression = math.parse('atanh(0.5)')
-    assert.equal(expression.toTex(), '\\tanh^{-1}\\left(0.5\\right)')
+    assert.strictEqual(expression.toTex(), '\\tanh^{-1}\\left(0.5\\right)')
   })
 })

@@ -213,6 +213,6 @@ describe('or', function () {
 
   it('should LaTeX or', function () {
     const expression = math.parse('or(1,2)')
-    assert.equal(expression.toTex(), '\\left(1\\vee2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1\\vee2\\right)')
   })
 })

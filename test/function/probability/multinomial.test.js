@@ -5,13 +5,13 @@ const _ = require('underscore')
 
 describe('multinomial', function () {
   it('should calculate the multinomial of an array of numbers', function () {
-    assert.equal(multinomial([1, 2, 1]), 12)
-    assert.equal(multinomial([4, 2, 1]), 105)
-    assert.equal(multinomial([4, 4]), 70)
+    assert.strictEqual(multinomial([1, 2, 1]), 12)
+    assert.strictEqual(multinomial([4, 2, 1]), 105)
+    assert.strictEqual(multinomial([4, 4]), 70)
   })
 
   it('should calculate the multinomial of n items taken k at a time with BigNumbers', function () {
-    assert.equal(_.isEqual(multinomial([math.bignumber(3), math.bignumber(4), math.bignumber(5)]), math.bignumber(27720)), true)
+    assert.strictEqual(_.isEqual(multinomial([math.bignumber(3), math.bignumber(4), math.bignumber(5)]), math.bignumber(27720)), true)
     assert.deepEqual(multinomial([math.bignumber(10), math.bignumber(1), math.bignumber(2)]), math.bignumber(858))
   })
 

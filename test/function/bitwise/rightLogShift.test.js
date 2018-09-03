@@ -7,30 +7,30 @@ const rightLogShift = math.rightLogShift
 
 describe('rightLogShift', function () {
   it('should right logically shift a number by a given amount', function () {
-    assert.equal(rightLogShift(0, 1000), 0)
-    assert.equal(rightLogShift(2, 0), 2)
-    assert.equal(rightLogShift(12, 3), 1)
-    assert.equal(rightLogShift(32, 4), 2)
-    assert.equal(rightLogShift(-1, 1000), 16777215)
-    assert.equal(rightLogShift(-12, 2), 1073741821)
-    assert.equal(rightLogShift(122, 3), 15)
-    assert.equal(rightLogShift(-13, 2), 1073741820)
-    assert.equal(rightLogShift(-13, 3), 536870910)
+    assert.strictEqual(rightLogShift(0, 1000), 0)
+    assert.strictEqual(rightLogShift(2, 0), 2)
+    assert.strictEqual(rightLogShift(12, 3), 1)
+    assert.strictEqual(rightLogShift(32, 4), 2)
+    assert.strictEqual(rightLogShift(-1, 1000), 16777215)
+    assert.strictEqual(rightLogShift(-12, 2), 1073741821)
+    assert.strictEqual(rightLogShift(122, 3), 15)
+    assert.strictEqual(rightLogShift(-13, 2), 1073741820)
+    assert.strictEqual(rightLogShift(-13, 3), 536870910)
   })
 
   it('should right logically shift booleans by a boolean amount', function () {
-    assert.equal(rightLogShift(true, true), 0)
-    assert.equal(rightLogShift(true, false), 1)
-    assert.equal(rightLogShift(false, true), 0)
-    assert.equal(rightLogShift(false, false), 0)
+    assert.strictEqual(rightLogShift(true, true), 0)
+    assert.strictEqual(rightLogShift(true, false), 1)
+    assert.strictEqual(rightLogShift(false, true), 0)
+    assert.strictEqual(rightLogShift(false, false), 0)
   })
 
   it('should right logically shift with a mix of numbers and booleans', function () {
-    assert.equal(rightLogShift(2, true), 1)
-    assert.equal(rightLogShift(2, false), 2)
-    assert.equal(rightLogShift(true, 0), 1)
-    assert.equal(rightLogShift(true, 1), 0)
-    assert.equal(rightLogShift(false, 2), 0)
+    assert.strictEqual(rightLogShift(2, true), 1)
+    assert.strictEqual(rightLogShift(2, false), 2)
+    assert.strictEqual(rightLogShift(true, 0), 1)
+    assert.strictEqual(rightLogShift(true, 1), 0)
+    assert.strictEqual(rightLogShift(false, 2), 0)
   })
 
   it('should throw an error if the parameters are not integers', function () {
@@ -135,6 +135,6 @@ describe('rightLogShift', function () {
 
   it('should LaTeX rightLogShift', function () {
     const expression = math.parse('rightLogShift(1,2)')
-    assert.equal(expression.toTex(), '\\left(1>>>2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1>>>2\\right)')
   })
 })

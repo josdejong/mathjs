@@ -136,8 +136,8 @@ describe('Node', function () {
     const s = new mymath.expression.node.SymbolNode('bla')
     const n2 = new mymath.expression.node.FunctionNode(s, [])
 
-    assert.equal(n1.toString(callback1), 'default')
-    assert.equal(n2.toString(callback2), 'bla()')
+    assert.strictEqual(n1.toString(callback1), 'default')
+    assert.strictEqual(n2.toString(callback2), 'bla()')
   })
 
   it('should ignore custom toTex if it returns nothing', function () {
@@ -153,8 +153,8 @@ describe('Node', function () {
     const s = new mymath.expression.node.SymbolNode('bla')
     const n2 = new mymath.expression.node.FunctionNode(s, [])
 
-    assert.equal(n1.toTex(callback1), 'default')
-    assert.equal(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)')
+    assert.strictEqual(n1.toTex(callback1), 'default')
+    assert.strictEqual(n2.toTex(callback2), '\\mathrm{bla}\\left(\\right)')
   })
 
   it('should throw an error when compiling an abstract node', function () {
@@ -167,13 +167,13 @@ describe('Node', function () {
   it('should have an identifier', function () {
     const node = new Node()
 
-    assert.equal(node.getIdentifier(), 'Node')
+    assert.strictEqual(node.getIdentifier(), 'Node')
   })
 
   it('should get the content of a Node', function () {
     const c = new math.expression.node.ConstantNode(1)
 
-    assert.equal(c.getContent(), c)
+    assert.strictEqual(c.getContent(), c)
     assert.deepEqual(c.getContent(), c)
   })
 })

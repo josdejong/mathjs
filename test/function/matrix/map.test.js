@@ -74,6 +74,6 @@ describe('map', function () {
 
   it('should LaTeX map', function () {
     const expression = math.parse('map([1,2,3],callback)')
-    assert.equal(expression.toTex(), '\\mathrm{map}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}, callback\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{map}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}, callback\\right)')
   })
 })

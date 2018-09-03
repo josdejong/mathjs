@@ -60,7 +60,7 @@ describe('reshape', function () {
 
   it('should LaTeX reshape', function () {
     const expression = math.parse('reshape([1,2],1)')
-    assert.equal(expression.toTex(), '\\mathrm{reshape}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{reshape}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)')
   })
 
   it('should reshape a SparseMatrix', function () {

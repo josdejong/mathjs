@@ -15,7 +15,7 @@ const Big = bigmath.bignumber
 describe('asinh', function () {
   it('should return the hyperbolic arcsin of a boolean', function () {
     approx.equal(asinh(true), 0.8813735870195430)
-    assert.equal(asinh(false), 0)
+    assert.strictEqual(asinh(false), 0)
   })
 
   it('should return the hyperbolic arcsin of a number', function () {
@@ -91,6 +91,6 @@ describe('asinh', function () {
 
   it('should LaTeX asinh', function () {
     const expression = math.parse('asinh(2)')
-    assert.equal(expression.toTex(), '\\sinh^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\sinh^{-1}\\left(2\\right)')
   })
 })

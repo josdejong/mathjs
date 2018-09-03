@@ -120,7 +120,7 @@ describe('diag', function () {
     const expr1 = math.parse('diag([1,2,3])')
     const expr2 = math.parse('diag([1,2,3],1)')
 
-    assert.equal(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
-    assert.equal(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1\\right)')
+    assert.strictEqual(expr1.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr2.toTex(), '\\mathrm{diag}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix},1\\right)')
   })
 })

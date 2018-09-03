@@ -14,7 +14,7 @@ const Big = bigmath.bignumber
 
 describe('asec', function () {
   it('should return the arcsec of a boolean', function () {
-    assert.equal(asec(true), 0)
+    assert.strictEqual(asec(true), 0)
     assert.deepEqual(asec(false), complex(0, Infinity))
     // assert.ok(isNaN(asec(false)))
   })
@@ -30,7 +30,7 @@ describe('asec', function () {
   })
 
   it('should return the arcsec of a number when predictable:true', function () {
-    assert.equal(typeof predmath.asec(0.5), 'number')
+    assert.strictEqual(typeof predmath.asec(0.5), 'number')
     assert(isNaN(predmath.asec(0.5)))
   })
 
@@ -112,6 +112,6 @@ describe('asec', function () {
 
   it('should LaTeX asec', function () {
     const expression = math.parse('asec(2)')
-    assert.equal(expression.toTex(), '\\sec^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\sec^{-1}\\left(2\\right)')
   })
 })

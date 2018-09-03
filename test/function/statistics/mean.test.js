@@ -7,11 +7,11 @@ const mean = math.mean
 
 describe('mean', function () {
   it('should return the mean value of some numbers', function () {
-    assert.equal(mean(5), 5)
-    assert.equal(mean(3, 1), 2)
-    assert.equal(mean(0, 3), 1.5)
-    assert.equal(mean(1, 3, 5, 2, -5), 1.2)
-    assert.equal(mean(0, 0, 0, 0), 0)
+    assert.strictEqual(mean(5), 5)
+    assert.strictEqual(mean(3, 1), 2)
+    assert.strictEqual(mean(0, 3), 1.5)
+    assert.strictEqual(mean(1, 3, 5, 2, -5), 1.2)
+    assert.strictEqual(mean(0, 0, 0, 0), 0)
   })
 
   it('should return the mean of big numbers', function () {
@@ -30,13 +30,13 @@ describe('mean', function () {
   })
 
   it('should return the mean value from an array', function () {
-    assert.equal(mean([5]), 5)
-    assert.equal(mean([1, 3, 5, 2, -5]), 1.2)
+    assert.strictEqual(mean([5]), 5)
+    assert.strictEqual(mean([1, 3, 5, 2, -5]), 1.2)
   })
 
   it('should return the mean value from a 1d matrix', function () {
-    assert.equal(mean(new DenseMatrix([5])), 5)
-    assert.equal(mean(new DenseMatrix([1, 3, 5, 2, -5])), 1.2)
+    assert.strictEqual(mean(new DenseMatrix([5])), 5)
+    assert.strictEqual(mean(new DenseMatrix([1, 3, 5, 2, -5])), 1.2)
   })
 
   it('should return the mean for each vector on the last dimension', function () {
@@ -109,6 +109,6 @@ describe('mean', function () {
 
   it('should LaTeX mean', function () {
     const expression = math.parse('mean(1,2,3,4)')
-    assert.equal(expression.toTex(), '\\mathrm{mean}\\left(1,2,3,4\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{mean}\\left(1,2,3,4\\right)')
   })
 })

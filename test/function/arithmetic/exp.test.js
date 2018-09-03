@@ -83,6 +83,6 @@ describe('exp', function () {
 
   it('should LaTeX exp', function () {
     const expression = math.parse('exp(0)')
-    assert.equal(expression.toTex(), '\\exp\\left(0\\right)')
+    assert.strictEqual(expression.toTex(), '\\exp\\left(0\\right)')
   })
 })

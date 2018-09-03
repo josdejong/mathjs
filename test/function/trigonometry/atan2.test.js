@@ -15,29 +15,29 @@ const atan2Big = bigmath.atan2
 
 describe('atan2', function () {
   it('should calculate atan2 correctly', function () {
-    assert.equal(atan2(0, 0) / pi, 0)
-    assert.equal(atan2(0, 1) / pi, 0)
-    assert.equal(atan2(1, 1) / pi, 0.25)
-    assert.equal(atan2(1, 0) / pi, 0.5)
-    assert.equal(atan2(1, -1) / pi, 0.75)
-    assert.equal(atan2(0, -1) / pi, 1)
-    assert.equal(atan2(-1, -1) / pi, -0.75)
-    assert.equal(atan2(-1, 0) / pi, -0.5)
-    assert.equal(atan2(-1, 1) / pi, -0.25)
+    assert.strictEqual(atan2(0, 0) / pi, 0)
+    assert.strictEqual(atan2(0, 1) / pi, 0)
+    assert.strictEqual(atan2(1, 1) / pi, 0.25)
+    assert.strictEqual(atan2(1, 0) / pi, 0.5)
+    assert.strictEqual(atan2(1, -1) / pi, 0.75)
+    assert.strictEqual(atan2(0, -1) / pi, 1)
+    assert.strictEqual(atan2(-1, -1) / pi, -0.75)
+    assert.strictEqual(atan2(-1, 0) / pi, -0.5)
+    assert.strictEqual(atan2(-1, 1) / pi, -0.25)
   })
 
   it('should calculate atan2 for booleans', function () {
-    assert.equal(atan2(true, true), 0.25 * pi)
-    assert.equal(atan2(true, false), 0.5 * pi)
-    assert.equal(atan2(false, true), 0)
-    assert.equal(atan2(false, false), 0)
+    assert.strictEqual(atan2(true, true), 0.25 * pi)
+    assert.strictEqual(atan2(true, false), 0.5 * pi)
+    assert.strictEqual(atan2(false, true), 0)
+    assert.strictEqual(atan2(false, false), 0)
   })
 
   it('should calculate atan2 with mixed numbers and booleans', function () {
-    assert.equal(atan2(1, true), 0.25 * pi)
-    assert.equal(atan2(1, false), 0.5 * pi)
-    assert.equal(atan2(true, 1), 0.25 * pi)
-    assert.equal(atan2(false, 1), 0)
+    assert.strictEqual(atan2(1, true), 0.25 * pi)
+    assert.strictEqual(atan2(1, false), 0.5 * pi)
+    assert.strictEqual(atan2(true, 1), 0.25 * pi)
+    assert.strictEqual(atan2(false, 1), 0)
   })
 
   it('should return the arctan of for bignumbers', function () {
@@ -140,8 +140,8 @@ describe('atan2', function () {
       matrix([1, 0, -1]),
       matrix([1, 0, -1])), pi),
     matrix([0.25, 0, -0.75]))
-    assert.equal(atan2(0, 2) / pi, 0)
-    assert.equal(atan2(0, -2) / pi, 1)
+    assert.strictEqual(atan2(0, 2) / pi, 0)
+    assert.strictEqual(atan2(0, -2) / pi, 1)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -155,6 +155,6 @@ describe('atan2', function () {
 
   it('should LaTeX atan2', function () {
     const expression = math.parse('atan2(1,1)')
-    assert.equal(expression.toTex(), '\\mathrm{atan2}\\left(1,1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{atan2}\\left(1,1\\right)')
   })
 })

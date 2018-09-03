@@ -26,8 +26,8 @@ describe('index', function () {
     const expr2 = math.parse('index(1,2)')
     const expr3 = math.parse('index(1,2,3)')
 
-    assert.equal(expr1.toTex(), '\\mathrm{index}\\left(1\\right)')
-    assert.equal(expr2.toTex(), '\\mathrm{index}\\left(1,2\\right)')
-    assert.equal(expr3.toTex(), '\\mathrm{index}\\left(1,2,3\\right)')
+    assert.strictEqual(expr1.toTex(), '\\mathrm{index}\\left(1\\right)')
+    assert.strictEqual(expr2.toTex(), '\\mathrm{index}\\left(1,2\\right)')
+    assert.strictEqual(expr3.toTex(), '\\mathrm{index}\\left(1,2,3\\right)')
   })
 })

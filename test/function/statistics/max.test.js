@@ -7,11 +7,11 @@ const max = math.max
 
 describe('max', function () {
   it('should return the max of numbers', function () {
-    assert.equal(max(5), 5)
-    assert.equal(max(3, 1), 3)
-    assert.equal(max(1, 3), 3)
-    assert.equal(max(1, 3, 5, 2, -5), 5)
-    assert.equal(max(0, 0, 0, 0), 0)
+    assert.strictEqual(max(5), 5)
+    assert.strictEqual(max(3, 1), 3)
+    assert.strictEqual(max(1, 3), 3)
+    assert.strictEqual(max(1, 3, 5, 2, -5), 5)
+    assert.strictEqual(max(0, 0, 0, 0), 0)
   })
 
   it('should return the max of big numbers', function () {
@@ -20,11 +20,11 @@ describe('max', function () {
   })
 
   it('should return the max of strings by their numerical value', function () {
-    assert.equal(max('10', '3', '4', '2'), '10')
+    assert.strictEqual(max('10', '3', '4', '2'), '10')
   })
 
   it('should return the max element from a vector', function () {
-    assert.equal(max(new DenseMatrix([1, 3, 5, 2, -5])), 5)
+    assert.strictEqual(max(new DenseMatrix([1, 3, 5, 2, -5])), 5)
   })
 
   it('should return the max element from a 2d matrix', function () {
@@ -106,6 +106,6 @@ describe('max', function () {
 
   it('should LaTeX max', function () {
     const expression = math.parse('max(1,2,3)')
-    assert.equal(expression.toTex(), '\\max\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\max\\left(1,2,3\\right)')
   })
 })

@@ -31,7 +31,7 @@ describe('acos', function () {
   })
 
   it('should return the arccos of a number when predictable:true', function () {
-    assert.equal(typeof mathPredictable.acos(-2), 'number')
+    assert.strictEqual(typeof mathPredictable.acos(-2), 'number')
     assert(isNaN(mathPredictable.acos(-2)))
   })
 
@@ -107,6 +107,6 @@ describe('acos', function () {
 
   it('should LaTeX acos', function () {
     const expression = math.parse('acos(1)')
-    assert.equal(expression.toTex(), '\\cos^{-1}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\cos^{-1}\\left(1\\right)')
   })
 })

@@ -7,27 +7,27 @@ const complex = math.complex
 
 describe('dotDivide', function () {
   it('should divide two numbers', function () {
-    assert.equal(dotDivide(4, 2), 2)
-    assert.equal(dotDivide(-4, 2), -2)
-    assert.equal(dotDivide(4, -2), -2)
-    assert.equal(dotDivide(-4, -2), 2)
-    assert.equal(dotDivide(4, 0), Infinity)
-    assert.equal(dotDivide(0, -5), 0)
+    assert.strictEqual(dotDivide(4, 2), 2)
+    assert.strictEqual(dotDivide(-4, 2), -2)
+    assert.strictEqual(dotDivide(4, -2), -2)
+    assert.strictEqual(dotDivide(-4, -2), 2)
+    assert.strictEqual(dotDivide(4, 0), Infinity)
+    assert.strictEqual(dotDivide(0, -5), 0)
     assert.ok(isNaN(dotDivide(0, 0)))
   })
 
   it('should divide booleans', function () {
-    assert.equal(dotDivide(true, true), 1)
-    assert.equal(dotDivide(true, false), Infinity)
-    assert.equal(dotDivide(false, true), 0)
+    assert.strictEqual(dotDivide(true, true), 1)
+    assert.strictEqual(dotDivide(true, false), Infinity)
+    assert.strictEqual(dotDivide(false, true), 0)
     assert.ok(isNaN(dotDivide(false, false)))
   })
 
   it('should add mixed numbers and booleans', function () {
-    assert.equal(dotDivide(2, true), 2)
-    assert.equal(dotDivide(2, false), Infinity)
+    assert.strictEqual(dotDivide(2, true), 2)
+    assert.strictEqual(dotDivide(2, false), Infinity)
     approx.equal(dotDivide(true, 2), 0.5)
-    assert.equal(dotDivide(false, 2), 0)
+    assert.strictEqual(dotDivide(false, 2), 0)
   })
 
   it('should throw an error if there\'s wrong number of arguments', function () {
@@ -47,11 +47,11 @@ describe('dotDivide', function () {
   })
 
   it('should divide a unit by a number', function () {
-    assert.equal(dotDivide(math.unit('5 m'), 10).toString(), '0.5 m')
+    assert.strictEqual(dotDivide(math.unit('5 m'), 10).toString(), '0.5 m')
   })
 
   it('should divide a number by a unit', function () {
-    assert.equal(dotDivide(10, math.unit('5 m')).toString(), '2 m^-1')
+    assert.strictEqual(dotDivide(10, math.unit('5 m')).toString(), '2 m^-1')
   })
 
   /*
@@ -168,6 +168,6 @@ describe('dotDivide', function () {
 
   it('should LaTeX dotDivide', function () {
     const expression = math.parse('dotDivide([1,2],[3,4])')
-    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.:\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.:\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

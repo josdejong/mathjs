@@ -122,13 +122,13 @@ describe('parse', function () {
     it('should parse multiple function assignments', function () {
       let scope = {}
       parse('f(x)=x*2;g(x)=x*3').compile().eval(scope)
-      assert.equal(scope.f(2), 4)
-      assert.equal(scope.g(2), 6)
+      assert.strictEqual(scope.f(2), 4)
+      assert.strictEqual(scope.g(2), 6)
 
       let scope2 = {}
       parse('a=2;f(x)=x^a;').compile().eval(scope2)
-      assert.equal(scope2.a, 2)
-      assert.equal(scope2.f(3), 9)
+      assert.strictEqual(scope2.a, 2)
+      assert.strictEqual(scope2.f(3), 9)
     })
 
     it('should correctly scope a function variable if also used outside the function', function () {
@@ -136,8 +136,8 @@ describe('parse', function () {
       const res = parse('x=2;f(x)=x^2;x').compile().eval(scope) // x should be x=2, not x of the function
 
       assert.deepEqual(res, { entries: [2] })
-      assert.equal(scope.x, 2)
-      assert.equal(scope.f(3), 9)
+      assert.strictEqual(scope.x, 2)
+      assert.strictEqual(scope.f(3), 9)
     })
 
     it('should spread a function over multiple lines', function () {
@@ -207,7 +207,7 @@ describe('parse', function () {
 
   describe('comments', function () {
     it('should skip comments', function () {
-      assert.equal(parseAndEval('2 + 3 # - 4'), 5)
+      assert.strictEqual(parseAndEval('2 + 3 # - 4'), 5)
     })
 
     it('should skip comments in a ResultSet', function () {
@@ -215,35 +215,35 @@ describe('parse', function () {
     })
 
     it('should fill in the property comment of a Node', function () {
-      assert.equal(parse('2 + 3').comment, '')
+      assert.strictEqual(parse('2 + 3').comment, '')
 
-      assert.equal(parse('2 + 3 # hello').comment, '# hello')
-      assert.equal(parse('   # hi').comment, '# hi')
+      assert.strictEqual(parse('2 + 3 # hello').comment, '# hello')
+      assert.strictEqual(parse('   # hi').comment, '# hi')
 
       const blockNode = parse('2 # foo\n3   # bar')
-      assert.equal(blockNode.blocks.length, 2)
-      assert.equal(blockNode.blocks[0].node.comment, '# foo')
-      assert.equal(blockNode.blocks[1].node.comment, '# bar')
+      assert.strictEqual(blockNode.blocks.length, 2)
+      assert.strictEqual(blockNode.blocks[0].node.comment, '# foo')
+      assert.strictEqual(blockNode.blocks[1].node.comment, '# bar')
     })
   })
 
   describe('number', function () {
     it('should parse valid numbers', function () {
-      assert.equal(parseAndEval('0'), 0)
-      assert.equal(parseAndEval('3'), 3)
-      assert.equal(parseAndEval('3.2'), 3.2)
-      assert.equal(parseAndEval('3.'), 3)
-      assert.equal(parseAndEval('3. '), 3)
-      assert.equal(parseAndEval('3.\t'), 3)
-      assert.equal(parseAndEval('003.2'), 3.2)
-      assert.equal(parseAndEval('003.200'), 3.2)
-      assert.equal(parseAndEval('.2'), 0.2)
-      assert.equal(parseAndEval('3e2'), 300)
-      assert.equal(parseAndEval('300e2'), 30000)
-      assert.equal(parseAndEval('300e+2'), 30000)
-      assert.equal(parseAndEval('300e-2'), 3)
-      assert.equal(parseAndEval('300E-2'), 3)
-      assert.equal(parseAndEval('3.2e2'), 320)
+      assert.strictEqual(parseAndEval('0'), 0)
+      assert.strictEqual(parseAndEval('3'), 3)
+      assert.strictEqual(parseAndEval('3.2'), 3.2)
+      assert.strictEqual(parseAndEval('3.'), 3)
+      assert.strictEqual(parseAndEval('3. '), 3)
+      assert.strictEqual(parseAndEval('3.\t'), 3)
+      assert.strictEqual(parseAndEval('003.2'), 3.2)
+      assert.strictEqual(parseAndEval('003.200'), 3.2)
+      assert.strictEqual(parseAndEval('.2'), 0.2)
+      assert.strictEqual(parseAndEval('3e2'), 300)
+      assert.strictEqual(parseAndEval('300e2'), 30000)
+      assert.strictEqual(parseAndEval('300e+2'), 30000)
+      assert.strictEqual(parseAndEval('300e-2'), 3)
+      assert.strictEqual(parseAndEval('300E-2'), 3)
+      assert.strictEqual(parseAndEval('3.2e2'), 320)
     })
 
     it('should parse a number followed by e', function () {
@@ -291,8 +291,8 @@ describe('parse', function () {
       })
 
       assert(fmath.parse('0.1').compile().eval() instanceof math.type.Fraction)
-      assert.equal(fmath.parse('1/3').compile().eval().toString(), '0.(3)')
-      assert.equal(fmath.parse('0.1+0.2').compile().eval().toString(), '0.3')
+      assert.strictEqual(fmath.parse('1/3').compile().eval().toString(), '0.(3)')
+      assert.strictEqual(fmath.parse('0.1+0.2').compile().eval().toString(), '0.3')
     })
   })
 
@@ -447,9 +447,9 @@ describe('parse', function () {
     it('should create units and aliases', function () {
       const myMath = math.create()
       myMath.eval('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})')
-      assert.equal(myMath.eval('5 knot').toString(), '5 knot')
-      assert.equal(myMath.eval('5 knots').toString(), '5 knots')
-      assert.equal(myMath.eval('5 kt').toString(), '5 kt')
+      assert.strictEqual(myMath.eval('5 knot').toString(), '5 knot')
+      assert.strictEqual(myMath.eval('5 knots').toString(), '5 knots')
+      assert.strictEqual(myMath.eval('5 kt').toString(), '5 kt')
     })
 
     it('should evaluate operator "to" with correct precedence ', function () {
@@ -834,7 +834,7 @@ describe('parse', function () {
     it('should parse an object containing a function assignment', function () {
       const obj = parseAndEval('{f: f(x)=x^2}')
       assert.deepEqual(Object.keys(obj), ['f'])
-      assert.equal(obj.f(2), 4)
+      assert.strictEqual(obj.f(2), 4)
     })
 
     it('should not parse a function assignment in an accessor node', function () {
@@ -858,8 +858,8 @@ describe('parse', function () {
 
   describe('boolean', function () {
     it('should parse boolean values', function () {
-      assert.equal(parseAndEval('true'), true)
-      assert.equal(parseAndEval('false'), false)
+      assert.strictEqual(parseAndEval('true'), true)
+      assert.strictEqual(parseAndEval('false'), false)
     })
   })
 
@@ -897,10 +897,10 @@ describe('parse', function () {
   describe('variables', function () {
     it('should parse valid variable assignments', function () {
       let scope = {}
-      assert.equal(parseAndEval('a = 0.75', scope), 0.75)
-      assert.equal(parseAndEval('a + 2', scope), 2.75)
-      assert.equal(parseAndEval('a = 2', scope), 2)
-      assert.equal(parseAndEval('a + 2', scope), 4)
+      assert.strictEqual(parseAndEval('a = 0.75', scope), 0.75)
+      assert.strictEqual(parseAndEval('a + 2', scope), 2.75)
+      assert.strictEqual(parseAndEval('a = 2', scope), 2)
+      assert.strictEqual(parseAndEval('a + 2', scope), 4)
       approx.equal(parseAndEval('pi * 2', scope), 6.283185307179586)
     })
 
@@ -915,14 +915,14 @@ describe('parse', function () {
 
     it('should parse nested assignments', function () {
       let scope = {}
-      assert.equal(parseAndEval('c = d = (e = 4.5)', scope), 4.5)
-      assert.equal(scope.c, 4.5)
-      assert.equal(scope.d, 4.5)
-      assert.equal(scope.e, 4.5)
+      assert.strictEqual(parseAndEval('c = d = (e = 4.5)', scope), 4.5)
+      assert.strictEqual(scope.c, 4.5)
+      assert.strictEqual(scope.d, 4.5)
+      assert.strictEqual(scope.e, 4.5)
       assert.deepEqual(parseAndEval('a = [1,2,f=3]', scope), math.matrix([1, 2, 3]))
-      assert.equal(scope.f, 3)
-      assert.equal(parseAndEval('2 + (g = 3 + 4)', scope), 9)
-      assert.equal(scope.g, 7)
+      assert.strictEqual(scope.f, 3)
+      assert.strictEqual(parseAndEval('2 + (g = 3 + 4)', scope), 9)
+      assert.strictEqual(scope.g, 7)
     })
 
     it('should parse variable assignment inside a function call', function () {
@@ -940,14 +940,14 @@ describe('parse', function () {
 
   describe('functions', function () {
     it('should parse functions', function () {
-      assert.equal(parseAndEval('sqrt(4)'), 2)
-      assert.equal(parseAndEval('sqrt(6+3)'), 3)
-      assert.equal(parseAndEval('atan2(2,2)'), 0.7853981633974483)
+      assert.strictEqual(parseAndEval('sqrt(4)'), 2)
+      assert.strictEqual(parseAndEval('sqrt(6+3)'), 3)
+      assert.strictEqual(parseAndEval('atan2(2,2)'), 0.7853981633974483)
       assert.deepEqual(parseAndEval('sqrt(-4)'), new Complex(0, 2))
-      assert.equal(parseAndEval('abs(-4.2)'), 4.2)
-      assert.equal(parseAndEval('add(2, 3)'), 5)
+      assert.strictEqual(parseAndEval('abs(-4.2)'), 4.2)
+      assert.strictEqual(parseAndEval('add(2, 3)'), 5)
       approx.deepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0))
-      assert.equal(parseAndEval('unequal(2, 3)'), true)
+      assert.strictEqual(parseAndEval('unequal(2, 3)'), true)
     })
 
     it('should get a subset of a matrix returned by a function', function () {
@@ -956,40 +956,40 @@ describe('parse', function () {
           return [1, 2, 3, 4]
         }
       }
-      assert.equal(parseAndEval('test()[2]', scope), 2)
+      assert.strictEqual(parseAndEval('test()[2]', scope), 2)
     })
 
     it('should parse functions without parameters', function () {
-      assert.equal(parseAndEval('r()', { r: function () { return 2 } }), 2)
+      assert.strictEqual(parseAndEval('r()', { r: function () { return 2 } }), 2)
     })
 
     it('should parse function assignments', function () {
       let scope = {}
       parseAndEval('x=100', scope) // for testing scoping of the function variables
-      assert.equal(parseAndEval('f(x) = x^2', scope).syntax, 'f(x)')
-      assert.equal(parseAndEval('f(3)', scope), 9)
-      assert.equal(scope.f(3), 9)
-      assert.equal(scope.x, 100)
-      assert.equal(parseAndEval('g(x, y) = x^y', scope).syntax, 'g(x, y)')
-      assert.equal(parseAndEval('g(4,5)', scope), 1024)
-      assert.equal(scope.g(4, 5), 1024)
+      assert.strictEqual(parseAndEval('f(x) = x^2', scope).syntax, 'f(x)')
+      assert.strictEqual(parseAndEval('f(3)', scope), 9)
+      assert.strictEqual(scope.f(3), 9)
+      assert.strictEqual(scope.x, 100)
+      assert.strictEqual(parseAndEval('g(x, y) = x^y', scope).syntax, 'g(x, y)')
+      assert.strictEqual(parseAndEval('g(4,5)', scope), 1024)
+      assert.strictEqual(scope.g(4, 5), 1024)
     })
 
     it('should correctly evaluate variables in assigned functions', function () {
       let scope = {}
-      assert.equal(parseAndEval('a = 3', scope), 3)
-      assert.equal(parseAndEval('f(x) = a * x', scope).syntax, 'f(x)')
-      assert.equal(parseAndEval('f(2)', scope), 6)
-      assert.equal(parseAndEval('a = 5', scope), 5)
-      assert.equal(parseAndEval('f(2)', scope), 10)
-      assert.equal(parseAndEval('g(x) = x^q', scope).syntax, 'g(x)')
-      assert.equal(parseAndEval('q = 4/2', scope), 2)
-      assert.equal(parseAndEval('g(3)', scope), 9)
+      assert.strictEqual(parseAndEval('a = 3', scope), 3)
+      assert.strictEqual(parseAndEval('f(x) = a * x', scope).syntax, 'f(x)')
+      assert.strictEqual(parseAndEval('f(2)', scope), 6)
+      assert.strictEqual(parseAndEval('a = 5', scope), 5)
+      assert.strictEqual(parseAndEval('f(2)', scope), 10)
+      assert.strictEqual(parseAndEval('g(x) = x^q', scope).syntax, 'g(x)')
+      assert.strictEqual(parseAndEval('q = 4/2', scope), 2)
+      assert.strictEqual(parseAndEval('g(3)', scope), 9)
     })
 
     it('should throw an error for undefined variables in an assigned function', function () {
       let scope = {}
-      assert.equal(parseAndEval('g(x) = x^q', scope).syntax, 'g(x)')
+      assert.strictEqual(parseAndEval('g(x) = x^q', scope).syntax, 'g(x)')
       assert.throws(function () {
         parseAndEval('g(3)', scope)
       }, function (err) {
@@ -1027,26 +1027,26 @@ describe('parse', function () {
     it('should parse operations', function () {
       approx.equal(parseAndEval('(2+3)/4'), 1.25)
       approx.equal(parseAndEval('2+3/4'), 2.75)
-      assert.equal(parse('0 + 2').toString(), '0 + 2')
+      assert.strictEqual(parse('0 + 2').toString(), '0 + 2')
     })
 
     it('should parse add +', function () {
-      assert.equal(parseAndEval('2 + 3'), 5)
-      assert.equal(parseAndEval('2 + 3 + 4'), 9)
-      assert.equal(parseAndEval('2.+3'), 5) // test whether the decimal mark isn't confused
+      assert.strictEqual(parseAndEval('2 + 3'), 5)
+      assert.strictEqual(parseAndEval('2 + 3 + 4'), 9)
+      assert.strictEqual(parseAndEval('2.+3'), 5) // test whether the decimal mark isn't confused
     })
 
     it('should parse divide /', function () {
-      assert.equal(parseAndEval('4 / 2'), 2)
-      assert.equal(parseAndEval('8 / 2 / 2'), 2)
+      assert.strictEqual(parseAndEval('4 / 2'), 2)
+      assert.strictEqual(parseAndEval('8 / 2 / 2'), 2)
     })
 
     it('should parse dotDivide ./', function () {
-      assert.equal(parseAndEval('4./2'), 2)
+      assert.strictEqual(parseAndEval('4./2'), 2)
       assert.deepEqual(parseAndEval('4./[2,4]'), math.matrix([2, 1]))
-      assert.equal(parseAndEval('4 ./ 2'), 2)
-      assert.equal(parseAndEval('8 ./ 4 / 2'), 1)
-      assert.equal(parseAndEval('8 ./ 2 / 2'), 2)
+      assert.strictEqual(parseAndEval('4 ./ 2'), 2)
+      assert.strictEqual(parseAndEval('8 ./ 4 / 2'), 1)
+      assert.strictEqual(parseAndEval('8 ./ 2 / 2'), 2)
 
       assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), math.matrix([1, 1, 1]))
     })
@@ -1078,15 +1078,15 @@ describe('parse', function () {
     })
 
     it('should parse larger >', function () {
-      assert.equal(parseAndEval('2 > 3'), false)
-      assert.equal(parseAndEval('2 > 2'), false)
-      assert.equal(parseAndEval('2 > 1'), true)
+      assert.strictEqual(parseAndEval('2 > 3'), false)
+      assert.strictEqual(parseAndEval('2 > 2'), false)
+      assert.strictEqual(parseAndEval('2 > 1'), true)
     })
 
     it('should parse largerEq >=', function () {
-      assert.equal(parseAndEval('2 >= 3'), false)
-      assert.equal(parseAndEval('2 >= 2'), true)
-      assert.equal(parseAndEval('2 >= 1'), true)
+      assert.strictEqual(parseAndEval('2 >= 3'), false)
+      assert.strictEqual(parseAndEval('2 >= 2'), true)
+      assert.strictEqual(parseAndEval('2 >= 1'), true)
     })
 
     it('should parse mod %', function () {
@@ -1103,41 +1103,41 @@ describe('parse', function () {
     })
 
     it('should parse implicit multiplication', function () {
-      assert.equal(parseAndStringifyWithParens('4a'), '4 a')
-      assert.equal(parseAndStringifyWithParens('4 a'), '4 a')
-      assert.equal(parseAndStringifyWithParens('a b'), 'a b')
-      assert.equal(parseAndStringifyWithParens('2a b'), '(2 a) b')
-      assert.equal(parseAndStringifyWithParens('2a * b'), '(2 a) * b')
-      assert.equal(parseAndStringifyWithParens('2a / b'), '(2 a) / b')
-      assert.equal(parseAndStringifyWithParens('a b c'), '(a b) c')
-      assert.equal(parseAndStringifyWithParens('a b*c'), '(a b) * c')
-      assert.equal(parseAndStringifyWithParens('a*b c'), 'a * (b c)')
-      assert.equal(parseAndStringifyWithParens('a/b c'), 'a / (b c)')
+      assert.strictEqual(parseAndStringifyWithParens('4a'), '4 a')
+      assert.strictEqual(parseAndStringifyWithParens('4 a'), '4 a')
+      assert.strictEqual(parseAndStringifyWithParens('a b'), 'a b')
+      assert.strictEqual(parseAndStringifyWithParens('2a b'), '(2 a) b')
+      assert.strictEqual(parseAndStringifyWithParens('2a * b'), '(2 a) * b')
+      assert.strictEqual(parseAndStringifyWithParens('2a / b'), '(2 a) / b')
+      assert.strictEqual(parseAndStringifyWithParens('a b c'), '(a b) c')
+      assert.strictEqual(parseAndStringifyWithParens('a b*c'), '(a b) * c')
+      assert.strictEqual(parseAndStringifyWithParens('a*b c'), 'a * (b c)')
+      assert.strictEqual(parseAndStringifyWithParens('a/b c'), 'a / (b c)')
 
-      assert.equal(parseAndStringifyWithParens('1/2a'), '(1 / 2) a')
-      assert.equal(parseAndStringifyWithParens('8/2a/2'), '((8 / 2) a) / 2')
-      assert.equal(parseAndStringifyWithParens('8/2a*2'), '((8 / 2) a) * 2')
-      assert.equal(parseAndStringifyWithParens('4*2a'), '4 * (2 a)')
-      assert.equal(parseAndStringifyWithParens('3!10'), '(3!) 10')
+      assert.strictEqual(parseAndStringifyWithParens('1/2a'), '(1 / 2) a')
+      assert.strictEqual(parseAndStringifyWithParens('8/2a/2'), '((8 / 2) a) / 2')
+      assert.strictEqual(parseAndStringifyWithParens('8/2a*2'), '((8 / 2) a) * 2')
+      assert.strictEqual(parseAndStringifyWithParens('4*2a'), '4 * (2 a)')
+      assert.strictEqual(parseAndStringifyWithParens('3!10'), '(3!) 10')
 
-      assert.equal(parseAndStringifyWithParens('(2+3)a'), '(2 + 3) a')
-      assert.equal(parseAndStringifyWithParens('(2+3)2'), '(2 + 3) 2')
-      assert.equal(parseAndStringifyWithParens('(2)(3)+4'), '(2 3) + 4')
-      assert.equal(parseAndStringifyWithParens('2(3+4)'), '2 (3 + 4)')
-      assert.equal(parseAndStringifyWithParens('(2+3)-2'), '(2 + 3) - 2') // no implicit multiplication, just a unary minus
-      assert.equal(parseAndStringifyWithParens('a(2+3)'), 'a(2 + 3)') // function call
-      assert.equal(parseAndStringifyWithParens('a.b(2+3)'), 'a.b(2 + 3)') // function call
-      assert.equal(parseAndStringifyWithParens('(2+3)(4+5)'), '(2 + 3) (4 + 5)') // implicit multiplication
-      assert.equal(parseAndStringifyWithParens('(2+3)(4+5)(3-1)'), '((2 + 3) (4 + 5)) (3 - 1)') // implicit multiplication
+      assert.strictEqual(parseAndStringifyWithParens('(2+3)a'), '(2 + 3) a')
+      assert.strictEqual(parseAndStringifyWithParens('(2+3)2'), '(2 + 3) 2')
+      assert.strictEqual(parseAndStringifyWithParens('(2)(3)+4'), '(2 3) + 4')
+      assert.strictEqual(parseAndStringifyWithParens('2(3+4)'), '2 (3 + 4)')
+      assert.strictEqual(parseAndStringifyWithParens('(2+3)-2'), '(2 + 3) - 2') // no implicit multiplication, just a unary minus
+      assert.strictEqual(parseAndStringifyWithParens('a(2+3)'), 'a(2 + 3)') // function call
+      assert.strictEqual(parseAndStringifyWithParens('a.b(2+3)'), 'a.b(2 + 3)') // function call
+      assert.strictEqual(parseAndStringifyWithParens('(2+3)(4+5)'), '(2 + 3) (4 + 5)') // implicit multiplication
+      assert.strictEqual(parseAndStringifyWithParens('(2+3)(4+5)(3-1)'), '((2 + 3) (4 + 5)) (3 - 1)') // implicit multiplication
 
-      assert.equal(parseAndStringifyWithParens('(2a)^3'), '(2 a) ^ 3')
-      assert.equal(parseAndStringifyWithParens('2a^3'), '2 (a ^ 3)')
-      assert.equal(parseAndStringifyWithParens('2(a)^3'), '2 (a ^ 3)')
-      assert.equal(parseAndStringifyWithParens('(2)a^3'), '2 (a ^ 3)')
-      assert.equal(parseAndStringifyWithParens('2^3a'), '(2 ^ 3) a')
-      assert.equal(parseAndStringifyWithParens('2^3(a)'), '(2 ^ 3) a')
-      assert.equal(parseAndStringifyWithParens('2^(3)(a)'), '(2 ^ 3) a')
-      assert.equal(parseAndStringifyWithParens('sqrt(2a)'), 'sqrt(2 a)')
+      assert.strictEqual(parseAndStringifyWithParens('(2a)^3'), '(2 a) ^ 3')
+      assert.strictEqual(parseAndStringifyWithParens('2a^3'), '2 (a ^ 3)')
+      assert.strictEqual(parseAndStringifyWithParens('2(a)^3'), '2 (a ^ 3)')
+      assert.strictEqual(parseAndStringifyWithParens('(2)a^3'), '2 (a ^ 3)')
+      assert.strictEqual(parseAndStringifyWithParens('2^3a'), '(2 ^ 3) a')
+      assert.strictEqual(parseAndStringifyWithParens('2^3(a)'), '(2 ^ 3) a')
+      assert.strictEqual(parseAndStringifyWithParens('2^(3)(a)'), '(2 ^ 3) a')
+      assert.strictEqual(parseAndStringifyWithParens('sqrt(2a)'), 'sqrt(2 a)')
 
       assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]))
       assert.deepEqual(parseAndEval('[2, 3] a', { a: 2 }), math.matrix([4, 6]))
@@ -1150,44 +1150,44 @@ describe('parse', function () {
     })
 
     it('should tell the OperatorNode about implicit multiplications', function () {
-      assert.equal(parse('2 + 3').implicit, false)
-      assert.equal(parse('4 * a').implicit, false)
+      assert.strictEqual(parse('2 + 3').implicit, false)
+      assert.strictEqual(parse('4 * a').implicit, false)
 
-      assert.equal(parse('4a').implicit, true)
-      assert.equal(parse('4 a').implicit, true)
-      assert.equal(parse('a b').implicit, true)
-      assert.equal(parse('2a b').implicit, true)
-      assert.equal(parse('a b c').implicit, true)
+      assert.strictEqual(parse('4a').implicit, true)
+      assert.strictEqual(parse('4 a').implicit, true)
+      assert.strictEqual(parse('a b').implicit, true)
+      assert.strictEqual(parse('2a b').implicit, true)
+      assert.strictEqual(parse('a b c').implicit, true)
 
-      assert.equal(parse('(2+3)a').implicit, true)
-      assert.equal(parse('(2+3)2').implicit, true)
-      assert.equal(parse('2(3+4)').implicit, true)
+      assert.strictEqual(parse('(2+3)a').implicit, true)
+      assert.strictEqual(parse('(2+3)2').implicit, true)
+      assert.strictEqual(parse('2(3+4)').implicit, true)
     })
 
     it('should correctly order consecutive multiplications and implicit multiplications', function () {
-      assert.equal(parseAndStringifyWithParens('9km*3km'), '(9 km) * (3 km)')
+      assert.strictEqual(parseAndStringifyWithParens('9km*3km'), '(9 km) * (3 km)')
     })
 
     it('should follow precedence rules for implicit multiplication and division', function () {
-      assert.equal(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x')
-      assert.equal(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg')
-      assert.equal(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y')
-      assert.equal(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)')
-      assert.equal(parseAndStringifyWithParens('17 h / 1 h'), '(17 h) / (1 h)')
-      assert.equal(parseAndStringifyWithParens('1 / 2 x'), '(1 / 2) x')
-      assert.equal(parseAndStringifyWithParens('1 / 2 * x'), '(1 / 2) * x')
-      assert.equal(parseAndStringifyWithParens('1 / 2 x y'), '((1 / 2) x) y')
-      assert.equal(parseAndStringifyWithParens('1 / 2 (x y)'), '(1 / 2) (x y)')
-      assert.equal(parseAndStringifyWithParens('1 / 2x * y'), '((1 / 2) x) * y')
-      assert.equal(parseAndStringifyWithParens('y / 2 x'), 'y / (2 x)')
-      assert.equal(parseAndStringifyWithParens('y / 2 * x'), '(y / 2) * x')
-      assert.equal(parseAndStringifyWithParens('y / 2 x w'), 'y / ((2 x) w)')
-      assert.equal(parseAndStringifyWithParens('y / v x w'), 'y / ((v x) w)')
-      assert.equal(parseAndStringifyWithParens('1 h / (1+1) h'), '(1 h) / ((1 + 1) h)')
-      assert.equal(parseAndStringifyWithParens('4 lb + 1/2 lb'), '(4 lb) + ((1 / 2) lb)')
-      assert.equal(parseAndStringifyWithParens('4 lb + 1 lb^2 / 2 lb'), '(4 lb) + ((1 (lb ^ 2)) / (2 lb))')
-      assert.equal(parseAndStringifyWithParens('1 m/s^2 + 1 m / 2 s^2'), '((1 m) / (s ^ 2)) + ((1 m) / (2 (s ^ 2)))')
-      assert.equal(parseAndStringifyWithParens('8.314 J/mol K'), '(8.314 J) / (mol K)')
+      assert.strictEqual(parseAndStringifyWithParens('2 / 3 x'), '(2 / 3) x')
+      assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 kg'), '(2.5 / 5) kg')
+      assert.strictEqual(parseAndStringifyWithParens('2.5 / 5 x y'), '((2.5 / 5) x) y')
+      assert.strictEqual(parseAndStringifyWithParens('2 x / 5 y'), '(2 x) / (5 y)')
+      assert.strictEqual(parseAndStringifyWithParens('17 h / 1 h'), '(17 h) / (1 h)')
+      assert.strictEqual(parseAndStringifyWithParens('1 / 2 x'), '(1 / 2) x')
+      assert.strictEqual(parseAndStringifyWithParens('1 / 2 * x'), '(1 / 2) * x')
+      assert.strictEqual(parseAndStringifyWithParens('1 / 2 x y'), '((1 / 2) x) y')
+      assert.strictEqual(parseAndStringifyWithParens('1 / 2 (x y)'), '(1 / 2) (x y)')
+      assert.strictEqual(parseAndStringifyWithParens('1 / 2x * y'), '((1 / 2) x) * y')
+      assert.strictEqual(parseAndStringifyWithParens('y / 2 x'), 'y / (2 x)')
+      assert.strictEqual(parseAndStringifyWithParens('y / 2 * x'), '(y / 2) * x')
+      assert.strictEqual(parseAndStringifyWithParens('y / 2 x w'), 'y / ((2 x) w)')
+      assert.strictEqual(parseAndStringifyWithParens('y / v x w'), 'y / ((v x) w)')
+      assert.strictEqual(parseAndStringifyWithParens('1 h / (1+1) h'), '(1 h) / ((1 + 1) h)')
+      assert.strictEqual(parseAndStringifyWithParens('4 lb + 1/2 lb'), '(4 lb) + ((1 / 2) lb)')
+      assert.strictEqual(parseAndStringifyWithParens('4 lb + 1 lb^2 / 2 lb'), '(4 lb) + ((1 (lb ^ 2)) / (2 lb))')
+      assert.strictEqual(parseAndStringifyWithParens('1 m/s^2 + 1 m / 2 s^2'), '((1 m) / (s ^ 2)) + ((1 m) / (2 (s ^ 2)))')
+      assert.strictEqual(parseAndStringifyWithParens('8.314 J/mol K'), '(8.314 J) / (mol K)')
     })
 
     it('should throw an error when having an implicit multiplication between two numbers', function () {
@@ -1304,115 +1304,115 @@ describe('parse', function () {
     })
 
     it('should parse minus -', function () {
-      assert.equal(parseAndEval('4 - 2'), 2)
-      assert.equal(parseAndEval('8 - 2 - 2'), 4)
+      assert.strictEqual(parseAndEval('4 - 2'), 2)
+      assert.strictEqual(parseAndEval('8 - 2 - 2'), 4)
     })
 
     it('should parse unary minus -', function () {
-      assert.equal(parseAndEval('-2'), -2)
-      assert.equal(parseAndEval('--2'), 2)
-      assert.equal(parseAndEval('---2'), -2)
+      assert.strictEqual(parseAndEval('-2'), -2)
+      assert.strictEqual(parseAndEval('--2'), 2)
+      assert.strictEqual(parseAndEval('---2'), -2)
 
-      assert.equal(parseAndEval('4*-2'), -8)
-      assert.equal(parseAndEval('4 * -2'), -8)
-      assert.equal(parseAndEval('4+-2'), 2)
-      assert.equal(parseAndEval('4 + -2'), 2)
-      assert.equal(parseAndEval('4--2'), 6)
-      assert.equal(parseAndEval('4 - -2'), 6)
+      assert.strictEqual(parseAndEval('4*-2'), -8)
+      assert.strictEqual(parseAndEval('4 * -2'), -8)
+      assert.strictEqual(parseAndEval('4+-2'), 2)
+      assert.strictEqual(parseAndEval('4 + -2'), 2)
+      assert.strictEqual(parseAndEval('4--2'), 6)
+      assert.strictEqual(parseAndEval('4 - -2'), 6)
 
-      assert.equal(parseAndEval('5-3'), 2)
-      assert.equal(parseAndEval('5--3'), 8)
-      assert.equal(parseAndEval('5---3'), 2)
-      assert.equal(parseAndEval('5+---3'), 2)
-      assert.equal(parseAndEval('5----3'), 8)
-      assert.equal(parseAndEval('5+--(2+1)'), 8)
+      assert.strictEqual(parseAndEval('5-3'), 2)
+      assert.strictEqual(parseAndEval('5--3'), 8)
+      assert.strictEqual(parseAndEval('5---3'), 2)
+      assert.strictEqual(parseAndEval('5+---3'), 2)
+      assert.strictEqual(parseAndEval('5----3'), 8)
+      assert.strictEqual(parseAndEval('5+--(2+1)'), 8)
     })
 
     it('should parse unary +', function () {
-      assert.equal(parseAndEval('+2'), 2)
-      assert.equal(parseAndEval('++2'), 2)
-      assert.equal(parseAndEval('+++2'), 2)
-      assert.equal(parseAndEval('+true'), 1)
+      assert.strictEqual(parseAndEval('+2'), 2)
+      assert.strictEqual(parseAndEval('++2'), 2)
+      assert.strictEqual(parseAndEval('+++2'), 2)
+      assert.strictEqual(parseAndEval('+true'), 1)
 
-      assert.equal(parseAndEval('4*+2'), 8)
-      assert.equal(parseAndEval('4 * +2'), 8)
-      assert.equal(parseAndEval('4-+2'), 2)
-      assert.equal(parseAndEval('4 - +2'), 2)
-      assert.equal(parseAndEval('4++2'), 6)
-      assert.equal(parseAndEval('4 + +2'), 6)
+      assert.strictEqual(parseAndEval('4*+2'), 8)
+      assert.strictEqual(parseAndEval('4 * +2'), 8)
+      assert.strictEqual(parseAndEval('4-+2'), 2)
+      assert.strictEqual(parseAndEval('4 - +2'), 2)
+      assert.strictEqual(parseAndEval('4++2'), 6)
+      assert.strictEqual(parseAndEval('4 + +2'), 6)
 
-      assert.equal(parseAndEval('5+3'), 8)
-      assert.equal(parseAndEval('5++3'), 8)
+      assert.strictEqual(parseAndEval('5+3'), 8)
+      assert.strictEqual(parseAndEval('5++3'), 8)
     })
 
     it('should parse unary ~', function () {
-      assert.equal(parseAndEval('~2'), -3)
-      assert.equal(parseAndEval('~~2'), 2)
-      assert.equal(parseAndEval('~~~2'), -3)
-      assert.equal(parseAndEval('~true'), -2)
+      assert.strictEqual(parseAndEval('~2'), -3)
+      assert.strictEqual(parseAndEval('~~2'), 2)
+      assert.strictEqual(parseAndEval('~~~2'), -3)
+      assert.strictEqual(parseAndEval('~true'), -2)
 
-      assert.equal(parseAndEval('4*~2'), -12)
-      assert.equal(parseAndEval('4 * ~2'), -12)
-      assert.equal(parseAndEval('4-~2'), 7)
-      assert.equal(parseAndEval('4 - ~2'), 7)
-      assert.equal(parseAndEval('4+~2'), 1)
-      assert.equal(parseAndEval('4 + ~2'), 1)
+      assert.strictEqual(parseAndEval('4*~2'), -12)
+      assert.strictEqual(parseAndEval('4 * ~2'), -12)
+      assert.strictEqual(parseAndEval('4-~2'), 7)
+      assert.strictEqual(parseAndEval('4 - ~2'), 7)
+      assert.strictEqual(parseAndEval('4+~2'), 1)
+      assert.strictEqual(parseAndEval('4 + ~2'), 1)
 
-      assert.equal(parseAndEval('10+~~3'), 13)
+      assert.strictEqual(parseAndEval('10+~~3'), 13)
     })
 
     it('should parse unary plus and minus  +, -', function () {
-      assert.equal(parseAndEval('-+2'), -2)
-      assert.equal(parseAndEval('-+-2'), 2)
-      assert.equal(parseAndEval('+-+-2'), 2)
-      assert.equal(parseAndEval('+-2'), -2)
-      assert.equal(parseAndEval('+-+2'), -2)
-      assert.equal(parseAndEval('-+-+2'), 2)
+      assert.strictEqual(parseAndEval('-+2'), -2)
+      assert.strictEqual(parseAndEval('-+-2'), 2)
+      assert.strictEqual(parseAndEval('+-+-2'), 2)
+      assert.strictEqual(parseAndEval('+-2'), -2)
+      assert.strictEqual(parseAndEval('+-+2'), -2)
+      assert.strictEqual(parseAndEval('-+-+2'), 2)
     })
 
     it('should parse unary plus and bitwise not  +, ~', function () {
-      assert.equal(parseAndEval('~+2'), -3)
-      assert.equal(parseAndEval('~+~2'), 2)
-      assert.equal(parseAndEval('+~+~2'), 2)
-      assert.equal(parseAndEval('+~2'), -3)
-      assert.equal(parseAndEval('+~+2'), -3)
-      assert.equal(parseAndEval('~+~+2'), 2)
+      assert.strictEqual(parseAndEval('~+2'), -3)
+      assert.strictEqual(parseAndEval('~+~2'), 2)
+      assert.strictEqual(parseAndEval('+~+~2'), 2)
+      assert.strictEqual(parseAndEval('+~2'), -3)
+      assert.strictEqual(parseAndEval('+~+2'), -3)
+      assert.strictEqual(parseAndEval('~+~+2'), 2)
     })
 
     it('should parse unary minus and bitwise not  -, ~', function () {
-      assert.equal(parseAndEval('~-2'), 1)
-      assert.equal(parseAndEval('~-~2'), -4)
-      assert.equal(parseAndEval('-~-~2'), 4)
-      assert.equal(parseAndEval('-~2'), 3)
-      assert.equal(parseAndEval('-~-2'), -1)
-      assert.equal(parseAndEval('~-~-2'), 0)
+      assert.strictEqual(parseAndEval('~-2'), 1)
+      assert.strictEqual(parseAndEval('~-~2'), -4)
+      assert.strictEqual(parseAndEval('-~-~2'), 4)
+      assert.strictEqual(parseAndEval('-~2'), 3)
+      assert.strictEqual(parseAndEval('-~-2'), -1)
+      assert.strictEqual(parseAndEval('~-~-2'), 0)
     })
 
     it('should parse unary plus + and logical not', function () {
-      assert.equal(parseAndEval('not+2'), false)
-      assert.equal(parseAndEval('not + not 2'), true)
-      assert.equal(parseAndEval('+not+not 2'), 1)
-      assert.equal(parseAndEval('+ not 2'), 0)
-      assert.equal(parseAndEval('+ not +2'), 0)
-      assert.equal(parseAndEval('not + not +2'), true)
+      assert.strictEqual(parseAndEval('not+2'), false)
+      assert.strictEqual(parseAndEval('not + not 2'), true)
+      assert.strictEqual(parseAndEval('+not+not 2'), 1)
+      assert.strictEqual(parseAndEval('+ not 2'), 0)
+      assert.strictEqual(parseAndEval('+ not +2'), 0)
+      assert.strictEqual(parseAndEval('not + not +2'), true)
     })
 
     it('should parse bitwise not ~ and logical not', function () {
-      assert.equal(parseAndEval('~not 2'), -1)
-      assert.equal(parseAndEval('~not~2'), -1)
-      assert.equal(parseAndEval('not~not~2'), false)
-      assert.equal(parseAndEval('not~2'), false)
-      assert.equal(parseAndEval('not~not 2'), false)
-      assert.equal(parseAndEval('~not~not 2'), -1)
+      assert.strictEqual(parseAndEval('~not 2'), -1)
+      assert.strictEqual(parseAndEval('~not~2'), -1)
+      assert.strictEqual(parseAndEval('not~not~2'), false)
+      assert.strictEqual(parseAndEval('not~2'), false)
+      assert.strictEqual(parseAndEval('not~not 2'), false)
+      assert.strictEqual(parseAndEval('~not~not 2'), -1)
     })
 
     it('should parse unary minus and logical not', function () {
-      assert.equal(parseAndEval('not-2'), false)
-      assert.equal(parseAndEval('not-not 2'), true)
-      assert.equal(parseAndEval('-not-not 2'), -1)
-      assert.equal(parseAndEval('-not 2'), -0)
-      assert.equal(parseAndEval('-not-2'), -0)
-      assert.equal(parseAndEval('not-not-2'), true)
+      assert.strictEqual(parseAndEval('not-2'), false)
+      assert.strictEqual(parseAndEval('not-not 2'), true)
+      assert.strictEqual(parseAndEval('-not-not 2'), -1)
+      assert.strictEqual(parseAndEval('-not 2'), -0)
+      assert.strictEqual(parseAndEval('-not-2'), -0)
+      assert.strictEqual(parseAndEval('not-not-2'), true)
     })
 
     it('should parse unequal !=', function () {
@@ -1422,14 +1422,14 @@ describe('parse', function () {
     })
 
     it('should parse conditional expression a ? b : c', function () {
-      assert.equal(parseAndEval('2 ? true : false'), true)
-      assert.equal(parseAndEval('0 ? true : false'), false)
-      assert.equal(parseAndEval('false ? true : false'), false)
+      assert.strictEqual(parseAndEval('2 ? true : false'), true)
+      assert.strictEqual(parseAndEval('0 ? true : false'), false)
+      assert.strictEqual(parseAndEval('false ? true : false'), false)
 
-      assert.equal(parseAndEval('2 > 0 ? 1 : 2 < 0 ? -1 : 0'), 1)
-      assert.equal(parseAndEval('(2 > 0 ? 1 : 2 < 0) ? -1 : 0'), -1)
-      assert.equal(parseAndEval('-2 > 0 ? 1 : -2 < 0 ? -1 : 0'), -1)
-      assert.equal(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0)
+      assert.strictEqual(parseAndEval('2 > 0 ? 1 : 2 < 0 ? -1 : 0'), 1)
+      assert.strictEqual(parseAndEval('(2 > 0 ? 1 : 2 < 0) ? -1 : 0'), -1)
+      assert.strictEqual(parseAndEval('-2 > 0 ? 1 : -2 < 0 ? -1 : 0'), -1)
+      assert.strictEqual(parseAndEval('0 > 0 ? 1 : 0 < 0 ? -1 : 0'), 0)
     })
 
     it('should lazily evaluate conditional expression a ? b : c', function () {
@@ -1489,103 +1489,103 @@ describe('parse', function () {
 
     describe('operator precedence', function () {
       it('should respect precedence of plus and minus', function () {
-        assert.equal(parseAndEval('4-2+3'), 5)
-        assert.equal(parseAndEval('4-(2+3)'), -1)
-        assert.equal(parseAndEval('4-2-3'), -1)
-        assert.equal(parseAndEval('4-(2-3)'), 5)
+        assert.strictEqual(parseAndEval('4-2+3'), 5)
+        assert.strictEqual(parseAndEval('4-(2+3)'), -1)
+        assert.strictEqual(parseAndEval('4-2-3'), -1)
+        assert.strictEqual(parseAndEval('4-(2-3)'), 5)
       })
 
       it('should respect precedence of plus/minus and multiply/divide', function () {
-        assert.equal(parseAndEval('2+3*4'), 14)
-        assert.equal(parseAndEval('2*3+4'), 10)
+        assert.strictEqual(parseAndEval('2+3*4'), 14)
+        assert.strictEqual(parseAndEval('2*3+4'), 10)
       })
 
       it('should respect precedence of plus/minus and pow', function () {
-        assert.equal(parseAndEval('2+3^2'), 11)
-        assert.equal(parseAndEval('3^2+2'), 11)
-        assert.equal(parseAndEval('8-2^2'), 4)
-        assert.equal(parseAndEval('4^2-2'), 14)
+        assert.strictEqual(parseAndEval('2+3^2'), 11)
+        assert.strictEqual(parseAndEval('3^2+2'), 11)
+        assert.strictEqual(parseAndEval('8-2^2'), 4)
+        assert.strictEqual(parseAndEval('4^2-2'), 14)
       })
 
       it('should respect precedence of multiply/divide and pow', function () {
-        assert.equal(parseAndEval('2*3^2'), 18)
-        assert.equal(parseAndEval('3^2*2'), 18)
-        assert.equal(parseAndEval('8/2^2'), 2)
-        assert.equal(parseAndEval('4^2/2'), 8)
+        assert.strictEqual(parseAndEval('2*3^2'), 18)
+        assert.strictEqual(parseAndEval('3^2*2'), 18)
+        assert.strictEqual(parseAndEval('8/2^2'), 2)
+        assert.strictEqual(parseAndEval('4^2/2'), 8)
       })
 
       it('should respect precedence of pow', function () {
-        assert.equal(parseAndEval('2^3'), 8)
-        assert.equal(parseAndEval('2^3^4'), Math.pow(2, Math.pow(3, 4)))
-        assert.equal(parseAndEval('1.5^1.5^1.5'), parseAndEval('1.5^(1.5^1.5)'))
-        assert.equal(parseAndEval('1.5^1.5^1.5^1.5'), parseAndEval('1.5^(1.5^(1.5^1.5))'))
+        assert.strictEqual(parseAndEval('2^3'), 8)
+        assert.strictEqual(parseAndEval('2^3^4'), Math.pow(2, Math.pow(3, 4)))
+        assert.strictEqual(parseAndEval('1.5^1.5^1.5'), parseAndEval('1.5^(1.5^1.5)'))
+        assert.strictEqual(parseAndEval('1.5^1.5^1.5^1.5'), parseAndEval('1.5^(1.5^(1.5^1.5))'))
       })
 
       it('should respect precedence of unary operations and pow', function () {
-        assert.equal(parseAndEval('-3^2'), -9)
-        assert.equal(parseAndEval('(-3)^2'), 9)
-        assert.equal(parseAndEval('2^-2'), 0.25)
-        assert.equal(parseAndEval('2^(-2)'), 0.25)
+        assert.strictEqual(parseAndEval('-3^2'), -9)
+        assert.strictEqual(parseAndEval('(-3)^2'), 9)
+        assert.strictEqual(parseAndEval('2^-2'), 0.25)
+        assert.strictEqual(parseAndEval('2^(-2)'), 0.25)
 
-        assert.equal(parseAndEval('+3^2'), 9)
-        assert.equal(parseAndEval('(+3)^2'), 9)
-        assert.equal(parseAndEval('2^(+2)'), 4)
+        assert.strictEqual(parseAndEval('+3^2'), 9)
+        assert.strictEqual(parseAndEval('(+3)^2'), 9)
+        assert.strictEqual(parseAndEval('2^(+2)'), 4)
 
-        assert.equal(parseAndEval('~3^2'), -10)
-        assert.equal(parseAndEval('(~3)^2'), 16)
-        assert.equal(parseAndEval('2^~2'), 0.125)
-        assert.equal(parseAndEval('2^(~2)'), 0.125)
+        assert.strictEqual(parseAndEval('~3^2'), -10)
+        assert.strictEqual(parseAndEval('(~3)^2'), 16)
+        assert.strictEqual(parseAndEval('2^~2'), 0.125)
+        assert.strictEqual(parseAndEval('2^(~2)'), 0.125)
 
-        assert.equal(parseAndEval('not 3^2'), false)
-        assert.equal(parseAndEval('(not 3)^2'), 0)
-        assert.equal(parseAndEval('2^not 2'), 1)
-        assert.equal(parseAndEval('2^(not 2)'), 1)
+        assert.strictEqual(parseAndEval('not 3^2'), false)
+        assert.strictEqual(parseAndEval('(not 3)^2'), 0)
+        assert.strictEqual(parseAndEval('2^not 2'), 1)
+        assert.strictEqual(parseAndEval('2^(not 2)'), 1)
       })
 
       it('should respect precedence of factorial and pow', function () {
-        assert.equal(parseAndEval('2^3!'), 64)
-        assert.equal(parseAndEval('2^(3!)'), 64)
-        assert.equal(parseAndEval('3!^2'), 36)
+        assert.strictEqual(parseAndEval('2^3!'), 64)
+        assert.strictEqual(parseAndEval('2^(3!)'), 64)
+        assert.strictEqual(parseAndEval('3!^2'), 36)
       })
 
       it('should respect precedence of factorial and unary operations', function () {
-        assert.equal(parseAndEval('-4!'), -24)
-        assert.equal(parseAndEval('-(4!)'), -24)
+        assert.strictEqual(parseAndEval('-4!'), -24)
+        assert.strictEqual(parseAndEval('-(4!)'), -24)
 
-        assert.equal(parseAndEval('3!+2'), 8)
-        assert.equal(parseAndEval('(3!)+2'), 8)
-        assert.equal(parseAndEval('+4!'), 24)
+        assert.strictEqual(parseAndEval('3!+2'), 8)
+        assert.strictEqual(parseAndEval('(3!)+2'), 8)
+        assert.strictEqual(parseAndEval('+4!'), 24)
 
-        assert.equal(parseAndEval('~4!+1'), -24)
-        assert.equal(parseAndEval('~(4!)+1'), -24)
+        assert.strictEqual(parseAndEval('~4!+1'), -24)
+        assert.strictEqual(parseAndEval('~(4!)+1'), -24)
 
-        assert.equal(parseAndEval('not 4!'), false)
-        assert.equal(parseAndEval('not not 4!'), true)
-        assert.equal(parseAndEval('not(4!)'), false)
-        assert.equal(parseAndEval('(not 4!)'), false)
-        assert.equal(parseAndEval('(not 4)!'), 1)
+        assert.strictEqual(parseAndEval('not 4!'), false)
+        assert.strictEqual(parseAndEval('not not 4!'), true)
+        assert.strictEqual(parseAndEval('not(4!)'), false)
+        assert.strictEqual(parseAndEval('(not 4!)'), false)
+        assert.strictEqual(parseAndEval('(not 4)!'), 1)
       })
 
       it('should respect precedence of transpose', function () {
         const node = math.parse('a + b\'')
         assert(node instanceof OperatorNode)
-        assert.equal(node.op, '+')
-        assert.equal(node.args[0].toString(), 'a')
-        assert.equal(node.args[1].toString(), 'b\'')
+        assert.strictEqual(node.op, '+')
+        assert.strictEqual(node.args[0].toString(), 'a')
+        assert.strictEqual(node.args[1].toString(), 'b\'')
       })
 
       it('should respect precedence of transpose (2)', function () {
         const node = math.parse('a ^ b\'')
         assert(node instanceof OperatorNode)
-        assert.equal(node.op, '^')
-        assert.equal(node.args[0].toString(), 'a')
-        assert.equal(node.args[1].toString(), 'b\'')
+        assert.strictEqual(node.op, '^')
+        assert.strictEqual(node.args[0].toString(), 'a')
+        assert.strictEqual(node.args[1].toString(), 'b\'')
       })
 
       it('should respect precedence of conditional operator and other operators', function () {
-        assert.equal(parseAndEval('2 > 3 ? true : false'), false)
-        assert.equal(parseAndEval('2 == 3 ? true : false'), false)
-        assert.equal(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6)
+        assert.strictEqual(parseAndEval('2 > 3 ? true : false'), false)
+        assert.strictEqual(parseAndEval('2 == 3 ? true : false'), false)
+        assert.strictEqual(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6)
         assert.deepEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
         assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
         assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
@@ -1632,70 +1632,70 @@ describe('parse', function () {
       it('should respect precedence of conditional operator and logical or', function () {
         const node = math.parse('1 or 0 ? 2 or 3 : 0 or 0')
         assert(node instanceof ConditionalNode)
-        assert.equal(node.condition.toString(), '1 or 0')
-        assert.equal(node.trueExpr.toString(), '2 or 3')
-        assert.equal(node.falseExpr.toString(), '0 or 0')
+        assert.strictEqual(node.condition.toString(), '1 or 0')
+        assert.strictEqual(node.trueExpr.toString(), '2 or 3')
+        assert.strictEqual(node.falseExpr.toString(), '0 or 0')
         assert.strictEqual(node.compile().eval(), true)
       })
 
       it('should respect precedence of conditional operator and relational operators', function () {
         const node = math.parse('a == b ? a > b : a < b')
         assert(node instanceof ConditionalNode)
-        assert.equal(node.condition.toString(), 'a == b')
-        assert.equal(node.trueExpr.toString(), 'a > b')
-        assert.equal(node.falseExpr.toString(), 'a < b')
+        assert.strictEqual(node.condition.toString(), 'a == b')
+        assert.strictEqual(node.trueExpr.toString(), 'a > b')
+        assert.strictEqual(node.falseExpr.toString(), 'a < b')
       })
 
       it('should respect precedence of conditional operator and range operator', function () {
         const node = math.parse('a ? b : c : d')
         assert(node instanceof ConditionalNode)
-        assert.equal(node.condition.toString(), 'a')
-        assert.equal(node.trueExpr.toString(), 'b')
-        assert.equal(node.falseExpr.toString(), 'c:d')
+        assert.strictEqual(node.condition.toString(), 'a')
+        assert.strictEqual(node.trueExpr.toString(), 'b')
+        assert.strictEqual(node.falseExpr.toString(), 'c:d')
       })
 
       it('should respect precedence of conditional operator and range operator (2)', function () {
         const node = math.parse('a ? (b : c) : (d : e)')
         assert(node instanceof ConditionalNode)
-        assert.equal(node.condition.toString(), 'a')
-        assert.equal(node.trueExpr.toString(), '(b:c)')
-        assert.equal(node.falseExpr.toString(), '(d:e)')
+        assert.strictEqual(node.condition.toString(), 'a')
+        assert.strictEqual(node.trueExpr.toString(), '(b:c)')
+        assert.strictEqual(node.falseExpr.toString(), '(d:e)')
       })
 
       it('should respect precedence of conditional operator and range operator (2)', function () {
         const node = math.parse('a ? (b ? c : d) : (e ? f : g)')
         assert(node instanceof ConditionalNode)
-        assert.equal(node.condition.toString(), 'a')
-        assert.equal(node.trueExpr.toString(), '(b ? c : d)')
-        assert.equal(node.falseExpr.toString(), '(e ? f : g)')
+        assert.strictEqual(node.condition.toString(), 'a')
+        assert.strictEqual(node.trueExpr.toString(), '(b ? c : d)')
+        assert.strictEqual(node.falseExpr.toString(), '(e ? f : g)')
       })
 
       it('should respect precedence of range operator and relational operators', function () {
         const node = math.parse('a:b == c:d')
         assert(node instanceof OperatorNode)
-        assert.equal(node.args[0].toString(), 'a:b')
-        assert.equal(node.args[1].toString(), 'c:d')
+        assert.strictEqual(node.args[0].toString(), 'a:b')
+        assert.strictEqual(node.args[1].toString(), 'c:d')
       })
 
       it('should respect precedence of range operator and operator plus and minus', function () {
         const node = math.parse('a + b : c - d')
         assert(node instanceof RangeNode)
-        assert.equal(node.start.toString(), 'a + b')
-        assert.equal(node.end.toString(), 'c - d')
+        assert.strictEqual(node.start.toString(), 'a + b')
+        assert.strictEqual(node.end.toString(), 'c - d')
       })
 
       it('should respect precedence of "to" operator and relational operators', function () {
         const node = math.parse('a == b to c')
         assert(node instanceof OperatorNode)
-        assert.equal(node.args[0].toString(), 'a')
-        assert.equal(node.args[1].toString(), 'b to c')
+        assert.strictEqual(node.args[0].toString(), 'a')
+        assert.strictEqual(node.args[1].toString(), 'b to c')
       })
 
       it('should respect precedence of "to" operator and relational operators (2)', function () {
         const node = math.parse('a to b == c')
         assert(node instanceof OperatorNode)
-        assert.equal(node.args[0].toString(), 'a to b')
-        assert.equal(node.args[1].toString(), 'c')
+        assert.strictEqual(node.args[0].toString(), 'a to b')
+        assert.strictEqual(node.args[1].toString(), 'c')
       })
 
       // TODO: extensively test operator precedence
@@ -1812,9 +1812,9 @@ describe('parse', function () {
       assert.deepEqual(scope.c, 5)
       assert.deepEqual(typeof scope.f, 'function')
 
-      assert.equal(scope.f(3), 27)
+      assert.strictEqual(scope.f(3), 27)
       scope.a = 2
-      assert.equal(scope.f(3), 9)
+      assert.strictEqual(scope.f(3), 9)
       scope.hello = function (name) {
         return 'hello, ' + name + '!'
       }
@@ -1826,7 +1826,7 @@ describe('parse', function () {
       let n = parse('q')
       assert.throws(function () { n.compile().eval(scope) })
       parse('q=33').compile().eval(scope)
-      assert.equal(n.compile().eval(scope), 33)
+      assert.strictEqual(n.compile().eval(scope), 33)
       delete scope.q
       assert.throws(function () { n.compile().eval(scope) })
 
@@ -1843,8 +1843,8 @@ describe('parse', function () {
     })
 
     it('should evaluate a symbol with value null or undefined', function () {
-      assert.equal(parse('a').compile().eval({ a: null }), null)
-      assert.equal(parse('a').compile().eval({ a: undefined }), undefined)
+      assert.strictEqual(parse('a').compile().eval({ a: null }), null)
+      assert.strictEqual(parse('a').compile().eval({ a: undefined }), undefined)
     })
   })
 
@@ -1930,16 +1930,16 @@ describe('parse', function () {
     // TODO: test parsing into a node tree
 
     it('should correctly stringify a node tree', function () {
-      assert.equal(parse('0').toString(), '0')
-      assert.equal(parse('"hello"').toString(), '"hello"')
-      assert.equal(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 i, 4]')
-      assert.equal(parse('1/2a').toString(), '1 / 2 a')
+      assert.strictEqual(parse('0').toString(), '0')
+      assert.strictEqual(parse('"hello"').toString(), '"hello"')
+      assert.strictEqual(parse('[1, 2 + 3i, 4]').toString(), '[1, 2 + 3 i, 4]')
+      assert.strictEqual(parse('1/2a').toString(), '1 / 2 a')
     })
 
     it('should correctly stringify an index with dot notation', function () {
-      assert.equal(parse('A[2]').toString(), 'A[2]')
-      assert.equal(parse('a["b"]').toString(), 'a["b"]')
-      assert.equal(parse('a.b').toString(), 'a.b')
+      assert.strictEqual(parse('A[2]').toString(), 'A[2]')
+      assert.strictEqual(parse('a["b"]').toString(), 'a["b"]')
+      assert.strictEqual(parse('a.b').toString(), 'a.b')
     })
 
     describe('custom nodes', function () {
@@ -1972,17 +1972,17 @@ describe('parse', function () {
 
       it('should parse custom nodes', function () {
         const node = parse('custom(x, (2+x), sin(x))', options)
-        assert.equal(node.compile().eval(), 'CustomNode(x, (2 + x), sin(x))')
+        assert.strictEqual(node.compile().eval(), 'CustomNode(x, (2 + x), sin(x))')
       })
 
       it('should parse custom nodes without parameters', function () {
         const node = parse('custom()', options)
-        assert.equal(node.compile().eval(), 'CustomNode()')
-        assert.equal(node.filter(function (node) { return node instanceof CustomNode }).length, 1)
+        assert.strictEqual(node.compile().eval(), 'CustomNode()')
+        assert.strictEqual(node.filter(function (node) { return node instanceof CustomNode }).length, 1)
 
         const node2 = parse('custom', options)
-        assert.equal(node2.compile().eval(), 'CustomNode()')
-        assert.equal(node2.filter(function (node) { return node instanceof CustomNode }).length, 1)
+        assert.strictEqual(node2.compile().eval(), 'CustomNode()')
+        assert.strictEqual(node2.filter(function (node) { return node instanceof CustomNode }).length, 1)
       })
 
       it('should throw an error on syntax errors in using custom nodes', function () {
@@ -2031,7 +2031,7 @@ describe('parse', function () {
 
       const node = math.expression.parse('$foo')
       const result = node.eval({ $foo: 42 })
-      assert.equal(result, 42)
+      assert.strictEqual(result, 42)
 
       // restore original isAlpha
       math.expression.parse.isAlpha = originalIsAlpha
@@ -2045,6 +2045,6 @@ describe('parse', function () {
       mathClone.eval('f(x)=1;config({clone:f})')
     } catch (err) {}
 
-    assert.equal(mathClone.eval('2'), 2)
+    assert.strictEqual(mathClone.eval('2'), 2)
   })
 })

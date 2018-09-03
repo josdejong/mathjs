@@ -410,33 +410,33 @@ describe('util.array', function () {
 
   describe('resize', function () {
     it('should test whether an object is an array', function () {
-      assert.equal(array.isArray([]), true)
-      assert.equal(array.isArray({}), false)
-      assert.equal(array.isArray(2), false)
-      assert.equal(array.isArray('string'), false)
+      assert.strictEqual(array.isArray([]), true)
+      assert.strictEqual(array.isArray({}), false)
+      assert.strictEqual(array.isArray(2), false)
+      assert.strictEqual(array.isArray('string'), false)
     })
   })
 
   describe('validateIndex', function () {
     it('should validate whether an index contains integers', function () {
-      assert.equal(array.validateIndex(2), undefined)
-      assert.equal(array.validateIndex(10), undefined)
+      assert.strictEqual(array.validateIndex(2), undefined)
+      assert.strictEqual(array.validateIndex(10), undefined)
       assert.throws(function () { array.validateIndex(2.3) }, /Index must be an integer/)
       assert.throws(function () { array.validateIndex('str') }, /Index must be an integer/)
       assert.throws(function () { array.validateIndex(true) }, /Index must be an integer/)
     })
 
     it('should validate whether an index doesn\'t exceed the minimum 0', function () {
-      assert.equal(array.validateIndex(2), undefined)
-      assert.equal(array.validateIndex(0), undefined)
+      assert.strictEqual(array.validateIndex(2), undefined)
+      assert.strictEqual(array.validateIndex(0), undefined)
       assert.throws(function () { array.validateIndex(-1) }, /Index out of range/)
       assert.throws(function () { array.validateIndex(-100) }, /Index out of range/)
     })
 
     it('should validate whether an index doesn\'t exceed both minimum and maximum', function () {
-      assert.equal(array.validateIndex(0, 10), undefined)
-      assert.equal(array.validateIndex(4, 10), undefined)
-      assert.equal(array.validateIndex(9, 10), undefined)
+      assert.strictEqual(array.validateIndex(0, 10), undefined)
+      assert.strictEqual(array.validateIndex(4, 10), undefined)
+      assert.strictEqual(array.validateIndex(9, 10), undefined)
       assert.throws(function () { array.validateIndex(-1, 10) }, /Index out of range/)
       assert.throws(function () { array.validateIndex(10, 10) }, /Index out of range/)
       assert.throws(function () { array.validateIndex(11, 10) }, /Index out of range/)
@@ -448,30 +448,30 @@ describe('util.array', function () {
         array.validateIndex(4, 3)
         assert.ok(false, 'should not reach this point')
       } catch (err) {
-        assert.equal(err.toString(), 'IndexError: Index out of range (4 > 2)')
-        assert.equal(err.index, 4)
-        assert.equal(err.min, 0)
-        assert.equal(err.max, 3)
+        assert.strictEqual(err.toString(), 'IndexError: Index out of range (4 > 2)')
+        assert.strictEqual(err.index, 4)
+        assert.strictEqual(err.min, 0)
+        assert.strictEqual(err.max, 3)
       }
 
       try {
         array.validateIndex(-1, 3)
         assert.ok(false, 'should not reach this point')
       } catch (err) {
-        assert.equal(err.toString(), 'IndexError: Index out of range (-1 < 0)')
-        assert.equal(err.index, -1)
-        assert.equal(err.min, 0)
-        assert.equal(err.max, 3)
+        assert.strictEqual(err.toString(), 'IndexError: Index out of range (-1 < 0)')
+        assert.strictEqual(err.index, -1)
+        assert.strictEqual(err.min, 0)
+        assert.strictEqual(err.max, 3)
       }
 
       try {
         array.validateIndex(-1)
         assert.ok(false, 'should not reach this point')
       } catch (err) {
-        assert.equal(err.toString(), 'IndexError: Index out of range (-1 < 0)')
-        assert.equal(err.index, -1)
-        assert.equal(err.min, 0)
-        assert.equal(err.max, undefined)
+        assert.strictEqual(err.toString(), 'IndexError: Index out of range (-1 < 0)')
+        assert.strictEqual(err.index, -1)
+        assert.strictEqual(err.min, 0)
+        assert.strictEqual(err.max, undefined)
       }
     })
   })
@@ -479,9 +479,9 @@ describe('util.array', function () {
   describe('validate', function () {
     it('should validate whether all elements in a vector have correct size', function () {
       // valid vector with correct size
-      assert.equal(array.validate([], [0]), undefined)
-      assert.equal(array.validate([1], [1]), undefined)
-      assert.equal(array.validate([1, 2, 3], [3]), undefined)
+      assert.strictEqual(array.validate([], [0]), undefined)
+      assert.strictEqual(array.validate([1], [1]), undefined)
+      assert.strictEqual(array.validate([1, 2, 3], [3]), undefined)
 
       // valid matrix but wrong size
       assert.throws(function () { array.validate([1, 2, 3], [2]) }, /Dimension mismatch/)
@@ -495,9 +495,9 @@ describe('util.array', function () {
 
     it('should validate whether all elements in a 2d matrix have correct size', function () {
       // valid matrix with correct size
-      assert.equal(array.validate([[1, 2], [3, 4]], [2, 2]), undefined)
-      assert.equal(array.validate([[1, 2, 3], [4, 5, 6]], [2, 3]), undefined)
-      assert.equal(array.validate([[1, 2], [3, 4], [5, 6]], [3, 2]), undefined)
+      assert.strictEqual(array.validate([[1, 2], [3, 4]], [2, 2]), undefined)
+      assert.strictEqual(array.validate([[1, 2, 3], [4, 5, 6]], [2, 3]), undefined)
+      assert.strictEqual(array.validate([[1, 2], [3, 4], [5, 6]], [3, 2]), undefined)
 
       // valid matrix with wrong size
       assert.throws(function () { array.validate([[1, 2], [3, 4]], [2, 1]) }, /Dimension mismatch/)
@@ -515,10 +515,10 @@ describe('util.array', function () {
 
     it('should validate whether all elements in a multi dimensional matrix have correct size', function () {
       // valid matrix with correct size
-      assert.equal(array.validate([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [2, 2, 2]), undefined)
-      assert.equal(array.validate([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]], [2, 2, 3]), undefined)
-      assert.equal(array.validate([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]]], [2, 3, 2]), undefined)
-      assert.equal(array.validate([[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]]], [3, 2, 2]), undefined)
+      assert.strictEqual(array.validate([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [2, 2, 2]), undefined)
+      assert.strictEqual(array.validate([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]], [2, 2, 3]), undefined)
+      assert.strictEqual(array.validate([[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]]], [2, 3, 2]), undefined)
+      assert.strictEqual(array.validate([[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]]], [3, 2, 2]), undefined)
 
       // valid matrix with wrong size
       assert.throws(function () { array.validate([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [2, 2, 3]) }, /Dimension mismatch/)
@@ -535,9 +535,9 @@ describe('util.array', function () {
     })
 
     it('should validate whether a variable contains a scalar', function () {
-      assert.equal(array.validate(2.3, []), undefined)
-      assert.equal(array.validate(new Date(), []), undefined)
-      assert.equal(array.validate({}, []), undefined)
+      assert.strictEqual(array.validate(2.3, []), undefined)
+      assert.strictEqual(array.validate(new Date(), []), undefined)
+      assert.strictEqual(array.validate({}, []), undefined)
 
       assert.throws(function () { array.validate([], []) }, /Dimension mismatch/)
       assert.throws(function () { array.validate([1, 2, 3], []) }, /Dimension mismatch/)

@@ -58,8 +58,8 @@ describe('gcd', function () {
 
   it('should find the greatest common divisor of fractions', function () {
     const a = math.fraction(5, 8)
-    assert.equal(gcd(a, math.fraction(3, 7)).toString(), '0.017(857142)')
-    assert.equal(a.toString(), '0.625')
+    assert.strictEqual(gcd(a, math.fraction(3, 7)).toString(), '0.017(857142)')
+    assert.strictEqual(a.toString(), '0.625')
   })
 
   it('should find the greatest common divisor of mixed numbers and fractions', function () {
@@ -68,10 +68,10 @@ describe('gcd', function () {
   })
 
   it('should find the greatest common divisor of booleans', function () {
-    assert.equal(gcd(true, true), 1)
-    assert.equal(gcd(true, false), 1)
-    assert.equal(gcd(false, true), 1)
-    assert.equal(gcd(false, false), 0)
+    assert.strictEqual(gcd(true, true), 1)
+    assert.strictEqual(gcd(true, false), 1)
+    assert.strictEqual(gcd(false, true), 1)
+    assert.strictEqual(gcd(false, false), 0)
   })
 
   it('should throw an error if only one argument', function () {
@@ -158,6 +158,6 @@ describe('gcd', function () {
 
   it('should LaTeX gcd', function () {
     const expression = math.parse('gcd(2,3)')
-    assert.equal(expression.toTex(), '\\gcd\\left(2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\gcd\\left(2,3\\right)')
   })
 })

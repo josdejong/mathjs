@@ -57,9 +57,9 @@ describe('eval', function () {
     assert.deepEqual(scope.c, 5)
     assert.deepEqual(typeof scope.f, 'function')
 
-    assert.equal(scope.f(3), 27)
+    assert.strictEqual(scope.f(3), 27)
     scope.a = 2
-    assert.equal(scope.f(3), 9)
+    assert.strictEqual(scope.f(3), 9)
     scope.hello = function (name) {
       return 'hello, ' + name + '!'
     }
@@ -70,7 +70,7 @@ describe('eval', function () {
     const expr1 = math.parse('eval(expr)')
     const expr2 = math.parse('eval(expr,scope)')
 
-    assert.equal(expr1.toTex(), '\\mathrm{eval}\\left( expr\\right)')
-    assert.equal(expr2.toTex(), '\\mathrm{eval}\\left( expr, scope\\right)')
+    assert.strictEqual(expr1.toTex(), '\\mathrm{eval}\\left( expr\\right)')
+    assert.strictEqual(expr2.toTex(), '\\mathrm{eval}\\left( expr, scope\\right)')
   })
 })

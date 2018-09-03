@@ -24,17 +24,17 @@ describe('multiply', function () {
     })
 
     it('should multiply booleans', function () {
-      assert.equal(multiply(true, true), 1)
-      assert.equal(multiply(true, false), 0)
-      assert.equal(multiply(false, true), 0)
-      assert.equal(multiply(false, false), 0)
+      assert.strictEqual(multiply(true, true), 1)
+      assert.strictEqual(multiply(true, false), 0)
+      assert.strictEqual(multiply(false, true), 0)
+      assert.strictEqual(multiply(false, false), 0)
     })
 
     it('should multiply mixed numbers and booleans', function () {
-      assert.equal(multiply(2, true), 2)
-      assert.equal(multiply(2, false), 0)
-      assert.equal(multiply(true, 2), 2)
-      assert.equal(multiply(false, 2), 0)
+      assert.strictEqual(multiply(2, true), 2)
+      assert.strictEqual(multiply(2, false), 0)
+      assert.strictEqual(multiply(true, 2), 2)
+      assert.strictEqual(multiply(false, 2), 0)
     })
 
     it('should multiply bignumbers', function () {
@@ -122,10 +122,10 @@ describe('multiply', function () {
 
     it('should multiply two fractions', function () {
       const a = math.fraction(1, 4)
-      assert.equal(multiply(a, math.fraction(1, 2)).toString(), '0.125')
-      assert.equal(a.toString(), '0.25')
+      assert.strictEqual(multiply(a, math.fraction(1, 2)).toString(), '0.125')
+      assert.strictEqual(a.toString(), '0.25')
 
-      assert.equal(multiply(math.fraction(2), math.fraction(1, 3)).toString(), '0.(6)')
+      assert.strictEqual(multiply(math.fraction(2), math.fraction(1, 3)).toString(), '0.(6)')
     })
 
     it('should multiply mixed fractions and numbers', function () {
@@ -134,64 +134,64 @@ describe('multiply', function () {
     })
 
     it('should multiply a number and a unit correctly', function () {
-      assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(10, unit('celsius')).toString(), '10 celsius')
-      assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm')
-      assert.equal(multiply(unit('5 mm'), 0).toString(), '0 mm')
-      assert.equal(multiply(unit('celsius'), 10).toString(), '10 celsius')
+      assert.strictEqual(multiply(2, unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(2, unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(10, unit('celsius')).toString(), '10 celsius')
+      assert.strictEqual(multiply(unit('5 mm'), 2).toString(), '10 mm')
+      assert.strictEqual(multiply(unit('5 mm'), 0).toString(), '0 mm')
+      assert.strictEqual(multiply(unit('celsius'), 10).toString(), '10 celsius')
 
-      assert.equal(multiply(unit(math.fraction(1, 4), 'm'), 3).toString(), '3/4 m')
-      assert.equal(multiply(3, unit(math.fraction(1, 4), 'm')).toString(), '3/4 m')
-      assert.equal(multiply(math.fraction(1, 4), unit(3, 'm')).toString(), '3/4 m')
-      assert.equal(multiply(unit(3, 'm'), math.fraction(1, 4)).toString(), '3/4 m')
+      assert.strictEqual(multiply(unit(math.fraction(1, 4), 'm'), 3).toString(), '3/4 m')
+      assert.strictEqual(multiply(3, unit(math.fraction(1, 4), 'm')).toString(), '3/4 m')
+      assert.strictEqual(multiply(math.fraction(1, 4), unit(3, 'm')).toString(), '3/4 m')
+      assert.strictEqual(multiply(unit(3, 'm'), math.fraction(1, 4)).toString(), '3/4 m')
 
-      assert.equal(multiply(unit(math.complex(9, 8), 'm'), 2).toString(), '(18 + 16i) m')
-      assert.equal(math.format(multiply(unit(math.complex(2, 3), 'g'), math.complex(4, 5)), 14), '(-7 + 22i) g')
+      assert.strictEqual(multiply(unit(math.complex(9, 8), 'm'), 2).toString(), '(18 + 16i) m')
+      assert.strictEqual(math.format(multiply(unit(math.complex(2, 3), 'g'), math.complex(4, 5)), 14), '(-7 + 22i) g')
     })
 
     it('should multiply a number and a unit without value correctly', function () {
-      assert.equal(multiply(2, unit('mm')).toString(), '2 mm')
-      assert.equal(multiply(2, unit('km')).toString(), '2 km')
-      assert.equal(multiply(2, unit('inch')).toString(), '2 inch')
-      assert.equal(multiply(unit('mm'), 2).toString(), '2 mm')
-      assert.equal(multiply(unit('km'), 2).toString(), '2 km')
-      assert.equal(multiply(unit('inch'), 2).toString(), '2 inch')
+      assert.strictEqual(multiply(2, unit('mm')).toString(), '2 mm')
+      assert.strictEqual(multiply(2, unit('km')).toString(), '2 km')
+      assert.strictEqual(multiply(2, unit('inch')).toString(), '2 inch')
+      assert.strictEqual(multiply(unit('mm'), 2).toString(), '2 mm')
+      assert.strictEqual(multiply(unit('km'), 2).toString(), '2 km')
+      assert.strictEqual(multiply(unit('inch'), 2).toString(), '2 inch')
     })
 
     it('should multiply two units correctly', function () {
-      assert.equal(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2')
-      assert.equal(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2')
-      assert.equal(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi')
-      assert.equal(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s')
-      assert.equal(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1')
-      assert.equal(multiply(unit(math.complex(3, -4), 'N'), unit(math.complex(7, -2), 'm')).toString(), '(13 - 34i) J')
+      assert.strictEqual(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2')
+      assert.strictEqual(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2')
+      assert.strictEqual(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi')
+      assert.strictEqual(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s')
+      assert.strictEqual(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1')
+      assert.strictEqual(multiply(unit(math.complex(3, -4), 'N'), unit(math.complex(7, -2), 'm')).toString(), '(13 - 34i) J')
     })
 
     it('should multiply valueless units correctly', function () {
-      assert.equal(multiply(unit('m'), unit('4 m')).toString(), '4 m^2')
-      assert.equal(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2')
-      assert.equal(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi')
-      assert.equal(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s')
-      assert.equal(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)')
+      assert.strictEqual(multiply(unit('m'), unit('4 m')).toString(), '4 m^2')
+      assert.strictEqual(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2')
+      assert.strictEqual(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi')
+      assert.strictEqual(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s')
+      assert.strictEqual(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)')
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
     it.skip('should multiply a bignumber and a unit correctly', function () {
-      assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm')
-      assert.equal(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m')
+      assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm')
+      assert.strictEqual(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m')
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
     it.skip('should multiply a bignumber and a unit without value correctly', function () {
-      assert.equal(multiply(bignumber(2), unit('mm')).toString(), '2 mm')
-      assert.equal(multiply(bignumber(2), unit('km')).toString(), '2 km')
-      assert.equal(multiply(bignumber(2), unit('inch')).toString(), '2 inch')
-      assert.equal(multiply(unit('mm'), bignumber(2)).toString(), '2 mm')
-      assert.equal(multiply(unit('km'), bignumber(2)).toString(), '2 km')
-      assert.equal(multiply(unit('inch'), bignumber(2)).toString(), '2 inch')
+      assert.strictEqual(multiply(bignumber(2), unit('mm')).toString(), '2 mm')
+      assert.strictEqual(multiply(bignumber(2), unit('km')).toString(), '2 km')
+      assert.strictEqual(multiply(bignumber(2), unit('inch')).toString(), '2 inch')
+      assert.strictEqual(multiply(unit('mm'), bignumber(2)).toString(), '2 mm')
+      assert.strictEqual(multiply(unit('km'), bignumber(2)).toString(), '2 km')
+      assert.strictEqual(multiply(unit('inch'), bignumber(2)).toString(), '2 inch')
     })
 
     it('should throw an error in case of unit non-numeric argument', function () {
@@ -861,6 +861,6 @@ describe('multiply', function () {
 
   it('should LaTeX multiply', function () {
     const expression = math.parse('multiply(2,3)')
-    assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2\\cdot3\\right)')
   })
 })

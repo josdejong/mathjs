@@ -15,7 +15,7 @@ const Big = bigmath.bignumber
 
 describe('acosh', function () {
   it('should return the hyperbolic arccos of a boolean', function () {
-    assert.equal(acosh(true), 0)
+    assert.strictEqual(acosh(true), 0)
     approx.deepEqual(acosh(false), complex(0, pi / 2))
     // assert.ok(isNaN(acosh(false)))
   })
@@ -33,7 +33,7 @@ describe('acosh', function () {
   })
 
   it('should return NaN for values out of range and predictable:true', function () {
-    assert.equal(typeof predmath.acosh(-2), 'number')
+    assert.strictEqual(typeof predmath.acosh(-2), 'number')
     assert(isNaN(predmath.acosh(-2)))
   })
 
@@ -106,6 +106,6 @@ describe('acosh', function () {
 
   it('should LaTeX acosh', function () {
     const expression = math.parse('acosh(1)')
-    assert.equal(expression.toTex(), '\\cosh^{-1}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\cosh^{-1}\\left(1\\right)')
   })
 })

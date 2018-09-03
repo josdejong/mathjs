@@ -5,8 +5,8 @@ const Chain = math.type.Chain
 
 describe('Chain', function () {
   it('should chain operations with numbers', function () {
-    assert.equal(new Chain(3).add(4).subtract(2).done(), 5)
-    assert.equal(new Chain(0).add(3).done(), 3)
+    assert.strictEqual(new Chain(3).add(4).subtract(2).done(), 5)
+    assert.strictEqual(new Chain(0).add(3).done(), 3)
   })
 
   it('should have a property isChain', function () {
@@ -38,7 +38,7 @@ describe('Chain', function () {
   })
 
   it('should get string representation', function () {
-    assert.equal(new Chain(5.2).toString(), '5.2')
+    assert.strictEqual(new Chain(5.2).toString(), '5.2')
   })
 
   it('toJSON and fromJSON', function () {
@@ -56,15 +56,15 @@ describe('Chain', function () {
   })
 
   it('should get chain\'s value via valueOf', function () {
-    assert.equal(new Chain(5.2).valueOf(), 5.2)
-    assert.equal(new Chain(5.2) + 2, 7.2)
+    assert.strictEqual(new Chain(5.2).valueOf(), 5.2)
+    assert.strictEqual(new Chain(5.2) + 2, 7.2)
   })
 
   it('should create a chain from a chain', function () {
     const a = new Chain(2.3)
     const b = new Chain(a)
-    assert.equal(a.done(), 2.3)
-    assert.equal(b.done(), 2.3)
+    assert.strictEqual(a.done(), 2.3)
+    assert.strictEqual(b.done(), 2.3)
   })
 
   it('should create a proxy for imported functions', function () {
@@ -75,7 +75,7 @@ describe('Chain', function () {
 
   it('should not break with null or true as value', function () {
     assert.deepEqual(new Chain(null).size().done(), math.matrix([]))
-    assert.equal(new Chain(true).add(1).done(), 2)
+    assert.strictEqual(new Chain(true).add(1).done(), 2)
   })
 
   it('should throw an error if called with wrong input', function () {
@@ -92,8 +92,8 @@ describe('Chain', function () {
 
     const chain = new Chain()
 
-    assert.equal(chain.foo, 'bar')
-    assert.equal(chain.hasOwnProperty('foo'), false)
+    assert.strictEqual(chain.foo, 'bar')
+    assert.strictEqual(chain.hasOwnProperty('foo'), false)
 
     delete Object.prototype.foo
   })

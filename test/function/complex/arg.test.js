@@ -5,14 +5,14 @@ const arg = math.arg
 
 describe('arg', function () {
   it('should compute the argument of a boolean', function () {
-    assert.equal(arg(true), 0)
-    assert.equal(arg(false), 0)
+    assert.strictEqual(arg(true), 0)
+    assert.strictEqual(arg(false), 0)
   })
 
   it('should compute the argument of a number', function () {
-    assert.equal(arg(1), 0)
-    assert.equal(arg(2), 0)
-    assert.equal(arg(0), 0)
+    assert.strictEqual(arg(1), 0)
+    assert.strictEqual(arg(2), 0)
+    assert.strictEqual(arg(0), 0)
     approx.equal(arg(-2), 3.141592653589793)
   })
 
@@ -23,16 +23,16 @@ describe('arg', function () {
   })
 
   it('should compute the argument of a complex number correctly', function () {
-    assert.equal(arg(math.complex('0')) / math.pi, 0)
-    assert.equal(arg(math.complex('1 + 0i')) / math.pi, 0)
-    assert.equal(arg(math.complex('1 + i')) / math.pi, 0.25)
-    assert.equal(arg(math.complex('0 + i')) / math.pi, 0.5)
-    assert.equal(arg(math.complex('-1 + i')) / math.pi, 0.75)
-    assert.equal(arg(math.complex('-1 + 0i')) / math.pi, 1)
-    assert.equal(arg(math.complex('-1 - i')) / math.pi, -0.75)
-    assert.equal(arg(math.complex('0 - i')) / math.pi, -0.5)
-    assert.equal(arg(math.complex('1 - i')) / math.pi, -0.25)
-    assert.equal(arg(math.i) / math.pi, 0.5)
+    assert.strictEqual(arg(math.complex('0')) / math.pi, 0)
+    assert.strictEqual(arg(math.complex('1 + 0i')) / math.pi, 0)
+    assert.strictEqual(arg(math.complex('1 + i')) / math.pi, 0.25)
+    assert.strictEqual(arg(math.complex('0 + i')) / math.pi, 0.5)
+    assert.strictEqual(arg(math.complex('-1 + i')) / math.pi, 0.75)
+    assert.strictEqual(arg(math.complex('-1 + 0i')) / math.pi, 1)
+    assert.strictEqual(arg(math.complex('-1 - i')) / math.pi, -0.75)
+    assert.strictEqual(arg(math.complex('0 - i')) / math.pi, -0.5)
+    assert.strictEqual(arg(math.complex('1 - i')) / math.pi, -0.25)
+    assert.strictEqual(arg(math.i) / math.pi, 0.5)
   })
 
   it('should calculate the argument for each element in a matrix', function () {
@@ -49,8 +49,8 @@ describe('arg', function () {
   })
 
   it('should compute the argument of a real number correctly', function () {
-    assert.equal(arg(2) / math.pi, 0)
-    assert.equal(arg(-2) / math.pi, 1)
+    assert.strictEqual(arg(2) / math.pi, 0)
+    assert.strictEqual(arg(-2) / math.pi, 1)
   })
 
   it('should throw an error if used with a string', function () {
@@ -68,6 +68,6 @@ describe('arg', function () {
 
   it('should LaTeX arg', function () {
     const expression = math.parse('arg(1+i)')
-    assert.equal(expression.toTex(), '\\arg\\left(1+ i\\right)')
+    assert.strictEqual(expression.toTex(), '\\arg\\left(1+ i\\right)')
   })
 })

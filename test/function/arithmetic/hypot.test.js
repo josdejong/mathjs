@@ -49,6 +49,6 @@ describe('hypot', function () {
 
   it('should LaTeX hypot', function () {
     const expression = math.parse('hypot(3,4)')
-    assert.equal(expression.toTex(), '\\hypot\\left(3,4\\right)')
+    assert.strictEqual(expression.toTex(), '\\hypot\\left(3,4\\right)')
   })
 })

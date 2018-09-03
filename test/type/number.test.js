@@ -75,8 +75,8 @@ describe('number', function () {
     const expr2 = math.parse('number(1)')
     const expr3 = math.parse('number(1,cm)')
 
-    assert.equal(expr1.toTex(), '0')
-    assert.equal(expr2.toTex(), '\\left(1\\right)')
-    assert.equal(expr3.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
+    assert.strictEqual(expr1.toTex(), '0')
+    assert.strictEqual(expr2.toTex(), '\\left(1\\right)')
+    assert.strictEqual(expr3.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
   })
 })

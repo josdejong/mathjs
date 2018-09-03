@@ -6,25 +6,25 @@ const bitAnd = math.bitAnd
 
 describe('bitAnd', function () {
   it('should bitwise and two numbers', function () {
-    assert.equal(bitAnd(53, 131), 1)
-    assert.equal(bitAnd(2, 3), 2)
-    assert.equal(bitAnd(-2, 3), 2)
-    assert.equal(bitAnd(2, -3), 0)
-    assert.equal(bitAnd(-5, -3), -7)
+    assert.strictEqual(bitAnd(53, 131), 1)
+    assert.strictEqual(bitAnd(2, 3), 2)
+    assert.strictEqual(bitAnd(-2, 3), 2)
+    assert.strictEqual(bitAnd(2, -3), 0)
+    assert.strictEqual(bitAnd(-5, -3), -7)
   })
 
   it('should bitwise and booleans', function () {
-    assert.equal(bitAnd(true, true), 1)
-    assert.equal(bitAnd(true, false), 0)
-    assert.equal(bitAnd(false, true), 0)
-    assert.equal(bitAnd(false, false), 0)
+    assert.strictEqual(bitAnd(true, true), 1)
+    assert.strictEqual(bitAnd(true, false), 0)
+    assert.strictEqual(bitAnd(false, true), 0)
+    assert.strictEqual(bitAnd(false, false), 0)
   })
 
   it('should bitwise and mixed numbers and booleans', function () {
-    assert.equal(bitAnd(1, true), 1)
-    assert.equal(bitAnd(1, false), 0)
-    assert.equal(bitAnd(true, 1), 1)
-    assert.equal(bitAnd(false, 1), 0)
+    assert.strictEqual(bitAnd(1, true), 1)
+    assert.strictEqual(bitAnd(1, false), 0)
+    assert.strictEqual(bitAnd(true, 1), 1)
+    assert.strictEqual(bitAnd(false, 1), 0)
   })
 
   it('should bitwise and bignumbers', function () {
@@ -209,6 +209,6 @@ describe('bitAnd', function () {
 
   it('should LaTeX bitAnd', function () {
     const expression = math.parse('bitAnd(4,2)')
-    assert.equal(expression.toTex(), '\\left(4\\&2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(4\\&2\\right)')
   })
 })

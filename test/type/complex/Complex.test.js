@@ -38,25 +38,25 @@ describe('Complex', function () {
 
   describe('toString', function () {
     it('stringify a complex number', function () {
-      assert.equal(new Complex(3, -4).toString(), '3 - 4i')
-      assert.equal(new Complex().toString(), '0')
-      assert.equal(new Complex(2, 3).toString(), '2 + 3i')
-      assert.equal(new Complex(2, 0).toString(), '2')
-      assert.equal(new Complex(0, 3).toString(), '3i')
-      assert.equal(new Complex().toString(), '0')
-      assert.equal(new Complex(0, 2).toString(), '2i')
-      assert.equal(new Complex(0, 1).toString(), 'i')
-      assert.equal(new Complex(1, 1).toString(), '1 + i')
-      assert.equal(new Complex(1, 2).toString(), '1 + 2i')
-      assert.equal(new Complex(1, -1).toString(), '1 - i')
-      assert.equal(new Complex(1, -2).toString(), '1 - 2i')
-      assert.equal(new Complex(1, 0).toString(), '1')
-      assert.equal(new Complex(-1, 2).toString(), '-1 + 2i')
-      assert.equal(new Complex(-1, 1).toString(), '-1 + i')
+      assert.strictEqual(new Complex(3, -4).toString(), '3 - 4i')
+      assert.strictEqual(new Complex().toString(), '0')
+      assert.strictEqual(new Complex(2, 3).toString(), '2 + 3i')
+      assert.strictEqual(new Complex(2, 0).toString(), '2')
+      assert.strictEqual(new Complex(0, 3).toString(), '3i')
+      assert.strictEqual(new Complex().toString(), '0')
+      assert.strictEqual(new Complex(0, 2).toString(), '2i')
+      assert.strictEqual(new Complex(0, 1).toString(), 'i')
+      assert.strictEqual(new Complex(1, 1).toString(), '1 + i')
+      assert.strictEqual(new Complex(1, 2).toString(), '1 + 2i')
+      assert.strictEqual(new Complex(1, -1).toString(), '1 - i')
+      assert.strictEqual(new Complex(1, -2).toString(), '1 - 2i')
+      assert.strictEqual(new Complex(1, 0).toString(), '1')
+      assert.strictEqual(new Complex(-1, 2).toString(), '-1 + 2i')
+      assert.strictEqual(new Complex(-1, 1).toString(), '-1 + i')
     })
 
     it('should not round off digits', function () {
-      assert.equal(new Complex(1 / 3, 1 / 3).toString(), '0.3333333333333333 + 0.3333333333333333i')
+      assert.strictEqual(new Complex(1 / 3, 1 / 3).toString(), '0.3333333333333333 + 0.3333333333333333i')
     })
   })
 
@@ -70,42 +70,42 @@ describe('Complex', function () {
 
   describe('format', function () {
     it('should format a complex number', function () {
-      assert.equal(new Complex(2, 3).format(), '2 + 3i')
-      assert.equal(new Complex(2, -3).format(), '2 - 3i')
-      assert.equal(new Complex(-2, 3).format(), '-2 + 3i')
-      assert.equal(new Complex(-2, -3).format(), '-2 - 3i')
-      assert.equal(new Complex(2, 1).format(), '2 + i')
-      assert.equal(new Complex(2, -1).format(), '2 - i')
-      assert.equal(new Complex(2, 0).format(), '2')
-      assert.equal(new Complex(0, 2).format(), '2i')
+      assert.strictEqual(new Complex(2, 3).format(), '2 + 3i')
+      assert.strictEqual(new Complex(2, -3).format(), '2 - 3i')
+      assert.strictEqual(new Complex(-2, 3).format(), '-2 + 3i')
+      assert.strictEqual(new Complex(-2, -3).format(), '-2 - 3i')
+      assert.strictEqual(new Complex(2, 1).format(), '2 + i')
+      assert.strictEqual(new Complex(2, -1).format(), '2 - i')
+      assert.strictEqual(new Complex(2, 0).format(), '2')
+      assert.strictEqual(new Complex(0, 2).format(), '2i')
     })
 
     it('should format a complex number with custom precision', function () {
-      assert.equal(new Complex(1 / 3, 1 / 3).format(3), '0.333 + 0.333i')
-      assert.equal(new Complex(1 / 3, 1 / 3).format(4), '0.3333 + 0.3333i')
-      assert.equal(new Complex(1 / 3, 1 / 3).format(), '0.3333333333333333 + 0.3333333333333333i')
+      assert.strictEqual(new Complex(1 / 3, 1 / 3).format(3), '0.333 + 0.333i')
+      assert.strictEqual(new Complex(1 / 3, 1 / 3).format(4), '0.3333 + 0.3333i')
+      assert.strictEqual(new Complex(1 / 3, 1 / 3).format(), '0.3333333333333333 + 0.3333333333333333i')
     })
 
     it('should round im to zero if very small compared to re', function () {
-      assert.equal(new Complex(-1, 1.22e-16).format(), '-1 + 1.22e-16i')
+      assert.strictEqual(new Complex(-1, 1.22e-16).format(), '-1 + 1.22e-16i')
 
-      assert.equal(new Complex(-1, 1.22e-16).format(15), '-1')
-      assert.equal(new Complex(-1, -1.22e-16).format(15), '-1')
-      assert.equal(new Complex(1, -1.22e-16).format(15), '1')
-      assert.equal(new Complex(1, 1.22e-16).format(15), '1')
+      assert.strictEqual(new Complex(-1, 1.22e-16).format(15), '-1')
+      assert.strictEqual(new Complex(-1, -1.22e-16).format(15), '-1')
+      assert.strictEqual(new Complex(1, -1.22e-16).format(15), '1')
+      assert.strictEqual(new Complex(1, 1.22e-16).format(15), '1')
 
-      assert.equal(new Complex(-1, 1e-7).format(5), '-1')
+      assert.strictEqual(new Complex(-1, 1e-7).format(5), '-1')
     })
 
     it('should round re to zero if very small compared to im', function () {
-      assert.equal(new Complex(1.22e-16, -1).format(), '1.22e-16 - i')
+      assert.strictEqual(new Complex(1.22e-16, -1).format(), '1.22e-16 - i')
 
-      assert.equal(new Complex(1.22e-16, -1).format(15), '-i')
-      assert.equal(new Complex(-1.22e-16, -1).format(15), '-i')
-      assert.equal(new Complex(-1.22e-16, 1).format(15), 'i')
-      assert.equal(new Complex(1.22e-16, 1).format(15), 'i')
+      assert.strictEqual(new Complex(1.22e-16, -1).format(15), '-i')
+      assert.strictEqual(new Complex(-1.22e-16, -1).format(15), '-i')
+      assert.strictEqual(new Complex(-1.22e-16, 1).format(15), 'i')
+      assert.strictEqual(new Complex(1.22e-16, 1).format(15), 'i')
 
-      assert.equal(new Complex(1e-7, -1).format(5), '-i')
+      assert.strictEqual(new Complex(1e-7, -1).format(5), '-i')
     })
   })
 
@@ -174,32 +174,32 @@ describe('Complex', function () {
       clone.re = 100
       clone.im = 200
       assert.notEqual(complex1, clone)
-      assert.equal(complex1.re, 3)
-      assert.equal(complex1.im, -4)
-      assert.equal(clone.re, 100)
-      assert.equal(clone.im, 200)
+      assert.strictEqual(complex1.re, 3)
+      assert.strictEqual(complex1.im, -4)
+      assert.strictEqual(clone.re, 100)
+      assert.strictEqual(clone.im, 200)
     })
   })
 
   describe('equals', function () {
     it('should test equality of two complex numbers', function () {
-      assert.equal(new Complex(2, 4).equals(new Complex(2, 4)), true)
-      assert.equal(new Complex(2, 3).equals(new Complex(2, 4)), false)
-      assert.equal(new Complex(2, 4).equals(new Complex(1, 4)), false)
-      assert.equal(new Complex(2, 4).equals(new Complex(1, 3)), false)
-      assert.equal(new Complex(2, 4).equals(new Complex(2, 0)), false)
-      assert.equal(new Complex(2, 4).equals(new Complex(0, 4)), false)
-      assert.equal(new Complex(0, 0).equals(new Complex()), true)
+      assert.strictEqual(new Complex(2, 4).equals(new Complex(2, 4)), true)
+      assert.strictEqual(new Complex(2, 3).equals(new Complex(2, 4)), false)
+      assert.strictEqual(new Complex(2, 4).equals(new Complex(1, 4)), false)
+      assert.strictEqual(new Complex(2, 4).equals(new Complex(1, 3)), false)
+      assert.strictEqual(new Complex(2, 4).equals(new Complex(2, 0)), false)
+      assert.strictEqual(new Complex(2, 4).equals(new Complex(0, 4)), false)
+      assert.strictEqual(new Complex(0, 0).equals(new Complex()), true)
     })
 
     it('should use the epsilon configured with math.js', function () {
       const old = math.config()
 
-      assert.equal(Complex.EPSILON, math.config().epsilon)
-      assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), false)
+      assert.strictEqual(Complex.EPSILON, math.config().epsilon)
+      assert.strictEqual(new Complex(1, 0).equals(new Complex(1.01, 0)), false)
 
       math.config({ epsilon: 0.1 })
-      assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), true)
+      assert.strictEqual(new Complex(1, 0).equals(new Complex(1.01, 0)), true)
 
       math.config(old) // restore old config
     })
@@ -214,9 +214,9 @@ describe('Complex', function () {
       const complex5 = Complex.fromPolar({ r: 3, phi: -Math.PI / 2 })
       assertComplex(complex1, -0, -0)
       assertComplex(complex2, 5, 0)
-      assert.equal(complex3.re, -1)
-      assert.equal(complex4.im, 3)
-      assert.equal(complex5.im, -3)
+      assert.strictEqual(complex3.re, -1)
+      assert.strictEqual(complex4.im, 3)
+      assert.strictEqual(complex5.im, -3)
     })
 
     it('should have the same value for the different import ways', function () {
@@ -229,9 +229,9 @@ describe('Complex', function () {
       const fromDeg = Complex.fromPolar(1, new Unit(90, 'deg'))
       const fromRad = Complex.fromPolar(1, new Unit(0, 'rad'))
       const fromGrad = Complex.fromPolar(1, new Unit(100, 'grad'))
-      assert.equal(fromDeg.im, 1)
-      assert.equal(fromGrad.im, 1)
-      assert.equal(fromRad.im, 0)
+      assert.strictEqual(fromDeg.im, 1)
+      assert.strictEqual(fromGrad.im, 1)
+      assert.strictEqual(fromRad.im, 0)
     })
 
     it('should only accept an object with r and phi keys for 1 argument', function () {
@@ -250,18 +250,18 @@ describe('Complex', function () {
       const polar3 = (new Complex(3, -4)).toPolar()
       const polar4 = (new Complex(-3, -4)).toPolar()
       const polar5 = (new Complex(0, -1)).toPolar()
-      assert.equal(polar0.r, 0)
-      assert.equal(polar1.r, 5)
-      assert.equal(polar2.r, 5)
-      assert.equal(polar3.r, 5)
-      assert.equal(polar4.r, 5)
-      assert.equal(polar5.r, 1)
-      assert.equal(polar0.phi, 0)
-      assert.equal(polar1.phi, 0.9272952180016122)
-      assert.equal(polar2.phi, 2.214297435588181)
-      assert.equal(polar3.phi, -0.9272952180016122)
-      assert.equal(polar4.phi, -2.214297435588181)
-      assert.equal(polar5.phi, -1.5707963267948966)
+      assert.strictEqual(polar0.r, 0)
+      assert.strictEqual(polar1.r, 5)
+      assert.strictEqual(polar2.r, 5)
+      assert.strictEqual(polar3.r, 5)
+      assert.strictEqual(polar4.r, 5)
+      assert.strictEqual(polar5.r, 1)
+      assert.strictEqual(polar0.phi, 0)
+      assert.strictEqual(polar1.phi, 0.9272952180016122)
+      assert.strictEqual(polar2.phi, 2.214297435588181)
+      assert.strictEqual(polar3.phi, -0.9272952180016122)
+      assert.strictEqual(polar4.phi, -2.214297435588181)
+      assert.strictEqual(polar5.phi, -1.5707963267948966)
     })
   })
 

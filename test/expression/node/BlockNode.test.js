@@ -15,7 +15,7 @@ describe('BlockNode', function () {
     const n = new BlockNode([])
     assert(n instanceof BlockNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'BlockNode')
+    assert.strictEqual(n.type, 'BlockNode')
   })
 
   it('should have isBlockNode', function () {
@@ -100,7 +100,7 @@ describe('BlockNode', function () {
       assert.strictEqual(parent, a)
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], x)
     assert.strictEqual(nodes[1], c)
     assert.deepEqual(paths, ['blocks[0].node', 'blocks[1].node'])
@@ -126,7 +126,7 @@ describe('BlockNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? d : node
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], x)
     assert.strictEqual(nodes[1], c)
     assert.deepEqual(paths, ['blocks[0].node', 'blocks[1].node'])
@@ -219,7 +219,7 @@ describe('BlockNode', function () {
       }
     })
 
-    assert.equal(count, 3)
+    assert.strictEqual(count, 3)
   })
 
   it('should clone a BlockNode', function () {
@@ -264,7 +264,7 @@ describe('BlockNode', function () {
       { node: new SymbolNode('foo'), visible: true }
     ])
 
-    assert.equal(n.toString(), '5\nfoo = 3;\nfoo')
+    assert.strictEqual(n.toString(), '5\nfoo = 3;\nfoo')
   })
 
   it('should stringify a BlockNode with custom toString', function () {
@@ -287,7 +287,7 @@ describe('BlockNode', function () {
 
     const n = new BlockNode([{ node: a }, { node: b }])
 
-    assert.equal(n.toString({ handler: customFunction }), 'const(1, number); const(2, number); ')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'const(1, number); const(2, number); ')
   })
 
   it('toJSON and fromJSON', function () {
@@ -317,7 +317,7 @@ describe('BlockNode', function () {
       { node: new SymbolNode('foo'), visible: true }
     ])
 
-    assert.equal(n.toTex(), '5\\;\\;\n foo:=3;\\;\\;\n foo')
+    assert.strictEqual(n.toTex(), '5\\;\\;\n foo:=3;\\;\\;\n foo')
   })
 
   it('should LaTeX a BlockNode with custom toTex', function () {
@@ -340,6 +340,6 @@ describe('BlockNode', function () {
 
     const n = new BlockNode([{ node: a }, { node: b }])
 
-    assert.equal(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right); const\\left(2, number\\right); ')
+    assert.strictEqual(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right); const\\left(2, number\\right); ')
   })
 })

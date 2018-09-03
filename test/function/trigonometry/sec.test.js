@@ -12,7 +12,7 @@ const biggermath = math.create({ number: 'BigNumber', precision: 21 })
 describe('sec', function () {
   it('should return the secant of a boolean', function () {
     approx.equal(sec(true), 1.85081571768093)
-    assert.equal(sec(false), 1)
+    assert.strictEqual(sec(false), 1)
   })
 
   it('should return the secant of a number', function () {
@@ -104,6 +104,6 @@ describe('sec', function () {
 
   it('should LaTeX sec', function () {
     const expression = math.parse('sec(1)')
-    assert.equal(expression.toTex(), '\\sec\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\sec\\left(1\\right)')
   })
 })

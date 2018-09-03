@@ -6,25 +6,25 @@ const bitOr = math.bitOr
 
 describe('bitOr', function () {
   it('should bitwise or two numbers', function () {
-    assert.equal(bitOr(53, 131), 183)
-    assert.equal(bitOr(2, 3), 3)
-    assert.equal(bitOr(-2, 3), -1)
-    assert.equal(bitOr(2, -3), -1)
-    assert.equal(bitOr(-5, -3), -1)
+    assert.strictEqual(bitOr(53, 131), 183)
+    assert.strictEqual(bitOr(2, 3), 3)
+    assert.strictEqual(bitOr(-2, 3), -1)
+    assert.strictEqual(bitOr(2, -3), -1)
+    assert.strictEqual(bitOr(-5, -3), -1)
   })
 
   it('should bitwise or booleans', function () {
-    assert.equal(bitOr(true, true), 1)
-    assert.equal(bitOr(true, false), 1)
-    assert.equal(bitOr(false, true), 1)
-    assert.equal(bitOr(false, false), 0)
+    assert.strictEqual(bitOr(true, true), 1)
+    assert.strictEqual(bitOr(true, false), 1)
+    assert.strictEqual(bitOr(false, true), 1)
+    assert.strictEqual(bitOr(false, false), 0)
   })
 
   it('should bitwise or mixed numbers and booleans', function () {
-    assert.equal(bitOr(0, true), 1)
-    assert.equal(bitOr(0, false), 0)
-    assert.equal(bitOr(true, 0), 1)
-    assert.equal(bitOr(false, 0), 0)
+    assert.strictEqual(bitOr(0, true), 1)
+    assert.strictEqual(bitOr(0, false), 0)
+    assert.strictEqual(bitOr(true, 0), 1)
+    assert.strictEqual(bitOr(false, 0), 0)
   })
 
   it('should bitwise or bignumbers', function () {
@@ -209,6 +209,6 @@ describe('bitOr', function () {
 
   it('should LaTeX bitOr', function () {
     const expression = math.parse('bitOr(2,3)')
-    assert.equal(expression.toTex(), '\\left(2|3\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2|3\\right)')
   })
 })

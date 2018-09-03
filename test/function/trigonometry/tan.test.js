@@ -88,6 +88,6 @@ describe('tan', function () {
 
   it('should LaTeX tan', function () {
     const expression = math.parse('tan(1)')
-    assert.equal(expression.toTex(), '\\tan\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\tan\\left(1\\right)')
   })
 })

@@ -10,65 +10,65 @@ const larger = math.larger
 
 describe('larger', function () {
   it('should compare two numbers correctly', function () {
-    assert.equal(larger(2, 3), false)
-    assert.equal(larger(2, 2), false)
-    assert.equal(larger(2, 1), true)
-    assert.equal(larger(0, 0), false)
-    assert.equal(larger(-2, 2), false)
-    assert.equal(larger(-2, -3), true)
-    assert.equal(larger(-3, -2), false)
+    assert.strictEqual(larger(2, 3), false)
+    assert.strictEqual(larger(2, 2), false)
+    assert.strictEqual(larger(2, 1), true)
+    assert.strictEqual(larger(0, 0), false)
+    assert.strictEqual(larger(-2, 2), false)
+    assert.strictEqual(larger(-2, -3), true)
+    assert.strictEqual(larger(-3, -2), false)
   })
 
   it('should compare two floating point numbers correctly', function () {
     // Infinity
-    assert.equal(larger(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false)
-    assert.equal(larger(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false)
-    assert.equal(larger(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true)
-    assert.equal(larger(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false)
-    assert.equal(larger(Number.POSITIVE_INFINITY, 2.0), true)
-    assert.equal(larger(2.0, Number.POSITIVE_INFINITY), false)
-    assert.equal(larger(Number.NEGATIVE_INFINITY, 2.0), false)
-    assert.equal(larger(2.0, Number.NEGATIVE_INFINITY), true)
+    assert.strictEqual(larger(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false)
+    assert.strictEqual(larger(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false)
+    assert.strictEqual(larger(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true)
+    assert.strictEqual(larger(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), false)
+    assert.strictEqual(larger(Number.POSITIVE_INFINITY, 2.0), true)
+    assert.strictEqual(larger(2.0, Number.POSITIVE_INFINITY), false)
+    assert.strictEqual(larger(Number.NEGATIVE_INFINITY, 2.0), false)
+    assert.strictEqual(larger(2.0, Number.NEGATIVE_INFINITY), true)
     // floating point numbers
-    assert.equal(larger(0.3 - 0.2, 0.1), false)
+    assert.strictEqual(larger(0.3 - 0.2, 0.1), false)
   })
 
   it('should compare two booleans', function () {
-    assert.equal(larger(true, true), false)
-    assert.equal(larger(true, false), true)
-    assert.equal(larger(false, true), false)
-    assert.equal(larger(false, false), false)
+    assert.strictEqual(larger(true, true), false)
+    assert.strictEqual(larger(true, false), true)
+    assert.strictEqual(larger(false, true), false)
+    assert.strictEqual(larger(false, false), false)
   })
 
   it('should compare mixed numbers and booleans', function () {
-    assert.equal(larger(2, true), true)
-    assert.equal(larger(0, true), false)
-    assert.equal(larger(true, 2), false)
-    assert.equal(larger(false, 2), false)
+    assert.strictEqual(larger(2, true), true)
+    assert.strictEqual(larger(0, true), false)
+    assert.strictEqual(larger(true, 2), false)
+    assert.strictEqual(larger(false, 2), false)
   })
 
   it('should compare bignumbers', function () {
-    assert.equal(larger(bignumber(2), bignumber(3)), false)
-    assert.equal(larger(bignumber(2), bignumber(2)), false)
-    assert.equal(larger(bignumber(3), bignumber(2)), true)
-    assert.equal(larger(bignumber(0), bignumber(0)), false)
-    assert.equal(larger(bignumber(-2), bignumber(2)), false)
+    assert.strictEqual(larger(bignumber(2), bignumber(3)), false)
+    assert.strictEqual(larger(bignumber(2), bignumber(2)), false)
+    assert.strictEqual(larger(bignumber(3), bignumber(2)), true)
+    assert.strictEqual(larger(bignumber(0), bignumber(0)), false)
+    assert.strictEqual(larger(bignumber(-2), bignumber(2)), false)
   })
 
   it('should compare mixed numbers and bignumbers', function () {
-    assert.equal(larger(bignumber(2), 3), false)
-    assert.equal(larger(2, bignumber(2)), false)
+    assert.strictEqual(larger(bignumber(2), 3), false)
+    assert.strictEqual(larger(2, bignumber(2)), false)
 
     assert.throws(function () { larger(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { larger(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
   it('should compare mixed booleans and bignumbers', function () {
-    assert.equal(larger(bignumber(0.1), true), false)
-    assert.equal(larger(bignumber(1), true), false)
-    assert.equal(larger(bignumber(1), false), true)
-    assert.equal(larger(false, bignumber(0)), false)
-    assert.equal(larger(true, bignumber(0)), true)
+    assert.strictEqual(larger(bignumber(0.1), true), false)
+    assert.strictEqual(larger(bignumber(1), true), false)
+    assert.strictEqual(larger(bignumber(1), false), true)
+    assert.strictEqual(larger(false, bignumber(0)), false)
+    assert.strictEqual(larger(true, bignumber(0)), true)
   })
 
   it('should compare two fractions', function () {
@@ -83,20 +83,20 @@ describe('larger', function () {
   })
 
   it('should add two measures of the same unit', function () {
-    assert.equal(larger(unit('100cm'), unit('10inch')), true)
-    assert.equal(larger(unit('99cm'), unit('1m')), false)
-    // assert.equal(larger(unit('100cm'), unit('1m')), false); // dangerous, round-off errors
-    assert.equal(larger(unit('101cm'), unit('1m')), true)
+    assert.strictEqual(larger(unit('100cm'), unit('10inch')), true)
+    assert.strictEqual(larger(unit('99cm'), unit('1m')), false)
+    // assert.strictEqual(larger(unit('100cm'), unit('1m')), false); // dangerous, round-off errors
+    assert.strictEqual(larger(unit('101cm'), unit('1m')), true)
   })
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
-    assert.equal(mymath.larger(1, 0.991), true)
-    assert.equal(mymath.larger(math.bignumber(1), math.bignumber(0.991)), true)
+    assert.strictEqual(mymath.larger(1, 0.991), true)
+    assert.strictEqual(mymath.larger(math.bignumber(1), math.bignumber(0.991)), true)
 
     mymath.config({ epsilon: 1e-2 })
-    assert.equal(mymath.larger(1, 0.991), false)
-    assert.equal(mymath.larger(math.bignumber(1), math.bignumber(0.991)), false)
+    assert.strictEqual(mymath.larger(1, 0.991), false)
+    assert.strictEqual(mymath.larger(math.bignumber(1), math.bignumber(0.991)), false)
   })
 
   it('should throw an error if comparing a unit with a number', function () {
@@ -112,8 +112,8 @@ describe('larger', function () {
   })
 
   it('should compare two strings by their numerical value', function () {
-    assert.equal(larger('0', 0), false)
-    assert.equal(larger('10', '2'), true)
+    assert.strictEqual(larger('0', 0), false)
+    assert.strictEqual(larger('10', '2'), true)
 
     assert.throws(function () { larger('A', 'B') }, /Cannot convert "A" to a number/)
   })
@@ -202,6 +202,6 @@ describe('larger', function () {
 
   it('should LaTeX larger', function () {
     const expression = math.parse('larger(1,2)')
-    assert.equal(expression.toTex(), '\\left(1>2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1>2\\right)')
   })
 })

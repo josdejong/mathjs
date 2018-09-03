@@ -8,51 +8,51 @@ const rightArithShift = math.rightArithShift
 
 describe('rightArithShift', function () {
   it('should right arithmetically shift a number by a given amount', function () {
-    assert.equal(rightArithShift(0, 1000), 0)
-    assert.equal(rightArithShift(2, 0), 2)
-    assert.equal(rightArithShift(12, 3), 1)
-    assert.equal(rightArithShift(32, 4), 2)
-    assert.equal(rightArithShift(-1, 1000), -1)
-    assert.equal(rightArithShift(-12, 2), -3)
-    assert.equal(rightArithShift(122, 3), 15)
-    assert.equal(rightArithShift(-13, 2), -4)
-    assert.equal(rightArithShift(-13, 3), -2)
+    assert.strictEqual(rightArithShift(0, 1000), 0)
+    assert.strictEqual(rightArithShift(2, 0), 2)
+    assert.strictEqual(rightArithShift(12, 3), 1)
+    assert.strictEqual(rightArithShift(32, 4), 2)
+    assert.strictEqual(rightArithShift(-1, 1000), -1)
+    assert.strictEqual(rightArithShift(-12, 2), -3)
+    assert.strictEqual(rightArithShift(122, 3), 15)
+    assert.strictEqual(rightArithShift(-13, 2), -4)
+    assert.strictEqual(rightArithShift(-13, 3), -2)
   })
 
   it('should right arithmetically shift booleans by a boolean amount', function () {
-    assert.equal(rightArithShift(true, true), 0)
-    assert.equal(rightArithShift(true, false), 1)
-    assert.equal(rightArithShift(false, true), 0)
-    assert.equal(rightArithShift(false, false), 0)
+    assert.strictEqual(rightArithShift(true, true), 0)
+    assert.strictEqual(rightArithShift(true, false), 1)
+    assert.strictEqual(rightArithShift(false, true), 0)
+    assert.strictEqual(rightArithShift(false, false), 0)
   })
 
   it('should right arithmetically shift with a mix of numbers and booleans', function () {
-    assert.equal(rightArithShift(2, true), 1)
-    assert.equal(rightArithShift(2, false), 2)
-    assert.equal(rightArithShift(true, 0), 1)
-    assert.equal(rightArithShift(true, 1), 0)
-    assert.equal(rightArithShift(false, 2), 0)
+    assert.strictEqual(rightArithShift(2, true), 1)
+    assert.strictEqual(rightArithShift(2, false), 2)
+    assert.strictEqual(rightArithShift(true, 0), 1)
+    assert.strictEqual(rightArithShift(true, 1), 0)
+    assert.strictEqual(rightArithShift(false, 2), 0)
   })
 
   it('should right arithmetically shift bignumbers', function () {
     assert.deepEqual(rightArithShift(bignumber(17), bignumber(3)), bignumber(2))
     assert.deepEqual(rightArithShift(bignumber('633825300114114700748351602688000'), bignumber(100)), bignumber(500))
     assert.deepEqual(rightArithShift(bignumber(-17), bignumber(3)), bignumber(-3))
-    assert.equal(rightArithShift(bignumber(-17), bignumber(-3)).isNaN(), true)
-    assert.equal(rightArithShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
+    assert.strictEqual(rightArithShift(bignumber(-17), bignumber(-3)).isNaN(), true)
+    assert.strictEqual(rightArithShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
     assert.deepEqual(rightArithShift(bignumber(-Infinity), bignumber(Infinity)), bignumber(-1))
   })
 
   it('should right arithmetically shift mixed numbers and bignumbers', function () {
     assert.deepEqual(rightArithShift(bignumber(17), 3), bignumber(2))
     assert.deepEqual(rightArithShift(bignumber('-633825300114114700748351602688000'), 100), bignumber(-500))
-    assert.equal(rightArithShift(bignumber(-17), -3).isNaN(), true)
+    assert.strictEqual(rightArithShift(bignumber(-17), -3).isNaN(), true)
     assert.deepEqual(rightArithShift(17, bignumber(3)), bignumber(2))
     assert.deepEqual(rightArithShift(-17, bignumber(3)), bignumber(-3))
-    assert.equal(rightArithShift(-3, bignumber(-17)).isNaN(), true)
+    assert.strictEqual(rightArithShift(-3, bignumber(-17)).isNaN(), true)
     assert.deepEqual(rightArithShift(bignumber(-Infinity), Infinity), bignumber(-1))
-    assert.equal(rightArithShift(bignumber(Infinity), Infinity).isNaN(), true)
-    assert.equal(rightArithShift(Infinity, bignumber(Infinity)).isNaN(), true)
+    assert.strictEqual(rightArithShift(bignumber(Infinity), Infinity).isNaN(), true)
+    assert.strictEqual(rightArithShift(Infinity, bignumber(Infinity)).isNaN(), true)
   })
 
   it('should right arithmetically shift mixed booleans and bignumbers', function () {
@@ -173,6 +173,6 @@ describe('rightArithShift', function () {
 
   it('should LaTeX rightArithShift', function () {
     const expression = math.parse('rightArithShift(3,2)')
-    assert.equal(expression.toTex(), '\\left(3>>2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(3>>2\\right)')
   })
 })

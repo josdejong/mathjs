@@ -334,7 +334,7 @@ describe('security', function () {
   })
 
   it('should allow calling functions on math', function () {
-    assert.equal(math.eval('sqrt(4)'), 2)
+    assert.strictEqual(math.eval('sqrt(4)'), 2)
   })
 
   it('should allow invoking methods on complex numbers', function () {

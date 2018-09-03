@@ -6,8 +6,8 @@ const fraction = math.fraction
 
 describe('unaryPlus', function () {
   it('should return unary plus of a boolean', function () {
-    assert.equal(math.unaryPlus(true), 1)
-    assert.equal(math.unaryPlus(false), 0)
+    assert.strictEqual(math.unaryPlus(true), 1)
+    assert.strictEqual(math.unaryPlus(false), 0)
   })
 
   it('should return bignumber unary plus of a boolean', function () {
@@ -17,8 +17,8 @@ describe('unaryPlus', function () {
   })
 
   it('should return unary plus on a string', function () {
-    assert.equal(math.unaryPlus('2'), 2)
-    assert.equal(math.unaryPlus('-2'), -2)
+    assert.strictEqual(math.unaryPlus('2'), 2)
+    assert.strictEqual(math.unaryPlus('-2'), -2)
   })
 
   it('should return bignumber unary plus on a string', function () {
@@ -54,21 +54,21 @@ describe('unaryPlus', function () {
   it('should perform unary plus of a fraction', function () {
     const a = fraction(0.5)
     assert(math.unaryPlus(a) instanceof math.type.Fraction)
-    assert.equal(a.toString(), '0.5')
+    assert.strictEqual(a.toString(), '0.5')
 
-    assert.equal(math.unaryPlus(fraction(0.5)).toString(), '0.5')
-    assert.equal(math.unaryPlus(fraction(-0.5)).toString(), '-0.5')
+    assert.strictEqual(math.unaryPlus(fraction(0.5)).toString(), '0.5')
+    assert.strictEqual(math.unaryPlus(fraction(-0.5)).toString(), '-0.5')
   })
 
   it('should perform unary plus of a complex number', function () {
-    assert.equal(math.unaryPlus(math.complex(3, 2)), '3 + 2i')
-    assert.equal(math.unaryPlus(math.complex(3, -2)), '3 - 2i')
-    assert.equal(math.unaryPlus(math.complex(-3, 2)), '-3 + 2i')
-    assert.equal(math.unaryPlus(math.complex(-3, -2)), '-3 - 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(3, 2)), '3 + 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(3, -2)), '3 - 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(-3, 2)), '-3 + 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(-3, -2)), '-3 - 2i')
   })
 
   it('should perform unary plus of a unit', function () {
-    assert.equal(math.unaryPlus(math.unit(5, 'km')).toString(), '5 km')
+    assert.strictEqual(math.unaryPlus(math.unit(5, 'km')).toString(), '5 km')
   })
 
   it('should perform element-wise unary plus on a matrix', function () {
@@ -92,6 +92,6 @@ describe('unaryPlus', function () {
 
   it('should LaTeX unaryPlus', function () {
     const expression = math.parse('unaryPlus(1)')
-    assert.equal(expression.toTex(), '+\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '+\\left(1\\right)')
   })
 })

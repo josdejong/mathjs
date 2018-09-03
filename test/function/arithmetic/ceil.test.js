@@ -11,8 +11,8 @@ const ceil = math.ceil
 
 describe('ceil', function () {
   it('should return the ceil of a boolean', function () {
-    assert.equal(ceil(true), 1)
-    assert.equal(ceil(false), 0)
+    assert.strictEqual(ceil(true), 1)
+    assert.strictEqual(ceil(false), 0)
   })
 
   it('should return the ceil of a number', function () {
@@ -52,18 +52,18 @@ describe('ceil', function () {
   it('should return the ceil of a number', function () {
     const a = fraction('2/3')
     assert(ceil(a) instanceof math.type.Fraction)
-    assert.equal(a.toString(), '0.(6)')
+    assert.strictEqual(a.toString(), '0.(6)')
 
-    assert.equal(ceil(fraction(0)).toString(), '0')
-    assert.equal(ceil(fraction(1)), '1')
-    assert.equal(ceil(fraction(1.3)).toString(), '2')
-    assert.equal(ceil(fraction(1.8)).toString(), '2')
-    assert.equal(ceil(fraction(2)).toString(), '2')
-    assert.equal(ceil(fraction(-1)).toString(), '-1')
-    assert.equal(ceil(fraction(-1.3)).toString(), '-1')
-    assert.equal(ceil(fraction(-1.8)).toString(), '-1')
-    assert.equal(ceil(fraction(-2)).toString(), '-2')
-    assert.equal(ceil(fraction(-2.1)).toString(), '-2')
+    assert.strictEqual(ceil(fraction(0)).toString(), '0')
+    assert.strictEqual(ceil(fraction(1)), '1')
+    assert.strictEqual(ceil(fraction(1.3)).toString(), '2')
+    assert.strictEqual(ceil(fraction(1.8)).toString(), '2')
+    assert.strictEqual(ceil(fraction(2)).toString(), '2')
+    assert.strictEqual(ceil(fraction(-1)).toString(), '-1')
+    assert.strictEqual(ceil(fraction(-1.3)).toString(), '-1')
+    assert.strictEqual(ceil(fraction(-1.8)).toString(), '-1')
+    assert.strictEqual(ceil(fraction(-2)).toString(), '-2')
+    assert.strictEqual(ceil(fraction(-2.1)).toString(), '-2')
   })
 
   it('should throw an error for units', function () {
@@ -90,6 +90,6 @@ describe('ceil', function () {
 
   it('should LaTeX ceil', function () {
     const expression = math.parse('ceil(0.5)')
-    assert.equal(expression.toTex(), '\\left\\lceil0.5\\right\\rceil')
+    assert.strictEqual(expression.toTex(), '\\left\\lceil0.5\\right\\rceil')
   })
 })

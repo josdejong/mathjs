@@ -12,7 +12,7 @@ describe('seed', function () {
     const first = math.random()
     math.config({ randomSeed: 'a' })
     const second = math.random()
-    assert.equal(first, second)
+    assert.strictEqual(first, second)
   })
 
   it('should generate different number subsequent calls to seeded random', function () {
@@ -30,7 +30,7 @@ describe('seed', function () {
     const firstB = math.random()
     math.config({ randomSeed: null })
     const secondB = math.random()
-    assert.equal(firstA, firstB)
+    assert.strictEqual(firstA, firstB)
     assert.notEqual(secondA, secondB)
   })
 
@@ -39,14 +39,14 @@ describe('seed', function () {
     const first = math.random([5, 5])
     math.config({ randomSeed: 'a' })
     const second = math.random([5, 5])
-    assert.equal(math.deepEqual(first, second), true)
+    assert.strictEqual(math.deepEqual(first, second), true)
   })
 
   it('should generate different matrices subsequent calls to seeded random', function () {
     math.config({ randomSeed: 'a' })
     const first = math.random([5, 5])
     const second = math.random([5, 5])
-    assert.equal(math.deepEqual(first, second), false)
+    assert.strictEqual(math.deepEqual(first, second), false)
   })
 
   it('should pick same number with seed', function () {
@@ -55,7 +55,7 @@ describe('seed', function () {
     const first = math.pickRandom(range)
     math.config({ randomSeed: 'a' })
     const second = math.pickRandom(range)
-    assert.equal(first, second)
+    assert.strictEqual(first, second)
   })
 
   it('should pick different number subsequent calls to seeded random', function () {
@@ -72,7 +72,7 @@ describe('seed', function () {
     const first = math.randomInt(1, 100)
     math.config({ randomSeed: 'a' })
     const second = math.randomInt(1, 100)
-    assert.equal(first, second)
+    assert.strictEqual(first, second)
   })
 
   it('should pick different int subsequent calls to seeded random', function () {
@@ -87,7 +87,7 @@ describe('seed', function () {
     const first = math.random()
     math.config({ randomSeed: 1 })
     const second = math.random()
-    assert.equal(first, second)
+    assert.strictEqual(first, second)
   })
 
   it('should work for object seeds', function () {
@@ -95,6 +95,6 @@ describe('seed', function () {
     const first = math.random()
     math.config({ randomSeed: { a: 1 } })
     const second = math.random()
-    assert.equal(first, second)
+    assert.strictEqual(first, second)
   })
 })

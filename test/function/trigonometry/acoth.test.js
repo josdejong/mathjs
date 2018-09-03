@@ -15,7 +15,7 @@ const Big = bigmath.bignumber
 
 describe('acoth', function () {
   it('should return the hyperbolic arccot of a boolean', function () {
-    assert.equal(acoth(true), Infinity)
+    assert.strictEqual(acoth(true), Infinity)
     approx.deepEqual(acoth(false), complex(0, pi / 2))
     // assert.ok(isNaN(acoth(false)))
   })
@@ -27,14 +27,14 @@ describe('acoth', function () {
     // assert.ok(isNaN(acoth(0.5)))
 
     approx.equal(acoth(-2), -0.54930614433405484569762261846)
-    assert.equal(acoth(-1), -Infinity)
-    assert.equal(acoth(1), Infinity)
+    assert.strictEqual(acoth(-1), -Infinity)
+    assert.strictEqual(acoth(1), Infinity)
     approx.equal(acoth(2), 0.54930614433405484569762261846)
-    assert.equal(acoth(Infinity), 0)
+    assert.strictEqual(acoth(Infinity), 0)
   })
 
   it('should return the hyperbolic arccot of a number when predictable:true', function () {
-    assert.equal(typeof predmath.acoth(0.5), 'number')
+    assert.strictEqual(typeof predmath.acoth(0.5), 'number')
     assert(isNaN(predmath.acoth(0.5)))
   })
 
@@ -109,6 +109,6 @@ describe('acoth', function () {
 
   it('should LaTeX acoth', function () {
     const expression = math.parse('acoth(2)')
-    assert.equal(expression.toTex(), '\\coth^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\coth^{-1}\\left(2\\right)')
   })
 })

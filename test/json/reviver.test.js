@@ -197,7 +197,7 @@ describe('reviver', function () {
 
     const node = JSON.parse(json, reviver)
 
-    assert.equal(node.type, 'OperatorNode')
-    assert.equal(node.toString(), '2 + sin(3 x)')
+    assert.strictEqual(node.type, 'OperatorNode')
+    assert.strictEqual(node.toString(), '2 + sin(3 x)')
   })
 })

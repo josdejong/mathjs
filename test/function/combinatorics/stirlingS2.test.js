@@ -4,9 +4,9 @@ const stirlingS2 = math.stirlingS2
 
 describe('stirlingS2', function () {
   it('should calculate the number of ways to partition a set of n objects into k non-empty subsets', function () {
-    assert.equal(stirlingS2(5, 3), 25)
-    assert.equal(stirlingS2(0, 0), 1)
-    assert.equal(stirlingS2(8, 7), 28)
+    assert.strictEqual(stirlingS2(5, 3), 25)
+    assert.strictEqual(stirlingS2(0, 0), 1)
+    assert.strictEqual(stirlingS2(8, 7), 28)
   })
 
   it('should calculate the stirlingS2 of n items taken k at a time with BigNumbers', function () {
@@ -31,6 +31,6 @@ describe('stirlingS2', function () {
 
   it('should LaTeX stirlingS2', function () {
     const expression = math.parse('stirlingS2(3,2)')
-    assert.equal(expression.toTex(), '\\mathrm{S}\\left(3,2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{S}\\left(3,2\\right)')
   })
 })

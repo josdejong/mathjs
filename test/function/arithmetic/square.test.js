@@ -8,14 +8,14 @@ const square = math.square
 
 describe('square', function () {
   it('should return the square of a boolean', function () {
-    assert.equal(square(true), 1)
-    assert.equal(square(false), 0)
+    assert.strictEqual(square(true), 1)
+    assert.strictEqual(square(false), 0)
   })
 
   it('should return the square of a number', function () {
-    assert.equal(square(4), 16)
-    assert.equal(square(-2), 4)
-    assert.equal(square(0), 0)
+    assert.strictEqual(square(4), 16)
+    assert.strictEqual(square(-2), 4)
+    assert.strictEqual(square(0), 0)
   })
 
   it('should return the square of a big number', function () {
@@ -27,8 +27,8 @@ describe('square', function () {
   it('should return the square of a fraction', function () {
     const a = fraction(0.5)
     assert(square(a) instanceof math.type.Fraction)
-    assert.equal(square(a).toString(), '0.25')
-    assert.equal(a.toString(), '0.5')
+    assert.strictEqual(square(a).toString(), '0.25')
+    assert.strictEqual(a.toString(), '0.5')
   })
 
   it('should throw an error if used with wrong number of arguments', function () {
@@ -47,9 +47,9 @@ describe('square', function () {
   })
 
   it('should return the square of a unit', function () {
-    assert.equal(square(math.unit('4 cm')).toString(), '16 cm^2')
-    assert.equal(square(math.unit('-2 cm')).toString(), '4 cm^2')
-    assert.equal(square(math.unit('0 cm')).toString(), '0 cm^2')
+    assert.strictEqual(square(math.unit('4 cm')).toString(), '16 cm^2')
+    assert.strictEqual(square(math.unit('-2 cm')).toString(), '4 cm^2')
+    assert.strictEqual(square(math.unit('0 cm')).toString(), '0 cm^2')
   })
 
   it('should throw an error when used with a string', function () {
@@ -64,6 +64,6 @@ describe('square', function () {
 
   it('should LaTeX square', function () {
     const expression = math.parse('square(4)')
-    assert.equal(expression.toTex(), '\\left(4\\right)^2')
+    assert.strictEqual(expression.toTex(), '\\left(4\\right)^2')
   })
 })

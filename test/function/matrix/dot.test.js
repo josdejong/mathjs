@@ -3,18 +3,18 @@ const math = require('../../../src/main')
 
 describe('dot', function () {
   it('should calculate dot product for two arrays', function () {
-    assert.equal(math.dot([2, 4, 1], [2, 2, 3]), 15)
-    assert.equal(math.dot([7, 3], [2, 4]), 26)
+    assert.strictEqual(math.dot([2, 4, 1], [2, 2, 3]), 15)
+    assert.strictEqual(math.dot([7, 3], [2, 4]), 26)
   })
 
   it('should calculate dot product for two matrices', function () {
-    assert.equal(math.dot(math.matrix([2, 4, 1]), math.matrix([2, 2, 3])), 15)
-    assert.equal(math.dot(math.matrix([7, 3]), math.matrix([2, 4])), 26)
+    assert.strictEqual(math.dot(math.matrix([2, 4, 1]), math.matrix([2, 2, 3])), 15)
+    assert.strictEqual(math.dot(math.matrix([7, 3]), math.matrix([2, 4])), 26)
   })
 
   it('should calculate dot product for mixed arrays and matrices', function () {
-    assert.equal(math.dot([2, 4, 1], math.matrix([2, 2, 3])), 15)
-    assert.equal(math.dot(math.matrix([7, 3]), [2, 4]), 26)
+    assert.strictEqual(math.dot([2, 4, 1], math.matrix([2, 2, 3])), 15)
+    assert.strictEqual(math.dot(math.matrix([7, 3]), [2, 4]), 26)
   })
 
   it('should throw an error for unsupported types of arguments', function () {
@@ -35,6 +35,6 @@ describe('dot', function () {
 
   it('should LaTeX dot', function () {
     const expression = math.parse('dot([1,2],[3,4])')
-    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

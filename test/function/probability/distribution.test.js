@@ -9,7 +9,7 @@ const distribution = math.distribution
 
 const assertApproxEqual = function (testVal, val, tolerance) {
   const diff = Math.abs(val - testVal)
-  if (diff > tolerance) assert.equal(testVal, val)
+  if (diff > tolerance) assert.strictEqual(testVal, val)
   else assert.ok(diff <= tolerance)
 }
 
@@ -18,9 +18,9 @@ const assertUniformDistribution = function (values, min, max) {
   let count
   let i
   count = _.filter(values, function (val) { return val < min }).length
-  assert.equal(count, 0)
+  assert.strictEqual(count, 0)
   count = _.filter(values, function (val) { return val > max }).length
-  assert.equal(count, 0)
+  assert.strictEqual(count, 0)
 
   for (i = 0; i < 10; i++) {
     count = _.filter(values, function (val) {
@@ -97,7 +97,7 @@ describe('distribution', function () {
           picked.push(val)
         })
       })
-      assert.equal(picked.length, 2 * 3 * 4 * 100)
+      assert.strictEqual(picked.length, 2 * 3 * 4 * 100)
 
       assertUniformDistribution(picked, 0, 1)
     })
@@ -119,7 +119,7 @@ describe('distribution', function () {
           picked.push(val)
         })
       })
-      assert.equal(picked.length, 2 * 3 * 4 * 100)
+      assert.strictEqual(picked.length, 2 * 3 * 4 * 100)
 
       assertUniformDistribution(picked, 0, 8)
     })
@@ -141,7 +141,7 @@ describe('distribution', function () {
           picked.push(val)
         })
       })
-      assert.equal(picked.length, 2 * 3 * 4 * 100)
+      assert.strictEqual(picked.length, 2 * 3 * 4 * 100)
 
       assertUniformDistribution(picked, 0, 1)
     })
@@ -162,7 +162,7 @@ describe('distribution', function () {
           picked.push(val)
         })
       })
-      assert.equal(picked.length, 2 * 3 * 4 * 100)
+      assert.strictEqual(picked.length, 2 * 3 * 4 * 100)
       assertUniformDistribution(picked, -103, 8)
     })
 
@@ -202,7 +202,7 @@ describe('distribution', function () {
           picked.push(val)
         })
       })
-      assert.equal(picked.length, 2 * 3 * 4 * 1000)
+      assert.strictEqual(picked.length, 2 * 3 * 4 * 1000)
       assertUniformDistributionInt(picked, -14.9, -2)
     })
 
@@ -276,9 +276,9 @@ describe('distribution', function () {
       const weights = [1, 5, 2, 4, 6]
       const number = 5
 
-      assert.equal(uniformDistrib.pickRandom(possibles, number), possibles)
-      assert.equal(uniformDistrib.pickRandom(possibles, number, weights), possibles)
-      assert.equal(uniformDistrib.pickRandom(possibles, weights, number), possibles)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number), possibles)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number, weights), possibles)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, weights, number), possibles)
     })
 
     it('should return the given array if the given number is greater than its length', function () {
@@ -286,9 +286,9 @@ describe('distribution', function () {
       const weights = [1, 5, 2, 4, 6]
       const number = 6
 
-      assert.equal(uniformDistrib.pickRandom(possibles, number), possibles)
-      assert.equal(uniformDistrib.pickRandom(possibles, number, weights), possibles)
-      assert.equal(uniformDistrib.pickRandom(possibles, weights, number), possibles)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number), possibles)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number, weights), possibles)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, weights, number), possibles)
     })
 
     it('should return an empty array if the given number is 0', function () {
@@ -296,9 +296,9 @@ describe('distribution', function () {
       const weights = [1, 5, 2, 4, 6]
       const number = 0
 
-      assert.equal(uniformDistrib.pickRandom(possibles, number).length, 0)
-      assert.equal(uniformDistrib.pickRandom(possibles, number, weights).length, 0)
-      assert.equal(uniformDistrib.pickRandom(possibles, weights, number).length, 0)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number).length, 0)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number, weights).length, 0)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, weights, number).length, 0)
     })
 
     it('should return an array of length 1 if the number passed is 1', function () {
@@ -310,9 +310,9 @@ describe('distribution', function () {
       assert(Array.isArray(uniformDistrib.pickRandom(possibles, number, weights)))
       assert(Array.isArray(uniformDistrib.pickRandom(possibles, weights, number)))
 
-      assert.equal(uniformDistrib.pickRandom(possibles, number).length, 1)
-      assert.equal(uniformDistrib.pickRandom(possibles, number, weights).length, 1)
-      assert.equal(uniformDistrib.pickRandom(possibles, weights, number).length, 1)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number).length, 1)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number, weights).length, 1)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, weights, number).length, 1)
     })
 
     it('should pick the given number of values from the given array', function () {
@@ -320,9 +320,9 @@ describe('distribution', function () {
       const weights = [1, 5, 2, 4, 6]
       const number = 3
 
-      assert.equal(uniformDistrib.pickRandom(possibles, number).length, number)
-      assert.equal(uniformDistrib.pickRandom(possibles, number, weights).length, number)
-      assert.equal(uniformDistrib.pickRandom(possibles, weights, number).length, number)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number).length, number)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, number, weights).length, number)
+      assert.strictEqual(uniformDistrib.pickRandom(possibles, weights, number).length, number)
     })
 
     it('should pick a value from the given array following an uniform distribution if only possibles are passed', function () {
@@ -335,19 +335,19 @@ describe('distribution', function () {
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
     })
 
     it('should pick a value from the given matrix following an uniform distribution', function () {
@@ -360,19 +360,19 @@ describe('distribution', function () {
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
     })
 
     it('should pick a given number of values from the given array following an uniform distribution if no weights were passed', function () {
@@ -385,22 +385,22 @@ describe('distribution', function () {
         picked.push.apply(picked, uniformDistrib.pickRandom(possibles, number))
       })
 
-      assert.equal(picked.length, 2000)
+      assert.strictEqual(picked.length, 2000)
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
     })
 
     it('should pick numbers from the given matrix following an uniform distribution', function () {
@@ -413,22 +413,22 @@ describe('distribution', function () {
         picked.push.apply(picked, uniformDistrib.pickRandom(possibles, number))
       })
 
-      assert.equal(picked.length, 3000)
+      assert.strictEqual(picked.length, 3000)
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
     })
 
     it('should pick a value from the given array following a weighted distribution', function () {
@@ -442,19 +442,19 @@ describe('distribution', function () {
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.1)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round((count) / picked.length, 1), 0.4)
+      assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0)
+      assert.strictEqual(math.round(count / picked.length, 1), 0)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.3)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.3)
     })
 
     it('should pick a value from the given matrix following a weighted distribution', function () {
@@ -468,19 +468,19 @@ describe('distribution', function () {
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.1)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round((count) / picked.length, 1), 0.4)
+      assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0)
+      assert.strictEqual(math.round(count / picked.length, 1), 0)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.3)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.3)
     })
 
     it('should return an array of values from the given array following a weighted distribution', function () {
@@ -495,38 +495,38 @@ describe('distribution', function () {
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.1)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round((count) / picked.length, 1), 0.4)
+      assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0)
+      assert.strictEqual(math.round(count / picked.length, 1), 0)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.3)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
       _.times(1000, function () {
         picked.push.apply(picked, uniformDistrib.pickRandom(possibles, weights, number))
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.1)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round((count) / picked.length, 1), 0.4)
+      assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0)
+      assert.strictEqual(math.round(count / picked.length, 1), 0)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.3)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.3)
     })
 
     it('should return an array of values from the given matrix following a weighted distribution', function () {
@@ -541,38 +541,38 @@ describe('distribution', function () {
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.1)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round((count) / picked.length, 1), 0.4)
+      assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0)
+      assert.strictEqual(math.round(count / picked.length, 1), 0)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.3)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.3)
 
       _.times(1000, function () {
         picked.push.apply(picked, uniformDistrib.pickRandom(possibles, weights, number))
       })
 
       count = _.filter(picked, function (val) { return val === 11 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.1)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.1)
 
       count = _.filter(picked, function (val) { return val === 22 }).length
-      assert.equal(math.round((count) / picked.length, 1), 0.4)
+      assert.strictEqual(math.round((count) / picked.length, 1), 0.4)
 
       count = _.filter(picked, function (val) { return val === 33 }).length
-      assert.equal(math.round(count / picked.length, 1), 0)
+      assert.strictEqual(math.round(count / picked.length, 1), 0)
 
       count = _.filter(picked, function (val) { return val === 44 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.2)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.2)
 
       count = _.filter(picked, function (val) { return val === 55 }).length
-      assert.equal(math.round(count / picked.length, 1), 0.3)
+      assert.strictEqual(math.round(count / picked.length, 1), 0.3)
     })
   })
 
@@ -586,9 +586,9 @@ describe('distribution', function () {
         picked.push(dist.random())
       })
       count = _.filter(picked, function (val) { return val < 0 }).length
-      assert.equal(count, 0)
+      assert.strictEqual(count, 0)
       count = _.filter(picked, function (val) { return val > 1 }).length
-      assert.equal(count, 0)
+      assert.strictEqual(count, 0)
 
       count = _.filter(picked, function (val) { return val < 0.25 }).length
       assertApproxEqual(count / picked.length, 0.07, 0.01)
@@ -625,6 +625,6 @@ describe('distribution', function () {
 
   it('should LaTeX distribution', function () {
     const expression = math.parse('distribution("normal")')
-    assert.equal(expression.toTex(), '\\mathrm{distribution}\\left(\\mathtt{"normal"}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{distribution}\\left(\\mathtt{"normal"}\\right)')
   })
 })

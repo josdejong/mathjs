@@ -119,8 +119,8 @@ describe('ImmutableDenseMatrix', function () {
 
   describe('toString', function () {
     it('should return string representation of matrix', function () {
-      assert.equal(new ImmutableDenseMatrix([[1, 2], [3, 4]]).toString(), '[[1, 2], [3, 4]]')
-      assert.equal(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]')
+      assert.strictEqual(new ImmutableDenseMatrix([[1, 2], [3, 4]]).toString(), '[[1, 2], [3, 4]]')
+      assert.strictEqual(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]')
     })
   })
 
@@ -186,9 +186,9 @@ describe('ImmutableDenseMatrix', function () {
 
   describe('format', function () {
     it('should format matrix', function () {
-      assert.equal(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).format(), '[[1, 2], [3, 0.3333333333333333]]')
-      assert.equal(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).format(3), '[[1, 2], [3, 0.333]]')
-      assert.equal(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).format(4), '[[1, 2], [3, 0.3333]]')
+      assert.strictEqual(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).format(), '[[1, 2], [3, 0.3333333333333333]]')
+      assert.strictEqual(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).format(3), '[[1, 2], [3, 0.333]]')
+      assert.strictEqual(new ImmutableDenseMatrix([[1, 2], [3, 1 / 3]]).format(4), '[[1, 2], [3, 0.3333]]')
     })
   })
 
@@ -210,8 +210,8 @@ describe('ImmutableDenseMatrix', function () {
     const m = new ImmutableDenseMatrix([[0, 1], [2, 3]])
 
     it('should get a value from the matrix', function () {
-      assert.equal(m.get([1, 0]), 2)
-      assert.equal(m.get([0, 1]), 1)
+      assert.strictEqual(m.get([1, 0]), 2)
+      assert.strictEqual(m.get([0, 1]), 1)
     })
 
     it('should throw an error when getting a value out of range', function () {

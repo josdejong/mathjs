@@ -7,9 +7,9 @@ const mad = math.mad
 
 describe('mad', function () {
   it('should return the median absolute deviation of numbers', function () {
-    assert.equal(mad(10), 0)
-    assert.equal(mad(4, 6, 8), 2)
-    assert.equal(mad(1, 10, 20, 30), 9.5)
+    assert.strictEqual(mad(10), 0)
+    assert.strictEqual(mad(4, 6, 8), 2)
+    assert.strictEqual(mad(1, 10, 20, 30), 9.5)
   })
 
   it('should return the median absolute deviation of big numbers', function () {
@@ -18,15 +18,15 @@ describe('mad', function () {
   })
 
   it('should return the median absolute deviation from an array', function () {
-    assert.equal(mad([10]), 0)
-    assert.equal(mad([4, 6, 8]), 2)
-    assert.equal(mad([1, 10, 20, 30]), 9.5)
+    assert.strictEqual(mad([10]), 0)
+    assert.strictEqual(mad([4, 6, 8]), 2)
+    assert.strictEqual(mad([1, 10, 20, 30]), 9.5)
   })
 
   it('should return the median absolute deviation from an 1d matrix', function () {
-    assert.equal(mad(new DenseMatrix([10])), 0)
-    assert.equal(mad(new DenseMatrix([4, 6, 8])), 2)
-    assert.equal(mad(new DenseMatrix([1, 10, 20, 30])), 9.5)
+    assert.strictEqual(mad(new DenseMatrix([10])), 0)
+    assert.strictEqual(mad(new DenseMatrix([4, 6, 8])), 2)
+    assert.strictEqual(mad(new DenseMatrix([1, 10, 20, 30])), 9.5)
   })
 
   it('should return the median absolute deviation element from a 2d array', function () {
@@ -71,6 +71,6 @@ describe('mad', function () {
 
   it('should LaTeX mad', function () {
     const expression = math.parse('mad(1,2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{mad}\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{mad}\\left(1,2,3\\right)')
   })
 })

@@ -72,6 +72,6 @@ describe('zeros', function () {
 
   it('should LaTeX zeros', function () {
     const expression = math.parse('zeros(2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{zeros}\\left(2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{zeros}\\left(2,3\\right)')
   })
 })

@@ -9,18 +9,18 @@ const mod = math.mod
 
 describe('mod', function () {
   it('should calculate the modulus of booleans correctly', function () {
-    assert.equal(mod(true, true), 0)
-    assert.equal(mod(false, true), 0)
-    assert.equal(mod(true, false), 1)
-    assert.equal(mod(false, false), 0)
+    assert.strictEqual(mod(true, true), 0)
+    assert.strictEqual(mod(false, true), 0)
+    assert.strictEqual(mod(true, false), 1)
+    assert.strictEqual(mod(false, false), 0)
   })
 
   it('should calculate the modulus of two numbers', function () {
-    assert.equal(mod(1, 1), 0)
-    assert.equal(mod(0, 1), 0)
-    assert.equal(mod(1, 0), 1)
-    assert.equal(mod(0, 0), 0)
-    assert.equal(mod(7, 0), 7)
+    assert.strictEqual(mod(1, 1), 0)
+    assert.strictEqual(mod(0, 1), 0)
+    assert.strictEqual(mod(1, 0), 1)
+    assert.strictEqual(mod(0, 0), 0)
+    assert.strictEqual(mod(7, 0), 7)
 
     approx.equal(mod(7, 2), 1)
     approx.equal(mod(9, 3), 0)
@@ -97,11 +97,11 @@ describe('mod', function () {
   it('should calculate modulus of two fractions', function () {
     const b = math.fraction(8)
     const a = mod(b, math.fraction(3))
-    assert.equal(a.toString(), '2')
-    assert.equal(b.toString(), '8')
+    assert.strictEqual(a.toString(), '2')
+    assert.strictEqual(b.toString(), '8')
     assert(a instanceof math.type.Fraction)
 
-    assert.equal(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0')
+    assert.strictEqual(mod(math.fraction(4.55), math.fraction(0.05)).toString(), '0')
   })
 
   it('should calculate modulus of mixed fractions and numbers', function () {
@@ -168,6 +168,6 @@ describe('mod', function () {
 
   it('should LaTeX mod', function () {
     const expression = math.parse('mod(11,2)')
-    assert.equal(expression.toTex(), '\\left(11\\mod2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(11\\mod2\\right)')
   })
 })

@@ -10,48 +10,48 @@ const unequal = math.unequal
 
 describe('unequal', function () {
   it('should compare two numbers correctly', function () {
-    assert.equal(unequal(2, 3), true)
-    assert.equal(unequal(2, 2), false)
-    assert.equal(unequal(0, 0), false)
-    assert.equal(unequal(-2, 2), true)
-    assert.equal(unequal(true, 1), false)
+    assert.strictEqual(unequal(2, 3), true)
+    assert.strictEqual(unequal(2, 2), false)
+    assert.strictEqual(unequal(0, 0), false)
+    assert.strictEqual(unequal(-2, 2), true)
+    assert.strictEqual(unequal(true, 1), false)
   })
 
   it('should compare two floating point numbers correctly', function () {
     // NaN
-    assert.equal(unequal(Number.NaN, Number.NaN), true)
+    assert.strictEqual(unequal(Number.NaN, Number.NaN), true)
     // Infinity
-    assert.equal(unequal(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false)
-    assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false)
-    assert.equal(unequal(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true)
-    assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true)
-    assert.equal(unequal(Number.POSITIVE_INFINITY, 2.0), true)
-    assert.equal(unequal(2.0, Number.POSITIVE_INFINITY), true)
-    assert.equal(unequal(Number.NEGATIVE_INFINITY, 2.0), true)
-    assert.equal(unequal(2.0, Number.NEGATIVE_INFINITY), true)
-    assert.equal(unequal(Number.NaN, Number.POSITIVE_INFINITY), true)
-    assert.equal(unequal(Number.POSITIVE_INFINITY, Number.NaN), true)
-    assert.equal(unequal(Number.NaN, Number.NEGATIVE_INFINITY), true)
-    assert.equal(unequal(Number.NEGATIVE_INFINITY, Number.NaN), true)
+    assert.strictEqual(unequal(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY), false)
+    assert.strictEqual(unequal(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY), false)
+    assert.strictEqual(unequal(Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY), true)
+    assert.strictEqual(unequal(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY), true)
+    assert.strictEqual(unequal(Number.POSITIVE_INFINITY, 2.0), true)
+    assert.strictEqual(unequal(2.0, Number.POSITIVE_INFINITY), true)
+    assert.strictEqual(unequal(Number.NEGATIVE_INFINITY, 2.0), true)
+    assert.strictEqual(unequal(2.0, Number.NEGATIVE_INFINITY), true)
+    assert.strictEqual(unequal(Number.NaN, Number.POSITIVE_INFINITY), true)
+    assert.strictEqual(unequal(Number.POSITIVE_INFINITY, Number.NaN), true)
+    assert.strictEqual(unequal(Number.NaN, Number.NEGATIVE_INFINITY), true)
+    assert.strictEqual(unequal(Number.NEGATIVE_INFINITY, Number.NaN), true)
     // floating point numbers
-    assert.equal(unequal(0.3 - 0.2, 0.1), false)
+    assert.strictEqual(unequal(0.3 - 0.2, 0.1), false)
   })
 
   it('should compare two booleans', function () {
-    assert.equal(unequal(true, true), false)
-    assert.equal(unequal(true, false), true)
-    assert.equal(unequal(false, true), true)
-    assert.equal(unequal(false, false), false)
+    assert.strictEqual(unequal(true, true), false)
+    assert.strictEqual(unequal(true, false), true)
+    assert.strictEqual(unequal(false, true), true)
+    assert.strictEqual(unequal(false, false), false)
   })
 
   it('should compare mixed numbers and booleans', function () {
-    assert.equal(unequal(2, true), true)
-    assert.equal(unequal(1, true), false)
-    assert.equal(unequal(0, true), true)
-    assert.equal(unequal(true, 2), true)
-    assert.equal(unequal(true, 1), false)
-    assert.equal(unequal(false, 2), true)
-    assert.equal(unequal(false, 0), false)
+    assert.strictEqual(unequal(2, true), true)
+    assert.strictEqual(unequal(1, true), false)
+    assert.strictEqual(unequal(0, true), true)
+    assert.strictEqual(unequal(true, 2), true)
+    assert.strictEqual(unequal(true, 1), false)
+    assert.strictEqual(unequal(false, 2), true)
+    assert.strictEqual(unequal(false, 0), false)
   })
 
   it('should compare bignumbers', function () {
@@ -81,15 +81,15 @@ describe('unequal', function () {
   })
 
   it('should compare two complex numbers correctly', function () {
-    assert.equal(unequal(complex(2, 3), complex(2, 4)), true)
-    assert.equal(unequal(complex(2, 3), complex(2, 3)), false)
-    assert.equal(unequal(complex(1, 3), complex(2, 3)), true)
-    assert.equal(unequal(complex(1, 3), complex(2, 4)), true)
-    assert.equal(unequal(complex(2, 0), 2), false)
-    assert.equal(unequal(complex(2, 1), 2), true)
-    assert.equal(unequal(2, complex(2, 0)), false)
-    assert.equal(unequal(2, complex(2, 1)), true)
-    assert.equal(unequal(complex(2, 0), 3), true)
+    assert.strictEqual(unequal(complex(2, 3), complex(2, 4)), true)
+    assert.strictEqual(unequal(complex(2, 3), complex(2, 3)), false)
+    assert.strictEqual(unequal(complex(1, 3), complex(2, 3)), true)
+    assert.strictEqual(unequal(complex(1, 3), complex(2, 4)), true)
+    assert.strictEqual(unequal(complex(2, 0), 2), false)
+    assert.strictEqual(unequal(complex(2, 1), 2), true)
+    assert.strictEqual(unequal(2, complex(2, 0)), false)
+    assert.strictEqual(unequal(2, complex(2, 1)), true)
+    assert.strictEqual(unequal(complex(2, 0), 3), true)
   })
 
   it('should compare mixed complex numbers and bignumbers (downgrades to numbers)', function () {
@@ -111,34 +111,34 @@ describe('unequal', function () {
   })
 
   it('should compare two quantitites of the same unit correctly', function () {
-    assert.equal(unequal(unit('100cm'), unit('10inch')), true)
-    assert.equal(unequal(unit('100cm'), unit('1m')), false)
-    // assert.equal(unequal(unit('12inch'), unit('1foot')), false); // round-off error :(
-    // assert.equal(unequal(unit('2.54cm'), unit('1inch')), false); // round-off error :(
+    assert.strictEqual(unequal(unit('100cm'), unit('10inch')), true)
+    assert.strictEqual(unequal(unit('100cm'), unit('1m')), false)
+    // assert.strictEqual(unequal(unit('12inch'), unit('1foot')), false); // round-off error :(
+    // assert.strictEqual(unequal(unit('2.54cm'), unit('1inch')), false); // round-off error :(
   })
 
   it('should compare null', function () {
-    assert.equal(unequal(null, null), false)
-    assert.equal(unequal(null, undefined), true)
-    assert.equal(unequal(0, null), true)
-    assert.equal(unequal('null', null), true)
+    assert.strictEqual(unequal(null, null), false)
+    assert.strictEqual(unequal(null, undefined), true)
+    assert.strictEqual(unequal(0, null), true)
+    assert.strictEqual(unequal('null', null), true)
   })
 
   it('should compare undefined', function () {
-    assert.equal(unequal(undefined, undefined), false)
-    assert.equal(unequal(undefined, 'undefined'), true)
-    assert.equal(unequal(undefined, null), true)
-    assert.equal(unequal(2, undefined), true)
+    assert.strictEqual(unequal(undefined, undefined), false)
+    assert.strictEqual(unequal(undefined, 'undefined'), true)
+    assert.strictEqual(unequal(undefined, null), true)
+    assert.strictEqual(unequal(2, undefined), true)
   })
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
-    assert.equal(mymath.unequal(1, 0.991), true)
-    assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), true)
+    assert.strictEqual(mymath.unequal(1, 0.991), true)
+    assert.strictEqual(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), true)
 
     mymath.config({ epsilon: 1e-2 })
-    assert.equal(mymath.unequal(1, 0.991), false)
-    assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), false)
+    assert.strictEqual(mymath.unequal(1, 0.991), false)
+    assert.strictEqual(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), false)
   })
 
   it('should throw an error when comparing numbers and units', function () {
@@ -156,9 +156,9 @@ describe('unequal', function () {
   })
 
   it('should compare two strings by their numerical value', function () {
-    assert.equal(unequal('0', 0), false)
-    assert.equal(unequal('1000', '1e3'), false)
-    assert.equal(unequal('20', '1'), true)
+    assert.strictEqual(unequal('0', 0), false)
+    assert.strictEqual(unequal('1000', '1e3'), false)
+    assert.strictEqual(unequal('20', '1'), true)
 
     assert.throws(function () { unequal('A', 'B') }, /Cannot convert "A" to a number/)
   })
@@ -235,6 +235,6 @@ describe('unequal', function () {
 
   it('should LaTeX unequal', function () {
     const expression = math.parse('unequal(1,0)')
-    assert.equal(expression.toTex(), '\\left(1\\neq0\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1\\neq0\\right)')
   })
 })

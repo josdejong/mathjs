@@ -99,7 +99,7 @@ describe('matrix', function () {
     const expr1 = math.parse('matrix()')
     const expr2 = math.parse('matrix([1])')
 
-    assert.equal(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
-    assert.equal(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
   })
 })

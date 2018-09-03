@@ -6,33 +6,33 @@ const lcm = math.lcm
 
 describe('lcm', function () {
   it('should find the lowest common multiple of two or more numbers', function () {
-    assert.equal(lcm(4, 6), 12)
-    assert.equal(lcm(4, -6), 12)
-    assert.equal(lcm(6, 4), 12)
-    assert.equal(lcm(-6, 4), 12)
-    assert.equal(lcm(-6, -4), 12)
-    assert.equal(lcm(21, 6), 42)
-    assert.equal(lcm(3, -4, 24), 24)
+    assert.strictEqual(lcm(4, 6), 12)
+    assert.strictEqual(lcm(4, -6), 12)
+    assert.strictEqual(lcm(6, 4), 12)
+    assert.strictEqual(lcm(-6, 4), 12)
+    assert.strictEqual(lcm(-6, -4), 12)
+    assert.strictEqual(lcm(21, 6), 42)
+    assert.strictEqual(lcm(3, -4, 24), 24)
 
     assert.throws(function () { lcm(1) }, /TypeError: Too few arguments/)
   })
 
   it('should calculate lcm for edge cases around zero', function () {
-    assert.equal(lcm(3, 0), 0)
-    assert.equal(lcm(-3, 0), 0)
-    assert.equal(lcm(0, 3), 0)
-    assert.equal(lcm(0, -3), 0)
-    assert.equal(lcm(0, 0), 0)
+    assert.strictEqual(lcm(3, 0), 0)
+    assert.strictEqual(lcm(-3, 0), 0)
+    assert.strictEqual(lcm(0, 3), 0)
+    assert.strictEqual(lcm(0, -3), 0)
+    assert.strictEqual(lcm(0, 0), 0)
 
-    assert.equal(lcm(1, 1), 1)
-    assert.equal(lcm(1, 0), 0)
-    assert.equal(lcm(1, -1), 1)
-    assert.equal(lcm(-1, 1), 1)
-    assert.equal(lcm(-1, 0), 0)
-    assert.equal(lcm(-1, -1), 1)
-    assert.equal(lcm(0, 1), 0)
-    assert.equal(lcm(0, -1), 0)
-    assert.equal(lcm(0, 0), 0)
+    assert.strictEqual(lcm(1, 1), 1)
+    assert.strictEqual(lcm(1, 0), 0)
+    assert.strictEqual(lcm(1, -1), 1)
+    assert.strictEqual(lcm(-1, 1), 1)
+    assert.strictEqual(lcm(-1, 0), 0)
+    assert.strictEqual(lcm(-1, -1), 1)
+    assert.strictEqual(lcm(0, 1), 0)
+    assert.strictEqual(lcm(0, -1), 0)
+    assert.strictEqual(lcm(0, 0), 0)
   })
 
   it('should calculate lcm for BigNumbers', function () {
@@ -46,10 +46,10 @@ describe('lcm', function () {
   })
 
   it('should find the lowest common multiple of booleans', function () {
-    assert.equal(lcm(true, true), 1)
-    assert.equal(lcm(true, false), 0)
-    assert.equal(lcm(false, true), 0)
-    assert.equal(lcm(false, false), 0)
+    assert.strictEqual(lcm(true, true), 1)
+    assert.strictEqual(lcm(true, false), 0)
+    assert.strictEqual(lcm(false, true), 0)
+    assert.strictEqual(lcm(false, false), 0)
   })
 
   it('should throw an error for non-integer numbers', function () {
@@ -66,17 +66,17 @@ describe('lcm', function () {
   })
 
   it('should convert strings to numbers', function () {
-    assert.equal(lcm('4', '6'), 12)
-    assert.equal(lcm('4', 6), 12)
-    assert.equal(lcm(4, '6'), 12)
+    assert.strictEqual(lcm('4', '6'), 12)
+    assert.strictEqual(lcm('4', 6), 12)
+    assert.strictEqual(lcm(4, '6'), 12)
 
     assert.throws(function () { lcm('a', 2) }, /Cannot convert "a" to a number/)
   })
 
   it('should find the least common multiple of fractions', function () {
     const a = math.fraction(5, 8)
-    assert.equal(lcm(a, math.fraction(3, 7)).toString(), '15')
-    assert.equal(a.toString(), '0.625')
+    assert.strictEqual(lcm(a, math.fraction(3, 7)).toString(), '15')
+    assert.strictEqual(a.toString(), '0.625')
   })
 
   it('should find the least common multiple of mixed numbers and fractions', function () {
@@ -157,6 +157,6 @@ describe('lcm', function () {
 
   it('should LaTeX lcm', function () {
     const expression = math.parse('lcm(2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{lcm}\\left(2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{lcm}\\left(2,3\\right)')
   })
 })

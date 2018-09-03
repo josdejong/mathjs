@@ -10,8 +10,8 @@ const log10 = math.log10
 
 describe('log10', function () {
   it('should return the log base 10 of a boolean', function () {
-    assert.equal(log10(true), 0)
-    assert.equal(log10(false), -Infinity)
+    assert.strictEqual(log10(true), 0)
+    assert.strictEqual(log10(false), -Infinity)
   })
 
   it('should return the log base 10 of positive numbers', function () {
@@ -34,7 +34,7 @@ describe('log10', function () {
   })
 
   it('should return the log base 10 of negative numbers with predicable:true', function () {
-    assert.equal(typeof mathPredictable.log10(-1), 'number')
+    assert.strictEqual(typeof mathPredictable.log10(-1), 'number')
     assert(isNaN(mathPredictable.log10(-1)))
   })
 
@@ -106,6 +106,6 @@ describe('log10', function () {
 
   it('should LaTeX log10', function () {
     const expression = math.parse('log10(10)')
-    assert.equal(expression.toTex(), '\\log_{10}\\left(10\\right)')
+    assert.strictEqual(expression.toTex(), '\\log_{10}\\left(10\\right)')
   })
 })

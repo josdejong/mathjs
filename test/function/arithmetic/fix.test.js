@@ -11,8 +11,8 @@ const fix = math.fix
 
 describe('fix', function () {
   it('should round booleans correctly', function () {
-    assert.equal(fix(true), 1)
-    assert.equal(fix(false), 0)
+    assert.strictEqual(fix(true), 1)
+    assert.strictEqual(fix(false), 0)
   })
 
   it('should round numbers correctly', function () {
@@ -53,18 +53,18 @@ describe('fix', function () {
   it('should round fractions correctly', function () {
     const a = fraction('2/3')
     assert(fix(a) instanceof math.type.Fraction)
-    assert.equal(a.toString(), '0.(6)')
+    assert.strictEqual(a.toString(), '0.(6)')
 
-    assert.equal(fix(fraction(0)).toString(), '0')
-    assert.equal(fix(fraction(1)).toString(), '1')
-    assert.equal(fix(fraction(1.3)).toString(), '1')
-    assert.equal(fix(fraction(1.8)).toString(), '1')
-    assert.equal(fix(fraction(2)).toString(), '2')
-    assert.equal(fix(fraction(-1)).toString(), '-1')
-    assert.equal(fix(fraction(-1.3)).toString(), '-1')
-    assert.equal(fix(fraction(-1.8)).toString(), '-1')
-    assert.equal(fix(fraction(-2)).toString(), '-2')
-    assert.equal(fix(fraction(-2.1)).toString(), '-2')
+    assert.strictEqual(fix(fraction(0)).toString(), '0')
+    assert.strictEqual(fix(fraction(1)).toString(), '1')
+    assert.strictEqual(fix(fraction(1.3)).toString(), '1')
+    assert.strictEqual(fix(fraction(1.8)).toString(), '1')
+    assert.strictEqual(fix(fraction(2)).toString(), '2')
+    assert.strictEqual(fix(fraction(-1)).toString(), '-1')
+    assert.strictEqual(fix(fraction(-1.3)).toString(), '-1')
+    assert.strictEqual(fix(fraction(-1.8)).toString(), '-1')
+    assert.strictEqual(fix(fraction(-2)).toString(), '-2')
+    assert.strictEqual(fix(fraction(-2.1)).toString(), '-2')
   })
 
   it('should throw an error on unit as parameter', function () {
@@ -93,6 +93,6 @@ describe('fix', function () {
 
   it('should LaTeX fix', function () {
     const expression = math.parse('fix(0.6)')
-    assert.equal(expression.toTex(), '\\mathrm{fix}\\left(0.6\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{fix}\\left(0.6\\right)')
   })
 })

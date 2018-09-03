@@ -63,6 +63,6 @@ describe('equalText', function () {
 
   it('should LaTeX compare', function () {
     const expression = math.parse('equalText(1,2)')
-    assert.equal(expression.toTex(), '\\mathrm{equalText}\\left(1,2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{equalText}\\left(1,2\\right)')
   })
 })

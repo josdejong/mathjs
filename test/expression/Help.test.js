@@ -53,7 +53,7 @@ describe('help', function () {
 
   it('should stringify a help', function () {
     const help = new Help(doc)
-    assert.equal(help.toString(),
+    assert.strictEqual(help.toString(),
       '\nName: add\n' +
         '\n' +
         'Category: Operators\n' +
@@ -76,7 +76,7 @@ describe('help', function () {
 
   it('should stringify a help with empty doc', function () {
     const help = new Help({})
-    assert.equal(help.toString(), '\n')
+    assert.strictEqual(help.toString(), '\n')
   })
 
   it('should stringify a doc with empty example', function () {
@@ -88,7 +88,7 @@ describe('help', function () {
       ]
     })
 
-    assert.equal(help.toString(),
+    assert.strictEqual(help.toString(),
       '\nName: add\n' +
         '\n' +
         'Examples:\n' +
@@ -106,7 +106,7 @@ describe('help', function () {
       ]
     })
 
-    assert.equal(help.toString(),
+    assert.strictEqual(help.toString(),
       '\nName: add\n' +
         '\n' +
         'Examples:\n' +
@@ -154,7 +154,7 @@ describe('help', function () {
     })
     json.name = 'foo' // this should not alter the original doc
     json.examples.push('2 + 3') // this should not alter the original doc
-    assert.equal(doc.name, 'add')
+    assert.strictEqual(doc.name, 'add')
     assert.notEqual(json.examples.length, doc.examples.length)
   })
 

@@ -30,7 +30,7 @@ describe('acsc', function () {
   })
 
   it('should return the arccsc of a number when predictable:true', function () {
-    assert.equal(typeof predmath.acsc(0), 'number')
+    assert.strictEqual(typeof predmath.acsc(0), 'number')
     assert(isNaN(predmath.acsc(0)))
   })
 
@@ -132,6 +132,6 @@ describe('acsc', function () {
 
   it('should LaTex acsc', function () {
     const expression = math.parse('acsc(2)')
-    assert.equal(expression.toTex(), '\\csc^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\csc^{-1}\\left(2\\right)')
   })
 })

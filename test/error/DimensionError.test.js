@@ -7,10 +7,10 @@ describe('DimensionError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof DimensionError)
-    assert.equal(err.actual, 3)
-    assert.equal(err.expected, 5)
-    assert.equal(err.relation, undefined)
-    assert.equal(err.toString(), 'DimensionError: Dimension mismatch (3 != 5)')
+    assert.strictEqual(err.actual, 3)
+    assert.strictEqual(err.expected, 5)
+    assert.strictEqual(err.relation, undefined)
+    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch (3 != 5)')
   })
 
   it('should construct a DimensionError with numbers and a custom relation', function () {
@@ -18,10 +18,10 @@ describe('DimensionError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof DimensionError)
-    assert.equal(err.actual, 3)
-    assert.equal(err.expected, 5)
-    assert.equal(err.relation, '<')
-    assert.equal(err.toString(), 'DimensionError: Dimension mismatch (3 < 5)')
+    assert.strictEqual(err.actual, 3)
+    assert.strictEqual(err.expected, 5)
+    assert.strictEqual(err.relation, '<')
+    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch (3 < 5)')
   })
 
   it('should construct a DimensionError with arrays', function () {
@@ -31,8 +31,8 @@ describe('DimensionError', function () {
     assert(err instanceof DimensionError)
     assert.deepEqual(err.actual, [2, 3])
     assert.deepEqual(err.expected, [1, 3])
-    assert.equal(err.relation, undefined)
-    assert.equal(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] != [1, 3])')
+    assert.strictEqual(err.relation, undefined)
+    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] != [1, 3])')
   })
 
   it('should construct a DimensionError with arrays and a custom relation', function () {
@@ -42,8 +42,8 @@ describe('DimensionError', function () {
     assert(err instanceof DimensionError)
     assert.deepEqual(err.actual, [2, 3])
     assert.deepEqual(err.expected, [1, 3])
-    assert.equal(err.relation, '<')
-    assert.equal(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] < [1, 3])')
+    assert.strictEqual(err.relation, '<')
+    assert.strictEqual(err.toString(), 'DimensionError: Dimension mismatch ([2, 3] < [1, 3])')
   })
 
   it('should throw an error when operator new is missing', function () {

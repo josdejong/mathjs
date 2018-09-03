@@ -88,8 +88,8 @@ describe('complex', function () {
     const expr2 = math.parse('complex(1)')
     const expr3 = math.parse('complex(1,2)')
 
-    assert.equal(expr1.toTex(), '0')
-    assert.equal(expr2.toTex(), '\\left(1\\right)')
-    assert.equal(expr3.toTex(), '\\left(\\left(1\\right)+i\\cdot\\left(2\\right)\\right)')
+    assert.strictEqual(expr1.toTex(), '0')
+    assert.strictEqual(expr2.toTex(), '\\left(1\\right)')
+    assert.strictEqual(expr3.toTex(), '\\left(\\left(1\\right)+i\\cdot\\left(2\\right)\\right)')
   })
 })

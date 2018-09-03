@@ -78,6 +78,6 @@ suite
 
 function assertApproxEqual (actual, expected, tolerance) {
   const diff = Math.abs(expected - actual)
-  if (diff > tolerance) assert.equal(actual, expected)
+  if (diff > tolerance) assert.strictEqual(actual, expected)
   else assert.ok(diff <= tolerance, actual + ' === ' + expected)
 }

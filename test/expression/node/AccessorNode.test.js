@@ -15,7 +15,7 @@ describe('AccessorNode', function () {
     const n = new AccessorNode(new Node(), new IndexNode([]))
     assert(n instanceof AccessorNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'AccessorNode')
+    assert.strictEqual(n.type, 'AccessorNode')
   })
 
   it('should have isAccessorNode', function () {
@@ -36,10 +36,10 @@ describe('AccessorNode', function () {
 
   it('should get the name of an AccessorNode', function () {
     const n1 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('toString')]))
-    assert.equal(n1.name, 'toString')
+    assert.strictEqual(n1.name, 'toString')
 
     const n2 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]))
-    assert.equal(n2.name, '')
+    assert.strictEqual(n2.name, '')
   })
 
   it('should compile a AccessorNode', function () {
@@ -54,7 +54,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.equal(expr.eval(scope), 3)
+    assert.strictEqual(expr.eval(scope), 3)
   })
 
   it('should compile a AccessorNode with range and context parameters', function () {
@@ -235,7 +235,7 @@ describe('AccessorNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], index)
     assert.deepEqual(paths, ['object', 'index'])
@@ -259,7 +259,7 @@ describe('AccessorNode', function () {
       return node instanceof SymbolNode ? e : node
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], index)
     assert.deepEqual(paths, ['object', 'index'])
@@ -370,10 +370,10 @@ describe('AccessorNode', function () {
     ])
 
     const n = new AccessorNode(a, index)
-    assert.equal(n.toString(), 'a[2, 1]')
+    assert.strictEqual(n.toString(), 'a[2, 1]')
 
     const n2 = new AccessorNode(a, new IndexNode([]))
-    assert.equal(n2.toString(), 'a[]')
+    assert.strictEqual(n2.toString(), 'a[]')
   })
 
   it('should stringify an AccessorNode with parentheses', function () {
@@ -381,14 +381,14 @@ describe('AccessorNode', function () {
     const b = new SymbolNode('b')
     const add = new OperatorNode('+', 'add', [a, b])
     const bar = new AccessorNode(add, new IndexNode([new ConstantNode('bar')]))
-    assert.equal(bar.toString(), '(a + b)["bar"]')
+    assert.strictEqual(bar.toString(), '(a + b)["bar"]')
   })
 
   it('should stringify nested AccessorNode', function () {
     const a = new SymbolNode('a')
     const foo = new AccessorNode(a, new IndexNode([new ConstantNode('foo')]))
     const bar = new AccessorNode(foo, new IndexNode([new ConstantNode('bar')]))
-    assert.equal(bar.toString(), 'a["foo"]["bar"]')
+    assert.strictEqual(bar.toString(), 'a["foo"]["bar"]')
   })
 
   it('should stringigy an AccessorNode with custom toString', function () {
@@ -412,7 +412,7 @@ describe('AccessorNode', function () {
 
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
-    assert.equal(n.toString({ handler: customFunction }), 'a at const(1, number), const(2, number), ')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'a at const(1, number), const(2, number), ')
   })
 
   it('should LaTeX an AccessorNode', function () {
@@ -423,10 +423,10 @@ describe('AccessorNode', function () {
     ])
 
     const n = new AccessorNode(a, index)
-    assert.equal(n.toTex(), ' a_{2,1}')
+    assert.strictEqual(n.toTex(), ' a_{2,1}')
 
     const n2 = new AccessorNode(a, new IndexNode([]))
-    assert.equal(n2.toTex(), ' a_{}')
+    assert.strictEqual(n2.toTex(), ' a_{}')
   })
 
   it('should LaTeX an AccessorNode with custom toTex', function () {
@@ -450,7 +450,7 @@ describe('AccessorNode', function () {
 
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
-    assert.equal(n.toTex({ handler: customFunction }), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ')
+    assert.strictEqual(n.toTex({ handler: customFunction }), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ')
   })
 
   it('toJSON and fromJSON', function () {

@@ -16,7 +16,7 @@ const Big = bigmath.bignumber
 describe('asin', function () {
   it('should return the arcsin of a boolean', function () {
     approx.equal(asin(true), 0.5 * pi)
-    assert.equal(asin(false), 0)
+    assert.strictEqual(asin(false), 0)
   })
 
   it('should return the arcsin of a number', function () {
@@ -31,7 +31,7 @@ describe('asin', function () {
   })
 
   it('should return the arccos of a number when predictable:true', function () {
-    assert.equal(typeof predmath.asin(-2), 'number')
+    assert.strictEqual(typeof predmath.asin(-2), 'number')
     assert(isNaN(predmath.asin(-2)))
   })
 
@@ -131,6 +131,6 @@ describe('asin', function () {
 
   it('should LaTeX asin', function () {
     const expression = math.parse('asin(0.5)')
-    assert.equal(expression.toTex(), '\\sin^{-1}\\left(0.5\\right)')
+    assert.strictEqual(expression.toTex(), '\\sin^{-1}\\left(0.5\\right)')
   })
 })

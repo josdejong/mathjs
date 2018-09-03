@@ -4,9 +4,9 @@ const bellNumbers = math.bellNumbers
 
 describe('bellNumbers', function () {
   it('should calculate the number of partitions of a set', function () {
-    assert.equal(bellNumbers(3), 5)
-    assert.equal(bellNumbers(0), 1)
-    assert.equal(bellNumbers(8), 4140)
+    assert.strictEqual(bellNumbers(3), 5)
+    assert.strictEqual(bellNumbers(0), 1)
+    assert.strictEqual(bellNumbers(8), 4140)
   })
 
   it('should calculate the bellNumbers of n items with BigNumbers', function () {
@@ -36,6 +36,6 @@ describe('bellNumbers', function () {
 
   it('should LaTeX bellNumbers', function () {
     const expression = math.parse('bellNumbers(3)')
-    assert.equal(expression.toTex(), '\\mathrm{B}_{3}')
+    assert.strictEqual(expression.toTex(), '\\mathrm{B}_{3}')
   })
 })

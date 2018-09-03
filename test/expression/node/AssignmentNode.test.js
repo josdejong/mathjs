@@ -15,7 +15,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(new SymbolNode('a'), new Node())
     assert(n instanceof AssignmentNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'AssignmentNode')
+    assert.strictEqual(n.type, 'AssignmentNode')
   })
 
   it('should have property isAssignmentNode', function () {
@@ -43,17 +43,17 @@ describe('AssignmentNode', function () {
 
   it('should get the name of an AssignmentNode', function () {
     const n = new AssignmentNode(new SymbolNode('a'), new ConstantNode(1))
-    assert.equal(n.name, 'a')
+    assert.strictEqual(n.name, 'a')
 
     const n2 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]))
     const n3 = new AssignmentNode(n2, new ConstantNode(1))
-    assert.equal(n3.name, 'b')
+    assert.strictEqual(n3.name, 'b')
 
     const n4 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]), new ConstantNode(1))
-    assert.equal(n4.name, 'b')
+    assert.strictEqual(n4.name, 'b')
 
     const n5 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]), new ConstantNode(1))
-    assert.equal(n5.name, '')
+    assert.strictEqual(n5.name, '')
   })
 
   it('should compile an AssignmentNode without index', function () {
@@ -62,8 +62,8 @@ describe('AssignmentNode', function () {
     const expr = n.compile()
 
     let scope = {}
-    assert.equal(expr.eval(scope), 3)
-    assert.equal(scope.b, 3)
+    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(scope.b, 3)
   })
 
   it('should compile an AssignmentNode with property index', function () {
@@ -77,7 +77,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: {}
     }
-    assert.equal(expr.eval(scope), 3)
+    assert.strictEqual(expr.eval(scope), 3)
     assert.deepEqual(scope, { a: { b: 3 } })
   })
 
@@ -95,7 +95,7 @@ describe('AssignmentNode', function () {
         b: {}
       }
     }
-    assert.equal(expr.eval(scope), 3)
+    assert.strictEqual(expr.eval(scope), 3)
     assert.deepEqual(scope, { a: { b: { c: 3 } } })
   })
 
@@ -221,7 +221,7 @@ describe('AssignmentNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], i)
     assert.strictEqual(nodes[2], v)
@@ -242,7 +242,7 @@ describe('AssignmentNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], v)
     assert.deepEqual(paths, ['object', 'value'])
@@ -268,7 +268,7 @@ describe('AssignmentNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], i)
     assert.strictEqual(nodes[2], v)
@@ -297,7 +297,7 @@ describe('AssignmentNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], x)
     assert.deepEqual(paths, ['object', 'value'])
@@ -395,7 +395,7 @@ describe('AssignmentNode', function () {
       }
     })
 
-    assert.equal(count, 4)
+    assert.strictEqual(count, 4)
   })
 
   it('should clone an AssignmentNode without index', function () {
@@ -466,8 +466,8 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString({ parenthesis: 'all' }), 'a = (1)')
-    assert.equal(n.toTex({ parenthesis: 'all' }), ' a:=\\left(1\\right)')
+    assert.strictEqual(n.toString({ parenthesis: 'all' }), 'a = (1)')
+    assert.strictEqual(n.toTex({ parenthesis: 'all' }), ' a:=\\left(1\\right)')
   })
 
   it('should stringify a AssignmentNode', function () {
@@ -475,7 +475,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(3)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString(), 'b = 3')
+    assert.strictEqual(n.toString(), 'b = 3')
   })
 
   it('should stringify an AssignmentNode containing an AssignmentNode', function () {
@@ -483,7 +483,7 @@ describe('AssignmentNode', function () {
     const a = new AssignmentNode(new SymbolNode('a'), value)
     const n = new AssignmentNode(new SymbolNode('b'), a)
 
-    assert.equal(n.toString(), 'b = (a = 2)')
+    assert.strictEqual(n.toString(), 'b = (a = 2)')
   })
 
   it('should stringify an AssignmentNode with custom toString', function () {
@@ -502,7 +502,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString({ handler: customFunction }), 'a equals const(1, number)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'a equals const(1, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -533,7 +533,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(2)
     const a = new AssignmentNode(new SymbolNode('a'), value)
 
-    assert.equal(a.toTex(), ' a:=2')
+    assert.strictEqual(a.toTex(), ' a:=2')
   })
 
   it('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
@@ -541,7 +541,7 @@ describe('AssignmentNode', function () {
     const a = new AssignmentNode(new SymbolNode('a'), value)
     const q = new AssignmentNode(new SymbolNode('q'), a)
 
-    assert.equal(q.toTex(), ' q:=\\left( a:=2\\right)')
+    assert.strictEqual(q.toTex(), ' q:=\\left( a:=2\\right)')
   })
 
   it('should LaTeX an AssignmentNode with custom toTex', function () {
@@ -560,6 +560,6 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toTex({ handler: customFunction }), ' a\\mbox{equals}const\\left(1, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), ' a\\mbox{equals}const\\left(1, number\\right)')
   })
 })

@@ -8,11 +8,11 @@ const sum = math.sum
 
 describe('sum', function () {
   it('should return the sum of numbers', function () {
-    assert.equal(sum(5), 5)
-    assert.equal(sum(3, 1), 4)
-    assert.equal(sum(1, 3), 4)
-    assert.equal(sum(1, 3, 5, 2), 11)
-    assert.equal(sum(0, 0, 0, 0), 0)
+    assert.strictEqual(sum(5), 5)
+    assert.strictEqual(sum(3, 1), 4)
+    assert.strictEqual(sum(1, 3), 4)
+    assert.strictEqual(sum(1, 3, 5, 2), 11)
+    assert.strictEqual(sum(0, 0, 0, 0), 0)
   })
 
   it('should return the sum of big numbers', function () {
@@ -34,7 +34,7 @@ describe('sum', function () {
   })
 
   it('should return the sum from an array', function () {
-    assert.equal(sum([1, 3, 5, 2, -5]), 6)
+    assert.strictEqual(sum([1, 3, 5, 2, -5]), 6)
   })
 
   it('should return the sum of units', function () {
@@ -42,7 +42,7 @@ describe('sum', function () {
   })
 
   it('should return the sum from an 1d matrix', function () {
-    assert.equal(sum(new DenseMatrix([1, 3, 5, 2, -5])), 6)
+    assert.strictEqual(sum(new DenseMatrix([1, 3, 5, 2, -5])), 6)
   })
 
   it('should return the sum element from a 2d array', function () {
@@ -85,11 +85,11 @@ describe('sum', function () {
     const big = bigMath.sum([])
     const frac = fracMath.sum([])
 
-    assert.equal(sum([]), 0)
-    assert.equal(big.type, 'BigNumber')
-    assert.equal(frac.type, 'Fraction')
-    assert.equal(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true)
-    assert.equal(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true)
+    assert.strictEqual(sum([]), 0)
+    assert.strictEqual(big.type, 'BigNumber')
+    assert.strictEqual(frac.type, 'Fraction')
+    assert.strictEqual(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true)
+    assert.strictEqual(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {
@@ -100,6 +100,6 @@ describe('sum', function () {
 
   it('should LaTeX sum', function () {
     const expression = math.parse('sum(1,2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{sum}\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sum}\\left(1,2,3\\right)')
   })
 })

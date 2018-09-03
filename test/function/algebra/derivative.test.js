@@ -12,7 +12,7 @@ describe('derivative', function () {
   }
 
   function compareString (left, right) {
-    assert.equal(left.toString(), right.toString())
+    assert.strictEqual(left.toString(), right.toString())
   }
 
   it('should take the derivative of a constant', function () {
@@ -47,7 +47,7 @@ describe('derivative', function () {
     // non-embedded example
     const f = math.parse('f(x) = x + 2')
     const newFunc = new OperatorNode('+', 'add', [math.parse('5x'), f])
-    assert.equal(derivativeWithoutSimplify(newFunc, 'x'), '5 * 1 + 1 + 0')
+    assert.strictEqual(derivativeWithoutSimplify(newFunc, 'x'), '5 * 1 + 1 + 0')
   })
 
   it('should take the derivative of a OperatorNodes with ConstantNodes', function () {
@@ -98,7 +98,7 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('0^(2^x + x^3 + 2)', 'x'), '0')
     compareString(derivativeWithoutSimplify('1^(2^x + x^3 + 2)', 'x'), '0')
     // d/dx(10^(2x + 2)) = 10^(2x + 2)*ln(10)*(2*1 + 0)
-    assert.equal(derivativeWithoutSimplify('10^(2x + 2)', 'x'), '10 ^ (2 x + 2) * log(10) * (2 * 1 + 0)')
+    assert.strictEqual(derivativeWithoutSimplify('10^(2x + 2)', 'x'), '10 ^ (2 x + 2) * log(10) * (2 * 1 + 0)')
 
     // Secret constant, f(x)^0 = 1 -> d/dx(f(x)^0) = 1
     compareString(derivativeWithoutSimplify('(x^x^x^x)^0', 'x'), '0')
@@ -196,14 +196,14 @@ describe('derivative', function () {
       const res = math.eval('derivative("x^2", "x")')
       assert.ok(res && res.isNode)
 
-      assert.equal(res.toString(), '2 * x')
+      assert.strictEqual(res.toString(), '2 * x')
     })
 
     it('should evaluate a derivative containing nodes', function () {
       const res = math.eval('derivative(parse("x^2"), parse("x"))')
       assert.ok(res && res.isNode)
 
-      assert.equal(res.toString(), '2 * x')
+      assert.strictEqual(res.toString(), '2 * x')
     })
   })
 

@@ -8,17 +8,17 @@ const add = math.add
 // TODO: make unit tests independent of math
 describe('addScalar', function () {
   it('should add two numbers', function () {
-    assert.equal(add(2, 3), 5)
-    assert.equal(add(-2, 3), 1)
-    assert.equal(add(2, -3), -1)
-    assert.equal(add(-5, -3), -8)
+    assert.strictEqual(add(2, 3), 5)
+    assert.strictEqual(add(-2, 3), 1)
+    assert.strictEqual(add(2, -3), -1)
+    assert.strictEqual(add(-5, -3), -8)
   })
 
   it('should add booleans', function () {
-    assert.equal(add(true, true), 2)
-    assert.equal(add(true, false), 1)
-    assert.equal(add(false, true), 1)
-    assert.equal(add(false, false), 0)
+    assert.strictEqual(add(true, true), 2)
+    assert.strictEqual(add(true, false), 1)
+    assert.strictEqual(add(false, true), 1)
+    assert.strictEqual(add(false, false), 0)
   })
 
   it('does not support null', function () {
@@ -26,10 +26,10 @@ describe('addScalar', function () {
   })
 
   it('should add mixed numbers and booleans', function () {
-    assert.equal(add(2, true), 3)
-    assert.equal(add(2, false), 2)
-    assert.equal(add(true, 2), 3)
-    assert.equal(add(false, 2), 2)
+    assert.strictEqual(add(2, true), 3)
+    assert.strictEqual(add(2, false), 2)
+    assert.strictEqual(add(true, 2), 3)
+    assert.strictEqual(add(false, 2), 2)
   })
 
   it('should add BigNumbers', function () {
@@ -59,17 +59,17 @@ describe('addScalar', function () {
   })
 
   it('should add two complex numbers', function () {
-    assert.equal(add(math.complex(3, -4), math.complex(8, 2)), '11 - 2i')
-    assert.equal(add(math.complex(3, -4), 10), '13 - 4i')
-    assert.equal(add(10, math.complex(3, -4)), '13 - 4i')
+    assert.strictEqual(add(math.complex(3, -4), math.complex(8, 2)), '11 - 2i')
+    assert.strictEqual(add(math.complex(3, -4), 10), '13 - 4i')
+    assert.strictEqual(add(10, math.complex(3, -4)), '13 - 4i')
   })
 
   it('should add two fractions', function () {
     const a = math.fraction(1, 3)
-    assert.equal(add(a, math.fraction(1, 6)).toString(), '0.5')
-    assert.equal(a.toString(), '0.(3)')
-    assert.equal(add(math.fraction(1, 5), math.fraction(2, 5)).toString(), '0.6')
-    assert.equal(add(math.fraction(1), math.fraction(1, 3)).toString(), '1.(3)')
+    assert.strictEqual(add(a, math.fraction(1, 6)).toString(), '0.5')
+    assert.strictEqual(a.toString(), '0.(3)')
+    assert.strictEqual(add(math.fraction(1, 5), math.fraction(2, 5)).toString(), '0.6')
+    assert.strictEqual(add(math.fraction(1), math.fraction(1, 3)).toString(), '1.(3)')
   })
 
   it('should add mixed fractions and numbers', function () {
@@ -146,6 +146,6 @@ describe('addScalar', function () {
 
   it('should LaTeX add', function () {
     const expression = math.parse('add(1,2)')
-    assert.equal(expression.toTex(), '\\left(1+2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1+2\\right)')
   })
 })

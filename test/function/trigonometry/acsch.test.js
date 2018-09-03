@@ -14,13 +14,13 @@ const Big = bigmath.bignumber
 describe('acsch', function () {
   it('should return the hyperbolic arccsc of a boolean', function () {
     approx.equal(acsch(true), 0.8813735870195430)
-    assert.equal(acsch(false), Infinity)
+    assert.strictEqual(acsch(false), Infinity)
   })
 
   it('should return the hyperbolic arccsc of a number', function () {
     approx.equal(acsch(-2), -0.48121182505960344749775891342437)
     approx.equal(acsch(-1), -0.88137358701954302523260932497979)
-    assert.equal(acsch(0), Infinity)
+    assert.strictEqual(acsch(0), Infinity)
     approx.equal(acsch(1), 0.88137358701954302523260932497979)
     approx.equal(acsch(2), 0.48121182505960344749775891342437)
     approx.equal(acsch(pi), 0.3131658804508683758718693082657)
@@ -90,6 +90,6 @@ describe('acsch', function () {
 
   it('should LaTeX acsch', function () {
     const expression = math.parse('acsch(2)')
-    assert.equal(expression.toTex(), '\\mathrm{csch}^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{csch}^{-1}\\left(2\\right)')
   })
 })

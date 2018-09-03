@@ -11,9 +11,9 @@ const identity = math.identity
 
 describe('det', function () {
   it('should calculate correctly the determinant of a NxN matrix', function () {
-    assert.equal(det([5]), 5)
-    assert.equal(det([[1, 2], [3, 4]]), -2)
-    assert.equal(det(new DenseMatrix([[1, 2], [3, 4]])), -2)
+    assert.strictEqual(det([5]), 5)
+    assert.strictEqual(det([[1, 2], [3, 4]]), -2)
+    assert.strictEqual(det(new DenseMatrix([[1, 2], [3, 4]])), -2)
     approx.equal(det([
       [-2, 2, 3],
       [-1, 1, 3],
@@ -52,25 +52,25 @@ describe('det', function () {
   })
 
   it('should return 1 for the identity matrix', function () {
-    assert.equal(det(identity(7)), 1)
-    assert.equal(det(identity(2)), 1)
-    assert.equal(det(identity(1)), 1)
+    assert.strictEqual(det(identity(7)), 1)
+    assert.strictEqual(det(identity(2)), 1)
+    assert.strictEqual(det(identity(1)), 1)
   })
 
   it('should return 0 for a singular matrix', function () {
-    assert.equal(det([
+    assert.strictEqual(det([
       [1, 0],
       [0, 0]
     ]), 0)
-    assert.equal(det([
+    assert.strictEqual(det([
       [1, 0],
       [1, 0]
     ]), 0)
-    assert.equal(det([
+    assert.strictEqual(det([
       [2, 6],
       [1, 3]
     ]), 0)
-    assert.equal(det([
+    assert.strictEqual(det([
       [1, 0, 0],
       [0, 0, 0],
       [1, 0, 0]
@@ -78,7 +78,7 @@ describe('det', function () {
   })
 
   it('should calculate the determinant for a scalar', function () {
-    assert.equal(det(7), 7)
+    assert.strictEqual(det(7), 7)
 
     const c1 = new Complex(2, 3)
     const c2 = det(c1)
@@ -86,8 +86,8 @@ describe('det', function () {
 
     // c2 should be a clone
     c1.re = 0
-    assert.equal(c1.re, 0)
-    assert.equal(c2.re, 2)
+    assert.strictEqual(c1.re, 0)
+    assert.strictEqual(c2.re, 2)
   })
 
   it('should calculate the determinant for a 1x1 matrix', function () {
@@ -97,8 +97,8 @@ describe('det', function () {
 
     // c2 should be a clone
     c1.re = 0
-    assert.equal(c1.re, 0)
-    assert.equal(c2.re, 2)
+    assert.strictEqual(c1.re, 0)
+    assert.strictEqual(c2.re, 2)
   })
 
   it('should calculate correctly the determinant of a matrix with bignumbers', function () {
@@ -151,6 +151,6 @@ describe('det', function () {
 
   it('should LaTeX det', function () {
     const expression = math.parse('det([1])')
-    assert.equal(expression.toTex(), '\\det\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\det\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
   })
 })

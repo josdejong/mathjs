@@ -13,8 +13,8 @@ describe('ArrayNode', function () {
     const b = new ArrayNode([])
     assert(a instanceof ArrayNode)
     assert(b instanceof ArrayNode)
-    assert.equal(a.type, 'ArrayNode')
-    assert.equal(b.type, 'ArrayNode')
+    assert.strictEqual(a.type, 'ArrayNode')
+    assert.strictEqual(b.type, 'ArrayNode')
   })
 
   it('should have property isArrayNode', function () {
@@ -105,7 +105,7 @@ describe('ArrayNode', function () {
     })
 
     assert.deepEqual(paths, ['items[0]', 'items[1]'])
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], b)
   })
@@ -128,7 +128,7 @@ describe('ArrayNode', function () {
     })
 
     assert.deepEqual(paths, ['items[0]', 'items[1]'])
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], b)
 
@@ -208,7 +208,7 @@ describe('ArrayNode', function () {
       }
     })
 
-    assert.equal(count, 3)
+    assert.strictEqual(count, 3)
   })
 
   it('should clone an ArrayNode', function () {
@@ -246,7 +246,7 @@ describe('ArrayNode', function () {
     const d = new ConstantNode(4)
     const n = new ArrayNode([a, b, c, d])
 
-    assert.equal(n.toString(), '[1, 2, 3, 4]')
+    assert.strictEqual(n.toString(), '[1, 2, 3, 4]')
   })
 
   it('should stringify an ArrayNode with custom toString', function () {
@@ -270,7 +270,7 @@ describe('ArrayNode', function () {
 
     const n = new ArrayNode([a, b])
 
-    assert.equal(n.toString({ handler: customFunction }), '[const(1, number), const(2, number), ]')
+    assert.strictEqual(n.toString({ handler: customFunction }), '[const(1, number), const(2, number), ]')
   })
 
   it('toJSON and fromJSON', function () {
@@ -299,7 +299,7 @@ describe('ArrayNode', function () {
     const v2 = new ArrayNode([c, d])
     const n = new ArrayNode([v1, v2])
 
-    assert.equal(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}')
+    assert.strictEqual(n.toTex(), '\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}')
   })
 
   it('should LaTeX an ArrayNode with custom toTex', function () {
@@ -323,6 +323,6 @@ describe('ArrayNode', function () {
 
     const n = new ArrayNode([a, b])
 
-    assert.equal(n.toTex({ handler: customFunction }), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]')
+    assert.strictEqual(n.toTex({ handler: customFunction }), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]')
   })
 })

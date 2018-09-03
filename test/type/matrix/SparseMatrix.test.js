@@ -186,7 +186,7 @@ describe('SparseMatrix', function () {
       const a = new SparseMatrix([[1, 2, 3]])
 
       const b = a.create([[4, 5, 6]])
-      assert.equal(b.isSparseMatrix, true)
+      assert.strictEqual(b.isSparseMatrix, true)
       assert.deepEqual(b, new SparseMatrix([[4, 5, 6]]))
 
       const c = a.create([[7, 8, 9]], 'number')
@@ -213,8 +213,8 @@ describe('SparseMatrix', function () {
 
   describe('toString', function () {
     it('should return string representation of matrix', function () {
-      assert.equal(new SparseMatrix([[1, 2], [3, 4]]).toString(), '[[1, 2], [3, 4]]')
-      assert.equal(new SparseMatrix([[1, 2], [3, 1 / 3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]')
+      assert.strictEqual(new SparseMatrix([[1, 2], [3, 4]]).toString(), '[[1, 2], [3, 4]]')
+      assert.strictEqual(new SparseMatrix([[1, 2], [3, 1 / 3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]')
     })
   })
 
@@ -318,21 +318,21 @@ describe('SparseMatrix', function () {
           [0, 0],
           [0, 1 / 3]
         ])
-      assert.equal(m.format(), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.3333333333333333')
+      assert.strictEqual(m.format(), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.3333333333333333')
 
       m = new SparseMatrix(
         [
           [0, 0],
           [0, 1 / 3]
         ])
-      assert.equal(m.format(3), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.333')
+      assert.strictEqual(m.format(3), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.333')
 
       m = new SparseMatrix(
         [
           [0, 0],
           [0, 1 / 3]
         ])
-      assert.equal(m.format(4), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.3333')
+      assert.strictEqual(m.format(4), 'Sparse Matrix [2 x 2] density: 0.25\n\n    (1, 1) ==> 0.3333')
     })
 
     it('should format pattern matrix', function () {
@@ -343,7 +343,7 @@ describe('SparseMatrix', function () {
         size: [3, 3]
       })
 
-      assert.equal(m.format(3), 'Sparse Matrix [3 x 3] density: 0.444\n\n    (0, 0) ==> X\n    (1, 0) ==> X\n    (2, 1) ==> X\n    (0, 2) ==> X')
+      assert.strictEqual(m.format(3), 'Sparse Matrix [3 x 3] density: 0.444\n\n    (0, 0) ==> X\n    (1, 0) ==> X\n    (2, 1) ==> X\n    (0, 2) ==> X')
     })
   })
 
@@ -685,10 +685,10 @@ describe('SparseMatrix', function () {
         [0, 4, 0, 0, 2, -1]
       ])
 
-      assert.equal(m.get([0, 0]), 10)
-      assert.equal(m.get([3, 1]), 0)
-      assert.equal(m.get([5, 1]), 4)
-      assert.equal(m.get([5, 5]), -1)
+      assert.strictEqual(m.get([0, 0]), 10)
+      assert.strictEqual(m.get([3, 1]), 0)
+      assert.strictEqual(m.get([5, 1]), 4)
+      assert.strictEqual(m.get([5, 5]), -1)
     })
 
     it('should get matrix element - Issue #450', function () {
@@ -701,12 +701,12 @@ describe('SparseMatrix', function () {
         datatype: undefined
       })
 
-      assert.equal(m.get([0, 0]), 10)
-      assert.equal(m.get([1, 0]), 3)
-      assert.equal(m.get([4, 1]), 8)
-      assert.equal(m.get([5, 1]), 4)
-      assert.equal(m.get([4, 5]), 13)
-      assert.equal(m.get([5, 5]), -1)
+      assert.strictEqual(m.get([0, 0]), 10)
+      assert.strictEqual(m.get([1, 0]), 3)
+      assert.strictEqual(m.get([4, 1]), 8)
+      assert.strictEqual(m.get([5, 1]), 4)
+      assert.strictEqual(m.get([4, 5]), 13)
+      assert.strictEqual(m.get([5, 5]), -1)
     })
   })
 

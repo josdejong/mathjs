@@ -15,8 +15,8 @@ const Big = bigmath.bignumber
 
 describe('asech', function () {
   it('should return the hyperbolic arcsec of a boolean', function () {
-    assert.equal(asech(true), 0)
-    assert.equal(asech(false), Infinity)
+    assert.strictEqual(asech(true), 0)
+    assert.strictEqual(asech(false), Infinity)
   })
 
   it('should return the hyperbolic arcsec of a number', function () {
@@ -25,15 +25,15 @@ describe('asech', function () {
     // assert.ok(isNaN(asech(-0.5)))
     // assert.ok(isNaN(asech(2)))
 
-    assert.equal(asech(0), Infinity)
+    assert.strictEqual(asech(0), Infinity)
     approx.equal(asech(0.25), 2.0634370688955605467272811726201)
     approx.equal(asech(0.5), 1.31695789692481670862504634730797)
     approx.equal(asech(0.75), 0.7953654612239056305278909331478)
-    assert.equal(asech(1), 0)
+    assert.strictEqual(asech(1), 0)
   })
 
   it('should return the hyperbolic arcsec of a number when predictable:true', function () {
-    assert.equal(typeof predmath.asech(2), 'number')
+    assert.strictEqual(typeof predmath.asech(2), 'number')
     assert(isNaN(predmath.asech(2)))
   })
 
@@ -110,6 +110,6 @@ describe('asech', function () {
 
   it('should LaTeX asech', function () {
     const expression = math.parse('asech(1)')
-    assert.equal(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
   })
 })

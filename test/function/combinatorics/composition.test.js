@@ -4,9 +4,9 @@ const composition = math.composition
 
 describe('composition', function () {
   it('should calculate the number of ways to compose a set of n objects into k non-empty subsets', function () {
-    assert.equal(composition(5, 3), 6)
-    assert.equal(composition(1, 1), 1)
-    assert.equal(composition(8, 3), 21)
+    assert.strictEqual(composition(5, 3), 6)
+    assert.strictEqual(composition(1, 1), 1)
+    assert.strictEqual(composition(8, 3), 21)
   })
 
   it('should calculate the composition of n items taken k at a time with BigNumbers', function () {

@@ -11,8 +11,8 @@ const EPSILON = 1e-14
 
 describe('sinh', function () {
   it('should return the sinh of a boolean', function () {
-    assert.equal(sinh(true), 1.1752011936438014)
-    assert.equal(sinh(false), 0)
+    assert.strictEqual(sinh(true), 1.1752011936438014)
+    assert.strictEqual(sinh(false), 0)
   })
 
   it('should return the sinh of a number', function () {
@@ -37,7 +37,7 @@ describe('sinh', function () {
     })
 
     it('should return the sinh of very large numbers (avoid returning zero)', function () {
-      // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
+      // If sinh returns 0, that is bad, so we are using assert.strictEqual, not approx.equal
       // console.log('process.version=', process.version)
       assert(sinh(1e-50) !== 0)
       assert(Math.abs(sinh(1e-50) - 1e-50) < EPSILON)
@@ -113,6 +113,6 @@ describe('sinh', function () {
 
   it('should LaTeX sinh', function () {
     const expression = math.parse('sinh(1)')
-    assert.equal(expression.toTex(), '\\sinh\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\sinh\\left(1\\right)')
   })
 })

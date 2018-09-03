@@ -119,7 +119,7 @@ describe('DenseMatrix', function () {
       const a = new DenseMatrix([1, 2, 3])
 
       const b = a.create([4, 5, 6])
-      assert.equal(b.isDenseMatrix, true)
+      assert.strictEqual(b.isDenseMatrix, true)
       assert.deepEqual(b, new DenseMatrix([4, 5, 6]))
 
       const c = a.create([7, 8, 9], 'number')
@@ -187,8 +187,8 @@ describe('DenseMatrix', function () {
 
   describe('toString', function () {
     it('should return string representation of matrix', function () {
-      assert.equal(new DenseMatrix([[1, 2], [3, 4]]).toString(), '[[1, 2], [3, 4]]')
-      assert.equal(new DenseMatrix([[1, 2], [3, 1 / 3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]')
+      assert.strictEqual(new DenseMatrix([[1, 2], [3, 4]]).toString(), '[[1, 2], [3, 4]]')
+      assert.strictEqual(new DenseMatrix([[1, 2], [3, 1 / 3]]).toString(), '[[1, 2], [3, 0.3333333333333333]]')
     })
   })
 
@@ -254,9 +254,9 @@ describe('DenseMatrix', function () {
 
   describe('format', function () {
     it('should format matrix', function () {
-      assert.equal(new DenseMatrix([[1, 2], [3, 1 / 3]]).format(), '[[1, 2], [3, 0.3333333333333333]]')
-      assert.equal(new DenseMatrix([[1, 2], [3, 1 / 3]]).format(3), '[[1, 2], [3, 0.333]]')
-      assert.equal(new DenseMatrix([[1, 2], [3, 1 / 3]]).format(4), '[[1, 2], [3, 0.3333]]')
+      assert.strictEqual(new DenseMatrix([[1, 2], [3, 1 / 3]]).format(), '[[1, 2], [3, 0.3333333333333333]]')
+      assert.strictEqual(new DenseMatrix([[1, 2], [3, 1 / 3]]).format(3), '[[1, 2], [3, 0.333]]')
+      assert.strictEqual(new DenseMatrix([[1, 2], [3, 1 / 3]]).format(4), '[[1, 2], [3, 0.3333]]')
     })
   })
 
@@ -367,8 +367,8 @@ describe('DenseMatrix', function () {
     const m = new DenseMatrix([[0, 1], [2, 3]])
 
     it('should get a value from the matrix', function () {
-      assert.equal(m.get([1, 0]), 2)
-      assert.equal(m.get([0, 1]), 1)
+      assert.strictEqual(m.get([1, 0]), 2)
+      assert.strictEqual(m.get([0, 1]), 1)
     })
 
     it('should throw an error when getting a value out of range', function () {

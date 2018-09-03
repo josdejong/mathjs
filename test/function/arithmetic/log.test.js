@@ -10,9 +10,9 @@ const log = math.log
 
 describe('log', function () {
   it('should return the log of a boolean value', function () {
-    assert.equal(log(true), 0)
-    assert.equal(log(false), -Infinity)
-    assert.equal(log(1, false), 0)
+    assert.strictEqual(log(true), 0)
+    assert.strictEqual(log(false), -Infinity)
+    assert.strictEqual(log(1, false), 0)
   })
 
   it('should return the log of positive numbers', function () {
@@ -29,7 +29,7 @@ describe('log', function () {
   })
 
   it('should return the log of negative numbers with predictable: true', function () {
-    assert.equal(typeof mathPredictable.log(-1), 'number')
+    assert.strictEqual(typeof mathPredictable.log(-1), 'number')
     assert(isNaN(mathPredictable.log(-1)))
   })
 
@@ -112,7 +112,7 @@ describe('log', function () {
     const expr1 = math.parse('log(e)')
     const expr2 = math.parse('log(32,2)')
 
-    assert.equal(expr1.toTex(), '\\ln\\left( e\\right)')
-    assert.equal(expr2.toTex(), '\\log_{2}\\left(32\\right)')
+    assert.strictEqual(expr1.toTex(), '\\ln\\left( e\\right)')
+    assert.strictEqual(expr2.toTex(), '\\log_{2}\\left(32\\right)')
   })
 })

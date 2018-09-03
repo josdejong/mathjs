@@ -93,10 +93,10 @@ describe('resize', function () {
   })
 
   it('should resize a string', function () {
-    assert.equal(math.resize('hello', [2]), 'he')
-    assert.equal(math.resize('hello', [8]), 'hello   ')
-    assert.equal(math.resize('hello', [5]), 'hello')
-    assert.equal(math.resize('hello', [8], '!'), 'hello!!!')
+    assert.strictEqual(math.resize('hello', [2]), 'he')
+    assert.strictEqual(math.resize('hello', [8]), 'hello   ')
+    assert.strictEqual(math.resize('hello', [5]), 'hello')
+    assert.strictEqual(math.resize('hello', [8], '!'), 'hello!!!')
   })
 
   it('should throw an error on invalid arguments', function () {
@@ -119,6 +119,6 @@ describe('resize', function () {
 
   it('should LaTeX resize', function () {
     const expression = math.parse('resize([1,2],1)')
-    assert.equal(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{resize}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},1\\right)')
   })
 })

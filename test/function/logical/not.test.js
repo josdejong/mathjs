@@ -85,6 +85,6 @@ describe('not', function () {
   it('should LaTeX not', function () {
     const c = new ConstantNode(1)
     const node = new FunctionNode(new SymbolNode('not'), [c])
-    assert.equal(node.toTex(), '\\neg\\left(1\\right)')
+    assert.strictEqual(node.toTex(), '\\neg\\left(1\\right)')
   })
 })

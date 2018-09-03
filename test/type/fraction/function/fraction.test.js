@@ -26,7 +26,7 @@ describe('fraction', function () {
   it('should create a fraction for all elements in an array', function () {
     const arr = math.fraction([0.2, 0.25, 0.125])
     assert(Array.isArray(arr))
-    assert.equal(arr.length, 3)
+    assert.strictEqual(arr.length, 3)
 
     equalFraction(arr[0], new Fraction(1, 5))
     equalFraction(arr[1], new Fraction(1, 4))

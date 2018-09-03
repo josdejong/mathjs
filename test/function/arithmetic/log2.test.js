@@ -10,19 +10,19 @@ const log2 = math.log2
 
 describe('log2', function () {
   it('should return the log base 2 of a boolean', function () {
-    assert.equal(log2(true), 0)
-    assert.equal(log2(false), -Infinity)
+    assert.strictEqual(log2(true), 0)
+    assert.strictEqual(log2(false), -Infinity)
   })
 
   it('should return the log base 2 of positive numbers', function () {
-    assert.equal(log2(1), 0)
-    assert.equal(log2(2), 1)
+    assert.strictEqual(log2(1), 0)
+    assert.strictEqual(log2(2), 1)
     approx.deepEqual(log2(3), 1.584962500721156)
 
-    assert.equal(log2(0.25), -2)
-    assert.equal(log2(0.5), -1)
-    assert.equal(log2(4), 2)
-    assert.equal(log2(8), 3)
+    assert.strictEqual(log2(0.25), -2)
+    assert.strictEqual(log2(0.5), -1)
+    assert.strictEqual(log2(4), 2)
+    assert.strictEqual(log2(8), 3)
   })
 
   it('should return the log base 2 of negative numbers', function () {
@@ -32,7 +32,7 @@ describe('log2', function () {
   })
 
   it('should return the log base 2 of negative numbers with predicable:true', function () {
-    assert.equal(typeof mathPredictable.log2(-1), 'number')
+    assert.strictEqual(typeof mathPredictable.log2(-1), 'number')
     assert(isNaN(mathPredictable.log2(-1)))
   })
 
@@ -100,6 +100,6 @@ describe('log2', function () {
 
   it('should LaTeX log2', function () {
     const expression = math.parse('log2(10)')
-    assert.equal(expression.toTex(), '\\log_{2}\\left(10\\right)')
+    assert.strictEqual(expression.toTex(), '\\log_{2}\\left(10\\right)')
   })
 })

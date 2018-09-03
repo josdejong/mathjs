@@ -8,17 +8,17 @@ const complex = math.complex
 
 describe('cbrt', function () {
   it('should return the cubic root of a boolean', function () {
-    assert.equal(cbrt(true), 1)
-    assert.equal(cbrt(false), 0)
+    assert.strictEqual(cbrt(true), 1)
+    assert.strictEqual(cbrt(false), 0)
   })
 
   it('should return the cubic root of a positive number', function () {
-    assert.equal(cbrt(0), 0)
-    assert.equal(cbrt(1), 1)
-    assert.equal(cbrt(8), 2)
-    assert.equal(cbrt(27), 3)
-    assert.equal(cbrt(64), 4)
-    assert.equal(cbrt(125), 5)
+    assert.strictEqual(cbrt(0), 0)
+    assert.strictEqual(cbrt(1), 1)
+    assert.strictEqual(cbrt(8), 2)
+    assert.strictEqual(cbrt(27), 3)
+    assert.strictEqual(cbrt(64), 4)
+    assert.strictEqual(cbrt(125), 5)
 
     approx.equal(cbrt(10), 2.1544346900318834)
   })
@@ -94,8 +94,8 @@ describe('cbrt', function () {
   })
 
   it('should return the cubic root of a unit', function () {
-    assert.equal(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString())
-    assert.equal(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString())
+    assert.strictEqual(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString())
+    assert.strictEqual(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString())
 
     assert(math.type.isBigNumber(cbrt(math.unit(math.bignumber(27), 'm^3')).value))
     assert.deepEqual(cbrt(math.unit(math.bignumber(27), 'm^3')).value, math.bignumber(3))
@@ -129,6 +129,6 @@ describe('cbrt', function () {
 
   it('should LaTeX cbrt', function () {
     const expression = math.parse('cbrt(2)')
-    assert.equal(expression.toTex(), '\\sqrt[3]{2}')
+    assert.strictEqual(expression.toTex(), '\\sqrt[3]{2}')
   })
 })

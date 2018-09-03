@@ -62,6 +62,6 @@ describe('compareText', function () {
 
   it('should LaTeX compare', function () {
     const expression = math.parse('compareText(1,2)')
-    assert.equal(expression.toTex(), '\\mathrm{compareText}\\left(1,2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{compareText}\\left(1,2\\right)')
   })
 })

@@ -51,8 +51,8 @@ describe('clone', function () {
     const a = math.unit('5mm')
     const b = math.clone(a)
     a.value = 10
-    assert.equal(a.toString(), '10 m')
-    assert.equal(b.toString(), '5 mm')
+    assert.strictEqual(a.toString(), '10 m')
+    assert.strictEqual(b.toString(), '5 mm')
   })
 
   it('should clone a fraction', function () {
@@ -65,23 +65,23 @@ describe('clone', function () {
     const a = [1, 2, [3, 4]]
     const b = math.clone(a)
     a[2][1] = 5
-    assert.equal(b[2][1], 4)
+    assert.strictEqual(b[2][1], 4)
   })
 
   it('should clone a matrix', function () {
     let a = math.matrix([[1, 2], [3, 4]])
     let b = math.clone(a)
     a.valueOf()[0][0] = 5
-    assert.equal(b.valueOf()[0][0], 1)
+    assert.strictEqual(b.valueOf()[0][0], 1)
 
     a = math.matrix([1, 2, math.complex(2, 3), 4])
     b = math.clone(a)
     a.valueOf()[2].re = 5
-    assert.equal(b.valueOf()[2].re, 2)
+    assert.strictEqual(b.valueOf()[2].re, 2)
   })
 
   it('should LaTeX clone', function () {
     const expression = math.parse('clone(1)')
-    assert.equal(expression.toTex(), '\\mathrm{clone}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{clone}\\left(1\\right)')
   })
 })

@@ -8,28 +8,28 @@ const complex = math.complex
 
 describe('divide', function () {
   it('should divide two numbers', function () {
-    assert.equal(divide(4, 2), 2)
-    assert.equal(divide(-4, 2), -2)
-    assert.equal(divide(4, -2), -2)
-    assert.equal(divide(-4, -2), 2)
-    assert.equal(divide(4, 0), Infinity)
-    assert.equal(divide(-4, 0), -Infinity)
-    assert.equal(divide(0, -5), 0)
+    assert.strictEqual(divide(4, 2), 2)
+    assert.strictEqual(divide(-4, 2), -2)
+    assert.strictEqual(divide(4, -2), -2)
+    assert.strictEqual(divide(-4, -2), 2)
+    assert.strictEqual(divide(4, 0), Infinity)
+    assert.strictEqual(divide(-4, 0), -Infinity)
+    assert.strictEqual(divide(0, -5), 0)
     assert.ok(isNaN(divide(0, 0)))
   })
 
   it('should divide booleans', function () {
-    assert.equal(divide(true, true), 1)
-    assert.equal(divide(true, false), Infinity)
-    assert.equal(divide(false, true), 0)
+    assert.strictEqual(divide(true, true), 1)
+    assert.strictEqual(divide(true, false), Infinity)
+    assert.strictEqual(divide(false, true), 0)
     assert.ok(isNaN(divide(false, false)))
   })
 
   it('should divide mixed numbers and booleans', function () {
-    assert.equal(divide(2, true), 2)
-    assert.equal(divide(2, false), Infinity)
+    assert.strictEqual(divide(2, true), 2)
+    assert.strictEqual(divide(2, false), Infinity)
     approx.equal(divide(true, 2), 0.5)
-    assert.equal(divide(false, 2), 0)
+    assert.strictEqual(divide(false, 2), 0)
   })
 
   it('should divide bignumbers', function () {
@@ -98,8 +98,8 @@ describe('divide', function () {
 
   it('should divide two fractions', function () {
     const a = math.fraction(1, 4)
-    assert.equal(divide(a, math.fraction(1, 2)).toString(), '0.5')
-    assert.equal(a.toString(), '0.25')
+    assert.strictEqual(divide(a, math.fraction(1, 2)).toString(), '0.5')
+    assert.strictEqual(a.toString(), '0.25')
   })
 
   it('should divide mixed fractions and numbers', function () {
@@ -108,49 +108,49 @@ describe('divide', function () {
   })
 
   it('should divide units by a number', function () {
-    assert.equal(divide(math.unit('5 m'), 10).toString(), '0.5 m')
+    assert.strictEqual(divide(math.unit('5 m'), 10).toString(), '0.5 m')
   })
 
   it('should divide valueless units by a number', function () {
-    assert.equal(divide(math.unit('m'), 2).toString(), '0.5 m')
+    assert.strictEqual(divide(math.unit('m'), 2).toString(), '0.5 m')
   })
 
   it('should divide a number by a unit', function () {
-    assert.equal(divide(20, math.unit('4 N s')).toString(), '5 N^-1 s^-1')
-    assert.equal(divide(4, math.unit('W')).toString(), '4 W^-1')
-    assert.equal(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1')
-    assert.equal(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg')
+    assert.strictEqual(divide(20, math.unit('4 N s')).toString(), '5 N^-1 s^-1')
+    assert.strictEqual(divide(4, math.unit('W')).toString(), '4 W^-1')
+    assert.strictEqual(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1')
+    assert.strictEqual(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg')
 
-    assert.equal(divide(10, math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
+    assert.strictEqual(divide(10, math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
 
     approx.equal(math.format(divide(10, math.unit(math.complex(1, 2), 'm/s')), 14), '(2 - 4i) s / m')
   })
 
   it('should divide two units', function () {
-    assert.equal(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute')
+    assert.strictEqual(divide(math.unit('75 mi/h'), math.unit('40 mi/gal')).to('gal/minute').toString(), '0.03125 gal / minute')
 
     const a = math.unit(math.fraction(75), 'mi/h')
     const b = math.unit(math.fraction(40), 'mi/gal')
-    assert.equal(divide(a, b).to('gal/minute').toString(), '1/32 gal / minute')
+    assert.strictEqual(divide(a, b).to('gal/minute').toString(), '1/32 gal / minute')
 
     const c = math.unit(math.complex(21, 1), 'kg')
     const d = math.unit(math.complex(2, -3), 's')
-    assert.equal(divide(c, d).toString(), '(3 + 5.000000000000001i) kg / s')
+    assert.strictEqual(divide(c, d).toString(), '(3 + 5.000000000000001i) kg / s')
   })
 
   it('should divide one valued unit by a valueless unit and vice-versa', function () {
-    assert.equal(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141648')
-    assert.equal(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946353')
+    assert.strictEqual(divide(math.unit('4 gal'), math.unit('L')).toString(), '15.141648')
+    assert.strictEqual(divide(math.unit('gal'), math.unit('4 L')).toString(), '0.946353')
 
-    assert.equal(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50')
+    assert.strictEqual(divide(math.unit('inch'), math.unit(math.fraction(1), 'cm')).toFraction(), '127/50')
   })
 
   it('should divide (but not simplify) two valueless units', function () {
-    assert.equal(divide(math.unit('gal'), math.unit('L')).toString(), 'gal / L')
+    assert.strictEqual(divide(math.unit('gal'), math.unit('L')).toString(), 'gal / L')
   })
 
   it('should divide units by a big number', function () {
-    assert.equal(divide(math.unit('5 m'), bignumber(10)).toString(), '0.5 m')
+    assert.strictEqual(divide(math.unit('5 m'), bignumber(10)).toString(), '0.5 m')
   })
 
   it('should divide each elements in a matrix by a number', function () {
@@ -207,6 +207,6 @@ describe('divide', function () {
 
   it('should LaTeX divide', function () {
     const expression = math.parse('divide(1,2)')
-    assert.equal(expression.toTex(), '\\frac{1}{2}')
+    assert.strictEqual(expression.toTex(), '\\frac{1}{2}')
   })
 })

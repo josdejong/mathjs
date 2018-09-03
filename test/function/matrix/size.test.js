@@ -61,6 +61,6 @@ describe('size', function () {
 
   it('should LaTeX size', function () {
     const expression = math.parse('size(1)')
-    assert.equal(expression.toTex(), '\\mathrm{size}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{size}\\left(1\\right)')
   })
 })

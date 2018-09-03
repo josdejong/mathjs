@@ -7,11 +7,11 @@ const prod = math.prod
 
 describe('prod', function () {
   it('should return the product of numbers', function () {
-    assert.equal(prod(5), 5)
-    assert.equal(prod(3, 2), 6)
-    assert.equal(prod(1, 3, 5, 2), 30)
-    assert.equal(prod(1, 3, 0, 2), 0)
-    assert.equal(prod(0, 0, 0, 0), 0)
+    assert.strictEqual(prod(5), 5)
+    assert.strictEqual(prod(3, 2), 6)
+    assert.strictEqual(prod(1, 3, 5, 2), 30)
+    assert.strictEqual(prod(1, 3, 0, 2), 0)
+    assert.strictEqual(prod(0, 0, 0, 0), 0)
   })
 
   it('should return the product of big numbers', function () {
@@ -28,11 +28,11 @@ describe('prod', function () {
   })
 
   it('should return the prod from an array', function () {
-    assert.equal(prod([1, 3, 5, 2]), 30)
+    assert.strictEqual(prod([1, 3, 5, 2]), 30)
   })
 
   it('should return the prod from an 1d matrix', function () {
-    assert.equal(prod(new DenseMatrix([1, 3, 5, 2])), 30)
+    assert.strictEqual(prod(new DenseMatrix([1, 3, 5, 2])), 30)
   })
 
   it('should return the prod element from a 2d array', function () {
@@ -78,6 +78,6 @@ describe('prod', function () {
 
   it('should LaTeX prod', function () {
     const expression = math.parse('prod(1,2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{prod}\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{prod}\\left(1,2,3\\right)')
   })
 })

@@ -11,7 +11,7 @@ describe('SymbolNode', function () {
     const n = new SymbolNode('sqrt')
     assert(n instanceof SymbolNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'SymbolNode')
+    assert.strictEqual(n.type, 'SymbolNode')
   })
 
   it('should have isSymbolNode', function () {
@@ -39,7 +39,7 @@ describe('SymbolNode', function () {
 
     const expr = s.compile()
     let scope = { a: 5 }
-    assert.equal(expr.eval(scope), 5)
+    assert.strictEqual(expr.eval(scope), 5)
     assert.throws(function () { expr.eval({}) }, Error)
 
     const s2 = new SymbolNode('sqrt')
@@ -95,7 +95,7 @@ describe('SymbolNode', function () {
     assert(b instanceof SymbolNode)
     assert.deepEqual(a, b)
     assert.notStrictEqual(a, b)
-    assert.equal(a.name, b.name)
+    assert.strictEqual(a.name, b.name)
   })
 
   it('test equality another Node', function () {
@@ -117,7 +117,7 @@ describe('SymbolNode', function () {
   it('should stringify a SymbolNode', function () {
     const s = new SymbolNode('foo')
 
-    assert.equal(s.toString(), 'foo')
+    assert.strictEqual(s.toString(), 'foo')
   })
 
   it('should stringigy a SymbolNode with custom toString', function () {
@@ -130,7 +130,7 @@ describe('SymbolNode', function () {
 
     const n = new SymbolNode('a')
 
-    assert.equal(n.toString({ handler: customFunction }), 'symbol(a)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'symbol(a)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -150,7 +150,7 @@ describe('SymbolNode', function () {
   it('should LaTeX a SymbolNode', function () {
     const s = new SymbolNode('foo')
 
-    assert.equal(s.toTex(), ' foo')
+    assert.strictEqual(s.toTex(), ' foo')
   })
 
   it('should LaTeX a SymbolNode with custom toTex', function () {
@@ -163,7 +163,7 @@ describe('SymbolNode', function () {
 
     const n = new SymbolNode('a')
 
-    assert.equal(n.toTex({ handler: customFunction }), 'symbol(a)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), 'symbol(a)')
   })
 
   it('should LaTeX a SymbolNode without breaking \\cdot', function () {
@@ -172,6 +172,6 @@ describe('SymbolNode', function () {
 
     const mult = new OperatorNode('*', 'multiply', [a, b])
 
-    assert.equal(mult.toTex(), '1\\cdot E')
+    assert.strictEqual(mult.toTex(), '1\\cdot E')
   })
 })

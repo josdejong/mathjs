@@ -87,6 +87,6 @@ describe('tanh', function () {
 
   it('should LaTeX tanh', function () {
     const expression = math.parse('tanh(1)')
-    assert.equal(expression.toTex(), '\\tanh\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\tanh\\left(1\\right)')
   })
 })

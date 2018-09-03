@@ -183,6 +183,6 @@ describe('and', function () {
 
   it('should LaTeX and', function () {
     const expression = math.parse('and(1,2)')
-    assert.equal(expression.toTex(), '\\left(1\\wedge2\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(1\\wedge2\\right)')
   })
 })

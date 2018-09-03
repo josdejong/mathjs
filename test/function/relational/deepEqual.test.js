@@ -8,13 +8,13 @@ const deepEqual = math.deepEqual
 
 describe('deepEqual', function () {
   it('should compare scalars correctly', function () {
-    assert.equal(deepEqual(2, 3), false)
-    assert.equal(deepEqual(2, 2), true)
-    assert.equal(deepEqual(0, 0), true)
-    assert.equal(deepEqual(-2, 2), false)
-    assert.equal(deepEqual(2, math.bignumber(2)), true)
-    assert.equal(deepEqual(math.fraction(1, 2), 0.5), true)
-    assert.equal(deepEqual(true, 1), true)
+    assert.strictEqual(deepEqual(2, 3), false)
+    assert.strictEqual(deepEqual(2, 2), true)
+    assert.strictEqual(deepEqual(0, 0), true)
+    assert.strictEqual(deepEqual(-2, 2), false)
+    assert.strictEqual(deepEqual(2, math.bignumber(2)), true)
+    assert.strictEqual(deepEqual(math.fraction(1, 2), 0.5), true)
+    assert.strictEqual(deepEqual(true, 1), true)
   })
 
   it('should compare two matrices', function () {
@@ -59,6 +59,6 @@ describe('deepEqual', function () {
 
   it('should LaTeX deepEqual', function () {
     const expression = math.parse('deepEqual([1,2],[1,3])')
-    assert.equal(expression.toTex(), '\\mathrm{deepEqual}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},\\begin{bmatrix}1\\\\3\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{deepEqual}\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix},\\begin{bmatrix}1\\\\3\\\\\\end{bmatrix}\\right)')
   })
 })

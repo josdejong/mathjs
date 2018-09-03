@@ -22,25 +22,25 @@ describe('help', function () {
   it('should find help from a function name', function () {
     const help = math.help('sin')
     assert(help instanceof math.type.Help)
-    assert.equal(help.doc.name, 'sin')
+    assert.strictEqual(help.doc.name, 'sin')
   })
 
   it('should find help from a function', function () {
     const help = math.help(math.sin)
     assert(help instanceof math.type.Help)
-    assert.equal(help.doc.name, 'sin')
+    assert.strictEqual(help.doc.name, 'sin')
   })
 
   it('should find help from a constant name', function () {
     const help = math.help('pi')
     assert(help instanceof math.type.Help)
-    assert.equal(help.doc.name, 'pi')
+    assert.strictEqual(help.doc.name, 'pi')
   })
 
   it('should find help from a constant', function () {
     const help = math.help(math.pi)
     assert(help instanceof math.type.Help)
-    assert.equal(help.doc.name, 'pi')
+    assert.strictEqual(help.doc.name, 'pi')
   })
 
   it('should not allow accessing unsafe properties ', function () {
@@ -56,6 +56,6 @@ describe('help', function () {
 
   it('should LaTeX help', function () {
     const expression = math.parse('help(parse)')
-    assert.equal(expression.toTex(), '\\mathrm{help}\\left( parse\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{help}\\left( parse\\right)')
   })
 })
