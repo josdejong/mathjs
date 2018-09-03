@@ -44,61 +44,61 @@ describe('ConditionalNode', function () {
     const expr = n.compile()
     let scope = {}
     assert.equal(expr.eval(scope), 2)
-    assert.deepEqual(scope, {a: 2})
+    assert.deepEqual(scope, { a: 2 })
   })
 
   describe('evaluate', function () {
     const condition = new ConditionalNode(new SymbolNode('a'), one, zero)
 
     it('should evaluate boolean conditions', function () {
-      assert.equal(condition.compile().eval({a: true}), 1)
-      assert.equal(condition.compile().eval({a: false}), 0)
+      assert.equal(condition.compile().eval({ a: true }), 1)
+      assert.equal(condition.compile().eval({ a: false }), 0)
     })
 
     it('should evaluate number conditions', function () {
-      assert.equal(condition.compile().eval({a: 1}), 1)
-      assert.equal(condition.compile().eval({a: 4}), 1)
-      assert.equal(condition.compile().eval({a: -1}), 1)
-      assert.equal(condition.compile().eval({a: 0}), 0)
+      assert.equal(condition.compile().eval({ a: 1 }), 1)
+      assert.equal(condition.compile().eval({ a: 4 }), 1)
+      assert.equal(condition.compile().eval({ a: -1 }), 1)
+      assert.equal(condition.compile().eval({ a: 0 }), 0)
     })
 
     it('should evaluate bignumber conditions', function () {
-      assert.equal(condition.compile().eval({a: math.bignumber(1)}), 1)
-      assert.equal(condition.compile().eval({a: math.bignumber(4)}), 1)
-      assert.equal(condition.compile().eval({a: math.bignumber(-1)}), 1)
-      assert.equal(condition.compile().eval({a: math.bignumber(0)}), 0)
+      assert.equal(condition.compile().eval({ a: math.bignumber(1) }), 1)
+      assert.equal(condition.compile().eval({ a: math.bignumber(4) }), 1)
+      assert.equal(condition.compile().eval({ a: math.bignumber(-1) }), 1)
+      assert.equal(condition.compile().eval({ a: math.bignumber(0) }), 0)
     })
 
     it('should evaluate complex number conditions', function () {
-      assert.equal(condition.compile().eval({a: math.complex(2, 3)}), 1)
-      assert.equal(condition.compile().eval({a: math.complex(2, 0)}), 1)
-      assert.equal(condition.compile().eval({a: math.complex(0, 3)}), 1)
-      assert.equal(condition.compile().eval({a: math.complex(0, 0)}), 0)
+      assert.equal(condition.compile().eval({ a: math.complex(2, 3) }), 1)
+      assert.equal(condition.compile().eval({ a: math.complex(2, 0) }), 1)
+      assert.equal(condition.compile().eval({ a: math.complex(0, 3) }), 1)
+      assert.equal(condition.compile().eval({ a: math.complex(0, 0) }), 0)
     })
 
     it('should evaluate string conditions', function () {
-      assert.equal(condition.compile().eval({a: 'hello'}), 1)
-      assert.equal(condition.compile().eval({a: ''}), 0)
+      assert.equal(condition.compile().eval({ a: 'hello' }), 1)
+      assert.equal(condition.compile().eval({ a: '' }), 0)
     })
 
     it('should evaluate unit conditions', function () {
-      assert.equal(condition.compile().eval({a: math.unit('5cm')}), 1)
-      assert.equal(condition.compile().eval({a: math.unit('0 inch')}), 0)
-      assert.equal(condition.compile().eval({a: math.unit('meter')}), 0)
+      assert.equal(condition.compile().eval({ a: math.unit('5cm') }), 1)
+      assert.equal(condition.compile().eval({ a: math.unit('0 inch') }), 0)
+      assert.equal(condition.compile().eval({ a: math.unit('meter') }), 0)
     })
 
     it('should evaluate null conditions', function () {
-      assert.equal(condition.compile().eval({a: null}), 0)
+      assert.equal(condition.compile().eval({ a: null }), 0)
     })
 
     it('should evaluate undefined conditions', function () {
-      assert.equal(condition.compile().eval({a: undefined}), 0)
+      assert.equal(condition.compile().eval({ a: undefined }), 0)
     })
 
     it('should throw an error in case of unsupported type of conditions', function () {
-      assert.throws(function () { condition.compile().eval({a: {}}) })
-      assert.throws(function () { condition.compile().eval({a: []}) })
-      assert.throws(function () { condition.compile().eval({a: math.matrix()}) })
+      assert.throws(function () { condition.compile().eval({ a: {} }) })
+      assert.throws(function () { condition.compile().eval({ a: [] }) })
+      assert.throws(function () { condition.compile().eval({ a: math.matrix() }) })
     })
   })
 
@@ -269,7 +269,7 @@ describe('ConditionalNode', function () {
   })
 
   it('should respect the \'all\' parenthesis option', function () {
-    assert.equal(math.parse('a?b:c').toString({parenthesis: 'all'}), '(a) ? (b) : (c)')
+    assert.equal(math.parse('a?b:c').toString({ parenthesis: 'all' }), '(a) ? (b) : (c)')
   })
 
   it('should stringify a ConditionalNode', function () {
@@ -296,7 +296,7 @@ describe('ConditionalNode', function () {
 
     const n = new ConditionalNode(a, b, c)
 
-    assert.equal(n.toString({handler: customFunction}), 'if const(1, number) then const(2, number) else const(3, number)')
+    assert.equal(n.toString({ handler: customFunction }), 'if const(1, number) then const(2, number) else const(3, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -343,6 +343,6 @@ describe('ConditionalNode', function () {
 
     const n = new ConditionalNode(a, b, c)
 
-    assert.equal(n.toTex({handler: customFunction}), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)')
+    assert.equal(n.toTex({ handler: customFunction }), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)')
   })
 })

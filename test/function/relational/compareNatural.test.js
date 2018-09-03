@@ -202,20 +202,20 @@ describe('compareNatural', function () {
 
   it('should compare objects', function () {
     // different number of keys
-    assert.strictEqual(compareNatural({a: 2, b: 3}, {a: 2}), 1)
+    assert.strictEqual(compareNatural({ a: 2, b: 3 }, { a: 2 }), 1)
 
     // different keys
-    assert.strictEqual(compareNatural({b: 3}, {a: 2}), 1)
+    assert.strictEqual(compareNatural({ b: 3 }, { a: 2 }), 1)
 
     // different values
-    assert.strictEqual(compareNatural({a: 3}, {a: 2}), 1)
+    assert.strictEqual(compareNatural({ a: 3 }, { a: 2 }), 1)
 
     // equal
-    assert.strictEqual(compareNatural({a: 2, b: 3}, {a: 2, b: 3}), 0)
+    assert.strictEqual(compareNatural({ a: 2, b: 3 }, { a: 2, b: 3 }), 0)
 
     // nesting
-    assert.strictEqual(compareNatural({a: 2, b: {c: 4}}, {a: 2, b: {c: 3}}), 1)
-    assert.strictEqual(compareNatural({a: 2, b: {c: 3}}, {a: 2, b: {c: 4}}), -1)
+    assert.strictEqual(compareNatural({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 3 } }), 1)
+    assert.strictEqual(compareNatural({ a: 2, b: { c: 3 } }, { a: 2, b: { c: 4 } }), -1)
   })
 
   it('should apply configuration option epsilon', function () {
@@ -224,7 +224,7 @@ describe('compareNatural', function () {
     assert.equal(mymath.compareNatural(1, 0.991), 1)
     assert.equal(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
 
-    mymath.config({epsilon: 1e-2})
+    mymath.config({ epsilon: 1e-2 })
     assert.equal(mymath.compareNatural(1, 0.991), 0)
     assert.equal(mymath.compareNatural(math.bignumber(1), math.bignumber(0.991)), 0)
   })

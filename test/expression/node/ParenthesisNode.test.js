@@ -147,8 +147,8 @@ describe('ParenthesisNode', function () {
 
     const p = new math.expression.node.ParenthesisNode(c)
 
-    assert.equal(p.toString({parenthesis: 'all'}), '1')
-    assert.equal(p.toString({parenthesis: 'auto'}), '1')
+    assert.equal(p.toString({ parenthesis: 'all' }), '1')
+    assert.equal(p.toString({ parenthesis: 'auto' }), '1')
   })
 
   it('should stringify a ParenthesisNode with custom toString', function () {
@@ -161,7 +161,7 @@ describe('ParenthesisNode', function () {
     const c = new math.expression.node.ConstantNode(1)
     const n = new math.expression.node.ParenthesisNode(c)
 
-    assert.equal(n.toString({handler: customFunction}), '[1]')
+    assert.equal(n.toString({ handler: customFunction }), '[1]')
   })
 
   it('toJSON and fromJSON', function () {
@@ -192,8 +192,8 @@ describe('ParenthesisNode', function () {
 
     const p = new math.expression.node.ParenthesisNode(c)
 
-    assert.equal(p.toTex({parenthesis: 'all'}), '1')
-    assert.equal(p.toTex({parenthesis: 'auto'}), '1')
+    assert.equal(p.toTex({ parenthesis: 'all' }), '1')
+    assert.equal(p.toTex({ parenthesis: 'auto' }), '1')
   })
 
   it('should LaTeX a ParenthesisNode with custom toTex', function () {
@@ -206,6 +206,6 @@ describe('ParenthesisNode', function () {
     const c = new math.expression.node.ConstantNode(1)
     const n = new math.expression.node.ParenthesisNode(c)
 
-    assert.equal(n.toTex({handler: customFunction}), '\\left[1\\right]')
+    assert.equal(n.toTex({ handler: customFunction }), '\\left[1\\right]')
   })
 })

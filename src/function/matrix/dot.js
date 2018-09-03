@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
     'Array, Array': _dot
   })
 
-  dot.toTex = {2: `\\left(\${args[0]}\\cdot\${args[1]}\\right)`}
+  dot.toTex = { 2: `\\left(\${args[0]}\\cdot\${args[1]}\\right)` }
 
   return dot
 

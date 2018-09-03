@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  im.toTex = {1: `\\Im\\left\\lbrace\${args[0]}\\right\\rbrace`}
+  im.toTex = { 1: `\\Im\\left\\lbrace\${args[0]}\\right\\rbrace` }
 
   return im
 }

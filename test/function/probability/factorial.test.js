@@ -16,7 +16,7 @@ describe('factorial', function () {
   })
 
   it('should calculate the factorial of a bignumber', function () {
-    const bigmath = math.create({number: 'BigNumber', precision: 5})
+    const bigmath = math.create({ number: 'BigNumber', precision: 5 })
     const bigfactorial = bigmath.factorial
     const bignumber = bigmath.bignumber
 
@@ -26,7 +26,7 @@ describe('factorial', function () {
     assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000))
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21))
 
-    bigmath.config({precision: 20})
+    bigmath.config({ precision: 20 })
     assert.deepEqual(bigfactorial(bignumber(5)), bignumber(120))
     assert.deepEqual(bigfactorial(bignumber(19)), bignumber(121645100408832000))
     assert.deepEqual(bigfactorial(bignumber(20)), bignumber(2432902008176640000))
@@ -35,14 +35,14 @@ describe('factorial', function () {
     assert.deepEqual(bigfactorial(bignumber(24)), bignumber('6.2044840173323943936e+23'))
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber('1124000727777607680000'))
 
-    bigmath.config({precision: 5})
+    bigmath.config({ precision: 5 })
     assert.deepEqual(bigfactorial(bignumber(11)), bignumber(39917000))
     assert.deepEqual(bigfactorial(bignumber(22)), bignumber(1.124e+21))
     assert.deepEqual(bigfactorial(bignumber(24)), bignumber(6.2045e+23))
     assert.deepEqual(bigfactorial(bignumber(21)), bignumber(5.1091e+19))
     assert.deepEqual(bigfactorial(bignumber(26)), bignumber(4.0329e+26))
 
-    bigmath.config({precision: 20})
+    bigmath.config({ precision: 20 })
     assert.deepEqual(bigfactorial(bignumber(3000)), bignumber('4.1493596034378540856e+9130'))
   })
 

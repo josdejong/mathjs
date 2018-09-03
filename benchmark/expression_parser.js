@@ -18,7 +18,7 @@ function pad (text) {
 }
 
 const expr = '2 + 3 * sin(pi / 4) - 4x'
-let scope = {x: 2}
+let scope = { x: 2 }
 const compiled = math.parse(expr).compile(math, {})
 
 const sin = getSafeProperty(math, 'sin')

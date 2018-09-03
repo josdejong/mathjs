@@ -6,7 +6,7 @@ describe('distance', function () {
     assert.equal(math.distance([0, 0], [10, 10]), 14.142135623730951)
     assert.equal(math.distance(math.matrix([0, 0]), math.matrix([10, 10])), 14.142135623730951)
     assert.equal(math.distance(math.matrix([0, 0, 0]), math.matrix([10, 10, 0])), 14.142135623730951)
-    assert.equal(math.distance({pointOneX: 0, pointOneY: 0}, {pointTwoX: 10, pointTwoY: 10}), 14.142135623730951)
+    assert.equal(math.distance({ pointOneX: 0, pointOneY: 0 }, { pointTwoX: 10, pointTwoY: 10 }), 14.142135623730951)
   })
 
   it('should calculate distance between two 3d points', function () {
@@ -15,15 +15,15 @@ describe('distance', function () {
     assert.equal(math.distance(math.matrix([0.31, 0.2, -0.21]), [0.4234, -0.212, -0.2342]), 0.42800607472324503)
     assert.equal(math.distance([67435, 654667, 3545567], [53467, 34567, 654356]), 2956995.1236931384)
     assert.equal(math.distance([-21, -230, -2141], math.matrix([-1234, -3122, -1242])), 3262.396971553278)
-    assert.equal(math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9}), 3)
+    assert.equal(math.distance({ pointOneX: 4, pointOneY: 5, pointOneZ: 8 }, { pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9 }), 3)
   })
 
   it('should calculate distance for inputs passed as objects', function () {
-    assert.deepEqual(math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8}), 2.720549372624744)
-    assert.deepEqual(math.distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3}), 11.535230316796387)
-    assert.equal(math.distance({pointOneX: 0, pointOneY: 0}, {pointTwoX: 10, pointTwoY: 10}), 14.142135623730951)
-    assert.throws(function () { math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 'l', lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8}) }, TypeError)
-    assert.equal(math.distance({pointOneX: 4, pointOneY: 5, pointOneZ: 8}, {pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9}), 3)
+    assert.deepEqual(math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 6, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }), 2.720549372624744)
+    assert.deepEqual(math.distance({ pointX: 10, pointY: 10 }, { xCoeffLine: 8, yCoeffLine: 1, constant: 3 }), 11.535230316796387)
+    assert.equal(math.distance({ pointOneX: 0, pointOneY: 0 }, { pointTwoX: 10, pointTwoY: 10 }), 14.142135623730951)
+    assert.throws(function () { math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 'l', lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }) }, TypeError)
+    assert.equal(math.distance({ pointOneX: 4, pointOneY: 5, pointOneZ: 8 }, { pointTwoX: 2, pointTwoY: 7, pointTwoZ: 9 }), 3)
   })
 
   it('should calculate distance for all non-zero values', function () {
@@ -41,8 +41,8 @@ describe('distance', function () {
     assert.throws(function () { math.distance('1') }, TypeError)
     assert.throws(function () { math.distance(['abc', 'def'], [1, 3]) }, TypeError)
     assert.throws(function () { math.distance(['2', '3'], math.matrix(['a', 'c']), [1, -0.445364786543434]) }, TypeError)
-    assert.throws(function () { math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 'l', lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8}) }, TypeError)
-    assert.throws(function () { math.distance({wrongkeyname: 2, english: 3, pointZ: 1}, {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1}) }, TypeError)
+    assert.throws(function () { math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 'l', lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }) }, TypeError)
+    assert.throws(function () { math.distance({ wrongkeyname: 2, english: 3, pointZ: 1 }, { x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1 }) }, TypeError)
   })
 
   it('should throw an error for unsupported number of parameters', function () {
@@ -71,25 +71,25 @@ describe('distance', function () {
     assert.deepEqual(math.distance([10, 10], [8, 1, 3]), 11.535230316796387)
     assert.deepEqual(math.distance([12.5, -0.5], [8.5, -1, 3.75]), 12.91095785619739)
     assert.deepEqual(math.distance([-34510, -1032], [8996, -10599, 34653]), 21542.094604263482)
-    assert.deepEqual(math.distance({pointX: 10, pointY: 10}, {xCoeffLine: 8, yCoeffLine: 1, constant: 3}), 11.535230316796387)
+    assert.deepEqual(math.distance({ pointX: 10, pointY: 10 }, { xCoeffLine: 8, yCoeffLine: 1, constant: 3 }), 11.535230316796387)
   })
 
   it('should calculate distance between a point and a line segment given by two points in 2D accurately', function () {
     assert.deepEqual(math.distance(math.matrix([10, 10]), math.matrix([2, 3]), math.matrix([-8, 0])), 8.759953130362847)
     assert.deepEqual(math.distance([0.23, -0.1240], [-0.232, 13.292], [-0.34, 0.346]), 10.658908662088363)
     assert.deepEqual(math.distance([-10, 0.54], [38, 12.8], [94.33, -239]), 10.012171799590002)
-    assert.deepEqual(math.distance({pointX: 1, pointY: 4}, {lineOnePtX: 6, lineOnePtY: 3}, {lineTwoPtX: 2, lineTwoPtY: 8}), 2.720549372624744)
+    assert.deepEqual(math.distance({ pointX: 1, pointY: 4 }, { lineOnePtX: 6, lineOnePtY: 3 }, { lineTwoPtX: 2, lineTwoPtY: 8 }), 2.720549372624744)
   })
 
   it('should calculate distance between point and line segment(with parametric co-ordinates) in 3D accurately', function () {
     assert.deepEqual(math.distance([2, 3, 1], [1, 1, 2, 5, 0, 1]), 2.3204774044612857)
     assert.deepEqual(math.distance(math.matrix([1, -1, -1]), math.matrix([2, 2, 0, 1, 2, 2])), 1.414213562373095)
     assert.deepEqual(math.distance([-341, 12, 84.34], [-3.2, 212, 1.240, -51241, 22.2, -4652]), 229.9871046141146)
-    assert.deepEqual(math.distance({pointX: 2, pointY: 3, pointZ: 1}, {x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1}), 2.3204774044612857)
+    assert.deepEqual(math.distance({ pointX: 2, pointY: 3, pointZ: 1 }, { x0: 1, y0: 1, z0: 2, a: 5, b: 0, c: 1 }), 2.3204774044612857)
   })
 
   it('should calculate the distance if coordinates are bignumbers', function () {
-    const bigmath = math.create({number: 'BigNumber', precision: 32})
+    const bigmath = math.create({ number: 'BigNumber', precision: 32 })
     const bigdistance = bigmath.distance
     const bignumber = bigmath.bignumber
 

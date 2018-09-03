@@ -1,6 +1,6 @@
 // test xgcd
 const assert = require('assert')
-const math = require('../../../src/main').create({matrix: 'Array'})
+const math = require('../../../src/main').create({ matrix: 'Array' })
 const gcd = math.gcd
 const xgcd = math.xgcd
 
@@ -78,10 +78,10 @@ describe('xgcd', function () {
   })
 
   it('should return a matrix when configured to use matrices', function () {
-    const math1 = math.create({matrix: 'Matrix'})
+    const math1 = math.create({ matrix: 'Matrix' })
     assert.deepEqual(math1.xgcd(65, 40), math.matrix([5, -3, 5]))
 
-    const math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({ matrix: 'Array' })
     assert.deepEqual(math2.xgcd(65, 40), [5, -3, 5])
   })
 

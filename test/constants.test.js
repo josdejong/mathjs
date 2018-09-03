@@ -5,7 +5,7 @@ const approx = require('../tools/approx')
 const constants = require('../src/constants')
 
 describe('constants', function () {
-  const bigmath = math.create({number: 'BigNumber', precision: 64})
+  const bigmath = math.create({ number: 'BigNumber', precision: 64 })
   const realmath = core.create()
   realmath.import(constants)
 

@@ -78,7 +78,7 @@ describe('AssignmentNode', function () {
       a: {}
     }
     assert.equal(expr.eval(scope), 3)
-    assert.deepEqual(scope, {a: {b: 3}})
+    assert.deepEqual(scope, { a: { b: 3 } })
   })
 
   it('should compile an AssignmentNode with nested property index', function () {
@@ -96,7 +96,7 @@ describe('AssignmentNode', function () {
       }
     }
     assert.equal(expr.eval(scope), 3)
-    assert.deepEqual(scope, {a: {b: {c: 3}}})
+    assert.deepEqual(scope, { a: { b: { c: 3 } } })
   })
 
   it('should compile an AssignmentNode with matrix index', function () {
@@ -143,7 +143,7 @@ describe('AssignmentNode', function () {
   })
 
   it('should compile an AssignmentNode with bignumber setting', function () {
-    const bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({ number: 'BigNumber' })
 
     const object = new bigmath.expression.node.SymbolNode('a')
     const index = new bigmath.expression.node.IndexNode([
@@ -466,8 +466,8 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString({parenthesis: 'all'}), 'a = (1)')
-    assert.equal(n.toTex({parenthesis: 'all'}), ' a:=\\left(1\\right)')
+    assert.equal(n.toString({ parenthesis: 'all' }), 'a = (1)')
+    assert.equal(n.toTex({ parenthesis: 'all' }), ' a:=\\left(1\\right)')
   })
 
   it('should stringify a AssignmentNode', function () {
@@ -502,7 +502,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)')
+    assert.equal(n.toString({ handler: customFunction }), 'a equals const(1, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -560,6 +560,6 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toTex({handler: customFunction}), ' a\\mbox{equals}const\\left(1, number\\right)')
+    assert.equal(n.toTex({ handler: customFunction }), ' a\\mbox{equals}const\\left(1, number\\right)')
   })
 })

@@ -51,29 +51,29 @@ describe('approx', function () {
   it('should test deep equality of arrays and objects', function () {
     approx.deepEqual({
       a: [1, 2, 3],
-      b: [{c: 4, d: 5}]
+      b: [{ c: 4, d: 5 }]
     }, {
       a: [1.000001, 1.99999999, 3.000005],
-      b: [{c: 3.999999981, d: 5.0000023}]
+      b: [{ c: 3.999999981, d: 5.0000023 }]
     })
 
     assert.throws(function () {
       approx.deepEqual({
         a: [1, 2, 3],
-        b: [{c: 4, d: 5}]
+        b: [{ c: 4, d: 5 }]
       }, {
         a: [1.000001, 1.99999999, 3.000005],
-        b: [{c: 3.1, d: 5.0000023}]
+        b: [{ c: 3.1, d: 5.0000023 }]
       })
     }, assert.AssertionError)
 
     assert.throws(function () {
       approx.deepEqual({
         a: [1, 2, 3],
-        b: [{c: 4, d: 5}]
+        b: [{ c: 4, d: 5 }]
       }, {
         a: [1.001, 1.99999999, 3.000005],
-        b: [{c: 3, d: 5.0000023}]
+        b: [{ c: 3, d: 5.0000023 }]
       })
     }, assert.AssertionError)
   })

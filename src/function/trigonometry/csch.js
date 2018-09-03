@@ -50,7 +50,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  csch.toTex = {1: `\\mathrm{csch}\\left(\${args[0]}\\right)`}
+  csch.toTex = { 1: `\\mathrm{csch}\\left(\${args[0]}\\right)` }
 
   return csch
 }

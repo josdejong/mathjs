@@ -6,7 +6,7 @@ const Range = math.type.Range
 describe('reviver', function () {
   it('should parse generic JSON', function () {
     const json = '{"foo":[1,2,3],"bar":null,"baz":"str"}'
-    const data = {foo: [1, 2, 3], bar: null, baz: 'str'}
+    const data = { foo: [1, 2, 3], bar: null, baz: 'str' }
     assert.deepEqual(JSON.parse(json, reviver), data)
   })
 
@@ -140,7 +140,7 @@ describe('reviver', function () {
 
   it('should parse a stringified Help', function () {
     const json = '{"mathjs":"Help","name":"foo","description":"bar"}'
-    const h = new math.type.Help({name: 'foo', description: 'bar'})
+    const h = new math.type.Help({ name: 'foo', description: 'bar' })
     const obj = JSON.parse(json, reviver)
 
     assert(obj instanceof math.type.Help)

@@ -6,8 +6,8 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sec = math.sec
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({number: 'BigNumber', precision: 21})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ number: 'BigNumber', precision: 21 })
 
 describe('sec', function () {
   it('should return the secant of a boolean', function () {

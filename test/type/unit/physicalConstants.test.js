@@ -16,7 +16,7 @@ describe('physical constants', function () {
     assert.equal(math.magneticConstant.toString(), '1.2566370614e-6 N / A^2')
     assert.equal(math.electricConstant.toString(), '8.854187817e-12 F / m')
     assert.equal(math.vacuumImpedance.toString(), '376.730313461 ohm')
-    assert.equal(math.coulomb.format({precision: 14}), '8.9875517873682e+9 (N m^2) / C^2') // round off issues on IE11 if not using precisions
+    assert.equal(math.coulomb.format({ precision: 14 }), '8.9875517873682e+9 (N m^2) / C^2') // round off issues on IE11 if not using precisions
     assert.equal(math.elementaryCharge.toString(), '1.60217656535e-19 C')
     assert.equal(math.bohrMagneton.toString(), '9.274009682e-24 J / T')
     assert.equal(math.conductanceQuantum.toString(), '7.748091734625e-5 S')
@@ -29,7 +29,7 @@ describe('physical constants', function () {
     // Atomic and nuclear constants
     assert.equal(math.bohrRadius.toString(), '5.291772109217e-11 m')
     assert.equal(math.classicalElectronRadius.toString(), '2.817940326727e-15 m')
-    assert.equal(math.electronMass.format({precision: 14}), '9.109382914e-31 kg')
+    assert.equal(math.electronMass.format({ precision: 14 }), '9.109382914e-31 kg')
     assert.equal(math.fermiCoupling.toString(), '1.1663645e-5 GeV^-2')
     approx.equal(math.fineStructure, 7.297352569824e-3)
     assert.equal(math.hartreeEnergy.toString(), '4.3597443419e-18 J')
@@ -43,7 +43,7 @@ describe('physical constants', function () {
     approx.equal(math.efimovFactor, 22.7)
 
     // Physico-chemical constants
-    assert.equal(math.atomicMass.format({precision: 14}), '1.66053892173e-27 kg') // round-off error
+    assert.equal(math.atomicMass.format({ precision: 14 }), '1.66053892173e-27 kg') // round-off error
     assert.equal(math.avogadro.toString(), '6.0221412927e+23 mol^-1')
     assert.equal(math.boltzmann.toString(), '1.380648813e-23 J / K')
     assert.equal(math.faraday.toString(), '96485.336521 C / mol')

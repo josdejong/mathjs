@@ -7,7 +7,7 @@ const csch = math.csch
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 const acschBig = bigmath.acsch
 const Big = bigmath.bignumber
 

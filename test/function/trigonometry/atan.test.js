@@ -7,7 +7,7 @@ const matrix = math.matrix
 const unit = math.unit
 const atan = math.atan
 const tan = math.tan
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 const atanBig = bigmath.atan
 const Big = bigmath.bignumber
 
@@ -47,7 +47,7 @@ describe('atan', function () {
     assert.deepEqual(arg7.toString(), 'Infinity')
 
     // Hit Newton's method case
-    bigmath.config({precision: 61})
+    bigmath.config({ precision: 61 })
     assert.deepEqual(atanBig(Big(0.9)), Big('0.7328151017865065916407920727342802519857556793582560863105069'))
   })
 
@@ -60,7 +60,7 @@ describe('atan', function () {
   })
 
   it('should be the inverse function of bignumber tan', function () {
-    bigmath.config({precision: 20})
+    bigmath.config({ precision: 20 })
     assert.deepEqual(atanBig(bigmath.tan(Big(-1))), Big(-1))
     assert.deepEqual(atanBig(bigmath.tan(Big(0))), Big(0))
     assert.deepEqual(atanBig(bigmath.tan(Big(0.1))), Big(0.1))

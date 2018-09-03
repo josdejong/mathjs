@@ -1,8 +1,8 @@
 // test bignumber utils
 const assert = require('assert')
 const BigNumber = require('decimal.js')
-const Big32 = BigNumber.clone({precision: 32})
-const Big64 = BigNumber.clone({precision: 64})
+const Big32 = BigNumber.clone({ precision: 32 })
+const Big64 = BigNumber.clone({ precision: 64 })
 const constants = require('../../../src/utils/bignumber/constants')
 
 describe('bignumber', function () {

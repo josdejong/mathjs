@@ -43,7 +43,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  bellNumbers.toTex = {1: `\\mathrm{B}_{\${args[0]}}`}
+  bellNumbers.toTex = { 1: `\\mathrm{B}_{\${args[0]}}` }
 
   return bellNumbers
 }

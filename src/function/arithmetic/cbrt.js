@@ -140,7 +140,7 @@ function factory (type, config, load, typed) {
     }
   }
 
-  cbrt.toTex = {1: `\\sqrt[3]{\${args[0]}}`}
+  cbrt.toTex = { 1: `\\sqrt[3]{\${args[0]}}` }
 
   return cbrt
 }

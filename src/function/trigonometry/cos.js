@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  cos.toTex = {1: `\\cos\\left(\${args[0]}\\right)`}
+  cos.toTex = { 1: `\\cos\\left(\${args[0]}\\right)` }
 
   return cos
 }

@@ -1,7 +1,7 @@
 // test AccessorNode
 const assert = require('assert')
 const math = require('../../../src/main')
-const bigmath = require('../../../src/main').create({number: 'BigNumber'})
+const bigmath = require('../../../src/main').create({ number: 'BigNumber' })
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const OperatorNode = math.expression.node.OperatorNode
@@ -412,7 +412,7 @@ describe('AccessorNode', function () {
 
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
-    assert.equal(n.toString({handler: customFunction}), 'a at const(1, number), const(2, number), ')
+    assert.equal(n.toString({ handler: customFunction }), 'a at const(1, number), const(2, number), ')
   })
 
   it('should LaTeX an AccessorNode', function () {
@@ -450,7 +450,7 @@ describe('AccessorNode', function () {
 
     const n = new AccessorNode(a, new IndexNode([b, c]))
 
-    assert.equal(n.toTex({handler: customFunction}), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ')
+    assert.equal(n.toTex({ handler: customFunction }), ' a at const\\left(1, number\\right), const\\left(2, number\\right), ')
   })
 
   it('toJSON and fromJSON', function () {

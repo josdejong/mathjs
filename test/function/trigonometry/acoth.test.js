@@ -7,9 +7,9 @@ const coth = math.coth
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 21})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 21 })
+const predmath = math.create({ predictable: true })
 const acothBig = bigmath.acoth
 const Big = bigmath.bignumber
 

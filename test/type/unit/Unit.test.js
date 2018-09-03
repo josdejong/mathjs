@@ -524,7 +524,7 @@ describe('Unit', function () {
 
     it('should simplify units when they cancel out with {predictable: true}', function () {
       const origConfig = math.config()
-      math.config({predictable: true})
+      math.config({ predictable: true })
       const unit1 = new Unit(2, 'Hz')
       const unit2 = new Unit(2, 's')
       const unit3 = math.multiply(unit1, unit2)
@@ -551,7 +551,7 @@ describe('Unit', function () {
 
     it('should convert units to appropriate _numeric_ values when they cancel out with {predictable: false}', function () {
       const origConfig = math.config()
-      math.config({predictable: false})
+      math.config({ predictable: false })
 
       assert.equal(typeof (math.eval('40 m * 40 N / (40 J)')), 'number')
 
@@ -616,11 +616,11 @@ describe('Unit', function () {
   describe('json', function () {
     it('toJSON', function () {
       assert.deepEqual(new Unit(5, 'cm').toJSON(),
-        {'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false})
+        { 'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false })
       assert.deepEqual(new Unit(5, 'cm').to('mm').toJSON(),
-        {'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true})
+        { 'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true })
       assert.deepEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
-        {'mathjs': 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true})
+        { 'mathjs': 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true })
       assert.deepEqual(new Unit(math.fraction(0.375), 'cm').toJSON(),
         {
           mathjs: 'Unit',
@@ -645,17 +645,17 @@ describe('Unit', function () {
 
     it('fromJSON', function () {
       const u1 = new Unit(5, 'cm')
-      const u2 = Unit.fromJSON({'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false})
+      const u2 = Unit.fromJSON({ 'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false })
       assert.ok(u2 instanceof Unit)
       assert.deepEqual(u2, u1)
 
       const u3 = new Unit(5, 'cm').to('mm')
-      const u4 = Unit.fromJSON({'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true})
+      const u4 = Unit.fromJSON({ 'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true })
       assert.ok(u4 instanceof Unit)
       assert.deepEqual(u4, u3)
 
       const u5 = new Unit(5, 'kN').to('kg m/s^2')
-      const u6 = Unit.fromJSON({'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true})
+      const u6 = Unit.fromJSON({ 'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true })
       assert.ok(u6 instanceof Unit)
       assert.deepEqual(u5, u6)
 
@@ -919,11 +919,11 @@ describe('Unit', function () {
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function () {
       const origConfig = math.config()
 
-      math.config({number: 'Fraction'})
+      math.config({ number: 'Fraction' })
       const unit1 = Unit.parse('5kg')
       assert(math.type.isFraction(unit1.value))
 
-      math.config({number: 'BigNumber'})
+      math.config({ number: 'BigNumber' })
       const unit2 = Unit.parse('5kg')
       assert(math.type.isBigNumber(unit2.value))
 
@@ -1145,24 +1145,24 @@ describe('Unit', function () {
     })
 
     it('should apply the correct prefixes', function () {
-      Unit.createUnitSingle('millizilch', {definition: '1e-3 m', prefixes: 'long'})
+      Unit.createUnitSingle('millizilch', { definition: '1e-3 m', prefixes: 'long' })
       assert.equal(new Unit(1e-6, 'millizilch').toString(), '1 micromillizilch')
     })
 
     it('should override prefixed built-in units', function () {
-      Unit.createUnitSingle('mm', {definition: '1e-4 m', prefixes: 'short'}) // User is being silly
+      Unit.createUnitSingle('mm', { definition: '1e-4 m', prefixes: 'short' }) // User is being silly
       assert.equal(new Unit(1e-3, 'mm').toString(), '1 mmm') // Use the user's new definition
       assert.equal(new Unit(1e-3, 'mm').to('m').format(4), '1e-7 m') // Use the user's new definition
     })
 
     it('should create aliases', function () {
-      Unit.createUnitSingle('knot', {definition: '0.51444444 m/s', aliases: ['knots', 'kts', 'kt']})
+      Unit.createUnitSingle('knot', { definition: '0.51444444 m/s', aliases: ['knots', 'kts', 'kt'] })
       assert.equal(new Unit(1, 'knot').equals(new Unit(1, 'kts')), true)
       assert.equal(new Unit(1, 'kt').equals(new Unit(1, 'knots')), true)
     })
 
     it('should apply offset correctly', function () {
-      Unit.createUnitSingle('whatsit', {definition: '3.14 kN', offset: 2})
+      Unit.createUnitSingle('whatsit', { definition: '3.14 kN', offset: 2 })
       assert.equal(new Unit(1, 'whatsit').to('kN').toString(), '9.42 kN')
     })
 
@@ -1174,7 +1174,7 @@ describe('Unit', function () {
     })
 
     it('should not override base units', function () {
-      assert.throws(function () { Unit.createUnitSingle('fooBase', '', {override: true}) }, /Cannot create/)
+      assert.throws(function () { Unit.createUnitSingle('fooBase', '', { override: true }) }, /Cannot create/)
     })
 
     it('should create and use a new base if no matching base exists', function () {
@@ -1198,9 +1198,9 @@ describe('Unit', function () {
     })
 
     it('should override units when requested and if able', function () {
-      assert.throws(function () { Unit.createUnit({foo1: ''}) }, /Cannot/)
-      assert.throws(function () { Unit.createUnit({foo1: '', override: true}) }, /Cannot/)
-      Unit.createUnit({foo3: ''}, {override: true})
+      assert.throws(function () { Unit.createUnit({ foo1: '' }) }, /Cannot/)
+      assert.throws(function () { Unit.createUnit({ foo1: '', override: true }) }, /Cannot/)
+      Unit.createUnit({ foo3: '' }, { override: true })
     })
 
     it('should throw error when first parameter is not an object', function () {
@@ -1246,12 +1246,12 @@ describe('Unit', function () {
     })
 
     it('should return SI units for custom units defined from other units', function () {
-      Unit.createUnit({foo: '3 kW'}, {override: true})
+      Unit.createUnit({ foo: '3 kW' }, { override: true })
       assert.equal(Unit.parse('42 foo').toSI().toString(), '1.26e+5 (kg m^2) / s^3')
     })
 
     it('should throw if custom unit not defined from existing units', function () {
-      Unit.createUnit({baz: ''}, {override: true})
+      Unit.createUnit({ baz: '' }, { override: true })
       assert.throws(function () { Unit.parse('10 baz').toSI() }, /Cannot express custom unit/)
     })
   })

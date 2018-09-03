@@ -8,7 +8,7 @@ const derivative = math.derivative
 
 describe('derivative', function () {
   function derivativeWithoutSimplify (expr, value) {
-    return math.derivative(expr, value, {simplify: false})
+    return math.derivative(expr, value, { simplify: false })
   }
 
   function compareString (left, right) {
@@ -22,8 +22,8 @@ describe('derivative', function () {
 
   it('should reckon with option simplify', function () {
     compareString(derivative('2x', 'x'), '2') // default of simplify is true
-    compareString(derivative('2x', 'x', {simplify: true}), '2')
-    compareString(derivative('2x', 'x', {simplify: false}), '2 * 1')
+    compareString(derivative('2x', 'x', { simplify: true }), '2')
+    compareString(derivative('2x', 'x', { simplify: false }), '2 * 1')
   })
 
   it('should create a function node', function () {

@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const mathPredictable = math.create({predictable: true})
+const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
@@ -48,7 +48,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of positive bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     assert.deepEqual(bigmath.log1p(bigmath.bignumber(-1)).toString(), '-Infinity')
     assert.deepEqual(bigmath.log1p(bigmath.bignumber(0)), bigmath.bignumber('0'))
@@ -60,7 +60,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of negative bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     approx.deepEqual(bigmath.log1p(bigmath.bignumber(-2)), complex('0.000000000000000 + 3.141592653589793i'))
     approx.deepEqual(bigmath.log1p(bigmath.bignumber(-3)), complex('0.693147180559945 + 3.141592653589793i'))

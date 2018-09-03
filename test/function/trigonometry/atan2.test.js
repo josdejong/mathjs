@@ -9,7 +9,7 @@ const sparse = math.sparse
 const unit = math.unit
 const divide = math.divide
 const atan2 = math.atan2
-const bigmath = math.create({precision: 20})
+const bigmath = math.create({ precision: 20 })
 const Big = bigmath.bignumber
 const atan2Big = bigmath.atan2
 

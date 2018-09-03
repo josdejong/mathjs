@@ -23,13 +23,13 @@ describe('subset', function () {
   })
 
   it('should get the right subset of an object', function () {
-    const obj = {'foo': 'bar'}
+    const obj = { 'foo': 'bar' }
     assert.deepEqual(subset(obj, index('foo')), 'bar')
     assert.deepEqual(subset(obj, index('bla')), undefined)
   })
 
   it('should throw an error in case of an invalid subset for an object', function () {
-    const obj = {'foo': 'bar'}
+    const obj = { 'foo': 'bar' }
     const i = index('a', 'b')
     assert.throws(function () { subset(obj, i) }, /DimensionError/)
   })
@@ -128,7 +128,7 @@ describe('subset', function () {
     it('should set a property of an object', function () {
       const obj = {}
       const res = subset(obj, index('foo'), 'bar')
-      assert.deepEqual(res, {foo: 'bar'})
+      assert.deepEqual(res, { foo: 'bar' })
       assert.deepEqual(obj, {}) // should leave the original object untouched
     })
 

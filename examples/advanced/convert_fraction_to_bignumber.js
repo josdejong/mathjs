@@ -16,7 +16,7 @@ const core = require('../../core')
 const math = core.create()
 
 // Configure to use fractions by default
-math.config({number: 'Fraction'})
+math.config({ number: 'Fraction' })
 
 // Add a conversion from Faction -> BigNumber
 // this conversion:

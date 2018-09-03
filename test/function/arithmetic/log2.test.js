@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const mathPredictable = math.create({predictable: true})
+const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
@@ -41,7 +41,7 @@ describe('log2', function () {
   })
 
   it('should return the log of positive bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     assert.deepEqual(bigmath.log2(bigmath.bignumber(1)), bigmath.bignumber(0))
     assert.deepEqual(bigmath.log2(bigmath.bignumber(2)), bigmath.bignumber(1))
@@ -52,7 +52,7 @@ describe('log2', function () {
   })
 
   it('should return the log of negative bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     approx.deepEqual(bigmath.log2(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 4.532360141827194i'))
     approx.deepEqual(bigmath.log2(bigmath.bignumber(-2)), bigmath.complex('1 + 4.532360141827194i'))
@@ -60,7 +60,7 @@ describe('log2', function () {
   })
 
   it('should return the log of a bignumber with value zero', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     assert.deepEqual(bigmath.log2(bigmath.bignumber(0)).toString(), '-Infinity')
   })

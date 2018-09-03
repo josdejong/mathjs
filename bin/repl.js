@@ -7,4 +7,4 @@
 global.math = require('../index')
 const repl = require('repl')
 
-repl.start({useGlobal: true})
+repl.start({ useGlobal: true })

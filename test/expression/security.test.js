@@ -342,12 +342,12 @@ describe('security', function () {
   })
 
   it('should allow accessing properties on an object', function () {
-    assert.deepEqual(math.eval('obj.a', {obj: {a: 42}}), 42)
+    assert.deepEqual(math.eval('obj.a', { obj: { a: 42 } }), 42)
   })
 
   it('should not allow accessing inherited properties on an object', function () {
     assert.throws(function () {
-      math.eval('obj.constructor', {obj: {a: 42}})
+      math.eval('obj.constructor', { obj: { a: 42 } })
     }, /Error: No access to property "constructor"/)
   })
 

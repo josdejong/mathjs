@@ -46,7 +46,7 @@ describe('identity', function () {
   })
 
   it('should return an array when setting matrix=="array"', function () {
-    const math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({ matrix: 'Array' })
     assert.deepEqual(math2.identity(2), [[1, 0], [0, 1]])
   })
 

@@ -72,14 +72,14 @@ describe('range', function () {
   })
 
   it('should parse a range with bignumbers', function () {
-    const bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({ number: 'BigNumber' })
     const bignumber = bigmath.bignumber
     assert.deepEqual(bigmath.range('1:3'), matrix([bignumber(1), bignumber(2)]))
     assert.deepEqual(bigmath.range('3:-1:0'), matrix([bignumber(3), bignumber(2), bignumber(1)]))
   })
 
   it('should throw an error when parsing a an invalid string to a bignumber range', function () {
-    const bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({ number: 'BigNumber' })
     assert.throws(function () { bigmath.range('1:a') }, /is no valid range/)
   })
 

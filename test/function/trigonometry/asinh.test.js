@@ -7,8 +7,8 @@ const sinh = math.sinh
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 21})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 21 })
 const asinhBig = bigmath.asinh
 const Big = bigmath.bignumber
 

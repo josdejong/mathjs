@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
       return options.simplify ? simplify(res) : res
     },
     'Node, SymbolNode': function (expr, variable) {
-      return derivative(expr, variable, {simplify: true})
+      return derivative(expr, variable, { simplify: true })
     },
 
     'string, SymbolNode': function (expr, variable) {

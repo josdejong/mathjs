@@ -25,7 +25,7 @@ describe('sort', function () {
   })
 
   it('should sort an array naturally', function () {
-    assert.deepEqual(math.sort([{a: 4}, {a: 2}, {a: 3}], 'natural'), [{a: 2}, {a: 3}, {a: 4}])
+    assert.deepEqual(math.sort([{ a: 4 }, { a: 2 }, { a: 3 }], 'natural'), [{ a: 2 }, { a: 3 }, { a: 4 }])
   })
 
   it('should sort an array with a custom compare function', function () {

@@ -86,7 +86,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  det.toTex = {1: `\\det\\left(\${args[0]}\\right)`}
+  det.toTex = { 1: `\\det\\left(\${args[0]}\\right)` }
 
   return det
 

@@ -9,11 +9,11 @@ describe('Index', function () {
   it('should create an Index', function () {
     assert.deepEqual(new Index(0, 2)._dimensions, [new ImmutableDenseMatrix([0]), new ImmutableDenseMatrix([2])])
 
-    assert.deepEqual(new Index(new Range(0, 10))._dimensions, [{start: 0, end: 10, step: 1}])
-    assert.deepEqual(new Index(new Range(0, 10, 2))._dimensions, [{start: 0, end: 10, step: 2}])
+    assert.deepEqual(new Index(new Range(0, 10))._dimensions, [{ start: 0, end: 10, step: 1 }])
+    assert.deepEqual(new Index(new Range(0, 10, 2))._dimensions, [{ start: 0, end: 10, step: 2 }])
     assert.deepEqual(new Index(new Range(0, 10), new Range(4, 6))._dimensions, [
-      {start: 0, end: 10, step: 1},
-      {start: 4, end: 6, step: 1}
+      { start: 0, end: 10, step: 1 },
+      { start: 4, end: 6, step: 1 }
     ])
     assert.deepEqual(new Index(new ImmutableDenseMatrix([0, 10]))._dimensions, [new ImmutableDenseMatrix([0, 10])])
     assert.deepEqual(new Index([0, 10])._dimensions, [new ImmutableDenseMatrix([0, 10])])
@@ -21,7 +21,7 @@ describe('Index', function () {
   })
 
   it('should create an Index from a Range', function () {
-    assert.deepEqual(new Index(new Range(0, 10))._dimensions, [{start: 0, end: 10, step: 1}])
+    assert.deepEqual(new Index(new Range(0, 10))._dimensions, [{ start: 0, end: 10, step: 1 }])
   })
 
   it('should create an Index from a Matrix', function () {
@@ -129,20 +129,20 @@ describe('Index', function () {
 
   it('toJSON', function () {
     assert.deepEqual(new Index(new Range(0, 10), 2, new ImmutableDenseMatrix([1, 2, 3])).toJSON(),
-      {'mathjs': 'Index',
+      { 'mathjs': 'Index',
         dimensions: [
           new Range(0, 10, 1),
           new ImmutableDenseMatrix([2]),
           new ImmutableDenseMatrix([1, 2, 3])
-        ]})
+        ] })
   })
 
   it('fromJSON', function () {
-    const json = {dimensions: [
+    const json = { dimensions: [
       new Range(0, 10, 1),
       new ImmutableDenseMatrix([2]),
       new ImmutableDenseMatrix([1, 2, 3])
-    ]}
+    ] }
     const i1 = new Index(new Range(0, 10), 2, new ImmutableDenseMatrix([1, 2, 3]))
 
     const i2 = Index.fromJSON(json)
@@ -181,10 +181,10 @@ describe('Index', function () {
     })
 
     assert.deepEqual(log, [
-      {dimension: new ImmutableDenseMatrix([2]), index: 0},
-      {dimension: new Range(0, 8, 2), index: 1},
-      {dimension: new Range(3, -1, -1), index: 2},
-      {dimension: new ImmutableDenseMatrix([1, 2, 3]), index: 3}
+      { dimension: new ImmutableDenseMatrix([2]), index: 0 },
+      { dimension: new Range(0, 8, 2), index: 1 },
+      { dimension: new Range(3, -1, -1), index: 2 },
+      { dimension: new ImmutableDenseMatrix([1, 2, 3]), index: 3 }
     ])
   })
 

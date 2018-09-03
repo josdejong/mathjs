@@ -68,7 +68,7 @@ describe('Chain', function () {
   })
 
   it('should create a proxy for imported functions', function () {
-    math.import({hello: function (a) { return a + '!' }})
+    math.import({ hello: function (a) { return a + '!' } })
     const a = new Chain('hello').hello().done()
     assert.strictEqual(a, 'hello!')
   })

@@ -49,12 +49,12 @@ describe('distribution', function () {
 
   before(function () {
     // Seed Random Number Generator for Reproducibility
-    math.config({randomSeed: 'test'})
+    math.config({ randomSeed: 'test' })
   })
 
   after(function () {
     // Randomly seed random number generator
-    math.config({randomSeed: null})
+    math.config({ randomSeed: null })
   })
 
   beforeEach(function () {

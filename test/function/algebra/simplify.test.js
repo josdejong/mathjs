@@ -41,9 +41,9 @@ describe('simplify', function () {
 
   it('should not change the value of the function', function () {
     simplifyAndCompareEval('3+2/4+2*8', '39/2')
-    simplifyAndCompareEval('x+1+x', '2x+1', {x: 7})
-    simplifyAndCompareEval('x+1+2x', '3x+1', {x: 7})
-    simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', {x: 7})
+    simplifyAndCompareEval('x+1+x', '2x+1', { x: 7 })
+    simplifyAndCompareEval('x+1+2x', '3x+1', { x: 7 })
+    simplifyAndCompareEval('x^2+x-3+x^2', '2x^2+x-3', { x: 7 })
   })
 
   it('should simplify exponents', function () {
@@ -125,7 +125,7 @@ describe('simplify', function () {
 
   it('should simplifyCore convert +unaryMinus to subtract', function () {
     simplifyAndCompareEval('--2', '2')
-    const result = math.simplify('x + y + a', [math.simplify.simplifyCore], {a: -1}).toString()
+    const result = math.simplify('x + y + a', [math.simplify.simplifyCore], { a: -1 }).toString()
     assert.equal(result, 'x + y - 1')
   })
 
@@ -156,10 +156,10 @@ describe('simplify', function () {
     const s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
     const f = new node.FunctionNode(s, [new node.SymbolNode('x')])
     assert.equal(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
-    assert.equal(f.eval({x: 5}), 0.9933071490757153)
+    assert.equal(f.eval({ x: 5 }), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.equal(fsimplified.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
-    assert.equal(fsimplified.eval({x: 5}), 0.9933071490757153)
+    assert.equal(fsimplified.eval({ x: 5 }), 0.9933071490757153)
   })
 
   it('should simplify (n- -n1)', function () {
@@ -176,7 +176,7 @@ describe('simplify', function () {
   })
 
   it('should preserve the value of BigNumbers', function () {
-    const bigmath = math.create({number: 'BigNumber', precision: 64})
+    const bigmath = math.create({ number: 'BigNumber', precision: 64 })
     assert.deepEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.eval('222222222222222222'))
     assert.deepEqual(bigmath.simplify('1 + 111111111111111111').eval(), bigmath.eval('111111111111111112'))
     assert.deepEqual(bigmath.simplify('1/2 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.5'))
@@ -258,7 +258,7 @@ describe('simplify', function () {
   })
 
   it('should support custom rules', function () {
-    const node = math.simplify('y+x', [{l: 'n1-n2', r: '-n2+n1'}], {x: 5})
+    const node = math.simplify('y+x', [{ l: 'n1-n2', r: '-n2+n1' }], { x: 5 })
     assert.equal(node.toString(), 'y + 5')
   })
 
@@ -293,40 +293,40 @@ describe('simplify', function () {
 
   it('new options parameters', function () {
     simplifyAndCompare('0.1*x', 'x/10')
-    simplifyAndCompare('0.1*x', 'x/10', math.simplify.rules, {}, {exactFractions: true})
-    simplifyAndCompare('0.1*x', '0.1*x', math.simplify.rules, {}, {exactFractions: false})
-    simplifyAndCompare('y+0.1*x', 'x/10+1', {y: 1})
-    simplifyAndCompare('y+0.1*x', 'x/10+1', {y: 1}, {exactFractions: true})
-    simplifyAndCompare('y+0.1*x', '0.1*x+1', {y: 1}, {exactFractions: false})
+    simplifyAndCompare('0.1*x', 'x/10', math.simplify.rules, {}, { exactFractions: true })
+    simplifyAndCompare('0.1*x', '0.1*x', math.simplify.rules, {}, { exactFractions: false })
+    simplifyAndCompare('y+0.1*x', 'x/10+1', { y: 1 })
+    simplifyAndCompare('y+0.1*x', 'x/10+1', { y: 1 }, { exactFractions: true })
+    simplifyAndCompare('y+0.1*x', '0.1*x+1', { y: 1 }, { exactFractions: false })
   })
 
   it('resolve() should substitute scoped constants', function () {
     assert.equal(
-      math.simplify.resolve(math.parse('x+y'), {x: 1}).toString(),
+      math.simplify.resolve(math.parse('x+y'), { x: 1 }).toString(),
       '1 + y'
     ) // direct
     simplifyAndCompare('x+y', 'x+y', {}) // operator
-    simplifyAndCompare('x+y', 'y+1', {x: 1})
-    simplifyAndCompare('x+y', 'y+1', {x: math.parse('1')})
-    simplifyAndCompare('x+y', '3', {x: 1, y: 2})
+    simplifyAndCompare('x+y', 'y+1', { x: 1 })
+    simplifyAndCompare('x+y', 'y+1', { x: math.parse('1') })
+    simplifyAndCompare('x+y', '3', { x: 1, y: 2 })
     simplifyAndCompare('x+x+x', '3*x')
-    simplifyAndCompare('y', 'x+1', {y: math.parse('1+x')})
-    simplifyAndCompare('y', '3', {x: 2, y: math.parse('1+x')})
-    simplifyAndCompare('x+y', '3*x', {y: math.parse('x+x')})
-    simplifyAndCompare('x+y', '6', {x: 2, y: math.parse('x+x')})
-    simplifyAndCompare('x+(y+2-1-1)', '6', {x: 2, y: math.parse('x+x')}) // parentheses
-    simplifyAndCompare('log(x+y)', String(Math.log(6)), {x: 2, y: math.parse('x+x')}) // function
+    simplifyAndCompare('y', 'x+1', { y: math.parse('1+x') })
+    simplifyAndCompare('y', '3', { x: 2, y: math.parse('1+x') })
+    simplifyAndCompare('x+y', '3*x', { y: math.parse('x+x') })
+    simplifyAndCompare('x+y', '6', { x: 2, y: math.parse('x+x') })
+    simplifyAndCompare('x+(y+2-1-1)', '6', { x: 2, y: math.parse('x+x') }) // parentheses
+    simplifyAndCompare('log(x+y)', String(Math.log(6)), { x: 2, y: math.parse('x+x') }) // function
     simplifyAndCompare('combinations( ceil(abs(sin(x)) * y), abs(x) )',
-      'combinations(ceil(0.9092974268256817 * y ), 2)', {x: -2})
+      'combinations(ceil(0.9092974268256817 * y ), 2)', { x: -2 })
 
     // TODO(deal with accessor nodes) simplifyAndCompare('size(text)[1]', '11', {text: "hello world"})
   })
 
   it('should keep implicit multiplication implicit', function () {
     const f = math.parse('2x')
-    assert.equal(f.toString({implicit: 'hide'}), '2 x')
+    assert.equal(f.toString({ implicit: 'hide' }), '2 x')
     const simplified = math.simplify(f)
-    assert.equal(simplified.toString({implicit: 'hide'}), '2 x')
+    assert.equal(simplified.toString({ implicit: 'hide' }), '2 x')
   })
 
   describe('expression parser', function () {

@@ -133,7 +133,7 @@ describe('rationalize', function () {
   })
 
   it('testing scope', function () {
-    assert.equal(stri(math.rationalize('x+x+x+y', {y: 1})), '3*x+1')
+    assert.equal(stri(math.rationalize('x+x+x+y', { y: 1 })), '3*x+1')
     assert.equal(stri(math.rationalize('x+x+x+y', {})), '3*x+y')
   })
 
@@ -161,21 +161,21 @@ describe('rationalize', function () {
       numerator: '5*x^2-2',
       variables: 'x'
     })
-    assert.deepEqual(objToStrings(math.rationalize('x^2 + 2*x*y + 3', {y: 5}, true)), {
+    assert.deepEqual(objToStrings(math.rationalize('x^2 + 2*x*y + 3', { y: 5 }, true)), {
       coefficients: '3,10,1',
       denominator: null,
       expression: 'x^2+10*x+3',
       numerator: 'x^2+10*x+3',
       variables: 'x'
     })
-    assert.deepEqual(objToStrings(math.rationalize('(x^2 + 2*x*y + 3)/(2y-3x)', {y: 5}, true)), {
+    assert.deepEqual(objToStrings(math.rationalize('(x^2 + 2*x*y + 3)/(2y-3x)', { y: 5 }, true)), {
       coefficients: '3,10,1',
       denominator: '-3*x+10',
       expression: '(x^2+10*x+3)/(-3*x+10)',
       numerator: 'x^2+10*x+3',
       variables: 'x'
     })
-    assert.deepEqual(objToStrings(math.rationalize('sin(y)+x', {y: math.PI / 6}, true)), {
+    assert.deepEqual(objToStrings(math.rationalize('sin(y)+x', { y: math.PI / 6 }, true)), {
       coefficients: '0.49999999999999994,1',
       denominator: null,
       expression: 'x+0.49999999999999994',

@@ -53,7 +53,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  asech.toTex = {1: `\\mathrm{sech}^{-1}\\left(\${args[0]}\\right)`}
+  asech.toTex = { 1: `\\mathrm{sech}^{-1}\\left(\${args[0]}\\right)` }
 
   return asech
 }

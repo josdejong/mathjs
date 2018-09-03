@@ -7,9 +7,9 @@ const matrix = math.matrix
 const unit = math.unit
 const acsc = math.acsc
 const csc = math.csc
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 21})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 21 })
+const predmath = math.create({ predictable: true })
 const acscBig = bigmath.acsc
 const Big = bigmath.bignumber
 
@@ -53,7 +53,7 @@ describe('acsc', function () {
     assert.deepEqual(arg3, Big(-1))
 
     // Hit Newton's method case
-    bigmath.config({precision: 61})
+    bigmath.config({ precision: 61 })
 
     const arg4 = Big(1.00000001)
     assert.deepEqual(acscBig(arg4), Big('1.570654905439248565373629613450057180739125884090554026623514'))
@@ -73,7 +73,7 @@ describe('acsc', function () {
   })
 
   it('should be the inverse function of bignumber csc', function () {
-    bigmath.config({precision: 61})
+    bigmath.config({ precision: 61 })
     assert.deepEqual(acscBig(bigmath.csc(Big(-2))), Big('-1.141592653589793238462643383279502884197169399375105820974946'))
     // wolfram:                                          -1.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132
     assert.deepEqual(acscBig(bigmath.csc(Big(-0.5))), Big('-0.4999999999999999999999999999999999999999999999999999999999999'))
@@ -83,7 +83,7 @@ describe('acsc', function () {
     assert.deepEqual(acscBig(bigmath.csc(Big(2))), Big('1.141592653589793238462643383279502884197169399375105820974946'))
 
     // Full decimal Taylor test cases
-    bigmath.config({precision: 20})
+    bigmath.config({ precision: 20 })
     assert.deepEqual(acscBig(bigmath.csc(Big(0))), Big(0))
     assert.deepEqual(acscBig(bigmath.csc(Big(0.1))), Big('0.099999999999999999997'))
     assert.deepEqual(acscBig(bigmath.csc(Big(0.5))), Big(0.5))

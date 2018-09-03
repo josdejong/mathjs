@@ -8,11 +8,11 @@ describe('index', function () {
   it('should create an index', function () {
     const index = math.index(new Range(2, 6))
     assert.ok(index instanceof math.type.Index)
-    assert.deepEqual(index._dimensions, [{start: 2, end: 6, step: 1}])
+    assert.deepEqual(index._dimensions, [{ start: 2, end: 6, step: 1 }])
 
     const index2 = math.index(new Range(0, 4), new Range(5, 2, -1))
     assert.ok(index2 instanceof math.type.Index)
-    assert.deepEqual(index2._dimensions, [{start: 0, end: 4, step: 1}, {start: 5, end: 2, step: -1}])
+    assert.deepEqual(index2._dimensions, [{ start: 0, end: 4, step: 1 }, { start: 5, end: 2, step: -1 }])
   })
 
   it('should create an index from bignumbers (downgrades to numbers)', function () {

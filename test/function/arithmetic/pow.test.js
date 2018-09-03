@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const mathPredictable = math.create({predictable: true})
+const mathPredictable = math.create({ predictable: true })
 const bignumber = math.bignumber
 const fraction = math.fraction
 const complex = math.complex

@@ -202,7 +202,7 @@ describe('IndexNode', function () {
 
     const n = new IndexNode([b, c])
 
-    assert.equal(n.toString({handler: customFunction}), 'const(1, number), const(2, number)')
+    assert.equal(n.toString({ handler: customFunction }), 'const(1, number), const(2, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -257,6 +257,6 @@ describe('IndexNode', function () {
     const c = new ConstantNode(2)
     const n = new IndexNode([b, c])
 
-    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right), const\\left(2, number\\right)')
+    assert.equal(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right), const\\left(2, number\\right)')
   })
 })

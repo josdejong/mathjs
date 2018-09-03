@@ -47,12 +47,12 @@ describe('complex', function () {
   })
 
   it('should accept polar coordinates as input', function () {
-    assert.deepEqual(complex({r: 1, phi: 1}), math.type.Complex.fromPolar(1, 1))
-    assert.deepEqual(complex({abs: 1, arg: 1}), math.type.Complex.fromPolar(1, 1))
+    assert.deepEqual(complex({ r: 1, phi: 1 }), math.type.Complex.fromPolar(1, 1))
+    assert.deepEqual(complex({ abs: 1, arg: 1 }), math.type.Complex.fromPolar(1, 1))
   })
 
   it('should accept an object with im and re as keys', function () {
-    assert.deepEqual(complex({re: 1, im: 2}), new math.type.Complex(1, 2))
+    assert.deepEqual(complex({ re: 1, im: 2 }), new math.type.Complex(1, 2))
   })
 
   it('should throw an error if called with a string', function () {

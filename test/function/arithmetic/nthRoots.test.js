@@ -8,12 +8,12 @@ describe('nthRoots', function () {
   it('should return an array of Complex roots', function () {
     const roots = nthRoots(complex('-1'), 6)
     const roots1 = [
-      complex({r: 1, phi: Math.PI / 6}),
+      complex({ r: 1, phi: Math.PI / 6 }),
       complex(0, 1),
-      complex({r: 1, phi: (5 * Math.PI) / 6}),
-      complex({r: 1, phi: (7 * Math.PI) / 6}),
+      complex({ r: 1, phi: (5 * Math.PI) / 6 }),
+      complex({ r: 1, phi: (7 * Math.PI) / 6 }),
       complex(0, -1),
-      complex({r: 1, phi: (11 * Math.PI) / 6})
+      complex({ r: 1, phi: (11 * Math.PI) / 6 })
     ]
 
     roots.forEach(function (value, index, array) {

@@ -30,8 +30,8 @@ describe('BlockNode', function () {
   it('should throw an error when adding invalid blocks', function () {
     assert.throws(function () { console.log(new BlockNode()) }, /Array expected/)
     assert.throws(function () { console.log(new BlockNode([2])) }, /Property "node" must be a Node/)
-    assert.throws(function () { console.log(new BlockNode([{node: 2, visible: true}])) }, /Property "node" must be a Node/)
-    assert.throws(function () { console.log(new BlockNode([{node: new Node(), visible: 2}])) }, /Property "visible" must be a boolean/)
+    assert.throws(function () { console.log(new BlockNode([{ node: 2, visible: true }])) }, /Property "node" must be a Node/)
+    assert.throws(function () { console.log(new BlockNode([{ node: new Node(), visible: 2 }])) }, /Property "visible" must be a boolean/)
   })
 
   it('should compile and evaluate a BlockNode', function () {
@@ -52,12 +52,12 @@ describe('BlockNode', function () {
 
     let scope = {}
     assert.deepEqual(n.compile().eval(scope), new ResultSet([5, 3]))
-    assert.deepEqual(scope, {foo: 3})
+    assert.deepEqual(scope, { foo: 3 })
   })
 
   it('expressions should be visible by default', function () {
     const n = new BlockNode([
-      {node: new ConstantNode(5)}
+      { node: new ConstantNode(5) }
     ])
 
     assert.deepEqual(n.compile().eval(), new ResultSet([5]))
@@ -70,9 +70,9 @@ describe('BlockNode', function () {
     const b = new AssignmentNode(foo, b2)
     const c = new SymbolNode('foo')
     const d = new BlockNode([
-      {node: a, visible: true},
-      {node: b, visible: false},
-      {node: c, visible: true}
+      { node: a, visible: true },
+      { node: b, visible: false },
+      { node: c, visible: true }
     ])
 
     assert.deepEqual(d.filter(function (node) { return node instanceof BlockNode }), [d])
@@ -88,8 +88,8 @@ describe('BlockNode', function () {
     const two = new ConstantNode(2)
     const c = new OperatorNode('+', 'add', [two, x])
     const a = new BlockNode([
-      {node: x},
-      {node: c}
+      { node: x },
+      { node: c }
     ])
 
     const nodes = []
@@ -112,8 +112,8 @@ describe('BlockNode', function () {
     const two = new ConstantNode(2)
     const c = new OperatorNode('+', 'add', [two, x])
     const a = new BlockNode([
-      {node: x},
-      {node: c}
+      { node: x },
+      { node: c }
     ])
 
     const nodes = []
@@ -145,8 +145,8 @@ describe('BlockNode', function () {
     const two = new ConstantNode(2)
     const c = new OperatorNode('+', 'add', [two, x])
     const a = new BlockNode([
-      {node: x},
-      {node: c}
+      { node: x },
+      { node: c }
     ])
 
     assert.throws(function () {
@@ -159,8 +159,8 @@ describe('BlockNode', function () {
     const b = new SymbolNode('x')
     const c = new ConstantNode(2)
     const a = new BlockNode([
-      {node: b},
-      {node: c}
+      { node: b },
+      { node: c }
     ])
 
     const d = new ConstantNode(3)
@@ -190,8 +190,8 @@ describe('BlockNode', function () {
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
     const c = new BlockNode([
-      {node: a, visible: true},
-      {node: b, visible: true}
+      { node: a, visible: true },
+      { node: b, visible: true }
     ])
 
     let count = 0
@@ -227,8 +227,8 @@ describe('BlockNode', function () {
     const b = new SymbolNode('x')
     const c = new ConstantNode(2)
     const a = new BlockNode([
-      {node: b},
-      {node: c}
+      { node: b },
+      { node: c }
     ])
 
     const d = a.clone()
@@ -243,11 +243,11 @@ describe('BlockNode', function () {
   })
 
   it('test equality another Node', function () {
-    const a = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2)} ])
-    const b = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2)} ])
-    const c = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(4)} ])
-    const d = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2), visible: false} ])
-    const e = new BlockNode([ {node: new SymbolNode('x')}, {node: new ConstantNode(2)}, {node: new ConstantNode(5)} ])
+    const a = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2) } ])
+    const b = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2) } ])
+    const c = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(4) } ])
+    const d = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2), visible: false } ])
+    const e = new BlockNode([ { node: new SymbolNode('x') }, { node: new ConstantNode(2) }, { node: new ConstantNode(5) } ])
 
     assert.strictEqual(a.equals(null), false)
     assert.strictEqual(a.equals(undefined), false)
@@ -259,9 +259,9 @@ describe('BlockNode', function () {
 
   it('should stringify a BlockNode', function () {
     const n = new BlockNode([
-      {node: new ConstantNode(5), visible: true},
-      {node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)), visible: false},
-      {node: new SymbolNode('foo'), visible: true}
+      { node: new ConstantNode(5), visible: true },
+      { node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)), visible: false },
+      { node: new SymbolNode('foo'), visible: true }
     ])
 
     assert.equal(n.toString(), '5\nfoo = 3;\nfoo')
@@ -285,17 +285,17 @@ describe('BlockNode', function () {
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
 
-    const n = new BlockNode([{node: a}, {node: b}])
+    const n = new BlockNode([{ node: a }, { node: b }])
 
-    assert.equal(n.toString({handler: customFunction}), 'const(1, number); const(2, number); ')
+    assert.equal(n.toString({ handler: customFunction }), 'const(1, number); const(2, number); ')
   })
 
   it('toJSON and fromJSON', function () {
     const b = new ConstantNode(1)
     const c = new ConstantNode(2)
 
-    const bBlock = {node: b, visible: false}
-    const cBlock = {node: c, visible: true}
+    const bBlock = { node: b, visible: false }
+    const cBlock = { node: c, visible: true }
 
     const node = new BlockNode([bBlock, cBlock])
 
@@ -312,9 +312,9 @@ describe('BlockNode', function () {
 
   it('should LaTeX a BlockNode', function () {
     const n = new BlockNode([
-      {node: new ConstantNode(5), visible: true},
-      {node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)), visible: false},
-      {node: new SymbolNode('foo'), visible: true}
+      { node: new ConstantNode(5), visible: true },
+      { node: new AssignmentNode(new SymbolNode('foo'), new ConstantNode(3)), visible: false },
+      { node: new SymbolNode('foo'), visible: true }
     ])
 
     assert.equal(n.toTex(), '5\\;\\;\n foo:=3;\\;\\;\n foo')
@@ -338,8 +338,8 @@ describe('BlockNode', function () {
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
 
-    const n = new BlockNode([{node: a}, {node: b}])
+    const n = new BlockNode([{ node: a }, { node: b }])
 
-    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right); const\\left(2, number\\right); ')
+    assert.equal(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right); const\\left(2, number\\right); ')
   })
 })

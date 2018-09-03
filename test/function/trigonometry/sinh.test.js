@@ -5,7 +5,7 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sinh = math.sinh
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 const EPSILON = 1e-14
 
@@ -64,7 +64,7 @@ describe('sinh', function () {
     assert.deepEqual(arg2, Big(-1))
     assert.deepEqual(arg7.toString(), 'Infinity')
 
-    bigmath.config({precision: 50})
+    bigmath.config({ precision: 50 })
     assert.deepEqual(sinhBig(Big(1e-50)), Big(1e-50))
   })
 

@@ -29,7 +29,7 @@ describe('util.function', function () {
 
       const m = functionUtils.memoize(f)
 
-      assert.strictEqual(m({x: 2, y: 3}), 6)
+      assert.strictEqual(m({ x: 2, y: 3 }), 6)
       assert.deepEqual(Object.keys(m.cache), ['[{"x":2,"y":3}]'])
       assert.strictEqual(m.cache['[{"x":2,"y":3}]'], 6)
     })
@@ -42,7 +42,7 @@ describe('util.function', function () {
 
       const m = functionUtils.memoize(f, hashIt)
 
-      assert.strictEqual(m({id: 2}), 2)
+      assert.strictEqual(m({ id: 2 }), 2)
       assert.deepEqual(Object.keys(m.cache), ['id:2'])
       assert.strictEqual(m.cache['id:2'], 2)
     })

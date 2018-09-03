@@ -79,8 +79,8 @@ describe('sum', function () {
   })
 
   it('should return zero if called with an empty array', function () {
-    const bigMath = math.create({number: 'BigNumber'})
-    const fracMath = math.create({number: 'Fraction'})
+    const bigMath = math.create({ number: 'BigNumber' })
+    const fracMath = math.create({ number: 'Fraction' })
 
     const big = bigMath.sum([])
     const frac = fracMath.sum([])

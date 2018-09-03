@@ -101,7 +101,7 @@ describe('smaller', function () {
     assert.equal(mymath.smaller(0.991, 1), true)
     assert.equal(mymath.smaller(math.bignumber(0.991), math.bignumber(1)), true)
 
-    mymath.config({epsilon: 1e-2})
+    mymath.config({ epsilon: 1e-2 })
     assert.equal(mymath.smaller(0.991, 1), false)
     assert.equal(mymath.smaller(math.bignumber(0.991), math.bignumber(1)), false)
   })

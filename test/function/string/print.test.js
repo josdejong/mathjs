@@ -4,7 +4,7 @@ const math = require('../../../src/main')
 
 describe('print', function () {
   it('should interpolate values in a template (object template)', function () {
-    assert.equal(math.print('hello, $name!', {name: 'user'}), 'hello, user!')
+    assert.equal(math.print('hello, $name!', { name: 'user' }), 'hello, user!')
   })
 
   it('should interpolate values from a nested object in a template (object template)', function () {
@@ -27,22 +27,22 @@ describe('print', function () {
   })
 
   it('should round interpolate values with provided precision (object template)', function () {
-    assert.equal(math.print('pi=$pi', {pi: math.pi}, 3), 'pi=3.14')
+    assert.equal(math.print('pi=$pi', { pi: math.pi }, 3), 'pi=3.14')
   })
 
   it('should leave unresolved variables untouched (object template)', function () {
-    assert.equal(math.print('$a,$b', {b: 2}), '$a,2')
-    assert.equal(math.print('$a.value,$b.value', {a: {}, b: {value: 2}}), '$a.value,2')
+    assert.equal(math.print('$a,$b', { b: 2 }), '$a,2')
+    assert.equal(math.print('$a.value,$b.value', { a: {}, b: { value: 2 } }), '$a.value,2')
   })
 
   it('should leave unresolved variables untouched (mixed object/array template)', function () {
-    assert.equal(math.print('$a.0,$b.value', {a: [], b: {value: 2}}), '$a.0,2')
+    assert.equal(math.print('$a.0,$b.value', { a: [], b: { value: 2 } }), '$a.0,2')
   })
 
   it('should leave trailing point intact (object template)', function () {
-    assert.equal(math.print('Hello $name.', {name: 'user'}), 'Hello user.')
-    assert.equal(math.print('Hello $name...', {name: 'user'}), 'Hello user...')
-    assert.equal(math.print('Hello $user.name.', {user: {name: 'user'}}), 'Hello user.')
+    assert.equal(math.print('Hello $name.', { name: 'user' }), 'Hello user.')
+    assert.equal(math.print('Hello $name...', { name: 'user' }), 'Hello user...')
+    assert.equal(math.print('Hello $user.name.', { user: { name: 'user' } }), 'Hello user.')
   })
 
   it('should interpolate values in a template (array template)', function () {

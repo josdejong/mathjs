@@ -8,12 +8,12 @@ const ResultSet = math.type.ResultSet
 describe('ResultSet', function () {
   it('should create a ResultSet without entries', function () {
     const r = new ResultSet()
-    assert.deepEqual(r, {entries: []})
+    assert.deepEqual(r, { entries: [] })
   })
 
   it('should create a ResultSet with entries', function () {
     const r = new ResultSet([1, 2, 3])
-    assert.deepEqual(r, {entries: [1, 2, 3]})
+    assert.deepEqual(r, { entries: [1, 2, 3] })
   })
 
   it('should throw an error when called without the new operator', function () {
@@ -42,13 +42,13 @@ describe('ResultSet', function () {
 
   it('toJSON', function () {
     const r = new ResultSet([1, 2, 3])
-    const json = {'mathjs': 'ResultSet', 'entries': [1, 2, 3]}
+    const json = { 'mathjs': 'ResultSet', 'entries': [1, 2, 3] }
     assert.deepEqual(r.toJSON(), json)
   })
 
   it('fromJSON', function () {
     const r1 = new ResultSet([1, 2, 3])
-    const json = {'mathjs': 'ResultSet', 'entries': [1, 2, 3]}
+    const json = { 'mathjs': 'ResultSet', 'entries': [1, 2, 3] }
     const r2 = ResultSet.fromJSON(json)
     assert(r2 instanceof ResultSet)
     assert.deepEqual(r2, r1)

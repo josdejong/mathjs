@@ -1,7 +1,7 @@
 // test ConstantNode
 const assert = require('assert')
 const math = require('../../../src/main')
-const bigmath = require('../../../src/main').create({number: 'BigNumber'})
+const bigmath = require('../../../src/main').create({ number: 'BigNumber' })
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode
@@ -127,7 +127,7 @@ describe('ConstantNode', function () {
     assert.strictEqual(a.equals(new ConstantNode(3)), false)
     assert.strictEqual(a.equals(new ConstantNode('2')), false)
     assert.strictEqual(a.equals(new SymbolNode('2')), false)
-    assert.strictEqual(a.equals({value: 2}), false)
+    assert.strictEqual(a.equals({ value: 2 }), false)
   })
 
   it('should stringify a ConstantNode', function () {
@@ -152,7 +152,7 @@ describe('ConstantNode', function () {
 
     const n = new ConstantNode(1)
 
-    assert.equal(n.toString({handler: customFunction}), 'const(1)')
+    assert.equal(n.toString({ handler: customFunction }), 'const(1)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -195,7 +195,7 @@ describe('ConstantNode', function () {
 
     const n = new ConstantNode(1)
 
-    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1\\right)')
+    assert.equal(n.toTex({ handler: customFunction }), 'const\\left(1\\right)')
   })
 
   it('should LaTeX a ConstantNode with a fraction', function () {

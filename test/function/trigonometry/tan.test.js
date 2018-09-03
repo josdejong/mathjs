@@ -6,8 +6,8 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const tan = math.tan
-const piBigmath = math.create({number: 'BigNumber', precision: 21})
-const bigmath = math.create({precision: 20})
+const piBigmath = math.create({ number: 'BigNumber', precision: 21 })
+const bigmath = math.create({ precision: 20 })
 const Big = bigmath.bignumber
 const bigTan = bigmath.tan
 

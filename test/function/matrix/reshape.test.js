@@ -32,12 +32,12 @@ describe('reshape', function () {
   })
 
   it('should reshape a vector into a 2d matrix', function () {
-    const math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({ matrix: 'Array' })
     assert.deepEqual(math2.reshape([1, 2, 3, 4, 5, 6], [3, 2]), [[1, 2], [3, 4], [5, 6]])
   })
 
   it('should reshape 2d matrix into a vector', function () {
-    const math2 = math.create({matrix: 'Array'})
+    const math2 = math.create({ matrix: 'Array' })
     assert.deepEqual(math2.reshape([[1, 2], [3, 4], [5, 6]], [6]), [1, 2, 3, 4, 5, 6])
   })
 

@@ -150,7 +150,7 @@ describe('equal', function () {
     assert.equal(mymath.equal(1, 0.991), false)
     assert.equal(mymath.equal(math.bignumber(1), math.bignumber(0.991)), false)
 
-    mymath.config({epsilon: 1e-2})
+    mymath.config({ epsilon: 1e-2 })
     assert.equal(mymath.equal(1, 0.991), true)
     assert.equal(mymath.equal(math.bignumber(1), math.bignumber(0.991)), true)
   })

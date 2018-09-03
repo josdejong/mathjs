@@ -7,7 +7,7 @@ describe('fraction', function () {
     equalFraction(math.fraction(1, 3), new Fraction(1, 3))
     equalFraction(math.fraction(0.3), new Fraction(0.3))
     equalFraction(math.fraction('1/3'), new Fraction(1, 3))
-    equalFraction(math.fraction({n: 1, d: 3}), new Fraction(1, 3))
+    equalFraction(math.fraction({ n: 1, d: 3 }), new Fraction(1, 3))
     equalFraction(math.fraction(null), new Fraction(0))
   })
 

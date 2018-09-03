@@ -53,7 +53,7 @@ describe('FunctionAssignmentNode', function () {
     const a = new ConstantNode(2)
     const x = new SymbolNode('x')
     const o = new OperatorNode('+', 'add', [a, x])
-    const n = new FunctionAssignmentNode('f', [{name: 'x', type: 'number'}], o)
+    const n = new FunctionAssignmentNode('f', [{ name: 'x', type: 'number' }], o)
 
     const expr = n.compile()
     let scope = {}
@@ -146,9 +146,9 @@ describe('FunctionAssignmentNode', function () {
     const o = new FunctionNode('outputScope', [x])
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
-    let scope = {a: 2}
+    let scope = { a: 2 }
     const f = n.eval(scope)
-    assert.deepEqual(f(3), {a: 2, f: f, x: 3})
+    assert.deepEqual(f(3), { a: 2, f: f, x: 3 })
   })
 
   it('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
@@ -171,9 +171,9 @@ describe('FunctionAssignmentNode', function () {
     const b = new FunctionNode(a, [new SymbolNode('y')])
     const n = new FunctionAssignmentNode('f', ['x', 'y'], b)
 
-    let scope = {a: 2}
+    let scope = { a: 2 }
     const f = n.eval(scope)
-    assert.deepEqual(f(3, 4), {a: 2, f, x: 3, y: 4})
+    assert.deepEqual(f(3, 4), { a: 2, f, x: 3, y: 4 })
   })
 
   it('should pass function arguments in scope to functions with rawArgs and transform', function () {
@@ -191,9 +191,9 @@ describe('FunctionAssignmentNode', function () {
     const o = new FunctionNode('outputScope', [x])
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
-    let scope = {a: 2}
+    let scope = { a: 2 }
     const f = n.eval(scope)
-    assert.deepEqual(f(3), {a: 2, f, x: 3})
+    assert.deepEqual(f(3), { a: 2, f, x: 3 })
   })
 
   it('should pass function arguments via scope to rawArgs function', function () {
@@ -203,7 +203,7 @@ describe('FunctionAssignmentNode', function () {
     }
     f.rawArgs = true
 
-    math2.import({f})
+    math2.import({ f })
 
     const g = math2.eval('g(arr) = f(arr)')
     assert.deepEqual(g([1, 2, 3]), [1, 2, 3])
@@ -356,8 +356,8 @@ describe('FunctionAssignmentNode', function () {
 
   it('should respect the \'all\' parenthesis option', function () {
     const expr = math.parse('f(x)=x+1')
-    assert.equal(expr.toString({parenthesis: 'all'}), 'f(x) = (x + 1)')
-    assert.equal(expr.toTex({parenthesis: 'all'}), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)')
+    assert.equal(expr.toString({ parenthesis: 'all' }), 'f(x) = (x + 1)')
+    assert.equal(expr.toTex({ parenthesis: 'all' }), '\\mathrm{f}\\left(x\\right):=\\left( x+1\\right)')
   })
 
   it('should stringify a FunctionAssignmentNode', function () {
@@ -398,13 +398,13 @@ describe('FunctionAssignmentNode', function () {
 
     const n = new FunctionAssignmentNode('func', ['x'], a)
 
-    assert.equal(n.toString({handler: customFunction}), '[func](x, )=const(1, number)')
+    assert.equal(n.toString({ handler: customFunction }), '[func](x, )=const(1, number)')
   })
 
   it('toJSON and fromJSON', function () {
     const expr = new SymbolNode('add')
     const node = new FunctionAssignmentNode('f', [
-      {name: 'x', type: 'number'},
+      { name: 'x', type: 'number' },
       'y'
     ], expr)
 
@@ -414,8 +414,8 @@ describe('FunctionAssignmentNode', function () {
       mathjs: 'FunctionAssignmentNode',
       name: 'f',
       params: [
-        {name: 'x', type: 'number'},
-        {name: 'y', type: 'any'}
+        { name: 'x', type: 'number' },
+        { name: 'y', type: 'any' }
       ],
       expr: expr
     })
@@ -463,6 +463,6 @@ describe('FunctionAssignmentNode', function () {
 
     const n = new FunctionAssignmentNode('func', ['x'], a)
 
-    assert.equal(n.toTex({handler: customFunction}), '\\mbox{func}\\left(x, \\right)=const\\left(1, number\\right)')
+    assert.equal(n.toTex({ handler: customFunction }), '\\mbox{func}\\left(x, \\right)=const\\left(1, number\\right)')
   })
 })

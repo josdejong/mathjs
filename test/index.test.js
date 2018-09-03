@@ -44,7 +44,7 @@ describe('factory', function () {
     assert.notDeepEqual(math.config(), math2.config())
 
     // changing config should not affect the other
-    math1.config({number: 'BigNumber'})
+    math1.config({ number: 'BigNumber' })
     assert.strictEqual(math.config().number, 'number')
     assert.strictEqual(math1.config().number, 'BigNumber')
     assert.strictEqual(math2.config().number, 'number')

@@ -13,7 +13,7 @@ describe('unaryMinus', function () {
 
   // TODO: unary minus should return bignumber on boolean input when configured for bignumber
   it.skip('should return bignumber unary minus of a boolean', function () {
-    const bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({ number: 'BigNumber' })
     assert.deepEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1))
     assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(0))
   })

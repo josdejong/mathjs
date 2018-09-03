@@ -7,7 +7,7 @@ describe('format', function () {
     let B = null
 
     before(function () {
-      B = BigNumber.clone({precision: 20}) // ensure the precision is 20 digits
+      B = BigNumber.clone({ precision: 20 }) // ensure the precision is 20 digits
     })
 
     it('should format special values Infinity, NaN', function () {
@@ -68,25 +68,25 @@ describe('format', function () {
     describe('should apply options', function () {
       it('auto notation with precision', function () {
         assert.equal(formatter.format(new B(1).div(3)), '0.33333333333333333333')
-        assert.equal(formatter.format(new B(1).div(3), {precision: 3}), '0.333')
-        assert.equal(formatter.format(new B(1).div(3), {precision: 4}), '0.3333')
-        assert.equal(formatter.format(new B(1).div(3), {precision: 5}), '0.33333')
+        assert.equal(formatter.format(new B(1).div(3), { precision: 3 }), '0.333')
+        assert.equal(formatter.format(new B(1).div(3), { precision: 4 }), '0.3333')
+        assert.equal(formatter.format(new B(1).div(3), { precision: 5 }), '0.33333')
 
-        assert.equal(formatter.format(new B(1000.000), {precision: 5}), '1000')
-        assert.equal(formatter.format(new B(1000.0010), {precision: 5}), '1000') // rounded off at 5 digits
-        assert.equal(formatter.format(new B(1234), {precision: 3}), '1230')
-        assert.equal(formatter.format(new B(123.4), {precision: 6}), '123.4')
-        assert.equal(formatter.format(new B(0.001234), {precision: 3}), '0.00123')
+        assert.equal(formatter.format(new B(1000.000), { precision: 5 }), '1000')
+        assert.equal(formatter.format(new B(1000.0010), { precision: 5 }), '1000') // rounded off at 5 digits
+        assert.equal(formatter.format(new B(1234), { precision: 3 }), '1230')
+        assert.equal(formatter.format(new B(123.4), { precision: 6 }), '123.4')
+        assert.equal(formatter.format(new B(0.001234), { precision: 3 }), '0.00123')
 
-        assert.equal(formatter.format(new B(1234567), {precision: 4}), '1.235e+6')
-        assert.equal(formatter.format(new B(1234567), {precision: 2}), '1.2e+6')
-        assert.equal(formatter.format(new B(123e-6), {precision: 2}), '1.2e-4')
-        assert.equal(formatter.format(new B(123e-6), {precision: 8}), '1.23e-4') // should remove trailing zeros
-        assert.equal(formatter.format(new B(3e+6), {precision: 8}), '3e+6') // should remove trailing zeros
-        assert.equal(formatter.format(new B(1234), {precision: 2}), '1200')
+        assert.equal(formatter.format(new B(1234567), { precision: 4 }), '1.235e+6')
+        assert.equal(formatter.format(new B(1234567), { precision: 2 }), '1.2e+6')
+        assert.equal(formatter.format(new B(123e-6), { precision: 2 }), '1.2e-4')
+        assert.equal(formatter.format(new B(123e-6), { precision: 8 }), '1.23e-4') // should remove trailing zeros
+        assert.equal(formatter.format(new B(3e+6), { precision: 8 }), '3e+6') // should remove trailing zeros
+        assert.equal(formatter.format(new B(1234), { precision: 2 }), '1200')
 
         // overflow the maximum precision of 20
-        assert.equal(formatter.format(new B(2.3), {precision: 30}), '2.3')
+        assert.equal(formatter.format(new B(2.3), { precision: 30 }), '2.3')
       })
 
       it('auto notation with custom lower and upper bound', function () {
@@ -135,7 +135,7 @@ describe('format', function () {
     })
 
     it('should format bignumbers with custom precision, lower, and upper bound', function () {
-      const Big = BigNumber.clone({precision: 100})
+      const Big = BigNumber.clone({ precision: 100 })
 
       const options = {
         notation: 'auto',
@@ -197,13 +197,13 @@ describe('format', function () {
 
     it('should throw an error on unknown notation', function () {
       assert.throws(function () {
-        formatter.format(new BigNumber(123), {notation: 'non existing'})
+        formatter.format(new BigNumber(123), { notation: 'non existing' })
       })
     })
   })
 
   it('should format a bignumber using toFixed', function () {
-    const Big = BigNumber.clone({precision: 100})
+    const Big = BigNumber.clone({ precision: 100 })
 
     assert.equal(formatter.toFixed(new Big(2.34)), '2.34')
     assert.equal(formatter.toFixed(new Big(2.34), 1), '2.3')
@@ -214,7 +214,7 @@ describe('format', function () {
   })
 
   it('should format a bignumber using toExponential', function () {
-    const Big = BigNumber.clone({precision: 100})
+    const Big = BigNumber.clone({ precision: 100 })
 
     assert.equal(formatter.toExponential(new Big(2.34)), '2.34e+0')
     assert.equal(formatter.toExponential(new Big(2.34e+3)), '2.34e+3')

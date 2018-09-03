@@ -136,7 +136,7 @@ describe('unequal', function () {
     assert.equal(mymath.unequal(1, 0.991), true)
     assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), true)
 
-    mymath.config({epsilon: 1e-2})
+    mymath.config({ epsilon: 1e-2 })
     assert.equal(mymath.unequal(1, 0.991), false)
     assert.equal(mymath.unequal(math.bignumber(1), math.bignumber(0.991)), false)
   })

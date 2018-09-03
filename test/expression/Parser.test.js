@@ -56,10 +56,10 @@ describe('parser', function () {
 
     parser.eval('a = 3')
     parser.eval('b = a + 2')
-    assert.deepEqual(parser.getAll(), {a: 3, b: 5})
+    assert.deepEqual(parser.getAll(), { a: 3, b: 5 })
 
     parser.remove('a')
-    assert.deepEqual(parser.getAll(), {b: 5})
+    assert.deepEqual(parser.getAll(), { b: 5 })
   })
 
   it('should return undefined when getting a non existing variable', function () {

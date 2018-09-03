@@ -6,8 +6,8 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const csch = math.csch
-const bigmath = math.create({precision: 20})
-const biggermath = math.create({number: 'BigNumber', precision: 22})
+const bigmath = math.create({ precision: 20 })
+const biggermath = math.create({ number: 'BigNumber', precision: 22 })
 
 describe('csch', function () {
   it('should return the csch of a boolean', function () {

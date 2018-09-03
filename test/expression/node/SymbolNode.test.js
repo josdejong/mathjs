@@ -38,7 +38,7 @@ describe('SymbolNode', function () {
     const s = new SymbolNode('a')
 
     const expr = s.compile()
-    let scope = {a: 5}
+    let scope = { a: 5 }
     assert.equal(expr.eval(scope), 5)
     assert.throws(function () { expr.eval({}) }, Error)
 
@@ -130,7 +130,7 @@ describe('SymbolNode', function () {
 
     const n = new SymbolNode('a')
 
-    assert.equal(n.toString({handler: customFunction}), 'symbol(a)')
+    assert.equal(n.toString({ handler: customFunction }), 'symbol(a)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -163,7 +163,7 @@ describe('SymbolNode', function () {
 
     const n = new SymbolNode('a')
 
-    assert.equal(n.toTex({handler: customFunction}), 'symbol(a)')
+    assert.equal(n.toTex({ handler: customFunction }), 'symbol(a)')
   })
 
   it('should LaTeX a SymbolNode without breaking \\cdot', function () {

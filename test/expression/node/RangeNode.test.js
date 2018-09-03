@@ -308,12 +308,12 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.equal(n.toString({handler: customFunction}), 'from const(1, number) to const(2, number) with steps of const(3, number)')
+    assert.equal(n.toString({ handler: customFunction }), 'from const(1, number) to const(2, number) with steps of const(3, number)')
   })
 
   it('should respect the \'all\' parenthesis option', function () {
-    assert.equal(math.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)')
-    assert.equal(math.parse('1:2:3').toTex({parenthesis: 'all'}), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')
+    assert.equal(math.parse('1:2:3').toString({ parenthesis: 'all' }), '(1):(2):(3)')
+    assert.equal(math.parse('1:2:3').toTex({ parenthesis: 'all' }), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -370,7 +370,7 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.equal(n.toTex({handler: customFunction}), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)')
+    assert.equal(n.toTex({ handler: customFunction }), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)')
   })
 
   /**

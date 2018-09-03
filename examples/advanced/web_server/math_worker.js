@@ -5,7 +5,7 @@ const workerpool = require('workerpool')
 function noImport () {
   throw new Error('function import is disabled.')
 }
-math.import({'import': noImport}, {override: true})
+math.import({ 'import': noImport }, { override: true })
 
 /**
  * Evaluate an expression

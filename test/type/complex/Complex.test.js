@@ -32,7 +32,7 @@ describe('Complex', function () {
     })
 
     it('should accept an object with im and re as keys', function () {
-      assertComplex(new Complex({re: 1, im: 2}), 1, 2)
+      assertComplex(new Complex({ re: 1, im: 2 }), 1, 2)
     })
   })
 
@@ -198,7 +198,7 @@ describe('Complex', function () {
       assert.equal(Complex.EPSILON, math.config().epsilon)
       assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), false)
 
-      math.config({epsilon: 0.1})
+      math.config({ epsilon: 0.1 })
       assert.equal(new Complex(1, 0).equals(new Complex(1.01, 0)), true)
 
       math.config(old) // restore old config
@@ -207,11 +207,11 @@ describe('Complex', function () {
 
   describe('fromPolar', function () {
     it('should save polar coordinates input correctly', function () {
-      const complex1 = Complex.fromPolar({r: 0, phi: 4})
-      const complex2 = Complex.fromPolar({r: 5, phi: 0})
-      const complex3 = Complex.fromPolar({r: 1, phi: Math.PI})
-      const complex4 = Complex.fromPolar({r: 3, phi: Math.PI / 2})
-      const complex5 = Complex.fromPolar({r: 3, phi: -Math.PI / 2})
+      const complex1 = Complex.fromPolar({ r: 0, phi: 4 })
+      const complex2 = Complex.fromPolar({ r: 5, phi: 0 })
+      const complex3 = Complex.fromPolar({ r: 1, phi: Math.PI })
+      const complex4 = Complex.fromPolar({ r: 3, phi: Math.PI / 2 })
+      const complex5 = Complex.fromPolar({ r: 3, phi: -Math.PI / 2 })
       assertComplex(complex1, -0, -0)
       assertComplex(complex2, 5, 0)
       assert.equal(complex3.re, -1)
@@ -221,7 +221,7 @@ describe('Complex', function () {
 
     it('should have the same value for the different import ways', function () {
       const way1 = Complex.fromPolar(1, 1)
-      const way2 = Complex.fromPolar({r: 1, phi: 1})
+      const way2 = Complex.fromPolar({ r: 1, phi: 1 })
       assert(way1.equals(way2))
     })
 
@@ -236,8 +236,8 @@ describe('Complex', function () {
 
     it('should only accept an object with r and phi keys for 1 argument', function () {
       assert.throws(function () { Complex({}) }, /Invalid Param/)
-      assert.throws(function () { Complex({r: 1}) }, /Invalid Param/)
-      assert.throws(function () { Complex({phi: 1}) }, /Invalid Param/)
+      assert.throws(function () { Complex({ r: 1 }) }, /Invalid Param/)
+      assert.throws(function () { Complex({ phi: 1 }) }, /Invalid Param/)
       assert.throws(function () { Complex('') }, /Invalid Param/)
     })
   })
@@ -266,17 +266,17 @@ describe('Complex', function () {
   })
 
   it('toJSON', function () {
-    assert.deepEqual(new Complex(2, 4).toJSON(), {'mathjs': 'Complex', re: 2, im: 4})
-    assert.deepEqual(new Complex(3, 0).toJSON(), {'mathjs': 'Complex', re: 3, im: 0})
+    assert.deepEqual(new Complex(2, 4).toJSON(), { 'mathjs': 'Complex', re: 2, im: 4 })
+    assert.deepEqual(new Complex(3, 0).toJSON(), { 'mathjs': 'Complex', re: 3, im: 0 })
   })
 
   it('fromJSON', function () {
-    const c1 = Complex.fromJSON({re: 2, im: 4})
+    const c1 = Complex.fromJSON({ re: 2, im: 4 })
     assert.ok(c1 instanceof Complex)
     assert.strictEqual(c1.re, 2)
     assert.strictEqual(c1.im, 4)
 
-    const c2 = Complex.fromJSON({re: 3, im: 0})
+    const c2 = Complex.fromJSON({ re: 3, im: 0 })
     assert.ok(c2 instanceof Complex)
     assert.strictEqual(c2.re, 3)
     assert.strictEqual(c2.im, 0)

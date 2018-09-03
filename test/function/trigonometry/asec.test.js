@@ -7,8 +7,8 @@ const sec = math.sec
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const predmath = math.create({ predictable: true })
 const asecBig = bigmath.asec
 const Big = bigmath.bignumber
 
@@ -47,7 +47,7 @@ describe('asec', function () {
     assert.deepEqual(arg2, Big(-1))
 
     // Hit Newton's method case
-    bigmath.config({precision: 64})
+    bigmath.config({ precision: 64 })
     const arg = Big('3.00000001')
     assert.deepEqual(asecBig(Big(3)), bigmath.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
     // wolfram:                  asec(3) = 1.2309594173407746821349291782479873757103400093550948390555483336639923144782560878532516201708609211389442794492
@@ -70,7 +70,7 @@ describe('asec', function () {
   })
 
   it('should be the inverse function of bignumber sec', function () {
-    bigmath.config({precision: 20})
+    bigmath.config({ precision: 20 })
     assert.deepEqual(asecBig(bigmath.sec(Big(-1))), Big(1))
     assert.deepEqual(asecBig(bigmath.sec(Big(0))), Big(0))
     assert.deepEqual(asecBig(bigmath.sec(Big(0.5))), Big('0.49999999999999999997'))

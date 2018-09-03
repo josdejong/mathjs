@@ -6,7 +6,7 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const cot = math.cot
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {

@@ -99,7 +99,7 @@ describe('smallerEq', function () {
     assert.equal(mymath.smallerEq(1.01, 1), false)
     assert.equal(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), false)
 
-    mymath.config({epsilon: 1e-2})
+    mymath.config({ epsilon: 1e-2 })
     assert.equal(mymath.smallerEq(1.01, 1), true)
     assert.equal(mymath.smallerEq(math.bignumber(1.01), math.bignumber(1)), true)
   })

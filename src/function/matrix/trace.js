@@ -125,7 +125,7 @@ function factory (type, config, load, typed) {
     throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
   }
 
-  trace.toTex = {1: `\\mathrm{tr}\\left(\${args[0]}\\right)`}
+  trace.toTex = { 1: `\\mathrm{tr}\\left(\${args[0]}\\right)` }
 
   return trace
 }

@@ -7,9 +7,9 @@ const matrix = math.matrix
 const unit = math.unit
 const asin = math.asin
 const sin = math.sin
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 21})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 21 })
+const predmath = math.create({ predictable: true })
 const asinBig = bigmath.asin
 const Big = bigmath.bignumber
 
@@ -54,7 +54,7 @@ describe('asin', function () {
     assert.deepEqual(arg3, Big(-0.5))
 
     // Hit Newton's method case
-    bigmath.config({precision: 61})
+    bigmath.config({ precision: 61 })
 
     const arg4 = Big(0.00000001)
     assert.deepEqual(asinBig(arg4), Big('1.00000000000000001666666666666666741666666666666671130952381e-8'))
@@ -80,7 +80,7 @@ describe('asin', function () {
     assert.deepEqual(asinBig(bigmath.sin(Big(2))), Big('1.141592653589793238462643383279502884197169399375105820974945'))
 
     // Full decimal Taylor test cases
-    bigmath.config({precision: 20})
+    bigmath.config({ precision: 20 })
     assert.deepEqual(asinBig(bigmath.sin(Big(0))), Big(0))
     assert.deepEqual(asinBig(bigmath.sin(Big(0.1))), Big(0.1))
     assert.deepEqual(asinBig(bigmath.sin(Big(0.5))), Big(0.5))

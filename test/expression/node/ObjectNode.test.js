@@ -11,7 +11,7 @@ const ObjectNode = math.expression.node.ObjectNode
 describe('ObjectNode', function () {
   it('should create an ObjectNode', function () {
     const c = new ConstantNode(1)
-    const a = new ObjectNode({c: c})
+    const a = new ObjectNode({ c: c })
     const b = new ObjectNode()
     assert(a instanceof ObjectNode)
     assert(b instanceof ObjectNode)
@@ -31,15 +31,15 @@ describe('ObjectNode', function () {
 
   it('should throw an error on wrong constructor arguments', function () {
     assert.throws(function () { console.log(new ObjectNode(2)) }, TypeError)
-    assert.throws(function () { console.log(new ObjectNode({a: 2, b: 3})) }, TypeError)
+    assert.throws(function () { console.log(new ObjectNode({ a: 2, b: 3 })) }, TypeError)
   })
 
   it('should evaluate an ObjectNode', function () {
     const c = new ConstantNode(1)
-    const a = new ObjectNode({c: c})
+    const a = new ObjectNode({ c: c })
     const b = new ObjectNode()
 
-    assert.deepEqual(a.compile().eval(), {c: 1})
+    assert.deepEqual(a.compile().eval(), { c: 1 })
     assert.deepEqual(b.compile().eval(), {})
   })
 
@@ -49,19 +49,19 @@ describe('ObjectNode', function () {
     const c = new ConstantNode(3)
     const d = new ConstantNode(4)
 
-    const n2 = new ObjectNode({a: a, b: b})
-    const n3 = new ObjectNode({c: c, d: d})
-    const n4 = new ObjectNode({n2: n2, n3: n3})
+    const n2 = new ObjectNode({ a: a, b: b })
+    const n3 = new ObjectNode({ c: c, d: d })
+    const n4 = new ObjectNode({ n2: n2, n3: n3 })
 
     const expr = n4.compile()
-    assert.deepEqual(expr.eval(), {n2: {a: 1, b: 2}, n3: {c: 3, d: 4}})
+    assert.deepEqual(expr.eval(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
   })
 
   it('should filter an ObjectNode', function () {
     const a = new ConstantNode(1)
     const b = new SymbolNode('x')
     const c = new ConstantNode(2)
-    const d = new ObjectNode({a: a, b: b, c: c})
+    const d = new ObjectNode({ a: a, b: b, c: c })
 
     assert.deepEqual(d.filter(function (node) { return node instanceof ObjectNode }), [d])
     assert.deepEqual(d.filter(function (node) { return node instanceof SymbolNode }), [b])
@@ -73,7 +73,7 @@ describe('ObjectNode', function () {
   it('should run forEach on an ObjectNode', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
-    const c = new ObjectNode({a: a, b: b})
+    const c = new ObjectNode({ a: a, b: b })
 
     const nodes = []
     const paths = []
@@ -92,7 +92,7 @@ describe('ObjectNode', function () {
   it('should map an ObjectNode', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
-    const c = new ObjectNode({a: a, b: b})
+    const c = new ObjectNode({ a: a, b: b })
 
     const d = new ConstantNode(3)
     const nodes = []
@@ -118,7 +118,7 @@ describe('ObjectNode', function () {
   it('should throw an error when the map callback does not return a node', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
-    const c = new ObjectNode({a: a, b: b})
+    const c = new ObjectNode({ a: a, b: b })
 
     assert.throws(function () {
       c.map(function () {})
@@ -128,7 +128,7 @@ describe('ObjectNode', function () {
   it('should transform an ObjectNodes parameters', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
-    const c = new ObjectNode({a: a, b: b})
+    const c = new ObjectNode({ a: a, b: b })
 
     const d = new ConstantNode(3)
     const e = c.transform(function (node) {
@@ -143,7 +143,7 @@ describe('ObjectNode', function () {
   it('should transform an ObjectNode itself', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
-    const c = new ObjectNode({a: a, b: b})
+    const c = new ObjectNode({ a: a, b: b })
 
     const d = new ConstantNode(3)
     const e = c.transform(function (node) {
@@ -158,8 +158,8 @@ describe('ObjectNode', function () {
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
     const c = new ConstantNode(3)
-    const d = new ObjectNode({a: a, b: b})
-    const e = new ObjectNode({c: c, d: d})
+    const d = new ObjectNode({ a: a, b: b })
+    const e = new ObjectNode({ c: c, d: d })
 
     let count = 0
     e.traverse(function (node, path, parent) {
@@ -204,7 +204,7 @@ describe('ObjectNode', function () {
   it('should clone an ObjectNode', function () {
     const a = new SymbolNode('x')
     const b = new ConstantNode(2)
-    const c = new ObjectNode({a: a, b: b})
+    const c = new ObjectNode({ a: a, b: b })
 
     const d = c.clone()
     assert(d instanceof ObjectNode)
@@ -215,11 +215,11 @@ describe('ObjectNode', function () {
   })
 
   it('test equality another Node', function () {
-    const a = new ObjectNode({a: new SymbolNode('a'), b: new ConstantNode(2)})
-    const b = new ObjectNode({a: new SymbolNode('a'), b: new ConstantNode(2)})
-    const c = new ObjectNode({a: new SymbolNode('a'), b: new ConstantNode(2), c: new ConstantNode(3)})
-    const d = new ObjectNode({a: new SymbolNode('foo'), b: new ConstantNode(2)})
-    const e = new ObjectNode({a: new SymbolNode('a')})
+    const a = new ObjectNode({ a: new SymbolNode('a'), b: new ConstantNode(2) })
+    const b = new ObjectNode({ a: new SymbolNode('a'), b: new ConstantNode(2) })
+    const c = new ObjectNode({ a: new SymbolNode('a'), b: new ConstantNode(2), c: new ConstantNode(3) })
+    const d = new ObjectNode({ a: new SymbolNode('foo'), b: new ConstantNode(2) })
+    const e = new ObjectNode({ a: new SymbolNode('a') })
     const f = new SymbolNode('x')
 
     assert.strictEqual(a.equals(null), false)
@@ -235,8 +235,8 @@ describe('ObjectNode', function () {
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
     const c = new ConstantNode(3)
-    const n1 = new ObjectNode({a: a, b: b})
-    const n2 = new ObjectNode({c: c, n1: n1})
+    const n1 = new ObjectNode({ a: a, b: b })
+    const n2 = new ObjectNode({ c: c, n1: n1 })
 
     assert.equal(n2.toString(), '{"c": 3, "n1": {"a": 1, "b": 2}}')
   })
@@ -250,22 +250,22 @@ describe('ObjectNode', function () {
 
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
-    const n = new ObjectNode({a: a, b: b})
+    const n = new ObjectNode({ a: a, b: b })
 
-    assert.equal(n.toString({handler: customFunction}), '{"a": const(1, number), "b": const(2, number)}')
+    assert.equal(n.toString({ handler: customFunction }), '{"a": const(1, number), "b": const(2, number)}')
   })
 
   it('toJSON and fromJSON', function () {
     const b = new ConstantNode(1)
     const c = new ConstantNode(2)
 
-    const node = new ObjectNode({b: b, c: c})
+    const node = new ObjectNode({ b: b, c: c })
 
     const json = node.toJSON()
 
     assert.deepEqual(json, {
       mathjs: 'ObjectNode',
-      properties: {b: b, c: c}
+      properties: { b: b, c: c }
     })
 
     const parsed = ObjectNode.fromJSON(json)
@@ -276,8 +276,8 @@ describe('ObjectNode', function () {
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
     const c = new ConstantNode(3)
-    const n1 = new ObjectNode({a: a, b: b})
-    const n2 = new ObjectNode({c: c, n1: n1})
+    const n1 = new ObjectNode({ a: a, b: b })
+    const n2 = new ObjectNode({ c: c, n1: n1 })
 
     assert.equal(n2.toTex(), '\\left\\{\\begin{array}{ll}\\mathbf{c:} & 3\\\\\n\\mathbf{n1:} & \\left\\{\\begin{array}{ll}\\mathbf{a:} & 1\\\\\n\\mathbf{b:} & 2\\\\\\end{array}\\right\\}\\\\\\end{array}\\right\\}')
   })
@@ -291,8 +291,8 @@ describe('ObjectNode', function () {
 
     const a = new ConstantNode(1)
     const b = new ConstantNode(2)
-    const n = new ObjectNode({a: a, b: b})
+    const n = new ObjectNode({ a: a, b: b })
 
-    assert.equal(n.toTex({handler: customFunction}), '\\left\\{\\begin{array}{ll}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{array}\\right\\}')
+    assert.equal(n.toTex({ handler: customFunction }), '\\left\\{\\begin{array}{ll}\\mathbf{a:} & const\\left(1, number\\right)\\\\\n\\mathbf{b:} & const\\left(2, number\\right)\\\\\\end{array}\\right\\}')
   })
 })

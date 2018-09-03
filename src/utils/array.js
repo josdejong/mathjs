@@ -482,14 +482,14 @@ export function identify (a) {
 
   let b = []
   let count = 0
-  b[0] = {value: a[0], identifier: 0}
+  b[0] = { value: a[0], identifier: 0 }
   for (let i = 1; i < a.length; i++) {
     if (a[i] === a[i - 1]) {
       count++
     } else {
       count = 0
     }
-    b.push({value: a[i], identifier: count})
+    b.push({ value: a[i], identifier: count })
   }
   return b
 }

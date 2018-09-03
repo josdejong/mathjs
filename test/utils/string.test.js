@@ -56,18 +56,18 @@ describe('string', function () {
     })
 
     it('should format a fraction with option fraction=\'ratio\'', function () {
-      assert.equal(string.format(math.fraction(1, 3), {fraction: 'ratio'}), '1/3')
-      assert.equal(string.format(math.fraction(2, 6), {fraction: 'ratio'}), '1/3')
+      assert.equal(string.format(math.fraction(1, 3), { fraction: 'ratio' }), '1/3')
+      assert.equal(string.format(math.fraction(2, 6), { fraction: 'ratio' }), '1/3')
     })
 
     it('should format a fraction with option fraction=\'decimal\'', function () {
-      assert.equal(string.format(math.fraction(1, 3), {fraction: 'decimal'}), '0.(3)')
-      assert.equal(string.format(math.fraction(2, 6), {fraction: 'decimal'}), '0.(3)')
+      assert.equal(string.format(math.fraction(1, 3), { fraction: 'decimal' }), '0.(3)')
+      assert.equal(string.format(math.fraction(2, 6), { fraction: 'decimal' }), '0.(3)')
     })
 
     it('should format a number with configuration', function () {
       assert.equal(string.format(1.23456, 3), '1.23')
-      assert.equal(string.format(1.23456, {precision: 3}), '1.23')
+      assert.equal(string.format(1.23456, { precision: 3 }), '1.23')
     })
 
     it('should format an array', function () {
@@ -102,7 +102,7 @@ describe('string', function () {
 
       assert.equal(string.format(obj), 'obj')
       assert.equal(string.format(obj, 4), 'obj 4')
-      assert.equal(string.format(obj, {precision: 4}), 'obj {"precision":4}')
+      assert.equal(string.format(obj, { precision: 4 }), 'obj {"precision":4}')
     })
 
     it('should format a function', function () {

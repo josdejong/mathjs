@@ -108,7 +108,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  atan2.toTex = {2: `\\mathrm{atan2}\\left(\${args}\\right)`}
+  atan2.toTex = { 2: `\\mathrm{atan2}\\left(\${args}\\right)` }
 
   return atan2
 }

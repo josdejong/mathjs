@@ -1,7 +1,7 @@
 // test sqrt
 const assert = require('assert')
 const math = require('../../../src/main')
-const mathPredictable = math.create({predictable: true})
+const mathPredictable = math.create({ predictable: true })
 const sqrt = math.sqrt
 const bignumber = math.bignumber
 
@@ -40,7 +40,7 @@ describe('sqrt', function () {
     assert.deepEqual(sqrt(bignumber(25)), bignumber(5))
 
     // validate whether we are really working at high precision
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
     assert.deepEqual(bigmath.sqrt(bigmath.bignumber(2)), bigmath.bignumber('1.414213562373095048801688724209698078569671875376948073176679737990732478462107038850387534327641573'))
   })
 

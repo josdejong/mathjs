@@ -13,7 +13,7 @@ describe('import', function () {
       hello: function (name) {
         return 'hello, ' + name + '!'
       }
-    }, {override: true})
+    }, { override: true })
   })
 
   afterEach(function () {
@@ -26,18 +26,18 @@ describe('import', function () {
   })
 
   it('should not override existing functions', function () {
-    assert.throws(function () { math.import({myvalue: 10}) },
+    assert.throws(function () { math.import({ myvalue: 10 }) },
       /Error: Cannot import "myvalue": already exists/)
     assert.equal(math.myvalue, 42)
   })
 
   it('should throw no errors when silent:true', function () {
-    math.import({myvalue: 10}, {silent: true})
+    math.import({ myvalue: 10 }, { silent: true })
     assert.strictEqual(math.myvalue, 42)
   })
 
   it('should override existing functions if forced', function () {
-    math.import({myvalue: 10}, {override: true})
+    math.import({ myvalue: 10 }, { override: true })
     assert.strictEqual(math.myvalue, 10)
   })
 
@@ -98,7 +98,7 @@ describe('import', function () {
   it('should ignore properties on Object', function () {
     Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
-    math.import({bar: 456})
+    math.import({ bar: 456 })
 
     assert(!math.hasOwnProperty('foo'))
     assert(math.hasOwnProperty('bar'))
@@ -107,15 +107,15 @@ describe('import', function () {
   })
 
   it('should return the imported object', function () {
-    math.import({a: 24})
+    math.import({ a: 24 })
     assert.deepEqual(math.a, 24)
 
-    math.import({pi: 24}, {silent: true})
+    math.import({ pi: 24 }, { silent: true })
     approx.equal(math.pi, Math.PI) // pi was ignored
   })
 
   it('should import a boolean', function () {
-    math.import({a: true})
+    math.import({ a: true })
     assert.strictEqual(math.a, true)
   })
 
@@ -161,7 +161,7 @@ describe('import', function () {
           return 'foo(string)'
         }
       })
-    }, {override: true})
+    }, { override: true })
 
     assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['string'])
     assert.equal(math.foo('bar'), 'foo(string)')
@@ -202,7 +202,7 @@ describe('import', function () {
   })
 
   it('should import a boolean', function () {
-    math.import({a: true})
+    math.import({ a: true })
     assert.strictEqual(math.a, true)
   })
 
@@ -215,7 +215,7 @@ describe('import', function () {
       return text.toUpperCase()
     }
 
-    math.import({foo: foo})
+    math.import({ foo: foo })
 
     assert(math.hasOwnProperty('foo'))
     assert.strictEqual(math.foo, foo)
@@ -228,7 +228,7 @@ describe('import', function () {
       return 'test'
     }
 
-    math.import({mean: mean}, {override: true})
+    math.import({ mean: mean }, { override: true })
 
     assert(math.hasOwnProperty('mean'))
     assert.strictEqual(math.mean, mean)
@@ -248,7 +248,7 @@ describe('import', function () {
       factory: () => mean
     }
 
-    math2.import([meanFactory], {override: true})
+    math2.import([meanFactory], { override: true })
 
     assert(math2.hasOwnProperty('mean'))
     assert.strictEqual(math2.mean, mean)

@@ -107,7 +107,7 @@ describe('FunctionNode', function () {
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
-    mymath.import({myFunction: myFunction})
+    mymath.import({ myFunction: myFunction })
 
     const s = new SymbolNode('myFunction')
     const a = new mymath.expression.node.ConstantNode(4)
@@ -152,7 +152,7 @@ describe('FunctionNode', function () {
       assert.ok(false, 'should not be executed')
     }
     myFunction.rawArgs = true
-    mymath.import({myFunction: myFunction})
+    mymath.import({ myFunction: myFunction })
 
     const s = new mymath.expression.node.SymbolNode('myFunction')
     const a = new mymath.expression.node.ConstantNode(4)
@@ -391,7 +391,7 @@ describe('FunctionNode', function () {
     const n = new FunctionNode(s, [c])
 
     assert.equal(n.toString(), 'sqrt(2 x)')
-    const options = {implicit: 'show'}
+    const options = { implicit: 'show' }
     assert.equal(n.toString(options), 'sqrt(2 * x)')
   })
 
@@ -416,8 +416,8 @@ describe('FunctionNode', function () {
     const n1 = new FunctionNode(new SymbolNode('add'), [a, b])
     const n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
 
-    assert.equal(n1.toString({handler: customFunction}), '[add](const(1, number), const(2, number), )')
-    assert.equal(n2.toString({handler: customFunction}), '[subtract](const(1, number), const(2, number), )')
+    assert.equal(n1.toString({ handler: customFunction }), '[add](const(1, number), const(2, number), )')
+    assert.equal(n2.toString({ handler: customFunction }), '[subtract](const(1, number), const(2, number), )')
   })
 
   it('should stringify a FunctionNode with custom toString for a single function', function () {
@@ -435,7 +435,7 @@ describe('FunctionNode', function () {
     const b = new ConstantNode(2)
     const n = new FunctionNode(s, [a, b])
 
-    assert.equal(n.toString({handler: customFunction}), '1 add 2')
+    assert.equal(n.toString({ handler: customFunction }), '1 add 2')
   })
 
   it('toJSON and fromJSON', function () {
@@ -501,8 +501,8 @@ describe('FunctionNode', function () {
     const n1 = new FunctionNode(new SymbolNode('add'), [a, b])
     const n2 = new FunctionNode(new SymbolNode('subtract'), [a, b])
 
-    assert.equal(n1.toTex({handler: customFunction}), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)')
-    assert.equal(n2.toTex({handler: customFunction}), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)')
+    assert.equal(n1.toTex({ handler: customFunction }), '\\mbox{add}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)')
+    assert.equal(n2.toTex({ handler: customFunction }), '\\mbox{subtract}\\left(const\\left(1, number\\right), const\\left(2, number\\right), \\right)')
   })
 
   it('should LaTeX a FunctionNode with custom toTex for a single function', function () {
@@ -520,7 +520,7 @@ describe('FunctionNode', function () {
     const b = new ConstantNode(2)
     const n = new FunctionNode(s, [a, b])
 
-    assert.equal(n.toTex({handler: customFunction}), '1 add 2')
+    assert.equal(n.toTex({ handler: customFunction }), '1 add 2')
   })
 
   it('should LaTeX a FunctionNode with callback attached to the function', function () {

@@ -53,7 +53,7 @@ describe('ArrayNode', function () {
   })
 
   it('should compile an ArrayNode and evaluate as Array', function () {
-    const mathArray = math.create({matrix: 'Array'})
+    const mathArray = math.create({ matrix: 'Array' })
     const a = new mathArray.expression.node.ConstantNode(1)
     const b = new mathArray.expression.node.ConstantNode(2)
     const c = new mathArray.expression.node.ConstantNode(3)
@@ -270,7 +270,7 @@ describe('ArrayNode', function () {
 
     const n = new ArrayNode([a, b])
 
-    assert.equal(n.toString({handler: customFunction}), '[const(1, number), const(2, number), ]')
+    assert.equal(n.toString({ handler: customFunction }), '[const(1, number), const(2, number), ]')
   })
 
   it('toJSON and fromJSON', function () {
@@ -323,6 +323,6 @@ describe('ArrayNode', function () {
 
     const n = new ArrayNode([a, b])
 
-    assert.equal(n.toTex({handler: customFunction}), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]')
+    assert.equal(n.toTex({ handler: customFunction }), '\\left[const\\left(1, number\\right), const\\left(2, number\\right), \\right]')
   })
 })

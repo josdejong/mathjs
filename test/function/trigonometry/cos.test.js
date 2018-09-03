@@ -6,8 +6,8 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const cos = math.cos
-const bigmath = math.create({number: 'BigNumber', precision: 15})
-const biggermath = math.create({number: 'BigNumber', precision: 238})
+const bigmath = math.create({ number: 'BigNumber', precision: 15 })
+const biggermath = math.create({ number: 'BigNumber', precision: 238 })
 
 describe('cos', function () {
   it('should return the cosine of a boolean', function () {
@@ -47,7 +47,7 @@ describe('cos', function () {
     assert.equal(cosVal.constructor.precision, 238)
     assert.deepEqual(cosVal.toString(), resultVal)
 
-    biggermath.config({precision: 16})
+    biggermath.config({ precision: 16 })
     const bigPi = biggermath.pi
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau

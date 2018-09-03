@@ -3,7 +3,7 @@ const math = require('../../src/main')
 
 describe('replacer', function () {
   it('should stringify generic JSON', function () {
-    const data = {foo: [1, 2, 3], bar: null, baz: 'str'}
+    const data = { foo: [1, 2, 3], bar: null, baz: 'str' }
     const json = '{"foo":[1,2,3],"bar":null,"baz":"str"}'
     assert.deepEqual(JSON.stringify(data), json)
   })
@@ -142,7 +142,7 @@ describe('replacer', function () {
   })
 
   it('should stringify Help', function () {
-    const h = new math.type.Help({name: 'foo', description: 'bar'})
+    const h = new math.type.Help({ name: 'foo', description: 'bar' })
     const json = '{"mathjs":"Help","name":"foo","description":"bar"}'
     assert.deepEqual(JSON.parse(JSON.stringify(h)), JSON.parse(json))
   })

@@ -249,18 +249,18 @@ describe('range', function () {
   })
 
   it('toJSON', function () {
-    assert.deepEqual(new Range(2, 4).toJSON(), {'mathjs': 'Range', start: 2, end: 4, step: 1})
-    assert.deepEqual(new Range(0, 10, 2).toJSON(), {'mathjs': 'Range', start: 0, end: 10, step: 2})
+    assert.deepEqual(new Range(2, 4).toJSON(), { 'mathjs': 'Range', start: 2, end: 4, step: 1 })
+    assert.deepEqual(new Range(0, 10, 2).toJSON(), { 'mathjs': 'Range', start: 0, end: 10, step: 2 })
   })
 
   it('fromJSON', function () {
-    const r1 = Range.fromJSON({start: 2, end: 4})
+    const r1 = Range.fromJSON({ start: 2, end: 4 })
     assert.ok(r1 instanceof Range)
     assert.strictEqual(r1.start, 2)
     assert.strictEqual(r1.end, 4)
     assert.strictEqual(r1.step, 1)
 
-    const r2 = Range.fromJSON({start: 0, end: 10, step: 2})
+    const r2 = Range.fromJSON({ start: 0, end: 10, step: 2 })
     assert.ok(r2 instanceof Range)
     assert.strictEqual(r2.start, 0)
     assert.strictEqual(r2.end, 10)
