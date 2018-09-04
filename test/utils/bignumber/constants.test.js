@@ -23,7 +23,7 @@ describe('bignumber', function () {
   it('should calculate a bignumber tau', function () {
     assert.strictEqual(constants.tau(Big32).toString(),
       '6.283185307179586476925286766559')
-    assert.strictEqual(constants.tau(Big64.toString()),
+    assert.strictEqual(constants.tau(Big64).toString(),
       '6.283185307179586476925286766559005768394338798750211641949889184')
   })
 
