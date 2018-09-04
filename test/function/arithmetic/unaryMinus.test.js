@@ -40,10 +40,10 @@ describe('unaryMinus', function () {
   })
 
   it('should perform unary minus of a complex number', function () {
-    assert.strictEqual(math.unaryMinus(math.complex(3, 2)), '-3 - 2i')
-    assert.strictEqual(math.unaryMinus(math.complex(3, -2)), '-3 + 2i')
-    assert.strictEqual(math.unaryMinus(math.complex(-3, 2)), '3 - 2i')
-    assert.strictEqual(math.unaryMinus(math.complex(-3, -2)), '3 + 2i')
+    assert.strictEqual(math.unaryMinus(math.complex(3, 2)).toString(), '-3 - 2i')
+    assert.strictEqual(math.unaryMinus(math.complex(3, -2)).toString(), '-3 + 2i')
+    assert.strictEqual(math.unaryMinus(math.complex(-3, 2)).toString(), '3 - 2i')
+    assert.strictEqual(math.unaryMinus(math.complex(-3, -2)).toString(), '3 + 2i')
   })
 
   it('should perform unary minus of a unit', function () {

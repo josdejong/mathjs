@@ -92,13 +92,13 @@ describe('parser', function () {
     assert.strictEqual(parser.get('qq'), 3)
 
     parser.remove('qq')
-    assert.strictEqual(parser.get('qq'), null)
+    assert.strictEqual(parser.get('qq'), undefined)
     assert.throws(function () { parser.eval('qq') })
 
     assert.strictEqual(parser.eval('ww = 5'), 5)
     assert.strictEqual(parser.get('ww'), 5)
     parser.remove('ww')
-    assert.strictEqual(parser.get('ww'), null)
+    assert.strictEqual(parser.get('ww'), undefined)
     assert.throws(function () { parser.eval('ww') })
   })
 
@@ -121,10 +121,10 @@ describe('parser', function () {
 
     parser.clear()
 
-    assert.strictEqual(parser.get('xx'), null)
-    assert.strictEqual(parser.get('yy'), null)
-    assert.strictEqual(parser.get('zz'), null)
-    approx.equal(parser.get('pi'), null)
+    assert.strictEqual(parser.get('xx'), undefined)
+    assert.strictEqual(parser.get('yy'), undefined)
+    assert.strictEqual(parser.get('zz'), undefined)
+    approx.equal(parser.get('pi'), undefined)
 
     assert.throws(function () { parser.eval('xx') })
     assert.throws(function () { parser.eval('yy') })

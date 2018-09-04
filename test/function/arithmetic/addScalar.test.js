@@ -59,9 +59,9 @@ describe('addScalar', function () {
   })
 
   it('should add two complex numbers', function () {
-    assert.strictEqual(add(math.complex(3, -4), math.complex(8, 2)), '11 - 2i')
-    assert.strictEqual(add(math.complex(3, -4), 10), '13 - 4i')
-    assert.strictEqual(add(10, math.complex(3, -4)), '13 - 4i')
+    assert.deepEqual(add(math.complex(3, -4), math.complex(8, 2)), math.complex('11 - 2i'))
+    assert.deepEqual(add(math.complex(3, -4), 10),  math.complex('13 - 4i'))
+    assert.deepEqual(add(10, math.complex(3, -4)),  math.complex('13 - 4i'))
   })
 
   it('should add two fractions', function () {

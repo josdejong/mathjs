@@ -160,8 +160,8 @@ describe('constants', function () {
     // Do these tests really belong in constants.test.js ?
     approx.equal(math.sin(math.pi / 2), 1)
 
-    assert.strictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), 0)
-    assert.strictEqual(math.round(math.eval('1+e^(pi*i)'), 5), 0)
+    assert.deepEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
+    assert.deepEqual(math.round(math.eval('1+e^(pi*i)'), 5), math.complex(0))
 
     assert.deepEqual(math.sqrt(-1), math.i)
     assert.deepEqual(math.eval('i'), math.complex(0, 1))

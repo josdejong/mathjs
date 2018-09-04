@@ -90,7 +90,7 @@ describe('compare', function () {
   it('should add two measures of the same unit', function () {
     assert.strictEqual(compare(unit('100cm'), unit('10inch')), 1)
     assert.strictEqual(compare(unit('99cm'), unit('1m')), -1)
-    assert.strictEqual(compare(unit('1m'), unit('1m')), bignumber(0))
+    assert.strictEqual(compare(unit('1m'), unit('1m')), 0)
     assert.strictEqual(compare(unit('101cm'), unit('1m')), 1)
   })
 
@@ -172,11 +172,11 @@ describe('compare', function () {
     const mymath = math.create()
 
     assert.strictEqual(mymath.compare(1, 0.991), 1)
-    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), 1)
+    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), '1')
 
     mymath.config({ epsilon: 1e-2 })
     assert.strictEqual(mymath.compare(1, 0.991), 0)
-    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)), 0)
+    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), '0')
   })
 
   it('should throw an error when comparing complex numbers', function () {

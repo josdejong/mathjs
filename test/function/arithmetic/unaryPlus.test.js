@@ -61,10 +61,10 @@ describe('unaryPlus', function () {
   })
 
   it('should perform unary plus of a complex number', function () {
-    assert.strictEqual(math.unaryPlus(math.complex(3, 2)), '3 + 2i')
-    assert.strictEqual(math.unaryPlus(math.complex(3, -2)), '3 - 2i')
-    assert.strictEqual(math.unaryPlus(math.complex(-3, 2)), '-3 + 2i')
-    assert.strictEqual(math.unaryPlus(math.complex(-3, -2)), '-3 - 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(3, 2)).toString(), '3 + 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(3, -2)).toString(), '3 - 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(-3, 2)).toString(), '-3 + 2i')
+    assert.strictEqual(math.unaryPlus(math.complex(-3, -2)).toString(), '-3 - 2i')
   })
 
   it('should perform unary plus of a unit', function () {

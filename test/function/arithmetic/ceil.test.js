@@ -55,7 +55,7 @@ describe('ceil', function () {
     assert.strictEqual(a.toString(), '0.(6)')
 
     assert.strictEqual(ceil(fraction(0)).toString(), '0')
-    assert.strictEqual(ceil(fraction(1)), '1')
+    assert.strictEqual(ceil(fraction(1)).toString(), '1')
     assert.strictEqual(ceil(fraction(1.3)).toString(), '2')
     assert.strictEqual(ceil(fraction(1.8)).toString(), '2')
     assert.strictEqual(ceil(fraction(2)).toString(), '2')

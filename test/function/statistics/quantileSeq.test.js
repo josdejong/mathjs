@@ -41,20 +41,21 @@ describe('quantileSeq', function () {
   })
 
   it('should return the quantileSeq from an array with BigNumber probability', function () {
+    // FIXME: why does quantileSeq sometimes return bignumber and sometimes not?
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    assert.strictEqual(quantileSeq(lst, bignumber(0)), 1.3)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.1)), 1.75)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.2)), 2.2)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.25)), 2.325)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.3)), 2.45)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.4)), 2.7)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.5)), 2.9)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.6)), 3.1)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.7)), 3.2)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.75)), 3.25)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.8)), 3.3)
-    assert.strictEqual(quantileSeq(lst, bignumber(0.9)), 3.5)
-    assert.strictEqual(quantileSeq(lst, bignumber(1)), 3.7)
+    assert.deepEqual(quantileSeq(lst, bignumber(0)), bignumber(1.3))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.1)), bignumber(1.75))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.2)), bignumber(2.2))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.25)), bignumber(2.325))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.3)), bignumber(2.45))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.4)), bignumber(2.7))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.5)), bignumber(2.9))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.6)), bignumber(3.1))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.7)), bignumber(3.2))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.75)), bignumber(3.25))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.8)), bignumber(3.3))
+    assert.deepEqual(quantileSeq(lst, bignumber(0.9)), bignumber(3.5))
+    assert.deepEqual(quantileSeq(lst, bignumber(1)), bignumber(3.7))
   })
 
   // FIXME: should return the quantileSeq of an array of bignumbers with number probability

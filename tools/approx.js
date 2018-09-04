@@ -38,8 +38,11 @@ exports.equal = function equal (a, b, epsilon) {
       const maxDiff = Math.abs(max * epsilon)
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
+  } else if (a == null || b == null) {
+    assert.strictEqual(a, b);
   } else {
-    assert.strictEqual(a, b)
+    // TODO: needs review
+    assert.equal(a.valueOf(), b.valueOf())
   }
 }
 
