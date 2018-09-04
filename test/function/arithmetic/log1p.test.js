@@ -12,7 +12,7 @@ describe('log1p', function () {
   it('should return the log1p of a boolean value', function () {
     approx.equal(log1p(true), 0.6931471805599)
     assert.strictEqual(log1p(false), 0)
-    assert.strictEqual(log1p(1, false), 0)
+    assert.strictEqual(log1p(1, false), -0)
   })
 
   it('should return the log1p of positive numbers', function () {

@@ -12,7 +12,7 @@ describe('dotDivide', function () {
     assert.strictEqual(dotDivide(4, -2), -2)
     assert.strictEqual(dotDivide(-4, -2), 2)
     assert.strictEqual(dotDivide(4, 0), Infinity)
-    assert.strictEqual(dotDivide(0, -5), 0)
+    assert.strictEqual(dotDivide(0, -5), -0)
     assert.ok(isNaN(dotDivide(0, 0)))
   })
 

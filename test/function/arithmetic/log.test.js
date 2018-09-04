@@ -12,7 +12,7 @@ describe('log', function () {
   it('should return the log of a boolean value', function () {
     assert.strictEqual(log(true), 0)
     assert.strictEqual(log(false), -Infinity)
-    assert.strictEqual(log(1, false), 0)
+    assert.strictEqual(log(1, false), -0)
   })
 
   it('should return the log of positive numbers', function () {

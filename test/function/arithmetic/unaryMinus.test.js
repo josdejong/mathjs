@@ -8,7 +8,7 @@ const complex = math.complex
 describe('unaryMinus', function () {
   it('should return unary minus of a boolean', function () {
     assert.strictEqual(math.unaryMinus(true), -1)
-    assert.strictEqual(math.unaryMinus(false), 0)
+    assert.strictEqual(math.unaryMinus(false), -0)
   })
 
   // TODO: unary minus should return bignumber on boolean input when configured for bignumber

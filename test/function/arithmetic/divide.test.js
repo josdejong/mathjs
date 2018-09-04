@@ -14,7 +14,7 @@ describe('divide', function () {
     assert.strictEqual(divide(-4, -2), 2)
     assert.strictEqual(divide(4, 0), Infinity)
     assert.strictEqual(divide(-4, 0), -Infinity)
-    assert.strictEqual(divide(0, -5), 0)
+    assert.strictEqual(divide(0, -5), -0)
     assert.ok(isNaN(divide(0, 0)))
   })
 

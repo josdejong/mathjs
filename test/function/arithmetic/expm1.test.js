@@ -27,7 +27,7 @@ describe('expm1', function () {
     // function requirements
     assert.ok(isNaN(expm1(NaN)))
     assert.strictEqual(expm1(+0), 0)
-    assert.strictEqual(expm1(-0), 0)
+    assert.strictEqual(expm1(-0), -0)
     assert.strictEqual(expm1(+Infinity), Infinity)
     assert.strictEqual(expm1(-Infinity), -1)
   })

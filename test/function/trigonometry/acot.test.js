@@ -25,7 +25,7 @@ describe('acot', function () {
     approx.equal(acot(0.5), 1.107148717794)
     approx.equal(acot(1) / pi, 0.25)
 
-    assert.strictEqual(acot(-Infinity), 0)
+    assert.strictEqual(acot(-Infinity), -0)
     assert.strictEqual(acot(Infinity), 0)
   })
 
