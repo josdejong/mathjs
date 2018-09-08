@@ -115,7 +115,7 @@ const units = {
 }
 
 exports.escape = function (string) {
-  return escapeLatex(string, {'preserveFormatting': true})
+  return escapeLatex(string, { 'preserveFormatting': true })
 }
 
 // @param {string} name

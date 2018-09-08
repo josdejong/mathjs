@@ -97,7 +97,7 @@ function factory (type, config, load, typed) {
     return Y
   }
 
-  sqrtm.toTex = {1: `{\${args[0]}}${latex.operators['pow']}{\\frac{1}{2}}`}
+  sqrtm.toTex = { 1: `{\${args[0]}}${latex.operators['pow']}{\\frac{1}{2}}` }
 
   return sqrtm
 }

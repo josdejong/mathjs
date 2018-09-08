@@ -7,19 +7,19 @@ describe('matrix', function () {
   it('should create an empty matrix with one dimension if called without argument', function () {
     const a = matrix()
     assert.ok(a instanceof math.type.Matrix)
-    assert.deepEqual(math.size(a), matrix([0])) // TODO: wouldn't it be nicer if an empty matrix has zero dimensions?
+    assert.deepStrictEqual(math.size(a), matrix([0])) // TODO: wouldn't it be nicer if an empty matrix has zero dimensions?
   })
 
   it('should create empty matrix, dense format', function () {
     const a = matrix('dense')
     assert.ok(a instanceof math.type.Matrix)
-    assert.deepEqual(math.size(a), matrix([0]))
+    assert.deepStrictEqual(math.size(a), matrix([0]))
   })
 
   it('should create empty matrix, dense format, number datatype', function () {
     const a = matrix('dense', 'number')
     assert.ok(a instanceof math.type.Matrix)
-    assert.deepEqual(math.size(a), matrix([0]))
+    assert.deepStrictEqual(math.size(a), matrix([0]))
     assert(a.datatype(), 'number')
   })
 
@@ -31,16 +31,16 @@ describe('matrix', function () {
   it('should create a matrix from an array', function () {
     const b = matrix([[1, 2], [3, 4]])
     assert.ok(b instanceof math.type.Matrix)
-    assert.deepEqual(b, matrix([[1, 2], [3, 4]]))
-    assert.deepEqual(math.size(b), matrix([2, 2]))
+    assert.deepStrictEqual(b, matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(math.size(b), matrix([2, 2]))
   })
 
   it('should be the identity if called with a matrix, dense format', function () {
     const b = matrix([[1, 2], [3, 4]], 'dense')
     const c = matrix(b, 'dense')
     assert.ok(c._data !== b._data) // data should be cloned
-    assert.deepEqual(c, matrix([[1, 2], [3, 4]], 'dense'))
-    assert.deepEqual(math.size(c), matrix([2, 2], 'dense'))
+    assert.deepStrictEqual(c, matrix([[1, 2], [3, 4]], 'dense'))
+    assert.deepStrictEqual(math.size(c), matrix([2, 2], 'dense'))
   })
 
   it('should be the identity if called with a matrix, dense format, number datatype', function () {
@@ -48,8 +48,8 @@ describe('matrix', function () {
     const c = matrix(b, 'dense')
     assert.ok(c._data !== b._data) // data should be cloned
     assert.ok(c._size !== b._size)
-    assert.deepEqual(c._data, b._data)
-    assert.deepEqual(c._size, b._size)
+    assert.deepStrictEqual(c._data, b._data)
+    assert.deepStrictEqual(c._size, b._size)
     assert.ok(c.datatype() === 'number')
   })
 
@@ -57,22 +57,22 @@ describe('matrix', function () {
     const b = matrix([[1, 2], [3, 4]], 'sparse')
     const c = matrix(b, 'sparse')
     assert.ok(c._values !== b._values) // data should be cloned
-    assert.deepEqual(c, matrix([[1, 2], [3, 4]], 'sparse'))
+    assert.deepStrictEqual(c, matrix([[1, 2], [3, 4]], 'sparse'))
   })
 
   it('should be the identity if called with a matrix, sparse, number datatype', function () {
     const b = matrix([[1, 2], [3, 4]], 'sparse', 'number')
     const c = matrix(b, 'sparse')
     assert.ok(c._values !== b._values) // data should be cloned
-    assert.deepEqual(c.valueOf(), b.valueOf())
+    assert.deepStrictEqual(c.valueOf(), b.valueOf())
     assert.ok(c.datatype() === 'number')
   })
 
   it('should create a matrix from a range correctly', function () {
     const d = matrix(math.range(1, 6))
     assert.ok(d instanceof math.type.Matrix)
-    assert.deepEqual(d, matrix([1, 2, 3, 4, 5]))
-    assert.deepEqual(math.size(d), matrix([5]))
+    assert.deepStrictEqual(d, matrix([1, 2, 3, 4, 5]))
+    assert.deepStrictEqual(math.size(d), matrix([5]))
   })
 
   it('should throw an error if called with an invalid argument', function () {
@@ -99,7 +99,7 @@ describe('matrix', function () {
     const expr1 = math.parse('matrix()')
     const expr2 = math.parse('matrix([1])')
 
-    assert.equal(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
-    assert.equal(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr1.toTex(), '\\begin{bmatrix}\\end{bmatrix}')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
   })
 })

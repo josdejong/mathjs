@@ -62,8 +62,8 @@ function assertValidQRDecomposition (A, Q, R) {
   const cols = Asize[1]
 
   // sizes match
-  assert.deepEqual(math.size(Q).valueOf(), [rows, rows])
-  assert.deepEqual(math.size(R).valueOf(), [rows, cols])
+  assert.deepStrictEqual(math.size(Q).valueOf(), [rows, rows])
+  assert.deepStrictEqual(math.size(R).valueOf(), [rows, cols])
 
   // A = Q * R
   approx.deepEqual(math.multiply(Q, R).valueOf(), A.valueOf())
@@ -209,7 +209,7 @@ describe('qr', function () {
 
     const r = math.qr(m)
     // Q
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.Q,
       math.matrix(
         [
@@ -220,7 +220,7 @@ describe('qr', function () {
         ]
       ))
     // R
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.R,
       math.matrix(
         [
@@ -264,7 +264,7 @@ describe('qr', function () {
         [0, 0, 0, 4]
       ])
     // P
-    assert.deepEqual(r.p, [3, 1, 0, 2])
+    assert.deepStrictEqual(r.p, [3, 1, 0, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -295,7 +295,7 @@ describe('qr', function () {
         [0, 0, 0.75]
       ])
     // P
-    assert.deepEqual(r.p, [2, 1, 0])
+    assert.deepStrictEqual(r.p, [2, 1, 0])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -311,7 +311,7 @@ describe('qr', function () {
     const r = math.qr(m)
 
     // Q
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.Q,
       math.eval(`[
         [0.09940285751055641 + 0.012425357188819552i, 0.6771044400000075 + 0.0032268934486674216i, 0.7225638487314755 + 0.09687792016125076i],
@@ -320,13 +320,13 @@ describe('qr', function () {
       ]`))
 
     // R
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.R,
-      math.eval(`[
-        [241.44175128417413 + 0i, 3.3948782289740067 - 0.8870876675671249i],
-        [0 + 0i, 14.254103875042043 - 4.440892098500626e-16i],
-        [0 + 0i, 0 + 0i]
-      ]`))
+      math.matrix([
+        [math.complex(241.44175128417413, 0), math.complex(3.3948782289740067, -0.8870876675671249)],
+        [math.complex(0, -0), math.complex(14.254103875042043, -4.440892098500626e-16)],
+        [math.complex(0, -0), math.complex(0, 0)]
+      ]))
 
     // verify
     assertValidQRDecomposition(m, r.Q, r.R)
@@ -342,7 +342,7 @@ describe('qr', function () {
     const r = math.qr(m)
 
     // Q
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.Q,
       math.eval(`[
         [-0.0038074725834465403 + 0.029084550335153184i, 0.22686378024210954 - 0.8031909609489004i, -0.1539944364016218 - 0.08044026151398012i, 0.15914274660150135 - 0.4970365797781979i],
@@ -352,14 +352,50 @@ describe('qr', function () {
       ]`))
 
     // R
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.R,
-      math.eval(`[
-        [85.74002161421444 - 1.7763568394002505e-15i, 75.75511004703746 + 4.3347264490288016i, 20.511425451943854 + 26.86626726613313i, 27.288058950461433 - 16.62801026736354i, 105.22335436327181 - 17.027323945468076i, 109.21486260617472 + 15.233872631050161i, 16.361518290342467 + 13.316745322711627i, 28.409955756511188 - 11.605326516313891i],
-        [0 + 0i, 121.47784233162547 + 1.7763568394002505e-15i, 44.01977059734889 + 24.441930600590624i, 38.83986358402923 + 10.93198966397847i, 78.56760829656308 + 7.162388196994509i, 72.474482997425 - 8.297010771192621i, -20.270457048330027 + 21.34082444731987i, 33.83280850600839 + 2.9469680307519037i],
-        [0 + 0i, 0 + 0i, 25.372653909655675 + 5.329070518200751e-15i, 46.75701662904174 - 52.038112884483404i, -25.7821433027293 - 35.64391269354021i, -31.014234782164266 + 3.4985227007956983i, -15.936684410229294 + 18.179762871924087i, 33.75717971935531 - 25.758933854786893i],
-        [0 + 0i, 0 + 0i, 0 + 0i, 69.24128415239949 + 0i, 14.27806840079945 + 4.055317531798819i, 13.583401274164364 - 21.002114936285405i, -8.485891575536547 + 10.384078077176659i, 31.408176714183693 + 17.21736552045245i]
-      ]`))
+      math.matrix([
+        [
+          math.complex(85.74002161421444, -1.7763568394002505e-15),
+          math.complex(75.75511004703746, 4.3347264490288016),
+          math.complex(20.511425451943854, 26.86626726613313),
+          math.complex(27.288058950461433, -16.62801026736354),
+          math.complex(105.22335436327181, -17.027323945468076),
+          math.complex(109.21486260617472, 15.233872631050161),
+          math.complex(16.361518290342467, 13.316745322711627),
+          math.complex(28.409955756511188, -11.605326516313891)
+        ],
+        [
+          math.complex(0, 0),
+          math.complex(121.47784233162547, 1.7763568394002505e-15),
+          math.complex(44.01977059734889, 24.441930600590624),
+          math.complex(38.83986358402923, 10.93198966397847),
+          math.complex(78.56760829656308, 7.162388196994509),
+          math.complex(72.474482997425, -8.297010771192621),
+          math.complex(-20.270457048330027, 21.34082444731987),
+          math.complex(33.83280850600839, 2.9469680307519037)
+        ],
+        [
+          math.complex(-0, 0),
+          math.complex(-0, 0),
+          math.complex(25.372653909655675, 5.329070518200751e-15),
+          math.complex(46.75701662904174, -52.038112884483404),
+          math.complex(-25.7821433027293, -35.64391269354021),
+          math.complex(-31.014234782164266, 3.4985227007956983),
+          math.complex(-15.936684410229294, 18.179762871924087),
+          math.complex(33.75717971935531, -25.758933854786893)
+        ],
+        [
+          math.complex(0, 0),
+          math.complex(0, 0),
+          math.complex(0, 0),
+          math.complex(69.24128415239949, 0),
+          math.complex(14.27806840079945, 4.055317531798819),
+          math.complex(13.583401274164364, -21.002114936285405),
+          math.complex(-8.485891575536547, 10.384078077176659),
+          math.complex(31.408176714183693, 17.21736552045245)
+        ]
+      ]))
 
     // verify
     assertValidQRDecomposition(m, r.Q, r.R)

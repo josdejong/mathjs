@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  fix.toTex = {1: `\\mathrm{\${name}}\\left(\${args[0]}\\right)`}
+  fix.toTex = { 1: `\\mathrm{\${name}}\\left(\${args[0]}\\right)` }
 
   return fix
 }

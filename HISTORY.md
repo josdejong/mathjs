@@ -3,7 +3,11 @@
 
 ## not yet released, version 5.1.2
 
+- Fixed a typo in the docs of `parse`. Thanks @mathiasvr.
 - Fixed #1222: a typo in the docs of `subset`.
+- Fixed #1236: quantileSeq has inconsistant return.
+- Fixed #1237: norm sometimes returning a complex number instead of
+  number.
 - Upgraded devDependencies (`uglify-js@3.4.8`, `webpack@4.17.1`).
 
 

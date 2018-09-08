@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  ceil.toTex = {1: `\\left\\lceil\${args[0]}\\right\\rceil`}
+  ceil.toTex = { 1: `\\left\\lceil\${args[0]}\\right\\rceil` }
 
   return ceil
 }

@@ -12,7 +12,7 @@ describe('IndexNode', function () {
     const n = new IndexNode([])
     assert(n instanceof IndexNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'IndexNode')
+    assert.strictEqual(n.type, 'IndexNode')
   })
 
   it('should have isIndexNode', function () {
@@ -36,18 +36,18 @@ describe('IndexNode', function () {
     const c = new ConstantNode(1)
     const n = new IndexNode([b, c])
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof IndexNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [b, c])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [b])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof IndexNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [b, c])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [b])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an empty IndexNode', function () {
     const n = new IndexNode([])
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof IndexNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof IndexNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [])
   })
 
   it('should run forEach on an IndexNode', function () {
@@ -63,10 +63,10 @@ describe('IndexNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], b)
     assert.strictEqual(nodes[1], c)
-    assert.deepEqual(paths, ['dimensions[0]', 'dimensions[1]'])
+    assert.deepStrictEqual(paths, ['dimensions[0]', 'dimensions[1]'])
   })
 
   it('should map an IndexNode', function () {
@@ -85,14 +85,14 @@ describe('IndexNode', function () {
       return node.isConstantNode && node.value === 1 ? e : node
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], b)
     assert.strictEqual(nodes[1], c)
-    assert.deepEqual(paths, ['dimensions[0]', 'dimensions[1]'])
+    assert.deepStrictEqual(paths, ['dimensions[0]', 'dimensions[1]'])
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.dimensions[0], b)
-    assert.deepEqual(f.dimensions[1], e)
+    assert.deepStrictEqual(f.dimensions[0], b)
+    assert.deepStrictEqual(f.dimensions[1], e)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -116,8 +116,8 @@ describe('IndexNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.dimensions[0], b)
-    assert.deepEqual(f.dimensions[1], e)
+    assert.deepStrictEqual(f.dimensions[0], b)
+    assert.deepStrictEqual(f.dimensions[1], e)
   })
 
   it('should transform an IndexNode itself', function () {
@@ -131,7 +131,7 @@ describe('IndexNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should clone an IndexNode', function () {
@@ -141,7 +141,7 @@ describe('IndexNode', function () {
 
     const d = n.clone()
     assert(d.isIndexNode)
-    assert.deepEqual(d, n)
+    assert.deepStrictEqual(d, n)
     assert.notStrictEqual(d, n)
     assert.notStrictEqual(d.dimensions, n.dimensions)
     assert.strictEqual(d.dimensions[0], n.dimensions[0])
@@ -172,17 +172,17 @@ describe('IndexNode', function () {
     ]
 
     const n = new IndexNode(dimensions)
-    assert.equal(n.toString(), '[2, 1]')
+    assert.strictEqual(n.toString(), '[2, 1]')
 
     const n2 = new IndexNode([])
-    assert.equal(n2.toString(), '[]')
+    assert.strictEqual(n2.toString(), '[]')
   })
 
   it('should stringify an IndexNode with dot notation', function () {
     const dimensions = [new ConstantNode('a')]
 
     const n = new IndexNode(dimensions, true)
-    assert.equal(n.toString(), '.a')
+    assert.strictEqual(n.toString(), '.a')
   })
 
   it('should stringify an IndexNode with custom toString', function () {
@@ -202,7 +202,7 @@ describe('IndexNode', function () {
 
     const n = new IndexNode([b, c])
 
-    assert.equal(n.toString({handler: customFunction}), 'const(1, number), const(2, number)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'const(1, number), const(2, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -211,14 +211,14 @@ describe('IndexNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'IndexNode',
       dimensions: [ prop ],
       dotNotation: true
     })
 
     const parsed = IndexNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX an IndexNode', function () {
@@ -228,17 +228,17 @@ describe('IndexNode', function () {
     ]
 
     const n = new IndexNode(dimensions)
-    assert.equal(n.toTex(), '_{2,1}')
+    assert.strictEqual(n.toTex(), '_{2,1}')
 
     const n2 = new IndexNode([])
-    assert.equal(n2.toTex(), '_{}')
+    assert.strictEqual(n2.toTex(), '_{}')
   })
 
   it('should LaTeX an IndexNode with dot notation', function () {
     const dimensions = [new ConstantNode('a')]
 
     const n = new IndexNode(dimensions, true)
-    assert.equal(n.toString(), '.a')
+    assert.strictEqual(n.toString(), '.a')
   })
 
   it('should LaTeX an IndexNode with custom toTex', function () {
@@ -257,6 +257,6 @@ describe('IndexNode', function () {
     const c = new ConstantNode(2)
     const n = new IndexNode([b, c])
 
-    assert.equal(n.toTex({handler: customFunction}), 'const\\left(1, number\\right), const\\left(2, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), 'const\\left(1, number\\right), const\\left(2, number\\right)')
   })
 })

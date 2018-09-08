@@ -49,7 +49,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  csc.toTex = {1: `\\csc\\left(\${args[0]}\\right)`}
+  csc.toTex = { 1: `\\csc\\left(\${args[0]}\\right)` }
 
   return csc
 }

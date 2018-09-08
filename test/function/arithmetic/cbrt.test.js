@@ -8,17 +8,17 @@ const complex = math.complex
 
 describe('cbrt', function () {
   it('should return the cubic root of a boolean', function () {
-    assert.equal(cbrt(true), 1)
-    assert.equal(cbrt(false), 0)
+    assert.strictEqual(cbrt(true), 1)
+    assert.strictEqual(cbrt(false), 0)
   })
 
   it('should return the cubic root of a positive number', function () {
-    assert.equal(cbrt(0), 0)
-    assert.equal(cbrt(1), 1)
-    assert.equal(cbrt(8), 2)
-    assert.equal(cbrt(27), 3)
-    assert.equal(cbrt(64), 4)
-    assert.equal(cbrt(125), 5)
+    assert.strictEqual(cbrt(0), 0)
+    assert.strictEqual(cbrt(1), 1)
+    assert.strictEqual(cbrt(8), 2)
+    assert.strictEqual(cbrt(27), 3)
+    assert.strictEqual(cbrt(64), 4)
+    assert.strictEqual(cbrt(125), 5)
 
     approx.equal(cbrt(10), 2.1544346900318834)
   })
@@ -48,19 +48,19 @@ describe('cbrt', function () {
   })
 
   it('should return the cubic root of a positive bignumber', function () {
-    assert.deepEqual(cbrt(bignumber(0)), bignumber(0))
-    assert.deepEqual(cbrt(bignumber(1)), bignumber(1))
-    assert.deepEqual(cbrt(bignumber(8)), bignumber(2))
-    assert.deepEqual(cbrt(bignumber(27)), bignumber(3))
-    assert.deepEqual(cbrt(bignumber(64)), bignumber(4))
-    assert.deepEqual(cbrt(bignumber(125)), bignumber(5))
+    assert.deepStrictEqual(cbrt(bignumber(0)), bignumber(0))
+    assert.deepStrictEqual(cbrt(bignumber(1)), bignumber(1))
+    assert.deepStrictEqual(cbrt(bignumber(8)), bignumber(2))
+    assert.deepStrictEqual(cbrt(bignumber(27)), bignumber(3))
+    assert.deepStrictEqual(cbrt(bignumber(64)), bignumber(4))
+    assert.deepStrictEqual(cbrt(bignumber(125)), bignumber(5))
 
-    assert.deepEqual(cbrt(bignumber(10)), bignumber('2.154434690031883721759293566519350495259344942192108582489235506'))
+    assert.deepStrictEqual(cbrt(bignumber(10)), bignumber('2.154434690031883721759293566519350495259344942192108582489235506'))
   })
 
   it('should return the cubic root of a negative bignumber', function () {
-    assert.deepEqual(cbrt(bignumber(-8)), bignumber(-2))
-    assert.deepEqual(cbrt(bignumber(-64)), bignumber(-4))
+    assert.deepStrictEqual(cbrt(bignumber(-8)), bignumber(-2))
+    assert.deepStrictEqual(cbrt(bignumber(-64)), bignumber(-4))
   })
 
   it('should return the cubic root of a complex number', function () {
@@ -82,7 +82,7 @@ describe('cbrt', function () {
       complex('-2i')
     ]))
 
-    math.config({matrix: 'Array'})
+    math.config({ matrix: 'Array' })
 
     approx.deepEqual(cbrt(complex('8i'), true), [
       complex(' 1.7321 + i'),
@@ -90,17 +90,17 @@ describe('cbrt', function () {
       complex('-2i')
     ])
 
-    math.config({matrix: 'Matrix'})
+    math.config({ matrix: 'Matrix' })
   })
 
   it('should return the cubic root of a unit', function () {
-    assert.equal(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString())
-    assert.equal(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString())
+    assert.strictEqual(cbrt(math.unit('27 m^3')).toString(), math.unit('3 m').toString())
+    assert.strictEqual(cbrt(math.unit('-27 m^3')).toString(), math.unit('-3 m').toString())
 
     assert(math.type.isBigNumber(cbrt(math.unit(math.bignumber(27), 'm^3')).value))
-    assert.deepEqual(cbrt(math.unit(math.bignumber(27), 'm^3')).value, math.bignumber(3))
+    assert.deepStrictEqual(cbrt(math.unit(math.bignumber(27), 'm^3')).value, math.bignumber(3))
     assert(math.type.isBigNumber(cbrt(math.unit(math.bignumber(-27), 'm^3')).value))
-    assert.deepEqual(cbrt(math.unit(math.bignumber(-27), 'm^3')).value, math.bignumber(-3))
+    assert.deepStrictEqual(cbrt(math.unit(math.bignumber(-27), 'm^3')).value, math.bignumber(-3))
 
     assert(math.type.isComplex(cbrt(math.unit(math.complex(-46, 9), 's^3')).value))
     approx.deepEqual(cbrt(math.unit(math.complex(-46, 9), 's^3')).value, math.complex(2, 3))
@@ -113,9 +113,9 @@ describe('cbrt', function () {
   })
 
   it('should return the cubic root of each element of a matrix', function () {
-    assert.deepEqual(cbrt([8, 27, 64, 125]), [2, 3, 4, 5])
-    assert.deepEqual(cbrt([[8, 27], [64, 125]]), [[2, 3], [4, 5]])
-    assert.deepEqual(cbrt(math.matrix([[8, 27], [64, 125]])), math.matrix([[2, 3], [4, 5]]))
+    assert.deepStrictEqual(cbrt([8, 27, 64, 125]), [2, 3, 4, 5])
+    assert.deepStrictEqual(cbrt([[8, 27], [64, 125]]), [[2, 3], [4, 5]])
+    assert.deepStrictEqual(cbrt(math.matrix([[8, 27], [64, 125]])), math.matrix([[2, 3], [4, 5]]))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -129,6 +129,6 @@ describe('cbrt', function () {
 
   it('should LaTeX cbrt', function () {
     const expression = math.parse('cbrt(2)')
-    assert.equal(expression.toTex(), '\\sqrt[3]{2}')
+    assert.strictEqual(expression.toTex(), '\\sqrt[3]{2}')
   })
 })

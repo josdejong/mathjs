@@ -50,7 +50,7 @@ module.exports = function bitwise (x, y, func) {
   const two = new BigNumber(2)
 
   const prevPrec = BigNumber.precision
-  BigNumber.config({precision: 1E9})
+  BigNumber.config({ precision: 1E9 })
 
   while (shortLen > 0) {
     if (func(minBits[--shortLen], maxBits[--longLen]) === expFuncVal) {
@@ -65,7 +65,7 @@ module.exports = function bitwise (x, y, func) {
     twoPower = twoPower.times(two)
   }
 
-  BigNumber.config({precision: prevPrec})
+  BigNumber.config({ precision: prevPrec })
 
   if (expFuncVal === 0) {
     outVal.s = -outVal.s

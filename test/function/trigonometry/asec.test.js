@@ -7,15 +7,15 @@ const sec = math.sec
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const predmath = math.create({ predictable: true })
 const asecBig = bigmath.asec
 const Big = bigmath.bignumber
 
 describe('asec', function () {
   it('should return the arcsec of a boolean', function () {
-    assert.equal(asec(true), 0)
-    assert.deepEqual(asec(false), complex(0, Infinity))
+    assert.strictEqual(asec(true), 0)
+    assert.deepStrictEqual(asec(false), complex(0, Infinity))
     // assert.ok(isNaN(asec(false)))
   })
 
@@ -30,30 +30,30 @@ describe('asec', function () {
   })
 
   it('should return the arcsec of a number when predictable:true', function () {
-    assert.equal(typeof predmath.asec(0.5), 'number')
+    assert.strictEqual(typeof predmath.asec(0.5), 'number')
     assert(isNaN(predmath.asec(0.5)))
   })
 
   it('should return the arcsec of a bignumber', function () {
     const arg1 = Big(-2)
     const arg2 = Big(-1)
-    assert.deepEqual(asecBig(arg1).toString(), bigmath.tau.div(3).toString())
-    assert.deepEqual(asecBig(arg2).toString(), bigmath.pi.toString())
-    assert.deepEqual(asecBig(Big(1)), Big(0))
-    assert.deepEqual(asecBig(Big(2)).toString(), bigmath.pi.div(3).toString())
+    assert.deepStrictEqual(asecBig(arg1).toString(), bigmath.tau.div(3).toString())
+    assert.deepStrictEqual(asecBig(arg2).toString(), bigmath.pi.toString())
+    assert.deepStrictEqual(asecBig(Big(1)), Big(0))
+    assert.deepStrictEqual(asecBig(Big(2)).toString(), bigmath.pi.div(3).toString())
 
     // Make sure arg was not changed
-    assert.deepEqual(arg1, Big(-2))
-    assert.deepEqual(arg2, Big(-1))
+    assert.deepStrictEqual(arg1, Big(-2))
+    assert.deepStrictEqual(arg2, Big(-1))
 
     // Hit Newton's method case
-    bigmath.config({precision: 64})
+    bigmath.config({ precision: 64 })
     const arg = Big('3.00000001')
-    assert.deepEqual(asecBig(Big(3)), bigmath.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
+    assert.deepStrictEqual(asecBig(Big(3)), bigmath.bignumber('1.230959417340774682134929178247987375710340009355094839055548334'))
     // wolfram:                  asec(3) = 1.2309594173407746821349291782479873757103400093550948390555483336639923144782560878532516201708609211389442794492
-    assert.deepEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265441'))
+    assert.deepStrictEqual(asecBig(arg), Big('1.230959418519285979938614206185297709155969929825366328254265441'))
     // wolfram:                         1.2309594185192859799386142061852977091559699298253663282542654408321080017053701257305273449373991752616248450522
-    assert.deepEqual(arg, Big(3.00000001))
+    assert.deepStrictEqual(arg, Big(3.00000001))
 
     // out of range
     assert.ok(asec(Big(0.5)).isNaN())
@@ -70,11 +70,11 @@ describe('asec', function () {
   })
 
   it('should be the inverse function of bignumber sec', function () {
-    bigmath.config({precision: 20})
-    assert.deepEqual(asecBig(bigmath.sec(Big(-1))), Big(1))
-    assert.deepEqual(asecBig(bigmath.sec(Big(0))), Big(0))
-    assert.deepEqual(asecBig(bigmath.sec(Big(0.5))), Big('0.49999999999999999997'))
-    assert.deepEqual(asecBig(bigmath.sec(Big(2))), Big(2))
+    bigmath.config({ precision: 20 })
+    assert.deepStrictEqual(asecBig(bigmath.sec(Big(-1))), Big(1))
+    assert.deepStrictEqual(asecBig(bigmath.sec(Big(0))), Big(0))
+    assert.deepStrictEqual(asecBig(bigmath.sec(Big(0.5))), Big('0.49999999999999999997'))
+    assert.deepStrictEqual(asecBig(bigmath.sec(Big(2))), Big(2))
   })
 
   it('should return the arcsec of a complex number', function () {
@@ -112,6 +112,6 @@ describe('asec', function () {
 
   it('should LaTeX asec', function () {
     const expression = math.parse('asec(2)')
-    assert.equal(expression.toTex(), '\\sec^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\sec^{-1}\\left(2\\right)')
   })
 })

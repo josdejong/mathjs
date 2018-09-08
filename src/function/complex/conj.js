@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  conj.toTex = {1: `\\left(\${args[0]}\\right)^*`}
+  conj.toTex = { 1: `\\left(\${args[0]}\\right)^*` }
 
   return conj
 }

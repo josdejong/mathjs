@@ -14,8 +14,8 @@ function isNumber (value) {
 /**
  * Test whether two values are approximately equal. Tests whether the difference
  * between the two numbers is smaller than a fraction of their max value.
- * @param {Number} a
- * @param {Number} b
+ * @param {Number | BigNumber | Complex | Fraction} a
+ * @param {Number | BigNumber | Complex | Fraction} b
  * @param {Number} [epsilon]
  */
 exports.equal = function equal (a, b, epsilon) {
@@ -27,7 +27,7 @@ exports.equal = function equal (a, b, epsilon) {
     if (a === b) {
       // great, we're done :)
     } else if (isNaN(a)) {
-      assert.equal(a.toString(), b.toString())
+      assert.strictEqual(a.toString(), b.toString())
     } else if (a === 0) {
       assert.ok(Math.abs(b) < epsilon, (a + ' ~= ' + b))
     } else if (b === 0) {
@@ -38,8 +38,23 @@ exports.equal = function equal (a, b, epsilon) {
       const maxDiff = Math.abs(max * epsilon)
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
+  } else if (a && a.isBigNumber) {
+    return exports.equal(a.toNumber(), b)
+  } else if (b && b.isBigNumber) {
+    return exports.equal(a, b.toNumber())
+  } else if ((a && a.isComplex) || (b && b.isComplex)) {
+    if (a && a.isComplex && b && b.isComplex) {
+      exports.equal(a.re, b.re, (a + ' ~= ' + b))
+      exports.equal(a.im, b.im, (a + ' ~= ' + b))
+    } else if (a && a.isComplex) {
+      exports.equal(a.re, b, (a + ' ~= ' + b))
+      exports.equal(a.im, 0, (a + ' ~= ' + b))
+    } else if (b && b.isComplex) {
+      exports.equal(a, b.re, (a + ' ~= ' + b))
+      exports.equal(0, b.im, (a + ' ~= ' + b))
+    }
   } else {
-    assert.equal(a, b)
+    assert.strictEqual(a, b)
   }
 }
 
@@ -53,7 +68,7 @@ exports.deepEqual = function deepEqual (a, b) {
   let prop, i, len
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    assert.equal(a.length, b.length, a + ' ~= ' + b)
+    assert.strictEqual(a.length, b.length, a + ' ~= ' + b)
     for (i = 0, len = a.length; i < len; i++) {
       deepEqual(a[i], b[i])
     }

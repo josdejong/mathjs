@@ -144,7 +144,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  nthRoot.toTex = {2: `\\sqrt[\${args[1]}]{\${args[0]}}`}
+  nthRoot.toTex = { 2: `\\sqrt[\${args[1]}]{\${args[0]}}` }
 
   return nthRoot
 
@@ -157,7 +157,7 @@ function factory (type, config, load, typed) {
    */
   function _bigNthRoot (a, root) {
     const precision = type.BigNumber.precision
-    const Big = type.BigNumber.clone({precision: precision + 2})
+    const Big = type.BigNumber.clone({ precision: precision + 2 })
     const zero = new type.BigNumber(0)
 
     const one = new Big(1)

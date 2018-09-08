@@ -29,13 +29,13 @@ describe('sqrtm', function () {
   })
 
   it('should return the principal square root of a matrix with just one value', function () {
-    assert.deepEqual(math.sqrtm([4]), [2])
-    assert.deepEqual(math.sqrtm([16]), [4])
-    assert.deepEqual(math.sqrtm([20.25]), [4.5])
+    assert.deepStrictEqual(math.sqrtm([4]), [2])
+    assert.deepStrictEqual(math.sqrtm([16]), [4])
+    assert.deepStrictEqual(math.sqrtm([20.25]), [4.5])
   })
 
   it('should return the principal square root of a matrix of big numbers', function () {
-    assert.deepEqual(math.round(math.sqrtm(math.bignumber(AA)), 20), math.bignumber(A))
+    assert.deepStrictEqual(math.round(math.sqrtm(math.bignumber(AA)), 20), math.bignumber(A))
   })
 
   it('math.pow(math.sqrtm(A), 2) should equal A', function () {
@@ -53,18 +53,18 @@ describe('sqrtm', function () {
 
   it('should LaTeX sqrtm', function () {
     const expression = math.parse('sqrtm([[33, 24], [48, 57]])')
-    assert.equal(expression.toTex(), '{\\begin{bmatrix}33&24\\\\48&57\\\\\\end{bmatrix}}^{\\frac{1}{2}}')
+    assert.strictEqual(expression.toTex(), '{\\begin{bmatrix}33&24\\\\48&57\\\\\\end{bmatrix}}^{\\frac{1}{2}}')
   })
 
   it('should return the result in the same format as the input', function () {
-    assert.equal(math.typeof(math.sqrtm(A)), 'Array')
-    assert.equal(math.typeof(math.sqrtm(B)), 'Array')
-    assert.equal(math.typeof(math.sqrtm(AA)), 'Array')
-    assert.equal(math.typeof(math.sqrtm(BB)), 'Array')
+    assert.strictEqual(math.typeof(math.sqrtm(A)), 'Array')
+    assert.strictEqual(math.typeof(math.sqrtm(B)), 'Array')
+    assert.strictEqual(math.typeof(math.sqrtm(AA)), 'Array')
+    assert.strictEqual(math.typeof(math.sqrtm(BB)), 'Array')
 
-    assert.equal(math.typeof(math.sqrtm(math.matrix(A))), 'Matrix')
-    assert.equal(math.typeof(math.sqrtm(math.matrix(B))), 'Matrix')
-    assert.equal(math.typeof(math.sqrtm(math.matrix(AA))), 'Matrix')
-    assert.equal(math.typeof(math.sqrtm(math.matrix(BB))), 'Matrix')
+    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(A))), 'Matrix')
+    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(B))), 'Matrix')
+    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(AA))), 'Matrix')
+    assert.strictEqual(math.typeof(math.sqrtm(math.matrix(BB))), 'Matrix')
   })
 })

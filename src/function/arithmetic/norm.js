@@ -91,7 +91,7 @@ function factory (type, config, load, typed) {
 
   /**
    * Calculate the norm for an array
-   * @param {Array} x
+   * @param {Matrix} x
    * @param {number | string} p
    * @returns {number} Returns the norm
    * @private
@@ -190,7 +190,7 @@ function factory (type, config, load, typed) {
           function (value, index) {
             fro = add(fro, multiply(value, conj(value)))
           })
-        return sqrt(fro)
+        return abs(sqrt(fro))
       }
       if (p === 2) {
         // not implemented

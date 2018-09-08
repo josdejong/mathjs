@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const mathPredictable = math.create({predictable: true})
+const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
@@ -10,8 +10,8 @@ const log10 = math.log10
 
 describe('log10', function () {
   it('should return the log base 10 of a boolean', function () {
-    assert.equal(log10(true), 0)
-    assert.equal(log10(false), -Infinity)
+    assert.strictEqual(log10(true), 0)
+    assert.strictEqual(log10(false), -Infinity)
   })
 
   it('should return the log base 10 of positive numbers', function () {
@@ -34,7 +34,7 @@ describe('log10', function () {
   })
 
   it('should return the log base 10 of negative numbers with predicable:true', function () {
-    assert.equal(typeof mathPredictable.log10(-1), 'number')
+    assert.strictEqual(typeof mathPredictable.log10(-1), 'number')
     assert(isNaN(mathPredictable.log10(-1)))
   })
 
@@ -43,18 +43,18 @@ describe('log10', function () {
   })
 
   it('should return the log of positive bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(1)), bigmath.bignumber(0))
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(10)), bigmath.bignumber(1))
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(100)), bigmath.bignumber(2))
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(1000)), bigmath.bignumber(3)) // note: this gives a round-off error with regular numbers
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(10000)), bigmath.bignumber(4))
-    assert.deepEqual(bigmath.log10(bigmath.bignumber('1e500')), bigmath.bignumber(500))
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber(1)), bigmath.bignumber(0))
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber(10)), bigmath.bignumber(1))
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber(100)), bigmath.bignumber(2))
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber(1000)), bigmath.bignumber(3)) // note: this gives a round-off error with regular numbers
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber(10000)), bigmath.bignumber(4))
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber('1e500')), bigmath.bignumber(500))
   })
 
   it('should return the log of negative bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     approx.deepEqual(bigmath.log10(bigmath.bignumber(-1)), bigmath.complex('0.000000000000000 + 1.364376353841841i'))
     approx.deepEqual(bigmath.log10(bigmath.bignumber(-2)), bigmath.complex('0.301029995663981 + 1.364376353841841i'))
@@ -62,9 +62,9 @@ describe('log10', function () {
   })
 
   it('should return the log of a bignumber with value zero', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log10(bigmath.bignumber(0)).toString(), '-Infinity')
+    assert.deepStrictEqual(bigmath.log10(bigmath.bignumber(0)).toString(), '-Infinity')
   })
 
   it('should throw an error if used with a wrong number of arguments', function () {
@@ -106,6 +106,6 @@ describe('log10', function () {
 
   it('should LaTeX log10', function () {
     const expression = math.parse('log10(10)')
-    assert.equal(expression.toTex(), '\\log_{10}\\left(10\\right)')
+    assert.strictEqual(expression.toTex(), '\\log_{10}\\left(10\\right)')
   })
 })

@@ -6,7 +6,7 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const cot = math.cot
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 describe('cot', function () {
   it('should return the cotan of a boolean', function () {
@@ -34,16 +34,16 @@ describe('cot', function () {
     const arg1 = Big(0)
     const result1 = bigmath.cot(arg1)
     assert.ok(!result1.isFinite())
-    assert.equal(result1.constructor.precision, 20)
-    assert.deepEqual(arg1, Big(0))
+    assert.strictEqual(result1.constructor.precision, 20)
+    assert.deepStrictEqual(arg1, Big(0))
 
     const result2 = bigmath.cot(bigPi.div(8))
-    assert.deepEqual(result2.toString(), '2.4142135623730950488')
-    assert.equal(result2.constructor.precision, 20)
-    assert.equal(bigPi.constructor.precision, 20)
+    assert.deepStrictEqual(result2.toString(), '2.4142135623730950488')
+    assert.strictEqual(result2.constructor.precision, 20)
+    assert.strictEqual(bigPi.constructor.precision, 20)
 
-    assert.deepEqual(bigmath.cot(bigPi.div(2)), Big('-1.4142135623730950488e-15')) // about zero
-    assert.deepEqual(bigmath.cot(bigPi), Big('26769019461318409709')) // about infinity
+    assert.deepStrictEqual(bigmath.cot(bigPi.div(2)), Big('-1.4142135623730950488e-15')) // about zero
+    assert.deepStrictEqual(bigmath.cot(bigPi), Big('26769019461318409709')) // about infinity
   })
 
   it('should return the cotan of a complex number', function () {
@@ -93,6 +93,6 @@ describe('cot', function () {
 
   it('should LaTeX cot', function () {
     const expression = math.parse('cot(1)')
-    assert.equal(expression.toTex(), '\\cot\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\cot\\left(1\\right)')
   })
 })

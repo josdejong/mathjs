@@ -51,7 +51,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  floor.toTex = {1: `\\left\\lfloor\${args[0]}\\right\\rfloor`}
+  floor.toTex = { 1: `\\left\\lfloor\${args[0]}\\right\\rfloor` }
 
   return floor
 }

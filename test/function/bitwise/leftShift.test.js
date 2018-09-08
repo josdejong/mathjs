@@ -8,54 +8,54 @@ const leftShift = math.leftShift
 
 describe('leftShift', function () {
   it('should left shift a number by a given amount', function () {
-    assert.equal(leftShift(0, 1000), 0)
-    assert.equal(leftShift(2, 0), 2)
-    assert.equal(leftShift(2, 3), 16)
-    assert.equal(leftShift(2, 4), 32)
-    assert.equal(leftShift(-2, 2), -8)
-    assert.equal(leftShift(3, 3), 24)
-    assert.equal(leftShift(-3, 2), -12)
-    assert.equal(leftShift(-3, 3), -24)
+    assert.strictEqual(leftShift(0, 1000), 0)
+    assert.strictEqual(leftShift(2, 0), 2)
+    assert.strictEqual(leftShift(2, 3), 16)
+    assert.strictEqual(leftShift(2, 4), 32)
+    assert.strictEqual(leftShift(-2, 2), -8)
+    assert.strictEqual(leftShift(3, 3), 24)
+    assert.strictEqual(leftShift(-3, 2), -12)
+    assert.strictEqual(leftShift(-3, 3), -24)
   })
 
   it('should left shift booleans by a boolean amount', function () {
-    assert.equal(leftShift(true, true), 2)
-    assert.equal(leftShift(true, false), 1)
-    assert.equal(leftShift(false, true), 0)
-    assert.equal(leftShift(false, false), 0)
+    assert.strictEqual(leftShift(true, true), 2)
+    assert.strictEqual(leftShift(true, false), 1)
+    assert.strictEqual(leftShift(false, true), 0)
+    assert.strictEqual(leftShift(false, false), 0)
   })
 
   it('should left shift with a mix of numbers and booleans', function () {
-    assert.equal(leftShift(2, true), 4)
-    assert.equal(leftShift(2, false), 2)
-    assert.equal(leftShift(true, 2), 4)
-    assert.equal(leftShift(false, 2), 0)
+    assert.strictEqual(leftShift(2, true), 4)
+    assert.strictEqual(leftShift(2, false), 2)
+    assert.strictEqual(leftShift(true, 2), 4)
+    assert.strictEqual(leftShift(false, 2), 0)
   })
 
   it('should left shift bignumbers', function () {
-    assert.deepEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16))
-    assert.deepEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'))
-    assert.deepEqual(leftShift(bignumber(-1), bignumber(2)), bignumber(-4))
-    assert.equal(leftShift(bignumber(0), bignumber(-2)).isNaN(), true)
-    assert.deepEqual(leftShift(bignumber(Infinity), bignumber(2)).toString(), 'Infinity')
-    assert.equal(leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
+    assert.deepStrictEqual(leftShift(bignumber(2), bignumber(3)), bignumber(16))
+    assert.deepStrictEqual(leftShift(bignumber(500), bignumber(100)), bignumber('633825300114114700748351602688000'))
+    assert.deepStrictEqual(leftShift(bignumber(-1), bignumber(2)), bignumber(-4))
+    assert.strictEqual(leftShift(bignumber(0), bignumber(-2)).isNaN(), true)
+    assert.deepStrictEqual(leftShift(bignumber(Infinity), bignumber(2)).toString(), 'Infinity')
+    assert.strictEqual(leftShift(bignumber(Infinity), bignumber(Infinity)).isNaN(), true)
   })
 
   it('should left shift mixed numbers and bignumbers', function () {
-    assert.deepEqual(leftShift(bignumber(2), 3), bignumber(16))
-    assert.deepEqual(leftShift(bignumber(500), 100), bignumber('633825300114114700748351602688000'))
-    assert.deepEqual(leftShift(2, bignumber(3)), bignumber(16))
-    assert.deepEqual(leftShift(-1, bignumber(2)), bignumber(-4))
-    assert.deepEqual(leftShift(bignumber(-1), 2), bignumber(-4))
-    assert.equal(leftShift(bignumber(0), -2).isNaN(), true)
-    assert.equal(leftShift(bignumber(Infinity), Infinity).isNaN(), true)
+    assert.deepStrictEqual(leftShift(bignumber(2), 3), bignumber(16))
+    assert.deepStrictEqual(leftShift(bignumber(500), 100), bignumber('633825300114114700748351602688000'))
+    assert.deepStrictEqual(leftShift(2, bignumber(3)), bignumber(16))
+    assert.deepStrictEqual(leftShift(-1, bignumber(2)), bignumber(-4))
+    assert.deepStrictEqual(leftShift(bignumber(-1), 2), bignumber(-4))
+    assert.strictEqual(leftShift(bignumber(0), -2).isNaN(), true)
+    assert.strictEqual(leftShift(bignumber(Infinity), Infinity).isNaN(), true)
   })
 
   it('should left shift mixed booleans and bignumbers', function () {
-    assert.deepEqual(leftShift(true, bignumber(3)), bignumber(8))
-    assert.deepEqual(leftShift(false, bignumber(3)), bignumber(0))
-    assert.deepEqual(leftShift(bignumber(3), false), bignumber(3))
-    assert.deepEqual(leftShift(bignumber(3), true), bignumber(6))
+    assert.deepStrictEqual(leftShift(true, bignumber(3)), bignumber(8))
+    assert.deepStrictEqual(leftShift(false, bignumber(3)), bignumber(0))
+    assert.deepStrictEqual(leftShift(bignumber(3), false), bignumber(3))
+    assert.deepStrictEqual(leftShift(bignumber(3), true), bignumber(6))
   })
 
   it('should throw an error if used with a unit', function () {
@@ -90,67 +90,67 @@ describe('leftShift', function () {
 
   describe('Array', function () {
     it('should left shift array and scalar', function () {
-      assert.deepEqual(leftShift([[1, 2], [8, 0]], 2), [[4, 8], [32, 0]])
-      assert.deepEqual(leftShift(2, [[1, 2], [8, 0]]), [[4, 8], [512, 2]])
+      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], 2), [[4, 8], [32, 0]])
+      assert.deepStrictEqual(leftShift(2, [[1, 2], [8, 0]]), [[4, 8], [512, 2]])
     })
 
     it('should left shift array - array', function () {
-      assert.deepEqual(leftShift([[1, 2], [8, 0]], [[4, 8], [32, 0]]), [[16, 512], [8, 0]])
-      assert.deepEqual(leftShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[8, 32], [8192, 0]])
+      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], [[4, 8], [32, 0]]), [[16, 512], [8, 0]])
+      assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], [[1, 2], [8, 0]]), [[8, 32], [8192, 0]])
     })
 
     it('should left shift array - dense matrix', function () {
-      assert.deepEqual(leftShift([[1, 2], [8, 0]], matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift([[4, 8], [32, 0]], matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
     })
 
     it('should left shift array - sparse matrix', function () {
-      assert.deepEqual(leftShift([[1, 2], [8, 0]], sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift([[4, 8], [32, 0]], sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift([[1, 2], [8, 0]], sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift([[4, 8], [32, 0]], sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should left shift dense matrix and scalar', function () {
-      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), 2), matrix([[4, 8], [32, 0]]))
-      assert.deepEqual(leftShift(2, matrix([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]))
+      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), 2), matrix([[4, 8], [32, 0]]))
+      assert.deepStrictEqual(leftShift(2, matrix([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]))
     })
 
     it('should left shift dense matrix - array', function () {
-      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), matrix([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift(matrix([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), matrix([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift(matrix([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), matrix([[8, 32], [8192, 0]]))
     })
 
     it('should left shift dense matrix - dense matrix', function () {
-      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift(matrix([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift(matrix([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
     })
 
     it('should left shift dense matrix - sparse matrix', function () {
-      assert.deepEqual(leftShift(matrix([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift(matrix([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift(matrix([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), matrix([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift(matrix([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), matrix([[8, 32], [8192, 0]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should left shift sparse matrix and scalar', function () {
-      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), 2), sparse([[4, 8], [32, 0]]))
-      assert.deepEqual(leftShift(2, sparse([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]))
+      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), 2), sparse([[4, 8], [32, 0]]))
+      assert.deepStrictEqual(leftShift(2, sparse([[1, 2], [8, 0]])), matrix([[4, 8], [512, 2]]))
     })
 
     it('should left shift sparse matrix - array', function () {
-      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), sparse([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift(sparse([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), sparse([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), [[4, 8], [32, 0]]), sparse([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift(sparse([[4, 8], [32, 0]]), [[1, 2], [8, 0]]), sparse([[8, 32], [8192, 0]]))
     })
 
     it('should left shift sparse matrix - dense matrix', function () {
-      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift(sparse([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), matrix([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift(sparse([[4, 8], [32, 0]]), matrix([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]))
     })
 
     it('should left shift sparse matrix - sparse matrix', function () {
-      assert.deepEqual(leftShift(sparse([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]))
-      assert.deepEqual(leftShift(sparse([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]))
+      assert.deepStrictEqual(leftShift(sparse([[1, 2], [8, 0]]), sparse([[4, 8], [32, 0]])), sparse([[16, 512], [8, 0]]))
+      assert.deepStrictEqual(leftShift(sparse([[4, 8], [32, 0]]), sparse([[1, 2], [8, 0]])), sparse([[8, 32], [8192, 0]]))
     })
   })
 
@@ -169,6 +169,6 @@ describe('leftShift', function () {
 
   it('should LaTeX leftShift', function () {
     const expression = math.parse('leftShift(2,3)')
-    assert.equal(expression.toTex(), '\\left(2<<3\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2<<3\\right)')
   })
 })
