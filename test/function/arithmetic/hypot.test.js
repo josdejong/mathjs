@@ -16,11 +16,11 @@ describe('hypot', function () {
   })
 
   it('should return the hypot of BigNumbers', function () {
-    assert.deepEqual(hypot(bignumber(3), bignumber(4)), bignumber(5))
-    assert.deepEqual(hypot(bignumber(3), bignumber(-4)), bignumber(5))
-    assert.deepEqual(hypot(bignumber(3), bignumber(4), bignumber(5)),
+    assert.deepStrictEqual(hypot(bignumber(3), bignumber(4)), bignumber(5))
+    assert.deepStrictEqual(hypot(bignumber(3), bignumber(-4)), bignumber(5))
+    assert.deepStrictEqual(hypot(bignumber(3), bignumber(4), bignumber(5)),
       bignumber('7.07106781186547524400844362104849039284835937688474036588339869'))
-    assert.deepEqual(hypot(bignumber(-2)), bignumber(2))
+    assert.deepStrictEqual(hypot(bignumber(-2)), bignumber(2))
   })
 
   it('should return the hypot of an Array with numbers', function () {
@@ -32,7 +32,7 @@ describe('hypot', function () {
   })
 
   it('should return the hypot of an Array with mixed numbers and BigNumbers', function () {
-    assert.deepEqual(hypot([3, bignumber(4)]), bignumber(5))
+    assert.deepStrictEqual(hypot([3, bignumber(4)]), bignumber(5))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

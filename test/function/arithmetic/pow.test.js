@@ -74,11 +74,11 @@ describe('pow', function () {
   })
 
   it('should exponentiate bignumbers', function () {
-    assert.deepEqual(pow(bignumber(2), bignumber(3)), bignumber(8))
-    assert.deepEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'))
+    assert.deepStrictEqual(pow(bignumber(2), bignumber(3)), bignumber(8))
+    assert.deepStrictEqual(pow(bignumber(100), bignumber(500)), bignumber('1e1000'))
 
-    assert.deepEqual(pow(bignumber(-1), bignumber(2)), bignumber('1'))
-    assert.deepEqual(pow(bignumber(2), bignumber(1.5)), bignumber('2.828427124746190097603377448419396157139343750753896146353359476'))
+    assert.deepStrictEqual(pow(bignumber(-1), bignumber(2)), bignumber('1'))
+    assert.deepStrictEqual(pow(bignumber(2), bignumber(1.5)), bignumber('2.828427124746190097603377448419396157139343750753896146353359476'))
   })
 
   it('should exponentiate a negative bignumber to a non-integer power', function () {
@@ -92,25 +92,25 @@ describe('pow', function () {
   })
 
   it('should exponentiate mixed numbers and bignumbers', function () {
-    assert.deepEqual(pow(bignumber(2), 3), bignumber(8))
-    assert.deepEqual(pow(2, bignumber(3)), bignumber(8))
+    assert.deepStrictEqual(pow(bignumber(2), 3), bignumber(8))
+    assert.deepStrictEqual(pow(2, bignumber(3)), bignumber(8))
 
     assert.throws(function () { pow(1 / 3, bignumber(2)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { pow(bignumber(1), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
   it('should exponentiate mixed booleans and bignumbers', function () {
-    assert.deepEqual(pow(true, bignumber(3)), bignumber(1))
-    assert.deepEqual(pow(false, bignumber(3)), bignumber(0))
-    assert.deepEqual(pow(bignumber(3), false), bignumber(1))
-    assert.deepEqual(pow(bignumber(3), true), bignumber(3))
+    assert.deepStrictEqual(pow(true, bignumber(3)), bignumber(1))
+    assert.deepStrictEqual(pow(false, bignumber(3)), bignumber(0))
+    assert.deepStrictEqual(pow(bignumber(3), false), bignumber(1))
+    assert.deepStrictEqual(pow(bignumber(3), true), bignumber(3))
   })
 
   it('should exponentiate a fraction to an integer power', function () {
-    assert.deepEqual(math.pow(fraction(3), fraction(2)), fraction(9))
-    assert.deepEqual(math.pow(fraction(1.5), fraction(2)), fraction(2.25))
-    assert.deepEqual(math.pow(fraction(1.5), fraction(-2)), fraction(4, 9))
-    assert.deepEqual(math.pow(fraction(1.5), 2), fraction(2.25))
+    assert.deepStrictEqual(math.pow(fraction(3), fraction(2)), fraction(9))
+    assert.deepStrictEqual(math.pow(fraction(1.5), fraction(2)), fraction(2.25))
+    assert.deepStrictEqual(math.pow(fraction(1.5), fraction(-2)), fraction(4, 9))
+    assert.deepStrictEqual(math.pow(fraction(1.5), 2), fraction(2.25))
   })
 
   it('should exponentiate a fraction to an non-integer power', function () {

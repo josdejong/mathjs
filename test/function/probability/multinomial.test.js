@@ -12,7 +12,7 @@ describe('multinomial', function () {
 
   it('should calculate the multinomial of n items taken k at a time with BigNumbers', function () {
     assert.strictEqual(_.isEqual(multinomial([math.bignumber(3), math.bignumber(4), math.bignumber(5)]), math.bignumber(27720)), true)
-    assert.deepEqual(multinomial([math.bignumber(10), math.bignumber(1), math.bignumber(2)]), math.bignumber(858))
+    assert.deepStrictEqual(multinomial([math.bignumber(10), math.bignumber(1), math.bignumber(2)]), math.bignumber(858))
   })
 
   it('should not work with non-integer and negative input', function () {

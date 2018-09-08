@@ -44,26 +44,26 @@ describe('parse', function () {
 
   it('should parse an array with expressions', function () {
     let scope = {}
-    assert.deepEqual(parse(['a=3', 'b=4', 'a*b']).map(function (node) {
+    assert.deepStrictEqual(parse(['a=3', 'b=4', 'a*b']).map(function (node) {
       return node.compile().eval(scope)
     }), [3, 4, 12])
   })
 
   it('should parse a matrix with expressions', function () {
     let scope = {}
-    assert.deepEqual(parse(math.matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
+    assert.deepStrictEqual(parse(math.matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
       return node.compile().eval(scope)
     }), math.matrix([3, 4, 12]))
   })
 
   it('should parse an array with an empty expression', function () {
-    assert.deepEqual(parse(['']).map(function (node) {
+    assert.deepStrictEqual(parse(['']).map(function (node) {
       return node.compile().eval()
     }), [undefined])
   })
 
   it('should parse an array with an empty expression', function () {
-    assert.deepEqual(parse(math.matrix([''])).map(function (node) {
+    assert.deepStrictEqual(parse(math.matrix([''])).map(function (node) {
       return node.compile().eval()
     }), math.matrix([undefined]))
   })
@@ -102,21 +102,21 @@ describe('parse', function () {
 
   describe('multiline', function () {
     it('should parse multiline expressions', function () {
-      assert.deepEqual(parse('a=3\nb=4\na*b').compile().eval(), new ResultSet([3, 4, 12]))
-      assert.deepEqual(parse('b = 43; b * 4').compile().eval(), new ResultSet([172]))
+      assert.deepStrictEqual(parse('a=3\nb=4\na*b').compile().eval(), new ResultSet([3, 4, 12]))
+      assert.deepStrictEqual(parse('b = 43; b * 4').compile().eval(), new ResultSet([172]))
     })
 
     it('should skip empty lines in multiline expressions', function () {
-      assert.deepEqual(parse('\n;\n2 * 4\n').compile().eval(), new ResultSet([8]))
+      assert.deepStrictEqual(parse('\n;\n2 * 4\n').compile().eval(), new ResultSet([8]))
     })
 
     it('should spread operators over multiple lines', function () {
-      assert.deepEqual(parse('2+\n3').compile().eval(), 5)
-      assert.deepEqual(parse('2+\n\n3').compile().eval(), 5)
-      assert.deepEqual(parse('2*\n3').compile().eval(), 6)
-      assert.deepEqual(parse('2^\n3').compile().eval(), 8)
-      assert.deepEqual(parse('2==\n3').compile().eval(), false)
-      assert.deepEqual(parse('2*-\n3').compile().eval(), -6)
+      assert.deepStrictEqual(parse('2+\n3').compile().eval(), 5)
+      assert.deepStrictEqual(parse('2+\n\n3').compile().eval(), 5)
+      assert.deepStrictEqual(parse('2*\n3').compile().eval(), 6)
+      assert.deepStrictEqual(parse('2^\n3').compile().eval(), 8)
+      assert.deepStrictEqual(parse('2==\n3').compile().eval(), false)
+      assert.deepStrictEqual(parse('2*-\n3').compile().eval(), -6)
     })
 
     it('should parse multiple function assignments', function () {
@@ -135,42 +135,42 @@ describe('parse', function () {
       let scope = {}
       const res = parse('x=2;f(x)=x^2;x').compile().eval(scope) // x should be x=2, not x of the function
 
-      assert.deepEqual(res, { entries: [2] })
+      assert.deepStrictEqual(res.entries, [2])
       assert.strictEqual(scope.x, 2)
       assert.strictEqual(scope.f(3), 9)
     })
 
     it('should spread a function over multiple lines', function () {
-      assert.deepEqual(parse('add(\n4\n,\n2\n)').compile().eval(), 6)
+      assert.deepStrictEqual(parse('add(\n4\n,\n2\n)').compile().eval(), 6)
     })
 
     it('should spread contents of parameters over multiple lines', function () {
-      assert.deepEqual(parse('(\n4\n+\n2\n)').compile().eval(), 6)
+      assert.deepStrictEqual(parse('(\n4\n+\n2\n)').compile().eval(), 6)
     })
 
     it('should spread a function assignment over multiple lines', function () {
-      assert.deepEqual(typeof parse('f(\nx\n,\ny\n)=\nx+\ny').compile().eval(), 'function')
+      assert.deepStrictEqual(typeof parse('f(\nx\n,\ny\n)=\nx+\ny').compile().eval(), 'function')
     })
 
     it('should spread a variable assignment over multiple lines', function () {
-      assert.deepEqual(parse('x=\n2').compile().eval(), 2)
+      assert.deepStrictEqual(parse('x=\n2').compile().eval(), 2)
     })
 
     it('should spread a matrix over multiple lines', function () {
-      assert.deepEqual(parse('[\n1\n,\n2\n]').compile().eval(), math.matrix([1, 2]))
+      assert.deepStrictEqual(parse('[\n1\n,\n2\n]').compile().eval(), math.matrix([1, 2]))
     })
 
     it('should spread a range over multiple lines', function () {
-      assert.deepEqual(parse('2:\n4').compile().eval(), math.matrix([2, 3, 4]))
-      assert.deepEqual(parse('2:\n2:\n6').compile().eval(), math.matrix([2, 4, 6]))
+      assert.deepStrictEqual(parse('2:\n4').compile().eval(), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parse('2:\n2:\n6').compile().eval(), math.matrix([2, 4, 6]))
     })
 
     it('should spread an index over multiple lines', function () {
-      assert.deepEqual(parse('a[\n1\n,\n1\n]').compile().eval({ a: [[1, 2], [3, 4]] }), 1)
+      assert.deepStrictEqual(parse('a[\n1\n,\n1\n]').compile().eval({ a: [[1, 2], [3, 4]] }), 1)
 
       let scope = { a: [[1, 2], [3, 4]] }
-      assert.deepEqual(parse('a[\n1\n,\n1\n]=\n100').compile().eval(scope), 100)
-      assert.deepEqual(scope, { a: [[100, 2], [3, 4]] })
+      assert.deepStrictEqual(parse('a[\n1\n,\n1\n]=\n100').compile().eval(scope), 100)
+      assert.deepStrictEqual(scope, { a: [[100, 2], [3, 4]] })
     })
   })
 
@@ -211,7 +211,7 @@ describe('parse', function () {
     })
 
     it('should skip comments in a ResultSet', function () {
-      assert.deepEqual(parseAndEval('2 + 3 # - 4\n6-2'), new ResultSet([5, 4]))
+      assert.deepStrictEqual(parseAndEval('2 + 3 # - 4\n6-2'), new ResultSet([5, 4]))
     })
 
     it('should fill in the property comment of a Node', function () {
@@ -270,8 +270,8 @@ describe('parse', function () {
 
   describe('bignumber', function () {
     it('should parse bignumbers', function () {
-      assert.deepEqual(parseAndEval('bignumber(0.1)'), math.bignumber(0.1))
-      assert.deepEqual(parseAndEval('bignumber("1.2e500")'), math.bignumber('1.2e500'))
+      assert.deepStrictEqual(parseAndEval('bignumber(0.1)'), math.bignumber(0.1))
+      assert.deepStrictEqual(parseAndEval('bignumber("1.2e500")'), math.bignumber('1.2e500'))
     })
 
     it('should output bignumbers if default number type is bignumber', function () {
@@ -279,8 +279,8 @@ describe('parse', function () {
         number: 'BigNumber'
       })
 
-      assert.deepEqual(bigmath.parse('0.1').compile().eval(), bigmath.bignumber(0.1))
-      assert.deepEqual(bigmath.parse('1.2e5000').compile().eval(), bigmath.bignumber('1.2e5000'))
+      assert.deepStrictEqual(bigmath.parse('0.1').compile().eval(), bigmath.bignumber(0.1))
+      assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().eval(), bigmath.bignumber('1.2e5000'))
     })
   })
 
@@ -298,17 +298,17 @@ describe('parse', function () {
 
   describe('string (double quotes)', function () {
     it('should parse a string', function () {
-      assert.deepEqual(parseAndEval('"hello"'), 'hello')
-      assert.deepEqual(parseAndEval('   "hi" '), 'hi')
+      assert.deepStrictEqual(parseAndEval('"hello"'), 'hello')
+      assert.deepStrictEqual(parseAndEval('   "hi" '), 'hi')
     })
 
     it('should parse a with escaped characters', function () {
-      assert.deepEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext')
-      assert.deepEqual(parseAndEval('"line end\\n"'), 'line end\n')
-      assert.deepEqual(parseAndEval('"tab\\tnext"'), 'tab\tnext')
-      assert.deepEqual(parseAndEval('"tab\\t"'), 'tab\t')
-      assert.deepEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next')
-      assert.deepEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\')
+      assert.deepStrictEqual(parseAndEval('"line end\\nnext"'), 'line end\nnext')
+      assert.deepStrictEqual(parseAndEval('"line end\\n"'), 'line end\n')
+      assert.deepStrictEqual(parseAndEval('"tab\\tnext"'), 'tab\tnext')
+      assert.deepStrictEqual(parseAndEval('"tab\\t"'), 'tab\t')
+      assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\next"'), 'escaped backslash\\next')
+      assert.deepStrictEqual(parseAndEval('"escaped backslash\\\\"'), 'escaped backslash\\')
     })
 
     it('should throw an error with invalid strings', function () {
@@ -318,53 +318,53 @@ describe('parse', function () {
 
     it('should get a string subset', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('c="hello"', scope), 'hello')
-      assert.deepEqual(parseAndEval('c[2:4]', scope), 'ell')
-      assert.deepEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
-      assert.deepEqual(parseAndEval('c[end-2:-1:1]', scope), 'leh')
-      assert.deepEqual(parseAndEval('"hello"[2:4]', scope), 'ell')
+      assert.deepStrictEqual(parseAndEval('c="hello"', scope), 'hello')
+      assert.deepStrictEqual(parseAndEval('c[2:4]', scope), 'ell')
+      assert.deepStrictEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
+      assert.deepStrictEqual(parseAndEval('c[end-2:-1:1]', scope), 'leh')
+      assert.deepStrictEqual(parseAndEval('"hello"[2:4]', scope), 'ell')
     })
 
     it('should set a string subset', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('c="hello"', scope), 'hello')
-      assert.deepEqual(parseAndEval('c[1] = "H"', scope), 'H')
-      assert.deepEqual(scope.c, 'Hello')
-      assert.deepEqual(parseAndEval('c', scope), 'Hello')
-      assert.deepEqual(parseAndEval('c[6:11] = " world"', scope), ' world')
-      assert.deepEqual(scope.c, 'Hello world')
-      assert.deepEqual(parseAndEval('c[end] = "D"', scope), 'D')
-      assert.deepEqual(scope.c, 'Hello worlD')
+      assert.deepStrictEqual(parseAndEval('c="hello"', scope), 'hello')
+      assert.deepStrictEqual(parseAndEval('c[1] = "H"', scope), 'H')
+      assert.deepStrictEqual(scope.c, 'Hello')
+      assert.deepStrictEqual(parseAndEval('c', scope), 'Hello')
+      assert.deepStrictEqual(parseAndEval('c[6:11] = " world"', scope), ' world')
+      assert.deepStrictEqual(scope.c, 'Hello world')
+      assert.deepStrictEqual(parseAndEval('c[end] = "D"', scope), 'D')
+      assert.deepStrictEqual(scope.c, 'Hello worlD')
     })
 
     it('should set a string subset on an object', function () {
       let scope = { a: {} }
-      assert.deepEqual(parseAndEval('a.c="hello"', scope), 'hello')
-      assert.deepEqual(parseAndEval('a.c[1] = "H"', scope), 'H')
-      assert.deepEqual(scope.a, { c: 'Hello' })
-      assert.deepEqual(parseAndEval('a.c', scope), 'Hello')
-      assert.deepEqual(parseAndEval('a.c[6:11] = " world"', scope), ' world')
-      assert.deepEqual(scope.a, { c: 'Hello world' })
-      assert.deepEqual(parseAndEval('a.c', scope), 'Hello world')
-      assert.deepEqual(scope.a, { c: 'Hello world' })
-      assert.deepEqual(parseAndEval('a.c[end] = "D"', scope), 'D')
-      assert.deepEqual(scope.a, { c: 'Hello worlD' })
+      assert.deepStrictEqual(parseAndEval('a.c="hello"', scope), 'hello')
+      assert.deepStrictEqual(parseAndEval('a.c[1] = "H"', scope), 'H')
+      assert.deepStrictEqual(scope.a, { c: 'Hello' })
+      assert.deepStrictEqual(parseAndEval('a.c', scope), 'Hello')
+      assert.deepStrictEqual(parseAndEval('a.c[6:11] = " world"', scope), ' world')
+      assert.deepStrictEqual(scope.a, { c: 'Hello world' })
+      assert.deepStrictEqual(parseAndEval('a.c', scope), 'Hello world')
+      assert.deepStrictEqual(scope.a, { c: 'Hello world' })
+      assert.deepStrictEqual(parseAndEval('a.c[end] = "D"', scope), 'D')
+      assert.deepStrictEqual(scope.a, { c: 'Hello worlD' })
     })
   })
 
   describe('string (single quotes)', function () {
     it('should parse a string', function () {
-      assert.deepEqual(parseAndEval('\'hello\''), 'hello')
-      assert.deepEqual(parseAndEval('   \'hi\' '), 'hi')
+      assert.deepStrictEqual(parseAndEval('\'hello\''), 'hello')
+      assert.deepStrictEqual(parseAndEval('   \'hi\' '), 'hi')
     })
 
     it('should parse a with escaped characters', function () {
-      assert.deepEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
-      assert.deepEqual(parseAndEval('\'line end\\n\''), 'line end\n')
-      assert.deepEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
-      assert.deepEqual(parseAndEval('\'tab\\t\''), 'tab\t')
-      assert.deepEqual(parseAndEval('\'escaped backslash\\\\next\''), 'escaped backslash\\next')
-      assert.deepEqual(parseAndEval('\'escaped backslash\\\\\''), 'escaped backslash\\')
+      assert.deepStrictEqual(parseAndEval('\'line end\\nnext\''), 'line end\nnext')
+      assert.deepStrictEqual(parseAndEval('\'line end\\n\''), 'line end\n')
+      assert.deepStrictEqual(parseAndEval('\'tab\\tnext\''), 'tab\tnext')
+      assert.deepStrictEqual(parseAndEval('\'tab\\t\''), 'tab\t')
+      assert.deepStrictEqual(parseAndEval('\'escaped backslash\\\\next\''), 'escaped backslash\\next')
+      assert.deepStrictEqual(parseAndEval('\'escaped backslash\\\\\''), 'escaped backslash\\')
     })
 
     it('should throw an error with invalid strings', function () {
@@ -374,50 +374,50 @@ describe('parse', function () {
 
     it('should get a string subset', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('c=\'hello\'', scope), 'hello')
-      assert.deepEqual(parseAndEval('c[2:4]', scope), 'ell')
-      assert.deepEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
-      assert.deepEqual(parseAndEval('c[end-2:-1:1]', scope), 'leh')
-      assert.deepEqual(parseAndEval('\'hello\'[2:4]', scope), 'ell')
+      assert.deepStrictEqual(parseAndEval('c=\'hello\'', scope), 'hello')
+      assert.deepStrictEqual(parseAndEval('c[2:4]', scope), 'ell')
+      assert.deepStrictEqual(parseAndEval('c[5:-1:1]', scope), 'olleh')
+      assert.deepStrictEqual(parseAndEval('c[end-2:-1:1]', scope), 'leh')
+      assert.deepStrictEqual(parseAndEval('\'hello\'[2:4]', scope), 'ell')
     })
 
     it('should set a string subset', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('c=\'hello\'', scope), 'hello')
-      assert.deepEqual(parseAndEval('c[1] = \'H\'', scope), 'H')
-      assert.deepEqual(scope.c, 'Hello')
-      assert.deepEqual(parseAndEval('c', scope), 'Hello')
-      assert.deepEqual(parseAndEval('c[6:11] = \' world\'', scope), ' world')
-      assert.deepEqual(scope.c, 'Hello world')
-      assert.deepEqual(parseAndEval('c[end] = \'D\'', scope), 'D')
-      assert.deepEqual(scope.c, 'Hello worlD')
+      assert.deepStrictEqual(parseAndEval('c=\'hello\'', scope), 'hello')
+      assert.deepStrictEqual(parseAndEval('c[1] = \'H\'', scope), 'H')
+      assert.deepStrictEqual(scope.c, 'Hello')
+      assert.deepStrictEqual(parseAndEval('c', scope), 'Hello')
+      assert.deepStrictEqual(parseAndEval('c[6:11] = \' world\'', scope), ' world')
+      assert.deepStrictEqual(scope.c, 'Hello world')
+      assert.deepStrictEqual(parseAndEval('c[end] = \'D\'', scope), 'D')
+      assert.deepStrictEqual(scope.c, 'Hello worlD')
     })
 
     it('should set a string subset on an object', function () {
       let scope = { a: {} }
-      assert.deepEqual(parseAndEval('a.c=\'hello\'', scope), 'hello')
-      assert.deepEqual(parseAndEval('a.c[1] = \'H\'', scope), 'H')
-      assert.deepEqual(scope.a, { c: 'Hello' })
-      assert.deepEqual(parseAndEval('a.c', scope), 'Hello')
-      assert.deepEqual(parseAndEval('a.c[6:11] = \' world\'', scope), ' world')
-      assert.deepEqual(scope.a, { c: 'Hello world' })
-      assert.deepEqual(parseAndEval('a.c', scope), 'Hello world')
-      assert.deepEqual(scope.a, { c: 'Hello world' })
-      assert.deepEqual(parseAndEval('a.c[end] = \'D\'', scope), 'D')
-      assert.deepEqual(scope.a, { c: 'Hello worlD' })
+      assert.deepStrictEqual(parseAndEval('a.c=\'hello\'', scope), 'hello')
+      assert.deepStrictEqual(parseAndEval('a.c[1] = \'H\'', scope), 'H')
+      assert.deepStrictEqual(scope.a, { c: 'Hello' })
+      assert.deepStrictEqual(parseAndEval('a.c', scope), 'Hello')
+      assert.deepStrictEqual(parseAndEval('a.c[6:11] = \' world\'', scope), ' world')
+      assert.deepStrictEqual(scope.a, { c: 'Hello world' })
+      assert.deepStrictEqual(parseAndEval('a.c', scope), 'Hello world')
+      assert.deepStrictEqual(scope.a, { c: 'Hello world' })
+      assert.deepStrictEqual(parseAndEval('a.c[end] = \'D\'', scope), 'D')
+      assert.deepStrictEqual(scope.a, { c: 'Hello worlD' })
     })
   })
 
   describe('unit', function () {
     it('should parse units', function () {
-      assert.deepEqual(parseAndEval('5cm'), new Unit(5, 'cm'))
+      assert.deepStrictEqual(parseAndEval('5cm'), new Unit(5, 'cm'))
       assert.ok(parseAndEval('5cm') instanceof Unit)
     })
 
     it('should parse physical constants', function () {
       const expected = new Unit(299792458, 'm/s')
       expected.fixPrefix = true
-      assert.deepEqual(parseAndEval('speedOfLight'), expected)
+      assert.deepStrictEqual(parseAndEval('speedOfLight'), expected)
     })
 
     it('should correctly parse negative temperatures', function () {
@@ -477,10 +477,10 @@ describe('parse', function () {
 
   describe('complex', function () {
     it('should parse complex values', function () {
-      assert.deepEqual(parseAndEval('i'), new Complex(0, 1))
-      assert.deepEqual(parseAndEval('2+3i'), new Complex(2, 3))
-      assert.deepEqual(parseAndEval('2+3*i'), new Complex(2, 3))
-      assert.deepEqual(parseAndEval('1/2i'), new Complex(0, 0.5))
+      assert.deepStrictEqual(parseAndEval('i'), new Complex(0, 1))
+      assert.deepStrictEqual(parseAndEval('2+3i'), new Complex(2, 3))
+      assert.deepStrictEqual(parseAndEval('2+3*i'), new Complex(2, 3))
+      assert.deepStrictEqual(parseAndEval('1/2i'), new Complex(0, 0.5))
     })
   })
 
@@ -489,23 +489,23 @@ describe('parse', function () {
       assert.ok(parseAndEval('[1,2;3,4]') instanceof Matrix)
 
       const m = parseAndEval('[1,2,3;4,5,6]')
-      assert.deepEqual(m.size(), [2, 3])
-      assert.deepEqual(m, math.matrix([[1, 2, 3], [4, 5, 6]]))
+      assert.deepStrictEqual(m.size(), [2, 3])
+      assert.deepStrictEqual(m, math.matrix([[1, 2, 3], [4, 5, 6]]))
 
       const b = parseAndEval('[5, 6; 1, 1]')
-      assert.deepEqual(b.size(), [2, 2])
-      assert.deepEqual(b, math.matrix([[5, 6], [1, 1]]))
+      assert.deepStrictEqual(b.size(), [2, 2])
+      assert.deepStrictEqual(b, math.matrix([[5, 6], [1, 1]]))
 
       // from 1 to n dimensions
-      assert.deepEqual(parseAndEval('[ ]'), math.matrix([]))
-      assert.deepEqual(parseAndEval('[1,2,3]'), math.matrix([1, 2, 3]))
-      assert.deepEqual(parseAndEval('[1;2;3]'), math.matrix([[1], [2], [3]]))
-      assert.deepEqual(parseAndEval('[[1,2],[3,4]]'), math.matrix([[1, 2], [3, 4]]))
-      assert.deepEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), math.matrix([[[1], [2]], [[3], [4]]]))
+      assert.deepStrictEqual(parseAndEval('[ ]'), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('[1,2,3]'), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('[1;2;3]'), math.matrix([[1], [2], [3]]))
+      assert.deepStrictEqual(parseAndEval('[[1,2],[3,4]]'), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('[[[1],[2]],[[3],[4]]]'), math.matrix([[[1], [2]], [[3], [4]]]))
     })
 
     it('should parse an empty matrix', function () {
-      assert.deepEqual(parseAndEval('[]'), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('[]'), math.matrix([]))
     })
 
     it('should get a matrix subset', function () {
@@ -516,18 +516,18 @@ describe('parse', function () {
           [7, 8, 9]
         ])
       }
-      assert.deepEqual(parseAndEval('a[2, :]', scope), math.matrix([[4, 5, 6]]))
-      assert.deepEqual(parseAndEval('a[2, :2]', scope), math.matrix([[4, 5]]))
-      assert.deepEqual(parseAndEval('a[2, :end-1]', scope), math.matrix([[4, 5]]))
-      assert.deepEqual(parseAndEval('a[2, 2:]', scope), math.matrix([[5, 6]]))
-      assert.deepEqual(parseAndEval('a[2, 2:3]', scope), math.matrix([[5, 6]]))
-      assert.deepEqual(parseAndEval('a[2, 1:2:3]', scope), math.matrix([[4, 6]]))
-      assert.deepEqual(parseAndEval('a[:, 2]', scope), math.matrix([[2], [5], [8]]))
-      assert.deepEqual(parseAndEval('a[:2, 2]', scope), math.matrix([[2], [5]]))
-      assert.deepEqual(parseAndEval('a[:end-1, 2]', scope), math.matrix([[2], [5]]))
-      assert.deepEqual(parseAndEval('a[2:, 2]', scope), math.matrix([[5], [8]]))
-      assert.deepEqual(parseAndEval('a[2:3, 2]', scope), math.matrix([[5], [8]]))
-      assert.deepEqual(parseAndEval('a[1:2:3, 2]', scope), math.matrix([[2], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[2, :]', scope), math.matrix([[4, 5, 6]]))
+      assert.deepStrictEqual(parseAndEval('a[2, :2]', scope), math.matrix([[4, 5]]))
+      assert.deepStrictEqual(parseAndEval('a[2, :end-1]', scope), math.matrix([[4, 5]]))
+      assert.deepStrictEqual(parseAndEval('a[2, 2:]', scope), math.matrix([[5, 6]]))
+      assert.deepStrictEqual(parseAndEval('a[2, 2:3]', scope), math.matrix([[5, 6]]))
+      assert.deepStrictEqual(parseAndEval('a[2, 1:2:3]', scope), math.matrix([[4, 6]]))
+      assert.deepStrictEqual(parseAndEval('a[:, 2]', scope), math.matrix([[2], [5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[:2, 2]', scope), math.matrix([[2], [5]]))
+      assert.deepStrictEqual(parseAndEval('a[:end-1, 2]', scope), math.matrix([[2], [5]]))
+      assert.deepStrictEqual(parseAndEval('a[2:, 2]', scope), math.matrix([[5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[2:3, 2]', scope), math.matrix([[5], [8]]))
+      assert.deepStrictEqual(parseAndEval('a[1:2:3, 2]', scope), math.matrix([[2], [8]]))
     })
 
     it('should get a matrix subset of a matrix subset', function () {
@@ -538,65 +538,65 @@ describe('parse', function () {
           [7, 8, 9]
         ])
       }
-      assert.deepEqual(parseAndEval('a[2, :][1,1]', scope), 4)
+      assert.deepStrictEqual(parseAndEval('a[2, :][1,1]', scope), 4)
     })
 
     it('should get BigNumber value from an array', function () {
       const res = parseAndEval('arr[1]', { arr: [math.bignumber(2)] })
-      assert.deepEqual(res, math.bignumber(2))
+      assert.deepStrictEqual(res, math.bignumber(2))
     })
 
     it('should parse matrix resizings', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('a = []', scope), math.matrix([]))
-      assert.deepEqual(parseAndEval('a[1:3,1] = [1;2;3]', scope), math.matrix([[1], [2], [3]]))
-      assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), math.matrix([[4], [5], [6]]))
-      assert.deepEqual(scope.a, math.matrix([[1, 4], [2, 5], [3, 6]]))
+      assert.deepStrictEqual(parseAndEval('a = []', scope), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('a[1:3,1] = [1;2;3]', scope), math.matrix([[1], [2], [3]]))
+      assert.deepStrictEqual(parseAndEval('a[:,2] = [4;5;6]', scope), math.matrix([[4], [5], [6]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[1, 4], [2, 5], [3, 6]]))
 
-      assert.deepEqual(parseAndEval('a = []', scope), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('a = []', scope), math.matrix([]))
       assert.strictEqual(parseAndEval('a[1,3] = 3', scope), 3)
-      assert.deepEqual(scope.a, math.matrix([[0, 0, 3]]))
-      assert.deepEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), math.matrix([[4, 5, 6]]))
-      assert.deepEqual(scope.a, math.matrix([[0, 0, 3], [4, 5, 6]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[0, 0, 3]]))
+      assert.deepStrictEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), math.matrix([[4, 5, 6]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[0, 0, 3], [4, 5, 6]]))
 
-      assert.deepEqual(parseAndEval('a = []', scope), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('a = []', scope), math.matrix([]))
       assert.strictEqual(parseAndEval('a[3,1] = 3', scope), 3)
-      assert.deepEqual(scope.a, math.matrix([[0], [0], [3]]))
-      assert.deepEqual(parseAndEval('a[:,2] = [4;5;6]', scope), math.matrix([[4], [5], [6]]))
-      assert.deepEqual(scope.a, math.matrix([[0, 4], [0, 5], [3, 6]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[0], [0], [3]]))
+      assert.deepStrictEqual(parseAndEval('a[:,2] = [4;5;6]', scope), math.matrix([[4], [5], [6]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[0, 4], [0, 5], [3, 6]]))
 
-      assert.deepEqual(parseAndEval('a = []', scope), math.matrix([]))
-      assert.deepEqual(parseAndEval('a[1,1:3] = [[1,2,3]]', scope), math.matrix([[1, 2, 3]]))
-      assert.deepEqual(scope.a, math.matrix([[1, 2, 3]]))
-      assert.deepEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), math.matrix([[4, 5, 6]]))
-      assert.deepEqual(scope.a, math.matrix([[1, 2, 3], [4, 5, 6]]))
+      assert.deepStrictEqual(parseAndEval('a = []', scope), math.matrix([]))
+      assert.deepStrictEqual(parseAndEval('a[1,1:3] = [[1,2,3]]', scope), math.matrix([[1, 2, 3]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[1, 2, 3]]))
+      assert.deepStrictEqual(parseAndEval('a[2,:] = [[4,5,6]]', scope), math.matrix([[4, 5, 6]]))
+      assert.deepStrictEqual(scope.a, math.matrix([[1, 2, 3], [4, 5, 6]]))
     })
 
     it('should get/set the matrix correctly', function () {
       let scope = {}
       parseAndEval('a=[1,2;3,4]', scope)
       parseAndEval('a[1,1] = 100', scope)
-      assert.deepEqual(scope.a.size(), [2, 2])
-      assert.deepEqual(scope.a, math.matrix([[100, 2], [3, 4]]))
+      assert.deepStrictEqual(scope.a.size(), [2, 2])
+      assert.deepStrictEqual(scope.a, math.matrix([[100, 2], [3, 4]]))
       parseAndEval('a[2:3,2:3] = [10,11;12,13]', scope)
-      assert.deepEqual(scope.a.size(), [3, 3])
-      assert.deepEqual(scope.a, math.matrix([[100, 2, 0], [3, 10, 11], [0, 12, 13]]))
+      assert.deepStrictEqual(scope.a.size(), [3, 3])
+      assert.deepStrictEqual(scope.a, math.matrix([[100, 2, 0], [3, 10, 11], [0, 12, 13]]))
       const a = scope.a
       // note: after getting subset, uninitialized elements are replaced by elements with an undefined value
-      assert.deepEqual(a.subset(math.index(new Range(0, 3), new Range(0, 2))), math.matrix([[100, 2], [3, 10], [0, 12]]))
-      assert.deepEqual(parseAndEval('a[1:3,1:2]', scope), math.matrix([[100, 2], [3, 10], [0, 12]]))
+      assert.deepStrictEqual(a.subset(math.index(new Range(0, 3), new Range(0, 2))), math.matrix([[100, 2], [3, 10], [0, 12]]))
+      assert.deepStrictEqual(parseAndEval('a[1:3,1:2]', scope), math.matrix([[100, 2], [3, 10], [0, 12]]))
 
       scope.b = [[1, 2], [3, 4]]
-      assert.deepEqual(parseAndEval('b[1,:]', scope), [[1, 2]])
+      assert.deepStrictEqual(parseAndEval('b[1,:]', scope), [[1, 2]])
     })
 
     it('should get/set the matrix correctly for 3d matrices', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('f=[1,2;3,4]', scope), math.matrix([[1, 2], [3, 4]]))
-      assert.deepEqual(parseAndEval('size(f)', scope), math.matrix([2, 2]))
+      assert.deepStrictEqual(parseAndEval('f=[1,2;3,4]', scope), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2]))
 
       parseAndEval('f[:,:,2]=[5,6;7,8]', scope)
-      assert.deepEqual(scope.f, math.matrix([
+      assert.deepStrictEqual(scope.f, math.matrix([
         [
           [1, 5],
           [2, 6]
@@ -607,22 +607,22 @@ describe('parse', function () {
         ]
       ]))
 
-      assert.deepEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2]))
-      assert.deepEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[[1], [2]], [[3], [4]]]))
-      assert.deepEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[[5], [6]], [[7], [8]]]))
-      assert.deepEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[[2, 6]], [[4, 8]]]))
-      assert.deepEqual(parseAndEval('f[2,:,:]', scope), math.matrix([[[3, 7], [4, 8]]]))
+      assert.deepStrictEqual(parseAndEval('size(f)', scope), math.matrix([2, 2, 2]))
+      assert.deepStrictEqual(parseAndEval('f[:,:,1]', scope), math.matrix([[[1], [2]], [[3], [4]]]))
+      assert.deepStrictEqual(parseAndEval('f[:,:,2]', scope), math.matrix([[[5], [6]], [[7], [8]]]))
+      assert.deepStrictEqual(parseAndEval('f[:,2,:]', scope), math.matrix([[[2, 6]], [[4, 8]]]))
+      assert.deepStrictEqual(parseAndEval('f[2,:,:]', scope), math.matrix([[[3, 7], [4, 8]]]))
 
       parseAndEval('a=diag([1,2,3,4])', scope)
-      assert.deepEqual(parseAndEval('a[3:end, 3:end]', scope), math.matrix([[3, 0], [0, 4]]))
+      assert.deepStrictEqual(parseAndEval('a[3:end, 3:end]', scope), math.matrix([[3, 0], [0, 4]]))
       parseAndEval('a[3:end, 2:end]=9*ones(2,3)', scope)
-      assert.deepEqual(scope.a, math.matrix([
+      assert.deepStrictEqual(scope.a, math.matrix([
         [1, 0, 0, 0],
         [0, 2, 0, 0],
         [0, 9, 9, 9],
         [0, 9, 9, 9]
       ]))
-      assert.deepEqual(parseAndEval('a[2:end-1, 2:end-1]', scope), math.matrix([[2, 0], [9, 9]]))
+      assert.deepStrictEqual(parseAndEval('a[2:end-1, 2:end-1]', scope), math.matrix([[2, 0], [9, 9]]))
     })
 
     it('should merge nested matrices', function () {
@@ -634,20 +634,20 @@ describe('parse', function () {
       let scope = {}
       parseAndEval('a=[1,2;3,4]', scope)
       parseAndEval('b=[5,6;7,8]', scope)
-      assert.deepEqual(parseAndEval('c=concat(a,b)', scope), math.matrix([[1, 2, 5, 6], [3, 4, 7, 8]]))
-      assert.deepEqual(parseAndEval('c=concat(a,b,1)', scope), math.matrix([[1, 2], [3, 4], [5, 6], [7, 8]]))
-      assert.deepEqual(parseAndEval('c=concat(concat(a,b), concat(b,a), 1)', scope), math.matrix([[1, 2, 5, 6], [3, 4, 7, 8], [5, 6, 1, 2], [7, 8, 3, 4]]))
-      assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 1)', scope), math.matrix([[1, 2], [3, 4]]))
-      assert.deepEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 2)', scope), math.matrix([[1, 2, 3, 4]]))
-      assert.deepEqual(parseAndEval('c=concat([[1]], [2;3], 1)', scope), math.matrix([[1], [2], [3]]))
-      assert.deepEqual(parseAndEval('d=1:3', scope), math.matrix([1, 2, 3]))
-      assert.deepEqual(parseAndEval('concat(d,d)', scope), math.matrix([1, 2, 3, 1, 2, 3]))
-      assert.deepEqual(parseAndEval('e=1+d', scope), math.matrix([2, 3, 4]))
-      assert.deepEqual(parseAndEval('size(e)', scope), math.matrix([3]))
-      assert.deepEqual(parseAndEval('concat(e,e)', scope), math.matrix([2, 3, 4, 2, 3, 4]))
-      assert.deepEqual(parseAndEval('[[],[]]', scope), math.matrix([[], []]))
-      assert.deepEqual(parseAndEval('[[],[]]', scope).size(), [2, 0])
-      assert.deepEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0]))
+      assert.deepStrictEqual(parseAndEval('c=concat(a,b)', scope), math.matrix([[1, 2, 5, 6], [3, 4, 7, 8]]))
+      assert.deepStrictEqual(parseAndEval('c=concat(a,b,1)', scope), math.matrix([[1, 2], [3, 4], [5, 6], [7, 8]]))
+      assert.deepStrictEqual(parseAndEval('c=concat(concat(a,b), concat(b,a), 1)', scope), math.matrix([[1, 2, 5, 6], [3, 4, 7, 8], [5, 6, 1, 2], [7, 8, 3, 4]]))
+      assert.deepStrictEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 1)', scope), math.matrix([[1, 2], [3, 4]]))
+      assert.deepStrictEqual(parseAndEval('c=concat([[1,2]], [[3,4]], 2)', scope), math.matrix([[1, 2, 3, 4]]))
+      assert.deepStrictEqual(parseAndEval('c=concat([[1]], [2;3], 1)', scope), math.matrix([[1], [2], [3]]))
+      assert.deepStrictEqual(parseAndEval('d=1:3', scope), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('concat(d,d)', scope), math.matrix([1, 2, 3, 1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('e=1+d', scope), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parseAndEval('size(e)', scope), math.matrix([3]))
+      assert.deepStrictEqual(parseAndEval('concat(e,e)', scope), math.matrix([2, 3, 4, 2, 3, 4]))
+      assert.deepStrictEqual(parseAndEval('[[],[]]', scope), math.matrix([[], []]))
+      assert.deepStrictEqual(parseAndEval('[[],[]]', scope).size(), [2, 0])
+      assert.deepStrictEqual(parseAndEval('size([[],[]])', scope), math.matrix([2, 0]))
     })
 
     it('should disable arrays as range in a matrix index', function () {
@@ -682,33 +682,33 @@ describe('parse', function () {
 
   describe('objects', function () {
     it('should get an object property', function () {
-      assert.deepEqual(parseAndEval('obj["foo"]', { obj: { foo: 2 } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj["foo"]', { obj: { foo: 2 } }), 2)
     })
 
     it('should get a nested object property', function () {
-      assert.deepEqual(parseAndEval('obj["foo"]["bar"]', { obj: { foo: { bar: 2 } } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj["foo"]["bar"]', { obj: { foo: { bar: 2 } } }), 2)
     })
 
     it('should get a nested matrix subset from an object property', function () {
-      assert.deepEqual(parseAndEval('obj.foo[2]', { obj: { foo: [1, 2, 3] } }), 2)
-      assert.deepEqual(parseAndEval('obj.foo[end]', { obj: { foo: [1, 2, 3] } }), 3)
-      assert.deepEqual(parseAndEval('obj.foo[2][3]', { obj: { foo: ['hello', 'world'] } }), 'r')
-      assert.deepEqual(parseAndEval('obj.foo[2][end]', { obj: { foo: ['hello', 'world'] } }), 'd')
-      assert.deepEqual(parseAndEval('obj.foo[1].bar', { obj: { foo: [{ bar: 4 }] } }), 4)
+      assert.deepStrictEqual(parseAndEval('obj.foo[2]', { obj: { foo: [1, 2, 3] } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj.foo[end]', { obj: { foo: [1, 2, 3] } }), 3)
+      assert.deepStrictEqual(parseAndEval('obj.foo[2][3]', { obj: { foo: ['hello', 'world'] } }), 'r')
+      assert.deepStrictEqual(parseAndEval('obj.foo[2][end]', { obj: { foo: ['hello', 'world'] } }), 'd')
+      assert.deepStrictEqual(parseAndEval('obj.foo[1].bar', { obj: { foo: [{ bar: 4 }] } }), 4)
     })
 
     it('should set an object property', function () {
       let scope = { obj: { a: 3 } }
       const res = parseAndEval('obj["b"] = 2', scope)
       assert.strictEqual(res, 2)
-      assert.deepEqual(scope, { obj: { a: 3, b: 2 } })
+      assert.deepStrictEqual(scope, { obj: { a: 3, b: 2 } })
     })
 
     it('should set a nested object property', function () {
       let scope = { obj: { foo: {} } }
       const res = parseAndEval('obj["foo"]["bar"] = 2', scope)
       assert.strictEqual(res, 2)
-      assert.deepEqual(scope, { obj: { foo: { bar: 2 } } })
+      assert.deepStrictEqual(scope, { obj: { foo: { bar: 2 } } })
     })
 
     it('should throw an error when trying to apply a matrix index as object property', function () {
@@ -720,45 +720,45 @@ describe('parse', function () {
 
     it('should set a nested matrix subset from an object property (1)', function () {
       let scope = { obj: { foo: [1, 2, 3] } }
-      assert.deepEqual(parseAndEval('obj.foo[2] = 6', scope), 6)
-      assert.deepEqual(scope, { obj: { foo: [1, 6, 3] } })
+      assert.deepStrictEqual(parseAndEval('obj.foo[2] = 6', scope), 6)
+      assert.deepStrictEqual(scope, { obj: { foo: [1, 6, 3] } })
 
-      assert.deepEqual(parseAndEval('obj.foo[end] = 8', scope), 8)
-      assert.deepEqual(scope, { obj: { foo: [1, 6, 8] } })
+      assert.deepStrictEqual(parseAndEval('obj.foo[end] = 8', scope), 8)
+      assert.deepStrictEqual(scope, { obj: { foo: [1, 6, 8] } })
     })
 
     it('should set a nested matrix subset from an object property (2)', function () {
       let scope = { obj: { foo: [{ bar: 4 }] } }
-      assert.deepEqual(parseAndEval('obj.foo[1].bar = 6', scope), 6)
-      assert.deepEqual(scope, { obj: { foo: [{ bar: 6 }] } })
+      assert.deepStrictEqual(parseAndEval('obj.foo[1].bar = 6', scope), 6)
+      assert.deepStrictEqual(scope, { obj: { foo: [{ bar: 6 }] } })
     })
 
     it('should set a nested matrix subset from an object property (3)', function () {
       let scope = { obj: { foo: [{ bar: {} }] } }
-      assert.deepEqual(parseAndEval('obj.foo[1].bar.baz = 6', scope), 6)
-      assert.deepEqual(scope, { obj: { foo: [{ bar: { baz: 6 } }] } })
+      assert.deepStrictEqual(parseAndEval('obj.foo[1].bar.baz = 6', scope), 6)
+      assert.deepStrictEqual(scope, { obj: { foo: [{ bar: { baz: 6 } }] } })
     })
 
     it('should set a nested matrix subset from an object property (4)', function () {
       let scope = { obj: { foo: ['hello', 'world'] } }
-      assert.deepEqual(parseAndEval('obj.foo[1][end] = "a"', scope), 'a')
-      assert.deepEqual(scope, { obj: { foo: ['hella', 'world'] } })
-      assert.deepEqual(parseAndEval('obj.foo[end][end] = "!"', scope), '!')
-      assert.deepEqual(scope, { obj: { foo: ['hella', 'worl!'] } })
+      assert.deepStrictEqual(parseAndEval('obj.foo[1][end] = "a"', scope), 'a')
+      assert.deepStrictEqual(scope, { obj: { foo: ['hella', 'world'] } })
+      assert.deepStrictEqual(parseAndEval('obj.foo[end][end] = "!"', scope), '!')
+      assert.deepStrictEqual(scope, { obj: { foo: ['hella', 'worl!'] } })
     })
 
     // TODO: test whether 1-based IndexErrors are thrown
 
     it('should get an object property with dot notation', function () {
-      assert.deepEqual(parseAndEval('obj.foo', { obj: { foo: 2 } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj.foo', { obj: { foo: 2 } }), 2)
     })
 
     it('should get an object property from an object inside parentheses', function () {
-      assert.deepEqual(parseAndEval('(obj).foo', { obj: { foo: 2 } }), 2)
+      assert.deepStrictEqual(parseAndEval('(obj).foo', { obj: { foo: 2 } }), 2)
     })
 
     it('should get a nested object property with dot notation', function () {
-      assert.deepEqual(parseAndEval('obj.foo.bar', { obj: { foo: { bar: 2 } } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj.foo.bar', { obj: { foo: { bar: 2 } } }), 2)
     })
 
     it('should invoke a function in an object', function () {
@@ -769,19 +769,19 @@ describe('parse', function () {
           }
         }
       }
-      assert.deepEqual(parseAndEval('obj.fn(2)', scope), 4)
-      assert.deepEqual(parseAndEval('obj["fn"](2)', scope), 4)
+      assert.deepStrictEqual(parseAndEval('obj.fn(2)', scope), 4)
+      assert.deepStrictEqual(parseAndEval('obj["fn"](2)', scope), 4)
     })
 
     it('should apply implicit multiplication after a function call', function () {
-      assert.deepEqual(parseAndEval('sqrt(4)(1+2)'), 6)
-      assert.deepEqual(parseAndEval('sqrt(4)(1+2)(2)'), 12)
+      assert.deepStrictEqual(parseAndEval('sqrt(4)(1+2)'), 6)
+      assert.deepStrictEqual(parseAndEval('sqrt(4)(1+2)(2)'), 12)
     })
 
     it('should invoke a function on an object with the right context', function () {
       approx.equal(parseAndEval('(2.54 cm).toNumeric("inch")'), 1)
-      assert.deepEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5))
-      assert.deepEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5))
+      assert.deepStrictEqual(parseAndEval('bignumber(2).plus(3)'), math.bignumber(5))
+      assert.deepStrictEqual(parseAndEval('bignumber(2)["plus"](3)'), math.bignumber(5))
     })
 
     it('should invoke native methods on a number', function () {
@@ -790,20 +790,20 @@ describe('parse', function () {
     })
 
     it('should get nested object property with mixed dot- and index-notation', function () {
-      assert.deepEqual(parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: { baz: 2 } } } }), 2)
-      assert.deepEqual(parseAndEval('obj["foo"].bar["baz"]', { obj: { foo: { bar: { baz: 2 } } } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj.foo["bar"].baz', { obj: { foo: { bar: { baz: 2 } } } }), 2)
+      assert.deepStrictEqual(parseAndEval('obj["foo"].bar["baz"]', { obj: { foo: { bar: { baz: 2 } } } }), 2)
     })
 
     it('should set an object property with dot notation', function () {
       let scope = { obj: {} }
       parseAndEval('obj.foo = 2', scope)
-      assert.deepEqual(scope, { obj: { foo: 2 } })
+      assert.deepStrictEqual(scope, { obj: { foo: 2 } })
     })
 
     it('should set a nested object property with dot notation', function () {
       let scope = { obj: { foo: {} } }
       parseAndEval('obj.foo.bar = 2', scope)
-      assert.deepEqual(scope, { obj: { foo: { bar: 2 } } })
+      assert.deepStrictEqual(scope, { obj: { foo: { bar: 2 } } })
     })
 
     it('should throw an error in case of invalid property with dot notation', function () {
@@ -812,28 +812,28 @@ describe('parse', function () {
     })
 
     it('should create an empty object', function () {
-      assert.deepEqual(parseAndEval('{}'), {})
+      assert.deepStrictEqual(parseAndEval('{}'), {})
     })
 
     it('should create an object with quoted keys', function () {
-      assert.deepEqual(parseAndEval('{"a":2+3,"b":"foo"}'), { a: 5, b: 'foo' })
+      assert.deepStrictEqual(parseAndEval('{"a":2+3,"b":"foo"}'), { a: 5, b: 'foo' })
     })
 
     it('should create an object with unquoted keys', function () {
-      assert.deepEqual(parseAndEval('{a:2+3,b:"foo"}'), { a: 5, b: 'foo' })
+      assert.deepStrictEqual(parseAndEval('{a:2+3,b:"foo"}'), { a: 5, b: 'foo' })
     })
 
     it('should create an object with child object', function () {
-      assert.deepEqual(parseAndEval('{a:{b:2}}'), { a: { b: 2 } })
+      assert.deepStrictEqual(parseAndEval('{a:{b:2}}'), { a: { b: 2 } })
     })
 
     it('should get a property from a just created object', function () {
-      assert.deepEqual(parseAndEval('{foo:2}["foo"]'), 2)
+      assert.deepStrictEqual(parseAndEval('{foo:2}["foo"]'), 2)
     })
 
     it('should parse an object containing a function assignment', function () {
       const obj = parseAndEval('{f: f(x)=x^2}')
-      assert.deepEqual(Object.keys(obj), ['f'])
+      assert.deepStrictEqual(Object.keys(obj), ['f'])
       assert.strictEqual(obj.f(2), 4)
     })
 
@@ -846,7 +846,7 @@ describe('parse', function () {
 
     it('should parse an object containing a variable assignment', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('{f: a=42}', scope), { f: 42 })
+      assert.deepStrictEqual(parseAndEval('{f: a=42}', scope), { f: 42 })
       assert.strictEqual(scope.a, 42)
     })
 
@@ -866,7 +866,7 @@ describe('parse', function () {
   describe('constants', function () {
     it('should parse symbolic constants', function () {
       assert.strictEqual(parse('i').type, 'SymbolNode')
-      assert.deepEqual(parseAndEval('i'), new Complex(0, 1))
+      assert.deepStrictEqual(parseAndEval('i'), new Complex(0, 1))
       approx.equal(parseAndEval('pi'), Math.PI)
       approx.equal(parseAndEval('e'), Math.E)
     })
@@ -919,7 +919,7 @@ describe('parse', function () {
       assert.strictEqual(scope.c, 4.5)
       assert.strictEqual(scope.d, 4.5)
       assert.strictEqual(scope.e, 4.5)
-      assert.deepEqual(parseAndEval('a = [1,2,f=3]', scope), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(parseAndEval('a = [1,2,f=3]', scope), math.matrix([1, 2, 3]))
       assert.strictEqual(scope.f, 3)
       assert.strictEqual(parseAndEval('2 + (g = 3 + 4)', scope), 9)
       assert.strictEqual(scope.g, 7)
@@ -927,14 +927,14 @@ describe('parse', function () {
 
     it('should parse variable assignment inside a function call', function () {
       let scope = {}
-      assert.deepEqual(parseAndEval('sqrt(x=4)', scope), 2)
-      assert.deepEqual(scope, { x: 4 })
+      assert.deepStrictEqual(parseAndEval('sqrt(x=4)', scope), 2)
+      assert.deepStrictEqual(scope, { x: 4 })
     })
 
     it('should parse variable assignment inside an accessor', function () {
       let scope = { A: [10, 20, 30] }
-      assert.deepEqual(parseAndEval('A[x=2]', scope), 20)
-      assert.deepEqual(scope, { A: [10, 20, 30], x: 2 })
+      assert.deepStrictEqual(parseAndEval('A[x=2]', scope), 20)
+      assert.deepStrictEqual(scope, { A: [10, 20, 30], x: 2 })
     })
   })
 
@@ -943,7 +943,7 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('sqrt(4)'), 2)
       assert.strictEqual(parseAndEval('sqrt(6+3)'), 3)
       assert.strictEqual(parseAndEval('atan2(2,2)'), 0.7853981633974483)
-      assert.deepEqual(parseAndEval('sqrt(-4)'), new Complex(0, 2))
+      assert.deepStrictEqual(parseAndEval('sqrt(-4)'), new Complex(0, 2))
       assert.strictEqual(parseAndEval('abs(-4.2)'), 4.2)
       assert.strictEqual(parseAndEval('add(2, 3)'), 5)
       approx.deepEqual(parseAndEval('1+exp(pi*i)'), new Complex(0, 0))
@@ -1043,12 +1043,12 @@ describe('parse', function () {
 
     it('should parse dotDivide ./', function () {
       assert.strictEqual(parseAndEval('4./2'), 2)
-      assert.deepEqual(parseAndEval('4./[2,4]'), math.matrix([2, 1]))
+      assert.deepStrictEqual(parseAndEval('4./[2,4]'), math.matrix([2, 1]))
       assert.strictEqual(parseAndEval('4 ./ 2'), 2)
       assert.strictEqual(parseAndEval('8 ./ 4 / 2'), 1)
       assert.strictEqual(parseAndEval('8 ./ 2 / 2'), 2)
 
-      assert.deepEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), math.matrix([1, 1, 1]))
+      assert.deepStrictEqual(parseAndEval('[1,2,3] ./ [1,2,3]'), math.matrix([1, 1, 1]))
     })
 
     it('should parse dotMultiply .*', function () {
@@ -1057,9 +1057,9 @@ describe('parse', function () {
       approx.deepEqual(parseAndEval('2 .* 3'), 6)
       approx.deepEqual(parseAndEval('4 .* 2'), 8)
       approx.deepEqual(parseAndEval('8 .* 2 .* 2'), 32)
-      assert.deepEqual(parseAndEval('a=3; a.*4'), new ResultSet([12]))
+      assert.deepStrictEqual(parseAndEval('a=3; a.*4'), new ResultSet([12]))
 
-      assert.deepEqual(parseAndEval('[1,2,3] .* [1,2,3]'), math.matrix([1, 4, 9]))
+      assert.deepStrictEqual(parseAndEval('[1,2,3] .* [1,2,3]'), math.matrix([1, 4, 9]))
     })
 
     it('should parse dotPower .^', function () {
@@ -1068,13 +1068,13 @@ describe('parse', function () {
       approx.deepEqual(parseAndEval('-2.^2'), -4) // -(2^2)
       approx.deepEqual(parseAndEval('2.^3.^4'), 2.41785163922926e+24) // 2^(3^4)
 
-      assert.deepEqual(parseAndEval('[2,3] .^ [2,3]'), math.matrix([4, 27]))
+      assert.deepStrictEqual(parseAndEval('[2,3] .^ [2,3]'), math.matrix([4, 27]))
     })
 
     it('should parse equal ==', function () {
       assert.strictEqual(parseAndEval('2 == 3'), false)
       assert.strictEqual(parseAndEval('2 == 2'), true)
-      assert.deepEqual(parseAndEval('[2,3] == [2,4]'), math.matrix([true, false]))
+      assert.deepStrictEqual(parseAndEval('[2,3] == [2,4]'), math.matrix([true, false]))
     })
 
     it('should parse larger >', function () {
@@ -1139,13 +1139,13 @@ describe('parse', function () {
       assert.strictEqual(parseAndStringifyWithParens('2^(3)(a)'), '(2 ^ 3) a')
       assert.strictEqual(parseAndStringifyWithParens('sqrt(2a)'), 'sqrt(2 a)')
 
-      assert.deepEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]))
-      assert.deepEqual(parseAndEval('[2, 3] a', { a: 2 }), math.matrix([4, 6]))
-      assert.deepEqual(parseAndEval('A [2,2]', { A: [[1, 2], [3, 4]] }), 4) // index
-      assert.deepEqual(parseAndEval('(A) [2,2]', { A: [[1, 2], [3, 4]] }), 4) // index
+      assert.deepStrictEqual(parseAndEval('[2, 3] 2'), math.matrix([4, 6]))
+      assert.deepStrictEqual(parseAndEval('[2, 3] a', { a: 2 }), math.matrix([4, 6]))
+      assert.deepStrictEqual(parseAndEval('A [2,2]', { A: [[1, 2], [3, 4]] }), 4) // index
+      assert.deepStrictEqual(parseAndEval('(A) [2,2]', { A: [[1, 2], [3, 4]] }), 4) // index
 
-      assert.deepEqual(parseAndEval('[1,2;3,4] [2,2]'), 4) // index
-      assert.deepEqual(parseAndEval('([1,2;3,4])[2,2]'), 4) // index
+      assert.deepStrictEqual(parseAndEval('[1,2;3,4] [2,2]'), 4) // index
+      assert.deepStrictEqual(parseAndEval('([1,2;3,4])[2,2]'), 4) // index
       assert.throws(function () { parseAndEval('2[1,2,3]') }, /Unexpected operator/)// index
     })
 
@@ -1418,7 +1418,7 @@ describe('parse', function () {
     it('should parse unequal !=', function () {
       assert.strictEqual(parseAndEval('2 != 3'), true)
       assert.strictEqual(parseAndEval('2 != 2'), false)
-      assert.deepEqual(parseAndEval('[2,3] != [2,4]'), math.matrix([false, true]))
+      assert.deepStrictEqual(parseAndEval('[2,3] != [2,4]'), math.matrix([false, true]))
     })
 
     it('should parse conditional expression a ? b : c', function () {
@@ -1435,7 +1435,7 @@ describe('parse', function () {
     it('should lazily evaluate conditional expression a ? b : c', function () {
       let scope = {}
       math.parse('true ? (a = 2) : (b = 2)').compile().eval(scope)
-      assert.deepEqual(scope, { a: 2 })
+      assert.deepStrictEqual(scope, { a: 2 })
     })
 
     it('should throw an error when false part of conditional expression is missing', function () {
@@ -1444,17 +1444,17 @@ describe('parse', function () {
 
     it('should parse : (range)', function () {
       assert.ok(parseAndEval('2:5') instanceof Matrix)
-      assert.deepEqual(parseAndEval('2:5'), math.matrix([2, 3, 4, 5]))
-      assert.deepEqual(parseAndEval('10:-2:0'), math.matrix([10, 8, 6, 4, 2, 0]))
-      assert.deepEqual(parseAndEval('2:4.0'), math.matrix([2, 3, 4]))
-      assert.deepEqual(parseAndEval('2:4.5'), math.matrix([2, 3, 4]))
-      assert.deepEqual(parseAndEval('2:4.1'), math.matrix([2, 3, 4]))
-      assert.deepEqual(parseAndEval('2:3.9'), math.matrix([2, 3]))
-      assert.deepEqual(parseAndEval('2:3.5'), math.matrix([2, 3]))
-      assert.deepEqual(parseAndEval('3:-1:0.5'), math.matrix([3, 2, 1]))
-      assert.deepEqual(parseAndEval('3:-1:0.5'), math.matrix([3, 2, 1]))
-      assert.deepEqual(parseAndEval('3:-1:0.1'), math.matrix([3, 2, 1]))
-      assert.deepEqual(parseAndEval('3:-1:-0.1'), math.matrix([3, 2, 1, 0]))
+      assert.deepStrictEqual(parseAndEval('2:5'), math.matrix([2, 3, 4, 5]))
+      assert.deepStrictEqual(parseAndEval('10:-2:0'), math.matrix([10, 8, 6, 4, 2, 0]))
+      assert.deepStrictEqual(parseAndEval('2:4.0'), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parseAndEval('2:4.5'), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parseAndEval('2:4.1'), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parseAndEval('2:3.9'), math.matrix([2, 3]))
+      assert.deepStrictEqual(parseAndEval('2:3.5'), math.matrix([2, 3]))
+      assert.deepStrictEqual(parseAndEval('3:-1:0.5'), math.matrix([3, 2, 1]))
+      assert.deepStrictEqual(parseAndEval('3:-1:0.5'), math.matrix([3, 2, 1]))
+      assert.deepStrictEqual(parseAndEval('3:-1:0.1'), math.matrix([3, 2, 1]))
+      assert.deepStrictEqual(parseAndEval('3:-1:-0.1'), math.matrix([3, 2, 1, 0]))
     })
 
     it('should parse to', function () {
@@ -1467,24 +1467,24 @@ describe('parse', function () {
     })
 
     it('should parse factorial !', function () {
-      assert.deepEqual(parseAndEval('5!'), 120)
-      assert.deepEqual(parseAndEval('[1,2,3,4]!'), math.matrix([1, 2, 6, 24]))
-      assert.deepEqual(parseAndEval('4!+2'), 26)
-      assert.deepEqual(parseAndEval('4!-2'), 22)
-      assert.deepEqual(parseAndEval('4!*2'), 48)
-      assert.deepEqual(parseAndEval('3!!'), 720)
-      assert.deepEqual(parseAndEval('[1,2;3,1]!\'!'), math.matrix([[1, 720], [2, 1]]))
-      assert.deepEqual(parseAndEval('[4,5]![2]'), 120) // index [2]
+      assert.deepStrictEqual(parseAndEval('5!'), 120)
+      assert.deepStrictEqual(parseAndEval('[1,2,3,4]!'), math.matrix([1, 2, 6, 24]))
+      assert.deepStrictEqual(parseAndEval('4!+2'), 26)
+      assert.deepStrictEqual(parseAndEval('4!-2'), 22)
+      assert.deepStrictEqual(parseAndEval('4!*2'), 48)
+      assert.deepStrictEqual(parseAndEval('3!!'), 720)
+      assert.deepStrictEqual(parseAndEval('[1,2;3,1]!\'!'), math.matrix([[1, 720], [2, 1]]))
+      assert.deepStrictEqual(parseAndEval('[4,5]![2]'), 120) // index [2]
     })
 
     it('should parse transpose \'', function () {
-      assert.deepEqual(parseAndEval('23\''), 23)
-      assert.deepEqual(parseAndEval('[1,2,3;4,5,6]\''), math.matrix([[1, 4], [2, 5], [3, 6]]))
+      assert.deepStrictEqual(parseAndEval('23\''), 23)
+      assert.deepStrictEqual(parseAndEval('[1,2,3;4,5,6]\''), math.matrix([[1, 4], [2, 5], [3, 6]]))
       assert.ok(parseAndEval('[1,2,3;4,5,6]\'') instanceof Matrix)
-      assert.deepEqual(parseAndEval('[1:5]'), math.matrix([[1, 2, 3, 4, 5]]))
-      assert.deepEqual(parseAndEval('[1:5]\''), math.matrix([[1], [2], [3], [4], [5]]))
-      assert.deepEqual(parseAndEval('size([1:5])'), math.matrix([1, 5]))
-      assert.deepEqual(parseAndEval('[1,2;3,4]\''), math.matrix([[1, 3], [2, 4]]))
+      assert.deepStrictEqual(parseAndEval('[1:5]'), math.matrix([[1, 2, 3, 4, 5]]))
+      assert.deepStrictEqual(parseAndEval('[1:5]\''), math.matrix([[1], [2], [3], [4], [5]]))
+      assert.deepStrictEqual(parseAndEval('size([1:5])'), math.matrix([1, 5]))
+      assert.deepStrictEqual(parseAndEval('[1,2;3,4]\''), math.matrix([[1, 3], [2, 4]]))
     })
 
     describe('operator precedence', function () {
@@ -1586,10 +1586,10 @@ describe('parse', function () {
         assert.strictEqual(parseAndEval('2 > 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('2 == 3 ? true : false'), false)
         assert.strictEqual(parseAndEval('3 ? 2 + 4 : 2 - 1'), 6)
-        assert.deepEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
-        assert.deepEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
-        assert.deepEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
-        assert.deepEqual(parseAndEval('false ? 1:2:6'), math.matrix([2, 3, 4, 5, 6]))
+        assert.deepStrictEqual(parseAndEval('3 ? true : false; 22'), new ResultSet([22]))
+        assert.deepStrictEqual(parseAndEval('3 ? 5cm to m : 5cm in mm'), new Unit(5, 'cm').to('m'))
+        assert.deepStrictEqual(parseAndEval('2 == 4-2 ? [1,2] : false'), math.matrix([1, 2]))
+        assert.deepStrictEqual(parseAndEval('false ? 1:2:6'), math.matrix([2, 3, 4, 5, 6]))
       })
 
       it('should respect precedence between left/right shift and relational operators', function () {
@@ -1715,7 +1715,7 @@ describe('parse', function () {
     it('should evaluate function "sort" with a custom sort function', function () {
       let scope = {}
       parseAndEval('sortByLength(a, b) = size(a)[1] - size(b)[1]', scope)
-      assert.deepEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
+      assert.deepStrictEqual(parseAndEval('sort(["Langdon", "Tom", "Sara"], sortByLength)', scope),
         math.matrix(['Tom', 'Sara', 'Langdon']))
     })
   })
@@ -1727,17 +1727,17 @@ describe('parse', function () {
     const BigNumber = bigmath.type.BigNumber
 
     it('should parse numbers as bignumber', function () {
-      assert.deepEqual(bigmath.bignumber('2.3'), new BigNumber('2.3'))
-      assert.deepEqual(bigmath.eval('2.3'), new BigNumber('2.3'))
-      assert.deepEqual(bigmath.eval('2.3e+500'), new BigNumber('2.3e+500'))
+      assert.deepStrictEqual(bigmath.bignumber('2.3'), new BigNumber('2.3'))
+      assert.deepStrictEqual(bigmath.eval('2.3'), new BigNumber('2.3'))
+      assert.deepStrictEqual(bigmath.eval('2.3e+500'), new BigNumber('2.3e+500'))
     })
 
     it('should evaluate functions supporting bignumbers', function () {
-      assert.deepEqual(bigmath.eval('0.1 + 0.2'), new BigNumber('0.3'))
+      assert.deepStrictEqual(bigmath.eval('0.1 + 0.2'), new BigNumber('0.3'))
     })
 
     it('should evaluate functions supporting bignumbers', function () {
-      assert.deepEqual(bigmath.eval('add(0.1, 0.2)'), new BigNumber('0.3'))
+      assert.deepStrictEqual(bigmath.eval('add(0.1, 0.2)'), new BigNumber('0.3'))
     })
 
     it('should work with mixed numbers and bignumbers', function () {
@@ -1749,50 +1749,50 @@ describe('parse', function () {
     })
 
     it('should create a range from bignumbers', function () {
-      assert.deepEqual(bigmath.eval('4:6'),
+      assert.deepStrictEqual(bigmath.eval('4:6'),
         bigmath.matrix([new BigNumber(4), new BigNumber(5), new BigNumber(6)]))
-      assert.deepEqual(bigmath.eval('0:2:4'),
+      assert.deepStrictEqual(bigmath.eval('0:2:4'),
         bigmath.matrix([new BigNumber(0), new BigNumber(2), new BigNumber(4)]))
     })
 
     it('should create a matrix with bignumbers', function () {
-      assert.deepEqual(bigmath.eval('[0.1, 0.2]'),
+      assert.deepStrictEqual(bigmath.eval('[0.1, 0.2]'),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
     })
 
     it('should get an element from a matrix with bignumbers', function () {
       let scope = {}
-      assert.deepEqual(bigmath.eval('a=[0.1, 0.2]', scope),
+      assert.deepStrictEqual(bigmath.eval('a=[0.1, 0.2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
 
-      assert.deepEqual(bigmath.eval('a[1]', scope), new BigNumber(0.1))
-      assert.deepEqual(bigmath.eval('a[:]', scope),
+      assert.deepStrictEqual(bigmath.eval('a[1]', scope), new BigNumber(0.1))
+      assert.deepStrictEqual(bigmath.eval('a[:]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
-      assert.deepEqual(bigmath.eval('a[1:2]', scope),
+      assert.deepStrictEqual(bigmath.eval('a[1:2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
     })
 
     it('should replace elements in a matrix with bignumbers', function () {
       let scope = {}
-      assert.deepEqual(bigmath.eval('a=[0.1, 0.2]', scope),
+      assert.deepStrictEqual(bigmath.eval('a=[0.1, 0.2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
 
       bigmath.eval('a[1] = 0.3', scope)
-      assert.deepEqual(scope.a, bigmath.matrix([new BigNumber(0.3), new BigNumber(0.2)]))
+      assert.deepStrictEqual(scope.a, bigmath.matrix([new BigNumber(0.3), new BigNumber(0.2)]))
       bigmath.eval('a[:] = [0.5, 0.6]', scope)
-      assert.deepEqual(scope.a, bigmath.matrix([new BigNumber(0.5), new BigNumber(0.6)]))
+      assert.deepStrictEqual(scope.a, bigmath.matrix([new BigNumber(0.5), new BigNumber(0.6)]))
       bigmath.eval('a[1:2] = [0.7, 0.8]', scope)
-      assert.deepEqual(scope.a, bigmath.matrix([new BigNumber(0.7), new BigNumber(0.8)]))
+      assert.deepStrictEqual(scope.a, bigmath.matrix([new BigNumber(0.7), new BigNumber(0.8)]))
     })
 
     it('should work with complex numbers (downgrades bignumbers to number)', function () {
-      assert.deepEqual(bigmath.eval('3i'), new Complex(0, 3))
-      assert.deepEqual(bigmath.eval('2 + 3i'), new Complex(2, 3))
-      assert.deepEqual(bigmath.eval('2 * i'), new Complex(0, 2))
+      assert.deepStrictEqual(bigmath.eval('3i'), new Complex(0, 3))
+      assert.deepStrictEqual(bigmath.eval('2 + 3i'), new Complex(2, 3))
+      assert.deepStrictEqual(bigmath.eval('2 * i'), new Complex(0, 2))
     })
 
     it('should work with units', function () {
-      assert.deepEqual(bigmath.eval('2 cm'), new Unit(new BigNumber(2), 'cm'))
+      assert.deepStrictEqual(bigmath.eval('2 cm'), new bigmath.type.Unit(new bigmath.type.BigNumber(2), 'cm'))
     })
   })
 
@@ -1802,15 +1802,15 @@ describe('parse', function () {
         a: 3,
         b: 4
       }
-      assert.deepEqual(parse('a*b').compile().eval(scope), 12)
-      assert.deepEqual(parse('c=5').compile().eval(scope), 5)
-      assert.deepEqual(parse('f(x) = x^a').compile().eval(scope).syntax, 'f(x)')
+      assert.deepStrictEqual(parse('a*b').compile().eval(scope), 12)
+      assert.deepStrictEqual(parse('c=5').compile().eval(scope), 5)
+      assert.deepStrictEqual(parse('f(x) = x^a').compile().eval(scope).syntax, 'f(x)')
 
-      assert.deepEqual(Object.keys(scope).length, 4)
-      assert.deepEqual(scope.a, 3)
-      assert.deepEqual(scope.b, 4)
-      assert.deepEqual(scope.c, 5)
-      assert.deepEqual(typeof scope.f, 'function')
+      assert.deepStrictEqual(Object.keys(scope).length, 4)
+      assert.deepStrictEqual(scope.a, 3)
+      assert.deepStrictEqual(scope.b, 4)
+      assert.deepStrictEqual(scope.c, 5)
+      assert.deepStrictEqual(typeof scope.f, 'function')
 
       assert.strictEqual(scope.f(3), 27)
       scope.a = 2
@@ -1818,7 +1818,7 @@ describe('parse', function () {
       scope.hello = function (name) {
         return 'hello, ' + name + '!'
       }
-      assert.deepEqual(parse('hello("jos")').compile().eval(scope), 'hello, jos!')
+      assert.deepStrictEqual(parse('hello("jos")').compile().eval(scope), 'hello, jos!')
     })
 
     it('should parse undefined symbols, defining symbols, and removing symbols', function () {
@@ -1834,10 +1834,10 @@ describe('parse', function () {
       assert.throws(function () { n.compile().eval(scope) })
       parse('qq=[1,2;3,4]').compile().eval(scope)
       n.compile().eval(scope)
-      assert.deepEqual(scope.qq, math.matrix([[33, 2], [3, 4]]))
+      assert.deepStrictEqual(scope.qq, math.matrix([[33, 2], [3, 4]]))
       parse('qq=[4]').compile().eval(scope)
       n.compile().eval(scope)
-      assert.deepEqual(scope.qq, math.matrix([[33]]))
+      assert.deepStrictEqual(scope.qq, math.matrix([[33]]))
       delete scope.qq
       assert.throws(function () { n.compile().eval(scope) })
     })
@@ -1890,9 +1890,9 @@ describe('parse', function () {
       // TODO
 
       // evaluation via parser throws one-based error
-      assert.deepEqual(math.eval('max([[1,2], [3,4]])'), 4)
-      assert.deepEqual(math.eval('max([[1,2], [3,4]], 1)'), math.matrix([3, 4]))
-      assert.deepEqual(math.eval('max([[1,2], [3,4]], 2)'), math.matrix([2, 4]))
+      assert.deepStrictEqual(math.eval('max([[1,2], [3,4]])'), 4)
+      assert.deepStrictEqual(math.eval('max([[1,2], [3,4]], 1)'), math.matrix([3, 4]))
+      assert.deepStrictEqual(math.eval('max([[1,2], [3,4]], 2)'), math.matrix([2, 4]))
       assert.throws(function () { math.eval('max([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
       assert.throws(function () { math.eval('max([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })
@@ -1904,9 +1904,9 @@ describe('parse', function () {
       // TODO
 
       // evaluation via parser throws one-based error
-      assert.deepEqual(math.eval('min([[1,2], [3,4]])'), 1)
-      assert.deepEqual(math.eval('min([[1,2], [3,4]], 1)'), math.matrix([1, 2]))
-      assert.deepEqual(math.eval('min([[1,2], [3,4]], 2)'), math.matrix([1, 3]))
+      assert.deepStrictEqual(math.eval('min([[1,2], [3,4]])'), 1)
+      assert.deepStrictEqual(math.eval('min([[1,2], [3,4]], 1)'), math.matrix([1, 2]))
+      assert.deepStrictEqual(math.eval('min([[1,2], [3,4]], 2)'), math.matrix([1, 3]))
       assert.throws(function () { math.eval('min([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
       assert.throws(function () { math.eval('min([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })
@@ -1918,9 +1918,9 @@ describe('parse', function () {
       // TODO
 
       // evaluation via parser throws one-based error
-      assert.deepEqual(math.eval('mean([[1,2], [3,4]])'), 2.5)
-      assert.deepEqual(math.eval('mean([[1,2], [3,4]], 1)'), math.matrix([2, 3]))
-      assert.deepEqual(math.eval('mean([[1,2], [3,4]], 2)'), math.matrix([1.5, 3.5]))
+      assert.deepStrictEqual(math.eval('mean([[1,2], [3,4]])'), 2.5)
+      assert.deepStrictEqual(math.eval('mean([[1,2], [3,4]], 1)'), math.matrix([2, 3]))
+      assert.deepStrictEqual(math.eval('mean([[1,2], [3,4]], 2)'), math.matrix([1.5, 3.5]))
       assert.throws(function () { math.eval('mean([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
       assert.throws(function () { math.eval('mean([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })

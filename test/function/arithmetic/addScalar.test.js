@@ -33,35 +33,35 @@ describe('addScalar', function () {
   })
 
   it('should add BigNumbers', function () {
-    assert.deepEqual(add(new BigNumber(0.1), new BigNumber(0.2)), new BigNumber(0.3))
-    assert.deepEqual(add(new BigNumber('2e5001'), new BigNumber('3e5000')), new BigNumber('2.3e5001'))
-    assert.deepEqual(add(new BigNumber('9999999999999999999'), new BigNumber('1')), new BigNumber('1e19'))
+    assert.deepStrictEqual(add(new BigNumber(0.1), new BigNumber(0.2)), new BigNumber(0.3))
+    assert.deepStrictEqual(add(new BigNumber('2e5001'), new BigNumber('3e5000')), new BigNumber('2.3e5001'))
+    assert.deepStrictEqual(add(new BigNumber('9999999999999999999'), new BigNumber('1')), new BigNumber('1e19'))
   })
 
   it('should add mixed numbers and BigNumbers', function () {
-    assert.deepEqual(add(new BigNumber(0.1), 0.2), new BigNumber(0.3))
-    assert.deepEqual(add(0.1, new BigNumber(0.2)), new math.type.BigNumber(0.3))
+    assert.deepStrictEqual(add(new BigNumber(0.1), 0.2), new BigNumber(0.3))
+    assert.deepStrictEqual(add(0.1, new BigNumber(0.2)), new math.type.BigNumber(0.3))
 
     assert.throws(function () { add(1 / 3, new BigNumber(1)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { add(new BigNumber(1), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
   it('should add mixed booleans and BigNumbers', function () {
-    assert.deepEqual(add(new BigNumber(0.1), true), new BigNumber(1.1))
-    assert.deepEqual(add(new BigNumber(0.1), false), new BigNumber(0.1))
-    assert.deepEqual(add(false, new BigNumber(0.2)), new math.type.BigNumber(0.2))
-    assert.deepEqual(add(true, new BigNumber(0.2)), new math.type.BigNumber(1.2))
+    assert.deepStrictEqual(add(new BigNumber(0.1), true), new BigNumber(1.1))
+    assert.deepStrictEqual(add(new BigNumber(0.1), false), new BigNumber(0.1))
+    assert.deepStrictEqual(add(false, new BigNumber(0.2)), new math.type.BigNumber(0.2))
+    assert.deepStrictEqual(add(true, new BigNumber(0.2)), new math.type.BigNumber(1.2))
   })
 
   it('should add mixed complex numbers and BigNumbers', function () {
-    assert.deepEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4))
-    assert.deepEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4))
+    assert.deepStrictEqual(add(math.complex(3, -4), new BigNumber(2)), math.complex(5, -4))
+    assert.deepStrictEqual(add(new BigNumber(2), math.complex(3, -4)), math.complex(5, -4))
   })
 
   it('should add two complex numbers', function () {
-    assert.deepEqual(add(math.complex(3, -4), math.complex(8, 2)), math.complex('11 - 2i'))
-    assert.deepEqual(add(math.complex(3, -4), 10),  math.complex('13 - 4i'))
-    assert.deepEqual(add(10, math.complex(3, -4)),  math.complex('13 - 4i'))
+    assert.deepStrictEqual(add(math.complex(3, -4), math.complex(8, 2)), math.complex('11 - 2i'))
+    assert.deepStrictEqual(add(math.complex(3, -4), 10), math.complex('13 - 4i'))
+    assert.deepStrictEqual(add(10, math.complex(3, -4)), math.complex('13 - 4i'))
   })
 
   it('should add two fractions', function () {
@@ -73,8 +73,8 @@ describe('addScalar', function () {
   })
 
   it('should add mixed fractions and numbers', function () {
-    assert.deepEqual(add(1, math.fraction(1, 3)), math.fraction(4, 3))
-    assert.deepEqual(add(math.fraction(1, 3), 1), math.fraction(4, 3))
+    assert.deepStrictEqual(add(1, math.fraction(1, 3)), math.fraction(4, 3))
+    assert.deepStrictEqual(add(math.fraction(1, 3), 1), math.fraction(4, 3))
   })
 
   it('should throw an error when converting a number to a fraction that is not an exact representation', function () {
@@ -90,20 +90,20 @@ describe('addScalar', function () {
   })
 
   it('should add strings to BigNumbers', function () {
-    assert.deepEqual(add('2', math.bignumber(3)), math.bignumber(5))
-    assert.deepEqual(add(math.bignumber(3), '2'), math.bignumber(5))
+    assert.deepStrictEqual(add('2', math.bignumber(3)), math.bignumber(5))
+    assert.deepStrictEqual(add(math.bignumber(3), '2'), math.bignumber(5))
     assert.throws(function () { add('foo', math.bignumber(3)) }, /Error: Cannot convert "foo" to BigNumber/)
   })
 
   it('should add strings to Fractions', function () {
-    assert.deepEqual(add('2', math.fraction(3)), math.fraction(5))
-    assert.deepEqual(add(math.fraction(3), '2'), math.fraction(5))
+    assert.deepStrictEqual(add('2', math.fraction(3)), math.fraction(5))
+    assert.deepStrictEqual(add(math.fraction(3), '2'), math.fraction(5))
     assert.throws(function () { add('foo', math.fraction(3)) }, /Error: Cannot convert "foo" to Fraction/)
   })
 
   it('should add strings to Complex numbers', function () {
-    assert.deepEqual(add('2', math.complex(0, 3)), math.complex(2, 3))
-    assert.deepEqual(add(math.complex(0, 3), '2'), math.complex(2, 3))
+    assert.deepStrictEqual(add('2', math.complex(0, 3)), math.complex(2, 3))
+    assert.deepStrictEqual(add(math.complex(0, 3), '2'), math.complex(2, 3))
     assert.throws(function () { add('foo', math.complex(0, 3)) }, /Error: Cannot convert "foo" to Complex/)
   })
 

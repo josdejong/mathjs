@@ -14,7 +14,7 @@ describe('std', function () {
   })
 
   it('should return the standard deviation of big numbers', function () {
-    assert.deepEqual(std(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
+    assert.deepStrictEqual(std(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
       new math.type.BigNumber(2))
   })
 
@@ -61,14 +61,14 @@ describe('std', function () {
   })
 
   it('should return the standard deviation element from a 2d array', function () {
-    assert.deepEqual(std([
+    assert.deepStrictEqual(std([
       [2, 4, 6],
       [1, 3, 5]
     ]), Math.sqrt(3.5))
   })
 
   it('should return the standard deviation element from a 2d matrix', function () {
-    assert.deepEqual(std(new DenseMatrix([
+    assert.deepStrictEqual(std(new DenseMatrix([
       [2, 4, 6],
       [1, 3, 5]
     ])), Math.sqrt(3.5))

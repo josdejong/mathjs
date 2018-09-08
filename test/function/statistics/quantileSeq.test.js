@@ -43,19 +43,19 @@ describe('quantileSeq', function () {
   it('should return the quantileSeq from an array with BigNumber probability', function () {
     // FIXME: why does quantileSeq sometimes return bignumber and sometimes not?
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    assert.deepEqual(quantileSeq(lst, bignumber(0)), bignumber(1.3))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.1)), bignumber(1.75))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.2)), bignumber(2.2))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.25)), bignumber(2.325))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.3)), bignumber(2.45))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.4)), bignumber(2.7))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.5)), bignumber(2.9))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.6)), bignumber(3.1))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.7)), bignumber(3.2))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.75)), bignumber(3.25))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.8)), bignumber(3.3))
-    assert.deepEqual(quantileSeq(lst, bignumber(0.9)), bignumber(3.5))
-    assert.deepEqual(quantileSeq(lst, bignumber(1)), bignumber(3.7))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0)), bignumber(1.3))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.1)), bignumber(1.75))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.2)), bignumber(2.2))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.25)), bignumber(2.325))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.3)), bignumber(2.45))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.4)), bignumber(2.7))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.5)), bignumber(2.9))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.6)), bignumber(3.1))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.7)), bignumber(3.2))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.75)), bignumber(3.25))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.8)), bignumber(3.3))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(0.9)), bignumber(3.5))
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(1)), bignumber(3.7))
   })
 
   // FIXME: should return the quantileSeq of an array of bignumbers with number probability
@@ -67,14 +67,14 @@ describe('quantileSeq', function () {
   })
 
   it('should return the quantileSeq of an array of bignumbers with BigNumber probability', function () {
-    assert.deepEqual(quantileSeq([bignumber(0.5377), bignumber(1.8339), bignumber(-2.2588), bignumber(0.8622),
+    assert.deepStrictEqual(quantileSeq([bignumber(0.5377), bignumber(1.8339), bignumber(-2.2588), bignumber(0.8622),
       bignumber(0.3188), bignumber(-1.3077), bignumber(-0.4336), bignumber(0.3426),
       bignumber(3.5784), bignumber(2.7694)], bignumber(0.3)),
     bignumber(0.09308))
   })
 
   it('should return the quantileSeq of units', function () {
-    assert.deepEqual(quantileSeq([math.unit('5mm'), math.unit('15mm'), math.unit('10mm')], 0.5), math.unit('10mm'))
+    assert.deepStrictEqual(quantileSeq([math.unit('5mm'), math.unit('15mm'), math.unit('10mm')], 0.5), math.unit('10mm'))
   })
 
   it('should return the quantileSeq from an 1d matrix', function () {
@@ -118,7 +118,7 @@ describe('quantileSeq', function () {
 
   it('should return list quantiles for list of BigNumber probabilities', function () {
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    assert.deepEqual(quantileSeq(lst, [bignumber(0.25), bignumber(0.5), bignumber(0.75)]),
+    assert.deepStrictEqual(quantileSeq(lst, [bignumber(0.25), bignumber(0.5), bignumber(0.75)]),
       [bignumber(2.325), bignumber(2.9), bignumber(3.25)])
     assert.strictEqual(quantileSeq(lst, [bignumber(0.1), bignumber(0.2), bignumber(0.3), bignumber(0.4),
       bignumber(0.5), bignumber(0.6), bignumber(0.7), bignumber(0.8),
@@ -140,7 +140,7 @@ describe('quantileSeq', function () {
 
   it('should return the evenly BigNumber spaced quantiles of an array', function () {
     const lst = [3.7, 2.7, 3.3, 1.3, 2.2, 3.1]
-    assert.deepEqual(quantileSeq(lst, bignumber(3)), [bignumber(2.325), bignumber(2.9), bignumber(3.25)])
+    assert.deepStrictEqual(quantileSeq(lst, bignumber(3)), [bignumber(2.325), bignumber(2.9), bignumber(3.25)])
     assert.strictEqual(quantileSeq(lst, bignumber(9)).toString(), '1.75,2.2,2.45,2.7,2.9,3.1,3.2,3.3,3.5')
   })
 
@@ -180,7 +180,7 @@ describe('quantileSeq', function () {
     quantileSeq(a, 0.2)
     quantileSeq(a, 2)
     quantileSeq(a, [0.1, 0.3])
-    assert.deepEqual(a, [3, 2, 1])
+    assert.deepStrictEqual(a, [3, 2, 1])
   })
 
   /*

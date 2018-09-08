@@ -13,7 +13,7 @@ describe('mad', function () {
   })
 
   it('should return the median absolute deviation of big numbers', function () {
-    assert.deepEqual(mad(new BigNumber(4), new BigNumber(6), new BigNumber(8)),
+    assert.deepStrictEqual(mad(new BigNumber(4), new BigNumber(6), new BigNumber(8)),
       new BigNumber(2))
   })
 
@@ -30,14 +30,14 @@ describe('mad', function () {
   })
 
   it('should return the median absolute deviation element from a 2d array', function () {
-    assert.deepEqual(mad([
+    assert.deepStrictEqual(mad([
       [2, 4, 6],
       [1, 3, 5]
     ]), 1.5)
   })
 
   it('should return the median absolute deviation element from a 2d matrix', function () {
-    assert.deepEqual(mad(new DenseMatrix([
+    assert.deepStrictEqual(mad(new DenseMatrix([
       [2, 4, 6],
       [1, 3, 5]
     ])), 1.5)

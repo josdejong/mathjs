@@ -54,7 +54,7 @@ describe('bignumber', function () {
     // from matrix
     const e = bignumber(math.matrix([0.1, 0.2]))
     assert.ok(e instanceof math.type.Matrix)
-    assert.deepEqual(e.size(), [2])
+    assert.deepStrictEqual(e.size(), [2])
     assert.ok(e.get([0]) instanceof BigNumber)
     assert.ok(e.get([1]) instanceof BigNumber)
     assert.strictEqual(e.get([0]).valueOf(), '0.1')

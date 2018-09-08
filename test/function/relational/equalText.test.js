@@ -21,31 +21,31 @@ describe('equalText', function () {
 
   describe('Array', function () {
     it('should compare array - scalar', function () {
-      assert.deepEqual(equalText('B', ['A', 'B', 'C']), [false, true, false])
-      assert.deepEqual(equalText(['A', 'B', 'C'], 'B'), [false, true, false])
+      assert.deepStrictEqual(equalText('B', ['A', 'B', 'C']), [false, true, false])
+      assert.deepStrictEqual(equalText(['A', 'B', 'C'], 'B'), [false, true, false])
     })
 
     it('should compare array - array', function () {
-      assert.deepEqual(equalText([['D', 'E', 'C'], ['B', 'C', 'E']], [['F', 'B', 'C'], ['A', 'D', 'C']]), [[false, false, true], [false, false, false]])
+      assert.deepStrictEqual(equalText([['D', 'E', 'C'], ['B', 'C', 'E']], [['F', 'B', 'C'], ['A', 'D', 'C']]), [[false, false, true], [false, false, false]])
     })
 
     it('should compare array - dense matrix', function () {
-      assert.deepEqual(equalText([['D', 'E', 'C'], ['B', 'C', 'E']], matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[false, false, true], [false, false, false]]))
+      assert.deepStrictEqual(equalText([['D', 'E', 'C'], ['B', 'C', 'E']], matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[false, false, true], [false, false, false]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should compare dense matrix - scalar', function () {
-      assert.deepEqual(equalText('B', matrix(['A', 'B', 'C'])), matrix([false, true, false]))
-      assert.deepEqual(equalText(matrix(['A', 'B', 'C']), 'B'), matrix([false, true, false]))
+      assert.deepStrictEqual(equalText('B', matrix(['A', 'B', 'C'])), matrix([false, true, false]))
+      assert.deepStrictEqual(equalText(matrix(['A', 'B', 'C']), 'B'), matrix([false, true, false]))
     })
 
     it('should compare dense matrix - array', function () {
-      assert.deepEqual(equalText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), [['F', 'B', 'C'], ['A', 'D', 'C']]), matrix([[false, false, true], [false, false, false]]))
+      assert.deepStrictEqual(equalText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), [['F', 'B', 'C'], ['A', 'D', 'C']]), matrix([[false, false, true], [false, false, false]]))
     })
 
     it('should compare dense matrix - dense matrix', function () {
-      assert.deepEqual(equalText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[false, false, true], [false, false, false]]))
+      assert.deepStrictEqual(equalText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[false, false, true], [false, false, false]]))
     })
   })
 

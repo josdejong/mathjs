@@ -338,11 +338,11 @@ describe('security', function () {
   })
 
   it('should allow invoking methods on complex numbers', function () {
-    assert.deepEqual(math.eval('complex(4, 0).sqrt(2)'), math.complex(2, 0))
+    assert.deepStrictEqual(math.eval('complex(4, 0).sqrt(2)'), math.complex(2, 0))
   })
 
   it('should allow accessing properties on an object', function () {
-    assert.deepEqual(math.eval('obj.a', { obj: { a: 42 } }), 42)
+    assert.deepStrictEqual(math.eval('obj.a', { obj: { a: 42 } }), 42)
   })
 
   it('should not allow accessing inherited properties on an object', function () {
@@ -388,7 +388,7 @@ describe('security', function () {
     assert.strictEqual(math.expression.mathWithTransform.Matrix, undefined)
     assert.strictEqual(math.expression.mathWithTransform.Node, undefined)
     assert.strictEqual(math.expression.mathWithTransform.chain, undefined)
-    assert.deepEqual(math.eval('chain'), math.unit('chain'))
+    assert.deepStrictEqual(math.eval('chain'), math.unit('chain'))
   })
 })
 

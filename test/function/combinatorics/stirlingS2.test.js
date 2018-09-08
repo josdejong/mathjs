@@ -10,8 +10,8 @@ describe('stirlingS2', function () {
   })
 
   it('should calculate the stirlingS2 of n items taken k at a time with BigNumbers', function () {
-    assert.deepEqual(stirlingS2(math.bignumber(7), math.bignumber(5)), math.bignumber(140))
-    assert.deepEqual(stirlingS2(math.bignumber(8), math.bignumber(6)), math.bignumber(266))
+    assert.deepStrictEqual(stirlingS2(math.bignumber(7), math.bignumber(5)), math.bignumber(140))
+    assert.deepStrictEqual(stirlingS2(math.bignumber(8), math.bignumber(6)), math.bignumber(266))
   })
 
   it('should not work with non-integer and negative input', function () {

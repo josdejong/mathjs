@@ -5,21 +5,21 @@ describe('map', function () {
   it('should apply map to all elements of the matrix', function () {
     const m = math.matrix([[1, 2, 3], [4, 5, 6]])
     const m2 = math.map(m, function (value) { return value * 2 })
-    assert.deepEqual(m2.valueOf(), [[2, 4, 6], [8, 10, 12]])
+    assert.deepStrictEqual(m2.valueOf(), [[2, 4, 6], [8, 10, 12]])
     assert.ok(m2 instanceof math.type.Matrix)
   })
 
   it('should apply deep-map to all elements in the array', function () {
     const arr = [[1, 2, 3], [4, 5, 6]]
     const arr2 = math.map(arr, function (value) { return value * 2 })
-    assert.deepEqual(arr2, [[2, 4, 6], [8, 10, 12]])
+    assert.deepStrictEqual(arr2, [[2, 4, 6], [8, 10, 12]])
     assert.ok(Array.isArray(arr2))
   })
 
   it('should invoke callback with parameters value, index, obj', function () {
     const arr = [[1, 2, 3], [4, 5, 6]]
 
-    assert.deepEqual(math.map(arr, function (value, index, obj) {
+    assert.deepStrictEqual(math.map(arr, function (value, index, obj) {
       // we don't clone index here, this should return a copy with every iteration
       return [value, index, obj === arr]
     }).valueOf(), [
@@ -42,7 +42,7 @@ describe('map', function () {
         return value + 2
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
@@ -51,7 +51,7 @@ describe('map', function () {
         return value + 2
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke a typed function with correct number of arguments (3)', function () {
@@ -60,7 +60,7 @@ describe('map', function () {
         return value + 2
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should throw an error if called with unsupported type', function () {

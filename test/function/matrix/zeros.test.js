@@ -6,40 +6,40 @@ const matrix = math.matrix
 
 describe('zeros', function () {
   it('should create an empty matrix', function () {
-    assert.deepEqual(zeros(), matrix())
-    assert.deepEqual(zeros([]), [])
-    assert.deepEqual(zeros(matrix([])), matrix())
+    assert.deepStrictEqual(zeros(), matrix())
+    assert.deepStrictEqual(zeros([]), [])
+    assert.deepStrictEqual(zeros(matrix([])), matrix())
   })
 
   it('should create an empty matrix, sparse', function () {
-    assert.deepEqual(zeros('sparse'), matrix('sparse'))
-    assert.deepEqual(zeros([], 'sparse'), matrix([], 'sparse'))
-    assert.deepEqual(zeros(matrix([]), 'sparse'), matrix('sparse'))
+    assert.deepStrictEqual(zeros('sparse'), matrix('sparse'))
+    assert.deepStrictEqual(zeros([], 'sparse'), matrix([], 'sparse'))
+    assert.deepStrictEqual(zeros(matrix([]), 'sparse'), matrix('sparse'))
   })
 
   it('should create a vector with zeros', function () {
-    assert.deepEqual(zeros(3), matrix([0, 0, 0]))
-    assert.deepEqual(zeros(matrix([4])), matrix([0, 0, 0, 0]))
-    assert.deepEqual(zeros([4]), [0, 0, 0, 0])
-    assert.deepEqual(zeros(0), matrix([]))
+    assert.deepStrictEqual(zeros(3), matrix([0, 0, 0]))
+    assert.deepStrictEqual(zeros(matrix([4])), matrix([0, 0, 0, 0]))
+    assert.deepStrictEqual(zeros([4]), [0, 0, 0, 0])
+    assert.deepStrictEqual(zeros(0), matrix([]))
   })
 
   it('should create a matrix with bignumber zeros', function () {
     const zero = math.bignumber(0)
     const three = math.bignumber(3)
-    assert.deepEqual(zeros(three), matrix([zero, zero, zero]))
-    assert.deepEqual(zeros([three]), [zero, zero, zero])
+    assert.deepStrictEqual(zeros(three), matrix([zero, zero, zero]))
+    assert.deepStrictEqual(zeros([three]), [zero, zero, zero])
   })
 
   it('should create a 2D matrix with zeros from an array', function () {
-    assert.deepEqual(zeros(2, 3), matrix([[0, 0, 0], [0, 0, 0]]))
-    assert.deepEqual(zeros(3, 2), matrix([[0, 0], [0, 0], [0, 0]]))
-    assert.deepEqual(zeros([3, 2]), [[0, 0], [0, 0], [0, 0]])
+    assert.deepStrictEqual(zeros(2, 3), matrix([[0, 0, 0], [0, 0, 0]]))
+    assert.deepStrictEqual(zeros(3, 2), matrix([[0, 0], [0, 0], [0, 0]]))
+    assert.deepStrictEqual(zeros([3, 2]), [[0, 0], [0, 0], [0, 0]])
   })
 
   it('should create a matrix with zeros from a matrix', function () {
-    assert.deepEqual(zeros(matrix([3])), matrix([0, 0, 0]))
-    assert.deepEqual(zeros(matrix([3, 2])), matrix([[0, 0], [0, 0], [0, 0]]))
+    assert.deepStrictEqual(zeros(matrix([3])), matrix([0, 0, 0]))
+    assert.deepStrictEqual(zeros(matrix([3, 2])), matrix([[0, 0], [0, 0], [0, 0]]))
   })
 
   it('should create a 3D matrix with zeros', function () {
@@ -56,16 +56,16 @@ describe('zeros', function () {
       ]
     ]
 
-    assert.deepEqual(zeros(2, 3, 4), matrix(res))
-    assert.deepEqual(zeros(matrix([2, 3, 4])), matrix(res))
-    assert.deepEqual(zeros([2, 3, 4]), res)
+    assert.deepStrictEqual(zeros(2, 3, 4), matrix(res))
+    assert.deepStrictEqual(zeros(matrix([2, 3, 4])), matrix(res))
+    assert.deepStrictEqual(zeros([2, 3, 4]), res)
   })
 
   // TODO: test setting `matrix`
 
   it('should create a matrix with zeros with the same size as original matrix', function () {
     const a = matrix([[1, 2, 3], [4, 5, 6]])
-    assert.deepEqual(zeros(math.size(a)).size(), a.size())
+    assert.deepStrictEqual(zeros(math.size(a)).size(), a.size())
   })
 
   // TODO: test with invalid input

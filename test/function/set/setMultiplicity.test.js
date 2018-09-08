@@ -4,13 +4,13 @@ const math = require('../../../src/main')
 
 describe('setMultiplicity', function () {
   it('should return the multiplicity on an element of a set', function () {
-    assert.deepEqual(math.setMultiplicity(1, [1, 2]), 1)
-    assert.deepEqual(math.setMultiplicity(1, []), 0)
+    assert.deepStrictEqual(math.setMultiplicity(1, [1, 2]), 1)
+    assert.deepStrictEqual(math.setMultiplicity(1, []), 0)
   })
 
   it('should return the multiplicity on an element of a multiset', function () {
-    assert.deepEqual(math.setMultiplicity(1, [1, 1, 2]), 2)
-    assert.deepEqual(math.setMultiplicity(1, [1, 2, 1]), 2)
+    assert.deepStrictEqual(math.setMultiplicity(1, [1, 1, 2]), 2)
+    assert.deepStrictEqual(math.setMultiplicity(1, [1, 2, 1]), 2)
   })
 
   it('should return a number', function () {

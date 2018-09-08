@@ -120,20 +120,20 @@ describe('larger', function () {
 
   describe('Array', function () {
     it('should compare array - scalar', function () {
-      assert.deepEqual(larger(2, [1, 2, 3]), [true, false, false])
-      assert.deepEqual(larger([1, 2, 3], 2), [false, false, true])
+      assert.deepStrictEqual(larger(2, [1, 2, 3]), [true, false, false])
+      assert.deepStrictEqual(larger([1, 2, 3], 2), [false, false, true])
     })
 
     it('should compare array - array', function () {
-      assert.deepEqual(larger([[1, 2, 0], [-1, 0, 2]], [[1, -1, 0], [-1, 1, 0]]), [[false, true, false], [false, false, true]])
+      assert.deepStrictEqual(larger([[1, 2, 0], [-1, 0, 2]], [[1, -1, 0], [-1, 1, 0]]), [[false, true, false], [false, false, true]])
     })
 
     it('should compare array - dense matrix', function () {
-      assert.deepEqual(larger([[1, 2, 0], [-1, 0, 2]], matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger([[1, 2, 0], [-1, 0, 2]], matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
     })
 
     it('should compare array - sparse matrix', function () {
-      assert.deepEqual(larger([[1, 2, 0], [-1, 0, 2]], sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger([[1, 2, 0], [-1, 0, 2]], sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
     })
 
     it('should throw an error if arrays have different sizes', function () {
@@ -143,39 +143,39 @@ describe('larger', function () {
 
   describe('DenseMatrix', function () {
     it('should compare dense matrix - scalar', function () {
-      assert.deepEqual(larger(2, matrix([1, 2, 3])), matrix([true, false, false]))
-      assert.deepEqual(larger(matrix([1, 2, 3]), 2), matrix([false, false, true]))
+      assert.deepStrictEqual(larger(2, matrix([1, 2, 3])), matrix([true, false, false]))
+      assert.deepStrictEqual(larger(matrix([1, 2, 3]), 2), matrix([false, false, true]))
     })
 
     it('should compare dense matrix - array', function () {
-      assert.deepEqual(larger(matrix([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger(matrix([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[false, true, false], [false, false, true]]))
     })
 
     it('should compare dense matrix - dense matrix', function () {
-      assert.deepEqual(larger(matrix([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger(matrix([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
     })
 
     it('should compare dense matrix - sparse matrix', function () {
-      assert.deepEqual(larger(matrix([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger(matrix([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should compare sparse matrix - scalar', function () {
-      assert.deepEqual(larger(2, sparse([[1, 2], [3, 4]])), matrix([[true, false], [false, false]]))
-      assert.deepEqual(larger(sparse([[1, 2], [3, 4]]), 2), matrix([[false, false], [true, true]]))
+      assert.deepStrictEqual(larger(2, sparse([[1, 2], [3, 4]])), matrix([[true, false], [false, false]]))
+      assert.deepStrictEqual(larger(sparse([[1, 2], [3, 4]]), 2), matrix([[false, false], [true, true]]))
     })
 
     it('should compare sparse matrix - array', function () {
-      assert.deepEqual(larger(sparse([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger(sparse([[1, 2, 0], [-1, 0, 2]]), [[1, -1, 0], [-1, 1, 0]]), matrix([[false, true, false], [false, false, true]]))
     })
 
     it('should compare sparse matrix - dense matrix', function () {
-      assert.deepEqual(larger(sparse([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger(sparse([[1, 2, 0], [-1, 0, 2]]), matrix([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
     })
 
     it('should compare sparse matrix - sparse matrix', function () {
-      assert.deepEqual(larger(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
+      assert.deepStrictEqual(larger(sparse([[1, 2, 0], [-1, 0, 2]]), sparse([[1, -1, 0], [-1, 1, 0]])), matrix([[false, true, false], [false, false, true]]))
     })
   })
 

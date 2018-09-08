@@ -47,38 +47,38 @@ describe('mod', function () {
   })
 
   it('should calculate the modulus of bignumbers', function () {
-    assert.deepEqual(mod(bignumber(7), bignumber(2)), bignumber(1))
-    assert.deepEqual(mod(bignumber(7), bignumber(0)), bignumber(7))
-    assert.deepEqual(mod(bignumber(0), bignumber(3)), bignumber(0))
-    assert.deepEqual(mod(bignumber(7), bignumber(2)), bignumber(1))
-    assert.deepEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf())
+    assert.deepStrictEqual(mod(bignumber(7), bignumber(2)), bignumber(1))
+    assert.deepStrictEqual(mod(bignumber(7), bignumber(0)), bignumber(7))
+    assert.deepStrictEqual(mod(bignumber(0), bignumber(3)), bignumber(0))
+    assert.deepStrictEqual(mod(bignumber(7), bignumber(2)), bignumber(1))
+    assert.deepStrictEqual(mod(bignumber(8), bignumber(3)).valueOf(), bignumber(2).valueOf())
   })
 
   it.skip('should calculate the modulus of bignumbers for fractions', function () {
-    assert.deepEqual(mod(bignumber(7).div(3), bignumber(1).div(3)), bignumber(0))
+    assert.deepStrictEqual(mod(bignumber(7).div(3), bignumber(1).div(3)), bignumber(0))
   })
 
   it.skip('should calculate the modulus of bignumbers for negative values', function () {
-    assert.deepEqual(mod(bignumber(-10), bignumber(4)), bignumber(2))
+    assert.deepStrictEqual(mod(bignumber(-10), bignumber(4)), bignumber(2))
   })
 
   it('should calculate the modulus of mixed numbers and bignumbers', function () {
-    assert.deepEqual(mod(bignumber(7), 2), bignumber(1))
-    assert.deepEqual(mod(bignumber(7), 0), bignumber(7))
-    assert.deepEqual(mod(8, bignumber(3)), bignumber(2))
-    assert.deepEqual(mod(7, bignumber(0)), bignumber(7))
-    assert.deepEqual(mod(bignumber(0), 3), bignumber(0))
-    assert.deepEqual(mod(bignumber(7), 0), bignumber(7))
+    assert.deepStrictEqual(mod(bignumber(7), 2), bignumber(1))
+    assert.deepStrictEqual(mod(bignumber(7), 0), bignumber(7))
+    assert.deepStrictEqual(mod(8, bignumber(3)), bignumber(2))
+    assert.deepStrictEqual(mod(7, bignumber(0)), bignumber(7))
+    assert.deepStrictEqual(mod(bignumber(0), 3), bignumber(0))
+    assert.deepStrictEqual(mod(bignumber(7), 0), bignumber(7))
 
     assert.throws(function () { mod(7 / 3, bignumber(2)) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { mod(bignumber(7).div(3), 1 / 3) }, /TypeError: Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
   it('should calculate the modulus of mixed booleans and bignumbers', function () {
-    assert.deepEqual(mod(bignumber(7), true), bignumber(0))
-    assert.deepEqual(mod(bignumber(7), false), bignumber(7))
-    assert.deepEqual(mod(true, bignumber(3)), bignumber(1))
-    assert.deepEqual(mod(false, bignumber(3)), bignumber(0))
+    assert.deepStrictEqual(mod(bignumber(7), true), bignumber(0))
+    assert.deepStrictEqual(mod(bignumber(7), false), bignumber(7))
+    assert.deepStrictEqual(mod(true, bignumber(3)), bignumber(1))
+    assert.deepStrictEqual(mod(false, bignumber(3)), bignumber(0))
   })
 
   it('should throw an error if used on complex numbers', function () {
@@ -105,8 +105,8 @@ describe('mod', function () {
   })
 
   it('should calculate modulus of mixed fractions and numbers', function () {
-    assert.deepEqual(mod(8, math.fraction(3)), math.fraction(2))
-    assert.deepEqual(mod(math.fraction(8), 3), math.fraction(2))
+    assert.deepStrictEqual(mod(8, math.fraction(3)), math.fraction(2))
+    assert.deepStrictEqual(mod(math.fraction(8), 3), math.fraction(2))
   })
 
   describe('Array', function () {

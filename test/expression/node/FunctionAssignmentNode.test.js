@@ -148,7 +148,7 @@ describe('FunctionAssignmentNode', function () {
 
     let scope = { a: 2 }
     const f = n.eval(scope)
-    assert.deepEqual(f(3), { a: 2, f: f, x: 3 })
+    assert.deepStrictEqual(f(3), { a: 2, f: f, x: 3 })
   })
 
   it('should pass function arguments in scope to functions with rawArgs returned by another function', function () {
@@ -173,7 +173,7 @@ describe('FunctionAssignmentNode', function () {
 
     let scope = { a: 2 }
     const f = n.eval(scope)
-    assert.deepEqual(f(3, 4), { a: 2, f, x: 3, y: 4 })
+    assert.deepStrictEqual(f(3, 4), { a: 2, f, x: 3, y: 4 })
   })
 
   it('should pass function arguments in scope to functions with rawArgs and transform', function () {
@@ -193,7 +193,7 @@ describe('FunctionAssignmentNode', function () {
 
     let scope = { a: 2 }
     const f = n.eval(scope)
-    assert.deepEqual(f(3), { a: 2, f, x: 3 })
+    assert.deepStrictEqual(f(3), { a: 2, f, x: 3 })
   })
 
   it('should pass function arguments via scope to rawArgs function', function () {
@@ -206,7 +206,7 @@ describe('FunctionAssignmentNode', function () {
     math2.import({ f })
 
     const g = math2.eval('g(arr) = f(arr)')
-    assert.deepEqual(g([1, 2, 3]), [1, 2, 3])
+    assert.deepStrictEqual(g([1, 2, 3]), [1, 2, 3])
   })
 
   it('should filter a FunctionAssignmentNode', function () {
@@ -215,12 +215,12 @@ describe('FunctionAssignmentNode', function () {
     const o = new OperatorNode('+', 'add', [a, x])
     const n = new FunctionAssignmentNode('f', ['x'], o)
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof FunctionAssignmentNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [x])
-    assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof FunctionAssignmentNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [x])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should throw an error when creating a FunctionAssignmentNode with a reserved keyword', function () {
@@ -232,8 +232,8 @@ describe('FunctionAssignmentNode', function () {
   it('should filter a FunctionAssignmentNode without expression', function () {
     const e = new FunctionAssignmentNode('f', ['x'], new ConstantNode(2))
 
-    assert.deepEqual(e.filter(function (node) { return node instanceof FunctionAssignmentNode }), [e])
-    assert.deepEqual(e.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(e.filter(function (node) { return node instanceof FunctionAssignmentNode }), [e])
+    assert.deepStrictEqual(e.filter(function (node) { return node instanceof SymbolNode }), [])
   })
 
   it('should run forEach on a FunctionAssignmentNode', function () {
@@ -250,7 +250,7 @@ describe('FunctionAssignmentNode', function () {
 
     assert.strictEqual(nodes.length, 1)
     assert.strictEqual(nodes[0], a)
-    assert.deepEqual(paths, ['expr'])
+    assert.deepStrictEqual(paths, ['expr'])
   })
 
   it('should map a FunctionAssignmentNode', function () {
@@ -270,10 +270,10 @@ describe('FunctionAssignmentNode', function () {
 
     assert.strictEqual(nodes.length, 1)
     assert.strictEqual(nodes[0], a)
-    assert.deepEqual(paths, ['expr'])
+    assert.deepStrictEqual(paths, ['expr'])
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.expr, a)
+    assert.deepStrictEqual(f.expr, a)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -298,8 +298,8 @@ describe('FunctionAssignmentNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.expr.args[0], a)
-    assert.deepEqual(f.expr.args[1], e)
+    assert.deepStrictEqual(f.expr.args[0], a)
+    assert.deepStrictEqual(f.expr.args[1], e)
   })
 
   it('should transform a FunctionAssignmentNode itself', function () {
@@ -315,7 +315,7 @@ describe('FunctionAssignmentNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should clone a FunctionAssignmentNode', function () {
@@ -327,7 +327,7 @@ describe('FunctionAssignmentNode', function () {
 
     const e = d.clone()
     assert(e instanceof FunctionAssignmentNode)
-    assert.deepEqual(e, d)
+    assert.deepStrictEqual(e, d)
     assert.notStrictEqual(e, d)
     assert.strictEqual(e.expr, d.expr)
   })
@@ -410,7 +410,7 @@ describe('FunctionAssignmentNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'FunctionAssignmentNode',
       name: 'f',
       params: [
@@ -421,7 +421,7 @@ describe('FunctionAssignmentNode', function () {
     })
 
     const parsed = FunctionAssignmentNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a FunctionAssignmentNode', function () {

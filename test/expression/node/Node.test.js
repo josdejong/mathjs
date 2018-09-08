@@ -30,9 +30,9 @@ describe('Node', function () {
   it('should filter a Node', function () {
     const n = new MyNode(2)
 
-    assert.deepEqual(n.filter(function () { return true }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof Node }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof Date }), [])
+    assert.deepStrictEqual(n.filter(function () { return true }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof Node }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof Date }), [])
   })
 
   it('should transform a Node', function () {
@@ -41,7 +41,7 @@ describe('Node', function () {
     let c = a.transform(function (node) {
       return b
     })
-    assert.deepEqual(c, b)
+    assert.deepStrictEqual(c, b)
 
     // no match
     a = new MyNode(2)
@@ -49,17 +49,17 @@ describe('Node', function () {
     c = a.transform(function (node) {
       return node
     })
-    assert.deepEqual(c, a)
+    assert.deepStrictEqual(c, a)
   })
 
   it('should transform a Node using a replacement function', function () {
     const a = new MyNode(2)
     const b = new MyNode(3)
     const c = a.transform(function (node) {
-      assert.deepEqual(node, a)
+      assert.deepStrictEqual(node, a)
       return b
     })
-    assert.deepEqual(c, b)
+    assert.deepStrictEqual(c, b)
   })
 
   it('should throw an error when cloning a Node interface', function () {
@@ -76,7 +76,7 @@ describe('Node', function () {
 
     const clone = c.clone()
 
-    assert.deepEqual(c, clone)
+    assert.deepStrictEqual(c, clone)
     assert.notStrictEqual(c, clone)
     assert.strictEqual(clone.args[0], c.args[0])
     assert.strictEqual(clone.args[1], c.args[1])
@@ -89,7 +89,7 @@ describe('Node', function () {
 
     const clone = c.cloneDeep()
 
-    assert.deepEqual(c, clone)
+    assert.deepStrictEqual(c, clone)
     assert.notStrictEqual(c, clone)
     assert.notStrictEqual(clone.args[0], c.args[0])
     assert.notStrictEqual(clone.args[1], c.args[1])
@@ -174,6 +174,6 @@ describe('Node', function () {
     const c = new math.expression.node.ConstantNode(1)
 
     assert.strictEqual(c.getContent(), c)
-    assert.deepEqual(c.getContent(), c)
+    assert.deepStrictEqual(c.getContent(), c)
   })
 })

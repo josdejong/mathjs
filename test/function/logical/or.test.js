@@ -126,75 +126,75 @@ describe('or', function () {
   })
 
   it('should or two arrays', function () {
-    assert.deepEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true])
-    assert.deepEqual(or([], []), [])
+    assert.deepStrictEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true])
+    assert.deepStrictEqual(or([], []), [])
   })
 
   it('should or mixed numbers and arrays', function () {
-    assert.deepEqual(or(10, [0, 2]), [true, true])
-    assert.deepEqual(or([0, 2], 10), [true, true])
-    assert.deepEqual(or(0, [0, 2]), [false, true])
-    assert.deepEqual(or([0, 2], 0), [false, true])
+    assert.deepStrictEqual(or(10, [0, 2]), [true, true])
+    assert.deepStrictEqual(or([0, 2], 10), [true, true])
+    assert.deepStrictEqual(or(0, [0, 2]), [false, true])
+    assert.deepStrictEqual(or([0, 2], 0), [false, true])
   })
 
   describe('Array', function () {
     it('should or array - scalar', function () {
-      assert.deepEqual(or(10, [0, 2]), [true, true])
-      assert.deepEqual(or([0, 2], 10), [true, true])
+      assert.deepStrictEqual(or(10, [0, 2]), [true, true])
+      assert.deepStrictEqual(or([0, 2], 10), [true, true])
     })
 
     it('should or array - array', function () {
-      assert.deepEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true])
-      assert.deepEqual(or([], []), [])
+      assert.deepStrictEqual(or([0, 1, 0, 12], [0, 0, 1, 22]), [false, true, true, true])
+      assert.deepStrictEqual(or([], []), [])
     })
 
     it('should or array - dense matrix', function () {
-      assert.deepEqual(or([0, 1, 0, 12], matrix([0, 0, 1, 22])), matrix([false, true, true, true]))
-      assert.deepEqual(or([], matrix([])), matrix([]))
+      assert.deepStrictEqual(or([0, 1, 0, 12], matrix([0, 0, 1, 22])), matrix([false, true, true, true]))
+      assert.deepStrictEqual(or([], matrix([])), matrix([]))
     })
 
     it('should or array - sparse matrix', function () {
-      assert.deepEqual(or([[0, 1], [0, 12]], sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, true]]))
+      assert.deepStrictEqual(or([[0, 1], [0, 12]], sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, true]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should or dense matrix - scalar', function () {
-      assert.deepEqual(or(10, matrix([0, 2])), matrix([true, true]))
-      assert.deepEqual(or(matrix([0, 2]), 10), matrix([true, true]))
+      assert.deepStrictEqual(or(10, matrix([0, 2])), matrix([true, true]))
+      assert.deepStrictEqual(or(matrix([0, 2]), 10), matrix([true, true]))
     })
 
     it('should or dense matrix - array', function () {
-      assert.deepEqual(or(matrix([0, 1, 0, 12]), [0, 0, 1, 22]), matrix([false, true, true, true]))
-      assert.deepEqual(or(matrix([]), []), matrix([]))
+      assert.deepStrictEqual(or(matrix([0, 1, 0, 12]), [0, 0, 1, 22]), matrix([false, true, true, true]))
+      assert.deepStrictEqual(or(matrix([]), []), matrix([]))
     })
 
     it('should or dense matrix - dense matrix', function () {
-      assert.deepEqual(or(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, true, true, true]))
-      assert.deepEqual(or(matrix([]), matrix([])), matrix([]))
+      assert.deepStrictEqual(or(matrix([0, 1, 0, 12]), matrix([0, 0, 1, 22])), matrix([false, true, true, true]))
+      assert.deepStrictEqual(or(matrix([]), matrix([])), matrix([]))
     })
 
     it('should or dense matrix - sparse matrix', function () {
-      assert.deepEqual(or(matrix([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, true]]))
+      assert.deepStrictEqual(or(matrix([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), matrix([[false, true], [true, true]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should or sparse matrix - scalar', function () {
-      assert.deepEqual(or(10, sparse([[0], [2]])), matrix([[true], [true]]))
-      assert.deepEqual(or(sparse([[0], [2]]), 10), matrix([[true], [true]]))
+      assert.deepStrictEqual(or(10, sparse([[0], [2]])), matrix([[true], [true]]))
+      assert.deepStrictEqual(or(sparse([[0], [2]]), 10), matrix([[true], [true]]))
     })
 
     it('should or sparse matrix - array', function () {
-      assert.deepEqual(or(sparse([[0, 1], [0, 12]]), [[0, 0], [1, 22]]), matrix([[false, true], [true, true]]))
+      assert.deepStrictEqual(or(sparse([[0, 1], [0, 12]]), [[0, 0], [1, 22]]), matrix([[false, true], [true, true]]))
     })
 
     it('should or sparse matrix - dense matrix', function () {
-      assert.deepEqual(or(sparse([[0, 1], [0, 12]]), matrix([[0, 0], [1, 22]])), matrix([[false, true], [true, true]]))
+      assert.deepStrictEqual(or(sparse([[0, 1], [0, 12]]), matrix([[0, 0], [1, 22]])), matrix([[false, true], [true, true]]))
     })
 
     it('should or sparse matrix - sparse matrix', function () {
-      assert.deepEqual(or(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), sparse([[false, true], [true, true]]))
+      assert.deepStrictEqual(or(sparse([[0, 1], [0, 12]]), sparse([[0, 0], [1, 22]])), sparse([[false, true], [true, true]]))
     })
   })
 

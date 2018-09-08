@@ -7,27 +7,27 @@ const add = math.add
 describe('add', function () {
   describe('Array', function () {
     it('should convert strings and add them element wise', function () {
-      assert.deepEqual(add('2', ['3', '4']), [5, 6])
-      assert.deepEqual(add(['2', '3'], '4'), [6, 7])
+      assert.deepStrictEqual(add('2', ['3', '4']), [5, 6])
+      assert.deepStrictEqual(add(['2', '3'], '4'), [6, 7])
     })
 
     it('should add arrays correctly', function () {
       const a2 = [[1, 2], [3, 4]]
       const a3 = [[5, 6], [7, 8]]
       const a4 = add(a2, a3)
-      assert.deepEqual(a4, [[6, 8], [10, 12]])
+      assert.deepStrictEqual(a4, [[6, 8], [10, 12]])
     })
 
     it('should add 3 dimension arrays correctly', function () {
       const a2 = [[[1, 1], [2, 2]], [[3, 3], [4, 4]]]
       const a3 = [[[5, 5], [6, 6]], [[7, 7], [8, 8]]]
       const a4 = add(a2, a3)
-      assert.deepEqual(a4, [[[6, 6], [8, 8]], [[10, 10], [12, 12]]])
+      assert.deepStrictEqual(a4, [[[6, 6], [8, 8]], [[10, 10], [12, 12]]])
     })
 
     it('should add a scalar and an array correctly', function () {
-      assert.deepEqual(add(2, [3, 4]), [5, 6])
-      assert.deepEqual(add([3, 4], 2), [5, 6])
+      assert.deepStrictEqual(add(2, [3, 4]), [5, 6])
+      assert.deepStrictEqual(add([3, 4], 2), [5, 6])
     })
 
     it('should add array and dense matrix correctly', function () {
@@ -36,7 +36,7 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.matrix([4, 4, 4]))
+      assert.deepStrictEqual(c, math.matrix([4, 4, 4]))
     })
 
     it('should add array and sparse matrix correctly', function () {
@@ -45,14 +45,14 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.matrix([[7, 7, 7], [7, 7, 7]]))
+      assert.deepStrictEqual(c, math.matrix([[7, 7, 7], [7, 7, 7]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should handle strings and matrices element wise', function () {
-      assert.deepEqual(add('2', math.matrix(['3', '4'])), math.matrix([5, 6]))
-      assert.deepEqual(add(math.matrix(['2', '3']), '4'), math.matrix([6, 7]))
+      assert.deepStrictEqual(add('2', math.matrix(['3', '4'])), math.matrix([5, 6]))
+      assert.deepStrictEqual(add(math.matrix(['2', '3']), '4'), math.matrix([6, 7]))
     })
 
     it('should add matrices correctly', function () {
@@ -60,20 +60,20 @@ describe('add', function () {
       const a3 = math.matrix([[5, 6], [7, 8]])
       const a4 = add(a2, a3)
       assert.ok(a4 instanceof math.type.Matrix)
-      assert.deepEqual(a4.size(), [2, 2])
-      assert.deepEqual(a4.valueOf(), [[6, 8], [10, 12]])
+      assert.deepStrictEqual(a4.size(), [2, 2])
+      assert.deepStrictEqual(a4.valueOf(), [[6, 8], [10, 12]])
     })
 
     it('should add 3 dimension natrices correctly', function () {
       const a2 = math.matrix([[[1, 1], [2, 2]], [[3, 3], [4, 4]]])
       const a3 = math.matrix([[[5, 5], [6, 6]], [[7, 7], [8, 8]]])
       const a4 = add(a2, a3)
-      assert.deepEqual(a4, math.matrix([[[6, 6], [8, 8]], [[10, 10], [12, 12]]]))
+      assert.deepStrictEqual(a4, math.matrix([[[6, 6], [8, 8]], [[10, 10], [12, 12]]]))
     })
 
     it('should add a scalar and a matrix correctly', function () {
-      assert.deepEqual(add(2, math.matrix([3, 4])), math.matrix([5, 6]))
-      assert.deepEqual(add(math.matrix([3, 4]), 2), math.matrix([5, 6]))
+      assert.deepStrictEqual(add(2, math.matrix([3, 4])), math.matrix([5, 6]))
+      assert.deepStrictEqual(add(math.matrix([3, 4]), 2), math.matrix([5, 6]))
     })
 
     it('should add matrix and array correctly', function () {
@@ -82,7 +82,7 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.matrix([4, 4, 4]))
+      assert.deepStrictEqual(c, math.matrix([4, 4, 4]))
     })
 
     it('should add dense and sparse matrices correctly', function () {
@@ -91,7 +91,7 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
+      assert.deepStrictEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
 
     it('should add matrices with a datatype correctly', function () {
@@ -100,8 +100,8 @@ describe('add', function () {
       const a4 = add(a2, a3)
       assert.ok(a4 instanceof math.type.Matrix)
       assert.strictEqual(a4._datatype, 'number')
-      assert.deepEqual(a4.size(), [2, 2])
-      assert.deepEqual(a4.valueOf(), [[6, 8], [10, 12]])
+      assert.deepStrictEqual(a4.size(), [2, 2])
+      assert.deepStrictEqual(a4.valueOf(), [[6, 8], [10, 12]])
     })
 
     it('should add matrices with a datatype correctly', function () {
@@ -110,8 +110,8 @@ describe('add', function () {
       const a4 = add(a2, a3)
       assert.ok(a4 instanceof math.type.Matrix)
       assert.strictEqual(a4._datatype, 'BigNumber')
-      assert.deepEqual(a4.size(), [2])
-      assert.deepEqual(a4.valueOf(), [math.bignumber(8), math.bignumber(10)])
+      assert.deepStrictEqual(a4.size(), [2])
+      assert.deepStrictEqual(a4.valueOf(), [math.bignumber(8), math.bignumber(10)])
     })
   })
 
@@ -121,12 +121,12 @@ describe('add', function () {
       const a3 = math.matrix([[5, -2], [7, -4]], 'sparse')
       const a4 = add(a2, a3)
       assert.ok(a4 instanceof math.type.Matrix)
-      assert.deepEqual(a4, math.sparse([[6, 0], [10, 0]]))
+      assert.deepStrictEqual(a4, math.sparse([[6, 0], [10, 0]]))
     })
 
     it('should add a scalar and a matrix correctly', function () {
-      assert.deepEqual(add(2, math.matrix([[3, 4], [5, 6]], 'sparse')), math.matrix([[5, 6], [7, 8]], 'dense'))
-      assert.deepEqual(add(math.matrix([[3, 4], [5, 6]], 'sparse'), 2), math.matrix([[5, 6], [7, 8]], 'dense'))
+      assert.deepStrictEqual(add(2, math.matrix([[3, 4], [5, 6]], 'sparse')), math.matrix([[5, 6], [7, 8]], 'dense'))
+      assert.deepStrictEqual(add(math.matrix([[3, 4], [5, 6]], 'sparse'), 2), math.matrix([[5, 6], [7, 8]], 'dense'))
     })
 
     it('should add matrix and array correctly', function () {
@@ -135,7 +135,7 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
+      assert.deepStrictEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
 
     it('should add sparse and dense matrices correctly', function () {
@@ -144,7 +144,7 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
+      assert.deepStrictEqual(c, math.matrix([[4, 4, 4], [1, 0, 1]]))
     })
 
     it('should add sparse and sparse matrices correctly', function () {
@@ -153,7 +153,7 @@ describe('add', function () {
       const c = add(a, b)
 
       assert.ok(c instanceof math.type.Matrix)
-      assert.deepEqual(c, math.sparse([[4, 4, 4], [1, 0, 1]]))
+      assert.deepStrictEqual(c, math.sparse([[4, 4, 4], [1, 0, 1]]))
     })
 
     it('should add two pattern matrices correctly', function () {
@@ -173,7 +173,7 @@ describe('add', function () {
 
       const c = add(a, b)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         c,
         new math.type.SparseMatrix({
           values: undefined,
@@ -200,7 +200,7 @@ describe('add', function () {
 
       const c = add(a, b)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         c,
         new math.type.SparseMatrix({
           values: undefined,
@@ -227,7 +227,7 @@ describe('add', function () {
 
       const c = add(a, b)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         c,
         new math.type.SparseMatrix({
           values: undefined,
@@ -240,16 +240,16 @@ describe('add', function () {
 
   describe('multiple arguments', function () {
     it('should add more than two arguments', function () {
-      assert.deepEqual(add(2, 3, 4), 9)
-      assert.deepEqual(add(2, 3, [5, 6]), [10, 11])
+      assert.deepStrictEqual(add(2, 3, 4), 9)
+      assert.deepStrictEqual(add(2, 3, [5, 6]), [10, 11])
 
-      assert.deepEqual(add([1, 1], [2, 2], [3, 3]), [6, 6])
-      assert.deepEqual(add([1, 1], [2, 2], 3), [6, 6])
-      assert.deepEqual(add([1, 1], 2, 3), [6, 6])
+      assert.deepStrictEqual(add([1, 1], [2, 2], [3, 3]), [6, 6])
+      assert.deepStrictEqual(add([1, 1], [2, 2], 3), [6, 6])
+      assert.deepStrictEqual(add([1, 1], 2, 3), [6, 6])
 
-      assert.deepEqual(add(math.matrix([1, 1]), math.matrix([2, 2]), math.matrix([3, 3])), math.matrix([6, 6]))
-      assert.deepEqual(add(math.matrix([1, 1]), math.matrix([2, 2]), 3), math.matrix([6, 6]))
-      assert.deepEqual(add(math.matrix([1, 1]), 2, 3), math.matrix([6, 6]))
+      assert.deepStrictEqual(add(math.matrix([1, 1]), math.matrix([2, 2]), math.matrix([3, 3])), math.matrix([6, 6]))
+      assert.deepStrictEqual(add(math.matrix([1, 1]), math.matrix([2, 2]), 3), math.matrix([6, 6]))
+      assert.deepStrictEqual(add(math.matrix([1, 1]), 2, 3), math.matrix([6, 6]))
     })
   })
 })

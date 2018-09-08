@@ -14,8 +14,8 @@ function isNumber (value) {
 /**
  * Test whether two values are approximately equal. Tests whether the difference
  * between the two numbers is smaller than a fraction of their max value.
- * @param {Number} a
- * @param {Number} b
+ * @param {Number | BigNumber | Complex | Fraction} a
+ * @param {Number | BigNumber | Complex | Fraction} b
  * @param {Number} [epsilon]
  */
 exports.equal = function equal (a, b, epsilon) {
@@ -38,11 +38,23 @@ exports.equal = function equal (a, b, epsilon) {
       const maxDiff = Math.abs(max * epsilon)
       assert.ok(diff <= maxDiff, (a + ' ~= ' + b))
     }
-  } else if (a == null || b == null) {
-    assert.strictEqual(a, b);
+  } else if (a && a.isBigNumber) {
+    return exports.equal(a.toNumber(), b)
+  } else if (b && b.isBigNumber) {
+    return exports.equal(a, b.toNumber())
+  } else if ((a && a.isComplex) || (b && b.isComplex)) {
+    if (a && a.isComplex && b && b.isComplex) {
+      exports.equal(a.re, b.re, (a + ' ~= ' + b))
+      exports.equal(a.im, b.im, (a + ' ~= ' + b))
+    } else if (a && a.isComplex) {
+      exports.equal(a.re, b, (a + ' ~= ' + b))
+      exports.equal(a.im, 0, (a + ' ~= ' + b))
+    } else if (b && b.isComplex) {
+      exports.equal(a, b.re, (a + ' ~= ' + b))
+      exports.equal(0, b.im, (a + ' ~= ' + b))
+    }
   } else {
-    // TODO: needs review
-    assert.equal(a.valueOf(), b.valueOf())
+    assert.strictEqual(a, b)
   }
 }
 

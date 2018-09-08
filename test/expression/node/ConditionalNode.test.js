@@ -44,7 +44,7 @@ describe('ConditionalNode', function () {
     const expr = n.compile()
     let scope = {}
     assert.strictEqual(expr.eval(scope), 2)
-    assert.deepEqual(scope, { a: 2 })
+    assert.deepStrictEqual(scope, { a: 2 })
   })
 
   describe('evaluate', function () {
@@ -105,9 +105,9 @@ describe('ConditionalNode', function () {
   it('should filter a ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConditionalNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [condition, two, three])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [two])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConditionalNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [condition, two, three])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [two])
   })
 
   it('should run forEach on a ConditionalNode', function () {
@@ -128,7 +128,7 @@ describe('ConditionalNode', function () {
     assert.strictEqual(nodes[0], condition)
     assert.strictEqual(nodes[1], a)
     assert.strictEqual(nodes[2], b)
-    assert.deepEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
+    assert.deepStrictEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
   })
 
   it('should map a ConditionalNode', function () {
@@ -152,7 +152,7 @@ describe('ConditionalNode', function () {
     assert.strictEqual(nodes[0], condition)
     assert.strictEqual(nodes[1], a)
     assert.strictEqual(nodes[2], b)
-    assert.deepEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
+    assert.deepStrictEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
 
     assert.notStrictEqual(f, n)
     assert.strictEqual(f.condition, e)
@@ -183,9 +183,9 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.condition, e)
-    assert.deepEqual(f.trueExpr, a)
-    assert.deepEqual(f.falseExpr, b)
+    assert.deepStrictEqual(f.condition, e)
+    assert.deepStrictEqual(f.trueExpr, a)
+    assert.deepStrictEqual(f.falseExpr, b)
   })
 
   it('should transform a ConditionalNodes trueExpr', function () {
@@ -200,9 +200,9 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.condition, condition)
-    assert.deepEqual(f.trueExpr, e)
-    assert.deepEqual(f.falseExpr, b)
+    assert.deepStrictEqual(f.condition, condition)
+    assert.deepStrictEqual(f.trueExpr, e)
+    assert.deepStrictEqual(f.falseExpr, b)
   })
 
   it('should transform a ConditionalNodes falseExpr', function () {
@@ -217,9 +217,9 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.condition, condition)
-    assert.deepEqual(f.trueExpr, a)
-    assert.deepEqual(f.falseExpr, e)
+    assert.deepStrictEqual(f.condition, condition)
+    assert.deepStrictEqual(f.trueExpr, a)
+    assert.deepStrictEqual(f.falseExpr, e)
   })
 
   it('should transform a ConditionalNode itself', function () {
@@ -234,7 +234,7 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should clone a ConditionalNode itself', function () {
@@ -246,7 +246,7 @@ describe('ConditionalNode', function () {
     const d = c.clone()
 
     assert(d instanceof ConditionalNode)
-    assert.deepEqual(d, c)
+    assert.deepStrictEqual(d, c)
     assert.notStrictEqual(d, c)
     assert.strictEqual(d.condition, c.condition)
     assert.strictEqual(d.trueExpr, c.trueExpr)
@@ -307,7 +307,7 @@ describe('ConditionalNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'ConditionalNode',
       condition: a,
       trueExpr: b,
@@ -315,7 +315,7 @@ describe('ConditionalNode', function () {
     })
 
     const parsed = ConditionalNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a ConditionalNode', function () {

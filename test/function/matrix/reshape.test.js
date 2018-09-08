@@ -5,7 +5,7 @@ const math = require('../../../src/main')
 describe('reshape', function () {
   it('should reshape an array', function () {
     const array = [[0, 1, 2], [3, 4, 5]]
-    assert.deepEqual(math.reshape(array, [3, 2]), [[0, 1], [2, 3], [4, 5]])
+    assert.deepStrictEqual(math.reshape(array, [3, 2]), [[0, 1], [2, 3], [4, 5]])
   })
 
   it('should reshape an array with bignumbers', function () {
@@ -14,31 +14,31 @@ describe('reshape', function () {
     const two = math.bignumber(2)
     const three = math.bignumber(3)
     const array = [zero, one, two, three]
-    assert.deepEqual(math.reshape(array, [two, two]),
+    assert.deepStrictEqual(math.reshape(array, [two, two]),
       [[zero, one], [two, three]])
   })
 
   it('should reshape a matrix', function () {
     const matrix = math.matrix([[0, 1, 2], [3, 4, 5]])
-    assert.deepEqual(math.reshape(matrix, [3, 2]),
+    assert.deepStrictEqual(math.reshape(matrix, [3, 2]),
       math.matrix([[0, 1], [2, 3], [4, 5]]))
-    assert.deepEqual(math.reshape(matrix, math.matrix([3, 2])),
+    assert.deepStrictEqual(math.reshape(matrix, math.matrix([3, 2])),
       math.matrix([[0, 1], [2, 3], [4, 5]]))
   })
 
   it('should reshape a flat single-element array into multiple dimensions', function () {
     const array = [3]
-    assert.deepEqual(math.reshape(array, [1, 1, 1]), [[[3]]])
+    assert.deepStrictEqual(math.reshape(array, [1, 1, 1]), [[[3]]])
   })
 
   it('should reshape a vector into a 2d matrix', function () {
     const math2 = math.create({ matrix: 'Array' })
-    assert.deepEqual(math2.reshape([1, 2, 3, 4, 5, 6], [3, 2]), [[1, 2], [3, 4], [5, 6]])
+    assert.deepStrictEqual(math2.reshape([1, 2, 3, 4, 5, 6], [3, 2]), [[1, 2], [3, 4], [5, 6]])
   })
 
   it('should reshape 2d matrix into a vector', function () {
     const math2 = math.create({ matrix: 'Array' })
-    assert.deepEqual(math2.reshape([[1, 2], [3, 4], [5, 6]], [6]), [1, 2, 3, 4, 5, 6])
+    assert.deepStrictEqual(math2.reshape([[1, 2], [3, 4], [5, 6]], [6]), [1, 2, 3, 4, 5, 6])
   })
 
   it('should throw an error on invalid arguments', function () {
@@ -70,21 +70,21 @@ describe('reshape', function () {
      */
 
     let matrix = math.matrix([[0, 1, 2], [3, 4, 5]], 'sparse')
-    assert.deepEqual(math.reshape(matrix, [3, 2]).toArray(),
+    assert.deepStrictEqual(math.reshape(matrix, [3, 2]).toArray(),
       [[0, 1], [2, 3], [4, 5]])
 
-    assert.deepEqual(math.reshape(matrix, [6, 1]).toArray(),
+    assert.deepStrictEqual(math.reshape(matrix, [6, 1]).toArray(),
       [[0], [1], [2], [3], [4], [5]])
 
-    assert.deepEqual(math.reshape(matrix, [1, 6]).toArray(),
+    assert.deepStrictEqual(math.reshape(matrix, [1, 6]).toArray(),
       [[0, 1, 2, 3, 4, 5]])
 
     matrix = math.matrix([[0, 1, 2, 3, 4, 5]], 'sparse')
-    assert.deepEqual(math.reshape(matrix, [3, 2]).toArray(),
+    assert.deepStrictEqual(math.reshape(matrix, [3, 2]).toArray(),
       [[0, 1], [2, 3], [4, 5]])
 
     matrix = math.matrix([[0], [1], [2], [3], [4], [5]], 'sparse')
-    assert.deepEqual(math.reshape(matrix, [3, 2]).toArray(),
+    assert.deepStrictEqual(math.reshape(matrix, [3, 2]).toArray(),
       [[0, 1], [2, 3], [4, 5]])
   })
 

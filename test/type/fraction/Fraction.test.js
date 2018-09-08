@@ -18,8 +18,8 @@ describe('Fraction', function () {
   })
 
   it('toJSON', function () {
-    assert.deepEqual(new math.type.Fraction(0.375).toJSON(), { 'mathjs': 'Fraction', n: 3, d: 8 })
-    assert.deepEqual(new math.type.Fraction(-0.375).toJSON(), { 'mathjs': 'Fraction', n: -3, d: 8 })
+    assert.deepStrictEqual(new math.type.Fraction(0.375).toJSON(), { 'mathjs': 'Fraction', n: 3, d: 8 })
+    assert.deepStrictEqual(new math.type.Fraction(-0.375).toJSON(), { 'mathjs': 'Fraction', n: -3, d: 8 })
   })
 
   it('fromJSON', function () {

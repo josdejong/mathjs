@@ -12,8 +12,8 @@ describe('unaryPlus', function () {
 
   it('should return bignumber unary plus of a boolean', function () {
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepEqual(bigmath.unaryPlus(true), bigmath.bignumber(1))
-    assert.deepEqual(bigmath.unaryPlus(false), bigmath.bignumber(0))
+    assert.deepStrictEqual(bigmath.unaryPlus(true), bigmath.bignumber(1))
+    assert.deepStrictEqual(bigmath.unaryPlus(false), bigmath.bignumber(0))
   })
 
   it('should return unary plus on a string', function () {
@@ -23,8 +23,8 @@ describe('unaryPlus', function () {
 
   it('should return bignumber unary plus on a string', function () {
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepEqual(bigmath.unaryPlus('2'), bigmath.bignumber(2))
-    assert.deepEqual(bigmath.unaryPlus('-2'), bigmath.bignumber(-2))
+    assert.deepStrictEqual(bigmath.unaryPlus('2'), bigmath.bignumber(2))
+    assert.deepStrictEqual(bigmath.unaryPlus('-2'), bigmath.bignumber(-2))
   })
 
   // TODO: this is temporary until the test above works again
@@ -32,23 +32,23 @@ describe('unaryPlus', function () {
     const bigmath = math.create({ number: 'BigNumber' })
     const a = bigmath.unaryPlus('2')
     assert(a instanceof math.type.BigNumber)
-    assert.deepEqual(a.toString(), '2')
+    assert.deepStrictEqual(a.toString(), '2')
 
     const b = bigmath.unaryPlus('-2')
     assert(b instanceof math.type.BigNumber)
-    assert.deepEqual(b.toString(), '-2')
+    assert.deepStrictEqual(b.toString(), '-2')
   })
 
   it('should perform unary plus of a number', function () {
-    assert.deepEqual(math.unaryPlus(2), 2)
-    assert.deepEqual(math.unaryPlus(-2), -2)
-    assert.deepEqual(math.unaryPlus(0), 0)
+    assert.deepStrictEqual(math.unaryPlus(2), 2)
+    assert.deepStrictEqual(math.unaryPlus(-2), -2)
+    assert.deepStrictEqual(math.unaryPlus(0), 0)
   })
 
   it('should perform unary plus of a big number', function () {
-    assert.deepEqual(math.unaryPlus(bignumber(2)), bignumber(2))
-    assert.deepEqual(math.unaryPlus(bignumber(-2)), bignumber(-2))
-    assert.deepEqual(math.unaryPlus(bignumber(0)).valueOf(), bignumber(0).valueOf())
+    assert.deepStrictEqual(math.unaryPlus(bignumber(2)), bignumber(2))
+    assert.deepStrictEqual(math.unaryPlus(bignumber(-2)), bignumber(-2))
+    assert.deepStrictEqual(math.unaryPlus(bignumber(0)).valueOf(), bignumber(0).valueOf())
   })
 
   it('should perform unary plus of a fraction', function () {
@@ -75,9 +75,9 @@ describe('unaryPlus', function () {
     const a2 = math.matrix([[1, 2], [3, 4]])
     const a7 = math.unaryPlus(a2)
     assert.ok(a7 instanceof math.type.Matrix)
-    assert.deepEqual(a7.size(), [2, 2])
-    assert.deepEqual(a7.valueOf(), [[1, 2], [3, 4]])
-    assert.deepEqual(math.unaryPlus([[1, 2], [3, 4]]), [[1, 2], [3, 4]])
+    assert.deepStrictEqual(a7.size(), [2, 2])
+    assert.deepStrictEqual(a7.valueOf(), [[1, 2], [3, 4]])
+    assert.deepStrictEqual(math.unaryPlus([[1, 2], [3, 4]]), [[1, 2], [3, 4]])
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

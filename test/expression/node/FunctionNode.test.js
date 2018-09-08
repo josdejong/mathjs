@@ -103,7 +103,7 @@ describe('FunctionNode', function () {
       assert.strictEqual(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
       assert(args[1] instanceof mymath.expression.node.Node)
-      assert.deepEqual(_scope, scope)
+      assert.deepStrictEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
@@ -128,7 +128,7 @@ describe('FunctionNode', function () {
       assert.strictEqual(args.length, 2)
       assert(args[0] instanceof mymath.expression.node.Node)
       assert(args[1] instanceof mymath.expression.node.Node)
-      assert.deepEqual(_scope, scope)
+      assert.deepStrictEqual(_scope, scope)
       return 'myFunction(' + args.join(', ') + ')'
     }
     myFunction.rawArgs = true
@@ -173,11 +173,11 @@ describe('FunctionNode', function () {
     const c = new ConstantNode(1)
     const n = new FunctionNode(s, [b, c])
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof FunctionNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [b, c])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [b])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof FunctionNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof RangeNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [b, c])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [b])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should run forEach on a FunctionNode', function () {
@@ -200,7 +200,7 @@ describe('FunctionNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], c)
     assert.strictEqual(nodes[1], d)
-    assert.deepEqual(paths, ['args[0]', 'args[1]'])
+    assert.deepStrictEqual(paths, ['args[0]', 'args[1]'])
   })
 
   it('should map a FunctionNode', function () {
@@ -226,7 +226,7 @@ describe('FunctionNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], c)
     assert.strictEqual(nodes[1], d)
-    assert.deepEqual(paths, ['args[0]', 'args[1]'])
+    assert.deepStrictEqual(paths, ['args[0]', 'args[1]'])
 
     assert.notStrictEqual(h, f)
     assert.strictEqual(h.args[0], c)
@@ -261,10 +261,10 @@ describe('FunctionNode', function () {
     })
 
     assert.notStrictEqual(h, f)
-    assert.deepEqual(h.args[0].args[0], g)
-    assert.deepEqual(h.args[0].args[1], b)
-    assert.deepEqual(h.name, 'multiply')
-    assert.deepEqual(h.args[1], g)
+    assert.deepStrictEqual(h.args[0].args[0], g)
+    assert.deepStrictEqual(h.args[0].args[1], b)
+    assert.deepStrictEqual(h.name, 'multiply')
+    assert.deepStrictEqual(h.args[1], g)
   })
 
   it('should transform a FunctionNodes name', function () {
@@ -282,7 +282,7 @@ describe('FunctionNode', function () {
     })
 
     assert.notStrictEqual(f, d)
-    assert.deepEqual(f.name, 'subtract')
+    assert.deepStrictEqual(f.name, 'subtract')
   })
 
   it('should transform a FunctionNode itself', function () {
@@ -297,7 +297,7 @@ describe('FunctionNode', function () {
       return node instanceof FunctionNode ? e : node
     })
 
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should traverse a FunctionNode', function () {
@@ -344,7 +344,7 @@ describe('FunctionNode', function () {
 
     const e = d.clone()
     assert(e instanceof FunctionNode)
-    assert.deepEqual(e, d)
+    assert.deepStrictEqual(e, d)
     assert.notStrictEqual(e, d)
     assert.strictEqual(e.name, d.name)
     assert.notStrictEqual(e.args, d.args)
@@ -446,14 +446,14 @@ describe('FunctionNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'FunctionNode',
       fn: a,
       args: [b, c]
     })
 
     const parsed = FunctionNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a FunctionNode', function () {

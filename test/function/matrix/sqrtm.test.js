@@ -29,13 +29,13 @@ describe('sqrtm', function () {
   })
 
   it('should return the principal square root of a matrix with just one value', function () {
-    assert.deepEqual(math.sqrtm([4]), [2])
-    assert.deepEqual(math.sqrtm([16]), [4])
-    assert.deepEqual(math.sqrtm([20.25]), [4.5])
+    assert.deepStrictEqual(math.sqrtm([4]), [2])
+    assert.deepStrictEqual(math.sqrtm([16]), [4])
+    assert.deepStrictEqual(math.sqrtm([20.25]), [4.5])
   })
 
   it('should return the principal square root of a matrix of big numbers', function () {
-    assert.deepEqual(math.round(math.sqrtm(math.bignumber(AA)), 20), math.bignumber(A))
+    assert.deepStrictEqual(math.round(math.sqrtm(math.bignumber(AA)), 20), math.bignumber(A))
   })
 
   it('math.pow(math.sqrtm(A), 2) should equal A', function () {

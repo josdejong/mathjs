@@ -10,8 +10,8 @@ describe('catalan', function () {
   })
 
   it('should calculate the nth catalan number with BigNumbers', function () {
-    assert.deepEqual(catalan(math.bignumber(7)), math.bignumber(429))
-    assert.deepEqual(catalan(math.bignumber(13)), math.bignumber(742900))
+    assert.deepStrictEqual(catalan(math.bignumber(7)), math.bignumber(429))
+    assert.deepStrictEqual(catalan(math.bignumber(13)), math.bignumber(742900))
   })
 
   it('should not work with non-integer and negative input', function () {

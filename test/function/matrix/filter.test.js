@@ -6,14 +6,14 @@ describe('filter', function () {
     function isPositive (x) {
       return x > 0
     }
-    assert.deepEqual(math.filter([6, -2, -1, 4, 3], isPositive), [6, 4, 3])
+    assert.deepStrictEqual(math.filter([6, -2, -1, 4, 3], isPositive), [6, 4, 3])
   })
 
   it('should filter a Matrix with a filter function', function () {
     function isPositive (x) {
       return x > 0
     }
-    assert.deepEqual(math.filter(math.matrix([6, -2, -1, 4, 3]), isPositive), math.matrix([6, 4, 3]))
+    assert.deepStrictEqual(math.filter(math.matrix([6, -2, -1, 4, 3]), isPositive), math.matrix([6, 4, 3]))
   })
 
   it('should invoke callback with parameters value, index, obj', function () {
@@ -25,7 +25,7 @@ describe('filter', function () {
       return true
     }).valueOf()
 
-    assert.deepEqual(log, [
+    assert.deepStrictEqual(log, [
       [1, [0], true],
       [2, [1], true],
       [3, [2], true]
@@ -39,7 +39,7 @@ describe('filter', function () {
         output.push(value + 2)
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
@@ -49,7 +49,7 @@ describe('filter', function () {
         output.push(value + 2)
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke a typed function with correct number of arguments (3)', function () {
@@ -59,15 +59,15 @@ describe('filter', function () {
         output.push(value + 2)
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should filter an array with a regexp', function () {
-    assert.deepEqual(math.filter(['23', 'foo', '100', '55', 'bar'], /[0-9]+/), ['23', '100', '55'])
+    assert.deepStrictEqual(math.filter(['23', 'foo', '100', '55', 'bar'], /[0-9]+/), ['23', '100', '55'])
   })
 
   it('should filter a Matrix with a regexp', function () {
-    assert.deepEqual(math.filter(math.matrix(['23', 'foo', '100', '55', 'bar']), /[0-9]+/), math.matrix(['23', '100', '55']))
+    assert.deepStrictEqual(math.filter(math.matrix(['23', 'foo', '100', '55', 'bar']), /[0-9]+/), math.matrix(['23', '100', '55']))
   })
 
   it('should throw an error if called with a multi dimensional matrix', function () {

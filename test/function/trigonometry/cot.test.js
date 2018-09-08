@@ -35,15 +35,15 @@ describe('cot', function () {
     const result1 = bigmath.cot(arg1)
     assert.ok(!result1.isFinite())
     assert.strictEqual(result1.constructor.precision, 20)
-    assert.deepEqual(arg1, Big(0))
+    assert.deepStrictEqual(arg1, Big(0))
 
     const result2 = bigmath.cot(bigPi.div(8))
-    assert.deepEqual(result2.toString(), '2.4142135623730950488')
+    assert.deepStrictEqual(result2.toString(), '2.4142135623730950488')
     assert.strictEqual(result2.constructor.precision, 20)
     assert.strictEqual(bigPi.constructor.precision, 20)
 
-    assert.deepEqual(bigmath.cot(bigPi.div(2)), Big('-1.4142135623730950488e-15')) // about zero
-    assert.deepEqual(bigmath.cot(bigPi), Big('26769019461318409709')) // about infinity
+    assert.deepStrictEqual(bigmath.cot(bigPi.div(2)), Big('-1.4142135623730950488e-15')) // about zero
+    assert.deepStrictEqual(bigmath.cot(bigPi), Big('26769019461318409709')) // about infinity
   })
 
   it('should return the cotan of a complex number', function () {

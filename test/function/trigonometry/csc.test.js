@@ -33,12 +33,12 @@ describe('csc', function () {
     const bigPi = bigmath.pi
     const sqrt2 = bigmath.SQRT2.toString()
 
-    assert.deepEqual(bigmath.csc(Big(0)).toString(), 'Infinity')
-    assert.deepEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557')
-    assert.deepEqual(bigmath.csc(bigPi.div(4)).toString(), sqrt2)
-    assert.deepEqual(bigmath.csc(bigPi.div(2)).toString(), '1')
-    assert.deepEqual(bigmath.csc(bigPi), Big('-26769019461318409709')) // large number (about infinity)
-    assert.deepEqual(bigmath.csc(bigPi.times(3).div(2)).toString(), '-1')
+    assert.deepStrictEqual(bigmath.csc(Big(0)).toString(), 'Infinity')
+    assert.deepStrictEqual(bigmath.csc(bigPi.div(8)).toString(), '2.6131259297527530557')
+    assert.deepStrictEqual(bigmath.csc(bigPi.div(4)).toString(), sqrt2)
+    assert.deepStrictEqual(bigmath.csc(bigPi.div(2)).toString(), '1')
+    assert.deepStrictEqual(bigmath.csc(bigPi), Big('-26769019461318409709')) // large number (about infinity)
+    assert.deepStrictEqual(bigmath.csc(bigPi.times(3).div(2)).toString(), '-1')
   })
 
   it('should return the cosecant of a complex number', function () {

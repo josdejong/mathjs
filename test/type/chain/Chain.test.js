@@ -29,10 +29,10 @@ describe('Chain', function () {
   })
 
   it('should chain operations with matrices', function () {
-    assert.deepEqual(new Chain(math.matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(new Chain(math.matrix([[1, 2], [3, 4]]))
       .subset(math.index(0, 0), 8)
       .multiply(3).done(), math.matrix([[24, 6], [9, 12]]))
-    assert.deepEqual(new Chain([[1, 2], [3, 4]])
+    assert.deepStrictEqual(new Chain([[1, 2], [3, 4]])
       .subset(math.index(0, 0), 8)
       .multiply(3).done(), [[24, 6], [9, 12]])
   })
@@ -46,13 +46,13 @@ describe('Chain', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'Chain',
       value: 2.3
     })
 
     const parsed = Chain.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should get chain\'s value via valueOf', function () {
@@ -74,7 +74,7 @@ describe('Chain', function () {
   })
 
   it('should not break with null or true as value', function () {
-    assert.deepEqual(new Chain(null).size().done(), math.matrix([]))
+    assert.deepStrictEqual(new Chain(null).size().done(), math.matrix([]))
     assert.strictEqual(new Chain(true).add(1).done(), 2)
   })
 

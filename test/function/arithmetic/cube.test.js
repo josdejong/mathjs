@@ -19,9 +19,9 @@ describe('cube', function () {
   })
 
   it('should return the cube of a big number', function () {
-    assert.deepEqual(cube(bignumber(4)), bignumber(64))
-    assert.deepEqual(cube(bignumber(-2)), bignumber(-8))
-    assert.deepEqual(cube(bignumber(0)), bignumber(0))
+    assert.deepStrictEqual(cube(bignumber(4)), bignumber(64))
+    assert.deepStrictEqual(cube(bignumber(-2)), bignumber(-8))
+    assert.deepStrictEqual(cube(bignumber(0)), bignumber(0))
   })
 
   it('should return the cube of a fraction', function () {
@@ -32,9 +32,9 @@ describe('cube', function () {
   })
 
   it('should return the cube of a complex number', function () {
-    assert.deepEqual(cube(math.complex('2i')), math.complex('-8i'))
-    assert.deepEqual(cube(math.complex('2+3i')), math.complex('-46+9i'))
-    assert.deepEqual(cube(math.complex('2')), math.complex('8'))
+    assert.deepStrictEqual(cube(math.complex('2i')), math.complex(-0, -8))
+    assert.deepStrictEqual(cube(math.complex('2+3i')), math.complex('-46+9i'))
+    assert.deepStrictEqual(cube(math.complex('2')), math.complex('8'))
   })
 
   it('should return the cube of a unit', function () {
@@ -59,9 +59,9 @@ describe('cube', function () {
   it('should cube each element in a matrix, array or range', function () {
     // array, matrix, range
     // arrays are evaluated element wise
-    assert.deepEqual(cube([2, 3, 4, 5]), [8, 27, 64, 125])
-    assert.deepEqual(cube(matrix([2, 3, 4, 5])), matrix([8, 27, 64, 125]))
-    assert.deepEqual(cube(matrix([[1, 2], [3, 4]])), matrix([[1, 8], [27, 64]]))
+    assert.deepStrictEqual(cube([2, 3, 4, 5]), [8, 27, 64, 125])
+    assert.deepStrictEqual(cube(matrix([2, 3, 4, 5])), matrix([8, 27, 64, 125]))
+    assert.deepStrictEqual(cube(matrix([[1, 2], [3, 4]])), matrix([[1, 8], [27, 64]]))
   })
 
   it('should LaTeX cube', function () {

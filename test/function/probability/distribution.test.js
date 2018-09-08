@@ -92,7 +92,7 @@ describe('distribution', function () {
       // Collect all values in one array
       matrices.forEach(function (matrix) {
         assert(Array.isArray(matrix))
-        assert.deepEqual(math.size(matrix), size)
+        assert.deepStrictEqual(math.size(matrix), size)
         math.forEach(matrix, function (val) {
           picked.push(val)
         })
@@ -114,7 +114,7 @@ describe('distribution', function () {
       // Collect all values in one array
       matrices.forEach(function (matrix) {
         assert(Array.isArray(matrix))
-        assert.deepEqual(math.size(matrix), size)
+        assert.deepStrictEqual(math.size(matrix), size)
         math.forEach(matrix, function (val) {
           picked.push(val)
         })
@@ -136,7 +136,7 @@ describe('distribution', function () {
       // Collect all values in one array
       matrices.forEach(function (matrix) {
         assert(matrix instanceof Matrix)
-        assert.deepEqual(matrix.size(), size.valueOf())
+        assert.deepStrictEqual(matrix.size(), size.valueOf())
         matrix.forEach(function (val) {
           picked.push(val)
         })
@@ -157,7 +157,7 @@ describe('distribution', function () {
 
       // Collect all values in one array
       matrices.forEach(function (matrix) {
-        assert.deepEqual(math.size(matrix), size)
+        assert.deepStrictEqual(math.size(matrix), size)
         math.forEach(matrix, function (val) {
           picked.push(val)
         })
@@ -197,7 +197,7 @@ describe('distribution', function () {
 
       // Collect all values in one array
       matrices.forEach(function (matrix) {
-        assert.deepEqual(math.size(matrix), size)
+        assert.deepStrictEqual(math.size(matrix), size)
         math.forEach(matrix, function (val) {
           picked.push(val)
         })
@@ -261,8 +261,8 @@ describe('distribution', function () {
       const possibles = [11, 22, 33, 44, 55]
       const weights = [1, 5, 2, 4, 6]
 
-      assert.notEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles)), -1)
-      assert.notEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles, weights)), -1)
+      assert.notStrictEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles)), -1)
+      assert.notStrictEqual(possibles.indexOf(uniformDistrib.pickRandom(possibles, weights)), -1)
     })
 
     it('should return a single value if no number argument was passed (2)', function () {

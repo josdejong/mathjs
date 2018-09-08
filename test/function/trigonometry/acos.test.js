@@ -37,18 +37,18 @@ describe('acos', function () {
 
   it('should return the arccos of a bignumber', function () {
     const arg = Big(-1)
-    assert.deepEqual(acosBig(arg).toString(), bigmath.pi.toString())
-    assert.deepEqual(acosBig(Big(-0.5)), Big('2.0943951023931954923'))
-    assert.deepEqual(acosBig(Big(0)), Big('1.5707963267948966192'))
-    assert.deepEqual(acosBig(Big(0.5)), Big('1.0471975511965977462'))
-    assert.deepEqual(acosBig(Big(1)), Big(0))
+    assert.deepStrictEqual(acosBig(arg).toString(), bigmath.pi.toString())
+    assert.deepStrictEqual(acosBig(Big(-0.5)), Big('2.0943951023931954923'))
+    assert.deepStrictEqual(acosBig(Big(0)), Big('1.5707963267948966192'))
+    assert.deepStrictEqual(acosBig(Big(0.5)), Big('1.0471975511965977462'))
+    assert.deepStrictEqual(acosBig(Big(1)), Big(0))
 
     // Hit Newton's method case
     bigmath.config({ precision: 61 })
-    assert.deepEqual(acosBig(Big(0.00000001)), Big('1.570796316794896619231321524973084775431910533020886243820359'))
+    assert.deepStrictEqual(acosBig(Big(0.00000001)), Big('1.570796316794896619231321524973084775431910533020886243820359'))
     // Wolfram:                                     1.5707963167948966192313215249730847754319105330208862438203592009158129650174844596314777278941600852176250962802
     // Make sure arg was not changed
-    assert.deepEqual(arg, Big(-1))
+    assert.deepStrictEqual(arg, Big(-1))
   })
 
   it('should be the inverse function of cos', function () {
@@ -61,11 +61,11 @@ describe('acos', function () {
 
   it('should be the inverse function of bignumber cos', function () {
     bigmath.config({ precision: 20 })
-    assert.deepEqual(acosBig(cosBig(Big(-1))), Big(1))
-    assert.deepEqual(acosBig(cosBig(Big(0))), Big('0'))
-    assert.deepEqual(acosBig(cosBig(Big(0.1))), Big('0.099999999999999999956'))
-    assert.deepEqual(acosBig(cosBig(Big(0.5))), Big('0.49999999999999999999'))
-    assert.deepEqual(acosBig(cosBig(Big(2))), Big(2))
+    assert.deepStrictEqual(acosBig(cosBig(Big(-1))), Big(1))
+    assert.deepStrictEqual(acosBig(cosBig(Big(0))), Big('0'))
+    assert.deepStrictEqual(acosBig(cosBig(Big(0.1))), Big('0.099999999999999999956'))
+    assert.deepStrictEqual(acosBig(cosBig(Big(0.5))), Big('0.49999999999999999999'))
+    assert.deepStrictEqual(acosBig(cosBig(Big(2))), Big(2))
   })
 
   it('should return for bignumber cos for x > 1', function () {

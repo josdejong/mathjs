@@ -17,8 +17,8 @@ describe('arg', function () {
   })
 
   it('should compute the argument of a bignumber', function () {
-    assert.deepEqual(arg(math.bignumber(1)), math.bignumber(0))
-    assert.deepEqual(arg(math.bignumber(-2)),
+    assert.deepStrictEqual(arg(math.bignumber(1)), math.bignumber(0))
+    assert.deepStrictEqual(arg(math.bignumber(-2)),
       math.bignumber('3.141592653589793238462643383279502884197169399375105820974944592'))
   })
 
@@ -36,12 +36,12 @@ describe('arg', function () {
   })
 
   it('should calculate the argument for each element in a matrix', function () {
-    assert.deepEqual(math.divide(arg([
+    assert.deepStrictEqual(math.divide(arg([
       math.i, math.unaryMinus(math.i), math.add(1, math.i)
     ]), math.pi), [
       0.5, -0.5, 0.25
     ])
-    assert.deepEqual(math.matrix(math.divide(arg([
+    assert.deepStrictEqual(math.matrix(math.divide(arg([
       math.i, math.unaryMinus(math.i), math.add(1, math.i)
     ]), math.pi)).valueOf(), [
       0.5, -0.5, 0.25

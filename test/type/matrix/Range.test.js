@@ -8,41 +8,41 @@ describe('range', function () {
   describe('create', function () {
     it('should create a range', function () {
       const r = new Range(2, 6)
-      assert.deepEqual(r.toArray(), [2, 3, 4, 5])
-      assert.deepEqual(r.size(), [ 4 ])
+      assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5])
+      assert.deepStrictEqual(r.size(), [ 4 ])
     })
 
     it('should create a range with custom step', function () {
       const r = new Range(10, 4, -1)
-      assert.deepEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.deepEqual(r.size(), [ 6 ])
+      assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
+      assert.deepStrictEqual(r.size(), [ 6 ])
     })
 
     it('should create a range with floating points', function () {
       const r = new Range(1, 5.5, 1.5)
-      assert.deepEqual(r.toArray(), [1, 2.5, 4])
-      assert.deepEqual(r.size(), [ 3 ])
+      assert.deepStrictEqual(r.toArray(), [1, 2.5, 4])
+      assert.deepStrictEqual(r.size(), [ 3 ])
     })
 
     it('should create an empty range', function () {
       const r = new Range()
-      assert.deepEqual(r.toArray(), [])
+      assert.deepStrictEqual(r.toArray(), [])
     })
 
     it('should create a range with only one value', function () {
       const r = new Range(0, 1)
-      assert.deepEqual(r.toArray(), [0])
-      assert.deepEqual(r.size(), [ 1 ])
+      assert.deepStrictEqual(r.toArray(), [0])
+      assert.deepStrictEqual(r.size(), [ 1 ])
     })
 
     it('should create an empty range because of wrong step size', function () {
       let r = new Range(0, 10, 0)
-      assert.deepEqual(r.toArray(), [])
-      assert.deepEqual(r.size(), [ 0 ])
+      assert.deepStrictEqual(r.toArray(), [])
+      assert.deepStrictEqual(r.size(), [ 0 ])
 
       r = new Range(0, 10, -1)
-      assert.deepEqual(r.toArray(), [])
-      assert.deepEqual(r.size(), [ 0 ])
+      assert.deepStrictEqual(r.toArray(), [])
+      assert.deepStrictEqual(r.size(), [ 0 ])
     })
 
     it('should throw an error when created without new keyword', function () {
@@ -59,12 +59,12 @@ describe('range', function () {
   describe('parse', function () {
     it('should create a range from a string', function () {
       let r = Range.parse('10:-1:4')
-      assert.deepEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
-      assert.deepEqual(r.size(), [ 6 ])
+      assert.deepStrictEqual(r.toArray(), [10, 9, 8, 7, 6, 5])
+      assert.deepStrictEqual(r.size(), [ 6 ])
 
       r = Range.parse('2 : 6')
-      assert.deepEqual(r.toArray(), [2, 3, 4, 5])
-      assert.deepEqual(r.size(), [ 4 ])
+      assert.deepStrictEqual(r.toArray(), [2, 3, 4, 5])
+      assert.deepStrictEqual(r.size(), [ 4 ])
     })
 
     it('should return null when parsing an invalid string', function () {
@@ -77,24 +77,24 @@ describe('range', function () {
 
   describe('size', function () {
     it('should calculate the size of a range', function () {
-      assert.deepEqual(new Range(0, 0).size(), [0])
-      assert.deepEqual(new Range(0, 0, -1).size(), [0])
-      assert.deepEqual(new Range(0, 0, 0).size(), [0])
+      assert.deepStrictEqual(new Range(0, 0).size(), [0])
+      assert.deepStrictEqual(new Range(0, 0, -1).size(), [0])
+      assert.deepStrictEqual(new Range(0, 0, 0).size(), [0])
 
-      assert.deepEqual(new Range(0, 4).size(), [4])
-      assert.deepEqual(new Range(2, 4).size(), [2])
-      assert.deepEqual(new Range(0, 8, 2).size(), [4])
-      assert.deepEqual(new Range(0, 8.1, 2).size(), [5])
-      assert.deepEqual(new Range(0, 7.9, 2).size(), [4])
-      assert.deepEqual(new Range(0, 7, 2).size(), [4])
+      assert.deepStrictEqual(new Range(0, 4).size(), [4])
+      assert.deepStrictEqual(new Range(2, 4).size(), [2])
+      assert.deepStrictEqual(new Range(0, 8, 2).size(), [4])
+      assert.deepStrictEqual(new Range(0, 8.1, 2).size(), [5])
+      assert.deepStrictEqual(new Range(0, 7.9, 2).size(), [4])
+      assert.deepStrictEqual(new Range(0, 7, 2).size(), [4])
 
-      assert.deepEqual(new Range(3, -1, -1).size(), [4])
-      assert.deepEqual(new Range(3, -1.1, -1).size(), [5])
-      assert.deepEqual(new Range(3, -0.9, -1).size(), [4])
-      assert.deepEqual(new Range(3, -1, -2).size(), [2])
-      assert.deepEqual(new Range(3, -0.9, -2).size(), [2])
-      assert.deepEqual(new Range(3, -1.1, -2).size(), [3])
-      assert.deepEqual(new Range(3, 0.1, -2).size(), [2])
+      assert.deepStrictEqual(new Range(3, -1, -1).size(), [4])
+      assert.deepStrictEqual(new Range(3, -1.1, -1).size(), [5])
+      assert.deepStrictEqual(new Range(3, -0.9, -1).size(), [4])
+      assert.deepStrictEqual(new Range(3, -1, -2).size(), [2])
+      assert.deepStrictEqual(new Range(3, -0.9, -2).size(), [2])
+      assert.deepStrictEqual(new Range(3, -1.1, -2).size(), [3])
+      assert.deepStrictEqual(new Range(3, 0.1, -2).size(), [2])
     })
   })
 
@@ -159,7 +159,7 @@ describe('range', function () {
       const r1 = new Range(0, 10, 2)
       const r2 = r1.clone()
 
-      assert.deepEqual(r1, r2)
+      assert.deepStrictEqual(r1, r2)
       assert.notStrictEqual(r1, r2)
 
       // changes in r1 should not affect r2
@@ -191,7 +191,7 @@ describe('range', function () {
   describe('map', function () {
     it('should perform a transformation on all values in the range', function () {
       const r = new Range(2, 6)
-      assert.deepEqual(r.map(function (value, index, range) {
+      assert.deepStrictEqual(r.map(function (value, index, range) {
         assert.strictEqual(range, r)
         return 'range[' + index[0] + ']=' + value
       }), [
@@ -212,7 +212,7 @@ describe('range', function () {
         log.push('range[' + index[0] + ']=' + value)
       })
 
-      assert.deepEqual(log, [
+      assert.deepStrictEqual(log, [
         'range[0]=2',
         'range[1]=3',
         'range[2]=4',
@@ -236,21 +236,21 @@ describe('range', function () {
 
   describe('toArray', function () {
     it('should expand a Range into an Array', function () {
-      assert.deepEqual(new Range(0, 4).toArray(), [0, 1, 2, 3])
-      assert.deepEqual(new Range(4, 0, -1).toArray(), [4, 3, 2, 1])
+      assert.deepStrictEqual(new Range(0, 4).toArray(), [0, 1, 2, 3])
+      assert.deepStrictEqual(new Range(4, 0, -1).toArray(), [4, 3, 2, 1])
     })
   })
 
   describe('valueOf', function () {
     it('valueOf should return the Range expanded as Array', function () {
-      assert.deepEqual(new Range(0, 4).valueOf(), [0, 1, 2, 3])
-      assert.deepEqual(new Range(4, 0, -1).valueOf(), [4, 3, 2, 1])
+      assert.deepStrictEqual(new Range(0, 4).valueOf(), [0, 1, 2, 3])
+      assert.deepStrictEqual(new Range(4, 0, -1).valueOf(), [4, 3, 2, 1])
     })
   })
 
   it('toJSON', function () {
-    assert.deepEqual(new Range(2, 4).toJSON(), { 'mathjs': 'Range', start: 2, end: 4, step: 1 })
-    assert.deepEqual(new Range(0, 10, 2).toJSON(), { 'mathjs': 'Range', start: 0, end: 10, step: 2 })
+    assert.deepStrictEqual(new Range(2, 4).toJSON(), { 'mathjs': 'Range', start: 2, end: 4, step: 1 })
+    assert.deepStrictEqual(new Range(0, 10, 2).toJSON(), { 'mathjs': 'Range', start: 0, end: 10, step: 2 })
   })
 
   it('fromJSON', function () {

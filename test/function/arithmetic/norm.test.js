@@ -19,12 +19,12 @@ describe('norm', function () {
   })
 
   it('should return the absolute value of a big number', function () {
-    assert.deepEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3))
-    assert.deepEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'))
-    assert.deepEqual(math.norm(math.bignumber('-5e500')), math.bignumber('5e500'))
-    assert.deepEqual(math.norm(math.bignumber(-2.3), 'fro'), math.bignumber(2.3))
-    assert.deepEqual(math.norm([math.bignumber(-2.3)], 'fro'), math.bignumber(2.3))
-    assert.deepEqual(math.norm([[math.bignumber(-2.3)]], 'fro'), math.bignumber(2.3))
+    assert.deepStrictEqual(math.norm(math.bignumber(-2.3)), math.bignumber(2.3))
+    assert.deepStrictEqual(math.norm(math.bignumber('5e500')), math.bignumber('5e500'))
+    assert.deepStrictEqual(math.norm(math.bignumber('-5e500')), math.bignumber('5e500'))
+    assert.deepStrictEqual(math.norm(math.bignumber(-2.3), 'fro'), math.bignumber(2.3))
+    assert.deepStrictEqual(math.norm([math.bignumber(-2.3)], 'fro'), math.bignumber(2.3))
+    assert.deepStrictEqual(math.norm([[math.bignumber(-2.3)]], 'fro'), math.bignumber(2.3))
   })
 
   it('should return the norm of a complex number', function () {

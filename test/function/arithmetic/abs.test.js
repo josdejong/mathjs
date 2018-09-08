@@ -20,9 +20,9 @@ describe('abs', function () {
   })
 
   it('should return the absolute value of a big number', function () {
-    assert.deepEqual(math.abs(math.bignumber(-2.3)), math.bignumber(2.3))
-    assert.deepEqual(math.abs(math.bignumber('5e500')), math.bignumber('5e500'))
-    assert.deepEqual(math.abs(math.bignumber('-5e500')), math.bignumber('5e500'))
+    assert.deepStrictEqual(math.abs(math.bignumber(-2.3)), math.bignumber(2.3))
+    assert.deepStrictEqual(math.abs(math.bignumber('5e500')), math.bignumber('5e500'))
+    assert.deepStrictEqual(math.abs(math.bignumber('-5e500')), math.bignumber('5e500'))
   })
 
   it('should return the absolute value of a complex number', function () {
@@ -44,10 +44,10 @@ describe('abs', function () {
   it('should return the absolute value of all elements in an Array', function () {
     let a1 = math.abs([1, -2, 3])
     assert.ok(Array.isArray(a1))
-    assert.deepEqual(a1, [1, 2, 3])
+    assert.deepStrictEqual(a1, [1, 2, 3])
     a1 = math.abs([-2, -1, 0, 1, 2])
     assert.ok(Array.isArray(a1))
-    assert.deepEqual(a1, [2, 1, 0, 1, 2])
+    assert.deepStrictEqual(a1, [2, 1, 0, 1, 2])
   })
 
   it('should return the absolute number of a complex number with zero', function () {
@@ -61,12 +61,12 @@ describe('abs', function () {
   it('should return the absolute value of all elements in a matrix', function () {
     let a1 = math.abs(math.matrix([1, -2, 3]))
     assert.ok(a1 instanceof math.type.Matrix)
-    assert.deepEqual(a1.size(), [3])
-    assert.deepEqual(a1.valueOf(), [1, 2, 3])
+    assert.deepStrictEqual(a1.size(), [3])
+    assert.deepStrictEqual(a1.valueOf(), [1, 2, 3])
     a1 = math.abs(math.matrix([-2, -1, 0, 1, 2]))
     assert.ok(a1 instanceof math.type.Matrix)
-    assert.deepEqual(a1.size(), [5])
-    assert.deepEqual(a1.valueOf(), [2, 1, 0, 1, 2])
+    assert.deepStrictEqual(a1.size(), [5])
+    assert.deepStrictEqual(a1.valueOf(), [2, 1, 0, 1, 2])
   })
 
   it('should return the absolute value of a unit', function () {

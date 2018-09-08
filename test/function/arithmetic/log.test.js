@@ -56,12 +56,12 @@ describe('log', function () {
   it('should return the log of positive bignumbers', function () {
     const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log(bigmath.bignumber(1)), bigmath.bignumber('0'))
-    assert.deepEqual(bigmath.log(bigmath.bignumber(2)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'))
-    assert.deepEqual(bigmath.log(bigmath.bignumber(3)), bigmath.bignumber('1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732089'))
+    assert.deepStrictEqual(bigmath.log(bigmath.bignumber(1)), bigmath.bignumber('0'))
+    assert.deepStrictEqual(bigmath.log(bigmath.bignumber(2)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'))
+    assert.deepStrictEqual(bigmath.log(bigmath.bignumber(3)), bigmath.bignumber('1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732089'))
 
     // note: the following gives a round-off error with regular numbers
-    assert.deepEqual(bigmath.log(bigmath.bignumber(1000), bigmath.bignumber(10)), bigmath.bignumber(3))
+    assert.deepStrictEqual(bigmath.log(bigmath.bignumber(1000), bigmath.bignumber(10)), bigmath.bignumber(3))
   })
 
   it('should return the log of negative bignumbers', function () {
@@ -79,7 +79,7 @@ describe('log', function () {
   it('should return the log of a bignumber with value zero', function () {
     const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log(bigmath.bignumber(0)).toString(), '-Infinity')
+    assert.deepStrictEqual(bigmath.log(bigmath.bignumber(0)).toString(), '-Infinity')
   })
 
   it('should return the log of a complex number', function () {

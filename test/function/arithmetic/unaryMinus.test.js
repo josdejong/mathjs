@@ -14,20 +14,20 @@ describe('unaryMinus', function () {
   // TODO: unary minus should return bignumber on boolean input when configured for bignumber
   it.skip('should return bignumber unary minus of a boolean', function () {
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1))
-    assert.deepEqual(bigmath.unaryMinus(false), bigmath.bignumber(0))
+    assert.deepStrictEqual(bigmath.unaryMinus(true), bigmath.bignumber(-1))
+    assert.deepStrictEqual(bigmath.unaryMinus(false), bigmath.bignumber(0))
   })
 
   it('should perform unary minus of a number', function () {
-    assert.deepEqual(math.unaryMinus(2), -2)
-    assert.deepEqual(math.unaryMinus(-2), 2)
-    assert.deepEqual(math.unaryMinus(0), 0)
+    assert.deepStrictEqual(math.unaryMinus(2), -2)
+    assert.deepStrictEqual(math.unaryMinus(-2), 2)
+    assert.deepStrictEqual(math.unaryMinus(0), -0)
   })
 
   it('should perform unary minus of a big number', function () {
-    assert.deepEqual(math.unaryMinus(bignumber(2)), bignumber(-2))
-    assert.deepEqual(math.unaryMinus(bignumber(-2)), bignumber(2))
-    assert.deepEqual(math.unaryMinus(bignumber(0)).toString(), '0')
+    assert.deepStrictEqual(math.unaryMinus(bignumber(2)), bignumber(-2))
+    assert.deepStrictEqual(math.unaryMinus(bignumber(-2)), bignumber(2))
+    assert.deepStrictEqual(math.unaryMinus(bignumber(0)).toString(), '0')
   })
 
   it('should perform unary minus of a fraction', function () {
@@ -56,9 +56,9 @@ describe('unaryMinus', function () {
     const a2 = math.matrix([[1, 2], [3, 4]])
     const a7 = math.unaryMinus(a2)
     assert.ok(a7 instanceof math.type.Matrix)
-    assert.deepEqual(a7.size(), [2, 2])
-    assert.deepEqual(a7.valueOf(), [[-1, -2], [-3, -4]])
-    assert.deepEqual(math.unaryMinus([[1, 2], [3, 4]]), [[-1, -2], [-3, -4]])
+    assert.deepStrictEqual(a7.size(), [2, 2])
+    assert.deepStrictEqual(a7.valueOf(), [[-1, -2], [-3, -4]])
+    assert.deepStrictEqual(math.unaryMinus([[1, 2], [3, 4]]), [[-1, -2], [-3, -4]])
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

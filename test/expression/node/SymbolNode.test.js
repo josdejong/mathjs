@@ -50,10 +50,10 @@ describe('SymbolNode', function () {
 
   it('should filter a SymbolNode', function () {
     const n = new SymbolNode('x')
-    assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.name === 'x' }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.name === 'q' }), [])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'x' }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [])
   })
 
   it('should run forEach on a SymbolNode', function () {
@@ -70,7 +70,7 @@ describe('SymbolNode', function () {
     })
 
     assert.notStrictEqual(b, a)
-    assert.deepEqual(b, a)
+    assert.deepStrictEqual(b, a)
   })
 
   it('should transform a SymbolNode', function () {
@@ -79,13 +79,13 @@ describe('SymbolNode', function () {
     const c = a.transform(function (node) {
       return node instanceof SymbolNode && node.name === 'x' ? b : node
     })
-    assert.deepEqual(c, b)
+    assert.deepStrictEqual(c, b)
 
     // no match should leave the symbol as is
     const d = a.transform(function (node) {
       return node instanceof SymbolNode && node.name === 'q' ? b : node
     })
-    assert.deepEqual(d, a)
+    assert.deepStrictEqual(d, a)
   })
 
   it('should clone a SymbolNode', function () {
@@ -93,7 +93,7 @@ describe('SymbolNode', function () {
     const b = a.clone()
 
     assert(b instanceof SymbolNode)
-    assert.deepEqual(a, b)
+    assert.deepStrictEqual(a, b)
     assert.notStrictEqual(a, b)
     assert.strictEqual(a.name, b.name)
   })
@@ -138,13 +138,13 @@ describe('SymbolNode', function () {
 
     const json = a.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'SymbolNode',
       name: 'a'
     })
 
     const parsed = SymbolNode.fromJSON(json)
-    assert.deepEqual(parsed, a)
+    assert.deepStrictEqual(parsed, a)
   })
 
   it('should LaTeX a SymbolNode', function () {

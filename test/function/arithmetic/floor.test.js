@@ -30,16 +30,16 @@ describe('floor', function () {
   })
 
   it('should floor big numbers correctly', function () {
-    assert.deepEqual(floor(bignumber(0)), bignumber(0))
-    assert.deepEqual(floor(bignumber(1)), bignumber(1))
-    assert.deepEqual(floor(bignumber(1.3)), bignumber(1))
-    assert.deepEqual(floor(bignumber(1.8)), bignumber(1))
-    assert.deepEqual(floor(bignumber(2)), bignumber(2))
-    assert.deepEqual(floor(bignumber(-1)), bignumber(-1))
-    assert.deepEqual(floor(bignumber(-1.3)), bignumber(-2))
-    assert.deepEqual(floor(bignumber(-1.8)), bignumber(-2))
-    assert.deepEqual(floor(bignumber(-2)), bignumber(-2))
-    assert.deepEqual(floor(bignumber(-2.1)), bignumber(-3))
+    assert.deepStrictEqual(floor(bignumber(0)), bignumber(0))
+    assert.deepStrictEqual(floor(bignumber(1)), bignumber(1))
+    assert.deepStrictEqual(floor(bignumber(1.3)), bignumber(1))
+    assert.deepStrictEqual(floor(bignumber(1.8)), bignumber(1))
+    assert.deepStrictEqual(floor(bignumber(2)), bignumber(2))
+    assert.deepStrictEqual(floor(bignumber(-1)), bignumber(-1))
+    assert.deepStrictEqual(floor(bignumber(-1.3)), bignumber(-2))
+    assert.deepStrictEqual(floor(bignumber(-1.8)), bignumber(-2))
+    assert.deepStrictEqual(floor(bignumber(-2)), bignumber(-2))
+    assert.deepStrictEqual(floor(bignumber(-2.1)), bignumber(-3))
   })
 
   it('should floor complex numbers correctly', function () {

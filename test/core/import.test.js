@@ -108,7 +108,7 @@ describe('import', function () {
 
   it('should return the imported object', function () {
     math.import({ a: 24 })
-    assert.deepEqual(math.a, 24)
+    assert.deepStrictEqual(math.a, 24)
 
     math.import({ pi: 24 }, { silent: true })
     approx.equal(math.pi, Math.PI) // pi was ignored
@@ -136,7 +136,7 @@ describe('import', function () {
       })
     })
 
-    assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string'])
+    assert.deepStrictEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string'])
     assert.strictEqual(math.foo(2), 'foo(number)')
     assert.strictEqual(math.foo('bar'), 'foo(string)')
     assert.throws(function () {
@@ -163,7 +163,7 @@ describe('import', function () {
       })
     }, { override: true })
 
-    assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['string'])
+    assert.deepStrictEqual(Object.keys(math.foo.signatures).sort(), ['string'])
     assert.strictEqual(math.foo('bar'), 'foo(string)')
     assert.throws(function () {
       math.foo(new Date())
@@ -193,7 +193,7 @@ describe('import', function () {
       }
     })
 
-    assert.deepEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string'])
+    assert.deepStrictEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string'])
     assert.strictEqual(math.foo(2), 'foo(number)')
     assert.strictEqual(math.foo('bar'), 'foo(string)')
     assert.throws(function () {

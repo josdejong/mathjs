@@ -15,7 +15,7 @@ describe('conj', function () {
     assert.strictEqual(conj(-2), -2)
   })
   it('should compute the conjugate of a bignumber', function () {
-    assert.deepEqual(conj(math.bignumber(2)), math.bignumber(2))
+    assert.deepStrictEqual(conj(math.bignumber(2)), math.bignumber(2))
   })
 
   it('should calculate the conjugate of a complex number correctly', function () {

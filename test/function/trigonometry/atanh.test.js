@@ -40,15 +40,15 @@ describe('atanh', function () {
   it('should return the hyperbolic arctan of a bignumber', function () {
     const arg1 = Big(-1)
     const arg2 = Big(-0.5)
-    assert.deepEqual(atanhBig(arg1).toString(), '-Infinity')
-    assert.deepEqual(atanhBig(arg2), Big('-0.5493061443340548457'))
-    assert.deepEqual(atanhBig(Big(0)), Big(0))
-    assert.deepEqual(atanhBig(Big(0.5)), Big('0.5493061443340548457'))
-    assert.deepEqual(atanhBig(Big(1)).toString(), 'Infinity')
+    assert.deepStrictEqual(atanhBig(arg1).toString(), '-Infinity')
+    assert.deepStrictEqual(atanhBig(arg2), Big('-0.5493061443340548457'))
+    assert.deepStrictEqual(atanhBig(Big(0)), Big(0))
+    assert.deepStrictEqual(atanhBig(Big(0.5)), Big('0.5493061443340548457'))
+    assert.deepStrictEqual(atanhBig(Big(1)).toString(), 'Infinity')
 
     // Make sure arg was not changed
-    assert.deepEqual(arg1, Big(-1))
-    assert.deepEqual(arg2, Big(-0.5))
+    assert.deepStrictEqual(arg1, Big(-1))
+    assert.deepStrictEqual(arg2, Big(-0.5))
   })
 
   it('should be the inverse function of hyperbolic tan', function () {
@@ -59,15 +59,15 @@ describe('atanh', function () {
   })
 
   it('should be the inverse function of bignumber tanh', function () {
-    assert.deepEqual(atanhBig(bigmath.tanh(Big(-0.5))), Big(-0.5))
-    assert.deepEqual(atanhBig(bigmath.tanh(Big(0))), Big(0))
-    assert.deepEqual(atanhBig(bigmath.tanh(Big(0.5))), Big(0.5))
+    assert.deepStrictEqual(atanhBig(bigmath.tanh(Big(-0.5))), Big(-0.5))
+    assert.deepStrictEqual(atanhBig(bigmath.tanh(Big(0))), Big(0))
+    assert.deepStrictEqual(atanhBig(bigmath.tanh(Big(0.5))), Big(0.5))
 
     /* Pass in more digits to pi. */
     const arg = Big(-1)
-    assert.deepEqual(atanhBig(biggermath.tanh(arg)), Big(-1))
-    assert.deepEqual(atanhBig(biggermath.tanh(Big(0.1))), Big(0.1))
-    assert.deepEqual(arg, Big(-1))
+    assert.deepStrictEqual(atanhBig(biggermath.tanh(arg)), Big(-1))
+    assert.deepStrictEqual(atanhBig(biggermath.tanh(Big(0.1))), Big(0.1))
+    assert.deepStrictEqual(arg, Big(-1))
 
     assert.ok(atanh(Big(1.1)).isNaN())
   })
@@ -81,8 +81,8 @@ describe('atanh', function () {
     approx.deepEqual(atanh(complex('i')), complex(0, pi / 4))
 
     approx.deepEqual(atanh(complex('2')), complex(0.54930614433405485, -pi / 2))
-    assert.deepEqual(atanh(complex('1')), complex(Infinity, 0))
-    assert.deepEqual(atanh(complex('0')), complex(0, 0))
+    assert.deepStrictEqual(atanh(complex('1')), complex(Infinity, 0))
+    assert.deepStrictEqual(atanh(complex('0')), complex(0, 0))
     approx.deepEqual(atanh(complex('-2')), complex(-0.54930614433405485, pi / 2))
   })
 
@@ -97,8 +97,8 @@ describe('atanh', function () {
 
   it('should calculate the arctan element-wise for arrays and matrices', function () {
     const atanh101 = [-Infinity, 0, Infinity]
-    assert.deepEqual(atanh([-1, 0, 1]), atanh101)
-    assert.deepEqual(atanh(matrix([-1, 0, 1])), matrix(atanh101))
+    assert.deepStrictEqual(atanh([-1, 0, 1]), atanh101)
+    assert.deepStrictEqual(atanh(matrix([-1, 0, 1])), matrix(atanh101))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {

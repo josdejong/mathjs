@@ -51,8 +51,8 @@ describe('BlockNode', function () {
     ])
 
     let scope = {}
-    assert.deepEqual(n.compile().eval(scope), new ResultSet([5, 3]))
-    assert.deepEqual(scope, { foo: 3 })
+    assert.deepStrictEqual(n.compile().eval(scope), new ResultSet([5, 3]))
+    assert.deepStrictEqual(scope, { foo: 3 })
   })
 
   it('expressions should be visible by default', function () {
@@ -60,7 +60,7 @@ describe('BlockNode', function () {
       { node: new ConstantNode(5) }
     ])
 
-    assert.deepEqual(n.compile().eval(), new ResultSet([5]))
+    assert.deepStrictEqual(n.compile().eval(), new ResultSet([5]))
   })
 
   it('should filter a BlockNode', function () {
@@ -75,11 +75,11 @@ describe('BlockNode', function () {
       { node: c, visible: true }
     ])
 
-    assert.deepEqual(d.filter(function (node) { return node instanceof BlockNode }), [d])
-    assert.deepEqual(d.filter(function (node) { return node instanceof SymbolNode }), [foo, c])
-    assert.deepEqual(d.filter(function (node) { return node instanceof RangeNode }), [])
-    assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode }), [a, b2])
-    assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value === 3 }), [b2])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof BlockNode }), [d])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof SymbolNode }), [foo, c])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof RangeNode }), [])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ConstantNode }), [a, b2])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value === 3 }), [b2])
   })
 
   it('should run forEach on a BlockNode', function () {
@@ -103,7 +103,7 @@ describe('BlockNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], x)
     assert.strictEqual(nodes[1], c)
-    assert.deepEqual(paths, ['blocks[0].node', 'blocks[1].node'])
+    assert.deepStrictEqual(paths, ['blocks[0].node', 'blocks[1].node'])
   })
 
   it('should map a BlockNode', function () {
@@ -129,7 +129,7 @@ describe('BlockNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], x)
     assert.strictEqual(nodes[1], c)
-    assert.deepEqual(paths, ['blocks[0].node', 'blocks[1].node'])
+    assert.deepStrictEqual(paths, ['blocks[0].node', 'blocks[1].node'])
 
     assert.notStrictEqual(e, a)
     assert.strictEqual(e.blocks[0].node, d)
@@ -169,8 +169,8 @@ describe('BlockNode', function () {
     })
 
     assert.notStrictEqual(e, a)
-    assert.deepEqual(e.blocks[0].node, d)
-    assert.deepEqual(e.blocks[1].node, c)
+    assert.deepStrictEqual(e.blocks[0].node, d)
+    assert.deepStrictEqual(e.blocks[1].node, c)
   })
 
   it('should transform a BlockNode itself', function () {
@@ -183,7 +183,7 @@ describe('BlockNode', function () {
     })
 
     assert.notStrictEqual(e, a)
-    assert.deepEqual(e, d)
+    assert.deepStrictEqual(e, d)
   })
 
   it('should traverse a BlockNode', function () {
@@ -233,7 +233,7 @@ describe('BlockNode', function () {
 
     const d = a.clone()
     assert(d instanceof BlockNode)
-    assert.deepEqual(a, d)
+    assert.deepStrictEqual(a, d)
     assert.notStrictEqual(a, d)
     assert.notStrictEqual(a.blocks, d.blocks)
     assert.notStrictEqual(a.blocks[0], d.blocks[0])
@@ -301,13 +301,13 @@ describe('BlockNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'BlockNode',
       blocks: [ bBlock, cBlock ]
     })
 
     const parsed = BlockNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a BlockNode', function () {

@@ -30,16 +30,16 @@ describe('ceil', function () {
   })
 
   it('should return the ceil of a big number', function () {
-    assert.deepEqual(ceil(bignumber(0)), bignumber(0))
-    assert.deepEqual(ceil(bignumber(1)), bignumber(1))
-    assert.deepEqual(ceil(bignumber(1.3)), bignumber(2))
-    assert.deepEqual(ceil(bignumber(1.8)), bignumber(2))
-    assert.deepEqual(ceil(bignumber(2)), bignumber(2))
-    assert.deepEqual(ceil(bignumber(-1)), bignumber(-1))
-    assert.deepEqual(ceil(bignumber(-1.3)), bignumber(-1))
-    assert.deepEqual(ceil(bignumber(-1.8)), bignumber(-1))
-    assert.deepEqual(ceil(bignumber(-2)), bignumber(-2))
-    assert.deepEqual(ceil(bignumber(-2.1)), bignumber(-2))
+    assert.deepStrictEqual(ceil(bignumber(0)), bignumber(0))
+    assert.deepStrictEqual(ceil(bignumber(1)), bignumber(1))
+    assert.deepStrictEqual(ceil(bignumber(1.3)), bignumber(2))
+    assert.deepStrictEqual(ceil(bignumber(1.8)), bignumber(2))
+    assert.deepStrictEqual(ceil(bignumber(2)), bignumber(2))
+    assert.deepStrictEqual(ceil(bignumber(-1)), bignumber(-1))
+    assert.deepStrictEqual(ceil(bignumber(-1.3)), bignumber(-1))
+    assert.deepStrictEqual(ceil(bignumber(-1.8)), bignumber(-1))
+    assert.deepStrictEqual(ceil(bignumber(-2)), bignumber(-2))
+    assert.deepStrictEqual(ceil(bignumber(-2.1)), bignumber(-2))
   })
 
   it('should return the ceil of real and imag part of a complex', function () {

@@ -23,12 +23,12 @@ describe('median', function () {
   })
 
   it('should return the median of an even number of new BigNumbers', function () {
-    assert.deepEqual(median(new BigNumber(1), new BigNumber(4), new BigNumber(5), new BigNumber(2)),
+    assert.deepStrictEqual(median(new BigNumber(1), new BigNumber(4), new BigNumber(5), new BigNumber(2)),
       new BigNumber(3))
   })
 
   it('should return the median of an odd number of new BigNumbers', function () {
-    assert.deepEqual(median(new BigNumber(1), new BigNumber(4), new BigNumber(2)),
+    assert.deepStrictEqual(median(new BigNumber(1), new BigNumber(4), new BigNumber(2)),
       new BigNumber(2))
   })
 
@@ -45,8 +45,8 @@ describe('median', function () {
   })
 
   it('should return the median of units', function () {
-    assert.deepEqual(median([new Unit(5, 'mm'), new Unit(15, 'mm'), new Unit(10, 'mm')]), new Unit(10, 'mm'))
-    assert.deepEqual(median([new Unit(5, 'mm'), new Unit(30, 'mm'), new Unit(20, 'mm'), new Unit(10, 'mm')]), new Unit(15, 'mm'))
+    assert.deepStrictEqual(median([new Unit(5, 'mm'), new Unit(15, 'mm'), new Unit(10, 'mm')]), new Unit(10, 'mm'))
+    assert.deepStrictEqual(median([new Unit(5, 'mm'), new Unit(30, 'mm'), new Unit(20, 'mm'), new Unit(10, 'mm')]), new Unit(15, 'mm'))
   })
 
   it('should return the median from an 1d matrix', function () {
@@ -106,8 +106,8 @@ describe('median', function () {
   it('should not mutate the input', function () {
     const a = [3, 2, 1]
     const b = median(a)
-    assert.deepEqual(a, [3, 2, 1])
-    assert.deepEqual(b, 2)
+    assert.deepStrictEqual(a, [3, 2, 1])
+    assert.deepStrictEqual(b, 2)
   })
 
   it('should LaTeX median', function () {

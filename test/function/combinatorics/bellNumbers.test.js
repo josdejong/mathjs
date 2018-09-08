@@ -10,8 +10,8 @@ describe('bellNumbers', function () {
   })
 
   it('should calculate the bellNumbers of n items with BigNumbers', function () {
-    assert.deepEqual(bellNumbers(math.bignumber(2)), math.bignumber(2))
-    assert.deepEqual(bellNumbers(math.bignumber(3)), math.bignumber(5))
+    assert.deepStrictEqual(bellNumbers(math.bignumber(2)), math.bignumber(2))
+    assert.deepStrictEqual(bellNumbers(math.bignumber(3)), math.bignumber(5))
   })
 
   it('should not work with non-integer and negative input', function () {

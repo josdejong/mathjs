@@ -15,7 +15,7 @@ describe('max', function () {
   })
 
   it('should return the max of big numbers', function () {
-    assert.deepEqual(max(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2), new BigNumber(-5)),
+    assert.deepStrictEqual(max(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2), new BigNumber(-5)),
       new BigNumber(5))
   })
 
@@ -28,12 +28,12 @@ describe('max', function () {
   })
 
   it('should return the max element from a 2d matrix', function () {
-    assert.deepEqual(max([
+    assert.deepStrictEqual(max([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 11, 9]
     ]), 11)
-    assert.deepEqual(max(new DenseMatrix([
+    assert.deepStrictEqual(max(new DenseMatrix([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 11, 9]
@@ -41,25 +41,25 @@ describe('max', function () {
   })
 
   it('should return a reduced n-1 matrix from a n matrix', function () {
-    assert.deepEqual(max([
+    assert.deepStrictEqual(max([
       [1, 2, 3],
       [4, 5, 6],
       [7, 8, 9]
     ], 0), [7, 8, 9])
 
-    assert.deepEqual(max([
+    assert.deepStrictEqual(max([
       [1, 2, 3],
       [4, 5, 6],
       [7, 8, 9]
     ], 1), [3, 6, 9])
 
-    assert.deepEqual(max([
+    assert.deepStrictEqual(max([
       [1, 2, 3],
       [6, 5, 4],
       [8, 7, 9]
     ], 1), [3, 6, 9])
 
-    assert.deepEqual(max([
+    assert.deepStrictEqual(max([
       [[1, 2], [3, 4], [5, 6]],
       [[6, 7], [8, 9], [10, 11]]
     ], 2),

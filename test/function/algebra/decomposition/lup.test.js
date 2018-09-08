@@ -9,11 +9,11 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
+    assert.deepStrictEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
     // U
-    assert.deepEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
+    assert.deepStrictEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
     // P
-    assert.deepEqual(r.p, [0, 1])
+    assert.deepStrictEqual(r.p, [0, 1])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -23,11 +23,11 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
+    assert.deepStrictEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
     // U
-    assert.deepEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
+    assert.deepStrictEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
     // P
-    assert.deepEqual(r.p, [0, 1])
+    assert.deepStrictEqual(r.p, [0, 1])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -37,11 +37,11 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
+    assert.deepStrictEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
     // U
-    assert.deepEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
+    assert.deepStrictEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
     // P
-    assert.deepEqual(r.p, [0, 1])
+    assert.deepStrictEqual(r.p, [0, 1])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -56,7 +56,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.L,
       math.matrix(
         [
@@ -65,7 +65,7 @@ describe('lup', function () {
         ]
       ))
     // U
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.U,
       math.matrix(
         [
@@ -74,7 +74,7 @@ describe('lup', function () {
         ]
       ))
     // P
-    assert.deepEqual(r.p, [0, 1])
+    assert.deepStrictEqual(r.p, [0, 1])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -90,7 +90,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.L,
       math.matrix(
         [
@@ -100,7 +100,7 @@ describe('lup', function () {
         ]
       ))
     // U
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.U,
       math.matrix(
         [
@@ -109,7 +109,7 @@ describe('lup', function () {
         ]
       ))
     // P
-    assert.deepEqual(r.p, [0, 1, 2])
+    assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -144,7 +144,7 @@ describe('lup', function () {
         [0, 0, 0, 4]
       ])
     // P
-    assert.deepEqual(r.p, [3, 1, 0, 2])
+    assert.deepStrictEqual(r.p, [3, 1, 0, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -175,7 +175,7 @@ describe('lup', function () {
         [0, 0, 0.75]
       ])
     // P
-    assert.deepEqual(r.p, [2, 1, 0])
+    assert.deepStrictEqual(r.p, [2, 1, 0])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -205,7 +205,7 @@ describe('lup', function () {
         [0, math.complex(-2.3333333333, 0)]
       ])
     // P
-    assert.deepEqual(r.p, [0, 1, 2])
+    assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -220,21 +220,21 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.L.valueOf(),
       [
         [1, 0],
         [0.5, 1]
       ])
     // U
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.U.valueOf(),
       [
         [2, 1, 1],
         [0, 3.5, 4.5]
       ])
     // P
-    assert.deepEqual(r.p, [0, 1])
+    assert.deepStrictEqual(r.p, [0, 1])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -250,7 +250,7 @@ describe('lup', function () {
 
     const r = math.lup(m)
     // L
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.L.valueOf(),
       [
         [1, 0],
@@ -258,14 +258,14 @@ describe('lup', function () {
         [0.5, 0]
       ])
     // U
-    assert.deepEqual(
+    assert.deepStrictEqual(
       r.U.valueOf(),
       [
         [8, 2],
         [0, 2.5]
       ])
     // P
-    assert.deepEqual(r.p, [0, 1, 2])
+    assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -300,7 +300,7 @@ describe('lup', function () {
         [0, 0, 0, 4]
       ])
     // P
-    assert.deepEqual(r.p, [3, 1, 0, 2])
+    assert.deepStrictEqual(r.p, [3, 1, 0, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -332,7 +332,7 @@ describe('lup', function () {
         [0, 0, 0.75]
       ])
     // P
-    assert.deepEqual(r.p, [2, 1, 0])
+    assert.deepStrictEqual(r.p, [2, 1, 0])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })
@@ -362,7 +362,7 @@ describe('lup', function () {
         [0, math.complex(-2.3333333333, 0)]
       ])
     // P
-    assert.deepEqual(r.p, [0, 1, 2])
+    assert.deepStrictEqual(r.p, [0, 1, 2])
     // verify
     approx.deepEqual(math.multiply(_p(r.p), m).valueOf(), math.multiply(r.L, r.U).valueOf())
   })

@@ -10,9 +10,9 @@ describe('subset', function () {
   const b = math.matrix(a)
 
   it('should get the right subset of an array', function () {
-    assert.deepEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
-    assert.deepEqual(subset(a, index(1, 0)), 3)
-    assert.deepEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
+    assert.deepStrictEqual(subset(a, index(new Range(0, 2), 1)), [[2], [4]])
+    assert.deepStrictEqual(subset(a, index(1, 0)), 3)
+    assert.deepStrictEqual(subset([math.bignumber(2)], index(0)), math.bignumber(2))
   })
 
   it('should throw an error if trying to access an invalid subset of an array', function () {
@@ -24,8 +24,8 @@ describe('subset', function () {
 
   it('should get the right subset of an object', function () {
     const obj = { 'foo': 'bar' }
-    assert.deepEqual(subset(obj, index('foo')), 'bar')
-    assert.deepEqual(subset(obj, index('bla')), undefined)
+    assert.deepStrictEqual(subset(obj, index('foo')), 'bar')
+    assert.deepStrictEqual(subset(obj, index('bla')), undefined)
   })
 
   it('should throw an error in case of an invalid subset for an object', function () {
@@ -35,16 +35,16 @@ describe('subset', function () {
   })
 
   it('should get the right subset of a matrix', function () {
-    assert.deepEqual(subset(b, index(new Range(0, 2), 1)), matrix([[2], [4]]))
-    assert.deepEqual(subset(b, index(1, 0)), 3)
+    assert.deepStrictEqual(subset(b, index(new Range(0, 2), 1)), matrix([[2], [4]]))
+    assert.deepStrictEqual(subset(b, index(1, 0)), 3)
   })
 
   it('should get a subset of a matrix returning a null or undefined value', function () {
-    assert.deepEqual(subset([0], index(0)), 0)
-    assert.deepEqual(subset([null], index(0)), null)
-    assert.deepEqual(subset([undefined], index(0)), undefined)
+    assert.deepStrictEqual(subset([0], index(0)), 0)
+    assert.deepStrictEqual(subset([null], index(0)), null)
+    assert.deepStrictEqual(subset([undefined], index(0)), undefined)
 
-    assert.deepEqual(subset([null, undefined], index(new Range(0, 2))), [null, undefined])
+    assert.deepStrictEqual(subset([null, undefined], index(new Range(0, 2))), [null, undefined])
   })
 
   it('should throw an error if trying to access an invalid subset of a matrix', function () {
@@ -60,18 +60,18 @@ describe('subset', function () {
   // TODO: test getting subset of an array and matrix
 
   it('should set the right subset of an array', function () {
-    assert.deepEqual(d, [[1, 2], [3, 4]])
-    assert.deepEqual(subset(d, index(new Range(0, 2), 1), [[-2], [-4]]), [[1, -2], [3, -4]])
-    assert.deepEqual(d, [[1, 2], [3, 4]])
-    assert.deepEqual(subset(d, index(2, new Range(0, 2)), [[5, 6]]), [[1, 2], [3, 4], [5, 6]])
-    assert.deepEqual(d, [[1, 2], [3, 4]])
-    assert.deepEqual(subset(d, index(0, 0), 123), [[123, 2], [3, 4]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(new Range(0, 2), 1), [[-2], [-4]]), [[1, -2], [3, -4]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(2, new Range(0, 2)), [[5, 6]]), [[1, 2], [3, 4], [5, 6]])
+    assert.deepStrictEqual(d, [[1, 2], [3, 4]])
+    assert.deepStrictEqual(subset(d, index(0, 0), 123), [[123, 2], [3, 4]])
   })
 
   it('should set a subset of an array with undefined default value', function () {
     const a = []
-    assert.deepEqual(subset(a, index(2), 1), [0, 0, 1])
-    assert.deepEqual(subset(a, index(2), 1, null), [null, null, 1])
+    assert.deepStrictEqual(subset(a, index(2), 1), [0, 0, 1])
+    assert.deepStrictEqual(subset(a, index(2), 1, null), [null, null, 1])
   })
 
   it('should throw an error if setting the subset of an array with an invalid replacement', function () {
@@ -80,10 +80,10 @@ describe('subset', function () {
   })
 
   it('should set the right subset of a matrix', function () {
-    assert.deepEqual(g, matrix([[1, 2], [3, 4]]))
-    assert.deepEqual(subset(g, index(new Range(0, 2), 1), [[-2], [-4]]), matrix([[1, -2], [3, -4]]))
-    assert.deepEqual(g, matrix([[1, 2], [3, 4]]))
-    assert.deepEqual(subset(g, index(2, new Range(0, 2)), [[5, 6]]), matrix([[1, 2], [3, 4], [5, 6]]))
+    assert.deepStrictEqual(g, matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(subset(g, index(new Range(0, 2), 1), [[-2], [-4]]), matrix([[1, -2], [3, -4]]))
+    assert.deepStrictEqual(g, matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(subset(g, index(2, new Range(0, 2)), [[5, 6]]), matrix([[1, 2], [3, 4], [5, 6]]))
   })
 
   it('should throw an error if setting the subset of a matrix with an invalid replacement', function () {
@@ -93,8 +93,8 @@ describe('subset', function () {
 
   describe('string', function () {
     it('should get the right subset of a string', function () {
-      assert.deepEqual(subset('hello', index(1)), 'e')
-      assert.deepEqual(subset('hello', index(new Range(4, -1, -1))), 'olleh')
+      assert.deepStrictEqual(subset('hello', index(1)), 'e')
+      assert.deepStrictEqual(subset('hello', index(new Range(4, -1, -1))), 'olleh')
     })
 
     it('should throw an error if trying to access an invalid subset of a string', function () {
@@ -106,12 +106,12 @@ describe('subset', function () {
 
     it('should set the right subset of a string', function () {
       const j = 'hello'
-      assert.deepEqual(subset(j, index(0), 'H'), 'Hello')
-      assert.deepEqual(j, 'hello')
-      assert.deepEqual(subset(j, index(5), '!'), 'hello!')
-      assert.deepEqual(j, 'hello')
-      assert.deepEqual(subset(j, index(new Range(5, 11)), ' world'), 'hello world')
-      assert.deepEqual(j, 'hello')
+      assert.deepStrictEqual(subset(j, index(0), 'H'), 'Hello')
+      assert.deepStrictEqual(j, 'hello')
+      assert.deepStrictEqual(subset(j, index(5), '!'), 'hello!')
+      assert.deepStrictEqual(j, 'hello')
+      assert.deepStrictEqual(subset(j, index(new Range(5, 11)), ' world'), 'hello world')
+      assert.deepStrictEqual(j, 'hello')
     })
 
     it('should throw an error when index is out of range for a string', function () {
@@ -122,14 +122,14 @@ describe('subset', function () {
     it('should set the right subset of a string with resizing', function () {
       const j = ''
       const defaultValue = 'i'
-      assert.deepEqual(subset(j, index(5), '!', defaultValue), 'iiiii!')
+      assert.deepStrictEqual(subset(j, index(5), '!', defaultValue), 'iiiii!')
     })
 
     it('should set a property of an object', function () {
       const obj = {}
       const res = subset(obj, index('foo'), 'bar')
-      assert.deepEqual(res, { foo: 'bar' })
-      assert.deepEqual(obj, {}) // should leave the original object untouched
+      assert.deepStrictEqual(res, { foo: 'bar' })
+      assert.deepStrictEqual(obj, {}) // should leave the original object untouched
     })
 
     it('should throw an error if setting the subset of a string with an invalid replacement', function () {

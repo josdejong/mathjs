@@ -72,7 +72,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepEqual(expr.eval(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.eval(scope), [[3, 4]])
   })
 
   it('should compile a AccessorNode with a property', function () {
@@ -84,7 +84,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: { b: 42 }
     }
-    assert.deepEqual(expr.eval(scope), 42)
+    assert.deepStrictEqual(expr.eval(scope), 42)
   })
 
   it('should throw a one-based index error when out of range (Array)', function () {
@@ -163,7 +163,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepEqual(expr.eval(scope), [[4, 3]])
+    assert.deepStrictEqual(expr.eval(scope), [[4, 3]])
   })
 
   it('should compile a AccessorNode with "end" both as value and in a range', function () {
@@ -181,7 +181,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepEqual(expr.eval(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.eval(scope), [[3, 4]])
   })
 
   it('should compile a AccessorNode with bignumber setting', function () {
@@ -195,7 +195,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepEqual(expr.eval(scope), 3)
+    assert.deepStrictEqual(expr.eval(scope), 3)
   })
 
   it('should filter an AccessorNode', function () {
@@ -205,19 +205,19 @@ describe('AccessorNode', function () {
     const index = new IndexNode([b, c])
     const n = new AccessorNode(a, index)
 
-    assert.deepEqual(n.filter(function (node) { return node.isAccessorNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
-    assert.deepEqual(n.filter(function (node) { return node.isRangeNode }), [])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode }), [b, c])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode && node.value === 2 }), [b])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isAccessorNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isRangeNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [b, c])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode && node.value === 2 }), [b])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an empty AccessorNode', function () {
     const n = new AccessorNode(new SymbolNode('a'), new IndexNode([]))
 
-    assert.deepEqual(n.filter(function (node) { return node.isAccessorNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isAccessorNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [])
   })
 
   it('should run forEach on an AccessorNode', function () {
@@ -238,7 +238,7 @@ describe('AccessorNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], index)
-    assert.deepEqual(paths, ['object', 'index'])
+    assert.deepStrictEqual(paths, ['object', 'index'])
   })
 
   it('should map an AccessorNode', function () {
@@ -262,12 +262,12 @@ describe('AccessorNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], index)
-    assert.deepEqual(paths, ['object', 'index'])
+    assert.deepStrictEqual(paths, ['object', 'index'])
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.object, e)
-    assert.deepEqual(f.index.dimensions[0], b)
-    assert.deepEqual(f.index.dimensions[1], c)
+    assert.deepStrictEqual(f.object, e)
+    assert.deepStrictEqual(f.index.dimensions[0], b)
+    assert.deepStrictEqual(f.index.dimensions[1], c)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -293,9 +293,9 @@ describe('AccessorNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.object, e)
-    assert.deepEqual(f.index.dimensions[0], b)
-    assert.deepEqual(f.index.dimensions[1], c)
+    assert.deepStrictEqual(f.object, e)
+    assert.deepStrictEqual(f.index.dimensions[0], b)
+    assert.deepStrictEqual(f.index.dimensions[1], c)
   })
 
   it('should transform an IndexNodes (nested) parameters', function () {
@@ -310,9 +310,9 @@ describe('AccessorNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.object, a)
-    assert.deepEqual(f.index.dimensions[0], b)
-    assert.deepEqual(f.index.dimensions[1], e)
+    assert.deepStrictEqual(f.object, a)
+    assert.deepStrictEqual(f.index.dimensions[0], b)
+    assert.deepStrictEqual(f.index.dimensions[1], e)
   })
 
   it('should transform an AccessorNode itself', function () {
@@ -327,7 +327,7 @@ describe('AccessorNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should clone an AccessorNode', function () {
@@ -338,7 +338,7 @@ describe('AccessorNode', function () {
 
     const d = n.clone()
     assert(d instanceof AccessorNode)
-    assert.deepEqual(d, n)
+    assert.deepStrictEqual(d, n)
     assert.notStrictEqual(d, n)
     assert.strictEqual(d.object, n.object)
     assert.strictEqual(d.index, n.index)
@@ -462,16 +462,13 @@ describe('AccessorNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'AccessorNode',
-      index: {
-        dimensions: [ b, c ],
-        dotNotation: false
-      },
+      index: node.index,
       object: a
     })
 
     const parsed = AccessorNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 })

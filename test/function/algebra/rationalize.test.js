@@ -140,42 +140,42 @@ describe('rationalize', function () {
   it('testing complete form', function () {
     this.timeout(5000) // For IE/Edge
 
-    assert.deepEqual(objToStrings(math.rationalize('x+x+x+y', {}, true)), {
+    assert.deepStrictEqual(objToStrings(math.rationalize('x+x+x+y', {}, true)), {
       coefficients: '',
       denominator: null,
       expression: '3*x+y',
       numerator: '3*x+y',
       variables: 'x,y'
     })
-    assert.deepEqual(objToStrings(math.rationalize('2x/y - y/(x+1)', {}, true)), {
+    assert.deepStrictEqual(objToStrings(math.rationalize('2x/y - y/(x+1)', {}, true)), {
       coefficients: '',
       denominator: 'x*y+y',
       expression: '(2*x^2-y^2+2*x)/(x*y+y)',
       numerator: '2*x^2-y^2+2*x',
       variables: 'x,y'
     })
-    assert.deepEqual(objToStrings(math.rationalize('-2+5x^2', {}, true)), {
+    assert.deepStrictEqual(objToStrings(math.rationalize('-2+5x^2', {}, true)), {
       coefficients: '-2,0,5',
       denominator: null,
       expression: '5*x^2-2',
       numerator: '5*x^2-2',
       variables: 'x'
     })
-    assert.deepEqual(objToStrings(math.rationalize('x^2 + 2*x*y + 3', { y: 5 }, true)), {
+    assert.deepStrictEqual(objToStrings(math.rationalize('x^2 + 2*x*y + 3', { y: 5 }, true)), {
       coefficients: '3,10,1',
       denominator: null,
       expression: 'x^2+10*x+3',
       numerator: 'x^2+10*x+3',
       variables: 'x'
     })
-    assert.deepEqual(objToStrings(math.rationalize('(x^2 + 2*x*y + 3)/(2y-3x)', { y: 5 }, true)), {
+    assert.deepStrictEqual(objToStrings(math.rationalize('(x^2 + 2*x*y + 3)/(2y-3x)', { y: 5 }, true)), {
       coefficients: '3,10,1',
       denominator: '-3*x+10',
       expression: '(x^2+10*x+3)/(-3*x+10)',
       numerator: 'x^2+10*x+3',
       variables: 'x'
     })
-    assert.deepEqual(objToStrings(math.rationalize('sin(y)+x', { y: math.PI / 6 }, true)), {
+    assert.deepStrictEqual(objToStrings(math.rationalize('sin(y)+x', { y: math.PI / 6 }, true)), {
       coefficients: '0.49999999999999994,1',
       denominator: null,
       expression: 'x+0.49999999999999994',

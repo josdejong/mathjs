@@ -36,15 +36,15 @@ describe('ParenthesisNode', function () {
     const a = new ConstantNode(1)
     const n = new ParenthesisNode(a)
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof ParenthesisNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.content instanceof ConstantNode }), [n])
-    assert.deepEqual(n.filter(function (node) {
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ParenthesisNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.content instanceof ConstantNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) {
       return (typeof node.content !== 'undefined') && (node.content.value === 1)
     }), [n])
-    assert.deepEqual(n.filter(function (node) {
+    assert.deepStrictEqual(n.filter(function (node) {
       return (typeof node.content !== 'undefined') && (node.content.type === 'ConstantNode')
     }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a])
   })
 
   it('should run forEach on a ParenthesisNode', function () {
@@ -55,7 +55,7 @@ describe('ParenthesisNode', function () {
     n.forEach(function (node, path, _parent) {
       assert.strictEqual(node.type, 'ConstantNode')
       assert.strictEqual(path, 'content')
-      assert.deepEqual(_parent, n)
+      assert.deepStrictEqual(_parent, n)
       count++
     })
 
@@ -89,13 +89,13 @@ describe('ParenthesisNode', function () {
     const c = a.transform(function (node) {
       return node instanceof ParenthesisNode && node.content.value === 1 ? b : node
     })
-    assert.deepEqual(c, b)
+    assert.deepStrictEqual(c, b)
 
     // no match should leave the constant as is
     const d = a.transform(function (node) {
       return node instanceof ParenthesisNode && node.name === 2 ? b : node
     })
-    assert.deepEqual(d, a)
+    assert.deepStrictEqual(d, a)
   })
 
   it('should clone a ParenthesisNode', function () {
@@ -104,7 +104,7 @@ describe('ParenthesisNode', function () {
     const clone = n.clone()
 
     assert(clone instanceof ParenthesisNode)
-    assert.deepEqual(n, clone)
+    assert.deepStrictEqual(n, clone)
     assert.notStrictEqual(n, clone)
     assert.strictEqual(n.content, clone.content)
   })
@@ -129,9 +129,9 @@ describe('ParenthesisNode', function () {
 
     assert.strictEqual(p1.content, c)
     assert.strictEqual(p1.getContent(), c)
-    assert.deepEqual(p1.getContent(), c)
+    assert.deepStrictEqual(p1.getContent(), c)
     assert.strictEqual(p2.getContent(), c)
-    assert.deepEqual(p2.getContent(), c)
+    assert.deepStrictEqual(p2.getContent(), c)
   })
 
   it('should stringify a ParenthesisNode', function () {
@@ -170,13 +170,13 @@ describe('ParenthesisNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'ParenthesisNode',
       content: b
     })
 
     const parsed = ParenthesisNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a ParenthesisNode', function () {

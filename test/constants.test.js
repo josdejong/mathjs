@@ -128,7 +128,7 @@ describe('constants', function () {
       it('should have i', function () {
         assert.strictEqual(math.i.re, 0)
         assert.strictEqual(math.i.im, 1)
-        assert.deepEqual(math.i, math.complex(0, 1))
+        assert.deepStrictEqual(math.i, math.complex(0, 1))
       })
     })
   })
@@ -160,11 +160,11 @@ describe('constants', function () {
     // Do these tests really belong in constants.test.js ?
     approx.equal(math.sin(math.pi / 2), 1)
 
-    assert.deepEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
-    assert.deepEqual(math.round(math.eval('1+e^(pi*i)'), 5), math.complex(0))
+    assert.deepStrictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
+    assert.deepStrictEqual(math.round(math.eval('1+e^(pi*i)'), 5), math.complex(0))
 
-    assert.deepEqual(math.sqrt(-1), math.i)
-    assert.deepEqual(math.eval('i'), math.complex(0, 1))
+    assert.deepStrictEqual(math.sqrt(-1), math.i)
+    assert.deepStrictEqual(math.eval('i'), math.complex(0, 1))
 
     assert.strictEqual(math.eval('true'), true)
     assert.strictEqual(math.eval('false'), false)

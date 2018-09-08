@@ -36,13 +36,13 @@ describe('lcm', function () {
   })
 
   it('should calculate lcm for BigNumbers', function () {
-    assert.deepEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12))
-    assert.deepEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12))
+    assert.deepStrictEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12))
+    assert.deepStrictEqual(lcm(math.bignumber(4), math.bignumber(6)), math.bignumber(12))
   })
 
   it('should calculate lcm for mixed BigNumbers and Numbers', function () {
-    assert.deepEqual(lcm(math.bignumber(4), 6), math.bignumber(12))
-    assert.deepEqual(lcm(4, math.bignumber(6)), math.bignumber(12))
+    assert.deepStrictEqual(lcm(math.bignumber(4), 6), math.bignumber(12))
+    assert.deepStrictEqual(lcm(4, math.bignumber(6)), math.bignumber(12))
   })
 
   it('should find the lowest common multiple of booleans', function () {
@@ -80,18 +80,18 @@ describe('lcm', function () {
   })
 
   it('should find the least common multiple of mixed numbers and fractions', function () {
-    assert.deepEqual(lcm(math.fraction(12), 8), math.fraction(24))
-    assert.deepEqual(lcm(12, math.fraction(8)), math.fraction(24))
+    assert.deepStrictEqual(lcm(math.fraction(12), 8), math.fraction(24))
+    assert.deepStrictEqual(lcm(12, math.fraction(8)), math.fraction(24))
   })
 
   it('should find the least common even for edge cases', function () {
-    assert.deepEqual(lcm(math.fraction(-3), math.fraction(3)), math.fraction(3))
-    assert.deepEqual(lcm(math.fraction(3), math.fraction(-3)), math.fraction(3))
-    assert.deepEqual(lcm(math.fraction(0), math.fraction(3)), math.fraction(0))
-    assert.deepEqual(lcm(math.fraction(3), math.fraction(0)), math.fraction(0))
-    assert.deepEqual(lcm(math.fraction(0), math.fraction(0)), math.fraction(0))
-    assert.deepEqual(lcm(math.fraction(200), math.fraction(333)), math.fraction(66600))
-    assert.deepEqual(lcm(math.fraction(9999), math.fraction(8888)), math.fraction(79992))
+    assert.deepStrictEqual(lcm(math.fraction(-3), math.fraction(3)), math.fraction(3))
+    assert.deepStrictEqual(lcm(math.fraction(3), math.fraction(-3)), math.fraction(3))
+    assert.deepStrictEqual(lcm(math.fraction(0), math.fraction(3)), math.fraction(0))
+    assert.deepStrictEqual(lcm(math.fraction(3), math.fraction(0)), math.fraction(0))
+    assert.deepStrictEqual(lcm(math.fraction(0), math.fraction(0)), math.fraction(0))
+    assert.deepStrictEqual(lcm(math.fraction(200), math.fraction(333)), math.fraction(66600))
+    assert.deepStrictEqual(lcm(math.fraction(9999), math.fraction(8888)), math.fraction(79992))
   })
 
   it('should throw an error with units', function () {
@@ -100,58 +100,58 @@ describe('lcm', function () {
 
   describe('Array', function () {
     it('should find the greatest common divisor array - scalar', function () {
-      assert.deepEqual(lcm([5, 18, 3], 3), [15, 18, 3])
-      assert.deepEqual(lcm(3, [5, 18, 3]), [15, 18, 3])
+      assert.deepStrictEqual(lcm([5, 18, 3], 3), [15, 18, 3])
+      assert.deepStrictEqual(lcm(3, [5, 18, 3]), [15, 18, 3])
     })
 
     it('should find the greatest common divisor array - array', function () {
-      assert.deepEqual(lcm([5, 2, 3], [25, 3, 6]), [25, 6, 6])
+      assert.deepStrictEqual(lcm([5, 2, 3], [25, 3, 6]), [25, 6, 6])
     })
 
     it('should find the greatest common divisor array - dense matrix', function () {
-      assert.deepEqual(lcm([5, 2, 3], matrix([25, 3, 6])), matrix([25, 6, 6]))
+      assert.deepStrictEqual(lcm([5, 2, 3], matrix([25, 3, 6])), matrix([25, 6, 6]))
     })
 
     it('should find the greatest common divisor array - sparse matrix', function () {
-      assert.deepEqual(lcm([[5, 2, 3], [3, 2, 5]], sparse([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
+      assert.deepStrictEqual(lcm([[5, 2, 3], [3, 2, 5]], sparse([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should find the greatest common divisor dense matrix - scalar', function () {
-      assert.deepEqual(lcm(matrix([5, 18, 3]), 3), matrix([15, 18, 3]))
-      assert.deepEqual(lcm(3, matrix([5, 18, 3])), matrix([15, 18, 3]))
+      assert.deepStrictEqual(lcm(matrix([5, 18, 3]), 3), matrix([15, 18, 3]))
+      assert.deepStrictEqual(lcm(3, matrix([5, 18, 3])), matrix([15, 18, 3]))
     })
 
     it('should find the greatest common divisor dense matrix - array', function () {
-      assert.deepEqual(lcm(matrix([5, 2, 3]), [25, 3, 6]), matrix([25, 6, 6]))
+      assert.deepStrictEqual(lcm(matrix([5, 2, 3]), [25, 3, 6]), matrix([25, 6, 6]))
     })
 
     it('should find the greatest common divisor dense matrix - dense matrix', function () {
-      assert.deepEqual(lcm(matrix([5, 2, 3]), matrix([25, 3, 6])), matrix([25, 6, 6]))
+      assert.deepStrictEqual(lcm(matrix([5, 2, 3]), matrix([25, 3, 6])), matrix([25, 6, 6]))
     })
 
     it('should find the greatest common divisor dense matrix - sparse matrix', function () {
-      assert.deepEqual(lcm(matrix([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
+      assert.deepStrictEqual(lcm(matrix([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should find the greatest common divisor sparse matrix - scalar', function () {
-      assert.deepEqual(lcm(sparse([[5, 0, 3], [0, 18, 0]]), 3), sparse([[15, 0, 3], [0, 18, 0]]))
-      assert.deepEqual(lcm(3, sparse([[5, 0, 3], [0, 18, 0]])), sparse([[15, 0, 3], [0, 18, 0]]))
+      assert.deepStrictEqual(lcm(sparse([[5, 0, 3], [0, 18, 0]]), 3), sparse([[15, 0, 3], [0, 18, 0]]))
+      assert.deepStrictEqual(lcm(3, sparse([[5, 0, 3], [0, 18, 0]])), sparse([[15, 0, 3], [0, 18, 0]]))
     })
 
     it('should find the greatest common divisor sparse matrix - array', function () {
-      assert.deepEqual(lcm(sparse([[5, 2, 3], [3, 2, 5]]), [[0, 3, 6], [6, 0, 25]]), sparse([[0, 6, 6], [6, 0, 25]]))
+      assert.deepStrictEqual(lcm(sparse([[5, 2, 3], [3, 2, 5]]), [[0, 3, 6], [6, 0, 25]]), sparse([[0, 6, 6], [6, 0, 25]]))
     })
 
     it('should find the greatest common divisor sparse matrix - dense matrix', function () {
-      assert.deepEqual(lcm(sparse([[5, 2, 3], [3, 2, 5]]), matrix([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
+      assert.deepStrictEqual(lcm(sparse([[5, 2, 3], [3, 2, 5]]), matrix([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
     })
 
     it('should find the greatest common divisor sparse matrix - sparse matrix', function () {
-      assert.deepEqual(lcm(sparse([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
+      assert.deepStrictEqual(lcm(sparse([[5, 2, 3], [3, 2, 5]]), sparse([[0, 3, 6], [6, 0, 25]])), sparse([[0, 6, 6], [6, 0, 25]]))
     })
   })
 

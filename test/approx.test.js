@@ -48,6 +48,8 @@ describe('approx', function () {
     assert.throws(function () { approx.equal(0, 0.001) }, assert.AssertionError)
   })
 
+  // TODO: test approx.equal for (mixed) numbers, BigNumbers, Fractions, Complex numbers
+
   it('should test deep equality of arrays and objects', function () {
     approx.deepEqual({
       a: [1, 2, 3],

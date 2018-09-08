@@ -75,18 +75,18 @@ describe('OperatorNode', function () {
     const b = new ConstantNode(3)
     const n = new OperatorNode('+', 'add', [a, b])
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a, b])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [a, b])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should filter an OperatorNode without contents', function () {
     const n = new OperatorNode('op', 'fn', [])
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof OperatorNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
   })
 
   it('should run forEach on an OperatorNode', function () {
@@ -108,7 +108,7 @@ describe('OperatorNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], c)
     assert.strictEqual(nodes[1], d)
-    assert.deepEqual(paths, ['args[0]', 'args[1]'])
+    assert.deepStrictEqual(paths, ['args[0]', 'args[1]'])
   })
 
   it('should map an OperatorNode', function () {
@@ -133,13 +133,13 @@ describe('OperatorNode', function () {
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], c)
     assert.strictEqual(nodes[1], d)
-    assert.deepEqual(paths, ['args[0]', 'args[1]'])
+    assert.deepStrictEqual(paths, ['args[0]', 'args[1]'])
 
     assert.notStrictEqual(g, e)
     assert.strictEqual(g.args[0], e.args[0])
     assert.strictEqual(g.args[0].args[0], a) // nested x is not replaced
-    assert.deepEqual(g.args[0].args[1], b)
-    assert.deepEqual(g.args[1], f)
+    assert.deepStrictEqual(g.args[0].args[1], b)
+    assert.deepStrictEqual(g.args[1], f)
   })
 
   it('should map an implicit OperatorNode', function () {
@@ -147,7 +147,7 @@ describe('OperatorNode', function () {
     const y = new SymbolNode('y')
     const product = new OperatorNode('*', 'multiply', [x, y], true /* implicit */)
 
-    assert.deepEqual(product.map(function (x) { return x }), product)
+    assert.deepStrictEqual(product.map(function (x) { return x }), product)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -173,7 +173,7 @@ describe('OperatorNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? f : node
     })
 
-    assert.deepEqual(g.args[1], f)
+    assert.deepStrictEqual(g.args[1], f)
   })
 
   it('should transform an OperatorNode itself', function () {
@@ -188,7 +188,7 @@ describe('OperatorNode', function () {
     })
 
     assert.notStrictEqual(g, c)
-    assert.deepEqual(g, f)
+    assert.deepStrictEqual(g, f)
   })
 
   it('should clone an OperatorNode', function () {
@@ -199,7 +199,7 @@ describe('OperatorNode', function () {
 
     const d = c.clone()
     assert(d instanceof OperatorNode)
-    assert.deepEqual(d, c)
+    assert.deepStrictEqual(d, c)
     assert.notStrictEqual(d, c)
     assert.notStrictEqual(d.args, c.args)
     assert.strictEqual(d.args[0], c.args[0])
@@ -711,7 +711,7 @@ describe('OperatorNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'OperatorNode',
       op: '+',
       fn: 'add',
@@ -720,7 +720,7 @@ describe('OperatorNode', function () {
     })
 
     const parsed = OperatorNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX implicit multiplications', function () {

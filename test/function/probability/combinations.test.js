@@ -12,10 +12,10 @@ describe('combinations', function () {
   })
 
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {
-    assert.deepEqual(combinations(math.bignumber(7), math.bignumber(5)), math.bignumber(21))
-    assert.deepEqual(combinations(math.bignumber(20), math.bignumber(15)), math.bignumber(15504))
-    assert.deepEqual(combinations(math.bignumber(63), math.bignumber(7)), math.bignumber(553270671))
-    assert.deepEqual(combinations(math.bignumber(25), math.bignumber(6)), math.bignumber(177100))
+    assert.deepStrictEqual(combinations(math.bignumber(7), math.bignumber(5)), math.bignumber(21))
+    assert.deepStrictEqual(combinations(math.bignumber(20), math.bignumber(15)), math.bignumber(15504))
+    assert.deepStrictEqual(combinations(math.bignumber(63), math.bignumber(7)), math.bignumber(553270671))
+    assert.deepStrictEqual(combinations(math.bignumber(25), math.bignumber(6)), math.bignumber(177100))
   })
 
   it('should not work with non-integer and negative input', function () {

@@ -31,19 +31,19 @@ describe('Unit', function () {
 
     it('should create a unit with Fraction value', function () {
       const unit1 = new Unit(math.fraction(1000, 3), 'cm')
-      assert.deepEqual(unit1.value, math.fraction(10, 3))
+      assert.deepStrictEqual(unit1.value, math.fraction(10, 3))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
     })
 
     it('should create a unit with BigNumber value', function () {
       const unit1 = new Unit(math.bignumber(5000), 'cm')
-      assert.deepEqual(unit1.value, math.bignumber(50))
+      assert.deepStrictEqual(unit1.value, math.bignumber(50))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
     })
 
     it('should create a unit with Complex value', function () {
       const unit1 = new Unit(math.complex(500, 600), 'cm')
-      assert.deepEqual(unit1.value, math.complex(5, 6))
+      assert.deepStrictEqual(unit1.value, math.complex(5, 6))
       assert.strictEqual(unit1.units[0].unit.name, 'm')
     })
 
@@ -170,29 +170,29 @@ describe('Unit', function () {
       const u1 = new Unit(100, 'cm')
       const u2 = u1.clone()
       assert(u1 !== u2)
-      assert.deepEqual(u1, u2)
+      assert.deepStrictEqual(u1, u2)
 
       const u3 = new Unit(100, 'cm').to('inch')
       const u4 = u3.clone()
       assert(u3 !== u4)
-      assert.deepEqual(u3, u4)
+      assert.deepStrictEqual(u3, u4)
 
       const u5 = new Unit(null, 'cm').to('inch')
       const u6 = u5.clone()
       assert(u5 !== u6)
-      assert.deepEqual(u5, u6)
+      assert.deepStrictEqual(u5, u6)
 
       const u7 = new Unit(8.314, 'kg m^2 / s^2 K mol')
       const u8 = u7.clone()
       assert(u7 !== u8)
-      assert.deepEqual(u7, u8)
+      assert.deepStrictEqual(u7, u8)
     })
 
     it('should clone a with a Fraction', function () {
       const u1 = new Unit(math.fraction(1, 3), 'cm')
       const u2 = u1.clone()
       assert(u1 !== u2)
-      assert.deepEqual(u1, u2)
+      assert.deepStrictEqual(u1, u2)
       assert(u1.value !== u2.value) // should be cloned
     })
 
@@ -200,7 +200,7 @@ describe('Unit', function () {
       const u1 = new Unit(math.complex(1, 3), 'cm')
       const u2 = u1.clone()
       assert(u1 !== u2)
-      assert.deepEqual(u1, u2)
+      assert.deepStrictEqual(u1, u2)
       assert(u1.value !== u2.value) // should be cloned
     })
   })
@@ -234,13 +234,13 @@ describe('Unit', function () {
   describe('toNumeric', function () {
     it('should convert a unit to a numeric value', function () {
       const u = new Unit(math.fraction(1, 3), 'cm')
-      assert.deepEqual(u.toNumeric('mm'), math.fraction(10, 3))
+      assert.deepStrictEqual(u.toNumeric('mm'), math.fraction(10, 3))
     })
     it('should simplify units before returning a numeric value', function () {
       const cm = new Unit(1, 'gram')
       const m = new Unit(1, 'kilogram')
       const product = cm.multiply(m)
-      assert.deepEqual(product.toNumeric(), 0.001)
+      assert.deepStrictEqual(product.toNumeric(), 0.001)
     })
   })
 
@@ -279,7 +279,7 @@ describe('Unit', function () {
       const u1 = new Unit(math.fraction(1, 3), 'm')
 
       const u2 = u1.to('cm')
-      assert.deepEqual(u2.value, math.fraction(1, 3))
+      assert.deepStrictEqual(u2.value, math.fraction(1, 3))
       assert(math.type.isFraction(u2.value))
       assert.strictEqual(u2.units[0].unit.name, 'm')
       assert.strictEqual(u2.units[0].prefix.name, 'c')
@@ -290,7 +290,7 @@ describe('Unit', function () {
       const u1 = new Unit(math.complex(300, 400), 'kPa')
       const u2 = u1.to('lbf/in^2')
       approx.deepEqual(u2.value, math.complex(300000, 400000))
-      assert.deepEqual(u2.toString(), '(43.511321319062766 + 58.01509509208368i) lbf / in^2')
+      assert.deepStrictEqual(u2.toString(), '(43.511321319062766 + 58.01509509208368i) lbf / in^2')
     })
 
     it('should convert a unit to a fixed unit', function () {
@@ -615,13 +615,13 @@ describe('Unit', function () {
 
   describe('json', function () {
     it('toJSON', function () {
-      assert.deepEqual(new Unit(5, 'cm').toJSON(),
+      assert.deepStrictEqual(new Unit(5, 'cm').toJSON(),
         { 'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false })
-      assert.deepEqual(new Unit(5, 'cm').to('mm').toJSON(),
+      assert.deepStrictEqual(new Unit(5, 'cm').to('mm').toJSON(),
         { 'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true })
-      assert.deepEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
+      assert.deepStrictEqual(new Unit(5, 'kN').to('kg m s ^ -2').toJSON(),
         { 'mathjs': 'Unit', value: 5000, unit: '(kg m) / s^2', fixPrefix: true })
-      assert.deepEqual(new Unit(math.fraction(0.375), 'cm').toJSON(),
+      assert.deepStrictEqual(new Unit(math.fraction(0.375), 'cm').toJSON(),
         {
           mathjs: 'Unit',
           value: math.fraction(0.375), // Note that value is not serialized at this point, that will be done by JSON.stringify
@@ -637,7 +637,7 @@ describe('Unit', function () {
         })
 
       const str = JSON.stringify(new Unit(math.fraction(0.375), 'cm'))
-      assert.deepEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}')
+      assert.deepStrictEqual(str, '{"mathjs":"Unit","value":{"mathjs":"Fraction","n":3,"d":8},"unit":"cm","fixPrefix":false}')
 
       const cmpx = JSON.stringify(new Unit(math.complex(2, 4), 'g'))
       assert.strictEqual(cmpx, '{"mathjs":"Unit","value":{"mathjs":"Complex","re":2,"im":4},"unit":"g","fixPrefix":false}')
@@ -647,17 +647,17 @@ describe('Unit', function () {
       const u1 = new Unit(5, 'cm')
       const u2 = Unit.fromJSON({ 'mathjs': 'Unit', value: 5, unit: 'cm', fixPrefix: false })
       assert.ok(u2 instanceof Unit)
-      assert.deepEqual(u2, u1)
+      assert.deepStrictEqual(u2, u1)
 
       const u3 = new Unit(5, 'cm').to('mm')
       const u4 = Unit.fromJSON({ 'mathjs': 'Unit', value: 50, unit: 'mm', fixPrefix: true })
       assert.ok(u4 instanceof Unit)
-      assert.deepEqual(u4, u3)
+      assert.deepStrictEqual(u4, u3)
 
       const u5 = new Unit(5, 'kN').to('kg m/s^2')
       const u6 = Unit.fromJSON({ 'mathjs': 'Unit', value: 5000, unit: 'kg m s^-2', fixPrefix: true })
       assert.ok(u6 instanceof Unit)
-      assert.deepEqual(u5, u6)
+      assert.deepStrictEqual(u5, u6)
 
       const u7 = Unit.fromJSON({
         mathjs: 'Unit',
@@ -665,7 +665,7 @@ describe('Unit', function () {
         unit: 'cm',
         fixPrefix: false
       })
-      assert.deepEqual(u7, new Unit(math.fraction(0.375), 'cm'))
+      assert.deepStrictEqual(u7, new Unit(math.fraction(0.375), 'cm'))
 
       const u8 = Unit.fromJSON({
         mathjs: 'Unit',
@@ -673,7 +673,7 @@ describe('Unit', function () {
         unit: 'g',
         fixPrefix: false
       })
-      assert.deepEqual(u8, new Unit(math.complex(2, 4), 'g'))
+      assert.deepStrictEqual(u8, new Unit(math.complex(2, 4), 'g'))
     })
 
     it('toJSON -> fromJSON should recover an "equal" unit', function () {
@@ -882,7 +882,7 @@ describe('Unit', function () {
       assert.strictEqual(unit1.units[6].power, -1)
 
       const unit2 = Unit.parse('1(m/(s/(kg mol)/(lbm/h)K))')
-      assert.deepEqual(unit1, unit2)
+      assert.deepStrictEqual(unit1, unit2)
     })
 
     it('should parse units with correct precedence', function () {

@@ -16,7 +16,7 @@ describe('sum', function () {
   })
 
   it('should return the sum of big numbers', function () {
-    assert.deepEqual(sum(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2)),
+    assert.deepStrictEqual(sum(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2)),
       new BigNumber(11))
   })
 
@@ -26,11 +26,11 @@ describe('sum', function () {
   })
 
   it('should return the sum of complex numbers', function () {
-    assert.deepEqual(sum(new Complex(2, 3), new Complex(-1, 2)), new Complex(1, 5))
+    assert.deepStrictEqual(sum(new Complex(2, 3), new Complex(-1, 2)), new Complex(1, 5))
   })
 
   it('should return the sum of mixed numbers and complex numbers', function () {
-    assert.deepEqual(sum(2, new Complex(-1, 3)), new Complex(1, 3))
+    assert.deepStrictEqual(sum(2, new Complex(-1, 3)), new Complex(1, 3))
   })
 
   it('should return the sum from an array', function () {
@@ -38,7 +38,7 @@ describe('sum', function () {
   })
 
   it('should return the sum of units', function () {
-    assert.deepEqual(sum([new Unit(5, 'mm'), new Unit(10, 'mm'), new Unit(15, 'mm')]), new Unit(30, 'mm'))
+    assert.deepStrictEqual(sum([new Unit(5, 'mm'), new Unit(10, 'mm'), new Unit(15, 'mm')]), new Unit(30, 'mm'))
   })
 
   it('should return the sum from an 1d matrix', function () {
@@ -46,7 +46,7 @@ describe('sum', function () {
   })
 
   it('should return the sum element from a 2d array', function () {
-    assert.deepEqual(sum([
+    assert.deepStrictEqual(sum([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 11, 9]
@@ -54,7 +54,7 @@ describe('sum', function () {
   })
 
   it('should return the sum element from a 2d matrix', function () {
-    assert.deepEqual(sum(new DenseMatrix([
+    assert.deepStrictEqual(sum(new DenseMatrix([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 11, 9]

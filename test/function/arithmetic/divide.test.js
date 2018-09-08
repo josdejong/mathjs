@@ -33,24 +33,24 @@ describe('divide', function () {
   })
 
   it('should divide bignumbers', function () {
-    assert.deepEqual(divide(bignumber(0.3), bignumber(0.2)), bignumber(1.5))
-    assert.deepEqual(divide(bignumber('2.6e5000'), bignumber('2')), bignumber('1.3e5000'))
+    assert.deepStrictEqual(divide(bignumber(0.3), bignumber(0.2)), bignumber(1.5))
+    assert.deepStrictEqual(divide(bignumber('2.6e5000'), bignumber('2')), bignumber('1.3e5000'))
   })
 
   it('should divide mixed numbers and bignumbers', function () {
-    assert.deepEqual(divide(bignumber(0.3), 0.2), bignumber(1.5))
-    assert.deepEqual(divide(0.3, bignumber(0.2)), bignumber(1.5))
-    assert.deepEqual(divide(bignumber('2.6e5000'), 2), bignumber('1.3e5000'))
+    assert.deepStrictEqual(divide(bignumber(0.3), 0.2), bignumber(1.5))
+    assert.deepStrictEqual(divide(0.3, bignumber(0.2)), bignumber(1.5))
+    assert.deepStrictEqual(divide(bignumber('2.6e5000'), 2), bignumber('1.3e5000'))
 
     assert.throws(function () { divide(1 / 3, bignumber(2)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
     assert.throws(function () { divide(bignumber(1), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
   })
 
   it('should divide mixed booleans and bignumbers', function () {
-    assert.deepEqual(divide(bignumber(0.3), true), bignumber(0.3))
-    assert.deepEqual(divide(bignumber(0.3), false).toString(), 'Infinity')
-    assert.deepEqual(divide(false, bignumber('2')), bignumber(0))
-    assert.deepEqual(divide(true, bignumber('2')), bignumber(0.5))
+    assert.deepStrictEqual(divide(bignumber(0.3), true), bignumber(0.3))
+    assert.deepStrictEqual(divide(bignumber(0.3), false).toString(), 'Infinity')
+    assert.deepStrictEqual(divide(false, bignumber('2')), bignumber(0))
+    assert.deepStrictEqual(divide(true, bignumber('2')), bignumber(0.5))
   })
 
   it('should divide two complex numbers', function () {
@@ -87,13 +87,13 @@ describe('divide', function () {
   })
 
   it('should divide mixed complex numbers and numbers', function () {
-    assert.deepEqual(divide(math.complex(6, -4), 2), math.complex(3, -2))
-    assert.deepEqual(divide(1, math.complex(2, 4)), math.complex(0.1, -0.2))
+    assert.deepStrictEqual(divide(math.complex(6, -4), 2), math.complex(3, -2))
+    assert.deepStrictEqual(divide(1, math.complex(2, 4)), math.complex(0.1, -0.2))
   })
 
   it('should divide mixed complex numbers and bignumbers', function () {
-    assert.deepEqual(divide(math.complex(6, -4), bignumber(2)), math.complex(3, -2))
-    assert.deepEqual(divide(bignumber(1), math.complex(2, 4)), math.complex(0.1, -0.2))
+    assert.deepStrictEqual(divide(math.complex(6, -4), bignumber(2)), math.complex(3, -2))
+    assert.deepStrictEqual(divide(bignumber(1), math.complex(2, 4)), math.complex(0.1, -0.2))
   })
 
   it('should divide two fractions', function () {
@@ -103,8 +103,8 @@ describe('divide', function () {
   })
 
   it('should divide mixed fractions and numbers', function () {
-    assert.deepEqual(divide(1, math.fraction(3)), math.fraction(1, 3))
-    assert.deepEqual(divide(math.fraction(1), 3), math.fraction(1, 3))
+    assert.deepStrictEqual(divide(1, math.fraction(3)), math.fraction(1, 3))
+    assert.deepStrictEqual(divide(math.fraction(1), 3), math.fraction(1, 3))
   })
 
   it('should divide units by a number', function () {
@@ -154,12 +154,12 @@ describe('divide', function () {
   })
 
   it('should divide each elements in a matrix by a number', function () {
-    assert.deepEqual(divide([2, 4, 6], 2), [1, 2, 3])
+    assert.deepStrictEqual(divide([2, 4, 6], 2), [1, 2, 3])
     const a = math.matrix([[1, 2], [3, 4]])
-    assert.deepEqual(divide(a, 2), math.matrix([[0.5, 1], [1.5, 2]]))
-    assert.deepEqual(divide(a.valueOf(), 2), [[0.5, 1], [1.5, 2]])
-    assert.deepEqual(divide([], 2), [])
-    assert.deepEqual(divide([], 2), [])
+    assert.deepStrictEqual(divide(a, 2), math.matrix([[0.5, 1], [1.5, 2]]))
+    assert.deepStrictEqual(divide(a.valueOf(), 2), [[0.5, 1], [1.5, 2]])
+    assert.deepStrictEqual(divide([], 2), [])
+    assert.deepStrictEqual(divide([], 2), [])
   })
 
   it('should divide 1 over a matrix (matrix inverse)', function () {
@@ -177,7 +177,7 @@ describe('divide', function () {
   it('should perform matrix division', function () {
     const a = math.matrix([[1, 2], [3, 4]])
     const b = math.matrix([[5, 6], [7, 8]])
-    assert.deepEqual(divide(a, b), math.matrix([[3, -2], [2, -1]]))
+    assert.deepStrictEqual(divide(a, b), math.matrix([[3, -2], [2, -1]]))
   })
 
   it('should divide a matrix by a matrix containing a scalar', function () {

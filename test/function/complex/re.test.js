@@ -13,7 +13,7 @@ describe('re', function () {
   })
 
   it('should return the real part of a big number', function () {
-    assert.deepEqual(math.re(math.bignumber(2)), math.bignumber(2))
+    assert.deepStrictEqual(math.re(math.bignumber(2)), math.bignumber(2))
   })
 
   it('should return the real part of a boolean', function () {
@@ -22,8 +22,8 @@ describe('re', function () {
   })
 
   it('should return the real part for each element in a matrix', function () {
-    assert.deepEqual(math.re([2, math.complex('3-6i')]), [2, 3])
-    assert.deepEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3])
+    assert.deepStrictEqual(math.re([2, math.complex('3-6i')]), [2, 3])
+    assert.deepStrictEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3])
   })
 
   it('should throw an error when called with an unsupported type of argument', function () {

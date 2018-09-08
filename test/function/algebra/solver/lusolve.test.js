@@ -16,7 +16,7 @@ describe('lusolve', function () {
 
     const x = math.lusolve(m, b)
 
-    approx.deepEqual(x, [-1, -0.5, -1 / 3, -0.25])
+    approx.deepEqual(x, [[-1], [-0.5], [-1 / 3], [-0.25]])
   })
 
   it('should solve linear system 4 x 4, array and column array', function () {

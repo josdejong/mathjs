@@ -19,9 +19,9 @@ describe('square', function () {
   })
 
   it('should return the square of a big number', function () {
-    assert.deepEqual(square(bignumber(4)), bignumber(16))
-    assert.deepEqual(square(bignumber(-2)), bignumber(4))
-    assert.deepEqual(square(bignumber(0)), bignumber(0))
+    assert.deepStrictEqual(square(bignumber(4)), bignumber(16))
+    assert.deepStrictEqual(square(bignumber(-2)), bignumber(4))
+    assert.deepStrictEqual(square(bignumber(0)), bignumber(0))
   })
 
   it('should return the square of a fraction', function () {
@@ -41,9 +41,9 @@ describe('square', function () {
   })
 
   it('should return the square of a complex number', function () {
-    assert.deepEqual(square(math.complex('2i')), math.complex('-4'))
-    assert.deepEqual(square(math.complex('2+3i')), math.complex('-5+12i'))
-    assert.deepEqual(square(math.complex('2')), math.complex('4'))
+    assert.deepStrictEqual(square(math.complex('2i')), math.complex('-4'))
+    assert.deepStrictEqual(square(math.complex('2+3i')), math.complex('-5+12i'))
+    assert.deepStrictEqual(square(math.complex('2')), math.complex('4'))
   })
 
   it('should return the square of a unit', function () {
@@ -57,9 +57,9 @@ describe('square', function () {
   })
 
   it('should return the square of each element in a matrix', function () {
-    assert.deepEqual(square([2, 3, 4, 5]), [4, 9, 16, 25])
-    assert.deepEqual(square(matrix([2, 3, 4, 5])), matrix([4, 9, 16, 25]))
-    assert.deepEqual(square(matrix([[1, 2], [3, 4]])), matrix([[1, 4], [9, 16]]))
+    assert.deepStrictEqual(square([2, 3, 4, 5]), [4, 9, 16, 25])
+    assert.deepStrictEqual(square(matrix([2, 3, 4, 5])), matrix([4, 9, 16, 25]))
+    assert.deepStrictEqual(square(matrix([[1, 2], [3, 4]])), matrix([[1, 4], [9, 16]]))
   })
 
   it('should LaTeX square', function () {

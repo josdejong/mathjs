@@ -33,12 +33,12 @@ describe('tan', function () {
   it('should return the tangent of a bignumber', function () {
     const bigPi = piBigmath.pi
 
-    assert.deepEqual(bigTan(Big(0)), Big(0))
-    assert.deepEqual(bigTan(Big(-1)), Big('-1.5574077246549022305'))
+    assert.deepStrictEqual(bigTan(Big(0)), Big(0))
+    assert.deepStrictEqual(bigTan(Big(-1)), Big('-1.5574077246549022305'))
 
-    assert.deepEqual(bigTan(bigPi.div(8)).toString(), '0.414213562373095048802')
+    assert.deepStrictEqual(bigTan(bigPi.div(8)).toString(), '0.414213562373095048802')
     // Wolfram:                                        0.414213562373095048801688724209698078569671875376948073176
-    assert.deepEqual(bigTan(bigPi.div(4)).toString(), '0.999999999999999999999')
+    assert.deepStrictEqual(bigTan(bigPi.div(4)).toString(), '0.999999999999999999999')
   })
 
   it('should return the tangent of a complex number', function () {

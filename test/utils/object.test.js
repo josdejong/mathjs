@@ -29,7 +29,7 @@ describe('object', function () {
       const obj = { a: { b: 'c', d: new Date(2014, 0, 1) } }
       const clone = object.clone(obj)
 
-      assert.deepEqual(obj, clone)
+      assert.deepStrictEqual(obj, clone)
 
       // check whether the clone remains unchanged when changing the original object
       obj.a.b = 'cc'
@@ -45,7 +45,7 @@ describe('object', function () {
       const d2 = object.clone(d1)
       assert.strictEqual(d1.valueOf(), d2.valueOf())
       d1.setMonth(2)
-      assert.notEqual(d1, d2)
+      assert.notStrictEqual(d1, d2)
     })
 
     it('should (deep) clone arrays', function () {
@@ -53,7 +53,7 @@ describe('object', function () {
       const arr = [1, 2, d, { a: 3 }]
       const clone = object.clone(arr)
 
-      assert.deepEqual(arr, clone)
+      assert.deepStrictEqual(arr, clone)
       assert.notStrictEqual(arr, clone)
       assert.notStrictEqual(arr[2], clone[2])
       assert.notStrictEqual(arr[3], clone[3])
@@ -80,8 +80,8 @@ describe('object', function () {
 
       assert.strictEqual(o1, o3)
       assert.strictEqual(o1.e, o3.e)
-      assert.deepEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: e })
-      assert.deepEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: e }) // should be unchanged
+      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: e })
+      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: e }) // should be unchanged
     })
 
     it('should ignore inherited properties when extending an object', function () {
@@ -105,12 +105,12 @@ describe('object', function () {
 
       assert.strictEqual(o1, o3)
       assert.notStrictEqual(o3.e, o2.e)
-      assert.deepEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } })
-      assert.deepEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } }) // should be unchanged
+      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } })
+      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } }) // should be unchanged
 
       e.f.g = 4
-      assert.deepEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } }) // should be unchanged
-      assert.deepEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 4 } } }) // should be changed
+      assert.deepStrictEqual(o3, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 3 } } }) // should be unchanged
+      assert.deepStrictEqual(o2, { a: 4, b: null, c: undefined, d: 5, e: { f: { g: 4 } } }) // should be changed
     })
 
     it('should throw an error when deep extending an array (is not yet supported)', function () {

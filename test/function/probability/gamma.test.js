@@ -50,48 +50,48 @@ describe('gamma', function () {
   })
 
   it('should calculate the gamma of an integer bignumber', function () {
-    assert.deepEqual(gamma(bignumber(1)), bignumber(1))
-    assert.deepEqual(gamma(bignumber(2)), bignumber(1))
-    assert.deepEqual(gamma(bignumber(3)), bignumber(2))
-    assert.deepEqual(gamma(bignumber(4)), bignumber(6))
-    assert.deepEqual(gamma(bignumber(5)), bignumber(24))
-    assert.deepEqual(gamma(bignumber(6)), bignumber(120))
-    assert.deepEqual(gamma(bignumber(31)), bignumber('265252859812191058636308480000000'))
-    assert.deepEqual(gamma(bignumber(Infinity)).toString(), 'Infinity')
+    assert.deepStrictEqual(gamma(bignumber(1)), bignumber(1))
+    assert.deepStrictEqual(gamma(bignumber(2)), bignumber(1))
+    assert.deepStrictEqual(gamma(bignumber(3)), bignumber(2))
+    assert.deepStrictEqual(gamma(bignumber(4)), bignumber(6))
+    assert.deepStrictEqual(gamma(bignumber(5)), bignumber(24))
+    assert.deepStrictEqual(gamma(bignumber(6)), bignumber(120))
+    assert.deepStrictEqual(gamma(bignumber(31)), bignumber('265252859812191058636308480000000'))
+    assert.deepStrictEqual(gamma(bignumber(Infinity)).toString(), 'Infinity')
   })
 
   it('should calculate the gamma of a nonpositive integer bignumber', function () {
-    assert.deepEqual(gamma(bignumber(0)).toString(), 'Infinity')
-    assert.deepEqual(gamma(bignumber(-1)).toString(), 'Infinity')
-    assert.deepEqual(gamma(bignumber(-2)).toString(), 'Infinity')
+    assert.deepStrictEqual(gamma(bignumber(0)).toString(), 'Infinity')
+    assert.deepStrictEqual(gamma(bignumber(-1)).toString(), 'Infinity')
+    assert.deepStrictEqual(gamma(bignumber(-2)).toString(), 'Infinity')
     assert.ok(gamma(bignumber(-Infinity)).isNaN())
   })
   /*
   it('should calculate the gamma of a rational bignumber', function () {
-    assert.deepEqual(gamma(bignumber(0.125)), bignumber('7.5339415987976'))
-    assert.deepEqual(gamma(bignumber(0.25)), bignumber('3.62560990822191'))
-    assert.deepEqual(gamma(bignumber(0.5)), bignumber('1.77245385090552'))
-    assert.deepEqual(gamma(bignumber(1.5)), bignumber('0.886226925452758'))
-    assert.deepEqual(gamma(bignumber(2.5)), bignumber('1.32934038817914'))
+    assert.deepStrictEqual(gamma(bignumber(0.125)), bignumber('7.5339415987976'))
+    assert.deepStrictEqual(gamma(bignumber(0.25)), bignumber('3.62560990822191'))
+    assert.deepStrictEqual(gamma(bignumber(0.5)), bignumber('1.77245385090552'))
+    assert.deepStrictEqual(gamma(bignumber(1.5)), bignumber('0.886226925452758'))
+    assert.deepStrictEqual(gamma(bignumber(2.5)), bignumber('1.32934038817914'))
 
     const bigmath = math.create({ precision: 15 })
-    assert.deepEqual(bigmath.gamma(bignumber(30.5)), '4.82269693349091e+31')
+    assert.deepStrictEqual(bigmath.gamma(bignumber(30.5)), '4.82269693349091e+31')
 
     bigmath.config({ precision: 13 })
-    assert.deepEqual(bigmath.gamma(bignumber(-1.5)), bigmath.bignumber('2.363271801207'))
-    assert.deepEqual(gamma(bignumber(-2.5)), bignumber('-0.9453087205'))
+    assert.deepStrictEqual(bigmath.gamma(bignumber(-1.5)), bigmath.bignumber('2.363271801207'))
+    assert.deepStrictEqual(gamma(bignumber(-2.5)), bignumber('-0.9453087205'))
   })
 
   it('should calculate the gamma of an irrational bignumber', function () {
-    assert.deepEqual(gamma(bigUtil.phi(math.precision).neg()), bignumber('2.3258497469'))
-    assert.deepEqual(gamma(bigUtil.phi(math.precision)), bignumber('0.895673151705288'))
+    assert.deepStrictEqual(gamma(bigUtil.phi(math.precision).neg()), bignumber('2.3258497469'))
+    assert.deepStrictEqual(gamma(bigUtil.phi(math.precision)), bignumber('0.895673151705288'))
 
-    assert.deepEqual(gamma(bigUtil.pi(20)), bignumber('2.28803779534003'))
-    assert.deepEqual(gamma(bigUtil.e(math.precision)), bignumber('1.56746825577405'))
+    assert.deepStrictEqual(gamma(bigUtil.pi(20)), bignumber('2.28803779534003'))
+    assert.deepStrictEqual(gamma(bigUtil.e(math.precision)), bignumber('1.56746825577405'))
 
     const bigmath = math.create({ number: 'BigNumber' })
-    assert.deepEqual(gamma(bigmath.SQRT2), bignumber('0.886581428719259'))
-    assert.deepEqual(gamma(bigmath.SQRT2.neg()), bignumber('2.59945990753'))
+    assert.deepStrictEqual(gamma(bigmath.SQRT2), bignumber('0.886581428719259'))
+    assert.deepStrictEqual(gamma(bigmath.SQRT2.neg()), bignumber('2.59945990753'))
   })
 */
   it('should calculate the gamma of an imaginary unit', function () {
@@ -132,11 +132,11 @@ describe('gamma', function () {
   })
 
   it('should calculate the gamma of each element in a matrix', function () {
-    assert.deepEqual(gamma(math.matrix([0, 1, 2, 3, 4, 5])), math.matrix([Infinity, 1, 1, 2, 6, 24]))
+    assert.deepStrictEqual(gamma(math.matrix([0, 1, 2, 3, 4, 5])), math.matrix([Infinity, 1, 1, 2, 6, 24]))
   })
 
   it('should calculate the gamma of each element in an array', function () {
-    assert.deepEqual(gamma([0, 1, 2, 3, 4, 5]), [Infinity, 1, 1, 2, 6, 24])
+    assert.deepStrictEqual(gamma([0, 1, 2, 3, 4, 5]), [Infinity, 1, 1, 2, 6, 24])
   })
 
   it('should throw en error if called with invalid number of arguments', function () {

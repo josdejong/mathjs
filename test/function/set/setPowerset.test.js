@@ -4,14 +4,14 @@ const math = require('../../../src/main')
 
 describe('setPowerset', function () {
   it('should return the powerset of a set', function () {
-    assert.deepEqual(math.setPowerset([1, 2]), [[], [1], [2], [1, 2]])
-    assert.deepEqual(math.setPowerset([1, math.complex(2, 2)]),
+    assert.deepStrictEqual(math.setPowerset([1, 2]), [[], [1], [2], [1, 2]])
+    assert.deepStrictEqual(math.setPowerset([1, math.complex(2, 2)]),
       [[], [math.complex(2, 2)], [1], [math.complex(2, 2), 1]])
-    assert.deepEqual(math.setPowerset([]), [])
+    assert.deepStrictEqual(math.setPowerset([]), [])
   })
 
   it('should return the powerset of a multiset', function () {
-    assert.deepEqual(math.setPowerset([1, 1]), [[], [1], [1], [1, 1]])
+    assert.deepStrictEqual(math.setPowerset([1, 1]), [[], [1], [1], [1, 1]])
   })
 
   it('should always return an array', function () {

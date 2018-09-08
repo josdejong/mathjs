@@ -43,12 +43,12 @@ describe('log2', function () {
   it('should return the log of positive bignumbers', function () {
     const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(1)), bigmath.bignumber(0))
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(2)), bigmath.bignumber(1))
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(4)), bigmath.bignumber(2))
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(8)), bigmath.bignumber(3))
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(16)), bigmath.bignumber(4))
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(2).pow(500)), bigmath.bignumber(500))
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(1)), bigmath.bignumber(0))
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(2)), bigmath.bignumber(1))
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(4)), bigmath.bignumber(2))
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(8)), bigmath.bignumber(3))
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(16)), bigmath.bignumber(4))
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(2).pow(500)), bigmath.bignumber(500))
   })
 
   it('should return the log of negative bignumbers', function () {
@@ -62,7 +62,7 @@ describe('log2', function () {
   it('should return the log of a bignumber with value zero', function () {
     const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log2(bigmath.bignumber(0)).toString(), '-Infinity')
+    assert.deepStrictEqual(bigmath.log2(bigmath.bignumber(0)).toString(), '-Infinity')
   })
 
   it('should throw an error if used with a wrong number of arguments', function () {

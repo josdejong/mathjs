@@ -23,11 +23,11 @@ describe('string', function () {
   })
 
   it('should convert the elements of an array to strings', function () {
-    assert.deepEqual(string([[2, true], ['hi', null]]), [['2', 'true'], ['hi', 'null']])
+    assert.deepStrictEqual(string([[2, true], ['hi', null]]), [['2', 'true'], ['hi', 'null']])
   })
 
   it('should convert the elements of a matrix to strings', function () {
-    assert.deepEqual(string(math.matrix([[2, true], ['hi', null]])),
+    assert.deepStrictEqual(string(math.matrix([[2, true], ['hi', null]])),
       math.matrix([['2', 'true'], ['hi', 'null']]))
   })
 

@@ -13,15 +13,15 @@ describe('permutations', function () {
   })
 
   it('should calculate the permutations of a BigNumber', function () {
-    assert.deepEqual(permutations(math.bignumber(4)), math.bignumber(24))
-    assert.deepEqual(permutations(math.bignumber(5)), math.bignumber(120))
-    assert.deepEqual(permutations(math.bignumber(8)), math.bignumber(40320))
+    assert.deepStrictEqual(permutations(math.bignumber(4)), math.bignumber(24))
+    assert.deepStrictEqual(permutations(math.bignumber(5)), math.bignumber(120))
+    assert.deepStrictEqual(permutations(math.bignumber(8)), math.bignumber(40320))
   })
 
   it('should calculate the permutations of a BigNumber, taking k at a time', function () {
-    assert.deepEqual(permutations(math.bignumber(5), math.bignumber(4)), math.bignumber(120))
-    assert.deepEqual(permutations(math.bignumber(6), math.bignumber(3)), math.bignumber(120))
-    assert.deepEqual(permutations(math.bignumber(9), math.bignumber(8)), math.bignumber(362880))
+    assert.deepStrictEqual(permutations(math.bignumber(5), math.bignumber(4)), math.bignumber(120))
+    assert.deepStrictEqual(permutations(math.bignumber(6), math.bignumber(3)), math.bignumber(120))
+    assert.deepStrictEqual(permutations(math.bignumber(9), math.bignumber(8)), math.bignumber(362880))
   })
 
   it('should calculate the permutations of a number, taking k at a time', function () {

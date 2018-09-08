@@ -82,7 +82,7 @@ describe('det', function () {
 
     const c1 = new Complex(2, 3)
     const c2 = det(c1)
-    assert.deepEqual(c1, c2)
+    assert.deepStrictEqual(c1, c2)
 
     // c2 should be a clone
     c1.re = 0
@@ -93,7 +93,7 @@ describe('det', function () {
   it('should calculate the determinant for a 1x1 matrix', function () {
     const c1 = new Complex(2, 3)
     const c2 = det([[c1]])
-    assert.deepEqual(c1, c2)
+    assert.deepStrictEqual(c1, c2)
 
     // c2 should be a clone
     c1.re = 0
@@ -103,30 +103,30 @@ describe('det', function () {
 
   it('should calculate correctly the determinant of a matrix with bignumbers', function () {
     // 1x1
-    assert.deepEqual(det([new BigNumber(5)]), new BigNumber(5))
+    assert.deepStrictEqual(det([new BigNumber(5)]), new BigNumber(5))
 
     // 2x2
-    assert.deepEqual(det([
+    assert.deepStrictEqual(det([
       [new BigNumber(1), new BigNumber(2)],
       [new BigNumber(3), new BigNumber(4)]
     ]), new BigNumber(-2))
 
     // 3x3
-    assert.deepEqual(det([
+    assert.deepStrictEqual(det([
       [new BigNumber(-2), new BigNumber(2), new BigNumber(3)],
       [new BigNumber(-1), new BigNumber(1), new BigNumber(3)],
       [new BigNumber(2), new BigNumber(0), new BigNumber(-1)]
     ]), new math.type.BigNumber(6))
 
     // the following would fail with regular Numbers due to a precision overflow
-    assert.deepEqual(det([
+    assert.deepStrictEqual(det([
       [new BigNumber(1e10 + 1), new BigNumber(1e10)],
       [new BigNumber(1e10), new BigNumber(1e10 - 1)]
     ]), new BigNumber(-1))
   })
 
   it('should calculate the determinant of a matrix with mixed numbers and bignumbers', function () {
-    assert.deepEqual(det([
+    assert.deepStrictEqual(det([
       [1, new BigNumber(2)],
       [new BigNumber(3), 4]
     ]), new math.type.BigNumber(-2))
@@ -135,7 +135,7 @@ describe('det', function () {
   it('should not change the value of the initial matrix', function () {
     const m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     det(m)
-    assert.deepEqual(m, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    assert.deepStrictEqual(m, [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
   })
 
   it('should not accept a non-square matrix', function () {

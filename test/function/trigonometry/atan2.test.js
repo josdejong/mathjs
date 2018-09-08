@@ -41,27 +41,27 @@ describe('atan2', function () {
   })
 
   it('should return the arctan of for bignumbers', function () {
-    assert.deepEqual(atan2Big(Big(0), Big(0)), Big(0))
-    assert.deepEqual(atan2Big(Big(0), Big(1)), Big(0))
-    assert.deepEqual(atan2Big(Big(1), Big(1)), Big('0.78539816339744830962'))
-    assert.deepEqual(atan2Big(Big(1), Big(0)), Big('1.5707963267948966192'))
-    assert.deepEqual(atan2Big(Big(1), Big(-1)), Big('2.3561944901923449288'))
-    assert.deepEqual(atan2Big(Big(0), Big(-1)), Big('3.1415926535897932385'))
-    assert.deepEqual(atan2Big(Big(-1), Big(-1)), Big('-2.3561944901923449288'))
-    assert.deepEqual(atan2Big(Big(-1), Big(0)), Big('-1.5707963267948966192'))
-    assert.deepEqual(atan2Big(Big(-1), Big(1)), Big('-0.78539816339744830962'))
+    assert.deepStrictEqual(atan2Big(Big(0), Big(0)), Big(0))
+    assert.deepStrictEqual(atan2Big(Big(0), Big(1)), Big(0))
+    assert.deepStrictEqual(atan2Big(Big(1), Big(1)), Big('0.78539816339744830962'))
+    assert.deepStrictEqual(atan2Big(Big(1), Big(0)), Big('1.5707963267948966192'))
+    assert.deepStrictEqual(atan2Big(Big(1), Big(-1)), Big('2.3561944901923449288'))
+    assert.deepStrictEqual(atan2Big(Big(0), Big(-1)), Big('3.1415926535897932385'))
+    assert.deepStrictEqual(atan2Big(Big(-1), Big(-1)), Big('-2.3561944901923449288'))
+    assert.deepStrictEqual(atan2Big(Big(-1), Big(0)), Big('-1.5707963267948966192'))
+    assert.deepStrictEqual(atan2Big(Big(-1), Big(1)), Big('-0.78539816339744830962'))
   })
 
   it('should return the arctan of for mixed numbers and bignumbers', function () {
-    assert.deepEqual(atan2Big(1, Big(1)), Big('0.78539816339744830962'))
-    assert.deepEqual(atan2Big(Big(1), 1), Big('0.78539816339744830962'))
+    assert.deepStrictEqual(atan2Big(1, Big(1)), Big('0.78539816339744830962'))
+    assert.deepStrictEqual(atan2Big(Big(1), 1), Big('0.78539816339744830962'))
   })
 
   it('should return the arctan of for mixed bignumbers and booleans', function () {
-    assert.deepEqual(atan2Big(Big(1), true), Big('0.78539816339744830962'))
-    assert.deepEqual(atan2Big(Big(1), false), Big('1.5707963267948966192'))
-    assert.deepEqual(atan2Big(true, Big(1)), Big('0.78539816339744830962'))
-    assert.deepEqual(atan2Big(false, Big(1)), Big(0))
+    assert.deepStrictEqual(atan2Big(Big(1), true), Big('0.78539816339744830962'))
+    assert.deepStrictEqual(atan2Big(Big(1), false), Big('1.5707963267948966192'))
+    assert.deepStrictEqual(atan2Big(true, Big(1)), Big('0.78539816339744830962'))
+    assert.deepStrictEqual(atan2Big(false, Big(1)), Big(0))
   })
 
   it('should throw an error if called with a complex', function () {
@@ -78,58 +78,58 @@ describe('atan2', function () {
 
   describe('Array', function () {
     it('should calculate atan2 array - scalar', function () {
-      assert.deepEqual(divide(atan2(1, [1, -1, 0]), pi), [0.25, 0.75, 0.5])
-      assert.deepEqual(divide(atan2([1, -1, 0], 1), pi), [0.25, -0.25, 0])
+      assert.deepStrictEqual(divide(atan2(1, [1, -1, 0]), pi), [0.25, 0.75, 0.5])
+      assert.deepStrictEqual(divide(atan2([1, -1, 0], 1), pi), [0.25, -0.25, 0])
     })
 
     it('should calculate atan2 array - array', function () {
-      assert.deepEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], [[-1, 0, 1], [1, 1, 1]]), pi), [[0.75, -0.5, 0], [0.25, -0.25, 0]])
+      assert.deepStrictEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], [[-1, 0, 1], [1, 1, 1]]), pi), [[0.75, -0.5, 0], [0.25, -0.25, 0]])
     })
 
     it('should calculate atan2 array - dense matrix', function () {
-      assert.deepEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
 
     it('should calculate atan2 array - sparse matrix', function () {
-      assert.deepEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], sparse([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2([[1, -1, 0], [1, -1, 0]], sparse([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should calculate atan2 dense matrix - scalar', function () {
-      assert.deepEqual(divide(atan2(1, matrix([1, -1, 0])), pi), matrix([0.25, 0.75, 0.5]))
-      assert.deepEqual(divide(atan2(matrix([1, -1, 0]), 1), pi), matrix([0.25, -0.25, 0]))
+      assert.deepStrictEqual(divide(atan2(1, matrix([1, -1, 0])), pi), matrix([0.25, 0.75, 0.5]))
+      assert.deepStrictEqual(divide(atan2(matrix([1, -1, 0]), 1), pi), matrix([0.25, -0.25, 0]))
     })
 
     it('should calculate atan2 dense matrix - array', function () {
-      assert.deepEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
 
     it('should calculate atan2 dense matrix - dense matrix', function () {
-      assert.deepEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
 
     it('should calculate atan2 dense matrix - sparse matrix', function () {
-      assert.deepEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), sparse([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(matrix([[1, -1, 0], [1, -1, 0]]), sparse([[-1, 0, 1], [1, 1, 1]])), pi), matrix([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should calculate atan2 sparse matrix - scalar', function () {
-      assert.deepEqual(divide(atan2(1, sparse([[1, -1], [0, 1]])), pi), matrix([[0.25, 0.75], [0.5, 0.25]]))
-      assert.deepEqual(divide(atan2(sparse([[1, -1], [0, 1]]), 1), pi), sparse([[0.25, -0.25], [0, 0.25]]))
+      assert.deepStrictEqual(divide(atan2(1, sparse([[1, -1], [0, 1]])), pi), matrix([[0.25, 0.75], [0.5, 0.25]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1], [0, 1]]), 1), pi), sparse([[0.25, -0.25], [0, 0.25]]))
     })
 
     it('should calculate atan2 sparse matrix - array', function () {
-      assert.deepEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), [[-1, 0, 1], [1, 1, 1]]), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
 
     it('should calculate atan2 sparse matrix - dense matrix', function () {
-      assert.deepEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), matrix([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
 
     it('should calculate atan2 sparse matrix - sparse matrix', function () {
-      assert.deepEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), sparse([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
+      assert.deepStrictEqual(divide(atan2(sparse([[1, -1, 0], [1, -1, 0]]), sparse([[-1, 0, 1], [1, 1, 1]])), pi), sparse([[0.75, -0.5, 0], [0.25, -0.25, 0]]))
     })
   })
 

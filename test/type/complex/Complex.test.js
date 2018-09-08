@@ -173,7 +173,7 @@ describe('Complex', function () {
       const clone = complex1.clone()
       clone.re = 100
       clone.im = 200
-      assert.notEqual(complex1, clone)
+      assert.notStrictEqual(complex1, clone)
       assert.strictEqual(complex1.re, 3)
       assert.strictEqual(complex1.im, -4)
       assert.strictEqual(clone.re, 100)
@@ -266,8 +266,8 @@ describe('Complex', function () {
   })
 
   it('toJSON', function () {
-    assert.deepEqual(new Complex(2, 4).toJSON(), { 'mathjs': 'Complex', re: 2, im: 4 })
-    assert.deepEqual(new Complex(3, 0).toJSON(), { 'mathjs': 'Complex', re: 3, im: 0 })
+    assert.deepStrictEqual(new Complex(2, 4).toJSON(), { 'mathjs': 'Complex', re: 2, im: 4 })
+    assert.deepStrictEqual(new Complex(3, 0).toJSON(), { 'mathjs': 'Complex', re: 3, im: 0 })
   })
 
   it('fromJSON', function () {
@@ -283,8 +283,8 @@ describe('Complex', function () {
   })
 
   it('compare', function () {
-    assert.deepEqual(Complex.compare(new Complex(3, 4), new Complex(2, 4)), 1)
-    assert.deepEqual(Complex.compare(new Complex(2, 4), new Complex(2, 4)), 0)
-    assert.deepEqual(Complex.compare(new Complex(2, 4), new Complex(2, 7)), -1)
+    assert.deepStrictEqual(Complex.compare(new Complex(3, 4), new Complex(2, 4)), 1)
+    assert.deepStrictEqual(Complex.compare(new Complex(2, 4), new Complex(2, 4)), 0)
+    assert.deepStrictEqual(Complex.compare(new Complex(2, 4), new Complex(2, 7)), -1)
   })
 })

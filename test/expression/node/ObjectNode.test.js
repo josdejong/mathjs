@@ -39,8 +39,8 @@ describe('ObjectNode', function () {
     const a = new ObjectNode({ c: c })
     const b = new ObjectNode()
 
-    assert.deepEqual(a.compile().eval(), { c: 1 })
-    assert.deepEqual(b.compile().eval(), {})
+    assert.deepStrictEqual(a.compile().eval(), { c: 1 })
+    assert.deepStrictEqual(b.compile().eval(), {})
   })
 
   it('should compile nested ObjectNodes', function () {
@@ -54,7 +54,7 @@ describe('ObjectNode', function () {
     const n4 = new ObjectNode({ n2: n2, n3: n3 })
 
     const expr = n4.compile()
-    assert.deepEqual(expr.eval(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
+    assert.deepStrictEqual(expr.eval(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
   })
 
   it('should filter an ObjectNode', function () {
@@ -63,11 +63,11 @@ describe('ObjectNode', function () {
     const c = new ConstantNode(2)
     const d = new ObjectNode({ a: a, b: b, c: c })
 
-    assert.deepEqual(d.filter(function (node) { return node instanceof ObjectNode }), [d])
-    assert.deepEqual(d.filter(function (node) { return node instanceof SymbolNode }), [b])
-    assert.deepEqual(d.filter(function (node) { return node instanceof RangeNode }), [])
-    assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode }), [a, c])
-    assert.deepEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [c])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ObjectNode }), [d])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof SymbolNode }), [b])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof RangeNode }), [])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ConstantNode }), [a, c])
+    assert.deepStrictEqual(d.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [c])
   })
 
   it('should run forEach on an ObjectNode', function () {
@@ -83,7 +83,7 @@ describe('ObjectNode', function () {
       assert.strictEqual(parent, c)
     })
 
-    assert.deepEqual(paths, ['properties["a"]', 'properties["b"]'])
+    assert.deepStrictEqual(paths, ['properties["a"]', 'properties["b"]'])
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], b)
@@ -105,14 +105,14 @@ describe('ObjectNode', function () {
       return (node instanceof SymbolNode) && (node.name === 'x') ? d : node
     })
 
-    assert.deepEqual(paths, ['properties["a"]', 'properties["b"]'])
+    assert.deepStrictEqual(paths, ['properties["a"]', 'properties["b"]'])
     assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], b)
 
     assert.notStrictEqual(e, c)
-    assert.deepEqual(e.properties['a'], d)
-    assert.deepEqual(e.properties['b'], b)
+    assert.deepStrictEqual(e.properties['a'], d)
+    assert.deepStrictEqual(e.properties['b'], b)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -136,8 +136,8 @@ describe('ObjectNode', function () {
     })
 
     assert.notStrictEqual(e, c)
-    assert.deepEqual(e.properties['a'], d)
-    assert.deepEqual(e.properties['b'], b)
+    assert.deepStrictEqual(e.properties['a'], d)
+    assert.deepStrictEqual(e.properties['b'], b)
   })
 
   it('should transform an ObjectNode itself', function () {
@@ -151,7 +151,7 @@ describe('ObjectNode', function () {
     })
 
     assert.notStrictEqual(e, c)
-    assert.deepEqual(e, d)
+    assert.deepStrictEqual(e, d)
   })
 
   it('should traverse an ObjectNode', function () {
@@ -208,7 +208,7 @@ describe('ObjectNode', function () {
 
     const d = c.clone()
     assert(d instanceof ObjectNode)
-    assert.deepEqual(c, d)
+    assert.deepStrictEqual(c, d)
     assert.notStrictEqual(c, d)
     assert.strictEqual(c.properties['a'], d.properties['a'])
     assert.strictEqual(c.properties['b'], d.properties['b'])
@@ -263,13 +263,13 @@ describe('ObjectNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'ObjectNode',
       properties: { b: b, c: c }
     })
 
     const parsed = ObjectNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX an ObjectNode', function () {

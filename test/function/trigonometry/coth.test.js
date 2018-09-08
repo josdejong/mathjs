@@ -26,13 +26,13 @@ describe('coth', function () {
   it('should return the coth of a bignumber', function () {
     const cothBig = bigmath.coth
     const Big = bigmath.bignumber
-    assert.deepEqual(cothBig(Big(0)).toString(), 'Infinity')
-    assert.deepEqual(cothBig(Big(1)), Big('1.3130352854993313036'))
-    assert.deepEqual(cothBig(Big(2)), Big('1.0373147207275480959'))
-    assert.deepEqual(cothBig(Big(3)), Big('1.0049698233136891711'))
+    assert.deepStrictEqual(cothBig(Big(0)).toString(), 'Infinity')
+    assert.deepStrictEqual(cothBig(Big(1)), Big('1.3130352854993313036'))
+    assert.deepStrictEqual(cothBig(Big(2)), Big('1.0373147207275480959'))
+    assert.deepStrictEqual(cothBig(Big(3)), Big('1.0049698233136891711'))
 
     /* Pass in extra digits to pi. */
-    assert.deepEqual(cothBig(biggermath.pi), Big('1.0037418731973212882'))
+    assert.deepStrictEqual(cothBig(biggermath.pi), Big('1.0037418731973212882'))
   })
 
   it('should return the coth of a complex number', function () {

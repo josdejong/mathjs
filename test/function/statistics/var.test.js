@@ -13,16 +13,16 @@ describe('variance', function () {
   })
 
   it('should return the variance of big numbers', function () {
-    assert.deepEqual(variance(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
+    assert.deepStrictEqual(variance(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
       new math.type.BigNumber(4))
   })
 
   it('should return the variance of complex numbers', function () {
-    assert.deepEqual(variance(new Complex(2, 3), new Complex(-1, 2)), new Complex(4, 3))
+    assert.deepStrictEqual(variance(new Complex(2, 3), new Complex(-1, 2)), new Complex(4, 3))
   })
 
   it('should return the variance of mixed numbers and complex numbers', function () {
-    assert.deepEqual(variance(2, new Complex(-1, 3)), new Complex(0, -9))
+    assert.deepStrictEqual(variance(2, new Complex(-1, 3)), new Complex(0, -9))
   })
 
   it('should return the variance from an array', function () {
@@ -59,14 +59,14 @@ describe('variance', function () {
   })
 
   it('should return the variance element from a 2d array', function () {
-    assert.deepEqual(variance([
+    assert.deepStrictEqual(variance([
       [2, 4, 6],
       [1, 3, 5]
     ]), 3.5)
   })
 
   it('should return the variance element from a 2d matrix', function () {
-    assert.deepEqual(variance(new DenseMatrix([
+    assert.deepStrictEqual(variance(new DenseMatrix([
       [2, 4, 6],
       [1, 3, 5]
     ])), 3.5)

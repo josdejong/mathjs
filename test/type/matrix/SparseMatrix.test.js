@@ -11,10 +11,10 @@ describe('SparseMatrix', function () {
   describe('constructor', function () {
     it('should create empty matrix if called with no argument', function () {
       const m = new SparseMatrix()
-      assert.deepEqual(m._size, [0, 0])
-      assert.deepEqual(m._values, [])
-      assert.deepEqual(m._index, [])
-      assert.deepEqual(m._ptr, [0])
+      assert.deepStrictEqual(m._size, [0, 0])
+      assert.deepStrictEqual(m._values, [])
+      assert.deepStrictEqual(m._index, [])
+      assert.deepStrictEqual(m._ptr, [0])
     })
 
     it('should create a Sparse Matrix from an array', function () {
@@ -27,10 +27,10 @@ describe('SparseMatrix', function () {
           [0, 8, 0, 9, 9, 13],
           [0, 4, 0, 0, 2, -1]
         ])
-      assert.deepEqual(m._size, [6, 6])
-      assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1])
-      assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5])
-      assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19])
+      assert.deepStrictEqual(m._size, [6, 6])
+      assert.deepStrictEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1])
+      assert.deepStrictEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5])
+      assert.deepStrictEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19])
       assert(typeof m._datatype === 'undefined')
     })
 
@@ -44,10 +44,10 @@ describe('SparseMatrix', function () {
           [0, 8, 0, 9, 9, 13],
           [0, 4, 0, 0, 2, -1]
         ], 'number')
-      assert.deepEqual(m._size, [6, 6])
-      assert.deepEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1])
-      assert.deepEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5])
-      assert.deepEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19])
+      assert.deepStrictEqual(m._size, [6, 6])
+      assert.deepStrictEqual(m._values, [10, 3, 3, 9, 7, 8, 4, 8, 8, 7, 7, 9, -2, 5, 9, 2, 3, 13, -1])
+      assert.deepStrictEqual(m._index, [0, 1, 3, 1, 2, 4, 5, 2, 3, 2, 3, 4, 0, 3, 4, 5, 1, 4, 5])
+      assert.deepStrictEqual(m._ptr, [0, 3, 7, 9, 12, 16, 19])
       assert(m._datatype === 'number')
     })
 
@@ -57,10 +57,10 @@ describe('SparseMatrix', function () {
           [1, 0, 0],
           [0, 0, 1]
         ])
-      assert.deepEqual(m._size, [2, 3])
-      assert.deepEqual(m._values, [1, 1])
-      assert.deepEqual(m._index, [0, 1])
-      assert.deepEqual(m._ptr, [0, 1, 1, 2])
+      assert.deepStrictEqual(m._size, [2, 3])
+      assert.deepStrictEqual(m._values, [1, 1])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 1, 1, 2])
     })
 
     it('should create a Sparse Matrix from an array, empty row', function () {
@@ -70,26 +70,26 @@ describe('SparseMatrix', function () {
           [0, 0],
           [0, 1]
         ])
-      assert.deepEqual(m._size, [3, 2])
-      assert.deepEqual(m._values, [1, 1])
-      assert.deepEqual(m._index, [0, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2])
+      assert.deepStrictEqual(m._size, [3, 2])
+      assert.deepStrictEqual(m._values, [1, 1])
+      assert.deepStrictEqual(m._index, [0, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2])
     })
 
     it('should create an empty Sparse Matrix from an array', function () {
       const m = new SparseMatrix([])
-      assert.deepEqual(m._size, [0, 0])
-      assert.deepEqual(m._values, [])
-      assert.deepEqual(m._index, [])
-      assert.deepEqual(m._ptr, [0])
+      assert.deepStrictEqual(m._size, [0, 0])
+      assert.deepStrictEqual(m._values, [])
+      assert.deepStrictEqual(m._index, [])
+      assert.deepStrictEqual(m._ptr, [0])
     })
 
     it('should create a Sparse Matrix from a vector', function () {
       const m = new SparseMatrix([1, 2, 3])
-      assert.deepEqual(m._size, [3, 1])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 3])
+      assert.deepStrictEqual(m._size, [3, 1])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 3])
     })
 
     it('should create a Sparse Matrix from another Sparse Matrix', function () {
@@ -101,10 +101,10 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       const m2 = new SparseMatrix(m1)
-      assert.deepEqual(m1._size, m2._size)
-      assert.deepEqual(m1._values, m2._values)
-      assert.deepEqual(m1._index, m2._index)
-      assert.deepEqual(m1._ptr, m2._ptr)
+      assert.deepStrictEqual(m1._size, m2._size)
+      assert.deepStrictEqual(m1._values, m2._values)
+      assert.deepStrictEqual(m1._index, m2._index)
+      assert.deepStrictEqual(m1._ptr, m2._ptr)
     })
 
     it('should create a Sparse Matrix from another Sparse Matrix, number datatype', function () {
@@ -116,11 +116,11 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ], 'number')
       const m2 = new SparseMatrix(m1)
-      assert.deepEqual(m1._size, m2._size)
-      assert.deepEqual(m1._values, m2._values)
-      assert.deepEqual(m1._index, m2._index)
-      assert.deepEqual(m1._ptr, m2._ptr)
-      assert.deepEqual(m1._datatype, m2._datatype)
+      assert.deepStrictEqual(m1._size, m2._size)
+      assert.deepStrictEqual(m1._values, m2._values)
+      assert.deepStrictEqual(m1._index, m2._index)
+      assert.deepStrictEqual(m1._ptr, m2._ptr)
+      assert.deepStrictEqual(m1._datatype, m2._datatype)
     })
 
     it('should create a Sparse Matrix from a Dense Matrix', function () {
@@ -132,8 +132,8 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       const m2 = new SparseMatrix(m1)
-      assert.deepEqual(m1.size(), m2.size())
-      assert.deepEqual(m1.toArray(), m2.toArray())
+      assert.deepStrictEqual(m1.size(), m2.size())
+      assert.deepStrictEqual(m1.toArray(), m2.toArray())
     })
 
     it('should create a Sparse Matrix from a Dense Matrix, number datatype', function () {
@@ -145,9 +145,9 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ], 'number')
       const m2 = new SparseMatrix(m1)
-      assert.deepEqual(m1.size(), m2.size())
-      assert.deepEqual(m1.toArray(), m2.toArray())
-      assert.deepEqual(m1._datatype, m2._datatype)
+      assert.deepStrictEqual(m1.size(), m2.size())
+      assert.deepStrictEqual(m1.toArray(), m2.toArray())
+      assert.deepStrictEqual(m1._datatype, m2._datatype)
     })
 
     it('should have a property isMatrix', function () {
@@ -187,10 +187,10 @@ describe('SparseMatrix', function () {
 
       const b = a.create([[4, 5, 6]])
       assert.strictEqual(b.isSparseMatrix, true)
-      assert.deepEqual(b, new SparseMatrix([[4, 5, 6]]))
+      assert.deepStrictEqual(b, new SparseMatrix([[4, 5, 6]]))
 
       const c = a.create([[7, 8, 9]], 'number')
-      assert.deepEqual(c, new SparseMatrix([[7, 8, 9]], 'number'))
+      assert.deepStrictEqual(c, new SparseMatrix([[7, 8, 9]], 'number'))
     })
 
     it('should throw an error when called without new keyword', function () {
@@ -204,10 +204,10 @@ describe('SparseMatrix', function () {
 
   describe('size', function () {
     it('should return the expected size', function () {
-      assert.deepEqual(new SparseMatrix([[23]]).size(), [1, 1])
-      assert.deepEqual(new SparseMatrix([[1, 2, 3], [4, 5, 6]]).size(), [2, 3])
-      assert.deepEqual(new SparseMatrix([[1], [2], [3]]).size(), [3, 1])
-      assert.deepEqual(new SparseMatrix([[]]).size(), [1, 0])
+      assert.deepStrictEqual(new SparseMatrix([[23]]).size(), [1, 1])
+      assert.deepStrictEqual(new SparseMatrix([[1, 2, 3], [4, 5, 6]]).size(), [2, 3])
+      assert.deepStrictEqual(new SparseMatrix([[1], [2], [3]]).size(), [3, 1])
+      assert.deepStrictEqual(new SparseMatrix([[]]).size(), [1, 0])
     })
   })
 
@@ -220,7 +220,7 @@ describe('SparseMatrix', function () {
 
   describe('toJSON', function () {
     it('should serialize Matrix', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         new SparseMatrix([[1, 2], [3, 4]]).toJSON(),
         {
           mathjs: 'SparseMatrix',
@@ -233,7 +233,7 @@ describe('SparseMatrix', function () {
     })
 
     it('should serialize Matrix, number datatype', function () {
-      assert.deepEqual(
+      assert.deepStrictEqual(
         new SparseMatrix([[1, 2], [3, 4]], 'number').toJSON(),
         {
           mathjs: 'SparseMatrix',
@@ -258,8 +258,8 @@ describe('SparseMatrix', function () {
       const m = SparseMatrix.fromJSON(json)
       assert.ok(m instanceof Matrix)
 
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -279,8 +279,8 @@ describe('SparseMatrix', function () {
       const m = SparseMatrix.fromJSON(json)
       assert.ok(m instanceof Matrix)
 
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -300,8 +300,8 @@ describe('SparseMatrix', function () {
       const m = SparseMatrix.fromJSON(json)
       assert.ok(m instanceof Matrix)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [1, 0, 1],
@@ -355,11 +355,11 @@ describe('SparseMatrix', function () {
           [4, 5, 6]
         ])
       m.resize([2, 4])
-      assert.deepEqual(m._size, [2, 4])
-      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6])
-      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1])
-      assert.deepEqual(m._ptr, [0, 2, 4, 6, 6])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 4])
+      assert.deepStrictEqual(m._values, [1, 4, 2, 5, 3, 6])
+      assert.deepStrictEqual(m._index, [0, 1, 0, 1, 0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 2, 4, 6, 6])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 3, 0],
@@ -374,11 +374,11 @@ describe('SparseMatrix', function () {
           [4, 5, 6]
         ])
       m.resize([2, 4], 100)
-      assert.deepEqual(m._size, [2, 4])
-      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6, 100, 100])
-      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1, 0, 1])
-      assert.deepEqual(m._ptr, [0, 2, 4, 6, 8])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 4])
+      assert.deepStrictEqual(m._values, [1, 4, 2, 5, 3, 6, 100, 100])
+      assert.deepStrictEqual(m._index, [0, 1, 0, 1, 0, 1, 0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 2, 4, 6, 8])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 3, 100],
@@ -393,11 +393,11 @@ describe('SparseMatrix', function () {
           [4, 5, 6]
         ])
       m.resize([3, 3])
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 4, 2, 5, 3, 6])
-      assert.deepEqual(m._index, [0, 1, 0, 1, 0, 1])
-      assert.deepEqual(m._ptr, [0, 2, 4, 6])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 4, 2, 5, 3, 6])
+      assert.deepStrictEqual(m._index, [0, 1, 0, 1, 0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 2, 4, 6])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 3],
@@ -413,11 +413,11 @@ describe('SparseMatrix', function () {
           [4, 5, 6]
         ])
       m.resize([3, 3], 100)
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 4, 100, 2, 5, 100, 3, 6, 100])
-      assert.deepEqual(m._index, [0, 1, 2, 0, 1, 2, 0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 3, 6, 9])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 4, 100, 2, 5, 100, 3, 6, 100])
+      assert.deepStrictEqual(m._index, [0, 1, 2, 0, 1, 2, 0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 3, 6, 9])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 3],
@@ -429,11 +429,11 @@ describe('SparseMatrix', function () {
     it('should increase rows & columns as needed, zero value, empty Sparse Matrix', function () {
       const m = new SparseMatrix([])
       m.resize([2, 2])
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(m._values, [])
-      assert.deepEqual(m._index, [])
-      assert.deepEqual(m._ptr, [0, 0, 0])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(m._values, [])
+      assert.deepStrictEqual(m._index, [])
+      assert.deepStrictEqual(m._ptr, [0, 0, 0])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0],
@@ -444,11 +444,11 @@ describe('SparseMatrix', function () {
     it('should increase rows & columns as needed, non zero value, empty Sparse Matrix', function () {
       const m = new SparseMatrix([])
       m.resize([2, 2], 100)
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(m._values, [100, 100, 100, 100])
-      assert.deepEqual(m._index, [0, 1, 0, 1])
-      assert.deepEqual(m._ptr, [0, 2, 4])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(m._values, [100, 100, 100, 100])
+      assert.deepStrictEqual(m._index, [0, 1, 0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 2, 4])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [100, 100],
@@ -463,11 +463,11 @@ describe('SparseMatrix', function () {
           [4, 5, 6]
         ])
       m.resize([2, 2])
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(m._values, [1, 4, 2, 5])
-      assert.deepEqual(m._index, [0, 1, 0, 1])
-      assert.deepEqual(m._ptr, [0, 2, 4])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(m._values, [1, 4, 2, 5])
+      assert.deepStrictEqual(m._index, [0, 1, 0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 2, 4])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -482,11 +482,11 @@ describe('SparseMatrix', function () {
           [0, 0, 0]
         ])
       m.resize([2, 2])
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(m._values, [])
-      assert.deepEqual(m._index, [])
-      assert.deepEqual(m._ptr, [0, 0, 0])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(m._values, [])
+      assert.deepStrictEqual(m._index, [])
+      assert.deepStrictEqual(m._ptr, [0, 0, 0])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0],
@@ -501,11 +501,11 @@ describe('SparseMatrix', function () {
           [3, 4]
         ])
       m.resize([1, 2])
-      assert.deepEqual(m._size, [1, 2])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [0, 0])
-      assert.deepEqual(m._ptr, [0, 1, 2])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [1, 2])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [0, 0])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2]
@@ -519,11 +519,11 @@ describe('SparseMatrix', function () {
           [0, 0]
         ])
       m.resize([1, 2])
-      assert.deepEqual(m._size, [1, 2])
-      assert.deepEqual(m._values, [])
-      assert.deepEqual(m._index, [])
-      assert.deepEqual(m._ptr, [0, 0, 0])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [1, 2])
+      assert.deepStrictEqual(m._values, [])
+      assert.deepStrictEqual(m._index, [])
+      assert.deepStrictEqual(m._ptr, [0, 0, 0])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0]
@@ -539,11 +539,11 @@ describe('SparseMatrix', function () {
           [0, 0, 0, 0]
         ])
       m.resize([2, 2])
-      assert.deepEqual(m._size, [2, 2])
-      assert.deepEqual(m._values, [])
-      assert.deepEqual(m._index, [])
-      assert.deepEqual(m._ptr, [0, 0, 0])
-      assert.deepEqual(
+      assert.deepStrictEqual(m._size, [2, 2])
+      assert.deepStrictEqual(m._values, [])
+      assert.deepStrictEqual(m._index, [])
+      assert.deepStrictEqual(m._ptr, [0, 0, 0])
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0],
@@ -562,11 +562,11 @@ describe('SparseMatrix', function () {
       const m2 = m1.resize([2, 2], 0, true)
       assert(m1 !== m2)
       // original matrix cannot be modified
-      assert.deepEqual(m1._size, [4, 4])
-      assert.deepEqual(m1._values, [])
-      assert.deepEqual(m1._index, [])
-      assert.deepEqual(m1._ptr, [0, 0, 0, 0, 0])
-      assert.deepEqual(
+      assert.deepStrictEqual(m1._size, [4, 4])
+      assert.deepStrictEqual(m1._values, [])
+      assert.deepStrictEqual(m1._index, [])
+      assert.deepStrictEqual(m1._ptr, [0, 0, 0, 0, 0])
+      assert.deepStrictEqual(
         m1.toArray(),
         [
           [0, 0, 0, 0],
@@ -575,11 +575,11 @@ describe('SparseMatrix', function () {
           [0, 0, 0, 0]
         ])
       // new matrix should have correct size
-      assert.deepEqual(m2._size, [2, 2])
-      assert.deepEqual(m2._values, [])
-      assert.deepEqual(m2._index, [])
-      assert.deepEqual(m2._ptr, [0, 0, 0])
-      assert.deepEqual(
+      assert.deepStrictEqual(m2._size, [2, 2])
+      assert.deepStrictEqual(m2._values, [])
+      assert.deepStrictEqual(m2._index, [])
+      assert.deepStrictEqual(m2._ptr, [0, 0, 0])
+      assert.deepStrictEqual(
         m2.toArray(),
         [
           [0, 0],
@@ -592,9 +592,9 @@ describe('SparseMatrix', function () {
     it('should reshape the matrix properly', function () {
       const m = new SparseMatrix([[1, 2, 3], [4, 5, 6]])
       m.reshape([3, 2])
-      assert.deepEqual(m.valueOf(), [[1, 2], [3, 4], [5, 6]])
+      assert.deepStrictEqual(m.valueOf(), [[1, 2], [3, 4], [5, 6]])
       m.reshape([6, 1])
-      assert.deepEqual(m.valueOf(), [[1], [2], [3], [4], [5], [6]])
+      assert.deepStrictEqual(m.valueOf(), [[1], [2], [3], [4], [5], [6]])
     })
 
     it('should return a copy only when specified', function () {
@@ -603,24 +603,24 @@ describe('SparseMatrix', function () {
       const m3 = m2.reshape([1, 4], true)
 
       assert.strictEqual(m2, m1)
-      assert.deepEqual(m2.valueOf(), [[1], [2], [3], [4]])
-      assert.deepEqual(m2.valueOf(), m1.valueOf())
+      assert.deepStrictEqual(m2.valueOf(), [[1], [2], [3], [4]])
+      assert.deepStrictEqual(m2.valueOf(), m1.valueOf())
 
       assert.notStrictEqual(m3, m2)
-      assert.deepEqual(m3.valueOf(), [[1, 2, 3, 4]])
-      assert.notDeepEqual(m3.valueOf(), m2.valueOf())
+      assert.deepStrictEqual(m3.valueOf(), [[1, 2, 3, 4]])
+      assert.notDeepStrictEqual(m3.valueOf(), m2.valueOf())
     })
 
     it('should update the size of the reshaped matrix', function () {
       const m1 = new SparseMatrix([[1, 2], [3, 4]])
       const m2 = m1.reshape([4, 1], true)
 
-      assert.deepEqual(m1.size(), [2, 2])
+      assert.deepStrictEqual(m1.size(), [2, 2])
 
       m1.reshape([1, 4])
 
-      assert.deepEqual(m1.size(), [1, 4])
-      assert.deepEqual(m2.size(), [4, 1])
+      assert.deepStrictEqual(m1.size(), [1, 4])
+      assert.deepStrictEqual(m2.size(), [4, 1])
     })
 
     it('should throw on attempting to reshape to != 2 dimensions', function () {
@@ -740,7 +740,7 @@ describe('SparseMatrix', function () {
       m.set([0, 4], 0)
       m.set([5, 1], 0)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, 0, 0, 0],
@@ -766,7 +766,7 @@ describe('SparseMatrix', function () {
       m.set([0, 4], 10)
       m.set([5, 1], 20)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [15, 0, 0, 0, 10, 0],
@@ -792,7 +792,7 @@ describe('SparseMatrix', function () {
       m.set([0, 5], 10)
       m.set([5, 0], 20)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [10, 15, 0, 0, -2, 10],
@@ -811,7 +811,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.set([3, 1], 22)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -821,7 +821,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.set([4, 0], 33)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -839,7 +839,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.set([1, 3], 22)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 0, 0],
@@ -847,7 +847,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.set([0, 4], 33)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 0, 0, 33],
@@ -862,7 +862,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.set([3, 3], 22)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 0, 0],
@@ -872,7 +872,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.set([4, 4], 33)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, 0, 0, 0],
@@ -890,7 +890,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.set([3, 1], 22, -1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -900,7 +900,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.set([4, 0], 33, -2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -918,7 +918,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.set([1, 3], 22, -1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, -1, -1],
@@ -926,7 +926,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.set([0, 4], 33, -2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, -1, -1, 33],
@@ -941,7 +941,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.set([3, 3], 22, -1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, -1, -1],
@@ -951,7 +951,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.set([4, 4], 33, -2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2, -1, -1, -2],
@@ -981,31 +981,31 @@ describe('SparseMatrix', function () {
           [4, 5, 6],
           [7, 8, 9]
         ])
-      assert.deepEqual(m.size(), [3, 3])
-      assert.deepEqual(m.subset(index(1, 1)), 5)
-      assert.deepEqual(m.subset(index(new Range(0, 2), new Range(0, 2))).toArray(), [[1, 2], [4, 5]])
-      assert.deepEqual(m.subset(index(1, new Range(1, 3))).toArray(), [[5, 6]])
-      assert.deepEqual(m.subset(index(0, new Range(1, 3))).toArray(), [[2, 3]])
-      assert.deepEqual(m.subset(index(new Range(1, 3), 1)).toArray(), [[5], [8]])
-      assert.deepEqual(m.subset(index(new Range(1, 3), 2)).toArray(), [[6], [9]])
-      assert.deepEqual(m.subset(index(new Range(1, 3, 2), 2)).toArray(), [[6]])
-      assert.deepEqual(m.subset(index([0, 1], [2, 1])).toArray(), [[3, 2], [6, 5]])
-      assert.deepEqual(m.subset(index([0, 1, 2], [2, 1, 0])).toArray(), [[3, 2, 1], [6, 5, 4], [9, 8, 7]])
-      assert.deepEqual(m.subset(index([2, 1, 0], [0, 1, 2])).toArray(), [[7, 8, 9], [4, 5, 6], [1, 2, 3]])
-      assert.deepEqual(m.subset(index([2, 1, 0], [2, 1, 0])).toArray(), [[9, 8, 7], [6, 5, 4], [3, 2, 1]])
+      assert.deepStrictEqual(m.size(), [3, 3])
+      assert.deepStrictEqual(m.subset(index(1, 1)), 5)
+      assert.deepStrictEqual(m.subset(index(new Range(0, 2), new Range(0, 2))).toArray(), [[1, 2], [4, 5]])
+      assert.deepStrictEqual(m.subset(index(1, new Range(1, 3))).toArray(), [[5, 6]])
+      assert.deepStrictEqual(m.subset(index(0, new Range(1, 3))).toArray(), [[2, 3]])
+      assert.deepStrictEqual(m.subset(index(new Range(1, 3), 1)).toArray(), [[5], [8]])
+      assert.deepStrictEqual(m.subset(index(new Range(1, 3), 2)).toArray(), [[6], [9]])
+      assert.deepStrictEqual(m.subset(index(new Range(1, 3, 2), 2)).toArray(), [[6]])
+      assert.deepStrictEqual(m.subset(index([0, 1], [2, 1])).toArray(), [[3, 2], [6, 5]])
+      assert.deepStrictEqual(m.subset(index([0, 1, 2], [2, 1, 0])).toArray(), [[3, 2, 1], [6, 5, 4], [9, 8, 7]])
+      assert.deepStrictEqual(m.subset(index([2, 1, 0], [0, 1, 2])).toArray(), [[7, 8, 9], [4, 5, 6], [1, 2, 3]])
+      assert.deepStrictEqual(m.subset(index([2, 1, 0], [2, 1, 0])).toArray(), [[9, 8, 7], [6, 5, 4], [3, 2, 1]])
     })
 
     /* TODO: implement!
     it('should squeeze the output when index contains a scalar', function() {
       let m = new SparseMatrix(math.range(0, 10))
-      // assert.deepEqual(m.subset(index(1)), 1)
-      assert.deepEqual(m.subset(index([1, 2])), new SparseMatrix([1]))
+      // assert.deepStrictEqual(m.subset(index(1)), 1)
+      assert.deepStrictEqual(m.subset(index([1, 2])), new SparseMatrix([1]))
 
       m = new SparseMatrix([[1,2], [3, 4]])
-      assert.deepEqual(m.subset(index(1, 1)), 4)
-      assert.deepEqual(m.subset(index([1, 2], 1)), new SparseMatrix([[4]]))
-      assert.deepEqual(m.subset(index(1, [1, 2])), new SparseMatrix([[4]]))
-      assert.deepEqual(m.subset(index([1, 2], [1, 2])), new SparseMatrix([[4]]))
+      assert.deepStrictEqual(m.subset(index(1, 1)), 4)
+      assert.deepStrictEqual(m.subset(index([1, 2], 1)), new SparseMatrix([[4]]))
+      assert.deepStrictEqual(m.subset(index(1, [1, 2])), new SparseMatrix([[4]]))
+      assert.deepStrictEqual(m.subset(index([1, 2], [1, 2])), new SparseMatrix([[4]]))
     })
     */
     it('should throw an error if the given subset is invalid', function () {
@@ -1049,7 +1049,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.subset(index(1, 1), 1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0],
@@ -1057,7 +1057,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(0, 0), 2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [2, 0],
@@ -1072,7 +1072,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.subset(index(2, 2), 2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1088,7 +1088,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.subset(index(2, 2), 2, 1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 1],
@@ -1104,7 +1104,7 @@ describe('SparseMatrix', function () {
       ])
 
       m.subset(index(0, [0, 2]), [1, 2])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -1112,7 +1112,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(1, [0, 2]), [3, 4])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 2],
@@ -1130,7 +1130,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(new Range(1, 3), new Range(1, 3)), [[1, 2], [3, 4]])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1139,7 +1139,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(0, new Range(0, 3)), [5, 6, 7])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [5, 6, 7],
@@ -1148,7 +1148,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(new Range(0, 3), 0), [8, 9, 10])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [8, 6, 7],
@@ -1167,7 +1167,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(new Range(2, 4), new Range(2, 4)), [[1, 2], [3, 4]])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, 0],
@@ -1177,7 +1177,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(4, new Range(0, 3)), [5, 6, 7])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, 0],
@@ -1188,7 +1188,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(new Range(0, 3), 4), [8, 9, 10])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, 0, 8],
@@ -1209,7 +1209,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index([2, 4], [2, 4]), [[1, 2], [3, 4]], -1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, -1],
@@ -1219,7 +1219,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(4, new Range(0, 3)), [5, 6, 7], -2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, -1],
@@ -1230,7 +1230,7 @@ describe('SparseMatrix', function () {
         ])
 
       m.subset(index(new Range(0, 3), 4), [8, 9, 10], -3)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, -1, 8],
@@ -1271,7 +1271,7 @@ describe('SparseMatrix', function () {
         [13, 14, 15, 16]
       ])
       m2 = m.map(function (value) { return value * 2 })
-      assert.deepEqual(m2.toArray(), [
+      assert.deepStrictEqual(m2.toArray(), [
         [2, 4, 6, 8],
         [10, 12, 14, 16],
         [18, 20, 22, 24],
@@ -1280,17 +1280,17 @@ describe('SparseMatrix', function () {
 
       m = new SparseMatrix([1])
       m2 = m.map(function (value) { return value * 2 })
-      assert.deepEqual(m2.toArray(), [[2]])
+      assert.deepStrictEqual(m2.toArray(), [[2]])
 
       m = new SparseMatrix([1, 2, 3])
       m2 = m.map(function (value) { return value * 2 })
-      assert.deepEqual(m2.toArray(), [[2], [4], [6]])
+      assert.deepStrictEqual(m2.toArray(), [[2], [4], [6]])
     })
 
     it('should work on empty matrices', function () {
       const m = new SparseMatrix([])
       const m2 = m.map(function (value) { return value * 2 })
-      assert.deepEqual(m2.toArray(), [])
+      assert.deepStrictEqual(m2.toArray(), [])
     })
 
     it('should process all values (zero and non-zero)', function () {
@@ -1301,7 +1301,7 @@ describe('SparseMatrix', function () {
         ]
       )
       const m2 = m.map(function (value) { return value + 2 })
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m2.toArray(),
         [
           [2, 2],
@@ -1327,7 +1327,7 @@ describe('SparseMatrix', function () {
         true)
 
       assert(counter === 1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m2.toArray(),
         [
           [3, 0],
@@ -1344,7 +1344,7 @@ describe('SparseMatrix', function () {
         }
       )
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m2.toArray(),
         [
           [1001, 1012, 1023],
@@ -1375,24 +1375,24 @@ describe('SparseMatrix', function () {
       ])
       output = []
       m.forEach(function (value) { output.push(value) })
-      assert.deepEqual(output, [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16])
+      assert.deepStrictEqual(output, [1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16])
 
       m = new SparseMatrix([1])
       output = []
       m.forEach(function (value) { output.push(value) })
-      assert.deepEqual(output, [1])
+      assert.deepStrictEqual(output, [1])
 
       m = new SparseMatrix([1, 2, 3])
       output = []
       m.forEach(function (value) { output.push(value) })
-      assert.deepEqual(output, [1, 2, 3])
+      assert.deepStrictEqual(output, [1, 2, 3])
     })
 
     it('should work on empty matrices', function () {
       const m = new SparseMatrix([])
       const output = []
       m.forEach(function (value) { output.push(value) })
-      assert.deepEqual(output, [])
+      assert.deepStrictEqual(output, [])
     })
 
     it('should process non-zero values', function () {
@@ -1416,7 +1416,7 @@ describe('SparseMatrix', function () {
           output.push(value + index[0] * 100 + index[1] * 10 + (obj === m ? 1000 : 0))
         }
       )
-      assert.deepEqual(output, [1001, 1104, 1012, 1115, 1023, 1126])
+      assert.deepStrictEqual(output, [1001, 1104, 1012, 1115, 1023, 1126])
     })
 
     it('should throw an error when invoked on a pattern matrix', function () {
@@ -1440,7 +1440,7 @@ describe('SparseMatrix', function () {
 
       const m2 = m1.clone()
 
-      assert.deepEqual(m1.toArray(), m2.toArray())
+      assert.deepStrictEqual(m1.toArray(), m2.toArray())
     })
 
     it('should clone pattern matrix', function () {
@@ -1453,7 +1453,7 @@ describe('SparseMatrix', function () {
 
       const m2 = m1.clone()
 
-      assert.deepEqual(m1.toArray(), m2.toArray())
+      assert.deepStrictEqual(m1.toArray(), m2.toArray())
     })
   })
 
@@ -1468,7 +1468,7 @@ describe('SparseMatrix', function () {
 
       const a = m.toArray()
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         a,
         [
           [10, 0, 0, 0, -2, 0],
@@ -1490,7 +1490,7 @@ describe('SparseMatrix', function () {
 
       const a = m.toArray()
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         a,
         [
           [1, 0, 0],
@@ -1508,7 +1508,7 @@ describe('SparseMatrix', function () {
 
       const a = m.toArray()
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         a,
         [
           [new Complex(1, 1), 0, new Complex(2, 2)],
@@ -1522,12 +1522,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n)', function () {
       const m = SparseMatrix.diagonal([3, 3], 1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 1, 1])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 1, 1])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0],
@@ -1539,12 +1539,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), k > 0', function () {
       const m = SparseMatrix.diagonal([3, 3], 1, 1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 1])
-      assert.deepEqual(m._index, [0, 1])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 1])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0],
@@ -1556,12 +1556,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), k < 0', function () {
       const m = SparseMatrix.diagonal([3, 3], 1, -1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 1])
-      assert.deepEqual(m._index, [1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 2])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 1])
+      assert.deepStrictEqual(m._index, [1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1573,12 +1573,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), vector value', function () {
       const m = SparseMatrix.diagonal([3, 3], [1, 2, 3])
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0],
@@ -1590,12 +1590,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), vector value, k > 0', function () {
       const m = SparseMatrix.diagonal([3, 3], [1, 2], 1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [0, 1])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0],
@@ -1607,12 +1607,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), vector value, k < 0', function () {
       const m = SparseMatrix.diagonal([3, 3], [1, 2], -1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 2])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1624,12 +1624,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), matrix vector value', function () {
       const m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2, 3]))
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0],
@@ -1641,12 +1641,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), matrix vector value, k > 0', function () {
       const m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2]), 1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [0, 1])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0],
@@ -1658,12 +1658,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), matrix vector value, k < 0', function () {
       const m = SparseMatrix.diagonal([3, 3], math.matrix([1, 2]), -1)
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 2])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1675,21 +1675,21 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (n x n), complex number', function () {
       const m = SparseMatrix.diagonal([3, 3], new Complex(1, 1))
 
-      assert.deepEqual(m._size, [3, 3])
-      assert.deepEqual(m._values, [new Complex(1, 1), new Complex(1, 1), new Complex(1, 1)])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [3, 3])
+      assert.deepStrictEqual(m._values, [new Complex(1, 1), new Complex(1, 1), new Complex(1, 1)])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
     })
 
     it('should create Sparse Matrix (m x n), m > n', function () {
       const m = SparseMatrix.diagonal([4, 3], 1)
 
-      assert.deepEqual(m._size, [4, 3])
-      assert.deepEqual(m._values, [1, 1, 1])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [4, 3])
+      assert.deepStrictEqual(m._values, [1, 1, 1])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0],
@@ -1702,12 +1702,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m > n, k > 0', function () {
       const m = SparseMatrix.diagonal([4, 3], 1, 1)
 
-      assert.deepEqual(m._size, [4, 3])
-      assert.deepEqual(m._values, [1, 1])
-      assert.deepEqual(m._index, [0, 1])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2])
+      assert.deepStrictEqual(m._size, [4, 3])
+      assert.deepStrictEqual(m._values, [1, 1])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0],
@@ -1720,12 +1720,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m > n, k < 0', function () {
       const m = SparseMatrix.diagonal([4, 3], 1, -1)
 
-      assert.deepEqual(m._size, [4, 3])
-      assert.deepEqual(m._values, [1, 1, 1])
-      assert.deepEqual(m._index, [1, 2, 3])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [4, 3])
+      assert.deepStrictEqual(m._values, [1, 1, 1])
+      assert.deepStrictEqual(m._index, [1, 2, 3])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1738,12 +1738,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m > n, vector value', function () {
       const m = SparseMatrix.diagonal([4, 3], [1, 2, 3])
 
-      assert.deepEqual(m._size, [4, 3])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [4, 3])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0],
@@ -1756,12 +1756,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m > n, vector value, k > 0', function () {
       const m = SparseMatrix.diagonal([4, 3], [1, 2], 1)
 
-      assert.deepEqual(m._size, [4, 3])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [0, 1])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2])
+      assert.deepStrictEqual(m._size, [4, 3])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [0, 1])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0],
@@ -1774,12 +1774,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m > n, vector value, k < 0', function () {
       const m = SparseMatrix.diagonal([4, 3], [1, 2, 3], -1)
 
-      assert.deepEqual(m._size, [4, 3])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [1, 2, 3])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [4, 3])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [1, 2, 3])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0],
@@ -1792,12 +1792,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m < n', function () {
       const m = SparseMatrix.diagonal([3, 4], 1)
 
-      assert.deepEqual(m._size, [3, 4])
-      assert.deepEqual(m._values, [1, 1, 1])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3, 3])
+      assert.deepStrictEqual(m._size, [3, 4])
+      assert.deepStrictEqual(m._values, [1, 1, 1])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0, 0],
@@ -1809,12 +1809,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m < n, k > 0', function () {
       const m = SparseMatrix.diagonal([3, 4], 1, 1)
 
-      assert.deepEqual(m._size, [3, 4])
-      assert.deepEqual(m._values, [1, 1, 1])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [3, 4])
+      assert.deepStrictEqual(m._values, [1, 1, 1])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0, 0],
@@ -1826,12 +1826,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m < n, k < 0', function () {
       const m = SparseMatrix.diagonal([3, 4], 1, -1)
 
-      assert.deepEqual(m._size, [3, 4])
-      assert.deepEqual(m._values, [1, 1])
-      assert.deepEqual(m._index, [1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 2, 2])
+      assert.deepStrictEqual(m._size, [3, 4])
+      assert.deepStrictEqual(m._values, [1, 1])
+      assert.deepStrictEqual(m._index, [1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 2, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, 0],
@@ -1843,12 +1843,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m < n, vector value', function () {
       const m = SparseMatrix.diagonal([3, 4], [1, 2, 3])
 
-      assert.deepEqual(m._size, [3, 4])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 3, 3])
+      assert.deepStrictEqual(m._size, [3, 4])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 3, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [1, 0, 0, 0],
@@ -1860,12 +1860,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m < n, vector value, k > 0', function () {
       const m = SparseMatrix.diagonal([3, 4], [1, 2, 3], 1)
 
-      assert.deepEqual(m._size, [3, 4])
-      assert.deepEqual(m._values, [1, 2, 3])
-      assert.deepEqual(m._index, [0, 1, 2])
-      assert.deepEqual(m._ptr, [0, 0, 1, 2, 3])
+      assert.deepStrictEqual(m._size, [3, 4])
+      assert.deepStrictEqual(m._values, [1, 2, 3])
+      assert.deepStrictEqual(m._index, [0, 1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 0, 1, 2, 3])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 1, 0, 0],
@@ -1877,12 +1877,12 @@ describe('SparseMatrix', function () {
     it('should create Sparse Matrix (m x n), m < n, vector value, k < 0', function () {
       const m = SparseMatrix.diagonal([3, 4], [1, 2], -1)
 
-      assert.deepEqual(m._size, [3, 4])
-      assert.deepEqual(m._values, [1, 2])
-      assert.deepEqual(m._index, [1, 2])
-      assert.deepEqual(m._ptr, [0, 1, 2, 2, 2])
+      assert.deepStrictEqual(m._size, [3, 4])
+      assert.deepStrictEqual(m._values, [1, 2])
+      assert.deepStrictEqual(m._index, [1, 2])
+      assert.deepStrictEqual(m._ptr, [0, 1, 2, 2, 2])
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.toArray(),
         [
           [0, 0, 0, 0],
@@ -1899,7 +1899,7 @@ describe('SparseMatrix', function () {
           [0, 0, 1]
         ])
 
-      assert.deepEqual(m.diagonal(), new SparseMatrix([1, 1, 1]))
+      assert.deepStrictEqual(m.diagonal(), new SparseMatrix([1, 1, 1]))
     })
 
     it('should get Sparse Matrix diagonal (n x n), k > 0', function () {
@@ -1910,7 +1910,7 @@ describe('SparseMatrix', function () {
           [0, 0, 1]
         ])
 
-      assert.deepEqual(m.diagonal(1), new SparseMatrix([2, 3]))
+      assert.deepStrictEqual(m.diagonal(1), new SparseMatrix([2, 3]))
     })
 
     it('should get Sparse Matrix diagonal (n x n), k < 0', function () {
@@ -1921,7 +1921,7 @@ describe('SparseMatrix', function () {
           [0, 3, 1]
         ])
 
-      assert.deepEqual(m.diagonal(-1), new SparseMatrix([2, 3]))
+      assert.deepStrictEqual(m.diagonal(-1), new SparseMatrix([2, 3]))
     })
 
     it('should get Sparse Matrix diagonal (m x n), m > n', function () {
@@ -1933,7 +1933,7 @@ describe('SparseMatrix', function () {
           [0, 0, 0]
         ])
 
-      assert.deepEqual(m.diagonal(), new SparseMatrix([1, 1, 1]))
+      assert.deepStrictEqual(m.diagonal(), new SparseMatrix([1, 1, 1]))
     })
 
     it('should get Sparse Matrix diagonal (m x n), m > n, k > 0', function () {
@@ -1945,7 +1945,7 @@ describe('SparseMatrix', function () {
           [0, 0, 0]
         ])
 
-      assert.deepEqual(m.diagonal(1), new SparseMatrix([2, 3]))
+      assert.deepStrictEqual(m.diagonal(1), new SparseMatrix([2, 3]))
     })
 
     it('should get Sparse Matrix diagonal (m x n), m > n, k < 0', function () {
@@ -1957,7 +1957,7 @@ describe('SparseMatrix', function () {
           [0, 0, 4]
         ])
 
-      assert.deepEqual(m.diagonal(-1), new SparseMatrix([2, 3, 4]))
+      assert.deepStrictEqual(m.diagonal(-1), new SparseMatrix([2, 3, 4]))
     })
 
     it('should get Sparse Matrix diagonal (m x n), m < n', function () {
@@ -1968,7 +1968,7 @@ describe('SparseMatrix', function () {
           [0, 0, 1, 0]
         ])
 
-      assert.deepEqual(m.diagonal(), new SparseMatrix([1, 1, 1]))
+      assert.deepStrictEqual(m.diagonal(), new SparseMatrix([1, 1, 1]))
     })
 
     it('should get Sparse Matrix diagonal (m x n), m < n, k > 0', function () {
@@ -1979,7 +1979,7 @@ describe('SparseMatrix', function () {
           [0, 0, 1, 4]
         ])
 
-      assert.deepEqual(m.diagonal(1), new SparseMatrix([2, 3, 4]))
+      assert.deepStrictEqual(m.diagonal(1), new SparseMatrix([2, 3, 4]))
     })
 
     it('should get Sparse Matrix diagonal (m x n), m < n, k < 0', function () {
@@ -1990,9 +1990,9 @@ describe('SparseMatrix', function () {
           [4, 3, 1, 0]
         ])
 
-      assert.deepEqual(m.diagonal(-1), new SparseMatrix([2, 3]))
+      assert.deepStrictEqual(m.diagonal(-1), new SparseMatrix([2, 3]))
 
-      assert.deepEqual(m.diagonal(-2), new SparseMatrix([4]))
+      assert.deepStrictEqual(m.diagonal(-2), new SparseMatrix([4]))
     })
   })
 
@@ -2006,7 +2006,7 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       m.swapRows(1, 2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [1, 2, 3],
@@ -2025,7 +2025,7 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       m.swapRows(1, 2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [1, 2, 3],
@@ -2044,7 +2044,7 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       m.swapRows(2, 1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [1, 2, 3],
@@ -2063,7 +2063,7 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       m.swapRows(2, 1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [1, 2, 3],
@@ -2082,7 +2082,7 @@ describe('SparseMatrix', function () {
           [10, 11, 12]
         ])
       m.swapRows(3, 1)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [1, 2, 3],
@@ -2101,7 +2101,7 @@ describe('SparseMatrix', function () {
           [10, 0, 0]
         ])
       m.swapRows(0, 2)
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [7, 0, 9],
@@ -2121,7 +2121,7 @@ describe('SparseMatrix', function () {
 
       m.swapRows(0, 2)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         m.valueOf(),
         [
           [0, 1, 0],

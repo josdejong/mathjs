@@ -27,7 +27,7 @@ describe('clone', function () {
   it('should clone a bignumber', function () {
     const a = math.bignumber('2.3e500')
     const b = math.clone(a)
-    assert.deepEqual(a, b)
+    assert.deepStrictEqual(a, b)
   })
 
   it('should clone a string', function () {
@@ -41,7 +41,7 @@ describe('clone', function () {
   it('should clone a complex number', function () {
     const a = math.complex(2, 3)
     const b = math.clone(a)
-    assert.notEqual(a, b)
+    assert.notStrictEqual(a, b)
     a.re = 5
     assert.strictEqual(a.toString(), '5 + 3i')
     assert.strictEqual(b.toString(), '2 + 3i')
@@ -58,7 +58,7 @@ describe('clone', function () {
   it('should clone a fraction', function () {
     const a = math.fraction(2, 3)
     const b = math.clone(a)
-    assert.deepEqual(a, b)
+    assert.deepStrictEqual(a, b)
   })
 
   it('should clone an array', function () {

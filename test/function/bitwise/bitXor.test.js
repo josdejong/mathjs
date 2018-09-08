@@ -32,25 +32,25 @@ describe('bitXor', function () {
   })
 
   it('should bitwise xor bignumbers', function () {
-    assert.deepEqual(bitXor(bignumber(1), bignumber(2)), bignumber(3))
-    assert.deepEqual(bitXor(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('92546795970570634164073698164736'))
-    assert.deepEqual(bitXor(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'))
-    assert.deepEqual(bitXor(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('-92546795970570634164077993132032'))
-    assert.deepEqual(bitXor(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('-92546795970570634164073698164736'))
+    assert.deepStrictEqual(bitXor(bignumber(1), bignumber(2)), bignumber(3))
+    assert.deepStrictEqual(bitXor(bignumber('-1.0e+31'), bignumber('-1.0e+32')), bignumber('92546795970570634164073698164736'))
+    assert.deepStrictEqual(bitXor(bignumber('1.0e+31'), bignumber('1.0e+32')), bignumber('92546795970570634164077993132032'))
+    assert.deepStrictEqual(bitXor(bignumber('-1.0e+31'), bignumber('1.0e+32')), bignumber('-92546795970570634164077993132032'))
+    assert.deepStrictEqual(bitXor(bignumber('1.0e+31'), bignumber('-1.0e+32')), bignumber('-92546795970570634164073698164736'))
   })
 
   it('should bitwise xor mixed numbers and bignumbers', function () {
-    assert.deepEqual(bitXor(bignumber(1), 2), bignumber(3))
-    assert.deepEqual(bitXor(1, bignumber(2)), bignumber(3))
-    assert.deepEqual(bitXor(bignumber(7), 9), bignumber(14))
-    assert.deepEqual(bitXor(7, bignumber(9)), bignumber(14))
+    assert.deepStrictEqual(bitXor(bignumber(1), 2), bignumber(3))
+    assert.deepStrictEqual(bitXor(1, bignumber(2)), bignumber(3))
+    assert.deepStrictEqual(bitXor(bignumber(7), 9), bignumber(14))
+    assert.deepStrictEqual(bitXor(7, bignumber(9)), bignumber(14))
   })
 
   it('should bitwise xor mixed booleans and bignumbers', function () {
-    assert.deepEqual(bitXor(bignumber(1), true), bignumber(0))
-    assert.deepEqual(bitXor(bignumber(1), false), bignumber(1))
-    assert.deepEqual(bitXor(true, bignumber(3)), bignumber(2))
-    assert.deepEqual(bitXor(false, bignumber(3)), bignumber(3))
+    assert.deepStrictEqual(bitXor(bignumber(1), true), bignumber(0))
+    assert.deepStrictEqual(bitXor(bignumber(1), false), bignumber(1))
+    assert.deepStrictEqual(bitXor(true, bignumber(3)), bignumber(2))
+    assert.deepStrictEqual(bitXor(false, bignumber(3)), bignumber(3))
   })
 
   it('should throw an error if used with a unit', function () {
@@ -85,58 +85,58 @@ describe('bitXor', function () {
 
   describe('Array', function () {
     it('should bitwise xor array - scalar', function () {
-      assert.deepEqual(bitXor(12, [3, 9]), [15, 5])
-      assert.deepEqual(bitXor([3, 9], 12), [15, 5])
+      assert.deepStrictEqual(bitXor(12, [3, 9]), [15, 5])
+      assert.deepStrictEqual(bitXor([3, 9], 12), [15, 5])
     })
 
     it('should bitwise xor array - array', function () {
-      assert.deepEqual(bitXor([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[4, 4], [4, 12]])
+      assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], [[5, 6], [7, 8]]), [[4, 4], [4, 12]])
     })
 
     it('should bitwise xor array - dense matrix', function () {
-      assert.deepEqual(bitXor([[1, 2], [3, 4]], matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })
 
     it('should bitwise xor array - sparse matrix', function () {
-      assert.deepEqual(bitXor([[1, 2], [3, 4]], sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor([[1, 2], [3, 4]], sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should bitwise xor dense matrix - scalar', function () {
-      assert.deepEqual(bitXor(12, matrix([3, 9])), matrix([15, 5]))
-      assert.deepEqual(bitXor(matrix([3, 9]), 12), matrix([15, 5]))
+      assert.deepStrictEqual(bitXor(12, matrix([3, 9])), matrix([15, 5]))
+      assert.deepStrictEqual(bitXor(matrix([3, 9]), 12), matrix([15, 5]))
     })
 
     it('should bitwise xor dense matrix - array', function () {
-      assert.deepEqual(bitXor(matrix([[1, 2], [3, 4]]), [[5, 6], [7, 8]]), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(matrix([[1, 2], [3, 4]]), [[5, 6], [7, 8]]), matrix([[4, 4], [4, 12]]))
     })
 
     it('should bitwise xor dense matrix - dense matrix', function () {
-      assert.deepEqual(bitXor(matrix([[1, 2], [3, 4]]), matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(matrix([[1, 2], [3, 4]]), matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })
 
     it('should bitwise xor dense matrix - sparse matrix', function () {
-      assert.deepEqual(bitXor(matrix([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(matrix([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })
   })
 
   describe('SparseMatrix', function () {
     it('should bitwise xor sparse matrix - scalar', function () {
-      assert.deepEqual(bitXor(12, sparse([[3, 9], [9, 3]])), matrix([[15, 5], [5, 15]]))
-      assert.deepEqual(bitXor(sparse([[3, 9], [9, 3]]), 12), matrix([[15, 5], [5, 15]]))
+      assert.deepStrictEqual(bitXor(12, sparse([[3, 9], [9, 3]])), matrix([[15, 5], [5, 15]]))
+      assert.deepStrictEqual(bitXor(sparse([[3, 9], [9, 3]]), 12), matrix([[15, 5], [5, 15]]))
     })
 
     it('should bitwise xor sparse matrix - array', function () {
-      assert.deepEqual(bitXor(sparse([[1, 2], [3, 4]]), [[5, 6], [7, 8]]), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), [[5, 6], [7, 8]]), matrix([[4, 4], [4, 12]]))
     })
 
     it('should bitwise xor sparse matrix - dense matrix', function () {
-      assert.deepEqual(bitXor(sparse([[1, 2], [3, 4]]), matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), matrix([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })
 
     it('should bitwise xor sparse matrix - sparse matrix', function () {
-      assert.deepEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
+      assert.deepStrictEqual(bitXor(sparse([[1, 2], [3, 4]]), sparse([[5, 6], [7, 8]])), matrix([[4, 4], [4, 12]]))
     })
   })
 

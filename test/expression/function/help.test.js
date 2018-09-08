@@ -5,13 +5,13 @@ describe('help', function () {
   it('should find documentation for a function by its name', function () {
     const help = math.help('sin')
     assert.ok(help instanceof math.type.Help)
-    assert.deepEqual(help.doc, math.expression.docs.sin)
+    assert.deepStrictEqual(help.doc, math.expression.docs.sin)
   })
 
   it('should find documentation for a function by the function itself', function () {
     const help = math.help(math.sin)
     assert.ok(help instanceof math.type.Help)
-    assert.deepEqual(help.doc, math.expression.docs.sin)
+    assert.deepStrictEqual(help.doc, math.expression.docs.sin)
   })
 
   it('should throw an error on wrong number of arguments', function () {

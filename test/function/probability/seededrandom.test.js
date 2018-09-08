@@ -19,7 +19,7 @@ describe('seed', function () {
     math.config({ randomSeed: 'a' })
     const first = math.random()
     const second = math.random()
-    assert.notEqual(first, second)
+    assert.notStrictEqual(first, second)
   })
 
   it('calling with no parameters should unseed rng', function () {
@@ -31,7 +31,7 @@ describe('seed', function () {
     math.config({ randomSeed: null })
     const secondB = math.random()
     assert.strictEqual(firstA, firstB)
-    assert.notEqual(secondA, secondB)
+    assert.notStrictEqual(secondA, secondB)
   })
 
   it('should generate same matrix with seed', function () {
@@ -64,7 +64,7 @@ describe('seed', function () {
     math.config({ randomSeed: 'a' })
     const first = math.pickRandom(range)
     const second = math.pickRandom(range)
-    assert.notEqual(first, second)
+    assert.notStrictEqual(first, second)
   })
 
   it('should pick same int with seed', function () {
@@ -79,7 +79,7 @@ describe('seed', function () {
     math.config({ randomSeed: 'a' })
     const first = math.randomInt(1, 100)
     const second = math.randomInt(1, 100)
-    assert.notEqual(first, second)
+    assert.notStrictEqual(first, second)
   })
 
   it('should work for number seeds', function () {

@@ -54,13 +54,13 @@ describe('ConstantNode', function () {
     const constantNode = bigmath.parse('2.3')
     assert.ok(constantNode.isConstantNode)
     const expr = constantNode.compile()
-    assert.deepEqual(expr.eval(), new bigmath.type.BigNumber(2.3))
+    assert.deepStrictEqual(expr.eval(), new bigmath.type.BigNumber(2.3))
   })
 
   it('should find a ConstantNode', function () {
     const a = new ConstantNode(2)
-    assert.deepEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
-    assert.deepEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
+    assert.deepStrictEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
   })
 
   it('should leave quotes in strings as is (no escaping)', function () {
@@ -70,8 +70,8 @@ describe('ConstantNode', function () {
 
   it('should find a ConstantNode', function () {
     const a = new ConstantNode(2)
-    assert.deepEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
-    assert.deepEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(a.filter(function (node) { return node instanceof ConstantNode }), [a])
+    assert.deepStrictEqual(a.filter(function (node) { return node instanceof SymbolNode }), [])
   })
 
   it('should run forEach on a ConstantNode', function () {
@@ -88,7 +88,7 @@ describe('ConstantNode', function () {
     })
 
     assert.notStrictEqual(b, a)
-    assert.deepEqual(b, a)
+    assert.deepStrictEqual(b, a)
   })
 
   it('should transform a ConstantNode', function () {
@@ -97,14 +97,14 @@ describe('ConstantNode', function () {
     const c = a.transform(function (node) {
       return node instanceof ConstantNode && node.value === 2 ? b : node
     })
-    assert.deepEqual(c, b)
+    assert.deepStrictEqual(c, b)
 
     // no match should leave the node as is
     const d = a.transform(function (node) {
       return node instanceof ConstantNode && node.value === 99 ? b : node
     })
     assert.notStrictEqual(d, a)
-    assert.deepEqual(d, a)
+    assert.deepStrictEqual(d, a)
   })
 
   it('should clone a ConstantNode', function () {
@@ -112,7 +112,7 @@ describe('ConstantNode', function () {
     const b = a.clone()
 
     assert(b instanceof ConstantNode)
-    assert.deepEqual(a, b)
+    assert.deepStrictEqual(a, b)
     assert.notStrictEqual(a, b)
     assert.strictEqual(a.value, b.value)
     assert.strictEqual(a.valueType, b.valueType)
@@ -132,9 +132,9 @@ describe('ConstantNode', function () {
 
   it('should stringify a ConstantNode', function () {
     assert.strictEqual(new ConstantNode(3).toString(), '3')
-    assert.deepEqual(new ConstantNode(3).toString(), '3')
-    assert.deepEqual(new ConstantNode(math.bignumber('1e500')).toString(), '1e+500')
-    assert.deepEqual(new ConstantNode(math.fraction(2, 3)).toString(), '2/3')
+    assert.deepStrictEqual(new ConstantNode(3).toString(), '3')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('1e500')).toString(), '1e+500')
+    assert.deepStrictEqual(new ConstantNode(math.fraction(2, 3)).toString(), '2/3')
     assert.strictEqual(new ConstantNode('hi').toString(), '"hi"')
     assert.strictEqual(new ConstantNode(true).toString(), 'true')
     assert.strictEqual(new ConstantNode(false).toString(), 'false')
@@ -160,19 +160,19 @@ describe('ConstantNode', function () {
 
     const json = a.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'ConstantNode',
       value: 2.3
     })
 
     const parsed = ConstantNode.fromJSON(json)
-    assert.deepEqual(parsed, a)
+    assert.deepStrictEqual(parsed, a)
   })
 
   it('should LaTeX a ConstantNode', function () {
     assert.strictEqual(new ConstantNode(3).toTex(), '3')
-    assert.deepEqual(new ConstantNode(3).toTex(), '3')
-    assert.deepEqual(new ConstantNode(math.bignumber('3')).toTex(), '3')
+    assert.deepStrictEqual(new ConstantNode(3).toTex(), '3')
+    assert.deepStrictEqual(new ConstantNode(math.bignumber('3')).toTex(), '3')
     assert.strictEqual(new ConstantNode('hi').toTex(), '\\mathtt{"hi"}')
     assert.strictEqual(new ConstantNode(true).toTex(), 'true')
     assert.strictEqual(new ConstantNode(false).toTex(), 'false')

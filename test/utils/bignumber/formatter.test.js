@@ -56,8 +56,8 @@ describe('format', function () {
     })
 
     it('auto notation with precision as second parameter', function () {
-      assert.deepEqual(formatter.format(new B('1.23456'), 3), '1.23')
-      assert.deepEqual(formatter.format(new B('12345678'), 4), '1.235e+7')
+      assert.deepStrictEqual(formatter.format(new B('1.23456'), 3), '1.23')
+      assert.deepStrictEqual(formatter.format(new B('12345678'), 4), '1.235e+7')
 
       assert.strictEqual(formatter.format(new B(1).dividedBy(3)), '0.33333333333333333333')
       assert.strictEqual(formatter.format(new B(1).dividedBy(3), 5), '0.33333')
@@ -118,12 +118,12 @@ describe('format', function () {
       const options = {
         notation: 'exponential'
       }
-      assert.deepEqual(formatter.format(new B('1.23456'), options), '1.23456e+0')
-      assert.deepEqual(formatter.format(new B('12345678'), options), '1.2345678e+7')
-      assert.deepEqual(formatter.format(new B('2.3e+30'), options), '2.3e+30')
-      assert.deepEqual(formatter.format(new B('0.23e+30'), options), '2.3e+29')
-      assert.deepEqual(formatter.format(new B('2.3e-30'), options), '2.3e-30')
-      assert.deepEqual(formatter.format(new B('0.23e-30'), options), '2.3e-31')
+      assert.deepStrictEqual(formatter.format(new B('1.23456'), options), '1.23456e+0')
+      assert.deepStrictEqual(formatter.format(new B('12345678'), options), '1.2345678e+7')
+      assert.deepStrictEqual(formatter.format(new B('2.3e+30'), options), '2.3e+30')
+      assert.deepStrictEqual(formatter.format(new B('0.23e+30'), options), '2.3e+29')
+      assert.deepStrictEqual(formatter.format(new B('2.3e-30'), options), '2.3e-30')
+      assert.deepStrictEqual(formatter.format(new B('0.23e-30'), options), '2.3e-31')
     })
 
     it('should format bignumbers in exponential notation with precision', function () {
@@ -131,7 +131,7 @@ describe('format', function () {
         notation: 'exponential',
         precision: 18
       }
-      assert.deepEqual(formatter.format(new B(1).div(3), options), '3.33333333333333333e-1')
+      assert.deepStrictEqual(formatter.format(new B(1).div(3), options), '3.33333333333333333e-1')
     })
 
     it('should format bignumbers with custom precision, lower, and upper bound', function () {
@@ -144,13 +144,13 @@ describe('format', function () {
         upperExp: 50
       }
 
-      assert.deepEqual(formatter.format(new Big(5).div(3), options), '1.6666666666666666666666666666666666666666666666667')
-      assert.deepEqual(formatter.format(new Big(5e+40).div(3), options), '16666666666666666666666666666666666666666.666666667')
-      assert.deepEqual(formatter.format(new Big(5e-40).div(3), options),
+      assert.deepStrictEqual(formatter.format(new Big(5).div(3), options), '1.6666666666666666666666666666666666666666666666667')
+      assert.deepStrictEqual(formatter.format(new Big(5e+40).div(3), options), '16666666666666666666666666666666666666666.666666667')
+      assert.deepStrictEqual(formatter.format(new Big(5e-40).div(3), options),
         '0.00000000000000000000000000000000000000016666666666666666666666666666666666666666666666667')
-      assert.deepEqual(formatter.format(new Big(5e+60).div(3), options), '1.6666666666666666666666666666666666666666666666667e+60')
-      assert.deepEqual(formatter.format(new Big(5e-60).div(3), options), '1.6666666666666666666666666666666666666666666666667e-60')
-      assert.deepEqual(formatter.format(new Big(5e-80).div(3), options), '1.6666666666666666666666666666666666666666666666667e-80')
+      assert.deepStrictEqual(formatter.format(new Big(5e+60).div(3), options), '1.6666666666666666666666666666666666666666666666667e+60')
+      assert.deepStrictEqual(formatter.format(new Big(5e-60).div(3), options), '1.6666666666666666666666666666666666666666666666667e-60')
+      assert.deepStrictEqual(formatter.format(new Big(5e-80).div(3), options), '1.6666666666666666666666666666666666666666666666667e-80')
     })
 
     it('auto notation with custom lower bound', function () {
@@ -177,11 +177,11 @@ describe('format', function () {
         notation: 'fixed'
       }
 
-      assert.deepEqual(formatter.format(new BigNumber('1.23456'), options), '1.23456')
-      assert.deepEqual(formatter.format(new BigNumber('1.7'), options), '1.7')
-      assert.deepEqual(formatter.format(new BigNumber('12345678'), options), '12345678')
-      assert.deepEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000')
-      assert.deepEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000')
+      assert.deepStrictEqual(formatter.format(new BigNumber('1.23456'), options), '1.23456')
+      assert.deepStrictEqual(formatter.format(new BigNumber('1.7'), options), '1.7')
+      assert.deepStrictEqual(formatter.format(new BigNumber('12345678'), options), '12345678')
+      assert.deepStrictEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000')
+      assert.deepStrictEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000')
     })
 
     it('should format bignumbers in fixed notation with precision', function () {
@@ -189,10 +189,10 @@ describe('format', function () {
         notation: 'fixed',
         precision: 2
       }
-      assert.deepEqual(formatter.format(new BigNumber('1.23456'), options), '1.23')
-      assert.deepEqual(formatter.format(new BigNumber('12345678'), options), '12345678.00')
-      assert.deepEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000.00')
-      assert.deepEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00')
+      assert.deepStrictEqual(formatter.format(new BigNumber('1.23456'), options), '1.23')
+      assert.deepStrictEqual(formatter.format(new BigNumber('12345678'), options), '12345678.00')
+      assert.deepStrictEqual(formatter.format(new BigNumber('12e18'), options), '12000000000000000000.00')
+      assert.deepStrictEqual(formatter.format(new BigNumber('12e30'), options), '12000000000000000000000000000000.00')
     })
 
     it('should throw an error on unknown notation', function () {

@@ -29,13 +29,13 @@ describe('csch', function () {
     const cschBig = bigmath.csch
     const Big = bigmath.bignumber
 
-    assert.deepEqual(cschBig(Big(0)).toString(), 'Infinity')
-    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154512'))
-    assert.deepEqual(cschBig(Big(2)), Big('0.27572056477178320776'))
-    assert.deepEqual(cschBig(Big(3)), Big('0.099821569668822732851'))
+    assert.deepStrictEqual(cschBig(Big(0)).toString(), 'Infinity')
+    assert.deepStrictEqual(cschBig(Big(1)), Big('0.85091812823932154512'))
+    assert.deepStrictEqual(cschBig(Big(2)), Big('0.27572056477178320776'))
+    assert.deepStrictEqual(cschBig(Big(3)), Big('0.099821569668822732851'))
 
     /* Pass in extra digits to pi. */
-    assert.deepEqual(cschBig(biggermath.pi).toString(), '0.086589537530046941828')
+    assert.deepStrictEqual(cschBig(biggermath.pi).toString(), '0.086589537530046941828')
   })
 
   it('should return the csch of a complex number', function () {
