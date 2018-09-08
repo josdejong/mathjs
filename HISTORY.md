@@ -8,7 +8,9 @@
 - Fixed #1236: quantileSeq has inconsistant return.
 - Fixed #1237: norm sometimes returning a complex number instead of
   number.
-- Upgraded devDependencies (`uglify-js@3.4.8`, `webpack@4.17.1`).
+- Upgraded dependencies (`fraction.js@4.0.9`)
+- Upgraded devDependencies (`babel@7`, `karma-webpack@3.0.4`,
+  `nyc@13.0.1`, `standard@12.0.0`, `uglify-js@3.4.9`, `webpack@4.17.2`)
 
 
 ## 2018-08-21, version 5.1.1
