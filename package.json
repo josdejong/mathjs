@@ -50,6 +50,7 @@
     "Marcus Andre (https://github.com/marcusandre)",
     "Horatiu Lazu (https://github.com/MathBunny)",
     "Mathias Polligkeit (https://github.com/woylie)",
+    "Mathias Rasmussen (https://github.com/mathiasvr)",
     "Max Bruckner (https://github.com/FSMaxB)",
     "Maxence Dalmais (https://github.com/maxired)",
     "Michael M. (https://github.com/Schnark)",
@@ -147,7 +148,7 @@
     "tar": "4.4.6",
     "uglify-js": "3.4.9",
     "underscore": "1.9.1",
-    "webpack": "4.17.1",
+    "webpack": "4.17.2",
     "zeros": "1.0.0"
   },
   "main": "./index",
@@ -181,7 +182,7 @@
     "mathjs": "./bin/cli.js"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">= 6"
   },
   "bugs": {
     "url": "https://github.com/josdejong/mathjs/issues"
