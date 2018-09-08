@@ -408,15 +408,6 @@ describe('util.array', function () {
     })
   })
 
-  describe('resize', function () {
-    it('should test whether an object is an array', function () {
-      assert.strictEqual(array.isArray([]), true)
-      assert.strictEqual(array.isArray({}), false)
-      assert.strictEqual(array.isArray(2), false)
-      assert.strictEqual(array.isArray('string'), false)
-    })
-  })
-
   describe('validateIndex', function () {
     it('should validate whether an index contains integers', function () {
       assert.strictEqual(array.validateIndex(2), undefined)
