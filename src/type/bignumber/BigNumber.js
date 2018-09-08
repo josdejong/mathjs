@@ -2,7 +2,7 @@
 
 import Decimal from 'decimal.js'
 
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const BigNumber = Decimal.clone({ precision: config.precision })
 
   /**
@@ -44,7 +44,6 @@ function factory (type, config, load, typed, math) {
   return BigNumber
 }
 
-exports.name = 'BigNumber'
-exports.path = 'type'
-exports.factory = factory
-exports.math = true // request access to the math namespace
+export const name = 'BigNumber'
+export const path = 'type'
+export const math = true // request access to the math namespace
