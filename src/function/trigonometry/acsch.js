@@ -43,7 +43,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acsch.toTex = {1: `\\mathrm{csch}^{-1}\\left(\${args[0]}\\right)`}
+  acsch.toTex = { 1: `\\mathrm{csch}^{-1}\\left(\${args[0]}\\right)` }
 
   return acsch
 }

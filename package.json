@@ -143,10 +143,10 @@
     "nyc": "12.0.2",
     "pad-right": "0.2.2",
     "q": "1.5.1",
-    "standard": "11.0.1",
+    "standard": "12.0.0",
     "sylvester": "0.0.21",
     "tar": "4.4.6",
-    "uglify-js": "3.4.8",
+    "uglify-js": "3.4.9",
     "underscore": "1.9.1",
     "webpack": "4.17.2",
     "zeros": "1.0.0"

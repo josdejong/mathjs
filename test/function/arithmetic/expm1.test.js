@@ -26,16 +26,16 @@ describe('expm1', function () {
 
     // function requirements
     assert.ok(isNaN(expm1(NaN)))
-    assert.equal(expm1(+0), 0)
-    assert.equal(expm1(-0), 0)
-    assert.equal(expm1(+Infinity), Infinity)
-    assert.equal(expm1(-Infinity), -1)
+    assert.strictEqual(expm1(+0), 0)
+    assert.strictEqual(expm1(-0), -0)
+    assert.strictEqual(expm1(+Infinity), Infinity)
+    assert.strictEqual(expm1(-Infinity), -1)
   })
 
   it('should exponentiate a bignumber', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.expm1(bigmath.bignumber(1)), bigmath.bignumber('1.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427'))
+    assert.deepStrictEqual(bigmath.expm1(bigmath.bignumber(1)), bigmath.bignumber('1.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427'))
   })
 
   it('should throw an error if there\'s wrong number of arguments', function () {
@@ -85,6 +85,6 @@ describe('expm1', function () {
 
   it('should LaTeX expm1', function () {
     const expression = math.parse('expm1(0)')
-    assert.equal(expression.toTex(), '\\left(e^{0}-1\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(e^{0}-1\\right)')
   })
 })

@@ -20,17 +20,17 @@ describe('dotMultiply', function () {
   })
 
   it('should multiply booleans', function () {
-    assert.equal(dotMultiply(true, true), 1)
-    assert.equal(dotMultiply(true, false), 0)
-    assert.equal(dotMultiply(false, true), 0)
-    assert.equal(dotMultiply(false, false), 0)
+    assert.strictEqual(dotMultiply(true, true), 1)
+    assert.strictEqual(dotMultiply(true, false), 0)
+    assert.strictEqual(dotMultiply(false, true), 0)
+    assert.strictEqual(dotMultiply(false, false), 0)
   })
 
   it('should multiply mixed numbers and booleans', function () {
-    assert.equal(dotMultiply(2, true), 2)
-    assert.equal(dotMultiply(2, false), 0)
-    assert.equal(dotMultiply(true, 2), 2)
-    assert.equal(dotMultiply(false, 2), 0)
+    assert.strictEqual(dotMultiply(2, true), 2)
+    assert.strictEqual(dotMultiply(2, false), 0)
+    assert.strictEqual(dotMultiply(true, 2), 2)
+    assert.strictEqual(dotMultiply(false, 2), 0)
   })
 
   it('should multiply 2 complex numbers', function () {
@@ -45,10 +45,10 @@ describe('dotMultiply', function () {
 
   it('should multiply a unit by a number', function () {
     // unit
-    assert.equal(dotMultiply(2, unit('5 mm')).toString(), '10 mm')
-    assert.equal(dotMultiply(2, unit('5 mm')).toString(), '10 mm')
-    assert.equal(dotMultiply(unit('5 mm'), 2).toString(), '10 mm')
-    assert.equal(dotMultiply(unit('5 mm'), 0).toString(), '0 mm')
+    assert.strictEqual(dotMultiply(2, unit('5 mm')).toString(), '10 mm')
+    assert.strictEqual(dotMultiply(2, unit('5 mm')).toString(), '10 mm')
+    assert.strictEqual(dotMultiply(unit('5 mm'), 2).toString(), '10 mm')
+    assert.strictEqual(dotMultiply(unit('5 mm'), 0).toString(), '0 mm')
   })
 
   it('should throw an error with strings', function () {
@@ -176,6 +176,6 @@ describe('dotMultiply', function () {
 
   it('should LaTeX dotMultiply', function () {
     const expression = math.parse('dotMultiply([1,2],[3,4])')
-    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.\\cdot\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

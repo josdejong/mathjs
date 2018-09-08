@@ -334,20 +334,20 @@ describe('security', function () {
   })
 
   it('should allow calling functions on math', function () {
-    assert.equal(math.eval('sqrt(4)'), 2)
+    assert.strictEqual(math.eval('sqrt(4)'), 2)
   })
 
   it('should allow invoking methods on complex numbers', function () {
-    assert.deepEqual(math.eval('complex(4, 0).sqrt(2)'), math.complex(2, 0))
+    assert.deepStrictEqual(math.eval('complex(4, 0).sqrt(2)'), math.complex(2, 0))
   })
 
   it('should allow accessing properties on an object', function () {
-    assert.deepEqual(math.eval('obj.a', {obj: {a: 42}}), 42)
+    assert.deepStrictEqual(math.eval('obj.a', { obj: { a: 42 } }), 42)
   })
 
   it('should not allow accessing inherited properties on an object', function () {
     assert.throws(function () {
-      math.eval('obj.constructor', {obj: {a: 42}})
+      math.eval('obj.constructor', { obj: { a: 42 } })
     }, /Error: No access to property "constructor"/)
   })
 
@@ -388,7 +388,7 @@ describe('security', function () {
     assert.strictEqual(math.expression.mathWithTransform.Matrix, undefined)
     assert.strictEqual(math.expression.mathWithTransform.Node, undefined)
     assert.strictEqual(math.expression.mathWithTransform.chain, undefined)
-    assert.deepEqual(math.eval('chain'), math.unit('chain'))
+    assert.deepStrictEqual(math.eval('chain'), math.unit('chain'))
   })
 })
 

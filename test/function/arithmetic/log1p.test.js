@@ -2,7 +2,7 @@
 const assert = require('assert')
 const approx = require('../../../tools/approx')
 const math = require('../../../src/main')
-const mathPredictable = math.create({predictable: true})
+const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
@@ -11,14 +11,14 @@ const log1p = math.log1p
 describe('log1p', function () {
   it('should return the log1p of a boolean value', function () {
     approx.equal(log1p(true), 0.6931471805599)
-    assert.equal(log1p(false), 0)
-    assert.equal(log1p(1, false), 0)
+    assert.strictEqual(log1p(false), 0)
+    assert.strictEqual(log1p(1, false), -0)
   })
 
   it('should return the log1p of positive numbers', function () {
-    assert.equal(log1p(-1), -Infinity)
-    assert.equal(log1p(-0), -0)
-    assert.equal(log1p(+0), +0)
+    assert.strictEqual(log1p(-1), -Infinity)
+    assert.strictEqual(log1p(-0), -0)
+    assert.strictEqual(log1p(+0), +0)
     approx.deepEqual(log1p(1), 0.693147180559945)
     approx.deepEqual(log1p(2), 1.098612288668110)
     approx.deepEqual(math.exp(log1p(99)), 100)
@@ -31,7 +31,7 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of negative numbers with predictable: true', function () {
-    assert.equal(typeof mathPredictable.log1p(-2), 'number')
+    assert.strictEqual(typeof mathPredictable.log1p(-2), 'number')
     assert(isNaN(mathPredictable.log1p(-2)))
   })
 
@@ -48,19 +48,19 @@ describe('log1p', function () {
   })
 
   it('should return the log1p of positive bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
-    assert.deepEqual(bigmath.log1p(bigmath.bignumber(-1)).toString(), '-Infinity')
-    assert.deepEqual(bigmath.log1p(bigmath.bignumber(0)), bigmath.bignumber('0'))
-    assert.deepEqual(bigmath.log1p(bigmath.bignumber(1)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'))
-    assert.deepEqual(bigmath.log1p(bigmath.bignumber(2)), bigmath.bignumber('1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732089'))
+    assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(-1)).toString(), '-Infinity')
+    assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(0)), bigmath.bignumber('0'))
+    assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(1)), bigmath.bignumber('0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875'))
+    assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(2)), bigmath.bignumber('1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732089'))
 
     // note: the following gives a round-off error with regular numbers
-    assert.deepEqual(bigmath.log1p(bigmath.bignumber(999), bigmath.bignumber(10)), bigmath.bignumber(3))
+    assert.deepStrictEqual(bigmath.log1p(bigmath.bignumber(999), bigmath.bignumber(10)), bigmath.bignumber(3))
   })
 
   it('should return the log1p of negative bignumbers', function () {
-    const bigmath = math.create({precision: 100})
+    const bigmath = math.create({ precision: 100 })
 
     approx.deepEqual(bigmath.log1p(bigmath.bignumber(-2)), complex('0.000000000000000 + 3.141592653589793i'))
     approx.deepEqual(bigmath.log1p(bigmath.bignumber(-3)), complex('0.693147180559945 + 3.141592653589793i'))
@@ -101,7 +101,7 @@ describe('log1p', function () {
     const expr1 = math.parse('log1p(e)')
     const expr2 = math.parse('log1p(32,2)')
 
-    assert.equal(expr1.toTex(), '\\ln\\left( e+1\\right)')
-    assert.equal(expr2.toTex(), '\\log_{2}\\left(32+1\\right)')
+    assert.strictEqual(expr1.toTex(), '\\ln\\left( e+1\\right)')
+    assert.strictEqual(expr2.toTex(), '\\log_{2}\\left(32+1\\right)')
   })
 })

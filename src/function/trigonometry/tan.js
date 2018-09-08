@@ -50,7 +50,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  tan.toTex = {1: `\\tan\\left(\${args[0]}\\right)`}
+  tan.toTex = { 1: `\\tan\\left(\${args[0]}\\right)` }
 
   return tan
 }

@@ -25,8 +25,8 @@ describe('help', function () {
     const help = new Help(doc)
 
     assert(help instanceof Help)
-    assert.deepEqual(help.doc.name, 'add')
-    assert.deepEqual(help.doc, doc)
+    assert.deepStrictEqual(help.doc.name, 'add')
+    assert.deepStrictEqual(help.doc, doc)
   })
 
   it('should throw an error when constructed without new operator', function () {
@@ -53,7 +53,7 @@ describe('help', function () {
 
   it('should stringify a help', function () {
     const help = new Help(doc)
-    assert.equal(help.toString(),
+    assert.strictEqual(help.toString(),
       '\nName: add\n' +
         '\n' +
         'Category: Operators\n' +
@@ -76,7 +76,7 @@ describe('help', function () {
 
   it('should stringify a help with empty doc', function () {
     const help = new Help({})
-    assert.equal(help.toString(), '\n')
+    assert.strictEqual(help.toString(), '\n')
   })
 
   it('should stringify a doc with empty example', function () {
@@ -88,7 +88,7 @@ describe('help', function () {
       ]
     })
 
-    assert.equal(help.toString(),
+    assert.strictEqual(help.toString(),
       '\nName: add\n' +
         '\n' +
         'Examples:\n' +
@@ -106,7 +106,7 @@ describe('help', function () {
       ]
     })
 
-    assert.equal(help.toString(),
+    assert.strictEqual(help.toString(),
       '\nName: add\n' +
         '\n' +
         'Examples:\n' +
@@ -135,7 +135,7 @@ describe('help', function () {
   it('should export doc to JSON', function () {
     const help = new Help(doc)
     const json = help.toJSON()
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       'mathjs': 'Help',
       'name': 'add',
       'category': 'Operators',
@@ -154,8 +154,8 @@ describe('help', function () {
     })
     json.name = 'foo' // this should not alter the original doc
     json.examples.push('2 + 3') // this should not alter the original doc
-    assert.equal(doc.name, 'add')
-    assert.notEqual(json.examples.length, doc.examples.length)
+    assert.strictEqual(doc.name, 'add')
+    assert.notStrictEqual(json.examples.length, doc.examples.length)
   })
 
   it('should instantiate Help from json using fromJSON', function () {
@@ -181,6 +181,6 @@ describe('help', function () {
 
     const help = Help.fromJSON(json)
     assert(help instanceof Help)
-    assert.deepEqual(doc, help.doc)
+    assert.deepStrictEqual(doc, help.doc)
   })
 })

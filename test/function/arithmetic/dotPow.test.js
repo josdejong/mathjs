@@ -23,17 +23,17 @@ describe('dotPow', function () {
   })
 
   it('should elevate booleans to the given power', function () {
-    assert.equal(dotPow(true, true), 1)
-    assert.equal(dotPow(true, false), 1)
-    assert.equal(dotPow(false, true), 0)
-    assert.equal(dotPow(false, false), 1)
+    assert.strictEqual(dotPow(true, true), 1)
+    assert.strictEqual(dotPow(true, false), 1)
+    assert.strictEqual(dotPow(false, true), 0)
+    assert.strictEqual(dotPow(false, false), 1)
   })
 
   it('should exponentiate mixed numbers and booleans', function () {
-    assert.equal(dotPow(2, true), 2)
-    assert.equal(dotPow(2, false), 1)
-    assert.equal(dotPow(true, 2), 1)
-    assert.equal(dotPow(false, 2), 0)
+    assert.strictEqual(dotPow(2, true), 2)
+    assert.strictEqual(dotPow(2, false), 1)
+    assert.strictEqual(dotPow(true, 2), 1)
+    assert.strictEqual(dotPow(false, 2), 0)
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -166,6 +166,6 @@ describe('dotPow', function () {
 
   it('should LaTeX dotPow', function () {
     const expression = math.parse('dotPow([1,2],[3,4])')
-    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.^\\wedge\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

@@ -138,7 +138,7 @@ function factory (type, config, load, typed, math) {
       let res = resolve(expr, scope)
       res = removeParens(res)
       let visited = {}
-      let str = res.toString({parenthesis: 'all'})
+      let str = res.toString({ parenthesis: 'all' })
       while (!visited[str]) {
         visited[str] = true
         _lastsym = 0 // counter for placeholder symbols
@@ -151,7 +151,7 @@ function factory (type, config, load, typed, math) {
           }
           unflattenl(res) // using left-heavy binary tree here since custom rule functions may expect it
         }
-        str = res.toString({parenthesis: 'all'})
+        str = res.toString({ parenthesis: 'all' })
       }
       return res
     }
@@ -284,7 +284,7 @@ function factory (type, config, load, typed, math) {
         case 'string':
           const lr = rule.split('->')
           if (lr.length === 2) {
-            rule = {l: lr[0], r: lr[1]}
+            rule = { l: lr[0], r: lr[1] }
           } else {
             throw SyntaxError('Could not parse rule: ' + rule)
           }
@@ -431,7 +431,7 @@ function factory (type, config, load, typed, math) {
    * Returns the set union of two match-placeholders or null if there is a conflict.
    */
   function mergeMatch (match1, match2) {
-    const res = {placeholders: {}}
+    const res = { placeholders: {} }
 
     // Some matches may not have placeholders; this is OK
     if (!match1.placeholders && !match2.placeholders) {
@@ -518,7 +518,7 @@ function factory (type, config, load, typed, math) {
     //    console.log('node = ' + node)
 
     //    console.log('Entering _ruleMatch(' + rule.toString() + ', ' + node.toString() + ')')
-    let res = [{placeholders: {}}]
+    let res = [{ placeholders: {} }]
 
     if ((rule instanceof OperatorNode && node instanceof OperatorNode) ||
       (rule instanceof FunctionNode && node instanceof FunctionNode)) {

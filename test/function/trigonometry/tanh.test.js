@@ -6,7 +6,7 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const tanh = math.tanh
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 describe('tanh', function () {
   it('should return the tanh of a boolean', function () {
@@ -29,21 +29,21 @@ describe('tanh', function () {
     const arg1 = Big(-Infinity)
     const arg2 = Big(-3)
     const arg10 = Big(Infinity)
-    assert.deepEqual(tanhBig(arg1), Big(-1))
-    assert.deepEqual(tanhBig(arg2), Big('-0.99505475368673045133'))
-    assert.deepEqual(tanhBig(Big(-2)), Big('-0.96402758007581688395'))
-    assert.deepEqual(tanhBig(Big(-1)), Big('-0.76159415595576488812'))
-    assert.deepEqual(tanhBig(Big(0)), Big(0))
-    assert.deepEqual(tanhBig(Big(1)), Big('0.76159415595576488812'))
-    assert.deepEqual(tanhBig(Big(2)), Big('0.96402758007581688395'))
-    assert.deepEqual(tanhBig(Big(3)), Big('0.99505475368673045133'))
-    assert.deepEqual(tanhBig(bigmath.pi).toString(), '0.99627207622074994426')
-    assert.deepEqual(tanhBig(arg10), Big(1))
+    assert.deepStrictEqual(tanhBig(arg1), Big(-1))
+    assert.deepStrictEqual(tanhBig(arg2), Big('-0.99505475368673045133'))
+    assert.deepStrictEqual(tanhBig(Big(-2)), Big('-0.96402758007581688395'))
+    assert.deepStrictEqual(tanhBig(Big(-1)), Big('-0.76159415595576488812'))
+    assert.deepStrictEqual(tanhBig(Big(0)), Big(0))
+    assert.deepStrictEqual(tanhBig(Big(1)), Big('0.76159415595576488812'))
+    assert.deepStrictEqual(tanhBig(Big(2)), Big('0.96402758007581688395'))
+    assert.deepStrictEqual(tanhBig(Big(3)), Big('0.99505475368673045133'))
+    assert.deepStrictEqual(tanhBig(bigmath.pi).toString(), '0.99627207622074994426')
+    assert.deepStrictEqual(tanhBig(arg10), Big(1))
 
     // Make sure args were not changed
-    assert.deepEqual(arg1.toString(), '-Infinity')
-    assert.deepEqual(arg2, Big(-3))
-    assert.deepEqual(arg10.toString(), 'Infinity')
+    assert.deepStrictEqual(arg1.toString(), '-Infinity')
+    assert.deepStrictEqual(arg2, Big(-3))
+    assert.deepStrictEqual(arg10.toString(), 'Infinity')
   })
 
   it('should return the tanh of a complex number', function () {
@@ -87,6 +87,6 @@ describe('tanh', function () {
 
   it('should LaTeX tanh', function () {
     const expression = math.parse('tanh(1)')
-    assert.equal(expression.toTex(), '\\tanh\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\tanh\\left(1\\right)')
   })
 })

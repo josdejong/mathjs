@@ -71,7 +71,7 @@ function factory (type, config, load, typed) {
     }
   }, divideScalar.signatures))
 
-  divide.toTex = {2: `\\frac{\${args[0]}}{\${args[1]}}`}
+  divide.toTex = { 2: `\\frac{\${args[0]}}{\${args[1]}}` }
 
   return divide
 }

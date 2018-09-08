@@ -14,7 +14,7 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end)
     assert(n instanceof RangeNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'RangeNode')
+    assert.strictEqual(n.type, 'RangeNode')
   })
 
   it('should have isRangeNode', function () {
@@ -49,7 +49,7 @@ describe('RangeNode', function () {
     const n = new RangeNode(start, end, step)
 
     const expr = n.compile()
-    assert.deepEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]))
+    assert.deepStrictEqual(expr.eval(), math.matrix([0, 2, 4, 6, 8, 10]))
   })
 
   it('should filter a RangeNode', function () {
@@ -58,11 +58,11 @@ describe('RangeNode', function () {
     const step = new ConstantNode(2)
     const n = new RangeNode(start, end, step)
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof RangeNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [start, end, step])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [step])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof RangeNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof SymbolNode }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [start, end, step])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [step])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 4 }), [])
   })
 
   it('should run forEach on a RangeNode', function () {
@@ -79,11 +79,11 @@ describe('RangeNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], start)
     assert.strictEqual(nodes[1], end)
     assert.strictEqual(nodes[2], step)
-    assert.deepEqual(paths, ['start', 'end', 'step'])
+    assert.deepStrictEqual(paths, ['start', 'end', 'step'])
   })
 
   it('should map a RangeNode', function () {
@@ -103,16 +103,16 @@ describe('RangeNode', function () {
       return node instanceof ConstantNode && node.value === 0 ? e : node
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], start)
     assert.strictEqual(nodes[1], end)
     assert.strictEqual(nodes[2], step)
-    assert.deepEqual(paths, ['start', 'end', 'step'])
+    assert.deepStrictEqual(paths, ['start', 'end', 'step'])
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.start, e)
-    assert.deepEqual(f.end, end)
-    assert.deepEqual(f.step, step)
+    assert.deepStrictEqual(f.start, e)
+    assert.deepStrictEqual(f.end, end)
+    assert.deepStrictEqual(f.step, step)
   })
 
   it('should throw an error when the map callback does not return a node', function () {
@@ -138,9 +138,9 @@ describe('RangeNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.start, e)
-    assert.deepEqual(f.end, end)
-    assert.deepEqual(f.step, step)
+    assert.deepStrictEqual(f.start, e)
+    assert.deepStrictEqual(f.end, end)
+    assert.deepStrictEqual(f.step, step)
   })
 
   it('should transform a RangeNodes end', function () {
@@ -155,9 +155,9 @@ describe('RangeNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.start, start)
-    assert.deepEqual(f.end, e)
-    assert.deepEqual(f.step, step)
+    assert.deepStrictEqual(f.start, start)
+    assert.deepStrictEqual(f.end, e)
+    assert.deepStrictEqual(f.step, step)
   })
 
   it('should transform a RangeNodes step', function () {
@@ -172,9 +172,9 @@ describe('RangeNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.start, start)
-    assert.deepEqual(f.end, end)
-    assert.deepEqual(f.step, e)
+    assert.deepStrictEqual(f.start, start)
+    assert.deepStrictEqual(f.end, end)
+    assert.deepStrictEqual(f.step, e)
   })
 
   it('should transform a RangeNodes without step', function () {
@@ -188,8 +188,8 @@ describe('RangeNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.start, start)
-    assert.deepEqual(f.end, e)
+    assert.deepStrictEqual(f.start, start)
+    assert.deepStrictEqual(f.end, e)
   })
 
   it('should transform a RangeNode itself', function () {
@@ -203,7 +203,7 @@ describe('RangeNode', function () {
       return node instanceof RangeNode ? e : node
     })
 
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should clone a RangeNode', function () {
@@ -214,7 +214,7 @@ describe('RangeNode', function () {
 
     const d = c.clone()
 
-    assert.deepEqual(d, c)
+    assert.deepStrictEqual(d, c)
     assert.notStrictEqual(d, c)
     assert.strictEqual(d.start, c.start)
     assert.strictEqual(d.end, c.end)
@@ -229,7 +229,7 @@ describe('RangeNode', function () {
     const d = c.clone()
 
     assert(d instanceof RangeNode)
-    assert.deepEqual(d, c)
+    assert.deepStrictEqual(d, c)
     assert.notStrictEqual(d, c)
     assert.strictEqual(d.start, c.start)
     assert.strictEqual(d.end, c.end)
@@ -254,7 +254,7 @@ describe('RangeNode', function () {
     const end = new ConstantNode(10)
     const n = new RangeNode(start, end)
 
-    assert.equal(n.toString(), '0:10')
+    assert.strictEqual(n.toString(), '0:10')
   })
 
   it('should stringify a RangeNode with step', function () {
@@ -263,7 +263,7 @@ describe('RangeNode', function () {
     const step = new ConstantNode(2)
     const n = new RangeNode(start, end, step)
 
-    assert.equal(n.toString(), '0:2:10')
+    assert.strictEqual(n.toString(), '0:2:10')
   })
 
   it('should stringify a RangeNode with an OperatorNode', function () {
@@ -275,7 +275,7 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(o1, o1, o2)
 
-    assert.equal(n.toString(), '1 + 2:(1 < 2):1 + 2')
+    assert.strictEqual(n.toString(), '1 + 2:(1 < 2):1 + 2')
   })
 
   it('should stringify a RangeNode with a RangeNode', function () {
@@ -287,7 +287,7 @@ describe('RangeNode', function () {
     const start2 = new RangeNode(start1, end1)
     const n = new RangeNode(start2, end2, step2)
 
-    assert.equal(n.toString(), '(0:10):2:100')
+    assert.strictEqual(n.toString(), '(0:10):2:100')
   })
 
   it('should stringify a RangeNode with custom toString', function () {
@@ -308,12 +308,12 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.equal(n.toString({handler: customFunction}), 'from const(1, number) to const(2, number) with steps of const(3, number)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'from const(1, number) to const(2, number) with steps of const(3, number)')
   })
 
   it('should respect the \'all\' parenthesis option', function () {
-    assert.equal(math.parse('1:2:3').toString({parenthesis: 'all'}), '(1):(2):(3)')
-    assert.equal(math.parse('1:2:3').toTex({parenthesis: 'all'}), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')
+    assert.strictEqual(math.parse('1:2:3').toString({ parenthesis: 'all' }), '(1):(2):(3)')
+    assert.strictEqual(math.parse('1:2:3').toTex({ parenthesis: 'all' }), '\\left(1\\right):\\left(2\\right):\\left(3\\right)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -324,7 +324,7 @@ describe('RangeNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'RangeNode',
       start: a,
       end: b,
@@ -332,7 +332,7 @@ describe('RangeNode', function () {
     })
 
     const parsed = RangeNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a RangeNode without step', function () {
@@ -340,7 +340,7 @@ describe('RangeNode', function () {
     const end = new ConstantNode(10)
     const n = new RangeNode(start, end)
 
-    assert.equal(n.toTex(), '0:10')
+    assert.strictEqual(n.toTex(), '0:10')
   })
 
   it('should LaTeX a RangeNode with step', function () {
@@ -349,7 +349,7 @@ describe('RangeNode', function () {
     const step = new ConstantNode(2)
     const n = new RangeNode(start, end, step)
 
-    assert.equal(n.toTex(), '0:2:10')
+    assert.strictEqual(n.toTex(), '0:2:10')
   })
 
   it('should LaTeX a RangeNode with custom toTex', function () {
@@ -370,7 +370,7 @@ describe('RangeNode', function () {
 
     const n = new RangeNode(a, b, c)
 
-    assert.equal(n.toTex({handler: customFunction}), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), 'from const\\left(1, number\\right) to const\\left(2, number\\right) with steps of const\\left(3, number\\right)')
   })
 
   /**

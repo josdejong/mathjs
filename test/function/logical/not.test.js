@@ -62,13 +62,13 @@ describe('not', function () {
   })
 
   it('should not arrays', function () {
-    assert.deepEqual(not([0, 10]), [true, false])
-    assert.deepEqual(not([]), [])
+    assert.deepStrictEqual(not([0, 10]), [true, false])
+    assert.deepStrictEqual(not([]), [])
   })
 
   it('should not matrices', function () {
-    assert.deepEqual(not(matrix([0, 10])), matrix([true, false]))
-    assert.deepEqual(not(matrix([])), matrix([]))
+    assert.deepStrictEqual(not(matrix([0, 10])), matrix([true, false]))
+    assert.deepStrictEqual(not(matrix([])), matrix([]))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -85,6 +85,6 @@ describe('not', function () {
   it('should LaTeX not', function () {
     const c = new ConstantNode(1)
     const node = new FunctionNode(new SymbolNode('not'), [c])
-    assert.equal(node.toTex(), '\\neg\\left(1\\right)')
+    assert.strictEqual(node.toTex(), '\\neg\\left(1\\right)')
   })
 })

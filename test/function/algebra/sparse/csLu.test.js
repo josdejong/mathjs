@@ -18,11 +18,11 @@ describe('csLu', function () {
     const r = csLu(m, null, 1)
 
     // L
-    assert.deepEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
+    assert.deepStrictEqual(r.L.valueOf(), [[1, 0], [0.5, 1]])
     // U
-    assert.deepEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
+    assert.deepStrictEqual(r.U.valueOf(), [[2, 1], [0, 3.5]])
     // P
-    assert.deepEqual(r.pinv, [0, 1])
+    assert.deepStrictEqual(r.pinv, [0, 1])
     // verify
     approx.deepEqual(csPermute(m, r.pinv, null, true), math.multiply(r.L, r.U))
   })

@@ -7,7 +7,7 @@ const matrix = math.matrix
 const unit = math.unit
 const atan = math.atan
 const tan = math.tan
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 const atanBig = bigmath.atan
 const Big = bigmath.bignumber
 
@@ -31,24 +31,24 @@ describe('atan', function () {
     const arg3 = Big(0)
     const arg6 = Big(2)
     const arg7 = Big(Infinity)
-    assert.deepEqual(atanBig(arg1), Big('-0.78539816339744830962'))
-    assert.deepEqual(atanBig(arg2), Big('-0.46364760900080611621'))
-    assert.deepEqual(atanBig(arg3), Big(0))
-    assert.deepEqual(atanBig(Big(0.5)), Big('0.46364760900080611621'))
-    assert.deepEqual(atanBig(Big(1)), Big('0.78539816339744830962'))
-    assert.deepEqual(atanBig(arg6), Big('1.107148717794090503'))
-    assert.deepEqual(atanBig(arg7).toString(), '1.5707963267948966192')
+    assert.deepStrictEqual(atanBig(arg1), Big('-0.78539816339744830962'))
+    assert.deepStrictEqual(atanBig(arg2), Big('-0.46364760900080611621'))
+    assert.deepStrictEqual(atanBig(arg3), Big(0))
+    assert.deepStrictEqual(atanBig(Big(0.5)), Big('0.46364760900080611621'))
+    assert.deepStrictEqual(atanBig(Big(1)), Big('0.78539816339744830962'))
+    assert.deepStrictEqual(atanBig(arg6), Big('1.107148717794090503'))
+    assert.deepStrictEqual(atanBig(arg7).toString(), '1.5707963267948966192')
 
     // Ensure the arguments where not changed
-    assert.deepEqual(arg1, Big(-1))
-    assert.deepEqual(arg2, Big(-0.5))
-    assert.deepEqual(arg3, Big(0))
-    assert.deepEqual(arg6, Big(2))
-    assert.deepEqual(arg7.toString(), 'Infinity')
+    assert.deepStrictEqual(arg1, Big(-1))
+    assert.deepStrictEqual(arg2, Big(-0.5))
+    assert.deepStrictEqual(arg3, Big(0))
+    assert.deepStrictEqual(arg6, Big(2))
+    assert.deepStrictEqual(arg7.toString(), 'Infinity')
 
     // Hit Newton's method case
-    bigmath.config({precision: 61})
-    assert.deepEqual(atanBig(Big(0.9)), Big('0.7328151017865065916407920727342802519857556793582560863105069'))
+    bigmath.config({ precision: 61 })
+    assert.deepStrictEqual(atanBig(Big(0.9)), Big('0.7328151017865065916407920727342802519857556793582560863105069'))
   })
 
   it('should be the inverse function of tan', function () {
@@ -60,13 +60,13 @@ describe('atan', function () {
   })
 
   it('should be the inverse function of bignumber tan', function () {
-    bigmath.config({precision: 20})
-    assert.deepEqual(atanBig(bigmath.tan(Big(-1))), Big(-1))
-    assert.deepEqual(atanBig(bigmath.tan(Big(0))), Big(0))
-    assert.deepEqual(atanBig(bigmath.tan(Big(0.1))), Big(0.1))
-    assert.deepEqual(atanBig(bigmath.tan(Big(0.5))), Big(0.5))
-    assert.deepEqual(atanBig(bigmath.tan(Big(2))), Big('-1.1415926535897932385'))
-    assert.deepEqual(atanBig(bigmath.tan(bigmath.pi.div(2))).toString(), '-1.570796326794895205')
+    bigmath.config({ precision: 20 })
+    assert.deepStrictEqual(atanBig(bigmath.tan(Big(-1))), Big(-1))
+    assert.deepStrictEqual(atanBig(bigmath.tan(Big(0))), Big(0))
+    assert.deepStrictEqual(atanBig(bigmath.tan(Big(0.1))), Big(0.1))
+    assert.deepStrictEqual(atanBig(bigmath.tan(Big(0.5))), Big(0.5))
+    assert.deepStrictEqual(atanBig(bigmath.tan(Big(2))), Big('-1.1415926535897932385'))
+    assert.deepStrictEqual(atanBig(bigmath.tan(bigmath.pi.div(2))).toString(), '-1.570796326794895205')
   })
 
   it('should return the arctan of a complex number', function () {
@@ -105,6 +105,6 @@ describe('atan', function () {
 
   it('should LaTeX atan', function () {
     const expression = math.parse('atan(10)')
-    assert.equal(expression.toTex(), '\\tan^{-1}\\left(10\\right)')
+    assert.strictEqual(expression.toTex(), '\\tan^{-1}\\left(10\\right)')
   })
 })

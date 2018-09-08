@@ -3,7 +3,7 @@
 import Decimal from 'decimal.js'
 
 function factory (type, config, load, typed, math) {
-  const BigNumber = Decimal.clone({precision: config.precision})
+  const BigNumber = Decimal.clone({ precision: config.precision })
 
   /**
    * Attach type information

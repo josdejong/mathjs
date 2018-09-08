@@ -6,7 +6,7 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const cosh = math.cosh
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 describe('cosh', function () {
   it('should return the cosh of a boolean', function () {
@@ -29,21 +29,21 @@ describe('cosh', function () {
     const arg1 = Big(-3)
     const arg9 = Big(Infinity)
     const arg10 = Big(-Infinity)
-    assert.deepEqual(coshBig(arg1), Big('10.067661995777765842'))
-    assert.deepEqual(coshBig(Big(-2)), Big('3.7621956910836314596'))
-    assert.deepEqual(coshBig(Big(-1)), Big('1.5430806348152437785'))
-    assert.deepEqual(coshBig(Big(0)), Big(1))
-    assert.deepEqual(coshBig(Big(1)), Big('1.5430806348152437785'))
-    assert.deepEqual(coshBig(Big(2)), Big('3.7621956910836314596'))
-    assert.deepEqual(coshBig(Big(3)), Big('10.067661995777765842'))
-    assert.deepEqual(coshBig(bigmath.pi).toString(), '11.591953275521520628')
-    assert.deepEqual(coshBig(arg9).toString(), 'Infinity')
-    assert.deepEqual(coshBig(arg10).toString(), 'Infinity')
+    assert.deepStrictEqual(coshBig(arg1), Big('10.067661995777765842'))
+    assert.deepStrictEqual(coshBig(Big(-2)), Big('3.7621956910836314596'))
+    assert.deepStrictEqual(coshBig(Big(-1)), Big('1.5430806348152437785'))
+    assert.deepStrictEqual(coshBig(Big(0)), Big(1))
+    assert.deepStrictEqual(coshBig(Big(1)), Big('1.5430806348152437785'))
+    assert.deepStrictEqual(coshBig(Big(2)), Big('3.7621956910836314596'))
+    assert.deepStrictEqual(coshBig(Big(3)), Big('10.067661995777765842'))
+    assert.deepStrictEqual(coshBig(bigmath.pi).toString(), '11.591953275521520628')
+    assert.deepStrictEqual(coshBig(arg9).toString(), 'Infinity')
+    assert.deepStrictEqual(coshBig(arg10).toString(), 'Infinity')
 
     // Ensure args were not changed
-    assert.deepEqual(arg1, Big(-3))
-    assert.deepEqual(arg9.toString(), 'Infinity')
-    assert.deepEqual(arg10.toString(), '-Infinity')
+    assert.deepStrictEqual(arg1, Big(-3))
+    assert.deepStrictEqual(arg9.toString(), 'Infinity')
+    assert.deepStrictEqual(arg10.toString(), '-Infinity')
   })
 
   it('should return the cosh of a complex number', function () {
@@ -87,6 +87,6 @@ describe('cosh', function () {
 
   it('should LaTeX cosh', function () {
     const expression = math.parse('cosh(1)')
-    assert.equal(expression.toTex(), '\\cosh\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\cosh\\left(1\\right)')
   })
 })

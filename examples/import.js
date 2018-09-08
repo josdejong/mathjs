@@ -34,7 +34,7 @@ try {
   const numbers = require('numbers')
 
   // import the numbers.js library into math.js
-  math.import(numbers, {wrap: true, silent: true})
+  math.import(numbers, { wrap: true, silent: true })
 
   if (math.fibonacci) {
     // calculate fibonacci
@@ -56,7 +56,7 @@ try {
   const numeric = require('numeric')
 
   // import the numeric.js library into math.js
-  math.import(numeric, {wrap: true, silent: true})
+  math.import(numeric, { wrap: true, silent: true })
 
   if (math.eig) {
     // calculate eigenvalues of a matrix

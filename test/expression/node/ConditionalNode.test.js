@@ -20,7 +20,7 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
     assert(n instanceof ConditionalNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'ConditionalNode')
+    assert.strictEqual(n.type, 'ConditionalNode')
   })
 
   it('should have isConditionalNode', function () {
@@ -43,71 +43,71 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
     const expr = n.compile()
     let scope = {}
-    assert.equal(expr.eval(scope), 2)
-    assert.deepEqual(scope, {a: 2})
+    assert.strictEqual(expr.eval(scope), 2)
+    assert.deepStrictEqual(scope, { a: 2 })
   })
 
   describe('evaluate', function () {
     const condition = new ConditionalNode(new SymbolNode('a'), one, zero)
 
     it('should evaluate boolean conditions', function () {
-      assert.equal(condition.compile().eval({a: true}), 1)
-      assert.equal(condition.compile().eval({a: false}), 0)
+      assert.strictEqual(condition.compile().eval({ a: true }), 1)
+      assert.strictEqual(condition.compile().eval({ a: false }), 0)
     })
 
     it('should evaluate number conditions', function () {
-      assert.equal(condition.compile().eval({a: 1}), 1)
-      assert.equal(condition.compile().eval({a: 4}), 1)
-      assert.equal(condition.compile().eval({a: -1}), 1)
-      assert.equal(condition.compile().eval({a: 0}), 0)
+      assert.strictEqual(condition.compile().eval({ a: 1 }), 1)
+      assert.strictEqual(condition.compile().eval({ a: 4 }), 1)
+      assert.strictEqual(condition.compile().eval({ a: -1 }), 1)
+      assert.strictEqual(condition.compile().eval({ a: 0 }), 0)
     })
 
     it('should evaluate bignumber conditions', function () {
-      assert.equal(condition.compile().eval({a: math.bignumber(1)}), 1)
-      assert.equal(condition.compile().eval({a: math.bignumber(4)}), 1)
-      assert.equal(condition.compile().eval({a: math.bignumber(-1)}), 1)
-      assert.equal(condition.compile().eval({a: math.bignumber(0)}), 0)
+      assert.strictEqual(condition.compile().eval({ a: math.bignumber(1) }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.bignumber(4) }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.bignumber(-1) }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.bignumber(0) }), 0)
     })
 
     it('should evaluate complex number conditions', function () {
-      assert.equal(condition.compile().eval({a: math.complex(2, 3)}), 1)
-      assert.equal(condition.compile().eval({a: math.complex(2, 0)}), 1)
-      assert.equal(condition.compile().eval({a: math.complex(0, 3)}), 1)
-      assert.equal(condition.compile().eval({a: math.complex(0, 0)}), 0)
+      assert.strictEqual(condition.compile().eval({ a: math.complex(2, 3) }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.complex(2, 0) }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.complex(0, 3) }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.complex(0, 0) }), 0)
     })
 
     it('should evaluate string conditions', function () {
-      assert.equal(condition.compile().eval({a: 'hello'}), 1)
-      assert.equal(condition.compile().eval({a: ''}), 0)
+      assert.strictEqual(condition.compile().eval({ a: 'hello' }), 1)
+      assert.strictEqual(condition.compile().eval({ a: '' }), 0)
     })
 
     it('should evaluate unit conditions', function () {
-      assert.equal(condition.compile().eval({a: math.unit('5cm')}), 1)
-      assert.equal(condition.compile().eval({a: math.unit('0 inch')}), 0)
-      assert.equal(condition.compile().eval({a: math.unit('meter')}), 0)
+      assert.strictEqual(condition.compile().eval({ a: math.unit('5cm') }), 1)
+      assert.strictEqual(condition.compile().eval({ a: math.unit('0 inch') }), 0)
+      assert.strictEqual(condition.compile().eval({ a: math.unit('meter') }), 0)
     })
 
     it('should evaluate null conditions', function () {
-      assert.equal(condition.compile().eval({a: null}), 0)
+      assert.strictEqual(condition.compile().eval({ a: null }), 0)
     })
 
     it('should evaluate undefined conditions', function () {
-      assert.equal(condition.compile().eval({a: undefined}), 0)
+      assert.strictEqual(condition.compile().eval({ a: undefined }), 0)
     })
 
     it('should throw an error in case of unsupported type of conditions', function () {
-      assert.throws(function () { condition.compile().eval({a: {}}) })
-      assert.throws(function () { condition.compile().eval({a: []}) })
-      assert.throws(function () { condition.compile().eval({a: math.matrix()}) })
+      assert.throws(function () { condition.compile().eval({ a: {} }) })
+      assert.throws(function () { condition.compile().eval({ a: [] }) })
+      assert.throws(function () { condition.compile().eval({ a: math.matrix() }) })
     })
   })
 
   it('should filter a ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConditionalNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode }), [condition, two, three])
-    assert.deepEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [two])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConditionalNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode }), [condition, two, three])
+    assert.deepStrictEqual(n.filter(function (node) { return node instanceof ConstantNode && node.value === 2 }), [two])
   })
 
   it('should run forEach on a ConditionalNode', function () {
@@ -124,11 +124,11 @@ describe('ConditionalNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], condition)
     assert.strictEqual(nodes[1], a)
     assert.strictEqual(nodes[2], b)
-    assert.deepEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
+    assert.deepStrictEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
   })
 
   it('should map a ConditionalNode', function () {
@@ -148,11 +148,11 @@ describe('ConditionalNode', function () {
       return node instanceof ConstantNode && node.value === 1 ? e : node
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], condition)
     assert.strictEqual(nodes[1], a)
     assert.strictEqual(nodes[2], b)
-    assert.deepEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
+    assert.deepStrictEqual(paths, ['condition', 'trueExpr', 'falseExpr'])
 
     assert.notStrictEqual(f, n)
     assert.strictEqual(f.condition, e)
@@ -183,9 +183,9 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.condition, e)
-    assert.deepEqual(f.trueExpr, a)
-    assert.deepEqual(f.falseExpr, b)
+    assert.deepStrictEqual(f.condition, e)
+    assert.deepStrictEqual(f.trueExpr, a)
+    assert.deepStrictEqual(f.falseExpr, b)
   })
 
   it('should transform a ConditionalNodes trueExpr', function () {
@@ -200,9 +200,9 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.condition, condition)
-    assert.deepEqual(f.trueExpr, e)
-    assert.deepEqual(f.falseExpr, b)
+    assert.deepStrictEqual(f.condition, condition)
+    assert.deepStrictEqual(f.trueExpr, e)
+    assert.deepStrictEqual(f.falseExpr, b)
   })
 
   it('should transform a ConditionalNodes falseExpr', function () {
@@ -217,9 +217,9 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.condition, condition)
-    assert.deepEqual(f.trueExpr, a)
-    assert.deepEqual(f.falseExpr, e)
+    assert.deepStrictEqual(f.condition, condition)
+    assert.deepStrictEqual(f.trueExpr, a)
+    assert.deepStrictEqual(f.falseExpr, e)
   })
 
   it('should transform a ConditionalNode itself', function () {
@@ -234,7 +234,7 @@ describe('ConditionalNode', function () {
     })
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should clone a ConditionalNode itself', function () {
@@ -246,7 +246,7 @@ describe('ConditionalNode', function () {
     const d = c.clone()
 
     assert(d instanceof ConditionalNode)
-    assert.deepEqual(d, c)
+    assert.deepStrictEqual(d, c)
     assert.notStrictEqual(d, c)
     assert.strictEqual(d.condition, c.condition)
     assert.strictEqual(d.trueExpr, c.trueExpr)
@@ -269,13 +269,13 @@ describe('ConditionalNode', function () {
   })
 
   it('should respect the \'all\' parenthesis option', function () {
-    assert.equal(math.parse('a?b:c').toString({parenthesis: 'all'}), '(a) ? (b) : (c)')
+    assert.strictEqual(math.parse('a?b:c').toString({ parenthesis: 'all' }), '(a) ? (b) : (c)')
   })
 
   it('should stringify a ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
-    assert.equal(n.toString(), 'true ? (a = 2) : (b = 3)')
+    assert.strictEqual(n.toString(), 'true ? (a = 2) : (b = 3)')
   })
 
   it('should stringify a ConditionalNode with custom toString', function () {
@@ -296,7 +296,7 @@ describe('ConditionalNode', function () {
 
     const n = new ConditionalNode(a, b, c)
 
-    assert.equal(n.toString({handler: customFunction}), 'if const(1, number) then const(2, number) else const(3, number)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'if const(1, number) then const(2, number) else const(3, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -307,7 +307,7 @@ describe('ConditionalNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'ConditionalNode',
       condition: a,
       trueExpr: b,
@@ -315,14 +315,14 @@ describe('ConditionalNode', function () {
     })
 
     const parsed = ConditionalNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
 
     // note that b is enclosed in \\mathrm{...} since it's a unit
-    assert.equal(n.toTex(), '\\begin{cases} { a:=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{cases}')
+    assert.strictEqual(n.toTex(), '\\begin{cases} { a:=2}, &\\quad{\\text{if }\\;true}\\\\{\\mathrm{b}:=3}, &\\quad{\\text{otherwise}}\\end{cases}')
   })
 
   it('should LaTeX a ConditionalNode with custom toTex', function () {
@@ -343,6 +343,6 @@ describe('ConditionalNode', function () {
 
     const n = new ConditionalNode(a, b, c)
 
-    assert.equal(n.toTex({handler: customFunction}), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), 'if const\\left(1, number\\right) then const\\left(2, number\\right) else const\\left(3, number\\right)')
   })
 })

@@ -11,9 +11,9 @@ const complex = math.complex
 
 describe('nthRoot', function () {
   it('should return the nthRoot of a boolean value', function () {
-    assert.equal(nthRoot(true), 1)
-    assert.equal(nthRoot(false), 0)
-    assert.equal(nthRoot(1, true), 1)
+    assert.strictEqual(nthRoot(true), 1)
+    assert.strictEqual(nthRoot(false), 0)
+    assert.strictEqual(nthRoot(1, true), 1)
   })
 
   it('should return the nthRoot for numbers', function () {
@@ -51,8 +51,8 @@ describe('nthRoot', function () {
   })
 
   it('should return the nthRoot for zero', function () {
-    assert.equal(nthRoot(0, 2), 0)
-    assert.equal(nthRoot(0, -2), Infinity)
+    assert.strictEqual(nthRoot(0, 2), 0)
+    assert.strictEqual(nthRoot(0, -2), Infinity)
   })
 
   it('should return the nthRoot for infinity', function () {
@@ -80,32 +80,32 @@ describe('nthRoot', function () {
   })
 
   it('should return the nthRoot of bignumbers', function () {
-    assert.deepEqual(nthRoot(big(4)), big(2))
-    assert.deepEqual(nthRoot(big(9)), big(3))
-    assert.deepEqual(nthRoot(big(8), big(3)), big(2))
-    assert.deepEqual(nthRoot(big(64), big(3)), big(4))
+    assert.deepStrictEqual(nthRoot(big(4)), big(2))
+    assert.deepStrictEqual(nthRoot(big(9)), big(3))
+    assert.deepStrictEqual(nthRoot(big(8), big(3)), big(2))
+    assert.deepStrictEqual(nthRoot(big(64), big(3)), big(4))
   })
 
   it('should return the nthRoot of negative bignumber values', function () {
-    assert.deepEqual(nthRoot(big(-2), big(3)), big('-1.259921049894873164767210607278228350570251464701507980081975112'))
-    assert.deepEqual(nthRoot(big(-64), big(3)), big(-4))
+    assert.deepStrictEqual(nthRoot(big(-2), big(3)), big('-1.259921049894873164767210607278228350570251464701507980081975112'))
+    assert.deepStrictEqual(nthRoot(big(-64), big(3)), big(-4))
   })
 
   it('should return the nthRoot of negative bignumber roots', function () {
-    assert.deepEqual(nthRoot(big(64), big(-3)), big(0.25))
-    assert.deepEqual(nthRoot(big(-64), big(3)), big(-4))
-    assert.deepEqual(nthRoot(big(-64), big(-3)), big(-0.25))
+    assert.deepStrictEqual(nthRoot(big(64), big(-3)), big(0.25))
+    assert.deepStrictEqual(nthRoot(big(-64), big(3)), big(-4))
+    assert.deepStrictEqual(nthRoot(big(-64), big(-3)), big(-0.25))
   })
 
   it('should return the nthRoot for bignumber zero', function () {
-    assert.deepEqual(nthRoot(big(0), big(2)).toString(), '0')
-    assert.deepEqual(nthRoot(big(0), big(-2)).toString(), 'Infinity')
+    assert.deepStrictEqual(nthRoot(big(0), big(2)).toString(), '0')
+    assert.deepStrictEqual(nthRoot(big(0), big(-2)).toString(), 'Infinity')
   })
 
   it('should return the nthRoot for bignumber infinity', function () {
-    assert.deepEqual(nthRoot(big(Infinity), big(2)).toString(), 'Infinity')
-    assert.deepEqual(nthRoot(big(-Infinity), big(3)).toString(), '-Infinity')
-    assert.deepEqual(nthRoot(big(Infinity), big(-3)), big(0))
+    assert.deepStrictEqual(nthRoot(big(Infinity), big(2)).toString(), 'Infinity')
+    assert.deepStrictEqual(nthRoot(big(-Infinity), big(3)).toString(), '-Infinity')
+    assert.deepStrictEqual(nthRoot(big(Infinity), big(-3)), big(0))
   })
 
   it('should throw an error when used with a complex number', function () {
@@ -187,6 +187,6 @@ describe('nthRoot', function () {
 
   it('should LaTeX nthRoot', function () {
     const expression = math.parse('nthRoot(8,3)')
-    assert.equal(expression.toTex(), '\\sqrt[3]{8}')
+    assert.strictEqual(expression.toTex(), '\\sqrt[3]{8}')
   })
 })

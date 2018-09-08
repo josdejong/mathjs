@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acoth.toTex = {1: `\\coth^{-1}\\left(\${args[0]}\\right)`}
+  acoth.toTex = { 1: `\\coth^{-1}\\left(\${args[0]}\\right)` }
 
   return acoth
 }

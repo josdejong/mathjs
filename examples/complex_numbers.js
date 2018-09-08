@@ -38,7 +38,7 @@ console.log()
 
 // create a complex number from polar coordinates
 console.log('create complex numbers with polar coordinates')
-const c = math.complex({r: math.sqrt(2), phi: math.pi / 4})
+const c = math.complex({ r: math.sqrt(2), phi: math.pi / 4 })
 print(c) // 1 + i
 
 // get polar coordinates of a complex number
