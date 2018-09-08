@@ -4,7 +4,7 @@ const math = require('../src/main')
 describe('factory', function () {
   it('should get a default instance of mathjs', function () {
     assert.strictEqual(typeof math, 'object')
-    assert.deepEqual(math.config(), {
+    assert.deepStrictEqual(math.config(), {
       matrix: 'Matrix',
       number: 'number',
       precision: 64,
@@ -21,7 +21,7 @@ describe('factory', function () {
     })
 
     assert.strictEqual(typeof math1, 'object')
-    assert.deepEqual(math1.config(), {
+    assert.deepStrictEqual(math1.config(), {
       matrix: 'Array',
       number: 'BigNumber',
       precision: 64,
@@ -40,11 +40,11 @@ describe('factory', function () {
     assert.notStrictEqual(math, math1)
     assert.notStrictEqual(math, math2)
     assert.notStrictEqual(math1, math2)
-    assert.notDeepEqual(math1.config(), math2.config())
-    assert.notDeepEqual(math.config(), math2.config())
+    assert.notDeepStrictEqual(math1.config(), math2.config())
+    assert.notDeepStrictEqual(math.config(), math2.config())
 
     // changing config should not affect the other
-    math1.config({number: 'BigNumber'})
+    math1.config({ number: 'BigNumber' })
     assert.strictEqual(math.config().number, 'number')
     assert.strictEqual(math1.config().number, 'BigNumber')
     assert.strictEqual(math2.config().number, 'number')
@@ -54,7 +54,7 @@ describe('factory', function () {
     const math1 = math.create()
 
     const config = math1.config()
-    assert.deepEqual(config, {
+    assert.deepStrictEqual(config, {
       matrix: 'Matrix',
       number: 'number',
       precision: 64,

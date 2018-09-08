@@ -6,11 +6,11 @@ describe('pickRandom', function () {
   // it is tested in distribution.test.js
 
   it('should have a function pickRandom', function () {
-    assert.equal(typeof math.pickRandom, 'function')
+    assert.strictEqual(typeof math.pickRandom, 'function')
   })
 
   it('should LaTeX pickRandom', function () {
     const expression = math.parse('pickRandom([1,2,3])')
-    assert.equal(expression.toTex(), '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{pickRandom}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}\\right)')
   })
 })

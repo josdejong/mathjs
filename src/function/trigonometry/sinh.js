@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  sinh.toTex = {1: `\\sinh\\left(\${args[0]}\\right)`}
+  sinh.toTex = { 1: `\\sinh\\left(\${args[0]}\\right)` }
 
   return sinh
 }

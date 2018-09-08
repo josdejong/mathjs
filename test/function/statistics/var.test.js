@@ -8,36 +8,36 @@ const variance = math['var']
 
 describe('variance', function () {
   it('should return the variance of numbers', function () {
-    assert.equal(variance(5), 0)
-    assert.equal(variance(2, 4, 6), 4)
+    assert.strictEqual(variance(5), 0)
+    assert.strictEqual(variance(2, 4, 6), 4)
   })
 
   it('should return the variance of big numbers', function () {
-    assert.deepEqual(variance(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
+    assert.deepStrictEqual(variance(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
       new math.type.BigNumber(4))
   })
 
   it('should return the variance of complex numbers', function () {
-    assert.deepEqual(variance(new Complex(2, 3), new Complex(-1, 2)), new Complex(4, 3))
+    assert.deepStrictEqual(variance(new Complex(2, 3), new Complex(-1, 2)), new Complex(4, 3))
   })
 
   it('should return the variance of mixed numbers and complex numbers', function () {
-    assert.deepEqual(variance(2, new Complex(-1, 3)), new Complex(0, -9))
+    assert.deepStrictEqual(variance(2, new Complex(-1, 3)), new Complex(0, -9))
   })
 
   it('should return the variance from an array', function () {
-    assert.equal(variance([2, 4, 6]), 4)
-    assert.equal(variance([5]), 0)
+    assert.strictEqual(variance([2, 4, 6]), 4)
+    assert.strictEqual(variance([5]), 0)
   })
 
   it('should return the uncorrected variance from an array', function () {
-    assert.equal(variance([2, 4], 'uncorrected'), 1)
-    assert.equal(variance([2, 4, 6, 8], 'uncorrected'), 5)
+    assert.strictEqual(variance([2, 4], 'uncorrected'), 1)
+    assert.strictEqual(variance([2, 4, 6, 8], 'uncorrected'), 5)
   })
 
   it('should return the biased variance from an array', function () {
-    assert.equal(variance([2, 8], 'biased'), 6)
-    assert.equal(variance([2, 4, 6, 8], 'biased'), 4)
+    assert.strictEqual(variance([2, 8], 'biased'), 6)
+    assert.strictEqual(variance([2, 4, 6, 8], 'biased'), 4)
   })
 
   it('should return NaN if any of the inputs contains NaN', function () {
@@ -54,19 +54,19 @@ describe('variance', function () {
   })
 
   it('should return the variance from an 1d matrix', function () {
-    assert.equal(variance(new DenseMatrix([2, 4, 6])), 4)
-    assert.equal(variance(new DenseMatrix([5])), 0)
+    assert.strictEqual(variance(new DenseMatrix([2, 4, 6])), 4)
+    assert.strictEqual(variance(new DenseMatrix([5])), 0)
   })
 
   it('should return the variance element from a 2d array', function () {
-    assert.deepEqual(variance([
+    assert.deepStrictEqual(variance([
       [2, 4, 6],
       [1, 3, 5]
     ]), 3.5)
   })
 
   it('should return the variance element from a 2d matrix', function () {
-    assert.deepEqual(variance(new DenseMatrix([
+    assert.deepStrictEqual(variance(new DenseMatrix([
       [2, 4, 6],
       [1, 3, 5]
     ])), 3.5)
@@ -90,6 +90,6 @@ describe('variance', function () {
 
   it('should LaTeX var', function () {
     const expression = math.parse('var(1,2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
   })
 })

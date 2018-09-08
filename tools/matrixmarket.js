@@ -139,11 +139,11 @@ const _importFromStream = function (stream, deferred) {
           const c = parseInt(matches[2]) - 1
           const v = readValue(matches.length === 4 ? matches[3] : null)
           // insert entry
-          mm.data.insert(c, {i: r, j: c, v: v})
+          mm.data.insert(c, { i: r, j: c, v: v })
           // check matrix is simmetric
           if (mm.qualifier === 'symmetric' && c !== r) {
             // insert entry
-            mm.data.insert(r, {i: c, j: r, v: v})
+            mm.data.insert(r, { i: c, j: r, v: v })
           }
         }
         break

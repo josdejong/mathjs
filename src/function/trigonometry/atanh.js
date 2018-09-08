@@ -46,7 +46,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  atanh.toTex = {1: `\\tanh^{-1}\\left(\${args[0]}\\right)`}
+  atanh.toTex = { 1: `\\tanh^{-1}\\left(\${args[0]}\\right)` }
 
   return atanh
 }

@@ -53,11 +53,11 @@ describe('isNegative', function () {
   })
 
   it('should test isNegative element wise on an Array', function () {
-    assert.deepEqual(isNegative([0, 5, 0, -3]), [false, false, false, true])
+    assert.deepStrictEqual(isNegative([0, 5, 0, -3]), [false, false, false, true])
   })
 
   it('should test isNegative element wise on a Matrix', function () {
-    assert.deepEqual(isNegative(math.matrix([0, 5, 0, -3])), math.matrix([false, false, false, true]))
+    assert.deepStrictEqual(isNegative(math.matrix([0, 5, 0, -3])), math.matrix([false, false, false, true]))
   })
 
   it('should throw an error in case of unsupported data types', function () {

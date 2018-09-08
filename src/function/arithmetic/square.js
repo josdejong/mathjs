@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  square.toTex = {1: `\\left(\${args[0]}\\right)^2`}
+  square.toTex = { 1: `\\left(\${args[0]}\\right)^2` }
 
   return square
 }

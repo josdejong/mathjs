@@ -6,11 +6,11 @@ describe('randomInt', function () {
   // it is tested in distribution.test.js
 
   it('should have a function randomInt', function () {
-    assert.equal(typeof math.randomInt, 'function')
+    assert.strictEqual(typeof math.randomInt, 'function')
   })
 
   it('should LaTeX randomInt', function () {
     const expression = math.parse('randomInt(0,100)')
-    assert.equal(expression.toTex(), '\\mathrm{randomInt}\\left(0,100\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{randomInt}\\left(0,100\\right)')
   })
 })

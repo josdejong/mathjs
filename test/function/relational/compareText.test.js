@@ -20,31 +20,31 @@ describe('compareText', function () {
 
   describe('Array', function () {
     it('should compare array - scalar', function () {
-      assert.deepEqual(compareText('B', ['A', 'B', 'C']), [1, 0, -1])
-      assert.deepEqual(compareText(['A', 'B', 'C'], 'B'), [-1, 0, 1])
+      assert.deepStrictEqual(compareText('B', ['A', 'B', 'C']), [1, 0, -1])
+      assert.deepStrictEqual(compareText(['A', 'B', 'C'], 'B'), [-1, 0, 1])
     })
 
     it('should compare array - array', function () {
-      assert.deepEqual(compareText([['D', 'E', 'C'], ['B', 'C', 'E']], [['F', 'B', 'C'], ['A', 'D', 'C']]), [[-1, 1, 0], [1, -1, 1]])
+      assert.deepStrictEqual(compareText([['D', 'E', 'C'], ['B', 'C', 'E']], [['F', 'B', 'C'], ['A', 'D', 'C']]), [[-1, 1, 0], [1, -1, 1]])
     })
 
     it('should compare array - dense matrix', function () {
-      assert.deepEqual(compareText([['D', 'E', 'C'], ['B', 'C', 'E']], matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(compareText([['D', 'E', 'C'], ['B', 'C', 'E']], matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[-1, 1, 0], [1, -1, 1]]))
     })
   })
 
   describe('DenseMatrix', function () {
     it('should compare dense matrix - scalar', function () {
-      assert.deepEqual(compareText('B', matrix(['A', 'B', 'C'])), matrix([1, 0, -1]))
-      assert.deepEqual(compareText(matrix(['A', 'B', 'C']), 'B'), matrix([-1, 0, 1]))
+      assert.deepStrictEqual(compareText('B', matrix(['A', 'B', 'C'])), matrix([1, 0, -1]))
+      assert.deepStrictEqual(compareText(matrix(['A', 'B', 'C']), 'B'), matrix([-1, 0, 1]))
     })
 
     it('should compare dense matrix - array', function () {
-      assert.deepEqual(compareText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), [['F', 'B', 'C'], ['A', 'D', 'C']]), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(compareText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), [['F', 'B', 'C'], ['A', 'D', 'C']]), matrix([[-1, 1, 0], [1, -1, 1]]))
     })
 
     it('should compare dense matrix - dense matrix', function () {
-      assert.deepEqual(compareText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[-1, 1, 0], [1, -1, 1]]))
+      assert.deepStrictEqual(compareText(matrix([['D', 'E', 'C'], ['B', 'C', 'E']]), matrix([['F', 'B', 'C'], ['A', 'D', 'C']])), matrix([[-1, 1, 0], [1, -1, 1]]))
     })
   })
 
@@ -62,6 +62,6 @@ describe('compareText', function () {
 
   it('should LaTeX compare', function () {
     const expression = math.parse('compareText(1,2)')
-    assert.equal(expression.toTex(), '\\mathrm{compareText}\\left(1,2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{compareText}\\left(1,2\\right)')
   })
 })

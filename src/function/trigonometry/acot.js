@@ -44,7 +44,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acot.toTex = {1: `\\cot^{-1}\\left(\${args[0]}\\right)`}
+  acot.toTex = { 1: `\\cot^{-1}\\left(\${args[0]}\\right)` }
 
   return acot
 }

@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acos.toTex = {1: `\\cos^{-1}\\left(\${args[0]}\\right)`}
+  acos.toTex = { 1: `\\cos^{-1}\\left(\${args[0]}\\right)` }
 
   return acos
 }

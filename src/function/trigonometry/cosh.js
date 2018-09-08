@@ -47,7 +47,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  cosh.toTex = {1: `\\cosh\\left(\${args[0]}\\right)`}
+  cosh.toTex = { 1: `\\cosh\\left(\${args[0]}\\right)` }
 
   return cosh
 }

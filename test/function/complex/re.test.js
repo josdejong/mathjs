@@ -3,17 +3,17 @@ const math = require('../../../src/main')
 
 describe('re', function () {
   it('should return the real part of a complex number', function () {
-    assert.equal(math.re(math.complex(2, 3)), 2)
-    assert.equal(math.re(math.complex(-2, -3)), -2)
-    assert.equal(math.re(math.i), 0)
+    assert.strictEqual(math.re(math.complex(2, 3)), 2)
+    assert.strictEqual(math.re(math.complex(-2, -3)), -2)
+    assert.strictEqual(math.re(math.i), 0)
   })
 
   it('should return the real part of a real number', function () {
-    assert.equal(math.re(2), 2)
+    assert.strictEqual(math.re(2), 2)
   })
 
   it('should return the real part of a big number', function () {
-    assert.deepEqual(math.re(math.bignumber(2)), math.bignumber(2))
+    assert.deepStrictEqual(math.re(math.bignumber(2)), math.bignumber(2))
   })
 
   it('should return the real part of a boolean', function () {
@@ -22,8 +22,8 @@ describe('re', function () {
   })
 
   it('should return the real part for each element in a matrix', function () {
-    assert.deepEqual(math.re([2, math.complex('3-6i')]), [2, 3])
-    assert.deepEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3])
+    assert.deepStrictEqual(math.re([2, math.complex('3-6i')]), [2, 3])
+    assert.deepStrictEqual(math.re(math.matrix([2, math.complex('3-6i')])).valueOf(), [2, 3])
   })
 
   it('should throw an error when called with an unsupported type of argument', function () {
@@ -38,6 +38,6 @@ describe('re', function () {
 
   it('should LaTeX re', function () {
     const expression = math.parse('re(1+i)')
-    assert.equal(expression.toTex(), '\\Re\\left\\lbrace1+ i\\right\\rbrace')
+    assert.strictEqual(expression.toTex(), '\\Re\\left\\lbrace1+ i\\right\\rbrace')
   })
 })

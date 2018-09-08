@@ -6,8 +6,8 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const csch = math.csch
-const bigmath = math.create({precision: 20})
-const biggermath = math.create({number: 'BigNumber', precision: 22})
+const bigmath = math.create({ precision: 20 })
+const biggermath = math.create({ number: 'BigNumber', precision: 22 })
 
 describe('csch', function () {
   it('should return the csch of a boolean', function () {
@@ -29,13 +29,13 @@ describe('csch', function () {
     const cschBig = bigmath.csch
     const Big = bigmath.bignumber
 
-    assert.deepEqual(cschBig(Big(0)).toString(), 'Infinity')
-    assert.deepEqual(cschBig(Big(1)), Big('0.85091812823932154512'))
-    assert.deepEqual(cschBig(Big(2)), Big('0.27572056477178320776'))
-    assert.deepEqual(cschBig(Big(3)), Big('0.099821569668822732851'))
+    assert.deepStrictEqual(cschBig(Big(0)).toString(), 'Infinity')
+    assert.deepStrictEqual(cschBig(Big(1)), Big('0.85091812823932154512'))
+    assert.deepStrictEqual(cschBig(Big(2)), Big('0.27572056477178320776'))
+    assert.deepStrictEqual(cschBig(Big(3)), Big('0.099821569668822732851'))
 
     /* Pass in extra digits to pi. */
-    assert.deepEqual(cschBig(biggermath.pi).toString(), '0.086589537530046941828')
+    assert.deepStrictEqual(cschBig(biggermath.pi).toString(), '0.086589537530046941828')
   })
 
   it('should return the csch of a complex number', function () {
@@ -79,6 +79,6 @@ describe('csch', function () {
 
   it('should LaTeX csch', function () {
     const expression = math.parse('csch(1)')
-    assert.equal(expression.toTex(), '\\mathrm{csch}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{csch}\\left(1\\right)')
   })
 })

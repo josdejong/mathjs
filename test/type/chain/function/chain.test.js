@@ -11,6 +11,6 @@ describe('chain', function () {
 
   it('should LaTeX chain', function () {
     const expression = math.parse('chain(1)')
-    assert.equal(expression.toTex(), '\\mathrm{chain}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{chain}\\left(1\\right)')
   })
 })

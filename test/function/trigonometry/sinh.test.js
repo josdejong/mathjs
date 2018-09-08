@@ -5,14 +5,14 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sinh = math.sinh
-const bigmath = math.create({number: 'BigNumber', precision: 20})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
 
 const EPSILON = 1e-14
 
 describe('sinh', function () {
   it('should return the sinh of a boolean', function () {
-    assert.equal(sinh(true), 1.1752011936438014)
-    assert.equal(sinh(false), 0)
+    assert.strictEqual(sinh(true), 1.1752011936438014)
+    assert.strictEqual(sinh(false), 0)
   })
 
   it('should return the sinh of a number', function () {
@@ -37,7 +37,7 @@ describe('sinh', function () {
     })
 
     it('should return the sinh of very large numbers (avoid returning zero)', function () {
-      // If sinh returns 0, that is bad, so we are using assert.equal, not approx.equal
+      // If sinh returns 0, that is bad, so we are using assert.strictEqual, not approx.equal
       // console.log('process.version=', process.version)
       assert(sinh(1e-50) !== 0)
       assert(Math.abs(sinh(1e-50) - 1e-50) < EPSILON)
@@ -51,21 +51,21 @@ describe('sinh', function () {
     const arg1 = Big(-Infinity)
     const arg2 = Big(-1)
     const arg7 = Big(Infinity)
-    assert.deepEqual(sinhBig(arg1).toString(), '-Infinity')
-    assert.deepEqual(sinhBig(arg2), Big('-1.1752011936438014569'))
-    assert.deepEqual(sinhBig(Big(-1e-10)), Big(-1e-10))
-    assert.deepEqual(sinhBig(Big(0)), Big(0))
-    assert.deepEqual(sinhBig(Big(1)), Big('1.1752011936438014569'))
-    assert.deepEqual(sinhBig(bigmath.pi).toString(), '11.548739357257748378')
-    assert.deepEqual(sinhBig(arg7).toString(), 'Infinity')
+    assert.deepStrictEqual(sinhBig(arg1).toString(), '-Infinity')
+    assert.deepStrictEqual(sinhBig(arg2), Big('-1.1752011936438014569'))
+    assert.deepStrictEqual(sinhBig(Big(-1e-10)), Big(-1e-10))
+    assert.deepStrictEqual(sinhBig(Big(0)), Big(0))
+    assert.deepStrictEqual(sinhBig(Big(1)), Big('1.1752011936438014569'))
+    assert.deepStrictEqual(sinhBig(bigmath.pi).toString(), '11.548739357257748378')
+    assert.deepStrictEqual(sinhBig(arg7).toString(), 'Infinity')
 
     // Ensure args were not changed
-    assert.deepEqual(arg1.toString(), '-Infinity')
-    assert.deepEqual(arg2, Big(-1))
-    assert.deepEqual(arg7.toString(), 'Infinity')
+    assert.deepStrictEqual(arg1.toString(), '-Infinity')
+    assert.deepStrictEqual(arg2, Big(-1))
+    assert.deepStrictEqual(arg7.toString(), 'Infinity')
 
-    bigmath.config({precision: 50})
-    assert.deepEqual(sinhBig(Big(1e-50)), Big(1e-50))
+    bigmath.config({ precision: 50 })
+    assert.deepStrictEqual(sinhBig(Big(1e-50)), Big(1e-50))
   })
 
   it('should return the sinh of a complex number', function () {
@@ -113,6 +113,6 @@ describe('sinh', function () {
 
   it('should LaTeX sinh', function () {
     const expression = math.parse('sinh(1)')
-    assert.equal(expression.toTex(), '\\sinh\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\sinh\\left(1\\right)')
   })
 })

@@ -49,7 +49,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  sec.toTex = {1: `\\sec\\left(\${args[0]}\\right)`}
+  sec.toTex = { 1: `\\sec\\left(\${args[0]}\\right)` }
 
   return sec
 }

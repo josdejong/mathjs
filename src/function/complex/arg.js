@@ -50,7 +50,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  arg.toTex = {1: `\\arg\\left(\${args[0]}\\right)`}
+  arg.toTex = { 1: `\\arg\\left(\${args[0]}\\right)` }
 
   return arg
 }

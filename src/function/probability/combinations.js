@@ -75,7 +75,7 @@ function factory (type, config, load, typed) {
     // TODO: implement support for collection in combinations
   })
 
-  combinations.toTex = {2: `\\binom{\${args[0]}}{\${args[1]}}`}
+  combinations.toTex = { 2: `\\binom{\${args[0]}}{\${args[1]}}` }
 
   return combinations
 }

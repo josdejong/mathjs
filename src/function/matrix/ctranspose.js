@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  ctranspose.toTex = {1: `\\left(\${args[0]}\\right)${latex.operators['ctranspose']}`}
+  ctranspose.toTex = { 1: `\\left(\${args[0]}\\right)${latex.operators['ctranspose']}` }
 
   return ctranspose
 }

@@ -49,7 +49,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  cot.toTex = {1: `\\cot\\left(\${args[0]}\\right)`}
+  cot.toTex = { 1: `\\cot\\left(\${args[0]}\\right)` }
 
   return cot
 }

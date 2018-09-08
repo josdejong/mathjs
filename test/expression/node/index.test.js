@@ -4,6 +4,6 @@ const index = require('../../../src/expression/node/index')
 
 describe('node/index', function () {
   it('should contain all nodes', function () {
-    assert.equal(index.length, 16)
+    assert.strictEqual(index.length, 16)
   })
 })

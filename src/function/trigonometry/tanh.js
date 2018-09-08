@@ -51,7 +51,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  tanh.toTex = {1: `\\tanh\\left(\${args[0]}\\right)`}
+  tanh.toTex = { 1: `\\tanh\\left(\${args[0]}\\right)` }
 
   return tanh
 }

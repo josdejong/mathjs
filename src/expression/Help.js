@@ -68,7 +68,7 @@ function factory (type, config, load, typed) {
           res = e
         }
         if (res !== undefined && !type.isHelp(res)) {
-          desc += '        ' + string.format(res, {precision: 14}) + '\n'
+          desc += '        ' + string.format(res, { precision: 14 }) + '\n'
         }
       }
       desc += '\n'

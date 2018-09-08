@@ -7,10 +7,10 @@ describe('IndexError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof IndexError)
-    assert.equal(err.index, 5)
-    assert.equal(err.min, 0)
-    assert.equal(err.max, undefined)
-    assert.equal(err.toString(), 'IndexError: Index out of range (5)')
+    assert.strictEqual(err.index, 5)
+    assert.strictEqual(err.min, 0)
+    assert.strictEqual(err.max, undefined)
+    assert.strictEqual(err.toString(), 'IndexError: Index out of range (5)')
   })
 
   it('should construct an IndexError without min and max (2)', function () {
@@ -18,10 +18,10 @@ describe('IndexError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof IndexError)
-    assert.equal(err.index, -5)
-    assert.equal(err.min, 0)
-    assert.equal(err.max, undefined)
-    assert.equal(err.toString(), 'IndexError: Index out of range (-5 < 0)')
+    assert.strictEqual(err.index, -5)
+    assert.strictEqual(err.min, 0)
+    assert.strictEqual(err.max, undefined)
+    assert.strictEqual(err.toString(), 'IndexError: Index out of range (-5 < 0)')
   })
 
   it('should construct an IndexError with max', function () {
@@ -29,10 +29,10 @@ describe('IndexError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof IndexError)
-    assert.equal(err.index, 5)
-    assert.equal(err.min, 0)
-    assert.equal(err.max, 3)
-    assert.equal(err.toString(), 'IndexError: Index out of range (5 > 2)')
+    assert.strictEqual(err.index, 5)
+    assert.strictEqual(err.min, 0)
+    assert.strictEqual(err.max, 3)
+    assert.strictEqual(err.toString(), 'IndexError: Index out of range (5 > 2)')
   })
 
   it('should construct an IndexError with min and max', function () {
@@ -40,10 +40,10 @@ describe('IndexError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof IndexError)
-    assert.equal(err.index, 0)
-    assert.equal(err.min, 2)
-    assert.equal(err.max, 5)
-    assert.equal(err.toString(), 'IndexError: Index out of range (0 < 2)')
+    assert.strictEqual(err.index, 0)
+    assert.strictEqual(err.min, 2)
+    assert.strictEqual(err.max, 5)
+    assert.strictEqual(err.toString(), 'IndexError: Index out of range (0 < 2)')
   })
 
   it('should construct an IndexError with min and max', function () {
@@ -51,10 +51,10 @@ describe('IndexError', function () {
     assert(err instanceof Error)
     assert(err instanceof RangeError)
     assert(err instanceof IndexError)
-    assert.equal(err.index, 6)
-    assert.equal(err.min, 1)
-    assert.equal(err.max, 4)
-    assert.equal(err.toString(), 'IndexError: Index out of range (6 > 3)')
+    assert.strictEqual(err.index, 6)
+    assert.strictEqual(err.min, 1)
+    assert.strictEqual(err.max, 4)
+    assert.strictEqual(err.toString(), 'IndexError: Index out of range (6 > 3)')
   })
 
   it('should throw an error when constructed without new operator', function () {
