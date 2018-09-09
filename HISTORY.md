@@ -1,11 +1,11 @@
 # History
 
 
-## not yet released, version 5.1.2
+## 2018-09-09, version 5.1.2
 
 - Fixed a typo in the docs of `parse`. Thanks @mathiasvr.
 - Fixed #1222: a typo in the docs of `subset`.
-- Fixed #1236: quantileSeq has inconsistant return.
+- Fixed #1236: `quantileSeq` has inconsistent return.
 - Fixed #1237: norm sometimes returning a complex number instead of
   number.
 - Upgraded dependencies (`fraction.js@4.0.9`)
