@@ -5,6 +5,18 @@ layout: default
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
 
+<h2 id="20180909-version-512">2018-09-09, version 5.1.2 <a href="#20180909-version-512" title="Permalink">#</a></h2>
+
+- Fixed a typo in the docs of `parse`. Thanks <a href="https://github.com/mathiasvr">@mathiasvr</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1222">#1222</a>: a typo in the docs of `subset`.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1236">#1236</a>: `quantileSeq` has inconsistent return.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1237">#1237</a>: norm sometimes returning a complex number instead of
+  number.
+- Upgraded dependencies (`fraction.js@4.0.9`)
+- Upgraded devDependencies (`babel@7`, `karma-webpack@3.0.4`,
+  `nyc@13.0.1`, `standard@12.0.0`, `uglify-js@3.4.9`, `webpack@4.17.2`)
+
+
 <h2 id="20180821-version-511">2018-08-21, version 5.1.1 <a href="#20180821-version-511" title="Permalink">#</a></h2>
 
 - Function `isNumeric` now recognizes more types.

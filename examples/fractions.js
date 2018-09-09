@@ -46,8 +46,8 @@ console.log()
 console.log('output formatting of fractions')
 const a = math.fraction('2/3')
 console.log(math.format(a)) // Fraction,  2/3
-console.log(math.format(a, {fraction: 'ratio'})) // Fraction,  2/3
-console.log(math.format(a, {fraction: 'decimal'})) // Fraction,  0.(6)
+console.log(math.format(a, { fraction: 'ratio' })) // Fraction,  2/3
+console.log(math.format(a, { fraction: 'decimal' })) // Fraction,  0.(6)
 console.log(a.toString()) // Fraction,  0.(6)
 console.log()
 
@@ -57,7 +57,7 @@ console.log()
  * @param {*} value
  */
 function printRatio (value) {
-  console.log(math.format(value, {fraction: 'ratio'}))
+  console.log(math.format(value, { fraction: 'ratio' }))
 }
 
 /**
@@ -66,5 +66,5 @@ function printRatio (value) {
  * @param {*} value
  */
 function print (value) {
-  console.log(math.format(value, {fraction: 'decimal'}))
+  console.log(math.format(value, { fraction: 'decimal' }))
 }
