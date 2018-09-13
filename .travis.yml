@@ -4,17 +4,7 @@ node_js:
   - 8
   - 10
 
-before_install:
-  - npm install -g npm@6
-  - npm install -g greenkeeper-lockfile@1
-
-install: npm install
-
-before_script: greenkeeper-lockfile-update
-
 script: npm run test:src
-
-after_script: greenkeeper-lockfile-upload
 
 # NAME env var is purely cosmetic, only way to identify builds until
 # https://github.com/travis-ci/travis-ci/issues/5898 is fixed.
