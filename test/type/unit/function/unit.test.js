@@ -35,9 +35,9 @@ describe('unit', function () {
 
   it('should create dimensionless units (pure numbers)', function () {
     const unit1 = unit(5)
-    assert.equal(unit1.toString(), '5')
-    assert.equal(unit1.value, 5)
-    assert.equal(unit1.units.length, 0)
+    assert.deepEqual(unit1.toString(), '5')
+    assert.deepEqual(unit1.value, 5)
+    assert.deepEqual(unit1.units.length, 0)
     assert.deepEqual(unit1, unit('5'))
   })
 
