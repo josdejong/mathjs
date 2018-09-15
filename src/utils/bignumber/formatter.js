@@ -31,8 +31,9 @@ const objectUtils = require('../object')
  *                                          For example '123.4' and '1.4e7'.
  *                     {number} precision   A number between 0 and 16 to round
  *                                          the digits of the number.
- *                                          In case of notations 'exponential' and
- *                                          'auto', `precision` defines the total
+ *                                          In case of notations 'exponential',
+ *                                          'engineering', and 'auto',
+ *                                          `precision` defines the total
  *                                          number of significant digits returned.
  *                                          In case of notation 'fixed',
  *                                          `precision` defines the number of

@@ -57,3 +57,27 @@ console.log(dh.eval({x: 3}))      // '7'
 The rules used by `math.derivative` can be found on Wikipedia:
 
 - [Differentiation rules (Wikipedia)](http://en.wikipedia.org/wiki/Differentiation_rules)
+
+
+## Rationalize
+
+The function [`math.transform`](../reference/functions/transform.md)  transforms a rationalizable expression in a rational fraction.
+If rational fraction is one variable polynomial then converts the numerator and denominator in canonical form, with decreasing exponents, returning the coefficients of numerator.
+
+```js
+
+math.rationalize('2x/y - y/(x+1)')
+              // (2*x^2-y^2+2*x)/(x*y+y)
+math.rationalize('(2x+1)^6')
+              // 64*x^6+192*x^5+240*x^4+160*x^3+60*x^2+12*x+1
+math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
+              // -20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)
+
+math.rationalize('x+x+x+y',{y:1}) // 3*x+1
+math.rationalize('x+x+x+y',{})    // 3*x+y
+
+const ret = math.rationalize('x+x+x+y',{},true)
+              // ret.expression=3*x+y, ret.variables = ["x","y"]
+const ret = math.rationalize('-2+5x^2',{},true)
+              // ret.expression=5*x^2-2, ret.variables = ["x"], ret.coefficients=[-2,0,5]
+```

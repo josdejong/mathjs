@@ -50,11 +50,11 @@ describe('isInteger', function () {
   })
 
   it('should test isInteger element wise on an Array', function () {
-    assert.deepEqual(isInteger([2, 5, 0.5, 3]), [true, true, false, true])
+    assert.deepStrictEqual(isInteger([2, 5, 0.5, 3]), [true, true, false, true])
   })
 
   it('should test isInteger element wise on a Matrix', function () {
-    assert.deepEqual(isInteger(math.matrix([2, 5, 0.5, 3])), math.matrix([true, true, false, true]))
+    assert.deepStrictEqual(isInteger(math.matrix([2, 5, 0.5, 3])), math.matrix([true, true, false, true]))
   })
 
   it('should throw an error in case of unsupported data types', function () {

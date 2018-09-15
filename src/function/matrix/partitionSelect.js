@@ -3,7 +3,10 @@
 const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
+  const isNumeric = load(require('../utils/isNumeric'))
+  const isNaN = load(require('../utils/isNaN'))
   const asc = load(require('../relational/compare'))
+
   function desc (a, b) {
     return -asc(a, b)
   }
@@ -89,6 +92,13 @@ function factory (type, config, load, typed) {
   function quickSelect (arr, k, compare) {
     if (k >= arr.length) {
       throw new Error('k out of bounds')
+    }
+
+    // check for NaN values since these can cause an infinite while loop
+    for (let i = 0; i < arr.length; i++) {
+      if (isNumeric(arr[i]) && isNaN(arr[i])) {
+        return arr[i] // return NaN
+      }
     }
 
     let from = 0

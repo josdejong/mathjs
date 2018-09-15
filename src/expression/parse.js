@@ -97,6 +97,7 @@ function factory (type, config, load, typed) {
     '{': true,
     '}': true,
     '"': true,
+    '\'': true,
     ';': true,
 
     '+': true,
@@ -113,7 +114,6 @@ function factory (type, config, load, typed) {
     '&': true,
     '|': true,
     '^|': true,
-    '\'': true,
     '=': true,
     ':': true,
     '?': true,
@@ -1218,7 +1218,7 @@ function factory (type, config, load, typed) {
       return node
     }
 
-    return parseString(state)
+    return parseDoubleQuotesString(state)
   }
 
   /**
@@ -1311,16 +1311,15 @@ function factory (type, config, load, typed) {
   }
 
   /**
-   * parse a string.
-   * A string is enclosed by double quotes
+   * Parse a double quotes string.
    * @return {Node} node
    * @private
    */
-  function parseString (state) {
+  function parseDoubleQuotesString (state) {
     let node, str
 
     if (state.token === '"') {
-      str = parseStringToken(state)
+      str = parseDoubleQuotesStringToken(state)
 
       // create constant
       node = new ConstantNode(str)
@@ -1331,14 +1330,14 @@ function factory (type, config, load, typed) {
       return node
     }
 
-    return parseMatrix(state)
+    return parseSingleQuotesString(state)
   }
 
   /**
    * Parse a string surrounded by double quotes "..."
    * @return {string}
    */
-  function parseStringToken (state) {
+  function parseDoubleQuotesStringToken (state) {
     let str = ''
 
     while (currentCharacter(state) !== '' && currentCharacter(state) !== '"') {
@@ -1356,6 +1355,57 @@ function factory (type, config, load, typed) {
     getToken(state)
     if (state.token !== '"') {
       throw createSyntaxError(state, 'End of string " expected')
+    }
+    getToken(state)
+
+    return JSON.parse('"' + str + '"') // unescape escaped characters
+  }
+
+  /**
+   * Parse a single quotes string.
+   * @return {Node} node
+   * @private
+   */
+  function parseSingleQuotesString (state) {
+    let node, str
+
+    if (state.token === '\'') {
+      str = parseSingleQuotesStringToken(state)
+
+      // create constant
+      node = new ConstantNode(str)
+
+      // parse index parameters
+      node = parseAccessors(state, node)
+
+      return node
+    }
+
+    return parseMatrix(state)
+  }
+
+  /**
+   * Parse a string surrounded by single quotes '...'
+   * @return {string}
+   */
+  function parseSingleQuotesStringToken (state) {
+    let str = ''
+
+    while (currentCharacter(state) !== '' && currentCharacter(state) !== '\'') {
+      if (currentCharacter(state) === '\\') {
+        // escape character, immediately process the next
+        // character to prevent stopping at a next '\''
+        str += currentCharacter(state)
+        next(state)
+      }
+
+      str += currentCharacter(state)
+      next(state)
+    }
+
+    getToken(state)
+    if (state.token !== '\'') {
+      throw createSyntaxError(state, 'End of string \' expected')
     }
     getToken(state)
 
@@ -1466,7 +1516,9 @@ function factory (type, config, load, typed) {
         if (state.token !== '}') {
           // parse key
           if (state.token === '"') {
-            key = parseStringToken(state)
+            key = parseDoubleQuotesStringToken(state)
+          } else if (state.token === '\'') {
+            key = parseSingleQuotesStringToken(state)
           } else if (state.tokenType === TOKENTYPE.SYMBOL) {
             key = state.token
             getToken(state)
@@ -1560,8 +1612,6 @@ function factory (type, config, load, typed) {
     if (state.token === '') {
       // syntax error or unexpected end of expression
       throw createSyntaxError(state, 'Unexpected end of expression')
-    } else if (state.token === "'") {
-      throw createSyntaxError(state, 'Value expected. Note: strings must be enclosed by double quotes')
     } else {
       throw createSyntaxError(state, 'Value expected')
     }

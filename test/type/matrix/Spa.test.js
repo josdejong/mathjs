@@ -25,7 +25,7 @@ describe('Spa', function () {
       spa.set(5, 0.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
-      assert.equal(spa._values[5].value, 0.5)
+      assert.strictEqual(spa._values[5].value, 0.5)
     })
 
     it('should set value when value exists for row', function () {
@@ -33,11 +33,11 @@ describe('Spa', function () {
       spa.set(5, 0.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
-      assert.equal(spa._values[5].value, 0.5)
+      assert.strictEqual(spa._values[5].value, 0.5)
       spa.set(5, 1.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
-      assert.equal(spa._values[5].value, 1.5)
+      assert.strictEqual(spa._values[5].value, 1.5)
     })
   })
 
@@ -45,14 +45,14 @@ describe('Spa', function () {
     it('should get zero when no value exists for row', function () {
       const spa = new Spa(10)
       const v = spa.get(5)
-      assert.equal(v, 0)
+      assert.strictEqual(v, 0)
     })
 
     it('should get value when value exists for row', function () {
       const spa = new Spa(10)
       spa.set(5, 0.5)
       const v = spa.get(5)
-      assert.equal(v, 0.5)
+      assert.strictEqual(v, 0.5)
     })
   })
 
@@ -62,7 +62,7 @@ describe('Spa', function () {
       spa.accumulate(5, 0.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
-      assert.equal(spa._values[5].value, 0.5)
+      assert.strictEqual(spa._values[5].value, 0.5)
     })
 
     it('should accumulate value when value exists for row', function () {
@@ -71,7 +71,7 @@ describe('Spa', function () {
       spa.accumulate(5, 1.5)
       assert(spa._values[5])
       assert(spa._values[5].value)
-      assert.equal(spa._values[5].value, 2)
+      assert.strictEqual(spa._values[5].value, 2)
     })
   })
 
@@ -83,10 +83,10 @@ describe('Spa', function () {
       spa.swap(2, 5)
       assert(spa._values[5])
       assert(spa._values[5].value)
-      assert.equal(spa._values[5].value, 0.2)
+      assert.strictEqual(spa._values[5].value, 0.2)
       assert(spa._values[2])
       assert(spa._values[2].value)
-      assert.equal(spa._values[2].value, 0.5)
+      assert.strictEqual(spa._values[2].value, 0.5)
     })
 
     it('should swap an existing and non existing values', function () {
@@ -96,7 +96,7 @@ describe('Spa', function () {
       assert(!spa._values[5])
       assert(spa._values[2])
       assert(spa._values[2].value)
-      assert.equal(spa._values[2].value, 0.5)
+      assert.strictEqual(spa._values[2].value, 0.5)
     })
 
     it('should swap a non existing and existing values', function () {
@@ -106,7 +106,7 @@ describe('Spa', function () {
       assert(!spa._values[5])
       assert(spa._values[2])
       assert(spa._values[2].value)
-      assert.equal(spa._values[2].value, 0.5)
+      assert.strictEqual(spa._values[2].value, 0.5)
     })
 
     it('should swap two non existing values', function () {
@@ -128,7 +128,7 @@ describe('Spa', function () {
       let c = 0
       spa.forEach(0, 9, function (i) {
         if (!x) {
-          assert.equal(i, 1)
+          assert.strictEqual(i, 1)
           x = i
         } else {
           assert(i > x)
@@ -136,10 +136,10 @@ describe('Spa', function () {
         }
         c++
       })
-      assert.equal(c, 4)
-      assert.equal(x, 4)
+      assert.strictEqual(c, 4)
+      assert.strictEqual(x, 4)
       assert(spa._heap._minimum !== null)
-      assert.equal(spa._heap._size, 4)
+      assert.strictEqual(spa._heap._size, 4)
     })
 
     it('should enumerate values in interval', function () {
@@ -152,7 +152,7 @@ describe('Spa', function () {
       let c = 0
       spa.forEach(2, 3, function (i) {
         if (!x) {
-          assert.equal(i, 2)
+          assert.strictEqual(i, 2)
           x = i
         } else {
           assert(i > x)
@@ -160,10 +160,10 @@ describe('Spa', function () {
         }
         c++
       })
-      assert.equal(c, 2)
-      assert.equal(x, 3)
+      assert.strictEqual(c, 2)
+      assert.strictEqual(x, 3)
       assert(spa._heap._minimum !== null)
-      assert.equal(spa._heap._size, 4)
+      assert.strictEqual(spa._heap._size, 4)
     })
   })
 })

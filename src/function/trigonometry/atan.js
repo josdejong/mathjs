@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  atan.toTex = {1: `\\tan^{-1}\\left(\${args[0]}\\right)`}
+  atan.toTex = { 1: `\\tan^{-1}\\left(\${args[0]}\\right)` }
 
   return atan
 }

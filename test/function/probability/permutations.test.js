@@ -4,30 +4,30 @@ const permutations = math.permutations
 
 describe('permutations', function () {
   it('should calculate the permutations of a number', function () {
-    assert.equal(permutations(0), 1)
-    assert.equal(permutations(1), 1)
-    assert.equal(permutations(2), 2)
-    assert.equal(permutations(3), 6)
-    assert.equal(permutations(4), 24)
-    assert.equal(permutations(5), 120)
+    assert.strictEqual(permutations(0), 1)
+    assert.strictEqual(permutations(1), 1)
+    assert.strictEqual(permutations(2), 2)
+    assert.strictEqual(permutations(3), 6)
+    assert.strictEqual(permutations(4), 24)
+    assert.strictEqual(permutations(5), 120)
   })
 
   it('should calculate the permutations of a BigNumber', function () {
-    assert.deepEqual(permutations(math.bignumber(4)), math.bignumber(24))
-    assert.deepEqual(permutations(math.bignumber(5)), math.bignumber(120))
-    assert.deepEqual(permutations(math.bignumber(8)), math.bignumber(40320))
+    assert.deepStrictEqual(permutations(math.bignumber(4)), math.bignumber(24))
+    assert.deepStrictEqual(permutations(math.bignumber(5)), math.bignumber(120))
+    assert.deepStrictEqual(permutations(math.bignumber(8)), math.bignumber(40320))
   })
 
   it('should calculate the permutations of a BigNumber, taking k at a time', function () {
-    assert.deepEqual(permutations(math.bignumber(5), math.bignumber(4)), math.bignumber(120))
-    assert.deepEqual(permutations(math.bignumber(6), math.bignumber(3)), math.bignumber(120))
-    assert.deepEqual(permutations(math.bignumber(9), math.bignumber(8)), math.bignumber(362880))
+    assert.deepStrictEqual(permutations(math.bignumber(5), math.bignumber(4)), math.bignumber(120))
+    assert.deepStrictEqual(permutations(math.bignumber(6), math.bignumber(3)), math.bignumber(120))
+    assert.deepStrictEqual(permutations(math.bignumber(9), math.bignumber(8)), math.bignumber(362880))
   })
 
   it('should calculate the permutations of a number, taking k at a time', function () {
-    assert.equal(permutations(5, 4), 120)
-    assert.equal(permutations(9, 8), 362880)
-    assert.equal(permutations(7, 5), 2520)
+    assert.strictEqual(permutations(5, 4), 120)
+    assert.strictEqual(permutations(9, 8), 362880)
+    assert.strictEqual(permutations(7, 5), 2520)
   })
 
   it('should fail loudly when k is larger than x', function () {
@@ -57,6 +57,6 @@ describe('permutations', function () {
 
   it('should LaTeX permutations', function () {
     const expression = math.parse('permutations(2)')
-    assert.equal(expression.toTex(), '\\mathrm{permutations}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{permutations}\\left(2\\right)')
   })
 })

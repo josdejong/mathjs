@@ -4,29 +4,23 @@ node_js:
   - 8
   - 10
 
-stages:
-  - lint
-  - test
-  - browser-test
-
 script: npm run test:src
-
-# NAME env var is purely cosmetic, only way to identify builds until
-# https://github.com/travis-ci/travis-ci/issues/5898 is fixed.
 
 jobs:
   include:
-    - stage: lint
-      node_js: 8
+    - stage: other
       script: npm run lint
-    - stage: browser-test
-      node_js: 8
-      script: npm run test:browser
-      env: NAME=local browser
-    - # second script to run in the browser-tests stage
-      node_js: 8
-      script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
-      env: NAME=browserstack
+      node_js: lts/*
+      name: Lint
+    - script: npm run test:browser
+      node_js: lts/*
+      name: Local Browser Test
+    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
+      node_js: lts/*
+      name: Browserstack Test
+    - script: npm run build && npm run test:dist
+      node_js: lts/*
+      name: Bundling Test
 
 git:
   depth: 5

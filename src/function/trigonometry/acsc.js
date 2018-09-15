@@ -47,7 +47,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  acsc.toTex = {1: `\\csc^{-1}\\left(\${args[0]}\\right)`}
+  acsc.toTex = { 1: `\\csc^{-1}\\left(\${args[0]}\\right)` }
 
   return acsc
 }

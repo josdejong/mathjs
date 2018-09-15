@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  log10.toTex = {1: `\\log_{10}\\left(\${args[0]}\\right)`}
+  log10.toTex = { 1: `\\log_{10}\\left(\${args[0]}\\right)` }
 
   return log10
 }

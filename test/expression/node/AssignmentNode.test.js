@@ -15,7 +15,7 @@ describe('AssignmentNode', function () {
     const n = new AssignmentNode(new SymbolNode('a'), new Node())
     assert(n instanceof AssignmentNode)
     assert(n instanceof Node)
-    assert.equal(n.type, 'AssignmentNode')
+    assert.strictEqual(n.type, 'AssignmentNode')
   })
 
   it('should have property isAssignmentNode', function () {
@@ -43,17 +43,17 @@ describe('AssignmentNode', function () {
 
   it('should get the name of an AssignmentNode', function () {
     const n = new AssignmentNode(new SymbolNode('a'), new ConstantNode(1))
-    assert.equal(n.name, 'a')
+    assert.strictEqual(n.name, 'a')
 
     const n2 = new AccessorNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]))
     const n3 = new AssignmentNode(n2, new ConstantNode(1))
-    assert.equal(n3.name, 'b')
+    assert.strictEqual(n3.name, 'b')
 
     const n4 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode('b')]), new ConstantNode(1))
-    assert.equal(n4.name, 'b')
+    assert.strictEqual(n4.name, 'b')
 
     const n5 = new AssignmentNode(new SymbolNode('a'), new IndexNode([new ConstantNode(1)]), new ConstantNode(1))
-    assert.equal(n5.name, '')
+    assert.strictEqual(n5.name, '')
   })
 
   it('should compile an AssignmentNode without index', function () {
@@ -62,8 +62,8 @@ describe('AssignmentNode', function () {
     const expr = n.compile()
 
     let scope = {}
-    assert.equal(expr.eval(scope), 3)
-    assert.equal(scope.b, 3)
+    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(scope.b, 3)
   })
 
   it('should compile an AssignmentNode with property index', function () {
@@ -77,8 +77,8 @@ describe('AssignmentNode', function () {
     let scope = {
       a: {}
     }
-    assert.equal(expr.eval(scope), 3)
-    assert.deepEqual(scope, {a: {b: 3}})
+    assert.strictEqual(expr.eval(scope), 3)
+    assert.deepStrictEqual(scope, { a: { b: 3 } })
   })
 
   it('should compile an AssignmentNode with nested property index', function () {
@@ -95,8 +95,8 @@ describe('AssignmentNode', function () {
         b: {}
       }
     }
-    assert.equal(expr.eval(scope), 3)
-    assert.deepEqual(scope, {a: {b: {c: 3}}})
+    assert.strictEqual(expr.eval(scope), 3)
+    assert.deepStrictEqual(scope, { a: { b: { c: 3 } } })
   })
 
   it('should compile an AssignmentNode with matrix index', function () {
@@ -113,7 +113,7 @@ describe('AssignmentNode', function () {
       a: [[0, 0], [0, 0]]
     }
     assert.strictEqual(expr.eval(scope), 5)
-    assert.deepEqual(scope, {
+    assert.deepStrictEqual(scope, {
       a: [[0, 0], [5, 0]]
     })
   })
@@ -135,15 +135,15 @@ describe('AssignmentNode', function () {
       a: [[0, 0], [0, 0]],
       b: [5, 6]
     }
-    assert.deepEqual(expr.eval(scope), [5, 6])
-    assert.deepEqual(scope, {
+    assert.deepStrictEqual(expr.eval(scope), [5, 6])
+    assert.deepStrictEqual(scope, {
       a: [[0, 0], [5, 6]],
       b: [5, 6]
     })
   })
 
   it('should compile an AssignmentNode with bignumber setting', function () {
-    const bigmath = math.create({number: 'BigNumber'})
+    const bigmath = math.create({ number: 'BigNumber' })
 
     const object = new bigmath.expression.node.SymbolNode('a')
     const index = new bigmath.expression.node.IndexNode([
@@ -157,8 +157,8 @@ describe('AssignmentNode', function () {
     let scope = {
       a: [[0, 0], [0, 0]]
     }
-    assert.deepEqual(expr.eval(scope), bigmath.bignumber(5))
-    assert.deepEqual(scope, {
+    assert.deepStrictEqual(expr.eval(scope), bigmath.bignumber(5))
+    assert.deepStrictEqual(scope, {
       a: [[0, 0], [bigmath.bignumber(5), 0]]
     })
   })
@@ -184,12 +184,12 @@ describe('AssignmentNode', function () {
     const v = new ConstantNode(2)
     const n = new AssignmentNode(a, i, v)
 
-    assert.deepEqual(n.filter(function (node) { return node.isAssignmentNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode }), [b, c, v])
-    assert.deepEqual(n.filter(function (node) { return node.value === 1 }), [c])
-    assert.deepEqual(n.filter(function (node) { return node.value === 2 }), [b, v])
-    assert.deepEqual(n.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isAssignmentNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [b, c, v])
+    assert.deepStrictEqual(n.filter(function (node) { return node.value === 1 }), [c])
+    assert.deepStrictEqual(n.filter(function (node) { return node.value === 2 }), [b, v])
+    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
   })
 
   it('should filter an AssignmentNode without index', function () {
@@ -197,11 +197,11 @@ describe('AssignmentNode', function () {
     const v = new ConstantNode(2)
     const n = new AssignmentNode(a, v)
 
-    assert.deepEqual(n.filter(function (node) { return node.isAssignmentNode }), [n])
-    assert.deepEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
-    assert.deepEqual(n.filter(function (node) { return node.isConstantNode }), [v])
-    assert.deepEqual(n.filter(function (node) { return node.value === 2 }), [v])
-    assert.deepEqual(n.filter(function (node) { return node.name === 'q' }), [])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isAssignmentNode }), [n])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isSymbolNode }), [a])
+    assert.deepStrictEqual(n.filter(function (node) { return node.isConstantNode }), [v])
+    assert.deepStrictEqual(n.filter(function (node) { return node.value === 2 }), [v])
+    assert.deepStrictEqual(n.filter(function (node) { return node.name === 'q' }), [])
   })
 
   it('should run forEach on an AssignmentNode', function () {
@@ -221,11 +221,11 @@ describe('AssignmentNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], i)
     assert.strictEqual(nodes[2], v)
-    assert.deepEqual(paths, ['object', 'index', 'value'])
+    assert.deepStrictEqual(paths, ['object', 'index', 'value'])
   })
 
   it('should run forEach on an AssignmentNode without index', function () {
@@ -242,10 +242,10 @@ describe('AssignmentNode', function () {
       assert.strictEqual(parent, n)
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], v)
-    assert.deepEqual(paths, ['object', 'value'])
+    assert.deepStrictEqual(paths, ['object', 'value'])
   })
 
   it('should map an AssignmentNode', function () {
@@ -268,17 +268,17 @@ describe('AssignmentNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
-    assert.equal(nodes.length, 3)
+    assert.strictEqual(nodes.length, 3)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], i)
     assert.strictEqual(nodes[2], v)
-    assert.deepEqual(paths, ['object', 'index', 'value'])
+    assert.deepStrictEqual(paths, ['object', 'index', 'value'])
 
     assert.notStrictEqual(f, n)
-    assert.deepEqual(f.object, a)
-    assert.deepEqual(f.index.dimensions[0], b)
-    assert.deepEqual(f.index.dimensions[1], c) // not replaced, is nested
-    assert.deepEqual(f.value, v)
+    assert.deepStrictEqual(f.object, a)
+    assert.deepStrictEqual(f.index.dimensions[0], b)
+    assert.deepStrictEqual(f.index.dimensions[1], c) // not replaced, is nested
+    assert.deepStrictEqual(f.value, v)
   })
 
   it('should map an AssignmentNode without index', function () {
@@ -297,10 +297,10 @@ describe('AssignmentNode', function () {
       return node instanceof SymbolNode && node.name === 'x' ? e : node
     })
 
-    assert.equal(nodes.length, 2)
+    assert.strictEqual(nodes.length, 2)
     assert.strictEqual(nodes[0], a)
     assert.strictEqual(nodes[1], x)
-    assert.deepEqual(paths, ['object', 'value'])
+    assert.deepStrictEqual(paths, ['object', 'value'])
 
     assert.notStrictEqual(f, d)
     assert.strictEqual(d.value, x)
@@ -336,9 +336,9 @@ describe('AssignmentNode', function () {
     })
 
     assert.notStrictEqual(f, d)
-    assert.deepEqual(f.index.dimensions[0], e)
-    assert.deepEqual(f.value.args[0], e)
-    assert.deepEqual(f.value.args[1], b)
+    assert.deepStrictEqual(f.index.dimensions[0], e)
+    assert.deepStrictEqual(f.value.args[0], e)
+    assert.deepStrictEqual(f.value.args[1], b)
   })
 
   it('should transform an AssignmentNode itself', function () {
@@ -355,7 +355,7 @@ describe('AssignmentNode', function () {
     })
 
     assert.notStrictEqual(f, d)
-    assert.deepEqual(f, e)
+    assert.deepStrictEqual(f, e)
   })
 
   it('should traverse an AssignmentNode', function () {
@@ -395,7 +395,7 @@ describe('AssignmentNode', function () {
       }
     })
 
-    assert.equal(count, 4)
+    assert.strictEqual(count, 4)
   })
 
   it('should clone an AssignmentNode without index', function () {
@@ -405,7 +405,7 @@ describe('AssignmentNode', function () {
 
     const b = a.clone()
     assert(b instanceof AssignmentNode)
-    assert.deepEqual(b, a)
+    assert.deepStrictEqual(b, a)
     assert.notStrictEqual(b, a)
     assert.strictEqual(b.object, a.object)
     assert.strictEqual(b.index, a.index)
@@ -424,7 +424,7 @@ describe('AssignmentNode', function () {
     const e = d.clone()
 
     assert(e instanceof AssignmentNode)
-    assert.deepEqual(e, d)
+    assert.deepStrictEqual(e, d)
     assert.notStrictEqual(e, d)
     assert.strictEqual(e.object, d.object)
     assert.strictEqual(e.index, d.index)
@@ -466,8 +466,8 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString({parenthesis: 'all'}), 'a = (1)')
-    assert.equal(n.toTex({parenthesis: 'all'}), ' a:=\\left(1\\right)')
+    assert.strictEqual(n.toString({ parenthesis: 'all' }), 'a = (1)')
+    assert.strictEqual(n.toTex({ parenthesis: 'all' }), ' a:=\\left(1\\right)')
   })
 
   it('should stringify a AssignmentNode', function () {
@@ -475,7 +475,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(3)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString(), 'b = 3')
+    assert.strictEqual(n.toString(), 'b = 3')
   })
 
   it('should stringify an AssignmentNode containing an AssignmentNode', function () {
@@ -483,7 +483,7 @@ describe('AssignmentNode', function () {
     const a = new AssignmentNode(new SymbolNode('a'), value)
     const n = new AssignmentNode(new SymbolNode('b'), a)
 
-    assert.equal(n.toString(), 'b = (a = 2)')
+    assert.strictEqual(n.toString(), 'b = (a = 2)')
   })
 
   it('should stringify an AssignmentNode with custom toString', function () {
@@ -502,7 +502,7 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toString({handler: customFunction}), 'a equals const(1, number)')
+    assert.strictEqual(n.toString({ handler: customFunction }), 'a equals const(1, number)')
   })
 
   it('toJSON and fromJSON', function () {
@@ -515,25 +515,22 @@ describe('AssignmentNode', function () {
 
     const json = node.toJSON()
 
-    assert.deepEqual(json, {
+    assert.deepStrictEqual(json, {
       mathjs: 'AssignmentNode',
-      index: {
-        dimensions: [ b, c ],
-        dotNotation: false
-      },
+      index: node.index,
       object: a,
       value: d
     })
 
     const parsed = AssignmentNode.fromJSON(json)
-    assert.deepEqual(parsed, node)
+    assert.deepStrictEqual(parsed, node)
   })
 
   it('should LaTeX a AssignmentNode', function () {
     const value = new ConstantNode(2)
     const a = new AssignmentNode(new SymbolNode('a'), value)
 
-    assert.equal(a.toTex(), ' a:=2')
+    assert.strictEqual(a.toTex(), ' a:=2')
   })
 
   it('should LaTeX an AssignmentNode containing an AssignmentNode', function () {
@@ -541,7 +538,7 @@ describe('AssignmentNode', function () {
     const a = new AssignmentNode(new SymbolNode('a'), value)
     const q = new AssignmentNode(new SymbolNode('q'), a)
 
-    assert.equal(q.toTex(), ' q:=\\left( a:=2\\right)')
+    assert.strictEqual(q.toTex(), ' q:=\\left( a:=2\\right)')
   })
 
   it('should LaTeX an AssignmentNode with custom toTex', function () {
@@ -560,6 +557,6 @@ describe('AssignmentNode', function () {
     const value = new ConstantNode(1)
     const n = new AssignmentNode(object, value)
 
-    assert.equal(n.toTex({handler: customFunction}), ' a\\mbox{equals}const\\left(1, number\\right)')
+    assert.strictEqual(n.toTex({ handler: customFunction }), ' a\\mbox{equals}const\\left(1, number\\right)')
   })
 })

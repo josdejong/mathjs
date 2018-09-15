@@ -36,7 +36,7 @@ describe('isPrime', function () {
   })
 
   it('should test isPrime element wise on an Array', function () {
-    assert.deepEqual(isPrime([0, 1, 2, 5, 9]), [false, false, true, true, false])
+    assert.deepStrictEqual(isPrime([0, 1, 2, 5, 9]), [false, false, true, true, false])
   })
 
   it('should throw an error in case of unsupported data types', function () {

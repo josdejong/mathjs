@@ -19,14 +19,14 @@ describe('sparse', function () {
     const b = sparse([[1, 2], [3, 4]])
     const c = sparse(b)
     assert.ok(c._values !== b._values) // data should be cloned
-    assert.deepEqual(c, sparse([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(c, sparse([[1, 2], [3, 4]]))
   })
 
   it('should be the identity if called with a matrix, number datatype', function () {
     const b = sparse([[1, 2], [3, 4]], 'number')
     const c = sparse(b)
     assert.ok(c._values !== b._values) // data should be cloned
-    assert.deepEqual(c.valueOf(), b.valueOf())
+    assert.deepStrictEqual(c.valueOf(), b.valueOf())
     assert.ok(c.datatype() === 'number')
   })
 
@@ -46,7 +46,7 @@ describe('sparse', function () {
     const expr1 = math.parse('sparse()')
     const expr2 = math.parse('sparse([1])')
 
-    assert.equal(expr1.toTex(), '\\begin{bsparse}\\end{bsparse}')
-    assert.equal(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expr1.toTex(), '\\begin{bsparse}\\end{bsparse}')
+    assert.strictEqual(expr2.toTex(), '\\left(\\begin{bmatrix}1\\\\\\end{bmatrix}\\right)')
   })
 })

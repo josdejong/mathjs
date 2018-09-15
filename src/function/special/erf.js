@@ -127,7 +127,7 @@ function factory (type, config, load, typed) {
     return Math.exp(-ysq * ysq) * Math.exp(-del) * result
   }
 
-  erf.toTex = {1: `erf\\left(\${args[0]}\\right)`}
+  erf.toTex = { 1: `erf\\left(\${args[0]}\\right)` }
 
   return erf
 }

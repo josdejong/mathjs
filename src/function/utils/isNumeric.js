@@ -36,7 +36,7 @@ function factory (type, config, load, typed) {
       return true
     },
 
-    'Complex | Unit | string': function () {
+    'Complex | Unit | string | null | undefined | Node': function () {
       return false
     },
 

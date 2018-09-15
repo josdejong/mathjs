@@ -21,7 +21,7 @@ function factory (type, config, load, typed) {
    *     // get a subset
    *     const d = [[1, 2], [3, 4]]
    *     math.subset(d, math.index(1, 0))        // returns 3
-   *     math.subset(d, math.index([0, 2], 1))   // returns [[2], [4]]
+   *     math.subset(d, math.index([0, 1], 1))   // returns [[2], [4]]
    *
    *     // replace a subset
    *     const e = []

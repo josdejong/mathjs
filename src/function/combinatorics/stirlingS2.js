@@ -59,7 +59,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  stirlingS2.toTex = {2: `\\mathrm{S}\\left(\${args}\\right)`}
+  stirlingS2.toTex = { 2: `\\mathrm{S}\\left(\${args}\\right)` }
 
   return stirlingS2
 }

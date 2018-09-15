@@ -197,7 +197,7 @@ function factory (type, config, load, typed) {
     }
   }
 
-  inv.toTex = {1: `\\left(\${args[0]}\\right)^{-1}`}
+  inv.toTex = { 1: `\\left(\${args[0]}\\right)^{-1}` }
 
   return inv
 }

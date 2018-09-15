@@ -1,6 +1,6 @@
 {
   "presets": [
-    ["env"]
+    ["@babel/preset-env"]
   ],
-  "plugins": ["transform-object-assign"]
+  "plugins": ["@babel/plugin-transform-object-assign"]
 }

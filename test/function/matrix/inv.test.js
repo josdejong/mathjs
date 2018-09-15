@@ -6,18 +6,18 @@ const inv = math.inv
 
 describe('inv', function () {
   it('should return the inverse of a number', function () {
-    assert.deepEqual(inv(4), 1 / 4)
-    assert.deepEqual(inv(math.bignumber(4)), math.bignumber(1 / 4))
+    assert.deepStrictEqual(inv(4), 1 / 4)
+    assert.deepStrictEqual(inv(math.bignumber(4)), math.bignumber(1 / 4))
   })
 
   it('should return the inverse of a matrix with just one value', function () {
-    assert.deepEqual(inv([4]), [1 / 4])
-    assert.deepEqual(inv([[4]]), [[1 / 4]])
+    assert.deepStrictEqual(inv([4]), [1 / 4])
+    assert.deepStrictEqual(inv([[4]]), [[1 / 4]])
   })
 
   it('should return the inverse for each element in an array', function () {
-    assert.deepEqual(inv([4]), [1 / 4])
-    assert.deepEqual(inv([[4]]), [[1 / 4]])
+    assert.deepStrictEqual(inv([4]), [1 / 4])
+    assert.deepStrictEqual(inv([[4]]), [[1 / 4]])
 
     approx.deepEqual(inv([
       [1, 4, 7],
@@ -62,10 +62,10 @@ describe('inv', function () {
   })
 
   it('should return the inverse for each element in a matrix', function () {
-    assert.deepEqual(inv(math.matrix([4])), math.matrix([1 / 4]))
-    assert.deepEqual(inv(math.matrix([[4]])), math.matrix([[1 / 4]]))
-    assert.deepEqual(inv(math.matrix([[4]], 'sparse')), math.matrix([[1 / 4]], 'sparse'))
-    assert.deepEqual(inv(math.matrix([[1, 2], [3, 4]], 'sparse')), math.matrix([[-2, 1], [1.5, -0.5]], 'sparse'))
+    assert.deepStrictEqual(inv(math.matrix([4])), math.matrix([1 / 4]))
+    assert.deepStrictEqual(inv(math.matrix([[4]])), math.matrix([[1 / 4]]))
+    assert.deepStrictEqual(inv(math.matrix([[4]], 'sparse')), math.matrix([[1 / 4]], 'sparse'))
+    assert.deepStrictEqual(inv(math.matrix([[1, 2], [3, 4]], 'sparse')), math.matrix([[-2, 1], [1.5, -0.5]], 'sparse'))
   })
 
   it('should throw an error in case of non-square matrices', function () {
@@ -120,6 +120,6 @@ describe('inv', function () {
 
   it('should  LaTeX inv', function () {
     const expression = math.parse('inv([[1,2],[3,4]])')
-    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^{-1}')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1&2\\\\3&4\\\\\\end{bmatrix}\\right)^{-1}')
   })
 })
