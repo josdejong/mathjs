@@ -1,5 +1,9 @@
 # History
 
+# not yet released, version 5.1.3
+
+- Fix #1240, allow units having just a value and no unit. Thanks @ericman314.
+
 
 ## 2018-09-09, version 5.1.2
 
