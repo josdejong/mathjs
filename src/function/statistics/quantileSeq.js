@@ -90,7 +90,7 @@ function factory (type, config, load, typed) {
 
           if (probOrN.lte(one)) {
             // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return _quantileSeq(dataArr, probOrN, sorted)
+            return new type.BigNumber(_quantileSeq(dataArr, probOrN, sorted))
           }
 
           if (probOrN.gt(one)) {
@@ -109,7 +109,7 @@ function factory (type, config, load, typed) {
             const nPlusOne = new type.BigNumber(intN + 1)
             probArr = new Array(intN)
             for (let i = 0; i < intN;) {
-              probArr[i] = _quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted)
+              probArr[i] = new type.BigNumber(_quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted))
             }
             return probArr
           }

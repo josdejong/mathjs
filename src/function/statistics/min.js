@@ -88,7 +88,9 @@ function factory (type, config, load, typed) {
 
     deepForEach(array, function (value) {
       try {
-        if (min === undefined || smaller(value, min)) {
+        if (isNaN(value) && typeof value === 'number') {
+          min = NaN
+        } else if (min === undefined || smaller(value, min)) {
           min = value
         }
       } catch (err) {

@@ -11,5 +11,5 @@ module.exports = {
     'typeof(45 deg)',
     'typeof("hello world")'
   ],
-  'seealso': []
+  'seealso': ['getMatrixDataType']
 }

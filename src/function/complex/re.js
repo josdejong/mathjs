@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  re.toTex = {1: `\\Re\\left\\lbrace\${args[0]}\\right\\rbrace`}
+  re.toTex = { 1: `\\Re\\left\\lbrace\${args[0]}\\right\\rbrace` }
 
   return re
 }

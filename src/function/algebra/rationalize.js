@@ -25,22 +25,25 @@ function factory (type, config, load, typed) {
    *
    * Examples:
    *
-   *     math.rationalize('sin(x)+y')  //  Error: There is an unsolved function call
-   *     math.rationalize('2x/y - y/(x+1)')  // (2*x^2-y^2+2*x)/(x*y+y)
+   *     math.rationalize('sin(x)+y')
+   *                   //  Error: There is an unsolved function call
+   *     math.rationalize('2x/y - y/(x+1)')
+   *                   // (2*x^2-y^2+2*x)/(x*y+y)
    *     math.rationalize('(2x+1)^6')
-   *                   //     64*x^6+192*x^5+240*x^4+160*x^3+60*x^2+12*x+1
+   *                   // 64*x^6+192*x^5+240*x^4+160*x^3+60*x^2+12*x+1
    *     math.rationalize('2x/( (2x-1) / (3x+2) ) - 5x/ ( (3x+4) / (2x^2-5) ) + 3')
-   *                   //    -20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)
+   *                   // -20*x^4+28*x^3+104*x^2+6*x-12)/(6*x^2+5*x-4)
    *     math.rationalize('x/(1-x)/(x-2)/(x-3)/(x-4) + 2x/ ( (1-2x)/(2-3x) )/ ((3-4x)/(4-5x) )') =
-   *                   //  (-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/
-   *                   //   (-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)
+   *                   // (-30*x^7+344*x^6-1506*x^5+3200*x^4-3472*x^3+1846*x^2-381*x)/
+   *                   //     (-8*x^6+90*x^5-383*x^4+780*x^3-797*x^2+390*x-72)
    *
    *     math.rationalize('x+x+x+y',{y:1}) // 3*x+1
    *     math.rationalize('x+x+x+y',{})    // 3*x+y
-   *     ret = math.rationalize('x+x+x+y',{},true)
-   *                          // ret.expression=3*x+y,  ret.variables = ["x","y"]
-   *     ret = math.rationalize('-2+5x^2',{},true)
-   *                          // ret.expression=5*x^2-2,  ret.variables = ["x"], ret.coefficients=[-2,0,5]
+   *
+   *     const ret = math.rationalize('x+x+x+y',{},true)
+   *                   // ret.expression=3*x+y, ret.variables = ["x","y"]
+   *     const ret = math.rationalize('-2+5x^2',{},true)
+   *                   // ret.expression=5*x^2-2, ret.variables = ["x"], ret.coefficients=[-2,0,5]
    *
    * See also:
    *
@@ -90,27 +93,37 @@ function factory (type, config, load, typed) {
     },
 
     'Node, Object, boolean': function (expr, scope, detailed) {
-      const polyRet = polynomial(expr, scope, true) // Check if expression is a rationalizable polynomial
+      const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
+      const polyRet = polynomial(expr, scope, true, setRules.firstRules) // Check if expression is a rationalizable polynomial
       const nVars = polyRet.variables.length
       expr = polyRet.expression
 
       if (nVars >= 1) { // If expression in not a constant
-        const setRules = rulesRationalize() // Rules for change polynomial in near canonical form
         expr = expandPower(expr) // First expand power of polynomials (cannot be made from rules!)
         let sBefore // Previous expression
-
+        let rules
+        let eDistrDiv = true
+        let redoInic = false
+        expr = simplify(expr, setRules.firstRules, {}, { exactFractions: false }) // Apply the initial rules, including succ div rules
+        let s
         while (true) { // Apply alternately  successive division rules and distr.div.rules
-          expr = simplify(expr, setRules.firstRules) // Apply the initial rules, including succ div rules
-          expr = simplify(expr, setRules.distrDivRules) // and distr.div.rules until no more changes
+          rules = eDistrDiv ? setRules.distrDivRules : setRules.sucDivRules
+          expr = simplify(expr, rules) // until no more changes
+          eDistrDiv = !eDistrDiv // Swap between Distr.Div and Succ. Div. Rules
 
-          const s = expr.toString()
-          if (s === sBefore) break // No changes : end of the loop
+          s = expr.toString()
+          if (s === sBefore) {
+            break // No changes : end of the loop
+          }
 
+          redoInic = true
           sBefore = s
         }
 
-        expr = simplify(expr, setRules.firstRulesAgain)
-        expr = simplify(expr, setRules.finalRules) // Apply final rules
+        if (redoInic) { // Apply first rules again without succ div rules (if there are changes)
+          expr = simplify(expr, setRules.firstRulesAgain, {}, { exactFractions: false })
+        }
+        expr = simplify(expr, setRules.finalRules, {}, { exactFractions: false }) // Apply final rules
       } // NVars >= 1
 
       const coefficients = []
@@ -152,20 +165,21 @@ function factory (type, config, load, typed) {
    *
    * Syntax:
    *
-   *     polynomial(expr,scope,extended)
+   *     polynomial(expr,scope,extended, rules)
    *
    * @param  {Node | string} expr     The expression to simplify and check if is polynomial expression
    * @param  {object} scope           Optional scope for expression simplification
    * @param  {boolean} extended       Optional. Default is false. When true allows divide operator.
+   * @param  {array}  rules           Optional. Default is no rule.
    *
    *
    * @return {Object}
    *            {Object} node:   node simplified expression
    *            {Array}  variables:  variable names
    */
-  function polynomial (expr, scope, extended) {
+  function polynomial (expr, scope, extended, rules) {
     const variables = []
-    const node = simplify(expr, scope) // Resolves any variables and functions with all defined parameters
+    const node = simplify(expr, rules, scope, { exactFractions: false }) // Resolves any variables and functions with all defined parameters
     extended = !!extended
 
     const oper = '+-*' + (extended ? '/' : '')
@@ -198,14 +212,11 @@ function factory (type, config, load, typed) {
         // No function call in polynomial expression
         throw new Error('There is an unsolved function call')
       } else if (tp === 'OperatorNode') {
-        if (node.op === '^' && node.isBinary()) {
-          if (node.args[1].op === '-' && node.args[1].isUnary()) {
-            if (node.args[1].args[0].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].args[0].value))) {
-              throw new Error('There is a non-integer exponent')
-            } else {
-              recPoly(node.args[0])
-            }
-          } else if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
+        if (node.op === '^') {
+          if (node.args[1].fn === 'unaryMinus') {
+            node = node.args[0]
+          }
+          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {
             recPoly(node.args[0])
@@ -245,44 +256,48 @@ function factory (type, config, load, typed) {
    */
   function rulesRationalize () {
     const oldRules = [simplifyCore, // sCore
-      {l: 'n+n', r: '2*n'},
-      {l: 'n+-n', r: '0'},
+      { l: 'n+n', r: '2*n' },
+      { l: 'n+-n', r: '0' },
       simplifyConstant, // sConstant
-      {l: 'n*(n1^-1)', r: 'n/n1'},
-      {l: 'n*n1^-n2', r: 'n/n1^n2'},
-      {l: 'n1^-1', r: '1/n1'},
-      {l: 'n1^-n2', r: '1/n1^n2'},
-      {l: 'n*(n1/n2)', r: '(n*n1)/n2'},
-      {l: '1*n', r: 'n'}]
+      { l: 'n*(n1^-1)', r: 'n/n1' },
+      { l: 'n*n1^-n2', r: 'n/n1^n2' },
+      { l: 'n1^-1', r: '1/n1' },
+      { l: 'n*(n1/n2)', r: '(n*n1)/n2' },
+      { l: '1*n', r: 'n' }]
 
     const rulesFirst = [
-      {l: '(-n1)/(-n2)', r: 'n1/n2'}, // Unary division
-      {l: '(-n1)*(-n2)', r: 'n1*n2'}, // Unary multiplication
-      {l: 'n1--n2', r: 'n1+n2'}, // '--' elimination
-      {l: 'n1-n2', r: 'n1+(-n2)'}, // Subtraction turn into add with un�ry minus
-      {l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)'}, // Distributive 1
-      {l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)'}, // Distributive 2
-      {l: 'c1*n + c2*n', r: '(c1+c2)*n'}, // Joining constants
-      {l: '-v*-c', r: 'c*v'}, // Inversion constant and variable 1
-      {l: '-v*c', r: '-c*v'}, // Inversion constant and variable 2
-      {l: 'v*-c', r: '-c*v'}, // Inversion constant and variable 3
-      {l: 'v*c', r: 'c*v'}, // Inversion constant and variable 4
-      {l: '-(-n1*n2)', r: '(n1*n2)'}, // Unary propagation
-      {l: '-(n1*n2)', r: '(-n1*n2)'}, // Unary propagation
-      {l: '-(-n1+n2)', r: '(n1-n2)'}, // Unary propagation
-      {l: '-(n1+n2)', r: '(-n1-n2)'}, // Unary propagation
-      {l: '(n1^n2)^n3', r: '(n1^(n2*n3))'}, // Power to Power
-      {l: '-(-n1/n2)', r: '(n1/n2)'}, // Division and Unary
-      {l: '-(n1/n2)', r: '(-n1/n2)'}] // Divisao and Unary
+      { l: '(-n1)/(-n2)', r: 'n1/n2' }, // Unary division
+      { l: '(-n1)*(-n2)', r: 'n1*n2' }, // Unary multiplication
+      { l: 'n1--n2', r: 'n1+n2' }, // '--' elimination
+      { l: 'n1-n2', r: 'n1+(-n2)' }, // Subtraction turn into add with un�ry minus
+      { l: '(n1+n2)*n3', r: '(n1*n3 + n2*n3)' }, // Distributive 1
+      { l: 'n1*(n2+n3)', r: '(n1*n2+n1*n3)' }, // Distributive 2
+      { l: 'c1*n + c2*n', r: '(c1+c2)*n' }, // Joining constants
+      { l: 'c1*n + n', r: '(c1+1)*n' }, // Joining constants
+      { l: 'c1*n - c2*n', r: '(c1-c2)*n' }, // Joining constants
+      { l: 'c1*n - n', r: '(c1-1)*n' }, // Joining constants
+      { l: 'v/c', r: '(1/c)*v' }, // variable/constant (new!)
+      { l: 'v/-c', r: '-(1/c)*v' }, // variable/constant (new!)
+      { l: '-v*-c', r: 'c*v' }, // Inversion constant and variable 1
+      { l: '-v*c', r: '-c*v' }, // Inversion constant and variable 2
+      { l: 'v*-c', r: '-c*v' }, // Inversion constant and variable 3
+      { l: 'v*c', r: 'c*v' }, // Inversion constant and variable 4
+      { l: '-(-n1*n2)', r: '(n1*n2)' }, // Unary propagation
+      { l: '-(n1*n2)', r: '(-n1*n2)' }, // Unary propagation
+      { l: '-(-n1+n2)', r: '(n1-n2)' }, // Unary propagation
+      { l: '-(n1+n2)', r: '(-n1-n2)' }, // Unary propagation
+      { l: '(n1^n2)^n3', r: '(n1^(n2*n3))' }, // Power to Power
+      { l: '-(-n1/n2)', r: '(n1/n2)' }, // Division and Unary
+      { l: '-(n1/n2)', r: '(-n1/n2)' }] // Divisao and Unary
 
     const rulesDistrDiv = [
-      {l: '(n1/n2 + n3/n4)', r: '((n1*n4 + n3*n2)/(n2*n4))'}, // Sum of fractions
-      {l: '(n1/n2 + n3)', r: '((n1 + n3*n2)/n2)'}, // Sum fraction with number 1
-      {l: '(n1 + n2/n3)', r: '((n1*n3 + n2)/n3)'}] // Sum fraction with number 1
+      { l: '(n1/n2 + n3/n4)', r: '((n1*n4 + n3*n2)/(n2*n4))' }, // Sum of fractions
+      { l: '(n1/n2 + n3)', r: '((n1 + n3*n2)/n2)' }, // Sum fraction with number 1
+      { l: '(n1 + n2/n3)', r: '((n1*n3 + n2)/n3)' }] // Sum fraction with number 1
 
     const rulesSucDiv = [
-      {l: '(n1/(n2/n3))', r: '((n1*n3)/n2)'}, // Division simplification
-      {l: '(n1/n2/n3)', r: '(n1/(n2*n3))'}]
+      { l: '(n1/(n2/n3))', r: '((n1*n3)/n2)' }, // Division simplification
+      { l: '(n1/n2/n3)', r: '(n1/(n2*n3))' }]
 
     const setRules = {} // rules set in 4 steps.
 
@@ -298,27 +313,27 @@ function factory (type, config, load, typed) {
 
     // Second rule set.
     // There is no aggregate expression with parentesis, but the only variable can be scattered.
-    setRules.finalRules = [ simplifyCore, // simplify.rules[0]
-      {l: 'n*-n', r: '-n^2'}, // Joining multiply with power 1
-      {l: 'n*n', r: 'n^2'}, // Joining multiply with power 2
+    setRules.finalRules = [simplifyCore, // simplify.rules[0]
+      { l: 'n*-n', r: '-n^2' }, // Joining multiply with power 1
+      { l: 'n*n', r: 'n^2' }, // Joining multiply with power 2
       simplifyConstant, // simplify.rules[14] old 3rd index in oldRules
-      {l: 'n*-n^n1', r: '-n^(n1+1)'}, // Joining multiply with power 3
-      {l: 'n*n^n1', r: 'n^(n1+1)'}, // Joining multiply with power 4
-      {l: 'n^n1*-n^n2', r: '-n^(n1+n2)'}, // Joining multiply with power 5
-      {l: 'n^n1*n^n2', r: 'n^(n1+n2)'}, // Joining multiply with power 6
-      {l: 'n^n1*-n', r: '-n^(n1+1)'}, // Joining multiply with power 7
-      {l: 'n^n1*n', r: 'n^(n1+1)'}, // Joining multiply with power 8
-      {l: 'n^n1/-n', r: '-n^(n1-1)'}, // Joining multiply with power 8
-      {l: 'n^n1/n', r: 'n^(n1-1)'}, // Joining division with power 1
-      {l: 'n/-n^n1', r: '-n^(1-n1)'}, // Joining division with power 2
-      {l: 'n/n^n1', r: 'n^(1-n1)'}, // Joining division with power 3
-      {l: 'n^n1/-n^n2', r: 'n^(n1-n2)'}, // Joining division with power 4
-      {l: 'n^n1/n^n2', r: 'n^(n1-n2)'}, // Joining division with power 5
-      {l: 'n1+(-n2*n3)', r: 'n1-n2*n3'}, // Solving useless parenthesis 1
-      {l: 'v*(-c)', r: '-c*v'}, // Solving useless unary 2
-      {l: 'n1+-n2', r: 'n1-n2'}, // Solving +- together (new!)
-      {l: 'v*c', r: 'c*v'}, // inversion constant with variable
-      {l: '(n1^n2)^n3', r: '(n1^(n2*n3))'} // Power to Power
+      { l: 'n*-n^n1', r: '-n^(n1+1)' }, // Joining multiply with power 3
+      { l: 'n*n^n1', r: 'n^(n1+1)' }, // Joining multiply with power 4
+      { l: 'n^n1*-n^n2', r: '-n^(n1+n2)' }, // Joining multiply with power 5
+      { l: 'n^n1*n^n2', r: 'n^(n1+n2)' }, // Joining multiply with power 6
+      { l: 'n^n1*-n', r: '-n^(n1+1)' }, // Joining multiply with power 7
+      { l: 'n^n1*n', r: 'n^(n1+1)' }, // Joining multiply with power 8
+      { l: 'n^n1/-n', r: '-n^(n1-1)' }, // Joining multiply with power 8
+      { l: 'n^n1/n', r: 'n^(n1-1)' }, // Joining division with power 1
+      { l: 'n/-n^n1', r: '-n^(1-n1)' }, // Joining division with power 2
+      { l: 'n/n^n1', r: 'n^(1-n1)' }, // Joining division with power 3
+      { l: 'n^n1/-n^n2', r: 'n^(n1-n2)' }, // Joining division with power 4
+      { l: 'n^n1/n^n2', r: 'n^(n1-n2)' }, // Joining division with power 5
+      { l: 'n1+(-n2*n3)', r: 'n1-n2*n3' }, // Solving useless parenthesis 1
+      { l: 'v*(-c)', r: '-c*v' }, // Solving useless unary 2
+      { l: 'n1+-n2', r: 'n1-n2' }, // Solving +- together (new!)
+      { l: 'v*c', r: 'c*v' }, // inversion constant with variable
+      { l: '(n1^n2)^n3', r: '(n1^(n2*n3))' } // Power to Power
 
     ]
     return setRules

@@ -68,11 +68,11 @@ describe('isZero', function () {
   })
 
   it('should test isZero element wise on an Array', function () {
-    assert.deepEqual(isZero([0, 5, 0, -3]), [true, false, true, false])
+    assert.deepStrictEqual(isZero([0, 5, 0, -3]), [true, false, true, false])
   })
 
   it('should test isZero element wise on a Matrix', function () {
-    assert.deepEqual(isZero(math.matrix([0, 5, 0, -3])), math.matrix([true, false, true, false]))
+    assert.deepStrictEqual(isZero(math.matrix([0, 5, 0, -3])), math.matrix([true, false, true, false]))
   })
 
   it('should throw an error in case of unsupported data types', function () {

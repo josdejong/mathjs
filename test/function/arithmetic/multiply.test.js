@@ -24,28 +24,28 @@ describe('multiply', function () {
     })
 
     it('should multiply booleans', function () {
-      assert.equal(multiply(true, true), 1)
-      assert.equal(multiply(true, false), 0)
-      assert.equal(multiply(false, true), 0)
-      assert.equal(multiply(false, false), 0)
+      assert.strictEqual(multiply(true, true), 1)
+      assert.strictEqual(multiply(true, false), 0)
+      assert.strictEqual(multiply(false, true), 0)
+      assert.strictEqual(multiply(false, false), 0)
     })
 
     it('should multiply mixed numbers and booleans', function () {
-      assert.equal(multiply(2, true), 2)
-      assert.equal(multiply(2, false), 0)
-      assert.equal(multiply(true, 2), 2)
-      assert.equal(multiply(false, 2), 0)
+      assert.strictEqual(multiply(2, true), 2)
+      assert.strictEqual(multiply(2, false), 0)
+      assert.strictEqual(multiply(true, 2), 2)
+      assert.strictEqual(multiply(false, 2), 0)
     })
 
     it('should multiply bignumbers', function () {
-      assert.deepEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3))
-      assert.deepEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'))
+      assert.deepStrictEqual(multiply(bignumber(1.5), bignumber(0.2)), bignumber(0.3))
+      assert.deepStrictEqual(multiply(bignumber('1.3e5000'), bignumber('2')), bignumber('2.6e5000'))
     })
 
     it('should multiply mixed numbers and bignumbers', function () {
-      assert.deepEqual(multiply(bignumber(1.5), 0.2), bignumber(0.3))
-      assert.deepEqual(multiply(1.5, bignumber(0.2)), bignumber(0.3))
-      assert.deepEqual(multiply(bignumber('1.3e5000'), 2), bignumber('2.6e5000'))
+      assert.deepStrictEqual(multiply(bignumber(1.5), 0.2), bignumber(0.3))
+      assert.deepStrictEqual(multiply(1.5, bignumber(0.2)), bignumber(0.3))
+      assert.deepStrictEqual(multiply(bignumber('1.3e5000'), 2), bignumber('2.6e5000'))
 
       assert.throws(function () { multiply(1 / 3, bignumber(1).div(3)) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
       assert.throws(function () { multiply(bignumber(1).div(3), 1 / 3) }, /Cannot implicitly convert a number with >15 significant digits to BigNumber/)
@@ -57,10 +57,10 @@ describe('multiply', function () {
     })
 
     it('should multiply mixed booleans and bignumbers', function () {
-      assert.deepEqual(multiply(bignumber(0.3), true), bignumber(0.3))
-      assert.deepEqual(multiply(bignumber(0.3), false), bignumber(0))
-      assert.deepEqual(multiply(false, bignumber('2')), bignumber(0))
-      assert.deepEqual(multiply(true, bignumber('2')), bignumber(2))
+      assert.deepStrictEqual(multiply(bignumber(0.3), true), bignumber(0.3))
+      assert.deepStrictEqual(multiply(bignumber(0.3), false), bignumber(0))
+      assert.deepStrictEqual(multiply(false, bignumber('2')), bignumber(0))
+      assert.deepStrictEqual(multiply(true, bignumber('2')), bignumber(2))
     })
 
     it('should multiply two complex numbers correctly', function () {
@@ -111,87 +111,87 @@ describe('multiply', function () {
     })
 
     it('should multiply mixed complex numbers and numbers', function () {
-      assert.deepEqual(multiply(math.complex(6, -4), 2), math.complex(12, -8))
-      assert.deepEqual(multiply(2, math.complex(2, 4)), math.complex(4, 8))
+      assert.deepStrictEqual(multiply(math.complex(6, -4), 2), math.complex(12, -8))
+      assert.deepStrictEqual(multiply(2, math.complex(2, 4)), math.complex(4, 8))
     })
 
     it('should multiply mixed complex numbers and big numbers', function () {
-      assert.deepEqual(multiply(math.complex(6, -4), math.bignumber(2)), math.complex(12, -8))
-      assert.deepEqual(multiply(math.bignumber(2), math.complex(2, 4)), math.complex(4, 8))
+      assert.deepStrictEqual(multiply(math.complex(6, -4), math.bignumber(2)), math.complex(12, -8))
+      assert.deepStrictEqual(multiply(math.bignumber(2), math.complex(2, 4)), math.complex(4, 8))
     })
 
     it('should multiply two fractions', function () {
       const a = math.fraction(1, 4)
-      assert.equal(multiply(a, math.fraction(1, 2)).toString(), '0.125')
-      assert.equal(a.toString(), '0.25')
+      assert.strictEqual(multiply(a, math.fraction(1, 2)).toString(), '0.125')
+      assert.strictEqual(a.toString(), '0.25')
 
-      assert.equal(multiply(math.fraction(2), math.fraction(1, 3)).toString(), '0.(6)')
+      assert.strictEqual(multiply(math.fraction(2), math.fraction(1, 3)).toString(), '0.(6)')
     })
 
     it('should multiply mixed fractions and numbers', function () {
-      assert.deepEqual(multiply(2, math.fraction(1, 3)), math.fraction(2, 3))
-      assert.deepEqual(multiply(math.fraction(1, 3), 2), math.fraction(2, 3))
+      assert.deepStrictEqual(multiply(2, math.fraction(1, 3)), math.fraction(2, 3))
+      assert.deepStrictEqual(multiply(math.fraction(1, 3), 2), math.fraction(2, 3))
     })
 
     it('should multiply a number and a unit correctly', function () {
-      assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(2, unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(10, unit('celsius')).toString(), '10 celsius')
-      assert.equal(multiply(unit('5 mm'), 2).toString(), '10 mm')
-      assert.equal(multiply(unit('5 mm'), 0).toString(), '0 mm')
-      assert.equal(multiply(unit('celsius'), 10).toString(), '10 celsius')
+      assert.strictEqual(multiply(2, unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(2, unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(10, unit('celsius')).toString(), '10 celsius')
+      assert.strictEqual(multiply(unit('5 mm'), 2).toString(), '10 mm')
+      assert.strictEqual(multiply(unit('5 mm'), 0).toString(), '0 mm')
+      assert.strictEqual(multiply(unit('celsius'), 10).toString(), '10 celsius')
 
-      assert.equal(multiply(unit(math.fraction(1, 4), 'm'), 3).toString(), '3/4 m')
-      assert.equal(multiply(3, unit(math.fraction(1, 4), 'm')).toString(), '3/4 m')
-      assert.equal(multiply(math.fraction(1, 4), unit(3, 'm')).toString(), '3/4 m')
-      assert.equal(multiply(unit(3, 'm'), math.fraction(1, 4)).toString(), '3/4 m')
+      assert.strictEqual(multiply(unit(math.fraction(1, 4), 'm'), 3).toString(), '3/4 m')
+      assert.strictEqual(multiply(3, unit(math.fraction(1, 4), 'm')).toString(), '3/4 m')
+      assert.strictEqual(multiply(math.fraction(1, 4), unit(3, 'm')).toString(), '3/4 m')
+      assert.strictEqual(multiply(unit(3, 'm'), math.fraction(1, 4)).toString(), '3/4 m')
 
-      assert.equal(multiply(unit(math.complex(9, 8), 'm'), 2).toString(), '(18 + 16i) m')
-      assert.equal(math.format(multiply(unit(math.complex(2, 3), 'g'), math.complex(4, 5)), 14), '(-7 + 22i) g')
+      assert.strictEqual(multiply(unit(math.complex(9, 8), 'm'), 2).toString(), '(18 + 16i) m')
+      assert.strictEqual(math.format(multiply(unit(math.complex(2, 3), 'g'), math.complex(4, 5)), 14), '(-7 + 22i) g')
     })
 
     it('should multiply a number and a unit without value correctly', function () {
-      assert.equal(multiply(2, unit('mm')).toString(), '2 mm')
-      assert.equal(multiply(2, unit('km')).toString(), '2 km')
-      assert.equal(multiply(2, unit('inch')).toString(), '2 inch')
-      assert.equal(multiply(unit('mm'), 2).toString(), '2 mm')
-      assert.equal(multiply(unit('km'), 2).toString(), '2 km')
-      assert.equal(multiply(unit('inch'), 2).toString(), '2 inch')
+      assert.strictEqual(multiply(2, unit('mm')).toString(), '2 mm')
+      assert.strictEqual(multiply(2, unit('km')).toString(), '2 km')
+      assert.strictEqual(multiply(2, unit('inch')).toString(), '2 inch')
+      assert.strictEqual(multiply(unit('mm'), 2).toString(), '2 mm')
+      assert.strictEqual(multiply(unit('km'), 2).toString(), '2 km')
+      assert.strictEqual(multiply(unit('inch'), 2).toString(), '2 inch')
     })
 
     it('should multiply two units correctly', function () {
-      assert.equal(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2')
-      assert.equal(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2')
-      assert.equal(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi')
-      assert.equal(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s')
-      assert.equal(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1')
-      assert.equal(multiply(unit(math.complex(3, -4), 'N'), unit(math.complex(7, -2), 'm')).toString(), '(13 - 34i) J')
+      assert.strictEqual(multiply(unit('2 m'), unit('4 m')).toString(), '8 m^2')
+      assert.strictEqual(multiply(unit('2 ft'), unit('4 ft')).toString(), '8 ft^2')
+      assert.strictEqual(multiply(unit('65 mi/h'), unit('2 h')).to('mi').toString(), '130 mi')
+      assert.strictEqual(multiply(unit('2 L'), unit('1 s^-1')).toString(), '2 L / s')
+      assert.strictEqual(multiply(unit('2 m/s'), unit('0.5 s/m')).toString(), '1')
+      assert.strictEqual(multiply(unit(math.complex(3, -4), 'N'), unit(math.complex(7, -2), 'm')).toString(), '(13 - 34i) J')
     })
 
     it('should multiply valueless units correctly', function () {
-      assert.equal(multiply(unit('m'), unit('4 m')).toString(), '4 m^2')
-      assert.equal(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2')
-      assert.equal(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi')
-      assert.equal(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s')
-      assert.equal(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)')
+      assert.strictEqual(multiply(unit('m'), unit('4 m')).toString(), '4 m^2')
+      assert.strictEqual(multiply(unit('ft'), unit('4 ft')).format(5), '4 ft^2')
+      assert.strictEqual(multiply(unit('65 mi/h'), unit('h')).to('mi').toString(), '65 mi')
+      assert.strictEqual(multiply(unit('2 L'), unit('s^-1')).toString(), '2 L / s')
+      assert.strictEqual(multiply(unit('m/s'), unit('h/m')).toString(), '(m h) / (s m)')
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
     it.skip('should multiply a bignumber and a unit correctly', function () {
-      assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
-      assert.equal(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm')
-      assert.equal(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m')
+      assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(bignumber(2), unit('5 mm')).toString(), '10 mm')
+      assert.strictEqual(multiply(unit('5 mm'), bignumber(2)).toString(), '10 mm')
+      assert.strictEqual(multiply(unit('5 mm'), bignumber(0)).toString(), '0 m')
     })
 
     // TODO: cleanup once decided to not downgrade BigNumber to number
     it.skip('should multiply a bignumber and a unit without value correctly', function () {
-      assert.equal(multiply(bignumber(2), unit('mm')).toString(), '2 mm')
-      assert.equal(multiply(bignumber(2), unit('km')).toString(), '2 km')
-      assert.equal(multiply(bignumber(2), unit('inch')).toString(), '2 inch')
-      assert.equal(multiply(unit('mm'), bignumber(2)).toString(), '2 mm')
-      assert.equal(multiply(unit('km'), bignumber(2)).toString(), '2 km')
-      assert.equal(multiply(unit('inch'), bignumber(2)).toString(), '2 inch')
+      assert.strictEqual(multiply(bignumber(2), unit('mm')).toString(), '2 mm')
+      assert.strictEqual(multiply(bignumber(2), unit('km')).toString(), '2 km')
+      assert.strictEqual(multiply(bignumber(2), unit('inch')).toString(), '2 inch')
+      assert.strictEqual(multiply(unit('mm'), bignumber(2)).toString(), '2 mm')
+      assert.strictEqual(multiply(unit('km'), bignumber(2)).toString(), '2 km')
+      assert.strictEqual(multiply(unit('inch'), bignumber(2)).toString(), '2 inch')
     })
 
     it('should throw an error in case of unit non-numeric argument', function () {
@@ -229,19 +229,19 @@ describe('multiply', function () {
     it('should NOT squeeze scalar results of matrix * matrix', function () {
       const a = [[1, 2, 3]]
       const b = [[4], [5], [6]]
-      assert.deepEqual(multiply(a, b), [[32]])
+      assert.deepStrictEqual(multiply(a, b), [[32]])
     })
 
     it('should NOT squeeze scalar results of vector * matrix', function () {
       const a = [1, 2, 3]
       const b = [[4], [5], [6]]
-      assert.deepEqual(multiply(a, b), [32])
+      assert.deepStrictEqual(multiply(a, b), [32])
     })
 
     it('should NOT squeeze scalar results of matrix * vector', function () {
       const a = [[1, 2, 3]]
       const b = [4, 5, 6]
-      assert.deepEqual(multiply(a, b), [32])
+      assert.deepStrictEqual(multiply(a, b), [32])
     })
   })
 
@@ -288,26 +288,26 @@ describe('multiply', function () {
       const v = [[1, 2, 3, 0, 0, 5, 6]]
 
       let r = multiply(v, [[3], [4], [6], [0], [1], [2], [0]])
-      assert.deepEqual(r, [[39]])
+      assert.deepStrictEqual(r, [[39]])
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'dense'))
-      assert.deepEqual(r, math.matrix([[39]], 'dense'))
+      assert.deepStrictEqual(r, math.matrix([[39]], 'dense'))
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'sparse'))
-      assert.deepEqual(r, math.matrix([[39]], 'sparse'))
+      assert.deepStrictEqual(r, math.matrix([[39]], 'sparse'))
     })
 
     it('should multiply dense row vector x column vector', function () {
       const v = math.matrix([[1, 2, 3, 0, 0, 5, 6]], 'dense')
 
       let r = multiply(v, [[3], [4], [6], [0], [1], [2], [0]])
-      assert.deepEqual(r, math.matrix([[39]]))
+      assert.deepStrictEqual(r, math.matrix([[39]]))
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'dense'))
-      assert.deepEqual(r, math.matrix([[39]]))
+      assert.deepStrictEqual(r, math.matrix([[39]]))
 
       r = multiply(v, math.matrix([[3], [4], [6], [0], [1], [2], [0]], 'sparse'))
-      assert.deepEqual(r, math.matrix([[39]], 'sparse'))
+      assert.deepStrictEqual(r, math.matrix([[39]], 'sparse'))
     })
 
     it('should throw an error when multiplying empty vectors', function () {
@@ -338,24 +338,24 @@ describe('multiply', function () {
       ])
 
       let r = multiply(m, 3)
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._data, [[6, 0], [12, 0]])
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._data, [[6, 0], [12, 0]])
 
       r = multiply(m, math.complex(3, 3))
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._data, [[math.complex(6, 6), math.complex(0, 0)], [math.complex(12, 12), math.complex(0, 0)]])
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._data, [[math.complex(6, 6), math.complex(0, 0)], [math.complex(12, 12), math.complex(0, 0)]])
 
       r = multiply(m, math.bignumber(3))
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._data, [[math.bignumber(6), math.bignumber(0)], [math.bignumber(12), math.bignumber(0)]])
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._data, [[math.bignumber(6), math.bignumber(0)], [math.bignumber(12), math.bignumber(0)]])
 
       r = multiply(m, true)
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._data, [[2, 0], [4, 0]])
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._data, [[2, 0], [4, 0]])
 
       r = multiply(m, false)
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._data, [[0, 0], [0, 0]])
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._data, [[0, 0], [0, 0]])
     })
 
     it('should multiply matrix x matrix with zeros', function () {
@@ -368,7 +368,7 @@ describe('multiply', function () {
         [2, 0],
         [4, 0]
       ]))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0],
@@ -379,7 +379,7 @@ describe('multiply', function () {
         [2, 0],
         [4, 0]
       ], 'sparse'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0],
@@ -391,7 +391,7 @@ describe('multiply', function () {
       const m = math.matrix([[1, 2], [3, 4]], 'dense')
 
       let r = multiply(m, math.matrix([[5, 6], [7, 8]], 'sparse'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [19, 22],
@@ -399,7 +399,7 @@ describe('multiply', function () {
         ])
 
       r = multiply(m, math.matrix([[5, 6], [7, 8]], 'dense'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [19, 22],
@@ -413,7 +413,7 @@ describe('multiply', function () {
 
       const r = multiply(m1, m2)
       assert(r.datatype() === 'number')
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [19, 22],
@@ -433,7 +433,7 @@ describe('multiply', function () {
           [2, 0],
           [4, 0]
         ])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0],
@@ -446,7 +446,7 @@ describe('multiply', function () {
           [2, 0, 1],
           [4, 0, 1]
         ])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0, 2],
@@ -466,7 +466,7 @@ describe('multiply', function () {
           [2],
           [4]
         ])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4],
@@ -485,7 +485,7 @@ describe('multiply', function () {
           [5],
           [6]
         ])
-      assert.deepEqual(multiply(a, b), math.matrix([[32]]))
+      assert.deepStrictEqual(multiply(a, b), math.matrix([[32]]))
     })
 
     it('should NOT squeeze scalar results of matrix * vector', function () {
@@ -494,7 +494,7 @@ describe('multiply', function () {
           [1, 2, 3]
         ])
       const b = [4, 5, 6]
-      assert.deepEqual(multiply(a, b), math.matrix([32]))
+      assert.deepStrictEqual(multiply(a, b), math.matrix([32]))
     })
 
     it('should throw an error when multiplying matrices with incompatible sizes', function () {
@@ -565,41 +565,41 @@ describe('multiply', function () {
       const m = math.matrix([[2, 0], [4, 0]], 'sparse')
 
       let r = multiply(m, 3)
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._values, [6, 12])
-      assert.deepEqual(r._index, m._index)
-      assert.deepEqual(r._ptr, m._ptr)
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._values, [6, 12])
+      assert.deepStrictEqual(r._index, m._index)
+      assert.deepStrictEqual(r._ptr, m._ptr)
 
       r = multiply(m, math.complex(3, 3))
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._values, [math.complex(6, 6), math.complex(12, 12)])
-      assert.deepEqual(r._index, m._index)
-      assert.deepEqual(r._ptr, m._ptr)
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._values, [math.complex(6, 6), math.complex(12, 12)])
+      assert.deepStrictEqual(r._index, m._index)
+      assert.deepStrictEqual(r._ptr, m._ptr)
 
       r = multiply(m, math.bignumber(3))
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._values, [math.bignumber(6), math.bignumber(12)])
-      assert.deepEqual(r._index, m._index)
-      assert.deepEqual(r._ptr, m._ptr)
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._values, [math.bignumber(6), math.bignumber(12)])
+      assert.deepStrictEqual(r._index, m._index)
+      assert.deepStrictEqual(r._ptr, m._ptr)
 
       r = multiply(m, true)
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._values, [2, 4])
-      assert.deepEqual(r._index, m._index)
-      assert.deepEqual(r._ptr, m._ptr)
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._values, [2, 4])
+      assert.deepStrictEqual(r._index, m._index)
+      assert.deepStrictEqual(r._ptr, m._ptr)
 
       r = multiply(m, false)
-      assert.deepEqual(r._size, m._size)
-      assert.deepEqual(r._values, [])
-      assert.deepEqual(r._index, [])
-      assert.deepEqual(r._ptr, [0, 0, 0])
+      assert.deepStrictEqual(r._size, m._size)
+      assert.deepStrictEqual(r._values, [])
+      assert.deepStrictEqual(r._index, [])
+      assert.deepStrictEqual(r._ptr, [0, 0, 0])
     })
 
     it('should multiply matrix x matrix with zeros', function () {
       const m = math.matrix([[2, 0], [4, 0]], 'sparse')
 
       let r = multiply(m, math.matrix([[2, 0], [4, 0]], 'sparse'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0],
@@ -607,7 +607,7 @@ describe('multiply', function () {
         ])
 
       r = multiply(m, math.matrix([[2, 0], [4, 0]], 'dense'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0],
@@ -619,7 +619,7 @@ describe('multiply', function () {
       const m = math.matrix([[1, 2], [3, 4]], 'sparse')
 
       let r = multiply(m, math.matrix([[5, 6], [7, 8]], 'sparse'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [19, 22],
@@ -627,7 +627,7 @@ describe('multiply', function () {
         ])
 
       r = multiply(m, math.matrix([[5, 6], [7, 8]], 'dense'))
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [19, 22],
@@ -641,7 +641,7 @@ describe('multiply', function () {
 
       const r = multiply(m1, m2)
       assert(r.datatype() === 'number')
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [19, 22],
@@ -657,7 +657,7 @@ describe('multiply', function () {
           [2, 0],
           [4, 0]
         ])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0],
@@ -669,7 +669,7 @@ describe('multiply', function () {
           [2, 0, 1],
           [4, 0, 1]
         ])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4, 0, 2],
@@ -685,7 +685,7 @@ describe('multiply', function () {
           [2],
           [4]
         ])
-      assert.deepEqual(
+      assert.deepStrictEqual(
         r.valueOf(),
         [
           [4],
@@ -696,13 +696,13 @@ describe('multiply', function () {
     it('should NOT squeeze scalar results of matrix * matrix', function () {
       const a = math.matrix([[1, 2, 3]], 'sparse')
       const b = math.matrix([[4], [5], [6]], 'sparse')
-      assert.deepEqual(multiply(a, b), math.matrix([[32]], 'sparse'))
+      assert.deepStrictEqual(multiply(a, b), math.matrix([[32]], 'sparse'))
     })
 
     it('should NOT squeeze scalar results of matrix * vector', function () {
       const a = math.matrix([[1, 2, 3]], 'sparse')
       const b = [4, 5, 6]
-      assert.deepEqual(multiply(a, b), math.matrix([32], 'sparse'))
+      assert.deepStrictEqual(multiply(a, b), math.matrix([32], 'sparse'))
     })
 
     it('should throw an error when multiplying matrices with incompatible sizes', function () {
@@ -782,7 +782,7 @@ describe('multiply', function () {
 
       const c = multiply(a, b)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         c.valueOf(),
         [
           [1, 0, 0],
@@ -808,7 +808,7 @@ describe('multiply', function () {
 
       const c = multiply(a, b)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         c.valueOf(),
         [
           [1, 0, 0],
@@ -834,7 +834,7 @@ describe('multiply', function () {
 
       const c = multiply(a, b)
 
-      assert.deepEqual(
+      assert.deepStrictEqual(
         c.valueOf(),
         [
           [1, 0, 0],
@@ -846,21 +846,21 @@ describe('multiply', function () {
 
   describe('multiple arguments', function () {
     it('should multiply more than two arguments', function () {
-      assert.deepEqual(multiply(2, 3, 4), 24)
-      assert.deepEqual(multiply(2, 3, [5, 6]), [30, 36])
+      assert.deepStrictEqual(multiply(2, 3, 4), 24)
+      assert.deepStrictEqual(multiply(2, 3, [5, 6]), [30, 36])
 
-      assert.deepEqual(multiply([[2, 2], [2, 2]], [[3, 3], [3, 3]], [[4, 4], [4, 4]]), [[96, 96], [96, 96]])
-      assert.deepEqual(multiply([[2, 2], [2, 2]], [[3, 3], [3, 3]], 4), [[48, 48], [48, 48]])
-      assert.deepEqual(multiply([[2, 2], [2, 2]], 3, 4), [[24, 24], [24, 24]])
+      assert.deepStrictEqual(multiply([[2, 2], [2, 2]], [[3, 3], [3, 3]], [[4, 4], [4, 4]]), [[96, 96], [96, 96]])
+      assert.deepStrictEqual(multiply([[2, 2], [2, 2]], [[3, 3], [3, 3]], 4), [[48, 48], [48, 48]])
+      assert.deepStrictEqual(multiply([[2, 2], [2, 2]], 3, 4), [[24, 24], [24, 24]])
 
-      assert.deepEqual(multiply(math.matrix([[2, 2], [2, 2]]), math.matrix([[3, 3], [3, 3]]), math.matrix([[4, 4], [4, 4]])), math.matrix([[96, 96], [96, 96]]))
-      assert.deepEqual(multiply(math.matrix([[2, 2], [2, 2]]), math.matrix([[3, 3], [3, 3]]), 4), math.matrix([[48, 48], [48, 48]]))
-      assert.deepEqual(multiply(math.matrix([[2, 2], [2, 2]]), 3, 4), math.matrix([[24, 24], [24, 24]]))
+      assert.deepStrictEqual(multiply(math.matrix([[2, 2], [2, 2]]), math.matrix([[3, 3], [3, 3]]), math.matrix([[4, 4], [4, 4]])), math.matrix([[96, 96], [96, 96]]))
+      assert.deepStrictEqual(multiply(math.matrix([[2, 2], [2, 2]]), math.matrix([[3, 3], [3, 3]]), 4), math.matrix([[48, 48], [48, 48]]))
+      assert.deepStrictEqual(multiply(math.matrix([[2, 2], [2, 2]]), 3, 4), math.matrix([[24, 24], [24, 24]]))
     })
   })
 
   it('should LaTeX multiply', function () {
     const expression = math.parse('multiply(2,3)')
-    assert.equal(expression.toTex(), '\\left(2\\cdot3\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(2\\cdot3\\right)')
   })
 })

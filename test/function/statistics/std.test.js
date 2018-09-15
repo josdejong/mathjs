@@ -9,12 +9,12 @@ const std = math.std
 
 describe('std', function () {
   it('should return the standard deviation of numbers', function () {
-    assert.equal(std(5), 0)
-    assert.equal(std(2, 4, 6), 2)
+    assert.strictEqual(std(5), 0)
+    assert.strictEqual(std(2, 4, 6), 2)
   })
 
   it('should return the standard deviation of big numbers', function () {
-    assert.deepEqual(std(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
+    assert.deepStrictEqual(std(new BigNumber(2), new BigNumber(4), new BigNumber(6)),
       new math.type.BigNumber(2))
   })
 
@@ -28,18 +28,27 @@ describe('std', function () {
   })
 
   it('should return the standard deviation from an array', function () {
-    assert.equal(std([2, 4, 6]), 2)
-    assert.equal(std([5]), 0)
+    assert.strictEqual(std([2, 4, 6]), 2)
+    assert.strictEqual(std([5]), 0)
   })
 
   it('should return the uncorrected variance from an array', function () {
-    assert.equal(std([2, 4], 'uncorrected'), 1)
-    assert.equal(std([2, 4, 6, 8], 'uncorrected'), Math.sqrt(5))
+    assert.strictEqual(std([2, 4], 'uncorrected'), 1)
+    assert.strictEqual(std([2, 4, 6, 8], 'uncorrected'), Math.sqrt(5))
   })
 
   it('should return the biased standard deviation from an array', function () {
-    assert.equal(std([2, 8], 'biased'), Math.sqrt(6))
-    assert.equal(std([2, 4, 6, 8], 'biased'), 2)
+    assert.strictEqual(std([2, 8], 'biased'), Math.sqrt(6))
+    assert.strictEqual(std([2, 4, 6, 8], 'biased'), 2)
+  })
+
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert(isNaN(std([NaN])))
+    assert(isNaN(std([1, NaN])))
+    assert(isNaN(std([NaN, 1])))
+    assert(isNaN(std([1, 3, NaN])))
+    assert(isNaN(std([NaN, NaN, NaN])))
+    assert(isNaN(std(NaN, NaN, NaN)))
   })
 
   it('should throw an error in case of unknown type of normalization', function () {
@@ -47,19 +56,19 @@ describe('std', function () {
   })
 
   it('should return the standard deviation from an 1d matrix', function () {
-    assert.equal(std(new DenseMatrix([2, 4, 6])), 2)
-    assert.equal(std(new DenseMatrix([5])), 0)
+    assert.strictEqual(std(new DenseMatrix([2, 4, 6])), 2)
+    assert.strictEqual(std(new DenseMatrix([5])), 0)
   })
 
   it('should return the standard deviation element from a 2d array', function () {
-    assert.deepEqual(std([
+    assert.deepStrictEqual(std([
       [2, 4, 6],
       [1, 3, 5]
     ]), Math.sqrt(3.5))
   })
 
   it('should return the standard deviation element from a 2d matrix', function () {
-    assert.deepEqual(std(new DenseMatrix([
+    assert.deepStrictEqual(std(new DenseMatrix([
       [2, 4, 6],
       [1, 3, 5]
     ])), Math.sqrt(3.5))
@@ -83,6 +92,6 @@ describe('std', function () {
 
   it('should LaTeX std', function () {
     const expression = math.parse('std(1,2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{std}\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{std}\\left(1,2,3\\right)')
   })
 })

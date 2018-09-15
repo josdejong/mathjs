@@ -131,17 +131,17 @@ describe('erf', function () {
 
   it('should LaTeX erf', function () {
     const expression = math.parse('erf(2.5)')
-    assert.equal(expression.toTex(), 'erf\\left(2.5\\right)')
+    assert.strictEqual(expression.toTex(), 'erf\\left(2.5\\right)')
   })
 
   it('should return 1 for numbers greater than 2**53 (including Infinity)', function () {
-    assert.equal(erf(Math.pow(2, 53)), 1)
-    assert.equal(erf(Infinity), 1)
+    assert.strictEqual(erf(Math.pow(2, 53)), 1)
+    assert.strictEqual(erf(Infinity), 1)
   })
 
   it('should return -1 for numbers less than -2**53 (including -Infinity)', function () {
-    assert.equal(erf(-Math.pow(2, 53)), -1)
-    assert.equal(erf(-Infinity), -1)
+    assert.strictEqual(erf(-Math.pow(2, 53)), -1)
+    assert.strictEqual(erf(-Infinity), -1)
   })
 
   // TODO: Test with nums really close to 0

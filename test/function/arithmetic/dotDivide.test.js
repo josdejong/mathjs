@@ -7,27 +7,27 @@ const complex = math.complex
 
 describe('dotDivide', function () {
   it('should divide two numbers', function () {
-    assert.equal(dotDivide(4, 2), 2)
-    assert.equal(dotDivide(-4, 2), -2)
-    assert.equal(dotDivide(4, -2), -2)
-    assert.equal(dotDivide(-4, -2), 2)
-    assert.equal(dotDivide(4, 0), Infinity)
-    assert.equal(dotDivide(0, -5), 0)
+    assert.strictEqual(dotDivide(4, 2), 2)
+    assert.strictEqual(dotDivide(-4, 2), -2)
+    assert.strictEqual(dotDivide(4, -2), -2)
+    assert.strictEqual(dotDivide(-4, -2), 2)
+    assert.strictEqual(dotDivide(4, 0), Infinity)
+    assert.strictEqual(dotDivide(0, -5), -0)
     assert.ok(isNaN(dotDivide(0, 0)))
   })
 
   it('should divide booleans', function () {
-    assert.equal(dotDivide(true, true), 1)
-    assert.equal(dotDivide(true, false), Infinity)
-    assert.equal(dotDivide(false, true), 0)
+    assert.strictEqual(dotDivide(true, true), 1)
+    assert.strictEqual(dotDivide(true, false), Infinity)
+    assert.strictEqual(dotDivide(false, true), 0)
     assert.ok(isNaN(dotDivide(false, false)))
   })
 
   it('should add mixed numbers and booleans', function () {
-    assert.equal(dotDivide(2, true), 2)
-    assert.equal(dotDivide(2, false), Infinity)
+    assert.strictEqual(dotDivide(2, true), 2)
+    assert.strictEqual(dotDivide(2, false), Infinity)
     approx.equal(dotDivide(true, 2), 0.5)
-    assert.equal(dotDivide(false, 2), 0)
+    assert.strictEqual(dotDivide(false, 2), 0)
   })
 
   it('should throw an error if there\'s wrong number of arguments', function () {
@@ -47,11 +47,11 @@ describe('dotDivide', function () {
   })
 
   it('should divide a unit by a number', function () {
-    assert.equal(dotDivide(math.unit('5 m'), 10).toString(), '0.5 m')
+    assert.strictEqual(dotDivide(math.unit('5 m'), 10).toString(), '0.5 m')
   })
 
   it('should divide a number by a unit', function () {
-    assert.equal(dotDivide(10, math.unit('5 m')).toString(), '2 m^-1')
+    assert.strictEqual(dotDivide(10, math.unit('5 m')).toString(), '2 m^-1')
   })
 
   /*
@@ -63,10 +63,10 @@ describe('dotDivide', function () {
 
   describe('Array', function () {
     it('should divide all the elements of a array by one number', function () {
-      assert.deepEqual(dotDivide([2, 4, 6], 2), [1, 2, 3])
+      assert.deepStrictEqual(dotDivide([2, 4, 6], 2), [1, 2, 3])
       const a = [[1, 2], [3, 4]]
-      assert.deepEqual(dotDivide(a, 2), [[0.5, 1], [1.5, 2]])
-      assert.deepEqual(dotDivide([], 2), [])
+      assert.deepStrictEqual(dotDivide(a, 2), [[0.5, 1], [1.5, 2]])
+      assert.deepStrictEqual(dotDivide([], 2), [])
     })
 
     it('should divide 1 over a array element-wise', function () {
@@ -76,19 +76,19 @@ describe('dotDivide', function () {
     it('should perform (array ./ array) element-wise matrix division', function () {
       const a = [[1, 2], [3, 4]]
       const b = [[5, 6], [7, 8]]
-      assert.deepEqual(dotDivide(a, b), [[1 / 5, 2 / 6], [3 / 7, 4 / 8]])
+      assert.deepStrictEqual(dotDivide(a, b), [[1 / 5, 2 / 6], [3 / 7, 4 / 8]])
     })
 
     it('should perform (array ./ dense matrix) element-wise matrix division', function () {
       const a = [[1, 2], [3, 4]]
       const b = math.matrix([[5, 6], [7, 8]])
-      assert.deepEqual(dotDivide(a, b), math.matrix([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
     })
 
     it('should perform (array ./ sparse matrix) element-wise matrix division', function () {
       const a = [[1, 2], [3, 4]]
       const b = math.sparse([[5, 0], [7, 8]])
-      assert.deepEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [3 / 7, 4 / 8]]))
     })
 
     it('should throw an error when dividing element-wise with differing size', function () {
@@ -98,10 +98,10 @@ describe('dotDivide', function () {
 
   describe('DenseMatrix', function () {
     it('should divide all the elements of a dense matrix by one number', function () {
-      assert.deepEqual(dotDivide(math.matrix([2, 4, 6]), 2), math.matrix([1, 2, 3]))
+      assert.deepStrictEqual(dotDivide(math.matrix([2, 4, 6]), 2), math.matrix([1, 2, 3]))
       const a = math.matrix([[1, 2], [3, 4]])
-      assert.deepEqual(dotDivide(a, 2), math.matrix([[0.5, 1], [1.5, 2]]))
-      assert.deepEqual(dotDivide(math.matrix([]), 2), math.matrix([]))
+      assert.deepStrictEqual(dotDivide(a, 2), math.matrix([[0.5, 1], [1.5, 2]]))
+      assert.deepStrictEqual(dotDivide(math.matrix([]), 2), math.matrix([]))
     })
 
     it('should divide 1 over a dense matrix element-wise', function () {
@@ -111,19 +111,19 @@ describe('dotDivide', function () {
     it('should perform (dense matrix ./ array) element-wise matrix division', function () {
       const a = math.matrix([[1, 2], [3, 4]])
       const b = [[5, 6], [7, 8]]
-      assert.deepEqual(dotDivide(a, b), math.matrix([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
     })
 
     it('should perform (dense matrix ./ dense matrix) element-wise matrix division', function () {
       const a = math.matrix([[1, 2], [3, 4]])
       const b = math.matrix([[5, 6], [7, 8]])
-      assert.deepEqual(dotDivide(a, b), math.matrix([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
     })
 
     it('should perform (dense matrix ./ sparse matrix) element-wise matrix division', function () {
       const a = math.matrix([[1, 2], [3, 4]])
       const b = math.sparse([[5, 0], [7, 8]])
-      assert.deepEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [3 / 7, 4 / 8]]))
     })
 
     it('should throw an error when dividing element-wise with differing size', function () {
@@ -133,10 +133,10 @@ describe('dotDivide', function () {
 
   describe('SparseMatrix', function () {
     it('should divide all the elements of a sparse matrix by one number', function () {
-      assert.deepEqual(dotDivide(math.sparse([[2, 0, 6], [8, 10, 12]]), 2), math.sparse([[1, 0, 3], [4, 5, 6]]))
+      assert.deepStrictEqual(dotDivide(math.sparse([[2, 0, 6], [8, 10, 12]]), 2), math.sparse([[1, 0, 3], [4, 5, 6]]))
       const a = math.sparse([[1, 2], [3, 4]])
-      assert.deepEqual(dotDivide(a, 2), math.sparse([[0.5, 1], [1.5, 2]]))
-      assert.deepEqual(dotDivide(math.sparse(), 2), math.sparse())
+      assert.deepStrictEqual(dotDivide(a, 2), math.sparse([[0.5, 1], [1.5, 2]]))
+      assert.deepStrictEqual(dotDivide(math.sparse(), 2), math.sparse())
     })
 
     it('should divide 1 over a sparse matrix element-wise', function () {
@@ -146,19 +146,19 @@ describe('dotDivide', function () {
     it('should perform (sparse matrix ./ array) element-wise matrix division', function () {
       const a = math.sparse([[1, 2], [3, 4]])
       const b = [[5, 6], [7, 8]]
-      assert.deepEqual(dotDivide(a, b), math.sparse([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.sparse([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
     })
 
     it('should perform (sparse matrix ./ dense matrix) element-wise matrix division', function () {
       const a = math.sparse([[1, 2], [3, 4]])
       const b = math.matrix([[5, 6], [7, 8]])
-      assert.deepEqual(dotDivide(a, b), math.sparse([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.sparse([[1 / 5, 2 / 6], [3 / 7, 4 / 8]]))
     })
 
     it('should perform (sparse matrix ./ sparse matrix) element-wise matrix division', function () {
       const a = math.sparse([[1, 2], [0, 4]])
       const b = math.sparse([[5, 0], [7, 8]])
-      assert.deepEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [0, 4 / 8]]))
+      assert.deepStrictEqual(dotDivide(a, b), math.matrix([[1 / 5, Infinity], [0, 4 / 8]]))
     })
 
     it('should throw an error when dividing element-wise with differing size', function () {
@@ -168,6 +168,6 @@ describe('dotDivide', function () {
 
   it('should LaTeX dotDivide', function () {
     const expression = math.parse('dotDivide([1,2],[3,4])')
-    assert.equal(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.:\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\left(\\begin{bmatrix}1\\\\2\\\\\\end{bmatrix}.:\\begin{bmatrix}3\\\\4\\\\\\end{bmatrix}\\right)')
   })
 })

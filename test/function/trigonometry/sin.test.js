@@ -6,7 +6,7 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sin = math.sin
-const bigmath = math.create({precision: 242})
+const bigmath = math.create({ precision: 242 })
 
 describe('sin', function () {
   it('should return the sine of a boolean', function () {
@@ -29,23 +29,23 @@ describe('sin', function () {
 
   it('should return the sine of a bignumber', function () {
     const Big = bigmath.bignumber
-    assert.deepEqual(bigmath.sin(Big(0)), Big(0))
+    assert.deepStrictEqual(bigmath.sin(Big(0)), Big(0))
 
     // 103.64 % tau = 3.109... <- pretty close to the pi boundary
     let resultVal = bigmath.sin(Big(103.64))
-    assert.deepEqual(resultVal, Big('0.0325518169566161584427313159942672130512044591216893328934710' +
+    assert.deepStrictEqual(resultVal, Big('0.0325518169566161584427313159942672130512044591216893328934710' +
                                         '307148043832988055013958395123418887322610809247793661058554' +
                                         '935758353628919004205593985094895305777198408601067175226892' +
                                         '4960612126026291341865833521451170868744460464214033460336158'))
 
     const arg = Big(-103.64)
     resultVal = bigmath.sin(arg)
-    assert.deepEqual(arg, Big(-103.64)) // Make sure arg wasn't changed
-    assert.deepEqual(resultVal, Big('-0.0325518169566161584427313159942672130512044591216893328934710' +
+    assert.deepStrictEqual(arg, Big(-103.64)) // Make sure arg wasn't changed
+    assert.deepStrictEqual(resultVal, Big('-0.0325518169566161584427313159942672130512044591216893328934710' +
                                         '3071480438329880550139583951234188873226108092477936610585549' +
                                         '3575835362891900420559398509489530577719840860106717522689249' +
                                         '60612126026291341865833521451170868744460464214033460336158'))
-    bigmath.config({number: 'BigNumber', precision: 15})
+    bigmath.config({ number: 'BigNumber', precision: 15 })
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau (like 6, 7)
     for (let x = -20; x < 20; x += 1) {
@@ -53,14 +53,14 @@ describe('sin', function () {
     }
 
     const bigPi = bigmath.pi
-    assert.deepEqual(bigmath.sin(bigPi.div(8)).toString(), '0.38268343236509')
-    assert.deepEqual(bigmath.sin(bigPi.div(4)).toString(), '0.707106781186547')
-    assert.deepEqual(bigmath.sin(bigPi.div(2)).toString(), '1')
-    assert.deepEqual(bigmath.sin(bigPi.times(3).div(4)).toString(), '0.707106781186551')
+    assert.deepStrictEqual(bigmath.sin(bigPi.div(8)).toString(), '0.38268343236509')
+    assert.deepStrictEqual(bigmath.sin(bigPi.div(4)).toString(), '0.707106781186547')
+    assert.deepStrictEqual(bigmath.sin(bigPi.div(2)).toString(), '1')
+    assert.deepStrictEqual(bigmath.sin(bigPi.times(3).div(4)).toString(), '0.707106781186551')
     assert.ok(bigmath.sin(bigPi).lt(1e-14))
-    assert.deepEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-0.707106781186554')
-    assert.deepEqual(bigmath.sin(bigPi.times(3).div(2)).toString(), '-1')
-    assert.deepEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-0.707106781186553')
+    assert.deepStrictEqual(bigmath.sin(bigPi.times(5).div(4)).toString(), '-0.707106781186554')
+    assert.deepStrictEqual(bigmath.sin(bigPi.times(3).div(2)).toString(), '-1')
+    assert.deepStrictEqual(bigmath.sin(bigPi.times(7).div(4)).toString(), '-0.707106781186553')
     assert.ok(bigmath.sin(bigPi.times(2)).lt(1e-13))
     assert.ok(bigmath.sin(bigmath.tau).lt(1e-14))
     assert.ok(bigmath.sin(bigmath.tau.times(2)).lt(1e-13))
@@ -114,6 +114,6 @@ describe('sin', function () {
 
   it('should LaTeX sin', function () {
     const expression = math.parse('sin(0.5)')
-    assert.equal(expression.toTex(), '\\sin\\left(0.5\\right)')
+    assert.strictEqual(expression.toTex(), '\\sin\\left(0.5\\right)')
   })
 })

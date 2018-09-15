@@ -13,5 +13,8 @@ module.exports = [
   // construction functions
   require('./function/index'),
   require('./function/matrix'),
-  require('./function/sparse')
+  require('./function/sparse'),
+
+  // util functions
+  require('./utils/getArrayDataType')
 ]

@@ -124,7 +124,7 @@ function factory (type, config, load, typed, math) {
           }
 
           if (isNumber(phi)) {
-            return new Complex({r: r, phi: phi})
+            return new Complex({ r: r, phi: phi })
           }
 
           throw new TypeError('Phi is not a number nor an angle unit.')

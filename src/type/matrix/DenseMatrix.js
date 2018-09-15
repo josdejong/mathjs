@@ -16,6 +16,7 @@ const isString = string.isString
 const validateIndex = array.validateIndex
 
 function factory (type, config, load, typed) {
+  const getArrayDataType = load(require('./utils/getArrayDataType'))
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
 
   /**
@@ -71,6 +72,19 @@ function factory (type, config, load, typed) {
    */
   DenseMatrix.prototype.type = 'DenseMatrix'
   DenseMatrix.prototype.isDenseMatrix = true
+
+  /**
+   * Get the matrix type
+   *
+   * Usage:
+   *    const matrixType = matrix.getDataType()  // retrieves the matrix type
+   *
+   * @memberOf DenseMatrix
+   * @return {string}   type information; if multiple types are found from the Matrix, it will return "mixed"
+   */
+  DenseMatrix.prototype.getDataType = function () {
+    return getArrayDataType(this._data)
+  }
 
   /**
    * Get the storage format used by the matrix.

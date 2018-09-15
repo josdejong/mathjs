@@ -7,16 +7,16 @@ describe('compile', function () {
     const code = math.compile('(5+3)/4')
     assert.ok(code instanceof Object)
     assert.ok(code.eval instanceof Function)
-    assert.equal(code.eval(), 2)
+    assert.strictEqual(code.eval(), 2)
   })
 
   it('should parse multiple expressions', function () {
     const codes = math.compile(['2+3', '4+5'])
     assert.ok(Array.isArray(codes))
-    assert.equal(codes.length, 2)
+    assert.strictEqual(codes.length, 2)
 
-    assert.equal(codes[0].eval(), 5)
-    assert.equal(codes[1].eval(), 9)
+    assert.strictEqual(codes[0].eval(), 5)
+    assert.strictEqual(codes[1].eval(), 9)
   })
 
   it('should throw an error on wrong number of arguments', function () {
@@ -30,6 +30,6 @@ describe('compile', function () {
 
   it('should LaTeX compile', function () {
     const expression = math.parse('compile(1)')
-    assert.equal(expression.toTex(), '\\mathrm{compile}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{compile}\\left(1\\right)')
   })
 })

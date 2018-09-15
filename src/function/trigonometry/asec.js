@@ -47,7 +47,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  asec.toTex = {1: `\\sec^{-1}\\left(\${args[0]}\\right)`}
+  asec.toTex = { 1: `\\sec^{-1}\\left(\${args[0]}\\right)` }
 
   return asec
 }

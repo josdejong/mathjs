@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  catalan.toTex = {1: `\\mathrm{C}_{\${args[0]}}`}
+  catalan.toTex = { 1: `\\mathrm{C}_{\${args[0]}}` }
 
   return catalan
 }

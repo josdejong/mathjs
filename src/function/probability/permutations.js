@@ -4,7 +4,7 @@ const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
   const factorial = load(require('./factorial'))
-
+  const product = require('./product')
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
    * from a set of `n` elements.
@@ -32,10 +32,7 @@ function factory (type, config, load, typed) {
    */
   const permutations = typed('permutations', {
     'number | BigNumber': factorial,
-
     'number, number': function (n, k) {
-      let result, i
-
       if (!isInteger(n) || n < 0) {
         throw new TypeError('Positive integer value expected in function permutations')
       }
@@ -45,14 +42,8 @@ function factory (type, config, load, typed) {
       if (k > n) {
         throw new TypeError('second argument k must be less than or equal to first argument n')
       }
-
       // Permute n objects, k at a time
-      result = 1
-      for (i = n - k + 1; i <= n; i++) {
-        result = result * i
-      }
-
-      return result
+      return product((n - k) + 1, n)
     },
 
     'BigNumber, BigNumber': function (n, k) {

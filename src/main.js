@@ -1,6 +1,6 @@
 'use strict'
 
-import core from './core/core'
+const core = require('./core/core')
 
 /**
  * math.js factory function. Creates a new instance of math.js

@@ -251,7 +251,7 @@ function runStream (input, output, mode, parenthesis) {
 
           case 'string':
             try {
-              const string = math.parse(expr).toString({parenthesis: parenthesis})
+              const string = math.parse(expr).toString({ parenthesis: parenthesis })
               console.log(string)
             } catch (err) {
               console.log(err.toString())
@@ -260,7 +260,7 @@ function runStream (input, output, mode, parenthesis) {
 
           case 'tex':
             try {
-              const tex = math.parse(expr).toTex({parenthesis: parenthesis})
+              const tex = math.parse(expr).toTex({ parenthesis: parenthesis })
               console.log(tex)
             } catch (err) {
               console.log(err.toString())
@@ -397,7 +397,7 @@ process.argv.forEach(function (arg, index) {
       parenthesis = 'all'
       break
 
-    // TODO: implement configuration via command line arguments
+      // TODO: implement configuration via command line arguments
 
     default:
       scripts.push(arg)
