@@ -35,10 +35,10 @@ describe('unit', function () {
 
   it('should create dimensionless units (pure numbers)', function () {
     const unit1 = unit(5)
-    assert.deepEqual(unit1.toString(), '5')
-    assert.deepEqual(unit1.value, 5)
-    assert.deepEqual(unit1.units.length, 0)
-    assert.deepEqual(unit1, unit('5'))
+    assert.strictEqual(unit1.toString(), '5')
+    assert.strictEqual(unit1.value, 5)
+    assert.strictEqual(unit1.units.length, 0)
+    assert.deepStrictEqual(unit1, unit('5'))
   })
 
   it('should throw an error if called with a complex', function () {
