@@ -33,8 +33,12 @@ describe('unit', function () {
     assert.throws(function () { unit('invalid unit') }, SyntaxError)
   })
 
-  it('should throw an error if called with a number', function () {
-    assert.throws(function () { unit(2) }, /SyntaxError: "2" contains no units/)
+  it('should create dimensionless units (pure numbers)', function () {
+    const unit1 = unit(5)
+    assert.equal(unit1.toString(), '5')
+    assert.equal(unit1.value, 5)
+    assert.equal(unit1.units.length, 0)
+    assert.deepEqual(unit1, unit("5"))
   })
 
   it('should throw an error if called with a complex', function () {
