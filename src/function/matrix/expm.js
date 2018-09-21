@@ -136,7 +136,7 @@ function factory (type, config, load, typed) {
       for (let q = 0; q <= k; q++) {
         const j = k - q
         if (errorEstimate(infNorm, q, j) < eps) {
-          return {q: q, j: j}
+          return { q: q, j: j }
         }
       }
     }
@@ -163,7 +163,7 @@ function factory (type, config, load, typed) {
       qfac * qfac / (twoqfac * twoqp1fac)
   }
 
-  expm.toTex = {1: `\\exp\\left(\${args[0]}\\right)`}
+  expm.toTex = { 1: `\\exp\\left(\${args[0]}\\right)` }
 
   return expm
 }

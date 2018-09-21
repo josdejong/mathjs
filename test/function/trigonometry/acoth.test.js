@@ -7,15 +7,15 @@ const coth = math.coth
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 21})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 21 })
+const predmath = math.create({ predictable: true })
 const acothBig = bigmath.acoth
 const Big = bigmath.bignumber
 
 describe('acoth', function () {
   it('should return the hyperbolic arccot of a boolean', function () {
-    assert.equal(acoth(true), Infinity)
+    assert.strictEqual(acoth(true), Infinity)
     approx.deepEqual(acoth(false), complex(0, pi / 2))
     // assert.ok(isNaN(acoth(false)))
   })
@@ -27,30 +27,30 @@ describe('acoth', function () {
     // assert.ok(isNaN(acoth(0.5)))
 
     approx.equal(acoth(-2), -0.54930614433405484569762261846)
-    assert.equal(acoth(-1), -Infinity)
-    assert.equal(acoth(1), Infinity)
+    assert.strictEqual(acoth(-1), -Infinity)
+    assert.strictEqual(acoth(1), Infinity)
     approx.equal(acoth(2), 0.54930614433405484569762261846)
-    assert.equal(acoth(Infinity), 0)
+    assert.strictEqual(acoth(Infinity), 0)
   })
 
   it('should return the hyperbolic arccot of a number when predictable:true', function () {
-    assert.equal(typeof predmath.acoth(0.5), 'number')
+    assert.strictEqual(typeof predmath.acoth(0.5), 'number')
     assert(isNaN(predmath.acoth(0.5)))
   })
 
   it('should return the hyperbolic arccot of a bignumber', function () {
     const arg2 = Big(-2)
     const arg3 = Big(-1)
-    assert.deepEqual(acothBig(Big(-Infinity)), Big('-0'))
-    assert.deepEqual(acothBig(arg2), Big('-0.5493061443340548457'))
-    assert.deepEqual(acothBig(arg3).toString(), '-Infinity')
-    assert.deepEqual(acothBig(Big(1)).toString(), 'Infinity')
-    assert.deepEqual(acothBig(Big(2)), Big('0.5493061443340548457'))
-    assert.deepEqual(acothBig(Big(Infinity)), Big(0))
+    assert.deepStrictEqual(acothBig(Big(-Infinity)), Big('-0'))
+    assert.deepStrictEqual(acothBig(arg2), Big('-0.5493061443340548457'))
+    assert.deepStrictEqual(acothBig(arg3).toString(), '-Infinity')
+    assert.deepStrictEqual(acothBig(Big(1)).toString(), 'Infinity')
+    assert.deepStrictEqual(acothBig(Big(2)), Big('0.5493061443340548457'))
+    assert.deepStrictEqual(acothBig(Big(Infinity)), Big(0))
 
     // Make sure arg was not changed
-    assert.deepEqual(arg2, Big(-2))
-    assert.deepEqual(arg3, Big(-1))
+    assert.deepStrictEqual(arg2, Big(-2))
+    assert.deepStrictEqual(arg3, Big(-1))
 
     // out of range
     assert.ok(acothBig(Big(-0.5)).isNaN())
@@ -66,13 +66,13 @@ describe('acoth', function () {
   })
 
   it('should be the inverse function of bignumber coth', function () {
-    assert.deepEqual(acothBig(bigmath.coth(Big(-1))), Big(-1))
-    assert.deepEqual(acothBig(bigmath.coth(Big(0))), Big(0))
-    assert.deepEqual(acothBig(bigmath.coth(Big(1))), Big(1))
+    assert.deepStrictEqual(acothBig(bigmath.coth(Big(-1))), Big(-1))
+    assert.deepStrictEqual(acothBig(bigmath.coth(Big(0))), Big(0))
+    assert.deepStrictEqual(acothBig(bigmath.coth(Big(1))), Big(1))
 
     /* Pass in more digits to pi. */
-    assert.deepEqual(acothBig(biggermath.coth(Big(-2))), Big('-2.0000000000000000001'))
-    assert.deepEqual(acothBig(biggermath.coth(Big(2))), Big('2.0000000000000000001'))
+    assert.deepStrictEqual(acothBig(biggermath.coth(Big(-2))), Big('-2.0000000000000000001'))
+    assert.deepStrictEqual(acothBig(biggermath.coth(Big(2))), Big('2.0000000000000000001'))
   })
 
   it('should return the arccoth of a complex number', function () {
@@ -82,7 +82,7 @@ describe('acoth', function () {
     approx.deepEqual(acoth(complex('-2-3i')), complex(-0.1469466662255, 0.2318238045004))
     approx.deepEqual(acoth(complex('1+i')), complex(0.4023594781085251, -0.55357435889705))
     approx.deepEqual(acoth(complex('i')), complex(0, -pi / 4))
-    assert.deepEqual(acoth(complex('1')), complex(Infinity, 0))
+    assert.deepStrictEqual(acoth(complex('1')), complex(Infinity, 0))
     approx.deepEqual(acoth(complex('0.5')), complex(0.5493061443340548, -1.5707963267949))
     approx.deepEqual(acoth(complex('0')), complex(0, pi / 2))
   })
@@ -109,6 +109,6 @@ describe('acoth', function () {
 
   it('should LaTeX acoth', function () {
     const expression = math.parse('acoth(2)')
-    assert.equal(expression.toTex(), '\\coth^{-1}\\left(2\\right)')
+    assert.strictEqual(expression.toTex(), '\\coth^{-1}\\left(2\\right)')
   })
 })

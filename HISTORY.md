@@ -1,6 +1,38 @@
 # History
 
 
+## 2018-09-09, version 5.1.2
+
+- Fixed a typo in the docs of `parse`. Thanks @mathiasvr.
+- Fixed #1222: a typo in the docs of `subset`.
+- Fixed #1236: `quantileSeq` has inconsistent return.
+- Fixed #1237: norm sometimes returning a complex number instead of
+  number.
+- Upgraded dependencies (`fraction.js@4.0.9`)
+- Upgraded devDependencies (`babel@7`, `karma-webpack@3.0.4`,
+  `nyc@13.0.1`, `standard@12.0.0`, `uglify-js@3.4.9`, `webpack@4.17.2`)
+
+
+## 2018-08-21, version 5.1.1
+
+- Function `isNumeric` now recognizes more types.
+- Fixed #1214: functions `sqrt`, `max`, `min`, `var`, `std`, `mode`, `mad`,
+  `median`, and `partitionSelect` not neatly handling `NaN` inputs. In some
+  cases (`median`, `mad`, and `partitionSelect`) this resulted in an infinite
+  loop.
+- Upgraded dependencies (`escape-latex@1.1.1`)
+- Upgraded devDependencies (`webpack@4.17.0`)
+
+
+## 2018-08-12, version 5.1.0
+
+- Implemented support for strings enclosed in single quotes.
+  Thanks @jean-emmanuel.
+- Implemented function `getMatrixDataType`. Thanks @JasonShin.
+- Implemented new `options` argument in `simplify`. Thanks @paulobuchsbaum.
+- Bug fixes in `rationalize`, see #1173. Thanks @paulobuchsbaum.
+
+
 ## 2018-07-22, version 5.0.4
 
 - Strongly improved the performance of functions `factorial` for numbers.

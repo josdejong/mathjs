@@ -48,11 +48,11 @@ describe('number', function () {
   })
 
   it('should convert the elements of a matrix to numbers', function () {
-    assert.deepEqual(number(math.matrix(['123', true])), math.matrix([123, 1]))
+    assert.deepStrictEqual(number(math.matrix(['123', true])), math.matrix([123, 1]))
   })
 
   it('should convert the elements of an array to numbers', function () {
-    assert.deepEqual(number(['123', true]), [123, 1])
+    assert.deepStrictEqual(number(['123', true]), [123, 1])
   })
 
   it('should throw an error if called with a wrong number of arguments', function () {
@@ -75,8 +75,8 @@ describe('number', function () {
     const expr2 = math.parse('number(1)')
     const expr3 = math.parse('number(1,cm)')
 
-    assert.equal(expr1.toTex(), '0')
-    assert.equal(expr2.toTex(), '\\left(1\\right)')
-    assert.equal(expr3.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
+    assert.strictEqual(expr1.toTex(), '0')
+    assert.strictEqual(expr2.toTex(), '\\left(1\\right)')
+    assert.strictEqual(expr3.toTex(), '\\left(\\left(1\\right)\\mathrm{cm}\\right)')
   })
 })

@@ -49,7 +49,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  sech.toTex = {1: `\\mathrm{sech}\\left(\${args[0]}\\right)`}
+  sech.toTex = { 1: `\\mathrm{sech}\\left(\${args[0]}\\right)` }
 
   return sech
 }

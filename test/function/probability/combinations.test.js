@@ -4,18 +4,18 @@ const combinations = math.combinations
 
 describe('combinations', function () {
   it('should calculate the combinations of a number taking k at a time', function () {
-    assert.equal(combinations(0, 0), 1)
-    assert.equal(combinations(7, 5), 21)
-    assert.equal(combinations(20, 15), 15504)
-    assert.equal(combinations(63, 7), 553270671)
-    assert.equal(combinations(25, 6), 177100)
+    assert.strictEqual(combinations(0, 0), 1)
+    assert.strictEqual(combinations(7, 5), 21)
+    assert.strictEqual(combinations(20, 15), 15504)
+    assert.strictEqual(combinations(63, 7), 553270671)
+    assert.strictEqual(combinations(25, 6), 177100)
   })
 
   it('should calculate the combinations of n items taken k at a time with BigNumbers', function () {
-    assert.deepEqual(combinations(math.bignumber(7), math.bignumber(5)), math.bignumber(21))
-    assert.deepEqual(combinations(math.bignumber(20), math.bignumber(15)), math.bignumber(15504))
-    assert.deepEqual(combinations(math.bignumber(63), math.bignumber(7)), math.bignumber(553270671))
-    assert.deepEqual(combinations(math.bignumber(25), math.bignumber(6)), math.bignumber(177100))
+    assert.deepStrictEqual(combinations(math.bignumber(7), math.bignumber(5)), math.bignumber(21))
+    assert.deepStrictEqual(combinations(math.bignumber(20), math.bignumber(15)), math.bignumber(15504))
+    assert.deepStrictEqual(combinations(math.bignumber(63), math.bignumber(7)), math.bignumber(553270671))
+    assert.deepStrictEqual(combinations(math.bignumber(25), math.bignumber(6)), math.bignumber(177100))
   })
 
   it('should not work with non-integer and negative input', function () {
@@ -36,6 +36,6 @@ describe('combinations', function () {
 
   it('should LaTeX combinations', function () {
     const expression = math.parse('combinations(3,2)')
-    assert.equal(expression.toTex(), '\\binom{3}{2}')
+    assert.strictEqual(expression.toTex(), '\\binom{3}{2}')
   })
 })

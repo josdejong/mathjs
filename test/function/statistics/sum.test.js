@@ -8,15 +8,15 @@ const sum = math.sum
 
 describe('sum', function () {
   it('should return the sum of numbers', function () {
-    assert.equal(sum(5), 5)
-    assert.equal(sum(3, 1), 4)
-    assert.equal(sum(1, 3), 4)
-    assert.equal(sum(1, 3, 5, 2), 11)
-    assert.equal(sum(0, 0, 0, 0), 0)
+    assert.strictEqual(sum(5), 5)
+    assert.strictEqual(sum(3, 1), 4)
+    assert.strictEqual(sum(1, 3), 4)
+    assert.strictEqual(sum(1, 3, 5, 2), 11)
+    assert.strictEqual(sum(0, 0, 0, 0), 0)
   })
 
   it('should return the sum of big numbers', function () {
-    assert.deepEqual(sum(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2)),
+    assert.deepStrictEqual(sum(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2)),
       new BigNumber(11))
   })
 
@@ -26,27 +26,27 @@ describe('sum', function () {
   })
 
   it('should return the sum of complex numbers', function () {
-    assert.deepEqual(sum(new Complex(2, 3), new Complex(-1, 2)), new Complex(1, 5))
+    assert.deepStrictEqual(sum(new Complex(2, 3), new Complex(-1, 2)), new Complex(1, 5))
   })
 
   it('should return the sum of mixed numbers and complex numbers', function () {
-    assert.deepEqual(sum(2, new Complex(-1, 3)), new Complex(1, 3))
+    assert.deepStrictEqual(sum(2, new Complex(-1, 3)), new Complex(1, 3))
   })
 
   it('should return the sum from an array', function () {
-    assert.equal(sum([1, 3, 5, 2, -5]), 6)
+    assert.strictEqual(sum([1, 3, 5, 2, -5]), 6)
   })
 
   it('should return the sum of units', function () {
-    assert.deepEqual(sum([new Unit(5, 'mm'), new Unit(10, 'mm'), new Unit(15, 'mm')]), new Unit(30, 'mm'))
+    assert.deepStrictEqual(sum([new Unit(5, 'mm'), new Unit(10, 'mm'), new Unit(15, 'mm')]), new Unit(30, 'mm'))
   })
 
   it('should return the sum from an 1d matrix', function () {
-    assert.equal(sum(new DenseMatrix([1, 3, 5, 2, -5])), 6)
+    assert.strictEqual(sum(new DenseMatrix([1, 3, 5, 2, -5])), 6)
   })
 
   it('should return the sum element from a 2d array', function () {
-    assert.deepEqual(sum([
+    assert.deepStrictEqual(sum([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 11, 9]
@@ -54,11 +54,20 @@ describe('sum', function () {
   })
 
   it('should return the sum element from a 2d matrix', function () {
-    assert.deepEqual(sum(new DenseMatrix([
+    assert.deepStrictEqual(sum(new DenseMatrix([
       [1, 4, 7],
       [3, 0, 5],
       [-1, 11, 9]
     ])), 39)
+  })
+
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert(isNaN(sum([NaN])))
+    assert(isNaN(sum([1, NaN])))
+    assert(isNaN(sum([NaN, 1])))
+    assert(isNaN(sum([1, 3, NaN])))
+    assert(isNaN(sum([NaN, NaN, NaN])))
+    assert(isNaN(sum(NaN, NaN, NaN)))
   })
 
   it('should throw an error if called with invalid number of arguments', function () {
@@ -70,17 +79,17 @@ describe('sum', function () {
   })
 
   it('should return zero if called with an empty array', function () {
-    const bigMath = math.create({number: 'BigNumber'})
-    const fracMath = math.create({number: 'Fraction'})
+    const bigMath = math.create({ number: 'BigNumber' })
+    const fracMath = math.create({ number: 'Fraction' })
 
     const big = bigMath.sum([])
     const frac = fracMath.sum([])
 
-    assert.equal(sum([]), 0)
-    assert.equal(big.type, 'BigNumber')
-    assert.equal(frac.type, 'Fraction')
-    assert.equal(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true)
-    assert.equal(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true)
+    assert.strictEqual(sum([]), 0)
+    assert.strictEqual(big.type, 'BigNumber')
+    assert.strictEqual(frac.type, 'Fraction')
+    assert.strictEqual(math.equal(bigMath.sum([]), new BigNumber(0)).valueOf(), true)
+    assert.strictEqual(math.equal(fracMath.sum([]), new fracMath.type.Fraction(0)), true)
   })
 
   it('should throw an error if called with invalid type of arguments', function () {
@@ -91,6 +100,6 @@ describe('sum', function () {
 
   it('should LaTeX sum', function () {
     const expression = math.parse('sum(1,2,3)')
-    assert.equal(expression.toTex(), '\\mathrm{sum}\\left(1,2,3\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sum}\\left(1,2,3\\right)')
   })
 })

@@ -87,7 +87,7 @@ export function validate (array, size) {
  * @param {number} index    Zero-based index
  * @param {number} [length] Length of the array
  */
-exports.validateIndex = function (index, length) {
+export function validateIndex (index, length) {
   if (!number.isNumber(index) || !number.isInteger(index)) {
     throw new TypeError('Index must be an integer (value: ' + index + ')')
   }
@@ -203,7 +203,7 @@ function _resize (array, size, dim, defaultValue) {
  *                                not equal that of the old ones
  */
 export function reshape (array, sizes) {
-  const flatArray = exports.flatten(array)
+  const flatArray = flatten(array)
   let newArray
 
   function product (arr) {
@@ -215,7 +215,7 @@ export function reshape (array, sizes) {
   }
 
   if (sizes.length === 0) {
-    throw new DimensionError(0, product(exports.size(array)), '!=')
+    throw new DimensionError(0, product(size(array)), '!=')
   }
 
   var totalSize = 1
@@ -226,7 +226,7 @@ export function reshape (array, sizes) {
   if (flatArray.length !== totalSize) {
     throw new DimensionError(
       product(sizes),
-      product(exports.size(array)),
+      product(size(array)),
       '!='
     )
   }
@@ -237,7 +237,7 @@ export function reshape (array, sizes) {
     if (e instanceof DimensionError) {
       throw new DimensionError(
         product(sizes),
-        product(exports.size(array)),
+        product(size(array)),
         '!='
       )
     }
@@ -279,11 +279,11 @@ function _reshape (array, sizes) {
 /**
  * Squeeze a multi dimensional array
  * @param {Array} array
- * @param {Array} [size]
+ * @param {Array} [arraySize]
  * @returns {Array} returns the array itself
  */
-exports.squeeze = function (array, size) {
-  let s = size || exports.size(array)
+export function squeeze (array, arraySize) {
+  let s = arraySize || size(array)
 
   // squeeze outer dimensions
   while (Array.isArray(array) && array.length === 1) {
@@ -337,14 +337,14 @@ function _squeeze (array, dims, dim) {
  * Paramter `size` will be mutated to match the new, unqueezed matrix size.
  *
  * @param {Array} array
- * @param {number} dims     Desired number of dimensions of the array
- * @param {number} [outer]  Number of outer dimensions to be added
- * @param {Array} [size]    Current size of array.
+ * @param {number} dims       Desired number of dimensions of the array
+ * @param {number} [outer]    Number of outer dimensions to be added
+ * @param {Array} [arraySize] Current size of array.
  * @returns {Array} returns the array itself
  * @private
  */
-export function unsqueeze (array, dims, outer, size) {
-  let s = size || exports.size(array)
+export function unsqueeze (array, dims, outer, arraySize) {
+  let s = arraySize || size(array)
 
   // unsqueeze outer dimensions
   if (outer) {
@@ -435,7 +435,7 @@ export function forEach (array, callback) {
  * @param {function} callback
  */
 export function filter (array, callback) {
-  if (exports.size(array).length !== 1) {
+  if (size(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 
@@ -450,7 +450,7 @@ export function filter (array, callback) {
  * @private
  */
 export function filterRegExp (array, regexp) {
-  if (exports.size(array).length !== 1) {
+  if (size(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 
@@ -482,14 +482,14 @@ export function identify (a) {
 
   let b = []
   let count = 0
-  b[0] = {value: a[0], identifier: 0}
+  b[0] = { value: a[0], identifier: 0 }
   for (let i = 1; i < a.length; i++) {
     if (a[i] === a[i - 1]) {
       count++
     } else {
       count = 0
     }
-    b.push({value: a[i], identifier: count})
+    b.push({ value: a[i], identifier: count })
   }
   return b
 }
@@ -499,7 +499,7 @@ export function identify (a) {
  * @param {array} a  An array
  * @return {array} An array of values without identifiers
  */
-exports.generalize = function (a) {
+export function generalize (a) {
   if (!Array.isArray(a)) {
     throw new TypeError('Array input expected')
   }
@@ -514,10 +514,3 @@ exports.generalize = function (a) {
   }
   return b
 }
-
-/**
- * Test whether an object is an array
- * @param {*} value
- * @return {boolean} isArray
- */
-exports.isArray = Array.isArray

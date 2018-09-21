@@ -149,6 +149,7 @@ Function | Description
 [math.filter(x,&nbsp;test)](functions/filter.md) | Filter the items in an array or one dimensional matrix.
 [math.flatten(x)](functions/flatten.md) | Flatten a multi dimensional matrix into a single dimensional matrix.
 [math.forEach(x,&nbsp;callback)](functions/forEach.md) | Iterate over all elements of a matrix/array, and executes the given callback function.
+[math.getMatrixDataType(x)](functions/getMatrixDataType.md) | Find the data type of all elements in a matrix or array, for example 'number' if all items are a number and 'Complex' if all values are complex numbers.
 [math.identity(n)](functions/identity.md) | Create a 2-dimensional identity matrix with size m x n or n x n.
 [math.inv(x)](functions/inv.md) | Calculate the inverse of a square matrix.
 [math.kron(x,&nbsp;y)](functions/kron.md) | Calculates the kronecker product of 2 matrices or vectors.

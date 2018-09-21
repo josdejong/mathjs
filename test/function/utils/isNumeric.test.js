@@ -15,14 +15,17 @@ describe('isNumeric', function () {
     assert.strictEqual(isNumeric('foo'), false)
     assert.strictEqual(isNumeric(math.complex(2, 3)), false)
     assert.strictEqual(isNumeric(math.unit('5 cm')), false)
+    assert.strictEqual(isNumeric(null), false)
+    assert.strictEqual(isNumeric(undefined), false)
+    assert.strictEqual(isNumeric(math.parse('2+4')), false)
   })
 
   it('should test isNumeric element wise on an Array', function () {
-    assert.deepEqual(isNumeric([2, 'foo', true]), [true, false, true])
+    assert.deepStrictEqual(isNumeric([2, 'foo', true]), [true, false, true])
   })
 
   it('should test isNumeric element wise on a Matrix', function () {
-    assert.deepEqual(isNumeric(math.matrix([2, 'foo', true])), math.matrix([true, false, true]))
+    assert.deepStrictEqual(isNumeric(math.matrix([2, 'foo', true])), math.matrix([true, false, true]))
   })
 
   it('should throw an error in case of unsupported data types', function () {

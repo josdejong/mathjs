@@ -5,36 +5,36 @@ const partitionSelect = math.partitionSelect
 
 describe('partitionSelect', function () {
   it('should sort an array with numbers', function () {
-    assert.equal(partitionSelect([5, 10, 1], 0), 1)
-    assert.equal(partitionSelect([5, 10, 1], 1), 5)
-    assert.equal(partitionSelect([5, 10, 1], 2), 10)
+    assert.strictEqual(partitionSelect([5, 10, 1], 0), 1)
+    assert.strictEqual(partitionSelect([5, 10, 1], 1), 5)
+    assert.strictEqual(partitionSelect([5, 10, 1], 2), 10)
   })
 
   it('should sort a Matrix', function () {
-    assert.equal(partitionSelect(matrix([5, 10, 1]), 0), 1)
-    assert.equal(partitionSelect(matrix([5, 10, 1]), 1), 5)
-    assert.equal(partitionSelect(matrix([5, 10, 1]), 2), 10)
+    assert.strictEqual(partitionSelect(matrix([5, 10, 1]), 0), 1)
+    assert.strictEqual(partitionSelect(matrix([5, 10, 1]), 1), 5)
+    assert.strictEqual(partitionSelect(matrix([5, 10, 1]), 2), 10)
   })
 
   it('should sort an array in ascending order', function () {
-    assert.equal(partitionSelect([5, 10, 1], 0, 'asc'), 1)
-    assert.equal(partitionSelect([5, 10, 1], 1, 'asc'), 5)
-    assert.equal(partitionSelect([5, 10, 1], 2, 'asc'), 10)
+    assert.strictEqual(partitionSelect([5, 10, 1], 0, 'asc'), 1)
+    assert.strictEqual(partitionSelect([5, 10, 1], 1, 'asc'), 5)
+    assert.strictEqual(partitionSelect([5, 10, 1], 2, 'asc'), 10)
   })
 
   it('should sort an array in descending order', function () {
-    assert.equal(partitionSelect([5, 10, 1], 0, 'desc'), 10)
-    assert.equal(partitionSelect([5, 10, 1], 1, 'desc'), 5)
-    assert.equal(partitionSelect([5, 10, 1], 2, 'desc'), 1)
+    assert.strictEqual(partitionSelect([5, 10, 1], 0, 'desc'), 10)
+    assert.strictEqual(partitionSelect([5, 10, 1], 1, 'desc'), 5)
+    assert.strictEqual(partitionSelect([5, 10, 1], 2, 'desc'), 1)
   })
 
   it('should sort an array with a custom compare function', function () {
     function sortByLength (a, b) {
       return a.length - b.length
     }
-    assert.equal(partitionSelect(['Langdon', 'Tom', 'Sara'], 0, sortByLength), 'Tom')
-    assert.equal(partitionSelect(['Langdon', 'Tom', 'Sara'], 1, sortByLength), 'Sara')
-    assert.equal(partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength), 'Langdon')
+    assert.strictEqual(partitionSelect(['Langdon', 'Tom', 'Sara'], 0, sortByLength), 'Tom')
+    assert.strictEqual(partitionSelect(['Langdon', 'Tom', 'Sara'], 1, sortByLength), 'Sara')
+    assert.strictEqual(partitionSelect(['Langdon', 'Tom', 'Sara'], 2, sortByLength), 'Langdon')
   })
 
   it('should mutate the input array, leaving it partitioned at k', function () {
@@ -65,6 +65,14 @@ describe('partitionSelect', function () {
     })
   })
 
+  it('should return NaN if any of the inputs contains NaN', function () {
+    assert(isNaN(partitionSelect([NaN], 0)))
+    assert(isNaN(partitionSelect([1, NaN], 0)))
+    assert(isNaN(partitionSelect([NaN, 1], 0)))
+    assert(isNaN(partitionSelect([1, 3, NaN], 1)))
+    assert(isNaN(partitionSelect([NaN, NaN, NaN], 1)))
+  })
+
   it('should throw an error if called with a multi dimensional matrix', function () {
     assert.throws(function () { partitionSelect(matrix([[1, 2], [3, 4]]), 2) }, /Only one dimensional matrices supported/)
   })
@@ -93,7 +101,7 @@ describe('partitionSelect', function () {
   /*
   it('should LaTeX sort', function () {
     const expression = math.parse('sort([3,2,1])')
-    assert.equal(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sort}\\left(\\begin{bmatrix}3\\\\2\\\\1\\\\\\end{bmatrix}\\right)')
   })
   */
 })

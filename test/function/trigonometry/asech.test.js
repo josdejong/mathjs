@@ -7,16 +7,16 @@ const sech = math.sech
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 22})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 22 })
+const predmath = math.create({ predictable: true })
 const asechBig = bigmath.asech
 const Big = bigmath.bignumber
 
 describe('asech', function () {
   it('should return the hyperbolic arcsec of a boolean', function () {
-    assert.equal(asech(true), 0)
-    assert.equal(asech(false), Infinity)
+    assert.strictEqual(asech(true), 0)
+    assert.strictEqual(asech(false), Infinity)
   })
 
   it('should return the hyperbolic arcsec of a number', function () {
@@ -25,30 +25,30 @@ describe('asech', function () {
     // assert.ok(isNaN(asech(-0.5)))
     // assert.ok(isNaN(asech(2)))
 
-    assert.equal(asech(0), Infinity)
+    assert.strictEqual(asech(0), Infinity)
     approx.equal(asech(0.25), 2.0634370688955605467272811726201)
     approx.equal(asech(0.5), 1.31695789692481670862504634730797)
     approx.equal(asech(0.75), 0.7953654612239056305278909331478)
-    assert.equal(asech(1), 0)
+    assert.strictEqual(asech(1), 0)
   })
 
   it('should return the hyperbolic arcsec of a number when predictable:true', function () {
-    assert.equal(typeof predmath.asech(2), 'number')
+    assert.strictEqual(typeof predmath.asech(2), 'number')
     assert(isNaN(predmath.asech(2)))
   })
 
   it('should return the hyperbolic arcsec of a bignumber', function () {
     const arg1 = Big(0)
     const arg2 = Big(0.25)
-    assert.deepEqual(asechBig(arg1).toString(), 'Infinity')
-    assert.deepEqual(asechBig(arg2), Big('2.0634370688955605467'))
-    assert.deepEqual(asechBig(Big(0.5)), Big('1.3169578969248167086'))
-    assert.deepEqual(asechBig(Big(0.75)), Big('0.79536546122390563049'))
-    assert.deepEqual(asechBig(Big(1)), Big(0))
+    assert.deepStrictEqual(asechBig(arg1).toString(), 'Infinity')
+    assert.deepStrictEqual(asechBig(arg2), Big('2.0634370688955605467'))
+    assert.deepStrictEqual(asechBig(Big(0.5)), Big('1.3169578969248167086'))
+    assert.deepStrictEqual(asechBig(Big(0.75)), Big('0.79536546122390563049'))
+    assert.deepStrictEqual(asechBig(Big(1)), Big(0))
 
     // Make sure arg was not changed
-    assert.deepEqual(arg1, Big(0))
-    assert.deepEqual(arg2, Big(0.25))
+    assert.deepStrictEqual(arg1, Big(0))
+    assert.deepStrictEqual(arg2, Big(0.25))
 
     /* out of range */
     assert.ok(asech(Big(-1)).isNaN())
@@ -64,13 +64,13 @@ describe('asech', function () {
   })
 
   it('should be the inverse function of bignumber sech', function () {
-    assert.deepEqual(asechBig(bigmath.sech(Big(-1))), Big(1))
-    assert.deepEqual(asechBig(bigmath.sech(Big(0))), Big(0))
-    assert.deepEqual(asechBig(bigmath.sech(Big(0.5))), Big('0.49999999999999999995'))
-    assert.deepEqual(asechBig(bigmath.sech(Big(2))), Big(2))
+    assert.deepStrictEqual(asechBig(bigmath.sech(Big(-1))), Big(1))
+    assert.deepStrictEqual(asechBig(bigmath.sech(Big(0))), Big(0))
+    assert.deepStrictEqual(asechBig(bigmath.sech(Big(0.5))), Big('0.49999999999999999995'))
+    assert.deepStrictEqual(asechBig(bigmath.sech(Big(2))), Big(2))
 
     /* Pass in more digits to pi. */
-    assert.deepEqual(asechBig(biggermath.sech(Big(0.1))), Big('0.10000000000000000012'))
+    assert.deepStrictEqual(asechBig(biggermath.sech(Big(0.1))), Big('0.10000000000000000012'))
   })
 
   it('should return the arcsech of a complex number', function () {
@@ -81,9 +81,9 @@ describe('asech', function () {
     approx.deepEqual(asech(complex('1+i')), complex(0.5306375309525178, -1.11851787964370594))
     approx.deepEqual(asech(complex('i')), complex(0.881373587019543, -1.570796326794897))
     approx.deepEqual(asech(complex('2')), complex(0, pi / 3))
-    assert.deepEqual(asech(complex('1')), complex(0, 0))
+    assert.deepStrictEqual(asech(complex('1')), complex(-0, 0))
     approx.deepEqual(asech(complex('0.5')), complex(1.3169578969248, 0))
-    assert.deepEqual(asech(complex('0')), complex(Infinity, Infinity))
+    assert.deepStrictEqual(asech(complex('0')), complex(Infinity, Infinity))
     approx.deepEqual(asech(complex('-0.5')), complex(1.3169578969248, pi))
     approx.deepEqual(asech(complex('-1')), complex(0, pi))
   })
@@ -99,8 +99,8 @@ describe('asech', function () {
 
   it('should calculate the arcsec element-wise for arrays and matrices', function () {
     const asech01 = [Infinity, 0]
-    assert.deepEqual(asech([0, 1]), asech01)
-    assert.deepEqual(asech(matrix([0, 1])), matrix(asech01))
+    assert.deepStrictEqual(asech([0, 1]), asech01)
+    assert.deepStrictEqual(asech(matrix([0, 1])), matrix(asech01))
   })
 
   it('should throw an error in case of invalid number of arguments', function () {
@@ -110,6 +110,6 @@ describe('asech', function () {
 
   it('should LaTeX asech', function () {
     const expression = math.parse('asech(1)')
-    assert.equal(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sech}^{-1}\\left(1\\right)')
   })
 })

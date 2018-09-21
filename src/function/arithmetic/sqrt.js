@@ -62,14 +62,16 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _sqrtNumber (x) {
-    if (x >= 0 || config.predictable) {
+    if (isNaN(x)) {
+      return NaN
+    } else if (x >= 0 || config.predictable) {
       return Math.sqrt(x)
     } else {
       return new type.Complex(x, 0).sqrt()
     }
   }
 
-  sqrt.toTex = {1: `\\sqrt{\${args[0]}}`}
+  sqrt.toTex = { 1: `\\sqrt{\${args[0]}}` }
 
   return sqrt
 }

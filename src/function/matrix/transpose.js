@@ -167,7 +167,7 @@ function factory (type, config, load, typed) {
     })
   }
 
-  transpose.toTex = {1: `\\left(\${args[0]}\\right)${latex.operators['transpose']}`}
+  transpose.toTex = { 1: `\\left(\${args[0]}\\right)${latex.operators['transpose']}` }
 
   return transpose
 }

@@ -53,7 +53,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  sin.toTex = {1: `\\sin\\left(\${args[0]}\\right)`}
+  sin.toTex = { 1: `\\sin\\left(\${args[0]}\\right)` }
 
   return sin
 }

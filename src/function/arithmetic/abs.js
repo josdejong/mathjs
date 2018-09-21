@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
     }
   })
 
-  abs.toTex = {1: `\\left|\${args[0]}\\right|`}
+  abs.toTex = { 1: `\\left|\${args[0]}\\right|` }
 
   return abs
 }

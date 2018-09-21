@@ -6,14 +6,14 @@ describe('forEach', function () {
     const m = math.matrix([1, 2, 3])
     const output = []
     math.forEach(m, function (value) { output.push(value) })
-    assert.deepEqual(output, [1, 2, 3])
+    assert.deepStrictEqual(output, [1, 2, 3])
   })
 
   it('should iterate deep over all elements in the array', function () {
     const arr = [1, 2, 3]
     const output = []
     math.forEach(arr, function (value) { output.push(value) })
-    assert.deepEqual(output, [1, 2, 3])
+    assert.deepStrictEqual(output, [1, 2, 3])
   })
 
   it('should invoke a typed function with correct number of arguments (1)', function () {
@@ -23,7 +23,7 @@ describe('forEach', function () {
         output.push(value + 2)
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke a typed function with correct number of arguments (2)', function () {
@@ -33,7 +33,7 @@ describe('forEach', function () {
         output.push(value + 2)
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke a typed function with correct number of arguments (3)', function () {
@@ -43,7 +43,7 @@ describe('forEach', function () {
         output.push(value + 2)
       }
     }))
-    assert.deepEqual(output, [3, 4, 5])
+    assert.deepStrictEqual(output, [3, 4, 5])
   })
 
   it('should invoke callback with parameters value, index, obj', function () {
@@ -54,7 +54,7 @@ describe('forEach', function () {
       // note: we don't copy index, it should be a copy with each iteration
       output.push([value, index, obj === arr])
     })
-    assert.deepEqual(output, [
+    assert.deepStrictEqual(output, [
       [1, [0, 0], true],
       [2, [0, 1], true],
       [3, [0, 2], true],
@@ -75,6 +75,6 @@ describe('forEach', function () {
 
   it('should LaTeX forEach', function () {
     const expression = math.parse('forEach([1,2,3],callback)')
-    assert.equal(expression.toTex(), '\\mathrm{forEach}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}, callback\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{forEach}\\left(\\begin{bmatrix}1\\\\2\\\\3\\\\\\end{bmatrix}, callback\\right)')
   })
 })

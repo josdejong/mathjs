@@ -5,12 +5,14 @@ This document describes the steps required to publish a new version of math.js.
 
 ## Update version number
 
-Update the version number package.json.
+Update the version number `package.json`.
+
+Run `npm install` to also have this version number updated in `package-lock.json`
 
 
 ## Update history
 
-Update the date and version number in the file HISTORY.md. Verify whether all
+Update the date and version number in the file `HISTORY.md`. Verify whether all
 changes in the new version are described.
 
 

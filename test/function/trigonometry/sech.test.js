@@ -6,8 +6,8 @@ const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
 const sech = math.sech
-const bigmath = math.create({precision: 20})
-const biggermath = math.create({number: 'BigNumber', precision: 21})
+const bigmath = math.create({ precision: 20 })
+const biggermath = math.create({ number: 'BigNumber', precision: 21 })
 
 describe('sech', function () {
   it('should return the sech of a boolean', function () {
@@ -27,13 +27,13 @@ describe('sech', function () {
     const sechBig = bigmath.sech
     const Big = bigmath.bignumber
 
-    assert.deepEqual(sechBig(Big(0)), Big(1))
-    assert.deepEqual(sechBig(Big(1)), Big('0.64805427366388539957'))
-    assert.deepEqual(sechBig(Big(2)), Big('0.26580222883407969212'))
-    assert.deepEqual(sechBig(Big(3)), Big('0.099327927419433207829'))
+    assert.deepStrictEqual(sechBig(Big(0)), Big(1))
+    assert.deepStrictEqual(sechBig(Big(1)), Big('0.64805427366388539957'))
+    assert.deepStrictEqual(sechBig(Big(2)), Big('0.26580222883407969212'))
+    assert.deepStrictEqual(sechBig(Big(3)), Big('0.099327927419433207829'))
 
     /* Pass in extra digits to pi. */
-    assert.deepEqual(sechBig(biggermath.pi), Big('0.086266738334054414697'))
+    assert.deepStrictEqual(sechBig(biggermath.pi), Big('0.086266738334054414697'))
   })
 
   it('should return the sech of a complex number', function () {
@@ -77,6 +77,6 @@ describe('sech', function () {
 
   it('should LaTeX sech', function () {
     const expression = math.parse('sech(1)')
-    assert.equal(expression.toTex(), '\\mathrm{sech}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\mathrm{sech}\\left(1\\right)')
   })
 })

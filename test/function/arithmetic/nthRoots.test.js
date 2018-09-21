@@ -8,28 +8,26 @@ describe('nthRoots', function () {
   it('should return an array of Complex roots', function () {
     const roots = nthRoots(complex('-1'), 6)
     const roots1 = [
-      complex({r: 1, phi: Math.PI / 6}),
+      complex({ r: 1, phi: Math.PI / 6 }),
       complex(0, 1),
-      complex({r: 1, phi: (5 * Math.PI) / 6}),
-      complex({r: 1, phi: (7 * Math.PI) / 6}),
+      complex({ r: 1, phi: (5 * Math.PI) / 6 }),
+      complex({ r: 1, phi: (7 * Math.PI) / 6 }),
       complex(0, -1),
-      complex({r: 1, phi: (11 * Math.PI) / 6})
+      complex({ r: 1, phi: (11 * Math.PI) / 6 })
     ]
 
     roots.forEach(function (value, index, array) {
-      assert.deepEqual(value, roots1[index])
+      assert.deepStrictEqual(value, roots1[index])
     })
   })
 
   it('should return the correct answer for Complex values', function () {
     const roots = nthRoots(complex(3, 4), 2)
-    const roots1 = [
-      { re: 2, im: 1 },
-      { re: -2.0000000000000004, im: -0.9999999999999999 }
-    ]
-    roots.forEach(function (value, index, array) {
-      assert.deepEqual(value, roots1[index])
-    })
+
+    assert.deepStrictEqual(roots, [
+      complex(2, 1),
+      complex(-2.0000000000000004, -0.9999999999999999)
+    ])
   })
 
   const twos = [
@@ -42,7 +40,7 @@ describe('nthRoots', function () {
     const roots = nthRoots(complex('16'), 4)
 
     roots.forEach(function (value, index, array) {
-      assert.deepEqual(value, twos[index])
+      assert.deepStrictEqual(value, twos[index])
     })
   })
 
@@ -50,7 +48,7 @@ describe('nthRoots', function () {
     const roots = nthRoots(16, 4)
 
     roots.forEach(function (value, index, array) {
-      assert.deepEqual(value, twos[index])
+      assert.deepStrictEqual(value, twos[index])
     })
   })
 
@@ -58,7 +56,7 @@ describe('nthRoots', function () {
     const roots = nthRoots('16', 4)
 
     roots.forEach(function (value, index, array) {
-      assert.deepEqual(value, twos[index])
+      assert.deepStrictEqual(value, twos[index])
     })
   })
 
@@ -66,8 +64,8 @@ describe('nthRoots', function () {
     const roots2 = nthRoots(0)
     const roots4 = nthRoots(0, 4)
     const roots8 = nthRoots(0, 8)
-    assert.deepEqual(roots2, [complex(0)])
-    assert.deepEqual(roots4, [complex(0)])
-    assert.deepEqual(roots8, [complex(0)])
+    assert.deepStrictEqual(roots2, [complex(0)])
+    assert.deepStrictEqual(roots4, [complex(0)])
+    assert.deepStrictEqual(roots8, [complex(0)])
   })
 })

@@ -3,7 +3,7 @@
 const Complex = require('../../type/complex/Complex')
 const typed = require('../../core/typed')
 const complex = Complex.factory(
-  'Complex', {}, '', typed, {on: function (x, y) {}}
+  'Complex', {}, '', typed, { on: function (x, y) {} }
 )
 
 function factory (type, config, load, typed) {
@@ -45,7 +45,7 @@ function factory (type, config, load, typed) {
     },
     'Complex, number': _nthComplexRoots
   })
-  nthRoots.toTex = {2: `\\{y : $y^{args[1]} = {\${args[0]}}\\}`}
+  nthRoots.toTex = { 2: `\\{y : $y^{args[1]} = {\${args[0]}}\\}` }
   return nthRoots
 }
 
@@ -99,7 +99,7 @@ function _nthComplexRoots (a, root) {
       roots.push(_calculateExactResult[halfPiFactor % 4](r))
       continue
     }
-    roots.push(complex({r: r, phi: (arg + 2 * Math.PI * k) / root}))
+    roots.push(complex({ r: r, phi: (arg + 2 * Math.PI * k) / root }))
   }
   return roots
 }

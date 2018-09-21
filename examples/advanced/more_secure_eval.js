@@ -28,7 +28,7 @@ math.import({
   'parse': function () { throw new Error('Function parse is disabled') },
   'simplify': function () { throw new Error('Function simplify is disabled') },
   'derivative': function () { throw new Error('Function derivative is disabled') }
-}, {override: true})
+}, { override: true })
 
 console.log(limitedEval('sqrt(16)')) // Ok, 4
 console.log(limitedEval('parse("2+3")')) // Error: Function parse is disabled

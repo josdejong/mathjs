@@ -7,15 +7,15 @@ const cosh = math.cosh
 const complex = math.complex
 const matrix = math.matrix
 const unit = math.unit
-const bigmath = math.create({number: 'BigNumber', precision: 20})
-const biggermath = math.create({precision: 22})
-const predmath = math.create({predictable: true})
+const bigmath = math.create({ number: 'BigNumber', precision: 20 })
+const biggermath = math.create({ precision: 22 })
+const predmath = math.create({ predictable: true })
 const acoshBig = bigmath.acosh
 const Big = bigmath.bignumber
 
 describe('acosh', function () {
   it('should return the hyperbolic arccos of a boolean', function () {
-    assert.equal(acosh(true), 0)
+    assert.strictEqual(acosh(true), 0)
     approx.deepEqual(acosh(false), complex(0, pi / 2))
     // assert.ok(isNaN(acosh(false)))
   })
@@ -33,19 +33,19 @@ describe('acosh', function () {
   })
 
   it('should return NaN for values out of range and predictable:true', function () {
-    assert.equal(typeof predmath.acosh(-2), 'number')
+    assert.strictEqual(typeof predmath.acosh(-2), 'number')
     assert(isNaN(predmath.acosh(-2)))
   })
 
   it('should return the hyperbolic arccos of a bignumber', function () {
     const arg = Big(1)
-    assert.deepEqual(acosh(arg), Big(0))
-    assert.deepEqual(acoshBig(Big(2)), Big('1.3169578969248167086'))
-    assert.deepEqual(acoshBig(Big(3)), Big('1.7627471740390860505'))
-    assert.deepEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107')
+    assert.deepStrictEqual(acosh(arg), Big(0))
+    assert.deepStrictEqual(acoshBig(Big(2)), Big('1.3169578969248167086'))
+    assert.deepStrictEqual(acoshBig(Big(3)), Big('1.7627471740390860505'))
+    assert.deepStrictEqual(acoshBig(bigmath.pi).toString(), '1.811526272460853107')
 
     // Make sure arg was not changed
-    assert.deepEqual(arg, Big(1))
+    assert.deepStrictEqual(arg, Big(1))
   })
 
   it('should be the inverse function of hyperbolic cos', function () {
@@ -57,15 +57,15 @@ describe('acosh', function () {
   })
 
   it('should be the inverse function of bignumber cosh', function () {
-    assert.deepEqual(acoshBig(bigmath.cosh(Big(-1))), Big(1))
-    assert.deepEqual(acoshBig(bigmath.cosh(Big(0))), Big(0))
-    assert.deepEqual(acoshBig(bigmath.cosh(Big(2))), Big(2))
+    assert.deepStrictEqual(acoshBig(bigmath.cosh(Big(-1))), Big(1))
+    assert.deepStrictEqual(acoshBig(bigmath.cosh(Big(0))), Big(0))
+    assert.deepStrictEqual(acoshBig(bigmath.cosh(Big(2))), Big(2))
 
     // Pass in extra digit
     const arg = Big(0.1)
-    assert.deepEqual(acoshBig(biggermath.cosh(arg)), Big('0.10000000000000000012'))
-    assert.deepEqual(acoshBig(biggermath.cosh(Big(0.5))), Big('0.49999999999999999995'))
-    assert.deepEqual(arg, Big(0.1))
+    assert.deepStrictEqual(acoshBig(biggermath.cosh(arg)), Big('0.10000000000000000012'))
+    assert.deepStrictEqual(acoshBig(biggermath.cosh(Big(0.5))), Big('0.49999999999999999995'))
+    assert.deepStrictEqual(arg, Big(0.1))
   })
 
   it('should throw an error if the bignumber result is complex', function () {
@@ -80,7 +80,7 @@ describe('acosh', function () {
     approx.deepEqual(acosh(complex('-2-3i')), complex(1.9833870299165, -2.14144911111600))
     approx.deepEqual(acosh(complex('1+i')), complex(1.061275061905036, 0.904556894302381))
     approx.deepEqual(acosh(complex('i')), complex(0.881373587019543, 1.570796326794897))
-    assert.deepEqual(acosh(complex('1')), complex(0, 0))
+    assert.deepStrictEqual(acosh(complex('1')), complex(-0, 0))
     approx.deepEqual(acosh(complex('0')), complex(0, pi / 2))
   })
 
@@ -106,6 +106,6 @@ describe('acosh', function () {
 
   it('should LaTeX acosh', function () {
     const expression = math.parse('acosh(1)')
-    assert.equal(expression.toTex(), '\\cosh^{-1}\\left(1\\right)')
+    assert.strictEqual(expression.toTex(), '\\cosh^{-1}\\left(1\\right)')
   })
 })
