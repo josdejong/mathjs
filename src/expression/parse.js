@@ -19,6 +19,7 @@ function factory (type, config, load, typed) {
   const ParenthesisNode = load(require('./node/ParenthesisNode'))
   const FunctionNode = load(require('./node/FunctionNode'))
   const RangeNode = load(require('./node/RangeNode'))
+  const RelationalNode = load(require('./node/RelationalNode'))
   const SymbolNode = load(require('./node/SymbolNode'))
 
   /**
@@ -757,12 +758,50 @@ function factory (type, config, load, typed) {
     return node
   }
 
+
+    /**
+   * Parse a chained conditional, like 'a > b >= c'
+   * @return {RelationalNode} node
+   */
+  function parseRelational (state) {
+    const params = [parseShift(state)]
+    const conditionals = []
+
+    let operators = {
+      '==': 'equal',
+      '!=': 'unequal',
+      '<': 'smaller',
+      '>': 'larger',
+      '<=': 'smallerEq',
+      '>=': 'largerEq'
+    }
+
+    while (operators.hasOwnProperty(state.token)) { // eslint-disable-line no-unmodified-loop-condition
+      let cond = { name: state.token, fn: operators[state.token] }
+      console.log(cond);
+      conditionals.push(cond)
+      getTokenSkipNewline(state)
+      params.push(parseShift(state))
+    }
+
+    if(params.length === 1) {
+      return params[0]
+    }
+    else if(params.length === 2) {
+      return new OperatorNode(conditionals[0].name, conditionals[0].fn, params)
+    }
+    else {
+      return new RelationalNode(conditionals.map(c => c.fn), params)
+    }
+  }
+
+
   /**
    * relational operators
    * @return {Node} node
    * @private
    */
-  function parseRelational (state) {
+  function parseRelationalOld (state) {
     let node, operators, name, fn, params
 
     node = parseShift(state)
