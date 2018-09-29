@@ -33,6 +33,7 @@ describe('RelationalNode', function () {
     assert.throws(function () { console.log(new RelationalNode('smaller')) }, TypeError)
     assert.throws(function () { console.log(new RelationalNode(['smaller'])) }, TypeError)
     assert.throws(function () { console.log(new RelationalNode(['smaller'], one)) }, TypeError)
+    assert.throws(function () { console.log(new RelationalNode(['smaller'], [one])) }, TypeError)
   })
 
   it('should evaluate a RelationalNode', function () {

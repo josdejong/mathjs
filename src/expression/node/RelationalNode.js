@@ -23,6 +23,7 @@ function factory (type, config, load, typed) {
     }
     if (!Array.isArray(conditionals)) throw new TypeError('Parameter conditionals must be an array')
     if (!Array.isArray(params)) throw new TypeError('Parameter params must be an array')
+    if (conditionals.length !== params.length - 1) throw new TypeError('Parameter params must contain exactly one more element than parameter conditionals')
 
     this.conditionals = conditionals
     this.params = params

@@ -760,7 +760,7 @@ function factory (type, config, load, typed) {
 
   /**
    * Parse a chained conditional, like 'a > b >= c'
-   * @return {RelationalNode} node
+   * @return {Node} node
    */
   function parseRelational (state) {
     const params = [parseShift(state)]
