@@ -1,6 +1,8 @@
 'use strict'
 
 const operators = require('../operators')
+const latex = require('../../utils/latex')
+const escape = require('../../utils/string').escape
 
 function factory (type, config, load, typed) {
   const Node = load(require('./Node'))
@@ -22,11 +24,8 @@ function factory (type, config, load, typed) {
     if (!Array.isArray(conditionals)) throw new TypeError('Parameter conditionals must be an array')
     if (!Array.isArray(params)) throw new TypeError('Parameter params must be an array')
 
-    
     this.conditionals = conditionals
     this.params = params
-    console.log("Creating RelationalNode");
-    console.log(this.conditionals, this.params);
   }
 
   RelationalNode.prototype = new Node()
@@ -49,39 +48,26 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   RelationalNode.prototype._compile = function (math, argNames) {
-
     // Step 0: let rhs = params[0]
     // Step 1: let lhs = params[0], rhs = params[1]
     // Step 2: Evaluate lhs conditionals[0] rhs.
     // If true, let rhs = params[2], lhs = rhs
 
-    let self = this;
+    let self = this
     return function evalRelationalNode (scope, args, context) {
+      let evalLhs
 
-      
-      let evalLhs, 
-          evalRhs = self.params[0]._compile(math, argNames);
-      
-      for(let i=0; i<self.conditionals.length; i++) {
-        evalLhs = evalRhs;
-        evalRhs = self.params[i+1]._compile(math, argNames);
-        console.log("Testing " + evalLhs(scope, args, context) + " " + self.conditionals[i] + " " + evalRhs(scope, args, context));
-        var condFn = getSafeProperty(math, self.conditionals[i]);
-        if(!condFn(evalLhs(scope, args, context), evalRhs(scope, args, context))) {
-          return false;
+      let evalRhs = self.params[0]._compile(math, argNames)
+
+      for (let i = 0; i < self.conditionals.length; i++) {
+        evalLhs = evalRhs
+        evalRhs = self.params[i + 1]._compile(math, argNames)
+        var condFn = getSafeProperty(math, self.conditionals[i])
+        if (!condFn(evalLhs(scope, args, context), evalRhs(scope, args, context))) {
+          return false
         }
       }
-      return true;
-    }
-
-    const evalCondition = this.condition._compile(math, argNames)
-    const evalTrueExpr = this.trueExpr._compile(math, argNames)
-    const evalFalseExpr = this.falseExpr._compile(math, argNames)
-
-    return function evalRelationalNode (scope, args, context) {
-      return testCondition(evalCondition(scope, args, context))
-        ? evalTrueExpr(scope, args, context)
-        : evalFalseExpr(scope, args, context)
+      return true
     }
   }
 
@@ -90,7 +76,7 @@ function factory (type, config, load, typed) {
    * @param {function(child: Node, path: string, parent: Node)} callback
    */
   RelationalNode.prototype.forEach = function (callback) {
-    this.params.forEach((n, i) => callback(n, 'params[' + i + ']', this), this);
+    this.params.forEach((n, i) => callback(n, 'params[' + i + ']', this), this)
   }
 
   /**
@@ -108,11 +94,11 @@ function factory (type, config, load, typed) {
    * @return {RelationalNode}
    */
   RelationalNode.prototype.clone = function () {
-    return new RelationalNode(this.conditionals, this.params);
+    return new RelationalNode(this.conditionals, this.params)
   }
 
   /**
-   * Get string representation
+   * Get string representation.
    * @param {Object} options
    * @return {string} str
    */
@@ -120,34 +106,28 @@ function factory (type, config, load, typed) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
     const precedence = operators.getPrecedence(this, parenthesis)
 
-    // Enclose Arguments in parentheses if they are an OperatorNode
-    // or have lower or equal precedence
-    // NOTE: enclosing all OperatorNodes in parentheses is a decision
-    // purely based on aesthetics and readability
-    let condition = this.condition.toString(options)
-    const conditionPrecedence = operators.getPrecedence(this.condition, parenthesis)
-    if ((parenthesis === 'all') ||
-        (this.condition.type === 'OperatorNode') ||
-        ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
-      condition = '(' + condition + ')'
+    const paramStrings = this.params.map(function (p, index) {
+      let paramPrecedence = operators.getPrecedence(p, parenthesis)
+      return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
+        ? '(' + p.toString(options) + ')'
+        : p.toString(options)
+    })
+
+    let operatorMap = {
+      'equal': '==',
+      'unequal': '!=',
+      'smaller': '<',
+      'larger': '>',
+      'smallerEq': '<=',
+      'largerEq': '>='
     }
 
-    let trueExpr = this.trueExpr.toString(options)
-    const truePrecedence = operators.getPrecedence(this.trueExpr, parenthesis)
-    if ((parenthesis === 'all') ||
-        (this.trueExpr.type === 'OperatorNode') ||
-        ((truePrecedence !== null) && (truePrecedence <= precedence))) {
-      trueExpr = '(' + trueExpr + ')'
+    let ret = paramStrings[0]
+    for (let i = 0; i < this.conditionals.length; i++) {
+      ret += ' ' + operatorMap[this.conditionals[i]] + ' ' + paramStrings[i + 1]
     }
 
-    let falseExpr = this.falseExpr.toString(options)
-    const falsePrecedence = operators.getPrecedence(this.falseExpr, parenthesis)
-    if ((parenthesis === 'all') ||
-        (this.falseExpr.type === 'OperatorNode') ||
-        ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
-      falseExpr = '(' + falseExpr + ')'
-    }
-    return condition + ' ? ' + trueExpr + ' : ' + falseExpr
+    return ret
   }
 
   /**
@@ -158,7 +138,7 @@ function factory (type, config, load, typed) {
     return {
       mathjs: 'RelationalNode',
       conditionals: this.conditionals,
-      params: this.params,
+      params: this.params
     }
   }
 
@@ -182,34 +162,28 @@ function factory (type, config, load, typed) {
     const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
     const precedence = operators.getPrecedence(this, parenthesis)
 
-    // Enclose Arguments in parentheses if they are an OperatorNode
-    // or have lower or equal precedence
-    // NOTE: enclosing all OperatorNodes in parentheses is a decision
-    // purely based on aesthetics and readability
-    let condition = this.condition.toHTML(options)
-    const conditionPrecedence = operators.getPrecedence(this.condition, parenthesis)
-    if ((parenthesis === 'all') ||
-        (this.condition.type === 'OperatorNode') ||
-        ((conditionPrecedence !== null) && (conditionPrecedence <= precedence))) {
-      condition = '<span class="math-parenthesis math-round-parenthesis">(</span>' + condition + '<span class="math-parenthesis math-round-parenthesis">)</span>'
+    const paramStrings = this.params.map(function (p, index) {
+      let paramPrecedence = operators.getPrecedence(p, parenthesis)
+      return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
+        ? '<span class="math-parenthesis math-round-parenthesis">(</span>' + p.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>'
+        : p.toHTML(options)
+    })
+
+    let operatorMap = {
+      'equal': '==',
+      'unequal': '!=',
+      'smaller': '<',
+      'larger': '>',
+      'smallerEq': '<=',
+      'largerEq': '>='
     }
 
-    let trueExpr = this.trueExpr.toHTML(options)
-    const truePrecedence = operators.getPrecedence(this.trueExpr, parenthesis)
-    if ((parenthesis === 'all') ||
-        (this.trueExpr.type === 'OperatorNode') ||
-        ((truePrecedence !== null) && (truePrecedence <= precedence))) {
-      trueExpr = '<span class="math-parenthesis math-round-parenthesis">(</span>' + trueExpr + '<span class="math-parenthesis math-round-parenthesis">)</span>'
+    let ret = paramStrings[0]
+    for (let i = 0; i < this.conditionals.length; i++) {
+      ret += '<span class="math-operator math-binary-operator math-explicit-binary-operator">' + escape(operatorMap[this.conditionals[i]]) + '</span>' + paramStrings[i + 1]
     }
 
-    let falseExpr = this.falseExpr.toHTML(options)
-    const falsePrecedence = operators.getPrecedence(this.falseExpr, parenthesis)
-    if ((parenthesis === 'all') ||
-        (this.falseExpr.type === 'OperatorNode') ||
-        ((falsePrecedence !== null) && (falsePrecedence <= precedence))) {
-      falseExpr = '<span class="math-parenthesis math-round-parenthesis">(</span>' + falseExpr + '<span class="math-parenthesis math-round-parenthesis">)</span>'
-    }
-    return condition + '<span class="math-operator math-conditional-operator">?</span>' + trueExpr + '<span class="math-operator math-conditional-operator">:</span>' + falseExpr
+    return ret
   }
 
   /**
@@ -218,44 +192,22 @@ function factory (type, config, load, typed) {
    * @return {string} str
    */
   RelationalNode.prototype._toTex = function (options) {
-    return '\\begin{cases} {' +
-        this.trueExpr.toTex(options) + '}, &\\quad{\\text{if }\\;' +
-        this.condition.toTex(options) +
-        '}\\\\{' + this.falseExpr.toTex(options) +
-        '}, &\\quad{\\text{otherwise}}\\end{cases}'
-  }
+    const parenthesis = (options && options.parenthesis) ? options.parenthesis : 'keep'
+    const precedence = operators.getPrecedence(this, parenthesis)
 
-  /**
-   * Test whether a condition is met
-   * @param {*} condition
-   * @returns {boolean} true if condition is true or non-zero, else false
-   */
-  function testCondition (condition) {
-    if (typeof condition === 'number' ||
-        typeof condition === 'boolean' ||
-        typeof condition === 'string') {
-      return !!condition
+    const paramStrings = this.params.map(function (p, index) {
+      let paramPrecedence = operators.getPrecedence(p, parenthesis)
+      return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
+        ? '\\left(' + p.toString(options) + '\right)'
+        : p.toString(options)
+    })
+
+    let ret = paramStrings[0]
+    for (let i = 0; i < this.conditionals.length; i++) {
+      ret += latex.operators[this.conditionals[i]] + paramStrings[i + 1]
     }
 
-    if (condition) {
-      if (type.isBigNumber(condition)) {
-        return !condition.isZero()
-      }
-
-      if (type.isComplex(condition)) {
-        return !!((condition.re || condition.im))
-      }
-
-      if (type.isUnit(condition)) {
-        return !!condition.value
-      }
-    }
-
-    if (condition === null || condition === undefined) {
-      return false
-    }
-
-    throw new TypeError('Unsupported type of condition "' + mathTypeOf(condition) + '"')
+    return ret
   }
 
   return RelationalNode
