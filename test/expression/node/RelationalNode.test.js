@@ -159,6 +159,28 @@ describe('RelationalNode', function () {
     assert.strictEqual(n1.equals(q), false)
   })
 
+  it('should perform short-circuit evaluation', function () {
+    const n = math.parse('(a = a+1) > (b = b+1) > (c = c+1) > (d = d+1)')
+    const scope = { a: 0, b: 0, c: 0, d: 0 }
+    let result = n.eval(scope)
+    assert.strictEqual(scope.a, 1)
+    assert.strictEqual(scope.b, 1)
+    assert.strictEqual(scope.c, 0)
+    assert.strictEqual(scope.d, 0)
+    assert.strictEqual(result, false)
+  })
+
+  it('should not evaluate params more than once', function () {
+    const n = math.parse('(a = a+1) >= (b = b+1) >= (c = c+1) >= (d = d+1)')
+    const scope = { a: 0, b: 0, c: 0, d: 0 }
+    let result = n.eval(scope)
+    assert.strictEqual(scope.a, 1)
+    assert.strictEqual(scope.b, 1)
+    assert.strictEqual(scope.c, 1)
+    assert.strictEqual(scope.d, 1)
+    assert.strictEqual(result, true)
+  })
+
   it('should respect the \'all\' parenthesis option', function () {
     assert.strictEqual(math.parse('a<b<c').toString({ parenthesis: 'all' }), '(a) < (b) < (c)')
   })

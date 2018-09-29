@@ -54,16 +54,18 @@ function factory (type, config, load, typed) {
     // If true, let rhs = params[2], lhs = rhs
 
     let self = this
+
+    const compiled = this.params.map(p => p._compile(math, argNames))
+
     return function evalRelationalNode (scope, args, context) {
       let evalLhs
-
-      let evalRhs = self.params[0]._compile(math, argNames)
+      let evalRhs = compiled[0](scope, args, context)
 
       for (let i = 0; i < self.conditionals.length; i++) {
         evalLhs = evalRhs
-        evalRhs = self.params[i + 1]._compile(math, argNames)
+        evalRhs = compiled[i + 1](scope, args, context)
         var condFn = getSafeProperty(math, self.conditionals[i])
-        if (!condFn(evalLhs(scope, args, context), evalRhs(scope, args, context))) {
+        if (!condFn(evalLhs, evalRhs)) {
           return false
         }
       }
