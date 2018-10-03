@@ -49,12 +49,7 @@ function factory (type, config, load, typed) {
    *                        evalNode(scope: Object, args: Object, context: *)
    */
   RelationalNode.prototype._compile = function (math, argNames) {
-    // Step 0: let rhs = params[0]
-    // Step 1: let lhs = params[0], rhs = params[1]
-    // Step 2: Evaluate lhs conditionals[0] rhs.
-    // If true, let rhs = params[2], lhs = rhs
-
-    let self = this
+    const self = this
 
     const compiled = this.params.map(p => p._compile(math, argNames))
 
@@ -65,7 +60,7 @@ function factory (type, config, load, typed) {
       for (let i = 0; i < self.conditionals.length; i++) {
         evalLhs = evalRhs
         evalRhs = compiled[i + 1](scope, args, context)
-        var condFn = getSafeProperty(math, self.conditionals[i])
+        const condFn = getSafeProperty(math, self.conditionals[i])
         if (!condFn(evalLhs, evalRhs)) {
           return false
         }
@@ -110,13 +105,13 @@ function factory (type, config, load, typed) {
     const precedence = operators.getPrecedence(this, parenthesis)
 
     const paramStrings = this.params.map(function (p, index) {
-      let paramPrecedence = operators.getPrecedence(p, parenthesis)
+      const paramPrecedence = operators.getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '(' + p.toString(options) + ')'
         : p.toString(options)
     })
 
-    let operatorMap = {
+    const operatorMap = {
       'equal': '==',
       'unequal': '!=',
       'smaller': '<',
@@ -166,13 +161,13 @@ function factory (type, config, load, typed) {
     const precedence = operators.getPrecedence(this, parenthesis)
 
     const paramStrings = this.params.map(function (p, index) {
-      let paramPrecedence = operators.getPrecedence(p, parenthesis)
+      const paramPrecedence = operators.getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '<span class="math-parenthesis math-round-parenthesis">(</span>' + p.toHTML(options) + '<span class="math-parenthesis math-round-parenthesis">)</span>'
         : p.toHTML(options)
     })
 
-    let operatorMap = {
+    const operatorMap = {
       'equal': '==',
       'unequal': '!=',
       'smaller': '<',
@@ -199,7 +194,7 @@ function factory (type, config, load, typed) {
     const precedence = operators.getPrecedence(this, parenthesis)
 
     const paramStrings = this.params.map(function (p, index) {
-      let paramPrecedence = operators.getPrecedence(p, parenthesis)
+      const paramPrecedence = operators.getPrecedence(p, parenthesis)
       return (parenthesis === 'all' || (paramPrecedence !== null && paramPrecedence <= precedence))
         ? '\\left(' + p.toString(options) + '\right)'
         : p.toString(options)

@@ -766,7 +766,7 @@ function factory (type, config, load, typed) {
     const params = [parseShift(state)]
     const conditionals = []
 
-    let operators = {
+    const operators = {
       '==': 'equal',
       '!=': 'unequal',
       '<': 'smaller',
@@ -776,7 +776,7 @@ function factory (type, config, load, typed) {
     }
 
     while (operators.hasOwnProperty(state.token)) { // eslint-disable-line no-unmodified-loop-condition
-      let cond = { name: state.token, fn: operators[state.token] }
+      const cond = { name: state.token, fn: operators[state.token] }
       conditionals.push(cond)
       getTokenSkipNewline(state)
       params.push(parseShift(state))
