@@ -1,7 +1,9 @@
 # History
 
-# not yet released, version 5.1.3
+# not yet released, version 5.2.0
 
+- Implemented support for chained conditionals like `10 < x <= 50`.
+  Thanks @ericman314.
 - Fix #1240, allow units having just a value and no unit. Thanks @ericman314.
 
 
