@@ -23,6 +23,7 @@ the lower level syntax of math.js. Differences are:
 - Some operators are different. For example  `^` is used for exponentiation,
   not bitwise xor.
 - Implicit multiplication, like `2 pi`, is supported and has special rules.
+- Relational operators (`<`, `>`, `<=`, `>=`, `==`, and `!=`) are chained, so the expression `5 < x < 10` is equivalent to `5 < x and x < 10`.
 
 
 ## Operators

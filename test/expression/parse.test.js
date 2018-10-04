@@ -1089,6 +1089,15 @@ describe('parse', function () {
       assert.strictEqual(parseAndEval('2 >= 1'), true)
     })
 
+    it('should parse chained conditionals', function () {
+      assert.strictEqual(parseAndEval('2 < 3 + 2 < 5 * 10'), true)
+      assert.strictEqual(parseAndEval('2 < 3 < 4'), true)
+      assert.strictEqual(parseAndEval('2 > 3 > 4'), false)
+      assert.strictEqual(parseAndEval('2 < 3 > 4'), false)
+      assert.strictEqual(parseAndEval('2 > 3 < 4'), false)
+      assert.strictEqual(parseAndEval('2 < 4 > 3 <= 5 >= 5'), true)
+    })
+
     it('should parse mod %', function () {
       approx.equal(parseAndEval('8 % 3'), 2)
     })
