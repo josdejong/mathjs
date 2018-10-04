@@ -645,6 +645,35 @@ const node3 = new math.expression.node.RangeNode(one, ten)
 const node4 = new math.expression.node.RangeNode(zero, ten, two)
 ```
 
+### RelationalNode
+
+Construction:
+
+```
+new RelationalNode(conditionals: string[], params: Node[])
+```
+
+`conditionals` is an array of strings, each of which may be 'smaller', 'larger', 'smallerEq', 'largerEq', 'equal', or 'unequal'. The `conditionals` array must contain exactly one fewer item than `params`.
+
+Properties:
+
+- `conditionals: string[]`
+- `params: Node[]`
+
+A `RelationalNode` efficiently represents a chained conditional expression with two or more comparison operators, such as `10 < x <= 50`. The expression is equivalent to `10 < x and x <= 50`, except that `x` is evaluated only once, and evaluation stops (is "short-circuited") once any condition tests false. Operators that are subject to chaining are `<`, `>`, `<=`, `>=`, `==`, and `!=`. For backward compatibility, `math.parse` will return an `OperatorNode` if only a single conditional is present (such as `x > 2`).
+
+Examples:
+
+```js
+
+const ten = new Math.expression.node.ConstantNode(10)
+const x = new Math.expression.node.SymbolNode('x')
+const fifty = new Math.expression.node.ConstantNode(50)
+
+const node1 = new math.expression.node.RelationalNode(['smaller', 'smallerEq'], [ten, x, fifty])
+const node2 = math.parse('10 < x <= 50')
+```
+
 
 ### SymbolNode
 
