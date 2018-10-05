@@ -1,10 +1,13 @@
 # History
 
-# not yet released, version 5.2.0
+# 2018-10-05, version 5.2.0
 
 - Implemented support for chained conditionals like `10 < x <= 50`.
   Thanks @ericman314.
-- Fix #1240, allow units having just a value and no unit. Thanks @ericman314.
+- Add an example showing a proof of concept of using `BigInt` in mathjs.
+- Fixed #1269: Bugfix for BigNumber divided by unit. Thanks @ericman314.
+- Fixed #1240: allow units having just a value and no unit.
+  Thanks @ericman314.
 
 
 ## 2018-09-09, version 5.1.2

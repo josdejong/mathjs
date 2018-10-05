@@ -50,5 +50,8 @@ function factory (type, config, load, typed) {
   return numeric
 }
 
-exports.name = 'numeric'
+// FIXME: expose numeric in the math namespace after we've decided on a name and have written proper docs for this function. See https://github.com/josdejong/mathjs/pull/1270
+// exports.name = 'type._numeric'
+exports.path = 'type'
+exports.name = '_numeric'
 exports.factory = factory
