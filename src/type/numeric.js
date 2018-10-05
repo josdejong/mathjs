@@ -10,13 +10,12 @@ function factory (type, config, load, typed) {
     'Fraction': true
   }
 
+  // Load the conversion functions for each output type
   const validOutputTypes = {
     'number': load(require('./number')),
     'BigNumber': load(require('./bignumber/function/bignumber')),
     'Fraction': load(require('./fraction/function/fraction'))
   }
-
-  // TODO: expose this function to mathjs, add documentation
 
   /**
    * Convert a numeric value to a specific type: number, BigNumber, or Fraction
