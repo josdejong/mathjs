@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181005-version-520">2018-10-05, version 5.2.0 <a href="#20181005-version-520" title="Permalink">#</a></h1>
+
+- Implemented support for chained conditionals like `10 < x <= 50`.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Add an example showing a proof of concept of using `BigInt` in mathjs.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1269">#1269</a>: Bugfix for BigNumber divided by unit. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1240">#1240</a>: allow units having just a value and no unit.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
 
 <h2 id="20180909-version-512">2018-09-09, version 5.1.2 <a href="#20180909-version-512" title="Permalink">#</a></h2>
 
