@@ -120,8 +120,9 @@ describe('divide', function () {
     assert.strictEqual(divide(4, math.unit('W')).toString(), '4 W^-1')
     assert.strictEqual(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1')
     assert.strictEqual(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg')
-
     assert.strictEqual(divide(10, math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
+    assert.strictEqual(divide(math.fraction(10), math.unit(4, 'mg/s')).toString(), '5/2 s / mg')
+    assert.strictEqual(divide(math.fraction(10), math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
 
     approx.equal(math.format(divide(10, math.unit(math.complex(1, 2), 'm/s')), 14), '(2 - 4i) s / m')
   })

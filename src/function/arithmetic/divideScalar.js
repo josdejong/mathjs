@@ -1,7 +1,8 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  const multiplyScalar = load(require('./multiplyScalar'))
+  const numeric = load(require('../../type/numeric'))
+  const getTypeOf = load(require('../../function/utils/typeof'))
 
   /**
    * Divide two scalar values, `x / y`.
@@ -33,47 +34,20 @@ function factory (type, config, load, typed) {
       return x.div(y)
     },
 
-    'Unit, number': function (x, y) {
+    'Unit, number | Fraction | BigNumber': function (x, y) {
       const res = x.clone()
       // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = divideScalar(((res.value === null) ? res._normalize(1) : res.value), y)
+      const one = numeric(1, getTypeOf(y))
+      res.value = divideScalar(((res.value === null) ? res._normalize(one) : res.value), y)
       return res
     },
 
-    'Unit, Fraction': function (x, y) {
-      const res = x.clone()
-      // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = divideScalar(((res.value === null) ? res._normalize(type.Fraction(1)) : res.value), y)
-      return res
-    },
-
-    'Unit, BigNumber': function (x, y) {
-      const res = x.clone()
-      // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = divideScalar(((res.value === null) ? res._normalize(type.BigNumber('1')) : res.value), y)
-      return res
-    },
-
-    'number, Unit': function (x, y) {
-      const res = y.pow(-1)
-      // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = multiplyScalar(((res.value === null) ? res._normalize(1) : res.value), x)
-      return res
-    },
-
-    'Fraction, Unit': function (x, y) {
-      const res = y.pow(-1)
-      // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = multiplyScalar(((res.value === null) ? res._normalize(type.Fraction(1)) : type.Fraction(res.value)), x)
-      return res
-    },
-
-    'BigNumber, Unit': function (x, y) {
+    'number | Fraction | BigNumber, Unit': function (x, y) {
       let res = y.clone()
-      if (res.value !== null) res.value = type.BigNumber(res.value)
       res = res.pow(-1)
       // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = multiplyScalar(((res.value === null) ? res._normalize(type.BigNumber('1')) : type.BigNumber(res.value + '')), x)
+      const one = numeric(1, getTypeOf(x))
+      res.value = divideScalar(x, ((y.value === null) ? y._normalize(one) : y.value))
       return res
     },
 

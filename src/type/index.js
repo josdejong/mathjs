@@ -7,6 +7,7 @@ module.exports = [
   require('./fraction'),
   require('./matrix'),
   require('./number'),
+  require('./numeric'),
   require('./resultset'),
   require('./string'),
   require('./unit')

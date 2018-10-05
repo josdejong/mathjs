@@ -1208,7 +1208,7 @@ function factory (type, config, load, typed) {
       if (CONSTANTS.hasOwnProperty(name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
       } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
-        node = new ConstantNode(numeric(name))
+        node = new ConstantNode(numeric(name, 'number'))
       } else {
         node = new SymbolNode(name)
       }
