@@ -1,5 +1,11 @@
 # History
 
+# not yet released, version 5.2.1
+
+- Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.
+  Thanks @ericman314.
+
+
 # 2018-10-05, version 5.2.0
 
 - Implemented support for chained conditionals like `10 < x <= 50`.
