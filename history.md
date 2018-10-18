@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181018-version-521">2018-10-18, version 5.2.1 <a href="#20181018-version-521" title="Permalink">#</a></h1>
+
+- Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.
+  Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Upgraded dependencies (`fraction.js@4.0.10`)
+- Upgraded devDependencies (`@babel/core@7.1.2`, `nyc@13.1.0`,
+  `webpack@4.21.0`).
+
+
 <h1 id="20181005-version-520">2018-10-05, version 5.2.0 <a href="#20181005-version-520" title="Permalink">#</a></h1>
 
 - Implemented support for chained conditionals like `10 < x <= 50`.
