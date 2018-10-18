@@ -1,9 +1,12 @@
 # History
 
-# not yet released, version 5.2.1
+# 2018-10-18, version 5.2.1
 
 - Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.
   Thanks @ericman314.
+- Upgraded dependencies (`fraction.js@4.0.10`)
+- Upgraded devDependencies (`@babel/core@7.1.2`, `nyc@13.1.0`,
+  `webpack@4.21.0`).
 
 
 # 2018-10-05, version 5.2.0
