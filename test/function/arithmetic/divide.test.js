@@ -120,8 +120,9 @@ describe('divide', function () {
     assert.strictEqual(divide(4, math.unit('W')).toString(), '4 W^-1')
     assert.strictEqual(divide(2.5, math.unit('1.25 mm')).toString(), '2 mm^-1')
     assert.strictEqual(divide(10, math.unit('4 mg/s')).toString(), '2.5 s / mg')
-
     assert.strictEqual(divide(10, math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
+    assert.strictEqual(divide(math.fraction(10), math.unit(4, 'mg/s')).toString(), '5/2 s / mg')
+    assert.strictEqual(divide(math.fraction(10), math.unit(math.fraction(4), 'mg/s')).toString(), '5/2 s / mg')
 
     approx.equal(math.format(divide(10, math.unit(math.complex(1, 2), 'm/s')), 14), '(2 - 4i) s / m')
   })
@@ -151,6 +152,12 @@ describe('divide', function () {
 
   it('should divide units by a big number', function () {
     assert.strictEqual(divide(math.unit('5 m'), bignumber(10)).toString(), '0.5 m')
+    assert.strictEqual(divide(bignumber(80), math.unit('day')).format({ precision: 50 }), '0.92592592592592592592592592592592592592592592592593 mHz')
+    assert.strictEqual(divide(bignumber(80), math.unit('1 day')).format({ precision: 50 }), '0.92592592592592592592592592592592592592592592592593 mHz')
+    assert.strictEqual(divide(math.unit('day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
+    assert.strictEqual(divide(math.unit('1 day'), bignumber(81)).format({ precision: 50 }), '0.012345679012345679012345679012345679012345679012346 day')
+
+    assert.strictEqual(math.create({ number: 'BigNumber' }).eval('round(80 / day * 5 days, 30)').toString(), '400')
   })
 
   it('should divide each elements in a matrix by a number', function () {

@@ -1,46 +1,57 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  // TODO: expose this function to mathjs, add documentation
+  const getTypeOf = load(require('../function/utils/typeof'))
+
+  const validInputTypes = {
+    'string': true,
+    'number': true,
+    'BigNumber': true,
+    'Fraction': true
+  }
+
+  // Load the conversion functions for each output type
+  const validOutputTypes = {
+    'number': load(require('./number')),
+    'BigNumber': load(require('./bignumber/function/bignumber')),
+    'Fraction': load(require('./fraction/function/fraction'))
+  }
 
   /**
-   * Create a numeric value with a specific type: number, BigNumber, or Fraction
+   * Convert a numeric value to a specific type: number, BigNumber, or Fraction
    *
-   * @param {string | number} value
-   * @param {'number' | 'BigNumber' | 'Fraction'}
+   * @param {string | number | BigNumber | Fraction } value
+   * @param {'number' | 'BigNumber' | 'Fraction'} outputType
    * @return {number | BigNumber | Fraction} Returns an instance of the
-   *                                         numeric requested type
+   *                                         numeric in the requested type
    */
-  return function numeric (value, valueType) {
-    if (valueType === 'BigNumber') {
-      return new type.BigNumber(value)
-    } else if (valueType === 'Fraction') {
-      return new type.Fraction(value)
+  const numeric = function (value, outputType) {
+    const inputType = getTypeOf(value)
+
+    if (!(inputType in validInputTypes)) {
+      throw new TypeError('Cannot convert ' + value + ' of type "' + inputType + '"; valid input types are ' + Object.keys(validInputTypes).join(', '))
+    }
+    if (!(outputType in validOutputTypes)) {
+      throw new TypeError('Cannot convert ' + value + ' to type "' + outputType + '"; valid output types are ' + Object.keys(validOutputTypes).join(', '))
+    }
+
+    if (outputType === inputType) {
+      return value
     } else {
-      // valueType === 'number' or undefined // TODO: check this
-      if (typeof value === 'number') {
-        return value
-      } else {
-        if (value === 'Infinity') {
-          return Infinity
-        }
-
-        if (value === 'NaN') {
-          return NaN
-        }
-
-        // The following regexp is relatively permissive
-        if (!/^[-+]?((\d+\.?\d*)|(\d*\.?\d+))([eE][+-]?\d+)?$/.test(value)) {
-          throw new Error('Invalid numeric value "' + value + '"')
-        }
-
-        // remove leading zeros like '003.2' which are not allowed by JavaScript
-        return parseFloat(value.replace(/^(0*)[0-9]/, function (match, zeros) {
-          return match.substring(zeros.length)
-        }))
-      }
+      return validOutputTypes[outputType](value)
     }
   }
+
+  numeric.toTex = function (node, options) {
+    // Not sure if this is strictly right but should work correctly for the vast majority of use cases.
+    return node.args[0].toTex()
+  }
+
+  return numeric
 }
 
+// FIXME: expose numeric in the math namespace after we've decided on a name and have written proper docs for this function. See https://github.com/josdejong/mathjs/pull/1270
+// exports.name = 'type._numeric'
+exports.path = 'type'
+exports.name = '_numeric'
 exports.factory = factory

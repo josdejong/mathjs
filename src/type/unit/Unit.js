@@ -1549,7 +1549,7 @@ function factory (type, config, load, typed, math) {
       name: 'rod',
       base: BASE_UNITS.LENGTH,
       prefixes: PREFIXES.NONE,
-      value: 5.029210,
+      value: 5.0292,
       offset: 0
     },
     chain: {

@@ -38,6 +38,7 @@ function factory (type, config, load, typed) {
     },
 
     'string': function (x) {
+      if (x === 'NaN') return NaN
       const num = Number(x)
       if (isNaN(num)) {
         throw new SyntaxError('String "' + x + '" is no valid number')

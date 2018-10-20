@@ -19,6 +19,7 @@ function factory (type, config, load, typed) {
   const ParenthesisNode = load(require('./node/ParenthesisNode'))
   const FunctionNode = load(require('./node/FunctionNode'))
   const RangeNode = load(require('./node/RangeNode'))
+  const RelationalNode = load(require('./node/RelationalNode'))
   const SymbolNode = load(require('./node/SymbolNode'))
 
   /**
@@ -758,16 +759,14 @@ function factory (type, config, load, typed) {
   }
 
   /**
-   * relational operators
+   * Parse a chained conditional, like 'a > b >= c'
    * @return {Node} node
-   * @private
    */
   function parseRelational (state) {
-    let node, operators, name, fn, params
+    const params = [parseShift(state)]
+    const conditionals = []
 
-    node = parseShift(state)
-
-    operators = {
+    const operators = {
       '==': 'equal',
       '!=': 'unequal',
       '<': 'smaller',
@@ -775,16 +774,21 @@ function factory (type, config, load, typed) {
       '<=': 'smallerEq',
       '>=': 'largerEq'
     }
-    while (operators.hasOwnProperty(state.token)) {
-      name = state.token
-      fn = operators[name]
 
+    while (operators.hasOwnProperty(state.token)) { // eslint-disable-line no-unmodified-loop-condition
+      const cond = { name: state.token, fn: operators[state.token] }
+      conditionals.push(cond)
       getTokenSkipNewline(state)
-      params = [node, parseShift(state)]
-      node = new OperatorNode(name, fn, params)
+      params.push(parseShift(state))
     }
 
-    return node
+    if (params.length === 1) {
+      return params[0]
+    } else if (params.length === 2) {
+      return new OperatorNode(conditionals[0].name, conditionals[0].fn, params)
+    } else {
+      return new RelationalNode(conditionals.map(c => c.fn), params)
+    }
   }
 
   /**
@@ -1208,7 +1212,7 @@ function factory (type, config, load, typed) {
       if (CONSTANTS.hasOwnProperty(name)) { // true, false, null, ...
         node = new ConstantNode(CONSTANTS[name])
       } else if (NUMERIC_CONSTANTS.indexOf(name) !== -1) { // NaN, Infinity
-        node = new ConstantNode(numeric(name))
+        node = new ConstantNode(numeric(name, 'number'))
       } else {
         node = new SymbolNode(name)
       }

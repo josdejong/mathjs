@@ -1,7 +1,8 @@
 'use strict'
 
 function factory (type, config, load, typed) {
-  const multiplyScalar = load(require('./multiplyScalar'))
+  const numeric = load(require('../../type/numeric'))
+  const getTypeOf = load(require('../../function/utils/typeof'))
 
   /**
    * Divide two scalar values, `x / y`.
@@ -36,14 +37,17 @@ function factory (type, config, load, typed) {
     'Unit, number | Fraction | BigNumber': function (x, y) {
       const res = x.clone()
       // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = divideScalar(((res.value === null) ? res._normalize(1) : res.value), y)
+      const one = numeric(1, getTypeOf(y))
+      res.value = divideScalar(((res.value === null) ? res._normalize(one) : res.value), y)
       return res
     },
 
     'number | Fraction | BigNumber, Unit': function (x, y) {
-      const res = y.pow(-1)
+      let res = y.clone()
+      res = res.pow(-1)
       // TODO: move the divide function to Unit.js, it uses internals of Unit
-      res.value = multiplyScalar(((res.value === null) ? res._normalize(1) : res.value), x)
+      const one = numeric(1, getTypeOf(x))
+      res.value = divideScalar(x, ((y.value === null) ? y._normalize(one) : y.value))
       return res
     },
 

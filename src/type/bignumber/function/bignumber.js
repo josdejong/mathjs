@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
     },
 
     'Fraction': function (x) {
-      return new type.BigNumber(x.n).div(x.d)
+      return new type.BigNumber(x.n).div(x.d).times(x.s)
     },
 
     'null': function (x) {

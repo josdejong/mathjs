@@ -4,36 +4,23 @@ node_js:
   - 8
   - 10
 
-before_install:
-  - npm install -g npm@6
-  - npm install -g greenkeeper-lockfile@1
-
-install: npm install
-
-before_script: greenkeeper-lockfile-update
-
 script: npm run test:src
-
-after_script: greenkeeper-lockfile-upload
-
-# NAME env var is purely cosmetic, only way to identify builds until
-# https://github.com/travis-ci/travis-ci/issues/5898 is fixed.
 
 jobs:
   include:
     - stage: other
       script: npm run lint
       node_js: lts/*
-      env: NAME=lint
+      name: Lint
     - script: npm run test:browser
       node_js: lts/*
-      env: NAME=local browser test
+      name: Local Browser Test
     - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
       node_js: lts/*
-      env: NAME=browserstack test
+      name: Browserstack Test
     - script: npm run build && npm run test:dist
       node_js: lts/*
-      env: NAME=bundling test
+      name: Bundling Test
 
 git:
   depth: 5

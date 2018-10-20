@@ -37,7 +37,7 @@ function factory (type, config, load, typed) {
         return new type.Unit(null, x) // a pure unit
       }
 
-      return type.Unit.parse(x) // a unit with value, like '5cm'
+      return type.Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
     },
 
     'number | BigNumber | Fraction | Complex, string': function (value, unit) {

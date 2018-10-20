@@ -14,6 +14,7 @@ module.exports = [
   require('./OperatorNode'),
   require('./ParenthesisNode'),
   require('./RangeNode'),
+  require('./RelationalNode'),
   require('./SymbolNode'),
   require('./UpdateNode')
 ]

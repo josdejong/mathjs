@@ -1,5 +1,23 @@
 # History
 
+# 2018-10-18, version 5.2.1
+
+- Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.
+  Thanks @ericman314.
+- Upgraded dependencies (`fraction.js@4.0.10`)
+- Upgraded devDependencies (`@babel/core@7.1.2`, `nyc@13.1.0`,
+  `webpack@4.21.0`).
+
+
+# 2018-10-05, version 5.2.0
+
+- Implemented support for chained conditionals like `10 < x <= 50`.
+  Thanks @ericman314.
+- Add an example showing a proof of concept of using `BigInt` in mathjs.
+- Fixed #1269: Bugfix for BigNumber divided by unit. Thanks @ericman314.
+- Fixed #1240: allow units having just a value and no unit.
+  Thanks @ericman314.
+
 
 ## 2018-09-09, version 5.1.2
 

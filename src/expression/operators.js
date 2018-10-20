@@ -93,6 +93,10 @@ const properties = [
     'OperatorNode:largerEq': {
       associativity: 'left',
       associativeWith: []
+    },
+    'RelationalNode': {
+      associativity: 'left',
+      associativeWith: []
     }
   },
   { // bitshift operators
