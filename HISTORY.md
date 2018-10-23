@@ -1,6 +1,6 @@
 # History
 
-# not yet released, version 5.2.2
+# 2018-10-23, version 5.2.2
 
 - Fixed #1286: Fixed unit base recognition and formatting for
   user-defined units. Thanks @ericman314.
