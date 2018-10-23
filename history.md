@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181023-version-522">2018-10-23, version 5.2.2 <a href="#20181023-version-522" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1286">#1286</a>: Fixed unit base recognition and formatting for
+  user-defined units. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h1 id="20181018-version-521">2018-10-18, version 5.2.1 <a href="#20181018-version-521" title="Permalink">#</a></h1>
 
 - Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.
