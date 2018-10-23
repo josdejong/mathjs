@@ -600,6 +600,13 @@ describe('Unit', function () {
       unit1.isUnitListSimplified = false
       assert.strictEqual(unit1.toString(), '300 lbf')
     })
+
+    it('should simplify user-defined units when unit system is "auto"', function () {
+      Unit.setUnitSystem('auto')
+      Unit.createUnit({ 'USD': '' })
+      Unit.createUnit({ 'EUR': '1.15 USD' })
+      assert.strictEqual(math.eval('10 EUR/hour * 2 hours').toString(), '20 EUR')
+    })
   })
 
   describe('valueOf', function () {

@@ -1,5 +1,11 @@
 # History
 
+# not yet released, version 5.2.2
+
+- Fixed #1286: Fixed unit base recognition and formatting for
+  user-defined units. Thanks @ericman314.
+
+
 # 2018-10-18, version 5.2.1
 
 - Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.

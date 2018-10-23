@@ -3166,7 +3166,7 @@ function factory (type, config, load, typed, math) {
         dimensions: BASE_UNITS[baseName].dimensions.slice(0),
         prefixes: prefixes,
         offset: offset,
-        base: baseName
+        base: BASE_UNITS[baseName]
       }
 
       currentUnitSystem[baseName] = {
@@ -3195,6 +3195,7 @@ function factory (type, config, load, typed, math) {
           }
           if (match) {
             anyMatch = true
+            newUnit.base = BASE_UNITS[i]
             break
           }
         }
@@ -3211,7 +3212,7 @@ function factory (type, config, load, typed, math) {
           prefix: PREFIXES.NONE['']
         }
 
-        newUnit.base = baseName
+        newUnit.base = BASE_UNITS[baseName]
       }
     }
 
