@@ -1,5 +1,12 @@
 # History
 
+# not yet released, version 5.2.3
+
+- Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
+  specific cases. Thanks @dangmai.
+- Fixed incorrect LaTeX output of function `bitNot`, see #1299. Thanks @FSMaxB.
+
+
 # 2018-10-23, version 5.2.2
 
 - Fixed #1286: Fixed unit base recognition and formatting for
