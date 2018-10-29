@@ -81,7 +81,7 @@ exports.operators = {
   'dotPow': '.^\\wedge', // TODO find ideal solution
   'unaryPlus': '+',
   'unaryMinus': '-',
-  'bitNot': '~', // TODO find ideal solution
+  'bitNot': '\\~', // TODO find ideal solution
   'not': '\\neg',
   'multiply': '\\cdot',
   'divide': '\\frac', // TODO how to handle that properly?
