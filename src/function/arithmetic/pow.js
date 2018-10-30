@@ -82,7 +82,7 @@ function factory (type, config, load, typed) {
       return _powMatrix(x, y.toNumber())
     },
 
-    'Unit, number': function (x, y) {
+    'Unit, number | BigNumber': function (x, y) {
       return x.pow(y)
     }
 

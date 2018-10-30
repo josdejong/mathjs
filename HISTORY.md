@@ -5,6 +5,7 @@
 - Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
   specific cases. Thanks @dangmai.
 - Fixed incorrect LaTeX output of function `bitNot`, see #1299. Thanks @FSMaxB.
+- Fixed #1304: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
 
 
 # 2018-10-23, version 5.2.2
