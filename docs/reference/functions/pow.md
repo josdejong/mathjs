@@ -22,7 +22,7 @@ math.pow(x, y)
 
 Parameter | Type | Description
 --------- | ---- | -----------
-`x` | number &#124; BigNumber &#124; Complex &#124; Array &#124; Matrix | The base
+`x` | number &#124; BigNumber &#124; Complex &#124; Unit &#124; Array &#124; Matrix | The base
 `y` | number &#124; BigNumber &#124; Complex | The exponent
 
 ### Returns
