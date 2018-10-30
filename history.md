@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181030-version-523">2018-10-30, version 5.2.3 <a href="#20181030-version-523" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1293">#1293</a>: non-unicode characters in `escape-latex` giving issues in some
+  specific cases. Thanks <a href="https://github.com/dangmai">@dangmai</a>.
+- Fixed incorrect LaTeX output of function `bitNot`, see <a href="https://github.com/josdejong/mathjs/issues/1299">#1299</a>. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1304">#1304</a>: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
+- Upgraded dependencies (`escape-latex@1.2.0`)
+
 <h1 id="20181023-version-522">2018-10-23, version 5.2.2 <a href="#20181023-version-522" title="Permalink">#</a></h1>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1286">#1286</a>: Fixed unit base recognition and formatting for
