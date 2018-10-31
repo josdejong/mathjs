@@ -1,6 +1,6 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
 
 function factory (type, config, load, typed) {
   const gamma = load(require('./gamma'))

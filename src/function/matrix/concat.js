@@ -78,7 +78,7 @@ function factory (type, config, load, typed) {
         } else {
           // this is a matrix or array
           const m = clone(arg).valueOf()
-          const size = array.size(m)
+          const size = array.arraySize(m)
           matrices[i] = m
           prevDim = dim
           dim = size.length - 1

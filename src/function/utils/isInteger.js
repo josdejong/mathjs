@@ -1,6 +1,6 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
 const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {

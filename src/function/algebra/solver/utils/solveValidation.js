@@ -1,7 +1,7 @@
 'use strict'
 
 import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
-import { size as arraySize } from '../../../../utils/array'
+import { arraySize } from '../../../../utils/array'
 import { format } from '../../../../utils/string'
 
 function factory (type) {

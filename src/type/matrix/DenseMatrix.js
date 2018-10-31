@@ -1,7 +1,7 @@
 'use strict'
 
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../../utils/is'
-import { reshape, resize, size, unsqueeze, validate, validateIndex } from '../../utils/array'
+import { reshape, resize, arraySize, unsqueeze, validate, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
 import { clone, deepEqual } from '../../utils/object'
@@ -43,7 +43,7 @@ function factory (type, config, load, typed) {
       // replace nested Matrices with Arrays
       this._data = preprocess(data)
       // get the dimensions of the array
-      this._size = size(this._data)
+      this._size = arraySize(this._data)
       // verify the dimensions of the array, TODO: compute size while processing array
       validate(this._data, this._size)
       // data type unknown
@@ -299,7 +299,7 @@ function factory (type, config, load, typed) {
       sSize = submatrix.size()
       submatrix = submatrix.valueOf()
     } else {
-      sSize = size(submatrix)
+      sSize = arraySize(submatrix)
     }
 
     if (isScalar) {

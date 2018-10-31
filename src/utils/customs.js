@@ -1,6 +1,6 @@
 'use strict'
 
-const hasOwnProperty = require('./object').hasOwnProperty
+import { hasOwnProperty } from './object'
 
 /**
  * Get a property of a plain object
@@ -147,9 +147,9 @@ const safeNativeMethods = {
   toLocaleString: true
 }
 
-exports.getSafeProperty = getSafeProperty
-exports.setSafeProperty = setSafeProperty
-exports.isSafeProperty = isSafeProperty
-exports.validateSafeMethod = validateSafeMethod
-exports.isSafeMethod = isSafeMethod
-exports.isPlainObject = isPlainObject
+export { getSafeProperty }
+export { setSafeProperty }
+export { isSafeProperty }
+export { validateSafeMethod }
+export { isSafeMethod }
+export { isPlainObject }

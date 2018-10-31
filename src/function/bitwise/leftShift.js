@@ -1,7 +1,8 @@
 'use strict'
 
+import { leftShift as bigLeftShift } from '../../utils/bignumber/bitwise'
+
 const isInteger = require('../../utils/number').isInteger
-const bigLeftShift = require('../../utils/bignumber/leftShift')
 
 function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')

@@ -1,7 +1,8 @@
 'use strict'
 
-const deepMap = require('../../utils/collection/deepMap')
-const bigBitNot = require('../../utils/bignumber/bitNot')
+import { bitNot as bigBitNot } from '../../utils/bignumber/bitwise'
+
+import { deepMap } from '../../utils/collection'
 const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {

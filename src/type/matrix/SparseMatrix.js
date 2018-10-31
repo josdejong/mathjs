@@ -4,7 +4,7 @@ import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../
 import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
 import { clone, deepEqual } from '../../utils/object'
-import { size as arraySize, unsqueeze, validateIndex } from '../../utils/array'
+import { arraySize, unsqueeze, validateIndex } from '../../utils/array'
 
 const DimensionError = require('../../error/DimensionError')
 

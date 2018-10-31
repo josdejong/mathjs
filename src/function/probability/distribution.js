@@ -172,7 +172,7 @@ function factory (type, config, load, typed, math) {
           throw new TypeError('Unsupported type of value in function pickRandom')
         }
 
-        if (array.size(possibles).length > 1) {
+        if (array.arraySize(possibles).length > 1) {
           throw new Error('Only one dimensional vectors supported')
         }
 

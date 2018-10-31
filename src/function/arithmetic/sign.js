@@ -1,7 +1,7 @@
 'use strict'
 
-const number = require('../../utils/number')
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
+import { sign as numberSign } from '../../utils/number'
 
 function factory (type, config, load, typed) {
   /**
@@ -35,7 +35,7 @@ function factory (type, config, load, typed) {
    *            The sign of `x`
    */
   const sign = typed('sign', {
-    'number': number.sign,
+    'number': numberSign,
 
     'Complex': function (x) {
       return x.sign()

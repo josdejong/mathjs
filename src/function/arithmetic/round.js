@@ -1,8 +1,7 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const toFixed = require('../../utils/number').toFixed
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
+import { isInteger, toFixed } from '../../utils/number'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
 

@@ -1,8 +1,8 @@
 'use strict'
 
-import number from './number'
-import string from './string'
-
+import { isInteger } from './number'
+import { isNumber } from './is'
+import { format } from './string'
 import DimensionError from '../error/DimensionError'
 import IndexError from '../error/IndexError'
 
@@ -13,7 +13,7 @@ import IndexError from '../error/IndexError'
  * @param {Array} x
  * @Return {Number[]} size
  */
-export function size (x) {
+export function arraySize (x) {
   let s = []
 
   while (Array.isArray(x)) {
@@ -88,7 +88,7 @@ export function validate (array, size) {
  * @param {number} [length] Length of the array
  */
 export function validateIndex (index, length) {
-  if (!number.isNumber(index) || !number.isInteger(index)) {
+  if (!isNumber(index) || !isInteger(index)) {
     throw new TypeError('Index must be an integer (value: ' + index + ')')
   }
   if (index < 0 || (typeof length === 'number' && index >= length)) {
@@ -119,9 +119,9 @@ export function resize (array, size, defaultValue) {
 
   // check whether size contains positive integers
   size.forEach(function (value) {
-    if (!number.isNumber(value) || !number.isInteger(value) || value < 0) {
+    if (!isNumber(value) || !isInteger(value) || value < 0) {
       throw new TypeError('Invalid size, must contain positive integers ' +
-          '(size: ' + string.format(size) + ')')
+          '(size: ' + format(size) + ')')
     }
   })
 
@@ -215,7 +215,7 @@ export function reshape (array, sizes) {
   }
 
   if (sizes.length === 0) {
-    throw new DimensionError(0, product(size(array)), '!=')
+    throw new DimensionError(0, product(arraySize(array)), '!=')
   }
 
   var totalSize = 1
@@ -226,7 +226,7 @@ export function reshape (array, sizes) {
   if (flatArray.length !== totalSize) {
     throw new DimensionError(
       product(sizes),
-      product(size(array)),
+      product(arraySize(array)),
       '!='
     )
   }
@@ -237,7 +237,7 @@ export function reshape (array, sizes) {
     if (e instanceof DimensionError) {
       throw new DimensionError(
         product(sizes),
-        product(size(array)),
+        product(arraySize(array)),
         '!='
       )
     }
@@ -279,11 +279,11 @@ function _reshape (array, sizes) {
 /**
  * Squeeze a multi dimensional array
  * @param {Array} array
- * @param {Array} [arraySize]
+ * @param {Array} [size]
  * @returns {Array} returns the array itself
  */
-export function squeeze (array, arraySize) {
-  let s = arraySize || size(array)
+export function squeeze (array, size) {
+  let s = size || arraySize(array)
 
   // squeeze outer dimensions
   while (Array.isArray(array) && array.length === 1) {
@@ -339,12 +339,12 @@ function _squeeze (array, dims, dim) {
  * @param {Array} array
  * @param {number} dims       Desired number of dimensions of the array
  * @param {number} [outer]    Number of outer dimensions to be added
- * @param {Array} [arraySize] Current size of array.
+ * @param {Array} [size] Current size of array.
  * @returns {Array} returns the array itself
  * @private
  */
-export function unsqueeze (array, dims, outer, arraySize) {
-  let s = arraySize || size(array)
+export function unsqueeze (array, dims, outer, size) {
+  let s = size || arraySize(array)
 
   // unsqueeze outer dimensions
   if (outer) {
@@ -435,7 +435,7 @@ export function forEach (array, callback) {
  * @param {function} callback
  */
 export function filter (array, callback) {
-  if (size(array).length !== 1) {
+  if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 
@@ -450,7 +450,7 @@ export function filter (array, callback) {
  * @private
  */
 export function filterRegExp (array, regexp) {
-  if (size(array).length !== 1) {
+  if (arraySize(array).length !== 1) {
     throw new Error('Only one dimensional matrices supported')
   }
 

@@ -1,7 +1,7 @@
 'use strict'
 
-const nearlyEqual = require('../../utils/number').nearlyEqual
-const bigNearlyEqual = require('../../utils/bignumber/nearlyEqual')
+import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
+import { nearlyEqual } from '../../utils/number'
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))

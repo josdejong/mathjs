@@ -40,7 +40,7 @@ function factory (type, config, load, typed) {
    */
   const sqrtm = typed('sqrtm', {
     'Array | Matrix': function (A) {
-      const size = isMatrix(A) ? A.size() : array.size(A)
+      const size = isMatrix(A) ? A.size() : array.arraySize(A)
       switch (size.length) {
         case 1:
           // Single element Array | Matrix

@@ -1,6 +1,6 @@
 'use strict'
 
-import { deepForEach } from '../../utils/collection/deepForEach'
+import { deepForEach } from '../../utils/collection'
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))

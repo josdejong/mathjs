@@ -13,7 +13,7 @@ import { isBigNumber } from './is'
  * @param {*} x
  * @return {*} clone
  */
-exports.clone = function clone (x) {
+export function clone (x) {
   const type = typeof x
 
   // immutable primitive types
@@ -39,7 +39,7 @@ exports.clone = function clone (x) {
   if (x instanceof RegExp) throw new TypeError('Cannot clone ' + x) // TODO: clone a RegExp
 
   // object
-  return exports.map(x, clone)
+  return mapObject(x, clone)
 }
 
 /**
@@ -48,11 +48,11 @@ exports.clone = function clone (x) {
  * @param {function} callback
  * @return {Object} Returns a copy of the object with mapped properties
  */
-exports.map = function (object, callback) {
+export function mapObject (object, callback) {
   const clone = {}
 
   for (const key in object) {
-    if (exports.hasOwnProperty(object, key)) {
+    if (hasOwnProperty(object, key)) {
       clone[key] = callback(object[key])
     }
   }
@@ -66,9 +66,9 @@ exports.map = function (object, callback) {
  * @param {Object} b
  * @return {Object} a
  */
-exports.extend = function (a, b) {
+export function extend (a, b) {
   for (const prop in b) {
-    if (exports.hasOwnProperty(b, prop)) {
+    if (hasOwnProperty(b, prop)) {
       a[prop] = b[prop]
     }
   }
@@ -81,14 +81,14 @@ exports.extend = function (a, b) {
  * @param {Object} b
  * @returns {Object}
  */
-exports.deepExtend = function deepExtend (a, b) {
+export function deepExtend (a, b) {
   // TODO: add support for Arrays to deepExtend
   if (Array.isArray(b)) {
     throw new TypeError('Arrays are not supported by deepExtend')
   }
 
   for (const prop in b) {
-    if (exports.hasOwnProperty(b, prop)) {
+    if (hasOwnProperty(b, prop)) {
       if (b[prop] && b[prop].constructor === Object) {
         if (a[prop] === undefined) {
           a[prop] = {}
@@ -114,7 +114,7 @@ exports.deepExtend = function deepExtend (a, b) {
  * @param {Array | Object} b
  * @returns {boolean}
  */
-exports.deepEqual = function deepEqual (a, b) {
+export function deepEqual (a, b) {
   let prop, i, len
   if (Array.isArray(a)) {
     if (!Array.isArray(b)) {
@@ -126,7 +126,7 @@ exports.deepEqual = function deepEqual (a, b) {
     }
 
     for (i = 0, len = a.length; i < len; i++) {
-      if (!exports.deepEqual(a[i], b[i])) {
+      if (!deepEqual(a[i], b[i])) {
         return false
       }
     }
@@ -138,13 +138,13 @@ exports.deepEqual = function deepEqual (a, b) {
 
     for (prop in a) {
       // noinspection JSUnfilteredForInLoop
-      if (!exports.deepEqual(a[prop], b[prop])) {
+      if (!deepEqual(a[prop], b[prop])) {
         return false
       }
     }
     for (prop in b) {
       // noinspection JSUnfilteredForInLoop
-      if (!exports.deepEqual(a[prop], b[prop])) {
+      if (!deepEqual(a[prop], b[prop])) {
         return false
       }
     }
@@ -158,7 +158,7 @@ exports.deepEqual = function deepEqual (a, b) {
  * Test whether the current JavaScript engine supports Object.defineProperty
  * @returns {boolean} returns true if supported
  */
-exports.canDefineProperty = function () {
+export function canDefineProperty () {
   // test needed for broken IE8 implementation
   try {
     if (Object.defineProperty) {
@@ -180,8 +180,8 @@ exports.canDefineProperty = function () {
  * @param {Function} fn     Function returning the property value. Called
  *                          without arguments.
  */
-exports.lazy = function (object, prop, fn) {
-  if (exports.canDefineProperty()) {
+export function lazy (object, prop, fn) {
+  if (canDefineProperty()) {
     let _uninitialized = true
     let _value
     Object.defineProperty(object, prop, {
@@ -214,7 +214,7 @@ exports.lazy = function (object, prop, fn) {
  * @param {string} path   A dot separated string like 'name.space'
  * @return {Object} Returns the object at the end of the path
  */
-exports.traverse = function (object, path) {
+export function traverse (object, path) {
   let obj = object
 
   if (path) {
@@ -236,7 +236,7 @@ exports.traverse = function (object, path) {
  * @param {Object} object
  * @param {string} property
  */
-exports.hasOwnProperty = function (object, property) {
+export function hasOwnProperty (object, property) {
   return object && Object.hasOwnProperty.call(object, property)
 }
 
@@ -252,6 +252,6 @@ exports.hasOwnProperty = function (object, property) {
  * @param {*} object
  * @returns {boolean}
  */
-exports.isFactory = function (object) {
+export function isFactory (object) {
   return object && typeof object.factory === 'function'
 }

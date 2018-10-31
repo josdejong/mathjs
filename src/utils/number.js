@@ -1,6 +1,6 @@
 'use strict'
 
-const objectUtils = require('./object')
+import { mapObject } from './object'
 
 /**
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue
@@ -11,7 +11,7 @@ const objectUtils = require('./object')
  * @param {*} value
  * @return {boolean} isNumber
  */
-exports.isNumber = function (value) {
+export function isNumber (value) {
   return typeof value === 'number'
 }
 
@@ -20,7 +20,7 @@ exports.isNumber = function (value) {
  * @param {number | boolean} value
  * @return {boolean} isInteger
  */
-exports.isInteger = function (value) {
+export function isInteger (value) {
   if (typeof value === 'boolean') {
     return true
   }
@@ -36,7 +36,7 @@ exports.isInteger = function (value) {
  * @param {number} x
  * @returns {*}
  */
-exports.sign = Math.sign || function (x) {
+export var sign = Math.sign || function (x) {
   if (x > 0) {
     return 1
   } else if (x < 0) {
@@ -116,7 +116,7 @@ exports.sign = Math.sign || function (x) {
  * @param {Object | Function | number} [options]
  * @return {string} str The formatted value
  */
-exports.format = function (value, options) {
+export function format (value, options) {
   if (typeof options === 'function') {
     // handle format(value, fn)
     return options(value)
@@ -142,7 +142,7 @@ exports.format = function (value, options) {
     }
 
     // determine precision from options
-    if (exports.isNumber(options)) {
+    if (isNumber(options)) {
       precision = options
     } else if (options.precision) {
       precision = options.precision
@@ -152,19 +152,19 @@ exports.format = function (value, options) {
   // handle the various notations
   switch (notation) {
     case 'fixed':
-      return exports.toFixed(value, precision)
+      return toFixed(value, precision)
 
     case 'exponential':
-      return exports.toExponential(value, precision)
+      return toExponential(value, precision)
 
     case 'engineering':
-      return exports.toEngineering(value, precision)
+      return toEngineering(value, precision)
 
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        const fixedOptions = objectUtils.map(options, function (x) { return x })
+        const fixedOptions = mapObject(options, function (x) { return x })
         fixedOptions.exponential = undefined
         if (options.exponential.lower !== undefined) {
           fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
@@ -179,13 +179,11 @@ exports.format = function (value, options) {
             '(minimum and maximum exponent) since version 4.0.0. ' +
             'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
 
-        return exports.toPrecision(value, precision, fixedOptions)
+        return toPrecision(value, precision, fixedOptions)
       }
 
-      return exports
-        .toPrecision(value, precision, options && options)
-
       // remove trailing zeros after the decimal point
+      return toPrecision(value, precision, options && options)
         .replace(/((\.\d*?)(0+))($|e)/, function () {
           const digits = arguments[2]
           const e = arguments[4]
@@ -204,7 +202,7 @@ exports.format = function (value, options) {
  * @return {SplitValue}
  *              Returns an object containing sign, coefficients, and exponent
  */
-exports.splitNumber = function (value) {
+export function splitNumber (value) {
   // parse the input value
   const match = String(value).toLowerCase().match(/^0*?(-?)(\d+\.?\d*)(e([+-]?\d+))?$/)
   if (!match) {
@@ -248,12 +246,12 @@ exports.splitNumber = function (value) {
  * @param {number | string} value
  * @param {number} [precision]        Optional number of significant figures to return.
  */
-exports.toEngineering = function (value, precision) {
+export function toEngineering (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
 
-  const rounded = exports.roundDigits(exports.splitNumber(value), precision)
+  const rounded = roundDigits(splitNumber(value), precision)
 
   const e = rounded.exponent
   let c = rounded.coefficients
@@ -261,7 +259,7 @@ exports.toEngineering = function (value, precision) {
   // find nearest lower multiple of 3 for exponent
   const newExp = e % 3 === 0 ? e : (e < 0 ? (e - 3) - (e % 3) : e - (e % 3))
 
-  if (exports.isNumber(precision)) {
+  if (isNumber(precision)) {
     // add zeroes to give correct sig figs
     if (precision > c.length) c = c.concat(zeros(precision - c.length))
   } else {
@@ -283,7 +281,7 @@ exports.toEngineering = function (value, precision) {
   // if all coefficient values are zero after the decimal point and precision is unset, don't add a decimal value.
   // otherwise concat with the rest of the coefficients
   const decimals = c.slice(decimalIdx).join('')
-  const decimalVal = ((exports.isNumber(precision) && decimals.length) || decimals.match(/[1-9]/)) ? ('.' + decimals) : ''
+  const decimalVal = ((isNumber(precision) && decimals.length) || decimals.match(/[1-9]/)) ? ('.' + decimals) : ''
 
   const str = c.slice(0, decimalIdx).join('') +
       decimalVal +
@@ -297,14 +295,14 @@ exports.toEngineering = function (value, precision) {
  * @param {number} [precision=undefined]  Optional number of decimals after the
  *                                        decimal point. null by default.
  */
-exports.toFixed = function (value, precision) {
+export function toFixed (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
 
-  const splitValue = exports.splitNumber(value)
+  const splitValue = splitNumber(value)
   const rounded = (typeof precision === 'number')
-    ? exports.roundDigits(splitValue, splitValue.exponent + 1 + precision)
+    ? roundDigits(splitValue, splitValue.exponent + 1 + precision)
     : splitValue
   let c = rounded.coefficients
   let p = rounded.exponent + 1 // exponent may have changed
@@ -336,14 +334,14 @@ exports.toFixed = function (value, precision) {
  *                              If not provided, the maximum available digits
  *                              is used.
  */
-exports.toExponential = function (value, precision) {
+export function toExponential (value, precision) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
 
   // round if needed, else create a clone
-  const split = exports.splitNumber(value)
-  const rounded = precision ? exports.roundDigits(split, precision) : split
+  const split = splitNumber(value)
+  const rounded = precision ? roundDigits(split, precision) : split
   let c = rounded.coefficients
   const e = rounded.exponent
 
@@ -368,7 +366,7 @@ exports.toExponential = function (value, precision) {
  *                                         upper = +5 (excl)
  * @return {string}
  */
-exports.toPrecision = function (value, precision, options) {
+export function toPrecision (value, precision, options) {
   if (isNaN(value) || !isFinite(value)) {
     return String(value)
   }
@@ -377,12 +375,12 @@ exports.toPrecision = function (value, precision, options) {
   const lowerExp = (options && options.lowerExp !== undefined) ? options.lowerExp : -3
   const upperExp = (options && options.upperExp !== undefined) ? options.upperExp : 5
 
-  const split = exports.splitNumber(value)
+  const split = splitNumber(value)
   if (split.exponent < lowerExp || split.exponent >= upperExp) {
     // exponential notation
-    return exports.toExponential(value, precision)
+    return toExponential(value, precision)
   } else {
-    const rounded = precision ? exports.roundDigits(split, precision) : split
+    const rounded = precision ? roundDigits(split, precision) : split
     let c = rounded.coefficients
     const e = rounded.exponent
 
@@ -416,7 +414,7 @@ exports.toPrecision = function (value, precision, options) {
  *              Returns an object containing sign, coefficients, and exponent
  *              with rounded digits
  */
-exports.roundDigits = function (split, precision) {
+export function roundDigits (split, precision) {
   // create a clone
   const rounded = {
     sign: split.sign,
@@ -478,7 +476,7 @@ function zeros (length) {
  * @param {number} value
  * @return {number} digits   Number of significant digits
  */
-exports.digits = function (value) {
+export function digits (value) {
   return value
     .toExponential()
     .replace(/e.*$/, '') // remove exponential notation
@@ -489,7 +487,7 @@ exports.digits = function (value) {
 /**
  * Minimum number added to one that makes the result different than one
  */
-exports.DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
+export var DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 
 /**
  * Compares two floating point numbers.
@@ -500,7 +498,7 @@ exports.DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
  *                            test whether x and y are exactly equal.
  * @return {boolean} whether the two numbers are nearly equal
 */
-exports.nearlyEqual = function (x, y, epsilon) {
+export function nearlyEqual (x, y, epsilon) {
   // if epsilon is null or undefined, test whether x and y are exactly equal
   if (epsilon === null || epsilon === undefined) {
     return x === y
@@ -519,7 +517,7 @@ exports.nearlyEqual = function (x, y, epsilon) {
   if (isFinite(x) && isFinite(y)) {
     // check numbers are very close, needed when comparing numbers near zero
     const diff = Math.abs(x - y)
-    if (diff < exports.DBL_EPSILON) {
+    if (diff < DBL_EPSILON) {
       return true
     } else {
       // use relative error

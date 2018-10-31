@@ -1,8 +1,8 @@
 'use strict'
 
-const escapeLatex = require('escape-latex')
+import escapeLatex from 'escape-latex'
 
-exports.symbols = {
+export var symbols = {
   // GREEK LETTERS
   Alpha: 'A',
   alpha: '\\alpha',
@@ -73,7 +73,7 @@ exports.symbols = {
   'undefined': '\\mathbf{?}'
 }
 
-exports.operators = {
+export var operators = {
   'transpose': '^\\top',
   'ctranspose': '^H',
   'factorial': '!',
@@ -108,31 +108,31 @@ exports.operators = {
   'or': '\\vee'
 }
 
-exports.defaultTemplate = `\\mathrm{\${name}}\\left(\${args}\\right)`
+export var defaultTemplate = `\\mathrm{\${name}}\\left(\${args}\\right)`
 
 const units = {
   deg: '^\\circ'
 }
 
-exports.escape = function (string) {
+export function escape (string) {
   return escapeLatex(string, { 'preserveFormatting': true })
 }
 
 // @param {string} name
 // @param {boolean} isUnit
-exports.toSymbol = function (name, isUnit) {
+export function toSymbol (name, isUnit) {
   isUnit = typeof isUnit === 'undefined' ? false : isUnit
   if (isUnit) {
     if (units.hasOwnProperty(name)) {
       return units[name]
     }
 
-    return '\\mathrm{' + exports.escape(name) + '}'
+    return '\\mathrm{' + escape(name) + '}'
   }
 
-  if (exports.symbols.hasOwnProperty(name)) {
-    return exports.symbols[name]
+  if (symbols.hasOwnProperty(name)) {
+    return symbols[name]
   }
 
-  return exports.escape(name)
+  return escape(name)
 }

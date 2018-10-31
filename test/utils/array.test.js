@@ -2,7 +2,7 @@ const assert = require('assert')
 const array = require('../../src/utils/array')
 const resize = array.resize
 const reshape = array.reshape
-const size = array.size
+const size = array.arraySize
 
 describe('util.array', function () {
   describe('size', function () {

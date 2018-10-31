@@ -57,7 +57,7 @@ function factory (type, config, load, typed) {
 
     'Array, Array': function (x, y) {
       // check dimensions
-      _validateMatrixDimensions(array.size(x), array.size(y))
+      _validateMatrixDimensions(array.arraySize(x), array.arraySize(y))
 
       // use dense matrix implementation
       const m = multiply(matrix(x), matrix(y))

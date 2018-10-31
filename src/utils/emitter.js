@@ -1,12 +1,12 @@
 'use strict'
-const Emitter = require('tiny-emitter')
+import Emitter from 'tiny-emitter'
 
 /**
  * Extend given object with emitter functions `on`, `off`, `once`, `emit`
  * @param {Object} obj
  * @return {Object} obj
  */
-exports.mixin = function (obj) {
+export function mixin (obj) {
   // create event emitter
   const emitter = new Emitter()
 

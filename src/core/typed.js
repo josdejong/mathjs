@@ -5,6 +5,7 @@ import {
   isArrayNode,
   isAssignmentNode,
   isBlockNode,
+  isBoolean,
   isChain,
   isComplex,
   isConditionalNode,
@@ -36,7 +37,6 @@ import {
   isUndefined,
   isUnit
 } from '../utils/is'
-import { isBoolean } from '../utils/boolean'
 
 const typedFunction = require('typed-function')
 const digits = require('./../utils/number').digits

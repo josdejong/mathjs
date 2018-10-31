@@ -1,6 +1,6 @@
 'use strict'
 
-const size = require('../../utils/array').size
+const size = require('../../utils/array').arraySize
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))

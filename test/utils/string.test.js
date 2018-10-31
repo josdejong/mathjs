@@ -5,15 +5,6 @@ const math = require('../../src/main')
 const string = require('../../src/utils/string')
 
 describe('string', function () {
-  it('isString', function () {
-    assert.strictEqual(string.isString('hi'), true)
-    assert.strictEqual(string.isString(String('hi')), true)
-
-    assert.strictEqual(string.isString(23), false)
-    assert.strictEqual(string.isString(true), false)
-    assert.strictEqual(string.isString(new Date()), false)
-  })
-
   it('endsWith', function () {
     assert.strictEqual(string.endsWith('hello', 'hello'), true)
     assert.strictEqual(string.endsWith('hello', 'lo'), true)

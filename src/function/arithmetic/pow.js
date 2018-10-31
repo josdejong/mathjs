@@ -1,7 +1,7 @@
 'use strict'
 
 const isInteger = require('../../utils/number').isInteger
-const size = require('../../utils/array').size
+const size = require('../../utils/array').arraySize
 
 function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')

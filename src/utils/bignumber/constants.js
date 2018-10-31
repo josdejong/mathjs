@@ -1,12 +1,12 @@
 'use strict'
-const memoize = require('../function').memoize
+import { memoize } from '../function'
 
 /**
  * Calculate BigNumber e
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns e
  */
-exports.e = memoize(function (BigNumber) {
+export var e = memoize(function (BigNumber) {
   return new BigNumber(1).exp()
 }, hasher)
 
@@ -15,7 +15,7 @@ exports.e = memoize(function (BigNumber) {
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns phi
  */
-exports.phi = memoize(function (BigNumber) {
+export var phi = memoize(function (BigNumber) {
   return new BigNumber(1).plus(new BigNumber(5).sqrt()).div(2)
 }, hasher)
 
@@ -24,7 +24,7 @@ exports.phi = memoize(function (BigNumber) {
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns pi
  */
-exports.pi = memoize(function (BigNumber) {
+export var pi = memoize(function (BigNumber) {
   return BigNumber.acos(-1)
 }, hasher)
 
@@ -33,8 +33,8 @@ exports.pi = memoize(function (BigNumber) {
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns tau
  */
-exports.tau = memoize(function (BigNumber) {
-  return exports.pi(BigNumber).times(2)
+export var tau = memoize(function (BigNumber) {
+  return pi(BigNumber).times(2)
 }, hasher)
 
 /**

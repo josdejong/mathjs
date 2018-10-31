@@ -1,6 +1,6 @@
 'use strict'
 
-const objectUtils = require('../object')
+import { mapObject } from '../object'
 
 /**
  * Convert a BigNumber to a formatted string representation.
@@ -69,7 +69,7 @@ const objectUtils = require('../object')
  * @param {Object | Function | number} [options]
  * @return {string} str The formatted value
  */
-exports.format = function (value, options) {
+export function format (value, options) {
   if (typeof options === 'function') {
     // handle format(value, fn)
     return options(value)
@@ -101,16 +101,16 @@ exports.format = function (value, options) {
   // handle the various notations
   switch (notation) {
     case 'fixed':
-      return exports.toFixed(value, precision)
+      return toFixed(value, precision)
 
     case 'exponential':
-      return exports.toExponential(value, precision)
+      return toExponential(value, precision)
 
     case 'auto':
       // TODO: clean up some day. Deprecated since: 2018-01-24
       // @deprecated upper and lower are replaced with upperExp and lowerExp since v4.0.0
       if (options && options.exponential && (options.exponential.lower !== undefined || options.exponential.upper !== undefined)) {
-        const fixedOptions = objectUtils.map(options, function (x) { return x })
+        const fixedOptions = mapObject(options, function (x) { return x })
         fixedOptions.exponential = undefined
         if (options.exponential.lower !== undefined) {
           fixedOptions.lowerExp = Math.round(Math.log(options.exponential.lower) / Math.LN10)
@@ -125,7 +125,7 @@ exports.format = function (value, options) {
             '(minimum and maximum exponent) since version 4.0.0. ' +
             'Replace ' + JSON.stringify(options) + ' with ' + JSON.stringify(fixedOptions))
 
-        return exports.format(value, fixedOptions)
+        return format(value, fixedOptions)
       }
 
       // determine lower and upper bound for exponential notation.
@@ -144,7 +144,7 @@ exports.format = function (value, options) {
         str = value.toSignificantDigits(precision).toFixed()
       } else {
         // exponential notation
-        str = exports.toExponential(value, precision)
+        str = toExponential(value, precision)
       }
 
       // remove trailing zeros after the decimal point
@@ -168,7 +168,7 @@ exports.format = function (value, options) {
  *                              is used.
  * @returns {string} str
  */
-exports.toExponential = function (value, precision) {
+export function toExponential (value, precision) {
   if (precision !== undefined) {
     return value.toExponential(precision - 1) // Note the offset of one
   } else {
@@ -182,6 +182,6 @@ exports.toExponential = function (value, precision) {
  * @param {number} [precision=undefined] Optional number of decimals after the
  *                                       decimal point. Undefined by default.
  */
-exports.toFixed = function (value, precision) {
+export function toFixed (value, precision) {
   return value.toFixed(precision)
 }

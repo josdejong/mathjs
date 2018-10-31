@@ -1,10 +1,7 @@
 'use strict'
 
-import { deepForEach } from '../../utils/collection/deepForEach'
-
-const size = require('../../utils/array').size
-const reduce = require('../../utils/collection/reduce')
-const containsCollections = require('../../utils/collection/containsCollections')
+import { containsCollections, deepForEach, reduce } from '../../utils/collection'
+import { arraySize } from '../../utils/array'
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))
@@ -70,7 +67,7 @@ function factory (type, config, load, typed) {
   function _nmeanDim (array, dim) {
     try {
       const sum = reduce(array, dim, add)
-      const s = Array.isArray(array) ? size(array) : array.size()
+      const s = Array.isArray(array) ? arraySize(array) : array.size()
       return divide(sum, s[dim])
     } catch (err) {
       throw improveErrorMessage(err, 'mean')

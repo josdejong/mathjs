@@ -1,6 +1,6 @@
 'use strict'
 
-import { deepForEach } from '../../utils/collection/deepForEach'
+import { deepForEach } from '../../utils/collection'
 import { isBigNumber } from '../../utils/is'
 
 const DEFAULT_NORMALIZATION = 'unbiased'

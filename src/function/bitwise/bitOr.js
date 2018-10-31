@@ -1,7 +1,8 @@
 'use strict'
 
+import { bitOr as bigBitOr } from '../../utils/bignumber/bitwise'
+
 const isInteger = require('../../utils/number').isInteger
-const bigBitOr = require('../../utils/bignumber/bitOr')
 
 function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')

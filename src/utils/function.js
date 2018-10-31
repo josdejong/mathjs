@@ -1,4 +1,5 @@
 'use strict'
+
 // function utils
 
 /**
@@ -12,7 +13,7 @@
  *                                          Is JSON.stringify by default.
  * @return {function}                       Returns the memoized function
  */
-exports.memoize = function (fn, hasher) {
+export function memoize (fn, hasher) {
   return function memoize () {
     if (typeof memoize.cache !== 'object') {
       memoize.cache = {}
@@ -37,7 +38,7 @@ exports.memoize = function (fn, hasher) {
  * @return {number} Returns the maximum number of expected arguments.
  *                  Returns -1 when no signatures where found on the function.
  */
-exports.maxArgumentCount = function (fn) {
+export function maxArgumentCount (fn) {
   return Object.keys(fn.signatures || {})
     .reduce(function (args, signature) {
       const count = (signature.match(/,/g) || []).length + 1
@@ -51,7 +52,7 @@ exports.maxArgumentCount = function (fn) {
  * @return {number} Returns the maximum number of expected arguments.
  *                  Returns -1 when no signatures where found on the function.
  */
-exports.callWithRightArgumentCount = function (fn, args, argCount) {
+export function callWithRightArgumentCount (fn, args, argCount) {
   return Object.keys(fn.signatures || {})
     .reduce(function (args, signature) {
       const count = (signature.match(/,/g) || []).length + 1

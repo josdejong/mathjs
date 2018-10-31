@@ -42,7 +42,7 @@ function factory (type, config, load, typed, math) {
    */
   function _config (options) {
     if (options) {
-      const prev = object.map(config, object.clone)
+      const prev = object.mapObject(config, object.clone)
 
       // validate some of the options
       validateOption(options, 'matrix', MATRIX)
@@ -51,16 +51,16 @@ function factory (type, config, load, typed, math) {
       // merge options
       object.deepExtend(config, options)
 
-      const curr = object.map(config, object.clone)
+      const curr = object.mapObject(config, object.clone)
 
-      const changes = object.map(options, object.clone)
+      const changes = object.mapObject(options, object.clone)
 
       // emit 'config' event
       math.emit('config', curr, prev, changes)
 
       return curr
     } else {
-      return object.map(config, object.clone)
+      return object.mapObject(config, object.clone)
     }
   }
 

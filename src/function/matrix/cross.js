@@ -70,13 +70,13 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _cross (x, y) {
-    const highestDimension = Math.max(array.size(x).length, array.size(y).length)
+    const highestDimension = Math.max(array.arraySize(x).length, array.arraySize(y).length)
 
     x = array.squeeze(x)
     y = array.squeeze(y)
 
-    const xSize = array.size(x)
-    const ySize = array.size(y)
+    const xSize = array.arraySize(x)
+    const ySize = array.arraySize(y)
 
     if (xSize.length !== 1 || ySize.length !== 1 || xSize[0] !== 3 || ySize[0] !== 3) {
       throw new RangeError('Vectors with length 3 expected ' +

@@ -1,9 +1,9 @@
 'use strict'
 
 import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
+import { deepMap } from '../utils/collection'
 
 const ArgumentsError = require('../error/ArgumentsError')
-const deepMap = require('../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   const numeric = load(require('../type/numeric'))

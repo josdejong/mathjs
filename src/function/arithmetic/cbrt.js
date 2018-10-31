@@ -2,7 +2,7 @@
 
 import { isBigNumber, isComplex, isFraction } from '../../utils/is'
 
-const deepMap = require('../../utils/collection/deepMap')
+import { deepMap } from '../../utils/collection'
 
 function factory (type, config, load, typed) {
   const unaryMinus = load(require('./unaryMinus'))

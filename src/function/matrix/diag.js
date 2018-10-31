@@ -49,27 +49,27 @@ function factory (type, config, load, typed) {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
     'Array': function (x) {
-      return _diag(x, 0, array.size(x), null)
+      return _diag(x, 0, array.arraySize(x), null)
     },
 
     'Array, number': function (x, k) {
-      return _diag(x, k, array.size(x), null)
+      return _diag(x, k, array.arraySize(x), null)
     },
 
     'Array, BigNumber': function (x, k) {
-      return _diag(x, k.toNumber(), array.size(x), null)
+      return _diag(x, k.toNumber(), array.arraySize(x), null)
     },
 
     'Array, string': function (x, format) {
-      return _diag(x, 0, array.size(x), format)
+      return _diag(x, 0, array.arraySize(x), format)
     },
 
     'Array, number, string': function (x, k, format) {
-      return _diag(x, k, array.size(x), format)
+      return _diag(x, k, array.arraySize(x), format)
     },
 
     'Array, BigNumber, string': function (x, k, format) {
-      return _diag(x, k.toNumber(), array.size(x), format)
+      return _diag(x, k.toNumber(), array.arraySize(x), format)
     },
 
     'Matrix': function (x) {

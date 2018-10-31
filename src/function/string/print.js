@@ -1,7 +1,7 @@
 'use strict'
 
-const isString = require('../../utils/string').isString
-const format = require('../../utils/string').format
+import { format } from '../../utils/string'
+import { isString } from '../../utils/is'
 
 function factory (type, config, load, typed) {
   /**

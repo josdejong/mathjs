@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
       return matrix(x.size())
     },
 
-    'Array': array.size,
+    'Array': array.arraySize,
 
     'string': function (x) {
       return (config.matrix === 'Array') ? [x.length] : matrix([x.length])

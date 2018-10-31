@@ -1,6 +1,7 @@
 'use strict'
 
-const scatter = require('./../../../utils/collection/scatter')
+import { scatter } from './../../../utils/collection'
+
 const DimensionError = require('../../../error/DimensionError')
 
 function factory (type, config, load, typed) {

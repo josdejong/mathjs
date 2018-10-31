@@ -1,9 +1,6 @@
 'use strict'
 
-import { deepForEach } from '../../utils/collection/deepForEach'
-
-const reduce = require('../../utils/collection/reduce')
-const containsCollections = require('../../utils/collection/containsCollections')
+import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 
 function factory (type, config, load, typed) {
   const smaller = load(require('../relational/smaller'))

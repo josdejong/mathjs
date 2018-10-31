@@ -1,7 +1,7 @@
 'use strict'
 
-const deepMap = require('./../utils/collection/deepMap')
-const number = require('../utils/number')
+import { deepMap } from '../utils/collection'
+import { format } from '../utils/number'
 
 function factory (type, config, load, typed) {
   /**
@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
       return ''
     },
 
-    'number': number.format,
+    'number': format,
 
     'null': function (x) {
       return 'null'

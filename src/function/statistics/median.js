@@ -1,7 +1,7 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
-const containsCollections = require('../../utils/collection/containsCollections')
+import { containsCollections } from '../../utils/collection'
+import { flatten } from '../../utils/array'
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
