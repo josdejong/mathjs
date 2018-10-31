@@ -1,5 +1,7 @@
 'use strict'
 
+import { isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
+
 function factory (type, config, load, typed, math) {
   const Node = math.expression.node.Node
   const OperatorNode = math.expression.node.OperatorNode
@@ -27,21 +29,21 @@ function factory (type, config, load, typed, math) {
     if (!scope) {
       return node
     }
-    if (type.isSymbolNode(node)) {
+    if (isSymbolNode(node)) {
       const value = scope[node.name]
       if (value instanceof Node) {
         return resolve(value, scope)
       } else if (typeof value === 'number') {
         return math.parse(String(value))
       }
-    } else if (type.isOperatorNode(node)) {
+    } else if (isOperatorNode(node)) {
       const args = node.args.map(function (arg) {
         return resolve(arg, scope)
       })
       return new OperatorNode(node.op, node.fn, args, node.implicit)
-    } else if (type.isParenthesisNode(node)) {
+    } else if (isParenthesisNode(node)) {
       return new ParenthesisNode(resolve(node.content, scope))
-    } else if (type.isFunctionNode(node)) {
+    } else if (isFunctionNode(node)) {
       const args = node.args.map(function (arg) {
         return resolve(arg, scope)
       })

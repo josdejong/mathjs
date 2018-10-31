@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 const stringify = require('../../utils/string').stringify
 const escape = require('../../utils/string').escape
 const isSafeProperty = require('../../utils/customs').isSafeProperty
@@ -24,7 +26,7 @@ function factory (type, config, load, typed) {
     // validate input
     if (properties) {
       if (!(typeof properties === 'object') || !Object.keys(properties).every(function (key) {
-        return type.isNode(properties[key])
+        return isNode(properties[key])
       })) {
         throw new TypeError('Object containing Nodes expected')
       }

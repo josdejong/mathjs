@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix, isRange } from '../../utils/is'
+
 const clone = require('../../utils/object').clone
 const isInteger = require('../../utils/number').isInteger
 
@@ -35,10 +37,10 @@ function factory (type) {
     for (let i = 0, ii = arguments.length; i < ii; i++) {
       const arg = arguments[i]
 
-      if (type.isRange(arg)) {
+      if (isRange(arg)) {
         this._dimensions.push(arg)
         this._isScalar = false
-      } else if (Array.isArray(arg) || type.isMatrix(arg)) {
+      } else if (Array.isArray(arg) || isMatrix(arg)) {
         // create matrix
         const m = _createImmutableMatrix(arg.valueOf())
         this._dimensions.push(m)

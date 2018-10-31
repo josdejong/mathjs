@@ -1,5 +1,7 @@
 'use strict'
 
+import { isOperatorNode } from '../../../utils/is'
+
 function factory (type, config, load, typed, math) {
   const FunctionNode = math.expression.node.FunctionNode
   const OperatorNode = math.expression.node.OperatorNode
@@ -19,7 +21,7 @@ function factory (type, config, load, typed, math) {
   }
 
   function isCommutative (node, context) {
-    if (!type.isOperatorNode(node)) {
+    if (!isOperatorNode(node)) {
       return true
     }
     const name = node.fn.toString()
@@ -30,7 +32,7 @@ function factory (type, config, load, typed, math) {
   }
 
   function isAssociative (node, context) {
-    if (!type.isOperatorNode(node)) {
+    if (!isOperatorNode(node)) {
       return false
     }
     const name = node.fn.toString()
@@ -64,7 +66,7 @@ function factory (type, config, load, typed, math) {
     const findChildren = function (node) {
       for (let i = 0; i < node.args.length; i++) {
         const child = node.args[i]
-        if (type.isOperatorNode(child) && op === child.op) {
+        if (isOperatorNode(child) && op === child.op) {
           findChildren(child)
         } else {
           children.push(child)
@@ -124,7 +126,7 @@ function factory (type, config, load, typed, math) {
   }
 
   function createMakeNodeFunction (node) {
-    if (type.isOperatorNode(node)) {
+    if (isOperatorNode(node)) {
       return function (args) {
         try {
           return new OperatorNode(node.op, node.fn, args, node.implicit)

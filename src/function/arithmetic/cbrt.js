@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isComplex, isFraction } from '../../utils/is'
+
 const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
@@ -108,7 +110,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _cbrtUnit (x) {
-    if (x.value && type.isComplex(x.value)) {
+    if (x.value && isComplex(x.value)) {
       let result = x.clone()
       result.value = 1.0
       result = result.pow(1.0 / 3) // Compute the units
@@ -122,9 +124,9 @@ function factory (type, config, load, typed) {
 
       // TODO: create a helper function for this
       let third
-      if (type.isBigNumber(x.value)) {
+      if (isBigNumber(x.value)) {
         third = new type.BigNumber(1).div(3)
-      } else if (type.isFraction(x.value)) {
+      } else if (isFraction(x.value)) {
         third = new type.Fraction(1, 3)
       } else {
         third = 1 / 3

@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 const DEFAULT_NORMALIZATION = 'unbiased'
 
 const deepForEach = require('../../utils/collection/deepForEach')
@@ -124,7 +126,7 @@ function factory (type, config, load, typed) {
         return divide(sum, num + 1)
 
       case 'unbiased':
-        const zero = type.isBigNumber(sum) ? new type.BigNumber(0) : 0
+        const zero = isBigNumber(sum) ? new type.BigNumber(0) : 0
         return (num === 1) ? zero : divide(sum, num - 1)
 
       default:

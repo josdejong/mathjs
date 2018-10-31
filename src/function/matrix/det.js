@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const util = require('../../utils/index')
 const object = util.object
 const string = util.string
@@ -43,7 +45,7 @@ function factory (type, config, load, typed) {
 
     'Array | Matrix': function det (x) {
       let size
-      if (type.isMatrix(x)) {
+      if (isMatrix(x)) {
         size = x.size()
       } else if (Array.isArray(x)) {
         x = matrix(x)

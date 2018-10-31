@@ -1,5 +1,7 @@
 'use strict'
 
+import { isDenseMatrix, isSparseMatrix } from '../../utils/is'
+
 const naturalSort = require('javascript-natural-sort')
 
 function factory (type, config, load, typed) {
@@ -158,23 +160,23 @@ function factory (type, config, load, typed) {
    * @returns {number} Returns the comparison result: -1, 0, or 1
    */
   function compareMatricesAndArrays (x, y) {
-    if (type.isSparseMatrix(x) && type.isSparseMatrix(y)) {
+    if (isSparseMatrix(x) && isSparseMatrix(y)) {
       return compareArrays(x.toJSON().values, y.toJSON().values)
     }
-    if (type.isSparseMatrix(x)) {
+    if (isSparseMatrix(x)) {
       // note: convert to array is expensive
       return compareMatricesAndArrays(x.toArray(), y)
     }
-    if (type.isSparseMatrix(y)) {
+    if (isSparseMatrix(y)) {
       // note: convert to array is expensive
       return compareMatricesAndArrays(x, y.toArray())
     }
 
     // convert DenseArray into Array
-    if (type.isDenseMatrix(x)) {
+    if (isDenseMatrix(x)) {
       return compareMatricesAndArrays(x.toJSON().data, y)
     }
-    if (type.isDenseMatrix(y)) {
+    if (isDenseMatrix(y)) {
       return compareMatricesAndArrays(x, y.toJSON().data)
     }
 

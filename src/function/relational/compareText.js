@@ -1,5 +1,7 @@
 'use strict'
 
+import { isString } from '../../utils/is'
+
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const _typeof = load(require('../utils/typeof'))
@@ -86,11 +88,11 @@ function factory (type, config, load, typed) {
    */
   function _compareText (x, y) {
     // we don't want to convert numbers to string, only accept string input
-    if (!type.isString(x)) {
+    if (!isString(x)) {
       throw new TypeError('Unexpected type of argument in function compareText ' +
           '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)')
     }
-    if (!type.isString(y)) {
+    if (!isString(y)) {
       throw new TypeError('Unexpected type of argument in function compareText ' +
           '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)')
     }

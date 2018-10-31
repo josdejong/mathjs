@@ -1,5 +1,7 @@
 'use strict'
 
+import { isIndex } from '../../utils/is'
+
 const clone = require('../../utils/object').clone
 const validateIndex = require('../../utils/array').validateIndex
 const getSafeProperty = require('../../utils/customs').getSafeProperty
@@ -99,7 +101,7 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _getSubstring (str, index) {
-    if (!type.isIndex(index)) {
+    if (!isIndex(index)) {
       // TODO: better error message
       throw new TypeError('Index expected')
     }

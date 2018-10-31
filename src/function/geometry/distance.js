@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
   const subtract = load(require('../arithmetic/subtract'))
@@ -213,7 +215,7 @@ function factory (type, config, load, typed) {
 
   function _isNumber (a) {
     // distance supports numbers and bignumbers
-    return (typeof a === 'number' || type.isBigNumber(a))
+    return (typeof a === 'number' || isBigNumber(a))
   }
 
   function _2d (a) {

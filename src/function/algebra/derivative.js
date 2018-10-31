@@ -1,5 +1,7 @@
 'use strict'
 
+import { isConstantNode } from '../../utils/is'
+
 function factory (type, config, load, typed) {
   const parse = load(require('../../expression/parse'))
   const simplify = load(require('./simplify'))
@@ -107,7 +109,7 @@ function factory (type, config, load, typed) {
   // NOTE: the optional "order" parameter here is currently unused
   const _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {
-      if (type.isConstantNode(expr) && getType(expr.value) === 'string') {
+      if (isConstantNode(expr) && getType(expr.value) === 'string') {
         return _derivTex(parse(expr.value).toString(), x.toString(), 1)
       } else {
         return _derivTex(expr.toString(), x.toString(), 1)
@@ -674,7 +676,7 @@ function factory (type, config, load, typed) {
 
         if (constNodes[arg0] !== undefined) {
           // If is secretly constant; 0^f(x) = 1 (in JS), 1^f(x) = 1
-          if (type.isConstantNode(arg0) && (isZero(arg0.value) || equal(arg0.value, 1))) {
+          if (isConstantNode(arg0) && (isZero(arg0.value) || equal(arg0.value, 1))) {
             return createConstantNode(0)
           }
 
@@ -689,7 +691,7 @@ function factory (type, config, load, typed) {
         }
 
         if (constNodes[arg1] !== undefined) {
-          if (type.isConstantNode(arg1)) {
+          if (isConstantNode(arg1)) {
             // If is secretly constant; f(x)^0 = 1 -> d/dx(1) = 0
             if (isZero(arg1.value)) {
               return createConstantNode(0)

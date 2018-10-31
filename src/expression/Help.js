@@ -1,5 +1,7 @@
 'use strict'
 
+import { isHelp } from '../utils/is'
+
 const object = require('../utils/object')
 const string = require('../utils/string')
 
@@ -67,7 +69,7 @@ function factory (type, config, load, typed) {
         } catch (e) {
           res = e
         }
-        if (res !== undefined && !type.isHelp(res)) {
+        if (res !== undefined && !isHelp(res)) {
           desc += '        ' + string.format(res, { precision: 14 }) + '\n'
         }
       }

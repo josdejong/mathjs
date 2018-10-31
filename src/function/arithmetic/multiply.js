@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const extend = require('../../utils/object').extend
 const array = require('../../utils/array')
 
@@ -60,7 +62,7 @@ function factory (type, config, load, typed) {
       // use dense matrix implementation
       const m = multiply(matrix(x), matrix(y))
       // return array or scalar
-      return type.isMatrix(m) ? m.valueOf() : m
+      return isMatrix(m) ? m.valueOf() : m
     },
 
     'Matrix, Matrix': function (x, y) {

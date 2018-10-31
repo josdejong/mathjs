@@ -1,4 +1,6 @@
 'use strict'
+import { isSymbolNode } from '../../../utils/is'
+
 function factory (type, config, load, typed) {
   /**
    * Compile an inline expression like "x > 0"
@@ -11,7 +13,7 @@ function factory (type, config, load, typed) {
   return function compileInlineExpression (expression, math, scope) {
     // find an undefined symbol
     const symbol = expression.filter(function (node) {
-      return type.isSymbolNode(node) &&
+      return isSymbolNode(node) &&
           !(node.name in math) &&
           !(node.name in scope)
     })[0]

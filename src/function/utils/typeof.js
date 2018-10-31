@@ -1,5 +1,19 @@
 'use strict'
 
+import {
+  isBigNumber,
+  isChain,
+  isComplex,
+  isFraction,
+  isHelp,
+  isIndex,
+  isMatrix,
+  isNode,
+  isRange,
+  isResultSet,
+  isUnit
+} from '../../utils/is'
+
 function factory (type, config, load, typed) {
   /**
    * Determine the type of a variable.
@@ -71,17 +85,17 @@ function factory (type, config, load, typed) {
         if (x instanceof RegExp) return 'RegExp'
 
         // math.js types
-        if (type.isBigNumber(x)) return 'BigNumber'
-        if (type.isComplex(x)) return 'Complex'
-        if (type.isFraction(x)) return 'Fraction'
-        if (type.isMatrix(x)) return 'Matrix'
-        if (type.isUnit(x)) return 'Unit'
-        if (type.isIndex(x)) return 'Index'
-        if (type.isRange(x)) return 'Range'
-        if (type.isResultSet(x)) return 'ResultSet'
-        if (type.isNode(x)) return x.type
-        if (type.isChain(x)) return 'Chain'
-        if (type.isHelp(x)) return 'Help'
+        if (isBigNumber(x)) return 'BigNumber'
+        if (isComplex(x)) return 'Complex'
+        if (isFraction(x)) return 'Fraction'
+        if (isMatrix(x)) return 'Matrix'
+        if (isUnit(x)) return 'Unit'
+        if (isIndex(x)) return 'Index'
+        if (isRange(x)) return 'Range'
+        if (isResultSet(x)) return 'ResultSet'
+        if (isNode(x)) return x.type
+        if (isChain(x)) return 'Chain'
+        if (isHelp(x)) return 'Help'
 
         return 'Object'
       }

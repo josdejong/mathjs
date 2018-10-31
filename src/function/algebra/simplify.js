@@ -1,5 +1,7 @@
 'use strict'
 
+import { isConstantNode, isParenthesisNode } from '../../utils/is'
+
 function factory (type, config, load, typed, math) {
   const parse = load(require('../../expression/parse'))
   const equal = load(require('../relational/equal'))
@@ -161,7 +163,7 @@ function factory (type, config, load, typed, math) {
 
   function removeParens (node) {
     return node.transform(function (node, path, parent) {
-      return type.isParenthesisNode(node)
+      return isParenthesisNode(node)
         ? node.content
         : node
     })
@@ -587,7 +589,7 @@ function factory (type, config, load, typed, math) {
         res[0].placeholders[rule.name] = node
       } else if (rule.name[0] === 'v') {
         // rule matches any variable thing (not a ConstantNode)
-        if (!type.isConstantNode(node)) {
+        if (!isConstantNode(node)) {
           res[0].placeholders[rule.name] = node
         } else {
           // Mis-match: rule was expecting something other than a ConstantNode

@@ -1,6 +1,8 @@
 'use strict'
 
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
+import { isFraction, isNode } from '../../../utils/is'
+
 function factory (type, config, load, typed, math) {
   const util = load(require('./util'))
   const isCommutative = util.isCommutative
@@ -13,7 +15,7 @@ function factory (type, config, load, typed, math) {
 
   function simplifyConstant (expr, options) {
     const res = foldFraction(expr, options)
-    return type.isNode(res) ? res : _toNode(res)
+    return isNode(res) ? res : _toNode(res)
   }
 
   function _eval (fnname, args, options) {
@@ -22,7 +24,7 @@ function factory (type, config, load, typed, math) {
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
-        if (type.isFraction(x)) {
+        if (isFraction(x)) {
           return x.valueOf()
         }
         return x
@@ -123,15 +125,15 @@ function factory (type, config, load, typed, math) {
    */
   function foldOp (fn, args, makeNode, options) {
     return args.reduce(function (a, b) {
-      if (!type.isNode(a) && !type.isNode(b)) {
+      if (!isNode(a) && !isNode(b)) {
         try {
           return _eval(fn, [a, b], options)
         } catch (ignoreandcontinue) {}
         a = _toNode(a)
         b = _toNode(b)
-      } else if (!type.isNode(a)) {
+      } else if (!isNode(a)) {
         a = _toNode(a)
-      } else if (!type.isNode(b)) {
+      } else if (!isNode(b)) {
         b = _toNode(b)
       }
 
@@ -160,7 +162,7 @@ function factory (type, config, load, typed, math) {
           let args = node.args.map(arg => foldFraction(arg, options))
 
           // If all args are numbers
-          if (!args.some(type.isNode)) {
+          if (!args.some(isNode)) {
             try {
               return _eval(node.name, args, options)
             } catch (ignoreandcontine) {}
@@ -168,7 +170,7 @@ function factory (type, config, load, typed, math) {
 
           // Convert all args to nodes and construct a symbolic function call
           args = args.map(function (arg) {
-            return type.isNode(arg) ? arg : _toNode(arg)
+            return isNode(arg) ? arg : _toNode(arg)
           })
           return new FunctionNode(node.name, args)
         } else {
@@ -182,7 +184,7 @@ function factory (type, config, load, typed, math) {
         const makeNode = createMakeNodeFunction(node)
         if (node.isUnary()) {
           args = [foldFraction(node.args[0], options)]
-          if (!type.isNode(args[0])) {
+          if (!isNode(args[0])) {
             res = _eval(fn, args, options)
           } else {
             res = makeNode(args)
@@ -197,7 +199,7 @@ function factory (type, config, load, typed, math) {
             const vars = []
 
             for (let i = 0; i < args.length; i++) {
-              if (!type.isNode(args[i])) {
+              if (!isNode(args[i])) {
                 consts.push(args[i])
               } else {
                 vars.push(args[i])

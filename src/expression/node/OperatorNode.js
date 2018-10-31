@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 const latex = require('../../utils/latex')
 const map = require('../../utils/array').map
 const escape = require('../../utils/string').escape
@@ -32,7 +34,7 @@ function factory (type, config, load, typed) {
     if (typeof fn !== 'string') {
       throw new TypeError('string expected for parameter "fn"')
     }
-    if (!Array.isArray(args) || !args.every(type.isNode)) {
+    if (!Array.isArray(args) || !args.every(isNode)) {
       throw new TypeError('Array containing Nodes expected for parameter "args"')
     }
 

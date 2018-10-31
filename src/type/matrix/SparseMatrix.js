@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isIndex, isMatrix } from '../../utils/is'
+
 const util = require('../../utils/index')
 const DimensionError = require('../../error/DimensionError')
 
@@ -29,7 +31,7 @@ function factory (type, config, load, typed) {
     if (!(this instanceof SparseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
 
-    if (type.isMatrix(data)) {
+    if (isMatrix(data)) {
       // create from matrix
       _createFromMatrix(this, data, datatype)
     } else if (data && isArray(data.index) && isArray(data.ptr) && isArray(data.size)) {
@@ -250,7 +252,7 @@ function factory (type, config, load, typed) {
 
   function _getsubset (matrix, idx) {
     // check idx
-    if (!type.isIndex(idx)) {
+    if (!isIndex(idx)) {
       throw new TypeError('Invalid index')
     }
 
@@ -344,7 +346,7 @@ function factory (type, config, load, typed) {
 
     // calculate the size of the submatrix, and convert it into an Array if needed
     let sSize
-    if (type.isMatrix(submatrix)) {
+    if (isMatrix(submatrix)) {
       // submatrix size
       sSize = submatrix.size()
       // use array representation
@@ -1073,7 +1075,7 @@ function factory (type, config, load, typed) {
     // validate k if any
     if (k) {
       // convert BigNumber to a number
-      if (type.isBigNumber(k)) { k = k.toNumber() }
+      if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
         throw new TypeError('The parameter k must be an integer number')
@@ -1160,7 +1162,7 @@ function factory (type, config, load, typed) {
     // map size & validate
     size = size.map(function (s) {
       // check it is a big number
-      if (type.isBigNumber(s)) {
+      if (isBigNumber(s)) {
         // convert it
         s = s.toNumber()
       }
@@ -1174,7 +1176,7 @@ function factory (type, config, load, typed) {
     // validate k if any
     if (k) {
       // convert BigNumber to a number
-      if (type.isBigNumber(k)) { k = k.toNumber() }
+      if (isBigNumber(k)) { k = k.toNumber() }
       // is must be an integer
       if (!isNumber(k) || !isInteger(k)) {
         throw new TypeError('The parameter k must be an integer number')
@@ -1221,7 +1223,7 @@ function factory (type, config, load, typed) {
         // return value @ i
         return value[i]
       }
-    } else if (type.isMatrix(value)) {
+    } else if (isMatrix(value)) {
       // matrix size
       const ms = value.size()
       // validate matrix

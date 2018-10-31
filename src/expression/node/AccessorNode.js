@@ -1,5 +1,17 @@
 'use strict'
 
+import {
+  isAccessorNode,
+  isArrayNode,
+  isConstantNode,
+  isFunctionNode,
+  isIndexNode,
+  isNode,
+  isObjectNode,
+  isParenthesisNode,
+  isSymbolNode
+} from '../../utils/is'
+
 const getSafeProperty = require('../../utils/customs').getSafeProperty
 
 function factory (type, config, load, typed) {
@@ -20,10 +32,10 @@ function factory (type, config, load, typed) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    if (!type.isNode(object)) {
+    if (!isNode(object)) {
       throw new TypeError('Node expected for parameter "object"')
     }
-    if (!type.isIndexNode(index)) {
+    if (!isIndexNode(index)) {
       throw new TypeError('IndexNode expected for parameter "index"')
     }
 
@@ -186,13 +198,13 @@ function factory (type, config, load, typed) {
   function needParenthesis (node) {
     // TODO: maybe make a method on the nodes which tells whether they need parenthesis?
     return !(
-      type.isAccessorNode(node) ||
-        type.isArrayNode(node) ||
-        type.isConstantNode(node) ||
-        type.isFunctionNode(node) ||
-        type.isObjectNode(node) ||
-        type.isParenthesisNode(node) ||
-        type.isSymbolNode(node))
+      isAccessorNode(node) ||
+        isArrayNode(node) ||
+        isConstantNode(node) ||
+        isFunctionNode(node) ||
+        isObjectNode(node) ||
+        isParenthesisNode(node) ||
+        isSymbolNode(node))
   }
 
   return AccessorNode

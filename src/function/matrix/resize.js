@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isMatrix } from '../../utils/is'
+
 const DimensionError = require('../../error/DimensionError')
 const ArgumentsError = require('../../error/ArgumentsError')
 
@@ -43,19 +45,19 @@ function factory (type, config, load, typed) {
       throw new ArgumentsError('resize', arguments.length, 2, 3)
     }
 
-    if (type.isMatrix(size)) {
+    if (isMatrix(size)) {
       size = size.valueOf() // get Array
     }
 
-    if (type.isBigNumber(size[0])) {
+    if (isBigNumber(size[0])) {
       // convert bignumbers to numbers
       size = size.map(function (value) {
-        return type.isBigNumber(value) ? value.toNumber() : value
+        return !isBigNumber(value) ? value : value.toNumber()
       })
     }
 
     // check x is a Matrix
-    if (type.isMatrix(x)) {
+    if (isMatrix(x)) {
       // use optimized matrix implementation, return copy
       return x.resize(size, defaultValue, true)
     }

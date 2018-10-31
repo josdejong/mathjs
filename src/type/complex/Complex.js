@@ -1,4 +1,6 @@
 'use strict'
+import { isUnit } from '../../utils/is'
+
 const Complex = require('complex.js')
 const format = require('../../utils/number').format
 const isNumber = require('../../utils/number').isNumber
@@ -118,7 +120,7 @@ function factory (type, config, load, typed, math) {
         const r = arguments[0]
         let phi = arguments[1]
         if (isNumber(r)) {
-          if (type.isUnit(phi) && phi.hasBase('ANGLE')) {
+          if (isUnit(phi) && phi.hasBase('ANGLE')) {
             // convert unit to a number in radians
             phi = phi.toNumber('rad')
           }

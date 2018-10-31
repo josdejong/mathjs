@@ -1,5 +1,7 @@
 'use strict'
 
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
+
 const ArgumentsError = require('../error/ArgumentsError')
 const deepMap = require('../utils/collection/deepMap')
 
@@ -585,25 +587,25 @@ function factory (type, config, load, typed) {
     const node = parseConditional(state)
 
     if (state.token === '=') {
-      if (type.isSymbolNode(node)) {
+      if (isSymbolNode(node)) {
         // parse a variable assignment like 'a = 2/3'
         name = node.name
         getTokenSkipNewline(state)
         value = parseAssignment(state)
         return new AssignmentNode(new SymbolNode(name), value)
-      } else if (type.isAccessorNode(node)) {
+      } else if (isAccessorNode(node)) {
         // parse a matrix subset assignment like 'A[1,2] = 4'
         getTokenSkipNewline(state)
         value = parseAssignment(state)
         return new AssignmentNode(node.object, node.index, value)
-      } else if (type.isFunctionNode(node) && type.isSymbolNode(node.fn)) {
+      } else if (isFunctionNode(node) && isSymbolNode(node.fn)) {
         // parse function assignment like 'f(x) = x^2'
         valid = true
         args = []
 
         name = node.name
         node.args.forEach(function (arg, index) {
-          if (type.isSymbolNode(arg)) {
+          if (isSymbolNode(arg)) {
             args[index] = arg.name
           } else {
             valid = false
@@ -976,10 +978,10 @@ function factory (type, config, load, typed) {
 
     while (true) {
       if ((state.tokenType === TOKENTYPE.SYMBOL) ||
-          (state.token === 'in' && type.isConstantNode(node)) ||
+          (state.token === 'in' && isConstantNode(node)) ||
           (state.tokenType === TOKENTYPE.NUMBER &&
-              !type.isConstantNode(last) &&
-              (!type.isOperatorNode(last) || last.op === '!')) ||
+              !isConstantNode(last) &&
+              (!isOperatorNode(last) || last.op === '!')) ||
           (state.token === '(')) {
         // parse implicit multiplication
         //
@@ -1010,7 +1012,7 @@ function factory (type, config, load, typed) {
 
     while (true) {
       // Match the "number /" part of the pattern "number / number symbol"
-      if (state.token === '/' && type.isConstantNode(last)) {
+      if (state.token === '/' && isConstantNode(last)) {
         // Look ahead to see if the next token is a number
         tokenStates.push(Object.assign({}, state))
         getTokenSkipNewline(state)
@@ -1246,7 +1248,7 @@ function factory (type, config, load, typed) {
       params = []
 
       if (state.token === '(') {
-        if (type.isSymbolNode(node) || type.isAccessorNode(node)) {
+        if (isSymbolNode(node) || isAccessorNode(node)) {
           // function invocation like fn(2, 3) or obj.fn(2, 3)
           openParams(state)
           getToken(state)

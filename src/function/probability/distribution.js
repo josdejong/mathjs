@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const ArgumentsError = require('../../error/ArgumentsError')
 const isCollection = require('../../utils/collection/isCollection')
 const isNumber = require('../../utils/number').isNumber
@@ -83,7 +85,7 @@ function factory (type, config, load, typed, math) {
           if (min === undefined) min = 0
           if (size !== undefined) {
             const res = _randomDataForMatrix(size.valueOf(), min, max, _random)
-            return type.isMatrix(size) ? matrix(res) : res
+            return isMatrix(size) ? matrix(res) : res
           }
           return _random(min, max)
         },
@@ -96,7 +98,7 @@ function factory (type, config, load, typed, math) {
               const size = arg
               const max = 1
               const res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
-              return type.isMatrix(size) ? matrix(res) : res
+              return !isMatrix(size) ? res : matrix(res)
             } else {
               const max = arg
               return _randomInt(min, max)
@@ -108,7 +110,7 @@ function factory (type, config, load, typed, math) {
               const max = arg2
               const min = 0
               const res = _randomDataForMatrix(size.valueOf(), min, max, _randomInt)
-              return type.isMatrix(size) ? matrix(res) : res
+              return isMatrix(size) ? matrix(res) : res
             } else {
               const min = arg1
               const max = arg2
@@ -165,7 +167,7 @@ function factory (type, config, load, typed, math) {
           number = 1
         }
 
-        if (type.isMatrix(possibles)) {
+        if (isMatrix(possibles)) {
           possibles = possibles.valueOf() // get Array
         } else if (!Array.isArray(possibles)) {
           throw new TypeError('Unsupported type of value in function pickRandom')

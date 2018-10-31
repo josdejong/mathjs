@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isMatrix } from '../../../utils/is'
+
 function factory (type, config, load, typed) {
   /**
    * Create an index. An Index can store ranges having start, step, and end
@@ -39,12 +41,12 @@ function factory (type, config, load, typed) {
   return typed('index', {
     '...number | string | BigNumber | Range | Array | Matrix': function (args) {
       const ranges = args.map(function (arg) {
-        if (type.isBigNumber(arg)) {
+        if (isBigNumber(arg)) {
           return arg.toNumber() // convert BigNumber to Number
-        } else if (Array.isArray(arg) || type.isMatrix(arg)) {
+        } else if (Array.isArray(arg) || isMatrix(arg)) {
           return arg.map(function (elem) {
             // convert BigNumber to Number
-            return type.isBigNumber(elem) ? elem.toNumber() : elem
+            return isBigNumber(elem) ? elem.toNumber() : elem
           })
         } else {
           return arg

@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const array = require('../../utils/array')
 const isInteger = require('../../utils/number').isInteger
 
@@ -139,7 +141,7 @@ function factory (type, config, load, typed) {
 
   function _getDiagonal (x, k, format, s, kSub, kSuper) {
     // check x is a Matrix
-    if (type.isMatrix(x)) {
+    if (isMatrix(x)) {
       // get diagonal matrix
       const dm = x.diagonal(k)
       // check we need to return a matrix

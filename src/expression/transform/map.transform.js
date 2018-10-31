@@ -1,5 +1,7 @@
 'use strict'
 
+import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
+
 const maxArgumentCount = require('../../utils/function').maxArgumentCount
 const map = require('../../utils/array').map
 
@@ -21,7 +23,7 @@ function factory (type, config, load, typed) {
     }
 
     if (args[1]) {
-      if (type.isSymbolNode(args[1]) || type.isFunctionAssignmentNode(args[1])) {
+      if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
         // a function pointer, like filter([3, -2, 5], myTestFunction)
         callback = args[1].compile().eval(scope)
       } else {

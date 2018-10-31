@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode, isSymbolNode } from '../../utils/is'
+
 const operators = require('../operators')
 
 function factory (type, config, load, typed) {
@@ -19,9 +21,9 @@ function factory (type, config, load, typed) {
     }
 
     // validate inputs
-    if (!type.isNode(start)) throw new TypeError('Node expected')
-    if (!type.isNode(end)) throw new TypeError('Node expected')
-    if (step && !type.isNode(step)) throw new TypeError('Node expected')
+    if (!isNode(start)) throw new TypeError('Node expected')
+    if (!isNode(end)) throw new TypeError('Node expected')
+    if (step && !isNode(step)) throw new TypeError('Node expected')
     if (arguments.length > 3) throw new Error('Too many arguments')
 
     this.start = start // included lower-bound
@@ -43,7 +45,7 @@ function factory (type, config, load, typed) {
   RangeNode.prototype.needsEnd = function () {
     // find all `end` symbols in this RangeNode
     const endSymbols = this.filter(function (node) {
-      return type.isSymbolNode(node) && (node.name === 'end')
+      return isSymbolNode(node) && (node.name === 'end')
     })
 
     return endSymbols.length > 0

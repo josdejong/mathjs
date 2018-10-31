@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 const forEach = require('../../utils/array').forEach
 const map = require('../../utils/array').map
 
@@ -27,7 +29,7 @@ function factory (type, config, load, typed) {
       const node = block && block.node
       const visible = block && block.visible !== undefined ? block.visible : true
 
-      if (!type.isNode(node)) throw new TypeError('Property "node" must be a Node')
+      if (!isNode(node)) throw new TypeError('Property "node" must be a Node')
       if (typeof visible !== 'boolean') throw new TypeError('Property "visible" must be a boolean')
 
       return {

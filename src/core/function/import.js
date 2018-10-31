@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
+
 const lazy = require('../../utils/object').lazy
 const isFactory = require('../../utils/object').isFactory
 const traverse = require('../../utils/object').traverse
@@ -339,11 +341,11 @@ function factory (type, config, load, typed, math) {
         typeof object === 'string' ||
         typeof object === 'boolean' ||
         object === null ||
-        (object && type.isUnit(object)) ||
-        (object && type.isComplex(object)) ||
-        (object && type.isBigNumber(object)) ||
-        (object && type.isFraction(object)) ||
-        (object && type.isMatrix(object)) ||
+        (object && isUnit(object)) ||
+        (object && isComplex(object)) ||
+        (object && isBigNumber(object)) ||
+        (object && isFraction(object)) ||
+        (object && isMatrix(object)) ||
         (object && Array.isArray(object))
   }
 

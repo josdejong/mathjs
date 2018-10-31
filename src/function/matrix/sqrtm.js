@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const array = require('../../utils/array')
 const latex = require('../../utils/latex')
 const string = require('../../utils/string')
@@ -38,7 +40,7 @@ function factory (type, config, load, typed) {
    */
   const sqrtm = typed('sqrtm', {
     'Array | Matrix': function (A) {
-      const size = type.isMatrix(A) ? A.size() : array.size(A)
+      const size = isMatrix(A) ? A.size() : array.size(A)
       switch (size.length) {
         case 1:
           // Single element Array | Matrix

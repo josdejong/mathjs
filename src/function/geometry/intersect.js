@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 function factory (type, config, load, typed) {
   const abs = load(require('../arithmetic/abs'))
   const add = load(require('../arithmetic/add'))
@@ -78,21 +80,21 @@ function factory (type, config, load, typed) {
     }
   })
 
-  function _isNumber (a) {
+  function _isNumeric (a) {
     // intersect supports numbers and bignumbers
-    return (typeof a === 'number' || type.isBigNumber(a))
+    return (typeof a === 'number' || isBigNumber(a))
   }
 
   function _2d (x) {
-    return x.length === 2 && _isNumber(x[0]) && _isNumber(x[1])
+    return x.length === 2 && _isNumeric(x[0]) && _isNumeric(x[1])
   }
 
   function _3d (x) {
-    return x.length === 3 && _isNumber(x[0]) && _isNumber(x[1]) && _isNumber(x[2])
+    return x.length === 3 && _isNumeric(x[0]) && _isNumeric(x[1]) && _isNumeric(x[2])
   }
 
   function _4d (x) {
-    return x.length === 4 && _isNumber(x[0]) && _isNumber(x[1]) && _isNumber(x[2]) && _isNumber(x[3])
+    return x.length === 4 && _isNumeric(x[0]) && _isNumeric(x[1]) && _isNumeric(x[2]) && _isNumeric(x[3])
   }
 
   function _intersect2d (p1a, p1b, p2a, p2b) {

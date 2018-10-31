@@ -1,5 +1,7 @@
 'use strict'
 
+import { isDenseMatrix, isMatrix } from '../../../../utils/is'
+
 const util = require('../../../../utils/index')
 
 const string = util.string
@@ -32,7 +34,7 @@ function factory (type) {
     // vars
     let data, i, bdata
     // check b is matrix
-    if (type.isMatrix(b)) {
+    if (isMatrix(b)) {
       // matrix size
       const msize = b.size()
       // vector
@@ -60,7 +62,7 @@ function factory (type) {
         // array must be a column vector
         if (msize[0] !== rows || msize[1] !== 1) { throw new RangeError('Dimension mismatch. Matrix columns must match vector length.') }
         // check matrix type
-        if (type.isDenseMatrix(b)) {
+        if (isDenseMatrix(b)) {
           // check a copy is needed
           if (copy) {
             // create data array

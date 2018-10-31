@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isComplex, isNode, isUnit } from '../../utils/is'
+
 const operators = require('../operators')
 
 function factory (type, config, load, typed) {
@@ -20,9 +22,9 @@ function factory (type, config, load, typed) {
     if (!(this instanceof ConditionalNode)) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
-    if (!type.isNode(condition)) throw new TypeError('Parameter condition must be a Node')
-    if (!type.isNode(trueExpr)) throw new TypeError('Parameter trueExpr must be a Node')
-    if (!type.isNode(falseExpr)) throw new TypeError('Parameter falseExpr must be a Node')
+    if (!isNode(condition)) throw new TypeError('Parameter condition must be a Node')
+    if (!isNode(trueExpr)) throw new TypeError('Parameter trueExpr must be a Node')
+    if (!isNode(falseExpr)) throw new TypeError('Parameter falseExpr must be a Node')
 
     this.condition = condition
     this.trueExpr = trueExpr
@@ -220,15 +222,15 @@ function factory (type, config, load, typed) {
     }
 
     if (condition) {
-      if (type.isBigNumber(condition)) {
+      if (isBigNumber(condition)) {
         return !condition.isZero()
       }
 
-      if (type.isComplex(condition)) {
+      if (isComplex(condition)) {
         return !!((condition.re || condition.im))
       }
 
-      if (type.isUnit(condition)) {
+      if (isUnit(condition)) {
         return !!condition.value
       }
     }

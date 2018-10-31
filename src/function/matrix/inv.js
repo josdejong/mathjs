@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const util = require('../../utils/index')
 
 function factory (type, config, load, typed) {
@@ -34,12 +36,12 @@ function factory (type, config, load, typed) {
    */
   const inv = typed('inv', {
     'Array | Matrix': function (x) {
-      const size = type.isMatrix(x) ? x.size() : util.array.size(x)
+      const size = isMatrix(x) ? x.size() : util.array.size(x)
       switch (size.length) {
         case 1:
           // vector
           if (size[0] === 1) {
-            if (type.isMatrix(x)) {
+            if (isMatrix(x)) {
               return matrix([
                 divideScalar(1, x.valueOf()[0])
               ])
@@ -58,7 +60,7 @@ function factory (type, config, load, typed) {
           const rows = size[0]
           const cols = size[1]
           if (rows === cols) {
-            if (type.isMatrix(x)) {
+            if (isMatrix(x)) {
               return matrix(
                 _inv(x.valueOf(), rows, cols),
                 x.storage()

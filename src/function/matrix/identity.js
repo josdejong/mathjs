@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 const array = require('../../utils/array')
 const isInteger = require('../../utils/number').isInteger
 
@@ -101,12 +103,12 @@ function factory (type, config, load, typed) {
    */
   function _identity (rows, cols, format) {
     // BigNumber constructor with the right precision
-    const Big = (type.isBigNumber(rows) || type.isBigNumber(cols))
+    const Big = (isBigNumber(rows) || isBigNumber(cols))
       ? type.BigNumber
       : null
 
-    if (type.isBigNumber(rows)) rows = rows.toNumber()
-    if (type.isBigNumber(cols)) cols = cols.toNumber()
+    if (isBigNumber(rows)) rows = rows.toNumber()
+    if (isBigNumber(cols)) cols = cols.toNumber()
 
     if (!isInteger(rows) || rows < 1) {
       throw new Error('Parameters in function identity must be positive integers')

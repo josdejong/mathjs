@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const util = require('../../utils/index')
 
 const string = util.string
@@ -17,7 +19,7 @@ function factory (type, config, load) {
     if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
 
-    if (type.isMatrix(data) || isArray(data)) {
+    if (isMatrix(data) || isArray(data)) {
       // use DenseMatrix implementation
       const matrix = new DenseMatrix(data, datatype)
       // internal structures
@@ -73,7 +75,7 @@ function factory (type, config, load) {
         // use base implementation
         const m = DenseMatrix.prototype.subset.call(this, index)
         // check result is a matrix
-        if (type.isMatrix(m)) {
+        if (isMatrix(m)) {
           // return immutable matrix
           return new ImmutableDenseMatrix({
             data: m._data,

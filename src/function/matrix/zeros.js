@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 const isInteger = require('../../utils/number').isInteger
 const resize = require('../../utils/array').resize
 
@@ -107,7 +109,7 @@ function factory (type, config, load, typed) {
   function _normalize (size) {
     let hasBigNumbers = false
     size.forEach(function (value, index, arr) {
-      if (type.isBigNumber(value)) {
+      if (isBigNumber(value)) {
         hasBigNumbers = true
         arr[index] = value.toNumber()
       }

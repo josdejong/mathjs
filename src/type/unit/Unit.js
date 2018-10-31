@@ -1,5 +1,7 @@
 'use strict'
 
+import { isComplex, isUnit } from '../../utils/is'
+
 const endsWith = require('../../utils/string').endsWith
 const clone = require('../../utils/object').clone
 const constants = require('../../utils/bignumber/constants')
@@ -44,7 +46,7 @@ function factory (type, config, load, typed, math) {
       throw new Error('Constructor must be called with the new operator')
     }
 
-    if (!(value === null || value === undefined || isNumeric(value) || type.isComplex(value))) {
+    if (!(value === null || value === undefined || isNumeric(value) || isComplex(value))) {
       throw new TypeError('First parameter in Unit constructor must be number, BigNumber, Fraction, Complex, or undefined')
     }
     if (name !== undefined && (typeof name !== 'string' || name === '')) {
@@ -811,7 +813,7 @@ function factory (type, config, load, typed, math) {
       other.fixPrefix = true
       other.isUnitListSimplified = true
       return other
-    } else if (type.isUnit(valuelessUnit)) {
+    } else if (isUnit(valuelessUnit)) {
       if (!this.equalBase(valuelessUnit)) {
         throw new Error(`Units do not match ('${valuelessUnit.toString()}' != '${this.toString()}')`)
       }
@@ -1080,7 +1082,7 @@ function factory (type, config, load, typed, math) {
 
     // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
     let isImaginary = false
-    if (typeof (this.value) !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
+    if (typeof (this.value) !== 'undefined' && this.value !== null && isComplex(this.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
       isImaginary = Math.abs(this.value.re) < 1e-14
     }
@@ -1109,7 +1111,7 @@ function factory (type, config, load, typed, math) {
     const value = this._denormalize(this.value)
     let str = (this.value !== null) ? format(value, options || {}) : ''
     const unitStr = this.formatUnits()
-    if (this.value && type.isComplex(this.value)) {
+    if (this.value && isComplex(this.value)) {
       str = '(' + str + ')' // Surround complex values with ( ) to enable better parsing
     }
     if (unitStr.length > 0 && str.length > 0) {

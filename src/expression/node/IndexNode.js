@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
+
 const map = require('../../utils/array').map
 const escape = require('../../utils/string').escape
 
@@ -33,7 +35,7 @@ function factory (type, config, load, typed) {
     this.dotNotation = dotNotation || false
 
     // validate input
-    if (!isArray(dimensions) || !dimensions.every(type.isNode)) {
+    if (!isArray(dimensions) || !dimensions.every(isNode)) {
       throw new TypeError('Array containing Nodes expected for parameter "dimensions"')
     }
     if (this.dotNotation && !this.isObjectProperty()) {
@@ -75,7 +77,7 @@ function factory (type, config, load, typed) {
 
     // optimization for a simple object property
     const evalDimensions = map(this.dimensions, function (range, i) {
-      if (type.isRangeNode(range)) {
+      if (isRangeNode(range)) {
         if (range.needsEnd()) {
           // create a range containing end (like '4:end')
           const childArgNames = Object.create(argNames)
@@ -114,7 +116,7 @@ function factory (type, config, load, typed) {
             )
           }
         }
-      } else if (type.isSymbolNode(range) && range.name === 'end') {
+      } else if (isSymbolNode(range) && range.name === 'end') {
         // SymbolNode 'end'
         const childArgNames = Object.create(argNames)
         childArgNames['end'] = true
@@ -184,7 +186,7 @@ function factory (type, config, load, typed) {
    */
   IndexNode.prototype.isObjectProperty = function () {
     return this.dimensions.length === 1 &&
-        type.isConstantNode(this.dimensions[0]) &&
+        isConstantNode(this.dimensions[0]) &&
         typeof this.dimensions[0].value === 'string'
   }
 
@@ -268,9 +270,9 @@ function factory (type, config, load, typed) {
   // helper function to create a Range from start, step and end
   function createRange (start, end, step) {
     return new Range(
-      type.isBigNumber(start) ? start.toNumber() : start,
-      type.isBigNumber(end) ? end.toNumber() : end,
-      type.isBigNumber(step) ? step.toNumber() : step
+      isBigNumber(start) ? start.toNumber() : start,
+      isBigNumber(end) ? end.toNumber() : end,
+      isBigNumber(step) ? step.toNumber() : step
     )
   }
 

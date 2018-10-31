@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 function factory (type, config, load, typed) {
   const Node = load(require('./Node'))
 
@@ -16,7 +18,7 @@ function factory (type, config, load, typed) {
     }
 
     // validate input
-    if (!type.isNode(content)) {
+    if (!isNode(content)) {
       throw new TypeError('Node expected for parameter "content"')
     }
 

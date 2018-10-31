@@ -1,5 +1,7 @@
 'use strict'
 
+import { isSparseMatrix } from '../../utils/is'
+
 const format = require('../../utils/string').format
 
 function factory (type, config, load, typed) {
@@ -105,7 +107,7 @@ function factory (type, config, load, typed) {
         R = multiply(R, R)
       }
 
-      return type.isSparseMatrix(A)
+      return isSparseMatrix(A)
         ? new SparseMatrix(R)
         : R
     }

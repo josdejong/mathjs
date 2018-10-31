@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isNumber } from '../../utils/is'
+
 const errorTransform = require('./error.transform').transform
 const isCollection = require('../../utils/collection/isCollection')
 
@@ -18,9 +20,9 @@ function factory (type, config, load, typed) {
       // change last argument dim from one-based to zero-based
       if (args.length === 2 && isCollection(args[0])) {
         const dim = args[1]
-        if (type.isNumber(dim)) {
+        if (isNumber(dim)) {
           args[1] = dim - 1
-        } else if (type.isBigNumber(dim)) {
+        } else if (isBigNumber(dim)) {
           args[1] = dim.minus(1)
         }
       }

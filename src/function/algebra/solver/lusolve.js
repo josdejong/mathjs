@@ -1,6 +1,6 @@
 'use strict'
 
-const isArray = Array.isArray
+import { isArray, isMatrix } from '../../../utils/is'
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
@@ -88,7 +88,7 @@ function factory (type, config, load, typed) {
 
   const _toMatrix = function (a) {
     // check it is a matrix
-    if (type.isMatrix(a)) { return a }
+    if (isMatrix(a)) { return a }
     // check array
     if (isArray(a)) { return matrix(a) }
     // throw

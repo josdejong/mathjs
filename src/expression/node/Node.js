@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 const keywords = require('../keywords')
 const deepEqual = require('../../utils/object').deepEqual
 const hasOwnProperty = require('../../utils/object').hasOwnProperty
@@ -93,7 +95,7 @@ function factory (type, config, load, typed, math) {
    * @protected
    */
   Node.prototype._ifNode = function (node) {
-    if (!type.isNode(node)) {
+    if (!isNode(node)) {
       throw new TypeError('Callback function must return a Node')
     }
 

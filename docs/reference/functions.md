@@ -70,7 +70,6 @@ Function | Description
 [math.fix(x)](functions/fix.md) | Round a value towards zero.
 [math.floor(x)](functions/floor.md) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.md) | Calculate the greatest common divisor for two or more values or arrays.
-[math.hypot(a,&nbsp;b,&nbsp;...)](functions/hypot.md) | Calculate the hypotenusa of a list with values.
 [math.lcm(a,&nbsp;b)](functions/lcm.md) | Calculate the least common multiple for two or more values or arrays.
 [math.log(x&nbsp;[,&nbsp;base])](functions/log.md) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.md) | Calculate the 10-base logarithm of a value.

@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 const isInteger = require('../../utils/number').isInteger
 const isNumber = require('../../utils/number').isNumber
 const flatten = require('../../utils/array').flatten
@@ -81,7 +83,7 @@ function factory (type, config, load, typed) {
           }
         }
 
-        if (type.isBigNumber(probOrN)) {
+        if (isBigNumber(probOrN)) {
           if (probOrN.isNegative()) {
             throw new Error('N/prob must be non-negative')
           }
@@ -124,7 +126,7 @@ function factory (type, config, load, typed) {
               if (currProb < 0 || currProb > 1) {
                 throw new Error('Probability must be between 0 and 1, inclusive')
               }
-            } else if (type.isBigNumber(currProb)) {
+            } else if (isBigNumber(currProb)) {
               one = new currProb.constructor(1)
               if (currProb.isNegative() || currProb.gt(one)) {
                 throw new Error('Probability must be between 0 and 1, inclusive')

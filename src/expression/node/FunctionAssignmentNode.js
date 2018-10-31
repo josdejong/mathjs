@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 const keywords = require('../keywords')
 const escape = require('../../utils/string').escape
 const forEach = require('../../utils/array').forEach
@@ -31,7 +33,7 @@ function factory (type, config, load, typed) {
     // validate input
     if (typeof name !== 'string') throw new TypeError('String expected for parameter "name"')
     if (!Array.isArray(params)) throw new TypeError('Array containing strings or objects expected for parameter "params"')
-    if (!type.isNode(expr)) throw new TypeError('Node expected for parameter "expr"')
+    if (!isNode(expr)) throw new TypeError('Node expected for parameter "expr"')
     if (name in keywords) throw new Error('Illegal function name, "' + name + '" is a reserved keyword')
 
     this.name = name

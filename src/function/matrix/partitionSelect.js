@@ -1,5 +1,7 @@
 'use strict'
 
+import { isMatrix } from '../../utils/is'
+
 const isInteger = require('../../utils/number').isInteger
 
 function factory (type, config, load, typed) {
@@ -66,7 +68,7 @@ function factory (type, config, load, typed) {
       throw new Error('k must be a non-negative integer')
     }
 
-    if (type.isMatrix(x)) {
+    if (isMatrix(x)) {
       const size = x.size()
       if (size.length > 1) {
         throw new Error('Only one dimensional matrices supported')

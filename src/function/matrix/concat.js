@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isMatrix, isNumber } from '../../utils/is'
+
 const clone = require('../../utils/object').clone
 const array = require('../../utils/array')
 const IndexError = require('../../error/IndexError')
@@ -52,11 +54,11 @@ function factory (type, config, load, typed) {
         const arg = args[i]
 
         // test whether we need to return a Matrix (if not we return an Array)
-        if (type.isMatrix(arg)) {
+        if (isMatrix(arg)) {
           asMatrix = true
         }
 
-        if (type.isNumber(arg) || type.isBigNumber(arg)) {
+        if (isNumber(arg) || isBigNumber(arg)) {
           if (i !== len - 1) {
             throw new Error('Dimension must be specified as last argument')
           }

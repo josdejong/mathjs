@@ -1,5 +1,7 @@
 'use strict'
 
+import { isNode } from '../../utils/is'
+
 const map = require('../../utils/array').map
 
 function factory (type, config, load, typed) {
@@ -19,7 +21,7 @@ function factory (type, config, load, typed) {
     this.items = items || []
 
     // validate input
-    if (!Array.isArray(this.items) || !this.items.every(type.isNode)) {
+    if (!Array.isArray(this.items) || !this.items.every(isNode)) {
       throw new TypeError('Array containing Nodes expected')
     }
 

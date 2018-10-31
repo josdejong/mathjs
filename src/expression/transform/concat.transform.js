@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber, isNumber } from '../../utils/is'
+
 const errorTransform = require('./error.transform').transform
 
 /**
@@ -18,9 +20,9 @@ function factory (type, config, load, typed) {
       // change last argument from one-based to zero-based
       const lastIndex = args.length - 1
       const last = args[lastIndex]
-      if (type.isNumber(last)) {
+      if (isNumber(last)) {
         args[lastIndex] = last - 1
-      } else if (type.isBigNumber(last)) {
+      } else if (isBigNumber(last)) {
         args[lastIndex] = last.minus(1)
       }
 

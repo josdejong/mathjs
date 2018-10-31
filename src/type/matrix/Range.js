@@ -1,5 +1,7 @@
 'use strict'
 
+import { isBigNumber } from '../../utils/is'
+
 const number = require('../../utils/number')
 
 function factory (type, config, load, typed) {
@@ -44,21 +46,21 @@ function factory (type, config, load, typed) {
     const hasStep = step !== null && step !== undefined
 
     if (hasStart) {
-      if (type.isBigNumber(start)) {
+      if (isBigNumber(start)) {
         start = start.toNumber()
       } else if (typeof start !== 'number') {
         throw new TypeError('Parameter start must be a number')
       }
     }
     if (hasEnd) {
-      if (type.isBigNumber(end)) {
+      if (isBigNumber(end)) {
         end = end.toNumber()
       } else if (typeof end !== 'number') {
         throw new TypeError('Parameter end must be a number')
       }
     }
     if (hasStep) {
-      if (type.isBigNumber(step)) {
+      if (isBigNumber(step)) {
         step = step.toNumber()
       } else if (typeof step !== 'number') {
         throw new TypeError('Parameter step must be a number')

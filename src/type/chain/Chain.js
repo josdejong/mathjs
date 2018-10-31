@@ -1,5 +1,7 @@
 'use strict'
 
+import { isChain } from '../../utils/is'
+
 const format = require('../../utils/string').format
 const lazy = require('../../utils/object').lazy
 
@@ -27,7 +29,7 @@ function factory (type, config, load, typed, math) {
       throw new SyntaxError('Constructor must be called with the new operator')
     }
 
-    if (type.isChain(value)) {
+    if (isChain(value)) {
       this.value = value.value
     } else {
       this.value = value
