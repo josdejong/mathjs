@@ -3,8 +3,8 @@
 import assertDependencies from '../../utils/assertDependencies'
 import { flatten } from '../../utils/array'
 
-export function hypot (math) {
-  assertDependencies(math, hypot.dependencies, hypot.name)
+export function createHypot (math) {
+  assertDependencies(math, createHypot.dependencies, createHypot.name)
 
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
@@ -34,15 +34,15 @@ export function hypot (math) {
    *                                                          single number for the whole matrix.
    * @return {number | BigNumber} Returns the hypothenusa of the input values.
    */
-  const _hypot = math.typed('hypot', {
-    '... number | BigNumber': __hypot,
+  const hypot = math.typed('hypot', {
+    '... number | BigNumber': _hypot,
 
     'Array': function (x) {
-      return _hypot.apply(_hypot, flatten(x))
+      return hypot.apply(hypot, flatten(x))
     },
 
     'Matrix': function (x) {
-      return _hypot.apply(_hypot, flatten(x.toArray()))
+      return hypot.apply(hypot, flatten(x.toArray()))
     }
   })
 
@@ -52,7 +52,7 @@ export function hypot (math) {
    * @return {number | BigNumber} Returns the result
    * @private
    */
-  function __hypot (args) {
+  function _hypot (args) {
     // code based on `hypot` from es6-shim:
     // https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js#L1619-L1633
     let result = 0
@@ -75,12 +75,12 @@ export function hypot (math) {
     return math.multiplyScalar(largest, math.sqrt(result))
   }
 
-  _hypot.toTex = `\\hypot\\left(\${args}\\right)`
+  hypot.toTex = `\\hypot\\left(\${args}\\right)`
 
-  return _hypot
+  return hypot
 }
 
-hypot.dependencies = [
+createHypot.dependencies = [
   'abs',
   'addScalar',
   'divideScalar',
