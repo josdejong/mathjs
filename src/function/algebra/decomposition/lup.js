@@ -1,8 +1,6 @@
 'use strict'
 
-const util = require('../../../utils/index')
-
-const object = util.object
+import { clone } from '../../../utils/object'
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
@@ -76,7 +74,7 @@ function factory (type, config, load, typed) {
     // minimum rows and columns
     let n = Math.min(rows, columns)
     // matrix array, clone original data
-    const data = object.clone(m._data)
+    const data = clone(m._data)
     // l matrix arrays
     const ldata = []
     const lsize = [rows, n]

@@ -1,18 +1,12 @@
 'use strict'
 
-import { isMatrix } from '../../utils/is'
-
-const util = require('../../utils/index')
-
-const string = util.string
-const object = util.object
-
-const isArray = Array.isArray
-const isString = string.isString
+import { isArray, isMatrix, isString } from '../../utils/is'
+import { clone } from '../../utils/object'
 
 function factory (type, config, load) {
   const DenseMatrix = load(require('./DenseMatrix'))
 
+  const getTypeOf = load(require('../../function/utils/typeof'))
   const smaller = load(require('../../function/relational/smaller'))
 
   function ImmutableDenseMatrix (data, datatype) {
@@ -37,7 +31,7 @@ function factory (type, config, load) {
       this._max = typeof data.max !== 'undefined' ? data.max : null
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + util.types.type(data) + ')')
+      throw new TypeError('Unsupported type of data (' + getTypeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []
@@ -139,8 +133,8 @@ function factory (type, config, load) {
    */
   ImmutableDenseMatrix.prototype.clone = function () {
     const m = new ImmutableDenseMatrix({
-      data: object.clone(this._data),
-      size: object.clone(this._size),
+      data: clone(this._data),
+      size: clone(this._size),
       datatype: this._datatype
     })
     return m

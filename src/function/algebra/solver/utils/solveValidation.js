@@ -1,13 +1,8 @@
 'use strict'
 
-import { isDenseMatrix, isMatrix } from '../../../../utils/is'
-
-const util = require('../../../../utils/index')
-
-const string = util.string
-const array = util.array
-
-const isArray = Array.isArray
+import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
+import { size as arraySize } from '../../../../utils/array'
+import { format } from '../../../../utils/string'
 
 function factory (type) {
   const DenseMatrix = type.DenseMatrix
@@ -25,12 +20,12 @@ function factory (type) {
     // matrix size
     const size = m.size()
     // validate matrix dimensions
-    if (size.length !== 2) { throw new RangeError('Matrix must be two dimensional (size: ' + string.format(size) + ')') }
+    if (size.length !== 2) { throw new RangeError('Matrix must be two dimensional (size: ' + format(size) + ')') }
     // rows & columns
     const rows = size[0]
     const columns = size[1]
     // validate rows & columns
-    if (rows !== columns) { throw new RangeError('Matrix must be square (size: ' + string.format(size) + ')') }
+    if (rows !== columns) { throw new RangeError('Matrix must be square (size: ' + format(size) + ')') }
     // vars
     let data, i, bdata
     // check b is matrix
@@ -111,7 +106,7 @@ function factory (type) {
     // check b is array
     if (isArray(b)) {
       // size
-      const asize = array.size(b)
+      const asize = arraySize(b)
       // check matrix dimensions, vector
       if (asize.length === 1) {
         // check vector length

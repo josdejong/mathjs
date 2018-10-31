@@ -1,9 +1,6 @@
 'use strict'
 
-const util = require('../../../utils/index')
-
-const number = util.number
-const isInteger = number.isInteger
+import { isInteger } from '../../../utils/number'
 
 function factory (type, config, load, typed) {
   const csSqr = load(require('../../algebra/sparse/csSqr'))

@@ -1,10 +1,8 @@
 'use strict'
 
 import { isMatrix } from '../../utils/is'
-
-const util = require('../../utils/index')
-const object = util.object
-const string = util.string
+import { clone } from '../../utils/object'
+import { format } from '../../utils/string'
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -40,7 +38,7 @@ function factory (type, config, load, typed) {
    */
   const det = typed('det', {
     'any': function (x) {
-      return object.clone(x)
+      return clone(x)
     },
 
     'Array | Matrix': function det (x) {
@@ -58,15 +56,15 @@ function factory (type, config, load, typed) {
       switch (size.length) {
         case 0:
           // scalar
-          return object.clone(x)
+          return clone(x)
 
         case 1:
           // vector
           if (size[0] === 1) {
-            return object.clone(x.valueOf()[0])
+            return clone(x.valueOf()[0])
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         case 2:
@@ -77,13 +75,13 @@ function factory (type, config, load, typed) {
             return _det(x.clone().valueOf(), rows, cols)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         default:
           // multi dimensional array
           throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + string.format(size) + ')')
+          '(size: ' + format(size) + ')')
       }
     }
   })
@@ -103,7 +101,7 @@ function factory (type, config, load, typed) {
   function _det (matrix, rows, cols) {
     if (rows === 1) {
       // this is a 1 x 1 matrix
-      return object.clone(matrix[0][0])
+      return clone(matrix[0][0])
     } else if (rows === 2) {
       // this is a 2 x 2 matrix
       // the determinant of [a11,a12;a21,a22] is det = a11*a22-a21*a12

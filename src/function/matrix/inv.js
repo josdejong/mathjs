@@ -1,8 +1,8 @@
 'use strict'
 
 import { isMatrix } from '../../utils/is'
-
-const util = require('../../utils/index')
+import { size as arraySize } from '../../utils/array'
+import { format } from '../../utils/string'
 
 function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -36,7 +36,7 @@ function factory (type, config, load, typed) {
    */
   const inv = typed('inv', {
     'Array | Matrix': function (x) {
-      const size = isMatrix(x) ? x.size() : util.array.size(x)
+      const size = isMatrix(x) ? x.size() : arraySize(x)
       switch (size.length) {
         case 1:
           // vector
@@ -52,7 +52,7 @@ function factory (type, config, load, typed) {
             }
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + util.string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         case 2:
@@ -71,13 +71,13 @@ function factory (type, config, load, typed) {
             }
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + util.string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         default:
           // multi dimensional array
           throw new RangeError('Matrix must be two dimensional ' +
-          '(size: ' + util.string.format(size) + ')')
+          '(size: ' + format(size) + ')')
       }
     },
 

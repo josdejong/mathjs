@@ -1,10 +1,6 @@
 'use strict'
 
-const util = require('../../utils/index')
-
-const string = util.string
-
-const isString = string.isString
+import { isString } from '../../utils/is'
 
 function factory (type, config, load, typed) {
   /**
