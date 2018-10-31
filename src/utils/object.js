@@ -1,6 +1,6 @@
 'use strict'
 
-const isBigNumber = require('./bignumber/isBigNumber')
+import { isBigNumber } from './is'
 
 /**
  * Clone an object

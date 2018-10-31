@@ -1,6 +1,6 @@
 'use strict'
 
-const deepForEach = require('../../utils/collection/deepForEach')
+import { deepForEach } from '../../utils/collection/deepForEach'
 
 function factory (type, config, load, typed) {
   const multiply = load(require('../arithmetic/multiplyScalar'))

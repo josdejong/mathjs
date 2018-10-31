@@ -1,6 +1,6 @@
 'use strict'
 
-const isCollection = require('./isCollection')
+import { isCollection } from '../is'
 
 /**
  * Test whether an array contains collections

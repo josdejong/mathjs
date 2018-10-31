@@ -1,9 +1,8 @@
 'use strict'
 
-import { isMatrix } from '../../utils/is'
+import { isCollection, isMatrix } from '../../utils/is'
 
 const ArgumentsError = require('../../error/ArgumentsError')
-const isCollection = require('../../utils/collection/isCollection')
 const isNumber = require('../../utils/number').isNumber
 
 // TODO: rethink math.distribution

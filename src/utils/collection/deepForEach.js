@@ -1,6 +1,6 @@
 'use strict'
 
-const isMatrix = require('./isMatrix')
+import { isMatrix } from '../is'
 
 /**
  * Recursively loop over all elements in a given multi dimensional array
@@ -9,7 +9,7 @@ const isMatrix = require('./isMatrix')
  * @param {Function} callback     The callback method is invoked with one
  *                                parameter: the current element in the array
  */
-module.exports = function deepForEach (array, callback) {
+export function deepForEach (array, callback) {
   if (isMatrix(array)) {
     array = array.valueOf()
   }

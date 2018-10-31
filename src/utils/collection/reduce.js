@@ -1,7 +1,8 @@
 'use strict'
 
+import { isMatrix } from '../is'
+
 const arraySize = require('../array').size
-const isMatrix = require('../collection/isMatrix')
 const IndexError = require('../../error/IndexError')
 
 /**

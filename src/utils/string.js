@@ -1,8 +1,9 @@
 'use strict'
 
+import { isBigNumber } from './is'
+
 const formatNumber = require('./number').format
 const formatBigNumber = require('./bignumber/formatter').format
-const isBigNumber = require('./bignumber/isBigNumber')
 
 /**
  * Test whether value is a string

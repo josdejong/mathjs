@@ -1,9 +1,8 @@
 'use strict'
 
-import { isBigNumber, isNumber } from '../../utils/is'
+import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 
 const errorTransform = require('./error.transform').transform
-const isCollection = require('../../utils/collection/isCollection')
 
 /**
  * Attach a transform function to math.mean

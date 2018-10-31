@@ -1,6 +1,7 @@
 'use strict'
 
-const deepForEach = require('../../utils/collection/deepForEach')
+import { deepForEach } from '../../utils/collection/deepForEach'
+
 const reduce = require('../../utils/collection/reduce')
 const containsCollections = require('../../utils/collection/containsCollections')
 

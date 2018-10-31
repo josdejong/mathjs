@@ -45,6 +45,15 @@ export function isMatrix (x) {
   return (x && x.constructor.prototype.isMatrix) || false
 }
 
+/**
+ * Test whether a value is a collection: an Array or Matrix
+ * @param {*} x
+ * @returns {boolean} isCollection
+ */
+export function isCollection (x) {
+  return Array.isArray(x) || isMatrix(x)
+}
+
 export function isDenseMatrix (x) {
   return (x && x.isDenseMatrix && x.constructor.prototype.isMatrix) || false
 }

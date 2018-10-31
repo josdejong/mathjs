@@ -1,11 +1,10 @@
 'use strict'
 
-import { isBigNumber } from '../../utils/is'
+import { isBigNumber, isCollection } from '../../utils/is'
 
 const isInteger = require('../../utils/number').isInteger
 const isNumber = require('../../utils/number').isNumber
 const flatten = require('../../utils/array').flatten
-const isCollection = require('../../utils/collection/isCollection')
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))

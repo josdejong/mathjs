@@ -1,10 +1,9 @@
 'use strict'
 
+import { deepForEach } from '../../utils/collection/deepForEach'
 import { isBigNumber } from '../../utils/is'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
-
-const deepForEach = require('../../utils/collection/deepForEach')
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
