@@ -1,7 +1,8 @@
 // test round
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import approx from '../../../tools/approx';
+import math from '../../../src/main';
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix

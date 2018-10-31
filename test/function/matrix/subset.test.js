@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+import math from '../../../src/main';
 const subset = math.subset
 const matrix = math.matrix
 const Range = math.type.Range

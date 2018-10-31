@@ -1,6 +1,7 @@
 // test AssignmentNode
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 const Node = math.expression.node.Node
 const AccessorNode = math.expression.node.AccessorNode
 const ConstantNode = math.expression.node.ConstantNode

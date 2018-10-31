@@ -1,6 +1,6 @@
-const assert = require('assert')
-const math = require('../../../../src/main')
-const Fraction = require('fraction.js')
+import assert from 'assert';
+import math from '../../../../src/main';
+import Fraction from 'fraction.js';
 
 describe('fraction', function () {
   it('should create a fraction', function () {

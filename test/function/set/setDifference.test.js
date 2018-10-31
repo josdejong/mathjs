@@ -1,6 +1,7 @@
 // test setDifference
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 
 describe('setDifference', function () {
   it('should return the difference of two sets', function () {

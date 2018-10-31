@@ -1,6 +1,7 @@
 // test add
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 const add = math.add
 
 // TODO: make unit tests independent of math

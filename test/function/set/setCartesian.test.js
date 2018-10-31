@@ -1,6 +1,7 @@
 // test setCartesian
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 
 describe('setCartesian', function () {
   it('should return the cartesian product of two sets', function () {

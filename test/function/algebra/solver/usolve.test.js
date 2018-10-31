@@ -1,7 +1,8 @@
 // test usolve
-const assert = require('assert')
-const approx = require('../../../../tools/approx')
-const math = require('../../../../src/main')
+import assert from 'assert';
+
+import approx from '../../../../tools/approx';
+import math from '../../../../src/main';
 
 describe('usolve', function () {
   it('should solve linear system 4 x 4, arrays', function () {

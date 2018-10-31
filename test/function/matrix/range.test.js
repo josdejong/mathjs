@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+import math from '../../../src/main';
 const range = math.range
 const matrix = math.matrix
 const bignumber = math.bignumber

@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+import math from '../../../src/main';
 
 describe('forEach', function () {
   it('should iterate over all elements of the matrix', function () {

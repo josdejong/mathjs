@@ -1,6 +1,7 @@
 // test compile
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 
 describe('compile', function () {
   it('should compile an expression', function () {

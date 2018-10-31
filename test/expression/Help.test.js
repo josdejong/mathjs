@@ -1,6 +1,7 @@
 // test Help
-const assert = require('assert')
-const math = require('../../src/main')
+import assert from 'assert';
+
+import math from '../../src/main';
 const Help = math.type.Help
 
 describe('help', function () {

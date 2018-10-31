@@ -1,11 +1,11 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+import math from '../../../src/main';
 const bignumber = math.bignumber
 const subtract = math.subtract
 const abs = math.abs
 const smaller = math.smaller
 const erf = math.erf
-const actualErfValues = require('./erf.values.json')
+import actualErfValues from './erf.values.json';
 
 const DIFF_THRESH = 5e-16
 

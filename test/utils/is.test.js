@@ -1,6 +1,6 @@
 import { isBoolean, isString } from '../../src/utils/is'
 
-const assert = require('assert')
+import assert from 'assert';
 
 describe('is', function () {
   it('isBoolean', function () {

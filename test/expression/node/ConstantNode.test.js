@@ -1,6 +1,7 @@
 // test ConstantNode
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 const bigmath = require('../../../src/main').create({ number: 'BigNumber' })
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode

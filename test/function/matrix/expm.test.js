@@ -1,7 +1,8 @@
 // test expm
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import approx from '../../../tools/approx';
+import math from '../../../src/main';
 const expm = math.expm
 
 describe('expm', function () {

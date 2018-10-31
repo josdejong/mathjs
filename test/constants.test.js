@@ -1,8 +1,8 @@
-const assert = require('assert')
-const core = require('../src/core/core')
-const math = require('../src/main')
-const approx = require('../tools/approx')
-const constants = require('../src/constants')
+import assert from 'assert';
+import core from '../src/core/core';
+import math from '../src/main';
+import approx from '../tools/approx';
+import constants from '../src/constants';
 
 describe('constants', function () {
   const bigmath = math.create({ number: 'BigNumber', precision: 64 })

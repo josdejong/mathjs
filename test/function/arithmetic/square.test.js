@@ -1,6 +1,7 @@
 // test square
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix

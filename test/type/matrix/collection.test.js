@@ -1,6 +1,6 @@
-const assert = require('assert')
-const isCollection = require('../../../src/utils/is').isCollection
-const math = require('../../../src/main')
+import assert from 'assert';
+import {isCollection} from '../../../src/utils/is';
+import math from '../../../src/main';
 const DenseMatrix = math.type.DenseMatrix
 const SparseMatrix = math.type.SparseMatrix
 

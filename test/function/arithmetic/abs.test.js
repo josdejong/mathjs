@@ -1,6 +1,7 @@
 // test abs
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {

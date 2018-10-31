@@ -1,6 +1,7 @@
 // test data type Index
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 const Index = math.type.Index
 const Range = math.type.Range
 const ImmutableDenseMatrix = math.type.ImmutableDenseMatrix

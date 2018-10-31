@@ -1,7 +1,7 @@
 import { nearlyEqual } from '../../../src/utils/bignumber/nearlyEqual'
 
-const assert = require('assert')
-const BigNumber = require('decimal.js')
+import assert from 'assert';
+import BigNumber from 'decimal.js';
 
 describe('nearlyEqual', function () {
   it('should test whether two BigNumbers are nearly equal', function () {

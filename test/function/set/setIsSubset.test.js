@@ -1,6 +1,7 @@
 // test setIsSubset
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 
 describe('setIsSubset', function () {
   it('should return true or false', function () {

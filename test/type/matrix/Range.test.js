@@ -1,7 +1,8 @@
 // test data type Range
 
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import math from '../../../src/main';
 const Range = math.type.Range
 
 describe('range', function () {

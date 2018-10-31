@@ -1,7 +1,8 @@
 // test eval
-const assert = require('assert')
-const approx = require('../../../tools/approx')
-const math = require('../../../src/main')
+import assert from 'assert';
+
+import approx from '../../../tools/approx';
+import math from '../../../src/main';
 const Complex = math.type.Complex
 const Unit = math.type.Unit
 const ResultSet = math.type.ResultSet

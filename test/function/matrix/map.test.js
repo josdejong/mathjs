@@ -1,5 +1,5 @@
-const assert = require('assert')
-const math = require('../../../src/main')
+import assert from 'assert';
+import math from '../../../src/main';
 
 describe('map', function () {
   it('should apply map to all elements of the matrix', function () {

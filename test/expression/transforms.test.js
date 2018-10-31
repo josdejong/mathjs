@@ -1,6 +1,7 @@
 // test transforms
-const assert = require('assert')
-const math = require('../../src/main')
+import assert from 'assert';
+
+import math from '../../src/main';
 const parse = math.expression.parse
 
 describe('transforms', function () {
