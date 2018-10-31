@@ -13,6 +13,14 @@ describe('hasNumericValue', function () {
     assert.strictEqual(hasNumericValue(fraction(1, 3)), true)
 
     assert.strictEqual(hasNumericValue('2'), true)
+    // assert.strictEqual(hasNumericValue(' 2'), false) //should this case pass?
+    assert.strictEqual(hasNumericValue('2.3'), true)
+    assert.strictEqual(hasNumericValue('100a'), false)
+    assert.strictEqual(hasNumericValue('0x11'), true)
+    assert.strictEqual(hasNumericValue('0b11'), true)
+    assert.strictEqual(hasNumericValue('0o11'), true)
+    assert.strictEqual(hasNumericValue('123e-1'), true)
+    assert.strictEqual(hasNumericValue(''), false)
     assert.strictEqual(hasNumericValue('foo'), false)
     assert.strictEqual(hasNumericValue(math.complex(2, 3)), false)
     assert.strictEqual(hasNumericValue(math.unit('5 cm')), false)

@@ -30,7 +30,7 @@ function factory (type, config, load, typed) {
    */
   const hasNumericValue = typed('hasNumericValue', {
     'string': function (x) {
-      return !isNaN(x)
+      return x.trim().length > 0 && !isNaN(Number(x))
     },
     'any': function (x) {
       return isNumeric(x)
