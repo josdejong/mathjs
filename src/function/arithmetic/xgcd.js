@@ -1,8 +1,8 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -139,5 +139,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'xgcd'
-exports.factory = factory
+export const name = 'xgcd'

@@ -1,12 +1,12 @@
 'use strict'
 
-const Complex = require('../../type/complex/Complex')
-const typed = require('../../core/typed')
+import Complex from '../../type/complex/Complex'
+import typed from '../../core/typed'
 const complex = Complex.factory(
   'Complex', {}, '', typed, { on: function (x, y) {} }
 )
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the nth roots of a value.
    * An nth root of a positive real number A,
@@ -104,5 +104,4 @@ function _nthComplexRoots (a, root) {
   return roots
 }
 
-exports.name = 'nthRoots'
-exports.factory = factory
+export const name = 'nthRoots'

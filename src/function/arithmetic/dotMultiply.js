@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const multiplyScalar = load(require('./multiplyScalar'))
   const latex = require('../../utils/latex')
@@ -106,5 +106,4 @@ function factory (type, config, load, typed) {
   return dotMultiply
 }
 
-exports.name = 'dotMultiply'
-exports.factory = factory
+export const name = 'dotMultiply'

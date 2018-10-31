@@ -2,7 +2,7 @@
 
 import { isArray, isMatrix } from '../../../utils/is'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
   const lup = load(require('../decomposition/lup'))
   const slu = load(require('../decomposition/slu'))
@@ -116,5 +116,4 @@ function factory (type, config, load, typed) {
   return lusolve
 }
 
-exports.name = 'lusolve'
-exports.factory = factory
+export const name = 'lusolve'

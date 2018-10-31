@@ -2,7 +2,7 @@
 
 import { deepForEach } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -85,5 +85,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'sum'
-exports.factory = factory
+export const name = 'sum'

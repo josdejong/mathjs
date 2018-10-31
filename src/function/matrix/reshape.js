@@ -1,8 +1,8 @@
 'use strict'
 
-const array = require('../../utils/array')
+import { reshape as arrayReshape } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const isInteger = load(require('../utils/isInteger'))
 
@@ -48,7 +48,7 @@ function factory (type, config, load, typed) {
       if (x.reshape) {
         return x.reshape(sizes)
       } else {
-        return matrix(array.reshape(x.valueOf(), sizes))
+        return matrix(arrayReshape(x.valueOf(), sizes))
       }
     },
 
@@ -58,7 +58,7 @@ function factory (type, config, load, typed) {
           throw new TypeError('Invalid size for dimension: ' + size)
         }
       })
-      return array.reshape(x, sizes)
+      return arrayReshape(x, sizes)
     }
 
   })
@@ -68,5 +68,4 @@ function factory (type, config, load, typed) {
   return reshape
 }
 
-exports.name = 'reshape'
-exports.factory = factory
+export const name = 'reshape'

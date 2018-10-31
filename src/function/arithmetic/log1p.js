@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const divideScalar = load(require('./divideScalar'))
   const log = load(require('./log'))
 
@@ -99,5 +99,4 @@ function factory (type, config, load, typed) {
   return log1p
 }
 
-exports.name = 'log1p'
-exports.factory = factory
+export const name = 'log1p'

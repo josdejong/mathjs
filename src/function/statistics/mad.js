@@ -1,8 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const abs = load(require('../arithmetic/abs'))
   const map = load(require('../matrix/map'))
   const median = load(require('../statistics/median'))
@@ -69,5 +69,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'mad'
-exports.factory = factory
+export const name = 'mad'

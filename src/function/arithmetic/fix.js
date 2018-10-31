@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.
@@ -61,5 +61,4 @@ function factory (type, config, load, typed) {
   return fix
 }
 
-exports.name = 'fix'
-exports.factory = factory
+export const name = 'fix'

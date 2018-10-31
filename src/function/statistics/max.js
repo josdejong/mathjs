@@ -2,7 +2,7 @@
 
 import { deepForEach, reduce, containsCollections } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const larger = load(require('../relational/larger'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -104,5 +104,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'max'
-exports.factory = factory
+export const name = 'max'

@@ -1,9 +1,9 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const size = require('../../utils/array').arraySize
+import { isInteger } from '../../utils/number'
+import { arraySize as size } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
   const identity = load(require('../matrix/identity'))
   const multiply = load(require('./multiply'))
@@ -188,5 +188,4 @@ function factory (type, config, load, typed) {
   return pow
 }
 
-exports.name = 'pow'
-exports.factory = factory
+export const name = 'pow'

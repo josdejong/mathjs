@@ -36,7 +36,7 @@ export function isInteger (value) {
  * @param {number} x
  * @returns {*}
  */
-export var sign = Math.sign || function (x) {
+export const sign = Math.sign || function (x) {
   if (x > 0) {
     return 1
   } else if (x < 0) {
@@ -487,7 +487,7 @@ export function digits (value) {
 /**
  * Minimum number added to one that makes the result different than one
  */
-export var DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
+export const DBL_EPSILON = Number.EPSILON || 2.2204460492503130808472633361816E-16
 
 /**
  * Compares two floating point numbers.

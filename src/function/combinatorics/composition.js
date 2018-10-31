@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const combinations = load(require('../probability/combinations'))
   const add = load(require('../arithmetic/addScalar'))
   const isPositive = load(require('../utils/isPositive'))
@@ -46,5 +46,4 @@ function factory (type, config, load, typed) {
   return composition
 }
 
-exports.name = 'composition'
-exports.factory = factory
+export const name = 'composition'

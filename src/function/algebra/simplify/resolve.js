@@ -2,7 +2,7 @@
 
 import { isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
 
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const Node = math.expression.node.Node
   const OperatorNode = math.expression.node.OperatorNode
   const FunctionNode = math.expression.node.FunctionNode
@@ -55,7 +55,6 @@ function factory (type, config, load, typed, math) {
   return resolve
 }
 
-exports.math = true
-exports.name = 'resolve'
-exports.path = 'algebra.simplify'
-exports.factory = factory
+export var math = true
+export const name = 'resolve'
+export var path = 'algebra.simplify'

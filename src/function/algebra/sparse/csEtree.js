@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * Computes the elimination tree of Matrix A (using triu(A)) or the
    * elimination tree of A'A without forming A'A.
@@ -66,6 +66,5 @@ function factory () {
   return csEtree
 }
 
-exports.name = 'csEtree'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csEtree'
+export var path = 'algebra.sparse'

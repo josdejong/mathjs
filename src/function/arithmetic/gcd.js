@@ -1,8 +1,8 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
@@ -162,5 +162,4 @@ function _gcd (a, b) {
   return (a < 0) ? -a : a
 }
 
-exports.name = 'gcd'
-exports.factory = factory
+export const name = 'gcd'

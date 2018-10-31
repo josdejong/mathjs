@@ -2,9 +2,9 @@
 
 import { isDenseMatrix, isSparseMatrix } from '../../utils/is'
 
-const naturalSort = require('javascript-natural-sort')
+import naturalSort from 'javascript-natural-sort'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const getTypeOf = load(require('../utils/typeof'))
   const compare = load(require('./compare'))
 
@@ -275,5 +275,4 @@ function compareComplexNumbers (x, y) {
   return 0
 }
 
-exports.name = 'compareNatural'
-exports.factory = factory
+export const name = 'compareNatural'

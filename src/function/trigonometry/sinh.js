@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic sine of a value,
    * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
@@ -63,5 +63,4 @@ const _sinh = Math.sinh || function (x) {
   return (Math.exp(x) - Math.exp(-x)) / 2
 }
 
-exports.name = 'sinh'
-exports.factory = factory
+export const name = 'sinh'

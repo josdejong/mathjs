@@ -1,8 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const concat = load(require('../matrix/concat'))
   const size = load(require('../matrix/size'))
@@ -46,5 +46,4 @@ function factory (type, config, load, typed) {
   return setSymDifference
 }
 
-exports.name = 'setSymDifference'
-exports.factory = factory
+export const name = 'setSymDifference'

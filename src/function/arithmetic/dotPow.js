@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const pow = load(require('./pow'))
   const latex = require('../../utils/latex')
@@ -104,5 +104,4 @@ function factory (type, config, load, typed) {
   return dotPow
 }
 
-exports.name = 'dotPow'
-exports.factory = factory
+export const name = 'dotPow'

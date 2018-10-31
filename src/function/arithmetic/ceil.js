@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -57,5 +57,4 @@ function factory (type, config, load, typed) {
   return ceil
 }
 
-exports.name = 'ceil'
-exports.factory = factory
+export const name = 'ceil'

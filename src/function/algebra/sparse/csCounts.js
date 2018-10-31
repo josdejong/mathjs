@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const transpose = load(require('../../matrix/transpose'))
 
   const csLeaf = load(require('./csLeaf'))
@@ -104,6 +104,5 @@ function factory (type, config, load) {
   return csCounts
 }
 
-exports.name = 'csCounts'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csCounts'
+export var path = 'algebra.sparse'

@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the inverse tangent of a value.
    *
@@ -50,5 +50,4 @@ function factory (type, config, load, typed) {
   return atan
 }
 
-exports.name = 'atan'
-exports.factory = factory
+export const name = 'atan'

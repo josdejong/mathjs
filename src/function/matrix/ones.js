@@ -2,10 +2,10 @@
 
 import { isBigNumber } from '../../utils/is'
 
-const isInteger = require('../../utils/number').isInteger
-const resize = require('../../utils/array').resize
+import { isInteger } from '../../utils/number'
+import { resize } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -129,5 +129,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'ones'
-exports.factory = factory
+export const name = 'ones'

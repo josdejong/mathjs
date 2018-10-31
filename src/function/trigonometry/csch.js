@@ -1,9 +1,9 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
-const sign = require('../../utils/number').sign
+import { sign } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic cosecant of a value,
    * defined as `csch(x) = 1 / sinh(x)`.
@@ -70,5 +70,4 @@ function _csch (x) {
   }
 }
 
-exports.name = 'csch'
-exports.factory = factory
+export const name = 'csch'

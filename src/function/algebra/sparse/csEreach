@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csMarked = load(require('./csMarked'))
   const csMark = load(require('./csMark'))
 

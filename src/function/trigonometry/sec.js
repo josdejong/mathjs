@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
    *
@@ -54,5 +54,4 @@ function factory (type, config, load, typed) {
   return sec
 }
 
-exports.name = 'sec'
-exports.factory = factory
+export const name = 'sec'

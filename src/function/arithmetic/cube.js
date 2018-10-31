@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Compute the cube of a value, `x * x * x`.
    * For matrices, the function is evaluated element wise.
@@ -59,5 +59,4 @@ function factory (type, config, load, typed) {
   return cube
 }
 
-exports.name = 'cube'
-exports.factory = factory
+export const name = 'cube'

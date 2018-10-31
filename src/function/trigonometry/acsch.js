@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic arccosecant of a value,
    * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
@@ -48,5 +48,4 @@ function factory (type, config, load, typed) {
   return acsch
 }
 
-exports.name = 'acsch'
-exports.factory = factory
+export const name = 'acsch'

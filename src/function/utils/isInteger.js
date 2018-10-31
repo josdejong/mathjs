@@ -1,9 +1,9 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
-const number = require('../../utils/number')
+import { isInteger as isIntegerNumber } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Test whether a value is an integer number.
    * The function supports `number`, `BigNumber`, and `Fraction`.
@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
    *                    Throws an error in case of an unknown data type.
    */
   const isInteger = typed('isInteger', {
-    'number': number.isInteger, // TODO: what to do with isInteger(add(0.1, 0.2))  ?
+    'number': isIntegerNumber, // TODO: what to do with isInteger(add(0.1, 0.2))  ?
 
     'BigNumber': function (x) {
       return x.isInt()
@@ -52,5 +52,4 @@ function factory (type, config, load, typed) {
   return isInteger
 }
 
-exports.name = 'isInteger'
-exports.factory = factory
+export const name = 'isInteger'

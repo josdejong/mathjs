@@ -2,7 +2,7 @@
 
 import { isOperatorNode } from '../../../utils/is'
 
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const FunctionNode = math.expression.node.FunctionNode
   const OperatorNode = math.expression.node.OperatorNode
   const SymbolNode = math.expression.node.SymbolNode
@@ -152,5 +152,4 @@ function factory (type, config, load, typed, math) {
   }
 }
 
-exports.factory = factory
-exports.math = true
+export var math = true

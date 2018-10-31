@@ -5,7 +5,7 @@ import { isInteger, toFixed } from '../../utils/number'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const equalScalar = load(require('../relational/equalScalar'))
   const zeros = load(require('../matrix/zeros'))
@@ -160,5 +160,4 @@ function _round (value, decimals) {
   return parseFloat(toFixed(value, decimals))
 }
 
-exports.name = 'round'
-exports.factory = factory
+export const name = 'round'

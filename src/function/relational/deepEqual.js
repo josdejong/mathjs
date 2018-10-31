@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const equal = load(require('./equal'))
 
   /**
@@ -76,5 +76,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'deepEqual'
-exports.factory = factory
+export const name = 'deepEqual'

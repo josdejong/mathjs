@@ -2,12 +2,12 @@
 
 import { isBigNumber, isMatrix, isNumber } from '../../utils/is'
 
-const clone = require('../../utils/object').clone
-const array = require('../../utils/array')
-const IndexError = require('../../error/IndexError')
-const DimensionError = require('../../error/DimensionError')
+import { clone } from '../../utils/object'
+import { arraySize } from '../../utils/array'
+import IndexError from '../../error/IndexError'
+import DimensionError from '../../error/DimensionError'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const isInteger = load(require('../utils/isInteger'))
 
@@ -78,7 +78,7 @@ function factory (type, config, load, typed) {
         } else {
           // this is a matrix or array
           const m = clone(arg).valueOf()
-          const size = array.arraySize(m)
+          const size = arraySize(m)
           matrices[i] = m
           prevDim = dim
           dim = size.length - 1
@@ -140,5 +140,4 @@ function _concat (a, b, concatDim, dim) {
   }
 }
 
-exports.name = 'concat'
-exports.factory = factory
+export const name = 'concat'

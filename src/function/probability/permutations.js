@@ -1,10 +1,10 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
+import { product } from './product'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const factorial = load(require('./factorial'))
-  const product = require('./product')
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
    * from a set of `n` elements.
@@ -81,5 +81,4 @@ function isPositiveInteger (n) {
   return n.isInteger() && n.gte(0)
 }
 
-exports.name = 'permutations'
-exports.factory = factory
+export const name = 'permutations'

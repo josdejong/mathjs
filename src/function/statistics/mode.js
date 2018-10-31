@@ -1,8 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const isNaN = load(require('../utils/isNaN'))
   const isNumeric = load(require('../utils/isNumeric'))
 
@@ -82,5 +82,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'mode'
-exports.factory = factory
+export const name = 'mode'

@@ -2,7 +2,7 @@
 
 import { clone } from '../../../utils/object'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
   const abs = load(require('../../arithmetic/abs'))
   const addScalar = load(require('../../arithmetic/addScalar'))
@@ -377,5 +377,4 @@ function factory (type, config, load, typed) {
   return lup
 }
 
-exports.name = 'lup'
-exports.factory = factory
+export const name = 'lup'

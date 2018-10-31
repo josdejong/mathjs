@@ -3,7 +3,7 @@
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 import { isFraction, isNode } from '../../../utils/is'
 
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const util = load(require('./util'))
   const isCommutative = util.isCommutative
   const isAssociative = util.isAssociative
@@ -255,7 +255,6 @@ function factory (type, config, load, typed, math) {
   return simplifyConstant
 }
 
-exports.math = true
-exports.name = 'simplifyConstant'
-exports.path = 'algebra.simplify'
-exports.factory = factory
+export var math = true
+export const name = 'simplifyConstant'
+export var path = 'algebra.simplify'

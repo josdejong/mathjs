@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
    *
@@ -52,5 +52,4 @@ function factory (type, config, load, typed) {
   return asec
 }
 
-exports.name = 'asec'
-exports.factory = factory
+export const name = 'asec'

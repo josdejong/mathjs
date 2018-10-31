@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csAmd = load(require('./csAmd'))
   const csPermute = load(require('./csPermute'))
   const csEtree = load(require('./csEtree'))
@@ -147,6 +147,5 @@ function factory (type, config, load) {
   return csSqr
 }
 
-exports.name = 'csSqr'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csSqr'
+export var path = 'algebra.sparse'

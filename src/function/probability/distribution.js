@@ -1,15 +1,14 @@
 'use strict'
 
 import { isCollection, isMatrix } from '../../utils/is'
-
-const ArgumentsError = require('../../error/ArgumentsError')
-const isNumber = require('../../utils/number').isNumber
+import ArgumentsError from '../../error/ArgumentsError'
+import { isNumber } from '../../utils/number'
+import { arraySize } from '../../utils/array'
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const matrix = load(require('../../type/matrix/function/matrix'))
-  const array = require('../../utils/array')
 
   // seeded pseudo random number generator
   const rng = load(require('./seededRNG'))
@@ -172,7 +171,7 @@ function factory (type, config, load, typed, math) {
           throw new TypeError('Unsupported type of value in function pickRandom')
         }
 
-        if (array.arraySize(possibles).length > 1) {
+        if (arraySize(possibles).length > 1) {
           throw new Error('Only one dimensional vectors supported')
         }
 
@@ -293,5 +292,4 @@ function factory (type, config, load, typed, math) {
   return distribution
 }
 
-exports.name = 'distribution'
-exports.factory = factory
+export const name = 'distribution'

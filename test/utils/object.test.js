@@ -256,15 +256,15 @@ describe('object', function () {
 
   describe('isFactory', function () {
     it('should test whether an object is a factory', function () {
-      assert.strictEqual(object.isFactory({}), false)
-      assert.strictEqual(object.isFactory({ foo: true }), false)
-      assert.strictEqual(object.isFactory({ name: 'foo' }), false)
-      assert.strictEqual(object.isFactory({ name: 'foo', factory: 'bar' }), false)
-      assert.strictEqual(object.isFactory({ name: 2, factory: function () {} }), true)
-      assert.strictEqual(object.isFactory({ factory: function () {} }), true)
+      assert.strictEqual(object.isLegacyFactory({}), false)
+      assert.strictEqual(object.isLegacyFactory({ foo: true }), false)
+      assert.strictEqual(object.isLegacyFactory({ name: 'foo' }), false)
+      assert.strictEqual(object.isLegacyFactory({ name: 'foo', factory: 'bar' }), false)
+      assert.strictEqual(object.isLegacyFactory({ name: 2, factory: function () {} }), true)
+      assert.strictEqual(object.isLegacyFactory({ factory: function () {} }), true)
 
-      assert.strictEqual(object.isFactory({ name: 'foo', factory: function () {} }), true)
-      assert.strictEqual(object.isFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
+      assert.strictEqual(object.isLegacyFactory({ name: 'foo', factory: function () {} }), true)
+      assert.strictEqual(object.isLegacyFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
     })
   })
 })

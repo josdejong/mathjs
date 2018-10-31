@@ -1,8 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const compareNatural = load(require('../relational/compareNatural'))
   const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const size = load(require('../matrix/size'))
@@ -48,5 +48,4 @@ function factory (type, config, load, typed) {
   return setMultiplicity
 }
 
-exports.name = 'setMultiplicity'
-exports.factory = factory
+export const name = 'setMultiplicity'

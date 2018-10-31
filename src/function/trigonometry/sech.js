@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic secant of a value,
    * defined as `sech(x) = 1 / cosh(x)`.
@@ -64,5 +64,4 @@ function _sech (x) {
   return 2 / (Math.exp(x) + Math.exp(-x))
 }
 
-exports.name = 'sech'
-exports.factory = factory
+export const name = 'sech'

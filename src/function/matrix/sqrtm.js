@@ -1,12 +1,11 @@
 'use strict'
 
 import { isMatrix } from '../../utils/is'
+import { format } from '../../utils/string'
+import { arraySize } from '../../utils/array'
+import { operators as latexOperators } from '../../utils/latex'
 
-const array = require('../../utils/array')
-const latex = require('../../utils/latex')
-const string = require('../../utils/string')
-
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const abs = load(require('../arithmetic/abs'))
   const add = load(require('../arithmetic/add'))
   const multiply = load(require('../arithmetic/multiply'))
@@ -40,7 +39,7 @@ function factory (type, config, load, typed) {
    */
   const sqrtm = typed('sqrtm', {
     'Array | Matrix': function (A) {
-      const size = isMatrix(A) ? A.size() : array.arraySize(A)
+      const size = isMatrix(A) ? A.size() : arraySize(A)
       switch (size.length) {
         case 1:
           // Single element Array | Matrix
@@ -48,7 +47,7 @@ function factory (type, config, load, typed) {
             return sqrt(A)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
 
         case 2:
@@ -59,7 +58,7 @@ function factory (type, config, load, typed) {
             return _denmanBeavers(A)
           } else {
             throw new RangeError('Matrix must be square ' +
-            '(size: ' + string.format(size) + ')')
+            '(size: ' + format(size) + ')')
           }
       }
     }
@@ -99,10 +98,9 @@ function factory (type, config, load, typed) {
     return Y
   }
 
-  sqrtm.toTex = { 1: `{\${args[0]}}${latex.operators['pow']}{\\frac{1}{2}}` }
+  sqrtm.toTex = { 1: `{\${args[0]}}${latexOperators['pow']}{\\frac{1}{2}}` }
 
   return sqrtm
 }
 
-exports.name = 'sqrtm'
-exports.factory = factory
+export const name = 'sqrtm'

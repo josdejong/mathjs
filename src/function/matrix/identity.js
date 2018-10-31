@@ -1,11 +1,10 @@
 'use strict'
 
 import { isBigNumber } from '../../utils/is'
+import { resize } from '../../utils/array'
+import { isInteger } from '../../utils/number'
 
-const array = require('../../utils/array')
-const isInteger = require('../../utils/number').isInteger
-
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -130,7 +129,7 @@ function factory (type, config, load, typed) {
     }
 
     // create and resize array
-    const res = array.resize([], size, defaultValue)
+    const res = resize([], size, defaultValue)
     // fill in ones on the diagonal
     const minimum = rows < cols ? rows : cols
     // fill diagonal
@@ -141,5 +140,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'identity'
-exports.factory = factory
+export const name = 'identity'

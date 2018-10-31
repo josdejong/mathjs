@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * It sets the p[i] equal to the sum of c[0] through c[i-1].
    *
@@ -32,6 +32,5 @@ function factory () {
   return csCumsum
 }
 
-exports.name = 'csCumsum'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csCumsum'
+export var path = 'algebra.sparse'

@@ -3,7 +3,7 @@
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
@@ -164,5 +164,4 @@ function factory (type, config, load, typed) {
   return unequal
 }
 
-exports.name = 'unequal'
-exports.factory = factory
+export const name = 'unequal'

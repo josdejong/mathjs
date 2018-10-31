@@ -1,12 +1,10 @@
 'use strict'
 
 import { isBigNumber, isCollection } from '../../utils/is'
+import { isInteger, isNumber } from '../../utils/number'
+import { flatten } from '../../utils/array'
 
-const isInteger = require('../../utils/number').isInteger
-const isNumber = require('../../utils/number').isNumber
-const flatten = require('../../utils/array').flatten
-
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))
   const multiply = load(require('../arithmetic/multiply'))
   const partitionSelect = load(require('../matrix/partitionSelect'))
@@ -256,5 +254,4 @@ function factory (type, config, load, typed) {
   return quantileSeq
 }
 
-exports.name = 'quantileSeq'
-exports.factory = factory
+export const name = 'quantileSeq'

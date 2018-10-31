@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -122,5 +122,4 @@ function factory (type, config, load, typed) {
   return or
 }
 
-exports.name = 'or'
-exports.factory = factory
+export const name = 'or'

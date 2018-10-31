@@ -1,8 +1,8 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
@@ -176,5 +176,4 @@ function _lcm (a, b) {
   return Math.abs(prod / a)
 }
 
-exports.name = 'lcm'
-exports.factory = factory
+export const name = 'lcm'

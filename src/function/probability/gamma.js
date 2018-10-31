@@ -1,12 +1,12 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
+import { product } from './product'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const multiply = load(require('../arithmetic/multiply'))
   const pow = load(require('../arithmetic/pow'))
-  const product = require('./product')
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -190,5 +190,4 @@ const p = [
   0.36899182659531622704e-5
 ]
 
-exports.name = 'gamma'
-exports.factory = factory
+export const name = 'gamma'

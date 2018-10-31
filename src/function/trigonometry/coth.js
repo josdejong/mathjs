@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic cotangent of a value,
    * defined as `coth(x) = 1 / tanh(x)`.
@@ -65,5 +65,4 @@ function _coth (x) {
   return (e + 1) / (e - 1)
 }
 
-exports.name = 'coth'
-exports.factory = factory
+export const name = 'coth'

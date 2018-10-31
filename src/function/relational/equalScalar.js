@@ -3,7 +3,7 @@
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Test whether two values are equal.
    *
@@ -44,5 +44,3 @@ function factory (type, config, load, typed) {
 
   return equalScalar
 }
-
-exports.factory = factory

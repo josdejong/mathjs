@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const distribution = load(require('./distribution'))
 
   /**
@@ -39,5 +39,4 @@ function factory (type, config, load, typed) {
   return randomInt
 }
 
-exports.name = 'randomInt'
-exports.factory = factory
+export const name = 'randomInt'

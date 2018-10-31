@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the inverse sine of a value.
    *
@@ -54,5 +54,4 @@ function factory (type, config, load, typed) {
   return asin
 }
 
-exports.name = 'asin'
-exports.factory = factory
+export const name = 'asin'

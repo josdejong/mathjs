@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csFlip = load(require('./csFlip'))
 
   /**
@@ -18,6 +18,5 @@ function factory (type, config, load) {
   return csUnflip
 }
 
-exports.name = 'csUnflip'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csUnflip'
+export var path = 'algebra.sparse'

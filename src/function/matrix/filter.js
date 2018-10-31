@@ -1,10 +1,9 @@
 'use strict'
 
-const filter = require('../../utils/array').filter
-const filterRegExp = require('../../utils/array').filterRegExp
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
+import { filter, filterRegExp } from '../../utils/array'
+import { maxArgumentCount } from '../../utils/function'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -78,5 +77,4 @@ function _filterCallback (x, callback) {
   })
 }
 
-exports.name = 'filter'
-exports.factory = factory
+export const name = 'filter'

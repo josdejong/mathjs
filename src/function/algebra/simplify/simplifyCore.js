@@ -2,7 +2,7 @@
 
 import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
 
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const equal = load(require('../../relational/equal'))
   const isZero = load(require('../../utils/isZero'))
   const add = load(require('../../arithmetic/add'))
@@ -177,7 +177,6 @@ function factory (type, config, load, typed, math) {
   return simplifyCore
 }
 
-exports.math = true
-exports.name = 'simplifyCore'
-exports.path = 'algebra.simplify'
-exports.factory = factory
+export var math = true
+export const name = 'simplifyCore'
+export var path = 'algebra.simplify'

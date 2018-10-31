@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * Checks if the node at w[j] is marked
    *
@@ -17,6 +17,5 @@ function factory () {
   return csMarked
 }
 
-exports.name = 'csMarked'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csMarked'
+export var path = 'algebra.sparse'

@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic arccotangent of a value,
    * defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
@@ -50,5 +50,4 @@ function factory (type, config, load, typed) {
   return acoth
 }
 
-exports.name = 'acoth'
-exports.factory = factory
+export const name = 'acoth'

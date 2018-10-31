@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic arccos of a value,
    * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
@@ -63,5 +63,4 @@ const _acosh = Math.acosh || function (x) {
   return Math.log(Math.sqrt(x * x - 1) + x)
 }
 
-exports.name = 'acosh'
-exports.factory = factory
+export const name = 'acosh'

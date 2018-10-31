@@ -2,7 +2,7 @@
 
 import { isString } from '../../utils/is'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const _typeof = load(require('../utils/typeof'))
 
@@ -107,5 +107,4 @@ function factory (type, config, load, typed) {
   return compareText
 }
 
-exports.name = 'compareText'
-exports.factory = factory
+export const name = 'compareText'

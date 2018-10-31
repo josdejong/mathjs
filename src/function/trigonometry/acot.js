@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
    *
@@ -49,5 +49,4 @@ function factory (type, config, load, typed) {
   return acot
 }
 
-exports.name = 'acot'
-exports.factory = factory
+export const name = 'acot'

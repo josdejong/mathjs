@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic arcsine of a value,
    * defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.
@@ -48,5 +48,4 @@ function factory (type, config, load, typed) {
   return asinh
 }
 
-exports.name = 'asinh'
-exports.factory = factory
+export const name = 'asinh'

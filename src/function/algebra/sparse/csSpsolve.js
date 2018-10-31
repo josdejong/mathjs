@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const divideScalar = load(require('../../arithmetic/divideScalar'))
   const multiply = load(require('../../arithmetic/multiply'))
   const subtract = load(require('../../arithmetic/subtract'))
@@ -77,6 +77,5 @@ function factory (type, config, load) {
   return csSpsolve
 }
 
-exports.name = 'csSpsolve'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csSpsolve'
+export var path = 'algebra.sparse'

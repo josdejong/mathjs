@@ -2,7 +2,7 @@
 
 import { isConstantNode, isParenthesisNode } from '../../utils/is'
 
-function factory (type, config, load, typed, math) {
+export function factory (type, config, load, typed, math) {
   const parse = load(require('../../expression/parse'))
   const equal = load(require('../relational/equal'))
   const ConstantNode = load(require('../../expression/node/ConstantNode'))
@@ -669,6 +669,5 @@ function factory (type, config, load, typed, math) {
   return simplify
 }
 
-exports.math = true
-exports.name = 'simplify'
-exports.factory = factory
+export var math = true
+export const name = 'simplify'

@@ -2,9 +2,9 @@
 
 import { bitOr as bigBitOr } from '../../utils/bignumber/bitwise'
 
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -115,5 +115,4 @@ function factory (type, config, load, typed) {
   return bitOr
 }
 
-exports.name = 'bitOr'
-exports.factory = factory
+export const name = 'bitOr'

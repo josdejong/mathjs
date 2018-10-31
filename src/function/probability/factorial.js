@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const gamma = load(require('./gamma'))
   const latex = require('../../utils/latex')
 
@@ -57,5 +57,4 @@ function factory (type, config, load, typed) {
   return factorial
 }
 
-exports.name = 'factorial'
-exports.factory = factory
+export const name = 'factorial'

@@ -1,14 +1,12 @@
 'use strict'
 
 import { isIndex } from '../../utils/is'
+import { clone } from '../../utils/object'
+import { validateIndex } from '../../utils/array'
+import { getSafeProperty, setSafeProperty } from '../../utils/customs'
+import DimensionError from '../../error/DimensionError'
 
-const clone = require('../../utils/object').clone
-const validateIndex = require('../../utils/array').validateIndex
-const getSafeProperty = require('../../utils/customs').getSafeProperty
-const setSafeProperty = require('../../utils/customs').setSafeProperty
-const DimensionError = require('../../error/DimensionError')
-
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -230,5 +228,4 @@ function _setObjectProperty (object, index, replacement) {
   return updated
 }
 
-exports.name = 'subset'
-exports.factory = factory
+export const name = 'subset'

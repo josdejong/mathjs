@@ -1,8 +1,8 @@
 'use strict'
 
-const extend = require('../../utils/object').extend
+import { extend } from '../../utils/object'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const divideScalar = load(require('./divideScalar'))
   const multiply = load(require('./multiply'))
   const inv = load(require('../matrix/inv'))
@@ -76,5 +76,4 @@ function factory (type, config, load, typed) {
   return divide
 }
 
-exports.name = 'divide'
-exports.factory = factory
+export const name = 'divide'

@@ -2,7 +2,7 @@
 
 import { deepForEach } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const multiply = load(require('../arithmetic/multiplyScalar'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -77,5 +77,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'prod'
-exports.factory = factory
+export const name = 'prod'

@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * Permutes a vector; x = P'b. In MATLAB notation, x(p)=b.
    *
@@ -34,6 +34,5 @@ function factory () {
   return csIpvec
 }
 
-exports.name = 'csIpvec'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csIpvec'
+export var path = 'algebra.sparse'

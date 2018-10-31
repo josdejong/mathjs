@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -56,5 +56,4 @@ function factory (type, config, load, typed) {
   return floor
 }
 
-exports.name = 'floor'
-exports.factory = factory
+export const name = 'floor'

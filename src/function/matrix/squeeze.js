@@ -1,9 +1,9 @@
 'use strict'
 
-const object = require('../../utils/object')
-const array = require('../../utils/array')
+import { clone } from '../../utils/object'
+import { squeeze as arraySqueeze } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -37,18 +37,18 @@ function factory (type, config, load, typed) {
    */
   const squeeze = typed('squeeze', {
     'Array': function (x) {
-      return array.squeeze(object.clone(x))
+      return arraySqueeze(clone(x))
     },
 
     'Matrix': function (x) {
-      const res = array.squeeze(x.toArray())
+      const res = arraySqueeze(x.toArray())
       // FIXME: return the same type of matrix as the input
       return Array.isArray(res) ? matrix(res) : res
     },
 
     'any': function (x) {
       // scalar
-      return object.clone(x)
+      return clone(x)
     }
   })
 
@@ -57,5 +57,4 @@ function factory (type, config, load, typed) {
   return squeeze
 }
 
-exports.name = 'squeeze'
-exports.factory = factory
+export const name = 'squeeze'

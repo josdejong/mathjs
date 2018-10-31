@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const transpose = load(require('./transpose'))
   const conj = load(require('../complex/conj'))
   const latex = require('../../utils/latex')
@@ -39,5 +39,4 @@ function factory (type, config, load, typed) {
   return ctranspose
 }
 
-exports.name = 'ctranspose'
-exports.factory = factory
+export const name = 'ctranspose'

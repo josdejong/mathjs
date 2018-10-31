@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))
   const stirlingS2 = load(require('./stirlingS2'))
   const isNegative = load(require('../utils/isNegative'))
@@ -48,5 +48,4 @@ function factory (type, config, load, typed) {
   return bellNumbers
 }
 
-exports.name = 'bellNumbers'
-exports.factory = factory
+export const name = 'bellNumbers'

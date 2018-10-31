@@ -156,7 +156,7 @@ describe('constants', function () {
     })
   })
 
-  describe('evaluation with constants', function () {
+  it('should evaluation functions with constants', function () {
     // Do these tests really belong in constants.test.js ?
     approx.equal(math.sin(math.pi / 2), 1)
 

@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const getType = load(require('../../utils/typeof'))
 
   /**
@@ -36,5 +36,3 @@ function factory (type, config, load, typed) {
     return err
   }
 }
-
-exports.factory = factory

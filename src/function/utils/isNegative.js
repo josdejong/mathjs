@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Test whether a value is negative: smaller than zero.
    * The function supports types `number`, `BigNumber`, `Fraction`, and `Unit`.
@@ -57,5 +57,4 @@ function factory (type, config, load, typed) {
   return isNegative
 }
 
-exports.name = 'isNegative'
-exports.factory = factory
+export const name = 'isNegative'

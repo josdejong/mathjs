@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   /**
@@ -68,5 +68,4 @@ function factory (type, config, load, typed) {
   return unaryPlus
 }
 
-exports.name = 'unaryPlus'
-exports.factory = factory
+export const name = 'unaryPlus'

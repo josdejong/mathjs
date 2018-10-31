@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Test whether a value is zero.
    * The function can check for zero for types `number`, `BigNumber`, `Fraction`,
@@ -65,5 +65,4 @@ function factory (type, config, load, typed) {
   return isZero
 }
 
-exports.name = 'isZero'
-exports.factory = factory
+export const name = 'isZero'

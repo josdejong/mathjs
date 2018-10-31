@@ -1,10 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
-const identify = require('../../utils/array').identify
-const generalize = require('../../utils/array').generalize
+import { flatten, generalize, identify } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
   const size = load(require('../matrix/size'))
@@ -62,5 +60,4 @@ function factory (type, config, load, typed) {
   return setIntersect
 }
 
-exports.name = 'setIntersect'
-exports.factory = factory
+export const name = 'setIntersect'

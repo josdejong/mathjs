@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * Keeps entries in the matrix when the callback function returns true, removes the entry otherwise
    *
@@ -57,6 +57,5 @@ function factory () {
   return csFkeep
 }
 
-exports.name = 'csFkeep'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csFkeep'
+export var path = 'algebra.sparse'

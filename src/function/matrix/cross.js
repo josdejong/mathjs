@@ -1,8 +1,8 @@
 'use strict'
 
-const array = require('../../utils/array')
+import { arraySize, squeeze } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiply'))
@@ -70,13 +70,13 @@ function factory (type, config, load, typed) {
    * @private
    */
   function _cross (x, y) {
-    const highestDimension = Math.max(array.arraySize(x).length, array.arraySize(y).length)
+    const highestDimension = Math.max(arraySize(x).length, arraySize(y).length)
 
-    x = array.squeeze(x)
-    y = array.squeeze(y)
+    x = squeeze(x)
+    y = squeeze(y)
 
-    const xSize = array.arraySize(x)
-    const ySize = array.arraySize(y)
+    const xSize = arraySize(x)
+    const ySize = arraySize(y)
 
     if (xSize.length !== 1 || ySize.length !== 1 || xSize[0] !== 3 || ySize[0] !== 3) {
       throw new RangeError('Vectors with length 3 expected ' +
@@ -97,5 +97,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'cross'
-exports.factory = factory
+export const name = 'cross'

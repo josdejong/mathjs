@@ -1,9 +1,9 @@
 'use strict'
 
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
-const forEach = require('../../utils/array').forEach
+import { maxArgumentCount } from '../../utils/function'
+import { forEach } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Iterate over all elements of a matrix/array, and executes the given callback function.
    *
@@ -70,5 +70,4 @@ function _forEach (array, callback) {
   recurse(array, [])
 }
 
-exports.name = 'forEach'
-exports.factory = factory
+export const name = 'forEach'

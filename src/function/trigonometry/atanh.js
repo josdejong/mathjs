@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the hyperbolic arctangent of a value,
    * defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.
@@ -61,5 +61,4 @@ const _atanh = Math.atanh || function (x) {
   return Math.log((1 + x) / (1 - x)) / 2
 }
 
-exports.name = 'atanh'
-exports.factory = factory
+export const name = 'atanh'

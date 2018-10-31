@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
    *
@@ -52,5 +52,4 @@ function factory (type, config, load, typed) {
   return acsc
 }
 
-exports.name = 'acsc'
-exports.factory = factory
+export const name = 'acsc'

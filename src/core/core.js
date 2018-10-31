@@ -1,7 +1,7 @@
 'use strict'
 require('./../utils/polyfills')
 
-const isFactory = require('./../utils/object').isFactory
+const isLegacyFactory = require('./../utils/object').isLegacyFactory
 const typedFactory = require('./typed')
 const emitter = require('./../utils/emitter')
 
@@ -93,7 +93,7 @@ exports.create = function create (options) {
    * @returns {*}
    */
   function load (factory) {
-    if (!isFactory(factory)) {
+    if (!isLegacyFactory(factory)) {
       throw new Error('Factory object with properties `type`, `name`, and `factory` expected')
     }
 

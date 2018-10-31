@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csTdfs = load(require('./csTdfs'))
 
   /**
@@ -50,6 +50,5 @@ function factory (type, config, load) {
   return csPost
 }
 
-exports.name = 'csPost'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csPost'
+export var path = 'algebra.sparse'

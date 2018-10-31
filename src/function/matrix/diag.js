@@ -2,10 +2,10 @@
 
 import { isMatrix } from '../../utils/is'
 
-const array = require('../../utils/array')
-const isInteger = require('../../utils/number').isInteger
+import { arraySize } from '../../utils/array'
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -49,27 +49,27 @@ function factory (type, config, load, typed) {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
     'Array': function (x) {
-      return _diag(x, 0, array.arraySize(x), null)
+      return _diag(x, 0, arraySize(x), null)
     },
 
     'Array, number': function (x, k) {
-      return _diag(x, k, array.arraySize(x), null)
+      return _diag(x, k, arraySize(x), null)
     },
 
     'Array, BigNumber': function (x, k) {
-      return _diag(x, k.toNumber(), array.arraySize(x), null)
+      return _diag(x, k.toNumber(), arraySize(x), null)
     },
 
     'Array, string': function (x, format) {
-      return _diag(x, 0, array.arraySize(x), format)
+      return _diag(x, 0, arraySize(x), format)
     },
 
     'Array, number, string': function (x, k, format) {
-      return _diag(x, k, array.arraySize(x), format)
+      return _diag(x, k, arraySize(x), format)
     },
 
     'Array, BigNumber, string': function (x, k, format) {
-      return _diag(x, k.toNumber(), array.arraySize(x), format)
+      return _diag(x, k.toNumber(), arraySize(x), format)
     },
 
     'Matrix': function (x) {
@@ -165,5 +165,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'diag'
-exports.factory = factory
+export const name = 'diag'

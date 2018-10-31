@@ -2,7 +2,7 @@
 
 import { isInteger } from '../../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const csSqr = load(require('../../algebra/sparse/csSqr'))
   const csLu = load(require('../../algebra/sparse/csLu'))
 
@@ -73,5 +73,4 @@ function factory (type, config, load, typed) {
   return slu
 }
 
-exports.name = 'slu'
-exports.factory = factory
+export const name = 'slu'

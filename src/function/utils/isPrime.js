@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Test whether a value is prime: has no divisors other than itself and one.
    * The function supports type `number`, `bignumber`.
@@ -76,5 +76,4 @@ function factory (type, config, load, typed) {
   return isPrime
 }
 
-exports.name = 'isPrime'
-exports.factory = factory
+export const name = 'isPrime'

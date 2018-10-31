@@ -1,9 +1,9 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
-const sign = require('../../utils/number').sign
+import { sign } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Compute the erf function of a value using a rational Chebyshev
    * approximations for different intervals of x.
@@ -191,5 +191,4 @@ const Q = [[
  */
 const MAX_NUM = Math.pow(2, 53)
 
-exports.name = 'erf'
-exports.factory = factory
+export const name = 'erf'

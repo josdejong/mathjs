@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * Depth-first search and postorder of a tree rooted at node j
    *
@@ -45,6 +45,5 @@ function factory () {
   return csTdfs
 }
 
-exports.name = 'csTdfs'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csTdfs'
+export var path = 'algebra.sparse'

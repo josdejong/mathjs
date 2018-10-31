@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the exponent of a value.
    * For matrices, the function is evaluated element wise.
@@ -53,5 +53,4 @@ function factory (type, config, load, typed) {
   return exp
 }
 
-exports.name = 'exp'
-exports.factory = factory
+export const name = 'exp'

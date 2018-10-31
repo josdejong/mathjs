@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the absolute value of a number. For matrices, the function is
    * evaluated element wise.
@@ -57,5 +57,4 @@ function factory (type, config, load, typed) {
   return abs
 }
 
-exports.name = 'abs'
-exports.factory = factory
+export const name = 'abs'

@@ -3,7 +3,7 @@
 import { format } from '../../utils/string'
 import { isString } from '../../utils/is'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Interpolate values into a string template.
    *
@@ -89,5 +89,4 @@ function _print (template, values, options) {
   )
 }
 
-exports.name = 'print'
-exports.factory = factory
+export const name = 'print'

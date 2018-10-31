@@ -3,7 +3,7 @@
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 
 const lazy = require('../../utils/object').lazy
-const isFactory = require('../../utils/object').isFactory
+const isLegacyFactory = require('../../utils/object').isLegacyFactory
 const traverse = require('../../utils/object').traverse
 const ArgumentsError = require('../../error/ArgumentsError')
 
@@ -66,8 +66,8 @@ function factory (type, config, load, typed, math) {
     }
 
     // TODO: allow a typed-function with name too
-    if (isFactory(object)) {
-      _importFactory(object, options)
+    if (isLegacyFactory(object)) {
+      _importLegacyFactory(object, options)
     } else if (Array.isArray(object)) {
       object.forEach(function (entry) {
         mathImport(entry, options)
@@ -77,12 +77,12 @@ function factory (type, config, load, typed, math) {
       for (const name in object) {
         if (object.hasOwnProperty(name)) {
           const value = object[name]
-          if (isDependencyFactory(value)) {
-            _importDependencyFactory(name, value, options)
+          if (isFactory(value)) {
+            _importFactory(name, value, options)
           } else if (isSupportedType(value)) {
             _import(name, value, options)
-          } else if (isFactory(object)) {
-            _importFactory(object, options)
+          } else if (isLegacyFactory(object)) {
+            _importLegacyFactory(object, options)
           } else {
             mathImport(value, options)
           }
@@ -201,7 +201,7 @@ function factory (type, config, load, typed, math) {
    * @param {Object} options  See import for a description of the options
    * @private
    */
-  function _importFactory (factory, options) {
+  function _importLegacyFactory (factory, options) {
     if (typeof factory.name === 'string') {
       const name = factory.name
       const existingTransform = name in math.expression.transform
@@ -272,7 +272,7 @@ function factory (type, config, load, typed, math) {
    * @param {Object} options  See import for a description of the options
    * @private
    */
-  function _importDependencyFactory (name, factory, options) {
+  function _importFactory (name, factory, options) {
     const existingTransform = name in math.expression.transform
     const namespace = factory.path ? traverse(math, factory.path) : math
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
@@ -358,8 +358,7 @@ function factory (type, config, load, typed, math) {
     return typeof fn === 'function' && typeof fn.signatures === 'object'
   }
 
-  // TODO: find a better name
-  function isDependencyFactory (obj) {
+  function isFactory (obj) {
     return obj && Array.isArray(obj.dependencies)
   }
 

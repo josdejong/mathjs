@@ -1,6 +1,6 @@
 'use strict'
 
-function factory () {
+export function factory () {
   /**
    * This function "flips" its input about the integer -1.
    *
@@ -16,6 +16,5 @@ function factory () {
   return csFlip
 }
 
-exports.name = 'csFlip'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csFlip'
+export var path = 'algebra.sparse'

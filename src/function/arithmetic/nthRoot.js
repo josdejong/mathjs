@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
@@ -247,5 +247,4 @@ function _nthRoot (a, root) {
   */
 }
 
-exports.name = 'nthRoot'
-exports.factory = factory
+export const name = 'nthRoot'

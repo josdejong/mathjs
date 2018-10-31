@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
    *
@@ -71,5 +71,4 @@ const _log10 = Math.log10 || function (x) {
   return Math.log(x) / Math.LN10
 }
 
-exports.name = 'log10'
-exports.factory = factory
+export const name = 'log10'

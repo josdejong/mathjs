@@ -1,8 +1,9 @@
 'use strict'
 
-const isInteger = require('../../utils/number').isInteger
-const product = require('./product')
-function factory (type, config, load, typed) {
+import { isInteger } from '../../utils/number'
+import { product } from './product'
+
+export function factory (type, config, load, typed) {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
    * possibilities.
@@ -89,5 +90,4 @@ function isPositiveInteger (n) {
   return n.isInteger() && n.gte(0)
 }
 
-exports.name = 'combinations'
-exports.factory = factory
+export const name = 'combinations'

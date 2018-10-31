@@ -1,11 +1,12 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+import { isInteger } from '../../utils/number'
+
+export function factory (type, config, load, typed) {
   const simplify = load(require('./simplify'))
   const simplifyCore = load(require('./simplify/simplifyCore'))
   const simplifyConstant = load(require('./simplify/simplifyConstant'))
   const parse = load(require('../../expression/function/parse'))
-  const number = require('../../utils/number')
   const ConstantNode = load(require('../../expression/node/ConstantNode'))
   const OperatorNode = load(require('../../expression/node/OperatorNode'))
   const SymbolNode = load(require('../../expression/node/SymbolNode'))
@@ -216,7 +217,7 @@ function factory (type, config, load, typed) {
           if (node.args[1].fn === 'unaryMinus') {
             node = node.args[0]
           }
-          if (node.args[1].type !== 'ConstantNode' || !number.isInteger(parseFloat(node.args[1].value))) {
+          if (node.args[1].type !== 'ConstantNode' || !isInteger(parseFloat(node.args[1].value))) {
             throw new Error('There is a non-integer exponent')
           } else {
             recPoly(node.args[0])
@@ -367,7 +368,7 @@ function factory (type, config, load, typed) {
             node.args[0].type === 'OperatorNode') &&
             (node.args[1].type === 'ConstantNode')) { // Second operator: Constant
           val = parseFloat(node.args[1].value)
-          does = (val >= 2 && number.isInteger(val))
+          does = (val >= 2 && isInteger(val))
         }
       }
 
@@ -568,7 +569,7 @@ function factory (type, config, load, typed) {
           // cte: second  child of power
           if (o.noFil !== 1) throw new Error('Constant cannot be powered')
 
-          if (!number.isInteger(valor) || valor <= 0) { throw new Error('Non-integer exponent is not allowed') }
+          if (!isInteger(valor) || valor <= 0) { throw new Error('Non-integer exponent is not allowed') }
 
           for (let i = maxExpo + 1; i < valor; i++) coefficients[i] = 0
           if (valor > maxExpo) coefficients[valor] = 0
@@ -587,5 +588,4 @@ function factory (type, config, load, typed) {
   return rationalize
 } // end of factory
 
-exports.name = 'rationalize'
-exports.factory = factory
+export const name = 'rationalize'

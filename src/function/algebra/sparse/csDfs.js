@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csMarked = load(require('./csMarked'))
   const csMark = load(require('./csMark'))
   const csUnflip = load(require('./csUnflip'))
@@ -78,6 +78,5 @@ function factory (type, config, load) {
   return csDfs
 }
 
-exports.name = 'csDfs'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csDfs'
+export var path = 'algebra.sparse'

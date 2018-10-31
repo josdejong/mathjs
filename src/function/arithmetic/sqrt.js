@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the square root of a value.
    *
@@ -76,5 +76,4 @@ function factory (type, config, load, typed) {
   return sqrt
 }
 
-exports.name = 'sqrt'
-exports.factory = factory
+export const name = 'sqrt'

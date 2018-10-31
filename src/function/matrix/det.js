@@ -4,7 +4,7 @@ import { isMatrix } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiply'))
@@ -146,5 +146,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'det'
-exports.factory = factory
+export const name = 'det'

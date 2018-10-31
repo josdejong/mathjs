@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Compute the argument of a complex value.
    * For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
@@ -55,5 +55,4 @@ function factory (type, config, load, typed) {
   return arg
 }
 
-exports.name = 'arg'
-exports.factory = factory
+export const name = 'arg'

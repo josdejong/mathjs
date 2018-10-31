@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const sqrt = load(require('../arithmetic/sqrt'))
   const variance = load(require('../statistics/var'))
 
@@ -78,5 +78,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'std'
-exports.factory = factory
+export const name = 'std'

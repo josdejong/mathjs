@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
   const zeros = load(require('../../matrix/zeros'))
   const identity = load(require('../../matrix/identity'))
@@ -242,5 +242,4 @@ function factory (type, config, load, typed) {
   return qr
 }
 
-exports.name = 'qr'
-exports.factory = factory
+export const name = 'qr'

@@ -1,8 +1,8 @@
 'use strict'
 
-const size = require('../../utils/array').arraySize
+import { arraySize as size } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const compareAsc = load(require('../relational/compare'))
   const compareDesc = function (a, b) {
@@ -119,5 +119,4 @@ function factory (type, config, load, typed) {
   return sort
 }
 
-exports.name = 'sort'
-exports.factory = factory
+export const name = 'sort'

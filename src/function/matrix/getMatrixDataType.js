@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const getArrayDataType = load(require('../../type/matrix/utils/getArrayDataType'))
   /**
    * Find the data type of all elements in a matrix or array,
@@ -47,5 +47,4 @@ function factory (type, config, load, typed) {
   return getMatrixDataType
 }
 
-exports.name = 'getMatrixDataType'
-exports.factory = factory
+export const name = 'getMatrixDataType'

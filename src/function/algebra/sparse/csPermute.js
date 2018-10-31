@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type) {
+export function factory (type) {
   const SparseMatrix = type.SparseMatrix
 
   /**
@@ -64,6 +64,5 @@ function factory (type) {
   return csPermute
 }
 
-exports.name = 'csPermute'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csPermute'
+export var path = 'algebra.sparse'

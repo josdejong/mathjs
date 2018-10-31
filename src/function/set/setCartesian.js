@@ -1,8 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
   const size = load(require('../matrix/size'))
@@ -55,5 +55,4 @@ function factory (type, config, load, typed) {
   return setCartesian
 }
 
-exports.name = 'setCartesian'
-exports.factory = factory
+export const name = 'setCartesian'

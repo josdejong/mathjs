@@ -1,9 +1,9 @@
 'use strict'
 
-const clone = require('../../utils/object').clone
-const _flatten = require('../../utils/array').flatten
+import { clone } from '../../utils/object'
+import { flatten as _flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -41,5 +41,4 @@ function factory (type, config, load, typed) {
   return flatten
 }
 
-exports.name = 'flatten'
-exports.factory = factory
+export const name = 'flatten'

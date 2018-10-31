@@ -252,6 +252,6 @@ export function hasOwnProperty (object, property) {
  * @param {*} object
  * @returns {boolean}
  */
-export function isFactory (object) {
+export function isLegacyFactory (object) {
   return object && typeof object.factory === 'function'
 }

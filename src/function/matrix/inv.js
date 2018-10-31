@@ -4,7 +4,7 @@ import { isMatrix } from '../../utils/is'
 import { arraySize } from '../../utils/array'
 import { format } from '../../utils/string'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const divideScalar = load(require('../arithmetic/divideScalar'))
   const addScalar = load(require('../arithmetic/addScalar'))
@@ -204,5 +204,4 @@ function factory (type, config, load, typed) {
   return inv
 }
 
-exports.name = 'inv'
-exports.factory = factory
+export const name = 'inv'

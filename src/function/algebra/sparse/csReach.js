@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csDfs = load(require('./csDfs'))
   const csMarked = load(require('./csMarked'))
   const csMark = load(require('./csMark'))
@@ -55,6 +55,5 @@ function factory (type, config, load) {
   return csReach
 }
 
-exports.name = 'csReach'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csReach'
+export var path = 'algebra.sparse'

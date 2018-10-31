@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const divide = load(require('../arithmetic/divide'))
   const sum = load(require('../statistics/sum'))
@@ -83,5 +83,4 @@ function factory (type, config, load, typed) {
   return kldivergence
 }
 
-exports.name = 'kldivergence'
-exports.factory = factory
+export const name = 'kldivergence'

@@ -3,7 +3,7 @@
 import { deepMap } from '../../utils/collection'
 import { sign as numberSign } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Compute the sign of a value. The sign of a value x is:
    *
@@ -64,5 +64,4 @@ function factory (type, config, load, typed) {
   return sign
 }
 
-exports.name = 'sign'
-exports.factory = factory
+export const name = 'sign'

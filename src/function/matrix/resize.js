@@ -1,16 +1,14 @@
 'use strict'
 
 import { isBigNumber, isMatrix } from '../../utils/is'
+import DimensionError from '../../error/DimensionError'
+import ArgumentsError from '../../error/ArgumentsError'
+import { isInteger } from '../../utils/number'
+import { format } from '../../utils/string'
+import { clone } from '../../utils/object'
+import { resize as arrayResize } from '../../utils/array'
 
-const DimensionError = require('../../error/DimensionError')
-const ArgumentsError = require('../../error/ArgumentsError')
-
-const isInteger = require('../../utils/number').isInteger
-const format = require('../../utils/string').format
-const clone = require('../../utils/object').clone
-const array = require('../../utils/array')
-
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -84,7 +82,7 @@ function factory (type, config, load, typed) {
       }
       x = clone(x)
 
-      const res = array.resize(x, size, defaultValue)
+      const res = arrayResize(x, size, defaultValue)
       return asMatrix ? matrix(res) : res
     }
   }
@@ -132,5 +130,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'resize'
-exports.factory = factory
+export const name = 'resize'

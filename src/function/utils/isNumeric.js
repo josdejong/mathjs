@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Test whether a value is an numeric value.
    *
@@ -48,5 +48,4 @@ function factory (type, config, load, typed) {
   return isNumeric
 }
 
-exports.name = 'isNumeric'
-exports.factory = factory
+export const name = 'isNumeric'

@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const compareText = load(require('./compareText'))
   const isZero = load(require('../utils/isZero'))
 
@@ -43,5 +43,4 @@ function factory (type, config, load, typed) {
   return equalText
 }
 
-exports.name = 'equalText'
-exports.factory = factory
+export const name = 'equalText'

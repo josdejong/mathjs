@@ -1,9 +1,9 @@
 'use strict'
 
-const clone = require('../../utils/object').clone
-const format = require('../../utils/string').format
+import { clone } from '../../utils/object'
+import { format } from '../../utils/string'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const add = load(require('../arithmetic/add'))
 
@@ -130,5 +130,4 @@ function factory (type, config, load, typed) {
   return trace
 }
 
-exports.name = 'trace'
-exports.factory = factory
+export const name = 'trace'

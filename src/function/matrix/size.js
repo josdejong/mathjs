@@ -1,8 +1,8 @@
 'use strict'
 
-const array = require('../../utils/array')
+import { arraySize } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   /**
@@ -34,7 +34,7 @@ function factory (type, config, load, typed) {
       return matrix(x.size())
     },
 
-    'Array': array.arraySize,
+    'Array': arraySize,
 
     'string': function (x) {
       return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
@@ -51,5 +51,4 @@ function factory (type, config, load, typed) {
   return size
 }
 
-exports.name = 'size'
-exports.factory = factory
+export const name = 'size'

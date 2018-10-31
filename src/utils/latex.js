@@ -2,7 +2,7 @@
 
 import escapeLatex from 'escape-latex'
 
-export var symbols = {
+export const symbols = {
   // GREEK LETTERS
   Alpha: 'A',
   alpha: '\\alpha',
@@ -73,7 +73,7 @@ export var symbols = {
   'undefined': '\\mathbf{?}'
 }
 
-export var operators = {
+export const operators = {
   'transpose': '^\\top',
   'ctranspose': '^H',
   'factorial': '!',
@@ -108,7 +108,7 @@ export var operators = {
   'or': '\\vee'
 }
 
-export var defaultTemplate = `\\mathrm{\${name}}\\left(\${args}\\right)`
+export const defaultTemplate = `\\mathrm{\${name}}\\left(\${args}\\right)`
 
 const units = {
   deg: '^\\circ'

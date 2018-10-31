@@ -2,9 +2,9 @@
 
 import { isMatrix } from '../../utils/is'
 
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const isNumeric = load(require('../utils/isNumeric'))
   const isNaN = load(require('../utils/isNaN'))
   const asc = load(require('../relational/compare'))
@@ -142,5 +142,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'partitionSelect'
-exports.factory = factory
+export const name = 'partitionSelect'

@@ -14,7 +14,7 @@ import {
   isUnit
 } from '../../utils/is'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Determine the type of a variable.
    *
@@ -111,5 +111,4 @@ function factory (type, config, load, typed) {
   return _typeof
 }
 
-exports.name = 'typeof'
-exports.factory = factory
+export const name = 'typeof'

@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
    *
@@ -54,5 +54,4 @@ function factory (type, config, load, typed) {
   return csc
 }
 
-exports.name = 'csc'
-exports.factory = factory
+export const name = 'csc'

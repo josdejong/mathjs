@@ -1,9 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
-const identify = require('../../utils/array').identify
+import { flatten, identify } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
   const size = load(require('../matrix/size'))
   const subset = load(require('../matrix/subset'))
@@ -59,5 +58,4 @@ function factory (type, config, load, typed) {
   return setIsSubset
 }
 
-exports.name = 'setIsSubset'
-exports.factory = factory
+export const name = 'setIsSubset'

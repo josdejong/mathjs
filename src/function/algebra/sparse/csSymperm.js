@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load) {
+export function factory (type, config, load) {
   const csCumsum = load(require('./csCumsum'))
   const conj = load(require('../../complex/conj'))
 
@@ -86,6 +86,5 @@ function factory (type, config, load) {
   return csSymperm
 }
 
-exports.name = 'csSymperm'
-exports.path = 'algebra.sparse'
-exports.factory = factory
+export const name = 'csSymperm'
+export var path = 'algebra.sparse'

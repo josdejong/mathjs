@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
    *
@@ -54,5 +54,4 @@ function factory (type, config, load, typed) {
   return cot
 }
 
-exports.name = 'cot'
-exports.factory = factory
+export const name = 'cot'

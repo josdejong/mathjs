@@ -3,7 +3,7 @@
 import { containsCollections } from '../../utils/collection'
 import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
   const divide = load(require('../arithmetic/divideScalar'))
   const compare = load(require('../relational/compare'))
@@ -116,5 +116,4 @@ function factory (type, config, load, typed) {
   return median
 }
 
-exports.name = 'median'
-exports.factory = factory
+export const name = 'median'

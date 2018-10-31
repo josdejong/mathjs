@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../../type/matrix/function/matrix'))
   const divideScalar = load(require('../../arithmetic/divideScalar'))
   const multiplyScalar = load(require('../../arithmetic/multiplyScalar'))
@@ -179,5 +179,4 @@ function factory (type, config, load, typed) {
   return lsolve
 }
 
-exports.name = 'lsolve'
-exports.factory = factory
+export const name = 'lsolve'

@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the cosine of a value.
    *
@@ -57,5 +57,4 @@ function factory (type, config, load, typed) {
   return cos
 }
 
-exports.name = 'cos'
-exports.factory = factory
+export const name = 'cos'

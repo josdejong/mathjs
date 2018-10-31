@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Calculate the 2-base of a value. This is the same as calculating `log(x, 2)`.
    *
@@ -75,5 +75,4 @@ function factory (type, config, load, typed) {
   return log2
 }
 
-exports.name = 'log2'
-exports.factory = factory
+export const name = 'log2'

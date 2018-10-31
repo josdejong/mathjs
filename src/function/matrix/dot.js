@@ -1,8 +1,8 @@
 'use strict'
 
-const size = require('../../utils/array').arraySize
+import { arraySize as size } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))
   const multiply = load(require('../arithmetic/multiply'))
 
@@ -75,5 +75,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'dot'
-exports.factory = factory
+export const name = 'dot'

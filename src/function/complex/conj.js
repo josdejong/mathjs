@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Compute the complex conjugate of a complex value.
    * If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
@@ -51,5 +51,4 @@ function factory (type, config, load, typed) {
   return conj
 }
 
-exports.name = 'conj'
-exports.factory = factory
+export const name = 'conj'

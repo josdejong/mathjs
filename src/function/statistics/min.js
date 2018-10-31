@@ -2,7 +2,7 @@
 
 import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const smaller = load(require('../relational/smaller'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -104,5 +104,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'min'
-exports.factory = factory
+export const name = 'min'

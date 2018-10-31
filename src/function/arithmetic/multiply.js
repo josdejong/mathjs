@@ -1,11 +1,10 @@
 'use strict'
 
 import { isMatrix } from '../../utils/is'
+import { extend } from '../../utils/object'
+import { arraySize } from '../../utils/array'
 
-const extend = require('../../utils/object').extend
-const array = require('../../utils/array')
-
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -57,7 +56,7 @@ function factory (type, config, load, typed) {
 
     'Array, Array': function (x, y) {
       // check dimensions
-      _validateMatrixDimensions(array.arraySize(x), array.arraySize(y))
+      _validateMatrixDimensions(arraySize(x), arraySize(y))
 
       // use dense matrix implementation
       const m = multiply(matrix(x), matrix(y))
@@ -921,5 +920,4 @@ function factory (type, config, load, typed) {
   return multiply
 }
 
-exports.name = 'multiply'
-exports.factory = factory
+export const name = 'multiply'

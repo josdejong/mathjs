@@ -1,8 +1,8 @@
 'use strict'
 
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
+import { maxArgumentCount } from '../../utils/function'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Create a new matrix or array with the results of the callback function executed on
    * each entry of the matrix/array.
@@ -72,5 +72,4 @@ function _map (array, callback) {
   return recurse(array, [])
 }
 
-exports.name = 'map'
-exports.factory = factory
+export const name = 'map'

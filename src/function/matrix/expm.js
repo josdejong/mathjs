@@ -2,9 +2,9 @@
 
 import { isSparseMatrix } from '../../utils/is'
 
-const format = require('../../utils/string').format
+import { format } from '../../utils/string'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const abs = load(require('../arithmetic/abs'))
   const add = load(require('../arithmetic/add'))
   const identity = load(require('./identity'))
@@ -170,5 +170,4 @@ function factory (type, config, load, typed) {
   return expm
 }
 
-exports.name = 'expm'
-exports.factory = factory
+export const name = 'expm'

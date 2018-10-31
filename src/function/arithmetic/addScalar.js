@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function
@@ -47,5 +47,4 @@ function factory (type, config, load, typed) {
   return add
 }
 
-exports.name = 'addScalar'
-exports.factory = factory
+export const name = 'addScalar'

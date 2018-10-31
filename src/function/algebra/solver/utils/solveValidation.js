@@ -4,7 +4,7 @@ import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
 import { arraySize } from '../../../../utils/array'
 import { format } from '../../../../utils/string'
 
-function factory (type) {
+export function factory (type) {
   const DenseMatrix = type.DenseMatrix
 
   /**
@@ -147,5 +147,3 @@ function factory (type) {
 
   return solveValidation
 }
-
-exports.factory = factory

@@ -2,7 +2,7 @@
 
 import { isConstantNode } from '../../utils/is'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const parse = load(require('../../expression/parse'))
   const simplify = load(require('./simplify'))
   const equal = load(require('../relational/equal'))
@@ -778,5 +778,4 @@ function factory (type, config, load, typed) {
   return derivative
 }
 
-exports.name = 'derivative'
-exports.factory = factory
+export const name = 'derivative'

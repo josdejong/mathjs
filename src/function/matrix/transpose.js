@@ -1,9 +1,9 @@
 'use strict'
 
-const clone = require('../../utils/object').clone
-const format = require('../../utils/string').format
+import { clone } from '../../utils/object'
+import { format } from '../../utils/string'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -172,5 +172,4 @@ function factory (type, config, load, typed) {
   return transpose
 }
 
-exports.name = 'transpose'
-exports.factory = factory
+export const name = 'transpose'

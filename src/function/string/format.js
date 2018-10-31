@@ -1,8 +1,8 @@
 'use strict'
 
-const string = require('../../utils/string')
+import { format as formatString } from '../../utils/string'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Format a value of any type into a string.
    *
@@ -104,8 +104,8 @@ function factory (type, config, load, typed) {
    * @return {string} The formatted value
    */
   const format = typed('format', {
-    'any': string.format,
-    'any, Object | function | number': string.format
+    'any': formatString,
+    'any, Object | function | number': formatString
   })
 
   format.toTex = undefined // use default template
@@ -113,5 +113,4 @@ function factory (type, config, load, typed) {
   return format
 }
 
-exports.name = 'format'
-exports.factory = factory
+export const name = 'format'

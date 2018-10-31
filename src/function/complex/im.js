@@ -2,7 +2,7 @@
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   /**
    * Get the imaginary part of a complex number.
    * For a complex number `a + bi`, the function returns `b`.
@@ -53,5 +53,4 @@ function factory (type, config, load, typed) {
   return im
 }
 
-exports.name = 'im'
-exports.factory = factory
+export const name = 'im'

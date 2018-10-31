@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const numeric = load(require('../../type/numeric'))
   const getTypeOf = load(require('../../function/utils/typeof'))
 
@@ -60,5 +60,4 @@ function factory (type, config, load, typed) {
   return divideScalar
 }
 
-exports.name = 'divideScalar'
-exports.factory = factory
+export const name = 'divideScalar'

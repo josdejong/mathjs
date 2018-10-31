@@ -4,7 +4,7 @@ import { isBigNumber, isComplex, isFraction } from '../../utils/is'
 
 import { deepMap } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const unaryMinus = load(require('./unaryMinus'))
   const isNegative = load(require('../utils/isNegative'))
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -179,5 +179,4 @@ const _cbrtNumber = Math.cbrt || function (x) {
   return negate ? -result : result
 }
 
-exports.name = 'cbrt'
-exports.factory = factory
+export const name = 'cbrt'

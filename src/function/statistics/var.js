@@ -5,7 +5,7 @@ import { isBigNumber } from '../../utils/is'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
@@ -135,5 +135,4 @@ function factory (type, config, load, typed) {
   }
 }
 
-exports.name = 'var'
-exports.factory = factory
+export const name = 'var'

@@ -1,6 +1,6 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
   const equalScalar = load(require('./equalScalar'))
 
@@ -133,5 +133,4 @@ function factory (type, config, load, typed) {
   return equal
 }
 
-exports.name = 'equal'
-exports.factory = factory
+export const name = 'equal'

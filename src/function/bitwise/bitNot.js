@@ -3,9 +3,9 @@
 import { bitNot as bigBitNot } from '../../utils/bignumber/bitwise'
 
 import { deepMap } from '../../utils/collection'
-const isInteger = require('../../utils/number').isInteger
+import { isInteger } from '../../utils/number'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   /**
@@ -53,5 +53,4 @@ function factory (type, config, load, typed) {
   return bitNot
 }
 
-exports.name = 'bitNot'
-exports.factory = factory
+export const name = 'bitNot'

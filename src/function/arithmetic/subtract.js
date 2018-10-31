@@ -1,8 +1,8 @@
 'use strict'
 
-const DimensionError = require('../../error/DimensionError')
+import DimensionError from '../../error/DimensionError'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const latex = require('../../utils/latex')
 
   const matrix = load(require('../../type/matrix/function/matrix'))
@@ -173,5 +173,4 @@ function checkEqualDimensions (x, y) {
   }
 }
 
-exports.name = 'subtract'
-exports.factory = factory
+export const name = 'subtract'

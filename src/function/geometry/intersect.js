@@ -2,7 +2,7 @@
 
 import { isBigNumber } from '../../utils/is'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const abs = load(require('../arithmetic/abs'))
   const add = load(require('../arithmetic/add'))
   const addScalar = load(require('../arithmetic/addScalar'))
@@ -168,5 +168,4 @@ function factory (type, config, load, typed) {
   return intersect
 }
 
-exports.name = 'intersect'
-exports.factory = factory
+export const name = 'intersect'

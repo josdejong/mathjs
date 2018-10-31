@@ -2,7 +2,7 @@
 
 import { deepForEach } from '../../utils/collection'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/add'))
   const multiply = load(require('../arithmetic/multiply'))
   const divide = load(require('../arithmetic/divide'))
@@ -49,5 +49,4 @@ function factory (type, config, load, typed) {
   })
 }
 
-exports.name = 'multinomial'
-exports.factory = factory
+export const name = 'multinomial'

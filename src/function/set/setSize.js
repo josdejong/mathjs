@@ -1,8 +1,8 @@
 'use strict'
 
-const flatten = require('../../utils/array').flatten
+import { flatten } from '../../utils/array'
 
-function factory (type, config, load, typed) {
+export function factory (type, config, load, typed) {
   const compareNatural = load(require('../relational/compareNatural'))
 
   /**
@@ -49,5 +49,4 @@ function factory (type, config, load, typed) {
   return setSize
 }
 
-exports.name = 'setSize'
-exports.factory = factory
+export const name = 'setSize'
