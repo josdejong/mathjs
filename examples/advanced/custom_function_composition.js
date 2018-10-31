@@ -10,7 +10,7 @@ const typed = require('typed-function')
 
 // Low level functions can be used right away.
 // The following implementation of function `add` only supports numbers:
-const add = require('../../lib/number/arithmetic').add
+const add = require('../../lib/plain/number/arithmetic').add
 
 // Use the loaded function:
 console.log('add(4, 3) =', add(4, 3)) // 7
@@ -41,7 +41,7 @@ typed.addConversion({
 })
 
 // We can compose a typed function `add` such that it supports number and BigNumber:
-const addBigNumber = require('../../lib/bignumber/arithmetic').add
+const addBigNumber = require('../../lib/plain/bignumber/arithmetic').add
 const addComposed = typed('add', add, addBigNumber)
 
 // Use the composed function add:

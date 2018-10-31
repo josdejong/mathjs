@@ -3,8 +3,8 @@
 // (lib/number/arithmetic) and not generic implementations (lib/arithmetic)
 const core = require('../../core')
 const bignumber = require('../../lib/type/bignumber')
-const numberArithmetic = require('../../lib/number/arithmetic')
-const bignumberArithmetic = require('../../lib/bignumber/arithmetic')
+const numberArithmetic = require('../../lib/plain/number/arithmetic')
+const bignumberArithmetic = require('../../lib/plain/bignumber/arithmetic')
 
 // Create a new, empty math.js instance
 // It will only contain methods `import` and `config`

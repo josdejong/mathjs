@@ -56,10 +56,12 @@ Function | Description
 ---- | -----------
 [math.abs(x)](functions/abs.md) | Calculate the absolute value of a number.
 [math.add(x,&nbsp;y)](functions/add.md) | Add two or more values, `x + y`.
+[addScalar](functions/addScalar.md) | Add two scalar values, `x + y`.
 [math.cbrt(x&nbsp;[,&nbsp;allRoots])](functions/cbrt.md) | Calculate the cubic root of a value.
 [math.ceil(x)](functions/ceil.md) | Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 [math.cube(x)](functions/cube.md) | Compute the cube of a value, `x * x * x`.
 [math.divide(x,&nbsp;y)](functions/divide.md) | Divide two values, `x / y`.
+[divideScalar](functions/divideScalar.md) | Divide two scalar values, `x / y`.
 [math.dotDivide(x,&nbsp;y)](functions/dotDivide.md) | Divide two matrices element wise.
 [math.dotMultiply(x,&nbsp;y)](functions/dotMultiply.md) | Multiply two matrices element wise.
 [math.dotPow(x,&nbsp;y)](functions/dotPow.md) | Calculates the power of x to y element wise.
@@ -76,6 +78,7 @@ Function | Description
 [math.log2(x)](functions/log2.md) | Calculate the 2-base of a value.
 [math.mod(x,&nbsp;y)](functions/mod.md) | Calculates the modulus, the remainder of an integer division.
 [math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or more values, `x * y`.
+[multiplyScalar](functions/multiplyScalar.md) | Multiply two scalar values, `x * y`.
 [math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
 [math.nthRoots(x)](functions/nthRoots.md) | Calculate the nth roots of a value.
