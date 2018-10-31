@@ -204,6 +204,11 @@ describe('pow', function () {
     assert.strictEqual(pow(unit('123 hogshead'), 0).toString(), '1')
   })
 
+  it('should correctly calculate unit ^ BigNumber', function () {
+    assert.strictEqual(pow(unit('4 N'), math.bignumber(2)).toString(), '16 N^2')
+    assert.deepStrictEqual(pow(unit(math.bignumber(4), 'N'), math.bignumber(2)).toNumeric('N^2'), math.bignumber(16))
+  })
+
   it('should return a cloned value and not affect the argument', function () {
     const unit1 = unit('2 m')
     const unit2 = pow(unit1, 2)

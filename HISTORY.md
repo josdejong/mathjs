@@ -1,5 +1,19 @@
 # History
 
+# 2018-10-30, version 5.2.3
+
+- Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
+  specific cases. Thanks @dangmai.
+- Fixed incorrect LaTeX output of function `bitNot`, see #1299. Thanks @FSMaxB.
+- Fixed #1304: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
+- Upgraded dependencies (`escape-latex@1.2.0`)
+
+# 2018-10-23, version 5.2.2
+
+- Fixed #1286: Fixed unit base recognition and formatting for
+  user-defined units. Thanks @ericman314.
+
+
 # 2018-10-18, version 5.2.1
 
 - Fixed unit `rod` being defined as `5.02921` instead of `5.0292`.
