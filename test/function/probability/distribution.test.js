@@ -1,7 +1,7 @@
-import assert from 'assert';
-import error from '../../../src/error/index';
-import _ from 'underscore';
-import math from '../../../src/main';
+import assert from 'assert'
+import error from '../../../src/error/index'
+import _ from 'underscore'
+import math from '../../../src/main'
 math.import(require('../../../src/function/probability/distribution'))
 
 const Matrix = math.type.Matrix

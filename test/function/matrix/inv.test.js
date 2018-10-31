@@ -1,8 +1,8 @@
 // test inv
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 const inv = math.inv
 
 describe('inv', function () {

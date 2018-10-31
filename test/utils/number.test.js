@@ -1,5 +1,5 @@
 // test number utils
-import assert from 'assert';
+import assert from 'assert'
 
 import {
   digits,

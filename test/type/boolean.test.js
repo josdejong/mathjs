@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../src/main';
+import assert from 'assert'
+import math from '../../src/main'
 const bool = math['boolean']
 
 describe('boolean', function () {

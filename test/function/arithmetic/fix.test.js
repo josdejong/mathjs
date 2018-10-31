@@ -1,8 +1,8 @@
 // test fix
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 const bignumber = math.bignumber
 const complex = math.complex
 const fraction = math.fraction

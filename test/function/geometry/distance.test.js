@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
 
 describe('distance', function () {
   it('should calculate the distance of two 2D points', function () {

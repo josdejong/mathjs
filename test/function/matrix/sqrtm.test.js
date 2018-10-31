@@ -1,8 +1,8 @@
 // test sqrtm
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 
 describe('sqrtm', function () {
   const A = [[5, 2], [4, 7]]

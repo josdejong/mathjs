@@ -1,6 +1,6 @@
-import assert from 'assert';
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import assert from 'assert'
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 
 describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {

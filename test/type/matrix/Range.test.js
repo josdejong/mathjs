@@ -1,8 +1,8 @@
 // test data type Range
 
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const Range = math.type.Range
 
 describe('range', function () {

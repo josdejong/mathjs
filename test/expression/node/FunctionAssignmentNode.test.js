@@ -1,5 +1,5 @@
 // test FunctionAssignmentNode
-import assert from 'assert';
+import assert from 'assert'
 
 const math = require('../../../src/main').create()
 const Node = math.expression.node.Node

@@ -1,5 +1,5 @@
-import assert from 'assert';
-import { toSymbol } from '../../src/utils/latex';
+import assert from 'assert'
+import { toSymbol } from '../../src/utils/latex'
 
 describe('util.latex', function () {
   it('should convert symbols with underscores', function () {

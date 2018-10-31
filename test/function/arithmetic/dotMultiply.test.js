@@ -1,8 +1,8 @@
 // test dotMultiply (element-wise multiply)
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
-import approx from '../../../tools/approx';
+import math from '../../../src/main'
+import approx from '../../../tools/approx'
 const dotMultiply = math.dotMultiply
 const divide = math.divide
 const matrix = math.matrix

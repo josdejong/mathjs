@@ -1,6 +1,6 @@
-import assert from 'assert';
-import math from '../../src/main';
-import approx from '../../tools/approx';
+import assert from 'assert'
+import math from '../../src/main'
+import approx from '../../tools/approx'
 const number = math.number
 
 describe('number', function () {

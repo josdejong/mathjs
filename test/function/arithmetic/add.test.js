@@ -1,7 +1,7 @@
 // test add
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const add = math.add
 
 // TODO: make unit tests independent of math

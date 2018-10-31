@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
 const BigNumber = math.type.BigNumber
 const Complex = math.type.Complex
 const DenseMatrix = math.type.DenseMatrix

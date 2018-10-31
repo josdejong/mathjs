@@ -1,8 +1,8 @@
 // test atan2
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
-import approx from '../../../tools/approx';
+import math from '../../../src/main'
+import approx from '../../../tools/approx'
 const pi = math.pi
 const complex = math.complex
 const matrix = math.matrix

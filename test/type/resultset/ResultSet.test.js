@@ -1,8 +1,8 @@
 // test data type ResultSet
 
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const Complex = math.type.Complex
 const ResultSet = math.type.ResultSet
 

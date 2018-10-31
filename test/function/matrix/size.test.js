@@ -1,7 +1,7 @@
 // test size
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const size = math.size
 const matrix = math.matrix
 

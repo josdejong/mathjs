@@ -1,8 +1,8 @@
 // test round
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix

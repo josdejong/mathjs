@@ -1,7 +1,7 @@
 // test setIntersect
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 
 describe('setIntersect', function () {
   it('should return the intersection of two sets', function () {

@@ -1,7 +1,7 @@
 // test or
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const bignumber = math.bignumber
 const complex = math.complex
 const matrix = math.matrix

@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
 
 describe('Fraction', function () {
   it('should have a property isFraction', function () {

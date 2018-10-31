@@ -1,7 +1,7 @@
 // test chain
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const Chain = math.type.Chain
 
 describe('Chain', function () {

@@ -1,8 +1,8 @@
 // test lup
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../../tools/approx';
-import math from '../../../../src/main';
+import approx from '../../../../tools/approx'
+import math from '../../../../src/main'
 
 describe('lup', function () {
   it('should decompose matrix, n x n, no permutations, array', function () {

@@ -1,11 +1,11 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
+import actualErfValues from './erf.values.json'
 const bignumber = math.bignumber
 const subtract = math.subtract
 const abs = math.abs
 const smaller = math.smaller
 const erf = math.erf
-import actualErfValues from './erf.values.json';
 
 const DIFF_THRESH = 5e-16
 

@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../src/main';
+import assert from 'assert'
+import math from '../../src/main'
 
 describe('replacer', function () {
   it('should stringify generic JSON', function () {

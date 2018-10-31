@@ -1,5 +1,5 @@
-import assert from 'assert';
-import BigNumber from 'decimal.js';
+import assert from 'assert'
+import BigNumber from 'decimal.js'
 import { format, toExponential, toFixed } from '../../../src/utils/bignumber/formatter'
 
 describe('format', function () {

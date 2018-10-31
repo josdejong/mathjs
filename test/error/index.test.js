@@ -1,5 +1,5 @@
-import assert from 'assert';
-import error from '../../src/error/index';
+import assert from 'assert'
+import error from '../../src/error/index'
 
 describe('index.js', function () {
   it('should contain error factory functions', function () {

@@ -1,8 +1,8 @@
 // test import
-import assert from 'assert';
+import assert from 'assert'
 
-import mathjs from '../../src/main';
-import approx from '../../tools/approx';
+import mathjs from '../../src/main'
+import approx from '../../tools/approx'
 
 describe('import', function () {
   let math = null

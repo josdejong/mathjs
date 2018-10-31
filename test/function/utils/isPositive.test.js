@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
 const isPositive = math.isPositive
 const bignumber = math.bignumber
 const fraction = math.fraction

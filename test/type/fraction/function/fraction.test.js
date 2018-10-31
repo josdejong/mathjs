@@ -1,6 +1,6 @@
-import assert from 'assert';
-import math from '../../../../src/main';
-import Fraction from 'fraction.js';
+import assert from 'assert'
+import math from '../../../../src/main'
+import Fraction from 'fraction.js'
 
 describe('fraction', function () {
   it('should create a fraction', function () {

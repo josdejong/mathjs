@@ -1,7 +1,7 @@
 // test rightArithShift
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const matrix = math.matrix
 const sparse = math.sparse
 const bignumber = math.bignumber

@@ -1,7 +1,7 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
+import _ from 'underscore'
 const multinomial = math.multinomial
-import _ from 'underscore';
 
 describe('multinomial', function () {
   it('should calculate the multinomial of an array of numbers', function () {

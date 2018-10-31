@@ -1,6 +1,6 @@
-import assert from 'assert';
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import assert from 'assert'
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 const Unit = math.type.Unit
 
 describe('Unit', function () {

@@ -1,9 +1,9 @@
 // test parse
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../tools/approx';
-import math from '../../src/main';
-import ArgumentsError from '../../src/error/ArgumentsError';
+import approx from '../../tools/approx'
+import math from '../../src/main'
+import ArgumentsError from '../../src/error/ArgumentsError'
 const parse = math.expression.parse
 const ConditionalNode = math.expression.node.ConditionalNode
 const ConstantNode = math.expression.node.ConstantNode

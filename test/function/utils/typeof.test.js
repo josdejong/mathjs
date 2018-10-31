@@ -1,7 +1,7 @@
 // test typeof
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const Index = math.type.Index
 const Range = math.type.Range
 const Help = math.type.Help

@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
 const mode = math.mode
 const DenseMatrix = math.type.DenseMatrix
 

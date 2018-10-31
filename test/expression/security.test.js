@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../src/main';
+import assert from 'assert'
+import math from '../../src/main'
 
 describe('security', function () {
   it('should not allow calling Function via constructor', function () {

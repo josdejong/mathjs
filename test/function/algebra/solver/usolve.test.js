@@ -1,8 +1,8 @@
 // test usolve
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../../tools/approx';
-import math from '../../../../src/main';
+import approx from '../../../../tools/approx'
+import math from '../../../../src/main'
 
 describe('usolve', function () {
   it('should solve linear system 4 x 4, arrays', function () {

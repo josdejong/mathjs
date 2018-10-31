@@ -1,8 +1,8 @@
 // test divide
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
-import approx from '../../../tools/approx';
+import math from '../../../src/main'
+import approx from '../../../tools/approx'
 const divide = math.divide
 const bignumber = math.bignumber
 const complex = math.complex

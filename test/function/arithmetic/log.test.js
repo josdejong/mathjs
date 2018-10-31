@@ -1,8 +1,8 @@
 // test log
-import assert from 'assert';
+import assert from 'assert'
 
-import approx from '../../../tools/approx';
-import math from '../../../src/main';
+import approx from '../../../tools/approx'
+import math from '../../../src/main'
 const mathPredictable = math.create({ predictable: true })
 const complex = math.complex
 const matrix = math.matrix

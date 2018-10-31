@@ -1,7 +1,7 @@
 // test ObjectNode
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode
 const RangeNode = math.expression.node.RangeNode

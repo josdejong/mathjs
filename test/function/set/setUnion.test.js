@@ -1,7 +1,7 @@
 // test setUnion
-import assert from 'assert';
+import assert from 'assert'
 
-import math from '../../../src/main';
+import math from '../../../src/main'
 
 describe('setUnion', function () {
   it('should return the union of two sets', function () {

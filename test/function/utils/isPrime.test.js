@@ -1,5 +1,5 @@
-import assert from 'assert';
-import math from '../../../src/main';
+import assert from 'assert'
+import math from '../../../src/main'
 const isPrime = math.isPrime
 const bignumber = math.bignumber
 const complex = math.complex
