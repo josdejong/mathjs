@@ -2,6 +2,7 @@
 
 const deepForEach = require('../../utils/collection/deepForEach')
 const reduce = require('../../utils/collection/reduce')
+const containsCollections = require('../../utils/collection/containsCollections')
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
@@ -43,7 +44,7 @@ function factory (type, config, load, typed) {
         throw new TypeError('Scalar values expected in function mean')
       }
 
-      return _mean(args)
+      return _sum(args)
     }
   })
 
