@@ -1,6 +1,7 @@
 'use strict'
 
 const deepForEach = require('../../utils/collection/deepForEach')
+const reduce = require('../../utils/collection/reduce')
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
@@ -30,20 +31,19 @@ function factory (type, config, load, typed) {
    * @return {*} The sum of all values
    */
   const sum = typed('sum', {
-    'Array | Matrix': function (args) {
-      // sum([a, b, c, d, ...])
-      return _sum(args)
-    },
+    // sum([a, b, c, d, ...])
+    'Array | Matrix': _sum,
 
-    'Array | Matrix, number | BigNumber': function () {
-      // sum([a, b, c, d, ...], dim)
-      // TODO: implement sum(A, dim)
-      throw new Error('sum(A, dim) is not yet supported')
-    },
+    // sum([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': _nsumDim,
 
+    // sum(a, b, c, d, ...)
     '...': function (args) {
-      // sum(a, b, c, d, ...)
-      return _sum(args)
+      if (containsCollections(args)) {
+        throw new TypeError('Scalar values expected in function mean')
+      }
+
+      return _mean(args)
     }
   })
 
@@ -83,6 +83,17 @@ function factory (type, config, load, typed) {
 
     return sum
   }
+
+
+  function _nsumDim (array, dim) {
+    try {
+      const sum = reduce(array, dim, add)
+      return sum
+    } catch (err) {
+      throw improveErrorMessage(err, 'sum')
+    }
+  }
+
 }
 
 exports.name = 'sum'
