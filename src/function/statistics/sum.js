@@ -41,7 +41,7 @@ function factory (type, config, load, typed) {
     // sum(a, b, c, d, ...)
     '...': function (args) {
       if (containsCollections(args)) {
-        throw new TypeError('Scalar values expected in function mean')
+        throw new TypeError('Scalar values expected in function sum')
       }
 
       return _sum(args)
