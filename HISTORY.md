@@ -1,5 +1,10 @@
 # History
 
+# not yet released, version 5.3.0
+
+- Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
+
+
 # 2018-10-30, version 5.2.3
 
 - Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
@@ -7,6 +12,7 @@
 - Fixed incorrect LaTeX output of function `bitNot`, see #1299. Thanks @FSMaxB.
 - Fixed #1304: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
 - Upgraded dependencies (`escape-latex@1.2.0`)
+
 
 # 2018-10-23, version 5.2.2
 
