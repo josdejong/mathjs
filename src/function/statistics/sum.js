@@ -84,8 +84,6 @@ function factory (type, config, load, typed) {
 
     return sum
   }
-
-
   function _nsumDim (array, dim) {
     try {
       const sum = reduce(array, dim, add)
@@ -94,7 +92,6 @@ function factory (type, config, load, typed) {
       throw improveErrorMessage(err, 'sum')
     }
   }
-
 }
 
 exports.name = 'sum'

@@ -82,19 +82,19 @@ describe('sum', function () {
   ]
 
   it('should return the sum value along a dimension of a matrix', function () {
-      assert.deepStrictEqual(sum([
-        [2, 6],
-        [4, 10]], 1), [8, 14])
-      assert.deepStrictEqual(sum([
-        [2, 6],
-        [4, 10]], 0), [6, 16])
-      assert.deepStrictEqual(sum(inputMatrix, 0),
-        [[400, 440], [480, 520], [560, 600]])
-      assert.deepStrictEqual(sum(inputMatrix, 1),
-        [[90, 120], [270, 300], [450, 480], [630, 660]])
-      assert.deepStrictEqual(sum(inputMatrix, 2),
-        [[30, 70, 110], [150, 190, 230], [270, 310, 350], [390, 430, 470]])
-    })
+    assert.deepStrictEqual(sum([
+      [2, 6],
+      [4, 10]], 1), [8, 14])
+    assert.deepStrictEqual(sum([
+      [2, 6],
+      [4, 10]], 0), [6, 16])
+    assert.deepStrictEqual(sum(inputMatrix, 0),
+      [[400, 440], [480, 520], [560, 600]])
+    assert.deepStrictEqual(sum(inputMatrix, 1),
+      [[90, 120], [270, 300], [450, 480], [630, 660]])
+    assert.deepStrictEqual(sum(inputMatrix, 2),
+      [[30, 70, 110], [150, 190, 230], [270, 310, 350], [390, 430, 470]])
+  })
 
   it('should return zero if called with an empty array', function () {
     const bigMath = math.create({ number: 'BigNumber' })
