@@ -150,7 +150,7 @@
     "tar": "4.4.6",
     "uglify-js": "3.4.9",
     "underscore": "1.9.1",
-    "webpack": "4.23.1",
+    "webpack": "4.25.0",
     "zeros": "1.0.0"
   },
   "main": "./index",
