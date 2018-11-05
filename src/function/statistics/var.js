@@ -9,6 +9,8 @@ function factory (type, config, load, typed) {
   const subtract = load(require('../arithmetic/subtract'))
   const multiply = load(require('../arithmetic/multiplyScalar'))
   const divide = load(require('../arithmetic/divideScalar'))
+  const mean = load(require('../statistics/mean'))
+  const square = load(require('../arithmetic/square'))
   const isNaN = load(require('../utils/isNaN'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -62,6 +64,12 @@ function factory (type, config, load, typed) {
 
     // var([a, b, c, d, ...], normalization)
     'Array | Matrix, string': _var,
+
+    // var([a, b, c, c, ...], dim)
+    'Array | Matrix, number | BigNumber': _varDim,
+
+    // var([a, b, c, c, ...], normalization, dim)
+    'Array | Matrix, string, number | BigNumber': _varDimWeighted,
 
     // var(a, b, c, d, ...)
     '...': function (args) {
@@ -130,6 +138,22 @@ function factory (type, config, load, typed) {
       default:
         throw new Error('Unknown normalization "' + normalization + '". ' +
         'Choose "unbiased" (default), "uncorrected", or "biased".')
+    }
+  }
+  function _varDim (array, dim) {
+    try {
+      const varDim = subtract(mean(square(array), dim), square(mean(array, dim)))
+      return varDim
+    } catch (err) {
+      throw improveErrorMessage(err, 'var')
+    }
+  }
+  function _varDimWeighted (array, weighting, dim) {
+    try {
+      const varDim = subtract(mean(square(array), dim), square(mean(array, dim)))
+      return varDim
+    } catch (err) {
+      throw improveErrorMessage(err, 'var')
     }
   }
 }
