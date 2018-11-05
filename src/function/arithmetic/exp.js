@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'exp'
+const dependencies = ['typed']
+
+export const createExp = factory(name, dependencies, (scope) => {
   /**
    * Calculate the exponent of a value.
    * For matrices, the function is evaluated element wise.
@@ -31,7 +35,7 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to exponentiate
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  const exp = typed('exp', {
+  const exp = scope.typed(name, {
     'number': Math.exp,
 
     'Complex': function (x) {
@@ -51,6 +55,4 @@ export function factory (type, config, load, typed) {
   exp.toTex = { 1: `\\exp\\left(\${args[0]}\\right)` }
 
   return exp
-}
-
-export const name = 'exp'
+})

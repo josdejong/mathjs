@@ -6,6 +6,7 @@ module.exports = [
   require('./deepEqual'),
   require('./equal'),
   require('./equalText'),
+  require('./equalScalar'),
   require('./larger'),
   require('./largerEq'),
   require('./smaller'),

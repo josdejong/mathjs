@@ -1,7 +1,7 @@
 'use strict'
 
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
-import { compareFactories, isFactory } from '../../utils/factory'
+import { sortFactories, isFactory } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
 import ArgumentsError from '../../error/ArgumentsError'
 
@@ -63,15 +63,18 @@ function factory (type, config, load, typed, math) {
       options = {}
     }
 
+    if (Array.isArray(object)) {
+      object = sortFactories(flattenImports(object))
+    }
+
+    // TODO: flatten objects containing factory functions too
     // TODO: allow a typed-function with name too
     if (isFactory(object)) {
       _importFactory(object, options)
     } else if (isLegacyFactory(object)) {
       _importLegacyFactory(object, options)
     } else if (Array.isArray(object)) {
-      object.slice()
-        .sort(compareFactories)
-        .forEach((entry) => mathImport(entry, options))
+      object.forEach((entry) => mathImport(entry, options))
     } else if (typeof object === 'object') {
       // a map with functions
       for (const name in object) {
@@ -96,6 +99,29 @@ function factory (type, config, load, typed, math) {
   }
 
   /**
+   * Flatten nested imports from arrays and/or objects
+   */
+  function flattenImports (arr, options) {
+    if (!Array.isArray(arr)) {
+      return arr
+    }
+
+    let flat = []
+
+    function recurse (child) {
+      if (Array.isArray(child)) {
+        child.forEach(item => recurse(item))
+      } else {
+        flat.push(child)
+      }
+    }
+
+    recurse(arr)
+
+    return flat
+  }
+
+  /**
    * Add a property to the math namespace and create a chain proxy for it.
    * @param {string} name
    * @param {*} value
@@ -109,8 +135,8 @@ function factory (type, config, load, typed, math) {
       value = _wrap(value)
     }
 
+    // turn a plain function with a typed-function signature into a typed-function
     if (hasTypedFunctionSignature(value)) {
-      // TODO: move this functionality into typed function?
       value = typed(name, {
         [value.signature]: value
       })
@@ -267,18 +293,18 @@ function factory (type, config, load, typed, math) {
 
   /**
    * Import an instance of a factory into math.js
-   * @param {{name: string, dependencies: string[], create: function(math: object)}} factory
+   * @param {function(scope: object)} factory
    * @param {Object} options  See import for a description of the options
    * @param {string} [name=factory.name] Optional custom name
    * @private
    */
-  function _importFactory (factory, options, name = factory.name) {
+  function _importFactory (factory, options, name = factory.fn) {
     const existingTransform = name in math.expression.transform
     const namespace = factory.path ? traverse(math, factory.path) : math
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
-      let instance = factory.create(math)
+      let instance = factory(math)
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
             'Please create a separate function for it with exports.path="expression.transform"')
@@ -304,7 +330,8 @@ function factory (type, config, load, typed, math) {
       }
     }
 
-    if (factory.lazy !== false) {
+    const neverEverLazy = true // FIXME: lazy loading is turned of during the migration, make this working in the end
+    if (factory.lazy !== false && neverEverLazy === false) {
       lazy(namespace, name, resolver)
 
       if (existingTransform) {
@@ -341,12 +368,12 @@ function factory (type, config, load, typed, math) {
         typeof object === 'string' ||
         typeof object === 'boolean' ||
         object === null ||
-        (object && isUnit(object)) ||
-        (object && isComplex(object)) ||
-        (object && isBigNumber(object)) ||
-        (object && isFraction(object)) ||
-        (object && isMatrix(object)) ||
-        (object && Array.isArray(object))
+        isUnit(object) ||
+        isComplex(object) ||
+        isBigNumber(object) ||
+        isFraction(object) ||
+        isMatrix(object) ||
+        Array.isArray(object)
   }
 
   /**

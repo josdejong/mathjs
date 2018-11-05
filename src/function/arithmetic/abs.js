@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'abs'
+const dependencies = ['typed']
+
+export const createAbs = factory(name, dependencies, (scope) => {
   /**
    * Calculate the absolute value of a number. For matrices, the function is
    * evaluated element wise.
@@ -27,7 +31,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Absolute value of `x`
    */
-  const abs = typed('abs', {
+  const abs = scope.typed(name, {
     'number': Math.abs,
 
     'Complex': function (x) {
@@ -55,6 +59,4 @@ export function factory (type, config, load, typed) {
   abs.toTex = { 1: `\\left|\${args[0]}\\right|` }
 
   return abs
-}
-
-export const name = 'abs'
+})

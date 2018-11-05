@@ -7,6 +7,7 @@ import * as emitter from './../utils/emitter'
 
 import * as importFactory from './function/import'
 import * as configFactory from './function/config'
+import { isFactory } from '../utils/factory'
 
 /**
  * Math.js core. Creates a new, empty math.js instance
@@ -89,10 +90,19 @@ export function create (options) {
    * Load a function or data type from a factory.
    * If the function or data type already exists, the existing instance is
    * returned.
-   * @param {{type: string, name: string, factory: Function}} factory
+   * @param {Function} factory
    * @returns {*}
    */
   function load (factory) {
+    if (isFactory(factory)) {
+      return factory(math)
+    }
+
+    const firstProperty = factory[Object.keys(factory)[0]]
+    if (isFactory(firstProperty)) {
+      return firstProperty(math)
+    }
+
     if (!isLegacyFactory(factory)) {
       throw new Error('Factory object with properties `type`, `name`, and `factory` expected')
     }

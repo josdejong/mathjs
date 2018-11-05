@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'sqrt'
+const dependencies = ['config', 'typed', 'complex']
+
+export const createSqrt = factory(name, dependencies, (scope) => {
   /**
    * Calculate the square root of a value.
    *
@@ -27,7 +31,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix | Unit}
    *            Returns the square root of `x`
    */
-  const sqrt = typed('sqrt', {
+  const sqrt = scope.typed('sqrt', {
     'number': _sqrtNumber,
 
     'Complex': function (x) {
@@ -35,7 +39,7 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      if (!x.isNegative() || config.predictable) {
+      if (!x.isNegative() || scope.config().predictable) {
         return x.sqrt()
       } else {
         // negative value -> downgrade to number to do complex value computation
@@ -64,16 +68,14 @@ export function factory (type, config, load, typed) {
   function _sqrtNumber (x) {
     if (isNaN(x)) {
       return NaN
-    } else if (x >= 0 || config.predictable) {
+    } else if (x >= 0 || scope.config().predictable) {
       return Math.sqrt(x)
     } else {
-      return new type.Complex(x, 0).sqrt()
+      return scope.complex(x, 0).sqrt()
     }
   }
 
   sqrt.toTex = { 1: `\\sqrt{\${args[0]}}` }
 
   return sqrt
-}
-
-export const name = 'sqrt'
+})

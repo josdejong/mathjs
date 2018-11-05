@@ -1,16 +1,23 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 import { arraySize as size } from '../../utils/array'
+import { operators as latexOperators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
-  const identity = load(require('../matrix/identity'))
-  const multiply = load(require('./multiply'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const fraction = load(require('../../type/fraction/function/fraction'))
-  const number = load(require('../../type/number'))
+const name = 'pow'
+const dependencies = [
+  'config',
+  'identity',
+  'multiply',
+  'matrix',
+  'fraction',
+  'number',
+  'complex',
+  'bignumber'
+]
 
+export const createPow = factory(name, dependencies, (scope) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive
@@ -43,7 +50,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Complex} y                          The exponent
    * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
    */
-  const pow = typed('pow', {
+  const pow = scope.typed(name, {
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
@@ -51,16 +58,16 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      if (y.isInteger() || x >= 0 || config.predictable) {
+      if (y.isInteger() || x >= 0 || scope.config().predictable) {
         return x.pow(y)
       } else {
-        return new type.Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
+        return scope.complex(x.toNumber(), 0).pow(y.toNumber(), 0)
       }
     },
 
     'Fraction, Fraction': function (x, y) {
       if (y.d !== 1) {
-        if (config.predictable) {
+        if (scope.config().predictable) {
           throw new Error('Function pow does not support non-integer exponents for fractions.')
         } else {
           return _pow(x.valueOf(), y.valueOf())
@@ -98,11 +105,11 @@ export function factory (type, config, load, typed) {
   function _pow (x, y) {
     // Alternatively could define a 'realmode' config option or something, but
     // 'predictable' will work for now
-    if (config.predictable && !isInteger(y) && x < 0) {
+    if (scope.config().predictable && !isInteger(y) && x < 0) {
       // Check to see if y can be represented as a fraction
       try {
-        const yFrac = fraction(y)
-        const yNum = number(yFrac)
+        const yFrac = scope.fraction(y)
+        const yNum = scope.number(yFrac)
         if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
           if (yFrac.d % 2 === 1) {
             return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y)
@@ -125,16 +132,16 @@ export function factory (type, config, load, typed) {
     // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
-    if (config.predictable &&
+    if (scope.config().predictable &&
         ((x < -1 && y === Infinity) ||
          (x > -1 && x < 0 && y === -Infinity))) {
       return NaN
     }
 
-    if (isInteger(y) || x >= 0 || config.predictable) {
+    if (isInteger(y) || x >= 0 || scope.config().predictable) {
       return Math.pow(x, y)
     } else {
-      return new type.Complex(x, 0).pow(y, 0)
+      return scope.complex(x, 0).pow(y, 0)
     }
   }
 
@@ -158,14 +165,14 @@ export function factory (type, config, load, typed) {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
     }
 
-    let res = identity(s[0]).valueOf()
+    let res = scope.identity(s[0]).valueOf()
     let px = x
     while (y >= 1) {
       if ((y & 1) === 1) {
-        res = multiply(px, res)
+        res = scope.multiply(px, res)
       }
       y >>= 1
-      px = multiply(px, px)
+      px = scope.multiply(px, px)
     }
     return res
   }
@@ -178,14 +185,12 @@ export function factory (type, config, load, typed) {
    * @private
    */
   function _powMatrix (x, y) {
-    return matrix(_powArray(x.valueOf(), y))
+    return scope.matrix(_powArray(x.valueOf(), y))
   }
 
   pow.toTex = {
-    2: `\\left(\${args[0]}\\right)${latex.operators['pow']}{\${args[1]}}`
+    2: `\\left(\${args[0]}\\right)${latexOperators['pow']}{\${args[1]}}`
   }
 
   return pow
-}
-
-export const name = 'pow'
+})

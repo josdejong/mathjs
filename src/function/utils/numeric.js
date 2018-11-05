@@ -1,8 +1,12 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const getTypeOf = load(require('../function/utils/typeof'))
+import { factory } from '../../utils/factory'
 
+// FIXME: expose numeric in the math namespace after we've decided on a name and have written proper docs for this function. See https://github.com/josdejong/mathjs/pull/1270
+const name = 'numeric'
+const dependencies = ['typeof', 'number', 'bignumber', 'fraction']
+
+export const createNumeric = factory(name, dependencies, (scope) => {
   const validInputTypes = {
     'string': true,
     'number': true,
@@ -12,9 +16,9 @@ function factory (type, config, load, typed) {
 
   // Load the conversion functions for each output type
   const validOutputTypes = {
-    'number': load(require('./number')),
-    'BigNumber': load(require('./bignumber/function/bignumber')),
-    'Fraction': load(require('./fraction/function/fraction'))
+    'number': (x) => scope.number(x),
+    'BigNumber': (x) => scope.bignumber(x),
+    'Fraction': (x) => scope.fraction(x)
   }
 
   /**
@@ -26,7 +30,7 @@ function factory (type, config, load, typed) {
    *                                         numeric in the requested type
    */
   const numeric = function (value, outputType) {
-    const inputType = getTypeOf(value)
+    const inputType = scope.typeof(value)
 
     if (!(inputType in validInputTypes)) {
       throw new TypeError('Cannot convert ' + value + ' of type "' + inputType + '"; valid input types are ' + Object.keys(validInputTypes).join(', '))
@@ -48,10 +52,4 @@ function factory (type, config, load, typed) {
   }
 
   return numeric
-}
-
-// FIXME: expose numeric in the math namespace after we've decided on a name and have written proper docs for this function. See https://github.com/josdejong/mathjs/pull/1270
-// exports.name = 'type._numeric'
-exports.path = 'type'
-exports.name = '_numeric'
-exports.factory = factory
+})

@@ -6,7 +6,7 @@ import { deepMap } from '../utils/collection'
 const ArgumentsError = require('../error/ArgumentsError')
 
 function factory (type, config, load, typed) {
-  const numeric = load(require('../type/numeric'))
+  const numeric = load(require('../function/utils/numeric'))
 
   const AccessorNode = load(require('./node/AccessorNode'))
   const ArrayNode = load(require('./node/ArrayNode'))

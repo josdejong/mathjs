@@ -5,7 +5,7 @@ import { nearlyEqual } from '../../utils/number'
 
 export function factory (type, config, load, typed) {
   /**
-   * Test whether two values are equal.
+   * Test whether two scalar values are nearly equal.
    *
    * @param  {number | BigNumber | Fraction | boolean | Complex | Unit} x   First value to compare
    * @param  {number | BigNumber | Fraction | boolean | Complex} y          Second value to compare
@@ -44,3 +44,5 @@ export function factory (type, config, load, typed) {
 
   return equalScalar
 }
+
+export const name = 'equalScalar'

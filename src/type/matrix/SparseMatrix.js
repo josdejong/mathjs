@@ -1378,7 +1378,7 @@ function factory (type, config, load, typed) {
   }
 
   // register this type in the base class Matrix
-  type.Matrix._storage.sparse = SparseMatrix
+  Matrix._storage.sparse = SparseMatrix
 
   return SparseMatrix
 }

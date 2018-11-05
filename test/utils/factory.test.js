@@ -1,52 +1,53 @@
 import assert from 'assert'
-import { compareFactories, isFactory } from '../../src/utils/factory'
+import { sortFactories, factory, isFactory } from '../../src/utils/factory'
 
 describe('factory', function () {
   it('should test whether something is a factory', () => {
     assert.strictEqual(isFactory(), false)
     assert.strictEqual(isFactory({}), false)
-    assert.strictEqual(isFactory({
-      name: 'fn',
-      dependencies: [],
-      create: () => {}
-    }), true)
-    assert.strictEqual(isFactory({
-      name: 'fn',
-      dependencies: 'foo',
-      create: () => {}
-    }), false)
+
+    const factory1 = () => {}
+    factory1.fn = 'fn1'
+    factory1.dependencies = ['fn2']
+    assert.strictEqual(isFactory(factory1), true)
+
+    const factory2 = () => {}
+    factory2.fn = 'fn2'
+    factory2.dependencies = 'foo'
+    assert.strictEqual(isFactory(factory2), false)
+
+    const factory3 = factory('fn3', ['fn2'], () => {})
+    assert.strictEqual(isFactory(factory3), true)
   })
 
   it('should order functions by their dependencies', () => {
-    const fn1factory = { name: 'fn1', dependencies: [], create () {} }
-    const fn2factory = { name: 'fn2', dependencies: ['fn1'], create () {} }
-    const fn3 = function () {}
+    const fn1factory = factory('fn1', [], () => {})
+    const fn2factory = factory('fn2', ['fn1'], () => {})
+    const fn3factory = factory('fn3', ['fn2'], () => {})
+    const fn4 = function () {}
+    const fn5 = function () {}
 
-    assert.deepStrictEqual([ fn2factory, fn1factory, fn3 ]
-      .sort(compareFactories)
-      .map(f => f.name), ['fn3', 'fn1', 'fn2'])
+    assert.deepStrictEqual(sortFactories([ fn3factory, fn2factory, fn1factory, fn4, fn5 ])
+      .map(f => f.fn || f.name), ['fn4', 'fn5', 'fn1', 'fn2', 'fn3'])
 
-    assert.deepStrictEqual([ fn1factory, fn2factory, fn3 ]
-      .sort(compareFactories)
-      .map(f => f.name), ['fn3', 'fn1', 'fn2'])
+    assert.deepStrictEqual(sortFactories([ fn1factory, fn2factory, fn3factory, fn4, fn5 ])
+      .map(f => f.fn || f.name), ['fn4', 'fn5', 'fn1', 'fn2', 'fn3'])
 
-    assert.deepStrictEqual([ fn3, fn1factory, fn2factory ]
-      .sort(compareFactories)
-      .map(f => f.name), ['fn3', 'fn1', 'fn2'])
+    assert.deepStrictEqual(sortFactories([ fn4, fn5, fn1factory, fn2factory, fn3factory ])
+      .map(f => f.fn || f.name), ['fn4', 'fn5', 'fn1', 'fn2', 'fn3'])
+
+    assert.deepStrictEqual(sortFactories([ fn5, fn4, fn1factory, fn2factory, fn3factory ])
+      .map(f => f.fn || f.name), ['fn5', 'fn4', 'fn1', 'fn2', 'fn3'])
   })
 
   it('should not go crazy with circular dependencies', () => {
-    const fn1factory = { name: 'fn1', dependencies: ['fn2'], create () {} }
-    const fn2factory = { name: 'fn2', dependencies: ['fn1'], create () {} }
+    const fn1factory = factory('fn1', ['fn2'], () => {})
+    const fn2factory = factory('fn2', ['fn1'], () => {})
 
-    assert.deepStrictEqual([ fn1factory, fn2factory ]
-      .sort(compareFactories)
-      .map(f => f.name), ['fn1', 'fn2'])
+    assert.deepStrictEqual(sortFactories([ fn1factory, fn2factory ])
+      .map(f => f.fn), ['fn1', 'fn2'])
 
-    assert.deepStrictEqual([ fn2factory, fn1factory ]
-      .sort(compareFactories)
-      .map(f => f.name), ['fn2', 'fn1'])
+    assert.deepStrictEqual(sortFactories([ fn2factory, fn1factory ])
+      .map(f => f.fn), ['fn2', 'fn1'])
   })
-
-  // TODO: test circular dependency
 })

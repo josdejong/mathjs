@@ -1,20 +1,24 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
+import { factory } from '../../utils/factory'
+
+const name = 'addScalar'
+const dependencies = ['typed']
+
+export const createAddScalar = factory(name, dependencies, (scope) => {
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function
    * `add`
    *
-   * This function does not support collections (Array or Matrix), and does
-   * not validate the number of of inputs.
+   * This function does not support collections (Array or Matrix).
    *
    * @param  {number | BigNumber | Fraction | Complex | Unit} x   First value to add
    * @param  {number | BigNumber | Fraction | Complex} y          Second value to add
-   * @return {number | BigNumber | Fraction | Complex | Unit}                      Sum of `x` and `y`
+   * @return {number | BigNumber | Fraction | Complex | Unit}     Sum of `x` and `y`
    * @private
    */
-  const add = typed('add', {
+  const addScalar = scope.typed(name, {
 
     'number, number': function (x, y) {
       return x + y
@@ -38,13 +42,11 @@ export function factory (type, config, load, typed) {
       if (!x.equalBase(y)) throw new Error('Units do not match')
 
       const res = x.clone()
-      res.value = add(res.value, y.value)
+      res.value = addScalar(res.value, y.value)
       res.fixPrefix = false
       return res
     }
   })
 
-  return add
-}
-
-export const name = 'addScalar'
+  return addScalar
+})

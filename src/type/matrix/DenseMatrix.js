@@ -850,8 +850,8 @@ function factory (type, config, load, typed) {
   }
 
   // register this type in the base class Matrix
-  type.Matrix._storage.dense = DenseMatrix
-  type.Matrix._storage['default'] = DenseMatrix
+  Matrix._storage.dense = DenseMatrix
+  Matrix._storage['default'] = DenseMatrix
 
   // exports
   return DenseMatrix

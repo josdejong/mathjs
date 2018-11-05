@@ -1,14 +1,23 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isBigNumber, isComplex, isFraction } from '../../utils/is'
 
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
-  const unaryMinus = load(require('./unaryMinus'))
-  const isNegative = load(require('../utils/isNegative'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'cbrt'
+const dependencies = [
+  'config',
+  'typed',
+  'isNegative',
+  'unaryMinus',
+  'complex',
+  'matrix',
+  'bignumber',
+  'fraction'
+]
 
+export const createCbrt = factory(name, dependencies, (scope) => {
   /**
    * Calculate the cubic root of a value.
    *
@@ -48,7 +57,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}
    *            Returns the cubic root of `x`
    */
-  const cbrt = typed('cbrt', {
+  const cbrt = scope.typed(name, {
     'number': _cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
@@ -85,19 +94,17 @@ export function factory (type, config, load, typed) {
     const abs = x.abs()
 
     // principal root:
-    const principal = new type.Complex(_cbrtNumber(abs), 0).mul(
-      new type.Complex(0, arg3).exp())
+    const principal = scope.complex(_cbrtNumber(abs), 0)
+      .mul(scope.complex(0, arg3).exp())
 
     if (allRoots) {
       const all = [
         principal,
-        new type.Complex(_cbrtNumber(abs), 0).mul(
-          new type.Complex(0, arg3 + Math.PI * 2 / 3).exp()),
-        new type.Complex(_cbrtNumber(abs), 0).mul(
-          new type.Complex(0, arg3 - Math.PI * 2 / 3).exp())
+        scope.complex(_cbrtNumber(abs), 0).mul(scope.complex(0, arg3 + Math.PI * 2 / 3).exp()),
+        scope.complex(_cbrtNumber(abs), 0).mul(scope.complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
-      return (config.matrix === 'Array') ? all : matrix(all)
+      return (scope.config().matrix === 'Array') ? all : scope.matrix(all)
     } else {
       return principal
     }
@@ -117,17 +124,17 @@ export function factory (type, config, load, typed) {
       result.value = _cbrtComplex(x.value) // Compute the value
       return result
     } else {
-      const negate = isNegative(x.value)
+      const negate = scope.isNegative(x.value)
       if (negate) {
-        x.value = unaryMinus(x.value)
+        x.value = scope.unaryMinus(x.value)
       }
 
       // TODO: create a helper function for this
       let third
       if (isBigNumber(x.value)) {
-        third = new type.BigNumber(1).div(3)
+        third = scope.bignumber(1).div(3)
       } else if (isFraction(x.value)) {
-        third = new type.Fraction(1, 3)
+        third = scope.fraction(1, 3)
       } else {
         third = 1 / 3
       }
@@ -135,7 +142,7 @@ export function factory (type, config, load, typed) {
       let result = x.pow(third)
 
       if (negate) {
-        result.value = unaryMinus(result.value)
+        result.value = scope.unaryMinus(result.value)
       }
 
       return result
@@ -145,7 +152,7 @@ export function factory (type, config, load, typed) {
   cbrt.toTex = { 1: `\\sqrt[3]{\${args[0]}}` }
 
   return cbrt
-}
+})
 
 /**
  * Calculate cbrt for a number
@@ -178,5 +185,3 @@ const _cbrtNumber = Math.cbrt || function (x) {
 
   return negate ? -result : result
 }
-
-export const name = 'cbrt'

@@ -2,33 +2,19 @@ import assert from 'assert'
 import { create } from '../../src/core/core'
 import mathjs from '../../src/main'
 import approx from '../../tools/approx'
-import assertDependencies from '../../src/utils/assertDependencies'
+import { factory } from '../../src/utils/factory'
 
-const multiplyTestFactory = {
-  name: 'multiplyTest',
-  dependencies: [],
-  lazy: false,
-  create: math => {
-    assertDependencies(math, multiplyTestFactory.dependencies, multiplyTestFactory.name)
-
-    return function multiply (a, b) {
-      return a * b
-    }
+const multiplyTestFactory = factory('multiplyTest', [], (scope) => {
+  return function multiply (a, b) {
+    return a * b
   }
-}
+})
 
-const cubeTestFactory = {
-  name: 'cubeTest',
-  dependencies: ['multiplyTest'],
-  lazy: false,
-  create: function createCube (math) {
-    assertDependencies(math, cubeTestFactory.dependencies, cubeTestFactory.name)
-
-    return function cube (a) {
-      return math.multiplyTest(a, math.multiplyTest(a, a))
-    }
+const cubeTestFactory = factory('cubeTest', ['multiplyTest'], (scope) => {
+  return function cube (a) {
+    return scope.multiplyTest(a, scope.multiplyTest(a, a))
   }
-}
+})
 
 describe('import', function () {
   let math = null

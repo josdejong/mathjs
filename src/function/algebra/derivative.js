@@ -8,7 +8,7 @@ export function factory (type, config, load, typed) {
   const equal = load(require('../relational/equal'))
   const isZero = load(require('../utils/isZero'))
   const getType = load(require('../utils/typeof'))
-  const numeric = load(require('../../type/numeric'))
+  const numeric = load(require('../utils/numeric'))
   const ConstantNode = load(require('../../expression/node/ConstantNode'))
   const FunctionNode = load(require('../../expression/node/FunctionNode'))
   const OperatorNode = load(require('../../expression/node/OperatorNode'))

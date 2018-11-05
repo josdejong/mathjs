@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../src/main'
-const numeric = math.type._numeric
+const numeric = math.numeric
 
 describe('numeric', function () {
   it('should throw if called with wrong number of arguments', function () {
@@ -80,7 +80,6 @@ describe('numeric', function () {
   })
 
   it('should LaTeX numeric', function () {
-    math.numeric = math.type._numeric // FIXME: this is a workaround until we have exposed numeric in the math namespace
     const expr1 = math.parse('numeric(3.14, "number")')
     const expr2 = math.parse('numeric("3.141592653589793238462643383279501", "BigNumber")')
     const expr3 = math.parse('numeric(22/7, "Fraction")')

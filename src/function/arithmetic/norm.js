@@ -1,17 +1,23 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const pow = load(require('../arithmetic/pow'))
-  const conj = load(require('../complex/conj'))
-  const sqrt = load(require('../arithmetic/sqrt'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const equalScalar = load(require('../relational/equalScalar'))
-  const larger = load(require('../relational/larger'))
-  const smaller = load(require('../relational/smaller'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
+import { factory } from '../../utils/factory'
 
+const name = 'norm'
+const dependencies = [
+  'typed',
+  'abs',
+  'add',
+  'pow',
+  'conj',
+  'sqrt',
+  'multiply',
+  'equalScalar',
+  'larger',
+  'smaller',
+  'matrix'
+]
+
+export const createNorm = factory(name, dependencies, (scope) => {
   /**
    * Calculate the norm of a number, vector or matrix.
    *
@@ -50,7 +56,7 @@ export function factory (type, config, load, typed) {
    *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
    * @return {number | BigNumber} the p-norm
    */
-  const norm = typed('norm', {
+  const norm = scope.typed(name, {
     'number': Math.abs,
 
     'Complex': function (x) {
@@ -68,7 +74,7 @@ export function factory (type, config, load, typed) {
     },
 
     'Array': function (x) {
-      return _norm(matrix(x), 2)
+      return _norm(scope.matrix(x), 2)
     },
 
     'Matrix': function (x) {
@@ -81,7 +87,7 @@ export function factory (type, config, load, typed) {
     },
 
     'Array, number | BigNumber | string': function (x, p) {
-      return _norm(matrix(x), p)
+      return _norm(scope.matrix(x), p)
     },
 
     'Matrix, number | BigNumber | string': function (x, p) {
@@ -109,8 +115,8 @@ export function factory (type, config, load, typed) {
         // skip zeros since abs(0) === 0
         x.forEach(
           function (value) {
-            const v = abs(value)
-            if (larger(v, pinf)) { pinf = v }
+            const v = scope.abs(value)
+            if (scope.larger(v, pinf)) { pinf = v }
           },
           true)
         return pinf
@@ -121,8 +127,8 @@ export function factory (type, config, load, typed) {
         // skip zeros since abs(0) === 0
         x.forEach(
           function (value) {
-            const v = abs(value)
-            if (!ninf || smaller(v, ninf)) { ninf = v }
+            const v = scope.abs(value)
+            if (!ninf || scope.smaller(v, ninf)) { ninf = v }
           },
           true)
         return ninf || 0
@@ -132,16 +138,16 @@ export function factory (type, config, load, typed) {
       }
       if (typeof p === 'number' && !isNaN(p)) {
         // check p != 0
-        if (!equalScalar(p, 0)) {
+        if (!scope.equalScalar(p, 0)) {
           // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
           let n = 0
           // skip zeros since abs(0) === 0
           x.forEach(
             function (value) {
-              n = add(pow(abs(value), p), n)
+              n = scope.add(scope.pow(scope.abs(value), p), n)
             },
             true)
-          return pow(n, 1 / p)
+          return scope.pow(n, 1 / p)
         }
         return Number.POSITIVE_INFINITY
       }
@@ -160,8 +166,8 @@ export function factory (type, config, load, typed) {
         x.forEach(
           function (value, index) {
             const j = index[1]
-            const cj = add(c[j] || 0, abs(value))
-            if (larger(cj, maxc)) { maxc = cj }
+            const cj = scope.add(c[j] || 0, scope.abs(value))
+            if (scope.larger(cj, maxc)) { maxc = cj }
             c[j] = cj
           },
           true)
@@ -176,8 +182,8 @@ export function factory (type, config, load, typed) {
         x.forEach(
           function (value, index) {
             const i = index[0]
-            const ri = add(r[i] || 0, abs(value))
-            if (larger(ri, maxr)) { maxr = ri }
+            const ri = scope.add(r[i] || 0, scope.abs(value))
+            if (scope.larger(ri, maxr)) { maxr = ri }
             r[i] = ri
           },
           true)
@@ -188,9 +194,9 @@ export function factory (type, config, load, typed) {
         let fro = 0
         x.forEach(
           function (value, index) {
-            fro = add(fro, multiply(value, conj(value)))
+            fro = scope.add(fro, scope.multiply(value, scope.conj(value)))
           })
-        return abs(sqrt(fro))
+        return scope.abs(scope.sqrt(fro))
       }
       if (p === 2) {
         // not implemented
@@ -207,6 +213,4 @@ export function factory (type, config, load, typed) {
   }
 
   return norm
-}
-
-export const name = 'norm'
+})

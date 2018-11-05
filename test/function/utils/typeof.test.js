@@ -138,7 +138,7 @@ describe('typeof', function () {
   })
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { math.typeof() }, /Too few arguments in function _typeof/)
-    assert.throws(function () { math.typeof(1, 2, 3) }, /Too many arguments in function _typeof/)
+    assert.throws(function () { math.typeof() }, /Too few arguments in function typeof/)
+    assert.throws(function () { math.typeof(1, 2, 3) }, /Too many arguments in function typeof/)
   })
 })

@@ -1,36 +1,50 @@
 'use strict'
+
+import { createAbs } from './abs'
+import { createAddScalar } from './addScalar'
+import { createCbrt } from './cbrt'
+import { createDivideScalar } from './divideScalar'
+import { createExp } from './exp'
+import { createHypot } from './hypot'
+import { createLog } from './log'
+import { createMultiplyScalar } from './multiplyScalar'
+import { createNorm } from './norm'
+import { createPow } from './pow'
+import { createSqrt } from './sqrt'
+
 module.exports = [
-  require('./abs'),
+  createAbs,
   require('./add'),
-  require('./addScalar'),
-  require('./cbrt'),
+  createAddScalar,
+  createCbrt,
   require('./ceil'),
   require('./cube'),
   require('./divide'),
-  require('./divideScalar'),
+  createDivideScalar,
   require('./dotDivide'),
   require('./dotMultiply'),
   require('./dotPow'),
-  require('./exp'),
+  createExp,
   require('./expm1'),
   require('./fix'),
   require('./floor'),
   require('./gcd'),
+  createHypot,
   require('./lcm'),
-  require('./log'),
+  createLog,
   require('./log10'),
   require('./log1p'),
   require('./log2'),
   require('./mod'),
   require('./multiply'),
-  require('./multiplyScalar'),
-  require('./norm'),
+  createMultiplyScalar,
+  createNorm,
   require('./nthRoot'),
   require('./nthRoots'),
-  require('./pow'),
+  createPow,
   require('./round'),
   require('./sign'),
-  require('./sqrt'),
+  createSqrt,
   require('./square'),
   require('./subtract'),
   require('./unaryMinus'),

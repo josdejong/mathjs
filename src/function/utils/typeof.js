@@ -1,5 +1,6 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import {
   isBigNumber,
   isChain,
@@ -14,7 +15,10 @@ import {
   isUnit
 } from '../../utils/is'
 
-export function factory (type, config, load, typed) {
+const name = 'typeof'
+const dependencies = ['typed']
+
+export const createTypeof = factory(name, dependencies, (scope) => {
   /**
    * Determine the type of a variable.
    *
@@ -73,7 +77,7 @@ export function factory (type, config, load, typed) {
    *                  non-primitive types are upper-camel-case.
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
-  const _typeof = typed('_typeof', {
+  const _typeof = scope.typed(name, {
     'any': function (x) {
       const t = typeof x
 
@@ -109,6 +113,4 @@ export function factory (type, config, load, typed) {
   _typeof.toTex = undefined // use default template
 
   return _typeof
-}
-
-export const name = 'typeof'
+})
