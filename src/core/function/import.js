@@ -66,7 +66,9 @@ function factory (type, config, load, typed, math) {
     }
 
     // TODO: allow a typed-function with name too
-    if (isLegacyFactory(object)) {
+    if (isFactory(object)) {
+      _importFactory(object, options)
+    } else if (isLegacyFactory(object)) {
       _importLegacyFactory(object, options)
     } else if (Array.isArray(object)) {
       object.forEach(function (entry) {
@@ -78,7 +80,7 @@ function factory (type, config, load, typed, math) {
         if (object.hasOwnProperty(name)) {
           const value = object[name]
           if (isFactory(value)) {
-            _importFactory(name, value, options)
+            _importFactory(value, options, name)
           } else if (isSupportedType(value)) {
             _import(name, value, options)
           } else if (isLegacyFactory(object)) {
@@ -267,18 +269,18 @@ function factory (type, config, load, typed, math) {
 
   /**
    * Import an instance of a factory into math.js
-   * @param {string} name
-   * @param {function(math: object)} factory
+   * @param {{name: string, dependencies: string[], create: function(math: object)}} factory
    * @param {Object} options  See import for a description of the options
+   * @param {string} [name=factory.name] Optional custom name
    * @private
    */
-  function _importFactory (name, factory, options) {
+  function _importFactory (factory, options, name = factory.name) {
     const existingTransform = name in math.expression.transform
     const namespace = factory.path ? traverse(math, factory.path) : math
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
-      let instance = factory(math)
+      let instance = factory.create(math)
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
             'Please create a separate function for it with exports.path="expression.transform"')
@@ -358,8 +360,17 @@ function factory (type, config, load, typed, math) {
     return typeof fn === 'function' && typeof fn.signatures === 'object'
   }
 
+  /**
+   * Test whether an object is a factory. This is the case when it has
+   * properties name, dependencies, and a function create.
+   * @param {any} obj
+   * @returns {boolean}
+   */
   function isFactory (obj) {
-    return obj && Array.isArray(obj.dependencies)
+    return typeof obj === 'object' &&
+      typeof obj.name === 'string' &&
+      Array.isArray(obj.dependencies) &&
+      typeof obj.create === 'function'
   }
 
   function hasTypedFunctionSignature (fn) {

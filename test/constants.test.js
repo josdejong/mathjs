@@ -1,12 +1,12 @@
 import assert from 'assert'
-import core from '../src/core/core'
+import { create } from '../src/core/core'
 import math from '../src/main'
 import approx from '../tools/approx'
 import constants from '../src/constants'
 
 describe('constants', function () {
   const bigmath = math.create({ number: 'BigNumber', precision: 64 })
-  const realmath = core.create()
+  const realmath = create()
   realmath.import(constants)
 
   describe('number', function () {

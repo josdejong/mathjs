@@ -1,12 +1,12 @@
 'use strict'
-require('./../utils/polyfills')
+import './../utils/polyfills'
 
-const isLegacyFactory = require('./../utils/object').isLegacyFactory
-const typedFactory = require('./typed')
-const emitter = require('./../utils/emitter')
+import { isLegacyFactory } from './../utils/object'
+import * as typedFactory from './typed'
+import * as emitter from './../utils/emitter'
 
-const importFactory = require('./function/import')
-const configFactory = require('./function/config')
+import * as importFactory from './function/import'
+import * as configFactory from './function/config'
 
 /**
  * Math.js core. Creates a new, empty math.js instance
@@ -37,7 +37,7 @@ const configFactory = require('./function/config')
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
  */
-exports.create = function create (options) {
+export function create (options) {
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
     throw new Error('ES5 not supported by this JavaScript engine. ' +

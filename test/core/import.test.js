@@ -1,8 +1,38 @@
 // test import
 import assert from 'assert'
 
+import { create } from '../../src/core/core'
 import mathjs from '../../src/main'
 import approx from '../../tools/approx'
+import assertDependencies from '../../src/utils/assertDependencies'
+
+const multiplyTestFactory = {
+  name: 'multiplyTest',
+  dependencies: [],
+  lazy: false,
+  create: math => {
+    console.log('create multiply')
+    assertDependencies(math, multiplyTestFactory.dependencies, multiplyTestFactory.name)
+
+    return function multiply (a, b) {
+      return a * b
+    }
+  }
+}
+
+const cubeTestFactory = {
+  name: 'cubeTest',
+  dependencies: ['multiplyTest'],
+  lazy: false,
+  create: function createCube (math) {
+    console.log('create cube', Object.keys(math))
+    assertDependencies(math, cubeTestFactory.dependencies, cubeTestFactory.name)
+
+    return function cube (a) {
+      return math.multiplyTest(a, math.multiplyTest(a, a))
+    }
+  }
+}
 
 describe('import', function () {
   let math = null
@@ -174,7 +204,7 @@ describe('import', function () {
     }, /TypeError: Unexpected type of argument in function foo/)
   })
 
-  it('should merge typed functions coming from a factory', function () {
+  it('should merge typed functions coming from a legacy factory', function () {
     math.import({
       'foo': math.typed('foo', {
         'number': function (x) {
@@ -237,9 +267,7 @@ describe('import', function () {
     assert.strictEqual(math.expression.mathWithTransform.mean, mean)
   })
 
-  it('should override a function with transform for a factory function without', function () {
-    const math2 = math.create()
-
+  it('should override a function with transform for a legacy factory function without', function () {
     function mean () {
       return 'test'
     }
@@ -249,15 +277,15 @@ describe('import', function () {
       factory: () => mean
     }
 
-    math2.import([meanFactory], { override: true })
+    math.import([meanFactory], { override: true })
 
-    assert(math2.hasOwnProperty('mean'))
-    assert.strictEqual(math2.mean, mean)
-    assert.strictEqual(math2.expression.transform.mean, undefined)
-    assert.strictEqual(math2.expression.mathWithTransform.mean, mean)
+    assert(math.hasOwnProperty('mean'))
+    assert.strictEqual(math.mean, mean)
+    assert.strictEqual(math.expression.transform.mean, undefined)
+    assert.strictEqual(math.expression.mathWithTransform.mean, mean)
   })
 
-  it('should throw an error when a factory function has a transform', function () {
+  it('should throw an error when a legacy factory function has a transform', function () {
     assert.throws(function () {
       math.import({
         name: 'foo2',
@@ -270,6 +298,72 @@ describe('import', function () {
 
       math.foo2() // as soon as we use it, it will resolve the factory function
     }, /Transforms cannot be attached to factory functions/)
+  })
+
+  describe.only('factory', () => {
+    it('should import a factory function', () => {
+      const math2 = create()
+
+      assert.strictEqual(math2.multiplyTest, undefined)
+      assert.strictEqual(math2.cubeTest, undefined)
+
+      math2.import(multiplyTestFactory)
+      math2.import(cubeTestFactory)
+
+      assert.strictEqual(math2.multiplyTest(2, 3), 6)
+      assert.strictEqual(math2.cubeTest(3), 27)
+    })
+
+    it('should import an array with factory functions', () => {
+      const math2 = create()
+
+      assert.strictEqual(math2.multiplyTest, undefined)
+      assert.strictEqual(math2.cubeTest, undefined)
+
+      math2.import([ multiplyTestFactory, cubeTestFactory ])
+
+      assert.strictEqual(math2.multiplyTest(2, 3), 6)
+      assert.strictEqual(math2.cubeTest(3), 27)
+    })
+
+    it('should import an array with factory functions in the correct order, resolving dependencies', () => {
+      const math2 = create()
+
+      assert.strictEqual(math2.multiplyTest, undefined)
+      assert.strictEqual(math2.cubeTest, undefined)
+
+      math2.import([ cubeTestFactory, multiplyTestFactory ])
+
+      assert.strictEqual(math2.multiplyTest(2, 3), 6)
+      assert.strictEqual(math2.cubeTest(3), 27)
+    })
+
+    it('should import factory functions with custom name', () => {
+      const math2 = create()
+
+      assert.strictEqual(math2.multiplyTest, undefined)
+      assert.strictEqual(math2.cubeTest, undefined)
+
+      math2.import({
+        multiplyTest: multiplyTestFactory
+      })
+      math2.import({
+        cubeTest3: cubeTestFactory
+      })
+
+      assert.strictEqual(math2.cubeTest, undefined)
+
+      assert.strictEqual(math2.multiplyTest(2, 3), 6)
+      assert.strictEqual(math2.cubeTest3(3), 27)
+    })
+
+    it('should throw an error when a dependency is missing with import factory', () => {
+      const math2 = create()
+
+      assert.throws(() => {
+        math2.import(cubeTestFactory)
+      }, /Cannot create function cubeTest, some dependencies are missing: multiplyTest/)
+    })
   })
 
   it.skip('should import a factory with name', function () {
