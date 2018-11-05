@@ -1,6 +1,4 @@
-// test import
 import assert from 'assert'
-
 import { create } from '../../src/core/core'
 import mathjs from '../../src/main'
 import approx from '../../tools/approx'
@@ -11,7 +9,6 @@ const multiplyTestFactory = {
   dependencies: [],
   lazy: false,
   create: math => {
-    console.log('create multiply')
     assertDependencies(math, multiplyTestFactory.dependencies, multiplyTestFactory.name)
 
     return function multiply (a, b) {
@@ -25,7 +22,6 @@ const cubeTestFactory = {
   dependencies: ['multiplyTest'],
   lazy: false,
   create: function createCube (math) {
-    console.log('create cube', Object.keys(math))
     assertDependencies(math, cubeTestFactory.dependencies, cubeTestFactory.name)
 
     return function cube (a) {
@@ -300,7 +296,7 @@ describe('import', function () {
     }, /Transforms cannot be attached to factory functions/)
   })
 
-  describe.only('factory', () => {
+  describe('factory', () => {
     it('should import a factory function', () => {
       const math2 = create()
 

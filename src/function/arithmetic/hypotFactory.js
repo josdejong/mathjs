@@ -14,7 +14,7 @@ export const hypotFactory = {
     'smaller',
     'isPositive'
   ],
-  create: function (math) {
+  create (math) {
     assertDependencies(math, hypotFactory.dependencies, hypotFactory.name)
 
     /**

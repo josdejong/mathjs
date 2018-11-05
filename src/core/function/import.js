@@ -1,11 +1,9 @@
 'use strict'
 
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
-
-const lazy = require('../../utils/object').lazy
-const isLegacyFactory = require('../../utils/object').isLegacyFactory
-const traverse = require('../../utils/object').traverse
-const ArgumentsError = require('../../error/ArgumentsError')
+import { compareFactories, isFactory } from '../../utils/factory'
+import { isLegacyFactory, lazy, traverse } from '../../utils/object'
+import ArgumentsError from '../../error/ArgumentsError'
 
 function factory (type, config, load, typed, math) {
   /**
@@ -71,9 +69,9 @@ function factory (type, config, load, typed, math) {
     } else if (isLegacyFactory(object)) {
       _importLegacyFactory(object, options)
     } else if (Array.isArray(object)) {
-      object.forEach(function (entry) {
-        mathImport(entry, options)
-      })
+      object.slice()
+        .sort(compareFactories)
+        .forEach((entry) => mathImport(entry, options))
     } else if (typeof object === 'object') {
       // a map with functions
       for (const name in object) {
@@ -358,19 +356,6 @@ function factory (type, config, load, typed, math) {
    */
   function isTypedFunction (fn) {
     return typeof fn === 'function' && typeof fn.signatures === 'object'
-  }
-
-  /**
-   * Test whether an object is a factory. This is the case when it has
-   * properties name, dependencies, and a function create.
-   * @param {any} obj
-   * @returns {boolean}
-   */
-  function isFactory (obj) {
-    return typeof obj === 'object' &&
-      typeof obj.name === 'string' &&
-      Array.isArray(obj.dependencies) &&
-      typeof obj.create === 'function'
   }
 
   function hasTypedFunctionSignature (fn) {
