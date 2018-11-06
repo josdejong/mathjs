@@ -13,11 +13,8 @@ const csSqr = createCsSqr({ add, multiply, transpose })
 describe('csLu', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 0
         const s = csSqr(0, m, false)
 
@@ -30,7 +27,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -38,11 +35,8 @@ describe('csLu', function () {
 
   it('should decompose matrix, 48 x 48, amd(A+A\') (order=1), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 1
         const s = csSqr(1, m, false)
 
@@ -55,7 +49,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -63,11 +57,8 @@ describe('csLu', function () {
 
   it('should decompose matrix, 48 x 48, amd(A\'*A) (order=2), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 2
         const s = csSqr(2, m, false)
 
@@ -80,7 +71,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -88,11 +79,8 @@ describe('csLu', function () {
 
   it('should decompose matrix, 48 x 48, amd(A\'*A) (order=3), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // symbolic ordering and analysis, order = 3
         const s = csSqr(3, m, false)
 
@@ -105,7 +93,7 @@ describe('csLu', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })

@@ -5,11 +5,8 @@ const market = require('../../../../tools/matrixmarket')
 describe('slu - matrix market', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // full pivoting
         const r = math.slu(m, 0, 0.001)
 
@@ -19,7 +16,7 @@ describe('slu - matrix market', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -27,11 +24,8 @@ describe('slu - matrix market', function () {
 
   it('should decompose matrix, 48 x 48, amd(A+A\') (order=1), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // full pivoting
         const r = math.slu(m, 1, 0.001)
 
@@ -41,7 +35,7 @@ describe('slu - matrix market', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -49,11 +43,8 @@ describe('slu - matrix market', function () {
 
   it('should decompose matrix, 48 x 48, amd(A\'*A) (order=2), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // full pivoting
         const r = math.slu(m, 2, 0.001)
 
@@ -63,7 +54,7 @@ describe('slu - matrix market', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
@@ -71,11 +62,8 @@ describe('slu - matrix market', function () {
 
   it('should decompose matrix, 48 x 48, amd(A\'*A) (order=3), full pivoting, matrix market', function (done) {
     // import matrix
-    market.import('tools/matrices/bcsstk01.tar.gz', ['bcsstk01/bcsstk01.mtx'])
-      .then(function (matrices) {
-        // matrix
-        const m = matrices[0]
-
+    market.import('tools/matrices/bcsstk01.mtx')
+      .then(function (m) {
         // full pivoting
         const r = math.slu(m, 3, 0.001)
 
@@ -85,7 +73,7 @@ describe('slu - matrix market', function () {
         // indicate test has completed
         done()
       })
-      .fail(function (error) {
+      .catch(function (error) {
         // indicate test has completed
         done(error)
       })
