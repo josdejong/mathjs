@@ -14,5 +14,5 @@ module.exports = {
     'getMatrixDataType([1, "text"])',
     'getMatrixDataType([1, bignumber(4)])'
   ],
-  'seealso': ['matrix', 'sparse', 'typeof']
+  'seealso': ['matrix', 'sparse', 'typeOf']
 }

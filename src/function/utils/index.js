@@ -1,6 +1,6 @@
 'use strict'
 
-import { createTypeof } from './typeof'
+import { createTypeOf, createDeprecatedTypeof } from './typeOf'
 import { createNumeric } from './numeric'
 
 module.exports = [
@@ -13,5 +13,6 @@ module.exports = [
   require('./isPrime'),
   require('./isZero'),
   require('./isNaN'),
-  createTypeof
+  createTypeOf,
+  createDeprecatedTypeof
 ]

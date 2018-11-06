@@ -5,6 +5,7 @@ import { flatten } from '../../utils/array'
 
 const name = 'hypot'
 const dependencies = [
+  'typed',
   'abs',
   'addScalar',
   'divideScalar',
@@ -14,7 +15,7 @@ const dependencies = [
   'isPositive'
 ]
 
-export const createHypot = factory(name, dependencies, (scope) => {
+export const createHypot = factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive }) => {
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
    *
@@ -43,7 +44,7 @@ export const createHypot = factory(name, dependencies, (scope) => {
    *                                                          single number for the whole matrix.
    * @return {number | BigNumber} Returns the hypothenusa of the input values.
    */
-  const hypot = scope.typed(name, {
+  const hypot = typed(name, {
     '... number | BigNumber': _hypot,
 
     'Array': function (x) {
@@ -68,20 +69,20 @@ export const createHypot = factory(name, dependencies, (scope) => {
     let largest = 0
 
     for (let i = 0; i < args.length; i++) {
-      const value = scope.abs(args[i])
-      if (scope.smaller(largest, value)) {
-        result = scope.multiplyScalar(result,
-          scope.multiplyScalar(scope.divideScalar(largest, value), scope.divideScalar(largest, value)))
-        result = scope.addScalar(result, 1)
+      const value = abs(args[i])
+      if (smaller(largest, value)) {
+        result = multiplyScalar(result,
+          multiplyScalar(divideScalar(largest, value), divideScalar(largest, value)))
+        result = addScalar(result, 1)
         largest = value
       } else {
-        result = scope.addScalar(result, scope.isPositive(value)
-          ? scope.multiplyScalar(scope.divideScalar(value, largest), scope.divideScalar(value, largest))
+        result = addScalar(result, isPositive(value)
+          ? multiplyScalar(divideScalar(value, largest), divideScalar(value, largest))
           : value)
       }
     }
 
-    return scope.multiplyScalar(largest, scope.sqrt(result))
+    return multiplyScalar(largest, sqrt(result))
   }
 
   hypot.toTex = `\\hypot\\left(\${args}\\right)`

@@ -6,7 +6,7 @@ const operators = require('../operators')
 
 function factory (type, config, load, typed) {
   const Node = load(require('./Node'))
-  const mathTypeOf = load(require('../../function/utils/typeof'))
+  const mathTypeOf = load(require('../../function/utils/typeOf'))
 
   /**
    * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'

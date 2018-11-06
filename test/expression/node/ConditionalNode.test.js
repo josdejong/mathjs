@@ -287,7 +287,7 @@ describe('ConditionalNode', function () {
           ' then ' + node.trueExpr.toString(options) +
           ' else ' + node.falseExpr.toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -334,7 +334,7 @@ describe('ConditionalNode', function () {
           ' then ' + node.trueExpr.toTex(options) +
           ' else ' + node.falseExpr.toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

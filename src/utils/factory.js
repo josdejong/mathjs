@@ -1,9 +1,12 @@
 // TODO: comment
+import { pick } from './object'
+
 export function factory (name, dependencies, create) {
   const assertAndCreate = (scope) => {
     assertDependencies(name, dependencies, scope)
 
-    return create(scope)
+    // we only pass the requested dependencies to the factory function
+    return create(pick(scope, dependencies))
   }
 
   assertAndCreate.fn = name

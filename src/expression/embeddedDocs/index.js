@@ -307,7 +307,7 @@ function factory (construction, config, load, typed) {
   docs.isPrime = require('./function/utils/isPrime')
   docs.isZero = require('./function/utils/isZero')
   // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
-  docs['typeof'] = require('./function/utils/typeof')
+  docs['typeOf'] = require('./function/utils/typeOf')
 
   return docs
 }

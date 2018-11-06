@@ -1,16 +1,15 @@
 'use strict'
 
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../../utils/is'
-import { reshape, resize, arraySize, unsqueeze, validate, validateIndex } from '../../utils/array'
+import { arraySize, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
 import { clone, deepEqual } from '../../utils/object'
-
-const DimensionError = require('../../error/DimensionError')
+import DimensionError from '../../error/DimensionError'
 
 function factory (type, config, load, typed) {
   const getArrayDataType = load(require('./utils/getArrayDataType'))
-  const getTypeOf = load(require('../../function/utils/typeof'))
+  const typeOf = load(require('../../function/utils/typeOf'))
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
 
   /**
@@ -50,7 +49,7 @@ function factory (type, config, load, typed) {
       this._datatype = datatype
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + getTypeOf(data) + ')')
+      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []

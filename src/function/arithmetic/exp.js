@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'exp'
 const dependencies = ['typed']
 
-export const createExp = factory(name, dependencies, (scope) => {
+export const createExp = factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the exponent of a value.
    * For matrices, the function is evaluated element wise.
@@ -35,7 +35,7 @@ export const createExp = factory(name, dependencies, (scope) => {
    * @param {number | BigNumber | Complex | Array | Matrix} x  A number or matrix to exponentiate
    * @return {number | BigNumber | Complex | Array | Matrix} Exponent of `x`
    */
-  const exp = scope.typed(name, {
+  const exp = typed(name, {
     'number': Math.exp,
 
     'Complex': function (x) {

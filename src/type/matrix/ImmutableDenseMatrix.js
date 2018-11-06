@@ -6,7 +6,7 @@ import { clone } from '../../utils/object'
 function factory (type, config, load) {
   const DenseMatrix = load(require('./DenseMatrix'))
 
-  const getTypeOf = load(require('../../function/utils/typeof'))
+  const typeOf = load(require('../../function/utils/typeOf'))
   const smaller = load(require('../../function/relational/smaller'))
 
   function ImmutableDenseMatrix (data, datatype) {
@@ -31,7 +31,7 @@ function factory (type, config, load) {
       this._max = typeof data.max !== 'undefined' ? data.max : null
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + getTypeOf(data) + ')')
+      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._data = []

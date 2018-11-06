@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'abs'
 const dependencies = ['typed']
 
-export const createAbs = factory(name, dependencies, (scope) => {
+export const createAbs = factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the absolute value of a number. For matrices, the function is
    * evaluated element wise.
@@ -31,7 +31,7 @@ export const createAbs = factory(name, dependencies, (scope) => {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Absolute value of `x`
    */
-  const abs = scope.typed(name, {
+  const abs = typed(name, {
     'number': Math.abs,
 
     'Complex': function (x) {

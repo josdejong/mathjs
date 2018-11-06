@@ -18,7 +18,7 @@ describe('setSize', function () {
   })
 
   it('should return a number', function () {
-    assert.strictEqual(math.typeof(math.setSize([1, 2, 3])), 'number')
+    assert.strictEqual(math.typeOf(math.setSize([1, 2, 3])), 'number')
   })
 
   it('should throw an error in case of invalid type of arguments', function () {

@@ -17,7 +17,7 @@ const dependencies = [
   'matrix'
 ]
 
-export const createNorm = factory(name, dependencies, (scope) => {
+export const createNorm = factory(name, dependencies, ({ typed, abs, add, pow, conj, sqrt, multiply, equalScalar, larger, smaller, matrix }) => {
   /**
    * Calculate the norm of a number, vector or matrix.
    *
@@ -56,7 +56,7 @@ export const createNorm = factory(name, dependencies, (scope) => {
    *            Supported strings are: 'inf', '-inf', and 'fro' (The Frobenius norm)
    * @return {number | BigNumber} the p-norm
    */
-  const norm = scope.typed(name, {
+  const norm = typed(name, {
     'number': Math.abs,
 
     'Complex': function (x) {
@@ -74,7 +74,7 @@ export const createNorm = factory(name, dependencies, (scope) => {
     },
 
     'Array': function (x) {
-      return _norm(scope.matrix(x), 2)
+      return _norm(matrix(x), 2)
     },
 
     'Matrix': function (x) {
@@ -87,7 +87,7 @@ export const createNorm = factory(name, dependencies, (scope) => {
     },
 
     'Array, number | BigNumber | string': function (x, p) {
-      return _norm(scope.matrix(x), p)
+      return _norm(matrix(x), p)
     },
 
     'Matrix, number | BigNumber | string': function (x, p) {
@@ -115,8 +115,8 @@ export const createNorm = factory(name, dependencies, (scope) => {
         // skip zeros since abs(0) === 0
         x.forEach(
           function (value) {
-            const v = scope.abs(value)
-            if (scope.larger(v, pinf)) { pinf = v }
+            const v = abs(value)
+            if (larger(v, pinf)) { pinf = v }
           },
           true)
         return pinf
@@ -127,8 +127,8 @@ export const createNorm = factory(name, dependencies, (scope) => {
         // skip zeros since abs(0) === 0
         x.forEach(
           function (value) {
-            const v = scope.abs(value)
-            if (!ninf || scope.smaller(v, ninf)) { ninf = v }
+            const v = abs(value)
+            if (!ninf || smaller(v, ninf)) { ninf = v }
           },
           true)
         return ninf || 0
@@ -138,16 +138,16 @@ export const createNorm = factory(name, dependencies, (scope) => {
       }
       if (typeof p === 'number' && !isNaN(p)) {
         // check p != 0
-        if (!scope.equalScalar(p, 0)) {
+        if (!equalScalar(p, 0)) {
           // norm(x, p) = sum(abs(xi) ^ p) ^ 1/p
           let n = 0
           // skip zeros since abs(0) === 0
           x.forEach(
             function (value) {
-              n = scope.add(scope.pow(scope.abs(value), p), n)
+              n = add(pow(abs(value), p), n)
             },
             true)
-          return scope.pow(n, 1 / p)
+          return pow(n, 1 / p)
         }
         return Number.POSITIVE_INFINITY
       }
@@ -166,8 +166,8 @@ export const createNorm = factory(name, dependencies, (scope) => {
         x.forEach(
           function (value, index) {
             const j = index[1]
-            const cj = scope.add(c[j] || 0, scope.abs(value))
-            if (scope.larger(cj, maxc)) { maxc = cj }
+            const cj = add(c[j] || 0, abs(value))
+            if (larger(cj, maxc)) { maxc = cj }
             c[j] = cj
           },
           true)
@@ -182,8 +182,8 @@ export const createNorm = factory(name, dependencies, (scope) => {
         x.forEach(
           function (value, index) {
             const i = index[0]
-            const ri = scope.add(r[i] || 0, scope.abs(value))
-            if (scope.larger(ri, maxr)) { maxr = ri }
+            const ri = add(r[i] || 0, abs(value))
+            if (larger(ri, maxr)) { maxr = ri }
             r[i] = ri
           },
           true)
@@ -194,9 +194,9 @@ export const createNorm = factory(name, dependencies, (scope) => {
         let fro = 0
         x.forEach(
           function (value, index) {
-            fro = scope.add(fro, scope.multiply(value, scope.conj(value)))
+            fro = add(fro, multiply(value, conj(value)))
           })
-        return scope.abs(scope.sqrt(fro))
+        return abs(sqrt(fro))
       }
       if (p === 2) {
         // not implemented

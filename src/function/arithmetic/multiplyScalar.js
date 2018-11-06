@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'multiplyScalar'
 const dependencies = ['typed']
 
-export const createMultiplyScalar = factory(name, dependencies, (scope) => {
+export const createMultiplyScalar = factory(name, dependencies, ({ typed }) => {
   /**
    * Multiply two scalar values, `x * y`.
    * This function is meant for internal use: it is used by the public function
@@ -18,7 +18,7 @@ export const createMultiplyScalar = factory(name, dependencies, (scope) => {
    * @return {number | BigNumber | Fraction | Complex | Unit}     Multiplication of `x` and `y`
    * @private
    */
-  const multiplyScalar = scope.typed('multiplyScalar', {
+  const multiplyScalar = typed('multiplyScalar', {
 
     'number, number': function (x, y) {
       return x * y

@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'sqrt'
 const dependencies = ['config', 'typed', 'complex']
 
-export const createSqrt = factory(name, dependencies, (scope) => {
+export const createSqrt = factory(name, dependencies, ({ config, typed, complex }) => {
   /**
    * Calculate the square root of a value.
    *
@@ -31,7 +31,7 @@ export const createSqrt = factory(name, dependencies, (scope) => {
    * @return {number | BigNumber | Complex | Array | Matrix | Unit}
    *            Returns the square root of `x`
    */
-  const sqrt = scope.typed('sqrt', {
+  const sqrt = typed('sqrt', {
     'number': _sqrtNumber,
 
     'Complex': function (x) {
@@ -39,7 +39,7 @@ export const createSqrt = factory(name, dependencies, (scope) => {
     },
 
     'BigNumber': function (x) {
-      if (!x.isNegative() || scope.config().predictable) {
+      if (!x.isNegative() || config().predictable) {
         return x.sqrt()
       } else {
         // negative value -> downgrade to number to do complex value computation
@@ -68,10 +68,10 @@ export const createSqrt = factory(name, dependencies, (scope) => {
   function _sqrtNumber (x) {
     if (isNaN(x)) {
       return NaN
-    } else if (x >= 0 || scope.config().predictable) {
+    } else if (x >= 0 || config().predictable) {
       return Math.sqrt(x)
     } else {
-      return scope.complex(x, 0).sqrt()
+      return complex(x, 0).sqrt()
     }
   }
 

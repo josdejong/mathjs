@@ -18,7 +18,7 @@ function factory (type, config, load, typed, math) {
   const equal = load(require('../../function/relational/equal'))
   const isNumeric = load(require('../../function/utils/isNumeric'))
   const format = load(require('../../function/string/format'))
-  const getTypeOf = load(require('../../function/utils/typeof'))
+  const typeOf = load(require('../../function/utils/typeOf'))
   const toNumber = load(require('../../type/number'))
   const Complex = load(require('../../type/complex/Complex'))
 
@@ -470,7 +470,7 @@ function factory (type, config, load, typed, math) {
       // This is a derived unit, so do not apply offsets.
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
       let res = value
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       for (let i = 0; i < this.units.length; i++) {
         unitValue = convert(this.units[i].unit.value)
@@ -482,7 +482,7 @@ function factory (type, config, load, typed, math) {
       return res
     } else {
       // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       unitValue = convert(this.units[0].unit.value)
       unitOffset = convert(this.units[0].unit.offset)
@@ -511,7 +511,7 @@ function factory (type, config, load, typed, math) {
       // For example, with J kg^-1 degC^-1 you would NOT want to apply the offset.
       // Also, prefixValue is ignored--but we will still use the prefix value stored in each unit, since kg is usually preferable to g unless the user decides otherwise.
       let res = value
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       for (let i = 0; i < this.units.length; i++) {
         unitValue = convert(this.units[i].unit.value)
@@ -523,7 +523,7 @@ function factory (type, config, load, typed, math) {
       return res
     } else {
       // This is a single unit of power 1, like kg or degC
-      convert = Unit._getNumberConverter(getTypeOf(value)) // convert to Fraction or BigNumber if needed
+      convert = Unit._getNumberConverter(typeOf(value)) // convert to Fraction or BigNumber if needed
 
       unitValue = convert(this.units[0].unit.value)
       unitPrefixValue = convert(this.units[0].prefix.value)

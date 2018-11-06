@@ -17,7 +17,7 @@ const dependencies = [
   'fraction'
 ]
 
-export const createCbrt = factory(name, dependencies, (scope) => {
+export const createCbrt = factory(name, dependencies, ({ config, typed, isNegative, unaryMinus, complex, matrix, bignumber, fraction }) => {
   /**
    * Calculate the cubic root of a value.
    *
@@ -57,7 +57,7 @@ export const createCbrt = factory(name, dependencies, (scope) => {
    * @return {number | BigNumber | Complex | Unit | Array | Matrix}
    *            Returns the cubic root of `x`
    */
-  const cbrt = scope.typed(name, {
+  const cbrt = typed(name, {
     'number': _cbrtNumber,
     // note: signature 'number, boolean' is also supported,
     //       created by typed as it knows how to convert number to Complex
@@ -94,17 +94,17 @@ export const createCbrt = factory(name, dependencies, (scope) => {
     const abs = x.abs()
 
     // principal root:
-    const principal = scope.complex(_cbrtNumber(abs), 0)
-      .mul(scope.complex(0, arg3).exp())
+    const principal = complex(_cbrtNumber(abs), 0)
+      .mul(complex(0, arg3).exp())
 
     if (allRoots) {
       const all = [
         principal,
-        scope.complex(_cbrtNumber(abs), 0).mul(scope.complex(0, arg3 + Math.PI * 2 / 3).exp()),
-        scope.complex(_cbrtNumber(abs), 0).mul(scope.complex(0, arg3 - Math.PI * 2 / 3).exp())
+        complex(_cbrtNumber(abs), 0).mul(complex(0, arg3 + Math.PI * 2 / 3).exp()),
+        complex(_cbrtNumber(abs), 0).mul(complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
-      return (scope.config().matrix === 'Array') ? all : scope.matrix(all)
+      return (config().matrix === 'Array') ? all : matrix(all)
     } else {
       return principal
     }
@@ -124,17 +124,17 @@ export const createCbrt = factory(name, dependencies, (scope) => {
       result.value = _cbrtComplex(x.value) // Compute the value
       return result
     } else {
-      const negate = scope.isNegative(x.value)
+      const negate = isNegative(x.value)
       if (negate) {
-        x.value = scope.unaryMinus(x.value)
+        x.value = unaryMinus(x.value)
       }
 
       // TODO: create a helper function for this
       let third
       if (isBigNumber(x.value)) {
-        third = scope.bignumber(1).div(3)
+        third = bignumber(1).div(3)
       } else if (isFraction(x.value)) {
-        third = scope.fraction(1, 3)
+        third = fraction(1, 3)
       } else {
         third = 1 / 3
       }
@@ -142,7 +142,7 @@ export const createCbrt = factory(name, dependencies, (scope) => {
       let result = x.pow(third)
 
       if (negate) {
-        result.value = scope.unaryMinus(result.value)
+        result.value = unaryMinus(result.value)
       }
 
       return result

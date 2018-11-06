@@ -20,6 +20,16 @@ describe('factory', function () {
     assert.strictEqual(isFactory(factory3), true)
   })
 
+  it('should only pass the dependencies, not the whole scope', (done) => {
+    const f = factory('fn1', ['a', 'c'], (scope) => {
+      assert.deepStrictEqual(scope, { a: 1, c: 3 })
+
+      done()
+    })
+
+    f({ a: 1, b: 2, c: 3 })
+  })
+
   it('should order functions by their dependencies', () => {
     const fn1factory = factory('fn1', [], () => {})
     const fn2factory = factory('fn2', ['fn1'], () => {})

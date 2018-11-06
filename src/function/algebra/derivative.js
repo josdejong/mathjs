@@ -7,7 +7,7 @@ export function factory (type, config, load, typed) {
   const simplify = load(require('./simplify'))
   const equal = load(require('../relational/equal'))
   const isZero = load(require('../utils/isZero'))
-  const getType = load(require('../utils/typeof'))
+  const typeOf = load(require('../utils/typeOf'))
   const numeric = load(require('../utils/numeric'))
   const ConstantNode = load(require('../../expression/node/ConstantNode'))
   const FunctionNode = load(require('../../expression/node/FunctionNode'))
@@ -109,14 +109,14 @@ export function factory (type, config, load, typed) {
   // NOTE: the optional "order" parameter here is currently unused
   const _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {
-      if (isConstantNode(expr) && getType(expr.value) === 'string') {
+      if (isConstantNode(expr) && typeOf(expr.value) === 'string') {
         return _derivTex(parse(expr.value).toString(), x.toString(), 1)
       } else {
         return _derivTex(expr.toString(), x.toString(), 1)
       }
     },
     'Node, ConstantNode': function (expr, x) {
-      if (getType(x.value) === 'string') {
+      if (typeOf(x.value) === 'string') {
         return _derivTex(expr, parse(x.value))
       } else {
         throw new Error("The second parameter to 'derivative' is a non-string constant")

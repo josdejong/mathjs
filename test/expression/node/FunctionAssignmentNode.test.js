@@ -391,7 +391,7 @@ describe('FunctionAssignmentNode', function () {
         string += ')=' + node.expr.toString(options)
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -456,7 +456,7 @@ describe('FunctionAssignmentNode', function () {
         latex += '\\right)=' + node.expr.toTex(options)
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

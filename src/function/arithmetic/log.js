@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'log'
 const dependencies = ['config', 'typed', 'divideScalar', 'complex']
 
-export const createLog = factory(name, dependencies, (scope) => {
+export const createLog = factory(name, dependencies, ({ typed, config, divideScalar, complex }) => {
   /**
    * Calculate the logarithm of a value.
    *
@@ -41,13 +41,13 @@ export const createLog = factory(name, dependencies, (scope) => {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x`
    */
-  const log = scope.typed(name, {
+  const log = typed(name, {
     'number': function (x) {
-      if (x >= 0 || scope.config().predictable) {
+      if (x >= 0 || config().predictable) {
         return Math.log(x)
       } else {
         // negative value -> complex value computation
-        return scope.complex(x, 0).log()
+        return complex(x, 0).log()
       }
     },
 
@@ -56,11 +56,11 @@ export const createLog = factory(name, dependencies, (scope) => {
     },
 
     'BigNumber': function (x) {
-      if (!x.isNegative() || scope.config().predictable) {
+      if (!x.isNegative() || config().predictable) {
         return x.ln()
       } else {
         // downgrade to number, return Complex valued result
-        return scope.complex(x.toNumber(), 0).log()
+        return complex(x.toNumber(), 0).log()
       }
     },
 
@@ -70,7 +70,7 @@ export const createLog = factory(name, dependencies, (scope) => {
 
     'any, any': function (x, base) {
       // calculate logarithm for a specified base, log(x, base)
-      return scope.divideScalar(log(x), log(base))
+      return divideScalar(log(x), log(base))
     }
   })
 

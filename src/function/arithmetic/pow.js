@@ -7,17 +7,17 @@ import { operators as latexOperators } from '../../utils/latex'
 
 const name = 'pow'
 const dependencies = [
+  'typed',
   'config',
   'identity',
   'multiply',
   'matrix',
   'fraction',
   'number',
-  'complex',
-  'bignumber'
+  'complex'
 ]
 
-export const createPow = factory(name, dependencies, (scope) => {
+export const createPow = factory(name, dependencies, ({ typed, config, identity, multiply, matrix, fraction, number, complex }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive
@@ -50,7 +50,7 @@ export const createPow = factory(name, dependencies, (scope) => {
    * @param  {number | BigNumber | Complex} y                          The exponent
    * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
    */
-  const pow = scope.typed(name, {
+  const pow = typed(name, {
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
@@ -58,16 +58,16 @@ export const createPow = factory(name, dependencies, (scope) => {
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      if (y.isInteger() || x >= 0 || scope.config().predictable) {
+      if (y.isInteger() || x >= 0 || config().predictable) {
         return x.pow(y)
       } else {
-        return scope.complex(x.toNumber(), 0).pow(y.toNumber(), 0)
+        return complex(x.toNumber(), 0).pow(y.toNumber(), 0)
       }
     },
 
     'Fraction, Fraction': function (x, y) {
       if (y.d !== 1) {
-        if (scope.config().predictable) {
+        if (config().predictable) {
           throw new Error('Function pow does not support non-integer exponents for fractions.')
         } else {
           return _pow(x.valueOf(), y.valueOf())
@@ -105,11 +105,11 @@ export const createPow = factory(name, dependencies, (scope) => {
   function _pow (x, y) {
     // Alternatively could define a 'realmode' config option or something, but
     // 'predictable' will work for now
-    if (scope.config().predictable && !isInteger(y) && x < 0) {
+    if (config().predictable && !isInteger(y) && x < 0) {
       // Check to see if y can be represented as a fraction
       try {
-        const yFrac = scope.fraction(y)
-        const yNum = scope.number(yFrac)
+        const yFrac = fraction(y)
+        const yNum = number(yFrac)
         if (y === yNum || Math.abs((y - yNum) / y) < 1e-14) {
           if (yFrac.d % 2 === 1) {
             return (yFrac.n % 2 === 0 ? 1 : -1) * Math.pow(-x, y)
@@ -132,16 +132,16 @@ export const createPow = factory(name, dependencies, (scope) => {
     // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
-    if (scope.config().predictable &&
+    if (config().predictable &&
         ((x < -1 && y === Infinity) ||
          (x > -1 && x < 0 && y === -Infinity))) {
       return NaN
     }
 
-    if (isInteger(y) || x >= 0 || scope.config().predictable) {
+    if (isInteger(y) || x >= 0 || config().predictable) {
       return Math.pow(x, y)
     } else {
-      return scope.complex(x, 0).pow(y, 0)
+      return complex(x, 0).pow(y, 0)
     }
   }
 
@@ -165,14 +165,14 @@ export const createPow = factory(name, dependencies, (scope) => {
       throw new Error('For A^b, A must be square (size is ' + s[0] + 'x' + s[1] + ')')
     }
 
-    let res = scope.identity(s[0]).valueOf()
+    let res = identity(s[0]).valueOf()
     let px = x
     while (y >= 1) {
       if ((y & 1) === 1) {
-        res = scope.multiply(px, res)
+        res = multiply(px, res)
       }
       y >>= 1
-      px = scope.multiply(px, px)
+      px = multiply(px, px)
     }
     return res
   }
@@ -185,7 +185,7 @@ export const createPow = factory(name, dependencies, (scope) => {
    * @private
    */
   function _powMatrix (x, y) {
-    return scope.matrix(_powArray(x.valueOf(), y))
+    return matrix(_powArray(x.valueOf(), y))
   }
 
   pow.toTex = {

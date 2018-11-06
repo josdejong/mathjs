@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'addScalar'
 const dependencies = ['typed']
 
-export const createAddScalar = factory(name, dependencies, (scope) => {
+export const createAddScalar = factory(name, dependencies, ({ typed }) => {
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function
@@ -18,7 +18,7 @@ export const createAddScalar = factory(name, dependencies, (scope) => {
    * @return {number | BigNumber | Fraction | Complex | Unit}     Sum of `x` and `y`
    * @private
    */
-  const addScalar = scope.typed(name, {
+  const addScalar = typed(name, {
 
     'number, number': function (x, y) {
       return x + y

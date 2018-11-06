@@ -194,7 +194,7 @@ describe('IndexNode', function () {
           return range.toString(options)
         }).join(', ')
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -250,7 +250,7 @@ describe('IndexNode', function () {
           return range.toTex(options)
         }).join(', ')
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

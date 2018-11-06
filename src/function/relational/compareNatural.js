@@ -5,7 +5,7 @@ import { isDenseMatrix, isSparseMatrix } from '../../utils/is'
 import naturalSort from 'javascript-natural-sort'
 
 export function factory (type, config, load, typed) {
-  const getTypeOf = load(require('../utils/typeof'))
+  const typeOf = load(require('../utils/typeOf'))
   const compare = load(require('./compare'))
 
   const compareBooleans = compare.signatures['boolean,boolean']
@@ -80,8 +80,8 @@ export function factory (type, config, load, typed) {
    */
   const compareNatural = typed('compareNatural', {
     'any, any': function (x, y) {
-      const typeX = getTypeOf(x)
-      const typeY = getTypeOf(y)
+      const typeX = typeOf(x)
+      const typeY = typeOf(y)
       let c
 
       // numeric types

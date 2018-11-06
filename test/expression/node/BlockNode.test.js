@@ -279,7 +279,7 @@ describe('BlockNode', function () {
 
         return string
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -332,7 +332,7 @@ describe('BlockNode', function () {
 
         return latex
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

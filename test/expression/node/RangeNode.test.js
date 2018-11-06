@@ -299,7 +299,7 @@ describe('RangeNode', function () {
           ' to ' + node.end.toString(options) +
           ' with steps of ' + node.step.toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -361,7 +361,7 @@ describe('RangeNode', function () {
           ' to ' + node.end.toTex(options) +
           ' with steps of ' + node.step.toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

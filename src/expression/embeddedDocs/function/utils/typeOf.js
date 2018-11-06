@@ -1,15 +1,15 @@
 module.exports = {
-  'name': 'typeof',
+  'name': 'typeOf',
   'category': 'Utils',
   'syntax': [
-    'typeof(x)'
+    'typeOf(x)'
   ],
   'description': 'Get the type of a variable.',
   'examples': [
-    'typeof(3.5)',
-    'typeof(2 - 4i)',
-    'typeof(45 deg)',
-    'typeof("hello world")'
+    'typeOf(3.5)',
+    'typeOf(2 - 4i)',
+    'typeOf(45 deg)',
+    'typeOf("hello world")'
   ],
   'seealso': ['getMatrixDataType']
 }

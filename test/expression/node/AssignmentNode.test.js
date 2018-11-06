@@ -495,7 +495,7 @@ describe('AssignmentNode', function () {
             (node.index ? node.index.toString(options) : '') +
             ' equals ' + node.value.toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -550,7 +550,7 @@ describe('AssignmentNode', function () {
             (node.index ? node.index.toTex(options) : '') +
             '\\mbox{equals}' + node.value.toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

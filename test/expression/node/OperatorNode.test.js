@@ -386,7 +386,7 @@ describe('OperatorNode', function () {
           node.args[0].toString(options) +
           ', ' + node.args[1].toString(options) + ')'
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -408,7 +408,7 @@ describe('OperatorNode', function () {
           node.op + node.fn + node.op +
           node.args[1].toString(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const(' + node.value + ', ' + math.typeof(node.value) + ')'
+        return 'const(' + node.value + ', ' + math.typeOf(node.value) + ')'
       }
     }
 
@@ -606,7 +606,7 @@ describe('OperatorNode', function () {
           node.args[0].toTex(options) +
           ', ' + node.args[1].toTex(options) + ')'
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 
@@ -628,7 +628,7 @@ describe('OperatorNode', function () {
           node.op + node.fn + node.op +
           node.args[1].toTex(options)
       } else if (node.type === 'ConstantNode') {
-        return 'const\\left(' + node.value + ', ' + math.typeof(node.value) + '\\right)'
+        return 'const\\left(' + node.value + ', ' + math.typeOf(node.value) + '\\right)'
       }
     }
 

@@ -54,37 +54,27 @@ Function | Description
 
 Function | Description
 ---- | -----------
-[math.abs(x)](functions/abs.md) | Calculate the absolute value of a number.
 [math.add(x,&nbsp;y)](functions/add.md) | Add two or more values, `x + y`.
-[addScalar](functions/addScalar.md) | Add two scalar values, `x + y`.
-[math.cbrt(x&nbsp;[,&nbsp;allRoots])](functions/cbrt.md) | Calculate the cubic root of a value.
 [math.ceil(x)](functions/ceil.md) | Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 [math.cube(x)](functions/cube.md) | Compute the cube of a value, `x * x * x`.
 [math.divide(x,&nbsp;y)](functions/divide.md) | Divide two values, `x / y`.
-[divideScalar](functions/divideScalar.md) | Divide two scalar values, `x / y`.
 [math.dotDivide(x,&nbsp;y)](functions/dotDivide.md) | Divide two matrices element wise.
 [math.dotMultiply(x,&nbsp;y)](functions/dotMultiply.md) | Multiply two matrices element wise.
 [math.dotPow(x,&nbsp;y)](functions/dotPow.md) | Calculates the power of x to y element wise.
-[math.exp(x)](functions/exp.md) | Calculate the exponent of a value.
 [math.expm1(x)](functions/expm1.md) | Calculate the value of subtracting 1 from the exponential value.
 [math.fix(x)](functions/fix.md) | Round a value towards zero.
 [math.floor(x)](functions/floor.md) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.md) | Calculate the greatest common divisor for two or more values or arrays.
 [math.lcm(a,&nbsp;b)](functions/lcm.md) | Calculate the least common multiple for two or more values or arrays.
-[math.log(x&nbsp;[,&nbsp;base])](functions/log.md) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.md) | Calculate the 10-base logarithm of a value.
 [math.log1p(x)](functions/log1p.md) | Calculate the logarithm of a `value+1`.
 [math.log2(x)](functions/log2.md) | Calculate the 2-base of a value.
 [math.mod(x,&nbsp;y)](functions/mod.md) | Calculates the modulus, the remainder of an integer division.
 [math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or more values, `x * y`.
-[multiplyScalar](functions/multiplyScalar.md) | Multiply two scalar values, `x * y`.
-[math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
 [math.nthRoots(x)](functions/nthRoots.md) | Calculate the nth roots of a value.
-[math.pow(x,&nbsp;y)](functions/pow.md) | Calculates the power of x to y, `x ^ y`.
 [math.round(x&nbsp;[,&nbsp;n])](functions/round.md) | Round a value towards the nearest integer.
 [math.sign(x)](functions/sign.md) | Compute the sign of a value.
-[math.sqrt(x)](functions/sqrt.md) | Calculate the square root of a value.
 [math.square(x)](functions/square.md) | Compute the square of a value, `x * x`.
 [math.subtract(x,&nbsp;y)](functions/subtract.md) | Subtract two values, `x - y`.
 [math.unaryMinus(x)](functions/unaryMinus.md) | Inverse the sign of a value, apply a unary minus operation.
@@ -193,6 +183,7 @@ Function | Description
 [math.compareText(x,&nbsp;y)](functions/compareText.md) | Compare two strings lexically.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.md) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.md) | Test whether two values are equal.
+[equalScalar](functions/equalScalar.md) | Test whether two scalar values are nearly equal.
 [math.equalText(x,&nbsp;y)](functions/equalText.md) | Check equality of two strings.
 [math.larger(x,&nbsp;y)](functions/larger.md) | Test whether value x is larger than y.
 [math.largerEq(x,&nbsp;y)](functions/largerEq.md) | Test whether value x is larger or equal to y.
@@ -292,7 +283,6 @@ Function | Description
 [math.isPositive(x)](functions/isPositive.md) | Test whether a value is positive: larger than zero.
 [math.isPrime(x)](functions/isPrime.md) | Test whether a value is prime: has no divisors other than itself and one.
 [math.isZero(x)](functions/isZero.md) | Test whether a value is zero.
-[math.typeof(x)](functions/typeof.md) | Determine the type of a variable.
 
 
 

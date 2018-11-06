@@ -5,7 +5,7 @@ const escapeLatex = require('../../utils/latex').escape
 
 function factory (type, config, load, typed) {
   const Node = load(require('./Node'))
-  const getType = load(require('../../function/utils/typeof'))
+  const typeOf = load(require('../../function/utils/typeOf'))
 
   /**
    * A ConstantNode holds a constant value like a number or string.
@@ -102,7 +102,7 @@ function factory (type, config, load, typed) {
   ConstantNode.prototype.toHTML = function (options) {
     const value = this._toString(options)
 
-    switch (getType(this.value)) {
+    switch (typeOf(this.value)) {
       case 'number':
       case 'BigNumber':
       case 'Fraction':
@@ -151,7 +151,7 @@ function factory (type, config, load, typed) {
   ConstantNode.prototype._toTex = function (options) {
     const value = this._toString(options)
 
-    switch (getType(this.value)) {
+    switch (typeOf(this.value)) {
       case 'string':
         return '\\mathtt{' + escapeLatex(value) + '}'
 

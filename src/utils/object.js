@@ -61,6 +61,25 @@ export function mapObject (object, callback) {
 }
 
 /**
+ * Create an object composed of the picked object properties
+ * @param {Object} object
+ * @param {string[]} properties
+ * @return {Object}
+ */
+export function pick (object, properties) {
+  const copy = {}
+
+  for (let i = 0; i < properties.length; i++) {
+    const key = properties[i]
+    if (key in object) {
+      copy[key] = object[key]
+    }
+  }
+
+  return copy
+}
+
+/**
  * Extend object a with the properties of object b
  * @param {Object} a
  * @param {Object} b

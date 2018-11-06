@@ -1,6 +1,6 @@
 'use strict'
 function factory (type, config, load, typed) {
-  const _typeof = load(require('../../../function/utils/typeof'))
+  const typeOf = load(require('../../../function/utils/typeOf'))
 
   function getArrayDataType (array) {
     let _type // to hold type info
@@ -20,7 +20,7 @@ function factory (type, config, load, typed) {
 
       const itemType = isArray
         ? getArrayDataType(item) // recurse into a nested array
-        : _typeof(item)
+        : typeOf(item)
       if (_type === undefined) {
         _type = itemType // first item
       } else if (_type !== itemType) {

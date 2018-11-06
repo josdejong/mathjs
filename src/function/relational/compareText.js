@@ -4,7 +4,7 @@ import { isString } from '../../utils/is'
 
 export function factory (type, config, load, typed) {
   const matrix = load(require('../../type/matrix/function/matrix'))
-  const _typeof = load(require('../utils/typeof'))
+  const typeOf = load(require('../utils/typeOf'))
 
   const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
   const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
@@ -90,11 +90,11 @@ export function factory (type, config, load, typed) {
     // we don't want to convert numbers to string, only accept string input
     if (!isString(x)) {
       throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(x) + ', index: 0)')
+          '(expected: string or Array or Matrix, actual: ' + typeOf(x) + ', index: 0)')
     }
     if (!isString(y)) {
       throw new TypeError('Unexpected type of argument in function compareText ' +
-          '(expected: string or Array or Matrix, actual: ' + _typeof(y) + ', index: 1)')
+          '(expected: string or Array or Matrix, actual: ' + typeOf(y) + ', index: 1)')
     }
 
     return (x === y)

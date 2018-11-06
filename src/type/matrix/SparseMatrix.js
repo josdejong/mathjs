@@ -11,7 +11,7 @@ const DimensionError = require('../../error/DimensionError')
 function factory (type, config, load, typed) {
   const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
   const equalScalar = load(require('../../function/relational/equalScalar'))
-  const getTypeOf = load(require('../../function/utils/typeof'))
+  const typeOf = load(require('../../function/utils/typeOf'))
   const getArrayDataType = load(require('./utils/getArrayDataType'))
 
   /**
@@ -38,7 +38,7 @@ function factory (type, config, load, typed) {
       _createFromArray(this, data, datatype)
     } else if (data) {
       // unsupported type
-      throw new TypeError('Unsupported type of data (' + getTypeOf(data) + ')')
+      throw new TypeError('Unsupported type of data (' + typeOf(data) + ')')
     } else {
       // nothing provided
       this._values = []

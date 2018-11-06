@@ -1,7 +1,7 @@
 'use strict'
 
 export function factory (type, config, load, typed) {
-  const getType = load(require('../../utils/typeof'))
+  const typeOf = load(require('../../utils/typeOf'))
 
   /**
    * Improve error messages for statistics functions. Errors are typically
@@ -19,7 +19,7 @@ export function factory (type, config, load, typed) {
 
     if (String(err).indexOf('Unexpected type') !== -1) {
       details = arguments.length > 2
-        ? ' (type: ' + getType(value) + ', value: ' + JSON.stringify(value) + ')'
+        ? ' (type: ' + typeOf(value) + ', value: ' + JSON.stringify(value) + ')'
         : ' (type: ' + err.data.actual + ')'
 
       return new TypeError('Cannot calculate ' + fnName + ', unexpected type of argument' + details)
@@ -27,7 +27,7 @@ export function factory (type, config, load, typed) {
 
     if (String(err).indexOf('complex numbers') !== -1) {
       details = arguments.length > 2
-        ? ' (type: ' + getType(value) + ', value: ' + JSON.stringify(value) + ')'
+        ? ' (type: ' + typeOf(value) + ', value: ' + JSON.stringify(value) + ')'
         : ''
 
       return new TypeError('Cannot calculate ' + fnName + ', no ordering relation is defined for complex numbers' + details)

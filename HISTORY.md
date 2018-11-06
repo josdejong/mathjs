@@ -1,5 +1,11 @@
 # History
 
+# not yet released, version 6.0.0
+
+- Renamed function `typeof` to `typeOf` (`typeof` is a reserved keyword which
+  can only be used as a property name).
+
+
 # 2018-10-30, version 5.2.3
 
 - Fixed #1293: non-unicode characters in `escape-latex` giving issues in some
