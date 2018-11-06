@@ -3,8 +3,7 @@
 # Function var
 
 Compute the variance of a matrix or a  list with values.
-In case of a (multi dimensional) array or matrix, the variance over all
-elements will be calculated.
+In case of a (multi dimensional) array or matrix, the variance will be calculated over all elements by default. It is also possible to calculate the variance along a specified axis by added the axis dimension as the final argument of the function.
 
 Optionally, the type of normalization can be specified as second
 parameter. The parameter `normalization` can be one of the following values:
@@ -24,6 +23,8 @@ case, the function can be called as `math['var'](...)` instead of
 math.var(a, b, c, ...)
 math.var(A)
 math.var(A, normalization)
+math.var(A, dimension)
+math.var(A, normalization, dimension)
 ```
 
 ### Parameters
@@ -32,6 +33,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
+`dimension` | number &#124; BigNumber | A number specifying which axis the variance should be computed along
 
 ### Returns
 
@@ -49,6 +51,9 @@ math.var([2, 4, 6, 8], 'uncorrected') // returns 5
 math.var([2, 4, 6, 8], 'biased')      // returns 4
 
 math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
+math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
+math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000005, 1.9999999999999964]
+math.var([[1, 2, 3], [4, 6, 8]], 'biased', 1) // returns [0.500000000000002, 1.9999999999999982]
 ```
 
 

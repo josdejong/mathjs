@@ -5,8 +5,7 @@
 Compute the standard deviation of a matrix or a  list with values.
 The standard deviations is defined as the square root of the variance:
 `std(A) = sqrt(var(A))`.
-In case of a (multi dimensional) array or matrix, the standard deviation
-over all elements will be calculated.
+In case of a (multi dimensional) array or matrix, the standard deviation will be calculated over all elements by default. It is also possible to calculate the standard deviation along a specified axis by added the axis as the final argument of the function.
 
 Optionally, the type of normalization can be specified as second
 parameter. The parameter `normalization` can be one of the following values:
@@ -22,6 +21,8 @@ parameter. The parameter `normalization` can be one of the following values:
 math.std(a, b, c, ...)
 math.std(A)
 math.std(A, normalization)
+math.std(A, dimension)
+math.std(A, normalization, dimension)
 ```
 
 ### Parameters
@@ -30,6 +31,7 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
+`dimension` | number &#124; BigNumber | A number specifying which axis the standard deviation should be computed along.
 
 ### Returns
 
@@ -47,6 +49,9 @@ math.std([2, 4, 6, 8], 'uncorrected') // returns 2.23606797749979
 math.std([2, 4, 6, 8], 'biased')      // returns 2
 
 math.std([[1, 2, 3], [4, 5, 6]])      // returns 1.8708286933869707
+math.std([[1, 2, 3], [4, 6, 8]], 0)    // returns [2.1213203435596424, 2.8284271247461903, 3.5355339059327378]
+math.std([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000002, 1.9999999999999991]
+math.std([[1, 2, 3], [4, 6, 8]], 'biased', 1) // returns [0.7071067811865477, 1.4142135623730945]
 ```
 
 

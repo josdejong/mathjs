@@ -28,6 +28,9 @@ function factory (type, config, load, typed) {
    * - 'uncorrected'        The sum of squared errors is divided by n
    * - 'biased'             The sum of squared errors is divided by (n + 1)
    *
+   * Additionally, it is possible to compute the variance along the browser
+   * or columns of a matrix by specifying the dimension.
+   *
    * Note that older browser may not like the variable name `var`. In that
    * case, the function can be called as `math['var'](...)` instead of
    * `math.var(...)`.
@@ -37,6 +40,8 @@ function factory (type, config, load, typed) {
    *     math.var(a, b, c, ...)
    *     math.var(A)
    *     math.var(A, normalization)
+   *     math.var(A, dimension)
+   *     math.var(A, normalization, dimension)
    *
    * Examples:
    *
@@ -46,6 +51,9 @@ function factory (type, config, load, typed) {
    *     math.var([2, 4, 6, 8], 'biased')      // returns 4
    *
    *     math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
+   *     math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000005, 1.9999999999999964]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 'biased', 1) // returns [0.500000000000002, 1.9999999999999982]
    *
    * See also:
    *
@@ -56,6 +64,8 @@ function factory (type, config, load, typed) {
    * @param {string} [normalization='unbiased']
    *                        Determines how to normalize the variance.
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
+   * @param dimension {number | BigNumber}
+   *                        Determines the axis to compute the variance for a matrix
    * @return {*} The variance
    */
 
@@ -150,7 +160,12 @@ function factory (type, config, load, typed) {
       if (array.length === 0) {
         throw new SyntaxError('Function var requires one or more parameters (0 provided)')
       }
-      const num = array.size()[dim]
+      let num = 0
+      if (array.isMatrix) {
+        num = array.size()[dim]
+      } else {
+        num = size(array)[dim]
+      }
       const meanOfSquares = mean(square(array), dim)
       const squaredMean = square(mean(array, dim))
       const varDim = subtract(meanOfSquares, squaredMean)
