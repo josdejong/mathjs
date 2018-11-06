@@ -171,7 +171,7 @@ function factory (type, config, load, typed, math) {
 
   // register on the import event, automatically add a proxy for every imported function.
   math.on('import', function (name, resolver, path) {
-    if (path === undefined) {
+    if (!path) {
       // an imported function (not a data type or something special)
       createLazyProxy(name, resolver)
     }

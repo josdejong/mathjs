@@ -1,18 +1,22 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { extend } from '../../utils/object'
+import { operators as latexOperators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const addScalar = load(require('./addScalar'))
-  const latex = require('../../utils/latex.js')
+const name = 'add'
+const dependencies = [
+  'typed',
+  'matrix',
+  'addScalar',
+  'utils.algorithm01',
+  'utils.algorithm04',
+  'utils.algorithm10',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createAdd = factory(name, dependencies, ({ typed, matrix, addScalar, utils: { algorithm01, algorithm04, algorithm10, algorithm13, algorithm14 } }) => {
   /**
    * Add two or more values, `x + y`.
    * For matrices, the function is evaluated element wise.
@@ -47,7 +51,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to add
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Sum of `x` and `y`
    */
-  const add = typed('add', extend({
+  const add = typed(name, extend({
     // we extend the signatures of addScalar with signatures dealing with matrices
 
     'DenseMatrix, DenseMatrix': function (x, y) {
@@ -121,10 +125,8 @@ export function factory (type, config, load, typed) {
   }, addScalar.signatures))
 
   add.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['add']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['add']}\${args[1]}\\right)`
   }
 
   return add
-}
-
-export const name = 'add'
+})

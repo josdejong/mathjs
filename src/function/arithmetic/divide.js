@@ -1,16 +1,20 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { extend } from '../../utils/object'
 
-export function factory (type, config, load, typed) {
-  const divideScalar = load(require('./divideScalar'))
-  const multiply = load(require('./multiply'))
-  const inv = load(require('../matrix/inv'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'divide'
+const dependencies = [
+  'typed',
+  'matrix',
+  'multiply',
+  'divideScalar',
+  'inv',
+  'utils.algorithm11',
+  'utils.algorithm14'
+]
 
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createDivide = factory(name, dependencies, ({ typed, matrix, multiply, divideScalar, inv, utils: { algorithm11, algorithm14 } }) => {
   /**
    * Divide two values, `x / y`.
    * To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.
@@ -74,6 +78,4 @@ export function factory (type, config, load, typed) {
   divide.toTex = { 2: `\\frac{\${args[0]}}{\${args[1]}}` }
 
   return divide
-}
-
-export const name = 'divide'
+})

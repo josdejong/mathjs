@@ -1,10 +1,16 @@
 'use strict'
 
 import { createAbs } from './abs'
+import { createAdd } from './add'
 import { createAddScalar } from './addScalar'
 import { createCbrt } from './cbrt'
+import { createCeil } from './ceil'
+import { createCube } from './cube'
+import { createDivide } from './divide'
 import { createDivideScalar } from './divideScalar'
 import { createExp } from './exp'
+import { createFix } from './fix'
+import { createFloor } from './floor'
 import { createHypot } from './hypot'
 import { createLog } from './log'
 import { createMultiplyScalar } from './multiplyScalar'
@@ -14,20 +20,20 @@ import { createSqrt } from './sqrt'
 
 module.exports = [
   createAbs,
-  require('./add'),
+  createAdd,
   createAddScalar,
   createCbrt,
-  require('./ceil'),
-  require('./cube'),
-  require('./divide'),
+  createCeil,
+  createCube,
+  createDivide,
   createDivideScalar,
   require('./dotDivide'),
   require('./dotMultiply'),
   require('./dotPow'),
   createExp,
   require('./expm1'),
-  require('./fix'),
-  require('./floor'),
+  createFix,
+  createFloor,
   require('./gcd'),
   createHypot,
   require('./lcm'),

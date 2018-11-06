@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'ceil'
+const dependencies = ['typed']
+
+export const createCeil = factory(name, dependencies, ({ typed }) => {
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.
@@ -31,7 +35,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const ceil = typed('ceil', {
+  const ceil = typed(name, {
     'number': Math.ceil,
 
     'Complex': function (x) {
@@ -55,6 +59,4 @@ export function factory (type, config, load, typed) {
   ceil.toTex = { 1: `\\left\\lceil\${args[0]}\\right\\rceil` }
 
   return ceil
-}
-
-export const name = 'ceil'
+})

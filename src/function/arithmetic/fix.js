@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'fix'
+const dependencies = ['typed', 'type.Complex']
+
+export const createFix = factory(name, dependencies, ({ typed, type: { Complex } }) => {
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.
@@ -36,7 +40,7 @@ export function factory (type, config, load, typed) {
     },
 
     'Complex': function (x) {
-      return new type.Complex(
+      return new Complex(
         (x.re > 0) ? Math.floor(x.re) : Math.ceil(x.re),
         (x.im > 0) ? Math.floor(x.im) : Math.ceil(x.im)
       )
@@ -59,6 +63,4 @@ export function factory (type, config, load, typed) {
   fix.toTex = { 1: `\\mathrm{\${name}}\\left(\${args[0]}\\right)` }
 
   return fix
-}
-
-export const name = 'fix'
+})

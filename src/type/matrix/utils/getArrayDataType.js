@@ -1,7 +1,16 @@
 'use strict'
-function factory (type, config, load, typed) {
+
+export function factory (type, config, load, typed) {
   const typeOf = load(require('../../../function/utils/typeOf'))
 
+  /**
+   * Check the datatype of a given object
+   * This is a low level implementation that should only be used by
+   * parent Matrix classes such as SparseMatrix or DenseMatrix
+   * This method does not validate Array Matrix shape
+   * @param array
+   * @return string
+   */
   function getArrayDataType (array) {
     let _type // to hold type info
     let _length = 0 // to hold length value to ensure it has consistent sizes
@@ -34,13 +43,3 @@ function factory (type, config, load, typed) {
   }
   return getArrayDataType
 }
-
-/**
- * Check the datatype of a given object
- * This is a low level implementation that should only be used by
- * parent Matrix classes such as SparseMatrix or DenseMatrix
- * This method does not validate Array Matrix shape
- * @param array
- * @return string
- */
-exports.factory = factory

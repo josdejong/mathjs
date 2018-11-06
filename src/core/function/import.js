@@ -302,7 +302,7 @@ function factory (type, config, load, typed, math) {
    */
   function _importFactory (factory, options, fullName = factory.fn) {
     const nameContainsPath = fullName.indexOf('.') !== -1
-    const path = nameContainsPath ? initial(fullName.split('.')) : null
+    const path = nameContainsPath ? initial(fullName.split('.')) : undefined
     const name = nameContainsPath ? last(fullName.split('.')) : fullName
     const namespace = path ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform

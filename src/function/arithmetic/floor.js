@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'floor'
+const dependencies = ['typed']
+
+export const createFloor = factory(name, dependencies, ({ typed }) => {
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.
@@ -30,7 +34,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} x  Number to be rounded
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const floor = typed('floor', {
+  const floor = typed(name, {
     'number': Math.floor,
 
     'Complex': function (x) {
@@ -54,6 +58,4 @@ export function factory (type, config, load, typed) {
   floor.toTex = { 1: `\\left\\lfloor\${args[0]}\\right\\rfloor` }
 
   return floor
-}
-
-export const name = 'floor'
+})

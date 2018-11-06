@@ -1,10 +1,11 @@
 'use strict'
 
-const clone = require('../../../utils/object').clone
+import { factory } from '../../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const DenseMatrix = type.DenseMatrix
+const name = 'utils.algorithm14'
+const dependencies = ['typed', 'clone', 'type.DenseMatrix']
 
+export const createAlgorithm14 = factory(name, dependencies, ({ typed, clone, type: { DenseMatrix } }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
    * Callback function invoked MxN times.
@@ -20,7 +21,7 @@ function factory (type, config, load, typed) {
    *
    * https://github.com/josdejong/mathjs/pull/346#issuecomment-97659042
    */
-  const algorithm14 = function (a, b, callback, inverse) {
+  return function algorithm14 (a, b, callback, inverse) {
     // a arrays
     const adata = a._data
     const asize = a._size
@@ -72,9 +73,4 @@ function factory (type, config, load, typed) {
     }
     return cv
   }
-
-  return algorithm14
-}
-
-exports.name = 'algorithm14'
-exports.factory = factory
+})
