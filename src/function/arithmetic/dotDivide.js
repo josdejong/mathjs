@@ -1,18 +1,23 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const divideScalar = load(require('./divideScalar'))
-  const latex = require('../../utils/latex')
+import { factory } from '../../utils/factory'
+import { operators as latexOperators } from '../../utils/latex'
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'dotDivide'
+const dependencies = [
+  'typed',
+  'matrix',
+  'divideScalar',
+  'utils.algorithm02',
+  'utils.algorithm03',
+  'utils.algorithm07',
+  'utils.algorithm11',
+  'utils.algorithm12',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
+export const createDotDivide = factory(name, dependencies, ({ typed, matrix, divideScalar, utils: { algorithm02, algorithm03, algorithm07, algorithm11, algorithm12, algorithm13, algorithm14 } }) => {
   /**
    * Divide two matrices element wise. The function accepts both matrices and
    * scalar values.
@@ -39,7 +44,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                    Quotient, `x ./ y`
    */
-  const dotDivide = typed('dotDivide', {
+  const dotDivide = typed(name, {
 
     'any, any': divideScalar,
 
@@ -102,10 +107,8 @@ export function factory (type, config, load, typed) {
   })
 
   dotDivide.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['dotDivide']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['dotDivide']}\${args[1]}\\right)`
   }
 
   return dotDivide
-}
-
-export const name = 'dotDivide'
+})

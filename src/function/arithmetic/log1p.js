@@ -1,11 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
-  const divideScalar = load(require('./divideScalar'))
-  const log = load(require('./log'))
+const name = 'log1p'
+const dependencies = [ 'typed', 'config', 'divideScalar', 'log', 'type.Complex' ]
 
+export const createLog1p = factory(name, dependencies, ({ typed, config, divideScalar, log, type: { Complex } }) => {
   /**
    * Calculate the logarithm of a `value+1`.
    *
@@ -37,18 +38,18 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the logarithm of `x+1`
    */
-  const log1p = typed('log1p', {
+  const log1p = typed(name, {
     'number': _log1pNumber,
 
     'Complex': _log1pComplex,
 
     'BigNumber': function (x) {
       const y = x.plus(1)
-      if (!y.isNegative() || config.predictable) {
+      if (!y.isNegative() || config().predictable) {
         return y.ln()
       } else {
         // downgrade to number, return Complex valued result
-        return _log1pComplex(new type.Complex(x.toNumber(), 0))
+        return _log1pComplex(new Complex(x.toNumber(), 0))
       }
     },
 
@@ -69,11 +70,11 @@ export function factory (type, config, load, typed) {
    * @private
    */
   function _log1pNumber (x) {
-    if (x >= -1 || config.predictable) {
+    if (x >= -1 || config().predictable) {
       return (Math.log1p) ? Math.log1p(x) : Math.log(x + 1)
     } else {
       // negative value -> complex value computation
-      return _log1pComplex(new type.Complex(x, 0))
+      return _log1pComplex(new Complex(x, 0))
     }
   }
 
@@ -85,7 +86,7 @@ export function factory (type, config, load, typed) {
    */
   function _log1pComplex (x) {
     const xRe1p = x.re + 1
-    return new type.Complex(
+    return new Complex(
       Math.log(Math.sqrt(xRe1p * xRe1p + x.im * x.im)),
       Math.atan2(x.im, xRe1p)
     )
@@ -97,6 +98,4 @@ export function factory (type, config, load, typed) {
   }
 
   return log1p
-}
-
-export const name = 'log1p'
+})

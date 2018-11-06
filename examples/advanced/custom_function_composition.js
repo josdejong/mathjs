@@ -49,17 +49,17 @@ console.log('addComposed(4, 3) =', addComposed(4, new BigNumber(3)).toString()) 
 
 // High level functions typically have dependencies and need to
 // be created via a factory function such as `hypotFactory`.
-const hypotFactory = require('../../lib/function/arithmetic/hypotFactory').hypotFactory
+const createHypot = require('../../lib/function/arithmetic/hypot').createHypot
 
 // We must satisfy all dependencies of the factory function before we can create it:
-console.log('dependencies:', hypotFactory.dependencies.join(', '))
+console.log('dependencies:', createHypot.dependencies.join(', '))
 
 // In this case, hypot also supports a type Matrix.
 // But we're not interested in it now so we mark this type to be ignored
 typed.ignore.push('Matrix')
 
 // Create a hypot instance that only works with numbers:
-const hypot = hypotFactory.create({
+const hypot = createHypot({
   typed,
   abs: Math.abs,
   addScalar: (a, b) => a + b,

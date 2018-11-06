@@ -1,19 +1,24 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { isInteger, toFixed } from '../../utils/number'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const equalScalar = load(require('../relational/equalScalar'))
-  const zeros = load(require('../matrix/zeros'))
+const name = 'round'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'zeros',
+  'type.BigNumber',
+  'utils.algorithm11',
+  'utils.algorithm12',
+  'utils.algorithm14'
+]
 
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createRound = factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, type: { BigNumber }, utils: { algorithm11, algorithm12, algorithm14 } }) => {
   /**
    * Round a value towards the nearest integer.
    * For matrices, the function is evaluated element wise.
@@ -45,7 +50,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array} [n=0]                            Number of decimals
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix} Rounded value
    */
-  const round = typed('round', {
+  const round = typed(name, {
 
     'number': Math.round,
 
@@ -76,7 +81,7 @@ export function factory (type, config, load, typed) {
     'number, BigNumber': function (x, n) {
       if (!n.isInteger()) { throw new TypeError(NO_INT) }
 
-      return new type.BigNumber(x).toDecimalPlaces(n.toNumber())
+      return new BigNumber(x).toDecimalPlaces(n.toNumber())
     },
 
     'BigNumber': function (x) {
@@ -146,7 +151,7 @@ export function factory (type, config, load, typed) {
   }
 
   return round
-}
+})
 
 /**
  * round a number to the given number of decimals, or to zero if decimals is
@@ -159,5 +164,3 @@ export function factory (type, config, load, typed) {
 function _round (value, decimals) {
   return parseFloat(toFixed(value, decimals))
 }
-
-export const name = 'round'

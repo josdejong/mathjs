@@ -1,23 +1,25 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isMatrix } from '../../utils/is'
 import { extend } from '../../utils/object'
 import { arraySize } from '../../utils/array'
+import { operators as latexOperators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'multiply'
+const dependencies = [
+  'typed',
+  'matrix',
+  'addScalar',
+  'multiplyScalar',
+  'equalScalar',
+  'type.DenseMatrix',
+  'type.SparseMatrix',
+  'utils.algorithm11',
+  'utils.algorithm14'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const addScalar = load(require('./addScalar'))
-  const multiplyScalar = load(require('./multiplyScalar'))
-  const equalScalar = load(require('../relational/equalScalar'))
-
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const DenseMatrix = type.DenseMatrix
-  const SparseMatrix = type.SparseMatrix
-
+export const createMultiply = factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, type: { DenseMatrix, SparseMatrix }, utils: { algorithm11, algorithm14 } }) => {
   /**
    * Multiply two or more values, `x * y`.
    * For matrices, the matrix product is calculated.
@@ -51,7 +53,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} y Second value to multiply
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix} Multiplication of `x` and `y`
    */
-  const multiply = typed('multiply', extend({
+  const multiply = typed(name, extend({
     // we extend the signatures of multiplyScalar with signatures dealing with matrices
 
     'Array, Array': function (x, y) {
@@ -914,10 +916,8 @@ export function factory (type, config, load, typed) {
   }
 
   multiply.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['multiply']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['multiply']}\${args[1]}\\right)`
   }
 
   return multiply
-}
-
-export const name = 'multiply'
+})

@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'log2'
+const dependencies = [ 'typed', 'config', 'type.Complex' ]
+
+export const createLog2 = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the 2-base of a value. This is the same as calculating `log(x, 2)`.
    *
@@ -28,26 +32,26 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 2-base logarithm of `x`
    */
-  const log2 = typed('log2', {
+  const log2 = typed(name, {
     'number': function (x) {
-      if (x >= 0 || config.predictable) {
+      if (x >= 0 || config().predictable) {
         return (Math.log2)
           ? Math.log2(x)
           : Math.log(x) / Math.LN2
       } else {
         // negative value -> complex value computation
-        return _log2Complex(new type.Complex(x, 0))
+        return _log2Complex(new Complex(x, 0))
       }
     },
 
     'Complex': _log2Complex,
 
     'BigNumber': function (x) {
-      if (!x.isNegative() || config.predictable) {
+      if (!x.isNegative() || config().predictable) {
         return x.log(2)
       } else {
         // downgrade to number, return Complex valued result
-        return _log2Complex(new type.Complex(x.toNumber(), 0))
+        return _log2Complex(new Complex(x.toNumber(), 0))
       }
     },
 
@@ -64,7 +68,7 @@ export function factory (type, config, load, typed) {
    */
   function _log2Complex (x) {
     const newX = Math.sqrt(x.re * x.re + x.im * x.im)
-    return new type.Complex(
+    return new Complex(
       (Math.log2) ? Math.log2(newX) : Math.log(newX) / Math.LN2,
       Math.atan2(x.im, x.re) / Math.LN2
     )
@@ -73,6 +77,4 @@ export function factory (type, config, load, typed) {
   log2.toTex = `\\log_{2}\\left(\${args[0]}\\right)`
 
   return log2
-}
-
-export const name = 'log2'
+})

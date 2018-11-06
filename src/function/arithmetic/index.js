@@ -8,15 +8,35 @@ import { createCeil } from './ceil'
 import { createCube } from './cube'
 import { createDivide } from './divide'
 import { createDivideScalar } from './divideScalar'
+import { createDotDivide } from './dotDivide'
+import { createDotMultiply } from './dotMultiply'
+import { createDotPow } from './dotPow'
 import { createExp } from './exp'
+import { createExpm1 } from './expm1'
 import { createFix } from './fix'
 import { createFloor } from './floor'
+import { createGcd } from './gcd'
 import { createHypot } from './hypot'
+import { createLcm } from './lcm'
 import { createLog } from './log'
+import { createLog10 } from './log10'
+import { createLog1p } from './log1p'
+import { createLog2 } from './log2'
+import { createMod } from './mod'
+import { createMultiply } from './multiply'
 import { createMultiplyScalar } from './multiplyScalar'
 import { createNorm } from './norm'
+import { createNthRoot } from './nthRoot'
+import { createNthRoots } from './nthRoots'
 import { createPow } from './pow'
+import { createRound } from './round'
+import { createSign } from './sign'
 import { createSqrt } from './sqrt'
+import { createSquare } from './square'
+import { createSubtract } from './subtract'
+import { createUnaryMinus } from './unaryMinus'
+import { createUnaryPlus } from './unaryPlus'
+import { createXgcd } from './xgcd'
 
 module.exports = [
   createAbs,
@@ -27,33 +47,33 @@ module.exports = [
   createCube,
   createDivide,
   createDivideScalar,
-  require('./dotDivide'),
-  require('./dotMultiply'),
-  require('./dotPow'),
+  createDotDivide,
+  createDotMultiply,
+  createDotPow,
   createExp,
-  require('./expm1'),
+  createExpm1,
   createFix,
   createFloor,
-  require('./gcd'),
+  createGcd,
   createHypot,
-  require('./lcm'),
+  createLcm,
   createLog,
-  require('./log10'),
-  require('./log1p'),
-  require('./log2'),
-  require('./mod'),
-  require('./multiply'),
+  createLog10,
+  createLog1p,
+  createLog2,
+  createMod,
+  createMultiply,
   createMultiplyScalar,
   createNorm,
-  require('./nthRoot'),
-  require('./nthRoots'),
+  createNthRoot,
+  createNthRoots,
   createPow,
-  require('./round'),
-  require('./sign'),
+  createRound,
+  createSign,
   createSqrt,
-  require('./square'),
-  require('./subtract'),
-  require('./unaryMinus'),
-  require('./unaryPlus'),
-  require('./xgcd')
+  createSquare,
+  createSubtract,
+  createUnaryMinus,
+  createUnaryPlus,
+  createXgcd
 ]

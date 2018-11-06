@@ -1,16 +1,20 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'lcm'
+const dependencies = [
+  'typed',
+  'matrix',
+  'utils.algorithm02',
+  'utils.algorithm06',
+  'utils.algorithm11',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createLcm = factory(name, dependencies, ({ typed, matrix, utils: { algorithm02, algorithm06, algorithm11, algorithm13, algorithm14 } }) => {
   /**
    * Calculate the least common multiple for two or more values or arrays.
    *
@@ -40,7 +44,7 @@ export function factory (type, config, load, typed) {
    * @param {... number | BigNumber | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Array | Matrix}                           The least common multiple
    */
-  const lcm = typed('lcm', {
+  const lcm = typed(name, {
     'number, number': _lcm,
 
     'BigNumber, BigNumber': _lcmBigNumber,
@@ -132,8 +136,11 @@ export function factory (type, config, load, typed) {
       throw new Error('Parameters in function lcm must be integer numbers')
     }
 
-    if (a.isZero() || b.isZero()) {
-      return new type.BigNumber(0)
+    if (a.isZero()) {
+      return a
+    }
+    if (b.isZero()) {
+      return b
     }
 
     // http://en.wikipedia.org/wiki/Euclidean_algorithm
@@ -146,7 +153,7 @@ export function factory (type, config, load, typed) {
     }
     return prod.div(a).abs()
   }
-}
+})
 
 /**
  * Calculate lcm for two numbers
@@ -175,5 +182,3 @@ function _lcm (a, b) {
   }
   return Math.abs(prod / a)
 }
-
-export const name = 'lcm'

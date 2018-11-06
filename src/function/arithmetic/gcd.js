@@ -1,16 +1,21 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'gcd'
+const dependencies = [
+  'typed',
+  'matrix',
+  'type.BigNumber',
+  'utils.algorithm01',
+  'utils.algorithm04',
+  'utils.algorithm10',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm04 = load(require('../../type/matrix/utils/algorithm04'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createGcd = factory(name, dependencies, ({ typed, matrix, type: { BigNumber }, utils: { algorithm01, algorithm04, algorithm10, algorithm13, algorithm14 } }) => {
   /**
    * Calculate the greatest common divisor for two or more values or arrays.
    *
@@ -36,7 +41,7 @@ export function factory (type, config, load, typed) {
    * @param {... number | BigNumber | Fraction | Array | Matrix} args  Two or more integer numbers
    * @return {number | BigNumber | Fraction | Array | Matrix}                           The greatest common divisor
    */
-  const gcd = typed('gcd', {
+  const gcd = typed(name, {
 
     'number, number': _gcd,
 
@@ -130,7 +135,7 @@ export function factory (type, config, load, typed) {
     }
 
     // http://en.wikipedia.org/wiki/Euclidean_algorithm
-    const zero = new type.BigNumber(0)
+    const zero = new BigNumber(0)
     while (!b.isZero()) {
       const r = a.mod(b)
       a = b
@@ -138,7 +143,7 @@ export function factory (type, config, load, typed) {
     }
     return a.lt(zero) ? a.neg() : a
   }
-}
+})
 
 /**
  * Calculate gcd for numbers
@@ -161,5 +166,3 @@ function _gcd (a, b) {
   }
   return (a < 0) ? -a : a
 }
-
-export const name = 'gcd'

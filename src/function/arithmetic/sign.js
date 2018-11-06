@@ -1,9 +1,13 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { sign as numberSign } from '../../utils/number'
 
-export function factory (type, config, load, typed) {
+const name = 'sign'
+const dependencies = ['typed', 'type.BigNumber', 'type.Fraction']
+
+export const createSign = factory(name, dependencies, ({ typed, type: { BigNumber, Fraction } }) => {
   /**
    * Compute the sign of a value. The sign of a value x is:
    *
@@ -34,7 +38,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}e
    *            The sign of `x`
    */
-  const sign = typed('sign', {
+  const sign = typed(name, {
     'number': numberSign,
 
     'Complex': function (x) {
@@ -42,11 +46,11 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(x.cmp(0))
+      return new BigNumber(x.cmp(0))
     },
 
     'Fraction': function (x) {
-      return new type.Fraction(x.s, 1)
+      return new Fraction(x.s, 1)
     },
 
     'Array | Matrix': function (x) {
@@ -62,6 +66,4 @@ export function factory (type, config, load, typed) {
   sign.toTex = { 1: `\\mathrm{\${name}}\\left(\${args[0]}\\right)` }
 
   return sign
-}
-
-export const name = 'sign'
+})

@@ -1,17 +1,22 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const latex = require('../../utils/latex')
+import { factory } from '../../utils/factory'
+import { operators as latexOperators } from '../../utils/latex'
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'mod'
+const dependencies = [
+  'typed',
+  'matrix',
+  'utils.algorithm02',
+  'utils.algorithm03',
+  'utils.algorithm05',
+  'utils.algorithm11',
+  'utils.algorithm12',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
+export const createMod = factory(name, dependencies, ({ typed, matrix, utils: { algorithm02, algorithm03, algorithm05, algorithm11, algorithm12, algorithm13, algorithm14 } }) => {
   /**
    * Calculates the modulus, the remainder of an integer division.
    *
@@ -47,7 +52,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | Array | Matrix} y Divisor
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the remainder of `x` divided by `y`.
    */
-  const mod = typed('mod', {
+  const mod = typed(name, {
 
     'number, number': _mod,
 
@@ -118,7 +123,7 @@ export function factory (type, config, load, typed) {
   })
 
   mod.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['mod']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['mod']}\${args[1]}\\right)`
   }
 
   return mod
@@ -143,6 +148,4 @@ export function factory (type, config, load, typed) {
       throw new Error('Cannot calculate mod for a negative divisor')
     }
   }
-}
-
-export const name = 'mod'
+})

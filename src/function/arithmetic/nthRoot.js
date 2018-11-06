@@ -1,15 +1,21 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+import { factory } from '../../utils/factory'
 
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'nthRoot'
+const dependencies = [
+  'typed',
+  'matrix',
+  'type.BigNumber',
+  'utils.algorithm01',
+  'utils.algorithm02',
+  'utils.algorithm06',
+  'utils.algorithm11',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
+export const createNthRoot = factory(name, dependencies, ({ typed, matrix, type: { BigNumber }, utils: { algorithm01, algorithm02, algorithm06, algorithm11, algorithm13, algorithm14 } }) => {
   /**
    * Calculate the nth root of a value.
    * The principal nth root of a positive real number A, is the positive real
@@ -43,7 +49,7 @@ export function factory (type, config, load, typed) {
     'Complex number not supported in function nthRoot. ' +
     'Use nthRoots instead.'
   )
-  const nthRoot = typed('nthRoot', {
+  const nthRoot = typed(name, {
 
     'number': function (x) {
       return _nthRoot(x, 2)
@@ -51,7 +57,7 @@ export function factory (type, config, load, typed) {
     'number, number': _nthRoot,
 
     'BigNumber': function (x) {
-      return _bigNthRoot(x, new type.BigNumber(2))
+      return _bigNthRoot(x, new BigNumber(2))
     },
     'Complex': function (x) {
       throw new Error(complexErr)
@@ -156,9 +162,9 @@ export function factory (type, config, load, typed) {
    * @private
    */
   function _bigNthRoot (a, root) {
-    const precision = type.BigNumber.precision
-    const Big = type.BigNumber.clone({ precision: precision + 2 })
-    const zero = new type.BigNumber(0)
+    const precision = BigNumber.precision
+    const Big = BigNumber.clone({ precision: precision + 2 })
+    const zero = new BigNumber(0)
 
     const one = new Big(1)
     const inv = root.isNegative()
@@ -185,9 +191,9 @@ export function factory (type, config, load, typed) {
     // If a < 0, we require that root is an odd integer,
     // so (-1) ^ (1/root) = -1
     x = a.isNeg() ? x.neg() : x
-    return new type.BigNumber((inv ? one.div(x) : x).toPrecision(precision))
+    return new BigNumber((inv ? one.div(x) : x).toPrecision(precision))
   }
-}
+})
 
 /**
  * Calculate the nth root of a, solve x^root == a
@@ -246,5 +252,3 @@ function _nthRoot (a, root) {
   return inv ? 1 / x : x
   */
 }
-
-export const name = 'nthRoot'

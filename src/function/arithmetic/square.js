@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'square'
+const dependencies = ['typed']
+
+export const createSquare = factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the square of a value, `x * x`.
    * For matrices, the function is evaluated element wise.
@@ -29,7 +33,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Array | Matrix | Unit}
    *            Squared value
    */
-  const square = typed('square', {
+  const square = typed(name, {
     'number': function (x) {
       return x * x
     },
@@ -59,6 +63,4 @@ export function factory (type, config, load, typed) {
   square.toTex = { 1: `\\left(\${args[0]}\\right)^2` }
 
   return square
-}
-
-export const name = 'square'
+})

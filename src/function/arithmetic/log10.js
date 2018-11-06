@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'log10'
+const dependencies = [ 'typed', 'config', 'type.Complex' ]
+
+export const createLog10 = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
    *
@@ -28,26 +32,26 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            Returns the 10-base logarithm of `x`
    */
-  const log10 = typed('log10', {
+  const log10 = typed(name, {
     'number': function (x) {
-      if (x >= 0 || config.predictable) {
+      if (x >= 0 || config().predictable) {
         return _log10(x)
       } else {
         // negative value -> complex value computation
-        return new type.Complex(x, 0).log().div(Math.LN10)
+        return new Complex(x, 0).log().div(Math.LN10)
       }
     },
 
     'Complex': function (x) {
-      return new type.Complex(x).log().div(Math.LN10)
+      return new Complex(x).log().div(Math.LN10)
     },
 
     'BigNumber': function (x) {
-      if (!x.isNegative() || config.predictable) {
+      if (!x.isNegative() || config().predictable) {
         return x.log()
       } else {
         // downgrade to number, return Complex valued result
-        return new type.Complex(x.toNumber(), 0).log().div(Math.LN10)
+        return new Complex(x.toNumber(), 0).log().div(Math.LN10)
       }
     },
 
@@ -59,7 +63,7 @@ export function factory (type, config, load, typed) {
   log10.toTex = { 1: `\\log_{10}\\left(\${args[0]}\\right)` }
 
   return log10
-}
+})
 
 /**
  * Calculate the 10-base logarithm of a number
@@ -70,5 +74,3 @@ export function factory (type, config, load, typed) {
 const _log10 = Math.log10 || function (x) {
   return Math.log(x) / Math.LN10
 }
-
-export const name = 'log10'

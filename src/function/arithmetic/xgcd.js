@@ -1,10 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'xgcd'
+const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
 
+export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
    * Calculate the extended greatest common divisor for two values.
    * See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.
@@ -28,7 +30,7 @@ export function factory (type, config, load, typed) {
    * @return {Array}              Returns an array containing 3 integers `[div, m, n]`
    *                              where `div = gcd(a, b)` and `a*m + b*n = div`
    */
-  const xgcd = typed('xgcd', {
+  const xgcd = typed(name, {
     'number, number': _xgcd,
     'BigNumber, BigNumber': _xgcdBigNumber
     // TODO: implement support for Fraction
@@ -81,7 +83,7 @@ export function factory (type, config, load, typed) {
     } else {
       res = [a, a ? lastx : 0, lasty]
     }
-    return (config.matrix === 'Array') ? res : matrix(res)
+    return (config().matrix === 'Array') ? res : matrix(res)
   }
 
   /**
@@ -102,8 +104,8 @@ export function factory (type, config, load, typed) {
     let // remainder
       r
 
-    const zero = new type.BigNumber(0)
-    const one = new type.BigNumber(1)
+    const zero = new BigNumber(0)
+    const one = new BigNumber(1)
     let x = zero
     let lastx = one
     let y = one
@@ -135,8 +137,6 @@ export function factory (type, config, load, typed) {
     } else {
       res = [a, !a.isZero() ? lastx : 0, lasty]
     }
-    return (config.matrix === 'Array') ? res : matrix(res)
+    return (config().matrix === 'Array') ? res : matrix(res)
   }
-}
-
-export const name = 'xgcd'
+})

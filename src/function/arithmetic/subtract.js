@@ -1,21 +1,24 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
+import { operators as latexOperators } from '../../utils/latex'
 import DimensionError from '../../error/DimensionError'
 
-export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'subtract'
+const dependencies = [
+  'typed',
+  'matrix',
+  'addScalar',
+  'unaryMinus',
+  'utils.algorithm01',
+  'utils.algorithm03',
+  'utils.algorithm05',
+  'utils.algorithm10',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const addScalar = load(require('./addScalar'))
-  const unaryMinus = load(require('./unaryMinus'))
-
-  const algorithm01 = load(require('../../type/matrix/utils/algorithm01'))
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  const algorithm10 = load(require('../../type/matrix/utils/algorithm10'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
+export const createSubtract = factory(name, dependencies, ({ typed, matrix, addScalar, unaryMinus, utils: { algorithm01, algorithm03, algorithm05, algorithm10, algorithm13, algorithm14 } }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   /**
@@ -51,7 +54,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Subtraction of `x` and `y`
    */
-  const subtract = typed('subtract', {
+  const subtract = typed(name, {
 
     'number, number': function (x, y) {
       return x - y
@@ -152,11 +155,11 @@ export function factory (type, config, load, typed) {
   })
 
   subtract.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['subtract']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['subtract']}\${args[1]}\\right)`
   }
 
   return subtract
-}
+})
 
 /**
  * Check whether matrix x and y have the same number of dimensions.
@@ -172,5 +175,3 @@ function checkEqualDimensions (x, y) {
     throw new DimensionError(xsize.length, ysize.length)
   }
 }
-
-export const name = 'subtract'

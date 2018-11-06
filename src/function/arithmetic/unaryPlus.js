@@ -1,10 +1,13 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
+import { operators as latexOperators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'unaryPlus'
+const dependencies = ['typed', 'config', 'type.BigNumber']
 
+export const createUnaryPlus = factory(name, dependencies, ({ typed, config, type: { BigNumber } }) => {
   /**
    * Unary plus operation.
    * Boolean values and strings will be converted to a number, numeric values will be returned as is.
@@ -29,7 +32,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns the input value when numeric, converts to a number when input is non-numeric.
    */
-  const unaryPlus = typed('unaryPlus', {
+  const unaryPlus = typed(name, {
     'number': function (x) {
       return x
     },
@@ -57,15 +60,13 @@ export function factory (type, config, load, typed) {
 
     'boolean | string': function (x) {
       // convert to a number or bignumber
-      return (config.number === 'BigNumber') ? new type.BigNumber(+x) : +x
+      return (config().number === 'BigNumber') ? new BigNumber(+x) : +x
     }
   })
 
   unaryPlus.toTex = {
-    1: `${latex.operators['unaryPlus']}\\left(\${args[0]}\\right)`
+    1: `${latexOperators['unaryPlus']}\\left(\${args[0]}\\right)`
   }
 
   return unaryPlus
-}
-
-export const name = 'unaryPlus'
+})
