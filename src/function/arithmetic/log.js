@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'log'
-const dependencies = ['config', 'typed', 'divideScalar', 'complex']
+const dependencies = ['config', 'typed', 'divideScalar', 'type.Complex']
 
-export const createLog = factory(name, dependencies, ({ typed, config, divideScalar, complex }) => {
+export const createLog = factory(name, dependencies, ({ typed, config, divideScalar, type: { Complex } }) => {
   /**
    * Calculate the logarithm of a value.
    *
@@ -47,7 +47,7 @@ export const createLog = factory(name, dependencies, ({ typed, config, divideSca
         return Math.log(x)
       } else {
         // negative value -> complex value computation
-        return complex(x, 0).log()
+        return new Complex(x, 0).log()
       }
     },
 
@@ -60,7 +60,7 @@ export const createLog = factory(name, dependencies, ({ typed, config, divideSca
         return x.ln()
       } else {
         // downgrade to number, return Complex valued result
-        return complex(x.toNumber(), 0).log()
+        return new Complex(x.toNumber(), 0).log()
       }
     },
 

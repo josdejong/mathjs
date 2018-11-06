@@ -1,7 +1,9 @@
 'use strict'
 
+import initial from 'lodash/initial'
+import last from 'lodash/last'
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
-import { sortFactories, isFactory } from '../../utils/factory'
+import { isFactory, sortFactories } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
 import ArgumentsError from '../../error/ArgumentsError'
 
@@ -295,12 +297,15 @@ function factory (type, config, load, typed, math) {
    * Import an instance of a factory into math.js
    * @param {function(scope: object)} factory
    * @param {Object} options  See import for a description of the options
-   * @param {string} [name=factory.name] Optional custom name
+   * @param {string} [fullName=factory.name] Optional custom name
    * @private
    */
-  function _importFactory (factory, options, name = factory.fn) {
+  function _importFactory (factory, options, fullName = factory.fn) {
+    const nameContainsPath = fullName.indexOf('.') !== -1
+    const path = nameContainsPath ? initial(fullName.split('.')) : null
+    const name = nameContainsPath ? last(fullName.split('.')) : fullName
+    const namespace = path ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
-    const namespace = factory.path ? traverse(math, factory.path) : math
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
@@ -337,7 +342,7 @@ function factory (type, config, load, typed, math) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+        if (path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
           lazy(math.expression.mathWithTransform, name, resolver)
         }
       }
@@ -347,13 +352,13 @@ function factory (type, config, load, typed, math) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+        if (path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
           math.expression.mathWithTransform[name] = resolver()
         }
       }
     }
 
-    math.emit('import', name, resolver, factory.path)
+    math.emit('import', name, resolver, path)
   }
 
   /**

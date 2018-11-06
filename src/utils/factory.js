@@ -1,6 +1,7 @@
-// TODO: comment
-import { pick } from './object'
+import get from 'lodash/get'
+import pick from 'lodash/pick'
 
+// TODO: comment
 export function factory (name, dependencies, create) {
   const assertAndCreate = (scope) => {
     assertDependencies(name, dependencies, scope)
@@ -82,8 +83,8 @@ export function isFactory (obj) {
  * @param {Object} scope
  */
 export function assertDependencies (name, dependencies, scope) {
-  if (!dependencies.every(dependency => dependency in scope)) {
-    const missingDependencies = dependencies.filter(dependency => !(dependency in scope))
+  if (!dependencies.every(dependency => get(scope, dependency) !== undefined)) {
+    const missingDependencies = dependencies.filter(dependency => get(scope, dependency) === undefined)
 
     // TODO: create a custom error class for this, a MathjsError or something like that
     throw new Error(`Cannot create function ${name}, ` +

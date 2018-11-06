@@ -11,13 +11,13 @@ const dependencies = [
   'typed',
   'isNegative',
   'unaryMinus',
-  'complex',
   'matrix',
-  'bignumber',
-  'fraction'
+  'type.Complex',
+  'type.BigNumber',
+  'type.Fraction'
 ]
 
-export const createCbrt = factory(name, dependencies, ({ config, typed, isNegative, unaryMinus, complex, matrix, bignumber, fraction }) => {
+export const createCbrt = factory(name, dependencies, ({ config, typed, isNegative, unaryMinus, matrix, type: { Complex, BigNumber, Fraction } }) => {
   /**
    * Calculate the cubic root of a value.
    *
@@ -94,14 +94,13 @@ export const createCbrt = factory(name, dependencies, ({ config, typed, isNegati
     const abs = x.abs()
 
     // principal root:
-    const principal = complex(_cbrtNumber(abs), 0)
-      .mul(complex(0, arg3).exp())
+    const principal = new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3).exp())
 
     if (allRoots) {
       const all = [
         principal,
-        complex(_cbrtNumber(abs), 0).mul(complex(0, arg3 + Math.PI * 2 / 3).exp()),
-        complex(_cbrtNumber(abs), 0).mul(complex(0, arg3 - Math.PI * 2 / 3).exp())
+        new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3 + Math.PI * 2 / 3).exp()),
+        new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
       return (config().matrix === 'Array') ? all : matrix(all)
@@ -132,9 +131,9 @@ export const createCbrt = factory(name, dependencies, ({ config, typed, isNegati
       // TODO: create a helper function for this
       let third
       if (isBigNumber(x.value)) {
-        third = bignumber(1).div(3)
+        third = new BigNumber(1).div(3)
       } else if (isFraction(x.value)) {
-        third = fraction(1, 3)
+        third = new Fraction(1, 3)
       } else {
         third = 1 / 3
       }

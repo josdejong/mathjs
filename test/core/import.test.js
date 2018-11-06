@@ -4,15 +4,21 @@ import mathjs from '../../src/main'
 import approx from '../../tools/approx'
 import { factory } from '../../src/utils/factory'
 
-const multiplyTestFactory = factory('multiplyTest', [], (scope) => {
+const multiplyTestFactory = factory('multiplyTest', [], () => {
   return function multiply (a, b) {
     return a * b
   }
 })
 
-const cubeTestFactory = factory('cubeTest', ['multiplyTest'], (scope) => {
+const cubeTestFactory = factory('cubeTest', ['multiplyTest'], ({ multiplyTest }) => {
   return function cube (a) {
-    return scope.multiplyTest(a, scope.multiplyTest(a, a))
+    return multiplyTest(a, multiplyTest(a, a))
+  }
+})
+
+const nestedFactory = factory('tools.misc.nested', [], () => {
+  return function nested () {
+    return 'nested'
   }
 })
 
@@ -306,6 +312,16 @@ describe('import', function () {
 
       assert.strictEqual(math2.multiplyTest(2, 3), 6)
       assert.strictEqual(math2.cubeTest(3), 27)
+    })
+
+    it('should import a factory function with a nested path', () => {
+      const math2 = create()
+
+      assert.strictEqual(math2.tools, undefined)
+
+      math2.import([ nestedFactory ])
+
+      assert.strictEqual(math2.tools.misc.nested(), 'nested')
     })
 
     it('should import an array with factory functions in the correct order, resolving dependencies', () => {

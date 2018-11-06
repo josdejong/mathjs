@@ -1,6 +1,4 @@
-// test object utils
 import assert from 'assert'
-
 import {
   canDefineProperty,
   clone,
@@ -9,7 +7,6 @@ import {
   extend,
   isLegacyFactory,
   lazy,
-  pick,
   traverse
 } from '../../src/utils/object'
 
@@ -249,6 +246,7 @@ describe('object', function () {
       assert.strictEqual(traverse(c, ''), c)
       assert.strictEqual(traverse(c, 'b'), b)
       assert.strictEqual(traverse(c, 'b.a'), a)
+      assert.strictEqual(traverse(c, ['b', 'a']), a)
     })
 
     it('should append missing piece of a path', function () {
@@ -276,13 +274,6 @@ describe('object', function () {
 
       assert.strictEqual(isLegacyFactory({ name: 'foo', factory: function () {} }), true)
       assert.strictEqual(isLegacyFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
-    })
-  })
-
-  describe('pick', function () {
-    it('should pick the selected properties', () => {
-      const object = { a: 1, b: 2, c: 3 }
-      assert.deepStrictEqual(pick(object, ['a', 'c', 'd']), { a: 1, c: 3 })
     })
   })
 })

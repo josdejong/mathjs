@@ -14,10 +14,10 @@ const dependencies = [
   'matrix',
   'fraction',
   'number',
-  'complex'
+  'type.Complex'
 ]
 
-export const createPow = factory(name, dependencies, ({ typed, config, identity, multiply, matrix, fraction, number, complex }) => {
+export const createPow = factory(name, dependencies, ({ typed, config, identity, multiply, matrix, number, fraction, type: { Complex } }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive
@@ -61,7 +61,7 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
       if (y.isInteger() || x >= 0 || config().predictable) {
         return x.pow(y)
       } else {
-        return complex(x.toNumber(), 0).pow(y.toNumber(), 0)
+        return new Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
       }
     },
 
@@ -141,7 +141,7 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
     if (isInteger(y) || x >= 0 || config().predictable) {
       return Math.pow(x, y)
     } else {
-      return complex(x, 0).pow(y, 0)
+      return new Complex(x, 0).pow(y, 0)
     }
   }
 

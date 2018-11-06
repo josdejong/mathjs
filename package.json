@@ -108,6 +108,7 @@
     "escape-latex": "1.2.0",
     "fraction.js": "4.0.10",
     "javascript-natural-sort": "0.7.1",
+    "lodash": "4.17.11",
     "seed-random": "2.2.0",
     "tiny-emitter": "2.0.2",
     "typed-function": "1.1.0"
