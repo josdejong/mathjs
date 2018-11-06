@@ -52,10 +52,10 @@ function factory (type, config, load, typed) {
     'Array | Matrix, string': _std,
 
     // std([a, b, c, c, ...], dim)
-    'Array | Matrix, number | BigNumber': _nstdDim,
+    'Array | Matrix, number | BigNumber': _std,
 
     // std([a, b, c, c, ...], normalization, dim)
-    'Array | Matrix, string, number | BigNumber': _nstdDimWeighted,
+    'Array | Matrix, string, number | BigNumber': _std,
 
     // std(a, b, c, d, ...)
     '...': function (args) {
@@ -68,36 +68,6 @@ function factory (type, config, load, typed) {
   return std
 
   function _std (array, normalization) {
-    if (array.length === 0) {
-      throw new SyntaxError('Function std requires one or more parameters (0 provided)')
-    }
-
-    try {
-      return sqrt(variance.apply(null, arguments))
-    } catch (err) {
-      if (err instanceof TypeError && err.message.indexOf(' var') !== -1) {
-        throw new TypeError(err.message.replace(' var', ' std'))
-      } else {
-        throw err
-      }
-    }
-  }
-  function _nstdDim (array, dim) {
-    if (array.length === 0) {
-      throw new SyntaxError('Function std requires one or more parameters (0 provided)')
-    }
-
-    try {
-      return sqrt(variance.apply(null, arguments))
-    } catch (err) {
-      if (err instanceof TypeError && err.message.indexOf(' var') !== -1) {
-        throw new TypeError(err.message.replace(' var', ' std'))
-      } else {
-        throw err
-      }
-    }
-  }
-  function _nstdDimWeighted (array, normalization, dim) {
     if (array.length === 0) {
       throw new SyntaxError('Function std requires one or more parameters (0 provided)')
     }

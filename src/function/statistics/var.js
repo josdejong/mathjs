@@ -3,6 +3,7 @@
 const DEFAULT_NORMALIZATION = 'unbiased'
 
 const deepForEach = require('../../utils/collection/deepForEach')
+const deepMap = require('../../utils/collection/deepMap')
 
 function factory (type, config, load, typed) {
   const add = load(require('../arithmetic/addScalar'))
@@ -11,6 +12,7 @@ function factory (type, config, load, typed) {
   const divide = load(require('../arithmetic/divideScalar'))
   const mean = load(require('../statistics/mean'))
   const square = load(require('../arithmetic/square'))
+  const size = load(require('../matrix/size'))
   const isNaN = load(require('../utils/isNaN'))
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
@@ -56,6 +58,7 @@ function factory (type, config, load, typed) {
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The variance
    */
+
   const variance = typed('variance', {
     // var([a, b, c, d, ...])
     'Array | Matrix': function (array) {
@@ -66,7 +69,9 @@ function factory (type, config, load, typed) {
     'Array | Matrix, string': _var,
 
     // var([a, b, c, c, ...], dim)
-    'Array | Matrix, number | BigNumber': _varDim,
+    'Array | Matrix, number | BigNumber': function (array, dim) {
+      return _varDimWeighted(array, DEFAULT_NORMALIZATION, dim)
+    },
 
     // var([a, b, c, c, ...], normalization, dim)
     'Array | Matrix, string, number | BigNumber': _varDimWeighted,
@@ -140,18 +145,38 @@ function factory (type, config, load, typed) {
         'Choose "unbiased" (default), "uncorrected", or "biased".')
     }
   }
-  function _varDim (array, dim) {
+  function _varDimWeighted (array, normalization, dim) {
     try {
-      const varDim = subtract(mean(square(array), dim), square(mean(array, dim)))
-      return varDim
-    } catch (err) {
-      throw improveErrorMessage(err, 'var')
-    }
-  }
-  function _varDimWeighted (array, weighting, dim) {
-    try {
-      const varDim = subtract(mean(square(array), dim), square(mean(array, dim)))
-      return varDim
+      if (array.length === 0) {
+        throw new SyntaxError('Function var requires one or more parameters (0 provided)')
+      }
+      const num = array.size()[dim]
+      const meanOfSquares = mean(square(array), dim)
+      const squaredMean = square(mean(array, dim))
+      const varDim = subtract(meanOfSquares, squaredMean)
+
+      let correction = 0
+      let biasCorrection = function (val, cor) {
+        try {
+          return multiply(val, cor)
+        } catch (err) {
+          throw improveErrorMessage(err, 'var', val)
+        }
+      }
+      switch (normalization) {
+        case 'uncorrected':
+          return varDim
+        case 'biased':
+          correction = divide(num, num + 1)
+          return deepMap(varDim, (x) => biasCorrection(x, correction), true)
+        case 'unbiased':
+          const zero = type.isBigNumber(meanOfSquares) ? new type.BigNumber(0) : 0
+          correction = (num === 1) ? zero : divide(num, num - 1)
+          return deepMap(varDim, (x) => biasCorrection(x, correction), true)
+        default:
+          throw new Error('Unknown normalization "' + normalization + '". ' +
+          'Choose "unbiased" (default), "uncorrected", or "biased".')
+      }
     } catch (err) {
       throw improveErrorMessage(err, 'var')
     }
