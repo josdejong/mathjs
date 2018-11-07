@@ -1,27 +1,27 @@
 const signature1 = 'BigNumber'
 const signature2 = 'BigNumber, BigNumber'
 
-export function abs (a) {
+export function absBigNumber (a) {
   return a.abs()
 }
-abs.signature = signature1
+absBigNumber.signature = signature1
 
-export function add (a, b) {
+export function addBigNumber (a, b) {
   return a.add(b)
 }
-add.signature = signature2
+addBigNumber.signature = signature2
 
-export function subtract (a, b) {
+export function subtractBigNumber (a, b) {
   return a.sub(b)
 }
-subtract.signature = signature2
+subtractBigNumber.signature = signature2
 
-export function multiply (a, b) {
+export function multiplyBigNumber (a, b) {
   return a.mul(b)
 }
-multiply.signature = signature2
+multiplyBigNumber.signature = signature2
 
-export function divide (a, b) {
+export function divideBigNumber (a, b) {
   return a.div(b)
 }
-divide.signature = signature2
+divideBigNumber.signature = signature2

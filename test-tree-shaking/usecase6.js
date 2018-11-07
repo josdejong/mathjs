@@ -2,8 +2,8 @@
 // create functions yourself: mix and match functions
 
 import { create } from '../src/mainAll'
-import { add as addNumber, multiply as multiplyNumber } from '../src/plain/number'
-import { add as addBigNumber, multiply as multiplyBigNumber, bignumber } from '../src/plain/bignumber'
+import { addNumber, multiplyNumber } from '../src/plain/number'
+import { addBigNumber, multiplyBigNumber, bignumber } from '../src/plain/bignumber'
 
 console.log('\nuse case 6')
 
