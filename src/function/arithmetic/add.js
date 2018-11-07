@@ -20,11 +20,11 @@ const dependencies = [
 ]
 
 export const createAdd = factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm01 = createAlgorithm01({ typed, type: { DenseMatrix } })
-  const algorithm04 = createAlgorithm04({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm04 = createAlgorithm04({ typed, equalScalar })
   const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Add two or more values, `x + y`.

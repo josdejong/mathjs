@@ -15,18 +15,17 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'type.DenseMatrix'
 ]
 
-export const createMod = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
-  const algorithm05 = createAlgorithm05({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+export const createMod = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm05 = createAlgorithm05({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Calculates the modulus, the remainder of an integer division.

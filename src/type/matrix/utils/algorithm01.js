@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import DimensionError from '../../../error/DimensionError'
 
 const name = 'utils.algorithm01'
-const dependencies = ['typed', 'type.DenseMatrix']
+const dependencies = ['typed']
 
-export const createAlgorithm01 = factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
+export const createAlgorithm01 = factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
    * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
@@ -96,7 +96,7 @@ export const createAlgorithm01 = factory(name, dependencies, ({ typed, type: { D
     }
 
     // return dense matrix
-    return new DenseMatrix({
+    return denseMatrix.createDenseMatrix({
       data: cdata,
       size: [rows, columns],
       datatype: dt

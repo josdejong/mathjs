@@ -14,16 +14,15 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'type.BigNumber',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'type.DenseMatrix'
 ]
 
-export const createGcd = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix, SparseMatrix } }) => {
-  const algorithm01 = createAlgorithm01({ typed, type: { DenseMatrix } })
-  const algorithm04 = createAlgorithm04({ typed, equalScalar, type: { SparseMatrix } })
+export const createGcd = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm04 = createAlgorithm04({ typed, equalScalar })
   const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Calculate the greatest common divisor for two or more values or arrays.

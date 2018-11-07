@@ -5,9 +5,9 @@ import DimensionError from '../../../error/DimensionError'
 import { scatter } from '../../../utils/collection'
 
 const name = 'utils.algorithm06'
-const dependencies = ['typed', 'equalScalar', 'type.SparseMatrix']
+const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm06 = factory(name, dependencies, ({ typed, equalScalar, type: { SparseMatrix } }) => {
+export const createAlgorithm06 = factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
    * Callback function invoked (Anz U Bnz) times, where Anz and Bnz are the nonzero elements in both matrices.
@@ -72,7 +72,7 @@ export const createAlgorithm06 = factory(name, dependencies, ({ typed, equalScal
     const cindex = []
     const cptr = []
     // matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,

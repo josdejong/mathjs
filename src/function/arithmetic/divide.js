@@ -12,14 +12,12 @@ const dependencies = [
   'multiply',
   'equalScalar',
   'divideScalar',
-  'inv',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'inv'
 ]
 
-export const createDivide = factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+export const createDivide = factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Divide two values, `x / y`.

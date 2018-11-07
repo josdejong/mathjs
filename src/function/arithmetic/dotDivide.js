@@ -16,18 +16,17 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'divideScalar',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'type.DenseMatrix'
 ]
 
-export const createDotDivide = factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
+export const createDotDivide = factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Divide two matrices element wise. The function accepts both matrices and

@@ -71,8 +71,8 @@ The following use cases are worked out:
 
     const math = create()
 
-    const add = math.typed(addNumber, addBigNumber)
-    const multiply = math.typed(multiplyNumber, multiplyBigNumber)
+    const add = math.typed('add', addNumber, addBigNumber)
+    const multiply = math.typed('multiply', multiplyNumber, multiplyBigNumber)
 
     console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
     console.log('2 * bignumber(3) + 4 = ' + add(multiply(2, bignumber(3)), 4))

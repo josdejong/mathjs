@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import DimensionError from '../../../error/DimensionError'
 
 const name = 'utils.algorithm13'
-const dependencies = ['typed', 'type.DenseMatrix']
+const dependencies = ['typed']
 
-export const createAlgorithm13 = factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
+export const createAlgorithm13 = factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z).
    * Callback function invoked MxN times.
@@ -61,7 +61,7 @@ export const createAlgorithm13 = factory(name, dependencies, ({ typed, type: { D
     const cdata = csize.length > 0 ? _iterate(cf, 0, csize, csize[0], adata, bdata) : []
 
     // c matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: cdata,
       size: csize,
       datatype: dt

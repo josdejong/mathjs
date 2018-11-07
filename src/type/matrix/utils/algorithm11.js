@@ -3,9 +3,9 @@
 import { factory } from '../../../utils/factory'
 
 const name = 'utils.algorithm11'
-const dependencies = ['typed', 'equalScalar', 'type.SparseMatrix']
+const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm11 = factory(name, dependencies, ({ typed, equalScalar, type: { SparseMatrix } }) => {
+export const createAlgorithm11 = factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked NZ times (number of nonzero items in S).
@@ -68,7 +68,7 @@ export const createAlgorithm11 = factory(name, dependencies, ({ typed, equalScal
     const cindex = []
     const cptr = []
     // matrix
-    const c = new SparseMatrix({
+    const c = s.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,

@@ -65,6 +65,13 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type
   DenseMatrix.prototype = new Matrix()
 
   /**
+   * Create a new DenseMatrix
+   */
+  DenseMatrix.prototype.createDenseMatrix = function (data, datatype) {
+    return new DenseMatrix(data, datatype)
+  }
+
+  /**
    * Attach type information
    */
   DenseMatrix.prototype.type = 'DenseMatrix'

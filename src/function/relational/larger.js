@@ -19,11 +19,11 @@ const dependencies = [
 ]
 
 export const createLarger = factory(name, dependencies, ({ typed, config, matrix, type: { DenseMatrix } }) => {
-  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
+  const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Test whether value x is larger than y.

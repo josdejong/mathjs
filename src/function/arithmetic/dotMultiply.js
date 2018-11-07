@@ -13,17 +13,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'multiplyScalar',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'multiplyScalar'
 ]
 
-export const createDotMultiply = factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm09 = createAlgorithm09({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+export const createDotMultiply = factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm09 = createAlgorithm09({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Multiply two matrices element wise. The function accepts both matrices and

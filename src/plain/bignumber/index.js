@@ -1,4 +1,4 @@
-import * as BigNumber from 'decimal.js'
+import BigNumber from 'decimal.js'
 
 export * from './arithmetic'
 

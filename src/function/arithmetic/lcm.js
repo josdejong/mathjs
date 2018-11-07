@@ -12,17 +12,15 @@ const name = 'lcm'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'equalScalar'
 ]
 
-export const createLcm = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm02 = createAlgorithm02({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm06 = createAlgorithm06({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+export const createLcm = factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm06 = createAlgorithm06({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Calculate the least common multiple for two or more values or arrays.

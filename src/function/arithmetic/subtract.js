@@ -21,15 +21,15 @@ const dependencies = [
   'type.SparseMatrix'
 ]
 
-export const createSubtract = factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix, SparseMatrix } }) => {
+export const createSubtract = factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix } }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
-  const algorithm01 = createAlgorithm01({ typed, type: { DenseMatrix } })
-  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
-  const algorithm05 = createAlgorithm05({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm01 = createAlgorithm01({ typed })
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm05 = createAlgorithm05({ typed, equalScalar })
   const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
-  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Subtract two values, `x - y`.

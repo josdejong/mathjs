@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import { clone } from '../../../utils/object'
 
 const name = 'utils.algorithm14'
-const dependencies = ['typed', 'type.DenseMatrix']
+const dependencies = ['typed']
 
-export const createAlgorithm14 = factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
+export const createAlgorithm14 = factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
    * Callback function invoked MxN times.
@@ -47,7 +47,7 @@ export const createAlgorithm14 = factory(name, dependencies, ({ typed, type: { D
     const cdata = asize.length > 0 ? _iterate(cf, 0, asize, asize[0], adata, b, inverse) : []
 
     // c matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: cdata,
       size: clone(asize),
       datatype: dt

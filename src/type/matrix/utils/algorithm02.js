@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import DimensionError from '../../../error/DimensionError'
 
 const name = 'utils.algorithm02'
-const dependencies = ['typed', 'equalScalar', 'type.SparseMatrix']
+const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm02 = factory(name, dependencies, ({ typed, equalScalar, type: { SparseMatrix } }) => {
+export const createAlgorithm02 = factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
    * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).
@@ -99,7 +99,7 @@ export const createAlgorithm02 = factory(name, dependencies, ({ typed, equalScal
     cptr[columns] = cindex.length
 
     // return sparse matrix
-    return new SparseMatrix({
+    return sparseMatrix.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,

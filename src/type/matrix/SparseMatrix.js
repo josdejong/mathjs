@@ -142,6 +142,13 @@ export const createSparseMatrixClass = factory(name, dependencies, ({ typed, typ
   SparseMatrix.prototype = new Matrix()
 
   /**
+   * Create a new SparseMatrix
+   */
+  SparseMatrix.prototype.createSparseMatrix = function (data, datatype) {
+    return new SparseMatrix(data, datatype)
+  }
+
+  /**
    * Attach type information
    */
   SparseMatrix.prototype.type = 'SparseMatrix'

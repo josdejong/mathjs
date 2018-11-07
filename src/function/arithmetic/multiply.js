@@ -19,9 +19,9 @@ const dependencies = [
   'type.SparseMatrix'
 ]
 
-export const createMultiply = factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
-  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
-  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+export const createMultiply = factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Multiply two or more values, `x * y`.
@@ -309,7 +309,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     }
 
     // return matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: c,
       size: [bcolumns],
       datatype: dt
@@ -398,7 +398,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     }
 
     // return matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: c,
       size: [arows],
       datatype: dt
@@ -466,7 +466,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     }
 
     // return matrix
-    return new DenseMatrix({
+    return a.createDenseMatrix({
       data: c,
       size: [arows, bcolumns],
       datatype: dt
@@ -526,7 +526,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     const cindex = []
     const cptr = []
     // c matrix
-    const c = new SparseMatrix({
+    const c = b.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -675,7 +675,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     cptr[1] = cindex.length
 
     // return sparse matrix
-    return new SparseMatrix({
+    return a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -736,7 +736,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     const cindex = []
     const cptr = []
     // c matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
@@ -842,7 +842,7 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
     const cindex = []
     const cptr = []
     // c matrix
-    const c = new SparseMatrix({
+    const c = a.createSparseMatrix({
       values: cvalues,
       index: cindex,
       ptr: cptr,
