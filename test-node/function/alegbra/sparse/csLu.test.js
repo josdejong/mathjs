@@ -1,6 +1,8 @@
+import defaultMath from '../../../../src/main'
+
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
-const math = require('../../../../src/main').create()
+const math = defaultMath.create()
 
 math.import(require('../../../../src/function/algebra/sparse/csPermute'))
 math.import(require('../../../../src/function/algebra/sparse/csLu'))

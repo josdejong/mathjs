@@ -1,5 +1,5 @@
 // test multiply
-const math = require('../../../src/main')
+import math from '../../../src/main'
 const market = require('../../../tools/matrixmarket')
 
 describe('multiply', function () {

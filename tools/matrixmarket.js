@@ -1,9 +1,10 @@
 'use strict'
 
+import math from '../src/main'
+
 const fs = require('fs')
 const zlib = require('zlib')
 const tar = require('tar')
-const math = require('../src/main')
 const Q = require('q')
 const typed = require('typed-function')
 const Spa = math.type.Spa

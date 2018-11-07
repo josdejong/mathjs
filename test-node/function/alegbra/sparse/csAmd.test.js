@@ -1,7 +1,9 @@
+import defaultMath from '../../../../src/main'
+
 const assert = require('assert')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
-const math = require('../../../../src/main').create()
+const math = defaultMath.create()
 math.import(require('../../../../src/function/algebra/sparse/csAmd'))
 
 const csAmd = math.algebra.sparse.csAmd

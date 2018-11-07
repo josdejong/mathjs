@@ -1,5 +1,5 @@
+import math from '../../../../src/main'
 const approx = require('../../../../tools/approx')
-const math = require('../../../../src/main')
 const market = require('../../../../tools/matrixmarket')
 
 describe('slu - matrix market', function () {
