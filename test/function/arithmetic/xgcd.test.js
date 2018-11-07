@@ -1,7 +1,8 @@
 // test xgcd
 import assert from 'assert'
 
-const math = require('../../../src/main').create({ matrix: 'Array' })
+import defaultMath from '../../../src/main'
+const math = defaultMath.create({ matrix: 'Array' })
 const gcd = math.gcd
 const xgcd = math.xgcd
 

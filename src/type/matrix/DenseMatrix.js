@@ -1,17 +1,21 @@
 'use strict'
 
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../../utils/is'
-import { arraySize, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
+import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
 import { clone, deepEqual } from '../../utils/object'
 import DimensionError from '../../error/DimensionError'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const getArrayDataType = load(require('./utils/getArrayDataType'))
-  const typeOf = load(require('../../function/utils/typeOf'))
-  const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
+const name = 'type.DenseMatrix'
+const dependencies = [
+  'typed',
+  'typeOf',
+  'type.Matrix'
+]
 
+export const createDenseMatrixClass = factory(name, dependencies, ({ typed, typeOf, type: { Matrix } }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
@@ -76,7 +80,7 @@ function factory (type, config, load, typed) {
    * @return {string}   type information; if multiple types are found from the Matrix, it will return "mixed"
    */
   DenseMatrix.prototype.getDataType = function () {
-    return getArrayDataType(this._data)
+    return getArrayDataType(this._data, typeOf)
   }
 
   /**
@@ -752,7 +756,9 @@ function factory (type, config, load, typed) {
     // discover default value if needed
     if (!defaultValue) {
       // check first value in array
-      defaultValue = isBigNumber(_value(0)) ? new type.BigNumber(0) : 0
+      defaultValue = isBigNumber(_value(0))
+        ? _value(0).mul(0) // trick to create a BigNumber with value zero
+        : 0
     }
 
     // empty array
@@ -848,15 +854,16 @@ function factory (type, config, load, typed) {
     return data
   }
 
-  // register this type in the base class Matrix
-  Matrix._storage.dense = DenseMatrix
-  Matrix._storage['default'] = DenseMatrix
+  // FIXME: registering twice should not occur
+  if (!Matrix._storage.dense) {
+    // register this type in the base class Matrix
+    Matrix._storage.dense = DenseMatrix
+    Matrix._storage['default'] = DenseMatrix
+  } else {
+    console.warn('DenseMatrix loaded twice, this should not happen')
+    return Matrix._storage.dense
+  }
 
   // exports
   return DenseMatrix
-}
-
-exports.name = 'DenseMatrix'
-exports.path = 'type'
-exports.factory = factory
-exports.lazy = false // no lazy loading, as we alter type.Matrix._storage
+})

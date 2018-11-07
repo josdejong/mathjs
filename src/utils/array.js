@@ -514,3 +514,69 @@ export function generalize (a) {
   }
   return b
 }
+
+/**
+ * Check the datatype of a given object
+ * This is a low level implementation that should only be used by
+ * parent Matrix classes such as SparseMatrix or DenseMatrix
+ * This method does not validate Array Matrix shape
+ * @param {Array} array
+ * @param {function} typeOf   Callback function to use to determine the type of a value
+ * @return string
+ */
+export function getArrayDataType (array, typeOf) {
+  let type // to hold type info
+  let length = 0 // to hold length value to ensure it has consistent sizes
+
+  for (let i = 0; i < array.length; i++) {
+    const item = array[i]
+    const isArray = Array.isArray(item)
+
+    // Saving the target matrix row size
+    if (i === 0 && isArray) {
+      length = item.length
+    }
+
+    // If the current item is an array but the length does not equal the targetVectorSize
+    if (isArray && item.length !== length) {
+      return undefined
+    }
+
+    const itemType = isArray
+      ? getArrayDataType(item, typeOf) // recurse into a nested array
+      : typeOf(item)
+
+    if (type === undefined) {
+      type = itemType // first item
+    } else if (type !== itemType) {
+      return 'mixed'
+    } else {
+      // we're good, everything has the same type so far
+    }
+  }
+
+  return type
+}
+
+/**
+ * Return the last item from an array
+ * @param array
+ * @returns {*}
+ */
+export function last (array) {
+  return array[array.length - 1]
+}
+
+/**
+ * Get all but the last element of array.
+ */
+export function initial (array) {
+  return array.slice(0, array.length - 1)
+}
+
+/**
+ * Test whether an array contains an item
+ */
+export function contains (array, item) {
+  return array.indexOf(item) !== -1
+}

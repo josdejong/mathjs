@@ -5,8 +5,11 @@ import {
   deepEqual,
   deepExtend,
   extend,
+  get,
   isLegacyFactory,
   lazy,
+  pick,
+  set,
   traverse
 } from '../../src/utils/object'
 
@@ -274,6 +277,57 @@ describe('object', function () {
 
       assert.strictEqual(isLegacyFactory({ name: 'foo', factory: function () {} }), true)
       assert.strictEqual(isLegacyFactory({ name: 'foo', factory: function () {}, foo: 'bar' }), true)
+    })
+  })
+
+  describe('get', function () {
+    it('should get nested properties from an object', () => {
+      const object = {
+        a: 2,
+        b: {
+          c: 3,
+          e: null
+        }
+      }
+
+      assert.strictEqual(get(object, ''), undefined)
+      assert.strictEqual(get(object, []), object)
+      assert.strictEqual(get(object, 'a'), 2)
+      assert.strictEqual(get(object, 'b.c'), 3)
+      assert.strictEqual(get(object, ['b', 'c']), 3)
+      assert.strictEqual(get(object, 'b.e'), null)
+      assert.strictEqual(get(object, 'a.foo'), undefined)
+    })
+  })
+
+  describe('set', function () {
+    it('should set a nested property in an object', () => {
+      assert.deepStrictEqual(set({}, [], 2), {})
+      assert.deepStrictEqual(set({}, 'a', 2), { a: 2 })
+      assert.deepStrictEqual(set({ a: 2 }, 'b.c', 3), { a: 2, b: { c: 3 } })
+      assert.deepStrictEqual(set({ a: 2 }, ['b', 'c'], 3), { a: 2, b: { c: 3 } })
+    })
+  })
+
+  describe('pick', function () {
+    it('should pick the selected properties', () => {
+      const object = { a: 1, b: 2, c: 3 }
+      assert.deepStrictEqual(pick(object, ['a', 'c', 'd']), { a: 1, c: 3 })
+    })
+
+    it('should pick nested properties', () => {
+      const object = {
+        a: 1,
+        b: {
+          c: 2,
+          d: 3
+        }
+      }
+
+      assert.deepStrictEqual(pick(object, ['a']), { a: 1 })
+      assert.deepStrictEqual(pick(object, ['a', 'b.c']), { a: 1, b: { c: 2 } })
+      assert.deepStrictEqual(pick(object, ['a', ['b', 'c']]), { a: 1, b: { c: 2 } })
+      assert.deepStrictEqual(pick(object, ['a', 'b.c', 'foo', 'b.foo']), { a: 1, b: { c: 2 } })
     })
   })
 })

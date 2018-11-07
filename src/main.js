@@ -1,6 +1,7 @@
 'use strict'
 
-const core = require('./core/core')
+import { create as createCore } from './core/core'
+import all from './index'
 
 /**
  * math.js factory function. Creates a new instance of math.js
@@ -27,14 +28,14 @@ const core = require('./core/core')
  */
 function create (config) {
   // create a new math.js instance
-  const math = core.create(config)
+  const math = createCore(config)
   math.create = create
 
   // import data types, functions, constants, expression parser, etc.
-  math['import'](require('./index'))
+  math['import'](all)
 
   return math
 }
 
 // return a new instance of math.js
-module.exports = create()
+export default create()

@@ -1,8 +1,8 @@
 'use strict'
 
-const object = require('../../utils/object')
+import { clone, mapObject, deepExtend } from '../../utils/object'
 
-function factory (type, config, load, typed, math) {
+export function configFactory (config, emit) {
   const MATRIX = ['Matrix', 'Array'] // valid values for option matrix
   const NUMBER = ['number', 'BigNumber', 'Fraction'] // valid values for option number
 
@@ -42,25 +42,25 @@ function factory (type, config, load, typed, math) {
    */
   function _config (options) {
     if (options) {
-      const prev = object.mapObject(config, object.clone)
+      const prev = mapObject(config, clone)
 
       // validate some of the options
       validateOption(options, 'matrix', MATRIX)
       validateOption(options, 'number', NUMBER)
 
       // merge options
-      object.deepExtend(config, options)
+      deepExtend(config, options)
 
-      const curr = object.mapObject(config, object.clone)
+      const curr = mapObject(config, clone)
 
-      const changes = object.mapObject(options, object.clone)
+      const changes = mapObject(options, clone)
 
       // emit 'config' event
-      math.emit('config', curr, prev, changes)
+      emit('config', curr, prev, changes)
 
       return curr
     } else {
-      return object.mapObject(config, object.clone)
+      return mapObject(config, clone)
     }
   }
 
@@ -116,7 +116,3 @@ function validateOption (options, name, values) {
     }
   }
 }
-
-exports.name = 'config'
-exports.math = true // request the math namespace as fifth argument
-exports.factory = factory

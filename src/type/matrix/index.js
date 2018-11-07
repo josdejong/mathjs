@@ -14,21 +14,26 @@ import { createAlgorithm11 } from './utils/algorithm11'
 import { createAlgorithm12 } from './utils/algorithm12'
 import { createAlgorithm13 } from './utils/algorithm13'
 import { createAlgorithm14 } from './utils/algorithm14'
+import { createMatrixClass } from './Matrix'
+import { createDenseMatrixClass } from './DenseMatrix'
+import { createSparseMatrixClass } from './SparseMatrix'
+import { createImmutableDenseMatrixClass } from './ImmutableDenseMatrix'
+import { createMatrix } from './function/matrix'
 
 module.exports = [
   // types
-  require('./Matrix'),
-  require('./DenseMatrix'),
-  require('./SparseMatrix'),
+  createMatrixClass,
+  createDenseMatrixClass,
+  createSparseMatrixClass,
   require('./Spa'),
   require('./FibonacciHeap'),
-  require('./ImmutableDenseMatrix'),
+  createImmutableDenseMatrixClass,
   require('./MatrixIndex'),
   require('./Range'),
 
   // construction functions
   require('./function/index'),
-  require('./function/matrix'),
+  createMatrix,
   require('./function/sparse'),
 
   // util functions
@@ -45,6 +50,5 @@ module.exports = [
   createAlgorithm11,
   createAlgorithm12,
   createAlgorithm13,
-  createAlgorithm14,
-  require('./utils/getArrayDataType')
+  createAlgorithm14
 ]

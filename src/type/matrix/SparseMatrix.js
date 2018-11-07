@@ -4,16 +4,19 @@ import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../
 import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
 import { clone, deepEqual } from '../../utils/object'
-import { arraySize, unsqueeze, validateIndex } from '../../utils/array'
+import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import DimensionError from '../../error/DimensionError'
 
-const DimensionError = require('../../error/DimensionError')
+const name = 'type.SparseMatrix'
+const dependencies = [
+  'typed',
+  'typeOf',
+  'equalScalar',
+  'type.Matrix'
+]
 
-function factory (type, config, load, typed) {
-  const Matrix = load(require('./Matrix')) // force loading Matrix (do not use via type.Matrix)
-  const equalScalar = load(require('../../function/relational/equalScalar'))
-  const typeOf = load(require('../../function/utils/typeOf'))
-  const getArrayDataType = load(require('./utils/getArrayDataType'))
-
+export const createSparseMatrixClass = factory(name, dependencies, ({ typed, typeOf, equalScalar, type: { Matrix } }) => {
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
    * for sparse matrices.
@@ -154,7 +157,7 @@ function factory (type, config, load, typed) {
    * @return {string}   type information; if multiple types are found from the Matrix, it will return "mixed"
    */
   SparseMatrix.prototype.getDataType = function () {
-    return getArrayDataType(this._values)
+    return getArrayDataType(this._values, typeOf)
   }
 
   /**
@@ -1377,13 +1380,14 @@ function factory (type, config, load, typed) {
     }
   }
 
-  // register this type in the base class Matrix
-  Matrix._storage.sparse = SparseMatrix
+  // FIXME: registering twice should not occur
+  if (!Matrix._storage.sparse) {
+    // register this type in the base class Matrix
+    Matrix._storage.sparse = SparseMatrix
+  } else {
+    console.warn('SparseMatrix loaded twice, this should not happen')
+    return Matrix._storage.sparse
+  }
 
   return SparseMatrix
-}
-
-exports.name = 'SparseMatrix'
-exports.path = 'type'
-exports.factory = factory
-exports.lazy = false // no lazy loading, as we alter type.Matrix._storage
+})

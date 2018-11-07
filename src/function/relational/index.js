@@ -1,4 +1,8 @@
 'use strict'
+
+import { createEqualScalar } from './equalScalar'
+import { createSmaller } from './smaller'
+
 module.exports = [
   require('./compare'),
   require('./compareNatural'),
@@ -6,10 +10,10 @@ module.exports = [
   require('./deepEqual'),
   require('./equal'),
   require('./equalText'),
-  require('./equalScalar'),
+  createEqualScalar,
   require('./larger'),
   require('./largerEq'),
-  require('./smaller'),
+  createSmaller,
   require('./smallerEq'),
   require('./unequal')
 ]

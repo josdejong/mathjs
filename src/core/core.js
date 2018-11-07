@@ -1,12 +1,11 @@
 'use strict'
+
 import './../utils/polyfills'
-
 import { isLegacyFactory } from './../utils/object'
-import * as typedFactory from './typed'
+import { createTyped } from './typed'
 import * as emitter from './../utils/emitter'
-
-import * as importFactory from './function/import'
-import * as configFactory from './function/config'
+import { importFactory } from './function/import'
+import { configFactory } from './function/config'
 import { isFactory } from '../utils/factory'
 
 /**
@@ -58,7 +57,7 @@ export function create (options) {
   }
 
   // create a new typed instance
-  math.typed = typedFactory.create(math.type)
+  math.typed = createTyped(math.type)
 
   // create configuration options. These are private
   const _config = {
@@ -104,6 +103,7 @@ export function create (options) {
     }
 
     if (!isLegacyFactory(factory)) {
+      console.warn('Factory object with properties `type`, `name`, and `factory` expected', factory)
       throw new Error('Factory object with properties `type`, `name`, and `factory` expected')
     }
 
@@ -130,8 +130,8 @@ export function create (options) {
   }
 
   // load the import and config functions
-  math['import'] = load(importFactory)
-  math['config'] = load(configFactory)
+  math['import'] = importFactory(math.typed, load, math)
+  math['config'] = configFactory(_config, math.emit)
   math.expression.mathWithTransform['config'] = math['config']
 
   // apply options

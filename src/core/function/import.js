@@ -1,13 +1,12 @@
 'use strict'
 
-import initial from 'lodash/initial'
-import last from 'lodash/last'
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, sortFactories } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
+import { last, initial } from '../../utils/array'
 import ArgumentsError from '../../error/ArgumentsError'
 
-function factory (type, config, load, typed, math) {
+export function importFactory (typed, load, math) {
   /**
    * Import functions from an object or a module
    *
@@ -67,6 +66,11 @@ function factory (type, config, load, typed, math) {
 
     if (Array.isArray(object)) {
       object = sortFactories(flattenImports(object))
+
+      // // TOOD: cleanup
+      // console.log('factories', JSON.stringify(object.map(obj => (
+      //   obj.fn ? (obj.fn + ' (' + obj.dependencies.join(', ') + ')') : (obj.name + ' (legacy)')
+      // )), null, 2))
     }
 
     // TODO: flatten objects containing factory functions too
@@ -269,7 +273,7 @@ function factory (type, config, load, typed, math) {
         if (existingTransform) {
           _deleteTransform(name)
         } else {
-          if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          if (factory.path === 'expression.transform' || legacyFactoryAllowedInExpressions(factory)) {
             lazy(math.expression.mathWithTransform, name, resolver)
           }
         }
@@ -279,7 +283,7 @@ function factory (type, config, load, typed, math) {
         if (existingTransform) {
           _deleteTransform(name)
         } else {
-          if (factory.path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          if (factory.path === 'expression.transform' || legacyFactoryAllowedInExpressions(factory)) {
             math.expression.mathWithTransform[name] = resolver()
           }
         }
@@ -353,6 +357,9 @@ function factory (type, config, load, typed, math) {
         _deleteTransform(name)
       } else {
         if (path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+          if (name === 'DenseMatrix')
+            console.log('mathWithTransform', factory.fn || factory.name, path, factoryAllowedInExpressions(factory))
+
           math.expression.mathWithTransform[name] = resolver()
         }
       }
@@ -398,8 +405,12 @@ function factory (type, config, load, typed, math) {
     return !unsafe.hasOwnProperty(name)
   }
 
-  function factoryAllowedInExpressions (factory) {
+  function legacyFactoryAllowedInExpressions (factory) {
     return factory.path === undefined && !unsafe.hasOwnProperty(factory.name)
+  }
+
+  function factoryAllowedInExpressions (factory) {
+    return factory.fn.indexOf('.') === -1 && !unsafe.hasOwnProperty(factory.fn)
   }
 
   // namespaces and functions not available in the parser for safety reasons
@@ -414,8 +425,3 @@ function factory (type, config, load, typed, math) {
 
   return mathImport
 }
-
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.name = 'import'
-exports.factory = factory
-exports.lazy = true

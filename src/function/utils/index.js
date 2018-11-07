@@ -1,10 +1,11 @@
 'use strict'
 
+import { createClone } from './clone'
 import { createTypeOf, createDeprecatedTypeof } from './typeOf'
 import { createNumeric } from './numeric'
 
 module.exports = [
-  require('./clone'),
+  createClone,
   createNumeric,
   require('./isInteger'),
   require('./isNegative'),

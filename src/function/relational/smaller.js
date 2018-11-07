@@ -2,18 +2,23 @@
 
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { operators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'smaller'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'divideScalar',
+  'utils.algorithm03',
+  'utils.algorithm07',
+  'utils.algorithm12',
+  'utils.algorithm13',
+  'utils.algorithm14'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const latex = require('../../utils/latex')
-
+export const createSmaller = factory(name, dependencies, ({ typed, config, matrix, divideScalar, utils: { algorithm03, algorithm07, algorithm12, algorithm13, algorithm14 } }) => {
   /**
    * Test whether value x is smaller than y.
    *
@@ -45,18 +50,18 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is smaller than y, else returns false
    */
-  const smaller = typed('smaller', {
+  const smaller = typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x < y
     },
 
     'number, number': function (x, y) {
-      return x < y && !nearlyEqual(x, y, config.epsilon)
+      return x < y && !nearlyEqual(x, y, config().epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.lt(y) && !bigNearlyEqual(x, y, config.epsilon)
+      return x.lt(y) && !bigNearlyEqual(x, y, config().epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -133,10 +138,8 @@ export function factory (type, config, load, typed) {
   })
 
   smaller.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['smaller']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${operators['smaller']}\${args[1]}\\right)`
   }
 
   return smaller
-}
-
-export const name = 'smaller'
+})

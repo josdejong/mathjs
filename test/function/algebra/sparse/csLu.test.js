@@ -1,6 +1,8 @@
 import assert from 'assert'
 import approx from '../../../../tools/approx'
-const math = require('../../../../src/main').create()
+
+import defaultMath from '../../../../src/main'
+const math = defaultMath.create()
 
 math.import(require('../../../../src/function/algebra/sparse/csPermute'))
 math.import(require('../../../../src/function/algebra/sparse/csLu'))

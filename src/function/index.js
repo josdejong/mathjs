@@ -1,7 +1,11 @@
 'use strict'
-module.exports = [
+
+import arithmetic from './arithmetic'
+
+export default [
   require('./algebra'),
-  require('./arithmetic'),
+  arithmetic,
+  // Object.keys(arithmetic).map(key => arithmetic[key]), // TODO: make this mapping redundant
   require('./bitwise'),
   require('./combinatorics'),
   require('./complex'),

@@ -369,7 +369,7 @@ describe('security', function () {
       // only plain functions allowed, no constructor functions
       if (typeof value === 'function') {
         assert.strictEqual(isPlainFunction(value), true,
-          'only plain functions expected, constructor functions not allowed (name: ' + name + ')')
+          'only plain functions expected, constructor functions not allowed (name: "' + name + '")')
       } else {
         // plain objects not allowed, only class instances like units and complex numbers
         if (value && typeof value === 'object') {

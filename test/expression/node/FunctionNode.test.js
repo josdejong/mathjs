@@ -1,7 +1,8 @@
 // test FunctionNode
 import assert from 'assert'
 
-const math = require('../../../src/main').create()
+import defaultMath from '../../../src/main'
+const math = defaultMath.create()
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode

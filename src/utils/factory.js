@@ -1,5 +1,5 @@
-import get from 'lodash/get'
-import pick from 'lodash/pick'
+import { contains } from './array'
+import { get, pick } from './object'
 
 // TODO: comment
 export function factory (name, dependencies, create) {
@@ -18,11 +18,45 @@ export function factory (name, dependencies, create) {
 
 // TODO: comment
 export function sortFactories (factories) {
-  const sorted = []
+  const factoriesByName = {}
+  for (const factory of factories) {
+    factoriesByName[factory.fn] = factory
+  }
 
+  function containsDependency (factory, dependency) {
+    if (!isFactory(dependency)) {
+      return isFactory(factory)
+    }
+
+    if (!isFactory(factory)) {
+      return false
+    }
+
+    if (contains(factory.dependencies, dependency.fn || dependency.name)) {
+      return true
+    }
+
+    if (contains(factory.dependencies, factory.fn)) {
+      throw new Error('Circular reference "' + factory.fn + '"')
+    }
+
+    for (const d of factory.dependencies) {
+      if (!factoriesByName[d]) {
+        // throw new Error('Unresolved dependency "' + d + '" in function "' + factory.fn + '"')
+      }
+
+      if (containsDependency(factoriesByName[d], dependency)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  const sorted = []
   for (const factory of factories) {
     let index = 0
-    while (index < sorted.length && canLoadAfter(factory, sorted[index])) {
+    while (index < sorted.length && !containsDependency(sorted[index], factory)) {
       index++
     }
 
@@ -33,7 +67,7 @@ export function sortFactories (factories) {
 }
 
 // helper function of sortFactories
-function canLoadAfter (a, b) {
+function canLoadAfter (a, b, containsDependency) {
   // keep non-factory functions before factory functions
   if (!isFactory(a)) {
     // if b is also a non-factory function, insert after b to maintain the original order
@@ -44,13 +78,7 @@ function canLoadAfter (a, b) {
     return true
   }
 
-  return contains(b.dependencies, a.fn)
-    ? contains(a.dependencies, b.fn) // if true, there is a circular dependency, leave order as is in that case
-    : true
-}
-
-function contains (arr, item) {
-  return arr.indexOf(item) !== -1
+  return containsDependency(b, a)
 }
 
 // TODO: comment

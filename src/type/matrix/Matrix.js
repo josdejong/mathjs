@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { isString } from '../../utils/is'
 
-function factory (type, config, load, typed) {
+const name = 'type.Matrix'
+const dependencies = []
+
+export const createMatrixClass = factory(name, dependencies, () => {
   /**
    * @constructor Matrix
    *
@@ -257,8 +261,4 @@ function factory (type, config, load, typed) {
 
   // exports
   return Matrix
-}
-
-exports.name = 'Matrix'
-exports.path = 'type'
-exports.factory = factory
+})

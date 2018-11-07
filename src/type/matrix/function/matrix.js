@@ -1,6 +1,10 @@
 'use strict'
+import { factory } from '../../../utils/factory'
 
-function factory (type, config, load, typed) {
+const name = 'matrix'
+const dependencies = [ 'typed', 'type.Matrix' ]
+
+export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix } }) => {
   /**
    * Create a Matrix. The function creates a new `math.type.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the
@@ -33,7 +37,7 @@ function factory (type, config, load, typed) {
    *
    * @return {Matrix} The created matrix
    */
-  const matrix = typed('matrix', {
+  const matrix = typed(name, {
     '': function () {
       return _create([])
     },
@@ -77,12 +81,9 @@ function factory (type, config, load, typed) {
    */
   function _create (data, format, datatype) {
     // get storage format constructor
-    const M = type.Matrix.storage(format || 'default')
+    const M = Matrix.storage(format || 'default')
 
     // create instance
     return new M(data, datatype)
   }
-}
-
-exports.name = 'matrix'
-exports.factory = factory
+})

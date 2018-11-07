@@ -2,8 +2,12 @@
 
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'equalScalar'
+const dependencies = ['typed', 'config']
+
+export const createEqualScalar = factory(name, dependencies, ({ typed, config }) => {
   /**
    * Test whether two scalar values are nearly equal.
    *
@@ -12,18 +16,18 @@ export function factory (type, config, load, typed) {
    * @return {boolean}                                                  Returns true when the compared values are equal, else returns false
    * @private
    */
-  const equalScalar = typed('equalScalar', {
+  const equalScalar = typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x === y
     },
 
     'number, number': function (x, y) {
-      return x === y || nearlyEqual(x, y, config.epsilon)
+      return x === y || nearlyEqual(x, y, config().epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon)
+      return x.eq(y) || bigNearlyEqual(x, y, config().epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -43,6 +47,4 @@ export function factory (type, config, load, typed) {
   })
 
   return equalScalar
-}
-
-export const name = 'equalScalar'
+})

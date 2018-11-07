@@ -1,4 +1,7 @@
 'use strict'
+
+import { createGetMatrixDataType } from './getMatrixDataType'
+
 module.exports = [
   require('./concat'),
   require('./cross'),
@@ -28,5 +31,5 @@ module.exports = [
   require('./trace'),
   require('./transpose'),
   require('./zeros'),
-  require('./getMatrixDataType')
+  createGetMatrixDataType
 ]

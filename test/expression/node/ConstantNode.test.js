@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import math from '../../../src/main'
-const bigmath = require('../../../src/main').create({ number: 'BigNumber' })
+const bigmath = math.create({ number: 'BigNumber' })
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode

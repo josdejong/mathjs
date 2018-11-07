@@ -21,7 +21,7 @@ let undocumentedCount = 0
 for (prop in math) {
   if (math.hasOwnProperty(prop)) {
     const obj = math[prop]
-    if (math['typeof'](obj) !== 'Object') {
+    if (math['typeOf'](obj) !== 'Object') {
       if (!math.expression.docs[prop] && (ignore.indexOf(prop) === -1)) {
         gutil.log('WARNING: Function ' + prop + ' is undocumented')
         undocumentedCount++

@@ -258,3 +258,87 @@ export function hasOwnProperty (object, property) {
 export function isLegacyFactory (object) {
   return object && typeof object.factory === 'function'
 }
+
+/**
+ * Get a nested property from an object
+ * @param {Object} object
+ * @param {string | string[]} path
+ * @returns {Object}
+ */
+export function get (object, path) {
+  if (typeof path === 'string') {
+    if (isPath(path)) {
+      return get(object, path.split('.'))
+    } else {
+      return object[path]
+    }
+  }
+
+  let child = object
+
+  for (const key of path) {
+    child = child ? child[key] : undefined
+  }
+
+  return child
+}
+
+/**
+ * Set a nested property in an object
+ * Mutates the object itself
+ * If the path doesn't exist, it will be created
+ * @param {Object} object
+ * @param {string | string[]} path
+ * @param {*} value
+ * @returns {Object}
+ */
+export function set (object, path, value) {
+  if (typeof path === 'string') {
+    if (isPath(path)) {
+      return set(object, path.split('.'), value)
+    } else {
+      object[path] = value
+      return object
+    }
+  }
+
+  let child = object
+  for (let i = 0; i < path.length - 1; i++) {
+    const key = path[i]
+    if (child[key] === undefined) {
+      child[key] = {}
+    }
+    child = child[key]
+  }
+
+  if (path.length > 0) {
+    const lastKey = path[path.length - 1]
+    child[lastKey] = value
+  }
+
+  return object
+}
+
+/**
+ * Create an object composed of the picked object properties
+ * @param {Object} object
+ * @param {string[]} properties
+ * @return {Object}
+ */
+export function pick (object, properties) {
+  const copy = {}
+
+  for (const key of properties) {
+    const value = get(object, key)
+    if (value !== undefined) {
+      set(copy, key, value)
+    }
+  }
+
+  return copy
+}
+
+// helper function to test whether a string contains a path like 'user.name'
+function isPath (str) {
+  return str.indexOf('.') !== -1
+}

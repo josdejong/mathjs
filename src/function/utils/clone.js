@@ -1,8 +1,12 @@
 'use strict'
 
 import { clone as objectClone } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'clone'
+const dependencies = ['typed']
+
+export const createClone = factory(name, dependencies, ({ typed }) => {
   /**
    * Clone an object.
    *
@@ -21,13 +25,11 @@ export function factory (type, config, load, typed) {
    * @param {*} x   Object to be cloned
    * @return {*} A clone of object x
    */
-  const clone = typed('clone', {
+  const clone = typed(name, {
     'any': objectClone
   })
 
   clone.toTex = undefined // use default template
 
   return clone
-}
-
-export const name = 'clone'
+})

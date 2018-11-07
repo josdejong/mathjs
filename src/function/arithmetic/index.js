@@ -38,7 +38,7 @@ import { createUnaryMinus } from './unaryMinus'
 import { createUnaryPlus } from './unaryPlus'
 import { createXgcd } from './xgcd'
 
-module.exports = [
+export default [
   createAbs,
   createAdd,
   createAddScalar,

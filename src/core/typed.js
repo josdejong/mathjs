@@ -1,9 +1,11 @@
 'use strict'
+
 import {
   isAccessorNode,
   isArray,
   isArrayNode,
   isAssignmentNode,
+  isBigNumber,
   isBlockNode,
   isBoolean,
   isChain,
@@ -37,18 +39,14 @@ import {
   isUndefined,
   isUnit
 } from '../utils/is'
-
-const typedFunction = require('typed-function')
-const digits = require('./../utils/number').digits
-const {
-  isBigNumber
-} = require('./../utils/is')
+import typedFunction from 'typed-function'
+import { digits } from './../utils/number'
 
 // returns a new instance of typed-function
-let createTyped = function () {
+let _createTyped = function () {
   // initially, return the original instance of typed-function
   // consecutively, return a new instance from typed.create.
-  createTyped = typedFunction.create
+  _createTyped = typedFunction.create
   return typedFunction
 }
 
@@ -57,7 +55,7 @@ let createTyped = function () {
  * @param {Object} type   Object with data types like Complex and BigNumber
  * @returns {Function}
  */
-exports.create = function create (type) {
+export function createTyped (type) {
   // TODO: typed-function must be able to silently ignore signatures with unknown data types
 
   // type checks for all known types
@@ -104,7 +102,7 @@ exports.create = function create (type) {
   type.isChain = isChain
 
   // get a new instance of typed-function
-  const typed = createTyped()
+  const typed = _createTyped()
 
   // define all types. The order of the types determines in which order function
   // arguments are type-checked (so for performance it's important to put the
