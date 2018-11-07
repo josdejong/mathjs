@@ -3,6 +3,9 @@
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 import { isInteger, toFixed } from '../../utils/number'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const NO_INT = 'Number of decimals in function round must be an integer'
 
@@ -13,12 +16,15 @@ const dependencies = [
   'equalScalar',
   'zeros',
   'type.BigNumber',
-  'utils.algorithm11',
-  'utils.algorithm12',
-  'utils.algorithm14'
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createRound = factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, type: { BigNumber }, utils: { algorithm11, algorithm12, algorithm14 } }) => {
+export const createRound = factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, type: { BigNumber, DenseMatrix, SparseMatrix } }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Round a value towards the nearest integer.
    * For matrices, the function is evaluated element wise.

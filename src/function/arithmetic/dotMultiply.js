@@ -2,20 +2,29 @@
 
 import { factory } from '../../utils/factory'
 import { operators as latexOperators } from '../../utils/latex'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm09 } from '../../type/matrix/utils/algorithm09'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'dotMultiply'
 const dependencies = [
   'typed',
   'matrix',
+  'equalScalar',
   'multiplyScalar',
-  'utils.algorithm02',
-  'utils.algorithm09',
-  'utils.algorithm11',
-  'utils.algorithm13',
-  'utils.algorithm14'
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createDotMultiply = factory(name, dependencies, ({ typed, matrix, multiplyScalar, utils: { algorithm02, algorithm09, algorithm11, algorithm13, algorithm14 } }) => {
+export const createDotMultiply = factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar, type: { DenseMatrix, SparseMatrix } }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm09 = createAlgorithm09({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Multiply two matrices element wise. The function accepts both matrices and
    * scalar values.

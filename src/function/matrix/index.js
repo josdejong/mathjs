@@ -1,6 +1,8 @@
 'use strict'
 
 import { createGetMatrixDataType } from './getMatrixDataType'
+import { createIdentity } from './identity'
+import { createInv } from './inv'
 
 module.exports = [
   require('./concat'),
@@ -14,8 +16,8 @@ module.exports = [
   require('./filter'),
   require('./flatten'),
   require('./forEach'),
-  require('./identity'),
-  require('./inv'),
+  createIdentity,
+  createInv,
   require('./kron'),
   require('./map'),
   require('./ones'),

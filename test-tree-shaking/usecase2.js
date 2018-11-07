@@ -3,4 +3,5 @@
 
 import { add, multiply } from '../src/mainNumber'
 
+console.log('\nuse case 2')
 console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))

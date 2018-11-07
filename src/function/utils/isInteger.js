@@ -2,8 +2,12 @@
 
 import { deepMap } from '../../utils/collection'
 import { isInteger as isIntegerNumber } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'isInteger'
+const dependencies = ['typed']
+
+export const createIsInteger = factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is an integer number.
    * The function supports `number`, `BigNumber`, and `Fraction`.
@@ -33,7 +37,7 @@ export function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` contains a numeric, integer value.
    *                    Throws an error in case of an unknown data type.
    */
-  const isInteger = typed('isInteger', {
+  const isInteger = typed(name, {
     'number': isIntegerNumber, // TODO: what to do with isInteger(add(0.1, 0.2))  ?
 
     'BigNumber': function (x) {
@@ -50,6 +54,4 @@ export function factory (type, config, load, typed) {
   })
 
   return isInteger
-}
-
-export const name = 'isInteger'
+})

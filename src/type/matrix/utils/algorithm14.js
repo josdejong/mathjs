@@ -1,11 +1,12 @@
 'use strict'
 
 import { factory } from '../../../utils/factory'
+import { clone } from '../../../utils/object'
 
 const name = 'utils.algorithm14'
-const dependencies = ['typed', 'clone', 'type.DenseMatrix']
+const dependencies = ['typed', 'type.DenseMatrix']
 
-export const createAlgorithm14 = factory(name, dependencies, ({ typed, clone, type: { DenseMatrix } }) => {
+export const createAlgorithm14 = factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
    * Callback function invoked MxN times.

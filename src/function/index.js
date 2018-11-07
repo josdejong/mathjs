@@ -1,6 +1,8 @@
 'use strict'
 
 import arithmetic from './arithmetic'
+import relational from './relational'
+import utils from './utils'
 
 export default [
   require('./algebra'),
@@ -13,12 +15,12 @@ export default [
   require('./logical'),
   require('./matrix'),
   require('./probability'),
-  require('./relational'),
+  relational,
   require('./set'),
   require('./special'),
   require('./statistics'),
   require('./string'),
   require('./trigonometry'),
   require('./unit'),
-  require('./utils')
+  utils
 ]

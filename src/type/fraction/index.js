@@ -1,8 +1,12 @@
 'use strict'
-module.exports = [
+
+import { createFractionClass } from './Fraction'
+import { createFraction } from './function/fraction'
+
+export default [
   // type
-  require('./Fraction'),
+  createFractionClass,
 
   // construction function
-  require('./function/fraction')
+  createFraction
 ]

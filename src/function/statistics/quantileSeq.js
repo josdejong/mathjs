@@ -1,7 +1,7 @@
 'use strict'
 
-import { isBigNumber, isCollection } from '../../utils/is'
-import { isInteger, isNumber } from '../../utils/number'
+import { isBigNumber, isCollection, isNumber } from '../../utils/is'
+import { isInteger } from '../../utils/number'
 import { flatten } from '../../utils/array'
 
 export function factory (type, config, load, typed) {

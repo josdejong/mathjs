@@ -1,11 +1,14 @@
 'use strict'
-import { isUnit } from '../../utils/is'
 
-const Complex = require('complex.js')
-const format = require('../../utils/number').format
-const isNumber = require('../../utils/number').isNumber
+import Complex from 'complex.js'
+import { format } from '../../utils/number'
+import { isUnit, isNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed, math) {
+const name = 'type.Complex'
+const dependencies = ['config', 'on']
+
+export const createComplexClass = factory(name, dependencies, ({ config, on }) => {
   /**
    * Attach type information
    */
@@ -154,10 +157,10 @@ function factory (type, config, load, typed, math) {
   }
 
   // apply the current epsilon
-  Complex.EPSILON = config.epsilon
+  Complex.EPSILON = config().epsilon
 
   // listen for changed in the configuration, automatically apply changed epsilon
-  math.on('config', function (curr, prev) {
+  on('config', function (curr, prev) {
     if (curr.epsilon !== prev.epsilon) {
       Complex.EPSILON = curr.epsilon
     }
@@ -189,9 +192,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return Complex
-}
-
-exports.name = 'Complex'
-exports.path = 'type'
-exports.factory = factory
-exports.math = true // request access to the math namespace
+})

@@ -1,19 +1,26 @@
 'use strict'
 
 import { createClone } from './clone'
-import { createTypeOf, createDeprecatedTypeof } from './typeOf'
+import { createIsInteger } from './isInteger'
+import { createIsNegative } from './isNegative'
+import { createIsNumeric } from './isNumeric'
+import { createIsPositive } from './isPositive'
+import { createIsPrime } from './isPrime'
+import { createIsZero } from './isZero'
+import { createIsNaN } from './isNaN'
 import { createNumeric } from './numeric'
+import { createTypeOf, createDeprecatedTypeof } from './typeOf'
 
-module.exports = [
+export default [
   createClone,
+  createIsInteger,
+  createIsNegative,
+  createIsNumeric,
+  createIsPositive,
+  createIsPrime,
+  createIsZero,
+  createIsNaN,
   createNumeric,
-  require('./isInteger'),
-  require('./isNegative'),
-  require('./isNumeric'),
-  require('./isPositive'),
-  require('./isPrime'),
-  require('./isZero'),
-  require('./isNaN'),
   createTypeOf,
   createDeprecatedTypeof
 ]

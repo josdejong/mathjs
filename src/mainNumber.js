@@ -6,4 +6,4 @@ import {
 } from './plain/number'
 
 export const add = typed(plainAdd)
-export const multiply = typed(plainMultiply())
+export const multiply = typed(plainMultiply)

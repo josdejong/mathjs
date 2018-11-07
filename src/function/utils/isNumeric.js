@@ -1,8 +1,12 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'isNumeric'
+const dependencies = ['typed']
+
+export const createIsNumeric = factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is an numeric value.
    *
@@ -31,7 +35,7 @@ export function factory (type, config, load, typed) {
    *                    `Fraction`, or `boolean`. Returns false for other types.
    *                    Throws an error in case of unknown types.
    */
-  const isNumeric = typed('isNumeric', {
+  const isNumeric = typed(name, {
     'number | BigNumber | Fraction | boolean': function () {
       return true
     },
@@ -46,6 +50,4 @@ export function factory (type, config, load, typed) {
   })
 
   return isNumeric
-}
-
-export const name = 'isNumeric'
+})

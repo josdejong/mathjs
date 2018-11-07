@@ -1,19 +1,11 @@
 'use strict'
 
 import { mapObject } from './object'
+import { isNumber } from './is'
 
 /**
  * @typedef {{sign: '+' | '-' | '', coefficients: number[], exponent: number}} SplitValue
  */
-
-/**
- * Test whether value is a number
- * @param {*} value
- * @return {boolean} isNumber
- */
-export function isNumber (value) {
-  return typeof value === 'number'
-}
 
 /**
  * Check if a number is integer

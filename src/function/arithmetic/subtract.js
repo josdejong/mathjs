@@ -3,23 +3,33 @@
 import { factory } from '../../utils/factory'
 import { operators as latexOperators } from '../../utils/latex'
 import DimensionError from '../../error/DimensionError'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'subtract'
 const dependencies = [
   'typed',
   'matrix',
+  'equalScalar',
   'addScalar',
   'unaryMinus',
-  'utils.algorithm01',
-  'utils.algorithm03',
-  'utils.algorithm05',
-  'utils.algorithm10',
-  'utils.algorithm13',
-  'utils.algorithm14'
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createSubtract = factory(name, dependencies, ({ typed, matrix, addScalar, unaryMinus, utils: { algorithm01, algorithm03, algorithm05, algorithm10, algorithm13, algorithm14 } }) => {
+export const createSubtract = factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix, SparseMatrix } }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
+
+  const algorithm01 = createAlgorithm01({ typed, type: { DenseMatrix } })
+  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
+  const algorithm05 = createAlgorithm05({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
 
   /**
    * Subtract two values, `x - y`.

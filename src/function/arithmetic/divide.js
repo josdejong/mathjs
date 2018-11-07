@@ -2,19 +2,25 @@
 
 import { factory } from '../../utils/factory'
 import { extend } from '../../utils/object'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'divide'
 const dependencies = [
   'typed',
   'matrix',
   'multiply',
+  'equalScalar',
   'divideScalar',
   'inv',
-  'utils.algorithm11',
-  'utils.algorithm14'
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createDivide = factory(name, dependencies, ({ typed, matrix, multiply, divideScalar, inv, utils: { algorithm11, algorithm14 } }) => {
+export const createDivide = factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv, type: { DenseMatrix, SparseMatrix } }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Divide two values, `x / y`.
    * To divide matrices, `x` is multiplied with the inverse of `y`: `x * inv(y)`.

@@ -4,6 +4,8 @@
 import typed from 'typed-function'
 import { createHypot } from '../src/factory'
 
+console.log('\nuse case 5')
+
 typed.ignore.push('BigNumber')
 typed.ignore.push('Matrix')
 

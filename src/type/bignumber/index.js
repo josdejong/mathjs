@@ -1,8 +1,12 @@
 'use strict'
-module.exports = [
+
+import { createBignumber } from './function/bignumber'
+import { createBigNumberClass } from './BigNumber'
+
+export default [
   // type
-  require('./BigNumber'),
+  createBigNumberClass,
 
   // construction function
-  require('./function/bignumber')
+  createBignumber
 ]

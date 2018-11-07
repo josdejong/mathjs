@@ -1,8 +1,12 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'isPrime'
+const dependencies = ['typed', 'type.BigNumber']
+
+export const createIsPrime = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Test whether a value is prime: has no divisors other than itself and one.
    * The function supports type `number`, `bignumber`.
@@ -31,7 +35,7 @@ export function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is larger than zero.
    *                    Throws an error in case of an unknown data type.
    */
-  const isPrime = typed('isPrime', {
+  const isPrime = typed(name, {
     'number': function (x) {
       if (x < 2) {
         return false
@@ -60,7 +64,7 @@ export function factory (type, config, load, typed) {
       if (x.mod(2).isZero()) {
         return false
       }
-      for (let i = type.BigNumber(3); i.times(i).lte(x); i = i.plus(1)) {
+      for (let i = BigNumber(3); i.times(i).lte(x); i = i.plus(1)) {
         if (x.mod(i).isZero()) {
           return false
         }
@@ -74,6 +78,4 @@ export function factory (type, config, load, typed) {
   })
 
   return isPrime
-}
-
-export const name = 'isPrime'
+})

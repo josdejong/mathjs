@@ -1,8 +1,7 @@
 'use strict'
 
-import { isCollection, isMatrix } from '../../utils/is'
+import { isCollection, isMatrix, isNumber } from '../../utils/is'
 import ArgumentsError from '../../error/ArgumentsError'
-import { isNumber } from '../../utils/number'
 import { arraySize } from '../../utils/array'
 
 // TODO: rethink math.distribution

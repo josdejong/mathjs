@@ -4,21 +4,29 @@ import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual
 import { nearlyEqual } from '../../utils/number'
 import { factory } from '../../utils/factory'
 import { operators } from '../../utils/latex'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
 const name = 'smaller'
 const dependencies = [
   'typed',
   'config',
   'matrix',
+  'equalScalar',
   'divideScalar',
-  'utils.algorithm03',
-  'utils.algorithm07',
-  'utils.algorithm12',
-  'utils.algorithm13',
-  'utils.algorithm14'
+  'type.DenseMatrix'
 ]
 
-export const createSmaller = factory(name, dependencies, ({ typed, config, matrix, divideScalar, utils: { algorithm03, algorithm07, algorithm12, algorithm13, algorithm14 } }) => {
+export const createSmaller = factory(name, dependencies, ({ typed, config, matrix, equalScalar, divideScalar, type: { DenseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
+  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+
   /**
    * Test whether value x is smaller than y.
    *

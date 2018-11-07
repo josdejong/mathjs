@@ -4,7 +4,9 @@ import assert from 'assert'
 import {
   digits,
   format,
-  isInteger, isNumber, nearlyEqual, roundDigits,
+  isInteger,
+  nearlyEqual,
+  roundDigits,
   sign,
   splitNumber,
   toExponential,
@@ -26,27 +28,6 @@ describe('number', function () {
     assert.strictEqual(isInteger(-2.3), false)
     assert.strictEqual(isInteger(-2.3), false)
     assert.strictEqual(isInteger(NaN), false)
-  })
-
-  it('isNumber', function () {
-    assert.strictEqual(isNumber(1), true)
-    assert.strictEqual(isNumber(2e+3), true)
-    assert.strictEqual(isNumber(Number(2.3)), true)
-    assert.strictEqual(isNumber(NaN), true)
-    assert.strictEqual(isNumber(-23), true)
-    assert.strictEqual(isNumber(parseFloat('123')), true)
-
-    assert.strictEqual(isNumber('23'), false)
-    assert.strictEqual(isNumber('str'), false)
-    assert.strictEqual(isNumber(new Date()), false)
-    assert.strictEqual(isNumber({}), false)
-    assert.strictEqual(isNumber([]), false)
-    assert.strictEqual(isNumber(/regexp/), false)
-    assert.strictEqual(isNumber(true), false)
-    assert.strictEqual(isNumber(false), false)
-    assert.strictEqual(isNumber(null), false)
-    assert.strictEqual(isNumber(undefined), false)
-    assert.strictEqual(isNumber(), false)
   })
 
   it('sign', function () {

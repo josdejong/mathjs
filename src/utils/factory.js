@@ -66,21 +66,6 @@ export function sortFactories (factories) {
   return sorted
 }
 
-// helper function of sortFactories
-function canLoadAfter (a, b, containsDependency) {
-  // keep non-factory functions before factory functions
-  if (!isFactory(a)) {
-    // if b is also a non-factory function, insert after b to maintain the original order
-    return !isFactory(b)
-  }
-
-  if (!isFactory(b)) {
-    return true
-  }
-
-  return containsDependency(b, a)
-}
-
 // TODO: comment
 export function create (factories, scope = {}) {
   sortFactories(factories)

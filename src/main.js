@@ -33,6 +33,7 @@ function create (config) {
 
   // import data types, functions, constants, expression parser, etc.
   math['import'](all)
+  math['import'](require('./constants')) // TODO: remove loading constants here, move again to index.js after fully refactored
 
   return math
 }

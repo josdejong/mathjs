@@ -2,21 +2,31 @@
 
 import { factory } from '../../utils/factory'
 import { operators as latexOperators } from '../../utils/latex'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'dotPow'
 const dependencies = [
   'typed',
+  'equalScalar',
   'matrix',
   'pow',
-  'utils.algorithm03',
-  'utils.algorithm07',
-  'utils.algorithm11',
-  'utils.algorithm12',
-  'utils.algorithm13',
-  'utils.algorithm14'
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createDotPow = factory(name, dependencies, ({ typed, matrix, pow, utils: { algorithm03, algorithm07, algorithm11, algorithm12, algorithm13, algorithm14 } }) => {
+export const createDotPow = factory(name, dependencies, ({ typed, equalScalar, matrix, pow, type: { DenseMatrix, SparseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed, type: { DenseMatrix } })
+  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Calculates the power of x to y element wise.
    *

@@ -2,18 +2,23 @@
 
 import { isMatrix } from '../../utils/is'
 import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 import { format } from '../../utils/string'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const divideScalar = load(require('../arithmetic/divideScalar'))
-  const addScalar = load(require('../arithmetic/addScalar'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const unaryMinus = load(require('../arithmetic/unaryMinus'))
-  const det = load(require('../matrix/det'))
-  const identity = load(require('./identity'))
-  const abs = load(require('../arithmetic/abs'))
+const name = 'inv'
+const dependencies = [
+  'typed',
+  'matrix',
+  'divideScalar',
+  'addScalar',
+  'multiply',
+  'unaryMinus',
+  'det',
+  'identity',
+  'abs'
+]
 
+export const createInv = factory(name, dependencies, ({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs }) => {
   /**
    * Calculate the inverse of a square matrix.
    *
@@ -34,7 +39,7 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x     Matrix to be inversed
    * @return {number | Complex | Array | Matrix} The inverse of `x`.
    */
-  const inv = typed('inv', {
+  const inv = typed(name, {
     'Array | Matrix': function (x) {
       const size = isMatrix(x) ? x.size() : arraySize(x)
       switch (size.length) {
@@ -202,6 +207,4 @@ export function factory (type, config, load, typed) {
   inv.toTex = { 1: `\\left(\${args[0]}\\right)^{-1}` }
 
   return inv
-}
-
-export const name = 'inv'
+})

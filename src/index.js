@@ -1,10 +1,12 @@
 // This file contains all factory functions of math.js
 
+import type from './type'
 import functions from './function'
 
 export default [
-  require('./type'), // data types (Matrix, Complex, Unit, ...)
-  require('./constants'), // constants
+  type, // data types (Matrix, Complex, Unit, ...)
+  // require('./constants'), // constants // TODO: load constants here again after refactored
+
   functions, // functions
 
   // load ./expression *after* ./function since we need to

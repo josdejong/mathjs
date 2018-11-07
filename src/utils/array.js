@@ -575,7 +575,10 @@ export function initial (array) {
 }
 
 /**
- * Test whether an array contains an item
+ * Test whether an array or string contains an item
+ * @param {Array | string} array
+ * @param {*} item
+ * @return {boolean}
  */
 export function contains (array, item) {
   return array.indexOf(item) !== -1

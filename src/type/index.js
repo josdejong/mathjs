@@ -1,13 +1,18 @@
 'use strict'
 
-module.exports = [
-  require('./bignumber'),
+import bignumber from './bignumber'
+import complex from './complex'
+import fraction from './fraction'
+import { createNumber } from './number'
+
+export default [
+  bignumber,
   require('./boolean'),
   require('./chain'),
-  require('./complex'),
-  require('./fraction'),
+  complex,
+  fraction,
   require('./matrix'),
-  require('./number'),
+  createNumber,
   require('./resultset'),
   require('./string'),
   require('./unit')

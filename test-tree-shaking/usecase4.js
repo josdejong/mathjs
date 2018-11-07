@@ -3,6 +3,8 @@
 
 import { create, add, multiply } from '../src/mainAll'
 
+console.log('\nuse case 4')
+
 const math = create([add, multiply])
 math.config({ number: 'BigNumber' })
 

@@ -1,8 +1,12 @@
 'use strict'
 
-import { deepMap } from './../utils/collection'
+import { factory } from '../utils/factory'
+import { deepMap } from '../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'number'
+const dependencies = ['typed']
+
+export const createNumber = factory(name, dependencies, ({ typed }) => {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
    * When value is a matrix, all elements will be converted to number.
@@ -78,7 +82,4 @@ function factory (type, config, load, typed) {
   }
 
   return number
-}
-
-exports.name = 'number'
-exports.factory = factory
+})

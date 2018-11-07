@@ -1,8 +1,12 @@
 'use strict'
-module.exports = [
+
+import { createComplexClass } from './Complex'
+import { createComplex } from './function/complex'
+
+export default [
   // type
-  require('./Complex'),
+  createComplexClass,
 
   // construction function
-  require('./function/complex')
+  createComplex
 ]

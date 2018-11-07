@@ -5,6 +5,8 @@ import { isMatrix } from '../../utils/is'
 import { extend } from '../../utils/object'
 import { arraySize } from '../../utils/array'
 import { operators as latexOperators } from '../../utils/latex'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'multiply'
 const dependencies = [
@@ -14,12 +16,13 @@ const dependencies = [
   'multiplyScalar',
   'equalScalar',
   'type.DenseMatrix',
-  'type.SparseMatrix',
-  'utils.algorithm11',
-  'utils.algorithm14'
+  'type.SparseMatrix'
 ]
 
-export const createMultiply = factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, type: { DenseMatrix, SparseMatrix }, utils: { algorithm11, algorithm14 } }) => {
+export const createMultiply = factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
+  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Multiply two or more values, `x * y`.
    * For matrices, the matrix product is calculated.

@@ -3,20 +3,29 @@
 import { factory } from '../../utils/factory'
 import { extend } from '../../utils/object'
 import { operators as latexOperators } from '../../utils/latex'
+import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
+import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
+import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'add'
 const dependencies = [
   'typed',
   'matrix',
   'addScalar',
-  'utils.algorithm01',
-  'utils.algorithm04',
-  'utils.algorithm10',
-  'utils.algorithm13',
-  'utils.algorithm14'
+  'equalScalar',
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createAdd = factory(name, dependencies, ({ typed, matrix, addScalar, utils: { algorithm01, algorithm04, algorithm10, algorithm13, algorithm14 } }) => {
+export const createAdd = factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
+  const algorithm01 = createAlgorithm01({ typed, type: { DenseMatrix } })
+  const algorithm04 = createAlgorithm04({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Add two or more values, `x + y`.
    * For matrices, the function is evaluated element wise.

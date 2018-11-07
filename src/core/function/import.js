@@ -357,9 +357,6 @@ export function importFactory (typed, load, math) {
         _deleteTransform(name)
       } else {
         if (path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
-          if (name === 'DenseMatrix')
-            console.log('mathWithTransform', factory.fn || factory.name, path, factoryAllowedInExpressions(factory))
-
           math.expression.mathWithTransform[name] = resolver()
         }
       }

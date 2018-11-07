@@ -3,10 +3,18 @@
 import { isBigNumber } from '../../utils/is'
 import { resize } from '../../utils/array'
 import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'identity'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'type.BigNumber',
+  'type.Matrix'
+]
 
+export const createIdentity = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber, Matrix } }) => {
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
    * The matrix has ones on the diagonal and zeros elsewhere.
@@ -37,9 +45,9 @@ export function factory (type, config, load, typed) {
    *
    * @return {Matrix | Array | number} A matrix with ones on the diagonal.
    */
-  const identity = typed('identity', {
+  const identity = typed(name, {
     '': function () {
-      return (config.matrix === 'Matrix') ? matrix([]) : []
+      return (config().matrix === 'Matrix') ? matrix([]) : []
     },
 
     'string': function (format) {
@@ -47,7 +55,7 @@ export function factory (type, config, load, typed) {
     },
 
     'number | BigNumber': function (rows) {
-      return _identity(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, rows, config().matrix === 'Matrix' ? 'default' : undefined)
     },
 
     'number | BigNumber, string': function (rows, format) {
@@ -55,7 +63,7 @@ export function factory (type, config, load, typed) {
     },
 
     'number | BigNumber, number | BigNumber': function (rows, cols) {
-      return _identity(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, cols, config().matrix === 'Matrix' ? 'default' : undefined)
     },
 
     'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
@@ -103,7 +111,7 @@ export function factory (type, config, load, typed) {
   function _identity (rows, cols, format) {
     // BigNumber constructor with the right precision
     const Big = (isBigNumber(rows) || isBigNumber(cols))
-      ? type.BigNumber
+      ? BigNumber
       : null
 
     if (isBigNumber(rows)) rows = rows.toNumber()
@@ -116,14 +124,14 @@ export function factory (type, config, load, typed) {
       throw new Error('Parameters in function identity must be positive integers')
     }
 
-    const one = Big ? new type.BigNumber(1) : 1
+    const one = Big ? new BigNumber(1) : 1
     const defaultValue = Big ? new Big(0) : 0
     const size = [rows, cols]
 
     // check we need to return a matrix
     if (format) {
       // get matrix storage constructor
-      const F = type.Matrix.storage(format)
+      const F = Matrix.storage(format)
       // create diagonal matrix (use optimized implementation for storage format)
       return F.diagonal(size, one, 0, defaultValue)
     }
@@ -138,6 +146,4 @@ export function factory (type, config, load, typed) {
     }
     return res
   }
-}
-
-export const name = 'identity'
+})

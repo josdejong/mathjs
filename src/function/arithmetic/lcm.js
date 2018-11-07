@@ -2,19 +2,28 @@
 
 import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
 const name = 'lcm'
 const dependencies = [
   'typed',
   'matrix',
-  'utils.algorithm02',
-  'utils.algorithm06',
-  'utils.algorithm11',
-  'utils.algorithm13',
-  'utils.algorithm14'
+  'equalScalar',
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createLcm = factory(name, dependencies, ({ typed, matrix, utils: { algorithm02, algorithm06, algorithm11, algorithm13, algorithm14 } }) => {
+export const createLcm = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm06 = createAlgorithm06({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar, type: { SparseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed, type: { DenseMatrix } })
+  const algorithm14 = createAlgorithm14({ typed, type: { DenseMatrix } })
+
   /**
    * Calculate the least common multiple for two or more values or arrays.
    *

@@ -1,8 +1,12 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'isZero'
+const dependencies = ['typed']
+
+export const createIsZero = factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is zero.
    * The function can check for zero for types `number`, `BigNumber`, `Fraction`,
@@ -36,7 +40,7 @@ export function factory (type, config, load, typed) {
    * @return {boolean}  Returns true when `x` is zero.
    *                    Throws an error in case of an unknown data type.
    */
-  const isZero = typed('isZero', {
+  const isZero = typed(name, {
     'number': function (x) {
       return x === 0
     },
@@ -63,6 +67,4 @@ export function factory (type, config, load, typed) {
   })
 
   return isZero
-}
-
-export const name = 'isZero'
+})
