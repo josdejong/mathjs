@@ -1,14 +1,12 @@
 'use strict'
 
 import { flatten, generalize, identify } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const DenseMatrix = load(require('../../type/matrix/DenseMatrix'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'setDifference'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'type.Index', 'type.DenseMatrix']
 
+export const createSetDifference = factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } }) => {
   /**
    * Create the difference of two (multi)sets: every element of set1, that is not the element of set2.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.
@@ -30,12 +28,12 @@ export function factory (type, config, load, typed) {
    * @param {Array | Matrix}    a2  A (multi)set
    * @return {Array | Matrix}    The difference of two (multi)sets
    */
-  const setDifference = typed('setDifference', {
+  return typed(name, {
     'Array | Matrix, Array | Matrix': function (a1, a2) {
       let result
-      if (subset(size(a1), new MatrixIndex(0)) === 0) { // empty-anything=empty
+      if (subset(size(a1), new Index(0)) === 0) { // empty-anything=empty
         result = []
-      } else if (subset(size(a2), new MatrixIndex(0)) === 0) { // anything-empty=anything
+      } else if (subset(size(a2), new Index(0)) === 0) { // anything-empty=anything
         return flatten(a1.toArray())
       } else {
         const b1 = identify(flatten(Array.isArray(a1) ? a1 : a1.toArray()).sort(compareNatural))
@@ -63,8 +61,4 @@ export function factory (type, config, load, typed) {
       return new DenseMatrix(generalize(result))
     }
   })
-
-  return setDifference
-}
-
-export const name = 'setDifference'
+})

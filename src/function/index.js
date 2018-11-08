@@ -6,6 +6,7 @@ import combinatorics from './combinatorics'
 import complex from './complex'
 import geometry from './geometry'
 import relational from './relational'
+import set from './set'
 import special from './special'
 import string from './string'
 import trigonometry from './trigonometry'
@@ -23,7 +24,7 @@ export default [
   require('./matrix'),
   require('./probability'),
   relational,
-  require('./set'),
+  set,
   special,
   require('./statistics'),
   string,

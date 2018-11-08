@@ -1,13 +1,12 @@
 'use strict'
 
 import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const compareNatural = load(require('../relational/compareNatural'))
-  const MatrixIndex = load(require('../../type/matrix/MatrixIndex'))
-  const size = load(require('../matrix/size'))
-  const subset = load(require('../matrix/subset'))
+const name = 'setMultiplicity'
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'type.Index']
 
+export const createSetMultiplicity = factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index } }) => {
   /**
    * Count the multiplicity of an element in a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.
@@ -29,9 +28,9 @@ export function factory (type, config, load, typed) {
    * @param {Array | Matrix}     a  A multiset
    * @return {number}            The number of how many times the multiset contains the element
    */
-  const setMultiplicity = typed('setMultiplicity', {
+  return typed(name, {
     'number | BigNumber | Fraction | Complex, Array | Matrix': function (e, a) {
-      if (subset(size(a), new MatrixIndex(0)) === 0) { // if empty, return 0
+      if (subset(size(a), new Index(0)) === 0) { // if empty, return 0
         return 0
       }
       const b = flatten(Array.isArray(a) ? a : a.toArray())
@@ -44,8 +43,4 @@ export function factory (type, config, load, typed) {
       return count
     }
   })
-
-  return setMultiplicity
-}
-
-export const name = 'setMultiplicity'
+})

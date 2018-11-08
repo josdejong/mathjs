@@ -1,7 +1,23 @@
 import { contains } from './array'
 import { get, pick } from './object'
 
-// TODO: comment
+/**
+ * Create a factory function, which can be used to inject dependencies.
+ *
+ * Example:
+ *
+ *     const name = 'log'
+ *     const dependencies = ['config', 'typed', 'divideScalar', 'type.Complex']
+ *
+ *     export const createLog = factory(name, dependencies, ({ typed, config, divideScalar, type: { Complex } }) => {
+ *       // ... create the function log here and return it
+ *     }
+ *
+ * @param {string} name           Name of the function to be created
+ * @param {string[]} dependencies The names of all required dependencies
+ * @param {function} create       Callback function called with an object with all dependencies
+ * @returns {function}
+ */
 export function factory (name, dependencies, create) {
   const assertAndCreate = (scope) => {
     assertDependencies(name, dependencies, scope)
@@ -16,7 +32,12 @@ export function factory (name, dependencies, create) {
   return assertAndCreate
 }
 
-// TODO: comment
+/**
+ * Sort all factories such that when loading in order, the dependencies are resolved.
+ *
+ * @param {Array} factories
+ * @returns {Array} Returns a new array with the sorted factories.
+ */
 export function sortFactories (factories) {
   const factoriesByName = {}
   for (const factory of factories) {

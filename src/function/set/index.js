@@ -1,13 +1,25 @@
 'use strict'
-module.exports = [
-  require('./setCartesian'),
-  require('./setDifference'),
-  require('./setDistinct'),
-  require('./setIntersect'),
-  require('./setIsSubset'),
-  require('./setMultiplicity'),
-  require('./setPowerset'),
-  require('./setSize'),
-  require('./setSymDifference'),
-  require('./setUnion')
+
+import { createSetCartesian } from './setCartesian'
+import { createSetDifference } from './setDifference'
+import { createSetDistinct } from './setDistinct'
+import { createSetIntersect } from './setIntersect'
+import { createSetIsSubset } from './setIsSubset'
+import { createSetMultiplicity } from './setMultiplicity'
+import { createSetPowerset } from './setPowerset'
+import { createSetSize } from './setSize'
+import { createSetSymDifference } from './setSymDifference'
+import { createSetUnion } from './setUnion'
+
+export default [
+  createSetCartesian,
+  createSetDifference,
+  createSetDistinct,
+  createSetIntersect,
+  createSetIsSubset,
+  createSetMultiplicity,
+  createSetPowerset,
+  createSetSize,
+  createSetSymDifference,
+  createSetUnion
 ]
