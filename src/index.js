@@ -3,10 +3,11 @@
 import expression from './expression'
 import type from './type'
 import functions from './function'
+import { createConstants } from './constants'
 
 export default [
   type, // data types (Matrix, Complex, Unit, ...)
-  // require('./constants'), // constants // TODO: load constants here again after refactored
+  createConstants, // constants
 
   functions, // functions
 

@@ -171,6 +171,9 @@ export const dotMultiply = createDotMultiply({ typed, matrix, equalScalar, multi
 export const dotPow = createDotPow({ typed, equalScalar, matrix, pow, type: { DenseMatrix } })
 export const dotDivide = createDotDivide({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } })
 
+// TODO: export constants
+// TODO: export physical constants
+
 export const expression = {
   docs: createEmbeddedDocs()
 }

@@ -1,4 +1,5 @@
 'use strict'
+
 import { lazy } from '../../utils/object'
 import { factory } from '../../utils/factory'
 

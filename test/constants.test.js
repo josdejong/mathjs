@@ -2,12 +2,17 @@ import assert from 'assert'
 import { create } from '../src/core/core'
 import math from '../src/main'
 import approx from '../tools/approx'
-import constants from '../src/constants'
+import { createConstants } from '../src/constants'
+import { createBigNumberClass } from '../src/type/bignumber/BigNumber'
+import { createComplexClass } from '../src/type/complex/Complex'
 
 describe('constants', function () {
   const bigmath = math.create({ number: 'BigNumber', precision: 64 })
+
   const realmath = create()
-  realmath.import(constants)
+  realmath.import(createBigNumberClass)
+  realmath.import(createComplexClass)
+  realmath.import(createConstants)
 
   describe('number', function () {
     [math, realmath].forEach(function (instance) {
@@ -130,12 +135,6 @@ describe('constants', function () {
         assert.strictEqual(math.i.im, 1)
         assert.deepStrictEqual(math.i, math.complex(0, 1))
       })
-    })
-  })
-
-  describe('real', function () {
-    it('does not have i', function () {
-      assert.strictEqual(realmath.i, undefined)
     })
   })
 
