@@ -1,4 +1,10 @@
-function factory (construction, config, load, typed) {
+import { factory } from '../../utils/factory'
+
+const name = 'expression.docs'
+const dependencies = []
+
+// TODO: remve factory function here, isn't useful
+export const createEmbeddedDocs = factory(name, dependencies, () => {
   const docs = {}
 
   // construction functions
@@ -310,8 +316,4 @@ function factory (construction, config, load, typed) {
   docs['typeOf'] = require('./function/utils/typeOf')
 
   return docs
-}
-
-exports.name = 'docs'
-exports.path = 'expression'
-exports.factory = factory
+})

@@ -17,8 +17,7 @@ const dependencies = [
   'equalScalar',
   'addScalar',
   'unaryMinus',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'type.DenseMatrix'
 ]
 
 export const createSubtract = factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix } }) => {

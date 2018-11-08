@@ -14,9 +14,7 @@ const dependencies = [
   'matrix',
   'addScalar',
   'multiplyScalar',
-  'equalScalar',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'equalScalar'
 ]
 
 export const createMultiply = factory(name, dependencies, ({ typed, matrix, addScalar, multiplyScalar, equalScalar }) => {

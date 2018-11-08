@@ -68,6 +68,7 @@ import { createIsZero } from './function/utils/isZero'
 import { createIsNaN } from './function/utils/isNaN'
 import { createNumeric } from './function/utils/numeric'
 import { createTypeOf } from './function/utils/typeOf'
+import { createEmbeddedDocs } from './expression/embeddedDocs'
 
 const math = _create()
 
@@ -169,3 +170,7 @@ export const norm = createNorm({ typed, abs, add, pow, conj, sqrt, multiply, equ
 export const dotMultiply = createDotMultiply({ typed, matrix, equalScalar, multiplyScalar })
 export const dotPow = createDotPow({ typed, equalScalar, matrix, pow, type: { DenseMatrix } })
 export const dotDivide = createDotDivide({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } })
+
+export const expression = {
+  docs: createEmbeddedDocs()
+}

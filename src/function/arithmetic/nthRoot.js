@@ -13,9 +13,7 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'type.BigNumber',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'type.BigNumber'
 ]
 
 export const createNthRoot = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber } }) => {

@@ -16,8 +16,7 @@ const dependencies = [
   'equalScalar',
   'zeros',
   'type.BigNumber',
-  'type.DenseMatrix',
-  'type.SparseMatrix'
+  'type.DenseMatrix'
 ]
 
 export const createRound = factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, type: { BigNumber, DenseMatrix } }) => {

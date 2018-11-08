@@ -1,6 +1,7 @@
 language: node_js
 node_js:
-  - 6
+  # FIXME: enable testing on nodejs 6 again (it's too slow right now, getting timeouts)
+  # - 6
   - 8
   - 10
 
