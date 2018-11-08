@@ -1,19 +1,14 @@
 'use strict'
 
 import { isBigNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const addScalar = load(require('../arithmetic/addScalar'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const multiplyScalar = load(require('../arithmetic/multiplyScalar'))
-  const divideScalar = load(require('../arithmetic/divideScalar'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const smaller = load(require('../relational/smaller'))
-  const equalScalar = load(require('../relational/equalScalar'))
+const name = 'intersect'
+const dependencies = [
+  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'
+]
 
+export const createIntersect = factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar }) => {
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
    * and of a line and a plane in three dimensions. The inputs are in the form of
@@ -103,7 +98,7 @@ export function factory (type, config, load, typed) {
     const d1 = subtract(o1, p1b)
     const d2 = subtract(o2, p2b)
     const det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
-    if (smaller(abs(det), config.epsilon)) {
+    if (smaller(abs(det), config().epsilon)) {
       return null
     }
     const d20o11 = multiplyScalar(d2[0], o1[1])
@@ -166,6 +161,4 @@ export function factory (type, config, load, typed) {
   }
 
   return intersect
-}
-
-export const name = 'intersect'
+})

@@ -1,4 +1,7 @@
 'use strict'
-module.exports = [
-  require('./to')
+
+import { createTo } from './to'
+
+export default [
+  createTo
 ]

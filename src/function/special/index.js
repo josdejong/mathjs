@@ -1,4 +1,7 @@
 'use strict'
-module.exports = [
-  require('./erf')
+
+import { createErf } from './erf'
+
+export default [
+  createErf
 ]

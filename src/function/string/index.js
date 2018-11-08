@@ -1,5 +1,9 @@
 'use strict'
-module.exports = [
-  require('./format'),
-  require('./print')
+
+import { createFormat } from './format'
+import { createPrint } from './print'
+
+export default [
+  createFormat,
+  createPrint
 ]

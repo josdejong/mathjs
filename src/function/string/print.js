@@ -2,8 +2,12 @@
 
 import { format } from '../../utils/string'
 import { isString } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'print'
+const dependencies = ['typed']
+
+export const createPrint = factory(name, dependencies, ({ typed }) => {
   /**
    * Interpolate values into a string template.
    *
@@ -48,16 +52,16 @@ export function factory (type, config, load, typed) {
    *                                    of all options.
    * @return {string} Interpolated string
    */
-  const print = typed('print', {
+  const print = typed(name, {
     // note: Matrix will be converted automatically to an Array
     'string, Object | Array': _print,
-    'string, Object | Array, number | Object': _print
+    'string, Object | Array, number | Object': _print
   })
 
   print.toTex = undefined // use default template
 
   return print
-}
+})
 
 /**
  * Interpolate values into a string template.
@@ -88,5 +92,3 @@ function _print (template, values, options) {
   }
   )
 }
-
-export const name = 'print'

@@ -1,8 +1,12 @@
 'use strict'
 
 import { format as formatString } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'format'
+const dependencies = ['typed']
+
+export const createFormat = factory(name, dependencies, ({ typed }) => {
   /**
    * Format a value of any type into a string.
    *
@@ -103,7 +107,7 @@ export function factory (type, config, load, typed) {
    * @param {Object | Function | number} [options]  Formatting options
    * @return {string} The formatted value
    */
-  const format = typed('format', {
+  const format = typed(name, {
     'any': formatString,
     'any, Object | function | number': formatString
   })
@@ -111,6 +115,4 @@ export function factory (type, config, load, typed) {
   format.toTex = undefined // use default template
 
   return format
-}
-
-export const name = 'format'
+})
