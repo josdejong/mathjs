@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'sec'
+const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
+
+export const createSec = factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
   /**
    * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
    *
@@ -24,7 +28,7 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Secant of x
    */
-  const sec = typed('sec', {
+  const sec = typed(name, {
     'number': function (x) {
       return 1 / Math.cos(x)
     },
@@ -34,11 +38,11 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.cos())
+      return new BigNumber(1).div(x.cos())
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sec is no angle')
       }
       return sec(x.value)
@@ -52,6 +56,4 @@ export function factory (type, config, load, typed) {
   sec.toTex = { 1: `\\sec\\left(\${args[0]}\\right)` }
 
   return sec
-}
-
-export const name = 'sec'
+})

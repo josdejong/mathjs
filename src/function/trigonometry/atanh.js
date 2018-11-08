@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'atanh'
+const dependencies = ['typed', 'config', 'type.Complex']
+
+export const createAtanh = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the hyperbolic arctangent of a value,
    * defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.
@@ -24,12 +28,12 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arctangent of x
    */
-  const atanh = typed('atanh', {
+  const atanh = typed(name, {
     'number': function (x) {
-      if ((x <= 1 && x >= -1) || config.predictable) {
+      if ((x <= 1 && x >= -1) || config().predictable) {
         return _atanh(x)
       }
-      return new type.Complex(x, 0).atanh()
+      return new Complex(x, 0).atanh()
     },
 
     'Complex': function (x) {
@@ -49,7 +53,7 @@ export function factory (type, config, load, typed) {
   atanh.toTex = { 1: `\\tanh^{-1}\\left(\${args[0]}\\right)` }
 
   return atanh
-}
+})
 
 /**
  * Calculate the hyperbolic arctangent of a number
@@ -60,5 +64,3 @@ export function factory (type, config, load, typed) {
 const _atanh = Math.atanh || function (x) {
   return Math.log((1 + x) / (1 - x)) / 2
 }
-
-export const name = 'atanh'

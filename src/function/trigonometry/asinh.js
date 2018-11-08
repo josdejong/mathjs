@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'asinh'
+const dependencies = ['typed']
+
+export const createAsinh = factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic arcsine of a value,
    * defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.
@@ -46,6 +50,4 @@ export function factory (type, config, load, typed) {
   asinh.toTex = { 1: `\\sinh^{-1}\\left(\${args[0]}\\right)` }
 
   return asinh
-}
-
-export const name = 'asinh'
+})

@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'coth'
+const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
+
+export const createCoth = factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
   /**
    * Calculate the hyperbolic cotangent of a value,
    * defined as `coth(x) = 1 / tanh(x)`.
@@ -26,7 +30,7 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic cotangent of x
    */
-  const coth = typed('coth', {
+  const coth = typed(name, {
     'number': _coth,
 
     'Complex': function (x) {
@@ -34,11 +38,11 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x.tanh())
+      return new BigNumber(1).div(x.tanh())
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function coth is no angle')
       }
       return coth(x.value)
@@ -52,7 +56,7 @@ export function factory (type, config, load, typed) {
   coth.toTex = { 1: `\\coth\\left(\${args[0]}\\right)` }
 
   return coth
-}
+})
 
 /**
  * Calculate the hyperbolic cosine of a number
@@ -64,5 +68,3 @@ function _coth (x) {
   const e = Math.exp(2 * x)
   return (e + 1) / (e - 1)
 }
-
-export const name = 'coth'

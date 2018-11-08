@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'acos'
+const dependencies = ['typed', 'config', 'type.Complex']
+
+export const createAcos = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the inverse cosine of a value.
    *
@@ -26,12 +30,12 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc cosine of x
    */
-  const acos = typed('acos', {
+  const acos = typed(name, {
     'number': function (x) {
-      if ((x >= -1 && x <= 1) || config.predictable) {
+      if ((x >= -1 && x <= 1) || config().predictable) {
         return Math.acos(x)
       } else {
-        return new type.Complex(x, 0).acos()
+        return new Complex(x, 0).acos()
       }
     },
 
@@ -51,6 +55,4 @@ export function factory (type, config, load, typed) {
   acos.toTex = { 1: `\\cos^{-1}\\left(\${args[0]}\\right)` }
 
   return acos
-}
-
-export const name = 'acos'
+})

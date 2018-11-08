@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'acsch'
+const dependencies = ['typed', 'type.BigNumber']
+
+export const createAcsch = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Calculate the hyperbolic arccosecant of a value,
    * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.
@@ -24,7 +28,7 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosecant of x
    */
-  const acsch = typed('acsch', {
+  const acsch = typed(name, {
     'number': function (x) {
       x = 1 / x
       return Math.log(x + Math.sqrt(x * x + 1))
@@ -35,7 +39,7 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).asinh()
+      return new BigNumber(1).div(x).asinh()
     },
 
     'Array | Matrix': function (x) {
@@ -46,6 +50,4 @@ export function factory (type, config, load, typed) {
   acsch.toTex = { 1: `\\mathrm{csch}^{-1}\\left(\${args[0]}\\right)` }
 
   return acsch
-}
-
-export const name = 'acsch'
+})

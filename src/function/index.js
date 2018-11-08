@@ -4,6 +4,7 @@ import algebra from './algebra'
 import arithmetic from './arithmetic'
 import complex from './complex'
 import relational from './relational'
+import trigonometry from './trigonometry'
 import utils from './utils'
 
 export default [
@@ -22,7 +23,7 @@ export default [
   require('./special'),
   require('./statistics'),
   require('./string'),
-  require('./trigonometry'),
+  trigonometry,
   require('./unit'),
   utils
 ]

@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'acoth'
+const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+
+export const createAcoth = factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
   /**
    * Calculate the hyperbolic arccotangent of a value,
    * defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.
@@ -24,12 +28,12 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccotangent of x
    */
-  const acoth = typed('acoth', {
+  const acoth = typed(name, {
     'number': function (x) {
-      if (x >= 1 || x <= -1 || config.predictable) {
+      if (x >= 1 || x <= -1 || config().predictable) {
         return isFinite(x) ? (Math.log((x + 1) / x) + Math.log(x / (x - 1))) / 2 : 0
       }
-      return new type.Complex(x, 0).acoth()
+      return new Complex(x, 0).acoth()
     },
 
     'Complex': function (x) {
@@ -37,7 +41,7 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).atanh()
+      return new BigNumber(1).div(x).atanh()
     },
 
     'Array | Matrix': function (x) {
@@ -48,6 +52,4 @@ export function factory (type, config, load, typed) {
   acoth.toTex = { 1: `\\coth^{-1}\\left(\${args[0]}\\right)` }
 
   return acoth
-}
-
-export const name = 'acoth'
+})

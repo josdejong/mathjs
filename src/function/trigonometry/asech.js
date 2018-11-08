@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'asech'
+const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+
+export const createAsech = factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
   /**
    * Calculate the hyperbolic arcsecant of a value,
    * defined as `asech(x) = acosh(1/x) = ln(sqrt(1/x^2 - 1) + 1/x)`.
@@ -24,20 +28,20 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arcsecant of x
    */
-  const asech = typed('asech', {
+  const asech = typed(name, {
     'number': function (x) {
-      if ((x <= 1 && x >= -1) || config.predictable) {
+      if ((x <= 1 && x >= -1) || config().predictable) {
         x = 1 / x
 
         const ret = Math.sqrt(x * x - 1)
-        if (x > 0 || config.predictable) {
+        if (x > 0 || config().predictable) {
           return Math.log(ret + x)
         }
 
-        return new type.Complex(Math.log(ret - x), Math.PI)
+        return new Complex(Math.log(ret - x), Math.PI)
       }
 
-      return new type.Complex(x, 0).asech()
+      return new Complex(x, 0).asech()
     },
 
     'Complex': function (x) {
@@ -45,7 +49,7 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).acosh()
+      return new BigNumber(1).div(x).acosh()
     },
 
     'Array | Matrix': function (x) {
@@ -56,6 +60,4 @@ export function factory (type, config, load, typed) {
   asech.toTex = { 1: `\\mathrm{sech}^{-1}\\left(\${args[0]}\\right)` }
 
   return asech
-}
-
-export const name = 'asech'
+})

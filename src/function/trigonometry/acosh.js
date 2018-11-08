@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'acosh'
+const dependencies = ['typed', 'config', 'type.Complex']
+
+export const createAcosh = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the hyperbolic arccos of a value,
    * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.
@@ -24,15 +28,15 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} Hyperbolic arccosine of x
    */
-  const acosh = typed('acosh', {
+  const acosh = typed(name, {
     'number': function (x) {
-      if (x >= 1 || config.predictable) {
+      if (x >= 1 || config().predictable) {
         return _acosh(x)
       }
       if (x <= -1) {
-        return new type.Complex(Math.log(Math.sqrt(x * x - 1) - x), Math.PI)
+        return new Complex(Math.log(Math.sqrt(x * x - 1) - x), Math.PI)
       }
-      return new type.Complex(x, 0).acosh()
+      return new Complex(x, 0).acosh()
     },
 
     'Complex': function (x) {
@@ -51,7 +55,7 @@ export function factory (type, config, load, typed) {
   acosh.toTex = { 1: `\\cosh^{-1}\\left(\${args[0]}\\right)` }
 
   return acosh
-}
+})
 
 /**
  * Calculate the hyperbolic arccos of a number
@@ -62,5 +66,3 @@ export function factory (type, config, load, typed) {
 const _acosh = Math.acosh || function (x) {
   return Math.log(Math.sqrt(x * x - 1) + x)
 }
-
-export const name = 'acosh'

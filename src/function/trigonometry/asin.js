@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'asin'
+const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+
+export const createAsin = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the inverse sine of a value.
    *
@@ -26,12 +30,12 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Array | Matrix} x   Function input
    * @return {number | BigNumber | Complex | Array | Matrix} The arc sine of x
    */
-  const asin = typed('asin', {
+  const asin = typed(name, {
     'number': function (x) {
-      if ((x >= -1 && x <= 1) || config.predictable) {
+      if ((x >= -1 && x <= 1) || config().predictable) {
         return Math.asin(x)
       } else {
-        return new type.Complex(x, 0).asin()
+        return new Complex(x, 0).asin()
       }
     },
 
@@ -52,6 +56,4 @@ export function factory (type, config, load, typed) {
   asin.toTex = { 1: `\\sin^{-1}\\left(\${args[0]}\\right)` }
 
   return asin
-}
-
-export const name = 'asin'
+})

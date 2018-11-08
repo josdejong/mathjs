@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'asec'
+const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+
+export const createAsec = factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
   /**
    * Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
    *
@@ -26,12 +30,12 @@ export function factory (type, config, load, typed) {
    * @param {number | Complex | Array | Matrix} x  Function input
    * @return {number | Complex | Array | Matrix} The arc secant of x
    */
-  const asec = typed('asec', {
+  const asec = typed(name, {
     'number': function (x) {
-      if (x <= -1 || x >= 1 || config.predictable) {
+      if (x <= -1 || x >= 1 || config().predictable) {
         return Math.acos(1 / x)
       }
-      return new type.Complex(x, 0).asec()
+      return new Complex(x, 0).asec()
     },
 
     'Complex': function (x) {
@@ -39,7 +43,7 @@ export function factory (type, config, load, typed) {
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(1).div(x).acos()
+      return new BigNumber(1).div(x).acos()
     },
 
     'Array | Matrix': function (x) {
@@ -50,6 +54,4 @@ export function factory (type, config, load, typed) {
   asec.toTex = { 1: `\\sec^{-1}\\left(\${args[0]}\\right)` }
 
   return asec
-}
-
-export const name = 'asec'
+})

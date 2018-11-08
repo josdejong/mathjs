@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'cos'
+const dependencies = ['typed', 'type.Unit']
+
+export const createCos = factory(name, dependencies, ({ typed, type: { Unit } }) => {
   /**
    * Calculate the cosine of a value.
    *
@@ -29,7 +33,7 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Cosine of x
    */
-  const cos = typed('cos', {
+  const cos = typed(name, {
     'number': Math.cos,
 
     'Complex': function (x) {
@@ -41,7 +45,7 @@ export function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function cos is no angle')
       }
       return cos(x.value)
@@ -55,6 +59,4 @@ export function factory (type, config, load, typed) {
   cos.toTex = { 1: `\\cos\\left(\${args[0]}\\right)` }
 
   return cos
-}
-
-export const name = 'cos'
+})

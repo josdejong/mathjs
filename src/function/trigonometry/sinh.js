@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'sinh'
+const dependencies = ['typed', 'type.Unit']
+
+export const createSinh = factory(name, dependencies, ({ typed, type: { Unit } }) => {
   /**
    * Calculate the hyperbolic sine of a value,
    * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.
@@ -24,7 +28,7 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber | Complex | Unit | Array | Matrix} x  Function input
    * @return {number | BigNumber | Complex | Array | Matrix} Hyperbolic sine of x
    */
-  const sinh = typed('sinh', {
+  const sinh = typed(name, {
     'number': _sinh,
 
     'Complex': function (x) {
@@ -36,7 +40,7 @@ export function factory (type, config, load, typed) {
     },
 
     'Unit': function (x) {
-      if (!x.hasBase(type.Unit.BASE_UNITS.ANGLE)) {
+      if (!x.hasBase(Unit.BASE_UNITS.ANGLE)) {
         throw new TypeError('Unit in function sinh is no angle')
       }
       return sinh(x.value)
@@ -51,7 +55,7 @@ export function factory (type, config, load, typed) {
   sinh.toTex = { 1: `\\sinh\\left(\${args[0]}\\right)` }
 
   return sinh
-}
+})
 
 /**
  * Calculate the hyperbolic sine of a number
@@ -62,5 +66,3 @@ export function factory (type, config, load, typed) {
 const _sinh = Math.sinh || function (x) {
   return (Math.exp(x) - Math.exp(-x)) / 2
 }
-
-export const name = 'sinh'
