@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'im'
+const dependencies = ['typed']
+
+export const createIm = factory(name, dependencies, ({ typed }) => {
   /**
    * Get the imaginary part of a complex number.
    * For a complex number `a + bi`, the function returns `b`.
@@ -30,13 +34,13 @@ export function factory (type, config, load, typed) {
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The imaginary part of x
    */
-  const im = typed('im', {
+  const im = typed(name, {
     'number': function (x) {
       return 0
     },
 
     'BigNumber': function (x) {
-      return new type.BigNumber(0)
+      return x.mul(0)
     },
 
     'Complex': function (x) {
@@ -51,6 +55,4 @@ export function factory (type, config, load, typed) {
   im.toTex = { 1: `\\Im\\left\\lbrace\${args[0]}\\right\\rbrace` }
 
   return im
-}
-
-export const name = 'im'
+})

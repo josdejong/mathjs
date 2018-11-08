@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'arg'
+const dependencies = ['typed', 'type.BigNumber']
+
+export const createArg = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Compute the argument of a complex value.
    * For a complex number `a + bi`, the argument is computed as `atan2(b, a)`.
@@ -30,13 +34,13 @@ export function factory (type, config, load, typed) {
    *            A complex number or array with complex numbers
    * @return {number | BigNumber | Array | Matrix} The argument of x
    */
-  const arg = typed('arg', {
+  const arg = typed(name, {
     'number': function (x) {
       return Math.atan2(0, x)
     },
 
     'BigNumber': function (x) {
-      return type.BigNumber.atan2(0, x)
+      return BigNumber.atan2(0, x)
     },
 
     'Complex': function (x) {
@@ -53,6 +57,4 @@ export function factory (type, config, load, typed) {
   arg.toTex = { 1: `\\arg\\left(\${args[0]}\\right)` }
 
   return arg
-}
-
-export const name = 'arg'
+})

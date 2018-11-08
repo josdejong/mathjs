@@ -7,3 +7,5 @@ import {
 
 export const add = typed(addNumber)
 export const multiply = typed(multiplyNumber)
+
+// TODO: create and export all functions

@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
-export function factory (type, config, load, typed) {
+const name = 'conj'
+const dependencies = ['typed']
+
+export const createConj = factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the complex conjugate of a complex value.
    * If `x = a+bi`, the complex conjugate of `x` is `a - bi`.
@@ -28,7 +32,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Complex | Array | Matrix}
    *            The complex conjugate of x
    */
-  const conj = typed('conj', {
+  const conj = typed(name, {
     'number': function (x) {
       return x
     },
@@ -49,6 +53,4 @@ export function factory (type, config, load, typed) {
   conj.toTex = { 1: `\\left(\${args[0]}\\right)^*` }
 
   return conj
-}
-
-export const name = 'conj'
+})
