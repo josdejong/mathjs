@@ -3,7 +3,7 @@
 import { isMatrix } from '../../utils/is'
 import { format } from '../../utils/string'
 import { arraySize } from '../../utils/array'
-import { operators as latexOperators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 
 export function factory (type, config, load, typed) {
   const abs = load(require('../arithmetic/abs'))

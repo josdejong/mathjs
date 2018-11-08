@@ -24,29 +24,16 @@ export function sortFactories (factories) {
   }
 
   function containsDependency (factory, dependency) {
-    if (!isFactory(dependency)) {
-      return isFactory(factory)
-    }
-
-    if (!isFactory(factory)) {
-      return false
-    }
-
-    if (contains(factory.dependencies, dependency.fn || dependency.name)) {
-      return true
-    }
-
-    if (contains(factory.dependencies, factory.fn)) {
-      throw new Error('Circular reference "' + factory.fn + '"')
-    }
-
-    for (const d of factory.dependencies) {
-      if (!factoriesByName[d]) {
-        // throw new Error('Unresolved dependency "' + d + '" in function "' + factory.fn + '"')
+    // TODO: detect circular references
+    if (isFactory(factory)) {
+      if (contains(factory.dependencies, dependency.fn || dependency.name)) {
+        return true
       }
 
-      if (containsDependency(factoriesByName[d], dependency)) {
-        return true
+      for (const d of factory.dependencies) {
+        if (containsDependency(factoriesByName[d], dependency)) {
+          return true
+        }
       }
     }
 
@@ -54,7 +41,8 @@ export function sortFactories (factories) {
   }
 
   const sorted = []
-  for (const factory of factories) {
+
+  function addFactory (factory) {
     let index = 0
     while (index < sorted.length && !containsDependency(sorted[index], factory)) {
       index++
@@ -62,6 +50,16 @@ export function sortFactories (factories) {
 
     sorted.splice(index, 0, factory)
   }
+
+  // sort regular factory functions
+  factories
+    .filter(isFactory)
+    .forEach(addFactory)
+
+  // sort legacy factory functions AFTER the regular factory functions
+  factories
+    .filter(factory => !isFactory(factory))
+    .forEach(addFactory)
 
   return sorted
 }
@@ -100,7 +98,7 @@ export function assertDependencies (name, dependencies, scope) {
     const missingDependencies = dependencies.filter(dependency => get(scope, dependency) === undefined)
 
     // TODO: create a custom error class for this, a MathjsError or something like that
-    throw new Error(`Cannot create function ${name}, ` +
-      `some dependencies are missing: ${missingDependencies.join(', ')}.`)
+    throw new Error(`Cannot create function "${name}", ` +
+      `some dependencies are missing: ${missingDependencies.map(d => `"${d}"`).join(', ')}.`)
   }
 }

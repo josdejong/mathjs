@@ -1,11 +1,12 @@
 'use strict'
 
+import algebra from './algebra'
 import arithmetic from './arithmetic'
 import relational from './relational'
 import utils from './utils'
 
 export default [
-  require('./algebra'),
+  algebra,
   arithmetic,
   // Object.keys(arithmetic).map(key => arithmetic[key]), // TODO: make this mapping redundant
   require('./bitwise'),

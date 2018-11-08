@@ -1,16 +1,30 @@
 'use strict'
 
 import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const simplify = load(require('./simplify'))
-  const simplifyCore = load(require('./simplify/simplifyCore'))
-  const simplifyConstant = load(require('./simplify/simplifyConstant'))
-  const parse = load(require('../../expression/function/parse'))
-  const ConstantNode = load(require('../../expression/node/ConstantNode'))
-  const OperatorNode = load(require('../../expression/node/OperatorNode'))
-  const SymbolNode = load(require('../../expression/node/SymbolNode'))
+const name = 'rationalize'
+const dependencies = [
+  'typed',
+  'parse',
+  'simplify',
+  'algebra.simplify.simplifyConstant',
+  'algebra.simplify.simplifyCore',
+  'expression.node.ConstantNode',
+  'expression.node.OperatorNode',
+  'expression.node.SymbolNode'
+]
 
+export const createRationalize = factory(name, dependencies, (
+  {
+    typed,
+    parse,
+    simplify,
+    algebra: { simplify: { simplifyConstant, simplifyCore } },
+    expression: { node: { ConstantNode, OperatorNode, SymbolNode }
+    }
+  }
+) => {
   /**
    * Transform a rationalizable expression in a rational fraction.
    * If rational fraction is one variable polynomial then converts
@@ -54,7 +68,7 @@ export function factory (type, config, load, typed) {
    * @param  {Object|boolean}      optional scope of expression or true for already evaluated rational expression at input
    * @param  {Boolean}  detailed   optional True if return an object, false if return expression node (default)
    *
-   * @return {Object | Expression Node}    The rational polynomial of `expr` or na object
+   * @return {Object | Node}    The rational polynomial of `expr` or na object
    *            {Object}
    *              {Expression Node} expression: node simplified expression
    *              {Expression Node} numerator: simplified numerator of expression
@@ -64,7 +78,7 @@ export function factory (type, config, load, typed) {
    *           {Expression Node}  node simplified expression
    *
    */
-  const rationalize = typed('rationalize', {
+  const rationalize = typed(name, {
     'string': function (expr) {
       return rationalize(parse(expr), {}, false)
     },
@@ -586,6 +600,4 @@ export function factory (type, config, load, typed) {
   } // End of polyToCanonical
 
   return rationalize
-} // end of factory
-
-export const name = 'rationalize'
+})

@@ -1,26 +1,38 @@
 'use strict'
 
 import { isConstantNode, isParenthesisNode } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { createUtil } from './simplify/util'
 
-export function factory (type, config, load, typed, math) {
-  const parse = load(require('../../expression/parse'))
-  const equal = load(require('../relational/equal'))
-  const ConstantNode = load(require('../../expression/node/ConstantNode'))
-  const FunctionNode = load(require('../../expression/node/FunctionNode'))
-  const OperatorNode = load(require('../../expression/node/OperatorNode'))
-  const ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
-  const SymbolNode = load(require('../../expression/node/SymbolNode'))
-  const simplifyConstant = load(require('./simplify/simplifyConstant'))
-  const simplifyCore = load(require('./simplify/simplifyCore'))
-  const resolve = load(require('./simplify/resolve'))
+const name = 'simplify'
+const dependencies = [
+  'typed',
+  'scope',
+  'parse',
+  'equal',
+  'algebra.simplify.simplifyConstant',
+  'algebra.simplify.simplifyCore',
+  'algebra.simplify.resolve',
+  'expression.node.ConstantNode',
+  'expression.node.FunctionNode',
+  'expression.node.OperatorNode',
+  'expression.node.ParenthesisNode',
+  'expression.node.SymbolNode'
+]
 
-  const util = load(require('./simplify/util'))
-  const isCommutative = util.isCommutative
-  const isAssociative = util.isAssociative
-  const flatten = util.flatten
-  const unflattenr = util.unflattenr
-  const unflattenl = util.unflattenl
-  const createMakeNodeFunction = util.createMakeNodeFunction
+export const createSimplify = factory(name, dependencies, (
+  {
+    typed,
+    scope,
+    parse,
+    equal,
+    algebra: { simplify: { simplifyConstant, simplifyCore, resolve } },
+    expression: { node: { ConstantNode, FunctionNode, OperatorNode, ParenthesisNode, SymbolNode }
+    }
+  }
+) => {
+  const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
+    createUtil({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } })
 
   /**
    * Simplify an expression tree.
@@ -573,7 +585,7 @@ export function factory (type, config, load, typed, math) {
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
       }
-      if (math.hasOwnProperty(rule.name)) {
+      if (scope.hasOwnProperty(rule.name)) {
         if (!SUPPORTED_CONSTANTS[rule.name]) {
           throw new Error('Built in constant: ' + rule.name + ' is not supported by simplify.')
         }
@@ -667,7 +679,4 @@ export function factory (type, config, load, typed, math) {
   }
 
   return simplify
-}
-
-export var math = true
-export const name = 'simplify'
+})

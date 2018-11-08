@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 
-function factory (type, config, load, typed) {
+const name = 'unit'
+const dependencies = ['typed', 'type.Unit']
+
+export const createUnit = factory(name, dependencies, ({ typed, type: { Unit } }) => {
   /**
    * Create a unit. Depending on the passed arguments, the function
    * will create and return a new math.type.Unit object.
@@ -27,21 +31,21 @@ function factory (type, config, load, typed) {
    * @return {Unit | Array | Matrix}    The created unit
    */
 
-  const unit = typed('unit', {
+  const unit = typed(name, {
     'Unit': function (x) {
       return x.clone()
     },
 
     'string': function (x) {
-      if (type.Unit.isValuelessUnit(x)) {
-        return new type.Unit(null, x) // a pure unit
+      if (Unit.isValuelessUnit(x)) {
+        return new Unit(null, x) // a pure unit
       }
 
-      return type.Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
+      return Unit.parse(x, { allowNoUnits: true }) // a unit with value, like '5cm'
     },
 
     'number | BigNumber | Fraction | Complex, string': function (value, unit) {
-      return new type.Unit(value, unit)
+      return new Unit(value, unit)
     },
 
     'Array | Matrix': function (x) {
@@ -55,7 +59,4 @@ function factory (type, config, load, typed) {
   }
 
   return unit
-}
-
-exports.name = 'unit'
-exports.factory = factory
+})

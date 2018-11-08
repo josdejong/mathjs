@@ -1,16 +1,27 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const equalScalar = load(require('./equalScalar'))
+import { factory } from '../../utils/factory'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { latexOperators } from '../../utils/latex'
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+const name = 'equal'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'type.DenseMatrix'
+]
 
-  const latex = require('../../utils/latex')
+export const createEqual = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Test whether two values are equal.
@@ -56,7 +67,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | boolean | Complex | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the compared values are equal, else returns false
    */
-  const equal = typed('equal', {
+  const equal = typed(name, {
 
     'any, any': function (x, y) {
       // strict equality for null and undefined?
@@ -127,10 +138,8 @@ export function factory (type, config, load, typed) {
   })
 
   equal.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['equal']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['equal']}\${args[1]}\\right)`
   }
 
   return equal
-}
-
-export const name = 'equal'
+})

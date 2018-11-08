@@ -1,8 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
-  const parse = load(require('../parse'))
+import { factory } from '../../utils/factory'
 
+const name = 'parse'
+const dependencies = ['typed', 'expression.parse']
+
+export const createParse = factory(name, dependencies, ({ typed, expression: { parse } }) => {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.eval().
@@ -46,7 +49,4 @@ function factory (type, config, load, typed) {
     'string | Array | Matrix': parse,
     'string | Array | Matrix, Object': parse
   })
-}
-
-exports.name = 'parse'
-exports.factory = factory
+})

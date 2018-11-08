@@ -3,7 +3,7 @@
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, sortFactories } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
-import { last, initial } from '../../utils/array'
+import { contains, initial, last } from '../../utils/array'
 import ArgumentsError from '../../error/ArgumentsError'
 
 export function importFactory (typed, load, math) {
@@ -313,7 +313,10 @@ export function importFactory (typed, load, math) {
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
-      let instance = factory(math)
+      let instance = contains(factory.dependencies, 'scope') // TODO: this is a special case for Chain and physicalConstants. Find a nicer solution
+        ? factory({ ...math, scope: math }) // TODO: this is probably inefficient. Use Object.create instead?
+        : factory(math)
+
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
             'Please create a separate function for it with exports.path="expression.transform"')
@@ -335,7 +338,8 @@ export function importFactory (typed, load, math) {
       }
 
       if (!options.silent) {
-        throw new Error('Cannot import "' + name + '": already exists')
+        // console.log('math', JSON.stringify(Object.keys(math)))
+        throw new Error('Cannot import "' + fullName + '": already exists')
       }
     }
 

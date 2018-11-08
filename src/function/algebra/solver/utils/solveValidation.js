@@ -4,9 +4,7 @@ import { isArray, isDenseMatrix, isMatrix } from '../../../../utils/is'
 import { arraySize } from '../../../../utils/array'
 import { format } from '../../../../utils/string'
 
-export function factory (type) {
-  const DenseMatrix = type.DenseMatrix
-
+export function createSolveValidation ({ DenseMatrix }) {
   /**
    * Validates matrix and column vector b for backward/forward substitution algorithms.
    *
@@ -16,7 +14,7 @@ export function factory (type) {
    *
    * @return {DenseMatrix}        Dense column vector b
    */
-  const solveValidation = function (m, b, copy) {
+  return function solveValidation (m, b, copy) {
     // matrix size
     const size = m.size()
     // validate matrix dimensions
@@ -144,6 +142,4 @@ export function factory (type) {
       throw new RangeError('Dimension mismatch. Matrix columns must match vector length.')
     }
   }
-
-  return solveValidation
 }

@@ -11,12 +11,18 @@ import {
   isParenthesisNode,
   isSymbolNode
 } from '../../utils/is'
+import { getSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { accessFactory } from './utils/access'
 
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+const name = 'expression.node.AccessorNode'
+const dependencies = [
+  'subset',
+  'expression.node.Node'
+]
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const access = load(require('./utils/access'))
+export const createAccessorNode = factory(name, dependencies, ({ subset, expression: { node: { Node } } }) => {
+  const access = accessFactory({ subset })
 
   /**
    * @constructor AccessorNode
@@ -208,8 +214,4 @@ function factory (type, config, load, typed) {
   }
 
   return AccessorNode
-}
-
-exports.name = 'AccessorNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

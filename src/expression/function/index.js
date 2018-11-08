@@ -1,8 +1,11 @@
 'use strict'
-module.exports = [
+
+import { createParse } from './parse'
+
+export default [
   require('./compile'),
   require('./eval'),
   require('./help'),
-  require('./parse'),
+  createParse,
   require('./parser')
 ]

@@ -47,7 +47,7 @@ export function factory (type, config, load, typed) {
   })
 
   bitNot.toTex = {
-    1: latex.operators['bitNot'] + `\\left(\${args[0]}\\right)`
+    1: latex.latexOperators['bitNot'] + `\\left(\${args[0]}\\right)`
   }
 
   return bitNot

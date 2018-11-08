@@ -2,7 +2,7 @@
 
 import escapeLatex from 'escape-latex'
 
-export const symbols = {
+export const latexSymbols = {
   // GREEK LETTERS
   Alpha: 'A',
   alpha: '\\alpha',
@@ -73,7 +73,7 @@ export const symbols = {
   'undefined': '\\mathbf{?}'
 }
 
-export const operators = {
+export const latexOperators = {
   'transpose': '^\\top',
   'ctranspose': '^H',
   'factorial': '!',
@@ -130,8 +130,8 @@ export function toSymbol (name, isUnit) {
     return '\\mathrm{' + escape(name) + '}'
   }
 
-  if (symbols.hasOwnProperty(name)) {
-    return symbols[name]
+  if (latexSymbols.hasOwnProperty(name)) {
+    return latexSymbols[name]
   }
 
   return escape(name)

@@ -2,16 +2,30 @@
 
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 import { isFraction, isNode } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
+import { createUtil } from './util'
 
-export function factory (type, config, load, typed, math) {
-  const util = load(require('./util'))
-  const isCommutative = util.isCommutative
-  const isAssociative = util.isAssociative
-  const allChildren = util.allChildren
-  const createMakeNodeFunction = util.createMakeNodeFunction
-  const ConstantNode = math.expression.node.ConstantNode
-  const OperatorNode = math.expression.node.OperatorNode
-  const FunctionNode = math.expression.node.FunctionNode
+const name = 'algebra.simplify.simplifyConstant'
+const dependencies = [
+  'typed',
+  'config',
+  'scope',
+  'fraction',
+  'bignumber',
+  'expression.node.ConstantNode',
+  'expression.node.OperatorNode',
+  'expression.node.FunctionNode',
+  'expression.node.SymbolNode'
+]
+
+export const createSimplifyConstant = factory(name, dependencies, ({ typed, config, scope, fraction, bignumber, expression: { node: {
+  ConstantNode,
+  OperatorNode,
+  FunctionNode,
+  SymbolNode
+} } }) => {
+  const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
+    createUtil({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } })
 
   function simplifyConstant (expr, options) {
     const res = foldFraction(expr, options)
@@ -20,7 +34,7 @@ export function factory (type, config, load, typed, math) {
 
   function _eval (fnname, args, options) {
     try {
-      return _toNumber(math[fnname].apply(null, args), options)
+      return _toNumber(scope[fnname].apply(null, args), options)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
@@ -29,7 +43,7 @@ export function factory (type, config, load, typed, math) {
         }
         return x
       })
-      return _toNumber(math[fnname].apply(null, args), options)
+      return _toNumber(scope[fnname].apply(null, args), options)
     }
   }
 
@@ -56,7 +70,7 @@ export function factory (type, config, load, typed, math) {
   function _exactFraction (n, options) {
     const exactFractions = (options && options.exactFractions !== false)
     if (exactFractions && isFinite(n)) {
-      const f = math.fraction(n)
+      const f = fraction(n)
       if (f.valueOf() === n) {
         return f
       }
@@ -68,10 +82,10 @@ export function factory (type, config, load, typed, math) {
   // BigNumbers are left alone
   const _toNumber = typed({
     'string, Object': function (s, options) {
-      if (config.number === 'BigNumber') {
-        return math.bignumber(s)
-      } else if (config.number === 'Fraction') {
-        return math.fraction(s)
+      if (config().number === 'BigNumber') {
+        return bignumber(s)
+      } else if (config().number === 'Fraction') {
+        return fraction(s)
       } else {
         const n = parseFloat(s)
         return _exactFraction(n, options)
@@ -152,7 +166,7 @@ export function factory (type, config, load, typed, math) {
         }
         return node
       case 'FunctionNode':
-        if (math[node.name] && math[node.name].rawArgs) {
+        if (scope[node.name] && scope[node.name].rawArgs) {
           return node
         }
 
@@ -253,8 +267,4 @@ export function factory (type, config, load, typed, math) {
   }
 
   return simplifyConstant
-}
-
-export var math = true
-export const name = 'simplifyConstant'
-export var path = 'algebra.simplify'
+})

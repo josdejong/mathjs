@@ -1,17 +1,24 @@
 'use strict'
-module.exports = [
+
+import { createPhysicalConstants } from './physicalConstants'
+import { createUnitClass } from './Unit'
+import { createCreateUnit } from './function/createUnit'
+import { createSplitUnit } from './function/splitUnit'
+import { createUnit } from './function/unit'
+
+export default [
   // type
-  require('./Unit'),
+  createUnitClass,
 
   // construction function
-  require('./function/unit'),
+  createUnit,
 
   // create new units
-  require('./function/createUnit'),
+  createCreateUnit,
 
   // split units
-  require('./function/splitUnit'),
+  createSplitUnit,
 
   // physical constants
-  require('./physicalConstants')
+  createPhysicalConstants
 ]

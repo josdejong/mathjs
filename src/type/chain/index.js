@@ -1,8 +1,12 @@
 'use strict'
-module.exports = [
+
+import { createChainClass } from './Chain'
+import { createChain } from './function/chain'
+
+export default [
   // type
-  require('./Chain'),
+  createChainClass,
 
   // construction function
-  require('./function/chain')
+  createChain
 ]

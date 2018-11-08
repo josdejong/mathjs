@@ -1,10 +1,14 @@
 'use strict'
 
-export function factory (type, config, load) {
-  const transpose = load(require('../../matrix/transpose'))
+import { factory } from '../../../utils/factory'
+import { csLeaf } from './csLeaf'
 
-  const csLeaf = load(require('./csLeaf'))
+const name = 'csCounts'
+const dependencies = [
+  'transpose'
+]
 
+export const createCsCounts = factory(name, dependencies, ({ transpose }) => {
   /**
    * Computes the column counts using the upper triangular part of A.
    * It transposes A internally, none of the input parameters are modified.
@@ -17,7 +21,7 @@ export function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const csCounts = function (a, parent, post, ata) {
+  return function (a, parent, post, ata) {
     // check inputs
     if (!a || !parent || !post) { return null }
     // a matrix arrays
@@ -100,9 +104,4 @@ export function factory (type, config, load) {
     }
     return colcount
   }
-
-  return csCounts
-}
-
-export const name = 'csCounts'
-export var path = 'algebra.sparse'
+})

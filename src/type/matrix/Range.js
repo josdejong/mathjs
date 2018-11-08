@@ -1,10 +1,13 @@
 'use strict'
 
 import { isBigNumber } from '../../utils/is'
+import { format, sign } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-const number = require('../../utils/number')
+const name = 'type.Range'
+const dependencies = []
 
-function factory (type, config, load, typed) {
+export const createRangeClass = factory(name, dependencies, () => {
   /**
    * Create a range. A range has a start, step, and end, and contains functions
    * to iterate over the range.
@@ -135,7 +138,7 @@ function factory (type, config, load, typed) {
     const end = this.end
     const diff = end - start
 
-    if (number.sign(step) === number.sign(diff)) {
+    if (sign(step) === sign(diff)) {
       len = Math.ceil((diff) / step)
     } else if (diff === 0) {
       len = 0
@@ -268,12 +271,12 @@ function factory (type, config, load, typed) {
    * @returns {string} str
    */
   Range.prototype.format = function (options) {
-    let str = number.format(this.start, options)
+    let str = format(this.start, options)
 
     if (this.step !== 1) {
-      str += ':' + number.format(this.step, options)
+      str += ':' + format(this.step, options)
     }
-    str += ':' + number.format(this.end, options)
+    str += ':' + format(this.end, options)
     return str
   }
 
@@ -313,8 +316,4 @@ function factory (type, config, load, typed) {
   }
 
   return Range
-}
-
-exports.name = 'Range'
-exports.path = 'type'
-exports.factory = factory
+})

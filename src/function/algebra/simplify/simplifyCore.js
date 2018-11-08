@@ -1,21 +1,29 @@
 'use strict'
 
 import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
 
-export function factory (type, config, load, typed, math) {
-  const equal = load(require('../../relational/equal'))
-  const isZero = load(require('../../utils/isZero'))
-  const add = load(require('../../arithmetic/add'))
-  const subtract = load(require('../../arithmetic/subtract'))
-  const multiply = load(require('../../arithmetic/multiply'))
-  const divide = load(require('../../arithmetic/divide'))
-  const pow = load(require('../../arithmetic/pow'))
+const name = 'algebra.simplify.simplifyCore'
+const dependencies = [
+  'equal',
+  'isZero',
+  'add',
+  'subtract',
+  'multiply',
+  'divide',
+  'pow',
+  'expression.node.ConstantNode',
+  'expression.node.OperatorNode',
+  'expression.node.FunctionNode',
+  'expression.node.ParenthesisNode'
+]
 
-  const ConstantNode = math.expression.node.ConstantNode
-  const OperatorNode = math.expression.node.OperatorNode
-  const FunctionNode = math.expression.node.FunctionNode
-  const ParenthesisNode = math.expression.node.ParenthesisNode
-
+export const createSimplifyCore = factory(name, dependencies, ({ equal, isZero, add, subtract, multiply, divide, pow, expression: { node: {
+  ConstantNode,
+  OperatorNode,
+  FunctionNode,
+  ParenthesisNode
+} } }) => {
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
 
@@ -175,8 +183,4 @@ export function factory (type, config, load, typed, math) {
   }
 
   return simplifyCore
-}
-
-export var math = true
-export const name = 'simplifyCore'
-export var path = 'algebra.simplify'
+})

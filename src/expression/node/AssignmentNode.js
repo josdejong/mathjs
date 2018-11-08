@@ -1,16 +1,22 @@
 'use strict'
 
 import { isAccessorNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
+import { getSafeProperty, setSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { accessFactory } from './utils/access'
+import { assignFactory } from './utils/assign'
+import { getPrecedence } from '../operators'
 
-const getSafeProperty = require('../../utils/customs').getSafeProperty
-const setSafeProperty = require('../../utils/customs').setSafeProperty
+const name = 'expression.node.AssignmentNode'
+const dependencies = [
+  'subset',
+  'matrix',
+  'expression.node.Node'
+]
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const assign = load(require('./utils/assign'))
-  const access = load(require('./utils/access'))
-
-  const operators = require('../operators')
+export const createAssignmentNode = factory(name, dependencies, ({ subset, matrix, expression: { node: { Node } } }) => {
+  const access = accessFactory({ subset })
+  const assign = assignFactory({ subset, matrix })
 
   /**
    * @constructor AssignmentNode
@@ -215,8 +221,8 @@ function factory (type, config, load, typed) {
       parenthesis = 'keep'
     }
 
-    const precedence = operators.getPrecedence(node, parenthesis)
-    const exprPrecedence = operators.getPrecedence(node.value, parenthesis)
+    const precedence = getPrecedence(node, parenthesis)
+    const exprPrecedence = getPrecedence(node.value, parenthesis)
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
   }
@@ -294,8 +300,4 @@ function factory (type, config, load, typed) {
   }
 
   return AssignmentNode
-}
-
-exports.name = 'AssignmentNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

@@ -360,7 +360,7 @@ describe('import', function () {
 
       assert.throws(() => {
         math2.import(cubeTestFactory)
-      }, /Cannot create function cubeTest, some dependencies are missing: multiplyTest/)
+      }, /Cannot create function "cubeTest", some dependencies are missing: "multiplyTest"/)
     })
   })
 

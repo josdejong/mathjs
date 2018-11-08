@@ -1,11 +1,14 @@
 'use strict'
 
 import { isChain } from '../../utils/is'
+import { format } from '../../utils/string'
+import { lazy } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-const format = require('../../utils/string').format
-const lazy = require('../../utils/object').lazy
+const name = 'type.Chain'
+const dependencies = ['on', 'scope']
 
-function factory (type, config, load, typed, math) {
+export const createChainClass = factory(name, dependencies, ({ on, scope }) => {
   /**
    * @constructor Chain
    * Wrap any value in a chain, allowing to perform chained operations on
@@ -167,10 +170,10 @@ function factory (type, config, load, typed, math) {
   }
 
   // create proxy for everything that is in math.js
-  Chain.createProxy(math)
+  Chain.createProxy(scope)
 
   // register on the import event, automatically add a proxy for every imported function.
-  math.on('import', function (name, resolver, path) {
+  on('import', function (name, resolver, path) {
     if (!path) {
       // an imported function (not a data type or something special)
       createLazyProxy(name, resolver)
@@ -178,10 +181,4 @@ function factory (type, config, load, typed, math) {
   })
 
   return Chain
-}
-
-exports.name = 'Chain'
-exports.path = 'type'
-exports.factory = factory
-exports.math = true // require providing the math namespace as 5th argument
-exports.lazy = false // we need to register a listener on the import events, so no lazy loading
+})

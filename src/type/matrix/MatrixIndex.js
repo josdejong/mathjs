@@ -1,11 +1,14 @@
 'use strict'
 
 import { isMatrix, isRange } from '../../utils/is'
+import { clone } from '../../utils/object'
+import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-const clone = require('../../utils/object').clone
-const isInteger = require('../../utils/number').isInteger
+const name = 'type.Index'
+const dependencies = ['type.ImmutableDenseMatrix']
 
-function factory (type) {
+export const createIndexClass = factory(name, dependencies, ({ type: { ImmutableDenseMatrix } }) => {
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.
@@ -76,7 +79,7 @@ function factory (type) {
       }
     }
     // create matrix
-    return new type.ImmutableDenseMatrix(arg)
+    return new ImmutableDenseMatrix(arg)
   }
 
   /**
@@ -272,8 +275,4 @@ function factory (type) {
   }
 
   return Index
-}
-
-exports.name = 'Index'
-exports.path = 'type'
-exports.factory = factory
+})

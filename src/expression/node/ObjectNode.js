@@ -1,15 +1,17 @@
 'use strict'
 
 import { isNode } from '../../utils/is'
+import { escape, stringify } from '../../utils/string'
+import { isSafeProperty } from '../../utils/customs'
+import { hasOwnProperty } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-const stringify = require('../../utils/string').stringify
-const escape = require('../../utils/string').escape
-const isSafeProperty = require('../../utils/customs').isSafeProperty
-const hasOwnProperty = require('../../utils/object').hasOwnProperty
+const name = 'expression.node.ObjectNode'
+const dependencies = [
+  'expression.node.Node'
+]
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-
+export const createObjectNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor ObjectNode
    * @extends {Node}
@@ -195,8 +197,4 @@ function factory (type, config, load, typed) {
   }
 
   return ObjectNode
-}
-
-exports.name = 'ObjectNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

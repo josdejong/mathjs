@@ -116,7 +116,7 @@ export function factory (type, config, load, typed) {
   })
 
   or.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['or']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latex.latexOperators['or']}\${args[1]}\\right)`
   }
 
   return or

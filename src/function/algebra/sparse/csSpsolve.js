@@ -1,12 +1,16 @@
 'use strict'
 
-export function factory (type, config, load) {
-  const divideScalar = load(require('../../arithmetic/divideScalar'))
-  const multiply = load(require('../../arithmetic/multiply'))
-  const subtract = load(require('../../arithmetic/subtract'))
+import { csReach } from './csReach'
+import { factory } from '../../../utils/factory'
 
-  const csReach = load(require('./csReach'))
+const name = 'csSpsolve'
+const dependencies = [
+  'divideScalar',
+  'multiply',
+  'subtract'
+]
 
+export const createCsSpsolve = factory(name, dependencies, ({ divideScalar, multiply, subtract }) => {
   /**
    * The function csSpsolve() computes the solution to G * x = bk, where bk is the
    * kth column of B. When lo is true, the function assumes G = L is lower triangular with the
@@ -26,7 +30,7 @@ export function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const csSpsolve = function (g, b, k, xi, x, pinv, lo) {
+  return function csSpsolve (g, b, k, xi, x, pinv, lo) {
     // g arrays
     const gvalues = g._values
     const gindex = g._index
@@ -73,9 +77,4 @@ export function factory (type, config, load) {
     // return top of stack
     return top
   }
-
-  return csSpsolve
-}
-
-export const name = 'csSpsolve'
-export var path = 'algebra.sparse'
+})

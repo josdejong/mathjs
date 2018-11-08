@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { extend } from '../../utils/object'
-import { operators as latexOperators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'

@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { isMatrix } from '../../utils/is'
 import { extend } from '../../utils/object'
 import { arraySize } from '../../utils/array'
-import { operators as latexOperators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 

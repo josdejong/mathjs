@@ -2,17 +2,21 @@
 
 import { isNode } from '../../utils/is'
 
-const keywords = require('../keywords')
-const escape = require('../../utils/string').escape
-const forEach = require('../../utils/array').forEach
-const join = require('../../utils/array').join
-const latex = require('../../utils/latex')
-const operators = require('../operators')
-const setSafeProperty = require('../../utils/customs').setSafeProperty
+import { keywords } from '../keywords'
+import { escape } from '../../utils/string'
+import { forEach, join } from '../../utils/array'
+import { toSymbol } from '../../utils/latex'
+import { getPrecedence } from '../operators'
+import { setSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+const name = 'expression.node.FunctionAssignmentNode'
+const dependencies = [
+  'typed',
+  'expression.node.Node'
+]
 
+export const createFunctionAssignmentNode = factory(name, dependencies, ({ typed, expression: { node: { Node } } }) => {
   /**
    * @constructor FunctionAssignmentNode
    * @extends {Node}
@@ -133,8 +137,8 @@ function factory (type, config, load, typed) {
    * @private
    */
   function needParenthesis (node, parenthesis) {
-    const precedence = operators.getPrecedence(node, parenthesis)
-    const exprPrecedence = operators.getPrecedence(node.expr, parenthesis)
+    const precedence = getPrecedence(node, parenthesis)
+    const exprPrecedence = getPrecedence(node.expr, parenthesis)
 
     return (parenthesis === 'all') ||
       ((exprPrecedence !== null) && (exprPrecedence <= precedence))
@@ -216,11 +220,8 @@ function factory (type, config, load, typed) {
     }
 
     return '\\mathrm{' + this.name +
-        '}\\left(' + this.params.map(latex.toSymbol).join(',') + '\\right):=' + expr
+        '}\\left(' + this.params.map(toSymbol).join(',') + '\\right):=' + expr
   }
 
   return FunctionAssignmentNode
-}
-exports.name = 'FunctionAssignmentNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

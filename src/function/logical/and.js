@@ -138,7 +138,7 @@ export function factory (type, config, load, typed) {
   })
 
   and.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['and']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latex.latexOperators['and']}\${args[1]}\\right)`
   }
 
   return and

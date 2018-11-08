@@ -1,14 +1,16 @@
 'use strict'
 
 import { isNode } from '../../utils/is'
+import { forEach, map } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-const forEach = require('../../utils/array').forEach
-const map = require('../../utils/array').map
+const name = 'expression.node.BlockNode'
+const dependencies = [
+  'type.ResultSet',
+  'expression.node.Node'
+]
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const ResultSet = load(require('../../type/resultset/ResultSet'))
-
+export const createBlockNode = factory(name, dependencies, ({ type: { ResultSet }, expression: { node: { Node } } }) => {
   /**
    * @constructor BlockNode
    * @extends {Node}
@@ -182,8 +184,4 @@ function factory (type, config, load, typed) {
   }
 
   return BlockNode
-}
-
-exports.name = 'BlockNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

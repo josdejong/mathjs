@@ -1,29 +1,48 @@
 'use strict'
 
-import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
+import { factory } from '../utils/factory'
+import { isAccessorNode, isConstantNode, isFunctionNode, isMatrix, isOperatorNode, isSymbolNode } from '../utils/is'
 import { deepMap } from '../utils/collection'
+import ArgumentsError from '../error/ArgumentsError'
 
-const ArgumentsError = require('../error/ArgumentsError')
+const name = 'expression.parse'
+const dependencies = [
+  'numeric',
+  'config',
+  'expression.node.AccessorNode',
+  'expression.node.ArrayNode',
+  'expression.node.AssignmentNode',
+  'expression.node.BlockNode',
+  'expression.node.ConditionalNode',
+  'expression.node.ConstantNode',
+  'expression.node.FunctionAssignmentNode',
+  'expression.node.FunctionNode',
+  'expression.node.IndexNode',
+  'expression.node.ObjectNode',
+  'expression.node.OperatorNode',
+  'expression.node.ParenthesisNode',
+  'expression.node.RangeNode',
+  'expression.node.RelationalNode',
+  'expression.node.SymbolNode'
+]
 
-function factory (type, config, load, typed) {
-  const numeric = load(require('../function/utils/numeric'))
-
-  const AccessorNode = load(require('./node/AccessorNode'))
-  const ArrayNode = load(require('./node/ArrayNode'))
-  const AssignmentNode = load(require('./node/AssignmentNode'))
-  const BlockNode = load(require('./node/BlockNode'))
-  const ConditionalNode = load(require('./node/ConditionalNode'))
-  const ConstantNode = load(require('./node/ConstantNode'))
-  const FunctionAssignmentNode = load(require('./node/FunctionAssignmentNode'))
-  const IndexNode = load(require('./node/IndexNode'))
-  const ObjectNode = load(require('./node/ObjectNode'))
-  const OperatorNode = load(require('./node/OperatorNode'))
-  const ParenthesisNode = load(require('./node/ParenthesisNode'))
-  const FunctionNode = load(require('./node/FunctionNode'))
-  const RangeNode = load(require('./node/RangeNode'))
-  const RelationalNode = load(require('./node/RelationalNode'))
-  const SymbolNode = load(require('./node/SymbolNode'))
-
+export const createParseExpression = factory(name, dependencies, ({ numeric, config, expression: { node: {
+  AccessorNode,
+  ArrayNode,
+  AssignmentNode,
+  BlockNode,
+  ConditionalNode,
+  ConstantNode,
+  FunctionAssignmentNode,
+  FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
+  ParenthesisNode,
+  RangeNode,
+  RelationalNode,
+  SymbolNode
+} } }) => {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.eval().
@@ -68,7 +87,7 @@ function factory (type, config, load, typed) {
       // parse a single expression
 
       return parseStart(expr, extraNodes)
-    } else if (Array.isArray(expr) || expr instanceof type.Matrix) {
+    } else if (Array.isArray(expr) || isMatrix(expr)) {
       // parse an array or matrix with expressions
       return deepMap(expr, function (elem) {
         if (typeof elem !== 'string') throw new TypeError('String expected')
@@ -1573,7 +1592,7 @@ function factory (type, config, load, typed) {
       numberStr = state.token
       getToken(state)
 
-      return new ConstantNode(numeric(numberStr, config.number))
+      return new ConstantNode(numeric(numberStr, config().number))
     }
 
     return parseParentheses(state)
@@ -1672,8 +1691,4 @@ function factory (type, config, load, typed) {
   }
 
   return parse
-}
-
-exports.name = 'parse'
-exports.path = 'expression'
-exports.factory = factory
+})

@@ -1,8 +1,7 @@
 // test FunctionNode
 import assert from 'assert'
 
-import defaultMath from '../../../src/main'
-const math = defaultMath.create()
+import math from '../../../src/main'
 const Node = math.expression.node.Node
 const ConstantNode = math.expression.node.ConstantNode
 const SymbolNode = math.expression.node.SymbolNode

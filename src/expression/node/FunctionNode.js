@@ -2,17 +2,21 @@
 
 import { isAccessorNode, isFunctionAssignmentNode, isIndexNode, isNode, isSymbolNode } from '../../utils/is'
 
-const latex = require('../../utils/latex')
-const escape = require('../../utils/string').escape
-const hasOwnProperty = require('../../utils/object').hasOwnProperty
-const map = require('../../utils/array').map
-const validateSafeMethod = require('../../utils/customs').validateSafeMethod
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+import { escape } from '../../utils/string'
+import { hasOwnProperty } from '../../utils/object'
+import { map } from '../../utils/array'
+import { getSafeProperty, validateSafeMethod } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { defaultTemplate } from '../../utils/latex'
 
-function factory (type, config, load, typed, math) {
-  const Node = load(require('./Node'))
-  const SymbolNode = load(require('./SymbolNode'))
+const name = 'expression.node.FunctionNode'
+const dependencies = [
+  'scope',
+  'expression.node.Node',
+  'expression.node.SymbolNode'
+]
 
+export const createFunctionNode = factory(name, dependencies, ({ scope, expression: { node: { Node, SymbolNode } } }) => {
   /**
    * @constructor FunctionNode
    * @extends {./Node}
@@ -386,9 +390,13 @@ function factory (type, config, load, typed, math) {
 
     let latexConverter
 
-    if (math[this.name] && ((typeof math[this.name].toTex === 'function') || (typeof math[this.name].toTex === 'object') || (typeof math[this.name].toTex === 'string'))) {
+    if (scope[this.name] &&
+      ((typeof scope[this.name].toTex === 'function') ||
+        (typeof scope[this.name].toTex === 'object') ||
+        (typeof scope[this.name].toTex === 'string'))
+    ) {
       // .toTex is a callback function
-      latexConverter = math[this.name].toTex
+      latexConverter = scope[this.name].toTex
     }
 
     let customToTex
@@ -414,7 +422,7 @@ function factory (type, config, load, typed, math) {
       return customToTex
     }
 
-    return expandTemplate(latex.defaultTemplate, this, options)
+    return expandTemplate(defaultTemplate, this, options)
   }
 
   /**
@@ -426,9 +434,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return FunctionNode
-}
-
-exports.name = 'FunctionNode'
-exports.path = 'expression.node'
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.factory = factory
+})

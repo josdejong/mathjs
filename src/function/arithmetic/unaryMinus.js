@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { operators as latexOperators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 
 const name = 'unaryMinus'
 const dependencies = ['typed']

@@ -1,13 +1,23 @@
 'use strict'
 
 import { isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
 
-export function factory (type, config, load, typed, math) {
-  const Node = math.expression.node.Node
-  const OperatorNode = math.expression.node.OperatorNode
-  const FunctionNode = math.expression.node.FunctionNode
-  const ParenthesisNode = math.expression.node.ParenthesisNode
+const name = 'algebra.simplify.resolve'
+const dependencies = [
+  'expression.parse',
+  'expression.node.Node',
+  'expression.node.FunctionNode',
+  'expression.node.OperatorNode',
+  'expression.node.ParenthesisNode'
+]
 
+export const createResolve = factory(name, dependencies, ({ expression: { parse, node: {
+  Node,
+  FunctionNode,
+  OperatorNode,
+  ParenthesisNode
+} } }) => {
   /**
    * resolve(expr, scope) replaces variable nodes with their scoped values
    *
@@ -34,7 +44,7 @@ export function factory (type, config, load, typed, math) {
       if (value instanceof Node) {
         return resolve(value, scope)
       } else if (typeof value === 'number') {
-        return math.parse(String(value))
+        return parse(String(value))
       }
     } else if (isOperatorNode(node)) {
       const args = node.args.map(function (arg) {
@@ -53,8 +63,4 @@ export function factory (type, config, load, typed, math) {
   }
 
   return resolve
-}
-
-export var math = true
-export const name = 'resolve'
-export var path = 'algebra.simplify'
+})

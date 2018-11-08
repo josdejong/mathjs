@@ -3,7 +3,7 @@
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
 import { factory } from '../../utils/factory'
-import { operators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
@@ -146,7 +146,7 @@ export const createSmaller = factory(name, dependencies, ({ typed, config, matri
   })
 
   smaller.toTex = {
-    2: `\\left(\${args[0]}${operators['smaller']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['smaller']}\${args[1]}\\right)`
   }
 
   return smaller

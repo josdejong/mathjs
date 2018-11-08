@@ -1,12 +1,16 @@
 'use strict'
 
-const format = require('../../utils/string').format
-const escapeLatex = require('../../utils/latex').escape
+import { format } from '../../utils/string'
+import { escape as escapeLatex } from '../../utils/latex'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const typeOf = load(require('../../function/utils/typeOf'))
+const name = 'expression.node.ConstantNode'
+const dependencies = [
+  'typeOf',
+  'expression.node.Node'
+]
 
+export const createConstantNode = factory(name, dependencies, ({ typeOf, expression: { node: { Node } } }) => {
   /**
    * A ConstantNode holds a constant value like a number or string.
    *
@@ -173,8 +177,4 @@ function factory (type, config, load, typed) {
   }
 
   return ConstantNode
-}
-
-exports.name = 'ConstantNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

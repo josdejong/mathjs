@@ -1,16 +1,14 @@
-import defaultMath from '../../../../src/main'
+import approx from '../../../../tools/approx'
+import math from '../../../../src/main'
+import { csPermute } from '../../../../src/function/algebra/sparse/csPermute'
+import { createCsLu } from '../../../../src/function/algebra/sparse/csLu'
+import { createCsSqr } from '../../../../src/function/algebra/sparse/csSqr'
+import * as market from '../../../../tools/matrixmarket'
 
-const approx = require('../../../../tools/approx')
-const market = require('../../../../tools/matrixmarket')
-const math = defaultMath.create()
+const { abs, add, divideScalar, multiply, subtract, larger, largerEq, transpose, type: { SparseMatrix } } = math
 
-math.import(require('../../../../src/function/algebra/sparse/csPermute'))
-math.import(require('../../../../src/function/algebra/sparse/csLu'))
-math.import(require('../../../../src/function/algebra/sparse/csSqr'))
-
-const csPermute = math.algebra.sparse.csPermute
-const csLu = math.algebra.sparse.csLu
-const csSqr = math.algebra.sparse.csSqr
+const csLu = createCsLu({ abs, divideScalar, multiply, subtract, larger, largerEq, type: { SparseMatrix } })
+const csSqr = createCsSqr({ add, multiply, transpose })
 
 describe('csLu', function () {
   it('should decompose matrix, 48 x 48, natural ordering (order=0), full pivoting, matrix market', function (done) {

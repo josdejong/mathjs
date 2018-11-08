@@ -1,7 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { operators as latexOperators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'

@@ -1,20 +1,26 @@
 'use strict'
 
-const latex = require('../../utils/latex')
-const escape = require('../../utils/string').escape
-const hasOwnProperty = require('../../utils/object').hasOwnProperty
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+import { escape } from '../../utils/string'
+import { hasOwnProperty } from '../../utils/object'
+import { getSafeProperty } from '../../utils/customs'
+import { factory } from '../../utils/factory'
+import { toSymbol } from '../../utils/latex'
 
-function factory (type, config, load, typed, math) {
-  const Node = load(require('./Node'))
+const name = 'expression.node.SymbolNode'
+const dependencies = [
+  'scope',
+  'type.Unit',
+  'expression.node.Node'
+]
 
+export const createSymbolNode = factory(name, dependencies, ({ scope, type: { Unit }, expression: { node: { Node } } }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name
    * @return {boolean}
    */
   function isValuelessUnit (name) {
-    return type.Unit ? type.Unit.isValuelessUnit(name) : false
+    return Unit ? Unit.isValuelessUnit(name) : false
   }
 
   /**
@@ -76,7 +82,7 @@ function factory (type, config, load, typed, math) {
         return name in scope
           ? getSafeProperty(scope, name)
           : isUnit
-            ? new type.Unit(null, name)
+            ? new Unit(null, name)
             : undef(name)
       }
     }
@@ -182,10 +188,10 @@ function factory (type, config, load, typed, math) {
    */
   SymbolNode.prototype._toTex = function (options) {
     let isUnit = false
-    if ((typeof math[this.name] === 'undefined') && isValuelessUnit(this.name)) {
+    if ((typeof scope[this.name] === 'undefined') && isValuelessUnit(this.name)) {
       isUnit = true
     }
-    const symbol = latex.toSymbol(this.name, isUnit)
+    const symbol = toSymbol(this.name, isUnit)
     if (symbol[0] === '\\') {
       // no space needed if the symbol starts with '\'
       return symbol
@@ -195,9 +201,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return SymbolNode
-}
-
-exports.name = 'SymbolNode'
-exports.path = 'expression.node'
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.factory = factory
+})

@@ -108,7 +108,7 @@ export function factory (type, config, load, typed) {
   })
 
   bitXor.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['bitXor']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latex.latexOperators['bitXor']}\${args[1]}\\right)`
   }
 
   return bitXor

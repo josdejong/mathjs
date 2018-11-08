@@ -1,12 +1,13 @@
-import defaultMath from '../../../../src/main'
+import math from '../../../../src/main'
+import { createCsAmd } from '../../../../src/function/algebra/sparse/csAmd'
 
 const assert = require('assert')
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
-const math = defaultMath.create()
-math.import(require('../../../../src/function/algebra/sparse/csAmd'))
 
-const csAmd = math.algebra.sparse.csAmd
+const { add, multiply, transpose } = math
+
+export const csAmd = createCsAmd({ add, multiply, transpose })
 
 describe('csAmd', function () {
   it('should approximate minimum degree ordering, 48 x 48, natural ordering (order=0), matrix market', function (done) {

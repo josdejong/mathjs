@@ -1,12 +1,9 @@
 'use strict'
 
-const errorTransform = require('../../transform/error.transform').transform
-const setSafeProperty = require('../../../utils/customs').setSafeProperty
+import { transform as errorTransform } from '../../transform/error.transform'
+import { setSafeProperty } from '../../../utils/customs'
 
-function factory (type, config, load, typed) {
-  const subset = load(require('../../../function/matrix/subset'))
-  const matrix = load(require('../../../type/matrix/function/matrix'))
-
+export function assignFactory ({ subset, matrix }) {
   /**
    * Replace part of an object:
    *
@@ -44,5 +41,3 @@ function factory (type, config, load, typed) {
     }
   }
 }
-
-exports.factory = factory

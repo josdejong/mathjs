@@ -1,23 +1,16 @@
 'use strict'
 
-export function factory (type, config, load) {
-  const csFlip = load(require('./csFlip'))
+import { csFlip } from './csFlip'
 
-  /**
-   * Marks the node at w[j]
-   *
-   * @param {Array}   w               The array
-   * @param {Number}  j               The array index
-   *
-   * Reference: http://faculty.cse.tamu.edu/davis/publications.html
-   */
-  const csMark = function (w, j) {
-    // mark w[j]
-    w[j] = csFlip(w[j])
-  }
-
-  return csMark
+/**
+ * Marks the node at w[j]
+ *
+ * @param {Array}   w               The array
+ * @param {Number}  j               The array index
+ *
+ * Reference: http://faculty.cse.tamu.edu/davis/publications.html
+ */
+export function csMark (w, j) {
+  // mark w[j]
+  w[j] = csFlip(w[j])
 }
-
-export const name = 'csMark'
-export var path = 'algebra.sparse'

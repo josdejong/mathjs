@@ -3,10 +3,9 @@
 import { bitAnd as bigBitAnd } from '../../utils/bignumber/bitwise'
 
 import { isInteger } from '../../utils/number'
+import { latexOperators } from '../../utils/latex'
 
 export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
-
   const matrix = load(require('../../type/matrix/function/matrix'))
 
   const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
@@ -108,7 +107,7 @@ export function factory (type, config, load, typed) {
   })
 
   bitAnd.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['bitAnd']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['bitAnd']}\${args[1]}\\right)`
   }
 
   return bitAnd

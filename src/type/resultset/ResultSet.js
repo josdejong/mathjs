@@ -1,6 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed) {
+import { factory } from '../../utils/factory'
+
+const name = 'type.ResultSet'
+const dependencies = []
+
+export const createResultSet = factory(name, dependencies, () => {
   /**
    * A ResultSet contains a list or results
    * @class ResultSet
@@ -64,8 +69,4 @@ function factory (type, config, load, typed) {
   }
 
   return ResultSet
-}
-
-exports.name = 'ResultSet'
-exports.path = 'type'
-exports.factory = factory
+})

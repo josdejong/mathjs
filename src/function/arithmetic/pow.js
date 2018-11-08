@@ -3,7 +3,7 @@
 import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 import { arraySize as size } from '../../utils/array'
-import { operators as latexOperators } from '../../utils/latex'
+import { latexOperators } from '../../utils/latex'
 
 const name = 'pow'
 const dependencies = [

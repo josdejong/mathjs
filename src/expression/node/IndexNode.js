@@ -1,16 +1,17 @@
 'use strict'
 
 import { isBigNumber, isConstantNode, isNode, isRangeNode, isSymbolNode } from '../../utils/is'
+import { map } from '../../utils/array'
+import { escape } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-const map = require('../../utils/array').map
-const escape = require('../../utils/string').escape
+const name = 'expression.node.IndexNode'
+const dependencies = [
+  'type.Range',
+  'expression.node.Node'
+]
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-  const Range = load(require('../../type/matrix/Range'))
-
-  const isArray = Array.isArray
-
+export const createIndexNode = factory(name, dependencies, ({ type: { Range }, expression: { node: { Node } } }) => {
   /**
    * @constructor IndexNode
    * @extends Node
@@ -35,7 +36,7 @@ function factory (type, config, load, typed) {
     this.dotNotation = dotNotation || false
 
     // validate input
-    if (!isArray(dimensions) || !dimensions.every(isNode)) {
+    if (!Array.isArray(dimensions) || !dimensions.every(isNode)) {
       throw new TypeError('Array containing Nodes expected for parameter "dimensions"')
     }
     if (this.dotNotation && !this.isObjectProperty()) {
@@ -277,8 +278,4 @@ function factory (type, config, load, typed) {
   }
 
   return IndexNode
-}
-
-exports.name = 'IndexNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

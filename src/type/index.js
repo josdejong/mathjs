@@ -1,19 +1,25 @@
 'use strict'
 
 import bignumber from './bignumber'
+import { createBoolean } from './boolean'
+import chain from './chain'
 import complex from './complex'
 import fraction from './fraction'
+import matrix from './matrix'
 import { createNumber } from './number'
+import resultset from './resultset'
+import { createString } from './string'
+import unit from './unit'
 
 export default [
   bignumber,
-  require('./boolean'),
-  require('./chain'),
+  createBoolean,
+  chain,
   complex,
   fraction,
-  require('./matrix'),
+  matrix,
   createNumber,
-  require('./resultset'),
-  require('./string'),
-  require('./unit')
+  resultset,
+  createString,
+  unit
 ]

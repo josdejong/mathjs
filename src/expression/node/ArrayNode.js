@@ -1,12 +1,15 @@
 'use strict'
 
 import { isNode } from '../../utils/is'
+import { map } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-const map = require('../../utils/array').map
+const name = 'expression.node.ArrayNode'
+const dependencies = [
+  'expression.node.Node'
+]
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
-
+export const createArrayNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor ArrayNode
    * @extends {Node}
@@ -179,8 +182,4 @@ function factory (type, config, load, typed) {
   }
 
   return ArrayNode
-}
-
-exports.name = 'ArrayNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

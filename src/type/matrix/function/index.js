@@ -1,8 +1,12 @@
 'use strict'
 
+import { factory } from '../../../utils/factory'
 import { isBigNumber, isMatrix } from '../../../utils/is'
 
-function factory (type, config, load, typed) {
+const name = 'index'
+const dependencies = ['typed', 'type.Index']
+
+export const createIndex = factory(name, dependencies, ({ typed, type: { Index } }) => {
   /**
    * Create an index. An Index can store ranges having start, step, and end
    * for multiple dimensions.
@@ -38,7 +42,7 @@ function factory (type, config, load, typed) {
    * @param {...*} ranges   Zero or more ranges or numbers.
    * @return {Index}        Returns the created index
    */
-  return typed('index', {
+  return typed(name, {
     '...number | string | BigNumber | Range | Array | Matrix': function (args) {
       const ranges = args.map(function (arg) {
         if (isBigNumber(arg)) {
@@ -53,12 +57,9 @@ function factory (type, config, load, typed) {
         }
       })
 
-      const res = new type.Index()
-      type.Index.apply(res, ranges)
+      const res = new Index()
+      Index.apply(res, ranges)
       return res
     }
   })
-}
-
-exports.name = 'index'
-exports.factory = factory
+})

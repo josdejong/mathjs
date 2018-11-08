@@ -1,12 +1,16 @@
 'use strict'
 
 import { isOperatorNode } from '../../../utils/is'
+import { factory } from '../../../utils/factory'
 
-export function factory (type, config, load, typed, math) {
-  const FunctionNode = math.expression.node.FunctionNode
-  const OperatorNode = math.expression.node.OperatorNode
-  const SymbolNode = math.expression.node.SymbolNode
+const name = 'algebra.simplify.util'
+const dependencies = [
+  'expression.node.FunctionNode',
+  'expression.node.OperatorNode',
+  'expression.node.SymbolNode'
+]
 
+export const createUtil = factory(name, dependencies, ({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } }) => {
   // TODO commutative/associative properties rely on the arguments
   // e.g. multiply is not commutative for matrices
   // The properties should be calculated from an argument to simplify, or possibly something in math.config
@@ -141,15 +145,14 @@ export function factory (type, config, load, typed, math) {
       }
     }
   }
-  return {
-    createMakeNodeFunction: createMakeNodeFunction,
-    isCommutative: isCommutative,
-    isAssociative: isAssociative,
-    flatten: flatten,
-    allChildren: allChildren,
-    unflattenr: unflattenr,
-    unflattenl: unflattenl
-  }
-}
 
-export var math = true
+  return {
+    createMakeNodeFunction,
+    isCommutative,
+    isAssociative,
+    flatten,
+    allChildren,
+    unflattenr,
+    unflattenl
+  }
+})

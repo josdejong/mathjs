@@ -1,20 +1,32 @@
 'use strict'
 
 import { isConstantNode } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const parse = load(require('../../expression/parse'))
-  const simplify = load(require('./simplify'))
-  const equal = load(require('../relational/equal'))
-  const isZero = load(require('../utils/isZero'))
-  const typeOf = load(require('../utils/typeOf'))
-  const numeric = load(require('../utils/numeric'))
-  const ConstantNode = load(require('../../expression/node/ConstantNode'))
-  const FunctionNode = load(require('../../expression/node/FunctionNode'))
-  const OperatorNode = load(require('../../expression/node/OperatorNode'))
-  const ParenthesisNode = load(require('../../expression/node/ParenthesisNode'))
-  const SymbolNode = load(require('../../expression/node/SymbolNode'))
+const name = 'derivative'
+const dependencies = [
+  'typed',
+  'config',
+  'parse',
+  'simplify',
+  'equal',
+  'isZero',
+  'typeOf',
+  'numeric',
+  'expression.node.ConstantNode',
+  'expression.node.FunctionNode',
+  'expression.node.OperatorNode',
+  'expression.node.ParenthesisNode',
+  'expression.node.SymbolNode'
+]
 
+export const createDerivative = factory(name, dependencies, ({ typed, config, parse, simplify, equal, isZero, typeOf, numeric, expression: { node: {
+  ConstantNode,
+  FunctionNode,
+  OperatorNode,
+  ParenthesisNode,
+  SymbolNode
+} } }) => {
   /**
    * Takes the derivative of an expression expressed in parser Nodes.
    * The derivative will be taken over the supplied variable in the
@@ -772,10 +784,8 @@ export function factory (type, config, load, typed) {
    * @return {ConstantNode}
    */
   function createConstantNode (value, valueType) {
-    return new ConstantNode(numeric(value, valueType || config.number))
+    return new ConstantNode(numeric(value, valueType || config().number))
   }
 
   return derivative
-}
-
-export const name = 'derivative'
+})

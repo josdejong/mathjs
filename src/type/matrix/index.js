@@ -14,27 +14,33 @@ import { createAlgorithm11 } from './utils/algorithm11'
 import { createAlgorithm12 } from './utils/algorithm12'
 import { createAlgorithm13 } from './utils/algorithm13'
 import { createAlgorithm14 } from './utils/algorithm14'
-import { createMatrixClass } from './Matrix'
 import { createDenseMatrixClass } from './DenseMatrix'
+import { createFibonacciHeapClass } from './FibonacciHeap'
+import { createMatrixClass } from './Matrix'
+import { createIndexClass } from './MatrixIndex'
+import { createRangeClass } from './Range'
+import { createSpaClass } from './Spa'
 import { createSparseMatrixClass } from './SparseMatrix'
 import { createImmutableDenseMatrixClass } from './ImmutableDenseMatrix'
+import { createIndex } from './function/index'
 import { createMatrix } from './function/matrix'
+import { createSparse } from './function/sparse'
 
-module.exports = [
+export default [
   // types
   createMatrixClass,
   createDenseMatrixClass,
   createSparseMatrixClass,
-  require('./Spa'),
-  require('./FibonacciHeap'),
+  createSpaClass,
+  createFibonacciHeapClass,
   createImmutableDenseMatrixClass,
-  require('./MatrixIndex'),
-  require('./Range'),
+  createIndexClass,
+  createRangeClass,
 
   // construction functions
-  require('./function/index'),
+  createIndex,
   createMatrix,
-  require('./function/sparse'),
+  createSparse,
 
   // util functions
   createAlgorithm01,

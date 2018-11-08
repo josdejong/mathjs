@@ -1,10 +1,14 @@
 'use strict'
 
 import { isNode } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const Node = load(require('./Node'))
+const name = 'expression.node.ParenthesisNode'
+const dependencies = [
+  'expression.node.Node'
+]
 
+export const createParenthesisNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor ParenthesisNode
    * @extends {Node}
@@ -146,8 +150,4 @@ function factory (type, config, load, typed) {
   }
 
   return ParenthesisNode
-}
-
-exports.name = 'ParenthesisNode'
-exports.path = 'expression.node'
-exports.factory = factory
+})

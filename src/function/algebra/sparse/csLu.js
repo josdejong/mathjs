@@ -1,16 +1,21 @@
 'use strict'
 
-export function factory (type, config, load) {
-  const abs = load(require('../../arithmetic/abs'))
-  const divideScalar = load(require('../../arithmetic/divideScalar'))
-  const multiply = load(require('../../arithmetic/multiply'))
+import { factory } from '../../../utils/factory'
+import { createCsSpsolve } from './csSpsolve'
 
-  const larger = load(require('../../relational/larger'))
-  const largerEq = load(require('../../relational/largerEq'))
+const name = 'csLu'
+const dependencies = [
+  'abs',
+  'divideScalar',
+  'multiply',
+  'subtract',
+  'larger',
+  'largerEq',
+  'type.SparseMatrix'
+]
 
-  const csSpsolve = load(require('./csSpsolve'))
-
-  const SparseMatrix = type.SparseMatrix
+export const createCsLu = factory(name, dependencies, ({ abs, divideScalar, multiply, subtract, larger, largerEq, type: { SparseMatrix } }) => {
+  const csSpsolve = createCsSpsolve({ divideScalar, multiply, subtract })
 
   /**
    * Computes the numeric LU factorization of the sparse matrix A. Implements a Left-looking LU factorization
@@ -27,7 +32,7 @@ export function factory (type, config, load) {
    *
    * Reference: http://faculty.cse.tamu.edu/davis/publications.html
    */
-  const csLu = function (m, s, tol) {
+  return function csLu (m, s, tol) {
     // validate input
     if (!m) { return null }
     // m arrays
@@ -163,9 +168,4 @@ export function factory (type, config, load) {
       pinv: pinv
     }
   }
-
-  return csLu
-}
-
-export const name = 'csLu'
-export var path = 'algebra.sparse'
+})

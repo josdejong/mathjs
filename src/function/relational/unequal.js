@@ -158,7 +158,7 @@ export function factory (type, config, load, typed) {
   })
 
   unequal.toTex = {
-    2: `\\left(\${args[0]}${latex.operators['unequal']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latex.latexOperators['unequal']}\${args[1]}\\right)`
   }
 
   return unequal

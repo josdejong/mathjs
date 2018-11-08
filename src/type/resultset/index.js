@@ -1,5 +1,8 @@
 'use strict'
-module.exports = [
+
+import { createResultSet } from './ResultSet'
+
+export default [
   // type
-  require('./ResultSet')
+  createResultSet
 ]

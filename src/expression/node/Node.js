@@ -2,11 +2,14 @@
 
 import { isNode } from '../../utils/is'
 
-const keywords = require('../keywords')
-const deepEqual = require('../../utils/object').deepEqual
-const hasOwnProperty = require('../../utils/object').hasOwnProperty
+import { keywords } from '../keywords'
+import { deepEqual, hasOwnProperty } from '../../utils/object'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed, math) {
+const name = 'expression.node.Node'
+const dependencies = ['expression.mathWithTransform']
+
+export const createNode = factory(name, dependencies, ({ expression: { mathWithTransform } }) => {
   /**
    * Node
    */
@@ -39,7 +42,7 @@ function factory (type, config, load, typed, math) {
    *                                  variables.
    */
   Node.prototype.compile = function () {
-    const expr = this._compile(math.expression.mathWithTransform, {})
+    const expr = this._compile(mathWithTransform, {})
     const args = {}
     const context = null
     return {
@@ -400,9 +403,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return Node
-}
-
-exports.name = 'Node'
-exports.path = 'expression.node'
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.factory = factory
+})

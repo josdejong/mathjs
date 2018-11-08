@@ -5,6 +5,6 @@ import index from '../../../src/expression/node/index'
 
 describe('node/index', function () {
   it('should contain all nodes', function () {
-    assert.strictEqual(index.length, 17)
+    assert.strictEqual(index.length, 16)
   })
 })
