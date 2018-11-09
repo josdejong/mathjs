@@ -214,6 +214,5 @@ export const createImmutableDenseMatrixClass = factory(name, dependencies, ({ sm
     return this._max
   }
 
-  // exports
   return ImmutableDenseMatrix
 })

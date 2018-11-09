@@ -2,6 +2,7 @@
 
 import { lazy } from './utils/object'
 import { factory } from './utils/factory'
+import { version } from './version'
 import * as bigConstants from './utils/bignumber/constants'
 
 const name = 'constants'
@@ -64,7 +65,7 @@ export const createConstants = factory(name, dependencies, ({ on, scope, config,
   setConstant(scope, 'i', Complex.I)
 
   // meta information
-  setConstant(scope, 'version', require('./version'))
+  setConstant(scope, 'version', version)
 })
 
 // create a constant in both math and mathWithTransform

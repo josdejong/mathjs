@@ -259,6 +259,5 @@ export const createMatrixClass = factory(name, dependencies, () => {
     throw new Error('Cannot invoke toString on a Matrix interface')
   }
 
-  // exports
   return Matrix
 })

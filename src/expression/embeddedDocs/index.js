@@ -425,7 +425,7 @@ export const createEmbeddedDocs = factory(name, dependencies, () => {
 
   // functions - probability
   docs.combinations = combinationsDocs
-  // docs.distribution = require('./function/probability/distribution')
+  // docs.distribution = distributionDocs
   docs.factorial = factorialDocs
   docs.gamma = gammaDocs
   docs.kldivergence = kldivergenceDocs

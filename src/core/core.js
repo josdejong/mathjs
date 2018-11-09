@@ -2,7 +2,7 @@
 
 import './../utils/polyfills'
 import { isLegacyFactory } from './../utils/object'
-import { createTyped } from './typed'
+import { createTyped } from './function/typed'
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'

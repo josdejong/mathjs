@@ -869,6 +869,5 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type
     return Matrix._storage.dense
   }
 
-  // exports
   return DenseMatrix
 })

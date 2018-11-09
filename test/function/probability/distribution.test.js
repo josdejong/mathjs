@@ -2,10 +2,10 @@ import assert from 'assert'
 import error from '../../../src/error/index'
 import _ from 'underscore'
 import math from '../../../src/main'
-math.import(require('../../../src/function/probability/distribution'))
+import { createDistribution } from '../../../src/function/probability/distribution'
 
 const Matrix = math.type.Matrix
-const distribution = math.distribution
+const distribution = createDistribution(math)
 
 const assertApproxEqual = function (testVal, val, tolerance) {
   const diff = Math.abs(val - testVal)
