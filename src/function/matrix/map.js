@@ -1,8 +1,12 @@
 'use strict'
 
 import { maxArgumentCount } from '../../utils/function'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'map'
+const dependencies = ['typed']
+
+export const createMap = factory(name, dependencies, ({ typed }) => {
   /**
    * Create a new matrix or array with the results of the callback function executed on
    * each entry of the matrix/array.
@@ -27,7 +31,7 @@ export function factory (type, config, load, typed) {
    *                              of the element, and the matrix being traversed.
    * @return {Matrix | array}     Transformed map of x
    */
-  const map = typed('map', {
+  const map = typed(name, {
     'Array, function': _map,
 
     'Matrix, function': function (x, callback) {
@@ -38,7 +42,7 @@ export function factory (type, config, load, typed) {
   map.toTex = undefined // use default template
 
   return map
-}
+})
 
 /**
  * Map for a multi dimensional array
@@ -71,5 +75,3 @@ function _map (array, callback) {
 
   return recurse(array, [])
 }
-
-export const name = 'map'

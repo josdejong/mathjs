@@ -2,11 +2,12 @@
 
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const add = load(require('../arithmetic/add'))
+const name = 'trace'
+const dependencies = ['typed', 'matrix', 'add']
 
+export const createTrace = factory(name, dependencies, ({ typed, matrix, add }) => {
   /**
    * Calculate the trace of a matrix: the sum of the elements on the main
    * diagonal of a square matrix.
@@ -128,6 +129,4 @@ export function factory (type, config, load, typed) {
   trace.toTex = { 1: `\\mathrm{tr}\\left(\${args[0]}\\right)` }
 
   return trace
-}
-
-export const name = 'trace'
+})

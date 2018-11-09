@@ -1,12 +1,12 @@
 'use strict'
 
 import { arraySize, squeeze } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiply'))
+const name = 'cross'
+const dependencies = ['typed', 'matrix', 'subtract', 'multiply']
 
+export const createCross = factory(name, dependencies, ({ typed, matrix, subtract, multiply }) => {
   /**
    * Calculate the cross product for two vectors in three dimensional space.
    * The cross product of `A = [a1, a2, a3]` and `B = [b1, b2, b3]` is defined
@@ -40,7 +40,7 @@ export function factory (type, config, load, typed) {
    * @param  {Array | Matrix} y   Second vector
    * @return {Array | Matrix}     Returns the cross product of `x` and `y`
    */
-  const cross = typed('cross', {
+  const cross = typed(name, {
     'Matrix, Matrix': function (x, y) {
       return matrix(_cross(x.toArray(), y.toArray()))
     },
@@ -95,6 +95,4 @@ export function factory (type, config, load, typed) {
       return product
     }
   }
-}
-
-export const name = 'cross'
+})

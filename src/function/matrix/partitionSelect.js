@@ -1,17 +1,15 @@
 'use strict'
 
 import { isMatrix } from '../../utils/is'
-
 import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const isNumeric = load(require('../utils/isNumeric'))
-  const isNaN = load(require('../utils/isNaN'))
-  const asc = load(require('../relational/compare'))
+const name = 'partitionSelect'
+const dependencies = ['typed', 'isNumeric', 'isNaN', 'compare']
 
-  function desc (a, b) {
-    return -asc(a, b)
-  }
+export const createPartitionSelect = factory(name, dependencies, ({ typed, isNumeric, isNaN, compare }) => {
+  const asc = compare
+  const desc = (a, b) => -compare(a, b)
 
   /**
    * Partition-based selection of an array or 1D matrix.
@@ -45,7 +43,7 @@ export function factory (type, config, load, typed) {
    *        and 0 when a == b.
    * @return {*} Returns the kth lowest value.
    */
-  return typed('partitionSelect', {
+  return typed(name, {
     'Array | Matrix, number': function (x, k) {
       return _partitionSelect(x, k, asc)
     },
@@ -140,6 +138,4 @@ export function factory (type, config, load, typed) {
 
     return arr[k]
   }
-}
-
-export const name = 'partitionSelect'
+})

@@ -1,13 +1,14 @@
 'use strict'
 
 import { isBigNumber } from '../../utils/is'
-
 import { isInteger } from '../../utils/number'
 import { resize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'zeros'
+const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
 
+export const createZeros = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
    * multiple dimensions.
@@ -39,9 +40,9 @@ export function factory (type, config, load, typed) {
    *
    * @return {Array | Matrix}           A matrix filled with zeros
    */
-  const zeros = typed('zeros', {
+  const zeros = typed(name, {
     '': function () {
-      return (config.matrix === 'Array')
+      return (config().matrix === 'Array')
         ? _zeros([])
         : _zeros([], 'default')
     },
@@ -53,7 +54,7 @@ export function factory (type, config, load, typed) {
       if (typeof last === 'string') {
         const format = size.pop()
         return _zeros(size, format)
-      } else if (config.matrix === 'Array') {
+      } else if (config().matrix === 'Array') {
         return _zeros(size)
       } else {
         return _zeros(size, 'default')
@@ -85,7 +86,7 @@ export function factory (type, config, load, typed) {
    */
   function _zeros (size, format) {
     const hasBigNumbers = _normalize(size)
-    const defaultValue = hasBigNumbers ? new type.BigNumber(0) : 0
+    const defaultValue = hasBigNumbers ? new BigNumber(0) : 0
     _validate(size)
 
     if (format) {
@@ -125,8 +126,6 @@ export function factory (type, config, load, typed) {
       }
     })
   }
-}
+})
 
 // TODO: zeros contains almost the same code as ones. Reuse this?
-
-export const name = 'zeros'

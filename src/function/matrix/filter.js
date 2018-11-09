@@ -2,10 +2,12 @@
 
 import { filter, filterRegExp } from '../../utils/array'
 import { maxArgumentCount } from '../../utils/function'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'filter'
+const dependencies = ['typed', 'matrix']
 
+export const createFilter = factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Filter the items in an array or one dimensional matrix.
    *
@@ -52,7 +54,7 @@ export function factory (type, config, load, typed) {
   filter.toTex = undefined // use default template
 
   return filter
-}
+})
 
 /**
  * Filter values in a callback given a callback function
@@ -76,5 +78,3 @@ function _filterCallback (x, callback) {
     }
   })
 }
-
-export const name = 'filter'

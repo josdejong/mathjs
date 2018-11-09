@@ -1,14 +1,14 @@
 'use strict'
 
 import { arraySize as size } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const compareAsc = load(require('../relational/compare'))
-  const compareDesc = function (a, b) {
-    return -compareAsc(a, b)
-  }
-  const compareNatural = load(require('../relational/compareNatural'))
+const name = 'sort'
+const dependencies = ['typed', 'config', 'matrix']
+
+export const createSort = factory(name, dependencies, ({ typed, matrix, compare, compareNatural }) => {
+  const compareAsc = compare
+  const compareDesc = (a, b) => -compare(a, b)
 
   /**
    * Sort the items in a matrix.
@@ -41,7 +41,7 @@ export function factory (type, config, load, typed) {
    *        and 0 when a == b.
    * @return {Matrix | Array} Returns the sorted matrix.
    */
-  const sort = typed('sort', {
+  const sort = typed(name, {
     'Array': function (x) {
       _arrayIsVector(x)
       return x.sort(compareAsc)
@@ -117,6 +117,4 @@ export function factory (type, config, load, typed) {
   }
 
   return sort
-}
-
-export const name = 'sort'
+})

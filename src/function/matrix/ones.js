@@ -1,13 +1,14 @@
 'use strict'
 
 import { isBigNumber } from '../../utils/is'
-
 import { isInteger } from '../../utils/number'
 import { resize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'ones'
+const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
 
+export const createOnes = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
    * Create a matrix filled with ones. The created matrix can have one or
    * multiple dimensions.
@@ -43,7 +44,7 @@ export function factory (type, config, load, typed) {
    */
   const ones = typed('ones', {
     '': function () {
-      return (config.matrix === 'Array')
+      return (config().matrix === 'Array')
         ? _ones([])
         : _ones([], 'default')
     },
@@ -55,7 +56,7 @@ export function factory (type, config, load, typed) {
       if (typeof last === 'string') {
         const format = size.pop()
         return _ones(size, format)
-      } else if (config.matrix === 'Array') {
+      } else if (config().matrix === 'Array') {
         return _ones(size)
       } else {
         return _ones(size, 'default')
@@ -87,7 +88,7 @@ export function factory (type, config, load, typed) {
    */
   function _ones (size, format) {
     const hasBigNumbers = _normalize(size)
-    const defaultValue = hasBigNumbers ? new type.BigNumber(1) : 1
+    const defaultValue = hasBigNumbers ? new BigNumber(1) : 1
     _validate(size)
 
     if (format) {
@@ -127,6 +128,4 @@ export function factory (type, config, load, typed) {
       }
     })
   }
-}
-
-export const name = 'ones'
+})

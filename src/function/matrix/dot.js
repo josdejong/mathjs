@@ -1,11 +1,12 @@
 'use strict'
 
 import { arraySize as size } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
+const name = 'dot'
+const dependencies = ['typed', 'add', 'multiply']
 
+export const createDot = factory(name, dependencies, ({ typed, add, multiply }) => {
   /**
    * Calculate the dot product of two vectors. The dot product of
    * `A = [a1, a2, a3, ..., an]` and `B = [b1, b2, b3, ..., bn]` is defined as:
@@ -29,7 +30,7 @@ export function factory (type, config, load, typed) {
    * @param  {Array | Matrix} y     Second vector
    * @return {number}               Returns the dot product of `x` and `y`
    */
-  const dot = typed('dot', {
+  const dot = typed(name, {
     'Matrix, Matrix': function (x, y) {
       return _dot(x.toArray(), y.toArray())
     },
@@ -73,6 +74,4 @@ export function factory (type, config, load, typed) {
 
     return prod
   }
-}
-
-export const name = 'dot'
+})

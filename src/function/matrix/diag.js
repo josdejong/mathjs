@@ -1,13 +1,14 @@
 'use strict'
 
 import { isMatrix } from '../../utils/is'
-
 import { arraySize } from '../../utils/array'
 import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'diag'
+const dependencies = ['typed', 'matrix', 'type.Matrix']
 
+export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { Matrix } }) => {
   /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix
    *
@@ -45,7 +46,7 @@ export function factory (type, config, load, typed) {
    *
    * @returns {Matrix | Array} Diagonal matrix from input vector, or diagonal from input matrix.
    */
-  const diag = typed('diag', {
+  const diag = typed(name, {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
     'Array': function (x) {
@@ -132,7 +133,7 @@ export function factory (type, config, load, typed) {
     // matrix size
     const ms = [l + kSub, l + kSuper]
     // get matrix constructor
-    const F = type.Matrix.storage(format || 'dense')
+    const F = Matrix.storage(format || 'dense')
     // create diagonal matrix
     const m = F.diagonal(ms, x, k)
     // check we need to return a matrix
@@ -163,6 +164,4 @@ export function factory (type, config, load, typed) {
     // check we need to return a matrix
     return format !== null ? matrix(vector) : vector
   }
-}
-
-export const name = 'diag'
+})

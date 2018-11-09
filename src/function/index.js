@@ -5,6 +5,7 @@ import arithmetic from './arithmetic'
 import combinatorics from './combinatorics'
 import complex from './complex'
 import geometry from './geometry'
+import matrix from './matrix'
 import relational from './relational'
 import set from './set'
 import special from './special'
@@ -21,7 +22,7 @@ export default [
   complex,
   geometry,
   require('./logical'),
-  require('./matrix'),
+  matrix,
   require('./probability'),
   relational,
   set,

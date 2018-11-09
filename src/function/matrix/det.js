@@ -3,14 +3,12 @@
 import { isMatrix } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const unaryMinus = load(require('../arithmetic/unaryMinus'))
-  const lup = load(require('../algebra/decomposition/lup'))
+const name = 'det'
+const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'unaryMinus', 'lup']
 
+export const createDet = factory(name, dependencies, ({ typed, matrix, subtract, multiply, unaryMinus, lup }) => {
   /**
    * Calculate the determinant of a matrix.
    *
@@ -36,7 +34,7 @@ export function factory (type, config, load, typed) {
    * @param {Array | Matrix} x  A matrix
    * @return {number} The determinant of `x`
    */
-  const det = typed('det', {
+  const det = typed(name, {
     'any': function (x) {
       return clone(x)
     },
@@ -144,6 +142,4 @@ export function factory (type, config, load, typed) {
       return evenCycles % 2 === 0 ? det : unaryMinus(det)
     }
   }
-}
-
-export const name = 'det'
+})

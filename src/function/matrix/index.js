@@ -3,35 +3,61 @@
 import { createGetMatrixDataType } from './getMatrixDataType'
 import { createIdentity } from './identity'
 import { createInv } from './inv'
+import { createConcat } from './concat'
+import { createCross } from './cross'
+import { createCtranspose } from './ctranspose'
+import { createDet } from './det'
+import { createDiag } from './diag'
+import { createDot } from './dot'
+import { createEye } from './eye'
+import { createExpm } from './expm'
+import { createFilter } from './filter'
+import { createFlatten } from './flatten'
+import { createForEach } from './forEach'
+import { createKron } from './kron'
+import { createMap } from './map'
+import { createOnes } from './ones'
+import { createPartitionSelect } from './partitionSelect'
+import { createRange } from './range'
+import { createReshape } from './reshape'
+import { createResize } from './resize'
+import { createSize } from './size'
+import { createSort } from './sort'
+import { createSqrtm } from './sqrtm'
+import { createSqueeze } from './squeeze'
+import { createSubset } from './subset'
+import { createTranspose } from './transpose'
+import { createZeros } from './zeros'
+import { createTrace } from './trace'
 
-module.exports = [
-  require('./concat'),
-  require('./cross'),
-  require('./ctranspose'),
-  require('./det'),
-  require('./diag'),
-  require('./dot'),
-  require('./eye'),
-  require('./expm'),
-  require('./filter'),
-  require('./flatten'),
-  require('./forEach'),
+export default [
+  createConcat,
+  createCross,
+  createCtranspose,
+  createDet,
+  createDiag,
+  createDot,
+  createEye,
+  createExpm,
+  createFilter,
+  createFlatten,
+  createForEach,
   createIdentity,
   createInv,
-  require('./kron'),
-  require('./map'),
-  require('./ones'),
-  require('./partitionSelect'),
-  require('./range'),
-  require('./reshape'),
-  require('./resize'),
-  require('./size'),
-  require('./sort'),
-  require('./sqrtm'),
-  require('./squeeze'),
-  require('./subset'),
-  require('./trace'),
-  require('./transpose'),
-  require('./zeros'),
+  createKron,
+  createMap,
+  createOnes,
+  createPartitionSelect,
+  createRange,
+  createReshape,
+  createResize,
+  createSize,
+  createSort,
+  createSqrtm,
+  createSqueeze,
+  createSubset,
+  createTrace,
+  createTranspose,
+  createZeros,
   createGetMatrixDataType
 ]

@@ -2,10 +2,12 @@
 
 import { clone } from '../../utils/object'
 import { squeeze as arraySqueeze } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'squeeze'
+const dependencies = ['typed', 'matrix']
 
+export const createSqueeze = factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Squeeze a matrix, remove inner and outer singleton dimensions from a matrix.
    *
@@ -35,7 +37,7 @@ export function factory (type, config, load, typed) {
    * @param {Matrix | Array} x      Matrix to be squeezed
    * @return {Matrix | Array} Squeezed matrix
    */
-  const squeeze = typed('squeeze', {
+  const squeeze = typed(name, {
     'Array': function (x) {
       return arraySqueeze(clone(x))
     },
@@ -55,6 +57,4 @@ export function factory (type, config, load, typed) {
   squeeze.toTex = undefined // use default template
 
   return squeeze
-}
-
-export const name = 'squeeze'
+})

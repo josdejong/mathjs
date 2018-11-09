@@ -5,10 +5,12 @@ import { clone } from '../../utils/object'
 import { validateIndex } from '../../utils/array'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
 import DimensionError from '../../error/DimensionError'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'subset'
+const dependencies = ['typed', 'matrix']
 
+export const createSubset = factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Get or set a subset of a matrix or string.
    *
@@ -43,7 +45,7 @@ export function factory (type, config, load, typed) {
    *                                          math.matrix elements will be left undefined.
    * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
    */
-  const subset = typed('subset', {
+  const subset = typed(name, {
     // get subset
     'Array, Index': function (value, index) {
       const m = matrix(value)
@@ -90,97 +92,97 @@ export function factory (type, config, load, typed) {
   subset.toTex = undefined // use default template
 
   return subset
+})
 
-  /**
-   * Retrieve a subset of a string
-   * @param {string} str            string from which to get a substring
-   * @param {Index} index           An index containing ranges for each dimension
-   * @returns {string} substring
-   * @private
-   */
-  function _getSubstring (str, index) {
-    if (!isIndex(index)) {
-      // TODO: better error message
-      throw new TypeError('Index expected')
-    }
-    if (index.size().length !== 1) {
-      throw new DimensionError(index.size().length, 1)
-    }
-
-    // validate whether the range is out of range
-    const strLen = str.length
-    validateIndex(index.min()[0], strLen)
-    validateIndex(index.max()[0], strLen)
-
-    const range = index.dimension(0)
-
-    let substr = ''
-    range.forEach(function (v) {
-      substr += str.charAt(v)
-    })
-
-    return substr
+/**
+ * Retrieve a subset of a string
+ * @param {string} str            string from which to get a substring
+ * @param {Index} index           An index containing ranges for each dimension
+ * @returns {string} substring
+ * @private
+ */
+function _getSubstring (str, index) {
+  if (!isIndex(index)) {
+    // TODO: better error message
+    throw new TypeError('Index expected')
+  }
+  if (index.size().length !== 1) {
+    throw new DimensionError(index.size().length, 1)
   }
 
-  /**
-   * Replace a substring in a string
-   * @param {string} str            string to be replaced
-   * @param {Index} index           An index containing ranges for each dimension
-   * @param {string} replacement    Replacement string
-   * @param {string} [defaultValue] Default value to be uses when resizing
-   *                                the string. is ' ' by default
-   * @returns {string} result
-   * @private
-   */
-  function _setSubstring (str, index, replacement, defaultValue) {
-    if (!index || index.isIndex !== true) {
-      // TODO: better error message
-      throw new TypeError('Index expected')
-    }
-    if (index.size().length !== 1) {
-      throw new DimensionError(index.size().length, 1)
-    }
-    if (defaultValue !== undefined) {
-      if (typeof defaultValue !== 'string' || defaultValue.length !== 1) {
-        throw new TypeError('Single character expected as defaultValue')
-      }
-    } else {
-      defaultValue = ' '
-    }
+  // validate whether the range is out of range
+  const strLen = str.length
+  validateIndex(index.min()[0], strLen)
+  validateIndex(index.max()[0], strLen)
 
-    const range = index.dimension(0)
-    const len = range.size()[0]
+  const range = index.dimension(0)
 
-    if (len !== replacement.length) {
-      throw new DimensionError(range.size()[0], replacement.length)
-    }
+  let substr = ''
+  range.forEach(function (v) {
+    substr += str.charAt(v)
+  })
 
-    // validate whether the range is out of range
-    const strLen = str.length
-    validateIndex(index.min()[0])
-    validateIndex(index.max()[0])
+  return substr
+}
 
-    // copy the string into an array with characters
-    const chars = []
-    for (let i = 0; i < strLen; i++) {
-      chars[i] = str.charAt(i)
-    }
-
-    range.forEach(function (v, i) {
-      chars[v] = replacement.charAt(i[0])
-    })
-
-    // initialize undefined characters with a space
-    if (chars.length > strLen) {
-      for (let i = strLen - 1, len = chars.length; i < len; i++) {
-        if (!chars[i]) {
-          chars[i] = defaultValue
-        }
-      }
-    }
-
-    return chars.join('')
+/**
+ * Replace a substring in a string
+ * @param {string} str            string to be replaced
+ * @param {Index} index           An index containing ranges for each dimension
+ * @param {string} replacement    Replacement string
+ * @param {string} [defaultValue] Default value to be uses when resizing
+ *                                the string. is ' ' by default
+ * @returns {string} result
+ * @private
+ */
+function _setSubstring (str, index, replacement, defaultValue) {
+  if (!index || index.isIndex !== true) {
+    // TODO: better error message
+    throw new TypeError('Index expected')
   }
+  if (index.size().length !== 1) {
+    throw new DimensionError(index.size().length, 1)
+  }
+  if (defaultValue !== undefined) {
+    if (typeof defaultValue !== 'string' || defaultValue.length !== 1) {
+      throw new TypeError('Single character expected as defaultValue')
+    }
+  } else {
+    defaultValue = ' '
+  }
+
+  const range = index.dimension(0)
+  const len = range.size()[0]
+
+  if (len !== replacement.length) {
+    throw new DimensionError(range.size()[0], replacement.length)
+  }
+
+  // validate whether the range is out of range
+  const strLen = str.length
+  validateIndex(index.min()[0])
+  validateIndex(index.max()[0])
+
+  // copy the string into an array with characters
+  const chars = []
+  for (let i = 0; i < strLen; i++) {
+    chars[i] = str.charAt(i)
+  }
+
+  range.forEach(function (v, i) {
+    chars[v] = replacement.charAt(i[0])
+  })
+
+  // initialize undefined characters with a space
+  if (chars.length > strLen) {
+    for (let i = strLen - 1, len = chars.length; i < len; i++) {
+      if (!chars[i]) {
+        chars[i] = defaultValue
+      }
+    }
+  }
+
+  return chars.join('')
 }
 
 /**
@@ -227,5 +229,3 @@ function _setObjectProperty (object, index, replacement) {
 
   return updated
 }
-
-export const name = 'subset'

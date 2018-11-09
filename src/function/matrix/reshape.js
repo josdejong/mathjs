@@ -1,11 +1,12 @@
 'use strict'
 
 import { reshape as arrayReshape } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const isInteger = load(require('../utils/isInteger'))
+const name = 'reshape'
+const dependencies = ['typed', 'isInteger', 'matrix']
 
+export const createReshape = factory(name, dependencies, ({ typed, isInteger, matrix }) => {
   /**
    * Reshape a multi dimensional array to fit the specified dimensions
    *
@@ -42,7 +43,7 @@ export function factory (type, config, load, typed) {
    * @throws {DimensionError}       If the product of the new dimension sizes does
    *                                not equal that of the old ones
    */
-  const reshape = typed('reshape', {
+  const reshape = typed(name, {
 
     'Matrix, Array': function (x, sizes) {
       if (x.reshape) {
@@ -66,6 +67,4 @@ export function factory (type, config, load, typed) {
   reshape.toTex = undefined // use default template
 
   return reshape
-}
-
-export const name = 'reshape'
+})

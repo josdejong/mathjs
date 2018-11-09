@@ -4,18 +4,12 @@ import { isMatrix } from '../../utils/is'
 import { format } from '../../utils/string'
 import { arraySize } from '../../utils/array'
 import { latexOperators } from '../../utils/latex'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const sqrt = load(require('../arithmetic/sqrt'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const inv = load(require('../matrix/inv'))
-  const size = load(require('../matrix/size'))
-  const max = load(require('../statistics/max'))
-  const identity = load(require('./identity'))
+const name = 'sqrtm'
+const dependencies = ['typed', 'abs', 'add', 'multiply', 'sqrt', 'subtract', 'inv', 'size', 'max', 'identity']
 
+export const createSqrtm = factory(name, dependencies, ({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity }) => {
   /**
    * Calculate the principal square root of a square matrix.
    * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
@@ -37,7 +31,7 @@ export function factory (type, config, load, typed) {
    * @param  {Array | Matrix} A   The square matrix `A`
    * @return {Array | Matrix}     The principal square root of matrix `A`
    */
-  const sqrtm = typed('sqrtm', {
+  const sqrtm = typed(name, {
     'Array | Matrix': function (A) {
       const size = isMatrix(A) ? A.size() : arraySize(A)
       switch (size.length) {
@@ -101,6 +95,4 @@ export function factory (type, config, load, typed) {
   sqrtm.toTex = { 1: `{\${args[0]}}${latexOperators['pow']}{\\frac{1}{2}}` }
 
   return sqrtm
-}
-
-export const name = 'sqrtm'
+})

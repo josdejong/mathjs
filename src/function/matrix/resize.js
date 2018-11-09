@@ -3,14 +3,15 @@
 import { isBigNumber, isMatrix } from '../../utils/is'
 import DimensionError from '../../error/DimensionError'
 import ArgumentsError from '../../error/ArgumentsError'
-import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
 import { clone } from '../../utils/object'
 import { resize as arrayResize } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'resize'
+const dependencies = ['config', 'matrix']
 
+export const createResize = factory(name, dependencies, ({ config, matrix }) => {
   /**
    * Resize a matrix
    *
@@ -66,7 +67,7 @@ export function factory (type, config, load, typed) {
     }
 
     // check result should be a matrix
-    const asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
+    const asMatrix = Array.isArray(x) ? false : (config().matrix !== 'Array')
 
     if (size.length === 0) {
       // output a scalar
@@ -128,6 +129,4 @@ export function factory (type, config, load, typed) {
       return str
     }
   }
-}
-
-export const name = 'resize'
+})

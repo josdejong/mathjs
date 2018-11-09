@@ -1,16 +1,16 @@
 'use strict'
 
 import { isBigNumber, isMatrix, isNumber } from '../../utils/is'
-
 import { clone } from '../../utils/object'
 import { arraySize } from '../../utils/array'
 import IndexError from '../../error/IndexError'
 import DimensionError from '../../error/DimensionError'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const isInteger = load(require('../utils/isInteger'))
+const name = 'concat'
+const dependencies = ['typed', 'matrix', 'isInteger']
 
+export const createConcat = factory(name, dependencies, ({ typed, matrix, isInteger }) => {
   /**
    * Concatenate two or more matrices.
    *
@@ -40,7 +40,7 @@ export function factory (type, config, load, typed) {
    * @param {... Array | Matrix} args     Two or more matrices
    * @return {Array | Matrix} Concatenated matrix
    */
-  const concat = typed('concat', {
+  const concat = typed(name, {
     // TODO: change signature to '...Array | Matrix, dim?' when supported
     '...Array | Matrix | number | BigNumber': function (args) {
       let i
@@ -110,7 +110,7 @@ export function factory (type, config, load, typed) {
   concat.toTex = undefined // use default template
 
   return concat
-}
+})
 
 /**
  * Recursively concatenate two matrices.
@@ -139,5 +139,3 @@ function _concat (a, b, concatDim, dim) {
     return a.concat(b)
   }
 }
-
-export const name = 'concat'

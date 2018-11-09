@@ -1,18 +1,13 @@
 'use strict'
 
 import { isSparseMatrix } from '../../utils/is'
-
 import { format } from '../../utils/string'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const add = load(require('../arithmetic/add'))
-  const identity = load(require('./identity'))
-  const inv = load(require('./inv'))
-  const multiply = load(require('../arithmetic/multiply'))
+const name = 'expm'
+const dependencies = ['typed', 'abs', 'add', 'identity', 'inv', 'multiply']
 
-  const SparseMatrix = type.SparseMatrix
-
+export const createExpm = factory(name, dependencies, ({ typed, abs, add, identity, inv, multiply }) => {
   /**
    * Compute the matrix exponential, expm(A) = e^A. The matrix must be square.
    * Not to be confused with exp(a), which performs element-wise
@@ -38,7 +33,7 @@ export function factory (type, config, load, typed) {
    * @param {Matrix} x  A square Matrix
    * @return {Matrix}   The exponential of x
    */
-  const expm = typed('expm', {
+  const expm = typed(name, {
 
     'Matrix': function (A) {
       // Check matrix size
@@ -108,7 +103,7 @@ export function factory (type, config, load, typed) {
       }
 
       return isSparseMatrix(A)
-        ? new SparseMatrix(R)
+        ? A.createSparseMatrix(R)
         : R
     }
 
@@ -168,6 +163,4 @@ export function factory (type, config, load, typed) {
   expm.toTex = { 1: `\\exp\\left(\${args[0]}\\right)` }
 
   return expm
-}
-
-export const name = 'expm'
+})

@@ -1,10 +1,13 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+import { factory } from '../../utils/factory'
 
-  const ZERO = new type.BigNumber(0)
-  const ONE = new type.BigNumber(1)
+const name = 'range'
+const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
+
+export const createRange = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
+  const ZERO = new BigNumber(0)
+  const ONE = new BigNumber(1)
 
   /**
    * Create an array from a range.
@@ -49,7 +52,7 @@ export function factory (type, config, load, typed) {
    * @param {*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
    * @return {Array | Matrix} range
    */
-  const range = typed('range', {
+  const range = typed(name, {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
     // TODO: a number or boolean should not be converted to string here
@@ -97,7 +100,7 @@ export function factory (type, config, load, typed) {
   return range
 
   function _out (arr) {
-    return config.matrix === 'Array' ? arr : matrix(arr)
+    return config().matrix === 'Array' ? arr : matrix(arr)
   }
 
   function _strRange (str, includeEnd) {
@@ -107,12 +110,12 @@ export function factory (type, config, load, typed) {
     }
 
     let fn
-    if (config.number === 'BigNumber') {
+    if (config().number === 'BigNumber') {
       fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
-        new type.BigNumber(r.start),
-        new type.BigNumber(r.end),
-        new type.BigNumber(r.step)))
+        new BigNumber(r.start),
+        new BigNumber(r.end),
+        new BigNumber(r.step)))
     } else {
       fn = includeEnd ? _rangeInc : _rangeEx
       return _out(fn(r.start, r.end, r.step))
@@ -267,6 +270,4 @@ export function factory (type, config, load, typed) {
         return null
     }
   }
-}
-
-export const name = 'range'
+})
