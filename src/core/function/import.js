@@ -349,8 +349,7 @@ export function importFactory (typed, load, math) {
       }
     }
 
-    const neverEverLazy = true // FIXME: lazy loading is turned of during the migration, make this working in the end
-    if (factory.lazy !== false && neverEverLazy === false) {
+    if (factory.lazy !== false) {
       lazy(namespace, name, resolver)
 
       if (existingTransform) {

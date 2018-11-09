@@ -1396,3 +1396,6 @@ export const createSparseMatrixClass = factory(name, dependencies, ({ typed, equ
 
   return SparseMatrix
 })
+
+// force loading, as it needs to register at Matrix
+createSparseMatrixClass.lazy = false

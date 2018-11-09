@@ -89,6 +89,9 @@ export const createPhysicalConstants = factory(name, dependencies, ({ math, conf
   setLazyConstant(math, 'planckTemperature', function () { return fixedUnit('1.41683385e+32', 'K') })
 })
 
+// disable lazy loading of constants
+createPhysicalConstants.lazy = false
+
 // create a lazy constant in both math and mathWithTransform
 function setLazyConstant (math, name, resolver) {
   lazy(math, name, resolver)

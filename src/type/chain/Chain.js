@@ -182,3 +182,5 @@ export const createChainClass = factory(name, dependencies, ({ on, math }) => {
 
   return Chain
 })
+
+createChainClass.lazy = false // we need to register a listener on the import events, so no lazy loading

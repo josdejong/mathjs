@@ -871,3 +871,6 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type
 
   return DenseMatrix
 })
+
+// force loading, as it needs to register at Matrix
+createDenseMatrixClass.lazy = false

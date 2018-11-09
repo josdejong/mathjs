@@ -68,6 +68,9 @@ export const createConstants = factory(name, dependencies, ({ on, math, config, 
   setConstant(math, 'version', version)
 })
 
+// disable lazy loading of constants
+createConstants.lazy = false
+
 // create a constant in both math and mathWithTransform
 function setConstant (math, name, value) {
   math[name] = value
