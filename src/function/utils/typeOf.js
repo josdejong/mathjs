@@ -1,19 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import {
-  isBigNumber,
-  isChain,
-  isComplex,
-  isFraction,
-  isHelp,
-  isIndex,
-  isMatrix,
-  isNode,
-  isRange,
-  isResultSet,
-  isUnit
-} from '../../utils/is'
+import { typeOf as _typeOf } from '../../utils/is'
 
 const name = 'typeOf'
 const dependencies = ['typed']
@@ -78,36 +66,7 @@ export const createTypeOf = factory(name, dependencies, ({ typed }) => {
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
   const typeOf = typed(name, {
-    'any': function (x) {
-      const t = typeof x
-
-      if (t === 'object') {
-        // JavaScript types
-        if (x === null) return 'null'
-        if (Array.isArray(x)) return 'Array'
-        if (x instanceof Date) return 'Date'
-        if (x instanceof RegExp) return 'RegExp'
-
-        // math.js types
-        if (isBigNumber(x)) return 'BigNumber'
-        if (isComplex(x)) return 'Complex'
-        if (isFraction(x)) return 'Fraction'
-        if (isMatrix(x)) return 'Matrix'
-        if (isUnit(x)) return 'Unit'
-        if (isIndex(x)) return 'Index'
-        if (isRange(x)) return 'Range'
-        if (isResultSet(x)) return 'ResultSet'
-        if (isNode(x)) return x.type
-        if (isChain(x)) return 'Chain'
-        if (isHelp(x)) return 'Help'
-
-        return 'Object'
-      }
-
-      if (t === 'function') return 'Function'
-
-      return t // can be 'string', 'number', 'boolean', ...
-    }
+    'any': _typeOf
   })
 
   typeOf.toTex = undefined // use default template
@@ -116,9 +75,15 @@ export const createTypeOf = factory(name, dependencies, ({ typed }) => {
 })
 
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-06
-export const createDeprecatedTypeof = factory('typeof', ['typeOf'], ({ typeOf }) => {
+export const createDeprecatedTypeof = factory('typeof', [], () => {
+  let warned = false
+
   return function (...args) {
-    console.warn('Function "typeof" has been renamed to "typeOf", please use the new function instead.')
-    return typeOf.apply(typeOf, args)
+    if (!warned) {
+      warned = true
+      console.warn('Function "typeof" has been renamed to "typeOf", please use the new function instead.')
+    }
+
+    return _typeOf.apply(_typeOf, args)
   }
 })

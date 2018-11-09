@@ -11,6 +11,7 @@ import matrix from './matrix'
 import relational from './relational'
 import set from './set'
 import special from './special'
+import statistics from './statistics'
 import string from './string'
 import trigonometry from './trigonometry'
 import unit from './unit'
@@ -29,7 +30,7 @@ export default [
   relational,
   set,
   special,
-  require('./statistics'),
+  statistics,
   string,
   trigonometry,
   unit,

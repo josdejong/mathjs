@@ -1,11 +1,13 @@
 'use strict'
 
 import { containsCollections, deepForEach, reduce } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const smaller = load(require('../relational/smaller'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'min'
+const dependencies = ['typed', 'smaller']
 
+export const createMin = factory(name, dependencies, ({ typed, smaller }) => {
   /**
    * Compute the maximum value of a matrix or a  list of values.
    * In case of a multi dimensional array, the maximum of the flattened array
@@ -37,7 +39,7 @@ export function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The minimum value
    */
-  const min = typed('min', {
+  const min = typed(name, {
     // min([a, b, c, d, ...])
     'Array | Matrix': _min,
 
@@ -102,6 +104,4 @@ export function factory (type, config, load, typed) {
 
     return min
   }
-}
-
-export const name = 'min'
+})

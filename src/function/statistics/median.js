@@ -2,14 +2,13 @@
 
 import { containsCollections } from '../../utils/collection'
 import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/addScalar'))
-  const divide = load(require('../arithmetic/divideScalar'))
-  const compare = load(require('../relational/compare'))
-  const partitionSelect = load(require('../matrix/partitionSelect'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'median'
+const dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect']
 
+export const createMedian = factory(name, dependencies, ({ typed, add, divide, compare, partitionSelect }) => {
   /**
    * Compute the median of a matrix or a list with values. The values are
    * sorted and the middle value is returned. In case of an even number of
@@ -36,7 +35,7 @@ export function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The median
    */
-  const median = typed('median', {
+  const median = typed(name, {
     // median([a, b, c, d, ...])
     'Array | Matrix': _median,
 
@@ -114,6 +113,4 @@ export function factory (type, config, load, typed) {
   median.toTex = undefined // use default template
 
   return median
-}
-
-export const name = 'median'
+})

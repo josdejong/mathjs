@@ -1,16 +1,16 @@
 'use strict'
 
 import { format } from '../../utils/string'
+import { typeOf } from '../../utils/is'
 import { escape as escapeLatex } from '../../utils/latex'
 import { factory } from '../../utils/factory'
 
 const name = 'expression.node.ConstantNode'
 const dependencies = [
-  'typeOf',
   'expression.node.Node'
 ]
 
-export const createConstantNode = factory(name, dependencies, ({ typeOf, expression: { node: { Node } } }) => {
+export const createConstantNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * A ConstantNode holds a constant value like a number or string.
    *

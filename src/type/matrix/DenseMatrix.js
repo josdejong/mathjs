@@ -1,6 +1,6 @@
 'use strict'
 
-import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../../utils/is'
+import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
 import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
@@ -11,11 +11,10 @@ import { factory } from '../../utils/factory'
 const name = 'type.DenseMatrix'
 const dependencies = [
   'typed',
-  'typeOf',
   'type.Matrix'
 ]
 
-export const createDenseMatrixClass = factory(name, dependencies, ({ typed, typeOf, type: { Matrix } }) => {
+export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type: { Matrix } }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix

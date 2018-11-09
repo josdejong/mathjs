@@ -2,12 +2,13 @@
 
 import { containsCollections, deepForEach, reduce } from '../../utils/collection'
 import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const divide = load(require('../arithmetic/divide'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'mean'
+const dependencies = ['typed', 'add', 'divide']
 
+export const createMean = factory(name, dependencies, ({ typed, add, divide }) => {
   /**
    * Compute the mean value of matrix or a list with values.
    * In case of a multi dimensional array, the mean of the flattened array
@@ -35,7 +36,7 @@ export function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The mean of all values
    */
-  const mean = typed('mean', {
+  const mean = typed(name, {
     // mean([a, b, c, d, ...])
     'Array | Matrix': _mean,
 
@@ -99,6 +100,4 @@ export function factory (type, config, load, typed) {
 
     return divide(sum, num)
   }
-}
-
-export const name = 'mean'
+})

@@ -1,11 +1,13 @@
 'use strict'
 
 import { deepForEach, reduce, containsCollections } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const larger = load(require('../relational/larger'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'max'
+const dependencies = ['typed', 'larger']
 
+export const createMax = factory(name, dependencies, ({ typed, larger }) => {
   /**
    * Compute the maximum value of a matrix or a  list with values.
    * In case of a multi dimensional array, the maximum of the flattened array
@@ -37,7 +39,7 @@ export function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The maximum value
    */
-  const max = typed('max', {
+  const max = typed(name, {
     // max([a, b, c, d, ...])
     'Array | Matrix': _max,
 
@@ -82,26 +84,24 @@ export function factory (type, config, load, typed) {
    * @private
    */
   function _max (array) {
-    let max
+    let res
 
     deepForEach(array, function (value) {
       try {
         if (isNaN(value) && typeof value === 'number') {
-          max = NaN
-        } else if (max === undefined || larger(value, max)) {
-          max = value
+          res = NaN
+        } else if (res === undefined || larger(value, res)) {
+          res = value
         }
       } catch (err) {
         throw improveErrorMessage(err, 'max', value)
       }
     })
 
-    if (max === undefined) {
+    if (res === undefined) {
       throw new Error('Cannot calculate max of an empty array')
     }
 
-    return max
+    return res
   }
-}
-
-export const name = 'max'
+})

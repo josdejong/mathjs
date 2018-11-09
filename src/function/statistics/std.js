@@ -1,9 +1,11 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const sqrt = load(require('../arithmetic/sqrt'))
-  const variance = load(require('../statistics/var'))
+import { factory } from '../../utils/factory'
 
+const name = 'std'
+const dependencies = ['typed', 'sqrt', 'variance']
+
+export const createStd = factory(name, dependencies, ({ typed, sqrt, variance }) => {
   /**
    * Compute the standard deviation of a matrix or a  list with values.
    * The standard deviations is defined as the square root of the variance:
@@ -44,7 +46,7 @@ export function factory (type, config, load, typed) {
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The standard deviation
    */
-  const std = typed('std', {
+  const std = typed(name, {
     // std([a, b, c, d, ...])
     'Array | Matrix': _std,
 
@@ -76,6 +78,4 @@ export function factory (type, config, load, typed) {
       }
     }
   }
-}
-
-export const name = 'std'
+})

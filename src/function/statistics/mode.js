@@ -1,11 +1,12 @@
 'use strict'
 
 import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const isNaN = load(require('../utils/isNaN'))
-  const isNumeric = load(require('../utils/isNumeric'))
+const name = 'mode'
+const dependencies = ['typed', 'isNaN', 'isNumeric']
 
+export const createMode = factory(name, dependencies, ({ typed, isNaN, isNumeric }) => {
   /**
   * Computes the mode of a set of numbers or a list with values(numbers or characters).
   * If there are more than one modes, it returns a list of those values.
@@ -31,16 +32,13 @@ export function factory (type, config, load, typed) {
   * @param {... *} args  A single matrix
   * @return {*} The mode of all values
   */
-
-  const mode = typed('mode', {
+  return typed(name, {
     'Array | Matrix': _mode,
 
     '...': function (args) {
       return _mode(args)
     }
   })
-
-  return mode
 
   /**
    * Calculates the mode in an 1-dimensional array
@@ -80,6 +78,4 @@ export function factory (type, config, load, typed) {
     }
     return mode
   }
-}
-
-export const name = 'mode'
+})

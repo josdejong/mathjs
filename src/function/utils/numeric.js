@@ -1,12 +1,13 @@
 'use strict'
 
+import { typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 // FIXME: expose numeric in the math namespace after we've decided on a name and have written proper docs for this function. See https://github.com/josdejong/mathjs/pull/1270
 const name = 'numeric'
-const dependencies = ['typeOf', 'number', 'bignumber', 'fraction']
+const dependencies = ['number', 'bignumber', 'fraction']
 
-export const createNumeric = factory(name, dependencies, ({ typeOf, number, bignumber, fraction }) => {
+export const createNumeric = factory(name, dependencies, ({ number, bignumber, fraction }) => {
   const validInputTypes = {
     'string': true,
     'number': true,

@@ -1,6 +1,6 @@
 'use strict'
 
-import { isString } from '../../utils/is'
+import { isString, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -9,11 +9,10 @@ const name = 'compareText'
 const dependencies = [
   'typed',
   'config',
-  'matrix',
-  'typeOf'
+  'matrix'
 ]
 
-export const createCompareText = factory(name, dependencies, ({ typed, config, typeOf, matrix }) => {
+export const createCompareText = factory(name, dependencies, ({ typed, config, matrix }) => {
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

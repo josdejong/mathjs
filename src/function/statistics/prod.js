@@ -1,11 +1,13 @@
 'use strict'
 
 import { deepForEach } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const multiply = load(require('../arithmetic/multiplyScalar'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'prod'
+const dependencies = ['typed', 'multiply']
 
+export const createProd = factory(name, dependencies, ({ typed, multiply }) => {
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -31,7 +33,7 @@ export function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The product of all values
    */
-  const prod = typed('prod', {
+  const prod = typed(name, {
     // prod([a, b, c, d, ...])
     'Array | Matrix': _prod,
 
@@ -75,6 +77,4 @@ export function factory (type, config, load, typed) {
 
     return prod
   }
-}
-
-export const name = 'prod'
+})

@@ -2,11 +2,12 @@
 
 import { factory } from '../../utils/factory'
 import { getArrayDataType } from '../../utils/array'
+import { typeOf } from '../../utils/is'
 
 const name = 'getMatrixDataType'
-const dependencies = ['typed', 'typeOf']
+const dependencies = ['typed']
 
-export const createGetMatrixDataType = factory(name, dependencies, ({ typed, typeOf }) => {
+export const createGetMatrixDataType = factory(name, dependencies, ({ typed }) => {
   /**
    * Find the data type of all elements in a matrix or array,
    * for example 'number' if all items are a number and 'Complex' if all values

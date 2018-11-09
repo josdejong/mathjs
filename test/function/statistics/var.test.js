@@ -4,7 +4,7 @@ const BigNumber = math.type.BigNumber
 const Complex = math.type.Complex
 const DenseMatrix = math.type.DenseMatrix
 const Unit = math.type.Unit
-const variance = math['var']
+const variance = math['variance']
 
 describe('variance', function () {
   it('should return the variance of numbers', function () {
@@ -89,7 +89,11 @@ describe('variance', function () {
   })
 
   it('should LaTeX var', function () {
-    const expression = math.parse('var(1,2,3)')
+    const expression = math.parse('variance(1,2,3)')
     assert.strictEqual(expression.toTex(), '\\mathrm{Var}\\left(1,2,3\\right)')
+  })
+
+  it('should have deprecated function var', function () {
+    assert.strictEqual(math['var'](2, 4, 6), 4)
   })
 })

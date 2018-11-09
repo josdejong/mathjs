@@ -3,13 +3,12 @@
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const partitionSelect = load(require('../matrix/partitionSelect'))
-  const compare = load(require('../relational/compare'))
+const name = 'quantileSeq'
+const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'type.BigNumber']
 
+export const createQuantileSeq = factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, type: { BigNumber } }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -89,7 +88,7 @@ export function factory (type, config, load, typed) {
 
           if (probOrN.lte(one)) {
             // quantileSeq([a, b, c, d, ...], prob[,sorted])
-            return new type.BigNumber(_quantileSeq(dataArr, probOrN, sorted))
+            return new BigNumber(_quantileSeq(dataArr, probOrN, sorted))
           }
 
           if (probOrN.gt(one)) {
@@ -105,10 +104,10 @@ export function factory (type, config, load, typed) {
               throw new Error('N must be less than or equal to 2^32-1, as that is the maximum length of an Array')
             }
 
-            const nPlusOne = new type.BigNumber(intN + 1)
+            const nPlusOne = new BigNumber(intN + 1)
             probArr = new Array(intN)
             for (let i = 0; i < intN;) {
-              probArr[i] = new type.BigNumber(_quantileSeq(dataArr, new type.BigNumber(++i).div(nPlusOne), sorted))
+              probArr[i] = new BigNumber(_quantileSeq(dataArr, new BigNumber(++i).div(nPlusOne), sorted))
             }
             return probArr
           }
@@ -252,6 +251,4 @@ export function factory (type, config, load, typed) {
   })
 
   return quantileSeq
-}
-
-export const name = 'quantileSeq'
+})

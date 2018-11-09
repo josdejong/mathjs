@@ -1,6 +1,6 @@
 'use strict'
 
-import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString } from '../../utils/is'
+import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
 import { clone, deepEqual } from '../../utils/object'
@@ -11,12 +11,11 @@ import { DimensionError } from '../../error/DimensionError'
 const name = 'type.SparseMatrix'
 const dependencies = [
   'typed',
-  'typeOf',
   'equalScalar',
   'type.Matrix'
 ]
 
-export const createSparseMatrixClass = factory(name, dependencies, ({ typed, typeOf, equalScalar, type: { Matrix } }) => {
+export const createSparseMatrixClass = factory(name, dependencies, ({ typed, equalScalar, type: { Matrix } }) => {
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
    * for sparse matrices.

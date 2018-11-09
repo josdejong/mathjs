@@ -1,11 +1,13 @@
 'use strict'
 
 import { deepForEach } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/addScalar'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'sum'
+const dependencies = ['typed', 'config', 'add', 'type.BigNumber', 'type.Fraction']
 
+export const createSum = factory(name, dependencies, ({ typed, config, add, type: { BigNumber, Fraction } }) => {
   /**
    * Compute the sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -29,7 +31,7 @@ export function factory (type, config, load, typed) {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The sum of all values
    */
-  const sum = typed('sum', {
+  const sum = typed(name, {
     'Array | Matrix': function (args) {
       // sum([a, b, c, d, ...])
       return _sum(args)
@@ -58,31 +60,29 @@ export function factory (type, config, load, typed) {
    * @private
    */
   function _sum (array) {
-    let sum
+    let res
 
     deepForEach(array, function (value) {
       try {
-        sum = (sum === undefined) ? value : add(sum, value)
+        res = (res === undefined) ? value : add(res, value)
       } catch (err) {
         throw improveErrorMessage(err, 'sum', value)
       }
     })
 
-    if (sum === undefined) {
-      switch (config.number) {
+    if (res === undefined) {
+      switch (config().number) {
         case 'number':
           return 0
         case 'BigNumber':
-          return new type.BigNumber(0)
+          return new BigNumber(0)
         case 'Fraction':
-          return new type.Fraction(0)
+          return new Fraction(0)
         default:
           return 0
       }
     }
 
-    return sum
+    return res
   }
-}
-
-export const name = 'sum'
+})

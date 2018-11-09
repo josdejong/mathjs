@@ -95,8 +95,8 @@ export const Matrix = createMatrixClass()
 export const BigNumber = createBigNumberClass({ config, on })
 export const Complex = createComplexClass({ config, on })
 export const Fraction = createFractionClass()
-export const DenseMatrix = createDenseMatrixClass({ typed, typeOf, type: { Matrix } })
-export const SparseMatrix = createSparseMatrixClass({ typed, typeOf, equalScalar, type: { Matrix } })
+export const DenseMatrix = createDenseMatrixClass({ typed, type: { Matrix } })
+export const SparseMatrix = createSparseMatrixClass({ typed, equalScalar, type: { Matrix } })
 
 // for backward compatibility
 export const type = {
@@ -116,10 +116,10 @@ export const matrix = createMatrix({ typed, type: { Matrix } })
 
 // utils (2)
 export const isPrime = createIsPrime({ typed, type: { BigNumber } })
-export const numeric = createNumeric({ typed, typeOf, number, bignumber, fraction })
+export const numeric = createNumeric({ typed, number, bignumber, fraction })
 
 // arithmetic (1)
-export const divideScalar = createDivideScalar({ typed, typeOf, numeric })
+export const divideScalar = createDivideScalar({ typed, numeric })
 
 // complex (1)
 export const conj = () => { throw new Error('Sorry conj is not yet implemented') } // FIXME: load conj

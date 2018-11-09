@@ -1,17 +1,16 @@
 'use strict'
 
-import { isArray, isMatrix, isString } from '../../utils/is'
+import { isArray, isMatrix, isString, typeOf } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'type.ImmutableDenseMatrix'
 const dependencies = [
-  'typeOf',
   'smaller',
   'type.DenseMatrix'
 ]
 
-export const createImmutableDenseMatrixClass = factory(name, dependencies, ({ typeOf, smaller, type: { DenseMatrix } }) => {
+export const createImmutableDenseMatrixClass = factory(name, dependencies, ({ smaller, type: { DenseMatrix } }) => {
   function ImmutableDenseMatrix (data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }

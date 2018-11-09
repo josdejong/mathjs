@@ -1,17 +1,16 @@
 'use strict'
 
 import naturalSort from 'javascript-natural-sort'
-import { isDenseMatrix, isSparseMatrix } from '../../utils/is'
+import { isDenseMatrix, isSparseMatrix, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'compareNatural'
 const dependencies = [
   'typed',
-  'compare',
-  'typeOf'
+  'compare'
 ]
 
-export const createCompareNatural = factory(name, dependencies, ({ typed, compare, typeOf }) => {
+export const createCompareNatural = factory(name, dependencies, ({ typed, compare }) => {
   const compareBooleans = compare.signatures['boolean,boolean']
 
   /**

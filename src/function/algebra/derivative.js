@@ -1,6 +1,6 @@
 'use strict'
 
-import { isConstantNode } from '../../utils/is'
+import { isConstantNode, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'derivative'
@@ -11,7 +11,6 @@ const dependencies = [
   'simplify',
   'equal',
   'isZero',
-  'typeOf',
   'numeric',
   'expression.node.ConstantNode',
   'expression.node.FunctionNode',
@@ -20,7 +19,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createDerivative = factory(name, dependencies, ({ typed, config, parse, simplify, equal, isZero, typeOf, numeric, expression: { node: {
+export const createDerivative = factory(name, dependencies, ({ typed, config, parse, simplify, equal, isZero, numeric, expression: { node: {
   ConstantNode,
   FunctionNode,
   OperatorNode,

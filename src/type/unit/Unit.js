@@ -1,6 +1,6 @@
 'use strict'
 
-import { isComplex, isUnit } from '../../utils/is'
+import { isComplex, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { endsWith } from '../../utils/string'
 import { clone } from '../../utils/object'
@@ -21,7 +21,6 @@ const dependencies = [
   'equal',
   'isNumeric',
   'format',
-  'typeOf',
   'number',
   'type.Complex',
   'type.BigNumber',
@@ -43,7 +42,6 @@ export const createUnitClass = factory(name, dependencies, (
     equal,
     isNumeric,
     format,
-    typeOf,
     number,
     type: { Complex, BigNumber, Fraction }
   }

@@ -2,8 +2,8 @@
 
 # not yet released, version 6.0.0
 
-- Renamed function `typeof` to `typeOf` (`typeof` is a reserved keyword which
-  can only be used as a property name).
+- Renamed function `typeof` to `typeOf` and `var` to `variance`. (`typeof` and
+  `var` are reserved keywords which can only be used as a property name).
 
 
 # 2018-10-30, version 5.2.3

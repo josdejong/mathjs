@@ -1,14 +1,13 @@
 'use strict'
 
 import { flatten } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
-export function factory (type, config, load, typed) {
-  const abs = load(require('../arithmetic/abs'))
-  const map = load(require('../matrix/map'))
-  const median = load(require('../statistics/median'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'mad'
+const dependencies = ['typed', 'abs', 'map', 'median', 'subtract']
 
+export const createMad = factory(name, dependencies, ({ typed, abs, map, median, subtract }) => {
   /**
    * Compute the median absolute deviation of a matrix or a list with values.
    * The median absolute deviation is defined as the median of the absolute
@@ -33,7 +32,7 @@ export function factory (type, config, load, typed) {
    *                        A single matrix or multiple scalar values.
    * @return {*} The median absolute deviation.
    */
-  const mad = typed('mad', {
+  const mad = typed(name, {
     // mad([a, b, c, d, ...])
     'Array | Matrix': _mad,
 
@@ -67,6 +66,4 @@ export function factory (type, config, load, typed) {
       }
     }
   }
-}
-
-export const name = 'mad'
+})

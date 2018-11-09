@@ -1,16 +1,15 @@
 'use strict'
 
-import { isBigNumber, isComplex, isNode, isUnit } from '../../utils/is'
+import { isBigNumber, isComplex, isNode, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { getPrecedence } from '../operators'
 
 const name = 'expression.node.ConditionalNode'
 const dependencies = [
-  'typeOf',
   'expression.node.Node'
 ]
 
-export const createConditionalNode = factory(name, dependencies, ({ typeOf, expression: { node: { Node } } }) => {
+export const createConditionalNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
    *

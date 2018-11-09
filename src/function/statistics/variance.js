@@ -2,17 +2,15 @@
 
 import { deepForEach } from '../../utils/collection'
 import { isBigNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/addScalar'))
-  const subtract = load(require('../arithmetic/subtract'))
-  const multiply = load(require('../arithmetic/multiplyScalar'))
-  const divide = load(require('../arithmetic/divideScalar'))
-  const isNaN = load(require('../utils/isNaN'))
-  const improveErrorMessage = load(require('./utils/improveErrorMessage'))
+const name = 'variance'
+const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'isNaN']
 
+export const createVariance = factory(name, dependencies, ({ typed, add, subtract, multiply, divide, isNaN }) => {
   /**
    * Compute the variance of a matrix or a  list with values.
    * In case of a (multi dimensional) array or matrix, the variance over all
@@ -55,7 +53,7 @@ export function factory (type, config, load, typed) {
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The variance
    */
-  const variance = typed('variance', {
+  const variance = typed(name, {
     // var([a, b, c, d, ...])
     'Array | Matrix': function (array) {
       return _var(array, DEFAULT_NORMALIZATION)
@@ -125,7 +123,7 @@ export function factory (type, config, load, typed) {
         return divide(sum, num + 1)
 
       case 'unbiased':
-        const zero = isBigNumber(sum) ? new type.BigNumber(0) : 0
+        const zero = isBigNumber(sum) ? sum.mul(0) : 0
         return (num === 1) ? zero : divide(sum, num - 1)
 
       default:
@@ -133,6 +131,17 @@ export function factory (type, config, load, typed) {
         'Choose "unbiased" (default), "uncorrected", or "biased".')
     }
   }
-}
+})
 
-export const name = 'var'
+// For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-09
+export const createDeprecatedVar = factory('var', ['variance'], ({ variance }) => {
+  let warned = false
+
+  return function (...args) {
+    if (!warned) {
+      warned = true
+      console.warn('Function "var" has been renamed to "variance", please use the new function instead.')
+    }
+    return variance.apply(variance, args)
+  }
+})
