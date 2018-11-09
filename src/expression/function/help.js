@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { getSafeProperty } from '../../utils/customs'
 
 const name = 'help'
-const dependencies = ['typed', 'scope', 'expression.docs', 'type.Help']
+const dependencies = ['typed', 'math', 'expression.docs', 'type.Help']
 
-export const createHelp = factory(name, dependencies, ({ typed, scope, expression: { docs }, type: { Help } }) => {
+export const createHelp = factory(name, dependencies, ({ typed, math, expression: { docs }, type: { Help } }) => {
   /**
    * Retrieve help on a function or data type.
    * Help files are retrieved from the documentation in math.expression.docs.
@@ -31,9 +31,9 @@ export const createHelp = factory(name, dependencies, ({ typed, scope, expressio
       let searchName = search
 
       if (typeof search !== 'string') {
-        for (prop in scope) {
+        for (prop in math) {
           // search in functions and constants
-          if (scope.hasOwnProperty(prop) && (search === scope[prop])) {
+          if (math.hasOwnProperty(prop) && (search === math[prop])) {
             searchName = prop
             break
           }

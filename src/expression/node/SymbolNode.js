@@ -8,12 +8,12 @@ import { toSymbol } from '../../utils/latex'
 
 const name = 'expression.node.SymbolNode'
 const dependencies = [
-  'scope',
+  'math',
   'type.Unit',
   'expression.node.Node'
 ]
 
-export const createSymbolNode = factory(name, dependencies, ({ scope, type: { Unit }, expression: { node: { Node } } }) => {
+export const createSymbolNode = factory(name, dependencies, ({ math, type: { Unit }, expression: { node: { Node } } }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name
@@ -188,7 +188,7 @@ export const createSymbolNode = factory(name, dependencies, ({ scope, type: { Un
    */
   SymbolNode.prototype._toTex = function (options) {
     let isUnit = false
-    if ((typeof scope[this.name] === 'undefined') && isValuelessUnit(this.name)) {
+    if ((typeof math[this.name] === 'undefined') && isValuelessUnit(this.name)) {
       isUnit = true
     }
     const symbol = toSymbol(this.name, isUnit)

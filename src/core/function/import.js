@@ -313,9 +313,15 @@ export function importFactory (typed, load, math) {
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
-      let instance = contains(factory.dependencies, 'scope') // TODO: this is a special case for Chain and physicalConstants. Find a nicer solution
-        ? factory({ ...math, scope: math }) // TODO: this is probably inefficient. Use Object.create instead?
-        : factory(math)
+      let instance
+      if (contains(factory.dependencies, 'math')) {
+        // TODO: it's not nice having to pass the whole math namespace. find a better way
+        const mathWithNamespace = Object.create(math)
+        mathWithNamespace.math = math
+        instance = factory(mathWithNamespace)
+      } else {
+        instance = factory(math)
+      }
 
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +

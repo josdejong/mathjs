@@ -11,12 +11,12 @@ import { defaultTemplate } from '../../utils/latex'
 
 const name = 'expression.node.FunctionNode'
 const dependencies = [
-  'scope',
+  'math',
   'expression.node.Node',
   'expression.node.SymbolNode'
 ]
 
-export const createFunctionNode = factory(name, dependencies, ({ scope, expression: { node: { Node, SymbolNode } } }) => {
+export const createFunctionNode = factory(name, dependencies, ({ math, expression: { node: { Node, SymbolNode } } }) => {
   /**
    * @constructor FunctionNode
    * @extends {./Node}
@@ -390,13 +390,13 @@ export const createFunctionNode = factory(name, dependencies, ({ scope, expressi
 
     let latexConverter
 
-    if (scope[this.name] &&
-      ((typeof scope[this.name].toTex === 'function') ||
-        (typeof scope[this.name].toTex === 'object') ||
-        (typeof scope[this.name].toTex === 'string'))
+    if (math[this.name] &&
+      ((typeof math[this.name].toTex === 'function') ||
+        (typeof math[this.name].toTex === 'object') ||
+        (typeof math[this.name].toTex === 'string'))
     ) {
       // .toTex is a callback function
-      latexConverter = scope[this.name].toTex
+      latexConverter = math[this.name].toTex
     }
 
     let customToTex

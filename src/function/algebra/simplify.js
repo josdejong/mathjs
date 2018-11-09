@@ -7,7 +7,7 @@ import { createUtil } from './simplify/util'
 const name = 'simplify'
 const dependencies = [
   'typed',
-  'scope',
+  'math',
   'parse',
   'equal',
   'algebra.simplify.simplifyConstant',
@@ -23,7 +23,7 @@ const dependencies = [
 export const createSimplify = factory(name, dependencies, (
   {
     typed,
-    scope,
+    math,
     parse,
     equal,
     algebra: { simplify: { simplifyConstant, simplifyCore, resolve } },
@@ -585,7 +585,7 @@ export const createSimplify = factory(name, dependencies, (
       if (rule.name.length === 0) {
         throw new Error('Symbol in rule has 0 length...!?')
       }
-      if (scope.hasOwnProperty(rule.name)) {
+      if (math.hasOwnProperty(rule.name)) {
         if (!SUPPORTED_CONSTANTS[rule.name]) {
           throw new Error('Built in constant: ' + rule.name + ' is not supported by simplify.')
         }

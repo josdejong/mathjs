@@ -6,9 +6,9 @@ import { lazy } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Chain'
-const dependencies = ['on', 'scope']
+const dependencies = ['on', 'math']
 
-export const createChainClass = factory(name, dependencies, ({ on, scope }) => {
+export const createChainClass = factory(name, dependencies, ({ on, math }) => {
   /**
    * @constructor Chain
    * Wrap any value in a chain, allowing to perform chained operations on
@@ -170,7 +170,7 @@ export const createChainClass = factory(name, dependencies, ({ on, scope }) => {
   }
 
   // create proxy for everything that is in math.js
-  Chain.createProxy(scope)
+  Chain.createProxy(math)
 
   // register on the import event, automatically add a proxy for every imported function.
   on('import', function (name, resolver, path) {

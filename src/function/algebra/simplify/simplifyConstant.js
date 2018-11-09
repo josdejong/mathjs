@@ -9,7 +9,7 @@ const name = 'algebra.simplify.simplifyConstant'
 const dependencies = [
   'typed',
   'config',
-  'scope',
+  'math',
   'fraction',
   'bignumber',
   'expression.node.ConstantNode',
@@ -18,7 +18,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createSimplifyConstant = factory(name, dependencies, ({ typed, config, scope, fraction, bignumber, expression: { node: {
+export const createSimplifyConstant = factory(name, dependencies, ({ typed, config, math, fraction, bignumber, expression: { node: {
   ConstantNode,
   OperatorNode,
   FunctionNode,
@@ -34,7 +34,7 @@ export const createSimplifyConstant = factory(name, dependencies, ({ typed, conf
 
   function _eval (fnname, args, options) {
     try {
-      return _toNumber(scope[fnname].apply(null, args), options)
+      return _toNumber(math[fnname].apply(null, args), options)
     } catch (ignore) {
       // sometimes the implicit type conversion causes the evaluation to fail, so we'll try again after removing Fractions
       args = args.map(function (x) {
@@ -43,7 +43,7 @@ export const createSimplifyConstant = factory(name, dependencies, ({ typed, conf
         }
         return x
       })
-      return _toNumber(scope[fnname].apply(null, args), options)
+      return _toNumber(math[fnname].apply(null, args), options)
     }
   }
 
@@ -166,7 +166,7 @@ export const createSimplifyConstant = factory(name, dependencies, ({ typed, conf
         }
         return node
       case 'FunctionNode':
-        if (scope[node.name] && scope[node.name].rawArgs) {
+        if (math[node.name] && math[node.name].rawArgs) {
           return node
         }
 
