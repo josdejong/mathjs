@@ -1,4 +1,4 @@
-module.exports = {
+export const createUnitDocs = {
   'name': 'createUnit',
   'category': 'Construction',
   'syntax': [

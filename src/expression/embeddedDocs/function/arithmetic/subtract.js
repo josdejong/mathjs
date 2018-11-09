@@ -1,4 +1,4 @@
-module.exports = {
+export const subtractDocs = {
   'name': 'subtract',
   'category': 'Operators',
   'syntax': [

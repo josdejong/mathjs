@@ -1,4 +1,4 @@
-module.exports = {
+export const gammaDocs = {
   'name': 'gamma',
   'category': 'Probability',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const lusolveDocs = {
   'name': 'lusolve',
   'category': 'Algebra',
   'syntax': [

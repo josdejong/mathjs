@@ -1,4 +1,4 @@
-module.exports = {
+export const invDocs = {
   'name': 'inv',
   'category': 'Matrix',
   'syntax': [

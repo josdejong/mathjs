@@ -1,4 +1,4 @@
-module.exports = {
+export const minDocs = {
   'name': 'min',
   'category': 'Statistics',
   'syntax': [

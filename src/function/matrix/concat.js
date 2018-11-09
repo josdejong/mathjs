@@ -3,8 +3,8 @@
 import { isBigNumber, isMatrix, isNumber } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { arraySize } from '../../utils/array'
-import IndexError from '../../error/IndexError'
-import DimensionError from '../../error/DimensionError'
+import { IndexError } from '../../error/IndexError'
+import { DimensionError } from '../../error/DimensionError'
 import { factory } from '../../utils/factory'
 
 const name = 'concat'

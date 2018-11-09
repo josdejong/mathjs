@@ -1,4 +1,4 @@
-module.exports = {
+export const traceDocs = {
   'name': 'trace',
   'category': 'Matrix',
   'syntax': [

@@ -1,20 +1,20 @@
 'use strict'
 
 import { isBigNumber, isNumber } from '../../utils/is'
+import { errorTransform } from './error.transform'
+import { factory } from '../../utils/factory'
 
-const errorTransform = require('./error.transform').transform
+const name = 'expression.transform.concat'
+const dependencies = ['typed', 'concat']
 
-/**
- * Attach a transform function to math.range
- * Adds a property transform containing the transform function.
- *
- * This transform changed the last `dim` parameter of function concat
- * from one-based to zero based
- */
-function factory (type, config, load, typed) {
-  const concat = load(require('../../function/matrix/concat'))
-
-  // @see: comment of concat itself
+export const createConcatTransform = factory(name, dependencies, ({ typed, concat }) => {
+  /**
+   * Attach a transform function to math.range
+   * Adds a property transform containing the transform function.
+   *
+   * This transform changed the last `dim` parameter of function concat
+   * from one-based to zero based
+   */
   return typed('concat', {
     '...any': function (args) {
       // change last argument from one-based to zero-based
@@ -33,8 +33,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-}
-
-exports.name = 'concat'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

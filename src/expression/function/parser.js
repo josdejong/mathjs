@@ -1,8 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed, math) {
-  const Parser = load(require('../Parser'))
+import { factory } from '../../utils/factory'
 
+const name = 'parser'
+const dependencies = ['typed', 'scope', 'expression.Parser']
+
+export const createParser = factory(name, dependencies, ({ typed, scope, expression: { Parser } }) => {
   /**
    * Create a parser. The function creates a new `math.expression.Parser` object.
    *
@@ -46,13 +49,9 @@ function factory (type, config, load, typed, math) {
    *
    * @return {Parser} Parser
    */
-  return typed('parser', {
+  return typed(name, {
     '': function () {
-      return new Parser(math)
+      return new Parser(scope)
     }
   })
-}
-
-exports.name = 'parser'
-exports.factory = factory
-exports.math = true // requires the math namespace as 5th argument
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const andDocs = {
   'name': 'and',
   'category': 'Logical',
   'syntax': [

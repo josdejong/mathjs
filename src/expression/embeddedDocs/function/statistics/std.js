@@ -1,4 +1,4 @@
-module.exports = {
+export const stdDocs = {
   'name': 'std',
   'category': 'Statistics',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const acoshDocs = {
   'name': 'acosh',
   'category': 'Trigonometry',
   'syntax': [

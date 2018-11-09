@@ -45,7 +45,7 @@ export const createParse = factory(name, dependencies, ({ typed, expression: { p
    * @return {Node | Node[]} node
    * @throws {Error}
    */
-  return typed('parse', {
+  return typed(name, {
     'string | Array | Matrix': parse,
     'string | Array | Matrix, Object': parse
   })

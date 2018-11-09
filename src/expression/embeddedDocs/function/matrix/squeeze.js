@@ -1,4 +1,4 @@
-module.exports = {
+export const squeezeDocs = {
   'name': 'squeeze',
   'category': 'Matrix',
   'syntax': [

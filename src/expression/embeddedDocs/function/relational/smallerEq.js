@@ -1,4 +1,4 @@
-module.exports = {
+export const smallerEqDocs = {
   'name': 'smallerEq',
   'category': 'Relational',
   'syntax': [

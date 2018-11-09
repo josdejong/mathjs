@@ -1,4 +1,4 @@
-module.exports = {
+export const booleanDocs = {
   'name': 'boolean',
   'category': 'Construction',
   'syntax': [

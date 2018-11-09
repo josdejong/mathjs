@@ -1,4 +1,4 @@
-module.exports = {
+export const printDocs = {
   'name': 'print',
   'category': 'Utils',
   'syntax': [

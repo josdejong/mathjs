@@ -1,4 +1,4 @@
-module.exports = {
+export const eDocs = {
   'name': 'e',
   'category': 'Constants',
   'syntax': [

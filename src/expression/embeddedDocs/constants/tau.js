@@ -1,4 +1,4 @@
-module.exports = {
+export const tauDocs = {
   'name': 'tau',
   'category': 'Constants',
   'syntax': [

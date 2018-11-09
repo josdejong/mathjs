@@ -1,4 +1,4 @@
-module.exports = {
+export const toDocs = {
   'name': 'to',
   'category': 'Units',
   'syntax': [

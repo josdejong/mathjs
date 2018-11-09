@@ -1,9 +1,9 @@
-module.exports = {
-  'name': 'dotpow',
+export const dotPowDocs = {
+  'name': 'dotPow',
   'category': 'Operators',
   'syntax': [
     'x .^ y',
-    'dotpow(x, y)'
+    'dotPow(x, y)'
   ],
   'description':
       'Calculates the power of x to y element wise.',

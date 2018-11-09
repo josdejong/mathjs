@@ -1,4 +1,4 @@
-module.exports = {
+export const formatDocs = {
   'name': 'format',
   'category': 'Utils',
   'syntax': [

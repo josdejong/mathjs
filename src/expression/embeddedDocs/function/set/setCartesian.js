@@ -1,4 +1,4 @@
-module.exports = {
+export const setCartesianDocs = {
   'name': 'setCartesian',
   'category': 'Set',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const derivativeDocs = {
   'name': 'derivative',
   'category': 'Algebra',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const xgcdDocs = {
   'name': 'xgcd',
   'category': 'Arithmetic',
   'syntax': [

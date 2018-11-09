@@ -1,4 +1,4 @@
-module.exports = {
+export const argDocs = {
   'name': 'arg',
   'category': 'Complex',
   'syntax': [

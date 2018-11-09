@@ -1,16 +1,18 @@
 'use strict'
 
-const errorTransform = require('./error.transform').transform
+import { factory } from '../../utils/factory'
+import { errorTransform } from './error.transform'
 
-/**
- * Attach a transform function to math.subset
- * Adds a property transform containing the transform function.
- *
- * This transform creates a range which includes the end value
- */
-function factory (type, config, load, typed) {
-  const subset = load(require('../../function/matrix/subset'))
+const name = 'expression.transform.subset'
+const dependencies = ['typed', 'subset']
 
+export const createSubsetTransform = factory(name, dependencies, ({ typed, subset }) => {
+  /**
+   * Attach a transform function to math.subset
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a range which includes the end value
+   */
   return typed('subset', {
     '...any': function (args) {
       try {
@@ -20,8 +22,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-}
-
-exports.name = 'subset'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

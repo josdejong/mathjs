@@ -1,4 +1,4 @@
-module.exports = {
+export const fixDocs = {
   'name': 'fix',
   'category': 'Arithmetic',
   'syntax': [

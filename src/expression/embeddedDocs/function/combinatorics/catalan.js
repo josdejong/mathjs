@@ -1,4 +1,4 @@
-module.exports = {
+export const catalanDocs = {
   'name': 'catalan',
   'category': 'Combinatorics',
   'syntax': [

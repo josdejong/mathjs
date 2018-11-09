@@ -1,20 +1,21 @@
 'use strict'
 
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
+import { maxArgumentCount } from '../../utils/function'
+import { map } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { compileInlineExpression } from './utils/compileInlineExpression'
 
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
-const map = require('../../utils/array').map
+const name = 'expression.transform.map'
+const dependencies = ['typed', 'matrix']
 
-/**
- * Attach a transform function to math.map
- * Adds a property transform containing the transform function.
- *
- * This transform creates a one-based index instead of a zero-based index
- */
-function factory (type, config, load, typed) {
-  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
+export const createMapTransform = factory(name, dependencies, ({ typed, matrix }) => {
+  /**
+   * Attach a transform function to math.map
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a one-based index instead of a zero-based index
+   */
   function mapTransform (args, math, scope) {
     let x, callback
 
@@ -37,7 +38,7 @@ function factory (type, config, load, typed) {
   mapTransform.rawArgs = true
 
   // one-based version of map function
-  let map = typed('map', {
+  const map = typed('map', {
     'Array, function': function (x, callback) {
       return _map(x, callback, x)
     },
@@ -48,7 +49,7 @@ function factory (type, config, load, typed) {
   })
 
   return mapTransform
-}
+})
 
 /**
  * Map for a multi dimensional array. One-based indexes
@@ -82,7 +83,3 @@ function _map (array, callback, orig) {
 
   return recurse(array, [])
 }
-
-exports.name = 'map'
-exports.path = 'expression.transform'
-exports.factory = factory

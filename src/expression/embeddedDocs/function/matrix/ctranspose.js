@@ -1,5 +1,5 @@
-module.exports = {
-  'name': 'transpose',
+export const ctransposeDocs = {
+  'name': 'ctranspose',
   'category': 'Matrix',
   'syntax': [
     'x\'',

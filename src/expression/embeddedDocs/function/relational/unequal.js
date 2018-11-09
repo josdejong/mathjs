@@ -1,4 +1,4 @@
-module.exports = {
+export const unequalDocs = {
   'name': 'unequal',
   'category': 'Relational',
   'syntax': [

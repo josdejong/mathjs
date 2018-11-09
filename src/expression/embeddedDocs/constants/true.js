@@ -1,4 +1,4 @@
-module.exports = {
+export const trueDocs = {
   'name': 'true',
   'category': 'Constants',
   'syntax': [

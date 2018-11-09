@@ -1,4 +1,4 @@
-module.exports = {
+export const setIsSubsetDocs = {
   'name': 'setIsSubset',
   'category': 'Set',
   'syntax': [

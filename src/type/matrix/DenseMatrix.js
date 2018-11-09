@@ -5,7 +5,7 @@ import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, vali
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
 import { clone, deepEqual } from '../../utils/object'
-import DimensionError from '../../error/DimensionError'
+import { DimensionError } from '../../error/DimensionError'
 import { factory } from '../../utils/factory'
 
 const name = 'type.DenseMatrix'

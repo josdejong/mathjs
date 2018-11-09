@@ -1,4 +1,4 @@
-module.exports = {
+export const cubeDocs = {
   'name': 'cube',
   'category': 'Arithmetic',
   'syntax': [

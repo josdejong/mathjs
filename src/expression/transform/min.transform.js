@@ -1,19 +1,20 @@
 'use strict'
 
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { errorTransform } from './error.transform'
 
-const errorTransform = require('./error.transform').transform
+const name = 'expression.transform.min'
+const dependencies = ['typed', 'min']
 
-/**
- * Attach a transform function to math.min
- * Adds a property transform containing the transform function.
- *
- * This transform changed the last `dim` parameter of function min
- * from one-based to zero based
- */
-function factory (type, config, load, typed) {
-  const min = load(require('../../function/statistics/min'))
-
+export const createMinTransform = factory(name, dependencies, ({ typed, min }) => {
+  /**
+   * Attach a transform function to math.min
+   * Adds a property transform containing the transform function.
+   *
+   * This transform changed the last `dim` parameter of function min
+   * from one-based to zero based
+   */
   return typed('min', {
     '...any': function (args) {
       // change last argument dim from one-based to zero-based
@@ -33,8 +34,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-}
-
-exports.name = 'min'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

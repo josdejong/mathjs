@@ -1,11 +1,15 @@
 'use strict'
 
 import { createParse } from './parse'
+import { createCompile } from './compile'
+import { createHelp } from './help'
+import { createEval } from './eval'
+import { createParser } from './parser'
 
 export default [
-  require('./compile'),
-  require('./eval'),
-  require('./help'),
+  createCompile,
+  createEval,
+  createHelp,
   createParse,
-  require('./parser')
+  createParser
 ]

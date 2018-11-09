@@ -1,6 +1,6 @@
 'use strict'
 
-import { transform as errorTransform } from '../../transform/error.transform'
+import { errorTransform } from '../../transform/error.transform'
 import { setSafeProperty } from '../../../utils/customs'
 
 export function assignFactory ({ subset, matrix }) {

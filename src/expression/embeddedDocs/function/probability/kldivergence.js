@@ -1,4 +1,4 @@
-module.exports = {
+export const kldivergenceDocs = {
   'name': 'kldivergence',
   'category': 'Probability',
   'syntax': [

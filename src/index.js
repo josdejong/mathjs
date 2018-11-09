@@ -4,6 +4,7 @@ import expression from './expression'
 import type from './type'
 import functions from './function'
 import { createConstants } from './constants'
+import error from './error'
 
 export default [
   type, // data types (Matrix, Complex, Unit, ...)
@@ -16,5 +17,5 @@ export default [
   expression, // expression parsing
 
   require('./json'), // serialization utility (math.json.reviver)
-  require('./error') // errors
+  error
 ]

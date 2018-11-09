@@ -1,4 +1,4 @@
-module.exports = {
+export const isNaNDocs = {
   'name': 'isNaN',
   'category': 'Utils',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const imDocs = {
   'name': 'im',
   'category': 'Complex',
   'syntax': [

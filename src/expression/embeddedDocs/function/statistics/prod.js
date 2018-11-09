@@ -1,4 +1,4 @@
-module.exports = {
+export const prodDocs = {
   'name': 'prod',
   'category': 'Statistics',
   'syntax': [

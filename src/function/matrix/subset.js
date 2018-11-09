@@ -4,7 +4,7 @@ import { isIndex } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { validateIndex } from '../../utils/array'
 import { getSafeProperty, setSafeProperty } from '../../utils/customs'
-import DimensionError from '../../error/DimensionError'
+import { DimensionError } from '../../error/DimensionError'
 import { factory } from '../../utils/factory'
 
 const name = 'subset'

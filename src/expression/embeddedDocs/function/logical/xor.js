@@ -1,4 +1,4 @@
-module.exports = {
+export const xorDocs = {
   'name': 'xor',
   'category': 'Logical',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const sizeDocs = {
   'name': 'size',
   'category': 'Matrix',
   'syntax': [

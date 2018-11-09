@@ -1,4 +1,4 @@
-module.exports = {
+export const sparseDocs = {
   'name': 'sparse',
   'category': 'Construction',
   'syntax': [

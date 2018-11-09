@@ -1,4 +1,4 @@
-module.exports = {
+export const identityDocs = {
   'name': 'identity',
   'category': 'Matrix',
   'syntax': [

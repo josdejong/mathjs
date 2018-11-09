@@ -1,4 +1,4 @@
-module.exports = {
+export const LOG10EDocs = {
   'name': 'LOG10E',
   'category': 'Constants',
   'syntax': [

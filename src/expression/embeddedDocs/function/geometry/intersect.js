@@ -1,4 +1,4 @@
-module.exports = {
+export const intersectDocs = {
   'name': 'intersect',
   'category': 'Geometry',
   'syntax': [

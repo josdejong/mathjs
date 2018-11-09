@@ -18,7 +18,7 @@
 //                  left argument doesn't need to be enclosed
 //                  in parentheses
 // latexRightParens: the same for the right argument
-const properties = [
+export const properties = [
   { // assignment
     'AssignmentNode': {},
     'FunctionAssignmentNode': {}
@@ -219,7 +219,7 @@ const properties = [
  * @param {string} parenthesis
  * @return {number|null}
  */
-function getPrecedence (_node, parenthesis) {
+export function getPrecedence (_node, parenthesis) {
   let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
@@ -244,7 +244,7 @@ function getPrecedence (_node, parenthesis) {
  * @return {string|null}
  * @throws {Error}
  */
-function getAssociativity (_node, parenthesis) {
+export function getAssociativity (_node, parenthesis) {
   let node = _node
   if (parenthesis !== 'keep') {
     // ParenthesisNodes are only ignored when not in 'keep' mode
@@ -283,7 +283,7 @@ function getAssociativity (_node, parenthesis) {
  * @param {string} parenthesis
  * @return {bool|null}
  */
-function isAssociativeWith (nodeA, nodeB, parenthesis) {
+export function isAssociativeWith (nodeA, nodeB, parenthesis) {
   // ParenthesisNodes are only ignored when not in 'keep' mode
   const a = (parenthesis !== 'keep') ? nodeA.getContent() : nodeA
   const b = (parenthesis !== 'keep') ? nodeA.getContent() : nodeB
@@ -309,8 +309,3 @@ function isAssociativeWith (nodeA, nodeB, parenthesis) {
   // associativeWith is not defined
   return null
 }
-
-module.exports.properties = properties
-module.exports.getPrecedence = getPrecedence
-module.exports.getAssociativity = getAssociativity
-module.exports.isAssociativeWith = isAssociativeWith

@@ -1,4 +1,4 @@
-module.exports = {
+export const detDocs = {
   'name': 'det',
   'category': 'Matrix',
   'syntax': [

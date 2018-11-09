@@ -1,4 +1,4 @@
-module.exports = {
+export const sluDocs = {
   'name': 'slu',
   'category': 'Algebra',
   'syntax': [

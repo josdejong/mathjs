@@ -1,4 +1,4 @@
-module.exports = {
+export const dotDocs = {
   'name': 'dot',
   'category': 'Matrix',
   'syntax': [

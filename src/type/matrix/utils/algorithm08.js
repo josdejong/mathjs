@@ -1,7 +1,7 @@
 'use strict'
 
 import { factory } from '../../../utils/factory'
-import DimensionError from '../../../error/DimensionError'
+import { DimensionError } from '../../../error/DimensionError'
 
 const name = 'utils.algorithm08'
 const dependencies = ['typed', 'equalScalar', 'type.SparseMatrix']

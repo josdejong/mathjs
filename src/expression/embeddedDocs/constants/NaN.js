@@ -1,4 +1,4 @@
-module.exports = {
+export const NaNDocs = {
   'name': 'NaN',
   'category': 'Constants',
   'syntax': [

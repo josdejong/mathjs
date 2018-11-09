@@ -1,7 +1,7 @@
 'use strict'
 
 import { factory } from '../../../utils/factory'
-import DimensionError from '../../../error/DimensionError'
+import { DimensionError } from '../../../error/DimensionError'
 import { scatter } from '../../../utils/collection'
 
 const name = 'utils.algorithm06'

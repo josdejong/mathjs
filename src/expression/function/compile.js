@@ -1,10 +1,12 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
 
-function factory (type, config, load, typed) {
-  const parse = load(require('../parse'))
+const name = 'compile'
+const dependencies = ['typed', 'expression.parse']
 
+export const createCompile = factory(name, dependencies, ({ typed, expression: { parse } }) => {
   /**
    * Parse and compile an expression.
    * Returns a an object with a function `eval([scope])` to evaluate the
@@ -39,7 +41,7 @@ function factory (type, config, load, typed) {
    *            An object with the compiled expression
    * @throws {Error}
    */
-  return typed('compile', {
+  return typed(name, {
     'string': function (expr) {
       return parse(expr).compile()
     },
@@ -50,7 +52,4 @@ function factory (type, config, load, typed) {
       })
     }
   })
-}
-
-exports.name = 'compile'
-exports.factory = factory
+})

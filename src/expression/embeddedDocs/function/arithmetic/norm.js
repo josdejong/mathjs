@@ -1,4 +1,4 @@
-module.exports = {
+export const normDocs = {
   'name': 'norm',
   'category': 'Arithmetic',
   'syntax': [

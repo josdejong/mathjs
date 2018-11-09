@@ -6,7 +6,7 @@ import { format } from '../../utils/string'
 import { clone, deepEqual } from '../../utils/object'
 import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array'
 import { factory } from '../../utils/factory'
-import DimensionError from '../../error/DimensionError'
+import { DimensionError } from '../../error/DimensionError'
 
 const name = 'type.SparseMatrix'
 const dependencies = [

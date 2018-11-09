@@ -1,19 +1,21 @@
 'use strict'
 
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
+import { maxArgumentCount } from '../../utils/function'
+import { forEach } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { compileInlineExpression } from './utils/compileInlineExpression'
 
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
-const forEach = require('../../utils/array').forEach
+const name = 'expression.transform.forEach'
+const dependencies = ['typed']
 
-/**
- * Attach a transform function to math.forEach
- * Adds a property transform containing the transform function.
- *
- * This transform creates a one-based index instead of a zero-based index
- */
-function factory (type, config, load, typed) {
-  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
-
+export const createForEachTransform = factory(name, dependencies, ({ typed }) => {
+  /**
+   * Attach a transform function to math.forEach
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a one-based index instead of a zero-based index
+   */
   function forEachTransform (args, math, scope) {
     let x, callback
 
@@ -36,7 +38,7 @@ function factory (type, config, load, typed) {
   forEachTransform.rawArgs = true
 
   // one-based version of forEach
-  let _forEach = typed('forEach', {
+  const _forEach = typed('forEach', {
     'Array | Matrix, function': function (array, callback) {
       // figure out what number of arguments the callback function expects
       const args = maxArgumentCount(callback)
@@ -63,8 +65,4 @@ function factory (type, config, load, typed) {
   })
 
   return forEachTransform
-}
-
-exports.name = 'forEach'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

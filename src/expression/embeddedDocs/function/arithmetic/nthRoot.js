@@ -1,4 +1,4 @@
-module.exports = {
+export const nthRootDocs = {
   'name': 'nthRoot',
   'category': 'Arithmetic',
   'syntax': [

@@ -1,31 +1,14 @@
 'use strict'
 
-const ArgumentsError = require('./ArgumentsError')
-const DimensionError = require('./DimensionError')
-const IndexError = require('./IndexError')
+import { factory } from '../utils/factory'
+import { ArgumentsError } from './ArgumentsError'
+import { DimensionError } from './DimensionError'
+import { IndexError } from './IndexError'
 
-module.exports = [
-  {
-    name: 'ArgumentsError',
-    path: 'error',
-    factory: function () {
-      return ArgumentsError
-    }
-  },
-  {
-    name: 'DimensionError',
-    path: 'error',
-    factory: function () {
-      return DimensionError
-    }
-  },
-  {
-    name: 'IndexError',
-    path: 'error',
-    factory: function () {
-      return IndexError
-    }
-  }
+export default [
+  factory('error.ArgumentsError', [], () => ArgumentsError),
+  factory('error.DimensionError', [], () => DimensionError),
+  factory('error.IndexError', [], () => IndexError)
 ]
 
 // TODO: implement an InvalidValueError?

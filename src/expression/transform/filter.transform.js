@@ -1,22 +1,22 @@
 'use strict'
 
 import { isFunctionAssignmentNode, isSymbolNode } from '../../utils/is'
+import { filter, filterRegExp } from '../../utils/array'
+import { maxArgumentCount } from '../../utils/function'
+import { compileInlineExpression } from './utils/compileInlineExpression'
+import { factory } from '../../utils/factory'
 
-const filter = require('../../utils/array').filter
-const filterRegExp = require('../../utils/array').filterRegExp
-const maxArgumentCount = require('../../utils/function').maxArgumentCount
+const name = 'expression.transform.filter'
+const dependencies = ['typed', 'matrix']
 
-/**
- * Attach a transform function to math.filter
- * Adds a property transform containing the transform function.
- *
- * This transform adds support for equations as test function for math.filter,
- * so you can do something like 'filter([3, -2, 5], x > 0)'.
- */
-function factory (type, config, load, typed) {
-  const compileInlineExpression = load(require('./utils/compileInlineExpression'))
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
+export const createFilterTransform = factory(name, dependencies, ({ typed, matrix }) => {
+  /**
+   * Attach a transform function to math.filter
+   * Adds a property transform containing the transform function.
+   *
+   * This transform adds support for equations as test function for math.filter,
+   * so you can do something like 'filter([3, -2, 5], x > 0)'.
+   */
   function filterTransform (args, math, scope) {
     let x, callback
 
@@ -39,7 +39,7 @@ function factory (type, config, load, typed) {
   filterTransform.rawArgs = true
 
   // one based version of function filter
-  let filter = typed('filter', {
+  const filter = typed('filter', {
     'Array, function': _filter,
 
     'Matrix, function': function (x, test) {
@@ -56,7 +56,7 @@ function factory (type, config, load, typed) {
   filter.toTex = undefined // use default template
 
   return filterTransform
-}
+})
 
 /**
  * Filter values in a callback given a callback function
@@ -83,7 +83,3 @@ function _filter (x, callback) {
     }
   })
 }
-
-exports.name = 'filter'
-exports.path = 'expression.transform'
-exports.factory = factory

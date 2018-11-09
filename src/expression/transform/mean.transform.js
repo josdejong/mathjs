@@ -1,19 +1,20 @@
 'use strict'
 
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { errorTransform } from './error.transform'
 
-const errorTransform = require('./error.transform').transform
+const name = 'expression.transform.mean'
+const dependencies = ['typed', 'mean']
 
-/**
- * Attach a transform function to math.mean
- * Adds a property transform containing the transform function.
- *
- * This transform changed the last `dim` parameter of function mean
- * from one-based to zero based
- */
-function factory (type, config, load, typed) {
-  const mean = load(require('../../function/statistics/mean'))
-
+export const createMeanTransform = factory(name, dependencies, ({ typed, mean }) => {
+  /**
+   * Attach a transform function to math.mean
+   * Adds a property transform containing the transform function.
+   *
+   * This transform changed the last `dim` parameter of function mean
+   * from one-based to zero based
+   */
   return typed('mean', {
     '...any': function (args) {
       // change last argument dim from one-based to zero-based
@@ -33,8 +34,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-}
-
-exports.name = 'mean'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const unaryMinusDocs = {
   'name': 'unaryMinus',
   'category': 'Operators',
   'syntax': [

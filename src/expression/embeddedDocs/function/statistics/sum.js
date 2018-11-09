@@ -1,4 +1,4 @@
-module.exports = {
+export const sumDocs = {
   'name': 'sum',
   'category': 'Statistics',
   'syntax': [

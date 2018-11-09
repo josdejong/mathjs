@@ -1,4 +1,4 @@
-module.exports = {
+export const setUnionDocs = {
   'name': 'setUnion',
   'category': 'Set',
   'syntax': [

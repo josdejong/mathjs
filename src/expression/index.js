@@ -3,7 +3,10 @@
 import functions from './function'
 import node from './node'
 import { createParseExpression } from './parse'
+import transform from './transform'
 import { createEmbeddedDocs } from './embeddedDocs'
+import { createHelpClass } from './Help'
+import { createParserClass } from './Parser'
 
 export default [
   // Note that the docs folder is called "embeddedDocs" and not "docs" to prevent issues
@@ -11,9 +14,9 @@ export default [
   createEmbeddedDocs,
   functions,
   node,
-  require('./transform'),
+  transform,
 
-  require('./Help'),
+  createHelpClass,
   createParseExpression,
-  require('./Parser')
+  createParserClass
 ]

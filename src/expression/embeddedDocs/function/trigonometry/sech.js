@@ -1,4 +1,4 @@
-module.exports = {
+export const sechDocs = {
   'name': 'sech',
   'category': 'Trigonometry',
   'syntax': [

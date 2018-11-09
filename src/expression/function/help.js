@@ -1,10 +1,12 @@
 'use strict'
 
-const getSafeProperty = require('../../utils/customs').getSafeProperty
+import { factory } from '../../utils/factory'
+import { getSafeProperty } from '../../utils/customs'
 
-function factory (type, config, load, typed, math) {
-  const docs = load(require('../embeddedDocs'))
+const name = 'help'
+const dependencies = ['typed', 'scope', 'expression.docs', 'type.Help']
 
+export const createHelp = factory(name, dependencies, ({ typed, scope, expression: { docs }, type: { Help } }) => {
   /**
    * Retrieve help on a function or data type.
    * Help files are retrieved from the documentation in math.expression.docs.
@@ -23,16 +25,16 @@ function factory (type, config, load, typed, math) {
    *                                              for which to get help
    * @return {Help} A help object
    */
-  return typed('help', {
+  return typed(name, {
     'any': function (search) {
       let prop
-      let name = search
+      let searchName = search
 
       if (typeof search !== 'string') {
-        for (prop in math) {
+        for (prop in scope) {
           // search in functions and constants
-          if (math.hasOwnProperty(prop) && (search === math[prop])) {
-            name = prop
+          if (scope.hasOwnProperty(prop) && (search === scope[prop])) {
+            searchName = prop
             break
           }
         }
@@ -52,15 +54,11 @@ function factory (type, config, load, typed, math) {
          */
       }
 
-      const doc = getSafeProperty(docs, name)
+      const doc = getSafeProperty(docs, searchName)
       if (!doc) {
-        throw new Error('No documentation found on "' + name + '"')
+        throw new Error('No documentation found on "' + searchName + '"')
       }
-      return new type.Help(doc)
+      return new Help(doc)
     }
   })
-}
-
-exports.math = true // request access to the math namespace as 5th argument of the factory function
-exports.name = 'help'
-exports.factory = factory
+})

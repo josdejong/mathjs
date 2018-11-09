@@ -1,4 +1,4 @@
-module.exports = {
+export const sortDocs = {
   'name': 'sort',
   'category': 'Matrix',
   'syntax': [

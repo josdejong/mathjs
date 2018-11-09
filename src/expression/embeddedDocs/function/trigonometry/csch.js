@@ -1,4 +1,4 @@
-module.exports = {
+export const cschDocs = {
   'name': 'csch',
   'category': 'Trigonometry',
   'syntax': [

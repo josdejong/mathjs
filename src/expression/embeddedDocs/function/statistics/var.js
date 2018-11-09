@@ -1,4 +1,4 @@
-module.exports = {
+export const varDocs = {
   'name': 'var',
   'category': 'Statistics',
   'syntax': [

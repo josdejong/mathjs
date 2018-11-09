@@ -1,4 +1,4 @@
-module.exports = {
+export const compareTextDocs = {
   'name': 'compareText',
   'category': 'Relational',
   'syntax': [

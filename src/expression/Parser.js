@@ -1,11 +1,13 @@
 'use strict'
 
-const extend = require('../utils/object').extend
-const customs = require('../utils/customs')
+import { factory } from '../utils/factory'
+import { extend } from '../utils/object'
+import { getSafeProperty, setSafeProperty } from '../utils/customs'
 
-function factory (type, config, load, typed, math) {
-  const _parse = load(require('./parse'))
+const name = 'expression.Parser'
+const dependencies = ['expression.parse']
 
+export const createParserClass = factory(name, dependencies, ({ expression: { parse } }) => {
   /**
    * @constructor Parser
    * Parser contains methods to evaluate or parse expressions, and has a number
@@ -99,7 +101,7 @@ function factory (type, config, load, typed, math) {
    */
   Parser.prototype.eval = function (expr) {
     // TODO: validate arguments
-    return _parse(expr)
+    return parse(expr)
       .compile()
       .eval(this.scope)
   }
@@ -113,7 +115,7 @@ function factory (type, config, load, typed, math) {
   Parser.prototype.get = function (name) {
     // TODO: validate arguments
     return name in this.scope
-      ? customs.getSafeProperty(this.scope, name)
+      ? getSafeProperty(this.scope, name)
       : undefined
   }
 
@@ -132,7 +134,7 @@ function factory (type, config, load, typed, math) {
    */
   Parser.prototype.set = function (name, value) {
     // TODO: validate arguments
-    return customs.setSafeProperty(this.scope, name, value)
+    return setSafeProperty(this.scope, name, value)
   }
 
   /**
@@ -156,9 +158,4 @@ function factory (type, config, load, typed, math) {
   }
 
   return Parser
-}
-
-exports.name = 'Parser'
-exports.path = 'expression'
-exports.factory = factory
-exports.math = true // requires the math namespace as 5th argument
+})

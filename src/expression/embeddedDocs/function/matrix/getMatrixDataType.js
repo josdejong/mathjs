@@ -1,4 +1,4 @@
-module.exports = {
+export const getMatrixDataTypeDocs = {
   'name': 'getMatrixDataType',
   'category': 'Matrix',
   'syntax': [

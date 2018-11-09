@@ -3,7 +3,7 @@
 import { factory } from '../utils/factory'
 import { isAccessorNode, isConstantNode, isFunctionNode, isMatrix, isOperatorNode, isSymbolNode } from '../utils/is'
 import { deepMap } from '../utils/collection'
-import ArgumentsError from '../error/ArgumentsError'
+import { ArgumentsError } from '../error/ArgumentsError'
 
 const name = 'expression.parse'
 const dependencies = [

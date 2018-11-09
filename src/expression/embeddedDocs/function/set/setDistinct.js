@@ -1,4 +1,4 @@
-module.exports = {
+export const setDistinctDocs = {
   'name': 'setDistinct',
   'category': 'Set',
   'syntax': [

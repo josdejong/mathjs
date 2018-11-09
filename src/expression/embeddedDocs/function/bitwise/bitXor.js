@@ -1,4 +1,4 @@
-module.exports = {
+export const bitXorDocs = {
   'name': 'bitXor',
   'category': 'Bitwise',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const fractionDocs = {
   'name': 'fraction',
   'category': 'Construction',
   'syntax': [

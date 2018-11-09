@@ -1,4 +1,4 @@
-module.exports = {
+export const LN2Docs = {
   'name': 'LN2',
   'category': 'Constants',
   'syntax': [

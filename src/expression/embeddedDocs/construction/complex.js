@@ -1,4 +1,4 @@
-module.exports = {
+export const complexDocs = {
   'name': 'complex',
   'category': 'Construction',
   'syntax': [

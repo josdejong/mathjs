@@ -1,4 +1,4 @@
-module.exports = {
+export const cosDocs = {
   'name': 'cos',
   'category': 'Trigonometry',
   'syntax': [

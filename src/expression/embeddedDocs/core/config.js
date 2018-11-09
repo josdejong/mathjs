@@ -1,4 +1,4 @@
-module.exports = {
+export const configDocs = {
   'name': 'config',
   'category': 'Core',
   'syntax': [

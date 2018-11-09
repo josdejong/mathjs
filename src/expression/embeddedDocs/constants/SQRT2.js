@@ -1,4 +1,4 @@
-module.exports = {
+export const SQRT2Docs = {
   'name': 'SQRT2',
   'category': 'Constants',
   'syntax': [

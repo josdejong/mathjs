@@ -1,46 +1,250 @@
 import { factory } from '../../utils/factory'
+import { bignumberDocs } from './construction/bignumber'
+import { typeOfDocs } from './function/utils/typeOf'
+import { isZeroDocs } from './function/utils/isZero'
+import { isPrimeDocs } from './function/utils/isPrime'
+import { isPositiveDocs } from './function/utils/isPositive'
+import { isNumericDocs } from './function/utils/isNumeric'
+import { isNegativeDocs } from './function/utils/isNegative'
+import { isIntegerDocs } from './function/utils/isInteger'
+import { isNaNDocs } from './function/utils/isNaN'
+import { formatDocs } from './function/utils/format'
+import { cloneDocs } from './function/utils/clone'
+import { toDocs } from './function/units/to'
+import { tanhDocs } from './function/trigonometry/tanh'
+import { tanDocs } from './function/trigonometry/tan'
+import { sinhDocs } from './function/trigonometry/sinh'
+import { sechDocs } from './function/trigonometry/sech'
+import { secDocs } from './function/trigonometry/sec'
+import { cschDocs } from './function/trigonometry/csch'
+import { cscDocs } from './function/trigonometry/csc'
+import { cothDocs } from './function/trigonometry/coth'
+import { cotDocs } from './function/trigonometry/cot'
+import { coshDocs } from './function/trigonometry/cosh'
+import { cosDocs } from './function/trigonometry/cos'
+import { atan2Docs } from './function/trigonometry/atan2'
+import { atanhDocs } from './function/trigonometry/atanh'
+import { atanDocs } from './function/trigonometry/atan'
+import { asinhDocs } from './function/trigonometry/asinh'
+import { asinDocs } from './function/trigonometry/asin'
+import { asechDocs } from './function/trigonometry/asech'
+import { asecDocs } from './function/trigonometry/asec'
+import { acschDocs } from './function/trigonometry/acsch'
+import { acscDocs } from './function/trigonometry/acsc'
+import { acothDocs } from './function/trigonometry/acoth'
+import { acotDocs } from './function/trigonometry/acot'
+import { acoshDocs } from './function/trigonometry/acosh'
+import { acosDocs } from './function/trigonometry/acos'
+import { sumDocs } from './function/statistics/sum'
+import { stdDocs } from './function/statistics/std'
+import { quantileSeqDocs } from './function/statistics/quantileSeq'
+import { prodDocs } from './function/statistics/prod'
+import { modeDocs } from './function/statistics/mode'
+import { minDocs } from './function/statistics/min'
+import { medianDocs } from './function/statistics/median'
+import { meanDocs } from './function/statistics/mean'
+import { maxDocs } from './function/statistics/max'
+import { madDocs } from './function/statistics/mad'
+import { erfDocs } from './function/special/erf'
+import { setUnionDocs } from './function/set/setUnion'
+import { setSymDifferenceDocs } from './function/set/setSymDifference'
+import { setSizeDocs } from './function/set/setSize'
+import { setPowersetDocs } from './function/set/setPowerset'
+import { setMultiplicityDocs } from './function/set/setMultiplicity'
+import { setIsSubsetDocs } from './function/set/setIsSubset'
+import { setIntersectDocs } from './function/set/setIntersect'
+import { setDistinctDocs } from './function/set/setDistinct'
+import { setDifferenceDocs } from './function/set/setDifference'
+import { setCartesianDocs } from './function/set/setCartesian'
+import { unequalDocs } from './function/relational/unequal'
+import { smallerEqDocs } from './function/relational/smallerEq'
+import { smallerDocs } from './function/relational/smaller'
+import { largerEqDocs } from './function/relational/largerEq'
+import { largerDocs } from './function/relational/larger'
+import { equalTextDocs } from './function/relational/equalText'
+import { equalDocs } from './function/relational/equal'
+import { deepEqualDocs } from './function/relational/deepEqual'
+import { compareTextDocs } from './function/relational/compareText'
+import { compareNaturalDocs } from './function/relational/compareNatural'
+import { compareDocs } from './function/relational/compare'
+import { randomIntDocs } from './function/probability/randomInt'
+import { randomDocs } from './function/probability/random'
+import { pickRandomDocs } from './function/probability/pickRandom'
+import { permutationsDocs } from './function/probability/permutations'
+import { multinomialDocs } from './function/probability/multinomial'
+import { kldivergenceDocs } from './function/probability/kldivergence'
+import { gammaDocs } from './function/probability/gamma'
+import { factorialDocs } from './function/probability/factorial'
+import { combinationsDocs } from './function/probability/combinations'
+import { zerosDocs } from './function/matrix/zeros'
+import { transposeDocs } from './function/matrix/transpose'
+import { traceDocs } from './function/matrix/trace'
+import { subsetDocs } from './function/matrix/subset'
+import { squeezeDocs } from './function/matrix/squeeze'
+import { sortDocs } from './function/matrix/sort'
+import { sizeDocs } from './function/matrix/size'
+import { reshapeDocs } from './function/matrix/reshape'
+import { resizeDocs } from './function/matrix/resize'
+import { rangeDocs } from './function/matrix/range'
+import { partitionSelectDocs } from './function/matrix/partitionSelect'
+import { onesDocs } from './function/matrix/ones'
+import { mapDocs } from './function/matrix/map'
+import { kronDocs } from './function/matrix/kron'
+import { invDocs } from './function/matrix/inv'
+import { forEachDocs } from './function/matrix/forEach'
+import { flattenDocs } from './function/matrix/flatten'
+import { filterDocs } from './function/matrix/filter'
+import { identityDocs } from './function/matrix/identity'
+import { getMatrixDataTypeDocs } from './function/matrix/getMatrixDataType'
+import { dotDocs } from './function/matrix/dot'
+import { diagDocs } from './function/matrix/diag'
+import { detDocs } from './function/matrix/det'
+import { ctransposeDocs } from './function/matrix/ctranspose'
+import { crossDocs } from './function/matrix/cross'
+import { concatDocs } from './function/matrix/concat'
+import { xorDocs } from './function/logical/xor'
+import { orDocs } from './function/logical/or'
+import { notDocs } from './function/logical/not'
+import { andDocs } from './function/logical/and'
+import { intersectDocs } from './function/geometry/intersect'
+import { distanceDocs } from './function/geometry/distance'
+import { helpDocs } from './function/expression/help'
+import { evalDocs } from './function/expression/eval'
+import { imDocs } from './function/complex/im'
+import { reDocs } from './function/complex/re'
+import { conjDocs } from './function/complex/conj'
+import { argDocs } from './function/complex/arg'
+import { typedDocs } from './core/typed'
+import { importDocs } from './core/import'
+import { configDocs } from './core/config'
+import { stirlingS2Docs } from './function/combinatorics/stirlingS2'
+import { compositionDocs } from './function/combinatorics/composition'
+import { catalanDocs } from './function/combinatorics/catalan'
+import { bellNumbersDocs } from './function/combinatorics/bellNumbers'
+import { rightLogShiftDocs } from './function/bitwise/rightLogShift'
+import { rightArithShiftDocs } from './function/bitwise/rightArithShift'
+import { leftShiftDocs } from './function/bitwise/leftShift'
+import { bitXorDocs } from './function/bitwise/bitXor'
+import { bitOrDocs } from './function/bitwise/bitOr'
+import { bitNotDocs } from './function/bitwise/bitNot'
+import { bitAndDocs } from './function/bitwise/bitAnd'
+import { xgcdDocs } from './function/arithmetic/xgcd'
+import { unaryPlusDocs } from './function/arithmetic/unaryPlus'
+import { unaryMinusDocs } from './function/arithmetic/unaryMinus'
+import { squareDocs } from './function/arithmetic/square'
+import { sqrtmDocs } from './function/arithmetic/sqrtm'
+import { sqrtDocs } from './function/arithmetic/sqrt'
+import { signDocs } from './function/arithmetic/sign'
+import { roundDocs } from './function/arithmetic/round'
+import { powDocs } from './function/arithmetic/pow'
+import { nthRootsDocs } from './function/arithmetic/nthRoots'
+import { nthRootDocs } from './function/arithmetic/nthRoot'
+import { normDocs } from './function/arithmetic/norm'
+import { multiplyDocs } from './function/arithmetic/multiply'
+import { modDocs } from './function/arithmetic/mod'
+import { log10Docs } from './function/arithmetic/log10'
+import { log1pDocs } from './function/arithmetic/log1p'
+import { log2Docs } from './function/arithmetic/log2'
+import { logDocs } from './function/arithmetic/log'
+import { lcmDocs } from './function/arithmetic/lcm'
+import { hypotDocs } from './function/arithmetic/hypot'
+import { gcdDocs } from './function/arithmetic/gcd'
+import { floorDocs } from './function/arithmetic/floor'
+import { fixDocs } from './function/arithmetic/fix'
+import { expm1Docs } from './function/arithmetic/expm1'
+import { expmDocs } from './function/arithmetic/expm'
+import { expDocs } from './function/arithmetic/exp'
+import { dotMultiplyDocs } from './function/arithmetic/dotMultiply'
+import { dotDivideDocs } from './function/arithmetic/dotDivide'
+import { divideDocs } from './function/arithmetic/divide'
+import { cubeDocs } from './function/arithmetic/cube'
+import { ceilDocs } from './function/arithmetic/ceil'
+import { cbrtDocs } from './function/arithmetic/cbrt'
+import { addDocs } from './function/arithmetic/add'
+import { absDocs } from './function/arithmetic/abs'
+import { qrDocs } from './function/algebra/qr'
+import { usolveDocs } from './function/algebra/usolve'
+import { sluDocs } from './function/algebra/slu'
+import { rationalizeDocs } from './function/algebra/rationalize'
+import { simplifyDocs } from './function/algebra/simplify'
+import { lupDocs } from './function/algebra/lup'
+import { lsolveDocs } from './function/algebra/lsolve'
+import { derivativeDocs } from './function/algebra/derivative'
+import { versionDocs } from './constants/version'
+import { trueDocs } from './constants/true'
+import { tauDocs } from './constants/tau'
+import { SQRT2Docs } from './constants/SQRT2'
+import { SQRT12Docs } from './constants/SQRT1_2'
+import { phiDocs } from './constants/phi'
+import { piDocs } from './constants/pi'
+import { nullDocs } from './constants/null'
+import { NaNDocs } from './constants/NaN'
+import { LOG10EDocs } from './constants/LOG10E'
+import { LOG2EDocs } from './constants/LOG2E'
+import { LN10Docs } from './constants/LN10'
+import { LN2Docs } from './constants/LN2'
+import { InfinityDocs } from './constants/Infinity'
+import { iDocs } from './constants/i'
+import { falseDocs } from './constants/false'
+import { eDocs } from './constants/e'
+import { unitDocs } from './construction/unit'
+import { stringDocs } from './construction/string'
+import { splitUnitDocs } from './construction/splitUnit'
+import { sparseDocs } from './construction/sparse'
+import { numberDocs } from './construction/number'
+import { matrixDocs } from './construction/matrix'
+import { indexDocs } from './construction'
+import { fractionDocs } from './construction/fraction'
+import { createUnitDocs } from './construction/createUnit'
+import { complexDocs } from './construction/complex'
+import { booleanDocs } from './construction/boolean'
+import { dotPowDocs } from './function/arithmetic/dotPow'
+import { lusolveDocs } from './function/algebra/lusolve'
+import { subtractDocs } from './function/arithmetic/subtract'
+import { varDocs } from './function/statistics/var'
+import { sinDocs } from './function/trigonometry/sin'
 
 const name = 'expression.docs'
 const dependencies = []
 
-// TODO: remve factory function here, isn't useful
+// TODO: remove factory function here, isn't useful
 export const createEmbeddedDocs = factory(name, dependencies, () => {
   const docs = {}
 
   // construction functions
-  docs.bignumber = require('./construction/bignumber')
-  docs['boolean'] = require('./construction/boolean')
-  docs.complex = require('./construction/complex')
-  docs.createUnit = require('./construction/createUnit')
-  docs.fraction = require('./construction/fraction')
-  docs.index = require('./construction/index')
-  docs.matrix = require('./construction/matrix')
-  docs.number = require('./construction/number')
-  docs.sparse = require('./construction/sparse')
-  docs.splitUnit = require('./construction/splitUnit')
-  docs.string = require('./construction/string')
-  docs.unit = require('./construction/unit')
+  docs.bignumber = bignumberDocs
+  docs['boolean'] = booleanDocs
+  docs.complex = complexDocs
+  docs.createUnit = createUnitDocs
+  docs.fraction = fractionDocs
+  docs.index = indexDocs
+  docs.matrix = matrixDocs
+  docs.number = numberDocs
+  docs.sparse = sparseDocs
+  docs.splitUnit = splitUnitDocs
+  docs.string = stringDocs
+  docs.unit = unitDocs
 
   // constants
-  docs.e = require('./constants/e')
-  docs.E = require('./constants/e')
-  docs['false'] = require('./constants/false')
-  docs.i = require('./constants/i')
-  docs['Infinity'] = require('./constants/Infinity')
-  docs.LN2 = require('./constants/LN2')
-  docs.LN10 = require('./constants/LN10')
-  docs.LOG2E = require('./constants/LOG2E')
-  docs.LOG10E = require('./constants/LOG10E')
-  docs.NaN = require('./constants/NaN')
-  docs['null'] = require('./constants/null')
-  docs.pi = require('./constants/pi')
-  docs.PI = require('./constants/pi')
-  docs.phi = require('./constants/phi')
-  docs.SQRT1_2 = require('./constants/SQRT1_2')
-  docs.SQRT2 = require('./constants/SQRT2')
-  docs.tau = require('./constants/tau')
-  docs['true'] = require('./constants/true')
-  docs.version = require('./constants/version')
+  docs.e = eDocs
+  docs.E = eDocs
+  docs['false'] = falseDocs
+  docs.i = iDocs
+  docs['Infinity'] = InfinityDocs
+  docs.LN2 = LN2Docs
+  docs.LN10 = LN10Docs
+  docs.LOG2E = LOG2EDocs
+  docs.LOG10E = LOG10EDocs
+  docs.NaN = NaNDocs
+  docs['null'] = nullDocs
+  docs.pi = piDocs
+  docs.PI = piDocs
+  docs.phi = phiDocs
+  docs.SQRT1_2 = SQRT12Docs
+  docs.SQRT2 = SQRT2Docs
+  docs.tau = tauDocs
+  docs['true'] = trueDocs
+  docs.version = versionDocs
 
   // physical constants
   // TODO: more detailed docs for physical constants
@@ -103,217 +307,217 @@ export const createEmbeddedDocs = factory(name, dependencies, () => {
   docs.planckTemperature = { description: 'Planck temperature', examples: ['planckTemperature'] }
 
   // functions - algebra
-  docs.derivative = require('./function/algebra/derivative')
-  docs.lsolve = require('./function/algebra/lsolve')
-  docs.lup = require('./function/algebra/lup')
-  docs.lusolve = require('./function/algebra/lusolve')
-  docs.simplify = require('./function/algebra/simplify')
-  docs.rationalize = require('./function/algebra/rationalize')
-  docs.slu = require('./function/algebra/slu')
-  docs.usolve = require('./function/algebra/usolve')
-  docs.qr = require('./function/algebra/qr')
+  docs.derivative = derivativeDocs
+  docs.lsolve = lsolveDocs
+  docs.lup = lupDocs
+  docs.lusolve = lusolveDocs
+  docs.simplify = simplifyDocs
+  docs.rationalize = rationalizeDocs
+  docs.slu = sluDocs
+  docs.usolve = usolveDocs
+  docs.qr = qrDocs
 
   // functions - arithmetic
-  docs.abs = require('./function/arithmetic/abs')
-  docs.add = require('./function/arithmetic/add')
-  docs.cbrt = require('./function/arithmetic/cbrt')
-  docs.ceil = require('./function/arithmetic/ceil')
-  docs.cube = require('./function/arithmetic/cube')
-  docs.divide = require('./function/arithmetic/divide')
-  docs.dotDivide = require('./function/arithmetic/dotDivide')
-  docs.dotMultiply = require('./function/arithmetic/dotMultiply')
-  docs.dotPow = require('./function/arithmetic/dotPow')
-  docs.exp = require('./function/arithmetic/exp')
-  docs.expm = require('./function/arithmetic/expm')
-  docs.expm1 = require('./function/arithmetic/expm1')
-  docs.fix = require('./function/arithmetic/fix')
-  docs.floor = require('./function/arithmetic/floor')
-  docs.gcd = require('./function/arithmetic/gcd')
-  docs.hypot = require('./function/arithmetic/hypot')
-  docs.lcm = require('./function/arithmetic/lcm')
-  docs.log = require('./function/arithmetic/log')
-  docs.log2 = require('./function/arithmetic/log2')
-  docs.log1p = require('./function/arithmetic/log1p')
-  docs.log10 = require('./function/arithmetic/log10')
-  docs.mod = require('./function/arithmetic/mod')
-  docs.multiply = require('./function/arithmetic/multiply')
-  docs.norm = require('./function/arithmetic/norm')
-  docs.nthRoot = require('./function/arithmetic/nthRoot')
-  docs.nthRoots = require('./function/arithmetic/nthRoots')
-  docs.pow = require('./function/arithmetic/pow')
-  docs.round = require('./function/arithmetic/round')
-  docs.sign = require('./function/arithmetic/sign')
-  docs.sqrt = require('./function/arithmetic/sqrt')
-  docs.sqrtm = require('./function/arithmetic/sqrtm')
-  docs.square = require('./function/arithmetic/square')
-  docs.subtract = require('./function/arithmetic/subtract')
-  docs.unaryMinus = require('./function/arithmetic/unaryMinus')
-  docs.unaryPlus = require('./function/arithmetic/unaryPlus')
-  docs.xgcd = require('./function/arithmetic/xgcd')
+  docs.abs = absDocs
+  docs.add = addDocs
+  docs.cbrt = cbrtDocs
+  docs.ceil = ceilDocs
+  docs.cube = cubeDocs
+  docs.divide = divideDocs
+  docs.dotDivide = dotDivideDocs
+  docs.dotMultiply = dotMultiplyDocs
+  docs.dotPow = dotPowDocs
+  docs.exp = expDocs
+  docs.expm = expmDocs
+  docs.expm1 = expm1Docs
+  docs.fix = fixDocs
+  docs.floor = floorDocs
+  docs.gcd = gcdDocs
+  docs.hypot = hypotDocs
+  docs.lcm = lcmDocs
+  docs.log = logDocs
+  docs.log2 = log2Docs
+  docs.log1p = log1pDocs
+  docs.log10 = log10Docs
+  docs.mod = modDocs
+  docs.multiply = multiplyDocs
+  docs.norm = normDocs
+  docs.nthRoot = nthRootDocs
+  docs.nthRoots = nthRootsDocs
+  docs.pow = powDocs
+  docs.round = roundDocs
+  docs.sign = signDocs
+  docs.sqrt = sqrtDocs
+  docs.sqrtm = sqrtmDocs
+  docs.square = squareDocs
+  docs.subtract = subtractDocs
+  docs.unaryMinus = unaryMinusDocs
+  docs.unaryPlus = unaryPlusDocs
+  docs.xgcd = xgcdDocs
 
   // functions - bitwise
-  docs.bitAnd = require('./function/bitwise/bitAnd')
-  docs.bitNot = require('./function/bitwise/bitNot')
-  docs.bitOr = require('./function/bitwise/bitOr')
-  docs.bitXor = require('./function/bitwise/bitXor')
-  docs.leftShift = require('./function/bitwise/leftShift')
-  docs.rightArithShift = require('./function/bitwise/rightArithShift')
-  docs.rightLogShift = require('./function/bitwise/rightLogShift')
+  docs.bitAnd = bitAndDocs
+  docs.bitNot = bitNotDocs
+  docs.bitOr = bitOrDocs
+  docs.bitXor = bitXorDocs
+  docs.leftShift = leftShiftDocs
+  docs.rightArithShift = rightArithShiftDocs
+  docs.rightLogShift = rightLogShiftDocs
 
   // functions - combinatorics
-  docs.bellNumbers = require('./function/combinatorics/bellNumbers')
-  docs.catalan = require('./function/combinatorics/catalan')
-  docs.composition = require('./function/combinatorics/composition')
-  docs.stirlingS2 = require('./function/combinatorics/stirlingS2')
+  docs.bellNumbers = bellNumbersDocs
+  docs.catalan = catalanDocs
+  docs.composition = compositionDocs
+  docs.stirlingS2 = stirlingS2Docs
 
   // functions - core
-  docs['config'] = require('./core/config')
-  docs['import'] = require('./core/import')
-  docs['typed'] = require('./core/typed')
+  docs['config'] = configDocs
+  docs['import'] = importDocs
+  docs['typed'] = typedDocs
 
   // functions - complex
-  docs.arg = require('./function/complex/arg')
-  docs.conj = require('./function/complex/conj')
-  docs.re = require('./function/complex/re')
-  docs.im = require('./function/complex/im')
+  docs.arg = argDocs
+  docs.conj = conjDocs
+  docs.re = reDocs
+  docs.im = imDocs
 
   // functions - expression
-  docs['eval'] = require('./function/expression/eval')
-  docs.help = require('./function/expression/help')
+  docs['eval'] = evalDocs
+  docs.help = helpDocs
 
   // functions - geometry
-  docs.distance = require('./function/geometry/distance')
-  docs.intersect = require('./function/geometry/intersect')
+  docs.distance = distanceDocs
+  docs.intersect = intersectDocs
 
   // functions - logical
-  docs['and'] = require('./function/logical/and')
-  docs['not'] = require('./function/logical/not')
-  docs['or'] = require('./function/logical/or')
-  docs['xor'] = require('./function/logical/xor')
+  docs['and'] = andDocs
+  docs['not'] = notDocs
+  docs['or'] = orDocs
+  docs['xor'] = xorDocs
 
   // functions - matrix
-  docs['concat'] = require('./function/matrix/concat')
-  docs.cross = require('./function/matrix/cross')
-  docs.ctranspose = require('./function/matrix/ctranspose')
-  docs.det = require('./function/matrix/det')
-  docs.diag = require('./function/matrix/diag')
-  docs.dot = require('./function/matrix/dot')
-  docs.getMatrixDataType = require('./function/matrix/getMatrixDataType')
-  docs.identity = require('./function/matrix/identity')
-  docs.filter = require('./function/matrix/filter')
-  docs.flatten = require('./function/matrix/flatten')
-  docs.forEach = require('./function/matrix/forEach')
-  docs.inv = require('./function/matrix/inv')
-  docs.kron = require('./function/matrix/kron')
-  docs.map = require('./function/matrix/map')
-  docs.ones = require('./function/matrix/ones')
-  docs.partitionSelect = require('./function/matrix/partitionSelect')
-  docs.range = require('./function/matrix/range')
-  docs.resize = require('./function/matrix/resize')
-  docs.reshape = require('./function/matrix/reshape')
-  docs.size = require('./function/matrix/size')
-  docs.sort = require('./function/matrix/sort')
-  docs.squeeze = require('./function/matrix/squeeze')
-  docs.subset = require('./function/matrix/subset')
-  docs.trace = require('./function/matrix/trace')
-  docs.transpose = require('./function/matrix/transpose')
-  docs.zeros = require('./function/matrix/zeros')
+  docs['concat'] = concatDocs
+  docs.cross = crossDocs
+  docs.ctranspose = ctransposeDocs
+  docs.det = detDocs
+  docs.diag = diagDocs
+  docs.dot = dotDocs
+  docs.getMatrixDataType = getMatrixDataTypeDocs
+  docs.identity = identityDocs
+  docs.filter = filterDocs
+  docs.flatten = flattenDocs
+  docs.forEach = forEachDocs
+  docs.inv = invDocs
+  docs.kron = kronDocs
+  docs.map = mapDocs
+  docs.ones = onesDocs
+  docs.partitionSelect = partitionSelectDocs
+  docs.range = rangeDocs
+  docs.resize = resizeDocs
+  docs.reshape = reshapeDocs
+  docs.size = sizeDocs
+  docs.sort = sortDocs
+  docs.squeeze = squeezeDocs
+  docs.subset = subsetDocs
+  docs.trace = traceDocs
+  docs.transpose = transposeDocs
+  docs.zeros = zerosDocs
 
   // functions - probability
-  docs.combinations = require('./function/probability/combinations')
+  docs.combinations = combinationsDocs
   // docs.distribution = require('./function/probability/distribution')
-  docs.factorial = require('./function/probability/factorial')
-  docs.gamma = require('./function/probability/gamma')
-  docs.kldivergence = require('./function/probability/kldivergence')
-  docs.multinomial = require('./function/probability/multinomial')
-  docs.permutations = require('./function/probability/permutations')
-  docs.pickRandom = require('./function/probability/pickRandom')
-  docs.random = require('./function/probability/random')
-  docs.randomInt = require('./function/probability/randomInt')
+  docs.factorial = factorialDocs
+  docs.gamma = gammaDocs
+  docs.kldivergence = kldivergenceDocs
+  docs.multinomial = multinomialDocs
+  docs.permutations = permutationsDocs
+  docs.pickRandom = pickRandomDocs
+  docs.random = randomDocs
+  docs.randomInt = randomIntDocs
 
   // functions - relational
-  docs.compare = require('./function/relational/compare')
-  docs.compareNatural = require('./function/relational/compareNatural')
-  docs.compareText = require('./function/relational/compareText')
-  docs.deepEqual = require('./function/relational/deepEqual')
-  docs['equal'] = require('./function/relational/equal')
-  docs.equalText = require('./function/relational/equalText')
-  docs.larger = require('./function/relational/larger')
-  docs.largerEq = require('./function/relational/largerEq')
-  docs.smaller = require('./function/relational/smaller')
-  docs.smallerEq = require('./function/relational/smallerEq')
-  docs.unequal = require('./function/relational/unequal')
+  docs.compare = compareDocs
+  docs.compareNatural = compareNaturalDocs
+  docs.compareText = compareTextDocs
+  docs.deepEqual = deepEqualDocs
+  docs['equal'] = equalDocs
+  docs.equalText = equalTextDocs
+  docs.larger = largerDocs
+  docs.largerEq = largerEqDocs
+  docs.smaller = smallerDocs
+  docs.smallerEq = smallerEqDocs
+  docs.unequal = unequalDocs
 
   // functions - set
-  docs.setCartesian = require('./function/set/setCartesian')
-  docs.setDifference = require('./function/set/setDifference')
-  docs.setDistinct = require('./function/set/setDistinct')
-  docs.setIntersect = require('./function/set/setIntersect')
-  docs.setIsSubset = require('./function/set/setIsSubset')
-  docs.setMultiplicity = require('./function/set/setMultiplicity')
-  docs.setPowerset = require('./function/set/setPowerset')
-  docs.setSize = require('./function/set/setSize')
-  docs.setSymDifference = require('./function/set/setSymDifference')
-  docs.setUnion = require('./function/set/setUnion')
+  docs.setCartesian = setCartesianDocs
+  docs.setDifference = setDifferenceDocs
+  docs.setDistinct = setDistinctDocs
+  docs.setIntersect = setIntersectDocs
+  docs.setIsSubset = setIsSubsetDocs
+  docs.setMultiplicity = setMultiplicityDocs
+  docs.setPowerset = setPowersetDocs
+  docs.setSize = setSizeDocs
+  docs.setSymDifference = setSymDifferenceDocs
+  docs.setUnion = setUnionDocs
 
   // functions - special
-  docs.erf = require('./function/special/erf')
+  docs.erf = erfDocs
 
   // functions - statistics
-  docs.mad = require('./function/statistics/mad')
-  docs.max = require('./function/statistics/max')
-  docs.mean = require('./function/statistics/mean')
-  docs.median = require('./function/statistics/median')
-  docs.min = require('./function/statistics/min')
-  docs.mode = require('./function/statistics/mode')
-  docs.prod = require('./function/statistics/prod')
-  docs.quantileSeq = require('./function/statistics/quantileSeq')
-  docs.std = require('./function/statistics/std')
-  docs.sum = require('./function/statistics/sum')
-  docs['var'] = require('./function/statistics/var')
+  docs.mad = madDocs
+  docs.max = maxDocs
+  docs.mean = meanDocs
+  docs.median = medianDocs
+  docs.min = minDocs
+  docs.mode = modeDocs
+  docs.prod = prodDocs
+  docs.quantileSeq = quantileSeqDocs
+  docs.std = stdDocs
+  docs.sum = sumDocs
+  docs['var'] = varDocs
 
   // functions - trigonometry
-  docs.acos = require('./function/trigonometry/acos')
-  docs.acosh = require('./function/trigonometry/acosh')
-  docs.acot = require('./function/trigonometry/acot')
-  docs.acoth = require('./function/trigonometry/acoth')
-  docs.acsc = require('./function/trigonometry/acsc')
-  docs.acsch = require('./function/trigonometry/acsch')
-  docs.asec = require('./function/trigonometry/asec')
-  docs.asech = require('./function/trigonometry/asech')
-  docs.asin = require('./function/trigonometry/asin')
-  docs.asinh = require('./function/trigonometry/asinh')
-  docs.atan = require('./function/trigonometry/atan')
-  docs.atanh = require('./function/trigonometry/atanh')
-  docs.atan2 = require('./function/trigonometry/atan2')
-  docs.cos = require('./function/trigonometry/cos')
-  docs.cosh = require('./function/trigonometry/cosh')
-  docs.cot = require('./function/trigonometry/cot')
-  docs.coth = require('./function/trigonometry/coth')
-  docs.csc = require('./function/trigonometry/csc')
-  docs.csch = require('./function/trigonometry/csch')
-  docs.sec = require('./function/trigonometry/sec')
-  docs.sech = require('./function/trigonometry/sech')
-  docs.sin = require('./function/trigonometry/sin')
-  docs.sinh = require('./function/trigonometry/sinh')
-  docs.tan = require('./function/trigonometry/tan')
-  docs.tanh = require('./function/trigonometry/tanh')
+  docs.acos = acosDocs
+  docs.acosh = acoshDocs
+  docs.acot = acotDocs
+  docs.acoth = acothDocs
+  docs.acsc = acscDocs
+  docs.acsch = acschDocs
+  docs.asec = asecDocs
+  docs.asech = asechDocs
+  docs.asin = asinDocs
+  docs.asinh = asinhDocs
+  docs.atan = atanDocs
+  docs.atanh = atanhDocs
+  docs.atan2 = atan2Docs
+  docs.cos = cosDocs
+  docs.cosh = coshDocs
+  docs.cot = cotDocs
+  docs.coth = cothDocs
+  docs.csc = cscDocs
+  docs.csch = cschDocs
+  docs.sec = secDocs
+  docs.sech = sechDocs
+  docs.sin = sinDocs
+  docs.sinh = sinhDocs
+  docs.tan = tanDocs
+  docs.tanh = tanhDocs
 
   // functions - units
-  docs.to = require('./function/units/to')
+  docs.to = toDocs
 
   // functions - utils
-  docs.clone = require('./function/utils/clone')
-  docs.format = require('./function/utils/format')
-  docs.isNaN = require('./function/utils/isNaN')
-  docs.isInteger = require('./function/utils/isInteger')
-  docs.isNegative = require('./function/utils/isNegative')
-  docs.isNumeric = require('./function/utils/isNumeric')
-  docs.isPositive = require('./function/utils/isPositive')
-  docs.isPrime = require('./function/utils/isPrime')
-  docs.isZero = require('./function/utils/isZero')
+  docs.clone = cloneDocs
+  docs.format = formatDocs
+  docs.isNaN = isNaNDocs
+  docs.isInteger = isIntegerDocs
+  docs.isNegative = isNegativeDocs
+  docs.isNumeric = isNumericDocs
+  docs.isPositive = isPositiveDocs
+  docs.isPrime = isPrimeDocs
+  docs.isZero = isZeroDocs
   // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
-  docs['typeOf'] = require('./function/utils/typeOf')
+  docs['typeOf'] = typeOfDocs
 
   return docs
 })

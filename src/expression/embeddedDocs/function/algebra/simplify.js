@@ -1,4 +1,4 @@
-module.exports = {
+export const simplifyDocs = {
   'name': 'simplify',
   'category': 'Algebra',
   'syntax': [

@@ -1,12 +1,12 @@
 'use strict'
-const IndexError = require('../../error/IndexError')
+import { IndexError } from '../../error/IndexError'
 
 /**
  * Transform zero-based indices to one-based indices in errors
  * @param {Error} err
- * @returns {Error} Returns the transformed error
+ * @returns {Error | IndexError} Returns the transformed error
  */
-exports.transform = function (err) {
+export function errorTransform (err) {
   if (err && err.isIndexError) {
     return new IndexError(
       err.index + 1,

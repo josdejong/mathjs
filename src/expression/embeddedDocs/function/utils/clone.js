@@ -1,4 +1,4 @@
-module.exports = {
+export const cloneDocs = {
   'name': 'clone',
   'category': 'Utils',
   'syntax': [

@@ -1,4 +1,4 @@
-module.exports = {
+export const kronDocs = {
   'name': 'kron',
   'category': 'Matrix',
   'syntax': [

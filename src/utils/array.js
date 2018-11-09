@@ -3,8 +3,8 @@
 import { isInteger } from './number'
 import { isNumber } from './is'
 import { format } from './string'
-import DimensionError from '../error/DimensionError'
-import IndexError from '../error/IndexError'
+import { DimensionError } from '../error/DimensionError'
+import { IndexError } from '../error/IndexError'
 
 /**
  * Calculate the size of a multi dimensional array.

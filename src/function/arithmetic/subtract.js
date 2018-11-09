@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 import { latexOperators } from '../../utils/latex'
-import DimensionError from '../../error/DimensionError'
+import { DimensionError } from '../../error/DimensionError'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'

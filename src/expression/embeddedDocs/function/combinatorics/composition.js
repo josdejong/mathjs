@@ -1,4 +1,4 @@
-module.exports = {
+export const compositionDocs = {
   'name': 'composition',
   'category': 'Combinatorics',
   'syntax': [

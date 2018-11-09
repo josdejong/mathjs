@@ -1,4 +1,4 @@
-module.exports = {
+export const acscDocs = {
   'name': 'acsc',
   'category': 'Trigonometry',
   'syntax': [

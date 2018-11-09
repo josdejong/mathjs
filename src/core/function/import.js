@@ -4,7 +4,7 @@ import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../util
 import { isFactory, sortFactories } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
 import { contains, initial, last } from '../../utils/array'
-import ArgumentsError from '../../error/ArgumentsError'
+import { ArgumentsError } from '../../error/ArgumentsError'
 
 export function importFactory (typed, load, math) {
   /**
@@ -350,7 +350,7 @@ export function importFactory (typed, load, math) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if (path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+        if ((path && path.join('.') === 'expression.transform') || factoryAllowedInExpressions(factory)) {
           lazy(math.expression.mathWithTransform, name, resolver)
         }
       }
@@ -360,7 +360,7 @@ export function importFactory (typed, load, math) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if (path === 'expression.transform' || factoryAllowedInExpressions(factory)) {
+        if ((path && path.join('.') === 'expression.transform') || factoryAllowedInExpressions(factory)) {
           math.expression.mathWithTransform[name] = resolver()
         }
       }

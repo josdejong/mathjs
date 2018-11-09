@@ -1,4 +1,4 @@
-module.exports = {
+export const mapDocs = {
   'name': 'map',
   'category': 'Matrix',
   'syntax': [

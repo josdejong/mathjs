@@ -1,4 +1,4 @@
-module.exports = {
+export const sinDocs = {
   'name': 'sin',
   'category': 'Trigonometry',
   'syntax': [

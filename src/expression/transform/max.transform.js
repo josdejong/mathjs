@@ -1,19 +1,20 @@
 'use strict'
 
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { errorTransform } from './error.transform'
 
-const errorTransform = require('./error.transform').transform
+const name = 'expression.transform.max'
+const dependencies = ['typed', 'max']
 
-/**
- * Attach a transform function to math.max
- * Adds a property transform containing the transform function.
- *
- * This transform changed the last `dim` parameter of function max
- * from one-based to zero based
- */
-function factory (type, config, load, typed) {
-  const max = load(require('../../function/statistics/max'))
-
+export const createMaxTransform = factory(name, dependencies, ({ typed, max }) => {
+  /**
+   * Attach a transform function to math.max
+   * Adds a property transform containing the transform function.
+   *
+   * This transform changed the last `dim` parameter of function max
+   * from one-based to zero based
+   */
   return typed('max', {
     '...any': function (args) {
       // change last argument dim from one-based to zero-based
@@ -33,8 +34,4 @@ function factory (type, config, load, typed) {
       }
     }
   })
-}
-
-exports.name = 'max'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

@@ -1,4 +1,4 @@
-module.exports = {
+export const acschDocs = {
   'name': 'acsch',
   'category': 'Trigonometry',
   'syntax': [

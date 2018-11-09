@@ -1,4 +1,4 @@
-module.exports = {
+export const rightArithShiftDocs = {
   'name': 'rightArithShift',
   'category': 'Bitwise',
   'syntax': [

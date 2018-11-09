@@ -1,4 +1,4 @@
-module.exports = {
+export const setSymDifferenceDocs = {
   'name': 'setSymDifference',
   'category': 'Set',
   'syntax': [

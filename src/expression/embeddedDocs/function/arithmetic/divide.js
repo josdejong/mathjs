@@ -1,4 +1,4 @@
-module.exports = {
+export const divideDocs = {
   'name': 'divide',
   'category': 'Operators',
   'syntax': [

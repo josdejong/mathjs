@@ -1,4 +1,4 @@
-module.exports = {
+export const usolveDocs = {
   'name': 'usolve',
   'category': 'Algebra',
   'syntax': [

@@ -1,14 +1,18 @@
 'use strict'
 
 import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-/**
- * Attach a transform function to math.index
- * Adds a property transform containing the transform function.
- *
- * This transform creates a one-based index instead of a zero-based index
- */
-function factory (type, config, load) {
+const name = 'expression.transform.index'
+const dependencies = ['type.Index']
+
+export const createIndexTransform = factory(name, dependencies, ({ type: { Index } }) => {
+  /**
+   * Attach a transform function to math.index
+   * Adds a property transform containing the transform function.
+   *
+   * This transform creates a one-based index instead of a zero-based index
+   */
   return function indexTransform () {
     const args = []
     for (let i = 0, ii = arguments.length; i < ii; i++) {
@@ -35,12 +39,8 @@ function factory (type, config, load) {
       args[i] = arg
     }
 
-    const res = new type.Index()
-    type.Index.apply(res, args)
+    const res = new Index()
+    Index.apply(res, args)
     return res
   }
-}
-
-exports.name = 'index'
-exports.path = 'expression.transform'
-exports.factory = factory
+})

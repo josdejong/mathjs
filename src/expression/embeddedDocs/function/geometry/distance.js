@@ -1,4 +1,4 @@
-module.exports = {
+export const distanceDocs = {
   'name': 'distance',
   'category': 'Geometry',
   'syntax': [

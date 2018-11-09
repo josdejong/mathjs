@@ -1,4 +1,4 @@
-module.exports = {
+export const dotMultiplyDocs = {
   'name': 'dotMultiply',
   'category': 'Operators',
   'syntax': [

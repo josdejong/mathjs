@@ -1,4 +1,4 @@
-module.exports = {
+export const medianDocs = {
   'name': 'median',
   'category': 'Statistics',
   'syntax': [

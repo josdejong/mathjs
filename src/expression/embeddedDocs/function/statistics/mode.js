@@ -1,4 +1,4 @@
-module.exports = {
+export const modeDocs = {
   'name': 'mode',
   'category': 'Statistics',
   'syntax': [

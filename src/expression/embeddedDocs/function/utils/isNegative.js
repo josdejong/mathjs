@@ -1,4 +1,4 @@
-module.exports = {
+export const isNegativeDocs = {
   'name': 'isNegative',
   'category': 'Utils',
   'syntax': [

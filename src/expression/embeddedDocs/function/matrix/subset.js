@@ -1,4 +1,4 @@
-module.exports = {
+export const subsetDocs = {
   'name': 'subset',
   'category': 'Matrix',
   'syntax': [

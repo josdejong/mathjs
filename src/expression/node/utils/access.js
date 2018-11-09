@@ -1,6 +1,6 @@
 'use strict'
 
-import { transform as errorTransform } from '../../transform/error.transform'
+import { errorTransform } from '../../transform/error.transform'
 import { getSafeProperty } from '../../../utils/customs'
 
 export function accessFactory ({ subset }) {
