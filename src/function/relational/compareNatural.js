@@ -1,13 +1,17 @@
 'use strict'
 
-import { isDenseMatrix, isSparseMatrix } from '../../utils/is'
-
 import naturalSort from 'javascript-natural-sort'
+import { isDenseMatrix, isSparseMatrix } from '../../utils/is'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const typeOf = load(require('../utils/typeOf'))
-  const compare = load(require('./compare'))
+const name = 'compareNatural'
+const dependencies = [
+  'typed',
+  'compare',
+  'typeOf'
+]
 
+export const createCompareNatural = factory(name, dependencies, ({ typed, compare, typeOf }) => {
   const compareBooleans = compare.signatures['boolean,boolean']
 
   /**
@@ -78,7 +82,7 @@ export function factory (type, config, load, typed) {
    * @return {number} Returns the result of the comparison:
    *                  1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compareNatural = typed('compareNatural', {
+  const compareNatural = typed(name, {
     'any, any': function (x, y) {
       const typeX = typeOf(x)
       const typeY = typeOf(y)
@@ -253,7 +257,7 @@ export function factory (type, config, load, typed) {
   }
 
   return compareNatural
-}
+})
 
 /**
  * Compare two complex numbers, `x` and `y`:
@@ -274,5 +278,3 @@ function compareComplexNumbers (x, y) {
 
   return 0
 }
-
-export const name = 'compareNatural'

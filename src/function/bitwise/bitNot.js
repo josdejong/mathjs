@@ -1,13 +1,15 @@
 'use strict'
 
 import { bitNot as bigBitNot } from '../../utils/bignumber/bitwise'
-
 import { deepMap } from '../../utils/collection'
 import { isInteger } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { latexOperators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+const name = 'bitNot'
+const dependencies = ['typed']
 
+export const createBitNot = factory(name, dependencies, ({ typed }) => {
   /**
    * Bitwise NOT value, `~x`.
    * For matrices, the function is evaluated element wise.
@@ -30,7 +32,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} x Value to not
    * @return {number | BigNumber | Array | Matrix} NOT of `x`
    */
-  const bitNot = typed('bitNot', {
+  const bitNot = typed(name, {
     'number': function (x) {
       if (!isInteger(x)) {
         throw new Error('Integer expected in function bitNot')
@@ -47,10 +49,8 @@ export function factory (type, config, load, typed) {
   })
 
   bitNot.toTex = {
-    1: latex.latexOperators['bitNot'] + `\\left(\${args[0]}\\right)`
+    1: latexOperators['bitNot'] + `\\left(\${args[0]}\\right)`
   }
 
   return bitNot
-}
-
-export const name = 'bitNot'
+})

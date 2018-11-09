@@ -15,12 +15,10 @@ const dependencies = [
   'typed',
   'config',
   'matrix',
-  'equalScalar',
-  'divideScalar',
   'type.DenseMatrix'
 ]
 
-export const createSmaller = factory(name, dependencies, ({ typed, config, matrix, equalScalar, divideScalar, type: { DenseMatrix } }) => {
+export const createSmaller = factory(name, dependencies, ({ typed, config, matrix, type: { DenseMatrix } }) => {
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })

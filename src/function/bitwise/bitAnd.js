@@ -1,18 +1,29 @@
 'use strict'
 
 import { bitAnd as bigBitAnd } from '../../utils/bignumber/bitwise'
-
 import { isInteger } from '../../utils/number'
 import { latexOperators } from '../../utils/latex'
+import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
+import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm06 } from '../../type/matrix/utils/algorithm06'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'bitAnd'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'type.DenseMatrix'
+]
 
-  const algorithm02 = load(require('../../type/matrix/utils/algorithm02'))
-  const algorithm06 = load(require('../../type/matrix/utils/algorithm06'))
-  const algorithm11 = load(require('../../type/matrix/utils/algorithm11'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createBitAnd = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+  const algorithm02 = createAlgorithm02({ typed, equalScalar })
+  const algorithm06 = createAlgorithm06({ typed, equalScalar })
+  const algorithm11 = createAlgorithm11({ typed, equalScalar })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Bitwise AND two values, `x & y`.
@@ -36,7 +47,7 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Array | Matrix} y Second value to and
    * @return {number | BigNumber | Array | Matrix} AND of `x` and `y`
    */
-  const bitAnd = typed('bitAnd', {
+  const bitAnd = typed(name, {
 
     'number, number': function (x, y) {
       if (!isInteger(x) || !isInteger(y)) {
@@ -111,6 +122,4 @@ export function factory (type, config, load, typed) {
   }
 
   return bitAnd
-}
-
-export const name = 'bitAnd'
+})

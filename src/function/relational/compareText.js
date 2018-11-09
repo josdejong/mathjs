@@ -1,13 +1,21 @@
 'use strict'
 
 import { isString } from '../../utils/is'
+import { factory } from '../../utils/factory'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-  const typeOf = load(require('../utils/typeOf'))
+const name = 'compareText'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'typeOf'
+]
 
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createCompareText = factory(name, dependencies, ({ typed, config, typeOf, matrix }) => {
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Compare two strings lexically. Comparison is case sensitive.
@@ -37,7 +45,7 @@ export function factory (type, config, load, typed) {
    * @return {number | Array | DenseMatrix} Returns the result of the comparison:
    *                                        1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compareText = typed('compareText', {
+  const compareText = typed(name, {
 
     'any, any': _compareText,
 
@@ -105,6 +113,4 @@ export function factory (type, config, load, typed) {
   compareText.toTex = undefined // use default template
 
   return compareText
-}
-
-export const name = 'compareText'
+})

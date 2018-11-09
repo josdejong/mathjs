@@ -2,9 +2,11 @@
 
 import algebra from './algebra'
 import arithmetic from './arithmetic'
+import bitwise from './bitwise'
 import combinatorics from './combinatorics'
 import complex from './complex'
 import geometry from './geometry'
+import logical from './logical'
 import matrix from './matrix'
 import relational from './relational'
 import set from './set'
@@ -17,11 +19,11 @@ import utils from './utils'
 export default [
   algebra,
   arithmetic,
-  require('./bitwise'),
+  bitwise,
   combinatorics,
   complex,
   geometry,
-  require('./logical'),
+  logical,
   matrix,
   require('./probability'),
   relational,

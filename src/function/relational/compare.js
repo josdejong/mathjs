@@ -2,15 +2,30 @@
 
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'compare'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'equalScalar',
+  'type.BigNumber',
+  'type.Fraction',
+  'type.DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createCompare = factory(name, dependencies, ({ typed, config, equalScalar, matrix, type: { BigNumber, Fraction, DenseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm05 = createAlgorithm05({ typed, equalScalar })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Compare two values. Returns 1 when x > y, -1 when x < y, and 0 when x == y.
@@ -49,26 +64,26 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber | Fraction | Array | Matrix} Returns the result of the comparison:
    *                                                          1 when x > y, -1 when x < y, and 0 when x == y.
    */
-  const compare = typed('compare', {
+  const compare = typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x === y ? 0 : (x > y ? 1 : -1)
     },
 
     'number, number': function (x, y) {
-      return (x === y || nearlyEqual(x, y, config.epsilon))
+      return (x === y || nearlyEqual(x, y, config().epsilon))
         ? 0
         : (x > y ? 1 : -1)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return (x.eq(y) || bigNearlyEqual(x, y, config.epsilon))
-        ? new type.BigNumber(0)
-        : new type.BigNumber(x.cmp(y))
+      return (x.eq(y) || bigNearlyEqual(x, y, config().epsilon))
+        ? new BigNumber(0)
+        : new BigNumber(x.cmp(y))
     },
 
     'Fraction, Fraction': function (x, y) {
-      return new type.Fraction(x.compare(y))
+      return new Fraction(x.compare(y))
     },
 
     'Complex, Complex': function () {
@@ -143,6 +158,4 @@ export function factory (type, config, load, typed) {
   compare.toTex = undefined // use default template
 
   return compare
-}
-
-export const name = 'compare'
+})

@@ -2,17 +2,28 @@
 
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { latexOperators } from '../../utils/latex'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'largerEq'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'type.DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const latex = require('../../utils/latex')
+export const createLargerEq = factory(name, dependencies, ({ typed, config, matrix, type: { DenseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Test whether value x is larger or equal to y.
@@ -41,18 +52,18 @@ export function factory (type, config, load, typed) {
    * @param  {number | BigNumber | Fraction | boolean | Unit | string | Array | Matrix} y Second value to compare
    * @return {boolean | Array | Matrix} Returns true when the x is larger or equal to y, else returns false
    */
-  const largerEq = typed('largerEq', {
+  const largerEq = typed(name, {
 
     'boolean, boolean': function (x, y) {
       return x >= y
     },
 
     'number, number': function (x, y) {
-      return x >= y || nearlyEqual(x, y, config.epsilon)
+      return x >= y || nearlyEqual(x, y, config().epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.gte(y) || bigNearlyEqual(x, y, config.epsilon)
+      return x.gte(y) || bigNearlyEqual(x, y, config().epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -129,10 +140,8 @@ export function factory (type, config, load, typed) {
   })
 
   largerEq.toTex = {
-    2: `\\left(\${args[0]}${latex.latexOperators['largerEq']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['largerEq']}\${args[1]}\\right)`
   }
 
   return largerEq
-}
-
-export const name = 'largerEq'
+})

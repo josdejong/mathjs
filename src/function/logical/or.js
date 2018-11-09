@@ -1,15 +1,27 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const latex = require('../../utils/latex')
+import { latexOperators } from '../../utils/latex'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
+import { factory } from '../../utils/factory'
 
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'or'
+const dependencies = [
+  'typed',
+  'matrix',
+  'equalScalar',
+  'type.DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm05 = load(require('../../type/matrix/utils/algorithm05'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
+export const createOr = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm05 = createAlgorithm05({ typed, equalScalar })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Logical `or`. Test if at least one value is defined with a nonzero/nonempty value.
@@ -39,7 +51,7 @@ export function factory (type, config, load, typed) {
    * @return {boolean | Array | Matrix}
    *            Returns true when one of the inputs is defined with a nonzero/nonempty value.
    */
-  const or = typed('or', {
+  const or = typed(name, {
 
     'number, number': function (x, y) {
       return !!(x || y)
@@ -116,10 +128,8 @@ export function factory (type, config, load, typed) {
   })
 
   or.toTex = {
-    2: `\\left(\${args[0]}${latex.latexOperators['or']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['or']}\${args[1]}\\right)`
   }
 
   return or
-}
-
-export const name = 'or'
+})

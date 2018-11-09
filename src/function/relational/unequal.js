@@ -2,17 +2,28 @@
 
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
+import { factory } from '../../utils/factory'
+import { latexOperators } from '../../utils/latex'
+import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
+import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
+import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
+import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
+import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 
-export function factory (type, config, load, typed) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
+const name = 'unequal'
+const dependencies = [
+  'typed',
+  'config',
+  'matrix',
+  'type.DenseMatrix'
+]
 
-  const algorithm03 = load(require('../../type/matrix/utils/algorithm03'))
-  const algorithm07 = load(require('../../type/matrix/utils/algorithm07'))
-  const algorithm12 = load(require('../../type/matrix/utils/algorithm12'))
-  const algorithm13 = load(require('../../type/matrix/utils/algorithm13'))
-  const algorithm14 = load(require('../../type/matrix/utils/algorithm14'))
-
-  const latex = require('../../utils/latex')
+export const createUnequal = factory(name, dependencies, ({ typed, config, matrix, type: { DenseMatrix } }) => {
+  const algorithm03 = createAlgorithm03({ typed })
+  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm13 = createAlgorithm13({ typed })
+  const algorithm14 = createAlgorithm14({ typed })
 
   /**
    * Test whether two values are unequal.
@@ -134,11 +145,11 @@ export function factory (type, config, load, typed) {
     },
 
     'number, number': function (x, y) {
-      return !nearlyEqual(x, y, config.epsilon)
+      return !nearlyEqual(x, y, config().epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return !bigNearlyEqual(x, y, config.epsilon)
+      return !bigNearlyEqual(x, y, config().epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -158,10 +169,8 @@ export function factory (type, config, load, typed) {
   })
 
   unequal.toTex = {
-    2: `\\left(\${args[0]}${latex.latexOperators['unequal']}\${args[1]}\\right)`
+    2: `\\left(\${args[0]}${latexOperators['unequal']}\${args[1]}\\right)`
   }
 
   return unequal
-}
-
-export const name = 'unequal'
+})
