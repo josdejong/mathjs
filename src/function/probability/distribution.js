@@ -3,14 +3,17 @@
 import { isCollection, isMatrix, isNumber } from '../../utils/is'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { arraySize } from '../../utils/array'
+import { factory } from '../../utils/factory'
+import { createRng } from './seededRNG'
+
+const name = 'distribution'
+const dependencies = ['typed', 'matrix', 'on', 'config']
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
-export function factory (type, config, load, typed, math) {
-  const matrix = load(require('../../type/matrix/function/matrix'))
-
+export const createDistribution = factory(name, dependencies, ({ typed, matrix, on, config }) => {
   // seeded pseudo random number generator
-  const rng = load(require('./seededRNG'))
+  const rng = createRng({ on, config })
 
   /**
    * Create a distribution object with a set of random functions for given
@@ -289,6 +292,4 @@ export function factory (type, config, load, typed, math) {
   distribution.toTex = undefined // use default template
 
   return distribution
-}
-
-export const name = 'distribution'
+})

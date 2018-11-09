@@ -1,6 +1,7 @@
 'use strict'
 
 import seedrandom from 'seed-random'
+import { factory } from '../../utils/factory'
 
 // create a random seed here to prevent an infinite loop from seed-random
 // inside the factory. Reason is that math.random is defined as a getter/setter
@@ -10,7 +11,12 @@ import seedrandom from 'seed-random'
 // See https://github.com/ForbesLindesay/seed-random/issues/6
 const singletonRandom = seedrandom()
 
-export function factory (type, config, load, typed, math) {
+const name = 'rng'
+const dependencies = ['on', 'config']
+
+// TODO: rethink math.distribution
+// TODO: rework to a typed function
+export const createRng = factory(name, dependencies, ({ on, config }) => {
   let random
 
   // create a new random generator with given seed
@@ -19,7 +25,7 @@ export function factory (type, config, load, typed, math) {
   }
 
   // initialize a seeded pseudo random number generator with config's random seed
-  setSeed(config.randomSeed)
+  setSeed(config().randomSeed)
 
   // wrapper function so the rng can be updated via generator
   function rng () {
@@ -27,7 +33,7 @@ export function factory (type, config, load, typed, math) {
   }
 
   // updates generator with a new instance of a seeded pseudo random number generator
-  math.on('config', function (curr, prev, changes) {
+  on('config', function (curr, prev, changes) {
     // if the user specified a randomSeed
     if (changes.randomSeed !== undefined) {
       // update generator with a new instance of a seeded pseudo random number generator
@@ -36,6 +42,4 @@ export function factory (type, config, load, typed, math) {
   })
 
   return rng
-}
-
-export var math = true
+})

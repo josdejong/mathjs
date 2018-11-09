@@ -1,8 +1,11 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const distribution = load(require('./distribution'))
+import { factory } from '../../utils/factory'
 
+const name = 'pickRandom'
+const dependencies = ['distribution']
+
+export const createPickRandom = factory(name, dependencies, ({ distribution }) => {
   /**
    * Random pick one or more values from a one dimensional array.
    * Array elements are picked using a random function with uniform or weighted distribution.
@@ -39,6 +42,4 @@ export function factory (type, config, load, typed) {
   pickRandom.toTex = undefined // use default template
 
   return pickRandom
-}
-
-export const name = 'pickRandom'
+})

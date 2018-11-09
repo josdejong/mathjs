@@ -1,15 +1,12 @@
 'use strict'
 
 import { deepForEach } from '../../utils/collection'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const add = load(require('../arithmetic/add'))
-  const multiply = load(require('../arithmetic/multiply'))
-  const divide = load(require('../arithmetic/divide'))
-  const factorial = load(require('../probability/factorial'))
-  const isInteger = load(require('../utils/isInteger'))
-  const isPositive = load(require('../utils/isPositive'))
+const name = 'multinomial'
+const dependencies = ['typed', 'add', 'divide', 'multiply', 'multiply', 'factorial', 'isInteger', 'isPositive']
 
+export const createMultinomial = factory(name, dependencies, ({ typed, add, divide, multiply, factorial, isInteger, isPositive }) => {
   /**
    * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
    *
@@ -31,7 +28,7 @@ export function factory (type, config, load, typed) {
    * @param {number[] | BigNumber[]} a    Integer numbers of objects in the subset
    * @return {Number | BigNumber}         Multinomial coefficient.
    */
-  return typed('multinomial', {
+  return typed(name, {
     'Array | Matrix': function (a) {
       let sum = 0
       let denom = 1
@@ -47,6 +44,4 @@ export function factory (type, config, load, typed) {
       return divide(factorial(sum), denom)
     }
   })
-}
-
-export const name = 'multinomial'
+})

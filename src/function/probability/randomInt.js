@@ -1,8 +1,11 @@
 'use strict'
 
-export function factory (type, config, load, typed) {
-  const distribution = load(require('./distribution'))
+import { factory } from '../../utils/factory'
 
+const name = 'randomInt'
+const dependencies = ['distribution']
+
+export const createRandomInt = factory(name, dependencies, ({ distribution }) => {
   /**
    * Return a random integer number larger or equal to `min` and smaller than `max`
    * using a uniform distribution.
@@ -37,6 +40,4 @@ export function factory (type, config, load, typed) {
   randomInt.toTex = undefined // use default template
 
   return randomInt
-}
-
-export const name = 'randomInt'
+})

@@ -8,6 +8,7 @@ import complex from './complex'
 import geometry from './geometry'
 import logical from './logical'
 import matrix from './matrix'
+import probability from './probability'
 import relational from './relational'
 import set from './set'
 import special from './special'
@@ -26,7 +27,7 @@ export default [
   geometry,
   logical,
   matrix,
-  require('./probability'),
+  probability,
   relational,
   set,
   special,

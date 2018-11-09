@@ -2,8 +2,12 @@
 
 import { isInteger } from '../../utils/number'
 import { product } from './product'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
+const name = 'combinations'
+const dependencies = ['typed', 'type.BigNumber']
+
+export const createCombinations = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Compute the number of ways of picking `k` unordered outcomes from `n`
    * possibilities.
@@ -28,7 +32,7 @@ export function factory (type, config, load, typed) {
    * @return {number | BigNumber}     Number of possible combinations.
    */
 
-  const combinations = typed('combinations', {
+  const combinations = typed(name, {
     'number, number': function (n, k) {
       let prodrange, nMinusk
 
@@ -54,7 +58,7 @@ export function factory (type, config, load, typed) {
 
     'BigNumber, BigNumber': function (n, k) {
       let max, result, i, ii
-      const one = new type.BigNumber(1)
+      const one = new BigNumber(1)
 
       if (!isPositiveInteger(n) || !isPositiveInteger(k)) {
         throw new TypeError('Positive integer value expected in function combinations')
@@ -79,7 +83,7 @@ export function factory (type, config, load, typed) {
   combinations.toTex = { 2: `\\binom{\${args[0]}}{\${args[1]}}` }
 
   return combinations
-}
+})
 
 /**
  * Test whether BigNumber n is a positive integer
@@ -89,5 +93,3 @@ export function factory (type, config, load, typed) {
 function isPositiveInteger (n) {
   return n.isInteger() && n.gte(0)
 }
-
-export const name = 'combinations'

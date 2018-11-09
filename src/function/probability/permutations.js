@@ -2,9 +2,12 @@
 
 import { isInteger } from '../../utils/number'
 import { product } from './product'
+import { factory } from '../../utils/factory'
 
-export function factory (type, config, load, typed) {
-  const factorial = load(require('./factorial'))
+const name = 'permutations'
+const dependencies = ['typed', 'factorial']
+
+export const createPermutations = factory(name, dependencies, ({ typed, factorial }) => {
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
    * from a set of `n` elements.
@@ -30,7 +33,7 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber} [k] The number of objects in the subset
    * @return {number | BigNumber}    The number of permutations
    */
-  const permutations = typed('permutations', {
+  const permutations = typed(name, {
     'number | BigNumber': factorial,
     'number, number': function (n, k) {
       if (!isInteger(n) || n < 0) {
@@ -56,7 +59,8 @@ export function factory (type, config, load, typed) {
         throw new TypeError('second argument k must be less than or equal to first argument n')
       }
 
-      result = new type.BigNumber(1)
+      const one = n.mul(0).add(1)
+      result = one
       for (i = n.minus(k).plus(1); i.lte(n); i = i.plus(1)) {
         result = result.times(i)
       }
@@ -70,7 +74,7 @@ export function factory (type, config, load, typed) {
   permutations.toTex = undefined // use default template
 
   return permutations
-}
+})
 
 /**
  * Test whether BigNumber n is a positive integer
@@ -80,5 +84,3 @@ export function factory (type, config, load, typed) {
 function isPositiveInteger (n) {
   return n.isInteger() && n.gte(0)
 }
-
-export const name = 'permutations'

@@ -4,6 +4,7 @@ import expression from './expression'
 import type from './type'
 import functions from './function'
 import { createConstants } from './constants'
+import json from './json'
 import error from './error'
 
 export default [
@@ -16,6 +17,6 @@ export default [
   // attach transforms to functions that are imported there
   expression, // expression parsing
 
-  require('./json'), // serialization utility (math.json.reviver)
+  json, // serialization utility (math.json.reviver)
   error
 ]

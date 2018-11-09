@@ -1,4 +1,7 @@
 'use strict'
-module.exports = [
-  require('./reviver')
+
+import { createReviver } from './reviver'
+
+export default [
+  createReviver
 ]

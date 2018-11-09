@@ -1,6 +1,11 @@
 'use strict'
 
-function factory (type, config, load, typed, math) {
+import { factory } from '../utils/factory'
+
+const name = 'json.reviver'
+const dependencies = ['type', 'expression.node']
+
+export const createReviver = factory(name, dependencies, ({ type, expression: { node } }) => {
   /**
    * Instantiate mathjs data types from their JSON representation
    * @param {string} key
@@ -8,8 +13,7 @@ function factory (type, config, load, typed, math) {
    * @returns {*} Returns the revived object
    */
   return function reviver (key, value) {
-    const constructor = type[value && value.mathjs] ||
-        (math.expression && math.expression.node[value && value.mathjs])
+    const constructor = type[value && value.mathjs] || (node && node[value && value.mathjs])
     // TODO: instead of checking math.expression.node, expose all Node classes on math.type too
 
     if (constructor && typeof constructor.fromJSON === 'function') {
@@ -18,9 +22,4 @@ function factory (type, config, load, typed, math) {
 
     return value
   }
-}
-
-exports.name = 'reviver'
-exports.path = 'json'
-exports.factory = factory
-exports.math = true // request the math namespace as fifth argument
+})

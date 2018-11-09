@@ -1,11 +1,13 @@
 'use strict'
 
 import { deepMap } from '../../utils/collection'
+import { factory } from '../../utils/factory'
+import { latexOperators } from '../../utils/latex'
 
-export function factory (type, config, load, typed) {
-  const gamma = load(require('./gamma'))
-  const latex = require('../../utils/latex')
+const name = 'factorial'
+const dependencies = ['typed', 'gamma']
 
+export const createFactorial = factory(name, dependencies, ({ typed, gamma }) => {
   /**
    * Compute the factorial of a value
    *
@@ -28,7 +30,7 @@ export function factory (type, config, load, typed) {
    * @param {number | BigNumber | Array | Matrix} n   An integer number
    * @return {number | BigNumber | Array | Matrix}    The factorial of `n`
    */
-  const factorial = typed('factorial', {
+  const factorial = typed(name, {
     'number': function (n) {
       if (n < 0) {
         throw new Error('Value must be non-negative')
@@ -51,10 +53,8 @@ export function factory (type, config, load, typed) {
   })
 
   factorial.toTex = {
-    1: `\\left(\${args[0]}\\right)${latex.latexOperators['factorial']}`
+    1: `\\left(\${args[0]}\\right)${latexOperators['factorial']}`
   }
 
   return factorial
-}
-
-export const name = 'factorial'
+})
