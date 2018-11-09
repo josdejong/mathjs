@@ -2,6 +2,8 @@
 
 sh bundle_and_run.sh
 
+ls bundles -lah | grep 'bundle.js$'
+
 # explore the contents
 npx source-map-explorer bundles/usecase1.bundle.js
 npx source-map-explorer bundles/usecase2.bundle.js
