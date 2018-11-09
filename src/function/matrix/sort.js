@@ -4,7 +4,7 @@ import { arraySize as size } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'sort'
-const dependencies = ['typed', 'config', 'matrix']
+const dependencies = ['typed', 'matrix', 'compare', 'compareNatural']
 
 export const createSort = factory(name, dependencies, ({ typed, matrix, compare, compareNatural }) => {
   const compareAsc = compare

@@ -3,6 +3,7 @@
 import { isBigNumber, isMatrix } from '../../utils/is'
 import DimensionError from '../../error/DimensionError'
 import ArgumentsError from '../../error/ArgumentsError'
+import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
 import { clone } from '../../utils/object'
 import { resize as arrayResize } from '../../utils/array'
