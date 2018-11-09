@@ -1387,12 +1387,11 @@ export const createSparseMatrixClass = factory(name, dependencies, ({ typed, typ
     }
   }
 
-  // FIXME: registering twice should not occur
   if (!Matrix._storage.sparse) {
     // register this type in the base class Matrix
     Matrix._storage.sparse = SparseMatrix
   } else {
-    console.warn('SparseMatrix loaded twice, this should not happen')
+    console.warn('Cannot register SparseMatrix: already registered')
     return Matrix._storage.sparse
   }
 

@@ -861,13 +861,12 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type
     return data
   }
 
-  // FIXME: registering twice should not occur
   if (!Matrix._storage.dense) {
     // register this type in the base class Matrix
     Matrix._storage.dense = DenseMatrix
     Matrix._storage['default'] = DenseMatrix
   } else {
-    console.warn('DenseMatrix loaded twice, this should not happen')
+    console.warn('Cannot register DenseMatrix: already registered')
     return Matrix._storage.dense
   }
 
