@@ -6,9 +6,9 @@ import { isUnit, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Complex'
-const dependencies = ['config', 'on']
+const dependencies = ['typed', 'config', 'on']
 
-export const createComplexClass = factory(name, dependencies, ({ config, on }) => {
+export const createComplexClass = factory(name, dependencies, ({ typed, config, on }) => {
   /**
    * Attach type information
    */
@@ -191,5 +191,11 @@ export const createComplexClass = factory(name, dependencies, ({ config, on }) =
     return 0
   }
 
+  // register with typed
+  typed.type.Complex = Complex
+
   return Complex
 })
+
+// no lazy loading, we need to register with typed.type
+createComplexClass.lazy = false

@@ -327,5 +327,8 @@ export function createTyped (type) {
     }
   ]
 
+  // TODO: this is a temporary test
+  typed.type = type
+
   return typed
 }

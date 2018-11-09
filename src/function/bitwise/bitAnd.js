@@ -14,11 +14,10 @@ const name = 'bitAnd'
 const dependencies = [
   'typed',
   'matrix',
-  'equalScalar',
-  'type.DenseMatrix'
+  'equalScalar'
 ]
 
-export const createBitAnd = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+export const createBitAnd = factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm06 = createAlgorithm06({ typed, equalScalar })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
