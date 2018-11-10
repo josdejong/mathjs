@@ -356,7 +356,7 @@ export function importFactory (typed, load, math) {
         _deleteTransform(name)
       } else {
         if ((path && path.join('.') === 'expression.transform') || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, resolver)
+          lazy(math.expression.mathWithTransform, name, () => namespace[name])
         }
       }
     } else {
@@ -366,7 +366,7 @@ export function importFactory (typed, load, math) {
         _deleteTransform(name)
       } else {
         if ((path && path.join('.') === 'expression.transform') || factoryAllowedInExpressions(factory)) {
-          math.expression.mathWithTransform[name] = resolver()
+          math.expression.mathWithTransform[name] = namespace[name]
         }
       }
     }

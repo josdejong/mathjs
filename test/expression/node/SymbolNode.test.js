@@ -35,8 +35,7 @@ describe('SymbolNode', function () {
     assert.throws(function () { s.compile().eval(scope) }, Error)
   })
 
-  // FIXME: should compile a SymbolNode
-  it.skip('should compile a SymbolNode', function () {
+  it('should compile a SymbolNode', function () {
     const s = new SymbolNode('a')
 
     const expr = s.compile()
