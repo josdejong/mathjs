@@ -8,7 +8,7 @@ layout: default
 
 Compute the sign of a value. The sign of a value x is:
 
--  1 when x > 1
+-  1 when x > 0
 - -1 when x < 0
 -  0 when x == 0
 
