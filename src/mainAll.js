@@ -60,9 +60,8 @@ import { createIsZero } from './function/utils/isZero'
 import { createIsNaN } from './function/utils/isNaN'
 import { createNumeric } from './function/utils/numeric'
 import { createTypeOf } from './function/utils/typeOf'
-import { createEmbeddedDocs } from './expression/embeddedDocs'
 import { createUnitClass } from './type/unit/Unit'
-import { createUnit } from './type/unit/function/unit'
+import { createUnit as _createUnit } from './type/unit/function/unit'
 import { createArg } from './function/complex/arg'
 import { createConj } from './function/complex/conj'
 import { createIm } from './function/complex/im'
@@ -89,27 +88,6 @@ import { createAnd } from './function/logical/and'
 import { createXor } from './function/logical/xor'
 import { createOr } from './function/logical/or'
 import { createNot } from './function/logical/not'
-import { createParseExpression } from './expression/parse'
-import { createEval } from './expression/function/eval'
-import { createCompile } from './expression/function/compile'
-import { createParse } from './expression/function/parse'
-import { createSymbolNode } from './expression/node/SymbolNode'
-import { createRelationalNode } from './expression/node/RelationalNode'
-import { createRangeNode } from './expression/node/RangeNode'
-import { createParenthesisNode } from './expression/node/ParenthesisNode'
-import { createOperatorNode } from './expression/node/OperatorNode'
-import { createObjectNode } from './expression/node/ObjectNode'
-import { createIndexNode } from './expression/node/IndexNode'
-import { createFunctionNode } from './expression/node/FunctionNode'
-import { createFunctionAssignmentNode } from './expression/node/FunctionAssignmentNode'
-import { createConstantNode } from './expression/node/ConstantNode'
-import { createConditionalNode } from './expression/node/ConditionalNode'
-import { createBlockNode } from './expression/node/BlockNode'
-import { createAssignmentNode } from './expression/node/AssignmentNode'
-import { createArrayNode } from './expression/node/ArrayNode'
-import { createAccessorNode } from './expression/node/AccessorNode'
-import { createNode } from './expression/node/Node'
-import { createParserClass } from './expression/Parser'
 import { createImmutableDenseMatrixClass } from './type/matrix/ImmutableDenseMatrix'
 import { createIndexClass } from './type/matrix/MatrixIndex'
 import { createRangeClass } from './type/matrix/Range'
@@ -163,25 +141,184 @@ import { createMode } from './function/statistics/mode'
 import { createMin } from './function/statistics/min'
 import { createMad } from './function/statistics/mad'
 import { createLsolve } from './function/algebra/solver/lsolve'
-import { createRationalize } from './function/algebra/rationalize'
 import { createLusolve } from './function/algebra/solver/lusolve'
 import { createUsolve } from './function/algebra/solver/usolve'
-import { createDerivative } from './function/algebra/derivative'
-import { createSimplify } from './function/algebra/simplify'
 import { createSlu } from './function/algebra/decomposition/slu'
 import { createQr } from './function/algebra/decomposition/qr'
 import { createLup } from './function/algebra/decomposition/lup'
+
+import { createHelpClass } from './expression/Help'
+import { createHelp } from './expression/function/help'
+import { createCreateUnit } from './type/unit/function/createUnit'
+import { createSplitUnit } from './type/unit/function/splitUnit'
+import { createEmbeddedDocs } from './expression/embeddedDocs'
+import { IndexError } from './error/IndexError'
+import { DimensionError } from './error/DimensionError'
+import { ArgumentsError } from './error/ArgumentsError'
+import { createParseExpression } from './expression/parse'
+import { createParserClass } from './expression/Parser'
+import { createEval } from './expression/function/eval'
+import { createCompile } from './expression/function/compile'
+import { createParse } from './expression/function/parse'
+import { createFunctionNode } from './expression/node/FunctionNode'
+import { createSymbolNode } from './expression/node/SymbolNode'
+import { createRelationalNode } from './expression/node/RelationalNode'
+import { createRangeNode } from './expression/node/RangeNode'
+import { createParenthesisNode } from './expression/node/ParenthesisNode'
+import { createOperatorNode } from './expression/node/OperatorNode'
+import { createObjectNode } from './expression/node/ObjectNode'
+import { createIndexNode } from './expression/node/IndexNode'
+import { createFunctionAssignmentNode } from './expression/node/FunctionAssignmentNode'
+import { createConstantNode } from './expression/node/ConstantNode'
+import { createConditionalNode } from './expression/node/ConditionalNode'
+import { createBlockNode } from './expression/node/BlockNode'
+import { createAssignmentNode } from './expression/node/AssignmentNode'
+import { createArrayNode } from './expression/node/ArrayNode'
+import { createAccessorNode } from './expression/node/AccessorNode'
+import { createNode } from './expression/node/Node'
+import { createRationalize } from './function/algebra/rationalize'
+import { createDerivative } from './function/algebra/derivative'
+import { createSimplify } from './function/algebra/simplify'
 import { createResolve } from './function/algebra/simplify/resolve'
 import { createSimplifyConstant } from './function/algebra/simplify/simplifyConstant'
 import { createSimplifyCore } from './function/algebra/simplify/simplifyCore'
+import {
+  isAccessorNode,
+  isArray,
+  isArrayNode,
+  isAssignmentNode,
+  isBigNumber,
+  isBlockNode,
+  isBoolean,
+  isChain,
+  isComplex,
+  isConditionalNode,
+  isConstantNode,
+  isDate,
+  isDenseMatrix,
+  isFraction,
+  isFunction,
+  isFunctionAssignmentNode,
+  isFunctionNode,
+  isHelp,
+  isIndex,
+  isIndexNode,
+  isMatrix,
+  isNode,
+  isNull,
+  isNumber,
+  isObject,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode,
+  isRange,
+  isRangeNode,
+  isRegExp,
+  isResultSet,
+  isSparseMatrix,
+  isString,
+  isSymbolNode,
+  isUndefined,
+  isUnit
+} from './utils/is'
+import { createAcos } from './function/trigonometry/acos'
+import { createAcosh } from './function/trigonometry/acosh'
+import { createAcot } from './function/trigonometry/acot'
+import { createAcoth } from './function/trigonometry/acoth'
+import { createAcsc } from './function/trigonometry/acsc'
+import { createAcsch } from './function/trigonometry/acsch'
+import { createAsec } from './function/trigonometry/asec'
+import { createAsech } from './function/trigonometry/asech'
+import { createAsin } from './function/trigonometry/asin'
+import { createAsinh } from './function/trigonometry/asinh'
+import { createAtan } from './function/trigonometry/atan'
+import { createAtan2 } from './function/trigonometry/atan2'
+import { createAtanh } from './function/trigonometry/atanh'
+import { createCos } from './function/trigonometry/cos'
+import { createCosh } from './function/trigonometry/cosh'
+import { createCot } from './function/trigonometry/cot'
+import { createCoth } from './function/trigonometry/coth'
+import { createCsc } from './function/trigonometry/csc'
+import { createCsch } from './function/trigonometry/csch'
+import { createSec } from './function/trigonometry/sec'
+import { createSech } from './function/trigonometry/sech'
+import { createSin } from './function/trigonometry/sin'
+import { createSinh } from './function/trigonometry/sinh'
+import { createTan } from './function/trigonometry/tan'
+import { createTanh } from './function/trigonometry/tanh'
+import { createSetUnion } from './function/set/setUnion'
+import { createSetSymDifference } from './function/set/setSymDifference'
+import { createSetCartesian } from './function/set/setCartesian'
+import { createSetDifference } from './function/set/setDifference'
+import { createSetDistinct } from './function/set/setDistinct'
+import { createSetIntersect } from './function/set/setIntersect'
+import { createSetIsSubset } from './function/set/setIsSubset'
+import { createSetMultiplicity } from './function/set/setMultiplicity'
+import { createSetPowerset } from './function/set/setPowerset'
+import { createSetSize } from './function/set/setSize'
 
-const math = _create()
+export { create as createCore } from './core/core'
 
-export { create } from './core/core'
+// minimal math instance used for individual exports
+const mathCore = _create()
 
-export const typed = math.typed
-export const config = math.config
-export const on = math.on
+export const typed = mathCore.typed
+export const create = mathCore.create
+export const config = mathCore.config
+export const on = mathCore.on
+export const off = mathCore.off
+export const emit = mathCore.emit
+export const once = mathCore.once
+
+// full math instance used for parse, evaluate, etc.
+const math = Object.assign({}, mathCore)
+const transform = {
+  // TODO: fill transform
+}
+const mathWithTransform = {
+  // TODO: fill mathWithTransform
+}
+
+const docs = createEmbeddedDocs()
+
+// util functions
+export {
+  isAccessorNode,
+  isArray,
+  isArrayNode,
+  isAssignmentNode,
+  isBigNumber,
+  isBlockNode,
+  isBoolean,
+  isChain,
+  isComplex,
+  isConditionalNode,
+  isConstantNode,
+  isDate,
+  isDenseMatrix,
+  isFraction,
+  isFunction,
+  isFunctionAssignmentNode,
+  isFunctionNode,
+  isHelp,
+  isIndex,
+  isIndexNode,
+  isMatrix,
+  isNode,
+  isNull,
+  isNumber,
+  isObject,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode,
+  isRange,
+  isRangeNode,
+  isRegExp,
+  isResultSet,
+  isSparseMatrix,
+  isSymbolNode,
+  isUnit
+} from './utils/is'
 
 // utils (1)
 export const clone = createClone({ typed })
@@ -215,6 +352,7 @@ export const complex = createComplex({ typed, type: { Complex } })
 export const fraction = createFraction({ typed, type: { Fraction } })
 export const matrix = createMatrix({ typed, type: { Matrix } })
 export const sparse = createSparse({ typed, type: { SparseMatrix } })
+export const splitUnit = createSplitUnit({ typed })
 
 // arithmetic (1)
 export const unaryMinus = createUnaryMinus({ typed })
@@ -366,8 +504,48 @@ export const Unit = createUnitClass({
   type: { Complex, BigNumber, Fraction }
 })
 
-// type (2)
-export const unit = createUnit({ typed, type: { Unit } })
+// create (2)
+export const unit = _createUnit({ typed, type: { Unit } })
+export const createUnit = createCreateUnit({ typed, type: { Unit } })
+
+// trigonometry (2)
+export const acos = createAcos({ typed, config, type: { Complex } })
+export const acosh = createAcosh({ typed, config, type: { Complex } })
+export const acot = createAcot({ typed, type: { BigNumber } })
+export const acoth = createAcoth({ typed, config, type: { Complex, BigNumber } })
+export const acsc = createAcsc({ typed, config, type: { Complex, BigNumber } })
+export const acsch = createAcsch({ typed, type: { BigNumber } })
+export const asec = createAsec({ typed, config, type: { Complex, BigNumber } })
+export const asech = createAsech({ typed, config, type: { Complex, BigNumber } })
+export const asin = createAsin({ typed, config, type: { Complex } })
+export const asinh = createAsinh({ typed })
+export const atan = createAtan({ typed })
+export const atan2 = createAtan2({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } })
+export const atanh = createAtanh({ typed, config, type: { Complex } })
+export const cos = createCos({ typed, type: { Unit } })
+export const cosh = createCosh({ typed, type: { Unit } })
+export const cot = createCot({ typed, type: { BigNumber, Unit } })
+export const coth = createCoth({ typed, type: { BigNumber, Unit } })
+export const csc = createCsc({ typed, type: { BigNumber, Unit } })
+export const csch = createCsch({ typed, type: { BigNumber, Unit } })
+export const sec = createSec({ typed, type: { BigNumber, Unit } })
+export const sech = createSech({ typed, type: { BigNumber, Unit } })
+export const sin = createSin({ typed, type: { BigNumber, Unit } })
+export const sinh = createSinh({ typed, type: { Unit } })
+export const tan = createTan({ typed, type: { Unit } })
+export const tanh = createTanh({ typed, type: { Unit } })
+
+// set (2)
+export const setCartesian = createSetCartesian({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setDifference = createSetDifference({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setDistinct = createSetDistinct({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setIntersect = createSetIntersect({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setIsSubset = createSetIsSubset({ typed, size, subset, compareNatural, type: { Index } })
+export const setMultiplicity = createSetMultiplicity({ typed, size, subset, compareNatural, type: { Index } })
+export const setPowerset = createSetPowerset({ typed, size, subset, compareNatural, type: { Index } })
+export const setSize = createSetSize({ typed, compareNatural })
+export const setSymDifference = createSetSymDifference({ typed, size, concat, subset, setDifference, type: { Index } })
+export const setUnion = createSetUnion({ typed, size, concat, subset, setIntersect, setSymDifference, type: { Index } })
 
 // arithmetic (3)
 export const hypot = createHypot({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive })
@@ -376,14 +554,8 @@ export const norm = createNorm({ typed, abs, add, pow, conj, sqrt, multiply, equ
 // matrix (3)
 export const index = createIndex({ typed, type: { Index } })
 
-// FIXME: import all functions in math2
-const math2 = {
-  abs
-}
-const math2WithTransform = Object.assign({}, math2)
-
 // expression (3)
-export const Node = createNode({ expression: { mathWithTransform: math2WithTransform } })
+export const Node = createNode({ expression: { mathWithTransform } })
 export const AccessorNode = createAccessorNode({ subset, expression: { node: { Node } } })
 export const ArrayNode = createArrayNode({ expression: { node: { Node } } })
 export const AssignmentNode = createAssignmentNode({ subset, matrix, expression: { node: { Node } } })
@@ -397,8 +569,8 @@ export const OperatorNode = createOperatorNode({ expression: { node: { Node } } 
 export const ParenthesisNode = createParenthesisNode({ expression: { node: { Node } } })
 export const RangeNode = createRangeNode({ expression: { node: { Node } } })
 export const RelationalNode = createRelationalNode({ expression: { node: { Node } } })
-export const SymbolNode = createSymbolNode({ math: math2, type: { Unit }, expression: { node: { Node } } })
-export const FunctionNode = createFunctionNode({ math: math2, expression: { node: { Node, SymbolNode } } })
+export const SymbolNode = createSymbolNode({ math, type: { Unit }, expression: { node: { Node } } })
+export const FunctionNode = createFunctionNode({ math, expression: { node: { Node, SymbolNode } } })
 const parseExpression = createParseExpression({
   numeric,
   config,
@@ -461,9 +633,11 @@ export const slu = createSlu({ typed, abs, add, multiply, transpose, divideScala
 export const lusolve = createLusolve({ typed, matrix, lup, slu, usolve, lsolve, type: { DenseMatrix } })
 
 // class (3)
-export const Chain = createChainClass({ on, math: math2 })
+export const Help = createHelpClass({ expression: { parse: parseExpression } })
+export const Chain = createChainClass({ on, math: math })
 
 // type (3)
+export const help = createHelp({ typed, math: math, expression: { docs }, type: { Help } })
 export const chain = createChain({ typed, type: { Chain } })
 
 // matrix (4)
@@ -503,7 +677,7 @@ const simplifyCore = createSimplifyCore({
 const simplifyConstant = createSimplifyConstant({
   typed,
   config,
-  math: math2,
+  math,
   fraction,
   bignumber,
   expression: {
@@ -518,7 +692,7 @@ const simplifyConstant = createSimplifyConstant({
 const resolve = createResolve({ expression: { parse, node: { Node, FunctionNode, OperatorNode, ParenthesisNode } } })
 export const simplify = createSimplify({
   typed,
-  math: math2,
+  math,
   parse,
   equal,
   algebra: {
@@ -575,11 +749,111 @@ export const rationalize = createRationalize({
   }
 })
 
+// error classes
+export { IndexError } from './error/IndexError'
+export { DimensionError } from './error/DimensionError'
+export { ArgumentsError } from './error/ArgumentsError'
+
 // TODO: export constants
 // TODO: export physical constants
 
-export const expression = {
-  docs: createEmbeddedDocs()
+// TODO: export all functions into math
+math.abs = abs
+math.sin = sin
+
+// TODO: export all functions into mathWithTransform
+mathWithTransform.abs = abs
+mathWithTransform.sin = sin
+
+// export for backward compatibility
+export const type = {
+  isNumber,
+  isComplex,
+  isBigNumber,
+  isFraction,
+  isUnit,
+  isString,
+  isArray,
+  isMatrix,
+  isDenseMatrix,
+  isSparseMatrix,
+  isRange,
+  isIndex,
+  isBoolean,
+  isResultSet,
+  isHelp,
+  isFunction,
+  isDate,
+  isRegExp,
+  isObject,
+  isNull,
+  isUndefined,
+  isAccessorNode,
+  isArrayNode,
+  isAssignmentNode,
+  isBlockNode,
+  isConditionalNode,
+  isConstantNode,
+  isFunctionAssignmentNode,
+  isFunctionNode,
+  isIndexNode,
+  isNode,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode,
+  isRangeNode,
+  isSymbolNode,
+  isChain,
+  BigNumber,
+  Chain,
+  Complex,
+  Fraction,
+  Matrix,
+  DenseMatrix,
+  SparseMatrix,
+  Spa,
+  FibonacciHeap,
+  ImmutableDenseMatrix,
+  Index,
+  Range,
+  ResultSet,
+  Unit,
+  Help
 }
 
-// TODO: create an export default for backward compatibility, with the whole old structure
+// export for backward compatibility
+export const expression = {
+  docs,
+  transform,
+  mathWithTransform,
+  node: {
+    AccessorNode,
+    ArrayNode,
+    AssignmentNode,
+    BlockNode,
+    ConditionalNode,
+    ConstantNode,
+    IndexNode,
+    FunctionAssignmentNode,
+    FunctionNode,
+    Node,
+    ObjectNode,
+    OperatorNode,
+    ParenthesisNode,
+    RangeNode,
+    RelationalNode,
+    SymbolNode
+  },
+  parse: parseExpression,
+  Parser
+}
+
+// export for backward compatibility
+export const error = {
+  ArgumentsError,
+  DimensionError,
+  IndexError
+}
+
+// allow using `import math from 'mathjs'` alongside using `import * as math from 'mathjs'`
+export default math
