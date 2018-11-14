@@ -5,6 +5,7 @@ import { factory } from '../utils/factory'
 const name = 'json.reviver'
 const dependencies = ['type', 'expression.node']
 
+// TODO: refactor createReviver factory to accept just a single object with types
 export const createReviver = factory(name, dependencies, ({ type, expression: { node } }) => {
   /**
    * Instantiate mathjs data types from their JSON representation
