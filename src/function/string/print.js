@@ -51,7 +51,7 @@ function factory (type, config, load, typed) {
   const print = typed('print', {
     // note: Matrix will be converted automatically to an Array
     'string, Object | Array': _print,
-    'string, Object | Array, number | Object': _print
+    'string, Object | Array, number | Object': _print
   })
 
   print.toTex = undefined // use default template
