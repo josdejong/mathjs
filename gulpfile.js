@@ -160,24 +160,24 @@ gulp.task('validate', ['minify'], function (cb) {
 
 // check whether any of the source files contains non-ascii characters
 gulp.task('validate:ascii', function () {
-  const Reset = "\x1b[0m"
-  const BgRed = "\x1b[41m"
+  const Reset = '\x1b[0m'
+  const BgRed = '\x1b[41m'
 
   validateAsciiChars.getAllFiles('./src')
-      .map(validateAsciiChars.validateChars)
-      .forEach(function (invalidChars) {
-        invalidChars.forEach(function (res) {
-          console.log(res.insideComment ? '' : BgRed,
-              'file:', res.filename, 
-              'ln:' + res.ln, 
-              'col:' + res.col, 
-              'inside comment:', res.insideComment,
-              'code:', res.c, 
-              'character:', String.fromCharCode(res.c),
-              Reset
-          )
-        })
+    .map(validateAsciiChars.validateChars)
+    .forEach(function (invalidChars) {
+      invalidChars.forEach(function (res) {
+        console.log(res.insideComment ? '' : BgRed,
+          'file:', res.filename,
+          'ln:' + res.ln,
+          'col:' + res.col,
+          'inside comment:', res.insideComment,
+          'code:', res.c,
+          'character:', String.fromCharCode(res.c),
+          Reset
+        )
       })
+    })
 })
 
 gulp.task('docs', ['compile'], function () {
