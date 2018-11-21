@@ -89,8 +89,6 @@ export const createSubset = factory(name, dependencies, ({ typed, matrix }) => {
     'Object, Index, any': _setObjectProperty
   })
 
-  subset.toTex = undefined // use default template
-
   return subset
 })
 

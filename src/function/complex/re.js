@@ -52,7 +52,5 @@ export const createRe = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  re.toTex = { 1: `\\Re\\left\\lbrace\${args[0]}\\right\\rbrace` }
-
   return re
 })

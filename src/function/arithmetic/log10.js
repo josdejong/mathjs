@@ -60,8 +60,6 @@ export const createLog10 = factory(name, dependencies, ({ typed, config, type: {
     }
   })
 
-  log10.toTex = { 1: `\\log_{10}\\left(\${args[0]}\\right)` }
-
   return log10
 })
 

@@ -107,12 +107,8 @@ export const createFormat = factory(name, dependencies, ({ typed }) => {
    * @param {Object | Function | number} [options]  Formatting options
    * @return {string} The formatted value
    */
-  const format = typed(name, {
+  return typed(name, {
     'any': formatString,
     'any, Object | function | number': formatString
   })
-
-  format.toTex = undefined // use default template
-
-  return format
 })

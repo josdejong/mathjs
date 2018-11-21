@@ -270,5 +270,8 @@ describe('derivative', function () {
     compareString(math.parse('derivative("x*y",x)').toTex(), '{d\\over dx}\\left[x * y\\right]')
     compareString(math.parse('derivative(x*y,"x")').toTex(), '{d\\over dx}\\left[x * y\\right]')
     compareString(math.parse('derivative("x*y","x")').toTex(), '{d\\over dx}\\left[x * y\\right]')
+
+    // FIXME: handle toTex of derivative with options as third argument
+    // compareString(math.parse('derivative("x*y","x", { simplify: false })').toTex(), '{d\\over dx}\\left[x * y\\right]')
   })
 })

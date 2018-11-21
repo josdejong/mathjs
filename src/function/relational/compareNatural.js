@@ -153,8 +153,6 @@ export const createCompareNatural = factory(name, dependencies, ({ typed, compar
     }
   })
 
-  compareNatural.toTex = undefined // use default template
-
   /**
    * Compare mixed matrix/array types, by converting to same-shaped array.
    * This comparator is non-deterministic regarding input types.

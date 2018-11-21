@@ -155,7 +155,5 @@ export const createCompare = factory(name, dependencies, ({ typed, config, equal
     }
   })
 
-  compare.toTex = undefined // use default template
-
   return compare
 })

@@ -43,7 +43,5 @@ export const createBellNumbers = factory(name, dependencies, ({ typed, addScalar
     }
   })
 
-  bellNumbers.toTex = { 1: `\\mathrm{B}_{\${args[0]}}` }
-
   return bellNumbers
 })

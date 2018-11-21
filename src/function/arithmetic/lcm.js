@@ -127,8 +127,6 @@ export const createLcm = factory(name, dependencies, ({ typed, matrix, equalScal
     }
   })
 
-  lcm.toTex = undefined // use default template
-
   return lcm
 
   /**

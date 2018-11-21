@@ -61,10 +61,5 @@ export const createString = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  string.toTex = {
-    0: '\\mathtt{""}',
-    1: `\\mathrm{string}\\left(\${args[0]}\\right)`
-  }
-
   return string
 })

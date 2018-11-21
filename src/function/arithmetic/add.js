@@ -2,7 +2,6 @@
 
 import { factory } from '../../utils/factory'
 import { extend } from '../../utils/object'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
@@ -132,10 +131,6 @@ export const createAdd = factory(name, dependencies, ({ typed, matrix, addScalar
       return result
     }
   }, addScalar.signatures))
-
-  add.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['add']}\${args[1]}\\right)`
-  }
 
   return add
 })

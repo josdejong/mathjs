@@ -33,7 +33,7 @@ export const createPermutations = factory(name, dependencies, ({ typed, factoria
    * @param {number | BigNumber} [k] The number of objects in the subset
    * @return {number | BigNumber}    The number of permutations
    */
-  const permutations = typed(name, {
+  return typed(name, {
     'number | BigNumber': factorial,
     'number, number': function (n, k) {
       if (!isInteger(n) || n < 0) {
@@ -70,10 +70,6 @@ export const createPermutations = factory(name, dependencies, ({ typed, factoria
 
     // TODO: implement support for collection in permutations
   })
-
-  permutations.toTex = undefined // use default template
-
-  return permutations
 })
 
 /**

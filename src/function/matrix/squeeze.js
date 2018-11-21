@@ -54,7 +54,5 @@ export const createSqueeze = factory(name, dependencies, ({ typed, matrix }) => 
     }
   })
 
-  squeeze.toTex = undefined // use default template
-
   return squeeze
 })

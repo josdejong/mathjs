@@ -3,7 +3,6 @@
 import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 import { arraySize as size } from '../../utils/array'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'pow'
 const dependencies = [
@@ -186,10 +185,6 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
    */
   function _powMatrix (x, y) {
     return matrix(_powArray(x.valueOf(), y))
-  }
-
-  pow.toTex = {
-    2: `\\left(\${args[0]}\\right)${latexOperators['pow']}{\${args[1]}}`
   }
 
   return pow

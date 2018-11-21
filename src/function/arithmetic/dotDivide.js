@@ -1,7 +1,6 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
@@ -115,10 +114,6 @@ export const createDotDivide = factory(name, dependencies, ({ typed, matrix, equ
       return algorithm14(matrix(y), x, divideScalar, true).valueOf()
     }
   })
-
-  dotDivide.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['dotDivide']}\${args[1]}\\right)`
-  }
 
   return dotDivide
 })

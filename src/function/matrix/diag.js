@@ -98,8 +98,6 @@ export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { 
     }
   })
 
-  diag.toTex = undefined // use default template
-
   return diag
 
   /**

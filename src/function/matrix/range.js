@@ -95,8 +95,6 @@ export const createRange = factory(name, dependencies, ({ typed, config, matrix,
 
   })
 
-  range.toTex = undefined // use default template
-
   return range
 
   function _out (arr) {

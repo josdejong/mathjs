@@ -37,9 +37,5 @@ export const createPickRandom = factory(name, dependencies, ({ distribution }) =
    *                          Returns an array with the configured number of elements when number is > 1.
    */
   // TODO: rework pickRandom to a typed-function
-  const pickRandom = distribution('uniform').pickRandom
-
-  pickRandom.toTex = undefined // use default template
-
-  return pickRandom
+  return distribution('uniform').pickRandom
 })

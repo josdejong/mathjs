@@ -207,10 +207,5 @@ export const createNorm = factory(name, dependencies, ({ typed, abs, add, pow, c
     }
   }
 
-  norm.toTex = {
-    1: `\\left\\|\${args[0]}\\right\\|`,
-    2: undefined // use default template
-  }
-
   return norm
 })

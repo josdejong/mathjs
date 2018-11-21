@@ -54,7 +54,5 @@ export const createTan = factory(name, dependencies, ({ typed, type: { Unit } })
     }
   })
 
-  tan.toTex = { 1: `\\tan\\left(\${args[0]}\\right)` }
-
   return tan
 })

@@ -2,7 +2,6 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'unaryMinus'
 const dependencies = ['typed']
@@ -61,10 +60,6 @@ export const createUnaryMinus = factory(name, dependencies, ({ typed }) => {
 
     // TODO: add support for string
   })
-
-  unaryMinus.toTex = {
-    1: `${latexOperators['unaryMinus']}\\left(\${args[0]}\\right)`
-  }
 
   return unaryMinus
 })

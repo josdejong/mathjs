@@ -47,7 +47,5 @@ export const createAcsch = factory(name, dependencies, ({ typed, type: { BigNumb
     }
   })
 
-  acsch.toTex = { 1: `\\mathrm{csch}^{-1}\\left(\${args[0]}\\right)` }
-
   return acsch
 })

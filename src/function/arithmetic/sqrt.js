@@ -75,7 +75,5 @@ export const createSqrt = factory(name, dependencies, ({ config, typed, type: { 
     }
   }
 
-  sqrt.toTex = { 1: `\\sqrt{\${args[0]}}` }
-
   return sqrt
 })

@@ -51,8 +51,6 @@ export const createFilter = factory(name, dependencies, ({ typed, matrix }) => {
     }
   })
 
-  filter.toTex = undefined // use default template
-
   return filter
 })
 

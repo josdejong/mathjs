@@ -89,8 +89,6 @@ export const createResize = factory(name, dependencies, ({ config, matrix }) => 
     }
   }
 
-  resize.toTex = undefined // use default template
-
   return resize
 
   /**

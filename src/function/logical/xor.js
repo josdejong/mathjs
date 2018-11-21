@@ -1,6 +1,5 @@
 'use strict'
 
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
@@ -125,10 +124,6 @@ export const createXor = factory(name, dependencies, ({ typed, matrix, type: { D
       return algorithm14(matrix(y), x, xor, true).valueOf()
     }
   })
-
-  xor.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['xor']}\${args[1]}\\right)`
-  }
 
   return xor
 })

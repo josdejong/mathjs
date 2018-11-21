@@ -54,7 +54,5 @@ export const createArg = factory(name, dependencies, ({ typed, type: { BigNumber
     }
   })
 
-  arg.toTex = { 1: `\\arg\\left(\${args[0]}\\right)` }
-
   return arg
 })

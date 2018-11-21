@@ -4,7 +4,6 @@ import { factory } from '../../utils/factory'
 import { isMatrix } from '../../utils/is'
 import { extend } from '../../utils/object'
 import { arraySize } from '../../utils/array'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 
@@ -914,10 +913,6 @@ export const createMultiply = factory(name, dependencies, ({ typed, matrix, addS
 
     // return sparse matrix
     return c
-  }
-
-  multiply.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['multiply']}\${args[1]}\\right)`
   }
 
   return multiply

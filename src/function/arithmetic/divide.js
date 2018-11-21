@@ -79,7 +79,5 @@ export const createDivide = factory(name, dependencies, ({ typed, matrix, multip
     }
   }, divideScalar.signatures))
 
-  divide.toTex = { 2: `\\frac{\${args[0]}}{\${args[1]}}` }
-
   return divide
 })

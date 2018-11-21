@@ -165,8 +165,6 @@ export const createGamma = factory(name, dependencies, ({ typed, config, multipl
     return new BigNumber(res.toPrecision(BigNumber.precision))
   }
 
-  gamma.toTex = { 1: `\\Gamma\\left(\${args[0]}\\right)` }
-
   return gamma
 })
 

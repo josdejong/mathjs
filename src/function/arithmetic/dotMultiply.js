@@ -1,7 +1,6 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm09 } from '../../type/matrix/utils/algorithm09'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
@@ -110,10 +109,6 @@ export const createDotMultiply = factory(name, dependencies, ({ typed, matrix, e
       return algorithm14(matrix(y), x, multiplyScalar, true).valueOf()
     }
   })
-
-  dotMultiply.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['dotMultiply']}\${args[1]}\\right)`
-  }
 
   return dotMultiply
 })

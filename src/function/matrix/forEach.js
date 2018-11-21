@@ -39,8 +39,6 @@ export const createForEach = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  forEach.toTex = undefined // use default template
-
   return forEach
 })
 

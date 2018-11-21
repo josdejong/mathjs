@@ -1,7 +1,6 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 import { DimensionError } from '../../error/DimensionError'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
@@ -162,10 +161,6 @@ export const createSubtract = factory(name, dependencies, ({ typed, matrix, equa
       return algorithm14(matrix(y), x, subtract, true).valueOf()
     }
   })
-
-  subtract.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['subtract']}\${args[1]}\\right)`
-  }
 
   return subtract
 })

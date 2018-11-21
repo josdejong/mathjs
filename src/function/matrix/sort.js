@@ -73,8 +73,6 @@ export const createSort = factory(name, dependencies, ({ typed, matrix, compare,
     }
   })
 
-  sort.toTex = undefined // use default template
-
   /**
    * Get the comparator for given order ('asc', 'desc', 'natural')
    * @param {'asc' | 'desc' | 'natural'} order

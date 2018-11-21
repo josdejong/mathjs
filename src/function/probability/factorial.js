@@ -2,7 +2,6 @@
 
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'factorial'
 const dependencies = ['typed', 'gamma']
@@ -51,10 +50,6 @@ export const createFactorial = factory(name, dependencies, ({ typed, gamma }) =>
       return deepMap(n, factorial)
     }
   })
-
-  factorial.toTex = {
-    1: `\\left(\${args[0]}\\right)${latexOperators['factorial']}`
-  }
 
   return factorial
 })

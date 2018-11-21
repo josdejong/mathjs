@@ -1,6 +1,5 @@
 'use strict'
 
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -126,10 +125,6 @@ export const createOr = factory(name, dependencies, ({ typed, matrix, equalScala
       return algorithm14(matrix(y), x, or, true).valueOf()
     }
   })
-
-  or.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['or']}\${args[1]}\\right)`
-  }
 
   return or
 })

@@ -58,7 +58,5 @@ export const createComposition = factory(name, dependencies, (
     }
   })
 
-  composition.toTex = undefined // use default template
-
   return composition
 })

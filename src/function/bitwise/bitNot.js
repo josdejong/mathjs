@@ -4,7 +4,6 @@ import { bitNot as bigBitNot } from '../../utils/bignumber/bitwise'
 import { deepMap } from '../../utils/collection'
 import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'bitNot'
 const dependencies = ['typed']
@@ -47,10 +46,6 @@ export const createBitNot = factory(name, dependencies, ({ typed }) => {
       return deepMap(x, bitNot)
     }
   })
-
-  bitNot.toTex = {
-    1: latexOperators['bitNot'] + `\\left(\${args[0]}\\right)`
-  }
 
   return bitNot
 })

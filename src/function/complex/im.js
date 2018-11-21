@@ -52,7 +52,5 @@ export const createIm = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  im.toTex = { 1: `\\Im\\left\\lbrace\${args[0]}\\right\\rbrace` }
-
   return im
 })

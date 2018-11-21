@@ -31,7 +31,7 @@ export const createSum = factory(name, dependencies, ({ typed, config, add, type
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The sum of all values
    */
-  const sum = typed(name, {
+  return typed(name, {
     'Array | Matrix': function (args) {
       // sum([a, b, c, d, ...])
       return _sum(args)
@@ -48,10 +48,6 @@ export const createSum = factory(name, dependencies, ({ typed, config, add, type
       return _sum(args)
     }
   })
-
-  sum.toTex = undefined // use default template
-
-  return sum
 
   /**
    * Recursively calculate the sum of an n-dimensional array

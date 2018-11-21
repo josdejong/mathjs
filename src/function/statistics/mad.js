@@ -32,7 +32,7 @@ export const createMad = factory(name, dependencies, ({ typed, abs, map, median,
    *                        A single matrix or multiple scalar values.
    * @return {*} The median absolute deviation.
    */
-  const mad = typed(name, {
+  return typed(name, {
     // mad([a, b, c, d, ...])
     'Array | Matrix': _mad,
 
@@ -41,10 +41,6 @@ export const createMad = factory(name, dependencies, ({ typed, abs, map, median,
       return _mad(args)
     }
   })
-
-  mad.toTex = undefined // use default template
-
-  return mad
 
   function _mad (array) {
     array = flatten(array.valueOf())

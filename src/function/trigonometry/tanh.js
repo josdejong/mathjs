@@ -55,8 +55,6 @@ export const createTanh = factory(name, dependencies, ({ typed, type: { Unit } }
     }
   })
 
-  tanh.toTex = { 1: `\\tanh\\left(\${args[0]}\\right)` }
-
   return tanh
 })
 

@@ -80,8 +80,6 @@ export const createCombinations = factory(name, dependencies, ({ typed, type: { 
     // TODO: implement support for collection in combinations
   })
 
-  combinations.toTex = { 2: `\\binom{\${args[0]}}{\${args[1]}}` }
-
   return combinations
 })
 

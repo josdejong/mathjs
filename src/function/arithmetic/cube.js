@@ -58,7 +58,5 @@ export const createCube = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  cube.toTex = { 1: `\\left(\${args[0]}\\right)^3` }
-
   return cube
 })

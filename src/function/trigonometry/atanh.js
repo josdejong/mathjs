@@ -50,8 +50,6 @@ export const createAtanh = factory(name, dependencies, ({ typed, config, type: {
     }
   })
 
-  atanh.toTex = { 1: `\\tanh^{-1}\\left(\${args[0]}\\right)` }
-
   return atanh
 })
 

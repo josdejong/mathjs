@@ -79,7 +79,5 @@ export const createStirlingS2 = factory(name, dependencies, (
     }
   })
 
-  stirlingS2.toTex = { 2: `\\mathrm{S}\\left(\${args}\\right)` }
-
   return stirlingS2
 })

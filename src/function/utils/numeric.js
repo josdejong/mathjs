@@ -47,10 +47,5 @@ export const createNumeric = factory(name, dependencies, ({ number, bignumber, f
     }
   }
 
-  numeric.toTex = function (node, options) {
-    // Not sure if this is strictly right but should work correctly for the vast majority of use cases.
-    return node.args[0].toTex()
-  }
-
   return numeric
 })

@@ -49,7 +49,5 @@ export const createAcoth = factory(name, dependencies, ({ typed, config, type: {
     }
   })
 
-  acoth.toTex = { 1: `\\coth^{-1}\\left(\${args[0]}\\right)` }
-
   return acoth
 })

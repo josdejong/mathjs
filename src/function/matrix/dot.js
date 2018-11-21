@@ -46,8 +46,6 @@ export const createDot = factory(name, dependencies, ({ typed, add, multiply }) 
     'Array, Array': _dot
   })
 
-  dot.toTex = { 2: `\\left(\${args[0]}\\cdot\${args[1]}\\right)` }
-
   return dot
 
   /**

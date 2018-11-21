@@ -45,8 +45,6 @@ export const createNthRoots = factory(name, dependencies, ({ typed, config, divi
     'Complex, number': _nthComplexRoots
   })
 
-  nthRoots.toTex = { 2: `\\{y : $y^{args[1]} = {\${args[0]}}\\}` }
-
   /**
    * Each function here returns a real multiple of i as a Complex value.
    * @param  {number} val

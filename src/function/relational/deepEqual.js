@@ -38,15 +38,11 @@ export const createDeepEqual = factory(name, dependencies, ({ typed, equal }) =>
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}
    *            Returns true when the input matrices have the same size and each of their elements is equal.
    */
-  const deepEqual = typed(name, {
+  return typed(name, {
     'any, any': function (x, y) {
       return _deepEqual(x.valueOf(), y.valueOf())
     }
   })
-
-  deepEqual.toTex = undefined // use default template
-
-  return deepEqual
 
   /**
    * Test whether two arrays have the same size and all elements are equal

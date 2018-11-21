@@ -52,8 +52,6 @@ export const createSinh = factory(name, dependencies, ({ typed, type: { Unit } }
     }
   })
 
-  sinh.toTex = { 1: `\\sinh\\left(\${args[0]}\\right)` }
-
   return sinh
 })
 

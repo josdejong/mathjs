@@ -51,8 +51,6 @@ export const createCosh = factory(name, dependencies, ({ typed, type: { Unit } }
     }
   })
 
-  cosh.toTex = { 1: `\\cosh\\left(\${args[0]}\\right)` }
-
   return cosh
 })
 

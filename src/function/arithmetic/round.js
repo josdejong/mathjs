@@ -150,11 +150,6 @@ export const createRound = factory(name, dependencies, ({ typed, matrix, equalSc
     }
   })
 
-  round.toTex = {
-    1: `\\left\\lfloor\${args[0]}\\right\\rceil`,
-    2: undefined // use default template
-  }
-
   return round
 })
 

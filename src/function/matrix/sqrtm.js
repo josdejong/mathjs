@@ -3,7 +3,6 @@
 import { isMatrix } from '../../utils/is'
 import { format } from '../../utils/string'
 import { arraySize } from '../../utils/array'
-import { latexOperators } from '../../utils/latex'
 import { factory } from '../../utils/factory'
 
 const name = 'sqrtm'
@@ -91,8 +90,6 @@ export const createSqrtm = factory(name, dependencies, ({ typed, abs, add, multi
 
     return Y
   }
-
-  sqrtm.toTex = { 1: `{\${args[0]}}${latexOperators['pow']}{\\frac{1}{2}}` }
 
   return sqrtm
 })

@@ -36,8 +36,6 @@ export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, 
     // TODO: implement support for Fraction
   })
 
-  xgcd.toTex = undefined // use default template
-
   return xgcd
 
   /**

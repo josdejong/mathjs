@@ -39,7 +39,7 @@ export const createMax = factory(name, dependencies, ({ typed, larger }) => {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The maximum value
    */
-  const max = typed(name, {
+  return typed(name, {
     // max([a, b, c, d, ...])
     'Array | Matrix': _max,
 
@@ -57,10 +57,6 @@ export const createMax = factory(name, dependencies, ({ typed, larger }) => {
       return _max(args)
     }
   })
-
-  max.toTex = `\\max\\left(\${args}\\right)`
-
-  return max
 
   /**
    * Return the largest of two values

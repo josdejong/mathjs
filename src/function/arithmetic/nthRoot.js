@@ -158,8 +158,6 @@ export const createNthRoot = factory(name, dependencies, ({ typed, matrix, equal
     }
   })
 
-  nthRoot.toTex = { 2: `\\sqrt[\${args[1]}]{\${args[0]}}` }
-
   return nthRoot
 
   /**

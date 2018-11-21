@@ -48,7 +48,5 @@ export const createSize = factory(name, dependencies, ({ typed, config, matrix }
     }
   })
 
-  size.toTex = undefined // use default template
-
   return size
 })

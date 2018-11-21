@@ -204,7 +204,5 @@ export const createInv = factory(name, dependencies, ({ typed, matrix, divideSca
     }
   }
 
-  inv.toTex = { 1: `\\left(\${args[0]}\\right)^{-1}` }
-
   return inv
 })

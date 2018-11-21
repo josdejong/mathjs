@@ -63,12 +63,6 @@ export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix
     'Array | Matrix, string, string': _create
   })
 
-  matrix.toTex = {
-    0: '\\begin{bmatrix}\\end{bmatrix}',
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\${args[0]}\\right)`
-  }
-
   return matrix
 
   /**

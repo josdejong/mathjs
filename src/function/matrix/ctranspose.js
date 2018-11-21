@@ -1,7 +1,6 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'ctranspose'
 const dependencies = ['typed', 'transpose', 'conj']
@@ -35,8 +34,6 @@ export const createCtranspose = factory(name, dependencies, ({ typed, transpose,
       return conj(transpose(x))
     }
   })
-
-  ctranspose.toTex = { 1: `\\left(\${args[0]}\\right)${latexOperators['ctranspose']}` }
 
   return ctranspose
 })

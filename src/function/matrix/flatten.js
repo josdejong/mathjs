@@ -38,7 +38,5 @@ export const createFlatten = factory(name, dependencies, ({ typed, matrix }) => 
     }
   })
 
-  flatten.toTex = undefined // use default template
-
   return flatten
 })

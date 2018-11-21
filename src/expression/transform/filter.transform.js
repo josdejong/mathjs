@@ -53,8 +53,6 @@ export const createFilterTransform = factory(name, dependencies, ({ typed, matri
     }
   })
 
-  filter.toTex = undefined // use default template
-
   return filterTransform
 })
 

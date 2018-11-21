@@ -50,7 +50,5 @@ export const createConj = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  conj.toTex = { 1: `\\left(\${args[0]}\\right)^*` }
-
   return conj
 })

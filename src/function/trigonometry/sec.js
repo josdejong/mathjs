@@ -53,7 +53,5 @@ export const createSec = factory(name, dependencies, ({ typed, type: { BigNumber
     }
   })
 
-  sec.toTex = { 1: `\\sec\\left(\${args[0]}\\right)` }
-
   return sec
 })

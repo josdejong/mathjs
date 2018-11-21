@@ -74,7 +74,5 @@ export const createLog2 = factory(name, dependencies, ({ typed, config, type: { 
     )
   }
 
-  log2.toTex = `\\log_{2}\\left(\${args[0]}\\right)`
-
   return log2
 })

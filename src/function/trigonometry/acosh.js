@@ -52,8 +52,6 @@ export const createAcosh = factory(name, dependencies, ({ typed, config, type: {
     }
   })
 
-  acosh.toTex = { 1: `\\cosh^{-1}\\left(\${args[0]}\\right)` }
-
   return acosh
 })
 

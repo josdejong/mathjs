@@ -51,10 +51,5 @@ export const createSparse = factory(name, dependencies, ({ typed, type: { Sparse
     }
   })
 
-  sparse.toTex = {
-    0: '\\begin{bsparse}\\end{bsparse}',
-    1: `\\left(\${args[0]}\\right)`
-  }
-
   return sparse
 })

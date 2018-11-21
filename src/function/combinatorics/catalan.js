@@ -55,7 +55,5 @@ export const createCatalan = factory(name, dependencies, (
     }
   })
 
-  catalan.toTex = { 1: `\\mathrm{C}_{\${args[0]}}` }
-
   return catalan
 })

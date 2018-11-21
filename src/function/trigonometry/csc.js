@@ -53,7 +53,5 @@ export const createCsc = factory(name, dependencies, ({ typed, type: { BigNumber
     }
   })
 
-  csc.toTex = { 1: `\\csc\\left(\${args[0]}\\right)` }
-
   return csc
 })

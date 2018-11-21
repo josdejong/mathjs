@@ -53,7 +53,5 @@ export const createCot = factory(name, dependencies, ({ typed, type: { BigNumber
     }
   })
 
-  cot.toTex = { 1: `\\cot\\left(\${args[0]}\\right)` }
-
   return cot
 })

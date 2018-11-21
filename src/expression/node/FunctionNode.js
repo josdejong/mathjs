@@ -7,7 +7,7 @@ import { hasOwnProperty } from '../../utils/object'
 import { map } from '../../utils/array'
 import { getSafeProperty, validateSafeMethod } from '../../utils/customs'
 import { factory } from '../../utils/factory'
-import { defaultTemplate } from '../../utils/latex'
+import { defaultTemplate, latexFunctions } from '../../utils/latex'
 
 const name = 'expression.node.FunctionNode'
 const dependencies = [
@@ -390,6 +390,11 @@ export const createFunctionNode = factory(name, dependencies, ({ math, expressio
 
     let latexConverter
 
+    if (latexFunctions[this.name]) {
+      latexConverter = latexFunctions[this.name]
+    }
+
+    // for backward compatibility (deprecated in v6)
     if (math[this.name] &&
       ((typeof math[this.name].toTex === 'function') ||
         (typeof math[this.name].toTex === 'object') ||

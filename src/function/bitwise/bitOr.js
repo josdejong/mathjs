@@ -8,7 +8,6 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm10 } from '../../type/matrix/utils/algorithm10'
 import { createAlgorithm04 } from '../../type/matrix/utils/algorithm04'
 import { createAlgorithm01 } from '../../type/matrix/utils/algorithm01'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'bitOr'
 const dependencies = [
@@ -117,10 +116,6 @@ export const createBitOr = factory(name, dependencies, ({ typed, matrix, equalSc
       return algorithm14(matrix(y), x, bitOr, true).valueOf()
     }
   })
-
-  bitOr.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['bitOr']}\${args[1]}\\right)`
-  }
 
   return bitOr
 })

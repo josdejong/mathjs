@@ -73,8 +73,6 @@ export const createZeros = factory(name, dependencies, ({ typed, config, matrix,
     }
   })
 
-  zeros.toTex = undefined // use default template
-
   return zeros
 
   /**

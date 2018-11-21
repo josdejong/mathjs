@@ -160,7 +160,5 @@ export const createExpm = factory(name, dependencies, ({ typed, abs, add, identi
       qfac * qfac / (twoqfac * twoqp1fac)
   }
 
-  expm.toTex = { 1: `\\exp\\left(\${args[0]}\\right)` }
-
   return expm
 })

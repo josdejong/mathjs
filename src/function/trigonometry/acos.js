@@ -52,7 +52,5 @@ export const createAcos = factory(name, dependencies, ({ typed, config, type: { 
     }
   })
 
-  acos.toTex = { 1: `\\cos^{-1}\\left(\${args[0]}\\right)` }
-
   return acos
 })

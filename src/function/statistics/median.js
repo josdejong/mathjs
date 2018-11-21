@@ -110,7 +110,5 @@ export const createMedian = factory(name, dependencies, ({ typed, add, divide, c
     }
   })
 
-  median.toTex = undefined // use default template
-
   return median
 })

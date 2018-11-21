@@ -53,8 +53,6 @@ export const createSech = factory(name, dependencies, ({ typed, type: { BigNumbe
     }
   })
 
-  sech.toTex = { 1: `\\mathrm{sech}\\left(\${args[0]}\\right)` }
-
   return sech
 })
 

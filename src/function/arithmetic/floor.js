@@ -55,7 +55,5 @@ export const createFloor = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  floor.toTex = { 1: `\\left\\lfloor\${args[0]}\\right\\rfloor` }
-
   return floor
 })

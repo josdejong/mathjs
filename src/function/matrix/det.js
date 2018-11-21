@@ -84,8 +84,6 @@ export const createDet = factory(name, dependencies, ({ typed, matrix, subtract,
     }
   })
 
-  det.toTex = { 1: `\\det\\left(\${args[0]}\\right)` }
-
   return det
 
   /**

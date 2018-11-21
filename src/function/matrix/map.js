@@ -39,8 +39,6 @@ export const createMap = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  map.toTex = undefined // use default template
-
   return map
 })
 

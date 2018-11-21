@@ -54,8 +54,6 @@ export const createCsch = factory(name, dependencies, ({ typed, type: { BigNumbe
     }
   })
 
-  csch.toTex = { 1: `\\mathrm{csch}\\left(\${args[0]}\\right)` }
-
   return csch
 })
 

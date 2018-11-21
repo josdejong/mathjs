@@ -47,7 +47,5 @@ export const createAsinh = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  asinh.toTex = { 1: `\\sinh^{-1}\\left(\${args[0]}\\right)` }
-
   return asinh
 })

@@ -39,7 +39,7 @@ export const createMin = factory(name, dependencies, ({ typed, smaller }) => {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The minimum value
    */
-  const min = typed(name, {
+  return typed(name, {
     // min([a, b, c, d, ...])
     'Array | Matrix': _min,
 
@@ -57,10 +57,6 @@ export const createMin = factory(name, dependencies, ({ typed, smaller }) => {
       return _min(args)
     }
   })
-
-  min.toTex = `\\min\\left(\${args}\\right)`
-
-  return min
 
   /**
    * Return the smallest of two values

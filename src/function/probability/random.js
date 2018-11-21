@@ -37,9 +37,5 @@ export const createRandom = factory(name, dependencies, ({ distribution }) => {
    * @return {number | Array | Matrix} A random number
    */
   // TODO: rework random to a typed-function
-  const random = distribution('uniform').random
-
-  random.toTex = undefined // use default template
-
-  return random
+  return distribution('uniform').random
 })

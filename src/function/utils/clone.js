@@ -25,11 +25,7 @@ export const createClone = factory(name, dependencies, ({ typed }) => {
    * @param {*} x   Object to be cloned
    * @return {*} A clone of object x
    */
-  const clone = typed(name, {
+  return typed(name, {
     'any': objectClone
   })
-
-  clone.toTex = undefined // use default template
-
-  return clone
 })

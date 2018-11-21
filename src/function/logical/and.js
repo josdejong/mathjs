@@ -1,6 +1,5 @@
 'use strict'
 
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -147,10 +146,6 @@ export const createAnd = factory(name, dependencies, ({ typed, matrix, equalScal
       return and(x, matrix(y)).valueOf()
     }
   })
-
-  and.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['and']}\${args[1]}\\right)`
-  }
 
   return and
 })

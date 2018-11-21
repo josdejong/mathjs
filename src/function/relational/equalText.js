@@ -36,15 +36,9 @@ export const createEqualText = factory(name, dependencies, ({ typed, compareText
    * @param  {string | Array | DenseMatrix} y Second string to compare
    * @return {number | Array | DenseMatrix} Returns true if the values are equal, and false if not.
    */
-  const equalText = typed(name, {
-
+  return typed(name, {
     'any, any': function (x, y) {
       return isZero(compareText(x, y))
     }
-
   })
-
-  equalText.toTex = undefined // use default template
-
-  return equalText
 })

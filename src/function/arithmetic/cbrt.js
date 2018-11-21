@@ -148,8 +148,6 @@ export const createCbrt = factory(name, dependencies, ({ config, typed, isNegati
     }
   }
 
-  cbrt.toTex = { 1: `\\sqrt[3]{\${args[0]}}` }
-
   return cbrt
 })
 

@@ -65,13 +65,9 @@ export const createTypeOf = factory(name, dependencies, ({ typed }) => {
    *                  non-primitive types are upper-camel-case.
    *                  For example 'number', 'string', 'Array', 'Date'.
    */
-  const typeOf = typed(name, {
+  return typed(name, {
     'any': _typeOf
   })
-
-  typeOf.toTex = undefined // use default template
-
-  return typeOf
 })
 
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-06

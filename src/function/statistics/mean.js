@@ -36,7 +36,7 @@ export const createMean = factory(name, dependencies, ({ typed, add, divide }) =
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The mean of all values
    */
-  const mean = typed(name, {
+  return typed(name, {
     // mean([a, b, c, d, ...])
     'Array | Matrix': _mean,
 
@@ -52,10 +52,6 @@ export const createMean = factory(name, dependencies, ({ typed, add, divide }) =
       return _mean(args)
     }
   })
-
-  mean.toTex = undefined // use default template
-
-  return mean
 
   /**
    * Calculate the mean value in an n-dimensional array, returning a

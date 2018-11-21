@@ -2,7 +2,6 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'expm1'
 const dependencies = [ 'typed', 'type.Complex' ]
@@ -67,8 +66,6 @@ export const createExpm1 = factory(name, dependencies, ({ typed, type: { Complex
       ? Math.exp(x) - 1
       : x + x * x / 2 + x * x * x / 6
   }
-
-  expm1.toTex = `\\left(e${latexOperators['pow']}{\${args[0]}}-1\\right)`
 
   return expm1
 })

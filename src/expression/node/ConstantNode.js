@@ -2,7 +2,7 @@
 
 import { format } from '../../utils/string'
 import { typeOf } from '../../utils/is'
-import { escape as escapeLatex } from '../../utils/latex'
+import { escapeLatex } from '../../utils/latex'
 import { factory } from '../../utils/factory'
 
 const name = 'expression.node.ConstantNode'

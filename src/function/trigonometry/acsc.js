@@ -51,7 +51,5 @@ export const createAcsc = factory(name, dependencies, ({ typed, config, type: { 
     }
   })
 
-  acsc.toTex = { 1: `\\csc^{-1}\\left(\${args[0]}\\right)` }
-
   return acsc
 })

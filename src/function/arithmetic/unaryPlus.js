@@ -2,7 +2,6 @@
 
 import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'unaryPlus'
 const dependencies = ['typed', 'config', 'type.BigNumber']
@@ -63,10 +62,6 @@ export const createUnaryPlus = factory(name, dependencies, ({ typed, config, typ
       return (config().number === 'BigNumber') ? new BigNumber(+x) : +x
     }
   })
-
-  unaryPlus.toTex = {
-    1: `${latexOperators['unaryPlus']}\\left(\${args[0]}\\right)`
-  }
 
   return unaryPlus
 })

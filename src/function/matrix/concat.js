@@ -107,8 +107,6 @@ export const createConcat = factory(name, dependencies, ({ typed, matrix, isInte
     }
   })
 
-  concat.toTex = undefined // use default template
-
   return concat
 })
 

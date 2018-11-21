@@ -75,11 +75,5 @@ export const createNumber = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  number.toTex = {
-    0: `0`,
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\\left(\${args[0]}\\right)\${args[1]}\\right)`
-  }
-
   return number
 })

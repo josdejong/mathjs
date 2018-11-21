@@ -53,10 +53,5 @@ export const createUnit = factory(name, dependencies, ({ typed, type: { Unit } }
     }
   })
 
-  unit.toTex = {
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\\left(\${args[0]}\\right)\${args[1]}\\right)`
-  }
-
   return unit
 })

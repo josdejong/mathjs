@@ -109,7 +109,5 @@ export const createCompareText = factory(name, dependencies, ({ typed, config, m
       : (x > y ? 1 : -1)
   }
 
-  compareText.toTex = undefined // use default template
-
   return compareText
 })

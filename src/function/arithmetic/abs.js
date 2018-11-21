@@ -56,7 +56,5 @@ export const createAbs = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  abs.toTex = { 1: `\\left|\${args[0]}\\right|` }
-
   return abs
 })

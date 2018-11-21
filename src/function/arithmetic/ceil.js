@@ -56,7 +56,5 @@ export const createCeil = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  ceil.toTex = { 1: `\\left\\lceil\${args[0]}\\right\\rceil` }
-
   return ceil
 })

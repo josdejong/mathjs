@@ -57,7 +57,5 @@ export const createSin = factory(name, dependencies, ({ typed, type: { BigNumber
     }
   })
 
-  sin.toTex = { 1: `\\sin\\left(\${args[0]}\\right)` }
-
   return sin
 })

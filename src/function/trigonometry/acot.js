@@ -48,7 +48,5 @@ export const createAcot = factory(name, dependencies, ({ typed, type: { BigNumbe
     }
   })
 
-  acot.toTex = { 1: `\\cot^{-1}\\left(\${args[0]}\\right)` }
-
   return acot
 })

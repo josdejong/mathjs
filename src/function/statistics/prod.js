@@ -33,7 +33,7 @@ export const createProd = factory(name, dependencies, ({ typed, multiply }) => {
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The product of all values
    */
-  const prod = typed(name, {
+  return typed(name, {
     // prod([a, b, c, d, ...])
     'Array | Matrix': _prod,
 
@@ -49,10 +49,6 @@ export const createProd = factory(name, dependencies, ({ typed, multiply }) => {
       return _prod(args)
     }
   })
-
-  prod.toTex = undefined // use default template
-
-  return prod
 
   /**
    * Recursively calculate the product of an n-dimensional array

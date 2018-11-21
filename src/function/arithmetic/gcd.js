@@ -126,8 +126,6 @@ export const createGcd = factory(name, dependencies, ({ typed, matrix, equalScal
     }
   })
 
-  gcd.toTex = `\\gcd\\left(\${args}\\right)`
-
   return gcd
 
   /**

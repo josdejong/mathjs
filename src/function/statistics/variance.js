@@ -53,7 +53,7 @@ export const createVariance = factory(name, dependencies, ({ typed, add, subtrac
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The variance
    */
-  const variance = typed(name, {
+  return typed(name, {
     // var([a, b, c, d, ...])
     'Array | Matrix': function (array) {
       return _var(array, DEFAULT_NORMALIZATION)
@@ -67,10 +67,6 @@ export const createVariance = factory(name, dependencies, ({ typed, add, subtrac
       return _var(args, DEFAULT_NORMALIZATION)
     }
   })
-
-  variance.toTex = `\\mathrm{Var}\\left(\${args}\\right)`
-
-  return variance
 
   /**
    * Recursively calculate the variance of an n-dimensional array

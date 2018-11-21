@@ -56,7 +56,5 @@ export const createCos = factory(name, dependencies, ({ typed, type: { Unit } })
     }
   })
 
-  cos.toTex = { 1: `\\cos\\left(\${args[0]}\\right)` }
-
   return cos
 })

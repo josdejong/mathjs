@@ -124,7 +124,5 @@ export const createAtan2 = factory(name, dependencies, ({ typed, matrix, equalSc
     }
   })
 
-  atan2.toTex = { 2: `\\mathrm{atan2}\\left(\${args}\\right)` }
-
   return atan2
 })

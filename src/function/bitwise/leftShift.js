@@ -2,7 +2,6 @@
 
 import { leftShift as bigLeftShift } from '../../utils/bignumber/bitwise'
 import { isInteger } from '../../utils/number'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -138,10 +137,6 @@ export const createLeftShift = factory(name, dependencies, ({ typed, matrix, equ
       return leftShift(x, matrix(y)).valueOf()
     }
   })
-
-  leftShift.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['leftShift']}\${args[1]}\\right)`
-  }
 
   return leftShift
 })

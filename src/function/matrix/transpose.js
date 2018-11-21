@@ -3,7 +3,6 @@
 import { clone } from '../../utils/object'
 import { format } from '../../utils/string'
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'transpose'
 const dependencies = ['typed', 'matrix']
@@ -164,8 +163,6 @@ export const createTranspose = factory(name, dependencies, ({ typed, matrix }) =
       datatype: m._datatype
     })
   }
-
-  transpose.toTex = { 1: `\\left(\${args[0]}\\right)${latexOperators['transpose']}` }
 
   return transpose
 })

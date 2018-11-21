@@ -117,6 +117,7 @@ export const createDerivative = factory(name, dependencies, ({ typed, config, pa
     return _derivTex.apply(null, deriv.args)
   }
 
+  // FIXME: move the toTex method of derivative to latex.js. Difficulty is that it relies on parse.
   // NOTE: the optional "order" parameter here is currently unused
   const _derivTex = typed('_derivTex', {
     'Node, SymbolNode': function (expr, x) {

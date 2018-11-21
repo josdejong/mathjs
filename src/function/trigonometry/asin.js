@@ -53,7 +53,5 @@ export const createAsin = factory(name, dependencies, ({ typed, config, type: { 
     }
   })
 
-  asin.toTex = { 1: `\\sin^{-1}\\left(\${args[0]}\\right)` }
-
   return asin
 })

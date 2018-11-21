@@ -85,8 +85,6 @@ export const createHypot = factory(name, dependencies, ({ typed, abs, addScalar,
     return multiplyScalar(largest, sqrt(result))
   }
 
-  hypot.toTex = `\\hypot\\left(\${args}\\right)`
-
   return hypot
 })
 

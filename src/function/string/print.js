@@ -52,15 +52,11 @@ export const createPrint = factory(name, dependencies, ({ typed }) => {
    *                                    of all options.
    * @return {string} Interpolated string
    */
-  const print = typed(name, {
+  return typed(name, {
     // note: Matrix will be converted automatically to an Array
     'string, Object | Array': _print,
     'string, Object | Array, number | Object': _print
   })
-
-  print.toTex = undefined // use default template
-
-  return print
 })
 
 /**

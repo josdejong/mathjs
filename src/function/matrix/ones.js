@@ -75,8 +75,6 @@ export const createOnes = factory(name, dependencies, ({ typed, config, matrix, 
     }
   })
 
-  ones.toTex = undefined // use default template
-
   return ones
 
   /**

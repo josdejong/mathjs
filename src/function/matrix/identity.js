@@ -87,8 +87,6 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
     }
   })
 
-  identity.toTex = undefined // use default template
-
   return identity
 
   function _identityVector (size, format) {

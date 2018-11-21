@@ -1,7 +1,6 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
@@ -131,10 +130,6 @@ export const createMod = factory(name, dependencies, ({ typed, matrix, equalScal
       return algorithm14(matrix(y), x, mod, true).valueOf()
     }
   })
-
-  mod.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['mod']}\${args[1]}\\right)`
-  }
 
   return mod
 

@@ -46,7 +46,7 @@ export const createStd = factory(name, dependencies, ({ typed, sqrt, variance })
    *                        Choose 'unbiased' (default), 'uncorrected', or 'biased'.
    * @return {*} The standard deviation
    */
-  const std = typed(name, {
+  return typed(name, {
     // std([a, b, c, d, ...])
     'Array | Matrix': _std,
 
@@ -58,10 +58,6 @@ export const createStd = factory(name, dependencies, ({ typed, sqrt, variance })
       return _std(args)
     }
   })
-
-  std.toTex = undefined // use default template
-
-  return std
 
   function _std (array, normalization) {
     if (array.length === 0) {

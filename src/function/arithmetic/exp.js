@@ -52,7 +52,5 @@ export const createExp = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  exp.toTex = { 1: `\\exp\\left(\${args[0]}\\right)` }
-
   return exp
 })

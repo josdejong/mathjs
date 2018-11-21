@@ -289,7 +289,5 @@ export const createDistribution = factory(name, dependencies, ({ typed, matrix, 
     }
   }
 
-  distribution.toTex = undefined // use default template
-
   return distribution
 })

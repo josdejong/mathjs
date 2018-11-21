@@ -57,7 +57,5 @@ export const createAsech = factory(name, dependencies, ({ typed, config, type: {
     }
   })
 
-  asech.toTex = { 1: `\\mathrm{sech}^{-1}\\left(\${args[0]}\\right)` }
-
   return asech
 })

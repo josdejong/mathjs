@@ -64,7 +64,5 @@ export const createReshape = factory(name, dependencies, ({ typed, isInteger, ma
 
   })
 
-  reshape.toTex = undefined // use default template
-
   return reshape
 })

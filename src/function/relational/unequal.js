@@ -3,7 +3,6 @@
 import { nearlyEqual as bigNearlyEqual } from '../../utils/bignumber/nearlyEqual'
 import { nearlyEqual } from '../../utils/number'
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
@@ -138,7 +137,7 @@ export const createUnequal = factory(name, dependencies, ({ typed, config, matri
     }
   })
 
-  let _unequal = typed('_unequal', {
+  const _unequal = typed('_unequal', {
 
     'boolean, boolean': function (x, y) {
       return x !== y
@@ -167,10 +166,6 @@ export const createUnequal = factory(name, dependencies, ({ typed, config, matri
       return unequal(x.value, y.value)
     }
   })
-
-  unequal.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['unequal']}\${args[1]}\\right)`
-  }
 
   return unequal
 })

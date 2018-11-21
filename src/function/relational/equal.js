@@ -6,7 +6,6 @@ import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'equal'
 const dependencies = [
@@ -136,10 +135,6 @@ export const createEqual = factory(name, dependencies, ({ typed, matrix, equalSc
       return algorithm14(matrix(y), x, equalScalar, true).valueOf()
     }
   })
-
-  equal.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['equal']}\${args[1]}\\right)`
-  }
 
   return equal
 })

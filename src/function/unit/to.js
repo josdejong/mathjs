@@ -3,7 +3,6 @@
 import { factory } from '../../utils/factory'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'to'
 const dependencies = [
@@ -85,10 +84,6 @@ export const createTo = factory(name, dependencies, ({ typed, matrix }) => {
       return algorithm14(matrix(y), x, to, true).valueOf()
     }
   })
-
-  to.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['to']}\${args[1]}\\right)`
-  }
 
   return to
 })

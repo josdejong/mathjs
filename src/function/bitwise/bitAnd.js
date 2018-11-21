@@ -2,7 +2,6 @@
 
 import { bitAnd as bigBitAnd } from '../../utils/bignumber/bitwise'
 import { isInteger } from '../../utils/number'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm02 } from '../../type/matrix/utils/algorithm02'
 import { createAlgorithm11 } from '../../type/matrix/utils/algorithm11'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
@@ -115,10 +114,6 @@ export const createBitAnd = factory(name, dependencies, ({ typed, matrix, equalS
       return algorithm14(matrix(y), x, bitAnd, true).valueOf()
     }
   })
-
-  bitAnd.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['bitAnd']}\${args[1]}\\right)`
-  }
 
   return bitAnd
 })

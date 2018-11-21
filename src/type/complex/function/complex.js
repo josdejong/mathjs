@@ -2,7 +2,6 @@
 
 import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
-import { latexSymbols } from '../../../utils/latex'
 
 const name = 'complex'
 const dependencies = ['typed', 'type.Complex']
@@ -92,12 +91,6 @@ export const createComplex = factory(name, dependencies, ({ typed, type: { Compl
       return deepMap(x, complex)
     }
   })
-
-  complex.toTex = {
-    0: '0',
-    1: `\\left(\${args[0]}\\right)`,
-    2: `\\left(\\left(\${args[0]}\\right)+${latexSymbols['i']}\\cdot\\left(\${args[1]}\\right)\\right)`
-  }
 
   return complex
 })

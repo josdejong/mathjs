@@ -51,7 +51,5 @@ export const createAsec = factory(name, dependencies, ({ typed, config, type: { 
     }
   })
 
-  asec.toTex = { 1: `\\sec^{-1}\\left(\${args[0]}\\right)` }
-
   return asec
 })

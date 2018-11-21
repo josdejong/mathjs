@@ -60,7 +60,5 @@ export const createSquare = factory(name, dependencies, ({ typed }) => {
     }
   })
 
-  square.toTex = { 1: `\\left(\${args[0]}\\right)^2` }
-
   return square
 })

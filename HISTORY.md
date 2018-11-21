@@ -4,6 +4,8 @@
 
 - Renamed function `typeof` to `typeOf` and `var` to `variance`. (`typeof` and
   `var` are reserved keywords which can only be used as a property name).
+- Deprecated having a `.toTex` property attached to functions.
+  Use a custom toTex handler instead.
 
 
 # 2018-10-30, version 5.2.3

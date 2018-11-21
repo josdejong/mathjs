@@ -2,7 +2,6 @@
 
 import { bitXor as bigBitXor } from '../../utils/bignumber/bitwise'
 import { isInteger } from '../../utils/number'
-import { latexOperators } from '../../utils/latex'
 import { createAlgorithm03 } from '../../type/matrix/utils/algorithm03'
 import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
@@ -115,10 +114,6 @@ export const createBitXor = factory(name, dependencies, ({ typed, matrix, type: 
       return algorithm14(matrix(y), x, bitXor, true).valueOf()
     }
   })
-
-  bitXor.toTex = {
-    2: `\\left(\${args[0]}${latexOperators['bitXor']}\${args[1]}\\right)`
-  }
 
   return bitXor
 })

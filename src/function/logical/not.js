@@ -2,7 +2,6 @@
 
 import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
-import { latexOperators } from '../../utils/latex'
 
 const name = 'not'
 const dependencies = ['typed']
@@ -54,10 +53,6 @@ export const createNot = factory(name, dependencies, ({ typed }) => {
       return deepMap(x, not)
     }
   })
-
-  not.toTex = {
-    1: latexOperators['not'] + `\\left(\${args[0]}\\right)`
-  }
 
   return not
 })

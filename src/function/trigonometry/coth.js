@@ -53,8 +53,6 @@ export const createCoth = factory(name, dependencies, ({ typed, type: { BigNumbe
     }
   })
 
-  coth.toTex = { 1: `\\coth\\left(\${args[0]}\\right)` }
-
   return coth
 })
 

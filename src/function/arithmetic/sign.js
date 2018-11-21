@@ -63,7 +63,5 @@ export const createSign = factory(name, dependencies, ({ typed, type: { BigNumbe
     }
   })
 
-  sign.toTex = { 1: `\\mathrm{\${name}}\\left(\${args[0]}\\right)` }
-
   return sign
 })
