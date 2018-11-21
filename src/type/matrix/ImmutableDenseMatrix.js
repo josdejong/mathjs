@@ -134,12 +134,11 @@ export const createImmutableDenseMatrixClass = factory(name, dependencies, ({ sm
    * @return {ImmutableDenseMatrix} clone
    */
   ImmutableDenseMatrix.prototype.clone = function () {
-    const m = new ImmutableDenseMatrix({
+    return new ImmutableDenseMatrix({
       data: clone(this._data),
       size: clone(this._size),
       datatype: this._datatype
     })
-    return m
   }
 
   /**

@@ -40,7 +40,7 @@ export const createZeros = factory(name, dependencies, ({ typed, config, matrix,
    *
    * @return {Array | Matrix}           A matrix filled with zeros
    */
-  const zeros = typed(name, {
+  return typed(name, {
     '': function () {
       return (config().matrix === 'Array')
         ? _zeros([])
@@ -72,8 +72,6 @@ export const createZeros = factory(name, dependencies, ({ typed, config, matrix,
       return _zeros(size.valueOf(), format)
     }
   })
-
-  return zeros
 
   /**
    * Create an Array or Matrix with zeros

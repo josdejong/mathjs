@@ -218,8 +218,8 @@ export function reshape (array, sizes) {
     throw new DimensionError(0, product(arraySize(array)), '!=')
   }
 
-  var totalSize = 1
-  for (var sizeIndex = 0; sizeIndex < sizes.length; sizeIndex++) {
+  let totalSize = 1
+  for (let sizeIndex = 0; sizeIndex < sizes.length; sizeIndex++) {
     totalSize *= sizes[sizeIndex]
   }
 
@@ -257,16 +257,16 @@ export function reshape (array, sizes) {
 
 function _reshape (array, sizes) {
   // testing if there are enough elements for the requested shape
-  var tmpArray = array
-  var tmpArray2
+  let tmpArray = array
+  let tmpArray2
   // for each dimensions starting by the last one and ignoring the first one
-  for (var sizeIndex = sizes.length - 1; sizeIndex > 0; sizeIndex--) {
-    var size = sizes[sizeIndex]
+  for (let sizeIndex = sizes.length - 1; sizeIndex > 0; sizeIndex--) {
+    const size = sizes[sizeIndex]
     tmpArray2 = []
 
     // aggregate the elements of the current tmpArray in elements of the requested size
-    var length = tmpArray.length / size
-    for (var i = 0; i < length; i++) {
+    const length = tmpArray.length / size
+    for (let i = 0; i < length; i++) {
       tmpArray2.push(tmpArray.slice(i * size, (i + 1) * size))
     }
     // set it as the new tmpArray for the next loop turn or for return

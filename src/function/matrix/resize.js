@@ -40,7 +40,7 @@ export const createResize = factory(name, dependencies, ({ config, matrix }) => 
    * @return {* | Array | Matrix} A resized clone of matrix `x`
    */
   // TODO: rework resize to a typed-function
-  const resize = function resize (x, size, defaultValue) {
+  return function resize (x, size, defaultValue) {
     if (arguments.length !== 2 && arguments.length !== 3) {
       throw new ArgumentsError('resize', arguments.length, 2, 3)
     }
@@ -88,8 +88,6 @@ export const createResize = factory(name, dependencies, ({ config, matrix }) => 
       return asMatrix ? matrix(res) : res
     }
   }
-
-  return resize
 
   /**
    * Resize a string

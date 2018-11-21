@@ -46,7 +46,7 @@ export const createDistribution = factory(name, dependencies, ({ typed, matrix, 
 
     return (function (distribution) {
       // This is the public API for all distributions
-      const randFunctions = {
+      return {
 
         random: function (arg1, arg2, arg3) {
           let size, min, max
@@ -255,8 +255,6 @@ export const createDistribution = factory(name, dependencies, ({ typed, matrix, 
 
         return data
       }
-
-      return randFunctions
     })(distribution)
   }
 

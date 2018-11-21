@@ -39,7 +39,7 @@ export const createInv = factory(name, dependencies, ({ typed, matrix, divideSca
    * @param {number | Complex | Array | Matrix} x     Matrix to be inversed
    * @return {number | Complex | Array | Matrix} The inverse of `x`.
    */
-  const inv = typed(name, {
+  return typed(name, {
     'Array | Matrix': function (x) {
       const size = isMatrix(x) ? x.size() : arraySize(x)
       switch (size.length) {
@@ -203,6 +203,4 @@ export const createInv = factory(name, dependencies, ({ typed, matrix, divideSca
       return B
     }
   }
-
-  return inv
 })

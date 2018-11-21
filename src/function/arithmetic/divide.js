@@ -50,7 +50,7 @@ export const createDivide = factory(name, dependencies, ({ typed, matrix, multip
    * @param  {number | BigNumber | Fraction | Complex | Array | Matrix} y          Denominator
    * @return {number | BigNumber | Fraction | Complex | Unit | Array | Matrix}                      Quotient, `x / y`
    */
-  const divide = typed('divide', extend({
+  return typed('divide', extend({
     // we extend the signatures of divideScalar with signatures dealing with matrices
 
     'Array | Matrix, Array | Matrix': function (x, y) {
@@ -78,6 +78,4 @@ export const createDivide = factory(name, dependencies, ({ typed, matrix, multip
       return multiply(x, inv(y))
     }
   }, divideScalar.signatures))
-
-  return divide
 })

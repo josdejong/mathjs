@@ -27,7 +27,7 @@ export const createBellNumbers = factory(name, dependencies, ({ typed, addScalar
    * @param {Number | BigNumber} n    Total number of objects in the set
    * @return {Number | BigNumber}     B(n)
    */
-  const bellNumbers = typed(name, {
+  return typed(name, {
     'number | BigNumber': function (n) {
       if (!isInteger(n) || isNegative(n)) {
         throw new TypeError('Non-negative integer value expected in function bellNumbers')
@@ -42,6 +42,4 @@ export const createBellNumbers = factory(name, dependencies, ({ typed, addScalar
       return result
     }
   })
-
-  return bellNumbers
 })

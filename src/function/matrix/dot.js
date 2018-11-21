@@ -30,7 +30,7 @@ export const createDot = factory(name, dependencies, ({ typed, add, multiply }) 
    * @param  {Array | Matrix} y     Second vector
    * @return {number}               Returns the dot product of `x` and `y`
    */
-  const dot = typed(name, {
+  return typed(name, {
     'Matrix, Matrix': function (x, y) {
       return _dot(x.toArray(), y.toArray())
     },
@@ -45,8 +45,6 @@ export const createDot = factory(name, dependencies, ({ typed, add, multiply }) 
 
     'Array, Array': _dot
   })
-
-  return dot
 
   /**
    * Calculate the dot product for two arrays

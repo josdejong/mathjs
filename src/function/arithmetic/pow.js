@@ -49,7 +49,7 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
    * @param  {number | BigNumber | Complex} y                          The exponent
    * @return {number | BigNumber | Complex | Array | Matrix} The value of `x` to the power `y`
    */
-  const pow = typed(name, {
+  return typed(name, {
     'number, number': _pow,
 
     'Complex, Complex': function (x, y) {
@@ -186,6 +186,4 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
   function _powMatrix (x, y) {
     return matrix(_powArray(x.valueOf(), y))
   }
-
-  return pow
 })

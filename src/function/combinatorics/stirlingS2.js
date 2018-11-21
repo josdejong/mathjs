@@ -56,7 +56,7 @@ export const createStirlingS2 = factory(name, dependencies, (
    * @param {Number | BigNumber} k    Number of objects in the subset
    * @return {Number | BigNumber}     S(n,k)
    */
-  const stirlingS2 = typed(name, {
+  return typed(name, {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || isNegative(n) || !isInteger(k) || isNegative(k)) {
         throw new TypeError('Non-negative integer value expected in function stirlingS2')
@@ -78,6 +78,4 @@ export const createStirlingS2 = factory(name, dependencies, (
       return divideScalar(result, kFactorial)
     }
   })
-
-  return stirlingS2
 })

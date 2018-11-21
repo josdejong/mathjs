@@ -42,7 +42,7 @@ export const createOnes = factory(name, dependencies, ({ typed, config, matrix, 
    *
    * @return {Array | Matrix | number}  A matrix filled with ones
    */
-  const ones = typed('ones', {
+  return typed('ones', {
     '': function () {
       return (config().matrix === 'Array')
         ? _ones([])
@@ -74,8 +74,6 @@ export const createOnes = factory(name, dependencies, ({ typed, config, matrix, 
       return _ones(size.valueOf(), format)
     }
   })
-
-  return ones
 
   /**
    * Create an Array or Matrix with ones

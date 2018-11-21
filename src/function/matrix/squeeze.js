@@ -37,7 +37,7 @@ export const createSqueeze = factory(name, dependencies, ({ typed, matrix }) => 
    * @param {Matrix | Array} x      Matrix to be squeezed
    * @return {Matrix | Array} Squeezed matrix
    */
-  const squeeze = typed(name, {
+  return typed(name, {
     'Array': function (x) {
       return arraySqueeze(clone(x))
     },
@@ -53,6 +53,4 @@ export const createSqueeze = factory(name, dependencies, ({ typed, matrix }) => 
       return clone(x)
     }
   })
-
-  return squeeze
 })

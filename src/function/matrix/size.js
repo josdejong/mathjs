@@ -30,7 +30,7 @@ export const createSize = factory(name, dependencies, ({ typed, config, matrix }
    * @param {boolean | number | Complex | Unit | string | Array | Matrix} x  A matrix
    * @return {Array | Matrix} A vector with size of `x`.
    */
-  const size = typed(name, {
+  return typed(name, {
     'Matrix': function (x) {
       // TODO: return the same matrix type as the input
       return matrix(x.size())
@@ -47,6 +47,4 @@ export const createSize = factory(name, dependencies, ({ typed, config, matrix }
       return (config().matrix === 'Array') ? [] : matrix([])
     }
   })
-
-  return size
 })

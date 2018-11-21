@@ -40,7 +40,7 @@ export const createCross = factory(name, dependencies, ({ typed, matrix, subtrac
    * @param  {Array | Matrix} y   Second vector
    * @return {Array | Matrix}     Returns the cross product of `x` and `y`
    */
-  const cross = typed(name, {
+  return typed(name, {
     'Matrix, Matrix': function (x, y) {
       return matrix(_cross(x.toArray(), y.toArray()))
     },
@@ -55,8 +55,6 @@ export const createCross = factory(name, dependencies, ({ typed, matrix, subtrac
 
     'Array, Array': _cross
   })
-
-  return cross
 
   /**
    * Calculate the cross product for two arrays

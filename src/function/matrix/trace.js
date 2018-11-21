@@ -35,8 +35,7 @@ export const createTrace = factory(name, dependencies, ({ typed, matrix, add }) 
    *
    * @return {number} The trace of `x`
    */
-  const trace = typed('trace', {
-
+  return typed('trace', {
     'Array': function _arrayTrace (x) {
       // use dense matrix implementation
       return _denseTrace(matrix(x))
@@ -125,6 +124,4 @@ export const createTrace = factory(name, dependencies, ({ typed, matrix, add }) 
     }
     throw new RangeError('Matrix must be square (size: ' + format(size) + ')')
   }
-
-  return trace
 })

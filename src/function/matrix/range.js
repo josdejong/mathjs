@@ -52,7 +52,7 @@ export const createRange = factory(name, dependencies, ({ typed, config, matrix,
    * @param {*} args   Parameters describing the ranges `start`, `end`, and optional `step`.
    * @return {Array | Matrix} range
    */
-  const range = typed(name, {
+  return typed(name, {
     // TODO: simplify signatures when typed-function supports default values and optional arguments
 
     // TODO: a number or boolean should not be converted to string here
@@ -94,8 +94,6 @@ export const createRange = factory(name, dependencies, ({ typed, config, matrix,
     }
 
   })
-
-  return range
 
   function _out (arr) {
     return config().matrix === 'Array' ? arr : matrix(arr)

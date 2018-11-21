@@ -41,7 +41,7 @@ export const createSort = factory(name, dependencies, ({ typed, matrix, compare,
    *        and 0 when a == b.
    * @return {Matrix | Array} Returns the sorted matrix.
    */
-  const sort = typed(name, {
+  return typed(name, {
     'Array': function (x) {
       _arrayIsVector(x)
       return x.sort(compareAsc)
@@ -113,6 +113,4 @@ export const createSort = factory(name, dependencies, ({ typed, matrix, compare,
       throw new Error('One dimensional matrix expected')
     }
   }
-
-  return sort
 })

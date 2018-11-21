@@ -36,7 +36,7 @@ export const createIsNaN = factory(name, dependencies, ({ typed }) => {
    * @return {boolean}  Returns true when `x` is NaN.
    *                    Throws an error in case of an unknown data type.
    */
-  const isNaN = typed(name, {
+  return typed(name, {
     'number': function (x) {
       return Number.isNaN(x)
     },
@@ -61,6 +61,4 @@ export const createIsNaN = factory(name, dependencies, ({ typed }) => {
       return deepMap(x, Number.isNaN)
     }
   })
-
-  return isNaN
 })

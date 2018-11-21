@@ -43,7 +43,7 @@ export const createReshape = factory(name, dependencies, ({ typed, isInteger, ma
    * @throws {DimensionError}       If the product of the new dimension sizes does
    *                                not equal that of the old ones
    */
-  const reshape = typed(name, {
+  return typed(name, {
 
     'Matrix, Array': function (x, sizes) {
       if (x.reshape) {
@@ -63,6 +63,4 @@ export const createReshape = factory(name, dependencies, ({ typed, isInteger, ma
     }
 
   })
-
-  return reshape
 })

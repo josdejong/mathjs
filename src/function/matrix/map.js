@@ -31,15 +31,13 @@ export const createMap = factory(name, dependencies, ({ typed }) => {
    *                              of the element, and the matrix being traversed.
    * @return {Matrix | array}     Transformed map of x
    */
-  const map = typed(name, {
+  return typed(name, {
     'Array, function': _map,
 
     'Matrix, function': function (x, callback) {
       return x.map(callback)
     }
   })
-
-  return map
 })
 
 /**

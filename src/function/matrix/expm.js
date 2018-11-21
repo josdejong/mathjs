@@ -33,7 +33,7 @@ export const createExpm = factory(name, dependencies, ({ typed, abs, add, identi
    * @param {Matrix} x  A square Matrix
    * @return {Matrix}   The exponential of x
    */
-  const expm = typed(name, {
+  return typed(name, {
 
     'Matrix': function (A) {
       // Check matrix size
@@ -159,6 +159,4 @@ export const createExpm = factory(name, dependencies, ({ typed, abs, add, identi
       Math.pow(infNorm / Math.pow(2, j), 2 * q) *
       qfac * qfac / (twoqfac * twoqp1fac)
   }
-
-  return expm
 })

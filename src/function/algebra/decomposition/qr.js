@@ -81,7 +81,7 @@ export const createQr = factory(name, dependencies, (
    * @return {{Q: Array | Matrix, R: Array | Matrix}} Q: the orthogonal
    * matrix and R: the upper triangular matrix
    */
-  const qr = typed(name, {
+  return typed(name, {
 
     'DenseMatrix': function (m) {
       return _denseQR(m)
@@ -258,6 +258,4 @@ export const createQr = factory(name, dependencies, (
   function _sparseQR (m) {
     throw new Error('qr not implemented for sparse matrices yet')
   }
-
-  return qr
 })

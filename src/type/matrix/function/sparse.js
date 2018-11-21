@@ -33,7 +33,7 @@ export const createSparse = factory(name, dependencies, ({ typed, type: { Sparse
    *
    * @return {Matrix} The created matrix
    */
-  const sparse = typed(name, {
+  return typed(name, {
     '': function () {
       return new SparseMatrix([])
     },
@@ -50,6 +50,4 @@ export const createSparse = factory(name, dependencies, ({ typed, type: { Sparse
       return new SparseMatrix(data, datatype)
     }
   })
-
-  return sparse
 })

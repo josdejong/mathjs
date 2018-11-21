@@ -45,7 +45,7 @@ export const createCatalan = factory(name, dependencies, (
    * @param {Number | BigNumber} n    nth Catalan number
    * @return {Number | BigNumber}     Cn(n)
    */
-  const catalan = typed(name, {
+  return typed(name, {
     'number | BigNumber': function (n) {
       if (!isInteger(n) || isNegative(n)) {
         throw new TypeError('Non-negative integer value expected in function catalan')
@@ -54,6 +54,4 @@ export const createCatalan = factory(name, dependencies, (
       return divideScalar(combinations(multiplyScalar(n, 2), n), addScalar(n, 1))
     }
   })
-
-  return catalan
 })

@@ -30,7 +30,7 @@ export const createNumeric = factory(name, dependencies, ({ number, bignumber, f
    * @return {number | BigNumber | Fraction} Returns an instance of the
    *                                         numeric in the requested type
    */
-  const numeric = function (value, outputType) {
+  return function numeric (value, outputType) {
     const inputType = typeOf(value)
 
     if (!(inputType in validInputTypes)) {
@@ -46,6 +46,4 @@ export const createNumeric = factory(name, dependencies, ({ number, bignumber, f
       return validOutputTypes[outputType](value)
     }
   }
-
-  return numeric
 })

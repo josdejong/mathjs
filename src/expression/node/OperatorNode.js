@@ -169,7 +169,7 @@ export const createOperatorNode = factory(name, dependencies, ({ expression: { n
     const associativity = getAssociativity(root, parenthesis)
 
     if ((parenthesis === 'all') || ((args.length > 2) && (root.getIdentifier() !== 'OperatorNode:add') && (root.getIdentifier() !== 'OperatorNode:multiply'))) {
-      const parens = args.map(function (arg) {
+      return args.map(function (arg) {
         switch (arg.getContent().type) { // Nodes that don't need extra parentheses
           case 'ArrayNode':
           case 'ConstantNode':
@@ -180,7 +180,6 @@ export const createOperatorNode = factory(name, dependencies, ({ expression: { n
             return true
         }
       })
-      return parens
     }
 
     let result

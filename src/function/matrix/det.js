@@ -34,7 +34,7 @@ export const createDet = factory(name, dependencies, ({ typed, matrix, subtract,
    * @param {Array | Matrix} x  A matrix
    * @return {number} The determinant of `x`
    */
-  const det = typed(name, {
+  return typed(name, {
     'any': function (x) {
       return clone(x)
     },
@@ -83,8 +83,6 @@ export const createDet = factory(name, dependencies, ({ typed, matrix, subtract,
       }
     }
   })
-
-  return det
 
   /**
    * Calculate the determinant of a matrix

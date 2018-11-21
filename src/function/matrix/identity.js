@@ -45,7 +45,7 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
    *
    * @return {Matrix | Array | number} A matrix with ones on the diagonal.
    */
-  const identity = typed(name, {
+  return typed(name, {
     '': function () {
       return (config().matrix === 'Matrix') ? matrix([]) : []
     },
@@ -86,8 +86,6 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
       return _identityVector(size.valueOf(), format)
     }
   })
-
-  return identity
 
   function _identityVector (size, format) {
     switch (size.length) {

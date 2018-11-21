@@ -37,7 +37,7 @@ export const createFilter = factory(name, dependencies, ({ typed, matrix }) => {
    *        matrix/array being traversed. The function must return a boolean.
    * @return {Matrix | Array} Returns the filtered matrix.
    */
-  const filter = typed('filter', {
+  return typed('filter', {
     'Array, function': _filterCallback,
 
     'Matrix, function': function (x, test) {
@@ -50,8 +50,6 @@ export const createFilter = factory(name, dependencies, ({ typed, matrix }) => {
       return matrix(filterRegExp(x.toArray(), test))
     }
   })
-
-  return filter
 })
 
 /**

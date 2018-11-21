@@ -30,13 +30,11 @@ export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, 
    * @return {Array}              Returns an array containing 3 integers `[div, m, n]`
    *                              where `div = gcd(a, b)` and `a*m + b*n = div`
    */
-  const xgcd = typed(name, {
+  return typed(name, {
     'number, number': _xgcd,
     'BigNumber, BigNumber': _xgcdBigNumber
     // TODO: implement support for Fraction
   })
-
-  return xgcd
 
   /**
    * Calculate xgcd for two numbers

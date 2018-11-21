@@ -46,7 +46,7 @@ export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { 
    *
    * @returns {Matrix | Array} Diagonal matrix from input vector, or diagonal from input matrix.
    */
-  const diag = typed(name, {
+  return typed(name, {
     // FIXME: simplify this huge amount of signatures as soon as typed-function supports optional arguments
 
     'Array': function (x) {
@@ -97,8 +97,6 @@ export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { 
       return _diag(x, k.toNumber(), x.size(), format)
     }
   })
-
-  return diag
 
   /**
    * Creeate diagonal matrix from a vector or vice versa

@@ -37,7 +37,7 @@ export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix
    *
    * @return {Matrix} The created matrix
    */
-  const matrix = typed(name, {
+  return typed(name, {
     '': function () {
       return _create([])
     },
@@ -62,8 +62,6 @@ export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix
 
     'Array | Matrix, string, string': _create
   })
-
-  return matrix
 
   /**
    * Create a new Matrix with given storage format

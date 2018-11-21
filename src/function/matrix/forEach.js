@@ -31,15 +31,13 @@ export const createForEach = factory(name, dependencies, ({ typed }) => {
    *                              parameters: the value of the element, the index
    *                              of the element, and the Matrix/array being traversed.
    */
-  const forEach = typed(name, {
+  return typed(name, {
     'Array, function': _forEach,
 
     'Matrix, function': function (x, callback) {
       return x.forEach(callback)
     }
   })
-
-  return forEach
 })
 
 /**

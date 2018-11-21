@@ -28,12 +28,9 @@ export const createCtranspose = factory(name, dependencies, ({ typed, transpose,
    * @param {Array | Matrix} x  Matrix to be ctransposed
    * @return {Array | Matrix}   The ctransposed matrix
    */
-  const ctranspose = typed(name, {
-
+  return typed(name, {
     'any': function (x) {
       return conj(transpose(x))
     }
   })
-
-  return ctranspose
 })

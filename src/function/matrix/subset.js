@@ -45,7 +45,7 @@ export const createSubset = factory(name, dependencies, ({ typed, matrix }) => {
    *                                          math.matrix elements will be left undefined.
    * @return {Array | Matrix | string} Either the retrieved subset or the updated matrix.
    */
-  const subset = typed(name, {
+  return typed(name, {
     // get subset
     'Array, Index': function (value, index) {
       const m = matrix(value)
@@ -88,8 +88,6 @@ export const createSubset = factory(name, dependencies, ({ typed, matrix }) => {
     'string, Index, string, string': _setSubstring,
     'Object, Index, any': _setObjectProperty
   })
-
-  return subset
 })
 
 /**

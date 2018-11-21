@@ -40,7 +40,7 @@ export const createConcat = factory(name, dependencies, ({ typed, matrix, isInte
    * @param {... Array | Matrix} args     Two or more matrices
    * @return {Array | Matrix} Concatenated matrix
    */
-  const concat = typed(name, {
+  return typed(name, {
     // TODO: change signature to '...Array | Matrix, dim?' when supported
     '...Array | Matrix | number | BigNumber': function (args) {
       let i
@@ -106,8 +106,6 @@ export const createConcat = factory(name, dependencies, ({ typed, matrix, isInte
       return args.join('')
     }
   })
-
-  return concat
 })
 
 /**

@@ -34,7 +34,7 @@ export const createKron = factory(name, dependencies, ({ typed, matrix, multiply
      * @param  {Array | Matrix} y     Second vector
      * @return {Array | Matrix}       Returns the kronecker product of `x` and `y`
      */
-  const kron = typed(name, {
+  return typed(name, {
     'Matrix, Matrix': function (x, y) {
       return matrix(_kron(x.toArray(), y.toArray()))
     },
@@ -49,8 +49,6 @@ export const createKron = factory(name, dependencies, ({ typed, matrix, multiply
 
     'Array, Array': _kron
   })
-
-  return kron
 
   /**
      * Calculate the kronecker product of two matrices / vectors

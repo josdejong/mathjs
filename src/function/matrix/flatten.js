@@ -26,7 +26,7 @@ export const createFlatten = factory(name, dependencies, ({ typed, matrix }) => 
    * @param {Matrix | Array} x   Matrix to be flattened
    * @return {Matrix | Array} Returns the flattened matrix
    */
-  const flatten = typed(name, {
+  return typed(name, {
     'Array': function (x) {
       return flattenArray(clone(x))
     },
@@ -37,6 +37,4 @@ export const createFlatten = factory(name, dependencies, ({ typed, matrix }) => 
       return matrix(flat)
     }
   })
-
-  return flatten
 })

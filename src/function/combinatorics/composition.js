@@ -46,7 +46,7 @@ export const createComposition = factory(name, dependencies, (
    * @param {Number | BigNumber} k    Number of objects in the subset
    * @return {Number | BigNumber}     Returns the composition counts of n into k parts.
    */
-  const composition = typed(name, {
+  return typed(name, {
     'number | BigNumber, number | BigNumber': function (n, k) {
       if (!isInteger(n) || !isPositive(n) || !isInteger(k) || !isPositive(k)) {
         throw new TypeError('Positive integer value expected in function composition')
@@ -57,6 +57,4 @@ export const createComposition = factory(name, dependencies, (
       return combinations(addScalar(n, -1), addScalar(k, -1))
     }
   })
-
-  return composition
 })

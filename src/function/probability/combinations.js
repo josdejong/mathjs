@@ -31,8 +31,7 @@ export const createCombinations = factory(name, dependencies, ({ typed, type: { 
    * @param {number | BigNumber} k    Number of objects in the subset
    * @return {number | BigNumber}     Number of possible combinations.
    */
-
-  const combinations = typed(name, {
+  return typed(name, {
     'number, number': function (n, k) {
       let prodrange, nMinusk
 
@@ -79,8 +78,6 @@ export const createCombinations = factory(name, dependencies, ({ typed, type: { 
 
     // TODO: implement support for collection in combinations
   })
-
-  return combinations
 })
 
 /**
