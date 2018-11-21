@@ -283,10 +283,6 @@ describe('simplify', function () {
     // note that NaN is a special case, we can't compare two values both NaN.
   })
 
-  it('should throw an error for invalid built-in constant symbols in rules', function () {
-    assert.throws(function () { math.simplify('version', ['version -> 1']).toString() })
-  })
-
   it('should remove addition of 0', function () {
     simplifyAndCompare('x+0', 'x')
     simplifyAndCompare('x-0', 'x')

@@ -749,7 +749,6 @@ const simplifyConstant = createSimplifyConstant({
 const resolve = createResolve({ expression: { parse, node: { Node, FunctionNode, OperatorNode, ParenthesisNode } } })
 export const simplify = createSimplify({
   typed,
-  math,
   parse,
   equal,
   algebra: {
