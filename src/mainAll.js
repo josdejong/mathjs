@@ -1463,6 +1463,3 @@ mathWithTransform.isResultSet = isResultSet
 mathWithTransform.isSparseMatrix = isSparseMatrix
 mathWithTransform.isSymbolNode = isSymbolNode
 mathWithTransform.isUnit = isUnit
-
-// allow using `import math from 'mathjs'` alongside using `import * as math from 'mathjs'`
-export default math
