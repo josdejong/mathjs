@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'asech'
-const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+const dependencies = ['typed', 'config.predictable', 'type.Complex', 'type.BigNumber']
 
 export const createAsech = factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
   /**
@@ -30,11 +30,11 @@ export const createAsech = factory(name, dependencies, ({ typed, config, type: {
    */
   const asech = typed(name, {
     'number': function (x) {
-      if ((x <= 1 && x >= -1) || config().predictable) {
+      if ((x <= 1 && x >= -1) || config.predictable) {
         x = 1 / x
 
         const ret = Math.sqrt(x * x - 1)
-        if (x > 0 || config().predictable) {
+        if (x > 0 || config.predictable) {
           return Math.log(ret + x)
         }
 

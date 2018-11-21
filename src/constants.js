@@ -6,7 +6,7 @@ import { version } from './version'
 import * as bigConstants from './utils/bignumber/constants'
 
 const name = 'constants'
-const dependencies = ['on', 'math', 'config', 'type.Complex', 'type.BigNumber']
+const dependencies = ['on', 'math', 'config.number', 'type.Complex', 'type.BigNumber']
 
 // FIXME: implement support for a factory without name
 export const createConstants = factory(name, dependencies, ({ on, math, config, type: { Complex, BigNumber } }) => {
@@ -23,7 +23,7 @@ export const createConstants = factory(name, dependencies, ({ on, math, config, 
   setConstant(math, 'null', null)
   setConstant(math, 'uninitialized', 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
 
-  if (config().number === 'BigNumber') {
+  if (config.number === 'BigNumber') {
     setConstant(math, 'Infinity', new BigNumber(Infinity))
     setConstant(math, 'NaN', new BigNumber(NaN))
 

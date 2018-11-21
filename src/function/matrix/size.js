@@ -4,7 +4,7 @@ import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'size'
-const dependencies = ['typed', 'config', 'matrix']
+const dependencies = ['typed', 'config.matrix', 'matrix']
 
 export const createSize = factory(name, dependencies, ({ typed, config, matrix }) => {
   /**
@@ -39,12 +39,12 @@ export const createSize = factory(name, dependencies, ({ typed, config, matrix }
     'Array': arraySize,
 
     'string': function (x) {
-      return (config().matrix === 'Array') ? [x.length] : matrix([x.length])
+      return (config.matrix === 'Array') ? [x.length] : matrix([x.length])
     },
 
     'number | Complex | BigNumber | Unit | boolean | null': function (x) {
       // scalar
-      return (config().matrix === 'Array') ? [] : matrix([])
+      return (config.matrix === 'Array') ? [] : matrix([])
     }
   })
 })

@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 
 const name = 'intersect'
 const dependencies = [
-  'typed', 'config', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'
+  'typed', 'config.epsilon', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'
 ]
 
 export const createIntersect = factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar }) => {
@@ -98,7 +98,7 @@ export const createIntersect = factory(name, dependencies, ({ typed, config, abs
     const d1 = subtract(o1, p1b)
     const d2 = subtract(o2, p2b)
     const det = subtract(multiplyScalar(d1[0], d2[1]), multiplyScalar(d2[0], d1[1]))
-    if (smaller(abs(det), config().epsilon)) {
+    if (smaller(abs(det), config.epsilon)) {
       return null
     }
     const d20o11 = multiplyScalar(d2[0], o1[1])

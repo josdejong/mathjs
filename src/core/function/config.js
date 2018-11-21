@@ -68,6 +68,15 @@ export function configFactory (config, emit) {
   _config.MATRIX = MATRIX
   _config.NUMBER = NUMBER
 
+  // attach the config properties as readonly properties to the config function
+  Object.keys(config).forEach(key => {
+    Object.defineProperty(_config, key, {
+      get: () => config[key],
+      enumerable: true,
+      configurable: true
+    })
+  })
+
   return _config
 }
 

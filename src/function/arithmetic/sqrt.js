@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sqrt'
-const dependencies = ['config', 'typed', 'type.Complex']
+const dependencies = ['config.predictable', 'typed', 'type.Complex']
 
 export const createSqrt = factory(name, dependencies, ({ config, typed, type: { Complex } }) => {
   /**
@@ -39,7 +39,7 @@ export const createSqrt = factory(name, dependencies, ({ config, typed, type: { 
     },
 
     'BigNumber': function (x) {
-      if (!x.isNegative() || config().predictable) {
+      if (!x.isNegative() || config.predictable) {
         return x.sqrt()
       } else {
         // negative value -> downgrade to number to do complex value computation
@@ -68,7 +68,7 @@ export const createSqrt = factory(name, dependencies, ({ config, typed, type: { 
   function _sqrtNumber (x) {
     if (isNaN(x)) {
       return NaN
-    } else if (x >= 0 || config().predictable) {
+    } else if (x >= 0 || config.predictable) {
       return Math.sqrt(x)
     } else {
       return new Complex(x, 0).sqrt()

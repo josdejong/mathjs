@@ -4,7 +4,7 @@ import { lazy } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'physicalConstants'
-const dependencies = ['math', 'config', 'type.Unit', 'type.BigNumber']
+const dependencies = ['math', 'config.number', 'type.Unit', 'type.BigNumber']
 
 // FIXME: implement support for a factory without name
 export const createPhysicalConstants = factory(name, dependencies, ({ math, config, type: { Unit, BigNumber } }) => {
@@ -12,7 +12,7 @@ export const createPhysicalConstants = factory(name, dependencies, ({ math, conf
   function fixedUnit (valueStr, name) {
     // Note that we can parse into number or BigNumber.
     // We do not parse into Fractions as that doesn't make sense: we would lose precision of the values
-    const value = config().number === 'BigNumber'
+    const value = config.number === 'BigNumber'
       ? new BigNumber(valueStr)
       : parseFloat(valueStr)
 

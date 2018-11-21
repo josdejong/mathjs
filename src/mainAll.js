@@ -295,10 +295,7 @@ const mathCore = _create()
 export const typed = mathCore.typed
 export const create = mathCore.create
 export const config = mathCore.config
-export const on = mathCore.on
-export const off = mathCore.off
-export const emit = mathCore.emit
-export const once = mathCore.once
+const on = mathCore.on
 
 // full math instance used for parse, evaluate, etc.
 const math = Object.assign({}, mathCore)
@@ -944,6 +941,7 @@ export const error = {
   IndexError
 }
 
+// FIXME: move this to a different index file and load from partial factories instead
 // add all functions to the math namespace
 math.clone = clone
 math.isInteger = isInteger

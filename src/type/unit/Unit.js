@@ -8,7 +8,8 @@ import { pi as createPi } from '../../utils/bignumber/constants'
 
 const name = 'type.Unit'
 const dependencies = [
-  'config',
+  'config.number',
+  'config.predictable',
   'on',
   'addScalar',
   'subtract',
@@ -294,9 +295,9 @@ export const createUnitClass = factory(name, dependencies, (
     const valueStr = parseNumber()
     let value = null
     if (valueStr) {
-      if (config().number === 'BigNumber') {
+      if (config.number === 'BigNumber') {
         value = new BigNumber(valueStr)
-      } else if (config().number === 'Fraction') {
+      } else if (config.number === 'Fraction') {
         try {
           // not all numbers can be turned in Fractions, for example very small numbers not
           value = new Fraction(valueStr)
@@ -792,7 +793,7 @@ export const createUnitClass = factory(name, dependencies, (
    * @returns {number | Fraction | BigNumber | Unit}  The numeric value of the unit if conditions are met, or the original unit otherwise
    */
   function getNumericIfUnitless (unit) {
-    if (unit.equalBase(BASE_UNITS.NONE) && unit.value !== null && !config().predictable) {
+    if (unit.equalBase(BASE_UNITS.NONE) && unit.value !== null && !config.predictable) {
       return unit.value
     } else {
       return unit
@@ -2867,7 +2868,7 @@ export const createUnitClass = factory(name, dependencies, (
   }
 
   // apply the angle values now
-  calculateAngleValues(config())
+  calculateAngleValues(config)
 
   // recalculate the values on change of configuration
   on('config', function (curr, prev) {

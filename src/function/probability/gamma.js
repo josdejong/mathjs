@@ -6,7 +6,7 @@ import { product } from './product'
 import { factory } from '../../utils/factory'
 
 const name = 'gamma'
-const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'type.BigNumber', 'type.Complex']
+const dependencies = ['typed', 'config.precision', 'multiplyScalar', 'pow', 'type.BigNumber', 'type.Complex']
 
 export const createGamma = factory(name, dependencies, ({ typed, config, multiplyScalar, pow, type: { BigNumber, Complex } }) => {
   /**
@@ -152,7 +152,7 @@ export const createGamma = factory(name, dependencies, ({ typed, config, multipl
       return new BigNumber(1) // 0! is per definition 1
     }
 
-    const precision = config().precision + (Math.log(n.toNumber()) | 0)
+    const precision = config.precision + (Math.log(n.toNumber()) | 0)
     const Big = BigNumber.clone({ precision: precision })
 
     let res = new Big(n)

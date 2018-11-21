@@ -3,7 +3,7 @@
 import { factory } from '../../utils/factory'
 
 const name = 'range'
-const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config.matrix', 'config.number', 'matrix', 'type.BigNumber']
 
 export const createRange = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   const ZERO = new BigNumber(0)
@@ -96,7 +96,7 @@ export const createRange = factory(name, dependencies, ({ typed, config, matrix,
   })
 
   function _out (arr) {
-    return config().matrix === 'Array' ? arr : matrix(arr)
+    return config.matrix === 'Array' ? arr : matrix(arr)
   }
 
   function _strRange (str, includeEnd) {
@@ -106,7 +106,7 @@ export const createRange = factory(name, dependencies, ({ typed, config, matrix,
     }
 
     let fn
-    if (config().number === 'BigNumber') {
+    if (config.number === 'BigNumber') {
       fn = includeEnd ? _bigRangeInc : _bigRangeEx
       return _out(fn(
         new BigNumber(r.start),

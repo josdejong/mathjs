@@ -12,7 +12,7 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 const name = 'smaller'
 const dependencies = [
   'typed',
-  'config',
+  'config.epsilon',
   'matrix',
   'type.DenseMatrix'
 ]
@@ -62,11 +62,11 @@ export const createSmaller = factory(name, dependencies, ({ typed, config, matri
     },
 
     'number, number': function (x, y) {
-      return x < y && !nearlyEqual(x, y, config().epsilon)
+      return x < y && !nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.lt(y) && !bigNearlyEqual(x, y, config().epsilon)
+      return x.lt(y) && !bigNearlyEqual(x, y, config.epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {

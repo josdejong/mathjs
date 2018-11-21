@@ -83,15 +83,13 @@ describe('cbrt', function () {
       complex('-2i')
     ]))
 
-    math.config({ matrix: 'Array' })
+    const math2 = math.create({ matrix: 'Array' })
 
-    approx.deepEqual(cbrt(complex('8i'), true), [
+    approx.deepEqual(math2.cbrt(complex('8i'), true), [
       complex(' 1.7321 + i'),
       complex('-1.7321 + i'),
       complex('-2i')
     ])
-
-    math.config({ matrix: 'Matrix' })
   })
 
   it('should return the cubic root of a unit', function () {

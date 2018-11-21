@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'unaryPlus'
-const dependencies = ['typed', 'config', 'type.BigNumber']
+const dependencies = ['typed', 'config.number', 'type.BigNumber']
 
 export const createUnaryPlus = factory(name, dependencies, ({ typed, config, type: { BigNumber } }) => {
   /**
@@ -59,7 +59,7 @@ export const createUnaryPlus = factory(name, dependencies, ({ typed, config, typ
 
     'boolean | string': function (x) {
       // convert to a number or bignumber
-      return (config().number === 'BigNumber') ? new BigNumber(+x) : +x
+      return (config.number === 'BigNumber') ? new BigNumber(+x) : +x
     }
   })
 

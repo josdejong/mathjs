@@ -10,7 +10,7 @@ import { resize as arrayResize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'resize'
-const dependencies = ['config', 'matrix']
+const dependencies = ['config.matrix', 'matrix']
 
 export const createResize = factory(name, dependencies, ({ config, matrix }) => {
   /**
@@ -68,7 +68,7 @@ export const createResize = factory(name, dependencies, ({ config, matrix }) => 
     }
 
     // check result should be a matrix
-    const asMatrix = Array.isArray(x) ? false : (config().matrix !== 'Array')
+    const asMatrix = Array.isArray(x) ? false : (config.matrix !== 'Array')
 
     if (size.length === 0) {
       // output a scalar

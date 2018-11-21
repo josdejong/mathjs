@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'derivative'
 const dependencies = [
   'typed',
-  'config',
+  'config.number',
   'parse',
   'simplify',
   'equal',
@@ -784,7 +784,7 @@ export const createDerivative = factory(name, dependencies, ({ typed, config, pa
    * @return {ConstantNode}
    */
   function createConstantNode (value, valueType) {
-    return new ConstantNode(numeric(value, valueType || config().number))
+    return new ConstantNode(numeric(value, valueType || config.number))
   }
 
   return derivative

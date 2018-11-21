@@ -8,7 +8,7 @@ import { ArgumentsError } from '../error/ArgumentsError'
 const name = 'expression.parse'
 const dependencies = [
   'numeric',
-  'config',
+  'config.number',
   'expression.node.AccessorNode',
   'expression.node.ArrayNode',
   'expression.node.AssignmentNode',
@@ -1592,7 +1592,7 @@ export const createParseExpression = factory(name, dependencies, ({ numeric, con
       numberStr = state.token
       getToken(state)
 
-      return new ConstantNode(numeric(numberStr, config().number))
+      return new ConstantNode(numeric(numberStr, config.number))
     }
 
     return parseParentheses(state)

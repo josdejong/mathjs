@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'acosh'
-const dependencies = ['typed', 'config', 'type.Complex']
+const dependencies = ['typed', 'config.predictable', 'type.Complex']
 
 export const createAcosh = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
@@ -30,7 +30,7 @@ export const createAcosh = factory(name, dependencies, ({ typed, config, type: {
    */
   const acosh = typed(name, {
     'number': function (x) {
-      if (x >= 1 || config().predictable) {
+      if (x >= 1 || config.predictable) {
         return _acosh(x)
       }
       if (x <= -1) {

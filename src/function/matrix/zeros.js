@@ -6,7 +6,7 @@ import { resize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'zeros'
-const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
 
 export const createZeros = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
@@ -42,7 +42,7 @@ export const createZeros = factory(name, dependencies, ({ typed, config, matrix,
    */
   return typed(name, {
     '': function () {
-      return (config().matrix === 'Array')
+      return (config.matrix === 'Array')
         ? _zeros([])
         : _zeros([], 'default')
     },
@@ -54,7 +54,7 @@ export const createZeros = factory(name, dependencies, ({ typed, config, matrix,
       if (typeof last === 'string') {
         const format = size.pop()
         return _zeros(size, format)
-      } else if (config().matrix === 'Array') {
+      } else if (config.matrix === 'Array') {
         return _zeros(size)
       } else {
         return _zeros(size, 'default')

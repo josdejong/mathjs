@@ -1,6 +1,8 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
 import math from '../../../src/main'
+import { isBigNumber, isFraction } from '../../../src/utils/is'
+
 const Unit = math.type.Unit
 
 describe('Unit', function () {
@@ -160,8 +162,8 @@ describe('Unit', function () {
     })
 
     it('should test whether a Complex unit and a unit with a number are equal', function () {
-      assert.strictEqual(new Unit(math.complex(3, 0), 'km').equals(new Unit(3000, 'm')), true)
-      assert.strictEqual(new Unit(math.complex(3, 4), 'km').equals(new Unit(3000, 'm')), false)
+      assert.strictEqual(new math.type.Unit(math.complex(3, 0), 'km').equals(new math.type.Unit(3000, 'm')), true)
+      assert.strictEqual(new math.type.Unit(math.complex(3, 4), 'km').equals(new math.type.Unit(3000, 'm')), false)
     })
   })
 
@@ -523,30 +525,27 @@ describe('Unit', function () {
     })
 
     it('should simplify units when they cancel out with {predictable: true}', function () {
-      const origConfig = math.config()
-      math.config({ predictable: true })
-      const unit1 = new Unit(2, 'Hz')
-      const unit2 = new Unit(2, 's')
-      const unit3 = math.multiply(unit1, unit2)
+      const math2 = math.create({ predictable: true })
+      const unit1 = new math2.type.Unit(2, 'Hz')
+      const unit2 = new math2.type.Unit(2, 's')
+      const unit3 = math2.multiply(unit1, unit2)
       assert.strictEqual(unit3.toString(), '4')
       assert.strictEqual(unit3.units.length, 0)
 
-      const nounit = math.eval('40m * 40N / (40J)')
+      const nounit = math2.eval('40m * 40N / (40J)')
       assert.strictEqual(nounit.toString(), '40')
       assert.strictEqual(nounit.units.length, 0)
 
-      const a = math.unit('3 s^-1')
-      const b = math.unit('4 s')
-      assert.strictEqual(math.multiply(a, b).type, 'Unit')
+      const a = math2.unit('3 s^-1')
+      const b = math2.unit('4 s')
+      assert.strictEqual(math2.multiply(a, b).type, 'Unit')
 
-      const c = math.unit('8.314 J / mol / K')
-      assert.strictEqual(math.pow(c, 0).type, 'Unit')
+      const c = math2.unit('8.314 J / mol / K')
+      assert.strictEqual(math2.pow(c, 0).type, 'Unit')
 
-      const d = math.unit('60 minute')
-      const e = math.unit('1 s')
-      assert.strictEqual(math.divide(d, e).type, 'Unit')
-
-      math.config(origConfig)
+      const d = math2.unit('60 minute')
+      const e = math2.unit('1 s')
+      assert.strictEqual(math2.divide(d, e).type, 'Unit')
     })
 
     it('should convert units to appropriate _numeric_ values when they cancel out with {predictable: false}', function () {
@@ -924,17 +923,13 @@ describe('Unit', function () {
     })
 
     it('should parse the value of the unit as Fraction or BigNumber when math.js is configured so', function () {
-      const origConfig = math.config()
+      const math2 = math.create({ number: 'Fraction' })
+      const unit2 = math2.type.Unit.parse('5kg')
+      assert(isFraction(unit2.value))
 
-      math.config({ number: 'Fraction' })
-      const unit1 = Unit.parse('5kg')
-      assert(math.type.isFraction(unit1.value))
-
-      math.config({ number: 'BigNumber' })
-      const unit2 = Unit.parse('5kg')
-      assert(math.type.isBigNumber(unit2.value))
-
-      math.config(origConfig)
+      const math3 = math.create({ number: 'BigNumber' })
+      const unit3 = math3.type.Unit.parse('5kg')
+      assert(isBigNumber(unit3.value))
     })
   })
 

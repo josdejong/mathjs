@@ -149,11 +149,11 @@ describe('equal', function () {
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
     assert.strictEqual(mymath.equal(1, 0.991), false)
-    assert.strictEqual(mymath.equal(math.bignumber(1), math.bignumber(0.991)), false)
+    assert.strictEqual(mymath.equal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
 
-    mymath.config({ epsilon: 1e-2 })
-    assert.strictEqual(mymath.equal(1, 0.991), true)
-    assert.strictEqual(mymath.equal(math.bignumber(1), math.bignumber(0.991)), true)
+    const mymath2 = math.create({ epsilon: 1e-2 })
+    assert.strictEqual(mymath2.equal(1, 0.991), true)
+    assert.strictEqual(mymath2.equal(mymath2.bignumber(1), mymath2.bignumber(0.991)), true)
   })
 
   it('should throw an error when comparing a unit with a big number', function () {

@@ -59,7 +59,7 @@ export const createArrayNode = factory(name, dependencies, ({ expression: { node
       return item._compile(math, argNames)
     })
 
-    const asMatrix = (math.config().matrix !== 'Array')
+    const asMatrix = (math.config.matrix !== 'Array')
     if (asMatrix) {
       const matrix = math.matrix
       return function evalArrayNode (scope, args, context) {

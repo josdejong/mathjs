@@ -12,7 +12,7 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 const name = 'largerEq'
 const dependencies = [
   'typed',
-  'config',
+  'config.epsilon',
   'matrix',
   'type.DenseMatrix'
 ]
@@ -58,11 +58,11 @@ export const createLargerEq = factory(name, dependencies, ({ typed, config, matr
     },
 
     'number, number': function (x, y) {
-      return x >= y || nearlyEqual(x, y, config().epsilon)
+      return x >= y || nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.gte(y) || bigNearlyEqual(x, y, config().epsilon)
+      return x.gte(y) || bigNearlyEqual(x, y, config.epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {

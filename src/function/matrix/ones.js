@@ -6,7 +6,7 @@ import { resize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'ones'
-const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
 
 export const createOnes = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
@@ -44,7 +44,7 @@ export const createOnes = factory(name, dependencies, ({ typed, config, matrix, 
    */
   return typed('ones', {
     '': function () {
-      return (config().matrix === 'Array')
+      return (config.matrix === 'Array')
         ? _ones([])
         : _ones([], 'default')
     },
@@ -56,7 +56,7 @@ export const createOnes = factory(name, dependencies, ({ typed, config, matrix, 
       if (typeof last === 'string') {
         const format = size.pop()
         return _ones(size, format)
-      } else if (config().matrix === 'Array') {
+      } else if (config.matrix === 'Array') {
         return _ones(size)
       } else {
         return _ones(size, 'default')

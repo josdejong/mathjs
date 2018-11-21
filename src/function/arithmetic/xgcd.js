@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 
 const name = 'xgcd'
-const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
 
 export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
@@ -79,7 +79,7 @@ export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, 
     } else {
       res = [a, a ? lastx : 0, lasty]
     }
-    return (config().matrix === 'Array') ? res : matrix(res)
+    return (config.matrix === 'Array') ? res : matrix(res)
   }
 
   /**
@@ -133,6 +133,6 @@ export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, 
     } else {
       res = [a, !a.isZero() ? lastx : 0, lasty]
     }
-    return (config().matrix === 'Array') ? res : matrix(res)
+    return (config.matrix === 'Array') ? res : matrix(res)
   }
 })

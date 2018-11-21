@@ -8,7 +8,7 @@ import { createUtil } from './util'
 const name = 'algebra.simplify.simplifyConstant'
 const dependencies = [
   'typed',
-  'config',
+  'config.number',
   'math',
   'fraction',
   'bignumber',
@@ -82,9 +82,9 @@ export const createSimplifyConstant = factory(name, dependencies, ({ typed, conf
   // BigNumbers are left alone
   const _toNumber = typed({
     'string, Object': function (s, options) {
-      if (config().number === 'BigNumber') {
+      if (config.number === 'BigNumber') {
         return bignumber(s)
-      } else if (config().number === 'Fraction') {
+      } else if (config.number === 'Fraction') {
         return fraction(s)
       } else {
         const n = parseFloat(s)

@@ -7,7 +7,7 @@ import { arraySize as size } from '../../utils/array'
 const name = 'pow'
 const dependencies = [
   'typed',
-  'config',
+  'config.predictable',
   'identity',
   'multiply',
   'matrix',
@@ -57,7 +57,7 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      if (y.isInteger() || x >= 0 || config().predictable) {
+      if (y.isInteger() || x >= 0 || config.predictable) {
         return x.pow(y)
       } else {
         return new Complex(x.toNumber(), 0).pow(y.toNumber(), 0)
@@ -66,7 +66,7 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
 
     'Fraction, Fraction': function (x, y) {
       if (y.d !== 1) {
-        if (config().predictable) {
+        if (config.predictable) {
           throw new Error('Function pow does not support non-integer exponents for fractions.')
         } else {
           return _pow(x.valueOf(), y.valueOf())
@@ -104,7 +104,7 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
   function _pow (x, y) {
     // Alternatively could define a 'realmode' config option or something, but
     // 'predictable' will work for now
-    if (config().predictable && !isInteger(y) && x < 0) {
+    if (config.predictable && !isInteger(y) && x < 0) {
       // Check to see if y can be represented as a fraction
       try {
         const yFrac = fraction(y)
@@ -131,13 +131,13 @@ export const createPow = factory(name, dependencies, ({ typed, config, identity,
     // **for predictable mode** x^Infinity === NaN if x < -1
     // N.B. this behavour is different from `Math.pow` which gives
     // (-2)^Infinity === Infinity
-    if (config().predictable &&
+    if (config.predictable &&
         ((x < -1 && y === Infinity) ||
          (x > -1 && x < 0 && y === -Infinity))) {
       return NaN
     }
 
-    if (isInteger(y) || x >= 0 || config().predictable) {
+    if (isInteger(y) || x >= 0 || config.predictable) {
       return Math.pow(x, y)
     } else {
       return new Complex(x, 0).pow(y, 0)

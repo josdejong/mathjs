@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'log1p'
-const dependencies = [ 'typed', 'config', 'divideScalar', 'log', 'type.Complex' ]
+const dependencies = [ 'typed', 'config.predictable', 'divideScalar', 'log', 'type.Complex' ]
 
 export const createLog1p = factory(name, dependencies, ({ typed, config, divideScalar, log, type: { Complex } }) => {
   /**
@@ -45,7 +45,7 @@ export const createLog1p = factory(name, dependencies, ({ typed, config, divideS
 
     'BigNumber': function (x) {
       const y = x.plus(1)
-      if (!y.isNegative() || config().predictable) {
+      if (!y.isNegative() || config.predictable) {
         return y.ln()
       } else {
         // downgrade to number, return Complex valued result
@@ -70,7 +70,7 @@ export const createLog1p = factory(name, dependencies, ({ typed, config, divideS
    * @private
    */
   function _log1pNumber (x) {
-    if (x >= -1 || config().predictable) {
+    if (x >= -1 || config.predictable) {
       return (Math.log1p) ? Math.log1p(x) : Math.log(x + 1)
     } else {
       // negative value -> complex value computation

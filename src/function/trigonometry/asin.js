@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'asin'
-const dependencies = ['typed', 'config', 'type.Complex']
+const dependencies = ['typed', 'config.predictable', 'type.Complex']
 
 export const createAsin = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
@@ -32,7 +32,7 @@ export const createAsin = factory(name, dependencies, ({ typed, config, type: { 
    */
   const asin = typed(name, {
     'number': function (x) {
-      if ((x >= -1 && x <= 1) || config().predictable) {
+      if ((x >= -1 && x <= 1) || config.predictable) {
         return Math.asin(x)
       } else {
         return new Complex(x, 0).asin()

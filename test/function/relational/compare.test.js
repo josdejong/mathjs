@@ -171,13 +171,12 @@ describe('compare', function () {
 
   it('should apply configuration option epsilon', function () {
     const mymath = math.create()
-
     assert.strictEqual(mymath.compare(1, 0.991), 1)
-    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), '1')
+    assert.strictEqual(mymath.compare(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), '1')
 
-    mymath.config({ epsilon: 1e-2 })
-    assert.strictEqual(mymath.compare(1, 0.991), 0)
-    assert.strictEqual(mymath.compare(math.bignumber(1), math.bignumber(0.991)).valueOf(), '0')
+    const mymath2 = mymath.create({ epsilon: 1e-2 })
+    assert.strictEqual(mymath2.compare(1, 0.991), 0)
+    assert.strictEqual(mymath2.compare(mymath2.bignumber(1), mymath2.bignumber(0.991)).valueOf(), '0')
   })
 
   it('should throw an error when comparing complex numbers', function () {

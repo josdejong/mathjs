@@ -7,7 +7,7 @@ import { deepMap } from '../../utils/collection'
 
 const name = 'cbrt'
 const dependencies = [
-  'config',
+  'config.matrix',
   'typed',
   'isNegative',
   'unaryMinus',
@@ -103,7 +103,7 @@ export const createCbrt = factory(name, dependencies, ({ config, typed, isNegati
         new Complex(_cbrtNumber(abs), 0).mul(new Complex(0, arg3 - Math.PI * 2 / 3).exp())
       ]
 
-      return (config().matrix === 'Array') ? all : matrix(all)
+      return (config.matrix === 'Array') ? all : matrix(all)
     } else {
       return principal
     }

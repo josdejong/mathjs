@@ -6,7 +6,7 @@ import { isUnit, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Complex'
-const dependencies = ['typed', 'config', 'on']
+const dependencies = ['typed', 'config.epsilon', 'on']
 
 export const createComplexClass = factory(name, dependencies, ({ typed, config, on }) => {
   /**
@@ -157,7 +157,7 @@ export const createComplexClass = factory(name, dependencies, ({ typed, config, 
   }
 
   // apply the current epsilon
-  Complex.EPSILON = config().epsilon
+  Complex.EPSILON = config.epsilon
 
   // listen for changed in the configuration, automatically apply changed epsilon
   on('config', function (curr, prev) {

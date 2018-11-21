@@ -5,7 +5,7 @@ import { nearlyEqual } from '../../utils/number'
 import { factory } from '../../utils/factory'
 
 const name = 'equalScalar'
-const dependencies = ['typed', 'config']
+const dependencies = ['typed', 'config.epsilon']
 
 export const createEqualScalar = factory(name, dependencies, ({ typed, config }) => {
   /**
@@ -23,11 +23,11 @@ export const createEqualScalar = factory(name, dependencies, ({ typed, config })
     },
 
     'number, number': function (x, y) {
-      return x === y || nearlyEqual(x, y, config().epsilon)
+      return x === y || nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.eq(y) || bigNearlyEqual(x, y, config().epsilon)
+      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {

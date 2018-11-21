@@ -12,7 +12,7 @@ import { factory } from '../../utils/factory'
 const singletonRandom = seedrandom()
 
 const name = 'rng'
-const dependencies = ['on', 'config']
+const dependencies = ['on', 'config.randomSeed']
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
@@ -25,7 +25,7 @@ export const createRng = factory(name, dependencies, ({ on, config }) => {
   }
 
   // initialize a seeded pseudo random number generator with config's random seed
-  setSeed(config().randomSeed)
+  setSeed(config.randomSeed)
 
   // wrapper function so the rng can be updated via generator
   function rng () {

@@ -2,10 +2,17 @@
 
 # not yet released, version 6.0.0
 
+!!! BE CAREFUL: BREAKING CHANGES !!!
+
+Breaking changes:
+
 - Renamed function `typeof` to `typeOf` and `var` to `variance`. (`typeof` and
   `var` are reserved keywords which can only be used as a property name).
 - Deprecated having a `.toTex` property attached to functions.
   Use a custom toTex handler instead.
+- Functions no longer dynamically update configuration. Instead, functions
+  have to be re-created with new config. A math.js instance automatically
+  recreates all affected functions when the configuration changes.
 
 
 # 2018-10-30, version 5.2.3

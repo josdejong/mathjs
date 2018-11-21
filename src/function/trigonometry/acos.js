@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'acos'
-const dependencies = ['typed', 'config', 'type.Complex']
+const dependencies = ['typed', 'config.predictable', 'type.Complex']
 
 export const createAcos = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
@@ -32,7 +32,7 @@ export const createAcos = factory(name, dependencies, ({ typed, config, type: { 
    */
   const acos = typed(name, {
     'number': function (x) {
-      if ((x >= -1 && x <= 1) || config().predictable) {
+      if ((x >= -1 && x <= 1) || config.predictable) {
         return Math.acos(x)
       } else {
         return new Complex(x, 0).acos()

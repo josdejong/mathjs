@@ -12,7 +12,7 @@ import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
 const name = 'compare'
 const dependencies = [
   'typed',
-  'config',
+  'config.epsilon',
   'matrix',
   'equalScalar',
   'type.BigNumber',
@@ -71,13 +71,13 @@ export const createCompare = factory(name, dependencies, ({ typed, config, equal
     },
 
     'number, number': function (x, y) {
-      return (x === y || nearlyEqual(x, y, config().epsilon))
+      return (x === y || nearlyEqual(x, y, config.epsilon))
         ? 0
         : (x > y ? 1 : -1)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return (x.eq(y) || bigNearlyEqual(x, y, config().epsilon))
+      return (x.eq(y) || bigNearlyEqual(x, y, config.epsilon))
         ? new BigNumber(0)
         : new BigNumber(x.cmp(y))
     },

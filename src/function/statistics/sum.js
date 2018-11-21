@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'sum'
-const dependencies = ['typed', 'config', 'add', 'type.BigNumber', 'type.Fraction']
+const dependencies = ['typed', 'config.number', 'add', 'type.BigNumber', 'type.Fraction']
 
 export const createSum = factory(name, dependencies, ({ typed, config, add, type: { BigNumber, Fraction } }) => {
   /**
@@ -67,7 +67,7 @@ export const createSum = factory(name, dependencies, ({ typed, config, add, type
     })
 
     if (res === undefined) {
-      switch (config().number) {
+      switch (config.number) {
         case 'number':
           return 0
         case 'BigNumber':

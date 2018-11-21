@@ -12,7 +12,7 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 const name = 'unequal'
 const dependencies = [
   'typed',
-  'config',
+  'config.epsilon',
   'matrix',
   'type.DenseMatrix'
 ]
@@ -144,11 +144,11 @@ export const createUnequal = factory(name, dependencies, ({ typed, config, matri
     },
 
     'number, number': function (x, y) {
-      return !nearlyEqual(x, y, config().epsilon)
+      return !nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return !bigNearlyEqual(x, y, config().epsilon)
+      return !bigNearlyEqual(x, y, config.epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {

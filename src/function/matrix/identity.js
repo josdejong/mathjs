@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'identity'
 const dependencies = [
   'typed',
-  'config',
+  'config.matrix',
   'matrix',
   'type.BigNumber',
   'type.Matrix'
@@ -47,7 +47,7 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
    */
   return typed(name, {
     '': function () {
-      return (config().matrix === 'Matrix') ? matrix([]) : []
+      return (config.matrix === 'Matrix') ? matrix([]) : []
     },
 
     'string': function (format) {
@@ -55,7 +55,7 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
     },
 
     'number | BigNumber': function (rows) {
-      return _identity(rows, rows, config().matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined)
     },
 
     'number | BigNumber, string': function (rows, format) {
@@ -63,7 +63,7 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
     },
 
     'number | BigNumber, number | BigNumber': function (rows, cols) {
-      return _identity(rows, cols, config().matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined)
     },
 
     'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
