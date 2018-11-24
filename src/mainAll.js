@@ -826,6 +826,8 @@ export const SQRT2 = createSQRT2(constantsDependencies)
 export const i = createI({ config, type: { Complex } })
 export const version = createVersion()
 
+// FIXME: export physical constants
+
 export const expression = {
   docs: createEmbeddedDocs()
 }

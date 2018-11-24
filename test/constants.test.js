@@ -27,7 +27,7 @@ describe('constants', function () {
     const BigNumber = createBigNumberClass({ config })
     const Complex = createComplexClass({ config })
     const dependencies = {
-      config: config,
+      config,
       type: { BigNumber, Complex }
     }
 
@@ -89,7 +89,7 @@ describe('constants', function () {
     const BigNumber = createBigNumberClass({ config })
     const Complex = createComplexClass({ config })
     const dependencies = {
-      config: config,
+      config,
       type: { BigNumber, Complex }
     }
 
