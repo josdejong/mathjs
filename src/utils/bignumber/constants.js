@@ -7,7 +7,7 @@ import { memoize } from '../function'
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns e
  */
-export const e = memoize(function (BigNumber) {
+export const createBigNumberE = memoize(function (BigNumber) {
   return new BigNumber(1).exp()
 }, hasher)
 
@@ -16,7 +16,7 @@ export const e = memoize(function (BigNumber) {
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns phi
  */
-export const phi = memoize(function (BigNumber) {
+export const createBigNumberPhi = memoize(function (BigNumber) {
   return new BigNumber(1).plus(new BigNumber(5).sqrt()).div(2)
 }, hasher)
 
@@ -25,7 +25,7 @@ export const phi = memoize(function (BigNumber) {
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns pi
  */
-export const pi = memoize(function (BigNumber) {
+export const createBigNumberPi = memoize(function (BigNumber) {
   return BigNumber.acos(-1)
 }, hasher)
 
@@ -34,8 +34,8 @@ export const pi = memoize(function (BigNumber) {
  * @param {function} BigNumber   BigNumber constructor
  * @returns {BigNumber} Returns tau
  */
-export const tau = memoize(function (BigNumber) {
-  return pi(BigNumber).times(2)
+export const createBigNumberTau = memoize(function (BigNumber) {
+  return createBigNumberPi(BigNumber).times(2)
 }, hasher)
 
 /**

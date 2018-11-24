@@ -887,6 +887,20 @@ describe('parse', function () {
       assert.deepStrictEqual(parse('Infinity'), createConstantNode(Infinity))
     })
 
+    it('should evaluate constants', function () {
+      // Do these tests really belong in constants.test.js ?
+      approx.equal(math.sin(math.pi / 2), 1)
+
+      assert.deepStrictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
+      assert.deepStrictEqual(math.round(math.eval('1+e^(pi*i)'), 5), math.complex(0))
+
+      assert.deepStrictEqual(math.sqrt(-1), math.i)
+      assert.deepStrictEqual(math.eval('i'), math.complex(0, 1))
+
+      assert.strictEqual(math.eval('true'), true)
+      assert.strictEqual(math.eval('false'), false)
+    })
+
     // helper function to create a ConstantNode with empty comment
     function createConstantNode (value) {
       const c = new ConstantNode(value)

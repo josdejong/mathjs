@@ -1,84 +1,119 @@
 'use strict'
 
-import { lazy } from './utils/object'
 import { factory } from './utils/factory'
 import { version } from './version'
-import * as bigConstants from './utils/bignumber/constants'
+import {
+  createBigNumberE,
+  createBigNumberPhi,
+  createBigNumberPi,
+  createBigNumberTau
+} from './utils/bignumber/constants'
 
-const name = 'constants'
-const dependencies = ['on', 'math', 'config.number', 'type.Complex', 'type.BigNumber']
+export const createTrue = factory('true', [], () => true)
+export const createFalse = factory('false', [], () => false)
+export const createNull = factory('null', [], () => null)
 
-// FIXME: implement support for a factory without name
-export const createConstants = factory(name, dependencies, ({ on, math, config, type: { Complex, BigNumber } }) => {
-  // listen for changed in the configuration, automatically reload
-  // constants when needed
-  on('config', function (curr, prev) {
-    if (curr.number !== prev.number) {
-      createConstants({ on, math, config, type: { Complex, BigNumber } })
-    }
-  })
+export const createInfinity = factory(
+  'Infinity',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(Infinity)
+    : Infinity
+)
 
-  setConstant(math, 'true', true)
-  setConstant(math, 'false', false)
-  setConstant(math, 'null', null)
-  setConstant(math, 'uninitialized', 'Error: Constant uninitialized is removed since v4.0.0. Use null instead')
+export const createNaN = factory(
+  'NaN',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(NaN)
+    : NaN
+)
 
-  if (config.number === 'BigNumber') {
-    setConstant(math, 'Infinity', new BigNumber(Infinity))
-    setConstant(math, 'NaN', new BigNumber(NaN))
+export const createPi = factory(
+  'pi',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? createBigNumberPi(BigNumber)
+    : Math.PI
+)
 
-    setLazyConstant(math, 'pi', function () { return bigConstants.pi(BigNumber) })
-    setLazyConstant(math, 'tau', function () { return bigConstants.tau(BigNumber) })
-    setLazyConstant(math, 'e', function () { return bigConstants.e(BigNumber) })
-    setLazyConstant(math, 'phi', function () { return bigConstants.phi(BigNumber) }) // golden ratio, (1+sqrt(5))/2
+export const createTau = factory(
+  'tau',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? createBigNumberTau(BigNumber)
+    : (2 * Math.PI)
+)
 
-    // uppercase constants (for compatibility with built-in Math)
-    setLazyConstant(math, 'E', function () { return math.e })
-    setLazyConstant(math, 'LN2', function () { return new BigNumber(2).ln() })
-    setLazyConstant(math, 'LN10', function () { return new BigNumber(10).ln() })
-    setLazyConstant(math, 'LOG2E', function () { return new BigNumber(1).div(new BigNumber(2).ln()) })
-    setLazyConstant(math, 'LOG10E', function () { return new BigNumber(1).div(new BigNumber(10).ln()) })
-    setLazyConstant(math, 'PI', function () { return math.pi })
-    setLazyConstant(math, 'SQRT1_2', function () { return new BigNumber('0.5').sqrt() })
-    setLazyConstant(math, 'SQRT2', function () { return new BigNumber(2).sqrt() })
-  } else {
-    setConstant(math, 'Infinity', Infinity)
-    setConstant(math, 'NaN', NaN)
+export const createE = factory(
+  'e',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? createBigNumberE(BigNumber)
+    : Math.E
+)
 
-    setConstant(math, 'pi', Math.PI)
-    setConstant(math, 'tau', Math.PI * 2)
-    setConstant(math, 'e', Math.E)
-    setConstant(math, 'phi', 1.61803398874989484820458683436563811772030917980576286213545) // golden ratio, (1+sqrt(5))/2
+// golden ratio, (1+sqrt(5))/2
+export const createPhi = factory(
+  'phi',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? createBigNumberPhi(BigNumber)
+    : 1.61803398874989484820458683436563811772030917980576286213545
+)
 
-    // uppercase constants (for compatibility with built-in Math)
-    setConstant(math, 'E', math.e)
-    setConstant(math, 'LN2', Math.LN2)
-    setConstant(math, 'LN10', Math.LN10)
-    setConstant(math, 'LOG2E', Math.LOG2E)
-    setConstant(math, 'LOG10E', Math.LOG10E)
-    setConstant(math, 'PI', math.pi)
-    setConstant(math, 'SQRT1_2', Math.SQRT1_2)
-    setConstant(math, 'SQRT2', Math.SQRT2)
-  }
+export const createLN2 = factory(
+  'LN2',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(2).ln()
+    : Math.LN2
+)
 
-  // complex i
-  setConstant(math, 'i', Complex.I)
+export const createLN10 = factory(
+  'LN10',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(10).ln()
+    : Math.LN10
+)
 
-  // meta information
-  setConstant(math, 'version', version)
-})
+export const createLOG2E = factory(
+  'LOG2E',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(1).div(new BigNumber(2).ln())
+    : Math.LOG2E
+)
 
-// disable lazy loading of constants
-createConstants.lazy = false
+export const createLOG10E = factory(
+  'LOG10E',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(1).div(new BigNumber(10).ln())
+    : Math.LOG10E
+)
 
-// create a constant in both math and mathWithTransform
-function setConstant (math, name, value) {
-  math[name] = value
-  math.expression.mathWithTransform[name] = value
-}
+export const createSQRTHalf = factory(
+  'SQRT1_2',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber('0.5').sqrt()
+    : Math.SQRT1_2
+)
 
-// create a lazy constant in both math and mathWithTransform
-function setLazyConstant (math, name, resolver) {
-  lazy(math, name, resolver)
-  lazy(math.expression.mathWithTransform, name, resolver)
-}
+export const createSQRT2 = factory(
+  'SQRT2',
+  ['config.number', 'type.BigNumber'],
+  ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
+    ? new BigNumber(2).sqrt()
+    : Math.SQRT2
+)
+
+export const createI = factory(
+  'i',
+  ['type.Complex'],
+  ({ type: { Complex } }) => Complex.I
+)
+
+export const createVersion = factory('version', [], () => version)

@@ -4,7 +4,7 @@ import { isComplex, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { endsWith } from '../../utils/string'
 import { clone } from '../../utils/object'
-import { pi as createPi } from '../../utils/bignumber/constants'
+import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
 
 const name = 'type.Unit'
 const dependencies = [

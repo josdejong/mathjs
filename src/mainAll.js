@@ -229,6 +229,26 @@ import { createGamma } from './function/probability/gamma'
 import { createDistribution } from './function/probability/distribution'
 import { createTyped } from './core/function/typed'
 import { DEFAULT_CONFIG } from './core/config'
+import { createEmbeddedDocs } from './expression/embeddedDocs'
+import {
+  createE,
+  createFalse,
+  createI,
+  createInfinity,
+  createLN10,
+  createLN2,
+  createLOG10E,
+  createLOG2E,
+  createNaN,
+  createNull,
+  createPhi,
+  createPi,
+  createSQRT2,
+  createSQRTHalf,
+  createTau,
+  createTrue,
+  createVersion
+} from './constants'
 
 export { create } from './core/core'
 
@@ -782,6 +802,32 @@ export const json = {
       }
     }
   })
+}
+
+// constants
+const constantsDependencies = { config, type: { BigNumber } }
+export const _true = createTrue()
+export const _false = createFalse()
+export const _null = createNull()
+export const _Infinity = createInfinity(constantsDependencies)
+export const _NaN = createNaN(constantsDependencies)
+export const pi = createPi(constantsDependencies)
+export const PI = pi
+export const tau = createTau(constantsDependencies)
+export const e = createE(constantsDependencies)
+export const E = e
+export const phi = createPhi(constantsDependencies)
+export const LN2 = createLN2(constantsDependencies)
+export const LN10 = createLN10(constantsDependencies)
+export const LOG2E = createLOG2E(constantsDependencies)
+export const LOG10E = createLOG10E(constantsDependencies)
+export const SQRT1_2 = createSQRTHalf(constantsDependencies)
+export const SQRT2 = createSQRT2(constantsDependencies)
+export const i = createI({ config, type: { Complex } })
+export const version = createVersion()
+
+export const expression = {
+  docs: createEmbeddedDocs()
 }
 
 // error classes
