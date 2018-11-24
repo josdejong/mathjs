@@ -2,10 +2,6 @@ import assert from 'assert'
 import math from '../../../src/main'
 
 describe('seed', function () {
-  after(function () {
-    // Randomly seed random number generator
-    math.config({ randomSeed: null })
-  })
 
   it('should generate same number with seed', function () {
     const math1 = math.create({ randomSeed: 'a' })
@@ -16,9 +12,9 @@ describe('seed', function () {
   })
 
   it('should generate different number subsequent calls to seeded random', function () {
-    math.config({ randomSeed: 'a' })
-    const first = math.random()
-    const second = math.random()
+    const math2 = math.create({ randomSeed: 'a' })
+    const first = math2.random()
+    const second = math2.random()
     assert.notStrictEqual(first, second)
   })
 
@@ -43,9 +39,9 @@ describe('seed', function () {
   })
 
   it('should generate different matrices subsequent calls to seeded random', function () {
-    math.config({ randomSeed: 'a' })
-    const first = math.random([5, 5])
-    const second = math.random([5, 5])
+    const math2 = math.create({ randomSeed: 'a' })
+    const first = math2.random([5, 5])
+    const second = math2.random([5, 5])
     assert.strictEqual(math.deepEqual(first, second), false)
   })
 
@@ -61,9 +57,9 @@ describe('seed', function () {
   it('should pick different number subsequent calls to seeded random', function () {
     // In theory these might be the same but with 'a' as seed they are different and always will be
     const range = math.range(1, 1000)
-    math.config({ randomSeed: 'a' })
-    const first = math.pickRandom(range)
-    const second = math.pickRandom(range)
+    const math2 = math.create({ randomSeed: 'a' })
+    const first = math2.pickRandom(range)
+    const second = math2.pickRandom(range)
     assert.notStrictEqual(first, second)
   })
 
@@ -76,9 +72,9 @@ describe('seed', function () {
   })
 
   it('should pick different int subsequent calls to seeded random', function () {
-    math.config({ randomSeed: 'a' })
-    const first = math.randomInt(1, 100)
-    const second = math.randomInt(1, 100)
+    const math2 = math.create({ randomSeed: 'a' })
+    const first = math2.randomInt(1, 100)
+    const second = math2.randomInt(1, 100)
     assert.notStrictEqual(first, second)
   })
 
