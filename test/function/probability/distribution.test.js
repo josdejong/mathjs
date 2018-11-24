@@ -1,9 +1,10 @@
 import assert from 'assert'
 import error from '../../../src/error/index'
 import _ from 'underscore'
-import math from '../../../src/main'
+import _math from '../../../src/main'
 import { createDistribution } from '../../../src/function/probability/distribution'
 
+const math = _math.create({ randomSeed: 'test' })
 const Matrix = math.type.Matrix
 const distribution = createDistribution(math)
 
@@ -46,16 +47,6 @@ const assertUniformDistributionInt = function (values, min, max) {
 
 describe('distribution', function () {
   let uniformDistrib
-
-  before(function () {
-    // Seed Random Number Generator for Reproducibility
-    math.config({ randomSeed: 'test' })
-  })
-
-  after(function () {
-    // Randomly seed random number generator
-    math.config({ randomSeed: null })
-  })
 
   beforeEach(function () {
     uniformDistrib = distribution('uniform')
