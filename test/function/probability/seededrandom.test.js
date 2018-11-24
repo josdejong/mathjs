@@ -2,7 +2,6 @@ import assert from 'assert'
 import math from '../../../src/main'
 
 describe('seed', function () {
-
   it('should generate same number with seed', function () {
     const math1 = math.create({ randomSeed: 'a' })
     const first = math1.random()
