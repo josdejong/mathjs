@@ -10,11 +10,10 @@ import { factory } from '../../utils/factory'
 
 const name = 'type.DenseMatrix'
 const dependencies = [
-  'typed',
   'type.Matrix'
 ]
 
-export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type: { Matrix } }) => {
+export const createDenseMatrixClass = factory(name, dependencies, ({ type: { Matrix } }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
@@ -677,7 +676,7 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type
    *
    * @returns {DenseMatrix}
    */
-  DenseMatrix.diagonal = function (size, value, k, defaultValue, datatype) {
+  DenseMatrix.diagonal = function (size, value, k, defaultValue) {
     if (!isArray(size)) { throw new TypeError('Array expected, size parameter') }
     if (size.length !== 2) { throw new Error('Only two dimensions matrix are supported') }
 
@@ -706,11 +705,6 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ typed, type
     } else {
       // default value
       k = 0
-    }
-
-    if (defaultValue && isString(datatype)) {
-      // convert defaultValue to the same datatype
-      defaultValue = typed.convert(defaultValue, datatype)
     }
 
     const kSuper = k > 0 ? k : 0

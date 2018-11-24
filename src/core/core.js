@@ -7,6 +7,46 @@ import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'
 import { isFactory } from '../utils/factory'
+import {
+  isAccessorNode,
+  isArray,
+  isArrayNode,
+  isAssignmentNode,
+  isBigNumber,
+  isBlockNode,
+  isBoolean,
+  isChain,
+  isComplex,
+  isConditionalNode,
+  isConstantNode,
+  isDate,
+  isDenseMatrix,
+  isFraction,
+  isFunction,
+  isFunctionAssignmentNode,
+  isFunctionNode,
+  isHelp,
+  isIndex,
+  isIndexNode,
+  isMatrix,
+  isNode,
+  isNull,
+  isNumber,
+  isObject,
+  isObjectNode,
+  isOperatorNode,
+  isParenthesisNode,
+  isRange,
+  isRangeNode,
+  isRegExp,
+  isResultSet,
+  isSparseMatrix,
+  isString,
+  isSymbolNode,
+  isUndefined,
+  isUnit
+} from '../utils/is'
+import { DEFAULT_CONFIG } from './config'
 
 /**
  * Math.js core. Creates a new, empty math.js instance
@@ -44,46 +84,73 @@ export function create (options) {
     'Please load the es5-shim and es5-sham library for compatibility.')
   }
 
-  // cached factories and instances
-  const factories = []
-  const instances = []
-
-  // create a namespace for the mathjs instance, and attach emitter functions
+  // create the mathjs instance
   const math = emitter.mixin({})
-  math.type = {}
   math.expression = {
     transform: {},
     mathWithTransform: {}
   }
 
+  // create configuration options. These are private
+  const _config = { ...DEFAULT_CONFIG }
+
+  // load config function and apply options
+  math['config'] = configFactory(_config, math.emit)
+  math.expression.mathWithTransform['config'] = math['config']
+  if (options) {
+    math.config(options)
+  }
+
+  // create a namespace for the mathjs instance, and attach emitter functions
+  math.type = {
+    // only here for backward compatibility for legacy factory functions
+    isNumber,
+    isComplex,
+    isBigNumber,
+    isFraction,
+    isUnit,
+    isString,
+    isArray,
+    isMatrix,
+    isDenseMatrix,
+    isSparseMatrix,
+    isRange,
+    isIndex,
+    isBoolean,
+    isResultSet,
+    isHelp,
+    isFunction,
+    isDate,
+    isRegExp,
+    isObject,
+    isNull,
+    isUndefined,
+
+    isAccessorNode,
+    isArrayNode,
+    isAssignmentNode,
+    isBlockNode,
+    isConditionalNode,
+    isConstantNode,
+    isFunctionAssignmentNode,
+    isFunctionNode,
+    isIndexNode,
+    isNode,
+    isObjectNode,
+    isOperatorNode,
+    isParenthesisNode,
+    isRangeNode,
+    isSymbolNode,
+
+    isChain
+  }
+
   // create a new typed instance
   math.typed = createTyped(math.type)
 
-  // create configuration options. These are private
-  const _config = {
-    // minimum relative difference between two compared values,
-    // used by all comparison functions
-    epsilon: 1e-12,
-
-    // type of default matrix output. Choose 'matrix' (default) or 'array'
-    matrix: 'Matrix',
-
-    // type of default number output. Choose 'number' (default) 'BigNumber', or 'Fraction
-    number: 'number',
-
-    // number of significant digits in BigNumbers
-    precision: 64,
-
-    // predictable output type of functions. When true, output type depends only
-    // on the input types. When false (default), output type can vary depending
-    // on input values. For example `math.sqrt(-4)` returns `complex('2i')` when
-    // predictable is false, and returns `NaN` when true.
-    predictable: false,
-
-    // random seed for seeded pseudo random number generation
-    // null = randomly seed
-    randomSeed: null
-  }
+  // cached factories and instances used by function load
+  const factories = []
+  const instances = []
 
   /**
    * Load a function or data type from a factory.
@@ -129,15 +196,8 @@ export function create (options) {
     return instance
   }
 
-  // load the import and config functions
+  // load the import function
   math['import'] = importFactory(math.typed, load, math)
-  math['config'] = configFactory(_config, math.emit)
-  math.expression.mathWithTransform['config'] = math['config']
-
-  // apply options
-  if (options) {
-    math.config(options)
-  }
 
   return math
 }

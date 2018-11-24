@@ -16,7 +16,7 @@ describe('mean', function () {
 
   it('should return the mean of big numbers', function () {
     assert.deepStrictEqual(mean(new BigNumber(1), new BigNumber(3), new BigNumber(5), new BigNumber(2), new BigNumber(-5)),
-      new math.type.BigNumber(1.2))
+      new BigNumber(1.2))
   })
 
   it('should return the mean value for complex values', function () {

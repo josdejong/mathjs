@@ -4,10 +4,10 @@ import Decimal from 'decimal.js'
 import { factory } from '../../utils/factory'
 
 const name = 'type.BigNumber'
-const dependencies = ['config.precision', 'on']
+const dependencies = ['config.precision']
 
-export const createBigNumberClass = factory(name, dependencies, ({ config, on }) => {
-  const BigNumber = Decimal.clone({ precision: config.precision })
+export const createBigNumberClass = factory(name, dependencies, ({ config: { precision } }) => {
+  const BigNumber = Decimal.clone({ precision })
 
   /**
    * Attach type information
@@ -37,13 +37,6 @@ export const createBigNumberClass = factory(name, dependencies, ({ config, on })
   BigNumber.fromJSON = function (json) {
     return new BigNumber(json.value)
   }
-
-  // listen for changed in the configuration, automatically apply changed precision
-  on('config', function (curr, prev) {
-    if (curr.precision !== prev.precision) {
-      BigNumber.config({ precision: curr.precision })
-    }
-  })
 
   return BigNumber
 })

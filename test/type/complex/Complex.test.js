@@ -194,15 +194,11 @@ describe('Complex', function () {
     })
 
     it('should use the epsilon configured with math.js', function () {
-      const old = math.config()
+      assert.strictEqual(math.type.Complex.EPSILON, math.config().epsilon)
+      assert.strictEqual(new math.type.Complex(1, 0).equals(new math.type.Complex(1.01, 0)), false)
 
-      assert.strictEqual(Complex.EPSILON, math.config().epsilon)
-      assert.strictEqual(new Complex(1, 0).equals(new Complex(1.01, 0)), false)
-
-      math.config({ epsilon: 0.1 })
-      assert.strictEqual(new Complex(1, 0).equals(new Complex(1.01, 0)), true)
-
-      math.config(old) // restore old config
+      const math2 = math.create({ epsilon: 0.1 })
+      assert.strictEqual(new math2.type.Complex(1, 0).equals(new math2.type.Complex(1.01, 0)), true)
     })
   })
 

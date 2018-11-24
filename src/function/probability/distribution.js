@@ -4,16 +4,16 @@ import { isCollection, isMatrix, isNumber } from '../../utils/is'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
-import { createRng } from './seededRNG'
+import { createRng } from './util/seededRNG'
 
 const name = 'distribution'
-const dependencies = ['typed', 'matrix', 'on', 'config']
+const dependencies = ['typed', 'matrix', 'config.randomSeed']
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
-export const createDistribution = factory(name, dependencies, ({ typed, matrix, on, config }) => {
+export const createDistribution = factory(name, dependencies, ({ typed, matrix, config: { randomSeed } }) => {
   // seeded pseudo random number generator
-  const rng = createRng({ on, config })
+  const rng = createRng(randomSeed)
 
   /**
    * Create a distribution object with a set of random functions for given

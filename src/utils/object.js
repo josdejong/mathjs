@@ -93,7 +93,7 @@ export function deepExtend (a, b) {
         if (a[prop] === undefined) {
           a[prop] = {}
         }
-        if (a[prop].constructor === Object) {
+        if (a[prop] && a[prop].constructor === Object) {
           deepExtend(a[prop], b[prop])
         } else {
           a[prop] = b[prop]

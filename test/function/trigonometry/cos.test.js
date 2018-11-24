@@ -47,8 +47,8 @@ describe('cos', function () {
     assert.strictEqual(cosVal.constructor.precision, 238)
     assert.deepStrictEqual(cosVal.toString(), resultVal)
 
-    biggermath.config({ precision: 16 })
-    const bigPi = biggermath.pi
+    const biggermath2 = math.create({ number: 'BigNumber', precision: 16 })
+    const bigPi = biggermath2.pi
 
     // we've had a bug in reducing the period, affecting integer values around multiples of tau
     assert.deepStrictEqual(bigmath.cos(bigmath.bignumber(6)).toString(), '0.960170286650366')

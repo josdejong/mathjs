@@ -10,7 +10,6 @@ const name = 'type.Unit'
 const dependencies = [
   'config.number',
   'config.predictable',
-  'on',
   'addScalar',
   'subtract',
   'multiplyScalar',
@@ -31,7 +30,6 @@ const dependencies = [
 export const createUnitClass = factory(name, dependencies, (
   {
     config,
-    on,
     addScalar,
     subtract,
     multiplyScalar,
@@ -2869,13 +2867,6 @@ export const createUnitClass = factory(name, dependencies, (
 
   // apply the angle values now
   calculateAngleValues(config)
-
-  // recalculate the values on change of configuration
-  on('config', function (curr, prev) {
-    if (curr.number !== prev.number) {
-      calculateAngleValues(curr)
-    }
-  })
 
   /**
    * A unit system is a set of dimensionally independent base units plus a set of derived units, formed by multiplication and division of the base units, that are by convention used with the unit system.

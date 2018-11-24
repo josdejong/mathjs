@@ -96,49 +96,6 @@ let _createTyped = function () {
 export function createTyped (type) {
   // TODO: typed-function must be able to silently ignore signatures with unknown data types
 
-  // type checks for all known types
-  // only here for backward compatibility for legacy factory functions
-  // FIXME: move this to the legacy import
-  type.isNumber = isNumber
-  type.isComplex = isComplex
-  type.isBigNumber = isBigNumber
-  type.isFraction = isFraction
-  type.isUnit = isUnit
-  type.isString = isString
-  type.isArray = isArray
-  type.isMatrix = isMatrix
-  type.isDenseMatrix = isDenseMatrix
-  type.isSparseMatrix = isSparseMatrix
-  type.isRange = isRange
-  type.isIndex = isIndex
-  type.isBoolean = isBoolean
-  type.isResultSet = isResultSet
-  type.isHelp = isHelp
-  type.isFunction = isFunction
-  type.isDate = isDate
-  type.isRegExp = isRegExp
-  type.isObject = isObject
-  type.isNull = isNull
-  type.isUndefined = isUndefined
-
-  type.isAccessorNode = isAccessorNode
-  type.isArrayNode = isArrayNode
-  type.isAssignmentNode = isAssignmentNode
-  type.isBlockNode = isBlockNode
-  type.isConditionalNode = isConditionalNode
-  type.isConstantNode = isConstantNode
-  type.isFunctionAssignmentNode = isFunctionAssignmentNode
-  type.isFunctionNode = isFunctionNode
-  type.isIndexNode = isIndexNode
-  type.isNode = isNode
-  type.isObjectNode = isObjectNode
-  type.isOperatorNode = isOperatorNode
-  type.isParenthesisNode = isParenthesisNode
-  type.isRangeNode = isRangeNode
-  type.isSymbolNode = isSymbolNode
-
-  type.isChain = isChain
-
   // get a new instance of typed-function
   const typed = _createTyped()
 
@@ -187,7 +144,6 @@ export function createTyped (type) {
     { name: 'Object', test: isObject } // order 'Object' last, it matches on other classes too
   ]
 
-  // TODO: add conversion from BigNumber to number?
   typed.conversions = [
     {
       from: 'number',
@@ -329,9 +285,6 @@ export function createTyped (type) {
       }
     }
   ]
-
-  // TODO: this is a temporary test
-  typed.type = type
 
   return typed
 }

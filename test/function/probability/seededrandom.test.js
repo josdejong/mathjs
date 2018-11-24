@@ -8,10 +8,10 @@ describe('seed', function () {
   })
 
   it('should generate same number with seed', function () {
-    math.config({ randomSeed: 'a' })
-    const first = math.random()
-    math.config({ randomSeed: 'a' })
-    const second = math.random()
+    const math1 = math.create({ randomSeed: 'a' })
+    const first = math1.random()
+    const math2 = math.create({ randomSeed: 'a' })
+    const second = math2.random()
     assert.strictEqual(first, second)
   })
 
@@ -23,22 +23,22 @@ describe('seed', function () {
   })
 
   it('calling with no parameters should unseed rng', function () {
-    math.config({ randomSeed: 'a' })
-    const firstA = math.random()
-    const secondA = math.random()
-    math.config({ randomSeed: 'a' })
-    const firstB = math.random()
-    math.config({ randomSeed: null })
-    const secondB = math.random()
+    const math1 = math.create({ randomSeed: 'a' })
+    const firstA = math1.random()
+    const secondA = math1.random()
+    const math2 = math.create({ randomSeed: 'a' })
+    const firstB = math2.random()
+    const math3 = math.create({ randomSeed: null })
+    const secondB = math3.random()
     assert.strictEqual(firstA, firstB)
     assert.notStrictEqual(secondA, secondB)
   })
 
   it('should generate same matrix with seed', function () {
-    math.config({ randomSeed: 'a' })
-    const first = math.random([5, 5])
-    math.config({ randomSeed: 'a' })
-    const second = math.random([5, 5])
+    const math1 = math.create({ randomSeed: 'a' })
+    const first = math1.random([5, 5])
+    const math2 = math.create({ randomSeed: 'a' })
+    const second = math2.random([5, 5])
     assert.strictEqual(math.deepEqual(first, second), true)
   })
 
@@ -51,10 +51,10 @@ describe('seed', function () {
 
   it('should pick same number with seed', function () {
     const range = math.range(1, 1000)
-    math.config({ randomSeed: 'a' })
-    const first = math.pickRandom(range)
-    math.config({ randomSeed: 'a' })
-    const second = math.pickRandom(range)
+    const math1 = math.create({ randomSeed: 'a' })
+    const first = math1.pickRandom(range)
+    const math2 = math.create({ randomSeed: 'a' })
+    const second = math2.pickRandom(range)
     assert.strictEqual(first, second)
   })
 
@@ -68,10 +68,10 @@ describe('seed', function () {
   })
 
   it('should pick same int with seed', function () {
-    math.config({ randomSeed: 'a' })
-    const first = math.randomInt(1, 100)
-    math.config({ randomSeed: 'a' })
-    const second = math.randomInt(1, 100)
+    const math1 = math.create({ randomSeed: 'a' })
+    const first = math1.randomInt(1, 100)
+    const math2 = math.create({ randomSeed: 'a' })
+    const second = math2.randomInt(1, 100)
     assert.strictEqual(first, second)
   })
 
@@ -83,18 +83,18 @@ describe('seed', function () {
   })
 
   it('should work for number seeds', function () {
-    math.config({ randomSeed: 1 })
-    const first = math.random()
-    math.config({ randomSeed: 1 })
-    const second = math.random()
+    const math1 = math.create({ randomSeed: 1 })
+    const first = math1.random()
+    const math2 = math.create({ randomSeed: 1 })
+    const second = math2.random()
     assert.strictEqual(first, second)
   })
 
   it('should work for object seeds', function () {
-    math.config({ randomSeed: { a: 1 } })
-    const first = math.random()
-    math.config({ randomSeed: { a: 1 } })
-    const second = math.random()
+    const math1 = math.create({ randomSeed: { a: 1 } })
+    const first = math1.random()
+    const math2 = math.create({ randomSeed: { a: 1 } })
+    const second = math2.random()
     assert.strictEqual(first, second)
   })
 })

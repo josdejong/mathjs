@@ -6,9 +6,9 @@ import { isUnit, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Complex'
-const dependencies = ['typed', 'config.epsilon', 'on']
+const dependencies = ['config.epsilon']
 
-export const createComplexClass = factory(name, dependencies, ({ typed, config, on }) => {
+export const createComplexClass = factory(name, dependencies, ({ config: { epsilon } }) => {
   /**
    * Attach type information
    */
@@ -157,14 +157,7 @@ export const createComplexClass = factory(name, dependencies, ({ typed, config, 
   }
 
   // apply the current epsilon
-  Complex.EPSILON = config.epsilon
-
-  // listen for changed in the configuration, automatically apply changed epsilon
-  on('config', function (curr, prev) {
-    if (curr.epsilon !== prev.epsilon) {
-      Complex.EPSILON = curr.epsilon
-    }
-  })
+  Complex.EPSILON = epsilon
 
   /**
    * Compare two complex numbers, `a` and `b`:
@@ -190,9 +183,6 @@ export const createComplexClass = factory(name, dependencies, ({ typed, config, 
 
     return 0
   }
-
-  // register with typed
-  typed.type.Complex = Complex
 
   return Complex
 })
