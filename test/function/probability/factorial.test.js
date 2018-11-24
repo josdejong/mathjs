@@ -21,6 +21,8 @@ describe('factorial', function () {
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(Infinity)).toString(), 'Infinity')
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(11)), bigmath.bignumber(39917000))
     assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(22)), bigmath.bignumber(1.124e+21))
+    assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(24)), bigmath.bignumber(6.2045e+23))
+    assert.deepStrictEqual(bigmath.factorial(bigmath.bignumber(26)), bigmath.bignumber(4.0329e+26))
 
     const bigmath20 = bigmath.create({ precision: 20 })
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(5)), bigmath20.bignumber(120))
@@ -30,17 +32,6 @@ describe('factorial', function () {
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(25)), bigmath20.bignumber('1.5511210043330985984e+25'))
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(24)), bigmath20.bignumber('6.2044840173323943936e+23'))
     assert.deepStrictEqual(bigmath20.factorial(bigmath20.bignumber(22)), bigmath20.bignumber('1124000727777607680000'))
-
-    const bigmath5 = bigmath20.create({ precision: 5 })
-    assert.deepStrictEqual(bigmath5.factorial(bigmath5.bignumber(11)), bigmath5.bignumber(39917000))
-    assert.deepStrictEqual(bigmath5.factorial(bigmath5.bignumber(22)), bigmath5.bignumber(1.124e+21))
-    assert.deepStrictEqual(bigmath5.factorial(bigmath5.bignumber(24)), bigmath5.bignumber(6.2045e+23))
-    assert.deepStrictEqual(bigmath5.factorial(bigmath5.bignumber(21)), bigmath5.bignumber(5.1091e+19))
-    assert.deepStrictEqual(bigmath5.factorial(bigmath5.bignumber(26)), bigmath5.bignumber(4.0329e+26))
-
-    const bigmath20again = bigmath5.create({ precision: 20 })
-    assert.deepStrictEqual(bigmath20again.factorial(bigmath20again.bignumber(3000)),
-      bigmath20again.bignumber('4.1493596034378540856e+9130'))
   })
 
   it('should calculate the factorial of a boolean', function () {
