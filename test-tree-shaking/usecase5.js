@@ -1,15 +1,12 @@
 // Use case 5
 // create functions yourself using factory functions
 
-import typed from 'typed-function'
-import { createHypot } from '../src/factory'
+import { createTyped, createHypot } from '../src/factory'
 
 console.log('\nuse case 5')
 
-typed.ignore.push('BigNumber')
-typed.ignore.push('Matrix')
-
 // Create a hypot instance that only works with numbers:
+const typed = createTyped({ type: {} })
 const hypot = createHypot({
   typed,
   abs: Math.abs,

@@ -1,11 +1,21 @@
 // Use case 4
-// create your own config and load some functions
+// create some functions with custom config
 
-import { create, add, multiply } from '../src/mainAll'
+import { createAddFull, createBignumberFull, createMultiplyFull } from '../src/factoryFull'
 
 console.log('\nuse case 4')
 
-const math = create([add, multiply])
-math.config({ number: 'BigNumber' })
+const config = {
+  epsilon: 1e-12,
+  matrix: 'Matrix',
+  number: 'BigNumber',
+  precision: 64,
+  predictable: false,
+  randomSeed: null
+}
 
-console.log('2 * 3 + 4 = ' + math.add(math.multiply(2, 3), 4))
+const bignumber = createBignumberFull({ config })
+const add = createAddFull({ config })
+const multiply = createMultiplyFull({ config })
+
+console.log('2 * 3 + 4 = ' + add(multiply(bignumber(2), 3), 4))

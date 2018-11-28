@@ -16,7 +16,7 @@ The following use cases are worked out:
 
 1. just pick a few full functions (supporting all data types), using a default config:
     ```js
-    import { add, multiply } from './mathjs'
+    import { add, multiply } from '../src/mainFull'
     console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
     ```
 
@@ -34,20 +34,30 @@ The following use cases are worked out:
 
 4. create your own mathjs instance with custom config:
     ```js
-    import { create, add, multiply } from '../src/mainAll'
+    import { createAddFull, createBignumberFull, createMultiplyFull } from '../src/factoryFull'
 
-    const math = create([add, multiply])
-    math.config({ number: 'BigNumber' })
+    const config = {
+      epsilon: 1e-12,
+      matrix: 'Matrix',
+      number: 'BigNumber',
+      precision: 64,
+      predictable: false,
+      randomSeed: null
+    }
 
-    console.log('2 * 3 + 4 = ' + math.add(math.multiply(2, 3), 4))
+    const bignumber = createBignumberFull({ config })
+    const add = createAddFull({ config })
+    const multiply = createMultiplyFull({ config })
+
+    console.log('2 * 3 + 4 = ' + add(multiply(bignumber(2), 3), 4))
     ```
 
 5. create functions yourself using factory functions:
     ```js
-    import typed from 'typed-function'
-    import { createHypot } from '../src/factory'
+    import { createTyped, createHypot } from '../src/factory'
 
     // Create a hypot instance that only works with numbers:
+    const typed = createTyped({ type: {} })
     const hypot = createHypot({
       typed,
       abs: Math.abs,
@@ -65,14 +75,16 @@ The following use cases are worked out:
 
 6. mix and match typed functions
     ```js
-    import { create } from '../src/mainAll'
+    import { createTyped, createBigNumberClass } from '../src/factory'
     import { addNumber, multiplyNumber } from '../src/plain/number'
     import { addBigNumber, multiplyBigNumber, bignumber } from '../src/plain/bignumber'
+    import { DEFAULT_CONFIG } from '../src/core/config'
 
-    const math = create()
+    const BigNumber = createBigNumberClass({ config: DEFAULT_CONFIG })
+    const typed = createTyped({ type: { BigNumber } })
 
-    const add = math.typed('add', addNumber, addBigNumber)
-    const multiply = math.typed('multiply', multiplyNumber, multiplyBigNumber)
+    const add = typed('add', addNumber, addBigNumber)
+    const multiply = typed('multiply', multiplyNumber, multiplyBigNumber)
 
     console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
     console.log('2 * bignumber(3) + 4 = ' + add(multiply(2, bignumber(3)), 4))
