@@ -89,11 +89,11 @@ describe('matrix', function () {
   })
 
   it('should throw an error when called with an invalid storage format', function () {
-    assert.throws(function () { math.matrix([], 1) }, /Unsupported matrix storage format: 1/)
+    assert.throws(function () { math.matrix([], 1) }, /TypeError: Unknown matrix type "1"/)
   })
 
   it('should throw an error when called with an unknown storage format', function () {
-    assert.throws(function () { math.matrix([], '123') }, /Unsupported matrix storage format: 123/)
+    assert.throws(function () { math.matrix([], '123') }, /TypeError: Unknown matrix type "123"/)
   })
 
   it('should LaTeX matrix', function () {

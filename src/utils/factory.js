@@ -1,8 +1,14 @@
 import { contains } from './array'
-import { get, pick } from './object'
+import { deepEqual, deepExtend, get, pick } from './object'
+import { isPlainObject } from './customs'
 
 /**
  * Create a factory function, which can be used to inject dependencies.
+ *
+ * The created functions are memoized, a consecutive call of the factory
+ * with the exact same inputs will return the same function instance.
+ * The memoized cache is exposed on `factory.cache` and can be cleared
+ * if needed.
  *
  * Example:
  *
@@ -20,16 +26,82 @@ import { get, pick } from './object'
  */
 export function factory (name, dependencies, create) {
   function assertAndCreate (scope) {
+    // we only pass the requested dependencies to the factory function
+    const deps = pick(scope, dependencies)
+
+    for (const cached of assertAndCreate.cache) {
+      if (deepEqual(deps, cached.deps)) {
+        // TODO: move this cache entry to the top so recently used entries move up?
+        return cached.fn
+      }
+    }
+
     assertDependencies(name, dependencies, scope)
 
-    // we only pass the requested dependencies to the factory function
-    return create(pick(scope, dependencies))
+    const fn = create(deps)
+    assertAndCreate.cache.unshift({ deps, fn })
+
+    return fn
   }
 
+  assertAndCreate.cache = [] // for memoization
+
+  assertAndCreate.isFactory = true
   assertAndCreate.fn = name
   assertAndCreate.dependencies = dependencies
 
   return assertAndCreate
+}
+
+/**
+ * Provide part of the dependencies needed by a factory function.
+ * Returns a new factory function which only requires the left over dependencies
+ * to be provided in order to create the function.
+ * @param {function} factory
+ * @param {Object} partialDependencies
+ * @returns {function}
+ */
+export function partial (factory, partialDependencies = {}) {
+  function create (dependencies) {
+    const allDependencies = deepCreate(partialDependencies, dependencies)
+
+    deepExtend(allDependencies, dependencies)
+
+    return factory(allDependencies)
+  }
+
+  create.isFactory = true
+  create.isPartial = true
+  create.fn = factory.fn
+  // TODO: calculate the left over dependencies via a lazy getter (including nested dependencies)
+
+  return create
+}
+
+/**
+ * Transform an object and nested objects, execute all partial
+ * @param partialDependencies
+ * @param dependencies
+ */
+function deepCreate (partialDependencies, dependencies) {
+  const created = {}
+
+  Object.keys(partialDependencies).forEach(key => {
+    const value = partialDependencies[key]
+
+    if (value && value.isFactory) {
+      // create factories and partial factories
+      created[key] = value(dependencies)
+    } else if (value && isPlainObject(value)) {
+      // iterate over nested objects
+      created[key] = deepCreate(value, dependencies)
+    } else {
+      // leave as is
+      created[key] = value
+    }
+  })
+
+  return created
 }
 
 /**

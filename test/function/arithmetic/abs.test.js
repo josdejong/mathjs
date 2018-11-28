@@ -1,7 +1,6 @@
-// test abs
 import assert from 'assert'
 
-import { abs, bignumber, complex, fraction, matrix, Matrix, unit, parse } from '../../../src/mainAll'
+import { abs, bignumber, complex, fraction, matrix, Matrix, unit, parse } from '../../../src/mainFull'
 
 describe('abs', function () {
   it('should return the abs value of a boolean', function () {

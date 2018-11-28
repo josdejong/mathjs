@@ -156,9 +156,6 @@ export const createComplexClass = factory(name, dependencies, ({ config: { epsil
     return new Complex(json)
   }
 
-  // apply the current epsilon
-  Complex.EPSILON = epsilon
-
   /**
    * Compare two complex numbers, `a` and `b`:
    *

@@ -1,5 +1,6 @@
 import assert from 'assert'
-import { maxArgumentCount, memoize } from '../../src/utils/function'
+import { maxArgumentCount, memoize, memoizeCompare } from '../../src/utils/function'
+import { deepEqual } from '../../src/utils/object'
 
 describe('util.function', function () {
   describe('memoize', function () {
@@ -56,6 +57,36 @@ describe('util.function', function () {
       assert.strictEqual(m(4), 2)
       a = 3
       assert.strictEqual(m(4), 2)
+    })
+  })
+
+  describe('memoizeCompare', function () {
+    it('should memoize using comparison', () => {
+      let execCount = 0
+
+      function multiply (obj) {
+        execCount++
+        return obj.x * obj.y
+      }
+
+      const m = memoizeCompare(multiply, deepEqual)
+
+      assert.strictEqual(m({ x: 2, y: 3 }), 6)
+      assert.strictEqual(execCount, 1)
+      assert.strictEqual(m({ x: 2, y: 3 }), 6)
+      assert.strictEqual(execCount, 1)
+
+      assert.strictEqual(m({ x: 2, y: 3, z: 4 }), 6)
+      assert.strictEqual(execCount, 2)
+
+      const fn1 = (a, b) => a + b
+      const fn2 = (a, b) => a + b
+      assert.strictEqual(m({ x: 2, y: 3, add: fn1 }), 6)
+      assert.strictEqual(execCount, 3)
+      assert.strictEqual(m({ x: 2, y: 3, add: fn1 }), 6)
+      assert.strictEqual(execCount, 3)
+      assert.strictEqual(m({ x: 2, y: 3, add: fn2 }), 6)
+      assert.strictEqual(execCount, 4)
     })
   })
 

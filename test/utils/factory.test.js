@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { sortFactories, factory, isFactory } from '../../src/utils/factory'
+import { sortFactories, factory, isFactory, partial } from '../../src/utils/factory'
 
 describe('factory', function () {
   it('should test whether something is a factory', () => {
@@ -70,5 +70,26 @@ describe('factory', function () {
 
     assert.deepStrictEqual(sortFactories([ fn2factory, fn1factory ])
       .map(f => f.fn), ['fn2', 'fn1'])
+  })
+
+  it('should create a partial factory', () => {
+    const createFn1 = factory('fn1', ['config.a'], ({ config }) => {
+      return (c) => c * config.a
+    })
+    const createFn2 = factory('fn2', ['fn1', 'config.b'], ({ config, fn1 }) => {
+      return (d) => d * config.b + fn1(2)
+    })
+
+    // // create the regular way
+    const config = { a: 5, b: 3 }
+    const fn1 = createFn1({ config })
+    const fn2 = createFn2({ config, fn1 })
+    assert.strictEqual(fn2(4), 22) // 4*3 + 2*5
+
+    // create a partial for both functions
+    const partialFn1 = partial(createFn1, {})
+    const partialFn2 = partial(createFn2, { fn1: partialFn1 })
+    const fn22 = partialFn2({ config })
+    assert.strictEqual(fn22(4), 22) // 4*3 + 2*5
   })
 })

@@ -14,6 +14,10 @@ Breaking changes:
   have to be re-created with new config. A math.js instance automatically
   recreates all affected functions when the configuration changes.
 
+Non breaking:
+
+- Fixed `epsilon` setting being applied globally to Complex numbers.
+
 
 # 2018-10-30, version 5.2.3
 

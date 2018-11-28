@@ -2,9 +2,9 @@
 import { factory } from '../../../utils/factory'
 
 const name = 'matrix'
-const dependencies = [ 'typed', 'type.Matrix' ]
+const dependencies = [ 'typed', 'type.Matrix', 'type.DenseMatrix', 'type.SparseMatrix' ]
 
-export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix } }) => {
+export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix, DenseMatrix, SparseMatrix } }) => {
   /**
    * Create a Matrix. The function creates a new `math.type.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the
@@ -73,9 +73,14 @@ export const createMatrix = factory(name, dependencies, ({ typed, type: { Matrix
    */
   function _create (data, format, datatype) {
     // get storage format constructor
-    const M = Matrix.storage(format || 'default')
+    if (format === 'dense' || format === 'default' || format === undefined) {
+      return new DenseMatrix(data, datatype)
+    }
 
-    // create instance
-    return new M(data, datatype)
+    if (format === 'sparse') {
+      return new SparseMatrix(data, datatype)
+    }
+
+    throw new TypeError('Unknown matrix type ' + JSON.stringify(format) + '.')
   }
 })

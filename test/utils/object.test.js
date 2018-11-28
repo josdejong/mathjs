@@ -159,6 +159,18 @@ describe('object', function () {
       assert.strictEqual(deepEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
     })
 
+    it('should deep compare values and functions strictly', function () {
+      assert.strictEqual(deepEqual({ a: 2 }, { a: '2' }), false)
+      assert.strictEqual(deepEqual(2, '2'), false)
+
+      const fn1 = (a, b) => a + b
+      const fn2 = (a, b) => a + b
+      assert.strictEqual(deepEqual({ add: fn1 }, { add: fn1 }), true)
+      assert.strictEqual(deepEqual({ add: fn1 }, { add: fn2 }), false)
+      assert.strictEqual(deepEqual({ b: { add: fn1 } }, { b: { add: fn1 } }), true)
+      assert.strictEqual(deepEqual({ b: { add: fn1 } }, { b: { add: fn2 } }), false)
+    })
+
     it('should deep compare two arrays', function () {
       assert.strictEqual(deepEqual([], []), true)
       assert.strictEqual(deepEqual([1, 2], [1, 2]), true)

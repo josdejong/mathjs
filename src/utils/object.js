@@ -110,6 +110,7 @@ export function deepExtend (a, b) {
 
 /**
  * Deep test equality of all fields in two pairs of arrays or objects.
+ * Compares values and functions strictly (ie. 2 is not the same as '2').
  * @param {Array | Object} a
  * @param {Array | Object} b
  * @returns {boolean}
@@ -131,6 +132,8 @@ export function deepEqual (a, b) {
       }
     }
     return true
+  } else if (typeof a === 'function') {
+    return (a === b)
   } else if (a instanceof Object) {
     if (Array.isArray(b) || !(b instanceof Object)) {
       return false

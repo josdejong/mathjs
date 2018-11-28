@@ -192,14 +192,6 @@ describe('Complex', function () {
       assert.strictEqual(new Complex(2, 4).equals(new Complex(0, 4)), false)
       assert.strictEqual(new Complex(0, 0).equals(new Complex()), true)
     })
-
-    it('should use the epsilon configured with math.js', function () {
-      assert.strictEqual(math.type.Complex.EPSILON, math.config().epsilon)
-      assert.strictEqual(new math.type.Complex(1, 0).equals(new math.type.Complex(1.01, 0)), false)
-
-      const math2 = math.create({ epsilon: 0.1 })
-      assert.strictEqual(new math2.type.Complex(1, 0).equals(new math2.type.Complex(1.01, 0)), true)
-    })
   })
 
   describe('fromPolar', function () {

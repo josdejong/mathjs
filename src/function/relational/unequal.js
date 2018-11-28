@@ -8,6 +8,7 @@ import { createAlgorithm07 } from '../../type/matrix/utils/algorithm07'
 import { createAlgorithm12 } from '../../type/matrix/utils/algorithm12'
 import { createAlgorithm14 } from '../../type/matrix/utils/algorithm14'
 import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
+import { complexEquals } from '../../utils/complex'
 
 const name = 'unequal'
 const dependencies = [
@@ -17,7 +18,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createUnequal = factory(name, dependencies, ({ typed, config, matrix, type: { DenseMatrix } }) => {
+export const createUnequal = factory(name, dependencies, ({ typed, config: { epsilon }, matrix, type: { DenseMatrix } }) => {
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
@@ -144,11 +145,11 @@ export const createUnequal = factory(name, dependencies, ({ typed, config, matri
     },
 
     'number, number': function (x, y) {
-      return !nearlyEqual(x, y, config.epsilon)
+      return !nearlyEqual(x, y, epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return !bigNearlyEqual(x, y, config.epsilon)
+      return !bigNearlyEqual(x, y, epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -156,7 +157,7 @@ export const createUnequal = factory(name, dependencies, ({ typed, config, matri
     },
 
     'Complex, Complex': function (x, y) {
-      return !x.equals(y)
+      return !complexEquals(x, y, epsilon)
     },
 
     'Unit, Unit': function (x, y) {
