@@ -141,13 +141,13 @@ export function deepEqual (a, b) {
 
     for (prop in a) {
       // noinspection JSUnfilteredForInLoop
-      if (!deepEqual(a[prop], b[prop])) {
+      if (!(prop in b) || !deepEqual(a[prop], b[prop])) {
         return false
       }
     }
     for (prop in b) {
       // noinspection JSUnfilteredForInLoop
-      if (!deepEqual(a[prop], b[prop])) {
+      if (!(prop in a) || !deepEqual(a[prop], b[prop])) {
         return false
       }
     }

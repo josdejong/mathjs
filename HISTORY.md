@@ -13,6 +13,8 @@ Breaking changes:
 - Functions no longer dynamically update configuration. Instead, functions
   have to be re-created with new config. A math.js instance automatically
   recreates all affected functions when the configuration changes.
+- Deprecated the `Matrix.storage` function. Use `math.matrix` instead to create
+  a matrix.
 
 Non breaking:
 

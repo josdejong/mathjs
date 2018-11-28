@@ -87,6 +87,11 @@ describe('util.function', function () {
       assert.strictEqual(execCount, 3)
       assert.strictEqual(m({ x: 2, y: 3, add: fn2 }), 6)
       assert.strictEqual(execCount, 4)
+
+      assert.strictEqual(m({ x: 2, y: 3, z: undefined }), 6)
+      assert.strictEqual(execCount, 5)
+      assert.strictEqual(m({ x: 2, y: 3, z: undefined }), 6)
+      assert.strictEqual(execCount, 5)
     })
   })
 

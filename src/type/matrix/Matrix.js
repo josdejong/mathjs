@@ -1,7 +1,6 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { isString } from '../../utils/is'
 
 const name = 'type.Matrix'
 const dependencies = []
@@ -49,23 +48,10 @@ export const createMatrixClass = factory(name, dependencies, () => {
    * @return {Function}           The Matrix storage constructor.
    */
   Matrix.storage = function (format) {
-    // check storage format is a string
-    if (!isString(format)) {
-      throw new TypeError('format must be a string value')
-    }
-
-    // get storage format constructor
-    const constructor = Matrix._storage[format]
-    if (!constructor) {
-      throw new SyntaxError('Unsupported matrix storage format: ' + format)
-    }
-
-    // return storage constructor
-    return constructor
+    // TODO: deprecated since v6.0.0. Clean up some day
+    throw new Error('Matrix.storage is deprecated since v6.0.0. ' +
+      'Use the factory function math.matrix instead.')
   }
-
-  // a map with all constructors for all storage types
-  Matrix._storage = {}
 
   /**
    * Get the storage format used by the matrix.

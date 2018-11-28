@@ -11,10 +11,11 @@ const dependencies = [
   'config.matrix',
   'matrix',
   'type.BigNumber',
-  'type.Matrix'
+  'type.DenseMatrix',
+  'type.SparseMatrix'
 ]
 
-export const createIdentity = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber, Matrix } }) => {
+export const createIdentity = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber, DenseMatrix, SparseMatrix } }) => {
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
    * The matrix has ones on the diagonal and zeros elsewhere.
@@ -55,7 +56,7 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
     },
 
     'number | BigNumber': function (rows) {
-      return _identity(rows, rows, config.matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, rows, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber, string': function (rows, format) {
@@ -63,7 +64,7 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
     },
 
     'number | BigNumber, number | BigNumber': function (rows, cols) {
-      return _identity(rows, cols, config.matrix === 'Matrix' ? 'default' : undefined)
+      return _identity(rows, cols, config.matrix === 'Matrix' ? 'dense' : undefined)
     },
 
     'number | BigNumber, number | BigNumber, string': function (rows, cols, format) {
@@ -126,10 +127,14 @@ export const createIdentity = factory(name, dependencies, ({ typed, config, matr
 
     // check we need to return a matrix
     if (format) {
-      // get matrix storage constructor
-      const F = Matrix.storage(format)
       // create diagonal matrix (use optimized implementation for storage format)
-      return F.diagonal(size, one, 0, defaultValue)
+      if (format === 'sparse') {
+        return SparseMatrix.diagonal(size, one, 0, defaultValue)
+      }
+      if (format === 'dense') {
+        return DenseMatrix.diagonal(size, one, 0, defaultValue)
+      }
+      throw new TypeError(`Unknown matrix type "${format}"`)
     }
 
     // create and resize array

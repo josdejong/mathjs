@@ -854,17 +854,5 @@ export const createDenseMatrixClass = factory(name, dependencies, ({ type: { Mat
     return data
   }
 
-  if (!Matrix._storage.dense) {
-    // register this type in the base class Matrix
-    Matrix._storage.dense = DenseMatrix
-    Matrix._storage['default'] = DenseMatrix
-  } else {
-    console.warn('Cannot register DenseMatrix: already registered')
-    return Matrix._storage.dense
-  }
-
   return DenseMatrix
 })
-
-// force loading, as it needs to register at Matrix
-createDenseMatrixClass.lazy = false

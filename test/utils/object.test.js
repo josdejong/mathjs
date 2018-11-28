@@ -157,6 +157,11 @@ describe('object', function () {
       assert.strictEqual(deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }), false)
       assert.strictEqual(deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }), false)
       assert.strictEqual(deepEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
+
+      assert.strictEqual(deepEqual(undefined, undefined), true)
+      assert.strictEqual(deepEqual({ a: undefined }, { }), false)
+      assert.strictEqual(deepEqual({ }, { a: undefined }), false)
+      assert.strictEqual(deepEqual({ a: undefined }, { a: undefined }), true)
     })
 
     it('should deep compare values and functions strictly', function () {

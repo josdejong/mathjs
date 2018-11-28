@@ -6,9 +6,9 @@ import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'
 
 const name = 'diag'
-const dependencies = ['typed', 'matrix', 'type.Matrix']
+const dependencies = ['typed', 'matrix', 'type.DenseMatrix', 'type.SparseMatrix']
 
-export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { Matrix } }) => {
+export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { DenseMatrix, SparseMatrix } }) => {
   /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix
    *
@@ -128,10 +128,15 @@ export const createDiag = factory(name, dependencies, ({ typed, matrix, type: { 
   function _createDiagonalMatrix (x, k, format, l, kSub, kSuper) {
     // matrix size
     const ms = [l + kSub, l + kSuper]
-    // get matrix constructor
-    const F = Matrix.storage(format || 'dense')
+
+    if (format && format !== 'sparse' && format !== 'dense') {
+      throw new TypeError(`Unknown matrix type ${format}"`)
+    }
+
     // create diagonal matrix
-    const m = F.diagonal(ms, x, k)
+    const m = format === 'sparse'
+      ? SparseMatrix.diagonal(ms, x, k)
+      : DenseMatrix.diagonal(ms, x, k)
     // check we need to return a matrix
     return format !== null ? m : m.valueOf()
   }

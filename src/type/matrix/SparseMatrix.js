@@ -1386,16 +1386,5 @@ export const createSparseMatrixClass = factory(name, dependencies, ({ typed, equ
     }
   }
 
-  if (!Matrix._storage.sparse) {
-    // register this type in the base class Matrix
-    Matrix._storage.sparse = SparseMatrix
-  } else {
-    console.warn('Cannot register SparseMatrix: already registered')
-    return Matrix._storage.sparse
-  }
-
   return SparseMatrix
 })
-
-// force loading, as it needs to register at Matrix
-createSparseMatrixClass.lazy = false
