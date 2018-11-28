@@ -270,10 +270,12 @@ export const createDenseMatrixClassFull = partial(createDenseMatrixClass, { type
 const DenseMatrix = createDenseMatrixClassFull
 
 export const createTypedFull = partial(createTyped, {
-  BigNumber: createBigNumberClassFull,
-  Complex: createComplexClassFull,
-  Fraction: createFractionClassFull,
-  DenseMatrix: createDenseMatrixClassFull
+  type: {
+    BigNumber: createBigNumberClassFull,
+    Complex: createComplexClassFull,
+    Fraction: createFractionClassFull,
+    DenseMatrix: createDenseMatrixClassFull
+  }
 })
 const typed = createTypedFull
 

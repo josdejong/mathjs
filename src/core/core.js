@@ -2,7 +2,7 @@
 
 import './../utils/polyfills'
 import { isLegacyFactory } from './../utils/object'
-import { createTyped } from './function/typed'
+import { createTypedLegacy } from './function/typed'
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'
@@ -146,7 +146,7 @@ export function create (options) {
   }
 
   // create a new typed instance
-  math.typed = createTyped(math.type)
+  math.typed = createTypedLegacy(math.type)
 
   // cached factories and instances used by function load
   const factories = []
