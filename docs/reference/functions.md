@@ -287,6 +287,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.clone(x)](functions/clone.html) | Clone an object.
+[math.hasNumericValue(x)](functions/hasNumericValue.html) | Test whether a value is an numeric value.
 [math.isInteger(x)](functions/isInteger.html) | Test whether a value is an integer number.
 [math.isNaN(x)](functions/isNaN.html) | Test whether a value is NaN (not a number).
 [math.isNegative(x)](functions/isNegative.html) | Test whether a value is negative: smaller than zero.

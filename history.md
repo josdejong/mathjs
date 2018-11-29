@@ -4,6 +4,14 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181129-version-530">2018-11-29, version 5.3.0 <a href="#20181129-version-530" title="Permalink">#</a></h1>
+
+- Implemented function `hasNumericValue`. Thanks <a href="https://github.com/Sathish-kumar-Subramani">@Sathish-kumar-Subramani</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1326">#1326</a>: non-ascii character in print.js.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1337">#1337</a>: `math.format` not working correctly with `{ precision: 0 }`.
+  Thanks <a href="https://github.com/dkenul">@dkenul</a>.
+
+
 <h1 id="20181030-version-523">2018-10-30, version 5.2.3 <a href="#20181030-version-523" title="Permalink">#</a></h1>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1293">#1293</a>: non-unicode characters in `escape-latex` giving issues in some
@@ -11,6 +19,7 @@ layout: default
 - Fixed incorrect LaTeX output of function `bitNot`, see <a href="https://github.com/josdejong/mathjs/issues/1299">#1299</a>. Thanks <a href="https://github.com/FSMaxB">@FSMaxB</a>.
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1304">#1304</a>: function `pow` not supporting inputs `pow(Unit, BigNumber)`.
 - Upgraded dependencies (`escape-latex@1.2.0`)
+
 
 <h1 id="20181023-version-522">2018-10-23, version 5.2.2 <a href="#20181023-version-522" title="Permalink">#</a></h1>
 
