@@ -1,6 +1,6 @@
 # History
 
-# not yet released, version 5.3.0
+# 2018-11-29, version 5.3.0
 
 - Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
 - Fix #1326: non-ascii character in print.js.
