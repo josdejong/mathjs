@@ -4,6 +4,8 @@
 
 - Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
 - Fix #1326: non-ascii character in print.js.
+- Fix #1337: `math.format` not working correctly with `{ precision: 0 }`.
+  Thanks @dkenul.
 
 
 # 2018-10-30, version 5.2.3
