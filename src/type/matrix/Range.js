@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Range'
 const dependencies = []
 
-export const createRangeClass = factory(name, dependencies, () => {
+export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Create a range. A range has a start, step, and end, and contains functions
    * to iterate over the range.

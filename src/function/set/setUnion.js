@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'setUnion'
 const dependencies = ['typed', 'size', 'concat', 'subset', 'setIntersect', 'setSymDifference', 'type.Index']
 
-export const createSetUnion = factory(name, dependencies, ({ typed, size, concat, subset, setIntersect, setSymDifference, type: { Index } }) => {
+export const createSetUnion = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, subset, setIntersect, setSymDifference, type: { Index } }) => {
   /**
    * Create the union of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

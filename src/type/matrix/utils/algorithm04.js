@@ -6,7 +6,7 @@ import { DimensionError } from '../../../error/DimensionError'
 const name = 'utils.algorithm04'
 const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm04 = factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createAlgorithm04 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix A and SparseMatrix B nonzero items and invokes the callback function f(Aij, Bij).
    * Callback function invoked MAX(NNZA, NNZB) times

@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'addScalar'
 const dependencies = ['typed']
 
-export const createAddScalar = factory(name, dependencies, ({ typed }) => {
+export const createAddScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Add two scalar values, `x + y`.
    * This function is meant for internal use: it is used by the public function

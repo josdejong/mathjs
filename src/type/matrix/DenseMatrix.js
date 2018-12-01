@@ -13,7 +13,7 @@ const dependencies = [
   'type.Matrix'
 ]
 
-export const createDenseMatrixClass = factory(name, dependencies, ({ type: { Matrix } }) => {
+export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ type: { Matrix } }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix

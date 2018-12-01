@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'log1p'
 const dependencies = [ 'typed', 'config.predictable', 'divideScalar', 'log', 'type.Complex' ]
 
-export const createLog1p = factory(name, dependencies, ({ typed, config, divideScalar, log, type: { Complex } }) => {
+export const createLog1p = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, log, type: { Complex } }) => {
   /**
    * Calculate the logarithm of a `value+1`.
    *

@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'ceil'
 const dependencies = ['typed']
 
-export const createCeil = factory(name, dependencies, ({ typed }) => {
+export const createCeil = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Round a value towards plus infinity
    * If `x` is complex, both real and imaginary part are rounded towards plus infinity.

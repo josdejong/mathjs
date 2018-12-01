@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'isPositive'
 const dependencies = ['typed']
 
-export const createIsPositive = factory(name, dependencies, ({ typed }) => {
+export const createIsPositive = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is positive: larger than zero.
    * The function supports types `number`, `BigNumber`, `Fraction`, and `Unit`.

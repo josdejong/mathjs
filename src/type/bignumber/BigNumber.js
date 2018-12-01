@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.BigNumber'
 const dependencies = ['config.precision']
 
-export const createBigNumberClass = factory(name, dependencies, ({ config: { precision } }) => {
+export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ config: { precision } }) => {
   const BigNumber = Decimal.clone({ precision })
 
   /**

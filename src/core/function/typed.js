@@ -296,7 +296,7 @@ export function createTypedLegacy (type) {
  * @param {Object} type   Object with data types like Complex and BigNumber
  * @returns {Function}
  */
-export const createTyped = factory('typed', ['type'], function createTyped ({ type }) {
+export const createTyped = /* #__PURE__ */ factory('typed', ['type'], function createTyped ({ type }) {
   // TODO: typed-function must be able to silently ignore signatures with unknown data types
 
   // get a new instance of typed-function

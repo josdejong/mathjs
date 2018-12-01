@@ -9,7 +9,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createArrayNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor ArrayNode
    * @extends {Node}

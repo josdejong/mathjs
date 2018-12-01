@@ -9,11 +9,11 @@ import {
   createBigNumberTau
 } from './utils/bignumber/constants'
 
-export const createTrue = factory('true', [], () => true)
-export const createFalse = factory('false', [], () => false)
-export const createNull = factory('null', [], () => null)
+export const createTrue = /* #__PURE__ */ factory('true', [], () => true)
+export const createFalse = /* #__PURE__ */ factory('false', [], () => false)
+export const createNull = /* #__PURE__ */ factory('null', [], () => null)
 
-export const createInfinity = factory(
+export const createInfinity = /* #__PURE__ */ factory(
   'Infinity',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -21,7 +21,7 @@ export const createInfinity = factory(
     : Infinity
 )
 
-export const createNaN = factory(
+export const createNaN = /* #__PURE__ */ factory(
   'NaN',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -29,7 +29,7 @@ export const createNaN = factory(
     : NaN
 )
 
-export const createPi = factory(
+export const createPi = /* #__PURE__ */ factory(
   'pi',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -37,7 +37,7 @@ export const createPi = factory(
     : Math.PI
 )
 
-export const createTau = factory(
+export const createTau = /* #__PURE__ */ factory(
   'tau',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -45,7 +45,7 @@ export const createTau = factory(
     : (2 * Math.PI)
 )
 
-export const createE = factory(
+export const createE = /* #__PURE__ */ factory(
   'e',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -54,7 +54,7 @@ export const createE = factory(
 )
 
 // golden ratio, (1+sqrt(5))/2
-export const createPhi = factory(
+export const createPhi = /* #__PURE__ */ factory(
   'phi',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -62,7 +62,7 @@ export const createPhi = factory(
     : 1.61803398874989484820458683436563811772030917980576286213545
 )
 
-export const createLN2 = factory(
+export const createLN2 = /* #__PURE__ */ factory(
   'LN2',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -70,7 +70,7 @@ export const createLN2 = factory(
     : Math.LN2
 )
 
-export const createLN10 = factory(
+export const createLN10 = /* #__PURE__ */ factory(
   'LN10',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -78,7 +78,7 @@ export const createLN10 = factory(
     : Math.LN10
 )
 
-export const createLOG2E = factory(
+export const createLOG2E = /* #__PURE__ */ factory(
   'LOG2E',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -86,7 +86,7 @@ export const createLOG2E = factory(
     : Math.LOG2E
 )
 
-export const createLOG10E = factory(
+export const createLOG10E = /* #__PURE__ */ factory(
   'LOG10E',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -94,7 +94,7 @@ export const createLOG10E = factory(
     : Math.LOG10E
 )
 
-export const createSQRTHalf = factory(
+export const createSQRTHalf = /* #__PURE__ */ factory(
   'SQRT1_2',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -102,7 +102,7 @@ export const createSQRTHalf = factory(
     : Math.SQRT1_2
 )
 
-export const createSQRT2 = factory(
+export const createSQRT2 = /* #__PURE__ */ factory(
   'SQRT2',
   ['config.number', 'type.BigNumber'],
   ({ config: { number }, type: { BigNumber } }) => (number === 'BigNumber')
@@ -110,10 +110,10 @@ export const createSQRT2 = factory(
     : Math.SQRT2
 )
 
-export const createI = factory(
+export const createI = /* #__PURE__ */ factory(
   'i',
   ['type.Complex'],
   ({ type: { Complex } }) => Complex.I
 )
 
-export const createVersion = factory('version', [], () => version)
+export const createVersion = /* #__PURE__ */ factory('version', [], () => version)

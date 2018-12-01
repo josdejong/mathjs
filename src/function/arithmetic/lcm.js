@@ -15,7 +15,7 @@ const dependencies = [
   'equalScalar'
 ]
 
-export const createLcm = factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
+export const createLcm = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm06 = createAlgorithm06({ typed, equalScalar })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })

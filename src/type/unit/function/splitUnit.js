@@ -5,7 +5,7 @@ import { factory } from '../../../utils/factory'
 const name = 'splitUnit'
 const dependencies = ['typed']
 
-export const createSplitUnit = factory(name, dependencies, ({ typed }) => {
+export const createSplitUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Split a unit in an array of units whose sum is equal to the original unit.
    *

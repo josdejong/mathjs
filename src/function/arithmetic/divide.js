@@ -15,7 +15,7 @@ const dependencies = [
   'inv'
 ]
 
-export const createDivide = factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv }) => {
+export const createDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiply, equalScalar, divideScalar, inv }) => {
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
   const algorithm14 = createAlgorithm14({ typed })
 

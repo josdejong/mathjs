@@ -13,7 +13,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createSymbolNode = factory(name, dependencies, ({ math, type: { Unit }, expression: { node: { Node } } }) => {
+export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, type: { Unit }, expression: { node: { Node } } }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name

@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'coth'
 const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
 
-export const createCoth = factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createCoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
   /**
    * Calculate the hyperbolic cotangent of a value,
    * defined as `coth(x) = 1 / tanh(x)`.

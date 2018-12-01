@@ -11,7 +11,7 @@ const dependencies = ['typed', 'matrix', 'config.randomSeed']
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
-export const createDistribution = factory(name, dependencies, ({ typed, matrix, config: { randomSeed } }) => {
+export const createDistribution = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config: { randomSeed } }) => {
   // seeded pseudo random number generator
   const rng = createRng(randomSeed)
 

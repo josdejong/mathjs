@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'acoth'
 const dependencies = ['typed', 'config.predictable', 'type.Complex', 'type.BigNumber']
 
-export const createAcoth = factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
+export const createAcoth = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
   /**
    * Calculate the hyperbolic arccotangent of a value,
    * defined as `acoth(x) = atanh(1/x) = (ln((x+1)/x) + ln(x/(x-1))) / 2`.

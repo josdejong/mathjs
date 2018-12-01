@@ -13,7 +13,7 @@ const dependencies = [
   'isInteger'
 ]
 
-export const createCatalan = factory(name, dependencies, (
+export const createCatalan = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     addScalar,

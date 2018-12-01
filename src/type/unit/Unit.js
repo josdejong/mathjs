@@ -27,7 +27,7 @@ const dependencies = [
   'type.Fraction'
 ]
 
-export const createUnitClass = factory(name, dependencies, (
+export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, (
   {
     config,
     addScalar,

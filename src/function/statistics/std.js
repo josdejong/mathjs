@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'std'
 const dependencies = ['typed', 'sqrt', 'variance']
 
-export const createStd = factory(name, dependencies, ({ typed, sqrt, variance }) => {
+export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, sqrt, variance }) => {
   /**
    * Compute the standard deviation of a matrix or a  list with values.
    * The standard deviations is defined as the square root of the variance:

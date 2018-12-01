@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'atan'
 const dependencies = ['typed']
 
-export const createAtan = factory(name, dependencies, ({ typed }) => {
+export const createAtan = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the inverse tangent of a value.
    *

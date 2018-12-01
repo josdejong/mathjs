@@ -10,7 +10,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createImmutableDenseMatrixClass = factory(name, dependencies, ({ smaller, type: { DenseMatrix } }) => {
+export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, type: { DenseMatrix } }) => {
   function ImmutableDenseMatrix (data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }

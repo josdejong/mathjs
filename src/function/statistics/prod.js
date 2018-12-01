@@ -7,7 +7,7 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 const name = 'prod'
 const dependencies = ['typed', 'multiply']
 
-export const createProd = factory(name, dependencies, ({ typed, multiply }) => {
+export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, multiply }) => {
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all

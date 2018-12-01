@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'cross'
 const dependencies = ['typed', 'matrix', 'subtract', 'multiply']
 
-export const createCross = factory(name, dependencies, ({ typed, matrix, subtract, multiply }) => {
+export const createCross = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply }) => {
   /**
    * Calculate the cross product for two vectors in three dimensional space.
    * The cross product of `A = [a1, a2, a3]` and `B = [b1, b2, b3]` is defined

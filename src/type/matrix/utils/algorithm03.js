@@ -6,7 +6,7 @@ import { DimensionError } from '../../../error/DimensionError'
 const name = 'utils.algorithm03'
 const dependencies = ['typed']
 
-export const createAlgorithm03 = factory(name, dependencies, ({ typed }) => {
+export const createAlgorithm03 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over SparseMatrix items and invokes the callback function f(Dij, Sij).
    * Callback function invoked M*N times.

@@ -16,7 +16,7 @@ const dependencies = [
   'type.Complex'
 ]
 
-export const createPow = factory(name, dependencies, ({ typed, config, identity, multiply, matrix, number, fraction, type: { Complex } }) => {
+export const createPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, identity, multiply, matrix, number, fraction, type: { Complex } }) => {
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive

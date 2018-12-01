@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'csc'
 const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
 
-export const createCsc = factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createCsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
   /**
    * Calculate the cosecant of a value, defined as `csc(x) = 1/sin(x)`.
    *

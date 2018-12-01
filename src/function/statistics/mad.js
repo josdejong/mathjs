@@ -7,7 +7,7 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 const name = 'mad'
 const dependencies = ['typed', 'abs', 'map', 'median', 'subtract']
 
-export const createMad = factory(name, dependencies, ({ typed, abs, map, median, subtract }) => {
+export const createMad = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, map, median, subtract }) => {
   /**
    * Compute the median absolute deviation of a matrix or a list with values.
    * The median absolute deviation is defined as the median of the absolute

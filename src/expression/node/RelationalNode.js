@@ -11,7 +11,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createRelationalNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * A node representing a chained conditional expression, such as 'x > y > z'
    *

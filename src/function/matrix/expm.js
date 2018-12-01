@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'expm'
 const dependencies = ['typed', 'abs', 'add', 'identity', 'inv', 'multiply']
 
-export const createExpm = factory(name, dependencies, ({ typed, abs, add, identity, inv, multiply }) => {
+export const createExpm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, identity, inv, multiply }) => {
   /**
    * Compute the matrix exponential, expm(A) = e^A. The matrix must be square.
    * Not to be confused with exp(a), which performs element-wise

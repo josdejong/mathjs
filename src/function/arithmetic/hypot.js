@@ -15,7 +15,7 @@ const dependencies = [
   'isPositive'
 ]
 
-export const createHypot = factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive }) => {
+export const createHypot = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive }) => {
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
    *

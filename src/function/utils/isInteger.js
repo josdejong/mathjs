@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'isInteger'
 const dependencies = ['typed']
 
-export const createIsInteger = factory(name, dependencies, ({ typed }) => {
+export const createIsInteger = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is an integer number.
    * The function supports `number`, `BigNumber`, and `Fraction`.

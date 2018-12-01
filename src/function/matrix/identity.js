@@ -15,7 +15,7 @@ const dependencies = [
   'type.SparseMatrix'
 ]
 
-export const createIdentity = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber, DenseMatrix, SparseMatrix } }) => {
+export const createIdentity = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber, DenseMatrix, SparseMatrix } }) => {
   /**
    * Create a 2-dimensional identity matrix with size m x n or n x n.
    * The matrix has ones on the diagonal and zeros elsewhere.

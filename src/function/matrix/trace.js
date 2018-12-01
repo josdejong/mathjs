@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'trace'
 const dependencies = ['typed', 'matrix', 'add']
 
-export const createTrace = factory(name, dependencies, ({ typed, matrix, add }) => {
+export const createTrace = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, add }) => {
   /**
    * Calculate the trace of a matrix: the sum of the elements on the main
    * diagonal of a square matrix.

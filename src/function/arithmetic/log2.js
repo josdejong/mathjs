@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'log2'
 const dependencies = [ 'typed', 'config.predictable', 'type.Complex' ]
 
-export const createLog2 = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
+export const createLog2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the 2-base of a value. This is the same as calculating `log(x, 2)`.
    *

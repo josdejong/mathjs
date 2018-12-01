@@ -8,7 +8,7 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 const name = 'median'
 const dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect']
 
-export const createMedian = factory(name, dependencies, ({ typed, add, divide, compare, partitionSelect }) => {
+export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, compare, partitionSelect }) => {
   /**
    * Compute the median of a matrix or a list with values. The values are
    * sorted and the middle value is returned. In case of an even number of

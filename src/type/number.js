@@ -6,7 +6,7 @@ import { deepMap } from '../utils/collection'
 const name = 'number'
 const dependencies = ['typed']
 
-export const createNumber = factory(name, dependencies, ({ typed }) => {
+export const createNumber = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a number or convert a string, boolean, or unit to a number.
    * When value is a matrix, all elements will be converted to number.

@@ -18,7 +18,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createSimplifyConstant = factory(name, dependencies, ({ typed, config, math, fraction, bignumber, expression: { node: {
+export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, math, fraction, bignumber, expression: { node: {
   ConstantNode,
   OperatorNode,
   FunctionNode,

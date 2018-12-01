@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'multinomial'
 const dependencies = ['typed', 'add', 'divide', 'multiply', 'multiply', 'factorial', 'isInteger', 'isPositive']
 
-export const createMultinomial = factory(name, dependencies, ({ typed, add, divide, multiply, factorial, isInteger, isPositive }) => {
+export const createMultinomial = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide, multiply, factorial, isInteger, isPositive }) => {
   /**
    * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
    *

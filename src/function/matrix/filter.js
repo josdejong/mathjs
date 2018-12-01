@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'filter'
 const dependencies = ['typed', 'matrix']
 
-export const createFilter = factory(name, dependencies, ({ typed, matrix }) => {
+export const createFilter = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Filter the items in an array or one dimensional matrix.
    *

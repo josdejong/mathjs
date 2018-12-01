@@ -8,7 +8,7 @@ const dependencies = [
   'typed', 'config.epsilon', 'abs', 'add', 'addScalar', 'matrix', 'multiply', 'multiplyScalar', 'divideScalar', 'subtract', 'smaller', 'equalScalar'
 ]
 
-export const createIntersect = factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar }) => {
+export const createIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar }) => {
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
    * and of a line and a plane in three dimensions. The inputs are in the form of

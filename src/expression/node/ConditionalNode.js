@@ -9,7 +9,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createConditionalNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
    *

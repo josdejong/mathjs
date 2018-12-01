@@ -7,7 +7,7 @@ import { sign } from '../../utils/number'
 const name = 'csch'
 const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
 
-export const createCsch = factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createCsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
   /**
    * Calculate the hyperbolic cosecant of a value,
    * defined as `csch(x) = 1 / sinh(x)`.

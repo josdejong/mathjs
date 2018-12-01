@@ -18,7 +18,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createUnequal = factory(name, dependencies, ({ typed, config: { epsilon }, matrix, type: { DenseMatrix } }) => {
+export const createUnequal = /* #__PURE__ */ factory(name, dependencies, ({ typed, config: { epsilon }, matrix, type: { DenseMatrix } }) => {
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })

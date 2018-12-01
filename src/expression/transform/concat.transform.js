@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'expression.transform.concat'
 const dependencies = ['typed', 'concat']
 
-export const createConcatTransform = factory(name, dependencies, ({ typed, concat }) => {
+export const createConcatTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, concat }) => {
   /**
    * Attach a transform function to math.range
    * Adds a property transform containing the transform function.

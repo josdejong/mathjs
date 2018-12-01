@@ -9,7 +9,7 @@ const dependencies = [
   'isZero'
 ]
 
-export const createEqualText = factory(name, dependencies, ({ typed, compareText, isZero }) => {
+export const createEqualText = /* #__PURE__ */ factory(name, dependencies, ({ typed, compareText, isZero }) => {
   /**
    * Check equality of two strings. Comparison is case sensitive.
    *

@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'square'
 const dependencies = ['typed']
 
-export const createSquare = factory(name, dependencies, ({ typed }) => {
+export const createSquare = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the square of a value, `x * x`.
    * For matrices, the function is evaluated element wise.

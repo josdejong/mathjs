@@ -27,8 +27,8 @@ import {
 import { factory } from './utils/factory'
 
 // for backward compatibility with v5
-const createUppercasePi = factory('PI', ['pi'], ({ pi }) => pi)
-const createUppercaseE = factory('E', ['e'], ({ e }) => e)
+const createUppercasePi = /* #__PURE__ */ factory('PI', ['pi'], ({ pi }) => pi)
+const createUppercaseE = /* #__PURE__ */ factory('E', ['e'], ({ e }) => e)
 
 export default [
   type, // data types (Matrix, Complex, Unit, ...)

@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'det'
 const dependencies = ['typed', 'matrix', 'subtract', 'multiply', 'unaryMinus', 'lup']
 
-export const createDet = factory(name, dependencies, ({ typed, matrix, subtract, multiply, unaryMinus, lup }) => {
+export const createDet = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, subtract, multiply, unaryMinus, lup }) => {
   /**
    * Calculate the determinant of a matrix.
    *

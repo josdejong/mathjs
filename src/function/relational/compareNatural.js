@@ -10,7 +10,7 @@ const dependencies = [
   'compare'
 ]
 
-export const createCompareNatural = factory(name, dependencies, ({ typed, compare }) => {
+export const createCompareNatural = /* #__PURE__ */ factory(name, dependencies, ({ typed, compare }) => {
   const compareBooleans = compare.signatures['boolean,boolean']
 
   /**

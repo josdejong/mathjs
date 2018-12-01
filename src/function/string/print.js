@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'print'
 const dependencies = ['typed']
 
-export const createPrint = factory(name, dependencies, ({ typed }) => {
+export const createPrint = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Interpolate values into a string template.
    *

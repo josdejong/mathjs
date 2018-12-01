@@ -12,7 +12,7 @@ const dependencies = [
   'matrix'
 ]
 
-export const createCompareText = factory(name, dependencies, ({ typed, config, matrix }) => {
+export const createCompareText = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix }) => {
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

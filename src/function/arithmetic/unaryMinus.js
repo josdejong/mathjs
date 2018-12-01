@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'unaryMinus'
 const dependencies = ['typed']
 
-export const createUnaryMinus = factory(name, dependencies, ({ typed }) => {
+export const createUnaryMinus = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Inverse the sign of a value, apply a unary minus operation.
    *

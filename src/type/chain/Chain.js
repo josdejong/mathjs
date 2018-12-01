@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Chain'
 const dependencies = ['on', 'math']
 
-export const createChainClass = factory(name, dependencies, ({ on, math }) => {
+export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ on, math }) => {
   /**
    * @constructor Chain
    * Wrap any value in a chain, allowing to perform chained operations on

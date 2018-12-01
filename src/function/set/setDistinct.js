@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'setDistinct'
 const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'type.Index', 'type.DenseMatrix']
 
-export const createSetDistinct = factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } }) => {
+export const createSetDistinct = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } }) => {
   /**
    * Collect the distinct elements of a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.

@@ -12,7 +12,7 @@ const dependencies = [
   'expression.node.ParenthesisNode'
 ]
 
-export const createResolve = factory(name, dependencies, ({ expression: { parse, node: {
+export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse, node: {
   Node,
   FunctionNode,
   OperatorNode,

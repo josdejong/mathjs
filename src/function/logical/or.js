@@ -15,7 +15,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createOr = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+export const createOr = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm05 = createAlgorithm05({ typed, equalScalar })
   const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })

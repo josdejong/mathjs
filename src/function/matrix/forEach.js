@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'forEach'
 const dependencies = ['typed']
 
-export const createForEach = factory(name, dependencies, ({ typed }) => {
+export const createForEach = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterate over all elements of a matrix/array, and executes the given callback function.
    *

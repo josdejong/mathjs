@@ -10,7 +10,7 @@ const dependencies = [
   'subtract'
 ]
 
-export const createCsSpsolve = factory(name, dependencies, ({ divideScalar, multiply, subtract }) => {
+export const createCsSpsolve = /* #__PURE__ */ factory(name, dependencies, ({ divideScalar, multiply, subtract }) => {
   /**
    * The function csSpsolve() computes the solution to G * x = bk, where bk is the
    * kth column of B. When lo is true, the function assumes G = L is lower triangular with the

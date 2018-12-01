@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'dot'
 const dependencies = ['typed', 'add', 'multiply']
 
-export const createDot = factory(name, dependencies, ({ typed, add, multiply }) => {
+export const createDot = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply }) => {
   /**
    * Calculate the dot product of two vectors. The dot product of
    * `A = [a1, a2, a3, ..., an]` and `B = [b1, b2, b3, ..., bn]` is defined as:

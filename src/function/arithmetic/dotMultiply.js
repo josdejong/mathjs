@@ -15,7 +15,7 @@ const dependencies = [
   'multiplyScalar'
 ]
 
-export const createDotMultiply = factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
+export const createDotMultiply = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, multiplyScalar }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm09 = createAlgorithm09({ typed, equalScalar })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })

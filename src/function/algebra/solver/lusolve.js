@@ -16,7 +16,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createLusolve = factory(name, dependencies, ({ typed, matrix, lup, slu, usolve, lsolve, type: { DenseMatrix } }) => {
+export const createLusolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, lup, slu, usolve, lsolve, type: { DenseMatrix } }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**

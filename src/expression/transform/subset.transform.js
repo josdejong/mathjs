@@ -6,7 +6,7 @@ import { errorTransform } from './error.transform'
 const name = 'expression.transform.subset'
 const dependencies = ['typed', 'subset']
 
-export const createSubsetTransform = factory(name, dependencies, ({ typed, subset }) => {
+export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset }) => {
   /**
    * Attach a transform function to math.subset
    * Adds a property transform containing the transform function.

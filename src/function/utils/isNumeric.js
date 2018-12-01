@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'isNumeric'
 const dependencies = ['typed']
 
-export const createIsNumeric = factory(name, dependencies, ({ typed }) => {
+export const createIsNumeric = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is an numeric value.
    *

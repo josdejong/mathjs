@@ -318,9 +318,9 @@ export function importFactory (typed, load, math) {
         // TODO: it's not nice having to pass the whole math namespace. find a better way
         const mathWithNamespace = Object.create(math)
         mathWithNamespace.math = math
-        instance = factory(mathWithNamespace)
+        instance = /* #__PURE__ */ factory(mathWithNamespace)
       } else {
-        instance = factory(math)
+        instance = /* #__PURE__ */ factory(math)
       }
 
       if (instance && typeof instance.transform === 'function') {

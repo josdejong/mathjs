@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'abs'
 const dependencies = ['typed']
 
-export const createAbs = factory(name, dependencies, ({ typed }) => {
+export const createAbs = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the absolute value of a number. For matrices, the function is
    * evaluated element wise.

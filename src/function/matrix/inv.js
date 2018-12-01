@@ -18,7 +18,7 @@ const dependencies = [
   'abs'
 ]
 
-export const createInv = factory(name, dependencies, ({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs }) => {
+export const createInv = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs }) => {
   /**
    * Calculate the inverse of a square matrix.
    *

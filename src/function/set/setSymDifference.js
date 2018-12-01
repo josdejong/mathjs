@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'setSymDifference'
 const dependencies = ['typed', 'size', 'concat', 'subset', 'setDifference', 'type.Index']
 
-export const createSetSymDifference = factory(name, dependencies, ({ typed, size, concat, subset, setDifference, type: { Index } }) => {
+export const createSetSymDifference = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, concat, subset, setDifference, type: { Index } }) => {
   /**
    * Create the symmetric difference of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

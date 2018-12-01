@@ -6,7 +6,7 @@ import { isInteger } from '../../utils/number'
 const name = 'xgcd'
 const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
 
-export const createXgcd = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
+export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
    * Calculate the extended greatest common divisor for two values.
    * See http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm.

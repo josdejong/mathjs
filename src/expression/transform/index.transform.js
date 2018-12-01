@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'expression.transform.index'
 const dependencies = ['type.Index']
 
-export const createIndexTransform = factory(name, dependencies, ({ type: { Index } }) => {
+export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ type: { Index } }) => {
   /**
    * Attach a transform function to math.index
    * Adds a property transform containing the transform function.

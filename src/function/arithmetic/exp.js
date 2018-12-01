@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'exp'
 const dependencies = ['typed']
 
-export const createExp = factory(name, dependencies, ({ typed }) => {
+export const createExp = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the exponent of a value.
    * For matrices, the function is evaluated element wise.

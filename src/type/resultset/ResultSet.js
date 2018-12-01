@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.ResultSet'
 const dependencies = []
 
-export const createResultSet = factory(name, dependencies, () => {
+export const createResultSet = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * A ResultSet contains a list or results
    * @class ResultSet

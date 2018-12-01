@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'expm1'
 const dependencies = [ 'typed', 'type.Complex' ]
 
-export const createExpm1 = factory(name, dependencies, ({ typed, type: { Complex } }) => {
+export const createExpm1 = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Complex } }) => {
   /**
    * Calculate the value of subtracting 1 from the exponential value.
    * For matrices, the function is evaluated element wise.

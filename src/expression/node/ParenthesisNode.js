@@ -8,7 +8,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createParenthesisNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor ParenthesisNode
    * @extends {Node}

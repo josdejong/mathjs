@@ -7,7 +7,7 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 const name = 'min'
 const dependencies = ['typed', 'smaller']
 
-export const createMin = factory(name, dependencies, ({ typed, smaller }) => {
+export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, smaller }) => {
   /**
    * Compute the maximum value of a matrix or a  list of values.
    * In case of a multi dimensional array, the maximum of the flattened array

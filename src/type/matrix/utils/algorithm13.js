@@ -6,7 +6,7 @@ import { DimensionError } from '../../../error/DimensionError'
 const name = 'utils.algorithm13'
 const dependencies = ['typed']
 
-export const createAlgorithm13 = factory(name, dependencies, ({ typed }) => {
+export const createAlgorithm13 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, Bij..z).
    * Callback function invoked MxN times.

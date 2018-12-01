@@ -7,7 +7,7 @@ import { errorTransform } from './error.transform'
 const name = 'expression.transform.max'
 const dependencies = ['typed', 'max']
 
-export const createMaxTransform = factory(name, dependencies, ({ typed, max }) => {
+export const createMaxTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, max }) => {
   /**
    * Attach a transform function to math.max
    * Adds a property transform containing the transform function.

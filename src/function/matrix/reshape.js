@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'reshape'
 const dependencies = ['typed', 'isInteger', 'matrix']
 
-export const createReshape = factory(name, dependencies, ({ typed, isInteger, matrix }) => {
+export const createReshape = /* #__PURE__ */ factory(name, dependencies, ({ typed, isInteger, matrix }) => {
   /**
    * Reshape a multi dimensional array to fit the specified dimensions
    *

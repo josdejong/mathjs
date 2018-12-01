@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'transpose'
 const dependencies = ['typed', 'matrix']
 
-export const createTranspose = factory(name, dependencies, ({ typed, matrix }) => {
+export const createTranspose = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Transpose a matrix. All values of the matrix are reflected over its
    * main diagonal. Only applicable to two dimensional matrices containing

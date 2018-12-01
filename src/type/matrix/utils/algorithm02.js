@@ -6,7 +6,7 @@ import { DimensionError } from '../../../error/DimensionError'
 const name = 'utils.algorithm02'
 const dependencies = ['typed', 'equalScalar']
 
-export const createAlgorithm02 = factory(name, dependencies, ({ typed, equalScalar }) => {
+export const createAlgorithm02 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {
   /**
    * Iterates over SparseMatrix nonzero items and invokes the callback function f(Dij, Sij).
    * Callback function invoked NNZ times (number of nonzero items in SparseMatrix).

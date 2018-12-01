@@ -10,7 +10,7 @@ const DEFAULT_NORMALIZATION = 'unbiased'
 const name = 'variance'
 const dependencies = ['typed', 'add', 'subtract', 'multiply', 'divide', 'isNaN']
 
-export const createVariance = factory(name, dependencies, ({ typed, add, subtract, multiply, divide, isNaN }) => {
+export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, subtract, multiply, divide, isNaN }) => {
   /**
    * Compute the variance of a matrix or a  list with values.
    * In case of a (multi dimensional) array or matrix, the variance over all
@@ -130,7 +130,7 @@ export const createVariance = factory(name, dependencies, ({ typed, add, subtrac
 })
 
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-09
-export const createDeprecatedVar = factory('var', ['variance'], ({ variance }) => {
+export const createDeprecatedVar = /* #__PURE__ */ factory('var', ['variance'], ({ variance }) => {
   let warned = false
 
   return function (...args) {

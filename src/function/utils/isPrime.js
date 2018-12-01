@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'isPrime'
 const dependencies = ['typed', 'type.BigNumber']
 
-export const createIsPrime = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
+export const createIsPrime = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Test whether a value is prime: has no divisors other than itself and one.
    * The function supports type `number`, `bignumber`.

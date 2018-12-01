@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'multiplyScalar'
 const dependencies = ['typed']
 
-export const createMultiplyScalar = factory(name, dependencies, ({ typed }) => {
+export const createMultiplyScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Multiply two scalar values, `x * y`.
    * This function is meant for internal use: it is used by the public function

@@ -16,7 +16,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createFunctionAssignmentNode = factory(name, dependencies, ({ typed, expression: { node: { Node } } }) => {
+export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ typed, expression: { node: { Node } } }) => {
   /**
    * @constructor FunctionAssignmentNode
    * @extends {Node}

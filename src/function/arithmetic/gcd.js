@@ -17,7 +17,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createGcd = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
   const algorithm01 = createAlgorithm01({ typed })
   const algorithm04 = createAlgorithm04({ typed, equalScalar })
   const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })

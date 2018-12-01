@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'setCartesian'
 const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'type.Index', 'type.DenseMatrix']
 
-export const createSetCartesian = factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } }) => {
+export const createSetCartesian = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } }) => {
   /**
    * Create the cartesian product of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

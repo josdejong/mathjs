@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'setSize'
 const dependencies = ['typed', 'compareNatural']
 
-export const createSetSize = factory(name, dependencies, ({ typed, compareNatural }) => {
+export const createSetSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, compareNatural }) => {
   /**
    * Count the number of elements of a (multi)set. When a second parameter is 'true', count only the unique values.
    * A multi-dimension array will be converted to a single-dimension array before the operation.

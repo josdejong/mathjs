@@ -21,7 +21,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createAccessorNode = factory(name, dependencies, ({ subset, expression: { node: { Node } } }) => {
+export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, expression: { node: { Node } } }) => {
   const access = accessFactory({ subset })
 
   /**

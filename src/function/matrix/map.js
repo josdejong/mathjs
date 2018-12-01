@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'map'
 const dependencies = ['typed']
 
-export const createMap = factory(name, dependencies, ({ typed }) => {
+export const createMap = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a new matrix or array with the results of the callback function executed on
    * each entry of the matrix/array.

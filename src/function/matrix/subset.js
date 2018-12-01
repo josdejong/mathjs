@@ -10,7 +10,7 @@ import { factory } from '../../utils/factory'
 const name = 'subset'
 const dependencies = ['typed', 'matrix']
 
-export const createSubset = factory(name, dependencies, ({ typed, matrix }) => {
+export const createSubset = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Get or set a subset of a matrix or string.
    *

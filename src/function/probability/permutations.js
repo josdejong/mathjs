@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'permutations'
 const dependencies = ['typed', 'factorial']
 
-export const createPermutations = factory(name, dependencies, ({ typed, factorial }) => {
+export const createPermutations = /* #__PURE__ */ factory(name, dependencies, ({ typed, factorial }) => {
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
    * from a set of `n` elements.

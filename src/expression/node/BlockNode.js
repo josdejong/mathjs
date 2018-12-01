@@ -10,7 +10,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createBlockNode = factory(name, dependencies, ({ type: { ResultSet }, expression: { node: { Node } } }) => {
+export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ type: { ResultSet }, expression: { node: { Node } } }) => {
   /**
    * @constructor BlockNode
    * @extends {Node}

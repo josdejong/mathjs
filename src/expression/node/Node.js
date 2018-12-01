@@ -9,7 +9,7 @@ import { factory } from '../../utils/factory'
 const name = 'expression.node.Node'
 const dependencies = ['expression.mathWithTransform']
 
-export const createNode = factory(name, dependencies, ({ expression: { mathWithTransform } }) => {
+export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { mathWithTransform } }) => {
   /**
    * Node
    */

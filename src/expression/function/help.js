@@ -6,7 +6,7 @@ import { getSafeProperty } from '../../utils/customs'
 const name = 'help'
 const dependencies = ['typed', 'math', 'expression.docs', 'type.Help']
 
-export const createHelp = factory(name, dependencies, ({ typed, math, expression: { docs }, type: { Help } }) => {
+export const createHelp = /* #__PURE__ */ factory(name, dependencies, ({ typed, math, expression: { docs }, type: { Help } }) => {
   /**
    * Retrieve help on a function or data type.
    * Help files are retrieved from the documentation in math.expression.docs.

@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'numeric'
 const dependencies = ['number', 'bignumber', 'fraction']
 
-export const createNumeric = factory(name, dependencies, ({ number, bignumber, fraction }) => {
+export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ number, bignumber, fraction }) => {
   const validInputTypes = {
     'string': true,
     'number': true,

@@ -9,7 +9,7 @@ import { factory } from '../../utils/factory'
 const name = 'expression.transform.filter'
 const dependencies = ['typed', 'matrix']
 
-export const createFilterTransform = factory(name, dependencies, ({ typed, matrix }) => {
+export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Attach a transform function to math.filter
    * Adds a property transform containing the transform function.

@@ -15,7 +15,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createRationalize = factory(name, dependencies, (
+export const createRationalize = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     parse,

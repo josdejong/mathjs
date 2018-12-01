@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'partitionSelect'
 const dependencies = ['typed', 'isNumeric', 'isNaN', 'compare']
 
-export const createPartitionSelect = factory(name, dependencies, ({ typed, isNumeric, isNaN, compare }) => {
+export const createPartitionSelect = /* #__PURE__ */ factory(name, dependencies, ({ typed, isNumeric, isNaN, compare }) => {
   const asc = compare
   const desc = (a, b) => -compare(a, b)
 

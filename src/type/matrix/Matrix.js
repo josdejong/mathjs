@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Matrix'
 const dependencies = []
 
-export const createMatrixClass = factory(name, dependencies, () => {
+export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * @constructor Matrix
    *

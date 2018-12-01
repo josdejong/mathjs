@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'sort'
 const dependencies = ['typed', 'matrix', 'compare', 'compareNatural']
 
-export const createSort = factory(name, dependencies, ({ typed, matrix, compare, compareNatural }) => {
+export const createSort = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, compare, compareNatural }) => {
   const compareAsc = compare
   const compareDesc = (a, b) => -compare(a, b)
 

@@ -7,7 +7,7 @@ import { errorTransform } from './error.transform'
 const name = 'expression.transform.mean'
 const dependencies = ['typed', 'mean']
 
-export const createMeanTransform = factory(name, dependencies, ({ typed, mean }) => {
+export const createMeanTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, mean }) => {
   /**
    * Attach a transform function to math.mean
    * Adds a property transform containing the transform function.

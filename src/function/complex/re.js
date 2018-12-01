@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 're'
 const dependencies = ['typed']
 
-export const createRe = factory(name, dependencies, ({ typed }) => {
+export const createRe = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Get the real part of a complex number.
    * For a complex number `a + bi`, the function returns `a`.

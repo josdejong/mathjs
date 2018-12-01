@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'kldivergence'
 const dependencies = ['typed', 'matrix', 'divide', 'sum', 'multiply', 'dotDivide', 'log', 'isNumeric']
 
-export const createKldivergence = factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric }) => {
+export const createKldivergence = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric }) => {
   /**
      * Calculate the Kullback-Leibler (KL) divergence  between two distributions
      *

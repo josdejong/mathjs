@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'asinh'
 const dependencies = ['typed']
 
-export const createAsinh = factory(name, dependencies, ({ typed }) => {
+export const createAsinh = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Calculate the hyperbolic arcsine of a value,
    * defined as `asinh(x) = ln(x + sqrt(x^2 + 1))`.

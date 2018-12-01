@@ -7,7 +7,7 @@ import { format } from '../utils/number'
 const name = 'string'
 const dependencies = ['typed']
 
-export const createString = factory(name, dependencies, ({ typed }) => {
+export const createString = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a string or convert any object into a string.
    * Elements of Arrays and Matrices are processed element wise.

@@ -18,7 +18,7 @@ const dependencies = [
   'type.SparseMatrix'
 ]
 
-export const createAdd = factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
+export const createAdd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, addScalar, equalScalar, type: { DenseMatrix, SparseMatrix } }) => {
   const algorithm01 = createAlgorithm01({ typed })
   const algorithm04 = createAlgorithm04({ typed, equalScalar })
   const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })

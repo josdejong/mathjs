@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Spa'
 const dependencies = ['addScalar', 'equalScalar', 'type.FibonacciHeap']
 
-export const createSpaClass = factory(name, dependencies, ({ addScalar, equalScalar, type: { FibonacciHeap } }) => {
+export const createSpaClass = /* #__PURE__ */ factory(name, dependencies, ({ addScalar, equalScalar, type: { FibonacciHeap } }) => {
   /**
    * An ordered Sparse Accumulator is a representation for a sparse vector that includes a dense array
    * of the vector elements and an ordered list of non-zero elements.

@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'cube'
 const dependencies = ['typed']
 
-export const createCube = factory(name, dependencies, ({ typed }) => {
+export const createCube = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the cube of a value, `x * x * x`.
    * For matrices, the function is evaluated element wise.

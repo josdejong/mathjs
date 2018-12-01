@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'atanh'
 const dependencies = ['typed', 'config.predictable', 'type.Complex']
 
-export const createAtanh = factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
+export const createAtanh = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
   /**
    * Calculate the hyperbolic arctangent of a value,
    * defined as `atanh(x) = ln((1 + x)/(1 - x)) / 2`.

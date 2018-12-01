@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'quantileSeq'
 const dependencies = ['typed', 'add', 'multiply', 'partitionSelect', 'compare', 'type.BigNumber']
 
-export const createQuantileSeq = factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, type: { BigNumber } }) => {
+export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, multiply, partitionSelect, compare, type: { BigNumber } }) => {
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.

@@ -5,7 +5,7 @@ import { factory } from '../../../utils/factory'
 const name = 'sparse'
 const dependencies = ['typed', 'type.SparseMatrix']
 
-export const createSparse = factory(name, dependencies, ({ typed, type: { SparseMatrix } }) => {
+export const createSparse = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { SparseMatrix } }) => {
   /**
    * Create a Sparse Matrix. The function creates a new `math.type.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the

@@ -10,7 +10,7 @@ const dependencies = [
   'type.BigNumber'
 ]
 
-export const createErf = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
+export const createErf = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Compute the erf function of a value using a rational Chebyshev
    * approximations for different intervals of x.

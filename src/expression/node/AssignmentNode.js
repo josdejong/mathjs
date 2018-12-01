@@ -14,7 +14,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createAssignmentNode = factory(name, dependencies, ({ subset, matrix, expression: { node: { Node } } }) => {
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, expression: { node: { Node } } }) => {
   const access = accessFactory({ subset })
   const assign = assignFactory({ subset, matrix })
 

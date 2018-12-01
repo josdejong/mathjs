@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'random'
 const dependencies = ['distribution']
 
-export const createRandom = factory(name, dependencies, ({ distribution }) => {
+export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ distribution }) => {
   /**
    * Return a random number larger or equal to `min` and smaller than `max`
    * using a uniform distribution.

@@ -6,7 +6,7 @@ import { deepMap } from '../../../utils/collection'
 const name = 'complex'
 const dependencies = ['typed', 'type.Complex']
 
-export const createComplex = factory(name, dependencies, ({ typed, type: { Complex } }) => {
+export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Complex } }) => {
   /**
    * Create a complex value or convert a value to a complex value.
    *

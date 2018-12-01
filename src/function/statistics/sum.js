@@ -7,7 +7,7 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 const name = 'sum'
 const dependencies = ['typed', 'config.number', 'add', 'type.BigNumber', 'type.Fraction']
 
-export const createSum = factory(name, dependencies, ({ typed, config, add, type: { BigNumber, Fraction } }) => {
+export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, type: { BigNumber, Fraction } }) => {
   /**
    * Compute the sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all

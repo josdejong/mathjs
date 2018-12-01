@@ -6,7 +6,7 @@ import { clone } from '../../../utils/object'
 const name = 'utils.algorithm14'
 const dependencies = ['typed']
 
-export const createAlgorithm14 = factory(name, dependencies, ({ typed }) => {
+export const createAlgorithm14 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Iterates over DenseMatrix items and invokes the callback function f(Aij..z, b).
    * Callback function invoked MxN times.

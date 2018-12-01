@@ -15,7 +15,7 @@ const dependencies = [
   'abs'
 ]
 
-export const createDistance = factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs }) => {
+export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs }) => {
   /**
     * Calculates:
     *    The eucledian distance between two points in 2 and 3 dimensional spaces.

@@ -19,7 +19,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createSubtract = factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix } }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix } }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const algorithm01 = createAlgorithm01({ typed })

@@ -14,7 +14,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createLsolve = factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, type: { DenseMatrix } }) => {
+export const createLsolve = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, type: { DenseMatrix } }) => {
   const solveValidation = createSolveValidation({ DenseMatrix })
 
   /**

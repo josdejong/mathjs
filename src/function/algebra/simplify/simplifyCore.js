@@ -18,7 +18,7 @@ const dependencies = [
   'expression.node.ParenthesisNode'
 ]
 
-export const createSimplifyCore = factory(name, dependencies, ({ equal, isZero, add, subtract, multiply, divide, pow, expression: { node: {
+export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({ equal, isZero, add, subtract, multiply, divide, pow, expression: { node: {
   ConstantNode,
   OperatorNode,
   FunctionNode,

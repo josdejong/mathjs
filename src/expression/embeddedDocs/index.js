@@ -208,7 +208,7 @@ const name = 'expression.docs'
 const dependencies = []
 
 // TODO: remove factory function here, isn't useful
-export const createEmbeddedDocs = factory(name, dependencies, () => {
+export const createEmbeddedDocs = /* #__PURE__ */ factory(name, dependencies, () => {
   const docs = {}
 
   // construction functions

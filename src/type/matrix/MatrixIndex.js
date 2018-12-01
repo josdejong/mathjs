@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Index'
 const dependencies = ['type.ImmutableDenseMatrix']
 
-export const createIndexClass = factory(name, dependencies, ({ type: { ImmutableDenseMatrix } }) => {
+export const createIndexClass = /* #__PURE__ */ factory(name, dependencies, ({ type: { ImmutableDenseMatrix } }) => {
   /**
    * Create an index. An Index can store ranges and sets for multiple dimensions.
    * Matrix.get, Matrix.set, and math.subset accept an Index as input.

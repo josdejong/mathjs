@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'factorial'
 const dependencies = ['typed', 'gamma']
 
-export const createFactorial = factory(name, dependencies, ({ typed, gamma }) => {
+export const createFactorial = /* #__PURE__ */ factory(name, dependencies, ({ typed, gamma }) => {
   /**
    * Compute the factorial of a value
    *

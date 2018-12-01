@@ -6,7 +6,7 @@ import { factory } from '../../../utils/factory'
 const name = 'csSymperm'
 const dependencies = ['conj', 'type.SparseMatrix']
 
-export const createCsSymperm = factory(name, dependencies, ({ conj, type: { SparseMatrix } }) => {
+export const createCsSymperm = /* #__PURE__ */ factory(name, dependencies, ({ conj, type: { SparseMatrix } }) => {
   /**
    * Computes the symmetric permutation of matrix A accessing only
    * the upper triangular part of A.

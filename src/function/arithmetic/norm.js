@@ -17,7 +17,7 @@ const dependencies = [
   'matrix'
 ]
 
-export const createNorm = factory(name, dependencies, ({ typed, abs, add, pow, conj, sqrt, multiply, equalScalar, larger, smaller, matrix }) => {
+export const createNorm = /* #__PURE__ */ factory(name, dependencies, ({ typed, abs, add, pow, conj, sqrt, multiply, equalScalar, larger, smaller, matrix }) => {
   /**
    * Calculate the norm of a number, vector or matrix.
    *

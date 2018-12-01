@@ -16,7 +16,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createFunctionNode = factory(name, dependencies, ({ math, expression: { node: { Node, SymbolNode } } }) => {
+export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({ math, expression: { node: { Node, SymbolNode } } }) => {
   /**
    * @constructor FunctionNode
    * @extends {./Node}

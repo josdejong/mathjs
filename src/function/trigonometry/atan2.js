@@ -18,7 +18,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createAtan2 = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
+export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm09 = createAlgorithm09({ typed, equalScalar })

@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'kron'
 const dependencies = ['typed', 'matrix', 'multiplyScalar']
 
-export const createKron = factory(name, dependencies, ({ typed, matrix, multiplyScalar }) => {
+export const createKron = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, multiplyScalar }) => {
   /**
      * Calculates the kronecker product of 2 matrices or vectors.
      *

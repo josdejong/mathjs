@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 const name = 'flatten'
 const dependencies = ['typed', 'matrix']
 
-export const createFlatten = factory(name, dependencies, ({ typed, matrix }) => {
+export const createFlatten = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Flatten a multi dimensional matrix into a single dimensional matrix.
    *

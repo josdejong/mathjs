@@ -17,7 +17,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createMod = factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm05 = createAlgorithm05({ typed, equalScalar })

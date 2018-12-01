@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'not'
 const dependencies = ['typed']
 
-export const createNot = factory(name, dependencies, ({ typed }) => {
+export const createNot = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Logical `not`. Flips boolean value of a given parameter.
    * For matrices, the function is evaluated element wise.

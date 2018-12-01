@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Complex'
 const dependencies = ['config.epsilon']
 
-export const createComplexClass = factory(name, dependencies, ({ config: { epsilon } }) => {
+export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ({ config: { epsilon } }) => {
   /**
    * Attach type information
    */

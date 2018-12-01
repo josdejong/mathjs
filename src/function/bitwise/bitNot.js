@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'bitNot'
 const dependencies = ['typed']
 
-export const createBitNot = factory(name, dependencies, ({ typed }) => {
+export const createBitNot = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Bitwise NOT value, `~x`.
    * For matrices, the function is evaluated element wise.

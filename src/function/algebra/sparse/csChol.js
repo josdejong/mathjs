@@ -18,7 +18,7 @@ const dependencies = [
   'type.SparseMatrix'
 ]
 
-export const createCsChol = factory(name, dependencies, (
+export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
   {
     divideScalar,
     sqrt,

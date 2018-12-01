@@ -15,7 +15,7 @@ const dependencies = [
   'type.Matrix'
 ]
 
-export const createSparseMatrixClass = factory(name, dependencies, ({ typed, equalScalar, type: { Matrix } }) => {
+export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, type: { Matrix } }) => {
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
    * for sparse matrices.

@@ -13,7 +13,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createOperatorNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor OperatorNode
    * @extends {Node}

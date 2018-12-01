@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.FibonacciHeap'
 const dependencies = ['smaller', 'larger']
 
-export const createFibonacciHeapClass = factory(name, dependencies, ({ smaller, larger }) => {
+export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, larger }) => {
   const oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0)
 
   /**

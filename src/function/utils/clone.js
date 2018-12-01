@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'clone'
 const dependencies = ['typed']
 
-export const createClone = factory(name, dependencies, ({ typed }) => {
+export const createClone = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Clone an object.
    *

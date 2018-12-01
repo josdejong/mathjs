@@ -6,7 +6,7 @@ import { typeOf } from '../../utils/is'
 const name = 'divideScalar'
 const dependencies = ['typed', 'numeric']
 
-export const createDivideScalar = factory(name, dependencies, ({ typed, numeric }) => {
+export const createDivideScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, numeric }) => {
   /**
    * Divide two scalar values, `x / y`.
    * This function is meant for internal use: it is used by the public functions

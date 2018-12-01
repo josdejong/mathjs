@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'unaryPlus'
 const dependencies = ['typed', 'config.number', 'type.BigNumber']
 
-export const createUnaryPlus = factory(name, dependencies, ({ typed, config, type: { BigNumber } }) => {
+export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { BigNumber } }) => {
   /**
    * Unary plus operation.
    * Boolean values and strings will be converted to a number, numeric values will be returned as is.

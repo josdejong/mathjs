@@ -5,7 +5,7 @@ import { factory } from '../../../utils/factory'
 const name = 'chain'
 const dependencies = ['typed', 'type.Chain']
 
-export const createChain = factory(name, dependencies, ({ typed, type: { Chain } }) => {
+export const createChain = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Chain } }) => {
   /**
    * Wrap any value in a chain, allowing to perform chained operations on
    * the value.

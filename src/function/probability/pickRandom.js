@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'pickRandom'
 const dependencies = ['distribution']
 
-export const createPickRandom = factory(name, dependencies, ({ distribution }) => {
+export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ distribution }) => {
   /**
    * Random pick one or more values from a one dimensional array.
    * Array elements are picked using a random function with uniform or weighted distribution.

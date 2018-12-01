@@ -26,7 +26,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createParseExpression = factory(name, dependencies, ({ numeric, config, expression: { node: {
+export const createParseExpression = /* #__PURE__ */ factory(name, dependencies, ({ numeric, config, expression: { node: {
   AccessorNode,
   ArrayNode,
   AssignmentNode,

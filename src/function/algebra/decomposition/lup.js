@@ -20,7 +20,7 @@ const dependencies = [
   'type.Spa'
 ]
 
-export const createLup = factory(name, dependencies, (
+export const createLup = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     matrix,

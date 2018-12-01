@@ -6,7 +6,7 @@ import { typeOf as _typeOf } from '../../utils/is'
 const name = 'typeOf'
 const dependencies = ['typed']
 
-export const createTypeOf = factory(name, dependencies, ({ typed }) => {
+export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Determine the type of a variable.
    *
@@ -71,7 +71,7 @@ export const createTypeOf = factory(name, dependencies, ({ typed }) => {
 })
 
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-06
-export const createDeprecatedTypeof = factory('typeof', [], () => {
+export const createDeprecatedTypeof = /* #__PURE__ */ factory('typeof', [], () => {
   let warned = false
 
   return function (...args) {

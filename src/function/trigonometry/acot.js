@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'acot'
 const dependencies = ['typed', 'type.BigNumber']
 
-export const createAcot = factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
+export const createAcot = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
   /**
    * Calculate the inverse cotangent of a value, defined as `acot(x) = atan(1/x)`.
    *

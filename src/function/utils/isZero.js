@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'isZero'
 const dependencies = ['typed']
 
-export const createIsZero = factory(name, dependencies, ({ typed }) => {
+export const createIsZero = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is zero.
    * The function can check for zero for types `number`, `BigNumber`, `Fraction`,

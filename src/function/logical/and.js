@@ -16,7 +16,7 @@ const dependencies = [
   'not'
 ]
 
-export const createAnd = factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not }) => {
+export const createAnd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, not }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm06 = createAlgorithm06({ typed, equalScalar })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })

@@ -8,7 +8,7 @@ import { factory } from '../utils/factory'
 const name = 'type.Help'
 const dependencies = ['expression.parse']
 
-export const createHelpClass = factory(name, dependencies, ({ expression: { parse } }) => {
+export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse } }) => {
   /**
    * Documentation object
    * @param {Object} doc  Object containing properties:

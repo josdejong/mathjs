@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'compile'
 const dependencies = ['typed', 'expression.parse']
 
-export const createCompile = factory(name, dependencies, ({ typed, expression: { parse } }) => {
+export const createCompile = /* #__PURE__ */ factory(name, dependencies, ({ typed, expression: { parse } }) => {
   /**
    * Parse and compile an expression.
    * Returns a an object with a function `eval([scope])` to evaluate the

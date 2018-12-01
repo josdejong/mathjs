@@ -19,7 +19,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createSimplify = factory(name, dependencies, (
+export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     parse,

@@ -9,7 +9,7 @@ import { compileInlineExpression } from './utils/compileInlineExpression'
 const name = 'expression.transform.map'
 const dependencies = ['typed', 'matrix']
 
-export const createMapTransform = factory(name, dependencies, ({ typed, matrix }) => {
+export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   /**
    * Attach a transform function to math.map
    * Adds a property transform containing the transform function.

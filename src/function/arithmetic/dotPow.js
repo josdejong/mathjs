@@ -17,7 +17,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createDotPow = factory(name, dependencies, ({ typed, equalScalar, matrix, pow, type: { DenseMatrix } }) => {
+export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, type: { DenseMatrix } }) => {
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })

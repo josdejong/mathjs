@@ -17,7 +17,7 @@ const dependencies = [
   'larger'
 ]
 
-export const createStirlingS2 = factory(name, dependencies, (
+export const createStirlingS2 = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     addScalar,

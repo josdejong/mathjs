@@ -12,7 +12,7 @@ const dependencies = [
   'transpose'
 ]
 
-export const createCsAmd = factory(name, dependencies, ({ add, multiply, transpose }) => {
+export const createCsAmd = /* #__PURE__ */ factory(name, dependencies, ({ add, multiply, transpose }) => {
   /**
    * Approximate minimum degree ordering. The minimum degree algorithm is a widely used
    * heuristic for finding a permutation P so that P*A*P' has fewer nonzeros in its factorization

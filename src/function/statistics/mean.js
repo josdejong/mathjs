@@ -8,7 +8,7 @@ import { improveErrorMessage } from './utils/improveErrorMessage'
 const name = 'mean'
 const dependencies = ['typed', 'add', 'divide']
 
-export const createMean = factory(name, dependencies, ({ typed, add, divide }) => {
+export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, add, divide }) => {
   /**
    * Compute the mean value of matrix or a list with values.
    * In case of a multi dimensional array, the mean of the flattened array

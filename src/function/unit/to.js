@@ -10,7 +10,7 @@ const dependencies = [
   'matrix'
 ]
 
-export const createTo = factory(name, dependencies, ({ typed, matrix }) => {
+export const createTo = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

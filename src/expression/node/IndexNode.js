@@ -11,7 +11,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createIndexNode = factory(name, dependencies, ({ type: { Range }, expression: { node: { Node } } }) => {
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ type: { Range }, expression: { node: { Node } } }) => {
   /**
    * @constructor IndexNode
    * @extends Node

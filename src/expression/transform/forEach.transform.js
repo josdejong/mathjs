@@ -9,7 +9,7 @@ import { compileInlineExpression } from './utils/compileInlineExpression'
 const name = 'expression.transform.forEach'
 const dependencies = ['typed']
 
-export const createForEachTransform = factory(name, dependencies, ({ typed }) => {
+export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Attach a transform function to math.forEach
    * Adds a property transform containing the transform function.

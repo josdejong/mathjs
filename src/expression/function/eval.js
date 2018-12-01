@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'eval'
 const dependencies = ['typed', 'expression.parse']
 
-export const createEval = factory(name, dependencies, ({ typed, expression: { parse } }) => {
+export const createEval = /* #__PURE__ */ factory(name, dependencies, ({ typed, expression: { parse } }) => {
   /**
    * Evaluate an expression.
    *

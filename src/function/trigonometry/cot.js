@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'cot'
 const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
 
-export const createCot = factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createCot = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
   /**
    * Calculate the cotangent of a value. Defined as `cot(x) = 1 / tan(x)`.
    *

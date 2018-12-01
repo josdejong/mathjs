@@ -10,7 +10,7 @@ import { factory } from '../../utils/factory'
 const name = 'concat'
 const dependencies = ['typed', 'matrix', 'isInteger']
 
-export const createConcat = factory(name, dependencies, ({ typed, matrix, isInteger }) => {
+export const createConcat = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, isInteger }) => {
   /**
    * Concatenate two or more matrices.
    *

@@ -9,7 +9,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createRangeNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor RangeNode
    * @extends {Node}

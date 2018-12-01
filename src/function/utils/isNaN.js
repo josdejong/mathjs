@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'isNaN'
 const dependencies = ['typed']
 
-export const createIsNaN = factory(name, dependencies, ({ typed }) => {
+export const createIsNaN = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is NaN (not a number).
    * The function supports types `number`, `BigNumber`, `Fraction`, `Unit` and `Complex`.

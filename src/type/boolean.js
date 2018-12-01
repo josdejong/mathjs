@@ -6,7 +6,7 @@ import { deepMap } from '../utils/collection'
 const name = 'boolean'
 const dependencies = ['typed']
 
-export const createBoolean = factory(name, dependencies, ({ typed }) => {
+export const createBoolean = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Create a boolean or convert a string or number to a boolean.
    * In case of a number, `true` is returned for non-zero numbers, and `false` in

@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'bellNumbers'
 const dependencies = ['typed', 'addScalar', 'isNegative', 'isInteger', 'stirlingS2']
 
-export const createBellNumbers = factory(name, dependencies, ({ typed, addScalar, isNegative, isInteger, stirlingS2 }) => {
+export const createBellNumbers = /* #__PURE__ */ factory(name, dependencies, ({ typed, addScalar, isNegative, isInteger, stirlingS2 }) => {
   /**
    * The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
    * bellNumbers only takes integer arguments.

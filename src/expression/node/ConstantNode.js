@@ -10,7 +10,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createConstantNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * A ConstantNode holds a constant value like a number or string.
    *

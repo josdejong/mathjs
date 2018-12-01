@@ -8,7 +8,7 @@ const dependencies = [
   'equal'
 ]
 
-export const createDeepEqual = factory(name, dependencies, ({ typed, equal }) => {
+export const createDeepEqual = /* #__PURE__ */ factory(name, dependencies, ({ typed, equal }) => {
   /**
    * Test element wise whether two matrices are equal.
    * The function accepts both matrices and scalar values.

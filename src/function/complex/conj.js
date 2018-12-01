@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'conj'
 const dependencies = ['typed']
 
-export const createConj = factory(name, dependencies, ({ typed }) => {
+export const createConj = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Compute the complex conjugate of a complex value.
    * If `x = a+bi`, the complex conjugate of `x` is `a - bi`.

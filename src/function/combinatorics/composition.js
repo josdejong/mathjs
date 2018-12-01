@@ -13,7 +13,7 @@ const dependencies = [
   'larger'
 ]
 
-export const createComposition = factory(name, dependencies, (
+export const createComposition = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     addScalar,

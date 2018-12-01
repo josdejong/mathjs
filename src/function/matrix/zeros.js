@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'zeros'
 const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
 
-export const createZeros = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
+export const createZeros = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
    * Create a matrix filled with zeros. The created matrix can have one or
    * multiple dimensions.

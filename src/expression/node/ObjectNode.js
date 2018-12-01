@@ -11,7 +11,7 @@ const dependencies = [
   'expression.node.Node'
 ]
 
-export const createObjectNode = factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
   /**
    * @constructor ObjectNode
    * @extends {Node}

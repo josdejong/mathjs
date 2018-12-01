@@ -20,7 +20,7 @@ const dependencies = [
   'subtract'
 ]
 
-export const createQr = factory(name, dependencies, (
+export const createQr = /* #__PURE__ */ factory(name, dependencies, (
   {
     typed,
     matrix,

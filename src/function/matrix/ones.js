@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'ones'
 const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
 
-export const createOnes = factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
+export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**
    * Create a matrix filled with ones. The created matrix can have one or
    * multiple dimensions.

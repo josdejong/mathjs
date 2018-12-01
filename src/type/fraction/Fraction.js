@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'type.Fraction'
 const dependencies = []
 
-export const createFractionClass = factory(name, dependencies, () => {
+export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Attach type information
    */

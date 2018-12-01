@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 const name = 'ctranspose'
 const dependencies = ['typed', 'transpose', 'conj']
 
-export const createCtranspose = factory(name, dependencies, ({ typed, transpose, conj }) => {
+export const createCtranspose = /* #__PURE__ */ factory(name, dependencies, ({ typed, transpose, conj }) => {
   /**
    * Transpose and complex conjugate a matrix. All values of the matrix are
    * reflected over its main diagonal and then the complex conjugate is

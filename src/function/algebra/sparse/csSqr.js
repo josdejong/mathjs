@@ -14,7 +14,7 @@ const dependencies = [
   'transpose'
 ]
 
-export const createCsSqr = factory(name, dependencies, ({ add, multiply, transpose }) => {
+export const createCsSqr = /* #__PURE__ */ factory(name, dependencies, ({ add, multiply, transpose }) => {
   const csAmd = createCsAmd({ add, multiply, transpose })
   const csCounts = createCsCounts({ transpose })
 

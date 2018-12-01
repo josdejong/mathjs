@@ -18,7 +18,7 @@ const dependencies = [
   'type.DenseMatrix'
 ]
 
-export const createDotDivide = factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } }) => {
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })

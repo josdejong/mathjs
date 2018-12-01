@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'floor'
 const dependencies = ['typed']
 
-export const createFloor = factory(name, dependencies, ({ typed }) => {
+export const createFloor = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Round a value towards minus infinity.
    * For matrices, the function is evaluated element wise.

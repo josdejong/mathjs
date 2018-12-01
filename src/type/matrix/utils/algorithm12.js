@@ -5,7 +5,7 @@ import { factory } from '../../../utils/factory'
 const name = 'utils.algorithm12'
 const dependencies = ['typed', 'type.DenseMatrix']
 
-export const createAlgorithm12 = factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
+export const createAlgorithm12 = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked MxN times.

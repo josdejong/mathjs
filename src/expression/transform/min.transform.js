@@ -7,7 +7,7 @@ import { errorTransform } from './error.transform'
 const name = 'expression.transform.min'
 const dependencies = ['typed', 'min']
 
-export const createMinTransform = factory(name, dependencies, ({ typed, min }) => {
+export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, min }) => {
   /**
    * Attach a transform function to math.min
    * Adds a property transform containing the transform function.

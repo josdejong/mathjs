@@ -19,7 +19,7 @@ const dependencies = [
   'expression.node.SymbolNode'
 ]
 
-export const createDerivative = factory(name, dependencies, ({ typed, config, parse, simplify, equal, isZero, numeric, expression: { node: {
+export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, parse, simplify, equal, isZero, numeric, expression: { node: {
   ConstantNode,
   FunctionNode,
   OperatorNode,

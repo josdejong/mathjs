@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'isNegative'
 const dependencies = ['typed']
 
-export const createIsNegative = factory(name, dependencies, ({ typed }) => {
+export const createIsNegative = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Test whether a value is negative: smaller than zero.
    * The function supports types `number`, `BigNumber`, `Fraction`, and `Unit`.

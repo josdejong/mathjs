@@ -6,7 +6,7 @@ import { deepMap } from '../../utils/collection'
 const name = 'tan'
 const dependencies = ['typed', 'type.Unit']
 
-export const createTan = factory(name, dependencies, ({ typed, type: { Unit } }) => {
+export const createTan = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Unit } }) => {
   /**
    * Calculate the tangent of a value. `tan(x)` is equal to `sin(x) / cos(x)`.
    *

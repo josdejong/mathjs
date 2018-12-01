@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'format'
 const dependencies = ['typed']
 
-export const createFormat = factory(name, dependencies, ({ typed }) => {
+export const createFormat = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {
   /**
    * Format a value of any type into a string.
    *

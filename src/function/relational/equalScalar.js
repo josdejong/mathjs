@@ -8,7 +8,7 @@ import { complexEquals } from '../../utils/complex'
 const name = 'equalScalar'
 const dependencies = ['typed', 'config.epsilon']
 
-export const createEqualScalar = factory(name, dependencies, ({ typed, config: { epsilon } }) => {
+export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config: { epsilon } }) => {
   /**
    * Test whether two scalar values are nearly equal.
    *
