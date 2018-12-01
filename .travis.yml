@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  # FIXME: enable testing on nodejs 6 again (it's too slow right now, getting timeouts)
+  # FIXME: enable testing on nodejs 6 and 8 again (it's too slow right now, getting timeouts)
   # - 6
-  - 8
+  # - 8
   - 10
 
 script: npm run test:src
