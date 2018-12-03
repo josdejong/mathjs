@@ -1000,7 +1000,7 @@ function factory (type, config, load, typed, math) {
 
     ret.fixPrefix = true
     ret.isUnitListSimplified = true
-    
+
     return ret
   }
 
