@@ -3,7 +3,8 @@
 # Function var
 
 Compute the variance of a matrix or a  list with values.
-In case of a (multi dimensional) array or matrix, the variance will be calculated over all elements by default. It is also possible to calculate the variance along a specified axis by added the axis dimension as the final argument of the function.
+In case of a (multi dimensional) array or matrix, the variance over all
+elements will be calculated.
 
 Optionally, the type of normalization can be specified as second
 parameter. The parameter `normalization` can be one of the following values:
@@ -11,6 +12,9 @@ parameter. The parameter `normalization` can be one of the following values:
 - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
 - 'uncorrected'        The sum of squared errors is divided by n
 - 'biased'             The sum of squared errors is divided by (n + 1)
+
+Additionally, it is possible to compute the variance along the browser
+or columns of a matrix by specifying the dimension.
 
 Note that older browser may not like the variable name `var`. In that
 case, the function can be called as `math['var'](...)` instead of
@@ -33,7 +37,6 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
-`dimension` | number &#124; BigNumber | A number specifying which axis the variance should be computed along
 
 ### Returns
 

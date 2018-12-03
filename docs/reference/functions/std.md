@@ -5,7 +5,9 @@
 Compute the standard deviation of a matrix or a  list with values.
 The standard deviations is defined as the square root of the variance:
 `std(A) = sqrt(var(A))`.
-In case of a (multi dimensional) array or matrix, the standard deviation will be calculated over all elements by default. It is also possible to calculate the standard deviation along a specified axis by added the axis as the final argument of the function.
+In case of a (multi dimensional) array or matrix, the standard deviation
+over all elements will be calculated by default, unless an axis is specified
+in which case the standard deviation will be computed along that axis.
 
 Optionally, the type of normalization can be specified as second
 parameter. The parameter `normalization` can be one of the following values:
@@ -13,6 +15,9 @@ parameter. The parameter `normalization` can be one of the following values:
 - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
 - 'uncorrected'        The sum of squared errors is divided by n
 - 'biased'             The sum of squared errors is divided by (n + 1)
+
+Additionally, it is possible to compute the standard deviation along the browser
+or columns of a matrix by specifying the dimension.
 
 
 ## Syntax
@@ -31,7 +36,6 @@ Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
 `normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
-`dimension` | number &#124; BigNumber | A number specifying which axis the standard deviation should be computed along.
 
 ### Returns
 
