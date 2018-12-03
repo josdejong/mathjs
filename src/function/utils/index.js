@@ -4,6 +4,7 @@ module.exports = [
   require('./isInteger'),
   require('./isNegative'),
   require('./isNumeric'),
+  require('./hasNumericValue'),
   require('./isPositive'),
   require('./isPrime'),
   require('./isZero'),

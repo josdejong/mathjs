@@ -60,6 +60,6 @@ describe('bitNot', function () {
 
   it('should LaTeX bitNot', function () {
     const expression = math.parse('bitNot(4)')
-    assert.strictEqual(expression.toTex(), '~\\left(4\\right)')
+    assert.strictEqual(expression.toTex(), '\\~\\left(4\\right)')
   })
 })
