@@ -4,6 +4,12 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181203-version-531">2018-12-03, version 5.3.1 <a href="#20181203-version-531" title="Permalink">#</a></h1>
+
+- Fixed <a href="https://github.com/josdejong/mathjs/issues/1336">#1336</a>: Unit.toSI() returning units with prefix like `mm` instead 
+  of `m`. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h1 id="20181129-version-530">2018-11-29, version 5.3.0 <a href="#20181129-version-530" title="Permalink">#</a></h1>
 
 - Implemented function `hasNumericValue`. Thanks <a href="https://github.com/Sathish-kumar-Subramani">@Sathish-kumar-Subramani</a>.
