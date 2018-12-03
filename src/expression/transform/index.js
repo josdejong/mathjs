@@ -9,5 +9,6 @@ module.exports = [
   require('./mean.transform'),
   require('./min.transform'),
   require('./range.transform'),
-  require('./subset.transform')
+  require('./subset.transform'),
+  require('./sum.transform')
 ]
