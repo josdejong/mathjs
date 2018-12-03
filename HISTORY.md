@@ -1,5 +1,11 @@
 # History
 
+# 2018-12-03, version 5.3.1
+
+- Fixed #1336: Unit.toSI() returning units with prefix like `mm` instead 
+  of `m`. Thanks @ericman314.
+
+
 # 2018-11-29, version 5.3.0
 
 - Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
