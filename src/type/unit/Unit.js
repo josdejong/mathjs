@@ -998,6 +998,7 @@ function factory (type, config, load, typed, math) {
     // Replace this unit list with the proposed list
     ret.units = proposedUnitList
 
+    ret.fixPrefix = true
     ret.isUnitListSimplified = true
 
     return ret
