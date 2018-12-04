@@ -147,7 +147,8 @@ describe('number', function () {
       })
 
       it('fixed notation with precision', function () {
-        const options = { notation: 'fixed', precision: 2 }
+        const notation = 'fixed'
+        const options = { notation, precision: 2 }
 
         assert.strictEqual(number.format(0, options), '0.00')
         assert.strictEqual(number.format(123, options), '123.00')
@@ -171,10 +172,13 @@ describe('number', function () {
         assert.strictEqual(number.format(1.3e-21, options), '0.00')
         assert.strictEqual(number.format(1.3e-22, options), '0.00')
 
-        assert.strictEqual(number.format(5.6789e-30, { notation: 'fixed', precision: 32 }),
+        assert.strictEqual(number.format(5.6789e-30, { notation, precision: 32 }),
           '0.00000000000000000000000000000568')
-        assert.strictEqual(number.format(5.6999e-30, { notation: 'fixed', precision: 32 }),
+        assert.strictEqual(number.format(5.6999e-30, { notation, precision: 32 }),
           '0.00000000000000000000000000000570')
+
+        assert.strictEqual(number.format(123.456, { notation, precision: 0 }), '123')
+        assert.strictEqual(number.format(-123.456, { notation, precision: 0 }), '-123')
       })
 
       it('exponential notation', function () {
