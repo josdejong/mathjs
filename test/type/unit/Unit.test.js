@@ -501,10 +501,10 @@ describe('Unit', function () {
     })
 
     it('should only simplify units with values', function () {
-      let unit1 = new Unit(null, 'kg m mol / s^2 / mol')
-      assert.strictEqual(unit1.simplify().toString(), '(kg m mol) / (s^2 mol)')
+      let unit1 = new Unit(null, 'kg m mol / s^2 / mol').pow(1) // Remove the "skipSimplify" flag
+      assert.strictEqual(unit1.toString(), '(kg m mol) / (s^2 mol)')
       unit1 = math.multiply(unit1, 1)
-      assert.strictEqual(unit1.simplify().toString(), '1 N')
+      assert.strictEqual(unit1.toString(), '1 N')
     })
 
     it('should simplify units when they cancel out with {predictable: true}', function () {
