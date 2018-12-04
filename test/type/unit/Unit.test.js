@@ -1246,6 +1246,7 @@ describe('Unit', function () {
 
     it('should return the unit in SI units', function () {
       assert.strictEqual(Unit.parse('3 ft').toSI().format(10), '0.9144 m')
+      assert.strictEqual(Unit.parse('0.111 ft^2').toSI().format(10), '0.01031223744 m^2')
     })
 
     it('should return SI units for valueless units', function () {

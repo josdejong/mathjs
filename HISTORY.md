@@ -1,8 +1,17 @@
 # History
 
-# not yet released, version 5.3.0
+# 2018-12-03, version 5.3.1
+
+- Fixed #1336: Unit.toSI() returning units with prefix like `mm` instead 
+  of `m`. Thanks @ericman314.
+
+
+# 2018-11-29, version 5.3.0
 
 - Implemented function `hasNumericValue`. Thanks @Sathish-kumar-Subramani.
+- Fix #1326: non-ascii character in print.js.
+- Fix #1337: `math.format` not working correctly with `{ precision: 0 }`.
+  Thanks @dkenul.
 
 
 # 2018-10-30, version 5.2.3
