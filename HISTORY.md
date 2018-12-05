@@ -1,5 +1,11 @@
 # History
 
+# not yet released, version 5.3.2
+
+- Remove side effects caused by `Unit.format` and `Unit.toString`, 
+  making changes to the unit on execution. Thanks @ericman314.
+
+
 # 2018-12-03, version 5.3.1
 
 - Fixed #1336: Unit.toSI() returning units with prefix like `mm` instead 
