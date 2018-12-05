@@ -3,12 +3,14 @@
 import { createParse } from './parse'
 import { createCompile } from './compile'
 import { createHelp } from './help'
-import { createEval } from './eval'
+import { createEvaluate } from './evaluate'
 import { createParser } from './parser'
+import { createDeprecatedEval } from './eval'
 
 export default [
   createCompile,
-  createEval,
+  createEvaluate,
+  createDeprecatedEval,
   createHelp,
   createParse,
   createParser

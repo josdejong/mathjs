@@ -147,7 +147,7 @@ import { createCreateUnit } from './type/unit/function/createUnit'
 import { createSplitUnit } from './type/unit/function/splitUnit'
 import { createParseExpression } from './expression/parse'
 import { createParserClass } from './expression/Parser'
-import { createEval } from './expression/function/eval'
+import { createEvaluate } from './expression/function/evaluate'
 import { createCompile } from './expression/function/compile'
 import { createParse } from './expression/function/parse'
 import { createFunctionNode } from './expression/node/FunctionNode'
@@ -626,7 +626,7 @@ const parseExpression = /* #__PURE__ */ createParseExpressionFull
 export const createParseFull = /* #__PURE__ */ partial(createParse, { typed, expression: { parse: parseExpression } })
 const parse = /* #__PURE__ */ createParseFull
 export const createCompileFull = /* #__PURE__ */ partial(createCompile, { typed, expression: { parse: parseExpression } })
-export const createEvalFull = /* #__PURE__ */ partial(createEval, { typed, expression: { parse: parseExpression } })
+export const createEvaluateFull = /* #__PURE__ */ partial(createEvaluate, { typed, expression: { parse: parseExpression } })
 export const createParserClassFull = /* #__PURE__ */ partial(createParserClass, { expression: { parse: parseExpression } })
 const Parser = /* #__PURE__ */ createParserClassFull
 

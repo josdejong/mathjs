@@ -72,7 +72,7 @@ import {
   createEqualScalarFull,
   createEqualTextFull,
   createErfFull,
-  createEvalFull,
+  createEvaluateFull,
   createExpFull,
   createExpm1Full,
   createExpmFull,
@@ -534,7 +534,7 @@ export const SymbolNode = /* #__PURE__ */ createSymbolNodeFull(dependenciesWithM
 export const FunctionNode = /* #__PURE__ */ createFunctionNodeFull(dependenciesWithMath)
 export const parse = /* #__PURE__ */ createParseFull(dependenciesWithMath)
 export const compile = /* #__PURE__ */ createCompileFull(dependenciesWithMath)
-export const evaluate = /* #__PURE__ */ createEvalFull(dependenciesWithMath)
+export const evaluate = /* #__PURE__ */ createEvaluateFull(dependenciesWithMath)
 export const Parser = /* #__PURE__ */ createParserClassFull(dependenciesWithMath)
 
 // create (3)

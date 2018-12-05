@@ -6,8 +6,9 @@
 
 Breaking changes:
 
-- Renamed function `typeof` to `typeOf` and `var` to `variance`. (`typeof` and
-  `var` are reserved keywords which can only be used as a property name).
+- Renamed function `typeof` to `typeOf`, `var` to `variance`,
+  and `eval` to `evaluate`. (the old function names are reserved keywords
+  which can only be used as a property name).
 - Deprecated having a `.toTex` property attached to functions.
   Use a custom toTex handler instead.
 - Functions no longer dynamically update configuration. Instead, functions
