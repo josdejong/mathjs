@@ -1,7 +1,7 @@
 'use strict'
 
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
-import { isFactory, sortFactories } from '../../utils/factory'
+import { isFactory } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
 import { contains, initial, last } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
@@ -64,16 +64,6 @@ export function importFactory (typed, load, math) {
       options = {}
     }
 
-    if (Array.isArray(object)) {
-      object = sortFactories(flattenImports(object))
-
-      // // TOOD: cleanup
-      // console.log('factories', JSON.stringify(object.map(obj => (
-      //   obj.fn ? (obj.fn + ' (' + obj.dependencies.join(', ') + ')') : (obj.name + ' (legacy)')
-      // )), null, 2))
-    }
-
-    // TODO: flatten objects containing factory functions too
     // TODO: allow a typed-function with name too
     if (isFactory(object)) {
       _importFactory(object, options)
