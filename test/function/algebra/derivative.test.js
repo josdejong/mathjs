@@ -194,14 +194,14 @@ describe('derivative', function () {
 
   describe('expression parser', function () {
     it('should evaluate a derivative containing string value', function () {
-      const res = math.eval('derivative("x^2", "x")')
+      const res = math.evaluate('derivative("x^2", "x")')
       assert.ok(res && res.isNode)
 
       assert.strictEqual(res.toString(), '2 * x')
     })
 
     it('should evaluate a derivative containing nodes', function () {
-      const res = math.eval('derivative(parse("x^2"), parse("x"))')
+      const res = math.evaluate('derivative(parse("x^2"), parse("x"))')
       assert.ok(res && res.isNode)
 
       assert.strictEqual(res.toString(), '2 * x')

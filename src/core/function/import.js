@@ -95,29 +95,6 @@ export function importFactory (typed, load, math) {
   }
 
   /**
-   * Flatten nested imports from arrays and/or objects
-   */
-  function flattenImports (arr, options) {
-    if (!Array.isArray(arr)) {
-      return arr
-    }
-
-    let flat = []
-
-    function recurse (child) {
-      if (Array.isArray(child)) {
-        child.forEach(item => recurse(item))
-      } else {
-        flat.push(child)
-      }
-    }
-
-    recurse(arr)
-
-    return flat
-  }
-
-  /**
    * Add a property to the math namespace and create a chain proxy for it.
    * @param {string} name
    * @param {*} value

@@ -87,7 +87,7 @@ describe('typeOf', function () {
   })
 
   it('should return function type for a ResultSet', function () {
-    assert.strictEqual(math.typeOf(math.eval('a=2\nb=3')), 'ResultSet')
+    assert.strictEqual(math.typeOf(math.evaluate('a=2\nb=3')), 'ResultSet')
     assert.strictEqual(math.typeOf(new math.type.ResultSet([2, 3])), 'ResultSet')
   })
 
@@ -150,6 +150,7 @@ describe('typeOf', function () {
 
     assert.strictEqual(math.typeof(true), 'boolean')
 
+    // Note that the following assertion will fail if math.typeof is already used in a previous unit test
     assert.deepStrictEqual(logs, [
       ['Function "typeof" has been renamed to "typeOf", please use the new function instead.']
     ])

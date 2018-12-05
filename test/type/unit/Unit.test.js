@@ -532,7 +532,7 @@ describe('Unit', function () {
       assert.strictEqual(unit3.toString(), '4')
       assert.strictEqual(unit3.units.length, 0)
 
-      const nounit = math2.eval('40m * 40N / (40J)')
+      const nounit = math2.evaluate('40m * 40N / (40J)')
       assert.strictEqual(nounit.toString(), '40')
       assert.strictEqual(nounit.units.length, 0)
 
@@ -552,7 +552,7 @@ describe('Unit', function () {
       const origConfig = math.config()
       math.config({ predictable: false })
 
-      assert.strictEqual(typeof (math.eval('40 m * 40 N / (40 J)')), 'number')
+      assert.strictEqual(typeof (math.evaluate('40 m * 40 N / (40 J)')), 'number')
 
       let bigunit = math.unit(math.bignumber(1), 'km')
       let smallunit = math.unit(math.bignumber(3000000), 'mm')
@@ -604,7 +604,7 @@ describe('Unit', function () {
       Unit.setUnitSystem('auto')
       Unit.createUnit({ 'USD': '' })
       Unit.createUnit({ 'EUR': '1.15 USD' })
-      assert.strictEqual(math.eval('10 EUR/hour * 2 hours').toString(), '20 EUR')
+      assert.strictEqual(math.evaluate('10 EUR/hour * 2 hours').toString(), '20 EUR')
     })
   })
 
@@ -722,16 +722,16 @@ describe('Unit', function () {
     })
 
     it('should format units with VA and VAR correctly', function () {
-      assert.strictEqual(math.eval('4000 VAR + 3000 VA').format(), '(3 + 4i) kVA')
-      assert.strictEqual(math.eval('3000 VA + 4000 VAR').format(), '(3 + 4i) kVA')
-      assert.strictEqual(math.eval('4000 VAR').format(), '(4) kVAR')
-      assert.strictEqual(math.eval('4000i VA').format(), '(4) kVAR')
-      assert.strictEqual(math.eval('4000i VAR').format(), '(-4) kVA')
-      assert.strictEqual(math.eval('abs(4000 VAR + 3000 VA)').format(), '5 kW')
-      assert.strictEqual(math.eval('abs(3000 VA + 4000 VAR)').format(), '5 kW')
-      assert.strictEqual(math.eval('abs(4000 VAR)').format(), '4 kW')
-      assert.strictEqual(math.eval('abs(4000i VA)').format(), '4 kW')
-      assert.strictEqual(math.eval('abs(4000i VAR)').format(), '4 kW')
+      assert.strictEqual(math.evaluate('4000 VAR + 3000 VA').format(), '(3 + 4i) kVA')
+      assert.strictEqual(math.evaluate('3000 VA + 4000 VAR').format(), '(3 + 4i) kVA')
+      assert.strictEqual(math.evaluate('4000 VAR').format(), '(4) kVAR')
+      assert.strictEqual(math.evaluate('4000i VA').format(), '(4) kVAR')
+      assert.strictEqual(math.evaluate('4000i VAR').format(), '(-4) kVA')
+      assert.strictEqual(math.evaluate('abs(4000 VAR + 3000 VA)').format(), '5 kW')
+      assert.strictEqual(math.evaluate('abs(3000 VA + 4000 VAR)').format(), '5 kW')
+      assert.strictEqual(math.evaluate('abs(4000 VAR)').format(), '4 kW')
+      assert.strictEqual(math.evaluate('abs(4000i VA)').format(), '4 kW')
+      assert.strictEqual(math.evaluate('abs(4000i VAR)').format(), '4 kW')
     })
 
     it('should ignore properties in Object.prototype when finding the best prefix', function () {
@@ -1050,8 +1050,8 @@ describe('Unit', function () {
       assert.strictEqual(unit2.units[0].unit.name, 'lb')
       assert.strictEqual(unit2.units[0].prefix.name, '')
 
-      assert.strictEqual(math.eval('2 feet * 8 s').toString(), '16 feet s')
-      assert.strictEqual(math.eval('2 s * 8 feet').toString(), '16 s feet')
+      assert.strictEqual(math.evaluate('2 feet * 8 s').toString(), '16 feet s')
+      assert.strictEqual(math.evaluate('2 s * 8 feet').toString(), '16 s feet')
     })
   })
 
@@ -1125,7 +1125,7 @@ describe('Unit', function () {
 
     it('should create a custom unit from a configuration object', function () {
       Unit.createUnitSingle('wiggle', { definition: '4 rad^2/s', offset: 1, prefixes: 'long' })
-      assert.strictEqual(math.eval('8000 rad^2/s').toString(), '1 kilowiggle')
+      assert.strictEqual(math.evaluate('8000 rad^2/s').toString(), '1 kilowiggle')
     })
 
     it('should return the new (value-less) unit', function () {
@@ -1182,7 +1182,7 @@ describe('Unit', function () {
     it('should create and use a new base if no matching base exists', function () {
       Unit.createUnitSingle('jabberwocky', '1 mile^5/hour')
       assert.strictEqual('jabberwocky_STUFF' in Unit.BASE_UNITS, true)
-      assert.strictEqual(math.eval('4 mile^5/minute').format(4), '240 jabberwocky')
+      assert.strictEqual(math.evaluate('4 mile^5/minute').format(4), '240 jabberwocky')
     })
   })
 
@@ -1196,7 +1196,7 @@ describe('Unit', function () {
           prefixes: 'long'
         }
       })
-      assert.strictEqual(math.eval('2 foo3 to foo1').toString(), '8 foo1')
+      assert.strictEqual(math.evaluate('2 foo3 to foo1').toString(), '8 foo1')
     })
 
     it('should override units when requested and if able', function () {

@@ -206,7 +206,7 @@ describe('FunctionAssignmentNode', function () {
 
     math2.import({ f })
 
-    const g = math2.eval('g(arr) = f(arr)')
+    const g = math2.evaluate('g(arr) = f(arr)')
     assert.deepStrictEqual(g([1, 2, 3]), [1, 2, 3])
   })
 

@@ -73,31 +73,31 @@ describe('parse', function () {
     // http://unicode-table.com/en
     let scope = {}
 
-    math.eval('$ab$c = 2', scope) // dollar sign
+    math.evaluate('$ab$c = 2', scope) // dollar sign
     assert.strictEqual(scope['$ab$c'], 2)
 
-    math.eval('\u00E9 = 2', scope) // Latin Small Letter E with Acute
+    math.evaluate('\u00E9 = 2', scope) // Latin Small Letter E with Acute
     assert.strictEqual(scope['\u00E9'], 2)
 
-    math.eval('\u03A6 = 3', scope) // Greek Capital Letter Phi
+    math.evaluate('\u03A6 = 3', scope) // Greek Capital Letter Phi
     assert.strictEqual(scope['\u03A6'], 3)
 
-    math.eval('\u03A9 = 4', scope) // Greek Capital Letter Omega
+    math.evaluate('\u03A9 = 4', scope) // Greek Capital Letter Omega
     assert.strictEqual(scope['\u03A9'], 4)
 
-    math.eval('\u2126 = 4', scope) // Letter-like character Ohm
+    math.evaluate('\u2126 = 4', scope) // Letter-like character Ohm
     assert.strictEqual(scope['\u2126'], 4)
 
-    math.eval('k\u00F6ln = 5', scope) // Combination of latin and unicode
+    math.evaluate('k\u00F6ln = 5', scope) // Combination of latin and unicode
     assert.strictEqual(scope['k\u00F6ln'], 5)
 
     // test unicode characters in the astral plane (surrogate pairs
-    math.eval('\uD835\uDD38 = 1', scope) // double struck capital A
+    math.evaluate('\uD835\uDD38 = 1', scope) // double struck capital A
     assert.strictEqual(scope['\uD835\uDD38'], 1)
 
     // should not allow the "holes"
     assert.throws(function () {
-      math.eval('\uD835\uDCA3 = 1', scope)
+      math.evaluate('\uD835\uDCA3 = 1', scope)
     })
   })
 
@@ -447,10 +447,10 @@ describe('parse', function () {
 
     it('should create units and aliases', function () {
       const myMath = math.create()
-      myMath.eval('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})')
-      assert.strictEqual(myMath.eval('5 knot').toString(), '5 knot')
-      assert.strictEqual(myMath.eval('5 knots').toString(), '5 knots')
-      assert.strictEqual(myMath.eval('5 kt').toString(), '5 kt')
+      myMath.evaluate('createUnit("knot", {definition: "0.514444444 m/s", aliases: ["knots", "kt", "kts"]})')
+      assert.strictEqual(myMath.evaluate('5 knot').toString(), '5 knot')
+      assert.strictEqual(myMath.evaluate('5 knots').toString(), '5 knots')
+      assert.strictEqual(myMath.evaluate('5 kt').toString(), '5 kt')
     })
 
     it('should evaluate operator "to" with correct precedence ', function () {
@@ -892,13 +892,13 @@ describe('parse', function () {
       approx.equal(math.sin(math.pi / 2), 1)
 
       assert.deepStrictEqual(math.round(math.add(1, math.pow(math.e, math.multiply(math.pi, math.i))), 5), math.complex(0))
-      assert.deepStrictEqual(math.round(math.eval('1+e^(pi*i)'), 5), math.complex(0))
+      assert.deepStrictEqual(math.round(math.evaluate('1+e^(pi*i)'), 5), math.complex(0))
 
       assert.deepStrictEqual(math.sqrt(-1), math.i)
-      assert.deepStrictEqual(math.eval('i'), math.complex(0, 1))
+      assert.deepStrictEqual(math.evaluate('i'), math.complex(0, 1))
 
-      assert.strictEqual(math.eval('true'), true)
-      assert.strictEqual(math.eval('false'), false)
+      assert.strictEqual(math.evaluate('true'), true)
+      assert.strictEqual(math.evaluate('false'), false)
     })
 
     // helper function to create a ConstantNode with empty comment
@@ -1752,71 +1752,71 @@ describe('parse', function () {
 
     it('should parse numbers as bignumber', function () {
       assert.deepStrictEqual(bigmath.bignumber('2.3'), new BigNumber('2.3'))
-      assert.deepStrictEqual(bigmath.eval('2.3'), new BigNumber('2.3'))
-      assert.deepStrictEqual(bigmath.eval('2.3e+500'), new BigNumber('2.3e+500'))
+      assert.deepStrictEqual(bigmath.evaluate('2.3'), new BigNumber('2.3'))
+      assert.deepStrictEqual(bigmath.evaluate('2.3e+500'), new BigNumber('2.3e+500'))
     })
 
     it('should evaluate functions supporting bignumbers', function () {
-      assert.deepStrictEqual(bigmath.eval('0.1 + 0.2'), new BigNumber('0.3'))
+      assert.deepStrictEqual(bigmath.evaluate('0.1 + 0.2'), new BigNumber('0.3'))
     })
 
     it('should evaluate functions supporting bignumbers', function () {
-      assert.deepStrictEqual(bigmath.eval('add(0.1, 0.2)'), new BigNumber('0.3'))
+      assert.deepStrictEqual(bigmath.evaluate('add(0.1, 0.2)'), new BigNumber('0.3'))
     })
 
     it('should work with mixed numbers and bignumbers', function () {
-      approx.equal(bigmath.eval('pi + 1'), 4.141592653589793)
+      approx.equal(bigmath.evaluate('pi + 1'), 4.141592653589793)
     })
 
     it('should evaluate functions not supporting bignumbers', function () {
-      approx.equal(bigmath.eval('sin(0.1)'), 0.09983341664682815)
+      approx.equal(bigmath.evaluate('sin(0.1)'), 0.09983341664682815)
     })
 
     it('should create a range from bignumbers', function () {
-      assert.deepStrictEqual(bigmath.eval('4:6'),
+      assert.deepStrictEqual(bigmath.evaluate('4:6'),
         bigmath.matrix([new BigNumber(4), new BigNumber(5), new BigNumber(6)]))
-      assert.deepStrictEqual(bigmath.eval('0:2:4'),
+      assert.deepStrictEqual(bigmath.evaluate('0:2:4'),
         bigmath.matrix([new BigNumber(0), new BigNumber(2), new BigNumber(4)]))
     })
 
     it('should create a matrix with bignumbers', function () {
-      assert.deepStrictEqual(bigmath.eval('[0.1, 0.2]'),
+      assert.deepStrictEqual(bigmath.evaluate('[0.1, 0.2]'),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
     })
 
     it('should get an element from a matrix with bignumbers', function () {
       let scope = {}
-      assert.deepStrictEqual(bigmath.eval('a=[0.1, 0.2]', scope),
+      assert.deepStrictEqual(bigmath.evaluate('a=[0.1, 0.2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
 
-      assert.deepStrictEqual(bigmath.eval('a[1]', scope), new BigNumber(0.1))
-      assert.deepStrictEqual(bigmath.eval('a[:]', scope),
+      assert.deepStrictEqual(bigmath.evaluate('a[1]', scope), new BigNumber(0.1))
+      assert.deepStrictEqual(bigmath.evaluate('a[:]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
-      assert.deepStrictEqual(bigmath.eval('a[1:2]', scope),
+      assert.deepStrictEqual(bigmath.evaluate('a[1:2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
     })
 
     it('should replace elements in a matrix with bignumbers', function () {
       let scope = {}
-      assert.deepStrictEqual(bigmath.eval('a=[0.1, 0.2]', scope),
+      assert.deepStrictEqual(bigmath.evaluate('a=[0.1, 0.2]', scope),
         bigmath.matrix([new BigNumber(0.1), new BigNumber(0.2)]))
 
-      bigmath.eval('a[1] = 0.3', scope)
+      bigmath.evaluate('a[1] = 0.3', scope)
       assert.deepStrictEqual(scope.a, bigmath.matrix([new BigNumber(0.3), new BigNumber(0.2)]))
-      bigmath.eval('a[:] = [0.5, 0.6]', scope)
+      bigmath.evaluate('a[:] = [0.5, 0.6]', scope)
       assert.deepStrictEqual(scope.a, bigmath.matrix([new BigNumber(0.5), new BigNumber(0.6)]))
-      bigmath.eval('a[1:2] = [0.7, 0.8]', scope)
+      bigmath.evaluate('a[1:2] = [0.7, 0.8]', scope)
       assert.deepStrictEqual(scope.a, bigmath.matrix([new BigNumber(0.7), new BigNumber(0.8)]))
     })
 
     it('should work with complex numbers (downgrades bignumbers to number)', function () {
-      assert.deepStrictEqual(bigmath.eval('3i'), new Complex(0, 3))
-      assert.deepStrictEqual(bigmath.eval('2 + 3i'), new Complex(2, 3))
-      assert.deepStrictEqual(bigmath.eval('2 * i'), new Complex(0, 2))
+      assert.deepStrictEqual(bigmath.evaluate('3i'), new Complex(0, 3))
+      assert.deepStrictEqual(bigmath.evaluate('2 + 3i'), new Complex(2, 3))
+      assert.deepStrictEqual(bigmath.evaluate('2 * i'), new Complex(0, 2))
     })
 
     it('should work with units', function () {
-      assert.deepStrictEqual(bigmath.eval('2 cm'), new bigmath.type.Unit(new bigmath.type.BigNumber(2), 'cm'))
+      assert.deepStrictEqual(bigmath.evaluate('2 cm'), new bigmath.type.Unit(new bigmath.type.BigNumber(2), 'cm'))
     })
   })
 
@@ -1879,8 +1879,8 @@ describe('parse', function () {
       assert.throws(function () { math.subset([1, 2, 3], math.index(-2)) }, /Index out of range \(-2 < 0\)/)
 
       // evaluation via parser throws one-based error
-      assert.throws(function () { math.eval('A[4]', { A: [1, 2, 3] }) }, /Index out of range \(4 > 3\)/)
-      assert.throws(function () { math.eval('A[-2]', { A: [1, 2, 3] }) }, /IndexError: Index out of range \(-2 < 1\)/)
+      assert.throws(function () { math.evaluate('A[4]', { A: [1, 2, 3] }) }, /Index out of range \(4 > 3\)/)
+      assert.throws(function () { math.evaluate('A[-2]', { A: [1, 2, 3] }) }, /IndexError: Index out of range \(-2 < 1\)/)
     })
 
     it('should return DimensionErrors with one based indices (subset)', function () {
@@ -1890,7 +1890,7 @@ describe('parse', function () {
       assert.throws(function () { math.subset([1, 2, 3], math.index(1, 1)) }, /DimensionError: Dimension mismatch \(2 != 1\)/)
 
       // evaluation via parser throws one-based error
-      assert.throws(function () { math.eval('A[1,1]', { A: [1, 2, 3] }) }, /DimensionError: Dimension mismatch \(2 != 1\)/)
+      assert.throws(function () { math.evaluate('A[1,1]', { A: [1, 2, 3] }) }, /DimensionError: Dimension mismatch \(2 != 1\)/)
     })
 
     it('should return DimensionErrors with one based indices (concat)', function () {
@@ -1902,9 +1902,9 @@ describe('parse', function () {
       assert.throws(function () { math.concat([[1, 2]], [[3, 4]], -1) }, /IndexError: Index out of range \(-1 < 0\)/)
 
       // evaluation via parser throws one-based error
-      assert.throws(function () { math.eval('concat([1,2], [[3,4]])') }, /DimensionError: Dimension mismatch \(1 != 2\)/)
-      assert.throws(function () { math.eval('concat([[1,2]], [[3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
-      assert.throws(function () { math.eval('concat([[1,2]], [[3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
+      assert.throws(function () { math.evaluate('concat([1,2], [[3,4]])') }, /DimensionError: Dimension mismatch \(1 != 2\)/)
+      assert.throws(function () { math.evaluate('concat([[1,2]], [[3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
+      assert.throws(function () { math.evaluate('concat([[1,2]], [[3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })
 
     it('should return DimensionErrors with one based indices (max)', function () {
@@ -1914,11 +1914,11 @@ describe('parse', function () {
       // TODO
 
       // evaluation via parser throws one-based error
-      assert.deepStrictEqual(math.eval('max([[1,2], [3,4]])'), 4)
-      assert.deepStrictEqual(math.eval('max([[1,2], [3,4]], 1)'), math.matrix([3, 4]))
-      assert.deepStrictEqual(math.eval('max([[1,2], [3,4]], 2)'), math.matrix([2, 4]))
-      assert.throws(function () { math.eval('max([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
-      assert.throws(function () { math.eval('max([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
+      assert.deepStrictEqual(math.evaluate('max([[1,2], [3,4]])'), 4)
+      assert.deepStrictEqual(math.evaluate('max([[1,2], [3,4]], 1)'), math.matrix([3, 4]))
+      assert.deepStrictEqual(math.evaluate('max([[1,2], [3,4]], 2)'), math.matrix([2, 4]))
+      assert.throws(function () { math.evaluate('max([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
+      assert.throws(function () { math.evaluate('max([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })
 
     it('should return DimensionErrors with one based indices (min)', function () {
@@ -1928,11 +1928,11 @@ describe('parse', function () {
       // TODO
 
       // evaluation via parser throws one-based error
-      assert.deepStrictEqual(math.eval('min([[1,2], [3,4]])'), 1)
-      assert.deepStrictEqual(math.eval('min([[1,2], [3,4]], 1)'), math.matrix([1, 2]))
-      assert.deepStrictEqual(math.eval('min([[1,2], [3,4]], 2)'), math.matrix([1, 3]))
-      assert.throws(function () { math.eval('min([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
-      assert.throws(function () { math.eval('min([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
+      assert.deepStrictEqual(math.evaluate('min([[1,2], [3,4]])'), 1)
+      assert.deepStrictEqual(math.evaluate('min([[1,2], [3,4]], 1)'), math.matrix([1, 2]))
+      assert.deepStrictEqual(math.evaluate('min([[1,2], [3,4]], 2)'), math.matrix([1, 3]))
+      assert.throws(function () { math.evaluate('min([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
+      assert.throws(function () { math.evaluate('min([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })
 
     it('should return DimensionErrors with one based indices (mean)', function () {
@@ -1942,11 +1942,11 @@ describe('parse', function () {
       // TODO
 
       // evaluation via parser throws one-based error
-      assert.deepStrictEqual(math.eval('mean([[1,2], [3,4]])'), 2.5)
-      assert.deepStrictEqual(math.eval('mean([[1,2], [3,4]], 1)'), math.matrix([2, 3]))
-      assert.deepStrictEqual(math.eval('mean([[1,2], [3,4]], 2)'), math.matrix([1.5, 3.5]))
-      assert.throws(function () { math.eval('mean([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
-      assert.throws(function () { math.eval('mean([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
+      assert.deepStrictEqual(math.evaluate('mean([[1,2], [3,4]])'), 2.5)
+      assert.deepStrictEqual(math.evaluate('mean([[1,2], [3,4]], 1)'), math.matrix([2, 3]))
+      assert.deepStrictEqual(math.evaluate('mean([[1,2], [3,4]], 2)'), math.matrix([1.5, 3.5]))
+      assert.throws(function () { math.evaluate('mean([[1,2], [3,4]], 3)') }, /IndexError: Index out of range \(3 > 2\)/)
+      assert.throws(function () { math.evaluate('mean([[1,2], [3,4]], 0)') }, /IndexError: Index out of range \(0 < 1\)/)
     })
   })
 
@@ -2066,9 +2066,9 @@ describe('parse', function () {
     const mathClone = math.create()
 
     try {
-      mathClone.eval('f(x)=1;config({clone:f})')
+      mathClone.evaluate('f(x)=1;config({clone:f})')
     } catch (err) {}
 
-    assert.strictEqual(mathClone.eval('2'), 2)
+    assert.strictEqual(mathClone.evaluate('2'), 2)
   })
 })

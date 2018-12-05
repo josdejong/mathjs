@@ -178,11 +178,11 @@ describe('simplify', function () {
 
   it('should preserve the value of BigNumbers', function () {
     const bigmath = math.create({ number: 'BigNumber', precision: 64 })
-    assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.eval('222222222222222222'))
-    assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').eval(), bigmath.eval('111111111111111112'))
-    assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.5'))
-    assert.deepStrictEqual(bigmath.simplify('1/3 + 11111111111111111111').eval(), bigmath.eval('11111111111111111111.33333333333333333333333333333333333333333333'))
-    assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').eval(), bigmath.eval('3 + 1 / 11111111111111111111'))
+    assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.evaluate('222222222222222222'))
+    assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').eval(), bigmath.evaluate('111111111111111112'))
+    assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').eval(), bigmath.evaluate('11111111111111111111.5'))
+    assert.deepStrictEqual(bigmath.simplify('1/3 + 11111111111111111111').eval(), bigmath.evaluate('11111111111111111111.33333333333333333333333333333333333333333333'))
+    assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').eval(), bigmath.evaluate('3 + 1 / 11111111111111111111'))
   })
 
   it('should not change the value of numbers when converting to fractions (1)', function () {
@@ -328,27 +328,27 @@ describe('simplify', function () {
 
   describe('expression parser', function () {
     it('should evaluate simplify containing string value', function () {
-      const res = math.eval('simplify("2x + 3x")')
+      const res = math.evaluate('simplify("2x + 3x")')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '5 * x')
     })
 
     it('should evaluate simplify containing nodes', function () {
-      const res = math.eval('simplify(parse("2x + 3x"))')
+      const res = math.evaluate('simplify(parse("2x + 3x"))')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '5 * x')
     })
 
     it('should compute and simplify derivatives', function () {
-      const res = math.eval('derivative("5x*3x", "x")')
+      const res = math.evaluate('derivative("5x*3x", "x")')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '30 * x')
     })
 
     it('should compute and simplify derivatives (2)', function () {
       let scope = {}
-      math.eval('a = derivative("5x*3x", "x")', scope)
-      const res = math.eval('simplify(a)', scope)
+      math.evaluate('a = derivative("5x*3x", "x")', scope)
+      const res = math.evaluate('simplify(a)', scope)
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '30 * x')
     })
@@ -356,7 +356,7 @@ describe('simplify', function () {
     it.skip('should compute and simplify derivatives (3)', function () {
       // TODO: this requires the + operator to support Nodes,
       //       i.e.   math.add(5, math.parse('2')) => return an OperatorNode
-      const res = math.eval('simplify(5+derivative(5/(3x), x))')
+      const res = math.evaluate('simplify(5+derivative(5/(3x), x))')
       assert.ok(res && res.isNode)
       assert.strictEqual(res.toString(), '5 - 15 / (3 * x) ^ 2')
     })
