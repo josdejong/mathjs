@@ -9,15 +9,14 @@ In case of a (multi dimensional) array or matrix, the standard deviation
 over all elements will be calculated by default, unless an axis is specified
 in which case the standard deviation will be computed along that axis.
 
-Optionally, the type of normalization can be specified as second
+For a multi dimensional array or matrix, is possible to compute the standard deviation along the rows or columns by specifying the dimension as the second argument.
+
+Optionally, the type of normalization can be specified as the final
 parameter. The parameter `normalization` can be one of the following values:
 
 - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
 - 'uncorrected'        The sum of squared errors is divided by n
 - 'biased'             The sum of squared errors is divided by (n + 1)
-
-Additionally, it is possible to compute the standard deviation along the browser
-or columns of a matrix by specifying the dimension.
 
 
 ## Syntax
@@ -27,7 +26,7 @@ math.std(a, b, c, ...)
 math.std(A)
 math.std(A, normalization)
 math.std(A, dimension)
-math.std(A, normalization, dimension)
+math.std(A, dimension, normalization)
 ```
 
 ### Parameters
@@ -35,6 +34,7 @@ math.std(A, normalization, dimension)
 Parameter | Type | Description
 --------- | ---- | -----------
 `array` | Array &#124; Matrix |  A single matrix or or multiple scalar values
+`dimension` | number &#124; BigNumber | The dimension along which the standard deviation will be calculated.
 `normalization` | string |  Determines how to normalize the variance. Choose 'unbiased' (default), 'uncorrected', or 'biased'. Default value: 'unbiased'.
 
 ### Returns
@@ -55,7 +55,7 @@ math.std([2, 4, 6, 8], 'biased')      // returns 2
 math.std([[1, 2, 3], [4, 5, 6]])      // returns 1.8708286933869707
 math.std([[1, 2, 3], [4, 6, 8]], 0)    // returns [2.1213203435596424, 2.8284271247461903, 3.5355339059327378]
 math.std([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000002, 1.9999999999999991]
-math.std([[1, 2, 3], [4, 6, 8]], 'biased', 1) // returns [0.7071067811865477, 1.4142135623730945]
+math.std([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.7071067811865477, 1.4142135623730945]
 ```
 
 
