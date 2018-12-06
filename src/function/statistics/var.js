@@ -21,15 +21,16 @@ function factory (type, config, load, typed) {
    * In case of a (multi dimensional) array or matrix, the variance over all
    * elements will be calculated.
    *
-   * Optionally, the type of normalization can be specified as second
+   * Additionally, it is possible to compute the variance along the rows
+   * or columns of a matrix by specifying the dimension as the second argument.
+   *
+   * Optionally, the type of normalization can be specified as the final
    * parameter. The parameter `normalization` can be one of the following values:
    *
    * - 'unbiased' (default) The sum of squared errors is divided by (n - 1)
    * - 'uncorrected'        The sum of squared errors is divided by n
    * - 'biased'             The sum of squared errors is divided by (n + 1)
    *
-   * Additionally, it is possible to compute the variance along the browser
-   * or columns of a matrix by specifying the dimension.
    *
    * Note that older browser may not like the variable name `var`. In that
    * case, the function can be called as `math['var'](...)` instead of
@@ -41,7 +42,7 @@ function factory (type, config, load, typed) {
    *     math.var(A)
    *     math.var(A, normalization)
    *     math.var(A, dimension)
-   *     math.var(A, normalization, dimension)
+   *     math.var(A, dimension, normalization)
    *
    * Examples:
    *
@@ -53,7 +54,7 @@ function factory (type, config, load, typed) {
    *     math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
    *     math.var([[1, 2, 3], [4, 6, 8]], 0)    // returns [4.5, 8, 12.5]
    *     math.var([[1, 2, 3], [4, 6, 8]], 1)    // returns [1.0000000000000005, 1.9999999999999964]
-   *     math.var([[1, 2, 3], [4, 6, 8]], 'biased', 1) // returns [0.500000000000002, 1.9999999999999982]
+   *     math.var([[1, 2, 3], [4, 6, 8]], 1, 'biased') // returns [0.500000000000002, 1.9999999999999982]
    *
    * See also:
    *
@@ -80,11 +81,11 @@ function factory (type, config, load, typed) {
 
     // var([a, b, c, c, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
-      return _varDimWeighted(array, DEFAULT_NORMALIZATION, dim)
+      return _varDimWeighted(array, dim, DEFAULT_NORMALIZATION)
     },
 
-    // var([a, b, c, c, ...], normalization, dim)
-    'Array | Matrix, string, number | BigNumber': _varDimWeighted,
+    // var([a, b, c, c, ...], dim, normalization)
+    'Array | Matrix, number | BigNumber, string': _varDimWeighted,
 
     // var(a, b, c, d, ...)
     '...': function (args) {
@@ -155,7 +156,7 @@ function factory (type, config, load, typed) {
         'Choose "unbiased" (default), "uncorrected", or "biased".')
     }
   }
-  function _varDimWeighted (array, normalization, dim) {
+  function _varDimWeighted (array, dim, normalization) {
     try {
       if (array.length === 0) {
         throw new SyntaxError('Function var requires one or more parameters (0 provided)')
