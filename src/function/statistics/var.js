@@ -81,11 +81,11 @@ function factory (type, config, load, typed) {
 
     // var([a, b, c, c, ...], dim)
     'Array | Matrix, number | BigNumber': function (array, dim) {
-      return _varDimWeighted(array, dim, DEFAULT_NORMALIZATION)
+      return _varDim(array, dim, DEFAULT_NORMALIZATION)
     },
 
     // var([a, b, c, c, ...], dim, normalization)
-    'Array | Matrix, number | BigNumber, string': _varDimWeighted,
+    'Array | Matrix, number | BigNumber, string': _varDim,
 
     // var(a, b, c, d, ...)
     '...': function (args) {
@@ -156,7 +156,7 @@ function factory (type, config, load, typed) {
         'Choose "unbiased" (default), "uncorrected", or "biased".')
     }
   }
-  function _varDimWeighted (array, dim, normalization) {
+  function _varDim (array, dim, normalization) {
     try {
       if (array.length === 0) {
         throw new SyntaxError('Function var requires one or more parameters (0 provided)')
