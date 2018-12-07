@@ -2,6 +2,7 @@
 
 # not yet released, version 5.3.2
 
+- Fix #1328: objects can't be written multi-line. Thanks @GHolk.
 - Remove side effects caused by `Unit.format` and `Unit.toString`, 
   making changes to the unit on execution. Thanks @ericman314.
 
