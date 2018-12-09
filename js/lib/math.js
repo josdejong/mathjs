@@ -6,8 +6,8 @@
  * It features real and complex numbers, units, matrices, a large set of
  * mathematical functions, and a flexible expression parser.
  *
- * @version 5.3.1
- * @date    2018-12-03
+ * @version 5.4.0
+ * @date    2018-12-09
  *
  * @license
  * Copyright (C) 2013-2018 Jos de Jong <wjosdejong@gmail.com>
@@ -1489,7 +1489,7 @@ exports.toSymbol = function (name, isUnit) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var isBigNumber = __webpack_require__(78);
+var isBigNumber = __webpack_require__(79);
 /**
  * Clone an object
  *
@@ -2002,7 +2002,7 @@ var formatNumber = __webpack_require__(3).format;
 
 var formatBigNumber = __webpack_require__(168).format;
 
-var isBigNumber = __webpack_require__(78);
+var isBigNumber = __webpack_require__(79);
 /**
  * Test whether value is a string
  * @param {*} value
@@ -3151,7 +3151,7 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   /**
@@ -3199,7 +3199,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var numeric = load(__webpack_require__(64));
+  var numeric = load(__webpack_require__(65));
   var getTypeOf = load(__webpack_require__(24));
   /**
    * Divide two scalar values, `x / y`.
@@ -3442,8 +3442,8 @@ function factory(type, config, load, typed) {
   var latex = __webpack_require__(4);
 
   var algorithm01 = load(__webpack_require__(32));
-  var algorithm04 = load(__webpack_require__(82));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm04 = load(__webpack_require__(83));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
   /**
@@ -3564,8 +3564,8 @@ function factory(type, config, load, typed) {
   var unaryMinus = load(__webpack_require__(34));
   var algorithm01 = load(__webpack_require__(32));
   var algorithm03 = load(__webpack_require__(18));
-  var algorithm05 = load(__webpack_require__(65));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm05 = load(__webpack_require__(66));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6)); // TODO: split function subtract in two: subtract and subtractScalar
 
@@ -3717,7 +3717,7 @@ exports.factory = factory;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var keywords = __webpack_require__(107);
+var keywords = __webpack_require__(108);
 
 var deepEqual = __webpack_require__(5).deepEqual;
 
@@ -5628,7 +5628,7 @@ var naturalSort = __webpack_require__(283);
 
 function factory(type, config, load, typed) {
   var getTypeOf = load(__webpack_require__(24));
-  var compare = load(__webpack_require__(53));
+  var compare = load(__webpack_require__(54));
   var compareBooleans = compare.signatures['boolean,boolean'];
   /**
    * Compare two values of any type in a deterministic, natural way.
@@ -5935,7 +5935,7 @@ exports['function'] = __webpack_require__(31);
 exports.number = __webpack_require__(3);
 exports.object = __webpack_require__(5);
 exports.string = __webpack_require__(9);
-exports.emitter = __webpack_require__(98);
+exports.emitter = __webpack_require__(99);
 
 /***/ }),
 /* 31 */
@@ -6135,7 +6135,7 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
@@ -6332,6 +6332,29 @@ exports.factory = factory;
 "use strict";
 
 
+var IndexError = __webpack_require__(55);
+/**
+ * Transform zero-based indices to one-based indices in errors
+ * @param {Error} err
+ * @returns {Error} Returns the transformed error
+ */
+
+
+exports.transform = function (err) {
+  if (err && err.isIndexError) {
+    return new IndexError(err.index + 1, err.min + 1, err.max !== undefined ? err.max + 1 : undefined);
+  }
+
+  return err;
+};
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var deepMap = __webpack_require__(0);
 
 var number = __webpack_require__(3);
@@ -6386,7 +6409,7 @@ exports.name = 'isInteger';
 exports.factory = factory;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6426,7 +6449,7 @@ function factory(type, config, load, typed) {
 exports.factory = factory;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6476,7 +6499,7 @@ module.exports = function nearlyEqual(x, y, epsilon) {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6588,7 +6611,7 @@ exports.name = 'algorithm10';
 exports.factory = factory;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6596,7 +6619,7 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
@@ -6718,7 +6741,7 @@ exports.name = 'smaller';
 exports.factory = factory;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6731,11 +6754,11 @@ var size = __webpack_require__(2).size;
 function factory(type, config, load, typed) {
   var latex = __webpack_require__(4);
 
-  var identity = load(__webpack_require__(48));
+  var identity = load(__webpack_require__(49));
   var multiply = load(__webpack_require__(10));
   var matrix = load(__webpack_require__(1));
-  var fraction = load(__webpack_require__(80));
-  var number = load(__webpack_require__(63));
+  var fraction = load(__webpack_require__(81));
+  var number = load(__webpack_require__(64));
   /**
    * Calculates the power of x to y, `x ^ y`.
    * Matrix exponentiation is supported for square matrices `x`, and positive
@@ -6912,7 +6935,7 @@ exports.name = 'pow';
 exports.factory = factory;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7049,7 +7072,7 @@ exports.name = 'zeros';
 exports.factory = factory;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7062,22 +7085,22 @@ var ArgumentsError = __webpack_require__(56);
 var deepMap = __webpack_require__(0);
 
 function factory(type, config, load, typed) {
-  var numeric = load(__webpack_require__(64));
-  var AccessorNode = load(__webpack_require__(106));
-  var ArrayNode = load(__webpack_require__(109));
-  var AssignmentNode = load(__webpack_require__(110));
-  var BlockNode = load(__webpack_require__(111));
-  var ConditionalNode = load(__webpack_require__(112));
+  var numeric = load(__webpack_require__(65));
+  var AccessorNode = load(__webpack_require__(107));
+  var ArrayNode = load(__webpack_require__(110));
+  var AssignmentNode = load(__webpack_require__(111));
+  var BlockNode = load(__webpack_require__(112));
+  var ConditionalNode = load(__webpack_require__(113));
   var ConstantNode = load(__webpack_require__(57));
-  var FunctionAssignmentNode = load(__webpack_require__(113));
-  var IndexNode = load(__webpack_require__(114));
-  var ObjectNode = load(__webpack_require__(115));
+  var FunctionAssignmentNode = load(__webpack_require__(114));
+  var IndexNode = load(__webpack_require__(115));
+  var ObjectNode = load(__webpack_require__(116));
   var OperatorNode = load(__webpack_require__(58));
-  var ParenthesisNode = load(__webpack_require__(66));
-  var FunctionNode = load(__webpack_require__(67));
-  var RangeNode = load(__webpack_require__(116));
-  var RelationalNode = load(__webpack_require__(117));
-  var SymbolNode = load(__webpack_require__(52));
+  var ParenthesisNode = load(__webpack_require__(67));
+  var FunctionNode = load(__webpack_require__(68));
+  var RangeNode = load(__webpack_require__(117));
+  var RelationalNode = load(__webpack_require__(118));
+  var SymbolNode = load(__webpack_require__(53));
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.eval().
@@ -8593,6 +8616,7 @@ function factory(type, config, load, typed) {
 
   function parseObject(state) {
     if (state.token === '{') {
+      openParams(state);
       var key;
       var properties = {};
 
@@ -8628,6 +8652,7 @@ function factory(type, config, load, typed) {
         throw createSyntaxError(state, 'Comma , or bracket } expected after object value');
       }
 
+      closeParams(state);
       getToken(state);
       var node = new ObjectNode(properties); // parse index parameters
 
@@ -8759,29 +8784,6 @@ exports.path = 'expression';
 exports.factory = factory;
 
 /***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var IndexError = __webpack_require__(55);
-/**
- * Transform zero-based indices to one-based indices in errors
- * @param {Error} err
- * @returns {Error} Returns the transformed error
- */
-
-
-exports.transform = function (err) {
-  if (err && err.isIndexError) {
-    return new IndexError(err.index + 1, err.min + 1, err.max !== undefined ? err.max + 1 : undefined);
-  }
-
-  return err;
-};
-
-/***/ }),
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8793,7 +8795,7 @@ var extend = __webpack_require__(5).extend;
 function factory(type, config, load, typed) {
   var divideScalar = load(__webpack_require__(12));
   var multiply = load(__webpack_require__(10));
-  var inv = load(__webpack_require__(68));
+  var inv = load(__webpack_require__(69));
   var matrix = load(__webpack_require__(1));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm14 = load(__webpack_require__(6));
@@ -8950,7 +8952,7 @@ exports.factory = factory;
 "use strict";
 
 
-var isMatrix = __webpack_require__(61);
+var isMatrix = __webpack_require__(62);
 /**
  * Recursively loop over all elements in a given multi dimensional array
  * and invoke the callback on each of the elements.
@@ -8983,6 +8985,25 @@ module.exports = function deepForEach(array, callback) {
 "use strict";
 
 
+var isMatrix = __webpack_require__(62);
+/**
+ * Test whether a value is a collection: an Array or Matrix
+ * @param {*} x
+ * @returns {boolean} isCollection
+ */
+
+
+module.exports = function isCollection(x) {
+  return Array.isArray(x) || isMatrix(x);
+};
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var util = __webpack_require__(30);
 
 var DimensionError = __webpack_require__(8);
@@ -8998,8 +9019,8 @@ var isString = string.isString;
 var validateIndex = array.validateIndex;
 
 function factory(type, config, load, typed) {
-  var getArrayDataType = load(__webpack_require__(62));
-  var Matrix = load(__webpack_require__(81)); // force loading Matrix (do not use via type.Matrix)
+  var getArrayDataType = load(__webpack_require__(63));
+  var Matrix = load(__webpack_require__(82)); // force loading Matrix (do not use via type.Matrix)
 
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
@@ -9919,7 +9940,7 @@ exports.factory = factory;
 exports.lazy = false; // no lazy loading, as we alter type.Matrix._storage
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10065,7 +10086,7 @@ exports.name = 'identity';
 exports.factory = factory;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10203,7 +10224,7 @@ exports.name = 'equal';
 exports.factory = factory;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10258,7 +10279,7 @@ exports.name = 'isNumeric';
 exports.factory = factory;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10580,7 +10601,7 @@ module.exports.getAssociativity = getAssociativity;
 module.exports.isAssociativeWith = isAssociativeWith;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10796,7 +10817,7 @@ exports.math = true; // request access to the math namespace as 5th argument of 
 exports.factory = factory;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10804,12 +10825,12 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var algorithm03 = load(__webpack_require__(18));
-  var algorithm05 = load(__webpack_require__(65));
+  var algorithm05 = load(__webpack_require__(66));
   var algorithm12 = load(__webpack_require__(19));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -10926,25 +10947,6 @@ function factory(type, config, load, typed) {
 
 exports.name = 'compare';
 exports.factory = factory;
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isMatrix = __webpack_require__(61);
-/**
- * Test whether a value is a collection: an Array or Matrix
- * @param {*} x
- * @returns {boolean} isCollection
- */
-
-
-module.exports = function isCollection(x) {
-  return Array.isArray(x) || isMatrix(x);
-};
 
 /***/ }),
 /* 55 */
@@ -11243,7 +11245,7 @@ var isSafeMethod = __webpack_require__(13).isSafeMethod;
 
 var getSafeProperty = __webpack_require__(13).getSafeProperty;
 
-var operators = __webpack_require__(51);
+var operators = __webpack_require__(52);
 
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
@@ -12055,6 +12057,32 @@ exports.factory = factory;
 
 "use strict";
 
+
+var isCollection = __webpack_require__(47);
+/**
+ * Test whether an array contains collections
+ * @param {Array} array
+ * @returns {boolean} Returns true when the array contains one or multiple
+ *                    collections (Arrays or Matrices). Returns false otherwise.
+ */
+
+
+module.exports = function containsCollections(array) {
+  for (var i = 0; i < array.length; i++) {
+    if (isCollection(array[i])) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 /**
  * Test whether a value is a Matrix
  * @param {*} x
@@ -12067,7 +12095,7 @@ module.exports = function isMatrix(x) {
 };
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12124,7 +12152,7 @@ function factory(type, config, load, typed) {
 exports.factory = factory;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12206,7 +12234,7 @@ exports.name = 'number';
 exports.factory = factory;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12222,9 +12250,9 @@ function factory(type, config, load, typed) {
 
   };
   var validOutputTypes = {
-    'number': load(__webpack_require__(63)),
-    'BigNumber': load(__webpack_require__(99)),
-    'Fraction': load(__webpack_require__(80))
+    'number': load(__webpack_require__(64)),
+    'BigNumber': load(__webpack_require__(100)),
+    'Fraction': load(__webpack_require__(81))
     /**
      * Convert a numeric value to a specific type: number, BigNumber, or Fraction
      *
@@ -12269,7 +12297,7 @@ exports.name = '_numeric';
 exports.factory = factory;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12449,7 +12477,7 @@ exports.name = 'algorithm05';
 exports.factory = factory;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12616,7 +12644,7 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12640,7 +12668,7 @@ var getSafeProperty = __webpack_require__(13).getSafeProperty;
 
 function factory(type, config, load, typed, math) {
   var Node = load(__webpack_require__(16));
-  var SymbolNode = load(__webpack_require__(52));
+  var SymbolNode = load(__webpack_require__(53));
   /**
    * @constructor FunctionNode
    * @extends {./Node}
@@ -13091,7 +13119,7 @@ exports.math = true; // request access to the math namespace as 5th argument of 
 exports.factory = factory;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13105,8 +13133,8 @@ function factory(type, config, load, typed) {
   var addScalar = load(__webpack_require__(17));
   var multiply = load(__webpack_require__(10));
   var unaryMinus = load(__webpack_require__(34));
-  var det = load(__webpack_require__(121));
-  var identity = load(__webpack_require__(48));
+  var det = load(__webpack_require__(122));
+  var identity = load(__webpack_require__(49));
   var abs = load(__webpack_require__(23));
   /**
    * Calculate the inverse of a square matrix.
@@ -13301,7 +13329,7 @@ exports.name = 'inv';
 exports.factory = factory;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13359,7 +13387,7 @@ exports.name = 'conj';
 exports.factory = factory;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13549,7 +13577,7 @@ exports.name = 'transpose';
 exports.factory = factory;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13613,7 +13641,7 @@ exports.name = 'isPositive';
 exports.factory = factory;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13774,7 +13802,7 @@ exports.name = 'algorithm06';
 exports.factory = factory;
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13783,7 +13811,7 @@ exports.factory = factory;
 var deepMap = __webpack_require__(0);
 
 function factory(type, config, load, typed) {
-  var gamma = load(__webpack_require__(135));
+  var gamma = load(__webpack_require__(136));
 
   var latex = __webpack_require__(4);
   /**
@@ -13839,7 +13867,7 @@ exports.name = 'factorial';
 exports.factory = factory;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13847,7 +13875,7 @@ exports.factory = factory;
 
 var isInteger = __webpack_require__(3).isInteger;
 
-var product = __webpack_require__(91);
+var product = __webpack_require__(92);
 
 function factory(type, config, load, typed) {
   /**
@@ -13943,7 +13971,7 @@ exports.name = 'combinations';
 exports.factory = factory;
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13959,7 +13987,7 @@ var DimensionError = __webpack_require__(8);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
-  var isInteger = load(__webpack_require__(35));
+  var isInteger = load(__webpack_require__(36));
   /**
    * Concatenate two or more matrices.
    *
@@ -14095,7 +14123,7 @@ exports.name = 'concat';
 exports.factory = factory;
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14160,33 +14188,113 @@ exports.name = 'isNaN';
 exports.factory = factory;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var isCollection = __webpack_require__(54);
+var arraySize = __webpack_require__(2).size;
+
+var isMatrix = __webpack_require__(62);
+
+var IndexError = __webpack_require__(55);
 /**
- * Test whether an array contains collections
- * @param {Array} array
- * @returns {boolean} Returns true when the array contains one or multiple
- *                    collections (Arrays or Matrices). Returns false otherwise.
+ * Reduce a given matrix or array to a new matrix or
+ * array with one less dimension, applying the given
+ * callback in the selected dimension.
+ * @param {Array | Matrix} mat
+ * @param {number} dim
+ * @param {Function} callback
+ * @return {Array | Matrix} res
  */
 
 
-module.exports = function containsCollections(array) {
-  for (var i = 0; i < array.length; i++) {
-    if (isCollection(array[i])) {
-      return true;
-    }
+module.exports = function (mat, dim, callback) {
+  var size = Array.isArray(mat) ? arraySize(mat) : mat.size();
+
+  if (dim < 0 || dim >= size.length) {
+    // TODO: would be more clear when throwing a DimensionError here
+    throw new IndexError(dim, size.length);
   }
 
-  return false;
+  if (isMatrix(mat)) {
+    return mat.create(_reduce(mat.valueOf(), dim, callback));
+  } else {
+    return _reduce(mat, dim, callback);
+  }
 };
+/**
+ * Recursively reduce a matrix
+ * @param {Array} mat
+ * @param {number} dim
+ * @param {Function} callback
+ * @returns {Array} ret
+ * @private
+ */
+
+
+function _reduce(mat, dim, callback) {
+  var i, ret, val, tran;
+
+  if (dim <= 0) {
+    if (!Array.isArray(mat[0])) {
+      val = mat[0];
+
+      for (i = 1; i < mat.length; i++) {
+        val = callback(val, mat[i]);
+      }
+
+      return val;
+    } else {
+      tran = _switch(mat);
+      ret = [];
+
+      for (i = 0; i < tran.length; i++) {
+        ret[i] = _reduce(tran[i], dim - 1, callback);
+      }
+
+      return ret;
+    }
+  } else {
+    ret = [];
+
+    for (i = 0; i < mat.length; i++) {
+      ret[i] = _reduce(mat[i], dim - 1, callback);
+    }
+
+    return ret;
+  }
+}
+/**
+ * Transpose a matrix
+ * @param {Array} mat
+ * @returns {Array} ret
+ * @private
+ */
+
+
+function _switch(mat) {
+  var I = mat.length;
+  var J = mat[0].length;
+  var i, j;
+  var ret = [];
+
+  for (j = 0; j < J; j++) {
+    var tmp = [];
+
+    for (i = 0; i < I; i++) {
+      tmp.push(mat[i][j]);
+    }
+
+    ret.push(tmp);
+  }
+
+  return ret;
+}
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14202,7 +14310,7 @@ module.exports = function isBigNumber(x) {
 };
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14429,7 +14537,7 @@ exports.factory = factory;
 exports.math = true; // request access to the math namespace
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14500,7 +14608,7 @@ exports.name = 'fraction';
 exports.factory = factory;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14790,7 +14898,7 @@ exports.path = 'type';
 exports.factory = factory;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14977,7 +15085,7 @@ exports.name = 'algorithm04';
 exports.factory = factory;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14986,17 +15094,17 @@ exports.factory = factory;
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function factory(type, config, load, typed, math) {
-  var parse = load(__webpack_require__(42));
-  var equal = load(__webpack_require__(49));
+  var parse = load(__webpack_require__(43));
+  var equal = load(__webpack_require__(50));
   var ConstantNode = load(__webpack_require__(57));
-  var FunctionNode = load(__webpack_require__(67));
+  var FunctionNode = load(__webpack_require__(68));
   var OperatorNode = load(__webpack_require__(58));
-  var ParenthesisNode = load(__webpack_require__(66));
-  var SymbolNode = load(__webpack_require__(52));
-  var simplifyConstant = load(__webpack_require__(118));
-  var simplifyCore = load(__webpack_require__(120));
+  var ParenthesisNode = load(__webpack_require__(67));
+  var SymbolNode = load(__webpack_require__(53));
+  var simplifyConstant = load(__webpack_require__(119));
+  var simplifyCore = load(__webpack_require__(121));
   var resolve = load(__webpack_require__(199));
-  var util = load(__webpack_require__(119));
+  var util = load(__webpack_require__(120));
   var isCommutative = util.isCommutative;
   var isAssociative = util.isAssociative;
   var flatten = util.flatten;
@@ -15746,7 +15854,7 @@ exports.name = 'simplify';
 exports.factory = factory;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16169,7 +16277,7 @@ exports.name = 'lup';
 exports.factory = factory;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16196,7 +16304,7 @@ exports.path = 'algebra.sparse';
 exports.factory = factory;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16389,7 +16497,7 @@ function factory(type) {
 exports.factory = factory;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16473,13 +16581,13 @@ exports.name = 'log';
 exports.factory = factory;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var bitNot = __webpack_require__(89);
+var bitNot = __webpack_require__(90);
 /**
  * Applies bitwise function to numbers
  * @param {BigNumber} x
@@ -16634,7 +16742,7 @@ function decCoefficientToBinaryString(x) {
 }
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16665,7 +16773,7 @@ module.exports = function bitNot(x) {
 };
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16827,7 +16935,7 @@ exports.name = 'algorithm08';
 exports.factory = factory;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports) {
 
 /** @param {integer} i
@@ -16853,7 +16961,7 @@ function product(i, n) {
 module.exports = product;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16862,9 +16970,9 @@ module.exports = product;
 var isInteger = __webpack_require__(3).isInteger;
 
 function factory(type, config, load, typed) {
-  var isNumeric = load(__webpack_require__(50));
-  var isNaN = load(__webpack_require__(76));
-  var asc = load(__webpack_require__(53));
+  var isNumeric = load(__webpack_require__(51));
+  var isNaN = load(__webpack_require__(77));
+  var asc = load(__webpack_require__(54));
 
   function desc(a, b) {
     return -asc(a, b);
@@ -17005,7 +17113,7 @@ exports.name = 'partitionSelect';
 exports.factory = factory;
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17013,13 +17121,13 @@ exports.factory = factory;
 
 var deepForEach = __webpack_require__(46);
 
-var reduce = __webpack_require__(94);
+var reduce = __webpack_require__(78);
 
-var containsCollections = __webpack_require__(77);
+var containsCollections = __webpack_require__(61);
 
 function factory(type, config, load, typed) {
   var larger = load(__webpack_require__(33));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the maximum value of a matrix or a  list with values.
    * In case of a multi dimensional array, the maximum of the flattened array
@@ -17119,113 +17227,114 @@ exports.name = 'max';
 exports.factory = factory;
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var arraySize = __webpack_require__(2).size;
+var deepForEach = __webpack_require__(46);
 
-var isMatrix = __webpack_require__(61);
+var reduce = __webpack_require__(78);
 
-var IndexError = __webpack_require__(55);
-/**
- * Reduce a given matrix or array to a new matrix or
- * array with one less dimension, applying the given
- * callback in the selected dimension.
- * @param {Array | Matrix} mat
- * @param {number} dim
- * @param {Function} callback
- * @return {Array | Matrix} res
- */
+var containsCollections = __webpack_require__(61);
 
+function factory(type, config, load, typed) {
+  var add = load(__webpack_require__(17));
+  var improveErrorMessage = load(__webpack_require__(37));
+  /**
+   * Compute the sum of a matrix or a list with values.
+   * In case of a (multi dimensional) array or matrix, the sum of all
+   * elements will be calculated.
+   *
+   * Syntax:
+   *
+   *     math.sum(a, b, c, ...)
+   *     math.sum(A)
+   *
+   * Examples:
+   *
+   *     math.sum(2, 1, 4, 3)               // returns 10
+   *     math.sum([2, 1, 4, 3])             // returns 10
+   *     math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
+   *
+   * See also:
+   *
+   *    mean, median, min, max, prod, std, var
+   *
+   * @param {... *} args  A single matrix or or multiple scalar values
+   * @return {*} The sum of all values
+   */
 
-module.exports = function (mat, dim, callback) {
-  var size = Array.isArray(mat) ? arraySize(mat) : mat.size();
-
-  if (dim < 0 || dim >= size.length) {
-    // TODO: would be more clear when throwing a DimensionError here
-    throw new IndexError(dim, size.length);
-  }
-
-  if (isMatrix(mat)) {
-    return mat.create(_reduce(mat.valueOf(), dim, callback));
-  } else {
-    return _reduce(mat, dim, callback);
-  }
-};
-/**
- * Recursively reduce a matrix
- * @param {Array} mat
- * @param {number} dim
- * @param {Function} callback
- * @returns {Array} ret
- * @private
- */
-
-
-function _reduce(mat, dim, callback) {
-  var i, ret, val, tran;
-
-  if (dim <= 0) {
-    if (!Array.isArray(mat[0])) {
-      val = mat[0];
-
-      for (i = 1; i < mat.length; i++) {
-        val = callback(val, mat[i]);
+  var sum = typed('sum', {
+    // sum([a, b, c, d, ...])
+    'Array | Matrix': _sum,
+    // sum([a, b, c, d, ...], dim)
+    'Array | Matrix, number | BigNumber': _nsumDim,
+    // sum(a, b, c, d, ...)
+    '...': function _(args) {
+      if (containsCollections(args)) {
+        throw new TypeError('Scalar values expected in function sum');
       }
 
-      return val;
-    } else {
-      tran = _switch(mat);
-      ret = [];
+      return _sum(args);
+    }
+  });
+  sum.toTex = undefined; // use default template
 
-      for (i = 0; i < tran.length; i++) {
-        ret[i] = _reduce(tran[i], dim - 1, callback);
+  return sum;
+  /**
+   * Recursively calculate the sum of an n-dimensional array
+   * @param {Array} array
+   * @return {number} sum
+   * @private
+   */
+
+  function _sum(array) {
+    var sum;
+    deepForEach(array, function (value) {
+      try {
+        sum = sum === undefined ? value : add(sum, value);
+      } catch (err) {
+        throw improveErrorMessage(err, 'sum', value);
       }
+    });
 
-      return ret;
-    }
-  } else {
-    ret = [];
+    if (sum === undefined) {
+      switch (config.number) {
+        case 'number':
+          return 0;
 
-    for (i = 0; i < mat.length; i++) {
-      ret[i] = _reduce(mat[i], dim - 1, callback);
-    }
+        case 'BigNumber':
+          return new type.BigNumber(0);
 
-    return ret;
-  }
-}
-/**
- * Transpose a matrix
- * @param {Array} mat
- * @returns {Array} ret
- * @private
- */
+        case 'Fraction':
+          return new type.Fraction(0);
 
-
-function _switch(mat) {
-  var I = mat.length;
-  var J = mat[0].length;
-  var i, j;
-  var ret = [];
-
-  for (j = 0; j < J; j++) {
-    var tmp = [];
-
-    for (i = 0; i < I; i++) {
-      tmp.push(mat[i][j]);
+        default:
+          return 0;
+      }
     }
 
-    ret.push(tmp);
+    return sum;
   }
 
-  return ret;
+  function _nsumDim(array, dim) {
+    try {
+      var _sum2 = reduce(array, dim, add);
+
+      return _sum2;
+    } catch (err) {
+      throw improveErrorMessage(err, 'sum');
+    }
+  }
 }
+
+exports.name = 'sum';
+exports.factory = factory;
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17233,7 +17342,7 @@ function _switch(mat) {
 
 var ArgumentsError = __webpack_require__(56);
 
-var isCollection = __webpack_require__(54);
+var isCollection = __webpack_require__(47);
 
 var isNumber = __webpack_require__(3).isNumber; // TODO: rethink math.distribution
 // TODO: rework to a typed function
@@ -17532,7 +17641,7 @@ exports.name = 'distribution';
 exports.factory = factory;
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17572,7 +17681,7 @@ function factory(type, config, load, typed) {
 exports.factory = factory;
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17584,9 +17693,9 @@ var typedFunction = __webpack_require__(157);
 
 var digits = __webpack_require__(3).digits;
 
-var isBigNumber = __webpack_require__(78);
+var isBigNumber = __webpack_require__(79);
 
-var isMatrix = __webpack_require__(61); // returns a new instance of typed-function
+var isMatrix = __webpack_require__(62); // returns a new instance of typed-function
 
 
 var _createTyped = function createTyped() {
@@ -18012,7 +18121,7 @@ exports.create = function create(type) {
 };
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18038,7 +18147,7 @@ exports.mixin = function (obj) {
 };
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18108,7 +18217,7 @@ exports.name = 'bignumber';
 exports.factory = factory;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18451,7 +18560,7 @@ exports.path = 'type';
 exports.factory = factory;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18532,7 +18641,7 @@ exports.path = 'type';
 exports.factory = factory;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18590,7 +18699,7 @@ function hasher(args) {
 }
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18654,7 +18763,7 @@ exports.name = 'fix';
 exports.factory = factory;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18671,7 +18780,7 @@ var NO_INT = 'Number of decimals in function round must be an integer';
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var equalScalar = load(__webpack_require__(11));
-  var zeros = load(__webpack_require__(41));
+  var zeros = load(__webpack_require__(42));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm12 = load(__webpack_require__(19));
   var algorithm14 = load(__webpack_require__(6));
@@ -18828,7 +18937,7 @@ exports.name = 'round';
 exports.factory = factory;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18950,7 +19059,7 @@ exports.name = 'format';
 exports.factory = factory;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18960,7 +19069,7 @@ var getSafeProperty = __webpack_require__(13).getSafeProperty;
 
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
-  var access = load(__webpack_require__(108));
+  var access = load(__webpack_require__(109));
   /**
    * @constructor AccessorNode
    * @extends {Node}
@@ -19159,7 +19268,7 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19170,7 +19279,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19178,7 +19287,7 @@ module.exports = {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 
 var getSafeProperty = __webpack_require__(13).getSafeProperty;
 
@@ -19224,7 +19333,7 @@ function factory(type, config, load, typed) {
 exports.factory = factory;
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19424,7 +19533,7 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19437,9 +19546,9 @@ var setSafeProperty = __webpack_require__(13).setSafeProperty;
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
   var assign = load(__webpack_require__(198));
-  var access = load(__webpack_require__(108));
+  var access = load(__webpack_require__(109));
 
-  var operators = __webpack_require__(51);
+  var operators = __webpack_require__(52);
   /**
    * @constructor AssignmentNode
    * @extends {Node}
@@ -19746,7 +19855,7 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19758,7 +19867,7 @@ var map = __webpack_require__(2).map;
 
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
-  var ResultSet = load(__webpack_require__(101));
+  var ResultSet = load(__webpack_require__(102));
   /**
    * @constructor BlockNode
    * @extends {Node}
@@ -19945,13 +20054,13 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var operators = __webpack_require__(51);
+var operators = __webpack_require__(52);
 
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
@@ -20190,13 +20299,13 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var keywords = __webpack_require__(107);
+var keywords = __webpack_require__(108);
 
 var escape = __webpack_require__(9).escape;
 
@@ -20206,7 +20315,7 @@ var join = __webpack_require__(2).join;
 
 var latex = __webpack_require__(4);
 
-var operators = __webpack_require__(51);
+var operators = __webpack_require__(52);
 
 var setSafeProperty = __webpack_require__(13).setSafeProperty;
 
@@ -20435,7 +20544,7 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20447,7 +20556,7 @@ var escape = __webpack_require__(9).escape;
 
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
-  var Range = load(__webpack_require__(100));
+  var Range = load(__webpack_require__(101));
   var isArray = Array.isArray;
   /**
    * @constructor IndexNode
@@ -20719,7 +20828,7 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20945,13 +21054,13 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var operators = __webpack_require__(51);
+var operators = __webpack_require__(52);
 
 function factory(type, config, load, typed) {
   var Node = load(__webpack_require__(16));
@@ -21237,13 +21346,13 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var operators = __webpack_require__(51);
+var operators = __webpack_require__(52);
 
 var latex = __webpack_require__(4);
 
@@ -21468,14 +21577,14 @@ exports.path = 'expression.node';
 exports.factory = factory;
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
  // TODO this could be improved by simplifying seperated constants under associative and commutative operators
 
 function factory(type, config, load, typed, math) {
-  var util = load(__webpack_require__(119));
+  var util = load(__webpack_require__(120));
   var isCommutative = util.isCommutative;
   var isAssociative = util.isAssociative;
   var allChildren = util.allChildren;
@@ -21771,7 +21880,7 @@ exports.path = 'algebra.simplify';
 exports.factory = factory;
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21955,20 +22064,20 @@ exports.factory = factory;
 exports.math = true;
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 function factory(type, config, load, typed, math) {
-  var equal = load(__webpack_require__(49));
+  var equal = load(__webpack_require__(50));
   var isZero = load(__webpack_require__(59));
   var add = load(__webpack_require__(14));
   var subtract = load(__webpack_require__(15));
   var multiply = load(__webpack_require__(10));
   var divide = load(__webpack_require__(44));
-  var pow = load(__webpack_require__(40));
+  var pow = load(__webpack_require__(41));
   var ConstantNode = math.expression.node.ConstantNode;
   var OperatorNode = math.expression.node.OperatorNode;
   var FunctionNode = math.expression.node.FunctionNode;
@@ -22153,7 +22262,7 @@ exports.path = 'algebra.simplify';
 exports.factory = factory;
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22169,7 +22278,7 @@ function factory(type, config, load, typed) {
   var subtract = load(__webpack_require__(15));
   var multiply = load(__webpack_require__(10));
   var unaryMinus = load(__webpack_require__(34));
-  var lup = load(__webpack_require__(84));
+  var lup = load(__webpack_require__(85));
   /**
    * Calculate the determinant of a matrix.
    *
@@ -22309,14 +22418,14 @@ exports.name = 'det';
 exports.factory = factory;
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 function factory(type, config, load, typed) {
-  var parse = load(__webpack_require__(42));
+  var parse = load(__webpack_require__(43));
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.eval().
@@ -22367,7 +22476,7 @@ exports.name = 'parse';
 exports.factory = factory;
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22375,7 +22484,7 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
@@ -22533,7 +22642,7 @@ exports.name = 'unequal';
 exports.factory = factory;
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22603,7 +22712,7 @@ exports.name = 'sign';
 exports.factory = factory;
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22690,7 +22799,7 @@ exports.name = 'slu';
 exports.factory = factory;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22748,7 +22857,7 @@ exports.path = 'algebra.sparse';
 exports.factory = factory;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22756,7 +22865,7 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
@@ -22874,7 +22983,7 @@ exports.name = 'largerEq';
 exports.factory = factory;
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22902,14 +23011,14 @@ exports.path = 'algebra.sparse';
 exports.factory = factory;
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 function factory(type, config, load) {
-  var csFlip = load(__webpack_require__(85));
+  var csFlip = load(__webpack_require__(86));
   /**
    * Marks the node at w[j]
    *
@@ -22932,7 +23041,7 @@ exports.path = 'algebra.sparse';
 exports.factory = factory;
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22944,7 +23053,7 @@ function factory(type, config, load, typed) {
   var multiplyScalar = load(__webpack_require__(21));
   var subtract = load(__webpack_require__(15));
   var equalScalar = load(__webpack_require__(11));
-  var solveValidation = load(__webpack_require__(86));
+  var solveValidation = load(__webpack_require__(87));
   var DenseMatrix = type.DenseMatrix;
   /**
    * Solves the linear equation system by forwards substitution. Matrix must be a lower triangular matrix.
@@ -23124,7 +23233,7 @@ exports.name = 'lsolve';
 exports.factory = factory;
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23136,7 +23245,7 @@ function factory(type, config, load, typed) {
   var multiplyScalar = load(__webpack_require__(21));
   var subtract = load(__webpack_require__(15));
   var equalScalar = load(__webpack_require__(11));
-  var solveValidation = load(__webpack_require__(86));
+  var solveValidation = load(__webpack_require__(87));
   var DenseMatrix = type.DenseMatrix;
   /**
    * Solves the linear equation system by backward substitution. Matrix must be an upper triangular matrix.
@@ -23317,7 +23426,7 @@ exports.name = 'usolve';
 exports.factory = factory;
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23420,7 +23529,7 @@ exports.name = 'dotDivide';
 exports.factory = factory;
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23569,7 +23678,7 @@ exports.name = 'algorithm09';
 exports.factory = factory;
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23580,11 +23689,11 @@ function factory(type, config, load, typed) {
   var subtract = load(__webpack_require__(15));
   var multiply = load(__webpack_require__(10));
   var divide = load(__webpack_require__(44));
-  var pow = load(__webpack_require__(40));
-  var factorial = load(__webpack_require__(73));
-  var combinations = load(__webpack_require__(74));
+  var pow = load(__webpack_require__(41));
+  var factorial = load(__webpack_require__(74));
+  var combinations = load(__webpack_require__(75));
   var isNegative = load(__webpack_require__(60));
-  var isInteger = load(__webpack_require__(35));
+  var isInteger = load(__webpack_require__(36));
   var larger = load(__webpack_require__(33));
   /**
    * The Stirling numbers of the second kind, counts the number of ways to partition
@@ -23643,7 +23752,7 @@ exports.name = 'stirlingS2';
 exports.factory = factory;
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23655,9 +23764,9 @@ var isInteger = __webpack_require__(3).isInteger;
 
 function factory(type, config, load, typed) {
   var multiply = load(__webpack_require__(10));
-  var pow = load(__webpack_require__(40));
+  var pow = load(__webpack_require__(41));
 
-  var product = __webpack_require__(91);
+  var product = __webpack_require__(92);
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.
@@ -23824,7 +23933,7 @@ exports.name = 'gamma';
 exports.factory = factory;
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23888,7 +23997,7 @@ exports.name = 'not';
 exports.factory = factory;
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23970,7 +24079,7 @@ exports.name = 'map';
 exports.factory = factory;
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24242,100 +24351,6 @@ exports.name = 'range';
 exports.factory = factory;
 
 /***/ }),
-/* 139 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deepForEach = __webpack_require__(46);
-
-function factory(type, config, load, typed) {
-  var add = load(__webpack_require__(17));
-  var improveErrorMessage = load(__webpack_require__(36));
-  /**
-   * Compute the sum of a matrix or a list with values.
-   * In case of a (multi dimensional) array or matrix, the sum of all
-   * elements will be calculated.
-   *
-   * Syntax:
-   *
-   *     math.sum(a, b, c, ...)
-   *     math.sum(A)
-   *
-   * Examples:
-   *
-   *     math.sum(2, 1, 4, 3)               // returns 10
-   *     math.sum([2, 1, 4, 3])             // returns 10
-   *     math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
-   *
-   * See also:
-   *
-   *    mean, median, min, max, prod, std, var
-   *
-   * @param {... *} args  A single matrix or or multiple scalar values
-   * @return {*} The sum of all values
-   */
-
-  var sum = typed('sum', {
-    'Array | Matrix': function ArrayMatrix(args) {
-      // sum([a, b, c, d, ...])
-      return _sum(args);
-    },
-    'Array | Matrix, number | BigNumber': function ArrayMatrixNumberBigNumber() {
-      // sum([a, b, c, d, ...], dim)
-      // TODO: implement sum(A, dim)
-      throw new Error('sum(A, dim) is not yet supported');
-    },
-    '...': function _(args) {
-      // sum(a, b, c, d, ...)
-      return _sum(args);
-    }
-  });
-  sum.toTex = undefined; // use default template
-
-  return sum;
-  /**
-   * Recursively calculate the sum of an n-dimensional array
-   * @param {Array} array
-   * @return {number} sum
-   * @private
-   */
-
-  function _sum(array) {
-    var sum;
-    deepForEach(array, function (value) {
-      try {
-        sum = sum === undefined ? value : add(sum, value);
-      } catch (err) {
-        throw improveErrorMessage(err, 'sum', value);
-      }
-    });
-
-    if (sum === undefined) {
-      switch (config.number) {
-        case 'number':
-          return 0;
-
-        case 'BigNumber':
-          return new type.BigNumber(0);
-
-        case 'Fraction':
-          return new type.Fraction(0);
-
-        default:
-          return 0;
-      }
-    }
-
-    return sum;
-  }
-}
-
-exports.name = 'sum';
-exports.factory = factory;
-
-/***/ }),
 /* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24454,7 +24469,7 @@ var generalize = __webpack_require__(2).generalize;
 
 function factory(type, config, load, typed) {
   var MatrixIndex = load(__webpack_require__(28));
-  var DenseMatrix = load(__webpack_require__(47));
+  var DenseMatrix = load(__webpack_require__(48));
   var size = load(__webpack_require__(26));
   var subset = load(__webpack_require__(22));
   var compareNatural = load(__webpack_require__(29));
@@ -24543,7 +24558,7 @@ var generalize = __webpack_require__(2).generalize;
 
 function factory(type, config, load, typed) {
   var MatrixIndex = load(__webpack_require__(28));
-  var DenseMatrix = load(__webpack_require__(47));
+  var DenseMatrix = load(__webpack_require__(48));
   var size = load(__webpack_require__(26));
   var subset = load(__webpack_require__(22));
   var compareNatural = load(__webpack_require__(29));
@@ -24618,7 +24633,7 @@ var flatten = __webpack_require__(2).flatten;
 
 function factory(type, config, load, typed) {
   var MatrixIndex = load(__webpack_require__(28));
-  var concat = load(__webpack_require__(75));
+  var concat = load(__webpack_require__(76));
   var size = load(__webpack_require__(26));
   var subset = load(__webpack_require__(22));
   var setDifference = load(__webpack_require__(141));
@@ -24673,14 +24688,14 @@ exports.factory = factory;
 
 var flatten = __webpack_require__(2).flatten;
 
-var containsCollections = __webpack_require__(77);
+var containsCollections = __webpack_require__(61);
 
 function factory(type, config, load, typed) {
   var add = load(__webpack_require__(17));
   var divide = load(__webpack_require__(12));
-  var compare = load(__webpack_require__(53));
-  var partitionSelect = load(__webpack_require__(92));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var compare = load(__webpack_require__(54));
+  var partitionSelect = load(__webpack_require__(93));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the median of a matrix or a list with values. The values are
    * sorted and the middle value is returned. In case of an even number of
@@ -24796,14 +24811,14 @@ var size = __webpack_require__(2).size;
 
 var deepForEach = __webpack_require__(46);
 
-var reduce = __webpack_require__(94);
+var reduce = __webpack_require__(78);
 
-var containsCollections = __webpack_require__(77);
+var containsCollections = __webpack_require__(61);
 
 function factory(type, config, load, typed) {
   var add = load(__webpack_require__(14));
   var divide = load(__webpack_require__(44));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the mean value of matrix or a list with values.
    * In case of a multi dimensional array, the mean of the flattened array
@@ -24907,13 +24922,13 @@ exports.factory = factory;
 
 var deepForEach = __webpack_require__(46);
 
-var reduce = __webpack_require__(94);
+var reduce = __webpack_require__(78);
 
-var containsCollections = __webpack_require__(77);
+var containsCollections = __webpack_require__(61);
 
 function factory(type, config, load, typed) {
-  var smaller = load(__webpack_require__(39));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var smaller = load(__webpack_require__(40));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the maximum value of a matrix or a  list of values.
    * In case of a multi dimensional array, the maximum of the flattened array
@@ -25028,8 +25043,8 @@ function factory(type, config, load, typed) {
   var subtract = load(__webpack_require__(15));
   var multiply = load(__webpack_require__(21));
   var divide = load(__webpack_require__(12));
-  var isNaN = load(__webpack_require__(76));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var isNaN = load(__webpack_require__(77));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the variance of a matrix or a  list with values.
    * In case of a (multi dimensional) array or matrix, the variance over all
@@ -25696,7 +25711,7 @@ var extend = __webpack_require__(5).extend;
 var customs = __webpack_require__(13);
 
 function factory(type, config, load, typed, math) {
-  var _parse = load(__webpack_require__(42));
+  var _parse = load(__webpack_require__(43));
   /**
    * @constructor Parser
    * Parser contains methods to evaluate or parse expressions, and has a number
@@ -30735,9 +30750,9 @@ __webpack_require__(156);
 
 var isFactory = __webpack_require__(5).isFactory;
 
-var typedFactory = __webpack_require__(97);
+var typedFactory = __webpack_require__(98);
 
-var emitter = __webpack_require__(98);
+var emitter = __webpack_require__(99);
 
 var importFactory = __webpack_require__(159);
 
@@ -32804,8 +32819,8 @@ __webpack_require__(195), // functions
 // load ./expression *after* ./function since we need to
 // attach transforms to functions that are imported there
 __webpack_require__(352), // expression parsing
-__webpack_require__(573), // serialization utility (math.json.reviver)
-__webpack_require__(575) // errors
+__webpack_require__(574), // serialization utility (math.json.reviver)
+__webpack_require__(576) // errors
 ];
 
 /***/ }),
@@ -32815,7 +32830,7 @@ __webpack_require__(575) // errors
 "use strict";
 
 
-module.exports = [__webpack_require__(163), __webpack_require__(165), __webpack_require__(166), __webpack_require__(170), __webpack_require__(174), __webpack_require__(177), __webpack_require__(63), __webpack_require__(64), __webpack_require__(185), __webpack_require__(186), __webpack_require__(187)];
+module.exports = [__webpack_require__(163), __webpack_require__(165), __webpack_require__(166), __webpack_require__(170), __webpack_require__(174), __webpack_require__(177), __webpack_require__(64), __webpack_require__(65), __webpack_require__(185), __webpack_require__(186), __webpack_require__(187)];
 
 /***/ }),
 /* 163 */
@@ -32826,7 +32841,7 @@ module.exports = [__webpack_require__(163), __webpack_require__(165), __webpack_
 
 module.exports = [// type
 __webpack_require__(164), // construction function
-__webpack_require__(99)];
+__webpack_require__(100)];
 
 /***/ }),
 /* 164 */
@@ -33444,7 +33459,7 @@ exports.factory = factory;
 
 
 module.exports = [// type
-__webpack_require__(79), // construction function
+__webpack_require__(80), // construction function
 __webpack_require__(172)];
 
 /***/ }),
@@ -35046,7 +35061,7 @@ module.exports = function (str) {
 
 module.exports = [// type
 __webpack_require__(175), // construction function
-__webpack_require__(80)];
+__webpack_require__(81)];
 
 /***/ }),
 /* 175 */
@@ -35938,9 +35953,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 module.exports = [// types
-__webpack_require__(81), __webpack_require__(47), __webpack_require__(179), __webpack_require__(180), __webpack_require__(181), __webpack_require__(182), __webpack_require__(28), __webpack_require__(100), // construction functions
+__webpack_require__(82), __webpack_require__(48), __webpack_require__(179), __webpack_require__(180), __webpack_require__(181), __webpack_require__(182), __webpack_require__(28), __webpack_require__(101), // construction functions
 __webpack_require__(183), __webpack_require__(1), __webpack_require__(184), // util functions
-__webpack_require__(62)];
+__webpack_require__(63)];
 
 /***/ }),
 /* 178 */
@@ -35980,10 +35995,10 @@ var isString = string.isString;
 var validateIndex = array.validateIndex;
 
 function factory(type, config, load, typed) {
-  var Matrix = load(__webpack_require__(81)); // force loading Matrix (do not use via type.Matrix)
+  var Matrix = load(__webpack_require__(82)); // force loading Matrix (do not use via type.Matrix)
 
   var equalScalar = load(__webpack_require__(11));
-  var getArrayDataType = load(__webpack_require__(62));
+  var getArrayDataType = load(__webpack_require__(63));
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
    * for sparse matrices.
@@ -37667,7 +37682,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var smaller = load(__webpack_require__(39));
+  var smaller = load(__webpack_require__(40));
   var larger = load(__webpack_require__(33));
   var oneOverLogPhi = 1.0 / Math.log((1.0 + Math.sqrt(5.0)) / 2.0);
   /**
@@ -38069,8 +38084,8 @@ var isArray = Array.isArray;
 var isString = string.isString;
 
 function factory(type, config, load) {
-  var DenseMatrix = load(__webpack_require__(47));
-  var smaller = load(__webpack_require__(39));
+  var DenseMatrix = load(__webpack_require__(48));
+  var smaller = load(__webpack_require__(40));
 
   function ImmutableDenseMatrix(data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) {
@@ -38440,7 +38455,7 @@ exports.factory = factory;
 
 
 module.exports = [// type
-__webpack_require__(101)];
+__webpack_require__(102)];
 
 /***/ }),
 /* 186 */
@@ -38537,23 +38552,23 @@ var endsWith = __webpack_require__(9).endsWith;
 
 var clone = __webpack_require__(5).clone;
 
-var constants = __webpack_require__(102);
+var constants = __webpack_require__(103);
 
 function factory(type, config, load, typed, math) {
   var add = load(__webpack_require__(17));
   var subtract = load(__webpack_require__(15));
   var multiply = load(__webpack_require__(21));
   var divide = load(__webpack_require__(12));
-  var pow = load(__webpack_require__(40));
+  var pow = load(__webpack_require__(41));
   var abs = load(__webpack_require__(23));
-  var fix = load(__webpack_require__(103));
-  var round = load(__webpack_require__(104));
-  var equal = load(__webpack_require__(49));
-  var isNumeric = load(__webpack_require__(50));
-  var format = load(__webpack_require__(105));
+  var fix = load(__webpack_require__(104));
+  var round = load(__webpack_require__(105));
+  var equal = load(__webpack_require__(50));
+  var isNumeric = load(__webpack_require__(51));
+  var format = load(__webpack_require__(106));
   var getTypeOf = load(__webpack_require__(24));
-  var toNumber = load(__webpack_require__(63));
-  var Complex = load(__webpack_require__(79));
+  var toNumber = load(__webpack_require__(64));
+  var Complex = load(__webpack_require__(80));
   /**
    * A unit can be constructed in the following ways:
    *
@@ -38612,7 +38627,7 @@ function factory(type, config, load, typed, math) {
     // The justification behind this is that if the constructor is explicitly called,
     // the caller wishes the units to be returned exactly as he supplied.
 
-    this.isUnitListSimplified = true;
+    this.skipAutomaticSimplification = true;
   }
   /**
    * Attach type information
@@ -38963,7 +38978,7 @@ function factory(type, config, load, typed, math) {
   Unit.prototype.clone = function () {
     var unit = new Unit();
     unit.fixPrefix = this.fixPrefix;
-    unit.isUnitListSimplified = this.isUnitListSimplified;
+    unit.skipAutomaticSimplification = this.skipAutomaticSimplification;
     unit.value = clone(this.value);
     unit.dimensions = this.dimensions.slice(0);
     unit.units = [];
@@ -39205,7 +39220,7 @@ function factory(type, config, load, typed, math) {
     for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
       res.dimensions[i] = (this.dimensions[i] || 0) + (other.dimensions[i] || 0);
-    } // Append other's units list onto res (simplify later in Unit.prototype.format)
+    } // Append other's units list onto res
 
 
     for (var _i = 0; _i < other.units.length; _i++) {
@@ -39226,10 +39241,9 @@ function factory(type, config, load, typed, math) {
       res.value = multiply(valThis, valOther);
     } else {
       res.value = null;
-    } // Trigger simplification of the unit list at some future time
+    }
 
-
-    res.isUnitListSimplified = false;
+    res.skipAutomaticSimplification = false;
     return getNumericIfUnitless(res);
   };
   /**
@@ -39246,7 +39260,7 @@ function factory(type, config, load, typed, math) {
     for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
       // Dimensions arrays may be of different lengths. Default to 0.
       res.dimensions[i] = (this.dimensions[i] || 0) - (other.dimensions[i] || 0);
-    } // Invert and append other's units list onto res (simplify later in Unit.prototype.format)
+    } // Invert and append other's units list onto res
 
 
     for (var _i2 = 0; _i2 < other.units.length; _i2++) {
@@ -39268,10 +39282,9 @@ function factory(type, config, load, typed, math) {
       res.value = divide(valThis, valOther);
     } else {
       res.value = null;
-    } // Trigger simplification of the unit list at some future time
+    }
 
-
-    res.isUnitListSimplified = false;
+    res.skipAutomaticSimplification = false;
     return getNumericIfUnitless(res);
   };
   /**
@@ -39303,10 +39316,9 @@ function factory(type, config, load, typed, math) {
       // Update: Complex supported now
     } else {
       res.value = null;
-    } // Trigger lazy evaluation of the unit list
+    }
 
-
-    res.isUnitListSimplified = false;
+    res.skipAutomaticSimplification = false;
     return getNumericIfUnitless(res);
   };
   /**
@@ -39371,7 +39383,7 @@ function factory(type, config, load, typed, math) {
 
       other.value = clone(value);
       other.fixPrefix = true;
-      other.isUnitListSimplified = true;
+      other.skipAutomaticSimplification = true;
       return other;
     } else if (type.isUnit(valuelessUnit)) {
       if (!this.equalBase(valuelessUnit)) {
@@ -39385,7 +39397,7 @@ function factory(type, config, load, typed, math) {
       other = valuelessUnit.clone();
       other.value = clone(value);
       other.fixPrefix = true;
-      other.isUnitListSimplified = true;
+      other.skipAutomaticSimplification = true;
       return other;
     } else {
       throw new Error('String or Unit expected as parameter');
@@ -39412,14 +39424,14 @@ function factory(type, config, load, typed, math) {
 
 
   Unit.prototype.toNumeric = function (valuelessUnit) {
-    var other = this;
+    var other;
 
     if (valuelessUnit) {
       // Allow getting the numeric value without converting to a different unit
       other = this.to(valuelessUnit);
+    } else {
+      other = this.clone();
     }
-
-    other.simplifyUnitListLazy();
 
     if (other._isDerived()) {
       return other._denormalize(other.value);
@@ -39476,28 +39488,25 @@ function factory(type, config, load, typed, math) {
 
   Unit.prototype.valueOf = Unit.prototype.toString;
   /**
-   * Attempt to simplify the list of units for this unit according to the dimensions array and the current unit system. After the call, this Unit will contain a list of the "best" units for formatting.
-   * Intended to be evaluated lazily. You must set isUnitListSimplified = false before the call! After the call, isUnitListSimplified will be set to true.
+   * Simplify this Unit's unit list and return a new Unit with the simplified list.
+   * The returned Unit will contain a list of the "best" units for formatting.
    */
 
-  Unit.prototype.simplifyUnitListLazy = function () {
-    if (this.isUnitListSimplified || this.value === null) {
-      return;
-    }
-
+  Unit.prototype.simplify = function () {
+    var ret = this.clone();
     var proposedUnitList = []; // Search for a matching base
 
     var matchingBase;
 
     for (var key in currentUnitSystem) {
-      if (this.hasBase(BASE_UNITS[key])) {
+      if (ret.hasBase(BASE_UNITS[key])) {
         matchingBase = key;
         break;
       }
     }
 
     if (matchingBase === 'NONE') {
-      this.units = [];
+      ret.units = [];
     } else {
       var matchingUnit;
 
@@ -39509,7 +39518,7 @@ function factory(type, config, load, typed, math) {
       }
 
       if (matchingUnit) {
-        this.units = [{
+        ret.units = [{
           unit: matchingUnit.unit,
           prefix: matchingUnit.prefix,
           power: 1.0
@@ -39523,12 +39532,12 @@ function factory(type, config, load, typed, math) {
         for (var i = 0; i < BASE_DIMENSIONS.length; i++) {
           var baseDim = BASE_DIMENSIONS[i];
 
-          if (Math.abs(this.dimensions[i] || 0) > 1e-12) {
+          if (Math.abs(ret.dimensions[i] || 0) > 1e-12) {
             if (currentUnitSystem.hasOwnProperty(baseDim)) {
               proposedUnitList.push({
                 unit: currentUnitSystem[baseDim].unit,
                 prefix: currentUnitSystem[baseDim].prefix,
-                power: this.dimensions[i] || 0
+                power: ret.dimensions[i] || 0
               });
             } else {
               missingBaseDim = true;
@@ -39537,15 +39546,19 @@ function factory(type, config, load, typed, math) {
         } // Is the proposed unit list "simpler" than the existing one?
 
 
-        if (proposedUnitList.length < this.units.length && !missingBaseDim) {
+        if (proposedUnitList.length < ret.units.length && !missingBaseDim) {
           // Replace this unit list with the proposed list
-          this.units = proposedUnitList;
+          ret.units = proposedUnitList;
         }
       }
     }
 
-    this.isUnitListSimplified = true;
+    return ret;
   };
+  /**
+   * Returns a new Unit in the SI system with the same value as this one
+   */
+
 
   Unit.prototype.toSI = function () {
     var ret = this.clone();
@@ -39572,19 +39585,17 @@ function factory(type, config, load, typed, math) {
 
     ret.units = proposedUnitList;
     ret.fixPrefix = true;
-    ret.isUnitListSimplified = true;
+    ret.skipAutomaticSimplification = true;
     return ret;
   };
   /**
-   * Get a string representation of the units of this Unit, without the value.
+   * Get a string representation of the units of this Unit, without the value. The unit list is formatted as-is without first being simplified.
    * @memberof Unit
    * @return {string}
    */
 
 
   Unit.prototype.formatUnits = function () {
-    // Lazy evaluation of the unit list
-    this.simplifyUnitListLazy();
     var strNum = '';
     var strDen = '';
     var nNum = 0;
@@ -39653,43 +39664,44 @@ function factory(type, config, load, typed, math) {
 
 
   Unit.prototype.format = function (options) {
-    // Simplfy the unit list, if necessary
-    this.simplifyUnitListLazy(); // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
+    // Simplfy the unit list, unless it is valueless or was created directly in the
+    // constructor or as the result of to or toSI
+    var simp = this.skipAutomaticSimplification || this.value === null ? this.clone() : this.simplify(); // Apply some custom logic for handling VA and VAR. The goal is to express the value of the unit as a real value, if possible. Otherwise, use a real-valued unit instead of a complex-valued one.
 
     var isImaginary = false;
 
-    if (typeof this.value !== 'undefined' && this.value !== null && type.isComplex(this.value)) {
+    if (typeof simp.value !== 'undefined' && simp.value !== null && type.isComplex(simp.value)) {
       // TODO: Make this better, for example, use relative magnitude of re and im rather than absolute
-      isImaginary = Math.abs(this.value.re) < 1e-14;
+      isImaginary = Math.abs(simp.value.re) < 1e-14;
     }
 
-    for (var i in this.units) {
-      if (this.units[i].unit) {
-        if (this.units[i].unit.name === 'VA' && isImaginary) {
-          this.units[i].unit = UNITS['VAR'];
-        } else if (this.units[i].unit.name === 'VAR' && !isImaginary) {
-          this.units[i].unit = UNITS['VA'];
+    for (var i in simp.units) {
+      if (simp.units[i].unit) {
+        if (simp.units[i].unit.name === 'VA' && isImaginary) {
+          simp.units[i].unit = UNITS['VAR'];
+        } else if (simp.units[i].unit.name === 'VAR' && !isImaginary) {
+          simp.units[i].unit = UNITS['VA'];
         }
       }
     } // Now apply the best prefix
     // Units must have only one unit and not have the fixPrefix flag set
 
 
-    if (this.units.length === 1 && !this.fixPrefix) {
+    if (simp.units.length === 1 && !simp.fixPrefix) {
       // Units must have integer powers, otherwise the prefix will change the
       // outputted value by not-an-integer-power-of-ten
-      if (Math.abs(this.units[0].power - Math.round(this.units[0].power)) < 1e-14) {
+      if (Math.abs(simp.units[0].power - Math.round(simp.units[0].power)) < 1e-14) {
         // Apply the best prefix
-        this.units[0].prefix = this._bestPrefix();
+        simp.units[0].prefix = simp._bestPrefix();
       }
     }
 
-    var value = this._denormalize(this.value);
+    var value = simp._denormalize(simp.value);
 
-    var str = this.value !== null ? format(value, options || {}) : '';
-    var unitStr = this.formatUnits();
+    var str = simp.value !== null ? format(value, options || {}) : '';
+    var unitStr = simp.formatUnits();
 
-    if (this.value && type.isComplex(this.value)) {
+    if (simp.value && type.isComplex(simp.value)) {
       str = '(' + str + ')'; // Surround complex values with ( ) to enable better parsing
     }
 
@@ -40561,7 +40573,9 @@ function factory(type, config, load, typed, math) {
     base: BASE_UNIT_NONE,
     value: 1,
     offset: 0,
-    dimensions: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    dimensions: BASE_DIMENSIONS.map(function (x) {
+      return 0;
+    })
   };
   var UNITS = {
     // length
@@ -42848,7 +42862,7 @@ exports.math = true; // request access to the math namespace
 
 var object = __webpack_require__(5);
 
-var bigConstants = __webpack_require__(102);
+var bigConstants = __webpack_require__(103);
 
 function factory(type, config, load, typed, math) {
   // listen for changed in the configuration, automatically reload
@@ -42953,7 +42967,7 @@ exports.math = true; // request access to the math namespace
 /* 194 */
 /***/ (function(module, exports) {
 
-module.exports = '5.3.1'; // Note: This file is automatically generated when building math.js.
+module.exports = '5.4.0'; // Note: This file is automatically generated when building math.js.
 // Changes made in this file will be overwritten.
 
 /***/ }),
@@ -42973,10 +42987,10 @@ module.exports = [__webpack_require__(196), __webpack_require__(217), __webpack_
 
 
 module.exports = [__webpack_require__(197), // simplify
-__webpack_require__(83), // polynomial
+__webpack_require__(84), // polynomial
 __webpack_require__(200), // decomposition
-__webpack_require__(201), __webpack_require__(84), __webpack_require__(125), // solver
-__webpack_require__(130), __webpack_require__(215), __webpack_require__(131)];
+__webpack_require__(201), __webpack_require__(85), __webpack_require__(126), // solver
+__webpack_require__(131), __webpack_require__(215), __webpack_require__(132)];
 
 /***/ }),
 /* 197 */
@@ -42986,17 +43000,17 @@ __webpack_require__(130), __webpack_require__(215), __webpack_require__(131)];
 
 
 function factory(type, config, load, typed) {
-  var parse = load(__webpack_require__(42));
-  var simplify = load(__webpack_require__(83));
-  var equal = load(__webpack_require__(49));
+  var parse = load(__webpack_require__(43));
+  var simplify = load(__webpack_require__(84));
+  var equal = load(__webpack_require__(50));
   var isZero = load(__webpack_require__(59));
   var getType = load(__webpack_require__(24));
-  var numeric = load(__webpack_require__(64));
+  var numeric = load(__webpack_require__(65));
   var ConstantNode = load(__webpack_require__(57));
-  var FunctionNode = load(__webpack_require__(67));
+  var FunctionNode = load(__webpack_require__(68));
   var OperatorNode = load(__webpack_require__(58));
-  var ParenthesisNode = load(__webpack_require__(66));
-  var SymbolNode = load(__webpack_require__(52));
+  var ParenthesisNode = load(__webpack_require__(67));
+  var SymbolNode = load(__webpack_require__(53));
   /**
    * Takes the derivative of an expression expressed in parser Nodes.
    * The derivative will be taken over the supplied variable in the
@@ -43605,7 +43619,7 @@ exports.factory = factory;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 
 var setSafeProperty = __webpack_require__(13).setSafeProperty;
 
@@ -43732,16 +43746,16 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var simplify = load(__webpack_require__(83));
-  var simplifyCore = load(__webpack_require__(120));
-  var simplifyConstant = load(__webpack_require__(118));
-  var parse = load(__webpack_require__(122));
+  var simplify = load(__webpack_require__(84));
+  var simplifyCore = load(__webpack_require__(121));
+  var simplifyConstant = load(__webpack_require__(119));
+  var parse = load(__webpack_require__(123));
 
   var number = __webpack_require__(3);
 
   var ConstantNode = load(__webpack_require__(57));
   var OperatorNode = load(__webpack_require__(58));
-  var SymbolNode = load(__webpack_require__(52));
+  var SymbolNode = load(__webpack_require__(53));
   /**
    * Transform a rationalizable expression in a rational fraction.
    * If rational fraction is one variable polynomial then converts
@@ -44580,13 +44594,13 @@ exports.factory = factory;
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
-  var zeros = load(__webpack_require__(41));
-  var identity = load(__webpack_require__(48));
+  var zeros = load(__webpack_require__(42));
+  var identity = load(__webpack_require__(49));
   var isZero = load(__webpack_require__(59));
-  var unequal = load(__webpack_require__(123));
-  var sign = load(__webpack_require__(124));
+  var unequal = load(__webpack_require__(124));
+  var sign = load(__webpack_require__(125));
   var sqrt = load(__webpack_require__(45));
-  var conj = load(__webpack_require__(69));
+  var conj = load(__webpack_require__(70));
   var unaryMinus = load(__webpack_require__(34));
   var addScalar = load(__webpack_require__(17));
   var divideScalar = load(__webpack_require__(12));
@@ -45006,12 +45020,12 @@ exports.factory = factory;
 
 
 function factory(type, config, load) {
-  var csFlip = load(__webpack_require__(85));
+  var csFlip = load(__webpack_require__(86));
   var csFkeep = load(__webpack_require__(204));
-  var csTdfs = load(__webpack_require__(126));
+  var csTdfs = load(__webpack_require__(127));
   var add = load(__webpack_require__(14));
   var multiply = load(__webpack_require__(10));
-  var transpose = load(__webpack_require__(70));
+  var transpose = load(__webpack_require__(71));
   /**
    * Approximate minimum degree ordering. The minimum degree algorithm is a widely used
    * heuristic for finding a permutation P so that P*A*P' has fewer nonzeros in its factorization
@@ -45892,7 +45906,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load) {
-  var csTdfs = load(__webpack_require__(126));
+  var csTdfs = load(__webpack_require__(127));
   /**
    * Post order a tree of forest
    *
@@ -45967,7 +45981,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load) {
-  var transpose = load(__webpack_require__(70));
+  var transpose = load(__webpack_require__(71));
   var csLeaf = load(__webpack_require__(209));
   /**
    * Computes the column counts using the upper triangular part of A.
@@ -46192,7 +46206,7 @@ function factory(type, config, load) {
   var divideScalar = load(__webpack_require__(12));
   var multiply = load(__webpack_require__(10));
   var larger = load(__webpack_require__(33));
-  var largerEq = load(__webpack_require__(127));
+  var largerEq = load(__webpack_require__(128));
   var csSpsolve = load(__webpack_require__(211));
   var SparseMatrix = type.SparseMatrix;
   /**
@@ -46487,8 +46501,8 @@ exports.factory = factory;
 
 function factory(type, config, load) {
   var csDfs = load(__webpack_require__(213));
-  var csMarked = load(__webpack_require__(128));
-  var csMark = load(__webpack_require__(129));
+  var csMarked = load(__webpack_require__(129));
+  var csMark = load(__webpack_require__(130));
   /**
    * The csReach function computes X = Reach(B), where B is the nonzero pattern of the n-by-1
    * sparse column of vector b. The function returns the set of nodes reachable from any node in B. The
@@ -46554,8 +46568,8 @@ exports.factory = factory;
 
 
 function factory(type, config, load) {
-  var csMarked = load(__webpack_require__(128));
-  var csMark = load(__webpack_require__(129));
+  var csMarked = load(__webpack_require__(129));
+  var csMark = load(__webpack_require__(130));
   var csUnflip = load(__webpack_require__(214));
   /**
    * Depth-first search computes the nonzero pattern xi of the directed graph G (Matrix) starting
@@ -46649,7 +46663,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load) {
-  var csFlip = load(__webpack_require__(85));
+  var csFlip = load(__webpack_require__(86));
   /**
    * Flips the value if it is negative of returns the same value otherwise.
    *
@@ -46681,12 +46695,12 @@ var isArray = Array.isArray;
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
-  var lup = load(__webpack_require__(84));
-  var slu = load(__webpack_require__(125));
+  var lup = load(__webpack_require__(85));
+  var slu = load(__webpack_require__(126));
   var csIpvec = load(__webpack_require__(216));
-  var solveValidation = load(__webpack_require__(86));
-  var usolve = load(__webpack_require__(131));
-  var lsolve = load(__webpack_require__(130));
+  var solveValidation = load(__webpack_require__(87));
+  var usolve = load(__webpack_require__(132));
+  var lsolve = load(__webpack_require__(131));
   /**
    * Solves the linear system `A * x = b` where `A` is an [n x n] matrix and `b` is a [n] column vector.
    *
@@ -46855,7 +46869,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(23), __webpack_require__(14), __webpack_require__(17), __webpack_require__(218), __webpack_require__(219), __webpack_require__(220), __webpack_require__(44), __webpack_require__(132), __webpack_require__(221), __webpack_require__(222), __webpack_require__(223), __webpack_require__(224), __webpack_require__(103), __webpack_require__(225), __webpack_require__(226), __webpack_require__(227), __webpack_require__(228), __webpack_require__(87), __webpack_require__(230), __webpack_require__(231), __webpack_require__(232), __webpack_require__(233), __webpack_require__(10), __webpack_require__(234), __webpack_require__(235), __webpack_require__(236), __webpack_require__(40), __webpack_require__(104), __webpack_require__(124), __webpack_require__(45), __webpack_require__(237), __webpack_require__(15), __webpack_require__(34), __webpack_require__(238), __webpack_require__(239)];
+module.exports = [__webpack_require__(23), __webpack_require__(14), __webpack_require__(17), __webpack_require__(218), __webpack_require__(219), __webpack_require__(220), __webpack_require__(44), __webpack_require__(133), __webpack_require__(221), __webpack_require__(222), __webpack_require__(223), __webpack_require__(224), __webpack_require__(104), __webpack_require__(225), __webpack_require__(226), __webpack_require__(227), __webpack_require__(228), __webpack_require__(88), __webpack_require__(230), __webpack_require__(231), __webpack_require__(232), __webpack_require__(233), __webpack_require__(10), __webpack_require__(234), __webpack_require__(235), __webpack_require__(236), __webpack_require__(41), __webpack_require__(105), __webpack_require__(125), __webpack_require__(45), __webpack_require__(237), __webpack_require__(15), __webpack_require__(34), __webpack_require__(238), __webpack_require__(239)];
 
 /***/ }),
 /* 218 */
@@ -47178,7 +47192,7 @@ function factory(type, config, load, typed) {
   var latex = __webpack_require__(4);
 
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm09 = load(__webpack_require__(133));
+  var algorithm09 = load(__webpack_require__(134));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -47274,7 +47288,7 @@ exports.factory = factory;
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
-  var pow = load(__webpack_require__(40));
+  var pow = load(__webpack_require__(41));
 
   var latex = __webpack_require__(4);
 
@@ -47570,8 +47584,8 @@ var isInteger = __webpack_require__(3).isInteger;
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var algorithm01 = load(__webpack_require__(32));
-  var algorithm04 = load(__webpack_require__(82));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm04 = load(__webpack_require__(83));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
   /**
@@ -47732,8 +47746,8 @@ function factory(type, config, load, typed) {
   var divide = load(__webpack_require__(12));
   var multiply = load(__webpack_require__(21));
   var sqrt = load(__webpack_require__(45));
-  var smaller = load(__webpack_require__(39));
-  var isPositive = load(__webpack_require__(71));
+  var smaller = load(__webpack_require__(40));
+  var isPositive = load(__webpack_require__(72));
   /**
    * Calculate the hypotenusa of a list with values. The hypotenusa is defined as:
    *
@@ -47819,7 +47833,7 @@ var isInteger = __webpack_require__(3).isInteger;
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm06 = load(__webpack_require__(72));
+  var algorithm06 = load(__webpack_require__(73));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -48136,7 +48150,7 @@ var deepMap = __webpack_require__(0);
 
 function factory(type, config, load, typed) {
   var divideScalar = load(__webpack_require__(12));
-  var log = load(__webpack_require__(87));
+  var log = load(__webpack_require__(88));
   /**
    * Calculate the logarithm of a `value+1`.
    *
@@ -48318,7 +48332,7 @@ function factory(type, config, load, typed) {
 
   var algorithm02 = load(__webpack_require__(25));
   var algorithm03 = load(__webpack_require__(18));
-  var algorithm05 = load(__webpack_require__(65));
+  var algorithm05 = load(__webpack_require__(66));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm12 = load(__webpack_require__(19));
   var algorithm13 = load(__webpack_require__(7));
@@ -48453,13 +48467,13 @@ exports.factory = factory;
 function factory(type, config, load, typed) {
   var abs = load(__webpack_require__(23));
   var add = load(__webpack_require__(14));
-  var pow = load(__webpack_require__(40));
-  var conj = load(__webpack_require__(69));
+  var pow = load(__webpack_require__(41));
+  var conj = load(__webpack_require__(70));
   var sqrt = load(__webpack_require__(45));
   var multiply = load(__webpack_require__(10));
   var equalScalar = load(__webpack_require__(11));
   var larger = load(__webpack_require__(33));
-  var smaller = load(__webpack_require__(39));
+  var smaller = load(__webpack_require__(40));
   var matrix = load(__webpack_require__(1));
   /**
    * Calculate the norm of a number, vector or matrix.
@@ -48677,7 +48691,7 @@ function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var algorithm01 = load(__webpack_require__(32));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm06 = load(__webpack_require__(72));
+  var algorithm06 = load(__webpack_require__(73));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -48915,9 +48929,9 @@ exports.factory = factory;
 "use strict";
 
 
-var Complex = __webpack_require__(79);
+var Complex = __webpack_require__(80);
 
-var typed = __webpack_require__(97);
+var typed = __webpack_require__(98);
 
 var complex = Complex.factory('Complex', {}, '', typed, {
   on: function on(x, y) {}
@@ -49347,7 +49361,7 @@ function factory(type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm06 = load(__webpack_require__(72));
+  var algorithm06 = load(__webpack_require__(73));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -49444,7 +49458,7 @@ exports.factory = factory;
 "use strict";
 
 
-var bitwise = __webpack_require__(88);
+var bitwise = __webpack_require__(89);
 /**
  * Bitwise and for Bignumbers
  *
@@ -49535,7 +49549,7 @@ module.exports = function bitAnd(x, y) {
 
 var deepMap = __webpack_require__(0);
 
-var bigBitNot = __webpack_require__(89);
+var bigBitNot = __webpack_require__(90);
 
 var isInteger = __webpack_require__(3).isInteger;
 
@@ -49603,8 +49617,8 @@ function factory(type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var algorithm01 = load(__webpack_require__(32));
-  var algorithm04 = load(__webpack_require__(82));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm04 = load(__webpack_require__(83));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
   /**
@@ -49701,7 +49715,7 @@ exports.factory = factory;
 "use strict";
 
 
-var bitwise = __webpack_require__(88);
+var bitwise = __webpack_require__(89);
 /**
  * Bitwise OR for BigNumbers
  *
@@ -49875,9 +49889,9 @@ exports.factory = factory;
 "use strict";
 
 
-var bitwise = __webpack_require__(88);
+var bitwise = __webpack_require__(89);
 
-var bitNot = __webpack_require__(89);
+var bitNot = __webpack_require__(90);
 /**
  * Bitwise XOR for BigNumbers
  *
@@ -49961,11 +49975,11 @@ function factory(type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var equalScalar = load(__webpack_require__(11));
-  var zeros = load(__webpack_require__(41));
+  var zeros = load(__webpack_require__(42));
   var algorithm01 = load(__webpack_require__(32));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm08 = load(__webpack_require__(90));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm08 = load(__webpack_require__(91));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -50144,11 +50158,11 @@ function factory(type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var equalScalar = load(__webpack_require__(11));
-  var zeros = load(__webpack_require__(41));
+  var zeros = load(__webpack_require__(42));
   var algorithm01 = load(__webpack_require__(32));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm08 = load(__webpack_require__(90));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm08 = load(__webpack_require__(91));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -50334,11 +50348,11 @@ function factory(type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var equalScalar = load(__webpack_require__(11));
-  var zeros = load(__webpack_require__(41));
+  var zeros = load(__webpack_require__(42));
   var algorithm01 = load(__webpack_require__(32));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm08 = load(__webpack_require__(90));
-  var algorithm10 = load(__webpack_require__(38));
+  var algorithm08 = load(__webpack_require__(91));
+  var algorithm10 = load(__webpack_require__(39));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -50456,7 +50470,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(254), __webpack_require__(255), __webpack_require__(134), __webpack_require__(256)];
+module.exports = [__webpack_require__(254), __webpack_require__(255), __webpack_require__(135), __webpack_require__(256)];
 
 /***/ }),
 /* 254 */
@@ -50467,9 +50481,9 @@ module.exports = [__webpack_require__(254), __webpack_require__(255), __webpack_
 
 function factory(type, config, load, typed) {
   var add = load(__webpack_require__(14));
-  var stirlingS2 = load(__webpack_require__(134));
+  var stirlingS2 = load(__webpack_require__(135));
   var isNegative = load(__webpack_require__(60));
-  var isInteger = load(__webpack_require__(35));
+  var isInteger = load(__webpack_require__(36));
   /**
    * The Bell Numbers count the number of partitions of a set. A partition is a pairwise disjoint subset of S whose union is S.
    * bellNumbers only takes integer arguments.
@@ -50525,10 +50539,10 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var combinations = load(__webpack_require__(74));
+  var combinations = load(__webpack_require__(75));
   var add = load(__webpack_require__(17));
-  var isPositive = load(__webpack_require__(71));
-  var isInteger = load(__webpack_require__(35));
+  var isPositive = load(__webpack_require__(72));
+  var isInteger = load(__webpack_require__(36));
   var larger = load(__webpack_require__(33));
   /**
    * The composition counts of n into k parts.
@@ -50583,9 +50597,9 @@ function factory(type, config, load, typed) {
   var add = load(__webpack_require__(14));
   var divide = load(__webpack_require__(44));
   var multiply = load(__webpack_require__(10));
-  var combinations = load(__webpack_require__(74));
+  var combinations = load(__webpack_require__(75));
   var isNegative = load(__webpack_require__(60));
-  var isInteger = load(__webpack_require__(35));
+  var isInteger = load(__webpack_require__(36));
   /**
    * The Catalan Numbers enumerate combinatorial structures of many different types.
    * catalan only takes integer arguments.
@@ -50633,7 +50647,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(258), __webpack_require__(69), __webpack_require__(259), __webpack_require__(260)];
+module.exports = [__webpack_require__(258), __webpack_require__(70), __webpack_require__(259), __webpack_require__(260)];
 
 /***/ }),
 /* 258 */
@@ -50841,7 +50855,7 @@ function factory(type, config, load, typed) {
   var multiplyScalar = load(__webpack_require__(21));
   var divideScalar = load(__webpack_require__(12));
   var subtract = load(__webpack_require__(15));
-  var smaller = load(__webpack_require__(39));
+  var smaller = load(__webpack_require__(40));
   var equalScalar = load(__webpack_require__(11));
   /**
    * Calculates the point of intersection of two lines in two or three dimensions
@@ -51395,7 +51409,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(265), __webpack_require__(136), __webpack_require__(266), __webpack_require__(267)];
+module.exports = [__webpack_require__(265), __webpack_require__(137), __webpack_require__(266), __webpack_require__(267)];
 
 /***/ }),
 /* 265 */
@@ -51408,10 +51422,10 @@ function factory(type, config, load, typed) {
   var latex = __webpack_require__(4);
 
   var matrix = load(__webpack_require__(1));
-  var zeros = load(__webpack_require__(41));
-  var not = load(__webpack_require__(136));
+  var zeros = load(__webpack_require__(42));
+  var not = load(__webpack_require__(137));
   var algorithm02 = load(__webpack_require__(25));
-  var algorithm06 = load(__webpack_require__(72));
+  var algorithm06 = load(__webpack_require__(73));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -51547,7 +51561,7 @@ function factory(type, config, load, typed) {
 
   var matrix = load(__webpack_require__(1));
   var algorithm03 = load(__webpack_require__(18));
-  var algorithm05 = load(__webpack_require__(65));
+  var algorithm05 = load(__webpack_require__(66));
   var algorithm12 = load(__webpack_require__(19));
   var algorithm13 = load(__webpack_require__(7));
   var algorithm14 = load(__webpack_require__(6));
@@ -51766,7 +51780,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(75), __webpack_require__(269), __webpack_require__(270), __webpack_require__(121), __webpack_require__(271), __webpack_require__(272), __webpack_require__(273), __webpack_require__(274), __webpack_require__(275), __webpack_require__(276), __webpack_require__(277), __webpack_require__(48), __webpack_require__(68), __webpack_require__(278), __webpack_require__(137), __webpack_require__(279), __webpack_require__(92), __webpack_require__(138), __webpack_require__(280), __webpack_require__(281), __webpack_require__(26), __webpack_require__(282), __webpack_require__(284), __webpack_require__(285), __webpack_require__(22), __webpack_require__(286), __webpack_require__(70), __webpack_require__(41), __webpack_require__(287)];
+module.exports = [__webpack_require__(76), __webpack_require__(269), __webpack_require__(270), __webpack_require__(122), __webpack_require__(271), __webpack_require__(272), __webpack_require__(273), __webpack_require__(274), __webpack_require__(275), __webpack_require__(276), __webpack_require__(277), __webpack_require__(49), __webpack_require__(69), __webpack_require__(278), __webpack_require__(138), __webpack_require__(279), __webpack_require__(93), __webpack_require__(139), __webpack_require__(280), __webpack_require__(281), __webpack_require__(26), __webpack_require__(282), __webpack_require__(284), __webpack_require__(285), __webpack_require__(22), __webpack_require__(286), __webpack_require__(71), __webpack_require__(42), __webpack_require__(287)];
 
 /***/ }),
 /* 269 */
@@ -51871,8 +51885,8 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var transpose = load(__webpack_require__(70));
-  var conj = load(__webpack_require__(69));
+  var transpose = load(__webpack_require__(71));
+  var conj = load(__webpack_require__(70));
 
   var latex = __webpack_require__(4);
   /**
@@ -52191,8 +52205,8 @@ var format = __webpack_require__(9).format;
 function factory(type, config, load, typed) {
   var abs = load(__webpack_require__(23));
   var add = load(__webpack_require__(14));
-  var identity = load(__webpack_require__(48));
-  var inv = load(__webpack_require__(68));
+  var identity = load(__webpack_require__(49));
+  var inv = load(__webpack_require__(69));
   var multiply = load(__webpack_require__(10));
   var SparseMatrix = type.SparseMatrix;
   /**
@@ -52821,7 +52835,7 @@ var array = __webpack_require__(2);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
-  var isInteger = load(__webpack_require__(35));
+  var isInteger = load(__webpack_require__(36));
   /**
    * Reshape a multi dimensional array to fit the specified dimensions
    *
@@ -53042,7 +53056,7 @@ var size = __webpack_require__(2).size;
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
-  var compareAsc = load(__webpack_require__(53));
+  var compareAsc = load(__webpack_require__(54));
 
   var compareDesc = function compareDesc(a, b) {
     return -compareAsc(a, b);
@@ -53235,10 +53249,10 @@ function factory(type, config, load, typed) {
   var multiply = load(__webpack_require__(10));
   var sqrt = load(__webpack_require__(45));
   var subtract = load(__webpack_require__(15));
-  var inv = load(__webpack_require__(68));
+  var inv = load(__webpack_require__(69));
   var size = load(__webpack_require__(26));
-  var max = load(__webpack_require__(93));
-  var identity = load(__webpack_require__(48));
+  var max = load(__webpack_require__(94));
+  var identity = load(__webpack_require__(49));
   /**
    * Calculate the principal square root of a square matrix.
    * The principal square root matrix `X` of another matrix `A` is such that `X * X = A`.
@@ -53550,7 +53564,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var getArrayDataType = load(__webpack_require__(62));
+  var getArrayDataType = load(__webpack_require__(63));
   /**
    * Find the data type of all elements in a matrix or array,
    * for example 'number' if all items are a number and 'Complex' if all values
@@ -53608,7 +53622,7 @@ exports.factory = factory;
 
 
 module.exports = [// require('./distribution'), // TODO: rethink math.distribution
-__webpack_require__(74), __webpack_require__(73), __webpack_require__(135), __webpack_require__(289), __webpack_require__(290), __webpack_require__(291), __webpack_require__(292), __webpack_require__(296), __webpack_require__(297)];
+__webpack_require__(75), __webpack_require__(74), __webpack_require__(136), __webpack_require__(289), __webpack_require__(290), __webpack_require__(291), __webpack_require__(292), __webpack_require__(296), __webpack_require__(297)];
 
 /***/ }),
 /* 289 */
@@ -53620,11 +53634,11 @@ __webpack_require__(74), __webpack_require__(73), __webpack_require__(135), __we
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var divide = load(__webpack_require__(44));
-  var sum = load(__webpack_require__(139));
+  var sum = load(__webpack_require__(95));
   var multiply = load(__webpack_require__(10));
-  var dotDivide = load(__webpack_require__(132));
-  var log = load(__webpack_require__(87));
-  var isNumeric = load(__webpack_require__(50));
+  var dotDivide = load(__webpack_require__(133));
+  var log = load(__webpack_require__(88));
+  var isNumeric = load(__webpack_require__(51));
   /**
      * Calculate the Kullback-Leibler (KL) divergence  between two distributions
      *
@@ -53716,9 +53730,9 @@ function factory(type, config, load, typed) {
   var add = load(__webpack_require__(14));
   var multiply = load(__webpack_require__(10));
   var divide = load(__webpack_require__(44));
-  var factorial = load(__webpack_require__(73));
-  var isInteger = load(__webpack_require__(35));
-  var isPositive = load(__webpack_require__(71));
+  var factorial = load(__webpack_require__(74));
+  var isInteger = load(__webpack_require__(36));
+  var isPositive = load(__webpack_require__(72));
   /**
    * Multinomial Coefficients compute the number of ways of picking a1, a2, ..., ai unordered outcomes from `n` possibilities.
    *
@@ -53771,9 +53785,9 @@ exports.factory = factory;
 var isInteger = __webpack_require__(3).isInteger;
 
 function factory(type, config, load, typed) {
-  var factorial = load(__webpack_require__(73));
+  var factorial = load(__webpack_require__(74));
 
-  var product = __webpack_require__(91);
+  var product = __webpack_require__(92);
   /**
    * Compute the number of ways of obtaining an ordered subset of `k` elements
    * from a set of `n` elements.
@@ -53866,7 +53880,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var distribution = load(__webpack_require__(95));
+  var distribution = load(__webpack_require__(96));
   /**
    * Random pick one or more values from a one dimensional array.
    * Array elements are picked using a random function with uniform or weighted distribution.
@@ -54168,7 +54182,7 @@ module.exports = g;
 
 
 function factory(type, config, load, typed) {
-  var distribution = load(__webpack_require__(95));
+  var distribution = load(__webpack_require__(96));
   /**
    * Return a random number larger or equal to `min` and smaller than `max`
    * using a uniform distribution.
@@ -54218,7 +54232,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var distribution = load(__webpack_require__(95));
+  var distribution = load(__webpack_require__(96));
   /**
    * Return a random integer number larger or equal to `min` and smaller than `max`
    * using a uniform distribution.
@@ -54265,7 +54279,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(53), __webpack_require__(29), __webpack_require__(140), __webpack_require__(299), __webpack_require__(49), __webpack_require__(300), __webpack_require__(33), __webpack_require__(127), __webpack_require__(39), __webpack_require__(301), __webpack_require__(123)];
+module.exports = [__webpack_require__(54), __webpack_require__(29), __webpack_require__(140), __webpack_require__(299), __webpack_require__(50), __webpack_require__(300), __webpack_require__(33), __webpack_require__(128), __webpack_require__(40), __webpack_require__(301), __webpack_require__(124)];
 
 /***/ }),
 /* 299 */
@@ -54275,7 +54289,7 @@ module.exports = [__webpack_require__(53), __webpack_require__(29), __webpack_re
 
 
 function factory(type, config, load, typed) {
-  var equal = load(__webpack_require__(49));
+  var equal = load(__webpack_require__(50));
   /**
    * Test element wise whether two matrices are equal.
    * The function accepts both matrices and scalar values.
@@ -54412,7 +54426,7 @@ exports.factory = factory;
 
 var nearlyEqual = __webpack_require__(3).nearlyEqual;
 
-var bigNearlyEqual = __webpack_require__(37);
+var bigNearlyEqual = __webpack_require__(38);
 
 function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
@@ -54549,7 +54563,7 @@ var flatten = __webpack_require__(2).flatten;
 
 function factory(type, config, load, typed) {
   var MatrixIndex = load(__webpack_require__(28));
-  var DenseMatrix = load(__webpack_require__(47));
+  var DenseMatrix = load(__webpack_require__(48));
   var size = load(__webpack_require__(26));
   var subset = load(__webpack_require__(22));
   var compareNatural = load(__webpack_require__(29));
@@ -54617,7 +54631,7 @@ var flatten = __webpack_require__(2).flatten;
 
 function factory(type, config, load, typed) {
   var MatrixIndex = load(__webpack_require__(28));
-  var DenseMatrix = load(__webpack_require__(47));
+  var DenseMatrix = load(__webpack_require__(48));
   var size = load(__webpack_require__(26));
   var subset = load(__webpack_require__(22));
   var compareNatural = load(__webpack_require__(29));
@@ -54973,7 +54987,7 @@ var flatten = __webpack_require__(2).flatten;
 
 function factory(type, config, load, typed) {
   var MatrixIndex = load(__webpack_require__(28));
-  var concat = load(__webpack_require__(75));
+  var concat = load(__webpack_require__(76));
   var size = load(__webpack_require__(26));
   var subset = load(__webpack_require__(22));
   var setIntersect = load(__webpack_require__(142));
@@ -55217,7 +55231,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(313), __webpack_require__(93), __webpack_require__(145), __webpack_require__(144), __webpack_require__(146), __webpack_require__(314), __webpack_require__(315), __webpack_require__(316), __webpack_require__(317), __webpack_require__(139), __webpack_require__(147)];
+module.exports = [__webpack_require__(313), __webpack_require__(94), __webpack_require__(145), __webpack_require__(144), __webpack_require__(146), __webpack_require__(314), __webpack_require__(315), __webpack_require__(316), __webpack_require__(317), __webpack_require__(95), __webpack_require__(147)];
 
 /***/ }),
 /* 313 */
@@ -55230,10 +55244,10 @@ var flatten = __webpack_require__(2).flatten;
 
 function factory(type, config, load, typed) {
   var abs = load(__webpack_require__(23));
-  var map = load(__webpack_require__(137));
+  var map = load(__webpack_require__(138));
   var median = load(__webpack_require__(144));
   var subtract = load(__webpack_require__(15));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the median absolute deviation of a matrix or a list with values.
    * The median absolute deviation is defined as the median of the absolute
@@ -55306,8 +55320,8 @@ exports.factory = factory;
 var flatten = __webpack_require__(2).flatten;
 
 function factory(type, config, load, typed) {
-  var isNaN = load(__webpack_require__(76));
-  var isNumeric = load(__webpack_require__(50));
+  var isNaN = load(__webpack_require__(77));
+  var isNumeric = load(__webpack_require__(51));
   /**
   * Computes the mode of a set of numbers or a list with values(numbers or characters).
   * If there are more than one modes, it returns a list of those values.
@@ -55399,7 +55413,7 @@ var deepForEach = __webpack_require__(46);
 
 function factory(type, config, load, typed) {
   var multiply = load(__webpack_require__(21));
-  var improveErrorMessage = load(__webpack_require__(36));
+  var improveErrorMessage = load(__webpack_require__(37));
   /**
    * Compute the product of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all
@@ -55483,13 +55497,13 @@ var isNumber = __webpack_require__(3).isNumber;
 
 var flatten = __webpack_require__(2).flatten;
 
-var isCollection = __webpack_require__(54);
+var isCollection = __webpack_require__(47);
 
 function factory(type, config, load, typed) {
   var add = load(__webpack_require__(14));
   var multiply = load(__webpack_require__(10));
-  var partitionSelect = load(__webpack_require__(92));
-  var compare = load(__webpack_require__(53));
+  var partitionSelect = load(__webpack_require__(93));
+  var compare = load(__webpack_require__(54));
   /**
    * Compute the prob order quantile of a matrix or a list with values.
    * The sequence is sorted and the middle value is returned.
@@ -55845,7 +55859,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(105), __webpack_require__(319)];
+module.exports = [__webpack_require__(106), __webpack_require__(319)];
 
 /***/ }),
 /* 319 */
@@ -56627,7 +56641,7 @@ function factory(type, config, load, typed) {
   var matrix = load(__webpack_require__(1));
   var algorithm02 = load(__webpack_require__(25));
   var algorithm03 = load(__webpack_require__(18));
-  var algorithm09 = load(__webpack_require__(133));
+  var algorithm09 = load(__webpack_require__(134));
   var algorithm11 = load(__webpack_require__(20));
   var algorithm12 = load(__webpack_require__(19));
   var algorithm13 = load(__webpack_require__(7));
@@ -57706,7 +57720,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(349), __webpack_require__(35), __webpack_require__(60), __webpack_require__(50), __webpack_require__(350), __webpack_require__(71), __webpack_require__(351), __webpack_require__(59), __webpack_require__(76), __webpack_require__(24)];
+module.exports = [__webpack_require__(349), __webpack_require__(36), __webpack_require__(60), __webpack_require__(51), __webpack_require__(350), __webpack_require__(72), __webpack_require__(351), __webpack_require__(59), __webpack_require__(77), __webpack_require__(24)];
 
 /***/ }),
 /* 349 */
@@ -57755,7 +57769,7 @@ exports.factory = factory;
 
 
 function factory(type, config, load, typed) {
-  var isNumeric = load(__webpack_require__(50));
+  var isNumeric = load(__webpack_require__(51));
   /**
    * Test whether a value is an numeric value.
    *
@@ -57897,7 +57911,7 @@ exports.factory = factory;
 
 module.exports = [// Note that the docs folder is called "embeddedDocs" and not "docs" to prevent issues
 // with yarn autoclean. See https://github.com/josdejong/mathjs/issues/969
-__webpack_require__(148), __webpack_require__(555), __webpack_require__(559), __webpack_require__(561), __webpack_require__(572), __webpack_require__(42), __webpack_require__(152)];
+__webpack_require__(148), __webpack_require__(555), __webpack_require__(559), __webpack_require__(561), __webpack_require__(573), __webpack_require__(43), __webpack_require__(152)];
 
 /***/ }),
 /* 353 */
@@ -60531,7 +60545,7 @@ module.exports = {
 "use strict";
 
 
-module.exports = [__webpack_require__(556), __webpack_require__(557), __webpack_require__(558), __webpack_require__(122), __webpack_require__(151)];
+module.exports = [__webpack_require__(556), __webpack_require__(557), __webpack_require__(558), __webpack_require__(123), __webpack_require__(151)];
 
 /***/ }),
 /* 556 */
@@ -60543,7 +60557,7 @@ module.exports = [__webpack_require__(556), __webpack_require__(557), __webpack_
 var deepMap = __webpack_require__(0);
 
 function factory(type, config, load, typed) {
-  var parse = load(__webpack_require__(42));
+  var parse = load(__webpack_require__(43));
   /**
    * Parse and compile an expression.
    * Returns a an object with a function `eval([scope])` to evaluate the
@@ -60604,7 +60618,7 @@ exports.factory = factory;
 var deepMap = __webpack_require__(0);
 
 function factory(type, config, load, typed) {
-  var parse = load(__webpack_require__(42));
+  var parse = load(__webpack_require__(43));
   /**
    * Evaluate an expression.
    *
@@ -60745,7 +60759,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(106), __webpack_require__(109), __webpack_require__(110), __webpack_require__(111), __webpack_require__(112), __webpack_require__(57), __webpack_require__(114), __webpack_require__(113), __webpack_require__(67), __webpack_require__(16), __webpack_require__(115), __webpack_require__(58), __webpack_require__(66), __webpack_require__(116), __webpack_require__(117), __webpack_require__(52), __webpack_require__(560)];
+module.exports = [__webpack_require__(107), __webpack_require__(110), __webpack_require__(111), __webpack_require__(112), __webpack_require__(113), __webpack_require__(57), __webpack_require__(115), __webpack_require__(114), __webpack_require__(68), __webpack_require__(16), __webpack_require__(116), __webpack_require__(58), __webpack_require__(67), __webpack_require__(117), __webpack_require__(118), __webpack_require__(53), __webpack_require__(560)];
 
 /***/ }),
 /* 560 */
@@ -60777,7 +60791,7 @@ exports.factory = factory;
 "use strict";
 
 
-module.exports = [__webpack_require__(562), __webpack_require__(563), __webpack_require__(564), __webpack_require__(565), __webpack_require__(566), __webpack_require__(567), __webpack_require__(568), __webpack_require__(569), __webpack_require__(570), __webpack_require__(571)];
+module.exports = [__webpack_require__(562), __webpack_require__(563), __webpack_require__(564), __webpack_require__(565), __webpack_require__(566), __webpack_require__(567), __webpack_require__(568), __webpack_require__(569), __webpack_require__(570), __webpack_require__(571), __webpack_require__(572)];
 
 /***/ }),
 /* 562 */
@@ -60786,7 +60800,7 @@ module.exports = [__webpack_require__(562), __webpack_require__(563), __webpack_
 "use strict";
 
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 /**
  * Attach a transform function to math.range
  * Adds a property transform containing the transform function.
@@ -60797,7 +60811,7 @@ var errorTransform = __webpack_require__(43).transform;
 
 
 function factory(type, config, load, typed) {
-  var concat = load(__webpack_require__(75)); // @see: comment of concat itself
+  var concat = load(__webpack_require__(76)); // @see: comment of concat itself
 
   return typed('concat', {
     '...any': function any(args) {
@@ -60846,7 +60860,7 @@ var maxArgumentCount = __webpack_require__(31).maxArgumentCount;
 
 
 function factory(type, config, load, typed) {
-  var compileInlineExpression = load(__webpack_require__(96));
+  var compileInlineExpression = load(__webpack_require__(97));
   var matrix = load(__webpack_require__(1));
 
   function filterTransform(args, math, scope) {
@@ -60936,7 +60950,7 @@ var forEach = __webpack_require__(2).forEach;
 
 
 function factory(type, config, load, typed) {
-  var compileInlineExpression = load(__webpack_require__(96));
+  var compileInlineExpression = load(__webpack_require__(97));
 
   function forEachTransform(args, math, scope) {
     var x, callback;
@@ -61067,7 +61081,7 @@ var map = __webpack_require__(2).map;
 
 
 function factory(type, config, load, typed) {
-  var compileInlineExpression = load(__webpack_require__(96));
+  var compileInlineExpression = load(__webpack_require__(97));
   var matrix = load(__webpack_require__(1));
 
   function mapTransform(args, math, scope) {
@@ -61149,9 +61163,9 @@ exports.factory = factory;
 "use strict";
 
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 
-var isCollection = __webpack_require__(54);
+var isCollection = __webpack_require__(47);
 /**
  * Attach a transform function to math.max
  * Adds a property transform containing the transform function.
@@ -61162,7 +61176,7 @@ var isCollection = __webpack_require__(54);
 
 
 function factory(type, config, load, typed) {
-  var max = load(__webpack_require__(93));
+  var max = load(__webpack_require__(94));
   return typed('max', {
     '...any': function any(args) {
       // change last argument dim from one-based to zero-based
@@ -61196,9 +61210,9 @@ exports.factory = factory;
 "use strict";
 
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 
-var isCollection = __webpack_require__(54);
+var isCollection = __webpack_require__(47);
 /**
  * Attach a transform function to math.mean
  * Adds a property transform containing the transform function.
@@ -61243,9 +61257,9 @@ exports.factory = factory;
 "use strict";
 
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 
-var isCollection = __webpack_require__(54);
+var isCollection = __webpack_require__(47);
 /**
  * Attach a transform function to math.min
  * Adds a property transform containing the transform function.
@@ -61297,7 +61311,7 @@ exports.factory = factory;
  */
 
 function factory(type, config, load, typed) {
-  var range = load(__webpack_require__(138));
+  var range = load(__webpack_require__(139));
   return typed('range', {
     '...any': function any(args) {
       var lastIndex = args.length - 1;
@@ -61324,7 +61338,7 @@ exports.factory = factory;
 "use strict";
 
 
-var errorTransform = __webpack_require__(43).transform;
+var errorTransform = __webpack_require__(35).transform;
 /**
  * Attach a transform function to math.subset
  * Adds a property transform containing the transform function.
@@ -61352,6 +61366,53 @@ exports.factory = factory;
 
 /***/ }),
 /* 572 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var errorTransform = __webpack_require__(35).transform;
+
+var isCollection = __webpack_require__(47);
+/**
+ * Attach a transform function to math.sum
+ * Adds a property transform containing the transform function.
+ *
+ * This transform changed the last `dim` parameter of function mean
+ * from one-based to zero based
+ */
+
+
+function factory(type, config, load, typed) {
+  var sum = load(__webpack_require__(95));
+  return typed('sum', {
+    '...any': function any(args) {
+      // change last argument dim from one-based to zero-based
+      if (args.length === 2 && isCollection(args[0])) {
+        var dim = args[1];
+
+        if (type.isNumber(dim)) {
+          args[1] = dim - 1;
+        } else if (type.isBigNumber(dim)) {
+          args[1] = dim.minus(1);
+        }
+      }
+
+      try {
+        return sum.apply(null, args);
+      } catch (err) {
+        throw errorTransform(err);
+      }
+    }
+  });
+}
+
+exports.name = 'sum';
+exports.path = 'expression.transform';
+exports.factory = factory;
+
+/***/ }),
+/* 573 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61490,16 +61551,16 @@ exports.path = 'type';
 exports.factory = factory;
 
 /***/ }),
-/* 573 */
+/* 574 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = [__webpack_require__(574)];
+module.exports = [__webpack_require__(575)];
 
 /***/ }),
-/* 574 */
+/* 575 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61529,7 +61590,7 @@ exports.factory = factory;
 exports.math = true; // request the math namespace as fifth argument
 
 /***/ }),
-/* 575 */
+/* 576 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20181209-version-540">2018-12-09, version 5.4.0 <a href="#20181209-version-540" title="Permalink">#</a></h1>
+
+- Extended sum.js to accept a dimension input to calculate the sum over a 
+  specific axis. Thanks <a href="https://github.com/bnlcas">@bnlcas</a>.
+- Fix <a href="https://github.com/josdejong/mathjs/issues/1328">#1328</a>: objects can't be written multi-line. Thanks <a href="https://github.com/GHolk">@GHolk</a>.
+- Remove side effects caused by `Unit.format` and `Unit.toString`, 
+  making changes to the unit on execution. Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+
+
 <h1 id="20181203-version-531">2018-12-03, version 5.3.1 <a href="#20181203-version-531" title="Permalink">#</a></h1>
 
 - Fixed <a href="https://github.com/josdejong/mathjs/issues/1336">#1336</a>: Unit.toSI() returning units with prefix like `mm` instead 
