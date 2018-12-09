@@ -1,7 +1,9 @@
 # History
 
-# not yet released, version 5.3.2
+# not yet released, version 5.4.0
 
+- Extended sum.js to accept a dimension input to calculate the sum over a 
+  specific axis. Thanks @bnlcas.
 - Fix #1328: objects can't be written multi-line. Thanks @GHolk.
 - Remove side effects caused by `Unit.format` and `Unit.toString`, 
   making changes to the unit on execution. Thanks @ericman314.
