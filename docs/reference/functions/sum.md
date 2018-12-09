@@ -4,8 +4,7 @@
 
 Compute the sum of a matrix or a list with values.
 In case of a (multi dimensional) array or matrix, the sum of all
-elements will be calculated. When `dim` is provided, the sum over the selected
-dimension will be calculated. Parameter `dim` is zero-based.
+elements will be calculated.
 
 
 ## Syntax
@@ -13,7 +12,6 @@ dimension will be calculated. Parameter `dim` is zero-based.
 ```js
 math.sum(a, b, c, ...)
 math.sum(A)
-math.sum(A, dim)
 ```
 
 ### Parameters
@@ -35,8 +33,6 @@ Type | Description
 math.sum(2, 1, 4, 3)               // returns 10
 math.sum([2, 1, 4, 3])             // returns 10
 math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
-math.sum([[2, 5], [4, 3], [1, 7]], 0)    // returns [7, 15]
-math.sum([[2, 5], [4, 3], [1, 7]], 1)    // returns [7, 7, 8]
 ```
 
 

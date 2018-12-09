@@ -1,6 +1,6 @@
 # History
 
-# not yet released, version 5.4.0
+# 2018-12-09, version 5.4.0
 
 - Extended sum.js to accept a dimension input to calculate the sum over a 
   specific axis. Thanks @bnlcas.
