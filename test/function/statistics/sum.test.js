@@ -74,8 +74,26 @@ describe('sum', function () {
     assert.throws(function () { sum() })
   })
 
-  it('should throw an error if called with not yet supported argument dim', function () {
-    assert.throws(function () { sum([], 2) }, /not yet supported/)
+  const inputMatrix = [ // this is a 4x3x2 matrix, full test coverage
+    [ [10, 20], [30, 40], [50, 60] ],
+    [ [70, 80], [90, 100], [110, 120] ],
+    [ [130, 140], [150, 160], [170, 180] ],
+    [ [190, 200], [210, 220], [230, 240] ]
+  ]
+
+  it('should return the sum value along a dimension of a matrix', function () {
+    assert.deepStrictEqual(sum([
+      [2, 6],
+      [4, 10]], 1), [8, 14])
+    assert.deepStrictEqual(sum([
+      [2, 6],
+      [4, 10]], 0), [6, 16])
+    assert.deepStrictEqual(sum(inputMatrix, 0),
+      [[400, 440], [480, 520], [560, 600]])
+    assert.deepStrictEqual(sum(inputMatrix, 1),
+      [[90, 120], [270, 300], [450, 480], [630, 660]])
+    assert.deepStrictEqual(sum(inputMatrix, 2),
+      [[30, 70, 110], [150, 190, 230], [270, 310, 350], [390, 430, 470]])
   })
 
   it('should return zero if called with an empty array', function () {
