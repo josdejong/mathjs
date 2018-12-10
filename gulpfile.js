@@ -94,7 +94,7 @@ const uglifyConfig = {
 // create a single instance of the compiler to allow caching
 const compiler = webpack(webpackConfig)
 
-gulp.task('bundle', function bundle (cb) {
+gulp.task('bundle', function bundle (done) {
   // update the banner contents (has a date in it which should stay up to date)
   bannerPlugin.banner = createBanner()
 
@@ -107,7 +107,7 @@ gulp.task('bundle', function bundle (cb) {
 
     gutil.log('bundled ' + MATH_JS)
 
-    cb()
+    done()
   })
 })
 
@@ -145,7 +145,7 @@ gulp.task('minify', gulp.series(gulp.parallel('bundle'), function minify (done) 
 }))
 
 // test whether the docs for the expression parser are complete
-gulp.task('validate', gulp.series(gulp.parallel('minify'), function validate (cb) {
+gulp.task('validate', gulp.series(gulp.parallel('minify'), function validate (done) {
   const childProcess = require('child_process')
 
   // this is run in a separate process as the modules need to be reloaded
@@ -156,12 +156,12 @@ gulp.task('validate', gulp.series(gulp.parallel('minify'), function validate (cb
     }
     process.stdout.write(stdout)
     process.stderr.write(stderr)
-    cb()
+    done()
   })
 }))
 
 // check whether any of the source files contains non-ascii characters
-gulp.task('validate:ascii', function validateAscii () {
+gulp.task('validate:ascii', function validateAscii (done) {
   const Reset = '\x1b[0m'
   const BgRed = '\x1b[41m'
 
@@ -180,6 +180,8 @@ gulp.task('validate:ascii', function validateAscii () {
         )
       })
     })
+
+  done()
 })
 
 gulp.task('docs', gulp.series(gulp.parallel(['compile']), function docs (done) {
