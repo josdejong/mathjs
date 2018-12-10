@@ -94,7 +94,7 @@ const uglifyConfig = {
 // create a single instance of the compiler to allow caching
 const compiler = webpack(webpackConfig)
 
-gulp.task('bundle', [], function (cb) {
+gulp.task('bundle', function (cb) {
   // update the banner contents (has a date in it which should stay up to date)
   bannerPlugin.banner = createBanner()
 
@@ -117,7 +117,7 @@ gulp.task('compile', function () {
     .pipe(gulp.dest(COMPILE_LIB))
 })
 
-gulp.task('minify', ['bundle'], function () {
+gulp.task('minify', gulp.parallel('bundle'), function () {
   const oldCwd = process.cwd()
   process.chdir(DIST)
 
@@ -143,7 +143,7 @@ gulp.task('minify', ['bundle'], function () {
 })
 
 // test whether the docs for the expression parser are complete
-gulp.task('validate', ['minify'], function (cb) {
+gulp.task('validate', gulp.parallel('minify'), function (cb) {
   const childProcess = require('child_process')
 
   // this is run in a separate process as the modules need to be reloaded
@@ -180,15 +180,15 @@ gulp.task('validate:ascii', function () {
     })
 })
 
-gulp.task('docs', ['compile'], function () {
+gulp.task('docs', gulp.parallel(['compile']), function () {
   docgenerator.iteratePath(REF_SRC, REF_DEST, REF_ROOT)
 })
 
 // The watch task (to automatically rebuild when the source code changes)
 // Does only generate math.js, not the minified math.min.js
-gulp.task('watch', ['bundle', 'compile'], function () {
-  gulp.watch(['index.js', 'src/**/*.js'], ['bundle', 'compile'])
+gulp.task('watch', gulp.parallel('bundle', 'compile'), function () {
+  gulp.watch(['index.js', 'src/**/*.js'], gulp.parallel(['bundle', 'compile']))
 })
 
 // The default task (called when you run `gulp`)
-gulp.task('default', ['bundle', 'compile', 'minify', 'validate', 'docs'])
+gulp.task('default', gulp.series(['bundle', 'compile', 'minify', 'validate', 'docs']))
