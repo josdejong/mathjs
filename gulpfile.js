@@ -94,7 +94,7 @@ const uglifyConfig = {
 // create a single instance of the compiler to allow caching
 const compiler = webpack(webpackConfig)
 
-gulp.task('bundle', function (cb) {
+gulp.task('bundle', function bundle (cb) {
   // update the banner contents (has a date in it which should stay up to date)
   bannerPlugin.banner = createBanner()
 
@@ -111,13 +111,13 @@ gulp.task('bundle', function (cb) {
   })
 })
 
-gulp.task('compile', function () {
+gulp.task('compile', function compile () {
   return gulp.src(COMPILE_SRC)
     .pipe(babel())
     .pipe(gulp.dest(COMPILE_LIB))
 })
 
-gulp.task('minify', gulp.parallel('bundle'), function () {
+gulp.task('minify', gulp.series(gulp.parallel('bundle'), function minify (done) {
   const oldCwd = process.cwd()
   process.chdir(DIST)
 
@@ -140,10 +140,12 @@ gulp.task('minify', gulp.parallel('bundle'), function () {
   } finally {
     process.chdir(oldCwd)
   }
-})
+
+  done()
+}))
 
 // test whether the docs for the expression parser are complete
-gulp.task('validate', gulp.parallel('minify'), function (cb) {
+gulp.task('validate', gulp.series(gulp.parallel('minify'), function validate (cb) {
   const childProcess = require('child_process')
 
   // this is run in a separate process as the modules need to be reloaded
@@ -156,10 +158,10 @@ gulp.task('validate', gulp.parallel('minify'), function (cb) {
     process.stderr.write(stderr)
     cb()
   })
-})
+}))
 
 // check whether any of the source files contains non-ascii characters
-gulp.task('validate:ascii', function () {
+gulp.task('validate:ascii', function validateAscii () {
   const Reset = '\x1b[0m'
   const BgRed = '\x1b[41m'
 
@@ -180,15 +182,16 @@ gulp.task('validate:ascii', function () {
     })
 })
 
-gulp.task('docs', gulp.parallel(['compile']), function () {
+gulp.task('docs', gulp.series(gulp.parallel(['compile']), function docs (done) {
   docgenerator.iteratePath(REF_SRC, REF_DEST, REF_ROOT)
-})
+  done()
+}))
 
 // The watch task (to automatically rebuild when the source code changes)
 // Does only generate math.js, not the minified math.min.js
-gulp.task('watch', gulp.parallel('bundle', 'compile'), function () {
+gulp.task('watch', gulp.series(gulp.parallel('bundle', 'compile'), function watch () {
   gulp.watch(['index.js', 'src/**/*.js'], gulp.parallel(['bundle', 'compile']))
-})
+}))
 
 // The default task (called when you run `gulp`)
 gulp.task('default', gulp.series(['bundle', 'compile', 'minify', 'validate', 'docs']))
