@@ -195,11 +195,11 @@ gulp.task('validate:ascii', validateAscii)
 // Does only generate math.js, not the minified math.min.js
 gulp.task('watch', function watch () {
   const files = ['package.json', 'index.js', 'src/**/*.js']
-  const options = { 
+  const options = {
     // ignore version.js else we get an infinite loop since it's updated during bundle
-    ignored: /version\.js/, 
-    ignoreInitial: false, 
-    delay: 100,
+    ignored: /version\.js/,
+    ignoreInitial: false,
+    delay: 100
   }
 
   gulp.watch(files, options, gulp.parallel(bundle, compile))
