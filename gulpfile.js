@@ -155,7 +155,7 @@ function validate (done) {
     }
     process.stdout.write(stdout)
     process.stderr.write(stderr)
-    
+
     done()
   })
 }
@@ -195,7 +195,7 @@ gulp.task('validate:ascii', validateAscii)
 // The watch task (to automatically rebuild when the source code changes)
 // Does only generate math.js, not the minified math.min.js
 gulp.task('watch', function watch () {
-  gulp.watch(['./index.js', './src/**/*.js'], { ignoreInitial: false }, 
+  gulp.watch(['./index.js', './src/**/*.js'], { ignoreInitial: false },
     gulp.parallel(bundle, compile))
 })
 
