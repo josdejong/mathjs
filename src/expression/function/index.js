@@ -4,5 +4,6 @@ module.exports = [
   require('./eval'),
   require('./help'),
   require('./parse'),
-  require('./parser')
+  require('./parser'),
+  require('./compareEquation')
 ]

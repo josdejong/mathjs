@@ -3,7 +3,7 @@
 const object = require('./utils/object')
 const bigConstants = require('./utils/bignumber/constants')
 
-function factory (type, config, load, typed, math) {
+function factory(type, config, load, typed, math) {
   // listen for changed in the configuration, automatically reload
   // constants when needed
   math.on('config', function (curr, prev) {
@@ -54,7 +54,10 @@ function factory (type, config, load, typed, math) {
     setConstant(math, 'SQRT1_2', Math.SQRT1_2)
     setConstant(math, 'SQRT2', Math.SQRT2)
   }
+  const more = require('./constant-more')
 
+  setConstant(math, 'more', more.more)
+  setConstant(math, 'phy', more.phy)
   // complex i
   if (type.Complex) {
     setConstant(math, 'i', type.Complex.I)
@@ -65,13 +68,13 @@ function factory (type, config, load, typed, math) {
 }
 
 // create a constant in both math and mathWithTransform
-function setConstant (math, name, value) {
+function setConstant(math, name, value) {
   math[name] = value
   math.expression.mathWithTransform[name] = value
 }
 
 // create a lazy constant in both math and mathWithTransform
-function setLazyConstant (math, name, resolver) {
+function setLazyConstant(math, name, resolver) {
   object.lazy(math, name, resolver)
   object.lazy(math.expression.mathWithTransform, name, resolver)
 }
