@@ -1,4 +1,5 @@
-const math = require('../../dist/math')
+// const math = require('../../dist/math')
+const math = require('../../src/main')
 it(`extend math and add physical constants`, () => {
     expect(math.more).toBeInstanceOf(Object)
     expect(math.phy).toBeInstanceOf(Object)

@@ -118,11 +118,12 @@
     "typed-function": "1.1.0"
   },
   "devDependencies": {
-    "@babel/core": "7.2.0",
+    "@babel/core": "^7.2.0",
     "@babel/plugin-transform-object-assign": "7.2.0",
     "@babel/preset-env": "7.2.0",
     "@babel/register": "7.0.0",
-    "babel-loader": "8.0.4",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-loader": "^8.0.4",
     "benchmark": "2.1.4",
     "expr-eval": "1.2.2",
     "glob": "7.1.3",
