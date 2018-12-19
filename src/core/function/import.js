@@ -283,16 +283,11 @@ export function importFactory (typed, load, math) {
       let instance
       if (contains(factory.dependencies, 'math')) {
         // TODO: it's not nice having to pass the whole math namespace. find a better way
-        // FIXME: not very efficient
         const mathWithNamespace = Object.create(math)
         mathWithNamespace.math = math
-        mathWithNamespace.config = math.config()
         instance = /* #__PURE__ */ factory(mathWithNamespace)
       } else {
-        // FIXME: not very efficient
-        const mathWithConfig = Object.create(math)
-        mathWithConfig.config = math.config()
-        instance = /* #__PURE__ */ factory(mathWithConfig)
+        instance = /* #__PURE__ */ factory(math)
       }
 
       if (instance && typeof instance.transform === 'function') {
