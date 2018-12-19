@@ -45,6 +45,7 @@ import {
   createConditionalNodeFull,
   createConjFull,
   createConstantNodeFull,
+  createCoreFull,
   createCosFull,
   createCoshFull,
   createCotFull,
@@ -233,7 +234,8 @@ import {
   createUnaryMinusFull,
   createUnaryPlusFull,
   createUnequalFull,
-  createUnitClassFull, createUnitFull,
+  createUnitClassFull,
+  createUnitFull,
   createUsolveFull,
   createVarianceFull,
   createVersionFull,
@@ -241,16 +243,25 @@ import {
   createXorFull,
   createZerosFull
 } from './factoryFull'
+import all from './index'
 import { DEFAULT_CONFIG } from './core/config'
 import { createEmbeddedDocs } from './expression/embeddedDocs'
 
 export const config = /* #__PURE__ */ Object.freeze({ ...DEFAULT_CONFIG })
-const dependencies = /* #__PURE__ */ { config }
+const instanceId = 'defaultInstance'
+const dependencies = /* #__PURE__ */ { instanceId, config }
 
 // FIXME: fill math and mathWithTransform
 const math = /* #__PURE__ */ {}
 const mathWithTransform = /* #__PURE__ */ {}
-const dependenciesWithMath = /* #__PURE__ */ { config, expression: { mathWithTransform }, math }
+const dependenciesWithMath = /* #__PURE__ */ {
+  instanceId,
+  config,
+  expression: {
+    mathWithTransform
+  },
+  math
+}
 
 // util functions
 export {
@@ -652,3 +663,38 @@ export const expression = {
 export { IndexError } from './error/IndexError'
 export { DimensionError } from './error/DimensionError'
 export { ArgumentsError } from './error/ArgumentsError'
+
+export function core (config) {
+  const _config = config
+    ? {
+      ...DEFAULT_CONFIG,
+      ...config
+    }
+    : DEFAULT_CONFIG
+
+  const instanceId = uniqueId()
+
+  return createCoreFull({ instanceId, config: _config })
+}
+
+const uniqueId = (function () {
+  let id = 0
+
+  return () => {
+    id++
+    return id
+  }
+})()
+
+export function create (config) {
+  const math = core(config)
+  math.create = create
+
+  // TODO: create a new, flat index file with all functions to be imported
+  math['import'](all)
+
+  return math
+}
+
+// return a new instance of math.js as default
+export default create()

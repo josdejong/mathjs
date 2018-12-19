@@ -326,15 +326,16 @@ export function set (object, path, value) {
  * Create an object composed of the picked object properties
  * @param {Object} object
  * @param {string[]} properties
+ * @param {function} [transform] Optional value to transform a value when picking it
  * @return {Object}
  */
-export function pick (object, properties) {
+export function pick (object, properties, transform) {
   const copy = {}
 
   for (const key of properties) {
     const value = get(object, key)
     if (value !== undefined) {
-      set(copy, key, value)
+      set(copy, key, transform ? transform(value, key) : value)
     }
   }
 

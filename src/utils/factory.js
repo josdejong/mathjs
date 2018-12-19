@@ -27,7 +27,7 @@ import { isPlainObject } from './customs'
 export function factory (name, dependencies, create) {
   function assertAndCreate (scope) {
     // we only pass the requested dependencies to the factory function
-    const deps = pick(scope, dependencies)
+    const deps = pick(scope, dependencies.map(stripOptionalNotation))
 
     for (const cached of assertAndCreate.cache) {
       if (deepEqual(deps, cached.deps)) {
@@ -48,7 +48,7 @@ export function factory (name, dependencies, create) {
 
   assertAndCreate.isFactory = true
   assertAndCreate.fn = name
-  assertAndCreate.dependencies = dependencies
+  assertAndCreate.dependencies = dependencies.slice().sort()
 
   return assertAndCreate
 }
@@ -62,46 +62,50 @@ export function factory (name, dependencies, create) {
  * @returns {function}
  */
 export function partial (factory, partialDependencies = {}) {
-  function create (dependencies) {
-    const allDependencies = deepCreate(partialDependencies, dependencies)
+  // split the dependencies in a resolved and unresolved section
+  const resolvedDependencies = []
+  const unresolvedDependenciesMap = {}
+  for (const name of factory.dependencies) {
+    const value = get(partialDependencies, stripOptionalNotation(name))
 
+    if (value) {
+      resolvedDependencies.push(name)
+
+      if (value.isFactory) {
+        value.dependencies.forEach(d => {
+          unresolvedDependenciesMap[d] = true
+        })
+      }
+    } else {
+      unresolvedDependenciesMap[name] = true
+    }
+  }
+
+  resolvedDependencies.sort()
+  const unresolvedDependencies = Object.keys(unresolvedDependenciesMap).sort()
+
+  function createFromPartial (dependencies) {
+    // resolve factory functions inside the partial dependencies
+    const allDependencies = pick(partialDependencies, resolvedDependencies.map(stripOptionalNotation), (value, key) => {
+      return (value && value.isFactory)
+        ? value(dependencies)
+        : value
+    })
+
+    // merge the resolved partial dependencies with the additional, left over dependencies
     deepExtend(allDependencies, dependencies)
 
+    // all dependencies are complete, create the function
     return factory(allDependencies)
   }
 
-  create.isFactory = true
-  create.isPartial = true
-  create.fn = factory.fn
-  // TODO: calculate the left over dependencies via a lazy getter (including nested dependencies)
+  createFromPartial.cache = {}
+  createFromPartial.isFactory = true
+  createFromPartial.isPartial = true
+  createFromPartial.fn = factory.fn
+  createFromPartial.dependencies = unresolvedDependencies
 
-  return create
-}
-
-/**
- * Transform an object and nested objects, execute all partial
- * @param partialDependencies
- * @param dependencies
- */
-function deepCreate (partialDependencies, dependencies) {
-  const created = {}
-
-  Object.keys(partialDependencies).forEach(key => {
-    const value = partialDependencies[key]
-
-    if (value && value.isFactory) {
-      // create factories and partial factories
-      created[key] = value(dependencies)
-    } else if (value && isPlainObject(value)) {
-      // iterate over nested objects
-      created[key] = deepCreate(value, dependencies)
-    } else {
-      // leave as is
-      created[key] = value
-    }
-  })
-
-  return created
+  return createFromPartial
 }
 
 /**
@@ -157,7 +161,7 @@ export function sortFactories (factories) {
   return sorted
 }
 
-// TODO: comment
+// TODO: comment or cleanup if unused in the end
 export function create (factories, scope = {}) {
   sortFactories(factories)
     .forEach(factory => factory(scope))
@@ -187,11 +191,25 @@ export function isFactory (obj) {
  * @param {Object} scope
  */
 export function assertDependencies (name, dependencies, scope) {
-  if (!dependencies.every(dependency => get(scope, dependency) !== undefined)) {
+  const allDefined = dependencies
+    .filter(dependency => !isOptionalDependency(dependency)) // filter optionals
+    .every(dependency => get(scope, dependency) !== undefined)
+
+  if (!allDefined) {
     const missingDependencies = dependencies.filter(dependency => get(scope, dependency) === undefined)
 
     // TODO: create a custom error class for this, a MathjsError or something like that
     throw new Error(`Cannot create function "${name}", ` +
       `some dependencies are missing: ${missingDependencies.map(d => `"${d}"`).join(', ')}.`)
   }
+}
+
+function isOptionalDependency (dependency) {
+  return dependency && dependency[0] === '?'
+}
+
+function stripOptionalNotation (dependency) {
+  return dependency && dependency[0] === '?'
+    ? dependency.slice(1)
+    : dependency
 }

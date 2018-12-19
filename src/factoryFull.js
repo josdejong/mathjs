@@ -253,6 +253,7 @@ import { createChainClass } from './type/chain/Chain'
 import { createHelp } from './expression/function/help'
 import { createChain } from './type/chain/function/chain'
 import { createEmbeddedDocs } from './expression/embeddedDocs'
+import { core } from './core/core'
 
 // class (1)
 export const createResultSetFull = /* #__PURE__ */ createResultSet
@@ -269,14 +270,16 @@ const Matrix = /* #__PURE__ */ createMatrixClassFull
 export const createDenseMatrixClassFull = /* #__PURE__ */ partial(createDenseMatrixClass, { type: { Matrix } })
 const DenseMatrix = /* #__PURE__ */ createDenseMatrixClassFull
 
-export const createTypedFull = /* #__PURE__ */ partial(createTyped, {
-  type: {
-    BigNumber: createBigNumberClassFull,
-    Complex: createComplexClassFull,
-    Fraction: createFractionClassFull,
-    DenseMatrix: createDenseMatrixClassFull
-  }
-})
+const classes = {
+  BigNumber: createBigNumberClassFull,
+  Complex: createComplexClassFull,
+  DenseMatrix: createDenseMatrixClassFull,
+  Fraction: createFractionClassFull
+}
+
+export const createCoreFull = /* #__PURE__ */ partial(core, { classes })
+
+export const createTypedFull = /* #__PURE__ */ partial(createTyped, { classes })
 const typed = /* #__PURE__ */ createTypedFull
 
 // utils (1)

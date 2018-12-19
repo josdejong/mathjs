@@ -1,6 +1,7 @@
 'use strict'
 
 import { clone, mapObject, deepExtend } from '../../utils/object'
+import { DEFAULT_CONFIG } from '../config'
 
 export function configFactory (config, emit) {
   const MATRIX = ['Matrix', 'Array'] // valid values for option matrix
@@ -69,7 +70,7 @@ export function configFactory (config, emit) {
   _config.NUMBER = NUMBER
 
   // attach the config properties as readonly properties to the config function
-  Object.keys(config).forEach(key => {
+  Object.keys(DEFAULT_CONFIG).forEach(key => {
     Object.defineProperty(_config, key, {
       get: () => config[key],
       enumerable: true,

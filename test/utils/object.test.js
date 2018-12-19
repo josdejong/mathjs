@@ -346,5 +346,26 @@ describe('object', function () {
       assert.deepStrictEqual(pick(object, ['a', ['b', 'c']]), { a: 1, b: { c: 2 } })
       assert.deepStrictEqual(pick(object, ['a', 'b.c', 'foo', 'b.foo']), { a: 1, b: { c: 2 } })
     })
+
+    it('should pick and transform nested properties', () => {
+      const object = {
+        a: 1,
+        b: {
+          c: 2,
+          d: 3
+        }
+      }
+
+      function transform (value, key) {
+        return `[${key}:${value}]`
+      }
+
+      assert.deepStrictEqual(pick(object, ['a', 'b.c'], transform), {
+        a: '[a:1]',
+        b: {
+          c: '[b.c:2]'
+        }
+      })
+    })
   })
 })

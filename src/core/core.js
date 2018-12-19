@@ -2,11 +2,11 @@
 
 import './../utils/polyfills'
 import { isLegacyFactory } from './../utils/object'
-import { createTypedLegacy } from './function/typed'
+import { createTyped } from './function/typed'
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
 import { configFactory } from './function/config'
-import { isFactory } from '../utils/factory'
+import { factory, isFactory } from '../utils/factory'
 import {
   isAccessorNode,
   isArray,
@@ -46,11 +46,19 @@ import {
   isUndefined,
   isUnit
 } from '../utils/is'
-import { DEFAULT_CONFIG } from './config'
+
+const dependencies = [
+  'instanceId',
+  'config',
+  '?classes.BigNumber',
+  '?classes.Complex',
+  '?classes.DenseMatrix',
+  '?classes.Fraction'
+]
 
 /**
  * Math.js core. Creates a new, empty math.js instance
- * @param {Object} [options] Available options:
+ * @param {Object} config     Available options:
  *                            {number} epsilon
  *                              Minimum relative difference between two
  *                              compared values, used by all comparison functions.
@@ -71,13 +79,18 @@ import { DEFAULT_CONFIG } from './config'
  *                            {string} randomSeed
  *                              Random seed for seeded pseudo random number generator.
  *                              Set to null to randomly seed.
+ * @param {Object} classes   Supported data classes:
+ *                           - BigNumber
+ *                           - Complex
+ *                           - DenseMatrix
+ *                           - Fraction
  * @returns {Object} Returns a bare-bone math.js instance containing
  *                   functions:
  *                   - `import` to add new functions
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
  */
-export function create (options) {
+export const core = factory('core', dependencies, ({ instanceId, config, classes }) => {
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
     throw new Error('ES5 not supported by this JavaScript engine. ' +
@@ -86,20 +99,18 @@ export function create (options) {
 
   // create the mathjs instance
   const math = emitter.mixin({})
+  math.instanceId = instanceId
   math.expression = {
     transform: {},
     mathWithTransform: {}
   }
 
   // create configuration options. These are private
-  const _config = { ...DEFAULT_CONFIG }
+  const _config = config
 
-  // load config function and apply options
-  math['config'] = configFactory(_config, math.emit)
+  // load config function and apply provided config
+  math.config = configFactory(_config, math.emit)
   math.expression.mathWithTransform['config'] = math['config']
-  if (options) {
-    math.config(options)
-  }
 
   // create a namespace for the mathjs instance, and attach emitter functions
   math.type = {
@@ -146,7 +157,7 @@ export function create (options) {
   }
 
   // create a new typed instance
-  math.typed = createTypedLegacy(math.type)
+  math.typed = createTyped({ config: _config, classes })
 
   // cached factories and instances used by function load
   const factories = []
@@ -200,4 +211,4 @@ export function create (options) {
   math['import'] = importFactory(math.typed, load, math)
 
   return math
-}
+})

@@ -6,7 +6,8 @@ import { createDistribution } from '../../../src/function/probability/distributi
 
 const math = _math.create({ randomSeed: 'test' })
 const Matrix = math.type.Matrix
-const distribution = createDistribution(math)
+const instanceId = 'distribution.test.js'
+const distribution = createDistribution({ instanceId, typed: math.typed, matrix: math.matrix, config: { randomSeed: 'test' } })
 
 const assertApproxEqual = function (testVal, val, tolerance) {
   const diff = Math.abs(val - testVal)

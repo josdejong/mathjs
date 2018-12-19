@@ -8,6 +8,7 @@ import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
 
 const name = 'type.Unit'
 const dependencies = [
+  'instanceId', // Unit can be changed (add custom units) so needs to be unique per instance
   'config.number',
   'config.predictable',
   'addScalar',

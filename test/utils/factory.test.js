@@ -88,8 +88,25 @@ describe('factory', function () {
 
     // create a partial for both functions
     const partialFn1 = partial(createFn1, {})
+    assert.deepStrictEqual(partialFn1.dependencies, ['config.a'])
     const partialFn2 = partial(createFn2, { fn1: partialFn1 })
+    assert.deepStrictEqual(partialFn2.dependencies, ['config.a', 'config.b'])
+
+    // create a function instance from a partial
     const fn22 = partialFn2({ config })
     assert.strictEqual(fn22(4), 22) // 4*3 + 2*5
   })
+
+  it('should allow optional dependencies', () => {
+    const createFn1 = factory('fn1', ['a', '?b'], ({ a, b }) => {
+      return () => ({ a, b })
+    })
+
+    const fn1_ab = createFn1({ a: 2, b: 3 })
+    assert.deepStrictEqual(fn1_ab(), { a: 2, b: 3 })
+    const fn1_a = createFn1({ a: 2 })
+    assert.deepStrictEqual(fn1_a(), { a: 2, b: undefined })
+  })
+
+  // TODO: test whether a factory function is created only once for the same dependencies
 })

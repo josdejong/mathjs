@@ -6,29 +6,26 @@ import functions from './function'
 import json from './json'
 import error from './error'
 import {
-  createInfinity,
-  createNull,
-  createFalse,
-  createTrue,
-  createNaN,
-  createPi,
-  createTau,
-  createPhi,
   createE,
-  createLN2,
-  createLN10,
-  createLOG2E,
-  createLOG10E,
-  createSQRTHalf,
-  createSQRT2,
+  createFalse,
   createI,
+  createInfinity,
+  createLN10,
+  createLN2,
+  createLOG10E,
+  createLOG2E,
+  createNaN,
+  createNull,
+  createPhi,
+  createPi,
+  createSQRT2,
+  createSQRTHalf,
+  createTau,
+  createTrue,
+  createUppercaseE,
+  createUppercasePi,
   createVersion
 } from './constants'
-import { factory } from './utils/factory'
-
-// for backward compatibility with v5
-const createUppercasePi = /* #__PURE__ */ factory('PI', ['pi'], ({ pi }) => pi)
-const createUppercaseE = /* #__PURE__ */ factory('E', ['e'], ({ e }) => e)
 
 export default [
   type, // data types (Matrix, Complex, Unit, ...)

@@ -116,4 +116,8 @@ export const createI = /* #__PURE__ */ factory(
   ({ type: { Complex } }) => Complex.I
 )
 
+// for backward compatibility with v5
+export const createUppercasePi = /* #__PURE__ */ factory('PI', ['pi'], ({ pi }) => pi)
+export const createUppercaseE = /* #__PURE__ */ factory('E', ['e'], ({ e }) => e)
+
 export const createVersion = /* #__PURE__ */ factory('version', [], () => version)

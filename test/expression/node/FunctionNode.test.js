@@ -602,4 +602,11 @@ describe('FunctionNode', function () {
 
     assert.throws(function () { tree.toTex() }, TypeError)
   })
+
+  // FIXME: custom instances should have there own function, not return the same function?
+  after(() => {
+    const customMath = math.create()
+    delete customMath.add.toTex
+    delete customMath.sum.toTex
+  })
 })
