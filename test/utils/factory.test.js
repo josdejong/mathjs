@@ -102,10 +102,10 @@ describe('factory', function () {
       return () => ({ a, b })
     })
 
-    const fn1_ab = createFn1({ a: 2, b: 3 })
-    assert.deepStrictEqual(fn1_ab(), { a: 2, b: 3 })
-    const fn1_a = createFn1({ a: 2 })
-    assert.deepStrictEqual(fn1_a(), { a: 2, b: undefined })
+    const ab = createFn1({ a: 2, b: 3 })
+    assert.deepStrictEqual(ab(), { a: 2, b: 3 })
+    const a = createFn1({ a: 2 })
+    assert.deepStrictEqual(a(), { a: 2, b: undefined })
   })
 
   // TODO: test whether a factory function is created only once for the same dependencies

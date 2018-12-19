@@ -1,6 +1,5 @@
 import { contains } from './array'
 import { deepEqual, deepExtend, get, pick } from './object'
-import { isPlainObject } from './customs'
 
 /**
  * Create a factory function, which can be used to inject dependencies.
