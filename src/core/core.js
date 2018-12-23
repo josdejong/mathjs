@@ -48,11 +48,11 @@ import {
 } from '../utils/is'
 
 const dependencies = [
-  'instanceId',
   'config',
   '?classes.BigNumber',
   '?classes.Complex',
   '?classes.DenseMatrix',
+  '?classes.Matrix',
   '?classes.Fraction'
 ]
 
@@ -90,7 +90,7 @@ const dependencies = [
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
  */
-export const core = factory('core', dependencies, ({ instanceId, config, classes }) => {
+export const createCore = factory('core', dependencies, ({ config, classes }) => {
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
     throw new Error('ES5 not supported by this JavaScript engine. ' +
@@ -99,7 +99,6 @@ export const core = factory('core', dependencies, ({ instanceId, config, classes
 
   // create the mathjs instance
   const math = emitter.mixin({})
-  math.instanceId = instanceId
   math.expression = {
     transform: {},
     mathWithTransform: {}
@@ -156,8 +155,10 @@ export const core = factory('core', dependencies, ({ instanceId, config, classes
     isChain
   }
 
+  Object.assign(math.type, classes)
+
   // create a new typed instance
-  math.typed = createTyped({ config: _config, classes })
+  math.typed = createTyped({ config: math.config, classes })
 
   // cached factories and instances used by function load
   const factories = []

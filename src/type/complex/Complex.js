@@ -2,7 +2,7 @@
 
 import Complex from 'complex.js'
 import { format } from '../../utils/number'
-import { isUnit, isNumber } from '../../utils/is'
+import { isNumber, isUnit } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Complex'
@@ -183,6 +183,3 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ({
 
   return Complex
 })
-
-// no lazy loading, we need to register with typed.type
-createComplexClass.lazy = false

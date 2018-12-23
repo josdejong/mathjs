@@ -2,7 +2,7 @@ import assert from 'assert'
 import {
   canDefineProperty,
   clone,
-  deepEqual,
+  deepStrictEqual,
   deepExtend,
   extend,
   get,
@@ -144,77 +144,77 @@ describe('object', function () {
 
   describe('deepEqual', function () {
     it('should deep compare two objects', function () {
-      assert.strictEqual(deepEqual({}, {}), true)
+      assert.strictEqual(deepStrictEqual({}, {}), true)
 
-      assert.strictEqual(deepEqual({ a: 2, b: 3 }, { a: 2, b: 3 }), true)
-      assert.strictEqual(deepEqual({ a: 2, b: 3 }, { a: 2, b: 4 }), false)
-      assert.strictEqual(deepEqual({ a: 2, b: 3 }, { a: 2 }), false)
-      assert.strictEqual(deepEqual({ a: 2 }, { a: 2, b: 3 }), false)
-      assert.strictEqual(deepEqual({ a: 2, b: 3 }, { a: 2, b: {} }), false)
-      assert.strictEqual(deepEqual({ a: 2, b: {} }, { a: 2, b: {} }), true)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2, b: 3 }), true)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2, b: 4 }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2 }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2 }, { a: 2, b: 3 }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: 3 }, { a: 2, b: {} }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: {} }, { a: 2, b: {} }), true)
 
-      assert.strictEqual(deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 4 } }), true)
-      assert.strictEqual(deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }), false)
-      assert.strictEqual(deepEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }), false)
-      assert.strictEqual(deepEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 4 } }), true)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: { c: 5 } }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: { c: 4 } }, { a: 2, b: {} }), false)
+      assert.strictEqual(deepStrictEqual({ a: 2, b: {} }, { a: 2, b: { c: 4 } }), false)
 
-      assert.strictEqual(deepEqual(undefined, undefined), true)
-      assert.strictEqual(deepEqual({ a: undefined }, { }), false)
-      assert.strictEqual(deepEqual({ }, { a: undefined }), false)
-      assert.strictEqual(deepEqual({ a: undefined }, { a: undefined }), true)
+      assert.strictEqual(deepStrictEqual(undefined, undefined), true)
+      assert.strictEqual(deepStrictEqual({ a: undefined }, { }), false)
+      assert.strictEqual(deepStrictEqual({ }, { a: undefined }), false)
+      assert.strictEqual(deepStrictEqual({ a: undefined }, { a: undefined }), true)
     })
 
     it('should deep compare values and functions strictly', function () {
-      assert.strictEqual(deepEqual({ a: 2 }, { a: '2' }), false)
-      assert.strictEqual(deepEqual(2, '2'), false)
+      assert.strictEqual(deepStrictEqual({ a: 2 }, { a: '2' }), false)
+      assert.strictEqual(deepStrictEqual(2, '2'), false)
 
       const fn1 = (a, b) => a + b
       const fn2 = (a, b) => a + b
-      assert.strictEqual(deepEqual({ add: fn1 }, { add: fn1 }), true)
-      assert.strictEqual(deepEqual({ add: fn1 }, { add: fn2 }), false)
-      assert.strictEqual(deepEqual({ b: { add: fn1 } }, { b: { add: fn1 } }), true)
-      assert.strictEqual(deepEqual({ b: { add: fn1 } }, { b: { add: fn2 } }), false)
+      assert.strictEqual(deepStrictEqual({ add: fn1 }, { add: fn1 }), true)
+      assert.strictEqual(deepStrictEqual({ add: fn1 }, { add: fn2 }), false)
+      assert.strictEqual(deepStrictEqual({ b: { add: fn1 } }, { b: { add: fn1 } }), true)
+      assert.strictEqual(deepStrictEqual({ b: { add: fn1 } }, { b: { add: fn2 } }), false)
     })
 
     it('should deep compare two arrays', function () {
-      assert.strictEqual(deepEqual([], []), true)
-      assert.strictEqual(deepEqual([1, 2], [1, 2]), true)
-      assert.strictEqual(deepEqual([1, 2], [1, 2, 3]), false)
-      assert.strictEqual(deepEqual([1, 0, 3], [1, 2, 3]), false)
+      assert.strictEqual(deepStrictEqual([], []), true)
+      assert.strictEqual(deepStrictEqual([1, 2], [1, 2]), true)
+      assert.strictEqual(deepStrictEqual([1, 2], [1, 2, 3]), false)
+      assert.strictEqual(deepStrictEqual([1, 0, 3], [1, 2, 3]), false)
 
-      assert.strictEqual(deepEqual([1, 2, [3, 4]], [1, 2, [3, 4]]), true)
-      assert.strictEqual(deepEqual([1, 2, [3]], [1, 2, [3, 4]]), false)
-      assert.strictEqual(deepEqual([1, 2, [3, 4]], [1, 2, [3]]), false)
-      assert.strictEqual(deepEqual([1, 2, null], [1, 2, [3]]), false)
-      assert.strictEqual(deepEqual([1, 2, [3]], [1, 2, null]), false)
-      assert.strictEqual(deepEqual([1, 2, 3], [1, 2, [3]]), false)
-      assert.strictEqual(deepEqual([1, 2, [3]], [1, 2, 3]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, [3, 4]], [1, 2, [3, 4]]), true)
+      assert.strictEqual(deepStrictEqual([1, 2, [3]], [1, 2, [3, 4]]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, [3, 4]], [1, 2, [3]]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, null], [1, 2, [3]]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, [3]], [1, 2, null]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, 3], [1, 2, [3]]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, [3]], [1, 2, 3]), false)
     })
 
     it('should deep compare mixed objects an arrays', function () {
-      assert.strictEqual(deepEqual({}, []), false)
-      assert.strictEqual(deepEqual({ a: {} }, { a: [] }), false)
+      assert.strictEqual(deepStrictEqual({}, []), false)
+      assert.strictEqual(deepStrictEqual({ a: {} }, { a: [] }), false)
 
-      assert.strictEqual(deepEqual({ a: [1, 2, 3] }, { a: [1, 2, 3] }), true)
-      assert.strictEqual(deepEqual({ a: [1, 2, {}] }, { a: [1, 2, {}] }), true)
-      assert.strictEqual(deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 4 }] }), true)
-      assert.strictEqual(deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 5 }] }), false)
-      assert.strictEqual(deepEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, {}] }), false)
+      assert.strictEqual(deepStrictEqual({ a: [1, 2, 3] }, { a: [1, 2, 3] }), true)
+      assert.strictEqual(deepStrictEqual({ a: [1, 2, {}] }, { a: [1, 2, {}] }), true)
+      assert.strictEqual(deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 4 }] }), true)
+      assert.strictEqual(deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, { b: 5 }] }), false)
+      assert.strictEqual(deepStrictEqual({ a: [1, 2, { b: 4 }] }, { a: [1, 2, {}] }), false)
 
-      assert.strictEqual(deepEqual([1, 2, {}], [1, 2, {}]), true)
-      assert.strictEqual(deepEqual([1, 2, { a: 3 }], [1, 2, { a: 3 }]), true)
-      assert.strictEqual(deepEqual([1, 2, { a: 3 }], [1, 2, { a: 4 }]), false)
-      assert.strictEqual(deepEqual([1, 2, { a: 3 }], [1, 2, 3]), false)
-      assert.strictEqual(deepEqual([1, 2, 3], [1, 2, { a: 3 }]), false)
-      assert.strictEqual(deepEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4] }]), true)
-      assert.strictEqual(deepEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4, 5] }]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, {}], [1, 2, {}]), true)
+      assert.strictEqual(deepStrictEqual([1, 2, { a: 3 }], [1, 2, { a: 3 }]), true)
+      assert.strictEqual(deepStrictEqual([1, 2, { a: 3 }], [1, 2, { a: 4 }]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, { a: 3 }], [1, 2, 3]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, 3], [1, 2, { a: 3 }]), false)
+      assert.strictEqual(deepStrictEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4] }]), true)
+      assert.strictEqual(deepStrictEqual([1, 2, { a: [3, 4] }], [1, 2, { a: [3, 4, 5] }]), false)
     })
 
     it('should not ignore inherited properties during comparison', function () {
       Object.prototype.foo = 'bar' // eslint-disable-line no-extend-native
 
-      assert.strictEqual(deepEqual({}, {}), true)
-      assert.strictEqual(deepEqual({ foo: 'bar' }, {}), true)
+      assert.strictEqual(deepStrictEqual({}, {}), true)
+      assert.strictEqual(deepStrictEqual({ foo: 'bar' }, {}), true)
 
       delete Object.prototype.foo
     })

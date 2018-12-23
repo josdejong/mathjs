@@ -3,7 +3,7 @@
 import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } from '../../utils/is'
 import { isInteger } from '../../utils/number'
 import { format } from '../../utils/string'
-import { clone, deepEqual } from '../../utils/object'
+import { clone, deepStrictEqual } from '../../utils/object'
 import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { DimensionError } from '../../error/DimensionError'
@@ -388,7 +388,7 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
       }
 
       // check whether the size of the submatrix matches the index size
-      if (!deepEqual(iSize, sSize)) {
+      if (!deepStrictEqual(iSize, sSize)) {
         throw new DimensionError(iSize, sSize, '>')
       }
 

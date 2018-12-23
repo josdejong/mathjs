@@ -4,7 +4,7 @@ import { isArray, isBigNumber, isIndex, isMatrix, isNumber, isString, typeOf } f
 import { arraySize, getArrayDataType, reshape, resize, unsqueeze, validate, validateIndex } from '../../utils/array'
 import { format } from '../../utils/string'
 import { isInteger } from '../../utils/number'
-import { clone, deepEqual } from '../../utils/object'
+import { clone, deepStrictEqual } from '../../utils/object'
 import { DimensionError } from '../../error/DimensionError'
 import { factory } from '../../utils/factory'
 
@@ -344,7 +344,7 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
       }
 
       // check whether the size of the submatrix matches the index size
-      if (!deepEqual(iSize, sSize)) {
+      if (!deepStrictEqual(iSize, sSize)) {
         throw new DimensionError(iSize, sSize, '>')
       }
 

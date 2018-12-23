@@ -1,5 +1,5 @@
 import { contains } from './array'
-import { deepEqual, deepExtend, get, pick } from './object'
+import { get, pick } from './object'
 
 /**
  * Create a factory function, which can be used to inject dependencies.
@@ -26,85 +26,20 @@ import { deepEqual, deepExtend, get, pick } from './object'
 export function factory (name, dependencies, create) {
   function assertAndCreate (scope) {
     // we only pass the requested dependencies to the factory function
+    // to prevent functions to rely on dependencies that are not explicitly
+    // requested.
     const deps = pick(scope, dependencies.map(stripOptionalNotation))
-
-    for (const cached of assertAndCreate.cache) {
-      if (deepEqual(deps, cached.deps)) {
-        // TODO: move this cache entry to the top so recently used entries move up?
-        return cached.fn
-      }
-    }
 
     assertDependencies(name, dependencies, scope)
 
-    const fn = create(deps)
-    assertAndCreate.cache.unshift({ deps, fn })
-
-    return fn
+    return create(deps)
   }
-
-  assertAndCreate.cache = [] // for memoization
 
   assertAndCreate.isFactory = true
   assertAndCreate.fn = name
   assertAndCreate.dependencies = dependencies.slice().sort()
 
   return assertAndCreate
-}
-
-/**
- * Provide part of the dependencies needed by a factory function.
- * Returns a new factory function which only requires the left over dependencies
- * to be provided in order to create the function.
- * @param {function} factory
- * @param {Object} partialDependencies
- * @returns {function}
- */
-export function partial (factory, partialDependencies = {}) {
-  // split the dependencies in a resolved and unresolved section
-  const resolvedDependencies = []
-  const unresolvedDependenciesMap = {}
-  for (const name of factory.dependencies) {
-    const value = get(partialDependencies, stripOptionalNotation(name))
-
-    if (value) {
-      resolvedDependencies.push(name)
-
-      if (value.isFactory) {
-        value.dependencies.forEach(d => {
-          unresolvedDependenciesMap[d] = true
-        })
-      }
-    } else {
-      unresolvedDependenciesMap[name] = true
-    }
-  }
-
-  resolvedDependencies.sort()
-  const unresolvedDependencies = Object.keys(unresolvedDependenciesMap).sort()
-
-  function createFromPartial (dependencies) {
-    // resolve factory functions inside the partial dependencies
-    const allDependencies = pick(partialDependencies, resolvedDependencies.map(stripOptionalNotation), (value, key) => {
-      return (value && value.isFactory)
-        ? value(dependencies)
-        : value
-    })
-
-    // merge the resolved partial dependencies with the additional, left over dependencies
-    deepExtend(allDependencies, dependencies)
-
-    // all dependencies are complete, create the function
-    return factory(allDependencies)
-  }
-
-  createFromPartial.cache = {}
-  createFromPartial.isFactory = true
-  createFromPartial.isPartial = true
-  createFromPartial.fn = factory.fn
-  createFromPartial.dependencies = unresolvedDependencies
-
-  return createFromPartial
 }
 
 /**

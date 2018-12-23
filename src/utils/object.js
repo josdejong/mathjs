@@ -115,7 +115,7 @@ export function deepExtend (a, b) {
  * @param {Array | Object} b
  * @returns {boolean}
  */
-export function deepEqual (a, b) {
+export function deepStrictEqual (a, b) {
   let prop, i, len
   if (Array.isArray(a)) {
     if (!Array.isArray(b)) {
@@ -127,7 +127,7 @@ export function deepEqual (a, b) {
     }
 
     for (i = 0, len = a.length; i < len; i++) {
-      if (!deepEqual(a[i], b[i])) {
+      if (!deepStrictEqual(a[i], b[i])) {
         return false
       }
     }
@@ -141,13 +141,13 @@ export function deepEqual (a, b) {
 
     for (prop in a) {
       // noinspection JSUnfilteredForInLoop
-      if (!(prop in b) || !deepEqual(a[prop], b[prop])) {
+      if (!(prop in b) || !deepStrictEqual(a[prop], b[prop])) {
         return false
       }
     }
     for (prop in b) {
       // noinspection JSUnfilteredForInLoop
-      if (!(prop in a) || !deepEqual(a[prop], b[prop])) {
+      if (!(prop in a) || !deepStrictEqual(a[prop], b[prop])) {
         return false
       }
     }

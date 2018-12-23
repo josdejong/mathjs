@@ -3,7 +3,7 @@
 import { isNode } from '../../utils/is'
 
 import { keywords } from '../keywords'
-import { deepEqual, hasOwnProperty } from '../../utils/object'
+import { deepStrictEqual, hasOwnProperty } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'expression.node.Node'
@@ -223,7 +223,7 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ express
    */
   Node.prototype.equals = function (other) {
     return other
-      ? deepEqual(this, other)
+      ? deepStrictEqual(this, other)
       : false
   }
 

@@ -229,7 +229,9 @@ export function importFactory (typed, load, math) {
           return instance
         }
 
-        if (!options.silent) {
+        if (options.silent) {
+          return existing
+        } else {
           throw new Error('Cannot import "' + name + '": already exists')
         }
       }
@@ -310,8 +312,9 @@ export function importFactory (typed, load, math) {
         return instance
       }
 
-      if (!options.silent) {
-        // console.log('math', JSON.stringify(Object.keys(math)))
+      if (options.silent) {
+        return existing
+      } else {
         throw new Error('Cannot import "' + fullName + '": already exists')
       }
     }

@@ -1,267 +1,268 @@
-import {
-  createAbsFull,
-  createAccessorNodeFull,
-  createAcosFull,
-  createAcoshFull,
-  createAcotFull,
-  createAcothFull,
-  createAcscFull,
-  createAcschFull,
-  createAddFull,
-  createAddScalarFull,
-  createAndFull,
-  createArgFull,
-  createArrayNodeFull,
-  createAsecFull,
-  createAsechFull,
-  createAsinFull,
-  createAsinhFull,
-  createAssignmentNodeFull,
-  createAtan2Full,
-  createAtanFull,
-  createAtanhFull,
-  createBellNumbersFull,
-  createBigNumberClassFull,
-  createBignumberFull,
-  createBitAndFull,
-  createBitNotFull,
-  createBitOrFull,
-  createBitXorFull,
-  createBlockNodeFull,
-  createBooleanFull,
-  createCatalanFull,
-  createCbrtFull,
-  createCeilFull,
-  createCloneFull,
-  createCombinationsFull,
-  createCompareFull,
-  createCompareNaturalFull,
-  createCompareTextFull,
-  createCompileFull,
-  createComplexClassFull,
-  createComplexFull,
-  createCompositionFull,
-  createConcatFull,
-  createConditionalNodeFull,
-  createConjFull,
-  createConstantNodeFull,
-  createCoreFull,
-  createCosFull,
-  createCoshFull,
-  createCotFull,
-  createCothFull,
-  createCreateUnitFull,
-  createCrossFull,
-  createCscFull,
-  createCschFull,
-  createCtransposeFull,
-  createCubeFull,
-  createDeepEqualFull,
-  createDenseMatrixClassFull,
-  createDerivativeFull,
-  createDetFull,
-  createDiagFull,
-  createDistanceFull,
-  createDivideFull,
-  createDivideScalarFull,
-  createDotDivideFull,
-  createDotFull,
-  createDotMultiplyFull,
-  createDotPowFull,
-  createEFull,
-  createEqualFull,
-  createEqualScalarFull,
-  createEqualTextFull,
-  createErfFull,
-  createEvaluateFull,
-  createExpFull,
-  createExpm1Full,
-  createExpmFull,
-  createEyeFull,
-  createFactorialFull,
-  createFalseFull,
-  createFibonacciHeapClassFull,
-  createFilterFull,
-  createFixFull,
-  createFlattenFull,
-  createFloorFull,
-  createForEachFull,
-  createFormatFull,
-  createFractionClassFull,
-  createFractionFull,
-  createFunctionAssignmentNodeFull,
-  createFunctionNodeFull,
-  createGammaFull,
-  createGcdFull,
-  createGetMatrixDataTypeFull,
-  createHypotFull,
-  createIdentityFull,
-  createIFull,
-  createImFull,
-  createImmutableDenseMatrixClassFull,
-  createIndexClassFull,
-  createIndexFull,
-  createIndexNodeFull,
-  createInfinityFull,
-  createIntersectFull,
-  createInvFull,
-  createIsIntegerFull,
-  createIsNaNFull,
-  createIsNegativeFull,
-  createIsNumericFull,
-  createIsPositiveFull,
-  createIsPrimeFull,
-  createIsZeroFull,
-  createKldivergenceFull,
-  createKronFull,
-  createLargerEqFull,
-  createLargerFull,
-  createLcmFull,
-  createLeftShiftFull,
-  createLN10Full,
-  createLN2Full,
-  createLOG10EFull,
-  createLog10Full,
-  createLog1pFull,
-  createLOG2EFull,
-  createLog2Full,
-  createLogFull,
-  createLsolveFull,
-  createLupFull,
-  createLusolveFull,
-  createMadFull,
-  createMapFull,
-  createMatrixClassFull,
-  createMatrixFull,
-  createMaxFull,
-  createMeanFull,
-  createMedianFull,
-  createMinFull,
-  createModeFull,
-  createModFull,
-  createMultinomialFull,
-  createMultiplyFull,
-  createMultiplyScalarFull,
-  createNaNFull,
-  createNodeFull,
-  createNormFull,
-  createNotFull,
-  createNthRootFull,
-  createNthRootsFull,
-  createNullFull,
-  createNumberFull,
-  createNumericFull,
-  createObjectNodeFull,
-  createOnesFull,
-  createOperatorNodeFull,
-  createOrFull,
-  createParenthesisNodeFull,
-  createParseFull,
-  createParserClassFull,
-  createParserFull,
-  createPartitionSelectFull,
-  createPermutationsFull,
-  createPhiFull,
-  createPickRandomFull,
-  createPiFull,
-  createPowFull,
-  createPrintFull,
-  createProdFull,
-  createQrFull,
-  createQuantileSeqFull,
-  createRandomFull,
-  createRandomIntFull,
-  createRangeClassFull,
-  createRangeFull,
-  createRangeNodeFull,
-  createRationalizeFull,
-  createReFull,
-  createRelationalNodeFull,
-  createReshapeFull,
-  createResizeFull,
-  createResultSetFull,
-  createReviverFull,
-  createRightArithShiftFull,
-  createRightLogShiftFull,
-  createRoundFull,
-  createSecFull,
-  createSechFull,
-  createSetCartesianFull,
-  createSetDifferenceFull,
-  createSetDistinctFull,
-  createSetIntersectFull,
-  createSetIsSubsetFull,
-  createSetMultiplicityFull,
-  createSetPowersetFull,
-  createSetSizeFull,
-  createSetSymDifferenceFull,
-  createSetUnionFull,
-  createSignFull,
-  createSimplifyFull,
-  createSinFull,
-  createSinhFull,
-  createSizeFull,
-  createSluFull,
-  createSmallerEqFull,
-  createSmallerFull,
-  createSortFull,
-  createSpaClassFull,
-  createSparseFull,
-  createSparseMatrixClassFull,
-  createSplitUnitFull,
-  createSQRT2Full,
-  createSqrtFull,
-  createSQRTHalfFull,
-  createSqrtmFull,
-  createSquareFull,
-  createSqueezeFull,
-  createStdFull,
-  createStirlingS2Full,
-  createStringFull,
-  createSubsetFull,
-  createSubtractFull,
-  createSumFull,
-  createSymbolNodeFull,
-  createTanFull,
-  createTanhFull,
-  createTauFull,
-  createToFull,
-  createTraceFull,
-  createTransposeFull,
-  createTrueFull,
-  createTypedFull,
-  createTypeOfFull,
-  createUnaryMinusFull,
-  createUnaryPlusFull,
-  createUnequalFull,
-  createUnitClassFull,
-  createUnitFull,
-  createUsolveFull,
-  createVarianceFull,
-  createVersionFull,
-  createXgcdFull,
-  createXorFull,
-  createZerosFull
-} from './factoryFull'
+// TODO: auto generate this file
+
 import all from './index'
 import { DEFAULT_CONFIG } from './core/config'
 import { createEmbeddedDocs } from './expression/embeddedDocs'
+import { createResultSet } from './type/resultset/ResultSet'
+import { createBigNumberClass } from './type/bignumber/BigNumber'
+import { createComplexClass } from './type/complex/Complex'
+import { createFractionClass } from './type/fraction/Fraction'
+import { createRangeClass } from './type/matrix/Range'
+import { createMatrixClass } from './type/matrix/Matrix'
+import { createDenseMatrixClass } from './type/matrix/DenseMatrix'
+import { createTyped } from './core/function/typed'
+import { createClone } from './function/utils/clone'
+import { createIsInteger } from './function/utils/isInteger'
+import { createIsNegative } from './function/utils/isNegative'
+import { createIsNumeric } from './function/utils/isNumeric'
+import { createIsPositive } from './function/utils/isPositive'
+import { createIsZero } from './function/utils/isZero'
+import { createIsNaN } from './function/utils/isNaN'
+import { createTypeOf } from './function/utils/typeOf'
+import { createEqualScalar } from './function/relational/equalScalar'
+import { createSparseMatrixClass } from './type/matrix/SparseMatrix'
+import { createNumber } from './type/number'
+import { createString } from './type/string'
+import { createBoolean } from './type/boolean'
+import { createBignumber } from './type/bignumber/function/bignumber'
+import { createComplex } from './type/complex/function/complex'
+import { createFraction } from './type/fraction/function/fraction'
+import { createMatrix } from './type/matrix/function/matrix'
+import { createSplitUnit } from './type/unit/function/splitUnit'
+import { createUnaryMinus } from './function/arithmetic/unaryMinus'
+import { createUnaryPlus } from './function/arithmetic/unaryPlus'
+import { createAbs } from './function/arithmetic/abs'
+import { createAddScalar } from './function/arithmetic/addScalar'
+import { createCbrt } from './function/arithmetic/cbrt'
+import { createCeil } from './function/arithmetic/ceil'
+import { createCube } from './function/arithmetic/cube'
+import { createExp } from './function/arithmetic/exp'
+import { createExpm1 } from './function/arithmetic/expm1'
+import { createFix } from './function/arithmetic/fix'
+import { createFloor } from './function/arithmetic/floor'
+import { createGcd } from './function/arithmetic/gcd'
+import { createLcm } from './function/arithmetic/lcm'
+import { createLog10 } from './function/arithmetic/log10'
+import { createLog2 } from './function/arithmetic/log2'
+import { createMod } from './function/arithmetic/mod'
+import { createMultiplyScalar } from './function/arithmetic/multiplyScalar'
+import { createMultiply } from './function/arithmetic/multiply'
+import { createNthRoot } from './function/arithmetic/nthRoot'
+import { createSign } from './function/arithmetic/sign'
+import { createSqrt } from './function/arithmetic/sqrt'
+import { createSquare } from './function/arithmetic/square'
+import { createSubtract } from './function/arithmetic/subtract'
+import { createXgcd } from './function/arithmetic/xgcd'
+import { createDotMultiply } from './function/arithmetic/dotMultiply'
+import { createBitAnd } from './function/bitwise/bitAnd'
+import { createBitNot } from './function/bitwise/bitNot'
+import { createBitOr } from './function/bitwise/bitOr'
+import { createBitXor } from './function/bitwise/bitXor'
+import { createArg } from './function/complex/arg'
+import { createConj } from './function/complex/conj'
+import { createIm } from './function/complex/im'
+import { createRe } from './function/complex/re'
+import { createNot } from './function/logical/not'
+import { createOr } from './function/logical/or'
+import { createXor } from './function/logical/xor'
+import { createConcat } from './function/matrix/concat'
+import { createCross } from './function/matrix/cross'
+import { createDiag } from './function/matrix/diag'
+import { createEye } from './function/matrix/eye'
+import { createFilter } from './function/matrix/filter'
+import { createFlatten } from './function/matrix/flatten'
+import { createForEach } from './function/matrix/forEach'
+import { createGetMatrixDataType } from './function/matrix/getMatrixDataType'
+import { createIdentity } from './function/matrix/identity'
+import { createKron } from './function/matrix/kron'
+import { createMap } from './function/matrix/map'
+import { createOnes } from './function/matrix/ones'
+import { createRange } from './function/matrix/range'
+import { createReshape } from './function/matrix/reshape'
+import { createResize } from './function/matrix/resize'
+import { createSize } from './function/matrix/size'
+import { createSqueeze } from './function/matrix/squeeze'
+import { createSubset } from './function/matrix/subset'
+import { createTranspose } from './function/matrix/transpose'
+import { createCtranspose } from './function/matrix/ctranspose'
+import { createZeros } from './function/matrix/zeros'
+import { createErf } from './function/special/erf'
+import { createMode } from './function/statistics/mode'
+import { createProd } from './function/statistics/prod'
+import { createFormat } from './function/string/format'
+import { createPrint } from './function/string/print'
+import { createTo } from './function/unit/to'
+import { createIsPrime } from './function/utils/isPrime'
+import { createNumeric } from './function/utils/numeric'
+import { createDivideScalar } from './function/arithmetic/divideScalar'
+import { createPow } from './function/arithmetic/pow'
+import { createRound } from './function/arithmetic/round'
+import { createLog } from './function/arithmetic/log'
+import { createLog1p } from './function/arithmetic/log1p'
+import { createNthRoots } from './function/arithmetic/nthRoots'
+import { createDotPow } from './function/arithmetic/dotPow'
+import { createDotDivide } from './function/arithmetic/dotDivide'
+import { createLsolve } from './function/algebra/solver/lsolve'
+import { createUsolve } from './function/algebra/solver/usolve'
+import { createLeftShift } from './function/bitwise/leftShift'
+import { createRightArithShift } from './function/bitwise/rightArithShift'
+import { createRightLogShift } from './function/bitwise/rightLogShift'
+import { createAnd } from './function/logical/and'
+import { createCompare } from './function/relational/compare'
+import { createCompareNatural } from './function/relational/compareNatural'
+import { createCompareText } from './function/relational/compareText'
+import { createEqual } from './function/relational/equal'
+import { createEqualText } from './function/relational/equalText'
+import { createSmaller } from './function/relational/smaller'
+import { createSmallerEq } from './function/relational/smallerEq'
+import { createLarger } from './function/relational/larger'
+import { createLargerEq } from './function/relational/largerEq'
+import { createDeepEqual } from './function/relational/deepEqual'
+import { createUnequal } from './function/relational/unequal'
+import { createPartitionSelect } from './function/matrix/partitionSelect'
+import { createSort } from './function/matrix/sort'
+import { createMax } from './function/statistics/max'
+import { createMin } from './function/statistics/min'
+import { createImmutableDenseMatrixClass } from './type/matrix/ImmutableDenseMatrix'
+import { createIndexClass } from './type/matrix/MatrixIndex'
+import { createFibonacciHeapClass } from './type/matrix/FibonacciHeap'
+import { createSpaClass } from './type/matrix/Spa'
+import { createUnitClass } from './type/unit/Unit'
+import { createUnit as createUnitFactory } from './type/unit/function/unit'
+import { createSparse } from './type/matrix/function/sparse'
+import { createCreateUnit } from './type/unit/function/createUnit'
+import { createAcos } from './function/trigonometry/acos'
+import { createAcosh } from './function/trigonometry/acosh'
+import { createAcot } from './function/trigonometry/acot'
+import { createAcoth } from './function/trigonometry/acoth'
+import { createAcsc } from './function/trigonometry/acsc'
+import { createAcsch } from './function/trigonometry/acsch'
+import { createAsec } from './function/trigonometry/asec'
+import { createAsech } from './function/trigonometry/asech'
+import { createAsin } from './function/trigonometry/asin'
+import { createAsinh } from './function/trigonometry/asinh'
+import { createAtan } from './function/trigonometry/atan'
+import { createAtan2 } from './function/trigonometry/atan2'
+import { createAtanh } from './function/trigonometry/atanh'
+import { createCos } from './function/trigonometry/cos'
+import { createCosh } from './function/trigonometry/cosh'
+import { createCot } from './function/trigonometry/cot'
+import { createCoth } from './function/trigonometry/coth'
+import { createCsc } from './function/trigonometry/csc'
+import { createCsch } from './function/trigonometry/csch'
+import { createSec } from './function/trigonometry/sec'
+import { createSech } from './function/trigonometry/sech'
+import { createSin } from './function/trigonometry/sin'
+import { createSinh } from './function/trigonometry/sinh'
+import { createTan } from './function/trigonometry/tan'
+import { createTanh } from './function/trigonometry/tanh'
+import { createSetCartesian } from './function/set/setCartesian'
+import { createSetDifference } from './function/set/setDifference'
+import { createSetDistinct } from './function/set/setDistinct'
+import { createSetIntersect } from './function/set/setIntersect'
+import { createSetIsSubset } from './function/set/setIsSubset'
+import { createSetMultiplicity } from './function/set/setMultiplicity'
+import { createSetPowerset } from './function/set/setPowerset'
+import { createSetSize } from './function/set/setSize'
+import { createSetSymDifference } from './function/set/setSymDifference'
+import { createSetUnion } from './function/set/setUnion'
+import { createAdd } from './function/arithmetic/add'
+import { createHypot } from './function/arithmetic/hypot'
+import { createNorm } from './function/arithmetic/norm'
+import { createDot } from './function/matrix/dot'
+import { createTrace } from './function/matrix/trace'
+import { createIndex } from './type/matrix/function'
+import { createNode } from './expression/node/Node'
+import { createAccessorNode } from './expression/node/AccessorNode'
+import { createArrayNode } from './expression/node/ArrayNode'
+import { createAssignmentNode } from './expression/node/AssignmentNode'
+import { createBlockNode } from './expression/node/BlockNode'
+import { createConditionalNode } from './expression/node/ConditionalNode'
+import { createConstantNode } from './expression/node/ConstantNode'
+import { createFunctionAssignmentNode } from './expression/node/FunctionAssignmentNode'
+import { createIndexNode } from './expression/node/IndexNode'
+import { createObjectNode } from './expression/node/ObjectNode'
+import { createOperatorNode } from './expression/node/OperatorNode'
+import { createParenthesisNode } from './expression/node/ParenthesisNode'
+import { createRangeNode } from './expression/node/RangeNode'
+import { createRelationalNode } from './expression/node/RelationalNode'
+import { createSymbolNode } from './expression/node/SymbolNode'
+import { createFunctionNode } from './expression/node/FunctionNode'
+import { createParseExpression } from './expression/parse'
+import { createParse } from './expression/function/parse'
+import { createCompile } from './expression/function/compile'
+import { createEvaluate } from './expression/function/evaluate'
+import { createParserClass } from './expression/Parser'
+import { createParser } from './expression/function/parser'
+import { createLup } from './function/algebra/decomposition/lup'
+import { createQr } from './function/algebra/decomposition/qr'
+import { createSlu } from './function/algebra/decomposition/slu'
+import { createLusolve } from './function/algebra/solver/lusolve'
+import { createHelpClass } from './expression/Help'
+import { createChainClass } from './type/chain/Chain'
+import { createHelp } from './expression/function/help'
+import { createChain } from './type/chain/function/chain'
+import { createDet } from './function/matrix/det'
+import { createInv } from './function/matrix/inv'
+import { createExpm } from './function/matrix/expm'
+import { createSqrtm } from './function/matrix/sqrtm'
+import { createDivide } from './function/arithmetic/divide'
+import { createDistance } from './function/geometry/distance'
+import { createIntersect } from './function/geometry/intersect'
+import { createSum } from './function/statistics/sum'
+import { createMean } from './function/statistics/mean'
+import { createMedian } from './function/statistics/median'
+import { createMad } from './function/statistics/mad'
+import { createVariance } from './function/statistics/variance'
+import { createQuantileSeq } from './function/statistics/quantileSeq'
+import { createStd } from './function/statistics/std'
+import { createDistribution } from './function/probability/distribution'
+import { createCombinations } from './function/probability/combinations'
+import { createGamma } from './function/probability/gamma'
+import { createFactorial } from './function/probability/factorial'
+import { createKldivergence } from './function/probability/kldivergence'
+import { createMultinomial } from './function/probability/multinomial'
+import { createPermutations } from './function/probability/permutations'
+import { createPickRandom } from './function/probability/pickRandom'
+import { createRandom } from './function/probability/random'
+import { createRandomInt } from './function/probability/randomInt'
+import { createStirlingS2 } from './function/combinatorics/stirlingS2'
+import { createBellNumbers } from './function/combinatorics/bellNumbers'
+import { createCatalan } from './function/combinatorics/catalan'
+import { createComposition } from './function/combinatorics/composition'
+import { createSimplifyCore } from './function/algebra/simplify/simplifyCore'
+import { createSimplifyConstant } from './function/algebra/simplify/simplifyConstant'
+import { createResolve } from './function/algebra/simplify/resolve'
+import { createSimplify } from './function/algebra/simplify'
+import { createDerivative } from './function/algebra/derivative'
+import { createRationalize } from './function/algebra/rationalize'
+import { createReviver } from './json/reviver'
+import {
+  createE,
+  createFalse,
+  createI,
+  createInfinity,
+  createLN10,
+  createLN2,
+  createLOG10E,
+  createLOG2E,
+  createNaN,
+  createNull,
+  createPhi,
+  createPi,
+  createSQRT2,
+  createSQRTHalf,
+  createTau,
+  createTrue,
+  createVersion
+} from './constants'
+import { createCore } from './core/core'
 
 export const config = /* #__PURE__ */ Object.freeze({ ...DEFAULT_CONFIG })
-const instanceId = 'defaultInstance'
-const dependencies = /* #__PURE__ */ { instanceId, config }
 
 // FIXME: fill math and mathWithTransform
 const math = /* #__PURE__ */ {}
 const mathWithTransform = /* #__PURE__ */ {}
-const dependenciesWithMath = /* #__PURE__ */ {
-  instanceId,
-  config,
-  expression: {
-    mathWithTransform
-  },
-  math
-}
 
 // util functions
 export {
@@ -303,338 +304,575 @@ export {
 } from './utils/is'
 
 // class (1)
-export const ResultSet = /* #__PURE__ */ createResultSetFull(dependencies)
-export const BigNumber = /* #__PURE__ */ createBigNumberClassFull(dependencies)
-export const Complex = /* #__PURE__ */ createComplexClassFull(dependencies)
-export const Fraction = /* #__PURE__ */ createFractionClassFull(dependencies)
-export const Range = /* #__PURE__ */ createRangeClassFull(dependencies)
-export const Matrix = /* #__PURE__ */ createMatrixClassFull(dependencies)
-export const DenseMatrix = /* #__PURE__ */ createDenseMatrixClassFull(dependencies)
+export const ResultSet = /* #__PURE__ */ createResultSet()
+export const BigNumber = /* #__PURE__ */ createBigNumberClass({ config })
+export const Complex = /* #__PURE__ */ createComplexClass({ config })
+export const Fraction = /* #__PURE__ */ createFractionClass()
+export const Range = /* #__PURE__ */ createRangeClass()
+export const Matrix = /* #__PURE__ */ createMatrixClass()
+export const DenseMatrix = /* #__PURE__ */ createDenseMatrixClass({ type: { Matrix } })
 
-export const typed = /* #__PURE__ */ createTypedFull(dependencies)
+const classes = {
+  BigNumber,
+  Complex,
+  DenseMatrix,
+  Fraction,
+  Matrix
+}
+
+export const typed = /* #__PURE__ */ createTyped({ classes })
 
 // utils (1)
-export const clone = /* #__PURE__ */ createCloneFull(dependencies)
-export const isInteger = /* #__PURE__ */ createIsIntegerFull(dependencies)
-export const isNegative = /* #__PURE__ */ createIsNegativeFull(dependencies)
-export const isNumeric = /* #__PURE__ */ createIsNumericFull(dependencies)
-export const isPositive = /* #__PURE__ */ createIsPositiveFull(dependencies)
-export const isZero = /* #__PURE__ */ createIsZeroFull(dependencies)
-export const isNaN = /* #__PURE__ */ createIsNaNFull(dependencies)
-export const typeOf = /* #__PURE__ */ createTypeOfFull(dependencies)
+export const clone = /* #__PURE__ */ createClone({ typed })
+export const isInteger = /* #__PURE__ */ createIsInteger({ typed })
+export const isNegative = /* #__PURE__ */ createIsNegative({ typed })
+export const isNumeric = /* #__PURE__ */ createIsNumeric({ typed })
+export const isPositive = /* #__PURE__ */ createIsPositive({ typed })
+export const isZero = /* #__PURE__ */ createIsZero({ typed })
+export const isNaN = /* #__PURE__ */ createIsNaN({ typed })
+export const typeOf = /* #__PURE__ */ createTypeOf({ typed })
 
 // relational (1)
-export const equalScalar = /* #__PURE__ */ createEqualScalarFull(dependencies)
+export const equalScalar = /* #__PURE__ */ createEqualScalar({ config, typed })
+
+// classes (1.1)
+export const SparseMatrix = /* #__PURE__ */ createSparseMatrixClass({ typed, equalScalar, type: { Matrix } })
 
 // create (1)
-export const number = /* #__PURE__ */ createNumberFull(dependencies)
-export const string = /* #__PURE__ */ createStringFull(dependencies)
-export const boolean = /* #__PURE__ */ createBooleanFull(dependencies)
-export const bignumber = /* #__PURE__ */ createBignumberFull(dependencies)
-export const complex = /* #__PURE__ */ createComplexFull(dependencies)
-export const fraction = /* #__PURE__ */ createFractionFull(dependencies)
-export const matrix = /* #__PURE__ */ createMatrixFull(dependencies)
-export const splitUnit = /* #__PURE__ */ createSplitUnitFull(dependencies)
+export const number = /* #__PURE__ */ createNumber({ typed })
+export const string = /* #__PURE__ */ createString({ typed })
+export const boolean = /* #__PURE__ */ createBoolean({ typed })
+export const bignumber = /* #__PURE__ */ createBignumber({ typed, type: { BigNumber } })
+export const complex = /* #__PURE__ */ createComplex({ typed, type: { Complex } })
+export const fraction = /* #__PURE__ */ createFraction({ typed, type: { Fraction } })
+export const matrix = /* #__PURE__ */ createMatrix({ typed, type: { Matrix, DenseMatrix, SparseMatrix } })
+export const splitUnit = /* #__PURE__ */ createSplitUnit({ typed })
 
 // arithmetic (1)
-export const unaryMinus = /* #__PURE__ */ createUnaryMinusFull(dependencies)
-export const unaryPlus = /* #__PURE__ */ createUnaryPlusFull(dependencies)
-export const abs = /* #__PURE__ */ createAbsFull(dependencies)
-export const addScalar = /* #__PURE__ */ createAddScalarFull(dependencies)
-export const cbrt = /* #__PURE__ */ createCbrtFull(dependencies)
-export const ceil = /* #__PURE__ */ createCeilFull(dependencies)
-export const cube = /* #__PURE__ */ createCubeFull(dependencies)
-export const exp = /* #__PURE__ */ createExpFull(dependencies)
-export const expm1 = /* #__PURE__ */ createExpm1Full(dependencies)
-export const fix = /* #__PURE__ */ createFixFull(dependencies)
-export const floor = /* #__PURE__ */ createFloorFull(dependencies)
-export const gcd = /* #__PURE__ */ createGcdFull(dependencies)
-export const lcm = /* #__PURE__ */ createLcmFull(dependencies)
-export const log10 = /* #__PURE__ */ createLog10Full(dependencies)
-export const log2 = /* #__PURE__ */ createLog2Full(dependencies)
-export const mod = /* #__PURE__ */ createModFull(dependencies)
-export const multiplyScalar = /* #__PURE__ */ createMultiplyScalarFull(dependencies)
-export const multiply = /* #__PURE__ */ createMultiplyFull(dependencies)
-export const nthRoot = /* #__PURE__ */ createNthRootFull(dependencies)
-export const sign = /* #__PURE__ */ createSignFull(dependencies)
-export const sqrt = /* #__PURE__ */ createSqrtFull(dependencies)
-export const square = /* #__PURE__ */ createSquareFull(dependencies)
-export const subtract = /* #__PURE__ */ createSubtractFull(dependencies)
-export const xgcd = /* #__PURE__ */ createXgcdFull(dependencies)
-export const dotMultiply = /* #__PURE__ */ createDotMultiplyFull(dependencies)
+export const unaryMinus = /* #__PURE__ */ createUnaryMinus({ typed })
+export const unaryPlus = /* #__PURE__ */ createUnaryPlus({ config, typed, type: { BigNumber } })
+export const abs = /* #__PURE__ */ createAbs({ typed })
+export const addScalar = /* #__PURE__ */ createAddScalar({ typed })
+export const cbrt = /* #__PURE__ */ createCbrt({ config, typed, isNegative, unaryMinus, matrix, type: { Complex, BigNumber, Fraction } })
+export const ceil = /* #__PURE__ */ createCeil({ typed })
+export const cube = /* #__PURE__ */ createCube({ typed })
+export const exp = /* #__PURE__ */ createExp({ typed })
+export const expm1 = /* #__PURE__ */ createExpm1({ typed, type: { Complex } })
+export const fix = /* #__PURE__ */ createFix({ typed, type: { Complex } })
+export const floor = /* #__PURE__ */ createFloor({ typed })
+export const gcd = /* #__PURE__ */ createGcd({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } })
+export const lcm = /* #__PURE__ */ createLcm({ typed, matrix, equalScalar })
+export const log10 = /* #__PURE__ */ createLog10({ config, typed, type: { Complex } })
+export const log2 = /* #__PURE__ */ createLog2({ config, typed, type: { Complex } })
+export const mod = /* #__PURE__ */ createMod({ typed, matrix, equalScalar, type: { DenseMatrix } })
+export const multiplyScalar = /* #__PURE__ */ createMultiplyScalar({ typed })
+export const multiply = /* #__PURE__ */ createMultiply({ typed, matrix, addScalar, multiplyScalar, equalScalar })
+export const nthRoot = /* #__PURE__ */ createNthRoot({ typed, matrix, equalScalar, type: { BigNumber } })
+export const sign = /* #__PURE__ */ createSign({ typed, type: { BigNumber, Fraction } })
+export const sqrt = /* #__PURE__ */ createSqrt({ config, typed, type: { Complex } })
+export const square = /* #__PURE__ */ createSquare({ typed })
+export const subtract = /* #__PURE__ */ createSubtract({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix } })
+export const xgcd = /* #__PURE__ */ createXgcd({ config, typed, matrix, type: { BigNumber } })
+export const dotMultiply = /* #__PURE__ */ createDotMultiply({ typed, matrix, equalScalar, multiplyScalar })
 
 // bitwise (1)
-export const bitAnd = /* #__PURE__ */ createBitAndFull(dependencies)
-export const bitNot = /* #__PURE__ */ createBitNotFull(dependencies)
-export const bitOr = /* #__PURE__ */ createBitOrFull(dependencies)
-export const bitXor = /* #__PURE__ */ createBitXorFull(dependencies)
+export const bitAnd = /* #__PURE__ */ createBitAnd({ typed, matrix, equalScalar })
+export const bitNot = /* #__PURE__ */ createBitNot({ typed })
+export const bitOr = /* #__PURE__ */ createBitOr({ typed, matrix, equalScalar, type: { DenseMatrix } })
+export const bitXor = /* #__PURE__ */ createBitXor({ typed, matrix, type: { DenseMatrix } })
 
 // complex (1)
-export const arg = /* #__PURE__ */ createArgFull(dependencies)
-export const conj = /* #__PURE__ */ createConjFull(dependencies)
-export const im = /* #__PURE__ */ createImFull(dependencies)
-export const re = /* #__PURE__ */ createReFull(dependencies)
+export const arg = /* #__PURE__ */ createArg({ typed, type: { BigNumber } })
+export const conj = /* #__PURE__ */ createConj({ typed })
+export const im = /* #__PURE__ */ createIm({ typed })
+export const re = /* #__PURE__ */ createRe({ typed })
 
 // logical (1)
-export const not = /* #__PURE__ */ createNotFull(dependencies)
-export const or = /* #__PURE__ */ createOrFull(dependencies)
-export const xor = /* #__PURE__ */ createXorFull(dependencies)
+export const not = /* #__PURE__ */ createNot({ typed })
+export const or = /* #__PURE__ */ createOr({ typed, matrix, equalScalar, type: { DenseMatrix } })
+export const xor = /* #__PURE__ */ createXor({ typed, matrix, type: { DenseMatrix } })
 
 // matrix (1)
-export const concat = /* #__PURE__ */ createConcatFull(dependencies)
-export const cross = /* #__PURE__ */ createCrossFull(dependencies)
-export const diag = /* #__PURE__ */ createDiagFull(dependencies)
-export const eye = /* #__PURE__ */ createEyeFull(dependencies)
-export const filter = /* #__PURE__ */ createFilterFull(dependencies)
-export const flatten = /* #__PURE__ */ createFlattenFull(dependencies)
-export const forEach = /* #__PURE__ */ createForEachFull(dependencies)
-export const getMatrixDataType = /* #__PURE__ */ createGetMatrixDataTypeFull(dependencies)
-export const identity = /* #__PURE__ */ createIdentityFull(dependencies)
-export const kron = /* #__PURE__ */ createKronFull(dependencies)
-export const map = /* #__PURE__ */ createMapFull(dependencies)
-export const ones = /* #__PURE__ */ createOnesFull(dependencies)
-export const range = /* #__PURE__ */ createRangeFull(dependencies)
-export const reshape = /* #__PURE__ */ createReshapeFull(dependencies)
-export const resize = /* #__PURE__ */ createResizeFull(dependencies)
-export const size = /* #__PURE__ */ createSizeFull(dependencies)
-export const squeeze = /* #__PURE__ */ createSqueezeFull(dependencies)
-export const subset = /* #__PURE__ */ createSubsetFull(dependencies)
-export const transpose = /* #__PURE__ */ createTransposeFull(dependencies)
-export const ctranspose = /* #__PURE__ */ createCtransposeFull(dependencies)
-export const zeros = /* #__PURE__ */ createZerosFull(dependencies)
+export const concat = /* #__PURE__ */ createConcat({ typed, matrix, isInteger })
+export const cross = /* #__PURE__ */ createCross({ typed, matrix, subtract, multiply })
+export const diag = /* #__PURE__ */ createDiag({ typed, matrix, type: { DenseMatrix, SparseMatrix } })
+export const eye = /* #__PURE__ */ createEye({ typed, matrix })
+export const filter = /* #__PURE__ */ createFilter({ typed, matrix })
+export const flatten = /* #__PURE__ */ createFlatten({ typed, matrix })
+export const forEach = /* #__PURE__ */ createForEach({ typed })
+export const getMatrixDataType = /* #__PURE__ */ createGetMatrixDataType({ typed })
+export const identity = /* #__PURE__ */ createIdentity({ config, typed, matrix, type: { BigNumber, DenseMatrix, SparseMatrix } })
+export const kron = /* #__PURE__ */ createKron({ typed, matrix, multiplyScalar })
+export const map = /* #__PURE__ */ createMap({ typed })
+export const ones = /* #__PURE__ */ createOnes({ config, typed, matrix, type: { BigNumber } })
+export const range = /* #__PURE__ */ createRange({ config, typed, matrix, type: { BigNumber } })
+export const reshape = /* #__PURE__ */ createReshape({ typed, isInteger, matrix })
+export const resize = /* #__PURE__ */ createResize({ config, matrix })
+export const size = /* #__PURE__ */ createSize({ config, typed, matrix })
+export const squeeze = /* #__PURE__ */ createSqueeze({ typed, matrix })
+export const subset = /* #__PURE__ */ createSubset({ typed, matrix })
+export const transpose = /* #__PURE__ */ createTranspose({ typed, matrix })
+export const ctranspose = /* #__PURE__ */ createCtranspose({ typed, transpose, conj })
+export const zeros = /* #__PURE__ */ createZeros({ config, typed, matrix, type: { BigNumber } })
 
 // special (1)
-export const erf = /* #__PURE__ */ createErfFull(dependencies)
+export const erf = /* #__PURE__ */ createErf({ typed, type: { BigNumber } })
 
 // statistics (1)
-export const mode = /* #__PURE__ */ createModeFull(dependencies)
-export const prod = /* #__PURE__ */ createProdFull(dependencies)
+export const mode = /* #__PURE__ */ createMode({ typed, isNaN, isNumeric })
+export const prod = /* #__PURE__ */ createProd({ typed, multiply })
 
 // string (1)
-export const format = /* #__PURE__ */ createFormatFull(dependencies)
-export const print = /* #__PURE__ */ createPrintFull(dependencies)
+export const format = /* #__PURE__ */ createFormat({ typed })
+export const print = /* #__PURE__ */ createPrint({ typed })
 
 // unit (1)
-export const to = /* #__PURE__ */ createToFull(dependencies)
+export const to = /* #__PURE__ */ createTo({ typed, matrix })
 
 // utils (2)
-export const isPrime = /* #__PURE__ */ createIsPrimeFull(dependencies)
-export const numeric = /* #__PURE__ */ createNumericFull(dependencies)
+export const isPrime = /* #__PURE__ */ createIsPrime({ typed, type: { BigNumber } })
+export const numeric = /* #__PURE__ */ createNumeric({ typed, number, bignumber, fraction })
 
 // arithmetic (2)
-export const divideScalar = /* #__PURE__ */ createDivideScalarFull(dependencies)
-export const pow = /* #__PURE__ */ createPowFull(dependencies)
-export const round = /* #__PURE__ */ createRoundFull(dependencies)
-export const log = /* #__PURE__ */ createLogFull(dependencies)
-export const log1p = /* #__PURE__ */ createLog1pFull(dependencies)
-export const nthRoots = /* #__PURE__ */ createNthRootsFull(dependencies)
-export const dotPow = /* #__PURE__ */ createDotPowFull(dependencies)
-export const dotDivide = /* #__PURE__ */ createDotDivideFull(dependencies)
+export const divideScalar = /* #__PURE__ */ createDivideScalar({ typed, numeric })
+export const pow = /* #__PURE__ */ createPow({ config, typed, identity, multiply, matrix, number, fraction, type: { Complex } })
+export const round = /* #__PURE__ */ createRound({ typed, matrix, equalScalar, zeros, type: { BigNumber, DenseMatrix } })
+export const log = /* #__PURE__ */ createLog({ config, typed, divideScalar, type: { Complex } })
+export const log1p = /* #__PURE__ */ createLog1p({ config, typed, divideScalar, log, type: { Complex } })
+export const nthRoots = /* #__PURE__ */ createNthRoots({ config, typed, divideScalar, type: { Complex } })
+export const dotPow = /* #__PURE__ */ createDotPow({ typed, equalScalar, matrix, pow, type: { DenseMatrix } })
+export const dotDivide = /* #__PURE__ */ createDotDivide({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } })
 
 // algebra (2)
-export const lsolve = /* #__PURE__ */ createLsolveFull(dependencies)
-export const usolve = /* #__PURE__ */ createUsolveFull(dependencies)
+export const lsolve = /* #__PURE__ */ createLsolve({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, type: { DenseMatrix } })
+export const usolve = /* #__PURE__ */ createUsolve({ typed, matrix, divideScalar, multiplyScalar, subtract, equalScalar, type: { DenseMatrix } })
 
 // bitwise (2)
-export const leftShift = /* #__PURE__ */ createLeftShiftFull(dependencies)
-export const rightArithShift = /* #__PURE__ */ createRightArithShiftFull(dependencies)
-export const rightLogShift = /* #__PURE__ */ createRightLogShiftFull(dependencies)
+export const leftShift = /* #__PURE__ */ createLeftShift({ typed, matrix, equalScalar, zeros, type: { DenseMatrix } })
+export const rightArithShift = /* #__PURE__ */ createRightArithShift({ typed, matrix, equalScalar, zeros, type: { DenseMatrix } })
+export const rightLogShift = /* #__PURE__ */ createRightLogShift({ typed, matrix, equalScalar, zeros, type: { DenseMatrix } })
 
 // logical (2)
-export const and = /* #__PURE__ */ createAndFull(dependencies)
+export const and = /* #__PURE__ */ createAnd({ typed, matrix, equalScalar, zeros, not })
 
 // relational (2)
-export const compare = /* #__PURE__ */ createCompareFull(dependencies)
-export const compareNatural = /* #__PURE__ */ createCompareNaturalFull(dependencies)
-export const compareText = /* #__PURE__ */ createCompareTextFull(dependencies)
-export const equal = /* #__PURE__ */ createEqualFull(dependencies)
-export const equalText = /* #__PURE__ */ createEqualTextFull(dependencies)
-export const smaller = /* #__PURE__ */ createSmallerFull(dependencies)
-export const smallerEq = /* #__PURE__ */ createSmallerEqFull(dependencies)
-export const larger = /* #__PURE__ */ createLargerFull(dependencies)
-export const largerEq = /* #__PURE__ */ createLargerEqFull(dependencies)
-export const deepEqual = /* #__PURE__ */ createDeepEqualFull(dependencies)
-export const unequal = /* #__PURE__ */ createUnequalFull(dependencies)
+export const compare = /* #__PURE__ */ createCompare({ config, typed, equalScalar, matrix, type: { BigNumber, Fraction, DenseMatrix } })
+export const compareNatural = /* #__PURE__ */ createCompareNatural({ typed, compare })
+export const compareText = /* #__PURE__ */ createCompareText({ config, typed, matrix })
+export const equal = /* #__PURE__ */ createEqual({ config, typed, matrix, equalScalar, type: { DenseMatrix } })
+export const equalText = /* #__PURE__ */ createEqualText({ typed, compareText, isZero })
+export const smaller = /* #__PURE__ */ createSmaller({ config, typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } })
+export const smallerEq = /* #__PURE__ */ createSmallerEq({ config, typed, matrix, type: { DenseMatrix } })
+export const larger = /* #__PURE__ */ createLarger({ config, typed, matrix, type: { DenseMatrix } })
+export const largerEq = /* #__PURE__ */ createLargerEq({ config, typed, matrix, type: { DenseMatrix } })
+export const deepEqual = /* #__PURE__ */ createDeepEqual({ config, typed, equal })
+export const unequal = /* #__PURE__ */ createUnequal({ config, typed, matrix, type: { DenseMatrix } })
 
 // matrix (2)
-export const partitionSelect = /* #__PURE__ */ createPartitionSelectFull(dependencies)
-export const sort = /* #__PURE__ */ createSortFull(dependencies)
+export const partitionSelect = /* #__PURE__ */ createPartitionSelect({ typed, isNumeric, isNaN, compare })
+export const sort = /* #__PURE__ */ createSort({ typed, matrix, compare, compareNatural })
 
 // statistics (2)
-export const max = /* #__PURE__ */ createMaxFull(dependencies)
-export const min = /* #__PURE__ */ createMinFull(dependencies)
+export const max = /* #__PURE__ */ createMax({ typed, larger })
+export const min = /* #__PURE__ */ createMin({ typed, smaller })
 
 // class (2)
-export const SparseMatrix = /* #__PURE__ */ createSparseMatrixClassFull(dependencies)
-export const ImmutableDenseMatrix = /* #__PURE__ */ createImmutableDenseMatrixClassFull(dependencies)
-export const Index = /* #__PURE__ */ createIndexClassFull(dependencies)
-export const FibonacciHeap = /* #__PURE__ */ createFibonacciHeapClassFull(dependencies)
-export const Spa = /* #__PURE__ */ createSpaClassFull(dependencies)
-export const Unit = /* #__PURE__ */ createUnitClassFull(dependencies)
+export const ImmutableDenseMatrix = /* #__PURE__ */ createImmutableDenseMatrixClass({ smaller, type: { DenseMatrix } })
+export const Index = /* #__PURE__ */ createIndexClass({ type: { ImmutableDenseMatrix } })
+export const FibonacciHeap = /* #__PURE__ */ createFibonacciHeapClass({ smaller, larger })
+export const Spa = /* #__PURE__ */ createSpaClass({ addScalar, equalScalar, type: { FibonacciHeap } })
+export const Unit = /* #__PURE__ */ createUnitClass({
+  config,
+  addScalar,
+  subtract,
+  multiplyScalar,
+  divideScalar,
+  pow,
+  abs,
+  fix,
+  round,
+  equal,
+  isNumeric,
+  format,
+  number,
+  type: { Complex, BigNumber, Fraction }
+})
 
 // create (2)
-export const sparse = /* #__PURE__ */ createSparseFull(dependencies)
-export const unit = /* #__PURE__ */ createUnitFull(dependencies)
-export const createUnit = /* #__PURE__ */ createCreateUnitFull(dependencies)
+export const sparse = /* #__PURE__ */ createSparse({ typed, type: { SparseMatrix } })
+export const unit = /* #__PURE__ */ createUnitFactory({ typed, type: { Unit } })
+export const createUnit = /* #__PURE__ */ createCreateUnit({ typed, type: { Unit } })
 
 // trigonometry (2)
-export const acos = /* #__PURE__ */ createAcosFull(dependencies)
-export const acosh = /* #__PURE__ */ createAcoshFull(dependencies)
-export const acot = /* #__PURE__ */ createAcotFull(dependencies)
-export const acoth = /* #__PURE__ */ createAcothFull(dependencies)
-export const acsc = /* #__PURE__ */ createAcscFull(dependencies)
-export const acsch = /* #__PURE__ */ createAcschFull(dependencies)
-export const asec = /* #__PURE__ */ createAsecFull(dependencies)
-export const asech = /* #__PURE__ */ createAsechFull(dependencies)
-export const asin = /* #__PURE__ */ createAsinFull(dependencies)
-export const asinh = /* #__PURE__ */ createAsinhFull(dependencies)
-export const atan = /* #__PURE__ */ createAtanFull(dependencies)
-export const atan2 = /* #__PURE__ */ createAtan2Full(dependencies)
-export const atanh = /* #__PURE__ */ createAtanhFull(dependencies)
-export const cos = /* #__PURE__ */ createCosFull(dependencies)
-export const cosh = /* #__PURE__ */ createCoshFull(dependencies)
-export const cot = /* #__PURE__ */ createCotFull(dependencies)
-export const coth = /* #__PURE__ */ createCothFull(dependencies)
-export const csc = /* #__PURE__ */ createCscFull(dependencies)
-export const csch = /* #__PURE__ */ createCschFull(dependencies)
-export const sec = /* #__PURE__ */ createSecFull(dependencies)
-export const sech = /* #__PURE__ */ createSechFull(dependencies)
-export const sin = /* #__PURE__ */ createSinFull(dependencies)
-export const sinh = /* #__PURE__ */ createSinhFull(dependencies)
-export const tan = /* #__PURE__ */ createTanFull(dependencies)
-export const tanh = /* #__PURE__ */ createTanhFull(dependencies)
+export const acos = /* #__PURE__ */ createAcos({ config, typed, type: { Complex } })
+export const acosh = /* #__PURE__ */ createAcosh({ config, typed, type: { Complex } })
+export const acot = /* #__PURE__ */ createAcot({ typed, type: { BigNumber } })
+export const acoth = /* #__PURE__ */ createAcoth({ config, typed, type: { Complex, BigNumber } })
+export const acsc = /* #__PURE__ */ createAcsc({ config, typed, type: { Complex, BigNumber } })
+export const acsch = /* #__PURE__ */ createAcsch({ typed, type: { BigNumber } })
+export const asec = /* #__PURE__ */ createAsec({ config, typed, type: { Complex, BigNumber } })
+export const asech = /* #__PURE__ */ createAsech({ config, typed, type: { Complex, BigNumber } })
+export const asin = /* #__PURE__ */ createAsin({ config, typed, type: { Complex } })
+export const asinh = /* #__PURE__ */ createAsinh({ typed })
+export const atan = /* #__PURE__ */ createAtan({ typed })
+export const atan2 = /* #__PURE__ */ createAtan2({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } })
+export const atanh = /* #__PURE__ */ createAtanh({ config, typed, type: { Complex } })
+export const cos = /* #__PURE__ */ createCos({ typed, type: { Unit } })
+export const cosh = /* #__PURE__ */ createCosh({ typed, type: { Unit } })
+export const cot = /* #__PURE__ */ createCot({ typed, type: { BigNumber, Unit } })
+export const coth = /* #__PURE__ */ createCoth({ typed, type: { BigNumber, Unit } })
+export const csc = /* #__PURE__ */ createCsc({ typed, type: { BigNumber, Unit } })
+export const csch = /* #__PURE__ */ createCsch({ typed, type: { BigNumber, Unit } })
+export const sec = /* #__PURE__ */ createSec({ typed, type: { BigNumber, Unit } })
+export const sech = /* #__PURE__ */ createSech({ typed, type: { BigNumber, Unit } })
+export const sin = /* #__PURE__ */ createSin({ typed, type: { BigNumber, Unit } })
+export const sinh = /* #__PURE__ */ createSinh({ typed, type: { Unit } })
+export const tan = /* #__PURE__ */ createTan({ typed, type: { Unit } })
+export const tanh = /* #__PURE__ */ createTanh({ typed, type: { Unit } })
 
 // set (2)
-export const setCartesian = /* #__PURE__ */ createSetCartesianFull(dependencies)
-export const setDifference = /* #__PURE__ */ createSetDifferenceFull(dependencies)
-export const setDistinct = /* #__PURE__ */ createSetDistinctFull(dependencies)
-export const setIntersect = /* #__PURE__ */ createSetIntersectFull(dependencies)
-export const setIsSubset = /* #__PURE__ */ createSetIsSubsetFull(dependencies)
-export const setMultiplicity = /* #__PURE__ */ createSetMultiplicityFull(dependencies)
-export const setPowerset = /* #__PURE__ */ createSetPowersetFull(dependencies)
-export const setSize = /* #__PURE__ */ createSetSizeFull(dependencies)
-export const setSymDifference = /* #__PURE__ */ createSetSymDifferenceFull(dependencies)
-export const setUnion = /* #__PURE__ */ createSetUnionFull(dependencies)
+export const setCartesian = /* #__PURE__ */ createSetCartesian({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setDifference = /* #__PURE__ */ createSetDifference({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setDistinct = /* #__PURE__ */ createSetDistinct({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setIntersect = /* #__PURE__ */ createSetIntersect({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } })
+export const setIsSubset = /* #__PURE__ */ createSetIsSubset({ typed, size, subset, compareNatural, type: { Index } })
+export const setMultiplicity = /* #__PURE__ */ createSetMultiplicity({ typed, size, subset, compareNatural, type: { Index } })
+export const setPowerset = /* #__PURE__ */ createSetPowerset({ typed, size, subset, compareNatural, type: { Index } })
+export const setSize = /* #__PURE__ */ createSetSize({ typed, compareNatural })
+export const setSymDifference = /* #__PURE__ */ createSetSymDifference({ typed, size, concat, subset, setDifference, type: { Index } })
+export const setUnion = /* #__PURE__ */ createSetUnion({ typed, size, concat, subset, setIntersect, setSymDifference, type: { Index } })
 
 // arithmetic (3)
-export const add = /* #__PURE__ */ createAddFull(dependencies)
-export const hypot = /* #__PURE__ */ createHypotFull(dependencies)
-export const norm = /* #__PURE__ */ createNormFull(dependencies)
+export const add = /* #__PURE__ */ createAdd({ typed, matrix, addScalar, equalScalar, type: { DenseMatrix, SparseMatrix } })
+export const hypot = /* #__PURE__ */ createHypot({ typed, abs, addScalar, divideScalar, multiplyScalar, sqrt, smaller, isPositive })
+export const norm = /* #__PURE__ */ createNorm({ typed, abs, add, pow, conj, sqrt, multiply, equalScalar, larger, smaller, matrix })
 
 // matrix (3)
-export const dot = /* #__PURE__ */ createDotFull(dependencies)
-export const trace = /* #__PURE__ */ createTraceFull(dependencies)
-export const index = /* #__PURE__ */ createIndexFull(dependencies)
+export const dot = /* #__PURE__ */ createDot({ typed, add, multiply })
+export const trace = /* #__PURE__ */ createTrace({ typed, matrix, add })
+export const index = /* #__PURE__ */ createIndex({ typed, type: { Index } })
 
 // expression (3)
-export const Node = /* #__PURE__ */ createNodeFull(dependenciesWithMath)
-export const AccessorNode = /* #__PURE__ */ createAccessorNodeFull(dependenciesWithMath)
-export const ArrayNode = /* #__PURE__ */ createArrayNodeFull(dependenciesWithMath)
-export const AssignmentNode = /* #__PURE__ */ createAssignmentNodeFull(dependenciesWithMath)
-export const BlockNode = /* #__PURE__ */ createBlockNodeFull(dependenciesWithMath)
-export const ConditionalNode = /* #__PURE__ */ createConditionalNodeFull(dependenciesWithMath)
-export const ConstantNode = /* #__PURE__ */ createConstantNodeFull(dependenciesWithMath)
-export const FunctionAssignmentNode = /* #__PURE__ */ createFunctionAssignmentNodeFull(dependenciesWithMath)
-export const IndexNode = /* #__PURE__ */ createIndexNodeFull(dependenciesWithMath)
-export const ObjectNode = /* #__PURE__ */ createObjectNodeFull(dependenciesWithMath)
-export const OperatorNode = /* #__PURE__ */ createOperatorNodeFull(dependenciesWithMath)
-export const ParenthesisNode = /* #__PURE__ */ createParenthesisNodeFull(dependenciesWithMath)
-export const RangeNode = /* #__PURE__ */ createRangeNodeFull(dependenciesWithMath)
-export const RelationalNode = /* #__PURE__ */ createRelationalNodeFull(dependenciesWithMath)
-export const SymbolNode = /* #__PURE__ */ createSymbolNodeFull(dependenciesWithMath)
-export const FunctionNode = /* #__PURE__ */ createFunctionNodeFull(dependenciesWithMath)
-export const parse = /* #__PURE__ */ createParseFull(dependenciesWithMath)
-export const compile = /* #__PURE__ */ createCompileFull(dependenciesWithMath)
-export const evaluate = /* #__PURE__ */ createEvaluateFull(dependenciesWithMath)
-export const Parser = /* #__PURE__ */ createParserClassFull(dependenciesWithMath)
+export const Node = /* #__PURE__ */ createNode({ expression: { mathWithTransform } })
+export const AccessorNode = /* #__PURE__ */ createAccessorNode({ subset, expression: { node: { Node } } })
+export const ArrayNode = /* #__PURE__ */ createArrayNode({ expression: { node: { Node } } })
+export const AssignmentNode = /* #__PURE__ */ createAssignmentNode({ subset, matrix, expression: { node: { Node } } })
+export const BlockNode = /* #__PURE__ */ createBlockNode({ type: { ResultSet }, expression: { node: { Node } } })
+export const ConditionalNode = /* #__PURE__ */ createConditionalNode({ expression: { node: { Node } } })
+export const ConstantNode = /* #__PURE__ */ createConstantNode({ expression: { node: { Node } } })
+export const FunctionAssignmentNode = /* #__PURE__ */ createFunctionAssignmentNode({ typed, expression: { node: { Node } } })
+export const IndexNode = /* #__PURE__ */ createIndexNode({ type: { Range }, expression: { node: { Node } } })
+export const ObjectNode = /* #__PURE__ */ createObjectNode({ expression: { node: { Node } } })
+export const OperatorNode = /* #__PURE__ */ createOperatorNode({ expression: { node: { Node } } })
+export const ParenthesisNode = /* #__PURE__ */ createParenthesisNode({ expression: { node: { Node } } })
+export const RangeNode = /* #__PURE__ */ createRangeNode({ expression: { node: { Node } } })
+export const RelationalNode = /* #__PURE__ */ createRelationalNode({ expression: { node: { Node } } })
+export const SymbolNode = /* #__PURE__ */ createSymbolNode({ math, type: { Unit }, expression: { node: { Node } } })
+export const FunctionNode = /* #__PURE__ */ createFunctionNode({ math, expression: { node: { Node, SymbolNode } } })
+const parseExpression = /* #__PURE__ */ createParseExpression({
+  config,
+  numeric,
+  expression: {
+    node: {
+      AccessorNode,
+      ArrayNode,
+      AssignmentNode,
+      BlockNode,
+      ConditionalNode,
+      ConstantNode,
+      FunctionAssignmentNode,
+      FunctionNode,
+      IndexNode,
+      ObjectNode,
+      OperatorNode,
+      ParenthesisNode,
+      RangeNode,
+      RelationalNode,
+      SymbolNode
+    }
+  }
+})
+export const parse = /* #__PURE__ */ createParse({ typed, expression: { parse: parseExpression } })
+export const compile = /* #__PURE__ */ createCompile({ typed, expression: { parse: parseExpression } })
+export const evaluate = /* #__PURE__ */ createEvaluate({ typed, expression: { parse: parseExpression } })
+export const Parser = /* #__PURE__ */ createParserClass({ expression: { parse: parseExpression } })
 
 // create (3)
-export const parser = /* #__PURE__ */ createParserFull(dependenciesWithMath)
+export const parser = /* #__PURE__ */ createParser({ math, typed, expression: { Parser } })
 
 // algebra (3)
-export const lup = /* #__PURE__ */ createLupFull(dependencies)
-export const qr = /* #__PURE__ */ createQrFull(dependencies)
-export const slu = /* #__PURE__ */ createSluFull(dependencies)
-export const lusolve = /* #__PURE__ */ createLusolveFull(dependencies)
+export const lup = /* #__PURE__ */ createLup({
+  typed,
+  matrix,
+  abs,
+  addScalar,
+  divideScalar,
+  multiplyScalar,
+  subtract,
+  larger,
+  equalScalar,
+  unaryMinus,
+  type: { DenseMatrix, SparseMatrix, Spa }
+})
+export const qr = /* #__PURE__ */ createQr({
+  typed,
+  matrix,
+  zeros,
+  identity,
+  isZero,
+  unequal,
+  sign,
+  sqrt,
+  conj,
+  unaryMinus,
+  addScalar,
+  divideScalar,
+  multiplyScalar,
+  subtract
+})
+export const slu = /* #__PURE__ */ createSlu({ typed, abs, add, multiply, transpose, divideScalar, subtract, larger, largerEq, type: { SparseMatrix } })
+export const lusolve = /* #__PURE__ */ createLusolve({ typed, matrix, lup, slu, usolve, lsolve, type: { DenseMatrix } })
 
 // class (3)
-// TODO: do we want to export Chain and Help? or not here?
-// export const Help = /* #__PURE__ */ createHelpClassFull(dependencies)
-// export const Chain = /* #__PURE__ */ createChainClassFull(dependencies)
+export const Help = /* #__PURE__ */ createHelpClass({ expression: { parse: parseExpression } })
+export const Chain = /* #__PURE__ */ createChainClass({ on: () => {}, math }) // TODO: what to do with on?
 
 // type (3)
-// export const help = /* #__PURE__ */ createHelpFull(dependencies)
-// export const chain = /* #__PURE__ */ createChainFull(dependencies)
+const docs = /* #__PURE__ */ createEmbeddedDocs()
+export const help = /* #__PURE__ */ createHelp({ math, typed, expression: { docs }, type: { Help } })
+export const chain = /* #__PURE__ */ createChain({ typed, type: { Chain } })
 
 // matrix (4)
-export const det = /* #__PURE__ */ createDetFull(dependencies)
-export const inv = /* #__PURE__ */ createInvFull(dependencies)
-export const expm = /* #__PURE__ */ createExpmFull(dependencies)
-export const sqrtm = /* #__PURE__ */ createSqrtmFull(dependencies)
+export const det = /* #__PURE__ */ createDet({ typed, matrix, subtract, multiply, unaryMinus, lup })
+export const inv = /* #__PURE__ */ createInv({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs })
+export const expm = /* #__PURE__ */ createExpm({ typed, abs, add, identity, inv, multiply })
+export const sqrtm = /* #__PURE__ */ createSqrtm({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity })
 
 // arithmetic (4)
-export const divide = /* #__PURE__ */ createDivideFull(dependencies)
+export const divide = /* #__PURE__ */ createDivide({ typed, matrix, multiply, equalScalar, divideScalar, inv })
 
 // geometry (4)
-export const distance = /* #__PURE__ */ createDistanceFull(dependencies)
-export const intersect = /* #__PURE__ */ createIntersectFull(dependencies)
+export const distance = /* #__PURE__ */ createDistance({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs })
+export const intersect = /* #__PURE__ */ createIntersect({ config, typed, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar })
 
 // statistics (4)
-export const sum = /* #__PURE__ */ createSumFull(dependencies)
-export const mean = /* #__PURE__ */ createMeanFull(dependencies)
-export const median = /* #__PURE__ */ createMedianFull(dependencies)
-export const mad = /* #__PURE__ */ createMadFull(dependencies)
-export const variance = /* #__PURE__ */ createVarianceFull(dependencies)
-export const quantileSeq = /* #__PURE__ */ createQuantileSeqFull(dependencies)
-export const std = /* #__PURE__ */ createStdFull(dependencies)
+export const sum = /* #__PURE__ */ createSum({ config, typed, add, type: { BigNumber, Fraction } })
+export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
+export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
+export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
+export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, isNaN })
+export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare, type: { BigNumber } })
+export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
 
 // probability (4)
-export const combinations = /* #__PURE__ */ createCombinationsFull(dependencies)
-export const gamma = /* #__PURE__ */ createGammaFull(dependencies)
-export const factorial = /* #__PURE__ */ createFactorialFull(dependencies)
-export const kldivergence = /* #__PURE__ */ createKldivergenceFull(dependencies)
-export const multinomial = /* #__PURE__ */ createMultinomialFull(dependencies)
-export const permutations = /* #__PURE__ */ createPermutationsFull(dependencies)
-export const pickRandom = /* #__PURE__ */ createPickRandomFull(dependencies)
-export const random = /* #__PURE__ */ createRandomFull(dependencies)
-export const randomInt = /* #__PURE__ */ createRandomIntFull(dependencies)
+const distribution = /* #__PURE__ */ createDistribution({ config, typed, matrix })
+export const combinations = /* #__PURE__ */ createCombinations({ typed, type: { BigNumber } })
+export const gamma = /* #__PURE__ */ createGamma({ config, typed, multiplyScalar, pow, type: { BigNumber, Complex } })
+export const factorial = /* #__PURE__ */ createFactorial({ typed, gamma })
+export const kldivergence = /* #__PURE__ */ createKldivergence({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric })
+export const multinomial = /* #__PURE__ */ createMultinomial({ typed, add, divide, multiply, factorial, isInteger, isPositive })
+export const permutations = /* #__PURE__ */ createPermutations({ typed, factorial })
+export const pickRandom = /* #__PURE__ */ createPickRandom({ distribution })
+export const random = /* #__PURE__ */ createRandom({ distribution })
+export const randomInt = /* #__PURE__ */ createRandomInt({ distribution })
 
 // combinatorics (4)
-export const stirlingS2 = /* #__PURE__ */ createStirlingS2Full(dependencies)
-export const bellNumbers = /* #__PURE__ */ createBellNumbersFull(dependencies)
-export const catalan = /* #__PURE__ */ createCatalanFull(dependencies)
-export const composition = /* #__PURE__ */ createCompositionFull(dependencies)
+export const stirlingS2 = /* #__PURE__ */ createStirlingS2({ typed, addScalar, subtract, multiplyScalar, divideScalar, pow, factorial, combinations, isNegative, isInteger, larger })
+export const bellNumbers = /* #__PURE__ */ createBellNumbers({ typed, addScalar, isNegative, isInteger, stirlingS2 })
+export const catalan = /* #__PURE__ */ createCatalan({ typed, addScalar, divideScalar, multiplyScalar, combinations, isNegative, isInteger })
+export const composition = /* #__PURE__ */ createComposition({ typed, addScalar, combinations, isPositive, isNegative, isInteger, larger })
 
 // algebra (4)
-export const simplify = /* #__PURE__ */ createSimplifyFull(dependenciesWithMath)
-export const derivative = /* #__PURE__ */ createDerivativeFull(dependenciesWithMath)
-export const rationalize = /* #__PURE__ */ createRationalizeFull(dependenciesWithMath)
+const simplifyCore = /* #__PURE__ */ createSimplifyCore({
+  equal,
+  isZero,
+  add,
+  subtract,
+  multiply,
+  divide,
+  pow,
+  expression: {
+    node: {
+      ConstantNode,
+      OperatorNode,
+      FunctionNode,
+      ParenthesisNode
+    }
+  }
+})
+const simplifyConstant = /* #__PURE__ */ createSimplifyConstant({
+  math,
+  config,
+  typed,
+  fraction,
+  bignumber,
+  expression: {
+    node: {
+      ConstantNode,
+      OperatorNode,
+      FunctionNode,
+      SymbolNode
+    }
+  }
+})
+const resolve = /* #__PURE__ */ createResolve({ expression: { parse: parseExpression, node: { Node, FunctionNode, OperatorNode, ParenthesisNode } } })
+export const simplify = /* #__PURE__ */ createSimplify({
+  typed,
+  parse,
+  equal,
+  algebra: {
+    simplify: {
+      simplifyConstant,
+      simplifyCore,
+      resolve
+    }
+  },
+  expression: {
+    node: {
+      ConstantNode,
+      FunctionNode,
+      OperatorNode,
+      ParenthesisNode,
+      SymbolNode
+    }
+  }
+})
+export const derivative = /* #__PURE__ */ createDerivative({
+  config,
+  typed,
+  parse,
+  simplify,
+  equal,
+  isZero,
+  numeric,
+  expression: {
+    node: {
+      ConstantNode,
+      FunctionNode,
+      OperatorNode,
+      ParenthesisNode,
+      SymbolNode
+    }
+  }
+})
+export const rationalize = /* #__PURE__ */ createRationalize({
+  typed,
+  parse,
+  simplify,
+  algebra: {
+    simplify: {
+      simplifyConstant,
+      simplifyCore
+    }
+  },
+  expression: {
+    node: {
+      ConstantNode,
+      OperatorNode,
+      SymbolNode
+    }
+  }
+})
+
+export const reviver = /* #__PURE__ */ createReviver({
+  type: {
+    BigNumber,
+    Chain,
+    Complex,
+    Fraction,
+    Matrix,
+    DenseMatrix,
+    SparseMatrix,
+    Spa,
+    FibonacciHeap,
+    ImmutableDenseMatrix,
+    Index,
+    Range,
+    ResultSet,
+    Unit,
+    Help
+  },
+  expression: {
+    node: {
+      AccessorNode,
+      ArrayNode,
+      AssignmentNode,
+      BlockNode,
+      ConditionalNode,
+      ConstantNode,
+      FunctionAssignmentNode,
+      FunctionNode,
+      IndexNode,
+      ObjectNode,
+      OperatorNode,
+      ParenthesisNode,
+      RangeNode,
+      RelationalNode,
+      SymbolNode
+    }
+  }
+})
 
 // constants
-export const _true = /* #__PURE__ */ createTrueFull()
-export const _false = /* #__PURE__ */ createFalseFull()
-export const _null = /* #__PURE__ */ createNullFull()
-export const _Infinity = /* #__PURE__ */ createInfinityFull(dependencies)
-export const _NaN = /* #__PURE__ */ createNaNFull(dependencies)
-export const pi = /* #__PURE__ */ createPiFull(dependencies)
-export const PI = pi
-export const tau = /* #__PURE__ */ createTauFull(dependencies)
-export const e = /* #__PURE__ */ createEFull(dependencies)
-export const E = e
-export const phi = /* #__PURE__ */ createPhiFull(dependencies)
-export const LN2 = /* #__PURE__ */ createLN2Full(dependencies)
-export const LN10 = /* #__PURE__ */ createLN10Full(dependencies)
-export const LOG2E = /* #__PURE__ */ createLOG2EFull(dependencies)
-export const LOG10E = /* #__PURE__ */ createLOG10EFull(dependencies)
-export const SQRT1_2 = /* #__PURE__ */ createSQRTHalfFull(dependencies)
-export const SQRT2 = /* #__PURE__ */ createSQRT2Full(dependencies)
-export const i = /* #__PURE__ */ createIFull(dependencies)
-export const version = /* #__PURE__ */ createVersionFull()
+export const _true = /* #__PURE__ */ createTrue()
+export const _false = /* #__PURE__ */ createFalse()
+export const _null = /* #__PURE__ */ createNull()
+export const _Infinity = /* #__PURE__ */ createInfinity({ config, type: { BigNumber } })
+export const _NaN = /* #__PURE__ */ createNaN({ config, type: { BigNumber } })
+export const pi = /* #__PURE__ */ createPi({ config, type: { BigNumber } })
+export const tau = /* #__PURE__ */ createTau({ config, type: { BigNumber } })
+export const e = /* #__PURE__ */ createE({ config, type: { BigNumber } })
+export const phi = /* #__PURE__ */ createPhi({ config, type: { BigNumber } })
+export const LN2 = /* #__PURE__ */ createLN2({ config, type: { BigNumber } })
+export const LN10 = /* #__PURE__ */ createLN10({ config, type: { BigNumber } })
+export const LOG2E = /* #__PURE__ */ createLOG2E({ config, type: { BigNumber } })
+export const LOG10E = /* #__PURE__ */ createLOG10E({ config, type: { BigNumber } })
+export const SQRTHalf = /* #__PURE__ */ createSQRTHalf({ config, type: { BigNumber } })
+export const SQRT2 = /* #__PURE__ */ createSQRT2({ config, type: { BigNumber } })
+export const i = /* #__PURE__ */ createI({ config, type: { Complex } })
+export const version = /* #__PURE__ */ createVersion()
 
 // FIXME: export physical constants
 
 export const json = /* #__PURE__ */ {
-  reviver: createReviverFull(dependenciesWithMath)
+  reviver: createReviver({
+    type: {
+      BigNumber,
+      Chain,
+      Complex,
+      Fraction,
+      Matrix,
+      DenseMatrix,
+      SparseMatrix,
+      Spa,
+      FibonacciHeap,
+      ImmutableDenseMatrix,
+      Index,
+      Range,
+      ResultSet,
+      Unit,
+      Help
+    },
+    expression: {
+      node: {
+        Node,
+        AccessorNode,
+        ArrayNode,
+        AssignmentNode,
+        BlockNode,
+        ConditionalNode,
+        ConstantNode,
+        FunctionAssignmentNode,
+        IndexNode,
+        ObjectNode,
+        ParenthesisNode,
+        RangeNode,
+        RelationalNode,
+        SymbolNode,
+        FunctionNode
+      }
+    }
+  })
 }
 
 // for backward compatibility
@@ -665,33 +903,36 @@ export { DimensionError } from './error/DimensionError'
 export { ArgumentsError } from './error/ArgumentsError'
 
 export function core (config) {
-  const _config = config
-    ? {
-      ...DEFAULT_CONFIG,
-      ...config
-    }
-    : DEFAULT_CONFIG
+  const mergedConfig = Object.assign({}, DEFAULT_CONFIG, config)
 
-  const instanceId = uniqueId()
+  const BigNumber = createBigNumberClass({ config: mergedConfig })
+  const Complex = createComplexClass({ config: mergedConfig })
+  const Fraction = createFractionClass()
+  const Matrix = createMatrixClass()
+  const DenseMatrix = createDenseMatrixClass({ type: { Matrix } })
 
-  return createCoreFull({ instanceId, config: _config })
-}
-
-const uniqueId = (function () {
-  let id = 0
-
-  return () => {
-    id++
-    return id
+  const classes = {
+    BigNumber,
+    Complex,
+    DenseMatrix,
+    Fraction,
+    Matrix
   }
-})()
+
+  return createCore({
+    config: mergedConfig,
+    classes
+  })
+}
 
 export function create (config) {
   const math = core(config)
   math.create = create
 
   // TODO: create a new, flat index file with all functions to be imported
-  math['import'](all)
+  // we need to set silent:true because for example BigNumber is already loaded
+  // and would be imported the second time
+  math['import'](all, { silent: true })
 
   return math
 }

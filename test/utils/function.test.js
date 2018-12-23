@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { maxArgumentCount, memoize, memoizeCompare } from '../../src/utils/function'
-import { deepEqual } from '../../src/utils/object'
+import { deepStrictEqual } from '../../src/utils/object'
 
 describe('util.function', function () {
   describe('memoize', function () {
@@ -69,7 +69,7 @@ describe('util.function', function () {
         return obj.x * obj.y
       }
 
-      const m = memoizeCompare(multiply, deepEqual)
+      const m = memoizeCompare(multiply, deepStrictEqual)
 
       assert.strictEqual(m({ x: 2, y: 3 }), 6)
       assert.strictEqual(execCount, 1)

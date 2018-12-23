@@ -164,6 +164,7 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
       for (const prop in arg0) {
         if (arg0.hasOwnProperty(prop)) {
           createProxy(prop, arg0[prop])
+          // createLazyProxy(prop, () => arg0[prop]) // TODO: lazy load Chain properties
         }
       }
     }

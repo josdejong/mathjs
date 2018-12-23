@@ -7,7 +7,7 @@ import { factory } from '../../utils/factory'
 import { createRng } from './util/seededRNG'
 
 const name = 'distribution'
-const dependencies = ['instanceId', 'typed', 'matrix', 'config.randomSeed']
+const dependencies = ['typed', 'matrix', 'config.randomSeed']
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
