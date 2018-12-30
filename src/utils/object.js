@@ -342,6 +342,10 @@ export function pick (object, properties, transform) {
   return copy
 }
 
+export function values (object) {
+  return Object.keys(object).map(key => object[key])
+}
+
 // helper function to test whether a string contains a path like 'user.name'
 function isPath (str) {
   return str.indexOf('.') !== -1

@@ -1,7 +1,7 @@
 'use strict'
 
 import './../utils/polyfills'
-import { isLegacyFactory } from './../utils/object'
+import { isLegacyFactory, values } from './../utils/object'
 import { createTyped } from './function/typed'
 import * as emitter from './../utils/emitter'
 import { importFactory } from './function/import'
@@ -232,7 +232,7 @@ export const createCore = factory('core', dependencies, ({ config }) => {
 
   // listen for changes in config, import all functions again when changed
   math.on('config', () => {
-    Object.values(factories).forEach(factory => {
+    values(factories).forEach(factory => {
       if (factory && factory.recreateOnConfigChange) {
         // FIXME: only re-create when the current instance is the same as was initially created
         // FIXME: delete the functions/constants before importing them again?
