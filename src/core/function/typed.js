@@ -342,8 +342,8 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
 })
 
 function throwNoBignumber (x) {
-  throw new Error(`Cannot convert value ${x} into a BigNumber: no factory function 'bignuumber' provided`)
-}
+  throw new Error(`Cannot convert value ${x} into a BigNumber: no factory function 'bignumber' provided`)
+}F
 
 function throwNoComplex (x) {
   throw new Error(`Cannot convert value ${x} into a Complex number: no factory function 'complex' provided`)

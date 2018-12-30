@@ -149,7 +149,7 @@ export const createCore = factory('core', dependencies, ({ config }) => {
     // (lazily) link to the factory functions (they may not exist, or may not exist yet)
     bignumber: (x) => {
       if (!math.bignumber) {
-        throw new Error(`Cannot convert value ${x} into a BigNumber: factory function 'math.bignuumber' missing`)
+        throw new Error(`Cannot convert value ${x} into a BigNumber: factory function 'math.bignumber' missing`)
       }
 
       return math.bignumber(x)
