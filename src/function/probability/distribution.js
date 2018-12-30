@@ -7,13 +7,21 @@ import { factory } from '../../utils/factory'
 import { createRng } from './util/seededRNG'
 
 const name = 'distribution'
-const dependencies = ['typed', 'matrix', 'config.randomSeed']
+const dependencies = ['typed', 'matrix', 'config', '?on']
 
 // TODO: rethink math.distribution
 // TODO: rework to a typed function
-export const createDistribution = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config: { randomSeed } }) => {
+export const createDistribution = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, config, on }) => {
   // seeded pseudo random number generator
-  const rng = createRng(randomSeed)
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
 
   /**
    * Create a distribution object with a set of random functions for given

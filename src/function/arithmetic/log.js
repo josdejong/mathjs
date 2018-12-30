@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'log'
-const dependencies = ['config.predictable', 'typed', 'divideScalar', 'type.Complex']
+const dependencies = ['config', 'typed', 'divideScalar', 'type.Complex']
 
 export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, type: { Complex } }) => {
   /**

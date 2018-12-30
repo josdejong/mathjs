@@ -4,7 +4,7 @@ import { arraySize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'size'
-const dependencies = ['typed', 'config.matrix', 'matrix']
+const dependencies = ['typed', 'config', 'matrix']
 
 export const createSize = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix }) => {
   /**

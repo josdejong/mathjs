@@ -7,7 +7,7 @@ import { arraySize as size } from '../../utils/array'
 const name = 'pow'
 const dependencies = [
   'typed',
-  'config.predictable',
+  'config',
   'identity',
   'multiply',
   'matrix',

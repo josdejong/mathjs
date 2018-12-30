@@ -12,7 +12,7 @@ import { createAlgorithm13 } from '../../type/matrix/utils/algorithm13'
 const name = 'smaller'
 const dependencies = [
   'typed',
-  'config.epsilon',
+  'config',
   'matrix',
   'type.DenseMatrix'
 ]

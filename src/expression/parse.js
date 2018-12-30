@@ -8,7 +8,7 @@ import { ArgumentsError } from '../error/ArgumentsError'
 const name = 'expression.parse'
 const dependencies = [
   'numeric',
-  'config.number',
+  'config',
   'expression.node.AccessorNode',
   'expression.node.ArrayNode',
   'expression.node.AssignmentNode',

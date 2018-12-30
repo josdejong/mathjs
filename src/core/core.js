@@ -47,14 +47,7 @@ import {
   isUnit
 } from '../utils/is'
 
-const dependencies = [
-  'config',
-  '?classes.BigNumber',
-  '?classes.Complex',
-  '?classes.DenseMatrix',
-  '?classes.Matrix',
-  '?classes.Fraction'
-]
+const dependencies = [ 'config' ]
 
 /**
  * Math.js core. Creates a new, empty math.js instance
@@ -79,18 +72,13 @@ const dependencies = [
  *                            {string} randomSeed
  *                              Random seed for seeded pseudo random number generator.
  *                              Set to null to randomly seed.
- * @param {Object} classes   Supported data classes:
- *                           - BigNumber
- *                           - Complex
- *                           - DenseMatrix
- *                           - Fraction
  * @returns {Object} Returns a bare-bone math.js instance containing
  *                   functions:
  *                   - `import` to add new functions
  *                   - `config` to change configuration
  *                   - `on`, `off`, `once`, `emit` for events
  */
-export const createCore = factory('core', dependencies, ({ config, classes }) => {
+export const createCore = factory('core', dependencies, ({ config }) => {
   // simple test for ES5 support
   if (typeof Object.create !== 'function') {
     throw new Error('ES5 not supported by this JavaScript engine. ' +
@@ -99,19 +87,18 @@ export const createCore = factory('core', dependencies, ({ config, classes }) =>
 
   // create the mathjs instance
   const math = emitter.mixin({})
-  math.expression = {
-    transform: {},
-    mathWithTransform: {}
-  }
-
-  // create configuration options. These are private
-  const _config = config
 
   // load config function and apply provided config
+  const _config = config // keep internal _config private
   math.config = configFactory(_config, math.emit)
-  math.expression.mathWithTransform['config'] = math['config']
 
-  // create a namespace for the mathjs instance, and attach emitter functions
+  math.expression = {
+    transform: {},
+    mathWithTransform: {
+      config: math.config
+    }
+  }
+
   math.type = {
     // only here for backward compatibility for legacy factory functions
     isNumber,
@@ -155,14 +142,44 @@ export const createCore = factory('core', dependencies, ({ config, classes }) =>
     isChain
   }
 
-  Object.assign(math.type, classes)
-
   // create a new typed instance
-  math.typed = createTyped({ config: math.config, classes })
+  math.typed = createTyped({
+    config: math.config,
+
+    // (lazily) link to the factory functions (they may not exist, or may not exist yet)
+    bignumber: (x) => {
+      if (!math.bignumber) {
+        throw new Error(`Cannot convert value ${x} into a BigNumber: factory function 'math.bignuumber' missing`)
+      }
+
+      return math.bignumber(x)
+    },
+    complex: (x) => {
+      if (!math.complex) {
+        throw new Error(`Cannot convert value ${x} into a Complex number: factory function 'math.complex' missing`)
+      }
+
+      return math.complex(x)
+    },
+    fraction: (x) => {
+      if (!math.fraction) {
+        throw new Error(`Cannot convert value ${x} into a Fraction: factory function 'math.fraction' missing`)
+      }
+
+      return math.fraction(x)
+    },
+    matrix: (x) => {
+      if (!math.fraction) {
+        throw new Error(`Cannot convert array into a Matrix: factory function 'math.matrix' missing`)
+      }
+
+      return math.matrix(x)
+    }
+  })
 
   // cached factories and instances used by function load
-  const factories = []
-  const instances = []
+  const legacyFactories = []
+  const legacyInstances = []
 
   /**
    * Load a function or data type from a factory.
@@ -186,7 +203,7 @@ export const createCore = factory('core', dependencies, ({ config, classes }) =>
       throw new Error('Factory object with properties `type`, `name`, and `factory` expected')
     }
 
-    const index = factories.indexOf(factory)
+    const index = legacyFactories.indexOf(factory)
     let instance
     if (index === -1) {
       // doesn't yet exist
@@ -198,18 +215,31 @@ export const createCore = factory('core', dependencies, ({ config, classes }) =>
       }
 
       // append to the cache
-      factories.push(factory)
-      instances.push(instance)
+      legacyFactories.push(factory)
+      legacyInstances.push(instance)
     } else {
       // already existing function, return the cached instance
-      instance = instances[index]
+      instance = legacyInstances[index]
     }
 
     return instance
   }
 
+  const factories = {}
+
   // load the import function
-  math['import'] = importFactory(math.typed, load, math)
+  math['import'] = importFactory(math.typed, load, math, factories)
+
+  // listen for changes in config, import all functions again when changed
+  math.on('config', () => {
+    Object.values(factories).forEach(factory => {
+      if (factory && factory.recreateOnConfigChange) {
+        // FIXME: only re-create when the current instance is the same as was initially created
+        // FIXME: delete the functions/constants before importing them again?
+        math['import'](factory, { override: true })
+      }
+    })
+  })
 
   return math
 })

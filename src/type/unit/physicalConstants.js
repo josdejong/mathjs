@@ -72,7 +72,7 @@ export const createPlanckTemperature = unitFactory('planckTemperature', '1.41683
 // helper function to create a factory function which creates a physical constant,
 // a Unit with either a number value or a BigNumber value depending on the configuration
 function unitFactory (name, valueStr, unitStr) {
-  const dependencies = ['config.number', 'type.Unit', 'type.BigNumber']
+  const dependencies = ['config', 'type.Unit', 'type.BigNumber']
 
   return factory(name, dependencies, ({ config: { number }, type: { Unit, BigNumber } }) => {
     // Note that we can parse into number or BigNumber.
@@ -91,7 +91,7 @@ function unitFactory (name, valueStr, unitStr) {
 // helper function to create a factory function which creates a numeric constant,
 // either a number or BigNumber depending on the configuration
 function numberFactory (name, value) {
-  const dependencies = ['config.number', 'type.BigNumber']
+  const dependencies = ['config', 'type.BigNumber']
 
   return factory(name, dependencies, ({ config: { number }, type: { Unit, BigNumber } }) => {
     return number === 'BigNumber'

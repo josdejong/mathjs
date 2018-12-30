@@ -6,9 +6,9 @@ import { isNumber, isUnit } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Complex'
-const dependencies = ['config.epsilon']
+const dependencies = []
 
-export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ({ config: { epsilon } }) => {
+export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, () => {
   /**
    * Attach type information
    */

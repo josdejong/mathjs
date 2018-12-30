@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'unaryPlus'
-const dependencies = ['typed', 'config.number', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'type.BigNumber']
 
 export const createUnaryPlus = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { BigNumber } }) => {
   /**

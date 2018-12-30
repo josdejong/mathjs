@@ -10,7 +10,7 @@ import { resize as arrayResize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'resize'
-const dependencies = ['config.matrix', 'matrix']
+const dependencies = ['config', 'matrix']
 
 export const createResize = /* #__PURE__ */ factory(name, dependencies, ({ config, matrix }) => {
   /**

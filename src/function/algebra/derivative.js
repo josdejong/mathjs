@@ -6,7 +6,7 @@ import { factory } from '../../utils/factory'
 const name = 'derivative'
 const dependencies = [
   'typed',
-  'config.number',
+  'config',
   'parse',
   'simplify',
   'equal',

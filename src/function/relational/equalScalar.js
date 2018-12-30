@@ -6,9 +6,9 @@ import { factory } from '../../utils/factory'
 import { complexEquals } from '../../utils/complex'
 
 const name = 'equalScalar'
-const dependencies = ['typed', 'config.epsilon']
+const dependencies = ['typed', 'config']
 
-export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config: { epsilon } }) => {
+export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ typed, config }) => {
   /**
    * Test whether two scalar values are nearly equal.
    *
@@ -24,11 +24,11 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'number, number': function (x, y) {
-      return x === y || nearlyEqual(x, y, epsilon)
+      return x === y || nearlyEqual(x, y, config.epsilon)
     },
 
     'BigNumber, BigNumber': function (x, y) {
-      return x.eq(y) || bigNearlyEqual(x, y, epsilon)
+      return x.eq(y) || bigNearlyEqual(x, y, config.epsilon)
     },
 
     'Fraction, Fraction': function (x, y) {
@@ -36,7 +36,7 @@ export const createEqualScalar = /* #__PURE__ */ factory(name, dependencies, ({ 
     },
 
     'Complex, Complex': function (x, y) {
-      return complexEquals(x, y, epsilon)
+      return complexEquals(x, y, config.epsilon)
     },
 
     'Unit, Unit': function (x, y) {

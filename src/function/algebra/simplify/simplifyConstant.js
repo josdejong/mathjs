@@ -8,7 +8,7 @@ import { createUtil } from './util'
 const name = 'algebra.simplify.simplifyConstant'
 const dependencies = [
   'typed',
-  'config.number',
+  'config',
   'math',
   'fraction',
   'bignumber',

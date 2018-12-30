@@ -8,8 +8,8 @@ import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
 
 const name = 'type.Unit'
 const dependencies = [
-  'config.number',
-  'config.predictable',
+  '?on',
+  'config',
   'addScalar',
   'subtract',
   'multiplyScalar',
@@ -29,6 +29,7 @@ const dependencies = [
 
 export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, (
   {
+    on,
     config,
     addScalar,
     subtract,
@@ -2867,6 +2868,15 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, (
 
   // apply the angle values now
   calculateAngleValues(config)
+
+  if (on) {
+    // recalculate the values on change of configuration
+    on('config', function (curr, prev) {
+      if (curr.number !== prev.number) {
+        calculateAngleValues(curr)
+      }
+    })
+  }
 
   /**
    * A unit system is a set of dimensionally independent base units plus a set of derived units, formed by multiplication and division of the base units, that are by convention used with the unit system.

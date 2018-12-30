@@ -7,7 +7,7 @@ import { deepMap } from '../../utils/collection'
 
 const name = 'cbrt'
 const dependencies = [
-  'config.matrix',
+  'config',
   'typed',
   'isNegative',
   'unaryMinus',

@@ -6,7 +6,7 @@ import { resize } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'ones'
-const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
 
 export const createOnes = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**

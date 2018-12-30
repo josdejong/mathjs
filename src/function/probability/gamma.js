@@ -6,7 +6,7 @@ import { product } from './product'
 import { factory } from '../../utils/factory'
 
 const name = 'gamma'
-const dependencies = ['typed', 'config.precision', 'multiplyScalar', 'pow', 'type.BigNumber', 'type.Complex']
+const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'type.BigNumber', 'type.Complex']
 
 export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, pow, type: { BigNumber, Complex } }) => {
   /**

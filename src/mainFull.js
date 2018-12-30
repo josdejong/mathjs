@@ -312,15 +312,12 @@ export const Range = /* #__PURE__ */ createRangeClass()
 export const Matrix = /* #__PURE__ */ createMatrixClass()
 export const DenseMatrix = /* #__PURE__ */ createDenseMatrixClass({ type: { Matrix } })
 
-const classes = {
-  BigNumber,
-  Complex,
-  DenseMatrix,
-  Fraction,
-  Matrix
-}
-
-export const typed = /* #__PURE__ */ createTyped({ classes })
+export const typed = /* #__PURE__ */ createTyped({
+  bignumber: (x) => new BigNumber(x),
+  complex: (re) => new Complex(re, 0),
+  fraction: (x) => new Fraction(x),
+  matrix: (x) => new DenseMatrix(x)
+})
 
 // utils (1)
 export const clone = /* #__PURE__ */ createClone({ typed })
@@ -905,23 +902,8 @@ export { ArgumentsError } from './error/ArgumentsError'
 export function core (config) {
   const mergedConfig = Object.assign({}, DEFAULT_CONFIG, config)
 
-  const BigNumber = createBigNumberClass({ config: mergedConfig })
-  const Complex = createComplexClass({ config: mergedConfig })
-  const Fraction = createFractionClass()
-  const Matrix = createMatrixClass()
-  const DenseMatrix = createDenseMatrixClass({ type: { Matrix } })
-
-  const classes = {
-    BigNumber,
-    Complex,
-    DenseMatrix,
-    Fraction,
-    Matrix
-  }
-
   return createCore({
-    config: mergedConfig,
-    classes
+    config: mergedConfig
   })
 }
 
@@ -930,9 +912,7 @@ export function create (config) {
   math.create = create
 
   // TODO: create a new, flat index file with all functions to be imported
-  // we need to set silent:true because for example BigNumber is already loaded
-  // and would be imported the second time
-  math['import'](all, { silent: true })
+  math['import'](all)
 
   return math
 }

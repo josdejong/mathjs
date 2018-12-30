@@ -6,7 +6,7 @@ import { isLegacyFactory, lazy, traverse } from '../../utils/object'
 import { contains, initial, last } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
 
-export function importFactory (typed, load, math) {
+export function importFactory (typed, load, math, factories) {
   /**
    * Import functions from an object or a module
    *
@@ -125,6 +125,8 @@ export function importFactory (typed, load, math) {
       }
 
       math[name] = value
+      delete factories[name]
+
       _importTransform(name, value)
       math.emit('import', name, function resolver () {
         return value
@@ -134,6 +136,8 @@ export function importFactory (typed, load, math) {
 
     if (math[name] === undefined || options.override) {
       math[name] = value
+      delete factories[name]
+
       _importTransform(name, value)
       math.emit('import', name, function resolver () {
         return value
@@ -258,6 +262,9 @@ export function importFactory (typed, load, math) {
         }
       }
 
+      const key = factory.path ? (factory.path + '.' + factory.name) : factory.name
+      factories[key] = factory
+
       math.emit('import', name, resolver, factory.path)
     } else {
       // unnamed factory.
@@ -340,6 +347,8 @@ export function importFactory (typed, load, math) {
         }
       }
     }
+
+    factories[fullName] = factory
 
     math.emit('import', name, resolver, path)
   }

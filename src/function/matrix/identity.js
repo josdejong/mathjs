@@ -8,7 +8,7 @@ import { factory } from '../../utils/factory'
 const name = 'identity'
 const dependencies = [
   'typed',
-  'config.matrix',
+  'config',
   'matrix',
   'type.BigNumber',
   'type.DenseMatrix',

@@ -5,7 +5,7 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'sum'
-const dependencies = ['typed', 'config.number', 'add', 'type.BigNumber', 'type.Fraction']
+const dependencies = ['typed', 'config', 'add', 'type.BigNumber', 'type.Fraction']
 
 export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, type: { BigNumber, Fraction } }) => {
   /**

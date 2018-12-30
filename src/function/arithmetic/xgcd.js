@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { isInteger } from '../../utils/number'
 
 const name = 'xgcd'
-const dependencies = ['typed', 'config.matrix', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'matrix', 'type.BigNumber']
 
 export const createXgcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
   /**

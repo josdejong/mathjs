@@ -12,7 +12,7 @@ import { createAlgorithm05 } from '../../type/matrix/utils/algorithm05'
 const name = 'compare'
 const dependencies = [
   'typed',
-  'config.epsilon',
+  'config',
   'matrix',
   'equalScalar',
   'type.BigNumber',

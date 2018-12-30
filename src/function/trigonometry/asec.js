@@ -4,7 +4,7 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'asec'
-const dependencies = ['typed', 'config.predictable', 'type.Complex', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
 
 export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
   /**
