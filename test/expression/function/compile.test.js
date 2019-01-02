@@ -1,7 +1,7 @@
 // test compile
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('compile', function () {
   it('should compile an expression', function () {

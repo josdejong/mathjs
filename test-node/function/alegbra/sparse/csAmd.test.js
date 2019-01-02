@@ -1,4 +1,4 @@
-import math from '../../../../src/main'
+import math from '../../../../src/mainBundle'
 import { createCsAmd } from '../../../../src/function/algebra/sparse/csAmd'
 
 const assert = require('assert')

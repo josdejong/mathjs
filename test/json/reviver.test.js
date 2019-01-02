@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/main'
+import math from '../../src/mainBundle'
 const reviver = math.json.reviver
 const Range = math.type.Range
 

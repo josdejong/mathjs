@@ -1,6 +1,6 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 import { isBigNumber, isFraction } from '../../../src/utils/is'
 
 const Unit = math.type.Unit

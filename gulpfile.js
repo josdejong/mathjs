@@ -8,7 +8,7 @@ const babel = require('gulp-babel')
 const uglify = require('uglify-js')
 const docgenerator = require('./tools/docgenerator')
 
-const ENTRY = './src/mainFull.js'
+const ENTRY = './src/mainBundle.js'
 const HEADER = './src/header.js'
 const VERSION = './src/version.js'
 const COMPILE_SRC = './src/**/*.js'

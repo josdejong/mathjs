@@ -1,6 +1,6 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const bignumber = math.bignumber
 const quantileSeq = math.quantileSeq
 

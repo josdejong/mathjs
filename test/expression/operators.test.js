@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../src/main'
+import math from '../../src/mainBundle'
 import { getAssociativity, getPrecedence, isAssociativeWith } from '../../src/expression/operators'
 const OperatorNode = math.expression.node.OperatorNode
 const AssignmentNode = math.expression.node.AssignmentNode

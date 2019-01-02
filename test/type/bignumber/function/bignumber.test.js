@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/main'
+import math from '../../../../src/mainBundle'
 const bignumber = math.bignumber
 const BigNumber = math.type.BigNumber
 

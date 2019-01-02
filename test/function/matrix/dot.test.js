@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('dot', function () {
   it('should calculate dot product for two arrays', function () {

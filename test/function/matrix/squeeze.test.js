@@ -1,7 +1,7 @@
 // test squeeze
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const squeeze = math.squeeze
 const size = math.size
 const matrix = math.matrix

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('sort', function () {
   it('should sort an array with numbers', function () {

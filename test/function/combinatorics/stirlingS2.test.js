@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const stirlingS2 = math.stirlingS2
 
 describe('stirlingS2', function () {

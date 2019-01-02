@@ -1,6 +1,6 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('trace', function () {
   it('should calculate correctly the trace of a NxN array', function () {

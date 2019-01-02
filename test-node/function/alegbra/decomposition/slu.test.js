@@ -1,4 +1,4 @@
-import math from '../../../../src/main'
+import math from '../../../../src/mainBundle'
 const approx = require('../../../../tools/approx')
 const market = require('../../../../tools/matrixmarket')
 

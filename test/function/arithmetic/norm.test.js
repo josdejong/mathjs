@@ -1,7 +1,7 @@
 // test norm
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('norm', function () {
   it('should return the absolute value of a boolean', function () {

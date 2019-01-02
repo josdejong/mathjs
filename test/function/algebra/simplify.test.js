@@ -1,7 +1,7 @@
 // test simplify
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('simplify', function () {
   function simplifyAndCompare (left, right, rules, scope, opt) {

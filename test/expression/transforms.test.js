@@ -1,6 +1,6 @@
 // test transforms
 import assert from 'assert'
-import math from '../../src/main'
+import math from '../../src/mainBundle'
 
 const parse = math.expression.parse
 

@@ -1,7 +1,7 @@
 // test nthRoots
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const complex = math.complex
 const nthRoots = math.nthRoots
 

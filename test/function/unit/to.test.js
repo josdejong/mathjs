@@ -1,6 +1,6 @@
 import assert from 'assert'
 import approx from '../../../tools/approx'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const matrix = math.matrix
 const Unit = math.type.Unit
 const unit = math.unit

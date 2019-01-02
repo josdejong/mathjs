@@ -1,6 +1,6 @@
 import assert from 'assert'
 import error from '../../../src/error/index'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('reshape', function () {
   it('should reshape an array', function () {

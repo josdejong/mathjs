@@ -1,7 +1,7 @@
 // test square
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const bignumber = math.bignumber
 const fraction = math.fraction
 const matrix = math.matrix

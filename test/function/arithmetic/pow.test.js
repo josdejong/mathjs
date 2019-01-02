@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../tools/approx'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const mathPredictable = math.create({ predictable: true })
 const bignumber = math.bignumber
 const fraction = math.fraction

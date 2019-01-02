@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../../src/main'
+import math from '../../../../src/mainBundle'
 const DenseMatrix = math.type.DenseMatrix
 const SparseMatrix = math.type.SparseMatrix
 const getMatrixDataType = math.getMatrixDataType

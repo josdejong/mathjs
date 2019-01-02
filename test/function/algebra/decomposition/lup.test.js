@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../../../tools/approx'
-import math from '../../../../src/main'
+import math from '../../../../src/mainBundle'
 
 describe('lup', function () {
   it('should decompose matrix, n x n, no permutations, array', function () {

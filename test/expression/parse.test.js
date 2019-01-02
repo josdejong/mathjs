@@ -2,7 +2,7 @@
 import assert from 'assert'
 
 import approx from '../../tools/approx'
-import math from '../../src/main'
+import math from '../../src/mainBundle'
 import { ArgumentsError } from '../../src/error/ArgumentsError'
 const parse = math.expression.parse
 const ConditionalNode = math.expression.node.ConditionalNode

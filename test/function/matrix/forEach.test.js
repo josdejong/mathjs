@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('forEach', function () {
   it('should iterate over all elements of the matrix', function () {

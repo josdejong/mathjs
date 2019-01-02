@@ -1,7 +1,7 @@
 import assert from 'assert'
 import error from '../../../src/error/index'
 import _ from 'underscore'
-import _math from '../../../src/main'
+import _math from '../../../src/mainBundle'
 import { createDistribution } from '../../../src/function/probability/distribution'
 
 const math = _math.create({ randomSeed: 'test' })

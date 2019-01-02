@@ -1,7 +1,7 @@
 // test setDistinct
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('setDistinct', function () {
   it('should return the elements of a set', function () {

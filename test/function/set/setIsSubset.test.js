@@ -1,7 +1,7 @@
 // test setIsSubset
 import assert from 'assert'
 
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 
 describe('setIsSubset', function () {
   it('should return true or false', function () {

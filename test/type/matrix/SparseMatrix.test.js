@@ -1,5 +1,5 @@
 import assert from 'assert'
-import math from '../../../src/main'
+import math from '../../../src/mainBundle'
 const index = math.index
 const Matrix = math.type.Matrix
 const SparseMatrix = math.type.SparseMatrix
