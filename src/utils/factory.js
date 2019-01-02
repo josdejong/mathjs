@@ -50,9 +50,10 @@ export function factory (name, dependencies, create) {
  */
 export function sortFactories (factories) {
   const factoriesByName = {}
-  for (const factory of factories) {
+
+  factories.forEach(factory => {
     factoriesByName[factory.fn] = factory
-  }
+  })
 
   function containsDependency (factory, dependency) {
     // TODO: detect circular references
@@ -61,10 +62,8 @@ export function sortFactories (factories) {
         return true
       }
 
-      for (const d of factory.dependencies) {
-        if (containsDependency(factoriesByName[d], dependency)) {
-          return true
-        }
+      if (factory.dependencies.some(d => containsDependency(factoriesByName[d], dependency))) {
+        return true
       }
     }
 

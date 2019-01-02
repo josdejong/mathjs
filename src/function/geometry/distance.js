@@ -258,16 +258,12 @@ export const createDistance = /* #__PURE__ */ factory(name, dependencies, ({ typ
   function _pairwise (a) {
     // checks for valid arguments passed to _distancePairwise(Array)
     if (a[0].length === 2 && _isNumber(a[0][0]) && _isNumber(a[0][1])) {
-      for (const aI of a) {
-        if (aI.length !== 2 || !_isNumber(aI[0]) || !_isNumber(aI[1])) {
-          return false
-        }
+      if (a.some(aI => aI.length !== 2 || !_isNumber(aI[0]) || !_isNumber(aI[1]))) {
+        return false
       }
     } else if (a[0].length === 3 && _isNumber(a[0][0]) && _isNumber(a[0][1]) && _isNumber(a[0][2])) {
-      for (const aI of a) {
-        if (aI.length !== 3 || !_isNumber(aI[0]) || !_isNumber(aI[1]) || !_isNumber(aI[2])) {
-          return false
-        }
+      if (a.some(aI => aI.length !== 3 || !_isNumber(aI[0]) || !_isNumber(aI[1]) || !_isNumber(aI[2]))) {
+        return false
       }
     } else {
       return false

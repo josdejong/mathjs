@@ -153,9 +153,8 @@ describe('constants', function () {
 
   describe('complex', function () {
     it('should create i', function () {
-      const config = { epsilon: 1e-12 }
-      const Complex = createComplexClass({ config })
-      const i = createI({ type: Complex })
+      const Complex = createComplexClass()
+      const i = createI({ type: { Complex } })
 
       assert.deepStrictEqual(i, new Complex(0, 1))
     })

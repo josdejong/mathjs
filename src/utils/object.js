@@ -279,7 +279,8 @@ export function get (object, path) {
 
   let child = object
 
-  for (const key of path) {
+  for (let i = 0; i < path.length; i++) {
+    const key = path[i]
     child = child ? child[key] : undefined
   }
 
@@ -332,7 +333,8 @@ export function set (object, path, value) {
 export function pick (object, properties, transform) {
   const copy = {}
 
-  for (const key of properties) {
+  for (let i = 0; i < properties.length; i++) {
+    const key = properties[i]
     const value = get(object, key)
     if (value !== undefined) {
       set(copy, key, transform ? transform(value, key) : value)

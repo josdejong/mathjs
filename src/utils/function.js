@@ -53,7 +53,9 @@ export function memoizeCompare (fn, isEqual) {
       args[i] = arguments[i]
     }
 
-    for (const cached of memoize.cache) {
+    for (let c = 0; c < memoize.cache.length; c++) {
+      const cached = memoize.cache[c]
+
       if (isEqual(args, cached.args)) {
         // TODO: move this cache entry to the top so recently used entries move up?
         return cached.res
