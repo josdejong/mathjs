@@ -1,4 +1,5 @@
 'use strict'
+require = require('esm')(module) // eslint-disable-line no-global-assign
 
 const core = require('./core/core')
 
