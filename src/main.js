@@ -1,5 +1,8 @@
 'use strict'
-require = require('esm')(module) // eslint-disable-line no-global-assign
+
+try {
+  eval("require = require('esm')(module)") // eslint-disable-line no-eval
+} catch (error) { }
 
 const core = require('./core/core')
 
