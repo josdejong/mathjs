@@ -107,6 +107,17 @@ function bundle (done) {
   compiler.run(function (err, stats) {
     if (err) {
       gutil.log(err)
+      done(err)
+    }
+    const info = stats.toJson()
+
+    if (stats.hasWarnings()) {
+      gutil.log('Webpack warnings:\n' + info.warnings.join('\n'))
+    }
+
+    if (stats.hasErrors()) {
+      gutil.log('Webpack errors:\n' + info.errors.join('\n'))
+      done(new Error('Compile failed'))
     }
 
     gutil.log('bundled ' + MATH_JS)
