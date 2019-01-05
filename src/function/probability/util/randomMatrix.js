@@ -1,22 +1,20 @@
 /**
  * This is a util function for generating a random matrix recursively.
  * @param {number[]} size
- * @param {number} min
- * @param {number} max
- * @param {function} randFunc
+ * @param {function} random
  * @returns {Array}
  */
-export function randomDataForMatrix (size, min, max, randFunc) {
+export function randomMatrix (size, random) {
   const data = []
   size = size.slice(0)
 
   if (size.length > 1) {
     for (let i = 0, length = size.shift(); i < length; i++) {
-      data.push(randomDataForMatrix(size, min, max, randFunc))
+      data.push(randomMatrix(size, random))
     }
   } else {
     for (let i = 0, length = size.shift(); i < length; i++) {
-      data.push(randFunc(min, max))
+      data.push(random())
     }
   }
 

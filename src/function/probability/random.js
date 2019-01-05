@@ -1,15 +1,14 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { ArgumentsError } from '../../error/ArgumentsError'
-import { isCollection, isMatrix, isNumber } from '../../utils/is'
+import { isMatrix } from '../../utils/is'
 import { createRng } from './util/seededRNG'
-import { randomDataForMatrix } from './util/randomDataForMatrix'
+import { randomMatrix } from './util/randomMatrix'
 
 const name = 'random'
-const dependencies = ['config', '?on', 'matrix']
+const dependencies = ['typed', 'config', '?on', 'matrix']
 
-export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ config, on, matrix }) => {
+export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on, matrix }) => {
   // seeded pseudo random number generator
   let rng = createRng(config.randomSeed)
 
@@ -51,54 +50,21 @@ export const createRandom = /* #__PURE__ */ factory(name, dependencies, ({ confi
    * @param {number} [max]  Maximum boundary for the random value, excluded
    * @return {number | Array | Matrix} A random number
    */
-  // TODO: rework random to a typed-function
-  return function random (arg1, arg2, arg3) {
-    let size, min, max
+  return typed(name, {
+    '': () => _random(0, 1),
+    'number': (max) => _random(0, max),
+    'number, number': (min, max) => _random(min, max),
+    'Array | Matrix': (size) => _randomMatrix(size, 0, 1),
+    'Array | Matrix, number': (size, max) => _randomMatrix(size, 0, max),
+    'Array | Matrix, number, number': (size, min, max) => _randomMatrix(size, min, max)
+  })
 
-    if (arguments.length > 3) {
-      throw new ArgumentsError('random', arguments.length, 0, 3)
-    } else if (arguments.length === 1) {
-      // `random(max)` or `random(size)`
-      if (isCollection(arg1)) {
-        size = arg1
-      } else {
-        max = arg1
-      }
-    } else if (arguments.length === 2) {
-      // `random(min, max)` or `random(size, max)`
-      if (isCollection(arg1)) {
-        size = arg1
-        max = arg2
-      } else {
-        min = arg1
-        max = arg2
-      }
-    } else {
-      // `random(size, min, max)`
-      size = arg1
-      min = arg2
-      max = arg3
-    }
-
-    // TODO: validate type of size
-    if ((min !== undefined && !isNumber(min)) || (max !== undefined && !isNumber(max))) {
-      throw new TypeError('Invalid argument in function random')
-    }
-
-    if (max === undefined) max = 1
-    if (min === undefined) min = 0
-    if (size !== undefined) {
-      const res = randomDataForMatrix(size.valueOf(), min, max, _random)
-      return isMatrix(size) ? matrix(res) : res
-    }
-    return _random(min, max)
+  function _randomMatrix (size, min, max) {
+    const res = randomMatrix(size.valueOf(), () => _random(min, max))
+    return isMatrix(size) ? matrix(res) : res
   }
 
   function _random (min, max) {
-    return min + uniform() * (max - min)
-  }
-
-  function uniform () {
-    return rng()
+    return min + rng() * (max - min)
   }
 })

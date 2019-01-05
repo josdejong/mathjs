@@ -667,7 +667,7 @@ export const kldivergence = /* #__PURE__ */ createKldivergence({ typed, matrix, 
 export const multinomial = /* #__PURE__ */ createMultinomial({ typed, add, divide, multiply, factorial, isInteger, isPositive })
 export const permutations = /* #__PURE__ */ createPermutations({ typed, factorial })
 export const pickRandom = /* #__PURE__ */ createPickRandom({ typed, config })
-export const random = /* #__PURE__ */ createRandom({ config, matrix })
+export const random = /* #__PURE__ */ createRandom({ typed, config, matrix })
 export const randomInt = /* #__PURE__ */ createRandomInt({ typed, config, matrix })
 
 // combinatorics (4)

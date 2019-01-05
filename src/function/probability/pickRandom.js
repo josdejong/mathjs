@@ -1,7 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { isMatrix, isNumber } from '../../utils/is'
+import { isNumber } from '../../utils/is'
 import { arraySize } from '../../utils/array'
 import { createRng } from './util/seededRNG'
 
@@ -44,59 +44,43 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
    *
    *     random, randomInt
    *
-   * @param {Array} array     A one dimensional array
-   * @param {Int} number      An int or float
-   * @param {Array} weights   An array of ints or floats
-   * @return {number | Array} Returns a single random value from array when number is 1 or undefined.
-   *                          Returns an array with the configured number of elements when number is > 1.
+   * @param {Array | Matrix} array     A one dimensional array
+   * @param {Int} number               An int or float
+   * @param {Array | Matrix} weights   An array of ints or floats
+   * @return {number | Array}          Returns a single random value from array when number is 1 or undefined.
+   *                                   Returns an array with the configured number of elements when number is > 1.
    */
   return typed({
-    'Array': function (possibles) {
+    'Array | Matrix': function (possibles) {
       return _pickRandom(possibles)
     },
-    'Array, number | Array': function (possibles, arg2) {
-      let number, weights
 
-      if (Array.isArray(arg2)) {
-        weights = arg2
-      } else if (isNumber(arg2)) {
-        number = arg2
-      } else {
-        throw new TypeError('Invalid argument in function pickRandom')
-      }
+    'Array | Matrix, number': function (possibles, number) {
+      return _pickRandom(possibles, number, undefined)
+    },
 
+    'Array | Matrix, Array': function (possibles, weights) {
+      return _pickRandom(possibles, undefined, weights)
+    },
+
+    'Array | Matrix, Array | Matrix, number': function (possibles, weights, number) {
       return _pickRandom(possibles, number, weights)
     },
-    'Array, number | Array, Array | number': function (possibles, arg2, arg3) {
-      let number, weights
 
-      if (Array.isArray(arg2)) {
-        weights = arg2
-        number = arg3
-      } else {
-        weights = arg3
-        number = arg2
-      }
-
-      if (!Array.isArray(weights) || !isNumber(number)) {
-        throw new TypeError('Invalid argument in function pickRandom')
-      }
-
+    'Array | Matrix, number, Array | Matrix': function (possibles, number, weights) {
       return _pickRandom(possibles, number, weights)
     }
   })
 
   function _pickRandom (possibles, number, weights) {
     const single = (typeof number === 'undefined')
-
     if (single) {
       number = 1
     }
 
-    if (isMatrix(possibles)) {
-      possibles = possibles.valueOf() // get Array
-    } else if (!Array.isArray(possibles)) {
-      throw new TypeError('Unsupported type of value in function pickRandom')
+    possibles = possibles.valueOf() // get Array
+    if (weights) {
+      weights = weights.valueOf() // get Array
     }
 
     if (arraySize(possibles).length > 1) {
@@ -153,6 +137,7 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ t
 
     return single ? result[0] : result
 
+    // TODO: return matrix when input was a matrix
     // TODO: add support for multi dimensional matrices
   }
 })

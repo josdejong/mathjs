@@ -1,8 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { isCollection, isMatrix } from '../../utils/is'
-import { randomDataForMatrix } from './util/randomDataForMatrix'
+import { randomMatrix } from './util/randomMatrix'
 import { createRng } from './util/seededRNG'
 
 const name = 'randomInt'
@@ -26,6 +25,7 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
    *
    * Syntax:
    *
+   *     math.randomInt()                // generate a random integer between 0 and 1
    *     math.randomInt(max)             // generate a random integer between 0 and max
    *     math.randomInt(min, max)        // generate a random integer between min and max
    *     math.randomInt(size)            // generate a matrix with random integer between 0 and 1
@@ -49,43 +49,20 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
    * @return {number | Array | Matrix} A random integer value
    */
   return typed(name, {
-    'number | Array': function (arg) {
-      const min = 0
-
-      if (isCollection(arg)) {
-        const size = arg
-        const max = 1
-        const res = randomDataForMatrix(size.valueOf(), min, max, _randomInt)
-        return !isMatrix(size) ? res : matrix(res)
-      } else {
-        const max = arg
-        return _randomInt(min, max)
-      }
-    },
-    'number | Array, number': function (arg1, arg2) {
-      if (isCollection(arg1)) {
-        const size = arg1
-        const max = arg2
-        const min = 0
-        const res = randomDataForMatrix(size.valueOf(), min, max, _randomInt)
-        return isMatrix(size) ? matrix(res) : res
-      } else {
-        const min = arg1
-        const max = arg2
-        return _randomInt(min, max)
-      }
-    },
-    'Array, number, number': function (size, min, max) {
-      const res = randomDataForMatrix(size.valueOf(), min, max, _randomInt)
-      return (size && size.isMatrix === true) ? matrix(res) : res
-    }
+    '': () => _randomInt(0, 1),
+    'number': (max) => _randomInt(0, max),
+    'number, number': (min, max) => _randomInt(min, max),
+    'Array | Matrix': (size) => _randomIntMatrix(size, 0, 1),
+    'Array | Matrix, number': (size, max) => _randomIntMatrix(size, 0, max),
+    'Array | Matrix, number, number': (size, min, max) => _randomIntMatrix(size, min, max)
   })
 
-  function _randomInt (min, max) {
-    return Math.floor(min + uniform() * (max - min))
+  function _randomIntMatrix (size, min, max) {
+    const res = randomMatrix(size.valueOf(), () => _randomInt(min, max))
+    return size.isMatrix ? matrix(res) : res
   }
 
-  function uniform () {
-    return rng()
+  function _randomInt (min, max) {
+    return Math.floor(min + rng() * (max - min))
   }
 })

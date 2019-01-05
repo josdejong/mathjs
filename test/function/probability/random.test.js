@@ -124,7 +124,7 @@ describe('random', function () {
   })
 
   it('should throw an error in case of wrong number of arguments', function () {
-    assert.throws(function () { random([2, 3], 10, 100, 12) }, /Wrong number of arguments/)
+    assert.throws(function () { random([2, 3], 10, 100, 12) }, /Too many arguments/)
   })
 
   it('should LaTeX random', function () {
