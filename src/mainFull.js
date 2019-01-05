@@ -215,7 +215,6 @@ import { createMad } from './function/statistics/mad'
 import { createVariance } from './function/statistics/variance'
 import { createQuantileSeq } from './function/statistics/quantileSeq'
 import { createStd } from './function/statistics/std'
-import { createDistribution } from './function/probability/distribution'
 import { createCombinations } from './function/probability/combinations'
 import { createGamma } from './function/probability/gamma'
 import { createFactorial } from './function/probability/factorial'
@@ -661,16 +660,15 @@ export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multi
 export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
 
 // probability (4)
-const distribution = /* #__PURE__ */ createDistribution({ config, typed, matrix })
 export const combinations = /* #__PURE__ */ createCombinations({ typed, type: { BigNumber } })
 export const gamma = /* #__PURE__ */ createGamma({ config, typed, multiplyScalar, pow, type: { BigNumber, Complex } })
 export const factorial = /* #__PURE__ */ createFactorial({ typed, gamma })
 export const kldivergence = /* #__PURE__ */ createKldivergence({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric })
 export const multinomial = /* #__PURE__ */ createMultinomial({ typed, add, divide, multiply, factorial, isInteger, isPositive })
 export const permutations = /* #__PURE__ */ createPermutations({ typed, factorial })
-export const pickRandom = /* #__PURE__ */ createPickRandom({ distribution })
-export const random = /* #__PURE__ */ createRandom({ distribution })
-export const randomInt = /* #__PURE__ */ createRandomInt({ distribution })
+export const pickRandom = /* #__PURE__ */ createPickRandom({ typed, config })
+export const random = /* #__PURE__ */ createRandom({ config, matrix })
+export const randomInt = /* #__PURE__ */ createRandomInt({ typed, config, matrix })
 
 // combinatorics (4)
 export const stirlingS2 = /* #__PURE__ */ createStirlingS2({ typed, addScalar, subtract, multiplyScalar, divideScalar, pow, factorial, combinations, isNegative, isInteger, larger })

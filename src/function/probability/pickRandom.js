@@ -1,11 +1,25 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
+import { isMatrix, isNumber } from '../../utils/is'
+import { arraySize } from '../../utils/array'
+import { createRng } from './util/seededRNG'
 
 const name = 'pickRandom'
-const dependencies = ['distribution']
+const dependencies = ['typed', 'config', '?on']
 
-export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ distribution }) => {
+export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, on }) => {
+  // seeded pseudo random number generator
+  let rng = createRng(config.randomSeed)
+
+  if (on) {
+    on('config', function (curr, prev) {
+      if (curr.randomSeed !== prev.randomSeed) {
+        rng = createRng(curr.randomSeed)
+      }
+    })
+  }
+
   /**
    * Random pick one or more values from a one dimensional array.
    * Array elements are picked using a random function with uniform or weighted distribution.
@@ -36,6 +50,109 @@ export const createPickRandom = /* #__PURE__ */ factory(name, dependencies, ({ d
    * @return {number | Array} Returns a single random value from array when number is 1 or undefined.
    *                          Returns an array with the configured number of elements when number is > 1.
    */
-  // TODO: rework pickRandom to a typed-function
-  return distribution('uniform').pickRandom
+  return typed({
+    'Array': function (possibles) {
+      return _pickRandom(possibles)
+    },
+    'Array, number | Array': function (possibles, arg2) {
+      let number, weights
+
+      if (Array.isArray(arg2)) {
+        weights = arg2
+      } else if (isNumber(arg2)) {
+        number = arg2
+      } else {
+        throw new TypeError('Invalid argument in function pickRandom')
+      }
+
+      return _pickRandom(possibles, number, weights)
+    },
+    'Array, number | Array, Array | number': function (possibles, arg2, arg3) {
+      let number, weights
+
+      if (Array.isArray(arg2)) {
+        weights = arg2
+        number = arg3
+      } else {
+        weights = arg3
+        number = arg2
+      }
+
+      if (!Array.isArray(weights) || !isNumber(number)) {
+        throw new TypeError('Invalid argument in function pickRandom')
+      }
+
+      return _pickRandom(possibles, number, weights)
+    }
+  })
+
+  function _pickRandom (possibles, number, weights) {
+    const single = (typeof number === 'undefined')
+
+    if (single) {
+      number = 1
+    }
+
+    if (isMatrix(possibles)) {
+      possibles = possibles.valueOf() // get Array
+    } else if (!Array.isArray(possibles)) {
+      throw new TypeError('Unsupported type of value in function pickRandom')
+    }
+
+    if (arraySize(possibles).length > 1) {
+      throw new Error('Only one dimensional vectors supported')
+    }
+
+    let totalWeights = 0
+
+    if (typeof weights !== 'undefined') {
+      if (weights.length !== possibles.length) {
+        throw new Error('Weights must have the same length as possibles')
+      }
+
+      for (let i = 0, len = weights.length; i < len; i++) {
+        if (!isNumber(weights[i]) || weights[i] < 0) {
+          throw new Error('Weights must be an array of positive numbers')
+        }
+
+        totalWeights += weights[i]
+      }
+    }
+
+    const length = possibles.length
+
+    if (length === 0) {
+      return []
+    } else if (number >= length) {
+      return number > 1 ? possibles : possibles[0]
+    }
+
+    const result = []
+    let pick
+
+    while (result.length < number) {
+      if (typeof weights === 'undefined') {
+        pick = possibles[Math.floor(rng() * length)]
+      } else {
+        let randKey = rng() * totalWeights
+
+        for (let i = 0, len = possibles.length; i < len; i++) {
+          randKey -= weights[i]
+
+          if (randKey < 0) {
+            pick = possibles[i]
+            break
+          }
+        }
+      }
+
+      if (result.indexOf(pick) === -1) {
+        result.push(pick)
+      }
+    }
+
+    return single ? result[0] : result
+
+    // TODO: add support for multi dimensional matrices
+  }
 })

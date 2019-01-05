@@ -7,8 +7,6 @@ const name = 'bignumber'
 const dependencies = ['typed', 'type.BigNumber']
 
 export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
-  // console.log('createBignumber', BigNumber.prototype.instanceId)
-
   /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to BigNumber.
@@ -41,7 +39,6 @@ export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
     'number': function (x) {
       // convert to string to prevent errors in case of >15 digits
-      // console.log('bignumber(' + x + ')', BigNumber.precision, BigNumber.prototype.instanceId)
       return new BigNumber(x + '')
     },
 

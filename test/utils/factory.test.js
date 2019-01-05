@@ -37,8 +37,6 @@ describe('factory', function () {
     function fn4 () { return 4 }
     function fn5 () { return 5 }
 
-    console.log(sortFactories([ fn3factory, fn2factory, fn1, fn4, fn5 ]))
-
     assert.deepStrictEqual(sortFactories([ fn3factory, fn2factory, fn1, fn4, fn5 ])
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn4', 'fn5'])
 

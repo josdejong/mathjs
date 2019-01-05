@@ -8,10 +8,8 @@ import { createPermutations } from './permutations'
 import { createPickRandom } from './pickRandom'
 import { createRandom } from './random'
 import { createRandomInt } from './randomInt'
-import { createDistribution } from './distribution'
 
 export default [
-  createDistribution, // TODO: rethink math.distribution
   createCombinations,
   createFactorial,
   createGamma,
