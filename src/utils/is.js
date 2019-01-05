@@ -12,15 +12,12 @@
 //   for security reasons, so these functions are not exposed in the expression
 //   parser.
 
-import Complex from 'complex.js'
-import Fraction from 'fraction.js'
-
 export function isNumber (x) {
   return typeof x === 'number'
 }
 
 export function isComplex (x) {
-  return (Complex && x instanceof Complex) || false
+  return (x && Object.getPrototypeOf(x).isComplex) || false
 }
 
 export function isBigNumber (x) {
@@ -28,7 +25,7 @@ export function isBigNumber (x) {
 }
 
 export function isFraction (x) {
-  return (Fraction && x instanceof Fraction) || false
+  return (x && Object.getPrototypeOf(x).isFraction) || false
 }
 
 export function isUnit (x) {
