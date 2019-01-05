@@ -1,21 +1,22 @@
 // Use case 4
-// create some functions with custom config
+// create functions yourself using factory functions
 
-import { createAddFull, createBignumberFull, createMultiplyFull } from '../src/factoryFull'
+import { createTyped, createHypot } from '../src/factory'
 
 console.log('\nuse case 4')
 
-const config = {
-  epsilon: 1e-12,
-  matrix: 'Matrix',
-  number: 'BigNumber',
-  precision: 64,
-  predictable: false,
-  randomSeed: null
-}
+// Create a hypot instance that only works with numbers:
+const typed = createTyped({})
+const hypot = createHypot({
+  typed,
+  abs: Math.abs,
+  addScalar: (a, b) => a + b,
+  divideScalar: (a, b) => a / b,
+  multiplyScalar: (a, b) => a * b,
+  sqrt: Math.sqrt,
+  smaller: (a, b) => a < b,
+  isPositive: a => a > 0
+})
 
-const bignumber = createBignumberFull({ config })
-const add = createAddFull({ config })
-const multiply = createMultiplyFull({ config })
-
-console.log('2 * 3 + 4 = ' + add(multiply(bignumber(2), 3), 4))
+// Use the created function:
+console.log('hypot(3, 4) =', hypot(3, 4)) // 5

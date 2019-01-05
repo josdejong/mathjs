@@ -32,27 +32,7 @@ The following use cases are worked out:
     console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
     ```
 
-4. create your own mathjs instance with custom config:
-    ```js
-    import { createAddFull, createBignumberFull, createMultiplyFull } from '../src/factoryFull'
-
-    const config = {
-      epsilon: 1e-12,
-      matrix: 'Matrix',
-      number: 'BigNumber',
-      precision: 64,
-      predictable: false,
-      randomSeed: null
-    }
-
-    const bignumber = createBignumberFull({ config })
-    const add = createAddFull({ config })
-    const multiply = createMultiplyFull({ config })
-
-    console.log('2 * 3 + 4 = ' + add(multiply(bignumber(2), 3), 4))
-    ```
-
-5. create functions yourself using factory functions:
+4. create functions yourself using factory functions:
     ```js
     import { createTyped, createHypot } from '../src/factory'
 
@@ -73,7 +53,7 @@ The following use cases are worked out:
     console.log('hypot(3, 4) =', hypot(3, 4)) // 5
     ```
 
-6. mix and match typed functions
+5. mix and match typed functions
     ```js
     import { createTyped, createBigNumberClass } from '../src/factory'
     import { addNumber, multiplyNumber } from '../src/plain/number'

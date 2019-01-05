@@ -1,22 +1,20 @@
 // Use case 5
-// create functions yourself using factory functions
+// create functions yourself: mix and match functions
 
-import { createTyped, createHypot } from '../src/factory'
+import { createTyped, createBigNumberClass } from '../src/factory'
+import { addNumber, multiplyNumber } from '../src/plain/number'
+import { addBigNumber, multiplyBigNumber, bignumber } from '../src/plain/bignumber'
+import { DEFAULT_CONFIG } from '../src/core/config'
 
 console.log('\nuse case 5')
 
-// Create a hypot instance that only works with numbers:
-const typed = createTyped({ type: {} })
-const hypot = createHypot({
-  typed,
-  abs: Math.abs,
-  addScalar: (a, b) => a + b,
-  divideScalar: (a, b) => a / b,
-  multiplyScalar: (a, b) => a * b,
-  sqrt: Math.sqrt,
-  smaller: (a, b) => a < b,
-  isPositive: a => a > 0
+const BigNumber = createBigNumberClass({ config: DEFAULT_CONFIG })
+const typed = createTyped({
+  bignumber: (x) => new BigNumber(x)
 })
 
-// Use the created function:
-console.log('hypot(3, 4) =', hypot(3, 4)) // 5
+const add = typed('add', addNumber, addBigNumber)
+const multiply = typed('multiply', multiplyNumber, multiplyBigNumber)
+
+console.log('2 * 3 + 4 = ' + add(multiply(2, 3), 4))
+console.log('2 * bignumber(3) + 4 = ' + add(multiply(2, bignumber(3)), 4))
