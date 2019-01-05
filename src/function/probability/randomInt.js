@@ -3,6 +3,7 @@
 import { factory } from '../../utils/factory'
 import { randomMatrix } from './util/randomMatrix'
 import { createRng } from './util/seededRNG'
+import { isMatrix } from '../../utils/is'
 
 const name = 'randomInt'
 const dependencies = ['typed', 'config', '?on', 'matrix']
@@ -59,7 +60,7 @@ export const createRandomInt = /* #__PURE__ */ factory(name, dependencies, ({ ty
 
   function _randomIntMatrix (size, min, max) {
     const res = randomMatrix(size.valueOf(), () => _randomInt(min, max))
-    return size.isMatrix ? matrix(res) : res
+    return isMatrix(size) ? matrix(res) : res
   }
 
   function _randomInt (min, max) {
