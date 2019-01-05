@@ -31,11 +31,13 @@ describe('factory', function () {
   })
 
   it('should order functions by their dependencies (1)', () => {
-    const fn1 = () => {}
+    function fn1 () { return 1 }
     const fn2factory = factory('fn2', ['fn1'], () => {})
     const fn3factory = factory('fn3', ['fn2'], () => {})
-    const fn4 = () => {}
-    const fn5 = () => {}
+    function fn4 () { return 4 }
+    function fn5 () { return 5 }
+
+    console.log(sortFactories([ fn3factory, fn2factory, fn1, fn4, fn5 ]))
 
     assert.deepStrictEqual(sortFactories([ fn3factory, fn2factory, fn1, fn4, fn5 ])
       .map(f => f.fn || f.name), ['fn1', 'fn2', 'fn3', 'fn4', 'fn5'])
