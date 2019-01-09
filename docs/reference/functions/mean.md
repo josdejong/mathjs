@@ -48,4 +48,4 @@ math.mean([[2, 5], [6, 3], [1, 7]], 1)    // returns [3.5, 4.5, 4]
 [sum](sum.md),
 [prod](prod.md),
 [std](std.md),
-[var](var.md)
+[variance](variance.md)

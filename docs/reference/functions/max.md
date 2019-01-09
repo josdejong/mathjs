@@ -52,4 +52,4 @@ math.min(2.7, 7.1, -4.5, 2.0, 4.1)    // returns -4.5
 [prod](prod.md),
 [std](std.md),
 [sum](sum.md),
-[var](var.md)
+[variance](variance.md)

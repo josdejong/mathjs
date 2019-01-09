@@ -18,9 +18,9 @@ export function configFactory (config, emit) {
    * Examples:
    *
    *     math.config().number                // outputs 'number'
-   *     math.eval('0.4')                    // outputs number 0.4
+   *     math.evaluate('0.4')                // outputs number 0.4
    *     math.config({number: 'Fraction'})
-   *     math.eval('0.4')                    // outputs Fraction 2/5
+   *     math.evaluate('0.4')                // outputs Fraction 2/5
    *
    * @param {Object} [options] Available options:
    *                            {number} epsilon

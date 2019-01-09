@@ -31,7 +31,7 @@ export const createMean = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * See also:
    *
-   *     median, min, max, sum, prod, std, var
+   *     median, min, max, sum, prod, std, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The mean of all values

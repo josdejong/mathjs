@@ -109,7 +109,7 @@ import { andDocs } from './function/logical/and'
 import { intersectDocs } from './function/geometry/intersect'
 import { distanceDocs } from './function/geometry/distance'
 import { helpDocs } from './function/expression/help'
-import { evalDocs } from './function/expression/eval'
+import { evaluateDocs } from './function/expression/evaluate'
 import { imDocs } from './function/complex/im'
 import { reDocs } from './function/complex/re'
 import { conjDocs } from './function/complex/conj'
@@ -201,8 +201,9 @@ import { booleanDocs } from './construction/boolean'
 import { dotPowDocs } from './function/arithmetic/dotPow'
 import { lusolveDocs } from './function/algebra/lusolve'
 import { subtractDocs } from './function/arithmetic/subtract'
-import { varDocs } from './function/statistics/var'
+import { varianceDocs } from './function/statistics/variance'
 import { sinDocs } from './function/trigonometry/sin'
+import { numericDocs } from './function/utils/numeric'
 
 const name = 'expression.docs'
 const dependencies = []
@@ -382,7 +383,7 @@ export const createEmbeddedDocs = /* #__PURE__ */ factory(name, dependencies, ()
   docs.im = imDocs
 
   // functions - expression
-  docs['eval'] = evalDocs
+  docs['evaluate'] = evaluateDocs
   docs.help = helpDocs
 
   // functions - geometry
@@ -474,7 +475,7 @@ export const createEmbeddedDocs = /* #__PURE__ */ factory(name, dependencies, ()
   docs.quantileSeq = quantileSeqDocs
   docs.std = stdDocs
   docs.sum = sumDocs
-  docs['var'] = varDocs
+  docs['variance'] = varianceDocs
 
   // functions - trigonometry
   docs.acos = acosDocs
@@ -518,6 +519,7 @@ export const createEmbeddedDocs = /* #__PURE__ */ factory(name, dependencies, ()
   docs.isZero = isZeroDocs
   // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
   docs['typeOf'] = typeOfDocs
+  docs['numeric'] = numericDocs
 
   return docs
 })

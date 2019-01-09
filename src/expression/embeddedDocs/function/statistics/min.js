@@ -23,6 +23,6 @@ export const minDocs = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

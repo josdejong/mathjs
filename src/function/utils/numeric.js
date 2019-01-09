@@ -3,7 +3,6 @@
 import { typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
-// FIXME: expose numeric in the math namespace after we've decided on a name and have written proper docs for this function. See https://github.com/josdejong/mathjs/pull/1270
 const name = 'numeric'
 const dependencies = ['number', 'bignumber', 'fraction']
 
@@ -23,12 +22,32 @@ export const createNumeric = /* #__PURE__ */ factory(name, dependencies, ({ numb
   }
 
   /**
-   * Convert a numeric value to a specific type: number, BigNumber, or Fraction
+   * Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.
+   *
+   * Syntax:
+   *
+   *    math.numeric(x)
+   *
+   * Examples:
+   *
+   *    math.numeric('4')                           // returns number 4
+   *    math.numeric('4', 'number')                 // returns number 4
+   *    math.numeric('4', 'BigNumber')              // returns BigNumber 4
+   *    math.numeric('4', 'Fraction')               // returns Fraction 4
+   *    math.numeric(4, 'Fraction')                 // returns Fraction 4
+   *    math.numeric(math.fraction(2, 5), 'number') // returns number 0.4
+   *
+   * See also:
+   *
+   *    number, fraction, bignumber, string, format
    *
    * @param {string | number | BigNumber | Fraction } value
-   * @param {'number' | 'BigNumber' | 'Fraction'} outputType
-   * @return {number | BigNumber | Fraction} Returns an instance of the
-   *                                         numeric in the requested type
+   *              A numeric value or a string containing a numeric value
+   * @param {string} outputType
+   *              Desired numeric output type.
+   *              Available values: 'number', 'BigNumber', or 'Fraction'
+   * @return {number | BigNumber | Fraction}
+   *              Returns an instance of the numeric in the requested type
    */
   return function numeric (value, outputType) {
     const inputType = typeOf(value)

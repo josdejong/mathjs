@@ -44,4 +44,4 @@ math.sum([[2, 5], [4, 3], [1, 7]]) // returns 22
 [max](max.md),
 [prod](prod.md),
 [std](std.md),
-[var](var.md)
+[variance](variance.md)

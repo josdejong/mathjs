@@ -92,7 +92,7 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
    *
    * See also:
    *
-   *     derivative, parse, eval, rationalize
+   *     derivative, parse, evaluate, rationalize
    *
    * @param {Node | string} expr
    *            The expression to be simplified

@@ -20,6 +20,6 @@ export const modeDocs = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

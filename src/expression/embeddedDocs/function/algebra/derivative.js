@@ -17,6 +17,6 @@ export const derivativeDocs = {
     'df.eval({x: 3})'
   ],
   'seealso': [
-    'simplify', 'parse', 'eval'
+    'simplify', 'parse', 'evaluate'
   ]
 }

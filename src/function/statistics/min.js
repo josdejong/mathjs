@@ -34,7 +34,7 @@ export const createMin = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
    *
    * See also:
    *
-   *    mean, median, max, prod, std, sum, var
+   *    mean, median, max, prod, std, sum, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The minimum value

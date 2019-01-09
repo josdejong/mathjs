@@ -23,6 +23,6 @@ export const maxDocs = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

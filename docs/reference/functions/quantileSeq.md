@@ -53,4 +53,4 @@ math.quantileSeq([-1, 3, 5, 7], 0.5, true)   // returns 4
 [sum](sum.md),
 [prod](prod.md),
 [std](std.md),
-[var](var.md)
+[variance](variance.md)

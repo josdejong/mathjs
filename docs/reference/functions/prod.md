@@ -46,4 +46,4 @@ math.prod([[2, 5], [4, 3]])   // returns 120
 [max](max.md),
 [sum](sum.md),
 [std](std.md),
-[var](var.md)
+[variance](variance.md)

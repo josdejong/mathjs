@@ -31,7 +31,7 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.compile(expr)](functions/compile.md) | Parse and compile an expression.
-[math.eval(expr&nbsp;[,&nbsp;scope])](functions/eval.md) | Evaluate an expression.
+[math.evaluate(expr)](functions/evaluate.md) | Evaluate an expression.
 [math.help(search)](functions/help.md) | Retrieve help on a function or data type.
 [math.parse(expr&nbsp;[,&nbsp;scope])](functions/parse.md) | Parse an expression.
 [math.parser()](functions/parser.md) | Create a parser.
@@ -54,27 +54,35 @@ Function | Description
 
 Function | Description
 ---- | -----------
+[math.abs(x)](functions/abs.md) | Calculate the absolute value of a number.
 [math.add(x,&nbsp;y)](functions/add.md) | Add two or more values, `x + y`.
+[math.cbrt(x&nbsp;[,&nbsp;allRoots])](functions/cbrt.md) | Calculate the cubic root of a value.
 [math.ceil(x)](functions/ceil.md) | Round a value towards plus infinity If `x` is complex, both real and imaginary part are rounded towards plus infinity.
 [math.cube(x)](functions/cube.md) | Compute the cube of a value, `x * x * x`.
 [math.divide(x,&nbsp;y)](functions/divide.md) | Divide two values, `x / y`.
 [math.dotDivide(x,&nbsp;y)](functions/dotDivide.md) | Divide two matrices element wise.
 [math.dotMultiply(x,&nbsp;y)](functions/dotMultiply.md) | Multiply two matrices element wise.
 [math.dotPow(x,&nbsp;y)](functions/dotPow.md) | Calculates the power of x to y element wise.
+[math.exp(x)](functions/exp.md) | Calculate the exponent of a value.
 [math.expm1(x)](functions/expm1.md) | Calculate the value of subtracting 1 from the exponential value.
 [math.fix(x)](functions/fix.md) | Round a value towards zero.
 [math.floor(x)](functions/floor.md) | Round a value towards minus infinity.
 [math.gcd(a,&nbsp;b)](functions/gcd.md) | Calculate the greatest common divisor for two or more values or arrays.
+[math.hypot(a,&nbsp;b,&nbsp;...)](functions/hypot.md) | Calculate the hypotenusa of a list with values.
 [math.lcm(a,&nbsp;b)](functions/lcm.md) | Calculate the least common multiple for two or more values or arrays.
+[math.log(x&nbsp;[,&nbsp;base])](functions/log.md) | Calculate the logarithm of a value.
 [math.log10(x)](functions/log10.md) | Calculate the 10-base logarithm of a value.
 [math.log1p(x)](functions/log1p.md) | Calculate the logarithm of a `value+1`.
 [math.log2(x)](functions/log2.md) | Calculate the 2-base of a value.
 [math.mod(x,&nbsp;y)](functions/mod.md) | Calculates the modulus, the remainder of an integer division.
 [math.multiply(x,&nbsp;y)](functions/multiply.md) | Multiply two or more values, `x * y`.
+[math.norm(x&nbsp;[,&nbsp;p])](functions/norm.md) | Calculate the norm of a number, vector or matrix.
 [math.nthRoot(a)](functions/nthRoot.md) | Calculate the nth root of a value.
 [math.nthRoots(x)](functions/nthRoots.md) | Calculate the nth roots of a value.
+[math.pow(x,&nbsp;y)](functions/pow.md) | Calculates the power of x to y, `x ^ y`.
 [math.round(x&nbsp;[,&nbsp;n])](functions/round.md) | Round a value towards the nearest integer.
 [math.sign(x)](functions/sign.md) | Compute the sign of a value.
+[math.sqrt(x)](functions/sqrt.md) | Calculate the square root of a value.
 [math.square(x)](functions/square.md) | Compute the square of a value, `x * x`.
 [math.subtract(x,&nbsp;y)](functions/subtract.md) | Subtract two values, `x - y`.
 [math.unaryMinus(x)](functions/unaryMinus.md) | Inverse the sign of a value, apply a unary minus operation.
@@ -183,7 +191,6 @@ Function | Description
 [math.compareText(x,&nbsp;y)](functions/compareText.md) | Compare two strings lexically.
 [math.deepEqual(x,&nbsp;y)](functions/deepEqual.md) | Test element wise whether two matrices are equal.
 [math.equal(x,&nbsp;y)](functions/equal.md) | Test whether two values are equal.
-[equalScalar](functions/equalScalar.md) | Test whether two scalar values are nearly equal.
 [math.equalText(x,&nbsp;y)](functions/equalText.md) | Check equality of two strings.
 [math.larger(x,&nbsp;y)](functions/larger.md) | Test whether value x is larger than y.
 [math.largerEq(x,&nbsp;y)](functions/largerEq.md) | Test whether value x is larger or equal to y.
@@ -226,7 +233,7 @@ Function | Description
 [math.quantileSeq(A,&nbsp;prob[,&nbsp;sorted])](functions/quantileSeq.md) | Compute the prob order quantile of a matrix or a list with values.
 [math.std(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/std.md) | Compute the standard deviation of a matrix or a  list with values.
 [math.sum(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/sum.md) | Compute the sum of a matrix or a list with values.
-[math.var(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/var.md) | Compute the variance of a matrix or a  list with values.
+[math.variance(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/variance.md) | Compute the variance of a matrix or a  list with values.
 
 ## String functions
 
@@ -283,6 +290,8 @@ Function | Description
 [math.isPositive(x)](functions/isPositive.md) | Test whether a value is positive: larger than zero.
 [math.isPrime(x)](functions/isPrime.md) | Test whether a value is prime: has no divisors other than itself and one.
 [math.isZero(x)](functions/isZero.md) | Test whether a value is zero.
+[math.numeric(x)](functions/numeric.md) | Convert a numeric input to a specific numeric type: number, BigNumber, or Fraction.
+[math.typeOf(x)](functions/typeOf.md) | Determine the type of a variable.
 
 
 

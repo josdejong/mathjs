@@ -83,5 +83,5 @@ math.simplify('0.4 * x', {}, {exactFractions: false}) // Node "0.4 * x"
 
 [derivative](derivative.md),
 [parse](parse.md),
-[eval](eval.md),
+[evaluate](evaluate.md),
 [rationalize](rationalize.md)

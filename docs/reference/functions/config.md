@@ -3,7 +3,7 @@
 # Function config
 
 Set configuration options for math.js, and get current options.
-Will emit a 'config' event, with arguments (curr, prev, changes).
+Will emit a 'config' event, with arguments (curr, prev, changes). Bla bla.
 
 
 ## Syntax
@@ -29,9 +29,9 @@ Object | Returns the current configuration
 
 ```js
 math.config().number                // outputs 'number'
-math.eval('0.4')                    // outputs number 0.4
+math.evaluate('0.4')                // outputs number 0.4
 math.config({number: 'Fraction'})
-math.eval('0.4')                    // outputs Fraction 2/5
+math.evaluate('0.4')                // outputs Fraction 2/5
 ```
 
 

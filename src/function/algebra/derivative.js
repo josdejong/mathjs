@@ -54,7 +54,7 @@ export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({ t
    *
    * See also:
    *
-   *     simplify, parse, eval
+   *     simplify, parse, evaluate
    *
    * @param  {Node | string} expr           The expression to differentiate
    * @param  {SymbolNode | string} variable The variable over which to differentiate

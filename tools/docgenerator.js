@@ -41,11 +41,15 @@ const SYNTAX = {
 }
 
 const IGNORE_FUNCTIONS = {
-  distribution: true
+  addScalar: true,
+  divideScalar: true,
+  multiplyScalar: true,
+  equalScalar: true,
+  eval: true
 }
 
 const IGNORE_WARNINGS = {
-  seeAlso: ['help', 'intersect', 'clone', 'typeof', 'chain', 'import', 'config', 'typed',
+  seeAlso: ['help', 'intersect', 'clone', 'typeOf', 'chain', 'import', 'config', 'typed',
     'distance', 'kldivergence', 'erf'],
   parameters: ['parser'],
   returns: ['forEach', 'import']
@@ -60,7 +64,7 @@ const IGNORE_WARNINGS = {
  */
 function generateDoc (name, code) {
   // get block comment from code
-  const match = /\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code)
+  const match = /\/\*\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\//.exec(code)
 
   if (!match) {
     return null
@@ -456,11 +460,12 @@ function generateMarkdown (doc, functions) {
 
 /**
  * Iterate over all source files and generate markdown documents for each of them
- * @param {String} inputPath   Path to /lib/
- * @param {String} outputPath  Path to /docs/reference/functions
- * @param {String} outputRoot  Path to /docs/reference
+ * @param {String[]} functionNames  List with all functions exported from the main instance of mathjs
+ * @param {String} inputPath        Path to /lib/
+ * @param {String} outputPath       Path to /docs/reference/functions
+ * @param {String} outputRoot       Path to /docs/reference
  */
-function iteratePath (inputPath, outputPath, outputRoot) {
+function iteratePath (functionNames, inputPath, outputPath, outputRoot) {
   if (!fs.existsSync(outputPath)) {
     mkdirp.sync(outputPath)
   }
@@ -498,7 +503,7 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         category = 'construction'
       }
 
-      if (IGNORE_FUNCTIONS[name]) {
+      if (functionNames.indexOf(name) === -1 || IGNORE_FUNCTIONS[name]) {
         category = null
       }
 
@@ -519,10 +524,8 @@ function iteratePath (inputPath, outputPath, outputRoot) {
         const fn = functions[name]
         const code = String(fs.readFileSync(fn.fullPath))
 
-        const isFunction = /\nexports.name/g.test(code) &&
-            /\nexports.factory/g.test(code) &&
-            !/\nexports.path/g.test(code)
-        const doc = isFunction && generateDoc(name, code)
+        const isFunction = (functionNames.indexOf(name) !== -1) && !IGNORE_FUNCTIONS[name]
+        const doc = isFunction ? generateDoc(name, code) : null
 
         if (isFunction && doc) {
           fn.doc = doc

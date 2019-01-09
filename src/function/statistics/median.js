@@ -30,7 +30,7 @@ export const createMedian = /* #__PURE__ */ factory(name, dependencies, ({ typed
    *
    * See also:
    *
-   *     mean, min, max, sum, prod, std, var, quantileSeq
+   *     mean, min, max, sum, prod, std, variance, quantileSeq
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The median

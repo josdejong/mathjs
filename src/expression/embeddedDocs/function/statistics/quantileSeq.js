@@ -21,6 +21,6 @@ export const quantileSeqDocs = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

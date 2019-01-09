@@ -158,7 +158,11 @@ gulp.task('validate', ['minify'], function (cb) {
 })
 
 gulp.task('docs', ['compile'], function () {
-  docgenerator.iteratePath(REF_SRC, REF_DEST, REF_ROOT)
+  const all = require(REF_SRC + 'mainBundle')
+  const functionNames = Object.keys(all)
+    .filter(key => typeof all[key] === 'function')
+
+  docgenerator.iteratePath(functionNames, REF_SRC, REF_DEST, REF_ROOT)
 })
 
 // The watch task (to automatically rebuild when the source code changes)

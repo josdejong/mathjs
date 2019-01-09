@@ -17,7 +17,7 @@ export const medianDocs = {
     'prod',
     'std',
     'sum',
-    'var',
+    'variance',
     'quantileSeq'
   ]
 }

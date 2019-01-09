@@ -19,6 +19,6 @@ export const sumDocs = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

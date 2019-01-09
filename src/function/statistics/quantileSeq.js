@@ -33,7 +33,7 @@ export const createQuantileSeq = /* #__PURE__ */ factory(name, dependencies, ({ 
    *
    * See also:
    *
-   *     median, mean, min, max, sum, prod, std, var
+   *     median, mean, min, max, sum, prod, std, variance
    *
    * @param {Array, Matrix} data                A single matrix or Array
    * @param {Number, BigNumber, Array} probOrN  prob is the order of the quantile, while N is

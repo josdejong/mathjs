@@ -13,7 +13,8 @@ const ignore = [
   'on', 'off', 'emit', 'once',
   'compile', 'parse', 'parser',
   'chain', 'print', 'uninitialized',
-  'eye'
+  'eye', 'var', 'eval', 'typeof', // deprecated functions
+  'addScalar', 'divideScalar', 'multiplyScalar', 'equalScalar'
 ]
 
 // test whether all functions are documented

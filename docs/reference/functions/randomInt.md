@@ -9,6 +9,7 @@ using a uniform distribution.
 ## Syntax
 
 ```js
+math.randomInt()                // generate a random integer between 0 and 1
 math.randomInt(max)             // generate a random integer between 0 and max
 math.randomInt(min, max)        // generate a random integer between min and max
 math.randomInt(size)            // generate a matrix with random integer between 0 and 1

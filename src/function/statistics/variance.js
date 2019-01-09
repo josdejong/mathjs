@@ -23,24 +23,20 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * - 'uncorrected'        The sum of squared errors is divided by n
    * - 'biased'             The sum of squared errors is divided by (n + 1)
    *
-   * Note that older browser may not like the variable name `var`. In that
-   * case, the function can be called as `math['var'](...)` instead of
-   * `math.var(...)`.
-   *
    * Syntax:
    *
-   *     math.var(a, b, c, ...)
-   *     math.var(A)
-   *     math.var(A, normalization)
+   *     math.variance(a, b, c, ...)
+   *     math.variance(A)
+   *     math.variance(A, normalization)
    *
    * Examples:
    *
-   *     math.var(2, 4, 6)                     // returns 4
-   *     math.var([2, 4, 6, 8])                // returns 6.666666666666667
-   *     math.var([2, 4, 6, 8], 'uncorrected') // returns 5
-   *     math.var([2, 4, 6, 8], 'biased')      // returns 4
+   *     math.variance(2, 4, 6)                     // returns 4
+   *     math.variance([2, 4, 6, 8])                // returns 6.666666666666667
+   *     math.variance([2, 4, 6, 8], 'uncorrected') // returns 5
+   *     math.variance([2, 4, 6, 8], 'biased')      // returns 4
    *
-   *     math.var([[1, 2, 3], [4, 5, 6]])      // returns 3.5
+   *     math.variance([[1, 2, 3], [4, 5, 6]])      // returns 3.5
    *
    * See also:
    *
@@ -54,15 +50,15 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
    * @return {*} The variance
    */
   return typed(name, {
-    // var([a, b, c, d, ...])
+    // variance([a, b, c, d, ...])
     'Array | Matrix': function (array) {
       return _var(array, DEFAULT_NORMALIZATION)
     },
 
-    // var([a, b, c, d, ...], normalization)
+    // variance([a, b, c, d, ...], normalization)
     'Array | Matrix, string': _var,
 
-    // var(a, b, c, d, ...)
+    // variance(a, b, c, d, ...)
     '...': function (args) {
       return _var(args, DEFAULT_NORMALIZATION)
     }
@@ -84,7 +80,7 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
     let num = 0
 
     if (array.length === 0) {
-      throw new SyntaxError('Function var requires one or more parameters (0 provided)')
+      throw new SyntaxError('Function variance requires one or more parameters (0 provided)')
     }
 
     // calculate the mean and number of elements
@@ -93,10 +89,10 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
         sum = add(sum, value)
         num++
       } catch (err) {
-        throw improveErrorMessage(err, 'var', value)
+        throw improveErrorMessage(err, 'variance', value)
       }
     })
-    if (num === 0) throw new Error('Cannot calculate var of an empty array')
+    if (num === 0) throw new Error('Cannot calculate variance of an empty array')
 
     const mean = divide(sum, num)
 

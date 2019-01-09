@@ -22,6 +22,6 @@ export const meanDocs = {
     'prod',
     'std',
     'sum',
-    'var'
+    'variance'
   ]
 }

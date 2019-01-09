@@ -34,7 +34,7 @@ export const createMax = /* #__PURE__ */ factory(name, dependencies, ({ typed, l
    *
    * See also:
    *
-   *    mean, median, min, prod, std, sum, var
+   *    mean, median, min, prod, std, sum, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The maximum value

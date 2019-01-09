@@ -9,7 +9,7 @@ export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
   /**
    * Compute the standard deviation of a matrix or a  list with values.
    * The standard deviations is defined as the square root of the variance:
-   * `std(A) = sqrt(var(A))`.
+   * `std(A) = sqrt(variance(A))`.
    * In case of a (multi dimensional) array or matrix, the standard deviation
    * over all elements will be calculated.
    *
@@ -37,7 +37,7 @@ export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
    *
    * See also:
    *
-   *    mean, median, max, min, prod, sum, var
+   *    mean, median, max, min, prod, sum, variance
    *
    * @param {Array | Matrix} array
    *                        A single matrix or or multiple scalar values
@@ -67,8 +67,8 @@ export const createStd = /* #__PURE__ */ factory(name, dependencies, ({ typed, s
     try {
       return sqrt(variance.apply(null, arguments))
     } catch (err) {
-      if (err instanceof TypeError && err.message.indexOf(' var') !== -1) {
-        throw new TypeError(err.message.replace(' var', ' std'))
+      if (err instanceof TypeError && err.message.indexOf(' variance') !== -1) {
+        throw new TypeError(err.message.replace(' variance', ' std'))
       } else {
         throw err
       }

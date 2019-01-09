@@ -33,7 +33,7 @@ export const createTypeOf = /* #__PURE__ */ factory(name, dependencies, ({ typed
    * math.type.Index        | `'Index'`     | `math.typeOf(math.index(1, 3))`
    * math.type.Matrix       | `'Matrix'`    | `math.typeOf(math.matrix([[1,2], [3, 4]]))`
    * math.type.Range        | `'Range'`     | `math.typeOf(math.range(0, 10))`
-   * math.type.ResultSet    | `'ResultSet'` | `math.typeOf(math.eval('a=2\nb=3'))`
+   * math.type.ResultSet    | `'ResultSet'` | `math.typeOf(math.evaluate('a=2\nb=3'))`
    * math.type.Unit         | `'Unit'`      | `math.typeOf(math.unit('45 deg'))`
    * math.expression.node&#8203;.AccessorNode            | `'AccessorNode'`            | `math.typeOf(math.parse('A[2]'))`
    * math.expression.node&#8203;.ArrayNode               | `'ArrayNode'`               | `math.typeOf(math.parse('[1,2,3]'))`

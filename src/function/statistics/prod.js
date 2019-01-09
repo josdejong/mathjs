@@ -28,7 +28,7 @@ export const createProd = /* #__PURE__ */ factory(name, dependencies, ({ typed, 
    *
    * See also:
    *
-   *    mean, median, min, max, sum, std, var
+   *    mean, median, min, max, sum, std, variance
    *
    * @param {... *} args  A single matrix or or multiple scalar values
    * @return {*} The product of all values

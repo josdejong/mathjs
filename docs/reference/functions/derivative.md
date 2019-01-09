@@ -52,4 +52,4 @@ math.derivative(f, x)                           // Node {2 * x}
 
 [simplify](simplify.md),
 [parse](parse.md),
-[eval](eval.md)
+[evaluate](evaluate.md)
