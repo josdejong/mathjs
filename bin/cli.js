@@ -58,7 +58,7 @@ const PRECISION = 14 // decimals
  * @return {*}
  */
 function getMath () {
-  return require('../index')
+  return require('../lib/mainBundle')
 }
 
 /**

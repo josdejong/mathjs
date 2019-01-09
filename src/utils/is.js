@@ -16,16 +16,16 @@ export function isNumber (x) {
   return typeof x === 'number'
 }
 
-export function isComplex (x) {
-  return (x && Object.getPrototypeOf(x).isComplex) || false
-}
-
 export function isBigNumber (x) {
   return (x && x.constructor.prototype.isBigNumber) || false
 }
 
+export function isComplex (x) {
+  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isComplex) || false
+}
+
 export function isFraction (x) {
-  return (x && Object.getPrototypeOf(x).isFraction) || false
+  return (x && typeof x === 'object' && Object.getPrototypeOf(x).isFraction) || false
 }
 
 export function isUnit (x) {

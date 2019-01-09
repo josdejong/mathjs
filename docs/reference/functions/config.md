@@ -3,7 +3,7 @@
 # Function config
 
 Set configuration options for math.js, and get current options.
-Will emit a 'config' event, with arguments (curr, prev, changes). Bla bla.
+Will emit a 'config' event, with arguments (curr, prev, changes).
 
 
 ## Syntax

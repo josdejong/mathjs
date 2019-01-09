@@ -12,16 +12,15 @@ jobs:
       script: npm run lint
       node_js: lts/*
       name: Lint
-# FIXME: enable browser testing again
-#    - script: npm run test:browser
-#      node_js: lts/*
-#      name: Local Browser Test
-#    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
-#      node_js: lts/*
-#      name: Browserstack Test
-#    - script: npm run build && npm run test:dist
-#      node_js: lts/*
-#      name: Bundling Test
+    - script: npm run test:browser
+      node_js: lts/*
+      name: Local Browser Test
+    - script: 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run test:browserstack; else true; fi'
+      node_js: lts/*
+      name: Browserstack Test
+    - script: npm run build && npm run test:dist
+      node_js: lts/*
+      name: Bundling Test
 
 git:
   depth: 5
