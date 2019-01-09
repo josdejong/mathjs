@@ -92,10 +92,11 @@ export function isRegExp (x) {
 }
 
 export function isObject (x) {
-  return typeof x === 'object' &&
+  return !!(x &&
+    typeof x === 'object' &&
     x.constructor === Object &&
     !isComplex(x) &&
-    !isFraction(x)
+    !isFraction(x))
 }
 
 export function isNull (x) {

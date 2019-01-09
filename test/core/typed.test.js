@@ -3,6 +3,8 @@ import math from '../../src/mainBundle'
 const math2 = math.create()
 
 describe('typed', function () {
+  // TODO: Move (most) of the type checks like isNumber, isComplex, to is.test.js
+
   it('should test whether a value is a number', function () {
     assert.strictEqual(math.type.isNumber(2), true)
     assert.strictEqual(math.type.isNumber('foo'), false)
@@ -141,20 +143,6 @@ describe('typed', function () {
     assert.strictEqual(math.type.isRegExp(function () {}), false)
     assert.strictEqual(math.type.isRegExp(2), false)
     assert.strictEqual(math.type.isRegExp(), false)
-  })
-
-  it('should test whether a value is an Object', function () {
-    assert.strictEqual(math.type.isObject({}), true)
-    assert.strictEqual(math.type.isObject(math.matrix()), false)
-    assert.strictEqual(math.type.isObject([]), false)
-    assert.strictEqual(math.type.isObject(math.fraction(1, 2)), false)
-    assert.strictEqual(math.type.isObject(math.bignumber(2)), false)
-    assert.strictEqual(math.type.isObject(math.complex(2, 3)), false)
-    assert.strictEqual(math.type.isObject(math.parse('2')), false)
-    assert.strictEqual(math.type.isObject(/test/), false)
-    assert.strictEqual(math.type.isObject(function () {}), false)
-    assert.strictEqual(math.type.isObject(2), false)
-    assert.strictEqual(math.type.isObject(), false)
   })
 
   it('should test whether a value is null', function () {

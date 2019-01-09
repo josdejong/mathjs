@@ -6,7 +6,7 @@ import { lazy } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
 const name = 'type.Chain'
-const dependencies = ['on', 'math']
+const dependencies = ['?on', 'math']
 
 export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ on, math }) => {
   /**
@@ -174,12 +174,14 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
   Chain.createProxy(math)
 
   // register on the import event, automatically add a proxy for every imported function.
-  on('import', function (name, resolver, path) {
-    if (!path) {
-      // an imported function (not a data type or something special)
-      createLazyProxy(name, resolver)
-    }
-  })
+  if (on) {
+    on('import', function (name, resolver, path) {
+      if (!path) {
+        // an imported function (not a data type or something special)
+        createLazyProxy(name, resolver)
+      }
+    })
+  }
 
   return Chain
 })

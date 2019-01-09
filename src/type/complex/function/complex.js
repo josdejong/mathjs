@@ -63,6 +63,10 @@ export const createComplex = /* #__PURE__ */ factory(name, dependencies, ({ type
       return new Complex(re.toNumber(), im.toNumber())
     },
 
+    'Fraction': function (x) {
+      return new Complex(x.valueOf(), 0)
+    },
+
     'Complex': function (x) {
       return x.clone()
     },

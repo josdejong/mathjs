@@ -255,6 +255,44 @@ import {
   createVersion
 } from './constants'
 import defaultInstance from './mainInstance'
+import {
+  createAtomicMass,
+  createAvogadro,
+  createBohrMagneton,
+  createBohrRadius,
+  createBoltzmann,
+  createClassicalElectronRadius,
+  createConductanceQuantum,
+  createCoulomb,
+  createDeuteronMass,
+  createEfimovFactor,
+  createElectricConstant,
+  createElectronMass,
+  createElementaryCharge,
+  createFaraday,
+  createFermiCoupling,
+  createFineStructure,
+  createFirstRadiation,
+  createGasConstant,
+  createGravitationConstant, createGravity,
+  createHartreeEnergy,
+  createInverseConductanceQuantum,
+  createKlitzing,
+  createLoschmidt,
+  createMagneticConstant,
+  createMagneticFluxQuantum, createMolarMass, createMolarMassC12, createMolarPlanckConstant, createMolarVolume,
+  createNeutronMass,
+  createNuclearMagneton, createPlanckCharge,
+  createPlanckConstant, createPlanckLength, createPlanckMass, createPlanckTemperature, createPlanckTime,
+  createProtonMass,
+  createQuantumOfCirculation,
+  createReducedPlanckConstant,
+  createRydberg, createSackurTetrode, createSecondRadiation,
+  createSpeedOfLight, createStefanBoltzmann,
+  createThomsonCrossSection,
+  createVacuumImpedance,
+  createWeakMixingAngle, createWienDisplacement
+} from './type/unit/physicalConstants'
 
 export const config = /* #__PURE__ */ Object.freeze({ ...DEFAULT_CONFIG })
 
@@ -300,6 +338,9 @@ export {
   isSymbolNode,
   isUnit
 } from './utils/is'
+
+// ----------------------------------------------------------------------------
+// classes and functions
 
 // class (1)
 export const ResultSet = /* #__PURE__ */ createResultSet()
@@ -630,7 +671,7 @@ export const lusolve = /* #__PURE__ */ createLusolve({ typed, matrix, lup, slu, 
 
 // class (3)
 export const Help = /* #__PURE__ */ createHelpClass({ expression: { parse: parseExpression } })
-export const Chain = /* #__PURE__ */ createChainClass({ on: () => {}, math }) // TODO: what to do with on?
+export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (3)
 const docs = /* #__PURE__ */ createEmbeddedDocs()
@@ -768,6 +809,9 @@ export const rationalize = /* #__PURE__ */ createRationalize({
   }
 })
 
+// ----------------------------------------------------------------------------
+// json
+
 export const reviver = /* #__PURE__ */ createReviver({
   type: {
     BigNumber,
@@ -807,7 +851,11 @@ export const reviver = /* #__PURE__ */ createReviver({
   }
 })
 
+// FIXME: export classes
+
+// ----------------------------------------------------------------------------
 // constants
+
 export const _true = /* #__PURE__ */ createTrue()
 export const _false = /* #__PURE__ */ createFalse()
 export const _null = /* #__PURE__ */ createNull()
@@ -826,75 +874,87 @@ export const SQRT2 = /* #__PURE__ */ createSQRT2({ config, type: { BigNumber } }
 export const i = /* #__PURE__ */ createI({ config, type: { Complex } })
 export const version = /* #__PURE__ */ createVersion()
 
-// FIXME: export physical constants
-
-export const json = /* #__PURE__ */ {
-  reviver: createReviver({
-    type: {
-      BigNumber,
-      Chain,
-      Complex,
-      Fraction,
-      Matrix,
-      DenseMatrix,
-      SparseMatrix,
-      Spa,
-      FibonacciHeap,
-      ImmutableDenseMatrix,
-      Index,
-      Range,
-      ResultSet,
-      Unit,
-      Help
-    },
-    expression: {
-      node: {
-        Node,
-        AccessorNode,
-        ArrayNode,
-        AssignmentNode,
-        BlockNode,
-        ConditionalNode,
-        ConstantNode,
-        FunctionAssignmentNode,
-        IndexNode,
-        ObjectNode,
-        ParenthesisNode,
-        RangeNode,
-        RelationalNode,
-        SymbolNode,
-        FunctionNode
-      }
-    }
-  })
-}
-
-// for backward compatibility
-export const expression = {
-  docs: /* #__PURE__ */ createEmbeddedDocs(),
-  node: {
-    Node,
-    AccessorNode,
-    ArrayNode,
-    AssignmentNode,
-    BlockNode,
-    ConditionalNode,
-    ConstantNode,
-    FunctionAssignmentNode,
-    IndexNode,
-    ObjectNode,
-    ParenthesisNode,
-    RangeNode,
-    RelationalNode,
-    SymbolNode,
-    FunctionNode
+// ----------------------------------------------------------------------------
+// physical constants
+const pyhiscalConstantsDependencies = {
+  config,
+  type: {
+    BigNumber,
+    Unit
   }
 }
 
+// Universal constants
+export const speedOfLight = /* #__PURE__ */ createSpeedOfLight(pyhiscalConstantsDependencies)
+export const gravitationConstant = /* #__PURE__ */ createGravitationConstant(pyhiscalConstantsDependencies)
+export const planckConstant = /* #__PURE__ */ createPlanckConstant(pyhiscalConstantsDependencies)
+export const reducedPlanckConstant = /* #__PURE__ */ createReducedPlanckConstant(pyhiscalConstantsDependencies)
+
+// Electromagnetic constants
+export const magneticConstant = /* #__PURE__ */ createMagneticConstant(pyhiscalConstantsDependencies)
+export const electricConstant = /* #__PURE__ */ createElectricConstant(pyhiscalConstantsDependencies)
+export const vacuumImpedance = /* #__PURE__ */ createVacuumImpedance(pyhiscalConstantsDependencies)
+export const coulomb = /* #__PURE__ */ createCoulomb(pyhiscalConstantsDependencies)
+export const elementaryCharge = /* #__PURE__ */ createElementaryCharge(pyhiscalConstantsDependencies)
+export const bohrMagneton = /* #__PURE__ */ createBohrMagneton(pyhiscalConstantsDependencies)
+export const conductanceQuantum = /* #__PURE__ */ createConductanceQuantum(pyhiscalConstantsDependencies)
+export const inverseConductanceQuantum = /* #__PURE__ */ createInverseConductanceQuantum(pyhiscalConstantsDependencies)
+export const magneticFluxQuantum = /* #__PURE__ */ createMagneticFluxQuantum(pyhiscalConstantsDependencies)
+export const nuclearMagneton = /* #__PURE__ */ createNuclearMagneton(pyhiscalConstantsDependencies)
+export const klitzing = /* #__PURE__ */ createKlitzing(pyhiscalConstantsDependencies)
+
+// Atomic and nuclear constants
+export const bohrRadius = /* #__PURE__ */ createBohrRadius(pyhiscalConstantsDependencies)
+export const classicalElectronRadius = /* #__PURE__ */ createClassicalElectronRadius(pyhiscalConstantsDependencies)
+export const electronMass = /* #__PURE__ */ createElectronMass(pyhiscalConstantsDependencies)
+export const fermiCoupling = /* #__PURE__ */ createFermiCoupling(pyhiscalConstantsDependencies)
+export const fineStructure = /* #__PURE__ */ createFineStructure(pyhiscalConstantsDependencies)
+export const hartreeEnergy = /* #__PURE__ */ createHartreeEnergy(pyhiscalConstantsDependencies)
+export const protonMass = /* #__PURE__ */ createProtonMass(pyhiscalConstantsDependencies)
+export const deuteronMass = /* #__PURE__ */ createDeuteronMass(pyhiscalConstantsDependencies)
+export const neutronMass = /* #__PURE__ */ createNeutronMass(pyhiscalConstantsDependencies)
+export const quantumOfCirculation = /* #__PURE__ */ createQuantumOfCirculation(pyhiscalConstantsDependencies)
+export const rydberg = /* #__PURE__ */ createRydberg(pyhiscalConstantsDependencies)
+export const thomsonCrossSection = /* #__PURE__ */ createThomsonCrossSection(pyhiscalConstantsDependencies)
+export const weakMixingAngle = /* #__PURE__ */ createWeakMixingAngle(pyhiscalConstantsDependencies)
+export const efimovFactor = /* #__PURE__ */ createEfimovFactor(pyhiscalConstantsDependencies)
+
+// Physico-chemical constants
+export const atomicMass = /* #__PURE__ */ createAtomicMass(pyhiscalConstantsDependencies)
+export const avogadro = /* #__PURE__ */ createAvogadro(pyhiscalConstantsDependencies)
+export const boltzmann = /* #__PURE__ */ createBoltzmann(pyhiscalConstantsDependencies)
+export const faraday = /* #__PURE__ */ createFaraday(pyhiscalConstantsDependencies)
+export const firstRadiation = /* #__PURE__ */ createFirstRadiation(pyhiscalConstantsDependencies)
+export const loschmidt = /* #__PURE__ */ createLoschmidt(pyhiscalConstantsDependencies)
+export const gasConstant = /* #__PURE__ */ createGasConstant(pyhiscalConstantsDependencies)
+export const molarPlanckConstant = /* #__PURE__ */ createMolarPlanckConstant(pyhiscalConstantsDependencies)
+export const molarVolume = /* #__PURE__ */ createMolarVolume(pyhiscalConstantsDependencies)
+export const sackurTetrode = /* #__PURE__ */ createSackurTetrode(pyhiscalConstantsDependencies)
+export const secondRadiation = /* #__PURE__ */ createSecondRadiation(pyhiscalConstantsDependencies)
+export const stefanBoltzmann = /* #__PURE__ */ createStefanBoltzmann(pyhiscalConstantsDependencies)
+export const wienDisplacement = /* #__PURE__ */ createWienDisplacement(pyhiscalConstantsDependencies)
+
+// Adopted values
+export const molarMass = /* #__PURE__ */ createMolarMass(pyhiscalConstantsDependencies)
+export const molarMassC12 = /* #__PURE__ */ createMolarMassC12(pyhiscalConstantsDependencies)
+export const gravity = /* #__PURE__ */ createGravity(pyhiscalConstantsDependencies)
+
+// Natural units
+export const planckLength = /* #__PURE__ */ createPlanckLength(pyhiscalConstantsDependencies)
+export const planckMass = /* #__PURE__ */ createPlanckMass(pyhiscalConstantsDependencies)
+export const planckTime = /* #__PURE__ */ createPlanckTime(pyhiscalConstantsDependencies)
+export const planckCharge = /* #__PURE__ */ createPlanckCharge(pyhiscalConstantsDependencies)
+export const planckTemperature = /* #__PURE__ */ createPlanckTemperature(pyhiscalConstantsDependencies)
+
+// ----------------------------------------------------------------------------
 // error classes
+
 export { IndexError } from './error/IndexError'
 export { DimensionError } from './error/DimensionError'
 export { ArgumentsError } from './error/ArgumentsError'
+
+// ----------------------------------------------------------------------------
+// core
 
 export { core, create } from './mainInstance'
 

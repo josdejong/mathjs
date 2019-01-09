@@ -1,7 +1,24 @@
 import assert from 'assert'
-import { isBoolean, isNumber, isString } from '../../src/utils/is'
+import { isBoolean, isNumber, isObject, isString } from '../../src/utils/is'
+import { bignumber, complex, fraction, matrix, parse } from '../../src/mainFull'
 
 describe('is', function () {
+  it('isObject', function () {
+    assert.strictEqual(isObject({}), true)
+    assert.strictEqual(isObject(matrix()), false)
+    assert.strictEqual(isObject([]), false)
+    assert.strictEqual(isObject(fraction(1, 2)), false)
+    assert.strictEqual(isObject(bignumber(2)), false)
+    assert.strictEqual(isObject(complex(2, 3)), false)
+    assert.strictEqual(isObject(parse('2')), false)
+    assert.strictEqual(isObject(/test/), false)
+    assert.strictEqual(isObject(function () {}), false)
+    assert.strictEqual(isObject(2), false)
+    assert.strictEqual(isObject(null), false)
+    assert.strictEqual(isObject(undefined), false)
+    assert.strictEqual(isObject(), false)
+  })
+
   it('isBoolean', function () {
     assert.strictEqual(isBoolean(true), true)
     assert.strictEqual(isBoolean(false), true)
