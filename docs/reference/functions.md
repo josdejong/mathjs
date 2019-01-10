@@ -231,7 +231,7 @@ Function | Description
 [math.max(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/max.html) | Compute the maximum value of a matrix or a  list with values.
 [math.mean(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mean.html) | Compute the mean value of matrix or a list with values.
 [math.median(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/median.html) | Compute the median of a matrix or a list with values.
-[math.min(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/min.html) | Compute the maximum value of a matrix or a  list of values.
+[math.min(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/min.html) | Compute the minimum value of a matrix or a  list of values.
 [math.mode(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/mode.html) | Computes the mode of a set of numbers or a list with values(numbers or characters).
 [math.prod(a,&nbsp;b,&nbsp;c,&nbsp;...)](functions/prod.html) | Compute the product of a matrix or a list with values.
 [math.quantileSeq(A,&nbsp;prob[,&nbsp;sorted])](functions/quantileSeq.html) | Compute the prob order quantile of a matrix or a list with values.
