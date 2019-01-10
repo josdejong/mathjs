@@ -1,6 +1,6 @@
 # History
 
-# not yet released, version 5.4.1
+# 2019-01-10, version 5.4.1
 
 - Fix #1378: negative bignumbers not formatted correctly.
 - Upgrade fraction.js to version 4.0.12 (#1369).
