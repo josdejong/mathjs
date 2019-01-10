@@ -9,9 +9,9 @@ function factory (type, config, load, typed) {
   const improveErrorMessage = load(require('./utils/improveErrorMessage'))
 
   /**
-   * Compute the maximum value of a matrix or a  list of values.
-   * In case of a multi dimensional array, the maximum of the flattened array
-   * will be calculated. When `dim` is provided, the maximum over the selected
+   * Compute the minimum value of a matrix or a  list of values.
+   * In case of a multi dimensional array, the minimum of the flattened array
+   * will be calculated. When `dim` is provided, the minimum over the selected
    * dimension will be calculated. Parameter `dim` is zero-based.
    *
    * Syntax:
@@ -25,7 +25,7 @@ function factory (type, config, load, typed) {
    *     math.min(2, 1, 4, 3)                  // returns 1
    *     math.min([2, 1, 4, 3])                // returns 1
    *
-   *     // maximum over a specified dimension (zero-based)
+   *     // minimum over a specified dimension (zero-based)
    *     math.min([[2, 5], [4, 3], [1, 7]], 0) // returns [1, 3]
    *     math.min([[2, 5], [4, 3], [1, 7]], 1) // returns [2, 3, 1]
    *
