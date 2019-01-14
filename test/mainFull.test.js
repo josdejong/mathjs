@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt } from '../src/mainFull'
+import { add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } from '../src/mainFull'
 
 describe('mainFull', function () {
   it('should export functions', () => {
@@ -22,11 +22,16 @@ describe('mainFull', function () {
     assert.strictEqual(isMatrix(matrix()), true)
   })
 
+  // FIXME: test export of evaluate and parse
+  it.skip('should export evaluate having functions and constants', () => {
+    assert.strictEqual(evaluate('sqrt(4)'), 2)
+    assert.strictEqual(evaluate('pi'), Math.PI)
+  })
+
   // TODO: test export of create and core
   // TODO: test export of errors
   // TODO: test export json reviver
   // TODO: test export of classes
-  // TODO: test export of evaluate and parse
   // TODO: test export of default instance
   // TODO: test snapshot of all exported things
 })

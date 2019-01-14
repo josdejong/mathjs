@@ -192,34 +192,6 @@ describe('import', function () {
     }, /TypeError: Unexpected type of argument in function foo/)
   })
 
-  it('should merge typed functions coming from a legacy factory', function () {
-    math.import({
-      'foo': math.typed('foo', {
-        'number': function (x) {
-          return 'foo(number)'
-        }
-      })
-    })
-
-    math.import({
-      'name': 'foo',
-      'factory': function () {
-        return math.typed('foo', {
-          'string': function (x) {
-            return 'foo(string)'
-          }
-        })
-      }
-    })
-
-    assert.deepStrictEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string'])
-    assert.strictEqual(math.foo(2), 'foo(number)')
-    assert.strictEqual(math.foo('bar'), 'foo(string)')
-    assert.throws(function () {
-      math.foo(new Date())
-    }, /TypeError: Unexpected type of argument in function foo/)
-  })
-
   it('should import a boolean', function () {
     math.import({ a: true })
     assert.strictEqual(math.a, true)
@@ -255,37 +227,83 @@ describe('import', function () {
     assert.strictEqual(math.expression.mathWithTransform.mean, mean)
   })
 
-  it('should override a function with transform for a legacy factory function without', function () {
-    function mean () {
-      return 'test'
-    }
+  describe('legacy factory', function () {
+    const originalConsoleWarn = console.warn
 
-    const meanFactory = {
-      name: 'mean',
-      factory: () => mean
-    }
+    before(() => {
+      console.warn = (...args) => {
+        // ignore warnings about legacy factories
+        if (args.join(', ').indexOf('Factories of type { name, factory } are deprecated') === -1) {
+          console.warn('Unexpected warning!')
+          originalConsoleWarn.apply(console, args)
+        }
+      }
+    })
 
-    math.import([meanFactory], { override: true })
+    after(() => {
+      console.warn = originalConsoleWarn
+    })
 
-    assert(math.hasOwnProperty('mean'))
-    assert.strictEqual(math.mean, mean)
-    assert.strictEqual(math.expression.transform.mean, undefined)
-    assert.strictEqual(math.expression.mathWithTransform.mean, mean)
-  })
-
-  it('should throw an error when a legacy factory function has a transform', function () {
-    assert.throws(function () {
+    it('should merge typed functions coming from a legacy factory', function () {
       math.import({
-        name: 'foo2',
-        factory: function () {
-          const fn = function () {}
-          fn.transform = function () {}
-          return fn
+        'foo': math.typed('foo', {
+          'number': function (x) {
+            return 'foo(number)'
+          }
+        })
+      })
+
+      math.import({
+        'name': 'foo',
+        'factory': function () {
+          return math.typed('foo', {
+            'string': function (x) {
+              return 'foo(string)'
+            }
+          })
         }
       })
 
-      math.foo2() // as soon as we use it, it will resolve the factory function
-    }, /Transforms cannot be attached to factory functions/)
+      assert.deepStrictEqual(Object.keys(math.foo.signatures).sort(), ['number', 'string'])
+      assert.strictEqual(math.foo(2), 'foo(number)')
+      assert.strictEqual(math.foo('bar'), 'foo(string)')
+      assert.throws(function () {
+        math.foo(new Date())
+      }, /TypeError: Unexpected type of argument in function foo/)
+    })
+
+    it('should override a function with transform for a legacy factory function without', function () {
+      function mean () {
+        return 'test'
+      }
+
+      const meanFactory = {
+        name: 'mean',
+        factory: () => mean
+      }
+
+      math.import([meanFactory], { override: true })
+
+      assert(math.hasOwnProperty('mean'))
+      assert.strictEqual(math.mean, mean)
+      assert.strictEqual(math.expression.transform.mean, undefined)
+      assert.strictEqual(math.expression.mathWithTransform.mean, mean)
+    })
+
+    it('should throw an error when a legacy factory function has a transform', function () {
+      assert.throws(function () {
+        math.import({
+          name: 'foo2',
+          factory: function () {
+            const fn = function () {}
+            fn.transform = function () {}
+            return fn
+          }
+        })
+
+        math.foo2() // as soon as we use it, it will resolve the factory function
+      }, /Transforms cannot be attached to factory functions/)
+    })
   })
 
   describe('factory', () => {

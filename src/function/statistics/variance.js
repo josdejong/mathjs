@@ -4,6 +4,7 @@ import { deepForEach } from '../../utils/collection'
 import { isBigNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
+import { warnOnce } from '../../utils/log'
 
 const DEFAULT_NORMALIZATION = 'unbiased'
 
@@ -127,13 +128,9 @@ export const createVariance = /* #__PURE__ */ factory(name, dependencies, ({ typ
 
 // For backward compatibility, deprecated since version 6.0.0. Date: 2018-11-09
 export const createDeprecatedVar = /* #__PURE__ */ factory('var', ['variance'], ({ variance }) => {
-  let warned = false
-
   return function (...args) {
-    if (!warned) {
-      warned = true
-      console.warn('Function "var" has been renamed to "variance", please use the new function instead.')
-    }
+    warnOnce('Function "var" has been renamed to "variance", please use the new function instead.')
+
     return variance.apply(variance, args)
   }
 })

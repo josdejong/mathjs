@@ -5,6 +5,7 @@ import { isFactory } from '../../utils/factory'
 import { isLegacyFactory, lazy, traverse } from '../../utils/object'
 import { contains, initial, last } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
+import { warnOnce } from '../../utils/log'
 
 export function importFactory (typed, load, math, factories) {
   /**
@@ -205,6 +206,9 @@ export function importFactory (typed, load, math, factories) {
    * @private
    */
   function _importLegacyFactory (factory, options) {
+    warnOnce('Factories of type { name, factory } are deprecated since v6. ' +
+      'Please refactor your factory functions.')
+
     if (typeof factory.name === 'string') {
       const name = factory.name
       const existingTransform = name in math.expression.transform

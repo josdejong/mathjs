@@ -1,7 +1,7 @@
 import assert from 'assert'
 import math from '../src/mainBundle'
 
-describe('factory', function () {
+describe('index', function () {
   it('should get a default instance of mathjs', function () {
     assert.strictEqual(typeof math, 'object')
     assert.deepStrictEqual(math.config(), {
