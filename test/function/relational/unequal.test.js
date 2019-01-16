@@ -138,10 +138,10 @@ describe('unequal', function () {
     assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), true)
     assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), true)
 
-    const mymath2 = mymath.create({ epsilon: 1e-2 })
-    assert.strictEqual(mymath2.unequal(1, 0.991), false)
-    assert.strictEqual(mymath2.unequal(mymath2.bignumber(1), mymath2.bignumber(0.991)), false)
-    assert.strictEqual(mymath2.unequal(mymath2.complex(1, 0), mymath2.complex(0.991, 0)), false)
+    mymath.config({ epsilon: 1e-2 })
+    assert.strictEqual(mymath.unequal(1, 0.991), false)
+    assert.strictEqual(mymath.unequal(mymath.bignumber(1), mymath.bignumber(0.991)), false)
+    assert.strictEqual(mymath.unequal(mymath.complex(1, 0), mymath.complex(0.991, 0)), false)
   })
 
   it('should throw an error when comparing numbers and units', function () {

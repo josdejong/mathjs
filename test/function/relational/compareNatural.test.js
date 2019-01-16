@@ -225,9 +225,9 @@ describe('compareNatural', function () {
     assert.strictEqual(mymath.compareNatural(1, 0.991), 1)
     assert.strictEqual(mymath.compareNatural(mymath.bignumber(1), mymath.bignumber(0.991)).valueOf(), 1)
 
-    const mymath2 = mymath.create({ epsilon: 1e-2 })
-    assert.strictEqual(mymath2.compareNatural(1, 0.991), 0)
-    assert.strictEqual(mymath2.compareNatural(mymath2.bignumber(1), mymath2.bignumber(0.991)), 0)
+    mymath.config({ epsilon: 1e-2 })
+    assert.strictEqual(mymath.compareNatural(1, 0.991), 0)
+    assert.strictEqual(mymath.compareNatural(mymath.bignumber(1), mymath.bignumber(0.991)), 0)
   })
 
   it('should compare complex numbers', function () {

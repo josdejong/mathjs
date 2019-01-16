@@ -205,6 +205,7 @@ export function importFactory (typed, load, math, factories) {
    * @param {Object} options  See import for a description of the options
    * @private
    */
+  // TODO: _importLegacyFactory is deprecated since v6.0.0, clean up some day
   function _importLegacyFactory (factory, options) {
     warnOnce('Factories of type { name, factory } are deprecated since v6. ' +
       'Please refactor your factory functions.')

@@ -95,9 +95,9 @@ describe('larger', function () {
     assert.strictEqual(mymath.larger(1, 0.991), true)
     assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), true)
 
-    const mymath2 = mymath.create({ epsilon: 1e-2 })
-    assert.strictEqual(mymath2.larger(1, 0.991), false)
-    assert.strictEqual(mymath2.larger(mymath2.bignumber(1), mymath2.bignumber(0.991)), false)
+    mymath.config({ epsilon: 1e-2 })
+    assert.strictEqual(mymath.larger(1, 0.991), false)
+    assert.strictEqual(mymath.larger(mymath.bignumber(1), mymath.bignumber(0.991)), false)
   })
 
   it('should throw an error if comparing a unit with a number', function () {
