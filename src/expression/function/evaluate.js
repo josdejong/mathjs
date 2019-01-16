@@ -42,23 +42,23 @@ export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typ
   return typed(name, {
     'string': function (expr) {
       let scope = {}
-      return parse(expr).compile().eval(scope)
+      return parse(expr).compile().evaluate(scope)
     },
 
     'string, Object': function (expr, scope) {
-      return parse(expr).compile().eval(scope)
+      return parse(expr).compile().evaluate(scope)
     },
 
     'Array | Matrix': function (expr) {
       let scope = {}
       return deepMap(expr, function (entry) {
-        return parse(entry).compile().eval(scope)
+        return parse(entry).compile().evaluate(scope)
       })
     },
 
     'Array | Matrix, Object': function (expr, scope) {
       return deepMap(expr, function (entry) {
-        return parse(entry).compile().eval(scope)
+        return parse(entry).compile().evaluate(scope)
       })
     }
   })

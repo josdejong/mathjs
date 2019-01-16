@@ -59,7 +59,7 @@ describe('FunctionNode', function () {
     const n = new FunctionNode(s, [c])
 
     let scope = {}
-    assert.strictEqual(n.compile().eval(scope), 2)
+    assert.strictEqual(n.compile().evaluate(scope), 2)
   })
 
   it('should compile a FunctionNode containing an index', function () {
@@ -77,7 +77,7 @@ describe('FunctionNode', function () {
         }
       }
     }
-    assert.strictEqual(n.compile().eval(scope), 16)
+    assert.strictEqual(n.compile().evaluate(scope), 16)
   })
 
   it('should execute a FunctionNode with the right context', function () {
@@ -95,7 +95,7 @@ describe('FunctionNode', function () {
         }
       }
     }
-    assert.strictEqual(n.compile().eval(scope), 42)
+    assert.strictEqual(n.compile().evaluate(scope), 42)
   })
 
   it('should compile a FunctionNode with a raw function', function () {
@@ -116,7 +116,7 @@ describe('FunctionNode', function () {
     const n = new mymath.expression.node.FunctionNode(s, [a, b])
 
     let scope = {}
-    assert.strictEqual(n.compile().eval(scope), 'myFunction(4, 5)')
+    assert.strictEqual(n.compile().evaluate(scope), 'myFunction(4, 5)')
   })
 
   it('should compile a FunctionNode containing an index resolving to a function with rawArgs', function () {
@@ -144,7 +144,7 @@ describe('FunctionNode', function () {
 
     scope.obj.myFunction = myFunction
 
-    assert.strictEqual(n.compile().eval(scope), 'myFunction(4, 5)')
+    assert.strictEqual(n.compile().evaluate(scope), 'myFunction(4, 5)')
   })
 
   it('should compile a FunctionNode with overloaded a raw function', function () {
@@ -165,7 +165,7 @@ describe('FunctionNode', function () {
         return 42
       }
     }
-    assert.strictEqual(n.compile().eval(scope), 42)
+    assert.strictEqual(n.compile().evaluate(scope), 42)
   })
 
   it('should filter a FunctionNode', function () {

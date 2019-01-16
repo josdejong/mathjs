@@ -7,8 +7,8 @@ describe('compile', function () {
   it('should compile an expression', function () {
     const code = math.compile('(5+3)/4')
     assert.ok(code instanceof Object)
-    assert.ok(code.eval instanceof Function)
-    assert.strictEqual(code.eval(), 2)
+    assert.ok(code.evaluate instanceof Function)
+    assert.strictEqual(code.evaluate(), 2)
   })
 
   it('should parse multiple expressions', function () {
@@ -16,8 +16,8 @@ describe('compile', function () {
     assert.ok(Array.isArray(codes))
     assert.strictEqual(codes.length, 2)
 
-    assert.strictEqual(codes[0].eval(), 5)
-    assert.strictEqual(codes[1].eval(), 9)
+    assert.strictEqual(codes[0].evaluate(), 5)
+    assert.strictEqual(codes[1].evaluate(), 9)
   })
 
   it('should throw an error on wrong number of arguments', function () {

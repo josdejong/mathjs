@@ -1080,7 +1080,7 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, (
     strNum = strNum.substr(1)
     strDen = strDen.substr(1)
 
-    // Add parans for better copy/paste back into the eval, for example, or for better pretty print formatting
+    // Add parans for better copy/paste back into evaluate, for example, or for better pretty print formatting
     if (nNum > 1 && nDen > 0) {
       strNum = '(' + strNum + ')'
     }

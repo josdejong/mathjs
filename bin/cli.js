@@ -212,11 +212,11 @@ function runStream (input, output, mode, parenthesis) {
           break
         }
         switch (mode) {
-          case 'eval':
+          case 'evaluate':
             // evaluate expression
             try {
               let node = math.parse(expr)
-              let res = node.eval(scope)
+              let res = node.evaluate(scope)
 
               if (math.type.isResultSet(res)) {
                 // we can have 0 or 1 results in the ResultSet, as the CLI
@@ -356,7 +356,7 @@ function outputHelp () {
  * Process input and output, based on the command line arguments
  */
 const scripts = [] // queue of scripts that need to be processed
-let mode = 'eval' // one of 'eval', 'tex' or 'string'
+let mode = 'evaluate' // one of 'evaluate', 'tex' or 'string'
 let parenthesis = 'keep'
 let version = false
 let help = false
@@ -414,7 +414,7 @@ if (version) {
 } else {
   fs.stat(scripts[0], function (e, f) {
     if (e) {
-      console.log(getMath().eval(scripts.join(' ')).toString())
+      console.log(getMath().evaluate(scripts.join(' ')).toString())
     } else {
     // work through the queue of scripts
       scripts.forEach(function (arg) {

@@ -38,8 +38,8 @@ describe('ArrayNode', function () {
     const a = new ArrayNode([c])
     const b = new ArrayNode()
 
-    assert.deepStrictEqual(a.compile().eval(), math.matrix([1]))
-    assert.deepStrictEqual(b.compile().eval(), math.matrix([]))
+    assert.deepStrictEqual(a.compile().evaluate(), math.matrix([1]))
+    assert.deepStrictEqual(b.compile().evaluate(), math.matrix([]))
   })
 
   it('should compile an ArrayNode and evaluate as Matrix', function () {
@@ -50,7 +50,7 @@ describe('ArrayNode', function () {
     const n = new ArrayNode([a, b, c, d])
 
     const expr = n.compile()
-    assert.deepStrictEqual(expr.eval(), math.matrix([1, 2, 3, 4]))
+    assert.deepStrictEqual(expr.evaluate(), math.matrix([1, 2, 3, 4]))
   })
 
   it('should compile an ArrayNode and evaluate as Array', function () {
@@ -61,7 +61,7 @@ describe('ArrayNode', function () {
     const d = new mathArray.expression.node.ConstantNode(4)
     const n = new mathArray.expression.node.ArrayNode([a, b, c, d])
     const expr = n.compile()
-    assert.deepStrictEqual(expr.eval(), [1, 2, 3, 4])
+    assert.deepStrictEqual(expr.evaluate(), [1, 2, 3, 4])
   })
 
   it('should compile nested ArrayNodes', function () {
@@ -75,7 +75,7 @@ describe('ArrayNode', function () {
     const n4 = new ArrayNode([n2, n3])
 
     const expr = n4.compile()
-    assert.deepStrictEqual(expr.eval(), math.matrix([[1, 2], [3, 4]]))
+    assert.deepStrictEqual(expr.evaluate(), math.matrix([[1, 2], [3, 4]]))
   })
 
   it('should find an ArrayNode', function () {

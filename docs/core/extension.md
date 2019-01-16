@@ -44,12 +44,12 @@ math.import({
 })
 
 // defined functions can be used in both JavaScript as well as the parser
-math.myvalue * 2               // 84
-math.hello('user')             // 'hello, user!'
+math.myvalue * 2                 // 84
+math.hello('user')               // 'hello, user!'
 
 const parser = math.parser()
-parser.eval('myvalue + 10')    // 52
-parser.eval('hello("user")')   // 'hello, user!'
+parser.evaluate('myvalue + 10')  // 52
+parser.evaluate('hello("user")') // 'hello, user!'
 ```
 
 ## Import external libraries
@@ -72,11 +72,11 @@ math.import(require('numbers'), {wrap: true, silent: true})
 math.import(require('numeric'), {wrap: true, silent: true})
 
 // use functions from numbers.js
-math.fibonacci(7)                          // 13
-math.eval('fibonacci(7)')                  // 13
+math.fibonacci(7)                           // 13
+math.evaluate('fibonacci(7)')               // 13
 
 // use functions from numeric.js
-math.eval('eig([1, 2; 4, 3])').lambda.x    // [5, -1]
+math.evaluate('eig([1, 2; 4, 3])').lambda.x // [5, -1]
 ```
 
 

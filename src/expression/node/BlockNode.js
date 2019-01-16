@@ -63,7 +63,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ ty
   BlockNode.prototype._compile = function (math, argNames) {
     const evalBlocks = map(this.blocks, function (block) {
       return {
-        eval: block.node._compile(math, argNames),
+        evaluate: block.node._compile(math, argNames),
         visible: block.visible
       }
     })
@@ -72,7 +72,7 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ ty
       const results = []
 
       forEach(evalBlocks, function evalBlockNode (block) {
-        const result = block.eval(scope, args, context)
+        const result = block.evaluate(scope, args, context)
         if (block.visible) {
           results.push(result)
         }

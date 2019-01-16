@@ -1,4 +1,3 @@
-// test eval
 import assert from 'assert'
 
 import approx from '../../../tools/approx'
@@ -7,20 +6,20 @@ const Complex = math.type.Complex
 const Unit = math.type.Unit
 const ResultSet = math.type.ResultSet
 
-describe('eval', function () {
+describe('evaluate', function () {
   it('should evaluate expressions', function () {
     approx.equal(math.evaluate('(2+3)/4'), 1.25)
     assert.deepStrictEqual(math.evaluate('sqrt(-4)'), new Complex(0, 2))
   })
 
-  it('should eval a list of expressions', function () {
+  it('should evaluate a list of expressions', function () {
     assert.deepStrictEqual(math.evaluate(['1+2', '3+4', '5+6']), [3, 7, 11])
     assert.deepStrictEqual(math.evaluate(['a=3', 'b=4', 'a*b']), [3, 4, 12])
     assert.deepStrictEqual(math.evaluate(math.matrix(['a=3', 'b=4', 'a*b'])), math.matrix([3, 4, 12]))
     assert.deepStrictEqual(math.evaluate(['a=3', 'b=4', 'a*b']), [3, 4, 12])
   })
 
-  it('should eval a series of expressions', function () {
+  it('should evaluate a series of expressions', function () {
     assert.deepStrictEqual(math.evaluate('a=3\nb=4\na*b'), new ResultSet([3, 4, 12]))
     assert.deepStrictEqual(math.evaluate('f(x) = a * x; a=2; f(4)'), new ResultSet([8]))
     assert.deepStrictEqual(math.evaluate('b = 43; b * 4'), new ResultSet([172]))
@@ -67,12 +66,12 @@ describe('eval', function () {
     assert.deepStrictEqual(math.evaluate('hello("jos")', scope), 'hello, jos!')
   })
 
-  it('should LaTeX eval', function () {
-    const expr1 = math.parse('eval(expr)')
-    const expr2 = math.parse('eval(expr,scope)')
+  it('should LaTeX evaluate', function () {
+    const expr1 = math.parse('evaluate(expr)')
+    const expr2 = math.parse('evaluate(expr,scope)')
 
-    assert.strictEqual(expr1.toTex(), '\\mathrm{eval}\\left( expr\\right)')
-    assert.strictEqual(expr2.toTex(), '\\mathrm{eval}\\left( expr, scope\\right)')
+    assert.strictEqual(expr1.toTex(), '\\mathrm{evaluate}\\left( expr\\right)')
+    assert.strictEqual(expr2.toTex(), '\\mathrm{evaluate}\\left( expr, scope\\right)')
   })
 
   it('should still allow using the deprecated function math.evaluate', () => {
@@ -83,7 +82,7 @@ describe('eval', function () {
 
     assert.strictEqual(math.eval('2+3'), 5)
 
-    // Note that the following assertion will fail if math.eval is already used in a previous unit test
+    // Note that the following assertion will fail if math.evaluate is already used in a previous unit test
     assert.deepStrictEqual(logs, [
       ['Function "eval" has been renamed to "evaluate", please use the new function instead.']
     ])

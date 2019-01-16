@@ -52,5 +52,5 @@ math.import({
   }
 })
 
-console.log(math.eval('bigint(4349) + bigint(5249)'))
-console.log(math.eval('bigint(4349) ^ bigint(5249)'))
+console.log(math.evaluate('bigint(4349) + bigint(5249)'))
+console.log(math.evaluate('bigint(4349) ^ bigint(5249)'))

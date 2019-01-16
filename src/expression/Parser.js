@@ -3,6 +3,7 @@
 import { factory } from '../utils/factory'
 import { extend } from '../utils/object'
 import { getSafeProperty, setSafeProperty } from '../utils/customs'
+import { warnOnce } from '../utils/log'
 
 const name = 'expression.Parser'
 const dependencies = ['expression.parse']
@@ -16,13 +17,13 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * evaluations.
    *
    * Methods:
-   *    const result = parser.eval(expr)  // evaluate an expression
-   *    const value = parser.get(name)    // retrieve a variable from the parser
-   *    const values = parser.getAll()    // retrieve all defined variables
-   *    parser.set(name, value)           // set a variable in the parser
-   *    parser.remove(name)               // clear a variable from the
-   *                                      // parsers scope
-   *    parser.clear()                    // clear the parsers scope
+   *    const result = parser.evaluate(expr)  // evaluate an expression
+   *    const value = parser.get(name)        // retrieve a variable from the parser
+   *    const values = parser.getAll()        // retrieve all defined variables
+   *    parser.set(name, value)               // set a variable in the parser
+   *    parser.remove(name)                   // clear a variable from the
+   *                                          // parsers scope
+   *    parser.clear()                        // clear the parsers scope
    *
    * Example usage:
    *    const parser = new Parser()
@@ -30,27 +31,27 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    *    // const parser = new math.parser()
    *
    *    // evaluate expressions
-   *    parser.eval('sqrt(3^2 + 4^2)')         // 5
-   *    parser.eval('sqrt(-4)')                // 2i
-   *    parser.eval('2 inch in cm')            // 5.08 cm
-   *    parser.eval('cos(45 deg)')             // 0.7071067811865476
+   *    parser.evaluate('sqrt(3^2 + 4^2)')        // 5
+   *    parser.evaluate('sqrt(-4)')               // 2i
+   *    parser.evaluate('2 inch in cm')           // 5.08 cm
+   *    parser.evaluate('cos(45 deg)')            // 0.7071067811865476
    *
    *    // define variables and functions
-   *    parser.eval('x = 7 / 2')               // 3.5
-   *    parser.eval('x + 3')                   // 6.5
-   *    parser.eval('function f(x, y) = x^y')  // f(x, y)
-   *    parser.eval('f(2, 3)')                 // 8
+   *    parser.evaluate('x = 7 / 2')              // 3.5
+   *    parser.evaluate('x + 3')                  // 6.5
+   *    parser.evaluate('function f(x, y) = x^y') // f(x, y)
+   *    parser.evaluate('f(2, 3)')                // 8
    *
    *    // get and set variables and functions
-   *    const x = parser.get('x')              // 7
-   *    const f = parser.get('f')              // function
-   *    const g = f(3, 2)                      // 9
+   *    const x = parser.get('x')                 // 7
+   *    const f = parser.get('f')                 // function
+   *    const g = f(3, 2)                         // 9
    *    parser.set('h', 500)
-   *    const i = parser.eval('h / 2')         // 250
+   *    const i = parser.evaluate('h / 2')        // 250
    *    parser.set('hello', function (name) {
    *        return 'hello, ' + name + '!'
    *    })
-   *    parser.eval('hello("user")')           // "hello, user!"
+   *    parser.evaluate('hello("user")')          // "hello, user!"
    *
    *    // clear defined functions and variables
    *    parser.clear()
@@ -73,7 +74,7 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
   /**
    * Parse an expression and return the parsed function node.
    * The node tree can be compiled via `code = node.compile(math)`,
-   * and the compiled code can be executed as `code.eval([scope])`
+   * and the compiled code can be executed as `code.evaluate([scope])`
    * @param {string} expr
    * @return {Node} node
    * @throws {Error}
@@ -84,9 +85,9 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
 
   /**
    * Parse and compile an expression, return the compiled javascript code.
-   * The node can be evaluated via code.eval([scope])
+   * The node can be evaluated via code.evaluate([scope])
    * @param {string} expr
-   * @return {{eval: function}} code
+   * @return {{evaluate: function}} code
    * @throws {Error}
    */
   Parser.prototype.compile = function (expr) {
@@ -99,11 +100,24 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
    * @return {*} result     The result, or undefined when the expression was empty
    * @throws {Error}
    */
-  Parser.prototype.eval = function (expr) {
+  Parser.prototype.evaluate = function (expr) {
     // TODO: validate arguments
     return parse(expr)
       .compile()
-      .eval(this.scope)
+      .evaluate(this.scope)
+  }
+
+  /**
+   * Parse and evaluate the given expression
+   * @param {string} expr   A string containing an expression, for example "2+3"
+   * @return {*} result     The result, or undefined when the expression was empty
+   * @throws {Error}
+   */
+  // TODO: Deprecated since v6.0.0. Clean up some day
+  Parser.prototype.eval = function (expr) {
+    warnOnce('Method Parser.eval is renamed to Parser.evaluate. Please use the new method name.')
+
+    return this.evaluate(expr)
   }
 
   /**

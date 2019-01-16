@@ -33,29 +33,29 @@ describe('ConstantNode', function () {
 
   it('should compile a ConstantNode', function () {
     let expr = new ConstantNode(2.3).compile()
-    assert.strictEqual(expr.eval(), 2.3)
+    assert.strictEqual(expr.evaluate(), 2.3)
 
     expr = new ConstantNode(2.3).compile()
-    assert.strictEqual(expr.eval(), 2.3)
+    assert.strictEqual(expr.evaluate(), 2.3)
 
     expr = new ConstantNode('hello').compile()
-    assert.strictEqual(expr.eval(), 'hello')
+    assert.strictEqual(expr.evaluate(), 'hello')
 
     expr = new ConstantNode(true).compile()
-    assert.strictEqual(expr.eval(), true)
+    assert.strictEqual(expr.evaluate(), true)
 
     expr = new ConstantNode(undefined).compile()
-    assert.strictEqual(expr.eval(), undefined)
+    assert.strictEqual(expr.evaluate(), undefined)
 
     expr = new ConstantNode(null).compile()
-    assert.strictEqual(expr.eval(), null)
+    assert.strictEqual(expr.evaluate(), null)
   })
 
   it('should compile a ConstantNode with bigmath', function () {
     const constantNode = bigmath.parse('2.3')
     assert.ok(constantNode.isConstantNode)
     const expr = constantNode.compile()
-    assert.deepStrictEqual(expr.eval(), new bigmath.type.BigNumber(2.3))
+    assert.deepStrictEqual(expr.evaluate(), new bigmath.type.BigNumber(2.3))
   })
 
   it('should find a ConstantNode', function () {
@@ -65,8 +65,8 @@ describe('ConstantNode', function () {
   })
 
   it('should leave quotes in strings as is (no escaping)', function () {
-    assert.strictEqual(new ConstantNode('"+foo+"').compile().eval(), '"+foo+"')
-    assert.strictEqual(new ConstantNode('\\"escaped\\"').compile().eval(), '\\"escaped\\"')
+    assert.strictEqual(new ConstantNode('"+foo+"').compile().evaluate(), '"+foo+"')
+    assert.strictEqual(new ConstantNode('\\"escaped\\"').compile().evaluate(), '\\"escaped\\"')
   })
 
   it('should find a ConstantNode', function () {

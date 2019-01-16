@@ -37,7 +37,7 @@ describe('simplify', function () {
 
   function simplifyAndCompareEval (left, right, scope) {
     scope = scope || {}
-    assert.strictEqual(math.simplify(left).eval(scope), math.parse(right).eval(scope))
+    assert.strictEqual(math.simplify(left).evaluate(scope), math.parse(right).evaluate(scope))
   }
 
   it('should not change the value of the function', function () {
@@ -84,10 +84,10 @@ describe('simplify', function () {
     const node = math.expression.node
     const f = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
     assert.strictEqual(f.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
-    assert.strictEqual(f.eval()(5), 0.9933071490757153)
+    assert.strictEqual(f.evaluate()(5), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'sigma(x) = 1 / (1 + exp(-x))')
-    assert.strictEqual(fsimplified.eval()(5), 0.9933071490757153)
+    assert.strictEqual(fsimplified.evaluate()(5), 0.9933071490757153)
   })
 
   it('simplifyCore should handle different node types', function () {
@@ -146,10 +146,10 @@ describe('simplify', function () {
     const node = math.expression.node
     const f = new node.FunctionNode(new node.SymbolNode('doubleIt'), [new node.SymbolNode('value')])
     assert.strictEqual(f.toString(), 'doubleIt(value)')
-    assert.strictEqual(f.eval({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(f.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), 'doubleIt(value)')
-    assert.strictEqual(fsimplified.eval({ doubleIt: doubleIt, value: 4 }), 8)
+    assert.strictEqual(fsimplified.evaluate({ doubleIt: doubleIt, value: 4 }), 8)
   })
 
   it('should handle immediately invoked function assignments', function () {
@@ -157,10 +157,10 @@ describe('simplify', function () {
     const s = new node.FunctionAssignmentNode('sigma', ['x'], math.parse('1 / (1 + exp(-x))'))
     const f = new node.FunctionNode(s, [new node.SymbolNode('x')])
     assert.strictEqual(f.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
-    assert.strictEqual(f.eval({ x: 5 }), 0.9933071490757153)
+    assert.strictEqual(f.evaluate({ x: 5 }), 0.9933071490757153)
     const fsimplified = math.simplify.simplifyCore(f)
     assert.strictEqual(fsimplified.toString(), '(sigma(x) = 1 / (1 + exp(-x)))(x)')
-    assert.strictEqual(fsimplified.eval({ x: 5 }), 0.9933071490757153)
+    assert.strictEqual(fsimplified.evaluate({ x: 5 }), 0.9933071490757153)
   })
 
   it('should simplify (n- -n1)', function () {
@@ -178,11 +178,11 @@ describe('simplify', function () {
 
   it('should preserve the value of BigNumbers', function () {
     const bigmath = math.create({ number: 'BigNumber', precision: 64 })
-    assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').eval(), bigmath.evaluate('222222222222222222'))
-    assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').eval(), bigmath.evaluate('111111111111111112'))
-    assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').eval(), bigmath.evaluate('11111111111111111111.5'))
-    assert.deepStrictEqual(bigmath.simplify('1/3 + 11111111111111111111').eval(), bigmath.evaluate('11111111111111111111.33333333333333333333333333333333333333333333'))
-    assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').eval(), bigmath.evaluate('3 + 1 / 11111111111111111111'))
+    assert.deepStrictEqual(bigmath.simplify('111111111111111111 + 111111111111111111').evaluate(), bigmath.evaluate('222222222222222222'))
+    assert.deepStrictEqual(bigmath.simplify('1 + 111111111111111111').evaluate(), bigmath.evaluate('111111111111111112'))
+    assert.deepStrictEqual(bigmath.simplify('1/2 + 11111111111111111111').evaluate(), bigmath.evaluate('11111111111111111111.5'))
+    assert.deepStrictEqual(bigmath.simplify('1/3 + 11111111111111111111').evaluate(), bigmath.evaluate('11111111111111111111.33333333333333333333333333333333333333333333'))
+    assert.deepStrictEqual(bigmath.simplify('3 + 1 / 11111111111111111111').evaluate(), bigmath.evaluate('3 + 1 / 11111111111111111111'))
   })
 
   it('should not change the value of numbers when converting to fractions (1)', function () {

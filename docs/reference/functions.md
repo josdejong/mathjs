@@ -31,7 +31,6 @@ Function | Description
 Function | Description
 ---- | -----------
 [math.compile(expr)](functions/compile.md) | Parse and compile an expression.
-[math.evaluate(expr)](functions/evaluate.md) | Evaluate an expression.
 [math.help(search)](functions/help.md) | Retrieve help on a function or data type.
 [math.parse(expr&nbsp;[,&nbsp;scope])](functions/parse.md) | Parse an expression.
 [math.parser()](functions/parser.md) | Create a parser.

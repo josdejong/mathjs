@@ -40,8 +40,8 @@ describe('ObjectNode', function () {
     const a = new ObjectNode({ c: c })
     const b = new ObjectNode()
 
-    assert.deepStrictEqual(a.compile().eval(), { c: 1 })
-    assert.deepStrictEqual(b.compile().eval(), {})
+    assert.deepStrictEqual(a.compile().evaluate(), { c: 1 })
+    assert.deepStrictEqual(b.compile().evaluate(), {})
   })
 
   it('should compile nested ObjectNodes', function () {
@@ -55,7 +55,7 @@ describe('ObjectNode', function () {
     const n4 = new ObjectNode({ n2: n2, n3: n3 })
 
     const expr = n4.compile()
-    assert.deepStrictEqual(expr.eval(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
+    assert.deepStrictEqual(expr.evaluate(), { n2: { a: 1, b: 2 }, n3: { c: 3, d: 4 } })
   })
 
   it('should filter an ObjectNode', function () {

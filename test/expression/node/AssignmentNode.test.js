@@ -63,7 +63,7 @@ describe('AssignmentNode', function () {
     const expr = n.compile()
 
     let scope = {}
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
     assert.strictEqual(scope.b, 3)
   })
 
@@ -78,7 +78,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: {}
     }
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
     assert.deepStrictEqual(scope, { a: { b: 3 } })
   })
 
@@ -96,7 +96,7 @@ describe('AssignmentNode', function () {
         b: {}
       }
     }
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
     assert.deepStrictEqual(scope, { a: { b: { c: 3 } } })
   })
 
@@ -113,7 +113,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: [[0, 0], [0, 0]]
     }
-    assert.strictEqual(expr.eval(scope), 5)
+    assert.strictEqual(expr.evaluate(scope), 5)
     assert.deepStrictEqual(scope, {
       a: [[0, 0], [5, 0]]
     })
@@ -136,7 +136,7 @@ describe('AssignmentNode', function () {
       a: [[0, 0], [0, 0]],
       b: [5, 6]
     }
-    assert.deepStrictEqual(expr.eval(scope), [5, 6])
+    assert.deepStrictEqual(expr.evaluate(scope), [5, 6])
     assert.deepStrictEqual(scope, {
       a: [[0, 0], [5, 6]],
       b: [5, 6]
@@ -158,7 +158,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: [[0, 0], [0, 0]]
     }
-    assert.deepStrictEqual(expr.eval(scope), bigmath.bignumber(5))
+    assert.deepStrictEqual(expr.evaluate(scope), bigmath.bignumber(5))
     assert.deepStrictEqual(scope, {
       a: [[0, 0], [bigmath.bignumber(5), 0]]
     })
@@ -174,7 +174,7 @@ describe('AssignmentNode', function () {
     let scope = {
       a: 42
     }
-    assert.throws(function () { expr.eval(scope) }, /Cannot apply index: unsupported type of object/)
+    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
   })
 
   it('should filter an AssignmentNode', function () {

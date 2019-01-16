@@ -44,7 +44,7 @@ describe('ConditionalNode', function () {
     const n = new ConditionalNode(condition, a, b)
     const expr = n.compile()
     let scope = {}
-    assert.strictEqual(expr.eval(scope), 2)
+    assert.strictEqual(expr.evaluate(scope), 2)
     assert.deepStrictEqual(scope, { a: 2 })
   })
 
@@ -52,54 +52,54 @@ describe('ConditionalNode', function () {
     const condition = new ConditionalNode(new SymbolNode('a'), one, zero)
 
     it('should evaluate boolean conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: true }), 1)
-      assert.strictEqual(condition.compile().eval({ a: false }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: true }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: false }), 0)
     })
 
     it('should evaluate number conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: 1 }), 1)
-      assert.strictEqual(condition.compile().eval({ a: 4 }), 1)
-      assert.strictEqual(condition.compile().eval({ a: -1 }), 1)
-      assert.strictEqual(condition.compile().eval({ a: 0 }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: 1 }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: 4 }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: -1 }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: 0 }), 0)
     })
 
     it('should evaluate bignumber conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: math.bignumber(1) }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.bignumber(4) }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.bignumber(-1) }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.bignumber(0) }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: math.bignumber(1) }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.bignumber(4) }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.bignumber(-1) }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.bignumber(0) }), 0)
     })
 
     it('should evaluate complex number conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: math.complex(2, 3) }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.complex(2, 0) }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.complex(0, 3) }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.complex(0, 0) }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: math.complex(2, 3) }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.complex(2, 0) }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.complex(0, 3) }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.complex(0, 0) }), 0)
     })
 
     it('should evaluate string conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: 'hello' }), 1)
-      assert.strictEqual(condition.compile().eval({ a: '' }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: 'hello' }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: '' }), 0)
     })
 
     it('should evaluate unit conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: math.unit('5cm') }), 1)
-      assert.strictEqual(condition.compile().eval({ a: math.unit('0 inch') }), 0)
-      assert.strictEqual(condition.compile().eval({ a: math.unit('meter') }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: math.unit('5cm') }), 1)
+      assert.strictEqual(condition.compile().evaluate({ a: math.unit('0 inch') }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: math.unit('meter') }), 0)
     })
 
     it('should evaluate null conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: null }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: null }), 0)
     })
 
     it('should evaluate undefined conditions', function () {
-      assert.strictEqual(condition.compile().eval({ a: undefined }), 0)
+      assert.strictEqual(condition.compile().evaluate({ a: undefined }), 0)
     })
 
     it('should throw an error in case of unsupported type of conditions', function () {
-      assert.throws(function () { condition.compile().eval({ a: {} }) })
-      assert.throws(function () { condition.compile().eval({ a: [] }) })
-      assert.throws(function () { condition.compile().eval({ a: math.matrix() }) })
+      assert.throws(function () { condition.compile().evaluate({ a: {} }) })
+      assert.throws(function () { condition.compile().evaluate({ a: [] }) })
+      assert.throws(function () { condition.compile().evaluate({ a: math.matrix() }) })
     })
   })
 

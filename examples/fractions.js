@@ -37,9 +37,9 @@ console.log()
 // one can work conveniently with fractions using the expression parser.
 // note though that Fractions are only supported by basic arithmetic functions
 console.log('use fractions in the expression parser')
-printRatio(math.eval('0.1 + 0.2')) // Fraction,  3/10
-printRatio(math.eval('0.3 / 0.2')) // Fraction,  3/2
-printRatio(math.eval('23 / 11')) // Fraction, 23/11
+printRatio(math.evaluate('0.1 + 0.2')) // Fraction,  3/10
+printRatio(math.evaluate('0.3 / 0.2')) // Fraction,  3/2
+printRatio(math.evaluate('23 / 11')) // Fraction, 23/11
 console.log()
 
 // output formatting

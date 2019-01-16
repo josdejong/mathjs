@@ -64,8 +64,8 @@ describe('import', function () {
     if (math.parser) {
       const parser = math.parser()
       math.add(math.myvalue, 10)
-      parser.eval('myvalue + 10') // 52
-      parser.eval('hello("user")') // 'hello, user!'
+      parser.evaluate('myvalue + 10') // 52
+      parser.evaluate('hello("user")') // 'hello, user!'
     }
   })
 

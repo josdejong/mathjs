@@ -177,7 +177,7 @@ describe('derivative', function () {
     compareString(derivativeWithoutSimplify('x^2 + x*y + y^2', 'x'), '2 * 1 * x ^ (2 - 1) + y * 1 + 0')
   })
 
-  it('should function properly even without being called within an eval', function () {
+  it('should function properly even without being called within an evaluate', function () {
     const f = math.parse('2x^3')
 
     // 2*3*1*x^(3-1) = 6x^2

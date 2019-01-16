@@ -10,7 +10,7 @@ self.addEventListener('message', function (event) {
 
   try {
     // evaluate the expression
-    result = parser.eval(request.expr)
+    result = parser.evaluate(request.expr)
   } catch (e) {
     // return the error
     err = e

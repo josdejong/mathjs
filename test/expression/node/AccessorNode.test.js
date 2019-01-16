@@ -55,7 +55,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.strictEqual(expr.eval(scope), 3)
+    assert.strictEqual(expr.evaluate(scope), 3)
   })
 
   it('should compile a AccessorNode with range and context parameters', function () {
@@ -73,7 +73,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
   it('should compile a AccessorNode with a property', function () {
@@ -85,7 +85,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: { b: 42 }
     }
-    assert.deepStrictEqual(expr.eval(scope), 42)
+    assert.deepStrictEqual(expr.evaluate(scope), 42)
   })
 
   it('should throw a one-based index error when out of range (Array)', function () {
@@ -97,7 +97,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [1, 2, 3]
     }
-    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw a one-based index error when out of range (Matrix)', function () {
@@ -109,7 +109,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: math.matrix([1, 2, 3])
     }
-    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw a one-based index error when out of range (string)', function () {
@@ -121,7 +121,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: 'hey'
     }
-    assert.throws(function () { expr.eval(scope) }, /Index out of range \(4 > 3\)/)
+    assert.throws(function () { expr.evaluate(scope) }, /Index out of range \(4 > 3\)/)
   })
 
   it('should throw an error when applying a matrix index onto an object', function () {
@@ -133,7 +133,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: {}
     }
-    assert.throws(function () { expr.eval(scope) }, /Cannot apply a numeric index as object property/)
+    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply a numeric index as object property/)
   })
 
   it('should throw an error when applying an index onto a scalar', function () {
@@ -145,7 +145,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: 42
     }
-    assert.throws(function () { expr.eval(scope) }, /Cannot apply index: unsupported type of object/)
+    assert.throws(function () { expr.evaluate(scope) }, /Cannot apply index: unsupported type of object/)
   })
 
   it('should compile a AccessorNode with negative step range and context parameters', function () {
@@ -164,7 +164,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), [[4, 3]])
+    assert.deepStrictEqual(expr.evaluate(scope), [[4, 3]])
   })
 
   it('should compile a AccessorNode with "end" both as value and in a range', function () {
@@ -182,7 +182,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), [[3, 4]])
+    assert.deepStrictEqual(expr.evaluate(scope), [[3, 4]])
   })
 
   it('should compile a AccessorNode with bignumber setting', function () {
@@ -196,7 +196,7 @@ describe('AccessorNode', function () {
     let scope = {
       a: [[1, 2], [3, 4]]
     }
-    assert.deepStrictEqual(expr.eval(scope), 3)
+    assert.deepStrictEqual(expr.evaluate(scope), 3)
   })
 
   it('should filter an AccessorNode', function () {

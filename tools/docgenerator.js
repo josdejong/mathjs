@@ -23,7 +23,7 @@ const SYNTAX = {
   matrix: 'math.matrix(x)',
   sparse: 'math.sparse(x)',
   unit: 'math.unit(x)',
-  eval: 'math.eval(expr [, scope])',
+  evaluate: 'math.evaluate(expr [, scope])',
   parse: 'math.parse(expr [, scope])',
   concat: 'math.concat(a, b, c, ... [, dim])',
   ones: 'math.ones(m, n, p, ...)',
@@ -45,7 +45,7 @@ const IGNORE_FUNCTIONS = {
   divideScalar: true,
   multiplyScalar: true,
   equalScalar: true,
-  eval: true
+  evaluate: true
 }
 
 const IGNORE_WARNINGS = {

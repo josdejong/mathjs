@@ -37,17 +37,17 @@ describe('parser', function () {
   it('should evaluate an expression', function () {
     const parser = new Parser()
 
-    const result = parser.eval('2 + 3')
+    const result = parser.evaluate('2 + 3')
     assert.strictEqual(result, 5)
   })
 
   it('should get variables from the parsers namespace ', function () {
     const parser = new Parser()
 
-    parser.eval('a = 3')
-    parser.eval('b = a + 2')
-    assert.strictEqual(parser.eval('a'), 3)
-    assert.strictEqual(parser.eval('b'), 5)
+    parser.evaluate('a = 3')
+    parser.evaluate('b = a + 2')
+    assert.strictEqual(parser.evaluate('a'), 3)
+    assert.strictEqual(parser.evaluate('b'), 5)
     assert.strictEqual(parser.get('a'), 3)
     assert.strictEqual(parser.get('b'), 5)
   })
@@ -55,8 +55,8 @@ describe('parser', function () {
   it('should get all variables from the parsers namespace ', function () {
     const parser = new Parser()
 
-    parser.eval('a = 3')
-    parser.eval('b = a + 2')
+    parser.evaluate('a = 3')
+    parser.evaluate('b = a + 2')
     assert.deepStrictEqual(parser.getAll(), { a: 3, b: 5 })
 
     parser.remove('a')
@@ -73,40 +73,40 @@ describe('parser', function () {
     const parser = new Parser()
 
     assert.strictEqual(parser.set('a', 3), 3)
-    assert.strictEqual(parser.eval('a'), 3)
-    assert.strictEqual(parser.eval('a + 2'), 5)
+    assert.strictEqual(parser.evaluate('a'), 3)
+    assert.strictEqual(parser.evaluate('a + 2'), 5)
 
     // adjust variable
-    assert.strictEqual(parser.eval('a = a + 2'), 5)
-    assert.strictEqual(parser.eval('a'), 5)
+    assert.strictEqual(parser.evaluate('a = a + 2'), 5)
+    assert.strictEqual(parser.evaluate('a'), 5)
     assert.strictEqual(parser.get('a'), 5)
 
     assert.strictEqual(parser.set('a', parser.get('a') - 4), 1)
-    assert.strictEqual(parser.eval('a'), 1)
+    assert.strictEqual(parser.evaluate('a'), 1)
   })
 
   it('should remove a variable from the parsers namespace ', function () {
     const parser = new Parser()
 
     assert.strictEqual(parser.set('qq', 3), 3)
-    assert.strictEqual(parser.eval('qq'), 3)
+    assert.strictEqual(parser.evaluate('qq'), 3)
     assert.strictEqual(parser.get('qq'), 3)
 
     parser.remove('qq')
     assert.strictEqual(parser.get('qq'), undefined)
-    assert.throws(function () { parser.eval('qq') })
+    assert.throws(function () { parser.evaluate('qq') })
 
-    assert.strictEqual(parser.eval('ww = 5'), 5)
+    assert.strictEqual(parser.evaluate('ww = 5'), 5)
     assert.strictEqual(parser.get('ww'), 5)
     parser.remove('ww')
     assert.strictEqual(parser.get('ww'), undefined)
-    assert.throws(function () { parser.eval('ww') })
+    assert.throws(function () { parser.evaluate('ww') })
   })
 
   it('should clear the parsers namespace ', function () {
     const parser = new Parser()
 
-    assert.strictEqual(parser.eval('xx = yy = zz = 5'), 5)
+    assert.strictEqual(parser.evaluate('xx = yy = zz = 5'), 5)
 
     assert.strictEqual(parser.set('pi', 'oops'), 'oops')
 
@@ -115,10 +115,10 @@ describe('parser', function () {
     assert.strictEqual(parser.get('zz'), 5)
     assert.strictEqual(parser.get('pi'), 'oops')
 
-    assert.strictEqual(parser.eval('xx'), 5)
-    assert.strictEqual(parser.eval('yy'), 5)
-    assert.strictEqual(parser.eval('zz'), 5)
-    assert.strictEqual(parser.eval('pi'), 'oops')
+    assert.strictEqual(parser.evaluate('xx'), 5)
+    assert.strictEqual(parser.evaluate('yy'), 5)
+    assert.strictEqual(parser.evaluate('zz'), 5)
+    assert.strictEqual(parser.evaluate('pi'), 'oops')
 
     parser.clear()
 
@@ -127,10 +127,10 @@ describe('parser', function () {
     assert.strictEqual(parser.get('zz'), undefined)
     approx.equal(parser.get('pi'), undefined)
 
-    assert.throws(function () { parser.eval('xx') })
-    assert.throws(function () { parser.eval('yy') })
-    assert.throws(function () { parser.eval('zz') })
-    assert.strictEqual(parser.eval('pi'), Math.PI)
+    assert.throws(function () { parser.evaluate('xx') })
+    assert.throws(function () { parser.evaluate('yy') })
+    assert.throws(function () { parser.evaluate('zz') })
+    assert.strictEqual(parser.evaluate('pi'), Math.PI)
   })
 
   describe('security', function () {

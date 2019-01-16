@@ -34,8 +34,8 @@ console.log()
 // one can work conveniently with BigNumbers using the expression parser.
 // note though that BigNumbers are only supported in arithmetic functions
 console.log('use BigNumbers in the expression parser')
-print(math.eval('0.1 + 0.2')) // BigNumber, 0.3
-print(math.eval('0.3 / 0.2')) // BigNumber, 1.5
+print(math.evaluate('0.1 + 0.2')) // BigNumber, 0.3
+print(math.evaluate('0.3 / 0.2')) // BigNumber, 1.5
 console.log()
 
 /**

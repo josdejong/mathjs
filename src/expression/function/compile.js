@@ -9,7 +9,7 @@ const dependencies = ['typed', 'expression.parse']
 export const createCompile = /* #__PURE__ */ factory(name, dependencies, ({ typed, expression: { parse } }) => {
   /**
    * Parse and compile an expression.
-   * Returns a an object with a function `eval([scope])` to evaluate the
+   * Returns a an object with a function `evaluate([scope])` to evaluate the
    * compiled expression.
    *
    * Syntax:
@@ -20,24 +20,24 @@ export const createCompile = /* #__PURE__ */ factory(name, dependencies, ({ type
    * Examples:
    *
    *     const code1 = math.compile('sqrt(3^2 + 4^2)')
-   *     code1.eval() // 5
+   *     code1.evaluate() // 5
    *
    *     let scope = {a: 3, b: 4}
    *     const code2 = math.compile('a * b') // 12
-   *     code2.eval(scope) // 12
+   *     code2.evaluate(scope) // 12
    *     scope.a = 5
-   *     code2.eval(scope) // 20
+   *     code2.evaluate(scope) // 20
    *
    *     const nodes = math.compile(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].eval() // 12
+   *     nodes[2].evaluate() // 12
    *
    * See also:
    *
-   *    parse, eval
+   *    parse, evaluate
    *
    * @param {string | string[] | Array | Matrix} expr
    *            The expression to be compiled
-   * @return {{eval: Function} | Array.<{eval: Function}>} code
+   * @return {{evaluate: Function} | Array.<{evaluate: Function}>} code
    *            An object with the compiled expression
    * @throws {Error}
    */

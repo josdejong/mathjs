@@ -47,7 +47,7 @@
       // evaluate the expression repeatedly for different values of x
       const xValues = math.range(-10, 10, 0.5).toArray()
       const yValues = xValues.map(function (x) {
-        return expr.eval({x: x})
+        return expr.evaluate({x: x})
       })
 
       // render the plot using plotly

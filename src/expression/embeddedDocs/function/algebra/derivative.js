@@ -14,7 +14,7 @@ export const derivativeDocs = {
     'f = parse("x^2 + x")',
     'x = parse("x")',
     'df = derivative(f, x)',
-    'df.eval({x: 3})'
+    'df.evaluate({x: 3})'
   ],
   'seealso': [
     'simplify', 'parse', 'evaluate'

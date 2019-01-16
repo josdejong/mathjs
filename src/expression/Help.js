@@ -68,7 +68,7 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ ex
         let res
         try {
           // note: res can be undefined when `expr` is an empty string
-          res = parse(expr).compile().eval(scope)
+          res = parse(expr).compile().evaluate(scope)
         } catch (e) {
           res = e
         }

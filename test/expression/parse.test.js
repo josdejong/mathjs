@@ -22,7 +22,7 @@ const ResultSet = math.type.ResultSet
  * @return {*} result
  */
 function parseAndEval (expr, scope) {
-  return parse(expr).eval(scope)
+  return parse(expr).evaluate(scope)
 }
 
 function parseAndStringifyWithParens (expr) {
@@ -31,41 +31,41 @@ function parseAndStringifyWithParens (expr) {
 
 describe('parse', function () {
   it('should parse a single expression', function () {
-    approx.equal(parse('2 + 6 / 3').compile().eval(), 4)
+    approx.equal(parse('2 + 6 / 3').compile().evaluate(), 4)
   })
 
   it('should parse an empty expression', function () {
-    assert.strictEqual(parse('').compile().eval(), undefined)
-    assert.strictEqual(parse('\n').compile().eval(), undefined)
-    assert.strictEqual(parse('\n\n').compile().eval(), undefined)
-    assert.strictEqual(parse('\n  \n').compile().eval(), undefined)
-    assert.strictEqual(parse('#foo\n').compile().eval(), undefined)
-    assert.strictEqual(parse('#foo\n#bar\n').compile().eval(), undefined)
+    assert.strictEqual(parse('').compile().evaluate(), undefined)
+    assert.strictEqual(parse('\n').compile().evaluate(), undefined)
+    assert.strictEqual(parse('\n\n').compile().evaluate(), undefined)
+    assert.strictEqual(parse('\n  \n').compile().evaluate(), undefined)
+    assert.strictEqual(parse('#foo\n').compile().evaluate(), undefined)
+    assert.strictEqual(parse('#foo\n#bar\n').compile().evaluate(), undefined)
   })
 
   it('should parse an array with expressions', function () {
     let scope = {}
     assert.deepStrictEqual(parse(['a=3', 'b=4', 'a*b']).map(function (node) {
-      return node.compile().eval(scope)
+      return node.compile().evaluate(scope)
     }), [3, 4, 12])
   })
 
   it('should parse a matrix with expressions', function () {
     let scope = {}
     assert.deepStrictEqual(parse(math.matrix(['a=3', 'b=4', 'a*b'])).map(function (node) {
-      return node.compile().eval(scope)
+      return node.compile().evaluate(scope)
     }), math.matrix([3, 4, 12]))
   })
 
   it('should parse an array with an empty expression', function () {
     assert.deepStrictEqual(parse(['']).map(function (node) {
-      return node.compile().eval()
+      return node.compile().evaluate()
     }), [undefined])
   })
 
   it('should parse an array with an empty expression', function () {
     assert.deepStrictEqual(parse(math.matrix([''])).map(function (node) {
-      return node.compile().eval()
+      return node.compile().evaluate()
     }), math.matrix([undefined]))
   })
 
@@ -103,38 +103,38 @@ describe('parse', function () {
 
   describe('multiline', function () {
     it('should parse multiline expressions', function () {
-      assert.deepStrictEqual(parse('a=3\nb=4\na*b').compile().eval(), new ResultSet([3, 4, 12]))
-      assert.deepStrictEqual(parse('b = 43; b * 4').compile().eval(), new ResultSet([172]))
+      assert.deepStrictEqual(parse('a=3\nb=4\na*b').compile().evaluate(), new ResultSet([3, 4, 12]))
+      assert.deepStrictEqual(parse('b = 43; b * 4').compile().evaluate(), new ResultSet([172]))
     })
 
     it('should skip empty lines in multiline expressions', function () {
-      assert.deepStrictEqual(parse('\n;\n2 * 4\n').compile().eval(), new ResultSet([8]))
+      assert.deepStrictEqual(parse('\n;\n2 * 4\n').compile().evaluate(), new ResultSet([8]))
     })
 
     it('should spread operators over multiple lines', function () {
-      assert.deepStrictEqual(parse('2+\n3').compile().eval(), 5)
-      assert.deepStrictEqual(parse('2+\n\n3').compile().eval(), 5)
-      assert.deepStrictEqual(parse('2*\n3').compile().eval(), 6)
-      assert.deepStrictEqual(parse('2^\n3').compile().eval(), 8)
-      assert.deepStrictEqual(parse('2==\n3').compile().eval(), false)
-      assert.deepStrictEqual(parse('2*-\n3').compile().eval(), -6)
+      assert.deepStrictEqual(parse('2+\n3').compile().evaluate(), 5)
+      assert.deepStrictEqual(parse('2+\n\n3').compile().evaluate(), 5)
+      assert.deepStrictEqual(parse('2*\n3').compile().evaluate(), 6)
+      assert.deepStrictEqual(parse('2^\n3').compile().evaluate(), 8)
+      assert.deepStrictEqual(parse('2==\n3').compile().evaluate(), false)
+      assert.deepStrictEqual(parse('2*-\n3').compile().evaluate(), -6)
     })
 
     it('should parse multiple function assignments', function () {
       let scope = {}
-      parse('f(x)=x*2;g(x)=x*3').compile().eval(scope)
+      parse('f(x)=x*2;g(x)=x*3').compile().evaluate(scope)
       assert.strictEqual(scope.f(2), 4)
       assert.strictEqual(scope.g(2), 6)
 
       let scope2 = {}
-      parse('a=2;f(x)=x^a;').compile().eval(scope2)
+      parse('a=2;f(x)=x^a;').compile().evaluate(scope2)
       assert.strictEqual(scope2.a, 2)
       assert.strictEqual(scope2.f(3), 9)
     })
 
     it('should correctly scope a function variable if also used outside the function', function () {
       let scope = {}
-      const res = parse('x=2;f(x)=x^2;x').compile().eval(scope) // x should be x=2, not x of the function
+      const res = parse('x=2;f(x)=x^2;x').compile().evaluate(scope) // x should be x=2, not x of the function
 
       assert.deepStrictEqual(res.entries, [2])
       assert.strictEqual(scope.x, 2)
@@ -142,35 +142,35 @@ describe('parse', function () {
     })
 
     it('should spread a function over multiple lines', function () {
-      assert.deepStrictEqual(parse('add(\n4\n,\n2\n)').compile().eval(), 6)
+      assert.deepStrictEqual(parse('add(\n4\n,\n2\n)').compile().evaluate(), 6)
     })
 
     it('should spread contents of parameters over multiple lines', function () {
-      assert.deepStrictEqual(parse('(\n4\n+\n2\n)').compile().eval(), 6)
+      assert.deepStrictEqual(parse('(\n4\n+\n2\n)').compile().evaluate(), 6)
     })
 
     it('should spread a function assignment over multiple lines', function () {
-      assert.deepStrictEqual(typeof parse('f(\nx\n,\ny\n)=\nx+\ny').compile().eval(), 'function')
+      assert.deepStrictEqual(typeof parse('f(\nx\n,\ny\n)=\nx+\ny').compile().evaluate(), 'function')
     })
 
     it('should spread a variable assignment over multiple lines', function () {
-      assert.deepStrictEqual(parse('x=\n2').compile().eval(), 2)
+      assert.deepStrictEqual(parse('x=\n2').compile().evaluate(), 2)
     })
 
     it('should spread a matrix over multiple lines', function () {
-      assert.deepStrictEqual(parse('[\n1\n,\n2\n]').compile().eval(), math.matrix([1, 2]))
+      assert.deepStrictEqual(parse('[\n1\n,\n2\n]').compile().evaluate(), math.matrix([1, 2]))
     })
 
     it('should spread a range over multiple lines', function () {
-      assert.deepStrictEqual(parse('2:\n4').compile().eval(), math.matrix([2, 3, 4]))
-      assert.deepStrictEqual(parse('2:\n2:\n6').compile().eval(), math.matrix([2, 4, 6]))
+      assert.deepStrictEqual(parse('2:\n4').compile().evaluate(), math.matrix([2, 3, 4]))
+      assert.deepStrictEqual(parse('2:\n2:\n6').compile().evaluate(), math.matrix([2, 4, 6]))
     })
 
     it('should spread an index over multiple lines', function () {
-      assert.deepStrictEqual(parse('a[\n1\n,\n1\n]').compile().eval({ a: [[1, 2], [3, 4]] }), 1)
+      assert.deepStrictEqual(parse('a[\n1\n,\n1\n]').compile().evaluate({ a: [[1, 2], [3, 4]] }), 1)
 
       let scope = { a: [[1, 2], [3, 4]] }
-      assert.deepStrictEqual(parse('a[\n1\n,\n1\n]=\n100').compile().eval(scope), 100)
+      assert.deepStrictEqual(parse('a[\n1\n,\n1\n]=\n100').compile().evaluate(scope), 100)
       assert.deepStrictEqual(scope, { a: [[100, 2], [3, 4]] })
     })
   })
@@ -180,7 +180,7 @@ describe('parse', function () {
       end: 2
     }
     assert.throws(function () {
-      parse('2+3').compile().eval(scope)
+      parse('2+3').compile().evaluate(scope)
     }, /Scope contains an illegal symbol/)
   })
 
@@ -280,8 +280,8 @@ describe('parse', function () {
         number: 'BigNumber'
       })
 
-      assert.deepStrictEqual(bigmath.parse('0.1').compile().eval(), bigmath.bignumber(0.1))
-      assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().eval(), bigmath.bignumber('1.2e5000'))
+      assert.deepStrictEqual(bigmath.parse('0.1').compile().evaluate(), bigmath.bignumber(0.1))
+      assert.deepStrictEqual(bigmath.parse('1.2e5000').compile().evaluate(), bigmath.bignumber('1.2e5000'))
     })
   })
 
@@ -291,9 +291,9 @@ describe('parse', function () {
         number: 'Fraction'
       })
 
-      assert(fmath.parse('0.1').compile().eval() instanceof math.type.Fraction)
-      assert.strictEqual(fmath.parse('1/3').compile().eval().toString(), '0.(3)')
-      assert.strictEqual(fmath.parse('0.1+0.2').compile().eval().toString(), '0.3')
+      assert(fmath.parse('0.1').compile().evaluate() instanceof math.type.Fraction)
+      assert.strictEqual(fmath.parse('1/3').compile().evaluate().toString(), '0.(3)')
+      assert.strictEqual(fmath.parse('0.1+0.2').compile().evaluate().toString(), '0.3')
     })
   })
 
@@ -1458,7 +1458,7 @@ describe('parse', function () {
 
     it('should lazily evaluate conditional expression a ? b : c', function () {
       let scope = {}
-      math.parse('true ? (a = 2) : (b = 2)').compile().eval(scope)
+      math.parse('true ? (a = 2) : (b = 2)').compile().evaluate(scope)
       assert.deepStrictEqual(scope, { a: 2 })
     })
 
@@ -1659,7 +1659,7 @@ describe('parse', function () {
         assert.strictEqual(node.condition.toString(), '1 or 0')
         assert.strictEqual(node.trueExpr.toString(), '2 or 3')
         assert.strictEqual(node.falseExpr.toString(), '0 or 0')
-        assert.strictEqual(node.compile().eval(), true)
+        assert.strictEqual(node.compile().evaluate(), true)
       })
 
       it('should respect precedence of conditional operator and relational operators', function () {
@@ -1826,9 +1826,9 @@ describe('parse', function () {
         a: 3,
         b: 4
       }
-      assert.deepStrictEqual(parse('a*b').compile().eval(scope), 12)
-      assert.deepStrictEqual(parse('c=5').compile().eval(scope), 5)
-      assert.deepStrictEqual(parse('f(x) = x^a').compile().eval(scope).syntax, 'f(x)')
+      assert.deepStrictEqual(parse('a*b').compile().evaluate(scope), 12)
+      assert.deepStrictEqual(parse('c=5').compile().evaluate(scope), 5)
+      assert.deepStrictEqual(parse('f(x) = x^a').compile().evaluate(scope).syntax, 'f(x)')
 
       assert.deepStrictEqual(Object.keys(scope).length, 4)
       assert.deepStrictEqual(scope.a, 3)
@@ -1842,33 +1842,33 @@ describe('parse', function () {
       scope.hello = function (name) {
         return 'hello, ' + name + '!'
       }
-      assert.deepStrictEqual(parse('hello("jos")').compile().eval(scope), 'hello, jos!')
+      assert.deepStrictEqual(parse('hello("jos")').compile().evaluate(scope), 'hello, jos!')
     })
 
     it('should parse undefined symbols, defining symbols, and removing symbols', function () {
       let scope = {}
       let n = parse('q')
-      assert.throws(function () { n.compile().eval(scope) })
-      parse('q=33').compile().eval(scope)
-      assert.strictEqual(n.compile().eval(scope), 33)
+      assert.throws(function () { n.compile().evaluate(scope) })
+      parse('q=33').compile().evaluate(scope)
+      assert.strictEqual(n.compile().evaluate(scope), 33)
       delete scope.q
-      assert.throws(function () { n.compile().eval(scope) })
+      assert.throws(function () { n.compile().evaluate(scope) })
 
       n = parse('qq[1,1]=33')
-      assert.throws(function () { n.compile().eval(scope) })
-      parse('qq=[1,2;3,4]').compile().eval(scope)
-      n.compile().eval(scope)
+      assert.throws(function () { n.compile().evaluate(scope) })
+      parse('qq=[1,2;3,4]').compile().evaluate(scope)
+      n.compile().evaluate(scope)
       assert.deepStrictEqual(scope.qq, math.matrix([[33, 2], [3, 4]]))
-      parse('qq=[4]').compile().eval(scope)
-      n.compile().eval(scope)
+      parse('qq=[4]').compile().evaluate(scope)
+      n.compile().evaluate(scope)
       assert.deepStrictEqual(scope.qq, math.matrix([[33]]))
       delete scope.qq
-      assert.throws(function () { n.compile().eval(scope) })
+      assert.throws(function () { n.compile().evaluate(scope) })
     })
 
     it('should evaluate a symbol with value null or undefined', function () {
-      assert.strictEqual(parse('a').compile().eval({ a: null }), null)
-      assert.strictEqual(parse('a').compile().eval({ a: undefined }), undefined)
+      assert.strictEqual(parse('a').compile().evaluate({ a: null }), null)
+      assert.strictEqual(parse('a').compile().evaluate({ a: undefined }), undefined)
     })
   })
 
@@ -1996,16 +1996,16 @@ describe('parse', function () {
 
       it('should parse custom nodes', function () {
         const node = parse('custom(x, (2+x), sin(x))', options)
-        assert.strictEqual(node.compile().eval(), 'CustomNode(x, (2 + x), sin(x))')
+        assert.strictEqual(node.compile().evaluate(), 'CustomNode(x, (2 + x), sin(x))')
       })
 
       it('should parse custom nodes without parameters', function () {
         const node = parse('custom()', options)
-        assert.strictEqual(node.compile().eval(), 'CustomNode()')
+        assert.strictEqual(node.compile().evaluate(), 'CustomNode()')
         assert.strictEqual(node.filter(function (node) { return node instanceof CustomNode }).length, 1)
 
         const node2 = parse('custom', options)
-        assert.strictEqual(node2.compile().eval(), 'CustomNode()')
+        assert.strictEqual(node2.compile().evaluate(), 'CustomNode()')
         assert.strictEqual(node2.filter(function (node) { return node instanceof CustomNode }).length, 1)
       })
 
@@ -2054,7 +2054,7 @@ describe('parse', function () {
       }
 
       const node = math.expression.parse('$foo')
-      const result = node.eval({ $foo: 42 })
+      const result = node.evaluate({ $foo: 42 })
       assert.strictEqual(result, 42)
 
       // restore original isAlpha

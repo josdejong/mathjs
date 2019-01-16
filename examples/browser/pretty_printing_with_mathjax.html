@@ -81,7 +81,7 @@
   // initialize with an example expression
   expr.value = 'sqrt(75 / 3) + det([[-1, 2], [3, 1]]) - sin(pi / 4)^2'
   pretty.innerHTML = '$$' + math.parse(expr.value).toTex({parenthesis: parenthesis}) + '$$'
-  result.innerHTML = math.format(math.eval(expr.value))
+  result.innerHTML = math.format(math.evaluate(expr.value))
 
   expr.oninput = function () {
     let node = null
@@ -91,7 +91,7 @@
       node = math.parse(expr.value)
 
       // evaluate the result of the expression
-      result.innerHTML = math.format(node.compile().eval())
+      result.innerHTML = math.format(node.compile().evaluate())
     }
     catch (err) {
       result.innerHTML = '<span style="color: red;">' + err.toString() + '</span>'

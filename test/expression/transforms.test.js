@@ -184,5 +184,5 @@ describe('transforms', function () {
  * @return {*} result
  */
 function parseAndEval (expr, scope) {
-  return parse(expr).eval(scope)
+  return parse(expr).evaluate(scope)
 }

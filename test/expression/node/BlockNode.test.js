@@ -52,7 +52,7 @@ describe('BlockNode', function () {
     ])
 
     let scope = {}
-    assert.deepStrictEqual(n.compile().eval(scope), new ResultSet([5, 3]))
+    assert.deepStrictEqual(n.compile().evaluate(scope), new ResultSet([5, 3]))
     assert.deepStrictEqual(scope, { foo: 3 })
   })
 
@@ -61,7 +61,7 @@ describe('BlockNode', function () {
       { node: new ConstantNode(5) }
     ])
 
-    assert.deepStrictEqual(n.compile().eval(), new ResultSet([5]))
+    assert.deepStrictEqual(n.compile().evaluate(), new ResultSet([5]))
   })
 
   it('should filter a BlockNode', function () {

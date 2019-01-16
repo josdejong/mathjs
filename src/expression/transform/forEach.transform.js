@@ -20,13 +20,13 @@ export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies
     let x, callback
 
     if (args[0]) {
-      x = args[0].compile().eval(scope)
+      x = args[0].compile().evaluate(scope)
     }
 
     if (args[1]) {
       if (isSymbolNode(args[1]) || isFunctionAssignmentNode(args[1])) {
         // a function pointer, like forEach([3, -2, 5], myTestFunction)
-        callback = args[1].compile().eval(scope)
+        callback = args[1].compile().evaluate(scope)
       } else {
         // an expression like forEach([3, -2, 5], x > 0 ? callback1(x) : callback2(x) )
         callback = compileInlineExpression(args[1], math, scope)

@@ -35,7 +35,7 @@ const a = [[1, 2], [3, 4]] // a 2x2 matrix
 let scope = {
   a: a
 }
-math.eval('subset(a, index(1, 2))', scope) // returns 2
+math.evaluate('subset(a, index(1, 2))', scope) // returns 2
 ```
 
 To create a transform for a function, the transform function must be attached
@@ -69,7 +69,7 @@ math.import({
 
 // use the function via the expression parser
 console.log('Using expression parser:')
-console.log('2+4=' + math.eval('addIt(2, 4)'))
+console.log('2+4=' + math.evaluate('addIt(2, 4)'))
 // This will output:
 //
 //     input: a=2, b=4
@@ -130,7 +130,7 @@ function myFunction(args, math, scope) {
 
   // evaluate the arguments
   const res = args.map(function (arg) {
-    return arg.compile().eval(scope)
+    return arg.compile().evaluate(scope)
   })
 
   return 'arguments: ' + str.join(',') + ', evaluated: ' + res.join(',')
@@ -145,7 +145,7 @@ math.import({
 })
 
 // use the function
-math.eval('myFunction(2 + 3, sqrt(4))')
+math.evaluate('myFunction(2 + 3, sqrt(4))')
 // returns 'arguments: 2 + 3, sqrt(4), evaluated: 5, 2'
 ```
 
@@ -371,6 +371,6 @@ math.expression.parse.isAlpha = function (c, cPrev, cNext) {
 }
 
 // now we can use the \u260E (phone) character in expressions
-const result = math.eval('\u260Efoo', {'\u260Efoo': 42}) // returns 42
+const result = math.evaluate('\u260Efoo', {'\u260Efoo': 42}) // returns 42
 console.log(result)
 ```

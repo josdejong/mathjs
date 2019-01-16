@@ -27,6 +27,6 @@ export function compileInlineExpression (expression, math, scope) {
   const eq = expression.compile()
   return function inlineExpression (x) {
     subScope[name] = x
-    return eq.eval(subScope)
+    return eq.evaluate(subScope)
   }
 }

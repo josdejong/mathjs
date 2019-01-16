@@ -33,7 +33,7 @@ math.import({
 
 // use the function via the expression parser
 console.log('Using expression parser:')
-console.log('2+4=' + math.eval('addIt(2, 4)'))
+console.log('2+4=' + math.evaluate('addIt(2, 4)'))
 // This will output:
 //
 //     input: a=2, b=4

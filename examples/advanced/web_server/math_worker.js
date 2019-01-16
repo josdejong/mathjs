@@ -13,7 +13,7 @@ math.import({ 'import': noImport }, { override: true })
  * @return {string} result
  */
 function evaluate (expr) {
-  const ans = math.eval(expr)
+  const ans = math.evaluate(expr)
   return math.format(ans)
 }
 

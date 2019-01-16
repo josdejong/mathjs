@@ -19,7 +19,7 @@ console.log(math.simplify('x * y * -x / (x ^ 2)').toString()) // '-y'
 const f = math.parse('2x + x')
 const simplified = math.simplify(f)
 console.log(simplified.toString()) // '3 * x'
-console.log(simplified.eval({ x: 4 })) // 12
+console.log(simplified.evaluate({ x: 4 })) // 12
 console.log()
 
 // calculate a derivative
@@ -31,4 +31,4 @@ console.log(math.derivative('sin(2x)', 'x').toString()) // '2 * cos(2 * x)'
 const h = math.parse('x^2 + x')
 const dh = math.derivative(h, 'x')
 console.log(dh.toString()) // '2 * x + 1'
-console.log(dh.eval({ x: 3 })) // '7'
+console.log(dh.evaluate({ x: 3 })) // '7'

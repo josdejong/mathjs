@@ -34,7 +34,7 @@ describe('OperatorNode', function () {
 
     const expr = n.compile()
 
-    assert.strictEqual(expr.eval(), 5)
+    assert.strictEqual(expr.evaluate(), 5)
   })
 
   it('should test whether a unary or binary operator', function () {

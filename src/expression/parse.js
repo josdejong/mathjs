@@ -45,7 +45,7 @@ export const createParseExpression = /* #__PURE__ */ factory(name, dependencies,
 } } }) => {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
-   * invoking node.eval().
+   * invoking node.evaluate().
    *
    * Syntax:
    *
@@ -57,17 +57,17 @@ export const createParseExpression = /* #__PURE__ */ factory(name, dependencies,
    * Example:
    *
    *     const node = parse('sqrt(3^2 + 4^2)')
-   *     node.compile(math).eval() // 5
+   *     node.compile(math).evaluate() // 5
    *
    *     let scope = {a:3, b:4}
    *     const node = parse('a * b') // 12
    *     const code = node.compile(math)
-   *     code.eval(scope) // 12
+   *     code.evaluate(scope) // 12
    *     scope.a = 5
-   *     code.eval(scope) // 20
+   *     code.evaluate(scope) // 20
    *
    *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].compile(math).eval() // 12
+   *     nodes[2].compile(math).evaluate() // 12
    *
    * @param {string | string[] | Matrix} expr
    * @param {{nodes: Object<string, Node>}} [options]  Available options:

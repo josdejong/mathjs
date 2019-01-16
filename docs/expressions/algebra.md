@@ -23,8 +23,8 @@ The function accepts either a string or an expression tree (`Node`) as input, an
 // work with an expression tree, evaluate results
 const f = math.parse('2x + x')
 const simplified = math.simplify(f)
-console.log(simplified.toString())     // '3 * x'
-console.log(simplified.eval({x: 4}))   // 12
+console.log(simplified.toString())       // '3 * x'
+console.log(simplified.evaluate({x: 4})) // 12
 ```
 
 For more details on the theory of expression simplification, see:
@@ -51,7 +51,7 @@ const h = math.parse('x^2 + x')
 const x = math.parse('x')
 const dh = math.derivative(h, x)
 console.log(dh.toString())        // '2 * x + 1'
-console.log(dh.eval({x: 3}))      // '7'
+console.log(dh.evaluate({x: 3}))  // '7'
 ```
 
 The rules used by `math.derivative` can be found on Wikipedia:

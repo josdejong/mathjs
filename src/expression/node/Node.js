@@ -5,6 +5,7 @@ import { isNode } from '../../utils/is'
 import { keywords } from '../keywords'
 import { deepStrictEqual, hasOwnProperty } from '../../utils/object'
 import { factory } from '../../utils/factory'
+import { warnOnce } from '../../utils/log'
 
 const name = 'expression.node.Node'
 const dependencies = ['expression.mathWithTransform']
@@ -24,8 +25,20 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ express
    * @param {Object} [scope]  Scope to read/write variables
    * @return {*}              Returns the result
    */
+  Node.prototype.evaluate = function (scope) {
+    return this.compile().evaluate(scope)
+  }
+
+  /**
+   * Evaluate the node
+   * @param {Object} [scope]  Scope to read/write variables
+   * @return {*}              Returns the result
+   */
+  // TODO: Deprecated since v6.0.0. Clean up some day
   Node.prototype.eval = function (scope) {
-    return this.compile().eval(scope)
+    warnOnce('Method Node.eval is renamed to Node.evaluate. Please use the new method name.')
+
+    return this.evaluate(scope)
   }
 
   Node.prototype.type = 'Node'
@@ -36,20 +49,31 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ express
 
   /**
    * Compile the node into an optimized, evauatable JavaScript function
-   * @return {{eval: function([Object])}} expr  Returns an object with a function 'eval',
-   *                                  which can be invoked as expr.eval([scope: Object]),
-   *                                  where scope is an optional object with
-   *                                  variables.
+   * @return {{evaluate: function([Object])}} object
+   *                Returns an object with a function 'evaluate',
+   *                which can be invoked as expr.evaluate([scope: Object]),
+   *                where scope is an optional object with
+   *                variables.
    */
   Node.prototype.compile = function () {
     const expr = this._compile(mathWithTransform, {})
     const args = {}
     const context = null
+
+    function evaluate (scope) {
+      const s = scope || {}
+      _validateScope(s)
+      return expr(s, args, context)
+    }
+
     return {
-      eval: function evalNode (scope) {
-        const s = scope || {}
-        _validateScope(s)
-        return expr(s, args, context)
+      evaluate,
+
+      // TODO: Deprecated since v6.0.0. Clean up some day
+      eval: function deprecatedEval (scope) {
+        warnOnce('Method eval is renamed to evaluate. Please use the new method.')
+
+        return evaluate(scope)
       }
     }
   }

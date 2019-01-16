@@ -30,7 +30,7 @@ describe('ParenthesisNode', function () {
     const a = new ConstantNode(1)
     const n = new ParenthesisNode(a)
 
-    assert.strictEqual(n.compile().eval.toString(), a.compile().eval.toString())
+    assert.strictEqual(n.compile().evaluate.toString(), a.compile().evaluate.toString())
   })
 
   it('should filter a ParenthesisNode', function () {

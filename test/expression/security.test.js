@@ -116,7 +116,7 @@ describe('security', function () {
   it('should not allow calling Function via getOwnPropertyDescriptor', function () {
     assert.throws(function () {
       math.evaluate('p = parser()\n' +
-          'p.eval("", [])\n' +
+          'p.evaluate("", [])\n' +
           'o = p.get("constructor")\n' +
           'c = o.getOwnPropertyDescriptor(o.__proto__, "constructor")\n' +
           'f = c.value("console.log(\'hacked...\')")\n' +
@@ -128,7 +128,7 @@ describe('security', function () {
     assert.throws(function () {
       math.evaluate('O = {}.constructor\n' +
           'd = O.getOwnPropertyDescriptor(O.__proto__, "constructor")\n' +
-          'f = eval("value", d)("console.log(\'hacked...\')")\n' +
+          'f = evaluate("value", d)("console.log(\'hacked...\')")\n' +
           'f()')
     }, /Error: No access to property "constructor/)
   })
@@ -157,50 +157,50 @@ describe('security', function () {
     assert.throws(function () {
       math.evaluate('{}.constructor.assign(expression.node.AssignmentNode.prototype, ' +
                 '{_compile: "".toString.bind("console.log(\'hacked...\')")})\n' +
-                'eval("a = 2")')
+                'evaluate("a = 2")')
     }, /Error: No access to property "constructor/)
   })
 
   it('should not allow calling Object via a __defineGetter__', function () {
     assert.throws(function () {
       math.evaluate('expression.node.AssignmentNode.prototype.__defineGetter__("_compile", ' +
-          '{}.valueOf.bind("".toString.bind("console.log(\'hacked...\')"))); eval("a = 2")')
+          '{}.valueOf.bind("".toString.bind("console.log(\'hacked...\')"))); evaluate("a = 2")')
     }, /Error: Undefined symbol expression/)
   })
 
-  it('should not allow calling eval via a custom compiled SymbolNode', function () {
+  it('should not allow calling evaluate via a custom compiled SymbolNode', function () {
     assert.throws(function () {
       math.evaluate("s={};s.__proto__=expression.node.SymbolNode[\"prototype\"];expression.node.SymbolNode.apply(s,[\"\\\");},\\\"exec\\\":function(a){return global.eval}};//\"]._data);s.compile().exec()(\"console.log('hacked...')\")")
     }, /Error: Undefined symbol expression/)
   })
 
-  it('should not allow calling eval via parse', function () {
+  it('should not allow calling evaluate via parse', function () {
     assert.throws(function () {
-      math.evaluate('x=parse("cos");x.name = "\\");},\\"eval\\": function(a) {return global.eval}};//a"; x.compile().eval()("console.log(\'hacked...\')")')
+      math.evaluate('x=parse("cos");x.name = "\\");},\\"evaluate\\": function(a) {return global.eval}};//a"; x.compile().evaluate()("console.log(\'hacked...\')")')
     }, /No access to property "name"/)
   })
 
-  it('should not allow calling eval via parse (2)', function () {
+  it('should not allow calling evaluate via parse (2)', function () {
     assert.throws(function () {
-      math.evaluate('p = parse("{}[\\"console.log(\'hacked...\')\\"]"); p.index.dimensions["0"].valueType = "boolean"; p.eval()')
+      math.evaluate('p = parse("{}[\\"console.log(\'hacked...\')\\"]"); p.index.dimensions["0"].valueType = "boolean"; p.evaluate()')
     }, /No access to property "index"/)
   })
 
-  it('should not allow calling eval via function.syntax', function () {
+  it('should not allow calling evaluate via function.syntax', function () {
     assert.throws(function () {
-      math.evaluate('cos.syntax="global.eval";s=unit("5 cm");s.units=[]._data;s.value=cos;s._compile=s.toString;expression.node.Node.prototype.compile.call(s).eval()("console.log(\'hacked...\')")')
+      math.evaluate('cos.syntax="global.eval";s=unit("5 cm");s.units=[]._data;s.value=cos;s._compile=s.toString;expression.node.Node.prototype.compile.call(s).evaluate()("console.log(\'hacked...\')")')
     }, /Error: No access to property "syntax"/)
   })
 
-  it('should not allow calling eval via clone', function () {
+  it('should not allow calling evaluate via clone', function () {
     assert.throws(function () {
-      math.evaluate('expression.node.ConstantNode.prototype.clone.call({"value":"eval"}).eval()("console.log(\'hacked...\')")')
+      math.evaluate('expression.node.ConstantNode.prototype.clone.call({"value":"evaluate"}).evaluate()("console.log(\'hacked...\')")')
     }, /Error: Undefined symbol expression/)
   })
 
   it('should not allow replacing _compile', function () {
     assert.throws(function () {
-      math.evaluate('c(x,y)="console.log(\'hacked...\')";expression.node.Node.prototype.compile.apply({_compile:c}).eval()')
+      math.evaluate('c(x,y)="console.log(\'hacked...\')";expression.node.Node.prototype.compile.apply({_compile:c}).evaluate()')
     }, /Error: Undefined symbol expression/)
   })
 
@@ -219,7 +219,7 @@ describe('security', function () {
 
   it('should not allow using restricted properties via subset (2)', function () {
     assert.throws(function () {
-      math.evaluate("scope={}; setter = eval(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"eval\", subset); scope.obj.compile().eval()(\"console.log('hacked...')\")")
+      math.evaluate("scope={}; setter = evaluate(\"f(obj, name, newValue, assign) = (obj[name] = newValue)\", scope); o = parse(\"1\"); setter(o, \"value\", \"evaluate\", subset); scope.obj.compile().evaluate()(\"console.log('hacked...')\")")
     }, /Error: No access to property "value"/)
   })
 
@@ -227,59 +227,59 @@ describe('security', function () {
     // this exploit does no longer work because parse("1") returns a ConstantNode
     // and subset doesn't accept that anymore (expects a plain Object)
     assert.throws(function () {
-      math.evaluate('subset(parse("1"), index("value"), "eval").compile().eval()("console.log(\'hacked...\')")')
+      math.evaluate('subset(parse("1"), index("value"), "evaluate").compile().evaluate()("console.log(\'hacked...\')")')
     }, /TypeError: Unexpected type of argument in function subset/)
   })
 
   it('should not allow inserting fake nodes with bad code via node.map or node.transform', function () {
     assert.throws(function () {
-      math.evaluate("badValue = {\"isNode\": true, \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log('hacked')\")")
+      math.evaluate("badValue = {\"isNode\": true, \"_compile\": evaluate(\"f(a, b) = \\\"evaluate\\\"\")}; x = evaluate(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().evaluate()(\"console.log('hacked')\")")
     }, /Error: Cannot convert "object" to a number/)
 
     assert.throws(function () {
-      math.evaluate("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": eval(\"f(a, b) = \\\"eval\\\"\")}; x = eval(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().eval()(\"console.log('hacked...')\")")
+      math.evaluate("badValue = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"string\", \"_compile\": evaluate(\"f(a, b) = \\\"evaluate\\\"\")}; x = evaluate(\"f(child, path, parent) = path ==\\\"value\\\" ? newChild : child\", {\"newChild\": badValue}); parse(\"x = 1\").map(x).compile().evaluate()(\"console.log('hacked...')\")")
     }) // The error message is vague but well...
   })
 
   it('should not allow replacing validateSafeMethod with a local variant', function () {
     assert.throws(function () {
-      math.evaluate("eval(\"f(validateSafeMethod)=cos.constructor(\\\"return eval\\\")()\")(eval(\"f(x,y)=0\"))(\"console.log('hacked...')\")")
+      math.evaluate("evaluate(\"f(validateSafeMethod)=cos.constructor(\\\"return evaluate\\\")()\")(evaluate(\"f(x,y)=0\"))(\"console.log('hacked...')\")")
     }, /SyntaxError: Value expected/)
   })
 
   it('should not allow abusing toString', function () {
     assert.throws(function () {
-      math.evaluate("badToString = eval(\"f() = 1\"); badReplace = eval(\"f(a, b) = \\\"eval\\\"\"); badNumber = {toString:badToString, replace:badReplace}; badNode = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"number\", \"value\": badNumber}; x = eval(\"f(child, path, parent) = badNode\", {badNode:badNode}); parse(\"(1)\").map(x).compile().eval()(\"console.log('hacked...')\")")
+      math.evaluate("badToString = evaluate(\"f() = 1\"); badReplace = evaluate(\"f(a, b) = \\\"evaluate\\\"\"); badNumber = {toString:badToString, replace:badReplace}; badNode = {\"isNode\": true, \"type\": \"ConstantNode\", \"valueType\": \"number\", \"value\": badNumber}; x = evaluate(\"f(child, path, parent) = badNode\", {badNode:badNode}); parse(\"(1)\").map(x).compile().evaluate()(\"console.log('hacked...')\")")
     }, /Error: No access to property "toString"/)
   })
 
   it('should not allow creating a bad FunctionAssignmentNode', function () {
     assert.throws(function () {
-      math.evaluate("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
+      math.evaluate("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:evaluate(\"f(a)=\\\"\\\"\")},params:{\"forEach\":evaluate(\"f(x)=1\"),\"join\":evaluate(\"f(x)=\\\"){return evaluate;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(evaluate(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().evaluate()()()(\"console.log('hacked...')\")")
     }, /SyntaxError: Value expected/)
   })
 
   it('should not allow creating a bad OperatorNode (1)', function () {
     assert.throws(function () {
-      math.evaluate("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:eval(\"f(a)=\\\"\\\"\")},params:{\"forEach\":eval(\"f(x)=1\"),\"join\":eval(\"f(x)=\\\"){return eval;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(eval(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().eval()()()(\"console.log('hacked...')\")")
+      math.evaluate("badNode={isNode:true,type:\"FunctionAssignmentNode\",expr:parse(\"1\"),types:{join:evaluate(\"f(a)=\\\"\\\"\")},params:{\"forEach\":evaluate(\"f(x)=1\"),\"join\":evaluate(\"f(x)=\\\"){return evaluate;}});return fn;})())}});return fn;})());}};//\\\"\")}};parse(\"f()=x\").map(evaluate(\"f(a,b,c)=badNode\",{\"badNode\":badNode})).compile().evaluate()()()(\"console.log('hacked...')\")")
     }, /SyntaxError: Value expected/)
   })
 
   it('should not allow creating a bad OperatorNode (2)', function () {
     assert.throws(function () {
-      math.evaluate("parse(\"(0)\").map(eval(\"f(a,b,c)=d\",{d:{isNode:true,type:\"OperatorNode\",fn:\"__lookupGetter__\",args:{map:eval(\"f(a)=b\",{b:{join:eval(\"f(a)=\\\"1)||eval;}};//\\\"\")}})}}})).compile().eval()(\"console.log('hacked...')\")")
+      math.evaluate("parse(\"(0)\").map(evaluate(\"f(a,b,c)=d\",{d:{isNode:true,type:\"OperatorNode\",fn:\"__lookupGetter__\",args:{map:evaluate(\"f(a)=b\",{b:{join:evaluate(\"f(a)=\\\"1)||evaluate;}};//\\\"\")}})}}})).compile().evaluate()(\"console.log('hacked...')\")")
     }, /TypeError: Node expected for parameter "content"/)
   })
 
   it('should not allow creating a bad ConstantNode', function () {
     assert.throws(function () {
-      math.evaluate('f(x,y)="eval";g()=3;fakeConstantNode={"isNode": true, "type": "ConstantNode", "valueType": "number", "value": {"replace": f, "toString": g}};injectFakeConstantNode(child,path,parent)=path=="value"?fakeConstantNode:child;parse("a=3").map(injectFakeConstantNode).compile().eval()("console.log(\'hacked...\')")')
+      math.evaluate('f(x,y)="evaluate";g()=3;fakeConstantNode={"isNode": true, "type": "ConstantNode", "valueType": "number", "value": {"replace": f, "toString": g}};injectFakeConstantNode(child,path,parent)=path=="value"?fakeConstantNode:child;parse("a=3").map(injectFakeConstantNode).compile().evaluate()("console.log(\'hacked...\')")')
     }, /Error: No access to property "toString"/)
   })
 
   it('should not allow creating a bad ArrayNode', function () {
     assert.throws(function () {
-      math.evaluate('g(x)="eval";f(x)=({join: g});fakeArrayNode={isNode: true, type: "ArrayNode", items: {map: f}};injectFakeArrayNode(child,path,parent)=path=="value"?fakeArrayNode:child;parse("a=3").map(injectFakeArrayNode).compile().eval()[1]("console.log(\'hacked...\')")')
+      math.evaluate('g(x)="evaluate";f(x)=({join: g});fakeArrayNode={isNode: true, type: "ArrayNode", items: {map: f}};injectFakeArrayNode(child,path,parent)=path=="value"?fakeArrayNode:child;parse("a=3").map(injectFakeArrayNode).compile().evaluate()[1]("console.log(\'hacked...\')")')
     }, /Error: Cannot convert "object" to a number/)
   })
 
@@ -288,13 +288,13 @@ describe('security', function () {
     // 1) A bug in validateSafeMethod which allows to call any method in Object.prototype
     // 2) A bug in stringify
     assert.throws(function () {
-      math.evaluate("x=parse(\"\\\"a\\\"\");x.__defineGetter__(\"value\",eval(\"f()=\\\"false\\\\\\\\\\\\\\\\\\\\\\\"&&eval;}};\\/\\/\\\"\")); x.compile().eval()(\"console.log('hacked...')\")")
+      math.evaluate("x=parse(\"\\\"a\\\"\");x.__defineGetter__(\"value\",evaluate(\"f()=\\\"false\\\\\\\\\\\\\\\\\\\\\\\"&&evaluate;}};\\/\\/\\\"\")); x.compile().evaluate()(\"console.log('hacked...')\")")
     }, /Error: No access to method "__defineGetter__"/)
   })
 
   it('should not allow using method chain', function () {
     assert.throws(function () {
-      math.evaluate('f=chain("a(){return eval;};function b").typed({"":f()=0}).done();' +
+      math.evaluate('f=chain("a(){return evaluate;};function b").typed({"":f()=0}).done();' +
           'g=f();' +
           "g(\"console.log('hacked...')\")")
     }, /(is not a function)|(Object expected)/)
@@ -302,7 +302,7 @@ describe('security', function () {
 
   it('should not allow using method chain (2)', function () {
     assert.throws(function () {
-      math.evaluate("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"eval\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log('hacked...')\")")
+      math.evaluate("evilMath=chain().create().done();evilMath.import({\"_compile\":f(a,b,c)=\"evaluate\",\"isNode\":f()=true}); parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().evaluate()(\"console.log('hacked...')\")")
     }, /(Cannot read property 'apply' of undefined)|(undefined has no properties)|(undefined is not an object)|(Unable to get property 'apply' of undefined or null reference)/)
   })
 
@@ -310,8 +310,8 @@ describe('security', function () {
     assert.throws(function () {
       math.evaluate('x=parse("a",{nodes:{a:Chain}});Chain.bind(x,{})();' +
           'evilMath=x.create().done();' +
-          'evilMath.import({"_compile":f(a,b,c)="eval","isNode":f()=true}); ' +
-          "parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().eval()(\"console.log('hacked...')\")")
+          'evilMath.import({"_compile":f(a,b,c)="evaluate","isNode":f()=true}); ' +
+          "parse(\"(1)\").map(g(a,b,c)=evilMath.chain()).compile().evaluate()(\"console.log('hacked...')\")")
     }, /SyntaxError: Value expected/)
   })
 
