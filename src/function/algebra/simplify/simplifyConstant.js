@@ -1,7 +1,7 @@
 'use strict'
 
 // TODO this could be improved by simplifying seperated constants under associative and commutative operators
-import { isFraction, isNode } from '../../../utils/is'
+import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 import { createUtil } from './util'
 
@@ -196,7 +196,7 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         let args
         let res
         const makeNode = createMakeNodeFunction(node)
-        if (node.isUnary()) {
+        if (isOperatorNode(node) && node.isUnary()) {
           args = [foldFraction(node.args[0], options)]
           if (!isNode(args[0])) {
             res = _eval(fn, args, options)

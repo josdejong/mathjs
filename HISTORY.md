@@ -352,6 +352,7 @@ Non breaking changes:
 - Upgraded devDependencies.
 - Fixed #1014: `derivative` silently dropping additional arguments
   from operator nodes with more than two arguments.
+- Fix `math.simplify('add(2, 3)')` throwing an error.
 
 
 ## 2018-02-07, version 3.20.2
