@@ -1,5 +1,10 @@
 # History
 
+# not yet released, version 5.4.2
+
+- Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+
+
 # 2019-01-10, version 5.4.1
 
 - Fix #1378: negative bignumbers not formatted correctly.
