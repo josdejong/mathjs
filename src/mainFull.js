@@ -296,10 +296,6 @@ import {
 
 export const config = /* #__PURE__ */ Object.freeze({ ...DEFAULT_CONFIG })
 
-// FIXME: fill math and mathWithTransform
-const math = /* #__PURE__ */ {}
-const mathWithTransform = /* #__PURE__ */ {}
-
 // util functions
 export {
   isAccessorNode,
@@ -588,7 +584,83 @@ export const dot = /* #__PURE__ */ createDot({ typed, add, multiply })
 export const trace = /* #__PURE__ */ createTrace({ typed, matrix, add })
 export const index = /* #__PURE__ */ createIndex({ typed, type: { Index } })
 
-// expression (3)
+// algebra (3)
+export const lup = /* #__PURE__ */ createLup({
+  typed,
+  matrix,
+  abs,
+  addScalar,
+  divideScalar,
+  multiplyScalar,
+  subtract,
+  larger,
+  equalScalar,
+  unaryMinus,
+  type: { DenseMatrix, SparseMatrix, Spa }
+})
+export const qr = /* #__PURE__ */ createQr({
+  typed,
+  matrix,
+  zeros,
+  identity,
+  isZero,
+  unequal,
+  sign,
+  sqrt,
+  conj,
+  unaryMinus,
+  addScalar,
+  divideScalar,
+  multiplyScalar,
+  subtract
+})
+export const slu = /* #__PURE__ */ createSlu({ typed, abs, add, multiply, transpose, divideScalar, subtract, larger, largerEq, type: { SparseMatrix } })
+export const lusolve = /* #__PURE__ */ createLusolve({ typed, matrix, lup, slu, usolve, lsolve, type: { DenseMatrix } })
+
+// matrix (4)
+export const det = /* #__PURE__ */ createDet({ typed, matrix, subtract, multiply, unaryMinus, lup })
+export const inv = /* #__PURE__ */ createInv({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs })
+export const expm = /* #__PURE__ */ createExpm({ typed, abs, add, identity, inv, multiply })
+export const sqrtm = /* #__PURE__ */ createSqrtm({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity })
+
+// arithmetic (4)
+export const divide = /* #__PURE__ */ createDivide({ typed, matrix, multiply, equalScalar, divideScalar, inv })
+
+// geometry (4)
+export const distance = /* #__PURE__ */ createDistance({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs })
+export const intersect = /* #__PURE__ */ createIntersect({ config, typed, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar })
+
+// statistics (4)
+export const sum = /* #__PURE__ */ createSum({ config, typed, add, type: { BigNumber, Fraction } })
+export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
+export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
+export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
+export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, isNaN })
+export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare, type: { BigNumber } })
+export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
+
+// probability (4)
+export const combinations = /* #__PURE__ */ createCombinations({ typed, type: { BigNumber } })
+export const gamma = /* #__PURE__ */ createGamma({ config, typed, multiplyScalar, pow, type: { BigNumber, Complex } })
+export const factorial = /* #__PURE__ */ createFactorial({ typed, gamma })
+export const kldivergence = /* #__PURE__ */ createKldivergence({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric })
+export const multinomial = /* #__PURE__ */ createMultinomial({ typed, add, divide, multiply, factorial, isInteger, isPositive })
+export const permutations = /* #__PURE__ */ createPermutations({ typed, factorial })
+export const pickRandom = /* #__PURE__ */ createPickRandom({ typed, config })
+export const random = /* #__PURE__ */ createRandom({ typed, config, matrix })
+export const randomInt = /* #__PURE__ */ createRandomInt({ typed, config, matrix })
+
+// combinatorics (4)
+export const stirlingS2 = /* #__PURE__ */ createStirlingS2({ typed, addScalar, subtract, multiplyScalar, divideScalar, pow, factorial, combinations, isNegative, isInteger, larger })
+export const bellNumbers = /* #__PURE__ */ createBellNumbers({ typed, addScalar, isNegative, isInteger, stirlingS2 })
+export const catalan = /* #__PURE__ */ createCatalan({ typed, addScalar, divideScalar, multiplyScalar, combinations, isNegative, isInteger })
+export const composition = /* #__PURE__ */ createComposition({ typed, addScalar, combinations, isPositive, isNegative, isInteger, larger })
+
+// FIXME: fill math and mathWithTransform
+const math = /* #__PURE__ */ {}
+const mathWithTransform = /* #__PURE__ */ {}
+
+// expression (4)
 export const Node = /* #__PURE__ */ createNode({ expression: { mathWithTransform } })
 export const AccessorNode = /* #__PURE__ */ createAccessorNode({ subset, expression: { node: { Node } } })
 export const ArrayNode = /* #__PURE__ */ createArrayNode({ expression: { node: { Node } } })
@@ -633,89 +705,17 @@ export const compile = /* #__PURE__ */ createCompile({ typed, expression: { pars
 export const evaluate = /* #__PURE__ */ createEvaluate({ typed, expression: { parse: parseExpression } })
 export const Parser = /* #__PURE__ */ createParserClass({ expression: { parse: parseExpression } })
 
-// create (3)
+// create (4)
 export const parser = /* #__PURE__ */ createParser({ math, typed, expression: { Parser } })
 
-// algebra (3)
-export const lup = /* #__PURE__ */ createLup({
-  typed,
-  matrix,
-  abs,
-  addScalar,
-  divideScalar,
-  multiplyScalar,
-  subtract,
-  larger,
-  equalScalar,
-  unaryMinus,
-  type: { DenseMatrix, SparseMatrix, Spa }
-})
-export const qr = /* #__PURE__ */ createQr({
-  typed,
-  matrix,
-  zeros,
-  identity,
-  isZero,
-  unequal,
-  sign,
-  sqrt,
-  conj,
-  unaryMinus,
-  addScalar,
-  divideScalar,
-  multiplyScalar,
-  subtract
-})
-export const slu = /* #__PURE__ */ createSlu({ typed, abs, add, multiply, transpose, divideScalar, subtract, larger, largerEq, type: { SparseMatrix } })
-export const lusolve = /* #__PURE__ */ createLusolve({ typed, matrix, lup, slu, usolve, lsolve, type: { DenseMatrix } })
-
-// class (3)
+// class (4)
 export const Help = /* #__PURE__ */ createHelpClass({ expression: { parse: parseExpression } })
 export const Chain = /* #__PURE__ */ createChainClass({ math })
 
-// type (3)
+// type (4)
 const docs = /* #__PURE__ */ createEmbeddedDocs()
 export const help = /* #__PURE__ */ createHelp({ math, typed, expression: { docs }, type: { Help } })
 export const chain = /* #__PURE__ */ createChain({ typed, type: { Chain } })
-
-// matrix (4)
-export const det = /* #__PURE__ */ createDet({ typed, matrix, subtract, multiply, unaryMinus, lup })
-export const inv = /* #__PURE__ */ createInv({ typed, matrix, divideScalar, addScalar, multiply, unaryMinus, det, identity, abs })
-export const expm = /* #__PURE__ */ createExpm({ typed, abs, add, identity, inv, multiply })
-export const sqrtm = /* #__PURE__ */ createSqrtm({ typed, abs, add, multiply, sqrt, subtract, inv, size, max, identity })
-
-// arithmetic (4)
-export const divide = /* #__PURE__ */ createDivide({ typed, matrix, multiply, equalScalar, divideScalar, inv })
-
-// geometry (4)
-export const distance = /* #__PURE__ */ createDistance({ typed, addScalar, subtract, multiplyScalar, divideScalar, unaryMinus, sqrt, abs })
-export const intersect = /* #__PURE__ */ createIntersect({ config, typed, abs, add, addScalar, matrix, multiply, multiplyScalar, divideScalar, subtract, smaller, equalScalar })
-
-// statistics (4)
-export const sum = /* #__PURE__ */ createSum({ config, typed, add, type: { BigNumber, Fraction } })
-export const mean = /* #__PURE__ */ createMean({ typed, add, divide })
-export const median = /* #__PURE__ */ createMedian({ typed, add, divide, compare, partitionSelect })
-export const mad = /* #__PURE__ */ createMad({ typed, abs, map, median, subtract })
-export const variance = /* #__PURE__ */ createVariance({ typed, add, subtract, multiply, divide, isNaN })
-export const quantileSeq = /* #__PURE__ */ createQuantileSeq({ typed, add, multiply, partitionSelect, compare, type: { BigNumber } })
-export const std = /* #__PURE__ */ createStd({ typed, sqrt, variance })
-
-// probability (4)
-export const combinations = /* #__PURE__ */ createCombinations({ typed, type: { BigNumber } })
-export const gamma = /* #__PURE__ */ createGamma({ config, typed, multiplyScalar, pow, type: { BigNumber, Complex } })
-export const factorial = /* #__PURE__ */ createFactorial({ typed, gamma })
-export const kldivergence = /* #__PURE__ */ createKldivergence({ typed, matrix, divide, sum, multiply, dotDivide, log, isNumeric })
-export const multinomial = /* #__PURE__ */ createMultinomial({ typed, add, divide, multiply, factorial, isInteger, isPositive })
-export const permutations = /* #__PURE__ */ createPermutations({ typed, factorial })
-export const pickRandom = /* #__PURE__ */ createPickRandom({ typed, config })
-export const random = /* #__PURE__ */ createRandom({ typed, config, matrix })
-export const randomInt = /* #__PURE__ */ createRandomInt({ typed, config, matrix })
-
-// combinatorics (4)
-export const stirlingS2 = /* #__PURE__ */ createStirlingS2({ typed, addScalar, subtract, multiplyScalar, divideScalar, pow, factorial, combinations, isNegative, isInteger, larger })
-export const bellNumbers = /* #__PURE__ */ createBellNumbers({ typed, addScalar, isNegative, isInteger, stirlingS2 })
-export const catalan = /* #__PURE__ */ createCatalan({ typed, addScalar, divideScalar, multiplyScalar, combinations, isNegative, isInteger })
-export const composition = /* #__PURE__ */ createComposition({ typed, addScalar, combinations, isPositive, isNegative, isInteger, larger })
 
 // algebra (4)
 const simplifyCore = /* #__PURE__ */ createSimplifyCore({
