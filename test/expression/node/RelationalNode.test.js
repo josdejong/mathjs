@@ -240,8 +240,9 @@ describe('RelationalNode', function () {
     const x = new SymbolNode('x')
     const n = new RelationalNode(['smaller', 'smaller'], [one, x, three])
 
-    assert.strictEqual(n.toTex(), '1<x<3')
-    assert.strictEqual(math.parse('(-1 < 4/2 < 3) == (3! > 2+3 > 4) != (1 > 2 > 1*3)').toTex(), '(-1 < 4 / 2 < 3)=(3! > 2 + 3 > 4)\\neq(1 > 2 > 1 * 3)')
+    assert.strictEqual(n.toTex(), '1< x<3')
+    assert.strictEqual(math.parse('1<x<sqrt(1+2)').toTex(), '1< x<\\sqrt{1+2}')
+    assert.strictEqual(math.parse('(-1 < 4/2 < 3) == (3! > 2+3 > 4) != (1 > 2 > 1*3)').toTex(), '\\left(-1<\\frac{4}{2}<3\\right)=\\left(3!>2+3>4\\right)\\neq\\left(1>2>1\\cdot3\\right)')
   })
 
   it('should HTML a RelationalNode', function () {
