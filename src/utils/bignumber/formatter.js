@@ -138,7 +138,7 @@ exports.format = function (value, options) {
 
       // determine whether or not to output exponential notation
       let str
-      const exp = value.logarithm()
+      const exp = value.abs().logarithm()
       if (exp.gte(lowerExp) && exp.lt(upperExp)) {
         // normal number notation
         str = value.toSignificantDigits(precision).toFixed()

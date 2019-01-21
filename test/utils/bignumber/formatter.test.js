@@ -21,7 +21,9 @@ describe('format', function () {
       assert.strictEqual(formatter.format(new B(0.10400)), '0.104')
       assert.strictEqual(formatter.format(new B(1000)), '1000')
 
+      assert.strictEqual(formatter.format(new B(1)), '1')
       assert.strictEqual(formatter.format(new B(0)), '0')
+      assert.strictEqual(formatter.format(new B(-1)), '-1')
 
       assert.strictEqual(formatter.format(new B(2.4e-7)), '2.4e-7')
       assert.strictEqual(formatter.format(new B(2.4e-6)), '2.4e-6')
