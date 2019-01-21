@@ -2,6 +2,8 @@
 
 # not yet released, version 5.4.2
 
+- Fix `math.format` not working for BigNumbers with a precision above
+  1025 digits. Thanks @ericman314.
 - Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
 
 
