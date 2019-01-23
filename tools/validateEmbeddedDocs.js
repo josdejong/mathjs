@@ -9,7 +9,7 @@ let prop
 // names to ignore
 const ignore = [
   // functions not supported or relevant for the parser:
-  'create', 'typed', 'config',
+  'create', 'core', 'typed', 'config',
   'on', 'off', 'emit', 'once',
   'compile', 'parse', 'parser',
   'chain', 'print', 'uninitialized',

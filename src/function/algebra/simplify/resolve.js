@@ -1,19 +1,17 @@
 'use strict'
 
-import { isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
+import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 
 const name = 'algebra.simplify.resolve'
 const dependencies = [
   'expression.parse',
-  'expression.node.Node',
   'expression.node.FunctionNode',
   'expression.node.OperatorNode',
   'expression.node.ParenthesisNode'
 ]
 
 export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse, node: {
-  Node,
   FunctionNode,
   OperatorNode,
   ParenthesisNode
@@ -41,7 +39,7 @@ export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({ expr
     }
     if (isSymbolNode(node)) {
       const value = scope[node.name]
-      if (value instanceof Node) {
+      if (isNode(value)) {
         return resolve(value, scope)
       } else if (typeof value === 'number') {
         return parse(String(value))

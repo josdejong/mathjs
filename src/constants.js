@@ -94,7 +94,7 @@ export const createLOG10E = /* #__PURE__ */ recreateFactory(
     : Math.LOG10E
 )
 
-export const createSQRTHalf = /* #__PURE__ */ recreateFactory(
+export const createSQRT1_2 = /* #__PURE__ */ recreateFactory( // eslint-disable-line camelcase
   'SQRT1_2',
   ['config', 'type.BigNumber'],
   ({ config, type: { BigNumber } }) => (config.number === 'BigNumber')

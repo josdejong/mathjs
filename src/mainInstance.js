@@ -12,7 +12,9 @@ export function core (config) {
 
 export function create (config) {
   const math = core(config)
+
   math.create = create
+  math.core = core
 
   // TODO: create a new, flat index file with all functions to be imported
   math['import'](all)

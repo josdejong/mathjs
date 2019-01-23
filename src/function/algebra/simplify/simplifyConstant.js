@@ -257,8 +257,6 @@ export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies
         /* falls through */
       case 'RangeNode':
         /* falls through */
-      case 'UpdateNode':
-        /* falls through */
       case 'ConditionalNode':
         /* falls through */
       default:

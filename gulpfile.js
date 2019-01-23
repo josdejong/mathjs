@@ -147,7 +147,7 @@ gulp.task('validate', ['minify'], function (cb) {
 
   // this is run in a separate process as the modules need to be reloaded
   // with every validation (and required modules stay in cache).
-  childProcess.execFile('node', ['./tools/validate'], function (err, stdout, stderr) {
+  childProcess.execFile('node', ['./tools/validateEmbeddedDocs'], function (err, stdout, stderr) {
     if (err instanceof Error) {
       throw err
     }

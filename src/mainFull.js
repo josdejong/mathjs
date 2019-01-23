@@ -228,9 +228,6 @@ import { createStirlingS2 } from './function/combinatorics/stirlingS2'
 import { createBellNumbers } from './function/combinatorics/bellNumbers'
 import { createCatalan } from './function/combinatorics/catalan'
 import { createComposition } from './function/combinatorics/composition'
-import { createSimplifyCore } from './function/algebra/simplify/simplifyCore'
-import { createSimplifyConstant } from './function/algebra/simplify/simplifyConstant'
-import { createResolve } from './function/algebra/simplify/resolve'
 import { createSimplify } from './function/algebra/simplify'
 import { createDerivative } from './function/algebra/derivative'
 import { createRationalize } from './function/algebra/rationalize'
@@ -248,8 +245,8 @@ import {
   createNull,
   createPhi,
   createPi,
+  createSQRT1_2, // eslint-disable-line camelcase
   createSQRT2,
-  createSQRTHalf,
   createTau,
   createTrue,
   createVersion
@@ -317,8 +314,18 @@ import { createMinTransform } from './expression/transform/min.transform'
 import { createRangeTransform } from './expression/transform/range.transform'
 import { createSubsetTransform } from './expression/transform/subset.transform'
 import { createConcatTransform } from './expression/transform/concat.transform'
+import { MATRIX_OPTIONS, NUMBER_OPTIONS } from './core/function/config'
 
-export const config = /* #__PURE__ */ Object.freeze({ ...DEFAULT_CONFIG })
+// create a read-only version of config
+export const config = /* #__PURE__ */ function (options) {
+  if (options) {
+    throw new Error('The global config is readonly. ' +
+      'Please create a mathjs instance if you want to change the default configuration.')
+  }
+
+  return Object.freeze(DEFAULT_CONFIG)
+}
+Object.assign(config, DEFAULT_CONFIG, { MATRIX_OPTIONS, NUMBER_OPTIONS })
 
 // util functions
 export {
@@ -346,6 +353,8 @@ export {
   isNode,
   isNull,
   isNumber,
+  isString,
+  isUndefined,
   isObject,
   isObjectNode,
   isOperatorNode,
@@ -568,7 +577,7 @@ export const LN2 = /* #__PURE__ */ createLN2({ config, type: { BigNumber } })
 export const LN10 = /* #__PURE__ */ createLN10({ config, type: { BigNumber } })
 export const LOG2E = /* #__PURE__ */ createLOG2E({ config, type: { BigNumber } })
 export const LOG10E = /* #__PURE__ */ createLOG10E({ config, type: { BigNumber } })
-export const SQRTHalf = /* #__PURE__ */ createSQRTHalf({ config, type: { BigNumber } })
+export const SQRT1_2 = /* #__PURE__ */ createSQRT1_2({ config, type: { BigNumber } })
 export const SQRT2 = /* #__PURE__ */ createSQRT2({ config, type: { BigNumber } })
 export const i = /* #__PURE__ */ createI({ config, type: { Complex } })
 export const version = /* #__PURE__ */ createVersion()
@@ -778,7 +787,7 @@ const math = /* #__PURE__ */ {
   LOG2E,
   NaN: _NaN,
   SQRT2,
-  SQRTHalf,
+  SQRT1_2,
   abs,
   acos,
   acosh,
@@ -1025,7 +1034,10 @@ const math = /* #__PURE__ */ {
   wienDisplacement,
   xgcd,
   xor,
-  zeros
+  zeros,
+
+  'var': variance,
+  'typeof': typeOf
 }
 
 const mathWithTransform = /* #__PURE__ */ {
@@ -1101,50 +1113,20 @@ export const help = /* #__PURE__ */ createHelp({ math, typed, expression: { docs
 export const chain = /* #__PURE__ */ createChain({ typed, type: { Chain } })
 
 // algebra (4)
-const simplifyCore = /* #__PURE__ */ createSimplifyCore({
-  equal,
-  isZero,
+export const simplify = /* #__PURE__ */ createSimplify({
+  config,
+  typed,
+  parse,
   add,
   subtract,
   multiply,
   divide,
   pow,
-  expression: {
-    node: {
-      ConstantNode,
-      OperatorNode,
-      FunctionNode,
-      ParenthesisNode
-    }
-  }
-})
-const simplifyConstant = /* #__PURE__ */ createSimplifyConstant({
-  math,
-  config,
-  typed,
+  isZero,
+  equal,
   fraction,
   bignumber,
-  expression: {
-    node: {
-      ConstantNode,
-      OperatorNode,
-      FunctionNode,
-      SymbolNode
-    }
-  }
-})
-const resolve = /* #__PURE__ */ createResolve({ expression: { parse: parseExpression, node: { Node, FunctionNode, OperatorNode, ParenthesisNode } } })
-export const simplify = /* #__PURE__ */ createSimplify({
-  typed,
-  parse,
-  equal,
-  algebra: {
-    simplify: {
-      simplifyConstant,
-      simplifyCore,
-      resolve
-    }
-  },
+  math,
   expression: {
     node: {
       ConstantNode,
@@ -1174,19 +1156,26 @@ export const derivative = /* #__PURE__ */ createDerivative({
   }
 })
 export const rationalize = /* #__PURE__ */ createRationalize({
+  config,
   typed,
-  parse,
   simplify,
-  algebra: {
-    simplify: {
-      simplifyConstant,
-      simplifyCore
-    }
-  },
+  parse,
+  add,
+  subtract,
+  multiply,
+  divide,
+  pow,
+  isZero,
+  equal,
+  fraction,
+  bignumber,
+  math,
   expression: {
     node: {
       ConstantNode,
+      FunctionNode,
       OperatorNode,
+      ParenthesisNode,
       SymbolNode
     }
   }
@@ -1236,10 +1225,14 @@ export const reviver = /* #__PURE__ */ createReviver({
 
 // TODO: this is ugly having to add these functions afterwards
 const mathAdditional = /* __PURE__ */ {
+  PI: pi,
+  E: e,
   help,
   parse,
+  parser,
   compile,
   evaluate,
+  eval: evaluate,
   chain,
   simplify,
   derivative,

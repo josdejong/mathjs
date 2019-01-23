@@ -2,10 +2,7 @@
 
 import { createDerivative } from './derivative'
 import { createSimplify } from './simplify'
-import { createResolve } from './simplify/resolve'
 import { createRationalize } from './rationalize'
-import { createSimplifyConstant } from './simplify/simplifyConstant'
-import { createSimplifyCore } from './simplify/simplifyCore'
 
 import { createLup } from './decomposition/lup'
 import { createQr } from './decomposition/qr'
@@ -19,9 +16,6 @@ export default [
 
   // simplify
   createSimplify,
-  createResolve,
-  createSimplifyConstant,
-  createSimplifyCore,
 
   // polynomial
   createRationalize,

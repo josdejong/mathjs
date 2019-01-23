@@ -2,29 +2,90 @@
 
 import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'
+import { createSimplifyConstant } from './simplify/simplifyConstant'
+import { createSimplifyCore } from './simplify/simplifyCore'
 
 const name = 'rationalize'
 const dependencies = [
+  'config',
   'typed',
+  'equal',
+  'isZero',
+  'add',
+  'subtract',
+  'multiply',
+  'divide',
+  'pow',
   'parse',
   'simplify',
-  'algebra.simplify.simplifyConstant',
-  'algebra.simplify.simplifyCore',
+  'bignumber',
+  'fraction',
+  'math',
   'expression.node.ConstantNode',
   'expression.node.OperatorNode',
-  'expression.node.SymbolNode'
+  'expression.node.FunctionNode',
+  'expression.node.SymbolNode',
+  'expression.node.ParenthesisNode'
 ]
 
-export const createRationalize = /* #__PURE__ */ factory(name, dependencies, (
-  {
-    typed,
-    parse,
-    simplify,
-    algebra: { simplify: { simplifyConstant, simplifyCore } },
-    expression: { node: { ConstantNode, OperatorNode, SymbolNode }
+export const createRationalize = /* #__PURE__ */ factory(name, dependencies, ({
+  config,
+  typed,
+  equal,
+  isZero,
+  add,
+  subtract,
+  multiply,
+  divide,
+  pow,
+  parse,
+  simplify,
+  fraction,
+  bignumber,
+  math,
+  expression: {
+    node: {
+      ConstantNode,
+      OperatorNode,
+      FunctionNode,
+      SymbolNode,
+      ParenthesisNode
     }
   }
-) => {
+}) => {
+  const simplifyConstant = createSimplifyConstant({
+    typed,
+    config,
+    math,
+    fraction,
+    bignumber,
+    expression: {
+      node: {
+        ConstantNode,
+        OperatorNode,
+        FunctionNode,
+        SymbolNode
+      }
+    }
+  })
+  const simplifyCore = createSimplifyCore({
+    equal,
+    isZero,
+    add,
+    subtract,
+    multiply,
+    divide,
+    pow,
+    expression: {
+      node: {
+        ConstantNode,
+        OperatorNode,
+        FunctionNode,
+        ParenthesisNode
+      }
+    }
+  })
+
   /**
    * Transform a rationalizable expression in a rational fraction.
    * If rational fraction is one variable polynomial then converts

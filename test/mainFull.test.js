@@ -1,10 +1,45 @@
 import assert from 'assert'
-import { add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } from '../src/mainFull'
+import * as mainFull from '../src/mainFull'
+import { expectedInstanceStructure, expectedES6Structure } from './snapshot'
+import { validateBundle, validateTypeOf } from '../tools/validateBundle'
+const { create, add, matrix, isObject, isMatrix, pi, speedOfLight, sqrt, evaluate } = mainFull
 
 describe('mainFull', function () {
   it('should export functions', () => {
     assert.strictEqual(add(2, 3), 5)
     assert.strictEqual(sqrt(4), 2)
+  })
+
+  it('should export all functions and constants', function () {
+    // snapshot testing
+    validateBundle(expectedES6Structure, mainFull)
+  })
+
+  it('new instance should have all expected functions', function () {
+    // snapshot testing
+    const newMathInstance = create()
+
+    validateBundle(expectedInstanceStructure, newMathInstance)
+  })
+
+  it('evaluate should contain all functions from mathWithTransform', function () {
+    // snapshot testing
+    const mathWithTransform = expectedInstanceStructure.expression.mathWithTransform
+
+    Object.keys(mathWithTransform).forEach(key => {
+      // console.log('check', key)
+      if (key === 'not') {
+        // operator, special case
+        assert.strictEqual(evaluate('not true'), false)
+      } else {
+        try {
+          assert.strictEqual(validateTypeOf(evaluate(key)), mathWithTransform[key], `Compare type of "${key}"`)
+        } catch (err) {
+          console.error(err.toString())
+          assert.ok(false, `Missing or wrong type of entry in mathWithTransform: "${key}"`)
+        }
+      }
+    })
   })
 
   it('should export constants', () => {

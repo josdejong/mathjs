@@ -3,15 +3,25 @@
 import { isConstantNode, isParenthesisNode } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { createUtil } from './simplify/util'
+import { createSimplifyCore } from './simplify/simplifyCore'
+import { createSimplifyConstant } from './simplify/simplifyConstant'
+import { createResolve } from './simplify/resolve'
 
 const name = 'simplify'
 const dependencies = [
+  'config',
   'typed',
   'parse',
+  'add',
+  'subtract',
+  'multiply',
+  'divide',
+  'pow',
+  'isZero',
   'equal',
-  'algebra.simplify.simplifyConstant',
-  'algebra.simplify.simplifyCore',
-  'algebra.simplify.resolve',
+  'fraction',
+  'bignumber',
+  'math',
   'expression.node.ConstantNode',
   'expression.node.FunctionNode',
   'expression.node.OperatorNode',
@@ -21,14 +31,73 @@ const dependencies = [
 
 export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
   {
+    config,
     typed,
     parse,
+    add,
+    subtract,
+    multiply,
+    divide,
+    pow,
+    isZero,
     equal,
-    algebra: { simplify: { simplifyConstant, simplifyCore, resolve } },
-    expression: { node: { ConstantNode, FunctionNode, OperatorNode, ParenthesisNode, SymbolNode }
+    fraction,
+    bignumber,
+    math,
+    expression: {
+      node: {
+        ConstantNode,
+        FunctionNode,
+        OperatorNode,
+        ParenthesisNode,
+        SymbolNode
+      }
     }
   }
 ) => {
+  const simplifyConstant = createSimplifyConstant({
+    typed,
+    config,
+    math,
+    fraction,
+    bignumber,
+    expression: {
+      node: {
+        ConstantNode,
+        OperatorNode,
+        FunctionNode,
+        SymbolNode
+      }
+    }
+  })
+  const simplifyCore = createSimplifyCore({
+    equal,
+    isZero,
+    add,
+    subtract,
+    multiply,
+    divide,
+    pow,
+    expression: {
+      node: {
+        ConstantNode,
+        OperatorNode,
+        FunctionNode,
+        ParenthesisNode
+      }
+    }
+  })
+  const resolve = createResolve({
+    expression: {
+      parse,
+      node: {
+        FunctionNode,
+        OperatorNode,
+        ParenthesisNode
+      }
+    }
+  })
+
   const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
     createUtil({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } })
 

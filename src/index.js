@@ -19,7 +19,7 @@ import {
   createPhi,
   createPi,
   createSQRT2,
-  createSQRTHalf,
+  createSQRT1_2, // eslint-disable-line camelcase
   createTau,
   createTrue,
   createUppercaseE,
@@ -46,7 +46,7 @@ export default [
   createLN10,
   createLOG2E,
   createLOG10E,
-  createSQRTHalf,
+  createSQRT1_2, // eslint-disable-line camelcase
   createSQRT2,
   createI,
   createVersion,

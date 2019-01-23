@@ -16,7 +16,7 @@ import {
   createPhi,
   createPi,
   createSQRT2,
-  createSQRTHalf,
+  createSQRT1_2, // eslint-disable-line camelcase
   createTau,
   createTrue
 } from '../src/constants'
@@ -68,7 +68,7 @@ describe('constants', function () {
     })
 
     it('should create SQRT1_2', function () {
-      approx.equal(createSQRTHalf(dependencies), 0.70710678118654752440084436210484903928483593768847403658833986899536623923105351942519376716382078636750692311545614851)
+      approx.equal(createSQRT1_2(dependencies), 0.70710678118654752440084436210484903928483593768847403658833986899536623923105351942519376716382078636750692311545614851)
     })
 
     it('should create SQRT2', function () {
@@ -130,7 +130,7 @@ describe('constants', function () {
     })
 
     it('should create bignumber SQRT1_2', function () {
-      assert.strictEqual(createSQRTHalf(dependencies).toString(), '0.707106781186547524400844362104849039284835937688474036588339869')
+      assert.strictEqual(createSQRT1_2(dependencies).toString(), '0.707106781186547524400844362104849039284835937688474036588339869')
     })
 
     it('should create bignumber SQRT2', function () {

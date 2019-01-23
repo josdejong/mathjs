@@ -3,10 +3,10 @@
 import { clone, mapObject, deepExtend } from '../../utils/object'
 import { DEFAULT_CONFIG } from '../config'
 
-export function configFactory (config, emit) {
-  const MATRIX = ['Matrix', 'Array'] // valid values for option matrix
-  const NUMBER = ['number', 'BigNumber', 'Fraction'] // valid values for option number
+export const MATRIX_OPTIONS = ['Matrix', 'Array'] // valid values for option matrix
+export const NUMBER_OPTIONS = ['number', 'BigNumber', 'Fraction'] // valid values for option number
 
+export function configFactory (config, emit) {
   /**
    * Set configuration options for math.js, and get current options.
    * Will emit a 'config' event, with arguments (curr, prev, changes).
@@ -46,8 +46,8 @@ export function configFactory (config, emit) {
       const prev = mapObject(config, clone)
 
       // validate some of the options
-      validateOption(options, 'matrix', MATRIX)
-      validateOption(options, 'number', NUMBER)
+      validateOption(options, 'matrix', MATRIX_OPTIONS)
+      validateOption(options, 'number', NUMBER_OPTIONS)
 
       // merge options
       deepExtend(config, options)
@@ -66,8 +66,8 @@ export function configFactory (config, emit) {
   }
 
   // attach the valid options to the function so they can be extended
-  _config.MATRIX = MATRIX
-  _config.NUMBER = NUMBER
+  _config.MATRIX_OPTIONS = MATRIX_OPTIONS
+  _config.NUMBER_OPTIONS = NUMBER_OPTIONS
 
   // attach the config properties as readonly properties to the config function
   Object.keys(DEFAULT_CONFIG).forEach(key => {

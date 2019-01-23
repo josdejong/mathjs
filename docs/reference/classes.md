@@ -84,4 +84,3 @@ A node in an expression-tree, which can be used to analyze, manipulate, and eval
 - [ParenthesisNode](../expressions/expression_trees.md#parenthesisnode)
 - [RangeNode](../expressions/expression_trees.md#rangenode)
 - [SymbolNode](../expressions/expression_trees.md#symbolnode)
-- [UpdateNode](../expressions/expression_trees.md#updatenode)
