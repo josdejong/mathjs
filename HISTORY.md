@@ -3,8 +3,10 @@
 # not yet released, version 5.4.2
 
 - Fix `math.format` not working for BigNumbers with a precision above
-  1025 digits. Thanks @ericman314.
+  1025 digits (see #1385). Thanks @ericman314.
 - Fix incorrect LaTeX output of `RelationalNode`. Thanks @rianmcguire.
+- Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
+  of `FunctionNode`.
 
 
 # 2019-01-10, version 5.4.1
