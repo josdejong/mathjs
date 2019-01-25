@@ -4,6 +4,15 @@ layout: default
 
 <h1 id="history">History <a href="#history" title="Permalink">#</a></h1>
 
+<h1 id="20190125-version-542">2019-01-25, version 5.4.2 <a href="#20190125-version-542" title="Permalink">#</a></h1>
+
+- Fix `math.format` not working for BigNumbers with a precision above
+  1025 digits (see <a href="https://github.com/josdejong/mathjs/issues/1385">#1385</a>). Thanks <a href="https://github.com/ericman314">@ericman314</a>.
+- Fix incorrect LaTeX output of `RelationalNode`. Thanks <a href="https://github.com/rianmcguire">@rianmcguire</a>.
+- Fixed a bug the methods `map`, `forEach`, `traverse`, and `transform`
+  of `FunctionNode`.
+
+
 <h1 id="20190110-version-541">2019-01-10, version 5.4.1 <a href="#20190110-version-541" title="Permalink">#</a></h1>
 
 - Fix <a href="https://github.com/josdejong/mathjs/issues/1378">#1378</a>: negative bignumbers not formatted correctly.
