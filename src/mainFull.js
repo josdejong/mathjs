@@ -303,7 +303,6 @@ import {
   createWeakMixingAngle,
   createWienDisplacement
 } from './type/unit/physicalConstants'
-import { create } from './mainInstance'
 import { createFilterTransform } from './expression/transform/filter.transform'
 import { createForEachTransform } from './expression/transform/forEach.transform'
 import { createIndexTransform } from './expression/transform/index.transform'
@@ -1040,20 +1039,19 @@ const math = /* #__PURE__ */ {
   'typeof': typeOf
 }
 
-const mathWithTransform = /* #__PURE__ */ {
-  ...math,
-
-  concat: createConcatTransform({ typed, concat }),
-  filter: createFilterTransform({ typed, matrix }),
-  forEach: createForEachTransform({ typed }),
-  index: createIndexTransform({ type: { Index } }),
-  map: createMapTransform({ typed, matrix }),
-  max: createMaxTransform({ typed, max }),
-  mean: createMeanTransform({ typed, mean }),
-  min: createMinTransform({ typed, min }),
-  range: createRangeTransform({ typed, range }),
-  subset: createSubsetTransform({ typed, subset })
-}
+// Do not use destructuring like { ...math } here, WebPack can't do tree-shaking in that case
+const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
+  concat: /* #__PURE__ */ createConcatTransform({ typed, concat }),
+  filter: /* #__PURE__ */ createFilterTransform({ typed, matrix }),
+  forEach: /* #__PURE__ */ createForEachTransform({ typed }),
+  index: /* #__PURE__ */ createIndexTransform({ type: { Index } }),
+  map: /* #__PURE__ */ createMapTransform({ typed, matrix }),
+  max: /* #__PURE__ */ createMaxTransform({ typed, max }),
+  mean: /* #__PURE__ */ createMeanTransform({ typed, mean }),
+  min: /* #__PURE__ */ createMinTransform({ typed, min }),
+  range: /* #__PURE__ */ createRangeTransform({ typed, range }),
+  subset: /* #__PURE__ */ createSubsetTransform({ typed, subset })
+})
 
 // expression (4)
 export const Node = /* #__PURE__ */ createNode({ expression: { mathWithTransform } })
@@ -1238,8 +1236,8 @@ const mathAdditional = /* __PURE__ */ {
   derivative,
   rationalize
 }
-Object.assign(math, mathAdditional)
-Object.assign(mathWithTransform, mathAdditional)
+/* #__PURE__ */ Object.assign(math, mathAdditional)
+/* #__PURE__ */ Object.assign(mathWithTransform, mathAdditional)
 
 // ----------------------------------------------------------------------------
 // error classes
@@ -1252,6 +1250,3 @@ export { ArgumentsError } from './error/ArgumentsError'
 // core
 
 export { core, create } from './mainInstance'
-
-// FIXME: imports from mainInstance causes tree shaking not to work
-export default /* #__PURE__ */ create()

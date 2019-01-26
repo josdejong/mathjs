@@ -713,6 +713,5 @@ exports.expectedES6Structure = {
   ...allNodeClasses,
   ...allErrorClasses,
   ...allTypeChecks,
-  reviver: 'Function',
-  'default': exports.expectedInstanceStructure
+  reviver: 'Function'
 }
