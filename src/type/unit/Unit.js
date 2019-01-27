@@ -1383,44 +1383,9 @@ function factory (type, config, load, typed, math) {
     }
   }
 
-  // Add a prefix list for both short and long prefixes (for example for ohm and bar which support both Mohm and megaohm, mbar and millibar):
-  PREFIXES.SHORTLONG = {}
-  for (let key in PREFIXES.SHORT) {
-    if (PREFIXES.SHORT.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.SHORT[key]
-    }
-  }
-  for (let key in PREFIXES.LONG) {
-    if (PREFIXES.LONG.hasOwnProperty(key)) {
-      PREFIXES.SHORTLONG[key] = PREFIXES.LONG[key]
-    }
-  }
-
-  // Add a prefix list binary long (SI and IEC)
-  PREFIXES.BINARY_LONG = {}
-  for (let key in PREFIXES.BINARY_LONG_SI) {
-    if (PREFIXES.BINARY_LONG_SI.hasOwnProperty(key)) {
-      PREFIXES.BINARY_LONG[key] = PREFIXES.BINARY_LONG_SI[key]
-    }
-  }
-  for (let key in PREFIXES.BINARY_LONG_IEC) {
-    if (PREFIXES.BINARY_LONG_IEC.hasOwnProperty(key)) {
-      PREFIXES.BINARY_LONG[key] = PREFIXES.BINARY_LONG_IEC[key]
-    }
-  }
-
-  // Add a prefix list binary short (SI and IEC)
-  PREFIXES.BINARY_SHORT = {}
-  for (let key in PREFIXES.BINARY_SHORT_SI) {
-    if (PREFIXES.BINARY_SHORT_SI.hasOwnProperty(key)) {
-      PREFIXES.BINARY_SHORT[key] = PREFIXES.BINARY_SHORT_SI[key]
-    }
-  }
-  for (let key in PREFIXES.BINARY_SHORT_IEC) {
-    if (PREFIXES.BINARY_SHORT_IEC.hasOwnProperty(key)) {
-      PREFIXES.BINARY_SHORT[key] = PREFIXES.BINARY_SHORT_IEC[key]
-    }
-  }
+  PREFIXES.SHORTLONG = Object.assign(PREFIXES.SHORT, PREFIXES.LONG)
+  PREFIXES.BINARY_SHORT = Object.assign(PREFIXES.BINARY_SHORT_SI, PREFIXES.BINARY_SHORT_IEC)
+  PREFIXES.BINARY_LONG = Object.assign(PREFIXES.BINARY_LONG_SI, PREFIXES.BINARY_LONG_IEC)
 
   /* Internally, each unit is represented by a value and a dimension array. The elements of the dimensions array have the following meaning:
    * Index  Dimension
