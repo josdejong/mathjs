@@ -1,5 +1,6 @@
 import { DEFAULT_CONFIG } from './core/config'
 import { createCore } from './core/core'
+import { values } from './utils/object'
 import * as all from './factory'
 import { ArgumentsError } from './error/ArgumentsError'
 import { DimensionError } from './error/DimensionError'
@@ -21,7 +22,7 @@ export function create (config) {
 
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
-  math['import'](Object.values(all))
+  math['import'](values(all))
 
   math.error = {
     ArgumentsError,
