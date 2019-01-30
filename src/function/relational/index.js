@@ -13,6 +13,8 @@ import { createLargerEq } from './largerEq'
 import { createSmallerEq } from './smallerEq'
 import { createUnequal } from './unequal'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createCompare,
   createCompareNatural,

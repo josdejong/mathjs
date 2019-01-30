@@ -26,6 +26,8 @@ import { createSinh } from './sinh'
 import { createTan } from './tan'
 import { createTanh } from './tanh'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createAcos,
   createAcosh,

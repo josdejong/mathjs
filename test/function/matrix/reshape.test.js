@@ -1,6 +1,6 @@
 import assert from 'assert'
-import error from '../../../src/error/index'
 import math from '../../../src/mainBundle'
+import { DimensionError } from '../../../src/error/DimensionError'
 
 describe('reshape', function () {
   it('should reshape an array', function () {
@@ -50,10 +50,10 @@ describe('reshape', function () {
     assert.throws(function () { math.reshape([], ['no number']) }, /Cannot convert/)
     assert.throws(function () { math.reshape([], [2.3]) }, /Invalid size/)
 
-    assert.throws(function () { math.reshape([1, 2], []) }, error.DimensionError)
-    assert.throws(function () { math.reshape([1, 2], [0]) }, error.DimensionError)
-    assert.throws(function () { math.reshape([1, 2], [0, 0]) }, error.DimensionError)
-    assert.throws(function () { math.reshape([[1, 2]], [0]) }, error.DimensionError)
+    assert.throws(function () { math.reshape([1, 2], []) }, DimensionError)
+    assert.throws(function () { math.reshape([1, 2], [0]) }, DimensionError)
+    assert.throws(function () { math.reshape([1, 2], [0, 0]) }, DimensionError)
+    assert.throws(function () { math.reshape([[1, 2]], [0]) }, DimensionError)
     assert.doesNotThrow(function () { math.reshape([[1, 2]], [2, 1]) })
     assert.doesNotThrow(function () { math.reshape([[1, 2]], [2]) })
   })

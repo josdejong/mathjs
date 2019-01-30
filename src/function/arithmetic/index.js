@@ -38,6 +38,8 @@ import { createUnaryMinus } from './unaryMinus'
 import { createUnaryPlus } from './unaryPlus'
 import { createXgcd } from './xgcd'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createAbs,
   createAdd,

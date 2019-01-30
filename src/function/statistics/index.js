@@ -11,6 +11,8 @@ import { createStd } from './std'
 import { createSum } from './sum'
 import { createDeprecatedVar, createVariance } from './variance'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createMad,
   createMax,

@@ -27,6 +27,8 @@ import {
   createVersion
 } from './constants'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   type, // data types (Matrix, Complex, Unit, ...)
 

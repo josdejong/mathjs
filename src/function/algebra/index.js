@@ -11,6 +11,8 @@ import { createLsolve } from './solver/lsolve'
 import { createUsolve } from './solver/usolve'
 import { createLusolve } from './solver/lusolve'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createDerivative,
 

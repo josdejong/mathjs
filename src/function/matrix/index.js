@@ -30,6 +30,8 @@ import { createTranspose } from './transpose'
 import { createZeros } from './zeros'
 import { createTrace } from './trace'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createConcat,
   createCross,

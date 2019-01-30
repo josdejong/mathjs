@@ -11,6 +11,8 @@ import { createMinTransform } from './min.transform'
 import { createRangeTransform } from './range.transform'
 import { createSubsetTransform } from './subset.transform'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createConcatTransform,
   createFilterTransform,

@@ -11,6 +11,8 @@ import { createSetSize } from './setSize'
 import { createSetSymDifference } from './setSymDifference'
 import { createSetUnion } from './setUnion'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createSetCartesian,
   createSetDifference,

@@ -1,6 +1,9 @@
 import { DEFAULT_CONFIG } from './core/config'
 import { createCore } from './core/core'
-import all from './index'
+import * as all from './factory'
+import { ArgumentsError } from './error/ArgumentsError'
+import { DimensionError } from './error/DimensionError'
+import { IndexError } from './error/IndexError'
 
 export function core (config) {
   const mergedConfig = Object.assign({}, DEFAULT_CONFIG, config)
@@ -16,8 +19,15 @@ export function create (config) {
   math.create = create
   math.core = core
 
-  // TODO: create a new, flat index file with all functions to be imported
-  math['import'](all)
+  // import the factory functions like createAdd as an array instead of object,
+  // else they will get a different naming (`createAdd` instead of `add`).
+  math['import'](Object.values(all))
+
+  math.error = {
+    ArgumentsError,
+    DimensionError,
+    IndexError
+  }
 
   return math
 }

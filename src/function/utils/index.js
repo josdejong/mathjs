@@ -11,6 +11,8 @@ import { createIsNaN } from './isNaN'
 import { createNumeric } from './numeric'
 import { createTypeOf, createDeprecatedTypeof } from './typeOf'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createClone,
   createIsInteger,

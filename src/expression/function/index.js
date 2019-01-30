@@ -7,6 +7,8 @@ import { createEvaluate } from './evaluate'
 import { createParser } from './parser'
 import { createDeprecatedEval } from './eval'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createCompile,
   createEvaluate,

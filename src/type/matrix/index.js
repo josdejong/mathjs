@@ -12,6 +12,8 @@ import { createIndex } from './function/index'
 import { createMatrix } from './function/matrix'
 import { createSparse } from './function/sparse'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   // types
   createMatrixClass,

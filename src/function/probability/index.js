@@ -9,6 +9,8 @@ import { createPickRandom } from './pickRandom'
 import { createRandom } from './random'
 import { createRandomInt } from './randomInt'
 
+console.log('This index file is deprecated since v6.0.0. Please use factory.js instead')
+
 export default [
   createCombinations,
   createFactorial,
