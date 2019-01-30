@@ -54,7 +54,7 @@ export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies,
   })
 
   return filterTransform
-})
+}, { isTransformFunction: true })
 
 /**
  * Filter values in a callback given a callback function

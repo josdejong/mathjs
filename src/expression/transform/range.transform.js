@@ -24,4 +24,4 @@ export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, 
       return range.apply(null, args)
     }
   })
-})
+}, { isTransformFunction: true })

@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 
 const name = 'unit'
-const dependencies = ['typed', 'type.Unit']
+const dependencies = ['typed', 'Unit']
 
-export const createUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Unit } }) => {
+export const createUnit = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Create a unit. Depending on the passed arguments, the function
    * will create and return a new math.type.Unit object.

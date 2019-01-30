@@ -5,9 +5,9 @@ import { deepMap } from '../../utils/collection'
 import { sign as numberSign } from '../../utils/number'
 
 const name = 'sign'
-const dependencies = ['typed', 'type.BigNumber', 'type.Fraction']
+const dependencies = ['typed', 'BigNumber', 'Fraction']
 
-export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Fraction } }) => {
+export const createSign = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Fraction }) => {
   /**
    * Compute the sign of a value. The sign of a value x is:
    *

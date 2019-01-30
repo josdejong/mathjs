@@ -49,7 +49,7 @@ export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({
   })
 
   return mapTransform
-})
+}, { isTransformFunction: true })
 
 /**
  * Map for a multi dimensional array. One-based indexes

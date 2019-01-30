@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'acsc'
-const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
 
-export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
+export const createAcsc = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
    * Calculate the inverse cosecant of a value, defined as `acsc(x) = asin(1/x)`.
    *

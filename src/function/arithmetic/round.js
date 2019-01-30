@@ -15,13 +15,13 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'type.BigNumber',
-  'type.DenseMatrix'
+  'BigNumber',
+  'DenseMatrix'
 ]
 
-export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, type: { BigNumber, DenseMatrix } }) => {
+export const createRound = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, BigNumber, DenseMatrix }) => {
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm14 = createAlgorithm14({ typed })
 
   /**

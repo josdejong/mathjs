@@ -3,7 +3,7 @@
 import Decimal from 'decimal.js'
 import { factory } from '../../utils/factory'
 
-const name = 'type.BigNumber'
+const name = 'BigNumber'
 const dependencies = ['?on', 'config']
 
 export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, ({ on, config }) => {
@@ -48,4 +48,4 @@ export const createBigNumberClass = /* #__PURE__ */ factory(name, dependencies, 
   }
 
   return BigNumber
-})
+}, { isClass: true })

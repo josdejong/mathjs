@@ -15,7 +15,7 @@ const dependencies = [
   'conj',
   'equal',
   'smallerEq',
-  'type.SparseMatrix'
+  'SparseMatrix'
 ]
 
 export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
@@ -29,10 +29,10 @@ export const createCsChol = /* #__PURE__ */ factory(name, dependencies, (
     conj,
     equal,
     smallerEq,
-    type: { SparseMatrix }
+    SparseMatrix
   }
 ) => {
-  const csSymperm = createCsSymperm({ conj, type: { SparseMatrix } })
+  const csSymperm = createCsSymperm({ conj, SparseMatrix })
 
   /**
    * Computes the Cholesky factorization of matrix A. It computes L and P so

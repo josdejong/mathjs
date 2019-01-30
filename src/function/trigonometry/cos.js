@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'cos'
-const dependencies = ['typed', 'type.Unit']
+const dependencies = ['typed', 'Unit']
 
-export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Unit } }) => {
+export const createCos = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Calculate the cosine of a value.
    *

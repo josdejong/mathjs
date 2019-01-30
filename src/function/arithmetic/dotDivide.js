@@ -15,15 +15,15 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'divideScalar',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, type: { DenseMatrix } }) => {
+export const createDotDivide = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, divideScalar, DenseMatrix }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

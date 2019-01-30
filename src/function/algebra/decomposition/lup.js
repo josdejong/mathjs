@@ -15,9 +15,9 @@ const dependencies = [
   'larger',
   'equalScalar',
   'unaryMinus',
-  'type.DenseMatrix',
-  'type.SparseMatrix',
-  'type.Spa'
+  'DenseMatrix',
+  'SparseMatrix',
+  'Spa'
 ]
 
 export const createLup = /* #__PURE__ */ factory(name, dependencies, (
@@ -32,7 +32,9 @@ export const createLup = /* #__PURE__ */ factory(name, dependencies, (
     larger,
     equalScalar,
     unaryMinus,
-    type: { DenseMatrix, SparseMatrix, Spa }
+    DenseMatrix,
+    SparseMatrix,
+    Spa
   }
 ) => {
   /**

@@ -4,7 +4,7 @@ import { isBigNumber } from '../../utils/is'
 import { format, sign } from '../../utils/number'
 import { factory } from '../../utils/factory'
 
-const name = 'type.Range'
+const name = 'Range'
 const dependencies = []
 
 export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () => {
@@ -316,4 +316,4 @@ export const createRangeClass = /* #__PURE__ */ factory(name, dependencies, () =
   }
 
   return Range
-})
+}, { isClass: true })

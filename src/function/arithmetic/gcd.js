@@ -13,14 +13,14 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'type.BigNumber',
-  'type.DenseMatrix'
+  'BigNumber',
+  'DenseMatrix'
 ]
 
-export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
+export const createGcd = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
   const algorithm01 = createAlgorithm01({ typed })
   const algorithm04 = createAlgorithm04({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

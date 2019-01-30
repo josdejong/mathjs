@@ -58,7 +58,7 @@ describe('physical constants', function () {
   it('should return the correct value and unit for physical constants', function () {
     // Note: to keep these unit tests readable and compact, the toString() of the units is compared
     const config = { number: 'number', precision: 64, epsilon: 1e-12 }
-    const dependencies = { config, type: { BigNumber, Unit } }
+    const dependencies = { config, BigNumber, Unit }
 
     // Universal constants
     assert.strictEqual(createSpeedOfLight(dependencies).toString(), '2.99792458e+8 m / s')
@@ -127,7 +127,7 @@ describe('physical constants', function () {
 
   it('should create BigNumber unit values if configured', () => {
     const config = { number: 'BigNumber', precision: 64, epsilon: 1e-12 }
-    const dependencies = { config, type: { BigNumber, Unit } }
+    const dependencies = { config, BigNumber, Unit }
     const molarMass = createMolarMass(dependencies)
 
     assert.strictEqual(molarMass.toString(), '0.001 kg / mol')

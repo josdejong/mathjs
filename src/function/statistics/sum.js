@@ -5,9 +5,9 @@ import { factory } from '../../utils/factory'
 import { improveErrorMessage } from './utils/improveErrorMessage'
 
 const name = 'sum'
-const dependencies = ['typed', 'config', 'add', 'type.BigNumber', 'type.Fraction']
+const dependencies = ['typed', 'config', 'add', 'BigNumber', 'Fraction']
 
-export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, type: { BigNumber, Fraction } }) => {
+export const createSum = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, add, BigNumber, Fraction }) => {
   /**
    * Compute the sum of a matrix or a list with values.
    * In case of a (multi dimensional) array or matrix, the sum of all

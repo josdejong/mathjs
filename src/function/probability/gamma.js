@@ -6,9 +6,9 @@ import { product } from './product'
 import { factory } from '../../utils/factory'
 
 const name = 'gamma'
-const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'type.BigNumber', 'type.Complex']
+const dependencies = ['typed', 'config', 'multiplyScalar', 'pow', 'BigNumber', 'Complex']
 
-export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, pow, type: { BigNumber, Complex } }) => {
+export const createGamma = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, multiplyScalar, pow, BigNumber, Complex }) => {
   /**
    * Compute the gamma function of a value using Lanczos approximation for
    * small values, and an extended Stirling approximation for large values.

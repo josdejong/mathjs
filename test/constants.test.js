@@ -28,7 +28,8 @@ describe('constants', function () {
     const Complex = createComplexClass({ config })
     const dependencies = {
       config,
-      type: { BigNumber, Complex }
+      BigNumber,
+      Complex
     }
 
     it('should create pi', function () {
@@ -90,7 +91,8 @@ describe('constants', function () {
     const Complex = createComplexClass({ config })
     const dependencies = {
       config,
-      type: { BigNumber, Complex }
+      BigNumber,
+      Complex
     }
 
     it('should create bignumber pi', function () {
@@ -154,7 +156,7 @@ describe('constants', function () {
   describe('complex', function () {
     it('should create i', function () {
       const Complex = createComplexClass()
-      const i = createI({ type: { Complex } })
+      const i = createI({ Complex })
 
       assert.deepStrictEqual(i, new Complex(0, 1))
     })

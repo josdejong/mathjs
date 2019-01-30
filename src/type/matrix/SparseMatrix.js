@@ -8,14 +8,14 @@ import { arraySize, getArrayDataType, unsqueeze, validateIndex } from '../../uti
 import { factory } from '../../utils/factory'
 import { DimensionError } from '../../error/DimensionError'
 
-const name = 'type.SparseMatrix'
+const name = 'SparseMatrix'
 const dependencies = [
   'typed',
   'equalScalar',
-  'type.Matrix'
+  'Matrix'
 ]
 
-export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, type: { Matrix } }) => {
+export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, Matrix }) => {
   /**
    * Sparse Matrix implementation. This type implements a Compressed Column Storage format
    * for sparse matrices.
@@ -1387,4 +1387,4 @@ export const createSparseMatrixClass = /* #__PURE__ */ factory(name, dependencie
   }
 
   return SparseMatrix
-})
+}, { isClass: true })

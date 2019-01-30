@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'tanh'
-const dependencies = ['typed', 'type.Unit']
+const dependencies = ['typed', 'Unit']
 
-export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Unit } }) => {
+export const createTanh = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Calculate the hyperbolic tangent of a value,
    * defined as `tanh(x) = (exp(2 * x) - 1) / (exp(2 * x) + 1)`.

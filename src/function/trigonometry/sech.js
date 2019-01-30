@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sech'
-const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
+const dependencies = ['typed', 'BigNumber', 'Unit']
 
-export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createSech = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
   /**
    * Calculate the hyperbolic secant of a value,
    * defined as `sech(x) = 1 / cosh(x)`.

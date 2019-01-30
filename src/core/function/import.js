@@ -1,9 +1,9 @@
 'use strict'
 
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
-import { isFactory } from '../../utils/factory'
-import { isLegacyFactory, lazy, traverse } from '../../utils/object'
-import { contains, initial, last } from '../../utils/array'
+import { isFactory, stripOptionalNotation } from '../../utils/factory'
+import { get, isLegacyFactory, lazy, set, traverse } from '../../utils/object'
+import { initial, last } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { warnOnce } from '../../utils/log'
 
@@ -96,7 +96,7 @@ export function importFactory (typed, load, math, factories) {
   }
 
   /**
-   * Add a property to the math namespace and create a chain proxy for it.
+   * Add a property to the math namespace
    * @param {string} name
    * @param {*} value
    * @param {Object} options  See import for a description of the options
@@ -286,23 +286,35 @@ export function importFactory (typed, load, math, factories) {
    * @private
    */
   function _importFactory (factory, options, fullName = factory.fn) {
+    // FIXME: remove support for path in factory name
     const nameContainsPath = fullName.indexOf('.') !== -1
-    const path = nameContainsPath ? initial(fullName.split('.')) : undefined
+    const path = nameContainsPath
+      ? initial(fullName.split('.'))
+      : (factory.meta && factory.meta.isClass === true)
+        ? ['type'] // path where we want to put classes
+        : undefined
     const name = nameContainsPath ? last(fullName.split('.')) : fullName
     const namespace = path ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
     const resolver = function () {
-      let instance
-      if (contains(factory.dependencies, 'math')) {
-        // TODO: it's not nice having to pass the whole math namespace. find a better way
-        const mathWithNamespace = Object.create(math)
-        mathWithNamespace.math = math
-        instance = /* #__PURE__ */ factory(mathWithNamespace)
-      } else {
-        instance = /* #__PURE__ */ factory(math)
-      }
+      // collect all dependencies, handle finding both functions and classes and other special cases
+      const dependencies = {}
+      factory.dependencies
+        .map(stripOptionalNotation)
+        .forEach(dependency => {
+          if (dependency === 'math') {
+            dependencies.math = math
+          } else if (dependency === 'classes') { // for json reviver
+            dependencies.classes = math.type
+          } else {
+            // dependencies[name] = math.type[name] || math[name] // FIXME: replace with non nested solution
+            set(dependencies, dependency, get(math.type, dependency) || get(math, dependency))
+          }
+        })
+
+      let instance = /* #__PURE__ */ factory(dependencies)
 
       if (instance && typeof instance.transform === 'function') {
         throw new Error('Transforms cannot be attached to factory functions. ' +
@@ -337,7 +349,7 @@ export function importFactory (typed, load, math, factories) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if ((path && path.join('.') === 'expression.transform') || factoryAllowedInExpressions(factory)) {
+        if (((path && path.join('.') === 'expression.transform')) || factoryAllowedInExpressions(factory)) {
           lazy(math.expression.mathWithTransform, name, () => namespace[name])
         }
       }
@@ -347,7 +359,7 @@ export function importFactory (typed, load, math, factories) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if ((path && path.join('.') === 'expression.transform') || factoryAllowedInExpressions(factory)) {
+        if (((path && path.join('.') === 'expression.transform')) || factoryAllowedInExpressions(factory)) {
           math.expression.mathWithTransform[name] = namespace[name]
         }
       }
@@ -400,7 +412,9 @@ export function importFactory (typed, load, math, factories) {
   }
 
   function factoryAllowedInExpressions (factory) {
-    return factory.fn.indexOf('.') === -1 && !unsafe.hasOwnProperty(factory.fn)
+    return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
+      !unsafe.hasOwnProperty(factory.fn) &&
+      (!factory.meta || !factory.meta.isClass)
   }
 
   // namespaces and functions not available in the parser for safety reasons

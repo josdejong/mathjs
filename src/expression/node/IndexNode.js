@@ -7,11 +7,11 @@ import { factory } from '../../utils/factory'
 
 const name = 'expression.node.IndexNode'
 const dependencies = [
-  'type.Range',
+  'Range',
   'expression.node.Node'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ type: { Range }, expression: { node: { Node } } }) => {
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, expression: { node: { Node } } }) => {
   /**
    * @constructor IndexNode
    * @extends Node

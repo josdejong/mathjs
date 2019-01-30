@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import { isBigNumber, isMatrix } from '../../../utils/is'
 
 const name = 'index'
-const dependencies = ['typed', 'type.Index']
+const dependencies = ['typed', 'Index']
 
-export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Index } }) => {
+export const createIndex = /* #__PURE__ */ factory(name, dependencies, ({ typed, Index }) => {
   /**
    * Create an index. An Index can store ranges having start, step, and end
    * for multiple dimensions.

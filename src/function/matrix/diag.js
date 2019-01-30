@@ -6,9 +6,9 @@ import { isInteger } from '../../utils/number'
 import { factory } from '../../utils/factory'
 
 const name = 'diag'
-const dependencies = ['typed', 'matrix', 'type.DenseMatrix', 'type.SparseMatrix']
+const dependencies = ['typed', 'matrix', 'DenseMatrix', 'SparseMatrix']
 
-export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, type: { DenseMatrix, SparseMatrix } }) => {
+export const createDiag = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix, SparseMatrix }) => {
   /**
    * Create a diagonal matrix or retrieve the diagonal of a matrix
    *

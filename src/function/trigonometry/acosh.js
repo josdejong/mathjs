@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'acosh'
-const dependencies = ['typed', 'config', 'type.Complex']
+const dependencies = ['typed', 'config', 'Complex']
 
-export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
+export const createAcosh = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
    * Calculate the hyperbolic arccos of a value,
    * defined as `acosh(x) = ln(sqrt(x^2 - 1) + x)`.

@@ -65,4 +65,4 @@ export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies
   })
 
   return forEachTransform
-})
+}, { isTransformFunction: true })

@@ -4,9 +4,9 @@ import { flatten, generalize, identify } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'setIntersect'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'type.Index', 'type.DenseMatrix']
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index', 'DenseMatrix']
 
-export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index, DenseMatrix } }) => {
+export const createSetIntersect = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index, DenseMatrix }) => {
   /**
    * Create the intersection of two (multi)sets.
    * Multi-dimension arrays will be converted to single-dimension arrays before the operation.

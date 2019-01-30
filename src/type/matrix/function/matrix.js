@@ -2,9 +2,9 @@
 import { factory } from '../../../utils/factory'
 
 const name = 'matrix'
-const dependencies = [ 'typed', 'type.Matrix', 'type.DenseMatrix', 'type.SparseMatrix' ]
+const dependencies = [ 'typed', 'Matrix', 'DenseMatrix', 'SparseMatrix' ]
 
-export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Matrix, DenseMatrix, SparseMatrix } }) => {
+export const createMatrix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Matrix, DenseMatrix, SparseMatrix }) => {
   /**
    * Create a Matrix. The function creates a new `math.type.Matrix` object from
    * an `Array`. A Matrix has utility functions to manipulate the data in the

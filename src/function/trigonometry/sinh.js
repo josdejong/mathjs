@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sinh'
-const dependencies = ['typed', 'type.Unit']
+const dependencies = ['typed', 'Unit']
 
-export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Unit } }) => {
+export const createSinh = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Calculate the hyperbolic sine of a value,
    * defined as `sinh(x) = 1/2 * (exp(x) - exp(-x))`.

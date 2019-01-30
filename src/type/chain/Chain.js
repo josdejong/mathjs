@@ -5,7 +5,7 @@ import { format } from '../../utils/string'
 import { lazy } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
-const name = 'type.Chain'
+const name = 'Chain'
 const dependencies = ['?on', 'math']
 
 export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ on, math }) => {
@@ -184,6 +184,6 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
   }
 
   return Chain
-})
+}, { isClass: true })
 
 createChainClass.lazy = false // we need to register a listener on the import events, so no lazy loading

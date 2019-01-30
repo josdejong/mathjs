@@ -14,14 +14,14 @@ const dependencies = [
   'equalScalar',
   'matrix',
   'pow',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, type: { DenseMatrix } }) => {
+export const createDotPow = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar, matrix, pow, DenseMatrix }) => {
   const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

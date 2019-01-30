@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'asech'
-const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
 
-export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
+export const createAsech = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
    * Calculate the hyperbolic arcsecant of a value,
    * defined as `asech(x) = acosh(1/x) = ln(sqrt(1/x^2 - 1) + 1/x)`.

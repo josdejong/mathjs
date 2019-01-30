@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 
-const name = 'type.FibonacciHeap'
+const name = 'FibonacciHeap'
 const dependencies = ['smaller', 'larger']
 
 export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, larger }) => {
@@ -328,4 +328,4 @@ export const createFibonacciHeapClass = /* #__PURE__ */ factory(name, dependenci
   }
 
   return FibonacciHeap
-})
+}, { isClass: true })

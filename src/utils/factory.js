@@ -12,18 +12,20 @@ import { get, pick } from './object'
  * Example:
  *
  *     const name = 'log'
- *     const dependencies = ['config', 'typed', 'divideScalar', 'type.Complex']
+ *     const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
  *
- *     export const createLog = factory(name, dependencies, ({ typed, config, divideScalar, type: { Complex } }) => {
+ *     export const createLog = factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
  *       // ... create the function log here and return it
  *     }
  *
  * @param {string} name           Name of the function to be created
  * @param {string[]} dependencies The names of all required dependencies
  * @param {function} create       Callback function called with an object with all dependencies
+ * @param {Object} [meta]         Optional object with meta information that will be attached
+ *                                to the created factory function as property `meta`.
  * @returns {function}
  */
-export function factory (name, dependencies, create) {
+export function factory (name, dependencies, create, meta) {
   function assertAndCreate (scope) {
     // we only pass the requested dependencies to the factory function
     // to prevent functions to rely on dependencies that are not explicitly
@@ -38,6 +40,9 @@ export function factory (name, dependencies, create) {
   assertAndCreate.isFactory = true
   assertAndCreate.fn = name
   assertAndCreate.dependencies = dependencies.slice().sort()
+  if (meta) {
+    assertAndCreate.meta = meta
+  }
 
   return assertAndCreate
 }
@@ -137,11 +142,11 @@ export function assertDependencies (name, dependencies, scope) {
   }
 }
 
-function isOptionalDependency (dependency) {
+export function isOptionalDependency (dependency) {
   return dependency && dependency[0] === '?'
 }
 
-function stripOptionalNotation (dependency) {
+export function stripOptionalNotation (dependency) {
   return dependency && dependency[0] === '?'
     ? dependency.slice(1)
     : dependency

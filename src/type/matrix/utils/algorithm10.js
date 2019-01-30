@@ -3,9 +3,9 @@
 import { factory } from '../../../utils/factory'
 
 const name = 'utils.algorithm10'
-const dependencies = ['typed', 'type.DenseMatrix']
+const dependencies = ['typed', 'DenseMatrix']
 
-export const createAlgorithm10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { DenseMatrix } }) => {
+export const createAlgorithm10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {
   /**
    * Iterates over SparseMatrix S nonzero items and invokes the callback function f(Sij, b).
    * Callback function invoked NZ times (number of nonzero items in S).

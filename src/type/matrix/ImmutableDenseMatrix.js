@@ -4,13 +4,13 @@ import { isArray, isMatrix, isString, typeOf } from '../../utils/is'
 import { clone } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
-const name = 'type.ImmutableDenseMatrix'
+const name = 'ImmutableDenseMatrix'
 const dependencies = [
   'smaller',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, type: { DenseMatrix } }) => {
+export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ smaller, DenseMatrix }) => {
   function ImmutableDenseMatrix (data, datatype) {
     if (!(this instanceof ImmutableDenseMatrix)) { throw new SyntaxError('Constructor must be called with the new operator') }
     if (datatype && !isString(datatype)) { throw new Error('Invalid datatype: ' + datatype) }
@@ -214,4 +214,4 @@ export const createImmutableDenseMatrixClass = /* #__PURE__ */ factory(name, dep
   }
 
   return ImmutableDenseMatrix
-})
+}, { isClass: true })

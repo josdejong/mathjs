@@ -3,9 +3,9 @@
 import { factory } from '../../utils/factory'
 
 const name = 'nthRoots'
-const dependencies = ['config', 'typed', 'divideScalar', 'type.Complex']
+const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
 
-export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, type: { Complex } }) => {
+export const createNthRoots = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
   /**
    * Calculate the nth roots of a value.
    * An nth root of a positive real number A,

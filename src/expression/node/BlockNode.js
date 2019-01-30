@@ -6,11 +6,11 @@ import { factory } from '../../utils/factory'
 
 const name = 'expression.node.BlockNode'
 const dependencies = [
-  'type.ResultSet',
+  'ResultSet',
   'expression.node.Node'
 ]
 
-export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ type: { ResultSet }, expression: { node: { Node } } }) => {
+export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ ResultSet, expression: { node: { Node } } }) => {
   /**
    * @constructor BlockNode
    * @extends {Node}

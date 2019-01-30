@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sin'
-const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
+const dependencies = ['typed', 'BigNumber', 'Unit']
 
-export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createSin = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
   /**
    * Calculate the sine of a value.
    *

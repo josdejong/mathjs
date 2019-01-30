@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sqrt'
-const dependencies = ['config', 'typed', 'type.Complex']
+const dependencies = ['config', 'typed', 'Complex']
 
-export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, type: { Complex } }) => {
+export const createSqrt = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, Complex }) => {
   /**
    * Calculate the square root of a value.
    *

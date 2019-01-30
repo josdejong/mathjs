@@ -84,5 +84,15 @@ describe('factory', function () {
     assert.deepStrictEqual(a(), { a: 2, b: undefined })
   })
 
+  it('should attach meta information to a factory function', () => {
+    const createFn1 = factory('fn1', [], () => {})
+    assert.strictEqual(createFn1.meta, undefined)
+
+    const createClass1 = factory('Class1', [], () => {}, {
+      isClass: true
+    })
+    assert.deepStrictEqual(createClass1.meta, { isClass: true })
+  })
+
   // TODO: test whether a factory function is created only once for the same dependencies
 })

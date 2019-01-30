@@ -11,13 +11,13 @@ const name = 'xor'
 const dependencies = [
   'typed',
   'matrix',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, type: { DenseMatrix } }) => {
+export const createXor = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, DenseMatrix }) => {
   const algorithm03 = createAlgorithm03({ typed })
-  const algorithm07 = createAlgorithm07({ typed, type: { DenseMatrix } })
-  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm07 = createAlgorithm07({ typed, DenseMatrix })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

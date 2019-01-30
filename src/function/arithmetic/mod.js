@@ -14,15 +14,15 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { DenseMatrix } }) => {
+export const createMod = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, DenseMatrix }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm05 = createAlgorithm05({ typed, equalScalar })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

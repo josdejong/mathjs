@@ -37,7 +37,7 @@ The following use cases are worked out:
     import { createTyped, createHypot } from '../src/factory'
 
     // Create a hypot instance that only works with numbers:
-    const typed = createTyped({ type: {} })
+    const typed = createTyped({ })
     const hypot = createHypot({
       typed,
       abs: Math.abs,
@@ -61,7 +61,7 @@ The following use cases are worked out:
     import { DEFAULT_CONFIG } from '../src/core/config'
 
     const BigNumber = createBigNumberClass({ config: DEFAULT_CONFIG })
-    const typed = createTyped({ type: { BigNumber } })
+    const typed = createTyped({ BigNumber })
 
     const add = typed('add', addNumber, addBigNumber)
     const multiply = typed('multiply', multiplyNumber, multiplyBigNumber)

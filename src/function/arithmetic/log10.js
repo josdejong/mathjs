@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'log10'
-const dependencies = [ 'typed', 'config', 'type.Complex' ]
+const dependencies = [ 'typed', 'config', 'Complex' ]
 
-export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
+export const createLog10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
    * Calculate the 10-base logarithm of a value. This is the same as calculating `log(x, 10)`.
    *

@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'fix'
-const dependencies = ['typed', 'type.Complex']
+const dependencies = ['typed', 'Complex']
 
-export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Complex } }) => {
+export const createFix = /* #__PURE__ */ factory(name, dependencies, ({ typed, Complex }) => {
   /**
    * Round a value towards zero.
    * For matrices, the function is evaluated element wise.

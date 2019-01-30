@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'cosh'
-const dependencies = ['typed', 'type.Unit']
+const dependencies = ['typed', 'Unit']
 
-export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Unit } }) => {
+export const createCosh = /* #__PURE__ */ factory(name, dependencies, ({ typed, Unit }) => {
   /**
    * Calculate the hyperbolic cosine of a value,
    * defined as `cosh(x) = 1/2 * (exp(x) + exp(-x))`.

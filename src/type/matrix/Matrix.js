@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 
-const name = 'type.Matrix'
+const name = 'Matrix'
 const dependencies = []
 
 export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () => {
@@ -246,4 +246,4 @@ export const createMatrixClass = /* #__PURE__ */ factory(name, dependencies, () 
   }
 
   return Matrix
-})
+}, { isClass: true })

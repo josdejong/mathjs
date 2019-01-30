@@ -16,14 +16,14 @@ const dependencies = [
   'matrix',
   'equalScalar',
   'zeros',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, type: { DenseMatrix } }) => {
+export const createRightLogShift = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, zeros, DenseMatrix }) => {
   const algorithm01 = createAlgorithm01({ typed })
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm08 = createAlgorithm08({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })

@@ -9,11 +9,11 @@ import { toSymbol } from '../../utils/latex'
 const name = 'expression.node.SymbolNode'
 const dependencies = [
   'math',
-  'type.Unit',
+  'Unit',
   'expression.node.Node'
 ]
 
-export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, type: { Unit }, expression: { node: { Node } } }) => {
+export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Unit, expression: { node: { Node } } }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name

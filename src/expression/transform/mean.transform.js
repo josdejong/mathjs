@@ -2,7 +2,7 @@
 
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
-import { errorTransform } from './error.transform'
+import { errorTransform } from './errorTransform'
 
 const name = 'expression.transform.mean'
 const dependencies = ['typed', 'mean']
@@ -34,4 +34,4 @@ export const createMeanTransform = /* #__PURE__ */ factory(name, dependencies, (
       }
     }
   })
-})
+}, { isTransformFunction: true })

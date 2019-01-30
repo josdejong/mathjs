@@ -1,7 +1,7 @@
 'use strict'
 
 import { isBigNumber, isNumber } from '../../utils/is'
-import { errorTransform } from './error.transform'
+import { errorTransform } from './errorTransform'
 import { factory } from '../../utils/factory'
 
 const name = 'expression.transform.concat'
@@ -33,4 +33,4 @@ export const createConcatTransform = /* #__PURE__ */ factory(name, dependencies,
       }
     }
   })
-})
+}, { isTransformFunction: true })

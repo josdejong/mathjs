@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'asin'
-const dependencies = ['typed', 'config', 'type.Complex']
+const dependencies = ['typed', 'config', 'Complex']
 
-export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex } }) => {
+export const createAsin = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex }) => {
   /**
    * Calculate the inverse sine of a value.
    *

@@ -14,16 +14,16 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'type.BigNumber',
-  'type.DenseMatrix'
+  'BigNumber',
+  'DenseMatrix'
 ]
 
-export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber, DenseMatrix } }) => {
+export const createAtan2 = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber, DenseMatrix }) => {
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm09 = createAlgorithm09({ typed, equalScalar })
   const algorithm11 = createAlgorithm11({ typed, equalScalar })
-  const algorithm12 = createAlgorithm12({ typed, type: { DenseMatrix } })
+  const algorithm12 = createAlgorithm12({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

@@ -5,7 +5,7 @@ import { format } from '../../utils/number'
 import { isNumber, isUnit } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
-const name = 'type.Complex'
+const name = 'Complex'
 const dependencies = []
 
 export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, () => {
@@ -182,4 +182,4 @@ export const createComplexClass = /* #__PURE__ */ factory(name, dependencies, ()
   }
 
   return Complex
-})
+}, { isClass: true })

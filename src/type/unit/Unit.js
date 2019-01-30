@@ -6,7 +6,7 @@ import { endsWith } from '../../utils/string'
 import { clone } from '../../utils/object'
 import { createBigNumberPi as createPi } from '../../utils/bignumber/constants'
 
-const name = 'type.Unit'
+const name = 'Unit'
 const dependencies = [
   '?on',
   'config',
@@ -22,30 +22,30 @@ const dependencies = [
   'isNumeric',
   'format',
   'number',
-  'type.Complex',
-  'type.BigNumber',
-  'type.Fraction'
+  'Complex',
+  'BigNumber',
+  'Fraction'
 ]
 
-export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, (
-  {
-    on,
-    config,
-    addScalar,
-    subtract,
-    multiplyScalar,
-    divideScalar,
-    pow,
-    abs,
-    fix,
-    round,
-    equal,
-    isNumeric,
-    format,
-    number,
-    type: { Complex, BigNumber, Fraction }
-  }
-) => {
+export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, ({
+  on,
+  config,
+  addScalar,
+  subtract,
+  multiplyScalar,
+  divideScalar,
+  pow,
+  abs,
+  fix,
+  round,
+  equal,
+  isNumeric,
+  format,
+  number,
+  Complex,
+  BigNumber,
+  Fraction
+}) => {
   const toNumber = number
   /**
    * A unit can be constructed in the following ways:
@@ -3279,4 +3279,4 @@ export const createUnitClass = /* #__PURE__ */ factory(name, dependencies, (
   Unit.UNITS = UNITS
 
   return Unit
-})
+}, { isClass: true })

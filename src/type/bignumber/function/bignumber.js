@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 
 const name = 'bignumber'
-const dependencies = ['typed', 'type.BigNumber']
+const dependencies = ['typed', 'BigNumber']
 
-export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
+export const createBignumber = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Create a BigNumber, which can store numbers with arbitrary precision.
    * When a matrix is provided, all elements will be converted to BigNumber.

@@ -12,12 +12,12 @@ const dependencies = [
   'isNegative',
   'unaryMinus',
   'matrix',
-  'type.Complex',
-  'type.BigNumber',
-  'type.Fraction'
+  'Complex',
+  'BigNumber',
+  'Fraction'
 ]
 
-export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, isNegative, unaryMinus, matrix, type: { Complex, BigNumber, Fraction } }) => {
+export const createCbrt = /* #__PURE__ */ factory(name, dependencies, ({ config, typed, isNegative, unaryMinus, matrix, Complex, BigNumber, Fraction }) => {
   /**
    * Calculate the cubic root of a value.
    *

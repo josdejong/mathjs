@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'asec'
-const dependencies = ['typed', 'config', 'type.Complex', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'Complex', 'BigNumber']
 
-export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, type: { Complex, BigNumber } }) => {
+export const createAsec = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, Complex, BigNumber }) => {
   /**
    * Calculate the inverse secant of a value. Defined as `asec(x) = acos(1/x)`.
    *

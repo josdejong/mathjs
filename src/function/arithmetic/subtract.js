@@ -16,16 +16,16 @@ const dependencies = [
   'equalScalar',
   'addScalar',
   'unaryMinus',
-  'type.DenseMatrix'
+  'DenseMatrix'
 ]
 
-export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, type: { DenseMatrix } }) => {
+export const createSubtract = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, addScalar, unaryMinus, DenseMatrix }) => {
   // TODO: split function subtract in two: subtract and subtractScalar
 
   const algorithm01 = createAlgorithm01({ typed })
   const algorithm03 = createAlgorithm03({ typed })
   const algorithm05 = createAlgorithm05({ typed, equalScalar })
-  const algorithm10 = createAlgorithm10({ typed, type: { DenseMatrix } })
+  const algorithm10 = createAlgorithm10({ typed, DenseMatrix })
   const algorithm13 = createAlgorithm13({ typed })
   const algorithm14 = createAlgorithm14({ typed })
 

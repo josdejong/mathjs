@@ -4,9 +4,9 @@ import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/i
 import { factory } from '../../utils/factory'
 
 const name = 'expression.transform.index'
-const dependencies = ['type.Index']
+const dependencies = ['Index']
 
-export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ type: { Index } }) => {
+export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ Index }) => {
   /**
    * Attach a transform function to math.index
    * Adds a property transform containing the transform function.
@@ -43,4 +43,4 @@ export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, 
     Index.apply(res, args)
     return res
   }
-})
+}, { isTransformFunction: true })

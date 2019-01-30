@@ -3,7 +3,7 @@
 import Fraction from 'fraction.js'
 import { factory } from '../../utils/factory'
 
-const name = 'type.Fraction'
+const name = 'Fraction'
 const dependencies = []
 
 export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, () => {
@@ -37,4 +37,4 @@ export const createFractionClass = /* #__PURE__ */ factory(name, dependencies, (
   }
 
   return Fraction
-})
+}, { isClass: true })

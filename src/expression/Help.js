@@ -5,7 +5,7 @@ import { clone } from '../utils/object'
 import { format } from '../utils/string'
 import { factory } from '../utils/factory'
 
-const name = 'type.Help'
+const name = 'Help'
 const dependencies = ['expression.parse']
 
 export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse } }) => {
@@ -115,4 +115,4 @@ export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ ex
   Help.prototype.valueOf = Help.prototype.toString
 
   return Help
-})
+}, { isClass: true })

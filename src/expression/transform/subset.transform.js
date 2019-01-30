@@ -1,7 +1,7 @@
 'use strict'
 
 import { factory } from '../../utils/factory'
-import { errorTransform } from './error.transform'
+import { errorTransform } from './errorTransform'
 
 const name = 'expression.transform.subset'
 const dependencies = ['typed', 'subset']
@@ -22,4 +22,4 @@ export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies,
       }
     }
   })
-})
+}, { isTransformFunction: true })

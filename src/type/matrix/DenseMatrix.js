@@ -8,12 +8,12 @@ import { clone, deepStrictEqual } from '../../utils/object'
 import { DimensionError } from '../../error/DimensionError'
 import { factory } from '../../utils/factory'
 
-const name = 'type.DenseMatrix'
+const name = 'DenseMatrix'
 const dependencies = [
-  'type.Matrix'
+  'Matrix'
 ]
 
-export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ type: { Matrix } }) => {
+export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies, ({ Matrix }) => {
   /**
    * Dense Matrix implementation. A regular, dense matrix, supporting multi-dimensional matrices. This is the default matrix type.
    * @class DenseMatrix
@@ -855,4 +855,4 @@ export const createDenseMatrixClass = /* #__PURE__ */ factory(name, dependencies
   }
 
   return DenseMatrix
-})
+}, { isClass: true })

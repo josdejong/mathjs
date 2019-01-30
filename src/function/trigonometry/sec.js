@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'sec'
-const dependencies = ['typed', 'type.BigNumber', 'type.Unit']
+const dependencies = ['typed', 'BigNumber', 'Unit']
 
-export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber, Unit } }) => {
+export const createSec = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber, Unit }) => {
   /**
    * Calculate the secant of a value, defined as `sec(x) = 1/cos(x)`.
    *

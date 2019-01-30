@@ -4,9 +4,9 @@ import { flatten } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
 const name = 'setMultiplicity'
-const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'type.Index']
+const dependencies = ['typed', 'size', 'subset', 'compareNatural', 'Index']
 
-export const createSetMultiplicity = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, type: { Index } }) => {
+export const createSetMultiplicity = /* #__PURE__ */ factory(name, dependencies, ({ typed, size, subset, compareNatural, Index }) => {
   /**
    * Count the multiplicity of an element in a multiset.
    * A multi-dimension array will be converted to a single-dimension array before the operation.

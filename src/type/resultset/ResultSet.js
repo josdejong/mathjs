@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 
-const name = 'type.ResultSet'
+const name = 'ResultSet'
 const dependencies = []
 
 export const createResultSet = /* #__PURE__ */ factory(name, dependencies, () => {
@@ -69,4 +69,4 @@ export const createResultSet = /* #__PURE__ */ factory(name, dependencies, () =>
   }
 
   return ResultSet
-})
+}, { isClass: true })

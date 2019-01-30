@@ -3,9 +3,9 @@
 import { factory } from '../../utils/factory'
 
 const name = 'range'
-const dependencies = ['typed', 'config', 'config', 'matrix', 'type.BigNumber']
+const dependencies = ['typed', 'config', 'config', 'matrix', 'BigNumber']
 
-export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, type: { BigNumber } }) => {
+export const createRange = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, matrix, BigNumber }) => {
   const ZERO = new BigNumber(0)
   const ONE = new BigNumber(1)
 

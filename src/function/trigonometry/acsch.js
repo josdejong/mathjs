@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'acsch'
-const dependencies = ['typed', 'type.BigNumber']
+const dependencies = ['typed', 'BigNumber']
 
-export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { BigNumber } }) => {
+export const createAcsch = /* #__PURE__ */ factory(name, dependencies, ({ typed, BigNumber }) => {
   /**
    * Calculate the hyperbolic arccosecant of a value,
    * defined as `acsch(x) = asinh(1/x) = ln(1/x + sqrt(1/x^2 + 1))`.

@@ -13,10 +13,10 @@ const dependencies = [
   'typed',
   'matrix',
   'equalScalar',
-  'type.BigNumber'
+  'BigNumber'
 ]
 
-export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, type: { BigNumber } }) => {
+export const createNthRoot = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix, equalScalar, BigNumber }) => {
   const algorithm01 = createAlgorithm01({ typed })
   const algorithm02 = createAlgorithm02({ typed, equalScalar })
   const algorithm06 = createAlgorithm06({ typed, equalScalar })

@@ -4,9 +4,9 @@ import { factory } from '../../../utils/factory'
 import { deepMap } from '../../../utils/collection'
 
 const name = 'fraction'
-const dependencies = ['typed', 'type.Fraction']
+const dependencies = ['typed', 'Fraction']
 
-export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typed, type: { Fraction } }) => {
+export const createFraction = /* #__PURE__ */ factory(name, dependencies, ({ typed, Fraction }) => {
   /**
    * Create a fraction convert a value to a fraction.
    *

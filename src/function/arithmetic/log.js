@@ -4,9 +4,9 @@ import { factory } from '../../utils/factory'
 import { deepMap } from '../../utils/collection'
 
 const name = 'log'
-const dependencies = ['config', 'typed', 'divideScalar', 'type.Complex']
+const dependencies = ['config', 'typed', 'divideScalar', 'Complex']
 
-export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, type: { Complex } }) => {
+export const createLog = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, divideScalar, Complex }) => {
   /**
    * Calculate the logarithm of a value.
    *
