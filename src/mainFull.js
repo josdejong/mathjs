@@ -1,7 +1,7 @@
 // TODO: auto generate this file
 
 import { DEFAULT_CONFIG } from './core/config'
-import { createEmbeddedDocs } from './expression/embeddedDocs'
+import { embeddedDocs } from './expression/embeddedDocs/embeddedDocs'
 import { createResultSet } from './type/resultset/ResultSet'
 import { createBigNumberClass } from './type/bignumber/BigNumber'
 import { createComplexClass } from './type/complex/Complex'
@@ -1108,8 +1108,7 @@ export const Help = /* #__PURE__ */ createHelpClass({ expression: { parse: parse
 export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (4)
-const docs = /* #__PURE__ */ createEmbeddedDocs()
-export const help = /* #__PURE__ */ createHelp({ math, typed, expression: { docs }, Help })
+export const help = /* #__PURE__ */ createHelp({ math, typed, expression: { docs: embeddedDocs }, Help })
 export const chain = /* #__PURE__ */ createChain({ typed, Chain })
 
 // algebra (4)

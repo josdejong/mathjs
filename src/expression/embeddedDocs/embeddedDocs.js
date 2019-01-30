@@ -1,4 +1,3 @@
-import { factory } from '../../utils/factory'
 import { bignumberDocs } from './construction/bignumber'
 import { typeOfDocs } from './function/utils/typeOf'
 import { isZeroDocs } from './function/utils/isZero'
@@ -205,321 +204,314 @@ import { varianceDocs } from './function/statistics/variance'
 import { sinDocs } from './function/trigonometry/sin'
 import { numericDocs } from './function/utils/numeric'
 
-const name = 'expression.docs'
-const dependencies = []
-
-// TODO: remove factory function here, isn't useful
-export const createEmbeddedDocs = /* #__PURE__ */ factory(name, dependencies, () => {
-  const docs = {}
+export const embeddedDocs = {
 
   // construction functions
-  docs.bignumber = bignumberDocs
-  docs['boolean'] = booleanDocs
-  docs.complex = complexDocs
-  docs.createUnit = createUnitDocs
-  docs.fraction = fractionDocs
-  docs.index = indexDocs
-  docs.matrix = matrixDocs
-  docs.number = numberDocs
-  docs.sparse = sparseDocs
-  docs.splitUnit = splitUnitDocs
-  docs.string = stringDocs
-  docs.unit = unitDocs
+  bignumber: bignumberDocs,
+  'boolean': booleanDocs,
+  complex: complexDocs,
+  createUnit: createUnitDocs,
+  fraction: fractionDocs,
+  index: indexDocs,
+  matrix: matrixDocs,
+  number: numberDocs,
+  sparse: sparseDocs,
+  splitUnit: splitUnitDocs,
+  string: stringDocs,
+  unit: unitDocs,
 
   // constants
-  docs.e = eDocs
-  docs.E = eDocs
-  docs['false'] = falseDocs
-  docs.i = iDocs
-  docs['Infinity'] = InfinityDocs
-  docs.LN2 = LN2Docs
-  docs.LN10 = LN10Docs
-  docs.LOG2E = LOG2EDocs
-  docs.LOG10E = LOG10EDocs
-  docs.NaN = NaNDocs
-  docs['null'] = nullDocs
-  docs.pi = piDocs
-  docs.PI = piDocs
-  docs.phi = phiDocs
-  docs.SQRT1_2 = SQRT12Docs
-  docs.SQRT2 = SQRT2Docs
-  docs.tau = tauDocs
-  docs['true'] = trueDocs
-  docs.version = versionDocs
+  e: eDocs,
+  E: eDocs,
+  'false': falseDocs,
+  i: iDocs,
+  'Infinity': InfinityDocs,
+  LN2: LN2Docs,
+  LN10: LN10Docs,
+  LOG2E: LOG2EDocs,
+  LOG10E: LOG10EDocs,
+  NaN: NaNDocs,
+  'null': nullDocs,
+  pi: piDocs,
+  PI: piDocs,
+  phi: phiDocs,
+  SQRT1_2: SQRT12Docs,
+  SQRT2: SQRT2Docs,
+  tau: tauDocs,
+  'true': trueDocs,
+  version: versionDocs,
 
   // physical constants
   // TODO: more detailed docs for physical constants
-  docs.speedOfLight = { description: 'Speed of light in vacuum', examples: ['speedOfLight'] }
-  docs.gravitationConstant = { description: 'Newtonian constant of gravitation', examples: ['gravitationConstant'] }
-  docs.planckConstant = { description: 'Planck constant', examples: ['planckConstant'] }
-  docs.reducedPlanckConstant = { description: 'Reduced Planck constant', examples: ['reducedPlanckConstant'] }
+  speedOfLight: { description: 'Speed of light in vacuum', examples: ['speedOfLight'] },
+  gravitationConstant: { description: 'Newtonian constant of gravitation', examples: ['gravitationConstant'] },
+  planckConstant: { description: 'Planck constant', examples: ['planckConstant'] },
+  reducedPlanckConstant: { description: 'Reduced Planck constant', examples: ['reducedPlanckConstant'] },
 
-  docs.magneticConstant = { description: 'Magnetic constant (vacuum permeability)', examples: ['magneticConstant'] }
-  docs.electricConstant = { description: 'Electric constant (vacuum permeability)', examples: ['electricConstant'] }
-  docs.vacuumImpedance = { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] }
-  docs.coulomb = { description: 'Coulomb\'s constant', examples: ['coulomb'] }
-  docs.elementaryCharge = { description: 'Elementary charge', examples: ['elementaryCharge'] }
-  docs.bohrMagneton = { description: 'Borh magneton', examples: ['bohrMagneton'] }
-  docs.conductanceQuantum = { description: 'Conductance quantum', examples: ['conductanceQuantum'] }
-  docs.inverseConductanceQuantum = { description: 'Inverse conductance quantum', examples: ['inverseConductanceQuantum'] }
-  // docs.josephson = {description: 'Josephson constant', examples: ['josephson']}
-  docs.magneticFluxQuantum = { description: 'Magnetic flux quantum', examples: ['magneticFluxQuantum'] }
-  docs.nuclearMagneton = { description: 'Nuclear magneton', examples: ['nuclearMagneton'] }
-  docs.klitzing = { description: 'Von Klitzing constant', examples: ['klitzing'] }
+  magneticConstant: { description: 'Magnetic constant (vacuum permeability)', examples: ['magneticConstant'] },
+  electricConstant: { description: 'Electric constant (vacuum permeability)', examples: ['electricConstant'] },
+  vacuumImpedance: { description: 'Characteristic impedance of vacuum', examples: ['vacuumImpedance'] },
+  coulomb: { description: 'Coulomb\'s constant', examples: ['coulomb'] },
+  elementaryCharge: { description: 'Elementary charge', examples: ['elementaryCharge'] },
+  bohrMagneton: { description: 'Borh magneton', examples: ['bohrMagneton'] },
+  conductanceQuantum: { description: 'Conductance quantum', examples: ['conductanceQuantum'] },
+  inverseConductanceQuantum: { description: 'Inverse conductance quantum', examples: ['inverseConductanceQuantum'] },
+  // josephson: {description: 'Josephson constant', examples: ['josephson']},
+  magneticFluxQuantum: { description: 'Magnetic flux quantum', examples: ['magneticFluxQuantum'] },
+  nuclearMagneton: { description: 'Nuclear magneton', examples: ['nuclearMagneton'] },
+  klitzing: { description: 'Von Klitzing constant', examples: ['klitzing'] },
 
-  docs.bohrRadius = { description: 'Borh radius', examples: ['bohrRadius'] }
-  docs.classicalElectronRadius = { description: 'Classical electron radius', examples: ['classicalElectronRadius'] }
-  docs.electronMass = { description: 'Electron mass', examples: ['electronMass'] }
-  docs.fermiCoupling = { description: 'Fermi coupling constant', examples: ['fermiCoupling'] }
-  docs.fineStructure = { description: 'Fine-structure constant', examples: ['fineStructure'] }
-  docs.hartreeEnergy = { description: 'Hartree energy', examples: ['hartreeEnergy'] }
-  docs.protonMass = { description: 'Proton mass', examples: ['protonMass'] }
-  docs.deuteronMass = { description: 'Deuteron Mass', examples: ['deuteronMass'] }
-  docs.neutronMass = { description: 'Neutron mass', examples: ['neutronMass'] }
-  docs.quantumOfCirculation = { description: 'Quantum of circulation', examples: ['quantumOfCirculation'] }
-  docs.rydberg = { description: 'Rydberg constant', examples: ['rydberg'] }
-  docs.thomsonCrossSection = { description: 'Thomson cross section', examples: ['thomsonCrossSection'] }
-  docs.weakMixingAngle = { description: 'Weak mixing angle', examples: ['weakMixingAngle'] }
-  docs.efimovFactor = { description: 'Efimov factor', examples: ['efimovFactor'] }
+  bohrRadius: { description: 'Borh radius', examples: ['bohrRadius'] },
+  classicalElectronRadius: { description: 'Classical electron radius', examples: ['classicalElectronRadius'] },
+  electronMass: { description: 'Electron mass', examples: ['electronMass'] },
+  fermiCoupling: { description: 'Fermi coupling constant', examples: ['fermiCoupling'] },
+  fineStructure: { description: 'Fine-structure constant', examples: ['fineStructure'] },
+  hartreeEnergy: { description: 'Hartree energy', examples: ['hartreeEnergy'] },
+  protonMass: { description: 'Proton mass', examples: ['protonMass'] },
+  deuteronMass: { description: 'Deuteron Mass', examples: ['deuteronMass'] },
+  neutronMass: { description: 'Neutron mass', examples: ['neutronMass'] },
+  quantumOfCirculation: { description: 'Quantum of circulation', examples: ['quantumOfCirculation'] },
+  rydberg: { description: 'Rydberg constant', examples: ['rydberg'] },
+  thomsonCrossSection: { description: 'Thomson cross section', examples: ['thomsonCrossSection'] },
+  weakMixingAngle: { description: 'Weak mixing angle', examples: ['weakMixingAngle'] },
+  efimovFactor: { description: 'Efimov factor', examples: ['efimovFactor'] },
 
-  docs.atomicMass = { description: 'Atomic mass constant', examples: ['atomicMass'] }
-  docs.avogadro = { description: 'Avogadro\'s number', examples: ['avogadro'] }
-  docs.boltzmann = { description: 'Boltzmann constant', examples: ['boltzmann'] }
-  docs.faraday = { description: 'Faraday constant', examples: ['faraday'] }
-  docs.firstRadiation = { description: 'First radiation constant', examples: ['firstRadiation'] }
-  docs.loschmidt = { description: 'Loschmidt constant at T=273.15 K and p=101.325 kPa', examples: ['loschmidt'] }
-  docs.gasConstant = { description: 'Gas constant', examples: ['gasConstant'] }
-  docs.molarPlanckConstant = { description: 'Molar Planck constant', examples: ['molarPlanckConstant'] }
-  docs.molarVolume = { description: 'Molar volume of an ideal gas at T=273.15 K and p=101.325 kPa', examples: ['molarVolume'] }
-  docs.sackurTetrode = { description: 'Sackur-Tetrode constant at T=1 K and p=101.325 kPa', examples: ['sackurTetrode'] }
-  docs.secondRadiation = { description: 'Second radiation constant', examples: ['secondRadiation'] }
-  docs.stefanBoltzmann = { description: 'Stefan-Boltzmann constant', examples: ['stefanBoltzmann'] }
-  docs.wienDisplacement = { description: 'Wien displacement law constant', examples: ['wienDisplacement'] }
-  // docs.spectralRadiance = {description: 'First radiation constant for spectral radiance', examples: ['spectralRadiance']}
+  atomicMass: { description: 'Atomic mass constant', examples: ['atomicMass'] },
+  avogadro: { description: 'Avogadro\'s number', examples: ['avogadro'] },
+  boltzmann: { description: 'Boltzmann constant', examples: ['boltzmann'] },
+  faraday: { description: 'Faraday constant', examples: ['faraday'] },
+  firstRadiation: { description: 'First radiation constant', examples: ['firstRadiation'] },
+  loschmidt: { description: 'Loschmidt constant at T=273.15 K and p=101.325 kPa', examples: ['loschmidt'] },
+  gasConstant: { description: 'Gas constant', examples: ['gasConstant'] },
+  molarPlanckConstant: { description: 'Molar Planck constant', examples: ['molarPlanckConstant'] },
+  molarVolume: { description: 'Molar volume of an ideal gas at T=273.15 K and p=101.325 kPa', examples: ['molarVolume'] },
+  sackurTetrode: { description: 'Sackur-Tetrode constant at T=1 K and p=101.325 kPa', examples: ['sackurTetrode'] },
+  secondRadiation: { description: 'Second radiation constant', examples: ['secondRadiation'] },
+  stefanBoltzmann: { description: 'Stefan-Boltzmann constant', examples: ['stefanBoltzmann'] },
+  wienDisplacement: { description: 'Wien displacement law constant', examples: ['wienDisplacement'] },
+  // spectralRadiance: {description: 'First radiation constant for spectral radiance', examples: ['spectralRadiance']},
 
-  docs.molarMass = { description: 'Molar mass constant', examples: ['molarMass'] }
-  docs.molarMassC12 = { description: 'Molar mass constant of carbon-12', examples: ['molarMassC12'] }
-  docs.gravity = { description: 'Standard acceleration of gravity (standard acceleration of free-fall on Earth)', examples: ['gravity'] }
+  molarMass: { description: 'Molar mass constant', examples: ['molarMass'] },
+  molarMassC12: { description: 'Molar mass constant of carbon-12', examples: ['molarMassC12'] },
+  gravity: { description: 'Standard acceleration of gravity (standard acceleration of free-fall on Earth)', examples: ['gravity'] },
 
-  docs.planckLength = { description: 'Planck length', examples: ['planckLength'] }
-  docs.planckMass = { description: 'Planck mass', examples: ['planckMass'] }
-  docs.planckTime = { description: 'Planck time', examples: ['planckTime'] }
-  docs.planckCharge = { description: 'Planck charge', examples: ['planckCharge'] }
-  docs.planckTemperature = { description: 'Planck temperature', examples: ['planckTemperature'] }
+  planckLength: { description: 'Planck length', examples: ['planckLength'] },
+  planckMass: { description: 'Planck mass', examples: ['planckMass'] },
+  planckTime: { description: 'Planck time', examples: ['planckTime'] },
+  planckCharge: { description: 'Planck charge', examples: ['planckCharge'] },
+  planckTemperature: { description: 'Planck temperature', examples: ['planckTemperature'] },
 
   // functions - algebra
-  docs.derivative = derivativeDocs
-  docs.lsolve = lsolveDocs
-  docs.lup = lupDocs
-  docs.lusolve = lusolveDocs
-  docs.simplify = simplifyDocs
-  docs.rationalize = rationalizeDocs
-  docs.slu = sluDocs
-  docs.usolve = usolveDocs
-  docs.qr = qrDocs
+  derivative: derivativeDocs,
+  lsolve: lsolveDocs,
+  lup: lupDocs,
+  lusolve: lusolveDocs,
+  simplify: simplifyDocs,
+  rationalize: rationalizeDocs,
+  slu: sluDocs,
+  usolve: usolveDocs,
+  qr: qrDocs,
 
   // functions - arithmetic
-  docs.abs = absDocs
-  docs.add = addDocs
-  docs.cbrt = cbrtDocs
-  docs.ceil = ceilDocs
-  docs.cube = cubeDocs
-  docs.divide = divideDocs
-  docs.dotDivide = dotDivideDocs
-  docs.dotMultiply = dotMultiplyDocs
-  docs.dotPow = dotPowDocs
-  docs.exp = expDocs
-  docs.expm = expmDocs
-  docs.expm1 = expm1Docs
-  docs.fix = fixDocs
-  docs.floor = floorDocs
-  docs.gcd = gcdDocs
-  docs.hypot = hypotDocs
-  docs.lcm = lcmDocs
-  docs.log = logDocs
-  docs.log2 = log2Docs
-  docs.log1p = log1pDocs
-  docs.log10 = log10Docs
-  docs.mod = modDocs
-  docs.multiply = multiplyDocs
-  docs.norm = normDocs
-  docs.nthRoot = nthRootDocs
-  docs.nthRoots = nthRootsDocs
-  docs.pow = powDocs
-  docs.round = roundDocs
-  docs.sign = signDocs
-  docs.sqrt = sqrtDocs
-  docs.sqrtm = sqrtmDocs
-  docs.square = squareDocs
-  docs.subtract = subtractDocs
-  docs.unaryMinus = unaryMinusDocs
-  docs.unaryPlus = unaryPlusDocs
-  docs.xgcd = xgcdDocs
+  abs: absDocs,
+  add: addDocs,
+  cbrt: cbrtDocs,
+  ceil: ceilDocs,
+  cube: cubeDocs,
+  divide: divideDocs,
+  dotDivide: dotDivideDocs,
+  dotMultiply: dotMultiplyDocs,
+  dotPow: dotPowDocs,
+  exp: expDocs,
+  expm: expmDocs,
+  expm1: expm1Docs,
+  fix: fixDocs,
+  floor: floorDocs,
+  gcd: gcdDocs,
+  hypot: hypotDocs,
+  lcm: lcmDocs,
+  log: logDocs,
+  log2: log2Docs,
+  log1p: log1pDocs,
+  log10: log10Docs,
+  mod: modDocs,
+  multiply: multiplyDocs,
+  norm: normDocs,
+  nthRoot: nthRootDocs,
+  nthRoots: nthRootsDocs,
+  pow: powDocs,
+  round: roundDocs,
+  sign: signDocs,
+  sqrt: sqrtDocs,
+  sqrtm: sqrtmDocs,
+  square: squareDocs,
+  subtract: subtractDocs,
+  unaryMinus: unaryMinusDocs,
+  unaryPlus: unaryPlusDocs,
+  xgcd: xgcdDocs,
 
   // functions - bitwise
-  docs.bitAnd = bitAndDocs
-  docs.bitNot = bitNotDocs
-  docs.bitOr = bitOrDocs
-  docs.bitXor = bitXorDocs
-  docs.leftShift = leftShiftDocs
-  docs.rightArithShift = rightArithShiftDocs
-  docs.rightLogShift = rightLogShiftDocs
+  bitAnd: bitAndDocs,
+  bitNot: bitNotDocs,
+  bitOr: bitOrDocs,
+  bitXor: bitXorDocs,
+  leftShift: leftShiftDocs,
+  rightArithShift: rightArithShiftDocs,
+  rightLogShift: rightLogShiftDocs,
 
   // functions - combinatorics
-  docs.bellNumbers = bellNumbersDocs
-  docs.catalan = catalanDocs
-  docs.composition = compositionDocs
-  docs.stirlingS2 = stirlingS2Docs
+  bellNumbers: bellNumbersDocs,
+  catalan: catalanDocs,
+  composition: compositionDocs,
+  stirlingS2: stirlingS2Docs,
 
   // functions - core
-  docs['config'] = configDocs
-  docs['import'] = importDocs
-  docs['typed'] = typedDocs
+  'config': configDocs,
+  'import': importDocs,
+  'typed': typedDocs,
 
   // functions - complex
-  docs.arg = argDocs
-  docs.conj = conjDocs
-  docs.re = reDocs
-  docs.im = imDocs
+  arg: argDocs,
+  conj: conjDocs,
+  re: reDocs,
+  im: imDocs,
 
   // functions - expression
-  docs['evaluate'] = evaluateDocs
-  docs.help = helpDocs
+  'evaluate': evaluateDocs,
+  help: helpDocs,
 
   // functions - geometry
-  docs.distance = distanceDocs
-  docs.intersect = intersectDocs
+  distance: distanceDocs,
+  intersect: intersectDocs,
 
   // functions - logical
-  docs['and'] = andDocs
-  docs['not'] = notDocs
-  docs['or'] = orDocs
-  docs['xor'] = xorDocs
+  'and': andDocs,
+  'not': notDocs,
+  'or': orDocs,
+  'xor': xorDocs,
 
   // functions - matrix
-  docs['concat'] = concatDocs
-  docs.cross = crossDocs
-  docs.ctranspose = ctransposeDocs
-  docs.det = detDocs
-  docs.diag = diagDocs
-  docs.dot = dotDocs
-  docs.getMatrixDataType = getMatrixDataTypeDocs
-  docs.identity = identityDocs
-  docs.filter = filterDocs
-  docs.flatten = flattenDocs
-  docs.forEach = forEachDocs
-  docs.inv = invDocs
-  docs.kron = kronDocs
-  docs.map = mapDocs
-  docs.ones = onesDocs
-  docs.partitionSelect = partitionSelectDocs
-  docs.range = rangeDocs
-  docs.resize = resizeDocs
-  docs.reshape = reshapeDocs
-  docs.size = sizeDocs
-  docs.sort = sortDocs
-  docs.squeeze = squeezeDocs
-  docs.subset = subsetDocs
-  docs.trace = traceDocs
-  docs.transpose = transposeDocs
-  docs.zeros = zerosDocs
+  'concat': concatDocs,
+  cross: crossDocs,
+  ctranspose: ctransposeDocs,
+  det: detDocs,
+  diag: diagDocs,
+  dot: dotDocs,
+  getMatrixDataType: getMatrixDataTypeDocs,
+  identity: identityDocs,
+  filter: filterDocs,
+  flatten: flattenDocs,
+  forEach: forEachDocs,
+  inv: invDocs,
+  kron: kronDocs,
+  map: mapDocs,
+  ones: onesDocs,
+  partitionSelect: partitionSelectDocs,
+  range: rangeDocs,
+  resize: resizeDocs,
+  reshape: reshapeDocs,
+  size: sizeDocs,
+  sort: sortDocs,
+  squeeze: squeezeDocs,
+  subset: subsetDocs,
+  trace: traceDocs,
+  transpose: transposeDocs,
+  zeros: zerosDocs,
 
   // functions - probability
-  docs.combinations = combinationsDocs
-  // docs.distribution = distributionDocs
-  docs.factorial = factorialDocs
-  docs.gamma = gammaDocs
-  docs.kldivergence = kldivergenceDocs
-  docs.multinomial = multinomialDocs
-  docs.permutations = permutationsDocs
-  docs.pickRandom = pickRandomDocs
-  docs.random = randomDocs
-  docs.randomInt = randomIntDocs
+  combinations: combinationsDocs,
+  // distribution: distributionDocs,
+  factorial: factorialDocs,
+  gamma: gammaDocs,
+  kldivergence: kldivergenceDocs,
+  multinomial: multinomialDocs,
+  permutations: permutationsDocs,
+  pickRandom: pickRandomDocs,
+  random: randomDocs,
+  randomInt: randomIntDocs,
 
   // functions - relational
-  docs.compare = compareDocs
-  docs.compareNatural = compareNaturalDocs
-  docs.compareText = compareTextDocs
-  docs.deepEqual = deepEqualDocs
-  docs['equal'] = equalDocs
-  docs.equalText = equalTextDocs
-  docs.larger = largerDocs
-  docs.largerEq = largerEqDocs
-  docs.smaller = smallerDocs
-  docs.smallerEq = smallerEqDocs
-  docs.unequal = unequalDocs
+  compare: compareDocs,
+  compareNatural: compareNaturalDocs,
+  compareText: compareTextDocs,
+  deepEqual: deepEqualDocs,
+  'equal': equalDocs,
+  equalText: equalTextDocs,
+  larger: largerDocs,
+  largerEq: largerEqDocs,
+  smaller: smallerDocs,
+  smallerEq: smallerEqDocs,
+  unequal: unequalDocs,
 
   // functions - set
-  docs.setCartesian = setCartesianDocs
-  docs.setDifference = setDifferenceDocs
-  docs.setDistinct = setDistinctDocs
-  docs.setIntersect = setIntersectDocs
-  docs.setIsSubset = setIsSubsetDocs
-  docs.setMultiplicity = setMultiplicityDocs
-  docs.setPowerset = setPowersetDocs
-  docs.setSize = setSizeDocs
-  docs.setSymDifference = setSymDifferenceDocs
-  docs.setUnion = setUnionDocs
+  setCartesian: setCartesianDocs,
+  setDifference: setDifferenceDocs,
+  setDistinct: setDistinctDocs,
+  setIntersect: setIntersectDocs,
+  setIsSubset: setIsSubsetDocs,
+  setMultiplicity: setMultiplicityDocs,
+  setPowerset: setPowersetDocs,
+  setSize: setSizeDocs,
+  setSymDifference: setSymDifferenceDocs,
+  setUnion: setUnionDocs,
 
   // functions - special
-  docs.erf = erfDocs
+  erf: erfDocs,
 
   // functions - statistics
-  docs.mad = madDocs
-  docs.max = maxDocs
-  docs.mean = meanDocs
-  docs.median = medianDocs
-  docs.min = minDocs
-  docs.mode = modeDocs
-  docs.prod = prodDocs
-  docs.quantileSeq = quantileSeqDocs
-  docs.std = stdDocs
-  docs.sum = sumDocs
-  docs['variance'] = varianceDocs
+  mad: madDocs,
+  max: maxDocs,
+  mean: meanDocs,
+  median: medianDocs,
+  min: minDocs,
+  mode: modeDocs,
+  prod: prodDocs,
+  quantileSeq: quantileSeqDocs,
+  std: stdDocs,
+  sum: sumDocs,
+  'variance': varianceDocs,
 
   // functions - trigonometry
-  docs.acos = acosDocs
-  docs.acosh = acoshDocs
-  docs.acot = acotDocs
-  docs.acoth = acothDocs
-  docs.acsc = acscDocs
-  docs.acsch = acschDocs
-  docs.asec = asecDocs
-  docs.asech = asechDocs
-  docs.asin = asinDocs
-  docs.asinh = asinhDocs
-  docs.atan = atanDocs
-  docs.atanh = atanhDocs
-  docs.atan2 = atan2Docs
-  docs.cos = cosDocs
-  docs.cosh = coshDocs
-  docs.cot = cotDocs
-  docs.coth = cothDocs
-  docs.csc = cscDocs
-  docs.csch = cschDocs
-  docs.sec = secDocs
-  docs.sech = sechDocs
-  docs.sin = sinDocs
-  docs.sinh = sinhDocs
-  docs.tan = tanDocs
-  docs.tanh = tanhDocs
+  acos: acosDocs,
+  acosh: acoshDocs,
+  acot: acotDocs,
+  acoth: acothDocs,
+  acsc: acscDocs,
+  acsch: acschDocs,
+  asec: asecDocs,
+  asech: asechDocs,
+  asin: asinDocs,
+  asinh: asinhDocs,
+  atan: atanDocs,
+  atanh: atanhDocs,
+  atan2: atan2Docs,
+  cos: cosDocs,
+  cosh: coshDocs,
+  cot: cotDocs,
+  coth: cothDocs,
+  csc: cscDocs,
+  csch: cschDocs,
+  sec: secDocs,
+  sech: sechDocs,
+  sin: sinDocs,
+  sinh: sinhDocs,
+  tan: tanDocs,
+  tanh: tanhDocs,
 
   // functions - units
-  docs.to = toDocs
+  to: toDocs,
 
   // functions - utils
-  docs.clone = cloneDocs
-  docs.format = formatDocs
-  docs.isNaN = isNaNDocs
-  docs.isInteger = isIntegerDocs
-  docs.isNegative = isNegativeDocs
-  docs.isNumeric = isNumericDocs
-  docs.isPositive = isPositiveDocs
-  docs.isPrime = isPrimeDocs
-  docs.isZero = isZeroDocs
-  // docs.print = require('./function/utils/print') // TODO: add documentation for print as soon as the parser supports objects.
-  docs['typeOf'] = typeOfDocs
-  docs['numeric'] = numericDocs
-
-  return docs
-})
+  clone: cloneDocs,
+  format: formatDocs,
+  isNaN: isNaNDocs,
+  isInteger: isIntegerDocs,
+  isNegative: isNegativeDocs,
+  isNumeric: isNumericDocs,
+  isPositive: isPositiveDocs,
+  isPrime: isPrimeDocs,
+  isZero: isZeroDocs,
+  // print: printDocs // TODO: add documentation for print as soon as the parser supports objects.
+  'typeOf': typeOfDocs,
+  'numeric': numericDocs
+}

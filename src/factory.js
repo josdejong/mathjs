@@ -1,4 +1,3 @@
-export { createEmbeddedDocs } from './expression/embeddedDocs'
 export { createResultSet } from './type/resultset/ResultSet'
 export { createBigNumberClass } from './type/bignumber/BigNumber'
 export { createComplexClass } from './type/complex/Complex'

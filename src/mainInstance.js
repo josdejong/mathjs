@@ -5,6 +5,7 @@ import * as all from './factory'
 import { ArgumentsError } from './error/ArgumentsError'
 import { DimensionError } from './error/DimensionError'
 import { IndexError } from './error/IndexError'
+import { embeddedDocs } from './expression/embeddedDocs/embeddedDocs'
 
 export function core (config) {
   const mergedConfig = Object.assign({}, DEFAULT_CONFIG, config)
@@ -23,6 +24,8 @@ export function create (config) {
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
   math['import'](values(all))
+
+  math.expression.docs = embeddedDocs
 
   math.error = {
     ArgumentsError,
