@@ -12,18 +12,25 @@ const dependencies = [
   'multiply',
   'divide',
   'pow',
-  'expression.node.ConstantNode',
-  'expression.node.OperatorNode',
-  'expression.node.FunctionNode',
-  'expression.node.ParenthesisNode'
+  'ConstantNode',
+  'OperatorNode',
+  'FunctionNode',
+  'ParenthesisNode'
 ]
 
-export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({ equal, isZero, add, subtract, multiply, divide, pow, expression: { node: {
+export const createSimplifyCore = /* #__PURE__ */ factory(name, dependencies, ({
+  equal,
+  isZero,
+  add,
+  subtract,
+  multiply,
+  divide,
+  pow,
   ConstantNode,
   OperatorNode,
   FunctionNode,
   ParenthesisNode
-} } }) => {
+}) => {
   const node0 = new ConstantNode(0)
   const node1 = new ConstantNode(1)
 

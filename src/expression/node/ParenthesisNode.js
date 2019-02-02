@@ -3,12 +3,12 @@
 import { isNode } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.ParenthesisNode'
+const name = 'ParenthesisNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor ParenthesisNode
    * @extends {Node}
@@ -150,4 +150,4 @@ export const createParenthesisNode = /* #__PURE__ */ factory(name, dependencies,
   }
 
   return ParenthesisNode
-})
+}, { isClass: true, isNode: true })

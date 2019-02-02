@@ -4,12 +4,12 @@ import { isNode, isSymbolNode } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { getPrecedence } from '../operators'
 
-const name = 'expression.node.RangeNode'
+const name = 'RangeNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor RangeNode
    * @extends {Node}
@@ -280,4 +280,4 @@ export const createRangeNode = /* #__PURE__ */ factory(name, dependencies, ({ ex
   }
 
   return RangeNode
-})
+}, { isClass: true, isNode: true })

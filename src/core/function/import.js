@@ -290,9 +290,11 @@ export function importFactory (typed, load, math, factories) {
     const nameContainsPath = fullName.indexOf('.') !== -1
     const path = nameContainsPath
       ? initial(fullName.split('.'))
-      : (factory.meta && factory.meta.isClass === true)
-        ? ['type'] // path where we want to put classes
-        : undefined
+      : (factory.meta && factory.meta.isNode === true)
+        ? ['expression', 'node'] // path where we want to put node classes
+        : (factory.meta && factory.meta.isClass === true)
+          ? ['type'] // path where we want to put classes
+          : undefined
     const name = nameContainsPath ? last(fullName.split('.')) : fullName
     const namespace = path ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
@@ -306,11 +308,12 @@ export function importFactory (typed, load, math, factories) {
         .forEach(dependency => {
           if (dependency === 'math') {
             dependencies.math = math
-          } else if (dependency === 'classes') { // for json reviver
-            dependencies.classes = math.type
+          } else if (dependency === 'classes') { // special case for json reviver
+            dependencies.classes = Object.assign({}, math.type, math.expression.node)
           } else {
-            // dependencies[name] = math.type[name] || math[name] // FIXME: replace with non nested solution
-            set(dependencies, dependency, get(math.type, dependency) || get(math, dependency))
+            // dependencies[name] = math.type[name] || math.expression.node[name] || math[name] // FIXME: replace with non nested solution
+            const value = get(math, dependency) || get(math.type, dependency) || get(math.expression.node, dependency)
+            set(dependencies, dependency, value)
           }
         })
 

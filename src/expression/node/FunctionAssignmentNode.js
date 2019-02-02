@@ -10,13 +10,13 @@ import { getPrecedence } from '../operators'
 import { setSafeProperty } from '../../utils/customs'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.FunctionAssignmentNode'
+const name = 'FunctionAssignmentNode'
 const dependencies = [
   'typed',
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ typed, expression: { node: { Node } } }) => {
+export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ typed, Node }) => {
   /**
    * @constructor FunctionAssignmentNode
    * @extends {Node}
@@ -224,4 +224,4 @@ export const createFunctionAssignmentNode = /* #__PURE__ */ factory(name, depend
   }
 
   return FunctionAssignmentNode
-})
+}, { isClass: true, isNode: true })

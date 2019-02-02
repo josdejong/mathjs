@@ -9,14 +9,14 @@ import { getSafeProperty, validateSafeMethod } from '../../utils/customs'
 import { factory } from '../../utils/factory'
 import { defaultTemplate, latexFunctions } from '../../utils/latex'
 
-const name = 'expression.node.FunctionNode'
+const name = 'FunctionNode'
 const dependencies = [
   'math',
-  'expression.node.Node',
-  'expression.node.SymbolNode'
+  'Node',
+  'SymbolNode'
 ]
 
-export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({ math, expression: { node: { Node, SymbolNode } } }) => {
+export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Node, SymbolNode }) => {
   /**
    * @constructor FunctionNode
    * @extends {./Node}
@@ -439,4 +439,4 @@ export const createFunctionNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   return FunctionNode
-})
+}, { isClass: true, isNode: true })

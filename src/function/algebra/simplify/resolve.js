@@ -6,16 +6,17 @@ import { factory } from '../../../utils/factory'
 const name = 'algebra.simplify.resolve'
 const dependencies = [
   'expression.parse',
-  'expression.node.FunctionNode',
-  'expression.node.OperatorNode',
-  'expression.node.ParenthesisNode'
+  'FunctionNode',
+  'OperatorNode',
+  'ParenthesisNode'
 ]
 
-export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse, node: {
+export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
+  expression: { parse },
   FunctionNode,
   OperatorNode,
   ParenthesisNode
-} } }) => {
+}) => {
   /**
    * resolve(expr, scope) replaces variable nodes with their scoped values
    *

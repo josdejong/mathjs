@@ -7,14 +7,14 @@ import { accessFactory } from './utils/access'
 import { assignFactory } from './utils/assign'
 import { getPrecedence } from '../operators'
 
-const name = 'expression.node.AssignmentNode'
+const name = 'AssignmentNode'
 const dependencies = [
   'subset',
   'matrix',
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, expression: { node: { Node } } }) => {
+export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, matrix, Node }) => {
   const access = accessFactory({ subset })
   const assign = assignFactory({ subset, matrix })
 
@@ -300,4 +300,4 @@ export const createAssignmentNode = /* #__PURE__ */ factory(name, dependencies, 
   }
 
   return AssignmentNode
-})
+}, { isClass: true, isNode: true })

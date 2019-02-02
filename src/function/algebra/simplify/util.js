@@ -5,12 +5,12 @@ import { factory } from '../../../utils/factory'
 
 const name = 'algebra.simplify.util'
 const dependencies = [
-  'expression.node.FunctionNode',
-  'expression.node.OperatorNode',
-  'expression.node.SymbolNode'
+  'FunctionNode',
+  'OperatorNode',
+  'SymbolNode'
 ]
 
-export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } }) => {
+export const createUtil = /* #__PURE__ */ factory(name, dependencies, ({ FunctionNode, OperatorNode, SymbolNode }) => {
   // TODO commutative/associative properties rely on the arguments
   // e.g. multiply is not commutative for matrices
   // The properties should be calculated from an argument to simplify, or possibly something in math.config

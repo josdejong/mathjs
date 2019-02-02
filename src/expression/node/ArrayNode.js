@@ -4,12 +4,12 @@ import { isNode } from '../../utils/is'
 import { map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.ArrayNode'
+const name = 'ArrayNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor ArrayNode
    * @extends {Node}
@@ -182,4 +182,4 @@ export const createArrayNode = /* #__PURE__ */ factory(name, dependencies, ({ ex
   }
 
   return ArrayNode
-})
+}, { isClass: true, isNode: true })

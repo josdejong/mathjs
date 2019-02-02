@@ -1057,43 +1057,39 @@ const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
 
 // expression (4)
 export const Node = /* #__PURE__ */ createNode({ expression: { mathWithTransform } })
-export const AccessorNode = /* #__PURE__ */ createAccessorNode({ subset, expression: { node: { Node } } })
-export const ArrayNode = /* #__PURE__ */ createArrayNode({ expression: { node: { Node } } })
-export const AssignmentNode = /* #__PURE__ */ createAssignmentNode({ subset, matrix, expression: { node: { Node } } })
-export const BlockNode = /* #__PURE__ */ createBlockNode({ ResultSet, expression: { node: { Node } } })
-export const ConditionalNode = /* #__PURE__ */ createConditionalNode({ expression: { node: { Node } } })
-export const ConstantNode = /* #__PURE__ */ createConstantNode({ expression: { node: { Node } } })
-export const FunctionAssignmentNode = /* #__PURE__ */ createFunctionAssignmentNode({ typed, expression: { node: { Node } } })
-export const IndexNode = /* #__PURE__ */ createIndexNode({ Range, expression: { node: { Node } } })
-export const ObjectNode = /* #__PURE__ */ createObjectNode({ expression: { node: { Node } } })
-export const OperatorNode = /* #__PURE__ */ createOperatorNode({ expression: { node: { Node } } })
-export const ParenthesisNode = /* #__PURE__ */ createParenthesisNode({ expression: { node: { Node } } })
-export const RangeNode = /* #__PURE__ */ createRangeNode({ expression: { node: { Node } } })
-export const RelationalNode = /* #__PURE__ */ createRelationalNode({ expression: { node: { Node } } })
-export const SymbolNode = /* #__PURE__ */ createSymbolNode({ math, Unit, expression: { node: { Node } } })
-export const FunctionNode = /* #__PURE__ */ createFunctionNode({ math, expression: { node: { Node, SymbolNode } } })
+export const AccessorNode = /* #__PURE__ */ createAccessorNode({ subset, Node })
+export const ArrayNode = /* #__PURE__ */ createArrayNode({ Node })
+export const AssignmentNode = /* #__PURE__ */ createAssignmentNode({ subset, matrix, Node })
+export const BlockNode = /* #__PURE__ */ createBlockNode({ ResultSet, Node })
+export const ConditionalNode = /* #__PURE__ */ createConditionalNode({ Node })
+export const ConstantNode = /* #__PURE__ */ createConstantNode({ Node })
+export const FunctionAssignmentNode = /* #__PURE__ */ createFunctionAssignmentNode({ typed, Node })
+export const IndexNode = /* #__PURE__ */ createIndexNode({ Range, Node })
+export const ObjectNode = /* #__PURE__ */ createObjectNode({ Node })
+export const OperatorNode = /* #__PURE__ */ createOperatorNode({ Node })
+export const ParenthesisNode = /* #__PURE__ */ createParenthesisNode({ Node })
+export const RangeNode = /* #__PURE__ */ createRangeNode({ Node })
+export const RelationalNode = /* #__PURE__ */ createRelationalNode({ Node })
+export const SymbolNode = /* #__PURE__ */ createSymbolNode({ math, Unit, Node })
+export const FunctionNode = /* #__PURE__ */ createFunctionNode({ math, Node, SymbolNode })
 const parseExpression = /* #__PURE__ */ createParseExpression({
   config,
   numeric,
-  expression: {
-    node: {
-      AccessorNode,
-      ArrayNode,
-      AssignmentNode,
-      BlockNode,
-      ConditionalNode,
-      ConstantNode,
-      FunctionAssignmentNode,
-      FunctionNode,
-      IndexNode,
-      ObjectNode,
-      OperatorNode,
-      ParenthesisNode,
-      RangeNode,
-      RelationalNode,
-      SymbolNode
-    }
-  }
+  AccessorNode,
+  ArrayNode,
+  AssignmentNode,
+  BlockNode,
+  ConditionalNode,
+  ConstantNode,
+  FunctionAssignmentNode,
+  FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
+  ParenthesisNode,
+  RangeNode,
+  RelationalNode,
+  SymbolNode
 })
 export const parse = /* #__PURE__ */ createParse({ typed, expression: { parse: parseExpression } })
 export const compile = /* #__PURE__ */ createCompile({ typed, expression: { parse: parseExpression } })
@@ -1126,15 +1122,11 @@ export const simplify = /* #__PURE__ */ createSimplify({
   fraction,
   bignumber,
   math,
-  expression: {
-    node: {
-      ConstantNode,
-      FunctionNode,
-      OperatorNode,
-      ParenthesisNode,
-      SymbolNode
-    }
-  }
+  ConstantNode,
+  FunctionNode,
+  OperatorNode,
+  ParenthesisNode,
+  SymbolNode
 })
 export const derivative = /* #__PURE__ */ createDerivative({
   config,
@@ -1144,15 +1136,11 @@ export const derivative = /* #__PURE__ */ createDerivative({
   equal,
   isZero,
   numeric,
-  expression: {
-    node: {
-      ConstantNode,
-      FunctionNode,
-      OperatorNode,
-      ParenthesisNode,
-      SymbolNode
-    }
-  }
+  ConstantNode,
+  FunctionNode,
+  OperatorNode,
+  ParenthesisNode,
+  SymbolNode
 })
 export const rationalize = /* #__PURE__ */ createRationalize({
   config,
@@ -1169,15 +1157,11 @@ export const rationalize = /* #__PURE__ */ createRationalize({
   fraction,
   bignumber,
   math,
-  expression: {
-    node: {
-      ConstantNode,
-      FunctionNode,
-      OperatorNode,
-      ParenthesisNode,
-      SymbolNode
-    }
-  }
+  ConstantNode,
+  FunctionNode,
+  OperatorNode,
+  ParenthesisNode,
+  SymbolNode
 })
 
 // ----------------------------------------------------------------------------
@@ -1201,25 +1185,21 @@ export const reviver = /* #__PURE__ */ createReviver({
     Unit,
     Help
   },
-  expression: {
-    node: {
-      AccessorNode,
-      ArrayNode,
-      AssignmentNode,
-      BlockNode,
-      ConditionalNode,
-      ConstantNode,
-      FunctionAssignmentNode,
-      FunctionNode,
-      IndexNode,
-      ObjectNode,
-      OperatorNode,
-      ParenthesisNode,
-      RangeNode,
-      RelationalNode,
-      SymbolNode
-    }
-  }
+  AccessorNode,
+  ArrayNode,
+  AssignmentNode,
+  BlockNode,
+  ConditionalNode,
+  ConstantNode,
+  FunctionAssignmentNode,
+  FunctionNode,
+  IndexNode,
+  ObjectNode,
+  OperatorNode,
+  ParenthesisNode,
+  RangeNode,
+  RelationalNode,
+  SymbolNode
 })
 
 // TODO: this is ugly having to add these functions afterwards

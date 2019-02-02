@@ -4,12 +4,12 @@ import { isBigNumber, isComplex, isNode, isUnit, typeOf } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { getPrecedence } from '../operators'
 
-const name = 'expression.node.ConditionalNode'
+const name = 'ConditionalNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * A lazy evaluating conditional operator: 'condition ? trueExpr : falseExpr'
    *
@@ -245,4 +245,4 @@ export const createConditionalNode = /* #__PURE__ */ factory(name, dependencies,
   }
 
   return ConditionalNode
-})
+}, { isClass: true, isNode: true })

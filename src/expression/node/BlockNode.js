@@ -4,13 +4,13 @@ import { isNode } from '../../utils/is'
 import { forEach, map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.BlockNode'
+const name = 'BlockNode'
 const dependencies = [
   'ResultSet',
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ ResultSet, expression: { node: { Node } } }) => {
+export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ ResultSet, Node }) => {
   /**
    * @constructor BlockNode
    * @extends {Node}
@@ -184,4 +184,4 @@ export const createBlockNode = /* #__PURE__ */ factory(name, dependencies, ({ Re
   }
 
   return BlockNode
-})
+}, { isClass: true, isNode: true })

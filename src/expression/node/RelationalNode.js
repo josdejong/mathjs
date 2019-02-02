@@ -6,12 +6,12 @@ import { getSafeProperty } from '../../utils/customs'
 import { latexOperators } from '../../utils/latex'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.RelationalNode'
+const name = 'RelationalNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * A node representing a chained conditional expression, such as 'x > y > z'
    *
@@ -213,4 +213,4 @@ export const createRelationalNode = /* #__PURE__ */ factory(name, dependencies, 
   }
 
   return RelationalNode
-})
+}, { isClass: true, isNode: true })

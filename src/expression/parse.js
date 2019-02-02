@@ -9,24 +9,26 @@ const name = 'expression.parse'
 const dependencies = [
   'numeric',
   'config',
-  'expression.node.AccessorNode',
-  'expression.node.ArrayNode',
-  'expression.node.AssignmentNode',
-  'expression.node.BlockNode',
-  'expression.node.ConditionalNode',
-  'expression.node.ConstantNode',
-  'expression.node.FunctionAssignmentNode',
-  'expression.node.FunctionNode',
-  'expression.node.IndexNode',
-  'expression.node.ObjectNode',
-  'expression.node.OperatorNode',
-  'expression.node.ParenthesisNode',
-  'expression.node.RangeNode',
-  'expression.node.RelationalNode',
-  'expression.node.SymbolNode'
+  'AccessorNode',
+  'ArrayNode',
+  'AssignmentNode',
+  'BlockNode',
+  'ConditionalNode',
+  'ConstantNode',
+  'FunctionAssignmentNode',
+  'FunctionNode',
+  'IndexNode',
+  'ObjectNode',
+  'OperatorNode',
+  'ParenthesisNode',
+  'RangeNode',
+  'RelationalNode',
+  'SymbolNode'
 ]
 
-export const createParseExpression = /* #__PURE__ */ factory(name, dependencies, ({ numeric, config, expression: { node: {
+export const createParseExpression = /* #__PURE__ */ factory(name, dependencies, ({
+  numeric,
+  config,
   AccessorNode,
   ArrayNode,
   AssignmentNode,
@@ -42,7 +44,7 @@ export const createParseExpression = /* #__PURE__ */ factory(name, dependencies,
   RangeNode,
   RelationalNode,
   SymbolNode
-} } }) => {
+}) => {
   /**
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.evaluate().

@@ -8,12 +8,12 @@ import { getAssociativity, getPrecedence, isAssociativeWith, properties } from '
 import { latexOperators } from '../../utils/latex'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.OperatorNode'
+const name = 'OperatorNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor OperatorNode
    * @extends {Node}
@@ -610,4 +610,4 @@ export const createOperatorNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   return OperatorNode
-})
+}, { isClass: true, isNode: true })

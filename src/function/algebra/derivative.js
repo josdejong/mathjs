@@ -12,20 +12,27 @@ const dependencies = [
   'equal',
   'isZero',
   'numeric',
-  'expression.node.ConstantNode',
-  'expression.node.FunctionNode',
-  'expression.node.OperatorNode',
-  'expression.node.ParenthesisNode',
-  'expression.node.SymbolNode'
+  'ConstantNode',
+  'FunctionNode',
+  'OperatorNode',
+  'ParenthesisNode',
+  'SymbolNode'
 ]
 
-export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, parse, simplify, equal, isZero, numeric, expression: { node: {
+export const createDerivative = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
+  config,
+  parse,
+  simplify,
+  equal,
+  isZero,
+  numeric,
   ConstantNode,
   FunctionNode,
   OperatorNode,
   ParenthesisNode,
   SymbolNode
-} } }) => {
+}) => {
   /**
    * Takes the derivative of an expression expressed in parser Nodes.
    * The derivative will be taken over the supplied variable in the

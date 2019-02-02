@@ -15,13 +15,13 @@ import { getSafeProperty } from '../../utils/customs'
 import { factory } from '../../utils/factory'
 import { accessFactory } from './utils/access'
 
-const name = 'expression.node.AccessorNode'
+const name = 'AccessorNode'
 const dependencies = [
   'subset',
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, expression: { node: { Node } } }) => {
+export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({ subset, Node }) => {
   const access = accessFactory({ subset })
 
   /**
@@ -214,4 +214,4 @@ export const createAccessorNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   return AccessorNode
-})
+}, { isClass: true, isNode: true })

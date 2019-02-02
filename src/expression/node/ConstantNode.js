@@ -5,12 +5,12 @@ import { typeOf } from '../../utils/is'
 import { escapeLatex } from '../../utils/latex'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.ConstantNode'
+const name = 'ConstantNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * A ConstantNode holds a constant value like a number or string.
    *
@@ -177,4 +177,4 @@ export const createConstantNode = /* #__PURE__ */ factory(name, dependencies, ({
   }
 
   return ConstantNode
-})
+}, { isClass: true, isNode: true })

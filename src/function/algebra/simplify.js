@@ -22,11 +22,11 @@ const dependencies = [
   'fraction',
   'bignumber',
   'math',
-  'expression.node.ConstantNode',
-  'expression.node.FunctionNode',
-  'expression.node.OperatorNode',
-  'expression.node.ParenthesisNode',
-  'expression.node.SymbolNode'
+  'ConstantNode',
+  'FunctionNode',
+  'OperatorNode',
+  'ParenthesisNode',
+  'SymbolNode'
 ]
 
 export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
@@ -44,15 +44,11 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     fraction,
     bignumber,
     math,
-    expression: {
-      node: {
-        ConstantNode,
-        FunctionNode,
-        OperatorNode,
-        ParenthesisNode,
-        SymbolNode
-      }
-    }
+    ConstantNode,
+    FunctionNode,
+    OperatorNode,
+    ParenthesisNode,
+    SymbolNode
   }
 ) => {
   const simplifyConstant = createSimplifyConstant({
@@ -61,14 +57,10 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     math,
     fraction,
     bignumber,
-    expression: {
-      node: {
-        ConstantNode,
-        OperatorNode,
-        FunctionNode,
-        SymbolNode
-      }
-    }
+    ConstantNode,
+    OperatorNode,
+    FunctionNode,
+    SymbolNode
   })
   const simplifyCore = createSimplifyCore({
     equal,
@@ -78,28 +70,22 @@ export const createSimplify = /* #__PURE__ */ factory(name, dependencies, (
     multiply,
     divide,
     pow,
-    expression: {
-      node: {
-        ConstantNode,
-        OperatorNode,
-        FunctionNode,
-        ParenthesisNode
-      }
-    }
+    ConstantNode,
+    OperatorNode,
+    FunctionNode,
+    ParenthesisNode
   })
   const resolve = createResolve({
     expression: {
-      parse,
-      node: {
-        FunctionNode,
-        OperatorNode,
-        ParenthesisNode
-      }
-    }
+      parse
+    },
+    FunctionNode,
+    OperatorNode,
+    ParenthesisNode
   })
 
   const { isCommutative, isAssociative, flatten, unflattenr, unflattenl, createMakeNodeFunction } =
-    createUtil({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } })
+    createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   /**
    * Simplify an expression tree.

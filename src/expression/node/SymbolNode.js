@@ -6,14 +6,14 @@ import { getSafeProperty } from '../../utils/customs'
 import { factory } from '../../utils/factory'
 import { toSymbol } from '../../utils/latex'
 
-const name = 'expression.node.SymbolNode'
+const name = 'SymbolNode'
 const dependencies = [
   'math',
   'Unit',
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Unit, expression: { node: { Node } } }) => {
+export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ math, Unit, Node }) => {
   /**
    * Check whether some name is a valueless unit like "inch".
    * @param {string} name
@@ -201,4 +201,4 @@ export const createSymbolNode = /* #__PURE__ */ factory(name, dependencies, ({ m
   }
 
   return SymbolNode
-})
+}, { isClass: true, isNode: true })

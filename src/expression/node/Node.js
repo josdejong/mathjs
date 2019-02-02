@@ -7,7 +7,7 @@ import { deepStrictEqual, hasOwnProperty } from '../../utils/object'
 import { factory } from '../../utils/factory'
 import { warnOnce } from '../../utils/log'
 
-const name = 'expression.node.Node'
+const name = 'Node'
 const dependencies = ['expression.mathWithTransform']
 
 export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { mathWithTransform } }) => {
@@ -427,4 +427,4 @@ export const createNode = /* #__PURE__ */ factory(name, dependencies, ({ express
   }
 
   return Node
-})
+}, { isClass: true, isNode: true })

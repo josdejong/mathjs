@@ -6,12 +6,12 @@ import { isSafeProperty } from '../../utils/customs'
 import { hasOwnProperty } from '../../utils/object'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.ObjectNode'
+const name = 'ObjectNode'
 const dependencies = [
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ expression: { node: { Node } } }) => {
+export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ Node }) => {
   /**
    * @constructor ObjectNode
    * @extends {Node}
@@ -197,4 +197,4 @@ export const createObjectNode = /* #__PURE__ */ factory(name, dependencies, ({ e
   }
 
   return ObjectNode
-})
+}, { isClass: true, isNode: true })

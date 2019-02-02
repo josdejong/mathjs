@@ -94,6 +94,7 @@ export const createCore = factory('core', dependencies, ({ config }) => {
 
   math.expression = {
     transform: {},
+    node: {},
     mathWithTransform: {
       config: math.config
     }

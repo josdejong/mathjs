@@ -5,13 +5,13 @@ import { map } from '../../utils/array'
 import { escape } from '../../utils/string'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.node.IndexNode'
+const name = 'IndexNode'
 const dependencies = [
   'Range',
-  'expression.node.Node'
+  'Node'
 ]
 
-export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, expression: { node: { Node } } }) => {
+export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Range, Node }) => {
   /**
    * @constructor IndexNode
    * @extends Node
@@ -278,4 +278,4 @@ export const createIndexNode = /* #__PURE__ */ factory(name, dependencies, ({ Ra
   }
 
   return IndexNode
-})
+}, { isClass: true, isNode: true })

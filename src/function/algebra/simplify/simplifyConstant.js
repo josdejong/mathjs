@@ -12,20 +12,25 @@ const dependencies = [
   'math',
   'fraction',
   'bignumber',
-  'expression.node.ConstantNode',
-  'expression.node.OperatorNode',
-  'expression.node.FunctionNode',
-  'expression.node.SymbolNode'
+  'ConstantNode',
+  'OperatorNode',
+  'FunctionNode',
+  'SymbolNode'
 ]
 
-export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({ typed, config, math, fraction, bignumber, expression: { node: {
+export const createSimplifyConstant = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
+  config,
+  math,
+  fraction,
+  bignumber,
   ConstantNode,
   OperatorNode,
   FunctionNode,
   SymbolNode
-} } }) => {
+}) => {
   const { isCommutative, isAssociative, allChildren, createMakeNodeFunction } =
-    createUtil({ expression: { node: { FunctionNode, OperatorNode, SymbolNode } } })
+    createUtil({ FunctionNode, OperatorNode, SymbolNode })
 
   function simplifyConstant (expr, options) {
     const res = foldFraction(expr, options)
