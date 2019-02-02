@@ -294,9 +294,11 @@ export function importFactory (typed, load, math, factories) {
         ? ['expression', 'node'] // path where we want to put node classes
         : (factory.meta && factory.meta.isClass === true)
           ? ['type'] // path where we want to put classes
-          : undefined
+          : (fullName === 'reviver') // special case, JSON util function
+            ? ['json']
+            : undefined
     const name = nameContainsPath ? last(fullName.split('.')) : fullName
-    const namespace = path ? traverse(math, path) : math
+    const namespace = path !== undefined ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
 
@@ -417,7 +419,8 @@ export function importFactory (typed, load, math, factories) {
   function factoryAllowedInExpressions (factory) {
     return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
       !unsafe.hasOwnProperty(factory.fn) &&
-      (!factory.meta || !factory.meta.isClass)
+      (!factory.meta || !factory.meta.isClass) &&
+      factory.fn !== 'reviver' // TODO: this is an ugly special case
   }
 
   // namespaces and functions not available in the parser for safety reasons

@@ -99,6 +99,7 @@ export const createCore = factory('core', dependencies, ({ config }) => {
       config: math.config
     }
   }
+  math.json = {}
 
   math.type = {
     // only here for backward compatibility for legacy factory functions

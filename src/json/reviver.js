@@ -2,7 +2,7 @@
 
 import { factory } from '../utils/factory'
 
-const name = 'json.reviver'
+const name = 'reviver'
 const dependencies = [
   'classes'
 ]
