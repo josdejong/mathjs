@@ -2,7 +2,7 @@
 
 import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
-import { errorTransform } from './errorTransform'
+import { errorTransform } from './utils/errorTransform'
 
 const name = 'expression.transform.min'
 const dependencies = ['typed', 'min']

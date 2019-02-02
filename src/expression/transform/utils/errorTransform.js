@@ -1,5 +1,5 @@
 'use strict'
-import { IndexError } from '../../error/IndexError'
+import { IndexError } from '../../../error/IndexError'
 
 /**
  * Transform zero-based indices to one-based indices in errors

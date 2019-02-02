@@ -1,7 +1,7 @@
 'use strict'
 
 import { isBigNumber, isNumber } from '../../utils/is'
-import { errorTransform } from './errorTransform'
+import { errorTransform } from './utils/errorTransform'
 import { factory } from '../../utils/factory'
 
 const name = 'expression.transform.concat'
