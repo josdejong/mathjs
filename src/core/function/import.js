@@ -419,8 +419,7 @@ export function importFactory (typed, load, math, factories) {
   function factoryAllowedInExpressions (factory) {
     return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
       !unsafe.hasOwnProperty(factory.fn) &&
-      (!factory.meta || !factory.meta.isClass) &&
-      factory.fn !== 'reviver' // TODO: this is an ugly special case
+      (!factory.meta || !factory.meta.isClass)
   }
 
   // namespaces and functions not available in the parser for safety reasons
@@ -430,7 +429,8 @@ export function importFactory (typed, load, math, factories) {
     'docs': true,
     'error': true,
     'json': true,
-    'chain': true // chain method not supported. Note that there is a unit chain too.
+    'chain': true, // chain method not supported. Note that there is a unit chain too.
+    'reviver': true
   }
 
   return mathImport
