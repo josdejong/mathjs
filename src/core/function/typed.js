@@ -317,7 +317,7 @@ export const createTyped = /* #__PURE__ */ factory('typed', dependencies, functi
       from: 'boolean',
       to: 'string',
       convert: function (x) {
-        return +x
+        return String(x)
       }
     }, {
       from: 'Array',

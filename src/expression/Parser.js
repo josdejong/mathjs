@@ -6,9 +6,9 @@ import { getSafeProperty, setSafeProperty } from '../utils/customs'
 import { warnOnce } from '../utils/log'
 
 const name = 'expression.Parser'
-const dependencies = ['expression.parse']
+const dependencies = ['parse']
 
-export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse } }) => {
+export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
   /**
    * @constructor Parser
    * Parser contains methods to evaluate or parse expressions, and has a number

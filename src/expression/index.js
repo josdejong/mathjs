@@ -2,7 +2,7 @@
 
 import functions from './function'
 import node from './node'
-import { createParseExpression } from './parse'
+import { createParse } from './parse'
 import transform from './transform'
 import { embeddedDocs } from './embeddedDocs/embeddedDocs'
 import { createHelpClass } from './Help'
@@ -20,6 +20,6 @@ export default [
   transform,
 
   createHelpClass,
-  createParseExpression,
+  createParse,
   createParserClass
 ]

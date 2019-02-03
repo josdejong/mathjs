@@ -352,11 +352,11 @@ node.toTex({implicit: 'show'})    // '2\\cdot a'
 It is possible to customize the characters allowed in symbols and digits.
 The `parse` function exposes the following test functions:
 
-- `math.expression.parse.isAlpha(c, cPrev, cNext)`
-- `math.expression.parse.isWhitespace(c, nestingLevel)`
-- `math.expression.parse.isDecimalMark(c, cNext)`
-- `math.expression.parse.isDigitDot(c)`
-- `math.expression.parse.isDigit(c)`
+- `math.parse.isAlpha(c, cPrev, cNext)`
+- `math.parse.isWhitespace(c, nestingLevel)`
+- `math.parse.isDecimalMark(c, cNext)`
+- `math.parse.isDigitDot(c)`
+- `math.parse.isDigit(c)`
 
 The exact signature and implementation of these functions can be looked up in
 the [source code of the parser](https://github.com/josdejong/mathjs/blob/master/lib/expression/parse.js). The allowed alpha characters are described here: [Constants and variables](syntax.md#constants-and-variables).
@@ -365,8 +365,8 @@ For example, the phone character <code>&#9742;</code> is not supported by defaul
 by replacing the `isAlpha` function:
 
 ```js
-const isAlphaOriginal = math.expression.parse.isAlpha
-math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+const isAlphaOriginal = math.parse.isAlpha
+math.parse.isAlpha = function (c, cPrev, cNext) {
   return isAlphaOriginal(c, cPrev, cNext) || (c === '\u260E')
 }
 

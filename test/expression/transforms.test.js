@@ -2,7 +2,7 @@
 import assert from 'assert'
 import math from '../../src/mainBundle'
 
-const parse = math.expression.parse
+const parse = math.parse
 
 describe('transforms', function () {
   describe('filter', function () {

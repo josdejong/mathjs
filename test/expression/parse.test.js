@@ -3,8 +3,8 @@ import assert from 'assert'
 
 import approx from '../../tools/approx'
 import math from '../../src/mainBundle'
-import { ArgumentsError } from '../../src/error/ArgumentsError'
-const parse = math.expression.parse
+
+const parse = math.parse
 const ConditionalNode = math.expression.node.ConditionalNode
 const ConstantNode = math.expression.node.ConstantNode
 const OperatorNode = math.expression.node.OperatorNode
@@ -190,16 +190,14 @@ describe('parse', function () {
   })
 
   it('should throw an error if called with wrong number of arguments', function () {
-    assert.throws(function () { parse() }, ArgumentsError)
-    assert.throws(function () { parse(1, 2, 3) }, ArgumentsError)
-    assert.throws(function () { parse([1, 2]) }, TypeError)
+    assert.throws(function () { parse() }, /Too few arguments/)
+    assert.throws(function () { parse('2 + 3', {}, 3) }, /Too many arguments/)
   })
 
   it('should throw an error if called with a wrong type of argument', function () {
-    assert.throws(function () { parse(23) }, TypeError)
     assert.throws(function () { parse(math.unit('5cm')) }, TypeError)
     assert.throws(function () { parse(new Complex(2, 3)) }, TypeError)
-    assert.throws(function () { parse(true) }, TypeError)
+    assert.throws(function () { parse(new Date()) }, TypeError)
   })
 
   it('should throw an error in case of unsupported characters', function () {
@@ -2018,47 +2016,47 @@ describe('parse', function () {
 
   describe('expose test functions', function () {
     it('should expose isAlpha', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isAlpha === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isAlpha === 'function')
     })
 
     it('should expose isValidLatinOrGreek', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isValidLatinOrGreek === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isValidLatinOrGreek === 'function')
     })
 
     it('should expose isValidMathSymbol', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isValidMathSymbol === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isValidMathSymbol === 'function')
     })
 
     it('should expose isWhitespace', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isWhitespace === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isWhitespace === 'function')
     })
 
     it('should expose isDecimalMark', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isDecimalMark === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isDecimalMark === 'function')
     })
 
     it('should expose isDigitDot', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isDigitDot === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isDigitDot === 'function')
     })
 
     it('should expose isDigit', function () {
-      assert.ok('should expose isAlpha', typeof math.expression.parse.isDigit === 'function')
+      assert.ok('should expose isAlpha', typeof math.parse.isDigit === 'function')
     })
 
     it('should allow overriding isAlpha', function () {
-      const originalIsAlpha = math.expression.parse.isAlpha
+      const originalIsAlpha = math.parse.isAlpha
 
       // override isAlpha with one accepting $ characters too
-      math.expression.parse.isAlpha = function (c, cPrev, cNext) {
+      math.parse.isAlpha = function (c, cPrev, cNext) {
         return /^[a-zA-Z_$]$/.test(c)
       }
 
-      const node = math.expression.parse('$foo')
+      const node = math.parse('$foo')
       const result = node.evaluate({ $foo: 42 })
       assert.strictEqual(result, 42)
 
       // restore original isAlpha
-      math.expression.parse.isAlpha = originalIsAlpha
+      math.parse.isAlpha = originalIsAlpha
     })
   })
 

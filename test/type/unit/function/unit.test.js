@@ -64,7 +64,7 @@ describe('unit', function () {
 
   it('should throw an error if called with an invalid argument', function () {
     assert.throws(function () { unit(2, math.complex(2, 3)) }, TypeError)
-    assert.throws(function () { unit(true) }, TypeError)
+    assert.throws(function () { unit(new Date()) }, TypeError)
   })
 
   it('should throw an error if called with no argument', function () {

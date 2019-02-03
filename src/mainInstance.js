@@ -27,6 +27,12 @@ export function create (config) {
 
   math.expression.docs = embeddedDocs
 
+  math.expression.parse = function () {
+    throw new Error(
+      'Function "math.expression.parse" is deprecated since v6.0.0. ' +
+      'Use "math.parse" instead.')
+  }
+
   math.error = {
     ArgumentsError,
     DimensionError,

@@ -187,8 +187,7 @@ import { createRangeNode } from './expression/node/RangeNode'
 import { createRelationalNode } from './expression/node/RelationalNode'
 import { createSymbolNode } from './expression/node/SymbolNode'
 import { createFunctionNode } from './expression/node/FunctionNode'
-import { createParseExpression } from './expression/parse'
-import { createParse } from './expression/function/parse'
+import { createParse } from './expression/parse'
 import { createCompile } from './expression/function/compile'
 import { createEvaluate } from './expression/function/evaluate'
 import { createParserClass } from './expression/Parser'
@@ -1072,7 +1071,8 @@ export const RangeNode = /* #__PURE__ */ createRangeNode({ Node })
 export const RelationalNode = /* #__PURE__ */ createRelationalNode({ Node })
 export const SymbolNode = /* #__PURE__ */ createSymbolNode({ math, Unit, Node })
 export const FunctionNode = /* #__PURE__ */ createFunctionNode({ math, Node, SymbolNode })
-const parseExpression = /* #__PURE__ */ createParseExpression({
+export const parse = /* #__PURE__ */ createParse({
+  typed,
   config,
   numeric,
   AccessorNode,
@@ -1091,16 +1091,15 @@ const parseExpression = /* #__PURE__ */ createParseExpression({
   RelationalNode,
   SymbolNode
 })
-export const parse = /* #__PURE__ */ createParse({ typed, expression: { parse: parseExpression } })
-export const compile = /* #__PURE__ */ createCompile({ typed, expression: { parse: parseExpression } })
-export const evaluate = /* #__PURE__ */ createEvaluate({ typed, expression: { parse: parseExpression } })
-export const Parser = /* #__PURE__ */ createParserClass({ expression: { parse: parseExpression } })
+export const compile = /* #__PURE__ */ createCompile({ typed, parse })
+export const evaluate = /* #__PURE__ */ createEvaluate({ typed, parse })
+export const Parser = /* #__PURE__ */ createParserClass({ parse })
 
 // create (4)
 export const parser = /* #__PURE__ */ createParser({ math, typed, expression: { Parser } })
 
 // class (4)
-export const Help = /* #__PURE__ */ createHelpClass({ expression: { parse: parseExpression } })
+export const Help = /* #__PURE__ */ createHelpClass({ parse })
 export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (4)

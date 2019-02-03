@@ -6,9 +6,9 @@ import { format } from '../utils/string'
 import { factory } from '../utils/factory'
 
 const name = 'Help'
-const dependencies = ['expression.parse']
+const dependencies = ['parse']
 
-export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ expression: { parse } }) => {
+export const createHelpClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
   /**
    * Documentation object
    * @param {Object} doc  Object containing properties:

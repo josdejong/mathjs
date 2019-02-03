@@ -1,7 +1,7 @@
 import assert from 'assert'
-
 import approx from '../../../tools/approx'
 import math from '../../../src/mainBundle'
+
 const Complex = math.type.Complex
 const Unit = math.type.Unit
 const ResultSet = math.type.ResultSet
@@ -38,8 +38,9 @@ describe('evaluate', function () {
     assert.throws(function () { math.evaluate(new Complex(2, 3)) }, /TypeError: Unexpected type of argument/)
   })
 
-  it('should throw an error with a boolean', function () {
-    assert.throws(function () { math.evaluate(true) }, TypeError)
+  it('should evaluate a boolean', function () {
+    // TODO: this is odd. Boolean is turned in to string and then evaluated
+    assert.strictEqual(math.evaluate(true), true)
   })
 
   it('should handle the given scope', function () {

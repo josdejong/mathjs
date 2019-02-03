@@ -5,14 +5,14 @@ import { factory } from '../../../utils/factory'
 
 const name = 'algebra.simplify.resolve'
 const dependencies = [
-  'expression.parse',
+  'parse',
   'FunctionNode',
   'OperatorNode',
   'ParenthesisNode'
 ]
 
 export const createResolve = /* #__PURE__ */ factory(name, dependencies, ({
-  expression: { parse },
+  parse,
   FunctionNode,
   OperatorNode,
   ParenthesisNode

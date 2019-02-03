@@ -1,12 +1,12 @@
 'use strict'
 
 import { factory } from '../utils/factory'
-import { isAccessorNode, isConstantNode, isFunctionNode, isMatrix, isOperatorNode, isSymbolNode } from '../utils/is'
+import { isAccessorNode, isConstantNode, isFunctionNode, isOperatorNode, isSymbolNode } from '../utils/is'
 import { deepMap } from '../utils/collection'
-import { ArgumentsError } from '../error/ArgumentsError'
 
-const name = 'expression.parse'
+const name = 'parse'
 const dependencies = [
+  'typed',
   'numeric',
   'config',
   'AccessorNode',
@@ -26,7 +26,8 @@ const dependencies = [
   'SymbolNode'
 ]
 
-export const createParseExpression = /* #__PURE__ */ factory(name, dependencies, ({
+export const createParse = /* #__PURE__ */ factory(name, dependencies, ({
+  typed,
   numeric,
   config,
   AccessorNode,
@@ -49,57 +50,65 @@ export const createParseExpression = /* #__PURE__ */ factory(name, dependencies,
    * Parse an expression. Returns a node tree, which can be evaluated by
    * invoking node.evaluate().
    *
+   * Note the evaluating arbitrary expressions may involve security risks,
+   * see [http://mathjs.org/docs/expressions/security.html](http://mathjs.org/docs/expressions/security.html) for more information.
+   *
    * Syntax:
    *
-   *     parse(expr)
-   *     parse(expr, options)
-   *     parse([expr1, expr2, expr3, ...])
-   *     parse([expr1, expr2, expr3, ...], options)
+   *     math.parse(expr)
+   *     math.parse(expr, options)
+   *     math.parse([expr1, expr2, expr3, ...])
+   *     math.parse([expr1, expr2, expr3, ...], options)
    *
    * Example:
    *
-   *     const node = parse('sqrt(3^2 + 4^2)')
-   *     node.compile(math).evaluate() // 5
+   *     const node1 = math.parse('sqrt(3^2 + 4^2)')
+   *     node1.compile().evaluate() // 5
    *
    *     let scope = {a:3, b:4}
-   *     const node = parse('a * b') // 12
-   *     const code = node.compile(math)
-   *     code.evaluate(scope) // 12
+   *     const node2 = math.parse('a * b') // 12
+   *     const code2 = node2.compile()
+   *     code2.evaluate(scope) // 12
    *     scope.a = 5
-   *     code.evaluate(scope) // 20
+   *     code2.evaluate(scope) // 20
    *
    *     const nodes = math.parse(['a = 3', 'b = 4', 'a * b'])
-   *     nodes[2].compile(math).evaluate() // 12
+   *     nodes[2].compile().evaluate() // 12
    *
-   * @param {string | string[] | Matrix} expr
+   * See also:
+   *
+   *     evaluate, compile
+   *
+   * @param {string | string[] | Matrix} expr          Expression to be parsed
    * @param {{nodes: Object<string, Node>}} [options]  Available options:
    *                                                   - `nodes` a set of custom nodes
    * @return {Node | Node[]} node
    * @throws {Error}
    */
-  function parse (expr, options) {
-    if (arguments.length !== 1 && arguments.length !== 2) {
-      throw new ArgumentsError('parse', arguments.length, 1, 2)
-    }
+  const parse = typed(name, {
+    'string': function (expression) {
+      return parseStart(expression, {})
+    },
+    'Array | Matrix': function (expressions) {
+      return parseMultiple(expressions, {})
+    },
+    'string, Object': function (expression, options) {
+      const extraNodes = options.nodes !== undefined ? options.nodes : {}
 
-    // pass extra nodes
-    let extraNodes = (options && options.nodes) ? options.nodes : {}
+      return parseStart(expression, extraNodes)
+    },
+    'Array | Matrix, Object': parseMultiple
+  })
 
-    if (typeof expr === 'string') {
-      // parse a single expression
+  function parseMultiple (expressions, options = {}) {
+    const extraNodes = options.nodes !== undefined ? options.nodes : {}
 
-      return parseStart(expr, extraNodes)
-    } else if (Array.isArray(expr) || isMatrix(expr)) {
-      // parse an array or matrix with expressions
-      return deepMap(expr, function (elem) {
-        if (typeof elem !== 'string') throw new TypeError('String expected')
+    // parse an array or matrix with expressions
+    return deepMap(expressions, function (elem) {
+      if (typeof elem !== 'string') throw new TypeError('String expected')
 
-        return parseStart(elem, extraNodes)
-      })
-    } else {
-      // oops
-      throw new TypeError('String or matrix expected')
-    }
+      return parseStart(elem, extraNodes)
+    })
   }
 
   // token types enumeration

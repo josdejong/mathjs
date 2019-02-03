@@ -4,9 +4,9 @@ import { deepMap } from '../../utils/collection'
 import { factory } from '../../utils/factory'
 
 const name = 'evaluate'
-const dependencies = ['typed', 'expression.parse']
+const dependencies = ['typed', 'parse']
 
-export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typed, expression: { parse } }) => {
+export const createEvaluate = /* #__PURE__ */ factory(name, dependencies, ({ typed, parse }) => {
   /**
    * Evaluate an expression.
    *
