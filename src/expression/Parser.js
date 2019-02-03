@@ -5,7 +5,7 @@ import { extend } from '../utils/object'
 import { getSafeProperty, setSafeProperty } from '../utils/customs'
 import { warnOnce } from '../utils/log'
 
-const name = 'expression.Parser'
+const name = 'Parser'
 const dependencies = ['parse']
 
 export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ parse }) => {
@@ -172,4 +172,4 @@ export const createParserClass = /* #__PURE__ */ factory(name, dependencies, ({ 
   }
 
   return Parser
-})
+}, { isClass: true })

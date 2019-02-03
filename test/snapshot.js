@@ -14,7 +14,8 @@ const allClasses = {
   Range: 'Function',
   ResultSet: 'Function',
   Unit: 'Function',
-  Help: 'Function'
+  Help: 'Function',
+  Parser: 'Function'
 }
 
 const allES6Classes = {

@@ -3,11 +3,11 @@
 import { factory } from '../../utils/factory'
 
 const name = 'parser'
-const dependencies = ['typed', 'math', 'expression.Parser']
+const dependencies = ['typed', 'math', 'Parser']
 
-export const createParser = /* #__PURE__ */ factory(name, dependencies, ({ typed, math, expression: { Parser } }) => {
+export const createParser = /* #__PURE__ */ factory(name, dependencies, ({ typed, math, Parser }) => {
   /**
-   * Create a parser. The function creates a new `math.expression.Parser` object.
+   * Create a parser. The function creates a new `math.type.Parser` object.
    *
    * Syntax:
    *

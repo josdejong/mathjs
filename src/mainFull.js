@@ -1096,7 +1096,7 @@ export const evaluate = /* #__PURE__ */ createEvaluate({ typed, parse })
 export const Parser = /* #__PURE__ */ createParserClass({ parse })
 
 // create (4)
-export const parser = /* #__PURE__ */ createParser({ math, typed, expression: { Parser } })
+export const parser = /* #__PURE__ */ createParser({ math, typed, Parser })
 
 // class (4)
 export const Help = /* #__PURE__ */ createHelpClass({ parse })

@@ -27,10 +27,18 @@ export function create (config) {
 
   math.expression.docs = embeddedDocs
 
+  // TODO: deprecated since v6.0.0. Clean up some day
   math.expression.parse = function () {
     throw new Error(
       'Function "math.expression.parse" is deprecated since v6.0.0. ' +
       'Use "math.parse" instead.')
+  }
+
+  // TODO: deprecated since v6.0.0. Clean up some day
+  math.expression.Parser = function () {
+    throw new Error(
+      'Class "math.expression.Parser" has been moved to ' +
+      'math.type.Parser since v6.0.0.')
   }
 
   math.error = {

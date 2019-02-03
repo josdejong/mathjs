@@ -1,6 +1,6 @@
 import assert from 'assert'
 import math from '../../../src/mainBundle'
-const Parser = math.expression.Parser
+const Parser = math.type.Parser
 
 describe('parser', function () {
   it('should create a parser', function () {

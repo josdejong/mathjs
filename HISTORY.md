@@ -19,6 +19,7 @@ Breaking changes:
 - Deprecated function `math.expression.parse`, use `math.parse` instead.
   Was used before for example to customize supported characters by replacing
   `math.parse.isAlpha`.
+- Moved class `math.expression.Parser` to `math.type.Parser`.
 
 Non breaking:
 
