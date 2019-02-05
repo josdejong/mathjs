@@ -1,5 +1,10 @@
 # History
 
+# not yet published, version 5.5.0
+
+- Upgrade tiny-emitter to v2.1.0 (#1397).
+
+
 # 2019-01-25, version 5.4.2
 
 - Fix `math.format` not working for BigNumbers with a precision above
