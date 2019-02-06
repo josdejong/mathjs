@@ -5,7 +5,7 @@ import { isFraction, isNode, isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 import { createUtil } from './util'
 
-const name = 'algebra.simplify.simplifyConstant'
+const name = 'simplifyConstant'
 const dependencies = [
   'typed',
   'config',

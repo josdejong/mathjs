@@ -4,7 +4,7 @@ import { factory } from '../../../utils/factory'
 import { DimensionError } from '../../../error/DimensionError'
 import { scatter } from '../../../utils/collection'
 
-const name = 'utils.algorithm06'
+const name = 'algorithm06'
 const dependencies = ['typed', 'equalScalar']
 
 export const createAlgorithm06 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {

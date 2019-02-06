@@ -4,7 +4,7 @@ import { factory } from '../../../utils/factory'
 import { csEreach } from './csEreach'
 import { createCsSymperm } from './csSymperm'
 
-const name = 'algebra.sparse.csChol'
+const name = 'csChol'
 const dependencies = [
   'divideScalar',
   'sqrt',

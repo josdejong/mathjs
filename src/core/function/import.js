@@ -2,8 +2,8 @@
 
 import { isBigNumber, isComplex, isFraction, isMatrix, isUnit } from '../../utils/is'
 import { isFactory, stripOptionalNotation } from '../../utils/factory'
-import { get, isLegacyFactory, lazy, set, traverse } from '../../utils/object'
-import { initial, last } from '../../utils/array'
+import { isLegacyFactory, lazy, traverse } from '../../utils/object'
+import { contains, initial } from '../../utils/array'
 import { ArgumentsError } from '../../error/ArgumentsError'
 import { warnOnce } from '../../utils/log'
 
@@ -282,24 +282,28 @@ export function importFactory (typed, load, math, factories) {
    * Import an instance of a factory into math.js
    * @param {function(scope: object)} factory
    * @param {Object} options  See import for a description of the options
-   * @param {string} [fullName=factory.name] Optional custom name
+   * @param {string} [name=factory.name] Optional custom name
    * @private
    */
-  function _importFactory (factory, options, fullName = factory.fn) {
-    // FIXME: remove support for path in factory name
-    const nameContainsPath = fullName.indexOf('.') !== -1
+  function _importFactory (factory, options, name = factory.fn) {
+    const nameContainsPath = name.indexOf('.') !== -1
+    if (contains(name, '.')) {
+      throw new Error('Factory name should not contain a nested path. ' +
+        'Name: ' + JSON.stringify(name))
+    }
+
     const path = nameContainsPath
-      ? initial(fullName.split('.'))
+      ? initial(name.split('.'))
       : (factory.meta !== undefined && factory.meta.isNode === true)
         ? ['expression', 'node'] // path where we want to put node classes
         : (factory.meta !== undefined && factory.meta.isClass === true)
           ? ['type'] // path where we want to put classes
           : (factory.meta !== undefined && factory.meta.isTransformFunction === true)
             ? ['expression', 'transform']
-            : (fullName === 'reviver') // special case, JSON util function
+            : (name === 'reviver') // special case, JSON util function
               ? ['json']
               : undefined
-    const name = nameContainsPath ? last(fullName.split('.')) : fullName
+
     const namespace = path !== undefined ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
     const existing = namespace.hasOwnProperty(name) ? namespace[name] : undefined
@@ -310,6 +314,11 @@ export function importFactory (typed, load, math, factories) {
       factory.dependencies
         .map(stripOptionalNotation)
         .forEach(dependency => {
+          if (contains(dependency, '.')) {
+            throw new Error('Factory dependency should not contain a nested path. ' +
+              'Name: ' + JSON.stringify(dependency))
+          }
+
           if (dependency === 'math') {
             dependencies.math = math
           } else if (dependency === 'mathWithTransform') {
@@ -319,9 +328,9 @@ export function importFactory (typed, load, math, factories) {
           } else if (dependency === 'docs') { // special case for embedded docs
             dependencies.docs = math.expression.docs
           } else {
-            // dependencies[name] = math.type[name] || math.expression.node[name] || math[name] // FIXME: replace with non nested solution
-            const value = get(math, dependency) || get(math.type, dependency) || get(math.expression.node, dependency)
-            set(dependencies, dependency, value)
+            dependencies[dependency] = (math.type[dependency] ||
+              math.expression.node[dependency] ||
+              math[dependency])
           }
         })
 
@@ -350,7 +359,7 @@ export function importFactory (typed, load, math, factories) {
       if (options.silent) {
         return existing
       } else {
-        throw new Error('Cannot import "' + fullName + '": already exists')
+        throw new Error('Cannot import "' + name + '": already exists')
       }
     }
 
@@ -376,7 +385,7 @@ export function importFactory (typed, load, math, factories) {
       }
     }
 
-    factories[fullName] = factory
+    factories[name] = factory
 
     math.emit('import', name, resolver, path)
   }

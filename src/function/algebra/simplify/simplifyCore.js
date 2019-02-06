@@ -3,7 +3,7 @@
 import { isConstantNode, isFunctionNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 
-const name = 'algebra.simplify.simplifyCore'
+const name = 'simplifyCore'
 const dependencies = [
   'equal',
   'isZero',

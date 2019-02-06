@@ -3,7 +3,7 @@
 import { factory } from '../../../utils/factory'
 import { DimensionError } from '../../../error/DimensionError'
 
-const name = 'utils.algorithm09'
+const name = 'algorithm09'
 const dependencies = ['typed', 'equalScalar']
 
 export const createAlgorithm09 = /* #__PURE__ */ factory(name, dependencies, ({ typed, equalScalar }) => {

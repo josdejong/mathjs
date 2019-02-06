@@ -2,7 +2,7 @@
 
 import { factory } from '../../../utils/factory'
 
-const name = 'utils.algorithm10'
+const name = 'algorithm10'
 const dependencies = ['typed', 'DenseMatrix']
 
 export const createAlgorithm10 = /* #__PURE__ */ factory(name, dependencies, ({ typed, DenseMatrix }) => {

@@ -3,7 +3,7 @@
 import { isFunctionNode, isNode, isOperatorNode, isParenthesisNode, isSymbolNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 
-const name = 'algebra.simplify.resolve'
+const name = 'resolve'
 const dependencies = [
   'parse',
   'FunctionNode',

@@ -3,7 +3,7 @@
 import { factory } from '../../../utils/factory'
 import { clone } from '../../../utils/object'
 
-const name = 'utils.algorithm14'
+const name = 'algorithm14'
 const dependencies = ['typed']
 
 export const createAlgorithm14 = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {

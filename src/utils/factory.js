@@ -1,5 +1,5 @@
 import { contains } from './array'
-import { get, pick } from './object'
+import { pickShallow } from './object'
 
 /**
  * Create a factory function, which can be used to inject dependencies.
@@ -30,7 +30,7 @@ export function factory (name, dependencies, create, meta) {
     // we only pass the requested dependencies to the factory function
     // to prevent functions to rely on dependencies that are not explicitly
     // requested.
-    const deps = pick(scope, dependencies.map(stripOptionalNotation))
+    const deps = pickShallow(scope, dependencies.map(stripOptionalNotation))
 
     assertDependencies(name, dependencies, scope)
 
@@ -131,10 +131,10 @@ export function isFactory (obj) {
 export function assertDependencies (name, dependencies, scope) {
   const allDefined = dependencies
     .filter(dependency => !isOptionalDependency(dependency)) // filter optionals
-    .every(dependency => get(scope, dependency) !== undefined)
+    .every(dependency => scope[dependency] !== undefined)
 
   if (!allDefined) {
-    const missingDependencies = dependencies.filter(dependency => get(scope, dependency) === undefined)
+    const missingDependencies = dependencies.filter(dependency => scope[dependency] === undefined)
 
     // TODO: create a custom error class for this, a MathjsError or something like that
     throw new Error(`Cannot create function "${name}", ` +

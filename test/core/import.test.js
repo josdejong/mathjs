@@ -332,14 +332,14 @@ describe('import', function () {
       assert.strictEqual(math2.cubeTest(3), 27)
     })
 
-    it('should import a factory function with a nested path', () => {
+    it('should not allow nested nested paths in a factory', () => {
       const math2 = core()
 
       assert.strictEqual(math2.tools, undefined)
 
-      math2.import([ nestedFactory ])
-
-      assert.strictEqual(math2.tools.misc.nested(), 'nested')
+      assert.throws(() => {
+        math2.import([ nestedFactory ])
+      }, /Factory name should not contain a nested path/)
     })
 
     it('should import an array with factory functions in the correct order, resolving dependencies', () => {

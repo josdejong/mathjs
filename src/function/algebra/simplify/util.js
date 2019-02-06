@@ -3,7 +3,7 @@
 import { isOperatorNode } from '../../../utils/is'
 import { factory } from '../../../utils/factory'
 
-const name = 'algebra.simplify.util'
+const name = 'simplifyUtil'
 const dependencies = [
   'FunctionNode',
   'OperatorNode',

@@ -344,6 +344,27 @@ export function pick (object, properties, transform) {
   return copy
 }
 
+/**
+ * Shallow version of pick, creating an object composed of the picked object properties
+ * but not for nested properties
+ * @param {Object} object
+ * @param {string[]} properties
+ * @return {Object}
+ */
+export function pickShallow (object, properties) {
+  const copy = {}
+
+  for (let i = 0; i < properties.length; i++) {
+    const key = properties[i]
+    const value = object[key]
+    if (value !== undefined) {
+      copy[key] = value
+    }
+  }
+
+  return copy
+}
+
 export function values (object) {
   return Object.keys(object).map(key => object[key])
 }
