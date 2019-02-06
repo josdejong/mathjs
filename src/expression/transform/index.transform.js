@@ -3,7 +3,7 @@
 import { isArray, isBigNumber, isMatrix, isNumber, isRange } from '../../utils/is'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.transform.index'
+const name = 'index'
 const dependencies = ['Index']
 
 export const createIndexTransform = /* #__PURE__ */ factory(name, dependencies, ({ Index }) => {

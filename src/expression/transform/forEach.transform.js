@@ -6,7 +6,7 @@ import { forEach } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { compileInlineExpression } from './utils/compileInlineExpression'
 
-const name = 'expression.transform.forEach'
+const name = 'forEach'
 const dependencies = ['typed']
 
 export const createForEachTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed }) => {

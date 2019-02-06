@@ -6,7 +6,7 @@ import { maxArgumentCount } from '../../utils/function'
 import { compileInlineExpression } from './utils/compileInlineExpression'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.transform.filter'
+const name = 'filter'
 const dependencies = ['typed', 'matrix']
 
 export const createFilterTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {

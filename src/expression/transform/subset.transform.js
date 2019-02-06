@@ -3,7 +3,7 @@
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
 
-const name = 'expression.transform.subset'
+const name = 'subset'
 const dependencies = ['typed', 'subset']
 
 export const createSubsetTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, subset }) => {

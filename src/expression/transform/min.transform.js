@@ -4,7 +4,7 @@ import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
 
-const name = 'expression.transform.min'
+const name = 'min'
 const dependencies = ['typed', 'min']
 
 export const createMinTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, min }) => {

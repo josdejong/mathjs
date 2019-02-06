@@ -4,7 +4,7 @@ import { isBigNumber, isCollection, isNumber } from '../../utils/is'
 import { factory } from '../../utils/factory'
 import { errorTransform } from './utils/errorTransform'
 
-const name = 'expression.transform.max'
+const name = 'max'
 const dependencies = ['typed', 'max']
 
 export const createMaxTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, max }) => {

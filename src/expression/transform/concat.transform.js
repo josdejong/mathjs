@@ -4,7 +4,7 @@ import { isBigNumber, isNumber } from '../../utils/is'
 import { errorTransform } from './utils/errorTransform'
 import { factory } from '../../utils/factory'
 
-const name = 'expression.transform.concat'
+const name = 'concat'
 const dependencies = ['typed', 'concat']
 
 export const createConcatTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, concat }) => {

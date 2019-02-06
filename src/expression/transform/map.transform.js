@@ -6,7 +6,7 @@ import { map } from '../../utils/array'
 import { factory } from '../../utils/factory'
 import { compileInlineExpression } from './utils/compileInlineExpression'
 
-const name = 'expression.transform.map'
+const name = 'map'
 const dependencies = ['typed', 'matrix']
 
 export const createMapTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, matrix }) => {

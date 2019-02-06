@@ -290,13 +290,15 @@ export function importFactory (typed, load, math, factories) {
     const nameContainsPath = fullName.indexOf('.') !== -1
     const path = nameContainsPath
       ? initial(fullName.split('.'))
-      : (factory.meta && factory.meta.isNode === true)
+      : (factory.meta !== undefined && factory.meta.isNode === true)
         ? ['expression', 'node'] // path where we want to put node classes
-        : (factory.meta && factory.meta.isClass === true)
+        : (factory.meta !== undefined && factory.meta.isClass === true)
           ? ['type'] // path where we want to put classes
-          : (fullName === 'reviver') // special case, JSON util function
-            ? ['json']
-            : undefined
+          : (factory.meta !== undefined && factory.meta.isTransformFunction === true)
+            ? ['expression', 'transform']
+            : (fullName === 'reviver') // special case, JSON util function
+              ? ['json']
+              : undefined
     const name = nameContainsPath ? last(fullName.split('.')) : fullName
     const namespace = path !== undefined ? traverse(math, path) : math
     const existingTransform = name in math.expression.transform
@@ -356,7 +358,7 @@ export function importFactory (typed, load, math, factories) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if (((path && path.join('.') === 'expression.transform')) || factoryAllowedInExpressions(factory)) {
+        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
           lazy(math.expression.mathWithTransform, name, () => namespace[name])
         }
       }
@@ -366,7 +368,7 @@ export function importFactory (typed, load, math, factories) {
       if (existingTransform) {
         _deleteTransform(name)
       } else {
-        if (((path && path.join('.') === 'expression.transform')) || factoryAllowedInExpressions(factory)) {
+        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
           math.expression.mathWithTransform[name] = namespace[name]
         }
       }
@@ -422,6 +424,12 @@ export function importFactory (typed, load, math, factories) {
     return factory.fn.indexOf('.') === -1 && // FIXME: make checking on path redundant, check on meta data instead
       !unsafe.hasOwnProperty(factory.fn) &&
       (!factory.meta || !factory.meta.isClass)
+  }
+
+  function isTransformFunctionFactory (factory) {
+    return (factory !== undefined &&
+      factory.meta !== undefined &&
+      factory.meta.isTransformFunction === true) || false
   }
 
   // namespaces and functions not available in the parser for safety reasons

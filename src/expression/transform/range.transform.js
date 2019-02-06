@@ -2,7 +2,7 @@
 
 import { factory } from '../../utils/factory'
 
-const name = 'expression.transform.range'
+const name = 'range'
 const dependencies = ['typed', 'range']
 
 export const createRangeTransform = /* #__PURE__ */ factory(name, dependencies, ({ typed, range }) => {
