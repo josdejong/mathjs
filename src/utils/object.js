@@ -176,38 +176,33 @@ export function canDefineProperty () {
 /**
  * Attach a lazy loading property to a constant.
  * The given function `fn` is called once when the property is first requested.
- * On older browsers (<IE8), the function will fall back to direct evaluation
- * of the properties value.
- * @param {Object} object   Object where to add the property
- * @param {string} prop     Property name
- * @param {Function} fn     Function returning the property value. Called
- *                          without arguments.
+ *
+ * @param {Object} object         Object where to add the property
+ * @param {string} prop           Property name
+ * @param {Function} valueResolver Function returning the property value. Called
+ *                                without arguments.
  */
-export function lazy (object, prop, fn) {
-  if (canDefineProperty()) {
-    let _uninitialized = true
-    let _value
-    Object.defineProperty(object, prop, {
-      get: function () {
-        if (_uninitialized) {
-          _value = fn()
-          _uninitialized = false
-        }
-        return _value
-      },
+export function lazy (object, prop, valueResolver) {
+  let _uninitialized = true
+  let _value
 
-      set: function (value) {
-        _value = value
+  Object.defineProperty(object, prop, {
+    get: function () {
+      if (_uninitialized) {
+        _value = valueResolver()
         _uninitialized = false
-      },
+      }
+      return _value
+    },
 
-      configurable: true,
-      enumerable: true
-    })
-  } else {
-    // fall back to immediate evaluation
-    object[prop] = fn()
-  }
+    set: function (value) {
+      _value = value
+      _uninitialized = false
+    },
+
+    configurable: true,
+    enumerable: true
+  })
 }
 
 /**
