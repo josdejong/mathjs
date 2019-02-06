@@ -312,6 +312,8 @@ export function importFactory (typed, load, math, factories) {
         .forEach(dependency => {
           if (dependency === 'math') {
             dependencies.math = math
+          } else if (dependency === 'mathWithTransform') {
+            dependencies.mathWithTransform = math.expression.mathWithTransform
           } else if (dependency === 'classes') { // special case for json reviver
             dependencies.classes = Object.assign({}, math.type, math.expression.node)
           } else if (dependency === 'docs') { // special case for embedded docs

@@ -1055,7 +1055,7 @@ const mathWithTransform = /* #__PURE__ */ Object.assign({}, math, {
 })
 
 // expression (4)
-export const Node = /* #__PURE__ */ createNode({ expression: { mathWithTransform } })
+export const Node = /* #__PURE__ */ createNode({ mathWithTransform })
 export const AccessorNode = /* #__PURE__ */ createAccessorNode({ subset, Node })
 export const ArrayNode = /* #__PURE__ */ createArrayNode({ Node })
 export const AssignmentNode = /* #__PURE__ */ createAssignmentNode({ subset, matrix, Node })
