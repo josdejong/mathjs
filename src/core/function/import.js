@@ -363,25 +363,13 @@ export function importFactory (typed, load, math, factories) {
       }
     }
 
-    if (factory.lazy !== false) {
-      lazy(namespace, name, resolver)
+    lazy(namespace, name, resolver)
 
-      if (existingTransform) {
-        _deleteTransform(name)
-      } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          lazy(math.expression.mathWithTransform, name, () => namespace[name])
-        }
-      }
+    if (existingTransform) {
+      _deleteTransform(name)
     } else {
-      namespace[name] = resolver()
-
-      if (existingTransform) {
-        _deleteTransform(name)
-      } else {
-        if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
-          math.expression.mathWithTransform[name] = namespace[name]
-        }
+      if (isTransformFunctionFactory(factory) || factoryAllowedInExpressions(factory)) {
+        lazy(math.expression.mathWithTransform, name, () => namespace[name])
       }
     }
 

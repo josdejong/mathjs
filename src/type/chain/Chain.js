@@ -161,13 +161,21 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
       createProxy(arg0, arg1)
     } else {
       // createProxy(values)
-      for (const prop in arg0) {
-        if (arg0.hasOwnProperty(prop)) {
-          createProxy(prop, arg0[prop])
-          // createLazyProxy(prop, () => arg0[prop]) // TODO: lazy load Chain properties
+      for (const name in arg0) {
+        if (arg0.hasOwnProperty(name) && excludedNames[name] === undefined) {
+          createLazyProxy(name, () => arg0[name])
         }
       }
     }
+  }
+
+  const excludedNames = {
+    'expression': true,
+    'docs': true,
+    'type': true,
+    'classes': true,
+    'json': true,
+    'error': true
   }
 
   // create proxy for everything that is in math.js
@@ -185,5 +193,3 @@ export const createChainClass = /* #__PURE__ */ factory(name, dependencies, ({ o
 
   return Chain
 }, { isClass: true })
-
-createChainClass.lazy = false // we need to register a listener on the import events, so no lazy loading
