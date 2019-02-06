@@ -21,11 +21,12 @@ export function create (config) {
   math.create = create
   math.core = core
 
+  // Important: load docs before help
+  math.expression.docs = embeddedDocs
+
   // import the factory functions like createAdd as an array instead of object,
   // else they will get a different naming (`createAdd` instead of `add`).
   math['import'](values(all))
-
-  math.expression.docs = embeddedDocs
 
   // TODO: deprecated since v6.0.0. Clean up some day
   math.expression.parse = function () {

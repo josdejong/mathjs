@@ -312,6 +312,8 @@ export function importFactory (typed, load, math, factories) {
             dependencies.math = math
           } else if (dependency === 'classes') { // special case for json reviver
             dependencies.classes = Object.assign({}, math.type, math.expression.node)
+          } else if (dependency === 'docs') { // special case for embedded docs
+            dependencies.docs = math.expression.docs
           } else {
             // dependencies[name] = math.type[name] || math.expression.node[name] || math[name] // FIXME: replace with non nested solution
             const value = get(math, dependency) || get(math.type, dependency) || get(math.expression.node, dependency)

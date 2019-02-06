@@ -348,6 +348,7 @@ describe('import', function () {
       assert.strictEqual(math2.multiplyTest, undefined)
       assert.strictEqual(math2.cubeTest, undefined)
 
+      // note that this depends on lazy loading
       math2.import([ cubeTestFactory, multiplyTestFactory ])
 
       assert.strictEqual(math2.multiplyTest(2, 3), 6)

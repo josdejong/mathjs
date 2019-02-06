@@ -1103,7 +1103,7 @@ export const Help = /* #__PURE__ */ createHelpClass({ parse })
 export const Chain = /* #__PURE__ */ createChainClass({ math })
 
 // type (4)
-export const help = /* #__PURE__ */ createHelp({ math, typed, expression: { docs: embeddedDocs }, Help })
+export const help = /* #__PURE__ */ createHelp({ math, typed, docs: embeddedDocs, Help })
 export const chain = /* #__PURE__ */ createChain({ typed, Chain })
 
 // algebra (4)
